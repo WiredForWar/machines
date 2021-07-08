@@ -132,7 +132,7 @@ Gui::bitmap( const SysPathName& path )
     //LO's assets don't keep case. :(
     string pathName(path.pathname());
 
-    if (not path.existsAsFile())
+    if (path.containsCapitals() and not path.existsAsFile())
     {
         std::transform(pathName.begin(), pathName.end(), pathName.begin(), [](unsigned char c){ return std::tolower(c); });
     }

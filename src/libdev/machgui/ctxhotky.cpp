@@ -21,6 +21,7 @@
 #include "ani/smacker.hpp"
 #include "device/cd.hpp"
 #include <fstream>
+#include <algorithm>
 
 MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
 :	MachGuiStartupScreenContext( pStartupScreens ),
@@ -276,8 +277,16 @@ void MachGuiCtxHotKeys::update()
 
 void MachGuiCtxHotKeys::readHotkeyData( const string& hotKeyDataFileName, string& hotkeyString, uint& linesInString )
 {
-	std::ifstream hotKeyFile( hotKeyDataFileName.c_str() );
-	ASSERT( hotKeyFile, hotKeyDataFileName.c_str() );
+    SysPathName hotKeyFilePath = SysPathName(hotKeyDataFileName);
+    string path = string(hotKeyDataFileName.c_str());
+
+    if (hotKeyFilePath.containsCapitals() and not hotKeyFilePath.existsAsFile())
+    {
+        std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c){ return std::tolower(c); });
+    }
+
+    ASSERT(hotKeyFilePath.insensitiveExistsAsFile(), hotKeyFilePath.c_str());
+    std::ifstream hotKeyFile( path.c_str() );
 	char nextChar;
 	uint noLines = 0;
 
