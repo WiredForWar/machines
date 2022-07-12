@@ -186,7 +186,8 @@ RenID3DMeshLoader::MeshMap* RenID3DMeshLoader::load
                 std::istreambuf_iterator<char>());
     try
     {
-        XFileParser xParser(fContent);
+        XFileParser xParser;
+        xParser.LoadData(fContent);
         sceneBeingLoaded_ = xParser.GetImportedData();
         objectLoaded(sceneBeingLoaded_);
         //  Only register this file if we were loading the meshes for it. If we

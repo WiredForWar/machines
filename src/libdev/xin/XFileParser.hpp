@@ -69,7 +69,9 @@ class XFileParser {
 public:
     /// Constructor. Creates a data structure out of the XFile given in the memory block.
     /// @param pBuffer Null-terminated memory buffer containing the XFile
-    explicit XFileParser( const std::vector<char>& pBuffer);
+    XFileParser() = default;
+
+    void LoadData( const std::vector<char>& pBuffer );
 
     /// Destructor. Does not destroy all imported data along with it
     ~XFileParser();

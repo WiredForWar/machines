@@ -55,6 +55,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using namespace Formatter;
 
 // ------------------------------------------------------------------------------------------------
+// The data loader. Creates a data structure out of the XFile given in the memory block.
+void XFileParser::LoadData(const std::vector<char> &pBuffer)
 {
     // vector to store uncompressed file for INFLATE'd X files
     std::vector<char> uncompressed;
