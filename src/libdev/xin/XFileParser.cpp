@@ -55,16 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using namespace Formatter;
 
 // ------------------------------------------------------------------------------------------------
-// Constructor. Creates a data structure out of the XFile given in the memory block.
-XFileParser::XFileParser( const std::vector<char>& pBuffer)
-: mMajorVersion( 0 )
-, mMinorVersion( 0 )
-, mIsBinaryFormat( false )
-, mBinaryNumCount( 0 )
-, mP( NULL )
-, mEnd( NULL )
-, mLineNumber( 0 )
-, mScene( NULL ) {
+{
     // vector to store uncompressed file for INFLATE'd X files
     std::vector<char> uncompressed;
 

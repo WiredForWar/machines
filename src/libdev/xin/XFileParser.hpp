@@ -145,14 +145,15 @@ protected:
     void FilterHierarchy( XFile::Node* pNode);
 
 protected:
-    unsigned int mMajorVersion, mMinorVersion; ///< version numbers
-    bool mIsBinaryFormat; ///< true if the file is in binary, false if it's in text form
-    unsigned int mBinaryFloatSize; ///< float size in bytes, either 4 or 8
-    unsigned int mBinaryNumCount; /// < counter for number arrays in binary format
-    const char* mP;
-    const char* mEnd;
-    unsigned int mLineNumber; ///< Line number when reading in text format
-    XFile::Scene* mScene; ///< Imported data
+    unsigned int mMajorVersion = 0; ///< version numbers
+    unsigned int mMinorVersion = 0;
+    bool mIsBinaryFormat = false; ///< true if the file is in binary, false if it's in text form
+    unsigned int mBinaryFloatSize = 0; ///< float size in bytes, either 4 or 8
+    unsigned int mBinaryNumCount = 0; /// < counter for number arrays in binary format
+    const char* mP = nullptr;
+    const char* mEnd = nullptr;
+    unsigned int mLineNumber = 0; ///< Line number when reading in text format
+    XFile::Scene* mScene = nullptr; ///< Imported data
 };
 
 
