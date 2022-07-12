@@ -100,7 +100,7 @@ public:
 
 	const MachLogSquadron* squadron() const;
 	MachLogSquadron* squadron();
-	bool squadron( const MachLogSquadron* );
+	bool squadron( MachLogSquadron* );
 
 	//returns which building inside (if any) use insideWhichBuilding
 	//query method to return which building the machine is inside.

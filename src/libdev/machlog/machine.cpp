@@ -758,7 +758,7 @@ MachLogMachine::Level MachLogMachine::swLevel() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MachLogMachine::squadron( const MachLogSquadron* pNewSquadron )
+bool MachLogMachine::squadron( MachLogSquadron* pNewSquadron )
 {
 	CB_DEPIMPL( MachLogSquadron*, pSquadron_ );
 	if( pSquadron_ != NULL )
@@ -767,10 +767,9 @@ bool MachLogMachine::squadron( const MachLogSquadron* pNewSquadron )
 
 	if( pNewSquadron )
 	{
-		MachLogSquadron* pNonConst = _CONST_CAST( MachLogSquadron*, pNewSquadron );
-		if( pNonConst->addToControl( this ) )
+		if( pNewSquadron->addToControl( this ) )
 		{
-			pSquadron_ = pNonConst;
+			pSquadron_ = pNewSquadron;
 			return true;
 		}
 	}
