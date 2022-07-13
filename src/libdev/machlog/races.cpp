@@ -2181,7 +2181,7 @@ MachLogPCController& MachLogRaces::pcController() const
     return *pDataImpl_->thePCController_;
 }
 
-void MachLogRaces::pcController( MachLogPCController * pNewPCController )
+void MachLogRaces::setPcController( MachLogPCController * pNewPCController )
 {
     PRE( not hasPCRace() );
 

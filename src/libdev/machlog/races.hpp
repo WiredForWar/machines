@@ -309,7 +309,7 @@ public:
 	const MachLogAIController& AIController( MachPhys::Race r ) const;
 
     //Register a new pc controller
-	void pcController( MachLogPCController * pNewPCController );
+	void setPcController( MachLogPCController * pNewPCController );
     //PRE( not hasPCRace() );
 
     //True iff a PC race has been defined

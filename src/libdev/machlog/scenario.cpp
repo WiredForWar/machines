@@ -361,7 +361,7 @@ void MachLogScenario::load
 				if( not network.isNetworkGame() or
 					network.localRace() == race )
 				{
-    				races.pcController( pPCController );
+					races.setPcController( pPCController );
 					if( network.isNetworkGame() )
 						network.remoteStatus( race, MachLogNetwork::LOCAL_PROCESS );
 				}
