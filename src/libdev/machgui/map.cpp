@@ -1636,7 +1636,7 @@ void MachContinentMap::update3dFogOfWarLightLevel()
 	else
 	{
 		// Update cameras actual position
-		MachLogCamera* pCamera = pCameras_->currentCamera();
+		const MachLogCamera* pCamera = pCameras_->currentCamera();
 		MexTransform3d cameraTrans = pCamera->globalTransform();
 		MexPoint3d cameraPos = cameraTrans.position();
 		cameraCheckPos.x( ( cameraPos.x() / ratio ) + xOffset() );
