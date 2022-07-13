@@ -176,18 +176,10 @@ RenID3DMeshLoader::MeshMap* RenID3DMeshLoader::load
     fileBeingLoaded_ = pathName;
 
     //  Use XParser to load the file.
-    std::ifstream xFile(pathName.pathname());
-    std::vector<char> fContent;
-    xFile.seekg(0, std::ios::end);
-    fContent.reserve(xFile.tellg());
-    xFile.seekg(0, std::ios::beg);
-
-    fContent.assign((std::istreambuf_iterator<char>(xFile)),
-                std::istreambuf_iterator<char>());
     try
     {
         XFileParser xParser;
-        xParser.LoadData(fContent);
+        xParser.LoadFromFile(pathName.pathname());
         sceneBeingLoaded_ = xParser.GetImportedData();
         objectLoaded(sceneBeingLoaded_);
         //  Only register this file if we were loading the meshes for it. If we

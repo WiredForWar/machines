@@ -56,6 +56,21 @@ using namespace Formatter;
 
 // ------------------------------------------------------------------------------------------------
 // The data loader. Creates a data structure out of the XFile given in the memory block.
+void XFileParser::LoadFromFile(const std::string &fileName)
+{
+    mFileName = fileName;
+
+    std::ifstream xFile(fileName, std::ios::binary | std::ios::ate);
+    std::vector<char> fContent;
+    fContent.reserve(xFile.tellg());
+    xFile.seekg(0, std::ios::beg);
+
+    fContent.assign((std::istreambuf_iterator<char>(xFile)),
+                    std::istreambuf_iterator<char>());
+
+    LoadData(fContent);
+}
+
 void XFileParser::LoadData(const std::vector<char> &pBuffer)
 {
     // vector to store uncompressed file for INFLATE'd X files

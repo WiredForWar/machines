@@ -71,6 +71,7 @@ public:
     /// @param pBuffer Null-terminated memory buffer containing the XFile
     XFileParser() = default;
 
+    void LoadFromFile( const std::string& fileName );
     void LoadData( const std::vector<char>& pBuffer );
 
     /// Destructor. Does not destroy all imported data along with it
@@ -156,6 +157,7 @@ protected:
     const char* mEnd = nullptr;
     unsigned int mLineNumber = 0; ///< Line number when reading in text format
     XFile::Scene* mScene = nullptr; ///< Imported data
+    std::string mFileName;
 };
 
 
