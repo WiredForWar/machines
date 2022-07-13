@@ -2265,14 +2265,7 @@ const MachLogStats&		MachLogRaces::stats() const
 bool MachLogRaces::loadGame( W4dSceneManager* pSceneManager, const string& planetName, const string& scenarioName, BaseProgressReporter* pReporter )
 {
 	MachLogGameCreationData gameData;
-
-	MachLogVoiceMailManager::instance().acceptMailPostings( false );
-
-	loadGame( pSceneManager, planetName, scenarioName, gameData, pReporter );
-
-	MachLogVoiceMailManager::instance().acceptMailPostings( true );
-
-    return true;
+	return loadGame( pSceneManager, planetName, scenarioName, gameData, pReporter );
 }
 
 bool MachLogRaces::loadGame(
