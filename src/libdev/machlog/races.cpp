@@ -291,7 +291,7 @@ bool MachLogRaces::addMatchingMachineToSquadron( MachPhys::Race r, const MachLog
 					wc == prod.weaponCombo() )
 					{
 						found = true;
-						mlm.squadron( pSquadron );
+						mlm.setSquadron( pSquadron );
 					}
 			}
 		}

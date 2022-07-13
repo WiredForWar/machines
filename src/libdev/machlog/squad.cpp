@@ -233,7 +233,7 @@ void MachLogSquadron::releaseAllMachines()
 	HAL_STREAM("MLSquadron::releaseAllMachines\n" );
 	while( machines_.size() > 0 )
 	{
-		(*machines_.begin())->squadron( NULL );
+		(*machines_.begin())->setSquadron( NULL );
 	}
 
     pStrongestMachine_ = nullptr;

@@ -95,7 +95,7 @@ void MachLogReinforcementsAction::doAction()
 				if( (*i)->squadronId() == assignToSquadronIndex_ )
 				{
 					HAL_STREAM(" FOUND A MATCH ADDING...\n" );
-					pMach->squadron( (*i) );
+					pMach->setSquadron( (*i) );
 				}
 			}
 			HAL_STREAM( std::endl );

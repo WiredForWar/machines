@@ -221,7 +221,7 @@ void MachLogFactory::createNewMachine( const MachLogProductionUnit& newMachine, 
 	//if this is an AI Race then if the constructionId field is set then it represents the id
 	//of the squadron id to add it to.
 	if( newMachine.constructionId() != -1 and MachLogRaces::instance().controller( pRace->race() ).type() == MachLogController::AI_CONTROLLER )
-		pMach->squadron( MachLogRaces::instance().squadrons( pRace->race() )[ newMachine.constructionId() ] );
+		pMach->setSquadron( MachLogRaces::instance().squadrons( pRace->race() )[ newMachine.constructionId() ] );
 
 	// give voicemail announcing arrival into world
 	MachLogMachineVoiceMailManager::instance().postNewMail( pMach->objectType(), pMach->subType(), MachLogMachineVoiceMailManager::MEV_BUILT, pMach->id(),  pMach->race() );

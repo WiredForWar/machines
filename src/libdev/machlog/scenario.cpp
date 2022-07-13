@@ -621,7 +621,7 @@ void MachLogScenario::load
 
 					if( squadId != -1 )
 					{
-						pMachine->squadron( races.squadrons( race )[squadId] );
+						pMachine->setSquadron( races.squadrons( race )[squadId] );
 					}
 				}
 

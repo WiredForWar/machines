@@ -266,7 +266,7 @@ void MachGuiSquadronBank::createSquad( size_t squadIndex )
     MachLogSquadron::Machines& existingMembers = pSquadron->machines();
     while( existingMembers.size() != 0 )
 	{
-        existingMembers.back()->squadron( NULL );
+		existingMembers.back()->setSquadron( NULL );
 	}
 
     //Now add each selected actor
@@ -276,7 +276,7 @@ void MachGuiSquadronBank::createSquad( size_t squadIndex )
     {
 		if ( (*it)->objectIsMachine() and (*it)->race() == race )
 		{
-			(*it)->asMachine().squadron( pSquadron );
+			(*it)->asMachine().setSquadron( pSquadron );
 		}
     }
 
@@ -481,7 +481,7 @@ void MachGuiSquadronBankIcon::doBeReleased( const GuiMouseEvent& )
             MachLogSquadron::Machines& existingMembers = pSquadron->machines();
             while( existingMembers.size() != 0 )
 			{
-                existingMembers.back()->squadron( NULL );
+				existingMembers.back()->setSquadron( NULL );
 			}
 
             //Now add each selected actor
@@ -491,7 +491,7 @@ void MachGuiSquadronBankIcon::doBeReleased( const GuiMouseEvent& )
             {
 				if ( (*it)->objectIsMachine() )
 				{
-					(*it)->asMachine().squadron( pSquadron );
+					(*it)->asMachine().setSquadron( pSquadron );
 				}
             }
 

@@ -85,7 +85,7 @@ MachLogCanAttack::~MachLogCanAttack()
 {
 	CB_MachLogCanAttack_DEPIMPL();
 	if(pMe_ and pMe_->objectIsMachine())
-        pMe_->asMachine().squadron(NULL);
+		pMe_->asMachine().setSquadron( NULL );
 	while( weapons_.size() > 0 )
 	{
 		_DELETE( weapons_.front() );

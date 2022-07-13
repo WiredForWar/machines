@@ -758,7 +758,7 @@ MachLogMachine::Level MachLogMachine::swLevel() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MachLogMachine::squadron( MachLogSquadron* pNewSquadron )
+bool MachLogMachine::setSquadron( MachLogSquadron* pNewSquadron )
 {
 	CB_DEPIMPL( MachLogSquadron*, pSquadron_ );
 	if( pSquadron_ != NULL )
@@ -1043,14 +1043,14 @@ void MachLogMachine::assignToDifferentRace( MachLogRace& newRace )
 	{
 		if( pOriginalSquadron_ )
 		{
-			squadron( pOriginalSquadron_ );
+			setSquadron( pOriginalSquadron_ );
 			pOriginalSquadron_ = NULL;
 		}
 	}
 	else
 	{
 		pOriginalSquadron_ = pSquadron_;
-		squadron( NULL );
+		setSquadron( NULL );
 	}
 
 	//base class version MUST be called
