@@ -376,7 +376,7 @@ void MachLogScenario::load
 				//register the controller abstract class.
                 MachLogPCController* pPCController;
 				pCtl = pPCController = _NEW( MachLogPCController( pRace, pPhysObject ) );
-    			races.controller( race, pCtl );
+				races.setController( race, pCtl );
 				pRace->toBeUpdated( SimProcess::MANAGER_NOT_UPDATE );
 				stopProcessingRace = true;
 				network.remoteStatus( race, MachLogNetwork::REMOTE_PROCESS );
@@ -397,7 +397,7 @@ void MachLogScenario::load
 					if( !getenv( "CB_NO_AI_ALLY" ) )
 						pAICtl->checkForDynamicAllies( true );
 				}
-    			races.controller( race, pCtl );
+				races.setController( race, pCtl );
 				races.defCon( race, MachLog::DEFCON_LOW );
 				doingAIRace = true;
 				pRace->priority( races.stats().aiPriority() );

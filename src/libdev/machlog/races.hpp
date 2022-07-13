@@ -303,7 +303,7 @@ public:
 
 	MachLogController& controller( MachPhys::Race r );
 	const MachLogController& controller( MachPhys::Race r ) const;
-	void controller( MachPhys::Race r, MachLogController * pNewController );
+	void setController( MachPhys::Race r, MachLogController * pNewController );
 
 	MachLogAIController& AIController( MachPhys::Race r );
 	const MachLogAIController& AIController( MachPhys::Race r ) const;

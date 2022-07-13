@@ -239,7 +239,7 @@ void perRead( PerIstream& istr, MachLogPersistence& per )
 		MachPhys::Race race = per.controllers_[i]->race();
 		HAL_STREAM("creating new log race\n" );
 		HAL_STREAM("registerting controller with races.\n" );
-		MachLogRaces::instance().controller( race, per.controllers_[i] );
+		MachLogRaces::instance().setController( race, per.controllers_[i] );
 		if( per.controllers_[i]->type() == MachLogController::PLAYER_CONTROLLER )
 		{
 			HAL_STREAM(" controller is PLAYER_CONTROLLER registering with races\n" );

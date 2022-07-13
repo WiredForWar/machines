@@ -848,7 +848,7 @@ MachLogRaces::controller( MachPhys::Race r )
 }
 
 void
-MachLogRaces::controller( MachPhys::Race r, MachLogController * pCtl )
+MachLogRaces::setController( MachPhys::Race r, MachLogController * pCtl )
 {
 	pDataImpl_->controller_[ map_MachPhysRace_to_size_t( r ) ] = pCtl;
 }
@@ -2189,7 +2189,7 @@ void MachLogRaces::pcController( MachLogPCController * pNewPCController )
     pDataImpl_->thePCController_ = pNewPCController;
 
     //Register as an abstract controller
-    controller( pNewPCController->race(), pNewPCController );
+    setController( pNewPCController->race(), pNewPCController );
 }
 
 MachLogResearchTree& MachLogRaces::researchTree()
