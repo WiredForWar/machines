@@ -49,6 +49,11 @@ public:
     template<class T1>
     friend void perRead( PerIstream&, basic_string< T1 >& );
 
+    operator std::string() const
+    {
+        return std::string(this->c_str(), this->size());
+    }
+
 private:
 
 };
