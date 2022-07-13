@@ -438,46 +438,39 @@ void MachLogSquadron::autoSetDefCon( MachLog::DefCon defCon )
 
 MachLogMachine* MachLogSquadron::getStrongestMachine()
 {
-    MachLogMachine* strongestMachine = nullptr;
     CB_MachLogSquadron_DEPIMPL();
 
     if (machines_.size() > 0)
     {
-        if (not squadronHasChanged_ and pStrongestMachine_ != nullptr)
+        if (squadronHasChanged_ || !pStrongestMachine_)
         {
-            strongestMachine = pStrongestMachine_;
-        }
-        else if (pStrongestMachine_ == nullptr or squadronHasChanged_ == true)
-        {
-            int bestStrength = 0;
-            int myStrength = 0;
+            int bestStrength = -1;
             for (auto machine : machines())
             {
-                if (not machine)
+                if (!machine)
                 {
                     continue;
                 }
-                // Initially assign the first machine, so that all-civvie squads don't cause null pointer woes.
-                if (strongestMachine == nullptr)
-                {
-                    strongestMachine = machine;
-                }
 
-                myStrength = machine->militaryStrength();
-                if (std::max(myStrength, bestStrength) > bestStrength)
+                int myStrength = machine->militaryStrength();
+                if (myStrength > bestStrength)
                 {
                     bestStrength = myStrength;
-                    strongestMachine = machine;
+                    pStrongestMachine_ = machine;
                 }
             }
         }
+    }
+    else
+    {
+        pStrongestMachine_ = nullptr;
     }
 
     // This bool serves this function
     // ...so that we perform the above iteration sparingly
     squadronHasChanged_ = false;
 
-    return strongestMachine;
+    return pStrongestMachine_;
 }
 
 /* End SQUAD.CPP ****************************************************/
