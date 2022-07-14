@@ -37,7 +37,7 @@ public:
 	virtual bool doHandleNavigationKey( NavKey, MachGuiFocusCapableControl** );
 	virtual void hasFocus( bool );
 
-	virtual bool isDisabled() const;
+	virtual bool isEnabled() const;
 
 	ctl_pvector< MachGuiSingleSelectionListBoxItem >& listItems();
 		

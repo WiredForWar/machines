@@ -34,7 +34,7 @@ public:
 	uint stringId() const;
 
 	// Inherited from MachGuiFocusCapableControl...
-	virtual bool isDisabled() const;
+	virtual bool isEnabled() const;
 
 	virtual bool executeControl();
 	// PRE( hasFocus() );

@@ -26,7 +26,7 @@ public:
 
 	enum NavKey { TAB_FOWARD, TAB_BACKWARD, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW };
 
-	virtual bool isDisabled() const;
+	virtual bool isEnabled() const;
 
 	// If true is returned then the control has used the NavKey and StartupScreens should do
 	// no more processing unless the MachGuiFocusCapableControl** is none NULL in which case
