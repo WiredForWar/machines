@@ -209,6 +209,16 @@ const MexPoint2d& MexAlignedBox2d::maxCorner( ) const
     return result;
 }
 
+MATHEX_SCALAR MexAlignedBox2d::width() const
+{
+	return vmax_.x() - vmin_.x();
+}
+
+MATHEX_SCALAR MexAlignedBox2d::height() const
+{
+	return vmax_.y() - vmin_.y();
+}
+
 
 /*-----------------------------------------------------------------------------**
 ** Here is an implementation of a Cohen-Sutherland clip clipper in C++.        **

@@ -82,6 +82,9 @@ public:
 	const MexPoint2d& maxCorner() const;
 	// POST( &result == &vmax_ ); // private
 
+	MATHEX_SCALAR width() const;
+	MATHEX_SCALAR height() const;
+
  	MATHEX_SCALAR area()   const;
 
     void corners( const MexPoint2d& newMinCorner, const MexPoint2d& newMaxCorner );
