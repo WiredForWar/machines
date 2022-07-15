@@ -253,7 +253,7 @@ void MachGuiDefaultCommand::selectActors
 {
 	ASSERT( pActor->selectableType() == MachLog::FULLY_SELECTABLE, "Attempting to select into the corral an invalid actor" );
 	//Add the actor to the list, if a machine
-	if( ctrlPressed )
+	if( ctrlPressed || shiftPressed )
 	{
 		//See if already selected: toggle state
 		if( inGameScreen().isSelected( *pActor ) )

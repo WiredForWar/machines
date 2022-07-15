@@ -114,8 +114,8 @@ void MachWorldViewWindow::doHandleMouseClickEvent( const GuiMouseEvent& event )
 	{
 		if ( rubberBanding_ )
 		{
-			// Select all actors inside rubber band. Must press ctrl to keep already selected items
-			updateActorsSelectedViaRubberBand( false, DevKeyboard::instance().ctrlPressed() );
+			bool keepSelection = DevKeyboard::instance().ctrlPressed() || DevKeyboard::instance().shiftPressed();
+			updateActorsSelectedViaRubberBand( false, keepSelection );
 			pCameras_->resumeMotion();
 			rubberBanding_ = false;
 		}
