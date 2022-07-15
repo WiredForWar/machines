@@ -61,4 +61,11 @@ GuiSimpleScrollableList& GuiListObserver::list()
 	return *pList_;
 }
 
+const GuiSimpleScrollableList& GuiListObserver::list() const
+{
+	PRE( hasList() );
+
+	return *pList_;
+}
+
 /* End LISTOBVR.CPP *************************************************/

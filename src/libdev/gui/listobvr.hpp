@@ -33,6 +33,7 @@ protected:
 	bool hasList() const;
 
 	GuiSimpleScrollableList& list();
+	const GuiSimpleScrollableList& list() const;
 	// PRE( hasList() );
 
 private:
