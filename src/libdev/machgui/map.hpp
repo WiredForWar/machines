@@ -93,6 +93,7 @@ protected:
 
 	void updateMapToWorldMetrics();
 
+	static GuiBitmap* logoImage();
 	static GuiBitmap* machineImage();
 	static GuiBitmap* constructionImage();
 	static GuiBitmap* podImage();

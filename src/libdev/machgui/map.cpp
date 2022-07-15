@@ -229,7 +229,7 @@ MachContinentMap::MachContinentMap( GuiDisplayable* pParent, const Gui::Coord& r
   pCameras_( pCameras ),
   firstDraw_( false ),
   pInGameScreen_( pInGameScreen ),
-  mapBackground_( Gui::bitmap( SysPathName("gui/map/rlogo.bmp") ) ),
+  mapBackground_( logoImage()[MachPhys::RED] ),
   pBeenHere_( NULL ),
   fogOfWarOn_( true ),
   mapMode_( UNITS_ONLY ),
@@ -364,6 +364,17 @@ void MachContinentMap::doDisplay()
 		GuiPainter::instance().blit( mapFrameOne_, absoluteCoord() );
 	else*/
 		GuiPainter::instance().blit( mapFrameTwo_, absoluteCoord() );
+}
+
+// static
+GuiBitmap* MachContinentMap::logoImage()
+{
+	static GuiBitmap machinePixel[MachPhys::N_RACES] = { Gui::bitmap( "gui/map/rlogo.bmp" ),
+														 Gui::bitmap( "gui/map/blogo.bmp" ),
+														 Gui::bitmap( "gui/map/glogo.bmp" ),
+														 Gui::bitmap( "gui/map/ylogo.bmp" ) };
+
+	return machinePixel;
 }
 
 // static
@@ -1564,22 +1575,7 @@ void MachContinentMap::updateBeacon( bool forceBeaconUpdate /* = false */ )
 		// If we don't have any form of beacon then the map just shows the race logo
 		if ( currentBeacon_ == MachLog::NO_BEACON )
 		{
-			switch ( playerRace_ )
-			{
-				case MachPhys::RED:
-					mapBackground_ = Gui::bitmap( SysPathName( "gui/map/rlogo.bmp" ) );
-					break;
-				case MachPhys::GREEN:
-					mapBackground_ = Gui::bitmap( SysPathName( "gui/map/glogo.bmp" ) );
-					break;
-				case MachPhys::BLUE:
-					mapBackground_ = Gui::bitmap( SysPathName( "gui/map/blogo.bmp" ) );
-					break;
-				case MachPhys::YELLOW:
-					mapBackground_ = Gui::bitmap( SysPathName( "gui/map/ylogo.bmp" ) );
-					break;
-				DEFAULT_ASSERT_BAD_CASE( playerRace_ );
-			}
+			mapBackground_ = logoImage()[playerRace_];
 		}
 		else
 		{
