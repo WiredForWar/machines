@@ -722,16 +722,14 @@ unsigned GuiDisplayable::width() const
 {
 	CB_GUIDISPLAYABLE_DEPIMPL();
 
-	return relativeBox_.maxCorner().x()
-			- relativeBox_.minCorner().x();
+	return relativeBox_.width();
 }
 
 unsigned GuiDisplayable::height() const
 {
 	CB_GUIDISPLAYABLE_DEPIMPL();
 
-	return relativeBox_.maxCorner().y()
-			- relativeBox_.minCorner().y();
+	return relativeBox_.height();
 }
 
 //////////////////////////////////////////////////////////////////////
