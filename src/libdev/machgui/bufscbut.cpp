@@ -17,15 +17,13 @@
 MachGuiBufferScrollButton::MachGuiBufferScrollButton( 	GuiDisplayable *pParent, 
 														const Gui::Coord& rel, 
 														const SysPathName& bitmap,
-						 								MachProductionIcons* pProductionIcons,
-						 								ScrollDir scrollDir,
-						 								MachInGameScreen* pInGameScreen,
-						 								MachProductionBank* pProductionBank )
-:	GuiIcon( pParent, rel, bitmap ),	
-	pProductionIcons_( pProductionIcons ),
+														GuiSimpleScrollableList* pList,
+														ScrollDir scrollDir,
+														MachInGameScreen* pInGameScreen ) :
+	GuiListObserver (pList ),
+	GuiIcon( pParent, rel, bitmap ),
 	scrollDir_( scrollDir ),
-	pInGameScreen_( pInGameScreen ),
-	pProductionBank_( pProductionBank )
+	pInGameScreen_( pInGameScreen )
 {}
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
@@ -49,24 +47,22 @@ void MachGuiBufferScrollButton::doBeReleased(const GuiMouseEvent& )
 {
 	switch ( scrollDir_ )
 	{
-		case LEFT:
-			if ( pProductionIcons_->canScrollBackward() )
-				pProductionIcons_->scrollBackward();
+		case FOWARD:
+			if ( list().canScrollFoward() )
+				list().scrollFoward();
 			break;
-		case RIGHT:
-			if ( pProductionIcons_->canScrollFoward() )
-				pProductionIcons_->scrollFoward();
+		case BACKWARD:
+			if ( list().canScrollBackward() )
+				list().scrollBackward();
 			break;
 	}
-
-	pProductionBank_->updateScrollBars();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachGuiBufferScrollButton::update()
+void MachGuiBufferScrollButton::listUpdated()
 {
-	bool canScroll = pProductionIcons_->canScrollBackward() or pProductionIcons_->canScrollFoward(); 
+	bool canScroll = list().canScrollBackward() or list().canScrollFoward();
 
 	if ( canScroll !=isVisible() )
 	{
@@ -94,7 +90,7 @@ const GuiBitmap& MachGuiBufferScrollButton::getBitmap() const
 
   	if ( scrollDir_ == LEFT )
 	{
-		if ( pProductionIcons_->canScrollBackward() )
+		if ( list().canScrollBackward() )
 		{
 			return scrollLeftHighlightBmp;
 		}
@@ -105,7 +101,7 @@ const GuiBitmap& MachGuiBufferScrollButton::getBitmap() const
 	}	
 	else
 	{
-		if ( pProductionIcons_->canScrollFoward() )
+		if ( list().canScrollFoward() )
 		{
 			return scrollRightHighlightBmp;
 		}

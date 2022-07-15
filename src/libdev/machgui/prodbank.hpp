@@ -52,8 +52,6 @@ public:
     //Update progress bars
     void updateProgress();
 
-	void updateScrollBars();
-
 	// inherited from GuiDisplayable...
 	virtual void doDisplay();
 

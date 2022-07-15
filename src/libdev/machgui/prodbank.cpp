@@ -47,8 +47,8 @@ MachProductionBank::MachProductionBank
     //Create and display a build progress indicator if required
     updateProgress();
 
-	pScrollLeft_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(0,0), SysPathName( "gui/misc/scrolll.bmp" ), pIcons_, MachGuiBufferScrollButton::LEFT, pInGameScreen, this ) );
-	pScrollRight_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(MachGuiBufferScrollButton::width() + MachProductionIcons::width(),0), SysPathName( "gui/misc/scrollr.bmp" ), pIcons_, MachGuiBufferScrollButton::RIGHT, pInGameScreen, this ) );
+	pScrollLeft_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(0,0), SysPathName( "gui/misc/scrolll.bmp" ), pIcons_, MachGuiBufferScrollButton::LEFT, pInGameScreen ) );
+	pScrollRight_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(MachGuiBufferScrollButton::width() + MachProductionIcons::width(),0), SysPathName( "gui/misc/scrollr.bmp" ), pIcons_, MachGuiBufferScrollButton::RIGHT, pInGameScreen ) );
 
 	pKeyTranslator_ = _NEW( DevKeyToCommandTranslator() );
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::BACK_SPACE, CANCEL_SELECTED_PRODUCTIONS, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
@@ -92,16 +92,7 @@ int MachProductionBank::requiredHeight()
 void MachProductionBank::updateQueueIcons()
 {
     pIcons_->updateIcons();
-	updateScrollBars();
 	updateProgress();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void MachProductionBank::updateScrollBars()
-{
-	pScrollLeft_->update();
-	pScrollRight_->update();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,8 +118,6 @@ void MachProductionBank::updateProgress()
 //virtual
 void MachProductionBank::doDisplay()
 {
-	pScrollLeft_->update();
-	pScrollRight_->update();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +133,6 @@ void MachProductionBank::cancelSelectedQueueIcons()
 {
 	pIcons_->cancelSelectedIcons();
 	pIcons_->updateIcons();
-	updateScrollBars();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

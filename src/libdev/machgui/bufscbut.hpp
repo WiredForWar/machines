@@ -15,26 +15,25 @@
 #include "base/base.hpp"
 
 #include "gui/icon.hpp"
+#include "gui/listobvr.hpp"
 
 //Forward refs
-class MachProductionIcons;
 class MachInGameScreen;
-class MachProductionBank;
+class GuiSimpleScrollableList;
 
-class MachGuiBufferScrollButton : public GuiIcon
+class MachGuiBufferScrollButton : public GuiListObserver, public GuiIcon
 // cannonical from revoked
 {
 public:
-	enum ScrollDir { LEFT, RIGHT };
+    enum ScrollDir { LEFT, RIGHT, FOWARD = RIGHT, BACKWARD = LEFT };
 
 	MachGuiBufferScrollButton(	GuiDisplayable *pParent,
 								const Gui::Coord& rel,
 								const SysPathName& bitmap,
-								MachProductionIcons*,
-						 		ScrollDir,
-						 		MachInGameScreen*,
-						 		MachProductionBank* );
-								
+								GuiSimpleScrollableList* pList,
+								ScrollDir dir,
+								MachInGameScreen* pInGameScreen );
+
 	virtual ~MachGuiBufferScrollButton();
 	
 	void CLASS_INVARIANT;
@@ -44,9 +43,9 @@ public:
 		return 17; // TODO: remove hard coding
 	}
 
-	void update();
-
 protected:
+	virtual void listUpdated();
+
 	virtual void doBeDepressed( const GuiMouseEvent& );
 	virtual void doBeReleased( const GuiMouseEvent& );
 
@@ -61,12 +60,9 @@ private:
 	friend ostream& operator <<( ostream& o, const MachGuiBufferScrollButton& t );
 	
 	// Data members...
-	MachProductionIcons* pProductionIcons_;
-	MachInGameScreen* pInGameScreen_;
 	ScrollDir scrollDir_;
-	MachProductionBank* pProductionBank_;
+	MachInGameScreen* pInGameScreen_;
 };
-
 
 #endif
 
