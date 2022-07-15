@@ -18,10 +18,10 @@
 
 
 //Forward refs
+class MachGuiBufferScrollButton;
 class MachHWResearchBankIcons;
 class MachLogHardwareLab;
 class MachInGameScreen;
-class MachGuiResBufferScrollButton;
 class DevKeyToCommandTranslator;
 
 //orthodox canonical (revoked)
@@ -44,8 +44,6 @@ public:
 
     //Update progress bars
     void updateProgress();
-
-	void updateScrollBars();
 
 	// inherited from GuiDisplayable...
 	virtual void doDisplay();
@@ -96,8 +94,8 @@ private:
     MachLogHardwareLab* pHardwareLab_; //The lab being edited
     MachHWResearchBankIcons* pIcons_; //The icon sequence depicting the queue machine icons
     bool observingLab_;//True while the observer relation on the lab exists
-	MachGuiResBufferScrollButton* pScrollLeft_;
-	MachGuiResBufferScrollButton* pScrollRight_;
+	MachGuiBufferScrollButton* pScrollLeft_;
+	MachGuiBufferScrollButton* pScrollRight_;
 	DevKeyToCommandTranslator* pKeyTranslator_;
 };
 
