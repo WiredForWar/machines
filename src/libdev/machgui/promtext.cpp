@@ -574,16 +574,16 @@ bool MachPromptText::doHandleKeyEvent( const GuiKeyEvent& event )
 						switch ( chatMessageIntendedForRace_ )
 						{
 							case MachPhys::RED:
-								chatMessageIntendedForStr_ = "©";
+								chatMessageIntendedForStr_ += GuiBmpFont::redCharIndex();
 								break;
 							case MachPhys::GREEN:
-								chatMessageIntendedForStr_ = "ª";
+								chatMessageIntendedForStr_ += GuiBmpFont::greenCharIndex();
 								break;
 							case MachPhys::BLUE:
-								chatMessageIntendedForStr_ = "«";
+								chatMessageIntendedForStr_ += GuiBmpFont::blueCharIndex();
 								break;
 							case MachPhys::YELLOW:
-								chatMessageIntendedForStr_ = "¬";
+								chatMessageIntendedForStr_ += GuiBmpFont::yellowCharIndex();
 								break;
 						}
 						GuiResourceString sendToStr( IDS_SENDTO );
@@ -657,16 +657,16 @@ bool MachPromptText::doHandleKeyEvent( const GuiKeyEvent& event )
 						switch ( MachGuiInGameChatMessages::instance().playerRace() )
 						{
 							case MachPhys::RED:
-								chatMessageStr += "©";
+								chatMessageStr += GuiBmpFont::redCharIndex();
 								break;
 							case MachPhys::GREEN:
-								chatMessageStr += "ª";
+								chatMessageStr += GuiBmpFont::greenCharIndex();
 								break;
 							case MachPhys::BLUE:
-								chatMessageStr += "«";
+								chatMessageStr += GuiBmpFont::blueCharIndex();
 								break;
 							case MachPhys::YELLOW:
-								chatMessageStr += "¬";
+								chatMessageStr += GuiBmpFont::yellowCharIndex();
 								break;
 						}
 						chatMessageStr += MachGuiInGameChatMessages::instance().playerName();

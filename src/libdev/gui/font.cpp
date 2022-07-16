@@ -120,6 +120,25 @@ void GuiBmpFont::releaseFontMemory()
 	fonts.erase( fonts.begin(), fonts.end() );
 }
 
+char GuiBmpFont::redCharIndex()
+{
+	return 0xA9;
+}
+
+char GuiBmpFont::greenCharIndex()
+{
+	return 0xAA;
+}
+
+char GuiBmpFont::blueCharIndex()
+{
+	return 0xAB;
+}
+
+char GuiBmpFont::yellowCharIndex()
+{
+	return 0xAC;
+}
 
 //static
 GuiBmpFont GuiBmpFont::getFont( const SysPathName& fontPath, FontType fontType /*= PROPORTIONAL*/, size_t spaceCharWidth /*= 7*/, size_t spacing /*= 1*/ )

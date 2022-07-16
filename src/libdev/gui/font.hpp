@@ -71,6 +71,11 @@ public:
 	// Free's up all the memory used by the cached fonts.
 	static void releaseFontMemory();
 
+	static char redCharIndex();
+	static char greenCharIndex();
+	static char blueCharIndex();
+	static char yellowCharIndex();
+
 protected:
     GuiBmpFont( const SysPathName& fontPath );
 	void drawTextLeftJustify( const string& text, const Gui::Coord& startPos, int maxWidth ) const;
