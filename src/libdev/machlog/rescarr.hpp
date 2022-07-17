@@ -65,8 +65,8 @@ public:
 	// inherited from MachLogCanPutDown
 	virtual PhysRelativeTime putDown();
 
-	MachPhys::BuildingMaterialUnits		amountCarried() const;
-	MachPhys::BuildingMaterialUnits&	amountCarried();
+	MachPhys::BuildingMaterialUnits	amountCarried() const;
+	void setAmountCarried(MachPhys::BuildingMaterialUnits carried);
 	
 	// whether or not the resource carrier is currently engaged in any of
 	// a transport, pickup or putdown op

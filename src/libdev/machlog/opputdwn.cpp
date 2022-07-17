@@ -172,7 +172,7 @@ MachLogPutDownOperation::doUpdate( )
 
 			MachPhys::BuildingMaterialUnits amountToAdd = pActor_->amountCarried();
 			amountToAdd = MachLogRaces::instance().smartAddBMUs( pActor_->race(), amountToAdd );
-		  	pActor_->amountCarried() -= amountToAdd;
+			pActor_->setAmountCarried(0);
 		  	
 			//If we dropped off something and this is a genuine smelter (not a pod), tell it to do smelting animation
 			if( amountToAdd > 0 )

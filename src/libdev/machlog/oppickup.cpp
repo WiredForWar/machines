@@ -305,12 +305,13 @@ MachLogPickUpOperation::doUpdate()
 			{
 				interval = pActor_->doLoading();			
 			
-				MachPhys::BuildingMaterialUnits amountToAdd = pActor_->data().capacity() - pActor_->amountCarried();
+				MachPhys::BuildingMaterialUnits carried = pActor_->amountCarried();
+				MachPhys::BuildingMaterialUnits amountToAdd = pActor_->data().capacity() - carried;
 
 				amountToAdd = mine.removeOre( amountToAdd );
 
 				MachLogRaces::instance().nOre( pActor_->race() ) -= amountToAdd;
-				pActor_->amountCarried() += amountToAdd;
+				pActor_->setAmountCarried(carried + amountToAdd);
 				
 				// finished with this mine go onto the next element if possible 
 				if( not moveToNextSupplier() )
@@ -389,11 +390,12 @@ MachLogPickUpOperation::doUpdate()
 				return 5.0;
 
 				
-			// steal as much as we possibly can	
-			MachPhys::BuildingMaterialUnits amountToSteal = pActor_->data().capacity() - pActor_->amountCarried();
+			// steal as much as we possibly can
+			MachPhys::BuildingMaterialUnits carried = pActor_->amountCarried();
+			MachPhys::BuildingMaterialUnits amountToSteal = pActor_->data().capacity() - carried;
 			amountToSteal = MachLogRaces::instance().smartSubtractBMUs( smeltingBuilding.race(), amountToSteal ); 
 		   
-		   	pActor_->amountCarried() += amountToSteal;
+			pActor_->setAmountCarried(carried + amountToSteal);
 			if( pActor_->amountCarried() > 0 )
 			{
 				interval = pActor_->doLoading();									

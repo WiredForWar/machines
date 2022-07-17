@@ -688,12 +688,12 @@ MachLogResourceCarrier::amountCarried() const
 	return amountCarried_;
 }
 
-MachPhys::BuildingMaterialUnits&
-MachLogResourceCarrier::amountCarried()
+void
+MachLogResourceCarrier::setAmountCarried(MachPhys::BuildingMaterialUnits carried)
 {
 	CB_MachLogResourceCarrier_DEPIMPL();
 
-	return amountCarried_;
+	amountCarried_ = carried;
 }
 
 void MachLogResourceCarrier::iterations( int i )
