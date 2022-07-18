@@ -65,6 +65,7 @@ public:
 	void postNewMail( MachLog::ObjectType, int subType, MachineVoiceMailEventID id, MachPhys::Race targetRace );
 	void postNewMail( MachLog::ObjectType, int subType, MachineVoiceMailEventID id, UtlId actorId, MachPhys::Race targetRace );
 	void postNewMail( MachLog::ObjectType, int subType, MachineVoiceMailEventID id, MexPoint3d position, MachPhys::Race targetRace );	
+	void postNewMail( const MachActor& fromActor, MachineVoiceMailEventID id );
 
     void CLASS_INVARIANT;
 

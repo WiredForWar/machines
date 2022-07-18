@@ -70,6 +70,11 @@ void MachLogMachineVoiceMailManager::postNewMail(MachLog::ObjectType ot, int sub
 	MachLogVoiceMailManager::instance().postNewMail( globalId, position, race );
 }
 
+void MachLogMachineVoiceMailManager::postNewMail(const MachActor &fromActor, MachineVoiceMailEventID id)
+{
+	MachLogMachineVoiceMailManager::postNewMail(fromActor.objectType(), fromActor.subType(), id, fromActor.id(), fromActor.race());
+}
+
 ostream& operator <<( ostream& o, const MachLogMachineVoiceMailManager& t )
 {
 
