@@ -66,6 +66,7 @@ struct Gui
     using Vec = MexVec2;
     using Boundary = MexAlignedBox2d;
     using Box = MexAlignedBox2d;
+    using Size = MexSize2d;
 
     CTL_PAIR(WidthAndHeight, unsigned, width, unsigned, height);
 

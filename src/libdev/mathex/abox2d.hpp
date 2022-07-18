@@ -12,6 +12,7 @@
 
 #include "mathex/mathex.hpp"
 #include "mathex/point2d.hpp"
+#include "mathex/size2d.hpp"
 
 class MexLine2d;
 class MexTriangle2d;
@@ -25,6 +26,8 @@ public:
 
     // Constructs the aligend box bounding both p1 and p2
     MexAlignedBox2d(const MexPoint2d& p1, const MexPoint2d& p2);
+    MexAlignedBox2d(const MexPoint2d& position, const MexSize2d& size);
+    MexAlignedBox2d(const MexSize2d& size);
 
     MexAlignedBox2d(const MexPoint2d& minCorner, double width, double height);
     // PRE(width  >= 0);
@@ -82,6 +85,7 @@ public:
 
     MATHEX_SCALAR width() const;
     MATHEX_SCALAR height() const;
+    MexSize2d size() const;
 
     MATHEX_SCALAR area() const;
 
