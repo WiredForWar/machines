@@ -418,13 +418,8 @@ bool SDLApp::clientStartup()
 		frontBuffer.simpleBlit( waitBmp, xOffset, yOffset );
 	}
     // Draw copyright note, store it in a way preventing from modification
-	{
-        const int chars[] = {'N'+255,'O'+260,'T'+265,' '+270,'f'+275,'o'+280,'r'+285,' '+290,'s'+295,'a'+300,'l'+305,'e'+310,','+315,
-                            ' '+320,'f'+325,'o'+330,'r'+335,' '+340,'t'+345,'e'+350,'s'+355,'t'+360,'i'+365,'n'+370,'g'+375,' '+380,
-                        'p'+385,'u'+390,'r'+395,'p'+400,'o'+405,'s'+410,'e'+415,'s'+420,' '+425,'o'+430,'n'+435,'l'+440,'y'+445,'.'+450 };
-        std::string note; note.reserve(sizeof(chars)/sizeof(int));
-        for(int i = 0; i < sizeof(chars)/sizeof(int); ++i) note.push_back(chars[i] - (255 + i*5) );
-        //std::string note("NOT for sale, for testing purposes only.");
+    {
+        const std::string note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.drawText(xOffset + 6, yOffset + 6, note, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
