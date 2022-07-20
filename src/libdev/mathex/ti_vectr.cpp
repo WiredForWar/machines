@@ -26,7 +26,7 @@ void MathexDummyFunction1()
     static ctl_vector< MexPoint2d* > d5;
     static ctl_vector< MexVec2 > d6;
     static ctl_vector< uint > d7;
-    static std::auto_ptr< MexConvexPolygon2d::Points > d8;
+    static std::unique_ptr< MexConvexPolygon2d::Points > d8;
 
 	static	MexXCoord< double >					dummyX(0);
 	static	MexYCoord< double >					dummyY(0);

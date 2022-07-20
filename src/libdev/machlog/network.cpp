@@ -101,19 +101,19 @@ void MachLogNetwork::processNetworkIniSettings( const string& fileName )
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, fileName, ios::text ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( SysMetaFileIstream( metaFile, fileName, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( fileName.c_str() );
         //pIstream = _NEW( ifstream( fileName.c_str(), ios::text | ios::in ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( std::ifstream( fileName.c_str(), std::ios::in ) ));
     }
 

@@ -23,7 +23,7 @@ void MachDummyFunction12()
     static ctl_vector< MexPoint3d >   dummy3;
     static ctl_vector< RenTexture >   dummy4;
     static ctl_vector< ctl_vector< RenTexture > >   dummy5;
-    static auto_ptr< istream >      dummy6;
+    static unique_ptr< istream >      dummy6;
     static MachPhysPlanetSurface::Floors dummy7;
 }
 

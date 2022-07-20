@@ -38,14 +38,14 @@ class PhysCS2dFindPath;
 class PhysCS2dDomainFindPath;
 template < class T > class ctl_pvector;
 template < class T > class ctl_nb_vector;
-//template < class T > class std::auto_ptr;
+//template < class T > class std::unique_ptr;
 //template < class X, class Y > class pair;
 
 
 // Warnings about foward references of template classes
 #ifndef CB_NOWARNINGS // Are Charybdis warnings turned on?
 #ifndef _MATHEX_POLY2D_HPP
-#pragma message( __FILE__ "(39): Warning : std::auto_ptr< MexPolygon2d > foward referenced" )
+#pragma message( __FILE__ "(39): Warning : std::unique_ptr< MexPolygon2d > foward referenced" )
 #endif
 
 #ifndef _MATHEX_POINT2D_HPP
@@ -116,7 +116,7 @@ public:
     //box is assumed to be the boundary.
     DomainId addDomain( const MexAlignedBox2d& box );
     DomainId addDomain( const MexAlignedBox2d& box,
-                        std::auto_ptr< MexPolygon2d >& boundaryAPtr );
+                        std::unique_ptr< MexPolygon2d >& boundaryAPtr );
     //PRE( mode() == SUBTRACTIVE )
 
     //True iff a domain with id id has been defined
@@ -160,11 +160,11 @@ public:
     //PRE( portalExists( id ) )
 
     ///////////////////////////////////////////////////////////////
-    //*polygonAPtr is added to the configuration space, with associated height.
+    //*polygonUPtr is added to the configuration space, with associated height.
     //The polygons are classified as either permanent or temporary. Temporary polygons
     //are ignored for the purposes of pathFinding. The flags associated with a polygon
     //allow it to be excluded for pathfinding purposes
-    PolygonId add( std::auto_ptr< MexPolygon2d >& polygonAPtr,
+    PolygonId add( std::unique_ptr< MexPolygon2d >& polygonUPtr,
       MATHEX_SCALAR height, ObstacleFlags flags, Longevity type );
     //The polygon must be convex
 

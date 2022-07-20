@@ -11,6 +11,6 @@
 
 dummyFunction8()
 {
-	static auto_ptr_array< D3DTLVERTEX > dummy1;
+	static unique_ptr_array< D3DTLVERTEX > dummy1;
 	static ctl_min_memory_vector<D3DLVERTEX> vertices2;
 }

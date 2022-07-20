@@ -42,7 +42,7 @@ public:
 
     //Construct the polygon using the vector of vertices provided.
     //The polygon becomes the owner of *pointsAPtr.
-    MexConvexPolygon2d(  std::auto_ptr< Points >& pointsAPtr );
+    MexConvexPolygon2d(  std::unique_ptr< Points >& pointsAPtr );
 
     //Construct a new polygon which bounds rhs expanded by expansionDistance
     MexConvexPolygon2d( const MexPolygon2d& rhs, MATHEX_SCALAR expansionDistance );

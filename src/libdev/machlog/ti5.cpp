@@ -12,7 +12,7 @@
 
 void ti5()
 {
-    static auto_ptr< PhysConfigSpace2d >    dummyZ;
+    static unique_ptr< PhysConfigSpace2d >    dummyZ;
 }
 
 /* End TI5.CPP *******************************************************/

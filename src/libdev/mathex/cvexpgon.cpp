@@ -69,7 +69,7 @@ MexConvexPolygon2d::MexConvexPolygon2d( const ctl_vector< MexPoint2d* >& points 
 
 /* //////////////////////////////////////////////////////////////////////////////////// */
 
-MexConvexPolygon2d::MexConvexPolygon2d( std::auto_ptr< Points >& pointsAPtr )
+MexConvexPolygon2d::MexConvexPolygon2d( std::unique_ptr< Points >& pointsAPtr )
 :   MexPolygon2d( pointsAPtr->size() ),
     pPoints_( pointsAPtr.release() )
 {

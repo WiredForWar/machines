@@ -201,7 +201,7 @@ W4dMaterialPlan* MachPhysPlasmaBolt::createBoltMaterialPlan( MachPhys::WeaponTyp
 {
     //Get the base material for the type
     const RenMeshInstance& meshInstance = exemplar( type ).mesh();
-  	std::auto_ptr<RenMaterialVec> materialVecAPtr = meshInstance.mesh()->materialVec();
+  	std::unique_ptr<RenMaterialVec> materialVecAPtr = meshInstance.mesh()->materialVec();
 
     RenMaterial baseMaterial = materialVecAPtr->front();
     uint nMaterialsPerVector = materialVecAPtr->size();

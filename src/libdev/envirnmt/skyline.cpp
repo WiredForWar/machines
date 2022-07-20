@@ -49,7 +49,7 @@ void EnvSkyline::colourTable
 
 	const W4dGeneric* constEntity = entity_;
 	matTable_ = clut;
-	std::auto_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
+	std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
 	plan_ = _NEW(EnvElevationMaterialPlan(*(mats.get()), *controller, *matTable_));
 	entity_->entityPlanForEdit().materialPlan(plan_, W4dManager::instance().time());
 }
@@ -77,7 +77,7 @@ void EnvSkyline::overrideColour(const RenColour& col)
     PhysScalarPlanPtr lineScalarPlanPtr = _NEW( PhysLinearScalarPlan(times, scales) );
 
 	const W4dGeneric* constEntity = entity_;
-	std::auto_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
+	std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
 	ASSERT(mats->size() == 1, "Skyline can have only one material.");
 
 	RenMaterial mat = mats->operator[](0);

@@ -892,19 +892,19 @@ void MachPhysDataParser::readParameterisedDataFile( const SysPathName& pathname 
 {
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< istream > pIstream;
+    std::unique_ptr< istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, pathname, ios::text ) );
-        pIstream = std::auto_ptr< istream >(
+        pIstream = std::unique_ptr< istream >(
                 _NEW( SysMetaFileIstream( metaFile, pathname, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( pathname.c_str() );
         //pIstream = _NEW( ifstream( pathname.c_str(), std::ios::in | ios::in ) );
-        pIstream = std::auto_ptr< istream >(
+        pIstream = std::unique_ptr< istream >(
             _NEW( std::ifstream( pathname.c_str(), std::ios::in | std::ios::in ) ) );
     }
 

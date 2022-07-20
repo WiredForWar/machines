@@ -96,20 +96,20 @@ void uninitialized_fill_n( ForwardIter first,
     const T& );
 
 template < class X >
-class auto_ptr_array
+class unique_ptr_array
 {
 public:
     typedef X element_type;
 
-    /* _EXPLICIT */ auto_ptr_array( X *tPtr = 0 );
-    auto_ptr_array( const auto_ptr_array& );
-    auto_ptr_array& operator =( const auto_ptr_array& ) ;
+    /* _EXPLICIT */ unique_ptr_array( X *tPtr = 0 );
+    unique_ptr_array( const unique_ptr_array& );
+    unique_ptr_array& operator =( const unique_ptr_array& ) ;
 
     //  Member templates not yet available under Watcom
-    //	template< class Y >    auto_ptr_array( const auto_ptr_array< Y >& );
-    //	template< class Y >    auto_ptr_array< Y >& operator =( const auto_ptr_array< Y >& );
+    //	template< class Y >    unique_ptr_array( const unique_ptr_array< Y >& );
+    //	template< class Y >    unique_ptr_array< Y >& operator =( const unique_ptr_array< Y >& );
 
-    ~auto_ptr_array();
+    ~unique_ptr_array();
 
 
     X& operator  *() const;
@@ -123,7 +123,7 @@ private:
     X*  pData_;
     /* mutable */ bool owner_;
 
-    // template<class Y> friend class auto_ptr_array;
+    // template<class Y> friend class unique_ptr_array;
 } ;
 
 #include "stdlib/memory.ctp"

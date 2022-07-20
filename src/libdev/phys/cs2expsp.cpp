@@ -68,12 +68,12 @@ PhysConfigSpace2d::PolygonId PhysCS2dExpansionSpace::addPolygon
 
     //Construct a new expanded polygon
     MexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( oldPolygon, expansionDistance_ ) );
-    std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+    std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
     CS2VGRA_STREAM( "Expanded polygon   " << *pPolygon << std::endl );
 
     //Add to the space
-    PolygonId id = configSpace_.add( polygonAPtr, 1, flags, PhysConfigSpace2d::PERMANENT );
+    PolygonId id = configSpace_.add( polygonUPtr, 1, flags, PhysConfigSpace2d::PERMANENT );
 
     //Add the polygon to the map
     idMap_.add( FtlPair<PolygonId, PolygonId>( oldId, id ) );

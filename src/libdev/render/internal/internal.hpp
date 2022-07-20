@@ -9,7 +9,7 @@
 #include "base/base.hpp"
 
 class RenIVertex;
-template <class T> class auto_ptr_array;
+template <class T> class unique_ptr_array;
 
 // Various widely used typedefs.  These could correctly be put in class
 // scopes, e.g. RenTexManager::TexId.  However, putting them here helps
@@ -17,7 +17,7 @@ template <class T> class auto_ptr_array;
 // Hence, this file is supposed to be **small & simple**.
 namespace RenI
 {
-	typedef auto_ptr_array<RenIVertex> LitVtxAPtr;
+	typedef unique_ptr_array<RenIVertex> LitVtxAPtr;
 	enum DisplayType { FRONT, BACK, NOT_DISPLAY };
 	enum UpdateType { FORCE_UPDATE, LAZY_UPDATE };
 };

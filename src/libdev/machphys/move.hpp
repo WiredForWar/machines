@@ -53,7 +53,7 @@ public:
 //         OrientationInfo orientationInfo, const MexPoint3d& destination,
 //         const MachPhysPlanetSurface& planetSurface ) const = 0;
 
-    virtual std::auto_ptr< MachPhysMachineMoveInfo > moveInfo(
+    virtual std::unique_ptr< MachPhysMachineMoveInfo > moveInfo(
         ProfilePtr profilePtr,
         const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,
         MATHEX_SCALAR capSpeed, MachPhys::FinalState finalState ) = 0;

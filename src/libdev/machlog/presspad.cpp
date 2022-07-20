@@ -53,7 +53,7 @@ void    MachLogPressurePads::add(
 
     MexConvexPolygon2d*  pPad = _NEW( MexConvexPolygon2d( points ) );
 
-    std::auto_ptr< MexPolygon2d >    padAPtr( pPad );
+    std::unique_ptr< MexPolygon2d >    padAPtr( pPad );
 
     MATHEX_SCALAR   padHeight = 20.0;
 

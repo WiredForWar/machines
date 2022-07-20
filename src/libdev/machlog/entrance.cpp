@@ -43,13 +43,13 @@ MachLogEntrance::MachLogEntrance(
 
     const MATHEX_SCALAR   height = 20.0;
 
-    std::auto_ptr< MexPolygon2d > interiorPolyAPtr (
+    std::unique_ptr< MexPolygon2d > interiorPolyAPtr (
       _NEW( MexConvexPolygon2d( entranceData.interiorPolygon() ) ) );
 
     interiorPolygonId_ =
       pInteriorConfigSpace->add( interiorPolyAPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT );
 
-    std::auto_ptr< MexPolygon2d > exteriorPolyAPtr (
+    std::unique_ptr< MexPolygon2d > exteriorPolyAPtr (
       _NEW( MexConvexPolygon2d( entranceData.exteriorPolygon() ) ) );
 
     exteriorPolygonId_ =

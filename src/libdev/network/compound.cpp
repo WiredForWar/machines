@@ -112,7 +112,7 @@ size_t NetCompoundMessage::compoundIdLength()
 	return 3;
 }
 
-std::auto_ptr< NetMessageBody > NetCompoundMessage::operator[]( size_t index ) const
+std::unique_ptr< NetMessageBody > NetCompoundMessage::operator[]( size_t index ) const
 {
 	PRE( index < header_.subMessages_ );
 
@@ -121,14 +121,14 @@ std::auto_ptr< NetMessageBody > NetCompoundMessage::operator[]( size_t index ) c
 	startPos += sizeof( short );
 
 	size_t upCounter = 0;
-	std::auto_ptr< NetMessageBody > pResult (NULL);
+	std::unique_ptr< NetMessageBody > pResult (nullptr);
 
 	while( upCounter <= index )
 	{
 		if( upCounter == index )
 		{
 			//Whatch out for that dosgy length -1 crap on the end of the next line.
-			pResult = std::auto_ptr< NetMessageBody>( _NEW( NetMessageBody( &pBuffer_[ startPos ], lengthOfSub - 1 ) ) );
+			pResult = std::unique_ptr< NetMessageBody>( _NEW( NetMessageBody( &pBuffer_[ startPos ], lengthOfSub - 1 ) ) );
 		}
 
 		startPos += lengthOfSub;

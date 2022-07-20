@@ -181,7 +181,7 @@ void RenTTFPolygon::render
 		{
 			// Shove it into the post-sorter.
 	 		RenITLPolygon* poly = _NEW(RenITLPolygon(pImpl_, mat, cen.z()*w2, tmpType));
-	 		std::auto_ptr<RenIDepthSortedItem> item (poly);
+	 		std::unique_ptr<RenIDepthSortedItem> item (poly);
 	 		devImpl->alphaSorter().addItem(item);
 		}
 		else

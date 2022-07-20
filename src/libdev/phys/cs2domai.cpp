@@ -29,10 +29,10 @@ PhysCS2dDomain::PhysCS2dDomain( const DomainId& id, const MexAlignedBox2d& bound
 //////////////////////////////////////////////////////////////////////////////////////////
 
 PhysCS2dDomain::PhysCS2dDomain( const DomainId& id, const MexAlignedBox2d& boundary,
-                                std::auto_ptr< MexPolygon2d >& polygonAPtr )
+                                std::unique_ptr< MexPolygon2d >& polygonUPtr )
 :   boundary_( boundary ),
     id_( id ),
-    pPolygon_( polygonAPtr.release() )
+    pPolygon_( polygonUPtr.release() )
 {
 
     TEST_INVARIANT;

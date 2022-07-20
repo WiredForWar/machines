@@ -31,7 +31,7 @@ public:
     typedef uint32  Flags;
 
     //ctor. TODO autoptr was const
-    PhysCS2dPolygon( const PolygonId& id, std::auto_ptr< MexPolygon2d >& polygonAPtr,
+    PhysCS2dPolygon( const PolygonId& id, std::unique_ptr< MexPolygon2d >& polygonAPtr,
                      MATHEX_SCALAR height, Flags flags,
                      const PhysConfigSpace2d::Longevity& longevity );
 

@@ -48,7 +48,7 @@ public:
     ~RenIDepthPostSorter();
 
 	// Ownership of the item *passes* from the caller to this object.
-	void addItem(std::auto_ptr<RenIDepthSortedItem>& item);
+	void addItem(std::unique_ptr<RenIDepthSortedItem>& item);
 	void render();
 
     void CLASS_INVARIANT;

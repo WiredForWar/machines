@@ -12,7 +12,7 @@
 
 void MachDummyFunction11()
 {
-	static auto_ptr< MachPhysMachineMoveInfo > dummy1;
+	static unique_ptr< MachPhysMachineMoveInfo > dummy1;
 }
 
 /* End TI11.CPP *****************************************************/

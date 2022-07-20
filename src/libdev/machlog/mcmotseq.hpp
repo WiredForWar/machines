@@ -48,7 +48,7 @@
 #endif
 
 #ifndef _MACHPHYS_MCMOVINF_HPP
-#pragma message( __FILE__ "(48): Warning : auto_ptr< MachPhysMachineMoveInfo > foward referenced" )
+#pragma message( __FILE__ "(48): Warning : unique_ptr< MachPhysMachineMoveInfo > foward referenced" )
 #endif
 #endif
 
@@ -530,7 +530,7 @@ private:
     //  object that caused the collision is returned in pCollisionObjectId.
     size_t reserveMotionChunks( ObjectId* pCollisionObjectId );
 
-    typedef std::auto_ptr< MachPhysMachineMoveInfo > MoveInfoAPtr;
+    typedef std::unique_ptr< MachPhysMachineMoveInfo > MoveInfoUPtr;
 
     enum ObstacleCheck
     {
@@ -561,7 +561,7 @@ private:
         ObstacleCheck,
         const PhysConfigSpace2d::ObjectIds& ignoreIds,
         MachLogCollisionInfo* pCollisionInfo,
-        MoveInfoAPtr* pMoveInfoAPtr );
+        MoveInfoUPtr* pMoveInfoAPtr );
 
     //  Try and swerve around an object that is blocking our way.
     //  Update the movingChunkIds and moveInfos if successful.
@@ -594,7 +594,7 @@ private:
         const PhysConfigSpace2d::ObjectIds& ignoreIds,
         MachPhys::FinalState* pActualFinalState,
         MachLogCollisionInfo* pCollisionInfo,
-        MoveInfoAPtr* pMoveInfoAPtr,
+        MoveInfoUPtr* pMoveInfoAPtr,
         MoveResult* pMoveResult
     );
 
@@ -612,7 +612,7 @@ private:
         const PhysConfigSpace2d::ObjectIds& ignoreIds,
         MotionChunkId* pMotionChunkId,
         MachLogCollisionInfo* pCollisionInfo,
-        MoveInfoAPtr* pMoveInfoAPtr ) const;
+        MoveInfoUPtr* pMoveInfoAPtr ) const;
 
     void forceMotionToRest(
         const PhysConfigSpace2d::ObjectIds& ignoreIds,
@@ -650,7 +650,7 @@ private:
     bool shuffling() const;
     void stopShuffling();
     void shuffle();
-    MoveInfoAPtr getShuffleMoveInfo(
+    MoveInfoUPtr getShuffleMoveInfo(
         const MexTransform3d& sourceTransform,
         const MexTransform3d& targetTransform );
 

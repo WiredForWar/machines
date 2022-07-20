@@ -247,19 +247,19 @@ void MachLogPlanet::readPlanetConfigSpaceFile( const SysPathName& spaceFilePath,
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, spaceFilePath, ios::text ) );
-        pIstream = std::auto_ptr< std::istream >(
+        pIstream = std::unique_ptr< std::istream >(
             _NEW( SysMetaFileIstream( metaFile, spaceFilePath, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( spaceFilePath.c_str() );
         //pIstream = _NEW( ifstream( spaceFilePath.c_str(), ios::text | ios::in ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( std::ifstream( spaceFilePath.c_str(), std::ios::in ) ));
     }
 
@@ -313,10 +313,10 @@ void MachLogPlanet::readPlanetConfigSpaceFile( const SysPathName& spaceFilePath,
             }
 
             //Construct a new polygon from the points, and add to the config space
-            std::auto_ptr< MexConvexPolygon2d::Points > pointsAPtr( pPoints );
+            std::unique_ptr< MexConvexPolygon2d::Points > pointsAPtr( pPoints );
             MexConvexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( pointsAPtr ) );
-            std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
-            pConfigSpace_->add( polygonAPtr, height, obstacleFlags, PhysConfigSpace2d::PERMANENT );
+            std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
+            pConfigSpace_->add( polygonUPtr, height, obstacleFlags, PhysConfigSpace2d::PERMANENT );
         }
         else if( parser.tokens()[ 0 ] == "NEWDOMAIN" )
         {
@@ -348,15 +348,15 @@ void MachLogPlanet::readPlanetConfigSpaceFile( const SysPathName& spaceFilePath,
             }
 
             //Construct a new polygon from the points, and add to the config space
-            std::auto_ptr< MexConvexPolygon2d::Points > pointsAPtr( pPoints );
+            std::unique_ptr< MexConvexPolygon2d::Points > pointsAPtr( pPoints );
             MexConvexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( pointsAPtr ) );
-            std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+            std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
             //Add the domain
 			MexAlignedBox2d domainBoundary;
 			pPolygon->boundary( &domainBoundary );
 
-            PhysConfigSpace2d::DomainId domainId = pConfigSpace_->addDomain( domainBoundary, polygonAPtr );
+            PhysConfigSpace2d::DomainId domainId = pConfigSpace_->addDomain( domainBoundary, polygonUPtr );
 			domainIds.push_back( domainId );
         }
         else if( parser.tokens()[ 0 ] == "DOMAIN" )

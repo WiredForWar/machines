@@ -191,7 +191,7 @@ SOUND_STREAM(" done!" << std::endl);
 }
 
 // virtual
-std::auto_ptr< MachPhysMachineMoveInfo > MachPhysMachine::moveInfo
+std::unique_ptr< MachPhysMachineMoveInfo > MachPhysMachine::moveInfo
 (
     ProfilePtr profilePtr,
     const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,
@@ -232,7 +232,7 @@ PhysRelativeTime MachPhysMachine::beDestroyed()
     return doExplode();
 }
 
-std::auto_ptr< MachPhysMachineMoveInfo > MachPhysMachine::doMoveInfo
+std::unique_ptr< MachPhysMachineMoveInfo > MachPhysMachine::doMoveInfo
 (
     ProfilePtr profilePtr,
     const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,
@@ -255,7 +255,7 @@ std::auto_ptr< MachPhysMachineMoveInfo > MachPhysMachine::doMoveInfo
                                        rampAccelerationsPtr,
                                        startTime ) );
 
-    return std::auto_ptr< MachPhysMachineMoveInfo >( pInfo );
+    return std::unique_ptr< MachPhysMachineMoveInfo >( pInfo );
 }
 
 void MachPhysMachine::addTurnTransformIfNecessary(

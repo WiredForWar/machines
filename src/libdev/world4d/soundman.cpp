@@ -660,17 +660,17 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
-        pIstream = std::auto_ptr< std::istream >(_NEW( SysMetaFileIstream( metaFile, definitionFileName, std::ios::in ) ));
+        pIstream = std::unique_ptr< std::istream >(_NEW( SysMetaFileIstream( metaFile, definitionFileName, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( definitionFileName.c_str() );
         //pIstream = _NEW( std::ifstream( definitionFileName.c_str(), std::ios::text | std::ios::in ) );
-        pIstream = std::auto_ptr< std::istream > ( _NEW( std::ifstream( definitionFileName.c_str(), std::ios::in ) ));
+        pIstream = std::unique_ptr< std::istream > ( _NEW( std::ifstream( definitionFileName.c_str(), std::ios::in ) ));
     }
 
     UtlLineTokeniser    parser( *pIstream, definitionFileName );

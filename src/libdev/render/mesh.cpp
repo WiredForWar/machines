@@ -292,7 +292,7 @@ void GroupRenderFunctor<T>::operator()(const T* group) const
 			if (mat.intraMeshAlphaPriority())
 				delayed->meshId(RenMesh::meshId());
 
-			std::auto_ptr<RenIDepthSortedItem> item ( delayed );
+			std::unique_ptr<RenIDepthSortedItem> item ( delayed );
 			devImpl->alphaSorter().addItem(item);
 		}
 		else
@@ -307,7 +307,7 @@ void GroupRenderFunctor<T>::operator()(const T* group) const
 	{
 		RenI::LitVtxAPtr lit = group->light(vertices_, mat);
 		RenIDelayedCoplanarGroup* delayed = _NEW(RenIDelayedCoplanarGroup(group, lit, mat, world_));
-		std::auto_ptr<RenIPrioritySortedItem> item (delayed);
+		std::unique_ptr<RenIPrioritySortedItem> item (delayed);
 		devImpl->coplanarSorter().addItem(item);
 	}
 	else
@@ -356,7 +356,7 @@ void GroupRenderFunctorMatOverride<T>::operator()(const T* group) const
 			if (mat.intraMeshAlphaPriority())
 				delayed->meshId(RenMesh::meshId());
 
-			std::auto_ptr<RenIDepthSortedItem> item (delayed);
+			std::unique_ptr<RenIDepthSortedItem> item (delayed);
 			devImpl->alphaSorter().addItem(item);
 		}
 		else
@@ -371,7 +371,7 @@ void GroupRenderFunctorMatOverride<T>::operator()(const T* group) const
 	{
 		RenI::LitVtxAPtr lit = group->light(vertices_, mat);
 		RenIDelayedCoplanarGroup* delayed = _NEW(RenIDelayedCoplanarGroup(group, lit, mat, world_));
-		std::auto_ptr<RenIPrioritySortedItem> item (delayed);
+		std::unique_ptr<RenIPrioritySortedItem> item (delayed);
 		devImpl->coplanarSorter().addItem(item);
 	}
 	else
@@ -810,7 +810,7 @@ void RenMesh::materialVec(const RenMaterialVec* mats)
 	}
 }
 
-std::auto_ptr<RenMaterialVec> RenMesh::materialVec() const
+std::unique_ptr<RenMaterialVec> RenMesh::materialVec() const
 {
 	RenMaterialVec* matSet = _NEW(RenMaterialVec(nMaterials()));
 	MaterialEnumerator enumerator(matSet);
@@ -837,7 +837,7 @@ std::auto_ptr<RenMaterialVec> RenMesh::materialVec() const
 	}
 
 	//return matSet; TODO check
-	return std::auto_ptr<RenMaterialVec>(matSet);
+	return std::unique_ptr<RenMaterialVec>(matSet);
 }
 
 int RenMesh::nTTFPolygons() const

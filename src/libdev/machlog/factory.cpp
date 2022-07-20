@@ -718,19 +718,19 @@ void MachLogFactory::loadGame()
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, factoryItemsPath, ios::text ) );
-        pIstream = std::auto_ptr< std::istream >(
+        pIstream = std::unique_ptr< std::istream >(
             _NEW( SysMetaFileIstream( metaFile, factoryItemsPath, std::ios::in ) ) );
     }
     else
     {
         ASSERT_FILE_EXISTS( factoryItemsPath.c_str() );
         //pIstream = _NEW( ifstream( factoryItemsPath.c_str(), ios::text | ios::in ) );
-        pIstream = std::auto_ptr< std::istream >(
+        pIstream = std::unique_ptr< std::istream >(
             _NEW( std::ifstream( factoryItemsPath.c_str(), std::ios::in ) ) );
     }
 

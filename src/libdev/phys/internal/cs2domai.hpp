@@ -32,7 +32,7 @@ public:
     PhysCS2dDomain( const DomainId& id, const MexAlignedBox2d& boundary );
 
     PhysCS2dDomain( const DomainId& id, const MexAlignedBox2d& boundary,
-                    std::auto_ptr< MexPolygon2d >& polygonAPtr );
+                    std::unique_ptr< MexPolygon2d >& polygonAPtr );
 
     //dtor.
     ~PhysCS2dDomain();

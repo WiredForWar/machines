@@ -4,5 +4,5 @@
 
 void dummyFunctionLitVtxPtr()
 {
-	auto_ptr_array<D3DLVERTEX> aPtr;
+	unique_ptr_array<D3DLVERTEX> aPtr;
 }

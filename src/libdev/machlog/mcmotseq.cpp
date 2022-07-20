@@ -816,7 +816,7 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
     //Construct a new polygon surrounding this position
     MexConvexPolygon2d* pPolygon =
         _NEW( MexConvexPolygon2d( location2d, nearPoint, useClearance_ ) );
-    std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+    std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
@@ -832,7 +832,7 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
 		}
 	}
     //Add this to the config space
-    restingObstacleId_ = pConfigSpace_->add( polygonAPtr, 3, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::TEMPORARY );
+    restingObstacleId_ = pConfigSpace_->add( polygonUPtr, 3, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::TEMPORARY );
     pImpl_->restingObstacleExists_ = true;
 
     LOG_INSPECT( location2d );
@@ -887,10 +887,10 @@ void MachLogMachineMotionSequencer::addRestingObstacleWithoutEcho( const MexTran
     //Construct a new polygon surrounding this position
     MexConvexPolygon2d* pPolygon =
         _NEW( MexConvexPolygon2d( location2d, nearPoint, useClearance_ ) );
-    std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+    std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
     //Add this to the config space
-    restingObstacleId_ = pConfigSpace_->add( polygonAPtr, 3, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::TEMPORARY );
+    restingObstacleId_ = pConfigSpace_->add( polygonUPtr, 3, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::TEMPORARY );
     pImpl_->restingObstacleExists_ = true;
 
     //Now construct a motion chunk as if we had moved from nearPoint to location2d,
@@ -1824,7 +1824,7 @@ size_t MachLogMachineMotionSequencer::tryMoveSideways()
     {
         const MATHEX_SCALAR startSpeed = 0.0;
 
-        MoveInfoAPtr            dummyMoveInfoAPtr;
+        MoveInfoUPtr            dummyMoveInfoUPtr;
         MachLogCollisionInfo    dummyCollisionInfo;
 
         PhysConfigSpace2d::ObjectIds ignoreIds;
@@ -1840,7 +1840,7 @@ size_t MachLogMachineMotionSequencer::tryMoveSideways()
           DONT_CHECK_STATIC_OBSTACLES,
           ignoreIds,
           &dummyCollisionInfo,
-          &dummyMoveInfoAPtr ) == SUCCESS )
+          &dummyMoveInfoUPtr ) == SUCCESS )
         {
             nChunksReserved = 1;
         }
@@ -3938,7 +3938,7 @@ bool MachLogMachineMotionSequencer::straightLineMove(
 
     PhysAbsoluteTime startTime = SimManager::instance().currentTime();
     MATHEX_SCALAR startSpeed = 0.0;
-    MoveInfoAPtr collideMoveInfoAPtr;
+    MoveInfoUPtr collideMoveInfoUPtr;
     MachLogCollisionInfo collisionInfo;
 
     MoveResult moveResult;
@@ -3949,7 +3949,7 @@ bool MachLogMachineMotionSequencer::straightLineMove(
         ignoreIds,
         &actualFinalState,
         &collisionInfo,
-        &collideMoveInfoAPtr, &moveResult );
+        &collideMoveInfoUPtr, &moveResult );
 
     bool motionPossible = false;
 

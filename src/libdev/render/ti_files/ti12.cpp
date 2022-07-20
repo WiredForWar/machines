@@ -7,5 +7,5 @@
 dummyFunction12()
 {
 	static ctl_min_memory_vector<RenMaterial> vec;
-	static auto_ptr<RenMaterialVec> ptr;
+	static unique_ptr<RenMaterialVec> ptr;
 }

@@ -63,7 +63,7 @@ void W4dMultiColourPulseData::apply( W4dEntity* pEntity, const PhysAbsoluteTime&
 	PRE(pEntity->hasMesh());
 
 	Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, pEntity)->mesh().mesh();
-	std::auto_ptr< RenMaterialVec > pAnimMaterialVec =animMeshPtr->materialVec();
+	std::unique_ptr< RenMaterialVec > pAnimMaterialVec =animMeshPtr->materialVec();
 
     W4dMaterialPlanPtr matPlanPtr = _NEW( W4dColourPulsePlan( colourPulseDataVec_, *pAnimMaterialVec) );
 

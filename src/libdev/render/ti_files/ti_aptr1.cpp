@@ -5,6 +5,6 @@
 
 void dummyFunctionSortedItemAPtr()
 {
-	auto_ptr<RenIDepthSortedItem> aPtr2;
-	auto_ptr<RenIPrioritySortedItem> aPtr1;
+	unique_ptr<RenIDepthSortedItem> aPtr2;
+	unique_ptr<RenIPrioritySortedItem> aPtr1;
 }

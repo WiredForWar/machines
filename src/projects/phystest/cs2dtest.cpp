@@ -101,9 +101,9 @@ bool PhysTestConfigSpace2d::addDomains( PhysConfigSpace2d* pSpace )
     pPoints2->push_back( MexPoint2d(1500,1600) );
     pPoints2->push_back( MexPoint2d(1300,1600) );
     pPoints2->push_back( MexPoint2d(1300,900) );
-    std::auto_ptr< Points > points2APtr( pPoints2 );
+    std::unique_ptr< Points > points2APtr( pPoints2 );
     MexConvexPolygon2d* pPolygon2 = _NEW( MexConvexPolygon2d( points2APtr ) );
-    std::auto_ptr< MexPolygon2d > polygon2APtr( pPolygon2 );
+    std::unique_ptr< MexPolygon2d > polygon2APtr( pPolygon2 );
     aDomainIds[2] = pSpace->addDomain( box2, polygon2APtr );
 
     MexAlignedBox2d box3( MexPoint2d(700, 1700), MexPoint2d(1300, 2800) );
@@ -126,9 +126,9 @@ bool PhysTestConfigSpace2d::addDomains( PhysConfigSpace2d* pSpace )
     pPoints7->push_back( MexPoint2d(2800,2800) );
     pPoints7->push_back( MexPoint2d(1500,2800) );
     pPoints7->push_back( MexPoint2d(1500,1600) );
-    std::auto_ptr< Points > points7APtr( pPoints7 );
+    std::unique_ptr< Points > points7APtr( pPoints7 );
     MexConvexPolygon2d* pPolygon7 = _NEW( MexConvexPolygon2d( points7APtr ) );
-    std::auto_ptr< MexPolygon2d > polygon7APtr( pPolygon7 );
+    std::unique_ptr< MexPolygon2d > polygon7APtr( pPolygon7 );
     aDomainIds[7] = pSpace->addDomain( box7, polygon7APtr );
 
     MexAlignedBox2d box8( MexPoint2d(1400, 0), MexPoint2d(2100, 800) );
@@ -146,9 +146,9 @@ bool PhysTestConfigSpace2d::addDomains( PhysConfigSpace2d* pSpace )
     pPoints10->push_back( MexPoint2d(1300,900) );
     pPoints10->push_back( MexPoint2d(800,800) );
     pPoints10->push_back( MexPoint2d(700,700) );
-    std::auto_ptr< Points > points10APtr( pPoints10 );
+    std::unique_ptr< Points > points10APtr( pPoints10 );
     MexConvexPolygon2d* pPolygon10 = _NEW( MexConvexPolygon2d( points10APtr ) );
-    std::auto_ptr< MexPolygon2d > polygon10APtr( pPolygon10 );
+    std::unique_ptr< MexPolygon2d > polygon10APtr( pPolygon10 );
     aDomainIds[10] = pSpace->addDomain( box10, polygon10APtr );
 
     MexAlignedBox2d box11( MexPoint2d(700, 800), MexPoint2d(1300, 1700) );
@@ -159,9 +159,9 @@ bool PhysTestConfigSpace2d::addDomains( PhysConfigSpace2d* pSpace )
     pPoints11->push_back( MexPoint2d(1300,900) );
     pPoints11->push_back( MexPoint2d(1300,1700) );
     pPoints11->push_back( MexPoint2d(700,1700) );
-    std::auto_ptr< Points > points11APtr( pPoints11 );
+    std::unique_ptr< Points > points11APtr( pPoints11 );
     MexConvexPolygon2d* pPolygon11 = _NEW( MexConvexPolygon2d( points11APtr ) );
-    std::auto_ptr< MexPolygon2d > polygon11APtr( pPolygon11 );
+    std::unique_ptr< MexPolygon2d > polygon11APtr( pPolygon11 );
     aDomainIds[11] = pSpace->addDomain( box11, polygon11APtr );
 
 
@@ -324,7 +324,7 @@ bool PhysTestConfigSpace2d::addPermanentPolygons( PhysConfigSpace2d* pSpace )
         MexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( points ) );
         points.erase( points.begin(), points.end() );
 
-        std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+        std::unique_ptr< MexPolygon2d > polygonAPtr( pPolygon );
         aPolygonIds[ nPolygons_ ] = pSpace->add( polygonAPtr, 444, flags, PhysConfigSpace2d::PERMANENT );
         okay = pSpace->exists( aPolygonIds[ nPolygons_++ ] );
     }
@@ -392,7 +392,7 @@ bool PhysTestConfigSpace2d::addTemporaryPolygons( PhysConfigSpace2d* pSpace )
         MexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( points ) );
         points.erase( points.begin(), points.end() );
 
-        std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+        std::unique_ptr< MexPolygon2d > polygonAPtr( pPolygon );
         const PhysConfigSpace2d::ObstacleFlags   flags = 0;
         aPolygonIds[ nPolygons_ ] = pSpace->add( polygonAPtr, 111, flags, PhysConfigSpace2d::TEMPORARY );
         okay = pSpace->exists( aPolygonIds[ nPolygons_++ ] );
@@ -814,7 +814,7 @@ bool PhysTestConfigSpace2d::oneTest( ostream& out )
     points.push_back( &p4 );
 
     MexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( points ) );
-    std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+    std::unique_ptr< MexPolygon2d > polygonAPtr( pPolygon );
     const PhysConfigSpace2d::ObstacleFlags   flags = 0;
     space.add( polygonAPtr, 444, flags, PhysConfigSpace2d::PERMANENT );
 

@@ -330,7 +330,7 @@ void setFogMultipliers( const W4dEntity* entity )
 	{
 		RenMesh* meshPtr( _CONST_CAST( RenMesh*, &( *entity->mesh().mesh() ) ) );
 
-		std::auto_ptr<RenMaterialVec> materialASet = meshPtr->materialVec();
+		std::unique_ptr<RenMaterialVec> materialASet = meshPtr->materialVec();
 		RenMaterialVec& materialSet = *materialASet;
 	    for( RenMaterialVec::iterator i = materialSet.begin(); i != materialSet.end(); ++i )
 	    {

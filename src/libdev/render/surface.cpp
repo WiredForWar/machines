@@ -698,7 +698,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
 		// There *is* a Direct3D device associated with this surface, so we
 		// can use DrawPrimitive and avoid the overheads of getting a DC.
 		static size_t nVertices = 30;
-		static auto_ptr_array< RenIVertex > vtx = _NEW_ARRAY(RenIVertex, nVertices);
+		static unique_ptr_array< RenIVertex > vtx = _NEW_ARRAY(RenIVertex, nVertices);
 		static bool initialised = false;
 
 		if(nVertices < pts.size() + (pts.size() - 2))

@@ -57,7 +57,7 @@ void EnvSatellite::loadMesh
 	{
 		const W4dGeneric* constEntity = orbit_->movingEntity();
 		matTable_ = colours;
-		std::auto_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
+		std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
 		EnvElevationMaterialPlan* plan = _NEW(EnvElevationMaterialPlan(*(mats.get()), *this, *matTable_));
 		entity->entityPlanForEdit().materialPlan(plan, W4dManager::instance().time());
 	}

@@ -381,19 +381,19 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
 
         SysMetaFile metaFile( "mach1.met" );
 
-        std::auto_ptr< istream > pIstream;
+        std::unique_ptr< istream > pIstream;
 
         if( SysMetaFile::useMetaFile() )
         {
             //pIstream = _NEW( SysMetaFileIstream( metaFile, logoFilename, std::ios::text ) );
-            pIstream = std::auto_ptr< istream > (
+            pIstream = std::unique_ptr< istream > (
                 _NEW( SysMetaFileIstream( metaFile, logoFilename, std::ios::in ) ));
         }
         else
         {
             ASSERT_FILE_EXISTS( logoFilename.c_str() );
             //pIstream = _NEW( ifstream( logoFilename.c_str(), ios::text | ios::in ) );
-            pIstream = std::auto_ptr< istream > (
+            pIstream = std::unique_ptr< istream > (
                 _NEW( std::ifstream( logoFilename.c_str(), std::ios::in ) ) );
         }
 

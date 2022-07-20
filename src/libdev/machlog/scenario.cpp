@@ -92,19 +92,19 @@ void MachLogScenario::load
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() && metaFile.hasFile(fullPath) )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, fullPath, ios::text ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( SysMetaFileIstream( metaFile, fullPath, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( fullPath.c_str() );
         //pIstream = _NEW( ifstream( fullPath.c_str(), ios::text | ios::in ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( std::ifstream( fullPath.c_str(), std::ios::in ) ));
     }
 
@@ -922,19 +922,19 @@ void MachLogScenario::load
 
 	const SysPathName RSI( researchItemsPath[ gameData.technologyLevel() ] );
 
-    std::auto_ptr< std::istream > pIstream2;
+    std::unique_ptr< std::istream > pIstream2;
 
     if( SysMetaFile::useMetaFile() && metaFile.hasFile( RSI ) )
     {
         //pIstream2 = _NEW( SysMetaFileIstream( metaFile, RSI, ios::text ) );
-        pIstream2 = std::auto_ptr< std::istream > (
+        pIstream2 = std::unique_ptr< std::istream > (
             _NEW( SysMetaFileIstream( metaFile, RSI, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( RSI.c_str() );
         //pIstream2 = _NEW( ifstream( RSI.c_str(), ios::text | ios::in ) );
-        pIstream2 = std::auto_ptr< std::istream > (
+        pIstream2 = std::unique_ptr< std::istream > (
             _NEW( std::ifstream( RSI.c_str(), std::ios::in ) ));
     }
 

@@ -35,7 +35,7 @@ void PhysDummyFunction1()
     static ctl_vector< const MexPolygon3d* > dummy5;
     static ctl_vector< const MexPolygon2d* > dummy6;
     static ctl_vector< void* > dummy7;
-    static std::auto_ptr< MexPolygon2d > dummy8;
+    static std::unique_ptr< MexPolygon2d > dummy8;
     static ctl_vector< bool > dummy9;
 	static ctl_vector<PhysRampAcceleration> dummy10;
 	static ctl_vector<MATHEX_SCALAR> dummy11;

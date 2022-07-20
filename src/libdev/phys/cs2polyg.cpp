@@ -19,12 +19,12 @@
 
 PhysCS2dPolygon::PhysCS2dPolygon
 (
-    const PolygonId& id, std::auto_ptr< MexPolygon2d >& polygonAPtr,
+    const PolygonId& id, std::unique_ptr< MexPolygon2d >& polygonUPtr,
     MATHEX_SCALAR height, Flags flags,
     const PhysConfigSpace2d::Longevity& longevity
 )
 :   id_( id ),
-    polygon_(*(polygonAPtr.release()) ),
+    polygon_(*(polygonUPtr.release()) ),
     height_( height ),
     longevity_( longevity ),
     enabled_( true ),

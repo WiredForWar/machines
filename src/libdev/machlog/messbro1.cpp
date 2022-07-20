@@ -117,7 +117,7 @@ void MachLogMessageBroker::processMachineMoveMessage( NetMessage* pMessage )
 		            pMoveInfo->startTransform_, MachPhysMachine::USE_ORIENTATION,
 		            pMoveInfo->endPosition_, *MachLogPlanet::instance().surface() );
 
-	            std::auto_ptr< MachPhysMachineMoveInfo > infoAPtr = pPhysMachine->moveInfo(
+	            std::unique_ptr< MachPhysMachineMoveInfo > infoAPtr = pPhysMachine->moveInfo(
 								                 profilePtr,
 	    	                                     pMoveInfo->startTime_,
 	                                             pMoveInfo->startSpeed_,

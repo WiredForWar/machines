@@ -663,19 +663,19 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, definitionFileName, ios::text ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( SysMetaFileIstream( metaFile, definitionFileName, std::ios::in ) ));
     }
     else
     {
         ASSERT_FILE_EXISTS( definitionFileName.c_str() );
         //pIstream = _NEW( ifstream( definitionFileName.c_str(), ios::text | ios::in ) );
-        pIstream = std::auto_ptr< std::istream > (
+        pIstream = std::unique_ptr< std::istream > (
             _NEW( std::ifstream( definitionFileName.c_str(), std::ios::in ) ));
     }
 

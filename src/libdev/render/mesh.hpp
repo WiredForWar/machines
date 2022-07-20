@@ -143,7 +143,7 @@ public:
 	// The set of materials used by this mesh.
 	size_t nMaterials() const;
 	void materialVec(const RenMaterialVec*);
-	std::auto_ptr<RenMaterialVec> materialVec() const;
+	std::unique_ptr<RenMaterialVec> materialVec() const;
 
 	// Change the backface setting for all the polygons of this mesh.
 	// Backface culling *is* applied by default.

@@ -46,7 +46,7 @@ W4dEntityMaterialVecChanger::W4dEntityMaterialVecChanger
                 const RenMesh& mesh = *(patternEntity.mesh( lodId ).mesh());
 
                 //Get the pattern material vector for the mesh
-                std::auto_ptr<RenMaterialVec> patternVecAPtr = mesh.materialVec();
+                std::unique_ptr<RenMaterialVec> patternVecAPtr = mesh.materialVec();
                 RenMaterialVec& materialVec = *patternVecAPtr;
 
                 //replace any materials as defined by the map, keeping track if any changes

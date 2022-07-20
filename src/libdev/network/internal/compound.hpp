@@ -55,7 +55,7 @@ public:
 	static const uint8* compoundId();
 	static size_t compoundIdLength();
 
-	std::auto_ptr< NetMessageBody > operator[]( size_t ) const;
+	std::unique_ptr< NetMessageBody > operator[]( size_t ) const;
 
 private:
     friend ostream& operator <<( ostream& o, const NetCompoundMessage& t );

@@ -99,7 +99,7 @@ PhysConfigSpace2d::DomainId PhysConfigSpace2d::addDomain( const MexAlignedBox2d&
 
 PhysConfigSpace2d::DomainId PhysConfigSpace2d::addDomain
 (
-    const MexAlignedBox2d& box, std::auto_ptr< MexPolygon2d >& boundaryAPtr
+    const MexAlignedBox2d& box, std::unique_ptr< MexPolygon2d >& boundaryAPtr
 )
 {
     PRE( impl_.mode() == SUBTRACTIVE );
@@ -234,7 +234,7 @@ bool PhysConfigSpace2d::portalExists( const PortalId& id ) const
 
 PhysConfigSpace2d::PolygonId PhysConfigSpace2d::add
 (
-    std::auto_ptr< MexPolygon2d >& polygonAPtr,
+    std::unique_ptr< MexPolygon2d >& polygonUPtr,
     MATHEX_SCALAR height,
     ObstacleFlags flags,
     Longevity type
@@ -245,7 +245,7 @@ PhysConfigSpace2d::PolygonId PhysConfigSpace2d::add
 
     //Construct a new holder for the polygon
     PhysCS2dPolygon* pPolygonHolder = _NEW(
-      PhysCS2dPolygon( id, polygonAPtr, height, flags, type) );
+      PhysCS2dPolygon( id, polygonUPtr, height, flags, type) );
     POST( pPolygonHolder != NULL );
 
     //Store in the polygon map

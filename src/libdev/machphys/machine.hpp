@@ -81,7 +81,7 @@ public:
     //be travelling with translation speed.
     //  (From MachPhysCanMove)
 
-    virtual std::auto_ptr< MachPhysMachineMoveInfo > moveInfo(
+    virtual std::unique_ptr< MachPhysMachineMoveInfo > moveInfo(
         ProfilePtr profilePtr,
         const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,
         MATHEX_SCALAR capSpeed, MachPhys::FinalState finalState );
@@ -257,7 +257,7 @@ protected:
       MachPhys::Race race,
       const MachPhysMachineData& data );
 
-    std::auto_ptr< MachPhysMachineMoveInfo > doMoveInfo
+    std::unique_ptr< MachPhysMachineMoveInfo > doMoveInfo
     (
         ProfilePtr profilePtr,
         const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,

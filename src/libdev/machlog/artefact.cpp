@@ -354,13 +354,13 @@ void MachLogArtefact::addObstaclePolygon()
 {
     //Get the physical rep to construct a global polygon boundary
     MexConvexPolygon2d* pPolygon = pPhysArtefact_->newGlobalBoundary();
-    std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+    std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
     MATHEX_SCALAR height = pPhysArtefact_->artefactData().obstacleHeight();
 
     //Add this to the config space
     PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
-    obstaclePolygonId_ = configSpace.add( polygonAPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT ).asScalar();
+    obstaclePolygonId_ = configSpace.add( polygonUPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT ).asScalar();
 }
 
 FtlSerialId MachLogArtefact::obstaclePolygonId() const

@@ -589,7 +589,7 @@ void MachLogConstruction::addObstaclePolygon( const MexAlignedBox2d& boundary )
     //Construct a polygon from the boundary
     MexConvexPolygon2d* pPolygon =
         _NEW( MexConvexPolygon2d( boundary ) );
-    std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+    std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
 	//Get the boundary of the construction, so we know how high to make the obstacle polygon
     const MexAlignedBox3d& constructionBoundingVolume = physConstruction().compositeBoundingVolume();
@@ -600,7 +600,7 @@ void MachLogConstruction::addObstaclePolygon( const MexAlignedBox2d& boundary )
 
     //Add this to the config space
     PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
-	obstaclePolygonId_ = configSpace.add( polygonAPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT );
+	obstaclePolygonId_ = configSpace.add( polygonUPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT );
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -870,10 +870,10 @@ void    MachLogConstruction::setupInteriorConfigSpace()
     {
 
         MexConvexPolygon2d* pPolygon = _NEW( MexConvexPolygon2d( *(*i) ) );
-        std::auto_ptr< MexPolygon2d > polygonAPtr( pPolygon );
+        std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
 
         const   MATHEX_SCALAR   height = 50.0;
-                pConfigSpace_->add( polygonAPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT );
+                pConfigSpace_->add( polygonUPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT );
         }
 }
 

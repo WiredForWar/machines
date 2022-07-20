@@ -114,7 +114,7 @@ void    RenMeshInstance::addMaterials( RenMaterialSet* pSet ) const
 {
     PRE( pSet != NULL );
 
-    std::auto_ptr<RenMaterialVec> materialSetAPtr (pMesh_->materialVec());
+    std::unique_ptr<RenMaterialVec> materialSetAPtr (pMesh_->materialVec());
 
     for( RenMaterialVec::iterator i = materialSetAPtr->begin();
       i != materialSetAPtr->end(); ++i )
@@ -130,7 +130,7 @@ void    RenMeshInstance::materialMap( const RenMaterialMap& map )
         materialVecPtr_.clear();
 
     //  get the materials currently in use
-    std::auto_ptr<RenMaterialVec> materialSetAPtr (pMesh_->materialVec());
+    std::unique_ptr<RenMaterialVec> materialSetAPtr (pMesh_->materialVec());
     RenMaterialVec& materialVec = *materialSetAPtr;
 
     bool    useMappedSet = false;

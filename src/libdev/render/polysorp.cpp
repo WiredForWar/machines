@@ -53,7 +53,7 @@ RenIPriorityPostSorter::~RenIPriorityPostSorter()
     TEST_INVARIANT;
 }
 
-void RenIPriorityPostSorter::addItem(std::auto_ptr<RenIPrioritySortedItem>& item)
+void RenIPriorityPostSorter::addItem(std::unique_ptr<RenIPrioritySortedItem>& item)
 {
 	// release implies that ownership is transferred from the caller.
 	items_.push_back(item.release());

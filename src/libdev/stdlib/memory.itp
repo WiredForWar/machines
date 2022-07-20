@@ -83,7 +83,7 @@ allocator< T >::max_size() const
 
 template < class X >
 _CODE_INLINE
-auto_ptr< X >::auto_ptr( X *tPtr )
+unique_ptr< X >::unique_ptr( X *tPtr )
 : pData_( tPtr ),
   owner_( tPtr != 0 )
 {
@@ -92,7 +92,7 @@ auto_ptr< X >::auto_ptr( X *tPtr )
 
 template < class X >
 _CODE_INLINE
-auto_ptr< X >::auto_ptr( const auto_ptr& rhs )
+unique_ptr< X >::unique_ptr( const unique_ptr& rhs )
 : owner_( rhs.owner_ )
 {
 	// NB: there's an initialisation order dependency.  release sets owner_
@@ -102,7 +102,7 @@ auto_ptr< X >::auto_ptr( const auto_ptr& rhs )
 
 template < class X >
 _CODE_INLINE
-auto_ptr< X >::~auto_ptr()
+unique_ptr< X >::~unique_ptr()
 {
     if( owner_ )
     	_DELETE(pData_);
@@ -110,8 +110,8 @@ auto_ptr< X >::~auto_ptr()
 
 template < class X >
 _CODE_INLINE
-auto_ptr< X >&
-auto_ptr< X >::operator=( const auto_ptr& rhs )
+unique_ptr< X >&
+unique_ptr< X >::operator=( const unique_ptr& rhs )
 {
     if( (void*)&rhs != (void*)this )
     {
@@ -126,32 +126,32 @@ auto_ptr< X >::operator=( const auto_ptr& rhs )
 
 template < class X >
 _CODE_INLINE
-X& auto_ptr< X >::operator *() const
+X& unique_ptr< X >::operator *() const
 {
 	return *pData_;
 }
 
 template < class X >
 _CODE_INLINE
-X* auto_ptr< X >::operator ->() const
+X* unique_ptr< X >::operator ->() const
 {
 	return pData_;
 }
 
 template < class X >
 _CODE_INLINE
-X* auto_ptr< X >::get() const
+X* unique_ptr< X >::get() const
 {
 	return pData_;
 }
 
 template < class X >
 _CODE_INLINE
-X* auto_ptr< X >::release() const
+X* unique_ptr< X >::release() const
 {
 	X* tPtr = pData_;
 
-    auto_ptr< X >* nonConstThis = (auto_ptr< X >*)this;
+    unique_ptr< X >* nonConstThis = (unique_ptr< X >*)this;
 
 	nonConstThis->owner_ = false;
 
@@ -160,7 +160,7 @@ X* auto_ptr< X >::release() const
 
 // template< class Y >
 // _CODE_INLINE
-// auto_ptr< X >::auto_ptr( const auto_ptr< Y >& rhs )
+// unique_ptr< X >::unique_ptr( const unique_ptr< Y >& rhs )
 // : owner_( rhs..owner_ ),
 //   pData_( rhs.release() )
 // {
@@ -168,7 +168,7 @@ X* auto_ptr< X >::release() const
 //
 // template< class Y >
 // _CODE_INLINE
-// auto_ptr< Y >& auto_ptr< X >::operator =( const auto_ptr< Y >& rhs )
+// unique_ptr< Y >& unique_ptr< X >::operator =( const unique_ptr< Y >& rhs )
 // {
 //     if( (void*)&rhs != (void*)this )
 //     {
@@ -183,7 +183,7 @@ X* auto_ptr< X >::release() const
 */
 template < class X >
 _CODE_INLINE
-auto_ptr_array< X >::auto_ptr_array( X *tPtr )
+unique_ptr_array< X >::unique_ptr_array( X *tPtr )
 : pData_( tPtr ),
   owner_( tPtr != 0 )
 {
@@ -192,7 +192,7 @@ auto_ptr_array< X >::auto_ptr_array( X *tPtr )
 
 template < class X >
 _CODE_INLINE
-auto_ptr_array< X >::auto_ptr_array( const auto_ptr_array& rhs )
+unique_ptr_array< X >::unique_ptr_array( const unique_ptr_array& rhs )
 : owner_( rhs.owner_ )
 {
 	// NB: there's an initialisation order dependency.  release sets owner_
@@ -202,17 +202,17 @@ auto_ptr_array< X >::auto_ptr_array( const auto_ptr_array& rhs )
 
 template < class X >
 _CODE_INLINE
-auto_ptr_array< X >::~auto_ptr_array()
+unique_ptr_array< X >::~unique_ptr_array()
 {
-//	IAIN_STREAM("Dtor for auto_ptr_array: o=" << owner_ << " ptr=" << pData_ << "\n");
+//	IAIN_STREAM("Dtor for unique_ptr_array: o=" << owner_ << " ptr=" << pData_ << "\n");
     if( owner_ )
     	_DELETE_ARRAY(pData_);
 }
 
 template < class X >
 _CODE_INLINE
-auto_ptr_array< X >&
-auto_ptr_array< X >::operator=( const auto_ptr_array& rhs )
+unique_ptr_array< X >&
+unique_ptr_array< X >::operator=( const unique_ptr_array& rhs )
 {
     if( (void*)&rhs != (void*)this )
     {
@@ -227,32 +227,32 @@ auto_ptr_array< X >::operator=( const auto_ptr_array& rhs )
 
 template < class X >
 _CODE_INLINE
-X& auto_ptr_array< X >::operator *() const
+X& unique_ptr_array< X >::operator *() const
 {
 	return *pData_;
 }
 
 template < class X >
 _CODE_INLINE
-X* auto_ptr_array< X >::operator ->() const
+X* unique_ptr_array< X >::operator ->() const
 {
 	return pData_;
 }
 
 template < class X >
 _CODE_INLINE
-X* auto_ptr_array< X >::get() const
+X* unique_ptr_array< X >::get() const
 {
 	return pData_;
 }
 
 template < class X >
 _CODE_INLINE
-X* auto_ptr_array< X >::release() const
+X* unique_ptr_array< X >::release() const
 {
 	X* tPtr = pData_;
 
-    auto_ptr_array< X >* nonConstThis = (auto_ptr_array< X >*)this;
+    unique_ptr_array< X >* nonConstThis = (unique_ptr_array< X >*)this;
 
 	nonConstThis->owner_ = false;
 

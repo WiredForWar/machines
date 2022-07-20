@@ -776,33 +776,33 @@ void NetINetwork::setAppUid()
 
         SysMetaFile metaFile( "mach1.met" );
 
-        std::auto_ptr< istream > pGuidStream;
+        std::unique_ptr< istream > pGuidStream;
 
         if( SysMetaFile::useMetaFile() )
         {
-            pGuidStream = std::auto_ptr< istream >
+            pGuidStream = std::unique_ptr< istream >
                 (_NEW( SysMetaFileIstream( metaFile, pathName, std::ios::in ) ));
         }
         else
         {
             ASSERT_FILE_EXISTS( pathName.c_str() );
-            pGuidStream = std::auto_ptr< istream >
+            pGuidStream = std::unique_ptr< istream >
                 (_NEW( std::ifstream( pathName.c_str(), std::ios::in ) ));
         }
 
     	NETWORK_STREAM(" close appguid.ini\n" );
 
-        std::auto_ptr< istream > pGuidStream2;
+        std::unique_ptr< istream > pGuidStream2;
 
         if( SysMetaFile::useMetaFile() )
         {
-            pGuidStream2 = std::auto_ptr< istream >
+            pGuidStream2 = std::unique_ptr< istream >
                 (_NEW( SysMetaFileIstream( metaFile, pathName, std::ios::in ) ));
         }
         else
         {
             ASSERT_FILE_EXISTS( pathName.c_str() );
-            pGuidStream2 = std::auto_ptr< istream >
+            pGuidStream2 = std::unique_ptr< istream >
                 (_NEW( std::ifstream( pathName.c_str(), std::ios::in ) ));
         }
 

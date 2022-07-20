@@ -128,12 +128,12 @@ bool MachLogMachineMotionSequencer::trySwerveMove
             path.push_back( endPoint );
 
             MachLogCollisionInfo    dummyCollisionInfo;
-            MoveInfoAPtr dummyMoveInfoAPtr;
+            MoveInfoUPtr dummyMoveInfoUPtr;
 
             size_t pointsReserved = reservePath( startTransform, orientationInfo, path, startTime, startSpeed, desiredFinalState,
               CHECK_STATIC_OBSTACLES,
               ignoreIds,
-              pActualFinalState, &dummyCollisionInfo, &dummyMoveInfoAPtr,
+              pActualFinalState, &dummyCollisionInfo, &dummyMoveInfoUPtr,
               pMoveResult );
 
             //  For a swerve move to succeed we have to reach all of the points
@@ -177,7 +177,7 @@ size_t MachLogMachineMotionSequencer::reservePath
     const PhysConfigSpace2d::ObjectIds& ignoreIds,
     MachPhys::FinalState* pActualFinalState,
     MachLogCollisionInfo* pCollisionInfo,
-    MoveInfoAPtr* pMoveInfoAPtr,
+    MoveInfoUPtr* pMoveInfoUPtr,
     MoveResult* pMoveResult
 )
 {
@@ -236,7 +236,7 @@ size_t MachLogMachineMotionSequencer::reservePath
           orientationInfo, toPoint, startTime,
           startSpeed, *pActualFinalState, obstacleCheck,
           ignoreIds,
-          pCollisionInfo, pMoveInfoAPtr );
+          pCollisionInfo, pMoveInfoUPtr );
 
 		bool motionPossible = false;
 
@@ -359,7 +359,7 @@ MachLogMachineMotionSequencer::reserveChunk(
     ObstacleCheck obstacleCheck,
     const PhysConfigSpace2d::ObjectIds& ignoreIds,
     MachLogCollisionInfo* pCollisionInfo,
-    MoveInfoAPtr* pMoveInfoAPtr )
+    MoveInfoUPtr* pMoveInfoUPtr )
 {
 	CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
@@ -459,7 +459,7 @@ MachLogMachineMotionSequencer::reserveChunk(
             profilePtr, chunkIntersections, startTime,
             startSpeed, speedLimit, finalState,
             ignoreIds, &motionChunkId,
-            pCollisionInfo, pMoveInfoAPtr );
+            pCollisionInfo, pMoveInfoUPtr );
 
         if( motionPossible )
             ++nNormalSpeedSucceed;
@@ -490,7 +490,7 @@ MachLogMachineMotionSequencer::reserveChunk(
                             profilePtr, chunkIntersections, startTime + timeOffset,
                             startSpeed, speedLimit, finalState,
                             ignoreIds, &motionChunkId,
-                            pCollisionInfo, pMoveInfoAPtr );
+                            pCollisionInfo, pMoveInfoUPtr );
 
                         if( motionPossible )
                         {
@@ -516,7 +516,7 @@ MachLogMachineMotionSequencer::reserveChunk(
                         profilePtr, chunkIntersections, startTime,
                         startSpeed, speedLimit * speedProportion(), finalState,
                         ignoreIds, &motionChunkId,
-                        pCollisionInfo, pMoveInfoAPtr );
+                        pCollisionInfo, pMoveInfoUPtr );
 
                     if( motionPossible )
                         ++nReducedSpeedSucceed;
@@ -531,7 +531,7 @@ MachLogMachineMotionSequencer::reserveChunk(
 
     if( motionPossible )
     {
-        const MachPhysMachineMoveInfo* pInfo = &(**pMoveInfoAPtr);
+        const MachPhysMachineMoveInfo* pInfo = &(**pMoveInfoUPtr);
 
         ASSERT( pInfo != NULL, "" );
 
@@ -599,7 +599,7 @@ size_t MachLogMachineMotionSequencer::reserveMotionChunks(
 
     MachPhys::FinalState actualFinalState;
     MachLogCollisionInfo    collisionInfo;
-    MoveInfoAPtr dummyMoveInfoAPtr;
+    MoveInfoUPtr dummyMoveInfoUPtr;
 
     MoveResult moveResult;
 
@@ -611,7 +611,7 @@ size_t MachLogMachineMotionSequencer::reserveMotionChunks(
         ignoreIds,
         &actualFinalState,
         &collisionInfo,
-	    &dummyMoveInfoAPtr,
+	    &dummyMoveInfoUPtr,
         &moveResult );
 
     if( nPointsReached == 0 )
@@ -628,7 +628,7 @@ size_t MachLogMachineMotionSequencer::reserveMotionChunks(
         {
             reserveChunk( fromTransform, MachPhysMachine::USE_ORIENTATION, toPoint, startTime, startSpeed,
               MachPhys::AT_REST, DONT_CHECK_STATIC_OBSTACLES,
-              ignoreIds, &collisionInfo, &dummyMoveInfoAPtr );
+              ignoreIds, &collisionInfo, &dummyMoveInfoUPtr );
         }
     }
 
@@ -696,7 +696,7 @@ void MachLogMachineMotionSequencer::forceMotionToRest(
         motionChunkIds_.pop_back();
         moveInfos_.pop_back();
 
-    	MoveInfoAPtr            dummyCollideMoveInfoAPtr;
+        MoveInfoUPtr dummyCollideMoveInfoUPtr;
         MachLogCollisionInfo    dummyCollisionInfo;
 
         LOG_STREAM( "Attempt to make segment come to rest" << std::endl );
@@ -707,7 +707,7 @@ void MachLogMachineMotionSequencer::forceMotionToRest(
           MachPhysMachine::USE_ORIENTATION, toPoint, startTime,
           startSpeed, MachPhys::AT_REST, DONT_CHECK_STATIC_OBSTACLES,
           ignoreIds, &dummyCollisionInfo,
-          &dummyCollideMoveInfoAPtr );
+          &dummyCollideMoveInfoUPtr );
 
 		if( moveResult != SUCCESS )
         {
@@ -772,7 +772,7 @@ bool MachLogMachineMotionSequencer::doReserveChunk(
     const PhysConfigSpace2d::ObjectIds& ignoreIds,
     MotionChunkId* pMotionChunkId,
     MachLogCollisionInfo* pCollisionInfo,
-    MoveInfoAPtr* pInfoAPtr ) const
+    MoveInfoUPtr* pInfoAPtr ) const
 {
     LOG_ENTER( "doReserveChunk" );
 
@@ -935,7 +935,7 @@ void MachLogMachineMotionSequencer::shuffle()
 
         //  Get the move info corresponding to this
 
-        MoveInfoAPtr moveInfoAPtr = getShuffleMoveInfo( currentTransform, targetTransform );
+        MoveInfoUPtr moveInfoAPtr = getShuffleMoveInfo( currentTransform, targetTransform );
 
         moveInfos_.erase( moveInfos_.begin(), moveInfos_.end() );
         moveInfos_.push_back( *moveInfoAPtr );
@@ -953,7 +953,7 @@ void MachLogMachineMotionSequencer::shuffle()
     POST( moveInfos_.size() == 0 );
 }
 
-MachLogMachineMotionSequencer::MoveInfoAPtr
+MachLogMachineMotionSequencer::MoveInfoUPtr
 MachLogMachineMotionSequencer::getShuffleMoveInfo(
     const MexTransform3d& sourceTransform,
     const MexTransform3d& targetTransform )
@@ -979,7 +979,7 @@ MachLogMachineMotionSequencer::getShuffleMoveInfo(
         (*i).preTransform( inverseParentGlobal );
     }
 
-    MoveInfoAPtr moveInfoAPtr;
+    MoveInfoUPtr moveInfoAPtr;
 
     //  This is a cheat because MachPhysMachine does not have a "turn info" method.
     //  TBD: Fix this

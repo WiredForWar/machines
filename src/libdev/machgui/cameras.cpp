@@ -857,19 +857,19 @@ void readZenithDataFile( MATHEX_SCALAR* pZenithMinHeight, MATHEX_SCALAR* pZenith
 
     SysMetaFile metaFile( "mach1.met" );
 
-    std::auto_ptr< std::istream > pIstream;
+    std::unique_ptr< std::istream > pIstream;
 
     if( SysMetaFile::useMetaFile() )
     {
         //pIstream = _NEW( SysMetaFileIstream( metaFile, fileName, std::ios::text ) );
-        pIstream = std::auto_ptr< std::istream >(
+        pIstream = std::unique_ptr< std::istream >(
             _NEW( SysMetaFileIstream( metaFile, fileName, std::ios::in ) ) );
     }
     else
     {
         ASSERT_FILE_EXISTS( fileName.c_str() );
         //pIstream = _NEW( std::ifstream( fileName.c_str(), std::ios::text | std::ios::in ) );
-        pIstream =  std::auto_ptr< std::istream >(
+        pIstream =  std::unique_ptr< std::istream >(
             _NEW( std::ifstream( fileName.c_str(), std::ios::in | std::ios::in ) ));
     }
 
