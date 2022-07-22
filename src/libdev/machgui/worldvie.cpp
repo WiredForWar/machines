@@ -39,6 +39,8 @@
 #include "render/camera.hpp"
 #include "sim/manager.hpp"
 
+#include <utility>
+
 MachWorldViewWindow::MachWorldViewWindow( 	MachInGameScreen * pParent,
 											const Gui::Boundary& relativeBox,
 											MachCameras* pCameras )
@@ -555,40 +557,26 @@ void MachWorldViewWindow::updateActorsSelectedViaRubberBand( bool highlightOnly,
 	if ( Mathex::abs( startRubberBand_.x() - endRubberBand_.x() ) > MexEpsilon::instance() and
 		 Mathex::abs( startRubberBand_.y() - endRubberBand_.y() ) > MexEpsilon::instance() )
 	{
-		// Sort rubber band points into clockwise order	and select entities inside bounding box
+		W4dSceneManager& sceneManager = pInGameScreen_->sceneManager();
+		MexPoint3d rbPoint1 = sceneManager.pDevice()->screenToCamera( startRubberBand_ );
+		MexPoint3d rbPoint2 = sceneManager.pDevice()->screenToCamera( MexPoint2d( startRubberBand_.x(), endRubberBand_.y() ) );
+		MexPoint3d rbPoint3 = sceneManager.pDevice()->screenToCamera( endRubberBand_ );
+		MexPoint3d rbPoint4 = sceneManager.pDevice()->screenToCamera( MexPoint2d( endRubberBand_.x(), startRubberBand_.y() ) );
+
+		// Sort rubber band points into clockwise order
 		if ( ( endRubberBand_.x() > startRubberBand_.x() and endRubberBand_.y() > startRubberBand_.y() ) or
 			 ( endRubberBand_.x() < startRubberBand_.x() and endRubberBand_.y() < startRubberBand_.y() ) )
 		{
-			W4dSceneManager& sceneManager = pInGameScreen_->sceneManager();
-
-		    MexPoint3d rbPoint1 = sceneManager.pDevice()->screenToCamera( startRubberBand_ );
-			MexPoint3d rbPoint2 = sceneManager.pDevice()->screenToCamera( MexPoint2d( endRubberBand_.x(), startRubberBand_.y() ) );
-			MexPoint3d rbPoint3 = sceneManager.pDevice()->screenToCamera( endRubberBand_ );
-			MexPoint3d rbPoint4 = sceneManager.pDevice()->screenToCamera( MexPoint2d( startRubberBand_.x(), endRubberBand_.y() ) );
-
-			MexQuad3d boundingBox( rbPoint1, rbPoint2, rbPoint3, rbPoint4 );
-			W4dBoundingBoxSelector selector( *sceneManager.currentCamera(), boundingBox );
-
-			selector.clipAtFogDistance( rubberBandCamera_ == GROUND );
-
-		    entitiesInRubberBand = selector.selectedEntities();
+			std::swap(rbPoint2, rbPoint4);
 		}
-		else
-		{
-			W4dSceneManager& sceneManager = pInGameScreen_->sceneManager();
 
-		    MexPoint3d rbPoint1 = sceneManager.pDevice()->screenToCamera( startRubberBand_ );
-			MexPoint3d rbPoint2 = sceneManager.pDevice()->screenToCamera( MexPoint2d( startRubberBand_.x(), endRubberBand_.y() ) );
-			MexPoint3d rbPoint3 = sceneManager.pDevice()->screenToCamera( endRubberBand_ );
-			MexPoint3d rbPoint4 = sceneManager.pDevice()->screenToCamera( MexPoint2d( endRubberBand_.x(), startRubberBand_.y() ) );
+		// Select entities inside the bounding box
+		MexQuad3d boundingBox( rbPoint1, rbPoint2, rbPoint3, rbPoint4 );
+		W4dBoundingBoxSelector selector( *sceneManager.currentCamera(), boundingBox );
 
-			MexQuad3d boundingBox( rbPoint1, rbPoint2, rbPoint3, rbPoint4 );
-			W4dBoundingBoxSelector selector( *sceneManager.currentCamera(), boundingBox );
+		selector.clipAtFogDistance( rubberBandCamera_ == GROUND );
 
-			selector.clipAtFogDistance( rubberBandCamera_ == GROUND );
-
-		    entitiesInRubberBand = selector.selectedEntities();
-		}
+		entitiesInRubberBand = selector.selectedEntities();
 	}
 
 	// Reset the viewport correctly for GUI drawing.  TBD: a save/restore or
