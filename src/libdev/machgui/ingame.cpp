@@ -1607,14 +1607,6 @@ bool MachInGameScreen::doHandleRightClickEvent( const GuiMouseEvent& event )
 		{
 			shouldDeselectActors = true;
 		}
-		// ...else if we release the right mouse button in under 0.1sec and we are
-		// over the map then deselect all selected actors, reset the intelligent
-		// cursors etc.
-		else if ( 	DevTime::instance().time() - pressReleaseTimer < 0.1 and
-			 		pContinentMap_->absoluteBoundary().contains( event.coord() ) )
-		{
-			shouldDeselectActors = true;
-		}
 
 		if ( shouldDeselectActors )
 		{
