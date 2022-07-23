@@ -110,6 +110,9 @@ private:
 	void assignMappingGroup1();
 	void assignMappingGroup2();
 
+	bool canPostMailForRace( MachPhys::Race targetRace ) const;
+	void queueMail( MachLogVoiceMail* pNewMail );
+
     friend ostream& operator <<( ostream& o, const MachLogVoiceMailManager& t );
 
     MachLogVoiceMailManager( const MachLogVoiceMailManager& );
