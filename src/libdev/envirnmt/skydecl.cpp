@@ -49,7 +49,7 @@ void EnvISkyDeclaration::UniformSky::completeSky()
 	PRE(controllerSet_);
 	PRE(colourTableSet_);
 
-	EnvIPlanetParser::instance().skyDeclaration().completeSky(pSky_);
+	EnvIPlanetParser::instance().skyDeclaration().setCompleteSky(pSky_);
 }
 
 EnvISkyDeclaration::UniformSky::UniformSky(EnvUniformSky* const pSky)
@@ -85,7 +85,7 @@ void EnvISkyDeclaration::StaticSky::completeSky()
 	PRE(meshFileSet_);
 	PRE(backgroundColourSet_);
 
-	EnvIPlanetParser::instance().skyDeclaration().completeSky(pSky_);
+	EnvIPlanetParser::instance().skyDeclaration().setCompleteSky(pSky_);
 }
 
 EnvISkyDeclaration::StaticSky::StaticSky(EnvStaticSky* const pSky)
@@ -133,7 +133,7 @@ void EnvISkyDeclaration::DynamicSky::completeSky()
 	PRE(controllerSet_);
 	PRE(atLeastOneColourTableSet_);
 
-	EnvIPlanetParser::instance().skyDeclaration().completeSky(pSky_);
+	EnvIPlanetParser::instance().skyDeclaration().setCompleteSky(pSky_);
 }
 
 EnvISkyDeclaration::DynamicSky::DynamicSky(EnvDynamicSky* const pSky)
@@ -301,7 +301,7 @@ void EnvISkyDeclaration::CLASS_INVARIANT
 	INVARIANT(this);
 }
 
-void EnvISkyDeclaration::completeSky(EnvSky* const pSky)
+void EnvISkyDeclaration::setCompleteSky(EnvSky* const pSky)
 {
 	PRE(not pCompletedSky_);
 

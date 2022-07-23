@@ -161,7 +161,7 @@ private:
 	bool operator ==(const EnvISkyDeclaration&);
 
 	// Called by the completeSky methods of the nested classes.
-	void completeSky(EnvSky* const pSky);
+	void setCompleteSky(EnvSky* const pSky);
 
 	EnvSky* pCompletedSky_;
 	UniformSky* pUniformSky_;
