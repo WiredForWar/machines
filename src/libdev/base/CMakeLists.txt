@@ -57,9 +57,6 @@ set(BASE_SOURCES
     tracker.cpp
     tracker.hpp
     trackeri.cpp
-    watc1000.hpp
-    watc1050.hpp
-    watc1060.hpp
 )
 
 add_library(base OBJECT ${BASE_SOURCES})

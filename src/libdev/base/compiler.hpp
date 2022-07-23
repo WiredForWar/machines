@@ -13,67 +13,6 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef __WATCOMC__
-
-    #if __WATCOMC__ == 1000
-        // watcom c++ version 10.00
-        #include "base/watc1000.hpp"
-        #define _COMPILER_VERSION   10.00
-    #endif  /*  #if __WATCOMC__ == 1000 */
-
-    #if __WATCOMC__ == 1050
-        // watcom c++ version 10.50
-        #include "base/watc1050.hpp"
-        #define _COMPILER_VERSION   10.50
-    #endif  /*  #if __WATCOMC__ == 1050 */
-
-    #if __WATCOMC__ == 1060
-        // watcom c++ version 10.60
-        #include "base/watc1060.hpp"
-        #define _COMPILER_VERSION   10.60
-    #endif  /*  #if __WATCOMC__ == 1060 */
-
-    #define _COMPILER_NAME  WATCOM
-
-    #ifdef M_I386
-        #define _LINEAR_ADDRESSING
-    #endif  /*  #ifdef M_I386   */
-
-    #ifdef _LINEAR_ADDRESSING
-        #include "base/limitw32.hpp"
-    #else
-        #include "base/limitw16.hpp"
-    #endif
-
-    //  Disable "must look ahead to determine whether construct
-    //   is a declaration/type or an expression" warning
-    #pragma warning 604 9;
-
-    //  Disable "construct resolved as an expression" warning
-    #pragma warning 595 9;
-
-    //  Disable "'sizeof' operand contains compiler generated information" warning
-    #pragma warning 549 9;
-
-    // Disable "construct resolved as a declaration/type" warning
-    #pragma warning 594 9;
-
-    // Disable "assuming unary 'operator &' not overloaded for type" warning
-    #pragma warning 666 9;
-
-    // Disable "expression is useful only for its side effects" warning
-    #pragma warning 387 9;
-
-    #ifdef __DOS__
-        #define _DOSAPP
-    #endif
-
-    #ifdef __NT__
-        #define _WIN95APP
-    #endif
-
-#endif  /*  #ifdef __WATCOMC__  */
-
 #ifdef __GNUC__
     #if __GNUC__ >= 5
         //#include "base/watc1060.hpp"
