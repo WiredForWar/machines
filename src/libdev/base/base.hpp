@@ -64,8 +64,8 @@ const size_t NPOS = (size_t)(-1);
 #define nor( a, b )     ( not ( (a) or (b) ) )
 #define nand( a, b )    ( not ( (a) and (b) ) )
 //#define xor( a, b )     (  (a) ? !(b) : !!(b) )
-#define iff( a, b )     ( ((bool)(a)) == ((bool)(b)) )
-#define implies( a, b ) ( ((bool)(a)) ? (bool)(b) : true )
+#define iff( a, b )     ( static_cast<bool>(a) == static_cast<bool>(b) )
+#define implies( a, b ) ( static_cast<bool>(a) ? static_cast<bool>(b) : true )
 
 // #defines for documentation purposes
 #define _ABSTACT
