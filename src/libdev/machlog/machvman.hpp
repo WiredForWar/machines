@@ -21,10 +21,6 @@
 #include "machlog/vmdata.hpp"
 #include "machlog/machlog.hpp"
 
-
-class MachLogVoiceMail;
-class MachLogVoiceMailInfo;
-
 class MachLogMachineVoiceMailManager
 // Canonical form revoked
 {
