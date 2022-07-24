@@ -368,61 +368,7 @@ bool MachInGameScreen::isSelected( MachActor& actor ) const
 
 void MachInGameScreen::select( MachActor* pActor )
 {
-	CB_DEPIMPL( Actors, selectedActors_	);
-	CB_DEPIMPL( MachGuiCorralSingleIcon*, pCorralSingleIcon_ );
-	CB_DEPIMPL(	MachGuiFirstPerson*, pFirstPerson_ );
-	CB_DEPIMPL(	bool, commandBankNeedsUpdating_ );
-
-	DEBUG_STREAM( DIAG_NEIL, "MachInGameScreen::select( MachActor* pActor )" );
-
-    PRE( not isSelected( *pActor ) );
-
-    //Mark actor as selected
-    pActor->selectionState( MachLog::SELECTED );
-
-    //Add to local collection
-    selectedActors_.push_back( pActor );
-
-	updateCorralState();
-
-    //Become an observer, in case it gets deleted etc
-    pActor->attach( this );
-
-    //Add to corral
-    corral().add( pActor );
-
-	// Update single icon corral and first person
-	if ( selectedActors_.size() == 1 )
-	{
-		pCorralSingleIcon_->setActor( pActor, true );
-
-		// Tell first person control which actor has been selected
-		pFirstPerson_->setActor( pActor );
-	}
-	else
-	{
-		pCorralSingleIcon_->clear();
-		pFirstPerson_->resetActor();
-	}
-
-    //Command buttons will need processing
-    commandBankNeedsUpdating_ = true;
-
-	// Reset the self-destruct icon
-	MachGuiSelfDestructCommand::resetButtonState();
-
-    //Any active command should be cancelled - but deferred to next update
-    cancelActiveCommand();
-
-    // Selection has changed therefore we no longer have a squad
-    applyCommandToSquadron( false );
-
-	checkDismissNavigator();
-
-	//Add/remove any associated banks
-    setupActorBank();
-
-	DEBUG_STREAM( DIAG_NEIL, "leaving MachInGameScreen::select( MachActor* pActor )" );
+	select( Actors( { pActor } ) );
 }
 
 void MachInGameScreen::select( const Actors& actors )
