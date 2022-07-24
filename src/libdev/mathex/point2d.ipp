@@ -58,6 +58,16 @@ MexPoint2d& MexPoint2d::operator =( const MexPoint2d& rhs )
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
+MexPoint2d& MexPoint2d::operator *=( MATHEX_SCALAR multiplier )
+{
+    x_ *= multiplier;
+    y_ *= multiplier;
+    TEST_INVARIANT;
+
+    return *this;
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+_CODE_INLINE
 bool MexPoint2d::operator ==( const MexPoint2d& rhs ) const
 {
     TEST_INVARIANT;
