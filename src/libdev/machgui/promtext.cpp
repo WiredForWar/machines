@@ -334,9 +334,7 @@ void MachPromptText::doDisplay()
                 GuiPainter::instance().blit(
                     promptBmp_,
                     Gui::Box(0, 0, blitToX_, promptBmp_.height()),
-                    Gui::Coord(
-                        absoluteBoundary().minCorner().x() + lightOn_.width() + 1,
-                        absoluteBoundary().minCorner().y() + 7));
+                    getPromptTextAbsolutePosition());
             }
         }
 
@@ -413,20 +411,14 @@ void MachPromptText::displayChatMessage()
     GuiPainter::instance().blit(
         promptBmp_,
         Gui::Box(0, 0, promptBmp_.width(), promptBmp_.height()),
-        Gui::Coord(absoluteBoundary().minCorner().x() + lightOn_.width() + 1, absoluteBoundary().minCorner().y() + 7));
+        getPromptTextAbsolutePosition());
 
     if (GuiManager::instance().charFocusExists() and &GuiManager::instance().charFocus() == this
         and showCaret()) // Only show caret if we have focus
     {
-        GuiPainter::instance().line(
-            Gui::Coord(
-                absoluteBoundary().minCorner().x() + caretPosition + lightOn_.width() + 1,
-                absoluteBoundary().minCorner().y() + startY + 7),
-            Gui::Coord(
-                absoluteBoundary().minCorner().x() + caretPosition + lightOn_.width() + 1,
-                absoluteBoundary().minCorner().y() + startY + font_.charHeight() + 7),
-            caretColour(),
-            1);
+        Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Coord(caretPosition, startY);
+        Gui::Coord to = from + Gui::Coord(0, font_.charHeight());
+        GuiPainter::instance().line(from, to, caretColour(), 1);
     }
 
     // Blit light on graphic
@@ -452,9 +444,11 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vecto
 
         for (const string& line : textLines)
         {
+            Gui::Coord textPos(0, startY);
+            Gui::Coord shadowPos = textPos + Gui::Coord(1, 1);
             pImpl_->shadowFont_
-                .drawText(&pImpl_->promptBmp_, line, Gui::Coord(1, startY + 1), pImpl_->promptBmp_.width() - 1);
-            pImpl_->font_.drawText(&pImpl_->promptBmp_, line, Gui::Coord(0, startY), pImpl_->promptBmp_.width());
+                .drawText(&pImpl_->promptBmp_, line, shadowPos, pImpl_->promptBmp_.width() - shadowPos.x());
+            pImpl_->font_.drawText(&pImpl_->promptBmp_, line, textPos, pImpl_->promptBmp_.width());
             startY += pImpl_->shadowFont_.charHeight() + 1;
         }
 
@@ -463,13 +457,12 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vecto
             pImpl_->blitToX_ = 0;
         }
     }
+
     // Blit text.
     GuiPainter::instance().blit(
         pImpl_->promptBmp_,
         Gui::Box(0, 0, pImpl_->blitToX_, pImpl_->promptBmp_.height()),
-        Gui::Coord(
-            absoluteBoundary().minCorner().x() + pImpl_->lightOn_.width() + 1,
-            absoluteBoundary().minCorner().y() + 7));
+        getPromptTextAbsolutePosition());
 
     // Scroll text to new pos for next frame.
     if (pImpl_->blitToX_ != pImpl_->promptBmp_.width())
@@ -723,6 +716,17 @@ int MachPromptText::maxWidth() const
 
     // Take into account other things that limit the available typing space
     return availableWidth - beginningTextWidth_ - lightOn_.width() - 1;
+}
+
+Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
+{
+    CB_DEPIMPL(GuiBitmap, lightOn_);
+
+    const int yOffset = 7;
+    const int hSpacing = 1;
+    const int xOffset = lightOn_.width() + hSpacing;
+
+    return absoluteBoundary().minCorner() + Gui::Coord(xOffset, yOffset);
 }
 
 /* NA 30/11/98. New processesMouseEvents added to GuiDisplayable means I don't need these

@@ -79,6 +79,7 @@ protected:
     void displayPromptText(PromptDisplayed textType, const ctl_vector<string>& textLines);
 
     int maxWidth() const override;
+    Gui::Coord getPromptTextAbsolutePosition() const;
 
     // Pass mouse position in as relative to this GuiDisplayable. Updates
     // mouse position to be relative to pPassEventsTo_.
