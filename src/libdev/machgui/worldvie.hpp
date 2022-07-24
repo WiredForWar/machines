@@ -57,6 +57,8 @@ public:
 	UtlId highlightedActorId() const;
     bool haveHighlightedActor() const;
 
+	ctl_pvector< W4dEntity > getEntitiesInView();
+
 protected:
     //A line in world space from the camera origin passing through the cursor of length length
     MexLine3d cameraThroughCursorLine( const Gui::Coord& cursorScreenPoint,	MATHEX_SCALAR length ) const;

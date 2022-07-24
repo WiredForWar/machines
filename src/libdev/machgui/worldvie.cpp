@@ -818,4 +818,13 @@ ctl_pvector< W4dEntity > MachWorldViewWindow::getActorsInRectangle(const Gui::Co
 	return entitiesInRubberBand;
 }
 
+ctl_pvector< W4dEntity > MachWorldViewWindow::getEntitiesInView()
+{
+	Gui::Box worldviewArea = pInGameScreen_->getWorldViewWindowVisibleArea();
+	Gui::Coord from = worldviewArea.minCorner();
+	Gui::Coord to = worldviewArea.maxCorner();
+
+	return getActorsInRectangle(from, to);
+}
+
 /* End WORLDVIE.CPP *************************************************/

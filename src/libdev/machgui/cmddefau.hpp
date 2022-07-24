@@ -107,6 +107,8 @@ private:
     //Data members
     //Performs intelligent cursor mapping when cursor is on an actor
     MachGuiIntelligentCursorOnActor* pIntelligentCursorOnActor_;
+    MachActor*pLastSelectedActor_ = nullptr;
+    double actorSelectedTime_ = 0;
 };
 
 
