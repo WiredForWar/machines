@@ -225,10 +225,18 @@ void MachGuiCorralResource::doBeReleased( const GuiMouseEvent& event )
 			pInGameScreen_->deselect( pActor_ );
 		}
 	}
-	else // Remove everything but this from the corral
+	else
 	{
 		MachActor *pActor = pActor_; // Keep copy because this is about to be deleted
 		MachInGameScreen* pInGameScreen = pInGameScreen_;
+		const MachInGameScreen::Actors& selectedActors = pInGameScreen->selectedActors();
+		if ( (selectedActors.size() == 1) && selectedActors.at(0) == pActor )
+		{
+			pInGameScreen->cameras()->setFollowTarget(pActor);
+			return;
+		}
+
+		// Remove everything but this from the corral
 		pInGameScreen->deselectAll();
 		pInGameScreen->select( pActor );
 	}
