@@ -83,6 +83,7 @@ private:
                          bool shiftPressed, bool altPressed );
 
 	void updateActorsSelectedViaRubberBand( bool highlightOnly, bool keepSelection, bool inclMachines = true, bool inclConstructions = true );
+	ctl_pvector< W4dEntity > getActorsInRectangle(const Gui::Coord& from, const Gui::Coord& to) const;
 	void unhighlightActorsSelectedViaRubberBand();
 		 
 	enum RubberBandCamera { ZENITH, GROUND, INVALID };
