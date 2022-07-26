@@ -226,21 +226,7 @@ void MachGuiDefaultCommand::pickOnActor
 
         case MachGui::SELECT_CURSOR:
         {
-			ASSERT( pActor->selectableType() == MachLog::FULLY_SELECTABLE, "Attempting to select into the corral an invalid actor" );
-            //Add the actor to the list, if a machine
-            if( ctrlPressed )
-            {
-                //See if already selected: toggle state
-               if( inGameScreen().isSelected( *pActor ) )
-                    inGameScreen().deselect( pActor );
-                else
-                    inGameScreen().select( pActor );
-            }
-            else
-            {
-                inGameScreen().deselectAll();
-                inGameScreen().select( pActor );
-            }
+            selectActors( pActor, ctrlPressed, shiftPressed, altPressed );
             break;
         }
     }
@@ -258,6 +244,28 @@ void MachGuiDefaultCommand::pickOnActor
         //Tidy up
         _DELETE( pCommand );
     }
+}
+
+void MachGuiDefaultCommand::selectActors
+(
+	MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
+)
+{
+	ASSERT( pActor->selectableType() == MachLog::FULLY_SELECTABLE, "Attempting to select into the corral an invalid actor" );
+	//Add the actor to the list, if a machine
+	if( ctrlPressed )
+	{
+		//See if already selected: toggle state
+		if( inGameScreen().isSelected( *pActor ) )
+			inGameScreen().deselect( pActor );
+		else
+			inGameScreen().select( pActor );
+	}
+	else
+	{
+		inGameScreen().deselectAll();
+		inGameScreen().select( pActor );
+	}
 }
 
 //virtual
