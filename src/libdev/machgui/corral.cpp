@@ -207,6 +207,21 @@ void MachGuiCorralResource::doBeReleased( const GuiMouseEvent& event )
 	{
 		if ( pInGameScreen_->isSelected( *pActor_ ) )
 		{
+			const MachActor *pActor = pActor_;
+			const ctl_pvector< MachActor > currentSelection = pInGameScreen_->selectedActors();
+			ctl_pvector< MachActor > actorsToRemove;
+			std::copy_if(currentSelection.begin(), currentSelection.end(), std::back_inserter(actorsToRemove), [pActor](MachActor *pActorInSelection)
+			{
+				return MachActor::IsSameActorType(pActor, pActorInSelection);
+			});
+			ASSERT( !actorsToRemove.empty(), "The must be at least one actor (the picked one)" );
+			pInGameScreen_->deselect(actorsToRemove);
+		}
+	}
+	else if ( event.isShiftPressed() )
+	{
+		if ( pInGameScreen_->isSelected( *pActor_ ) )
+		{
 			pInGameScreen_->deselect( pActor_ );
 		}
 	}
