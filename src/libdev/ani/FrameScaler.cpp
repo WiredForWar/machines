@@ -69,5 +69,5 @@ uint8_t* FrameScaler::scaleFrame(uint8_t* srcFrame) {
 void FrameScaler::resetFrameData() {
     const size_t dstSize = dstWidth_*dstHeight_*4;
 
-    std::fill(pDstFrame_, pDstFrame_+dstSize, 0x00);
+    std::fill(pDstFrame_, pDstFrame_+dstSize, '\0');
 }
