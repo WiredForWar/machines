@@ -21,6 +21,8 @@ if(NOT "$ENV{BUILD_NUMBER}" STREQUAL "")
     message(STATUS "CI build #${BUILD_NUMBER}")
 endif()
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 ##
 # Platform detection and some related checks
