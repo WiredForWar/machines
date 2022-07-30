@@ -59,7 +59,6 @@ private:
 	double      lastFrameTime_;
 	bool 		advanceToNextFrame_;
 	bool 		fast_;
-	bool 		synchronisation_;
 	bool		useFrontBuffer_;
 	SysPathName fileName_;
 	bool		finished_;
