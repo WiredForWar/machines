@@ -5,20 +5,15 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-project(machines C CXX)
+project(machines
+    VERSION 1.6.0
+    LANGUAGES C CXX
+)
 include(CheckCXXCompilerFlag)
 include(CheckCCompilerFlag)
 include(CMakeDependentOption)
 
-##
-# Project version
-##
-set(MACHINES_VERSION_CODENAME "Patch 1.6")
-set(MACHINES_VERSION_MAJOR    0)
-set(MACHINES_VERSION_MINOR    1)
-set(MACHINES_VERSION_REVISION 1.6)
-
-message(STATUS "Building Machines \"${MACHINES_VERSION_CODENAME}\" (${MACHINES_VERSION_FULL})")
+message(STATUS "Building Machines ${machines_VERSION}")
 
 set(BUILD_NUMBER 0)
 if(NOT "$ENV{BUILD_NUMBER}" STREQUAL "")
