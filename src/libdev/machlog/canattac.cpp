@@ -639,16 +639,13 @@ const MATHEX_SCALAR MachLogCanAttack::getMaximumTreacheryWeaponRange() const
 
 bool MachLogCanAttack::hasTreacheryWeapon() const
 {
-//	CB_MachLogCanAttack_DEPIMPL();
-	CB_DEPIMPL( const Weapons, weapons_ );
-	bool result = false;
-	for( Weapons::const_iterator i = weapons_.begin(); i != weapons().end(); ++i )
+	for ( const MachLogWeapon *weapon : weapons() )
 	{
-		MachPhys::WeaponType type = _CONST_CAST( const MachLogWeapon*, (*i) )->physWeapon().type();
+		MachPhys::WeaponType type = weapon->physWeapon().type();
 		if( type == MachPhys::ORB_OF_TREACHERY )
-			result = true;
+			return true;
 	}
-	return result;
+	return false;
 }
 
 PhysRelativeTime MachLogCanAttack::attackWithTreachery( MachActor* pTarget )
