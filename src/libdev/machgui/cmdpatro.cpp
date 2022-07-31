@@ -131,7 +131,7 @@ bool MachGuiPatrolCommand::doApply( MachActor* pActor, string* )
 
 		   	if( not hasPlayedVoiceMail() )
 			{
-				MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_TASKED, pActor->id(),  pActor->race() );
+				MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_TASKED );
 				hasPlayedVoiceMail( true );
 			}
 		}

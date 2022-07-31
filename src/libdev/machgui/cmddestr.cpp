@@ -61,7 +61,7 @@ bool MachGuiSelfDestructCommand::doApply( MachActor* pActor, string* )
 	{
 		if( not hasPlayedVoiceMail() and pActor->objectIsMachine() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_SELF_DESTRUCT, pActor->id(),  pActor->race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_SELF_DESTRUCT );
 			hasPlayedVoiceMail( true );
 		}
 

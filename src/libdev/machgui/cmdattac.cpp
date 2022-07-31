@@ -150,7 +150,7 @@ bool MachGuiAttackCommand::applyMove( MachActor* pActor, string* )
 
 			if( not hasPlayedVoiceMail() )
 			{
-				MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_MOVING, pActor->id(),  pActor->race() );
+				MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_MOVING );
 				hasPlayedVoiceMail( true );
 			}
 		}
@@ -179,7 +179,7 @@ bool MachGuiAttackCommand::applyAttackObject( MachActor* pActor, string* )
 
 				if( not hasPlayedVoiceMail() )
 				{
-					MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_TARGET_ENEMY, pActor->id(),  pActor->race() );
+					MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_TARGET_ENEMY );
 					hasPlayedVoiceMail( true );
 				}
 				pActor->asMachine().manualCommandIssued();
@@ -336,7 +336,7 @@ bool MachGuiAttackCommand::applyAdminAttackObject( MachLogAdministrator* pAdmini
 		pAdministrator->squadron()->manualCommandIssuedToSquadron();
 
 		// give voicemail
-		MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::ADMINISTRATOR, pAdministrator->subType(), MachLogMachineVoiceMailManager::MEV_TARGET_ENEMY, pAdministrator->id(),  pAdministrator->race() );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pAdministrator, MachLogMachineVoiceMailManager::MEV_TARGET_ENEMY );
 	}
 
     return canDo;
@@ -397,7 +397,7 @@ bool MachGuiAttackCommand::applyAdminMove( MachLogAdministrator* pAdministrator,
 	        _NEW( MachLogAdminMoveToOperation( pAdministrator, validPoint, pathFindingPriority() ) );
 
 		// give voicemail
-		MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::ADMINISTRATOR, pAdministrator->subType(), MachLogMachineVoiceMailManager::MEV_MOVING, pAdministrator->id(),  pAdministrator->race() );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pAdministrator, MachLogMachineVoiceMailManager::MEV_MOVING );
 
         // The operation is now given to the actor by the group move code
         add( pAdministrator, pOp );

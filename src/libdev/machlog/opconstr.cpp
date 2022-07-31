@@ -81,13 +81,13 @@ PhysRelativeTime MachLogConstructOperation::interactWithBuilding()
 			pConstructorGuy->constructing( false );
 		
 		// if the building is now complete, give a voicemail
-		if( pUnfinishedConstruction->isComplete() )
+		if( pUnfinishedConstruction->isComplete() ) // pConstructor
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pConstructorGuy->subType(), MachLogMachineVoiceMailManager::MEV_BUILDING_COMPLETE, pConstructorGuy->id(),  pConstructorGuy->race() );            		
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachLogMachineVoiceMailManager::MEV_BUILDING_COMPLETE );
 
 			// post voicemail if no more operations on the queue
 			if( not pConstructorGuy->isDoingSuperConstruct() )
-			        MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pConstructorGuy->subType(), MachLogMachineVoiceMailManager::MEV_AWAITING_NEW_JOB, pConstructorGuy->id(),  pConstructorGuy->race() );
+			        MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachLogMachineVoiceMailManager::MEV_AWAITING_NEW_JOB );
 
 			interval = 0.0;
 		}					
