@@ -140,6 +140,12 @@ ostream& operator <<( ostream& o, MachineVoiceMailEventID id )
         case MachineVoiceMailEventID::BUILDING_REPAIRED:
             o << "MEV_BUILDING_REPAIRED";
             break;
+        case MachineVoiceMailEventID::MINERAL_LOCATED:
+            o << "MEV_MINERAL_LOCATED";
+            break;
+        case MachineVoiceMailEventID::SEARCH_COMPLETE:
+            o << "MEV_SEARCH_COMPLETE";
+            break;
 
 
   		DEFAULT_ASSERT_BAD_CASE( id );
@@ -877,6 +883,10 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 					}
 				case MachineVoiceMailEventID::RECYCLE:
 					return VID_GEO_RECYCLE;
+				case MachineVoiceMailEventID::MINERAL_LOCATED:
+					return VID_GEO_MINERAL_LOCATED;
+				case MachineVoiceMailEventID::SEARCH_COMPLETE:
+					return VID_GEO_SEARCH_COMPLETE;
 
 				DEFAULT_ASSERT_BAD_CASE( id );
 			}

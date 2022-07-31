@@ -19,12 +19,11 @@
 #include "machlog/oplocate.hpp"
 #include "machlog/geolocat.hpp"
 #include "machlog/planet.hpp"
+#include "machlog/machvman.hpp"
 #include "machlog/minesite.hpp"
 #include "machlog/mcmotseq.hpp"
 #include "machlog/move.hpp"
 #include "machlog/spacial.hpp"
-#include "machlog/vmman.hpp"
-#include "machlog/vmdata.hpp"
 
 PER_DEFINE_PERSISTENT( MachLogLocateOperation );
 /* //////////////////////////////////////////////////////////////// */
@@ -194,7 +193,7 @@ bool MachLogLocateOperation::doIsFinished() const
 	{
 	        finished = true;
 	        // issue voicemail
-	        MachLogVoiceMailManager::instance().postNewMail( VID_GEO_SEARCH_COMPLETE, pActor_->id(), pActor_->race() );
+	        MachLogMachineVoiceMailManager::instance().postNewMail( *pActor_, MachineVoiceMailEventID::SEARCH_COMPLETE );
 	}
 
 	return finished;
@@ -225,6 +224,7 @@ PhysRelativeTime MachLogLocateOperation::doUpdate( )
 			if( found )
 			{
 				site.beDiscoveredBy( race );
+				MachLogMachineVoiceMailManager::instance().postNewMail( *pActor_, MachineVoiceMailEventID::MINERAL_LOCATED );
 			}
 		}
 		++currentElement_;
