@@ -1031,9 +1031,6 @@ void MachLogMachine::assignToDifferentRace( MachLogRace& newRace )
 	CB_DEPIMPL( MachLogSquadron*, pOriginalSquadron_ );
 	CB_DEPIMPL( MachLogSquadron*, pSquadron_ );
 
-	if( displayMapAndIconRace() != newRace.race() )
-		MachLogMachineVoiceMailManager::instance().postNewMail( objectType(), subType(), MachLogMachineVoiceMailManager::MEV_CHANGED_RACE, id(),  newRace.race() );
-
 	/*
 	// decrement losing race's machine numbers
 	MachLogRaces::instance().nMachines( race() )--;
@@ -1062,6 +1059,10 @@ void MachLogMachine::assignToDifferentRace( MachLogRace& newRace )
 	MachLogRaces::instance().nMachines( race() )++;
 	*/
 
+	if( displayMapAndIconRace() != newRace.race() )
+	{
+		MachLogMachineVoiceMailManager::instance().postNewMail( objectType(), subType(), MachLogMachineVoiceMailManager::MEV_CHANGED_RACE, id(),  newRace.race() );
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
