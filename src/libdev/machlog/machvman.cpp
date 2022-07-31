@@ -45,34 +45,13 @@ void MachLogMachineVoiceMailManager::CLASS_INVARIANT
     INVARIANT( this != NULL );
 }
 
-void MachLogMachineVoiceMailManager::postNewMail(MachLog::ObjectType ot, int subType, MachineVoiceMailEventID id, MachPhys::Race race )
-{
-	VoiceMailID globalId = getGlobalFromMachineEvent( ot, subType, id );
-	MachLogVoiceMailManager& manref = MachLogVoiceMailManager::instance();
-	MachLogVoiceMailManager::instance().postNewMail( globalId, race );
-}
-
-void MachLogMachineVoiceMailManager::postNewMail(MachLog::ObjectType ot, int subType, MachineVoiceMailEventID id, UtlId actorId, MachPhys::Race race )
-{
-	PRE( MachLogRaces::instance().actorExists( actorId ) );
-	PRE( MachLogRaces::instance().actor( actorId ).objectIsMachine() );
-
-	if( not MachLogRaces::instance().actor( actorId ).isIn1stPersonView() )
-	{
-		VoiceMailID globalId = getGlobalFromMachineEvent( ot, subType, id, actorId );
-		MachLogVoiceMailManager::instance().postNewMail( globalId, actorId, race );
-	}
-}
-
-void MachLogMachineVoiceMailManager::postNewMail(MachLog::ObjectType ot, int subType, MachineVoiceMailEventID id, MexPoint3d position, MachPhys::Race race )
-{
-	VoiceMailID globalId = getGlobalFromMachineEvent( ot, subType, id );
-	MachLogVoiceMailManager::instance().postNewMail( globalId, position, race );
-}
-
 void MachLogMachineVoiceMailManager::postNewMail(const MachActor &fromActor, MachineVoiceMailEventID id)
 {
-	MachLogMachineVoiceMailManager::postNewMail(fromActor.objectType(), fromActor.subType(), id, fromActor.id(), fromActor.race());
+	if( fromActor.isIn1stPersonView() )
+		return;
+
+	VoiceMailID globalId = getGlobalFromMachineEvent( fromActor.objectType(), fromActor.subType(), id, fromActor.id() );
+	MachLogVoiceMailManager::instance().postNewMail( globalId, fromActor.id(), fromActor.race() );
 }
 
 ostream& operator <<( ostream& o, const MachLogMachineVoiceMailManager& t )
