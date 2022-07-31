@@ -122,8 +122,6 @@ protected:
 	static ResearchItemsArray& researchItems();
 
 private:
-	friend class MachLogFactory;
-
 	void insertIntoProductionLine( MachLogProductionUnit* newUnit );
 
 	void clearProductionLine();
