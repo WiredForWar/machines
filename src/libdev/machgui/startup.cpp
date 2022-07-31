@@ -91,6 +91,8 @@
 #include "machlog/creatdat.hpp"
 #include "machlog/p1remman.hpp"
 #include "machlog/score.hpp"
+#include "machlog/RecentEventsManager.hpp"
+
 #include "network/node.hpp"
 #include "network/session.hpp"
 #include "device/cd.hpp"
@@ -259,6 +261,7 @@ MachGuiStartupScreens::MachGuiStartupScreens( W4dSceneManager* pSceneManager, W4
 	SysRegistry::instance().setStringValue( "", "version", "1.0" );
 
 	MachGuiInGameChatMessages::instance().initialise( pMessageBroker_, this );
+	MachLogRecentEventsManager::instance().setCameras( pInGameScreen_->cameras() );
 
 	initialiseVolumes();
 
@@ -282,6 +285,8 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
 	CB_DEPIMPL(	AniSmacker*, pPlayingSmacker_ );
 	CB_DEPIMPL(	MachGuiStartupData*, pStartupData_ );
 	CB_DEPIMPL( MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_ );
+
+	MachLogRecentEventsManager::instance().setCameras( nullptr );
 
 	//Bullet proof function - doesn't matter if notifiable has already been unregistered.
 	MachLogRaces::instance().unregisterDispositionChangeNotifiable( pDispositionNotifiable_ );

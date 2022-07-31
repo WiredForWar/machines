@@ -20,6 +20,7 @@
 #include "machlog/rescarr.hpp"
 #include "machlog/technici.hpp"
 #include "machlog/vmman.hpp"
+#include "machlog/RecentEventsManager.hpp"
 
 #include "machphys/random.hpp"
 
@@ -51,7 +52,11 @@ void MachLogMachineVoiceMailManager::postNewMail(const MachActor &fromActor, Mac
 		return;
 
 	VoiceMailID globalId = getGlobalFromMachineEvent( fromActor.objectType(), fromActor.subType(), id, fromActor.id() );
-	MachLogVoiceMailManager::instance().postNewMail( globalId, fromActor.id(), fromActor.race() );
+	bool posted = MachLogVoiceMailManager::instance().postNewMail( globalId, fromActor.id(), fromActor.race() );
+	if( posted )
+	{
+		MachLogRecentEventsManager::instance().onVoiceMailPosted(fromActor, id);
+	}
 }
 
 ostream& operator <<( ostream& o, const MachLogMachineVoiceMailManager& t )

@@ -54,6 +54,7 @@ class MachGuiControlPanel;
 class MachGuiMapArea;
 class MachGuiCameraScrollArea;
 class MachGuiInGameChatMessagesDisplay;
+class MachLogRecentEventsManager;
 
 class MachInGameScreenImpl
 {

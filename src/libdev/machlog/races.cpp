@@ -67,6 +67,7 @@
 #include "machlog/dispnoti.hpp"
 #include "machlog/artefact.hpp"
 #include "machlog/cntrl_ai.hpp"
+#include "machlog/RecentEventsManager.hpp"
 
 #include "system/metafile.hpp"
 #include "system/metaistr.hpp"
@@ -2376,6 +2377,7 @@ void MachLogRaces::unloadGame()
 
 	//Clear the voicemail queue
 	MachLogVoiceMailManager::instance().clearMailQueue();
+	MachLogRecentEventsManager::instance().clear();
 
     //Delete the dependent objects
     clear();
