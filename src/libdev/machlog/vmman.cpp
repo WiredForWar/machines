@@ -13,6 +13,7 @@
 
 #include "machphys/random.hpp"
 
+#include "machlog/RecentEventsManager.hpp"
 #include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "machlog/vmdata.hpp"
@@ -332,6 +333,11 @@ void MachLogVoiceMailManager::queueMail(MachLogVoiceMail *pNewMail)
 {
 	CB_DEPIMPL( MailVector, incomingMailQueue_ );
 	incomingMailQueue_.push_back( pNewMail );
+
+	if ( !pNewMail->hasPosition() )
+		return;
+
+	MachLogRecentEventsManager::instance().onVoiceMailPosted(pNewMail->position(), pNewMail->id());
 }
 
 bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetRace )

@@ -2,6 +2,7 @@
 #define MACHLOG_RecentEventsManager_HPP
 
 #include "mathex/point2d.hpp"
+#include "machlog/vmdata.hpp"
 
 #include <vector>
 
@@ -22,6 +23,7 @@ public:
 
 	bool hasEvents() const;
 
+	void onVoiceMailPosted(const MexPoint3d& position, VoiceMailID id);
 	void onVoiceMailPosted(const MachActor& fromActor, MachineVoiceMailEventID id);
 
 	bool doHandleKeyEvent(const GuiKeyEvent& event);

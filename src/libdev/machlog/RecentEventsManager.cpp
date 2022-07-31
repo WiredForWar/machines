@@ -32,8 +32,35 @@ bool MachLogRecentEventsManager::hasEvents() const
 	return !eventPositions_.empty();
 }
 
-void MachLogRecentEventsManager::onVoiceMailPosted(const MexPoint3d& position)
+void MachLogRecentEventsManager::onVoiceMailPosted(const MexPoint3d& position, VoiceMailID id)
 {
+	switch (id)
+	{
+		case VID_POD_BEACON_DESTROYED:
+		case VID_POD_UPLINK_DESTROYED:
+		case VID_POD_POD_ATTACKED:
+		case VID_POD_POD_CRITICAL_DAMAGE:
+		case VID_POD_ION_CANNON_ACQUIRED:
+		case VID_POD_ION_CANNON_CHARGED:
+		case VID_POD_BUILDING_DESTROYED:
+		case VID_POD_BUILDING_CRITICAL:
+		case VID_POD_CONSTRUCTION_ATTACKED:
+		case VID_POD_MINERALS_EXHAUSTED:
+		case VID_POD_MINE_INOPERABLE:
+		case VID_POD_NUKE_READY:
+		case VID_POD_NO_TECHNICIANS:
+		case VID_POD_POD_DESTROYED:
+		case VID_POD_MINE_SWITCHED_SOURCE:
+		case VID_POD_REINFORCEMENTS_ONLINE:
+		case VID_POD_TURRET_ATTACKED:
+		case VID_POD_INSUFFICIENT_CASH_FOR_NUKE:
+		case VID_POD_NEW_CONSTRUCTIONS:
+		case VID_POD_INSUFFICIENT_BMUS:
+			break;
+		default:
+			return;
+	}
+
 	addEventPosition(position);
 }
 
