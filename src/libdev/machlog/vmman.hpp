@@ -65,9 +65,9 @@ public:
 	bool decCurrentMail();
 
 	//Post verbal mail onto queue
-	void postNewMail(VoiceMailID id, MachPhys::Race targetRace);
-	void postNewMail(VoiceMailID, UtlId actorId, MachPhys::Race targetRace);
-	void postNewMail(VoiceMailID, MexPoint3d position, MachPhys::Race targetRace);
+	bool postNewMail(VoiceMailID id, MachPhys::Race targetRace);
+	bool postNewMail(VoiceMailID, UtlId actorId, MachPhys::Race targetRace);
+	bool postNewMail(VoiceMailID, MexPoint3d position, MachPhys::Race targetRace);
 
 	// special case posting that replaces any currently playing mail with static, and boots any other
 	// outstanding mails for that actor off the queue

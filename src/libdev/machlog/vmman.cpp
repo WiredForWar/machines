@@ -334,28 +334,30 @@ void MachLogVoiceMailManager::queueMail(MachLogVoiceMail *pNewMail)
 	incomingMailQueue_.push_back( pNewMail );
 }
 
-void MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetRace )
+bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetRace )
 {
 	CB_MachLogVoiceMailManager_DEPIMPL();
 
 	if( !canPostMailForRace(targetRace) )
-		return;
+		return false;
 
 	// only bother pushing it onto the queue if the actor in question isn't already playing a mail
 	// OR it's not a selection-affirmation mail.
-	if( not podMailPlaying_ or ( (*pAvailableVEMails_)[id] )->mailType_ != VM_SELECTION_AFFIRMATION )
-	{
-		MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id ) );
-		queueMail( pNewMail );
-	}
+	if( podMailPlaying_ && (( (*pAvailableVEMails_)[id] )->mailType_ != VM_SELECTION_AFFIRMATION) )
+		return false;
+
+	MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id ) );
+	queueMail( pNewMail );
+
+	return true;
 }
 
-void MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhys::Race targetRace )
+bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhys::Race targetRace )
 {
 	CB_MachLogVoiceMailManager_DEPIMPL();
 
 	if( !canPostMailForRace(targetRace) )
-		return;
+		return false;
 
 	// now, will we actually accept this posting onto the queue?
 
@@ -395,21 +397,27 @@ void MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
 		acceptMail =( nActorMailsInQueue <= 1 );
 	}
 
-	if( acceptMail )
+	if( !acceptMail )
 	{
-		MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id, actorId ) );
-		queueMail( pNewMail );
-		update();
+		return false;
 	}
+
+	MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id, actorId ) );
+	queueMail( pNewMail );
+	update();
+
+	return true;
 }
 
-void MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, MachPhys::Race targetRace )
+bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, MachPhys::Race targetRace )
 {
 	if( !canPostMailForRace(targetRace) )
-		return;
+		return false;
 
 	MachLogVoiceMail* pNewMail = _NEW(MachLogVoiceMail(id, position));
 	queueMail(pNewMail);
+
+	return true;
 }
 
 void MachLogVoiceMailManager::postDeathMail( UtlId actorId, MachPhys::Race targetRace )
