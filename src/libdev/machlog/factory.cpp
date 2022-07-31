@@ -224,7 +224,7 @@ void MachLogFactory::createNewMachine( const MachLogProductionUnit& newMachine, 
 		pMach->setSquadron( MachLogRaces::instance().squadrons( pRace->race() )[ newMachine.constructionId() ] );
 
 	// give voicemail announcing arrival into world
-	MachLogMachineVoiceMailManager::instance().postNewMail( *pMach, MachLogMachineVoiceMailManager::MEV_BUILT );
+	MachLogMachineVoiceMailManager::instance().postNewMail( *pMach, MachineVoiceMailEventID::BUILT );
 
 	// Now make the little fella beetle off to a deploy point.
 	moveToDeployPoint( pMach, entranceInternalPoint, entranceExternalPoint );

@@ -4,6 +4,7 @@ set(MACHLOG_SOURCES
     MachLog1stPersonActiveSquad.hpp
     MachLog1stPersonOpDispatch.hpp
     MachLog1stPersonTargetInfo.hpp
+    MachineVoiceMailEventID.hpp
     actanim.cpp
     actanim.hpp
     actenabl.cpp

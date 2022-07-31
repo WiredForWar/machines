@@ -20,43 +20,12 @@
 #include "machlog/vmman.hpp"
 #include "machlog/vmdata.hpp"
 #include "machlog/machlog.hpp"
+#include "machlog/MachineVoiceMailEventID.hpp"
 
 class MachLogMachineVoiceMailManager
 // Canonical form revoked
 {
 public:
-
-	enum MachineVoiceMailEventID
-	{
-		MEV_SELF_DESTRUCT,
-		MEV_BUILT,
-		MEV_DESTROYED,
-		MEV_NEAR_DEATH,
-		MEV_CHANGED_RACE,
-		MEV_VIRUS_INFECTED,
-		MEV_DAMAGED,
-		MEV_TASKED,
-		MEV_MOVING,
-		MEV_SELECTED,
-		MEV_TARGET_ENEMY,
-		MEV_RECYCLE,
-		
-		MEV_HEAL_TARGET,
-		MEV_HEALING_COMPLETE,
-		
-		MEV_LAUNCH_VIRUS,
-		MEV_VIRUS_LAUNCHED,
-		MEV_TREACHERY_TARGET,
-		
-		MEV_BUILDING_COMPLETE,
-		MEV_AWAITING_NEW_JOB,
-		MEV_MOVING_TO_NEXT,
-		MEV_MOVE_TO_SITE,
-		MEV_BUILDING_CAPTURED,
-		MEV_BUILDING_DECONSTRUCTED,
-		MEV_BUILDING_REPAIRED
-	};	
-
     //  Singleton class
     static MachLogMachineVoiceMailManager& instance();
     ~MachLogMachineVoiceMailManager();
@@ -83,7 +52,7 @@ private:
 
 };
 
-ostream& operator <<( ostream& o, MachLogMachineVoiceMailManager::MachineVoiceMailEventID );
+ostream& operator <<( ostream& o, MachineVoiceMailEventID );
 
 
 #endif

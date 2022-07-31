@@ -107,7 +107,7 @@ void MachLogSuperCharger::doFire( MachActor* pTarget, const MachLogFireData& )
 				if( pTarget->hp() >= pTarget->objectData().hitPoints() )
 				{
 					// give voicemail
-					MachLogMachineVoiceMailManager::instance().postNewMail( owner(), MachLogMachineVoiceMailManager::MEV_HEALING_COMPLETE );
+					MachLogMachineVoiceMailManager::instance().postNewMail( owner(), MachineVoiceMailEventID::HEALING_COMPLETE );
 				}
 
 	        	lastUpdateTime_ = SimManager::instance().currentTime();

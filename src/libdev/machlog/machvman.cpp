@@ -63,81 +63,81 @@ ostream& operator <<( ostream& o, const MachLogMachineVoiceMailManager& t )
     return o;
 }
 
-ostream& operator <<( ostream& o, MachLogMachineVoiceMailManager::MachineVoiceMailEventID id )
+ostream& operator <<( ostream& o, MachineVoiceMailEventID id )
 {
 
     switch( id )
     {
-        case MachLogMachineVoiceMailManager:: MEV_SELF_DESTRUCT:
+        case MachineVoiceMailEventID::SELF_DESTRUCT:
             o << "MEV_SELF_DESTRUCT";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_BUILT:
+        case MachineVoiceMailEventID::BUILT:
             o << "MEV_BUILT";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_DESTROYED:
+        case MachineVoiceMailEventID::DESTROYED:
             o << "MEV_DESTROYED";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_NEAR_DEATH:
+        case MachineVoiceMailEventID::NEAR_DEATH:
             o << "MEV_NEAR_DEATH";
 			break;
-		case MachLogMachineVoiceMailManager:: MEV_CHANGED_RACE:
+		case MachineVoiceMailEventID::CHANGED_RACE:
             o << "MEV_CHANGED_RACE";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_VIRUS_INFECTED:
+        case MachineVoiceMailEventID::VIRUS_INFECTED:
             o << "MEV_VIRUS_INFECTED";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_DAMAGED:
+        case MachineVoiceMailEventID::DAMAGED:
             o << "MEV_DAMAGED";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_TASKED:
+        case MachineVoiceMailEventID::TASKED:
             o << "MEV_TASKED";
 			break;
-		case MachLogMachineVoiceMailManager:: MEV_MOVING:
+		case MachineVoiceMailEventID::MOVING:
             o << "MEV_MOVING";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_SELECTED:
+        case MachineVoiceMailEventID::SELECTED:
             o << "MEV_SELECTED";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_TARGET_ENEMY:
+        case MachineVoiceMailEventID::TARGET_ENEMY:
             o << "MEV_TARGET_ENEMY";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_RECYCLE:
+        case MachineVoiceMailEventID::RECYCLE:
             o << "MEV_RECYCLE";
             break;
-		case MachLogMachineVoiceMailManager:: MEV_HEAL_TARGET:
+		case MachineVoiceMailEventID::HEAL_TARGET:
             o << "MEV_HEAL_TARGET";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_HEALING_COMPLETE:
+        case MachineVoiceMailEventID::HEALING_COMPLETE:
             o << "MEV_HEALING_COMPLETE";
             break;
-		case MachLogMachineVoiceMailManager:: MEV_LAUNCH_VIRUS:
+		case MachineVoiceMailEventID::LAUNCH_VIRUS:
             o << "MEV_LAUNCH_VIRUS";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_VIRUS_LAUNCHED:
+        case MachineVoiceMailEventID::VIRUS_LAUNCHED:
             o << "MEV_VIRUS_LAUNCHED";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_TREACHERY_TARGET:
+        case MachineVoiceMailEventID::TREACHERY_TARGET:
             o << "MEV_TREACHERY_TARGET";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_BUILDING_COMPLETE:
+        case MachineVoiceMailEventID::BUILDING_COMPLETE:
             o << "MEV_BUILDING_COMPLETE";
 			break;
-		case MachLogMachineVoiceMailManager:: MEV_AWAITING_NEW_JOB:
+		case MachineVoiceMailEventID::AWAITING_NEW_JOB:
             o << "MEV_AWAITING_NEW_JOB";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_MOVING_TO_NEXT:
+        case MachineVoiceMailEventID::MOVING_TO_NEXT:
             o << "MEV_MOVING_TO_NEXT";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_MOVE_TO_SITE:
+        case MachineVoiceMailEventID::MOVE_TO_SITE:
             o << "MEV_MOVE_TO_SITE";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_BUILDING_CAPTURED:
+        case MachineVoiceMailEventID::BUILDING_CAPTURED:
             o << "MEV_BUILDING_CAPTURED";
             break;
-		case MachLogMachineVoiceMailManager:: MEV_BUILDING_DECONSTRUCTED:
+		case MachineVoiceMailEventID::BUILDING_DECONSTRUCTED:
             o << "MEV_BUILDING_DECONSTRUCTED";
             break;
-        case MachLogMachineVoiceMailManager:: MEV_BUILDING_REPAIRED:
+        case MachineVoiceMailEventID::BUILDING_REPAIRED:
             o << "MEV_BUILDING_REPAIRED";
             break;
 
@@ -175,13 +175,13 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::GRUNT:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_GRUNT_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 							return VID_GRUNT_BUILT0;
-						case MEV_DESTROYED:
+						case MachineVoiceMailEventID::DESTROYED:
 							return VID_GRUNT_DESTROYED;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -193,7 +193,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_GRUNT_NEAR_DEATH3;
 							}
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -201,11 +201,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_GRUNT_CHANGED_RACE1;
 							}
-						case MEV_VIRUS_INFECTED:
+						case MachineVoiceMailEventID::VIRUS_INFECTED:
 							return VID_GRUNT_VIRUS_INFECTED;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							return VID_GRUNT_DAMAGED;
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::TASKED:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -217,7 +217,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_GRUNT_TASKED3;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -229,7 +229,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_GRUNT_MOVING3;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 3 ) )
 							{
 								case 0:
@@ -239,7 +239,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 2:
 									return VID_GRUNT_SELECTED2;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 5 ) )
 							{
 								case 0:
@@ -253,7 +253,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 4:
 									return VID_GRUNT_TARGET_ENEMY4;
 							}
-						case MEV_RECYCLE:
+						case MachineVoiceMailEventID::RECYCLE:
 							return VID_GRUNT_RECYCLE;
 
 						DEFAULT_ASSERT_BAD_CASE( id );
@@ -262,13 +262,13 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::ASSASSIN:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_ASSASSIN_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 							return VID_ASSASSIN_BUILT;
-						case MEV_DESTROYED:
+						case MachineVoiceMailEventID::DESTROYED:
 							return VID_ASSASSIN_DESTROYED;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -276,7 +276,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_ASSASSIN_NEAR_DEATH1;
 							}
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -284,11 +284,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_ASSASSIN_CHANGED_RACE1;
 							}
-						case MEV_VIRUS_INFECTED:
+						case MachineVoiceMailEventID::VIRUS_INFECTED:
 							return VID_ASSASSIN_VIRUS_INFECTED;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							return VID_ASSASSIN_DAMAGED;
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::TASKED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -296,7 +296,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_ASSASSIN_TASKED1;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -304,7 +304,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_ASSASSIN_MOVING1;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 3 ) )
 							{
 								case 0:
@@ -314,7 +314,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 2:
 									return VID_ASSASSIN_SELECTED2;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 3 ) )
 							{
 								case 0:
@@ -324,7 +324,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 2:
 									return VID_ASSASSIN_TARGET_ENEMY2;
 							}
-						case MEV_RECYCLE:
+						case MachineVoiceMailEventID::RECYCLE:
 							return VID_ASSASSIN_RECYCLE;
 
 						DEFAULT_ASSERT_BAD_CASE( id );
@@ -333,15 +333,15 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::KNIGHT:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_KNIGHT_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 							return VID_KNIGHT_BUILT;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							return VID_KNIGHT_NEAR_DEATH;
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							return VID_KNIGHT_CHANGED_RACE;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -349,8 +349,8 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_KNIGHT_DAMAGED1;
 							}
-						case MEV_TASKED:
-						case MEV_RECYCLE:
+						case MachineVoiceMailEventID::TASKED:
+						case MachineVoiceMailEventID::RECYCLE:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -358,7 +358,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_KNIGHT_TASKED1;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -370,7 +370,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_KNIGHT_MOVING3;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -378,7 +378,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_KNIGHT_SELECTED1;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -393,9 +393,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::BALLISTA:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_BALLISTA_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 						{
 							ASSERT( actorId != 0, "Wasn't passed an actor id!" );
 							ASSERT( MachLogRaces::instance().actorExists( actorId ), "That actor doesn't exist!" );
@@ -418,11 +418,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								return VID_BALLISTA_GOLIATH_BUILT;
 							}
 						}
-						case MEV_DESTROYED:
+						case MachineVoiceMailEventID::DESTROYED:
 							return VID_BALLISTA_DESTROYED;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							return VID_BALLISTA_NEAR_DEATH;
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -430,11 +430,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_BALLISTA_CHANGED_RACE1;
 							}
-						case MEV_VIRUS_INFECTED:
+						case MachineVoiceMailEventID::VIRUS_INFECTED:
 							return VID_BALLISTA_VIRUS_INFECTED;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							return VID_BALLISTA_DAMAGED;
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::TASKED:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -446,7 +446,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_BALLISTA_TASKED3;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 3 ) )
 							{
 								case 0:
@@ -456,7 +456,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 2:
 									return VID_BALLISTA_MOVING2;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -464,7 +464,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_BALLISTA_SELECTED1;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -476,7 +476,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_BALLISTA_TARGET_ENEMY3;
 							}
-						case MEV_RECYCLE:
+						case MachineVoiceMailEventID::RECYCLE:
 							return VID_BALLISTA_RECYCLE;
 
 						DEFAULT_ASSERT_BAD_CASE( id );
@@ -486,13 +486,13 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::NINJA:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_NINJA_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 							return VID_NINJA_BUILT;
-						case MEV_DESTROYED:
+						case MachineVoiceMailEventID::DESTROYED:
 							return VID_NINJA_DESTROYED;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -500,13 +500,13 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_NINJA_NEAR_DEATH1;
 							}
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							return VID_NINJA_CHANGED_RACE;
-						case MEV_VIRUS_INFECTED:
+						case MachineVoiceMailEventID::VIRUS_INFECTED:
 							break;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							return VID_NINJA_DAMAGED;
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::TASKED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -514,7 +514,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_NINJA_TASKED1;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 3 ) )
 							{
 								case 0:
@@ -524,7 +524,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 2:
 									return VID_NINJA_MOVING2;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 3 ) )
 							{
 								case 0:
@@ -534,7 +534,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 2:
 									return VID_NINJA_SELECTED2;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -546,7 +546,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_NINJA_TARGET_ENEMY3;
 							}
-						case MEV_RECYCLE:
+						case MachineVoiceMailEventID::RECYCLE:
 							return VID_NINJA_RECYCLE;
 
 						DEFAULT_ASSERT_BAD_CASE( id );
@@ -561,9 +561,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::BOSS:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_BOSS_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 						{
 							ASSERT( actorId != 0, "Wasn't passed an actor id!" );
 							ASSERT( MachLogRaces::instance().actorExists( actorId ), "That actor doesn't exist!" );
@@ -576,7 +576,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 							else
 								return VID_BOSS_WASP_BUILT;
 						}
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -584,9 +584,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_BOSS_NEAR_DEATH1;
 							}
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							return VID_BOSS_CHANGED_RACE;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -594,8 +594,8 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_BOSS_DAMAGED1;
 							}
-						case MEV_RECYCLE:
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::RECYCLE:
+						case MachineVoiceMailEventID::TASKED:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -607,7 +607,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_BOSS_TASKED3;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 4 ) )
 							{
 								case 0:
@@ -619,7 +619,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 3:
 									return VID_BOSS_MOVING3;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -627,7 +627,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_BOSS_SELECTED1;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -642,13 +642,13 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::OVERSEER:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_OVERSEER_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 							return VID_OVERSEER_BUILT;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							return VID_OVERSEER_NEAR_DEATH;
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -656,13 +656,13 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_OVERSEER_CHANGED_RACE1;
 							}
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							return VID_OVERSEER_DAMAGED;
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::TASKED:
 							return VID_OVERSEER_TASKED;
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							return VID_OVERSEER_MOVING;
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -670,7 +670,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_OVERSEER_SELECTED1;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -678,11 +678,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_OVERSEER_TARGET_ENEMY1;
 							}
-						case MEV_RECYCLE:
+						case MachineVoiceMailEventID::RECYCLE:
 							return VID_OVERSEER_MOVING;
-						case MEV_HEAL_TARGET:
+						case MachineVoiceMailEventID::HEAL_TARGET:
 							return VID_OVERSEER_HEAL_TARGET;
-						case MEV_HEALING_COMPLETE:
+						case MachineVoiceMailEventID::HEALING_COMPLETE:
 							return VID_OVERSEER_HEALING_COMPLETE;
 
 						DEFAULT_ASSERT_BAD_CASE( id );
@@ -691,18 +691,18 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 				case MachPhys::COMMANDER:
 					switch( id )
 					{
-						case MEV_SELF_DESTRUCT:
+						case MachineVoiceMailEventID::SELF_DESTRUCT:
 							return VID_COMMANDER_SELF_DESTRUCT;
-						case MEV_BUILT:
+						case MachineVoiceMailEventID::BUILT:
 							return VID_COMMANDER_BUILT;
-						case MEV_NEAR_DEATH:
+						case MachineVoiceMailEventID::NEAR_DEATH:
 							return VID_COMMANDER_NEAR_DEATH;
-						case MEV_CHANGED_RACE:
+						case MachineVoiceMailEventID::CHANGED_RACE:
 							return VID_COMMANDER_CHANGED_RACE;
-						case MEV_DAMAGED:
+						case MachineVoiceMailEventID::DAMAGED:
 							return VID_COMMANDER_DAMAGED;
-						case MEV_RECYCLE:
-						case MEV_TASKED:
+						case MachineVoiceMailEventID::RECYCLE:
+						case MachineVoiceMailEventID::TASKED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -710,7 +710,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_COMMANDER_TASKED1;
 							}
-						case MEV_MOVING:
+						case MachineVoiceMailEventID::MOVING:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -718,7 +718,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_COMMANDER_MOVING1;
 							}
-						case MEV_SELECTED:
+						case MachineVoiceMailEventID::SELECTED:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -726,7 +726,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 								case 1:
 									return VID_COMMANDER_SELECTED1;
 							}
-						case MEV_TARGET_ENEMY:
+						case MachineVoiceMailEventID::TARGET_ENEMY:
 							switch( MachPhysRandom::randomInt( 0, 2 ) )
 							{
 								case 0:
@@ -735,11 +735,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 									return VID_COMMANDER_TARGET_ENEMY1;
 							}
 
-						case MEV_HEAL_TARGET:
+						case MachineVoiceMailEventID::HEAL_TARGET:
 							return VID_COMMANDER_HEAL_TARGET;
-						case MEV_HEALING_COMPLETE:
+						case MachineVoiceMailEventID::HEALING_COMPLETE:
 							return VID_COMMANDER_HEALING_COMPLETE;
-						case MEV_TREACHERY_TARGET:
+						case MachineVoiceMailEventID::TREACHERY_TARGET:
 							return VID_COMMANDER_TREACHERY_TARGET;
 
 						DEFAULT_ASSERT_BAD_CASE( id );
@@ -750,9 +750,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 		case MachLog::TECHNICIAN:
 			switch( id )
 			{
-				case MEV_SELF_DESTRUCT:
+				case MachineVoiceMailEventID::SELF_DESTRUCT:
 					return VID_TECHNICIAN_SELF_DESTRUCT;
-				case MEV_BUILT:
+				case MachineVoiceMailEventID::BUILT:
 					{
 						ASSERT( actorId != 0, "Wasn't passed an actor id!" );
 						ASSERT( MachLogRaces::instance().actorExists( actorId ), "That actor doesn't exist!" );
@@ -772,11 +772,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 							DEFAULT_ASSERT_BAD_CASE( actor.asTechnician().subType() );
 						}
 						}
- 				case MEV_DESTROYED:
+ 				case MachineVoiceMailEventID::DESTROYED:
 					return VID_TECHNICIAN_DESTROYED;
-				case MEV_NEAR_DEATH:
+				case MachineVoiceMailEventID::NEAR_DEATH:
 					return VID_TECHNICIAN_NEAR_DEATH;
-				case MEV_CHANGED_RACE:
+				case MachineVoiceMailEventID::CHANGED_RACE:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -784,9 +784,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_TECHNICIAN_CHANGED_RACE1;
 					}
-				case MEV_VIRUS_INFECTED:
+				case MachineVoiceMailEventID::VIRUS_INFECTED:
 					return VID_TECHNICIAN_VIRUS_INFECTED;
-				case MEV_DAMAGED:
+				case MachineVoiceMailEventID::DAMAGED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -794,7 +794,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_TECHNICIAN_DESTROYED;
 					}
-				case MEV_TASKED:
+				case MachineVoiceMailEventID::TASKED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -802,7 +802,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_TECHNICIAN_TASKED1;
 					}
-				case MEV_MOVING:
+				case MachineVoiceMailEventID::MOVING:
 					switch( MachPhysRandom::randomInt( 0, 3 ) )
 					{
 						case 0:
@@ -813,7 +813,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 							return VID_TECHNICIAN_MOVING2;
 
 					}
-				case MEV_SELECTED:
+				case MachineVoiceMailEventID::SELECTED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -822,7 +822,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 							return VID_TECHNICIAN_SELECTED1;
 
 					}
-				case MEV_RECYCLE:
+				case MachineVoiceMailEventID::RECYCLE:
 					return VID_TECHNICIAN_RECYCLE;
 
 				DEFAULT_ASSERT_BAD_CASE( id );
@@ -831,15 +831,15 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 		case MachLog::GEO_LOCATOR:
 			switch( id )
 			{
-				case MEV_SELF_DESTRUCT:
+				case MachineVoiceMailEventID::SELF_DESTRUCT:
 					return VID_GEO_SELF_DESTRUCT;
-				case MEV_BUILT:
+				case MachineVoiceMailEventID::BUILT:
 					return VID_GEO_BUILT;
-				case MEV_DESTROYED:
+				case MachineVoiceMailEventID::DESTROYED:
 					return VID_GEO_DESTROYED;
-				case MEV_NEAR_DEATH:
+				case MachineVoiceMailEventID::NEAR_DEATH:
 					return VID_GEO_NEAR_DEATH;
-				case MEV_CHANGED_RACE:
+				case MachineVoiceMailEventID::CHANGED_RACE:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -847,11 +847,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_GEO_CHANGED_RACE1;
 					}
-				case MEV_VIRUS_INFECTED:
+				case MachineVoiceMailEventID::VIRUS_INFECTED:
 					return VID_GEO_VIRUS_INFECTED;
-				case MEV_DAMAGED:
+				case MachineVoiceMailEventID::DAMAGED:
 					return VID_GEO_DAMAGED;
-				case MEV_TASKED:
+				case MachineVoiceMailEventID::TASKED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -859,7 +859,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_GEO_TASKED1;
 					}
-				case MEV_MOVING:
+				case MachineVoiceMailEventID::MOVING:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -867,7 +867,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_GEO_MOVING1;
 					}
-				case MEV_SELECTED:
+				case MachineVoiceMailEventID::SELECTED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -875,7 +875,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_GEO_SELECTED1;
 					}
-				case MEV_RECYCLE:
+				case MachineVoiceMailEventID::RECYCLE:
 					return VID_GEO_RECYCLE;
 
 				DEFAULT_ASSERT_BAD_CASE( id );
@@ -884,23 +884,23 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 		case MachLog::SPY_LOCATOR:
 			switch( id )
 			{
-				case MEV_SELF_DESTRUCT:
+				case MachineVoiceMailEventID::SELF_DESTRUCT:
 					return VID_SPY_SELF_DESTRUCT;
-				case MEV_BUILT:
+				case MachineVoiceMailEventID::BUILT:
 					return VID_SPY_BUILT;
-				case MEV_DESTROYED:
+				case MachineVoiceMailEventID::DESTROYED:
 					return VID_SPY_DESTROYED;
-				case MEV_NEAR_DEATH:
+				case MachineVoiceMailEventID::NEAR_DEATH:
 					return VID_SPY_NEAR_DEATH;
-				case MEV_CHANGED_RACE:
+				case MachineVoiceMailEventID::CHANGED_RACE:
 					return VID_SPY_CHANGED_RACE;
-				case MEV_VIRUS_INFECTED:
+				case MachineVoiceMailEventID::VIRUS_INFECTED:
 					return VID_SPY_VIRUS_INFECTED;
-				case MEV_DAMAGED:
+				case MachineVoiceMailEventID::DAMAGED:
 					return VID_SPY_DAMAGED;
-				case MEV_TASKED:
+				case MachineVoiceMailEventID::TASKED:
 					return VID_SPY_TASKED0;
-				case MEV_MOVING:
+				case MachineVoiceMailEventID::MOVING:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -908,9 +908,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_SPY_MOVING1;
 					}
-				case MEV_SELECTED:
+				case MachineVoiceMailEventID::SELECTED:
 					return VID_SPY_SELECTED0;
-				case MEV_RECYCLE:
+				case MachineVoiceMailEventID::RECYCLE:
 					return VID_SPY_RECYCLE;
 
 				DEFAULT_ASSERT_BAD_CASE( id );
@@ -922,9 +922,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 		case MachLog::CONSTRUCTOR:
 			switch( id )
 			{
-				case MEV_SELF_DESTRUCT:
+				case MachineVoiceMailEventID::SELF_DESTRUCT:
 					return VID_DOZER_SELF_DESTRUCT;
-				case MEV_BUILT:
+				case MachineVoiceMailEventID::BUILT:
 					switch( subType )
 					{
 						case MachPhys::DOZER:
@@ -947,11 +947,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 
 						DEFAULT_ASSERT_BAD_CASE( subType );
 					}
-				case MEV_DESTROYED:
+				case MachineVoiceMailEventID::DESTROYED:
 					return VID_DOZER_DESTROYED;
-				case MEV_NEAR_DEATH:
+				case MachineVoiceMailEventID::NEAR_DEATH:
 					return VID_DOZER_NEAR_DEATH;
-				case MEV_CHANGED_RACE:
+				case MachineVoiceMailEventID::CHANGED_RACE:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -959,11 +959,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_DOZER_CHANGED_RACE1;
 					}
-				case MEV_VIRUS_INFECTED:
+				case MachineVoiceMailEventID::VIRUS_INFECTED:
 					return VID_DOZER_VIRUS_INFECTED;
-				case MEV_DAMAGED:
+				case MachineVoiceMailEventID::DAMAGED:
 					return VID_DOZER_DAMAGED;
-				case MEV_TASKED:
+				case MachineVoiceMailEventID::TASKED:
 					switch( MachPhysRandom::randomInt( 0, 3 ) )
 					{
 						case 0:
@@ -973,7 +973,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 2:
 							return VID_DOZER_TASKED2;
 					}
-				case MEV_MOVING:
+				case MachineVoiceMailEventID::MOVING:
 					switch( MachPhysRandom::randomInt( 0, 3 ) )
 					{
 						case 0:
@@ -983,7 +983,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 2:
 							return VID_DOZER_MOVING2;
 					}
-				case MEV_SELECTED:
+				case MachineVoiceMailEventID::SELECTED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -991,21 +991,21 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_DOZER_SELECTED1;
 					}
-				case MEV_RECYCLE:
+				case MachineVoiceMailEventID::RECYCLE:
 					return VID_DOZER_RECYCLE;
-				case MEV_BUILDING_COMPLETE:
+				case MachineVoiceMailEventID::BUILDING_COMPLETE:
 					return VID_DOZER_BUILDING_COMPLETE;
-				case MEV_AWAITING_NEW_JOB:
+				case MachineVoiceMailEventID::AWAITING_NEW_JOB:
 					return VID_DOZER_AWAITING_NEW_JOB;
-				case MEV_MOVING_TO_NEXT:
+				case MachineVoiceMailEventID::MOVING_TO_NEXT:
 					return VID_DOZER_MOVING_TO_NEXT;
-				case MEV_MOVE_TO_SITE:
+				case MachineVoiceMailEventID::MOVE_TO_SITE:
 					return VID_DOZER_MOVE_TO_SITE;
-				case MEV_BUILDING_CAPTURED:
+				case MachineVoiceMailEventID::BUILDING_CAPTURED:
 					return VID_DOZER_BUILDING_CAPTURED;
-				case MEV_BUILDING_DECONSTRUCTED:
+				case MachineVoiceMailEventID::BUILDING_DECONSTRUCTED:
 					return VID_DOZER_BUILDING_DECONSTRUCTED;
-				case MEV_BUILDING_REPAIRED:
+				case MachineVoiceMailEventID::BUILDING_REPAIRED:
 					return  VID_DOZER_BUILDING_REPAIRED;
 
 				DEFAULT_ASSERT_BAD_CASE( id );
@@ -1014,9 +1014,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 		case MachLog::RESOURCE_CARRIER:
 			switch( id )
 			{
-				case MEV_SELF_DESTRUCT:
+				case MachineVoiceMailEventID::SELF_DESTRUCT:
 					return VID_RESOURCE_CARRIER_SELF_DESTRUCT;
-				case MEV_BUILT:
+				case MachineVoiceMailEventID::BUILT:
 				{
 					ASSERT( actorId != 0, "Wasn't passed an actor id!" );
 					ASSERT( MachLogRaces::instance().actorExists( actorId ), "That actor doesn't exist!" );
@@ -1029,9 +1029,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 					else
 						return VID_RESOURCE_CARRIER_BUILT;
 				}
-				case MEV_NEAR_DEATH:
+				case MachineVoiceMailEventID::NEAR_DEATH:
 					return VID_RESOURCE_CARRIER_NEAR_DEATH;
-				case MEV_CHANGED_RACE:
+				case MachineVoiceMailEventID::CHANGED_RACE:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -1039,10 +1039,10 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_RESOURCE_CARRIER_CHANGED_RACE1;
 					}
-				case MEV_DAMAGED:
+				case MachineVoiceMailEventID::DAMAGED:
 					return VID_RESOURCE_CARRIER_DAMAGED;
-				case MEV_RECYCLE:
-				case MEV_TASKED:
+				case MachineVoiceMailEventID::RECYCLE:
+				case MachineVoiceMailEventID::TASKED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -1050,7 +1050,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_RESOURCE_CARRIER_TASKED1;
 					}
-				case MEV_MOVING:
+				case MachineVoiceMailEventID::MOVING:
 					switch( MachPhysRandom::randomInt( 0, 3 ) )
 					{
 						case 0:
@@ -1060,7 +1060,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 2:
 							return VID_RESOURCE_CARRIER_MOVING2;
 					}
-				case MEV_SELECTED:
+				case MachineVoiceMailEventID::SELECTED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -1075,15 +1075,15 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 		case MachLog::APC:
 			switch( id )
 			{
-				case MEV_SELF_DESTRUCT:
+				case MachineVoiceMailEventID::SELF_DESTRUCT:
 					return VID_APC_SELF_DESTRUCT;
-				case MEV_BUILT:
+				case MachineVoiceMailEventID::BUILT:
 					return VID_APC_BUILT;
-				case MEV_DESTROYED:
+				case MachineVoiceMailEventID::DESTROYED:
 					return VID_APC_DESTROYED;
-				case MEV_NEAR_DEATH:
+				case MachineVoiceMailEventID::NEAR_DEATH:
 					return VID_APC_NEAR_DEATH;
-				case MEV_CHANGED_RACE:
+				case MachineVoiceMailEventID::CHANGED_RACE:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -1091,11 +1091,11 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_APC_CHANGED_RACE1;
 					}
-				case MEV_VIRUS_INFECTED:
+				case MachineVoiceMailEventID::VIRUS_INFECTED:
 					return VID_APC_VIRUS_INFECTED;
-				case MEV_DAMAGED:
+				case MachineVoiceMailEventID::DAMAGED:
 					return VID_APC_DAMAGED;
-				case MEV_TASKED:
+				case MachineVoiceMailEventID::TASKED:
 					switch( MachPhysRandom::randomInt( 0, 3 ) )
 					{
 						case 0:
@@ -1105,7 +1105,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 2:
 							return VID_APC_TASKED2;
 					}
-				case MEV_MOVING:
+				case MachineVoiceMailEventID::MOVING:
 					switch( MachPhysRandom::randomInt( 0, 3 ) )
 					{
 						case 0:
@@ -1115,7 +1115,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 2:
 							return VID_APC_MOVING2;
 					}
-				case MEV_SELECTED:
+				case MachineVoiceMailEventID::SELECTED:
 					switch( MachPhysRandom::randomInt( 0, 2 ) )
 					{
 						case 0:
@@ -1123,7 +1123,7 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent( MachLog::
 						case 1:
 							return VID_APC_SELECTED1;
 					}
-				case MEV_RECYCLE:
+				case MachineVoiceMailEventID::RECYCLE:
 					return VID_APC_RECYCLE;
 
 				DEFAULT_ASSERT_BAD_CASE( id );

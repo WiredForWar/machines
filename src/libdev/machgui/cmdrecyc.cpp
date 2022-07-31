@@ -116,7 +116,7 @@ bool MachGuiRecycleCommand::doApply( MachActor* pActor, string* )
 
 	if( not hasPlayedVoiceMail() )
 	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_RECYCLE );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::RECYCLE );
 		hasPlayedVoiceMail( true );
 	}
 

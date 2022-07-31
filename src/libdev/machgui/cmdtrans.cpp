@@ -128,7 +128,7 @@ bool MachGuiTransportCommand::doApply( MachActor* pActor, string* )
 		// instead( "OK." "Alright!" etc.
 
 		if( pActor->asResourceCarrier().isTransporting() )
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_TASKED );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TASKED );
 		else
 			MachLogVoiceMailManager::instance().postNewMail( VID_RESOURCE_CARRIER_TRANSPORTING, pActor->id(), pActor->race() );
 

@@ -164,7 +164,7 @@ bool MachGuiDeconstructCommand::doApply( MachActor* pActor, string* )
 
 	if( not hasPlayedVoiceMail() )
 	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_MOVE_TO_SITE );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVE_TO_SITE );
 		hasPlayedVoiceMail( true );
 	}
 
@@ -236,7 +236,7 @@ bool MachGuiDeconstructCommand::doAdminApply( MachLogAdministrator* pAdministrat
 	ASSERT( found, "No constructor found in corral!" );
 
 	// give out voicemail
-	MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstConstructor, MachLogMachineVoiceMailManager::MEV_MOVE_TO_SITE );
+	MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE );
 
 
 

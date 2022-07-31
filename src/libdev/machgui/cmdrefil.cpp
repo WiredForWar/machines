@@ -92,7 +92,7 @@ bool MachGuiRefillLandMineCommand::doApply( MachActor* pActor, string* /*pReason
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_TASKED );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TASKED );
 			hasPlayedVoiceMail( true );
 		}
 

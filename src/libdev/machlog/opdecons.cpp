@@ -119,12 +119,12 @@ PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
 	//now, if that caused the destruction of the thing, let's have a notification e-mail
 	if( pConstron->hpRatio() <= 0 )
 	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachLogMachineVoiceMailManager::MEV_BUILDING_DECONSTRUCTED );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachineVoiceMailEventID::BUILDING_DECONSTRUCTED );
 
 		// post "awaiting new job" voicemail if no more operations on the queue
 
 		if( not pConstructorMachine->isDoingSuperConstruct() )
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachLogMachineVoiceMailManager::MEV_AWAITING_NEW_JOB );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachineVoiceMailEventID::AWAITING_NEW_JOB );
 
 	}
 

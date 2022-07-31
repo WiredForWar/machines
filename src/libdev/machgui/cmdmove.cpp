@@ -200,7 +200,7 @@ bool MachGuiMoveCommand::applySimpleMove( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_MOVING );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
 			hasPlayedVoiceMail( true );
 		}
 	}
@@ -275,7 +275,7 @@ bool MachGuiMoveCommand::applyEnterBuilding( MachActor* pActor, string* pReason 
 			{
 				if( not hasPlayedVoiceMail() )
 				{
-					MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_MOVING );
+					MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
 					hasPlayedVoiceMail( true );
 				}
 
@@ -312,7 +312,7 @@ bool MachGuiMoveCommand::applyEnterAPC( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_MOVING );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
 			hasPlayedVoiceMail( true );
 		}
 
@@ -345,7 +345,7 @@ bool MachGuiMoveCommand::applyFollowMachine( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachLogMachineVoiceMailManager::MEV_MOVING );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
 			hasPlayedVoiceMail( true );
 		}
 
@@ -541,7 +541,7 @@ bool MachGuiMoveCommand::doAdminApply( MachLogAdministrator* pAdministrator, str
 	        _NEW( MachLogAdminMoveToOperation( pAdministrator, path, pathFindingPriority() ) );
 
 		// give voicemail
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pAdministrator, MachLogMachineVoiceMailManager::MEV_MOVING );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pAdministrator, MachineVoiceMailEventID::MOVING );
 
         // The operation is now given to the actor by the group move code
         add( pAdministrator, pOp );
@@ -607,7 +607,7 @@ bool MachGuiMoveCommand::doGroupApply( const Actors& actors, string* pReason )
 		if( canApply and pMachine )
 		{
 			// give voicemail
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pMachine, MachLogMachineVoiceMailManager::MEV_MOVING );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pMachine, MachineVoiceMailEventID::MOVING );
 		}
 	}
 
