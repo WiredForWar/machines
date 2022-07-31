@@ -1242,18 +1242,19 @@ void MachLogConstruction::dealWithHitVoiceMail()
 					if( hpRatio() < 0.10 )
 					{
 						// give voicemail to warn that damage is dangerously high, and, err, we're evacuating the building (??)
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_POD_CRITICAL_DAMAGE, /*id(),*/ race() );												   							}
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_POD_CRITICAL_DAMAGE, position(), race() );
+					}
 					else
 					{
 						// just report on having been hit
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_POD_ATTACKED, /*id(),*/ race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_POD_ATTACKED, position(), race() );
 					}
 					break;
 
 				case MachLog::MISSILE_EMPLACEMENT:
 					if( asMissileEmplacement().subType() != MachPhys::ICBM )
 					{
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_TURRET_ATTACKED, race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_TURRET_ATTACKED, position(), race() );
 						break;
 					}
 					// note drop through if we're an ICBM silo.
@@ -1263,12 +1264,12 @@ void MachLogConstruction::dealWithHitVoiceMail()
 					if( hpRatio() < 0.10 and not isEmpty() )
 					{
 						// give voicemail to warn that damage is dangerously high, and, err, we're evacuating the building (??)
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_BUILDING_CRITICAL, /*id(),*/ race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_BUILDING_CRITICAL, position(), race() );
 					}
 					else
 					{
 						// just report on having been hit
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_CONSTRUCTION_ATTACKED, /*id(),*/ race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_CONSTRUCTION_ATTACKED, position(), race() );
 					}
 			}
 
@@ -1282,16 +1283,16 @@ void MachLogConstruction::dealWithHitVoiceMail()
 				switch( level() )
 				{
 					case 1:
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_BEACON_DESTROYED, /*id(),*/ race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_BEACON_DESTROYED, position(), race() );
 						break;
 					case 3:
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_UPLINK_DESTROYED, /*id(),*/ race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_UPLINK_DESTROYED, position(), race() );
 						break;
 					DEFAULT_ASSERT_BAD_CASE( level() );
 				}
 				break;
 			case MachLog::POD:
-				MachLogVoiceMailManager::instance().postNewMail( VID_POD_POD_DESTROYED, /*id(),*/ race() );
+				MachLogVoiceMailManager::instance().postNewMail( VID_POD_POD_DESTROYED, position(), race() );
 				break;
 
 			case MachLog::MISSILE_EMPLACEMENT:
@@ -1299,7 +1300,7 @@ void MachLogConstruction::dealWithHitVoiceMail()
 					// only drop through if we're an ICBM silo.
 					break;
 			default:
-				MachLogVoiceMailManager::instance().postNewMail( VID_POD_BUILDING_DESTROYED, /*id(),*/ race() );
+				MachLogVoiceMailManager::instance().postNewMail( VID_POD_BUILDING_DESTROYED, position(), race() );
 		}
 }
 

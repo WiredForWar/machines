@@ -183,7 +183,7 @@ PhysRelativeTime MachLogPod::update( const PhysRelativeTime& alteredMaxCPUTime, 
 			{
 				if( not ionCannonCharged_ )	// i.e. it wasn't charged last update time
 					// aha! Ion cannon has come online!
-					MachLogVoiceMailManager::instance().postNewMail( VID_POD_ION_CANNON_CHARGED, /*id(),*/ myRace );
+					MachLogVoiceMailManager::instance().postNewMail( VID_POD_ION_CANNON_CHARGED, position(), myRace );
 
 				ionCannonCharged_ = true;
 			}
@@ -358,7 +358,7 @@ void MachLogPod::ionCannonAcquiredForFirstTime()
 	CB_MachLogPod_DEPIMPL();
 
 	MachPhys::Race podRace = race();
-	MachLogVoiceMailManager::instance().postNewMail( VID_POD_ION_CANNON_ACQUIRED, /*id(),*/ podRace );
+	MachLogVoiceMailManager::instance().postNewMail( VID_POD_ION_CANNON_ACQUIRED, position(), podRace );
 
 	MachLogRaces::instance().builtIonCannon( podRace );
 

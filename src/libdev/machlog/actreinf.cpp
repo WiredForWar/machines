@@ -107,7 +107,7 @@ void MachLogReinforcementsAction::doAction()
 	if( giveVoiceMail_ )
 	{
 		// give voicemail announcing arrival into game world
-		MachLogVoiceMailManager::instance().postNewMail( VID_POD_REINFORCEMENTS_ONLINE, race_ );
+		MachLogVoiceMailManager::instance().postNewMail( VID_POD_REINFORCEMENTS_ONLINE, dest_, race_ );
 	}
 }
 

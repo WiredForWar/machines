@@ -172,7 +172,7 @@ PhysRelativeTime MachLogMissileEmplacement::update( const PhysRelativeTime& alte
 						domeOpen_ = true;
 
 						// inform owning race of this weapon's availability.
-						MachLogVoiceMailManager::instance().postNewMail( VID_POD_NUKE_READY, /*id(),*/  race() );
+						MachLogVoiceMailManager::instance().postNewMail( VID_POD_NUKE_READY, position(), race() );
 					}
 					else
 					{
