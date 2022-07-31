@@ -427,7 +427,14 @@ void MachCameras::updateCameras()
 {
 	if ( pFollowTarget_ )
 	{
-		internalLookAt( *pFollowTarget_ );
+		if (pFollowTarget_->selectionState() != MachLog::SELECTED)
+		{
+			resetFollowTarget();
+		}
+		else
+		{
+			internalLookAt( *pFollowTarget_ );
+		}
 	}
 
 	if ( isGroundCameraActive() )
