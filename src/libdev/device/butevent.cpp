@@ -18,55 +18,21 @@ DevButtonEventT<DevTimeDep>::DevButtonEventT
 	ushort repeat,
 	char print
 ):
+	coords_(MexPoint2d(x,y)),
 	code_(code),
     action_(action),
+	time_(time),
+	repeatCount_(repeat),
+	printable_(print),
 	press_(action == PRESS),
 	previous_( prev ? 1 : 0 ),
 	shift_(shift),
-	alt_(alt),
 	ctrl_(ctrl),
-	coords_(MexPoint2d(x,y)),
-	repeatCount_(repeat),
-	printable_(print),
-	time_(time)
+	alt_(alt)
 {
     //  Removed because of the recording
 //	PRE(time <= DevTime::instance().time());
 }
-
-// This ctor is only supplied because the template instantiation of list
-// requires it.  If one were actually to construct a default object, it
-// would fail lots of assertions because the MAX_CODE value is not allowed.
-template<typename DevTimeDep>
-DevButtonEventT<DevTimeDep>::DevButtonEventT():
-	code_(DevKey::MAX_CODE),
-    action_(PRESS),
-	press_(PRESS),
-	previous_(0),
-	shift_(0),
-	alt_(0),
-	ctrl_(0),
-	coords_(MexPoint2d()),
-	repeatCount_(0),
-	printable_(0),
-	time_(0)
-{
-}
-
-template<typename DevTimeDep>
-DevButtonEventT<DevTimeDep>::DevButtonEventT(const DevButtonEventT& b):
-	code_(b.code_),
-    action_(b.action_),
-	press_(b.press_),
-	previous_(b.previous_),
-	shift_(b.shift_),
-	alt_(b.alt_),
-	ctrl_(b.ctrl_),
-	coords_(b.coords_),
-	repeatCount_(b.repeatCount_),
-	printable_(b.printable_),
-	time_(b.time_)
-{}
 
 template<typename DevTimeDep>
 DevButtonEventT<DevTimeDep>& DevButtonEventT<DevTimeDep>::operator=(const DevButtonEventT& b)

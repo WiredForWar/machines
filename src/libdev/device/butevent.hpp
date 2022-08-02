@@ -27,13 +27,13 @@ public:
 
 	// There's no useful reason for creating default events, but ctl_list
 	// appears to require a default ctor.
-    DevButtonEventT();
+    DevButtonEventT() = default;
 
     // Repeat count NEEDS to be >= 1
     DevButtonEventT(ScanCode, Action, bool previous, bool shift, bool ctrl, bool alt,
 				   double time, int x, int y, ushort repeat, char print=0);
 
-    DevButtonEventT(const DevButtonEventT&);
+    DevButtonEventT(const DevButtonEventT&) = default;
     DevButtonEventT& operator=(const DevButtonEventT&);
 
 	// True if this DevButtonEvent was created as a char event ( i.e. via a WM_CHAR message ).
@@ -99,16 +99,19 @@ protected:
 
 private:
 	Coord		coords_;
-	ScanCode	code_;
-    Action      action_;
+	ScanCode	code_ = DevKey::MAX_CODE;
+    Action      action_ = PRESS;
 
 	// Space is at a premium because these objects are copied by value.  Hence,
 	// we use only float precision for time and bitfields for all the bools.
-	float		time_;
-	ushort		repeatCount_;
-	char		printable_;
-	uchar		press_:1, previous_:1, shift_:1, ctrl_:1, alt_:1;
-//	bool		press_, previous_, shift_, ctrl_, alt_;
+	float		time_ = 0;
+	ushort		repeatCount_ = 0;
+	char		printable_ = 0;
+	bool press_ = false;
+    bool previous_ = false;
+    bool shift_ = false;
+    bool ctrl_ = false;
+    bool alt_ = false;
 };
 template<typename DevTimeDep>
 ostream& operator<<(ostream& o, const DevButtonEventT<DevTimeDep>&);
