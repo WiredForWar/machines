@@ -78,11 +78,10 @@ set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
 
 # Includes
 set(LOCAL_INCLUDES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include/libdev
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include/projects
     ${CMAKE_CURRENT_SOURCE_DIR}/../external/libsmack
     ${CMAKE_CURRENT_SOURCE_DIR}/../external
     ${CMAKE_CURRENT_SOURCE_DIR}/libdev
+    ${CMAKE_CURRENT_SOURCE_DIR}/projects
 )
 
 set(SYSTEM_INCLUDES
