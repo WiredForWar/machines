@@ -36,7 +36,6 @@
 #include "machphys/pulsplat.hpp"
 #include "machphys/pulseblb.hpp"
 #include "machphys/sparks.hpp"
-#include "machphys/scorch.hpp"
 #include "machphys/splat.hpp"
 #include "machphys/shockwav.hpp"
 #include "machphys/nukewave.hpp"
