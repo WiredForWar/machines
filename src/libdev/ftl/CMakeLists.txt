@@ -15,4 +15,5 @@ set(FTL_SOURCES
     seripmap.itp
 )
 
-add_library(ftl INTERFACE ${FTL_SOURCES})
+add_library(ftl INTERFACE)
+target_sources(ftl INTERFACE ${FTL_SOURCES})
