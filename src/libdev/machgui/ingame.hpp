@@ -100,6 +100,8 @@ public:
     //Deselect all currently selected actors
     void deselectAll();
 
+    Actors getVisibleActors() const;
+
     //The list of all available commands
     const Commands& allCommands() const;
 

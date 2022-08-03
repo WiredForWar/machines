@@ -130,6 +130,7 @@ public:
 	MachPhys::HitPointUnits maximumhp() const;
 	MATHEX_SCALAR hpRatio() const;
 
+	static bool IsSameActorType( const MachActor * pActor1, const MachActor * pActor2 );
 
 	///////////////////////////////
 	friend std::ostream& operator<<( std::ostream&, const MachActor& );

@@ -761,6 +761,11 @@ MachLogMachine::Level MachLogMachine::swLevel() const
 bool MachLogMachine::setSquadron( MachLogSquadron* pNewSquadron )
 {
 	CB_DEPIMPL( MachLogSquadron*, pSquadron_ );
+	if( pNewSquadron  == pSquadron_ )
+	{
+		return true;
+	}
+
 	if( pSquadron_ != NULL )
 //		if( MachLogRaces::instance().objectExists( pAdministrator_ ) )
 			pSquadron_->removeFromControl( this );

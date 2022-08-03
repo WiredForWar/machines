@@ -198,6 +198,18 @@ MachGuiSquadronBank::MachGuiSquadronBank( GuiDisplayable* pParent,
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_8, CREATE_SQUAD8, DevKeyToCommand::PRESSED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_9, CREATE_SQUAD9, DevKeyToCommand::PRESSED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_0, CREATE_SQUAD0, DevKeyToCommand::PRESSED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
+
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_1, ADD_TO_SQUAD1, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_2, ADD_TO_SQUAD2, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_3, ADD_TO_SQUAD3, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_4, ADD_TO_SQUAD4, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_5, ADD_TO_SQUAD5, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_6, ADD_TO_SQUAD6, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_7, ADD_TO_SQUAD7, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_8, ADD_TO_SQUAD8, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_9, ADD_TO_SQUAD9, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_0, ADD_TO_SQUAD0, DevKeyToCommand::CTRLKEY_RELEASED, DevKeyToCommand::SHIFTKEY_PRESSED, DevKeyToCommand::ALTKEY_RELEASED ) );
+
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_1, SELECT_SQUAD1, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_2, SELECT_SQUAD2, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
 	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_3, SELECT_SQUAD3, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
@@ -236,6 +248,18 @@ bool MachGuiSquadronBank::processButtonEvent( const DevButtonEvent& buttonEvent 
 			case CREATE_SQUAD9:
 			case CREATE_SQUAD0:
 				createSquad( commandId - CREATE_SQUAD0 );
+				break;
+			case ADD_TO_SQUAD1:
+			case ADD_TO_SQUAD2:
+			case ADD_TO_SQUAD3:
+			case ADD_TO_SQUAD4:
+			case ADD_TO_SQUAD5:
+			case ADD_TO_SQUAD6:
+			case ADD_TO_SQUAD7:
+			case ADD_TO_SQUAD8:
+			case ADD_TO_SQUAD9:
+			case ADD_TO_SQUAD0:
+				addToSquad( commandId - ADD_TO_SQUAD0 );
 				break;
 			case SELECT_SQUAD1:
 			case SELECT_SQUAD2:
@@ -286,6 +310,34 @@ void MachGuiSquadronBank::createSquad( size_t squadIndex )
 	// Dismiss squad menu
     //pInGameScreen_->currentContext( MachGui::MAIN_MENU );
 	
+	// Indicate that any commands should now be applied to this squad
+	pInGameScreen_->applyCommandToSquadron( true );
+
+	update();
+}
+
+void MachGuiSquadronBank::addToSquad(size_t squadIndex)
+{
+	MachLogRaces& races = MachLogRaces::instance();
+	MachPhys::Race race = races.pcController().race();
+
+	// Add the selected items into a squadron.
+	MachLogSquadron* pSquadron = races.squadrons( race )[ squadIndex ];
+	const MachInGameScreen::Actors& members = pInGameScreen_->selectedActors();
+	for ( MachActor* pActor : members )
+	{
+		if ( pActor->objectIsMachine() && pActor->race() == race )
+		{
+			pActor->asMachine().setSquadron( pSquadron );
+		}
+	}
+
+	//Cancel the current command
+	pInGameScreen_->cancelActiveCommand();
+
+	// Dismiss squad menu
+	//pInGameScreen_->currentContext( MachGui::MAIN_MENU );
+
 	// Indicate that any commands should now be applied to this squad
 	pInGameScreen_->applyCommandToSquadron( true );
 

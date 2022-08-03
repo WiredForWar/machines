@@ -75,6 +75,9 @@ public:
     //Ignores actor race in determining result.
     virtual bool actorsCanExecute() const;
 
+    void selectActors( MachActor* pActor, bool ctrlPressed,
+                       bool shiftPressed, bool altPressed );
+
     //True if this is a kind of command that actor can ever execute.
     virtual bool canActorEverExecute( const MachActor& actor ) const;
 
@@ -104,6 +107,8 @@ private:
     //Data members
     //Performs intelligent cursor mapping when cursor is on an actor
     MachGuiIntelligentCursorOnActor* pIntelligentCursorOnActor_;
+    MachActor*pLastSelectedActor_ = nullptr;
+    double actorSelectedTime_ = 0;
 };
 
 

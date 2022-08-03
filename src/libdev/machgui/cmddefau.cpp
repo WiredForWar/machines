@@ -28,6 +28,7 @@
 #include "machgui/cameras.hpp"
 
 #include "machlog/actor.hpp"
+#include "machlog/canattac.hpp"
 #include "machlog/races.hpp"
 #include "machlog/cntrl_pc.hpp"
 #include "machlog/planet.hpp"
@@ -226,21 +227,7 @@ void MachGuiDefaultCommand::pickOnActor
 
         case MachGui::SELECT_CURSOR:
         {
-			ASSERT( pActor->selectableType() == MachLog::FULLY_SELECTABLE, "Attempting to select into the corral an invalid actor" );
-            //Add the actor to the list, if a machine
-            if( ctrlPressed )
-            {
-                //See if already selected: toggle state
-               if( inGameScreen().isSelected( *pActor ) )
-                    inGameScreen().deselect( pActor );
-                else
-                    inGameScreen().select( pActor );
-            }
-            else
-            {
-                inGameScreen().deselectAll();
-                inGameScreen().select( pActor );
-            }
+            selectActors( pActor, ctrlPressed, shiftPressed, altPressed );
             break;
         }
     }
@@ -258,6 +245,89 @@ void MachGuiDefaultCommand::pickOnActor
         //Tidy up
         _DELETE( pCommand );
     }
+}
+
+void MachGuiDefaultCommand::selectActors
+(
+	MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
+)
+{
+	ASSERT( pActor->selectableType() == MachLog::FULLY_SELECTABLE, "Attempting to select into the corral an invalid actor" );
+	//Add the actor to the list, if a machine
+	if( ctrlPressed )
+	{
+		bool select = !inGameScreen().isSelected( *pActor );
+		if( select )
+		{
+			const ctl_pvector< MachActor > visibleActors = inGameScreen().getVisibleActors();
+			ctl_pvector< MachActor > actorsToAdd;
+			std::copy_if(visibleActors.begin(), visibleActors.end(), std::back_inserter(actorsToAdd), [pActor](MachActor *pReferenceActor)
+			{
+				if( pActor->race() != pReferenceActor->race() )
+					return false;
+				if( !MachActor::IsSameActorType(pActor, pReferenceActor) )
+					return false;
+				if( pReferenceActor->selectionState() == MachLog::SELECTED )
+					return false;
+
+				return true;
+			});
+			ASSERT( !actorsToAdd.empty(), "The must be at least one actor (the picked one)" );
+			inGameScreen().select( actorsToAdd );
+		}
+		else
+		{
+			const ctl_pvector< MachActor > currentSelection = inGameScreen().selectedActors();
+			ctl_pvector< MachActor > actorsToRemove;
+			std::copy_if(currentSelection.begin(), currentSelection.end(), std::back_inserter(actorsToRemove), [pActor](MachActor *pActorInSelection)
+			{
+				return MachActor::IsSameActorType(pActor, pActorInSelection);
+			});
+			ASSERT( !actorsToRemove.empty(), "The must be at least one actor (the picked one)" );
+			inGameScreen().deselect(actorsToRemove);
+		}
+	}
+	else if( shiftPressed )
+	{
+		//See if already selected: toggle state
+		if( inGameScreen().isSelected( *pActor ) )
+			inGameScreen().deselect( pActor );
+		else
+			inGameScreen().select( pActor );
+	}
+	else
+	{
+		double currentT = DevTime::instance().time();
+		if ( currentT - actorSelectedTime_ < MachGui::doubleClickInterval() )
+		{
+			actorSelectedTime_ = 0;
+			if( pActor == pLastSelectedActor_)
+			{
+				inGameScreen().deselectAll();
+
+				// The actor is double-clicked
+				const ctl_pvector< MachActor > visibleActors = inGameScreen().getVisibleActors();
+				ctl_pvector< MachActor > actorsToAdd;
+				std::copy_if(visibleActors.begin(), visibleActors.end(), std::back_inserter(actorsToAdd), [pActor](MachActor *pReferenceActor)
+				{
+					if( pActor->race() != pReferenceActor->race() )
+						return false;
+					if( !MachActor::IsSameActorType(pActor, pReferenceActor) )
+						return false;
+
+					return true;
+				});
+				ASSERT( !actorsToAdd.empty(), "The must be at least one actor (the picked one)" );
+				inGameScreen().select( actorsToAdd );
+				return;
+			}
+		}
+		actorSelectedTime_ = currentT;
+		pLastSelectedActor_ = pActor;
+
+		inGameScreen().deselectAll();
+		inGameScreen().select( pActor );
+	}
 }
 
 //virtual

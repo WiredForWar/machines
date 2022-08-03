@@ -584,6 +584,27 @@ MATHEX_SCALAR MachActor::hpRatio() const
 	return (MATHEX_SCALAR)hp()/(MATHEX_SCALAR)maximumhp();
 }
 
+bool MachActor::IsSameActorType(const MachActor *pActor1, const MachActor *pActor2)
+{
+	if( pActor1->objectType() != pActor2->objectType())
+		return false;
+	if( pActor1->subType() != pActor2->subType())
+		return false;
+
+	if( pActor1->objectIsCanAttack() )
+	{
+		MachPhys::WeaponCombo combo1 = pActor1->asCanAttack().weaponCombo();
+		MachPhys::WeaponCombo combo2 = pActor2->asCanAttack().weaponCombo();
+
+		if( combo1 != combo2 )
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void MachActor::selfDestruct( const PhysRelativeTime& whenRelative )
 {
 	CB_DEPIMPL( bool, selfDestructActive_ );

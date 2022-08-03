@@ -57,6 +57,8 @@ public:
 	UtlId highlightedActorId() const;
     bool haveHighlightedActor() const;
 
+	ctl_pvector< W4dEntity > getEntitiesInView();
+
 protected:
     //A line in world space from the camera origin passing through the cursor of length length
     MexLine3d cameraThroughCursorLine( const Gui::Coord& cursorScreenPoint,	MATHEX_SCALAR length ) const;
@@ -83,6 +85,7 @@ private:
                          bool shiftPressed, bool altPressed );
 
 	void updateActorsSelectedViaRubberBand( bool highlightOnly, bool keepSelection, bool inclMachines = true, bool inclConstructions = true );
+	ctl_pvector< W4dEntity > getActorsInRectangle(const Gui::Coord& from, const Gui::Coord& to) const;
 	void unhighlightActorsSelectedViaRubberBand();
 		 
 	enum RubberBandCamera { ZENITH, GROUND, INVALID };

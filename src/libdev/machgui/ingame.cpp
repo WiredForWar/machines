@@ -665,6 +665,31 @@ void MachInGameScreen::deselectAll()
 	pFirstPerson_->resetActor();
 }
 
+MachInGameScreen::Actors MachInGameScreen::getVisibleActors() const
+{
+	ctl_pvector< W4dEntity > entities = pImpl_->pWorldViewWindow_->getEntitiesInView();
+
+	for( const W4dEntity *pEntity : entities)
+	{
+		std::cerr << pEntity->id() << " " << pEntity->name() << std::endl;
+	}
+
+	Actors actors;
+	actors.reserve(std::min<size_t>(12, entities.size()));
+
+	MachLogRaces& races = MachLogRaces::instance();
+	for( const W4dEntity *pEntity : entities)
+	{
+		if( races.actorExists( pEntity->id() ) )
+		{
+			MachActor& actor = races.actor( pEntity->id() );
+			actors.push_back(&actor);
+		}
+	}
+
+	return actors;
+}
+
 W4dSceneManager& MachInGameScreen::sceneManager() const
 {
 	CB_DEPIMPL( W4dSceneManager*, pSceneManager_ );
@@ -1579,14 +1604,6 @@ bool MachInGameScreen::doHandleRightClickEvent( const GuiMouseEvent& event )
 		// cursors etc.
 		if ( DevTime::instance().time() - pressReleaseTimer < 0.5 and
 			 not pContinentMap_->absoluteBoundary().contains( event.coord() ) )
-		{
-			shouldDeselectActors = true;
-		}
-		// ...else if we release the right mouse button in under 0.1sec and we are
-		// over the map then deselect all selected actors, reset the intelligent
-		// cursors etc.
-		else if ( 	DevTime::instance().time() - pressReleaseTimer < 0.1 and
-			 		pContinentMap_->absoluteBoundary().contains( event.coord() ) )
 		{
 			shouldDeselectActors = true;
 		}
