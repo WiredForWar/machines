@@ -56,8 +56,6 @@ AniSmackerRegular::AniSmackerRegular( const SysPathName& path, size_t xCoordTo, 
     alFormat_           = -1;
     alSource_           = 0;
     alFrequency_        = 0;
-
-    synchronisation_ = false;
 }
 
 // DTOR
@@ -219,7 +217,7 @@ void AniSmackerRegular::playNextFrame(RenDevice *pDevice)
         advanceToNextFrame_ = (timeNow - lastFrameTime_ >= frameTime_);
 
         // Copy next frame from smacker file to the buffer.
-        if ( advanceToNextFrame_ or fast_ or synchronisation_ )
+        if ( advanceToNextFrame_ or fast_ )
         {
             copyCurrentFrameToBuffer( surface_ );
             lastFrameTime_ = timeNow;
@@ -245,20 +243,12 @@ void AniSmackerRegular::playNextFrame(RenDevice *pDevice)
         }
         else
         {
-            if ( synchronisation_ )
+            if ( advanceToNextFrame_ )
             {
                 getNextFrame();
-
             }
-            else
-            {
-                if ( advanceToNextFrame_ )
-                {
-                    getNextFrame();
-                }
 
-                advanceToNextFrame_ = true;
-            }
+            advanceToNextFrame_ = true;
         }
         ++frame_;
     }
