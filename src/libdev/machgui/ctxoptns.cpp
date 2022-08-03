@@ -650,6 +650,9 @@ void MachGuiCtxOptions::load3dSoundFiles( bool enabled )
 
 void MachGuiCtxOptions::showDirect3DDrivers()
 {
+	if ( !pDirectDrawDrivers_->items() )
+		return;
+
 	//CtlCountedPtr<RenDriver> const & newDriver = ( CtlCountedPtr<RenDriver> const & ) *(pDirectDrawDrivers_->item());
 	CtlCountedPtr<RenDriver> const & newDriver =
         ( CtlCountedPtr<RenDriver> const & ) *((CtlCountedPtr<RenDriver>*)pDirectDrawDrivers_->item());
