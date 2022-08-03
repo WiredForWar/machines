@@ -540,7 +540,7 @@ bool MachGuiConstructCommand::doApply( MachActor* pActor, string* )
 
 	if( not hasPlayedVoiceMail() )
 	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pActor->subType(), MachLogMachineVoiceMailManager::MEV_MOVE_TO_SITE, pActor->id(),  pActor->race() );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVE_TO_SITE );
 		hasPlayedVoiceMail( true );
 	}
 
@@ -640,7 +640,7 @@ bool MachGuiConstructCommand::doAdminApply( MachLogAdministrator* pAdministrator
 	ASSERT( found, "No constructor found in corral!" );
 
 	// give out voicemail
-	MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pFirstConstructor->subType(), MachLogMachineVoiceMailManager::MEV_MOVE_TO_SITE, pFirstConstructor->id(),  pFirstConstructor->race() );
+	MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE );
 
 
 	// Remove reservations from the new constructions. Remember, the superconstruct operation will just have

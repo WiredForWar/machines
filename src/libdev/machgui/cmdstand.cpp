@@ -107,7 +107,7 @@ bool MachGuiStandGroundCommand::doApply( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( machine.objectType(), machine.subType(), MachLogMachineVoiceMailManager::MEV_TASKED, machine.id(), machine.race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( machine, MachineVoiceMailEventID::TASKED );
 			hasPlayedVoiceMail( true );
 		}
 

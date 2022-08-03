@@ -22,6 +22,7 @@
 #include "gui/event.hpp"
 #include "gui/gui.hpp"
 #include "machgui/internal/igameimp.hpp"
+#include "machlog/RecentEventsManager.hpp"
 #include "machlog/mcmotseq.hpp"
 #include "machlog/vmman.hpp"
 #include "machphys/mcmovinf.hpp"
@@ -166,6 +167,9 @@ bool MachInGameScreen::doHandleKeyEvent( const GuiKeyEvent& e )
 						processed = true;
 					}
 				}
+			case 14:
+				processed = MachLogRecentEventsManager::instance().doHandleKeyEvent(e);
+				break;
 			default:
 				finished = true;
 				break;

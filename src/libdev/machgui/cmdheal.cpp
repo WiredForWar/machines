@@ -138,7 +138,7 @@ bool MachGuiHealCommand::applyMove( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_MOVING, pActor->id(),  pActor->race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
 			hasPlayedVoiceMail( true );
 		}
 	}
@@ -166,7 +166,7 @@ bool MachGuiHealCommand::applyHealObject( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_HEAL_TARGET, pActor->id(),  pActor->race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::HEAL_TARGET );
 			hasPlayedVoiceMail( true );
 		}
 
@@ -269,7 +269,7 @@ bool MachGuiHealCommand::doAdminApply( MachLogAdministrator* pAdministrator, str
 		ASSERT( found, "No heal-capable machine found in corral!" );
 
 		// give out voicemail
-		MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::ADMINISTRATOR, pFirstHealingMachine->subType(), MachLogMachineVoiceMailManager::MEV_HEAL_TARGET, pFirstHealingMachine->id(),  pFirstHealingMachine->race() );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstHealingMachine, MachineVoiceMailEventID::HEAL_TARGET );
 
 	}
 

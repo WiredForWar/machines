@@ -223,14 +223,14 @@ void MachLogFactory::createNewMachine( const MachLogProductionUnit& newMachine, 
 	if( newMachine.constructionId() != -1 and MachLogRaces::instance().controller( pRace->race() ).type() == MachLogController::AI_CONTROLLER )
 		pMach->setSquadron( MachLogRaces::instance().squadrons( pRace->race() )[ newMachine.constructionId() ] );
 
-	// give voicemail announcing arrival into world
-	MachLogMachineVoiceMailManager::instance().postNewMail( pMach->objectType(), pMach->subType(), MachLogMachineVoiceMailManager::MEV_BUILT, pMach->id(),  pMach->race() );
-
 	// Now make the little fella beetle off to a deploy point.
 	moveToDeployPoint( pMach, entranceInternalPoint, entranceExternalPoint );
 
-		// and update the race "machines built" counter
+	// and update the race "machines built" counter
 	MachLogRaces::instance().machinesBuiltScoreAdjust( race, *pMach );
+
+	// give voicemail announcing arrival into world
+	MachLogMachineVoiceMailManager::instance().postNewMail( *pMach, MachineVoiceMailEventID::BUILT );
 }
 
 //virtual

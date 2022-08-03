@@ -312,7 +312,7 @@ void MachCorralIcons::add( MachActor* pActor )
 	if( pActor->objectIsMachine() and pActor->race() == MachLogRaces::instance().pcController().race() and pCorral_->actors_.size()==1 )
 	{
 		// give voicemail
-		MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_SELECTED, pActor->id(),  pActor->race() );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::SELECTED );
 		// need INSTANT acknowledgement in the case of actor selection
 		MachLogVoiceMailManager::instance().update();
 	}

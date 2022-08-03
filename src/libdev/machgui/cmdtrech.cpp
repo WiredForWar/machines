@@ -134,7 +134,7 @@ bool MachGuiTreacheryCommand::applyMove( MachActor* pActor, string* )
 
 			if( not hasPlayedVoiceMail() )
 			{
-				MachLogMachineVoiceMailManager::instance().postNewMail( pActor->objectType(), pActor->subType(), MachLogMachineVoiceMailManager::MEV_MOVING, pActor->id(),  pActor->race() );
+				MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
 				hasPlayedVoiceMail( true );
 			}
 		}
@@ -163,7 +163,8 @@ bool MachGuiTreacheryCommand::applyTreacheryObject( MachActor* pActor, string* )
 
 		if( not hasPlayedVoiceMail() )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::ADMINISTRATOR, pActor->subType(), MachLogMachineVoiceMailManager::MEV_TREACHERY_TARGET, pActor->id(),  pActor->race() );
+			// Note: here we had passing objectType = MachLog::ADMINISTRATOR:
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TREACHERY_TARGET );
 			hasPlayedVoiceMail( true );
 		}
     }

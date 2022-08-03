@@ -473,7 +473,7 @@ bool MachLogHardwareLab::addResearchItem( const MachLogResearchItem& mlri )
 				if( noTechsOnWayEncountered )
 				{
 					// give the mail
-					MachLogVoiceMailManager::instance().postNewMail( VID_POD_NO_TECHNICIANS, race() );
+					MachLogVoiceMailManager::instance().postNewMail( VID_POD_NO_TECHNICIANS, position(), race() );
 				}
 			}
 		}

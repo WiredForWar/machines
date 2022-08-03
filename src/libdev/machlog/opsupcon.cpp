@@ -198,7 +198,7 @@ MachLogSuperConstructOperation::doUpdate()
 	        doingFirstOp_ = false;
 	}
 	else
-	        MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pActor_->subType(), MachLogMachineVoiceMailManager::MEV_MOVING_TO_NEXT, pActor_->id(),  pActor_->race() );
+	        MachLogMachineVoiceMailManager::instance().postNewMail( *pActor_, MachineVoiceMailEventID::MOVING_TO_NEXT );
 
 	// "fire and forget": we don't care about observing that construction anymore
 	pTargetConstruction->detach( this );

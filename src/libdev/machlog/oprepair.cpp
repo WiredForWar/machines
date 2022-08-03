@@ -82,11 +82,11 @@ PhysRelativeTime MachLogRepairOperation::interactWithBuilding()
 		// if the building is now repaired, give a voicemail
 		if( pDamagedConstruction->hpRatio() >= 1.0 )
 		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pConstructorGuy->subType(), MachLogMachineVoiceMailManager::MEV_BUILDING_REPAIRED, pConstructorGuy->id(), constructorRace );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachineVoiceMailEventID::BUILDING_REPAIRED );
 
 			// post voicemail if no more operations on the queue
 			if( not pConstructorGuy->isDoingSuperConstruct() )
-				MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pConstructorGuy->subType(), MachLogMachineVoiceMailManager::MEV_AWAITING_NEW_JOB, pConstructorGuy->id(), constructorRace );
+				MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachineVoiceMailEventID::AWAITING_NEW_JOB );
 		}
 
 		//only update time and pay the cash if hps were added on.

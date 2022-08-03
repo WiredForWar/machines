@@ -77,10 +77,6 @@ void MachLogMineralSite::beDiscoveredBy( MachPhys::Race race )
 	{
 		if( MachLogNetwork::instance().isNetworkGame() )
 			MachLogNetwork::instance().messageBroker().sendSetSiteDiscoveredByMessage( position_, race );
-
-		// issue voicemail
-		MachLogVoiceMailManager::instance().postNewMail( VID_GEO_MINERAL_LOCATED, pOreHolo_->id(), race );
-
 	}
 //	_NEW( MachLogOreHolograph( pRace, 0, 0, position() ) );
 

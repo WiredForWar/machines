@@ -1031,9 +1031,6 @@ void MachLogMachine::assignToDifferentRace( MachLogRace& newRace )
 	CB_DEPIMPL( MachLogSquadron*, pOriginalSquadron_ );
 	CB_DEPIMPL( MachLogSquadron*, pSquadron_ );
 
-	if( displayMapAndIconRace() != newRace.race() )
-		MachLogMachineVoiceMailManager::instance().postNewMail( objectType(), subType(), MachLogMachineVoiceMailManager::MEV_CHANGED_RACE, id(),  newRace.race() );
-
 	/*
 	// decrement losing race's machine numbers
 	MachLogRaces::instance().nMachines( race() )--;
@@ -1062,6 +1059,10 @@ void MachLogMachine::assignToDifferentRace( MachLogRace& newRace )
 	MachLogRaces::instance().nMachines( race() )++;
 	*/
 
+	if( displayMapAndIconRace() != newRace.race() )
+	{
+		MachLogMachineVoiceMailManager::instance().postNewMail( *this, MachineVoiceMailEventID::CHANGED_RACE );
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2580,10 +2581,10 @@ void MachLogMachine::checkAndDoHitVoiceMail()
 	{
 		if( hpRatio() <= 0.35 )
 			// give voicemail to warn that damage is dangerously high
-			MachLogMachineVoiceMailManager::instance().postNewMail( objectType(), subType(), MachLogMachineVoiceMailManager::MEV_NEAR_DEATH, id(),  race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *this, MachineVoiceMailEventID::NEAR_DEATH );
 		else
 			// just report on having been hit
-			MachLogMachineVoiceMailManager::instance().postNewMail( objectType(), subType(), MachLogMachineVoiceMailManager::MEV_DAMAGED, id(),  race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *this, MachineVoiceMailEventID::DAMAGED );
 	}
 }
 

@@ -130,11 +130,11 @@ PhysRelativeTime MachLogCaptureOperation::interactWithBuilding()
 			MachLogRaces::instance().podCaptured( pConstructorMachine->race(), true );
 
 		// give voicemail informing player of capture
-		MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pConstructorMachine->subType(), MachLogMachineVoiceMailManager::MEV_BUILDING_CAPTURED, pConstructorMachine->id(),  pConstructorMachine->race() );
+		MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachineVoiceMailEventID::BUILDING_CAPTURED );
 
 		// post voicemail if no more operations on the queue
 	   	if( not pConstructorMachine->isDoingSuperConstruct() )
-	   		MachLogMachineVoiceMailManager::instance().postNewMail( MachLog::CONSTRUCTOR, pConstructorMachine->subType(), MachLogMachineVoiceMailManager::MEV_AWAITING_NEW_JOB, pConstructorMachine->id(),  pConstructorMachine->race() );
+			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachineVoiceMailEventID::AWAITING_NEW_JOB );
 
 		interval = 0.0;
 	}

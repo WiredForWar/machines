@@ -13,6 +13,7 @@
 
 #include "machphys/random.hpp"
 
+#include "machlog/RecentEventsManager.hpp"
 #include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "machlog/vmdata.hpp"
@@ -315,85 +316,114 @@ bool MachLogVoiceMailManager::decCurrentMail()
 	return true;
 }
 
-void MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetRace )
+bool MachLogVoiceMailManager::canPostMailForRace(MachPhys::Race targetRace) const
 {
 	CB_MachLogVoiceMailManager_DEPIMPL();
 
-	if( voiceMailsActivated() and acceptMailPostings_ and MachLogRaces::instance().hasPCRace() and targetRace == MachLogRaces::instance().pcController().race() )
-	{
-		// only bother pushing it onto the queue if the actor in question isn't already playing a mail
-		// OR it's not a selection-affirmation mail.
-		if( not podMailPlaying_
-		    or ( (*pAvailableVEMails_)[id] )->mailType_ != VM_SELECTION_AFFIRMATION )
-	    {
-	    	MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id ) );
-			incomingMailQueue_.push_back( pNewMail );
-	    }
-	}
+	if( !voiceMailsActivated() || !acceptMailPostings_ )
+		return false;
+
+	if ( !MachLogRaces::instance().hasPCRace() || targetRace != MachLogRaces::instance().pcController().race() )
+		return false;
+
+	return true;
 }
 
-void MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhys::Race targetRace )
+void MachLogVoiceMailManager::queueMail(MachLogVoiceMail *pNewMail)
+{
+	CB_DEPIMPL( MailVector, incomingMailQueue_ );
+	incomingMailQueue_.push_back( pNewMail );
+
+	if ( !pNewMail->hasPosition() )
+		return;
+
+	MachLogRecentEventsManager::instance().onVoiceMailPosted(pNewMail->position(), pNewMail->id());
+}
+
+bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetRace )
 {
 	CB_MachLogVoiceMailManager_DEPIMPL();
 
-	if( voiceMailsActivated() and acceptMailPostings_ and MachLogRaces::instance().hasPCRace() and targetRace == MachLogRaces::instance().pcController().race() )
+	if( !canPostMailForRace(targetRace) )
+		return false;
+
+	// only bother pushing it onto the queue if the actor in question isn't already playing a mail
+	// OR it's not a selection-affirmation mail.
+	if( podMailPlaying_ && (( (*pAvailableVEMails_)[id] )->mailType_ != VM_SELECTION_AFFIRMATION) )
+		return false;
+
+	MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id ) );
+	queueMail( pNewMail );
+
+	return true;
+}
+
+bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhys::Race targetRace )
+{
+	CB_MachLogVoiceMailManager_DEPIMPL();
+
+	if( !canPostMailForRace(targetRace) )
+		return false;
+
+	// now, will we actually accept this posting onto the queue?
+
+	bool acceptMail = false;
+
+	// acceptance of mail is contingent upon voicemail type.
+	VoiceMailType mailType = ( (*pAvailableVEMails_)[id] )->mailType_;
+
+	if( mailType == VM_FULL_FUNCTION or mailType == VM_WAIT_UNTIL_NOTHING_PLAYING )
 	{
-		// now, will we actually accept this posting onto the queue?
+		// yes, we'll definitely keep that
+		acceptMail = true;
+	}
+	else if( voiceMailPlaying_[ actorId ] and mailType == VM_SELECTION_AFFIRMATION )
+	{
+		// nope, we certainly won't bother keeping one of those
+		acceptMail = false;
+	}
+	else
+	{
+		// acceptance now depends on how many mails this actor already has in the queue. If 2 or
+		// more, don't accept this one.
+		int nActorMailsInQueue = 0;
 
-		bool acceptMail = false;
-
-		// acceptance of mail is contingent upon voicemail type.
-		VoiceMailType mailType = ( (*pAvailableVEMails_)[id] )->mailType_;
-
-		if( mailType == VM_FULL_FUNCTION or mailType == VM_WAIT_UNTIL_NOTHING_PLAYING )
+		for( MachLogVoiceMailManager::MailVector::iterator i = incomingMailQueue_.begin();
+								nActorMailsInQueue <= 1 and i != incomingMailQueue_.end();
+																					  ++i )
 		{
-			// yes, we'll definitely keep that
-			acceptMail = true;
-		}
-		else if( voiceMailPlaying_[ actorId ] and mailType == VM_SELECTION_AFFIRMATION )
-		{
-			// nope, we certainly won't bother keeping one of those
-			acceptMail = false;
-		}
-		else
-		{
-			// acceptance now depends on how many mails this actor already has in the queue. If 2 or
-			// more, don't accept this one.
-			int nActorMailsInQueue = 0;
+			MachLogVoiceMail* pMail = (*i);
 
-			for( MachLogVoiceMailManager::MailVector::iterator i = incomingMailQueue_.begin();
-									nActorMailsInQueue <= 1 and i != incomingMailQueue_.end();
-																						  ++i )
+			if( pMail->hasActorId() and pMail->actorId() == actorId )
 			{
-				MachLogVoiceMail* pMail = (*i);
-
-				if( pMail->hasActorId() and pMail->actorId() == actorId )
-				{
-					++nActorMailsInQueue;
-				}
+				++nActorMailsInQueue;
 			}
-
-			acceptMail =( nActorMailsInQueue <= 1 );
 		}
 
-		if( acceptMail )
-	    {
-	    	MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id, actorId ) );
-			incomingMailQueue_.push_back( pNewMail );
-			update();
-	    }
+		acceptMail =( nActorMailsInQueue <= 1 );
 	}
+
+	if( !acceptMail )
+	{
+		return false;
+	}
+
+	MachLogVoiceMail* pNewMail = _NEW( MachLogVoiceMail( id, actorId ) );
+	queueMail( pNewMail );
+	update();
+
+	return true;
 }
 
-void MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, MachPhys::Race targetRace )
+bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, MachPhys::Race targetRace )
 {
-	CB_MachLogVoiceMailManager_DEPIMPL();
+	if( !canPostMailForRace(targetRace) )
+		return false;
 
-	if( voiceMailsActivated() and acceptMailPostings_ and MachLogRaces::instance().hasPCRace() and targetRace == MachLogRaces::instance().pcController().race() )
-	{
-		MachLogVoiceMail* pNewMail = _NEW(MachLogVoiceMail(id, position));
-		incomingMailQueue_.push_back(pNewMail);
-	}
+	MachLogVoiceMail* pNewMail = _NEW(MachLogVoiceMail(id, position));
+	queueMail(pNewMail);
+
+	return true;
 }
 
 void MachLogVoiceMailManager::postDeathMail( UtlId actorId, MachPhys::Race targetRace )
