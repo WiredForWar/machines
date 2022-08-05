@@ -65,7 +65,7 @@ RenSurface RenSurface::createAnonymousSurface( PerIstream& inStream, const RenSu
 }
 
 // static
-RenSurface RenSurface::createSharedSurface
+WEAK_SYMBOL RenSurface RenSurface::createSharedSurface
 (
 	const std::string& bitmapName,
 	const RenSurface& surf
@@ -103,7 +103,7 @@ RenSurface::RenSurface(Ren::TexId id):
 	myId_(id)
 {
 	PRE(Ren::initialised());
-	RenSurfaceManager::instance().impl().incRefCount(myId_);
+    RenSurface::mgrIncrementRefCount(myId_);
     TEST_INVARIANT;
 }
 
@@ -111,7 +111,7 @@ RenSurface::RenSurface():
 	myId_(Ren::NullTexId)
 {
 	PRE(Ren::initialised());
-	RenSurfaceManager::instance().impl().incRefCount(myId_);
+    RenSurface::mgrIncrementRefCount(myId_);
     TEST_INVARIANT;
 	POST(isNull() && sharable() && readOnly());
 }
@@ -119,7 +119,7 @@ RenSurface::RenSurface():
 RenSurface::RenSurface(const RenSurface& tex):
 	myId_(tex.myId_)
 {
-	RenSurfaceManager::instance().impl().incRefCount(myId_);
+    RenSurface::mgrIncrementRefCount(myId_);
     TEST_INVARIANT;
 }
 
@@ -127,9 +127,9 @@ RenSurface& RenSurface::operator =( const RenSurface& rhs)
 {
 	if (*this != rhs)
 	{
-		RenSurfaceManager::instance().impl().decRefCount(myId_);
+        RenSurface::mgrDecrementRefCount(myId_);
 		myId_ = rhs.myId_;
-		RenSurfaceManager::instance().impl().incRefCount(myId_);
+        RenSurface::mgrIncrementRefCount(myId_);
 	}
 
 	return *this;
@@ -138,7 +138,7 @@ RenSurface& RenSurface::operator =( const RenSurface& rhs)
 RenSurface::~RenSurface()
 {
     TEST_INVARIANT;
-	RenSurfaceManager::instance().impl().decRefCount(myId_);
+    RenSurface::mgrDecrementRefCount(myId_);
 }
 
 //------------------------------------Blitting---------------------------------------
@@ -1245,6 +1245,17 @@ void RenSurface::write( PerOstream& outStream )
     }
 
    	_DELETE_ARRAY( image );
+}
+
+//static
+WEAK_SYMBOL void RenSurface::mgrIncrementRefCount(Ren::TexId texId)
+{
+    RenSurfaceManager::instance().impl().incRefCount(texId);
+}
+//static
+WEAK_SYMBOL void RenSurface::mgrDecrementRefCount(Ren::TexId texId)
+{
+    RenSurfaceManager::instance().impl().decRefCount(texId);
 }
 
 /* End BLITABLE.CPP *************************************************/

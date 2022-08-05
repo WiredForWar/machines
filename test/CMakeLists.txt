@@ -57,7 +57,7 @@ math(EXPR len2 "${len1} - 1")
 foreach( val RANGE ${len2} )
     list(GET TESTS_SRCS ${val} test_src)
     list(GET TESTS_NAME ${val} test_name)
-    add_executable(${test_name} AssertionOverrides.cpp ${test_src})
+    add_executable(${test_name} AssertionOverrides.cpp RenSurfaceOverrides.cpp ${test_src})
     target_link_libraries( ${test_name}
         gtest
         gmock
