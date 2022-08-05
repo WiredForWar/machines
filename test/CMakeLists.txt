@@ -48,6 +48,8 @@ append_test(FrameScalerTests ani/FrameScalerTests.cpp)
 append_test(DevButtonEventTests device/DevButtonEventTests.cpp)
 append_test(DevEventQueueTests device/DevEventQueueTests.cpp)
 append_test(DevMouseTests device/DevMouseTests.cpp)
+#~:gui
+append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
 #~:system
 append_test(SysPathNameTests system/SysPathNameTests.cpp)
 
