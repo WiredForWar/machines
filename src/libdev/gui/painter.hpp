@@ -26,40 +26,40 @@ public:
     virtual void blit( 	const GuiBitmap& source,
                   const Gui::Box& sourceArea,
                   const Gui::Coord& dest
-                  ) = 0;
+                  ) const = 0;
 
     // Same as above only sourceArea is entire area of the source GuiBitmap
     virtual void blit( 	const GuiBitmap& source,
                   const Gui::Coord& dest
-                  ) = 0;
+                  ) const  = 0;
 
     // Same as above only dest is defaulted to (0,0)
-    virtual void blit( 	const GuiBitmap& source ) = 0;
+    virtual void blit( 	const GuiBitmap& source ) const = 0;
 
     virtual void tile( 	const GuiBitmap& source,
                   const Gui::Box& sourceArea,
                   const Gui::Box& destArea
-                  ) = 0;
+                  ) const  = 0;
 
     virtual void stretch( 	const GuiBitmap& source,
                      const Gui::Box& sourceArea,
                      const Gui::Box& destArea
-                     ) = 0;
+                     ) const  = 0;
 
     virtual void stretch( const GuiBitmap& source,
-                  const Gui::Box& destArea ) = 0;
+                  const Gui::Box& destArea ) const  = 0;
 
 
     ///////////////////////////////
 
-    virtual void filledRectangle( const Gui::Box&, const Gui::Colour& ) = 0;
-    virtual void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness ) = 0;
+    virtual void filledRectangle( const Gui::Box&, const Gui::Colour& ) const = 0;
+    virtual void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness ) const  = 0;
 
     virtual void bevel( const Gui::Box& b,
                 unsigned thickness,
                 const Gui::Colour& hiCol,
                 const Gui::Colour& loCol
-                ) = 0;
+                )  const = 0;
 
     ///////////////////////////////
 
@@ -67,31 +67,31 @@ public:
                const Gui::Coord& c2,
                const Gui::Colour&,
                unsigned thickness
-               ) = 0;
+               ) const  = 0;
 
     virtual void horizontalLine( const Gui::Coord& c1,
                          unsigned length,
                          const Gui::Colour&,
                          unsigned thickness
-                         ) = 0;
+                         ) const  = 0;
 
     virtual void verticalLine( const Gui::Coord& c1,
                        unsigned height,
                        const Gui::Colour&,
                        unsigned thickness
-                       ) = 0;
+                       ) const  = 0;
 
     ///////////////////////////////
 
     virtual void text( const Gui::Coord& c,
                const string& text,
                const Gui::Colour&
-               ) = 0;
+               ) const  = 0;
 
     virtual void rightAlignText(const Gui::Coord& c,
                         const string& theText,
                         const Gui::Colour& col
-                        ) = 0;
+                        ) const  = 0;
 
     ///////////////////////////////
 
@@ -99,7 +99,7 @@ public:
                        const GuiBorderDimensions&,
                        const GuiFilledBorderColours&,
                        const GuiBorderMetrics&
-                       ) = 0;
+                       ) const  = 0;
 };
 
 class GuiPainter : public IGuiPainter
@@ -114,69 +114,69 @@ public:
 	// Blit bitmap to backbuffer
 	void blit( 	const GuiBitmap& source,
 			   	const Gui::Box& sourceArea,
-			   	const Gui::Coord& dest ) override;
+			   	const Gui::Coord& dest ) const override;
 
 	// Same as above only sourceArea is entire area of the source GuiBitmap
 	void blit( 	const GuiBitmap& source,
-			   	const Gui::Coord& dest ) override;
+			   	const Gui::Coord& dest ) const  override;
 
 	// Same as above only dest is defaulted to (0,0)
-	void blit( 	const GuiBitmap& source ) override;
+	void blit( 	const GuiBitmap& source ) const  override;
 
 	void tile( 	const GuiBitmap& source,
 				const Gui::Box& sourceArea,
-				const Gui::Box& destArea ) override;
+				const Gui::Box& destArea ) const  override;
 
 	void stretch( 	const GuiBitmap& source,
 					const Gui::Box& sourceArea,
-					const Gui::Box& destArea ) override;
+					const Gui::Box& destArea ) const  override;
 
 	void stretch( const GuiBitmap& source,
-				  const Gui::Box& destArea ) override;
+				  const Gui::Box& destArea ) const  override;
 
 	///////////////////////////////
 
-	void filledRectangle( const Gui::Box&, const Gui::Colour& ) override;
-	void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness ) override;
+	void filledRectangle( const Gui::Box&, const Gui::Colour& ) const  override;
+	void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness ) const  override;
 
 	void bevel( const Gui::Box& b,
 				unsigned thickness,
 				const Gui::Colour& hiCol,
-				const Gui::Colour& loCol ) override;
+				const Gui::Colour& loCol ) const  override;
 
 	///////////////////////////////
 
 	void line( const Gui::Coord& c1,
 				const Gui::Coord& c2,
 				const Gui::Colour&,
-				unsigned thickness ) override;
+				unsigned thickness ) const  override;
 
 	void horizontalLine( const Gui::Coord& c1,
 							unsigned length,
 							const Gui::Colour&,
-							unsigned thickness ) override;
+							unsigned thickness ) const  override;
 
 	void verticalLine( const Gui::Coord& c1,
 							unsigned height,
 							const Gui::Colour&,
-							unsigned thickness ) override;
+							unsigned thickness ) const  override;
 
 	///////////////////////////////
 
 	void text( const Gui::Coord& c,
 				const string& text,
-				const Gui::Colour& ) override;
+				const Gui::Colour& ) const  override;
 
 	void rightAlignText(const Gui::Coord& c,
 						const string& theText,
-						const Gui::Colour& col ) override;
+						const Gui::Colour& col ) const  override;
 
 	///////////////////////////////
 
 	void filledBorder( const Gui::Coord& absCoord,
 						const GuiBorderDimensions&,
 						const GuiFilledBorderColours&,
-						const GuiBorderMetrics& ) override;
+						const GuiBorderMetrics& ) const  override;
 
 private:
 	GuiPainter( const GuiPainter& );

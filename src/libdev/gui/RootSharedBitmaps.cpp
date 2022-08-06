@@ -81,3 +81,18 @@ std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string
         return std::weak_ptr<GuiBitmap>();
     }
 }
+
+void GuiRootSharedBitmaps::blitNamedBitmapFromArea(const std::shared_ptr<GuiBitmap>& bitmap,
+                                                   const Gui::Box& sourceArea,
+                                                   const Gui::Coord& destination,
+                                                   std::function<Gui::Box(const Gui::Box&)> fnSourceAreaTransform) const
+{
+    if (bitmap)
+    {
+        guiPainter_.blit(*bitmap, fnSourceAreaTransform(sourceArea), destination);
+    }
+    else
+    {
+        std::cerr << "GuiRootSharedBitmaps::blitNamedBitmapFromArea(): Attempted blit of null named bitmap." << std::endl;
+    }
+}

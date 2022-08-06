@@ -41,7 +41,7 @@ map_GuiBox_to_RenSurfaceRect( const Gui::Box& b )
 								Gui::height( b ) );
 }
 
-void GuiPainter::filledRectangle( const Gui::Box& b, const Gui::Colour& col )
+void GuiPainter::filledRectangle( const Gui::Box& b, const Gui::Colour& col ) const
 {
 	Gui::backBuffer().filledRectangle( map_GuiBox_to_RenSurfaceRect( b ), col );
 }
@@ -50,7 +50,7 @@ void GuiPainter::filledRectangle( const Gui::Box& b, const Gui::Colour& col )
 
 void GuiPainter::hollowRectangle( const Gui::Box& b,
 									const Gui::Colour& col,
-									unsigned thickness )
+									unsigned thickness ) const
 {
 	Ren::Rect area(b.minCorner().x(), b.minCorner().y(), Gui::width( b ) - 1, Gui::height( b ) - 1 );
 
@@ -62,7 +62,7 @@ void GuiPainter::hollowRectangle( const Gui::Box& b,
 void GuiPainter::line( const Gui::Coord& c1,
 						const Gui::Coord& c2,
 						const Gui::Colour& col,
-						unsigned thickness )
+						unsigned thickness ) const
 {
 	RenSurface::Points p;
     p.reserve( 2 );
@@ -74,7 +74,7 @@ void GuiPainter::line( const Gui::Coord& c1,
 void GuiPainter::horizontalLine( const Gui::Coord& c1,
 							unsigned length,
 							const Gui::Colour& col,
-							unsigned thickness )
+							unsigned thickness ) const
 {
 	if(thickness > 1)
 	{
@@ -90,7 +90,7 @@ void GuiPainter::horizontalLine( const Gui::Coord& c1,
 void GuiPainter::verticalLine( const Gui::Coord& c1,
 							unsigned height,
 							const Gui::Colour& col,
-							unsigned thickness )
+							unsigned thickness ) const
 {
 	line( c1, Gui::Coord( c1.x(), c1.y() + height ), col, thickness );
 }
@@ -100,7 +100,7 @@ void GuiPainter::verticalLine( const Gui::Coord& c1,
 void GuiPainter::bevel( const Gui::Box& b,
 							unsigned thickness,
 							const Gui::Colour& hiCol,
-							const Gui::Colour& loCol )
+							const Gui::Colour& loCol ) const
 {
 	const Gui::Coord& c = b.minCorner();
 	Gui::XCoord x1 = c.x();
@@ -119,14 +119,14 @@ void GuiPainter::bevel( const Gui::Box& b,
 
 //////////////////////////////////////////////////////////////////////
 
-void GuiPainter::text( const Gui::Coord& c, const string& theText, const Gui::Colour& col )
+void GuiPainter::text( const Gui::Coord& c, const string& theText, const Gui::Colour& col ) const
 {
     RenSurface backBuffer = Gui::backBuffer();
     backBuffer.useFontHeight(12);
     backBuffer.drawText( c.x(), c.y(), theText, col );
 }
 
-void GuiPainter::rightAlignText( const Gui::Coord& c, const string& theText, const Gui::Colour& col )
+void GuiPainter::rightAlignText( const Gui::Coord& c, const string& theText, const Gui::Colour& col ) const
 {
     Gui::Coord cCopy( c );
 
@@ -144,7 +144,7 @@ void GuiPainter::rightAlignText( const Gui::Coord& c, const string& theText, con
 
 void GuiPainter::blit( 	const GuiBitmap& source,
 						const Gui::Box& sourceArea,
-						const Gui::Coord& dest )
+						const Gui::Coord& dest ) const
 {
 	Gui::backBuffer().simpleBlit( 	source,
 									map_GuiBox_to_RenSurfaceRect( sourceArea ),
@@ -152,20 +152,20 @@ void GuiPainter::blit( 	const GuiBitmap& source,
 }
 
 void GuiPainter::blit( 	const GuiBitmap& source,
-						const Gui::Coord& dest )
+						const Gui::Coord& dest ) const
 {
 	Gui::backBuffer().simpleBlit( 	source,
 									dest.x(), dest.y() );
 }
 
-void GuiPainter::blit( 	const GuiBitmap& source )
+void GuiPainter::blit( 	const GuiBitmap& source ) const
 {
 	Gui::backBuffer().simpleBlit( source );
 }
 
 void GuiPainter::tile( 	const GuiBitmap& source,
 						const Gui::Box& sourceArea,
-						const Gui::Box& destArea )
+						const Gui::Box& destArea ) const
 {
 	Gui::backBuffer().tileBlit( source,
 								map_GuiBox_to_RenSurfaceRect( sourceArea ),
@@ -174,11 +174,11 @@ void GuiPainter::tile( 	const GuiBitmap& source,
 
 void GuiPainter::stretch( 	const GuiBitmap&/*source*/,
 							const Gui::Box& /*sourceArea*/,
-							const Gui::Box& /*destArea*/ )
+							const Gui::Box& /*destArea*/ ) const
 {}
 
 void GuiPainter::stretch( 	const GuiBitmap& /*source*/,
-							const Gui::Box& /*destArea*/ )
+							const Gui::Box& /*destArea*/ ) const
 {}
 
 //////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ void GuiPainter::stretch( 	const GuiBitmap& /*source*/,
 void GuiPainter::filledBorder( const Gui::Coord& absCoord,
 								const GuiBorderDimensions& dim,
 								const GuiFilledBorderColours& colours,
-								const GuiBorderMetrics& m )
+								const GuiBorderMetrics& m ) const
 {
 	unsigned exteriorHeight = dim.exteriorHeight();
 	unsigned exteriorWidth = dim.exteriorWidth();
