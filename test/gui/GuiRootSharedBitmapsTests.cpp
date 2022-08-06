@@ -28,13 +28,34 @@ public:
 
 //////////////////////////////////////////////////////////////////////////////
 
-TEST(GuiRootSharedBitmapsTests, NamedBitmap_GetNamedBitmap)
+TEST(GuiRootSharedBitmapsTests, NamedBitmap_GetNamedBitmap_RefCount)
 {
     MockPainter mockPainter;
 
     auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
 
-    //TODO: Write test
+    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp");
+
+    {
+        auto currentBackdrop = sharedBitmaps.getNamedBitmap("backdrop");
+        ASSERT_EQ(2L, currentBackdrop.use_count());
+    }
+
+    auto currentBackdrop = sharedBitmaps.getSharedBitmap("gui/menu/acclaim.bmp");
+    ASSERT_EQ(1L, currentBackdrop.use_count());
+}
+
+TEST(GuiRootSharedBitmapsTests, AllBitmaps_GetBitmaps_NoExist)
+{
+    MockPainter mockPainter;
+
+    auto sharedBitmaps = GuiRootSharedBitmaps{mockPainter};
+
+    auto namedBitmap = sharedBitmaps.getNamedBitmap("i was never created");
+    auto sharedBitmap = sharedBitmaps.getSharedBitmap("i was never loaded");
+
+    ASSERT_FALSE(namedBitmap);
+    ASSERT_TRUE(sharedBitmap.expired());
 }
 
 TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmapFromArea)
@@ -44,6 +65,7 @@ TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmapFromArea)
     auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
 
     //TODO: Write test
+    ASSERT_TRUE(false);
 }
 
 TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmap)
@@ -53,4 +75,5 @@ TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmap)
     auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
 
     //TODO: Write test
+    ASSERT_TRUE(false);
 }
