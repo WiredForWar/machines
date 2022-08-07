@@ -103,8 +103,14 @@ TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmap)
 {
     MockPainter mockPainter;
 
-    auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
+    auto dstPoint = Gui::Coord{ 0, 0 };
 
-    //TODO: Write test
-    ASSERT_TRUE(false);
+    EXPECT_CALL(mockPainter, blit(An<const GuiBitmap&>(), TypedEq<const Gui::Coord&>(dstPoint)))
+        .Times(1);
+
+    auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
+    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp");
+
+    auto backdrop = sharedBitmaps.getNamedBitmap("backdrop");
+    sharedBitmaps.blitNamedBitmap(backdrop, dstPoint);
 }

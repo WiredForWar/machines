@@ -96,3 +96,16 @@ void GuiRootSharedBitmaps::blitNamedBitmapFromArea(const std::shared_ptr<GuiBitm
         std::cerr << "GuiRootSharedBitmaps::blitNamedBitmapFromArea(): Attempted blit of null named bitmap." << std::endl;
     }
 }
+
+void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap> &bitmap,
+                                           const Gui::Coord &destination) const
+{
+    if (bitmap)
+    {
+        guiPainter_.blit(*bitmap, destination);
+    }
+    else
+    {
+        std::cerr << "GuiRootSharedBitmaps::blitNamedBitmap(): Attempted blit of null named bitmap." << std::endl;
+    }
+}
