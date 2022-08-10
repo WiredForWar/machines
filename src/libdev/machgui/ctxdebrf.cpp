@@ -38,15 +38,20 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing( MachGuiStartupScreens* pStartupScree
 	playedMail_(false)
 {
 	// Create menu buttons. Order of creation denotes TAB order.
-	MachGuiMenuButton* pStatisticsButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 206, 279, 248 ), IDS_MENUBTN_STATS, MachGuiStartupScreens::BE_STATISTICS ) );
+	MachGuiMenuButton* pStatisticsButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens,
+                                                                  Gui::Box(87, 206, 279, 248), IDS_MENUBTN_STATS,
+                                                                  MachGuiStartupScreens::BE_STATISTICS));
 	MachGuiMenuButton* pContinueButton;
 	//display back to lobby on button for zone games.
 	if( not NetNetwork::instance().isLobbiedGame() )
-	 	pContinueButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 310, 279, 353 ), IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::CONTINUE ) );
+	 	pContinueButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(87, 310, 279, 353),
+                                                 IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::CONTINUE));
 	else
-	 	pContinueButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 310, 279, 353 ), IDS_MENUBTN_BACK_TO_ZONE, MachGuiStartupScreens::CONTINUE ) );
+	 	pContinueButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(87, 310, 279, 353),
+                                                 IDS_MENUBTN_BACK_TO_ZONE, MachGuiStartupScreens::CONTINUE));
 
-  	MachGuiMenuButton* pRestartButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 100, 279, 142 ), IDS_MENUBTN_RESTART, MachGuiStartupScreens::RESTART ) );
+  	MachGuiMenuButton* pRestartButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(87, 100, 279, 142),
+                                                               IDS_MENUBTN_RESTART, MachGuiStartupScreens::RESTART));
 
 #ifdef DEMO
 	pStatisticsButton->disabled( true );

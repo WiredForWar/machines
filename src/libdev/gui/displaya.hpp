@@ -156,6 +156,8 @@ public:
 	GuiDisplayable& parent();
 	// PRE( not isRoot() );
 
+    GuiDisplayable* findRoot(GuiDisplayable* current);
+
 	// call this method when a subclass undergoes a state
 	// change which alters the display of the object
 	void changed();

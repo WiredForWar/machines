@@ -1169,7 +1169,7 @@ void MachGuiStartupScreens::buttonAction( ButtonEvent be, const string& wavFile 
 
 void MachGuiStartupScreens::doDisplay()
 {
-	CB_DEPIMPL(	GuiBitmap*, pBackdrop_ );
+    CB_DEPIMPL(	MachGuiMessageBox*, pMsgBox_ );
 	CB_DEPIMPL(	W4dSceneManager*, pSceneManager_ );
 	CB_DEPIMPL( Context, context_ );
 
@@ -1187,10 +1187,8 @@ void MachGuiStartupScreens::doDisplay()
 		}
 	}
 
-	if ( pBackdrop_ )
-	{
-		GuiPainter::instance().blit( *pBackdrop_, Gui::Coord( xMenuOffset(), yMenuOffset() ) );
-	}
+    auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
+    mSharedBitmaps_.blitNamedBitmap(backdrop, Gui::Coord( xMenuOffset(), yMenuOffset() ));
 }
 
 bool MachGuiStartupScreens::finishApp()
@@ -1205,7 +1203,6 @@ void MachGuiStartupScreens::switchContext( Context newContext )
 	CB_DEPIMPL(	MachGuiStartupScreenContext*, pCurrContext_ );
 	CB_DEPIMPL(	MachGuiStartupScreens::Context, context_ );
 	CB_DEPIMPL(	bool, switchGuiRoot_ );
-	CB_DEPIMPL(	GuiBitmap*, pBackdrop_ );
 	CB_DEPIMPL(	MachGuiStartupScreens::Context, contextAfterFlic_ );
 	CB_DEPIMPL(	MachGuiStartupScreens::GameType, gameType_ );
 	CB_DEPIMPL(	PhysAbsoluteTime, contextTimer_ );
@@ -1247,8 +1244,6 @@ void MachGuiStartupScreens::switchContext( Context newContext )
 
 	// Clean up controls from last context
 	deleteAllChildren();
-	_DELETE( pBackdrop_ );
-	pBackdrop_ = NULL;
 	_DELETE( pCurrContext_ );
 	pCurrContext_ = NULL;
 
@@ -2234,10 +2229,9 @@ void MachGuiStartupScreens::updateCdAudio()
 
 void MachGuiStartupScreens::changeBackdrop( const char* image )
 {
-	CB_DEPIMPL(	GuiBitmap*, pBackdrop_ );
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image);
 
-	pBackdrop_ = _NEW( GuiBitmap( Gui::bitmap( SysPathName( image ) ) ) );
-	changed();
+    changed();
 }
 
 void MachGuiStartupScreens::cursorOn( bool on )
@@ -2281,19 +2275,6 @@ bool MachGuiStartupScreens::doHandleCharEvent( const DevButtonEvent& e )
 	DEBUG_STREAM( DIAG_NEIL, "MachGuiStartupScreens::doHandleCharEvent " << e.getChar() << std::endl );
 
 	return false;
-}
-
-const GuiBitmap& MachGuiStartupScreens::backdrop() const
-{
-	CB_DEPIMPL(	GuiBitmap*, pBackdrop_ );
-	CB_DEPIMPL(	MachGuiMessageBox*, pMsgBox_ );
-
-	PRE( pBackdrop_ );
-
-	if ( pMsgBox_ )
-		return pMsgBox_->image();
-
-	return *pBackdrop_;
 }
 
 void MachGuiStartupScreens::contextAnimation()
@@ -2690,6 +2671,8 @@ void MachGuiStartupScreens::displayMsgBox( uint stringResId )
 	GuiManager::instance().removeCharFocus();
 
 	pMsgBox_ = _NEW( MachGuiMessageBox( this, stringResId, MachGuiMessageBox::MBOK ) );
+
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
 }
 
 void MachGuiStartupScreens::displayMsgBox( uint stringResId, const GuiStrings& strs )
@@ -2709,6 +2692,8 @@ void MachGuiStartupScreens::displayMsgBox( uint stringResId, const GuiStrings& s
 	GuiManager::instance().removeCharFocus();
 
 	pMsgBox_ = _NEW( MachGuiMessageBox( this, stringResId, MachGuiMessageBox::MBOK, strs ) );
+
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
 }
 
 void MachGuiStartupScreens::displayMsgBox( uint stringResId, MachGuiMessageBoxResponder* pResponder )
@@ -2743,6 +2728,9 @@ void MachGuiStartupScreens::displayMsgBox( uint stringResId, MachGuiMessageBoxRe
 		pMsgBox_ = _NEW( MachGuiMessageBox( this, stringResId, MachGuiMessageBox::MBOKCANCEL ) );
 	}
 
+    // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp");
+
 	pMsgBoxResponder_ = pResponder;
 }
 
@@ -2765,6 +2753,10 @@ void MachGuiStartupScreens::displayMsgBox( uint stringResId, MachGuiMessageBoxRe
 	GuiManager::instance().removeCharFocus();
 
 	pMsgBox_ = _NEW( MachGuiMessageBox( this, stringResId, MachGuiMessageBox::MBOKCANCEL, strs ) );
+
+    // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp");
+
 	pMsgBoxResponder_ = pResponder;
 }
 
@@ -2787,6 +2779,10 @@ void MachGuiStartupScreens::displayOKMsgBox( uint stringResId, MachGuiMessageBox
 	GuiManager::instance().removeCharFocus();
 
 	pMsgBox_ = _NEW( MachGuiMessageBox( this, stringResId, MachGuiMessageBox::MBOK ) );
+
+    // This overload of displayMsgBox is the single-button one. Set msgbox to the single-button one
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
+
 	pMsgBoxResponder_ = pResponder;
 }
 
@@ -3484,31 +3480,30 @@ void MachGuiStartupScreens::initialiseVolumes()
 	}
 }
 
-int MachGuiStartupScreens::xMenuOffset() const
+//static
+int MachGuiStartupScreens::xMenuOffset()
 {
-	CB_MachGuiStartupScreens_DEPIMPL();
+    const RenDisplay::Mode& mode = RenDevice::current()->display()->currentMode();
 
-	const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
+    int xOffset = ( mode.width() - 640 ) / 2;
 
-	int xOffset = ( mode.width() - 640 ) / 2;
-
-	return xOffset;
+    return xOffset;
 }
 
-int MachGuiStartupScreens::yMenuOffset() const
+//static
+int MachGuiStartupScreens::yMenuOffset()
 {
-	CB_MachGuiStartupScreens_DEPIMPL();
+    const RenDisplay::Mode& mode = RenDevice::current()->display()->currentMode();
 
-	const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
+    int yOffset = ( mode.height() - 480 ) / 2;
 
-	int yOffset = ( mode.height() - 480 ) / 2;
-
-	return yOffset;
+    return yOffset;
 }
 
 void MachGuiStartupScreens::blitBackdrop( const Gui::Box& box, const Gui::Coord& coord )
 {
-	GuiPainter::instance().blit( backdrop(),
+    auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
+	GuiPainter::instance().blit( *backdrop,
 								 Gui::Box(  Gui::Coord( box.minCorner().x() - xMenuOffset(),
 														box.minCorner().y() - yMenuOffset() ),
 											box.maxCorner().x() - box.minCorner().x(),

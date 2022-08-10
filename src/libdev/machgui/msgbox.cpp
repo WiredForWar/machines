@@ -135,25 +135,35 @@ void MachGuiMessageBox::update()
 
 void MachGuiMessageBox::displayButtons( MachGuiStartupScreens* pStartupScreens )
 {
-	if ( mbType_ == MBOKCANCEL )
-	{
-		MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 348,324,491,355 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::BE_CANCEL, this ) );
-		MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 175,324,319,355 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK, this ) );
-		pOkBtn->hasFocus( true );
-		pCancelBtn->escapeControl( true );
-	}
-	else if ( mbType_ == MBOK )
-	{
-		MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 348,324,491,355 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK, this ) );
-		pOkBtn->hasFocus( true );
-	}
-	else if ( mbType_ == MBYESNO )
-	{
-		MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 348,324,491,355 ), IDS_MENUBTN_NO, MachGuiStartupScreens::BE_CANCEL, this ) );
-		MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 175,324,319,355 ), IDS_MENUBTN_YES, MachGuiStartupScreens::BE_OK, this ) );
-		pOkBtn->hasFocus( true );
-		pCancelBtn->escapeControl( true );
-	}
+    if ( mbType_ == MBOKCANCEL )
+    {
+        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(348, 324, 491, 355),
+                                                               IDS_MENUBTN_CANCEL, MachGuiStartupScreens::BE_CANCEL, this));
+        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(175, 324, 319, 355),
+                                                           IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK, this));
+        pOkBtn->hasFocus( true );
+        pCancelBtn->escapeControl( true );
+        pCancelBtn->setMsgBoxButton( true );
+        pOkBtn->setMsgBoxButton( true );
+    }
+    else if ( mbType_ == MBOK )
+    {
+        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(348, 324, 491, 355),
+                                                           IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK, this));
+        pOkBtn->hasFocus( true );
+        pOkBtn->setMsgBoxButton( true );
+    }
+    else if ( mbType_ == MBYESNO )
+    {
+        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(348, 324, 491, 355),
+                                                               IDS_MENUBTN_NO, MachGuiStartupScreens::BE_CANCEL, this));
+        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(175, 324, 319, 355),
+                                                           IDS_MENUBTN_YES, MachGuiStartupScreens::BE_OK, this));
+        pOkBtn->hasFocus( true );
+        pCancelBtn->escapeControl( true );
+        pCancelBtn->setMsgBoxButton( true );
+        pOkBtn->setMsgBoxButton( true );
+    }
 }
 
 const GuiBitmap& MachGuiMessageBox::image() const

@@ -41,10 +41,14 @@ MachGuiCtxBriefing::MachGuiCtxBriefing( MachGuiStartupScreens* pStartupScreens )
 	playedMail_( false ),
 	autoLoadGame_( false )
 {
-	pOkBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 131, 363, 301, 401 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_DUMMY_OK ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 132, 416, 301, 453 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
-	pHintsBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 357, 363, 526, 401 ), IDS_MENUBTN_HINTS, MachGuiStartupScreens::HINTS ) );
-	pObjectiveBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 356, 416, 526, 453 ), IDS_MENUBTN_OBJECTIVES, MachGuiStartupScreens::OBJECTIVES ) );
+	pOkBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(131, 363, 301, 401), IDS_MENUBTN_OK,
+                                     MachGuiStartupScreens::BE_DUMMY_OK));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(132, 416, 301, 453),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
+	pHintsBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(357, 363, 526, 401), IDS_MENUBTN_HINTS,
+                                        MachGuiStartupScreens::HINTS));
+	pObjectiveBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(356, 416, 526, 453),
+                                            IDS_MENUBTN_OBJECTIVES, MachGuiStartupScreens::OBJECTIVES));
 
 	pCancelBtn->escapeControl( true );
 

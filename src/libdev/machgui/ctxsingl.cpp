@@ -15,10 +15,14 @@ MachGuiCtxSinglePlayer::MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupSc
 :	MachGuiStartupScreenContext( pStartupScreens ),
 	animations_( pStartupScreens, SysPathName("gui/menu/si_anims.anm") )
 {
-  	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 401, 62,  588, 105 ), IDS_MENUBTN_CAMPAIGN, MachGuiStartupScreens::CAMPAIGN ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 401, 169, 588, 211 ), IDS_MENUBTN_SKIRMISH, MachGuiStartupScreens::SKIRMISH ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 401, 272, 588, 314 ), IDS_MENUBTN_LOADGAME, MachGuiStartupScreens::LOADGAME ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 401, 370, 588, 412 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+  	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(401, 62, 588, 105), IDS_MENUBTN_CAMPAIGN,
+                           MachGuiStartupScreens::CAMPAIGN));
+	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(401, 169, 588, 211), IDS_MENUBTN_SKIRMISH,
+                           MachGuiStartupScreens::SKIRMISH));
+	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(401, 272, 588, 314), IDS_MENUBTN_LOADGAME,
+                           MachGuiStartupScreens::LOADGAME));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(401, 370, 588, 412),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 82, 292, 262, 399 ), IDS_MENU_SINGLEPLAYER, "gui/menu/largefnt.bmp" ) );
 	pCancelBtn->escapeControl( true );
 

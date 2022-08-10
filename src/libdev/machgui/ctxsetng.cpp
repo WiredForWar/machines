@@ -164,8 +164,10 @@ MachGuiCtxSettings::MachGuiCtxSettings( MachGuiStartupScreens* pStartupScreens )
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
 	// Regular menu buttons...
-	MachGuiMenuButton* pOKBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 302, 420, 444, 451 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK ) );
-  	MachGuiMenuButton* pCancelBtn =_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 472, 420, 607, 451 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+	MachGuiMenuButton* pOKBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(302, 420, 444, 451),
+                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK));
+  	MachGuiMenuButton* pCancelBtn =_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(472, 420, 607, 451),
+                                                          IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pOKBtn->defaultControl( true );

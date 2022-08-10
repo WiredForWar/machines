@@ -63,13 +63,14 @@ public:
 
 	// Get the bitmap that is forming the backdrop for all the buttons etc ( different backdrop
 	// for each context ).
-	const GuiBitmap& backdrop() const;
+	// const GuiBitmap& backdrop() const;
 
 	// Returns the ButtonEvent enum for the last menu button that was pressed.
 	ButtonEvent lastButtonEvent() const;
 
 	// Update the startup screens backdrop. This is an image of a circuit board.
-	void changeBackdrop( const char* );
+    //TODO: Move to GuiRoot, rename more generically, change sig to (cc*, cc*)
+    void changeBackdrop( const char* ) __attribute((deprecated));
 
 	// Switch mouse cursor on/off
 	void cursorOn( bool );
@@ -221,10 +222,12 @@ public:
 	void initialiseVolumes();
 
 	// If menu screens are using something other than 640x480 then what is the top left offset...
-	int xMenuOffset() const;
-	int yMenuOffset() const;
+    // TODO: Move this to namespaced helper land, machgui::helpers::menu
+	static int xMenuOffset() __attribute((deprecated));
+	static int yMenuOffset() __attribute((deprecated));
 
-	void blitBackdrop( const Gui::Box&, const Gui::Coord& );
+    // TODO: Delete once refactor complete
+	void blitBackdrop( const Gui::Box&, const Gui::Coord& ) __attribute((deprecated));
 
 	// Focus capable controls allow for keyboard navigation of the menus
 	void addFocusCapableControl( MachGuiFocusCapableControl* );

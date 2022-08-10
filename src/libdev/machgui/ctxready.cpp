@@ -41,7 +41,7 @@ class MachGuiImReadyButton : public MachGuiMenuButton
 {
 public:
 	MachGuiImReadyButton( MachGuiStartupScreens* pParent, const Gui::Box& box, unsigned int stringId, MachGuiStartupScreens::ButtonEvent buttonEvent )
-	:	MachGuiMenuButton( pParent, box, stringId, buttonEvent )
+	: MachGuiMenuButton(pParent, pParent, box, stringId, buttonEvent)
 	{
 		ready_ = false;
 	}
@@ -96,7 +96,7 @@ class MachGuiChatButton : public MachGuiMenuButton
 {
 public:
 	MachGuiChatButton( MachGuiStartupScreens* pParent, const Gui::Box& box )
-	:	MachGuiMenuButton( pParent, box, IDS_MENUBTN_SENDCHAT, MachGuiStartupScreens::BE_OK ),
+	: MachGuiMenuButton(pParent, pParent, box, IDS_MENUBTN_SENDCHAT, MachGuiStartupScreens::BE_OK),
 		pStartupScreens_( pParent )
 	{}
 
@@ -153,13 +153,17 @@ MachGuiCtxImReady::MachGuiCtxImReady( MachGuiStartupScreens* pStartupScreens )
 
 	MachGuiMenuButton* pCancelBtn;
 	if( not NetNetwork::instance().isLobbiedGame() )
-		pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 379, 416, 574, 458 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+		pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(379, 416, 574, 458), IDS_MENUBTN_CANCEL,
+                                            MachGuiStartupScreens::EXIT));
 	else
-		pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 379, 416, 574, 458 ), IDS_MENUBTN_EXIT_TO_ZONE, MachGuiStartupScreens::EXIT ) );
+		pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(379, 416, 574, 458),
+                                            IDS_MENUBTN_EXIT_TO_ZONE, MachGuiStartupScreens::EXIT));
 
-	pSettingsButton_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 395, 40, 591, 82 ), IDS_MENUBTN_SETTINGS, MachGuiStartupScreens::SETTINGS ) );
+	pSettingsButton_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(395, 40, 591, 82),
+                                              IDS_MENUBTN_SETTINGS, MachGuiStartupScreens::SETTINGS));
 	pImReadyButton_ = _NEW( MachGuiImReadyButton( pStartupScreens, Gui::Box( 47, 399, 243, 442 ), IDS_MENUBTN_IMREADY, MachGuiStartupScreens::IMREADY ) );
-	pStartButton_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 380, 348, 576, 392 ), IDS_MENUBTN_START, MachGuiStartupScreens::START ) );
+	pStartButton_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(380, 348, 576, 392), IDS_MENUBTN_START,
+                                           MachGuiStartupScreens::START));
 	pCancelBtn->escapeControl( true );
 
 	// Chat window...

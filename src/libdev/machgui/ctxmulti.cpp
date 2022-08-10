@@ -66,8 +66,10 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer( MachGuiStartupScreens* pStartupScr
 :	MachGuiStartupScreenContext( pStartupScreens ),
 	animations_( pStartupScreens, SysPathName("gui/menu/sb_anims.anm") )
 {
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 56, 407, 246, 449 ), IDS_MENUBTN_OK, MachGuiStartupScreens::JOIN ) );
-	MachGuiMenuButton* pExitBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 311,407, 502, 449 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(56, 407, 246, 449), IDS_MENUBTN_OK,
+                           MachGuiStartupScreens::JOIN));
+	MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(311, 407, 502, 449),
+                                                         IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 	pExitBtn->escapeControl( true );
 	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/largefnt.bmp") );
 	pSingleLineEditBox_ = _NEW( MachGuiSingleLineEditBox( pStartupScreens, Gui::Box( 106, 34, 444, 34 + font.charHeight() ), font ) );

@@ -40,7 +40,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics( MachGuiStartupScreens* pStartupScree
 :	MachGuiStartupScreenContext( pStartupScreens ),
 	delayBarsGrowth_( 2 )
 {
-  	MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 425,406,576,439 ), IDS_MENUBTN_OK, MachGuiStartupScreens::EXIT ) );
+  	MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(425, 406, 576, 439),
+                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::EXIT));
 	pOkBtn->escapeControl( true );
 
 	pStartupScreens->changeBackdrop( "gui/menu/sq.bmp" );

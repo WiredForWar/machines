@@ -168,9 +168,12 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
 	// Standard buttons...
-	pOkBtn_ 	= _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 387, 111, 578, 154 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK ) );
-	pDeleteBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 387, 215, 578, 258 ), IDS_MENUBTN_DELETE, MachGuiStartupScreens::BE_DELETE ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 387, 312, 578, 356 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+	pOkBtn_ 	= _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 111, 578, 154), IDS_MENUBTN_OK,
+                                        MachGuiStartupScreens::BE_OK));
+	pDeleteBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 215, 578, 258), IDS_MENUBTN_DELETE,
+                                         MachGuiStartupScreens::BE_DELETE));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 312, 578, 356),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pOkBtn_->defaultControl( true );

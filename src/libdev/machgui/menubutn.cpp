@@ -18,32 +18,37 @@
 #include "render/device.hpp"
 #include "system/winapi.hpp"
 
-MachGuiMenuButton::MachGuiMenuButton( MachGuiStartupScreens* pParent, const Gui::Box& box, unsigned int stringId, MachGuiStartupScreens::ButtonEvent buttonEvent )
+MachGuiMenuButton::MachGuiMenuButton(GuiRoot* pRootParent, MachGuiStartupScreens* pParent, const Gui::Box& box,
+                                     unsigned int stringId,
+                                     MachGuiStartupScreens::ButtonEvent buttonEvent)
 :	GuiDisplayable( pParent, box ),
-	MachGuiFocusCapableControl( pParent ),
-	pStartupScreens_( pParent ),
-	stringId_( stringId ),
-	buttonEvent_( buttonEvent ),
-	flash_( false ),
-	highlighted_( false ),
-	disabled_( false )
+    MachGuiFocusCapableControl( pParent ),
+    pRootParent_( pRootParent),
+    pStartupScreens_( pParent ),
+    stringId_( stringId ),
+    highlighted_( false ),
+    flash_( false ),
+    disabled_( false ),
+    msgBoxButton_( false ),
+    buttonEvent_( buttonEvent )
 {
 
     TEST_INVARIANT;
 }
 
 MachGuiMenuButton::MachGuiMenuButton( 	MachGuiStartupScreens* pStartupScreens, const Gui::Box& box, unsigned int stringId, 
-										MachGuiStartupScreens::ButtonEvent buttonEvent, GuiDisplayable* pParent )
+                                        MachGuiStartupScreens::ButtonEvent buttonEvent, GuiDisplayable* pParent )
 :	GuiDisplayable( pParent, box ),
-	MachGuiFocusCapableControl( pStartupScreens ),
-	pStartupScreens_( pStartupScreens ),
-	stringId_( stringId ),
-	buttonEvent_( buttonEvent ),
-	flash_( false ),
-	highlighted_( false ),
-	disabled_( false )
+    MachGuiFocusCapableControl( pStartupScreens ),
+    pStartupScreens_( pStartupScreens ),
+    stringId_( stringId ),
+    highlighted_( false ),
+    flash_( false ),
+    disabled_( false ),
+    msgBoxButton_( false ),
+    buttonEvent_( buttonEvent )
 {
-
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
 }
 
@@ -121,74 +126,103 @@ void MachGuiMenuButton::doHandleMouseEnterEvent( const GuiMouseEvent& /*rel*/ )
 //virtual 
 void MachGuiMenuButton::doDisplay()
 {
-	static uint glowWidth = MachGui::buttonGlowBmp().width();
-	static uint glowHeight = MachGui::buttonGlowBmp().height();
+    static uint glowWidth = MachGui::buttonGlowBmp().width();
+    static uint glowHeight = MachGui::buttonGlowBmp().height();
 
-	ASSERT( glowWidth >= width(), "glow bitmap not wide enough" );
-	ASSERT( glowHeight >= height(), "glow bitmap not high enough" );
-	ASSERT( MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough" );
-	ASSERT( MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough" );
+    ASSERT( glowWidth >= width(), "glow bitmap not wide enough" );
+    ASSERT( glowHeight >= height(), "glow bitmap not high enough" );
+    ASSERT( MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough" );
+    ASSERT( MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough" );
 
-	uint glowX = ( glowWidth - width() ) / 2.0;
-	uint glowY = ( glowHeight - height() ) / 2.0;
+    uint glowX = ( glowWidth - width() ) / 2.0;
+    uint glowY = ( glowHeight - height() ) / 2.0;
 
-	// Draw background to button ( glow or normal backdrop ).
-	if ( flash_ or highlighted_ )
-	{
-		GuiPainter::instance().blit( 	MachGui::buttonGlowBmp(), 
-										Gui::Box( 	Gui::Coord( glowX, glowY ), 
-													width(), height() ), 
-										absoluteBoundary().minCorner() );
-	}
-	else
-	{
-		pStartupScreens_->blitBackdrop( absoluteBoundary(), 
-										absoluteBoundary().minCorner() );
-	}
+    // Draw background to button ( glow or normal backdrop ).
+    if ( flash_ or highlighted_ )
+    {
+        GuiPainter::instance().blit( 	MachGui::buttonGlowBmp(),
+                                        Gui::Box( 	Gui::Coord( glowX, glowY ),
+                                                    width(), height() ),
+                                        absoluteBoundary().minCorner() );
+    }
+    else
+    {
+        if (msgBoxButton_)
+        {
+            auto msgBoxBackdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("msgbox");
+            pRootParent_->getSharedBitmaps()->blitNamedBitmapFromArea(
+                    msgBoxBackdrop,
+                    absoluteBoundary(),
+                    absoluteBoundary().minCorner(),
+                    [](Gui::Box box) {
+                        return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                                   box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                        box.maxCorner().x() - box.minCorner().x(),
+                                        box.maxCorner().y() - box.minCorner().y()
+                        );
+                    });
+        }
+        else
+        {
+            auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
+            pRootParent_->getSharedBitmaps()->blitNamedBitmapFromArea(
+                    backdrop,
+                    absoluteBoundary(),
+                    absoluteBoundary().minCorner(),
+                    [](Gui::Box box) {
+                        return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                                   box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                        box.maxCorner().x() - box.minCorner().x(),
+                                        box.maxCorner().y() - box.minCorner().y()
+                        );
+                    });
+        }
 
-	GuiBmpFont darkfont( GuiBmpFont::getFont( "gui/menu/largdfnt.bmp" ) );
-	GuiBmpFont lightfont( GuiBmpFont::getFont( "gui/menu/largefnt.bmp" ) );
-	GuiBmpFont focusfont( GuiBmpFont::getFont( "gui/menu/largyfnt.bmp" ) );
+    }
 
-	GuiResourceString str( stringId_ );
-	string text = str.asString();
+    GuiBmpFont darkfont( GuiBmpFont::getFont( "gui/menu/largdfnt.bmp" ) );
+    GuiBmpFont lightfont( GuiBmpFont::getFont( "gui/menu/largefnt.bmp" ) );
+    GuiBmpFont focusfont( GuiBmpFont::getFont( "gui/menu/largyfnt.bmp" ) );
 
-	size_t textWidth = darkfont.textWidth( text );
-	size_t textHeight = darkfont.charHeight();
+    GuiResourceString str( stringId_ );
+    string text = str.asString();
 
-	size_t textX = absoluteBoundary().minCorner().x() + ( width() - textWidth ) / 2.0;
-	size_t textY = absoluteBoundary().minCorner().y() + ( height() - textHeight ) / 2.0;
+    size_t textWidth = darkfont.textWidth( text );
+    size_t textHeight = darkfont.charHeight();
 
-	// Draw text
-	if ( flash_ )
-	{
-		darkfont.underline( true );
-		darkfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
-	}
-	else if ( highlighted_ )
-	{
-		darkfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
-	}
-	else
-	{
-		if ( isFocusControl() )
-		{
-			focusfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
-		}
-		else
-		{
-			lightfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
-		}
-	}
+    size_t textX = absoluteBoundary().minCorner().x() + ( width() - textWidth ) / 2.0;
+    size_t textY = absoluteBoundary().minCorner().y() + ( height() - textHeight ) / 2.0;
 
-	// Show disabled button if necessary
-	if ( disabled_ )
-	{
-		GuiPainter::instance().blit( 	MachGui::buttonDisableBmp(), 
-										Gui::Box( 	Gui::Coord( 0, 0 ), 
-													width(), height() ), 
-										absoluteBoundary().minCorner() );
-	}
+    // Draw text
+    if ( flash_ )
+    {
+        darkfont.underline( true );
+        darkfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+    }
+    else if ( highlighted_ )
+    {
+        darkfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+    }
+    else
+    {
+        if ( isFocusControl() )
+        {
+            focusfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+        }
+        else
+        {
+            lightfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+        }
+    }
+
+    // Show disabled button if necessary
+    if ( disabled_ )
+    {
+        GuiPainter::instance().blit( 	MachGui::buttonDisableBmp(),
+                                        Gui::Box( 	Gui::Coord( 0, 0 ),
+                                                    width(), height() ),
+                                        absoluteBoundary().minCorner() );
+    }
 
 }
 

@@ -106,8 +106,10 @@ MachGuiCtxOptions::MachGuiCtxOptions( MachGuiStartupScreens* pStartupScreens )
 	MachGuiOptionsLayout screenLayout( SysPathName( "gui/layout/options.dat" ) );
 
  	// Create buttons
- 	MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 85, 377, 291, 423 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_DUMMY_OK ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 337,377, 543, 423 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::BE_DUMMY_EXIT ) );
+ 	MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(85, 377, 291, 423),
+                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::BE_DUMMY_OK));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(337, 377, 543, 423),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::BE_DUMMY_EXIT));
 	pCancelBtn->escapeControl( true );
 	pOkBtn->defaultControl( true );
 
