@@ -14,23 +14,23 @@
 
 #include "base/base.hpp"
 #include "gui/scrolist.hpp"
-
-class MachGuiStartupScreens;
+#include "gui/root.hpp"
 
 class MachGuiScrollableText	: public GuiSimpleScrollableList
 // Canonical form revoked
 {
 public:
-    MachGuiScrollableText( 	MachGuiStartupScreens* pParent, const Gui::Box& );
-    MachGuiScrollableText( 	MachGuiStartupScreens* pParent, const Gui::Box&, uint stringId );
-	MachGuiScrollableText( 	MachGuiStartupScreens* pParent, const Gui::Box&, const string& text );
-	MachGuiScrollableText( 	MachGuiStartupScreens* pParent, const Gui::Box&, uint columnWidth, const string& text );
-	virtual ~MachGuiScrollableText();
+    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box);
+    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint stringId );
+    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, const string& text );
+    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint columnWidth, const string& text );
+    virtual ~MachGuiScrollableText();
 
-	void setText( uint stringId );
-	void setText( const string& );
+    void setText( uint stringId );
+    void setText( const string& );
 
-	virtual void doDisplay();
+    virtual void doDisplay() override;
+
 
     void CLASS_INVARIANT;
 
@@ -39,8 +39,9 @@ private:
 
     MachGuiScrollableText( const MachGuiScrollableText& );
     MachGuiScrollableText& operator =( const MachGuiScrollableText& );
-    
-    MachGuiStartupScreens* pStartupScreens_;	
+
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
 };
 
 
