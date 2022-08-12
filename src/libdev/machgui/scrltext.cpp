@@ -70,11 +70,11 @@ void MachGuiScrollableText::setText( const string& text )
 
 		if ( strncasecmp(&lineOfText.c_str()[0], "<w>",3) == 0 )
 		{
-			_NEW( MachGuiText( this, pStartupScreens_, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp" ) );
+			_NEW(MachGuiText(this, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp"));
 		}
 		else
 		{
-			_NEW( MachGuiText( this, pStartupScreens_, width(), lineOfText ) );
+			_NEW(MachGuiText(this, width(), lineOfText));
 		}
 	}
 

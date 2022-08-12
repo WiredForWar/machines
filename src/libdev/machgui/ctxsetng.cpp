@@ -476,7 +476,7 @@ void MachGuiCtxSettings::addSetting( MachGuiDropDownListBoxCreator*& pCreator, u
 
 	GuiResourceString labelStr( labelStrId );
 	GuiStrings strings;
-	MachGuiText* pText = _NEW( MachGuiText( pSettingsList_, pStartupScreens_, width, labelStr.asString() ) );
+	MachGuiText* pText = _NEW(MachGuiText(pSettingsList_, width, labelStr.asString()));
 	pText->textOffset( 1, 1 );
 
    	while( numStrs )

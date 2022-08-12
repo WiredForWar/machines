@@ -509,7 +509,7 @@ MachGuiText* MachGuiCtxSkirmish::addSetting( bool numPlayersDropDown, MachGuiDro
 	GuiResourceString labelStr( labelStrId );
 	GuiStrings strings;
     strings.reserve( numStrs + 1 );
-	MachGuiText* pText = _NEW( MachGuiText( pSettingsList_, pStartupScreens_, width, labelStr.asString() ) );
+	MachGuiText* pText = _NEW(MachGuiText(pSettingsList_, width, labelStr.asString()));
 	pText->textOffset( 1, 1 );
 
    	while( numStrs )

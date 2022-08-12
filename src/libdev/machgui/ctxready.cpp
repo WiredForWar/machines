@@ -626,37 +626,39 @@ void MachGuiCtxImReady::updateGameSettings()
 	string whiteFont("gui/menu/smalwfnt.bmp");
 
 	// Show read only game settings...
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, fogOfWarStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().fogOfWarStr(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, resourcesStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().resourcesStr(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, startingResourcesStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().startingResourcesStr(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, startingPositionStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().startingPositionStr(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, techLevelStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().techLevelStr(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, mapSizeStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().scenario()->planet().system().menuString(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, broadcastAlliancesStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().broadcastAlliancesStr(), whiteFont ) );
- 	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, disableFirstPersonStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, startupData().disableFirstPersonStr(), whiteFont ) );
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, fogOfWarStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().fogOfWarStr(), whiteFont));
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, resourcesStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().resourcesStr(), whiteFont));
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, startingResourcesStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingResourcesStr(), whiteFont));
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, startingPositionStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingPositionStr(), whiteFont));
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, techLevelStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().techLevelStr(), whiteFont));
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, mapSizeStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().scenario()->planet().system().menuString(),
+                     whiteFont));
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, broadcastAlliancesStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().broadcastAlliancesStr(), whiteFont));
+ 	_NEW(MachGuiText(pReadOnlySettings_, textWidth, disableFirstPersonStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().disableFirstPersonStr(), whiteFont));
 
 	// Following settings are split across two lines
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, victoryConditionStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, "" ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, SETTINGS_MAXX-SETTINGS_MINX, " " + startupData().victoryConditionStr(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, "" ) );
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, victoryConditionStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
+	_NEW(MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX, " " + startupData().victoryConditionStr()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
 
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, terrainTypeStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, "" ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, SETTINGS_MAXX-SETTINGS_MINX, " " + startupData().scenario()->planet().menuString(), whiteFont ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, "" ) );
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, terrainTypeStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
+	_NEW(MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX,
+                     " " + startupData().scenario()->planet().menuString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
 
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, textWidth, scenarioStr.asString() ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, valueWidth, "" ) );
-	_NEW( MachGuiText( pReadOnlySettings_, pStartupScreens_, SETTINGS_MAXX-SETTINGS_MINX, " " + startupData().scenario()->menuString(), whiteFont ) );
+	_NEW(MachGuiText(pReadOnlySettings_, textWidth, scenarioStr.asString()));
+	_NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
+	_NEW(MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX, " " + startupData().scenario()->menuString()));
 
 	pReadOnlySettings_->childrenUpdated();
 };
