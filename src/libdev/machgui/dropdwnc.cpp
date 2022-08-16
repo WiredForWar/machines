@@ -19,13 +19,14 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 																const GuiStrings& availText )
 : 	GuiDisplayable( pParent, Gui::Box(0,0,width,reqHeight() ) ),
 	MachGuiFocusCapableControl( pStartupScreens ),
+	highlighted_( false ),
 	strings_( availText ),
 	pStartupScreens_( pStartupScreens ),
-	highlighted_( false ),
 	whiteFont_( false ),
 	border_( false )
 {
 	text_ = availText[0];
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
@@ -37,13 +38,14 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 																bool whiteFont )
 : 	GuiDisplayable( pParent, Gui::Box( 0,0,width,reqHeight() ) ),
 	MachGuiFocusCapableControl( pStartupScreens ),
+	highlighted_( false ),
 	strings_( availText ),
 	pStartupScreens_( pStartupScreens ),
-	highlighted_( false ),
 	whiteFont_( whiteFont ),
 	border_( false )
 {
 	text_ = availText[0];
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
@@ -57,14 +59,15 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 																bool border )
 : 	GuiDisplayable( pParent, Gui::Box( relCoord, width, reqHeight( border ) ) ),
 	MachGuiFocusCapableControl( pStartupScreens ),
+	highlighted_( false ),
 	strings_( availText ),
 	pStartupScreens_( pStartupScreens ),
-	highlighted_( false ),
 	whiteFont_( whiteFont ),
 	border_( border )
 {
 	PRE(availText.size() > 0);
 	text_ = availText[0];
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
@@ -229,9 +232,18 @@ void MachGuiDropDownListBoxCreator::doDisplay()
 		}
 		else
 		{
-			// Blit background to list box item
-			pStartupScreens_->blitBackdrop( absoluteBoundary(),
-											absoluteBoundary().minCorner() );
+            auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
+            pRootParent_->getSharedBitmaps()->blitNamedBitmapFromArea(
+                    backdrop,
+                    absoluteBoundary(),
+                    absoluteBoundary().minCorner(),
+                    [](Gui::Box box) {
+                        return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                                   box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                        box.maxCorner().x() - box.minCorner().x(),
+                                        box.maxCorner().y() - box.minCorner().y()
+                        );
+                    });
 
 			// Draw list box item text
 			if ( whiteFont_ )

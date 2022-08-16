@@ -16,6 +16,7 @@
 #include "ctl/vector.hpp"
 #include "gui/displaya.hpp"
 #include "gui/restring.hpp"
+#include "gui/root.hpp"
 #include "machgui/dropdown.hpp"
 
 class MachGuiStartupScreens;
@@ -29,6 +30,7 @@ public:
 	typedef void* DropDownListBoxItem;
 	typedef ctl_vector< DropDownListBoxItem > DropDownListBoxItems;
 
+    //TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS still needed for
     MachGuiDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, int width, const GuiStrings& availText );
 	MachGuiDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, int width, const GuiStrings& availText, bool whiteFont );
     MachGuiDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, const Gui::Coord& relCoord, int width, const GuiStrings& availText, bool whiteFont, bool border );
@@ -84,14 +86,19 @@ private:
 	GuiString text_;
 	DropDownListBoxItems items_;
 	DropDownListBoxItem item_;
-	MachGuiStartupScreens* pStartupScreens_;
+    //TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...
+	MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
 	bool whiteFont_;
 	bool border_;
+
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
 };
 
 class MachGuiDropDownList : public MachGuiDropDownListBox
 {
 public:
+    //TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control & auto-delete stuff is what MGSS still needed for
 	MachGuiDropDownList(MachGuiStartupScreens* pParent, const Gui::Box& box, 
 					    size_t horizontalSpacing, size_t verticalSpacing,
 						size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
