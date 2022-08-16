@@ -12,8 +12,9 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 
-MachGuiChatWindow::MachGuiChatWindow( MachGuiStartupScreens* pStartupScreens, const Gui::Box& box )
+MachGuiChatWindow::MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens* pStartupScreens, const Gui::Box& box)
 :	GuiDisplayable( pStartupScreens, box ) ,
+    pRootParent_( pRootParent),
 	pStartupScreens_( pStartupScreens )
 {
 	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smallfnt.bmp") );
@@ -79,8 +80,18 @@ ostream& operator <<( ostream& o, const MachGuiChatWindow& t )
 void MachGuiChatWindow::doDisplay()
 {
 	// Blit background to list box item
-	pStartupScreens_->blitBackdrop( absoluteBoundary(), 
-									absoluteBoundary().minCorner() );
+    auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pRootParent_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            absoluteBoundary(),
+            absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smallfnt.bmp") );
 
