@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-cmake:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        include:
+        - os: ubuntu-20.04
+          tests: true
+          build-type: Release
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Prepare the system (Linux)
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        sudo scripts/prepare-system.sh
+
+    - name: Configure
+      run: cmake -B ${{github.workspace}}/build -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }}
+
+    - name: Test
+      if: matrix.tests
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{ matrix.build-type }}
+
+    - name: Package
+      working-directory: ${{github.workspace}}/build
+      run: cpack -C ${{ matrix.build-type }}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        path: ${{github.workspace}}/build/machines-*.zip
