@@ -1,6 +1,10 @@
 #include <iostream>
 #include "base/prepost.hpp"
 
+#ifdef NDEBUG
+// Overrides are not needed for release builds
+#else
+
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 void BaseAssertion::preconditionFail(const char* exprStr, const char* file, const char* line)
@@ -38,3 +42,5 @@ void BaseAssertion::invariantFail(const char* exprStr, const char* file, const c
 }
 
 #pragma GCC diagnostic warning "-Wunused-parameter"
+
+#endif // NDEBUG
