@@ -177,12 +177,10 @@ set_target_properties(machines planeted PROPERTIES
     COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
 )
 
-target_link_libraries(machines -static-libgcc -static-libstdc++)
-target_link_libraries(planeted -static-libgcc -static-libstdc++)
 target_link_libraries(machines libs libs_mach_gui libaudio ${LIBS} )
 target_link_libraries(planeted libs libaudio ${LIBS} )
 
-target_link_libraries (machines -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic)
-target_link_libraries (planeted -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic)
-
-
+if(TOOLCHAIN_EXTRA_FLAGS)
+    target_link_libraries (machines ${TOOLCHAIN_EXTRA_FLAGS})
+    target_link_libraries (planeted ${TOOLCHAIN_EXTRA_FLAGS})
+endif()
