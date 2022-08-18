@@ -50,8 +50,7 @@ endif()
 set(LIBS
     ${LIBS}
     #pthread
-    #SDL2
-    ${SDL2_LIBRARY}
+    SDL2::SDL2
     #GL
     ${OPENGL_LIBRARY}
     #GLEW
@@ -86,7 +85,6 @@ set(LOCAL_INCLUDES
 
 set(SYSTEM_INCLUDES
     /usr/include/freetype2
-    ${SDL2_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
     ${GLEW_INCLUDE_PATH}
     ${LIBSNDFILE_INCLUDE_DIR}

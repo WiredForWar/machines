@@ -2,7 +2,7 @@
 # This module defines
 # SDL2_LIBRARY, the name of the library to link against
 # SDL2_FOUND, if false, do not try to link to SDL2
-# SDL2_INCLUDE_DIR, where to find SDL.h
+# SDL2_INCLUDE_DIRS, where to find SDL.h
 #
 # This module responds to the the flag:
 # SDL2_BUILDING_LIBRARY
@@ -76,7 +76,7 @@ SET(SDL2_SEARCH_PATHS
 	/opt
 )
 
-FIND_PATH(SDL2_INCLUDE_DIR SDL2/SDL.h
+FIND_PATH(SDL2_INCLUDE_DIRS SDL2/SDL.h
 	HINTS
 	$ENV{SDL2DIR}
 	PATH_SUFFIXES include/SDL2 include
@@ -92,7 +92,7 @@ FIND_LIBRARY(SDL2_LIBRARY_TEMP
 )
 
 IF(NOT SDL2_BUILDING_LIBRARY)
-	IF(NOT ${SDL2_INCLUDE_DIR} MATCHES ".framework")
+	IF(NOT ${SDL2_INCLUDE_DIRS} MATCHES ".framework")
 		# Non-OS X framework versions expect you to also dynamically link to
 		# SDL2main. This is mainly for Windows and OS X. Other (Unix) platforms
 		# seem to provide SDL2main for compatibility even though they don't
@@ -104,7 +104,7 @@ IF(NOT SDL2_BUILDING_LIBRARY)
 			PATH_SUFFIXES lib64 lib
 			PATHS ${SDL2_SEARCH_PATHS}
 		)
-	ENDIF(NOT ${SDL2_INCLUDE_DIR} MATCHES ".framework")
+	ENDIF(NOT ${SDL2_INCLUDE_DIRS} MATCHES ".framework")
 ENDIF(NOT SDL2_BUILDING_LIBRARY)
 
 # SDL2 may require threads on your system.
@@ -160,4 +160,14 @@ ENDIF(SDL2_LIBRARY_TEMP)
 
 INCLUDE(FindPackageHandleStandardArgs)
 
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2 REQUIRED_VARS SDL2_LIBRARY SDL2_INCLUDE_DIR)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2 REQUIRED_VARS SDL2_LIBRARY SDL2_INCLUDE_DIRS)
+
+if(NOT TARGET SDL2::SDL2)
+    add_library(SDL2::SDL2 INTERFACE IMPORTED)
+    if(SDL2_image_INCLUDE_DIRS)
+        set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
+                              "${SDL2_INCLUDE_DIRS}")
+    endif()
+    set_property(TARGET SDL2::SDL2 PROPERTY INTERFACE_LINK_LIBRARIES
+                 "${SDL2_LIBRARY}")
+endif()
