@@ -11,14 +11,6 @@ TEST(SysPathNameTests, NoArgsIsUnsetTest) {
     ASSERT_EQ(false, noArgsConstructed.set());
 }
 
-TEST(SysPathNameTests, NoArgsPathDoesntExist) {
-    SysPathName noArgsConstructed = SysPathName();
-
-    ASSERT_EQ(false, noArgsConstructed.existsAsDirectory());
-    ASSERT_EQ(false, noArgsConstructed.existsAsFile());
-    ASSERT_EQ(false, noArgsConstructed.insensitiveExistsAsFile());
-}
-
 TEST(SysPathNameTests, EmptyPathDoesntExist) {
     const char* blankPath = "";
     auto emptyPath = SysPathName{ blankPath };
