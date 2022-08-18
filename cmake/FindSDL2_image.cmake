@@ -88,7 +88,7 @@
 # (To distribute this file outside of CMake, substitute the full
 # License text for the above reference.)
 
-find_path(SDL2_image_INCLUDE_DIR SDL2/SDL_image.h
+find_path(SDL2_image_INCLUDE_DIRS SDL2/SDL_image.h
 	HINTS
 	${SDL2}
 	$ENV{SDL2}
@@ -149,13 +149,22 @@ find_path(SDL2_image_INCLUDE_DIR SDL2/SDL_image.h
 set(SDL2_image_FOUND FALSE)
 if(SDL2_image_LIBRARY_TEMP)
     # Set the final string here so the GUI reflects the final state.
-    set(SDL2_image_LIBRARY ${SDL2_image_LIBRARY_TEMP} CACHE STRING "Where the SDL2_image Library can be found")
+    set(SDL2_image_LIBRARIES ${SDL2_image_LIBRARY_TEMP} CACHE STRING "Where the SDL2_image Library can be found")
     # Set the temp variable to INTERNAL so it is not seen in the CMake GUI
     set(SDL2_image_LIBRARY_TEMP "${SDL2_image_LIBRARY_TEMP}" CACHE INTERNAL "")
     set(SDL2_image_FOUND TRUE)
-endif(SDL2_image_LIBRARY_TEMP)
+endif()
 
 include(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(SDL2_image REQUIRED_VARS SDL2_image_LIBRARY SDL2_image_INCLUDE_DIR)
+find_package_handle_standard_args(SDL2_image REQUIRED_VARS SDL2_image_LIBRARIES SDL2_image_INCLUDE_DIRS)
 
+if(NOT TARGET SDL2_image::SDL2_image)
+    add_library(SDL2_image::SDL2_image INTERFACE IMPORTED)
+    if(SDL2_image_INCLUDE_DIRS)
+        set_target_properties(SDL2_image::SDL2_image PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
+                              "${SDL2_image_INCLUDE_DIRS}")
+    endif()
+    set_property(TARGET SDL2_image::SDL2_image PROPERTY INTERFACE_LINK_LIBRARIES
+                 "${SDL2_image_LIBRARIES}")
+endif()

@@ -55,8 +55,7 @@ set(LIBS
     ${OPENGL_LIBRARY}
     #GLEW
     ${GLEW_LIBRARY}
-    #SDL2_image
-    ${SDL2_IMAGE_LIBRARY}
+    SDL2_image::SDL2_image
     #alure-static
     ${ALURE_LIBRARY}
     #openal
@@ -85,7 +84,6 @@ set(LOCAL_INCLUDES
 
 set(SYSTEM_INCLUDES
     /usr/include/freetype2
-    ${SDL2_IMAGE_INCLUDE_DIR}
     ${GLEW_INCLUDE_PATH}
     ${LIBSNDFILE_INCLUDE_DIR}
     ${ALURE_INCLUDE_DIR}
