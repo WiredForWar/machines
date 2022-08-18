@@ -243,7 +243,7 @@ enum PerConstructor { PERSISTENCE_CONSTRUCTOR };
 
 #define	PER_POINTER_WRITE( className )							\
 {											                    \
-    void* pMostDerivedOb = pOb ? pOb->perPDerivedClass() : (void*)pOb;          \
+    const void* pMostDerivedOb = pOb ? pOb->perPDerivedClass() : static_cast< const void* >(pOb);          \
     const char* mostDerivedClassName =  pOb ? pOb->perMostDerivedClassName() : NULL;    \
     if( Persistence::instance().writePointerPre(                                    \
       ostr, _STATIC_CAST( const void*, pOb ), #className, pMostDerivedOb, mostDerivedClassName ) == Persistence::WRITE_OBJECT ) \
