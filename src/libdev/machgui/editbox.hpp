@@ -7,34 +7,33 @@
     MachGuiSingleLineEditBox
 
     Constructs a GuiDisplayable that displays text on a single line as it is
-	typed in by the user. Note that you must call GuiManager::instance().setCharFocus( this ) in
-	order for this EditBox to get character messages ( WM_CHAR ).
+    typed in by the user. Note that you must call GuiManager::instance().setCharFocus( this ) in
+    order for this EditBox to get character messages ( WM_CHAR ).
 */
 
 #ifndef _MACHGUI_EDITBOX_HPP
 #define _MACHGUI_EDITBOX_HPP
 
 #include "base/base.hpp"
+#include "gui/root.hpp"
 #include "gui/editbox.hpp"
-
-class MachGuiStartupScreens;
 
 class MachGuiSingleLineEditBox : public GuiSingleLineEditBox
 {
 public:
-	MachGuiSingleLineEditBox( MachGuiStartupScreens* pStartupScreens, const Gui::Box& box, const GuiBmpFont& font );
-	virtual ~MachGuiSingleLineEditBox();
+    MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font );
+    virtual ~MachGuiSingleLineEditBox();
 
-	void clearTextOnNextChar( bool );
-	bool clearTextOnNextChar() const;
+    void clearTextOnNextChar( bool );
+    bool clearTextOnNextChar() const;
 
-	// Do/Don't allow space characters to be entered at beginning of edit box.
-	void ignoreSpaceAtBeginning( bool );
+    // Do/Don't allow space characters to be entered at beginning of edit box.
+    void ignoreSpaceAtBeginning( bool );
 
 protected:
-	virtual void drawBackground();
-	virtual bool doHandleCharEvent( const GuiCharEvent& e );
-	
+    virtual void drawBackground() override;
+    virtual bool doHandleCharEvent( const GuiCharEvent& e ) override;
+
 private:
     void CLASS_INVARIANT;
 
@@ -43,9 +42,11 @@ private:
     MachGuiSingleLineEditBox( const MachGuiSingleLineEditBox& );
     MachGuiSingleLineEditBox& operator =( const MachGuiSingleLineEditBox& );
 
-	MachGuiStartupScreens* pStartupScreens_;
-	bool clearTextOnNextChar_;
-	bool ignoreSpaceAtBeginning_;
+    bool clearTextOnNextChar_;
+    bool ignoreSpaceAtBeginning_;
+
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
 };
 
 

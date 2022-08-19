@@ -13,13 +13,12 @@
 unsigned char pPromptText1[] = { 87, 244, 105, 128, 48, 182, 149, 151, 72, 203, 222, 59, 150, 19, 218, 139, 154, 243, 40, 190, 242, 54, 243, 50, 98, 159, 84, 250, 37, 136, 151, 150, 0 };
 unsigned char pPromptText8[] = { 4, 212, 167, 27, 173, 11, 155, 126, 58, 37, 114, 151, 128 };
 
-MachGuiSingleLineEditBox::MachGuiSingleLineEditBox( MachGuiStartupScreens* pStartupScreens, const Gui::Box& box, const GuiBmpFont& font )
-:	GuiSingleLineEditBox( pStartupScreens, box, font ),
-	pStartupScreens_( pStartupScreens ),
-	clearTextOnNextChar_( false ),
-	ignoreSpaceAtBeginning_( true )
+MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font )
+:	GuiSingleLineEditBox(pParent, box, font ),
+    clearTextOnNextChar_( false ),
+    ignoreSpaceAtBeginning_( true )
 {
-
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
 }
 
@@ -32,8 +31,18 @@ MachGuiSingleLineEditBox::~MachGuiSingleLineEditBox()
 //virtual 
 void MachGuiSingleLineEditBox::drawBackground()
 {
-	pStartupScreens_->blitBackdrop( absoluteBoundary(), 
-									absoluteBoundary().minCorner() );
+    auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pRootParent_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            absoluteBoundary(),
+            absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 }
 
 void MachGuiSingleLineEditBox::CLASS_INVARIANT
@@ -44,8 +53,8 @@ void MachGuiSingleLineEditBox::CLASS_INVARIANT
 ostream& operator <<( ostream& o, const MachGuiSingleLineEditBox& t )
 {
 
-    o << "MachGuiSingleLineEditBox " << (void*)&t << " start" << std::endl;
-    o << "MachGuiSingleLineEditBox " << (void*)&t << " end" << std::endl;
+    o << "MachGuiSingleLineEditBox " << reinterpret_cast<void*>( const_cast<MachGuiSingleLineEditBox*>(&t) ) << " start" << std::endl;
+    o << "MachGuiSingleLineEditBox " << reinterpret_cast<void*>( const_cast<MachGuiSingleLineEditBox*>(&t) ) << " end" << std::endl;
 
     return o;
 }
@@ -53,35 +62,35 @@ ostream& operator <<( ostream& o, const MachGuiSingleLineEditBox& t )
 //virtual 
 bool MachGuiSingleLineEditBox::doHandleCharEvent( const GuiCharEvent& e )
 {
-	DEBUG_STREAM( DIAG_NEIL, "MachGuiSingleLineEditBox::doHandleCharEvent " << e.getChar() << " " << (int)e.getChar() << std::endl );
+    DEBUG_STREAM( DIAG_NEIL, "MachGuiSingleLineEditBox::doHandleCharEvent " << e.getChar() << " " << static_cast<int>(e.getChar()) << std::endl );
 
-	if ( ignoreSpaceAtBeginning_ and leftText() == "" and e.getChar() == ' ' )
-	{
-		return true;
-	}
-	
-	if ( clearTextOnNextChar_ )
-	{
-		text( "" );
-		clearTextOnNextChar_ = false;
-	}	
+    if ( ignoreSpaceAtBeginning_ and leftText().empty() and e.getChar() == ' ' )
+    {
+        return true;
+    }
 
-	return GuiSingleLineEditBox::doHandleCharEvent( e );
+    if ( clearTextOnNextChar_ )
+    {
+        text( "" );
+        clearTextOnNextChar_ = false;
+    }
+
+    return GuiSingleLineEditBox::doHandleCharEvent( e );
 }
 
 void MachGuiSingleLineEditBox::clearTextOnNextChar( bool newVal )
 {
-	clearTextOnNextChar_ = newVal;
+    clearTextOnNextChar_ = newVal;
 }
 
 bool MachGuiSingleLineEditBox::clearTextOnNextChar() const
 {
-	return clearTextOnNextChar_;
+    return clearTextOnNextChar_;
 }
 
 void MachGuiSingleLineEditBox::ignoreSpaceAtBeginning( bool ignore )
 {
-	ignoreSpaceAtBeginning_ = ignore;
+    ignoreSpaceAtBeginning_ = ignore;
 }
 
 
