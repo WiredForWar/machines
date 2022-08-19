@@ -17,20 +17,10 @@ GuiRootSharedBitmaps::~GuiRootSharedBitmaps()
     sharedBitmaps_.clear();
 }
 
-void GuiRootSharedBitmaps::createUpdateNamedBitmap(const char* name, const char* image)
-{
-    createUpdateNamedBitmap(std::string(name), std::string(image));
-}
-
 void GuiRootSharedBitmaps::createUpdateNamedBitmap(const std::string& name, const std::string& image)
 {
     loadSharedBitmap(image);
     namedBitmaps_[name] = image;
-}
-
-void GuiRootSharedBitmaps::loadSharedBitmap(const char *image)
-{
-    loadSharedBitmap(std::string(image));
 }
 
 void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& image)
@@ -41,11 +31,6 @@ void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& image)
     {
         sharedBitmaps_[image] = std::make_shared<GuiBitmap>( Gui::bitmap( SysPathName( image ) ) );
     }
-}
-
-std::shared_ptr<GuiBitmap> GuiRootSharedBitmaps::getNamedBitmap(const char* name) const noexcept
-{
-    return getNamedBitmap(std::string(name));
 }
 
 std::shared_ptr<GuiBitmap> GuiRootSharedBitmaps::getNamedBitmap(const std::string& name) const noexcept
@@ -62,11 +47,6 @@ std::shared_ptr<GuiBitmap> GuiRootSharedBitmaps::getNamedBitmap(const std::strin
     }
 
     return std::shared_ptr<GuiBitmap>(getSharedBitmap(sharedBitmapsKey));
-}
-
-std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const char* image) const noexcept
-{
-    return getSharedBitmap(std::string(image));
 }
 
 std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string& image) const noexcept
