@@ -184,7 +184,7 @@ if(BUILD_TESTS)
     FetchContent_Declare(
         googletest
         # Specify the commit you depend on and update it regularly.
-        URL https://github.com/google/googletest/archive/refs/tags/release-1.10.0.zip
+        URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
     )
 
     FetchContent_GetProperties(googletest)
