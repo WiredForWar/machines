@@ -67,9 +67,11 @@ set(LIBS
     ${FREETYPE_LIBRARY}
     #enet
     ${ENET_LIBRARY}
-    ffmpeg::swscale
 )
 
+if(TARGET ffmpeg::swscale)
+    list(APPEND LIBS ffmpeg::swscale)
+endif()
 set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
 
 

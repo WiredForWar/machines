@@ -135,8 +135,9 @@ find_package(OpenAL REQUIRED)
 find_package(Alure REQUIRED)
 find_package(ENet REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(SWScale REQUIRED)
 
+find_package(SWScale)
+set(USE_SWSCALE ${SWScale_FOUND})
 
 if(NOT DEV_BUILD)
     add_definitions(-DNDEBUG)

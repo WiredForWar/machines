@@ -1,5 +1,7 @@
 #include "ani/AniSmackerCutscene.hpp"
 
+#include "ani/FrameScaler.hpp"
+
 AniSmackerCutscene::AniSmackerCutscene(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, size_t fsWidth, size_t fsHeight)
     : AniSmackerRegular(path, xCoordTo, yCoordTo, false),
       pFrameScaler_(nullptr)

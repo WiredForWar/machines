@@ -2071,12 +2071,18 @@ void MachGuiStartupScreens::startPlayingAnimation( const SysPathName& filename, 
 //    pPlayingSmacker_ = _NEW( AniSmacker( filename, targetWindow, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast ) );
     //pPlayingSmacker_ = _NEW( AniSmacker( filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast ) );
 
-    if (not isCutscene) {
+#if not USE_SWSCALE
+    isCutscene = false;
+#endif
+    if ( not isCutscene )
+    {
         pPlayingSmacker_ = new AniSmackerRegular(filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast);
     }
     else {
+#if USE_SWSCALE
         const auto& displayMode = RenDevice::current()->display()->currentMode();
         pPlayingSmacker_ = new AniSmackerCutscene(filename, 0, 0, displayMode.width(), displayMode.height());
+#endif
     }
 
 	if ( frontBuffer )

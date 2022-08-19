@@ -43,7 +43,9 @@ set(TESTING_THESE_GUYS
 #~:afx
 append_test(AfxConfigurationTests afx/AfxConfigurationTests.cpp)
 #~:ani
-append_test(FrameScalerTests ani/FrameScalerTests.cpp)
+if(USE_SWSCALE)
+    append_test(FrameScalerTests ani/FrameScalerTests.cpp)
+endif()
 #~:device
 append_test(DevButtonEventTests device/DevButtonEventTests.cpp)
 append_test(DevEventQueueTests device/DevEventQueueTests.cpp)

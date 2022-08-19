@@ -2,7 +2,8 @@
 
 #include <cstddef>
 #include "ani/AniSmackerRegular.hpp"
-#include "ani/FrameScaler.hpp"
+
+class FrameScaler;
 
 class AniSmackerCutscene : public AniSmackerRegular {
 public:
