@@ -224,3 +224,13 @@ add_custom_command(TARGET distribution
 add_custom_command(TARGET distribution
                     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:planeted> ${DISTRIBUTION_DIR}/$<TARGET_FILE_NAME:planeted>
                     COMMENT "Copying planeted binary to distribution directory" VERBATIM)
+
+# Install
+install(DIRECTORY "data" DESTINATION ".")
+install(DIRECTORY "sounds" DESTINATION ".")
+install(DIRECTORY "gui" DESTINATION ".")
+install(DIRECTORY "models" DESTINATION ".")
+install(TARGETS machines planeted DESTINATION ".")
+
+set(CPACK_GENERATOR ZIP)
+include(CPack)
