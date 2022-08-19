@@ -186,7 +186,14 @@ if(BUILD_TESTS)
         # Specify the commit you depend on and update it regularly.
         URL https://github.com/google/googletest/archive/refs/tags/release-1.10.0.zip
     )
-    FetchContent_MakeAvailable(googletest)
+
+    FetchContent_GetProperties(googletest)
+    if(NOT googletest_POPULATED)
+      FetchContent_Populate(googletest)
+
+      add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+    endif()
+
     if(PLATFORM_WINDOWS)
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     endif(PLATFORM_WINDOWS)
