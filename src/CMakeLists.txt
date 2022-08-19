@@ -67,8 +67,7 @@ set(LIBS
     ${FREETYPE_LIBRARY}
     #enet
     ${ENET_LIBRARY}
-    #swscale
-    ${SWSCALE_LIBRARY}
+    ffmpeg::swscale
 )
 
 set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
@@ -89,7 +88,6 @@ set(SYSTEM_INCLUDES
     ${ALURE_INCLUDE_DIR}
     ${ENET_INCLUDE_DIRS}
     ${OPENAL_INCLUDE_DIR}
-    ${SWSCALE_INCLUDE_DIR}
 )
 
 

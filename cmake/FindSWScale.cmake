@@ -6,12 +6,12 @@
 #
 # Once done this will define:
 #   SWSCALE_FOUND       - system has ffmpeg's libswscale
-#   SWSCALE_INCLUDE_DIR - the libswscale include directory
-#   SWSCALE_LIBRARY     - the path to the library binary
+#   SWSCALE_INCLUDE_DIRS - the libswscale include directory
+#   SWSCALE_LIBRARIES     - the path to the library binary
 #
 
 # Find the libswscale include files
-find_path(SWSCALE_INCLUDE_DIR
+find_path(SWSCALE_INCLUDE_DIRS
   NAMES "libswscale/swscale.h"
   PATHS "/usr/include"
         "/usr/local/include"
@@ -23,7 +23,7 @@ find_path(SWSCALE_INCLUDE_DIR
 )
 
 # Find the libswscale library
-find_library(SWSCALE_LIBRARY
+find_library(SWSCALE_LIBRARIES
   NAMES "swscale"
   PATHS "/usr"
         "/usr/local"
@@ -34,17 +34,29 @@ find_library(SWSCALE_LIBRARY
   PATH_SUFFIXES "lib" "lib32" "lib64"
 )
 
-mark_as_advanced(SWSCALE_INCLUDE_DIR)
-mark_as_advanced(SWSCALE_LIBRARY)
+mark_as_advanced(SWSCALE_INCLUDE_DIRS)
+mark_as_advanced(SWSCALE_LIBRARIES)
 
 # Translate library into library directory
-if(SWSCALE_LIBRARY)
-  unset(SWSCALE_LIBRARY_DIR CACHE)
-  get_filename_component(SWSCALE_LIBRARY_DIR "${SWSCALE_LIBRARY}" PATH)
-  set(SWSCALE_LIBRARY_DIR "${SWSCALE_LIBRARY_DIR}" CACHE PATH "The path to libffmpeg's library directory.") # Library path
+if(SWSCALE_LIBRARIES)
+  unset(SWSCALE_LIBRARY_DIRS CACHE)
+  get_filename_component(SWSCALE_LIBRARY_DIRS "${SWSCALE_LIBRARIES}" PATH)
+  set(SWSCALE_LIBRARY_DIRS "${SWSCALE_LIBRARY_DIRS}" CACHE PATH "The path to libffmpeg's library directory.") # Library path
 endif()
 
-mark_as_advanced(SWSCALE_LIBRARY_DIR)
+mark_as_advanced(SWSCALE_LIBRARY_DIRS)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SWScale DEFAULT_MSG SWSCALE_LIBRARY SWSCALE_INCLUDE_DIR SWSCALE_LIBRARY_DIR)
+find_package_handle_standard_args(SWScale DEFAULT_MSG SWSCALE_LIBRARIES SWSCALE_INCLUDE_DIRS SWSCALE_LIBRARY_DIRS)
+
+if(SWScale_FOUND)
+    if(NOT TARGET ffmpeg::swscale)
+        add_library(ffmpeg::swscale INTERFACE IMPORTED)
+        set_target_properties(ffmpeg::swscale PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
+                              "${SWSCALE_INCLUDE_DIRS}")
+        set_target_properties(ffmpeg::swscale PROPERTIES INTERFACE_LINK_DIRECTORIES
+                              "${SWSCALE_LIBRARY_DIRS}")
+        set_target_properties(ffmpeg::swscale PROPERTIES INTERFACE_LINK_LIBRARIES
+                              "${SWSCALE_LIBRARIES}")
+    endif()
+endif()
