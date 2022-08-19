@@ -218,17 +218,26 @@ MachGuiCtxSettings::MachGuiCtxSettings( MachGuiStartupScreens* pStartupScreens )
 							   			 SETTINGS_LB_MINY + font.charHeight() + 2 ), IDS_MENULB_SETTINGS, "gui/menu/largefnt.bmp" ) );
 
 	// Create system list box
-	pMapSizeList_ = _NEW( MachGuiSingleSelectionListBox(  pStartupScreens,
-														 Gui::Box( LB_MINX, pMapSizeText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), LB_MAXX, MAPSIZE_LB_MAXY),
-														 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pMapSizeList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                       Gui::Box(LB_MINX,
+                                                                pMapSizeText->absoluteBoundary().maxCorner().y() -
+                                                                pStartupScreens_->yMenuOffset(), LB_MAXX,
+                                                                MAPSIZE_LB_MAXY),
+                                                       1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	// Create planet list box
-	pTerrainTypeList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-															 Gui::Box( LB_MINX, pTerrainText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), LB_MAXX, TERRAINTYPE_LB_MAXY),
-															 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pTerrainTypeList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                           Gui::Box(LB_MINX,
+                                                                    pTerrainText->absoluteBoundary().maxCorner().y() -
+                                                                    pStartupScreens_->yMenuOffset(), LB_MAXX,
+                                                                    TERRAINTYPE_LB_MAXY),
+                                                           1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	// Create scenario list box
-	pScenarioList_ = _NEW( MachGuiSingleSelectionListBox(pStartupScreens,
-														 Gui::Box( LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), LB_MAXX, SCENARIO_LB_MAXY),
-														 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pScenarioList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                        Gui::Box(LB_MINX,
+                                                                 pScenarioText->absoluteBoundary().maxCorner().y() -
+                                                                 pStartupScreens_->yMenuOffset(), LB_MAXX,
+                                                                 SCENARIO_LB_MAXY),
+                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	// Create settings list box
 	pSettingsList_ = _NEW( GuiSimpleScrollableList( pStartupScreens,

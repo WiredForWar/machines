@@ -189,12 +189,13 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
 
 
 	// Create save game list box
-	pSaveGameList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-														  Gui::Box( SAVE_LB_MINX,
-														  			pSaveText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(),
-														  			SAVE_LB_MAXX - SCROLLBAR_WIDTH,
-														  			SAVE_LB_MAXY ),
-														  1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                        Gui::Box(SAVE_LB_MINX,
+                                                                 pSaveText->absoluteBoundary().maxCorner().y() -
+                                                                 pStartupScreens_->yMenuOffset(),
+                                                                 SAVE_LB_MAXX - SCROLLBAR_WIDTH,
+                                                                 SAVE_LB_MAXY),
+                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
 												Gui::Coord( SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset() ),

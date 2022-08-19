@@ -156,9 +156,12 @@ MachGuiCtxCampaign::MachGuiCtxCampaign( MachGuiStartupScreens* pStartupScreens )
 							   			 CURRENTSTATUS_MINY + font.charHeight() + 2 ), IDS_MENU_PLAYERSTATUS, "gui/menu/largefnt.bmp" ) );
 
 	// Create players list box
-	pPlayersList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-														 Gui::Box( PLAYERS_LB_MINX, pPlayersText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), PLAYERS_LB_MAXX, PLAYERS_LB_MAXY),
-														 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pPlayersList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                       Gui::Box(PLAYERS_LB_MINX,
+                                                                pPlayersText->absoluteBoundary().maxCorner().y() -
+                                                                pStartupScreens_->yMenuOffset(), PLAYERS_LB_MAXX,
+                                                                PLAYERS_LB_MAXY),
+                                                       1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	updatePlayersList();
 
 	// Display backdrop, play correct music, switch cursor on.

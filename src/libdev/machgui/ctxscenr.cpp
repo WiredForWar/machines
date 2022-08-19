@@ -43,7 +43,7 @@ public:
 	MachGuiSystemPlanetScenarioListBox( MachGuiStartupScreens* pParent, const Gui::Box& box,
     									size_t horizontalSpacing, size_t verticalSpacing,
 	    								size_t scrollInc )
-	:	MachGuiSingleSelectionListBox( pParent, box, horizontalSpacing, verticalSpacing, scrollInc )
+	: MachGuiSingleSelectionListBox(pParent, pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
 	{}
 
 	virtual void doNavSelectNewItem( MachGuiSingleSelectionListBoxItem* pItem );

@@ -168,12 +168,13 @@ WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl );
 																IDS_MENULB_GAMES, "gui/menu/largefnt.bmp" ) );
 
 	// Create games list box
-	pGamesList_ = _NEW( MachGuiSingleSelectionListBox( 	pStartupScreens,
-														Gui::Box( 	JOINGAME_LB_MINX,
-																	pCurrentGamesText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(),
-																	JOINGAME_LB_MAXX - SCROLLBAR_WIDTH,
-																	JOINGAME_LB_MAXY),
-														1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pGamesList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                     Gui::Box(JOINGAME_LB_MINX,
+                                                              pCurrentGamesText->absoluteBoundary().maxCorner().y() -
+                                                              pStartupScreens_->yMenuOffset(),
+                                                              JOINGAME_LB_MAXX - SCROLLBAR_WIDTH,
+                                                              JOINGAME_LB_MAXY),
+                                                     1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
 												Gui::Coord( JOINGAME_LB_MAXX - SCROLLBAR_WIDTH, JOINGAME_LB_MINY ),

@@ -93,7 +93,10 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer( MachGuiStartupScreens* pStartupScr
 	size_t startY = 123;
 	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 61, startY, 61 + font.textWidth( connectionType.asString() ), startY + font.charHeight() + 2 ), IDS_MENULB_CONNECTIONTYPE, "gui/menu/largefnt.bmp" ) );
 	startY += font.charHeight() + 3;
-	MachGuiSingleSelectionListBox* pListBox = _NEW( MachGuiSingleSelectionListBox( pStartupScreens, Gui::Box(61,startY,474,287), 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	MachGuiSingleSelectionListBox* pListBox = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                                                 Gui::Box(61, startY, 474, 287), 1000,
+                                                                                 MachGuiSingleSelectionListBoxItem::reqHeight(),
+                                                                                 1));
 
 	// Get available protocols
 	const NetNetwork::ProtocolMap& availableProtocols = NetNetwork::availableProtocols();

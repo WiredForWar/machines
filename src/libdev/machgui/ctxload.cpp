@@ -132,12 +132,13 @@ MachGuiCtxLoad::MachGuiCtxLoad( MachGuiStartupScreens* pStartupScreens )
 							   			 LOAD_LB_MINY + font.charHeight() + 2 ), IDS_MENULB_LOADGAME, "gui/menu/largefnt.bmp" ) );
 
 	// Create save game list box
-	pSaveGameList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-														  Gui::Box( LOAD_LB_MINX,
-														  			pLoadText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(),
-														  			LOAD_LB_MAXX - SCROLLBAR_WIDTH,
-														  			LOAD_LB_MAXY ),
-														  1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                        Gui::Box(LOAD_LB_MINX,
+                                                                 pLoadText->absoluteBoundary().maxCorner().y() -
+                                                                 pStartupScreens_->yMenuOffset(),
+                                                                 LOAD_LB_MAXX - SCROLLBAR_WIDTH,
+                                                                 LOAD_LB_MAXY),
+                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
 												Gui::Coord( LOAD_LB_MAXX - SCROLLBAR_WIDTH, pLoadText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset() ),
