@@ -14,6 +14,7 @@
 
 #include "base/base.hpp"
 #include "stdlib/string.hpp"
+#include "gui/root.hpp"
 #include "gui/sslistit.hpp"
 
 class GuiBmpFont;
@@ -24,31 +25,37 @@ class MachGuiSingleSelectionListBoxItem	: public GuiSingleSelectionListBoxItem
 // Canonical form revoked
 {
 public:
-    MachGuiSingleSelectionListBoxItem( MachGuiStartupScreens*, MachGuiSingleSelectionListBox* pListBox, size_t width, const string& text );
-    MachGuiSingleSelectionListBoxItem( MachGuiStartupScreens*, GuiSingleSelectionListBox* pListBox, size_t width, const string& text );
+    //TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be removed
+    MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, MachGuiSingleSelectionListBox* pParentListBox, size_t width, const string& text );
+
     ~MachGuiSingleSelectionListBoxItem();
 
     void CLASS_INVARIANT;
 
-	static size_t reqHeight();
+    static size_t reqHeight();
 
 protected:
-	virtual void select();
-	virtual void unselect();
+    // This variant utilized by MachGuiDropDownListBoxItem to initialize it. Hence, pMyListBox_ is null
+    //TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be removed
+    MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, GuiSingleSelectionListBox* pParentListBox, size_t width, const string& text );
 
-	static GuiBmpFont getFont();
-	static GuiBmpFont getUnderlineFont();
-	static GuiBmpFont getHighlightFont();
+    virtual void select() override;
+    virtual void unselect() override;
 
-	virtual void doDisplay();
+    static GuiBmpFont getFont();
+    static GuiBmpFont getUnderlineFont();
+    static GuiBmpFont getHighlightFont();
 
-	bool highlighted() const;
-	const string& text() const;
-	MachGuiStartupScreens* startupScreens();
-	MachGuiSingleSelectionListBox* myListBox();
+    virtual void doDisplay() override;
 
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
+    bool highlighted() const;
+    const string& text() const;
+    // TODO: Eliminate this. Subclasses in declared in ctxjoin.cpp and ctxmulti.cpp use this to join & name the MP game.
+    MachGuiStartupScreens* startupScreens() __attribute((deprecated));
+    MachGuiSingleSelectionListBox* myListBox();
+
+    virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel ) override;
+    virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel ) override;
 
 private:
     friend ostream& operator <<( ostream& o, const MachGuiSingleSelectionListBoxItem& t );
@@ -56,10 +63,14 @@ private:
     MachGuiSingleSelectionListBoxItem( const MachGuiSingleSelectionListBoxItem& );
     MachGuiSingleSelectionListBoxItem& operator =( const MachGuiSingleSelectionListBoxItem& );
 
-	string text_;
-	bool highlighted_;
-	MachGuiStartupScreens* pStartupScreens_;
-	MachGuiSingleSelectionListBox* pMyListBox_;
+    string text_;
+    bool highlighted_;
+    // TODO: Eliminate this. Subclasses in declared in ctxjoin.cpp and ctxmulti.cpp use this to join & name the MP game.
+    MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+    MachGuiSingleSelectionListBox* pMyListBox_;
+
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
 };
 
 
