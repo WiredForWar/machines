@@ -83,7 +83,7 @@ set(LOCAL_INCLUDES
 )
 
 set(SYSTEM_INCLUDES
-    /usr/include/freetype2
+    ${Freetype_INCLUDE_DIRS}
     ${GLEW_INCLUDE_PATH}
     ${LIBSNDFILE_INCLUDE_DIR}
     ${ALURE_INCLUDE_DIR}

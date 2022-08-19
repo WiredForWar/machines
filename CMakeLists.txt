@@ -143,6 +143,9 @@ if(NOT DEV_BUILD)
     add_definitions(-DPRODUCTION)
 endif()
 
+# CMake Freetype find package sets only the capital-case variable
+set(Freetype_INCLUDE_DIRS ${FREETYPE_INCLUDE_DIRS})
+
 if(PLATFORM_WINDOWS)
   if(NOT BUILD_32)
     find_library(MSVCRT_LIBRARY msvcrt HINTS ${WINDOWS_DEPENDENCIES_DIR})
