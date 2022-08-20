@@ -47,7 +47,7 @@ void MachPhysCanAttack::initialiseMountingLinks()
 
 	CB_DEPIMPL( ctl_fixed_vector< W4dLink* >, mountingLinks_ );
 
-    char* linkNames[] = { "r_gun", "l_gun", "gun" };
+    const char* linkNames[] = { "r_gun", "l_gun", "gun" };
     W4dComposite& attacker = asComposite();
 
     W4dLink* pLink;
