@@ -10,22 +10,55 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
         include:
         - os: ubuntu-20.04
+          build-type: Release
           tests: true
+
+        - os: ubuntu-20.04
+          toolchain: mingw64
+          build-type: Release
+
+        - os: ubuntu-20.04
+          toolchain: mingw32
           build-type: Release
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        lfs: true
 
     - name: Prepare the system (Linux)
       if: contains(matrix.os, 'ubuntu')
       run: |
         sudo scripts/prepare-system.sh
 
+    - name: Prepare mingw (Linux)
+      if: contains(matrix.toolchain, 'mingw')
+      run: |
+        sudo apt-get install -y mingw-w64
+
     - name: Configure
-      run: cmake -B ${{github.workspace}}/build -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+      shell: cmake -P {0}
+      run: |
+        set(toolchain "${{ matrix.toolchain }}")
+        if(toolchain)
+          set(cmake_toolchain_args "-DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-${toolchain}.cmake")
+            if(toolchain MATCHES ".*32.*")
+                list(APPEND cmake_toolchain_args "-DBUILD_32=1")
+            endif()
+        endif()
+        if("${{ matrix.build-type }}" STREQUAL "Release" AND NOT "${{ matrix.tests }}" STREQUAL "true")
+          set(cmake_release_args "-DDEV_BUILD=OFF")
+        endif()
+
+        execute_process(COMMAND ${CMAKE_COMMAND}
+          -B ${{ github.workspace }}/build
+          -GNinja
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          ${cmake_toolchain_args}
+          ${cmake_release_args}
+        )
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }}
