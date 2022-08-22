@@ -4,8 +4,9 @@
 #include "device/cdlist.hpp"
 #include "mathex/random.hpp"
 
-struct DevCDImpl
+class DevCDImpl
 {
+public:
     enum CDVOLUME
     {
         MAX_CDVOLUME = 65535,
