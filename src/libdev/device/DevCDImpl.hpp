@@ -4,9 +4,17 @@
 #include "device/cdlist.hpp"
 #include "mathex/random.hpp"
 
+void eosCallback( void*, ALuint );
+
+class DevCD;
+
 class DevCDImpl
 {
 public:
+    friend void eosCallback( void*, ALuint );
+
+    static DevCDImpl* getInstance( DevCD* parent );
+
     enum CDVOLUME
     {
         MAX_CDVOLUME = 65535,

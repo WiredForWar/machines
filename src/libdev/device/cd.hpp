@@ -18,15 +18,10 @@
 #include "device/cd_helper.hpp"
 #include "device/cddefs.hpp"
 
-#include <AL/al.h>
-
 //////////////////////////////////////////////////////////////////////
 
 class DevCDPlayList;
 class DevCDImpl;
-
-void eosCallback(void*, ALuint);
-
 class DevCD
 // singleton
 {
@@ -139,8 +134,8 @@ private:
 
     ///////////////////////////////
 
+    friend DevCDImpl;
     friend void device::helper::cd::configure(DevCD*);
-    friend void eosCallback(void*, ALuint);
 } ;
 
 #endif

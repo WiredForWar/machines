@@ -18,6 +18,11 @@
 
 #include "device/DevCDImpl.hpp"
 
+DevCDImpl* DevCDImpl::getInstance( DevCD* parent )
+{
+    return parent->pImpl_;
+}
+
 // static
 
 DevCD& DevCD::instance()
@@ -261,7 +266,8 @@ void eosCallback(void *unused, ALuint unused2)
     (void) unused;
     (void) unused2;
     //DevCD::instance().handleMessages(DevCD::SUCCESS, 0); // This called from alure thread creates little problems
-    DevCD::instance().pImpl_->needsUpdate_ = true;
+    DevCDImpl* pImpl = DevCDImpl::getInstance( &DevCD::instance() );
+    pImpl->needsUpdate_ = true;
     //std::cout << "Done playing track" << std::endl;
 }
 
