@@ -349,3 +349,6 @@ set(MACHGUI_SOURCES
 )
 
 add_library(machgui OBJECT ${MACHGUI_SOURCES})
+target_link_libraries(machgui PUBLIC
+    ani
+)
