@@ -35,7 +35,6 @@ DevCD::DevCD()
     // This will enable/disable music!
     device::helper::cd::configure(this);
 
-    alureStream*&  stream_ = pImpl_-> stream_;
     ALuint&  source_ = pImpl_-> source_;
     unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
     DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
@@ -43,7 +42,6 @@ DevCD::DevCD()
     MexBasicRandom&  randomGenerator_ = pImpl_-> randomGenerator_;
     bool& musicEnabled_ =  pImpl_->musicEnabled_;
 
-    haveMixer_ = false;
     savedVolume_ = 20;
 
     //    int nDevices = mixerGetNumDevs();
@@ -71,7 +69,6 @@ DevCD::DevCD()
             alureUpdateInterval(STREAM_UPDATE_INTERVAL);
         }
     }
-    stream_ = nullptr;
     haveMixer_ = noErrors;
     pPlayList_ = new DevCDPlayList(numberOfTracks());
 

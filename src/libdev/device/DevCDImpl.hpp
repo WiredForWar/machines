@@ -32,23 +32,22 @@ public:
         MIN_CDVOLUME = 0
     };
 
-    alureStream*        stream_;
-    ALuint              source_;
+    alureStream* stream_ = nullptr;
+    ALuint source_ = 0;
 
     PlayStatus status_ = NORMAL;
-    DevCDTrackIndex trackPlaying_;
+    DevCDTrackIndex trackPlaying_ = 0;
 
     bool needsUpdate_ = false;
-    unsigned int savedVolume_;
+    unsigned int savedVolume_ = 0;
 
-    DevCDPlayList* pPlayList_;
+    DevCDPlayList* pPlayList_ = nullptr;
 
-    bool haveMixer_;
+    bool haveMixer_ = false;
 
-    DevCDTrackIndex randomStartTrack_;
-    DevCDTrackIndex randomEndTrack_;
+    DevCDTrackIndex randomStartTrack_ = 0;
+    DevCDTrackIndex randomEndTrack_ = 0;
     MexBasicRandom    randomGenerator_;
 
-    bool musicEnabled_;
-
+    bool musicEnabled_ = false;
 };
