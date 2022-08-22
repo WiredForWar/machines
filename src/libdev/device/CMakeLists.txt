@@ -44,3 +44,5 @@ set(DEVICE_SOURCES
 )
 
 add_library(device OBJECT ${DEVICE_SOURCES})
+
+target_compile_definitions(device PUBLIC USE_ALURE=$<IF:$<BOOL:USE_ALURE>,1,0>)

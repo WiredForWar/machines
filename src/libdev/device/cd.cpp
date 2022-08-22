@@ -12,6 +12,10 @@
 
 #include "device/DevCDImpl.hpp"
 
+#if !USE_ALURE
+#include <AL/al.h>
+#endif
+
 #define STREAM_NUM_BUFFERS 3
 #define STREAM_BUFFER_SIZE 250000
 #define STREAM_UPDATE_INTERVAL 0.125f
@@ -32,6 +36,7 @@ DevCD& DevCD::instance()
 DevCD::DevCD()
     : pImpl_( new DevCDImpl() )
 {
+#if USE_ALURE
     // This will enable/disable music!
     device::helper::cd::configure(this);
 
@@ -73,10 +78,12 @@ DevCD::DevCD()
     pPlayList_ = new DevCDPlayList(numberOfTracks());
 
     randomGenerator_.seedFromTime();
+#endif
 }
 
 DevCD::~DevCD()
 {
+#if USE_ALURE
     alureStream*&  stream_ = pImpl_-> stream_;
     ALuint&  source_ = pImpl_-> source_;
     unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
@@ -101,6 +108,7 @@ DevCD::~DevCD()
     //    delete [] pMixerValues_;
     delete  pPlayList_ ;
     delete pImpl_;
+#endif
 }
 
 void DevCD::update()
@@ -115,6 +123,7 @@ void DevCD::update()
 
 bool DevCD::isPlayingAudioCd() const
 {
+#if USE_ALURE
     ALuint&  source_ = pImpl_-> source_;
     bool& musicEnabled_ =  pImpl_->musicEnabled_;
 
@@ -124,6 +133,7 @@ bool DevCD::isPlayingAudioCd() const
         alGetSourcei(source_, AL_SOURCE_STATE, &sourceState);
         return sourceState == AL_PLAYING;
     }
+#endif
 
     return false;
 }
@@ -267,6 +277,7 @@ void eosCallback(void *unused, ALuint unused2)
 
 void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
 {
+#if USE_ALURE
     alureStream*&  stream_ = pImpl_-> stream_;
     ALuint&  source_ = pImpl_-> source_;
     PlayStatus& status_ = pImpl_->status_;
@@ -316,6 +327,7 @@ void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
     {
         status_ = SINGLE;
     }
+#endif
 }
 
 void DevCD::play( const DevCDPlayList& params )
@@ -336,10 +348,12 @@ void DevCD::stopPlaying()
     ALuint&  source_ = pImpl_-> source_;
     bool& musicEnabled_ =  pImpl_->musicEnabled_;
 
+#if USE_ALURE
     if (musicEnabled_)
     {
         alureStopSource(source_, AL_FALSE);
     }
+#endif
 }
 
 void DevCD::handleMessages( CDMessage message, unsigned int devID)

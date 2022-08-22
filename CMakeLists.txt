@@ -134,12 +134,13 @@ find_package(GLEW REQUIRED)
 find_package(OpenAL REQUIRED)
 include(EnsureOpenALTarget)
 
-find_package(Alure REQUIRED)
+find_package(Alure)
 find_package(ENet REQUIRED)
 find_package(Freetype REQUIRED)
 
 find_package(SWScale)
 set(USE_SWSCALE ${SWScale_FOUND})
+set(USE_ALURE ${Alure_FOUND})
 
 if(NOT DEV_BUILD)
     add_definitions(-DNDEBUG)

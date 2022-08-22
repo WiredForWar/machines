@@ -56,8 +56,6 @@ set(LIBS
     #GLEW
     ${GLEW_LIBRARY}
     SDL2_image::SDL2_image
-    #alure-static
-    ${ALURE_LIBRARY}
     #openal
     ${OPENAL_LIBRARY}
     #audio
@@ -68,12 +66,6 @@ set(LIBS
     #enet
     ${ENET_LIBRARY}
 )
-
-if(TARGET ffmpeg::swscale)
-    list(APPEND LIBS ffmpeg::swscale)
-endif()
-set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
-
 
 # Includes
 set(LOCAL_INCLUDES
@@ -87,11 +79,24 @@ set(SYSTEM_INCLUDES
     ${Freetype_INCLUDE_DIRS}
     ${GLEW_INCLUDE_PATH}
     ${LIBSNDFILE_INCLUDE_DIR}
-    ${ALURE_INCLUDE_DIR}
     ${ENET_INCLUDE_DIRS}
     ${OPENAL_INCLUDE_DIR}
 )
 
+if(USE_ALURE)
+    list(APPEND SYSTEM_INCLUDES
+        ${ALURE_INCLUDE_DIRS}
+    )
+    list(APPEND LIBS
+        #alure-static
+        ${ALURE_LIBRARIES}
+    )
+endif()
+
+if(TARGET ffmpeg::swscale)
+    list(APPEND LIBS ffmpeg::swscale)
+endif()
+set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
 
 include_directories(${LOCAL_INCLUDES})
 include_directories(SYSTEM ${SYSTEM_INCLUDES})
