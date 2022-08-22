@@ -52,13 +52,20 @@ jobs:
           set(cmake_release_args "-DDEV_BUILD=OFF")
         endif()
 
+        file(TO_CMAKE_PATH "${{ github.workspace }}" WORKSPACE_DIR)
+
         execute_process(COMMAND ${CMAKE_COMMAND}
-          -B ${{ github.workspace }}/build
+          -B ${WORKSPACE_DIR}/build
           -GNinja
           -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
           ${cmake_toolchain_args}
           ${cmake_release_args}
+          RESULT_VARIABLE CONF_RESULT
         )
+
+        if(CONF_RESULT)
+            message(FATAL_ERROR "Configuration failed")
+        endif()
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }}
