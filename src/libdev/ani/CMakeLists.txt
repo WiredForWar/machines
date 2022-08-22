@@ -5,16 +5,15 @@ set(ANI_SOURCES
     AniSmackerRegular.hpp
 )
 
-add_library(ani OBJECT ${ANI_SOURCES})
-
 if(USE_SWSCALE)
-    target_compile_definitions(ani PUBLIC USE_SWSCALE=1)
-    target_sources(ani PUBLIC
+    list(APPEND ANI_SOURCES
         AniSmackerCutscene.cpp
         AniSmackerCutscene.hpp
         FrameScaler.cpp
         FrameScaler.hpp
     )
-else()
-    target_compile_definitions(ani PUBLIC USE_SWSCALE=0)
 endif()
+
+add_library(ani OBJECT ${ANI_SOURCES})
+
+target_compile_definitions(ani PUBLIC USE_SWSCALE=$<BOOL:${USE_SWSCALE}>)
