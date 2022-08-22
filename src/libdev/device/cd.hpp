@@ -11,9 +11,8 @@
 #ifndef _DEV_CD_HPP
 #define _DEV_CD_HPP
 
-#include <cstdlib>
-
-#include "base/base.hpp"
+#include <cstddef>
+#include <iosfwd>
 
 #include "device/cddefs.hpp"
 
@@ -106,18 +105,6 @@ public:
     friend std::ostream& operator <<( std::ostream&, const DevCD& ) ;
 
 private:
-
-    enum PlayStatus
-    {
-        PROGRAMMED,
-        CONTINUOUS,
-        SINGLE,
-        REPEAT,
-        NORMAL,
-        STOPPED,
-        RANDOM
-    } ;
-
     DevCD( const DevCD& );
     DevCD& operator =( const DevCD& ) ;
     bool operator ==( const DevCD& ) ;
@@ -125,16 +112,12 @@ private:
 
     DevCD();
 
-    PlayStatus              status_;
-
-    DevCDImpl*              pImpl_;
-
-    DevCDTrackIndex trackPlaying_;
+    DevCDImpl* pImpl_;
 
     ///////////////////////////////
 
     friend DevCDImpl;
-} ;
+};
 
 #endif
 

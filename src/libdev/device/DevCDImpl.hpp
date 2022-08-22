@@ -8,6 +8,17 @@ void eosCallback( void*, ALuint );
 
 class DevCD;
 
+enum PlayStatus
+{
+    PROGRAMMED,
+    CONTINUOUS,
+    SINGLE,
+    REPEAT,
+    NORMAL,
+    STOPPED,
+    RANDOM
+};
+
 class DevCDImpl
 {
 public:
@@ -23,6 +34,9 @@ public:
 
     alureStream*        stream_;
     ALuint              source_;
+
+    PlayStatus status_ = NORMAL;
+    DevCDTrackIndex trackPlaying_;
 
     bool needsUpdate_ = false;
     unsigned int savedVolume_;

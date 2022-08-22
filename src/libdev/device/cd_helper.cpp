@@ -1,7 +1,6 @@
 #include "device/cd_helper.hpp"
 
 #include "base/compiler.hpp"    // For WEAK_SYMBOL def
-#include "device/cd.hpp"
 #include "device/DevCDImpl.hpp"
 #include "system/registry.hpp"
 

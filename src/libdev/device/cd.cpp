@@ -5,19 +5,16 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "afx/AfxSdlApp.hpp"
-
 #include "device/cd.hpp"
 #include "device/cd_helper.hpp"
 #include "device/cdlist.hpp"
 #include "system/pathname.hpp"
-#include <AL/alure.h>
+
+#include "device/DevCDImpl.hpp"
 
 #define STREAM_NUM_BUFFERS 3
 #define STREAM_BUFFER_SIZE 250000
 #define STREAM_UPDATE_INTERVAL 0.125f
-
-#include "device/DevCDImpl.hpp"
 
 DevCDImpl* DevCDImpl::getInstance( DevCD* parent )
 {
@@ -32,9 +29,8 @@ DevCD& DevCD::instance()
     return instance;
 }
 
-DevCD::DevCD() :
-status_(NORMAL),
-pImpl_(new DevCDImpl())
+DevCD::DevCD()
+    : pImpl_( new DevCDImpl() )
 {
     // This will enable/disable music!
     device::helper::cd::configure(this);
@@ -217,7 +213,7 @@ void DevCD::volume( Volume newLevel )
 DevCDTrackIndex DevCD::currentTrackIndex() const
 {
     PRE( isPlayingAudioCd() );
-    return trackPlaying_;
+    return pImpl_->trackPlaying_;
 }
 
 DevCDTrackIndex DevCD::numberOfTracks() const
@@ -276,6 +272,8 @@ void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
 {
     alureStream*&  stream_ = pImpl_-> stream_;
     ALuint&  source_ = pImpl_-> source_;
+    PlayStatus& status_ = pImpl_->status_;
+    DevCDTrackIndex& trackPlaying_ = pImpl_->trackPlaying_;
     unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
     bool& musicEnabled_ =  pImpl_->musicEnabled_;
 
@@ -325,6 +323,7 @@ void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
 
 void DevCD::play( const DevCDPlayList& params )
 {
+    PlayStatus& status_ = pImpl_->status_;
     DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
 
     //Naughty and evil, replace with a copy construction
@@ -348,6 +347,8 @@ void DevCD::stopPlaying()
 
 void DevCD::handleMessages( CDMessage message, unsigned int devID)
 {
+    PlayStatus& status_ = pImpl_->status_;
+    DevCDTrackIndex& trackPlaying_ = pImpl_->trackPlaying_;
     DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
     MexBasicRandom&  randomGenerator_ = pImpl_-> randomGenerator_;
     DevCDTrackIndex&  randomStartTrack_ = pImpl_-> randomStartTrack_;
@@ -363,7 +364,7 @@ void DevCD::handleMessages( CDMessage message, unsigned int devID)
 
         case SUCCESS:
         {
-            if (status_ == PROGRAMMED)
+            if ( status_ == PROGRAMMED )
             {
                 if (not pPlayList_->isFinished())
                 {
@@ -446,6 +447,7 @@ std::ostream& operator <<( std::ostream& o, const DevCD& devCD)
 
 void DevCD::randomPlay( DevCDTrackIndex startTrack, DevCDTrackIndex endTrack, DevCDTrackIndex firstTrack /*= -1*/ )
 {
+    PlayStatus& status_ = pImpl_->status_;
     DevCDTrackIndex&  randomStartTrack_ = pImpl_-> randomStartTrack_;
     DevCDTrackIndex&  randomEndTrack_ = pImpl_-> randomEndTrack_;
     MexBasicRandom&  randomGenerator_ = pImpl_-> randomGenerator_;
