@@ -22,7 +22,6 @@
 
 //////////////////////////////////////////////////////////////////////
 
-class AfxWin95App;
 class DevCDPlayList;
 class DevCDImpl;
 
@@ -132,9 +131,6 @@ private:
 
     DevCD();
 
-
-    unsigned int    deviceID_;
-
     PlayStatus              status_;
 
     DevCDImpl*              pImpl_;
@@ -146,7 +142,6 @@ private:
     ///////////////////////////////
 
     friend void device::helper::cd::configure(DevCD*);
-    friend class AfxWin95App;
     friend void eosCallback(void*, ALuint);
 } ;
 
