@@ -28,7 +28,6 @@ DevCD& DevCD::instance()
 
 DevCD::DevCD() :
 status_(NORMAL),
-needsUpdate_(false),
 pImpl_(new DevCDImpl())
 {
     // This will enable/disable music!
@@ -107,10 +106,10 @@ DevCD::~DevCD()
 
 void DevCD::update()
 {
-    if (needsUpdate_)
+    if ( pImpl_->needsUpdate_ )
     {
         handleMessages(DevCD::SUCCESS, 0);
-        needsUpdate_ = false;
+        pImpl_->needsUpdate_ = false;
         //std::cout << "music mixer update" << std::endl;
     }
 }
@@ -262,7 +261,7 @@ void eosCallback(void *unused, ALuint unused2)
     (void) unused;
     (void) unused2;
     //DevCD::instance().handleMessages(DevCD::SUCCESS, 0); // This called from alure thread creates little problems
-    DevCD::instance().needsUpdate_ = true;
+    DevCD::instance().pImpl_->needsUpdate_ = true;
     //std::cout << "Done playing track" << std::endl;
 }
 

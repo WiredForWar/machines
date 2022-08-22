@@ -16,6 +16,7 @@ public:
     alureStream*        stream_;
     ALuint              source_;
 
+    bool needsUpdate_ = false;
     unsigned int savedVolume_;
 
     DevCDPlayList* pPlayList_;

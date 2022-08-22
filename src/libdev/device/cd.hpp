@@ -137,8 +137,6 @@ private:
 
     DevCDTrackIndex trackPlaying_;
 
-    bool        needsUpdate_;
-
     ///////////////////////////////
 
     friend void device::helper::cd::configure(DevCD*);
