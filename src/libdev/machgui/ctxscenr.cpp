@@ -506,8 +506,18 @@ void MachGuiCtxScenario::updatePlanetList( MachGuiDbSystem& system )
 	pPlanetList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pPlanetList_->absoluteBoundary(),
-									pPlanetList_->absoluteBoundary().minCorner() );
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            pPlanetList_->absoluteBoundary(),
+            pPlanetList_->absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 	// Insert new items into list
 	uint numPlanets = system.nPlanets();
@@ -560,8 +570,18 @@ void MachGuiCtxScenario::updateScenarioList( MachGuiDbPlanet& planet )
 	pScenarioList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pScenarioList_->absoluteBoundary(),
-									pScenarioList_->absoluteBoundary().minCorner() );
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            pScenarioList_->absoluteBoundary(),
+            pScenarioList_->absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 	// Insert new items into list
 	uint numScenarios = planet.nScenarios();

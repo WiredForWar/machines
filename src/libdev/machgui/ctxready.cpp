@@ -606,8 +606,18 @@ void MachGuiCtxImReady::updateGameSettings()
 	pReadOnlySettings_->deleteAllChildren();
 
 	// Blit background to read only list box
-	pStartupScreens_->blitBackdrop( pReadOnlySettings_->absoluteBoundary(),
-									pReadOnlySettings_->absoluteBoundary().minCorner() );
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            pReadOnlySettings_->absoluteBoundary(),
+            pReadOnlySettings_->absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 	int textWidth = (SETTINGS_MAXX-SETTINGS_MINX)*0.66;
 	int valueWidth = (SETTINGS_MAXX-SETTINGS_MINX)*0.33;

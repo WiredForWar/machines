@@ -312,9 +312,18 @@ void MachGuiCtxSettings::updateTerrainTypeList( MachGuiDbSystem& system )
 	pTerrainTypeList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pTerrainTypeList_->absoluteBoundary(),
-									pTerrainTypeList_->absoluteBoundary().minCorner() );
-
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            pTerrainTypeList_->absoluteBoundary(),
+            pTerrainTypeList_->absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 	// Insert new items into list
 	uint numPlanets = system.nPlanets();
@@ -349,8 +358,18 @@ void MachGuiCtxSettings::updateScenarioList( MachGuiDbPlanet& planet )
 	pScenarioList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pScenarioList_->absoluteBoundary(),
-									pScenarioList_->absoluteBoundary().minCorner() );
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            pScenarioList_->absoluteBoundary(),
+            pScenarioList_->absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 	// Insert new items into list
 	uint numScenarios = planet.nScenarios();
@@ -434,8 +453,18 @@ void MachGuiCtxSettings::initSettings()
 	pSettingsList_->deleteAllChildren();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pSettingsList_->absoluteBoundary(),
-									pSettingsList_->absoluteBoundary().minCorner() );
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+            backdrop,
+            pSettingsList_->absoluteBoundary(),
+            pSettingsList_->absoluteBoundary().minCorner(),
+            [](Gui::Box box) {
+                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
+                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
+                                box.maxCorner().x() - box.minCorner().x(),
+                                box.maxCorner().y() - box.minCorner().y()
+                );
+            });
 
 
 	// Add "fog of war" setting...
