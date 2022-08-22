@@ -8,6 +8,7 @@
 #include "afx/AfxSdlApp.hpp"
 
 #include "device/cd.hpp"
+#include "device/cd_helper.hpp"
 #include "device/cdlist.hpp"
 #include "system/pathname.hpp"
 #include <AL/alure.h>

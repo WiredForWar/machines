@@ -20,5 +20,6 @@ void device::helper::cd::configure( DevCD* cd )
         enableMusic &= ( std::atoi(configValue.c_str()) != 0 );
     }
 
-    cd->pImpl_->musicEnabled_ = enableMusic;
+    DevCDImpl* pImpl = DevCDImpl::getInstance( cd );
+    pImpl->musicEnabled_ = enableMusic;
 }

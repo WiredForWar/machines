@@ -15,7 +15,6 @@
 
 #include "base/base.hpp"
 
-#include "device/cd_helper.hpp"
 #include "device/cddefs.hpp"
 
 //////////////////////////////////////////////////////////////////////
@@ -135,7 +134,6 @@ private:
     ///////////////////////////////
 
     friend DevCDImpl;
-    friend void device::helper::cd::configure(DevCD*);
 } ;
 
 #endif
