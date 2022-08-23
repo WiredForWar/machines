@@ -28,9 +28,6 @@ set(BASE_SOURCES
     istrrep.cpp
     istrrep.hpp
     lessptr.hpp
-    limitw16.hpp
-    limitw32.hpp
-    limitw64.hpp
     logbuff.cpp
     logbuff.hpp
     lstrbuff.cpp
