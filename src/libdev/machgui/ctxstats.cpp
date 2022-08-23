@@ -44,7 +44,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics( MachGuiStartupScreens* pStartupScree
                                                        IDS_MENUBTN_OK, MachGuiStartupScreens::EXIT));
 	pOkBtn->escapeControl( true );
 
-	pStartupScreens->changeBackdrop( "gui/menu/sq.bmp" );
+	changeBackdrop( "gui/menu/sq.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

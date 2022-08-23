@@ -68,10 +68,6 @@ public:
 	// Returns the ButtonEvent enum for the last menu button that was pressed.
 	ButtonEvent lastButtonEvent() const;
 
-	// Update the startup screens backdrop. This is an image of a circuit board.
-    //TODO: Move to GuiRoot, rename more generically, change sig to (cc*, cc*)
-    void changeBackdrop( const char* ) __attribute((deprecated));
-
 	// Switch mouse cursor on/off
 	void cursorOn( bool );
 
@@ -226,9 +222,6 @@ public:
 	static int xMenuOffset() __attribute((deprecated));
 	static int yMenuOffset() __attribute((deprecated));
 
-    // TODO: Delete once refactor complete
-	void blitBackdrop( const Gui::Box&, const Gui::Coord& ) __attribute((deprecated));
-
 	// Focus capable controls allow for keyboard navigation of the menus
 	void addFocusCapableControl( MachGuiFocusCapableControl* );
 	void removeFocusCapableControl( MachGuiFocusCapableControl* );
@@ -348,6 +341,9 @@ private:
 	void contextVictory();
 	void contextDefeat();
 	void contextLogo();
+
+    // Change the logo image
+    void changeLogoImage( const char* image );
 
 	static string getContextStrName( Context context );
 

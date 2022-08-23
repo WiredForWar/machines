@@ -239,7 +239,8 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish( MachGuiStartupScreens* pStartupScreens )
 	autoLoadGame_( false )
 {
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sn.bmp" );
+	changeBackdrop( "gui/menu/sn.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

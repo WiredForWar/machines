@@ -95,7 +95,8 @@ MachGuiCtxOptions::MachGuiCtxOptions( MachGuiStartupScreens* pStartupScreens )
 	pGammaCorrection_( NULL )
 {
 	// Bitmap background
-	pStartupScreens->changeBackdrop( "gui/menu/sf.bmp" );
+	changeBackdrop( "gui/menu/sf.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

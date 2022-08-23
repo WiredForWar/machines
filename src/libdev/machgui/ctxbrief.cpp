@@ -52,7 +52,8 @@ MachGuiCtxBriefing::MachGuiCtxBriefing( MachGuiStartupScreens* pStartupScreens )
 
 	pCancelBtn->escapeControl( true );
 
-	pStartupScreens->changeBackdrop( "gui/menu/sk.bmp" );
+	changeBackdrop( "gui/menu/sk.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

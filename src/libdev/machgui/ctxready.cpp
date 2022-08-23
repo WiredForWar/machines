@@ -144,7 +144,8 @@ MachGuiCtxImReady::MachGuiCtxImReady( MachGuiStartupScreens* pStartupScreens )
  	NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady this " << (void*)this << "\n" );
  	NETWORK_INDENT( 2 );
  	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sd.bmp" );
+	changeBackdrop( "gui/menu/sd.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

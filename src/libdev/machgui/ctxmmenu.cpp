@@ -72,7 +72,8 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu( MachGuiStartupScreens* pStartupScreens )
 
 	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 97, 32, 243, 122 ), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp" ) );
 
-	pStartupScreens->changeBackdrop( "gui/menu/sa.bmp" ); 
+	changeBackdrop( "gui/menu/sa.bmp" );
+
     pStartupScreens->cursorOn( true );
 	pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

@@ -23,28 +23,28 @@ MachGuiStartupScreenContext::~MachGuiStartupScreenContext()
 //virtual
 void MachGuiStartupScreenContext::update()
 {
-	// Intentionally empty
+    // Intentionally empty
 }
 
 // virtual
 bool MachGuiStartupScreenContext::okayToSwitchContext()
 {
-	return true;
+    return true;
 }
 
 //virtual 
 void MachGuiStartupScreenContext::buttonEvent( MachGuiStartupScreens::ButtonEvent )
 {
-	// Intentionally empty
+    // Intentionally empty
 }
 
 //virtual 
 bool MachGuiStartupScreenContext::doHandleKeyEvent( const GuiKeyEvent& )
 {
-	// Intentionally empty
-	return false;
+    // Intentionally empty
+    return false;
 }
-	
+
 void MachGuiStartupScreenContext::CLASS_INVARIANT
 {
     INVARIANT( this != NULL );
@@ -53,10 +53,19 @@ void MachGuiStartupScreenContext::CLASS_INVARIANT
 ostream& operator <<( ostream& o, const MachGuiStartupScreenContext& t )
 {
 
-    o << "MachGuiStartupScreenContext " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStartupScreenContext " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>( const_cast<MachGuiStartupScreenContext*>(&t) ) << " start" << std::endl;
+    o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>( const_cast<MachGuiStartupScreenContext*>(&t) ) << " end" << std::endl;
 
     return o;
+}
+
+void MachGuiStartupScreenContext::changeBackdrop(const char* newBackdrop)
+{
+    // This is here to show that the background image, or backdrop, is managed by the active GuiRoot.
+    GuiRoot* root = pStartupScreens_;
+
+    root->getSharedBitmaps()->createUpdateNamedBitmap("backdrop", newBackdrop);
+    root->changed();
 }
 
 /* End STARTCTX.CPP *************************************************/

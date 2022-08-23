@@ -2227,13 +2227,6 @@ void MachGuiStartupScreens::updateCdAudio()
 	}
 }
 
-void MachGuiStartupScreens::changeBackdrop( const char* image )
-{
-    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image);
-
-    changed();
-}
-
 void MachGuiStartupScreens::cursorOn( bool on )
 {
 	CB_DEPIMPL(	RenAnimCursor2d*, pMenuCursor_ );
@@ -2537,19 +2530,19 @@ void MachGuiStartupScreens::contextLogo()
 	switch ( context_ )
 	{
 		case CTX_PROBEACCLAIMLOGO:
-			changeBackdrop( "gui/menu/acclaim.bmp" );
+			changeLogoImage( "gui/menu/acclaim.bmp" );
 			break;
 		case CTX_CHARYBDISLOGO:
-			changeBackdrop( "gui/menu/charlogo.bmp" );
+            changeLogoImage( "gui/menu/charlogo.bmp" );
 			break;
 		case CTX_SPLASH1:
-			changeBackdrop( "gui/menu/splash1.bmp" );
+            changeLogoImage( "gui/menu/splash1.bmp" );
 			break;
 		case CTX_SPLASH2:
-			changeBackdrop( "gui/menu/splash2.bmp" );
+            changeLogoImage( "gui/menu/splash2.bmp" );
 			break;
 		case CTX_LEGALSCREEN:
-			changeBackdrop( "gui/menu/legal.bmp" );
+            changeLogoImage( "gui/menu/legal.bmp" );
 			break;
 		DEFAULT_ASSERT_BAD_CASE( context_ );
 	}
@@ -3500,17 +3493,6 @@ int MachGuiStartupScreens::yMenuOffset()
     return yOffset;
 }
 
-void MachGuiStartupScreens::blitBackdrop( const Gui::Box& box, const Gui::Coord& coord )
-{
-    auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
-	GuiPainter::instance().blit( *backdrop,
-								 Gui::Box(  Gui::Coord( box.minCorner().x() - xMenuOffset(),
-														box.minCorner().y() - yMenuOffset() ),
-											box.maxCorner().x() - box.minCorner().x(),
-											box.maxCorner().y() - box.minCorner().y() ),
-								 coord );
-}
-
 void MachGuiStartupScreens::addFocusCapableControl( MachGuiFocusCapableControl* pFocusCtrl )
 {
 	CB_DEPIMPL(	MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_ );
@@ -3830,4 +3812,12 @@ void MachGuiStartupScreens::ignoreHostLostSystemMessage(bool value)
 	CB_DEPIMPL(	bool, ignoreHostLostSystemMessage_ );
 	ignoreHostLostSystemMessage_ = value;
 }
+
+void MachGuiStartupScreens::changeLogoImage( const char* image )
+{
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image);
+
+    changed();
+}
+
 /* End STARTUP.CPP **************************************************/

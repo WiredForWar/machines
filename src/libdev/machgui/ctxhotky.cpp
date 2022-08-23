@@ -28,7 +28,8 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
 :	MachGuiStartupScreenContext( pStartupScreens ),
 	animations_( pStartupScreens, SysPathName("gui/menu/so_anims.anm") )
 {
-	pStartupScreens->changeBackdrop( "gui/menu/so.bmp" );
+	changeBackdrop( "gui/menu/so.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

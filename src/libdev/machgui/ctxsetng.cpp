@@ -159,7 +159,8 @@ MachGuiCtxSettings::MachGuiCtxSettings( MachGuiStartupScreens* pStartupScreens )
 	animations_( pStartupScreens, SysPathName("gui/menu/sp_anims.anm") )
 {
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sp.bmp" );
+	changeBackdrop( "gui/menu/sp.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

@@ -103,7 +103,8 @@ MachGuiCtxInGameOptions::MachGuiCtxInGameOptions( MachGuiStartupScreens* pStartu
 		pBriefingBtn->disabled( true );
 	}
 
-	pStartupScreens->changeBackdrop( "gui/menu/se.bmp" ); 
+	changeBackdrop( "gui/menu/se.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

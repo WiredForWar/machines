@@ -107,7 +107,8 @@ MachGuiCtxLoad::MachGuiCtxLoad( MachGuiStartupScreens* pStartupScreens )
 	autoLoadGame_( false )
 {
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sg.bmp" );
+	changeBackdrop( "gui/menu/sg.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

@@ -62,7 +62,8 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing( MachGuiStartupScreens* pStartupScree
 	if ( pStartupScreens->currentContext() == MachGuiStartupScreens::CTX_MPDEBRIEFING )
 		pRestartButton->disabled( true );
 
-   	pStartupScreens->changeBackdrop( "gui/menu/sj.bmp" );
+   	changeBackdrop( "gui/menu/sj.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

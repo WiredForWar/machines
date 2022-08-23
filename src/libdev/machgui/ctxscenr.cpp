@@ -322,7 +322,8 @@ MachGuiCtxScenario::MachGuiCtxScenario( MachGuiStartupScreens* pStartupScreens )
 	const int SCENARIO_LB_MAXY = 453;
 
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sl.bmp" );
+	changeBackdrop( "gui/menu/sl.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

@@ -119,7 +119,8 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer( MachGuiStartupScreens* pStartupScr
 	pListBox->childrenUpdated();
 
 
-	pStartupScreens->changeBackdrop( "gui/menu/sb.bmp" );
+	changeBackdrop( "gui/menu/sb.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

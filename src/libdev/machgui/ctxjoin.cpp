@@ -190,7 +190,8 @@ WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl );
 	pGamesList_->childrenUpdated();
 
 	// Standard context setting stuff...
-	pStartupScreens->changeBackdrop( "gui/menu/sc.bmp" );
+	changeBackdrop( "gui/menu/sc.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
