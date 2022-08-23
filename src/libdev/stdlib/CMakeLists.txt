@@ -12,7 +12,6 @@ set(STDLIB_SOURCES
     list.hpp
     map.hpp
     memory.hpp
-    numeric.hpp
     queue.hpp
     set.hpp
     stack.hpp
