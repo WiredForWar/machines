@@ -466,13 +466,6 @@ enum PerConstructor { PERSISTENCE_CONSTRUCTOR };
     void perRead( PerIstream& istr, className< LIST_T > & ob ) \
     { perRead< LIST_T >( istr, ob ); }
 
-    //char* className< LIST_T >::perPDerivedClass() const                   \
-        { return _STATIC_CAST( char*, this ); }                                 \
-	const char* className< LIST_T >::perClassName() const		            \
-	    { return className ## STRING_T; }							            \
-	const char* className< LIST_T >::perMostDerivedClassName() const      \
-        { return this->perClassName(); }                                        \
-
 #define	PER_PRIVATE_DEFINE_PERSISTENT_ABSTRACT_T( className, LIST_T, STRING_T )	\
 	PerOstream& operator <<( PerOstream& ostr, const className< LIST_T >& ob )	\
 	PER_OBJECT_WRITE( className )											    \
