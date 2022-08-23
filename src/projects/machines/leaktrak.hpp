@@ -12,9 +12,6 @@
 #ifndef _LEAKTRAK_HPP
 #define _LEAKTRAK_HPP
 
-#include "base/base.hpp"
-#include "device/keyboard.hpp"
-
 //static methods only
 class LeakTracker
 {
@@ -33,7 +30,6 @@ private:
     bool operator ==( const LeakTracker& );
 
 };
-
 
 #endif
 

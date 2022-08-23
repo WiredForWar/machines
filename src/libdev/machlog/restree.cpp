@@ -18,8 +18,9 @@
 
 #include "system/metafile.hpp"
 #include "system/metaistr.hpp"
-#include <memory>
 
+#include <memory>
+#include <sstream>
 
 //////////////////////////////////////////////////////////////////////////////
 

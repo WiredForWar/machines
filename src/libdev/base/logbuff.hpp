@@ -17,6 +17,7 @@
 #define _LOGSTREA_HPP
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "base/base.hpp"

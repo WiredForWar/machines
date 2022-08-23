@@ -7,7 +7,7 @@
 #ifndef _MEMCDATA_HPP
 #define _MEMCDATA_HPP
 
-#include <fstream>
+#include <ostream>
 
 #include "base/base.hpp"
 

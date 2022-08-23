@@ -13,6 +13,8 @@
 #include "recorder/recorder.hpp"
 #include "recorder/private/recpriv.hpp"
 
+#include <sstream>
+
 DevKeyboard::DevKeyboard()
 //: pressedCount_(0)
 // Don't initialise pressedCount_ here, because it could cause a

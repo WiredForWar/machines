@@ -16,6 +16,7 @@
 #include "base/base.hpp"
 #include "utility/id.hpp"
 #include "mathex/mathex.hpp"
+#include "machlog/machlog.hpp"
 
 template< class T> class ctl_vector;
 template< class T> class ctl_pvector;

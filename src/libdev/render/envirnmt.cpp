@@ -5,7 +5,6 @@
 
 #include "render/envirnmt.hpp"
 
-#include <string>
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
 
@@ -20,6 +19,9 @@
 #include "utility/linetok.hpp"
 
 #include "system/pathname.hpp"
+
+#include <sstream>
+#include <string>
 
 static std::string concatRemainingTokens(UtlLineTokeniser& parser, size_t fromToken)
 {

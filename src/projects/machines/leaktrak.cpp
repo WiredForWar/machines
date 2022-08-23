@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machines/leaktrak.hpp"
+
+#include "device/keyboard.hpp"
 #include "sim/manager.hpp"
 
 void LeakTracker::update( Action action, SampleRate rate )

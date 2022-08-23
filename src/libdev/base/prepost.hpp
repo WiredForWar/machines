@@ -6,7 +6,6 @@
 #ifndef _PREPOST_HPP
 #define _PREPOST_HPP
 
-#include <sstream>
 #include "stdlib/exceptio.hpp"
 
 //  Invariants are turned on by default in the debug version
@@ -39,6 +38,8 @@
     #define CLASS_INVARIANT    invariant() const
     #define ASSERT_FILE_EXISTS( f )
 #else
+
+    #include <sstream>
 
     ///////////////////////////////
 
