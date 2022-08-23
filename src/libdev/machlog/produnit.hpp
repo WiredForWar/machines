@@ -95,12 +95,6 @@ private:
 
 PER_DECLARE_PERSISTENT( MachLogProductionUnit );
 
-//	This goes after the end of the class declaration
-#pragma off(unreferenced);
-//EXISTS( MachLogProductionUnit );
-#pragma on(unreferenced);
-
-
 #endif
 
 /* End PRODUNIT.HPP *************************************************/

@@ -159,10 +159,6 @@ PER_DECLARE_PERSISTENT( MachLogOperation );
 PER_ENUM_PERSISTENT( MachLogOperation::Priority );
 PER_ENUM_PERSISTENT( MachLogOperation::OperationType );
 
-#pragma off(unreferenced);
-//EXISTS( MachLogOperation );
-#pragma on(unreferenced);
-
 #endif	/*	#ifndef _MACH_OPERATIO_HPP	*/
 
 /* End OPERATIO.HPP *************************************************/

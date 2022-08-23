@@ -616,8 +616,4 @@ ostream& operator<<(ostream& s, const W4dEntity* entity);
 
 PER_DECLARE_PERSISTENT( W4dEntity );
 
-#pragma off(unreferenced);
-//EXISTS( W4dEntity );
-#pragma on(unreferenced);
-
 #endif

@@ -176,8 +176,4 @@ bool operator <( const SysPathName& a, const SysPathName& b );
 
 PER_DECLARE_PERSISTENT( SysPathName );
 
-#pragma off(unreferenced);
-//EXISTS( SysPathName );
-#pragma on(unreferenced);
-
 #endif
