@@ -12,6 +12,12 @@
 #  For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 #
 
+if(NOT TARGET OpenAL::OpenAL)
+    message(FATAL_ERROR "Alure: OpenAL is missing")
+    set(Alure_FOUND FALSE)
+    return()
+endif()
+
 find_path(ALURE_INCLUDE_DIR
     NAMES
       alure.h
@@ -64,4 +70,7 @@ ENDIF(ALURE_INCLUDE_DIR)
 
   # show the ALURE_INCLUDE_DIRS and ALURE_LIBRARIES variables only in the advanced view
   mark_as_advanced(ALURE_INCLUDE_DIRS ALURE_LIBRARIES)
- 
+
+if(Alure_FOUND)
+    set(ALURE_LIBRARIES ${ALURE_LIBRARIES} OpenAL::OpenAL)
+endif()
