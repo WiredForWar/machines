@@ -7,7 +7,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         message(FATAL_ERROR "${PROJECT_NAME} requires GCC 4.7 or greater.")
     endif()
 
-    message(STATUS "Detected GCC version 4.7+")
+    message(STATUS "Detected GCC version ${CMAKE_CXX_COMPILER_VERSION}")
 
     #set(NORMAL_CXX_FLAGS "-Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-declarations")
     if(BUILD_32)
