@@ -132,6 +132,8 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenAL REQUIRED)
+include(EnsureOpenALTarget)
+
 find_package(Alure REQUIRED)
 find_package(ENet REQUIRED)
 find_package(Freetype REQUIRED)
