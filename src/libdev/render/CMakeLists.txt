@@ -82,7 +82,6 @@ set(RENDER_SOURCES
     internal/linediag.hpp
     internal/linediag.ipp
     internal/matapply.hpp
-    internal/matapply.ipp
     internal/matbody.hpp
     internal/matbody.ipp
     internal/matmgr.hpp

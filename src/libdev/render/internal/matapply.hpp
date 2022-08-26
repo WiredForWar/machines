@@ -88,10 +88,6 @@ public:
 	void applyDirectToVertices(RenILightingBuffer*, size_t nVertices) const;
 };
 
-#ifdef _INLINE
-    #include "internal/matapply.ipp"
-#endif
-
 #endif
 
 /* End MATAPPLY.HPP *************************************************/
