@@ -141,9 +141,6 @@ void RenIUnlitMatApp::applyViaIndices
 				applied = true;
 				RenIVertex& vtx = vertices[*it];
 				applyToVertex(vtx);
-
-				vtx.color    = packedAmbient_;
-				vtx.specular = packedBlack_;
 			}
 		}
 		++it;
@@ -171,8 +168,6 @@ void RenIUnlitMatApp::applyDirectToVertices
 			{
 				applied = true;
 				applyToVertex(*vertices);
-				vertices->color    = packedAmbient_;
-				vertices->specular = packedBlack_;
 			}
 		}
 		++vertices;
