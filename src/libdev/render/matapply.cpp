@@ -60,12 +60,21 @@ void RenIMaterialApplicator::applySpecular( RenIVertex& vtx, float lambR, float 
     }
 }
 
+RenILitMatApp::RenILitMatApp( const RenIMatBody* body,
+                              const RenColour& ambient,
+                              const RenIExpandedIntensityMap* map,
+                              bool mapUnity,
+                              const RenColour& filter )
+    : RenIMaterialApplicator( body, ambient, map, mapUnity, filter )
+{
+}
+
 RenINoOverflowMatApp::RenINoOverflowMatApp( const RenIMatBody* body,
                                             const RenColour& ambient,
                                             const RenIExpandedIntensityMap* map,
                                             bool mapUnity,
                                             const RenColour& filter )
-    : RenIMaterialApplicator( body, ambient, map, mapUnity, filter )
+    : RenILitMatApp( body, ambient, map, mapUnity, filter )
 {
 }
 
@@ -83,7 +92,7 @@ RenICheckedMatApp::RenICheckedMatApp( const RenIMatBody* body,
                                       const RenIExpandedIntensityMap* map,
                                       bool mapUnity,
                                       const RenColour& filter )
-    : RenIMaterialApplicator( body, ambient, map, mapUnity, filter )
+    : RenILitMatApp( body, ambient, map, mapUnity, filter )
 {
 }
 
@@ -255,7 +264,6 @@ void APP_TYPE::applyDirectToVertices								\
 	APPLICATOR_DIRECT_VERTEX_FUNCTION(T) 	\
 	APPLICATOR_INDICES_FUNCTION(T)
 
-APPLICATOR_FUNCTIONS(RenINoOverflowMatApp)
-APPLICATOR_FUNCTIONS(RenICheckedMatApp)
+APPLICATOR_FUNCTIONS(RenILitMatApp)
 
 /* End MATAPPLY.CPP *************************************************/

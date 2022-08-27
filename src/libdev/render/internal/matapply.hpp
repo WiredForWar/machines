@@ -51,28 +51,35 @@ protected:
 };
 
 ////////////////////////////////////////////////////////////////////////////
+// Abstract class which performs calculation required to apply a material to a lit vertex.
+class RenILitMatApp : public RenIMaterialApplicator
+{
+public:
+    RenILitMatApp( const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter );
+    virtual void applyToVertex( RenIVertex& vtx, float lambR, float lambG, float lambB ) const = 0;
+    void applyViaIndices( const RenIIlluminator::Indices&, RenIFloatLightingBuffer* ) const;
+    void applyDirectToVertices( RenIFloatLightingBuffer*, size_t nVertices ) const;
+};
+
+////////////////////////////////////////////////////////////////////////////
 // Performs calculation required to apply a material to a lit vertex.  It is
 // assumed that the lighting parameters and the material are such that the
 // calculation cannot overflow, hence, no bounds checking is done.
-class RenINoOverflowMatApp : public RenIMaterialApplicator
+class RenINoOverflowMatApp : public RenILitMatApp
 {
 public:
 	RenINoOverflowMatApp(const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
-	void applyToVertex(RenIVertex& vtx, float lambR, float lambG, float lambB) const;
-	void applyViaIndices(const RenIIlluminator::Indices&, RenIFloatLightingBuffer*) const;
-	void applyDirectToVertices(RenIFloatLightingBuffer*, size_t nVertices) const;
+    void applyToVertex( RenIVertex& vtx, float lambR, float lambG, float lambB ) const final;
 };
 
 ////////////////////////////////////////////////////////////////////////////
 // Performs calculation required to apply a material to a lit vertex.  The
 // lighting calculation *can* overflow, so bounds checking is done.
-class RenICheckedMatApp : public RenIMaterialApplicator
+class RenICheckedMatApp : public RenILitMatApp
 {
 public:
 	RenICheckedMatApp(const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
-	void applyToVertex(RenIVertex& vtx, float lambR, float lambG, float lambB) const;
-	void applyViaIndices(const RenIIlluminator::Indices&, RenIFloatLightingBuffer*) const;
-	void applyDirectToVertices(RenIFloatLightingBuffer*, size_t nVertices) const;
+    void applyToVertex( RenIVertex& vtx, float lambR, float lambG, float lambB ) const final;
 };
 
 ////////////////////////////////////////////////////////////////////////////
