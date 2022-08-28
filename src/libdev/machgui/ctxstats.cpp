@@ -81,7 +81,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics( MachGuiStartupScreens* pStartupScree
 
 //		AniSmacker* pSmackerAnimation = _NEW( AniSmacker( statAnim, targetWindow, 55 + pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() ) );
         //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() ) );
-        AniSmacker* pSmackerAnimation = new AniSmackerRegular(statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset());
+        const auto& topLeft = getBackdropTopLeft();
+        AniSmacker* pSmackerAnimation = new AniSmackerRegular(statAnim, 55 + topLeft.second, 142 + topLeft.first);
         pStartupScreens->addSmackerAnimation( pSmackerAnimation );
 	}
 

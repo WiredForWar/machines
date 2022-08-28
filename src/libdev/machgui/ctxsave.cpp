@@ -165,6 +165,8 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
 	// Display backdrop, play correct music, switch cursor on.
 	changeBackdrop( "gui/menu/sh.bmp" );
 
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -193,13 +195,13 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
 	pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
                                                         Gui::Box(SAVE_LB_MINX,
                                                                  pSaveText->absoluteBoundary().maxCorner().y() -
-                                                                 pStartupScreens_->yMenuOffset(),
+                                                                 topLeft.first,
                                                                  SAVE_LB_MAXX - SCROLLBAR_WIDTH,
                                                                  SAVE_LB_MAXY),
                                                         1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
-												Gui::Coord( SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset() ),
+												Gui::Coord( SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first ),
 												SAVE_LB_MAXY - SAVE_LB_MINY - ( pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y() ),
 												pSaveGameList_ );
 
@@ -375,7 +377,8 @@ bool MachGuiCtxSave::saveGame( const string& saveDisplayName )
 	GuiBitmap savingBmp = Gui::bitmap( "gui/menu/saving.bmp" );
 	savingBmp.enableColourKeying();
 	GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-	frontBuffer.simpleBlit( savingBmp, pStartupScreens_->xMenuOffset(), pStartupScreens_->yMenuOffset() );
+    const auto& topLeft = getBackdropTopLeft();
+	frontBuffer.simpleBlit( savingBmp, topLeft.second, topLeft.first );
 	W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
 
 	// Create next filename...

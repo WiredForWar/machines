@@ -333,7 +333,8 @@ void MachGuiCtxBriefing::displayBriefingImage()
 
  //			AniSmacker* pSmackerAnimation = _NEW( AniSmacker( briefPicture, targetWindow, 355 + pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() ) );
             //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() ) );
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset());
+            const auto& topLeft = getBackdropTopLeft();
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(briefPicture, 355 + topLeft.second, 56 + topLeft.first);
             pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
 		}
 		else if ( briefPicture.extension() == "bmp" )

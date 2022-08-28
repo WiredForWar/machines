@@ -37,6 +37,10 @@ public:
     // Blit the `bitmap` to `destination`
     void blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap, const Gui::Coord& destination) const;
 
+    // Getters for named bitmap width & height
+    int getWidthOfNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap) const;
+    int getHeightOfNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap) const;
+
 private:
     const IGuiPainter& guiPainter_;
 

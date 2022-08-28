@@ -766,9 +766,14 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent( const GuiMouseEvent& rel )
 {
     if ( rel.leftButton() == Gui::RELEASED and canDisplayDropDownList() )
     {
+        auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
+        using namespace machgui::helper::menus;
+        int menuLeft = x_from_screen_left(pRootParent_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
+        int menuTop  = y_from_screen_bottom(pRootParent_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
+
         Gui::Coord dropDownPos = absoluteBoundary().minCorner();
-        dropDownPos.x( dropDownPos.x() + MachGui::tickBmp().width() - pStartupScreens_->xMenuOffset() );
-        dropDownPos.y( dropDownPos.y() + 4 - pStartupScreens_->yMenuOffset() );
+        dropDownPos.x( dropDownPos.x() + MachGui::tickBmp().width() - menuLeft );
+        dropDownPos.y( dropDownPos.y() + 4 - menuTop );
         size_t dropDownWidth = width() - 3 - MachGui::tickBmp().width() - MachGuiPlayerColour::reqWidth();
 
         ctl_vector< string > strings;

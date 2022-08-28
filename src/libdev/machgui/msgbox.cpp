@@ -13,6 +13,7 @@
 #include "machgui/internal/strings.hpp"
 #include "gui/manager.hpp"
 #include "gui/painter.hpp"
+#include "machgui/menus_helper.hpp"
 
 MachGuiMessageBoxResponder::MachGuiMessageBoxResponder()
 {}
@@ -89,29 +90,34 @@ MachGuiMessageBox::~MachGuiMessageBox()
 // virtual
 void MachGuiMessageBox::doDisplay()
 {
-	size_t msgBoxBmpWidth = 0;
-	size_t msgBoxBmpHeight = 0;
+    size_t msgBoxBmpWidth = 0;
+    size_t msgBoxBmpHeight = 0;
 
-	switch ( mbType_ )
-	{
-		case MBOKCANCEL:
-		case MBYESNO:
-			msgBoxBmpWidth = MachGui::okCancelMsgBoxBmp().width();
-			msgBoxBmpHeight = MachGui::okCancelMsgBoxBmp().height();
-			GuiPainter::instance().blit(	MachGui::okCancelMsgBoxBmp(),
-											Gui::Box( 0,0,msgBoxBmpWidth,msgBoxBmpHeight ),
-											Gui::Coord( pStartupScreens_->xMenuOffset(),pStartupScreens_->yMenuOffset() ) );
-			break;
+    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    using namespace machgui::helper::menus;
+    int menuLeft = x_from_screen_left(pStartupScreens_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
+    int menuTop  = y_from_screen_bottom(pStartupScreens_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
 
-		case MBOK:
-			msgBoxBmpWidth = MachGui::okMsgBoxBmp().width();
-			msgBoxBmpHeight = MachGui::okMsgBoxBmp().height();
-			GuiPainter::instance().blit( MachGui::okMsgBoxBmp(),
-										 Gui::Box( 0,0,msgBoxBmpWidth,msgBoxBmpHeight ),
-							 			 Gui::Coord( pStartupScreens_->xMenuOffset(),pStartupScreens_->yMenuOffset() ) );
-			break;
+    switch ( mbType_ )
+    {
+        case MBOKCANCEL:
+        case MBYESNO:
+            msgBoxBmpWidth = MachGui::okCancelMsgBoxBmp().width();
+            msgBoxBmpHeight = MachGui::okCancelMsgBoxBmp().height();
+            GuiPainter::instance().blit(	MachGui::okCancelMsgBoxBmp(),
+                                            Gui::Box( 0,0,msgBoxBmpWidth,msgBoxBmpHeight ),
+                                            Gui::Coord( menuLeft,menuTop ) );
+            break;
 
-	}
+        case MBOK:
+            msgBoxBmpWidth = MachGui::okMsgBoxBmp().width();
+            msgBoxBmpHeight = MachGui::okMsgBoxBmp().height();
+            GuiPainter::instance().blit( MachGui::okMsgBoxBmp(),
+                                         Gui::Box( 0,0,msgBoxBmpWidth,msgBoxBmpHeight ),
+                                         Gui::Coord( menuLeft,menuTop ) );
+            break;
+
+    }
 }
 
 void MachGuiMessageBox::CLASS_INVARIANT

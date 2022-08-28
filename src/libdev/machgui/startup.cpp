@@ -30,6 +30,7 @@
 #include "machgui/chatmsgs.hpp"
 #include "machgui/focusctl.hpp"
 #include "machgui/dispnoti.hpp"
+#include "machgui/menus_helper.hpp"
 
 // Context helpers
 #include "machgui/ctxmulti.hpp"
@@ -3473,26 +3474,6 @@ void MachGuiStartupScreens::initialiseVolumes()
 	}
 }
 
-//static
-int MachGuiStartupScreens::xMenuOffset()
-{
-    const RenDisplay::Mode& mode = RenDevice::current()->display()->currentMode();
-
-    int xOffset = ( mode.width() - 640 ) / 2;
-
-    return xOffset;
-}
-
-//static
-int MachGuiStartupScreens::yMenuOffset()
-{
-    const RenDisplay::Mode& mode = RenDevice::current()->display()->currentMode();
-
-    int yOffset = ( mode.height() - 480 ) / 2;
-
-    return yOffset;
-}
-
 void MachGuiStartupScreens::addFocusCapableControl( MachGuiFocusCapableControl* pFocusCtrl )
 {
 	CB_DEPIMPL(	MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_ );
@@ -3818,6 +3799,32 @@ void MachGuiStartupScreens::changeLogoImage( const char* image )
     mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image);
 
     changed();
+}
+
+int MachGuiStartupScreens::xMenuOffset()
+{
+    auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
+
+    using namespace machgui::helper::menus;
+    int width = mSharedBitmaps_.getWidthOfNamedBitmap(backdrop);
+    // FIXME: Somewhere they store the value of xMenuOffset's first invocation and reuse it >:(. Comment L3811 to see the craziness
+    width = (width == 0) ? 640 : width;
+    int x = x_from_screen_left(width, 2);
+
+    return x;
+}
+
+int MachGuiStartupScreens::yMenuOffset()
+{
+    auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
+
+    using namespace machgui::helper::menus;
+    int height = mSharedBitmaps_.getHeightOfNamedBitmap(backdrop);
+    // FIXME: Somewhere they store the value of yMenuOffset's first invocation and reuse it >:(. Comment L3824 to see the craziness
+    height = (height == 0) ? 480 : height;
+    int y = y_from_screen_bottom(height, 2);
+
+    return y;
 }
 
 /* End STARTUP.CPP **************************************************/

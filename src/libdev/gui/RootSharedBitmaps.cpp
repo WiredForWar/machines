@@ -77,8 +77,8 @@ void GuiRootSharedBitmaps::blitNamedBitmapFromArea(const std::shared_ptr<GuiBitm
     }
 }
 
-void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap> &bitmap,
-                                           const Gui::Coord &destination) const
+void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap,
+                                           const Gui::Coord& destination) const
 {
     if (bitmap)
     {
@@ -88,4 +88,36 @@ void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap> &bit
     {
         std::cerr << "GuiRootSharedBitmaps::blitNamedBitmap(): Attempted blit of null named bitmap." << std::endl;
     }
+}
+
+int GuiRootSharedBitmaps::getWidthOfNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap) const
+{
+    int width = 0;
+
+    if (bitmap)
+    {
+        width = static_cast<int>( bitmap->width() );
+    }
+    else
+    {
+        std::cerr << "GuiRootSharedBitmaps::getWidthOfNamedBitmap: Null bitmap. Returning 0" << std::endl;
+    }
+
+    return width;
+}
+
+int GuiRootSharedBitmaps::getHeightOfNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap) const
+{
+    int height = 0;
+
+    if (bitmap)
+    {
+        height = static_cast<int>( bitmap->height() );
+    }
+    else
+    {
+        std::cerr << "GuiRootSharedBitmaps::getHeightOfNamedBitmap: Null bitmap. Returning 0" << std::endl;
+    }
+
+    return height;
 }

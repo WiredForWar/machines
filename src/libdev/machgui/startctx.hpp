@@ -44,7 +44,8 @@ public:
 protected:
     MachGuiStartupScreens* pStartupScreens_;
 
-    void changeBackdrop( const char* newBackdrop );
+    std::pair<int, int>     getBackdropTopLeft();
+    void                    changeBackdrop( const char* newBackdrop );
 
 private:
     friend ostream& operator <<( ostream& o, const MachGuiStartupScreenContext& t );

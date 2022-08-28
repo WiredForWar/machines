@@ -240,7 +240,8 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
 //		HWND targetWindow = RenDevice::current()->display()->window();
 //	 	AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, targetWindow, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) );
 //	 	AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) );
-        AniSmacker* pSmackerAnimation = new AniSmackerRegular(hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset());
+        const auto& topLeft = getBackdropTopLeft();
+        AniSmacker* pSmackerAnimation = new AniSmackerRegular(hotkeySmackerFile, 430 + topLeft.second, 199 + topLeft.first);
         pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
  	 }
 

@@ -325,6 +325,8 @@ MachGuiCtxScenario::MachGuiCtxScenario( MachGuiStartupScreens* pStartupScreens )
 	// Display backdrop, play correct music, switch cursor on.
 	changeBackdrop( "gui/menu/sl.bmp" );
 
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -364,15 +366,15 @@ MachGuiCtxScenario::MachGuiCtxScenario( MachGuiStartupScreens* pStartupScreens )
 
 	// Create system list box
 	pSystemList_ = _NEW( MachGuiSystemPlanetScenarioListBox( pStartupScreens,
-															 Gui::Box( LB_MINX, pSystemText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), LB_MAXX, SYSTEM_LB_MAXY),
+															 Gui::Box( LB_MINX, pSystemText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SYSTEM_LB_MAXY),
 															 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
 	// Create planet list box
 	pPlanetList_ = _NEW( MachGuiSystemPlanetScenarioListBox( pStartupScreens,
-															 Gui::Box( LB_MINX, pPlanetText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), LB_MAXX, PLANET_LB_MAXY),
+															 Gui::Box( LB_MINX, pPlanetText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, PLANET_LB_MAXY),
 															 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
 	// Create scenario list box
 	pScenarioList_ = _NEW( MachGuiSystemPlanetScenarioListBox(	pStartupScreens,
-																Gui::Box( LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), LB_MAXX, SCENARIO_LB_MAXY),
+																Gui::Box( LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SCENARIO_LB_MAXY),
 																1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
 
 	pTextInfo_ = _NEW( MachGuiScrollableText( pStartupScreens, Gui::Box(338,155,556,260) ) );
@@ -679,7 +681,8 @@ void MachGuiCtxScenario::updateDisplayedInfo( const string& text, SysPathName an
 
 //			AniSmacker* pSmackerAnimation = _NEW( AniSmacker( animation, targetWindow, 342 + pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() ) );
             //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( animation, 342 + pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() ) );
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(animation, 342 + pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset());
+            const auto& topLeft = getBackdropTopLeft();
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(animation, 342 + topLeft.second, 32 + topLeft.first);
             pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
 		}
 		else if ( animation.extension() == "bmp" )

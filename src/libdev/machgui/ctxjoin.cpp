@@ -171,7 +171,7 @@ WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl );
 	pGamesList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
                                                      Gui::Box(JOINGAME_LB_MINX,
                                                               pCurrentGamesText->absoluteBoundary().maxCorner().y() -
-                                                              pStartupScreens_->yMenuOffset(),
+                                                              getBackdropTopLeft().first,
                                                               JOINGAME_LB_MAXX - SCROLLBAR_WIDTH,
                                                               JOINGAME_LB_MAXY),
                                                      1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));

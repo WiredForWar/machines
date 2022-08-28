@@ -288,7 +288,8 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
 
 //			AniSmacker* pSmackerAnimation = _NEW( AniSmacker( debriefPicture, targetWindow, 359 + pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() ) );
             //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( debriefPicture, 359 + pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() ) );
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(debriefPicture, 359 + pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset());
+            const auto& topLeft = getBackdropTopLeft();
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(debriefPicture, 359 + topLeft.second, 51 + topLeft.first);
             pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
 		}
 		else if ( debriefPicture.extension() == "bmp" )

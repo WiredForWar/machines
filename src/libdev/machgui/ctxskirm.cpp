@@ -242,6 +242,8 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish( MachGuiStartupScreens* pStartupScreens )
 	// Display backdrop, play correct music, switch cursor on.
 	changeBackdrop( "gui/menu/sn.bmp" );
 
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -295,27 +297,27 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish( MachGuiStartupScreens* pStartupScreens )
 	pMapSizeList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
                                                        Gui::Box(LB_MINX,
                                                                 pMapSizeText->absoluteBoundary().maxCorner().y() -
-                                                                pStartupScreens->yMenuOffset(), LB_MAXX,
+                                                                topLeft.first, LB_MAXX,
                                                                 MAPSIZE_LB_MAXY),
                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	// Create planet list box
 	pTerrainTypeList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
                                                            Gui::Box(LB_MINX,
                                                                     pTerrainText->absoluteBoundary().maxCorner().y() -
-                                                                    pStartupScreens->yMenuOffset(), LB_MAXX,
+                                                                            topLeft.first, LB_MAXX,
                                                                     TERRAINTYPE_LB_MAXY),
                                                            1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	// Create scenario list box
 	pScenarioList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
                                                         Gui::Box(LB_MINX,
                                                                  pScenarioText->absoluteBoundary().maxCorner().y() -
-                                                                 pStartupScreens->yMenuOffset(), LB_MAXX,
+                                                                         topLeft.first, LB_MAXX,
                                                                  SCENARIO_LB_MAXY),
                                                         1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	// Create settings list box
 	pSettingsList_ = _NEW( GuiSimpleScrollableList( pStartupScreens,
-													Gui::Box( SETTINGS_LB_MINX, pSettingsText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), SETTINGS_LB_MAXX, SETTINGS_LB_MAXY),
+													Gui::Box( SETTINGS_LB_MINX, pSettingsText->absoluteBoundary().maxCorner().y() - topLeft.first, SETTINGS_LB_MAXX, SETTINGS_LB_MAXY),
 													(SETTINGS_LB_MAXX-SETTINGS_LB_MINX)/2,
 													 MachGuiDropDownListBoxCreator::reqHeight() + 1, 1 ) );
 

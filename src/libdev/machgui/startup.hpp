@@ -217,11 +217,6 @@ public:
 	//Initialise the CD and sound volume to the values specified in the registry
 	void initialiseVolumes();
 
-	// If menu screens are using something other than 640x480 then what is the top left offset...
-    // TODO: Move this to namespaced helper land, machgui::helpers::menu
-	static int xMenuOffset() __attribute((deprecated));
-	static int yMenuOffset() __attribute((deprecated));
-
 	// Focus capable controls allow for keyboard navigation of the menus
 	void addFocusCapableControl( MachGuiFocusCapableControl* );
 	void removeFocusCapableControl( MachGuiFocusCapableControl* );
@@ -344,6 +339,11 @@ private:
 
     // Change the logo image
     void changeLogoImage( const char* image );
+
+    // Get the X & Y Coordinates of the Menu's BG Image Top Left Corner.
+    friend class LoadGameProgressIndicator;
+    int xMenuOffset();
+    int yMenuOffset();
 
 	static string getContextStrName( Context context );
 
