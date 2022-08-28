@@ -9,6 +9,7 @@
 #include "machgui/startup.hpp"
 #include "gui/painter.hpp"
 #include "gui/font.hpp"
+#include "machgui/menus_helper.hpp"
 
 MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const string& str)
 :	GuiDisplayable( pParent, Gui::Box(0,0,width,GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() ) ),
@@ -45,12 +46,10 @@ void MachGuiText::doDisplay()
             backdrop,
             absoluteBoundary(),
             absoluteBoundary().minCorner(),
-            [](Gui::Box box) {
-                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                box.maxCorner().x() - box.minCorner().x(),
-                                box.maxCorner().y() - box.minCorner().y()
-                );
+            [](const Gui::Box& box) {
+                //TODO: Stop using hardcoded values for the menu background graphic
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(box, 640, 480);
             });
 
     // Draw list box item text

@@ -15,6 +15,7 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
+#include "machgui/menus_helper.hpp"
 
 unsigned char pPromptText3[] = { 40, 106, 186, 168, 66, 203, 57, 56, 169, 183, 234, 60, 237, 34, 130, 107, 2, 114, 142, 83, 21, 22, 94, 198, 230, 161, 55, 98, 0 };
 
@@ -337,12 +338,10 @@ void MachGuiPlayerListItem::doDisplay()
                 backdrop,
                 absoluteBoundary(),
                 absoluteBoundary().minCorner(),
-                [](Gui::Box box) {
-                    return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                               box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                    box.maxCorner().x() - box.minCorner().x(),
-                                    box.maxCorner().y() - box.minCorner().y()
-                    );
+                [](const Gui::Box& box) {
+                    //TODO: Stop using hardcoded values for the menu background graphic
+                    using namespace machgui::helper::menus;
+                    return centered_bitmap_transform(box, 640, 480);
                 });
 
         // Blit host icon

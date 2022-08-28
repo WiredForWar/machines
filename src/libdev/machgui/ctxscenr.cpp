@@ -34,6 +34,7 @@
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "device/cd.hpp"
+#include "machgui/menus_helper.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -512,12 +513,10 @@ void MachGuiCtxScenario::updatePlanetList( MachGuiDbSystem& system )
             backdrop,
             pPlanetList_->absoluteBoundary(),
             pPlanetList_->absoluteBoundary().minCorner(),
-            [](Gui::Box box) {
-                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                box.maxCorner().x() - box.minCorner().x(),
-                                box.maxCorner().y() - box.minCorner().y()
-                );
+            [](const Gui::Box& box) {
+                //TODO: Stop using hardcoded values for the menu background graphic
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(box, 640, 480);
             });
 
 	// Insert new items into list
@@ -576,12 +575,10 @@ void MachGuiCtxScenario::updateScenarioList( MachGuiDbPlanet& planet )
             backdrop,
             pScenarioList_->absoluteBoundary(),
             pScenarioList_->absoluteBoundary().minCorner(),
-            [](Gui::Box box) {
-                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                box.maxCorner().x() - box.minCorner().x(),
-                                box.maxCorner().y() - box.minCorner().y()
-                );
+            [](const Gui::Box& box) {
+                //TODO: Stop using hardcoded values for the menu background graphic
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(box, 640, 480);
             });
 
 	// Insert new items into list

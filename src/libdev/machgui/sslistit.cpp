@@ -13,6 +13,7 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
+#include "machgui/menus_helper.hpp"
 
 MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, MachGuiSingleSelectionListBox* pParentListBox, size_t width, const string& text )
 : 	GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight() ),
@@ -151,12 +152,10 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
                 backdrop,
                 absoluteBoundary(),
                 absoluteBoundary().minCorner(),
-                [](Gui::Box box) {
-                    return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                               box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                    box.maxCorner().x() - box.minCorner().x(),
-                                    box.maxCorner().y() - box.minCorner().y()
-                    );
+                [](const Gui::Box& box) {
+                    //TODO: Stop using hardcoded values for the menu background graphic
+                    using namespace machgui::helper::menus;
+                    return centered_bitmap_transform(box, 640, 480);
                 });
 
         // Draw list box item text

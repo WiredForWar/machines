@@ -17,6 +17,7 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "render/device.hpp"
 #include "system/winapi.hpp"
+#include "machgui/menus_helper.hpp"
 
 MachGuiMenuButton::MachGuiMenuButton(GuiRoot* pRootParent, MachGuiStartupScreens* pParent, const Gui::Box& box,
                                      unsigned int stringId,
@@ -154,12 +155,10 @@ void MachGuiMenuButton::doDisplay()
                     msgBoxBackdrop,
                     absoluteBoundary(),
                     absoluteBoundary().minCorner(),
-                    [](Gui::Box box) {
-                        return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                                   box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                        box.maxCorner().x() - box.minCorner().x(),
-                                        box.maxCorner().y() - box.minCorner().y()
-                        );
+                    [](const Gui::Box& box) {
+                        //TODO: Stop using hardcoded values for the menu background graphic
+                        using namespace machgui::helper::menus;
+                        return centered_bitmap_transform(box, 640, 480);
                     });
         }
         else
@@ -169,12 +168,10 @@ void MachGuiMenuButton::doDisplay()
                     backdrop,
                     absoluteBoundary(),
                     absoluteBoundary().minCorner(),
-                    [](Gui::Box box) {
-                        return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                                   box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                        box.maxCorner().x() - box.minCorner().x(),
-                                        box.maxCorner().y() - box.minCorner().y()
-                        );
+                    [](const Gui::Box& box) {
+                        //TODO: Stop using hardcoded values for the menu background graphic
+                        using namespace machgui::helper::menus;
+                        return centered_bitmap_transform(box, 640, 480);
                     });
         }
 

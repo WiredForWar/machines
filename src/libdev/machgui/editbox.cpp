@@ -9,6 +9,7 @@
 #include "machgui/startup.hpp"
 #include "gui/painter.hpp"
 #include "device/butevent.hpp"
+#include "machgui/menus_helper.hpp"
 
 unsigned char pPromptText1[] = { 87, 244, 105, 128, 48, 182, 149, 151, 72, 203, 222, 59, 150, 19, 218, 139, 154, 243, 40, 190, 242, 54, 243, 50, 98, 159, 84, 250, 37, 136, 151, 150, 0 };
 unsigned char pPromptText8[] = { 4, 212, 167, 27, 173, 11, 155, 126, 58, 37, 114, 151, 128 };
@@ -36,12 +37,10 @@ void MachGuiSingleLineEditBox::drawBackground()
             backdrop,
             absoluteBoundary(),
             absoluteBoundary().minCorner(),
-            [](Gui::Box box) {
-                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                box.maxCorner().x() - box.minCorner().x(),
-                                box.maxCorner().y() - box.minCorner().y()
-                );
+            [](const Gui::Box& box) {
+                //TODO: Stop using hardcoded values for the menu background graphic
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(box, 640, 480);
             });
 }
 

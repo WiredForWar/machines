@@ -34,6 +34,7 @@
 #include "network/nodeuid.hpp"
 #include "network/node.hpp"
 #include "system/winapi.hpp"
+#include "machgui/menus_helper.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -612,12 +613,10 @@ void MachGuiCtxImReady::updateGameSettings()
             backdrop,
             pReadOnlySettings_->absoluteBoundary(),
             pReadOnlySettings_->absoluteBoundary().minCorner(),
-            [](Gui::Box box) {
-                return Gui::Box(Gui::Coord(box.minCorner().x() - MachGuiStartupScreens::xMenuOffset(),
-                                           box.minCorner().y() - MachGuiStartupScreens::yMenuOffset()),
-                                box.maxCorner().x() - box.minCorner().x(),
-                                box.maxCorner().y() - box.minCorner().y()
-                );
+            [](const Gui::Box& box) {
+                //TODO: Stop using hardcoded values for the menu background graphic
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(box, 640, 480);
             });
 
 	int textWidth = (SETTINGS_MAXX-SETTINGS_MINX)*0.66;
