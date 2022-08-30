@@ -261,7 +261,12 @@ bool SysPathName::existsAsFile() const
 
     std::ifstream f(pathname().c_str());
     return f.good();
+}
 
+bool SysPathName::existsAsFile( const std::string& path )
+{
+    std::ifstream f( path );
+    return f.good();
 }
 
 bool SysPathName::checkForCapitals(const string& path) const

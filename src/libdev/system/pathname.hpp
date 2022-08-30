@@ -78,6 +78,8 @@ public:
     bool existsAsFile() const;
     // PRE( set() )
 
+    static bool existsAsFile( const std::string& path );
+
     // Return true if the pathname has capitals. Use when wanting to check for files again in lowercase.
     bool containsCapitals() const;
 
