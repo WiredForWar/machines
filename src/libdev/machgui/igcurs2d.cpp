@@ -181,6 +181,7 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
 
     // Create and add the surface for each frame
     char buffer[3];
+    bool twiceManyFrames = false;
     std::string cursorDir = "gui/cursor/";
     std::string extention;
 
@@ -199,6 +200,15 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
             extention = ".bmp";
 
             ASSERT(SysPathName::existsAsFile(withFrames + extention), "Unable to load a cursor: file not found");
+        }
+        if (nFrames > 1)
+        {
+            sprintf(buffer, "%d", nFrames * 2);
+            if (SysPathName::existsAsFile(basePath + buffer + extention))
+            {
+                twiceManyFrames = true;
+                nFrames *= 2;
+            }
         }
     }
 
@@ -238,7 +248,7 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
     pCursor->origin(origin.x(), origin.y());
 
     // set the frame rate
-    pCursor->targetFrequency(10);
+    pCursor->targetFrequency(twiceManyFrames ? 20 : 10);
 
     return pCursor;
 }
