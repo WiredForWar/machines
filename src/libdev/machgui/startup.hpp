@@ -20,7 +20,6 @@
 
 class MachGuiStartupScreensImpl;
 class W4dSceneManager;
-class RenAnimCursor2d;
 class MachInGameScreen;
 class W4dRoot;
 class GuiKeyEvent;
@@ -303,8 +302,6 @@ private:
 	void CLASS_INVARIANT;
 
     friend ostream& operator <<( ostream& o, const MachGuiStartupScreens& t );
-
-	RenAnimCursor2d* loadCursor( const string& baseName, int nFrames );
 
 	struct ContextSwitchInfo
 	{

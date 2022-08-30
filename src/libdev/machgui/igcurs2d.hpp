@@ -30,6 +30,8 @@ public:
     //dtor
     ~MachInGameCursors2d();
 
+    static RenAnimCursor2d* loadCursor( const string& baseName, int nFrames );
+
     //Get/Select the appropriate current cursor
     void cursor( MachGui::Cursor2dType type );
     MachGui::Cursor2dType type() const;
@@ -56,8 +58,7 @@ private:
 
     //Load up all the cursors
     void loadCursors();
-    RenAnimCursor2d* loadCursor( const string& baseName, int nFrames );
-   
+
     //Data members
     RenAnimCursor2d* pMenuCursor_; 			//The one over the menus etc
     RenAnimCursor2d* pMoveCursor_[2];		//Move to terrain location

@@ -227,8 +227,8 @@ MachGuiStartupScreens::MachGuiStartupScreens( W4dSceneManager* pSceneManager, W4
 	ignoreHostLostSystemMessage_ = false;
 	cdCheckTime_ = 0.0;
 
+    pMenuCursor_ = MachInGameCursors2d::loadCursor( "large/arrow", 1 );
 
-    pMenuCursor_ = loadCursor( "large/arrow", 1 );
 	pMenuCursor_->origin(0,0);
 
 	pReporter->report( 1, 100 ); // 1% of gui stuff done
@@ -1501,50 +1501,6 @@ void MachGuiStartupScreens::doBecomeNotRoot()
 	}
 	//Stop all playing sounds
 	W4dSoundManager::instance().stopAll();
-}
-
-
-RenAnimCursor2d* MachGuiStartupScreens::loadCursor( const string& baseName, int nFrames )
-{
-    //Get the back buffer
-    const RenSurface& backBuffer = Gui::backBuffer();
-
-    //Create the main cursor
-    RenAnimCursor2d* pCursor = _NEW( RenAnimCursor2d );
-
-    //Create and add the surface for each frame
-    int width = 0;
-    int height = 0;
-    char index = '1';
-    for( int i = 0; i < nFrames; ++i )
-    {
-        //Construct the full name
-        string name = "gui/cursor/";
-        name += baseName;
-        if( nFrames > 1 )
-            name += index;
-        name += ".bmp";
-        ++index;
-
-        //Create the surface
-        RenSurface surface = RenSurface::createSharedSurface( name, backBuffer );
-        surface.enableColourKeying();
-
-        //Get the surface dimensions
-        width = surface.width();
-        height = surface.height();
-
-        //Add to the cursor
-        pCursor->addFrame( surface );
-    }
-
-    //Set the origin
-    pCursor->origin( width / 2, height / 2 );
-
-    //set the frame rate
-    pCursor->targetFrequency( 10 );
-
-    return pCursor;
 }
 
 void MachGuiStartupScreens::CLASS_INVARIANT
