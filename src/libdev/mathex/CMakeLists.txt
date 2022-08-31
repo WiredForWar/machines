@@ -38,7 +38,6 @@ set(MATHEX_SOURCES
     hlfpln2d.hpp
     hshape3d.cpp
     hshape3d.hpp
-    int.hpp
     intersec.cpp
     intersec.hpp
     line2d.cpp
@@ -78,7 +77,6 @@ set(MATHEX_SOURCES
     transf3d.hpp
     tri2d.cpp
     tri2d.hpp
-    unsigned.hpp
     utility.cpp
     utility.hpp
     vec2.cpp

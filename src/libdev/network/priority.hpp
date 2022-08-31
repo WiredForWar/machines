@@ -1,9 +1,6 @@
 #ifndef _NETPRIORITY_HPP
 #define _NETPRIORITY_HPP
 
-#include "mathex/int.hpp"
-#include "mathex/unsigned.hpp"
-
 class NetPriority
 // memberwise cannonical
 {
