@@ -218,9 +218,12 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const string& baseName, int nFr
         GuiBitmap surface = Gui::bitmap(SysPathName(name));
         surface.enableColourKeying();
 
-        // Get the surface dimensions
-        width = surface.width();
-        height = surface.height();
+        if (i == 0)
+        {
+            // Get the surface dimensions
+            width = surface.width();
+            height = surface.height();
+        }
 
         // Add to the cursor
         pCursor->addFrame(surface);
