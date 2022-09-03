@@ -234,6 +234,10 @@ MachGuiStartupScreens::MachGuiStartupScreens( W4dSceneManager* pSceneManager, W4
 
 	pReporter->report( 1, 100 ); // 1% of gui stuff done
 
+    // The loading image is the very first backdrop. Loaded before construction of MGSS. It needs to be tracked by its purpose.
+    // Since this bitmap was already loaded in sdlapp.cpp, the surface manager will simply increase the ref count (:
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp");
+
 	pInGameScreen_ = _NEW( MachInGameScreen( pSceneManager, pW4dRoot_, pReporter ) );
 
 	pReporter->report( 70, 100 ); // 70% of gui stuff done
@@ -3806,10 +3810,7 @@ int MachGuiStartupScreens::xMenuOffset()
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
 
     using namespace machgui::helper::menus;
-    int width = mSharedBitmaps_.getWidthOfNamedBitmap(backdrop);
-    // FIXME: Somewhere they store the value of xMenuOffset's first invocation and reuse it >:(. Comment L3811 to see the craziness
-   // width = (width == 0) ? 640 : width;
-    int x = x_from_screen_left(width, 2);
+    int x = x_from_screen_left(mSharedBitmaps_.getWidthOfNamedBitmap(backdrop);, 2);
 
     return x;
 }
@@ -3819,10 +3820,7 @@ int MachGuiStartupScreens::yMenuOffset()
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
 
     using namespace machgui::helper::menus;
-    int height = mSharedBitmaps_.getHeightOfNamedBitmap(backdrop);
-    // FIXME: Somewhere they store the value of yMenuOffset's first invocation and reuse it >:(. Comment L3824 to see the craziness
-    //height = (height == 0) ? 480 : height;
-    int y = y_from_screen_bottom(height, 2);
+    int y = y_from_screen_bottom(mSharedBitmaps_.getHeightOfNamedBitmap(backdrop), 2);
 
     return y;
 }
