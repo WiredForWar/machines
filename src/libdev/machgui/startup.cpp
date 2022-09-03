@@ -3810,7 +3810,7 @@ int MachGuiStartupScreens::xMenuOffset()
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
 
     using namespace machgui::helper::menus;
-    int x = x_from_screen_left(mSharedBitmaps_.getWidthOfNamedBitmap(backdrop);, 2);
+    int x = x_from_screen_left(mSharedBitmaps_.getWidthOfNamedBitmap(backdrop), 2);
 
     return x;
 }

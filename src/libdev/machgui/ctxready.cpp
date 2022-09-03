@@ -608,15 +608,19 @@ void MachGuiCtxImReady::updateGameSettings()
 	pReadOnlySettings_->deleteAllChildren();
 
 	// Blit background to read only list box
-    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
-    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
             backdrop,
             pReadOnlySettings_->absoluteBoundary(),
             pReadOnlySettings_->absoluteBoundary().minCorner(),
-            [](const Gui::Box& box) {
-                //TODO: Stop using hardcoded values for the menu background graphic
+            [shared, backdrop](const Gui::Box& box) {
                 using namespace machgui::helper::menus;
-                return centered_bitmap_transform(box, 640, 480);
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
             });
 
 	int textWidth = (SETTINGS_MAXX-SETTINGS_MINX)*0.66;

@@ -316,15 +316,19 @@ void MachGuiCtxSettings::updateTerrainTypeList( MachGuiDbSystem& system )
 	pTerrainTypeList_->deleteAllItems();
 
 	// Redraw backdrop to list
-    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
-    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
             backdrop,
             pTerrainTypeList_->absoluteBoundary(),
             pTerrainTypeList_->absoluteBoundary().minCorner(),
-            [](const Gui::Box& box) {
-                //TODO: Stop using hardcoded values for the menu background graphic
+            [shared, backdrop](const Gui::Box& box) {
                 using namespace machgui::helper::menus;
-                return centered_bitmap_transform(box, 640, 480);
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
             });
 
 	// Insert new items into list
@@ -360,15 +364,19 @@ void MachGuiCtxSettings::updateScenarioList( MachGuiDbPlanet& planet )
 	pScenarioList_->deleteAllItems();
 
 	// Redraw backdrop to list
-    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
-    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
             backdrop,
             pScenarioList_->absoluteBoundary(),
             pScenarioList_->absoluteBoundary().minCorner(),
-            [](const Gui::Box& box) {
-                //TODO: Stop using hardcoded values for the menu background graphic
+            [shared, backdrop](const Gui::Box& box) {
                 using namespace machgui::helper::menus;
-                return centered_bitmap_transform(box, 640, 480);
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
             });
 
 	// Insert new items into list
@@ -453,15 +461,19 @@ void MachGuiCtxSettings::initSettings()
 	pSettingsList_->deleteAllChildren();
 
 	// Redraw backdrop to list
-    auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
-    pStartupScreens_->getSharedBitmaps()->blitNamedBitmapFromArea(
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
             backdrop,
             pSettingsList_->absoluteBoundary(),
             pSettingsList_->absoluteBoundary().minCorner(),
-            [](const Gui::Box& box) {
-                //TODO: Stop using hardcoded values for the menu background graphic
+            [shared, backdrop](const Gui::Box& box) {
                 using namespace machgui::helper::menus;
-                return centered_bitmap_transform(box, 640, 480);
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
             });
 
 
