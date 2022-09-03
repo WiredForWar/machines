@@ -80,6 +80,10 @@ void MachGuiStartupScreenContext::changeBackdrop(const char* newBackdrop)
     GuiRoot* root = pStartupScreens_;
 
     root->getSharedBitmaps()->createUpdateNamedBitmap("backdrop", newBackdrop);
+
+    const auto& topLeft = getBackdropTopLeft();
+    root->absoluteCoord(Gui::Coord(topLeft.second, topLeft.first));
+
     root->changed();
 }
 
