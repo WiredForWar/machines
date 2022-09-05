@@ -34,6 +34,7 @@
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "device/cd.hpp"
+#include "machgui/menus_helper.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +44,7 @@ public:
 	MachGuiSystemPlanetScenarioListBox( MachGuiStartupScreens* pParent, const Gui::Box& box,
     									size_t horizontalSpacing, size_t verticalSpacing,
 	    								size_t scrollInc )
-	:	MachGuiSingleSelectionListBox( pParent, box, horizontalSpacing, verticalSpacing, scrollInc )
+	: MachGuiSingleSelectionListBox(pParent, pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
 	{}
 
 	virtual void doNavSelectNewItem( MachGuiSingleSelectionListBoxItem* pItem );
@@ -322,13 +323,18 @@ MachGuiCtxScenario::MachGuiCtxScenario( MachGuiStartupScreens* pStartupScreens )
 	const int SCENARIO_LB_MAXY = 453;
 
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sl.bmp" );
+	changeBackdrop( "gui/menu/sl.bmp" );
+
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
 	// Regular menu buttons...
-  	MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 362, 305, 532, 343 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 362, 400, 532, 438 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+  	MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(362, 305, 532, 343),
+                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(362, 400, 532, 438),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pOkBtn->defaultControl( true );
@@ -360,15 +366,15 @@ MachGuiCtxScenario::MachGuiCtxScenario( MachGuiStartupScreens* pStartupScreens )
 
 	// Create system list box
 	pSystemList_ = _NEW( MachGuiSystemPlanetScenarioListBox( pStartupScreens,
-															 Gui::Box( LB_MINX, pSystemText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), LB_MAXX, SYSTEM_LB_MAXY),
+															 Gui::Box( LB_MINX, pSystemText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SYSTEM_LB_MAXY),
 															 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
 	// Create planet list box
 	pPlanetList_ = _NEW( MachGuiSystemPlanetScenarioListBox( pStartupScreens,
-															 Gui::Box( LB_MINX, pPlanetText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), LB_MAXX, PLANET_LB_MAXY),
+															 Gui::Box( LB_MINX, pPlanetText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, PLANET_LB_MAXY),
 															 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
 	// Create scenario list box
 	pScenarioList_ = _NEW( MachGuiSystemPlanetScenarioListBox(	pStartupScreens,
-																Gui::Box( LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - pStartupScreens->yMenuOffset(), LB_MAXX, SCENARIO_LB_MAXY),
+																Gui::Box( LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SCENARIO_LB_MAXY),
 																1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
 
 	pTextInfo_ = _NEW( MachGuiScrollableText( pStartupScreens, Gui::Box(338,155,556,260) ) );
@@ -504,8 +510,20 @@ void MachGuiCtxScenario::updatePlanetList( MachGuiDbSystem& system )
 	pPlanetList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pPlanetList_->absoluteBoundary(),
-									pPlanetList_->absoluteBoundary().minCorner() );
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
+            backdrop,
+            pPlanetList_->absoluteBoundary(),
+            pPlanetList_->absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
+            });
 
 	// Insert new items into list
 	uint numPlanets = system.nPlanets();
@@ -558,8 +576,20 @@ void MachGuiCtxScenario::updateScenarioList( MachGuiDbPlanet& planet )
 	pScenarioList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pScenarioList_->absoluteBoundary(),
-									pScenarioList_->absoluteBoundary().minCorner() );
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
+            backdrop,
+            pScenarioList_->absoluteBoundary(),
+            pScenarioList_->absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
+            });
 
 	// Insert new items into list
 	uint numScenarios = planet.nScenarios();
@@ -659,7 +689,8 @@ void MachGuiCtxScenario::updateDisplayedInfo( const string& text, SysPathName an
 
 //			AniSmacker* pSmackerAnimation = _NEW( AniSmacker( animation, targetWindow, 342 + pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() ) );
             //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( animation, 342 + pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() ) );
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(animation, 342 + pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset());
+            const auto& topLeft = getBackdropTopLeft();
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(animation, 342 + topLeft.second, 32 + topLeft.first);
             pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
 		}
 		else if ( animation.extension() == "bmp" )

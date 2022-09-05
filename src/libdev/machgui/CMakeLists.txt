@@ -346,7 +346,8 @@ set(MACHGUI_SOURCES
     typemap.hpp
     worldvie.cpp
     worldvie.hpp
-)
+    menus_helper.hpp
+    menus_helper.cpp)
 
 add_library(machgui OBJECT ${MACHGUI_SOURCES})
 target_link_libraries(machgui PUBLIC

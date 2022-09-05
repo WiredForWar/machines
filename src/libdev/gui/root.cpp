@@ -1,5 +1,7 @@
 
 #include "gui/manager.hpp"
+#include "root.hpp"
+
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -38,7 +40,12 @@ bool GuiRoot::recursivelyHasChild( GuiDisplayable * pChild ) const
 	POST( iff( pChild != this, result ) );
 	return result;
 }
-	
+
+GuiRootSharedBitmaps* GuiRoot::getSharedBitmaps()
+{
+    return &mSharedBitmaps_;
+}
+
 /* //////////////////////////////////////////////////////////////// */
 
 /* End ROOT.CPP *****************************************************/

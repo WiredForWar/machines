@@ -56,10 +56,14 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu( MachGuiStartupScreens* pStartupScreens )
 	MachGuiMenuButton* pExitBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 117, 410, 275, 445 ), IDS_MENUBTN_EXIT, MachGuiStartupScreens::BE_DUMMY_OK ) );
 
 #else
-   	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 40,  527, 75  ), IDS_MENUBTN_SINGLEPLAYER, MachGuiStartupScreens::SINGLEPLAYER ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 130, 527, 165 ), IDS_MENUBTN_MULTIPLAYER, MachGuiStartupScreens::MULTIPLAYER ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 217, 527, 252 ), IDS_MENUBTN_OPTIONS, MachGuiStartupScreens::OPTIONS ) );
-	MachGuiMenuButton* pExitBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 297, 527, 332 ), IDS_MENUBTN_EXIT, MachGuiStartupScreens::BE_DUMMY_OK ) );
+   	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 40, 527, 75), IDS_MENUBTN_SINGLEPLAYER,
+                           MachGuiStartupScreens::SINGLEPLAYER));
+	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 130, 527, 165), IDS_MENUBTN_MULTIPLAYER,
+                           MachGuiStartupScreens::MULTIPLAYER));
+	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 217, 527, 252), IDS_MENUBTN_OPTIONS,
+                           MachGuiStartupScreens::OPTIONS));
+	MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 297, 527, 332),
+                                                         IDS_MENUBTN_EXIT, MachGuiStartupScreens::BE_DUMMY_OK));
 
 #endif
 
@@ -68,7 +72,8 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu( MachGuiStartupScreens* pStartupScreens )
 
 	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 97, 32, 243, 122 ), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp" ) );
 
-	pStartupScreens->changeBackdrop( "gui/menu/sa.bmp" ); 
+	changeBackdrop( "gui/menu/sa.bmp" );
+
     pStartupScreens->cursorOn( true );
 	pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

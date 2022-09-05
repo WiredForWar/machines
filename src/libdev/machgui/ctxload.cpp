@@ -107,14 +107,20 @@ MachGuiCtxLoad::MachGuiCtxLoad( MachGuiStartupScreens* pStartupScreens )
 	autoLoadGame_( false )
 {
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sg.bmp" );
+	changeBackdrop( "gui/menu/sg.bmp" );
+
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
 	// Standard buttons...
- 	pOkBtn_ 	= _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 364, 127, 555, 170 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_DUMMY_OK ) );
-	pDeleteBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 364, 230, 555, 274 ), IDS_MENUBTN_DELETE, MachGuiStartupScreens::BE_DELETE ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 364, 328, 555, 371 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+ 	pOkBtn_ 	= _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(364, 127, 555, 170), IDS_MENUBTN_OK,
+                                        MachGuiStartupScreens::BE_DUMMY_OK));
+	pDeleteBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(364, 230, 555, 274), IDS_MENUBTN_DELETE,
+                                         MachGuiStartupScreens::BE_DELETE));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(364, 328, 555, 371),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pOkBtn_->defaultControl( true );
@@ -129,15 +135,16 @@ MachGuiCtxLoad::MachGuiCtxLoad( MachGuiStartupScreens* pStartupScreens )
 							   			 LOAD_LB_MINY + font.charHeight() + 2 ), IDS_MENULB_LOADGAME, "gui/menu/largefnt.bmp" ) );
 
 	// Create save game list box
-	pSaveGameList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-														  Gui::Box( LOAD_LB_MINX,
-														  			pLoadText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(),
-														  			LOAD_LB_MAXX - SCROLLBAR_WIDTH,
-														  			LOAD_LB_MAXY ),
-														  1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                        Gui::Box(LOAD_LB_MINX,
+                                                                 pLoadText->absoluteBoundary().maxCorner().y() -
+                                                                 topLeft.first,
+                                                                 LOAD_LB_MAXX - SCROLLBAR_WIDTH,
+                                                                 LOAD_LB_MAXY),
+                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
-												Gui::Coord( LOAD_LB_MAXX - SCROLLBAR_WIDTH, pLoadText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset() ),
+												Gui::Coord( LOAD_LB_MAXX - SCROLLBAR_WIDTH, pLoadText->absoluteBoundary().maxCorner().y() - topLeft.first ),
 												LOAD_LB_MAXY - LOAD_LB_MINY - ( pLoadText->absoluteBoundary().maxCorner().y() - pLoadText->absoluteBoundary().minCorner().y() ),
 												pSaveGameList_ );
 

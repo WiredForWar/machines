@@ -145,10 +145,14 @@ MachGuiCtxJoin::MachGuiCtxJoin( MachGuiStartupScreens* pStartupScreens )
 {
 
 WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl );
- 	pJoinBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 414, 51,  605, 93 ), IDS_MENUBTN_JOIN, MachGuiStartupScreens::JOIN ) );
-	pCreateBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 414, 157, 605, 200 ), IDS_MENUBTN_CREATE, MachGuiStartupScreens::CREATE ) );
- 	pShowGamesBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 414, 251, 605, 293 ), IDS_MENUBTN_SHOWGAMES, MachGuiStartupScreens::SHOWGAMES ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 414, 348, 605, 390 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+ 	pJoinBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(414, 51, 605, 93), IDS_MENUBTN_JOIN,
+                                       MachGuiStartupScreens::JOIN));
+	pCreateBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(414, 157, 605, 200), IDS_MENUBTN_CREATE,
+                                         MachGuiStartupScreens::CREATE));
+ 	pShowGamesBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(414, 251, 605, 293),
+                                            IDS_MENUBTN_SHOWGAMES, MachGuiStartupScreens::SHOWGAMES));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(414, 348, 605, 390),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pShowGamesBtn_->defaultControl( true );
@@ -164,12 +168,13 @@ WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl );
 																IDS_MENULB_GAMES, "gui/menu/largefnt.bmp" ) );
 
 	// Create games list box
-	pGamesList_ = _NEW( MachGuiSingleSelectionListBox( 	pStartupScreens,
-														Gui::Box( 	JOINGAME_LB_MINX,
-																	pCurrentGamesText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(),
-																	JOINGAME_LB_MAXX - SCROLLBAR_WIDTH,
-																	JOINGAME_LB_MAXY),
-														1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pGamesList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                     Gui::Box(JOINGAME_LB_MINX,
+                                                              pCurrentGamesText->absoluteBoundary().maxCorner().y() -
+                                                              getBackdropTopLeft().first,
+                                                              JOINGAME_LB_MAXX - SCROLLBAR_WIDTH,
+                                                              JOINGAME_LB_MAXY),
+                                                     1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
 												Gui::Coord( JOINGAME_LB_MAXX - SCROLLBAR_WIDTH, JOINGAME_LB_MINY ),
@@ -185,7 +190,8 @@ WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl );
 	pGamesList_->childrenUpdated();
 
 	// Standard context setting stuff...
-	pStartupScreens->changeBackdrop( "gui/menu/sc.bmp" );
+	changeBackdrop( "gui/menu/sc.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 

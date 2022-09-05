@@ -21,8 +21,12 @@ class MachGuiMenuButton	: public GuiDisplayable, public MachGuiFocusCapableContr
 // Canonical form revoked
 {
 public:
-    MachGuiMenuButton( MachGuiStartupScreens* pParent, const Gui::Box& box, unsigned int stringId, MachGuiStartupScreens::ButtonEvent );
-    MachGuiMenuButton( MachGuiStartupScreens*, const Gui::Box& box, unsigned int stringId, MachGuiStartupScreens::ButtonEvent, GuiDisplayable* pParent );
+
+    //TODO: Eliminate entirely MachGuiStartupScreens from this constructor
+    MachGuiMenuButton(GuiRoot* pRootParent, MachGuiStartupScreens* pParent, const Gui::Box& box, unsigned int stringId,
+                      MachGuiStartupScreens::ButtonEvent buttonEvent);
+    //TODO: Eliminate entirely MachGuiStartupScreens from this constructor.
+    MachGuiMenuButton( MachGuiStartupScreens* pStartupScreens, const Gui::Box& box, unsigned int stringId, MachGuiStartupScreens::ButtonEvent, GuiDisplayable* pParent );
     ~MachGuiMenuButton();
 
     void CLASS_INVARIANT;
@@ -42,6 +46,8 @@ public:
 
 	virtual void hasFocus( bool );
 
+    void setMsgBoxButton(bool val) { msgBoxButton_ = val; };
+
 protected:
 	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
 	virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
@@ -54,11 +60,17 @@ private:
     MachGuiMenuButton( const MachGuiMenuButton& );
     MachGuiMenuButton& operator =( const MachGuiMenuButton& );
 
-	MachGuiStartupScreens* pStartupScreens_;
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
+
+    //TODO: Eliminate dependency. Still required for buttonAction and other GUI event handling
+	MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+
 	unsigned int stringId_;
 	bool highlighted_;
 	bool flash_;
 	bool disabled_;
+    bool msgBoxButton_;
 	MachGuiStartupScreens::ButtonEvent buttonEvent_;
 };
 

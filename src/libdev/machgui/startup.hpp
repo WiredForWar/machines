@@ -62,13 +62,10 @@ public:
 
 	// Get the bitmap that is forming the backdrop for all the buttons etc ( different backdrop
 	// for each context ).
-	const GuiBitmap& backdrop() const;
+	// const GuiBitmap& backdrop() const;
 
 	// Returns the ButtonEvent enum for the last menu button that was pressed.
 	ButtonEvent lastButtonEvent() const;
-
-	// Update the startup screens backdrop. This is an image of a circuit board.
-	void changeBackdrop( const char* );
 
 	// Switch mouse cursor on/off
 	void cursorOn( bool );
@@ -219,12 +216,6 @@ public:
 	//Initialise the CD and sound volume to the values specified in the registry
 	void initialiseVolumes();
 
-	// If menu screens are using something other than 640x480 then what is the top left offset...
-	int xMenuOffset() const;
-	int yMenuOffset() const;
-
-	void blitBackdrop( const Gui::Box&, const Gui::Coord& );
-
 	// Focus capable controls allow for keyboard navigation of the menus
 	void addFocusCapableControl( MachGuiFocusCapableControl* );
 	void removeFocusCapableControl( MachGuiFocusCapableControl* );
@@ -342,6 +333,14 @@ private:
 	void contextVictory();
 	void contextDefeat();
 	void contextLogo();
+
+    // Change the logo image
+    void changeLogoImage( const char* image );
+
+    // Get the X & Y Coordinates of the Menu's BG Image Top Left Corner.
+    friend class LoadGameProgressIndicator;
+    int xMenuOffset();
+    int yMenuOffset();
 
 	static string getContextStrName( Context context );
 

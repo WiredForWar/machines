@@ -38,15 +38,20 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing( MachGuiStartupScreens* pStartupScree
 	playedMail_(false)
 {
 	// Create menu buttons. Order of creation denotes TAB order.
-	MachGuiMenuButton* pStatisticsButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 206, 279, 248 ), IDS_MENUBTN_STATS, MachGuiStartupScreens::BE_STATISTICS ) );
+	MachGuiMenuButton* pStatisticsButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens,
+                                                                  Gui::Box(87, 206, 279, 248), IDS_MENUBTN_STATS,
+                                                                  MachGuiStartupScreens::BE_STATISTICS));
 	MachGuiMenuButton* pContinueButton;
 	//display back to lobby on button for zone games.
 	if( not NetNetwork::instance().isLobbiedGame() )
-	 	pContinueButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 310, 279, 353 ), IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::CONTINUE ) );
+	 	pContinueButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(87, 310, 279, 353),
+                                                 IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::CONTINUE));
 	else
-	 	pContinueButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 310, 279, 353 ), IDS_MENUBTN_BACK_TO_ZONE, MachGuiStartupScreens::CONTINUE ) );
+	 	pContinueButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(87, 310, 279, 353),
+                                                 IDS_MENUBTN_BACK_TO_ZONE, MachGuiStartupScreens::CONTINUE));
 
-  	MachGuiMenuButton* pRestartButton = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 87, 100, 279, 142 ), IDS_MENUBTN_RESTART, MachGuiStartupScreens::RESTART ) );
+  	MachGuiMenuButton* pRestartButton = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(87, 100, 279, 142),
+                                                               IDS_MENUBTN_RESTART, MachGuiStartupScreens::RESTART));
 
 #ifdef DEMO
 	pStatisticsButton->disabled( true );
@@ -57,7 +62,8 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing( MachGuiStartupScreens* pStartupScree
 	if ( pStartupScreens->currentContext() == MachGuiStartupScreens::CTX_MPDEBRIEFING )
 		pRestartButton->disabled( true );
 
-   	pStartupScreens->changeBackdrop( "gui/menu/sj.bmp" );
+   	changeBackdrop( "gui/menu/sj.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -282,7 +288,8 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
 
 //			AniSmacker* pSmackerAnimation = _NEW( AniSmacker( debriefPicture, targetWindow, 359 + pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() ) );
             //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( debriefPicture, 359 + pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() ) );
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(debriefPicture, 359 + pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset());
+            const auto& topLeft = getBackdropTopLeft();
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(debriefPicture, 359 + topLeft.second, 51 + topLeft.first);
             pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
 		}
 		else if ( debriefPicture.extension() == "bmp" )

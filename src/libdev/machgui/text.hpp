@@ -16,27 +16,29 @@
 #include "stdlib/string.hpp"
 #include "gui/displaya.hpp"
 #include "gui/font.hpp"
+#include "gui/root.hpp"
 
-class MachGuiStartupScreens;
 
 class MachGuiText : public GuiDisplayable
 {
 public:
-	MachGuiText( GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens, size_t width, const string& str );
-	MachGuiText( GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens, size_t width, const string& str, const string& font );
+    MachGuiText(GuiDisplayable* pParent, size_t width, const string& str);
+    MachGuiText(GuiDisplayable* pParent, size_t width, const string& str, const string& font);
 
-	static size_t reqHeight();
-	
-	virtual void doDisplay();
+    static size_t reqHeight();
 
-	void textOffset( int x, int y );
+    virtual void doDisplay() override;
+
+    void textOffset( int x, int y );
 
 private:
-	string text_;
-	MachGuiStartupScreens* pStartupScreens_;
-	int textOffsetX_;
-	int textOffsetY_;
-	GuiBmpFont font_;
+    string text_;
+    int textOffsetX_;
+    int textOffsetY_;
+    GuiBmpFont font_;
+
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
 };
 
 

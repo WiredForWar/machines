@@ -203,6 +203,10 @@ private:
 //	friend class RenTexture;
 //	RenSurface(RenISurfBody* i);		// PRE(i);
 
+    // Compile Seam Wrappers for the RenSurfaceManager calls
+    static void mgrIncrementRefCount(Ren::TexId texId);
+    static void mgrDecrementRefCount(Ren::TexId texId);
+
 	// Only the manager class can allocate Ids and create surfaces.
 	// (A texture can create a surface corresponding to its own id.)
 	friend class RenSurfaceManager;

@@ -41,14 +41,19 @@ MachGuiCtxBriefing::MachGuiCtxBriefing( MachGuiStartupScreens* pStartupScreens )
 	playedMail_( false ),
 	autoLoadGame_( false )
 {
-	pOkBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 131, 363, 301, 401 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_DUMMY_OK ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 132, 416, 301, 453 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
-	pHintsBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 357, 363, 526, 401 ), IDS_MENUBTN_HINTS, MachGuiStartupScreens::HINTS ) );
-	pObjectiveBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 356, 416, 526, 453 ), IDS_MENUBTN_OBJECTIVES, MachGuiStartupScreens::OBJECTIVES ) );
+	pOkBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(131, 363, 301, 401), IDS_MENUBTN_OK,
+                                     MachGuiStartupScreens::BE_DUMMY_OK));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(132, 416, 301, 453),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
+	pHintsBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(357, 363, 526, 401), IDS_MENUBTN_HINTS,
+                                        MachGuiStartupScreens::HINTS));
+	pObjectiveBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(356, 416, 526, 453),
+                                            IDS_MENUBTN_OBJECTIVES, MachGuiStartupScreens::OBJECTIVES));
 
 	pCancelBtn->escapeControl( true );
 
-	pStartupScreens->changeBackdrop( "gui/menu/sk.bmp" );
+	changeBackdrop( "gui/menu/sk.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -328,7 +333,8 @@ void MachGuiCtxBriefing::displayBriefingImage()
 
  //			AniSmacker* pSmackerAnimation = _NEW( AniSmacker( briefPicture, targetWindow, 355 + pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() ) );
             //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() ) );
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset());
+            const auto& topLeft = getBackdropTopLeft();
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(briefPicture, 355 + topLeft.second, 56 + topLeft.first);
             pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
 		}
 		else if ( briefPicture.extension() == "bmp" )

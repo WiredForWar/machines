@@ -952,6 +952,16 @@ bool& GuiDisplayable::useFourTimesRender()
 	return useFourTimesRenderBool;
 }
 
+GuiDisplayable* GuiDisplayable::findRoot(GuiDisplayable* current)
+{
+    if (current->isRoot())
+    {
+        return current;
+    }
+
+    return findRoot( &(current->parent()) );
+}
+
 //////////////////////////////////////////////////////////////////////
 
 /* End **************************************************************/

@@ -156,6 +156,8 @@ public:
 	GuiDisplayable& parent();
 	// PRE( not isRoot() );
 
+    GuiDisplayable* findRoot(GuiDisplayable* current);
+
 	// call this method when a subclass undergoes a state
 	// change which alters the display of the object
 	void changed();
@@ -192,8 +194,9 @@ public:
 	// Fixes problem with screen going white when resolution is changed on certain cards
 	static bool& useFourTimesRender();
 		 
-protected:
 	void absoluteCoord( const Gui::Coord& absCoord );
+
+protected:
 	// PRE( implies( not isRoot(), parent().contains( Gui::Box( absCoord, width(), height() ) ) );
 	// POST( absoluteCoord() == absCoord );
 	// POST( boundary() == Gui::Box( absCoord, width(), height() ) ) );

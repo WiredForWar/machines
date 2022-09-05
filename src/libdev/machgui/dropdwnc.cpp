@@ -12,6 +12,7 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
+#include "machgui/menus_helper.hpp"
 
 MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* pParent,
 																MachGuiStartupScreens* pStartupScreens,
@@ -19,13 +20,14 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 																const GuiStrings& availText )
 : 	GuiDisplayable( pParent, Gui::Box(0,0,width,reqHeight() ) ),
 	MachGuiFocusCapableControl( pStartupScreens ),
+	highlighted_( false ),
 	strings_( availText ),
 	pStartupScreens_( pStartupScreens ),
-	highlighted_( false ),
 	whiteFont_( false ),
 	border_( false )
 {
 	text_ = availText[0];
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
@@ -37,13 +39,14 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 																bool whiteFont )
 : 	GuiDisplayable( pParent, Gui::Box( 0,0,width,reqHeight() ) ),
 	MachGuiFocusCapableControl( pStartupScreens ),
+	highlighted_( false ),
 	strings_( availText ),
 	pStartupScreens_( pStartupScreens ),
-	highlighted_( false ),
 	whiteFont_( whiteFont ),
 	border_( false )
 {
 	text_ = availText[0];
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
@@ -57,14 +60,15 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 																bool border )
 : 	GuiDisplayable( pParent, Gui::Box( relCoord, width, reqHeight( border ) ) ),
 	MachGuiFocusCapableControl( pStartupScreens ),
+	highlighted_( false ),
 	strings_( availText ),
 	pStartupScreens_( pStartupScreens ),
-	highlighted_( false ),
 	whiteFont_( whiteFont ),
 	border_( border )
 {
 	PRE(availText.size() > 0);
 	text_ = availText[0];
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
@@ -153,40 +157,45 @@ void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent( const GuiMouseEvent&
 //virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent( const GuiMouseEvent& rel )
 {
-	if( strings_.size() )
-	{
-		if ( rel.leftButton() == Gui::RELEASED )
-		{
-			size_t dropDownHeight = strings_.size() * MachGuiSingleSelectionListBoxItem::reqHeight();
+    if( !strings_.empty() )
+    {
+        if ( rel.leftButton() == Gui::RELEASED )
+        {
+            size_t dropDownHeight = strings_.size() * MachGuiSingleSelectionListBoxItem::reqHeight();
 
-			Gui::Coord coord = absoluteBoundary().minCorner();
+            Gui::Coord coord = absoluteBoundary().minCorner();
 
-			// Make sure that selected string appears first in list
-			GuiStrings orderedStrings;
-			orderedStrings.push_back( text_ );
+            // Make sure that selected string appears first in list
+            GuiStrings orderedStrings;
+            orderedStrings.push_back( text_ );
 
-			for ( GuiStrings::iterator iter = strings_.begin(); iter != strings_.end(); ++iter )
-			{
-				// Ignore text_, do not add into list again.
+            for (auto iter = strings_.begin(); iter != strings_.end(); ++iter )
+            {
+                // Ignore text_, do not add into list again.
 //				if ( stricmp( (*iter).c_str(), text_.c_str() ) != 0 )
-				if ( strcasecmp( (*iter).c_str(), text_.c_str() ) != 0 )
-				{
-					orderedStrings.push_back( (*iter) );
-				}
-			}
+                if ( strcasecmp( (*iter).c_str(), text_.c_str() ) != 0 )
+                {
+                    orderedStrings.push_back( (*iter) );
+                }
+            }
 
-			createDropDownList(	pStartupScreens_,
-								Gui::Box( Gui::Coord( coord.x() - pStartupScreens_->xMenuOffset(),
-											coord.y() - pStartupScreens_->yMenuOffset() ),
-											width(), dropDownHeight ),
-								1000,
-								MachGuiSingleSelectionListBoxItem::reqHeight() - 1 /* slight overlap*/,
-								1,
-								width(),
-								orderedStrings,
-								this );
-		}
-	}
+            auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
+            using namespace machgui::helper::menus;
+            int menuLeft = x_from_screen_left(pRootParent_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
+            int menuTop  = y_from_screen_bottom(pRootParent_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
+
+            createDropDownList(	pStartupScreens_,
+                                Gui::Box( Gui::Coord( coord.x() - menuLeft,
+                                            coord.y() - menuTop ),
+                                            width(), dropDownHeight ),
+                                1000,
+                                MachGuiSingleSelectionListBoxItem::reqHeight() - 1 /* slight overlap*/,
+                                1,
+                                width(),
+                                orderedStrings,
+                                this );
+        }
+    }
 }
 
 //virtual
@@ -229,9 +238,20 @@ void MachGuiDropDownListBoxCreator::doDisplay()
 		}
 		else
 		{
-			// Blit background to list box item
-			pStartupScreens_->blitBackdrop( absoluteBoundary(),
-											absoluteBoundary().minCorner() );
+            auto* shared = pRootParent_->getSharedBitmaps();
+            auto backdrop = shared->getNamedBitmap("backdrop");
+            shared->blitNamedBitmapFromArea(
+                    backdrop,
+                    absoluteBoundary(),
+                    absoluteBoundary().minCorner(),
+                    [shared, backdrop](const Gui::Box& box) {
+                        using namespace machgui::helper::menus;
+                        return centered_bitmap_transform(
+                                box,
+                                shared->getWidthOfNamedBitmap(backdrop),
+                                shared->getHeightOfNamedBitmap(backdrop)
+                        );
+                    });
 
 			// Draw list box item text
 			if ( whiteFont_ )

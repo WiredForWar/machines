@@ -31,6 +31,7 @@
 #include <stdarg.h>
 #include "network/netnet.hpp"
 #include "network/session.hpp"
+#include "machgui/menus_helper.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -159,13 +160,18 @@ MachGuiCtxSettings::MachGuiCtxSettings( MachGuiStartupScreens* pStartupScreens )
 	animations_( pStartupScreens, SysPathName("gui/menu/sp_anims.anm") )
 {
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sp.bmp" );
+	changeBackdrop( "gui/menu/sp.bmp" );
+
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
 	// Regular menu buttons...
-	MachGuiMenuButton* pOKBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 302, 420, 444, 451 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK ) );
-  	MachGuiMenuButton* pCancelBtn =_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 472, 420, 607, 451 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+	MachGuiMenuButton* pOKBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(302, 420, 444, 451),
+                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK));
+  	MachGuiMenuButton* pCancelBtn =_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(472, 420, 607, 451),
+                                                          IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pOKBtn->defaultControl( true );
@@ -216,21 +222,30 @@ MachGuiCtxSettings::MachGuiCtxSettings( MachGuiStartupScreens* pStartupScreens )
 							   			 SETTINGS_LB_MINY + font.charHeight() + 2 ), IDS_MENULB_SETTINGS, "gui/menu/largefnt.bmp" ) );
 
 	// Create system list box
-	pMapSizeList_ = _NEW( MachGuiSingleSelectionListBox(  pStartupScreens,
-														 Gui::Box( LB_MINX, pMapSizeText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), LB_MAXX, MAPSIZE_LB_MAXY),
-														 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pMapSizeList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                       Gui::Box(LB_MINX,
+                                                                pMapSizeText->absoluteBoundary().maxCorner().y() -
+                                                                topLeft.first, LB_MAXX,
+                                                                MAPSIZE_LB_MAXY),
+                                                       1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	// Create planet list box
-	pTerrainTypeList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-															 Gui::Box( LB_MINX, pTerrainText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), LB_MAXX, TERRAINTYPE_LB_MAXY),
-															 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pTerrainTypeList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                           Gui::Box(LB_MINX,
+                                                                    pTerrainText->absoluteBoundary().maxCorner().y() -
+                                                                            topLeft.first, LB_MAXX,
+                                                                    TERRAINTYPE_LB_MAXY),
+                                                           1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 	// Create scenario list box
-	pScenarioList_ = _NEW( MachGuiSingleSelectionListBox(pStartupScreens,
-														 Gui::Box( LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), LB_MAXX, SCENARIO_LB_MAXY),
-														 1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pScenarioList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                        Gui::Box(LB_MINX,
+                                                                 pScenarioText->absoluteBoundary().maxCorner().y() -
+                                                                         topLeft.first, LB_MAXX,
+                                                                 SCENARIO_LB_MAXY),
+                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	// Create settings list box
 	pSettingsList_ = _NEW( GuiSimpleScrollableList( pStartupScreens,
-													Gui::Box( SETTINGS_LB_MINX, pSettingsText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(), SETTINGS_LB_MAXX, SETTINGS_LB_MAXY),
+													Gui::Box( SETTINGS_LB_MINX, pSettingsText->absoluteBoundary().maxCorner().y() - topLeft.first, SETTINGS_LB_MAXX, SETTINGS_LB_MAXY),
 													(SETTINGS_LB_MAXX-SETTINGS_LB_MINX)/2,
 													 MachGuiDropDownListBoxCreator::reqHeight() + 1, 1 ) );
 
@@ -301,9 +316,20 @@ void MachGuiCtxSettings::updateTerrainTypeList( MachGuiDbSystem& system )
 	pTerrainTypeList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pTerrainTypeList_->absoluteBoundary(),
-									pTerrainTypeList_->absoluteBoundary().minCorner() );
-
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
+            backdrop,
+            pTerrainTypeList_->absoluteBoundary(),
+            pTerrainTypeList_->absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
+            });
 
 	// Insert new items into list
 	uint numPlanets = system.nPlanets();
@@ -338,8 +364,20 @@ void MachGuiCtxSettings::updateScenarioList( MachGuiDbPlanet& planet )
 	pScenarioList_->deleteAllItems();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pScenarioList_->absoluteBoundary(),
-									pScenarioList_->absoluteBoundary().minCorner() );
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
+            backdrop,
+            pScenarioList_->absoluteBoundary(),
+            pScenarioList_->absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
+            });
 
 	// Insert new items into list
 	uint numScenarios = planet.nScenarios();
@@ -423,8 +461,20 @@ void MachGuiCtxSettings::initSettings()
 	pSettingsList_->deleteAllChildren();
 
 	// Redraw backdrop to list
-	pStartupScreens_->blitBackdrop( pSettingsList_->absoluteBoundary(),
-									pSettingsList_->absoluteBoundary().minCorner() );
+    auto* shared = pStartupScreens_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
+            backdrop,
+            pSettingsList_->absoluteBoundary(),
+            pSettingsList_->absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
+            });
 
 
 	// Add "fog of war" setting...
@@ -474,7 +524,7 @@ void MachGuiCtxSettings::addSetting( MachGuiDropDownListBoxCreator*& pCreator, u
 
 	GuiResourceString labelStr( labelStrId );
 	GuiStrings strings;
-	MachGuiText* pText = _NEW( MachGuiText( pSettingsList_, pStartupScreens_, width, labelStr.asString() ) );
+	MachGuiText* pText = _NEW(MachGuiText(pSettingsList_, width, labelStr.asString()));
 	pText->textOffset( 1, 1 );
 
    	while( numStrs )

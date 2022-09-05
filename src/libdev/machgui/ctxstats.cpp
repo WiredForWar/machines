@@ -40,10 +40,12 @@ MachGuiCtxStatistics::MachGuiCtxStatistics( MachGuiStartupScreens* pStartupScree
 :	MachGuiStartupScreenContext( pStartupScreens ),
 	delayBarsGrowth_( 2 )
 {
-  	MachGuiMenuButton* pOkBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 425,406,576,439 ), IDS_MENUBTN_OK, MachGuiStartupScreens::EXIT ) );
+  	MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(425, 406, 576, 439),
+                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::EXIT));
 	pOkBtn->escapeControl( true );
 
-	pStartupScreens->changeBackdrop( "gui/menu/sq.bmp" );
+	changeBackdrop( "gui/menu/sq.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -79,7 +81,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics( MachGuiStartupScreens* pStartupScree
 
 //		AniSmacker* pSmackerAnimation = _NEW( AniSmacker( statAnim, targetWindow, 55 + pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() ) );
         //AniSmacker* pSmackerAnimation = _NEW( AniSmacker( statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() ) );
-        AniSmacker* pSmackerAnimation = new AniSmackerRegular(statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset());
+        const auto& topLeft = getBackdropTopLeft();
+        AniSmacker* pSmackerAnimation = new AniSmackerRegular(statAnim, 55 + topLeft.second, 142 + topLeft.first);
         pStartupScreens->addSmackerAnimation( pSmackerAnimation );
 	}
 

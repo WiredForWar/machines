@@ -16,87 +16,167 @@ class GuiBorderMetrics;
 class GuiBorderDimensions;
 class GuiFilledBorderColours;
 
-class GuiPainter
+// Interface for the GuiPainter Singleton
+class IGuiPainter
+{
+public:
+    virtual ~IGuiPainter() = 0;
+
+    // Blit bitmap to backbuffer
+    virtual void blit( 	const GuiBitmap& source,
+                  const Gui::Box& sourceArea,
+                  const Gui::Coord& dest
+                  ) const = 0;
+
+    // Same as above only sourceArea is entire area of the source GuiBitmap
+    virtual void blit( 	const GuiBitmap& source,
+                  const Gui::Coord& dest
+                  ) const  = 0;
+
+    // Same as above only dest is defaulted to (0,0)
+    virtual void blit( 	const GuiBitmap& source ) const = 0;
+
+    virtual void tile( 	const GuiBitmap& source,
+                  const Gui::Box& sourceArea,
+                  const Gui::Box& destArea
+                  ) const  = 0;
+
+    virtual void stretch( 	const GuiBitmap& source,
+                     const Gui::Box& sourceArea,
+                     const Gui::Box& destArea
+                     ) const  = 0;
+
+    virtual void stretch( const GuiBitmap& source,
+                  const Gui::Box& destArea ) const  = 0;
+
+
+    ///////////////////////////////
+
+    virtual void filledRectangle( const Gui::Box&, const Gui::Colour& ) const = 0;
+    virtual void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness ) const  = 0;
+
+    virtual void bevel( const Gui::Box& b,
+                unsigned thickness,
+                const Gui::Colour& hiCol,
+                const Gui::Colour& loCol
+                )  const = 0;
+
+    ///////////////////////////////
+
+    virtual void line( const Gui::Coord& c1,
+               const Gui::Coord& c2,
+               const Gui::Colour&,
+               unsigned thickness
+               ) const  = 0;
+
+    virtual void horizontalLine( const Gui::Coord& c1,
+                         unsigned length,
+                         const Gui::Colour&,
+                         unsigned thickness
+                         ) const  = 0;
+
+    virtual void verticalLine( const Gui::Coord& c1,
+                       unsigned height,
+                       const Gui::Colour&,
+                       unsigned thickness
+                       ) const  = 0;
+
+    ///////////////////////////////
+
+    virtual void text( const Gui::Coord& c,
+               const string& text,
+               const Gui::Colour&
+               ) const  = 0;
+
+    virtual void rightAlignText(const Gui::Coord& c,
+                        const string& theText,
+                        const Gui::Colour& col
+                        ) const  = 0;
+
+    ///////////////////////////////
+
+    virtual void filledBorder( const Gui::Coord& absCoord,
+                       const GuiBorderDimensions&,
+                       const GuiFilledBorderColours&,
+                       const GuiBorderMetrics&
+                       ) const  = 0;
+};
+
+class GuiPainter : public IGuiPainter
 // Singleton
 {
 public:
 
 	static GuiPainter& instance();
-	
+
 	///////////////////////////////
-	
-	void fill( 	const Gui::Box& destArea, const GuiColour& );
 
 	// Blit bitmap to backbuffer
-	void blit( 	const GuiBitmap& source, 
+	void blit( 	const GuiBitmap& source,
 			   	const Gui::Box& sourceArea,
-			   	const Gui::Coord& dest );
+			   	const Gui::Coord& dest ) const override;
 
 	// Same as above only sourceArea is entire area of the source GuiBitmap
-	void blit( 	const GuiBitmap& source, 
-			   	const Gui::Coord& dest );
+	void blit( 	const GuiBitmap& source,
+			   	const Gui::Coord& dest ) const  override;
 
 	// Same as above only dest is defaulted to (0,0)
-	void blit( 	const GuiBitmap& source );
+	void blit( 	const GuiBitmap& source ) const  override;
 
-	void tile( 	const GuiBitmap& source, 
-				const Gui::Box& sourceArea, 
-				const Gui::Box& destArea );
+	void tile( 	const GuiBitmap& source,
+				const Gui::Box& sourceArea,
+				const Gui::Box& destArea ) const  override;
 
-	void stretch( 	const GuiBitmap& source, 
-					const Gui::Box& sourceArea, 
-					const Gui::Box& destArea );
+	void stretch( 	const GuiBitmap& source,
+					const Gui::Box& sourceArea,
+					const Gui::Box& destArea ) const  override;
 
-	void stretch( const GuiBitmap& source, 
-				  const Gui::Box& destArea );
+	void stretch( const GuiBitmap& source,
+				  const Gui::Box& destArea ) const  override;
 
 	///////////////////////////////
 
-	void filledRectangle( const Gui::Box&, const Gui::Colour& );
-	void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness );
+	void filledRectangle( const Gui::Box&, const Gui::Colour& ) const  override;
+	void hollowRectangle( const Gui::Box&, const Gui::Colour&, unsigned thickness ) const  override;
 
 	void bevel( const Gui::Box& b,
-				unsigned thickness, 
-				const Gui::Colour& hiCol, 
-				const Gui::Colour& loCol );
-	
+				unsigned thickness,
+				const Gui::Colour& hiCol,
+				const Gui::Colour& loCol ) const  override;
+
 	///////////////////////////////
 
-	void line( const Gui::Coord& c1, 
-				const Gui::Coord& c2, 
-				const Gui::Colour&, 
-				unsigned thickness );
+	void line( const Gui::Coord& c1,
+				const Gui::Coord& c2,
+				const Gui::Colour&,
+				unsigned thickness ) const  override;
 
 	void horizontalLine( const Gui::Coord& c1,
 							unsigned length,
-							const Gui::Colour&, 
-							unsigned thickness );
+							const Gui::Colour&,
+							unsigned thickness ) const  override;
 
 	void verticalLine( const Gui::Coord& c1,
 							unsigned height,
-							const Gui::Colour&, 
-							unsigned thickness );
+							const Gui::Colour&,
+							unsigned thickness ) const  override;
 
-	void polyline( const GuiCoords& coords,
-					const Gui::Colour&, 
-					unsigned thickness );
-	
 	///////////////////////////////
 
-	void text( const Gui::Coord& c, 
-				const string& text, 
-				const Gui::Colour& );
+	void text( const Gui::Coord& c,
+				const string& text,
+				const Gui::Colour& ) const  override;
 
-	void rightAlignText(const Gui::Coord& c, 
-						const string& theText, 
-						const Gui::Colour& col );
-	
+	void rightAlignText(const Gui::Coord& c,
+						const string& theText,
+						const Gui::Colour& col ) const  override;
+
 	///////////////////////////////
 
-	void filledBorder( const Gui::Coord& absCoord, 
-						const GuiBorderDimensions&, 
-						const GuiFilledBorderColours&, 
-						const GuiBorderMetrics& );
+	void filledBorder( const Gui::Coord& absCoord,
+						const GuiBorderDimensions&,
+						const GuiFilledBorderColours&,
+						const GuiBorderMetrics& ) const  override;
 
 private:
 	GuiPainter( const GuiPainter& );

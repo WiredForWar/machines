@@ -14,6 +14,7 @@
 
 #include "base/base.hpp"
 #include "gui/displaya.hpp"
+#include "gui/root.hpp"
 
 class MachGuiStartupScreens;
 
@@ -21,8 +22,9 @@ class MachGuiChatWindow : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiChatWindow( MachGuiStartupScreens*, const Gui::Box& );
-    ~MachGuiChatWindow();
+    //TODO: Eliminate entirely MachGuiStartupScreens from this constructor
+    MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens* pStartupScreens, const Gui::Box& box);
+    virtual ~MachGuiChatWindow();
 
 	static void addText( const string& text );
 
@@ -48,7 +50,12 @@ private:
     MachGuiChatWindow& operator =( const MachGuiChatWindow& );
 
 	// Data members...
-	MachGuiStartupScreens* pStartupScreens_;
+
+    // A GuiRoot such as MachGuiStartupScreens
+    GuiRoot* pRootParent_;
+
+    //TODO: Eliminate dependency. Still required for message box stuff >.<
+	MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
 };
 
 

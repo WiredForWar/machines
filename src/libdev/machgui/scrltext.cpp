@@ -12,73 +12,74 @@
 #include "gui/restring.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
+#include "machgui/menus_helper.hpp"
 
-MachGuiScrollableText::MachGuiScrollableText( MachGuiStartupScreens* pParent, const Gui::Box& box, uint stringId )
-:	GuiSimpleScrollableList( pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 ),
-	pStartupScreens_( pParent )
+MachGuiScrollableText::MachGuiScrollableText( GuiDisplayable* pParent, const Gui::Box& box, uint stringId )
+:	GuiSimpleScrollableList( pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 )
 {
-	setText( stringId );
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
+    setText( stringId );
 
     TEST_INVARIANT;
 }
 
-MachGuiScrollableText::MachGuiScrollableText( MachGuiStartupScreens* pParent, const Gui::Box& box, const string& text )
-:	GuiSimpleScrollableList( pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 ),
-	pStartupScreens_( pParent )
+MachGuiScrollableText::MachGuiScrollableText( GuiDisplayable* pParent, const Gui::Box& box, const string& text )
+:	GuiSimpleScrollableList( pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 )
 {
-	setText( text );
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
+    setText( text );
 
     TEST_INVARIANT;
 }
 
 
-MachGuiScrollableText::MachGuiScrollableText( MachGuiStartupScreens* pParent, const Gui::Box& box )
-:	GuiSimpleScrollableList( pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 ),
-	pStartupScreens_( pParent )
+MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box )
+:	GuiSimpleScrollableList( pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 )
 {
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
 }
 
-MachGuiScrollableText::MachGuiScrollableText( MachGuiStartupScreens* pParent, const Gui::Box& box, uint columnWidth, const string& text )
-:	GuiSimpleScrollableList( pParent, box, columnWidth, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 ),
-	pStartupScreens_( pParent )
+MachGuiScrollableText::MachGuiScrollableText( GuiDisplayable* pParent, const Gui::Box& box, uint columnWidth, const string& text )
+:	GuiSimpleScrollableList( pParent, box, columnWidth, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1 )
 {
-	setText( text );
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
+    setText( text );
 
     TEST_INVARIANT;
 }
 
 void MachGuiScrollableText::setText( uint stringId )
 {
-	GuiResourceString text( stringId );
-	setText( text.asString() );
+    GuiResourceString text( stringId );
+    setText( text.asString() );
 }
 
 void MachGuiScrollableText::setText( const string& text )
 {
-	deleteAllChildren();
+    deleteAllChildren();
 
-	strings linesOfText;
+    strings linesOfText;
     linesOfText.reserve( 64 );
-	MachGuiMenuText::chopUpText( text, width(), GuiBmpFont::getFont("gui/menu/smallfnt.bmp"), &linesOfText );
+    MachGuiMenuText::chopUpText( text, width(), GuiBmpFont::getFont("gui/menu/smallfnt.bmp"), &linesOfText );
 
-	for ( strings::iterator iter = linesOfText.begin(); iter != linesOfText.end(); ++iter )
-	{
-		string lineOfText = *iter;
+    for (auto iter = linesOfText.begin(); iter != linesOfText.end(); ++iter )
+    {
+        string lineOfText = *iter;
 
-		NEIL_STREAM( lineOfText << std::endl );
+        NEIL_STREAM( lineOfText << std::endl );
 
-		if ( strncasecmp(&lineOfText.c_str()[0], "<w>",3) == 0 )
-		{
-			_NEW( MachGuiText( this, pStartupScreens_, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp" ) );
-		}
-		else
-		{
-			_NEW( MachGuiText( this, pStartupScreens_, width(), lineOfText ) );
-		}
-	}
+        if ( strncasecmp(&lineOfText.c_str()[0], "<w>",3) == 0 )
+        {
+            _NEW(MachGuiText(this, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp"));
+        }
+        else
+        {
+            _NEW(MachGuiText(this, width(), lineOfText));
+        }
+    }
 
-	childrenUpdated();
+    childrenUpdated();
 }
 
 MachGuiScrollableText::~MachGuiScrollableText()
@@ -104,9 +105,21 @@ ostream& operator <<( ostream& o, const MachGuiScrollableText& t )
 // virtual
 void MachGuiScrollableText::doDisplay()
 {
-	// Blit background to list box item
-	pStartupScreens_->blitBackdrop( absoluteBoundary(),
-									absoluteBoundary().minCorner() );
+    // Blit background to list box item
+    auto* shared = pRootParent_->getSharedBitmaps();
+    auto backdrop = shared->getNamedBitmap("backdrop");
+    shared->blitNamedBitmapFromArea(
+            backdrop,
+            absoluteBoundary(),
+            absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop)
+                );
+            });
 }
 
 /* End SCRLTEXT.CPP *************************************************/

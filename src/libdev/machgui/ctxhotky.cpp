@@ -28,7 +28,8 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
 :	MachGuiStartupScreenContext( pStartupScreens ),
 	animations_( pStartupScreens, SysPathName("gui/menu/so_anims.anm") )
 {
-	pStartupScreens->changeBackdrop( "gui/menu/so.bmp" );
+	changeBackdrop( "gui/menu/so.bmp" );
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
@@ -239,11 +240,13 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
 //		HWND targetWindow = RenDevice::current()->display()->window();
 //	 	AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, targetWindow, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) );
 //	 	AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) );
-        AniSmacker* pSmackerAnimation = new AniSmackerRegular(hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset());
+        const auto& topLeft = getBackdropTopLeft();
+        AniSmacker* pSmackerAnimation = new AniSmackerRegular(hotkeySmackerFile, 430 + topLeft.second, 199 + topLeft.first);
         pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
  	 }
 
-   	MachGuiMenuButton* pContinueBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 351, 420, 553, 464 ), IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::EXIT ) );
+   	MachGuiMenuButton* pContinueBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(351, 420, 553, 464),
+                                                             IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::EXIT));
 	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 42, 353, 224, 464 ), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp" ) );
 
 	pContinueBtn->escapeControl( true );

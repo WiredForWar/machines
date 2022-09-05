@@ -22,3 +22,7 @@ CMakeUserPresets.json
 *.srctrlbm
 *.srctrldb
 
+### clion
+.idea/
+build-clion/
+

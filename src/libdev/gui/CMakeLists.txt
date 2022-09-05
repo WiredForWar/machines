@@ -49,6 +49,7 @@ set(GUI_SOURCES
     sslistbx.hpp
     sslistit.cpp
     sslistit.hpp
-)
+    RootSharedBitmaps.hpp
+    RootSharedBitmaps.cpp)
 
 add_library(gui OBJECT ${GUI_SOURCES})

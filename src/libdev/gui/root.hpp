@@ -7,6 +7,7 @@
 #define _GUI_ROOT_HPP
 
 #include "gui/displaya.hpp"
+#include "RootSharedBitmaps.hpp"
 
 //Forward refs
 class GuiMouseEvent;
@@ -34,6 +35,8 @@ public:
 	bool recursivelyHasChild( GuiDisplayable * ) const;
 	// POST( iff( pChild != this, result ) );
 
+    GuiRootSharedBitmaps* getSharedBitmaps();
+
 protected:
  	// inherited from GuiDisplayable...
 	// virtual void doDisplay() = 0;
@@ -41,6 +44,8 @@ protected:
 
 	virtual void doBecomeRoot() = 0;
 	virtual void doBecomeNotRoot() = 0;
+
+    GuiRootSharedBitmaps mSharedBitmaps_;
 
 private:
 	GuiRoot( const GuiRoot& );

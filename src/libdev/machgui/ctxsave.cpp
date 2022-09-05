@@ -163,14 +163,20 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
 	pSelectedSaveGame_( NULL )
 {
 	// Display backdrop, play correct music, switch cursor on.
-	pStartupScreens->changeBackdrop( "gui/menu/sh.bmp" );
+	changeBackdrop( "gui/menu/sh.bmp" );
+
+    const auto& topLeft = getBackdropTopLeft();
+
     pStartupScreens->cursorOn( true );
     pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
 
 	// Standard buttons...
-	pOkBtn_ 	= _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 387, 111, 578, 154 ), IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK ) );
-	pDeleteBtn_ = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 387, 215, 578, 258 ), IDS_MENUBTN_DELETE, MachGuiStartupScreens::BE_DELETE ) );
-	MachGuiMenuButton* pCancelBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 387, 312, 578, 356 ), IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT ) );
+	pOkBtn_ 	= _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 111, 578, 154), IDS_MENUBTN_OK,
+                                        MachGuiStartupScreens::BE_OK));
+	pDeleteBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 215, 578, 258), IDS_MENUBTN_DELETE,
+                                         MachGuiStartupScreens::BE_DELETE));
+	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 312, 578, 356),
+                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
 
 	pCancelBtn->escapeControl( true );
 	pOkBtn_->defaultControl( true );
@@ -186,15 +192,16 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
 
 
 	// Create save game list box
-	pSaveGameList_ = _NEW( MachGuiSingleSelectionListBox( pStartupScreens,
-														  Gui::Box( SAVE_LB_MINX,
-														  			pSaveText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset(),
-														  			SAVE_LB_MAXX - SCROLLBAR_WIDTH,
-														  			SAVE_LB_MAXY ),
-														  1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1 ) );
+	pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
+                                                        Gui::Box(SAVE_LB_MINX,
+                                                                 pSaveText->absoluteBoundary().maxCorner().y() -
+                                                                 topLeft.first,
+                                                                 SAVE_LB_MAXX - SCROLLBAR_WIDTH,
+                                                                 SAVE_LB_MAXY),
+                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
 
 	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
-												Gui::Coord( SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - pStartupScreens_->yMenuOffset() ),
+												Gui::Coord( SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first ),
 												SAVE_LB_MAXY - SAVE_LB_MINY - ( pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y() ),
 												pSaveGameList_ );
 
@@ -370,7 +377,8 @@ bool MachGuiCtxSave::saveGame( const string& saveDisplayName )
 	GuiBitmap savingBmp = Gui::bitmap( "gui/menu/saving.bmp" );
 	savingBmp.enableColourKeying();
 	GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-	frontBuffer.simpleBlit( savingBmp, pStartupScreens_->xMenuOffset(), pStartupScreens_->yMenuOffset() );
+    const auto& topLeft = getBackdropTopLeft();
+	frontBuffer.simpleBlit( savingBmp, topLeft.second, topLeft.first );
 	W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
 
 	// Create next filename...
