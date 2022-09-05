@@ -102,7 +102,7 @@ void MachProductionBank::updateProgress()
 	MachPhys::WeaponCombo	wc;
 
     //NB the arguments are for return value, passed by non-const reference.
-    if( pFactory_->currentlyBuilding( objectType, subType, hwLevel, swLevel, wc) )
+    if( pFactory_->currentlyBuilding() )
     {
 		pIcons_->updateProgress( pFactory_->percentComplete() ); 
 	}

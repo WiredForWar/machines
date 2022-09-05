@@ -77,7 +77,7 @@ public:
 	bool currentlyBuilding( MachLog::ObjectType&, int& subType, MachLogMachine::Level& hwLevel,
 							MachLogMachine::Level& swLevel, MachPhys::WeaponCombo& wc) const;
 	//Am I currently building anything. The answer is returned via the pointer to productionUnit
-	bool currentlyBuildingProductionUnit( MachLogProductionUnit* ) const;
+    bool currentlyBuildingProductionUnit( MachLogProductionUnit* pReturn = nullptr ) const;
 
 	//manipulation functions
 	//destroy everything remaining on the production line

@@ -613,15 +613,17 @@ bool MachLogFactory::currentlyBuildingProductionUnit( MachLogProductionUnit* pRe
 	{
 		return false;
 	}
-	MachLogProductionUnit* pCurrent = *productionLine_.begin();
-	pReturn->type( pCurrent->type() );
-	pReturn->subType( pCurrent->subType() );
-	pReturn->hwLevel( pCurrent->hwLevel() );
-	pReturn->swLevel( pCurrent->swLevel() );
-	pReturn->priority( pCurrent->priority() );
-	pReturn->weaponCombo( pCurrent->weaponCombo() );
-	return true;
-
+    if ( pReturn )
+    {
+        const MachLogProductionUnit* pCurrent = *productionLine_.begin();
+        pReturn->type( pCurrent->type() );
+        pReturn->subType( pCurrent->subType() );
+        pReturn->hwLevel( pCurrent->hwLevel() );
+        pReturn->swLevel( pCurrent->swLevel() );
+        pReturn->priority( pCurrent->priority() );
+        pReturn->weaponCombo( pCurrent->weaponCombo() );
+    }
+    return true;
 }
 
 MATHEX_SCALAR	MachLogFactory::percentComplete() const
