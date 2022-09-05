@@ -253,7 +253,7 @@ bool MachLogRaces::getSuitableFactory( MachPhys::Race r, const MachLogProduction
 			{
 				MachLogProductionUnit prodUnit;
 				//check for factory not building
-				if( not (*i)->currentlyBuildingProductionUnit( &prodUnit ) )
+                if ( !( *i )->currentlyBuilding( &prodUnit ) )
 				{
 					jumpOutOfLoop = true;
 					*ppFactory = *i;

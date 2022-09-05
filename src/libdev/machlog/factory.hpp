@@ -73,11 +73,8 @@ public:
 	bool buildMachineUniqueWithSquadIndex( const MachLog::ObjectType type, const int subType, 
 							const MachLogMachine::Level hwLevel, const MachLogMachine::Level swLevel, 
 							int priority, int squadIndex, MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS );
-	//Am I currently building anything. The answer is returned via the references.
-	bool currentlyBuilding( MachLog::ObjectType&, int& subType, MachLogMachine::Level& hwLevel,
-							MachLogMachine::Level& swLevel, MachPhys::WeaponCombo& wc) const;
 	//Am I currently building anything. The answer is returned via the pointer to productionUnit
-    bool currentlyBuildingProductionUnit( MachLogProductionUnit* pReturn = nullptr ) const;
+    bool currentlyBuilding( MachLogProductionUnit* pReturn = nullptr ) const;
 
 	//manipulation functions
 	//destroy everything remaining on the production line

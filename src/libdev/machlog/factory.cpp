@@ -137,15 +137,17 @@ void MachLogFactory::doOutputOperator( ostream& o ) const
 	o << " Build rate BMU/s " << data().buildRate() / 60 << std::endl;
 	o << " Build rate BMU/min " << data().buildRate() << std::endl;
 
-	bool building = currentlyBuilding( type, subType, hwLevel, swLevel, wc );
+    MachLogProductionUnit prodUnit;
+    bool building = currentlyBuilding( &prodUnit );
 	o << " Currently building " << ( building ? "TRUE" : "FALSE");
 
 	if( building )
 	{
-		o << " " << type << " sub: " << subType << " HW " << hwLevel << " SW " << swLevel << " wc " << wc << std::endl;
-		o << " % " << percentComplete() << std::endl;
-		o << " Amount Built " << amountBuilt() << std::endl;
-		o << " current Total Cost " << currentTotalCost() << std::endl;
+        o << " " << prodUnit.type() << " sub: " << prodUnit.subType() << " HW " << prodUnit.hwLevel() << " SW "
+          << prodUnit.swLevel() << " wc " << prodUnit.weaponCombo() << std::endl;
+        o << " % " << percentComplete() << std::endl;
+        o << " Amount Built " << amountBuilt() << std::endl;
+        o << " current Total Cost " << currentTotalCost() << std::endl;
 	}
 	else
 		o << std::endl;
@@ -583,30 +585,7 @@ void MachLogFactory::amountBuilt( const MachPhys::BuildingMaterialUnits& newAmou
 	amountBuilt_ = newAmount;
 }
 
-
-bool MachLogFactory::currentlyBuilding
-(
-	MachLog::ObjectType& reftype, int& refSubType,
-	MachLogMachine::Level& refhwLevel, MachLogMachine::Level& refswLevel,
-	MachPhys::WeaponCombo& refWc
-) const
-{
-	CB_MachLogFactory_DEPIMPL();
-	if( productionLine_.empty() )
-	{
-		return false;
-	}
-
-	MachLogProductionUnit* current = *productionLine_.begin();
-	reftype = current->type();
-	refSubType = current->subType();
-	refhwLevel = current->hwLevel();
-	refswLevel = current->swLevel();
-	refWc = current->weaponCombo();
-	return true;
-}
-
-bool MachLogFactory::currentlyBuildingProductionUnit( MachLogProductionUnit* pReturn ) const
+bool MachLogFactory::currentlyBuilding( MachLogProductionUnit* pReturn ) const
 {
 	CB_MachLogFactory_DEPIMPL();
 	if( productionLine_.empty() )
