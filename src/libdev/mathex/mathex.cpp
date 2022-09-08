@@ -39,36 +39,6 @@ bool isinteger( double x )
 }
 
 //////////////////////////////////////////////////////////////////////
-
-size_t rmo( size_t n )
-{
-    size_t i=1, j=0;
-    for( ; i; i <<= 1, --j )
-        if( n & i )
-            return  j;
-
-    return  NPOS;
-}
-
-///////////////////////////////////
-
-size_t lmo( size_t n )
-{
-    size_t j = bitsizeof( n ) - 1;
-    size_t msbit = 1 << j;
-    for( size_t i=msbit; i; i >>= 1, --j )
-        if( n & i )
-            return  j;
-
-    return  NPOS;
-}
-
-size_t log2( size_t n )
-{
-    return  rmo( n );
-}
-
-//////////////////////////////////////////////////////////////////////
 //static
 Mathex::Side Mathex::side( MATHEX_SCALAR h )
 {

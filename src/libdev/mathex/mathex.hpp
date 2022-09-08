@@ -119,20 +119,6 @@ template < class T > T integerpowerof2ceil( T );
 
 //////////////////////////////////////////////////////////////////////
 
-// returns the index ( 0..bitsizeof( size_t ) - 1 )
-// of leftmost set bit, or NPOS iff n is 0.
-size_t lmo( size_t n );
-
-// returns the index ( 0..bitsizeof( size_t ) - 1 )
-// of rightmost set bit, or NPOS iff n is 0.
-size_t rmo( size_t n );
-
-//////////////////////////////////////////////////////////////////////
-
-size_t log2( size_t n );
-
-//////////////////////////////////////////////////////////////////////
-
 // functions to check if a value lies within an interval
 // the 'O' qualifier refers to an open interval ( <=, >= )
 // the 'C' qualifier refers to a closed interval ( <, > )
