@@ -90,37 +90,6 @@ SCALAR primeceil( SCALAR x )
 
 ///////////////////////////////////
 
-template < class SCALAR >
-SCALAR round( SCALAR x )
-{
-	if( x < 0.0 )
-		return  ceil( x - 0.5 );
-
-	return floor( x + 0.5 );
-}
-
-///////////////////////////////////
-
-template < class SCALAR >
-bool isintegerpowerof2( SCALAR x )
-{
-    const double LOG10_2 = log10( 2.0 );
-
-	SCALAR t = SCALAR( log10( x ) / LOG10_2 );
-	return isinteger( t );
-}
-
-template < class SCALAR >
-SCALAR integerpowerof2ceil( SCALAR x )
-{
-    const double LOG10_2 = log10( 2.0 );
-
-	SCALAR result = (SCALAR)ceil( log10( x ) / LOG10_2 );
-	POST( isintegerpowerof2( result ) and result >= x );
-	return result;
-}
-
-
 template < class SCALAR > _CODE_INLINE SCALAR sqr( const SCALAR &t ) { return  t * t; }
 template < class SCALAR > _CODE_INLINE SCALAR cube( const SCALAR &t ) { return  t * t * t; }
 

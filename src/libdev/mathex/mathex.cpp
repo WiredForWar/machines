@@ -18,26 +18,6 @@ const double Mathex::PI_DIV_2   = PI / 2.0;
 const double Mathex::SQRT_2     = sqrt( 2.0 );
 
 //////////////////////////////////////////////////////////////////////
-
-bool isintegerpowerof2( size_t n )
-{
-	unsigned ones = 0;
-	for( size_t i=1; i; i <<= 1 )
-		if( n & i and ( ++ones > 1 ) )
-			return  false;
-
-	return ones == 1;
-}
-
-//////////////////////////////////////////////////////////////////////
-
-bool isinteger( double x )
-{
-	double abs_x = abs( x );
-	return  abs_x - floor( abs_x ) < MexEpsilon::instance();
-}
-
-//////////////////////////////////////////////////////////////////////
 //static
 Mathex::Side Mathex::side( MATHEX_SCALAR h )
 {

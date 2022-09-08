@@ -86,14 +86,8 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 
-double round( double );
-bool isinteger( double );
-
-//////////////////////////////////////////////////////////////////////
-
 //template < class T > T sqr( T );
 //template < class T > T cube( T );
-template < class T > T round( T );
 
 template < class T > bool isodd( T );
 template < class T > bool iseven( T );
@@ -107,11 +101,6 @@ template < class T > T mod( T a, T b );
 
 template < class T > bool isprime( T );
 template < class T > T prime_ceil( T );
-
-template < class T > bool isintegerpowerof2( T );
-bool isintegerpowerof2( size_t );
-
-template < class T > T integerpowerof2ceil( T );
 
 //////////////////////////////////////////////////////////////////////
 
