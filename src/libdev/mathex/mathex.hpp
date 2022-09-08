@@ -66,7 +66,6 @@ public:
     static const double PI;
     static const double PI_DIV_2;
     static const double SQRT_2;
-    static const double LOG10_2;
 
 	// Used by MexHalfPlane2d for determining which side of
 	// a line points, polys etc. lie on.
