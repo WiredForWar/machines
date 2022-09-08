@@ -12,6 +12,8 @@
     #include "render/scale.ipp"
 #endif
 
+#include <cmath>
+
 PER_DEFINE_PERSISTENT_ABSTRACT( RenScale );
 PER_DEFINE_PERSISTENT( RenUnityScale );
 PER_DEFINE_PERSISTENT( RenUniformScale );
@@ -84,8 +86,8 @@ RenScale* RenUnityScale::clone() const
 RenUniformScale::RenUniformScale(MATHEX_SCALAR f):
 	factor_(f)
 {
-	PRE(f>0);
-	PRE(!Mathex::isNan(f));
+    PRE( f > 0 );
+    PRE( !std::isnan( f ) );
 }
 
 // virtual
@@ -161,10 +163,10 @@ RenNonUniformScale::RenNonUniformScale(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_
 	z_(z),
 	yz_(y*z)
 {
-	PRE(x>0 && y>0 && z>0);
-	PRE(!Mathex::isNan(x));
-	PRE(!Mathex::isNan(y));
-	PRE(!Mathex::isNan(z));
+    PRE( x > 0 && y > 0 && z > 0 );
+    PRE( !std::isnan( x ) );
+    PRE( !std::isnan( y ) );
+    PRE( !std::isnan( z ) );
 }
 
 // virtual
@@ -388,9 +390,9 @@ void RenNonUniformScale::factors( MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALA
     PRE( x > 0 );
     PRE( y > 0 );
     PRE( z > 0 );
-	PRE(!Mathex::isNan(x));
-	PRE(!Mathex::isNan(y));
-	PRE(!Mathex::isNan(z));
+    PRE( !std::isnan( x ) );
+    PRE( !std::isnan( y ) );
+    PRE( !std::isnan( z ) );
 
     x_ = x;
     y_ = y;

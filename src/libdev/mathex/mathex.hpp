@@ -60,9 +60,6 @@ public:
 	static double		abs( double );
 	static long double	abs( long double );
 
-	static bool isNan(double);
-	static bool isNan(float);
-
     static const double PI;
     static const double PI_DIV_2;
     static const double SQRT_2;
