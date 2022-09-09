@@ -66,7 +66,6 @@ set(PHYS_SOURCES
     persist.hpp
     phys.cpp
     phys.hpp
-    precomp_.hpp
     rampacce.cpp
     rampacce.hpp
     sclplan.cpp
