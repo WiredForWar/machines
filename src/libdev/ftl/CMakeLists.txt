@@ -4,7 +4,6 @@ set(FTL_SOURCES
     contain.hpp
     ftl.hpp
     map.hpp
-    rbtree.hpp
     reuidgen.hpp
     serialid.hpp
     seriamap.ctp
