@@ -17,47 +17,47 @@ GuiRootSharedBitmaps::~GuiRootSharedBitmaps()
     sharedBitmaps_.clear();
 }
 
-void GuiRootSharedBitmaps::createUpdateNamedBitmap(const std::string& name, const std::string& image)
+void GuiRootSharedBitmaps::createUpdateNamedBitmap(const std::string& imageName, const std::string& filePath)
 {
-    loadSharedBitmap(image);
-    namedBitmaps_[name] = image;
+    loadSharedBitmap(filePath);
+    namedBitmaps_[imageName] = filePath;
 }
 
-void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& image)
+void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& filePath)
 {
-    auto sharedBitmap = sharedBitmaps_.find(image);
+    auto sharedBitmap = sharedBitmaps_.find(filePath);
     // only load once
     if (sharedBitmap == sharedBitmaps_.end())
     {
-        sharedBitmaps_[image] = std::make_shared<GuiBitmap>( Gui::bitmap( SysPathName( image ) ) );
+        sharedBitmaps_[filePath] = std::make_shared<GuiBitmap>(Gui::bitmap(SysPathName(filePath)));
     }
 }
 
-std::shared_ptr<GuiBitmap> GuiRootSharedBitmaps::getNamedBitmap(const std::string& name) const noexcept
+std::shared_ptr<GuiBitmap> GuiRootSharedBitmaps::getNamedBitmap(const std::string& imageName) const noexcept
 {
     auto sharedBitmapsKey = std::string{ };
     try
     {
-        sharedBitmapsKey = namedBitmaps_.at(name);
+        sharedBitmapsKey = namedBitmaps_.at(imageName);
     }
     catch (const std::out_of_range& ore)
     {
-        std::cerr << "GuiRootSharedBitmaps::getNamedBitmap(): " << name << " was never created!!!" << std::endl;
+        std::cerr << "GuiRootSharedBitmaps::getNamedBitmap(): " << imageName << " was never created!!!" << std::endl;
         return std::shared_ptr<GuiBitmap>(nullptr);
     }
 
     return std::shared_ptr<GuiBitmap>(getSharedBitmap(sharedBitmapsKey));
 }
 
-std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string& image) const noexcept
+std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string& filePath) const noexcept
 {
     try
     {
-        return std::weak_ptr<GuiBitmap>(sharedBitmaps_.at(image));
+        return std::weak_ptr< GuiBitmap >(sharedBitmaps_.at(filePath));
     }
     catch (const std::out_of_range& ore)
     {
-        std::cerr << "GuiRootSharedBitmaps::getSharedBitmap(): " << image << " was never loaded!!!" << std::endl;
+        std::cerr << "GuiRootSharedBitmaps::getSharedBitmap(): " << filePath << " was never loaded!!!" << std::endl;
         return std::weak_ptr<GuiBitmap>();
     }
 }
