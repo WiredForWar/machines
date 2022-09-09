@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include "gui/painter.hpp"
 
@@ -44,6 +44,6 @@ public:
 private:
     const IGuiPainter& guiPainter_;
 
-    std::map<std::string, std::shared_ptr<GuiBitmap>> sharedBitmaps_;
-    std::map<std::string, std::string>                namedBitmaps_;
+    std::unordered_map<std::string, std::shared_ptr<GuiBitmap>> sharedBitmaps_;
+    std::unordered_map<std::string, std::string> namedBitmaps_;
 };
