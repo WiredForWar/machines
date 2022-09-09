@@ -15,14 +15,6 @@ jobs:
           build-type: Release
           tests: true
 
-        - os: ubuntu-20.04
-          toolchain: mingw64
-          build-type: Release
-
-        - os: ubuntu-20.04
-          toolchain: mingw32
-          build-type: Release
-
     steps:
     - uses: actions/checkout@v3
       with:
