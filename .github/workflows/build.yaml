@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        lfs: true
+        lfs: false
 
     - name: Prepare the system (Linux)
       if: contains(matrix.os, 'ubuntu')
