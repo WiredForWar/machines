@@ -9,8 +9,6 @@ project(machines
     VERSION 1.6.0
     LANGUAGES C CXX
 )
-include(CheckCXXCompilerFlag)
-include(CheckCCompilerFlag)
 include(CMakeDependentOption)
 
 message(STATUS "Building Machines ${machines_VERSION}")

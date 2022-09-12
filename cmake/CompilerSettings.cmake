@@ -1,4 +1,7 @@
 
+include(CheckCXXCompilerFlag)
+include(CheckCCompilerFlag)
+
 # Compiler detection
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
