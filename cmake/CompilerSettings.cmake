@@ -1,7 +1,5 @@
 
 # Compiler detection
-#set(CMAKE_CXX_COMPILER "${OMPP_CXX}" CACHE PATH "Set compiler used")
-
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
         message(FATAL_ERROR "${PROJECT_NAME} requires GCC 4.7 or greater.")
@@ -44,14 +42,12 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations") # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
     set(RELEASE_CXX_FLAGS "-O2")
     set(DEBUG_CXX_FLAGS "-g -O0")
-    set(TEST_CXX_FLAGS "-pthread")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     message(STATUS "Detected MSVC compiler")
 
     set(NORMAL_CXX_FLAGS "/wd\"4244\" /wd\"4309\" /wd\"4800\" /wd\"4996\" /wd\"4351\" /EHsc") # disable some useless warnings
     set(RELEASE_CXX_FLAGS "/MD")
     set(DEBUG_CXX_FLAGS "/MDd /ZI")
-    set(TEST_CXX_FLAGS "")
 
     # Needed for Debug information (it's set to "No" by default for some reason)
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG")
