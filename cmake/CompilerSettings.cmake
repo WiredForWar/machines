@@ -10,6 +10,19 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 
     message(STATUS "Detected GCC version ${CMAKE_CXX_COMPILER_VERSION}")
 
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.1)
+        message(FATAL_ERROR "${PROJECT_NAME} requires Clang 3.1 or greater.")
+    endif()
+
+    message(STATUS "Detected ${CMAKE_CXX_COMPILER_ID} version ${CMAKE_CXX_COMPILER_VERSION}")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    message(STATUS "Detected ${CMAKE_CXX_COMPILER_ID} version ${CMAKE_CXX_COMPILER_VERSION}")
+else()
+    message(FATAL_ERROR "Your C++ compiler doesn't seem to be supported.")
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     #set(NORMAL_CXX_FLAGS "-Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-declarations")
     if(BUILD_32)
         set(MACHINES_COMPILER_BIT_MODE -m32)
@@ -39,15 +52,11 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         message(FATAL_ERROR "${PROJECT_NAME} requires Clang 3.1 or greater.")
     endif()
 
-    message(STATUS "Detected Clang version 3.1+")
-
     set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} -Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-prototypes")
     set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations") # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
     set(RELEASE_CXX_FLAGS "-O2")
     set(DEBUG_CXX_FLAGS "-g -O0")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    message(STATUS "Detected MSVC compiler")
-
     set(NORMAL_CXX_FLAGS "/wd\"4244\" /wd\"4309\" /wd\"4800\" /wd\"4996\" /wd\"4351\" /EHsc") # disable some useless warnings
     set(RELEASE_CXX_FLAGS "/MD")
     set(DEBUG_CXX_FLAGS "/MDd /ZI")
@@ -55,8 +64,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     # Needed for Debug information (it's set to "No" by default for some reason)
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG")
     set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/DEBUG")
-else()
-    message(FATAL_ERROR "Your C++ compiler doesn't seem to be supported.")
 endif()
 
 # Compiler flags
