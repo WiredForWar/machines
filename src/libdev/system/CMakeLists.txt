@@ -25,3 +25,8 @@ set(SYSTEM_SOURCES
 )
 
 add_library(system OBJECT ${SYSTEM_SOURCES})
+add_library(LibDev::system ALIAS system)
+
+target_link_libraries(system PUBLIC
+    LibDev::recorder
+)

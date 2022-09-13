@@ -196,3 +196,8 @@ set(WORLD4D_SOURCES
 )
 
 add_library(world4d OBJECT ${WORLD4D_SOURCES})
+add_library(LibDev::world4d ALIAS world4d)
+
+target_link_libraries(world4d PUBLIC
+    LibDev::render
+)

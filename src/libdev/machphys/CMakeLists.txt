@@ -496,3 +496,8 @@ set(MACHPHYS_SOURCES
 )
 
 add_library(machphys OBJECT ${MACHPHYS_SOURCES})
+add_library(LibDev::machphys ALIAS machphys)
+
+target_link_libraries(machphys PUBLIC
+    LibDev::render
+)

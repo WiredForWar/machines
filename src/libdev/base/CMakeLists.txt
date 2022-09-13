@@ -57,3 +57,4 @@ set(BASE_SOURCES
 )
 
 add_library(base OBJECT ${BASE_SOURCES})
+add_library(LibDev::base ALIAS base)

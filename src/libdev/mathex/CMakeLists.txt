@@ -86,3 +86,8 @@ set(MATHEX_SOURCES
 )
 
 add_library(mathex OBJECT ${MATHEX_SOURCES})
+add_library(LibDev::mathex ALIAS mathex)
+
+target_link_libraries(mathex PUBLIC
+    LibDev::recorder
+)

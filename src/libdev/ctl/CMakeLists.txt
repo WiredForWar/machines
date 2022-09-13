@@ -21,3 +21,4 @@ file(GLOB CTL_SOURCES
 )
 
 add_library(ctl OBJECT ${CTL_SOURCES})
+add_library(LibDev::ctl ALIAS ctl)

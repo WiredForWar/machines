@@ -15,5 +15,10 @@ if(USE_SWSCALE)
 endif()
 
 add_library(ani OBJECT ${ANI_SOURCES})
+add_library(LibDev::ani ALIAS ani)
+
+target_link_libraries(ani PUBLIC
+    LibDev::render
+)
 
 target_compile_definitions(ani PUBLIC USE_SWSCALE=$<BOOL:${USE_SWSCALE}>)

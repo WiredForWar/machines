@@ -11,3 +11,8 @@ set(RECORDER_SOURCES
 )
 
 add_library(recorder OBJECT ${RECORDER_SOURCES})
+add_library(LibDev::recorder ALIAS recorder)
+
+target_link_libraries(recorder PUBLIC
+    LibDev::device
+)
