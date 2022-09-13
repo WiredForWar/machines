@@ -11,17 +11,7 @@
 #ifndef DEVICE_KEYBOARD
 #define DEVICE_KEYBOARD
 
-#include "base/base.hpp"
-
-#if defined _DOSAPP
-    #include "device/private/doskeybd.hpp"
-#elif defined _WIN95APP
-    #include "device/private/w95keybd.hpp"
-#elif defined _SDLAPP
-    #include "device/private/sdlkeybd.hpp"
-#else
-    #error Use of the device lib: one of _DOSAPP, _WIN95APP, etc. must be defined.
-#endif
+#include "private/shrkeybd.hpp"
 
 #endif
 

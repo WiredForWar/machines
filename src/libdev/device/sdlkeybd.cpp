@@ -3,7 +3,8 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
 
-#include "device/keyboard.hpp"
+#include "device/private/sdlkeybd.hpp"
+
 #include <limits.h>
 #include "device/eventq.hpp"
 

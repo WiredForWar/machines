@@ -1,6 +1,9 @@
 #include "afx/AfxSdlApp.hpp"
 #include "device/mouse.hpp"
 #include "device/keyboard.hpp"
+
+#include "device/private/sdlkeybd.hpp"
+
 #include "device/eventq.hpp"
 #include "device/time.hpp"
 

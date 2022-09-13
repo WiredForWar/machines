@@ -18,6 +18,7 @@
 #define _RECORDER_RECPRIV_HPP
 
 #include "base/base.hpp"
+#include "device/butevent.hpp"
 #include "device/keyboard.hpp"
 #include "system/registry.hpp"
 
