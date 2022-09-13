@@ -3,7 +3,7 @@
 #include "afx/app.hpp"
 #include "AfxConfiguration.hpp"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 class AfxSdlApp : public AfxApp
 {
