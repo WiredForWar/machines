@@ -1,9 +1,3 @@
-# Compile flags as defined in global CMakeLists
-set(CMAKE_CXX_FLAGS "${MACHINES_CXX_FLAGS}")
-set(CMAKE_C_FLAGS "${MACHINES_C_FLAGS}")
-set(CMAKE_CXX_FLAGS_RELEASE ${MACHINES_CXX_FLAGS_RELEASE})
-set(CMAKE_CXX_FLAGS_DEBUG ${MACHINES_CXX_FLAGS_DEBUG})
-
 # Subdirectories
 
 #add_subdirectory(libdev)
