@@ -385,9 +385,10 @@ SysRegistry::ReturnValue SysRegistry::closeKeyNoRecord( KeyHandle key )
 	return result;
 }
 
-std::string SysRegistry::queryStringValue(const std::string& keyName, const std::string& valueName)
+std::string
+SysRegistry::queryStringValue(const std::string& keyName, const std::string& valueName, const std::string& defaultValue)
 {
-	std::string  result = "";
+    std::string result = defaultValue;
 
     if( RecRecorder::instance().state() == RecRecorder::PLAYING )
     {
@@ -424,9 +425,9 @@ std::string SysRegistry::queryStringValue(const std::string& keyName, const std:
 	return result;
 }
 
-int SysRegistry::queryIntegerValue(const std::string& keyName, const std::string& valueName)
+int SysRegistry::queryIntegerValue(const std::string& keyName, const std::string& valueName, int defaultValue)
 {
-	int result = 0;
+    int result = defaultValue;
 
     if( RecRecorder::instance().state() == RecRecorder::PLAYING )
     {
