@@ -327,7 +327,7 @@ void MachInGameScreen::doBecomeRoot()
 	redrawMapCounter_ = 3;
 
 	// Configure pitch up/down keys for ground camera
-	pCameras_->reversePitchUpDownKeys( SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on", SysRegistry::CURRENT_USER ) );
+	pCameras_->reversePitchUpDownKeys( SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on") );
 }
 
 void MachInGameScreen::doBecomeNotRoot()

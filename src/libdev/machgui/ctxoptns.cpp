@@ -182,9 +182,9 @@ MachGuiCtxOptions::MachGuiCtxOptions( MachGuiStartupScreens* pStartupScreens )
 	const RenCapabilities& caps = W4dManager::instance().sceneManager()->pDevice()->capabilities();
 
 	// Get current resolution
-	int inGameResolutionWidth = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Width", SysRegistry::CURRENT_USER );
-	int inGameResolutionHeight = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Height", SysRegistry::CURRENT_USER );
-	int inGameResolutionRefresh = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Refresh Rate", SysRegistry::CURRENT_USER );
+	int inGameResolutionWidth = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Width");
+	int inGameResolutionHeight = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Height");
+	int inGameResolutionRefresh = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Refresh Rate");
 
 	// Check that minimum resolution is specified
 	if ( inGameResolutionWidth < 640 or inGameResolutionHeight < 480 )
@@ -461,7 +461,7 @@ void MachGuiCtxOptions::getOptions()
 {
 	// Used to set current game settings to be that of gui items
 
-	if(pSound3d_->checked() != SysRegistry::instance().queryIntegerValue( "Options\\3DSound", "on", SysRegistry::CURRENT_USER ) )
+	if(pSound3d_->checked() != SysRegistry::instance().queryIntegerValue( "Options\\3DSound", "on") )
 	{
 		SOUND_STREAM("Updating sounds" << std::endl);
 //		//It is necessary to clear all sounds from the system
@@ -479,33 +479,33 @@ void MachGuiCtxOptions::getOptions()
 		{
 			W4dSoundManager::instance().convertSoundDimensions(Snd::TWO_D);
 		}
-		SysRegistry::instance().setIntegerValue( "Options\\3DSound", "on", pSound3d_->checked(), SysRegistry::CURRENT_USER );
+		SysRegistry::instance().setIntegerValue( "Options\\3DSound", "on", pSound3d_->checked());
 	}
 
 	pStartupScreens_->startupData()->transitionFlicsOn( pTransitions_->checked() );
-	SysRegistry::instance().setIntegerValue( "Options\\transitions", "on", pStartupScreens_->startupData()->transitionFlicsOn(), SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Options\\transitions", "on", pStartupScreens_->startupData()->transitionFlicsOn());
 
 	// Store the new screen size in the registry
     const RenDisplay::Mode* pNewMode = (const RenDisplay::Mode*)pScreenSize_->item();
-	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Width", pNewMode->width(), SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Height", pNewMode->height(), SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Refresh Rate", pNewMode->refreshRate(), SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Width", pNewMode->width());
+	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Height", pNewMode->height());
+	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Refresh Rate", pNewMode->refreshRate());
 
 	// Store sound and CD settings
-	SysRegistry::instance().setIntegerValue( "Options\\CD", "Volume", pMusicVolume_->value() + 0.5 /*stop rounding errors*/, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Options\\Sound", "Volume", pSoundVolume_->value() + 0.5 /*stop rounding errors*/, SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Options\\CD", "Volume", pMusicVolume_->value() + 0.5 /*stop rounding errors*/);
+	SysRegistry::instance().setIntegerValue( "Options\\Sound", "Volume", pSoundVolume_->value() + 0.5 /*stop rounding errors*/);
 
 	// Store gamma correction value
 	if ( pGammaCorrection_ )
 	{
-		SysRegistry::instance().setIntegerValue( "Options\\Gamma Correction", "Value", pGammaCorrection_->value() * GAMMA_REG_MULTIPLIER, SysRegistry::CURRENT_USER );
+		SysRegistry::instance().setIntegerValue( "Options\\Gamma Correction", "Value", pGammaCorrection_->value() * GAMMA_REG_MULTIPLIER);
 	}
 
 	// Store option to maintain screen res of in-game menus	in menus
-	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Lock Resolution", pScreenResolutionLock_->checked(), SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Screen Resolution", "Lock Resolution", pScreenResolutionLock_->checked());
 
 	// Store cursor type (2D/3D)
-	SysRegistry::instance().setIntegerValue( "Options\\Cursor Type", "2D", pCursorType_->checked(), SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Options\\Cursor Type", "2D", pCursorType_->checked());
 
 	// If cursor type has changed then refresh all selection boxes
 	if ( cursorType2d_ != pCursorType_->checked() )
@@ -531,8 +531,8 @@ void MachGuiCtxOptions::getOptions()
 	}
 
 	//Store reverse direction of up/down keys/mouse
-	SysRegistry::instance().setIntegerValue( "Options\\Reverse UpDown Keys", "on", pReverseKeys_->checked(), SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Options\\Reverse BackForward Mouse", "on", pReverseMouse_->checked(), SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Options\\Reverse UpDown Keys", "on", pReverseKeys_->checked());
+	SysRegistry::instance().setIntegerValue( "Options\\Reverse BackForward Mouse", "on", pReverseMouse_->checked());
 
 	// Access all the boolean optimisations
 	const MachPhysComplexityManager::BooleanItems& boolItems =	MachPhysComplexityManager::instance().booleanItems();
@@ -571,9 +571,9 @@ void MachGuiCtxOptions::setOptions()
 {
 	// Used to set gui items to reflect current game settings
 	SysRegistry::KeyHandle handle;
-	if( SysRegistry::instance().onlyOpenKey( "Options\\3DSound", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Options\\3DSound", &handle) == SysRegistry::SUCCESS )
 	{
-		pSound3d_->check( SysRegistry::instance().queryIntegerValue( "Options\\3DSound", "on", SysRegistry::CURRENT_USER ) );
+		pSound3d_->check( SysRegistry::instance().queryIntegerValue( "Options\\3DSound", "on") );
 	}
 	else
 	{
@@ -583,15 +583,15 @@ void MachGuiCtxOptions::setOptions()
 	// Set resolution lock on if it the first time the game is being run
 	SysRegistry::KeyHandle resolutionHandle;
 
-	if( SysRegistry::instance().onlyOpenKey( "Screen Resolution\\Lock Resolution", &resolutionHandle, SysRegistry::CURRENT_USER ) != SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Screen Resolution\\Lock Resolution", &resolutionHandle) != SysRegistry::SUCCESS )
 	{
-		SysRegistry::instance().setIntegerValue( "Screen Resolution", "Lock Resolution", 1, SysRegistry::CURRENT_USER );
+		SysRegistry::instance().setIntegerValue( "Screen Resolution", "Lock Resolution", 1);
 	}
 
-	pScreenResolutionLock_->check( SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution", SysRegistry::CURRENT_USER ) );
- 	pCursorType_->check( SysRegistry::instance().queryIntegerValue( "Options\\Cursor Type", "2D", SysRegistry::CURRENT_USER ) );
-	pReverseKeys_->check( SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on", SysRegistry::CURRENT_USER ) );
-	pReverseMouse_->check( SysRegistry::instance().queryIntegerValue( "Options\\Reverse BackForward Mouse", "on", SysRegistry::CURRENT_USER ) );
+	pScreenResolutionLock_->check( SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution") );
+    pCursorType_->check(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
+    pReverseKeys_->check( SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on") );
+	pReverseMouse_->check( SysRegistry::instance().queryIntegerValue( "Options\\Reverse BackForward Mouse", "on") );
 	pTransitions_->check( pStartupScreens_->startupData()->transitionFlicsOn() );
 
 	// Access all the boolean optimisations

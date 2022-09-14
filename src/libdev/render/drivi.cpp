@@ -120,11 +120,11 @@ bool RenIDDrawDriverImpl::isBetterChoiceThan( const RenIDDrawDriverImpl& than ) 
 
 void RenIDDrawDriverImpl::writeToRegistry()
 {
-	SysRegistry::KeyHandle handle;
-	SysRegistry::instance().setIntegerValue( "Options\\Video Drivers\\DirectDraw", "Automatic", isAutomatic(), SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Options\\Video Drivers\\DirectDraw", "Primary Driver",  not hasGuid(), SysRegistry::CURRENT_USER );
-	if( hasGuid() )
-	{
+    SysRegistry::KeyHandle handle;
+    SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Automatic", isAutomatic());
+    SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Primary Driver", not hasGuid());
+    if (hasGuid())
+    {
 		SysRegistry::instance().closeKey( handle );
 	}
 }
@@ -160,11 +160,11 @@ bool RenID3dDeviceImpl::isBetterChoiceThan( const RenID3dDeviceImpl& than ) cons
 void RenID3dDeviceImpl::writeToRegistry()
 {
 	SysRegistry::KeyHandle handle;
-	SysRegistry::instance().setIntegerValue( "Options\\Video Drivers\\Direct3d", "Automatic", isAutomatic(), SysRegistry::CURRENT_USER );
-	if( hasGuid() )
+    SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\Direct3d", "Automatic", isAutomatic());
+    if( hasGuid() )
 	{
-		SysRegistry::instance().openKey( "Options\\Video Drivers\\Direct3d", &handle, SysRegistry::CURRENT_USER );
-		SysRegistry::instance().closeKey( handle );
+        SysRegistry::instance().openKey("Options\\Video Drivers\\Direct3d", &handle);
+        SysRegistry::instance().closeKey( handle );
 	}
 }
 

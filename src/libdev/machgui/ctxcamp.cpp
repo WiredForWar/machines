@@ -46,7 +46,7 @@ public:
 		pCampaignCtx_( pCampaignCtx )
 	{
 		// Select this list box item if it was the last one selected
-		if ( player.name() == SysRegistry::instance().queryStringValue( "Misc", "Current Player Name", SysRegistry::CURRENT_USER ) )
+		if ( player.name() == SysRegistry::instance().queryStringValue( "Misc", "Current Player Name") )
 		{
 			selectThisItem();
 		}
@@ -66,7 +66,7 @@ protected:
 		MachGuiDatabase::instance().currentPlayer( &player_ );
 
 		// Store the fact that this item was just selected
-		SysRegistry::instance().setStringValue( "Misc", "Current Player Name", player_.name(), SysRegistry::CURRENT_USER );
+		SysRegistry::instance().setStringValue( "Misc", "Current Player Name", player_.name());
 	}
 
 	virtual void unselect()
@@ -244,7 +244,7 @@ bool MachGuiCtxCampaign::okayToSwitchContext()
 			if ( pNewPlayerName_->text() != "" )
 			{
 				// Store the name of the last selected player in the registry
-				SysRegistry::instance().setStringValue( "Misc", "Current Player Name", pNewPlayerName_->text(), SysRegistry::CURRENT_USER );
+				SysRegistry::instance().setStringValue( "Misc", "Current Player Name", pNewPlayerName_->text());
 
 				MachGuiDbPlayer& newPlayer = MachGuiDatabase::instance().addPlayer( pNewPlayerName_->text() );
 				MachGuiDatabase::instance().currentPlayer( &newPlayer );

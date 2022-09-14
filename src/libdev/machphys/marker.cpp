@@ -87,8 +87,8 @@ MachPhysMarker::MachPhysMarker
 
 	// There are two flavours of marker: 2D on a TTF or 3D wireframe boxes.
 	// The choice is determined by a registry setting.
-	const bool use2D = SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D", SysRegistry::CURRENT_USER);
-	if (use2D)
+    const bool use2D = SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D");
+    if (use2D)
 	{
 		// Change the alpha to be partly transparent.  Set a hardcoded texture.
 		static const RenTexture tex1 = RenTexManager::instance().createTexture("mark3_t.bmp");

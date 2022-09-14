@@ -44,10 +44,10 @@ void SDLApp::initSound()
 void SDLApp::loadSounds()
 {
 	SysRegistry::KeyHandle handle;
-	if( SysRegistry::instance().onlyOpenKey( "Options\\3DSound", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
-	{
-		MachGuiCtxOptions::load3dSoundFiles( SysRegistry::instance().queryIntegerValue( "Options\\3DSound", "on", SysRegistry::CURRENT_USER ) );
-	}
+    if (SysRegistry::instance().onlyOpenKey("Options\\3DSound", &handle) == SysRegistry::SUCCESS)
+    {
+        MachGuiCtxOptions::load3dSoundFiles(SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"));
+    }
 	else
 	{
 		MachGuiCtxOptions::load3dSoundFiles( SndMixer::instance().is3dMixer() );

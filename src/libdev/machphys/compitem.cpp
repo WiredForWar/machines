@@ -41,8 +41,8 @@ MachPhysComplexityBooleanItem::MachPhysComplexityBooleanItem( const ItemId& setI
 	idToString(id(), &strId);
 
 	SysRegistry::KeyHandle handle;
-	SysRegistry::instance().openKey( "Options\\Graphics Complexity", &handle, SysRegistry::CURRENT_USER );
-	readSucceeded = ( SysRegistry::instance().queryValue( handle, strId, SysRegistry::INTEGER, &buf, &sizeOfBool ) == SysRegistry::SUCCESS );
+    SysRegistry::instance().openKey("Options\\Graphics Complexity", &handle);
+    readSucceeded = ( SysRegistry::instance().queryValue( handle, strId, SysRegistry::INTEGER, &buf, &sizeOfBool ) == SysRegistry::SUCCESS );
 	SysRegistry::instance().closeKey( handle );
 
 	if( readSucceeded )
@@ -51,8 +51,8 @@ MachPhysComplexityBooleanItem::MachPhysComplexityBooleanItem( const ItemId& setI
 	}
 	else
 	{
-		SysRegistry::instance().setIntegerValue( "Options\\Graphics Complexity", strId, enabled_, SysRegistry::CURRENT_USER );
-	}
+        SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, enabled_);
+    }
 }
 
 MachPhysComplexityBooleanItem::~MachPhysComplexityBooleanItem()
@@ -69,8 +69,8 @@ void MachPhysComplexityBooleanItem::changeState( bool enabled )
 		// persist new setting
 		string strId;
 		idToString(id(), &strId);
-		SysRegistry::instance().setIntegerValue( "Options\\Graphics Complexity", strId, enabled_, SysRegistry::CURRENT_USER );
-	}
+        SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, enabled_);
+    }
 }
 
 MachPhysComplexityChoiceItem::MachPhysComplexityChoiceItem( const ItemId& setId, uint nChoices, uint choice )
@@ -90,8 +90,8 @@ MachPhysComplexityChoiceItem::MachPhysComplexityChoiceItem( const ItemId& setId,
 	idToString(id(), &strId);
 
 	SysRegistry::KeyHandle handle;
-	SysRegistry::instance().openKey( "Options\\Graphics Complexity", &handle, SysRegistry::CURRENT_USER );
-	readSucceeded = ( SysRegistry::instance().queryValue( handle, strId, SysRegistry::INTEGER, &buf, &sizeOfInt ) == SysRegistry::SUCCESS );
+    SysRegistry::instance().openKey("Options\\Graphics Complexity", &handle);
+    readSucceeded = ( SysRegistry::instance().queryValue( handle, strId, SysRegistry::INTEGER, &buf, &sizeOfInt ) == SysRegistry::SUCCESS );
 	SysRegistry::instance().closeKey( handle );
 
 	if( readSucceeded and buf < nChoices_ )
@@ -100,8 +100,8 @@ MachPhysComplexityChoiceItem::MachPhysComplexityChoiceItem( const ItemId& setId,
 	}
 	else
 	{
-		SysRegistry::instance().setIntegerValue( "Options\\Graphics Complexity", strId, choice_, SysRegistry::CURRENT_USER );
-	}
+        SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, choice_);
+    }
 }
 
 MachPhysComplexityChoiceItem::~MachPhysComplexityChoiceItem()
@@ -129,8 +129,8 @@ void MachPhysComplexityChoiceItem::changeState( uint choice )
 		// persist new setting
 		string strId;
 		idToString(id(), &strId);
-		SysRegistry::instance().setIntegerValue( "Options\\Graphics Complexity", strId, choice_, SysRegistry::CURRENT_USER );
-	}
+        SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, choice_);
+    }
 }
 
 

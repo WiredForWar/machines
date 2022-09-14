@@ -114,23 +114,7 @@ ostream& operator <<( ostream& o, const SysRegistry& t )
     return o;
 }
 
-ostream& operator <<( ostream& o, const SysRegistry::Root& t )
-{
-	switch( t )
-	{
-		case SysRegistry::LOCAL_MACHINE:
-			o << "LOCAL_MACHINE";
-			break;
-		case SysRegistry::CURRENT_USER:
-			o << "CURRENT_USER";
-			break;
-		DEFAULT_ASSERT_BAD_CASE( (int)t );
-	}
-
-    return o;
-}
-
-SysRegistry::ReturnValue	SysRegistry::onlyOpenKey( const std::string & keyName, SysRegistry::KeyHandle* pOpenedKey, SysRegistry::Root root )
+SysRegistry::ReturnValue SysRegistry::onlyOpenKey(const std::string& keyName, SysRegistry::KeyHandle* pOpenedKey)
 {
 	ReturnValue result = SUCCESS;
 
@@ -141,7 +125,7 @@ SysRegistry::ReturnValue	SysRegistry::onlyOpenKey( const std::string & keyName, 
     }
     else
     {
-        result = onlyOpenKeyNoRecord( keyName, pOpenedKey, root );
+        result = onlyOpenKeyNoRecord(keyName, pOpenedKey);
 
         if( RecRecorder::instance().state() == RecRecorder::RECORDING )
         {
@@ -153,7 +137,8 @@ SysRegistry::ReturnValue	SysRegistry::onlyOpenKey( const std::string & keyName, 
 	return result;
 }
 
-SysRegistry::ReturnValue	SysRegistry::onlyOpenKeyNoRecord( const std::string & keyName, SysRegistry::KeyHandle* pOpenedKey, SysRegistry::Root root )
+SysRegistry::ReturnValue SysRegistry::onlyOpenKeyNoRecord(const std::string& keyName,
+                                                          SysRegistry::KeyHandle* pOpenedKey)
 {
 	ReturnValue result = SUCCESS;
 
@@ -172,7 +157,7 @@ SysRegistry::ReturnValue	SysRegistry::onlyOpenKeyNoRecord( const std::string & k
     return FAILED;
 }
 
-SysRegistry::ReturnValue	SysRegistry::openKey( const std::string & keyName, SysRegistry::KeyHandle* pOpenedKey, SysRegistry::Root root )
+SysRegistry::ReturnValue SysRegistry::openKey(const std::string& keyName, SysRegistry::KeyHandle* pOpenedKey)
 {
 	ReturnValue result = SUCCESS;
 
@@ -210,7 +195,7 @@ SysRegistry::ReturnValue	SysRegistry::openKey( const std::string & keyName, SysR
 	return result;
 }
 
-SysRegistry::ReturnValue	SysRegistry::deleteKey( const std::string & keyName, SysRegistry::Root root )
+SysRegistry::ReturnValue SysRegistry::deleteKey(const std::string& keyName)
 {
 	ReturnValue result = SUCCESS;
 
@@ -400,7 +385,7 @@ SysRegistry::ReturnValue SysRegistry::closeKeyNoRecord( KeyHandle key )
 	return result;
 }
 
-std::string  SysRegistry::queryStringValue( const std::string & keyName, const std::string & valueName, SysRegistry::Root root )
+std::string SysRegistry::queryStringValue(const std::string& keyName, const std::string& valueName)
 {
 	std::string  result = "";
 
@@ -439,7 +424,7 @@ std::string  SysRegistry::queryStringValue( const std::string & keyName, const s
 	return result;
 }
 
-int SysRegistry::queryIntegerValue( const std::string & keyName, const std::string & valueName, SysRegistry::Root root )
+int SysRegistry::queryIntegerValue(const std::string& keyName, const std::string& valueName)
 {
 	int result = 0;
 
@@ -461,8 +446,8 @@ int SysRegistry::queryIntegerValue( const std::string & keyName, const std::stri
     		doCloseKey = false;
     	}
 
-//    	if( SUCCESS == onlyOpenKeyNoRecord( keyName, &handle, root ) )
-    	{
+        //    	if( SUCCESS == onlyOpenKeyNoRecord( keyName, &handle ) )
+        {
     		std::string value;
     		if( SUCCESS == queryValueNoRecord( handle, actualKeyName, value) )
     			result = atoi(value.c_str());
@@ -480,7 +465,7 @@ int SysRegistry::queryIntegerValue( const std::string & keyName, const std::stri
 }
 
 //The set functions will create the key if it isn't present
-void SysRegistry::setStringValue( const std::string & keyName, const std::string & valueName, const std::string & value, SysRegistry::Root root )
+void SysRegistry::setStringValue(const std::string& keyName, const std::string& valueName, const std::string& value)
 {
 	CB_SysRegistry_DEPIMPL();
 	SysRegistry::KeyHandle handle;
@@ -502,7 +487,7 @@ void SysRegistry::setStringValue( const std::string & keyName, const std::string
 	}
 }
 
-void SysRegistry::setIntegerValue( const std::string & keyName, const std::string & valueName, int value, SysRegistry::Root root )
+void SysRegistry::setIntegerValue(const std::string& keyName, const std::string& valueName, int value)
 {
 	CB_SysRegistry_DEPIMPL();
 	SysRegistry::KeyHandle handle;

@@ -716,7 +716,7 @@ void MachGuiCtxSkirmish::autoLoadGame()
 //static
 int& MachGuiCtxSkirmish::chosenNumPlayers()
 {
-	static int chosenNumPlayersVal = SysRegistry::instance().queryIntegerValue( "Game Settings\\Num Players", "Value", SysRegistry::CURRENT_USER );
+	static int chosenNumPlayersVal = SysRegistry::instance().queryIntegerValue( "Game Settings\\Num Players", "Value");
 
 	if ( chosenNumPlayersVal == 0 )
 	{

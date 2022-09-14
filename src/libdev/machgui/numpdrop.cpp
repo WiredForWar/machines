@@ -95,7 +95,7 @@ bool MachGuiNumPlayersDropDownListBoxCreator::doHandleNavigationKey( NavKey navK
 			ASSERT( false, "MachGuiDropDownListBoxCreator::doHandleNavigationKey has invalid text()" );
 		}
 
-		SysRegistry::instance().setIntegerValue( "Game Settings\\Num Players", "Value", MachGuiCtxSkirmish::chosenNumPlayers(), SysRegistry::CURRENT_USER );
+		SysRegistry::instance().setIntegerValue( "Game Settings\\Num Players", "Value", MachGuiCtxSkirmish::chosenNumPlayers());
 	}
 
 	return retValue;
@@ -168,7 +168,7 @@ void MachGuiNumPlayersDropDownListBoxItem::select()
 		ASSERT( false, "MachGuiNumPlayersDropDownListBoxItem::select() has invalid text()" );
 	}
 
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Num Players", "Value", MachGuiCtxSkirmish::chosenNumPlayers(), SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Num Players", "Value", MachGuiCtxSkirmish::chosenNumPlayers());
 
 	// This base class function indirecty deletes this object, therefore it is called last
 	MachGuiDropDownListBoxItem::select();

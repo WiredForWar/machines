@@ -529,10 +529,10 @@ void MachPhys1stPersonDriver::adjustCameraRoll()
     W4dEntity* pParent = pAntiRollEntity->pParent();
     const MexTransform3d globalOwnerTransform = pParent->globalTransform();
 
-	static double rollDamper = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Roll Damper", SysRegistry::CURRENT_USER );
-	static double elevationDamper = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Elevation Damper", SysRegistry::CURRENT_USER );
-	static double rollSpeed = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Roll Speed", SysRegistry::CURRENT_USER );
-	static double elevationSpeed = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Elevation Speed", SysRegistry::CURRENT_USER );
+	static double rollDamper = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Roll Damper");
+	static double elevationDamper = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Elevation Damper");
+	static double rollSpeed = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Roll Speed");
+	static double elevationSpeed = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Elevation Speed");
 	static bool checkValues = true;
 
 	if ( checkValues )

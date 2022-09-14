@@ -1450,7 +1450,7 @@ void MachGuiStartupScreens::doBecomeRoot()
 	CB_DEPIMPL(	W4dSceneManager*, pSceneManager_ );
 
 	// Use 640x480 menu resolution
-	if ( not SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution", SysRegistry::CURRENT_USER ) )
+	if ( not SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution") )
 	{
 //		pSceneManager_->pDevice()->display()->useMode(640, 480, 0);
 
@@ -1475,12 +1475,12 @@ void MachGuiStartupScreens::doBecomeNotRoot()
 	int oldWidth = inGameResolutionWidth_;
 	int oldHeight = inGameResolutionHeight_;
 
-	if( SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution", SysRegistry::CURRENT_USER ) == 0 )
+	if( SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution") == 0 )
 	{
 
-		inGameResolutionWidth_ = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Width", SysRegistry::CURRENT_USER );
-		inGameResolutionHeight_ = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Height", SysRegistry::CURRENT_USER );
-        inGameResolutionRate_ = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Refresh Rate", SysRegistry::CURRENT_USER );
+		inGameResolutionWidth_ = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Width");
+		inGameResolutionHeight_ = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Height");
+        inGameResolutionRate_ = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Refresh Rate");
 
 		// Check that minimum resolution is specified
 		if ( inGameResolutionWidth_ < 640 or inGameResolutionHeight_ < 480 )
@@ -3415,11 +3415,11 @@ void MachGuiStartupScreens::initialiseVolumes()
 	int theSize = 0;
 
 	//If there is key in the registry for the sound volume
-	if(SysRegistry::instance().onlyOpenKey( "Options\\Sound", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS)
+	if(SysRegistry::instance().onlyOpenKey( "Options\\Sound", &handle) == SysRegistry::SUCCESS)
 	{
 		//Set the intial volume to the registry value
-		initialVolume = SysRegistry::instance().queryIntegerValue( "Options\\Sound", "Volume", SysRegistry::CURRENT_USER);
-		SndMixer::instance().masterSampleVolume(initialVolume);
+        initialVolume = SysRegistry::instance().queryIntegerValue("Options\\Sound", "Volume");
+        SndMixer::instance().masterSampleVolume(initialVolume);
 		SOUND_STREAM("Setting sound initialVolume to " << initialVolume << std::endl);
 	}
 	else
@@ -3428,11 +3428,11 @@ void MachGuiStartupScreens::initialiseVolumes()
 	}
 
 	//If there is key in the registry for the CD volume
-	if(SysRegistry::instance().onlyOpenKey( "Options\\CD", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS)
+	if(SysRegistry::instance().onlyOpenKey( "Options\\CD", &handle) == SysRegistry::SUCCESS)
 	{
 		//Set the intial CD volume to the registry value
-		initialVolume = SysRegistry::instance().queryIntegerValue( "Options\\CD", "Volume", SysRegistry::CURRENT_USER);
-		DevCD::instance().volume(initialVolume);
+        initialVolume = SysRegistry::instance().queryIntegerValue("Options\\CD", "Volume");
+        DevCD::instance().volume(initialVolume);
 		SOUND_STREAM("Setting CD initialVolume to " << initialVolume << std::endl);
 	}
 	else

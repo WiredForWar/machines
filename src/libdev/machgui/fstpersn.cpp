@@ -227,8 +227,8 @@ MachGuiFirstPersonImpl::MachGuiFirstPersonImpl()
 	rightMouseButtonHeadTurningUsed_( false ),
 	lastRightClickTime_( 0 ),
 	pPausedImage_( NULL ),
-	reverseUpDownKeys_( SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on", SysRegistry::CURRENT_USER ) ),
-	reverseUpDownMouse_( SysRegistry::instance().queryIntegerValue( "Options\\Reverse BackForward Mouse", "on", SysRegistry::CURRENT_USER ) ),
+	reverseUpDownKeys_( SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on") ),
+	reverseUpDownMouse_( SysRegistry::instance().queryIntegerValue( "Options\\Reverse BackForward Mouse", "on") ),
 	hitInterferenceRandom_( MexBasicRandom::constructSeededFromTime() ),
 	machineNVGOn_( false ),
     finishedStartupSequence_( false ),
@@ -1248,8 +1248,8 @@ void MachGuiFirstPerson::doBecomeRoot()
 
 	pTargetActor_ = NULL;
 
-	reverseUpDownKeys_ = SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on", SysRegistry::CURRENT_USER );
-	reverseUpDownMouse_ = SysRegistry::instance().queryIntegerValue( "Options\\Reverse BackForward Mouse", "on", SysRegistry::CURRENT_USER );
+	reverseUpDownKeys_ = SysRegistry::instance().queryIntegerValue( "Options\\Reverse UpDown Keys", "on");
+	reverseUpDownMouse_ = SysRegistry::instance().queryIntegerValue( "Options\\Reverse BackForward Mouse", "on");
 }
 
 //virtual

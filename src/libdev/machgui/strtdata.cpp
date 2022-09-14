@@ -134,74 +134,74 @@ MachGuiStartupData::GameSettings::GameSettings():
 {
 	// Read game settings from registry (or default to initial values)
 	SysRegistry::KeyHandle handle;
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Resources", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Resources", &handle) == SysRegistry::SUCCESS )
 	{
-		resources_ = (MachLog::ResourcesAvailable)SysRegistry::instance().queryIntegerValue( "Game Settings\\Resources", "Value", SysRegistry::CURRENT_USER );
+		resources_ = (MachLog::ResourcesAvailable)SysRegistry::instance().queryIntegerValue( "Game Settings\\Resources", "Value");
 	}
 	else
 	{
 		resources_ = MachLog::RES_HIGH;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Starting Resources", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Starting Resources", &handle) == SysRegistry::SUCCESS )
 	{
-		startingResources_ = (MachLog::StartingResources)SysRegistry::instance().queryIntegerValue( "Game Settings\\Starting Resources", "Value", SysRegistry::CURRENT_USER );
+		startingResources_ = (MachLog::StartingResources)SysRegistry::instance().queryIntegerValue( "Game Settings\\Starting Resources", "Value");
 	}
 	else
 	{
 		startingResources_ = MachLog::STARTING_RESOURCES_DEFAULT;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Starting Positions", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Starting Positions", &handle) == SysRegistry::SUCCESS )
 	{
-		startingPosition_ = (MachLog::RandomStarts)SysRegistry::instance().queryIntegerValue( "Game Settings\\Starting Positions", "Value", SysRegistry::CURRENT_USER );
+		startingPosition_ = (MachLog::RandomStarts)SysRegistry::instance().queryIntegerValue( "Game Settings\\Starting Positions", "Value");
 	}
 	else
 	{
 		startingPosition_ = MachLog::RANDOM_START_LOCATIONS;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Victory Condition", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Victory Condition", &handle) == SysRegistry::SUCCESS )
 	{
-		//victoryCondition_ = (MachLog::VictoryCondition)SysRegistry::instance().queryIntegerValue( "Game Settings\\Victory Condition", "Value", SysRegistry::CURRENT_USER );
+		//victoryCondition_ = (MachLog::VictoryCondition)SysRegistry::instance().queryIntegerValue( "Game Settings\\Victory Condition", "Value");
 		victoryCondition_ = _STATIC_CAST(VictoryCondition,
-            (MachLog::VictoryCondition)SysRegistry::instance().queryIntegerValue( "Game Settings\\Victory Condition", "Value", SysRegistry::CURRENT_USER ) );
+            (MachLog::VictoryCondition)SysRegistry::instance().queryIntegerValue( "Game Settings\\Victory Condition", "Value") );
 	}
 	else
 	{
 		victoryCondition_ = VC_DEFAULT;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Tech Level", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Tech Level", &handle) == SysRegistry::SUCCESS )
 	{
-		techLevel_ = (MachLog::TechnologyLevel)SysRegistry::instance().queryIntegerValue( "Game Settings\\Tech Level", "Value", SysRegistry::CURRENT_USER );
+		techLevel_ = (MachLog::TechnologyLevel)SysRegistry::instance().queryIntegerValue( "Game Settings\\Tech Level", "Value");
 	}
 	else
 	{
 		techLevel_ = MachLog::TECH_LEVEL_DEFAULT;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Fog Of War", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Fog Of War", &handle) == SysRegistry::SUCCESS )
 	{
-		fogOfWar_ = (bool)SysRegistry::instance().queryIntegerValue( "Game Settings\\Fog Of War", "Value", SysRegistry::CURRENT_USER );
+		fogOfWar_ = (bool)SysRegistry::instance().queryIntegerValue( "Game Settings\\Fog Of War", "Value");
 	}
 	else
 	{
 		fogOfWar_ = true;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Broadcast Alliances", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Broadcast Alliances", &handle) == SysRegistry::SUCCESS )
 	{
-		broadcastAlliances_ = (bool)SysRegistry::instance().queryIntegerValue( "Game Settings\\Broadcast Alliances", "Value", SysRegistry::CURRENT_USER );
+		broadcastAlliances_ = (bool)SysRegistry::instance().queryIntegerValue( "Game Settings\\Broadcast Alliances", "Value");
 	}
 	else
 	{
 		broadcastAlliances_ = false;
 	}
 
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Disable First Person", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Disable First Person", &handle) == SysRegistry::SUCCESS )
 	{
-		disableFirstPerson_ = (bool)SysRegistry::instance().queryIntegerValue( "Game Settings\\Disable First Person", "Value", SysRegistry::CURRENT_USER );
+		disableFirstPerson_ = (bool)SysRegistry::instance().queryIntegerValue( "Game Settings\\Disable First Person", "Value");
 	}
 	else
 	{
@@ -217,14 +217,14 @@ MachGuiStartupData::GameSettings::GameSettings():
 MachGuiStartupData::GameSettings::~GameSettings()
 {
 	// Update registry
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Resources", "Value", resources_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Starting Resources", "Value", startingResources_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Starting Positions", "Value", startingPosition_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Victory Condition", "Value", victoryCondition_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Tech Level", "Value", techLevel_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Fog Of War", "Value", fogOfWar_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Broadcast Alliances", "Value", broadcastAlliances_, SysRegistry::CURRENT_USER );
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Disable First Person", "Value", disableFirstPerson_, SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Resources", "Value", resources_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Starting Resources", "Value", startingResources_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Starting Positions", "Value", startingPosition_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Victory Condition", "Value", victoryCondition_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Tech Level", "Value", techLevel_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Fog Of War", "Value", fogOfWar_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Broadcast Alliances", "Value", broadcastAlliances_);
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Disable First Person", "Value", disableFirstPerson_);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,9 +241,9 @@ MachGuiStartupData::MachGuiStartupData( MachGuiStartupScreens* pStartupScreens )
 	NETWORK_STREAM("MachGuiStartupData::MachGuiStartupData " << (void*)this << std::endl );
 	SysRegistry::KeyHandle handle;
 	// Get default for menu transitions (on/off)
-	if( SysRegistry::instance().onlyOpenKey( "Options\\transitions", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Options\\transitions", &handle) == SysRegistry::SUCCESS )
 	{
-		transitionFlicsOn_ = SysRegistry::instance().queryIntegerValue( "Options\\transitions", "on", SysRegistry::CURRENT_USER );
+		transitionFlicsOn_ = SysRegistry::instance().queryIntegerValue( "Options\\transitions", "on");
 	}
 	else
 	{
@@ -251,14 +251,14 @@ MachGuiStartupData::MachGuiStartupData( MachGuiStartupScreens* pStartupScreens )
 	}
 
 	// Get default player race for skirmish games
-	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Player Race", &handle, SysRegistry::CURRENT_USER ) == SysRegistry::SUCCESS )
+	if( SysRegistry::instance().onlyOpenKey( "Game Settings\\Player Race", &handle) == SysRegistry::SUCCESS )
 	{
-		playerRace_ = (MachPhys::Race)SysRegistry::instance().queryIntegerValue( "Game Settings\\Player Race", "Value", SysRegistry::CURRENT_USER );
+		playerRace_ = (MachPhys::Race)SysRegistry::instance().queryIntegerValue( "Game Settings\\Player Race", "Value");
 	}
 
-	newGameName_ = SysRegistry::instance().queryStringValue( "Misc", "New Game Name", SysRegistry::CURRENT_USER );
-	playerName_ = SysRegistry::instance().queryStringValue( "Misc", "Players Name", SysRegistry::CURRENT_USER );
-	lastProtocol_ = SysRegistry::instance().queryStringValue( "Misc", "Chosen Protocol", SysRegistry::CURRENT_USER );
+	newGameName_ = SysRegistry::instance().queryStringValue( "Misc", "New Game Name");
+	playerName_ = SysRegistry::instance().queryStringValue( "Misc", "Players Name");
+	lastProtocol_ = SysRegistry::instance().queryStringValue( "Misc", "Chosen Protocol");
 
 	MexBasicRandom rng = MexBasicRandom::constructSeededFromTime();
 	uniqueMachineNumber_ = mexRandomInt( &rng, INT_MIN, INT_MAX );
@@ -297,7 +297,7 @@ void MachGuiStartupData::playerName( const string& playerName )
 	playerName_ = playerName;
 
 	// Store players name in registry so that it persists between different instances of the game
-	SysRegistry::instance().setStringValue( "Misc", "Players Name", playerName_, SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setStringValue( "Misc", "Players Name", playerName_);
 }
 
 void MachGuiStartupData::scenario( MachGuiDbScenario* pScenario )
@@ -328,7 +328,7 @@ void MachGuiStartupData::connectionType( const string& ct, InitialiseConnection 
 
 	lastProtocol_ = ct;
 	// Store chosen protocol in registry so that it persists between different instances of the game
-	SysRegistry::instance().setStringValue( "Misc", "Chosen Protocol", lastProtocol_, SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setStringValue( "Misc", "Chosen Protocol", lastProtocol_);
 
 	ASSERT( success, "failed to set protocol" );
 }
@@ -934,7 +934,7 @@ void MachGuiStartupData::newGameName( const string& gameName )
 	newGameName_ = gameName;
 
 	// Store new game name in registry so that it persists between different instances of the game
-	SysRegistry::instance().setStringValue( "Misc", "New Game Name", newGameName_, SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setStringValue( "Misc", "New Game Name", newGameName_);
 }
 
 void MachGuiStartupData::resetPlayers()
@@ -1513,7 +1513,7 @@ void MachGuiStartupData::playerRace( MachPhys::Race race )
 	playerRace_ = race;
 
 	// Store value in registry so it is the same the next time Machines is run
-	SysRegistry::instance().setIntegerValue( "Game Settings\\Player Race", "Value", playerRace_, SysRegistry::CURRENT_USER );
+	SysRegistry::instance().setIntegerValue( "Game Settings\\Player Race", "Value", playerRace_);
 }
 
 void MachGuiStartupData::playerRace( const string& str )

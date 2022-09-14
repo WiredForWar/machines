@@ -190,13 +190,13 @@ bool SDLApp::clientStartup()
 		//This is not a particularly nice place to do this initialisation
 		//but if we want the music to start playing at the right volume
 		//this is where it's going to happen
-		SysRegistry::KeyHandle handle;
-		if(SysRegistry::instance().onlyOpenKey( "Options\\CD", &handle, SysRegistry::CURRENT_USER )==SysRegistry::SUCCESS)
-		{
-			size_t theVol = SysRegistry::instance().queryIntegerValue( "Options\\CD", "Volume", SysRegistry::CURRENT_USER);
-			DevCD::instance().volume(theVol);
-		}
-		// Play loading music. It's in a different position depending upon which CD is in.
+        SysRegistry::KeyHandle handle;
+        if (SysRegistry::instance().onlyOpenKey("Options\\CD", &handle) == SysRegistry::SUCCESS)
+        {
+            size_t theVol = SysRegistry::instance().queryIntegerValue("Options\\CD", "Volume");
+            DevCD::instance().volume(theVol);
+        }
+        // Play loading music. It's in a different position depending upon which CD is in.
 		if ( MachGui::machinesCDIsAvailable( 1 ) )
 		{
  			DevCD::instance().play( 2 ); // Data 0, Menu Music 1, Loading Music 2
@@ -285,17 +285,17 @@ bool SDLApp::clientStartup()
 	// Initially, pick the lowest-res 16-bit mode.
 	pDisplay_->buildDisplayModesList();
 
-	// Check for windowed mode
-	if ( ! SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Windowed", SysRegistry::CURRENT_USER ) )
+    // Check for windowed mode
+    if (!SysRegistry::instance().queryIntegerValue("Screen Resolution", "Windowed"))
         pDisplay_->useFullScreen();
 
     // Check for first time run - set config to desktop resolution then
-    if( !SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Width", SysRegistry::CURRENT_USER ) )
+    if (!SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width"))
     {
         const RenDisplay::Mode desktopMode = pDisplay_->getDesktopDisplayMode();
-        SysRegistry::instance().setIntegerValue( "Screen Resolution", "Width", desktopMode.width(), SysRegistry::CURRENT_USER );
-        SysRegistry::instance().setIntegerValue( "Screen Resolution", "Height", desktopMode.height(), SysRegistry::CURRENT_USER );
-        SysRegistry::instance().setIntegerValue( "Screen Resolution", "Refresh Rate", desktopMode.refreshRate(), SysRegistry::CURRENT_USER );
+        SysRegistry::instance().setIntegerValue("Screen Resolution", "Width", desktopMode.width());
+        SysRegistry::instance().setIntegerValue("Screen Resolution", "Height", desktopMode.height());
+        SysRegistry::instance().setIntegerValue("Screen Resolution", "Refresh Rate", desktopMode.refreshRate());
     }
 
 	//Set default resolution.
@@ -303,16 +303,16 @@ bool SDLApp::clientStartup()
     int modeH = 480;
     int modeR = 0;
 
-	if ( SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Lock Resolution", SysRegistry::CURRENT_USER ) )
-	{
-		modeW = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Width", SysRegistry::CURRENT_USER );
-		modeH = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Height", SysRegistry::CURRENT_USER );
+    if (SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"))
+    {
+        modeW = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
+        modeH = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
 
-		if(pDisplay_->fullScreen())
-            modeR = SysRegistry::instance().queryIntegerValue( "Screen Resolution", "Refresh Rate", SysRegistry::CURRENT_USER );
-	}
+        if (pDisplay_->fullScreen())
+            modeR = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
+    }
 
-	std::cout << "Trying to select display mode " << modeW << "x" << modeH << " at " << modeR << " Hz" << std::endl;
+    std::cout << "Trying to select display mode " << modeW << "x" << modeH << " at " << modeR << " Hz" << std::endl;
 	if( not pDisplay_->useMode(modeW, modeH, modeR))
 	{
 		if ( modeW != 640 or modeH != 480 )
@@ -345,14 +345,14 @@ bool SDLApp::clientStartup()
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
 
 	manager_ = _NEW(W4dSceneManager(pDisplay_, root));
-	manager_->pDevice()->debugTextCoords(204, 0);
-	manager_->useLevelOfDetail(
-        !SysRegistry::instance().queryIntegerValue( "Options\\Graphics Complexity\\LOD", "Value", SysRegistry::CURRENT_USER ));
+    manager_->pDevice()->debugTextCoords(204, 0);
+    manager_->useLevelOfDetail(
+        !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));
 
-	// set this after the device has been created: we need the capability class
-	// to find out how much memory is available for display
-//	bool highestModeSet = manager_->pDevice()->setHighestAllowedDisplayMode();
-//	ASSERT(highestModeSet, "Could tot find a mode fitting in the amount of display memory available");
+    // set this after the device has been created: we need the capability class
+    // to find out how much memory is available for display
+    //	bool highestModeSet = manager_->pDevice()->setHighestAllowedDisplayMode();
+    //	ASSERT(highestModeSet, "Could tot find a mode fitting in the amount of display memory available");
 
     // Register the scene manager with the render libary manager
 	HAL_STREAM("D3dApp::clientStartup sceneManager\n" );
@@ -361,15 +361,15 @@ bool SDLApp::clientStartup()
 	// Restore users gamma correction setting
 	if ( pDisplay_->supportsGammaCorrection() )
 	{
-		SysRegistry::KeyHandle handle;
-		if(SysRegistry::instance().onlyOpenKey( "Options\\Gamma Correction", &handle, SysRegistry::CURRENT_USER )==SysRegistry::SUCCESS)
-		{
-			double gammaValue = SysRegistry::instance().queryIntegerValue( "Options\\Gamma Correction", "Value", SysRegistry::CURRENT_USER );
-			gammaValue /= GAMMA_REG_MULTIPLIER;
-			gammaValue = mexClamp( gammaValue, GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT );
+        SysRegistry::KeyHandle handle;
+        if (SysRegistry::instance().onlyOpenKey("Options\\Gamma Correction", &handle) == SysRegistry::SUCCESS)
+        {
+            double gammaValue = SysRegistry::instance().queryIntegerValue("Options\\Gamma Correction", "Value");
+            gammaValue /= GAMMA_REG_MULTIPLIER;
+            gammaValue = mexClamp( gammaValue, GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT );
 			pDisplay_->gammaCorrection( gammaValue );
-		}
-	}
+        }
+    }
 
 	// Get top left offset for images
 	int xOffset = ( mode.width() - 640 ) / 2;
