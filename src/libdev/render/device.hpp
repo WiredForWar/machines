@@ -359,6 +359,8 @@ private:
     glm::vec3 fogColour_{};
     glm::vec3 fogParams_{};
 
+    bool      clearAll2D_{false};
+
     // Operations deliberately revoked
     RenDevice( const RenDevice& );
     RenDevice& operator =( const RenDevice& ) ;

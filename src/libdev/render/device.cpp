@@ -431,6 +431,7 @@ void RenDevice::clearAllSurfaces(const RenColour& colour)
 {
     PRE(!rendering3D() && !rendering2D());
 
+    RENDER_STREAM("Inside RenDevice::clearAllSurfaces( RenColour RGBA: " << colour.r() << ", " << colour.g() << ", " << colour.b() << ", " << colour.a() << " )" << std::endl);
     // Temporarily set, then reset the background colour.
     glClearColor(colour.r(), colour.g(), colour.b(), colour.a());
     clearAllSurfaces();
@@ -449,6 +450,7 @@ void RenDevice::clearAllSurfaces()
     if (!pImpl_->vpMapping_)
         setViewport(0, 0, mode.width(), mode.height());
 
+    clearAll2D_ = true;
 
     ASSERT(pImpl_->vpMapping_, "No viewport set; there should be a default.");
 
@@ -638,6 +640,13 @@ void RenDevice::start2D()
 void RenDevice::end2D()
 {
     PRE(rendering2D());
+
+    // Needs to go here because smacker animations do not call RenDevice's frame lifecycle methods... -_-
+    if (clearAll2D_)
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        clearAll2D_ = false;
+    }
 
     pImpl_->rendering2D_ = false;
 
