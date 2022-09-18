@@ -77,7 +77,7 @@ void MachHWResearchBankIcons::updateIcons()
          it != queue.end(); ++it )
     {
         MachLogResearchItem* pResearchItem = (*it);
-        _NEW( MachHWResearchBankIcon( this, pResearchItem, pInGameScreen_, race ) );
+        new MachHWResearchBankIcon(this, pInGameScreen_, pResearchItem, race);
     }
 
     //Ensure redisplayed
@@ -98,12 +98,12 @@ void MachHWResearchBankIcons::cancelSelectedIcons() const
 		// alternative would be to keep wasteful personal container of MachHWResearchBankIcon pointers
 		// that would constantly shadow the children collection inherited from GuiDisplayable.
 
-		//MachLogProductionUnit& prodUnit = pHWResIcon->productionUnit();		
-		if ( pHWResBankIcon->isDepressed() )
-		{
-			pHardwareLab_->removeResearchItem(  pHWResBankIcon->researchItem() );
-		}
-	}		
+        //MachLogProductionUnit& prodUnit = pHWResIcon->productionUnit();
+        if (pHWResBankIcon->isDepressed())
+        {
+            pHardwareLab_->removeResearchItem(*pHWResBankIcon->researchItem());
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

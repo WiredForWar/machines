@@ -54,10 +54,10 @@ class MachHWResearchBankIcon : public MachGuiNewResearchIcon
 {
 public:
     //ctor.
-    MachHWResearchBankIcon( GuiDisplayable* pParent, 
-    						MachLogResearchItem* pResearchItem,
-						    MachInGameScreen* pInGameScreen,
-							MachPhys::Race race );
+    MachHWResearchBankIcon(GuiDisplayable* pParent,
+                           MachInGameScreen* pInGameScreen,
+                           const MachLogResearchItem* pResearchItem,
+                           MachPhys::Race race);
 
     //dtor.
     ~MachHWResearchBankIcon();
@@ -67,7 +67,7 @@ public:
 	static size_t reqHeight();
 	static size_t reqWidth();
 
-	MachLogResearchItem& researchItem() const;	//returns reference to associated MachLogProductionUnit	
+    const MachLogResearchItem* researchItem() const;
 
 	void updateProgress( float percentageComplete );
 
@@ -92,7 +92,7 @@ private:
     //Data members
 	MachGuiBuildProgressBar* pProgressBar_;
 	MachInGameScreen* pInGameScreen_;
-	MachLogResearchItem* pResearchItem_;
+    const MachLogResearchItem* pResearchItem_;
 	bool needsPromptUpdate_;
 };
 
