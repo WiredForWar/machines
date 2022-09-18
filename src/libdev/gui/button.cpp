@@ -69,6 +69,11 @@ void GuiButton::doHandleMouseClickEvent( const GuiMouseEvent& e )
 					doBeReleased( e );
 				}
 			}
+
+            if (clickedCallback_)
+            {
+                clickedCallback_(this);
+            }
 		}
 		else if( e.leftButton() == Gui::PRESSED )
 		{
@@ -97,6 +102,11 @@ void GuiButton::doHandleMouseExitEvent( const GuiMouseEvent& )
 			changed();
 		}
 	}
+}
+
+void GuiButton::setMouseClickHandler(Callback callback)
+{
+    clickedCallback_ = callback;
 }
 
 void GuiButton::doDisplay()
