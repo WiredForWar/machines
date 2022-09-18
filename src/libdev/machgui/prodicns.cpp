@@ -35,6 +35,14 @@ MachProductionIcons::MachProductionIcons(	GuiDisplayable * pParent,
     TEST_INVARIANT;
 }
 
+void MachProductionIcons::onIconClicked(GuiButton* pIcon)
+{
+    MachProductionIcon* pProdIcon = static_cast<MachProductionIcon*>(pIcon);
+    pFactory_->cancelProductionUnit(pProdIcon->productionUnit());
+
+    updateIcons();
+}
+
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachProductionIcons::~MachProductionIcons()
@@ -68,7 +76,8 @@ void MachProductionIcons::updateIcons()
     for( ; it != queue.end(); ++it )
     {
         const MachLogProductionUnit& item = *(*it);
-        new MachProductionIcon(this, pInGameScreen_, &item, index++);
+        MachProductionIcon* pIcon = new MachProductionIcon(this, pInGameScreen_, &item, index++);
+        pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
     }
 
     // Ensure redisplayed

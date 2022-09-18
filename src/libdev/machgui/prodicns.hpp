@@ -17,6 +17,7 @@
 #include "gui/gui.hpp"
 
 //Forward refs
+class GuiButton;
 class MachInGameScreen;
 class MachLogFactory;
 
@@ -56,6 +57,8 @@ private:
     MachProductionIcons( const MachProductionIcons& );
     MachProductionIcons& operator =( const MachProductionIcons& );
     bool operator ==( const MachProductionIcons& );
+
+    void onIconClicked(GuiButton* pIcon);
 
     //data members
     MachLogFactory* pFactory_; //The factory whose production queu is depicted
