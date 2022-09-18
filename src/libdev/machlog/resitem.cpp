@@ -264,7 +264,7 @@ void MachLogResearchItem::researched( MachPhys::Race race, bool value )
 //	HAL_STREAM("MLRI::available " << objectType_ << " sub " << subType_ << " hw " << hwLevel_ << " value " << value << std::endl );
 	researched_[ race ] = value;
 }
-MachPhys::ResearchUnits MachLogResearchItem::amountResearched( MachPhys::Race race )
+MachPhys::ResearchUnits MachLogResearchItem::amountResearched(MachPhys::Race race) const
 {
 	CB_MachLogResearchItem_DEPIMPL();
 
@@ -292,8 +292,7 @@ void MachLogResearchItem::advanceResearch( MachPhys::Race race , MachPhys::Resea
 	}
 }
 
-
-MachPhys::BuildingMaterialUnits MachLogResearchItem::amountBuilt( MachPhys::Race race )
+MachPhys::BuildingMaterialUnits MachLogResearchItem::amountBuilt(MachPhys::Race race) const
 {
 	CB_MachLogResearchItem_DEPIMPL();
 
@@ -451,20 +450,6 @@ MachLogResearchItem* MachLogResearchItem::pParentDependancy() const
 	CB_MachLogResearchItem_DEPIMPL();
 
 	return pParentDependancy_;
-}
-	
-MachPhys::ResearchUnits MachLogResearchItem::amountResearched( MachPhys::Race race ) const
-{
-	CB_MachLogResearchItem_DEPIMPL();
-
-	return amountResearched_[ race ];
-}
-
-MachPhys::BuildingMaterialUnits MachLogResearchItem::amountBuilt( MachPhys::Race race ) const
-{
-	CB_MachLogResearchItem_DEPIMPL();
-
-	return amountBuilt_[ race ];
 }
 
 MachPhys::ResearchUnits MachLogResearchItem::swAmountResearched( MachPhys::Race race, int level ) const

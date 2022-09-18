@@ -67,8 +67,8 @@ public:
 	void available( MachPhys::Race , bool );
 	void researched( MachPhys::Race, bool );
 	void advanceResearch( MachPhys::Race, MachPhys::ResearchUnits );
-	MachPhys::ResearchUnits amountResearched( MachPhys::Race );
-	MachPhys::BuildingMaterialUnits amountBuilt( MachPhys::Race );
+    MachPhys::ResearchUnits amountResearched(MachPhys::Race) const;
+    MachPhys::BuildingMaterialUnits amountBuilt(MachPhys::Race) const;
 	MachPhys::BuildingMaterialUnits costToAddResearch( MachPhys::ResearchUnits ) const; 
 
 	void swAvailable( MachPhys::Race , int level, bool );
@@ -103,8 +103,6 @@ private:
 	MachPhys::MachineType mapToMachPhysMachine( MachLog::ObjectType ) const;
 
 	MachLogResearchItem* pParentDependancy() const;
-	MachPhys::ResearchUnits amountResearched( MachPhys::Race ) const;
-	MachPhys::BuildingMaterialUnits amountBuilt( MachPhys::Race ) const;
 	MachPhys::ResearchUnits swAmountResearched( MachPhys::Race, int level ) const;
 	MachPhys::BuildingMaterialUnits swAmountBuilt( MachPhys::Race, int level ) const;
 
