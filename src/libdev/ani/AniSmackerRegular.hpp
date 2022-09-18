@@ -36,6 +36,9 @@ protected:
     virtual void copyCurrentVideoFrameToBuffer(RenSurface& renderSurface) override;
     virtual uint* fillBufferForCurrentFrame() override;
 
+    size_t 		xCoordTo_;
+    size_t 		yCoordTo_;
+
 private:
     void copyCurrentFrameToBuffer( RenSurface& dst );
     void unpackBufferToSurface(  const RenSurface& dst, const RenSurface& src );
@@ -52,8 +55,6 @@ private:
     uint *	pBuffer_;
     RenSurface  surface_;
 	unsigned	frame_;
-	size_t 		xCoordTo_;
-	size_t 		yCoordTo_;
 	size_t      width_, height_;
 	double      frameTime_;
 	double      lastFrameTime_;

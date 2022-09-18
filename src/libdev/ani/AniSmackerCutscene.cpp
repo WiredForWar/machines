@@ -4,7 +4,8 @@
 
 AniSmackerCutscene::AniSmackerCutscene(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, size_t fsWidth, size_t fsHeight)
     : AniSmackerRegular(path, xCoordTo, yCoordTo, false),
-      pFrameScaler_(nullptr)
+      pFrameScaler_(nullptr),
+      scaledVideoHeight_(0L)
 {
     fullScreenWidth_ = fsWidth;
     fullScreenHeight_ = fsHeight;
@@ -18,7 +19,11 @@ AniSmackerCutscene::~AniSmackerCutscene() {
 
 RenSurface AniSmackerCutscene::createSmackerSurface(RenDevice *pDevice)
 {
-    return RenSurface::createAnonymousSurface( fullScreenWidth_, fullScreenHeight_, pDevice->backSurface() );
+    // maintain aspect ratio
+    scaledVideoHeight_ = fullScreenWidth_ * AniSmackerRegular::height() / AniSmackerRegular::width();
+    yCoordTo_ = ( fullScreenHeight_ - scaledVideoHeight_ ) / 2L;
+
+    return RenSurface::createAnonymousSurface( fullScreenWidth_, scaledVideoHeight_, pDevice->backSurface() );
 }
 
 
@@ -31,7 +36,7 @@ void AniSmackerCutscene::copyCurrentVideoFrameToBuffer(RenSurface& renderSurface
 FrameScaler* AniSmackerCutscene::fetchOrInitializeScaler() {
     if (pFrameScaler_ == nullptr) {
         // By now, width() & height() will have the smacker file's w/h values
-        pFrameScaler_ = new FrameScaler(this->width(), this->height(), fullScreenWidth_, fullScreenHeight_);
+        pFrameScaler_ = new FrameScaler(this->width(), this->height(), fullScreenWidth_, scaledVideoHeight_);
     }
 
     return pFrameScaler_;

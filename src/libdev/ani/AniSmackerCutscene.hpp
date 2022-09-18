@@ -24,4 +24,5 @@ private:
     FrameScaler* pFrameScaler_;
     size_t fullScreenWidth_;
     size_t fullScreenHeight_;
+    size_t scaledVideoHeight_;
 };

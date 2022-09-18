@@ -2037,7 +2037,8 @@ void MachGuiStartupScreens::startPlayingAnimation( const SysPathName& filename, 
     else {
 #if USE_SWSCALE
         const auto& displayMode = RenDevice::current()->display()->currentMode();
-        pPlayingSmacker_ = new AniSmackerCutscene(filename, 0, 0, displayMode.width(), displayMode.height());
+        // If xCoordTo is 0, then for some bizarre reason there will be a large black bar on the left. 3 makes it a skinny line on both sides.
+        pPlayingSmacker_ = new AniSmackerCutscene(filename, 3, 0, displayMode.width(), displayMode.height());
 #endif
     }
 
