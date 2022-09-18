@@ -95,28 +95,6 @@ void MachHWResearchBankIcons::updateIcons()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachHWResearchBankIcons::cancelSelectedIcons() const
-{
-
-	for( Children::const_iterator i = children().begin(); i != children().end(); ++i )
-	{
- 		GuiDisplayable* pChild = (*i);
-		MachHWResearchBankIcon* pHWResBankIcon = _REINTERPRET_CAST ( MachHWResearchBankIcon* , pChild);
-		
-		// deemed acceptable here as we know that all our children are of type MachHWResearchBankIcon;
-		// alternative would be to keep wasteful personal container of MachHWResearchBankIcon pointers
-		// that would constantly shadow the children collection inherited from GuiDisplayable.
-
-        //MachLogProductionUnit& prodUnit = pHWResIcon->productionUnit();
-        if (pHWResBankIcon->isDepressed())
-        {
-            pHardwareLab_->removeResearchItem(*pHWResBankIcon->researchItem());
-        }
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void MachHWResearchBankIcons::doDisplay()
 {
 	pInGameScreen_->controlPanel().redrawAreaImmediate( *this );

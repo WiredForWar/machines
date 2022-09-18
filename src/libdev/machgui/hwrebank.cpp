@@ -18,7 +18,6 @@
 #include "gui/progress.hpp"
 #include "gui/icon.hpp"
 #include "device/butevent.hpp"
-#include "device/keytrans.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,13 +57,15 @@ MachHWResearchBank::MachHWResearchBank
     updateProgress();
 
 	pScrollLeft_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(0,0), SysPathName( "gui/misc/scrolll.bmp" ), pIcons_, MachGuiBufferScrollButton::LEFT, pInGameScreen ) );
-	pScrollRight_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(MachGuiBufferScrollButton::width() + MachHWResearchBankIcons::reqWidth(),0), SysPathName( "gui/misc/scrollr.bmp" ), pIcons_, MachGuiBufferScrollButton::RIGHT, pInGameScreen ) );
+    pScrollRight_ = _NEW(MachGuiBufferScrollButton(
+        this,
+        Gui::Coord(MachGuiBufferScrollButton::width() + MachHWResearchBankIcons::reqWidth(), 0),
+        SysPathName("gui/misc/scrollr.bmp"),
+        pIcons_,
+        MachGuiBufferScrollButton::RIGHT,
+        pInGameScreen));
 
-	pKeyTranslator_ = _NEW( DevKeyToCommandTranslator() );
-	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::BACK_SPACE, CANCEL_SELECTED_RESEARCH, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
-   	pKeyTranslator_->initEventQueue();
-	
-	updateQueueIcons();
+    updateQueueIcons();
 
     TEST_INVARIANT;
 }
@@ -117,14 +118,6 @@ void MachHWResearchBank::updateProgress()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachHWResearchBank::cancelSelectedQueueIcons()
-{
-	pIcons_->cancelSelectedIcons();
-	pIcons_->updateIcons();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 //virtual
 void MachHWResearchBank::doDisplay()
 {
@@ -145,37 +138,6 @@ MachLogHardwareLab& MachHWResearchBank::hardwareLab()
 void MachHWResearchBank::domainDeleted( W4dDomain* )
 {
     //Do nothing
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool MachHWResearchBank::processButtonEvent( const DevButtonEvent& buttonEvent )
-{
-	// do not process key release events
-	
-	if ( buttonEvent.action() == DevButtonEvent::PRESS )
-		return false;
-
-
-	typedef DevKeyToCommand::CommandId CommandId;
-	
-	CommandId commandId;
-	bool processed = pKeyTranslator_->translate( buttonEvent, &commandId );
-			
-	if ( processed )
-	{
-		switch ( commandId )
-		{
-			case CANCEL_SELECTED_RESEARCH:
-				cancelSelectedQueueIcons();
-				break;
-			default:
-				ASSERT ( true, "Received unexpected command ID in MachHWResearchBank::processButtonEvent" );
-				break;
-		}
-	}
-
-	return processed;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

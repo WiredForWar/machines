@@ -39,10 +39,6 @@ public:
 	static size_t reqWidth();
 
 	void updateProgress( float percentageComplete );
-	
-	//Remove from the bank any and all selected icons
-	//This also removes the associated production units from this class's associated factory's production line.
-	void cancelSelectedIcons() const;
 
     void CLASS_INVARIANT;
 

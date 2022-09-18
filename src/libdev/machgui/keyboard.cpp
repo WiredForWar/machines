@@ -97,8 +97,6 @@ bool MachInGameScreen::doHandleKeyEvent( const GuiKeyEvent& e )
 			case 6:
 				break;
 			case 7:
-				if ( pImpl_->pHWResearchBank_ )		// (May not be a research bank in existence)
-					processed = pImpl_->pHWResearchBank_->processButtonEvent( e.buttonEvent() );
 				break;
 			case 8:
 				if ( e.key() == DevKey::ESCAPE and e.state() == Gui::PRESSED )
