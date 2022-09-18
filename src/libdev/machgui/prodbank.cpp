@@ -17,7 +17,6 @@
 #include "machlog/factory.hpp"
 #include "gui/gui.hpp"
 #include "device/butevent.hpp"
-#include "device/keytrans.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */	 
 
@@ -49,10 +48,6 @@ MachProductionBank::MachProductionBank
 
 	pScrollLeft_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(0,0), SysPathName( "gui/misc/scrolll.bmp" ), pIcons_, MachGuiBufferScrollButton::LEFT, pInGameScreen ) );
 	pScrollRight_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(MachGuiBufferScrollButton::width() + MachProductionIcons::width(),0), SysPathName( "gui/misc/scrollr.bmp" ), pIcons_, MachGuiBufferScrollButton::RIGHT, pInGameScreen ) );
-
-	pKeyTranslator_ = _NEW( DevKeyToCommandTranslator() );
-	pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::BACK_SPACE, CANCEL_SELECTED_PRODUCTIONS, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED ) );
-   	pKeyTranslator_->initEventQueue();
 
 	updateQueueIcons();
 
@@ -129,14 +124,6 @@ MachLogFactory& MachProductionBank::factory()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachProductionBank::cancelSelectedQueueIcons()
-{
-	pIcons_->cancelSelectedIcons();
-	pIcons_->updateIcons();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 //virtual
 void MachProductionBank::domainDeleted( W4dDomain* )
 {
@@ -157,37 +144,6 @@ size_t MachProductionBank::width()
 size_t MachProductionBank::height()
 {
 	return ( MachProductionIcons::height() );
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool MachProductionBank::processButtonEvent( const DevButtonEvent& buttonEvent )
-{
-	// do not process key release events
-	
-	if ( buttonEvent.action() == DevButtonEvent::PRESS )
-		return false;
-
-
-	typedef DevKeyToCommand::CommandId CommandId;
-	
-	CommandId commandId;
-	bool processed = pKeyTranslator_->translate( buttonEvent, &commandId );
-			
-	if ( processed )
-	{
-		switch ( commandId )
-		{
-			case CANCEL_SELECTED_PRODUCTIONS:
-				cancelSelectedQueueIcons();
-				break;
-			default:
-				ASSERT ( true, "Received unexpected command ID in MachProductionBank::processButtonEvent" );
-				break;
-		}
-	}
-
-	return processed;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

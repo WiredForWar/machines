@@ -95,8 +95,6 @@ bool MachInGameScreen::doHandleKeyEvent( const GuiKeyEvent& e )
 				processed = pImpl_->pWorldViewWindow_->processButtonEvent( e.buttonEvent() );
 				break;
 			case 6:
-				if ( pImpl_->pProductionBank_ )		// (May not be a production bank in existence)
-					processed = pImpl_->pProductionBank_->processButtonEvent( e.buttonEvent() );
 				break;
 			case 7:
 				if ( pImpl_->pHWResearchBank_ )		// (May not be a research bank in existence)

@@ -94,28 +94,6 @@ void MachProductionIcons::doDisplay()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachProductionIcons::cancelSelectedIcons() const
-{
-
-	for( Children::const_iterator i = children().begin(); i != children().end(); ++i )
-	{
-		GuiDisplayable* pChild = (*i);
-		MachProductionIcon* pProdIcon = _REINTERPRET_CAST ( MachProductionIcon* , pChild);
-		
-		// deemed acceptable here as we know that all our children are of type MachProductionIcon;
-		// alternative would be to keep wasteful personal container of MachProductionIcon pointers
-		// that would constantly shadow the children collection inherited from GuiDisplayable.
-
-		//MachLogProductionUnit& prodUnit = pProdIcon->productionUnit();		
-		if ( pProdIcon->isDepressed() )
-		{
-            pFactory_->cancelProductionUnit(pProdIcon->productionUnit());
-		}
-	}		
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 //static 
 size_t MachProductionIcons::height()
 {

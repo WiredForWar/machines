@@ -35,10 +35,6 @@ public:
 
     //Set up the list of icons
     void updateIcons();
-	
-	//Remove from the bank any and all selected icons
-	//This also removes the associated production units from this class's associated factory's production line.
-	void cancelSelectedIcons() const;
 
 	static size_t height();
 	static size_t width();

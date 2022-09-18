@@ -57,14 +57,6 @@ public:
 
     //The bank's factory
     MachLogFactory& factory();
-	
-	// Called every time there is a buttonEvent. Returns true if the buttonEvent was
-	// processed (e.g. buttonEvent caused squad to be selected).
-	bool processButtonEvent( const DevButtonEvent& buttonEvent );
-	
-	//Remove from the bank any and all selected icons
-	//This also removes the associated production units from this prodbank's associated factory's production line.
-	void cancelSelectedQueueIcons();
 
     ////////////////////////////////////////////////////////////////////////////////
     // Inherited from W4dObserver
@@ -95,8 +87,6 @@ private:
     MachProductionBank& operator =( const MachProductionBank& );
     bool operator ==( const MachProductionBank& );
 
-	enum Command { 	CANCEL_SELECTED_PRODUCTIONS, CANCEL_ALL_PRODUCTIONS };
-	
     //Data members
     MachLogFactory* pFactory_; //The factory being edited
     MachProductionIcons* pIcons_; //The icon sequence depicting the queue machine icons
@@ -104,7 +94,6 @@ private:
     bool observingFactory_;//True while the observer relation on the factory exists
 	MachGuiBufferScrollButton* pScrollLeft_;
 	MachGuiBufferScrollButton* pScrollRight_;
-	DevKeyToCommandTranslator* pKeyTranslator_;
 };
 
 
