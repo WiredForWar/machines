@@ -16,6 +16,7 @@
 #include "gui/gui.hpp"
 
 //Forward refs
+class GuiButton;
 class MachInGameScreen;
 class MachLogHardwareLab;
 
@@ -55,6 +56,8 @@ private:
     MachHWResearchBankIcons( const MachHWResearchBankIcons& );
     MachHWResearchBankIcons& operator =( const MachHWResearchBankIcons& );
     bool operator ==( const MachHWResearchBankIcons& );
+
+    void onIconClicked(GuiButton* pIcon);
 
     //data members
     MachLogHardwareLab* pHardwareLab_; //The hw lab whose research queue is depicted

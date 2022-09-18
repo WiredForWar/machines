@@ -32,6 +32,14 @@ MachHWResearchBankIcons::MachHWResearchBankIcons(	GuiDisplayable* pParent,
     TEST_INVARIANT;
 }
 
+void MachHWResearchBankIcons::onIconClicked(GuiButton* pIcon)
+{
+    MachHWResearchBankIcon* pHWResBankIcon = static_cast<MachHWResearchBankIcon*>(pIcon);
+    pHardwareLab_->removeResearchItem(*pHWResBankIcon->researchItem());
+
+    updateIcons();
+}
+
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachHWResearchBankIcons::~MachHWResearchBankIcons()
@@ -77,7 +85,8 @@ void MachHWResearchBankIcons::updateIcons()
          it != queue.end(); ++it )
     {
         MachLogResearchItem* pResearchItem = (*it);
-        new MachHWResearchBankIcon(this, pInGameScreen_, pResearchItem, race);
+        MachHWResearchBankIcon* pIcon = new MachHWResearchBankIcon(this, pInGameScreen_, pResearchItem, race);
+        pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
     }
 
     //Ensure redisplayed
