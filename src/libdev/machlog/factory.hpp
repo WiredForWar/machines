@@ -81,7 +81,7 @@ public:
 
 	//manipulation functions
 	//destroy everything remaining on the production line
-	void cancelProductionUnit( MachLogProductionUnit* );
+    void cancelProductionUnit(const MachLogProductionUnit* pUnit);
 	enum MoveDirection { TOWARDS_FRONT, TOWARDS_BACK };
 	void moveProductionUnit( MachLogProductionUnit*, MoveDirection );
 	//use this method to remove the currently being produced machine.
