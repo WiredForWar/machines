@@ -68,7 +68,7 @@ void MachProductionIcons::updateIcons()
     for( ; it != queue.end(); ++it )
     {
         const MachLogProductionUnit& item = *(*it);
-        _NEW( MachProductionIcon( this, pInGameScreen_, &( _CONST_CAST( MachLogProductionUnit&, item ) ), index++ ) );
+        new MachProductionIcon(this, pInGameScreen_, &item, index++);
     }
 
     // Ensure redisplayed
@@ -100,7 +100,7 @@ void MachProductionIcons::cancelSelectedIcons() const
 		//MachLogProductionUnit& prodUnit = pProdIcon->productionUnit();		
 		if ( pProdIcon->isDepressed() )
 		{
-			pFactory_->cancelProductionUnit( &( pProdIcon->productionUnit() ) );
+            pFactory_->cancelProductionUnit(pProdIcon->productionUnit());
 		}
 	}		
 }

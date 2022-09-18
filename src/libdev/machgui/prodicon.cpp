@@ -111,19 +111,24 @@ Gui::Box MachGuiNewProductionIcon::exteriorRelativeBoundary( const GuiBitmap& bi
 
 MachProductionIcon::MachProductionIcon(	GuiDisplayable* pParent,
 										MachInGameScreen* pInGameScreen,
-										MachLogProductionUnit* pProductionUnit,
-										int index )
-:   MachGuiNewProductionIcon( 	pParent,
-								Gui::Coord(0,0), //Will be relocated by icon sequence parent
-					        	Gui::bitmap( SysPathName( MachActorBitmaps::name( pProductionUnit->type(), pProductionUnit->subType(), pProductionUnit->hwLevel(), pProductionUnit->weaponCombo(), MachLogRaces::instance().pcController().race() ) ) ),
-					        	index ),
-	pInGameScreen_( pInGameScreen ),
-	subType_( pProductionUnit->subType() ),
-	hwLevel_( pProductionUnit->hwLevel() ),
-	weaponCombo_( pProductionUnit->weaponCombo() ),
-	machineType_( pProductionUnit->type() ),
-	pProductionUnit_( pProductionUnit ),
-	needsPromptUpdate_( false )
+                                       const MachLogProductionUnit* pProductionUnit,
+                                       int index)
+    : MachGuiNewProductionIcon(
+        pParent,
+        Gui::Coord(0, 0), //Will be relocated by icon sequence parent
+        Gui::bitmap(SysPathName(MachActorBitmaps::name(pProductionUnit->type(),
+                                                       pProductionUnit->subType(),
+                                                       pProductionUnit->hwLevel(),
+                                                       pProductionUnit->weaponCombo(),
+                                                       MachLogRaces::instance().pcController().race()))),
+        index)
+    , pInGameScreen_(pInGameScreen)
+    , subType_(pProductionUnit->subType())
+    , hwLevel_(pProductionUnit->hwLevel())
+    , weaponCombo_(pProductionUnit->weaponCombo())
+    , machineType_(pProductionUnit->type())
+    , pProductionUnit_(pProductionUnit)
+    , needsPromptUpdate_(false)
 {
 
     TEST_INVARIANT;
@@ -259,9 +264,9 @@ void MachProductionIcon::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-MachLogProductionUnit& MachProductionIcon::productionUnit() const
+const MachLogProductionUnit* MachProductionIcon::productionUnit() const
 {
-	return *pProductionUnit_;
+    return pProductionUnit_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
