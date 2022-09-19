@@ -17,6 +17,7 @@
 #include "gui/gui.hpp"
 
 //Forward refs
+class GuiButton;
 class MachInGameScreen;
 class MachLogFactory;
 
@@ -34,10 +35,6 @@ public:
 
     //Set up the list of icons
     void updateIcons();
-	
-	//Remove from the bank any and all selected icons
-	//This also removes the associated production units from this class's associated factory's production line.
-	void cancelSelectedIcons() const;
 
 	static size_t height();
 	static size_t width();
@@ -56,6 +53,8 @@ private:
     MachProductionIcons( const MachProductionIcons& );
     MachProductionIcons& operator =( const MachProductionIcons& );
     bool operator ==( const MachProductionIcons& );
+
+    void onIconClicked(GuiButton* pIcon);
 
     //data members
     MachLogFactory* pFactory_; //The factory whose production queu is depicted

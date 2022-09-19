@@ -502,7 +502,7 @@ void MachLogFactory::cancelAllProduction()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogFactory::cancelProductionUnit( MachLogProductionUnit* pUnit )
+void MachLogFactory::cancelProductionUnit(const MachLogProductionUnit* pUnit)
 {
 	CB_MachLogFactory_DEPIMPL();
 	if( not productionLine_.empty() )

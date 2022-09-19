@@ -80,16 +80,20 @@ Gui::Box MachGuiNewResearchIcon::exteriorRelativeBoundary( const GuiBitmap& bitm
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachHWResearchBankIcon::MachHWResearchBankIcon(	GuiDisplayable* pParent,
-											    MachLogResearchItem* pResearchItem,
-												MachInGameScreen *pInGameScreen,
-												MachPhys::Race race )
-:   MachGuiNewResearchIcon( 	pParent,
-								Gui::Coord(0,0), //Will be relocated by icon sequence parent
-					        	Gui::bitmap( SysPathName( MachActorBitmaps::name( pResearchItem->objectType(), pResearchItem->subType(), pResearchItem->hwLevel(), pResearchItem->weaponCombo(), race ) ) ) ),
-	pInGameScreen_( pInGameScreen ),
-	pResearchItem_( pResearchItem ),
-	needsPromptUpdate_( false )
+MachHWResearchBankIcon::MachHWResearchBankIcon(GuiDisplayable* pParent,
+                                               MachInGameScreen* pInGameScreen,
+                                               const MachLogResearchItem* pResearchItem,
+                                               MachPhys::Race race)
+    : MachGuiNewResearchIcon(pParent,
+                             Gui::Coord(0, 0), //Will be relocated by icon sequence parent
+                             Gui::bitmap(SysPathName(MachActorBitmaps::name(pResearchItem->objectType(),
+                                                                            pResearchItem->subType(),
+                                                                            pResearchItem->hwLevel(),
+                                                                            pResearchItem->weaponCombo(),
+                                                                            race))))
+    , pInGameScreen_(pInGameScreen)
+    , pResearchItem_(pResearchItem)
+    , needsPromptUpdate_(false)
 {
 
     TEST_INVARIANT;
@@ -185,9 +189,9 @@ void MachHWResearchBankIcon::updateProgress( float complete )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-MachLogResearchItem& MachHWResearchBankIcon::researchItem() const
+const MachLogResearchItem* MachHWResearchBankIcon::researchItem() const
 {
-	return *pResearchItem_;
+    return pResearchItem_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

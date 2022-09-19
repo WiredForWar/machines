@@ -71,6 +71,12 @@ set(CMAKE_MODULE_PATH "${machines_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 # Build targets should be placed in the root build directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
+include(Utils)
+
+# Options for optional libs
+option_on_off_auto(BUILD_WITH_SWSCALE "Build with SWScale support" "Auto")
+option_on_off_auto(BUILD_WITH_ALURE "Build with Alure support" "Auto")
+
 # 32 bit build configuration
 option(BUILD_32 "Builds 32 bit executable" OFF)
 # Include cmake directory with some additions
@@ -132,13 +138,11 @@ find_package(GLEW REQUIRED)
 find_package(OpenAL REQUIRED)
 include(EnsureOpenALTarget)
 
-find_package(Alure)
+find_optional_dependency(Alure)
+find_optional_dependency(SWScale)
+
 find_package(ENet REQUIRED)
 find_package(Freetype REQUIRED)
-
-find_package(SWScale)
-set(USE_SWSCALE ${SWScale_FOUND})
-set(USE_ALURE ${Alure_FOUND})
 
 if(NOT DEV_BUILD)
     add_definitions(-DNDEBUG)

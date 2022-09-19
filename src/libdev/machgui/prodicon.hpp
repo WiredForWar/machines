@@ -66,7 +66,7 @@ class MachProductionIcon : public MachGuiNewProductionIcon
 public:
     MachProductionIcon( GuiDisplayable* pParent,
                         MachInGameScreen* pInGameScreen,
-						MachLogProductionUnit* pProductionUnit,
+                       const MachLogProductionUnit* pProductionUnit,
 						int index );
     virtual ~MachProductionIcon();
 
@@ -75,7 +75,7 @@ public:
 	static size_t buttonHeight();
 	static size_t buttonWidth();
 	
-	MachLogProductionUnit& productionUnit() const;	//returns reference to associated MachLogProductionUnit
+    const MachLogProductionUnit* productionUnit() const;
 
 	void updateProgress( float percentageComplete );
 	
@@ -104,7 +104,7 @@ private:
     MachPhys::WeaponCombo weaponCombo_;
     int subType_; 
     int hwLevel_; 
-	MachLogProductionUnit* pProductionUnit_;
+    const MachLogProductionUnit* pProductionUnit_;
 	bool needsPromptUpdate_;
 };
 

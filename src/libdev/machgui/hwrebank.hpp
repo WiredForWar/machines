@@ -53,11 +53,7 @@ public:
 	
 	// Called every time there is a buttonEvent. Returns true if the buttonEvent was
 	// processed (e.g. buttonEvent caused squad to be selected).
-	bool processButtonEvent( const DevButtonEvent& buttonEvent );	
-	
-	//Remove from the bank any and all selected icons
-	//This also removes the associated production units from this prodbank's associated factory's production line.
-	void cancelSelectedQueueIcons();
+	bool processButtonEvent( const DevButtonEvent& buttonEvent );
 
     ////////////////////////////////////////////////////////////////////////////////
     // Inherited from W4dObserver
@@ -88,15 +84,12 @@ private:
     MachHWResearchBank& operator =( const MachHWResearchBank& );
     bool operator ==( const MachHWResearchBank& );
 
-	enum Command { 	CANCEL_SELECTED_RESEARCH, CANCEL_ALL_RESEARCH };
-	
     //Data members
     MachLogHardwareLab* pHardwareLab_; //The lab being edited
     MachHWResearchBankIcons* pIcons_; //The icon sequence depicting the queue machine icons
     bool observingLab_;//True while the observer relation on the lab exists
 	MachGuiBufferScrollButton* pScrollLeft_;
 	MachGuiBufferScrollButton* pScrollRight_;
-	DevKeyToCommandTranslator* pKeyTranslator_;
 };
 
 

@@ -5,6 +5,7 @@
 #include "gui/gui.hpp"
 #include "gui/border.hpp"
 #include "gui/displaya.hpp"
+#include <functional>
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -12,6 +13,7 @@ class GuiButton
 : public GuiDisplayable
 {
 public:
+    using Callback = std::function<void(GuiButton*)>;
 
 	GuiButton( GuiDisplayable *pParent, const Gui::Box& rel );
 
@@ -30,6 +32,8 @@ public:
 	virtual void doDisplay();
 	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
 	virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
+
+    void setMouseClickHandler(Callback callback);
 
 protected:
 	
@@ -58,6 +62,8 @@ private:
 	GuiButton( const GuiButton& );
 	GuiButton& operator =( const GuiButton& );
 	bool operator ==( const GuiButton& ) const;
+
+    std::function<void(GuiButton*)> clickedCallback_;
 
 	bool	isDepressed_;
 	bool	isDisabled_;

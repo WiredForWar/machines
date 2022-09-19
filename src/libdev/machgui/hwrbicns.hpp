@@ -16,6 +16,7 @@
 #include "gui/gui.hpp"
 
 //Forward refs
+class GuiButton;
 class MachInGameScreen;
 class MachLogHardwareLab;
 
@@ -38,10 +39,6 @@ public:
 	static size_t reqWidth();
 
 	void updateProgress( float percentageComplete );
-	
-	//Remove from the bank any and all selected icons
-	//This also removes the associated production units from this class's associated factory's production line.
-	void cancelSelectedIcons() const;
 
     void CLASS_INVARIANT;
 
@@ -55,6 +52,8 @@ private:
     MachHWResearchBankIcons( const MachHWResearchBankIcons& );
     MachHWResearchBankIcons& operator =( const MachHWResearchBankIcons& );
     bool operator ==( const MachHWResearchBankIcons& );
+
+    void onIconClicked(GuiButton* pIcon);
 
     //data members
     MachLogHardwareLab* pHardwareLab_; //The hw lab whose research queue is depicted

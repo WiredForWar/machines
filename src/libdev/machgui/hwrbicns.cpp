@@ -32,6 +32,14 @@ MachHWResearchBankIcons::MachHWResearchBankIcons(	GuiDisplayable* pParent,
     TEST_INVARIANT;
 }
 
+void MachHWResearchBankIcons::onIconClicked(GuiButton* pIcon)
+{
+    MachHWResearchBankIcon* pHWResBankIcon = static_cast<MachHWResearchBankIcon*>(pIcon);
+    pHardwareLab_->removeResearchItem(*pHWResBankIcon->researchItem());
+
+    updateIcons();
+}
+
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachHWResearchBankIcons::~MachHWResearchBankIcons()
@@ -77,33 +85,12 @@ void MachHWResearchBankIcons::updateIcons()
          it != queue.end(); ++it )
     {
         MachLogResearchItem* pResearchItem = (*it);
-        _NEW( MachHWResearchBankIcon( this, pResearchItem, pInGameScreen_, race ) );
+        MachHWResearchBankIcon* pIcon = new MachHWResearchBankIcon(this, pInGameScreen_, pResearchItem, race);
+        pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
     }
 
     //Ensure redisplayed
     childrenUpdated();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void MachHWResearchBankIcons::cancelSelectedIcons() const
-{
-
-	for( Children::const_iterator i = children().begin(); i != children().end(); ++i )
-	{
- 		GuiDisplayable* pChild = (*i);
-		MachHWResearchBankIcon* pHWResBankIcon = _REINTERPRET_CAST ( MachHWResearchBankIcon* , pChild);
-		
-		// deemed acceptable here as we know that all our children are of type MachHWResearchBankIcon;
-		// alternative would be to keep wasteful personal container of MachHWResearchBankIcon pointers
-		// that would constantly shadow the children collection inherited from GuiDisplayable.
-
-		//MachLogProductionUnit& prodUnit = pHWResIcon->productionUnit();		
-		if ( pHWResBankIcon->isDepressed() )
-		{
-			pHardwareLab_->removeResearchItem(  pHWResBankIcon->researchItem() );
-		}
-	}		
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

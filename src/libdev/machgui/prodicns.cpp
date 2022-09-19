@@ -35,6 +35,14 @@ MachProductionIcons::MachProductionIcons(	GuiDisplayable * pParent,
     TEST_INVARIANT;
 }
 
+void MachProductionIcons::onIconClicked(GuiButton* pIcon)
+{
+    MachProductionIcon* pProdIcon = static_cast<MachProductionIcon*>(pIcon);
+    pFactory_->cancelProductionUnit(pProdIcon->productionUnit());
+
+    updateIcons();
+}
+
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachProductionIcons::~MachProductionIcons()
@@ -68,7 +76,8 @@ void MachProductionIcons::updateIcons()
     for( ; it != queue.end(); ++it )
     {
         const MachLogProductionUnit& item = *(*it);
-        _NEW( MachProductionIcon( this, pInGameScreen_, &( _CONST_CAST( MachLogProductionUnit&, item ) ), index++ ) );
+        MachProductionIcon* pIcon = new MachProductionIcon(this, pInGameScreen_, &item, index++);
+        pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
     }
 
     // Ensure redisplayed
@@ -81,28 +90,6 @@ void MachProductionIcons::doDisplay()
 {
 	pInGameScreen_->controlPanel().redrawAreaImmediate( *this );
 	GuiSimpleScrollableList::doDisplay();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void MachProductionIcons::cancelSelectedIcons() const
-{
-
-	for( Children::const_iterator i = children().begin(); i != children().end(); ++i )
-	{
-		GuiDisplayable* pChild = (*i);
-		MachProductionIcon* pProdIcon = _REINTERPRET_CAST ( MachProductionIcon* , pChild);
-		
-		// deemed acceptable here as we know that all our children are of type MachProductionIcon;
-		// alternative would be to keep wasteful personal container of MachProductionIcon pointers
-		// that would constantly shadow the children collection inherited from GuiDisplayable.
-
-		//MachLogProductionUnit& prodUnit = pProdIcon->productionUnit();		
-		if ( pProdIcon->isDepressed() )
-		{
-			pFactory_->cancelProductionUnit( &( pProdIcon->productionUnit() ) );
-		}
-	}		
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
