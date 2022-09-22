@@ -86,6 +86,8 @@
 #endif
 
 //  Please use the macros wherever possible
+#define WHERE_STR __FILE__ << "  " << std::dec << __LINE__
+#define WHERE Diag::instance().whereStream() << WHERE_STR << std::endl
 
 #define	BOB_STREAM( exp )               DEBUG_STREAM( DIAG_BOB, exp )
 #define	BOB_WHERE                       BOB_STREAM( WHERE_STR << std::endl )

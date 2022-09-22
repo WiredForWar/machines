@@ -30,9 +30,6 @@ typedef char*           c_string;
 
 // #defines //////////////////////////////////////////////////////////
 
-#define WHERE_STR   __FILE__ << "  " << std::dec << __LINE__
-#define WHERE       Diag::instance().whereStream() << WHERE_STR << std::endl
-
 #define INSPECT_ON( ostream, var )   ( ostream << #var " :\t" << (var) << std::endl )
 
 ///////////////////////////////////
