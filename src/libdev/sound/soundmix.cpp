@@ -6,11 +6,9 @@
 /*
 */
 
-#include "stdlib/string.hpp"
-//included for getenv only
-//#include <stdlib.h>
-
 #include "sound/soundmix.hpp"
+
+#include "base/diag.hpp"
 #include "sound/sndparam.hpp"
 #include "sound/internal/sample.hpp"
 #include "sound/internal/alsample.hpp"

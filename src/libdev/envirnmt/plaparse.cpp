@@ -12,6 +12,7 @@
 #include "envirnmt/internal/orbparam.hpp"
 #include "envirnmt/internal/satparam.hpp"
 
+#include "base/diag.hpp"
 #include "ctl/pvector.hpp"
 #include "system/pathname.hpp"
 #include <stdio.h>

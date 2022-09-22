@@ -20,6 +20,8 @@
 #include "base/internal/prepend.hpp"
 #include "base/internal/windstr.hpp"
 
+#include <fstream>
+
 class BaseWindowStream;
 
 class DiagStream

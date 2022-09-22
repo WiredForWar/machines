@@ -3,6 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
+#include "base/diag.hpp"
 #include "ctl/countptr.hpp"
 #include "render/internal/devicei.hpp"
 

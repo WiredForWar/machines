@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "phys/internal/cs2porta.hpp"
 #include "phys/internal/cs2dmgra.hpp"
 #include "ctl/erase.hpp"

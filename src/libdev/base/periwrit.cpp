@@ -6,6 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/internal/periwrit.hpp"
+#include "base/diag.hpp"
 #include "base/ostr.hpp"
 #include "base/persist.hpp"
 #include "base/internal/perolog.hpp"

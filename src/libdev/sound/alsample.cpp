@@ -10,6 +10,7 @@
 
 #include "sound/internal/alsample.hpp"
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "sound/internal/dxs.hpp"
 #include "sound/internal/waveform.hpp"

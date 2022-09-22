@@ -9,6 +9,7 @@
 #include <cstring>
 #include <ctime>
 
+#include "base/diag.hpp"
 #include "recorder/internal/recimpl.hpp"
 #include "system/pathname.hpp"
 

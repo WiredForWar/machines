@@ -1,6 +1,7 @@
 #include "planeted/sdlapp.hpp"
 
 #include "base/base.hpp"
+#include "base/diag.hpp"
 #include "base/istrrep.hpp"
 #include "base/error.hpp"
 #include "sound/snd.hpp"

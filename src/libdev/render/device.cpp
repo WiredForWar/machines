@@ -12,6 +12,7 @@
 #include <iomanip>
 
 #include <string>
+#include "base/diag.hpp"
 #include "ctl/vector.hpp"
 #include "system/pathname.hpp"
 

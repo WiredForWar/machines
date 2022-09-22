@@ -3,6 +3,7 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "world4d/internal/soundmai.hpp"
 #include "world4d/internal/snddata.hpp"

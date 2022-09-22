@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/internal/mgsndman.hpp"
+
+#include "base/diag.hpp"
 #include "sound/smphandl.hpp"
 //Inclusion in here to stop compilation error
 #include "stdlib/string.hpp"

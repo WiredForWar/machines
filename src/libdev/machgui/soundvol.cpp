@@ -6,6 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/soundvol.hpp"
+
+#include "base/diag.hpp"
+
 #include "sound/soundmix.hpp"
 
 MachGuiSoundVolumeSlideBar::MachGuiSoundVolumeSlideBar( MachGuiStartupScreens* pStartupScreens, GuiDisplayable* pParent, Gui::Coord topLeft, size_t width )

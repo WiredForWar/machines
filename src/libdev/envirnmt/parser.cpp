@@ -1,6 +1,7 @@
 
 //# line 7 "d:\libdev\envirnmt\source\parser.y"
 
+#include "base/diag.hpp"
 #include "envirnmt/elevclut.hpp"
 #include "envirnmt/orbit.hpp"
 #include "envirnmt/sky.hpp"

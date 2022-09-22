@@ -1,9 +1,12 @@
+
+#include "network/internal/netinet.hpp"
+
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "profiler/profiler.hpp"
 #include "ctl/algorith.hpp"
 #include "utility/linetok.hpp"
 
-#include "network/node.hpp"
 #include "network/nodeuid.hpp"
 #include "network/sessuid.hpp"
 #include "network/session.hpp"
@@ -13,7 +16,6 @@
 
 #include "network/internal/sessioni.hpp"
 #include "network/internal/mapping.hpp"
-#include "network/internal/netinet.hpp"
 #include "network/internal/recorder.hpp"
 #include "network/internal/compound.hpp"
 

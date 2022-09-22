@@ -8,6 +8,8 @@
 #include <string>
 
 #include "render/internal/surfmgri.hpp"
+
+#include "base/diag.hpp"
 #include "render/texture.hpp"
 #include "render/device.hpp"
 #include "render/internal/texbody.hpp"

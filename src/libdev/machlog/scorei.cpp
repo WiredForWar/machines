@@ -1,5 +1,7 @@
 #include "machlog/internal/scorei.hpp"
 
+#include "base/diag.hpp"
+
 PER_DEFINE_PERSISTENT( MachLogScoreImpl );
 
 MachLogScoreImpl::MachLogScoreImpl()

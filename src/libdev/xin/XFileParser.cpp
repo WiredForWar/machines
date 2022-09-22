@@ -47,10 +47,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "xin/XFileParser.hpp"
 #include "xin/XFileHelper.hpp"
 #include <cstring>
-#include <iostream>
 #include "xin/fastatof.hpp"
 #include "xin/formatter.hpp"
 #include "base/base.hpp"
+
+#include <iostream>
+#include <fstream>
 
 using namespace Formatter;
 

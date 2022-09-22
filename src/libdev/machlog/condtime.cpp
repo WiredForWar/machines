@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "sim/manager.hpp"
 #include "utility/linetok.hpp"

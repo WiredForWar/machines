@@ -6,6 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "gxin/gxfile.hpp"
+
+#include "base/diag.hpp"
+
 #include <cstring>
 
 //static

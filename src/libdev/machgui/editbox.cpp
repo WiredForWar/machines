@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/editbox.hpp"
+
+#include "base/diag.hpp"
 #include "machgui/startup.hpp"
 #include "gui/painter.hpp"
 #include "device/butevent.hpp"

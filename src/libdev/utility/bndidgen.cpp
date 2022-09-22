@@ -11,6 +11,8 @@
     #include "utility/bndidgen.ipp"
 #endif
 
+#include "base/diag.hpp"
+
 UtlBoundedIdGenerator::UtlBoundedIdGenerator( UtlId upperBound )
 :   upperBound_( upperBound ),
     lastAllocatedId_( 0 ),

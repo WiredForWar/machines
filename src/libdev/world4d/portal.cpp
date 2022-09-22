@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "ctl/list.hpp"
 #include "world4d/portal.hpp"
 #include "world4d/manager.hpp"

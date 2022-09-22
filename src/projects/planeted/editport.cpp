@@ -6,6 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/editport.hpp"
+
+#include "base/diag.hpp"
+
 #include "planeted/editdoma.hpp"
 #include "planeted/portal.hpp"
 #include "planeted/domain.hpp"

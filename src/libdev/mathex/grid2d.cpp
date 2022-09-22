@@ -7,6 +7,8 @@
 
 #include <cstdio>
 
+#include "base/diag.hpp"
+
 #include "mathex/grid2d.hpp"
 #include "mathex/line2d.hpp"
 

@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/scrltext.hpp"
+
+#include "base/diag.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/menutext.hpp"
 #include "machgui/text.hpp"

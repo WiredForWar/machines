@@ -23,6 +23,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
+#include "base/diag.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/vec3.hpp"

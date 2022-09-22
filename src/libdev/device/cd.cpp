@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "device/cd.hpp"
 #include "device/cd_helper.hpp"
 #include "device/cdlist.hpp"

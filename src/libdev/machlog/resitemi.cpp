@@ -7,6 +7,8 @@
 
 #include "machlog/internal/resitemi.hpp"
 
+#include "base/diag.hpp"
+
 PER_DEFINE_PERSISTENT( MachLogResearchItemImpl )
 
 MachLogResearchItemImpl::MachLogResearchItemImpl()

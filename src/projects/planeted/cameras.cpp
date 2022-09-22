@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/cameras.hpp"
+
+#include "base/diag.hpp"
 #include "device/butevent.hpp"
 #include "device/keytrans.hpp"
 #include "mathex/point2d.hpp"

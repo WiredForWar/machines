@@ -5,6 +5,7 @@
 
 #include "render/internal/ren_pch.hpp"	// NB: pre-compiled header must come 1st
 
+#include "base/diag.hpp"
 #include "render/mesh.hpp"
 #include "gxin/gxmesh.hpp"
 #include "utility/factory.hpp"

@@ -12,7 +12,7 @@
 #define _BASE_PRIVATE_TRACKER_HPP
 
 #include "base/base.hpp"
-#include "base/private/diagint.hpp"
+#include "base/diag.hpp"
 #include <cstring>
 
 #define PRIVATE_OBJECT_TRACKER( CLASS )                                         \

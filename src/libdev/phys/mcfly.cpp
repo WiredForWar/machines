@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <algorithm>
 
+#include "base/diag.hpp"
+
 #include "mathex/eulerang.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/vec3.hpp"

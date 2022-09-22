@@ -7,6 +7,7 @@
  *
  */
 
+#include "base/diag.hpp"
 #include "render/device.hpp"
 #include "world4d/scenemgr.hpp"
 #include "mathex/transf3d.hpp"

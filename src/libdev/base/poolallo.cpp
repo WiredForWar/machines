@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include "base/poolallo.hpp"
 
+#include "base/diag.hpp"
+
 BasePoolAllocator::BasePoolAllocator( ulong nInitialPoolBytes, ulong nExtensionBytes )
 : pFirstUnusedBlock_( NULL ),
   pFirstSystemBlock_( NULL ),

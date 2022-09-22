@@ -7,6 +7,7 @@
 #define _WORLD4D_WORLD4D_HPP
 
 #include "base/base.hpp"
+#include "base/diag.hpp"
 #include "mathex/mathex.hpp"
 #include "utility/id.hpp"
 

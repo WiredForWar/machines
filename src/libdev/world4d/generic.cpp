@@ -5,6 +5,7 @@
 
 #include "world4d/generic.hpp"
 
+#include "base/diag.hpp"
 #include "system/pathname.hpp"
 #include "render/meshinst.hpp"
 #include "mathex/double.hpp"

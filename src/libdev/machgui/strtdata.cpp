@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/strtdata.hpp"
+
+#include "base/diag.hpp"
 #include "system/registry.hpp"
 #include "machgui/dbscenar.hpp"
 #include "machgui/ctxready.hpp"

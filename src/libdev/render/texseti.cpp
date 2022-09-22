@@ -7,6 +7,7 @@
 
 #include "render/internal/texseti.hpp"
 #include <string>
+#include "base/diag.hpp"
 #include "base/istrrep.hpp"
 #include "system/pathname.hpp"
 #include "system/fileenum.hpp"

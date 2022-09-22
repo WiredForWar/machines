@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "base/diag.hpp"
 #include "ctl/countptr.hpp"
 #include "ctl/list.hpp"
 #include "ctl/algorith.hpp"

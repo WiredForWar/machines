@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 
+#include "base/diag.hpp"
+
 #include "mathex/point3d.hpp"
 #include "mathex/poly2d.hpp"
 #include "mathex/cvexpgon.hpp"

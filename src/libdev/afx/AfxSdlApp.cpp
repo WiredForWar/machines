@@ -1,4 +1,6 @@
 #include "afx/AfxSdlApp.hpp"
+
+#include "base/diag.hpp"
 #include "device/mouse.hpp"
 #include "device/keyboard.hpp"
 

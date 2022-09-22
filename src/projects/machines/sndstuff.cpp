@@ -1,4 +1,7 @@
 #include "machines/sdlapp.hpp"
+
+#include "base/diag.hpp"
+
 #include "machgui/ctxoptns.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndparam.hpp"

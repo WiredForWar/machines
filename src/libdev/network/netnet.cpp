@@ -1,6 +1,9 @@
+#include "network/netnet.hpp"
+
+#include "base/diag.hpp"
+
 #include "profiler/profiler.hpp"
 
-#include "network/netnet.hpp"
 #include "network/node.hpp"
 #include "network/nodeuid.hpp"
 #include "network/sessuid.hpp"

@@ -9,6 +9,7 @@
 
 #include "machphys/missile.hpp"
 
+#include "base/diag.hpp"
 #include "phys/rampacce.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/eulerang.hpp"

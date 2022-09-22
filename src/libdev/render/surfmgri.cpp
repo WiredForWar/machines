@@ -4,6 +4,8 @@
  */
 
 #include <string>
+
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "render/internal/surfmgri.hpp"
 #include "render/texture.hpp"

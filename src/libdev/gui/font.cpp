@@ -8,6 +8,7 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/internal/fontcore.hpp"
+#include "base/diag.hpp"
 #include "base/persist.hpp"
 
 PER_DEFINE_PERSISTENT( GuiBmpFontCoreCharData );

@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxmulti.hpp"
+
+#include "base/diag.hpp"
 #include "machgui/menubutn.hpp"
 #include "machgui/strtdata.hpp"
 #include "machgui/menutext.hpp"

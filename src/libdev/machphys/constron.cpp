@@ -6,6 +6,7 @@
 #include "machphys/constron.hpp"
 #include "machphys/internal/constroi.hpp"
 
+#include "base/diag.hpp"
 #include "mathex/vec2.hpp"
 #include "mathex/abox3d.hpp"
 #include "mathex/plane3d.hpp"

@@ -8,6 +8,7 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 EXISTS( W4dEntity );
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "world4d/root.hpp"
 #include "world4d/domain.hpp"

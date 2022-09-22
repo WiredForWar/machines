@@ -7,6 +7,7 @@
 
 //#include "utility/id.hpp"
 
+#include "base/diag.hpp"
 #include "mathex/point2d.hpp"
 
 #include "network/message.hpp"

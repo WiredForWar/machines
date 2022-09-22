@@ -7,6 +7,7 @@
 
 #include "render/internal/linediag.hpp"
 
+#include "base/diag.hpp"
 #include "render/render.hpp"
 #include "render/device.hpp"
 #include "render/colour.hpp"

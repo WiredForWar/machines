@@ -9,6 +9,7 @@
 #include "machphys/subid.hpp"
 #include "machphys/hwlab.hpp"
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "ctl/countptr.hpp"
 #include "ctl/pvector.hpp"

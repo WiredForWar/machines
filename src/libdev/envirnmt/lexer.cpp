@@ -75,6 +75,8 @@ static void unput(unsigned char);
  */
 
 #include "base/base.hpp"
+#include "base/diag.hpp"
+
 #include <stdlib.h>
 #include <cstring>                             /* strcpy(), getc(),  putc()  */
 #include "stdlib/string.hpp"

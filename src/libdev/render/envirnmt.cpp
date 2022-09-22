@@ -5,6 +5,7 @@
 
 #include "render/envirnmt.hpp"
 
+#include "base/diag.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
 

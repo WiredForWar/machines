@@ -14,6 +14,8 @@
 
 #include "base/base.hpp"
 
+#include <fstream>
+
 class BaseLogBuffer;
 
 //TODO: handle timer

@@ -6,7 +6,9 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+
 #include "base/cballoc.hpp"
+#include "base/diag.hpp"
 #include "base/poolallo.hpp"
 #include "system/memcaps.hpp"
 #include "profiler/profiler.hpp"

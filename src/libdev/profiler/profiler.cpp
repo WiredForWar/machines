@@ -9,6 +9,8 @@
 //  prolog hook routine) and -ee (call epilog hook routine)
 //  options *disabled*
 
+#include "base/diag.hpp"
+
 #include <csignal>
 #include <ctime>
 #include <cstring>

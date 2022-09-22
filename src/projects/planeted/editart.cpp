@@ -7,6 +7,8 @@
 
 #include "planeted/editart.hpp"
 #include "base/base.hpp"
+#include "base/diag.hpp"
+
 #include "stdlib/string.hpp"
 #include "device/keyboard.hpp"
 #include "device/eventq.hpp"

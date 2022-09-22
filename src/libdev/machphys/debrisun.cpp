@@ -7,6 +7,7 @@
 
 #include "machphys/debrisun.hpp"
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "render/texmgr.hpp"

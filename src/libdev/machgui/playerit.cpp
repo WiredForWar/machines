@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/playerit.hpp"
+
+#include "base/diag.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/strtdata.hpp"

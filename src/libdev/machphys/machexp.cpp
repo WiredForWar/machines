@@ -7,6 +7,7 @@
 
 #include "ctl/list.hpp"
 
+#include "base/diag.hpp"
 #include "mathex/vec3.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/abox3d.hpp"

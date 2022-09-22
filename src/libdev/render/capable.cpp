@@ -3,6 +3,7 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
+#include "base/diag.hpp"
 #include <string>
 #include "system/pathname.hpp"
 #include "utility/linetok.hpp"

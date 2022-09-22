@@ -5,6 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
+
 #include "render/render.hpp"
 #include "render/surface.hpp"
 #include "render/cursor2d.hpp"

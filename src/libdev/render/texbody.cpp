@@ -10,6 +10,7 @@
 #include <stdlib.h>					// for abs
 #include <iostream>
 #include <iomanip>
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 #include "render/device.hpp"
 #include "render/colour.hpp"

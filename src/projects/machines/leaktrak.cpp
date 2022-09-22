@@ -10,6 +10,8 @@
 #include "device/keyboard.hpp"
 #include "sim/manager.hpp"
 
+#include "base/diag.hpp"
+
 void LeakTracker::update( Action action, SampleRate rate )
 {
     static bool f12Down = false;

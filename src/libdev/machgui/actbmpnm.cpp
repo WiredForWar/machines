@@ -7,6 +7,8 @@
 
 #include "machgui/actbmpnm.hpp"
 
+#include "base/diag.hpp"
+
 #include "machphys/machphys.hpp"
 #include <algorithm>
 

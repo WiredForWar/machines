@@ -7,6 +7,7 @@
 #define _PREPOST_HPP
 
 #include "stdlib/exceptio.hpp"
+#include "private/diagint.hpp"
 
 //  Invariants are turned on by default in the debug version
 

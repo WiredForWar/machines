@@ -14,6 +14,7 @@
 #include "machphys/internal/wheelsi.hpp"
 #include "machphys/mcmovinf.hpp"
 
+#include "base/diag.hpp"
 #include "world4d/link.hpp"
 #include "world4d/entyplan.hpp"
 #include "world4d/manager.hpp"

@@ -9,6 +9,7 @@
 #include "ctl/bitvec.hpp"
 #include "ctl/set.hpp"
 
+#include "base/diag.hpp"
 #include "mathex/grid2d.hpp"
 #include "mathex/vec2.hpp"
 #include "mathex/line2d.hpp"

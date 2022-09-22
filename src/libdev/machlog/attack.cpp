@@ -4,6 +4,8 @@
  */
 
 #include <iostream>
+
+#include "base/diag.hpp"
 #include "ctl/pvector.hpp"
 
 #include "mathex/cvexpgon.hpp"

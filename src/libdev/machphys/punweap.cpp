@@ -8,6 +8,7 @@
 #include "machphys/punweap.hpp"
 #include "machphys/private/weapper.hpp"
 
+#include "base/diag.hpp"
 #include "stdlib/string.hpp"
 
 #include "machphys/machphys.hpp"

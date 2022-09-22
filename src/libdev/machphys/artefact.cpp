@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/artefact.hpp"
+
+#include "base/diag.hpp"
 #include "machphys/artfdata.hpp"
 #include "machphys/damage.hpp"
 #include "machphys/objexplo.hpp"

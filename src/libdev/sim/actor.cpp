@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
+#include "base/diag.hpp"
+
 #include "sim/actor.hpp"
 #include "sim/process.hpp"
 #include "sim/manager.hpp"

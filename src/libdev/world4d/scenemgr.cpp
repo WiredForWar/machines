@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <stdio.h>
 
+#include "base/diag.hpp"
 #include "ctl/list.hpp"
 
 #include "device/timer.hpp"

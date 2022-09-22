@@ -5,6 +5,8 @@
 
 #include "render/internal/ren_pch.hpp"	// NB: pre-compiled header must come 1st
 
+#include "base/diag.hpp"
+
 #include "system/pathname.hpp"
 #include "render/texture.hpp"
 #include "render/surfmgr.hpp"

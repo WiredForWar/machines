@@ -14,6 +14,7 @@
 #include "network/netdefs.hpp"
 #include "network/netnet.hpp"
 #include "network/comport.hpp"
+#include "network/node.hpp"
 //#include "network/pinghelp.hpp"
 
 class NetNode;

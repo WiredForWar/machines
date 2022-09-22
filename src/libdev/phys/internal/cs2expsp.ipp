@@ -5,6 +5,8 @@
 
 //  Definitions of inline non-template methods and inline global functions
 
+#include "base/diag.hpp"
+
 #include "profiler/stktrace.hpp"
 
 #ifdef _INLINE

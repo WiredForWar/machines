@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/surfchk.hpp"
+
+#include "base/diag.hpp"
 #include "machphys/plansurf.hpp"
 #include "machphys/terrtile.hpp"
 #include "machphys/tiledata.hpp"

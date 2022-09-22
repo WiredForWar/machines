@@ -8,6 +8,7 @@
 #include "render/surface.hpp"
 
 #include <string>
+#include "base/diag.hpp"
 #include "stdlib/memory.hpp"
 
 #include "ctl/vector.hpp"

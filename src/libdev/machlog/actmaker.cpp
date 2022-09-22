@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/point2d.hpp"
 #include "mathex/eulerang.hpp"

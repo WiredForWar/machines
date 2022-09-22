@@ -5,10 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "machgui/messbrok.hpp"
+
 #include <stdlib.h>
+#include "base/diag.hpp"
 #include "gui/restring.hpp"
 #include "network/message.hpp"
-#include "machgui/messbrok.hpp"
 #include "machgui/dispmess.hpp"
 #include "machgui/chatwind.hpp"
 #include "machgui/strtdata.hpp"

@@ -10,6 +10,8 @@
 
 #include "base/internal/appbuff.hpp"
 
+#include <fstream>
+
 BaseAppendBuffer::BaseAppendBuffer( const char* fileName )
 {
     PRE( fileName != NULL );

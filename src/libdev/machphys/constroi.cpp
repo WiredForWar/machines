@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/internal/constroi.hpp"
+
+#include "base/diag.hpp"
 #include "world4d/domain.hpp"
 #include "world4d/genecomp.hpp"
 #include "world4d/link.hpp"

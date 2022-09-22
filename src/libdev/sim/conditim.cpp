@@ -1,5 +1,8 @@
 
 #include "sim/conditim.hpp"
+
+#include "base/diag.hpp"
+
 #include "sim/action.hpp"
 #include "sim/conditio.hpp"
 #include "sim/manager.hpp"

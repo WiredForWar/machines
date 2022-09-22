@@ -5,6 +5,8 @@
 
 #include "world4d/composit.hpp"
 
+#include "base/diag.hpp"
+
 // Note: unfortunately there are #include order dependencies due to forward
 // declarations of templates.  These includes must come before compplan.hpp.
 #include "phys/linemoti.hpp"		// before compplan.hpp

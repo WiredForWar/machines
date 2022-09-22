@@ -6,6 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/scenfile.hpp"
+
+#include "base/diag.hpp"
+
 #include "utility/linetok.hpp"
 #include "planeted/race.hpp"
 #include "mathex/eulerang.hpp"

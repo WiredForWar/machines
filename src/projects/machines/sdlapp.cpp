@@ -2,6 +2,7 @@
 
 #include "machines/sdlapp.hpp"
 #include "afx/castfns.hpp"
+#include "base/diag.hpp"
 #include "system/pathname.hpp"
 #include "system/winapi.hpp"
 #include "system/registry.hpp"

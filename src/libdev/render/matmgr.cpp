@@ -7,6 +7,7 @@
 
 #include <iomanip>
 #include <algorithm>
+#include "base/diag.hpp"
 #include "ctl/vector.hpp"
 #include "render/material.hpp"
 #include "render/internal/matbody.hpp"

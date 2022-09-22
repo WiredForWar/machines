@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/radians.hpp"
 #include "phys/rampacce.hpp"

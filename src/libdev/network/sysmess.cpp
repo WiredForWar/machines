@@ -5,9 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "network/sysmess.hpp"
+
+#include "base/diag.hpp"
+
 #include "network/session.hpp"
 #include "network/sessuid.hpp"
-#include "network/sysmess.hpp"
 #include "network/netnet.hpp"
 #include "network/node.hpp"
 #include "network/netdefs.hpp"

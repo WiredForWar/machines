@@ -7,6 +7,8 @@
 
 #include <stdlib.h>
 
+#include "base/diag.hpp"
+
 #include "ctl/nbvector.hpp"
 #include "device/time.hpp"
 #include "mathex/poly2d.hpp"

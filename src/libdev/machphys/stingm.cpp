@@ -7,6 +7,8 @@
 #include "mathex/point2d.hpp"
 
 #include "machphys/stingm.hpp"
+
+#include "base/diag.hpp"
 #include "machphys/private/otherper.hpp"
 #include "stdlib/string.hpp"
 #include "ctl/vector.hpp"

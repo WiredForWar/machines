@@ -1,4 +1,5 @@
 #include <cstdio>
+#include "base/diag.hpp"
 #include "machines/sdlapp.hpp"
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"

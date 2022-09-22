@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "base/internal/periread.hpp"
 #include "base/poolallo.hpp"
 #include "base/cballoc.hpp"

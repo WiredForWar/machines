@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-#include "render/internal/ren_pch.hpp"	// NB: pre-compiled header must come 1st
+#include "base/diag.hpp"
 #include "render/internal/lightbuf.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"

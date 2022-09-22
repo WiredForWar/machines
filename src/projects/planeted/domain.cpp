@@ -8,6 +8,8 @@
 #include "planeted/domain.hpp"
 #include "planeted/portal.hpp"
 
+#include "base/diag.hpp"
+
 #include "mathex/mathex.hpp"
 #include "mathex/line2d.hpp"
 

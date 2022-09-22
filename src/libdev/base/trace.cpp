@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 #include "base/base.hpp"
+#include "base/diag.hpp"
 
 #include "base/private/trace.hpp"
 

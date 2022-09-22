@@ -6,6 +6,8 @@
 #include "render/internal/ren_pch.hpp"	// NB: pre-compiled header must come 1st
 
 #include "render/ttfpoly.hpp"
+
+#include "base/diag.hpp"
 #include "render/colour.hpp"
 #include "render/material.hpp"
 #include "render/texture.hpp"

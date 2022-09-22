@@ -5,6 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
+
 #include "mathex/cvexpgon.hpp"
 #include "mathex/epsilon.hpp"
 #include "mathex/sausag2d.hpp"

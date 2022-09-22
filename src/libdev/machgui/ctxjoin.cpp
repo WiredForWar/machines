@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
 #include "world4d/manager.hpp"
 #include "device/time.hpp"
 #include "machgui/ctxjoin.hpp"

@@ -5,6 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/diag.hpp"
+
 #include "machlog/constron.hpp"
 #include "machlog/entrance.hpp"
 #include "machlog/presspad.hpp"
