@@ -31,11 +31,11 @@ public:
 
     static int upperLimit();
 
-    void    seed( ulong newSeed );
+    void    seed( uint32_t newSeed );
     void    seedFromTime();
 
     //  Return the seed used for this RNG
-    ulong   seed() const;
+    uint32_t   seed() const;
 
     //  Construct a random number generator seeded by the
     //  time and return it
@@ -51,8 +51,8 @@ private:
     //  to seedFromTime will use a different seed.
     static  size_t  seedIncrement();
 
-    ulong state_;
-    ulong seed_;
+    uint32_t state_;
+    uint32_t seed_;
 };
 
 //  Acccessor functions for getting the results of a

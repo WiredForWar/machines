@@ -16,7 +16,7 @@
 /////////////////////////////////////////////
 //These constants define the parameters of the allocation system
 
-typedef ulong Unit;
+typedef uint32_t Unit;
 
 //The size of chunks allocated from the operating system in bytes
 #define SYSTEM_BLOCK_SIZE 1048576
@@ -423,13 +423,13 @@ void cbTouchAll()
     //Iterate thru the system blocks
     for( SystemBlock* pSystemBlock = pFirstSystemBlock; pSystemBlock != NULL; pSystemBlock = pSystemBlock->pNext_ )
     {
-        ulong i = 537;
+        uint32_t i = 537;
 
         //Visit words at 2k intervals of the system block
-        ulong* pWord = (ulong*)pSystemBlock;
-        for( ulong offset = 0; offset < SYSTEM_BLOCK_UNIT_SIZE; offset += 500 )
+        uint32_t* pWord = (uint32_t*)pSystemBlock;
+        for( uint32_t offset = 0; offset < SYSTEM_BLOCK_UNIT_SIZE; offset += 500 )
         {
-            ulong j = *(pWord+offset);
+            uint32_t j = *(pWord+offset);
             i = (i + j) % 533;
         }
     }

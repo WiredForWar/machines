@@ -167,16 +167,16 @@ public:
         // This number uniquely identifies the last camera that drew this entity.
         // It is used internally to avoid rendering the same entity twice.  It is
         // also needed externally for domain culling.
-        ulong latestRenderPassId() const;
+        uint32_t latestRenderPassId() const;
 
     //Generates a new globally unique checkid
-    static ulong nextCheckId();
+    static uint32_t nextCheckId();
 
     //This entity's stored check id
-    ulong checkId() const;
+    uint32_t checkId() const;
 
     //Updates the stored checkid
-    void checkId( ulong id );
+    void checkId( uint32_t id );
 
     //  Add the materials used by this entity (all LODs) to the given set
     virtual void    addMaterials( RenMaterialSet* pSet ) const;
@@ -529,8 +529,8 @@ private:
                                   W4dLOD* pLodId, const W4dComplexity& complexity ) const;
 
     //Get/set the render pass id;
-    void passId( ulong id );
-    ulong passId() const;
+    void passId( uint32_t id );
+    uint32_t passId() const;
 
     //Mark the global transform of this entity and all its descendants out of date.
     //Also works for composites and their links.

@@ -60,15 +60,15 @@ public:
     void recordButtonEvent( const DevButtonEvent& );
     void recordEventQueueLength( size_t );
 
-    void recordRandomSeed( ulong );
+    void recordRandomSeed( uint32_t );
 
     void recordSoundIsActive( bool );
     void recordSoundIsAudible( bool );
     void recordSoundIs3dSound( bool );
     void recordSoundSamplePosition( const MexPoint3d& );
     void recordSoundSampleVolume( Snd::Volume );
-    void recordSoundNoOfFreeLogicalChannels( ulong );
-    void recordSoundNoOfUsedLogicalChannels( ulong );
+    void recordSoundNoOfFreeLogicalChannels( uint32_t );
+    void recordSoundNoOfUsedLogicalChannels( uint32_t );
 
     void recordAniSmackerFinished( bool );
 
@@ -104,15 +104,15 @@ public:
     DevButtonEvent playbackButtonEvent() const;
     size_t playbackEventQueueLength() const;
 
-    ulong playbackRandomSeed() const;
+    uint32_t playbackRandomSeed() const;
 
     bool playbackSoundIsActive() const;
     bool playbackSoundIsAudible() const;
     bool playbackSoundIs3dSound() const;
     MexPoint3d playbackSoundSamplePosition() const;
     Snd::Volume playbackSoundSampleVolume() const;
-    ulong playbackSoundNoOfFreeLogicalChannels() const;
-    ulong playbackSoundNoOfUsedLogicalChannels() const;
+    uint32_t playbackSoundNoOfFreeLogicalChannels() const;
+    uint32_t playbackSoundNoOfUsedLogicalChannels() const;
 
     bool playbackAniSmackerFinished() const;
 

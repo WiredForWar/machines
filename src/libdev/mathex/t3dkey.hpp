@@ -51,8 +51,8 @@ public:
     MexTransform3dKey( PerIstream& stream ); //ctor
 */
 private:
-    static ulong lastKey_; //Incremented on each use to keep unique
-    ulong key_; //The unique key id, derived from lastKey_
+    static uint32_t lastKey_; //Incremented on each use to keep unique
+    uint32_t key_; //The unique key id, derived from lastKey_
 };
 
 //PER_DECLARE_PERSISTENT( MexTransform3dKey );

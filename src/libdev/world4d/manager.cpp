@@ -64,7 +64,7 @@ size_t W4dManager::frameNumber() const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-ulong W4dManager::generateRenderPassId()
+uint32_t W4dManager::generateRenderPassId()
 {
 	return ++currentPassId_;
 }

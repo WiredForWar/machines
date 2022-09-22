@@ -25,7 +25,7 @@
     CB_DEPIMPL( ctl_list<RenDisplay::Mode>, modeList_ );	\
 	CB_DEPIMPL( RenDisplay::Mode, currentMode_ );	\
 	CB_DEPIMPL( bool, fullscreen_ );	\
-	CB_DEPIMPL( ulong, frameNo_ ); \
+	CB_DEPIMPL( uint32_t, frameNo_ ); \
 	CB_DEPIMPL( bool, supportsGammaCorrection_ ); \
 	CB_DEPIMPL( double, gammaCorrection_ );	\
 	CB_DEPIMPL( RenDisplay::Mode, lowestAllowedMode_ );	\
@@ -410,12 +410,12 @@ bool RenDisplay::setHighestAllowedMode( )
 	return true;
 }
 
-bool RenDisplay::setHighestAllowedMode( ulong maxMemory )
+bool RenDisplay::setHighestAllowedMode( uint32_t maxMemory )
 {
 	CB_RenDisplay_DEPIMPL();
 
 	bool found = false;
-	ulong memoryRequiredByMode;
+	uint32_t memoryRequiredByMode;
 
 	ctl_list<Mode>::const_iterator lowestIt = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
 	ctl_list<Mode>::const_iterator it = modeList_.end();
@@ -577,7 +577,7 @@ const RenCursor2d* RenDisplay::currentCursor() const
 	return pImpl_->currentCursor();
 }
 
-ulong RenDisplay::frameNumber() const
+uint32_t RenDisplay::frameNumber() const
 {
 	CB_RenDisplay_DEPIMPL();
 	return frameNo_;

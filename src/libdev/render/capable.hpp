@@ -42,13 +42,13 @@ public:
 
 	// Memory required by the 4 Mbytes texture set if it is supported,
 	// by the 2 Mbytes texture set if not
-	ulong memoryRequiredByTextureSet() const;
+	uint32_t memoryRequiredByTextureSet() const;
 	// yes if we have more texture memory than required by the 4Mbytes texture set
 	bool supports4MBytesTextureSet() const;
 	// maximum texture memory available (account for system memory)
-	ulong maxAvailableTextureMemory() const;
+	uint32_t maxAvailableTextureMemory() const;
 	// total display memory available once the texture set has been loaded
-	ulong maxAvailableDisplayMemoryAfterTextures() const;
+	uint32_t maxAvailableDisplayMemoryAfterTextures() const;
 
 	// The internal capabilities (which provide a super-set of the above capabilities).
 	const RenICapabilities* internal() const;

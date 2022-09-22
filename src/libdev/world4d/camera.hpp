@@ -53,8 +53,8 @@ public:
 
 	W4dSceneManager* manager() const;
 
-	const ulong& renderPassId() const { return passId_; };
-	const ulong& lastRenderPassId() const { return lastPassId_; };
+	const uint32_t& renderPassId() const { return passId_; };
+	const uint32_t& lastRenderPassId() const { return lastPassId_; };
 	const MexTransform3dKey& lastRenderTransformKey() const;
 
 	// Rendering statistics.
@@ -109,8 +109,8 @@ private:
 	void domainRender(const int maxDepth);
 
 	W4dSceneManager*	manager_;
-	ulong				passId_;
-	ulong				lastPassId_;
+	uint32_t				passId_;
+	uint32_t				lastPassId_;
 	MexTransform3dKey	lastRenderTransformKey_;
 	uint				entitiesRendered_, domainsRendered_;
 

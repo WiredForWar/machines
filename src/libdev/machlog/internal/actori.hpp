@@ -47,7 +47,7 @@ private:
 	MachLogRace*					pOriginalRace_;
 	PhysAbsoluteTime				changeRaceStartTime_;
 	int								localStrength_; 	
-	ulong							lastBeHitFrame_;
+	uint32_t						lastBeHitFrame_;
 	PhysAbsoluteTime				nextSOSOpportunity_;
 	PhysAbsoluteTime				nextSpecialUpdateOpportunity_;
 	PhysAbsoluteTime				nextFirstPersonSOSOpportunity_;	

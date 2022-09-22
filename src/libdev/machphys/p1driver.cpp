@@ -300,7 +300,7 @@ void MachPhys1stPersonDriver::aimData()
     auto lineOfSight = MexLine3d{ cameraTransform.position(), farPoint, lineLength };
 
     //Find what this NEAR line intersects.
-    ulong checkId = W4dEntity::nextCheckId();
+    uint32_t checkId = W4dEntity::nextCheckId();
     pEntity_->checkId( checkId );
 
     pHitEntity_ = nullptr;
@@ -322,7 +322,7 @@ void MachPhys1stPersonDriver::aimData()
         lineOfSight = MexLine3d{ cameraTransform.position(), farPoint, farCommandDistance };
 
         //Find what this FAR line intersects.
-        ulong checkId = W4dEntity::nextCheckId();
+        uint32_t checkId = W4dEntity::nextCheckId();
         pEntity_->checkId( checkId );
 
         farCmdHitDistance_ = farCommandDistance;

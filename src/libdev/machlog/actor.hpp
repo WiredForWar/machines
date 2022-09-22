@@ -225,7 +225,7 @@ public:
 	const PhysAbsoluteTime& changeRaceStartTime() const;
 	//this is only ever called if you wish to override the permanancy of the change race - certain actions can do this.
 	void changeRaceStartTime( const PhysAbsoluteTime& );
-	ulong lastBeHitFrame() const;
+	uint32_t lastBeHitFrame() const;
 
 	void setHPAndArmour( MachPhys::HitPointUnits, MachPhys::ArmourUnits );
 
@@ -307,7 +307,7 @@ protected:
 
 	void actorCreated();
 
-	void lastBeHitFrame( ulong newVal );
+	void lastBeHitFrame( uint32_t newVal );
 
 	Actors&							actorsThreateningMe();
 

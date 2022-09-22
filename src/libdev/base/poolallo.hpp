@@ -23,7 +23,7 @@ public:
     //nInitialPoolBytes is the size of the block of memory to be allocated initially for the pool.
     //nExtensionBytes is the size of memory block to be allocated when additional memory is required
     //for the pool.
-    BasePoolAllocator( ulong nInitialPoolBytes, ulong nExtensionBytes );
+    BasePoolAllocator(uint32_t nInitialPoolBytes, uint32_t nExtensionBytes);
 
     ~BasePoolAllocator();
     //PRE( allBlocksFreed() );
@@ -48,7 +48,7 @@ private:
     enum { UNIT_SIZE_P2 = 2, UNIT_SIZE = 4, UNIT_THRESHOLD = 4097 };
 
     //Block that has been allocated. It always remains the same size.
-    typedef ulong Unit;
+    typedef uint32_t Unit;
     struct PoolBlock
     {
         size_t unitSize_; //Size of the block's usable space in units
@@ -74,10 +74,10 @@ private:
     //Data members
     UnusedBlock* pFirstUnusedBlock_;
     SystemBlock* pFirstSystemBlock_;
-    ulong nInitialPoolBytes_;
-    ulong nExtensionBytes_;
-    ulong nUnitsAllocated_;
-    ulong nBlocksAllocated_;
+    uint32_t nInitialPoolBytes_;
+    uint32_t nExtensionBytes_;
+    uint32_t nUnitsAllocated_;
+    uint32_t nBlocksAllocated_;
     PoolBlock* aPoolHeader_[ UNIT_THRESHOLD ];
 };
 

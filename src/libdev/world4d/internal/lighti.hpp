@@ -59,8 +59,8 @@ private:
     RenLight*			pLight_;
 	bool				enabled_, on_;		// on is a client value; enabled is internal
 	bool				dynamicDisable_;	// used for dynamic light volume culling
-	ulong				spherePassId_;		// compared against RenCamera::passId_
-	ulong				renPassId_;			// compared against RenCamera::passId_
+	uint32_t				spherePassId_;		// compared against RenCamera::passId_
+	uint32_t				renPassId_;			// compared against RenCamera::passId_
 	RenColour*			pUnintensifiedColour_;
 	PhysScalarPlanPtr	intensityPlanPtr_;
 	PhysAbsoluteTime	startTime_;

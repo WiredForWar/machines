@@ -38,9 +38,9 @@ public:
 	bool supportsSharedVideoMemory() const;
 	bool supportsTextureSysMemory() const;
 
-	ulong totalVideoMemory() const;
-	ulong totalTextureMemory() const;
-	ulong memoryRequiredBy4MBytesTextureSet() const;
+	uint32_t totalVideoMemory() const;
+	uint32_t totalTextureMemory() const;
+	uint32_t memoryRequiredBy4MBytesTextureSet() const;
 	void setTotalTextureAndVideoMemory(const RenDevice* dev);
 
 	bool supportsGammaCorrection() const;
@@ -71,11 +71,11 @@ private:
 	// maxAvailableTextureMemory_ accounts for the minDisplayMemory_ in case the video
 	// memory is shared
 	bool maxAvailableTextureMemoryDirty_;
-	ulong maxAvailableTextureMemory_;
+	uint32_t maxAvailableTextureMemory_;
 	// maxAvailableDisplayMemoryAfterTextures_ accounts for the memory which is to be used by
 	// the texture set in case the video memory is shared
 	bool maxAvailableDisplayMemoryAfterTexturesDirty_;
-	ulong maxAvailableDisplayMemoryAfterTextures_;
+	uint32_t maxAvailableDisplayMemoryAfterTextures_;
 
 	bool hardware_, supportsMMX_, supportsBilinear_, supportsEdgeAntiAliasing_;
 	bool supportsFlatAlpha_, supportsStippledAlpha_, supportsTextureAlpha_;
@@ -83,8 +83,8 @@ private:
 	bool supportsZBias_, supports8BitsTexture_;
 	bool supportsSharedVideoMemory_, supportsTextureSysMemory_;
 	bool supportsGammaCorrection_;
-	ulong totalVideoMemory_, totalTextureMemory_;
-	ulong minDisplayMemory_;
+	uint32_t totalVideoMemory_, totalTextureMemory_;
+	uint32_t minDisplayMemory_;
 };
 
 #ifdef _INLINE

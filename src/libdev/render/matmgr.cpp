@@ -263,7 +263,7 @@ ostream& operator <<( ostream& o, const RenIMatManager& t )
 	o << "Material manager contains " << t.bodies_->size() << " materials:" << std::endl;
 
 	double totalHandles = 0;
-	ulong  totalBodies  = 0;
+	uint32_t  totalBodies  = 0;
 	RenIMatManager::Bodies::const_iterator it = t.bodies_->begin();
 	while (it != t.bodies_->end())
 	{

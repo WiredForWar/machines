@@ -48,13 +48,13 @@ bool W4dManager::hasSceneManager( void ) const
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-ulong W4dManager::generateGeneralPositionId()
+uint32_t W4dManager::generateGeneralPositionId()
 {
         return ++generalPositionId_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-ulong W4dManager::generalPositionId() const
+uint32_t W4dManager::generalPositionId() const
 {
         return generalPositionId_;
 }

@@ -41,7 +41,7 @@ private:
 	bool						currentlyAttached_;
 	MachPhys::WeaponCombo		weaponCombo_;
 	MachLogCanAttack::Weapons	weapons_;
-	ulong						lastFireFrame_;
+	uint32_t					lastFireFrame_;
 	MATHEX_SCALAR				minimumInaccuracy_;		// ranges from 0 to 100.0
 	MATHEX_SCALAR				currentInaccuracy_;		// as above, but has lower bound of above. Can vary above this due to damage etc.
 	PhysAbsoluteTime			lastFireTime_;			// used as a reference to improve aim in successive shots

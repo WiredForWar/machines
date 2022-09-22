@@ -14,7 +14,7 @@
 #endif
 
 //class variables
-ulong MexTransform3dKey::lastKey_ = 0;
+uint32_t MexTransform3dKey::lastKey_ = 0;
 
 //---------------------------------------------------------------------
 void MexTransform3dKey::CLASS_INVARIANT

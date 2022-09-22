@@ -146,7 +146,7 @@ public:
 	// non-static version of the above; calls into the above with pMe_ automatically used as the first argument
 	bool IHaveClearWeaponPathToHim( MachActor* pTargetActor ) const;
 
-	ulong lastFireFrame() const;
+	uint32_t lastFireFrame() const;
 	
 	bool canDetect( const MachActor& other );
 

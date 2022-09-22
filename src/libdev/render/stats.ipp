@@ -10,37 +10,37 @@
 #endif
 
 _CODE_INLINE
-void RenStats::incrPolyCount(ulong number)
+void RenStats::incrPolyCount(uint32_t number)
 {
 	polygonsDrawn_ += number;
 }
 
 _CODE_INLINE
-void RenStats::incrLineCount(ulong number)
+void RenStats::incrLineCount(uint32_t number)
 {
 	linesDrawn_ += number;
 }
 
 _CODE_INLINE
-void RenStats::incrTTFCount(ulong number)
+void RenStats::incrTTFCount(uint32_t number)
 {
 	TTFsDrawn_ += number;
 }
 
 _CODE_INLINE
-void RenStats::incrSTFCount(ulong number)
+void RenStats::incrSTFCount(uint32_t number)
 {
 	STFsDrawn_ += number;
 }
 
 _CODE_INLINE
-void RenStats::incrPointsCount(ulong number)
+void RenStats::incrPointsCount(uint32_t number)
 {
 	pointsDrawn_ += number;
 }
 
 _CODE_INLINE
-ulong RenStats::frameCount() const
+uint32_t RenStats::frameCount() const
 {
 	return frameCount_;
 }	

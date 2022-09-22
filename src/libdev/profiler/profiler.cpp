@@ -323,11 +323,11 @@ bool ProProfiler::isMemoryProfilingEnabled() const
 }
 
     void traceStack( ostream& outStream, bool doTraceAnchor, size_t nStackFrames, const size_t* pCallStack,
-                     ulong lineNumber, const char* extraString );
+                     uint32_t lineNumber, const char* extraString );
 void ProProfiler::traceStack
 (
     ostream& mystr, bool doTraceAnchor, size_t nStackFrames, const size_t* pCallStack,
-    ulong lineNumber, const char* extraString
+    uint32_t lineNumber, const char* extraString
 )
 {
     //This is necessary because of compiler rubbish
@@ -447,7 +447,7 @@ size_t ProProfiler::nCallStackEntries() const
     return count;
 }
 
-void ProProfiler::traceStack( ostream& outStream, bool doTraceAnchor, ulong lineNumber, const char* extraString )
+void ProProfiler::traceStack( ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString )
 {
     traceStack( outStream, doTraceAnchor, count, &call_stack, lineNumber, extraString );
 }

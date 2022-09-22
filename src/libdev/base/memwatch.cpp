@@ -56,7 +56,7 @@ BasePoolAllocator& BaseMemWatcher::allocator()
     return theAllocator;
 }
 
-void BaseMemWatcher::addBlock( void* pBlock, size_t nBytes, ulong lineNumber, const char* aNewText )
+void BaseMemWatcher::addBlock( void* pBlock, size_t nBytes, uint32_t lineNumber, const char* aNewText )
 {
     //Get the call stack
     static const size_t* stackAddress = ProProfiler::instance().pCallStack();
@@ -213,7 +213,7 @@ void BaseMemWatcher::clear()
 }
 
 //static
-size_t BaseMemWatcher::hashValue( size_t nStackFrames, const size_t* aCallStack, size_t nBytes, ulong lineNumber )
+size_t BaseMemWatcher::hashValue( size_t nStackFrames, const size_t* aCallStack, size_t nBytes, uint32_t lineNumber )
 {
     size_t result = 0;
 

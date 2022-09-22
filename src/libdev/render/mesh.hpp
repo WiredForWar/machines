@@ -182,12 +182,12 @@ public:
 	static void removeAllFromFactory();
 
 	// PRE(Ren::initialised());
-	static ulong totalMeshCount();
+	static uint32_t totalMeshCount();
 
 	// This is the maximum number of vertices stored in any mesh.  Used in
 	// the lighting calculations.
 	// PRE(Ren::initialised());
-	static ulong maxVertices();
+	static uint32_t maxVertices();
 
 	static void startFrame();
 	static ushort meshId();
@@ -223,7 +223,7 @@ private:
 	ctl_min_memory_vector<RenILineGroup*>		lines_;
 
 	// For debugging, this is the total number of mesh objects in existance.
-	static ulong		meshCount_, maxVertices_;
+	static uint32_t		meshCount_, maxVertices_;
 
 	//typedef ctl_vector< RenTexture > Textures;
 	Textures*			pVertexTexture_;

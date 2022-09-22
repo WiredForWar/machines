@@ -340,7 +340,7 @@ void W4dDomain::flushDeletedSubjectFromNewSubjects( W4dSubject* pSubject )
 bool W4dDomain::findNearerEntity
 (
     const MexLine3d& line, MATHEX_SCALAR limit,
-    ulong checkId, W4dEntity::Accuracy accuracy,
+    uint32_t checkId, W4dEntity::Accuracy accuracy,
     W4dEntity** ppEntity, MATHEX_SCALAR* pDistance,
     int filter
 )
@@ -353,7 +353,7 @@ bool W4dDomain::findNearerEntity
 bool W4dDomain::findNearerEntity
 (
     const MexLine3d& line, MATHEX_SCALAR limit,
-    ulong checkId, W4dEntity::Accuracy accuracy,
+    uint32_t checkId, W4dEntity::Accuracy accuracy,
     W4dEntity** ppEntity, MATHEX_SCALAR* pDistance,
     W4dEntityFilter* pEntityFilter
 )
@@ -426,7 +426,7 @@ bool W4dDomain::recursiveFindNearerEntity
 (
     W4dEntity* pEntity,
     const MexLine3d& line, MATHEX_SCALAR limit,
-    ulong checkId, W4dEntity::Accuracy accuracy,
+    uint32_t checkId, W4dEntity::Accuracy accuracy,
     W4dEntity** ppEntity, MATHEX_SCALAR* pDistance,
     W4dEntityFilter* pEntityFilter
 )

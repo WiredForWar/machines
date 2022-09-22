@@ -101,9 +101,9 @@ ostream& RenICapabilities::write(ostream& o)
     return o;
 }
 
-ulong RenICapabilities::memoryRequiredBy4MBytesTextureSet() const
+uint32_t RenICapabilities::memoryRequiredBy4MBytesTextureSet() const
 {
-	ulong result;
+	uint32_t result;
 	if( supports8BitsTexture_ )
 		result = 0x400000;
 	else

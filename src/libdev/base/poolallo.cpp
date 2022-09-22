@@ -10,7 +10,7 @@
 
 #include "base/diag.hpp"
 
-BasePoolAllocator::BasePoolAllocator( ulong nInitialPoolBytes, ulong nExtensionBytes )
+BasePoolAllocator::BasePoolAllocator( uint32_t nInitialPoolBytes, uint32_t nExtensionBytes )
 : pFirstUnusedBlock_( NULL ),
   pFirstSystemBlock_( NULL ),
   nInitialPoolBytes_( nInitialPoolBytes ),
@@ -88,7 +88,7 @@ void* BasePoolAllocator::alloc( size_t nBytes )
                 if( not found )
                 {
                     //Allocate a new system block
-                    ulong nSystemBytes = (pFirstSystemBlock_ == NULL ? nInitialPoolBytes_ : nExtensionBytes_);
+                    uint32_t nSystemBytes = (pFirstSystemBlock_ == NULL ? nInitialPoolBytes_ : nExtensionBytes_);
                     SystemBlock* pNewSystemBlock = (SystemBlock*)malloc( nSystemBytes );
                     size_t systemBlockUnitSize = nSystemBytes / sizeof( Unit );
 

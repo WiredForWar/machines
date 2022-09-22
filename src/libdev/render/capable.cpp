@@ -11,16 +11,16 @@
 #include "render/internal/capablei.hpp"
 
 #define CB_RenCapabilities_DEPIMPL() \
-	CB_DEPIMPL( ulong,	maxAvailableTextureMemory_ ); \
+	CB_DEPIMPL( uint32_t,	maxAvailableTextureMemory_ ); \
 	CB_DEPIMPL( bool,	maxAvailableTextureMemoryDirty_ ); \
-	CB_DEPIMPL( ulong,	maxAvailableDisplayMemoryAfterTextures_ ); \
+	CB_DEPIMPL( uint32_t,	maxAvailableDisplayMemoryAfterTextures_ ); \
 	CB_DEPIMPL( bool,	maxAvailableDisplayMemoryAfterTexturesDirty_ ); \
 	CB_DEPIMPL( bool,	supports8BitsTexture_ ); \
 	CB_DEPIMPL( bool,	supportsSharedVideoMemory_ ); \
 	CB_DEPIMPL( bool,	supportsTextureSysMemory_ ); \
-	CB_DEPIMPL( ulong, 	totalVideoMemory_ ); \
-	CB_DEPIMPL( ulong, 	minDisplayMemory_ ); \
-	CB_DEPIMPL( ulong, 	totalTextureMemory_ );
+	CB_DEPIMPL( uint32_t, 	totalVideoMemory_ ); \
+	CB_DEPIMPL( uint32_t, 	minDisplayMemory_ ); \
+	CB_DEPIMPL( uint32_t, 	totalTextureMemory_ );
 
 RenCapabilities::RenCapabilities(const RenDevice* dev, bool h):
 	pImpl_(_NEW(RenICapabilities(dev, h)))
@@ -114,7 +114,7 @@ void RenCapabilities::parseCardSpecificationFile( const SysPathName& fileName )
         if( parser.tokens()[0] == "MEMORY_AVAILABLE_FOR_TEXTURES" )
 		{
 		    ASSERT( parser.tokens().size() == 2, "Wrong file format" );
-	        ulong mem = atof( parser.tokens()[ 1 ].c_str() );
+	        uint32_t mem = atof( parser.tokens()[ 1 ].c_str() );
 			maxAvailableTextureMemory_ = mem;
 			maxAvailableTextureMemoryDirty_ = false;
 			RENDER_STREAM( "Read Memory available for textures: " << maxAvailableTextureMemory_ << " (" << ( maxAvailableTextureMemory_ / 0x100000 ) << " MBytes)" << std::endl);
@@ -122,7 +122,7 @@ void RenCapabilities::parseCardSpecificationFile( const SysPathName& fileName )
 		else if( parser.tokens()[0] == "MEMORY_AVAILABLE_FOR_DISPLAY" )
 		{
 		    ASSERT( parser.tokens().size() == 2, "Wrong file format" );
-	        ulong mem = atof( parser.tokens()[ 1 ].c_str() );
+	        uint32_t mem = atof( parser.tokens()[ 1 ].c_str() );
 			maxAvailableDisplayMemoryAfterTextures_	= mem;
 			maxAvailableDisplayMemoryAfterTexturesDirty_ = false;
 			RENDER_STREAM( "Read Memory available for display: " << maxAvailableDisplayMemoryAfterTextures_ << " (" << ( maxAvailableDisplayMemoryAfterTextures_ / 0x100000 ) << " MBytes)" << std::endl);
@@ -157,11 +157,11 @@ void RenCapabilities::updateMaxAvailableDisplayMemoryAfterTextures()
 		RENDER_INDENT(2);
 		if( supportsSharedVideoMemory_ )
 		{
-			ulong totalTextureSystemMemory = 0;
-			ulong memoryRequiredByTexSet = memoryRequiredByTextureSet();
+			uint32_t totalTextureSystemMemory = 0;
+			uint32_t memoryRequiredByTexSet = memoryRequiredByTextureSet();
 			totalTextureSystemMemory = totalTextureMemory_ - totalVideoMemory_;
 			RENDER_STREAM( "Total system memory available for textures: " << totalTextureSystemMemory << " (" << ( totalTextureSystemMemory / 0x100000 ) << " MBytes)" << std::endl);
-			ulong videoMemoryRequiredForTextureSet = ( memoryRequiredByTexSet > totalTextureSystemMemory ) ? memoryRequiredByTexSet-totalTextureSystemMemory : 0;
+			uint32_t videoMemoryRequiredForTextureSet = ( memoryRequiredByTexSet > totalTextureSystemMemory ) ? memoryRequiredByTexSet-totalTextureSystemMemory : 0;
 			RENDER_STREAM( "Video memory required by texture set: " << videoMemoryRequiredForTextureSet << " (" << ( videoMemoryRequiredForTextureSet / 0x100000 ) << " MBytes)" << std::endl);
 			maxAvailableDisplayMemoryAfterTextures_ = totalVideoMemory_ - videoMemoryRequiredForTextureSet;
 			RENDER_STREAM( "Total video memory: " << totalVideoMemory_ << " (" << ( totalVideoMemory_ / 0x100000 ) << " MBytes)" << std::endl);
@@ -179,7 +179,7 @@ void RenCapabilities::updateMaxAvailableDisplayMemoryAfterTextures()
 	maxAvailableDisplayMemoryAfterTexturesDirty_=false;
 }
 
-ulong RenCapabilities::maxAvailableDisplayMemoryAfterTextures() const
+uint32_t RenCapabilities::maxAvailableDisplayMemoryAfterTextures() const
 {
 	CB_RenCapabilities_DEPIMPL();
 	if( maxAvailableDisplayMemoryAfterTexturesDirty_ )
@@ -190,12 +190,12 @@ ulong RenCapabilities::maxAvailableDisplayMemoryAfterTextures() const
 	return maxAvailableDisplayMemoryAfterTextures_;
 }
 
-ulong RenCapabilities::memoryRequiredByTextureSet() const
+uint32_t RenCapabilities::memoryRequiredByTextureSet() const
 {
 	CB_RenCapabilities_DEPIMPL();
 	RENDER_STREAM( "Working out how much memory will be used by textures: " << std::endl);
 	RENDER_INDENT(2);
-	ulong result = 0x200000;
+	uint32_t result = 0x200000;
 	if( supports4MBytesTextureSet() )
 		result*=2;
 
@@ -214,7 +214,7 @@ bool RenCapabilities::supports4MBytesTextureSet() const
 	RENDER_STREAM( "Does the card support a 4 mbytes texture set" << std::endl);
 	RENDER_INDENT(2);
 
-	ulong memoryRequiredBy4MBytesTexSet = pImpl_->memoryRequiredBy4MBytesTextureSet();
+	uint32_t memoryRequiredBy4MBytesTexSet = pImpl_->memoryRequiredBy4MBytesTextureSet();
 	RENDER_STREAM( "Memory required by the four Mbytes texture set: " << memoryRequiredBy4MBytesTexSet << " (" <<  ( memoryRequiredBy4MBytesTexSet / 0x100000 ) << " MBytes)" << std::endl);
 	bool result = maxAvailableTextureMemory() > memoryRequiredBy4MBytesTexSet;
 
@@ -255,7 +255,7 @@ void RenCapabilities::updateMaxAvailableTextureMemory()
 	maxAvailableTextureMemoryDirty_=false;
 }
 
-ulong RenCapabilities::maxAvailableTextureMemory() const
+uint32_t RenCapabilities::maxAvailableTextureMemory() const
 {
 	CB_RenCapabilities_DEPIMPL();
 	if( maxAvailableTextureMemoryDirty_ )

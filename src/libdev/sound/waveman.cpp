@@ -63,7 +63,7 @@ int bobSoundError(
 
 
     bool writeStackAnchor = true;
-    ulong lineNumber = 0;
+    uint32_t lineNumber = 0;
     const char* extraString = NULL;
 
     ostr << std::endl;

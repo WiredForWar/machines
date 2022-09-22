@@ -44,7 +44,7 @@ int MexBasicRandom::upperLimit()
     return (int)RAND_MAX + 1;
 }
 
-void    MexBasicRandom::seed( ulong newSeed )
+void    MexBasicRandom::seed( uint32_t newSeed )
 {
     state_ = newSeed;
     seed_ = state_;
@@ -52,7 +52,7 @@ void    MexBasicRandom::seed( ulong newSeed )
 
 void    MexBasicRandom::seedFromTime()
 {
-    ulong result;
+    uint32_t result;
 
     if( RecRecorder::instance().state() == RecRecorder::PLAYING )
         result = RecRecorderPrivate::instance().playbackRandomSeed();
@@ -86,7 +86,7 @@ size_t  MexBasicRandom::seedIncrement()
     return ++increment;
 }
 
-ulong MexBasicRandom::seed() const
+uint32_t MexBasicRandom::seed() const
 {
     return seed_;
 }

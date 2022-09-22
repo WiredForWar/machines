@@ -80,7 +80,7 @@ private:
 
 	Bodies*				bodies_;
 	RenIMatBody*		defaultBody_;
-	ulong				nullSlots_;
+	uint32_t				nullSlots_;
 	Bodies*				unusedBodies_; //Temporary cache of unused bodies
 	short				minPriority_, maxPriority_;
 

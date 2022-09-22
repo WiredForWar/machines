@@ -118,13 +118,13 @@ bool RenICapabilities::supportsTextureSysMemory() const
 }	
 
 _CODE_INLINE
-ulong RenICapabilities::totalVideoMemory() const
+uint32_t RenICapabilities::totalVideoMemory() const
 {
 	return totalVideoMemory_;
 }	
 
 _CODE_INLINE
-ulong RenICapabilities::totalTextureMemory() const
+uint32_t RenICapabilities::totalTextureMemory() const
 {
 	return totalTextureMemory_;
 }	

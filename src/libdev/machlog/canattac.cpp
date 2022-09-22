@@ -60,7 +60,7 @@ PER_DEFINE_PERSISTENT( MachLogCanAttack );
 		CB_DEPIMPL( bool ,currentlyAttached_ ); \
 		CB_DEPIMPL( MachPhys::WeaponCombo ,weaponCombo_); \
 		CB_DEPIMPL( MachLogCanAttack::Weapons ,weapons_ ); \
-		CB_DEPIMPL( ulong ,lastFireFrame_); \
+		CB_DEPIMPL( uint32_t ,lastFireFrame_); \
 		CB_DEPIMPL( MATHEX_SCALAR ,minimumInaccuracy_); \
 		CB_DEPIMPL( MATHEX_SCALAR ,currentInaccuracy_); \
 		CB_DEPIMPL( PhysAbsoluteTime ,lastFireTime_); \
@@ -1015,7 +1015,7 @@ void MachLogCanAttack::dt( const char* text, bool start )
 	}
 }
 
-ulong MachLogCanAttack::lastFireFrame() const
+uint32_t MachLogCanAttack::lastFireFrame() const
 {
 	CB_MachLogCanAttack_DEPIMPL();
 	return lastFireFrame_;
@@ -1305,7 +1305,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::testActorBehindCover
 
     //Set up a new check id, and assign it to the attacker and test actor, so we don't waste
     //time checking them.
-    ulong checkId = W4dEntity::nextCheckId();
+    uint32_t checkId = W4dEntity::nextCheckId();
     pSubjectActor->physObject().checkId( checkId );
 
 

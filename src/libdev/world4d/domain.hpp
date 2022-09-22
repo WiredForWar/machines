@@ -93,7 +93,7 @@ public:
     };
 
     bool findNearerEntity( const MexLine3d& line, MATHEX_SCALAR limit,
-                           ulong checkId, W4dEntity::Accuracy accuracy,
+                           uint32_t checkId, W4dEntity::Accuracy accuracy,
                            W4dEntity** ppEntity, MATHEX_SCALAR* pDistance,
                            int filter = EXCLUDE_NOT_SOLID );
 
@@ -106,7 +106,7 @@ public:
     //The accuracy of the intersection test is subjectively indicated by accuracy.
     //The entities to be checked are filtered as defined by pEntityFilter.
     bool findNearerEntity( const MexLine3d& line, MATHEX_SCALAR limit,
-                           ulong checkId, W4dEntity::Accuracy accuracy,
+                           uint32_t checkId, W4dEntity::Accuracy accuracy,
                            W4dEntity** ppEntity, MATHEX_SCALAR* pDistance,
                            W4dEntityFilter* pEntityFilter );
 
@@ -175,7 +175,7 @@ private:
     (
         W4dEntity* pEntity,
         const MexLine3d& line, MATHEX_SCALAR limit,
-        ulong checkId, W4dEntity::Accuracy accuracy,
+        uint32_t checkId, W4dEntity::Accuracy accuracy,
         W4dEntity** ppEntity, MATHEX_SCALAR* pDistance,
         W4dEntityFilter* pEntityFilter
     );

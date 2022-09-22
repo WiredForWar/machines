@@ -23,12 +23,12 @@
 #define RENI_PACK_G(g)	(((long)(g * 0x0000ff00L)) & 0x0000ff00L)
 #define RENI_PACK_B(b)	 ((long)(b * 0x000000ffL))
 
-inline uint packColourUnChecked(float r, float g, float b, ulong a=0xff000000L)
+inline uint packColourUnChecked(float r, float g, float b, uint32_t a=0xff000000L)
 {
 	return a | RENI_PACK_R(r) | RENI_PACK_G(g) | RENI_PACK_B(b);
 }
 
-inline uint packColourChecked(float r, float g, float b, ulong a=0xff000000L)
+inline uint packColourChecked(float r, float g, float b, uint32_t a=0xff000000L)
 {
 	// A minor optimisation: if red, green or blue exceed 1, then skip the packing
 	// arithmetic.  The alternative checks the floating point values against a

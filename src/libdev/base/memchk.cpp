@@ -1191,7 +1191,7 @@ void operator delete []( void *p )
 
 void MemChkWatchNewBlock( void* address, size_t nRequestedBytes )
 {
-    ulong watchLineNumber = 0;
+    uint32_t watchLineNumber = 0;
     const char* aNewText = NULL;
 
 #ifndef NDEBUG

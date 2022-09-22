@@ -17,13 +17,13 @@ bool W4dEntityImpl::hasMesh( ) const
 }
 
 _CODE_INLINE
-void W4dEntityImpl::passId( ulong id )
+void W4dEntityImpl::passId( uint32_t id )
 {
     passId_ = id;
 }
 
 _CODE_INLINE
-ulong W4dEntityImpl::passId( void ) const
+uint32_t W4dEntityImpl::passId( void ) const
 {
     return passId_;
 }

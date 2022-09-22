@@ -738,9 +738,9 @@ void SndMixer::sampleVolume( const SndSampleHandle& handle, Snd::Volume newVolum
 
 UtlId SndMixerImpl::noOfChannels_ = 0;
 
-ulong SndMixer::noOfFreeLogicalChannels() const
+uint32_t SndMixer::noOfFreeLogicalChannels() const
 {
-    ulong result;
+    uint32_t result;
 
     if( RecRecorder::instance().state() == RecRecorder::PLAYING )
         result = RecRecorderPrivate::instance().playbackSoundNoOfFreeLogicalChannels();
@@ -755,9 +755,9 @@ ulong SndMixer::noOfFreeLogicalChannels() const
 	return result;
 }
 
-ulong SndMixer::noOfFreeLogicalChannelsNoRecord() const
+uint32_t SndMixer::noOfFreeLogicalChannelsNoRecord() const
 {
-    ulong result;
+    uint32_t result;
 
   	CB_DEPIMPL(UtlBoundedIdGenerator*, pSoundIDGenerator_);
 
@@ -766,9 +766,9 @@ ulong SndMixer::noOfFreeLogicalChannelsNoRecord() const
 	return result;
 }
 
-ulong SndMixer::noOfUsedLogicalChannels() const
+uint32_t SndMixer::noOfUsedLogicalChannels() const
 {
-    ulong occupiedChannels;
+    uint32_t occupiedChannels;
 
     if( RecRecorder::instance().state() == RecRecorder::PLAYING )
         occupiedChannels = RecRecorderPrivate::instance().playbackSoundNoOfUsedLogicalChannels();

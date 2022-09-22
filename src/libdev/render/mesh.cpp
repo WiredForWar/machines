@@ -43,8 +43,8 @@
 #include <memory>
 
 // statics
-ulong RenMesh::meshCount_   = 0;
-ulong RenMesh::maxVertices_ = 0;
+uint32_t RenMesh::meshCount_   = 0;
+uint32_t RenMesh::maxVertices_ = 0;
 
 PER_DEFINE_PERSISTENT( RenMesh );
 
@@ -733,7 +733,7 @@ void RenMesh::addLine(const MexPoint3d& p1, const MexPoint3d& p2, const RenMater
     isDirty_ = true;
 }
 
-static void checkMaxVertices(const RenIVertexData* v, ulong& max)
+static void checkMaxVertices(const RenIVertexData* v, uint32_t& max)
 {
 	if (v && v->size() > max)
 		max = v->size();
@@ -2545,7 +2545,7 @@ void RenMesh::removeAllFromFactory()
 }
 
 // static
-ulong RenMesh::totalMeshCount()
+uint32_t RenMesh::totalMeshCount()
 {
 	// This pre-condition should prevent initialisation order bugs while
 	// accessing the static member variable.
@@ -2554,7 +2554,7 @@ ulong RenMesh::totalMeshCount()
 }
 
 // static
-ulong RenMesh::maxVertices()
+uint32_t RenMesh::maxVertices()
 {
 	// This pre-condition should prevent initialisation order bugs while
 	// accessing the static member variable.

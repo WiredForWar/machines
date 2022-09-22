@@ -167,7 +167,7 @@ MATHEX_SCALAR   MachLogLinearProjectile::rangeToStationaryObject(
 
     //  Check for construction or terrain intersection
 
-	ulong checkId = W4dEntity::nextCheckId();
+	uint32_t checkId = W4dEntity::nextCheckId();
 	pOwner_->physObject().checkId( checkId );
 
     if( pDomain->findNearerEntity(

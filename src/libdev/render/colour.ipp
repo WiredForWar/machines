@@ -25,7 +25,7 @@ void RenColour::IColour::packAlpha(float a)
 	else if (a <= 0.0)	
 		a_ = 0;
 	else	
-		a_ = _STATIC_CAST(ulong, 255 * a) << 24;
+		a_ = _STATIC_CAST(uint32_t, 255 * a) << 24;
 }
 
 
@@ -92,7 +92,7 @@ float RenColour::a() const
 }
 
 _CODE_INLINE
-ulong RenColour::packedAlpha() const
+uint32_t RenColour::packedAlpha() const
 {
 	return rep_.a_;
 }	

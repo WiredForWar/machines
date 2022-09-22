@@ -30,7 +30,7 @@ public:
     UtlId upperBound() const;
 
     //Number of ids that can still be allocated
-    ulong nUnusedIds() const;
+    uint32_t nUnusedIds() const;
 
     //True if id has been allocated
     bool isAllocated( UtlId id ) const;
@@ -66,7 +66,7 @@ private:
     //Data members
     UtlId upperBound_; //Upper bound for ids
     UtlId lastAllocatedId_; //Caches last id allocated
-    ulong nUnused_; //Number of ids not allocated
+    uint32_t nUnused_; //Number of ids not allocated
     uchar* aFlags_; //Pointer to array of flags: 1 => allocated, 0 =>unallocated
 };
 

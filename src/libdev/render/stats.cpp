@@ -27,7 +27,7 @@ RenStats::RenStats():
 
 // A nasty cruft: these should be member vars.
 static double totalTime = 0;
-static ulong  totalFrames = 0;
+static uint32_t  totalFrames = 0;
 
 RenStats::~RenStats()
 {
@@ -176,15 +176,15 @@ void RenStats::endFrame()
 		frameRate_ = 1.0 / avFrameTime;
 
 		// Compute how many polys went out since the last update.
-		ulong avPolys = polygonsDrawn_ / framesSinceUpdate_;
+		uint32_t avPolys = polygonsDrawn_ / framesSinceUpdate_;
 		polygonsDrawn_ = 0;
-		ulong avLines = linesDrawn_ / framesSinceUpdate_;
+		uint32_t avLines = linesDrawn_ / framesSinceUpdate_;
 		linesDrawn_ = 0;
-		ulong avTTFs = TTFsDrawn_ / framesSinceUpdate_;
+		uint32_t avTTFs = TTFsDrawn_ / framesSinceUpdate_;
 		TTFsDrawn_ = 0;
-		ulong avSTFs = STFsDrawn_ / framesSinceUpdate_;
+		uint32_t avSTFs = STFsDrawn_ / framesSinceUpdate_;
 		STFsDrawn_ = 0;
-		ulong avPoints = pointsDrawn_ / framesSinceUpdate_;
+		uint32_t avPoints = pointsDrawn_ / framesSinceUpdate_;
 		pointsDrawn_ = 0;
 
 		if( show_)

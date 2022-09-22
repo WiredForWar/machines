@@ -114,7 +114,7 @@ void RecRecorderPrivate::recordDeltaKeyCode( const DevKeyboard::KeyState& state 
        _STATIC_CAST( const void*, &state ) );
 }
 
-void RecRecorderPrivate::recordRandomSeed( ulong seed )
+void RecRecorderPrivate::recordRandomSeed( uint32_t seed )
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
@@ -181,7 +181,7 @@ void RecRecorderPrivate::recordSoundSampleVolume( Snd::Volume volume )
        _STATIC_CAST( const void*, &volume ) );
 }
 
-void RecRecorderPrivate::recordSoundNoOfFreeLogicalChannels( ulong value )
+void RecRecorderPrivate::recordSoundNoOfFreeLogicalChannels( uint32_t value )
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
@@ -190,7 +190,7 @@ void RecRecorderPrivate::recordSoundNoOfFreeLogicalChannels( ulong value )
        _STATIC_CAST( const void*, &value ) );
 }
 
-void RecRecorderPrivate::recordSoundNoOfUsedLogicalChannels( ulong value )
+void RecRecorderPrivate::recordSoundNoOfUsedLogicalChannels( uint32_t value )
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
@@ -416,9 +416,9 @@ DevKeyboard::KeyState RecRecorderPrivate::playbackDeltaKeyCode() const
     return state;
 }
 
-ulong RecRecorderPrivate::playbackRandomSeed() const
+uint32_t RecRecorderPrivate::playbackRandomSeed() const
 {
-    ulong seed;
+    uint32_t seed;
 
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
@@ -503,11 +503,11 @@ Snd::Volume RecRecorderPrivate::playbackSoundSampleVolume() const
     return result;
 }
 
-ulong RecRecorderPrivate::playbackSoundNoOfFreeLogicalChannels() const
+uint32_t RecRecorderPrivate::playbackSoundNoOfFreeLogicalChannels() const
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    ulong result;
+    uint32_t result;
 
     recorder.getData( RecRecorderImplementation::SOUND_FREE_LOGICAL_CHANNELS,
        sizeof( result ),
@@ -516,11 +516,11 @@ ulong RecRecorderPrivate::playbackSoundNoOfFreeLogicalChannels() const
     return result;
 }
 
-ulong RecRecorderPrivate::playbackSoundNoOfUsedLogicalChannels() const
+uint32_t RecRecorderPrivate::playbackSoundNoOfUsedLogicalChannels() const
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    ulong result;
+    uint32_t result;
 
     recorder.getData( RecRecorderImplementation::SOUND_USED_LOGICAL_CHANNELS,
        sizeof( result ),

@@ -53,8 +53,8 @@ public:
     // POST( result != NULL );
 
     //Get/set the render pass id;
-    void passId( ulong id );
-    ulong passId() const;
+    void passId( uint32_t id );
+    uint32_t passId() const;
 
 	bool hasMesh() const;
 
@@ -175,7 +175,7 @@ private:
     W4dSubject* pSubject_; //Optional logical owner of this entity
 
 	// A number which uniquely identifies the last camera traversal to draw this entity.
-	ulong				passId_;
+	uint32_t				passId_;
 
     //The time when the cached global transform was last updated
     PhysAbsoluteTime timeGlobalTransformLastUpdated_;
@@ -186,7 +186,7 @@ private:
     MexTransform3dKey lastLocalTransformKey_;
 
     //An id used for various purposes in checking algorithms
-    ulong checkId_;
+    uint32_t checkId_;
 
     //This entity's id
     W4dId id_;

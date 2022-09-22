@@ -28,7 +28,7 @@ public:
 
     //Register a block allocation at address pBlock, of requested size nBytes, at line lineNumber in
     //source file, with optional pointer to null-terminated string of new text.
-    void addBlock( void* pBlock, size_t nBytes, ulong lineNumber, const char* aNewText );
+    void addBlock( void* pBlock, size_t nBytes, uint32_t lineNumber, const char* aNewText );
 
     //Unregister the block allocated with address pBlock
     void removeBlock( void* pBlock );
@@ -61,8 +61,8 @@ private:
         size_t nBytes_; //Size in bytes of object allocated at this site
         size_t nNewTextChars_; //Number of characters in aNewText_ (including null terminator)
         char* aNewText_; //Array of new allocation text
-        ulong lineNumber_; //Source file line number for the site
-        ulong refCount_; //Number of outstanding allocations at this site
+        uint32_t lineNumber_; //Source file line number for the site
+        uint32_t refCount_; //Number of outstanding allocations at this site
     };
 
     //represents an allocated block
@@ -80,7 +80,7 @@ private:
     BasePoolAllocator& allocator();
 
     //A hash value for indexing into the hash table aSiteHashTable_
-    static size_t hashValue( size_t nStackFrames, const size_t* aCallStack, size_t nBytes, ulong lineNumber );
+    static size_t hashValue( size_t nStackFrames, const size_t* aCallStack, size_t nBytes, uint32_t lineNumber );
     //POST( result < SITE_HASH_BOUND );
 
     //A hash value for indexing into the hash table aBlockHashTable_

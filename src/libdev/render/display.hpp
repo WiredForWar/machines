@@ -83,7 +83,7 @@ public:
 	bool lowestAllowedMode(int width, int height, int depth);
 
 	const Mode& highestAllowedMode() const;
-	bool setHighestAllowedMode( ulong maxMemory );
+	bool setHighestAllowedMode( uint32_t maxMemory );
 	bool setHighestAllowedMode();
 
 	// If there's not enough video memory to create all the required
@@ -145,7 +145,7 @@ public:
 
 	bool isPrimaryDriver() const;
 
-	ulong frameNumber() const;
+	uint32_t frameNumber() const;
 
 	SDL_Window* window();
 

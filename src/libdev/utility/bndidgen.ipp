@@ -18,7 +18,7 @@ UtlId UtlBoundedIdGenerator::upperBound() const
 }
 
 _CODE_INLINE
-ulong UtlBoundedIdGenerator::nUnusedIds() const
+uint32_t UtlBoundedIdGenerator::nUnusedIds() const
 {
     return nUnused_;
 }

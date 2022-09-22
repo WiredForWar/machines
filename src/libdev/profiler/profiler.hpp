@@ -72,7 +72,7 @@ public:
     //If doTraceAnchor is true, the name of the anchor function and its address is prepended.
     //The line number is added. (Zero implies not known).
     //If extraString is non empty, it is added.
-    void traceStack( ostream& outStream, bool doTraceAnchor, ulong lineNumber, const char* extraString );
+    void traceStack( ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString );
 
     //Export the address of the call stack
     const size_t* pCallStack() const;
@@ -82,7 +82,7 @@ public:
 
     //Trace the supplied call stack pCallStack with nStackFrames frames to outStream
     void traceStack( ostream& outStream, bool doTraceAnchor, size_t nStackFrames, const size_t* pCallStack,
-                     ulong lineNumber, const char* extraString );
+                     uint32_t lineNumber, const char* extraString );
 
     //Enable/disable/test whether all calls to traceStack are written to an internal buffer instead
     //of designated stream

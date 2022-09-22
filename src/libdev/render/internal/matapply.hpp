@@ -32,7 +32,7 @@ protected:
 
 	// Initialisation order of alpha_ is important.
 	const float difR_, difG_, difB_, constR_, constG_, constB_;
-	ulong alpha_;
+	uint32_t alpha_;
 	const uint packedAmbient_, packedBlack_;
 
 	// packedAmbient_ can only be used if every entry in map_ is 1.0.

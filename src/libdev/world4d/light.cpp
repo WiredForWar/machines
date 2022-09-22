@@ -59,7 +59,7 @@ const MexSphere3d& W4dLightImpl::boundingSphere( const W4dCamera* camera ) const
 	PRE(on_);
 	PRE(pW4dLight_);
 
-	const ulong cameraPass = (camera)? camera->renderPassId(): ULONG_MAX-1;
+	const uint32_t cameraPass = (camera)? camera->renderPassId(): ULONG_MAX-1;
 	ASSERT(implies(!camera, cameraPass != spherePassId_), "program ran for too many frames");
 
 	// Spheres must be updated even for disabled entites because they could be
@@ -160,7 +160,7 @@ void W4dLight::lazyUpdate()
 		return;
 
 	const W4dCamera* camera = W4dManager::instance().sceneManager()->currentCamera();
-	const ulong cameraPass = (camera)? camera->renderPassId(): ULONG_MAX-1;
+	const uint32_t cameraPass = (camera)? camera->renderPassId(): ULONG_MAX-1;
 	ASSERT(implies(!camera, cameraPass != pImpl_->renPassId_),    "program ran for too many frames");
 
 	// Update the render library only if we haven't done so this frame.

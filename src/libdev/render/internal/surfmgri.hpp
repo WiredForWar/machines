@@ -104,7 +104,7 @@ private:
 	const RenDevice* handleDevice_;
 
 	// Statistic gathering.
-	ulong		handleSets_, stateChanges_;
+	uint32_t		handleSets_, stateChanges_;
 };
 
 #endif /* _RENDER_INTERNAL_SURFACE_MANAGER_IMPL ***********/

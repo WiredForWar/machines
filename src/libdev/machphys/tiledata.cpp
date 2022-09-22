@@ -77,9 +77,9 @@ MachPhysTileData::MachPhysTileData
         ASSERT( vCount == 3, "" );
 
         //Register the triangle
-        ulong index1 = faceData[j++];
-        ulong index2 = faceData[j++];
-        ulong index3 = faceData[j++];
+        uint32_t index1 = faceData[j++];
+        uint32_t index2 = faceData[j++];
+        uint32_t index3 = faceData[j++];
         ASSERT_INFO( index1 );
         ASSERT_INFO( index2 );
         ASSERT_INFO( index3 );

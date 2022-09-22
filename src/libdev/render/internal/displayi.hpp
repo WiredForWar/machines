@@ -71,7 +71,7 @@ private:
 	const RenCursor2d*			cursor_;
 	RenISavedArea*				backBufferCursorSave_;
 	RenISavedArea*				frontBufferCursorSave_;
-	ulong						frameNo_;
+	uint32_t						frameNo_;
 	RenDisplay::Mode			lowestAllowedMode_;
 	RenDisplay::Mode			highestAllowedMode_;
 	bool						supportsGammaCorrection_;

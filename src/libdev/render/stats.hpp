@@ -20,7 +20,7 @@ public:
     virtual ~RenStats();
 
 	// The number of frames rendered since this object was created.
-	ulong frameCount() const;
+	uint32_t frameCount() const;
 
 	// The times taken to render historic frames.  Call with an argument of 0
 	// to get the most recent time; use 1 to get the next oldest time, etc.
@@ -57,20 +57,20 @@ public:
 	void startFrame();
 	void endFrame();
 	const std::string& statsText() const;
-	void incrPolyCount(ulong number);
-	void incrLineCount(ulong number);
-	void incrSTFCount(ulong number);
-	void incrTTFCount(ulong number);
-	void incrPointsCount(ulong number);
+	void incrPolyCount(uint32_t number);
+	void incrLineCount(uint32_t number);
+	void incrSTFCount(uint32_t number);
+	void incrTTFCount(uint32_t number);
+	void incrPointsCount(uint32_t number);
 
 private:
 	void computeAverage();
 
 	bool				show_;
-	ulong				frameCount_;
+	uint32_t				frameCount_;
 
 	DevTimer			updateTimer_;
-	ulong  				framesSinceUpdate_;
+	uint32_t  				framesSinceUpdate_;
 	double				updateInterval_;
 
 	DevTimer			frameTimer_;
@@ -80,7 +80,7 @@ private:
 	double				frameRate_;
 	size_t				maxQueueLength_;
 
-	ulong				polygonsDrawn_, linesDrawn_, TTFsDrawn_, STFsDrawn_, pointsDrawn_;
+	uint32_t				polygonsDrawn_, linesDrawn_, TTFsDrawn_, STFsDrawn_, pointsDrawn_;
 
 	BaseLogBuffer		stream_;
 	std::string				text_;

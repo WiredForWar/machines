@@ -244,7 +244,7 @@ void W4dComposite::renderLinks( const W4dCamera& camera,
         //  Only render this link if its parent is visible and has
         //  been rendered this pass
         const W4dEntity* pParent = linkImpl.pParent();
-		ulong parentPassId = pParent->passId();
+		uint32_t parentPassId = pParent->passId();
 
         //JG commented out the parent id check below. It was causing links attached to links with no mesh
         //to not be rendered. I don't know what the check was for. It makes no sense to me.

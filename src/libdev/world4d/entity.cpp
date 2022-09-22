@@ -64,11 +64,11 @@ EXISTS( W4dEntity );
         CB_DEPIMPL( W4dEntityPlan*, pPlan_ ); \
         CB_DEPIMPL( W4dEntityImpl::PlanUpdateTimes*, pPlanUpdateTimes_ ); \
         CB_DEPIMPL( W4dSubject*, pSubject_ ); \
-        CB_DEPIMPL( ulong, passId_); \
+        CB_DEPIMPL( uint32_t, passId_); \
         CB_DEPIMPL( PhysAbsoluteTime, timeGlobalTransformLastUpdated_ ); \
         CB_DEPIMPL( MexTransform3dKey, lastParentGlobalTransformKey_ ); \
         CB_DEPIMPL( MexTransform3dKey, lastLocalTransformKey_ ); \
-        CB_DEPIMPL( ulong, checkId_ ); \
+        CB_DEPIMPL( uint32_t, checkId_ ); \
         CB_DEPIMPL( W4dId, id_ ); \
         CB_DEPIMPL( MexAlignedBox3d*, boundingVolume_ ); \
         CB_DEPIMPL( W4dLocalLightList*, pLocalLightList_ ); \
@@ -1435,7 +1435,7 @@ const RenMeshInstance& W4dEntity::mesh( W4dLOD id ) const
     return *((*meshes_)[id].mesh);
 }
 
-ulong W4dEntity::latestRenderPassId() const
+uint32_t W4dEntity::latestRenderPassId() const
 {
     TEST_INVARIANT;
         CB_W4dEntity_DEPIMPL();
@@ -1456,12 +1456,12 @@ const string& W4dEntity::name() const
         return pImpl_->name();
 }
 
-void W4dEntity::passId( ulong id )
+void W4dEntity::passId( uint32_t id )
 {
     pImpl_->passId( id );
 }
 
-ulong W4dEntity::passId() const
+uint32_t W4dEntity::passId() const
 {
     TEST_INVARIANT;
     return pImpl_->passId();
@@ -1687,20 +1687,20 @@ bool W4dEntity::intersectsBoundingVolume( const MexLine3d& line, MATHEX_SCALAR* 
 }
 
 //static
-ulong W4dEntity::nextCheckId()
+uint32_t W4dEntity::nextCheckId()
 {
-    static ulong nextId = 0;
+    static uint32_t nextId = 0;
     return ++nextId;
 }
 
-ulong W4dEntity::checkId() const
+uint32_t W4dEntity::checkId() const
 {
     TEST_INVARIANT;
         CB_W4dEntity_DEPIMPL();
     return checkId_;
 }
 
-void W4dEntity::checkId( ulong id )
+void W4dEntity::checkId(uint32_t id)
 {
     TEST_INVARIANT;
         CB_W4dEntity_DEPIMPL();

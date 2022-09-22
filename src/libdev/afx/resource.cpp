@@ -58,7 +58,7 @@ std::string AfxResourceLib::getString(const uint id) const
         return "";
 }
 
-ulong AfxResourceLib::bitmapHandle(const std::string& name) const
+uint32_t AfxResourceLib::bitmapHandle(const std::string& name) const
 {
 	return 0;
 }

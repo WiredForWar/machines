@@ -161,7 +161,7 @@ WEAK_SYMBOL void BaseAssertion::assertFail( const char *msg, const xmsg& xms )
         ofs << xms.what() << ": " << msg << std::endl << std::endl;
 
         bool writeStackAnchor = true;
-        ulong lineNumber = 0;
+        uint32_t lineNumber = 0;
         const char* extraString = NULL;
 
         ofs << std::endl;

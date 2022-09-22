@@ -94,7 +94,7 @@ private:
     MexQuad3d localBoundingBox_; //The projection plane bounding box
     MexPoint3d globalCameraPosition_; //Global camera origin
     MexVec3 aGlobalPlaneNormals_[5]; //The 5 bounding plane normals
-    ulong checkId_; //The id in use for a single pass selection check
+    uint32_t checkId_; //The id in use for a single pass selection check
     bool clipAtFogDistance_; //true if entities further from the camera than the fog distance are to be ignored
     bool ignoreNonSubjectEntities_; //true if entities with no associated subject are to be ignored
 };

@@ -80,7 +80,7 @@ public:
 		int 						numPlayers_;
 		MachPhys::Race 				playerRace_;
 		MachLog::TechnologyLevel 	techLevel_;
-		ulong						randomStartsSeed_;
+		uint32_t						randomStartsSeed_;
 		bool 						broadcastAlliances_;
 		bool						disableFirstPerson_;
 	};

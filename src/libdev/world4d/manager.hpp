@@ -69,13 +69,13 @@ public:
     
 	// A number which a camera or scene manager can use to uniquely
 	// identify a render pass.
-	ulong generateRenderPassId();
+	uint32_t generateRenderPassId();
 
     //Increments an id to denote that some object may have changed its position
-    ulong generateGeneralPositionId();
+    uint32_t generateGeneralPositionId();
 
     //The last generated id
-    ulong generalPositionId() const;
+    uint32_t generalPositionId() const;
 	
 	// These are error handling functions for DirectX errors.  The first
 	// attempts to restore the screen before an abnormal termination.
@@ -103,8 +103,8 @@ private:
     PhysAbsoluteTime	currentTime_;	//Current simulation time
     PhysAbsoluteTime	artificialTime_; //Current time to be used artificially
     W4dSceneManager*	pSceneManager_; //The visualisation scene
-	ulong				currentPassId_;
-    ulong               generalPositionId_; //Updated whenever anything occurs
+	uint32_t				currentPassId_;
+    uint32_t               generalPositionId_; //Updated whenever anything occurs
                                             //which could change the position of any object
     size_t              frameNumber_;
     bool hasArtificialTime_; //true if artificialTime_ has been set

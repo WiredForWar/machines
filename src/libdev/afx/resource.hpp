@@ -23,7 +23,7 @@ public:
 
 	// The "get" is not ideal, but "string" conflicts with the type name.
 	std::string getString(const uint id) const;
-	ulong bitmapHandle(const std::string& name) const;
+	uint32_t bitmapHandle(const std::string& name) const;
 
 	// POST(retval.existsAsFile());  must be created with a valid file
 	const SysPathName& fileName() const;

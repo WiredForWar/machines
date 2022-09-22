@@ -359,7 +359,7 @@ void MachActor::beHit( const int& damage, MachPhys::WeaponType wt,
 			doHitButStillAliveStuff( pByActor );
 		}
 	}
-	CB_DEPIMPL( ulong, lastBeHitFrame_ );
+	CB_DEPIMPL( uint32_t, lastBeHitFrame_ );
 	lastBeHitFrame_ = W4dManager::instance().frameNumber();
 }
 
@@ -403,7 +403,7 @@ void MachActor::beHitWithoutAnimation( int damage, PhysRelativeTime physicalTime
 			MachLogNetwork::instance().messageBroker().sendBeHitMessage( id(), damage, MachPhys::N_WEAPON_TYPES, pByActor, NULL, physicalTimeDelay, MachLogMessageBroker::NO_ANIMATION_HIT, actorNowDead );
 
 	}
-	CB_DEPIMPL( ulong, lastBeHitFrame_ );
+	CB_DEPIMPL( uint32_t, lastBeHitFrame_ );
 	lastBeHitFrame_ = W4dManager::instance().frameNumber();
 }
 
@@ -437,9 +437,9 @@ void MachActor::doHitButStillAliveStuff( MachActor* pByActor )
 		asCanAttack().setMinimumAlertness( 125 );
 }
 
-void MachActor::lastBeHitFrame( ulong newVal )
+void MachActor::lastBeHitFrame( uint32_t newVal )
 {
-	CB_DEPIMPL( ulong, lastBeHitFrame_ );
+	CB_DEPIMPL( uint32_t, lastBeHitFrame_ );
 	lastBeHitFrame_ = newVal;
 }
 
@@ -1222,9 +1222,9 @@ void MachActor::changeRaceStartTime( const PhysAbsoluteTime& newChangeRaceStartT
 	changeRaceStartTime_ = newChangeRaceStartTime;
 }
 
-ulong	MachActor::lastBeHitFrame() const
+uint32_t	MachActor::lastBeHitFrame() const
 {
-	CB_DEPIMPL( ulong, lastBeHitFrame_ );
+	CB_DEPIMPL( uint32_t, lastBeHitFrame_ );
 	return lastBeHitFrame_;
 }
 

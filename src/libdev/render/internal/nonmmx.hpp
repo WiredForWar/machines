@@ -34,7 +34,7 @@ private:
 	bool specularRequired() const;
 
 	RenIFloatLightingBuffer*	lightingBuffer_;
-	ulong		   				overflows_, applications_;
+	uint32_t		   				overflows_, applications_;
 };
 
 #endif

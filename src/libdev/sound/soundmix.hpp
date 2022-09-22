@@ -216,10 +216,10 @@ public:
 	bool is3dMixer() const;
 
 	//The number of channels available for allocation
-	ulong noOfFreeLogicalChannels() const;
+	uint32_t noOfFreeLogicalChannels() const;
 
 	//The number of channels already allocated
-	ulong noOfUsedLogicalChannels() const;
+	uint32_t noOfUsedLogicalChannels() const;
 
 	Snd::Volume masterSampleVolume() const;
 	void masterSampleVolume( Snd::Volume newVolume );
@@ -245,7 +245,7 @@ private:
     bool is3dSoundNoRecord( const SndSampleHandle& handle ) const;
     bool isActiveNoRecord( const SndSampleHandle& handle ) const;
     MexPoint3d samplePositionNoRecord( const SndSampleHandle& handle ) const;
-	ulong noOfFreeLogicalChannelsNoRecord() const;
+	uint32_t noOfFreeLogicalChannelsNoRecord() const;
 	Snd::Volume sampleVolumeNoRecord( const SndSampleHandle& handle ) const;
 	void actualFreeSampleResources( const SndSampleHandle& handle );
 

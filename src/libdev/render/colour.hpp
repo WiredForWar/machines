@@ -27,7 +27,7 @@ public:
 
 	// Get the alpha packed into the format used by Direct3D, i.e. as the
 	// most-significant-byte of a four-byte word.
-	ulong packedAlpha() const;
+	uint32_t packedAlpha() const;
 
 	// Returns true if alpha is less than 1.0.
 	bool isTransparent() const;
