@@ -17,7 +17,7 @@
 #include <stddef.h>
 #include <iostream>
 
-#include "base/base.hpp"
+#include "base/DiagStreamType.hpp"
 
 class DiagPointerTracker;
 

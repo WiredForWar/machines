@@ -14,6 +14,7 @@ set(BASE_SOURCES
     diagint.cpp
     diagstr.cpp
     diagstrs.cpp
+    DiagStreamType.hpp
     error.cpp
     error.hpp
     filtbuff.cpp
