@@ -561,9 +561,9 @@ static  void    logNewBlock( const DebugInfo *dPtr )
         //Set up string detailing the extra information we want
         char buffer[64];
         if( ctorText != NULL )
-            sprintf( buffer, "NEW %d %#08x @ %.32s @", dPtr->nBytes, (ulong)address, ctorText );
+            snprintf(buffer, sizeof(buffer), "NEW %d %p @ %.32s @", static_cast<int>(dPtr->nBytes), address, ctorText);
         else
-            sprintf( buffer, "NEW %d %#08x", dPtr->nBytes, (ulong)address );
+            snprintf(buffer, sizeof(buffer), "NEW %d %p", static_cast<int>(dPtr->nBytes), address);
 
         ProProfiler::instance().traceStack( logStream(), false, dPtr->lnumber, buffer );
     }
@@ -594,7 +594,7 @@ static  void    logDeleteBlock( const DebugInfo *dPtr )
     {
         //Set up string detailing the extra information we want
         char buffer[64];
-        sprintf( buffer, "DELETE %#08x", (ulong)address );
+        snprintf(buffer, sizeof(buffer), "DELETE %p", address);
         ProProfiler::instance().traceStack( logStream(), false, dPtr->lnumber, buffer );
     }
 
