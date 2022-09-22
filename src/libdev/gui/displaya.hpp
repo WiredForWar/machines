@@ -65,16 +65,9 @@ public:
 	
 	// since subclasses of GuiDisplayable are owned by their parent
 	// GuiDisplayable, they should _only_ be allocated on the heap.
+    explicit GuiDisplayable(GuiDisplayable* pParent, Layer layer = LAYER1);
 
-	// Layer defaults to 1 ( i.e. background )
-	GuiDisplayable( GuiDisplayable* pParent, const Gui::Boundary& relativeBoundary );
-	// PRE( pParent != NULL );
-	// PRE( pParent->boundary().contains( boundary() ) );
-	// POST( not isRoot() );
-	// POST( pParent->hasChild( this ) );
-	// POST ( useFastSecondDisplay() );
-
-	GuiDisplayable( GuiDisplayable* pParent, const Gui::Boundary& relativeBoundary, Layer );
+    GuiDisplayable(GuiDisplayable* pParent, const Gui::Boundary& relativeBoundary, Layer layer = LAYER1);
 	// PRE( pParent != NULL );
 	// PRE( pParent->boundary().contains( boundary() ) );
 	// POST( not isRoot() );
@@ -127,6 +120,7 @@ public:
 	Gui::Boundary relativeBoundary( const GuiDisplayable& ancestor ) const;
 
 	const Gui::Boundary& absoluteBoundary() const;
+    void setRelativeBoundary(const Gui::Boundary& boundary);
 	
 	bool contains( Gui::XCoord x, Gui::YCoord y ) const;
 	// POST( iff( result, boundary().contains( Gui::Coord( x, y ) ) ) );

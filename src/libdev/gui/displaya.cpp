@@ -28,82 +28,51 @@
 
 //////////////////////////////////////////////////////////////////////
 
-GuiDisplayable::GuiDisplayable( GuiDisplayable * pParent, const Gui::Boundary& relativeBoundary )
-:	pImpl_( _NEW( GuiDisplayableImpl ) )
+GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, Layer layer)
+    : pImpl_(_NEW(GuiDisplayableImpl))
 {
-	CB_GUIDISPLAYABLE_DEPIMPL();
+    pImpl_->pParent_ = pParent;
+    pImpl_->isVisible_ = true;
+    pImpl_->redrawEveryFrame_ = false;
+    pImpl_->useFastSecondDisplay_ = true;
 
-	PRE( pParent != NULL );
+    for (int layer = LAYER1; layer < NUMLAYERS; ++layer)
+    {
+        pImpl_->children_[layer].reserve(2);
+    }
+    pImpl_->allChildren_.reserve(4);
 
-	pParent_ 			= pParent;
-  	relativeBox_ 		= relativeBoundary;
-  	absoluteBox_ 		= translateBox( relativeBoundary, pParent->absoluteCoord() );
-  	isVisible_ 			= true;
-	redrawEveryFrame_ 	= false;
-	useFastSecondDisplay_= true;
-	changed( true );
+    changed(true);
 
-	pParent_->addChild( this, LAYER1 );
-	for ( Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer) )
-	{
-		children_[layer].reserve( 2 );
-	}
-	allChildren_.reserve( 4 );
-
-	POST_INFO( pParent->absoluteBoundary() );
-	POST_INFO( absoluteBoundary() );
-	//POST( pParent->absoluteBoundary().contains( absoluteBoundary() ) ); //TODO fails by few pixels sometimes
-	POST ( useFastSecondDisplay() );
+    if (pParent)
+    {
+        pImpl_->pParent_->addChild(this, layer);
+    }
 }
 
-GuiDisplayable::GuiDisplayable( GuiDisplayable * pParent, const Gui::Boundary& relativeBoundary, Layer myLayer )
-:	pImpl_( _NEW( GuiDisplayableImpl ) )
+GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, const Gui::Boundary& relativeBoundary, Layer myLayer)
+    : GuiDisplayable(pParent, myLayer)
 {
-	CB_GUIDISPLAYABLE_DEPIMPL();
+    CB_GUIDISPLAYABLE_DEPIMPL();
 
-	PRE( pParent != NULL );
+    PRE(pParent != NULL);
 
-	pParent_ 			= pParent;
-  	relativeBox_ 		= relativeBoundary;
-  	absoluteBox_ 		= translateBox( relativeBoundary, pParent->absoluteCoord() );
-  	isVisible_ 			= true;
-	redrawEveryFrame_ 	= false;
-	useFastSecondDisplay_=true;
-	changed( true );
-
-	pParent_->addChild( this, myLayer );
-	for ( Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer) )
-	{
-		children_[layer].reserve( 2 );
-	}
-	allChildren_.reserve( 4 );
-
-	POST_INFO( pParent->absoluteBoundary() );
-	POST_INFO( absoluteBoundary() );
-	POST( pParent->absoluteBoundary().contains( absoluteBoundary() ) );
-	POST ( useFastSecondDisplay() );
+    setRelativeBoundary(relativeBoundary);
+    POST_INFO(pParent->absoluteBoundary());
+    POST_INFO(absoluteBoundary());
+    POST(pParent->absoluteBoundary().contains(absoluteBoundary()));
+    POST(useFastSecondDisplay());
 }
 
-GuiDisplayable::GuiDisplayable( const Gui::Boundary& absBoundary )
-:	pImpl_( _NEW( GuiDisplayableImpl ) )
+GuiDisplayable::GuiDisplayable(const Gui::Boundary& absBoundary)
+    : GuiDisplayable(nullptr)
 {
-	CB_GUIDISPLAYABLE_DEPIMPL();
+    CB_GUIDISPLAYABLE_DEPIMPL();
 
-	pParent_ 			= NULL;
-  	relativeBox_ 		= absBoundary;
-  	absoluteBox_ 		= absBoundary;
-  	isVisible_ 			= true;
-	redrawEveryFrame_ 	= false;
-	useFastSecondDisplay_=true;
-	changed( true );
+    relativeBox_ = absBoundary;
+    absoluteBox_ = absBoundary;
 
-	for ( Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer) )
-	{
-		children_[layer].reserve( 2 );
-	}
-	allChildren_.reserve( 4 );
-
-	POST ( useFastSecondDisplay() );
+    POST(useFastSecondDisplay());
 }
 
 GuiDisplayable::~GuiDisplayable()
@@ -700,6 +669,19 @@ const Gui::Boundary& GuiDisplayable::absoluteBoundary() const
 	CB_GUIDISPLAYABLE_DEPIMPL();
 
  	return absoluteBox_;
+}
+
+void GuiDisplayable::setRelativeBoundary(const Gui::Boundary& boundary)
+{
+    pImpl_->relativeBox_ = boundary;
+    if (pImpl_->pParent_)
+    {
+        pImpl_->absoluteBox_ = translateBox(boundary, pImpl_->pParent_->absoluteCoord());
+    }
+    else
+    {
+        pImpl_->absoluteBox_ = boundary;
+    }
 }
 
 const Gui::Boundary& GuiDisplayable::relativeBoundary() const
