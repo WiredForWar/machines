@@ -201,6 +201,68 @@ set(MACHLOG_SOURCES
     inout.cpp
     inout.hpp
     internal
+    internal/actori.hpp
+    internal/apci.hpp
+    internal/artfctsi.hpp
+    internal/artsdata.hpp
+    internal/attacki.hpp
+    internal/beebomxi.hpp
+    internal/camerai.hpp
+    internal/canattai.hpp
+    internal/cntrlaii.hpp
+    internal/collinfo.hpp
+    internal/consitei.hpp
+    internal/constrei.hpp
+    internal/constroi.hpp
+    internal/dyingeni.hpp
+    internal/expandbi.hpp
+    internal/factoryi.hpp
+    internal/firedata.hpp
+    internal/followi.hpp
+    internal/garrisoi.hpp
+    internal/grpmovei.hpp
+    internal/grpmvutl.hpp
+    internal/hwlabi.hpp
+    internal/ionbeami.hpp
+    internal/machinei.hpp
+    internal/mcconvoi.hpp
+    internal/messages.hpp
+    internal/minesiti.hpp
+    internal/movei.hpp
+    internal/netimpl.hpp
+    internal/nuclbomi.hpp
+    internal/opadloci.hpp
+    internal/opadmovi.hpp
+    internal/opautsci.hpp
+    internal/opconsti.hpp
+    internal/opcounti.hpp
+    internal/opdapci.hpp
+    internal/operatii.hpp
+    internal/opevadei.hpp
+    internal/oplaboui.hpp
+    internal/oplminei.hpp
+    internal/opmeatti.hpp
+    internal/oppickui.hpp
+    internal/opputdwi.hpp
+    internal/opscavi.hpp
+    internal/optransi.hpp
+    internal/planeti.hpp
+    internal/podi.hpp
+    internal/punchi.hpp
+    internal/racesimp.hpp
+    internal/rescarri.hpp
+    internal/resitemi.hpp
+    internal/restreei.hpp
+    internal/scorei.hpp
+    internal/seqdata.hpp
+    internal/seqdebug.hpp
+    internal/squadi.hpp
+    internal/statimpl.hpp
+    internal/vmail.hpp
+    internal/vmaili.hpp
+    internal/vminfo.hpp
+    internal/vmmani.hpp
+    internal/vortbomi.hpp
     ionbeam.cpp
     ionbeam.hpp
     ionbeami.cpp
