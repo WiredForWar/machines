@@ -340,8 +340,6 @@ set(MACHGUI_SOURCES
     sysmess.hpp
     text.cpp
     text.hpp
-    textdisp.cpp
-    textdisp.hpp
     typemap.cpp
     typemap.hpp
     worldvie.cpp
