@@ -227,9 +227,12 @@ else()
     set(Freetype_INCLUDE_DIRS ${FREETYPE_INCLUDE_DIRS})
 endif()
 
-if(NOT DEV_BUILD)
+if(DEV_BUILD)
+    set(USE_EXCEPTIONS TRUE)
+else()
     add_definitions(-DNDEBUG)
     add_definitions(-DPRODUCTION)
+    set(USE_EXCEPTIONS FALSE)
 endif()
 
 # CMake Freetype find package sets only the capital-case variable
