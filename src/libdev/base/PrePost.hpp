@@ -6,7 +6,10 @@
 #ifndef _PREPOST_HPP
 #define _PREPOST_HPP
 
+#ifndef NDEBUG
 #include "stdlib/Exceptions.hpp"
+#endif
+
 #include "private/DiagInternal.hpp"
 
 //  Invariants are turned on by default in the debug version
