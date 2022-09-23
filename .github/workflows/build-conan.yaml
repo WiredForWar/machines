@@ -13,9 +13,16 @@ jobs:
         include:
         - os: windows-2019
           build-type: Release
+        - os: ubuntu-20.04
+          build-type: Release
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Prepare the system (Linux)
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        sudo scripts/prepare-system-conan.sh
 
     - name: Install Conan
       id: conan
@@ -31,6 +38,8 @@ jobs:
         if("${CMAKE_HOST_SYSTEM_NAME}" MATCHES "Windows")
           set(cmake_generator "Visual Studio 16 2019")
           set(cmake_generator_platform_arg "-A x64")
+        else()
+          set(cmake_generator "Ninja")
         endif()
 
         execute_process(COMMAND ${CMAKE_COMMAND}
