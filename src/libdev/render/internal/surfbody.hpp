@@ -14,10 +14,11 @@
 #include "render/internal/internal.hpp"
 #include "render/internal/pixelfmt.hpp"
 #include <GL/glew.h>
-#include <SDL2/SDL_image.h>
 // FONTS
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+struct SDL_Surface;
 
 //class ostream;
 class SysPathname;

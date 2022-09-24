@@ -23,6 +23,8 @@
     #include "render/internal/texbody.ipp"
 #endif
 
+#include <SDL2/SDL_image.h>
+
 RenITexBody::RenITexBody():
 	RenISurfBody(),
 #ifndef NDEBUG

@@ -202,3 +202,7 @@ target_link_libraries(render PUBLIC
     GLEW::GLEW
     glm::glm
 )
+
+target_link_libraries(render PRIVATE
+    SDL2_image::SDL2_image
+)
