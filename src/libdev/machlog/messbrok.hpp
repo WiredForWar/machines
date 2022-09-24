@@ -104,7 +104,7 @@ public:
 	virtual void processMessage( NetMessage* );
 	//note that message code has to be integer. This allows untype safe but useful different
 	//enums to be used at the different library levels.
-	virtual void sendMessage( int messageCode, NetNode* from, NetMessage::NetMessageRecipients to );
+	virtual void sendMessage( int messageCode, NetNode* from, NetMessageRecipients to );
 
 	bool hasCachedOutgoingMessages() const;
 	void sendCachedOutgoingMessages();

@@ -391,7 +391,7 @@ NetMessage* NetINetwork::getMessage()
 	return pFrontMessage;
 }
 
-void NetINetwork::sendMessage( const NetPriority& priority, const NetMessage::NetMessageRecipients& /*to*/, const NetMessageBody& body)
+void NetINetwork::sendMessage( const NetPriority& priority, const NetMessageRecipients& /*to*/, const NetMessageBody& body)
 {
     enet_uint32 flag = 0;
     if(priority.urgency() < 2)

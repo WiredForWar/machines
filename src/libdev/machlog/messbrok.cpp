@@ -248,7 +248,7 @@ void MachLogMessageBroker::doSend( MachLogNetMessage*& pMessage )
 	++nOutgoingMessages;
 	outgoingTotalLength += pMessage->header_.totalLength_;
 
-/*	NetMessage::NetMessageRecipients to;
+/*	NetMessageRecipients to;
 
 	NetAppSession::NodeIds::const_iterator i = NetNetwork::instance().session().nodes().begin();
 	NetAppSession::NodeIds::const_iterator j = NetNetwork::instance().session().nodes().end();
@@ -289,7 +289,7 @@ void MachLogMessageBroker::doSend( MachLogNetMessage*& pMessage )
 
 
 //virtual
-void MachLogMessageBroker::sendMessage( int , NetNode* , NetMessage::NetMessageRecipients )
+void MachLogMessageBroker::sendMessage( int , NetNode* , NetMessageRecipients )
 {
 }
 
@@ -300,7 +300,7 @@ bool MachLogMessageBroker::hasCachedOutgoingMessages() const
 
 void MachLogMessageBroker::sendCachedOutgoingMessages()
 {
-	NetMessage::NetMessageRecipients to;
+	NetMessageRecipients to;
 /*	NetAppSession::NodeIds::const_iterator i = NetNetwork::instance().session().nodes().begin();
 	NetAppSession::NodeIds::const_iterator j = NetNetwork::instance().session().nodes().end();
 	for( ; i != j; ++i )

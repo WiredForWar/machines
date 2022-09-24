@@ -358,6 +358,6 @@ bool NetNetwork::haveMessages()
 void NetNetwork::sendMessage( const NetPriority& priority,
                               const NetMessageBody& body )
 {
-    NetMessage::NetMessageRecipients to;
+    NetMessageRecipients to;
     pNetINetwork_->sendMessage(priority, to, body);
 }

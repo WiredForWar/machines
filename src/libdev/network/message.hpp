@@ -19,12 +19,12 @@
 #include "network/messhead.hpp"
 #include "network/messbody.hpp"
 
+typedef ctl_pvector<NetNodeUid> NetMessageRecipients;
+
 class NetMessage
 // Canonical form revoked
 {
 public:
-	typedef ctl_pvector< NetNodeUid > NetMessageRecipients;
-
     NetMessage( const NetMessageHeader& , const NetMessageBody& );
     NetMessage( const NetMessage& );
     ~NetMessage();

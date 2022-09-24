@@ -134,7 +134,7 @@ private:
 	NetMessage*                 getMessage();
 	bool                        haveMessages();
 	void                        sendMessage( const NetPriority& priority,
-                                             const NetMessage::NetMessageRecipients& /*to*/,
+                                             const NetMessageRecipients& /*to*/,
                                              const NetMessageBody& body
                                            );
 

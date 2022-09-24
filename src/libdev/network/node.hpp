@@ -55,7 +55,7 @@ public:
         NetNodeUid*                             pNodeUid();
         const NetAppSessionUid& appSessionUid() const;
 
-        virtual void sendMessage( const NetPriority& priority, const NetMessage::NetMessageRecipients& to, const NetMessageBody& body);
+        virtual void sendMessage(const NetPriority& priority, const NetMessageRecipients& to, const NetMessageBody& body);
         // POST( not ctl_contains( &to, nodeUid() ) );
 
         virtual void receiveMessage( NetMessage* message );
