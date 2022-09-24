@@ -9,7 +9,6 @@ set(RENDER_SOURCES
     capable.hpp
     capablei.cpp
     capable.ipp
-    CMakeLists.txt
     colmap.cpp
     colmap.hpp
     colour.cpp
