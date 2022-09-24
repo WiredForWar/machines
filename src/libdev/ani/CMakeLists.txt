@@ -21,4 +21,10 @@ target_link_libraries(ani PUBLIC
     LibDev::render
 )
 
+if(USE_SWSCALE)
+    target_link_libraries(ani PUBLIC
+        ffmpeg::swscale
+    )
+endif()
+
 target_compile_definitions(ani PUBLIC USE_SWSCALE=$<BOOL:${USE_SWSCALE}>)

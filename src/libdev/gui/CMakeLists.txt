@@ -57,4 +57,5 @@ add_library(LibDev::gui ALIAS gui)
 
 target_link_libraries(gui PUBLIC
     LibDev::device
+    LibDev::render
 )

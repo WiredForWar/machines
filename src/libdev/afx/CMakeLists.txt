@@ -24,4 +24,6 @@ set(AFX_SOURCES
 add_library(afx_lite OBJECT ${AFX_SOURCES})
 add_library(afx OBJECT ${AFX_SOURCES} AfxSdlApp.cpp)
 target_link_libraries(afx PUBLIC
-    SDL2::SDL2)
+    LibDev::render
+    SDL2::SDL2
+)

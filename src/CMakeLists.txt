@@ -158,6 +158,7 @@ target_sources(libs
 
 target_link_libraries(libs INTERFACE
     LibDev::network
+    LibDev::render
 )
 
 add_library(libs_mach_gui INTERFACE)

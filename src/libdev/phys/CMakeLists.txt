@@ -87,4 +87,5 @@ add_library(LibDev::phys ALIAS phys)
 
 target_link_libraries(phys PUBLIC
     LibDev::device
+    LibDev::render
 )
