@@ -43,6 +43,14 @@ IF (ENET_FOUND)
     ELSE(WIN32)
         SET(ENET_LIBRARIES ${ENET_LIBRARY})
     ENDIF(WIN32)
+
+    if(NOT TARGET enet::enet)
+        add_library(enet::enet INTERFACE IMPORTED)
+        set_target_properties(enet::enet PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
+            "${ENET_INCLUDE_DIRS}")
+        set_property(TARGET enet::enet PROPERTY INTERFACE_LINK_LIBRARIES
+            "${ENET_LIBRARIES}")
+    endif()
 ENDIF (ENET_FOUND)
 
 MARK_AS_ADVANCED(ENET_LIBRARY ENET_LIBRARIES ENET_INCLUDE_DIRS) 

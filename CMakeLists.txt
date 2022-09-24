@@ -142,7 +142,7 @@ include(EnsureOpenALTarget)
 find_optional_dependency(Alure)
 find_optional_dependency(SWScale)
 
-find_package(ENet REQUIRED)
+find_package(enet REQUIRED)
 find_package(Freetype REQUIRED)
 
 if(NOT DEV_BUILD)
