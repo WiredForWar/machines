@@ -4,7 +4,6 @@
 #include "device/timer.hpp"
 #include "network/netdefs.hpp"
 #include "network/sessuid.hpp"
-#include "network/message.hpp"
 #include "network/nodeuid.hpp"
 
 #include "ctl/queue.hpp"
