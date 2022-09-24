@@ -200,5 +200,6 @@ add_library(LibDev::render ALIAS render)
 
 target_link_libraries(render PUBLIC
     SDL2::SDL2
+    GLEW::GLEW
     glm::glm
 )
