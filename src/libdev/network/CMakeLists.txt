@@ -37,3 +37,8 @@ set(NETWORK_SOURCES
 )
 
 add_library(network OBJECT ${NETWORK_SOURCES})
+add_library(LibDev::network ALIAS network)
+
+target_link_libraries(network PUBLIC
+    enet::enet
+)

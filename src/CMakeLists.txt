@@ -57,8 +57,6 @@ set(LIBS
     #static-libstdc++
     #freetype
     ${FREETYPE_LIBRARY}
-    #enet
-    ${ENET_LIBRARY}
 )
 
 # Includes
@@ -73,7 +71,6 @@ set(SYSTEM_INCLUDES
     ${Freetype_INCLUDE_DIRS}
     ${GLEW_INCLUDE_PATH}
     ${LIBSNDFILE_INCLUDE_DIR}
-    ${ENET_INCLUDE_DIRS}
     ${OPENAL_INCLUDE_DIR}
 )
 
@@ -157,6 +154,10 @@ target_sources(libs
     $<TARGET_OBJECTS:machphys>
     $<TARGET_OBJECTS:machlog>
 
+)
+
+target_link_libraries(libs INTERFACE
+    LibDev::network
 )
 
 add_library(libs_mach_gui INTERFACE)

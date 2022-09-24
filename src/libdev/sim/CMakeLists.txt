@@ -31,3 +31,8 @@ set(SIM_SOURCES
 )
 
 add_library(sim OBJECT ${SIM_SOURCES})
+add_library(LibDev::sim ALIAS sim)
+
+target_link_libraries(sim PUBLIC
+    LibDev::network
+)
