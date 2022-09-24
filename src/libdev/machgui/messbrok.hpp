@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 #include "mathex/point2d.hpp"
 #include "machlog/messbrok.hpp"
-#include "network/message.hpp"
 
 struct MachGuiChatMessage;
 struct MachGuiJoinMessage;

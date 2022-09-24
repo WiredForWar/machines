@@ -14,12 +14,10 @@
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
+#include "stdlib/string.hpp"
 #include "utility/id.hpp"
 #include "phys/phys.hpp"
 #include "phys/motchunk.hpp"
-#include "network/message.hpp"
-//#include "network/nodeuid.hpp"
-//#include "network/node.hpp"
 
 #include "machphys/machphys.hpp"
 #include "machphys/mcmovinf.hpp"
@@ -35,10 +33,13 @@ class MexAlignedBox2d;
 class SysPathName;
 class MachPhysFirstPersonStateVector;
 class NetNode;
+class NetNodeUid;
 class NetMessage;
 class MachLogScoreImpl;
 
 const int	MACHLOG_MAXLENGTH = 1024;
+
+typedef ctl_pvector<NetNodeUid> NetMessageRecipients;
 
 #pragma pack(push,1)
 struct MachLogMessageHeader
