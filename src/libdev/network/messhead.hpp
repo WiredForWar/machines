@@ -4,7 +4,9 @@
 #include "network/netdefs.hpp"
 #include "network/priority.hpp"
 #include "network/nodeuid.hpp"
-#include <enet/enet.h>
+
+struct _ENetPeer;
+typedef struct _ENetPeer ENetPeer;
 
 class NetMessageHeader
 {

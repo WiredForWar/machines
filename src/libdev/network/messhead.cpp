@@ -3,6 +3,8 @@
 #include "network/netdefs.hpp"
 //#include "network/priority.hpp"
 
+#include <enet/enet.h>
+
 //NetMessageHeader::NetMessageHeader( NetNode* pSender, NetPriority priority, const Recipients& recipients):
 //sender_(pSender->nodeUid()),
 //priority_(priority),
