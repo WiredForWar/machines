@@ -8,6 +8,32 @@
 #ifndef _STD_EXCEPTIO_HPP
 #define _STD_EXCEPTIO_HPP
 
+#ifndef NO_EXCEPTIONS
+
+// exceptions implemented
+
+#define _TRY_BEGIN \
+    try \
+    {
+#define _CATCH_ALL \
+    catch (...) \
+    {
+#define _CATCH_END }
+#define _RAISE(x) throw(x)
+#define _RERAISE(x) throw
+
+#else
+
+// exceptions revoked
+
+#define _TRY_BEGIN {
+#define _CATCH_ALL {
+#define _CATCH_END }
+#define _RAISE(x)
+#define _RERAISE(x)
+
+#endif /* #ifndef NO_EXCEPTIONS	*/
+
 //////////////////////////////////////////////////////////////////////
 
 typedef void fvoid_t();

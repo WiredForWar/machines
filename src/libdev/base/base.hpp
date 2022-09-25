@@ -65,30 +65,6 @@ const size_t NPOS = (size_t)(-1);
 
 //////////////////////////////////////////////////////////////////////
 
-#ifndef NO_EXCEPTIONS
-
-	// exceptions implemented
-
-	#define _TRY_BEGIN      try {
-	#define _CATCH_ALL      catch( ... ) {
-	#define _CATCH_END      }
-	#define _RAISE( x )     throw( x )
-	#define _RERAISE( x )   throw
-
-#else
-
-	// exceptions revoked
-
-	#define _TRY_BEGIN      {
-	#define _CATCH_ALL      {
-	#define _CATCH_END      }
-	#define _RAISE( x )
-	#define _RERAISE( x )
-
-#endif	/* #ifndef NO_EXCEPTIONS	*/
-
-//////////////////////////////////////////////////////////////////////
-
 #ifndef NO_ENUM_OVERLOAD
 
 	#define _BITMASK( E, T )                    \
