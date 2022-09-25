@@ -29,8 +29,10 @@ using uint64 = uint64_t;
 
 #ifdef __GNUC__
     #define WEAK_SYMBOL __attribute__((weak))
+    #define DECL_DEPRECATED __attribute__((__deprecated__))
 #else
     #define WEAK_SYMBOL
+    #define DECL_DEPRECATED
 #endif
 
 #endif  /*  #ifndef COMPILER_HPP    */
