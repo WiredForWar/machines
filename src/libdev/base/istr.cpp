@@ -19,13 +19,6 @@ PerIstream::PerIstream( istream& istr )
   //istream( istr )
    //istream( pImpl_->pBuffer_ )
 {
-    istream& base = *this;
-
-    // TODO: this again...
-    //base = pImpl_->pBuffer_;
-    //this->rdbuf(pImpl_->pBuffer_);
-    this->rdbuf(istr_.rdbuf());
-
     Persistence::instance().registerOpenIstream();
 }
 
@@ -34,11 +27,6 @@ PerIstream::PerIstream( istream& istr, PerIstreamReporter* pReporter )
   istr_( istr )
 {
     PRE( pReporter != NULL );
-
-    istream& base = *this;
-    // TODO
-    //base = pImpl_->pBuffer_;
-    this->rdbuf(istr.rdbuf());
 
     Persistence::instance().registerOpenIstream();
 }
@@ -50,6 +38,11 @@ PerIstream::~PerIstream()
     Persistence::instance().registerCloseIstream();
 }
 
+void PerIstream::read(char* pOutput, size_t length)
+{
+    istr_.read(pOutput, length);
+}
+
 //  Read a single character
 int PerIstream::get()
 {
@@ -58,9 +51,14 @@ int PerIstream::get()
     int ch = istr_.get();
 
     if( logRead() )
-        PER_READ_INDENT_STREAM( "$" << hex << (int)ch << "$" << dec );
+        PER_READ_INDENT_STREAM("$" << std::hex << (int)ch << "$" << std::dec);
 
     return ch;
+}
+
+size_t PerIstream::tellg() const
+{
+    return istr_.tellg();
 }
 
 // static

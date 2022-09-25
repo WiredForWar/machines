@@ -21,7 +21,7 @@ class PerIstreamReporter;
 
 using std::istream;
 
-class PerIstream : public istream
+class PerIstream
 {
 public:
     //  Note that istr must be capable of accepting binary data
@@ -32,8 +32,12 @@ public:
 
     virtual ~PerIstream();
 
+    void read(char* pOutput, size_t length);
+
     //  Read a single character
     int get();
+
+    size_t tellg() const;
 
     static  bool&   logRead();
 
