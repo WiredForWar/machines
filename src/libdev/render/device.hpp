@@ -96,7 +96,7 @@ public:
     // initially called by the ctor.  The client is responsible for calling
     // setViewport so that the viewport fits on the new display.
     bool reinitializeDisplayAndCreateGlContext();
-    bool fitToDisplay(RenDisplay* pDisplay) __attribute__ ((deprecated));
+    DECL_DEPRECATED bool fitToDisplay(RenDisplay* pDisplay);
 
     // This sets the sub-area of the screen which is used for 3D rendering.  The
     // remainder of the back-buffer is accessible thru the RenSurface interface.

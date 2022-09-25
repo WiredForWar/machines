@@ -87,8 +87,8 @@ private:
 	DropDownListBoxItems items_;
 	DropDownListBoxItem item_;
     //TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...
-	MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
-	bool whiteFont_;
+    DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
+    bool whiteFont_;
 	bool border_;
 
     // A GuiRoot such as MachGuiStartupScreens

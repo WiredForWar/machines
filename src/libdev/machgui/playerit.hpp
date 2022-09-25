@@ -126,7 +126,7 @@ private:
     bool highlighted_;
     bool colourHighlighted_;
     MachGuiDropDownListBox* pDropDownList_;
-    MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+    DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     MachGuiPlayerColour* pPlayerColour_;
     MachGuiSharedPlayerInfo playerInfo_;
 

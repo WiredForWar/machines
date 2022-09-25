@@ -55,7 +55,7 @@ private:
     GuiRoot* pRootParent_;
 
     //TODO: Eliminate dependency. Still required for message box stuff >.<
-	MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+    DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
 };
 
 

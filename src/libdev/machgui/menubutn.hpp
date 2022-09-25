@@ -64,9 +64,9 @@ private:
     GuiRoot* pRootParent_;
 
     //TODO: Eliminate dependency. Still required for buttonAction and other GUI event handling
-	MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+    DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
 
-	unsigned int stringId_;
+    unsigned int stringId_;
 	bool highlighted_;
 	bool flash_;
 	bool disabled_;

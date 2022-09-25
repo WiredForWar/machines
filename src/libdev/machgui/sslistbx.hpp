@@ -54,7 +54,7 @@ private:
     MachGuiSingleSelectionListBox& operator =( const MachGuiSingleSelectionListBox& );
 
     //TODO: Remove this once the focus capable control refactor is done...
-    MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+    DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     ctl_pvector< MachGuiSingleSelectionListBoxItem > listItems_;
 
     // A GuiRoot such as MachGuiStartupScreens

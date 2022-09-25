@@ -51,7 +51,7 @@ protected:
     bool highlighted() const;
     const string& text() const;
     // TODO: Eliminate this. Subclasses in declared in ctxjoin.cpp and ctxmulti.cpp use this to join & name the MP game.
-    MachGuiStartupScreens* startupScreens() __attribute((deprecated));
+    DECL_DEPRECATED MachGuiStartupScreens* startupScreens();
     MachGuiSingleSelectionListBox* myListBox();
 
     virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel ) override;
@@ -66,7 +66,7 @@ private:
     string text_;
     bool highlighted_;
     // TODO: Eliminate this. Subclasses in declared in ctxjoin.cpp and ctxmulti.cpp use this to join & name the MP game.
-    MachGuiStartupScreens* pStartupScreens_ __attribute((deprecated));
+    DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     MachGuiSingleSelectionListBox* pMyListBox_;
 
     // A GuiRoot such as MachGuiStartupScreens
