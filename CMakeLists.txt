@@ -217,30 +217,6 @@ if(BUILD_TESTS)
     add_subdirectory(test)
 endif(BUILD_TESTS)
 
-# Distribution Target
-# A directory that can be copied into your installation folder
-set(DISTRIBUTION_DIR "${CMAKE_BINARY_DIR}/distribution")
-add_custom_target(distribution
-                    DEPENDS machines planeted)
-add_custom_command(TARGET distribution
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${DISTRIBUTION_DIR}/data
-                    COMMENT "Copying GAME-data files to distribution directory" VERBATIM)
-add_custom_command(TARGET distribution
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/sounds ${DISTRIBUTION_DIR}/sounds
-                    COMMENT "Copying SOUND-data files to distribution directory" VERBATIM)
-add_custom_command(TARGET distribution
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/gui ${DISTRIBUTION_DIR}/gui
-                    COMMENT "Copying GUI graphics files to distribution directory" VERBATIM)
-add_custom_command(TARGET distribution
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/models ${DISTRIBUTION_DIR}/models
-                    COMMENT "Copying WORLD4D-data and graphics files to distribution directory" VERBATIM)
-add_custom_command(TARGET distribution
-                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:machines> ${DISTRIBUTION_DIR}/$<TARGET_FILE_NAME:machines>
-                    COMMENT "Copying machines binary to distribution directory" VERBATIM)
-add_custom_command(TARGET distribution
-                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:planeted> ${DISTRIBUTION_DIR}/$<TARGET_FILE_NAME:planeted>
-                    COMMENT "Copying planeted binary to distribution directory" VERBATIM)
-
 # Install
 install(DIRECTORY "data" DESTINATION ".")
 install(DIRECTORY "sounds" DESTINATION ".")
