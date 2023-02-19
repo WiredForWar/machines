@@ -222,6 +222,7 @@ install(DIRECTORY "data" DESTINATION ".")
 install(DIRECTORY "sounds" DESTINATION ".")
 install(DIRECTORY "gui" DESTINATION ".")
 install(DIRECTORY "models" DESTINATION ".")
+install(FILES "machstrg.xml" DESTINATION ".")
 install(TARGETS machines planeted DESTINATION ".")
 
 set(CPACK_GENERATOR ZIP)
