@@ -651,6 +651,69 @@ void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
 }
 
 // static
+std::string MachGui::getScaledImagePath(std::string path)
+{
+    const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
+    const MATHEX_SCALAR factor = uiScaleFactor();
+    if (factor == 1)
+    {
+        if (hasBmpExtention)
+            return path;
+
+        return path + ".bmp";
+    }
+
+    // TODO: Fix later :eyes:
+    if (hasBmpExtention)
+    {
+        const auto from = path.end() - 4;
+        path.replace(from, path.end(), "_2x.png");
+        return path;
+    }
+
+    return path + "_2x.png";
+}
+
+GuiBitmap MachGui::getScaledImage(std::string path)
+{
+    const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
+    const MATHEX_SCALAR factor = uiScaleFactor();
+    if (factor == 1)
+    {
+        if (!hasBmpExtention)
+        {
+            path += ".bmp";
+        }
+        return Gui::bitmap(path);
+    }
+
+    // TODO: Fix later :eyes:
+    std::string scaledImagePath = path;
+    if (hasBmpExtention)
+    {
+        const auto from = scaledImagePath.end() - 4;
+        scaledImagePath.replace(from, scaledImagePath.end(), "_2x.png");
+    }
+    else
+    {
+        scaledImagePath += "_2x.png";
+    }
+
+    if (SysPathName::existsAsFile(scaledImagePath))
+    {
+        return Gui::bitmap(scaledImagePath);
+    }
+
+    const GuiBitmap mapBitmap1x = Gui::bitmap(hasBmpExtention ? path : path + ".bmp");
+    GuiBitmap result = RenSurface::createAnonymousSurface(
+        mapBitmap1x.width() * MachGui::uiScaleFactor(),
+        mapBitmap1x.height() * MachGui::uiScaleFactor(),
+        mapBitmap1x);
+    result.stretchBlit(mapBitmap1x);
+    return result;
+}
+
+// static
 int MachGui::controlPanelInXPos()
 {
     return 6;
