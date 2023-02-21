@@ -18,7 +18,7 @@ NetMappings::DPIDVector& NetMappings::currentDPIDS()
 }
 
 //static
-unsigned NetMappings::mapDPIDtoUnsigned( DPID mapDPID )
+unsigned NetMappings::mapDPIDtoUnsigned( DPID_t mapDPID )
 {
 	DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
 
@@ -49,7 +49,7 @@ unsigned NetMappings::mapDPIDtoUnsigned( DPID mapDPID )
 }
 
 //static
-DPID NetMappings::mapUnsignedtoDPID( unsigned mapUnsigned )
+DPID_t NetMappings::mapUnsignedtoDPID( unsigned mapUnsigned )
 {
 	PRE(mapUnsigned < currentDPIDS().size());
 
@@ -62,7 +62,7 @@ DPID NetMappings::mapUnsignedtoDPID( unsigned mapUnsigned )
 }
 
 //static
-void NetMappings::updateDPID( unsigned mapUnsigned, DPID newMapID )
+void NetMappings::updateDPID( unsigned mapUnsigned, DPID_t newMapID )
 {
 	PRE(mapUnsigned < currentDPIDS().size());
 
@@ -72,7 +72,7 @@ void NetMappings::updateDPID( unsigned mapUnsigned, DPID newMapID )
 }
 
 //static
-unsigned NetMappings::mapGUIDtoUnsigned( GUID mapGUID )
+unsigned NetMappings::mapGUIDtoUnsigned( GUID_t mapGUID )
 {
 	GUIDVector& currentGUIDS = NetMappings::currentGUIDS();
 
@@ -103,7 +103,7 @@ unsigned NetMappings::mapGUIDtoUnsigned( GUID mapGUID )
 }
 
 //static
-GUID NetMappings::mapUnsignedtoGUID( unsigned mapUnsigned )
+GUID_t NetMappings::mapUnsignedtoGUID( unsigned mapUnsigned )
 {
 	PRE(mapUnsigned < currentGUIDS().size());
 
