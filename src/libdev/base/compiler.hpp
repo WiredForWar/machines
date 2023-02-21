@@ -27,7 +27,7 @@ using uint64 = uint64_t;
 
 #define _SDLAPP
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__MINGW32__)
     #define WEAK_SYMBOL __attribute__((weak))
     #define DECL_DEPRECATED __attribute__((__deprecated__))
 #else
