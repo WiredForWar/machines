@@ -2,13 +2,11 @@ FROM ubuntu:18.04
 
 USER root
 
-# Passwordless sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
 RUN apt-get update --fix-missing && \
     apt-get install -y \
         build-essential \
         file \
+        sudo \
         apt-utils \
         cmake \
         cmake-curses-gui \
@@ -24,7 +22,9 @@ RUN apt-get update --fix-missing && \
         libaudio-dev \
         libswscale-dev
 
+# Passwordless sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-RUN useradd -ms /bin/bash dev
+RUN useradd -ms /bin/bash dev && usermod -aG sudo dev
 USER dev
 WORKDIR /home/dev
