@@ -29,7 +29,7 @@ class MachGuiDropDownListBoxCreator
 // Canonical form revoked
 {
 public:
-    using DropDownListBoxItem = void*;
+    using DropDownListBoxItem = const void*;
     using DropDownListBoxItems = ctl_vector<DropDownListBoxItem>;
 
     // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS
