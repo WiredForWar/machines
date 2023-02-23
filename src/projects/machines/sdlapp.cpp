@@ -340,6 +340,15 @@ bool SDLApp::clientStartup()
     // tell the display what is the lowest resolution mode it is allowed to use
     pDisplay_->lowestAllowedMode(640, 480, 16);
 
+    {
+        int scaleFactorPercents = SysRegistry::instance().queryIntegerValue("Options\\Scale Factor", "Value");
+        if (scaleFactorPercents == 0)
+        {
+            scaleFactorPercents = 100;
+        }
+        MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
+    }
+
     // if current mode uses too much memory, switch to a mode fitting in video memory
     //  bool modeSet = pDisplay_->setHighestAllowedMode();
     //  ASSERT(modeSet, "Could not find a mode fitting in video memory");

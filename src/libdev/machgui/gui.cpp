@@ -17,6 +17,7 @@
 #include "machgui/actbmpnm.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/machine.hpp"
+#include <cassert>
 
 // static
 GuiBitmap MachGui::createIconForMachine(MachLogMachine* machine, bool firstPersonIcon)
@@ -633,6 +634,20 @@ const string& MachGui::unavailableText()
     }
 
     return text;
+}
+
+// static
+static double s_uiScaleFactor = 0;
+
+MATHEX_SCALAR MachGui::uiScaleFactor()
+{
+    assert(s_uiScaleFactor > 0);
+    return s_uiScaleFactor;
+}
+
+void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
+{
+    s_uiScaleFactor = scale;
 }
 
 // static

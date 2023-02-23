@@ -68,6 +68,9 @@ public:
     static const string& unavailableText();
     static const string& wonSymbolText();
 
+    static MATHEX_SCALAR uiScaleFactor();
+    static void setUiScaleFactor(MATHEX_SCALAR scale);
+
     // Various gui layout values
     static int controlPanelInXPos();
     static int controlPanelOutXPos();
