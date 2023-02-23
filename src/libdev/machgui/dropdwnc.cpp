@@ -384,6 +384,11 @@ void MachGuiDropDownList::itemSelected(const string& text)
     MachGuiDropDownListBox::itemSelected(text);
 }
 
+const MachGuiDropDownListBoxCreator::DropDownListBoxItems& MachGuiDropDownListBoxCreator::items() const
+{
+    return items_;
+}
+
 void MachGuiDropDownListBoxCreator::items(const DropDownListBoxItems& items)
 {
     items_ = items;

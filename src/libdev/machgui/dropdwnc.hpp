@@ -81,6 +81,8 @@ public:
     // Establish if there are values associated with drop down list box entries
     bool hasItems() const;
 
+    const DropDownListBoxItems& items() const;
+
     // Set item data associated with list box item text
     void items(const DropDownListBoxItems& items);
 
