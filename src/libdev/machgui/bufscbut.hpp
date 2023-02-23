@@ -1,5 +1,5 @@
 /*
- * B U F S C B U T . H P P 
+ * B U F S C B U T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,51 +17,60 @@
 #include "gui/icon.hpp"
 #include "gui/listobvr.hpp"
 
-//Forward refs
+// Forward refs
 class MachInGameScreen;
 class GuiSimpleScrollableList;
 
-class MachGuiBufferScrollButton : public GuiListObserver, public GuiIcon
+class MachGuiBufferScrollButton
+    : public GuiListObserver
+    , public GuiIcon
 // cannonical from revoked
 {
 public:
-    enum ScrollDir { LEFT, RIGHT, FOWARD = RIGHT, BACKWARD = LEFT };
+    enum ScrollDir
+    {
+        LEFT,
+        RIGHT,
+        FOWARD = RIGHT,
+        BACKWARD = LEFT
+    };
 
-	MachGuiBufferScrollButton(	GuiDisplayable *pParent,
-								const Gui::Coord& rel,
-								const SysPathName& bitmap,
-								GuiSimpleScrollableList* pList,
-								ScrollDir dir,
-								MachInGameScreen* pInGameScreen );
+    MachGuiBufferScrollButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        const SysPathName& bitmap,
+        GuiSimpleScrollableList* pList,
+        ScrollDir dir,
+        MachInGameScreen* pInGameScreen);
 
-	virtual ~MachGuiBufferScrollButton();
-	
-	void CLASS_INVARIANT;
+    ~MachGuiBufferScrollButton() override;
 
-	static size_t width()
-	{
-		return 17; // TODO: remove hard coding
-	}
+    void CLASS_INVARIANT;
+
+    static size_t width()
+    {
+        return 17; // TODO: remove hard coding
+    }
 
 protected:
-	virtual void listUpdated();
+    void listUpdated() override;
 
-	virtual void doBeDepressed( const GuiMouseEvent& );
-	virtual void doBeReleased( const GuiMouseEvent& );
+    void doBeDepressed(const GuiMouseEvent&) override;
+    void doBeReleased(const GuiMouseEvent&) override;
 
-	virtual const GuiBitmap& getBitmap() const;
+    const GuiBitmap& getBitmap() const override;
 
 private:
-	// Operations revoked
-	MachGuiBufferScrollButton( const MachGuiBufferScrollButton& );
-	MachGuiBufferScrollButton& operator =( const MachGuiBufferScrollButton& );
-	bool operator ==( const MachGuiBufferScrollButton& ) const;
+    // Operations revoked
+    MachGuiBufferScrollButton(const MachGuiBufferScrollButton&);
+    MachGuiBufferScrollButton& operator=(const MachGuiBufferScrollButton&);
+    bool operator==(const MachGuiBufferScrollButton&) const;
 
-	friend ostream& operator <<( ostream& o, const MachGuiBufferScrollButton& t );
-	
-	// Data members...
-	ScrollDir scrollDir_;
-	MachInGameScreen* pInGameScreen_;
+    friend ostream& operator<<(ostream& o, const MachGuiBufferScrollButton& t);
+
+    // Data members...
+    ScrollDir scrollDir_;
+    MachInGameScreen* pInGameScreen_;
 };
 
 #endif

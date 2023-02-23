@@ -11,12 +11,12 @@
 #include "machphys/machphys.hpp"
 #include "machphys/turntrak.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysCanAttackImpl );
+PER_DEFINE_PERSISTENT(MachPhysCanAttackImpl);
 
 MachPhysCanAttackImpl::MachPhysCanAttackImpl()
-:   mountingLinks_( MachPhys::N_MOUNTINGS, NULL ),
-	lastSoundWeapon_(_STATIC_CAST(MachPhys::WeaponType, 0)),
-	lastLightWeapon_(_STATIC_CAST(MachPhys::WeaponType, 0))
+    : mountingLinks_(MachPhys::N_MOUNTINGS, nullptr)
+    , lastSoundWeapon_(_STATIC_CAST(MachPhys::WeaponType, 0))
+    , lastLightWeapon_(_STATIC_CAST(MachPhys::WeaponType, 0))
 {
 
     TEST_INVARIANT;
@@ -26,16 +26,16 @@ MachPhysCanAttackImpl::~MachPhysCanAttackImpl()
 {
     TEST_INVARIANT;
 
-	for ( TurnerTrackers::iterator i = turnerTrackers_.begin(); i != turnerTrackers_.end(); ++i )
-		_DELETE( *i );
+    for (TurnerTrackers::iterator i = turnerTrackers_.begin(); i != turnerTrackers_.end(); ++i)
+        _DELETE(*i);
 }
 
 void MachPhysCanAttackImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysCanAttackImpl& t )
+ostream& operator<<(ostream& o, const MachPhysCanAttackImpl& t)
 {
 
     o << "MachPhysCanAttackImpl " << (void*)&t << " start" << std::endl;
@@ -44,16 +44,16 @@ ostream& operator <<( ostream& o, const MachPhysCanAttackImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysCanAttackImpl& attack )
+void perWrite(PerOstream& ostr, const MachPhysCanAttackImpl& attack)
 {
     ostr << attack.mountingLinks_;
-//    ostr << attack.weapons_;
+    //    ostr << attack.weapons_;
 }
 
-void perRead( PerIstream& istr, MachPhysCanAttackImpl& attack )
+void perRead(PerIstream& istr, MachPhysCanAttackImpl& attack)
 {
     istr >> attack.mountingLinks_;
-//    istr >> attack.weapons_;
+    //    istr >> attack.weapons_;
 }
 
 /* End ATTACKI.CPP **************************************************/

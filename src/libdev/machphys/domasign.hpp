@@ -1,5 +1,5 @@
 /*
- * D O M A S I G N . H P P 
+ * D O M A S I G N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,12 +17,12 @@ class MachPhysDomainAssignor : public W4dDomainAssignor
 {
 public:
     MachPhysDomainAssignor(const MachPhysPlanetSurface*);
-    virtual ~MachPhysDomainAssignor();
+    ~MachPhysDomainAssignor() override;
 
-	virtual void assignDomains(W4dRoot*, W4dLight*);
+    void assignDomains(W4dRoot*, W4dLight*) override;
 
 private:
-	const MachPhysPlanetSurface* const pPlanet_;
+    const MachPhysPlanetSurface* const pPlanet_;
 };
 
 #endif

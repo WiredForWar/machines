@@ -1,5 +1,5 @@
 /*
- * T R I A N G L E . H P P 
+ * T R I A N G L E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,26 +17,25 @@ class RenTriangle
 public:
     ~RenTriangle();
 
-	// Provide read-only access to the vertices.  If you wish to move a
-	// vertex, use the RenMesh interface.
-	const RenVertex& vertex(size_t index) const;		// index [0,2]
-	
-	RenMaterial& material();
-	const RenMaterial& material() const;
-	
+    // Provide read-only access to the vertices.  If you wish to move a
+    // vertex, use the RenMesh interface.
+    const RenVertex& vertex(size_t index) const; // index [0,2]
+
+    RenMaterial& material();
+    const RenMaterial& material() const;
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const RenTriangle& t );
+    friend ostream& operator<<(ostream& o, const RenTriangle& t);
 
 private:
     RenTriangle();
 
     // Operations deliberately revoked
-    RenTriangle( const RenTriangle& );
-    RenTriangle& operator =( const RenTriangle& );
-    bool operator ==( const RenTriangle& );
+    RenTriangle(const RenTriangle&);
+    RenTriangle& operator=(const RenTriangle&);
+    bool operator==(const RenTriangle&);
 };
-
 
 #endif
 

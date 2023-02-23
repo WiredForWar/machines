@@ -18,36 +18,35 @@
 
 #include "phys/cspace2.hpp"
 
-//memberwise canonical
+// memberwise canonical
 class PhysCS2dDomainArc
 {
 public:
-    //ctor
+    // ctor
     PhysCS2dDomainArc();
-    PhysCS2dDomainArc( PhysConfigSpace2d::DomainId domainId );
+    PhysCS2dDomainArc(PhysConfigSpace2d::DomainId domainId);
 
-    //dtor
+    // dtor
     ~PhysCS2dDomainArc();
 
-    //Data access
+    // Data access
     const PhysConfigSpace2d::DomainId& domainId() const;
 
-    friend bool operator== ( const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs );
-    friend bool operator< ( const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs );
+    friend bool operator==(const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs);
+    friend bool operator<(const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysCS2dDomainArc& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dDomainArc& t);
 
 private:
-    //Data members
-    PhysConfigSpace2d::DomainId domainId_; //The domain containing the arc
+    // Data members
+    PhysConfigSpace2d::DomainId domainId_; // The domain containing the arc
 };
 
 #ifdef _INLINE
-    #include "internal/cs2dmarc.ipp"
+#include "internal/cs2dmarc.ipp"
 #endif
-
 
 #endif
 

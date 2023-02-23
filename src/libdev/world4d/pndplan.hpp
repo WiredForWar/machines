@@ -14,8 +14,7 @@
 
 #include "base/base.hpp"
 
-template< class X >
-class PLAN_TYPE
+template <class X> class PLAN_TYPE
 {
 public:
     PLAN_TYPE();
@@ -23,24 +22,22 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PLAN_TYPE< X >& t );
+    friend ostream& operator<<(ostream& o, const PLAN_TYPE<X>& t);
 
 private:
     // Operation deliberately revoked
-    PLAN_TYPE( const PLAN_TYPE< X >& );
+    PLAN_TYPE(const PLAN_TYPE<X>&);
 
     // Operation deliberately revoked
-    PLAN_TYPE< X >& operator =( const PLAN_TYPE< X >& );
+    PLAN_TYPE<X>& operator=(const PLAN_TYPE<X>&);
 
     // Operation deliberately revoked
-    bool operator ==( const PLAN_TYPE< X >& );
-
+    bool operator==(const PLAN_TYPE<X>&);
 };
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "world4d/pndplan.ctp"
-//#endif
-
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "world4d/pndplan.ctp"
+// #endif
 
 #endif
 

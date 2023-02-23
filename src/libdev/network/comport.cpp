@@ -7,12 +7,17 @@
 
 #include "network/comport.hpp"
 
-NetComPortAddress::NetComPortAddress( size_t portNumber, BaudRate baudRate , StopBits stopBits, Parity parity, FlowControl flowControl )
-: portNumber_( portNumber ),
-  baudRate_( baudRate ),
-  stopBits_( stopBits ),
-  parity_( parity ),
-  flowControl_( flowControl )
+NetComPortAddress::NetComPortAddress(
+    size_t portNumber,
+    BaudRate baudRate,
+    StopBits stopBits,
+    Parity parity,
+    FlowControl flowControl)
+    : portNumber_(portNumber)
+    , baudRate_(baudRate)
+    , stopBits_(stopBits)
+    , parity_(parity)
+    , flowControl_(flowControl)
 {
 
     TEST_INVARIANT;
@@ -21,15 +26,14 @@ NetComPortAddress::NetComPortAddress( size_t portNumber, BaudRate baudRate , Sto
 NetComPortAddress::~NetComPortAddress()
 {
     TEST_INVARIANT;
-
 }
 
 void NetComPortAddress::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const NetComPortAddress& t )
+ostream& operator<<(ostream& o, const NetComPortAddress& t)
 {
 
     o << "NetComPortAddress " << (void*)&t << " start" << std::endl;
@@ -40,53 +44,53 @@ ostream& operator <<( ostream& o, const NetComPortAddress& t )
 
 size_t NetComPortAddress::portNumber() const
 {
-	return portNumber_;
+    return portNumber_;
 }
 
-void NetComPortAddress::portNumber( size_t newPortNumber )
+void NetComPortAddress::portNumber(size_t newPortNumber)
 {
-	PRE( newPortNumber > 0 and newPortNumber < 5 );
-	portNumber_ = newPortNumber;
+    PRE(newPortNumber > 0 and newPortNumber < 5);
+    portNumber_ = newPortNumber;
 }
 
 NetComPortAddress::BaudRate NetComPortAddress::baudRate() const
 {
-	return baudRate_;
+    return baudRate_;
 }
 
-void NetComPortAddress::baudRate( NetComPortAddress::BaudRate newBaudRate )
+void NetComPortAddress::baudRate(NetComPortAddress::BaudRate newBaudRate)
 {
-	baudRate_ = newBaudRate;
+    baudRate_ = newBaudRate;
 }
 
-NetComPortAddress::StopBits	NetComPortAddress::stopBits() const
+NetComPortAddress::StopBits NetComPortAddress::stopBits() const
 {
-	return stopBits_;
+    return stopBits_;
 }
 
-void NetComPortAddress::stopBits( NetComPortAddress::StopBits newStopBits )
+void NetComPortAddress::stopBits(NetComPortAddress::StopBits newStopBits)
 {
-	stopBits_ = newStopBits;
+    stopBits_ = newStopBits;
 }
 
 NetComPortAddress::Parity NetComPortAddress::parity() const
 {
-	return parity_;
+    return parity_;
 }
 
-void NetComPortAddress::parity( NetComPortAddress::Parity newParity )
+void NetComPortAddress::parity(NetComPortAddress::Parity newParity)
 {
-	parity_ = newParity;
+    parity_ = newParity;
 }
 
-NetComPortAddress::FlowControl	NetComPortAddress::flowControl() const
+NetComPortAddress::FlowControl NetComPortAddress::flowControl() const
 {
-	return flowControl_;
+    return flowControl_;
 }
 
-void NetComPortAddress::flowControl( NetComPortAddress::FlowControl newFlowControl )
+void NetComPortAddress::flowControl(NetComPortAddress::FlowControl newFlowControl)
 {
-	flowControl_ = newFlowControl;
+    flowControl_ = newFlowControl;
 }
 
 /* End COMPORT.CPP **************************************************/

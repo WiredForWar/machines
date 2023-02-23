@@ -26,23 +26,23 @@
 #include "phys/rampacce.hpp"
 #include "phys/asclplan.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysWhiteSphere );
+PER_DEFINE_PERSISTENT(MachPhysWhiteSphere);
 
-//One-time ctor
+// One-time ctor
 MachPhysWhiteSphere::MachPhysWhiteSphere()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/vortex/white.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/vortex/white.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysWhiteSphere::MachPhysWhiteSphere( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysWhiteSphere::MachPhysWhiteSphere(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -50,10 +50,9 @@ MachPhysWhiteSphere::MachPhysWhiteSphere( W4dEntity* pParent, const MexTransform
 MachPhysWhiteSphere::~MachPhysWhiteSphere()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysWhiteSphere& MachPhysWhiteSphere::exemplar()
 {
     return MachPhysOtherPersistence::instance().whiteSphereExemplar();
@@ -61,10 +60,10 @@ const MachPhysWhiteSphere& MachPhysWhiteSphere::exemplar()
 
 void MachPhysWhiteSphere::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysWhiteSphere& t )
+ostream& operator<<(ostream& o, const MachPhysWhiteSphere& t)
 {
 
     o << "MachPhysWhiteSphere " << (void*)&t << " start" << std::endl;
@@ -73,30 +72,29 @@ ostream& operator <<( ostream& o, const MachPhysWhiteSphere& t )
     return o;
 }
 
-//virtual
-bool MachPhysWhiteSphere::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysWhiteSphere::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysWhiteSphere& sphere )
+void perWrite(PerOstream& ostr, const MachPhysWhiteSphere& sphere)
 {
     const W4dEntity& base = sphere;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysWhiteSphere& sphere )
+void perRead(PerIstream& istr, MachPhysWhiteSphere& sphere)
 {
     W4dEntity& base = sphere;
 
     istr >> base;
 }
 
-MachPhysWhiteSphere::MachPhysWhiteSphere( PerConstructor c )
-:W4dEntity( c )
+MachPhysWhiteSphere::MachPhysWhiteSphere(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
 /* End WSPHERE.CPP *************************************************/
-

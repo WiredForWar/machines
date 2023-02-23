@@ -8,11 +8,10 @@
 
 #include "base/base.hpp"
 
-extern "C"
-{
-	void DevSetPageGranularity( uint16 );
-	void DevCopyLinearToPlanar640x400x256( uint8 * );
-	void DevCopyLinearToPlanar640x480x256( uint8 * );
+extern "C" {
+void DevSetPageGranularity(uint16);
+void DevCopyLinearToPlanar640x400x256(uint8*);
+void DevCopyLinearToPlanar640x480x256(uint8*);
 }
 
 #endif // _SVGAASM_HPP

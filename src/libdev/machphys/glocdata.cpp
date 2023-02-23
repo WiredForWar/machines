@@ -16,29 +16,28 @@ MachPhysGeoLocatorData::MachPhysGeoLocatorData()
 MachPhysGeoLocatorData::~MachPhysGeoLocatorData()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::MineralGrade MachPhysGeoLocatorData::mineralGrade() const
 {
-	return mineralGrade_;
+    return mineralGrade_;
 }
 
-void MachPhysGeoLocatorData::mineralGrade( const MachPhys::MineralGrade& newMineralGrade )
+void MachPhysGeoLocatorData::mineralGrade(const MachPhys::MineralGrade& newMineralGrade)
 {
-	mineralGrade_ = newMineralGrade;
+    mineralGrade_ = newMineralGrade;
 }
 
 void MachPhysGeoLocatorData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGeoLocatorData& t )
+ostream& operator<<(ostream& o, const MachPhysGeoLocatorData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-	//o << (MachPhysMachineData)t;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysMachineData)t;
 
     return o;
 }

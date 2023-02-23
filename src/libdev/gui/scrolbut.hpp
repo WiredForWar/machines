@@ -1,5 +1,5 @@
 /*
- * S C R O L B U T . H P P 
+ * S C R O L B U T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,62 +16,72 @@
 #include "gui/listobvr.hpp"
 #include "gui/button.hpp"
 
-class GuiScrollButton : public GuiListObserver, public GuiBitmapButtonWithFilledBorder
+class GuiScrollButton
+    : public GuiListObserver
+    , public GuiBitmapButtonWithFilledBorder
 // Canonical form revoked
 {
 public:
-	enum ScrollDir{ FOWARD, BACKWARD, END, BEGIN };
+    enum ScrollDir
+    {
+        FOWARD,
+        BACKWARD,
+        END,
+        BEGIN
+    };
 
-    GuiScrollButton( GuiDisplayable* pParent, 
-    				 const Gui::Coord& rel, 
-    				 GuiSimpleScrollableList* pList, 
-					 ScrollDir dir,
-    				 const GuiFilledBorderColours&,
-					 const GuiBitmap& );
-    GuiScrollButton( GuiDisplayable* pParent, 
-    				 const Gui::Coord& rel, 
-    				 GuiSimpleScrollableList* pList, 
-					 ScrollDir dir,
-					 const GuiBitmap& );
-    GuiScrollButton( GuiDisplayable* pParent, 
-    				 const Gui::Coord& rel, 
-    				 GuiSimpleScrollableList* pList, 
-					 ScrollDir dir,
-    				 const GuiFilledBorderColours&,
-					 const GuiBitmap& enabledBitmap,
-					 const GuiBitmap& disabledBitmap );
-    GuiScrollButton( GuiDisplayable* pParent, 
-    				 const Gui::Coord& rel, 
-    				 GuiSimpleScrollableList* pList, 
-					 ScrollDir dir,
-					 const GuiBitmap& enabledBitmap,
-					 const GuiBitmap& disabledBitmap );
+    GuiScrollButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        GuiSimpleScrollableList* pList,
+        ScrollDir dir,
+        const GuiFilledBorderColours&,
+        const GuiBitmap&);
+    GuiScrollButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        GuiSimpleScrollableList* pList,
+        ScrollDir dir,
+        const GuiBitmap&);
+    GuiScrollButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        GuiSimpleScrollableList* pList,
+        ScrollDir dir,
+        const GuiFilledBorderColours&,
+        const GuiBitmap& enabledBitmap,
+        const GuiBitmap& disabledBitmap);
+    GuiScrollButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        GuiSimpleScrollableList* pList,
+        ScrollDir dir,
+        const GuiBitmap& enabledBitmap,
+        const GuiBitmap& disabledBitmap);
 
-    ~GuiScrollButton();
+    ~GuiScrollButton() override;
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual void listUpdated();	
+    void listUpdated() override;
 
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doBeDepressed(const GuiMouseEvent& rel) override;
 
-
-	virtual const GuiBitmap& getBitmap() const;
+    const GuiBitmap& getBitmap() const override;
 
 private:
-    friend ostream& operator <<( ostream& o, const GuiScrollButton& t );
+    friend ostream& operator<<(ostream& o, const GuiScrollButton& t);
 
-    GuiScrollButton( const GuiScrollButton& );
-    GuiScrollButton& operator =( const GuiScrollButton& );
+    GuiScrollButton(const GuiScrollButton&);
+    GuiScrollButton& operator=(const GuiScrollButton&);
 
-	ScrollDir scrollDir_;
+    ScrollDir scrollDir_;
 
-	GuiBitmap enabledBitmap_;
-	GuiBitmap disabledBitmap_;
+    GuiBitmap enabledBitmap_;
+    GuiBitmap disabledBitmap_;
 };
-
 
 #endif
 

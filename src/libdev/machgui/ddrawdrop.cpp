@@ -1,5 +1,5 @@
 /*
- * D D R A W D R O P . C P P 
+ * D D R A W D R O P . C P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -7,25 +7,44 @@
 
 #include "machgui/ddrawdrop.hpp"
 
-MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens* pStartup, int width, const GuiStrings& availText, MachGuiDropDownCallback* pCallbackHandler )
-:	MachGuiDropDownListBoxCreator( pParent, pStartup, width, availText ),
-	callbackHandler_( pCallbackHandler )
+MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
+    GuiDisplayable* pParent,
+    MachGuiStartupScreens* pStartup,
+    int width,
+    const GuiStrings& availText,
+    MachGuiDropDownCallback* pCallbackHandler)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, availText)
+    , callbackHandler_(pCallbackHandler)
 {
 
     TEST_INVARIANT;
 }
 
-MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens* pStartup, int width, const GuiStrings& availText, bool whiteFont, MachGuiDropDownCallback* pCallbackHandler )
-:	MachGuiDropDownListBoxCreator( pParent, pStartup, width, availText, whiteFont ),
-	callbackHandler_( pCallbackHandler )
+MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
+    GuiDisplayable* pParent,
+    MachGuiStartupScreens* pStartup,
+    int width,
+    const GuiStrings& availText,
+    bool whiteFont,
+    MachGuiDropDownCallback* pCallbackHandler)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, availText, whiteFont)
+    , callbackHandler_(pCallbackHandler)
 {
 
     TEST_INVARIANT;
 }
 
-MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens* pStartup, const Gui::Coord& relCoord, int width, const GuiStrings& availText, bool whiteFont, bool border, MachGuiDropDownCallback* pCallbackHandler )
-:	MachGuiDropDownListBoxCreator( pParent, pStartup, relCoord, width, availText, whiteFont, border ),
-	callbackHandler_( pCallbackHandler )
+MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
+    GuiDisplayable* pParent,
+    MachGuiStartupScreens* pStartup,
+    const Gui::Coord& relCoord,
+    int width,
+    const GuiStrings& availText,
+    bool whiteFont,
+    bool border,
+    MachGuiDropDownCallback* pCallbackHandler)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, relCoord, width, availText, whiteFont, border)
+    , callbackHandler_(pCallbackHandler)
 {
 
     TEST_INVARIANT;
@@ -34,25 +53,39 @@ MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator( GuiDispl
 MachGuiDDrawDropDownListBoxCreator::~MachGuiDDrawDropDownListBoxCreator()
 {
     TEST_INVARIANT;
-	// newed by client but deleted here
-	_DELETE( callbackHandler_ );
+    // newed by client but deleted here
+    _DELETE(callbackHandler_);
 }
 
 void MachGuiDDrawDropDownListBoxCreator::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-// virtual 
-MachGuiDropDownList* MachGuiDDrawDropDownListBoxCreator::createDropDownList( 	MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    														size_t horizontalSpacing, size_t verticalSpacing,
-																				size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-																				MachGuiDropDownListBoxCreator* listBoxCreator )
+// virtual
+MachGuiDropDownList* MachGuiDDrawDropDownListBoxCreator::createDropDownList(
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc,
+    size_t itemWidth,
+    const ctl_vector<string>& itemText,
+    MachGuiDropDownListBoxCreator* listBoxCreator)
 {
-	return _NEW( MachGuiDDrawDropDownList( pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText, listBoxCreator, callbackHandler_ ) );
+    return _NEW(MachGuiDDrawDropDownList(
+        pParent,
+        box,
+        horizontalSpacing,
+        verticalSpacing,
+        scrollInc,
+        itemWidth,
+        itemText,
+        listBoxCreator,
+        callbackHandler_));
 }
 
-ostream& operator <<( ostream& o, const MachGuiDDrawDropDownListBoxCreator& t )
+ostream& operator<<(ostream& o, const MachGuiDDrawDropDownListBoxCreator& t)
 {
 
     o << "MachGuiDDrawDropDownListBoxCreator " << (void*)&t << " start" << std::endl;
@@ -61,68 +94,100 @@ ostream& operator <<( ostream& o, const MachGuiDDrawDropDownListBoxCreator& t )
     return o;
 }
 
-//virtual 
-bool MachGuiDDrawDropDownListBoxCreator::doHandleNavigationKey( NavKey navKey, MachGuiFocusCapableControl** pFocusCapableControl )
+// virtual
+bool MachGuiDDrawDropDownListBoxCreator::doHandleNavigationKey(
+    NavKey navKey,
+    MachGuiFocusCapableControl** pFocusCapableControl)
 {
-	bool retValue = MachGuiDropDownListBoxCreator::doHandleNavigationKey( navKey, pFocusCapableControl );
+    bool retValue = MachGuiDropDownListBoxCreator::doHandleNavigationKey(navKey, pFocusCapableControl);
 
-	if ( 	navKey == MachGuiFocusCapableControl::UP_ARROW or 
-			navKey == MachGuiFocusCapableControl::DOWN_ARROW )
-	{
-		callbackHandler_->callBack();
-	}
+    if (navKey == MachGuiFocusCapableControl::UP_ARROW or navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    {
+        callbackHandler_->callBack();
+    }
 
-	return retValue;
+    return retValue;
 }
 
-
-MachGuiDDrawDropDownList::MachGuiDDrawDropDownList( MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    							size_t horizontalSpacing, size_t verticalSpacing,
-													size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-													MachGuiDropDownListBoxCreator* listBoxCreator, MachGuiDropDownCallback* callbackHandler )
-:	MachGuiDropDownList( pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText, listBoxCreator ),
-	callbackHandler_( callbackHandler )
+MachGuiDDrawDropDownList::MachGuiDDrawDropDownList(
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc,
+    size_t itemWidth,
+    const ctl_vector<string>& itemText,
+    MachGuiDropDownListBoxCreator* listBoxCreator,
+    MachGuiDropDownCallback* callbackHandler)
+    : MachGuiDropDownList(
+        pParent,
+        box,
+        horizontalSpacing,
+        verticalSpacing,
+        scrollInc,
+        itemWidth,
+        itemText,
+        listBoxCreator)
+    , callbackHandler_(callbackHandler)
 {
-	// Intentionally empty
+    // Intentionally empty
 }
 
-MachGuiDDrawDropDownList::MachGuiDDrawDropDownList( MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    							size_t horizontalSpacing, size_t verticalSpacing,
-													size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-													MachGuiDropDownListBoxCreator* listBoxCreator, bool whiteFont, MachGuiDropDownCallback* callbackHandler )
-:	MachGuiDropDownList( pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText, listBoxCreator, whiteFont ),
-	callbackHandler_( callbackHandler )
+MachGuiDDrawDropDownList::MachGuiDDrawDropDownList(
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc,
+    size_t itemWidth,
+    const ctl_vector<string>& itemText,
+    MachGuiDropDownListBoxCreator* listBoxCreator,
+    bool whiteFont,
+    MachGuiDropDownCallback* callbackHandler)
+    : MachGuiDropDownList(
+        pParent,
+        box,
+        horizontalSpacing,
+        verticalSpacing,
+        scrollInc,
+        itemWidth,
+        itemText,
+        listBoxCreator,
+        whiteFont)
+    , callbackHandler_(callbackHandler)
 
 {
-	// Intentionally empty
+    // Intentionally empty
 }
 
-// virtual 
-MachGuiDropDownListBoxItem*  MachGuiDDrawDropDownList::createListBoxItem(	MachGuiStartupScreens* pStartupScreens, 
-																			MachGuiDropDownListBox* pListBox, 
-																			size_t width, 
-																			const string& text,
-																			bool whiteFont )
+// virtual
+MachGuiDropDownListBoxItem* MachGuiDDrawDropDownList::createListBoxItem(
+    MachGuiStartupScreens* pStartupScreens,
+    MachGuiDropDownListBox* pListBox,
+    size_t width,
+    const string& text,
+    bool whiteFont)
 {
-	return _NEW( MachGuiDDrawDropDownListBoxItem( pStartupScreens, pListBox, width, text, whiteFont, callbackHandler_ ) );
+    return _NEW(MachGuiDDrawDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont, callbackHandler_));
 }
 
-MachGuiDDrawDropDownListBoxItem::MachGuiDDrawDropDownListBoxItem( 	MachGuiStartupScreens* pStartupScreens, 
-																	MachGuiDropDownListBox* pListBox, 
-																	size_t width, 
-																	const string& text,
-																	bool whiteFont,
-																	MachGuiDropDownCallback* callbackHandler )
-:	MachGuiDropDownListBoxItem( pStartupScreens, pListBox, width, text, whiteFont ),
-	callbackHandler_( callbackHandler )
+MachGuiDDrawDropDownListBoxItem::MachGuiDDrawDropDownListBoxItem(
+    MachGuiStartupScreens* pStartupScreens,
+    MachGuiDropDownListBox* pListBox,
+    size_t width,
+    const string& text,
+    bool whiteFont,
+    MachGuiDropDownCallback* callbackHandler)
+    : MachGuiDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont)
+    , callbackHandler_(callbackHandler)
 {
-	// Intentionally empty
+    // Intentionally empty
 }
 
 // virtual
 void MachGuiDDrawDropDownListBoxItem::select()
 {
-	MachGuiDropDownListBoxItem::select();
-	callbackHandler_->callBack();
+    MachGuiDropDownListBoxItem::select();
+    callbackHandler_->callBack();
 }
 /* End DDRAWDROP.CPP ************************************************/

@@ -4,7 +4,7 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-//#include "stdlib/memory.hpp"
+// #include "stdlib/memory.hpp"
 #include <memory>
 #include "ctl/list.hpp"
 #include "mathex/point2d.hpp"
@@ -33,36 +33,41 @@
 #include "machlog/messbrok.hpp"
 
 #ifndef _INLINE
-    #include "machlog/artefact.ipp"
+#include "machlog/artefact.ipp"
 #endif
 
-PER_DEFINE_PERSISTENT( MachLogArtefact );
-PER_DEFINE_PERSISTENT( MachLogArtefactLinkData );
+PER_DEFINE_PERSISTENT(MachLogArtefact);
+PER_DEFINE_PERSISTENT(MachLogArtefactLinkData);
 
-MachLogArtefact::MachLogArtefact( int subType, const MexPoint3d& location, const MexRadians& angle )
-:   MachActor(  &MachLogRaces::instance().race( MachPhys::NORACE ), newPhysArtefact( subType, location, angle ),
-                MachLog::ARTEFACT ),
-    pLinkDatas_( NULL ),
-    obstaclePolygonId_( 0 )
+MachLogArtefact::MachLogArtefact(int subType, const MexPoint3d& location, const MexRadians& angle)
+    : MachActor(
+        &MachLogRaces::instance().race(MachPhys::NORACE),
+        newPhysArtefact(subType, location, angle),
+        MachLog::ARTEFACT)
+    , pLinkDatas_(nullptr)
+    , obstaclePolygonId_(0)
 {
-    //NB pPhysArtefact_ initialised as side effect of newPhysArtefact()
+    // NB pPhysArtefact_ initialised as side effect of newPhysArtefact()
 
     initialise();
-        MachLogRaces::instance().artefactsCollection().push_back( this );
+    MachLogRaces::instance().artefactsCollection().push_back(this);
 
     TEST_INVARIANT;
 }
 
-MachLogArtefact::MachLogArtefact( int subType, const MexPoint3d& location, const MexRadians& angle, UtlId withId )
-:   MachActor(  &MachLogRaces::instance().race( MachPhys::NORACE ), newPhysArtefact( subType, location, angle ),
-                MachLog::ARTEFACT, withId ),
-    pLinkDatas_( NULL ),
-    obstaclePolygonId_( 0 )
+MachLogArtefact::MachLogArtefact(int subType, const MexPoint3d& location, const MexRadians& angle, UtlId withId)
+    : MachActor(
+        &MachLogRaces::instance().race(MachPhys::NORACE),
+        newPhysArtefact(subType, location, angle),
+        MachLog::ARTEFACT,
+        withId)
+    , pLinkDatas_(nullptr)
+    , obstaclePolygonId_(0)
 {
-    //NB pPhysArtefact_ initialised as side effect of newPhysArtefact()
+    // NB pPhysArtefact_ initialised as side effect of newPhysArtefact()
 
     initialise();
-        MachLogRaces::instance().artefactsCollection().push_back( this );
+    MachLogRaces::instance().artefactsCollection().push_back(this);
 
     TEST_INVARIANT;
 }
@@ -71,26 +76,26 @@ MachLogArtefact::~MachLogArtefact()
 {
     TEST_INVARIANT;
 
-    //Detach from all observees
-    if( pLinkDatas_ )
+    // Detach from all observees
+    if (pLinkDatas_)
     {
-        for( LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it )
-            (*it).pLinkedArtefact_->detach( this );
+        for (LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it)
+            (*it).pLinkedArtefact_->detach(this);
 
-        _DELETE( pLinkDatas_ );
+        _DELETE(pLinkDatas_);
     }
 
-    //Remove obstacle polygon
+    // Remove obstacle polygon
     PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
-    configSpace.remove( PhysConfigSpace2d::PolygonId( obstaclePolygonId_ ) );
+    configSpace.remove(PhysConfigSpace2d::PolygonId(obstaclePolygonId_));
 }
 
 void MachLogArtefact::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogArtefact& t )
+ostream& operator<<(ostream& o, const MachLogArtefact& t)
 {
 
     o << "MachLogArtefact " << (void*)&t << " start" << std::endl;
@@ -99,273 +104,296 @@ ostream& operator <<( ostream& o, const MachLogArtefact& t )
     return o;
 }
 
-//virtual
-PhysRelativeTime MachLogArtefact::update( const PhysRelativeTime&, MATHEX_SCALAR )
+// virtual
+PhysRelativeTime MachLogArtefact::update(const PhysRelativeTime&, MATHEX_SCALAR)
 {
-    //Update the damage indication
+    // Update the damage indication
     pPhysArtefact_->updateDamageLevel();
 
-    //Use long update time
+    // Use long update time
     return 60.0;
 }
 
-//virtual
+// virtual
 PhysRelativeTime MachLogArtefact::beDestroyed()
 {
-    //Initiate the destruction and get the animation time
+    // Initiate the destruction and get the animation time
     PhysAbsoluteTime nowTime = SimManager::instance().currentTime();
-    PhysRelativeTime result = pPhysArtefact_->destroy( nowTime );
+    PhysRelativeTime result = pPhysArtefact_->destroy(nowTime);
 
-    //Set up a dying entity event to destruct the physical model after the animation
-    preservePhysicalModel( result );
+    // Set up a dying entity event to destruct the physical model after the animation
+    preservePhysicalModel(result);
 
-    //Create some debris with BMU count of the original cost
-    dropDebris( nowTime );
+    // Create some debris with BMU count of the original cost
+    dropDebris(nowTime);
 
     return result;
 }
 
-//virtual
-void MachLogArtefact::beHit
-(
-    const int& damage, MachPhys::WeaponType byType,
-        MachActor* pByActor, MexLine3d* pByDirection, MachActor::EchoBeHit echo
-)
+// virtual
+void MachLogArtefact::beHit(
+    const int& damage,
+    MachPhys::WeaponType byType,
+    MachActor* pByActor,
+    MexLine3d* pByDirection,
+    MachActor::EchoBeHit echo)
 {
-        HAL_STREAM("(" << id() << ") MachLogArtefact::beHit for damage " << damage << std::endl );
-    //Use base class implementation.
-    //TBD victim animations for artefacts.
-        HAL_STREAM(" callin MA::beHit\n" );
-        MachActor::beHit( damage, byType, pByActor, pByDirection, echo );
-        if( isDead() )
-        {
-            if( pLinkDatas_ != NULL )
-            {
-                for( LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it )
-                    damageLinkedArtefact( (*it ) );
-            }
-        }
-        else
-    //Do more stuff if survived...
+    HAL_STREAM("(" << id() << ") MachLogArtefact::beHit for damage " << damage << std::endl);
+    // Use base class implementation.
+    // TBD victim animations for artefacts.
+    HAL_STREAM(" callin MA::beHit\n");
+    MachActor::beHit(damage, byType, pByActor, pByDirection, echo);
+    if (isDead())
     {
-        //Apply an victim animation if appropriate
-        if( byType != MachPhys::N_WEAPON_TYPES and pByDirection != NULL )
-                MachPhysWeaponUtility::victimAnimation( byType, SimManager::instance().currentTime(), *pByDirection,
-                                                        pPhysArtefact_ );
-
-        //Set the damage level
-        double hpMax = maximumhp();
-        double hpNow = hp();
-        if( hpNow < hpMax )
+        if (pLinkDatas_ != nullptr)
         {
-            double damagePercent = ((hpMax - hpNow) / hpMax) * 100.0;
-            pPhysArtefact_->damageLevel( damagePercent );
+            for (LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it)
+                damageLinkedArtefact((*it));
         }
     }
-        HAL_STREAM("(" << id() << ") MachLogArtefact::beHit DONE " << std::endl );
+    else
+    // Do more stuff if survived...
+    {
+        // Apply an victim animation if appropriate
+        if (byType != MachPhys::N_WEAPON_TYPES and pByDirection != nullptr)
+            MachPhysWeaponUtility::victimAnimation(
+                byType,
+                SimManager::instance().currentTime(),
+                *pByDirection,
+                pPhysArtefact_);
+
+        // Set the damage level
+        double hpMax = maximumhp();
+        double hpNow = hp();
+        if (hpNow < hpMax)
+        {
+            double damagePercent = ((hpMax - hpNow) / hpMax) * 100.0;
+            pPhysArtefact_->damageLevel(damagePercent);
+        }
+    }
+    HAL_STREAM("(" << id() << ") MachLogArtefact::beHit DONE " << std::endl);
 }
 
 // virtual
-void MachLogArtefact::beHitWithoutAnimation( int damage, PhysRelativeTime physicalTimeDelay, MachActor* pByActor, MachActor::EchoBeHit echo )
+void MachLogArtefact::beHitWithoutAnimation(
+    int damage,
+    PhysRelativeTime physicalTimeDelay,
+    MachActor* pByActor,
+    MachActor::EchoBeHit echo)
 {
-    if( not isDead() )
+    if (not isDead())
     {
         MachPhys::ArmourUnits armourLeft = armour();
         MachPhys::ArmourUnits absorb = 0;
         MachPhys::HitPointUnits hpLeft = hp();
-        if( damage > armourLeft )
-                absorb = armourLeft;
+        if (damage > armourLeft)
+            absorb = armourLeft;
         else
-                absorb = damage - 1;
-        armour( armourLeft - absorb );
-        hp( hpLeft - damage + absorb );
+            absorb = damage - 1;
+        armour(armourLeft - absorb);
+        hp(hpLeft - damage + absorb);
 
-        //Set the damage level
+        // Set the damage level
         double hpMax = maximumhp();
         double hpNow = hp();
-        if( hpNow < hpMax )
+        if (hpNow < hpMax)
         {
             double damagePercent = ((hpMax - hpNow) / hpMax) * 100.0;
-            pPhysArtefact_->damageLevel( damagePercent );
+            pPhysArtefact_->damageLevel(damagePercent);
         }
 
-        if( armour() < 0 )
-                armour( 0 );
+        if (armour() < 0)
+            armour(0);
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
-        if( hp() <= 0 )
-                actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if( echo == ECHO and MachLogNetwork::instance().isNetworkGame() )
-                MachLogNetwork::instance().messageBroker().sendBeHitMessage( id(), damage, MachPhys::N_WEAPON_TYPES, pByActor, NULL, physicalTimeDelay, MachLogMessageBroker::NO_ANIMATION_HIT, actorNowDead );
-        //Oops I'm dead!
-        if( hp() <= 0 )
+        if (hp() <= 0)
+            actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
+        if (echo == ECHO and MachLogNetwork::instance().isNetworkGame())
+            MachLogNetwork::instance().messageBroker().sendBeHitMessage(
+                id(),
+                damage,
+                MachPhys::N_WEAPON_TYPES,
+                pByActor,
+                nullptr,
+                physicalTimeDelay,
+                MachLogMessageBroker::NO_ANIMATION_HIT,
+                actorNowDead);
+        // Oops I'm dead!
+        if (hp() <= 0)
         {
             MATHEX_SCALAR junk = 0.0;
             PhysAbsoluteTime nowTime = SimManager::instance().currentTime();
-            if( physicalTimeDelay > 0 )
+            if (physicalTimeDelay > 0)
             {
                 MachLogArtefact& mla = asArtefact();
-                mla.preservePhysicalModel( physicalTimeDelay );
-                mla.dropDebris( nowTime + physicalTimeDelay );
-			}
+                mla.preservePhysicalModel(physicalTimeDelay);
+                mla.dropDebris(nowTime + physicalTimeDelay);
+            }
 
-			//remove any outstanding operations.
-			strategy().beInterrupted();
-			isDead( true );
-            //Ensure marker gets removed
-            selectionState( MachLog::NOT_SELECTED );
-            if( pLinkDatas_ != NULL )
+            // remove any outstanding operations.
+            strategy().beInterrupted();
+            isDead(true);
+            // Ensure marker gets removed
+            selectionState(MachLog::NOT_SELECTED);
+            if (pLinkDatas_ != nullptr)
             {
-                for( LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it )
-                    damageLinkedArtefact( (*it ) );
+                for (LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it)
+                    damageLinkedArtefact((*it));
             }
         }
-        if( not isDead() )
-		{
-			notifyObservers( W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED );
-			doVisualiseSelectionState();
-		}
+        if (not isDead())
+        {
+            notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
+            doVisualiseSelectionState();
+        }
     }
-    lastBeHitFrame( W4dManager::instance().frameNumber() );
+    lastBeHitFrame(W4dManager::instance().frameNumber());
 }
 
-
-//virtual
+// virtual
 const MachPhysObjectData& MachLogArtefact::objectData() const
 {
     return pPhysArtefact_->artefactData();
 }
 
-//virtual
+// virtual
 void MachLogArtefact::doStartExplodingAnimation()
 {
-        HAL_STREAM("MachLogArtefact::doStartExplodingAnimation\n" );
+    HAL_STREAM("MachLogArtefact::doStartExplodingAnimation\n");
 }
 
-//virtual
+// virtual
 void MachLogArtefact::doEndExplodingAnimation()
 {
-        HAL_STREAM("MachLogArtefact::doEndExplodingAnimation\n" );
+    HAL_STREAM("MachLogArtefact::doEndExplodingAnimation\n");
 }
 
-//virtual
+// virtual
 void MachLogArtefact::doVisualiseSelectionState()
 {
-        //Can't be selected
+    // Can't be selected
 }
 
-W4dEntity* MachLogArtefact::newPhysArtefact( int subType, const MexPoint3d& location, const MexRadians& zAngle )
+W4dEntity* MachLogArtefact::newPhysArtefact(int subType, const MexPoint3d& location, const MexRadians& zAngle)
 {
-    //Construct a new artefact entity model
+    // Construct a new artefact entity model
     const MachLogArtefacts& artefacts = MachLogRaces::instance().artefacts();
-    W4dEntity* pModel = artefacts.newPhysArtefact( subType, location, zAngle );
+    W4dEntity* pModel = artefacts.newPhysArtefact(subType, location, zAngle);
 
-    //Construct a new artefact object as side effect, and store the pointer
-    pPhysArtefact_ = _NEW( MachPhysArtefact( pModel, artefacts.artefactData( subType ) ) );
+    // Construct a new artefact object as side effect, and store the pointer
+    pPhysArtefact_ = _NEW(MachPhysArtefact(pModel, artefacts.artefactData(subType)));
 
-    //Return the physical model
+    // Return the physical model
     return pModel;
 }
 
-//virtual
-bool MachLogArtefact::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int )
+// virtual
+bool MachLogArtefact::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
-        HAL_STREAM("(" << id() << ") MachLogArtefact::beNotified\n" );
+    HAL_STREAM("(" << id() << ") MachLogArtefact::beNotified\n");
     bool stayObserving = true;
 
-    //Iterate through the collection of damage link datas, looking for a link to artefact pSubject,
-    //and erasing those entries
-    if( event == W4dSubject::DELETED  and  pLinkDatas_ != NULL )
+    // Iterate through the collection of damage link datas, looking for a link to artefact pSubject,
+    // and erasing those entries
+    if (event == W4dSubject::DELETED and pLinkDatas_ != nullptr)
     {
         LinkDatas::iterator it, nextIt;
-        for( nextIt = it = pLinkDatas_->begin(); it != pLinkDatas_->end(); it = nextIt )
+        for (nextIt = it = pLinkDatas_->begin(); it != pLinkDatas_->end(); it = nextIt)
         {
             ++nextIt;
             MachLogArtefactLinkData& linkData = *it;
-            if( linkData.pLinkedArtefact_ == pSubject )
-                pLinkDatas_->erase( it );
+            if (linkData.pLinkedArtefact_ == pSubject)
+                pLinkDatas_->erase(it);
         }
 
         stayObserving = false;
     }
-        HAL_STREAM("(" << id() << ") MachLogArtefact::beNotified DONE\n" );
+    HAL_STREAM("(" << id() << ") MachLogArtefact::beNotified DONE\n");
 
     return stayObserving;
 }
 
-//virtual
-void MachLogArtefact::domainDeleted( W4dDomain* )
+// virtual
+void MachLogArtefact::domainDeleted(W4dDomain*)
 {
 }
 
-void MachLogArtefact::damageOnDestroy
-(
-    MachLogArtefact* pLinkedArtefact, MachLogArtefactLinkData::DamageType hpDamageType, int hpDamage,
-    MachLogArtefactLinkData::DamageType armourDamageType, int armourDamage
-)
+void MachLogArtefact::damageOnDestroy(
+    MachLogArtefact* pLinkedArtefact,
+    MachLogArtefactLinkData::DamageType hpDamageType,
+    int hpDamage,
+    MachLogArtefactLinkData::DamageType armourDamageType,
+    int armourDamage)
 {
-    //Check the collection exists
-    if( pLinkDatas_ == NULL )
-        pLinkDatas_ = _NEW( LinkDatas );
+    // Check the collection exists
+    if (pLinkDatas_ == nullptr)
+        pLinkDatas_ = _NEW(LinkDatas);
 
-    //Add the new entry to the collection
-    pLinkDatas_->push_back( MachLogArtefactLinkData( pLinkedArtefact, (MachLogArtefactLinkData::DamageType)hpDamageType, hpDamage,
-                                      (MachLogArtefactLinkData::DamageType)armourDamageType, armourDamage) );
+    // Add the new entry to the collection
+    pLinkDatas_->push_back(MachLogArtefactLinkData(
+        pLinkedArtefact,
+        (MachLogArtefactLinkData::DamageType)hpDamageType,
+        hpDamage,
+        (MachLogArtefactLinkData::DamageType)armourDamageType,
+        armourDamage));
 
-    //Become an observer of the linked artefact in case it gets destroyed first
-    pLinkedArtefact->attach( this );
+    // Become an observer of the linked artefact in case it gets destroyed first
+    pLinkedArtefact->attach(this);
 }
 
-void MachLogArtefact::damageLinkedArtefact( const MachLogArtefactLinkData& linkData )
+void MachLogArtefact::damageLinkedArtefact(const MachLogArtefactLinkData& linkData)
 {
-    //Get current hp and armour values
+    // Get current hp and armour values
     MachLogArtefact* pDamageArtefact = linkData.pLinkedArtefact_;
     MachPhys::HitPointUnits hpOld = pDamageArtefact->hp();
     MachPhys::ArmourUnits armourOld = pDamageArtefact->armour();
 
-    //Compute the new values
+    // Compute the new values
     MachPhys::HitPointUnits hpNew;
     MachPhys::ArmourUnits armourNew;
 
-    hpNew = ( linkData.hpDamageType_ == MachLogArtefactLinkData::DAMAGE_ABSOLUTE ? linkData.hpDamage_
-                                                        : hpOld - linkData.hpDamage_ );
-    if( hpNew < 0 )
+    hpNew
+        = (linkData.hpDamageType_ == MachLogArtefactLinkData::DAMAGE_ABSOLUTE ? linkData.hpDamage_
+                                                                              : hpOld - linkData.hpDamage_);
+    if (hpNew < 0)
         hpNew = 0;
-    else if( hpNew > hpOld )
+    else if (hpNew > hpOld)
         hpNew = hpOld;
 
-    armourNew = ( linkData.armourDamageType_ == MachLogArtefactLinkData::DAMAGE_ABSOLUTE ? linkData.armourDamage_
-                                                                : armourOld - linkData.armourDamage_ );
-    if( armourNew < 0 )
+    armourNew
+        = (linkData.armourDamageType_ == MachLogArtefactLinkData::DAMAGE_ABSOLUTE ? linkData.armourDamage_
+                                                                                  : armourOld - linkData.armourDamage_);
+    if (armourNew < 0)
         armourNew = 0;
-    else if( armourNew > armourOld )
+    else if (armourNew > armourOld)
         armourNew = armourOld;
 
-    //Modify the artefact
-    pDamageArtefact->setHPAndArmour( hpNew, armourNew );
+    // Modify the artefact
+    pDamageArtefact->setHPAndArmour(hpNew, armourNew);
 
-    //If the artefact has zero hp, damage it again to invoke destruction
-        //Do not do this if the thing is already dead - there simply is no point and it also leads to
-        //recursive call sequence - if artefact A kills artefact B which kills artefact A etc
-    if( hpNew <= 0 and not pDamageArtefact->isDead() )
-        pDamageArtefact->beHit( armourNew + 10, MachPhys::N_WEAPON_TYPES, NULL, NULL, ECHO );
+    // If the artefact has zero hp, damage it again to invoke destruction
+    // Do not do this if the thing is already dead - there simply is no point and it also leads to
+    // recursive call sequence - if artefact A kills artefact B which kills artefact A etc
+    if (hpNew <= 0 and not pDamageArtefact->isDead())
+        pDamageArtefact->beHit(armourNew + 10, MachPhys::N_WEAPON_TYPES, nullptr, nullptr, ECHO);
 }
 
 void MachLogArtefact::addObstaclePolygon()
 {
-    //Get the physical rep to construct a global polygon boundary
+    // Get the physical rep to construct a global polygon boundary
     MexConvexPolygon2d* pPolygon = pPhysArtefact_->newGlobalBoundary();
-    std::unique_ptr< MexPolygon2d > polygonUPtr( pPolygon );
+    std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
     MATHEX_SCALAR height = pPhysArtefact_->artefactData().obstacleHeight();
 
-    //Add this to the config space
+    // Add this to the config space
     PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
-    obstaclePolygonId_ = configSpace.add( polygonUPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT ).asScalar();
+    obstaclePolygonId_
+        = configSpace.add(polygonUPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT).asScalar();
 }
 
 FtlSerialId MachLogArtefact::obstaclePolygonId() const
 {
-    return PhysConfigSpace2d::PolygonId( obstaclePolygonId_ );
+    return PhysConfigSpace2d::PolygonId(obstaclePolygonId_);
 }
 
 int MachLogArtefact::subType() const
@@ -375,90 +403,92 @@ int MachLogArtefact::subType() const
 
 void MachLogArtefact::initialise()
 {
-    //Initialise damage values
+    // Initialise damage values
     const MachPhysArtefactData& data = pPhysArtefact_->artefactData();
-    hp( data.hitPoints() );
-    armour( data.armour() );
+    hp(data.hitPoints());
+    armour(data.armour());
 
-    //Add the obstacle to the config space
+    // Add the obstacle to the config space
     addObstaclePolygon();
 }
 
-void MachLogArtefact::preservePhysicalModel( const PhysRelativeTime& forTime )
+void MachLogArtefact::preservePhysicalModel(const PhysRelativeTime& forTime)
 {
-        SimManager::instance().add( _NEW( MachLogDyingEntityEvent( physObjectPtr(), NULL, forTime,
-                                                                   MachLogDyingEntityEvent::NOT_INSIDE_BUILDING, NULL ) ) );
+    SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+        physObjectPtr(),
+        nullptr,
+        forTime,
+        MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
+        nullptr)));
 }
 
-void MachLogArtefact::dropDebris( const PhysAbsoluteTime& )
+void MachLogArtefact::dropDebris(const PhysAbsoluteTime&)
 {
-    //get the bounding obstacle polygon, and hence an aligned boundary
-    const MexPolygon2d& polygon = MachLogPlanet::instance().configSpace().polygon( obstaclePolygonId() );
+    // get the bounding obstacle polygon, and hence an aligned boundary
+    const MexPolygon2d& polygon = MachLogPlanet::instance().configSpace().polygon(obstaclePolygonId());
     MexAlignedBox2d tempBoundary;
-    polygon.boundary( &tempBoundary );
+    polygon.boundary(&tempBoundary);
 
-        if( not MachLogNetwork::instance().isNetworkGame() or
-            ( MachLogNetwork::instance().isNetworkGame() and MachLogNetwork::instance().isNodeLogicalHost() ) )
+    if (not MachLogNetwork::instance().isNetworkGame()
+        or (MachLogNetwork::instance().isNetworkGame() and MachLogNetwork::instance().isNodeLogicalHost()))
     {
-                int quantity = pPhysArtefact_->artefactData().cost();
-				if( quantity > 0 )
-					MachLogActorMaker::newLogDebris( MachPhys::NORACE, quantity, position(), tempBoundary );
-	}
+        int quantity = pPhysArtefact_->artefactData().cost();
+        if (quantity > 0)
+            MachLogActorMaker::newLogDebris(MachPhys::NORACE, quantity, position(), tempBoundary);
+    }
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogArtefact& actor )
+void perWrite(PerOstream& ostr, const MachLogArtefact& actor)
 {
-        const MachActor& base1 = actor;
-        const PhysConfigSpace2d& cspace = MachLogPlanet::instance().configSpace();
-        ostr << base1;
+    const MachActor& base1 = actor;
+    const PhysConfigSpace2d& cspace = MachLogPlanet::instance().configSpace();
+    ostr << base1;
     ostr << actor.pLinkDatas_;
 
-        int subType = actor.subType();
-        PER_WRITE_RAW_OBJECT( ostr, subType );
+    int subType = actor.subType();
+    PER_WRITE_RAW_OBJECT(ostr, subType);
 
-        const MexTransform3d& trans = actor.globalTransform();
-        PER_WRITE_RAW_OBJECT( ostr, trans );
-        const W4dId id = actor.id();
-        PER_WRITE_RAW_OBJECT( ostr, id );
+    const MexTransform3d& trans = actor.globalTransform();
+    PER_WRITE_RAW_OBJECT(ostr, trans);
+    const W4dId id = actor.id();
+    PER_WRITE_RAW_OBJECT(ostr, id);
 
-        actor.persistenceWriteStrategy( ostr );
-
+    actor.persistenceWriteStrategy(ostr);
 }
 
-void perRead( PerIstream& istr, MachLogArtefact& actor )
+void perRead(PerIstream& istr, MachLogArtefact& actor)
 {
-        MachActor& base1 = actor;
+    MachActor& base1 = actor;
 
-        istr >> base1;
-        istr >> actor.pLinkDatas_;
-        if( actor.pLinkDatas_ )
-                for( MachLogArtefact::LinkDatas::iterator i = actor.pLinkDatas_->begin(); i != actor.pLinkDatas_->end(); ++i )
-                        (*i).pLinkedArtefact_->attach( &actor );
+    istr >> base1;
+    istr >> actor.pLinkDatas_;
+    if (actor.pLinkDatas_)
+        for (MachLogArtefact::LinkDatas::iterator i = actor.pLinkDatas_->begin(); i != actor.pLinkDatas_->end(); ++i)
+            (*i).pLinkedArtefact_->attach(&actor);
 
-        int subType;
-        PER_READ_RAW_OBJECT( istr, subType );
+    int subType;
+    PER_READ_RAW_OBJECT(istr, subType);
 
-        MexTransform3d trans;
-        W4dId id;
-        PER_READ_RAW_OBJECT( istr, trans );
-        PER_READ_RAW_OBJECT( istr, id );
+    MexTransform3d trans;
+    W4dId id;
+    PER_READ_RAW_OBJECT(istr, trans);
+    PER_READ_RAW_OBJECT(istr, id);
 
-        W4dEntity* pEntity = actor.newPhysArtefact( subType, trans.position(), 0 );
-        actor.setObjectPtr( pEntity, trans );
-        actor.id( id );
-        actor.addObstaclePolygon();
-        actor.actorCreated();
+    W4dEntity* pEntity = actor.newPhysArtefact(subType, trans.position(), 0);
+    actor.setObjectPtr(pEntity, trans);
+    actor.id(id);
+    actor.addObstaclePolygon();
+    actor.actorCreated();
 
-        actor.persistenceReadStrategy( istr );
+    actor.persistenceReadStrategy(istr);
 }
 
-MachLogArtefact::MachLogArtefact( PerConstructor con )
-:       MachActor( con )
+MachLogArtefact::MachLogArtefact(PerConstructor con)
+    : MachActor(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachLogArtefactLinkData& ld )
+void perWrite(PerOstream& ostr, const MachLogArtefactLinkData& ld)
 {
     ostr << ld.pLinkedArtefact_;
     ostr << ld.hpDamageType_;
@@ -467,7 +497,7 @@ void perWrite( PerOstream& ostr, const MachLogArtefactLinkData& ld )
     ostr << ld.armourDamage_;
 }
 
-void perRead( PerIstream& istr, MachLogArtefactLinkData& ld )
+void perRead(PerIstream& istr, MachLogArtefactLinkData& ld)
 {
     istr >> ld.pLinkedArtefact_;
     istr >> ld.hpDamageType_;
@@ -475,7 +505,6 @@ void perRead( PerIstream& istr, MachLogArtefactLinkData& ld )
     istr >> ld.armourDamageType_;
     istr >> ld.armourDamage_;
 }
-
 
 // forced to recompile Yueai 12/11/98
 /* End ARTEFACT.CPP *************************************************/

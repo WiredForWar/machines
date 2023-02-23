@@ -1,5 +1,5 @@
 /*
- * I P X M O D E . H P P 
+ * I P X M O D E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,30 +18,28 @@
 class GuiDisplayable;
 class MachGuiStartupScreens;
 
-class MachGuiIPXNetworkMode	: public MachGuiNetworkProtocolMode
+class MachGuiIPXNetworkMode : public MachGuiNetworkProtocolMode
 // Canonical form revoked
 {
 public:
-    MachGuiIPXNetworkMode( GuiDisplayable*, MachGuiStartupScreens* );
-    ~MachGuiIPXNetworkMode();
+    MachGuiIPXNetworkMode(GuiDisplayable*, MachGuiStartupScreens*);
+    ~MachGuiIPXNetworkMode() override;
 
     void CLASS_INVARIANT;
 
-	virtual void setNetworkDetails();
+    void setNetworkDetails() override;
 
-	virtual bool validNetworkDetails( bool isHost );
+    bool validNetworkDetails(bool isHost) override;
 
 protected:
-	virtual void readNetworkDetails();
+    void readNetworkDetails() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiIPXNetworkMode& t );
+    friend ostream& operator<<(ostream& o, const MachGuiIPXNetworkMode& t);
 
-    MachGuiIPXNetworkMode( const MachGuiIPXNetworkMode& );
-    MachGuiIPXNetworkMode& operator =( const MachGuiIPXNetworkMode& );
-
+    MachGuiIPXNetworkMode(const MachGuiIPXNetworkMode&);
+    MachGuiIPXNetworkMode& operator=(const MachGuiIPXNetworkMode&);
 };
-
 
 #endif
 

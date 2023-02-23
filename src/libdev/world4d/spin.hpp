@@ -31,45 +31,43 @@ class W4dSpinSprite : public W4dEntity
 {
 public:
     W4dSpinSprite(
-      W4dEntity* pParent,
-      const W4dTransform3d& localTransform,
-      MATHEX_SCALAR width,
-      MATHEX_SCALAR height,
-      const RenMaterial& material,
-      const MexVec3& spinAxis );
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        MATHEX_SCALAR width,
+        MATHEX_SCALAR height,
+        const RenMaterial& material,
+        const MexVec3& spinAxis);
 
-    ~W4dSpinSprite();
+    ~W4dSpinSprite() override;
 
-    //Will only be visible up to distance metres
-    void visibleRange( MATHEX_SCALAR distance );
+    // Will only be visible up to distance metres
+    void visibleRange(MATHEX_SCALAR distance);
 
-    //Inherited from W4dEntity
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                             Accuracy accuracy ) const;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( W4dSpinSprite );
-    PER_FRIEND_READ_WRITE( W4dSpinSprite );
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dSpinSprite);
+    PER_FRIEND_READ_WRITE(W4dSpinSprite);
 
 private:
     // Operation deliberately revoked
-    W4dSpinSprite( const W4dSpinSprite& );
+    W4dSpinSprite(const W4dSpinSprite&);
 
     // Operation deliberately revoked
-    W4dSpinSprite& operator =( const W4dSpinSprite& );
+    W4dSpinSprite& operator=(const W4dSpinSprite&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dSpinSprite& );
+    bool operator==(const W4dSpinSprite&);
 
-    Ren::MeshPtr        pMesh_;
-    RenMeshInstance*    pMeshInstance_;
+    Ren::MeshPtr pMesh_;
+    RenMeshInstance* pMeshInstance_;
 
-    size_t              startFrame_;
+    size_t startFrame_;
 };
 
-PER_DECLARE_PERSISTENT( W4dSpinSprite );
-
+PER_DECLARE_PERSISTENT(W4dSpinSprite);
 
 #endif
 

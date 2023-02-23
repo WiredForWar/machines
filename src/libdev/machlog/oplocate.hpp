@@ -1,5 +1,5 @@
 /*
- * O P L O C A T E . H P P 
+ * O P L O C A T E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -19,58 +19,51 @@
 #include "mathex/point3d.hpp"
 #include "machlog/operatio.hpp"
 
-
-
 class MachLogGeoLocator;
 
 // orthodox canonical (revoked)
 
-class MachLogLocateOperation
-: public MachLogOperation
+class MachLogLocateOperation : public MachLogOperation
 {
 public:
+    using Path = ctl_list<MexPoint2d>;
+    MachLogLocateOperation(MachLogGeoLocator* pActor, const MexPoint3d& dest);
+    MachLogLocateOperation(MachLogGeoLocator* pActor, const Path& externalPath);
 
-	typedef ctl_list< MexPoint2d > Path;
-	MachLogLocateOperation( MachLogGeoLocator * pActor, const MexPoint3d& dest );
-	MachLogLocateOperation( MachLogGeoLocator * pActor, const Path& externalPath );
+    ~MachLogLocateOperation() override;
 
-	~MachLogLocateOperation( );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLocateOperation );
-	PER_FRIEND_READ_WRITE( MachLogLocateOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLocateOperation);
+    PER_FRIEND_READ_WRITE(MachLogLocateOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual bool doBeInterrupted();
-	
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
+    bool doBeInterrupted() override;
 
-	// redefinition required, invocation revoked	
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
+
+    // redefinition required, invocation revoked
+    PhysRelativeTime doUpdate() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogLocateOperation(const MachLogLocateOperation&);
+    MachLogLocateOperation& operator=(const MachLogLocateOperation&);
+    bool operator==(const MachLogLocateOperation&);
 
-	// Operations deliberately revoked
-    MachLogLocateOperation( const MachLogLocateOperation& );
-    MachLogLocateOperation& operator =( const MachLogLocateOperation& );
-    bool operator ==( const MachLogLocateOperation& );
-	
-	void buildPathFromExternalPath();
+    void buildPathFromExternalPath();
 
-	MachLogGeoLocator *	pActor_;
-	MexPoint3d			dest_;
-	Path				path_;
-	Path				externalPath_;
-	bool				hasExternalPath_;
-	int					currentElement_;
+    MachLogGeoLocator* pActor_;
+    MexPoint3d dest_;
+    Path path_;
+    Path externalPath_;
+    bool hasExternalPath_;
+    int currentElement_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogLocateOperation );
-
+PER_DECLARE_PERSISTENT(MachLogLocateOperation);
 
 #endif
 

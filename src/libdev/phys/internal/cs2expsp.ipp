@@ -1,5 +1,5 @@
 /*
- * C S 2 E X P S P . I P P 
+ * C S 2 E X P S P . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -10,51 +10,51 @@
 #include "profiler/stktrace.hpp"
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const PhysConfigSpace2d& PhysCS2dExpansionSpace::configSpace( void ) const
+const PhysConfigSpace2d& PhysCS2dExpansionSpace::configSpace() const
 {
     return configSpace_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-PhysConfigSpace2d* PhysCS2dExpansionSpace::pConfigSpace( void )
+PhysConfigSpace2d* PhysCS2dExpansionSpace::pConfigSpace()
 {
     return &configSpace_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-size_t PhysCS2dExpansionSpace::nClients( void ) const
+size_t PhysCS2dExpansionSpace::nClients() const
 {
     return nClients_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-void PhysCS2dExpansionSpace::addClient( void )
+void PhysCS2dExpansionSpace::addClient()
 {
     CS2VGRA_WHERE;
-    CS2VGRA_STREAM( ProStackTracer() );
-    
+    CS2VGRA_STREAM(ProStackTracer());
+
     ++nClients_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-void PhysCS2dExpansionSpace::removeClient( void )
+void PhysCS2dExpansionSpace::removeClient()
 {
     CS2VGRA_WHERE;
-    CS2VGRA_STREAM( ProStackTracer() );
+    CS2VGRA_STREAM(ProStackTracer());
 
-    PRE( nClients() > 0 );
+    PRE(nClients() > 0);
     --nClients_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-MATHEX_SCALAR PhysCS2dExpansionSpace::expansionDistance( void ) const
+MATHEX_SCALAR PhysCS2dExpansionSpace::expansionDistance() const
 {
     return expansionDistance_;
 }

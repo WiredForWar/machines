@@ -17,43 +17,41 @@
 
 #include "world4d/entity.hpp"
 
-class MachPhysLoadingOver: public W4dEntity
+class MachPhysLoadingOver : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysLoadingOver( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysLoadingOver(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysLoadingOver();
+    // dtor
+    ~MachPhysLoadingOver() override;
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysLoadingOver& exemplar();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLoadingOver& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLoadingOver& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLoadingOver );
+    PER_MEMBER_PERSISTENT(MachPhysLoadingOver);
 
 private:
-    //Deliberately revoked
-    MachPhysLoadingOver( const MachPhysLoadingOver& );
-    MachPhysLoadingOver& operator =( const MachPhysLoadingOver& );
-    bool operator ==( const MachPhysLoadingOver& );
+    // Deliberately revoked
+    MachPhysLoadingOver(const MachPhysLoadingOver&);
+    MachPhysLoadingOver& operator=(const MachPhysLoadingOver&);
+    bool operator==(const MachPhysLoadingOver&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLoadingOver();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLoadingOver );
-PER_READ_WRITE( MachPhysLoadingOver );
+PER_DECLARE_PERSISTENT(MachPhysLoadingOver);
+PER_READ_WRITE(MachPhysLoadingOver);
 
 #endif
 

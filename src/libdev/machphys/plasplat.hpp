@@ -18,48 +18,45 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysPlasmaSplat : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysPlasmaSplat( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysPlasmaSplat(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysPlasmaSplat& exemplar();
 
-    //dtor
-    ~MachPhysPlasmaSplat();
+    // dtor
+    ~MachPhysPlasmaSplat() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startPlasmaSplat( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration );
+    void startPlasmaSplat(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
 
-	static void preloadTextures();
+    static void preloadTextures();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPlasmaSplat& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPlasmaSplat& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPlasmaSplat );
+    PER_MEMBER_PERSISTENT(MachPhysPlasmaSplat);
 
 private:
-    //Deliberately revoked
-    MachPhysPlasmaSplat( const MachPhysPlasmaSplat& );
-    MachPhysPlasmaSplat& operator =( const MachPhysPlasmaSplat& );
-    bool operator ==( const MachPhysPlasmaSplat& );
+    // Deliberately revoked
+    MachPhysPlasmaSplat(const MachPhysPlasmaSplat&);
+    MachPhysPlasmaSplat& operator=(const MachPhysPlasmaSplat&);
+    bool operator==(const MachPhysPlasmaSplat&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysPlasmaSplat();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPlasmaSplat );
-PER_READ_WRITE( MachPhysPlasmaSplat );
+PER_DECLARE_PERSISTENT(MachPhysPlasmaSplat);
+PER_READ_WRITE(MachPhysPlasmaSplat);
 
 #endif
 

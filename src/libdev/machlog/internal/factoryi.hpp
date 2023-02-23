@@ -1,5 +1,5 @@
 /*
- * F A C T O R Y I . H P P 
+ * F A C T O R Y I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,30 +21,29 @@ class MachLogFactoryImpl
 // Canonical form revoked
 {
 public:
-    MachLogFactoryImpl( MachPhys::FactorySubType );
+    MachLogFactoryImpl(MachPhys::FactorySubType);
     ~MachLogFactoryImpl();
 
     void CLASS_INVARIANT;
-	PER_MEMBER_PERSISTENT( MachLogFactoryImpl );
-	PER_FRIEND_READ_WRITE( MachLogFactoryImpl );
+    PER_MEMBER_PERSISTENT(MachLogFactoryImpl);
+    PER_FRIEND_READ_WRITE(MachLogFactoryImpl);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogFactoryImpl& t );
-	friend class MachLogFactory;
+    friend ostream& operator<<(ostream& o, const MachLogFactoryImpl& t);
+    friend class MachLogFactory;
 
-    MachLogFactoryImpl( const MachLogFactoryImpl& );
-    MachLogFactoryImpl& operator =( const MachLogFactoryImpl& );
+    MachLogFactoryImpl(const MachLogFactoryImpl&);
+    MachLogFactoryImpl& operator=(const MachLogFactoryImpl&);
 
-	MachLogFactory::ProductionLine		productionLine_;
-	MachPhys::BuildingMaterialUnits		amountBuilt_;
-	PhysAbsoluteTime					lastUpdateTime_;
-	MachPhys::FactorySubType 			subType_;
-	MexPoint2d 							specifiedDeployPoint_;
-	bool								deployPointIsSet_;
-
+    MachLogFactory::ProductionLine productionLine_;
+    MachPhys::BuildingMaterialUnits amountBuilt_;
+    PhysAbsoluteTime lastUpdateTime_;
+    MachPhys::FactorySubType subType_;
+    MexPoint2d specifiedDeployPoint_;
+    bool deployPointIsSet_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogFactoryImpl );
+PER_DECLARE_PERSISTENT(MachLogFactoryImpl);
 
 #endif
 

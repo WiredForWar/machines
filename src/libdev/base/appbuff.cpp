@@ -12,87 +12,87 @@
 
 #include <fstream>
 
-BaseAppendBuffer::BaseAppendBuffer( const char* fileName )
+BaseAppendBuffer::BaseAppendBuffer(const char* fileName)
 {
-	PRE( fileName != NULL );
+    PRE(fileName != nullptr);
 
-	pFileName_ = (char*)malloc( strlen( fileName + 1 ) );
-	strcpy( pFileName_, fileName );
+    pFileName_ = (char*)malloc(strlen(fileName + 1));
+    strcpy(pFileName_, fileName);
 }
 
 BaseAppendBuffer::BaseAppendBuffer()
-: pFileName_( NULL )
+    : pFileName_(nullptr)
 {
 }
 
 BaseAppendBuffer::~BaseAppendBuffer()
 {
-	if( pFileName_ )
-		free( pFileName_ );
+    if (pFileName_)
+        free(pFileName_);
 }
 
-void BaseAppendBuffer::name( const char* fileName )
+void BaseAppendBuffer::name(const char* fileName)
 {
-	if( pFileName_ )
-		free( pFileName_ );
+    if (pFileName_)
+        free(pFileName_);
 
-	pFileName_ = (char*)malloc( strlen( fileName + 1 ) );
-	strcpy( pFileName_, fileName );
+    pFileName_ = (char*)malloc(strlen(fileName + 1));
+    strcpy(pFileName_, fileName);
 }
 
 // virtual
-int BaseAppendBuffer::overflow( int c )
+int BaseAppendBuffer::overflow(int c)
 {
-	//	cout << "overflow " << (char)c << endl;
+    //  cout << "overflow " << (char)c << endl;
 
-	char    c1 = (char)c;
+    char c1 = (char)c;
 
-	do_sputn( &c1, 1 );
+    do_sputn(&c1, 1);
 
-	return !EOF;
+    return !EOF;
 }
 
 // virtual
 int BaseAppendBuffer::underflow()
 {
-	//	cout << "underflow" << endl;
-	return EOF;
+    //  cout << "underflow" << endl;
+    return EOF;
 }
 
 // virtual
-int BaseAppendBuffer::do_sgetn( char *, int len )
+int BaseAppendBuffer::do_sgetn(char*, int len)
 {
-	//	cout << "do_sgetn" << endl;
+    //  cout << "do_sgetn" << endl;
 
-	return len;
+    return len;
 }
 
 // virtual
-int BaseAppendBuffer::do_sputn( char const *buf, int len )
+int BaseAppendBuffer::do_sputn(char const* buf, int len)
 {
-	//	cout << "do_sputn " << len << endl;
+    //  cout << "do_sputn " << len << endl;
 
-	//	for( size_t i = 0; i < len; ++i )
-	//		cout << buf[ i ];
+    //  for( size_t i = 0; i < len; ++i )
+    //      cout << buf[ i ];
 
-	std::ofstream ostr( pFileName_, std::ios::app );
+    std::ofstream ostr(pFileName_, std::ios::app);
 
-	ostr.write( buf, len );
+    ostr.write(buf, len);
 
-	return len;
+    return len;
 }
 
 // virtual
 int BaseAppendBuffer::sync()
 {
-	//  Dummy sync - always succeed
+    //  Dummy sync - always succeed
 
-	return !EOF;
+    return !EOF;
 }
 
 void BaseAppendBuffer::clear()
 {
-	std::ofstream ostr( pFileName_ );
+    std::ofstream ostr(pFileName_);
 }
 
 /* End APPBUFF.CPP *************************************************/

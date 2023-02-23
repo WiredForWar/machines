@@ -1,5 +1,5 @@
 /*
- * C O M P I T E M . H P P 
+ * C O M P I T E M . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -14,58 +14,58 @@
 
 #include "base/base.hpp"
 
-typedef uint ItemId;
+using ItemId = uint;
 
 class MachPhysComplexityItem
 // Canonical form revoked
 {
 public:
-	MachPhysComplexityItem( const ItemId& id );
-	virtual ~MachPhysComplexityItem();
+    MachPhysComplexityItem(const ItemId& id);
+    virtual ~MachPhysComplexityItem();
 
-	const ItemId& id() const { return id_; }
-	bool changed() const { return changed_; }
+    const ItemId& id() const { return id_; }
+    bool changed() const { return changed_; }
 
-	virtual void update() = 0;
+    virtual void update() = 0;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysComplexityItem& t );
+    friend ostream& operator<<(ostream& o, const MachPhysComplexityItem& t);
 
-	MachPhysComplexityItem();
-	MachPhysComplexityItem( const MachPhysComplexityItem& );
-    MachPhysComplexityItem& operator =( const MachPhysComplexityItem& );
+    MachPhysComplexityItem();
+    MachPhysComplexityItem(const MachPhysComplexityItem&);
+    MachPhysComplexityItem& operator=(const MachPhysComplexityItem&);
 
 protected:
-	ItemId	id_;
-	bool	changed_;
+    ItemId id_;
+    bool changed_;
 };
 
-class MachPhysComplexityBooleanItem	: public MachPhysComplexityItem
+class MachPhysComplexityBooleanItem : public MachPhysComplexityItem
 {
 public:
-	MachPhysComplexityBooleanItem( const ItemId& id, bool enabled );
-	~MachPhysComplexityBooleanItem();
+    MachPhysComplexityBooleanItem(const ItemId& id, bool enabled);
+    ~MachPhysComplexityBooleanItem() override;
 
-	bool enabled() const { return enabled_; }
-	void changeState( bool enabled );
+    bool enabled() const { return enabled_; }
+    void changeState(bool enabled);
 
 protected:
-	bool	enabled_;
+    bool enabled_;
 };
 
-class MachPhysComplexityChoiceItem	: public MachPhysComplexityItem
+class MachPhysComplexityChoiceItem : public MachPhysComplexityItem
 {
 public:
-	MachPhysComplexityChoiceItem( const ItemId& id, uint nChoices, uint choice = 0 );
-	~MachPhysComplexityChoiceItem();
+    MachPhysComplexityChoiceItem(const ItemId& id, uint nChoices, uint choice = 0);
+    ~MachPhysComplexityChoiceItem() override;
 
-	uint nChoices() const;
-	uint choice() const;
-	void changeState( uint choice );
+    uint nChoices() const;
+    uint choice() const;
+    void changeState(uint choice);
 
 protected:
-	uint nChoices_;
-	uint choice_;
+    uint nChoices_;
+    uint choice_;
 };
 
 #endif

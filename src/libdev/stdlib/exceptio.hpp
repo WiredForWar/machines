@@ -12,11 +12,11 @@
 
 // exceptions implemented
 
-#define _TRY_BEGIN \
-    try \
+#define _TRY_BEGIN                                                                                                     \
+    try                                                                                                                \
     {
-#define _CATCH_ALL \
-    catch (...) \
+#define _CATCH_ALL                                                                                                     \
+    catch (...)                                                                                                        \
     {
 #define _CATCH_END }
 #define _RAISE(x) throw(x)
@@ -32,17 +32,17 @@
 #define _RAISE(x)
 #define _RERAISE(x)
 
-#endif /* #ifndef NO_EXCEPTIONS	*/
+#endif /* #ifndef NO_EXCEPTIONS */
 
 //////////////////////////////////////////////////////////////////////
 
-typedef void fvoid_t();
+using fvoid_t = void();
 
 void terminate();
-fvoid_t *set_terminate( fvoid_t * );
+fvoid_t* set_terminate(fvoid_t*);
 
 void unexpected();
-fvoid_t *set_unexpected( fvoid_t * );
+fvoid_t* set_unexpected(fvoid_t*);
 
 //////////////////////////////////////////////////////////////////////
 
@@ -52,40 +52,37 @@ fvoid_t *set_unexpected( fvoid_t * );
 class xmsg
 {
 public:
+    xmsg(const char* what = nullptr);
 
-	xmsg( const char *what = 0 );
-                
-	xmsg( const xmsg& rhs );
+    xmsg(const xmsg& rhs);
 
-	virtual ~xmsg();
-   
-	const xmsg& operator =( const xmsg& rhs );
+    virtual ~xmsg();
 
-	///////////////////////////////
+    const xmsg& operator=(const xmsg& rhs);
 
-	virtual const char *what() const;
-    
-	// handle an unthrowable xmsg
-	static void _Throw( xmsg *ePtr );
-    
-	typedef void (*raise_handler)( xmsg& );
-	static raise_handler set_raise_handler( raise_handler newh );
+    ///////////////////////////////
+
+    virtual const char* what() const;
+
+    // handle an unthrowable xmsg
+    static void _Throw(xmsg* ePtr);
+
+    using raise_handler = void (*)(xmsg&);
+    static raise_handler set_raise_handler(raise_handler newh);
 
 protected:
+    xmsg(const char*, bool);
 
-	xmsg( const char *, bool );
-
-	virtual void do_raise();
+    virtual void do_raise();
 
 private:
+    void _Raise();
+    void _Tidy();
 
-	void _Raise();
-	void _Tidy();
-   
-	static raise_handler _Handler;
+    static raise_handler _Handler;
 
-	const char *	_What;
-	bool			_Alloced;
+    const char* _What;
+    bool _Alloced;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -96,14 +93,12 @@ private:
 class logic_error : public xmsg
 {
 public:
+    logic_error(const char* what = nullptr);
 
-	logic_error( const char *what = 0 );
-	               
-	virtual ~logic_error();
-    
+    ~logic_error() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -113,14 +108,12 @@ protected:
 class domain_error : public logic_error
 {
 public:
+    domain_error(const char* what = nullptr);
 
-	domain_error( const char *what = 0 );
-               
-	virtual ~domain_error();
-    
+    ~domain_error() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -130,14 +123,12 @@ protected:
 class invalid_argument : public logic_error
 {
 public:
+    invalid_argument(const char* what = nullptr);
 
-	invalid_argument( const char *what = 0 );
-               
-	virtual ~invalid_argument();
-    
+    ~invalid_argument() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -148,14 +139,12 @@ protected:
 class length_error : public logic_error
 {
 public:
+    length_error(const char* what = nullptr);
 
-	length_error( const char *what = 0 );
-               
-	virtual ~length_error();
-    
+    ~length_error() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -165,14 +154,12 @@ protected:
 class out_of_range : public logic_error
 {
 public:
+    out_of_range(const char* what = nullptr);
 
-	out_of_range( const char *what = 0 );
-               
-	virtual ~out_of_range();
-    
+    ~out_of_range() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -182,14 +169,12 @@ protected:
 class bad_cast : public logic_error
 {
 public:
+    bad_cast(const char* what = nullptr);
 
-	bad_cast( const char *what = 0 );
-               
-	virtual ~bad_cast();
-    
+    ~bad_cast() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -200,14 +185,12 @@ protected:
 class bad_typeid : public logic_error
 {
 public:
+    bad_typeid(const char* what = nullptr);
 
-	bad_typeid( const char *what = 0 );
-               
-	virtual ~bad_typeid();
-    
+    ~bad_typeid() override;
+
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -219,16 +202,14 @@ protected:
 class runtime_error : public xmsg
 {
 public:
+    runtime_error(const char* what = nullptr);
 
-	runtime_error( const char *what = 0 );
-
-	virtual ~runtime_error();
+    ~runtime_error() override;
 
 protected:
+    runtime_error(const char* what, bool copy);
 
-	runtime_error( const char *what, bool copy );
-
-	void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -238,14 +219,12 @@ protected:
 class range_error : public runtime_error
 {
 public:
-                      
-	range_error( const char *what = 0 );
+    range_error(const char* what = nullptr);
 
-	virtual ~range_error();
+    ~range_error() override;
 
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -256,14 +235,12 @@ protected:
 class overflow_error : public runtime_error
 {
 public:
-                      
-	overflow_error( const char *what = 0 );
-	
-	virtual ~overflow_error();
+    overflow_error(const char* what = nullptr);
+
+    ~overflow_error() override;
 
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -275,18 +252,14 @@ protected:
 class bad_alloc : public runtime_error
 {
 public:
-                      
-	bad_alloc( const char *what = 0 );
-	
-	virtual ~bad_alloc();
+    bad_alloc(const char* what = nullptr);
+
+    ~bad_alloc() override;
 
 protected:
-
-	virtual void do_raise();
+    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	/* #ifndef _STD_EXCEPTIO_HPP	*/
-
-
+#endif /* #ifndef _STD_EXCEPTIO_HPP    */

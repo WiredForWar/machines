@@ -8,53 +8,52 @@
 #include "world4d/scalplan.hpp"
 
 #ifndef _INLINE
-    #include "world4d/scalplan.ipp"
+#include "world4d/scalplan.ipp"
 #endif
 
-PER_DEFINE_PERSISTENT_ABSTRACT( W4dScalePlan );
+PER_DEFINE_PERSISTENT_ABSTRACT(W4dScalePlan);
 
-W4dScalePlan::W4dScalePlan( const PhysRelativeTime& duration )
-:   duration_( duration )
+W4dScalePlan::W4dScalePlan(const PhysRelativeTime& duration)
+    : duration_(duration)
 {
-    PRE( duration >= 0.0 )
+    PRE(duration >= 0.0)
 
     TEST_INVARIANT;
 }
 
-W4dScalePlan::W4dScalePlan( PerConstructor )
+W4dScalePlan::W4dScalePlan(PerConstructor)
 {
 }
 
 W4dScalePlan::~W4dScalePlan()
 {
     TEST_INVARIANT;
-
 }
 
-void W4dScalePlan::scale( const PhysRelativeTime& timeOffset, RenUniformScale* pScale ) const
+void W4dScalePlan::scale(const PhysRelativeTime& timeOffset, RenUniformScale* pScale) const
 {
-    PRE( not isNonUniform() );
-    doScale( timeOffset, pScale );
+    PRE(not isNonUniform());
+    doScale(timeOffset, pScale);
 }
 
-void W4dScalePlan::scale( const PhysRelativeTime& timeOffset, RenNonUniformScale* pScale ) const
+void W4dScalePlan::scale(const PhysRelativeTime& timeOffset, RenNonUniformScale* pScale) const
 {
-    PRE( isNonUniform() );
-    doScale( timeOffset, pScale );
+    PRE(isNonUniform());
+    doScale(timeOffset, pScale);
 }
 
-W4dScalePlan* W4dScalePlan::transformClone( const MexTransform3d& offsetTransform ) const
+W4dScalePlan* W4dScalePlan::transformClone(const MexTransform3d& offsetTransform) const
 {
-    PRE( isNonUniform() );
-    return doTransformClone( offsetTransform );
+    PRE(isNonUniform());
+    return doTransformClone(offsetTransform);
 }
 
 void W4dScalePlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dScalePlan& t )
+ostream& operator<<(ostream& o, const W4dScalePlan& t)
 {
 
     o << "W4dScalePlan " << (void*)&t << " start" << std::endl;
@@ -63,12 +62,12 @@ ostream& operator <<( ostream& o, const W4dScalePlan& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const W4dScalePlan& plan )
+void perWrite(PerOstream& ostr, const W4dScalePlan& plan)
 {
     ostr << plan.duration_;
 }
 
-void perRead( PerIstream& istr, W4dScalePlan& plan )
+void perRead(PerIstream& istr, W4dScalePlan& plan)
 {
     istr >> plan.duration_;
 }

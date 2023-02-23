@@ -1,5 +1,5 @@
 /*
- * A C T W I N . H P P 
+ * A C T W I N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,34 +23,32 @@ class MachLogExplosionAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogExplosionAction();
-	static MachLogExplosionAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
+    ~MachLogExplosionAction() override;
+    static MachLogExplosionAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogExplosionAction );
-	PER_FRIEND_READ_WRITE( MachLogExplosionAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogExplosionAction);
+    PER_FRIEND_READ_WRITE(MachLogExplosionAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogExplosionAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogExplosionAction& t);
 
-    MachLogExplosionAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogExplosionAction& t );
+    MachLogExplosionAction(const MachLogExplosionAction&);
+    MachLogExplosionAction& operator=(const MachLogExplosionAction&);
 
-    MachLogExplosionAction( const MachLogExplosionAction& );
-    MachLogExplosionAction& operator =( const MachLogExplosionAction& );
-
-	MexPoint2d		point_;
-	MATHEX_SCALAR 	range_;
-	MATHEX_SCALAR 	size_;
-	int				damage_;
+    MexPoint2d point_;
+    MATHEX_SCALAR range_;
+    MATHEX_SCALAR size_;
+    int damage_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogExplosionAction );
+PER_DECLARE_PERSISTENT(MachLogExplosionAction);
 
 #endif
 

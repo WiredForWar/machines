@@ -22,12 +22,12 @@
 class MachPhysAggressorData;
 class MachPhysPunchBlast;
 class MachPhysMachinePersistence;
-template< class ID, class PART > class MachPhysObjectFactory;
-template< class SUBTYPE > class MachPhysSubTypeId;
+template <class ID, class PART> class MachPhysObjectFactory;
+template <class SUBTYPE> class MachPhysSubTypeId;
 
 class MachPhysAggressor
-:   public MachPhysMachine,
-    public MachPhysCanAttack
+    : public MachPhysMachine
+    , public MachPhysCanAttack
 {
 public:
     MachPhysAggressor(
@@ -37,85 +37,84 @@ public:
         size_t bodyLevel,
         size_t brainLevel,
         MachPhys::Race race,
-        MachPhys::WeaponCombo combo );
+        MachPhys::WeaponCombo combo);
 
-    virtual ~MachPhysAggressor();
-
-
-    ///////////////////////////////////////////////////////
-    //Inherited from MachPhysCanAttack
-
-    //Makes the underlying physical model available
-    virtual W4dComposite& asComposite();
-    virtual const W4dComposite& asComposite() const;
-
-    //True iff the attacker can turn its weapon carrier to track a target
-    virtual bool canTrackWeaponBase() const;
-
-    //Override to cause the weapon base to turn in order to track targetObject.
-    //Default implementation does nothing.
-    virtual void doWeaponBaseTrackTarget( const W4dEntity& targetObject );
-
-    //Override to stop the weapon base tracking any target.
-    //Default implementation does nothing.
-    virtual void doStopWeaponBaseTrackingTarget();
+    ~MachPhysAggressor() override;
 
     ///////////////////////////////////////////////////////
+    // Inherited from MachPhysCanAttack
 
-	virtual const MachPhysMachineData& machineData() const;
+    // Makes the underlying physical model available
+    W4dComposite& asComposite() override;
+    const W4dComposite& asComposite() const override;
 
-	const MachPhysAggressorData& data() const;
+    // True iff the attacker can turn its weapon carrier to track a target
+    bool canTrackWeaponBase() const override;
+
+    // Override to cause the weapon base to turn in order to track targetObject.
+    // Default implementation does nothing.
+    void doWeaponBaseTrackTarget(const W4dEntity& targetObject) override;
+
+    // Override to stop the weapon base tracking any target.
+    // Default implementation does nothing.
+    void doStopWeaponBaseTrackingTarget() override;
+
+    ///////////////////////////////////////////////////////
+
+    const MachPhysMachineData& machineData() const override;
+
+    const MachPhysAggressorData& data() const;
 
     MachPhys::AggressorSubType subType() const;
 
-	bool canPunch() const;
+    bool canPunch() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysAggressor& t );
+    friend ostream& operator<<(ostream& o, const MachPhysAggressor& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysAggressor );
-    PER_FRIEND_READ_WRITE( MachPhysAggressor );
+    PER_MEMBER_PERSISTENT(MachPhysAggressor);
+    PER_FRIEND_READ_WRITE(MachPhysAggressor);
 
-    typedef MachPhysSubTypeId< MachPhys::AggressorSubType >  Id;
+    using Id = MachPhysSubTypeId<MachPhys::AggressorSubType>;
 
 private:
     // Operation deliberately revoked
-    MachPhysAggressor( const MachPhysAggressor& );
+    MachPhysAggressor(const MachPhysAggressor&);
 
     // Operation deliberately revoked
-    MachPhysAggressor& operator =( const MachPhysAggressor& );
+    MachPhysAggressor& operator=(const MachPhysAggressor&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysAggressor& );
+    bool operator==(const MachPhysAggressor&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysAggressor >    Factory;
+    using Factory = MachPhysObjectFactory<Id, MachPhysAggressor>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysAggressor& Factory::part( const ID&, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysAggressor >;
+    // friend MachPhysAggressor& Factory::part( const ID&, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysAggressor>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysMachinePersistence& );
-    friend void perRead( PerIstream&, MachPhysMachinePersistence& );
+    friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
+    friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    static  MachPhysAggressor& part( MachPhys::AggressorSubType subType, size_t bodyLevel );
-    static  Factory& factory();
+    static MachPhysAggressor& part(MachPhys::AggressorSubType subType, size_t bodyLevel);
+    static Factory& factory();
 
     void createExplosionData();
 
-    SysPathName compositeFileName( MachPhys::AggressorSubType, size_t bodyLevel ) const;
+    SysPathName compositeFileName(MachPhys::AggressorSubType, size_t bodyLevel) const;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds an administrator from scratch
 
-    MachPhysAggressor( W4dEntity* pParent, Id id );
+    MachPhysAggressor(W4dEntity* pParent, Id id);
 
-    MachPhys::AggressorSubType	subType_;
+    MachPhys::AggressorSubType subType_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysAggressor );
+PER_DECLARE_PERSISTENT(MachPhysAggressor);
 
 #endif
 

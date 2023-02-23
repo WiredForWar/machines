@@ -8,10 +8,10 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 /*
 template < class T >
@@ -20,7 +20,7 @@ allocator< T >::pointer
 allocator< T >::allocate( allocator< T >::size_type n )
 {
 
-	return ::allocate( (difference_type)n, (pointer)0 );
+    return ::allocate( (difference_type)n, (pointer)0 );
 }
 
 template < class T >
@@ -28,7 +28,7 @@ _CODE_INLINE
 void
 allocator< T >::deallocate( pointer p )
 {
-	::deallocate( p );
+    ::deallocate( p );
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -38,16 +38,16 @@ _CODE_INLINE
 allocator< T >::pointer
 allocator< T >::address( allocator< T >::reference x )
 {
-	return (pointer)&x;
+    return (pointer)&x;
 }
 
 template < class T >
 _CODE_INLINE
 allocator< T >::const_pointer
 allocator< T >::const_address(
-	allocator< T >::const_reference x )
+    allocator< T >::const_reference x )
 {
-	return (const_pointer)&x;
+    return (const_pointer)&x;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -57,8 +57,8 @@ _CODE_INLINE
 allocator< T >::size_type
 allocator< T >::init_page_size()
 {
-	return max( size_type( 1 ),
-					size_type( 4096/sizeof( T ) ) );
+    return max( size_type( 1 ),
+                    size_type( 4096/sizeof( T ) ) );
 }
 
 template < class T >
@@ -66,18 +66,11 @@ _CODE_INLINE
 allocator< T >::size_type
 allocator< T >::max_size() const
 {
-	return max( size_type( 1 ),
-					size_type( UINT_MAX / sizeof( T ) ) );
+    return max( size_type( 1 ),
+                    size_type( UINT_MAX / sizeof( T ) ) );
 }
 */
 //////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
 
 /*
 
@@ -87,7 +80,7 @@ unique_ptr< X >::unique_ptr( X *tPtr )
 : pData_( tPtr ),
   owner_( tPtr != 0 )
 {
-	//* Intentionally Empty	*
+    //* Intentionally Empty *
 }
 
 template < class X >
@@ -95,9 +88,9 @@ _CODE_INLINE
 unique_ptr< X >::unique_ptr( const unique_ptr& rhs )
 : owner_( rhs.owner_ )
 {
-	// NB: there's an initialisation order dependency.  release sets owner_
-	// to false.  this->owner_ *must* be initialised first.
-	pData_ = rhs.release();
+    // NB: there's an initialisation order dependency.  release sets owner_
+    // to false.  this->owner_ *must* be initialised first.
+    pData_ = rhs.release();
 }
 
 template < class X >
@@ -105,7 +98,7 @@ _CODE_INLINE
 unique_ptr< X >::~unique_ptr()
 {
     if( owner_ )
-    	_DELETE(pData_);
+        _DELETE(pData_);
 }
 
 template < class X >
@@ -128,34 +121,34 @@ template < class X >
 _CODE_INLINE
 X& unique_ptr< X >::operator *() const
 {
-	return *pData_;
+    return *pData_;
 }
 
 template < class X >
 _CODE_INLINE
 X* unique_ptr< X >::operator ->() const
 {
-	return pData_;
+    return pData_;
 }
 
 template < class X >
 _CODE_INLINE
 X* unique_ptr< X >::get() const
 {
-	return pData_;
+    return pData_;
 }
 
 template < class X >
 _CODE_INLINE
 X* unique_ptr< X >::release() const
 {
-	X* tPtr = pData_;
+    X* tPtr = pData_;
 
     unique_ptr< X >* nonConstThis = (unique_ptr< X >*)this;
 
-	nonConstThis->owner_ = false;
+    nonConstThis->owner_ = false;
 
-	return pData_;
+    return pData_;
 }
 
 // template< class Y >
@@ -181,42 +174,35 @@ X* unique_ptr< X >::release() const
 //     return *this;
 // }
 */
-template < class X >
-_CODE_INLINE
-unique_ptr_array< X >::unique_ptr_array( X *tPtr )
-: pData_( tPtr ),
-  owner_( tPtr != 0 )
+template <class X>
+_CODE_INLINE unique_ptr_array<X>::unique_ptr_array(X* tPtr)
+    : pData_(tPtr)
+    , owner_(tPtr != nullptr)
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-template < class X >
-_CODE_INLINE
-unique_ptr_array< X >::unique_ptr_array( const unique_ptr_array& rhs )
-: owner_( rhs.owner_ )
+template <class X>
+_CODE_INLINE unique_ptr_array<X>::unique_ptr_array(const unique_ptr_array& rhs)
+    : owner_(rhs.owner_)
 {
-	// NB: there's an initialisation order dependency.  release sets owner_
-	// to false.  this->owner_ *must* be initialised first.
-	pData_ = rhs.release();
+    // NB: there's an initialisation order dependency.  release sets owner_
+    // to false.  this->owner_ *must* be initialised first.
+    pData_ = rhs.release();
 }
 
-template < class X >
-_CODE_INLINE
-unique_ptr_array< X >::~unique_ptr_array()
+template <class X> _CODE_INLINE unique_ptr_array<X>::~unique_ptr_array()
 {
-//	IAIN_STREAM("Dtor for unique_ptr_array: o=" << owner_ << " ptr=" << pData_ << "\n");
-    if( owner_ )
-    	_DELETE_ARRAY(pData_);
+    //  IAIN_STREAM("Dtor for unique_ptr_array: o=" << owner_ << " ptr=" << pData_ << "\n");
+    if (owner_)
+        _DELETE_ARRAY(pData_);
 }
 
-template < class X >
-_CODE_INLINE
-unique_ptr_array< X >&
-unique_ptr_array< X >::operator=( const unique_ptr_array& rhs )
+template <class X> _CODE_INLINE unique_ptr_array<X>& unique_ptr_array<X>::operator=(const unique_ptr_array& rhs)
 {
-    if( (void*)&rhs != (void*)this )
+    if ((void*)&rhs != (void*)this)
     {
-        if( owner_ )
+        if (owner_)
             _DELETE_ARRAY(pData_);
         owner_ = rhs.owner_;
         pData_ = rhs.release();
@@ -225,37 +211,28 @@ unique_ptr_array< X >::operator=( const unique_ptr_array& rhs )
     return *this;
 }
 
-template < class X >
-_CODE_INLINE
-X& unique_ptr_array< X >::operator *() const
+template <class X> _CODE_INLINE X& unique_ptr_array<X>::operator*() const
 {
-	return *pData_;
+    return *pData_;
 }
 
-template < class X >
-_CODE_INLINE
-X* unique_ptr_array< X >::operator ->() const
+template <class X> _CODE_INLINE X* unique_ptr_array<X>::operator->() const
 {
-	return pData_;
+    return pData_;
 }
 
-template < class X >
-_CODE_INLINE
-X* unique_ptr_array< X >::get() const
+template <class X> _CODE_INLINE X* unique_ptr_array<X>::get() const
 {
-	return pData_;
+    return pData_;
 }
 
-template < class X >
-_CODE_INLINE
-X* unique_ptr_array< X >::release() const
+template <class X> _CODE_INLINE X* unique_ptr_array<X>::release() const
 {
-	X* tPtr = pData_;
+    X* tPtr = pData_;
 
-    unique_ptr_array< X >* nonConstThis = (unique_ptr_array< X >*)this;
+    unique_ptr_array<X>* nonConstThis = (unique_ptr_array<X>*)this;
 
-	nonConstThis->owner_ = false;
+    nonConstThis->owner_ = false;
 
-	return pData_;
+    return pData_;
 }
-

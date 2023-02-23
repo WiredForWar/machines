@@ -13,63 +13,64 @@ MachPhysMissileEmplacementData::MachPhysMissileEmplacementData()
     TEST_INVARIANT;
 }
 
-MachPhysMissileEmplacementData::MachPhysMissileEmplacementData( const MachPhysMissileEmplacementData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform ),
-  nWeapons_( copyMe.nWeapons_ ),
-  accuracy_( copyMe.accuracy_ ),
-  maxRotation_( copyMe.maxRotation_ )
+MachPhysMissileEmplacementData::MachPhysMissileEmplacementData(
+    const MachPhysMissileEmplacementData& copyMe,
+    const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
+    , nWeapons_(copyMe.nWeapons_)
+    , accuracy_(copyMe.accuracy_)
+    , maxRotation_(copyMe.maxRotation_)
 {
 }
 
 MachPhysMissileEmplacementData::~MachPhysMissileEmplacementData()
 {
     TEST_INVARIANT;
-
 }
 
 MATHEX_SCALAR MachPhysMissileEmplacementData::nWeapons() const
 {
-	return nWeapons_;
+    return nWeapons_;
 }
 
-void MachPhysMissileEmplacementData::nWeapons( const MATHEX_SCALAR& newNumberOfWeapons )
+void MachPhysMissileEmplacementData::nWeapons(const MATHEX_SCALAR& newNumberOfWeapons)
 {
-	nWeapons_ = newNumberOfWeapons;
+    nWeapons_ = newNumberOfWeapons;
 }
 
 MATHEX_SCALAR MachPhysMissileEmplacementData::accuracy() const
 {
-	return accuracy_;
+    return accuracy_;
 }
 
-void MachPhysMissileEmplacementData::accuracy( const MATHEX_SCALAR& newAccuracy )
+void MachPhysMissileEmplacementData::accuracy(const MATHEX_SCALAR& newAccuracy)
 {
-	accuracy_ = newAccuracy;
+    accuracy_ = newAccuracy;
 }
 
 MexRadians MachPhysMissileEmplacementData::maxRotation() const
 {
-	return maxRotation_;
+    return maxRotation_;
 }
 
-void MachPhysMissileEmplacementData::maxRotation( const MexRadians& newMaxRotation )
+void MachPhysMissileEmplacementData::maxRotation(const MexRadians& newMaxRotation)
 {
-	maxRotation_ = newMaxRotation;
+    maxRotation_ = newMaxRotation;
 }
 
 void MachPhysMissileEmplacementData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMissileEmplacementData& t )
+ostream& operator<<(ostream& o, const MachPhysMissileEmplacementData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
-	o << "Number Weap " << t.nWeapons() << std::endl;
-	o << "Accuracy " << t.accuracy() << std::endl;
-	o << "MaxRotation " << t.maxRotation() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
+    o << "Number Weap " << t.nWeapons() << std::endl;
+    o << "Accuracy " << t.accuracy() << std::endl;
+    o << "MaxRotation " << t.maxRotation() << std::endl;
 
     return o;
 }

@@ -10,7 +10,6 @@
 
 #include "device/internal/sdltimei.hpp"
 
-
 DevSdlTimeInternal::DevSdlTimeInternal()
 {
     method_ = TIME_GET_TIME;
@@ -22,16 +21,14 @@ DevSdlTimeInternal::DevSdlTimeInternal()
 DevSdlTimeInternal::~DevSdlTimeInternal()
 {
     TEST_INVARIANT;
-
 }
-
 
 void DevSdlTimeInternal::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const DevSdlTimeInternal& t )
+ostream& operator<<(ostream& o, const DevSdlTimeInternal& t)
 {
 
     o << "DevSdlTimeInternal " << (void*)&t << " start" << std::endl;

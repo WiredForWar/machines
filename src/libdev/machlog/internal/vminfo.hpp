@@ -10,13 +10,16 @@
 class MachLogVoiceMailInfo
 {
 public:
-	MachLogVoiceMailInfo(VoiceMailID id, SysPathName wavName, VoiceMailType mailType, PhysAbsoluteTime maxSaveTime):
-	id_(id), wavName_(wavName), mailType_(mailType), maxSaveTime_(maxSaveTime){};
+    MachLogVoiceMailInfo(VoiceMailID id, SysPathName wavName, VoiceMailType mailType, PhysAbsoluteTime maxSaveTime)
+        : id_(id)
+        , wavName_(wavName)
+        , mailType_(mailType)
+        , maxSaveTime_(maxSaveTime) {};
 
-	VoiceMailID id_;
-	SysPathName wavName_;
-	VoiceMailType mailType_;
-	PhysAbsoluteTime maxSaveTime_;
+    VoiceMailID id_;
+    SysPathName wavName_;
+    VoiceMailType mailType_;
+    PhysAbsoluteTime maxSaveTime_;
 };
 
 #endif

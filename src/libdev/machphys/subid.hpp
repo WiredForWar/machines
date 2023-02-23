@@ -1,5 +1,5 @@
 /*
- * S U B I D . H P P 
+ * S U B I D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,71 +16,66 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 
-template< class SUBTYPE >
-class MachPhysSubTypeId
+template <class SUBTYPE> class MachPhysSubTypeId
 {
 public:
-    MachPhysSubTypeId()
-    {}
-    
-    MachPhysSubTypeId( SUBTYPE subType, size_t level )
-    : subType_( subType ),
-      level_( level )
-    {}
-    
-    MachPhysSubTypeId( const MachPhysSubTypeId< SUBTYPE >& copyMe )
-    : subType_( copyMe.subType_ ),
-      level_( copyMe.level_ )
-    {}
+    MachPhysSubTypeId() { }
 
-    MachPhysSubTypeId< SUBTYPE >& operator =( const MachPhysSubTypeId< SUBTYPE >& copyMe )
+    MachPhysSubTypeId(SUBTYPE subType, size_t level)
+        : subType_(subType)
+        , level_(level)
+    {
+    }
+
+    MachPhysSubTypeId(const MachPhysSubTypeId<SUBTYPE>& copyMe)
+        : subType_(copyMe.subType_)
+        , level_(copyMe.level_)
+    {
+    }
+
+    MachPhysSubTypeId<SUBTYPE>& operator=(const MachPhysSubTypeId<SUBTYPE>& copyMe)
     {
         subType_ = copyMe.subType_;
         level_ = copyMe.level_;
         return *this;
     }
 
-    ~MachPhysSubTypeId()
-    {}
-    
-    SUBTYPE subType_;
-    size_t  level_;
+    ~MachPhysSubTypeId() { }
 
-    PER_MEMBER_PERSISTENT_DEFAULT_INLINE( MachPhysSubTypeId );
-    
+    SUBTYPE subType_;
+    size_t level_;
+
+    PER_MEMBER_PERSISTENT_DEFAULT_INLINE(MachPhysSubTypeId);
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSubTypeId< SUBTYPE >& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSubTypeId<SUBTYPE>& t);
 
 private:
 };
 
-template< class SUBTYPE >
-bool operator ==( const MachPhysSubTypeId< SUBTYPE >& a, const MachPhysSubTypeId< SUBTYPE >& b )
+template <class SUBTYPE> bool operator==(const MachPhysSubTypeId<SUBTYPE>& a, const MachPhysSubTypeId<SUBTYPE>& b)
 {
     return a.subType_ == b.subType_ and a.level_ == b.level_;
 }
 
-template< class SUBTYPE >
-bool operator <( const MachPhysSubTypeId< SUBTYPE >& a, const MachPhysSubTypeId< SUBTYPE >& b )
+template <class SUBTYPE> bool operator<(const MachPhysSubTypeId<SUBTYPE>& a, const MachPhysSubTypeId<SUBTYPE>& b)
 {
-    if( a.subType_ < b.subType_ )
+    if (a.subType_ < b.subType_)
         return true;
-    if ( b.subType_ < a.subType_ )
+    if (b.subType_ < a.subType_)
         return false;
 
     return a.level_ < b.level_;
 }
 
-template< class SUBTYPE >
-void perWrite( PerOstream& ostr, const MachPhysSubTypeId< SUBTYPE >& id )
+template <class SUBTYPE> void perWrite(PerOstream& ostr, const MachPhysSubTypeId<SUBTYPE>& id)
 {
     ostr << id.subType_;
     ostr << id.level_;
 }
 
-template< class SUBTYPE >
-void perRead( PerIstream& istr, MachPhysSubTypeId< SUBTYPE >& id )
+template <class SUBTYPE> void perRead(PerIstream& istr, MachPhysSubTypeId<SUBTYPE>& id)
 {
     istr >> id.subType_;
     istr >> id.level_;

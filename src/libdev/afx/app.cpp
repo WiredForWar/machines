@@ -4,64 +4,64 @@ AfxApp::AfxApp()
 {
 }
 
-// virtual 
+// virtual
 AfxApp::~AfxApp()
 {
 }
 
 AfxApp::ExitStatus AfxApp::run()
 {
-	if (startup())
-	{
-		coreLoop();
-		shutdown();
-	}
+    if (startup())
+    {
+        coreLoop();
+        shutdown();
+    }
 
-	return exitStatus();
+    return exitStatus();
 }
 
-// virtual 
+// virtual
 bool AfxApp::startup()
 {
-	if (not OSStartup())
-		return false;
-		
-	if (not clientStartup())
-	{
-		OSShutdown();
-		return false;
-	}
-	
-	clientStarted();
-	
-	return true;
+    if (not OSStartup())
+        return false;
+
+    if (not clientStartup())
+    {
+        OSShutdown();
+        return false;
+    }
+
+    clientStarted();
+
+    return true;
 }
 
-// virtual 
+// virtual
 void AfxApp::shutdown()
 {
-	clientShutdown();
-	OSShutdown();
+    clientShutdown();
+    OSShutdown();
 }
 
 AfxApp::ExitStatus AfxApp::exitStatus() const
 {
-	return exitStatus_;
+    return exitStatus_;
 }
 
 void AfxApp::exitStatus(AfxApp::ExitStatus es)
 {
-	exitStatus_ = es;
+    exitStatus_ = es;
 }
 
 void AfxApp::setArgs(const AfxInvokeArgs& a)
 {
-	args_ = a;
+    args_ = a;
 }
 
 // virtual
 const string& AfxApp::name() const
 {
-	static string n = "Way Cool Charybdis Game";
-	return n;
+    static string n = "Way Cool Charybdis Game";
+    return n;
 }

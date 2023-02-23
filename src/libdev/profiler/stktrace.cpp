@@ -1,5 +1,5 @@
 /*
- * S T K T R A C E . C P P 
+ * S T K T R A C E . C P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -17,17 +17,16 @@ ProStackTracer::ProStackTracer()
 ProStackTracer::~ProStackTracer()
 {
     TEST_INVARIANT;
-
 }
 
 void ProStackTracer::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const ProStackTracer& )
+ostream& operator<<(ostream& o, const ProStackTracer&)
 {
-    ProProfiler::instance().traceStack( o, true, 0, "" );
+    ProProfiler::instance().traceStack(o, true, 0, "");
 
     return o;
 }

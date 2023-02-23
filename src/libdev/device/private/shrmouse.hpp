@@ -7,7 +7,7 @@
 #define _DEV_SHARED_MOUSE_HPP
 
 #ifndef DEVICE_MOUSE
-        #error Do not include shrmouse.hpp file directly, include mouse.hpp
+#error Do not include shrmouse.hpp file directly, include mouse.hpp
 #endif
 
 //////////////////////////////////////////////////////////////////////
@@ -20,32 +20,37 @@
 class DevSharedMouse
 {
 public:
-    typedef int32 XCoord;
-    typedef int32 YCoord;
+    using XCoord = int32;
+    using YCoord = int32;
 
-    typedef std::pair< XCoord, YCoord >  Position;
+    using Position = std::pair<XCoord, YCoord>;
 
-    enum ButtonState { NO_CHANGE, PRESSED, RELEASED };
+    enum ButtonState
+    {
+        NO_CHANGE,
+        PRESSED,
+        RELEASED
+    };
 
     const Position& minRange() const;
     const Position& maxRange() const;
 
-        // Clip the mouse coordinates to be within the given range.  If the mouse
-        // is moved outside this area, then coordinates on the edge are returned.
-    void range( const Position& min, const Position& max );
+    // Clip the mouse coordinates to be within the given range.  If the mouse
+    // is moved outside this area, then coordinates on the edge are returned.
+    void range(const Position& min, const Position& max);
 
 protected:
-        DevSharedMouse();
+    DevSharedMouse();
     void clipToRange(Position&) const;
 
-    mutable bool    lastLeftButtonState_;
-    mutable bool    lastRightButtonState_;
+    mutable bool lastLeftButtonState_;
+    mutable bool lastRightButtonState_;
 
 private:
-    Position    minRange_;
-    Position    maxRange_;
+    Position minRange_;
+    Position maxRange_;
 };
 
-#endif     /*    #ifndef  _DEV_SHARED_MOUSE_HPP     */
+#endif /*    #ifndef  _DEV_SHARED_MOUSE_HPP     */
 
 /* End SHRMOUSE.HPP ****************************************************/

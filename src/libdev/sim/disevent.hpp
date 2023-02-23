@@ -1,5 +1,5 @@
 /*
- * D I S E V E N T . H P P 
+ * D I S E V E N T . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,19 +22,19 @@
 #include "phys/phys.hpp"
 #include "ctl/countptr.hpp"
 
-//Forward declarations
+// Forward declarations
 class SimEventDiary;
 
-//Abstract, orthodox canonical (revoked)
+// Abstract, orthodox canonical (revoked)
 class SimDiscreteEvent
 {
 public:
-    //Constructor specifies time at which the event oocurs
-    SimDiscreteEvent( const PhysAbsoluteTime& time );
+    // Constructor specifies time at which the event oocurs
+    SimDiscreteEvent(const PhysAbsoluteTime& time);
 
-    //Destructor
+    // Destructor
     virtual ~SimDiscreteEvent();
-    //PRE( not in a diary )
+    // PRE( not in a diary )
 
     /* Executes the action defined by the event. This action must compute very quickly,
        and should therefore not perform any expensive computations. It should not perform
@@ -42,51 +42,50 @@ public:
        SimActor::update() call, for example. */
     virtual void execute() = 0;
 
-    //The scheduled time for the event
+    // The scheduled time for the event
     const PhysAbsoluteTime& time() const;
 
     /* Set the event time. If the time is changed, and the event is in a diary, the diary
        is notified of the change in time, so that the ordering can be adjusted. */
-    void time( const PhysAbsoluteTime& time );
+    void time(const PhysAbsoluteTime& time);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SimDiscreteEvent& t );
+    friend ostream& operator<<(ostream& o, const SimDiscreteEvent& t);
 
-    virtual void doOutputOperator( ostream& ) const;
+    virtual void doOutputOperator(ostream&) const;
 
-	PER_MEMBER_PERSISTENT_ABSTRACT( SimDiscreteEvent );
-	PER_FRIEND_READ_WRITE( SimDiscreteEvent );
+    PER_MEMBER_PERSISTENT_ABSTRACT(SimDiscreteEvent);
+    PER_FRIEND_READ_WRITE(SimDiscreteEvent);
 
 private:
     friend class SimEventDiary;
     // Operation deliberately revoked
-    SimDiscreteEvent( const SimDiscreteEvent& );
+    SimDiscreteEvent(const SimDiscreteEvent&);
 
     // Operation deliberately revoked
-    SimDiscreteEvent& operator =( const SimDiscreteEvent& );
+    SimDiscreteEvent& operator=(const SimDiscreteEvent&);
 
     // Operation deliberately revoked
-    bool operator ==( const SimDiscreteEvent& );
+    bool operator==(const SimDiscreteEvent&);
 
-    //Set/get the SimEventDiary of which the event is a member
-    void diary( SimEventDiary* pDiary );
+    // Set/get the SimEventDiary of which the event is a member
+    void diary(SimEventDiary* pDiary);
     SimEventDiary* diary() const;
 
-    //Data members
-    PhysAbsoluteTime time_; //Time at which the event occurs
-    SimEventDiary* pDiary_; //Any diary in which currently entered
+    // Data members
+    PhysAbsoluteTime time_; // Time at which the event occurs
+    SimEventDiary* pDiary_; // Any diary in which currently entered
 };
 
-PER_DECLARE_PERSISTENT( SimDiscreteEvent );
+PER_DECLARE_PERSISTENT(SimDiscreteEvent);
 
-//Implements a ref-counted pointer to an event
-typedef CtlCountedPtr<SimDiscreteEvent> SimDiscreteEventPtr;
+// Implements a ref-counted pointer to an event
+using SimDiscreteEventPtr = CtlCountedPtr<SimDiscreteEvent>;
 
 #ifdef _INLINE
-    #include "sim/disevent.ipp"
+#include "sim/disevent.ipp"
 #endif
-
 
 #endif
 

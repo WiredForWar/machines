@@ -42,34 +42,33 @@
 
 #include "sim/manager.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysBeeBomb );
+PER_DEFINE_PERSISTENT(MachPhysBeeBomb);
 
-//public constructor
-MachPhysBeeBomb::MachPhysBeeBomb( W4dEntity* pParent, const MexTransform3d& localTransform )
-:MachPhysTrailedProjectile( exemplar(), pParent, localTransform )
+// public constructor
+MachPhysBeeBomb::MachPhysBeeBomb(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : MachPhysTrailedProjectile(exemplar(), pParent, localTransform)
 {
-	//pFlame_ = links()[exemplar().pFlame_->id()];
+    // pFlame_ = links()[exemplar().pFlame_->id()];
 
-    if(!findLink("flame", &pFlame_))
-    	pFlame_ = NULL;
+    if (!findLink("flame", &pFlame_))
+        pFlame_ = nullptr;
 
-	ASSERT( pFlame_ != NULL, " flame not exist" );
-	pFlame_->visible( false );	//only be visible when the missile is launched
+    ASSERT(pFlame_ != nullptr, " flame not exist");
+    pFlame_->visible(false); // only be visible when the missile is launched
 
     TEST_INVARIANT;
 }
 
-
-//one time constructor
+// one time constructor
 MachPhysBeeBomb::MachPhysBeeBomb()
-:MachPhysTrailedProjectile(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), BEE_BOMB)
+    : MachPhysTrailedProjectile(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), BEE_BOMB)
 {
-	readCompositeFile( SysPathName( "models/weapons/bee/bomb.cdf" ) );
+    readCompositeFile(SysPathName("models/weapons/bee/bomb.cdf"));
 
-    if(!findLink("flame", &pFlame_))
-		pFlame_ = NULL;
+    if (!findLink("flame", &pFlame_))
+        pFlame_ = nullptr;
 
-	ASSERT( pFlame_ != NULL, " flame not found" );
+    ASSERT(pFlame_ != nullptr, " flame not found");
 
     TEST_INVARIANT;
 }
@@ -81,17 +80,16 @@ MachPhysBeeBomb::~MachPhysBeeBomb()
 
 void MachPhysBeeBomb::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//static
+// static
 const MachPhysBeeBomb& MachPhysBeeBomb::exemplar()
 {
-	return MachPhysOtherPersistence::instance().beeBombExemplar();
+    return MachPhysOtherPersistence::instance().beeBombExemplar();
 }
 
-
-ostream& operator <<( ostream& o, const MachPhysBeeBomb& t )
+ostream& operator<<(ostream& o, const MachPhysBeeBomb& t)
 {
 
     o << "MachPhysBeeBomb " << (void*)&t << " start" << std::endl;
@@ -100,72 +98,68 @@ ostream& operator <<( ostream& o, const MachPhysBeeBomb& t )
     return o;
 }
 
-//virtual
-PhysRelativeTime MachPhysBeeBomb::doBeDestroyedAt
-(
-    const PhysAbsoluteTime& time, MachPhys::StrikeType
-)
+// virtual
+PhysRelativeTime MachPhysBeeBomb::doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType)
 {
     destructionTime_ = time;
-    PhysRelativeTime animationDuration = 6.0;  //can not be zero nor even s smaller value, otherwise crash. don't understand. Yueai
+    PhysRelativeTime animationDuration
+        = 6.0; // can not be zero nor even s smaller value, otherwise crash. don't understand. Yueai
 
-    //Make sure the vapour trail gets garbage collected
-	if( pVapourTrail_ != NULL )
-    	pVapourTrail_->finish( time + animationDuration );
+    // Make sure the vapour trail gets garbage collected
+    if (pVapourTrail_ != nullptr)
+        pVapourTrail_->finish(time + animationDuration);
 
-	RICHARD_STREAM("Creating bomb blast" << std::endl);
+    RICHARD_STREAM("Creating bomb blast" << std::endl);
 
-    //Create the explosion
-    //createBombExplosion( time );
+    // Create the explosion
+    // createBombExplosion( time );
 
     return animationDuration;
 }
 
-MachPhysBeeBomb::MachPhysBeeBomb( PerConstructor con )
-: MachPhysTrailedProjectile( con )
+MachPhysBeeBomb::MachPhysBeeBomb(PerConstructor con)
+    : MachPhysTrailedProjectile(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysBeeBomb& beeBomb )
+void perWrite(PerOstream& ostr, const MachPhysBeeBomb& beeBomb)
 {
     const MachPhysTrailedProjectile& base = beeBomb;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysBeeBomb& beeBomb )
+void perRead(PerIstream& istr, MachPhysBeeBomb& beeBomb)
 {
     MachPhysTrailedProjectile& base = beeBomb;
 
     istr >> base;
 }
 
-void MachPhysBeeBomb::createBombExplosion( const PhysAbsoluteTime& time )
+void MachPhysBeeBomb::createBombExplosion(const PhysAbsoluteTime& time)
 {
-    //Kick off a bomb explosion animation at the appropriate time, provided teh client has provided us
-    //with a planet surface.
-    if( hasPlanetSurface() )
+    // Kick off a bomb explosion animation at the appropriate time, provided teh client has provided us
+    // with a planet surface.
+    if (hasPlanetSurface())
     {
-        //Get the coordinates of the bomb when it explodes
-        MexPoint3d explodePosition = flightPosition( time );
+        // Get the coordinates of the bomb when it explodes
+        MexPoint3d explodePosition = flightPosition(time);
 
-        //Project down onto the planet surface - get terrain height
+        // Project down onto the planet surface - get terrain height
         MachPhysPlanetSurface& surface = planetSurface();
-        MATHEX_SCALAR z = surface.terrainHeight( explodePosition.x(), explodePosition.y() );
-        explodePosition.z( z );
+        MATHEX_SCALAR z = surface.terrainHeight(explodePosition.x(), explodePosition.y());
+        explodePosition.z(z);
 
-        //Create the bomb explosion
-        W4dDomain* pParent = surface.domainAt( explodePosition );
-		pParent->globalTransform().transformInverse( &explodePosition);
+        // Create the bomb explosion
+        W4dDomain* pParent = surface.domainAt(explodePosition);
+        pParent->globalTransform().transformInverse(&explodePosition);
 
-        MachPhysBeeBombExplosion* pExplosion =
-            _NEW( MachPhysBeeBombExplosion( pParent, MexTransform3d( explodePosition ) ) );
+        MachPhysBeeBombExplosion* pExplosion = _NEW(MachPhysBeeBombExplosion(pParent, MexTransform3d(explodePosition)));
 
+        PhysRelativeTime explosionDuration = pExplosion->startExplosion(time, surface);
 
-        PhysRelativeTime explosionDuration = pExplosion->startExplosion( time, surface );
-
-        //Have it garbage collected
-        W4dGarbageCollector::instance().add( pExplosion, time + explosionDuration );
+        // Have it garbage collected
+        W4dGarbageCollector::instance().add(pExplosion, time + explosionDuration);
     }
 }
 /* End BEEBOMB.CPP **************************************************/

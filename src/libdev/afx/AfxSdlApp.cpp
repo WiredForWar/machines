@@ -32,7 +32,9 @@ int main(int argc, char* argv[])
         SDL_ShowSimpleMessageBox(
             SDL_MESSAGEBOX_ERROR,
             "Crash",
-            (std::string{"A fatal error (unhandled exception) has occurred, application will be terminated. Msg:\n"} + e.what()).c_str(),
+            (std::string { "A fatal error (unhandled exception) has occurred, application will be terminated. Msg:\n" }
+             + e.what())
+                .c_str(),
             nullptr);
 
         return -1;
@@ -65,7 +67,9 @@ bool AfxSdlApp::isFinished() const
     return finished_;
 }
 
-void AfxSdlApp::testPrint(const char*) const { }
+void AfxSdlApp::testPrint(const char*) const
+{
+}
 
 void AfxSdlApp::initialise(int argc, char* argv[])
 {
@@ -90,10 +94,11 @@ bool AfxSdlApp::OSStartup()
 
     pWindow_ = SDL_CreateWindow(
         name().c_str(),
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        640, 480, // initial width and height
-        SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
-    );
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        640,
+        480, // initial width and height
+        SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
     if (pWindow_ == nullptr)
     {
@@ -122,8 +127,8 @@ void AfxSdlApp::coreLoop()
         SDL_Event ev;
         if (SDL_PollEvent(&ev))
         {
-            //If any message other than key down or mouse move, ensure we
-            //call the application
+            // If any message other than key down or mouse move, ensure we
+            // call the application
             if (ev.type != SDL_KEYDOWN and ev.type != SDL_KEYUP and ev.type != SDL_MOUSEMOTION)
             {
                 callApp = true;
@@ -140,11 +145,11 @@ void AfxSdlApp::coreLoop()
             {
                 dispatchEvent(&ev);
             }
-            //if (ev.type == SDL_WINDOWEVENT && ev.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-            //onResize(ev.window.data1, ev.window.data2);
+            // if (ev.type == SDL_WINDOWEVENT && ev.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            // onResize(ev.window.data1, ev.window.data2);
 
-            //If we haven't yet decided to call the app, don't call it if there
-            //are any keyboard messages still in the queue
+            // If we haven't yet decided to call the app, don't call it if there
+            // are any keyboard messages still in the queue
             if (not callApp)
             {
                 callApp = not SDL_PollEvent(&ev);
@@ -157,7 +162,7 @@ void AfxSdlApp::coreLoop()
         }
         else
         {
-            callApp = true; //No messages waiting
+            callApp = true; // No messages waiting
         }
 
         // Let the client app do its thing.
@@ -216,7 +221,7 @@ void AfxSdlApp::dispatchEvent(SDL_Event* event)
         case SDL_FINGERUP:
             dispatchTouchEvent(event, false);
             break;
-            
+
         case SDL_FINGERDOWN:
             dispatchTouchEvent(event, true);
             break;
@@ -258,7 +263,7 @@ void AfxSdlApp::dispatchMouseEvent(SDL_Event* event, bool pressed)
 
     // Decode wParam and lParam.
     const DevButtonEvent::ScanCode code = (button == 1) ? DevKey::LEFT_MOUSE : DevKey::RIGHT_MOUSE;
-    const bool previous = 0;
+    const bool previous = false;
     const size_t repeats = 1;
 
     const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
@@ -279,7 +284,8 @@ void AfxSdlApp::dispatchMouseScrollEvent(SDL_Event* event)
     // If direction is SDL_MOUSEWHEEL_FLIPPED the values in x and y will be opposite.
     //  Multiply by -1 to change them back.
     const int multiplier = (event->wheel.direction == SDL_MOUSEWHEEL_NORMAL) ? 1 : -1;
-    const DevButtonEvent::Action act = (event->wheel.y*multiplier > 0) ? DevButtonEvent::SCROLL_UP : DevButtonEvent::SCROLL_DOWN;
+    const DevButtonEvent::Action act
+        = (event->wheel.y * multiplier > 0) ? DevButtonEvent::SCROLL_UP : DevButtonEvent::SCROLL_DOWN;
 
     // Get the position of the cursor at the time of the event.
     const DevMouse::Position pos = DevMouse::instance().getMessagePos();
@@ -297,7 +303,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(SDL_Event* event)
 
     // Button code & whatnot
     const DevButtonEvent::ScanCode code = DevKey::MIDDLE_MOUSE;
-    const bool previous = 0;
+    const bool previous = false;
     const size_t repeats = 1;
 
     // DISPATCH!!!
@@ -325,7 +331,8 @@ void AfxSdlApp::dispatchKeybrdEvent(SDL_Event* event, bool pressed)
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->key.timestamp;
 
-    const DevButtonEvent::ScanCode code = static_cast<DevButtonEvent::ScanCode>(DevSdlKeyboard::scanCodeToKeyNumMap[event->key.keysym.scancode]);
+    const DevButtonEvent::ScanCode code
+        = static_cast<DevButtonEvent::ScanCode>(DevSdlKeyboard::scanCodeToKeyNumMap[event->key.keysym.scancode]);
     const bool previous = false;
     const uint16_t rpt = event->key.repeat + 1;
 
@@ -352,38 +359,38 @@ void AfxSdlApp::dispatchCharEvent(SDL_Event* event)
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->text.timestamp;
 
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, rpt, (char) *(event->text.text));
+    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, rpt, (char)*(event->text.text));
 
-    DEBUG_STREAM(DIAG_NEIL, "char event " << (char) *(event->text.text) << std::endl);
+    DEBUG_STREAM(DIAG_NEIL, "char event " << (char)*(event->text.text) << std::endl);
 
     DevSdlKeyboard::sdlInstance().wm_char(ev);
 }
 
-void AfxSdlApp::dispatchTouchEvent( SDL_Event* event, bool pressed )
+void AfxSdlApp::dispatchTouchEvent(SDL_Event* event, bool pressed)
 {
-	// The argument is a bool so that we don't need the definition of
-	// DevButtonEvent in this class's header file.  Decode the bool.
-	const DevButtonEvent::Action act = (pressed)? DevButtonEvent::PRESS: DevButtonEvent::RELEASE;
+    // The argument is a bool so that we don't need the definition of
+    // DevButtonEvent in this class's header file.  Decode the bool.
+    const DevButtonEvent::Action act = (pressed) ? DevButtonEvent::PRESS : DevButtonEvent::RELEASE;
 
-	// Get the position of the cursor at the time of the event.
-	const DevMouse::Position pos = DevMouse::instance().getMessagePos();
-	const int x = pos.first;
-	const int y = pos.second;
+    // Get the position of the cursor at the time of the event.
+    const DevMouse::Position pos = DevMouse::instance().getMessagePos();
+    const int x = pos.first;
+    const int y = pos.second;
 
-	// Get the states of the modifiers keys at the time of the event.
-	const Uint8* kStates = SDL_GetKeyboardState(NULL);
-	const bool shift = kStates[SDL_SCANCODE_LSHIFT] || kStates[SDL_SCANCODE_RSHIFT];
-	const bool ctrl  = kStates[SDL_SCANCODE_LCTRL] || kStates[SDL_SCANCODE_RCTRL];
-	const bool alt   = kStates[SDL_SCANCODE_LALT] || kStates[SDL_SCANCODE_RALT];
+    // Get the states of the modifiers keys at the time of the event.
+    const Uint8* kStates = SDL_GetKeyboardState(nullptr);
+    const bool shift = kStates[SDL_SCANCODE_LSHIFT] || kStates[SDL_SCANCODE_RSHIFT];
+    const bool ctrl = kStates[SDL_SCANCODE_LCTRL] || kStates[SDL_SCANCODE_RCTRL];
+    const bool alt = kStates[SDL_SCANCODE_LALT] || kStates[SDL_SCANCODE_RALT];
 
-	// Get the message's time.
-	const double time = DevTime::instance().resolution() * event->tfinger.timestamp;
+    // Get the message's time.
+    const double time = DevTime::instance().resolution() * event->tfinger.timestamp;
 
-	// Decode wParam and lParam.
-	const DevButtonEvent::ScanCode code = DevKey::LEFT_MOUSE;
-	const bool previous = 0;
-	const size_t repeats = 1;
+    // Decode wParam and lParam.
+    const DevButtonEvent::ScanCode code = DevKey::LEFT_MOUSE;
+    const bool previous = false;
+    const size_t repeats = 1;
 
-	const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x,y, repeats);
-	DevMouse::instance().wm_button(ev);
+    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
+    DevMouse::instance().wm_button(ev);
 }

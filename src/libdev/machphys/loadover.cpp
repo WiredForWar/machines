@@ -10,49 +10,48 @@
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysLoadingOver );
+PER_DEFINE_PERSISTENT(MachPhysLoadingOver);
 
-//One-time ctor
+// One-time ctor
 MachPhysLoadingOver::MachPhysLoadingOver()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/load/over.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/load/over.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysLoadingOver::MachPhysLoadingOver( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysLoadingOver::MachPhysLoadingOver(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
     TEST_INVARIANT;
 }
 
-MachPhysLoadingOver::MachPhysLoadingOver( PerConstructor con )
-: W4dEntity( con )
+MachPhysLoadingOver::MachPhysLoadingOver(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
 MachPhysLoadingOver::~MachPhysLoadingOver()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysLoadingOver& MachPhysLoadingOver::exemplar()
 {
-	return MachPhysOtherPersistence::instance().overLoadingExemplar();
+    return MachPhysOtherPersistence::instance().overLoadingExemplar();
 }
 
 void MachPhysLoadingOver::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysLoadingOver& t )
+ostream& operator<<(ostream& o, const MachPhysLoadingOver& t)
 {
 
     o << "MachPhysLoadingOver " << (void*)&t << " start" << std::endl;
@@ -61,21 +60,20 @@ ostream& operator <<( ostream& o, const MachPhysLoadingOver& t )
     return o;
 }
 
-//virtual
-bool MachPhysLoadingOver::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysLoadingOver::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysLoadingOver& over )
+void perWrite(PerOstream& ostr, const MachPhysLoadingOver& over)
 {
     const W4dEntity& base = over;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysLoadingOver& over )
+void perRead(PerIstream& istr, MachPhysLoadingOver& over)
 {
     W4dEntity& base = over;
 
@@ -83,4 +81,3 @@ void perRead( PerIstream& istr, MachPhysLoadingOver& over )
 }
 
 /* End LOADOVER.CPP *************************************************/
-

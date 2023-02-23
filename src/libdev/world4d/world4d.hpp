@@ -1,5 +1,5 @@
 /*
- * W O R L D 4 D . H P P 
+ * W O R L D 4 D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -14,24 +14,29 @@
 class MexDouble;
 class MexTransform3d;
 
-//A link identifier
-typedef uint W4dLinkId;
+// A link identifier
+using W4dLinkId = uint;
 
-//An entity id
-typedef UtlId W4dId;
+// An entity id
+using W4dId = UtlId;
 
-//A level of detail id
-typedef int W4dLOD;
-    
-typedef MexTransform3d  W4dTransform3d;
+// A level of detail id
+using W4dLOD = int;
 
-//Namespace declarations
+using W4dTransform3d = MexTransform3d;
+
+// Namespace declarations
 class W4d
 {
 public:
-    //The explicit values allow enumeration objects to be used to index into
-    //vectors, points etc, and are guaranteed not to change.
-    enum Axis{ X_AXIS = 0, Y_AXIS = 1, Z_AXIS = 2 };
+    // The explicit values allow enumeration objects to be used to index into
+    // vectors, points etc, and are guaranteed not to change.
+    enum Axis
+    {
+        X_AXIS = 0,
+        Y_AXIS = 1,
+        Z_AXIS = 2
+    };
 };
 
 #endif

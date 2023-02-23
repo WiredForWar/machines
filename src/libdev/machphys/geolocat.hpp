@@ -17,11 +17,10 @@
 #include "phys/phys.hpp"
 #include "machphys/machine.hpp"
 
-
 class MachPhysGeoLocatorData;
 class MachPhysMachinePersistence;
 class MachPhysGeoLocatorImpl;
-template< class ID, class PART > class MachPhysObjectFactory;
+template <class ID, class PART> class MachPhysObjectFactory;
 
 class MachPhysGeoLocator : public MachPhysMachine
 {
@@ -31,63 +30,66 @@ public:
         const W4dTransform3d& localTransform,
         size_t bodyLevel,
         size_t brainLevel,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-    virtual ~MachPhysGeoLocator();
+    ~MachPhysGeoLocator() override;
 
-    //Set/get locating mode
-    void isLocating( bool doLocate );
+    // Set/get locating mode
+    void isLocating(bool doLocate);
     bool isLocating() const;
 
-    //Inherited from MachPhysMachine
-    virtual void move( const MachPhysMachineMoveInfo& info );
+    // Inherited from MachPhysMachine
+    void move(const MachPhysMachineMoveInfo& info) override;
 
-	virtual const MachPhysMachineData& machineData() const;
+    const MachPhysMachineData& machineData() const override;
 
-	const MachPhysGeoLocatorData& data() const;
+    const MachPhysGeoLocatorData& data() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysGeoLocator& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGeoLocator& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysGeoLocator );
-    PER_FRIEND_READ_WRITE( MachPhysGeoLocator );
+    PER_MEMBER_PERSISTENT(MachPhysGeoLocator);
+    PER_FRIEND_READ_WRITE(MachPhysGeoLocator);
 
 private:
     // Operations deliberately revoked
-    MachPhysGeoLocator( const MachPhysGeoLocator& );
-    MachPhysGeoLocator& operator =( const MachPhysGeoLocator& );
-    bool operator ==( const MachPhysGeoLocator& );
+    MachPhysGeoLocator(const MachPhysGeoLocator&);
+    MachPhysGeoLocator& operator=(const MachPhysGeoLocator&);
+    bool operator==(const MachPhysGeoLocator&);
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysGeoLocator& Factory::part( const ID&, size_t );
-    typedef MachPhysObjectFactory< size_t, MachPhysGeoLocator >    Factory;
-    //friend class Factory;
-    friend class MachPhysObjectFactory< size_t, MachPhysGeoLocator >;
+    // friend MachPhysGeoLocator& Factory::part( const ID&, size_t );
+    using Factory = MachPhysObjectFactory<size_t, MachPhysGeoLocator>;
+    // friend class Factory;
+    friend class MachPhysObjectFactory<size_t, MachPhysGeoLocator>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysMachinePersistence& );
-    friend void perRead( PerIstream&, MachPhysMachinePersistence& );
+    friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
+    friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    static  MachPhysGeoLocator& part( size_t bodyLevel );
-    static  Factory& factory();
+    static MachPhysGeoLocator& part(size_t bodyLevel);
+    static Factory& factory();
 
-    SysPathName compositeFileName( size_t bodyLevel ) const;
+    SysPathName compositeFileName(size_t bodyLevel) const;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds an administrator from scratch
 
-    MachPhysGeoLocator( W4dEntity* pParent, size_t bodyLevel );
+    MachPhysGeoLocator(W4dEntity* pParent, size_t bodyLevel);
 
     void createExplosionData();
 
-	enum {LOCATOR_LOCATING};
+    enum
+    {
+        LOCATOR_LOCATING
+    };
 
     // Data members
-    MachPhysGeoLocatorImpl* pImpl_; //implementation object
+    MachPhysGeoLocatorImpl* pImpl_; // implementation object
 };
 
-PER_DECLARE_PERSISTENT( MachPhysGeoLocator );
+PER_DECLARE_PERSISTENT(MachPhysGeoLocator);
 
 #endif
 

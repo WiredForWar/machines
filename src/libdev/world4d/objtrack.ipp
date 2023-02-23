@@ -1,14 +1,14 @@
 /*
- * O B J T R A C K . I P P 
+ * O B J T R A C K . I P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -66,9 +66,9 @@ MATHEX_SCALAR W4dObjectTracker::defaultLength() const
 }
 
 _CODE_INLINE
-void W4dObjectTracker::deltaAngle( MATHEX_SCALAR yawDeltaSine, MATHEX_SCALAR yawDeltaCosine )
+void W4dObjectTracker::deltaAngle(MATHEX_SCALAR yawDeltaSine, MATHEX_SCALAR yawDeltaCosine)
 {
-    PRE( fabs( 1.0 - (yawDeltaSine*yawDeltaSine + yawDeltaCosine*yawDeltaCosine) ) < 0.00001 );
+    PRE(fabs(1.0 - (yawDeltaSine * yawDeltaSine + yawDeltaCosine * yawDeltaCosine)) < 0.00001);
     yawDeltaSine_ = yawDeltaSine;
     yawDeltaCosine_ = yawDeltaCosine;
 }

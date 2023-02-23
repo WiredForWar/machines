@@ -1,5 +1,5 @@
 /*
- * R A D I A N S . H P P 
+ * R A D I A N S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -24,34 +24,33 @@
 class MexRadians : public MexAngle
 {
 public:
-
     MexRadians();
-    MexRadians( MATHEX_SCALAR );
-    MexRadians( const MexAngle& );
+    MexRadians(MATHEX_SCALAR);
+    MexRadians(const MexAngle&);
 
-    MATHEX_SCALAR   asScalar() const;
+    MATHEX_SCALAR asScalar() const;
 
-    friend ostream& operator <<( ostream& o, const MexRadians& t );
-    //Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT( MexRadians );
-    PER_FRIEND_READ_WRITE( MexRadians );
+    friend ostream& operator<<(ostream& o, const MexRadians& t);
+    // Persistence
+    PER_MEMBER_PERSISTENT_DEFAULT(MexRadians);
+    PER_FRIEND_READ_WRITE(MexRadians);
 };
 
-PER_DECLARE_PERSISTENT( MexRadians );
+PER_DECLARE_PERSISTENT(MexRadians);
 
 class MexDegrees;
 
-const MexRadians   operator +( const MexRadians& a, const MexRadians& b );
-const MexRadians   operator +( const MexRadians& a, const MexDegrees& b );
+const MexRadians operator+(const MexRadians& a, const MexRadians& b);
+const MexRadians operator+(const MexRadians& a, const MexDegrees& b);
 
-const MexRadians   operator -( const MexRadians& a, const MexRadians& b );
-const MexRadians   operator -( const MexRadians& a, const MexDegrees& b );
-const MexRadians   operator -( const MexRadians& );
+const MexRadians operator-(const MexRadians& a, const MexRadians& b);
+const MexRadians operator-(const MexRadians& a, const MexDegrees& b);
+const MexRadians operator-(const MexRadians&);
 
-const MexRadians   operator *( const MexRadians&, MATHEX_SCALAR );
-const MexRadians   operator *( MATHEX_SCALAR, const MexRadians& );
+const MexRadians operator*(const MexRadians&, MATHEX_SCALAR);
+const MexRadians operator*(MATHEX_SCALAR, const MexRadians&);
 
-const MexRadians   operator /( const MexRadians&, MATHEX_SCALAR );
+const MexRadians operator/(const MexRadians&, MATHEX_SCALAR);
 
 #endif
 

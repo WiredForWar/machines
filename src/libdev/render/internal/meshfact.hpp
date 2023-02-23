@@ -28,26 +28,26 @@ class RenIMeshFactory : public UtlCPFactory<RenIMeshID, Ren::ConstMeshPtr>
 public:
     //  Singleton class
     static RenIMeshFactory& instance();
-    ~RenIMeshFactory();
+    ~RenIMeshFactory() override;
 
-	// These methods don't actually destory the mesh instances, they just
-	// release the counted pointers held by the factory.
-	void removeFromFactory(Ren::ConstMeshPtr);
-	void removeAllFromFactory();
+    // These methods don't actually destory the mesh instances, they just
+    // release the counted pointers held by the factory.
+    void removeFromFactory(Ren::ConstMeshPtr);
+    void removeAllFromFactory();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const RenIMeshFactory& t );
+    friend ostream& operator<<(ostream& o, const RenIMeshFactory& t);
 
 private:
-	virtual Ren::ConstMeshPtr doCreatePart( const RenIMeshID& id );
+    Ren::ConstMeshPtr doCreatePart(const RenIMeshID& id) override;
 
     RenIMeshFactory();
 
     // Operations deliberately revoked
-    RenIMeshFactory( const RenIMeshFactory& );
-    RenIMeshFactory& operator =( const RenIMeshFactory& );
-    bool operator ==( const RenIMeshFactory& );
+    RenIMeshFactory(const RenIMeshFactory&);
+    RenIMeshFactory& operator=(const RenIMeshFactory&);
+    bool operator==(const RenIMeshFactory&);
 };
 
 #endif

@@ -6,8 +6,8 @@
 /*
     RenICapabilities
 
-	Driver and hardware capabilities of interest to internal clients.
-	RenCapabilites exports a sub-set of these for public clients.
+    Driver and hardware capabilities of interest to internal clients.
+    RenCapabilites exports a sub-set of these for public clients.
 */
 
 #ifndef _RENDER_CAPABLEI_HPP
@@ -20,75 +20,75 @@ class RenDevice;
 class RenICapabilities
 {
 public:
-	// Is the driver hardware assisted or software only?
-	bool hardware() const;
+    // Is the driver hardware assisted or software only?
+    bool hardware() const;
 
-	// Does the driver support these various nice features?
-	bool supportsBilinear() const;
-	bool supportsFlatAlpha() const;
-	bool supportsTextureAlpha() const;
-	bool supportsColourKey() const;
-	bool supportsStippledAlpha() const;
-	bool supportsTableFog() const;
-	bool supportsVertexFog() const;
-	bool supportsFog() const;			// the logical OR of the above two fns.
-	bool supportsMMX() const;
-	bool supportsZBias() const;
-	bool supports8BitsTexture() const;
-	bool supportsSharedVideoMemory() const;
-	bool supportsTextureSysMemory() const;
+    // Does the driver support these various nice features?
+    bool supportsBilinear() const;
+    bool supportsFlatAlpha() const;
+    bool supportsTextureAlpha() const;
+    bool supportsColourKey() const;
+    bool supportsStippledAlpha() const;
+    bool supportsTableFog() const;
+    bool supportsVertexFog() const;
+    bool supportsFog() const; // the logical OR of the above two fns.
+    bool supportsMMX() const;
+    bool supportsZBias() const;
+    bool supports8BitsTexture() const;
+    bool supportsSharedVideoMemory() const;
+    bool supportsTextureSysMemory() const;
 
-	uint32_t totalVideoMemory() const;
-	uint32_t totalTextureMemory() const;
-	uint32_t memoryRequiredBy4MBytesTextureSet() const;
-	void setTotalTextureAndVideoMemory(const RenDevice* dev);
+    uint32_t totalVideoMemory() const;
+    uint32_t totalTextureMemory() const;
+    uint32_t memoryRequiredBy4MBytesTextureSet() const;
+    void setTotalTextureAndVideoMemory(const RenDevice* dev);
 
-	bool supportsGammaCorrection() const;
-	void setSupportsGammaCorrection();
+    bool supportsGammaCorrection() const;
+    void setSupportsGammaCorrection();
 
-	// The driver supports anti-aliasing.  More specifically, this returns true
-	// only if the type of anti-aliasing does not impose contraints on the
-	// rendering (some of them require the polygons rendered in order).
-	bool supportsEdgeAntiAliasing() const;
+    // The driver supports anti-aliasing.  More specifically, this returns true
+    // only if the type of anti-aliasing does not impose contraints on the
+    // rendering (some of them require the polygons rendered in order).
+    bool supportsEdgeAntiAliasing() const;
 
-	// These values are derived from the Direct3D reference rather than any
-	// Direct3D capability entries.
-	short minZBias() const;
-	short maxZBias() const;
+    // These values are derived from the Direct3D reference rather than any
+    // Direct3D capability entries.
+    short minZBias() const;
+    short maxZBias() const;
 
     ostream& write(ostream& o);
 
 private:
-	friend class RenCapabilities;
-	RenICapabilities(const RenDevice* dev, bool hardwareDriver);		// PRE(dev);
+    friend class RenCapabilities;
+    RenICapabilities(const RenDevice* dev, bool hardwareDriver); // PRE(dev);
     ~RenICapabilities();
 
-    friend ostream& operator <<( ostream& o, const RenICapabilities& t );
+    friend ostream& operator<<(ostream& o, const RenICapabilities& t);
 
-    RenICapabilities( const RenICapabilities& );
-    RenICapabilities& operator =( const RenICapabilities& );
+    RenICapabilities(const RenICapabilities&);
+    RenICapabilities& operator=(const RenICapabilities&);
 
-	// maxAvailableTextureMemory_ accounts for the minDisplayMemory_ in case the video
-	// memory is shared
-	bool maxAvailableTextureMemoryDirty_;
-	uint32_t maxAvailableTextureMemory_;
-	// maxAvailableDisplayMemoryAfterTextures_ accounts for the memory which is to be used by
-	// the texture set in case the video memory is shared
-	bool maxAvailableDisplayMemoryAfterTexturesDirty_;
-	uint32_t maxAvailableDisplayMemoryAfterTextures_;
+    // maxAvailableTextureMemory_ accounts for the minDisplayMemory_ in case the video
+    // memory is shared
+    bool maxAvailableTextureMemoryDirty_;
+    uint32_t maxAvailableTextureMemory_;
+    // maxAvailableDisplayMemoryAfterTextures_ accounts for the memory which is to be used by
+    // the texture set in case the video memory is shared
+    bool maxAvailableDisplayMemoryAfterTexturesDirty_;
+    uint32_t maxAvailableDisplayMemoryAfterTextures_;
 
-	bool hardware_, supportsMMX_, supportsBilinear_, supportsEdgeAntiAliasing_;
-	bool supportsFlatAlpha_, supportsStippledAlpha_, supportsTextureAlpha_;
-	bool supportsTableFog_, supportsVertexFog_, supportsColourKey_;
-	bool supportsZBias_, supports8BitsTexture_;
-	bool supportsSharedVideoMemory_, supportsTextureSysMemory_;
-	bool supportsGammaCorrection_;
-	uint32_t totalVideoMemory_, totalTextureMemory_;
-	uint32_t minDisplayMemory_;
+    bool hardware_, supportsMMX_, supportsBilinear_, supportsEdgeAntiAliasing_;
+    bool supportsFlatAlpha_, supportsStippledAlpha_, supportsTextureAlpha_;
+    bool supportsTableFog_, supportsVertexFog_, supportsColourKey_;
+    bool supportsZBias_, supports8BitsTexture_;
+    bool supportsSharedVideoMemory_, supportsTextureSysMemory_;
+    bool supportsGammaCorrection_;
+    uint32_t totalVideoMemory_, totalTextureMemory_;
+    uint32_t minDisplayMemory_;
 };
 
 #ifdef _INLINE
-    #include "internal/capablei.ipp"
+#include "internal/capablei.ipp"
 #endif
 
 #endif

@@ -26,26 +26,26 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const ClassPair& t );
-    friend bool operator ==( const ClassPair& a, const ClassPair& b );
-    friend bool operator !=( const ClassPair& a, const ClassPair& b );
+    friend ostream& operator<<(ostream& o, const ClassPair& t);
+    friend bool operator==(const ClassPair& a, const ClassPair& b);
+    friend bool operator!=(const ClassPair& a, const ClassPair& b);
 
-    PER_MEMBER_PERSISTENT_DEFAULT( ClassPair );
-    PER_FRIEND_READ_WRITE( ClassPair );
+    PER_MEMBER_PERSISTENT_DEFAULT(ClassPair);
+    PER_FRIEND_READ_WRITE(ClassPair);
 
 private:
-    ClassPair( const ClassPair& );
-    ClassPair& operator =( const ClassPair& );
-    bool operator ==( const ClassPair& );
-    bool operator !=( const ClassPair& );
+    ClassPair(const ClassPair&);
+    ClassPair& operator=(const ClassPair&);
+    bool operator==(const ClassPair&);
+    bool operator!=(const ClassPair&);
 
-    typedef std::pair< int, double > Pair;
+    typedef std::pair<int, double> Pair;
 
-    Pair    p1_;
-    Pair*   pP1_;
+    Pair p1_;
+    Pair* pP1_;
 };
 
-PER_DECLARE_PERSISTENT( ClassPair );
+PER_DECLARE_PERSISTENT(ClassPair);
 
 #endif
 

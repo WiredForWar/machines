@@ -1,5 +1,5 @@
 /*
- * STINGL . C P P 
+ * STINGL . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -12,31 +12,30 @@
 #include "machlog/stingl.hpp"
 #include "machlog/plandoms.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogLightSting );
+PER_DEFINE_PERSISTENT(MachLogLightSting);
 
 MachLogLightSting::MachLogLightSting(
     MachLogRace* pRace,
-	MachPhysLinearProjectile* pPhysProjectile,
+    MachPhysLinearProjectile* pPhysProjectile,
     MachActor* pOwner,
-    const MachPhysWeaponData& weaponData )
-:	MachLogLinearProjectile( pRace, pPhysProjectile, pOwner, weaponData )
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData)
 {
-	HAL_STREAM("MLLightSting::CTOR\n" );
+    HAL_STREAM("MLLightSting::CTOR\n");
     TEST_INVARIANT;
 }
 
 MachLogLightSting::~MachLogLightSting()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogLightSting::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogLightSting& t )
+ostream& operator<<(ostream& o, const MachLogLightSting& t)
 {
 
     o << "MachLogLightSting " << (void*)&t << " start" << std::endl;
@@ -47,28 +46,25 @@ ostream& operator <<( ostream& o, const MachLogLightSting& t )
 
 void MachLogLightSting::doBeDestroyed()
 {
-	checkForDamage( 3.0, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::WASP_LIGHT_STING );
+    checkForDamage(3.0, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::WASP_LIGHT_STING);
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogLightSting& actor )
+void perWrite(PerOstream& ostr, const MachLogLightSting& actor)
 {
-	const MachLogLinearProjectile& base1 = actor;
+    const MachLogLinearProjectile& base1 = actor;
 
-	ostr << base1;
-
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogLightSting& actor )
+void perRead(PerIstream& istr, MachLogLightSting& actor)
 {
-	MachLogLinearProjectile& base1 = actor;
+    MachLogLinearProjectile& base1 = actor;
 
-	istr >> base1;
-
+    istr >> base1;
 }
 
-MachLogLightSting::MachLogLightSting( PerConstructor con )
-:	MachLogLinearProjectile( con )
+MachLogLightSting::MachLogLightSting(PerConstructor con)
+    : MachLogLinearProjectile(con)
 {
 }
 

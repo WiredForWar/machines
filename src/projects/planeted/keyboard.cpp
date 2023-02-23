@@ -36,55 +36,58 @@
 
 #include "planeted/planeted.hpp"
 
-#define EXPECT(expected)	i>>c; if (c!=expected) return i;
+#define EXPECT(expected)                                                                                               \
+    i >> c;                                                                                                            \
+    if (c != expected)                                                                                                 \
+        return i;
 
-istream& operator >>( istream& i, MexPoint3d& p )
+istream& operator>>(istream& i, MexPoint3d& p)
 {
-	char c;
+    char c;
 
-	EXPECT('(');
-	i >> p[0];
-	EXPECT(',');
-	i >> p[1];
-	EXPECT(',');
-	i >> p[2];
-	EXPECT(')');
+    EXPECT('(');
+    i >> p[0];
+    EXPECT(',');
+    i >> p[1];
+    EXPECT(',');
+    i >> p[2];
+    EXPECT(')');
 
-	return i;
+    return i;
 }
 
-istream& operator >>( istream& i, MexEulerAngles& p )
+istream& operator>>(istream& i, MexEulerAngles& p)
 {
-	char c;
-	MATHEX_SCALAR a,e,r;
+    char c;
+    MATHEX_SCALAR a, e, r;
 
-	EXPECT('(');
-	i >> a;
-	i >> e;
-	i >> r;
-	EXPECT(')');
+    EXPECT('(');
+    i >> a;
+    i >> e;
+    i >> r;
+    EXPECT(')');
 
-	p.azimuth(a);
-	p.elevation(e);
-	p.roll(r);
+    p.azimuth(a);
+    p.elevation(e);
+    p.roll(r);
 
-	return i;
+    return i;
 }
 
 void SDLApp::processInput()
 {
-	DevEventQueue& devEventQueue = DevEventQueue::instance();
+    DevEventQueue& devEventQueue = DevEventQueue::instance();
 
-	while ( not devEventQueue.isEmpty() )
-	{
-		DevButtonEvent devButtonEvent = devEventQueue.oldestEvent();
+    while (not devEventQueue.isEmpty())
+    {
+        DevButtonEvent devButtonEvent = devEventQueue.oldestEvent();
 
- 		PedPlanetEditor::instance().processInput( devButtonEvent );
-		PhysMotionControl::processButtonEvent( devButtonEvent );
-		MachCameras::instance().processButtonEvent( devButtonEvent );
+        PedPlanetEditor::instance().processInput(devButtonEvent);
+        PhysMotionControl::processButtonEvent(devButtonEvent);
+        MachCameras::instance().processButtonEvent(devButtonEvent);
 
-		checkForQuit( devButtonEvent );
-  	}
+        checkForQuit(devButtonEvent);
+    }
 }
 
 /* End D3DAPP.CPP ***************************************************/

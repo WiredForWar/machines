@@ -1,5 +1,5 @@
 /*
- * R E S T R E E . H P P 
+ * R E S T R E E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,42 +20,50 @@ class SysPathName;
 class MachLogResearchItem;
 class MachLogNotifiable;
 class MachLogResearchTreeImpl;
-template < class T > class ctl_pvector;
+template <class T> class ctl_pvector;
 
 class MachLogResearchTree
 {
 public:
-	typedef ctl_pvector< MachLogResearchItem > ResearchItems;
-	typedef ctl_pvector< MachLogNotifiable > Notifiables;
+    using ResearchItems = ctl_pvector<MachLogResearchItem>;
+    using Notifiables = ctl_pvector<MachLogNotifiable>;
 
     MachLogResearchTree();
     ~MachLogResearchTree();
 
     void CLASS_INVARIANT;
 
-	ResearchItems& researchItems();
-	const ResearchItems& researchItems() const;
-	MachLogResearchItem& researchItem( MachLog::ObjectType, int subType, MachLogMachine::Level hwLevel = 0, MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS );
+    ResearchItems& researchItems();
+    const ResearchItems& researchItems() const;
+    MachLogResearchItem& researchItem(
+        MachLog::ObjectType,
+        int subType,
+        MachLogMachine::Level hwLevel = 0,
+        MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS);
 
-	// note that if any parameter is set or left as DONTCARE, *no* further parameters will be checked even if passed.
-	bool activated( MachPhys::Race r, MachLog::ObjectType objectType, int subType=MachLog::DONTCARE, size_t hwLevel=MachLog::DONTCARE, MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS );
-	void updated( MachPhys::Race r );
-	
-	void addMe( MachLogNotifiable* pNewRTreeNot );
-	void removeMe( MachLogNotifiable* pCurrentRTreeNot );	
+    // note that if any parameter is set or left as DONTCARE, *no* further parameters will be checked even if passed.
+    bool activated(
+        MachPhys::Race r,
+        MachLog::ObjectType objectType,
+        int subType = MachLog::DONTCARE,
+        size_t hwLevel = MachLog::DONTCARE,
+        MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS);
+    void updated(MachPhys::Race r);
 
-    friend ostream& operator <<( ostream& o, const MachLogResearchTree& t );
+    void addMe(MachLogNotifiable* pNewRTreeNot);
+    void removeMe(MachLogNotifiable* pCurrentRTreeNot);
+
+    friend ostream& operator<<(ostream& o, const MachLogResearchTree& t);
 
 private:
-	void readAllItems( const SysPathName& );
+    void readAllItems(const SysPathName&);
     // Operation deliberately revoked
-    MachLogResearchTree( const MachLogResearchTree& );
-    MachLogResearchTree& operator =( const MachLogResearchTree& );
-    bool operator ==( const MachLogResearchTree& );
+    MachLogResearchTree(const MachLogResearchTree&);
+    MachLogResearchTree& operator=(const MachLogResearchTree&);
+    bool operator==(const MachLogResearchTree&);
 
-	MachLogResearchTreeImpl* pImpl_;
+    MachLogResearchTreeImpl* pImpl_;
 };
-
 
 #endif
 

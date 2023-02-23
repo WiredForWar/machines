@@ -1,5 +1,5 @@
 /*
- * S K Y . H P P 
+ * S K Y . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,10 +18,10 @@
 class MachPhysSkyComplexity : public MachPhysComplexityChoiceItem
 {
 public:
-	MachPhysSkyComplexity( const ItemId& id );
-	~MachPhysSkyComplexity();
+    MachPhysSkyComplexity(const ItemId& id);
+    ~MachPhysSkyComplexity() override;
 
-	virtual	void update();
+    void update() override;
 };
 
 #endif

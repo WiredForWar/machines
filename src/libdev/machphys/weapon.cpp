@@ -29,64 +29,64 @@
 #include "phys/linemoti.hpp"
 
 #ifndef _INLINE
-    #include "machphys/weapon.ipp"
+#include "machphys/weapon.ipp"
 #endif
 
-PER_DEFINE_PERSISTENT( MachPhysWeapon );
+PER_DEFINE_PERSISTENT(MachPhysWeapon);
 
-MachPhysWeapon::MachPhysWeapon
-(
-    W4dEntity* pParent, const MexTransform3d& localTransform,
+MachPhysWeapon::MachPhysWeapon(
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform,
     const SysPathName& compositeFileName,
-    MachPhys::WeaponType type, MachPhys::Mounting mounting
-)
-:   W4dComposite( pParent, localTransform, W4dEntity::SOLID ),
-    type_( type ),
-    mounting_( mounting ),
-    recoilId_( 0 ),
-    nextLaunchOffset_( 0 ),
-    pMachine_( NULL ),
-    pConstruction_( NULL )
+    MachPhys::WeaponType type,
+    MachPhys::Mounting mounting)
+    : W4dComposite(pParent, localTransform, W4dEntity::SOLID)
+    , type_(type)
+    , mounting_(mounting)
+    , recoilId_(0)
+    , nextLaunchOffset_(0)
+    , pMachine_(nullptr)
+    , pConstruction_(nullptr)
 {
-    //Load the model
-    readCompositeFile( compositeFileName );
+    // Load the model
+    readCompositeFile(compositeFileName);
 
-    //If there is a recoil distance, look for the link named "recoil"
-    if( weaponData().recoilDistance() != 0.0 )
+    // If there is a recoil distance, look for the link named "recoil"
+    if (weaponData().recoilDistance() != 0.0)
     {
         W4dLink* pRecoilLink;
-        if( findLink( "recoil", &pRecoilLink ) )
+        if (findLink("recoil", &pRecoilLink))
         {
-            //Store link id plus 2
+            // Store link id plus 2
             recoilId_ = pRecoilLink->id() + 2;
         }
         else
         {
-            //Indicate whole weapon to recoil
+            // Indicate whole weapon to recoil
             recoilId_ = 1;
         }
     }
     TEST_INVARIANT;
 }
 
-MachPhysWeapon::MachPhysWeapon
-(
-    const MachPhysWeapon& copyMe, MachPhys::Mounting mounting,
-    W4dEntity* pParent, const MexTransform3d& localTransform
-)
-:   W4dComposite( copyMe, pParent, localTransform ),
-    type_( copyMe.type_ ),
-    mounting_( mounting ),
-    recoilId_( copyMe.recoilId_ ),
-    nextLaunchOffset_( 0 ),
-    pMachine_( NULL ),
-    pConstruction_( NULL )
+MachPhysWeapon::MachPhysWeapon(
+    const MachPhysWeapon& copyMe,
+    MachPhys::Mounting mounting,
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform)
+    : W4dComposite(copyMe, pParent, localTransform)
+    , type_(copyMe.type_)
+    , mounting_(mounting)
+    , recoilId_(copyMe.recoilId_)
+    , nextLaunchOffset_(0)
+    , pMachine_(nullptr)
+    , pConstruction_(nullptr)
 {
     TEST_INVARIANT;
 }
 
-MachPhysWeapon::MachPhysWeapon( PerConstructor con )
-: W4dComposite( con )
+MachPhysWeapon::MachPhysWeapon(PerConstructor con)
+    : W4dComposite(con)
 {
     TEST_INVARIANT;
 }
@@ -94,16 +94,16 @@ MachPhysWeapon::MachPhysWeapon( PerConstructor con )
 MachPhysWeapon::~MachPhysWeapon()
 {
     TEST_INVARIANT;
-    //Stop any playing sound
-    W4dSoundManager::instance().stop( this );
+    // Stop any playing sound
+    W4dSoundManager::instance().stop(this);
 }
 
 void MachPhysWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysWeapon& t )
+ostream& operator<<(ostream& o, const MachPhysWeapon& t)
 {
 
     o << "MachPhysWeapon " << (void*)&t << " start" << std::endl;
@@ -112,38 +112,29 @@ ostream& operator <<( ostream& o, const MachPhysWeapon& t )
     return o;
 }
 
-//virtual
-bool MachPhysWeapon::intersectsLine
-(
-    const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy
-) const
+// virtual
+bool MachPhysWeapon::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
 {
-    //use the default function
-    return defaultIntersectsLine( line, pDistance, accuracy );
+    // use the default function
+    return defaultIntersectsLine(line, pDistance, accuracy);
 }
 
 const MachPhysWeaponData& MachPhysWeapon::weaponData() const
 {
-    return MachPhysData::instance().weaponData( type() );
+    return MachPhysData::instance().weaponData(type());
 }
 
-//virtual
-PhysRelativeTime MachPhysWeapon::victimAnimation
-(
-    const PhysAbsoluteTime&, const MexLine3d&, MachPhysMachine*
-) const
+// virtual
+PhysRelativeTime MachPhysWeapon::victimAnimation(const PhysAbsoluteTime&, const MexLine3d&, MachPhysMachine*) const
 {
-    //No default animation
+    // No default animation
     return 0.0;
 }
 
-//virtual
-PhysRelativeTime MachPhysWeapon::victimAnimation
-(
-    const PhysAbsoluteTime&, const MexLine3d&, MachPhysConstruction*
-) const
+// virtual
+PhysRelativeTime MachPhysWeapon::victimAnimation(const PhysAbsoluteTime&, const MexLine3d&, MachPhysConstruction*) const
 {
-    //No default animation
+    // No default animation
     return 0.0;
 }
 
@@ -152,36 +143,36 @@ uint MachPhysWeapon::nLaunchOffsets() const
     return weaponData().launchOffsets().size();
 }
 
-const MexPoint3d& MachPhysWeapon::localLaunchOffset( uint index ) const
+const MexPoint3d& MachPhysWeapon::localLaunchOffset(uint index) const
 {
-    PRE( index < nLaunchOffsets() );
-    return weaponData().launchOffsets()[ index ];
+    PRE(index < nLaunchOffsets());
+    return weaponData().launchOffsets()[index];
 }
 
-void MachPhysWeapon::globalLaunchPosition( uint index, MexTransform3d* pTransform ) const
+void MachPhysWeapon::globalLaunchPosition(uint index, MexTransform3d* pTransform) const
 {
-    //Construct a translation only transform from the local launch offset
-    MexTransform3d offset( localLaunchOffset( index ) );
+    // Construct a translation only transform from the local launch offset
+    MexTransform3d offset(localLaunchOffset(index));
 
-    //Combine this with weapon global transform
-    globalTransform().transform( offset, pTransform );
+    // Combine this with weapon global transform
+    globalTransform().transform(offset, pTransform);
 }
 
-//virtual
-PhysRelativeTime MachPhysWeapon::fire( const PhysAbsoluteTime&, int )
+// virtual
+PhysRelativeTime MachPhysWeapon::fire(const PhysAbsoluteTime&, int)
 {
-    //Do nothing
+    // Do nothing
     return 0.0;
 }
 
-PhysRelativeTime MachPhysWeapon::recoil( const PhysAbsoluteTime& startTime, int numberInBurst )
+PhysRelativeTime MachPhysWeapon::recoil(const PhysAbsoluteTime& startTime, int numberInBurst)
 {
     PhysRelativeTime duration;
 
-    //Check there is a recoil defined
-    if( recoilId_ != 0 )
+    // Check there is a recoil defined
+    if (recoilId_ != 0)
     {
-        //get the data
+        // get the data
         const MachPhysWeaponData& data = weaponData();
         MATHEX_SCALAR distance = data.recoilDistance();
         PhysRelativeTime backTime = data.recoilBackTime();
@@ -190,53 +181,51 @@ PhysRelativeTime MachPhysWeapon::recoil( const PhysAbsoluteTime& startTime, int 
         uint nRounds = data.nRoundsPerBurst();
         duration = burstDuration;
 
-        //Compute the spare time after recoil to start of next projectile
+        // Compute the spare time after recoil to start of next projectile
         PhysRelativeTime roundTime = burstDuration / nRounds;
         PhysRelativeTime spareTime = roundTime - (backTime + foreTime);
-        if( spareTime < 0.01 )
+        if (spareTime < 0.01)
         {
 
-            ASSERT( spareTime > -0.01, "Inconsistent recoil/burst times" );
-            //Modify times to eliminate spare time
+            ASSERT(spareTime > -0.01, "Inconsistent recoil/burst times");
+            // Modify times to eliminate spare time
             spareTime = 0.0;
             foreTime = roundTime - backTime;
         }
 
-        //Get the required entity
-        //W4dEntity* pRecoilEntity = (recoilId_ == 1 ? this : links()[recoilId_ - 2]);
-        W4dEntity* pRecoilEntity =
-          (recoilId_ == 1 ? this : _STATIC_CAST(W4dEntity*, links()[recoilId_ - 2]) );
+        // Get the required entity
+        // W4dEntity* pRecoilEntity = (recoilId_ == 1 ? this : links()[recoilId_ - 2]);
+        W4dEntity* pRecoilEntity = (recoilId_ == 1 ? this : _STATIC_CAST(W4dEntity*, links()[recoilId_ - 2]));
 
-        //Set up the motion plan for a single burst/recoil
+        // Set up the motion plan for a single burst/recoil
         MexTransform3d startPos = pRecoilEntity->localTransform();
-        MexTransform3d shift( MexPoint3d (-distance,0.0,0.0) );
+        MexTransform3d shift(MexPoint3d(-distance, 0.0, 0.0));
         MexTransform3d backPos;
-        startPos.transform( shift, &backPos );
+        startPos.transform(shift, &backPos);
 
-        PhysLinearMotionPlan* pPlan =
-            _NEW( PhysLinearMotionPlan( startPos, backPos, backTime ) );
-        pPlan->add( startPos, backTime + foreTime );
-        pPlan->add( startPos, roundTime );
+        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPos, backPos, backTime));
+        pPlan->add(startPos, backTime + foreTime);
+        pPlan->add(startPos, roundTime);
 
-        PhysMotionPlanPtr planPtr( pPlan );
+        PhysMotionPlanPtr planPtr(pPlan);
 
-        pRecoilEntity->entityPlanForEdit().absoluteMotion( planPtr, startTime, numberInBurst - 1 );
+        pRecoilEntity->entityPlanForEdit().absoluteMotion(planPtr, startTime, numberInBurst - 1);
     }
     else
     {
-        //No recoil
+        // No recoil
         duration = 0.0;
     }
 
     return duration;
 }
 
-void MachPhysWeapon::nextLaunchOffset( uint index )
+void MachPhysWeapon::nextLaunchOffset(uint index)
 {
     nextLaunchOffset_ = (index % weaponData().launchOffsets().size());
 }
 
-void perWrite( PerOstream& ostr, const MachPhysWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachPhysWeapon& weapon)
 {
     const W4dComposite& base = weapon;
 
@@ -250,7 +239,7 @@ void perWrite( PerOstream& ostr, const MachPhysWeapon& weapon )
     ostr << weapon.pConstruction_;
 }
 
-void perRead( PerIstream& istr, MachPhysWeapon& weapon )
+void perRead(PerIstream& istr, MachPhysWeapon& weapon)
 {
     W4dComposite& base = weapon;
 
@@ -264,150 +253,153 @@ void perRead( PerIstream& istr, MachPhysWeapon& weapon )
     istr >> weapon.pConstruction_;
 }
 
-void MachPhysWeapon::lighting(const RenColour& col, const PhysAbsoluteTime& startTime, const MATHEX_SCALAR distance, MachPhysWeapon::Shadow shadow)
+void MachPhysWeapon::lighting(
+    const RenColour& col,
+    const PhysAbsoluteTime& startTime,
+    const MATHEX_SCALAR distance,
+    MachPhysWeapon::Shadow shadow)
 {
     const MachPhysWeaponData& data = weaponData();
     uint nRounds = data.nRoundsPerBurst();
     PhysRelativeTime burstDuration = data.burstDuration();
     MexPoint3d offSet = data.launchOffsets()[0];
 
-	//W4dUniformLight* pLight = _NEW(W4dUniformLight(this, MexVec3(1, 0, 0), distance));
-	W4dPointLight* pLight = _NEW(W4dPointLight(this, MexVec3(1, 0, 0), distance));
+    // W4dUniformLight* pLight = _NEW(W4dUniformLight(this, MexVec3(1, 0, 0), distance));
+    W4dPointLight* pLight = _NEW(W4dPointLight(this, MexVec3(1, 0, 0), distance));
 
-    pLight->localTransform( MexTransform3d(offSet) );
-	pLight->colour(col);
-	pLight->maxRange(distance);
-	pLight->constantAttenuation(0);
-	pLight->linearAttenuation(0.7);
-	pLight->quadraticAttenuation(0.3);
-	pLight->scope(W4dLight::LOCAL);
-	pLight->visible(true);
+    pLight->localTransform(MexTransform3d(offSet));
+    pLight->colour(col);
+    pLight->maxRange(distance);
+    pLight->constantAttenuation(0);
+    pLight->linearAttenuation(0.7);
+    pLight->quadraticAttenuation(0.3);
+    pLight->scope(W4dLight::LOCAL);
+    pLight->visible(true);
 
+    // visibility plan
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    PhysRelativeTime roundTime = burstDuration / nRounds;
+    PhysRelativeTime roundOffTime = 0.75 * roundTime;
+    PhysRelativeTime roundOnTime = 0.25 * roundTime;
 
-	//visibility plan
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	PhysRelativeTime roundTime = burstDuration/nRounds;
-	PhysRelativeTime roundOffTime = 0.75*roundTime;
-	PhysRelativeTime roundOnTime = 0.25*roundTime;
+    for (int i = 1; i < nRounds; ++i)
+    {
+        PhysRelativeTime offTime = roundOffTime * i;
+        lightVisibilityPlanPtr->add(false, offTime);
 
-	for(int i = 1; i < nRounds; ++i)
-	{
-		PhysRelativeTime offTime = roundOffTime*i;
-		lightVisibilityPlanPtr->add( false, offTime );
+        PhysRelativeTime onTime = offTime + roundOnTime;
+        lightVisibilityPlanPtr->add(true, onTime);
+    }
 
-		PhysRelativeTime onTime = offTime + roundOnTime;
-		lightVisibilityPlanPtr->add( true, onTime );
-	}
+    lightVisibilityPlanPtr->add(false, burstDuration - roundOnTime);
 
-	lightVisibilityPlanPtr->add( false, burstDuration - roundOnTime );
+    // apply the visibility plan
+    pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
 
-	//apply the visibility plan
-    pLight->entityPlanForEdit().visibilityPlan( lightVisibilityPlanPtr, startTime );
+    // attach the entity to the light
+    W4dEntity* pParent = nullptr;
 
-	//attach the entity to the light
-	W4dEntity* pParent = NULL;
+    if (hasMachine())
+    {
+        pLight->illuminate(&machine());
+        pParent = &machine();
+    }
 
-	if(hasMachine())
-	{
-		pLight->illuminate(&machine());
-		pParent = &machine();
-	}
+    if (hasConstruction())
+    {
+        pLight->illuminate(&construction());
+        pParent = &construction();
+    }
 
-	if(hasConstruction())
-	{
-		pLight->illuminate(&construction());
-		pParent = &construction();
-	}
+    // also create a light shadow on the ground if required
+    if (pParent != nullptr and shadow == SHADOW)
+    {
+        MexPoint3d shadowPositon = pLight->globalTransform().position();
+        shadowPositon.z(
+            pParent->globalTransform().position().z()
+            + 0.066); // plus the z-buffer resolution to avoid the interference with the planet surface
 
-	//also create a light shadow on the ground if required
-	if( pParent != NULL and shadow == SHADOW )
-	{
-		MexPoint3d shadowPositon = pLight->globalTransform().position();
-				   shadowPositon.z( pParent->globalTransform().position().z() + 0.066 );  //plus the z-buffer resolution to avoid the interference with the planet surface
+        (pParent->globalTransform()).transformInverse(&shadowPositon);
 
-		(pParent->globalTransform()).transformInverse( &shadowPositon );
+        MachPhysLight* pGroundLight = _NEW(MachPhysLight(pParent, MexTransform3d(shadowPositon)));
+        pGroundLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
 
-		MachPhysLight* pGroundLight = _NEW( MachPhysLight( pParent, MexTransform3d( shadowPositon ) ) );
-	    pGroundLight->entityPlanForEdit().visibilityPlan( lightVisibilityPlanPtr, startTime );
+        W4dGarbageCollector::instance().add(pGroundLight, startTime + burstDuration);
+    }
 
-	    W4dGarbageCollector::instance().add( pGroundLight, startTime + burstDuration );
-	}
-
-    W4dGarbageCollector::instance().add( pLight, startTime + burstDuration );
+    W4dGarbageCollector::instance().add(pLight, startTime + burstDuration);
 }
 
 void MachPhysWeapon::convertMaterials()
 {
-    //Ensure we have a machine or construction to get race from
+    // Ensure we have a machine or construction to get race from
     bool haveRace = true;
     MachPhys::Race race;
-    if( pMachine_ != NULL )
+    if (pMachine_ != nullptr)
         race = pMachine_->race();
-    else if( pConstruction_ != NULL )
+    else if (pConstruction_ != nullptr)
         race = pConstruction_->race();
     else
         haveRace = false;
 
-    //We need to convert even for RED, in case reverting back to red from treachery
-    if( haveRace )
+    // We need to convert even for RED, in case reverting back to red from treachery
+    if (haveRace)
     {
-        //Use the race changer to do the job
-        const W4dCompositeMaterialVecChanger& changer =
-            MachPhysRaceChanger::instance().changer( *this, race );
+        // Use the race changer to do the job
+        const W4dCompositeMaterialVecChanger& changer = MachPhysRaceChanger::instance().changer(*this, race);
 
-        changer.applyOverrides( this );
+        changer.applyOverrides(this);
     }
 }
 
 bool MachPhysWeapon::firedLightRecently(PhysRelativeTime launchTime) const
 {
-	// Deterimine if the owning machine has fired any of it's
-	// multi-weapons recently.
-	MachPhysCanAttack* pCanAttack = NULL;
-	if(hasMachine() && machine().hasCanAttack())
-		pCanAttack = machine().canAttack();
+    // Deterimine if the owning machine has fired any of it's
+    // multi-weapons recently.
+    MachPhysCanAttack* pCanAttack = nullptr;
+    if (hasMachine() && machine().hasCanAttack())
+        pCanAttack = machine().canAttack();
 
     const MachPhysWeaponData& data = weaponData();
     const uint nRounds = data.nRoundsPerBurst();
     const PhysRelativeTime burstDuration = data.burstDuration();
 
-	// Check for a light within the round duration.  This should give one
-	// light per round, rather than burst.  Cf sounds.
+    // Check for a light within the round duration.  This should give one
+    // light per round, rather than burst.  Cf sounds.
     const PhysAbsoluteTime roundTime = burstDuration / nRounds;
-    const PhysAbsoluteTime interval2  = 0.95 * roundTime;
-	return pCanAttack && pCanAttack->hasLaunchedLightWithin(type(), interval2, launchTime);
+    const PhysAbsoluteTime interval2 = 0.95 * roundTime;
+    return pCanAttack && pCanAttack->hasLaunchedLightWithin(type(), interval2, launchTime);
 }
 
 bool MachPhysWeapon::playedSoundRecently(PhysRelativeTime launchTime) const
 {
-	// Deterimine if the owning machine has fired any of it's
-	// multi-weapons recently.
-	MachPhysCanAttack* pCanAttack = NULL;
-	if(hasMachine() && machine().hasCanAttack())
-		pCanAttack = machine().canAttack();
+    // Deterimine if the owning machine has fired any of it's
+    // multi-weapons recently.
+    MachPhysCanAttack* pCanAttack = nullptr;
+    if (hasMachine() && machine().hasCanAttack())
+        pCanAttack = machine().canAttack();
 
     const MachPhysWeaponData& data = weaponData();
     const uint nRounds = data.nRoundsPerBurst();
     const PhysRelativeTime burstDuration = data.burstDuration();
 
-	// Check for a sound within the burst duration.  This should give one
-	// sound per burst.
+    // Check for a sound within the burst duration.  This should give one
+    // sound per burst.
     const PhysAbsoluteTime interval = 0.95 * burstDuration;
-	return pCanAttack && pCanAttack->hasPlayedSoundWithin(type(), interval, launchTime);
+    return pCanAttack && pCanAttack->hasPlayedSoundWithin(type(), interval, launchTime);
 }
 
 void MachPhysWeapon::changeRace()
 {
-	convertMaterials();
+    convertMaterials();
 }
 
-void MachPhysWeapon::changeColour( MachPhys::Race newRace )
+void MachPhysWeapon::changeColour(MachPhys::Race newRace)
 {
-    //Use the race changer to do the job
-    const W4dCompositeMaterialVecChanger& changer =
-        MachPhysRaceChanger::instance().changer( *this, newRace );
+    // Use the race changer to do the job
+    const W4dCompositeMaterialVecChanger& changer = MachPhysRaceChanger::instance().changer(*this, newRace);
 
-    changer.applyOverrides( this );
+    changer.applyOverrides(this);
 }
 
 /* End WEAPON.CPP ***************************************************/

@@ -1,5 +1,5 @@
 /*
- * S C R O L B A R . H P P 
+ * S C R O L B A R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,15 +7,15 @@
     GuiVerticalScrollBar
 
     +--------+
-	|        |<- scroll bar
-	|        |
-	|        |
+    |        |<- scroll bar
+    |        |
+    |        |
     +--------+
-	|////////|<- scroll box
-	|////////|
+    |////////|<- scroll box
+    |////////|
     +--------+
-	|        |
-	|        |
+    |        |
+    |        |
     +--------+
 
 */
@@ -27,47 +27,48 @@
 #include "gui/listobvr.hpp"
 #include "gui/displaya.hpp"
 
-class GuiVerticalScrollBar : public GuiDisplayable, public GuiListObserver
+class GuiVerticalScrollBar
+    : public GuiDisplayable
+    , public GuiListObserver
 // Canonical form revoked
 {
 public:
-    GuiVerticalScrollBar( GuiDisplayable* pParent, const Gui::Box& area, GuiSimpleScrollableList* pList );
-	// PRE( pList )
+    GuiVerticalScrollBar(GuiDisplayable* pParent, const Gui::Box& area, GuiSimpleScrollableList* pList);
+    // PRE( pList )
 
-    ~GuiVerticalScrollBar();
+    ~GuiVerticalScrollBar() override;
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual void listUpdated();
+    void listUpdated() override;
 
-	virtual void doDisplay();
-	virtual void doDisplayBar();
-	virtual void doDisplayBox( const Gui::Box& absoluteBox );
+    void doDisplay() override;
+    virtual void doDisplayBar();
+    virtual void doDisplayBox(const Gui::Box& absoluteBox);
 
-	// Enables derived scroll bars to specify a minimum size ( in pixels ) for the scroll 
-	// box. Default, i.e. this implementation, is set to 7.
-	virtual size_t minBoxHeight() const; 
+    // Enables derived scroll bars to specify a minimum size ( in pixels ) for the scroll
+    // box. Default, i.e. this implementation, is set to 7.
+    virtual size_t minBoxHeight() const;
 
-	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
-	virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel );
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent& rel) override;
 
-	Gui::Box boxAbsPosition() const;
-	Gui::Box boxRelPosition() const;
+    Gui::Box boxAbsPosition() const;
+    Gui::Box boxRelPosition() const;
 
-	void scrollToMousePos( const GuiMouseEvent& rel );
+    void scrollToMousePos(const GuiMouseEvent& rel);
 
 private:
-    friend ostream& operator <<( ostream& o, const GuiVerticalScrollBar& t );
+    friend ostream& operator<<(ostream& o, const GuiVerticalScrollBar& t);
 
-    GuiVerticalScrollBar( const GuiVerticalScrollBar& );
-    GuiVerticalScrollBar& operator =( const GuiVerticalScrollBar& );
+    GuiVerticalScrollBar(const GuiVerticalScrollBar&);
+    GuiVerticalScrollBar& operator=(const GuiVerticalScrollBar&);
 
-	Gui::Box boxAbsPosition_;
-	Gui::Box boxRelPosition_;
-	bool dragBox_;
+    Gui::Box boxAbsPosition_;
+    Gui::Box boxRelPosition_;
+    bool dragBox_;
 };
-
 
 #endif
 

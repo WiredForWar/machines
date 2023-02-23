@@ -16,7 +16,7 @@ public:
     ~MachLog1stPersonActiveSquadron();
     // MOVEABLE
     MachLog1stPersonActiveSquadron(MachLog1stPersonActiveSquadron&& other);
-    MachLog1stPersonActiveSquadron& operator=( MachLog1stPersonActiveSquadron&& other);
+    MachLog1stPersonActiveSquadron& operator=(MachLog1stPersonActiveSquadron&& other);
     // NOT COPYABLE
     MachLog1stPersonActiveSquadron(const MachLog1stPersonActiveSquadron&) = delete;
     MachLog1stPersonActiveSquadron& operator=(const MachLog1stPersonActiveSquadron&) = delete;

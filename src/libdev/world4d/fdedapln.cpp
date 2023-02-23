@@ -10,36 +10,34 @@
 #include "render/colour.hpp"
 #include "render/matvec.hpp"
 
-W4dSolidFadedAlphaPlan::W4dSolidFadedAlphaPlan
-(
-	uint nFadedFrames,
+W4dSolidFadedAlphaPlan::W4dSolidFadedAlphaPlan(
+    uint nFadedFrames,
     uint nSolidFrames,
     uint nMaterialsInVector,
-	const RenMaterial& mat,
+    const RenMaterial& mat,
     W4dLOD maxLOD,
-	PhysRelativeTime duration,
+    PhysRelativeTime duration,
     MATHEX_SCALAR minAlpha,
-    MATHEX_SCALAR maxAlpha
-)
-:   W4dMaterialPlan( duration, maxLOD ),
-	nFadedFrames_( nFadedFrames ),
-	nFrames_( nFadedFrames+nSolidFrames ),
-    minAlpha_(minAlpha),
-    alphaDifference_(maxAlpha-minAlpha),
-	material_(mat)
+    MATHEX_SCALAR maxAlpha)
+    : W4dMaterialPlan(duration, maxLOD)
+    , nFadedFrames_(nFadedFrames)
+    , nFrames_(nFadedFrames + nSolidFrames)
+    , minAlpha_(minAlpha)
+    , alphaDifference_(maxAlpha - minAlpha)
+    , material_(mat)
 {
-	PRE( nMaterialsInVector >= 1 );
-	PRE( minAlpha >= 0 );
-	PRE( maxAlpha <= 1 );
-	PRE( maxAlpha >= minAlpha );
+    PRE(nMaterialsInVector >= 1);
+    PRE(minAlpha >= 0);
+    PRE(maxAlpha <= 1);
+    PRE(maxAlpha >= minAlpha);
 
-	material_.makeNonSharable();
+    material_.makeNonSharable();
 
-	materialVecPtr_ = _NEW( RenMaterialVec(nMaterialsInVector) );
-    for( uint j=0; j<nMaterialsInVector; ++j )
-	{
-    	materialVecPtr_->push_back( material_ );
-	}
+    materialVecPtr_ = _NEW(RenMaterialVec(nMaterialsInVector));
+    for (uint j = 0; j < nMaterialsInVector; ++j)
+    {
+        materialVecPtr_->push_back(material_);
+    }
 
     TEST_INVARIANT;
 }
@@ -51,10 +49,10 @@ W4dSolidFadedAlphaPlan::~W4dSolidFadedAlphaPlan()
 
 void W4dSolidFadedAlphaPlan::CLASS_INVARIANT
 {
-    INVARIANT( nFrames_ != 0 );
+    INVARIANT(nFrames_ != 0);
 }
 
-ostream& operator <<( ostream& o, const W4dSolidFadedAlphaPlan& t )
+ostream& operator<<(ostream& o, const W4dSolidFadedAlphaPlan& t)
 {
 
     o << "W4dSolidFadedAlphaPlan " << (void*)&t << " start" << std::endl;
@@ -63,60 +61,32 @@ ostream& operator <<( ostream& o, const W4dSolidFadedAlphaPlan& t )
     return o;
 }
 
-bool W4dSolidFadedAlphaPlan::isLODDefined( W4dLOD lodId ) const
+bool W4dSolidFadedAlphaPlan::isLODDefined(W4dLOD lodId) const
 {
     return lodId <= maxLOD() and isFaded();
 }
 
 bool W4dSolidFadedAlphaPlan::isFaded() const
 {
-	return W4dManager::instance().frameNumber() % nFrames_ < nFadedFrames_;
+    return W4dManager::instance().frameNumber() % nFrames_ < nFadedFrames_;
 }
 
-
-//virtual
-const Ren::MaterialVecPtr& W4dSolidFadedAlphaPlan::materialVec
-(
-    const PhysRelativeTime&, W4dLOD
-) const
+// virtual
+const Ren::MaterialVecPtr& W4dSolidFadedAlphaPlan::materialVec(const PhysRelativeTime&, W4dLOD) const
 {
-    //Get the current frame, apply the offset and take modulus of frame count
-    uint i = ( W4dManager::instance().frameNumber() ) % nFrames_;
+    // Get the current frame, apply the offset and take modulus of frame count
+    uint i = (W4dManager::instance().frameNumber()) % nFrames_;
 
-	if(i < nFadedFrames_ )
-	{
-		MATHEX_SCALAR half = 0.5*nFadedFrames_;
-		MATHEX_SCALAR alpha = minAlpha_ + alphaDifference_*fabs(i-half)/half;
-	    RenColour diffuseColour = material_.diffuse();
-	    diffuseColour.a( alpha );
-    	_CONST_CAST(W4dSolidFadedAlphaPlan*, this)->material_.diffuse( diffuseColour );
-	}
+    if (i < nFadedFrames_)
+    {
+        MATHEX_SCALAR half = 0.5 * nFadedFrames_;
+        MATHEX_SCALAR alpha = minAlpha_ + alphaDifference_ * fabs(i - half) / half;
+        RenColour diffuseColour = material_.diffuse();
+        diffuseColour.a(alpha);
+        _CONST_CAST(W4dSolidFadedAlphaPlan*, this)->material_.diffuse(diffuseColour);
+    }
 
-	return materialVecPtr_;
+    return materialVecPtr_;
 }
 
 /* End FDEDAPLN.CPP *************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -22,12 +22,12 @@ PhysPersistence& PhysPersistence::instance()
 
 PhysPersistence::PhysPersistence()
 {
-    PER_REGISTER_DERIVED_CLASS( PhysLinearTravelPlan );
-    PER_REGISTER_DERIVED_CLASS( PhysLinearMotionPlan );
-    PER_REGISTER_DERIVED_CLASS( PhysAccelerateTumblePlan );
-    PER_REGISTER_DERIVED_CLASS( PhysTimedAnglePlan );
-    PER_REGISTER_DERIVED_CLASS( PhysTimedSpinPlan );
-    PER_REGISTER_DERIVED_CLASS( PhysMoveSpinPlan );
+    PER_REGISTER_DERIVED_CLASS(PhysLinearTravelPlan);
+    PER_REGISTER_DERIVED_CLASS(PhysLinearMotionPlan);
+    PER_REGISTER_DERIVED_CLASS(PhysAccelerateTumblePlan);
+    PER_REGISTER_DERIVED_CLASS(PhysTimedAnglePlan);
+    PER_REGISTER_DERIVED_CLASS(PhysTimedSpinPlan);
+    PER_REGISTER_DERIVED_CLASS(PhysMoveSpinPlan);
 
     TEST_INVARIANT;
 }
@@ -35,15 +35,14 @@ PhysPersistence::PhysPersistence()
 PhysPersistence::~PhysPersistence()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysPersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysPersistence& t )
+ostream& operator<<(ostream& o, const PhysPersistence& t)
 {
 
     o << "PhysPersistence " << (void*)&t << " start" << std::endl;

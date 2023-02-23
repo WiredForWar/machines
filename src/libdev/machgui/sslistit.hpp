@@ -1,5 +1,5 @@
 /*
- * S S L I S T I T . H P P 
+ * S S L I S T I T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,14 +21,19 @@ class GuiBmpFont;
 class MachGuiStartupScreens;
 class MachGuiSingleSelectionListBox;
 
-class MachGuiSingleSelectionListBoxItem	: public GuiSingleSelectionListBoxItem
+class MachGuiSingleSelectionListBoxItem : public GuiSingleSelectionListBoxItem
 // Canonical form revoked
 {
 public:
-    //TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be removed
-    MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, MachGuiSingleSelectionListBox* pParentListBox, size_t width, const string& text );
+    // TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be
+    // removed
+    MachGuiSingleSelectionListBoxItem(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiSingleSelectionListBox* pParentListBox,
+        size_t width,
+        const string& text);
 
-    ~MachGuiSingleSelectionListBoxItem();
+    ~MachGuiSingleSelectionListBoxItem() override;
 
     void CLASS_INVARIANT;
 
@@ -36,17 +41,22 @@ public:
 
 protected:
     // This variant utilized by MachGuiDropDownListBoxItem to initialize it. Hence, pMyListBox_ is null
-    //TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be removed
-    MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, GuiSingleSelectionListBox* pParentListBox, size_t width, const string& text );
+    // TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be
+    // removed
+    MachGuiSingleSelectionListBoxItem(
+        MachGuiStartupScreens* pStartupScreens,
+        GuiSingleSelectionListBox* pParentListBox,
+        size_t width,
+        const string& text);
 
-    virtual void select() override;
-    virtual void unselect() override;
+    void select() override;
+    void unselect() override;
 
     static GuiBmpFont getFont();
     static GuiBmpFont getUnderlineFont();
     static GuiBmpFont getHighlightFont();
 
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
     bool highlighted() const;
     const string& text() const;
@@ -54,14 +64,14 @@ protected:
     DECL_DEPRECATED MachGuiStartupScreens* startupScreens();
     MachGuiSingleSelectionListBox* myListBox();
 
-    virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel ) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiSingleSelectionListBoxItem& t );
+    friend ostream& operator<<(ostream& o, const MachGuiSingleSelectionListBoxItem& t);
 
-    MachGuiSingleSelectionListBoxItem( const MachGuiSingleSelectionListBoxItem& );
-    MachGuiSingleSelectionListBoxItem& operator =( const MachGuiSingleSelectionListBoxItem& );
+    MachGuiSingleSelectionListBoxItem(const MachGuiSingleSelectionListBoxItem&);
+    MachGuiSingleSelectionListBoxItem& operator=(const MachGuiSingleSelectionListBoxItem&);
 
     string text_;
     bool highlighted_;
@@ -72,7 +82,6 @@ private:
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 };
-
 
 #endif
 

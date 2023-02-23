@@ -21,31 +21,31 @@ class W4dEntity;
 class EnvIOrbitParams
 {
 public:
-    EnvIOrbitParams(const string* name);	// PRE(name);
+    EnvIOrbitParams(const string* name); // PRE(name);
     ~EnvIOrbitParams();
 
-	const string& name() const	{ return name_; }
+    const string& name() const { return name_; }
 
-	void radius(MATHEX_SCALAR);
-	void period(MATHEX_SCALAR);
-	void startTime(MATHEX_SCALAR);
-	void minElevation(MexDegrees);
-	void maxElevation(MexDegrees);
-	void heading(MexDegrees);
+    void radius(MATHEX_SCALAR);
+    void period(MATHEX_SCALAR);
+    void startTime(MATHEX_SCALAR);
+    void minElevation(MexDegrees);
+    void maxElevation(MexDegrees);
+    void heading(MexDegrees);
 
-	EnvOrbit* createOrbit(W4dEntity* parent);
+    EnvOrbit* createOrbit(W4dEntity* parent);
 
     void CLASS_INVARIANT;
 
 private:
-	const string	name_;
-	MATHEX_SCALAR	radius_, period_, start_;
-	MexDegrees		min_, max_, heading_;
-	bool			radiusSet_, periodSet_, startSet_, minSet_, maxSet_, headingSet_;
+    const string name_;
+    MATHEX_SCALAR radius_, period_, start_;
+    MexDegrees min_, max_, heading_;
+    bool radiusSet_, periodSet_, startSet_, minSet_, maxSet_, headingSet_;
 
-    EnvIOrbitParams( const EnvIOrbitParams& );
-    EnvIOrbitParams& operator =( const EnvIOrbitParams& );
-    bool operator ==( const EnvIOrbitParams& );
+    EnvIOrbitParams(const EnvIOrbitParams&);
+    EnvIOrbitParams& operator=(const EnvIOrbitParams&);
+    bool operator==(const EnvIOrbitParams&);
 };
 
 #endif

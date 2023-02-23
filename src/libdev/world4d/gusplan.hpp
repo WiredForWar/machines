@@ -1,5 +1,5 @@
 /*
- * G U S P L A N . H P P 
+ * G U S P L A N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,39 +25,39 @@ class W4dGeneralUniformScalePlan : public W4dScalePlan
 // Canonical form revoked
 {
 public:
-	typedef  CtlCountedPtr< PhysScalarPlan > PhysScalarPlanPtr;
-    W4dGeneralUniformScalePlan( const PhysScalarPlanPtr&  scalarPlanPtr );
+    using PhysScalarPlanPtr = CtlCountedPtr<PhysScalarPlan>;
+    W4dGeneralUniformScalePlan(const PhysScalarPlanPtr& scalarPlanPtr);
 
-    virtual ~W4dGeneralUniformScalePlan();
+    ~W4dGeneralUniformScalePlan() override;
 
-    virtual bool isNonUniform() const;
+    bool isNonUniform() const override;
 
-	const PhysScalarPlanPtr& physScalarPlan() const;
-	void physScalarPlan(const PhysScalarPlanPtr& );
+    const PhysScalarPlanPtr& physScalarPlan() const;
+    void physScalarPlan(const PhysScalarPlanPtr&);
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dGeneralUniformScalePlan& t );
+    friend ostream& operator<<(ostream& o, const W4dGeneralUniformScalePlan& t);
 
-    PER_MEMBER_PERSISTENT( W4dGeneralUniformScalePlan );
-    PER_FRIEND_READ_WRITE( W4dGeneralUniformScalePlan );
-    
+    PER_MEMBER_PERSISTENT(W4dGeneralUniformScalePlan);
+    PER_FRIEND_READ_WRITE(W4dGeneralUniformScalePlan);
+
 private:
-    W4dGeneralUniformScalePlan( const W4dGeneralUniformScalePlan& );
-    W4dGeneralUniformScalePlan& operator =( const W4dGeneralUniformScalePlan& );
-    bool operator ==( const W4dGeneralUniformScalePlan& );
+    W4dGeneralUniformScalePlan(const W4dGeneralUniformScalePlan&);
+    W4dGeneralUniformScalePlan& operator=(const W4dGeneralUniformScalePlan&);
+    bool operator==(const W4dGeneralUniformScalePlan&);
 
-    //return the defined uniform scale at timeOffset in pScale
-    virtual void doScale( const PhysRelativeTime& timeOffset, RenUniformScale* pScale ) const;
+    // return the defined uniform scale at timeOffset in pScale
+    void doScale(const PhysRelativeTime& timeOffset, RenUniformScale* pScale) const override;
 
-	virtual void doScale( const PhysRelativeTime&, RenNonUniformScale* ) const;
-    //Return a new plan allocated on the heap but modified to take account of the offset
-    //transform.
-    virtual W4dScalePlan* doTransformClone( const MexTransform3d& offsetTransform ) const;
+    void doScale(const PhysRelativeTime&, RenNonUniformScale*) const override;
+    // Return a new plan allocated on the heap but modified to take account of the offset
+    // transform.
+    W4dScalePlan* doTransformClone(const MexTransform3d& offsetTransform) const override;
 
-	PhysScalarPlanPtr  physScalarPlanPtr_;
+    PhysScalarPlanPtr physScalarPlanPtr_;
 };
 
-PER_DECLARE_PERSISTENT( W4dGeneralUniformScalePlan );
+PER_DECLARE_PERSISTENT(W4dGeneralUniformScalePlan);
 
 #endif
 

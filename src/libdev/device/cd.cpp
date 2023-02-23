@@ -21,7 +21,7 @@
 #define STREAM_BUFFER_SIZE 250000
 #define STREAM_UPDATE_INTERVAL 0.125f
 
-DevCDImpl* DevCDImpl::getInstance( DevCD* parent )
+DevCDImpl* DevCDImpl::getInstance(DevCD* parent)
 {
     return parent->pImpl_;
 }
@@ -35,18 +35,18 @@ DevCD& DevCD::instance()
 }
 
 DevCD::DevCD()
-    : pImpl_( new DevCDImpl() )
+    : pImpl_(new DevCDImpl())
 {
 #if USE_ALURE
     // This will enable/disable music!
     device::helper::cd::configure(this);
 
-    ALuint&  source_ = pImpl_-> source_;
-    unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
-    DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
-    bool&  haveMixer_ = pImpl_-> haveMixer_;
-    MexBasicRandom&  randomGenerator_ = pImpl_-> randomGenerator_;
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    ALuint& source_ = pImpl_->source_;
+    unsigned int& savedVolume_ = pImpl_->savedVolume_;
+    DevCDPlayList*& pPlayList_ = pImpl_->pPlayList_;
+    bool& haveMixer_ = pImpl_->haveMixer_;
+    MexBasicRandom& randomGenerator_ = pImpl_->randomGenerator_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
     savedVolume_ = 20;
 
@@ -85,11 +85,11 @@ DevCD::DevCD()
 DevCD::~DevCD()
 {
 #if USE_ALURE
-    alureStream*&  stream_ = pImpl_-> stream_;
-    ALuint&  source_ = pImpl_-> source_;
-    unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
-    DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    alureStream*& stream_ = pImpl_->stream_;
+    ALuint& source_ = pImpl_->source_;
+    unsigned int& savedVolume_ = pImpl_->savedVolume_;
+    DevCDPlayList*& pPlayList_ = pImpl_->pPlayList_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
     stopPlaying();
 
@@ -107,26 +107,26 @@ DevCD::~DevCD()
     }
 
     //    delete [] pMixerValues_;
-    delete  pPlayList_ ;
+    delete pPlayList_;
     delete pImpl_;
 #endif
 }
 
 void DevCD::update()
 {
-    if ( pImpl_->needsUpdate_ )
+    if (pImpl_->needsUpdate_)
     {
         handleMessages(DevCD::SUCCESS, 0);
         pImpl_->needsUpdate_ = false;
-        //std::cout << "music mixer update" << std::endl;
+        // std::cout << "music mixer update" << std::endl;
     }
 }
 
 bool DevCD::isPlayingAudioCd() const
 {
 #if USE_ALURE
-    ALuint&  source_ = pImpl_-> source_;
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    ALuint& source_ = pImpl_->source_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
     if (musicEnabled_)
     {
@@ -141,7 +141,7 @@ bool DevCD::isPlayingAudioCd() const
 
 bool DevCD::supportsVolumeControl() const
 {
-    bool&  haveMixer_ = pImpl_-> haveMixer_;
+    bool& haveMixer_ = pImpl_->haveMixer_;
     return haveMixer_;
 }
 
@@ -155,8 +155,9 @@ Volume DevCD::volume() const
         MIXERLINECONTROLS&  mixerLineControl_ = pImpl_-> mixerLineControl_;
         MIXERCONTROL&  mixerControl_ = pImpl_-> mixerControl_;
         MIXERCONTROLDETAILS&  mixerControlDetails_ = pImpl_-> mixerControlDetails_;
-        MIXERCONTROLDETAILS_UNSIGNED*&  pMixerValues_ = pImpl_-> pMixerValues_;*/;
-        unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
+        MIXERCONTROLDETAILS_UNSIGNED*&  pMixerValues_ = pImpl_-> pMixerValues_;*/
+        ;
+        unsigned int& savedVolume_ = pImpl_->savedVolume_;
 
         /*HRESULT hr = mixerGetControlDetails( ( HMIXEROBJ )hMixer_, &mixerControlDetails_,
             MIXER_GETCONTROLDETAILSF_VALUE );
@@ -178,13 +179,13 @@ Volume DevCD::volume() const
     return percentageVolume;
 }
 
-void DevCD::volume( Volume newLevel )
+void DevCD::volume(Volume newLevel)
 {
     if (supportsVolumeControl())
     {
-        unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
-        ALuint&  source_ = pImpl_-> source_;
-        bool& musicEnabled_ =  pImpl_->musicEnabled_;
+        unsigned int& savedVolume_ = pImpl_->savedVolume_;
+        ALuint& source_ = pImpl_->source_;
+        bool& musicEnabled_ = pImpl_->musicEnabled_;
 
         if (newLevel > 100)
         {
@@ -194,7 +195,7 @@ void DevCD::volume( Volume newLevel )
 
         if (musicEnabled_)
         {
-            ALfloat fVol = (float) (savedVolume_) / 100.0f; // Maybe use log model instead of linear?
+            ALfloat fVol = (float)(savedVolume_) / 100.0f; // Maybe use log model instead of linear?
             alSourcef(source_, AL_GAIN, fVol);
         }
         /*unsigned int theVolume = ((float)newLevel / 100.0) * DevCDImpl::MAX_CDVOLUME;
@@ -220,7 +221,7 @@ void DevCD::volume( Volume newLevel )
 
 DevCDTrackIndex DevCD::currentTrackIndex() const
 {
-    PRE( isPlayingAudioCd() );
+    PRE(isPlayingAudioCd());
     return pImpl_->trackPlaying_;
 }
 
@@ -231,28 +232,28 @@ DevCDTrackIndex DevCD::numberOfTracks() const
 
 Seconds DevCD::currentTrackLengthInSeconds() const
 {
-    PRE( isPlayingAudioCd() );
+    PRE(isPlayingAudioCd());
     // Not implemented
     return 0;
 }
 
 Seconds DevCD::currentTrackRunningTime() const
 {
-    PRE( isPlayingAudioCd() );
+    PRE(isPlayingAudioCd());
     ASSERT(false, "Function not implemented");
     return 0;
 }
 
 Seconds DevCD::currentTrackTimeRemaining() const
 {
-    PRE( isPlayingAudioCd() );
+    PRE(isPlayingAudioCd());
     ASSERT(false, "Function not implemented");
     return 0;
 }
 
 void DevCD::play()
 {
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
     if (musicEnabled_)
     {
@@ -260,33 +261,33 @@ void DevCD::play()
     }
 }
 
-void DevCD::playFrom( DevCDTrackIndex track )
+void DevCD::playFrom(DevCDTrackIndex track)
 {
-    PRE( track >= 0 and track < numberOfTracks() );
+    PRE(track >= 0 and track < numberOfTracks());
     play(track);
 }
 
-void eosCallback(void *unused, ALuint unused2)
+void eosCallback(void* unused, ALuint unused2)
 {
-    (void) unused;
-    (void) unused2;
-    //DevCD::instance().handleMessages(DevCD::SUCCESS, 0); // This called from alure thread creates little problems
-    DevCDImpl* pImpl = DevCDImpl::getInstance( &DevCD::instance() );
+    (void)unused;
+    (void)unused2;
+    // DevCD::instance().handleMessages(DevCD::SUCCESS, 0); // This called from alure thread creates little problems
+    DevCDImpl* pImpl = DevCDImpl::getInstance(&DevCD::instance());
     pImpl->needsUpdate_ = true;
-    //std::cout << "Done playing track" << std::endl;
+    // std::cout << "Done playing track" << std::endl;
 }
 
-void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
+void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
 {
 #if USE_ALURE
-    alureStream*&  stream_ = pImpl_-> stream_;
-    ALuint&  source_ = pImpl_-> source_;
+    alureStream*& stream_ = pImpl_->stream_;
+    ALuint& source_ = pImpl_->source_;
     PlayStatus& status_ = pImpl_->status_;
     DevCDTrackIndex& trackPlaying_ = pImpl_->trackPlaying_;
-    unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    unsigned int& savedVolume_ = pImpl_->savedVolume_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
-    PRE( track >= 0 and track < numberOfTracks() );
+    PRE(track >= 0 and track < numberOfTracks());
 
     trackPlaying_ = track;
 
@@ -311,16 +312,16 @@ void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
         return;
     }
 
-    ALfloat fVol = (float) (savedVolume_) / 100.0f;
+    ALfloat fVol = (float)(savedVolume_) / 100.0f;
     alSourcef(source_, AL_GAIN, fVol);
     if (!alurePlaySourceStream(source_, stream_, STREAM_NUM_BUFFERS, 0, eosCallback, nullptr))
     {
         std::cerr << "Failed to play stream: " << alureGetErrorString() << std::endl;
         return;
     }
-    //std::cout << "Playing track: " << trackPlaying_ << " volume: " << savedVolume_ << std::endl;
+    // std::cout << "Playing track: " << trackPlaying_ << " volume: " << savedVolume_ << std::endl;
 
-    if ( repeat )
+    if (repeat)
     {
         status_ = REPEAT;
     }
@@ -331,12 +332,12 @@ void DevCD::play( DevCDTrackIndex track, bool repeat /* = false */ )
 #endif
 }
 
-void DevCD::play( const DevCDPlayList& params )
+void DevCD::play(const DevCDPlayList& params)
 {
     PlayStatus& status_ = pImpl_->status_;
-    DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
+    DevCDPlayList*& pPlayList_ = pImpl_->pPlayList_;
 
-    //Naughty and evil, replace with a copy construction
+    // Naughty and evil, replace with a copy construction
     *pPlayList_ = params;
     pPlayList_->reset();
     play(pPlayList_->firstTrack());
@@ -346,8 +347,8 @@ void DevCD::play( const DevCDPlayList& params )
 
 void DevCD::stopPlaying()
 {
-    ALuint&  source_ = pImpl_-> source_;
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    ALuint& source_ = pImpl_->source_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
 #if USE_ALURE
     if (musicEnabled_)
@@ -357,14 +358,14 @@ void DevCD::stopPlaying()
 #endif
 }
 
-void DevCD::handleMessages( CDMessage message, unsigned int devID)
+void DevCD::handleMessages(CDMessage message, unsigned int devID)
 {
     PlayStatus& status_ = pImpl_->status_;
     DevCDTrackIndex& trackPlaying_ = pImpl_->trackPlaying_;
-    DevCDPlayList*&  pPlayList_ = pImpl_-> pPlayList_;
-    MexBasicRandom&  randomGenerator_ = pImpl_-> randomGenerator_;
-    DevCDTrackIndex&  randomStartTrack_ = pImpl_-> randomStartTrack_;
-    DevCDTrackIndex&  randomEndTrack_ = pImpl_-> randomEndTrack_;
+    DevCDPlayList*& pPlayList_ = pImpl_->pPlayList_;
+    MexBasicRandom& randomGenerator_ = pImpl_->randomGenerator_;
+    DevCDTrackIndex& randomStartTrack_ = pImpl_->randomStartTrack_;
+    DevCDTrackIndex& randomEndTrack_ = pImpl_->randomEndTrack_;
 
     switch (message)
     {
@@ -375,42 +376,42 @@ void DevCD::handleMessages( CDMessage message, unsigned int devID)
             break;
 
         case SUCCESS:
-        {
-            if ( status_ == PROGRAMMED )
             {
-                if (not pPlayList_->isFinished())
+                if (status_ == PROGRAMMED)
                 {
-                    play(pPlayList_->nextTrack());
-                }
-            }
-            else if ( status_ == REPEAT )
-            {
-                play( trackPlaying_, true );
-            }
-            else if ( status_ == RANDOM )
-            {
-                if ( randomStartTrack_ < numberOfTracks() )
-                {
-                    // Make sure we're not asking it to randomise a number outside the range of tracks
-                    // on the CD.
-                    DevCDTrackIndex tmpEndTrack = std::min( numberOfTracks(), randomEndTrack_ );
-
-                    if ( randomStartTrack_ < tmpEndTrack )
+                    if (not pPlayList_->isFinished())
                     {
-                        // Make sure we don't play the same track twice (unless it is the only track)
-                        DevCDTrackIndex trackToPlay = trackPlaying_;
-                        while ( trackToPlay == trackPlaying_ and
-                            ( trackToPlay != randomStartTrack_ or trackToPlay != tmpEndTrack ) )
-                        {
-                            trackToPlay = mexRandomInt( &randomGenerator_, randomStartTrack_, tmpEndTrack );
-                        }
-                        play( trackToPlay );
-                        status_ = RANDOM; // 'play' sets the status_ to SINGLE
+                        play(pPlayList_->nextTrack());
                     }
                 }
+                else if (status_ == REPEAT)
+                {
+                    play(trackPlaying_, true);
+                }
+                else if (status_ == RANDOM)
+                {
+                    if (randomStartTrack_ < numberOfTracks())
+                    {
+                        // Make sure we're not asking it to randomise a number outside the range of tracks
+                        // on the CD.
+                        DevCDTrackIndex tmpEndTrack = std::min(numberOfTracks(), randomEndTrack_);
+
+                        if (randomStartTrack_ < tmpEndTrack)
+                        {
+                            // Make sure we don't play the same track twice (unless it is the only track)
+                            DevCDTrackIndex trackToPlay = trackPlaying_;
+                            while (trackToPlay == trackPlaying_
+                                   and (trackToPlay != randomStartTrack_ or trackToPlay != tmpEndTrack))
+                            {
+                                trackToPlay = mexRandomInt(&randomGenerator_, randomStartTrack_, tmpEndTrack);
+                            }
+                            play(trackToPlay);
+                            status_ = RANDOM; // 'play' sets the status_ to SINGLE
+                        }
+                    }
+                }
+                break;
             }
-            break;
-        }
 
         case SUPERSEDED:
             break;
@@ -425,8 +426,8 @@ void DevCD::handleMessages( CDMessage message, unsigned int devID)
 
 bool DevCD::isAudioCDPresent()
 {
-    unsigned int&  savedVolume_ = pImpl_-> savedVolume_;
-    bool& musicEnabled_ =  pImpl_->musicEnabled_;
+    unsigned int& savedVolume_ = pImpl_->savedVolume_;
+    bool& musicEnabled_ = pImpl_->musicEnabled_;
 
     // If music is muted then just say no
     if (not musicEnabled_ or savedVolume_ <= 0)
@@ -446,46 +447,46 @@ void DevCD::disableMusic()
     pImpl_->musicEnabled_ = false;
 }
 
-std::ostream& operator <<( std::ostream& o, const DevCD& devCD)
+std::ostream& operator<<(std::ostream& o, const DevCD& devCD)
 {
     o << "Number of tracks " << devCD.numberOfTracks() << "\n"
-        << "Current Track " << devCD.currentTrackIndex() << "\n"
-        << "Track time " << devCD.currentTrackLengthInSeconds() << "\n"
-        << "Track running time " << devCD.currentTrackRunningTime() << "\n"
-        << "Track remaining time " << devCD.currentTrackTimeRemaining() << std::endl;
+      << "Current Track " << devCD.currentTrackIndex() << "\n"
+      << "Track time " << devCD.currentTrackLengthInSeconds() << "\n"
+      << "Track running time " << devCD.currentTrackRunningTime() << "\n"
+      << "Track remaining time " << devCD.currentTrackTimeRemaining() << std::endl;
 
     return o;
 }
 
-void DevCD::randomPlay( DevCDTrackIndex startTrack, DevCDTrackIndex endTrack, DevCDTrackIndex firstTrack /*= -1*/ )
+void DevCD::randomPlay(DevCDTrackIndex startTrack, DevCDTrackIndex endTrack, DevCDTrackIndex firstTrack /*= -1*/)
 {
     PlayStatus& status_ = pImpl_->status_;
-    DevCDTrackIndex&  randomStartTrack_ = pImpl_-> randomStartTrack_;
-    DevCDTrackIndex&  randomEndTrack_ = pImpl_-> randomEndTrack_;
-    MexBasicRandom&  randomGenerator_ = pImpl_-> randomGenerator_;
+    DevCDTrackIndex& randomStartTrack_ = pImpl_->randomStartTrack_;
+    DevCDTrackIndex& randomEndTrack_ = pImpl_->randomEndTrack_;
+    MexBasicRandom& randomGenerator_ = pImpl_->randomGenerator_;
 
-    PRE( startTrack >= 0 );
-    PRE( startTrack <= endTrack );
+    PRE(startTrack >= 0);
+    PRE(startTrack <= endTrack);
 
     randomStartTrack_ = startTrack;
     randomEndTrack_ = endTrack + 1;
 
-    if ( firstTrack != -1 )
+    if (firstTrack != -1)
     {
-        play( firstTrack );
+        play(firstTrack);
     }
     else
     {
-        if ( randomStartTrack_ < numberOfTracks() )
+        if (randomStartTrack_ < numberOfTracks())
         {
             // Make sure we're not asking it to randomise a number outside the range of tracks
             // on the CD.
-            DevCDTrackIndex tmpEndTrack = std::min( numberOfTracks(), randomEndTrack_ );
+            DevCDTrackIndex tmpEndTrack = std::min(numberOfTracks(), randomEndTrack_);
 
-            if ( randomStartTrack_ < tmpEndTrack )
+            if (randomStartTrack_ < tmpEndTrack)
             {
-                DevCDTrackIndex trackToPlay = mexRandomInt( &randomGenerator_, randomStartTrack_, tmpEndTrack );
-                play( trackToPlay );
+                DevCDTrackIndex trackToPlay = mexRandomInt(&randomGenerator_, randomStartTrack_, tmpEndTrack);
+                play(trackToPlay);
             }
         }
     }

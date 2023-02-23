@@ -1,5 +1,5 @@
 /*
- * T E S T . C P P 
+ * T E S T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,15 +16,14 @@ Test::Test()
 Test::~Test()
 {
     TEST_INVARIANT;
-
 }
 
 void Test::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != NULL);
 }
 
-ostream& operator <<( ostream& o, const Test& t )
+ostream& operator<<(ostream& o, const Test& t)
 {
 
     o << "Test " << (void*)&t << " start" << endl;

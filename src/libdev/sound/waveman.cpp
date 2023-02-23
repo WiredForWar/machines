@@ -11,67 +11,66 @@
 
 #include <time.h>
 #include "profiler/profiler.hpp"
-//diag.hpp used for file existence checking in debug and release
+// diag.hpp used for file existence checking in debug and release
 #ifdef PRODUCTION
 #include "base/diag.hpp"
 #endif
 
 // TBD: We need much better error handling for the sound
 
-static  bool    bobFirstSoundError = true;
-static  int    	numberOfRefCreations = 0;
-static  int    	numberOfRefReleases = 0;
+static bool bobFirstSoundError = true;
+static int numberOfRefCreations = 0;
+static int numberOfRefReleases = 0;
 
 /*unsigned long getRefCount(IUnknown* pThisInterface)
 {
-	unsigned long theRefCount = 0;
-	if(pThisInterface)
-	{
-		pThisInterface->AddRef();
-		theRefCount = pThisInterface->Release();
-	}
-	return theRefCount;
+    unsigned long theRefCount = 0;
+    if(pThisInterface)
+    {
+        pThisInterface->AddRef();
+        theRefCount = pThisInterface->Release();
+    }
+    return theRefCount;
 }*/
 
 int bobSoundError(
-    char* lpText,	// address of text in message box
-    char* lpCaption,	// address of title of message box
-    uint   	// style of message box
-   )
+    char* lpText, // address of text in message box
+    char* lpCaption, // address of title of message box
+    uint // style of message box
+)
 {
-//We don't want spurious diagnostic files appearing in production
-//versions
+// We don't want spurious diagnostic files appearing in production
+// versions
 #ifndef PRODUCTION
-    if( bobFirstSoundError )
+    if (bobFirstSoundError)
     {
         bobFirstSoundError = false;
 
         //  Clear the file
-        std::ofstream ostr( "snderr.log" );
+        std::ofstream ostr("snderr.log");
     }
 
-    std::ofstream ostr( "snderr.log", std::ios::app );
+    std::ofstream ostr("snderr.log", std::ios::app);
 
-    time_t  t = time( NULL );
-    ostr << ctime( &t );
+    time_t t = time(nullptr);
+    ostr << ctime(&t);
 
     ostr << std::endl;
 
     ostr << "Error : " << lpText << " " << lpCaption << std::endl;
 
-//    ostr << "GetLastError " << GetLastError() << "  ";
-
+    //    ostr << "GetLastError " << GetLastError() << "  ";
 
     bool writeStackAnchor = true;
     uint32_t lineNumber = 0;
-    const char* extraString = NULL;
+    const char* extraString = nullptr;
 
     ostr << std::endl;
     ostr << "------ Stack trace start ------------------------------" << std::endl;
-    ProProfiler::instance().traceStack( ostr, writeStackAnchor, lineNumber, extraString );
+    ProProfiler::instance().traceStack(ostr, writeStackAnchor, lineNumber, extraString);
     ostr << "------ Stack trace finish -----------------------------" << std::endl << std::endl;
 
-    ostr << ctime( &t );
+    ostr << ctime(&t);
 
     ostr << std::endl << std::endl << std::endl << std::endl;
 
@@ -80,8 +79,7 @@ int bobSoundError(
     return 0;
 }
 
-
-extern void debugTiming( const char*, bool );
+extern void debugTiming(const char*, bool);
 
 // static
 SndWaveManager& SndWaveManager::instance()
@@ -101,177 +99,176 @@ SndWaveManager::~SndWaveManager()
     TEST_INVARIANT;
 }
 
-void SndWaveManager::shutdown( )
+void SndWaveManager::shutdown()
 {
-	freeAll();
+    freeAll();
 }
 
 void SndWaveManager::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ALuint SndWaveManager::getSoundBuffer( const SndWaveformId& id, bool& isFound )
+ALuint SndWaveManager::getSoundBuffer(const SndWaveformId& id, bool& isFound)
 {
     PRE(id.pathname().existsAsFile());
     ALBufferMap::iterator i = loadedSoundBuffers_.find(id);
-	bool found = (i != loadedSoundBuffers_.end());
+    bool found = (i != loadedSoundBuffers_.end());
 
-	ALuint result = 0;
-	if(found)
-	{
-		result = (*i).second.buffer_;
-		(*i).second.count_++;
-	}
-	else
-	{
+    ALuint result = 0;
+    if (found)
+    {
+        result = (*i).second.buffer_;
+        (*i).second.count_++;
+    }
+    else
+    {
         ALuint buffer;
         alGenBuffers(1, &buffer);
         alTestError("buffer generation");
-        loadedSoundBuffers_.insert(id, SndCountedSoundBuffer( buffer ) );
+        loadedSoundBuffers_.insert(id, SndCountedSoundBuffer(buffer));
         numberOfRefCreations++;
         result = buffer;
-	}
-	isFound = found;
-	return result;
+    }
+    isFound = found;
+    return result;
 }
 
-void SndWaveManager::freeSoundBuffer( const SndWaveformId& id )
+void SndWaveManager::freeSoundBuffer(const SndWaveformId& id)
 {
-	ALBufferMap::iterator i = loadedSoundBuffers_.find(id);
+    ALBufferMap::iterator i = loadedSoundBuffers_.find(id);
     SOUND_STREAM("Wav3" << std::endl);
-	bool found = (i != loadedSoundBuffers_.end());
+    bool found = (i != loadedSoundBuffers_.end());
     SOUND_STREAM("Wav4" << std::endl);
 
-	if(found)
-	{
+    if (found)
+    {
         SOUND_STREAM("Wav5" << std::endl);
-		ALuint originalBuffer = (*i).second.buffer_;
+        ALuint originalBuffer = (*i).second.buffer_;
         SOUND_STREAM("Wav6" << std::endl);
 
-		//Work out how many references there are still outstanding.
-		int count = (*i).second.count_;
+        // Work out how many references there are still outstanding.
+        int count = (*i).second.count_;
         SOUND_STREAM("Wav7" << std::endl);
 
-		//if there was 1 - we are releasing must be last reference
-		if( count == 1 )
-		{
+        // if there was 1 - we are releasing must be last reference
+        if (count == 1)
+        {
             alDeleteBuffers(1, &originalBuffer);
             numberOfRefReleases++;
-			loadedSoundBuffers_.erase( i );
+            loadedSoundBuffers_.erase(i);
             SOUND_STREAM("Wav17" << std::endl);
-		}
-		else
-		{
+        }
+        else
+        {
             SOUND_STREAM("Wav22" << std::endl);
-			(*i).second.count_--;
+            (*i).second.count_--;
             SOUND_STREAM("Wav23" << std::endl);
-		}
+        }
         SOUND_STREAM("Wav24" << std::endl);
-	}
+    }
     SOUND_STREAM("Wav25" << std::endl);
 }
 
-SndWaveform* SndWaveManager::getWaveForm( const SndWaveformId& id )
+SndWaveform* SndWaveManager::getWaveForm(const SndWaveformId& id)
 {
-	PRE(id.pathname().exists());
+    PRE(id.pathname().exists());
 
-//	WaveFormMap::iterator i = loadedWaveForms_.begin();
-//	WaveFormMap::iterator j = loadedWaveForms_.end();
-//
-//	SndWaveform* returnForm = NULL;
-//
-////	for(;i!=j && !returnForm; ++i)
-//	while(i!=j && !returnForm)
-//	{
-//		if(((*i).first).pathname() == id.pathname())
-//		{
-//			(*i).second->addReference();
-//			returnForm = (*i).second;
-//		}
-//		else
-//			++i;
-//	}
+    //  WaveFormMap::iterator i = loadedWaveForms_.begin();
+    //  WaveFormMap::iterator j = loadedWaveForms_.end();
+    //
+    //  SndWaveform* returnForm = NULL;
+    //
+    ////    for(;i!=j && !returnForm; ++i)
+    //  while(i!=j && !returnForm)
+    //  {
+    //      if(((*i).first).pathname() == id.pathname())
+    //      {
+    //          (*i).second->addReference();
+    //          returnForm = (*i).second;
+    //      }
+    //      else
+    //          ++i;
+    //  }
 
-	SndWaveform* returnForm = NULL;
-	WaveFormMap::iterator i = loadedWaveForms_.find(id);
+    SndWaveform* returnForm = nullptr;
+    WaveFormMap::iterator i = loadedWaveForms_.find(id);
 
-	if(i==loadedWaveForms_.end())
-	{
-		SndWaveform* newWave= _NEW(SndWaveform(id));
-		loadedWaveForms_.insert(id, newWave);
-		returnForm = newWave;
-	}
-	else
-	{
-		(*i).second->addReference();
-		returnForm = (*i).second;
-	}
+    if (i == loadedWaveForms_.end())
+    {
+        SndWaveform* newWave = _NEW(SndWaveform(id));
+        loadedWaveForms_.insert(id, newWave);
+        returnForm = newWave;
+    }
+    else
+    {
+        (*i).second->addReference();
+        returnForm = (*i).second;
+    }
 
-	POST(returnForm);
-	return returnForm;
+    POST(returnForm);
+    return returnForm;
 }
 
-void SndWaveManager::freeWaveForm( const SndWaveformId& id )
+void SndWaveManager::freeWaveForm(const SndWaveformId& id)
 {
-	WaveFormMap::iterator i = loadedWaveForms_.find(id);
+    WaveFormMap::iterator i = loadedWaveForms_.find(id);
 
-	if(i!=loadedWaveForms_.end())
-	{
-		(*i).second->removeReference();
-		if((*i).second->ref() == 0)
-		{
-			_DELETE((*i).second);
-			loadedWaveForms_.erase(i);
-		}
-	}
-	else
-	{
-		ASSERT(NULL, "Trying to dereference unloaded wav");
-	}
+    if (i != loadedWaveForms_.end())
+    {
+        (*i).second->removeReference();
+        if ((*i).second->ref() == 0)
+        {
+            _DELETE((*i).second);
+            loadedWaveForms_.erase(i);
+        }
+    }
+    else
+    {
+        ASSERT(NULL, "Trying to dereference unloaded wav");
+    }
 }
 
 void SndWaveManager::freeAll()
 {
-	WaveFormMap::iterator i = loadedWaveForms_.begin();
+    WaveFormMap::iterator i = loadedWaveForms_.begin();
 
-	SOUND_STREAM("Clearing preloads out" << std::endl);
-	for(WaveFormMap::iterator i = loadedWaveForms_.begin(); i!=loadedWaveForms_.end(); ++i)
-	{
-		_DELETE((*i).second);
-	}
+    SOUND_STREAM("Clearing preloads out" << std::endl);
+    for (WaveFormMap::iterator i = loadedWaveForms_.begin(); i != loadedWaveForms_.end(); ++i)
+    {
+        _DELETE((*i).second);
+    }
 
-	loadedWaveForms_.erase(loadedWaveForms_.begin(), loadedWaveForms_.end());
+    loadedWaveForms_.erase(loadedWaveForms_.begin(), loadedWaveForms_.end());
 
-	ALBufferMap::iterator j = loadedSoundBuffers_.begin();
-	for(;j!=loadedSoundBuffers_.end();++j)
-	{
-//		int refNum = (*j).second.pBuffer_->Release();
-        alDeleteBuffers(1, &((*j).second.buffer_) );
-		numberOfRefReleases++;
-	}
-	loadedSoundBuffers_.erase(loadedSoundBuffers_.begin(), loadedSoundBuffers_.end());
+    ALBufferMap::iterator j = loadedSoundBuffers_.begin();
+    for (; j != loadedSoundBuffers_.end(); ++j)
+    {
+        //      int refNum = (*j).second.pBuffer_->Release();
+        alDeleteBuffers(1, &((*j).second.buffer_));
+        numberOfRefReleases++;
+    }
+    loadedSoundBuffers_.erase(loadedSoundBuffers_.begin(), loadedSoundBuffers_.end());
 }
 
-bool SndWaveManager::isLoaded( const SndWaveformId& id )
+bool SndWaveManager::isLoaded(const SndWaveformId& id)
 {
-//	WaveFormMap::iterator i = loadedWaveForms_.begin();
-//	WaveFormMap::iterator j = loadedWaveForms_.end();
-//
-//	bool found = false;
-//	while(not found && i!=j)
-//	{
-//		if((*i).first.pathname() == id)
-//		{
-//			found = true;
-//		}
-//		++i;
-//	}
-	return (loadedWaveForms_.find(id)!=loadedWaveForms_.end());
+    //  WaveFormMap::iterator i = loadedWaveForms_.begin();
+    //  WaveFormMap::iterator j = loadedWaveForms_.end();
+    //
+    //  bool found = false;
+    //  while(not found && i!=j)
+    //  {
+    //      if((*i).first.pathname() == id)
+    //      {
+    //          found = true;
+    //      }
+    //      ++i;
+    //  }
+    return (loadedWaveForms_.find(id) != loadedWaveForms_.end());
 }
 
-
-ostream& operator <<( ostream& o, const SndWaveManager& t )
+ostream& operator<<(ostream& o, const SndWaveManager& t)
 {
 
     o << "SndWaveManager " << (void*)&t << " start" << std::endl;
@@ -280,18 +277,18 @@ ostream& operator <<( ostream& o, const SndWaveManager& t )
     return o;
 }
 
-bool operator<( const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b )
+bool operator<(const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b)
 {
-//	if( a.pBuffer_ < b.pBuffer_ )
-	if( a.buffer_ < b.buffer_ )
-		return true;
-	return false;
+    //  if( a.pBuffer_ < b.pBuffer_ )
+    if (a.buffer_ < b.buffer_)
+        return true;
+    return false;
 }
-bool operator==( const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b )
+bool operator==(const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b)
 {
-//	if( a.pBuffer_ == b.pBuffer_ )
-	if( a.buffer_ == b.buffer_ )
-		return true;
-	return false;
+    //  if( a.pBuffer_ == b.pBuffer_ )
+    if (a.buffer_ == b.buffer_)
+        return true;
+    return false;
 }
 /* End WAVEMAN.CPP **************************************************/

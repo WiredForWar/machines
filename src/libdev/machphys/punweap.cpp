@@ -30,20 +30,23 @@
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysPunchWeapon );
+PER_DEFINE_PERSISTENT(MachPhysPunchWeapon);
 
-MachPhysPunchWeapon::MachPhysPunchWeapon( W4dEntity* pParent, const MexTransform3d& localTransform)
-: MachPhysWeapon( exemplar(), MachPhys::TOP, pParent, localTransform )
+MachPhysPunchWeapon::MachPhysPunchWeapon(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : MachPhysWeapon(exemplar(), MachPhys::TOP, pParent, localTransform)
 {
-	visible( false );
+    visible(false);
     TEST_INVARIANT;
 }
 
-//One-time ctor
+// One-time ctor
 MachPhysPunchWeapon::MachPhysPunchWeapon()
-:MachPhysWeapon( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(),
-                          SysPathName( compositeFilePath() ),
-                          MachPhys::GORILLA_PUNCH, MachPhys::TOP )
+    : MachPhysWeapon(
+        MachPhysWeaponPersistence::instance().pRoot(),
+        MexTransform3d(),
+        SysPathName(compositeFilePath()),
+        MachPhys::GORILLA_PUNCH,
+        MachPhys::TOP)
 {
     TEST_INVARIANT;
 }
@@ -51,10 +54,9 @@ MachPhysPunchWeapon::MachPhysPunchWeapon()
 MachPhysPunchWeapon::~MachPhysPunchWeapon()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysPunchWeapon& MachPhysPunchWeapon::exemplar()
 {
     return MachPhysWeaponPersistence::instance().punchExemplar();
@@ -62,10 +64,10 @@ const MachPhysPunchWeapon& MachPhysPunchWeapon::exemplar()
 
 void MachPhysPunchWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysPunchWeapon& t )
+ostream& operator<<(ostream& o, const MachPhysPunchWeapon& t)
 {
 
     o << "MachPhysPunchWeapon " << (void*)&t << " start" << std::endl;
@@ -74,102 +76,101 @@ ostream& operator <<( ostream& o, const MachPhysPunchWeapon& t )
     return o;
 }
 
-//static
+// static
 const char* MachPhysPunchWeapon::compositeFilePath()
 {
-	return "models/weapons/nmissile/point.cdf";
+    return "models/weapons/nmissile/point.cdf";
 }
 
-//virtual
-PhysRelativeTime MachPhysPunchWeapon::fire( const PhysAbsoluteTime&, int  )
+// virtual
+PhysRelativeTime MachPhysPunchWeapon::fire(const PhysAbsoluteTime&, int)
 {
 
-	//PhysRelativeTime duration = 5;
-	//lighting(RenColour(0.784, 0.784, 0.784), startTime, 5);
+    // PhysRelativeTime duration = 5;
+    // lighting(RenColour(0.784, 0.784, 0.784), startTime, 5);
 
     return 0;
 }
 
-MachPhysPunchWeapon::MachPhysPunchWeapon( PerConstructor con )
-: MachPhysWeapon( con )
+MachPhysPunchWeapon::MachPhysPunchWeapon(PerConstructor con)
+    : MachPhysWeapon(con)
 {
 }
 
-
-void perWrite( PerOstream& ostr, const MachPhysPunchWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachPhysPunchWeapon& weapon)
 {
     const MachPhysWeapon& base = weapon;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysPunchWeapon& weapon )
+void perRead(PerIstream& istr, MachPhysPunchWeapon& weapon)
 {
     MachPhysWeapon& base = weapon;
 
     istr >> base;
 }
 
-
-MachPhysPunchBlast* MachPhysPunchWeapon::createPunchBlast(const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface)
+MachPhysPunchBlast*
+MachPhysPunchWeapon::createPunchBlast(const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface)
 {
 
-	W4dCompositePlanPtr punchPlanPtr;
+    W4dCompositePlanPtr punchPlanPtr;
 
-	uint AorB = MachPhysRandom::randomInt( 0, 2 );
-	bool findPlan;
+    uint AorB = MachPhysRandom::randomInt(0, 2);
+    bool findPlan;
 
-	if( AorB )
-	{
-		findPlan = machine().findCompositePlan( "PunchA", &punchPlanPtr );
-		ASSERT( findPlan, "PunchA plan not found");
-	}
-	else
-	{
-		findPlan = machine().findCompositePlan( "PunchB", &punchPlanPtr );
-		ASSERT( findPlan, "PunchB plan not found");
-	}
+    if (AorB)
+    {
+        findPlan = machine().findCompositePlan("PunchA", &punchPlanPtr);
+        ASSERT(findPlan, "PunchA plan not found");
+    }
+    else
+    {
+        findPlan = machine().findCompositePlan("PunchB", &punchPlanPtr);
+        ASSERT(findPlan, "PunchB plan not found");
+    }
 
-    machine().plan( *punchPlanPtr, startTime);
+    machine().plan(*punchPlanPtr, startTime);
 
-	RICHARD_STREAM("Punch play" << std::endl);
-	W4dSoundManager::instance().play(this, SID_PUNCH, startTime, 1);
+    RICHARD_STREAM("Punch play" << std::endl);
+    W4dSoundManager::instance().play(this, SID_PUNCH, startTime, 1);
 
-	PhysAbsoluteTime animEndTime = startTime + 42.0/MachPhysPunchBlast::punchFrameRate();
+    PhysAbsoluteTime animEndTime = startTime + 42.0 / MachPhysPunchBlast::punchFrameRate();
 
-	//the blast is at MexPoint3d(2.9, 0.2, 0.0) with respect to the gorilla
-	MexTransform3d blastXform = machine().localTransform();
-	blastXform.translate(MexPoint3d(2.9, 0.2, 0.0));
+    // the blast is at MexPoint3d(2.9, 0.2, 0.0) with respect to the gorilla
+    MexTransform3d blastXform = machine().localTransform();
+    blastXform.translate(MexPoint3d(2.9, 0.2, 0.0));
 
-	MachPhysPunchBlast* pPunchBlast = _NEW( MachPhysPunchBlast( machine().pParent(), blastXform) );
-	PhysRelativeTime blastDuration = pPunchBlast->startPunchBlast(animEndTime, surface);
+    MachPhysPunchBlast* pPunchBlast = _NEW(MachPhysPunchBlast(machine().pParent(), blastXform));
+    PhysRelativeTime blastDuration = pPunchBlast->startPunchBlast(animEndTime, surface);
 
-	W4dUniformLight* pLight = _NEW( W4dUniformLight(pPunchBlast, MexVec3(1, 0, 0), 20.0));
-    pLight->localTransform( MexTransform3d() );
-	pLight->colour(RenColour(3, 3, 3)); //::white());
-	pLight->constantAttenuation(0);
-	pLight->linearAttenuation(0.17);
-	pLight->quadraticAttenuation(0.83);
-	pLight->scope(W4dLight::LOCAL);
-	pLight->illuminate( this );
-	pLight->visible( false );
-	pLight->maxRange( 25 );
-	//pLight->localTransform( spherePosition );
+    W4dUniformLight* pLight = _NEW(W4dUniformLight(pPunchBlast, MexVec3(1, 0, 0), 20.0));
+    pLight->localTransform(MexTransform3d());
+    pLight->colour(RenColour(3, 3, 3)); //::white());
+    pLight->constantAttenuation(0);
+    pLight->linearAttenuation(0.17);
+    pLight->quadraticAttenuation(0.83);
+    pLight->scope(W4dLight::LOCAL);
+    pLight->illuminate(this);
+    pLight->visible(false);
+    pLight->maxRange(25);
+    // pLight->localTransform( spherePosition );
 
-	//attach the entity to the light
-	if(hasMachine())
-		pLight->illuminate(&machine());
+    // attach the entity to the light
+    if (hasMachine())
+        pLight->illuminate(&machine());
 
-	//visibility plan
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	lightVisibilityPlanPtr->add( false, 0.8 );
+    // visibility plan
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    lightVisibilityPlanPtr->add(false, 0.8);
 
-	//apply the visibility plan
-    pLight->entityPlanForEdit().visibilityPlan( lightVisibilityPlanPtr, animEndTime );
+    // apply the visibility plan
+    pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, animEndTime);
 
-    W4dGarbageCollector::instance().add( pLight, animEndTime + 0.8 );
+    W4dGarbageCollector::instance().add(pLight, animEndTime + 0.8);
 
-	return 	pPunchBlast;
+    return pPunchBlast;
 }
 
 /* End PUNWEAP.CPP ****************************************************/

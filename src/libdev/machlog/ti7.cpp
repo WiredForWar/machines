@@ -13,8 +13,7 @@ class SimCondition;
 
 void ti7()
 {
-    static ctl_map< string , SimCondition*, less< string > >		conditionMap;
-
+    static ctl_map<string, SimCondition*, less<string>> conditionMap;
 }
 
-/* End TI6.CPP *******************************************************/	
+/* End TI6.CPP *******************************************************/

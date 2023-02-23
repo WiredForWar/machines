@@ -7,13 +7,13 @@
 
 #include "sim/projecti.hpp"
 
-PER_DEFINE_PERSISTENT_ABSTRACT( SimProjectile )
+PER_DEFINE_PERSISTENT_ABSTRACT(SimProjectile)
 
-SimProjectile::SimProjectile( SimProcess* pProcess, W4dEntity* pPhysObject )
-: SimActor( pProcess, pPhysObject, UPDATE_EVERY_CYCLE )
+SimProjectile::SimProjectile(SimProcess* pProcess, W4dEntity* pPhysObject)
+    : SimActor(pProcess, pPhysObject, UPDATE_EVERY_CYCLE)
 {
-    PRE( pProcess != NULL );
-    PRE( pPhysObject != NULL );
+    PRE(pProcess != nullptr);
+    PRE(pPhysObject != nullptr);
 
     TEST_INVARIANT;
 }
@@ -21,15 +21,14 @@ SimProjectile::SimProjectile( SimProcess* pProcess, W4dEntity* pPhysObject )
 SimProjectile::~SimProjectile()
 {
     TEST_INVARIANT;
-
 }
 
 void SimProjectile::CLASS_INVARIANT
 {
-	INVARIANT( this );
+    INVARIANT(this);
 }
 
-ostream& operator <<( ostream& o, const SimProjectile& t )
+ostream& operator<<(ostream& o, const SimProjectile& t)
 {
 
     o << "SimProjectile " << (void*)&t << " start" << std::endl;
@@ -38,22 +37,22 @@ ostream& operator <<( ostream& o, const SimProjectile& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const SimProjectile& projectile )
+void perWrite(PerOstream& ostr, const SimProjectile& projectile)
 {
-	const SimActor& base1 = projectile;
+    const SimActor& base1 = projectile;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, SimProjectile& projectile )
+void perRead(PerIstream& istr, SimProjectile& projectile)
 {
-	SimActor& base1 = projectile;
+    SimActor& base1 = projectile;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-SimProjectile::SimProjectile( PerConstructor con )
-:	SimActor( con )
+SimProjectile::SimProjectile(PerConstructor con)
+    : SimActor(con)
 {
 }
 

@@ -11,16 +11,18 @@
 #include "mathex/eulerang.hpp"
 
 PhysThirdPerson::PhysThirdPerson()
-{}
+{
+}
 
 // virtual
 PhysThirdPerson::~PhysThirdPerson()
-{}
-
-PhysThirdPersonCameraConstraint::PhysThirdPersonCameraConstraint( PhysThirdPerson* pThirdPerson )
-:	pThirdPerson_( pThirdPerson )
 {
-	PRE( pThirdPerson );
+}
+
+PhysThirdPersonCameraConstraint::PhysThirdPersonCameraConstraint(PhysThirdPerson* pThirdPerson)
+    : pThirdPerson_(pThirdPerson)
+{
+    PRE(pThirdPerson);
 
     TEST_INVARIANT;
 }
@@ -29,104 +31,104 @@ PhysThirdPersonCameraConstraint::~PhysThirdPersonCameraConstraint()
 {
     TEST_INVARIANT;
 
-	_DELETE( pThirdPerson_ );
+    _DELETE(pThirdPerson_);
 }
 
 void PhysThirdPersonCameraConstraint::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//virtual
-void PhysThirdPersonCameraConstraint::move( MexTransform3d& transform, PhysMotion& , double )
+// virtual
+void PhysThirdPersonCameraConstraint::move(MexTransform3d& transform, PhysMotion&, double)
 {
-	//Compute camera position using the current global position of the target entity,
-	//and the relative transform.
-	static MexPoint3d oldPos;
-	static MexEulerAngles oldAngle;
-	static PhysThirdPerson* oldThirdPerson = NULL;
+    // Compute camera position using the current global position of the target entity,
+    // and the relative transform.
+    static MexPoint3d oldPos;
+    static MexEulerAngles oldAngle;
+    static PhysThirdPerson* oldThirdPerson = nullptr;
 
-    if( pThirdPerson_->thirdPersonExists() )
+    if (pThirdPerson_->thirdPersonExists())
     {
-    	pThirdPerson_->getIdealCameraLocation( &transform );
+        pThirdPerson_->getIdealCameraLocation(&transform);
 
-		MexPoint3d pos;
-		MexEulerAngles angle;
-		transform.position( &pos );
-		transform.rotation( &angle );
+        MexPoint3d pos;
+        MexEulerAngles angle;
+        transform.position(&pos);
+        transform.rotation(&angle);
 
-		if ( pThirdPerson_ != oldThirdPerson )
-		{
-			oldPos = pos;
-			oldAngle = angle;
-			oldThirdPerson = pThirdPerson_;
-		}
-		else
-		{
-			// Camera moves slowly towards the ideal location.
-			MexLine3d line( pos, oldPos );
-			MexPoint3d newPos = line.pointAtDistance( line.length() * 0.90 );
-			transform.position( newPos );
+        if (pThirdPerson_ != oldThirdPerson)
+        {
+            oldPos = pos;
+            oldAngle = angle;
+            oldThirdPerson = pThirdPerson_;
+        }
+        else
+        {
+            // Camera moves slowly towards the ideal location.
+            MexLine3d line(pos, oldPos);
+            MexPoint3d newPos = line.pointAtDistance(line.length() * 0.90);
+            transform.position(newPos);
 
+            MexEulerAngles diffAngle(
+                angle.azimuth() - oldAngle.azimuth(),
+                angle.elevation() - oldAngle.elevation(),
+                angle.roll() - oldAngle.roll());
 
-			MexEulerAngles diffAngle( 	angle.azimuth() - oldAngle.azimuth(),
-										angle.elevation() - oldAngle.elevation(),
-										angle.roll() - oldAngle.roll() );
+            // Make sure diff angles don't go less than or greater than pi.
+            if (diffAngle.azimuth().asScalar() > Mathex::PI)
+                diffAngle.azimuth(diffAngle.azimuth().asScalar() - (2.0 * Mathex::PI));
+            else if (diffAngle.azimuth().asScalar() < -Mathex::PI)
+                diffAngle.azimuth(diffAngle.azimuth().asScalar() + (2.0 * Mathex::PI));
+            if (diffAngle.elevation().asScalar() > Mathex::PI)
+                diffAngle.elevation(diffAngle.elevation().asScalar() - (2.0 * Mathex::PI));
+            else if (diffAngle.elevation().asScalar() < -Mathex::PI)
+                diffAngle.elevation(diffAngle.elevation().asScalar() + (2.0 * Mathex::PI));
+            if (diffAngle.roll().asScalar() > Mathex::PI)
+                diffAngle.roll(diffAngle.roll().asScalar() - (2.0 * Mathex::PI));
+            else if (diffAngle.roll().asScalar() < -Mathex::PI)
+                diffAngle.roll(diffAngle.roll().asScalar() + (2.0 * Mathex::PI));
 
-			// Make sure diff angles don't go less than or greater than pi.
-			if ( diffAngle.azimuth().asScalar() > Mathex::PI )
-				diffAngle.azimuth( diffAngle.azimuth().asScalar() - ( 2.0 * Mathex::PI ) );
-			else if ( diffAngle.azimuth().asScalar() < -Mathex::PI )
-				diffAngle.azimuth( diffAngle.azimuth().asScalar() + ( 2.0 * Mathex::PI ) );
-			if ( diffAngle.elevation().asScalar() > Mathex::PI )
-				diffAngle.elevation( diffAngle.elevation().asScalar() - ( 2.0 * Mathex::PI ) );
-			else if ( diffAngle.elevation().asScalar() < -Mathex::PI )
-				diffAngle.elevation( diffAngle.elevation().asScalar() + ( 2.0 * Mathex::PI ) );
-			if ( diffAngle.roll().asScalar() > Mathex::PI )
-				diffAngle.roll( diffAngle.roll().asScalar() - ( 2.0 * Mathex::PI ) );
-			else if ( diffAngle.roll().asScalar() < -Mathex::PI )
-				diffAngle.roll( diffAngle.roll().asScalar() + ( 2.0 * Mathex::PI ) );
+            MexEulerAngles newAngle(
+                (diffAngle.azimuth() * 0.10) + oldAngle.azimuth(),
+                (diffAngle.elevation() * 0.10) + oldAngle.elevation(),
+                (diffAngle.roll() * 0.10) + oldAngle.roll());
 
+            // Make sure new angles don't go less than or greater than pi.
+            if (newAngle.azimuth().asScalar() > Mathex::PI)
+                newAngle.azimuth(newAngle.azimuth().asScalar() - (2.0 * Mathex::PI));
+            else if (newAngle.azimuth().asScalar() < -Mathex::PI)
+                newAngle.azimuth(newAngle.azimuth().asScalar() + (2.0 * Mathex::PI));
+            if (newAngle.elevation().asScalar() > Mathex::PI)
+                newAngle.elevation(newAngle.elevation().asScalar() - (2.0 * Mathex::PI));
+            else if (newAngle.elevation().asScalar() < -Mathex::PI)
+                newAngle.elevation(newAngle.elevation().asScalar() + (2.0 * Mathex::PI));
+            if (newAngle.roll().asScalar() > Mathex::PI)
+                newAngle.roll(newAngle.roll().asScalar() - (2.0 * Mathex::PI));
+            else if (newAngle.roll().asScalar() < -Mathex::PI)
+                newAngle.roll(newAngle.roll().asScalar() + (2.0 * Mathex::PI));
 
-			MexEulerAngles newAngle( ( diffAngle.azimuth() * 0.10 )		+ oldAngle.azimuth(),
-									 ( diffAngle.elevation() * 0.10 )	+ oldAngle.elevation(),
-									 ( diffAngle.roll() * 0.10 ) 		+ oldAngle.roll() );
+            transform.rotation(newAngle);
 
-			// Make sure new angles don't go less than or greater than pi.
-			if ( newAngle.azimuth().asScalar() > Mathex::PI )
-			    newAngle.azimuth( newAngle.azimuth().asScalar() - ( 2.0 * Mathex::PI ) );
-			else if ( newAngle.azimuth().asScalar() < -Mathex::PI )
-				newAngle.azimuth( newAngle.azimuth().asScalar() + ( 2.0 * Mathex::PI ) );
-		   	if ( newAngle.elevation().asScalar() > Mathex::PI )
-			    newAngle.elevation( newAngle.elevation().asScalar() - ( 2.0 * Mathex::PI ) );
-			else if ( newAngle.elevation().asScalar() < -Mathex::PI )
-				newAngle.elevation( newAngle.elevation().asScalar() + ( 2.0 * Mathex::PI ) );
-			if ( newAngle.roll().asScalar() > Mathex::PI )
-			    newAngle.roll( newAngle.roll().asScalar() - ( 2.0 * Mathex::PI ) );
-			else if ( newAngle.roll().asScalar() < -Mathex::PI )
-				newAngle.roll( newAngle.roll().asScalar() + ( 2.0 * Mathex::PI ) );
-
-			transform.rotation( newAngle );
-
-			oldPos = newPos;
-			oldAngle = newAngle;
-		}
+            oldPos = newPos;
+            oldAngle = newAngle;
+        }
     }
 }
 
 // virtual
-bool PhysThirdPersonCameraConstraint::snapTo( MexPoint3d* )
+bool PhysThirdPersonCameraConstraint::snapTo(MexPoint3d*)
 {
-	return false;
+    return false;
 }
 
 // virtual
-bool PhysThirdPersonCameraConstraint::snapTo( MexTransform3d* )
+bool PhysThirdPersonCameraConstraint::snapTo(MexTransform3d*)
 {
-	return false;
+    return false;
 }
 
-ostream& operator <<( ostream& o, const PhysThirdPersonCameraConstraint& t )
+ostream& operator<<(ostream& o, const PhysThirdPersonCameraConstraint& t)
 {
 
     o << "PhysThirdPersonCameraConstraint " << (void*)&t << " start" << std::endl;

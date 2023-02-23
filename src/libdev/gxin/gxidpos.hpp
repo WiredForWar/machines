@@ -11,44 +11,36 @@
 #include "gx.hpp"
 #include "gxerror.hpp"
 
-typedef unsigned long GXId;
+using GXId = unsigned long;
 
-class GXIdPos {
-// Canonical form revoked
+class GXIdPos
+{
+    // Canonical form revoked
+
 public:
     GXIdPos();
     ~GXIdPos();
-    GXIdPos( const GXIdPos& );
-    GXIdPos& operator =( const GXIdPos& );
-    friend bool operator ==(const GXIdPos&, const GXIdPos& );
-    friend bool operator !=(const GXIdPos&, const GXIdPos& );
-    friend bool operator < (const GXIdPos&, const GXIdPos& );
+    GXIdPos(const GXIdPos&);
+    GXIdPos& operator=(const GXIdPos&);
+    friend bool operator==(const GXIdPos&, const GXIdPos&);
+    friend bool operator!=(const GXIdPos&, const GXIdPos&);
+    friend bool operator<(const GXIdPos&, const GXIdPos&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXIdPos& t );
+    friend ostream& operator<<(ostream& o, const GXIdPos& t);
 
-	const short& pos() const {
-		return pos_;
-	}
+    const short& pos() const { return pos_; }
 
-	void pos(short newpos) {
-		pos_=newpos;
-	}
+    void pos(short newpos) { pos_ = newpos; }
 
-	void gxid(GXId newgxid) {
-		gxid_=newgxid;
-	}
+    void gxid(GXId newgxid) { gxid_ = newgxid; }
 
-	const GXId& gxid() const {
-		return gxid_;
-	}
+    const GXId& gxid() const { return gxid_; }
 
 private:
-
-	short pos_;
-	GXId gxid_;
-
+    short pos_;
+    GXId gxid_;
 };
 
 #endif

@@ -7,22 +7,21 @@
 
 #include "machphys/levels.hpp"
 
-template< class ID, class PART >
-MachPhysObjectFactory< ID, PART >::MachPhysObjectFactory( size_t nEntries )
-: root_( 10000 ),
-  entries_( nEntries, NULL )
+template <class ID, class PART>
+MachPhysObjectFactory<ID, PART>::MachPhysObjectFactory(size_t nEntries)
+    : root_(10000)
+    , entries_(nEntries, nullptr)
 {
     TEST_INVARIANT;
 }
 
-template< class ID, class PART >
-MachPhysObjectFactory< ID, PART >::MachPhysObjectFactory( PerConstructor )
-: root_( 10000 )
+template <class ID, class PART>
+MachPhysObjectFactory<ID, PART>::MachPhysObjectFactory(PerConstructor)
+    : root_(10000)
 {
 }
 
-template< class ID, class PART >
-MachPhysObjectFactory< ID, PART >::~MachPhysObjectFactory()
+template <class ID, class PART> MachPhysObjectFactory<ID, PART>::~MachPhysObjectFactory()
 {
     TEST_INVARIANT;
 
@@ -31,22 +30,19 @@ MachPhysObjectFactory< ID, PART >::~MachPhysObjectFactory()
     //  the root is deleted.
 }
 
-template< class ID, class PART >
-PART& MachPhysObjectFactory< ID, PART >::part( const ID& id, size_t index )
+template <class ID, class PART> PART& MachPhysObjectFactory<ID, PART>::part(const ID& id, size_t index)
 {
-    if( entries_[ index ] == NULL )
-        entries_[ index ] = _NEW( PART( &root_, id ) );
+    if (entries_[index] == nullptr)
+        entries_[index] = _NEW(PART(&root_, id));
 
-    return *entries_[ index ];
+    return *entries_[index];
 }
 
-
-template< class ID, class PART >
-void MachPhysObjectFactory< ID, PART >::CLASS_INVARIANT
+template <class ID, class PART> void MachPhysObjectFactory<ID, PART>::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//#include "ctl/fixedvec.ctp"
+// #include "ctl/fixedvec.ctp"
 
 /* End OFACTORY.CTP **************************************************/

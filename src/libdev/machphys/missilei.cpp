@@ -9,13 +9,13 @@
 #include "machphys/vaptrail.hpp"
 #include "world4d/link.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMissileImpl );
+PER_DEFINE_PERSISTENT(MachPhysMissileImpl);
 
-MachPhysMissileImpl::MachPhysMissileImpl( size_t level )
-: pVapourTrail_( NULL ),
-  destructionTime_( 0.0 ),
-  level_(level),
-  pFlame_( NULL )
+MachPhysMissileImpl::MachPhysMissileImpl(size_t level)
+    : pVapourTrail_(nullptr)
+    , destructionTime_(0.0)
+    , level_(level)
+    , pFlame_(nullptr)
 {
 
     TEST_INVARIANT;
@@ -25,16 +25,15 @@ MachPhysMissileImpl::~MachPhysMissileImpl()
 {
     TEST_INVARIANT;
 
-	_DELETE( pVapourTrail_ );
-
+    _DELETE(pVapourTrail_);
 }
 
 void MachPhysMissileImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMissileImpl& t )
+ostream& operator<<(ostream& o, const MachPhysMissileImpl& t)
 {
 
     o << "MachPhysMissileImpl " << (void*)&t << " start" << std::endl;
@@ -43,11 +42,11 @@ ostream& operator <<( ostream& o, const MachPhysMissileImpl& t )
     return o;
 }
 
-MachPhysMissileImpl::MachPhysMissileImpl( PerConstructor )
+MachPhysMissileImpl::MachPhysMissileImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMissileImpl& missileImpl )
+void perWrite(PerOstream& ostr, const MachPhysMissileImpl& missileImpl)
 {
     ostr << missileImpl.pVapourTrail_;
     ostr << missileImpl.vapourTrailOffset_;
@@ -56,7 +55,7 @@ void perWrite( PerOstream& ostr, const MachPhysMissileImpl& missileImpl )
     ostr << missileImpl.pFlame_;
 }
 
-void perRead( PerIstream& istr, MachPhysMissileImpl& missileImpl )
+void perRead(PerIstream& istr, MachPhysMissileImpl& missileImpl)
 {
     istr >> missileImpl.pVapourTrail_;
     istr >> missileImpl.vapourTrailOffset_;

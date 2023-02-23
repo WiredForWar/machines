@@ -6,26 +6,26 @@
 #include "network/nodeuid.hpp"
 
 struct _ENetPeer;
-typedef struct _ENetPeer ENetPeer;
+using ENetPeer = struct _ENetPeer;
 
 class NetMessageHeader
 {
 public:
-	NetMessageHeader( ENetPeer* pPeer, const NetPriority& priority);
-	NetMessageHeader( const NetMessageHeader& );
-	//NetMessageHeader( NetMessageHeader& );
+    NetMessageHeader(ENetPeer* pPeer, const NetPriority& priority);
+    NetMessageHeader(const NetMessageHeader&);
+    // NetMessageHeader( NetMessageHeader& );
 
-	//ENetPeer*	    sender();
-	const ENetPeer*	    sender() const;
+    // ENetPeer*     sender();
+    const ENetPeer* sender() const;
 
-	const NetPriority&	priority() const;
-	size_t				length() const;
+    const NetPriority& priority() const;
+    size_t length() const;
 
 private:
-	friend ostream& operator<<( ostream&, const NetMessageHeader& );
-	ENetPeer* 	sender_;
-	NetPriority	priority_;
-	size_t		length_;
+    friend ostream& operator<<(ostream&, const NetMessageHeader&);
+    ENetPeer* sender_;
+    NetPriority priority_;
+    size_t length_;
 };
 
 #endif //_MESSAGE_HEADER_HPP

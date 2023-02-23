@@ -1,10 +1,10 @@
 /*
- * D E S T R O Y . H P P 
+ * D E S T R O Y . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 /*
- * Mixin for physical objects that support 
+ * Mixin for physical objects that support
  * an animation for their destruction.
  */
 
@@ -18,15 +18,14 @@
 class MachPhysCanBeDestroyed
 {
 public:
+    virtual ~MachPhysCanBeDestroyed() {};
 
-	virtual ~MachPhysCanBeDestroyed() {};
-
-    //Destroy oneself, returning the time any animation will take    
+    // Destroy oneself, returning the time any animation will take
     virtual PhysRelativeTime beDestroyed() = 0;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef 	_MACHPHYS_DESTROY_HPP	*/
+#endif /*  #ifndef     _MACHPHYS_DESTROY_HPP   */
 
 /* End DESTROY.HPP **************************************************/

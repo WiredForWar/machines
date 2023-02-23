@@ -30,47 +30,47 @@ template <class T> class CtlCountedPtr;
 class PhysAccelerateTumblePlan : public PhysMotionPlan
 {
 public:
-
-    typedef ctl_vector< PhysEulerTransform3d > EulerTransforms;
-    typedef CtlCountedPtr< EulerTransforms > EulerTransformsPtr;
+    using EulerTransforms = ctl_vector<PhysEulerTransform3d>;
+    using EulerTransformsPtr = CtlCountedPtr<EulerTransforms>;
 
     PhysAccelerateTumblePlan(
         const EulerTransformsPtr& transformsPtr,
         const TimesPtr& timesPtr,
-        const MexVec3& acceleration );
+        const MexVec3& acceleration);
     //  PRE( transformsPtr->size() == durationPtr->size() + 1 );
     //  PRE( inAscendingOrder( *timesPtr ) );
 
-    virtual ~PhysAccelerateTumblePlan();
+    ~PhysAccelerateTumblePlan() override;
 
-    //Override defines result as a function of timeOffset.
-    //If time is greater than duration, the transform at time duration is returned.
-    virtual void transform( const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const;
+    // Override defines result as a function of timeOffset.
+    // If time is greater than duration, the transform at time duration is returned.
+    void transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysAccelerateTumblePlan& t );
+    friend ostream& operator<<(ostream& o, const PhysAccelerateTumblePlan& t);
 
-    PER_MEMBER_PERSISTENT( PhysAccelerateTumblePlan );
-    PER_FRIEND_READ_WRITE( PhysAccelerateTumblePlan );
+    PER_MEMBER_PERSISTENT(PhysAccelerateTumblePlan);
+    PER_FRIEND_READ_WRITE(PhysAccelerateTumblePlan);
+
 private:
     // Operation deliberately revoked
-    PhysAccelerateTumblePlan( const PhysAccelerateTumblePlan& );
+    PhysAccelerateTumblePlan(const PhysAccelerateTumblePlan&);
 
     // Operation deliberately revoked
-    PhysAccelerateTumblePlan& operator =( const PhysAccelerateTumblePlan& );
+    PhysAccelerateTumblePlan& operator=(const PhysAccelerateTumblePlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const PhysAccelerateTumblePlan& );
+    bool operator==(const PhysAccelerateTumblePlan&);
 
-    PhysRelativeTime    currentSegmentDuration() const;
+    PhysRelativeTime currentSegmentDuration() const;
 
-    void setPosition( const PhysRelativeTime& timeOffset, MexTransform3d* pResult ) const;
-    void setRotation( const PhysRelativeTime& timeOffset, MexTransform3d* pResult ) const;
+    void setPosition(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const;
+    void setRotation(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const;
 
     void computeCacheData();
 
-/*
+    /*
     EulerTransformsPtr   transformsPtr_;
     TimesPtr        segmentTimesPtr_;
 
@@ -82,10 +82,10 @@ private:
     MexEulerAngles  initialOrientation_;
     MexVec3         initialVelocity_;
 */
-	PhysAccelerateTumblePlanImpl* pImpl_;
+    PhysAccelerateTumblePlanImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( PhysAccelerateTumblePlan );
+PER_DECLARE_PERSISTENT(PhysAccelerateTumblePlan);
 
 #endif
 

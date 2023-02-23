@@ -1,5 +1,5 @@
 /*
- * O P S C A V I . H P P 
+ * O P S C A V I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -31,27 +31,26 @@ class MachActor;
 
 class MachLogScavengeOperationImpl
 {
-public:		
-	MachLogScavengeOperationImpl( MachLogResourceCarrier* );
-							
-	~MachLogScavengeOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogScavengeOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogScavengeOperationImpl );
-	
-	void CLASS_INVARIANT;
+public:
+    MachLogScavengeOperationImpl(MachLogResourceCarrier*);
 
-	friend class MachLogScavengeOperation;
-	
+    ~MachLogScavengeOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogScavengeOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogScavengeOperationImpl);
+
+    void CLASS_INVARIANT;
+
+    friend class MachLogScavengeOperation;
+
 private:
-
-	MachLogResourceCarrier *				pActor_;
-	bool									finished_;
-	MachLogScavengeOperation::Suppliers		suppliers_;
-	size_t									currentElement_;
-	MexPoint3d								dest_;	
+    MachLogResourceCarrier* pActor_;
+    bool finished_;
+    MachLogScavengeOperation::Suppliers suppliers_;
+    size_t currentElement_;
+    MexPoint3d dest_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogScavengeOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogScavengeOperationImpl);
 
 #endif
 

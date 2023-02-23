@@ -1,5 +1,5 @@
 /*
- * R E N E R R O R . C P P 
+ * R E N E R R O R . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -8,40 +8,32 @@
 
 RenDXErrorHandler::RenDXErrorHandler()
 {
-	// Use these different default handlers.
-	changeDefaultNonTerminal(informManager);
-	changeDefaultTerminal(shutdownDirectX);
+    // Use these different default handlers.
+    changeDefaultNonTerminal(informManager);
+    changeDefaultTerminal(shutdownDirectX);
 }
 
-// static 
-RenDXErrorHandler::Action RenDXErrorHandler::shutdownDirectX
-(
-	const DirectXErrorHandler* handler, 
-	HRESULT hresult
-)
+// static
+RenDXErrorHandler::Action RenDXErrorHandler::shutdownDirectX(const DirectXErrorHandler* handler, HRESULT hresult)
 {
-	printTerminalMsg(handler, hresult);
-//	RenManager::instance().emergencyShutdown();
-	return TERMINAL;
+    printTerminalMsg(handler, hresult);
+    //  RenManager::instance().emergencyShutdown();
+    return TERMINAL;
 }
 
-// static 
-RenDXErrorHandler::Action RenDXErrorHandler::informManager
-(
-	const DirectXErrorHandler* handler, 
-	HRESULT hresult
-)
+// static
+RenDXErrorHandler::Action RenDXErrorHandler::informManager(const DirectXErrorHandler* handler, HRESULT hresult)
 {
-	printNonTerminalMsg(handler, hresult);
-//	RenManager::instance().renderingSuspended();
-	return NON_TERMINAL;
+    printNonTerminalMsg(handler, hresult);
+    //  RenManager::instance().renderingSuspended();
+    return NON_TERMINAL;
 }
 
-//static
+// static
 RenDXErrorHandler& RenDXErrorHandler::defaultHandler()
 {
-    static  RenDXErrorHandler renErr;
-    
+    static RenDXErrorHandler renErr;
+
     return renErr;
 }
 

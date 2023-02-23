@@ -1,5 +1,5 @@
 /*
- * S P Y L O C A I . H P P 
+ * S P Y L O C A I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -27,24 +27,23 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysSpyLocatorImpl );
-    PER_FRIEND_READ_WRITE( MachPhysSpyLocatorImpl );
+    PER_MEMBER_PERSISTENT(MachPhysSpyLocatorImpl);
+    PER_FRIEND_READ_WRITE(MachPhysSpyLocatorImpl);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysSpyLocatorImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSpyLocatorImpl& t);
     friend class MachPhysSpyLocator;
 
-    MachPhysSpyLocatorImpl( const MachPhysSpyLocatorImpl& );
-    MachPhysSpyLocatorImpl& operator =( const MachPhysSpyLocatorImpl& );
+    MachPhysSpyLocatorImpl(const MachPhysSpyLocatorImpl&);
+    MachPhysSpyLocatorImpl& operator=(const MachPhysSpyLocatorImpl&);
 
-    //data members
-    W4dCompositePlanPtr locatingPlanPtr_; //Animation for locating
-    PhysAbsoluteTime locatingPlanEndTime_; //Time at which any queued locating animation ends
-    bool isLocating_; //True if in locating mode
-
+    // data members
+    W4dCompositePlanPtr locatingPlanPtr_; // Animation for locating
+    PhysAbsoluteTime locatingPlanEndTime_; // Time at which any queued locating animation ends
+    bool isLocating_; // True if in locating mode
 };
 
-PER_DECLARE_PERSISTENT( MachPhysSpyLocatorImpl );
+PER_DECLARE_PERSISTENT(MachPhysSpyLocatorImpl);
 
 #endif
 

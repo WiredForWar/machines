@@ -13,27 +13,26 @@ MachPhysHardwareLabData::MachPhysHardwareLabData()
     TEST_INVARIANT;
 }
 
-MachPhysHardwareLabData::MachPhysHardwareLabData( const MachPhysHardwareLabData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform )
+MachPhysHardwareLabData::MachPhysHardwareLabData(const MachPhysHardwareLabData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
 {
 }
 
 MachPhysHardwareLabData::~MachPhysHardwareLabData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysHardwareLabData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysHardwareLabData& t )
+ostream& operator<<(ostream& o, const MachPhysHardwareLabData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
 
     return o;
 }

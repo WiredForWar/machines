@@ -9,6 +9,6 @@ class W4dD3DDriver;
 
 W4dDummyFunction2()
 {
-	static ctl_list<const W4dD3DDriver*>	driverList;
-    static RenMaterialSet               	dummySet;
+    static ctl_list<const W4dD3DDriver*> driverList;
+    static RenMaterialSet dummySet;
 }

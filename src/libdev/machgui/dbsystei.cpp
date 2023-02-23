@@ -8,11 +8,11 @@
 #include "machgui/internal/dbsystei.hpp"
 #include "machgui/dbplanet.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbISystem );
+PER_DEFINE_PERSISTENT(MachGuiDbISystem);
 
 MachGuiDbISystem::MachGuiDbISystem()
 {
-    planets_.reserve( 4 );
+    planets_.reserve(4);
 
     TEST_INVARIANT;
 }
@@ -20,15 +20,14 @@ MachGuiDbISystem::MachGuiDbISystem()
 MachGuiDbISystem::~MachGuiDbISystem()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDbISystem::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbISystem& t )
+ostream& operator<<(ostream& o, const MachGuiDbISystem& t)
 {
 
     o << "MachGuiDbISystem " << (void*)&t << " start" << std::endl;
@@ -37,19 +36,20 @@ ostream& operator <<( ostream& o, const MachGuiDbISystem& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbISystem& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbISystem& ob)
 {
     ostr << ob.campaignPicture_;
-    //ostr << ob.planets_;
-    // Write a copy without user scenarios
-    ctl_vector< MachGuiDbPlanet* > *planets = _NEW( ctl_vector< MachGuiDbPlanet* > );
-    for ( MachGuiDbPlanet* planet : ob.planets_ )
-        if ( !planet->isCustom() ) planets->push_back( planet );
+    // ostr << ob.planets_;
+    //  Write a copy without user scenarios
+    ctl_vector<MachGuiDbPlanet*>* planets = _NEW(ctl_vector<MachGuiDbPlanet*>);
+    for (MachGuiDbPlanet* planet : ob.planets_)
+        if (!planet->isCustom())
+            planets->push_back(planet);
     ostr << *planets;
-    _DELETE( planets );
+    _DELETE(planets);
 }
 
-void perRead( PerIstream& istr, MachGuiDbISystem& ob )
+void perRead(PerIstream& istr, MachGuiDbISystem& ob)
 {
     istr >> ob.campaignPicture_;
     istr >> ob.planets_;

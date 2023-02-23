@@ -29,36 +29,35 @@ public:
     static BaseCrashInternal& instance();
     ~BaseCrashInternal();
 
-    typedef void (*PFn)();
+    using PFn = void (*)();
     //  Add a function to the list of functions to be
     //  called should a crash or an assertion occur.
-    void addCrashFunction( PFn );
+    void addCrashFunction(PFn);
 
     void handleCrash() const;
 
     // Add / remove a stream to the list of streams to be closed
     // should a crash or an assertion occur
-    void addCrashStream( std::ofstream& );
-    void removeCrashStream( std::ofstream& );
+    void addCrashStream(std::ofstream&);
+    void removeCrashStream(std::ofstream&);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const BaseCrashInternal& t );
+    friend ostream& operator<<(ostream& o, const BaseCrashInternal& t);
 
-    BaseCrashInternal( const BaseCrashInternal& );
-    BaseCrashInternal& operator =( const BaseCrashInternal& );
+    BaseCrashInternal(const BaseCrashInternal&);
+    BaseCrashInternal& operator=(const BaseCrashInternal&);
 
     BaseCrashInternal();
 
     //  Functions to be called in the event of a crash
-    ctl_vector< PFn >       functions_;
+    ctl_vector<PFn> functions_;
 
     //  Streams to be closed in the event of a crash
-    typedef ctl_set< std::ofstream*, less_ptr< std::ofstream >  > Streams;
-    Streams  streams_;
+    using Streams = ctl_set<std::ofstream*, less_ptr<std::ofstream>>;
+    Streams streams_;
 };
-
 
 #endif
 

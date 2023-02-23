@@ -1,5 +1,5 @@
 /*
- * O B S E R V F W . H P P 
+ * O B S E R V F W . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -10,11 +10,11 @@
 #ifndef _WORLD4D_OBSERVERFW_HPP
 #define _WORLD4D_OBSERVERFW_HPP
 
-//forward declarations
+// forward declarations
 template <class T> class ctl_pvector;
 class W4dObserver;
 
-typedef ctl_pvector< W4dObserver > W4dObservers;
+using W4dObservers = ctl_pvector<W4dObserver>;
 
 #endif
 

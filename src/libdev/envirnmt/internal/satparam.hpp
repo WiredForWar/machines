@@ -18,32 +18,32 @@ class EnvElevationColourTable;
 class EnvISatelliteParams
 {
 public:
-    EnvISatelliteParams(const string* name);	// PRE(name);
+    EnvISatelliteParams(const string* name); // PRE(name);
     ~EnvISatelliteParams();
 
-	const string& name() const	{ return name_; }
+    const string& name() const { return name_; }
 
-	void orbit(const string* name);
-	void dirLightClut(const string* name);
-	void ambLightClut(const string* name);
-	void mesh(const string* name);
-	void meshColourClut(const string* name);
+    void orbit(const string* name);
+    void dirLightClut(const string* name);
+    void ambLightClut(const string* name);
+    void mesh(const string* name);
+    void meshColourClut(const string* name);
 
-	EnvSatellite* createSatellite(W4dSceneManager*);
+    EnvSatellite* createSatellite(W4dSceneManager*);
 
     void CLASS_INVARIANT;
 
 private:
-	const string				name_;
-	string						meshName_;
-	EnvOrbit*					orbit_;
-	EnvElevationColourTable*	dirClut_;
-	EnvElevationColourTable*	ambClut_;
-	EnvElevationColourTable*	meshClut_;
+    const string name_;
+    string meshName_;
+    EnvOrbit* orbit_;
+    EnvElevationColourTable* dirClut_;
+    EnvElevationColourTable* ambClut_;
+    EnvElevationColourTable* meshClut_;
 
-    EnvISatelliteParams( const EnvISatelliteParams& );
-    EnvISatelliteParams& operator =( const EnvISatelliteParams& );
-    bool operator ==( const EnvISatelliteParams& );
+    EnvISatelliteParams(const EnvISatelliteParams&);
+    EnvISatelliteParams& operator=(const EnvISatelliteParams&);
+    bool operator==(const EnvISatelliteParams&);
 };
 
 #endif

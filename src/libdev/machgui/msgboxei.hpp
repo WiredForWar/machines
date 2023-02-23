@@ -1,5 +1,5 @@
 /*
- * M S G B O X E I . H P P 
+ * M S G B O X E I . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -21,25 +21,28 @@ class MachGuiExitToInternetMessageBoxResponder : public MachGuiMessageBoxRespond
 // Canonical form revoked
 {
 public:
-	enum UnloadGame { UNLOAD_GAME, DO_NOT_UNLOAD_GAME };
+    enum UnloadGame
+    {
+        UNLOAD_GAME,
+        DO_NOT_UNLOAD_GAME
+    };
 
-    MachGuiExitToInternetMessageBoxResponder( MachGuiStartupScreens*, UnloadGame );
+    MachGuiExitToInternetMessageBoxResponder(MachGuiStartupScreens*, UnloadGame);
 
-    virtual ~MachGuiExitToInternetMessageBoxResponder();
+    ~MachGuiExitToInternetMessageBoxResponder() override;
 
-	virtual bool okPressed();
-
+    bool okPressed() override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiExitToInternetMessageBoxResponder& t );
+    friend ostream& operator<<(ostream& o, const MachGuiExitToInternetMessageBoxResponder& t);
 
-    MachGuiExitToInternetMessageBoxResponder( const MachGuiExitToInternetMessageBoxResponder& );
-    MachGuiExitToInternetMessageBoxResponder& operator =( const MachGuiExitToInternetMessageBoxResponder& );
+    MachGuiExitToInternetMessageBoxResponder(const MachGuiExitToInternetMessageBoxResponder&);
+    MachGuiExitToInternetMessageBoxResponder& operator=(const MachGuiExitToInternetMessageBoxResponder&);
 
-	MachGuiStartupScreens* 	pStartupScreens_;
-	UnloadGame				unloadGame_;
+    MachGuiStartupScreens* pStartupScreens_;
+    UnloadGame unloadGame_;
 };
 
 #endif

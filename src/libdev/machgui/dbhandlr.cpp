@@ -1,5 +1,5 @@
 /*
- * D B H A N D L R . C P P 
+ * D B H A N D L R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -15,7 +15,7 @@
 #include "machgui/dbtexdat.hpp"
 
 MachGuiDatabaseHandler::MachGuiDatabaseHandler()
-: MachLogDatabaseHandler()
+    : MachLogDatabaseHandler()
 {
 
     TEST_INVARIANT;
@@ -24,15 +24,14 @@ MachGuiDatabaseHandler::MachGuiDatabaseHandler()
 MachGuiDatabaseHandler::~MachGuiDatabaseHandler()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDatabaseHandler::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDatabaseHandler& t )
+ostream& operator<<(ostream& o, const MachGuiDatabaseHandler& t)
 {
 
     o << "MachGuiDatabaseHandler " << (void*)&t << " start" << std::endl;
@@ -41,67 +40,65 @@ ostream& operator <<( ostream& o, const MachGuiDatabaseHandler& t )
     return o;
 }
 
-//virtual
-const MachLogDatabaseHandler::Units& MachGuiDatabaseHandler::survivingUnits
-(
-    MachPhys::Race race, const string& scenarioName
-) const
+// virtual
+const MachLogDatabaseHandler::Units&
+MachGuiDatabaseHandler::survivingUnits(MachPhys::Race race, const string& scenarioName) const
 {
-    //Use an empty static collection to return if we don't find what we are looking for below
+    // Use an empty static collection to return if we don't find what we are looking for below
     static MachLogDatabaseHandler::Units dummyUnits;
     const MachLogDatabaseHandler::Units* pUnits = &dummyUnits;
 
-    //Get the current player
+    // Get the current player
     MachGuiDbPlayer& player = MachGuiDatabase::instance().currentPlayer();
 
-    //Find the playerscenario object
-    MachGuiDbScenario* pDbScenario = NULL;
-    if( MachGuiDatabase::instance().campaignScenario( scenarioName, &pDbScenario ) )
+    // Find the playerscenario object
+    MachGuiDbScenario* pDbScenario = nullptr;
+    if (MachGuiDatabase::instance().campaignScenario(scenarioName, &pDbScenario))
     {
-        //See if our player has played this scenario successfully
-        MachGuiDbPlayerScenario* pDbPlayerScenario = NULL;
-        if( player.hasPlayed( *pDbScenario, &pDbPlayerScenario ) and  pDbPlayerScenario->hasWon() )
+        // See if our player has played this scenario successfully
+        MachGuiDbPlayerScenario* pDbPlayerScenario = nullptr;
+        if (player.hasPlayed(*pDbScenario, &pDbPlayerScenario) and pDbPlayerScenario->hasWon())
         {
-            pUnits = &pDbPlayerScenario->raceSurvivingUnits( race );
+            pUnits = &pDbPlayerScenario->raceSurvivingUnits(race);
         }
     }
 
     return *pUnits;
 }
 
-//virtual
-bool MachGuiDatabaseHandler::isFlagSet( const string& flag, const string& scenarioName ) const
+// virtual
+bool MachGuiDatabaseHandler::isFlagSet(const string& flag, const string& scenarioName) const
 {
     bool isSet = false;
 
-    //Get the current player
+    // Get the current player
     MachGuiDbPlayer& player = MachGuiDatabase::instance().currentPlayer();
 
-    //Find the playerscenario object
-    MachGuiDbScenario* pDbScenario = NULL;
-    if( MachGuiDatabase::instance().campaignScenario( scenarioName, &pDbScenario ) )
+    // Find the playerscenario object
+    MachGuiDbScenario* pDbScenario = nullptr;
+    if (MachGuiDatabase::instance().campaignScenario(scenarioName, &pDbScenario))
     {
-        //See if our player has played this scenario successfully
-        MachGuiDbPlayerScenario* pDbPlayerScenario = NULL;
-        if( player.hasPlayed( *pDbScenario, &pDbPlayerScenario ) and  pDbPlayerScenario->hasWon() )
+        // See if our player has played this scenario successfully
+        MachGuiDbPlayerScenario* pDbPlayerScenario = nullptr;
+        if (player.hasPlayed(*pDbScenario, &pDbPlayerScenario) and pDbPlayerScenario->hasWon())
         {
-            isSet = pDbPlayerScenario->isFlagSet( flag );
+            isSet = pDbPlayerScenario->isFlagSet(flag);
         }
     }
 
     return isSet;
 }
 
-//virtual
+// virtual
 uint MachGuiDatabaseHandler::nTasksInCurrentScenario() const
 {
     return MachGuiDatabase::instance().currentScenario().textData().nTasks();
 }
 
-//virtual
-bool MachGuiDatabaseHandler::taskStartsAvailable( uint index ) const
+// virtual
+bool MachGuiDatabaseHandler::taskStartsAvailable(uint index) const
 {
-    return MachGuiDatabase::instance().currentScenario().textData().taskStartsAvailable( index );
+    return MachGuiDatabase::instance().currentScenario().textData().taskStartsAvailable(index);
 }
 
 /* End DBHANDLR.CPP *************************************************/

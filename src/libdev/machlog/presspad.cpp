@@ -18,13 +18,16 @@
 #include "mathex/transf3d.hpp"
 #include "mathex/cvexpgon.hpp"
 
-MachLogPressurePads::MachLogPressurePads( const MexPoint2d& minBound, const MexPoint2d& maxBound )
+MachLogPressurePads::MachLogPressurePads(const MexPoint2d& minBound, const MexPoint2d& maxBound)
 {
-    pEntranceConfigSpace_ = _NEW( PhysConfigSpace2d( minBound, maxBound,
-                                             PhysConfigSpace2d::SUBTRACTIVE,
-                                             0.0, MachLogMachine::minLowClearance(),
-                                             MachLogMachine::maxLowClearance(),
-                                             MachLog::OBSTACLE_ALL ) );
+    pEntranceConfigSpace_ = _NEW(PhysConfigSpace2d(
+        minBound,
+        maxBound,
+        PhysConfigSpace2d::SUBTRACTIVE,
+        0.0,
+        MachLogMachine::minLowClearance(),
+        MachLogMachine::maxLowClearance(),
+        MachLog::OBSTACLE_ALL));
 
     TEST_INVARIANT;
 }
@@ -33,57 +36,56 @@ MachLogPressurePads::~MachLogPressurePads()
 {
     TEST_INVARIANT;
 
-    _DELETE( pEntranceConfigSpace_ );
+    _DELETE(pEntranceConfigSpace_);
 }
 
-void    MachLogPressurePads::add(
+void MachLogPressurePads::add(
     const MexPoint2d& p1,
     const MexPoint2d& p2,
     const MexPoint2d& p3,
     const MexPoint2d& p4,
     MachLogConstruction* pConstruction,
-    size_t entranceNum )
+    size_t entranceNum)
 {
-    ctl_vector< MexPoint2d >   points;
-    points.reserve( 4 );
-    points.push_back( p1 );
-    points.push_back( p2 );
-    points.push_back( p3 );
-    points.push_back( p4 );
+    ctl_vector<MexPoint2d> points;
+    points.reserve(4);
+    points.push_back(p1);
+    points.push_back(p2);
+    points.push_back(p3);
+    points.push_back(p4);
 
-    MexConvexPolygon2d*  pPad = _NEW( MexConvexPolygon2d( points ) );
+    MexConvexPolygon2d* pPad = _NEW(MexConvexPolygon2d(points));
 
-    std::unique_ptr< MexPolygon2d >    padAPtr( pPad );
+    std::unique_ptr<MexPolygon2d> padAPtr(pPad);
 
-    MATHEX_SCALAR   padHeight = 20.0;
+    MATHEX_SCALAR padHeight = 20.0;
 
-    PhysConfigSpace2d::PolygonId id =
-      pEntranceConfigSpace_->add( padAPtr, padHeight, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT );
+    PhysConfigSpace2d::PolygonId id
+        = pEntranceConfigSpace_->add(padAPtr, padHeight, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT);
 
-    polygonToEntrance_.insert( id, EntranceData( pConstruction, entranceNum ) );
+    polygonToEntrance_.insert(id, EntranceData(pConstruction, entranceNum));
 }
 
 bool MachLogPressurePads::onPad(
     const MexConvexPolygon2d& polygon,
     MachLogConstruction** ppConstruction,
-    size_t* pEntrance )
+    size_t* pEntrance)
 {
-    PRE( pEntranceConfigSpace_ != NULL );
+    PRE(pEntranceConfigSpace_ != nullptr);
 
-    bool    result = false;
+    bool result = false;
     PhysConfigSpace2d::PolygonId id;
 
-    if( not pEntranceConfigSpace_->contains( polygon, MachLog::OBSTACLE_NORMAL, &id ) )
+    if (not pEntranceConfigSpace_->contains(polygon, MachLog::OBSTACLE_NORMAL, &id))
     {
         result = true;
 
-        EntranceMap::iterator i = polygonToEntrance_.find( id );
+        EntranceMap::iterator i = polygonToEntrance_.find(id);
 
-        ASSERT( i != polygonToEntrance_.end(), "Polygon was not in pressure pad map" );
+        ASSERT(i != polygonToEntrance_.end(), "Polygon was not in pressure pad map");
 
         *ppConstruction = (*i).second.first;
         *pEntrance = (*i).second.second;
-
     }
 
     return result;
@@ -91,10 +93,10 @@ bool MachLogPressurePads::onPad(
 
 void MachLogPressurePads::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogPressurePads& t )
+ostream& operator<<(ostream& o, const MachLogPressurePads& t)
 {
 
     o << "MachLogPressurePads " << (void*)&t << " start" << std::endl;
@@ -103,47 +105,44 @@ ostream& operator <<( ostream& o, const MachLogPressurePads& t )
     return o;
 }
 
-void MachLogPressurePads::remove( MachLogConstruction* pConstruction )
+void MachLogPressurePads::remove(MachLogConstruction* pConstruction)
 {
-    //Iterate through all the map entries, looking for refernces to the construction
+    // Iterate through all the map entries, looking for refernces to the construction
     EntranceMap::iterator nextIt;
-    for( EntranceMap::iterator it = polygonToEntrance_.begin(); it != polygonToEntrance_.end(); it = nextIt )
+    for (EntranceMap::iterator it = polygonToEntrance_.begin(); it != polygonToEntrance_.end(); it = nextIt)
     {
-        //Advance iterator in case we erase the current entry
+        // Advance iterator in case we erase the current entry
         nextIt = it;
         ++nextIt;
 
-        //Check for match with target construction
+        // Check for match with target construction
         const EntranceData& entranceData = (*it).second;
-        if( entranceData.first == pConstruction )
+        if (entranceData.first == pConstruction)
         {
-            //Yes we need to erase this entry. First remove the polygon from the config space.
+            // Yes we need to erase this entry. First remove the polygon from the config space.
             PhysConfigSpace2d::PolygonId polygonId = (*it).first;
-            pEntranceConfigSpace_->remove( polygonId );
+            pEntranceConfigSpace_->remove(polygonId);
 
-            //erase the map entry
-            polygonToEntrance_.erase( it );
+            // erase the map entry
+            polygonToEntrance_.erase(it);
         }
     }
 }
 
-bool MachLogPressurePads::onPad(
-    const MexCircle2d& circle,
-    MachLogConstruction** ppConstruction,
-    size_t* pEntrance )
+bool MachLogPressurePads::onPad(const MexCircle2d& circle, MachLogConstruction** ppConstruction, size_t* pEntrance)
 {
-    PRE( pEntranceConfigSpace_ != NULL );
+    PRE(pEntranceConfigSpace_ != nullptr);
 
-    bool    result = false;
+    bool result = false;
     PhysConfigSpace2d::PolygonId id;
 
-    if( not pEntranceConfigSpace_->contains( circle, MachLog::OBSTACLE_NORMAL, &id ) )
+    if (not pEntranceConfigSpace_->contains(circle, MachLog::OBSTACLE_NORMAL, &id))
     {
         result = true;
 
-        EntranceMap::iterator i = polygonToEntrance_.find( id );
+        EntranceMap::iterator i = polygonToEntrance_.find(id);
 
-        ASSERT( i != polygonToEntrance_.end(), "Polygon was not in pressure pad map" );
+        ASSERT(i != polygonToEntrance_.end(), "Polygon was not in pressure pad map");
 
         *ppConstruction = (*i).second.first;
         *pEntrance = (*i).second.second;

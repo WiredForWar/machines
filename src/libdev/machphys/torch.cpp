@@ -9,7 +9,7 @@
 #include "machphys/private/weapper.hpp"
 
 #include "world4d/root.hpp"
-//#include "world4d/simplsca.hpp"
+// #include "world4d/simplsca.hpp"
 #include "world4d/entyplan.hpp"
 #include "world4d/visplan.hpp"
 #include "world4d/gusplan.hpp"
@@ -23,20 +23,20 @@
 #include "phys/rampacce.hpp"
 #include "phys/asclplan.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysTorch );
+PER_DEFINE_PERSISTENT(MachPhysTorch);
 
-//One-time ctor
+// One-time ctor
 MachPhysTorch::MachPhysTorch()
-:   W4dComposite( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID )
+    : W4dComposite(MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID)
 {
-	//Load the model
-    readCompositeFile( SysPathName( "models/construc/torch/torch.cdf" ) );
+    // Load the model
+    readCompositeFile(SysPathName("models/construc/torch/torch.cdf"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysTorch::MachPhysTorch( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dComposite( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysTorch::MachPhysTorch(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dComposite(exemplar(), pParent, localTransform)
 {
 
     TEST_INVARIANT;
@@ -45,23 +45,22 @@ MachPhysTorch::MachPhysTorch( W4dEntity* pParent, const MexTransform3d& localTra
 MachPhysTorch::~MachPhysTorch()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysTorch& MachPhysTorch::exemplar()
 {
-    //Use the one time constructor
-    static MachPhysTorch& torch = *_NEW( MachPhysTorch );
+    // Use the one time constructor
+    static MachPhysTorch& torch = *_NEW(MachPhysTorch);
     return torch;
 }
 
 void MachPhysTorch::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysTorch& t )
+ostream& operator<<(ostream& o, const MachPhysTorch& t)
 {
 
     o << "MachPhysTorch " << (void*)&t << " start" << std::endl;
@@ -70,31 +69,30 @@ ostream& operator <<( ostream& o, const MachPhysTorch& t )
     return o;
 }
 
-//virtual
-bool MachPhysTorch::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysTorch::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysTorch& sphere )
+void perWrite(PerOstream& ostr, const MachPhysTorch& sphere)
 {
     const W4dComposite& base = sphere;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysTorch& sphere )
+void perRead(PerIstream& istr, MachPhysTorch& sphere)
 {
     W4dComposite& base = sphere;
 
     istr >> base;
 }
 
-MachPhysTorch::MachPhysTorch( PerConstructor c )
-: W4dComposite( c )
+MachPhysTorch::MachPhysTorch(PerConstructor c)
+    : W4dComposite(c)
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* End TORCH.CPP *************************************************/
-

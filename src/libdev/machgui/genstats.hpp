@@ -1,5 +1,5 @@
 /*
- * G E N S T A T S . H P P 
+ * G E N S T A T S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,36 +19,40 @@
 #include "machphys/machphys.hpp"
 #include "machgui/statdisp.hpp"
 
-class MachGuiGeneralStatistics 
-: 	public MachGuiStatistics, 
- 	public GuiDisplayable
+class MachGuiGeneralStatistics
+    : public MachGuiStatistics
+    , public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiGeneralStatistics( GuiDisplayable *pParent, Gui::Coord topLeft, uint titleString, MachPhys::Race race );
-    MachGuiGeneralStatistics( GuiDisplayable *pParent, Gui::Coord topLeft, uint titleString, MachPhys::Race race, const string& player );
-    ~MachGuiGeneralStatistics();
+    MachGuiGeneralStatistics(GuiDisplayable* pParent, Gui::Coord topLeft, uint titleString, MachPhys::Race race);
+    MachGuiGeneralStatistics(
+        GuiDisplayable* pParent,
+        Gui::Coord topLeft,
+        uint titleString,
+        MachPhys::Race race,
+        const string& player);
+    ~MachGuiGeneralStatistics() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual void setStatistics( int, int, int, int );
+    void setStatistics(int, int, int, int) override;
 
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
-	// Truncate player's name if it will not fit in bounding box.
-	static string truncate( const string& name );
+    // Truncate player's name if it will not fit in bounding box.
+    static string truncate(const string& name);
 
-    friend ostream& operator <<( ostream& o, const MachGuiGeneralStatistics& t );
+    friend ostream& operator<<(ostream& o, const MachGuiGeneralStatistics& t);
 
-    MachGuiGeneralStatistics( const MachGuiGeneralStatistics& );
-    MachGuiGeneralStatistics& operator =( const MachGuiGeneralStatistics& );
+    MachGuiGeneralStatistics(const MachGuiGeneralStatistics&);
+    MachGuiGeneralStatistics& operator=(const MachGuiGeneralStatistics&);
 
-	MachGuiStatisticsDisplay statDisplay_;
+    MachGuiStatisticsDisplay statDisplay_;
 };
-
 
 #endif
 

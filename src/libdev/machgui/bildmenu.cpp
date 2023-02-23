@@ -1,5 +1,5 @@
 /*
- * B I L D M E N U . C P P 
+ * B I L D M E N U . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -14,14 +14,15 @@
 #include "world4d/subject.hpp"
 #include "ctl/pvector.hpp"
 
-MachBuildMenu::MachBuildMenu( 	GuiDisplayable* pParent, 
-								MachProductionBank* pProductionBank, 
-								const Gui::Coord& coord,
-								MachInGameScreen* pInGameScreen )
-:   MachGuiScrollArea( pParent, Gui::Box( coord, reqWidth(), reqHeight( pInGameScreen, coord ) ), pInGameScreen ),
-    pInGameScreen_( pInGameScreen ),
-    pProductionBank_( pProductionBank ),
-    pFactory_( &selectedFactory( pInGameScreen ) )
+MachBuildMenu::MachBuildMenu(
+    GuiDisplayable* pParent,
+    MachProductionBank* pProductionBank,
+    const Gui::Coord& coord,
+    MachInGameScreen* pInGameScreen)
+    : MachGuiScrollArea(pParent, Gui::Box(coord, reqWidth(), reqHeight(pInGameScreen, coord)), pInGameScreen)
+    , pInGameScreen_(pInGameScreen)
+    , pProductionBank_(pProductionBank)
+    , pFactory_(&selectedFactory(pInGameScreen))
 {
     TEST_INVARIANT;
 }
@@ -33,10 +34,10 @@ MachBuildMenu::~MachBuildMenu()
 
 void MachBuildMenu::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachBuildMenu& t )
+ostream& operator<<(ostream& o, const MachBuildMenu& t)
 {
 
     o << "MachBuildMenu " << (void*)&t << " start" << std::endl;
@@ -45,31 +46,32 @@ ostream& operator <<( ostream& o, const MachBuildMenu& t )
     return o;
 }
 
-//virtual 
-GuiSimpleScrollableList* MachBuildMenu::createList( GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen )
+// virtual
+GuiSimpleScrollableList*
+MachBuildMenu::createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
 {
-	return _NEW( MachBuildMenuIcons( pParent, rel, pProductionBank_, pFactory_, pInGameScreen ) );
-}	
+    return _NEW(MachBuildMenuIcons(pParent, rel, pProductionBank_, pFactory_, pInGameScreen));
+}
 
-MachLogFactory& MachBuildMenu::selectedFactory( MachInGameScreen* pInGameScreen ) const
+MachLogFactory& MachBuildMenu::selectedFactory(MachInGameScreen* pInGameScreen) const
 {
-    //Ensure there is a single selected factory
+    // Ensure there is a single selected factory
     const MachInGameScreen::Actors& selectionSet = pInGameScreen->selectedActors();
-    ASSERT( selectionSet.size() == 1, "" );
+    ASSERT(selectionSet.size() == 1, "");
 
     return selectionSet.front()->asFactory();
 }
 
-//static 
+// static
 size_t MachBuildMenu::reqWidth()
 {
-	return MachGuiScrollBar::reqWidth() + MachBuildMenuIcons::reqWidth() + MachGuiScrollBar::reqWidth();
+    return MachGuiScrollBar::reqWidth() + MachBuildMenuIcons::reqWidth() + MachGuiScrollBar::reqWidth();
 }
 
-//static 
-size_t MachBuildMenu::reqHeight( MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord )
+// static
+size_t MachBuildMenu::reqHeight(MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord)
 {
-	return MachBuildMenuIcons::reqHeight( pInGameScreen, relCoord ) + 2;
+    return MachBuildMenuIcons::reqHeight(pInGameScreen, relCoord) + 2;
 }
 
 /* End BILDMENU.CPP *************************************************/

@@ -12,8 +12,8 @@
 #include "base/persist.hpp"
 // #include "internal/ostrbuff.hpp"
 
-PerOstream::PerOstream( ostream& ostr )
-: ostr_( ostr )
+PerOstream::PerOstream(ostream& ostr)
+    : ostr_(ostr)
 {
     Persistence::instance().registerOpenOstream();
 }
@@ -23,25 +23,25 @@ PerOstream::~PerOstream()
     Persistence::instance().registerCloseOstream();
 }
 
-void    PerOstream::write( const char* data, size_t length )
+void PerOstream::write(const char* data, size_t length)
 {
-    ostr_.write( data, length );
+    ostr_.write(data, length);
 
-    if( logWrite() )
+    if (logWrite())
     {
-        PER_WRITE_INDENT_STREAM( "$" );
-        for( size_t i = 0; i < length; ++i )
+        PER_WRITE_INDENT_STREAM("$");
+        for (size_t i = 0; i < length; ++i)
         {
-            PER_WRITE_INDENT_STREAM( std::hex << (int)data[ i ] << " " << std::dec );
+            PER_WRITE_INDENT_STREAM(std::hex << (int)data[i] << " " << std::dec);
         }
-        PER_WRITE_INDENT_STREAM( "$" << std::endl );
+        PER_WRITE_INDENT_STREAM("$" << std::endl);
     }
 }
 
 // static
-bool&    PerOstream::logWrite()
+bool& PerOstream::logWrite()
 {
-    static  bool    logWrite_ = false;
+    static bool logWrite_ = false;
 
     return logWrite_;
 }
@@ -52,14 +52,14 @@ bool&    PerOstream::logWrite()
 //     return pBuffer_;
 // }
 
-void    PerOstream::filterCharacters( const char* pBuf, size_t nChars )
+void PerOstream::filterCharacters(const char* pBuf, size_t nChars)
 {
-    outputCharacters( pBuf, nChars );
+    outputCharacters(pBuf, nChars);
 }
 
-void    PerOstream::outputCharacters( const char* pBuf, size_t nChars )
+void PerOstream::outputCharacters(const char* pBuf, size_t nChars)
 {
-    ostr_.write( pBuf, nChars );
+    ostr_.write(pBuf, nChars);
 }
 
 /* End FILTER.CPP *************************************************/

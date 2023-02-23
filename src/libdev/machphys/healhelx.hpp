@@ -20,37 +20,35 @@ class MachPhysHealHelix : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor. Attaches to pParent at position localTransform
-    MachPhysHealHelix( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor. Attaches to pParent at position localTransform
+    MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysHealHelix();
+    // dtor
+    ~MachPhysHealHelix() override;
 
-    //returns a material used to apply to the helix
+    // returns a material used to apply to the helix
     static const RenMaterial& helixMaterial();
 
-    //returns a material sequence plan suitable for the healing animations
-    //static const W4dMaterialPlanPtr& MachPhysHealHelix::healCyclingTexturePlan();
+    // returns a material sequence plan suitable for the healing animations
+    // static const W4dMaterialPlanPtr& MachPhysHealHelix::healCyclingTexturePlan();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysHealHelix& t );
+    friend ostream& operator<<(ostream& o, const MachPhysHealHelix& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysHealHelix );
+    PER_MEMBER_PERSISTENT(MachPhysHealHelix);
 
 private:
-    MachPhysHealHelix( const MachPhysHealHelix& );
-    MachPhysHealHelix& operator =( const MachPhysHealHelix& );
-    bool operator ==( const MachPhysHealHelix& );
-
+    MachPhysHealHelix(const MachPhysHealHelix&);
+    MachPhysHealHelix& operator=(const MachPhysHealHelix&);
+    bool operator==(const MachPhysHealHelix&);
 };
 
-PER_DECLARE_PERSISTENT( MachPhysHealHelix );
-PER_READ_WRITE( MachPhysHealHelix );
+PER_DECLARE_PERSISTENT(MachPhysHealHelix);
+PER_READ_WRITE(MachPhysHealHelix);
 
 #endif
 

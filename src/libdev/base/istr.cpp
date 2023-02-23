@@ -13,27 +13,27 @@
 #include "base/internal/istrbuff.hpp"
 #include "base/internal/istrimpl.hpp"
 
-PerIstream::PerIstream( istream& istr )
-: pImpl_( _NEW( PerIstreamImpl( this ) ) ),
-  istr_( istr )
-  //istream( istr )
-   //istream( pImpl_->pBuffer_ )
+PerIstream::PerIstream(istream& istr)
+    : pImpl_(_NEW(PerIstreamImpl(this)))
+    , istr_(istr)
+// istream( istr )
+// istream( pImpl_->pBuffer_ )
 {
     Persistence::instance().registerOpenIstream();
 }
 
-PerIstream::PerIstream( istream& istr, PerIstreamReporter* pReporter )
-: pImpl_( _NEW( PerIstreamImpl( this, istr, pReporter ) ) ),
-  istr_( istr )
+PerIstream::PerIstream(istream& istr, PerIstreamReporter* pReporter)
+    : pImpl_(_NEW(PerIstreamImpl(this, istr, pReporter)))
+    , istr_(istr)
 {
-    PRE( pReporter != NULL );
+    PRE(pReporter != nullptr);
 
     Persistence::instance().registerOpenIstream();
 }
 
 PerIstream::~PerIstream()
 {
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 
     Persistence::instance().registerCloseIstream();
 }
@@ -46,11 +46,11 @@ void PerIstream::read(char* pOutput, size_t length)
 //  Read a single character
 int PerIstream::get()
 {
-    pImpl_->logDataRead( 1 );
+    pImpl_->logDataRead(1);
 
     int ch = istr_.get();
 
-    if( logRead() )
+    if (logRead())
         PER_READ_INDENT_STREAM("$" << std::hex << (int)ch << "$" << std::dec);
 
     return ch;
@@ -62,9 +62,9 @@ size_t PerIstream::tellg() const
 }
 
 // static
-bool&    PerIstream::logRead()
+bool& PerIstream::logRead()
 {
-    static  bool    logRead_ = false;
+    static bool logRead_ = false;
 
     return logRead_;
 }

@@ -24,16 +24,17 @@ class W4dColourPulseData
 // Canonical form revoked
 {
 public:
-    W4dColourPulseData( const string& textureName,
-                        const RenColour& fromCol,
-                        const RenColour& toCol,
-                        const PhysRelativeTime& duration);
+    W4dColourPulseData(
+        const string& textureName,
+        const RenColour& fromCol,
+        const RenColour& toCol,
+        const PhysRelativeTime& duration);
 
     ~W4dColourPulseData();
 
     void CLASS_INVARIANT;
 
-	const RenTexture& keyTexture() const;
+    const RenTexture& keyTexture() const;
     const RenColour& fromColour() const;
     const RenColour& toColour() const;
     const PhysRelativeTime& duration() const;
@@ -42,17 +43,16 @@ public:
     PER_FRIEND_READ_WRITE(W4dColourPulseData);
 
 private:
-    friend ostream& operator <<( ostream& o, const W4dColourPulseData& t );
+    friend ostream& operator<<(ostream& o, const W4dColourPulseData& t);
 
-    W4dColourPulseData( const W4dColourPulseData& );
-    W4dColourPulseData& operator =( const W4dColourPulseData& );
+    W4dColourPulseData(const W4dColourPulseData&);
+    W4dColourPulseData& operator=(const W4dColourPulseData&);
 
-	RenTexture keyTexture_;
+    RenTexture keyTexture_;
     RenColour fromColour_;
     RenColour toColour_;
     PhysRelativeTime duration_;
 };
-
 
 PER_DECLARE_PERSISTENT(W4dColourPulseData);
 

@@ -1,5 +1,5 @@
 /*
- * B E A C D A T A . H P P 
+ * B E A C D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,26 +20,24 @@ class MachPhysBeaconData : public MachPhysConstructionData
 {
 public:
     MachPhysBeaconData();
-    MachPhysBeaconData( const MachPhysBeaconData&, const MexTransform3d& );
-    ~MachPhysBeaconData();
+    MachPhysBeaconData(const MachPhysBeaconData&, const MexTransform3d&);
+    ~MachPhysBeaconData() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysBeaconData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysBeaconData& t);
 
 private:
-	friend class MachPhysData;
+    friend class MachPhysData;
     // Operation deliberately revoked
-    MachPhysBeaconData( const MachPhysBeaconData& );
+    MachPhysBeaconData(const MachPhysBeaconData&);
 
     // Operation deliberately revoked
-    MachPhysBeaconData& operator =( const MachPhysBeaconData& );
+    MachPhysBeaconData& operator=(const MachPhysBeaconData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysBeaconData& );
-
+    bool operator==(const MachPhysBeaconData&);
 };
-
 
 #endif
 

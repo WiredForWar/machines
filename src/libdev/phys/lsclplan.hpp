@@ -1,12 +1,12 @@
 /*
- * A S C L P L A N . H P P 
+ * A S C L P L A N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     PhysLinearScalarPlan is
-	scalar = Linear interpolation of discrete values
-    
+    scalar = Linear interpolation of discrete values
+
 */
 
 #ifndef _PHYS_LSCLPLAN_HPP
@@ -22,32 +22,31 @@ class PhysLinearScalarPlan : public PhysScalarPlan
 // Canonical form revoked
 {
 public:
-	typedef ctl_vector<MATHEX_SCALAR> ScalarVec;
-	PhysLinearScalarPlan(const ScalarVec& times, const ScalarVec& scales);
-    PhysLinearScalarPlan( const PhysLinearScalarPlan& );
-	 
-    virtual ~PhysLinearScalarPlan();
+    using ScalarVec = ctl_vector<MATHEX_SCALAR>;
+    PhysLinearScalarPlan(const ScalarVec& times, const ScalarVec& scales);
+    PhysLinearScalarPlan(const PhysLinearScalarPlan&);
 
-	const ScalarVec& times() const;
-	const ScalarVec& scales() const;
+    ~PhysLinearScalarPlan() override;
 
-	void  times(const ScalarVec&);
-	void  scales(const ScalarVec&);
+    const ScalarVec& times() const;
+    const ScalarVec& scales() const;
 
-//	returns the scale value at timeOffset
-	virtual MATHEX_SCALAR scalar(const PhysRelativeTime& timeOffset) const; 
+    void times(const ScalarVec&);
+    void scales(const ScalarVec&);
+
+    //  returns the scale value at timeOffset
+    MATHEX_SCALAR scalar(const PhysRelativeTime& timeOffset) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysLinearScalarPlan& t );
+    friend ostream& operator<<(ostream& o, const PhysLinearScalarPlan& t);
 
 private:
-    PhysLinearScalarPlan& operator =( const PhysLinearScalarPlan& );
-    bool operator ==( const PhysLinearScalarPlan& );
+    PhysLinearScalarPlan& operator=(const PhysLinearScalarPlan&);
+    bool operator==(const PhysLinearScalarPlan&);
 
-	PhysLinearScalarPlanImpl* pImpl_;
+    PhysLinearScalarPlanImpl* pImpl_;
 };
-
 
 #endif
 

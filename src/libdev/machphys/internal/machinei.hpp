@@ -1,5 +1,5 @@
 /*
- * M A C H I N E I . H P P 
+ * M A C H I N E I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -37,60 +37,59 @@ class MachPhysMachineImpl
 // Canonical form revoked
 {
 public:
-
     virtual ~MachPhysMachineImpl();
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysMachineImpl );
-    PER_FRIEND_READ_WRITE( MachPhysMachineImpl );
+    PER_MEMBER_PERSISTENT(MachPhysMachineImpl);
+    PER_FRIEND_READ_WRITE(MachPhysMachineImpl);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysMachineImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMachineImpl& t);
 
     friend class MachPhysMachine;
 
-	// One time constructor
+    // One time constructor
     MachPhysMachineImpl();
-    MachPhysMachineImpl
-    (
-        const MachPhysMachineImpl& copyMe, const MachPhysMachineData& data, MachPhys::Race race,
-        size_t bodyLevel, size_t brainLevel
-    );
-    MachPhysMachineImpl( const MachPhysMachineImpl& );
-    MachPhysMachineImpl& operator =( const MachPhysMachineImpl& );
+    MachPhysMachineImpl(
+        const MachPhysMachineImpl& copyMe,
+        const MachPhysMachineData& data,
+        MachPhys::Race race,
+        size_t bodyLevel,
+        size_t brainLevel);
+    MachPhysMachineImpl(const MachPhysMachineImpl&);
+    MachPhysMachineImpl& operator=(const MachPhysMachineImpl&);
 
-    //data members
-    MATHEX_SCALAR   maxTranslationSpeed_;           // Metres / second
-    MexRadians      maxRotationSpeed_;              // Radians / second
-    MATHEX_SCALAR   maxTranslationAcceleration_;    // Metres / second / second
-    MexRadians      maxRotationAcceleration_;       // Radians / second / second
+    // data members
+    MATHEX_SCALAR maxTranslationSpeed_; // Metres / second
+    MexRadians maxRotationSpeed_; // Radians / second
+    MATHEX_SCALAR maxTranslationAcceleration_; // Metres / second / second
+    MexRadians maxRotationAcceleration_; // Radians / second / second
 
-    MachPhysLocomotionMethod*    pLocomotionMethod_;
-    MachPhysMachineDamageData*   pDamageData_; 
+    MachPhysLocomotionMethod* pLocomotionMethod_;
+    MachPhysMachineDamageData* pDamageData_;
 
-    W4dLink*        pFaceplate_;
-    W4dComposite::W4dLinks shakeLinks_; //The links to be used for a shaking animation
-    
-    MachPhys::Race    race_;
-    
-    MachPhysMachineExplosion*   pExplosion_;
+    W4dLink* pFaceplate_;
+    W4dComposite::W4dLinks shakeLinks_; // The links to be used for a shaking animation
 
-    MachPhysMachineExplosionDataPtr    explosionDataPtr_;
+    MachPhys::Race race_;
 
-	W4dLink*    pUpperBodyTurnLink_; //Link used to turn upper body. NULL if can't turn.
-    MachPhysTurnerTracker* pTurnerTracker_; //Controls turning and tracking
+    MachPhysMachineExplosion* pExplosion_;
 
-	size_t			bodyLevel_;							//Hardware Level 
-	size_t			brainLevel_;						//Software Level
+    MachPhysMachineExplosionDataPtr explosionDataPtr_;
 
-    MachPhysPlanetSurface::Floors   floors_;
+    W4dLink* pUpperBodyTurnLink_; // Link used to turn upper body. NULL if can't turn.
+    MachPhysTurnerTracker* pTurnerTracker_; // Controls turning and tracking
 
-	MachPhysMachine::ControlType	machineControlType_;
+    size_t bodyLevel_; // Hardware Level
+    size_t brainLevel_; // Software Level
+
+    MachPhysPlanetSurface::Floors floors_;
+
+    MachPhysMachine::ControlType machineControlType_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMachineImpl );
-
+PER_DECLARE_PERSISTENT(MachPhysMachineImpl);
 
 #endif
 

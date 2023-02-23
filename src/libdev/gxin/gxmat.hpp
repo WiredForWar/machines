@@ -1,5 +1,5 @@
 /*
- * G X M A T . H P P 
+ * G X M A T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,64 +18,55 @@
 #include "gxidpos.hpp"
 
 class GXMat
-// Canonical form 
+// Canonical form
 {
 public:
     GXMat();
     ~GXMat();
-    GXMat( const GXMat& );
-    GXMat& operator =( const GXMat& );
-    friend bool operator ==( const GXMat& , const GXMat& );
-    friend bool operator  <( const GXMat& , const GXMat& );
+    GXMat(const GXMat&);
+    GXMat& operator=(const GXMat&);
+    friend bool operator==(const GXMat&, const GXMat&);
+    friend bool operator<(const GXMat&, const GXMat&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXMat& t );
+    friend ostream& operator<<(ostream& o, const GXMat& t);
 
-	GXIdPos textureId() const {
-	  return textureId_;
-	}
-	void textureId(GXIdPos newTextureId) {
-	  textureId_=newTextureId;
-	}
+    GXIdPos textureId() const { return textureId_; }
+    void textureId(GXIdPos newTextureId) { textureId_ = newTextureId; }
 
     // true if textureId_ refers to a valid texture name in the mesh
-    bool hasValidTexture() {
-      return hasValidTexture_;
-    }
+    bool hasValidTexture() { return hasValidTexture_; }
 
-    void hasValidTexture(bool valid) {
-      hasValidTexture_=valid;
-    }
+    void hasValidTexture(bool valid) { hasValidTexture_ = valid; }
 
-	short transparancy() const { return transparancy_; }
-	void transparancy(short newTransparancy) { transparancy_=newTransparancy; }
+    short transparancy() const { return transparancy_; }
+    void transparancy(short newTransparancy) { transparancy_ = newTransparancy; }
 
-    void hasOneColor(bool newHasOneColor )  { hasOneColor_=newHasOneColor; }
+    void hasOneColor(bool newHasOneColor) { hasOneColor_ = newHasOneColor; }
     bool hasOneColor() const { return hasOneColor_; }
-	const GXColor& diffuseColor() const {
-	  PRE(hasOneColor());
-	  return diffuseColor_;
-	}
-	void diffuseColor(const GXColor& newDiffuseColor)
-	{
-	  diffuseColor_=newDiffuseColor;
-	  hasOneColor_=true;
-	}
+    const GXColor& diffuseColor() const
+    {
+        PRE(hasOneColor());
+        return diffuseColor_;
+    }
+    void diffuseColor(const GXColor& newDiffuseColor)
+    {
+        diffuseColor_ = newDiffuseColor;
+        hasOneColor_ = true;
+    }
+
 private:
-    
-	// does the textureId_ refer to a valid texture name ?
-	bool hasValidTexture_;
-	GXIdPos textureId_;   
+    // does the textureId_ refer to a valid texture name ?
+    bool hasValidTexture_;
+    GXIdPos textureId_;
 
-	short transparancy_; 
+    short transparancy_;
 
-   // true if all vertices have same color
-	bool hasOneColor_;
-	GXColor diffuseColor_;
-
+    // true if all vertices have same color
+    bool hasOneColor_;
+    GXColor diffuseColor_;
 };
-
 
 #endif
 

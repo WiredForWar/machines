@@ -7,14 +7,14 @@
 
 #include "phys/internal/linetrai.hpp"
 
-PER_DEFINE_PERSISTENT( PhysLinearTravelPlanImpl );
+PER_DEFINE_PERSISTENT(PhysLinearTravelPlanImpl);
 
-PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl( const PhysMotionPlan::TransformsPtr& transformsPtr )
-: transformsPtr_( transformsPtr ),
-  rampAccelerationsPtr_( _NEW( PhysMotionPlan::RampAccelerations() ) ),
-  cacheValid_( false ),
-  segmentTimesPtr_( _NEW( PhysMotionPlan::Times ) ),
-  startRotationDistance_( 2.0 )
+PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(const PhysMotionPlan::TransformsPtr& transformsPtr)
+    : transformsPtr_(transformsPtr)
+    , rampAccelerationsPtr_(_NEW(PhysMotionPlan::RampAccelerations()))
+    , cacheValid_(false)
+    , segmentTimesPtr_(_NEW(PhysMotionPlan::Times))
+    , startRotationDistance_(2.0)
 {
 
     TEST_INVARIANT;
@@ -22,12 +22,12 @@ PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl( const PhysMotionPlan::Transf
 
 PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(
     const PhysMotionPlan::TransformsPtr& transformsPtr,
-    const PhysMotionPlan::RampAccelerationsPtr& rampAccelerationsPtr )
-: transformsPtr_( transformsPtr ),
-  rampAccelerationsPtr_( rampAccelerationsPtr ),
-  cacheValid_( false ),
-  segmentTimesPtr_( _NEW( PhysMotionPlan::Times ) ),
-  startRotationDistance_( 2.0 )
+    const PhysMotionPlan::RampAccelerationsPtr& rampAccelerationsPtr)
+    : transformsPtr_(transformsPtr)
+    , rampAccelerationsPtr_(rampAccelerationsPtr)
+    , cacheValid_(false)
+    , segmentTimesPtr_(_NEW(PhysMotionPlan::Times))
+    , startRotationDistance_(2.0)
 {
     TEST_INVARIANT;
 }
@@ -35,15 +35,14 @@ PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(
 PhysLinearTravelPlanImpl::~PhysLinearTravelPlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysLinearTravelPlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysLinearTravelPlanImpl& t )
+ostream& operator<<(ostream& o, const PhysLinearTravelPlanImpl& t)
 {
 
     o << "PhysLinearTravelPlanImpl " << (void*)&t << " start" << std::endl;
@@ -54,11 +53,11 @@ ostream& operator <<( ostream& o, const PhysLinearTravelPlanImpl& t )
     return o;
 }
 
-PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl( PerConstructor )
+PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const PhysLinearTravelPlanImpl& plan )
+void perWrite(PerOstream& ostr, const PhysLinearTravelPlanImpl& plan)
 {
     ostr << plan.transformsPtr_;
     ostr << plan.rampAccelerationsPtr_;
@@ -79,7 +78,7 @@ void perWrite( PerOstream& ostr, const PhysLinearTravelPlanImpl& plan )
     ostr << plan.cacheRotationLowerS_;
 }
 
-void perRead( PerIstream& istr, PhysLinearTravelPlanImpl& plan )
+void perRead(PerIstream& istr, PhysLinearTravelPlanImpl& plan)
 {
     istr >> plan.transformsPtr_;
     istr >> plan.rampAccelerationsPtr_;

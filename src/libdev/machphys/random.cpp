@@ -16,56 +16,55 @@ MachPhysRandom::MachPhysRandom()
 MachPhysRandom::~MachPhysRandom()
 {
     TEST_INVARIANT;
-
 }
 
 //  static
-double MachPhysRandom::randomDouble( MATHEX_SCALAR lowerLimit, MATHEX_SCALAR upperLimit )
+double MachPhysRandom::randomDouble(MATHEX_SCALAR lowerLimit, MATHEX_SCALAR upperLimit)
 {
-    PRE( lowerLimit <= upperLimit );
+    PRE(lowerLimit <= upperLimit);
 
     double result;
 
-//    result = lowerLimit + ( (float)(rand()) / 32767.0 ) * ( upperLimit - lowerLimit );
-    result = lowerLimit + ( (float)(rand()) / (float)RAND_MAX ) * ( upperLimit - lowerLimit );
+    //    result = lowerLimit + ( (float)(rand()) / 32767.0 ) * ( upperLimit - lowerLimit );
+    result = lowerLimit + ((float)(rand()) / (float)RAND_MAX) * (upperLimit - lowerLimit);
 
-    POST( lowerLimit <= result and result <= upperLimit );
+    POST(lowerLimit <= result and result <= upperLimit);
 
     return result;
 }
 
 // static
-int MachPhysRandom::randomInt( int lowerLimit, int upperLimit )
+int MachPhysRandom::randomInt(int lowerLimit, int upperLimit)
 {
-    PRE_INFO( lowerLimit );
-    PRE_INFO( upperLimit );
-    PRE( lowerLimit < upperLimit );
+    PRE_INFO(lowerLimit);
+    PRE_INFO(upperLimit);
+    PRE(lowerLimit < upperLimit);
 
-    int result = lowerLimit + rand() % ( upperLimit - lowerLimit );
+    int result = lowerLimit + rand() % (upperLimit - lowerLimit);
 
-    POST( lowerLimit <= result and result < upperLimit );
+    POST(lowerLimit <= result and result < upperLimit);
 
     return result;
 }
 
 // static
-size_t MachPhysRandom::randomInt( size_t lowerLimit, size_t upperLimit )
+size_t MachPhysRandom::randomInt(size_t lowerLimit, size_t upperLimit)
 {
-    PRE( lowerLimit <= upperLimit );
+    PRE(lowerLimit <= upperLimit);
 
-    size_t result = lowerLimit + rand() % ( upperLimit - lowerLimit );
+    size_t result = lowerLimit + rand() % (upperLimit - lowerLimit);
 
-    POST( lowerLimit <= result and result < upperLimit );
+    POST(lowerLimit <= result and result < upperLimit);
 
     return result;
 }
 
 // static
-size_t MachPhysRandom::randomInt( size_t upperLimit )
+size_t MachPhysRandom::randomInt(size_t upperLimit)
 {
     size_t result = rand() % upperLimit;
 
-    POST( result < upperLimit );
+    POST(result < upperLimit);
 
     return result;
 }
@@ -73,6 +72,5 @@ size_t MachPhysRandom::randomInt( size_t upperLimit )
 void MachPhysRandom::CLASS_INVARIANT
 {
 }
-
 
 /* End RANDOM.CPP ***************************************************/

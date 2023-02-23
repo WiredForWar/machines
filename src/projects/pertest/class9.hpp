@@ -1,5 +1,5 @@
 /*
- * C L A S S 9 . H P P 
+ * C L A S S 9 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -15,43 +15,38 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 
-template< class X >
-class Class9
+template <class X> class Class9
 // Canonical form revoked
 {
 public:
-    Class9( double d );
+    Class9(double d);
     virtual ~Class9();
 
-    X       x1_;
-    double  d1_;
+    X x1_;
+    double d1_;
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_ABSTRACT_VIRTUAL( Class9 );
+    PER_MEMBER_PERSISTENT_ABSTRACT_VIRTUAL(Class9);
 
-    friend ostream& operator <<( ostream& o, const Class9< X >& t );
+    friend ostream& operator<<(ostream& o, const Class9<X>& t);
 
     virtual void overrideMe() const = 0;
 
 private:
     Class9();
-    Class9( const Class9< X >& );
-    Class9< X >& operator =( const Class9< X >& );
-
+    Class9(const Class9<X>&);
+    Class9<X>& operator=(const Class9<X>&);
 };
 
+template <class X> bool operator==(const Class9<X>&, const Class9<X>&);
 
-template< class X >
-bool operator ==( const Class9< X >&, const Class9< X >& );
+PER_READ_WRITE_T1(Class9);
+PER_DECLARE_PERSISTENT_T1(Class9);
 
-PER_READ_WRITE_T1( Class9 );
-PER_DECLARE_PERSISTENT_T1( Class9 );
-
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "pertest/class9.ctp"
-//#endif
-
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "pertest/class9.ctp"
+// #endif
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * F R A M E R E G . H P P 
+ * F R A M E R E G . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,52 +26,55 @@
 #include "base/persist.hpp"
 #include "phys/phys.hpp"
 
-//bitwise canonical
+// bitwise canonical
 class W4dFrameRegulator
 {
 public:
-    //ctor. Animation is to start at startTime. Ideally should run for
-    //idealDuration, but no longer than maxDuration.
-    //The actual number of animation frames is nFrames.
-    W4dFrameRegulator( const PhysAbsoluteTime& startTime, const PhysRelativeTime& idealDuration,
-                       const PhysRelativeTime& maxDuration, size_t nFrames );
+    // ctor. Animation is to start at startTime. Ideally should run for
+    // idealDuration, but no longer than maxDuration.
+    // The actual number of animation frames is nFrames.
+    W4dFrameRegulator(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& idealDuration,
+        const PhysRelativeTime& maxDuration,
+        size_t nFrames);
 
-    //dtor
+    // dtor
     ~W4dFrameRegulator();
 
-    //Accessors
+    // Accessors
     const PhysAbsoluteTime& startTime() const;
     const PhysRelativeTime& idealDuration() const;
     const PhysRelativeTime& maxDuration() const;
     size_t startFrame() const;
     size_t nFrames() const;
 
-    void startTime( const PhysAbsoluteTime& startTime );
+    void startTime(const PhysAbsoluteTime& startTime);
 
-    //The effective time to use to get the correct frame displayed in the animation
+    // The effective time to use to get the correct frame displayed in the animation
     PhysAbsoluteTime effectiveTime() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dFrameRegulator& t );
+    friend ostream& operator<<(ostream& o, const W4dFrameRegulator& t);
 
-    PER_MEMBER_PERSISTENT( W4dFrameRegulator );
-    PER_FRIEND_READ_WRITE( W4dFrameRegulator );
+    PER_MEMBER_PERSISTENT(W4dFrameRegulator);
+    PER_FRIEND_READ_WRITE(W4dFrameRegulator);
+
 private:
-    //data members
-    PhysAbsoluteTime startTime_; //The actual time at which the animation starts
-    PhysRelativeTime idealDuration_; //The approximate time we'd like the animation to run
-    PhysRelativeTime maxDuration_; //The longest time we want the animation to run
-    size_t startFrame_; //The simulation frame number when the animation is activated
-    size_t nFrames_; //The number of frames in the animation
+    // data members
+    PhysAbsoluteTime startTime_; // The actual time at which the animation starts
+    PhysRelativeTime idealDuration_; // The approximate time we'd like the animation to run
+    PhysRelativeTime maxDuration_; // The longest time we want the animation to run
+    size_t startFrame_; // The simulation frame number when the animation is activated
+    size_t nFrames_; // The number of frames in the animation
 };
 
-PER_DECLARE_PERSISTENT( W4dFrameRegulator );
+PER_DECLARE_PERSISTENT(W4dFrameRegulator);
 
 #ifdef _INLINE
-    #include "world4d/framereg.ipp"
+#include "world4d/framereg.ipp"
 #endif
-
 
 #endif
 

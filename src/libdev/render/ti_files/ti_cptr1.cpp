@@ -9,5 +9,5 @@
 void renDummyFunctionVertexMatCPtr()
 {
     static CtlCountedPtr<RenIVertexIntensities> dummy1;
-    static CtlCountedPtr<RenIVertexMaterials>	dummy2;
+    static CtlCountedPtr<RenIVertexMaterials> dummy2;
 }

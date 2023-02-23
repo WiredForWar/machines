@@ -1,5 +1,5 @@
 /*
- * D U A L S T R . H P P 
+ * D U A L S T R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,24 +21,22 @@ class BaseDualOstream : public BaseFilterOstream
 // Canonical form revoked
 {
 public:
-    BaseDualOstream( ostream&, ostream& );
+    BaseDualOstream(ostream&, ostream&);
     ~BaseDualOstream();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const BaseDualOstream& t );
+    friend ostream& operator<<(ostream& o, const BaseDualOstream& t);
 
-    BaseDualOstream( const BaseDualOstream& );
-    BaseDualOstream& operator =( const BaseDualOstream& );
+    BaseDualOstream(const BaseDualOstream&);
+    BaseDualOstream& operator=(const BaseDualOstream&);
 
-    virtual void    doFilterCharacters( const char* pBuf, size_t nChars );
+    virtual void doFilterCharacters(const char* pBuf, size_t nChars);
 
-    ostream&    stream1_;
-    ostream&    stream2_;
-    
+    ostream& stream1_;
+    ostream& stream2_;
 };
-
 
 #endif
 

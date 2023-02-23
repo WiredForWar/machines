@@ -1,5 +1,5 @@
 /*
- * S P I R A L . H P P 
+ * S P I R A L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachLogSquareSpiral
 
     Generate a spiral based on a square grid. Start off with
-    a point in the centre, then each application of the ++ operator 
+    a point in the centre, then each application of the ++ operator
     will produce the next point on the grid working outwards in a
     series of squares.
 */
@@ -26,24 +26,23 @@ public:
 
     int x() const;
     int y() const;
-    
-    void operator ++( PREFIX );
-    void operator ++( POSTFIX );    
+
+    void operator++(PREFIX);
+    void operator++(POSTFIX);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogSquareSpiral& t );
+    friend ostream& operator<<(ostream& o, const MachLogSquareSpiral& t);
 
-    MachLogSquareSpiral( const MachLogSquareSpiral& );
-    MachLogSquareSpiral& operator =( const MachLogSquareSpiral& );
+    MachLogSquareSpiral(const MachLogSquareSpiral&);
+    MachLogSquareSpiral& operator=(const MachLogSquareSpiral&);
 
     int x_;
     int y_;
     int edgeLength_;
     int gridIndex_;
 };
-
 
 #endif
 

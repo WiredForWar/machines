@@ -13,8 +13,8 @@
 #include "phys/internal/cs2dmfnd.hpp"
 #include "phys/internal/cs2findp.hpp"
 
-PhysPathFindingQueueWriter::PhysPathFindingQueueWriter( const PhysConfigSpace2d& configSpace )
-: configSpace_( configSpace )
+PhysPathFindingQueueWriter::PhysPathFindingQueueWriter(const PhysConfigSpace2d& configSpace)
+    : configSpace_(configSpace)
 {
 
     TEST_INVARIANT;
@@ -23,22 +23,21 @@ PhysPathFindingQueueWriter::PhysPathFindingQueueWriter( const PhysConfigSpace2d&
 PhysPathFindingQueueWriter::~PhysPathFindingQueueWriter()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysPathFindingQueueWriter::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysPathFindingQueueWriter& t )
+ostream& operator<<(ostream& o, const PhysPathFindingQueueWriter& t)
 {
     const PhysCS2dImpl::DomainFindPaths& domainFindPathQueue = t.configSpace_.impl().domainFindPathQueue_;
 
     o << "Domain find path queue length " << domainFindPathQueue.size() << std::endl;
 
-    for( PhysCS2dImpl::DomainFindPaths::const_iterator i = domainFindPathQueue.begin();
-      i != domainFindPathQueue.end(); ++i )
+    for (PhysCS2dImpl::DomainFindPaths::const_iterator i = domainFindPathQueue.begin(); i != domainFindPathQueue.end();
+         ++i)
     {
         o << "  " << (*(*i)) << std::endl;
     }
@@ -47,8 +46,7 @@ ostream& operator <<( ostream& o, const PhysPathFindingQueueWriter& t )
 
     o << "Find path queue length " << findPathQueue.size() << std::endl;
 
-    for( PhysCS2dImpl::FindPaths::const_iterator i = findPathQueue.begin();
-      i != findPathQueue.end(); ++i )
+    for (PhysCS2dImpl::FindPaths::const_iterator i = findPathQueue.begin(); i != findPathQueue.end(); ++i)
     {
         o << "  " << (*(*i)) << std::endl;
     }

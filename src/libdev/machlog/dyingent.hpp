@@ -17,57 +17,59 @@
 #include "phys/phys.hpp"
 #include "ftl/serialid.hpp"
 
-//#include "machlog/actor.hpp"
+// #include "machlog/actor.hpp"
 #include "world4d/entity.hpp"
 
 class MachLogConstruction;
 class MachLogDyingEntityEventImpl;
-template < class X > class ctl_nb_vector;
+template <class X> class ctl_nb_vector;
 
 class MachLogDyingEntityEvent : public SimDiscreteEvent
 {
 public:
+    using PolygonId = FtlSerialId;
+    using Polygons = ctl_nb_vector<PolygonId>;
+    enum InsideBuilding
+    {
+        INSIDE_BUILDING,
+        NOT_INSIDE_BUILDING
+    };
 
-    typedef FtlSerialId PolygonId;
-	typedef ctl_nb_vector< PolygonId >	Polygons;
-	enum InsideBuilding{ INSIDE_BUILDING, NOT_INSIDE_BUILDING };
+    MachLogDyingEntityEvent(
+        const CtlConstCountedPtr<W4dEntity>& physObjectPtr,
+        const Polygons*,
+        const PhysRelativeTime& goDeadTime,
+        InsideBuilding,
+        MachLogConstruction*);
 
-    MachLogDyingEntityEvent( const CtlConstCountedPtr< W4dEntity >& physObjectPtr,
-    					const Polygons*,
-    					const PhysRelativeTime& goDeadTime,
-    					InsideBuilding,
-    					MachLogConstruction* );
+    MachLogDyingEntityEvent(
+        const CtlConstCountedPtr<W4dEntity>& physObjectPtr,
+        PolygonId singlePolygonOnly,
+        const PhysRelativeTime& goDeadTime,
+        InsideBuilding,
+        MachLogConstruction*);
 
-    MachLogDyingEntityEvent( const CtlConstCountedPtr< W4dEntity >& physObjectPtr,
-						PolygonId singlePolygonOnly,
-    					const PhysRelativeTime& goDeadTime,
-    					InsideBuilding,
-    					MachLogConstruction* );
-
-
-    ~MachLogDyingEntityEvent();
+    ~MachLogDyingEntityEvent() override;
 
     void CLASS_INVARIANT;
 
-	//inherited from SimDiscreteEvent
-	//called when the time goes out of range by SimManager.
-    virtual void execute();
+    // inherited from SimDiscreteEvent
+    // called when the time goes out of range by SimManager.
+    void execute() override;
 
-    friend ostream& operator <<( ostream& o, const MachLogDyingEntityEvent& t );
-	virtual void doOutputOperator( ostream& ) const;
+    friend ostream& operator<<(ostream& o, const MachLogDyingEntityEvent& t);
+    void doOutputOperator(ostream&) const override;
 
 private:
-
     // Operation deliberately revoked
-    MachLogDyingEntityEvent( const MachLogDyingEntityEvent& );
-    MachLogDyingEntityEvent& operator =( const MachLogDyingEntityEvent& );
-    bool operator ==( const MachLogDyingEntityEvent& );
+    MachLogDyingEntityEvent(const MachLogDyingEntityEvent&);
+    MachLogDyingEntityEvent& operator=(const MachLogDyingEntityEvent&);
+    bool operator==(const MachLogDyingEntityEvent&);
 
-	MachLogDyingEntityEventImpl*		pImpl_;
-
+    MachLogDyingEntityEventImpl* pImpl_;
 };
 
-PER_ENUM_PERSISTENT( MachLogDyingEntityEvent::InsideBuilding );
+PER_ENUM_PERSISTENT(MachLogDyingEntityEvent::InsideBuilding);
 
 #endif
 

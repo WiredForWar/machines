@@ -1,5 +1,5 @@
 /*
- * C O N D D E A D . H P P 
+ * C O N D D E A D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachLogAllUnitsDeadCondition
 
     This conditon code checks for all units in a given race being dead (i.e. raceObjects is
-	empty).
+    empty).
 
 */
 
@@ -25,36 +25,33 @@ class MachLogAllUnitsDeadCondition : public SimCondition
 // Canonical form revoked
 {
 public:
-	static MachLogAllUnitsDeadCondition* newFromParser( UtlLineTokeniser* );
+    static MachLogAllUnitsDeadCondition* newFromParser(UtlLineTokeniser*);
 
-    MachLogAllUnitsDeadCondition( const string& keyName, MachPhys::Race );
+    MachLogAllUnitsDeadCondition(const string& keyName, MachPhys::Race);
 
-	virtual bool doHasConditionBeenMet() const;
+    bool doHasConditionBeenMet() const override;
 
-    virtual ~MachLogAllUnitsDeadCondition();
+    ~MachLogAllUnitsDeadCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAllUnitsDeadCondition );
-	PER_FRIEND_READ_WRITE( MachLogAllUnitsDeadCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAllUnitsDeadCondition);
+    PER_FRIEND_READ_WRITE(MachLogAllUnitsDeadCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    friend ostream& operator<<(ostream& o, const MachLogAllUnitsDeadCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogAllUnitsDeadCondition& t );
+    MachLogAllUnitsDeadCondition(const MachLogAllUnitsDeadCondition&);
+    MachLogAllUnitsDeadCondition& operator=(const MachLogAllUnitsDeadCondition&);
 
-    MachLogAllUnitsDeadCondition( const MachLogAllUnitsDeadCondition& );
-    MachLogAllUnitsDeadCondition& operator =( const MachLogAllUnitsDeadCondition& );
-
-	MachPhys::Race								race_;
+    MachPhys::Race race_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAllUnitsDeadCondition );
+PER_DECLARE_PERSISTENT(MachLogAllUnitsDeadCondition);
 
 #endif
 

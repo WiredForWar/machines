@@ -1,5 +1,5 @@
 /*
- * F A C T D A T A . H P P 
+ * F A C T D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,34 +20,32 @@ class MachPhysFactoryData : public MachPhysConstructionData
 {
 public:
     MachPhysFactoryData();
-    MachPhysFactoryData( const MachPhysFactoryData&, const MexTransform3d& );
-    ~MachPhysFactoryData();
+    MachPhysFactoryData(const MachPhysFactoryData&, const MexTransform3d&);
+    ~MachPhysFactoryData() override;
 
-	//Get mthods public
-	MachPhys::BuildingMaterialUnits buildRate() const;
+    // Get mthods public
+    MachPhys::BuildingMaterialUnits buildRate() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysFactoryData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysFactoryData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysFactoryData( const MachPhysFactoryData& );
-
-    // Operation deliberately revoked
-    MachPhysFactoryData& operator =( const MachPhysFactoryData& );
+    MachPhysFactoryData(const MachPhysFactoryData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysFactoryData& );
+    MachPhysFactoryData& operator=(const MachPhysFactoryData&);
 
-	//Set mthods public
-	void buildRate( const MachPhys::BuildingMaterialUnits& );
+    // Operation deliberately revoked
+    bool operator==(const MachPhysFactoryData&);
 
-	MachPhys::BuildingMaterialUnits 	buildRate_;
+    // Set mthods public
+    void buildRate(const MachPhys::BuildingMaterialUnits&);
 
+    MachPhys::BuildingMaterialUnits buildRate_;
 };
-
 
 #endif
 

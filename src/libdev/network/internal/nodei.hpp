@@ -1,5 +1,5 @@
 /*
- * N O D E I . H P P 
+ * N O D E I . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -31,7 +31,6 @@ class NetPriority;
 class NetINetwork;
 class NetCompoundMessage;
 
-
 class NetNodeImpl
 // Canonical form revoked
 {
@@ -41,31 +40,29 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const NetNodeImpl& t );
-	friend class NetNode;
+    friend ostream& operator<<(ostream& o, const NetNodeImpl& t);
+    friend class NetNode;
 
     NetNodeImpl();
-    NetNodeImpl( const NetNodeImpl& );
-    NetNodeImpl& operator =( const NetNodeImpl& );
+    NetNodeImpl(const NetNodeImpl&);
+    NetNodeImpl& operator=(const NetNodeImpl&);
 
-	NetNodeUid*							pNodeUid_;		// ORDER DEPENDENCY
-	NetAppSessionUid*					pAppSessionUid_;	// ORDER DEPENDENCY
+    NetNodeUid* pNodeUid_; // ORDER DEPENDENCY
+    NetAppSessionUid* pAppSessionUid_; // ORDER DEPENDENCY
 
-	NetNode::NetMessageBuffer			messageBuffer_;
+    NetNode::NetMessageBuffer messageBuffer_;
 
-	bool 								acceptingPing_;
+    bool acceptingPing_;
 
-	const string 						pingString_;
+    const string pingString_;
 
-	NetNode::Ping						ping_;
-	double								lastPingAllTime_;
-	double								lastCompoundTransmitTime_;
-	DevTimer							timer_;
-	NetCompoundMessage*					pCompoundMessage_;
-	ctl_pvector< NetCompoundMessage >	cachedCompoundMessages_;
-
+    NetNode::Ping ping_;
+    double lastPingAllTime_;
+    double lastCompoundTransmitTime_;
+    DevTimer timer_;
+    NetCompoundMessage* pCompoundMessage_;
+    ctl_pvector<NetCompoundMessage> cachedCompoundMessages_;
 };
-
 
 #endif
 

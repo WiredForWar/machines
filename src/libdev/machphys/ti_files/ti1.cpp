@@ -34,27 +34,27 @@ class MachPhysFireball;
 
 void MachDummyFunction1()
 {
-    static  ctl_vector< W4dDomain* >            dummyVectorW4dDomain;
-    static  ctl_vector< ctl_vector< W4dDomain* > >  dummyVectorVectorW4dDomain;
-    static  ctl_vector< MachPhysTerrainTile* >  dummyVectorTerrainTile;
-    static  ctl_vector< ctl_vector< MachPhysTerrainTile* > >  dummyVectorVectorTerrainTile;
-    static  ctl_vector< MachPhysFireball* > dummyVectorFireballs;
+    static ctl_vector<W4dDomain*> dummyVectorW4dDomain;
+    static ctl_vector<ctl_vector<W4dDomain*>> dummyVectorVectorW4dDomain;
+    static ctl_vector<MachPhysTerrainTile*> dummyVectorTerrainTile;
+    static ctl_vector<ctl_vector<MachPhysTerrainTile*>> dummyVectorVectorTerrainTile;
+    static ctl_vector<MachPhysFireball*> dummyVectorFireballs;
 
-    static  ctl_vector<MATHEX_SCALAR>                       dummyVectorMATHEX_SCALAR;
-    static  ctl_vector<MachPhysTileBoundary::TriangleData>  dummyVectorTriangleData;
-    static  ctl_vector<MachPhysTileBoundary::CellPair>      dummyVectorCellPair;
-    static  ctl_vector< W4dCompositePlanPtr > dummyCompositePlanPtrs;
+    static ctl_vector<MATHEX_SCALAR> dummyVectorMATHEX_SCALAR;
+    static ctl_vector<MachPhysTileBoundary::TriangleData> dummyVectorTriangleData;
+    static ctl_vector<MachPhysTileBoundary::CellPair> dummyVectorCellPair;
+    static ctl_vector<W4dCompositePlanPtr> dummyCompositePlanPtrs;
 
-    static  ctl_vector< MachPhys::Race >  dummy1;
-    static  ctl_fixed_vector< W4dLink* >  dummy3(2, NULL);
+    static ctl_vector<MachPhys::Race> dummy1;
+    static ctl_fixed_vector<W4dLink*> dummy3(2, NULL);
 
-    static  MachPhysTileData::IntersectingTriangles   dummy2;
+    static MachPhysTileData::IntersectingTriangles dummy2;
 
-    static  MachPhysPlanetSurfaceChecker::Triangles dummy10;
+    static MachPhysPlanetSurfaceChecker::Triangles dummy10;
 
-    static  ctl_pvector< W4dDomain >            dummyPVectorW4dDomain;
+    static ctl_pvector<W4dDomain> dummyPVectorW4dDomain;
 
-    static  ctl_vector< MexPoint2d > dummyPoints;
+    static ctl_vector<MexPoint2d> dummyPoints;
 }
 
 /* End TI.CPP *****************************************************/

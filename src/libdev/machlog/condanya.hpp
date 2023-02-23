@@ -23,38 +23,37 @@ class MachLogAnyAllCondition : public SimCondition
 // Canonical form revoked
 {
 public:
+    using ConditionMap = ctl_map<string, SimCondition*, std::less<string>>;
 
-	typedef ctl_map< string , SimCondition*, std::less< string >	>	ConditionMap;
+    static MachLogAnyAllCondition*
+    newFromParser(UtlLineTokeniser*, ConditionMap*, SimCondition::BooleanOperator booleanOperator);
 
-	static MachLogAnyAllCondition* newFromParser( UtlLineTokeniser*, ConditionMap*, SimCondition::BooleanOperator booleanOperator );
+    bool doHasConditionBeenMet() const override;
 
-	virtual bool doHasConditionBeenMet() const;
-
-    virtual ~MachLogAnyAllCondition();
+    ~MachLogAnyAllCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAnyAllCondition );
-	PER_FRIEND_READ_WRITE( MachLogAnyAllCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAnyAllCondition);
+    PER_FRIEND_READ_WRITE(MachLogAnyAllCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogAnyAllCondition(
+        const string& keyName,
+        const ctl_pvector<SimCondition>&,
+        SimCondition::BooleanOperator booleanOperator);
 
-    MachLogAnyAllCondition( const string& keyName, const ctl_pvector< SimCondition >&, SimCondition::BooleanOperator booleanOperator );
+    friend ostream& operator<<(ostream& o, const MachLogAnyAllCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogAnyAllCondition& t );
-
-    MachLogAnyAllCondition( const MachLogAnyAllCondition& );
-    MachLogAnyAllCondition& operator =( const MachLogAnyAllCondition& );
-
+    MachLogAnyAllCondition(const MachLogAnyAllCondition&);
+    MachLogAnyAllCondition& operator=(const MachLogAnyAllCondition&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogAnyAllCondition );
+PER_DECLARE_PERSISTENT(MachLogAnyAllCondition);
 
 #endif
 

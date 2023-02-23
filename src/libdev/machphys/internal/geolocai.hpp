@@ -1,5 +1,5 @@
 /*
- * G E O L O C A I . H P P 
+ * G E O L O C A I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -29,26 +29,25 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysGeoLocatorImpl );
-    PER_FRIEND_READ_WRITE( MachPhysGeoLocatorImpl );
+    PER_MEMBER_PERSISTENT(MachPhysGeoLocatorImpl);
+    PER_FRIEND_READ_WRITE(MachPhysGeoLocatorImpl);
 
 private:
     friend class MachPhysGeoLocator;
-    friend ostream& operator <<( ostream& o, const MachPhysGeoLocatorImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGeoLocatorImpl& t);
 
-    MachPhysGeoLocatorImpl( const MachPhysGeoLocatorImpl& );
-    MachPhysGeoLocatorImpl& operator =( const MachPhysGeoLocatorImpl& );
+    MachPhysGeoLocatorImpl(const MachPhysGeoLocatorImpl&);
+    MachPhysGeoLocatorImpl& operator=(const MachPhysGeoLocatorImpl&);
 
-    //Data members
-    W4dCompositePlanPtr locatingPlanPtr_; //Animation for locating
-    PhysAbsoluteTime locatingPlanEndTime_; //Time at which any queued locating animation ends
-    bool isLocating_; //True if in locating mode
-	MachPhysLocator* pLocator_;
-	MATHEX_SCALAR 	 locatorSize_;
+    // Data members
+    W4dCompositePlanPtr locatingPlanPtr_; // Animation for locating
+    PhysAbsoluteTime locatingPlanEndTime_; // Time at which any queued locating animation ends
+    bool isLocating_; // True if in locating mode
+    MachPhysLocator* pLocator_;
+    MATHEX_SCALAR locatorSize_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysGeoLocatorImpl );
-
+PER_DECLARE_PERSISTENT(MachPhysGeoLocatorImpl);
 
 #endif
 

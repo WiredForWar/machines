@@ -16,7 +16,7 @@
 
 char* RenIVertexData::perPDerivedClass() const
 {
-    return const_cast<char*> (reinterpret_cast<const char*> (this));
+    return const_cast<char*>(reinterpret_cast<const char*>(this));
 }
 
 const char* RenIVertexData::perClassName()
@@ -34,59 +34,64 @@ void perReadRenIVertexData(PerIstream& istr)
     istr >> RenIVertexData::perCreate();
 }
 
-void perWriteRenIVertexData( PerOstream& ostr, const void* pVoid )
+void perWriteRenIVertexData(PerOstream& ostr, const void* pVoid)
 {
-    const RenIVertexData* pObject = static_cast<const RenIVertexData*> ( pVoid );
+    const RenIVertexData* pObject = static_cast<const RenIVertexData*>(pVoid);
     ostr << *pObject;
 }
 
 PerOstream& operator<<(PerOstream& ostr, const RenIVertexData& ob)
 {
-    ASSERT_INFO( "w" );
-    Persistence::instance().writeObjectPre( ostr, static_cast< const void*> ( &ob ), "RenIVertexData" );
-    ASSERT_INFO( "x" );
-    perWrite( ostr, ob );
-    ASSERT_INFO( "y" );
-    Persistence::instance().writeObjectPost( static_cast< const void*> ( &ob ), "RenIVertexData" );
-    ASSERT_INFO( "z" );
+    ASSERT_INFO("w");
+    Persistence::instance().writeObjectPre(ostr, static_cast<const void*>(&ob), "RenIVertexData");
+    ASSERT_INFO("x");
+    perWrite(ostr, ob);
+    ASSERT_INFO("y");
+    Persistence::instance().writeObjectPost(static_cast<const void*>(&ob), "RenIVertexData");
+    ASSERT_INFO("z");
     return ostr;
 }
 
 PerIstream& operator>>(PerIstream& istr, RenIVertexData& ob)
 {
-    Persistence::instance().readObjectPre( istr, static_cast< const void*> ( &ob ), "RenIVertexData" );
-    perRead( istr, ob );
-    Persistence::instance().readObjectPost( static_cast< const void*> ( &ob ), "RenIVertexData" );
+    Persistence::instance().readObjectPre(istr, static_cast<const void*>(&ob), "RenIVertexData");
+    perRead(istr, ob);
+    Persistence::instance().readObjectPost(static_cast<const void*>(&ob), "RenIVertexData");
     return istr;
 }
 
 PerOstream& operator<<(PerOstream& ostr, const RenIVertexData* pOb)
 {
-    void* pMostDerivedOb = pOb ? pOb->perPDerivedClass() : (void*) pOb;
-    const char* mostDerivedClassName =  pOb ? pOb->perMostDerivedClassName() : nullptr;
+    void* pMostDerivedOb = pOb ? pOb->perPDerivedClass() : (void*)pOb;
+    const char* mostDerivedClassName = pOb ? pOb->perMostDerivedClassName() : nullptr;
 
-    auto const result = Persistence::instance().writePointerPre(ostr, static_cast< const void*> ( pOb ), "RenIVertexData", pMostDerivedOb, mostDerivedClassName );
+    auto const result = Persistence::instance().writePointerPre(
+        ostr,
+        static_cast<const void*>(pOb),
+        "RenIVertexData",
+        pMostDerivedOb,
+        mostDerivedClassName);
 
     if (result == Persistence::WRITE_OBJECT)
     {
         ostr << *pOb;
     }
 
-    Persistence::instance().writePointerPost( ostr, static_cast< const void*> ( pOb ), "RenIVertexData", pMostDerivedOb );
+    Persistence::instance().writePointerPost(ostr, static_cast<const void*>(pOb), "RenIVertexData", pMostDerivedOb);
 
     return ostr;
 }
 
 PerIstream& operator>>(PerIstream& istr, RenIVertexData*& pOb)
 {
-    auto const result = Persistence::instance().readPointerPre( istr, reinterpret_cast< void**> (&pOb), "RenIVertexData");
+    auto const result = Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), "RenIVertexData");
 
-    if (result == Persistence::READ_OBJECT )
+    if (result == Persistence::READ_OBJECT)
     {
         istr >> RenIVertexData::perCreate();
     }
 
-    Persistence::instance().readPointerPost( istr, reinterpret_cast< void**> (&pOb), "RenIVertexData" );
+    Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), "RenIVertexData");
 
     return istr;
 }
@@ -96,22 +101,22 @@ RenIVertexData& RenIVertexData::perCreate()
     return *(new RenIVertexData(PERSISTENCE_CONSTRUCTOR));
 }
 
-RenIVertexData::RenIVertexData(size_t nVertices):
-intensityMap_(nullptr),
-materialMap_(nullptr)
+RenIVertexData::RenIVertexData(size_t nVertices)
+    : intensityMap_(nullptr)
+    , materialMap_(nullptr)
 {
     reserve(nVertices);
-    persistAsRaw( true );
+    persistAsRaw(true);
     normals_.persistAsRaw();
 }
 
-RenIVertexData::RenIVertexData(PerConstructor):
-intensityMap_(nullptr),
-materialMap_(nullptr)
+RenIVertexData::RenIVertexData(PerConstructor)
+    : intensityMap_(nullptr)
+    , materialMap_(nullptr)
 {
     // Allow the base-class persistent read to allocate the memory.
     reserve(0);
-    persistAsRaw( true );
+    persistAsRaw(true);
     normals_.persistAsRaw();
 }
 
@@ -120,13 +125,13 @@ materialMap_(nullptr)
 // mix of deep and shallow semantics.  This is the desired behaviour for texture
 // UV animation which is currently the only client.
 
-RenIVertexData::RenIVertexData(const RenIVertexData& copyMe) :
-Base(copyMe.begin(), copyMe.end()),
-intensityMap_(copyMe.intensityMap_),
-materialMap_(copyMe.materialMap_),
-normals_(copyMe.normals_)
+RenIVertexData::RenIVertexData(const RenIVertexData& copyMe)
+    : Base(copyMe.begin(), copyMe.end())
+    , intensityMap_(copyMe.intensityMap_)
+    , materialMap_(copyMe.materialMap_)
+    , normals_(copyMe.normals_)
 {
-    persistAsRaw( true );
+    persistAsRaw(true);
     normals_.persistAsRaw();
 
     POST(size() == copyMe.size());
@@ -137,15 +142,15 @@ normals_(copyMe.normals_)
 // mix of deep and shallow semantics.  This is the desired behaviour for texture
 // UV animation which is currently the only client.
 
-RenIVertexData::RenIVertexData(const RenIVertexData& copyMe, size_t nElements) :
-Base(copyMe.begin(), copyMe.begin() + nElements),
-intensityMap_(copyMe.intensityMap_),
-materialMap_(copyMe.materialMap_),
-normals_(copyMe.normals_)
+RenIVertexData::RenIVertexData(const RenIVertexData& copyMe, size_t nElements)
+    : Base(copyMe.begin(), copyMe.begin() + nElements)
+    , intensityMap_(copyMe.intensityMap_)
+    , materialMap_(copyMe.materialMap_)
+    , normals_(copyMe.normals_)
 {
     PRE(nElements <= copyMe.size());
 
-    persistAsRaw( true );
+    persistAsRaw(true);
     normals_.persistAsRaw();
 
     POST(size() == nElements);
@@ -286,13 +291,11 @@ void RenIVertexData::addVertex(const MexPoint3d& pt, const MexVec3& normal, cons
     push_back(newVtx);
 }
 
-void RenIVertexData::addVertices
-(
+void RenIVertexData::addVertices(
     const ctl_vector<MexPoint3d>& pts,
     const MexVec3& normal,
     const ctl_vector<MexPoint2d>& uvs,
-    size_t nPts
-    )
+    size_t nPts)
 {
     PRE(implies(nPts == 0, pts.size() == uvs.size()));
     PRE(implies(nPts != 0, pts.size() >= nPts && uvs.size() >= nPts));
@@ -350,7 +353,7 @@ RenIVec3FixPtS0_7& RenIVertexData::normal(const RenIVertex& v)
     return normals_[v.normalIndex];
 }
 
-void perRead( PerIstream& istr, RenIVertexData& data )
+void perRead(PerIstream& istr, RenIVertexData& data)
 {
     RenIVertexData::Base& base = data;
 
@@ -359,11 +362,11 @@ void perRead( PerIstream& istr, RenIVertexData& data )
 
     // Currently the persistence for counted pointers chokes on a private base.
     // TBD: stream these member vars.
-    //	istr >> data.intensityMap_;
+    //  istr >> data.intensityMap_;
     istr >> data.materialMap_;
 }
 
-void perWrite( PerOstream& ostr, const RenIVertexData& data )
+void perWrite(PerOstream& ostr, const RenIVertexData& data)
 {
     const RenIVertexData::Base& base = data;
 
@@ -372,11 +375,11 @@ void perWrite( PerOstream& ostr, const RenIVertexData& data )
 
     // Currently the persistence for counted pointers chokes on a private base.
     // TBD: stream these member vars.
-    //	ostr << data.intensityMap_;
+    //  ostr << data.intensityMap_;
     ostr << data.materialMap_;
 }
 
-std::ostream& operator <<(std::ostream& o, const RenIVertexData& data )
+std::ostream& operator<<(std::ostream& o, const RenIVertexData& data)
 {
     const RenIVertexData::Base& base = data;
 
@@ -388,22 +391,21 @@ std::ostream& operator <<(std::ostream& o, const RenIVertexData& data )
 std::ostream& operator<<(std::ostream& os, const RenIVertex& vtx)
 {
     os << std::setprecision(1);
-    os << "D3DVERTEX: (" << vtx.x  << "," << vtx.y  << "," << vtx.z  << ") "
-        << "ni=" << vtx.normalIndex
-        << " uv (" << vtx.tu << "," << vtx.tv << ") ";
+    os << "D3DVERTEX: (" << vtx.x << "," << vtx.y << "," << vtx.z << ") "
+       << "ni=" << vtx.normalIndex << " uv (" << vtx.tu << "," << vtx.tv << ") ";
     return os;
 }
 
-PerOstream& operator <<( PerOstream& os, const RenIVertex& vtx )
+PerOstream& operator<<(PerOstream& os, const RenIVertex& vtx)
 {
-    PER_WRITE_RAW_DATA( os, &vtx, sizeof ( vtx ) );
+    PER_WRITE_RAW_DATA(os, &vtx, sizeof(vtx));
 
     return os;
 }
 
-PerIstream& operator >>( PerIstream& is, RenIVertex& vtx )
+PerIstream& operator>>(PerIstream& is, RenIVertex& vtx)
 {
-    PER_READ_RAW_DATA( is, &vtx, sizeof ( vtx ) );
+    PER_READ_RAW_DATA(is, &vtx, sizeof(vtx));
 
     return is;
 }

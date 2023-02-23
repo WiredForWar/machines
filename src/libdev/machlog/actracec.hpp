@@ -1,13 +1,13 @@
 /*
- * A C T R A C E C . H P P 
+ * A C T R A C E C . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     MachLogChangeRaceAction
 
-    This action class will change all objects of original race to be target race witihin 
-	an area defined by a point and a range.
+    This action class will change all objects of original race to be target race witihin
+    an area defined by a point and a range.
 */
 
 #ifndef _MACHLOG_ACTRACEC_HPP
@@ -25,34 +25,32 @@ class MachLogChangeRaceAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogChangeRaceAction();
-	static MachLogChangeRaceAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
+    ~MachLogChangeRaceAction() override;
+    static MachLogChangeRaceAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogChangeRaceAction );
-	PER_FRIEND_READ_WRITE( MachLogChangeRaceAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogChangeRaceAction);
+    PER_FRIEND_READ_WRITE(MachLogChangeRaceAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogChangeRaceAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogChangeRaceAction& t);
 
-    MachLogChangeRaceAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogChangeRaceAction& t );
+    MachLogChangeRaceAction(const MachLogChangeRaceAction&);
+    MachLogChangeRaceAction& operator=(const MachLogChangeRaceAction&);
 
-    MachLogChangeRaceAction( const MachLogChangeRaceAction& );
-    MachLogChangeRaceAction& operator =( const MachLogChangeRaceAction& );
-
-	MachPhys::Race			originalRace_;
-	MachPhys::Race			targetRace_;
-	MexPoint2d				dest_;
-	MATHEX_SCALAR			range_;
+    MachPhys::Race originalRace_;
+    MachPhys::Race targetRace_;
+    MexPoint2d dest_;
+    MATHEX_SCALAR range_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogChangeRaceAction );
+PER_DECLARE_PERSISTENT(MachLogChangeRaceAction);
 
 #endif
 

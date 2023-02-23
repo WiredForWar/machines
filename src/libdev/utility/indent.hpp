@@ -1,5 +1,5 @@
 /*
- * I N D E N T . H P P 
+ * I N D E N T . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "base/private/indent.hpp"
 
-typedef BaseIndentOstream   UtlIndentOstream;
+using UtlIndentOstream = BaseIndentOstream;
 
 #endif
 

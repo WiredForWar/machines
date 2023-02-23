@@ -1,5 +1,5 @@
 /*
- * M E T A F I L E . H P P 
+ * M E T A F I L E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,40 +23,40 @@ class SysMetaFile
 // Canonical form revoked
 {
 public:
-    SysMetaFile( const SysPathName& filename );
+    SysMetaFile(const SysPathName& filename);
     ~SysMetaFile();
 
     const SysPathName& filename() const;
-    
-    bool hasFile( const SysPathName& ) const;
+
+    bool hasFile(const SysPathName&) const;
 
     enum EncryptionType
     {
-        NO_ENCRYPTION, ENCRYPTION_1, ENCRYPTION_2
+        NO_ENCRYPTION,
+        ENCRYPTION_1,
+        ENCRYPTION_2
     };
 
     //  Sets the encryption to be used by all SysMetaIStreams
-    static void encryptionType( EncryptionType );
+    static void encryptionType(EncryptionType);
 
-    // By default, meta files should always be used. It is 
+    // By default, meta files should always be used. It is
     // possible to set the environment variable CB_READ_FROM_METAFILE
     // to false which will set the output of this function to false.
     static bool useMetaFile();
- 
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SysMetaFile& t );
+    friend ostream& operator<<(ostream& o, const SysMetaFile& t);
 
 private:
-    SysMetaFile( const SysMetaFile& );
-    SysMetaFile& operator =( const SysMetaFile& );
-    bool operator ==( const SysMetaFile& );
+    SysMetaFile(const SysMetaFile&);
+    SysMetaFile& operator=(const SysMetaFile&);
+    bool operator==(const SysMetaFile&);
 
     SysMetaFileImpl* pImpl_;
 };
 
-
 #endif
 
 /* End METAFILE.HPP *************************************************/
-

@@ -1,5 +1,5 @@
 /*
- * G X U V C O O R D S . H P P 
+ * G X U V C O O R D S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,33 +20,24 @@ class GXUVCoords
 public:
     GXUVCoords();
     ~GXUVCoords();
-    GXUVCoords( const GXUVCoords& );
-    GXUVCoords& operator =( const GXUVCoords& );
-    friend bool operator ==( const GXUVCoords&, const GXUVCoords& );
-    friend bool operator < ( const GXUVCoords&, const GXUVCoords& );
+    GXUVCoords(const GXUVCoords&);
+    GXUVCoords& operator=(const GXUVCoords&);
+    friend bool operator==(const GXUVCoords&, const GXUVCoords&);
+    friend bool operator<(const GXUVCoords&, const GXUVCoords&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXUVCoords& t );
+    friend ostream& operator<<(ostream& o, const GXUVCoords& t);
 
-	float u() const {
-	  return u_;
-	}
-	void u(float newU) {
-	  u_=newU;
-	}
-    float v() const {
-	  return v_;
-	}
-    void v(float newV) {
-	  v_=newV;
-	}
+    float u() const { return u_; }
+    void u(float newU) { u_ = newU; }
+    float v() const { return v_; }
+    void v(float newV) { v_ = newV; }
+
 private:
-
-	float u_;
-	float v_;
+    float u_;
+    float v_;
 };
-
 
 #endif
 

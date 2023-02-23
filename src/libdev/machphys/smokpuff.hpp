@@ -1,5 +1,5 @@
 /*
- * S M O K P U F F . H P P 
+ * S M O K P U F F . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,52 +22,51 @@
 class MachPhysSmokePuff : public W4dSprite3d
 {
 public:
-    
     MachPhysSmokePuff(
         W4dEntity* pParent,
         const MexTransform3d& localTransform,
         MachPhysPuffType type,
         MATHEX_SCALAR size,
-        MATHEX_SCALAR depthOffset );
+        MATHEX_SCALAR depthOffset);
 
-    ~MachPhysSmokePuff();
+    ~MachPhysSmokePuff() override;
 
-    static  void preload();
+    static void preload();
 
-    static  MachPhysPuffType randomPuff();
+    static MachPhysPuffType randomPuff();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSmokePuff& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSmokePuff& t);
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysSmokePuff );
-    
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysSmokePuff);
+
 private:
     // Operation deliberately revoked
-    MachPhysSmokePuff( const MachPhysSmokePuff& );
+    MachPhysSmokePuff(const MachPhysSmokePuff&);
 
     // Operation deliberately revoked
-    MachPhysSmokePuff& operator =( const MachPhysSmokePuff& );
+    MachPhysSmokePuff& operator=(const MachPhysSmokePuff&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysSmokePuff& );
+    bool operator==(const MachPhysSmokePuff&);
 
-    static  RenMaterial material( MachPhysPuffType puffType );
+    static RenMaterial material(MachPhysPuffType puffType);
 
-    static  RenMaterial puff1();
-    static  RenMaterial puff2();
-    static  RenMaterial puff3();
-    static  RenMaterial puff4();
-    static  RenMaterial puff5();
-    static  RenMaterial puff6();
+    static RenMaterial puff1();
+    static RenMaterial puff2();
+    static RenMaterial puff3();
+    static RenMaterial puff4();
+    static RenMaterial puff5();
+    static RenMaterial puff6();
 
-    static  RenMaterial puff( const RenColour& colour );
+    static RenMaterial puff(const RenColour& colour);
 
-    static  RenMaterial material( const string& textureFileName );
+    static RenMaterial material(const string& textureFileName);
 };
 
-PER_DECLARE_PERSISTENT( MachPhysSmokePuff );
-PER_READ_WRITE( MachPhysSmokePuff );
+PER_DECLARE_PERSISTENT(MachPhysSmokePuff);
+PER_READ_WRITE(MachPhysSmokePuff);
 
 #endif
 

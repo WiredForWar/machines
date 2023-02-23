@@ -1,5 +1,5 @@
 /*
- * S O F T D A T A . H P P 
+ * S O F T D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,26 +20,24 @@ class MachPhysSoftwareLabData : public MachPhysConstructionData
 {
 public:
     MachPhysSoftwareLabData();
-    MachPhysSoftwareLabData( const MachPhysSoftwareLabData&, const MexTransform3d& );
-    ~MachPhysSoftwareLabData();
+    MachPhysSoftwareLabData(const MachPhysSoftwareLabData&, const MexTransform3d&);
+    ~MachPhysSoftwareLabData() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSoftwareLabData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSoftwareLabData& t);
 
 private:
-	friend class MachPhysData;
+    friend class MachPhysData;
     // Operation deliberately revoked
-    MachPhysSoftwareLabData( const MachPhysSoftwareLabData& );
+    MachPhysSoftwareLabData(const MachPhysSoftwareLabData&);
 
     // Operation deliberately revoked
-    MachPhysSoftwareLabData& operator =( const MachPhysSoftwareLabData& );
+    MachPhysSoftwareLabData& operator=(const MachPhysSoftwareLabData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysSoftwareLabData& );
-
+    bool operator==(const MachPhysSoftwareLabData&);
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * D O O R . C P P 
+ * D O O R . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,18 +18,21 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-MachPhysDoor::MachPhysDoor( W4dEntity* pDoor, const MexVec3& displacement,
-                  MATHEX_SCALAR speed, MATHEX_SCALAR acceleration )
-:   pDoor_( pDoor ),
-    speed_( speed ),
-    acceleration_( acceleration ),
-    closedLocation_( pDoor->localTransform().position() )
+MachPhysDoor::MachPhysDoor(
+    W4dEntity* pDoor,
+    const MexVec3& displacement,
+    MATHEX_SCALAR speed,
+    MATHEX_SCALAR acceleration)
+    : pDoor_(pDoor)
+    , speed_(speed)
+    , acceleration_(acceleration)
+    , closedLocation_(pDoor->localTransform().position())
 {
-    PRE( pDoor != NULL );
-    PRE( speed > 0 );
-    PRE( acceleration > 0 );
+    PRE(pDoor != nullptr);
+    PRE(speed > 0);
+    PRE(acceleration > 0);
 
-    //Compute open location
+    // Compute open location
     openLocation_ = closedLocation_;
     openLocation_ += displacement;
 
@@ -40,39 +43,44 @@ MachPhysDoor::MachPhysDoor( W4dEntity* pDoor, const MexVec3& displacement,
 MachPhysDoor::~MachPhysDoor()
 {
     TEST_INVARIANT;
-
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void MachPhysDoor::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-PhysRelativeTime MachPhysDoor::changeState( bool doOpen )
+PhysRelativeTime MachPhysDoor::changeState(bool doOpen)
 {
-    //Create a motion plan for the move. First create a collection of the 2 transforms.
-    PhysMotionPlan::Transforms* pTransforms = _NEW( PhysMotionPlan::Transforms );
-    pTransforms->reserve( 2 );
+    // Create a motion plan for the move. First create a collection of the 2 transforms.
+    PhysMotionPlan::Transforms* pTransforms = _NEW(PhysMotionPlan::Transforms);
+    pTransforms->reserve(2);
 
-    MexTransform3d doorTransform( pDoor_->localTransform() );
+    MexTransform3d doorTransform(pDoor_->localTransform());
 
-    //doorTransform.position( doOpen ? closedLocation_ : openLocation_ );
-    pTransforms->push_back( doorTransform );
+    // doorTransform.position( doOpen ? closedLocation_ : openLocation_ );
+    pTransforms->push_back(doorTransform);
 
-    doorTransform.position( doOpen ? openLocation_ : closedLocation_ );
-    pTransforms->push_back( doorTransform );
+    doorTransform.position(doOpen ? openLocation_ : closedLocation_);
+    pTransforms->push_back(doorTransform);
 
-    //Now create the plan
-    PhysLinearTravelPlan* pPlan =
-        _NEW( PhysLinearTravelPlan( PhysMotionPlan::TransformsPtr( pTransforms ),
-                                    0, speed_, acceleration_, acceleration_,
-                                    0, 1, 1, 1, true ) );
+    // Now create the plan
+    PhysLinearTravelPlan* pPlan = _NEW(PhysLinearTravelPlan(
+        PhysMotionPlan::TransformsPtr(pTransforms),
+        0,
+        speed_,
+        acceleration_,
+        acceleration_,
+        0,
+        1,
+        1,
+        1,
+        true));
 
-    //Apply it to the entity
-    pDoor_->entityPlanForEdit().absoluteMotion( PhysMotionPlanPtr( pPlan ),
-                                                SimManager::instance().currentTime() );
+    // Apply it to the entity
+    pDoor_->entityPlanForEdit().absoluteMotion(PhysMotionPlanPtr(pPlan), SimManager::instance().currentTime());
 
     return pPlan->duration();
 }

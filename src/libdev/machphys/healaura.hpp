@@ -18,7 +18,7 @@
 #include "world4d/entity.hpp"
 #include "phys/phys.hpp"
 
-//forward refs
+// forward refs
 class MachPhysMachine;
 class W4dGeneric;
 
@@ -26,44 +26,42 @@ class MachPhysHealAura : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor. Attaches itself to pMachine, the machine being healed.
-    //Becomes active at startTime, and remains so until destructed.
-    MachPhysHealAura( MachPhysMachine* pMachine, const PhysAbsoluteTime& startTime );
+    // ctor. Attaches itself to pMachine, the machine being healed.
+    // Becomes active at startTime, and remains so until destructed.
+    MachPhysHealAura(MachPhysMachine* pMachine, const PhysAbsoluteTime& startTime);
 
-    //dtor.
-    virtual ~MachPhysHealAura();
+    // dtor.
+    ~MachPhysHealAura() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-    //Return exemplars for the two crosses
+    // Return exemplars for the two crosses
     static const W4dGeneric& centralCrossExemplar();
     static const W4dGeneric& radialCrossExemplar();
 
-    //returns a material used to apply to the radial cross
+    // returns a material used to apply to the radial cross
     static const RenMaterial& radialCrossMaterial();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysHealAura& t );
+    friend ostream& operator<<(ostream& o, const MachPhysHealAura& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysHealAura );
+    PER_MEMBER_PERSISTENT(MachPhysHealAura);
 
 private:
-    MachPhysHealAura( const MachPhysHealAura& );
-    MachPhysHealAura& operator =( const MachPhysHealAura& );
-    bool operator ==( const MachPhysHealAura& );
+    MachPhysHealAura(const MachPhysHealAura&);
+    MachPhysHealAura& operator=(const MachPhysHealAura&);
+    bool operator==(const MachPhysHealAura&);
 
-	friend class MachPhysOtherPersistence;
+    friend class MachPhysOtherPersistence;
 
-	static W4dGeneric& newRadialCross();
-	static W4dGeneric& newCentralCross();
-
+    static W4dGeneric& newRadialCross();
+    static W4dGeneric& newCentralCross();
 };
 
-PER_DECLARE_PERSISTENT( MachPhysHealAura );
-PER_READ_WRITE( MachPhysHealAura );
+PER_DECLARE_PERSISTENT(MachPhysHealAura);
+PER_READ_WRITE(MachPhysHealAura);
 
 #endif
 

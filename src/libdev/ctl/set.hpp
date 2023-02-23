@@ -24,59 +24,48 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template < class KEY, class COMPARE >
-class ctl_set
-: public std::set< KEY, COMPARE >
+template <class KEY, class COMPARE> class ctl_set : public std::set<KEY, COMPARE>
 {
 protected:
-
-	typedef std::set< KEY, COMPARE > rep_type;
+    using rep_type = std::set<KEY, COMPARE>;
 
 public:
+    ///////////////////////////////
 
+    using std::set<KEY, COMPARE>::set;
 
-	///////////////////////////////
+    virtual ~ctl_set() {};
 
-	using std::set< KEY, COMPARE >::set;
-
-	virtual ~ctl_set(){};
-
-	ctl_set< KEY, COMPARE >&
-	operator =( const ctl_set< KEY, COMPARE >& );
+    ctl_set<KEY, COMPARE>& operator=(const ctl_set<KEY, COMPARE>&);
 };
 
 //////////////////////////////////////////////////////////////////////
 
-template < class KEY, class COMPARE >
-class ctl_multiset
-: public std::multiset< KEY, COMPARE >
+template <class KEY, class COMPARE> class ctl_multiset : public std::multiset<KEY, COMPARE>
 {
 protected:
-
-	typedef std::multiset< KEY, COMPARE > rep_type;
+    using rep_type = std::multiset<KEY, COMPARE>;
 
 public:
+    ///////////////////////////////
+    using std::multiset<KEY, COMPARE>::multiset;
 
-	///////////////////////////////
-    using std::multiset< KEY, COMPARE >::multiset;
+    virtual ~ctl_multiset() {};
 
-	virtual ~ctl_multiset() {};
-
-	ctl_multiset< KEY, COMPARE >&
-	operator =( const ctl_multiset< KEY, COMPARE >& );
+    ctl_multiset<KEY, COMPARE>& operator=(const ctl_multiset<KEY, COMPARE>&);
 
     // accessors //////////////////
 };
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
+#ifdef _INLINE
 //    #include "ctl/set.itp"
- //   #include "ctl/set.itf"
+//   #include "ctl/set.itf"
 #endif
 
 #ifdef _INSTANTIATE_TEMPLATE_CLASSES
- //   #include "ctl/set.ctp"
+//   #include "ctl/set.ctp"
 #endif
 
 #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
@@ -85,6 +74,4 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	/* #ifndef _CTL_SET_HPP	*/
-
-
+#endif /* #ifndef _CTL_SET_HPP */

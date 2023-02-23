@@ -22,63 +22,58 @@
 #include "mathex/transf3d.hpp"
 #include "machphys/wepdata.hpp"
 
-PER_DEFINE_PERSISTENT(  MachPhysLinearProjectile );
+PER_DEFINE_PERSISTENT(MachPhysLinearProjectile);
 
-MachPhysLinearProjectile::MachPhysLinearProjectile
-(
-    W4dEntity* pParent, const MexTransform3d& localTransform
-)
-:   W4dComposite( pParent, localTransform, W4dEntity::NOT_SOLID ),
-    pImpl_( _NEW( MachPhysLinearProjectileImpl() ) )
+MachPhysLinearProjectile::MachPhysLinearProjectile(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dComposite(pParent, localTransform, W4dEntity::NOT_SOLID)
+    , pImpl_(_NEW(MachPhysLinearProjectileImpl()))
 {
-    //Set invisible so it doesn't appear until required
-    visible( false );
+    // Set invisible so it doesn't appear until required
+    visible(false);
 
-    //Initialise the flight path using current position
+    // Initialise the flight path using current position
     MexPoint3d startPos = globalTransform().position();
-    pImpl_->flightPath_ = MexLine3d( startPos, startPos );
+    pImpl_->flightPath_ = MexLine3d(startPos, startPos);
 
     TEST_INVARIANT;
 }
 
-MachPhysLinearProjectile::MachPhysLinearProjectile
-(
+MachPhysLinearProjectile::MachPhysLinearProjectile(
     const MachPhysLinearProjectile& copyMe,
-    W4dEntity* pParent, const W4dTransform3d& localTransform
-)
-:   W4dComposite( copyMe, pParent, localTransform ),
-    pImpl_( _NEW( MachPhysLinearProjectileImpl( *copyMe.pImpl_ ) ) )
+    W4dEntity* pParent,
+    const W4dTransform3d& localTransform)
+    : W4dComposite(copyMe, pParent, localTransform)
+    , pImpl_(_NEW(MachPhysLinearProjectileImpl(*copyMe.pImpl_)))
 {
-	sharedCopyCtor();
+    sharedCopyCtor();
 }
 
-MachPhysLinearProjectile::MachPhysLinearProjectile
-(
+MachPhysLinearProjectile::MachPhysLinearProjectile(
     const MachPhysLinearProjectile& copyMe,
-    W4dEntity* pParent, const W4dTransform3d& localTransform,
-	CopyLights copyLights
-)
-:   W4dComposite( copyMe, pParent, localTransform, copyLights ),
-    pImpl_( _NEW( MachPhysLinearProjectileImpl( *copyMe.pImpl_ ) ) )
+    W4dEntity* pParent,
+    const W4dTransform3d& localTransform,
+    CopyLights copyLights)
+    : W4dComposite(copyMe, pParent, localTransform, copyLights)
+    , pImpl_(_NEW(MachPhysLinearProjectileImpl(*copyMe.pImpl_)))
 {
-	sharedCopyCtor();
+    sharedCopyCtor();
 
-	// If we were asked not to copy any composite lights, set a flag.
-	if (copyLights == DONT_COPY_LIGHTS)
-		pImpl_->lightsSuppressed_ = true;
+    // If we were asked not to copy any composite lights, set a flag.
+    if (copyLights == DONT_COPY_LIGHTS)
+        pImpl_->lightsSuppressed_ = true;
 }
 
 void MachPhysLinearProjectile::sharedCopyCtor()
 {
-    //Set invisible so it doesn't appear until required
-    visible( false );
+    // Set invisible so it doesn't appear until required
+    visible(false);
 
-    //Set flag indicating it will move
-    stationary( false );
+    // Set flag indicating it will move
+    stationary(false);
 
-    //Initialise the flight path using current position
+    // Initialise the flight path using current position
     MexPoint3d startPos = globalTransform().position();
-    pImpl_->flightPath_ = MexLine3d( startPos, startPos );
+    pImpl_->flightPath_ = MexLine3d(startPos, startPos);
 
     TEST_INVARIANT;
 }
@@ -87,18 +82,18 @@ MachPhysLinearProjectile::~MachPhysLinearProjectile()
 {
     TEST_INVARIANT;
 
-    //Stop any playing sound
-    W4dSoundManager::instance().stop( this );
+    // Stop any playing sound
+    W4dSoundManager::instance().stop(this);
 
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachPhysLinearProjectile::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysLinearProjectile& t )
+ostream& operator<<(ostream& o, const MachPhysLinearProjectile& t)
 {
 
     o << "MachPhysLinearProjectile " << (void*)&t << " start" << std::endl;
@@ -107,142 +102,129 @@ ostream& operator <<( ostream& o, const MachPhysLinearProjectile& t )
     return o;
 }
 
-PhysRelativeTime MachPhysLinearProjectile::move
-(
-    const PhysAbsoluteTime& startTime, const MachPhysWeaponData& data
-)
+PhysRelativeTime MachPhysLinearProjectile::move(const PhysAbsoluteTime& startTime, const MachPhysWeaponData& data)
 {
-    //Get the relevant data
+    // Get the relevant data
     MATHEX_SCALAR distance = data.range();
     MATHEX_SCALAR speed = data.projectileSpeed();
 
-    //Compute end position
-    MexTransform3d relativeMotion( MexPoint3d( distance, 0.0, 0.0 ) );
+    // Compute end position
+    MexTransform3d relativeMotion(MexPoint3d(distance, 0.0, 0.0));
     const MexTransform3d& startTransform = localTransform();
     MexTransform3d endTransform;
-    startTransform.transform( relativeMotion, &endTransform );
+    startTransform.transform(relativeMotion, &endTransform);
 
-    //Compute flight duration
+    // Compute flight duration
     PhysRelativeTime duration = distance / speed;
 
-    //Construct and apply the transform plan
-    PhysLinearMotionPlan* pPlan =
-        _NEW( PhysLinearMotionPlan( startTransform, endTransform, duration ) );
+    // Construct and apply the transform plan
+    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startTransform, endTransform, duration));
 
-    PhysMotionPlanPtr planPtr( pPlan );
+    PhysMotionPlanPtr planPtr(pPlan);
 
     W4dEntityPlan& entityPlan = entityPlanForEdit();
-    entityPlan.absoluteMotion( planPtr, startTime );
+    entityPlan.absoluteMotion(planPtr, startTime);
 
-    //Construct and apply a visibility plan to switch it on at startTime
-    //and off at end time
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-    visibilityPlanPtr->add( false, duration );
+    // Construct and apply a visibility plan to switch it on at startTime
+    // and off at end time
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    visibilityPlanPtr->add(false, duration);
 
-    entityPlan.visibilityPlan( visibilityPlanPtr, startTime );
+    entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
-    //Store default flight path data
+    // Store default flight path data
     MexPoint3d startPosition = startTransform.position();
     MexPoint3d endPosition = endTransform.position();
 
-    MexPoint3d globalStartPosition( startPosition );
-    MexPoint3d globalEndPosition( endPosition );
+    MexPoint3d globalStartPosition(startPosition);
+    MexPoint3d globalEndPosition(endPosition);
     const MexTransform3d& parentTransform = pParent()->globalTransform();
-    parentTransform.transform( &globalStartPosition );
-    parentTransform.transform( &globalEndPosition );
+    parentTransform.transform(&globalStartPosition);
+    parentTransform.transform(&globalEndPosition);
 
-    flightStartTime( startTime );
-    flightDuration( duration );
-    flightPath( MexLine3d( globalStartPosition, globalEndPosition ) );
+    flightStartTime(startTime);
+    flightDuration(duration);
+    flightPath(MexLine3d(globalStartPosition, globalEndPosition));
 
-    //Make the subclass call to apply any extra bits.
-    doMove( startPosition, endPosition, duration );
+    // Make the subclass call to apply any extra bits.
+    doMove(startPosition, endPosition, duration);
 
     return duration;
 }
 
-PhysRelativeTime MachPhysLinearProjectile::beDestroyedAt
-(
-    const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType
-)
+PhysRelativeTime MachPhysLinearProjectile::beDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType)
 {
-    //Construct and apply the visibility plan switching the projectile off
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( false ) ) );
-    entityPlanForEdit().visibilityPlan( visibilityPlanPtr, time );
+    // Construct and apply the visibility plan switching the projectile off
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    entityPlanForEdit().visibilityPlan(visibilityPlanPtr, time);
 
-    return doBeDestroyedAt( time, strikeType );
+    return doBeDestroyedAt(time, strikeType);
 }
 
-//virtual
-void MachPhysLinearProjectile::doMove
-(
-    const MexPoint3d&, const MexPoint3d&, const PhysRelativeTime&
-)
+// virtual
+void MachPhysLinearProjectile::doMove(const MexPoint3d&, const MexPoint3d&, const PhysRelativeTime&)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
-PhysRelativeTime MachPhysLinearProjectile::doBeDestroyedAt
-(
-    const PhysAbsoluteTime&, MachPhys::StrikeType
-)
+// virtual
+PhysRelativeTime MachPhysLinearProjectile::doBeDestroyedAt(const PhysAbsoluteTime&, MachPhys::StrikeType)
 {
-    //Do nothing taking no time
+    // Do nothing taking no time
     return 0.0;
 }
 
-//virtual
-bool MachPhysLinearProjectile::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysLinearProjectile::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
 const PhysAbsoluteTime& MachPhysLinearProjectile::flightStartTime() const
 {
-    _CONST_CAST( MachPhysLinearProjectile*, this)->updateFlightData();
+    _CONST_CAST(MachPhysLinearProjectile*, this)->updateFlightData();
     return pImpl_->flightStartTime_;
 }
 
 const PhysRelativeTime& MachPhysLinearProjectile::flightDuration() const
 {
-    _CONST_CAST( MachPhysLinearProjectile*, this)->updateFlightData();
+    _CONST_CAST(MachPhysLinearProjectile*, this)->updateFlightData();
     return pImpl_->flightDuration_;
 }
 
 const MexLine3d& MachPhysLinearProjectile::flightPath() const
 {
-    _CONST_CAST( MachPhysLinearProjectile*, this)->updateFlightData();
+    _CONST_CAST(MachPhysLinearProjectile*, this)->updateFlightData();
     return pImpl_->flightPath_;
 }
 
-void MachPhysLinearProjectile::flightStartTime( const PhysAbsoluteTime& startTime )
+void MachPhysLinearProjectile::flightStartTime(const PhysAbsoluteTime& startTime)
 {
     pImpl_->flightStartTime_ = startTime;
 }
 
-void MachPhysLinearProjectile::flightDuration( const PhysRelativeTime& duration )
+void MachPhysLinearProjectile::flightDuration(const PhysRelativeTime& duration)
 {
     pImpl_->flightDuration_ = duration;
 }
 
-void MachPhysLinearProjectile::flightPath( const MexLine3d& path )
+void MachPhysLinearProjectile::flightPath(const MexLine3d& path)
 {
     pImpl_->flightPath_ = path;
 }
 
-//virtual
+// virtual
 void MachPhysLinearProjectile::updateFlightData()
 {
-    //Intentionally empty
+    // Intentionally empty
 }
 
-MachPhysLinearProjectile::MachPhysLinearProjectile( PerConstructor con )
-: W4dComposite( con )
+MachPhysLinearProjectile::MachPhysLinearProjectile(PerConstructor con)
+    : W4dComposite(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysLinearProjectile& projectile )
+void perWrite(PerOstream& ostr, const MachPhysLinearProjectile& projectile)
 {
     const W4dComposite& base = projectile;
 
@@ -250,7 +232,7 @@ void perWrite( PerOstream& ostr, const MachPhysLinearProjectile& projectile )
     ostr << projectile.pImpl_;
 }
 
-void perRead( PerIstream& istr, MachPhysLinearProjectile& projectile )
+void perRead(PerIstream& istr, MachPhysLinearProjectile& projectile)
 {
     W4dComposite& base = projectile;
 
@@ -258,81 +240,79 @@ void perRead( PerIstream& istr, MachPhysLinearProjectile& projectile )
     istr >> projectile.pImpl_;
 }
 
-//static
-bool MachPhysLinearProjectile::impactData
-(
+// static
+bool MachPhysLinearProjectile::impactData(
     W4dEntity& target,
     const MexLine3d& fromDirection,
     MexPoint3d* pImpactPoint,
-    MexVec3* pUnitDirection
-)
+    MexVec3* pUnitDirection)
 {
-    PRE( fromDirection.length() != 0.0 );
+    PRE(fromDirection.length() != 0.0);
 
-    //Check for the intersection between the direction line, and the machine point.
+    // Check for the intersection between the direction line, and the machine point.
     MATHEX_SCALAR distance;
-    bool result = target.intersectsLine( fromDirection, &distance, W4dEntity::HIGH );
-    if( result )
+    bool result = target.intersectsLine(fromDirection, &distance, W4dEntity::HIGH);
+    if (result)
     {
-        //Get the line length. Hence compute the actual point of impact, and
-        //unit direction vector back in the direction of bolter flight.
+        // Get the line length. Hence compute the actual point of impact, and
+        // unit direction vector back in the direction of bolter flight.
         MATHEX_SCALAR length = fromDirection.length();
-        *pUnitDirection = MexVec3( fromDirection.end1(), fromDirection.end2(), length );
-        *pImpactPoint = fromDirection.pointAtDistance( distance );
+        *pUnitDirection = MexVec3(fromDirection.end1(), fromDirection.end2(), length);
+        *pImpactPoint = fromDirection.pointAtDistance(distance);
         (*pUnitDirection) *= -1.0;
 
-        //Convert the point and direction into local coordinates relative to the machine
+        // Convert the point and direction into local coordinates relative to the machine
         MexTransform3d inverseTransform = target.globalTransform();
         inverseTransform.invert();
 
-        inverseTransform.transform( pImpactPoint );
-        inverseTransform.transform( pUnitDirection );
+        inverseTransform.transform(pImpactPoint);
+        inverseTransform.transform(pUnitDirection);
     }
 
     return result;
 }
 
-void MachPhysLinearProjectile::planetSurface( MachPhysPlanetSurface* pSurface )
+void MachPhysLinearProjectile::planetSurface(MachPhysPlanetSurface* pSurface)
 {
-    CB_DEPIMPL( MachPhysPlanetSurface*, pPlanetSurface_ );
+    CB_DEPIMPL(MachPhysPlanetSurface*, pPlanetSurface_);
     pPlanetSurface_ = pSurface;
 }
 
 bool MachPhysLinearProjectile::hasPlanetSurface() const
 {
-    CB_DEPIMPL( MachPhysPlanetSurface*, pPlanetSurface_ );
-    return pPlanetSurface_ != NULL;
+    CB_DEPIMPL(MachPhysPlanetSurface*, pPlanetSurface_);
+    return pPlanetSurface_ != nullptr;
 }
 
 MachPhysPlanetSurface& MachPhysLinearProjectile::planetSurface() const
 {
-    PRE( hasPlanetSurface() );
-    CB_DEPIMPL( MachPhysPlanetSurface*, pPlanetSurface_ );
+    PRE(hasPlanetSurface());
+    CB_DEPIMPL(MachPhysPlanetSurface*, pPlanetSurface_);
     return *pPlanetSurface_;
 }
 
-MexPoint3d MachPhysLinearProjectile::flightPosition( const PhysAbsoluteTime& time ) const
+MexPoint3d MachPhysLinearProjectile::flightPosition(const PhysAbsoluteTime& time) const
 {
-    //get linear path data
+    // get linear path data
     PhysAbsoluteTime startTime = flightStartTime();
     PhysRelativeTime duration = flightDuration();
     const MexLine3d& path = flightPath();
 
-    //Work out how far along the path time represents
+    // Work out how far along the path time represents
     PhysRelativeTime timeIntoFlight = time - startTime;
     const MexPoint3d& startPosition = path.end1();
     const MexPoint3d& endPosition = path.end2();
     MexPoint3d position;
-    if( time <= 0.0 )
+    if (time <= 0.0)
         position = startPosition;
-    else if( time >= duration )
+    else if (time >= duration)
         position = endPosition;
     else
     {
         MATHEX_SCALAR f = timeIntoFlight / duration;
-        position.x( startPosition.x() * (1.0 - f) + endPosition.x() * f );
-        position.y( startPosition.y() * (1.0 - f) + endPosition.y() * f );
-        position.z( startPosition.z() * (1.0 - f) + endPosition.z() * f );
+        position.x(startPosition.x() * (1.0 - f) + endPosition.x() * f);
+        position.y(startPosition.y() * (1.0 - f) + endPosition.y() * f);
+        position.z(startPosition.z() * (1.0 - f) + endPosition.z() * f);
     }
 
     return position;
@@ -340,19 +320,19 @@ MexPoint3d MachPhysLinearProjectile::flightPosition( const PhysAbsoluteTime& tim
 
 bool MachPhysLinearProjectile::lightsSuppressed() const
 {
-	return pImpl_->lightsSuppressed_;
+    return pImpl_->lightsSuppressed_;
 }
 
 void MachPhysLinearProjectile::setLauncherControl(MachPhysMachine::ControlType newControlType)
 {
-    CB_DEPIMPL( MachPhysMachine::ControlType, launchControlType_ );
-	launchControlType_ = newControlType;
+    CB_DEPIMPL(MachPhysMachine::ControlType, launchControlType_);
+    launchControlType_ = newControlType;
 }
 
 MachPhysMachine::ControlType MachPhysLinearProjectile::getLauncherControl() const
 {
-    CB_DEPIMPL( MachPhysMachine::ControlType, launchControlType_ );
-	return launchControlType_;
+    CB_DEPIMPL(MachPhysMachine::ControlType, launchControlType_);
+    return launchControlType_;
 }
 
 /* End LINEPROJ.CPP *************************************************/

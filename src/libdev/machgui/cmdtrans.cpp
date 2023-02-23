@@ -26,30 +26,28 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 
-
-MachGuiTransportCommand::MachGuiTransportCommand( MachInGameScreen* pInGameScreen, bool explicitOrder )
-:   MachGuiCommand( pInGameScreen ),
-    pSmeltingBuilding_( NULL ),
-	explicitOrder_( explicitOrder ),
-    hadFinalPick_( false )
+MachGuiTransportCommand::MachGuiTransportCommand(MachInGameScreen* pInGameScreen, bool explicitOrder)
+    : MachGuiCommand(pInGameScreen)
+    , pSmeltingBuilding_(nullptr)
+    , explicitOrder_(explicitOrder)
+    , hadFinalPick_(false)
 {
-	suppliers_.reserve( 10 );
+    suppliers_.reserve(10);
     TEST_INVARIANT;
 }
 
 MachGuiTransportCommand::~MachGuiTransportCommand()
 {
-	clearAndDetachFromAllSuppliers();
+    clearAndDetachFromAllSuppliers();
     TEST_INVARIANT;
-
 }
 
 void MachGuiTransportCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiTransportCommand& t )
+ostream& operator<<(ostream& o, const MachGuiTransportCommand& t)
 {
 
     o << "MachGuiTransportCommand " << (void*)&t << " start" << std::endl;
@@ -58,228 +56,226 @@ ostream& operator <<( ostream& o, const MachGuiTransportCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiTransportCommand::pickOnTerrain( const MexPoint3d& , bool, bool, bool )
+// virtual
+void MachGuiTransportCommand::pickOnTerrain(const MexPoint3d&, bool, bool, bool)
 {
-
 }
 
-//virtual
-void MachGuiTransportCommand::pickOnActor
-(
-    MachActor* pActor, bool, bool shiftPressed, bool
-)
+// virtual
+void MachGuiTransportCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
-	bool myRace = ( MachLogRaces::instance().pcController().race() == pActor->race() );
+    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
 
-    //Check for a building or machine
-    if( ( pActor->objectType() == MachLog::MINE and pActor->asMine().worthVisiting() )
-		or ( pActor->objectIsCanSmelt() and not myRace ) )
+    // Check for a building or machine
+    if ((pActor->objectType() == MachLog::MINE and pActor->asMine().worthVisiting())
+        or (pActor->objectIsCanSmelt() and not myRace))
     {
-		MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
+        MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-		if( not supplierIsDuplicate( pCandidateConstruction ) )
-		{
-			if( not shiftPressed )
-				clearAndDetachFromAllSuppliers();
+        if (not supplierIsDuplicate(pCandidateConstruction))
+        {
+            if (not shiftPressed)
+                clearAndDetachFromAllSuppliers();
 
-			// Add to list of suppliers
-        	suppliers_.push_back( pCandidateConstruction );
+            // Add to list of suppliers
+            suppliers_.push_back(pCandidateConstruction);
 
-        	pCandidateConstruction->attach( this );
-		}
+            pCandidateConstruction->attach(this);
+        }
     }
 
-    if( pActor->objectIsCanSmelt() and myRace )
+    if (pActor->objectIsCanSmelt() and myRace)
     {
-		pSmeltingBuilding_ = &pActor->asConstruction();
-       	hadFinalPick_ = true;
+        pSmeltingBuilding_ = &pActor->asConstruction();
+        hadFinalPick_ = true;
     }
-	else
-	{
-		// Waypoint click (i.e. not final click)
-		MachGuiSoundManager::instance().playSound( "gui/sounds/waypoint.wav" );
-	}
+    else
+    {
+        // Waypoint click (i.e. not final click)
+        MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
+    }
 }
 
-//virtual
-bool MachGuiTransportCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiTransportCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Administrators and aggressors can Transport
+    // Administrators and aggressors can Transport
     MachLog::ObjectType objectType = actor.objectType();
     return objectType == MachLog::RESOURCE_CARRIER and actor.asResourceCarrier().isNormalResourceCarrier();
 }
 
-//virtual
+// virtual
 bool MachGuiTransportCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiTransportCommand::doApply( MachActor* pActor, string* )
+// virtual
+bool MachGuiTransportCommand::doApply(MachActor* pActor, string*)
 {
-    PRE( pActor->objectIsMachine() );
-	PRE( pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isNormalResourceCarrier() );
+    PRE(pActor->objectIsMachine());
+    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isNormalResourceCarrier());
 
-	if( not hasPlayedVoiceMail() )
-	{
-		// if we're already transporting, we're basically just changing implementation details, so give a "tasked" e-mail
-		// instead( "OK." "Alright!" etc.
+    if (not hasPlayedVoiceMail())
+    {
+        // if we're already transporting, we're basically just changing implementation details, so give a "tasked"
+        // e-mail instead( "OK." "Alright!" etc.
 
-		if( pActor->asResourceCarrier().isTransporting() )
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TASKED );
-		else
-			MachLogVoiceMailManager::instance().postNewMail( VID_RESOURCE_CARRIER_TRANSPORTING, pActor->id(), pActor->race() );
+        if (pActor->asResourceCarrier().isTransporting())
+            MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TASKED);
+        else
+            MachLogVoiceMailManager::instance().postNewMail(
+                VID_RESOURCE_CARRIER_TRANSPORTING,
+                pActor->id(),
+                pActor->race());
 
-		hasPlayedVoiceMail( true );
-	}
+        hasPlayedVoiceMail(true);
+    }
 
-	if( not suppliers_.empty() )
-	{
-		pActor->asResourceCarrier().setSuppliers( suppliers_ );
-	}
-	else
-	{
-		// if we're ONLY specifying a destination here, and this is an explicit order, then wipe out
-		// any supplier list currently held in the resource carrier
-		if( explicitOrder_ )
-			pActor->asResourceCarrier().clearSuppliers();
-	}
+    if (not suppliers_.empty())
+    {
+        pActor->asResourceCarrier().setSuppliers(suppliers_);
+    }
+    else
+    {
+        // if we're ONLY specifying a destination here, and this is an explicit order, then wipe out
+        // any supplier list currently held in the resource carrier
+        if (explicitOrder_)
+            pActor->asResourceCarrier().clearSuppliers();
+    }
 
-	ASSERT( pSmeltingBuilding_ , "Unexpected NULL for pSmeltingBuilding_" );
+    ASSERT(pSmeltingBuilding_, "Unexpected NULL for pSmeltingBuilding_");
 
-	pActor->asResourceCarrier().setSmeltingBuilding( pSmeltingBuilding_ );
+    pActor->asResourceCarrier().setSmeltingBuilding(pSmeltingBuilding_);
 
     return true;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiTransportCommand::cursorOnTerrain( const MexPoint3d& location, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiTransportCommand::cursorOnTerrain(const MexPoint3d& location, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
-    if( isPointValidOnTerrain( location, IGNORE_SELECTED_ACTOR_OBSTACLES  ) )
+    if (isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::MOVETO_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiTransportCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiTransportCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
-    bool myRace = ( MachLogRaces::instance().pcController().race() == pActor->race() );
+    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
 
-	MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
+    MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     MachLog::ObjectType objectType = pActor->objectType();
 
-    if( ( objectType == MachLog::MINE and pActor->asMine().worthVisiting() )
-		or ( objectType == MachLog::SMELTER and not myRace) )
-	{
-		cursor = MachGui::PICKUP_CURSOR;
-	}
-    else if( ( objectType == MachLog::SMELTER or objectType == MachLog::POD ) and myRace )
+    if ((objectType == MachLog::MINE and pActor->asMine().worthVisiting())
+        or (objectType == MachLog::SMELTER and not myRace))
+    {
+        cursor = MachGui::PICKUP_CURSOR;
+    }
+    else if ((objectType == MachLog::SMELTER or objectType == MachLog::POD) and myRace)
         cursor = MachGui::TRANSPORT_CURSOR;
 
     return cursor;
 }
 
-//virtual
-void MachGuiTransportCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiTransportCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiTransportCommand::clone() const
 {
-    return _NEW( MachGuiTransportCommand( &inGameScreen() ) );
+    return _NEW(MachGuiTransportCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiTransportCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/transprt.bmp", "gui/commands/transprt.bmp" );
+    static std::pair<string, string> names("gui/commands/transprt.bmp", "gui/commands/transprt.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiTransportCommand::cursorPromptStringId() const
 {
     return IDS_TRANSPORT_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiTransportCommand::commandPromptStringid() const
 {
     return IDS_TRANSPORT_START;
 }
 
-//virtual
-bool MachGuiTransportCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiTransportCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_T and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_T and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-bool MachGuiTransportCommand::supplierIsDuplicate( const MachLogConstruction* pCandidateConstruction ) const
+bool MachGuiTransportCommand::supplierIsDuplicate(const MachLogConstruction* pCandidateConstruction) const
 {
-	bool result = false;
+    bool result = false;
 
-	ctl_pvector< MachLogConstruction >::const_iterator i = find( suppliers_.begin(), suppliers_.end(), pCandidateConstruction );
+    ctl_pvector<MachLogConstruction>::const_iterator i
+        = find(suppliers_.begin(), suppliers_.end(), pCandidateConstruction);
 
-	if( i != suppliers_.end() )
-		result = true;
+    if (i != suppliers_.end())
+        result = true;
 
-	return result;
+    return result;
 }
 
 void MachGuiTransportCommand::clearAndDetachFromAllSuppliers()
 {
-	while( not suppliers_.empty() )
-	{
-		suppliers_.back()->detach( this );
-		suppliers_.pop_back();
-	}
+    while (not suppliers_.empty())
+    {
+        suppliers_.back()->detach(this);
+        suppliers_.pop_back();
+    }
 }
 
-//virtual
-bool MachGuiTransportCommand::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/ )
+// virtual
+bool MachGuiTransportCommand::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/)
 {
-	bool stayAttached = true;
+    bool stayAttached = true;
 
-	switch( event )
-	{
-	case W4dSubject::DELETED:
-	{
-		ctl_pvector< MachLogConstruction >::iterator i = find( suppliers_.begin(), suppliers_.end(), pSubject );
-		if( i != suppliers_.end() )
-		{
-			// one of our constructions has been destroyed
-			stayAttached = false;
-			suppliers_.erase( i );
-		}
-	}
-	break;
+    switch (event)
+    {
+        case W4dSubject::DELETED:
+            {
+                ctl_pvector<MachLogConstruction>::iterator i = find(suppliers_.begin(), suppliers_.end(), pSubject);
+                if (i != suppliers_.end())
+                {
+                    // one of our constructions has been destroyed
+                    stayAttached = false;
+                    suppliers_.erase(i);
+                }
+            }
+            break;
 
-	default:
-		;
-	}
+        default:;
+    }
 
-	return stayAttached;
+    return stayAttached;
 }
 
-
-//virtual
-void MachGuiTransportCommand::domainDeleted( W4dDomain*  )
+// virtual
+void MachGuiTransportCommand::domainDeleted(W4dDomain*)
 {
-	//intentionally empty...override as necessary
+    // intentionally empty...override as necessary
 }
 
 /* End CMDATTAC.CPP **************************************************/

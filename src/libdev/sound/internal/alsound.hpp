@@ -14,7 +14,7 @@
 */
 
 #ifndef A_L_SOUND_HPP
-	#define A_L_SOUND_HPP
+#define A_L_SOUND_HPP
 
 #include "sound/snd.hpp"
 #include "sound/sndparam.hpp"
@@ -31,70 +31,70 @@ class MexTransform3d;
 
 ////////////////////////////////////////////////////////////
 
-	/** SINGLETON **/
-	class ALSound
-	{
-	public:
+/** SINGLETON **/
+class ALSound
+{
+public:
+    enum PriorityLevel
+    {
+        WRITE_PRIMARY,
+        EXCLUSIVE,
+        HIGH,
+        NORMAL
+    };
 
-		enum PriorityLevel {
-			WRITE_PRIMARY,
-			EXCLUSIVE,
-			HIGH,
-			NORMAL
-		};
+    enum SOUNDCARD
+    {
+        DIRECTSOUND,
+        AUREAL,
+        UNKNOWN
+    };
 
-		enum SOUNDCARD {
-			DIRECTSOUND,
-			AUREAL,
-			UNKNOWN
-		};
+    /** SINGLETON IMPLEMENTATION **/
+    static void initialise(const SndMixerParameters& params, PriorityLevel p);
+    static ALSound& instance();
+    static void listDevices(const ALCchar*);
 
-		/** SINGLETON IMPLEMENTATION **/
-		static void initialise( const SndMixerParameters& params, PriorityLevel p );
-		static ALSound& instance();
-		static void listDevices(const ALCchar*);
+    void shutdown();
 
-		void shutdown( );
+    void compact();
 
-		void compact();
+    bool listenerPosition(const MexVec3& newval);
+    MexPoint3d listenerPosition() const;
 
-		bool listenerPosition(const MexVec3& newval);
-		MexPoint3d listenerPosition() const;
+    void listenerOrientation(const MexEulerAngles& newOrientation);
+    MexEulerAngles listenerOrientation();
 
-		void listenerOrientation(const MexEulerAngles& newOrientation);
-		MexEulerAngles listenerOrientation();
+    void listenerTransform(const MexTransform3d& newTransform);
+    MexTransform3d listenerTransform();
 
-		void listenerTransform(const MexTransform3d& newTransform);
-		MexTransform3d listenerTransform();
+    bool is3DSystem();
 
+    void commitDeferredSettings();
 
-		bool is3DSystem();
+protected:
+    IDirectSound* pIDirectSound() const;
+    ALSound();
+    ~ALSound();
 
-		void commitDeferredSettings();
+private:
+    /** revoked methods **/
+    ALSound(const ALSound&);
+    ALSound& operator=(const ALSound&);
 
-	protected:
-		IDirectSound* pIDirectSound() const;
-		ALSound();
-		~ALSound();
+    static bool& isInitialised();
 
-	private:
-		/** revoked methods **/
-		ALSound( const ALSound& );
-		ALSound& operator =( const ALSound& );
+    static SOUNDCARD soundcard_;
 
-		static bool& isInitialised();
+    static ALCcontext* alContext_;
+    static ALCdevice* alDevice_;
 
-		static SOUNDCARD soundcard_;
+    bool is3DSystem_;
+    SndMixer::SampleList preLoadedSamples_;
 
-        static ALCcontext *alContext_;
-        static ALCdevice *alDevice_;
-
-		bool is3DSystem_;
-		SndMixer::SampleList preLoadedSamples_;
-
-		friend class SndMixer;
-		friend class SndWaveManager;
-	};
+    friend class SndMixer;
+    friend class SndWaveManager;
+};
 
 ////////////////////////////////////////////////////////////
 

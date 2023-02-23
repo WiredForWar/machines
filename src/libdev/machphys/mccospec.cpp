@@ -7,25 +7,27 @@
 
 #include "machphys/mccospec.hpp"
 
-MachPhysMachineSpec::MachPhysMachineSpec
-(
-     MachPhys::MachineType type, int subType, uint hwLevel, uint swLevel, MachPhys::Race race
-)
-:   type_( type ),
-    subType_( subType ),
-    hwLevel_( hwLevel ),
-    swLevel_( swLevel ),
-    race_( race )
+MachPhysMachineSpec::MachPhysMachineSpec(
+    MachPhys::MachineType type,
+    int subType,
+    uint hwLevel,
+    uint swLevel,
+    MachPhys::Race race)
+    : type_(type)
+    , subType_(subType)
+    , hwLevel_(hwLevel)
+    , swLevel_(swLevel)
+    , race_(race)
 {
     TEST_INVARIANT;
 }
 
 MachPhysMachineSpec::MachPhysMachineSpec()
-:   type_( MachPhys::AGGRESSOR ),
-    subType_( 0 ),
-    hwLevel_( 1 ),
-    swLevel_( 1 ),
-    race_( MachPhys::RED )
+    : type_(MachPhys::AGGRESSOR)
+    , subType_(0)
+    , hwLevel_(1)
+    , swLevel_(1)
+    , race_(MachPhys::RED)
 {
     TEST_INVARIANT;
 }
@@ -33,15 +35,14 @@ MachPhysMachineSpec::MachPhysMachineSpec()
 MachPhysMachineSpec::~MachPhysMachineSpec()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysMachineSpec::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMachineSpec& t )
+ostream& operator<<(ostream& o, const MachPhysMachineSpec& t)
 {
 
     o << "MachPhysMachineSpec " << (void*)&t << " start" << std::endl;
@@ -75,70 +76,62 @@ uint MachPhysMachineSpec::swLevel() const
     return swLevel_;
 }
 
-void MachPhysMachineSpec::type( MachPhys::MachineType type )
+void MachPhysMachineSpec::type(MachPhys::MachineType type)
 {
     type_ = type;
 }
 
-void MachPhysMachineSpec::subType( int subType )
+void MachPhysMachineSpec::subType(int subType)
 {
     subType_ = subType;
 }
 
-void MachPhysMachineSpec::hwLevel( uint level )
+void MachPhysMachineSpec::hwLevel(uint level)
 {
     hwLevel_ = level;
 }
 
-void MachPhysMachineSpec::swLevel( uint level )
+void MachPhysMachineSpec::swLevel(uint level)
 {
     swLevel_ = level;
 }
 
-void MachPhysMachineSpec::race( MachPhys::Race race )
+void MachPhysMachineSpec::race(MachPhys::Race race)
 {
     race_ = race;
 }
 
-bool operator <( const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs )
+bool operator<(const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs)
 {
-    return lhs.type_ < rhs.type_  or
-               (lhs.type_ == rhs.type_  and
-                   (lhs.subType_ < rhs.subType_  or
-                       (lhs.subType_ == rhs.subType_  and
-                           (lhs.hwLevel_ < rhs.hwLevel_  or
-                               (lhs.hwLevel_ == rhs.hwLevel_  and
-                                   (lhs.swLevel_ < rhs.swLevel_  or
-                                       (lhs.swLevel_ == rhs.swLevel_  and
-                                           (lhs.race_ < rhs.race_ ) ) ) ) ) ) ) );
+    return lhs.type_ < rhs.type_
+        or (lhs.type_ == rhs.type_
+            and (lhs.subType_ < rhs.subType_ or (lhs.subType_ == rhs.subType_ and (lhs.hwLevel_ < rhs.hwLevel_ or (lhs.hwLevel_ == rhs.hwLevel_ and (lhs.swLevel_ < rhs.swLevel_ or (lhs.swLevel_ == rhs.swLevel_ and (lhs.race_ < rhs.race_))))))));
 }
 
-bool operator ==( const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs )
+bool operator==(const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs)
 {
-    return lhs.type_ == rhs.type_  and
-           lhs.subType_ == rhs.subType_  and
-           lhs.hwLevel_ == rhs.hwLevel_  and
-           lhs.swLevel_ == rhs.swLevel_  and
-           lhs.race_ == rhs.race_;
+    return lhs.type_ == rhs.type_ and lhs.subType_ == rhs.subType_ and lhs.hwLevel_ == rhs.hwLevel_
+        and lhs.swLevel_ == rhs.swLevel_ and lhs.race_ == rhs.race_;
 }
 
-MachPhysConstructionSpec::MachPhysConstructionSpec
-(
-     MachPhys::ConstructionType type, int subType, uint hwLevel, MachPhys::Race race
-)
-:   type_( type ),
-    subType_( subType ),
-    hwLevel_( hwLevel ),
-    race_( race )
+MachPhysConstructionSpec::MachPhysConstructionSpec(
+    MachPhys::ConstructionType type,
+    int subType,
+    uint hwLevel,
+    MachPhys::Race race)
+    : type_(type)
+    , subType_(subType)
+    , hwLevel_(hwLevel)
+    , race_(race)
 {
     TEST_INVARIANT;
 }
 
 MachPhysConstructionSpec::MachPhysConstructionSpec()
-:   type_( MachPhys::BEACON ),
-    subType_( 0 ),
-    hwLevel_( 1 ),
-    race_( MachPhys::RED )
+    : type_(MachPhys::BEACON)
+    , subType_(0)
+    , hwLevel_(1)
+    , race_(MachPhys::RED)
 {
     TEST_INVARIANT;
 }
@@ -146,15 +139,14 @@ MachPhysConstructionSpec::MachPhysConstructionSpec()
 MachPhysConstructionSpec::~MachPhysConstructionSpec()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysConstructionSpec::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysConstructionSpec& t )
+ostream& operator<<(ostream& o, const MachPhysConstructionSpec& t)
 {
 
     o << "MachPhysConstructionSpec " << (void*)&t << " start" << std::endl;
@@ -189,75 +181,61 @@ uint MachPhysConstructionSpec::hwLevel() const
     return hwLevel_;
 }
 
-void MachPhysConstructionSpec::type( MachPhys::ConstructionType type )
+void MachPhysConstructionSpec::type(MachPhys::ConstructionType type)
 {
     type_ = type;
 }
 
-void MachPhysConstructionSpec::subType( int subType )
+void MachPhysConstructionSpec::subType(int subType)
 {
     subType_ = subType;
 }
 
-void MachPhysConstructionSpec::hwLevel( uint level )
+void MachPhysConstructionSpec::hwLevel(uint level)
 {
     hwLevel_ = level;
 }
 
-void MachPhysConstructionSpec::race( MachPhys::Race race )
+void MachPhysConstructionSpec::race(MachPhys::Race race)
 {
     race_ = race;
 }
 
-bool operator <( const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs )
+bool operator<(const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs)
 {
-    return lhs.type_ < rhs.type_  or
-               (lhs.type_ == rhs.type_  and
-                   (lhs.subType_ < rhs.subType_  or
-                       (lhs.subType_ == rhs.subType_  and
-                           (lhs.hwLevel_ < rhs.hwLevel_  or
-                               (lhs.hwLevel_ == rhs.hwLevel_  and
-                                   (lhs.race_ < rhs.race_ ) ) ) ) ) );
+    return lhs.type_ < rhs.type_
+        or (lhs.type_ == rhs.type_
+            and (lhs.subType_ < rhs.subType_ or (lhs.subType_ == rhs.subType_ and (lhs.hwLevel_ < rhs.hwLevel_ or (lhs.hwLevel_ == rhs.hwLevel_ and (lhs.race_ < rhs.race_))))));
 }
 
-bool operator ==( const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs )
+bool operator==(const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs)
 {
-    return lhs.type_ == rhs.type_  and
-           lhs.subType_ == rhs.subType_  and
-           lhs.hwLevel_ == rhs.hwLevel_  and
-           lhs.race_ == rhs.race_;
+    return lhs.type_ == rhs.type_ and lhs.subType_ == rhs.subType_ and lhs.hwLevel_ == rhs.hwLevel_
+        and lhs.race_ == rhs.race_;
 }
 
-bool MachPhysMachineSpec_Less::operator()
-(
-    const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs
-) const
+bool MachPhysMachineSpec_Less::operator()(const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs) const
 {
     return lhs < rhs;
 }
 
-bool MachPhysConstructionSpec_Less::operator()
-(
-    const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs
-) const
+bool MachPhysConstructionSpec_Less::operator()(const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs)
+    const
 {
     return lhs < rhs;
 }
 
-MachPhysWeaponSpec::MachPhysWeaponSpec
-(
-     MachPhys::WeaponType type, MachPhys::Race race
-)
-:   type_( type ),
-    race_( race )
+MachPhysWeaponSpec::MachPhysWeaponSpec(MachPhys::WeaponType type, MachPhys::Race race)
+    : type_(type)
+    , race_(race)
 {
     TEST_INVARIANT;
 }
 
 MachPhysWeaponSpec::MachPhysWeaponSpec()
-//:   type_( MachPhys::L_BOLTER ),
-:   type_( _STATIC_CAST(MachPhys::WeaponType, MachPhys::L_BOLTER )),
-    race_( MachPhys::RED )
+    //:   type_( MachPhys::L_BOLTER ),
+    : type_(_STATIC_CAST(MachPhys::WeaponType, MachPhys::L_BOLTER))
+    , race_(MachPhys::RED)
 {
     TEST_INVARIANT;
 }
@@ -265,15 +243,14 @@ MachPhysWeaponSpec::MachPhysWeaponSpec()
 MachPhysWeaponSpec::~MachPhysWeaponSpec()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysWeaponSpec::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysWeaponSpec& t )
+ostream& operator<<(ostream& o, const MachPhysWeaponSpec& t)
 {
 
     o << "MachPhysWeaponSpec " << (void*)&t << " start" << std::endl;
@@ -292,33 +269,27 @@ MachPhys::Race MachPhysWeaponSpec::race() const
     return race_;
 }
 
-void MachPhysWeaponSpec::type( MachPhys::WeaponType type )
+void MachPhysWeaponSpec::type(MachPhys::WeaponType type)
 {
     type_ = type;
 }
 
-void MachPhysWeaponSpec::race( MachPhys::Race race )
+void MachPhysWeaponSpec::race(MachPhys::Race race)
 {
     race_ = race;
 }
 
-bool operator <( const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs )
+bool operator<(const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs)
 {
-    return lhs.type_ < rhs.type_  or
-               (lhs.type_ == rhs.type_  and
-                   (lhs.race_ < rhs.race_ ) );
+    return lhs.type_ < rhs.type_ or (lhs.type_ == rhs.type_ and (lhs.race_ < rhs.race_));
 }
 
-bool operator ==( const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs )
+bool operator==(const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs)
 {
-    return lhs.type_ == rhs.type_  and
-           lhs.race_ == rhs.race_;
+    return lhs.type_ == rhs.type_ and lhs.race_ == rhs.race_;
 }
 
-bool MachPhysWeaponSpec_Less::operator()
-(
-    const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs
-) const
+bool MachPhysWeaponSpec_Less::operator()(const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs) const
 {
     return lhs < rhs;
 }

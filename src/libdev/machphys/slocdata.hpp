@@ -1,5 +1,5 @@
 /*
- * S L O C D A T A . H P P 
+ * S L O C D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,37 +18,35 @@
 class MachPhysSpyLocatorData : public MachPhysMachineData
 {
 public:
-    ~MachPhysSpyLocatorData();
+    ~MachPhysSpyLocatorData() override;
 
     void CLASS_INVARIANT;
 
-	// Get methods public
-	int				mineCapacity() const;
-	MachPhys::ResearchUnits	downloadRate() const;
+    // Get methods public
+    int mineCapacity() const;
+    MachPhys::ResearchUnits downloadRate() const;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSpyLocatorData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSpyLocatorData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysSpyLocatorData( const MachPhysSpyLocatorData& );
+    MachPhysSpyLocatorData(const MachPhysSpyLocatorData&);
 
     // Operation deliberately revoked
-    MachPhysSpyLocatorData& operator =( const MachPhysSpyLocatorData& );
+    MachPhysSpyLocatorData& operator=(const MachPhysSpyLocatorData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysSpyLocatorData& );
+    bool operator==(const MachPhysSpyLocatorData&);
 
-	// Set methods private
-	void mineCapacity( int );
-	void downloadRate( MachPhys::ResearchUnits );
+    // Set methods private
+    void mineCapacity(int);
+    void downloadRate(MachPhys::ResearchUnits);
 
     MachPhysSpyLocatorData();
-	int					mineCapacity_;
-	MachPhys::ResearchUnits		downloadRate_;
-
+    int mineCapacity_;
+    MachPhys::ResearchUnits downloadRate_;
 };
-
 
 #endif
 

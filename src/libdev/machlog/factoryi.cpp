@@ -1,5 +1,5 @@
 /*
- * F A C T O R Y I . C P P 
+ * F A C T O R Y I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,14 +9,14 @@
 #include "sim/manager.hpp"
 #include "machlog/produnit.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogFactoryImpl );
+PER_DEFINE_PERSISTENT(MachLogFactoryImpl);
 
-MachLogFactoryImpl::MachLogFactoryImpl( MachPhys::FactorySubType subType )
-:	amountBuilt_( 0 ),
-	subType_( subType ),
-	lastUpdateTime_( SimManager::instance().currentTime() ),
-	deployPointIsSet_( false ),
-	specifiedDeployPoint_( 0,0 )
+MachLogFactoryImpl::MachLogFactoryImpl(MachPhys::FactorySubType subType)
+    : amountBuilt_(0)
+    , subType_(subType)
+    , lastUpdateTime_(SimManager::instance().currentTime())
+    , deployPointIsSet_(false)
+    , specifiedDeployPoint_(0, 0)
 {
 
     TEST_INVARIANT;
@@ -25,15 +25,14 @@ MachLogFactoryImpl::MachLogFactoryImpl( MachPhys::FactorySubType subType )
 MachLogFactoryImpl::~MachLogFactoryImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogFactoryImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogFactoryImpl& t )
+ostream& operator<<(ostream& o, const MachLogFactoryImpl& t)
 {
 
     o << "MachLogFactoryImpl " << (void*)&t << " start" << std::endl;
@@ -42,27 +41,27 @@ ostream& operator <<( ostream& o, const MachLogFactoryImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogFactoryImpl& actorImpl )
+void perWrite(PerOstream& ostr, const MachLogFactoryImpl& actorImpl)
 {
-	ostr << actorImpl.productionLine_;
-	ostr << actorImpl.amountBuilt_;
-	ostr << actorImpl.lastUpdateTime_;
-	ostr << actorImpl.subType_;
-	ostr << actorImpl.specifiedDeployPoint_;
-	ostr << actorImpl.deployPointIsSet_;
+    ostr << actorImpl.productionLine_;
+    ostr << actorImpl.amountBuilt_;
+    ostr << actorImpl.lastUpdateTime_;
+    ostr << actorImpl.subType_;
+    ostr << actorImpl.specifiedDeployPoint_;
+    ostr << actorImpl.deployPointIsSet_;
 }
 
-void perRead( PerIstream& istr, MachLogFactoryImpl& actorImpl )
+void perRead(PerIstream& istr, MachLogFactoryImpl& actorImpl)
 {
-	istr >> actorImpl.productionLine_;
-	istr >> actorImpl.amountBuilt_;
-	istr >> actorImpl.lastUpdateTime_;
-	istr >> actorImpl.subType_;
-	istr >> actorImpl.specifiedDeployPoint_;
-	istr >> actorImpl.deployPointIsSet_;
+    istr >> actorImpl.productionLine_;
+    istr >> actorImpl.amountBuilt_;
+    istr >> actorImpl.lastUpdateTime_;
+    istr >> actorImpl.subType_;
+    istr >> actorImpl.specifiedDeployPoint_;
+    istr >> actorImpl.deployPointIsSet_;
 }
 
-MachLogFactoryImpl::MachLogFactoryImpl( PerConstructor )
+MachLogFactoryImpl::MachLogFactoryImpl(PerConstructor)
 {
 }
 /* End FACTORYI.CPP *************************************************/

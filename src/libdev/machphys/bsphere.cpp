@@ -10,23 +10,23 @@
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysBlackSphere );
+PER_DEFINE_PERSISTENT(MachPhysBlackSphere);
 
-//One-time ctor
+// One-time ctor
 MachPhysBlackSphere::MachPhysBlackSphere()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/vortex/black.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/vortex/black.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysBlackSphere::MachPhysBlackSphere( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysBlackSphere::MachPhysBlackSphere(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -34,10 +34,9 @@ MachPhysBlackSphere::MachPhysBlackSphere( W4dEntity* pParent, const MexTransform
 MachPhysBlackSphere::~MachPhysBlackSphere()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysBlackSphere& MachPhysBlackSphere::exemplar()
 {
     return MachPhysOtherPersistence::instance().blackSphereExemplar();
@@ -45,10 +44,10 @@ const MachPhysBlackSphere& MachPhysBlackSphere::exemplar()
 
 void MachPhysBlackSphere::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysBlackSphere& t )
+ostream& operator<<(ostream& o, const MachPhysBlackSphere& t)
 {
 
     o << "MachPhysBlackSphere " << (void*)&t << " start" << std::endl;
@@ -57,25 +56,25 @@ ostream& operator <<( ostream& o, const MachPhysBlackSphere& t )
     return o;
 }
 
-//virtual
-bool MachPhysBlackSphere::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysBlackSphere::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-MachPhysBlackSphere::MachPhysBlackSphere( PerConstructor c )
-:W4dEntity( c )
+MachPhysBlackSphere::MachPhysBlackSphere(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysBlackSphere& sphere )
+void perWrite(PerOstream& ostr, const MachPhysBlackSphere& sphere)
 {
     const W4dEntity& base = sphere;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysBlackSphere& sphere )
+void perRead(PerIstream& istr, MachPhysBlackSphere& sphere)
 {
     W4dEntity& base = sphere;
 
@@ -83,4 +82,3 @@ void perRead( PerIstream& istr, MachPhysBlackSphere& sphere )
 }
 
 /* End VORTBOMB.CPP *************************************************/
-

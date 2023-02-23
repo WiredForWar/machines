@@ -26,18 +26,18 @@
 class W4dEntity;
 class W4dCycleTextureData;
 
-class W4dCycleMultiTextureData: public  W4dAnimationData
+class W4dCycleMultiTextureData : public W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dCycleMultiTextureData( const size_t& nData );
+    W4dCycleMultiTextureData(const size_t& nData);
 
-    virtual ~W4dCycleMultiTextureData();
+    ~W4dCycleMultiTextureData() override;
 
-	//apply the texture cucling animation to pEntity  start at statTime
-	virtual void apply( W4dEntity* pEntity, const PhysAbsoluteTime& startTime);
+    // apply the texture cucling animation to pEntity  start at statTime
+    void apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) override;
 
-	void add( W4dCycleTextureData* pData );
+    void add(W4dCycleTextureData* pData);
 
     void CLASS_INVARIANT;
 
@@ -45,18 +45,18 @@ public:
     PER_FRIEND_READ_WRITE(W4dCycleMultiTextureData);
 
 private:
-    friend ostream& operator <<( ostream& o, const W4dCycleMultiTextureData& t );
+    friend ostream& operator<<(ostream& o, const W4dCycleMultiTextureData& t);
 
-    W4dCycleMultiTextureData( const W4dCycleMultiTextureData& );
-    W4dCycleMultiTextureData& operator =( const W4dCycleMultiTextureData& );
+    W4dCycleMultiTextureData(const W4dCycleMultiTextureData&);
+    W4dCycleMultiTextureData& operator=(const W4dCycleMultiTextureData&);
 
-	ctl_vector< ctl_vector<RenTexture> > keyTextures2d() const;
+    ctl_vector<ctl_vector<RenTexture>> keyTextures2d() const;
 
-    typedef ctl_vector< Ren::MaterialVecPtr > MaterialVecPtrs;
-    typedef CtlCountedPtr< MaterialVecPtrs > MaterialVecPtrsPtr;
-    typedef ctl_vector< MaterialVecPtrsPtr > MaterialVecPtrsPtrVec;
+    using MaterialVecPtrs = ctl_vector<Ren::MaterialVecPtr>;
+    using MaterialVecPtrsPtr = CtlCountedPtr<MaterialVecPtrs>;
+    using MaterialVecPtrsPtrVec = ctl_vector<MaterialVecPtrsPtr>;
 
-	ctl_pvector< W4dCycleTextureData > cycleTextureDataVec_;
+    ctl_pvector<W4dCycleTextureData> cycleTextureDataVec_;
 };
 
 PER_DECLARE_PERSISTENT(W4dCycleMultiTextureData);

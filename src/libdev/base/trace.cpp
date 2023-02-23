@@ -21,30 +21,28 @@ BaseTrace& BaseTrace::instance()
 }
 
 BaseTrace::BaseTrace()
-: trace_( false )
+    : trace_(false)
 {
-    const char* pC = getenv( "CB_TRACE" );
+    const char* pC = getenv("CB_TRACE");
 
-    if( pC )
+    if (pC)
     {
         trace_ = true;
     }
-
 }
 
 BaseTrace::~BaseTrace()
 {
 }
 
-void BaseTrace::trace( bool flag )
+void BaseTrace::trace(bool flag)
 {
     trace_ = flag;
 }
 
-void    BaseTrace::log( const char* fileName, size_t line )
+void BaseTrace::log(const char* fileName, size_t line)
 {
     Diag::instance().traceStream() << fileName << ", " << line << std::endl;
 }
-
 
 /* End TRACE.CPP ****************************************************/

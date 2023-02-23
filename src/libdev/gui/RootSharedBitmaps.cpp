@@ -35,7 +35,7 @@ void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& filePath)
 
 std::shared_ptr<GuiBitmap> GuiRootSharedBitmaps::getNamedBitmap(const std::string& imageName) const noexcept
 {
-    auto sharedBitmapsKey = std::string{ };
+    auto sharedBitmapsKey = std::string {};
     try
     {
         sharedBitmapsKey = namedBitmaps_.at(imageName);
@@ -53,7 +53,7 @@ std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string
 {
     try
     {
-        return std::weak_ptr< GuiBitmap >(sharedBitmaps_.at(filePath));
+        return std::weak_ptr<GuiBitmap>(sharedBitmaps_.at(filePath));
     }
     catch (const std::out_of_range& ore)
     {
@@ -62,10 +62,11 @@ std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string
     }
 }
 
-void GuiRootSharedBitmaps::blitNamedBitmapFromArea(const std::shared_ptr<GuiBitmap>& bitmap,
-                                                   const Gui::Box& sourceArea,
-                                                   const Gui::Coord& destination,
-                                                   std::function<Gui::Box(const Gui::Box&)> fnSourceAreaTransform) const
+void GuiRootSharedBitmaps::blitNamedBitmapFromArea(
+    const std::shared_ptr<GuiBitmap>& bitmap,
+    const Gui::Box& sourceArea,
+    const Gui::Coord& destination,
+    std::function<Gui::Box(const Gui::Box&)> fnSourceAreaTransform) const
 {
     if (bitmap)
     {
@@ -73,12 +74,13 @@ void GuiRootSharedBitmaps::blitNamedBitmapFromArea(const std::shared_ptr<GuiBitm
     }
     else
     {
-        std::cerr << "GuiRootSharedBitmaps::blitNamedBitmapFromArea(): Attempted blit of null named bitmap." << std::endl;
+        std::cerr << "GuiRootSharedBitmaps::blitNamedBitmapFromArea(): Attempted blit of null named bitmap."
+                  << std::endl;
     }
 }
 
-void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap,
-                                           const Gui::Coord& destination) const
+void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap, const Gui::Coord& destination)
+    const
 {
     if (bitmap)
     {
@@ -96,7 +98,7 @@ int GuiRootSharedBitmaps::getWidthOfNamedBitmap(const std::shared_ptr<GuiBitmap>
 
     if (bitmap)
     {
-        width = static_cast<int>( bitmap->width() );
+        width = static_cast<int>(bitmap->width());
     }
     else
     {
@@ -112,7 +114,7 @@ int GuiRootSharedBitmaps::getHeightOfNamedBitmap(const std::shared_ptr<GuiBitmap
 
     if (bitmap)
     {
-        height = static_cast<int>( bitmap->height() );
+        height = static_cast<int>(bitmap->height());
     }
     else
     {

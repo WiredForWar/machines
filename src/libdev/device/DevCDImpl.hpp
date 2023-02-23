@@ -10,7 +10,7 @@ typedef unsigned int ALuint;
 #include "device/cdlist.hpp"
 #include "mathex/random.hpp"
 
-void eosCallback( void*, ALuint );
+void eosCallback(void*, ALuint);
 
 class DevCD;
 
@@ -28,9 +28,9 @@ enum PlayStatus
 class DevCDImpl
 {
 public:
-    friend void eosCallback( void*, ALuint );
+    friend void eosCallback(void*, ALuint);
 
-    static DevCDImpl* getInstance( DevCD* parent );
+    static DevCDImpl* getInstance(DevCD* parent);
 
     enum CDVOLUME
     {
@@ -53,7 +53,7 @@ public:
 
     DevCDTrackIndex randomStartTrack_ = 0;
     DevCDTrackIndex randomEndTrack_ = 0;
-    MexBasicRandom    randomGenerator_;
+    MexBasicRandom randomGenerator_;
 
     bool musicEnabled_ = false;
 };

@@ -16,15 +16,14 @@ RenNormalMap::RenNormalMap()
 RenNormalMap::~RenNormalMap()
 {
     TEST_INVARIANT;
-
 }
 
 void RenNormalMap::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RenNormalMap& t )
+ostream& operator<<(ostream& o, const RenNormalMap& t)
 {
 
     o << "RenNormalMap " << (void*)&t << " start" << std::endl;

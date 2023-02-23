@@ -1,10 +1,10 @@
 /*
- * D E S T R O Y . H P P 
+ * D E S T R O Y . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 /*
- * Mixin for logical objects that support 
+ * Mixin for logical objects that support
  * an operation for their destruction.
  */
 
@@ -18,16 +18,15 @@
 class MachLogCanBeDestroyed
 {
 public:
+    virtual ~MachLogCanBeDestroyed() {};
 
-	virtual ~MachLogCanBeDestroyed() {};
-
-    // Destroy oneself, returning 
+    // Destroy oneself, returning
     // the time any animation will take
     virtual PhysRelativeTime beDestroyed() = 0;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_DESTROY_HPP	*/
+#endif /*  #ifndef _MACHLOG_DESTROY_HPP    */
 
 /* End DESTROY.HPP **************************************************/

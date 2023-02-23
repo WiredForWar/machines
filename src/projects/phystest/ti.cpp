@@ -14,9 +14,9 @@ class MexPolygon2d;
 
 void PhysDummyFunction3()
 {
-	MexPoint2d minCorner, maxCorner;
-	static PhysAlignedBSPTree2d< MexLine2d* > d1( minCorner, maxCorner, 10.0, 3, 0);
-    static ctl_vector< MexPolygon2d* > d2;
-    static ctl_vector< bool > d3;
+    MexPoint2d minCorner, maxCorner;
+    static PhysAlignedBSPTree2d<MexLine2d*> d1(minCorner, maxCorner, 10.0, 3, 0);
+    static ctl_vector<MexPolygon2d*> d2;
+    static ctl_vector<bool> d3;
 }
 /* End TI.CPP *****************************************************/

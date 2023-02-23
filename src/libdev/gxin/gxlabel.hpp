@@ -17,88 +17,59 @@
 #include "ctl/vector.hpp"
 
 #define LABELLENGTH 25
-#define MAXLABEL    34
-#define LABELLIST   \
-  {                       \
-  "",                     \
-  "Objects",              \
-  "QuadMesh",             \
-  "TriMesh",              \
-  "3DPointArray",         \
-  "TriangleArray",        \
-  "QuadrangleArray",      \
-  "NormalArray",          \
-  "Polygon",              \
-  "PolygonVertex",        \
-  "DirectionnalLight",    \
-  "PointLight",           \
-  "SpotLight",            \
-  "Camera",               \
-  "Hierarchy",            \
-  "Child",                \
-  "Transform",            \
-  "Matrix4X4",            \
-  "Matrix3X3",            \
-  "ComponentTransform",   \
-  "Textures",             \
-  "BitmapTexture",        \
-  "Animation",            \
-  "AnimateParameter",     \
-  "KeyFrame",             \
-  "UserData",             \
-  "UserDataNode",         \
-  "AGIDArray",            \
-  "ChangeVertex3D",       \
-  "SkinMeshUserData", \
-  "SkinBoneUserData", \
-  "SkinLinkArray",    \
-  "SkinMeshArray",    \
-  "SkinVertexArray"}
+#define MAXLABEL 34
+#define LABELLIST                                                                                                      \
+    {                                                                                                                  \
+        "", "Objects", "QuadMesh", "TriMesh", "3DPointArray", "TriangleArray", "QuadrangleArray", "NormalArray",       \
+            "Polygon", "PolygonVertex", "DirectionnalLight", "PointLight", "SpotLight", "Camera", "Hierarchy",         \
+            "Child", "Transform", "Matrix4X4", "Matrix3X3", "ComponentTransform", "Textures", "BitmapTexture",         \
+            "Animation", "AnimateParameter", "KeyFrame", "UserData", "UserDataNode", "AGIDArray", "ChangeVertex3D",    \
+            "SkinMeshUserData", "SkinBoneUserData", "SkinLinkArray", "SkinMeshArray", "SkinVertexArray"                \
+    }
 
-typedef enum
+enum LabelAGT
 {
-  NOLABEL,
-  OBJECTS,
-  QUADMESH,
-  TRIMESH,
-  POINTARRAY,
+    NOLABEL,
+    OBJECTS,
+    QUADMESH,
+    TRIMESH,
+    POINTARRAY,
 
-  TRIANGLEARRAY,
-  QUADRANGLEARRAY,
-  NORMALARRAY,
-  POLYGON,
-  POLYGONVERTEX,
+    TRIANGLEARRAY,
+    QUADRANGLEARRAY,
+    NORMALARRAY,
+    POLYGON,
+    POLYGONVERTEX,
 
-  DIRECTIONNALLIGHT,
-  POINTLIGHT,
-  SPOTLIGHT,
-  CAMERA,
-  HIERARCHY,
+    DIRECTIONNALLIGHT,
+    POINTLIGHT,
+    SPOTLIGHT,
+    CAMERA,
+    HIERARCHY,
 
-  CHILD,
-  TRANSFORM,
-  MATRIX4X4,
-  MATRIX3X3,
-  COMPONENTTRANSFORM,
+    CHILD,
+    TRANSFORM,
+    MATRIX4X4,
+    MATRIX3X3,
+    COMPONENTTRANSFORM,
 
-  TEXTURES,
-  BITMAPTEXTURE,
-  ANIMATION,
-  ANIMATEPARAMETER,
-  KEYFRAME,
+    TEXTURES,
+    BITMAPTEXTURE,
+    ANIMATION,
+    ANIMATEPARAMETER,
+    KEYFRAME,
 
-  USERDATA,
-  USERDATANODE,
-  AGIDARRAY,
-  CHANGEVERTEX3D,
-  SKINMESHUSERDATA,
-  SKINBONEUSERDATA,
+    USERDATA,
+    USERDATANODE,
+    AGIDARRAY,
+    CHANGEVERTEX3D,
+    SKINMESHUSERDATA,
+    SKINBONEUSERDATA,
 
-  SKINLINKARRAY,
-  SKINMESHARRAY,
-  SKINVERTEXARRAY
-} LabelAGT;
-
+    SKINLINKARRAY,
+    SKINMESHARRAY,
+    SKINVERTEXARRAY
+};
 
 class GXLabel
 // Canonical form revoked
@@ -109,37 +80,32 @@ public:
 
     void CLASS_INVARIANT;
 
-	const LabelAGT type() const {
-	  return type_;
-	}
+    const LabelAGT type() const { return type_; }
 
-	void nameAppend(char character);
+    void nameAppend(char character);
 
     // Reinitialise label
     void init();
 
-	// find the label type corrensponding to the std::string  name_
-	// affects it to type_, returns it
+    // find the label type corrensponding to the std::string  name_
+    // affects it to type_, returns it
     LabelAGT findLabelType();
 
-    friend ostream& operator <<( ostream& o, const GXLabel& t );
+    friend ostream& operator<<(ostream& o, const GXLabel& t);
 
 private:
-    GXLabel( const GXLabel& );
-    GXLabel& operator =( const GXLabel& );
-    bool operator ==( const GXLabel& );
+    GXLabel(const GXLabel&);
+    GXLabel& operator=(const GXLabel&);
+    bool operator==(const GXLabel&);
 
     // Reinitialise label
-    //void init();
+    // void init();
 
-    static std::string  labelList_[MAXLABEL];
-
+    static std::string labelList_[MAXLABEL];
 
     LabelAGT type_;
-	std::string  name_;
-
+    std::string name_;
 };
-
 
 #endif
 

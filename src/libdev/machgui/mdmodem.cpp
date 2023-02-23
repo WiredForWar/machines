@@ -21,66 +21,67 @@
 
 struct MachGuiModemNetworkModeImpl
 {
-	MachGuiModemNetworkModeImpl()
-	:	pModemSelector_( NULL ),
-		pTelNoEntryBox_( NULL )
-	{}
-	MachGuiDropDownListBoxCreator* pModemSelector_;
-	MachGuiSingleLineEditBox* pTelNoEntryBox_;
+    MachGuiModemNetworkModeImpl()
+        : pModemSelector_(nullptr)
+        , pTelNoEntryBox_(nullptr)
+    {
+    }
+    MachGuiDropDownListBoxCreator* pModemSelector_;
+    MachGuiSingleLineEditBox* pTelNoEntryBox_;
 };
 
-MachGuiModemNetworkMode::MachGuiModemNetworkMode( GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens )
-:	MachGuiNetworkProtocolMode( pParent, pStartupScreens )
+MachGuiModemNetworkMode::MachGuiModemNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
+    : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-	pimpl_ = _NEW( MachGuiModemNetworkModeImpl() );
+    pimpl_ = _NEW(MachGuiModemNetworkModeImpl());
 
-	readNetworkDetails();
+    readNetworkDetails();
 
     TEST_INVARIANT;
 }
 
 MachGuiModemNetworkMode::~MachGuiModemNetworkMode()
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	_DELETE( pimpl_ );
+    _DELETE(pimpl_);
 }
 
 void MachGuiModemNetworkMode::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 // virtual
 void MachGuiModemNetworkMode::setNetworkDetails()
 {
-	// This function will use the settings from the drop downs to configure network settings
-	string currentModem = pimpl_->pModemSelector_->text();
-	string serverTelNo = pimpl_->pTelNoEntryBox_->text();
+    // This function will use the settings from the drop downs to configure network settings
+    string currentModem = pimpl_->pModemSelector_->text();
+    string serverTelNo = pimpl_->pTelNoEntryBox_->text();
 
-//	NetNetwork::instance().phone( serverTelNo );
-//	NetNetwork::instance().modem( currentModem );
-	NetNetwork::instance().initialiseConnection();
+    //  NetNetwork::instance().phone( serverTelNo );
+    //  NetNetwork::instance().modem( currentModem );
+    NetNetwork::instance().initialiseConnection();
 }
 
 // virtual
-bool MachGuiModemNetworkMode::validNetworkDetails( bool isHost )
+bool MachGuiModemNetworkMode::validNetworkDetails(bool isHost)
 {
-	bool valid = true;
+    bool valid = true;
 
-	if ( ( pimpl_->pTelNoEntryBox_->text() == "" ) and ( not isHost ) )
-	{
-		startupScreens().displayMsgBox( IDS_MENUMSG_ENTERSERVERTELNO );
-		valid = false;
-	}
-	return valid;
+    if ((pimpl_->pTelNoEntryBox_->text() == "") and (not isHost))
+    {
+        startupScreens().displayMsgBox(IDS_MENUMSG_ENTERSERVERTELNO);
+        valid = false;
+    }
+    return valid;
 }
 
 // virtual
 void MachGuiModemNetworkMode::updateGUI()
 {
-	// calling the update method on the text entry box will cause its caret to flash
-	pimpl_->pTelNoEntryBox_->update();
+    // calling the update method on the text entry box will cause its caret to flash
+    pimpl_->pTelNoEntryBox_->update();
 }
 
 #define MNM_MINX 62
@@ -93,48 +94,52 @@ void MachGuiModemNetworkMode::updateGUI()
 // virtual
 void MachGuiModemNetworkMode::readNetworkDetails()
 {
-	GuiResourceString modemHeading( IDS_MENU_MODEMTYPE );
-  	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smalwfnt.bmp") );
-	const int textHeight = font.charHeight() + 2;
+    GuiResourceString modemHeading(IDS_MENU_MODEMTYPE);
+    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    const int textHeight = font.charHeight() + 2;
 
+    //  NetNetwork::Modems availableModems = NetNetwork::instance().modems();
+    NetNetwork::Modems availableModems;
 
-//	NetNetwork::Modems availableModems = NetNetwork::instance().modems();
-	NetNetwork::Modems availableModems;
+    //  ASSERT( availableModems.size(), "no modems");
 
-//	ASSERT( availableModems.size(), "no modems");
+    //  WAYNE_STREAM( "Modems" << std::endl << availableModems << std::endl );
 
-//	WAYNE_STREAM( "Modems" << std::endl << availableModems << std::endl );
+    MachGuiMenuText* pModemText = _NEW(MachGuiMenuText(
+        &parent(),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), font.textWidth(modemHeading.asString()), textHeight),
+        IDS_MENU_MODEMTYPE,
+        "gui/menu/smallfnt.bmp"));
 
- 	MachGuiMenuText* pModemText =
-		_NEW( MachGuiMenuText( &parent(),
-							   Gui::Box( Gui::Coord( MNM_MINX, MNM_MINY ),
-							   			 font.textWidth( modemHeading.asString() ),
-							   			 textHeight ),
-							   IDS_MENU_MODEMTYPE, "gui/menu/smallfnt.bmp" ) );
+    pimpl_->pModemSelector_ = _NEW(MachGuiDropDownListBoxCreator(
+        &parent(),
+        &startupScreens(),
+        Gui::Coord(MNM_MINX, MNM_MINY + textHeight),
+        MNM_WIDTH,
+        availableModems,
+        true,
+        true));
 
-	pimpl_->pModemSelector_ = _NEW( MachGuiDropDownListBoxCreator ( &parent(), &startupScreens(), Gui::Coord( MNM_MINX, MNM_MINY+textHeight ), MNM_WIDTH, availableModems, true, true ) );
+    GuiResourceString telephoneNoHeading(IDS_MENU_TELNO);
 
-	GuiResourceString telephoneNoHeading( IDS_MENU_TELNO );
+    MachGuiMenuText* pTelephoneNoText = _NEW(MachGuiMenuText(
+        &parent(),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), font.textWidth(telephoneNoHeading.asString()), textHeight),
+        IDS_MENU_TELNO,
+        "gui/menu/smallfnt.bmp"));
 
-	MachGuiMenuText* pTelephoneNoText =
-		_NEW( MachGuiMenuText( &parent(),
-							   Gui::Box( Gui::Coord( MNM_MINX, MNM_MINY2 ),
-							   			 font.textWidth( telephoneNoHeading.asString() ),
-							   			 textHeight ),
-							   IDS_MENU_TELNO, "gui/menu/smallfnt.bmp" ) );
+    pimpl_->pTelNoEntryBox_ = _NEW(MachGuiSingleLineEditBox(
+        &startupScreens(),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2 + textHeight), MNM_WIDTH, textHeight + 4),
+        font));
+    pimpl_->pTelNoEntryBox_->ignoreSpaceAtBeginning(true);
+    pimpl_->pTelNoEntryBox_->border(true);
+    pimpl_->pTelNoEntryBox_->borderColour(MachGui::DARKSANDY());
 
-	pimpl_->pTelNoEntryBox_ = _NEW( MachGuiSingleLineEditBox( 	&startupScreens(),
-																Gui::Box( Gui::Coord( MNM_MINX, MNM_MINY2+textHeight ),
-																		  MNM_WIDTH,
-																		  textHeight + 4 ), font ) );
-	pimpl_->pTelNoEntryBox_->ignoreSpaceAtBeginning( true );
-	pimpl_->pTelNoEntryBox_->border( true );
-	pimpl_->pTelNoEntryBox_->borderColour( MachGui::DARKSANDY() );
-
-	GuiManager::instance().charFocus( pimpl_->pTelNoEntryBox_ );
+    GuiManager::instance().charFocus(pimpl_->pTelNoEntryBox_);
 }
 
-ostream& operator <<( ostream& o, const MachGuiModemNetworkMode& t )
+ostream& operator<<(ostream& o, const MachGuiModemNetworkMode& t)
 {
 
     o << "MachGuiModemNetworkMode " << (void*)&t << " start" << std::endl;

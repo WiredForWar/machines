@@ -1,5 +1,5 @@
 /*
- * C N T R L A I I . H P P 
+ * C N T R L A I I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,52 +22,55 @@ class MachLogAIControllerImpl
 // Canonical form revoked
 {
 public:
-    MachLogAIControllerImpl( const string& rules );
+    MachLogAIControllerImpl(const string& rules);
     ~MachLogAIControllerImpl();
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT( MachLogAIControllerImpl );
-	PER_FRIEND_READ_WRITE( MachLogAIControllerImpl );
+    PER_MEMBER_PERSISTENT(MachLogAIControllerImpl);
+    PER_FRIEND_READ_WRITE(MachLogAIControllerImpl);
 
 private:
-	friend class MachLogAIController;
-    friend ostream& operator <<( ostream& o, const MachLogAIControllerImpl& t );
+    friend class MachLogAIController;
+    friend ostream& operator<<(ostream& o, const MachLogAIControllerImpl& t);
 
-    MachLogAIControllerImpl( const MachLogAIControllerImpl& );
-    MachLogAIControllerImpl& operator =( const MachLogAIControllerImpl& );
-	MachLogAIController::ResearchInterest				researchInterest_;
+    MachLogAIControllerImpl(const MachLogAIControllerImpl&);
+    MachLogAIControllerImpl& operator=(const MachLogAIControllerImpl&);
+    MachLogAIController::ResearchInterest researchInterest_;
 
-	//rules conatins the string variable which contains the strategic rules.
-	string													rules_;
-	MachLogAIController::StrategicProductionList			strategicProductionList_;
-	MachLogAIController::ProductionList						constructionProductionList_;
-	MachLogAIController::DesiredMachineList					desiredMachineList_;
-	bool													checkForDynamicAllies_;
-	PhysAbsoluteTime										nextAllyUpdateTime_;
-
+    // rules conatins the string variable which contains the strategic rules.
+    string rules_;
+    MachLogAIController::StrategicProductionList strategicProductionList_;
+    MachLogAIController::ProductionList constructionProductionList_;
+    MachLogAIController::DesiredMachineList desiredMachineList_;
+    bool checkForDynamicAllies_;
+    PhysAbsoluteTime nextAllyUpdateTime_;
 };
 
 class MachLogAIStrategicProductionUnit
 {
-	public:
-		MachLogAIStrategicProductionUnit( const string& type, int number, int priority ):
-			type_( type ),
-			number_( number ),
-			priority_( priority ) { ; }
-		string	type() { return type_; }
-		int		number() { return number_; }
-		int		priority() { return priority_; }
-		PER_MEMBER_PERSISTENT( MachLogAIStrategicProductionUnit );
-		PER_FRIEND_READ_WRITE( MachLogAIStrategicProductionUnit );
-	private:
-		string	type_;
-		int		number_;
-		int		priority_;
+public:
+    MachLogAIStrategicProductionUnit(const string& type, int number, int priority)
+        : type_(type)
+        , number_(number)
+        , priority_(priority)
+    {
+        ;
+    }
+    string type() { return type_; }
+    int number() { return number_; }
+    int priority() { return priority_; }
+    PER_MEMBER_PERSISTENT(MachLogAIStrategicProductionUnit);
+    PER_FRIEND_READ_WRITE(MachLogAIStrategicProductionUnit);
+
+private:
+    string type_;
+    int number_;
+    int priority_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAIControllerImpl );
-PER_DECLARE_PERSISTENT( MachLogAIStrategicProductionUnit );
+PER_DECLARE_PERSISTENT(MachLogAIControllerImpl);
+PER_DECLARE_PERSISTENT(MachLogAIStrategicProductionUnit);
 
 #endif
 

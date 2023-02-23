@@ -1,5 +1,5 @@
 /*
- * C O N D P O D . H P P 
+ * C O N D P O D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,36 +24,33 @@ class MachLogPodCapturedCondition : public SimCondition
 // Canonical form revoked
 {
 public:
-	static MachLogPodCapturedCondition* newFromParser( UtlLineTokeniser* );
+    static MachLogPodCapturedCondition* newFromParser(UtlLineTokeniser*);
 
-	virtual bool doHasConditionBeenMet() const;
+    bool doHasConditionBeenMet() const override;
 
-    virtual ~MachLogPodCapturedCondition();
+    ~MachLogPodCapturedCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPodCapturedCondition );
-	PER_FRIEND_READ_WRITE( MachLogPodCapturedCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPodCapturedCondition);
+    PER_FRIEND_READ_WRITE(MachLogPodCapturedCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogPodCapturedCondition(const string& keyName, MachPhys::Race);
 
-    MachLogPodCapturedCondition( const string& keyName, MachPhys::Race );
+    friend ostream& operator<<(ostream& o, const MachLogPodCapturedCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogPodCapturedCondition& t );
+    MachLogPodCapturedCondition(const MachLogPodCapturedCondition&);
+    MachLogPodCapturedCondition& operator=(const MachLogPodCapturedCondition&);
 
-    MachLogPodCapturedCondition( const MachLogPodCapturedCondition& );
-    MachLogPodCapturedCondition& operator =( const MachLogPodCapturedCondition& );
-
-	MachPhys::Race								race_;
+    MachPhys::Race race_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPodCapturedCondition );
+PER_DECLARE_PERSISTENT(MachLogPodCapturedCondition);
 
 #endif
 

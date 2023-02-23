@@ -13,28 +13,27 @@ MexCompressedAlignedBox2d::MexCompressedAlignedBox2d()
     TEST_INVARIANT;
 }
 
-MexCompressedAlignedBox2d::MexCompressedAlignedBox2d( const MexAlignedBox2d& abox ):
-    vmin_(abox.vmin_),
-    vmax_(abox.vmax_),
-    isEmpty_(abox.isEmpty_)
+MexCompressedAlignedBox2d::MexCompressedAlignedBox2d(const MexAlignedBox2d& abox)
+    : vmin_(abox.vmin_)
+    , vmax_(abox.vmax_)
+    , isEmpty_(abox.isEmpty_)
 {
 }
 
 MexCompressedAlignedBox2d::~MexCompressedAlignedBox2d()
 {
     TEST_INVARIANT;
-
 }
 
 void MexCompressedAlignedBox2d::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MexCompressedAlignedBox2d& t )
+ostream& operator<<(ostream& o, const MexCompressedAlignedBox2d& t)
 {
 
-	o << " MexCAlignedBox2d: ( " << t.vmin_ << ", " << t.vmax_ << ": " << t.isEmpty_ <<" )\n";
+    o << " MexCAlignedBox2d: ( " << t.vmin_ << ", " << t.vmax_ << ": " << t.isEmpty_ << " )\n";
 
     return o;
 }

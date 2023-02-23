@@ -1,5 +1,5 @@
 /*
- * M E X T E M P . H P P 
+ * M E X T E M P . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -23,21 +23,19 @@ public:
     MexTemp();
     ~MexTemp();
 
-    //Rotate the boundary of pBox by n times 90 degrees
-    static void quarterRotate( MexAlignedBox2d* pBox, int n );
+    // Rotate the boundary of pBox by n times 90 degrees
+    static void quarterRotate(MexAlignedBox2d* pBox, int n);
 
 private:
     // Operation deliberately revoked
-    MexTemp( const MexTemp& );
+    MexTemp(const MexTemp&);
 
     // Operation deliberately revoked
-    MexTemp& operator =( const MexTemp& );
+    MexTemp& operator=(const MexTemp&);
 
     // Operation deliberately revoked
-    bool operator ==( const MexTemp& );
-
+    bool operator==(const MexTemp&);
 };
-
 
 #endif
 

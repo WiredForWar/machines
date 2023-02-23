@@ -7,18 +7,13 @@
 #include "render/device.hpp"
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
-void RenITTFImpl::renderGL
-(
-    RenIVertex* vtx,
-    const RenMaterial& mat,
-    GLenum mode
-) const
+void RenITTFImpl::renderGL(RenIVertex* vtx, const RenMaterial& mat, GLenum mode) const
 {
     glDisable(GL_CULL_FACE);
     Ren::VertexIdx* crufty = _CONST_CAST(Ren::VertexIdx*, indices_);

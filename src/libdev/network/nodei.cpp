@@ -8,7 +8,7 @@
 #include "network/internal/nodei.hpp"
 
 NetNodeImpl::NetNodeImpl()
-:	pingString_("Ping")
+    : pingString_("Ping")
 {
 
     TEST_INVARIANT;
@@ -17,15 +17,14 @@ NetNodeImpl::NetNodeImpl()
 NetNodeImpl::~NetNodeImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void NetNodeImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != NULL);
 }
 
-ostream& operator <<( ostream& o, const NetNodeImpl& t )
+ostream& operator<<(ostream& o, const NetNodeImpl& t)
 {
 
     o << "NetNodeImpl " << (void*)&t << " start" << std::endl;

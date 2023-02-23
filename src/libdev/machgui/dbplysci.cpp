@@ -1,5 +1,5 @@
 /*
- * D B P L Y S C I . C P P 
+ * D B P L Y S C I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -11,25 +11,25 @@
 #include "machgui/dbscenar.hpp"
 #include "machgui/dbplayer.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbIPlayerScenario );
+PER_DEFINE_PERSISTENT(MachGuiDbIPlayerScenario);
 
 MachGuiDbIPlayerScenario::MachGuiDbIPlayerScenario()
-:   pDbScenario_( NULL ),
-    pDbPlayer_( NULL ),
-    isWon_( false ),
-    lastScore_( 0 ),
-    nAttempts_( 0 ),
-    lastUpdateId_( 0 )
+    : pDbScenario_(nullptr)
+    , pDbPlayer_(nullptr)
+    , isWon_(false)
+    , lastScore_(0)
+    , nAttempts_(0)
+    , lastUpdateId_(0)
 {
-    //Initialise the lists of machines left over
-    raceUnits_.reserve( MachPhys::N_RACES );
-    for( size_t i = 0; i != MachPhys::N_RACES; ++i )
+    // Initialise the lists of machines left over
+    raceUnits_.reserve(MachPhys::N_RACES);
+    for (size_t i = 0; i != MachPhys::N_RACES; ++i)
     {
-        raceUnits_.push_back( Units() );
-        raceUnits_.back().reserve( 2 );
+        raceUnits_.push_back(Units());
+        raceUnits_.back().reserve(2);
     }
 
-    setFlags_.reserve( 4 );
+    setFlags_.reserve(4);
 
     TEST_INVARIANT;
 }
@@ -37,15 +37,14 @@ MachGuiDbIPlayerScenario::MachGuiDbIPlayerScenario()
 MachGuiDbIPlayerScenario::~MachGuiDbIPlayerScenario()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDbIPlayerScenario::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbIPlayerScenario& t )
+ostream& operator<<(ostream& o, const MachGuiDbIPlayerScenario& t)
 {
 
     o << "MachGuiDbIPlayerScenario " << (void*)&t << " start" << std::endl;
@@ -54,7 +53,7 @@ ostream& operator <<( ostream& o, const MachGuiDbIPlayerScenario& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbIPlayerScenario& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbIPlayerScenario& ob)
 {
     ostr << ob.pDbScenario_;
     ostr << ob.pDbPlayer_;
@@ -66,7 +65,7 @@ void perWrite( PerOstream& ostr, const MachGuiDbIPlayerScenario& ob )
     ostr << ob.setFlags_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbIPlayerScenario& ob )
+void perRead(PerIstream& istr, MachGuiDbIPlayerScenario& ob)
 {
     istr >> ob.pDbScenario_;
     istr >> ob.pDbPlayer_;

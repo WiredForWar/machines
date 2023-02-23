@@ -12,13 +12,16 @@
 #include "machgui/menus_helper.hpp"
 #include <algorithm>
 
-MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(MachGuiStartupScreens* pStartupScreens,
-                                                             GuiDisplayable* pParent, const Gui::Box& box,
-                                                             size_t horizontalSpacing, size_t verticalSpacing,
-                                                             size_t scrollInc)
-:	GuiSingleSelectionListBox(pStartupScreens, box, horizontalSpacing, verticalSpacing, scrollInc ),
-    MachGuiFocusCapableControl(pStartupScreens ),
-    pStartupScreens_(pStartupScreens )
+MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(
+    MachGuiStartupScreens* pStartupScreens,
+    GuiDisplayable* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc)
+    : GuiSingleSelectionListBox(pStartupScreens, box, horizontalSpacing, verticalSpacing, scrollInc)
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , pStartupScreens_(pStartupScreens)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
@@ -33,94 +36,93 @@ MachGuiSingleSelectionListBox::~MachGuiSingleSelectionListBox()
 
 void MachGuiSingleSelectionListBox::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiSingleSelectionListBox& t )
+ostream& operator<<(ostream& o, const MachGuiSingleSelectionListBox& t)
 {
 
-    o << "MachGuiSingleSelectionListBox " << reinterpret_cast<void*>( const_cast<MachGuiSingleSelectionListBox*>(&t) ) << " start" << std::endl;
-    o << "MachGuiSingleSelectionListBox " << reinterpret_cast<void*>( const_cast<MachGuiSingleSelectionListBox*>(&t) ) << " end" << std::endl;
+    o << "MachGuiSingleSelectionListBox " << reinterpret_cast<void*>(const_cast<MachGuiSingleSelectionListBox*>(&t))
+      << " start" << std::endl;
+    o << "MachGuiSingleSelectionListBox " << reinterpret_cast<void*>(const_cast<MachGuiSingleSelectionListBox*>(&t))
+      << " end" << std::endl;
 
     return o;
 }
 
-//virtual
+// virtual
 void MachGuiSingleSelectionListBox::doDisplay()
 {
     // Blit background to list box
     auto* shared = pRootParent_->getSharedBitmaps();
     auto backdrop = shared->getNamedBitmap("backdrop");
     shared->blitNamedBitmapFromArea(
-            backdrop,
-            absoluteBoundary(),
-            absoluteBoundary().minCorner(),
-            [shared, backdrop](const Gui::Box& box) {
-                using namespace machgui::helper::menus;
-                return centered_bitmap_transform(
-                        box,
-                        shared->getWidthOfNamedBitmap(backdrop),
-                        shared->getHeightOfNamedBitmap(backdrop)
-                );
-            });
+        backdrop,
+        absoluteBoundary(),
+        absoluteBoundary().minCorner(),
+        [shared, backdrop](const Gui::Box& box) {
+            using namespace machgui::helper::menus;
+            return centered_bitmap_transform(
+                box,
+                shared->getWidthOfNamedBitmap(backdrop),
+                shared->getHeightOfNamedBitmap(backdrop));
+        });
 }
 
-void MachGuiSingleSelectionListBox::addListItem( MachGuiSingleSelectionListBoxItem* pItem )
+void MachGuiSingleSelectionListBox::addListItem(MachGuiSingleSelectionListBoxItem* pItem)
 {
-    listItems_.push_back( pItem );
+    listItems_.push_back(pItem);
 }
 
-void MachGuiSingleSelectionListBox::removeListItem( MachGuiSingleSelectionListBoxItem* pItem )
+void MachGuiSingleSelectionListBox::removeListItem(MachGuiSingleSelectionListBoxItem* pItem)
 {
-    auto i = find( listItems_.begin(), listItems_.end(), pItem );
+    auto i = find(listItems_.begin(), listItems_.end(), pItem);
 
-    ASSERT( i != listItems_.end(), "Trying to remove pItem which does not exist" );
+    ASSERT(i != listItems_.end(), "Trying to remove pItem which does not exist");
 
-    listItems_.erase( i );
+    listItems_.erase(i);
 }
 
-//virtual
-void MachGuiSingleSelectionListBox::hasFocus( bool newValue )
+// virtual
+void MachGuiSingleSelectionListBox::hasFocus(bool newValue)
 {
-    MachGuiFocusCapableControl::hasFocus( newValue );
+    MachGuiFocusCapableControl::hasFocus(newValue);
 
     changed();
 
     // If no items are selected in list then select first one
-    if ( isFocusControl() )
+    if (isFocusControl())
     {
         bool itemSelected = false;
 
-        for ( 	auto i = listItems_.begin();
-                i != listItems_.end() and not itemSelected;
-                ++i )
+        for (auto i = listItems_.begin(); i != listItems_.end() and not itemSelected; ++i)
         {
             itemSelected = (*i)->selected();
         }
 
         // Select first item
-        if ( !itemSelected and !listItems_.empty() )
+        if (!itemSelected and !listItems_.empty())
         {
             listItems_.front()->selectThisItem();
         }
     }
 }
 
-//virtual
-bool MachGuiSingleSelectionListBox::doHandleNavigationKey( MachGuiFocusCapableControl::NavKey navKey, MachGuiFocusCapableControl** ppNavFocusControl)
+// virtual
+bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
+    MachGuiFocusCapableControl::NavKey navKey,
+    MachGuiFocusCapableControl** ppNavFocusControl)
 {
     bool retValue = false;
 
-    if ( navKey == MachGuiFocusCapableControl::UP_ARROW )
+    if (navKey == MachGuiFocusCapableControl::UP_ARROW)
     {
         MachGuiSingleSelectionListBoxItem* pPreviousItem = nullptr;
         MachGuiSingleSelectionListBoxItem* pCurrentItem = nullptr;
         bool itemSelected = false;
 
         // Find item before one selected
-        for ( 	auto i = listItems_.begin();
-                i != listItems_.end() and not itemSelected;
-                ++i )
+        for (auto i = listItems_.begin(); i != listItems_.end() and not itemSelected; ++i)
         {
             pPreviousItem = pCurrentItem;
 
@@ -130,42 +132,40 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey( MachGuiFocusCapableCo
         }
 
         // Didn't find previous item (first item was selected or there isn't any items to select)
-        if ( !pPreviousItem and !listItems_.empty() )
+        if (!pPreviousItem and !listItems_.empty())
         {
             pPreviousItem = listItems_.back();
         }
 
         // Select the new item
-        if ( pPreviousItem )
+        if (pPreviousItem)
         {
-            doNavSelectNewItem( pPreviousItem );
+            doNavSelectNewItem(pPreviousItem);
             retValue = true;
         }
     }
-    else if ( navKey == MachGuiFocusCapableControl::DOWN_ARROW )
+    else if (navKey == MachGuiFocusCapableControl::DOWN_ARROW)
     {
         bool itemSelected = false;
 
         // Find item after one selected
         auto i = listItems_.begin();
 
-        for ( 	/*empty*/;
-                i != listItems_.end() and not itemSelected;
-                ++i )
+        for (/*empty*/; i != listItems_.end() and not itemSelected; ++i)
         {
             itemSelected = (*i)->selected();
         }
 
         // Found selected item, no select one after it...
-        if ( itemSelected )
+        if (itemSelected)
         {
-            if ( i != listItems_.end() )
+            if (i != listItems_.end())
             {
-                doNavSelectNewItem( (*i) );
+                doNavSelectNewItem((*i));
             }
             else
             {
-                doNavSelectNewItem( listItems_.front() );
+                doNavSelectNewItem(listItems_.front());
             }
 
             retValue = true;
@@ -175,19 +175,19 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey( MachGuiFocusCapableCo
     return retValue;
 }
 
-//virtual
+// virtual
 bool MachGuiSingleSelectionListBox::isEnabled() const
 {
     return MachGuiFocusCapableControl::isEnabled() && !listItems_.empty();
 }
 
-ctl_pvector< MachGuiSingleSelectionListBoxItem >& MachGuiSingleSelectionListBox::listItems()
+ctl_pvector<MachGuiSingleSelectionListBoxItem>& MachGuiSingleSelectionListBox::listItems()
 {
     return listItems_;
 }
 
-//virtual
-void MachGuiSingleSelectionListBox::doNavSelectNewItem( MachGuiSingleSelectionListBoxItem* pItem )
+// virtual
+void MachGuiSingleSelectionListBox::doNavSelectNewItem(MachGuiSingleSelectionListBoxItem* pItem)
 {
     pItem->selectThisItem();
 }

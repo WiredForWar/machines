@@ -1,5 +1,5 @@
 /*
- * C A M S C R O L . H P P 
+ * C A M S C R O L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,31 +21,41 @@ class MachInGameScreen;
 class MachGuiCameraScrollArea : public GuiDisplayable
 // Canonical form revoked
 {
-public:			
-	enum POSITION { Top, Bottom, Right, Left };
+public:
+    enum POSITION
+    {
+        Top,
+        Bottom,
+        Right,
+        Left
+    };
 
-    MachGuiCameraScrollArea( GuiDisplayable* pParent, const Gui::Box& rel, POSITION pos, MachCameras*, MachInGameScreen* );
-    ~MachGuiCameraScrollArea();
+    MachGuiCameraScrollArea(
+        GuiDisplayable* pParent,
+        const Gui::Box& rel,
+        POSITION pos,
+        MachCameras*,
+        MachInGameScreen*);
+    ~MachGuiCameraScrollArea() override;
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual void doHandleContainsMouseEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
+    void doHandleContainsMouseEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCameraScrollArea& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCameraScrollArea& t);
 
-    MachGuiCameraScrollArea( const MachGuiCameraScrollArea& );
-    MachGuiCameraScrollArea& operator =( const MachGuiCameraScrollArea& );
+    MachGuiCameraScrollArea(const MachGuiCameraScrollArea&);
+    MachGuiCameraScrollArea& operator=(const MachGuiCameraScrollArea&);
 
-	POSITION pos_;
-	MachCameras* pCameras_;
-	MachInGameScreen* pInGameScreen_;
+    POSITION pos_;
+    MachCameras* pCameras_;
+    MachInGameScreen* pInGameScreen_;
 };
-
 
 #endif
 

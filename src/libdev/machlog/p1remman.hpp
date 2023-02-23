@@ -1,5 +1,5 @@
 /*
- * P 1 R E M M A N . H P P 
+ * P 1 R E M M A N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,7 +18,7 @@
 #include "world4d/observer.hpp"
 #include "machphys/machphys.hpp"
 
-//forward refs
+// forward refs
 class MachLogRemoteFirstPersonManagerImpl;
 class MachPhysFirstPersonStateVector;
 
@@ -30,50 +30,48 @@ public:
 
     virtual ~MachLogRemoteFirstPersonManager();
 
-    //Needs to be called per frame
+    // Needs to be called per frame
     void update();
 
-    //Remote actor with specified id has entered first person
-    void actorOpen( UtlId actorId, MachPhys::Race race );
+    // Remote actor with specified id has entered first person
+    void actorOpen(UtlId actorId, MachPhys::Race race);
 
-    //Remote actor with specified id has exited first person
-    void actorClose( UtlId actorId, MachPhys::Race race );
+    // Remote actor with specified id has exited first person
+    void actorClose(UtlId actorId, MachPhys::Race race);
 
-    //All remote actors to exit first person
+    // All remote actors to exit first person
     void closeAll();
 
-    void actorState( UtlId actorId, MachPhys::Race race, const MachPhysFirstPersonStateVector& state );
+    void actorState(UtlId actorId, MachPhys::Race race, const MachPhysFirstPersonStateVector& state);
 
     /////////////////////////////////////////////
-    //Inherited from W4dObserver
+    // Inherited from W4dObserver
 
-	//true iff this observer is to exist in this subject's list of observers
-	//following this call. This will typically be implemented using double dispatch.
-	//The clientData is of interest only if event == CLIENT_SPECIFIC.Interpretation
-	//is client defined.
-	virtual bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData = 0 );
+    // true iff this observer is to exist in this subject's list of observers
+    // following this call. This will typically be implemented using double dispatch.
+    // The clientData is of interest only if event == CLIENT_SPECIFIC.Interpretation
+    // is client defined.
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData = 0) override;
 
-    //Informs observer that an observed domain is being deleted.
-    //This observer need not call the W4dDomain::detach() method - this
-    //will be done automatically.
-    virtual void domainDeleted( W4dDomain* pDomain );
+    // Informs observer that an observed domain is being deleted.
+    // This observer need not call the W4dDomain::detach() method - this
+    // will be done automatically.
+    void domainDeleted(W4dDomain* pDomain) override;
 
     /////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogRemoteFirstPersonManager& t );
+    friend ostream& operator<<(ostream& o, const MachLogRemoteFirstPersonManager& t);
 
-    //revoked
-    MachLogRemoteFirstPersonManager( const MachLogRemoteFirstPersonManager& );
-    MachLogRemoteFirstPersonManager& operator =( const MachLogRemoteFirstPersonManager& );
+    // revoked
+    MachLogRemoteFirstPersonManager(const MachLogRemoteFirstPersonManager&);
+    MachLogRemoteFirstPersonManager& operator=(const MachLogRemoteFirstPersonManager&);
 
-    //data members
-    MachLogRemoteFirstPersonManagerImpl* pImpl_; //data implementation object
+    // data members
+    MachLogRemoteFirstPersonManagerImpl* pImpl_; // data implementation object
 };
-
 
 #endif
 

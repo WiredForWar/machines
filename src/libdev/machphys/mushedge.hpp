@@ -18,44 +18,40 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysMushroomEdge : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysMushroomEdge( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysMushroomEdge(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysMushroomEdge& exemplar();
 
-    //dtor
-    ~MachPhysMushroomEdge();
+    // dtor
+    ~MachPhysMushroomEdge() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMushroomEdge& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMushroomEdge& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysMushroomEdge );
+    PER_MEMBER_PERSISTENT(MachPhysMushroomEdge);
 
 private:
-    //Deliberately revoked
-    MachPhysMushroomEdge( const MachPhysMushroomEdge& );
-    MachPhysMushroomEdge& operator =( const MachPhysMushroomEdge& );
-    bool operator ==( const MachPhysMushroomEdge& );
+    // Deliberately revoked
+    MachPhysMushroomEdge(const MachPhysMushroomEdge&);
+    MachPhysMushroomEdge& operator=(const MachPhysMushroomEdge&);
+    bool operator==(const MachPhysMushroomEdge&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysMushroomEdge();
-
 };
 
-PER_READ_WRITE( MachPhysMushroomEdge );
-PER_DECLARE_PERSISTENT( MachPhysMushroomEdge );
-
+PER_READ_WRITE(MachPhysMushroomEdge);
+PER_DECLARE_PERSISTENT(MachPhysMushroomEdge);
 
 #endif
 

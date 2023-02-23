@@ -1,5 +1,5 @@
 /*
- * G R P M O V E . H P P 
+ * G R P M O V E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,42 +19,39 @@
 #include "machlog/actor.hpp"
 
 class MachLogGroupSimpleMoveImplementation;
-template < class T > class ctl_pvector;
-template < class T > class ctl_vector;
+template <class T> class ctl_pvector;
+template <class T> class ctl_vector;
 
 class MachLogGroupSimpleMove
 // Canonical form revoked
 {
 public:
-    typedef ctl_pvector< MachActor > Actors;    	
-    typedef ctl_vector< MexPoint3d > Points;
+    using Actors = ctl_pvector<MachActor>;
+    using Points = ctl_vector<MexPoint3d>;
 
-    MachLogGroupSimpleMove( 
-      const Actors&, 
-      const Points&, 
-      size_t commandId, 
-      string* pReason,
-      PhysPathFindingPriority pathFindingPriority );
+    MachLogGroupSimpleMove(
+        const Actors&,
+        const Points&,
+        size_t commandId,
+        string* pReason,
+        PhysPathFindingPriority pathFindingPriority);
 
     ~MachLogGroupSimpleMove();
 
     //  Return true iff the move command was successful
-    bool    moveOK() const;
-    
+    bool moveOK() const;
+
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogGroupSimpleMove& t );
+    friend ostream& operator<<(ostream& o, const MachLogGroupSimpleMove& t);
 
-    MachLogGroupSimpleMove( const MachLogGroupSimpleMove& );
-    MachLogGroupSimpleMove& operator =( const MachLogGroupSimpleMove& );
+    MachLogGroupSimpleMove(const MachLogGroupSimpleMove&);
+    MachLogGroupSimpleMove& operator=(const MachLogGroupSimpleMove&);
 
     MachLogGroupSimpleMoveImplementation* pImpl_;
 };
 
-
 #endif
 
 /* End GRPMOVE.HPP **************************************************/
-
-

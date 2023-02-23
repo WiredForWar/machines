@@ -1,5 +1,5 @@
 /*
- * M I S S I L E . H P P 
+ * M I S S I L E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,30 +22,25 @@ class MachLogLargeMissile : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogLargeMissile(
-        MachLogRace* pRace,
-		MachPhysMissile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogLargeMissile(MachLogRace* pRace, MachPhysMissile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogLargeMissile();
+    ~MachLogLargeMissile() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogLargeMissile& t );
+    friend ostream& operator<<(ostream& o, const MachLogLargeMissile& t);
 
-    virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime,
-                                     MATHEX_SCALAR clearanceFromDisplayedVolume );
+    PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
+
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogLargeMissile( const MachLogLargeMissile& );
-    MachLogLargeMissile& operator =( const MachLogLargeMissile& );
-    bool operator ==( const MachLogLargeMissile& );
+    MachLogLargeMissile(const MachLogLargeMissile&);
+    MachLogLargeMissile& operator=(const MachLogLargeMissile&);
+    bool operator==(const MachLogLargeMissile&);
 
-	MachPhysMissile*	pPhysMissile_;
+    MachPhysMissile* pPhysMissile_;
 };
-
 
 #endif
 

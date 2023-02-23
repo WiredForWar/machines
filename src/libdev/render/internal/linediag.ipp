@@ -6,32 +6,31 @@
 ***********************************************************/
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
-RenILinesDiagnostic::DrawMethod RenILinesDiagnostic::horizontalResult( void ) const
+RenILinesDiagnostic::DrawMethod RenILinesDiagnostic::horizontalResult() const
 {
-	PRE(hasTestedLines());
+    PRE(hasTestedLines());
 
-	return horizontalResult_;
+    return horizontalResult_;
 }
 
 _CODE_INLINE
-RenILinesDiagnostic::DrawMethod RenILinesDiagnostic::verticalResult( void ) const
+RenILinesDiagnostic::DrawMethod RenILinesDiagnostic::verticalResult() const
 {
-	PRE(hasTestedLines());
+    PRE(hasTestedLines());
 
-	return verticalResult_;
+    return verticalResult_;
 }
 
 _CODE_INLINE
-bool RenILinesDiagnostic::hasTestedLines( void ) const
+bool RenILinesDiagnostic::hasTestedLines() const
 {
-	return hasTestedLines_;
+    return hasTestedLines_;
 }
 
 /* LINEDIAG.IPP *******************************************/
-

@@ -18,7 +18,7 @@
 
 #include "machphys/locomoti.hpp"
 
-//Forward refs
+// Forward refs
 class W4dCompositePlan;
 class MachPhysMachine;
 class MachPhysMachineMoveInfo;
@@ -27,87 +27,85 @@ class MachPhysSpiderLegsImpl;
 class MachPhysSpiderLegs : public MachPhysLocomotionMethod
 {
 public:
-    //ctor.
-    //The machine being locomoted is pMachine.
-    //The animation for resting is restingPlanPtr
-    //The animation for walking is pWalkingPlan
-    //The animation for turning left is pTurningLeftPlan
-    //The animation for turning right is pTurningRightPlan
-    //All the pointers must reference objects which persist during the lifetime
-    //of this object.
-    MachPhysSpiderLegs( MachPhysMachine* pMachine,
+    // ctor.
+    // The machine being locomoted is pMachine.
+    // The animation for resting is restingPlanPtr
+    // The animation for walking is pWalkingPlan
+    // The animation for turning left is pTurningLeftPlan
+    // The animation for turning right is pTurningRightPlan
+    // All the pointers must reference objects which persist during the lifetime
+    // of this object.
+    MachPhysSpiderLegs(
+        MachPhysMachine* pMachine,
         const W4dCompositePlanPtr& restingPlanPtr,
         const W4dCompositePlanPtr& walkingPlanPtr,
         const W4dCompositePlanPtr& turningLeftPlanPtr,
         const W4dCompositePlanPtr& turningRightPlanPtr,
         const W4dCompositePlanPtr& startWalkingPlanPtr,
-    	const W4dCompositePlanPtr& stopWalkingPlanPtr );
+        const W4dCompositePlanPtr& stopWalkingPlanPtr);
 
-    //dtor
-    ~MachPhysSpiderLegs();
+    // dtor
+    ~MachPhysSpiderLegs() override;
 
-    virtual MachPhysLocomotionMethod* clone( MachPhysMachine* pMachine,
-        const W4dLinks& links );
+    MachPhysLocomotionMethod* clone(MachPhysMachine* pMachine, const W4dLinks& links) override;
 
     void CLASS_INVARIANT;
 
-    //Initiate the movement animations
-    virtual void moveAnimations( const PhysLinearTravelPlan& linearTravelPlan, const TurnAngles& turnAngles,
-                                 const MachPhysMachineMoveInfo& info );
-
+    // Initiate the movement animations
+    void moveAnimations(
+        const PhysLinearTravelPlan& linearTravelPlan,
+        const TurnAngles& turnAngles,
+        const MachPhysMachineMoveInfo& info) override;
 
     //  Given a motion profile calculate the appropriate rampAccelerations
-    virtual void calculateAccelerations(
+    void calculateAccelerations(
         const TransformsPtr& transformsPtr,
         MATHEX_SCALAR startSpeed,
         MATHEX_SCALAR capTranslationSpeed,
         MachPhys::FinalState finalState,
-        RampAccelerationsPtr rampAccelerationsPtr ) const;
+        RampAccelerationsPtr rampAccelerationsPtr) const override;
     //  PRE( pTransforms->size() >= 2 );
     //  PRE( pRampAccelerations->size() == 0 );
     //  PRE( MexUtility::inStraightLine( *transformsPtr ) );
     //  POST( pRampAccelerations->size() == pTransforms->size() - 1 );
 
     //  Stop the move dead. Apply appropriate animations.
-    virtual void stopDead();
+    void stopDead() override;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSpiderLegs& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSpiderLegs& t);
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysSpiderLegs );
-    PER_FRIEND_READ_WRITE( MachPhysSpiderLegs );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysSpiderLegs);
+    PER_FRIEND_READ_WRITE(MachPhysSpiderLegs);
 
 private:
     friend class MachPhysSpiderLegsImpl;
 
     // Operations deliberately revoked
-    MachPhysSpiderLegs( const MachPhysSpiderLegs& );
-    MachPhysSpiderLegs& operator =( const MachPhysSpiderLegs& );
-    bool operator ==( const MachPhysSpiderLegs& );
+    MachPhysSpiderLegs(const MachPhysSpiderLegs&);
+    MachPhysSpiderLegs& operator=(const MachPhysSpiderLegs&);
+    bool operator==(const MachPhysSpiderLegs&);
 
-    void translationAnimations( PhysAbsoluteTime startTime, PhysRelativeTime duration );
-    void rotationAnimations( MexRadians angle, PhysAbsoluteTime startTime, PhysRelativeTime duration );
+    void translationAnimations(PhysAbsoluteTime startTime, PhysRelativeTime duration);
+    void rotationAnimations(MexRadians angle, PhysAbsoluteTime startTime, PhysRelativeTime duration);
 
-	//  Adjust the time of the ramp acceleration so that the motion
+    //  Adjust the time of the ramp acceleration so that the motion
     //  uses a whole number of turning animations.
-    void reviseRotationProfile( RampAccelerations::iterator iAcc ) const;
+    void reviseRotationProfile(RampAccelerations::iterator iAcc) const;
 
-	//  Adjust the times so that the overall motion uses a whole
+    //  Adjust the times so that the overall motion uses a whole
     //  number of walking animations.
-    void reviseTranslationProfile(
-        RampAccelerations::iterator begin,
-        RampAccelerations::iterator end
-    ) const;
+    void reviseTranslationProfile(RampAccelerations::iterator begin, RampAccelerations::iterator end) const;
     // PRE( fabs( (*begin).startSpeed() ) < MexEpsilon::instance() );
     // PRE( fabs( (*(end-1)).endSpeed() ) < MexEpsilon::instance() );
 
-    //Callback to do the work of displaying the locomotion animations
-    void doFirstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state );
+    // Callback to do the work of displaying the locomotion animations
+    void doFirstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state);
 
-    //data members
+    // data members
     MachPhysSpiderLegsImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysSpiderLegs );
+PER_DECLARE_PERSISTENT(MachPhysSpiderLegs);
 
 #endif
 

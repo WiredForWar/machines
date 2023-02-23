@@ -1,5 +1,5 @@
 /*
- * D E S T E N T Y . H P P 
+ * D E S T E N T Y . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,37 +20,35 @@
 
 #include "sim/disevent.hpp"
 
-//forward refs
+// forward refs
 class W4dEntity;
 
-//orthodox canonical revoked
+// orthodox canonical revoked
 class SimDestructW4dEntityEvent : public SimDiscreteEvent
 {
 public:
-    //ctor. entityPtr refs the entity likely to be destroyed when the counted ptr
-    //is destructed at time.
-    SimDestructW4dEntityEvent( const CtlConstCountedPtr< W4dEntity >& entityPtr,
-                               const PhysAbsoluteTime& time );
+    // ctor. entityPtr refs the entity likely to be destroyed when the counted ptr
+    // is destructed at time.
+    SimDestructW4dEntityEvent(const CtlConstCountedPtr<W4dEntity>& entityPtr, const PhysAbsoluteTime& time);
 
-    //dtor
-    ~SimDestructW4dEntityEvent();
+    // dtor
+    ~SimDestructW4dEntityEvent() override;
 
-    virtual void execute();
+    void execute() override;
 
     void CLASS_INVARIANT;
 
-    virtual void doOutputOperator( ostream& ) const;
+    void doOutputOperator(ostream&) const override;
 
 private:
     // Operation deliberately revoked
-    SimDestructW4dEntityEvent( const SimDestructW4dEntityEvent& );
-    SimDestructW4dEntityEvent& operator =( const SimDestructW4dEntityEvent& );
-    bool operator ==( const SimDestructW4dEntityEvent& );
+    SimDestructW4dEntityEvent(const SimDestructW4dEntityEvent&);
+    SimDestructW4dEntityEvent& operator=(const SimDestructW4dEntityEvent&);
+    bool operator==(const SimDestructW4dEntityEvent&);
 
-    //Data members
-    CtlConstCountedPtr< W4dEntity > entityPtr_; //The entity likely to be destructed
+    // Data members
+    CtlConstCountedPtr<W4dEntity> entityPtr_; // The entity likely to be destructed
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * C T X L O A D . H P P 
+ * C T X L O A D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,41 +24,40 @@ class MachGuiCtxLoad : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxLoad( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxLoad();
+    MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxLoad() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	void selectedSaveGame( MachGuiDbSavedGame* );
+    void selectedSaveGame(MachGuiDbSavedGame*);
 
-	void deleteSavedGame();
+    void deleteSavedGame();
 
-	void autoLoadGame();
+    void autoLoadGame();
 
 protected:
-	void updateSaveGameList();
+    void updateSaveGameList();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxLoad& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxLoad& t);
 
-    MachGuiCtxLoad( const MachGuiCtxLoad& );
-    MachGuiCtxLoad& operator =( const MachGuiCtxLoad& );
+    MachGuiCtxLoad(const MachGuiCtxLoad&);
+    MachGuiCtxLoad& operator=(const MachGuiCtxLoad&);
 
-	// Data members...
-	MachGuiAnimations animations_;
-	MachGuiSingleSelectionListBox* pSaveGameList_;
-	MachGuiDbSavedGame* pSelectedSaveGame_;
-	bool autoLoadGame_;
-	MachGuiMenuButton* pDeleteBtn_;
-	MachGuiMenuButton* pOkBtn_;
+    // Data members...
+    MachGuiAnimations animations_;
+    MachGuiSingleSelectionListBox* pSaveGameList_;
+    MachGuiDbSavedGame* pSelectedSaveGame_;
+    bool autoLoadGame_;
+    MachGuiMenuButton* pDeleteBtn_;
+    MachGuiMenuButton* pOkBtn_;
 };
-
 
 #endif
 

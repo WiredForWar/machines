@@ -8,11 +8,11 @@
 #include "planeted/wdebug.hpp"
 #include "world4d/scenemgr.hpp"
 
-wdebug::wdebug( W4dSceneManager* pSourceSceneManager )
+wdebug::wdebug(W4dSceneManager* pSourceSceneManager)
 {
-	PRE ( pSourceSceneManager != NULL );
+    PRE(pSourceSceneManager != nullptr);
 
-	pSceneManager_ = pSourceSceneManager;
+    pSceneManager_ = pSourceSceneManager;
 
     TEST_INVARIANT;
 }
@@ -20,34 +20,33 @@ wdebug::wdebug( W4dSceneManager* pSourceSceneManager )
 wdebug::~wdebug()
 {
     TEST_INVARIANT;
-
 }
 
-void wdebug::add( const string& error )
+void wdebug::add(const string& error)
 {
-	if ( errors.size() == 4 )
-	{
-		errorlist::iterator i = errors.begin();
-		errors.erase( i );
-	}
-	errors.push_back( error );
+    if (errors.size() == 4)
+    {
+        errorlist::iterator i = errors.begin();
+        errors.erase(i);
+    }
+    errors.push_back(error);
 }
 
 void wdebug::display()
 {
-	const char* tab = "\t";
+    const char* tab = "\t";
 
-	for ( errorlist::iterator i = errors.begin(); i != errors.end(); i++ )
-		pSceneManager_->out() << tab << *i << std::endl;
+    for (errorlist::iterator i = errors.begin(); i != errors.end(); i++)
+        pSceneManager_->out() << tab << *i << std::endl;
 }
 
 void wdebug::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
-	INVARIANT( pSceneManager_ != NULL );
+    INVARIANT(this != nullptr);
+    INVARIANT(pSceneManager_ != nullptr);
 }
 
-ostream& operator <<( ostream& o, const wdebug& t )
+ostream& operator<<(ostream& o, const wdebug& t)
 {
 
     o << "wdebug " << (void*)&t << " start" << std::endl;

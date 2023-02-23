@@ -1,5 +1,5 @@
 /*
- * G L I D E R I . H P P 
+ * G L I D E R I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,55 +23,55 @@ class MachPhysGliderImpl : public MachPhysLocomotionMethodImpl
 // Canonical form revoked
 {
 public:
-
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysGliderImpl );
-    PER_FRIEND_READ_WRITE( MachPhysGliderImpl );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysGliderImpl);
+    PER_FRIEND_READ_WRITE(MachPhysGliderImpl);
 
 private:
     friend class MachPhysGlider;
 
-    MachPhysGliderImpl( MachPhysMachine* pMachine, MachPhysGlider* pGlider, MATHEX_SCALAR height );
+    MachPhysGliderImpl(MachPhysMachine* pMachine, MachPhysGlider* pGlider, MATHEX_SCALAR height);
 
-    virtual ~MachPhysGliderImpl();
+    ~MachPhysGliderImpl() override;
 
     ///////////////////////////////////////////////////
     // Inherited from MachPhysLocomotionMethodImpl
 
-    //Compute the instantaneous position for the machine at baseLocation, facing along unitFacingDirection.
-    //Return the 3d location for the origin in pLocation, and the machine vertical normal in pNormal.
-    virtual void machineSurfacePosition
-    (
-        const MachPhysPlanetSurface& surface, const MexPoint3d& baseLocation, const MexVec3& unitFacingDirection,
-        MexPoint3d* pLocation, MexVec3* pNormal
-    ) const;
+    // Compute the instantaneous position for the machine at baseLocation, facing along unitFacingDirection.
+    // Return the 3d location for the origin in pLocation, and the machine vertical normal in pNormal.
+    void machineSurfacePosition(
+        const MachPhysPlanetSurface& surface,
+        const MexPoint3d& baseLocation,
+        const MexVec3& unitFacingDirection,
+        MexPoint3d* pLocation,
+        MexVec3* pNormal) const override;
 
-    //Update the locomotion animations for the machine depending on current activity as specified by state.
-    virtual void firstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state );
+    // Update the locomotion animations for the machine depending on current activity as specified by state.
+    void firstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state) override;
 
     ///////////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysGliderImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGliderImpl& t);
 
-    MachPhysGliderImpl( const MachPhysGliderImpl& );
-    MachPhysGliderImpl& operator =( const MachPhysGliderImpl& );
+    MachPhysGliderImpl(const MachPhysGliderImpl&);
+    MachPhysGliderImpl& operator=(const MachPhysGliderImpl&);
 
-    //data members
-    MachPhysGlider* pGlider_; //The owning object
-    MATHEX_SCALAR   height_;
-	W4dLink* 		pBody_;
-	W4dLink* 		pHip_;
-	MexPoint3d		hipPosition_;
-	W4dLink* 		pBrake_;
-	W4dLink* 		pThrust_;
-	W4dLink*		pLFan_;
-	W4dLink*		pRFan_;
-	W4dLink*		pLTurb_;
-	W4dLink*		pRTurb_;
+    // data members
+    MachPhysGlider* pGlider_; // The owning object
+    MATHEX_SCALAR height_;
+    W4dLink* pBody_;
+    W4dLink* pHip_;
+    MexPoint3d hipPosition_;
+    W4dLink* pBrake_;
+    W4dLink* pThrust_;
+    W4dLink* pLFan_;
+    W4dLink* pRFan_;
+    W4dLink* pLTurb_;
+    W4dLink* pRTurb_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysGliderImpl );
+PER_DECLARE_PERSISTENT(MachPhysGliderImpl);
 
 #endif
 

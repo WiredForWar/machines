@@ -13,39 +13,38 @@
 
 #include "utility/time.hpp"
 
-void    registerDerivedClasses();
-void    testNonPersistent();
-void    writeFile( const SysPathName& pathname, const Master& master );
-void    readFile( const SysPathName& pathname, Master* pMaster );
+void registerDerivedClasses();
+void testNonPersistent();
+void writeFile(const SysPathName& pathname, const Master& master);
+void readFile(const SysPathName& pathname, Master* pMaster);
 
-int main( int, char ** )
+int main(int, char**)
 {
-WHERE;
+    WHERE;
 
     UtlDebugTimer::calibrate();
 
-    PER_LOG_WRITE( true );
-    PER_LOG_READ( true );
+    PER_LOG_WRITE(true);
+    PER_LOG_READ(true);
 
-    unsigned int seed = time( NULL );
+    unsigned int seed = time(NULL);
 
-    srand( seed );
+    srand(seed);
 
     registerDerivedClasses();
     testNonPersistent();
 
-    const SysPathName   pathname( "test.bin" );
-    Master  m1;
+    const SysPathName pathname("test.bin");
+    Master m1;
 
-    writeFile( pathname, m1 );
+    writeFile(pathname, m1);
 
-    Master  m2;
+    Master m2;
 
-    readFile( pathname, &m2 );
+    readFile(pathname, &m2);
 
-
-WHERE;
-    if( m1 == m2 )
+    WHERE;
+    if (m1 == m2)
         std::cout << "Write and read successful" << std::endl;
     else
     {
@@ -60,19 +59,19 @@ WHERE;
         std::cout << "Write and read failed" << std::endl;
     }
 
-WHERE;
-    std::ofstream    log( "testper.log" );
-WHERE;
+    WHERE;
+    std::ofstream log("testper.log");
+    WHERE;
 
     log << "Original" << std::endl;
-WHERE;
+    WHERE;
     log << m1;
-WHERE;
+    WHERE;
 
     log << std::endl << "New" << std::endl;
-WHERE;
+    WHERE;
     log << m2;
-WHERE;
+    WHERE;
 
     return 0;
 }
@@ -83,40 +82,39 @@ WHERE;
 // PER_DEFINE_PERSISTENT_T2( Class7, int, double );
 // PER_DEFINE_PERSISTENT_ABSTRACT_T1( Class9, int );
 
-void    registerDerivedClasses()
+void registerDerivedClasses()
 {
-//     PER_REGISTER_DERIVED_CLASS_T2( Class7, int, double );
-//     PER_REGISTER_DERIVED_CLASS( Class3 );
-//     PER_REGISTER_DERIVED_CLASS( Class10 );
+    //     PER_REGISTER_DERIVED_CLASS_T2( Class7, int, double );
+    //     PER_REGISTER_DERIVED_CLASS( Class3 );
+    //     PER_REGISTER_DERIVED_CLASS( Class10 );
 }
 
 void testNonPersistent()
 {
-//     ctl_vector< Class8 >            v1;
-//     CtlCountedPtr< Class8 >         p1;
-//     CtlConstCountedPtr< Class8 >    p2;
-//     UtlProperty< Class8 >           property;
+    //     ctl_vector< Class8 >            v1;
+    //     CtlCountedPtr< Class8 >         p1;
+    //     CtlConstCountedPtr< Class8 >    p2;
+    //     UtlProperty< Class8 >           property;
 }
 
-void    writeFile( const SysPathName& pathname, const Master& master )
+void writeFile(const SysPathName& pathname, const Master& master)
 {
-	std::ofstream	str( pathname.c_str(), std::ios::binary );
-    PerOstream	ostr( str );
+    std::ofstream str(pathname.c_str(), std::ios::binary);
+    PerOstream ostr(str);
 
     // TODO handle open once?
-    //PerOstream	ostr2( str );
+    // PerOstream    ostr2( str );
 
     ostr << master;
 
     Class3 cl3;
     ostr << cl3;
-
 }
 
-void    readFile( const SysPathName& pathname, Master* pMaster )
+void readFile(const SysPathName& pathname, Master* pMaster)
 {
-   	std::ifstream	str( pathname.c_str(), std::ios::binary );
-    PerIstream	istr( str );
+    std::ifstream str(pathname.c_str(), std::ios::binary);
+    PerIstream istr(str);
 
     istr >> *pMaster;
 

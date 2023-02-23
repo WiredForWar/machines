@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-//#include "machphys/plansurf.hpp"
-//#include "ctl/algorith.hpp"
+// #include "machphys/plansurf.hpp"
+// #include "ctl/algorith.hpp"
 #include "sim/manager.hpp"
 
 #include "mathex/abox2d.hpp"
@@ -26,23 +26,23 @@
 #include "machlog/races.hpp"
 #include "machlog/planet.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogRepairOperation );
+PER_DEFINE_PERSISTENT(MachLogRepairOperation);
 
-MachLogRepairOperation::MachLogRepairOperation( MachLogConstructor * pActor, MachLogConstruction * pConstr )
-:	MachLogLabourOperation( pActor, pConstr, "REPAIR_OPERATION", MachLogOperation::REPAIR_OPERATION )
+MachLogRepairOperation::MachLogRepairOperation(MachLogConstructor* pActor, MachLogConstruction* pConstr)
+    : MachLogLabourOperation(pActor, pConstr, "REPAIR_OPERATION", MachLogOperation::REPAIR_OPERATION)
 {
-	// deliberately left blank
+    // deliberately left blank
 }
 
-void MachLogRepairOperation::doOutputOperator( ostream& o ) const
+void MachLogRepairOperation::doOutputOperator(ostream& o) const
 {
-	o << "MachLogRepairOperation\n";
-	MachLogLabourOperation::doOutputOperator( o );
+    o << "MachLogRepairOperation\n";
+    MachLogLabourOperation::doOutputOperator(o);
 
-	if( pConstruction() )
-		o << " Repairing (" << pConstruction()->id() << ")[" << pConstruction()->objectType() << "]\n";
-	else
-		o << " Target destroyed or invalid. " << std::endl;
+    if (pConstruction())
+        o << " Repairing (" << pConstruction()->id() << ")[" << pConstruction()->objectType() << "]\n";
+    else
+        o << " Target destroyed or invalid. " << std::endl;
 }
 
 ///////////////////////////////////
@@ -50,115 +50,118 @@ void MachLogRepairOperation::doOutputOperator( ostream& o ) const
 // virtual
 PhysRelativeTime MachLogRepairOperation::interactWithBuilding()
 {
-	PhysRelativeTime interval = 2.0;
+    PhysRelativeTime interval = 2.0;
 
-	MachLogConstructor* pConstructorGuy = pConstructor();
-	MachLogConstruction* pDamagedConstruction = pConstruction();
+    MachLogConstructor* pConstructorGuy = pConstructor();
+    MachLogConstruction* pDamagedConstruction = pConstruction();
 
-	MachLogRaces& races = MachLogRaces::instance();
-	MachPhys::Race constructorRace = pConstructorGuy->race();
+    MachLogRaces& races = MachLogRaces::instance();
+    MachPhys::Race constructorRace = pConstructorGuy->race();
 
-	MachPhys::BuildingMaterialUnits constructRate = pConstructorGuy->data().constructionRate();
+    MachPhys::BuildingMaterialUnits constructRate = pConstructorGuy->data().constructionRate();
 
-	MachPhys::BuildingMaterialUnits BMUValueAdded = ( constructRate * ( SimManager::instance().currentTime() - lastUpdateTime() ) / 60 );
-	MachPhys::BuildingMaterialUnits nBMUsAvailable = races.nBuildingMaterialUnits( constructorRace );
+    MachPhys::BuildingMaterialUnits BMUValueAdded
+        = (constructRate * (SimManager::instance().currentTime() - lastUpdateTime()) / 60);
+    MachPhys::BuildingMaterialUnits nBMUsAvailable = races.nBuildingMaterialUnits(constructorRace);
 
-	if( BMUValueAdded > nBMUsAvailable )
-		BMUValueAdded = nBMUsAvailable;
+    if (BMUValueAdded > nBMUsAvailable)
+        BMUValueAdded = nBMUsAvailable;
 
-	MachPhys::HitPointUnits hpsAdded = pDamagedConstruction->hitPointValueOfBMUs( BMUValueAdded );
+    MachPhys::HitPointUnits hpsAdded = pDamagedConstruction->hitPointValueOfBMUs(BMUValueAdded);
 
-	if( hpsAdded > 0 )
-	{
-		//subOperation( pConstructorGuy, _NEW( MachLogConstructAnimation( pConstructorGuy, pDamagedConstruction, constructRate ) ) );
-		pConstructorGuy->constructing( true, pDamagedConstruction->id() );
+    if (hpsAdded > 0)
+    {
+        // subOperation( pConstructorGuy, _NEW( MachLogConstructAnimation( pConstructorGuy, pDamagedConstruction,
+        // constructRate ) ) );
+        pConstructorGuy->constructing(true, pDamagedConstruction->id());
 
-		const MachPhysObjectData& objData = pDamagedConstruction->objectData();
-		if( hpsAdded + pDamagedConstruction->hp() > pDamagedConstruction->objectData().hitPoints() )
-			hpsAdded = pDamagedConstruction->objectData().hitPoints() - pDamagedConstruction->hp();
+        const MachPhysObjectData& objData = pDamagedConstruction->objectData();
+        if (hpsAdded + pDamagedConstruction->hp() > pDamagedConstruction->objectData().hitPoints())
+            hpsAdded = pDamagedConstruction->objectData().hitPoints() - pDamagedConstruction->hp();
 
-		pDamagedConstruction->addRepairPoints( hpsAdded );
+        pDamagedConstruction->addRepairPoints(hpsAdded);
 
-		// if the building is now repaired, give a voicemail
-		if( pDamagedConstruction->hpRatio() >= 1.0 )
-		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachineVoiceMailEventID::BUILDING_REPAIRED );
+        // if the building is now repaired, give a voicemail
+        if (pDamagedConstruction->hpRatio() >= 1.0)
+        {
+            MachLogMachineVoiceMailManager::instance().postNewMail(
+                *pConstructorGuy,
+                MachineVoiceMailEventID::BUILDING_REPAIRED);
 
-			// post voicemail if no more operations on the queue
-			if( not pConstructorGuy->isDoingSuperConstruct() )
-				MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachineVoiceMailEventID::AWAITING_NEW_JOB );
-		}
+            // post voicemail if no more operations on the queue
+            if (not pConstructorGuy->isDoingSuperConstruct())
+                MachLogMachineVoiceMailManager::instance().postNewMail(
+                    *pConstructorGuy,
+                    MachineVoiceMailEventID::AWAITING_NEW_JOB);
+        }
 
-		//only update time and pay the cash if hps were added on.
-		races.smartSubtractBMUs( constructorRace, BMUValueAdded );
-		lastUpdateTime( SimManager::instance().currentTime() );
-	}
-	else
-	{
-		// if we added nothing, it's cos we're out of money, so don't animate. The workers are on strike.
-		pConstructorGuy->constructing( false );
+        // only update time and pay the cash if hps were added on.
+        races.smartSubtractBMUs(constructorRace, BMUValueAdded);
+        lastUpdateTime(SimManager::instance().currentTime());
+    }
+    else
+    {
+        // if we added nothing, it's cos we're out of money, so don't animate. The workers are on strike.
+        pConstructorGuy->constructing(false);
 
-		state( MachLogLabourOperation::INTERACTING );
-	}
+        state(MachLogLabourOperation::INTERACTING);
+    }
 
-	return interval;
+    return interval;
 }
 
 bool MachLogRepairOperation::doIsFinished() const
 {
-	bool finished = ( not pConstruction() )
-					or pConstruction()->hpRatio() == 1.0;
+    bool finished = (not pConstruction()) or pConstruction()->hpRatio() == 1.0;
 
-	return finished;
+    return finished;
 }
 
 // virtual
-bool MachLogRepairOperation::clientSpecificNotification( int clientData )
+bool MachLogRepairOperation::clientSpecificNotification(int clientData)
 {
-	PRE( pConstruction() );
-	PRE( pConstructor() );
+    PRE(pConstruction());
+    PRE(pConstructor());
 
-	bool stayAttached = true;
+    bool stayAttached = true;
 
-	switch( clientData )
-	{
-		case MachLog::RACE_CHANGED:
-		{
-			MachLogRaces::DispositionToRace disposition = MachLogRaces::instance().dispositionToRace( pConstruction()->race(), pConstructor()->race() );
+    switch (clientData)
+    {
+        case MachLog::RACE_CHANGED:
+            {
+                MachLogRaces::DispositionToRace disposition
+                    = MachLogRaces::instance().dispositionToRace(pConstruction()->race(), pConstructor()->race());
 
-			if( disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL )
-			{
-				// not going to repair an opponent's base. No way.
-				stayAttached = false;
-			}
-		}
-		break;
+                if (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL)
+                {
+                    // not going to repair an opponent's base. No way.
+                    stayAttached = false;
+                }
+            }
+            break;
 
-		default:
-			;
-	}
+        default:;
+    }
 
-	return stayAttached;
+    return stayAttached;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogRepairOperation& op )
+void perWrite(PerOstream& ostr, const MachLogRepairOperation& op)
 {
-	const MachLogLabourOperation& base1 = op;
+    const MachLogLabourOperation& base1 = op;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogRepairOperation& op )
+void perRead(PerIstream& istr, MachLogRepairOperation& op)
 {
-	MachLogLabourOperation& base1 = op;
+    MachLogLabourOperation& base1 = op;
 
-	istr >> base1;
-
+    istr >> base1;
 }
 
-MachLogRepairOperation::MachLogRepairOperation( PerConstructor con )
-:	MachLogLabourOperation( con )
+MachLogRepairOperation::MachLogRepairOperation(PerConstructor con)
+    : MachLogLabourOperation(con)
 {
 }
 

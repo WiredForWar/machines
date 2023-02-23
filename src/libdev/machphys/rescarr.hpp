@@ -20,88 +20,88 @@
 
 class MachPhysResourceCarrierData;
 class MachPhysMachinePersistence;
-template< class ID, class PART > class MachPhysObjectFactory;
+template <class ID, class PART> class MachPhysObjectFactory;
 
 class MachPhysResourceCarrier : public MachPhysMachine
 {
 public:
-//     MachPhysResourceCarrier(
-//         W4dEntity* pParent,
-//         const W4dTransform3d& localTransform,
-//         const SysPathName& compositeFileName );
+    //     MachPhysResourceCarrier(
+    //         W4dEntity* pParent,
+    //         const W4dTransform3d& localTransform,
+    //         const SysPathName& compositeFileName );
 
     MachPhysResourceCarrier(
         W4dEntity* pParent,
         const W4dTransform3d& localTransform,
         size_t bodyLevel,
         size_t brainLevel,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-//     MachPhysResourceCarrier(
-//         W4dEntity* pParent,
-//         const MexTransform3d& transform,
-//         const MachPhysResourceCarrier& copyMe,
-//         const W4dLink& faceplate );
+    //     MachPhysResourceCarrier(
+    //         W4dEntity* pParent,
+    //         const MexTransform3d& transform,
+    //         const MachPhysResourceCarrier& copyMe,
+    //         const W4dLink& faceplate );
 
-    virtual ~MachPhysResourceCarrier();
+    ~MachPhysResourceCarrier() override;
 
-	virtual const MachPhysMachineData& machineData() const;
+    const MachPhysMachineData& machineData() const override;
 
-	const MachPhysResourceCarrierData& data() const;
+    const MachPhysResourceCarrierData& data() const;
 
-	//perform the loading animation from startTime, return the duration
-	const PhysRelativeTime doLoading( const PhysAbsoluteTime& startTime );
+    // perform the loading animation from startTime, return the duration
+    const PhysRelativeTime doLoading(const PhysAbsoluteTime& startTime);
 
-	//only level 3 sgavenges
-	bool isScavenger() const;
+    // only level 3 sgavenges
+    bool isScavenger() const;
 
-	//perform the scavenging animations
-	const PhysRelativeTime doScavenge( const PhysAbsoluteTime& startTime );
-	//PRE( isScavenger() );
+    // perform the scavenging animations
+    const PhysRelativeTime doScavenge(const PhysAbsoluteTime& startTime);
+    // PRE( isScavenger() );
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysResourceCarrier& t );
+    friend ostream& operator<<(ostream& o, const MachPhysResourceCarrier& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysResourceCarrier );
-    PER_FRIEND_READ_WRITE( MachPhysResourceCarrier );
+    PER_MEMBER_PERSISTENT(MachPhysResourceCarrier);
+    PER_FRIEND_READ_WRITE(MachPhysResourceCarrier);
 
-    typedef size_t  Id;
+    using Id = size_t;
 
 private:
     // Operation deliberately revoked
-    MachPhysResourceCarrier( const MachPhysResourceCarrier& );
+    MachPhysResourceCarrier(const MachPhysResourceCarrier&);
 
     // Operation deliberately revoked
-    MachPhysResourceCarrier& operator =( const MachPhysResourceCarrier& );
+    MachPhysResourceCarrier& operator=(const MachPhysResourceCarrier&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysResourceCarrier& );
+    bool operator==(const MachPhysResourceCarrier&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysResourceCarrier >    Factory;
+    using Factory = MachPhysObjectFactory<Id, MachPhysResourceCarrier>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysResourceCarrier& Factory::part( const ID&, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysResourceCarrier > ;
+    // friend MachPhysResourceCarrier& Factory::part( const ID&, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysResourceCarrier>;
 
     //  This constructor for use by the factory only
-    MachPhysResourceCarrier( W4dEntity* pParent, size_t bodyLevel );
+    MachPhysResourceCarrier(W4dEntity* pParent, size_t bodyLevel);
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysMachinePersistence& );
-    friend void perRead( PerIstream&, MachPhysMachinePersistence& );
+    friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
+    friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    SysPathName compositeFileName( size_t bodyLevel ) const;
-    static  MachPhysResourceCarrier&    part( size_t bodyLevel );
-    static  Factory& factory();
+    SysPathName compositeFileName(size_t bodyLevel) const;
+    static MachPhysResourceCarrier& part(size_t bodyLevel);
+    static Factory& factory();
 
     void createExplosionData();
 
-	size_t bodyLevel_;
+    size_t bodyLevel_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysResourceCarrier );
+PER_DECLARE_PERSISTENT(MachPhysResourceCarrier);
 
 #endif
 

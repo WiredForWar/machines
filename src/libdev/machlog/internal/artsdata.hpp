@@ -1,5 +1,5 @@
 /*
- * A R T S D A T A . H P P 
+ * A R T S D A T A . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,41 +19,39 @@
 #include "ctl/pvector.hpp"
 #include "machphys/artfdata.hpp"
 
-//forward refs
+// forward refs
 class W4dEntity;
 
 class MachLogArtefactSubType
 {
 public:
-    MachLogArtefactSubType( int subType, const W4dEntity* pExemplar, const string& name )
-    :   subType_( subType ),
-        pExemplar_( pExemplar ),
-        name_( name )
-    {};
+    MachLogArtefactSubType(int subType, const W4dEntity* pExemplar, const string& name)
+        : subType_(subType)
+        , pExemplar_(pExemplar)
+        , name_(name) {};
 
     //////////////////////////////////////////////
-    //These functions required by ctl_vector instantiation. Not required otherwise.
+    // These functions required by ctl_vector instantiation. Not required otherwise.
     MachLogArtefactSubType()
-    :   subType_( 0 ),
-        pExemplar_( NULL )
-    {};
+        : subType_(0)
+        , pExemplar_(nullptr) {};
 
-    friend bool operator< ( const MachLogArtefactSubType& lhs, const MachLogArtefactSubType& rhs )
+    friend bool operator<(const MachLogArtefactSubType& lhs, const MachLogArtefactSubType& rhs)
     {
         return lhs.subType_ < rhs.subType_;
     };
 
-    friend bool operator== ( const MachLogArtefactSubType& lhs, const MachLogArtefactSubType& rhs )
+    friend bool operator==(const MachLogArtefactSubType& lhs, const MachLogArtefactSubType& rhs)
     {
         return lhs.subType_ == rhs.subType_;
     };
 
     //////////////////////////////////////////////
 
-    //data members
-    int subType_; //The subtype value
-    const W4dEntity* pExemplar_; //The exemplar for this subtype
-    string name_; //Name as referenced in the artefacts repository
+    // data members
+    int subType_; // The subtype value
+    const W4dEntity* pExemplar_; // The exemplar for this subtype
+    string name_; // Name as referenced in the artefacts repository
 };
 
 class MachLogArtefactsData
@@ -64,18 +62,17 @@ private:
     friend class MachLogArtefactsImpl;
 
     MachLogArtefactsData()
-    :   pSubTypes_( NULL )
+        : pSubTypes_(nullptr)
     {
-        artefactDatas_.reserve( 64 );
+        artefactDatas_.reserve(64);
     };
 
-    typedef ctl_pvector< MachPhysArtefactData > ArtefactDatas;
+    using ArtefactDatas = ctl_pvector<MachPhysArtefactData>;
 
-    //data members
-    ctl_vector< MachLogArtefactSubType >* pSubTypes_;
+    // data members
+    ctl_vector<MachLogArtefactSubType>* pSubTypes_;
     ArtefactDatas artefactDatas_;
 };
-
 
 #endif
 

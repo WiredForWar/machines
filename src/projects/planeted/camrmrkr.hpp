@@ -1,5 +1,5 @@
 /*
- * C A M R M A R K . H P P 
+ * C A M R M A R K . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,7 +17,6 @@
 #include "render/colour.hpp"
 #include "machlog/camera.hpp"
 
-
 class W4dEntity;
 class MexTransform3d;
 class RenColour;
@@ -26,25 +25,24 @@ class PedCameraMarker : public W4dCustom
 // Canonical form revoked
 {
 public:
-    PedCameraMarker( W4dEntity*, const MexTransform3d&, MachLogCamera::Type, const RenColour& );
-    ~PedCameraMarker();
+    PedCameraMarker(W4dEntity*, const MexTransform3d&, MachLogCamera::Type, const RenColour&);
+    ~PedCameraMarker() override;
 
     void CLASS_INVARIANT;
 
-	void draw();
+    void draw();
 
-	MachLogCamera::Type cameraType() const { return cameraType_; }
+    MachLogCamera::Type cameraType() const { return cameraType_; }
 
 private:
-    friend ostream& operator <<( ostream& o, const PedCameraMarker& t );
+    friend ostream& operator<<(ostream& o, const PedCameraMarker& t);
 
-    PedCameraMarker( const PedCameraMarker& );
-    PedCameraMarker& operator =( const PedCameraMarker& );
+    PedCameraMarker(const PedCameraMarker&);
+    PedCameraMarker& operator=(const PedCameraMarker&);
 
-	MachLogCamera::Type cameraType_;
-	RenColour colour_;
+    MachLogCamera::Type cameraType_;
+    RenColour colour_;
 };
-
 
 #endif
 

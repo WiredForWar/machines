@@ -24,32 +24,31 @@ public:
     ~DiagStreams();
 
     //  Close all open diagnostic streams
-    void    close();
+    void close();
 
-    friend ostream& operator <<( ostream& o, const DiagStreams& t );
+    friend ostream& operator<<(ostream& o, const DiagStreams& t);
 
 private:
     // Operation deliberately revoked
-    DiagStreams( const DiagStreams& );
+    DiagStreams(const DiagStreams&);
 
     // Operation deliberately revoked
-    DiagStreams& operator =( const DiagStreams& );
+    DiagStreams& operator=(const DiagStreams&);
 
     // Operation deliberately revoked
-    bool operator ==( const DiagStreams& );
+    bool operator==(const DiagStreams&);
 
     DiagStreams();
 
     friend class Diag;
     friend class DiagInternal;
 
-    bool        diagStreamEnabled_[ DIAG_N_DIAG_STREAMS ];
+    bool diagStreamEnabled_[DIAG_N_DIAG_STREAMS];
 
-    DiagStream	diagStreams_[ DIAG_N_DIAG_STREAMS ];
+    DiagStream diagStreams_[DIAG_N_DIAG_STREAMS];
 
-    size_t	nStreams();
+    size_t nStreams();
 };
-
 
 #endif
 

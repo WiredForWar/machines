@@ -20,39 +20,42 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-MachLogOreHolograph::MachLogOreHolograph
-(
-    MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location
-)
-:   MachActor( pRace, pPhysHolo_ = pNewOreHolograph( pRace, concentration, quantity, location), MachLog::ORE_HOLOGRAPH )
+MachLogOreHolograph::MachLogOreHolograph(
+    MachLogRace* pRace,
+    uint concentration,
+    uint quantity,
+    const MexPoint3d& location)
+    : MachActor(pRace, pPhysHolo_ = pNewOreHolograph(pRace, concentration, quantity, location), MachLog::ORE_HOLOGRAPH)
 {
     TEST_INVARIANT;
 }
 
-MachLogOreHolograph::MachLogOreHolograph
-(
-    MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location, UtlId withId
-)
-:   MachActor( pRace, pPhysHolo_ = pNewOreHolograph( pRace, concentration, quantity, location), MachLog::ORE_HOLOGRAPH, withId )
+MachLogOreHolograph::MachLogOreHolograph(
+    MachLogRace* pRace,
+    uint concentration,
+    uint quantity,
+    const MexPoint3d& location,
+    UtlId withId)
+    : MachActor(
+        pRace,
+        pPhysHolo_ = pNewOreHolograph(pRace, concentration, quantity, location),
+        MachLog::ORE_HOLOGRAPH,
+        withId)
 {
     TEST_INVARIANT;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//static
-MachPhysOreHolograph* MachLogOreHolograph::pNewOreHolograph
-(
-    MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location
-)
+// static
+MachPhysOreHolograph*
+MachLogOreHolograph::pNewOreHolograph(MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location)
 {
-    //get domain and transform to use
+    // get domain and transform to use
     MexTransform3d localTransform;
-    W4dDomain* pDomain =
-        MachLogPlanetDomains::pDomainPosition( location, 0, &localTransform );
+    W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
-    //Construct the holograph
-    return _NEW( MachPhysOreHolograph( pDomain, localTransform, pRace->race(),
-                                       concentration, quantity ) );
+    // Construct the holograph
+    return _NEW(MachPhysOreHolograph(pDomain, localTransform, pRace->race(), concentration, quantity));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -64,91 +67,91 @@ MachLogOreHolograph::~MachLogOreHolograph()
 
 void MachLogOreHolograph::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
+// virtual
 PhysRelativeTime MachLogOreHolograph::beDestroyed()
 {
     return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
+// virtual
 bool MachLogOreHolograph::exists() const
 {
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-//virtual
+// virtual
 void MachLogOreHolograph::doStartExplodingAnimation()
 {
 }
 
-//virtual
+// virtual
 void MachLogOreHolograph::doEndExplodingAnimation()
 {
 }
 
-//virtual
+// virtual
 const MachPhysObjectData& MachLogOreHolograph::objectData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysConstructionData& MachLogOreHolograph::constructionData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysConstructionData& MachLogOreHolograph::data() const
 {
-	return _REINTERPRET_CAST( const MachPhysConstructionData&, MachPhysData::instance().oreHolographData() );
+    return _REINTERPRET_CAST(const MachPhysConstructionData&, MachPhysData::instance().oreHolographData());
 }
 
-//virtual
+// virtual
 void MachLogOreHolograph::doVisualiseSelectionState()
 {
-	//Do nothing - they can't be selected
+    // Do nothing - they can't be selected
 }
 
 const MachLogMineralSite& MachLogOreHolograph::mineralSite() const
 {
-	// Find the mineral site associated with this ore holograph. Bit of a hack, needs
-	// sorting out properly at some point.
-	const MachLogPlanet::Sites mineralSites = MachLogPlanet::instance().sites();
-	MachLogMineralSite* pRetVal = NULL;
+    // Find the mineral site associated with this ore holograph. Bit of a hack, needs
+    // sorting out properly at some point.
+    const MachLogPlanet::Sites mineralSites = MachLogPlanet::instance().sites();
+    MachLogMineralSite* pRetVal = nullptr;
 
-	for ( MachLogPlanet::Sites::const_iterator iter = mineralSites.begin(); iter != mineralSites.end(); ++iter )
-	{
-		MexPoint2d mineralPos( (*iter)->position() );
-		MexPoint2d oreHoloPos( position() );
+    for (MachLogPlanet::Sites::const_iterator iter = mineralSites.begin(); iter != mineralSites.end(); ++iter)
+    {
+        MexPoint2d mineralPos((*iter)->position());
+        MexPoint2d oreHoloPos(position());
 
-		if ( mineralPos == oreHoloPos )
-		{
-			pRetVal = (*iter);
-		}
-	}
+        if (mineralPos == oreHoloPos)
+        {
+            pRetVal = (*iter);
+        }
+    }
 
-	POST( pRetVal );
+    POST(pRetVal);
 
-	return *pRetVal;
+    return *pRetVal;
 }
 
-void MachLogOreHolograph::assignToDifferentRace(MachLogRace &newRace)
+void MachLogOreHolograph::assignToDifferentRace(MachLogRace& newRace)
 {
-	// OreHolograph race change does not work:
-	// Save files do not have Holographes but only MineralSites
-	// During the load MineralSites create Holographes for the 'Race discoveredBy_'
+    // OreHolograph race change does not work:
+    // Save files do not have Holographes but only MineralSites
+    // During the load MineralSites create Holographes for the 'Race discoveredBy_'
 
-	// See void perRead( PerIstream& istr, MachLogMineralSiteImpl& siteImpl ) in minesiti.cpp:64 for details
-	return;
+    // See void perRead( PerIstream& istr, MachLogMineralSiteImpl& siteImpl ) in minesiti.cpp:64 for details
+    return;
 }
 
 void MachLogOreHolograph::removeMe()
 {
-	isDead( true );
+    isDead(true);
 }
 
 /* End OREHOLO.CPP **************************************************/

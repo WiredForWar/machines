@@ -1,5 +1,5 @@
 /*
- * G A R R I S O I . H P P 
+ * G A R R I S O I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,21 +24,21 @@ public:
     ~MachLogGarrisonImpl();
 
     void CLASS_INVARIANT;
-	PER_MEMBER_PERSISTENT_DEFAULT( MachLogGarrisonImpl );
-	PER_FRIEND_READ_WRITE( MachLogGarrisonImpl );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogGarrisonImpl);
+    PER_FRIEND_READ_WRITE(MachLogGarrisonImpl);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogGarrisonImpl& t );
-	friend class MachLogGarrison;
+    friend ostream& operator<<(ostream& o, const MachLogGarrisonImpl& t);
+    friend class MachLogGarrison;
 
-    MachLogGarrisonImpl( const MachLogGarrisonImpl& );
-    MachLogGarrisonImpl& operator =( const MachLogGarrisonImpl& );
+    MachLogGarrisonImpl(const MachLogGarrisonImpl&);
+    MachLogGarrisonImpl& operator=(const MachLogGarrisonImpl&);
 
-	MachLogConstruction::Machines			machinesBeingHealed_;
-	PhysAbsoluteTime						lastUpdateTime_;	
+    MachLogConstruction::Machines machinesBeingHealed_;
+    PhysAbsoluteTime lastUpdateTime_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogGarrisonImpl );
+PER_DECLARE_PERSISTENT(MachLogGarrisonImpl);
 
 #endif
 

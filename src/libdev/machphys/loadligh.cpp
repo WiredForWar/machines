@@ -10,49 +10,48 @@
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysLoadingLight );
+PER_DEFINE_PERSISTENT(MachPhysLoadingLight);
 
-//One-time ctor
+// One-time ctor
 MachPhysLoadingLight::MachPhysLoadingLight()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/load/light.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/load/light.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysLoadingLight::MachPhysLoadingLight( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysLoadingLight::MachPhysLoadingLight(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
     TEST_INVARIANT;
 }
 
-MachPhysLoadingLight::MachPhysLoadingLight( PerConstructor con )
-: W4dEntity( con )
+MachPhysLoadingLight::MachPhysLoadingLight(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
 MachPhysLoadingLight::~MachPhysLoadingLight()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysLoadingLight& MachPhysLoadingLight::exemplar()
 {
-	return MachPhysOtherPersistence::instance().lightLoadingExemplar();
+    return MachPhysOtherPersistence::instance().lightLoadingExemplar();
 }
 
 void MachPhysLoadingLight::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysLoadingLight& t )
+ostream& operator<<(ostream& o, const MachPhysLoadingLight& t)
 {
 
     o << "MachPhysLoadingLight " << (void*)&t << " start" << std::endl;
@@ -61,21 +60,20 @@ ostream& operator <<( ostream& o, const MachPhysLoadingLight& t )
     return o;
 }
 
-//virtual
-bool MachPhysLoadingLight::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysLoadingLight::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysLoadingLight& light )
+void perWrite(PerOstream& ostr, const MachPhysLoadingLight& light)
 {
     const W4dEntity& base = light;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysLoadingLight& light )
+void perRead(PerIstream& istr, MachPhysLoadingLight& light)
 {
     W4dEntity& base = light;
 
@@ -83,4 +81,3 @@ void perRead( PerIstream& istr, MachPhysLoadingLight& light )
 }
 
 /* End LOADLIGH.CPP *************************************************/
-

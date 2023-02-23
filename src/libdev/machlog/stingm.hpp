@@ -1,5 +1,5 @@
 /*
- * STINGM . H P P 
+ * STINGM . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,31 +22,26 @@ class MachLogMetalSting : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogMetalSting(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogMetalSting(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogMetalSting();
+    ~MachLogMetalSting() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogMetalSting& t );
+    friend ostream& operator<<(ostream& o, const MachLogMetalSting& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogMetalSting );
-	PER_FRIEND_READ_WRITE( MachLogMetalSting );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogMetalSting);
+    PER_FRIEND_READ_WRITE(MachLogMetalSting);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogMetalSting( const MachLogMetalSting& );
-    MachLogMetalSting& operator =( const MachLogMetalSting& );
-    bool operator ==( const MachLogMetalSting& );
-
+    MachLogMetalSting(const MachLogMetalSting&);
+    MachLogMetalSting& operator=(const MachLogMetalSting&);
+    bool operator==(const MachLogMetalSting&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogMetalSting );
+PER_DECLARE_PERSISTENT(MachLogMetalSting);
 
 #endif
 

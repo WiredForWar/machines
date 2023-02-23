@@ -5,7 +5,7 @@
 
 #include "render/internal/vpmap.hpp"
 #ifndef _INLINE
-    #include "render/internal/vpmap.ipp"
+#include "render/internal/vpmap.ipp"
 #endif
 
 /* End VPMAP.CPP ****************************************************/

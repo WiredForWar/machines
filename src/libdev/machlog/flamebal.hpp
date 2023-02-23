@@ -1,5 +1,5 @@
 /*
- * F L A M E B A L . H P P 
+ * F L A M E B A L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,31 +22,26 @@ class MachLogFlameBall : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogFlameBall(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogFlameBall(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogFlameBall();
+    ~MachLogFlameBall() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogFlameBall& t );
+    friend ostream& operator<<(ostream& o, const MachLogFlameBall& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogFlameBall );
-	PER_FRIEND_READ_WRITE( MachLogFlameBall );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogFlameBall);
+    PER_FRIEND_READ_WRITE(MachLogFlameBall);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogFlameBall( const MachLogFlameBall& );
-    MachLogFlameBall& operator =( const MachLogFlameBall& );
-    bool operator ==( const MachLogFlameBall& );
-
+    MachLogFlameBall(const MachLogFlameBall&);
+    MachLogFlameBall& operator=(const MachLogFlameBall&);
+    bool operator==(const MachLogFlameBall&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogFlameBall );
+PER_DECLARE_PERSISTENT(MachLogFlameBall);
 
 #endif
 

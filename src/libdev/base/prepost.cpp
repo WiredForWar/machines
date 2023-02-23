@@ -17,76 +17,80 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 
-BaseAssertion::AssertionAction_fn_AssertionInfo    BaseAssertion::assertionHandler_ = NULL;
+BaseAssertion::AssertionAction_fn_AssertionInfo BaseAssertion::assertionHandler_ = nullptr;
 
 //////////////////////////////////////////////////////////////////////////////////
 
-WEAK_SYMBOL void BaseAssertion::preconditionFail( const char* exprStr, const char* file, const char* line )
+WEAK_SYMBOL void BaseAssertion::preconditionFail(const char* exprStr, const char* file, const char* line)
 {
-	std::string	failString( exprStr );
-	failString += ", ";
-	failString += file;
-	failString += ":";
-	failString += line;
+    std::string failString(exprStr);
+    failString += ", ";
+    failString += file;
+    failString += ":";
+    failString += line;
 
-	assertFail( failString.c_str(), domain_error( "precondition failed" ) );
+    assertFail(failString.c_str(), domain_error("precondition failed"));
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-WEAK_SYMBOL void BaseAssertion::postconditionFail( const char* exprStr, const char* file, const char* line )
+WEAK_SYMBOL void BaseAssertion::postconditionFail(const char* exprStr, const char* file, const char* line)
 {
-	std::string	failString = exprStr;
-	failString += ", ";
-	failString += file;
-	failString += ":";
-	failString += line;
+    std::string failString = exprStr;
+    failString += ", ";
+    failString += file;
+    failString += ":";
+    failString += line;
 
-    BaseAssertion::writeLoggedInfo( std::cout );
+    BaseAssertion::writeLoggedInfo(std::cout);
 
-	assertFail( failString.c_str(), range_error( "postcondition failed" ) );
+    assertFail(failString.c_str(), range_error("postcondition failed"));
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-WEAK_SYMBOL void BaseAssertion::invariantFail( const char* exprStr, const char* file, const char* line,
-    const char* calledFromFile, const char* calledFromLine )
+WEAK_SYMBOL void BaseAssertion::invariantFail(
+    const char* exprStr,
+    const char* file,
+    const char* line,
+    const char* calledFromFile,
+    const char* calledFromLine)
 {
-	std::string	failString = exprStr;
+    std::string failString = exprStr;
 
-	failString += ", ";
-	failString += file;
-	failString += ":";
-	failString += line;
-	failString += " called from ";
-	failString += calledFromFile;
-	failString += ":";
-	failString += calledFromLine;
+    failString += ", ";
+    failString += file;
+    failString += ":";
+    failString += line;
+    failString += " called from ";
+    failString += calledFromFile;
+    failString += ":";
+    failString += calledFromLine;
 
-	assertFail( failString.c_str(), domain_error( "invariant failed" ) );
+    assertFail(failString.c_str(), domain_error("invariant failed"));
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-WEAK_SYMBOL void BaseAssertion::assertFileExists( const char* fileName, const char* file, const char* line )
+WEAK_SYMBOL void BaseAssertion::assertFileExists(const char* fileName, const char* file, const char* line)
 {
 #ifdef NDEBUG
     return;
 #endif
 
-    bool    assertionFailed = false;
-    std::string  errorText;
+    bool assertionFailed = false;
+    std::string errorText;
 
-    if( !validFileName( fileName ) )
+    if (!validFileName(fileName))
     {
         assertionFailed = true;
         errorText = "File name invalid";
     }
     else
     {
-    	unsigned attr;
-    	std::ifstream f(fileName);
-	    if( !f.good() )
+        unsigned attr;
+        std::ifstream f(fileName);
+        if (!f.good())
         {
             assertionFailed = true;
             errorText = "File not found";
@@ -102,20 +106,20 @@ WEAK_SYMBOL void BaseAssertion::assertFileExists( const char* fileName, const ch
         }*/
     }
 
-    if( assertionFailed )
+    if (assertionFailed)
     {
-        std::string  failString( fileName );
-    	failString += ", ";
-    	failString += file;
-    	failString += ":";
-    	failString += line;
+        std::string failString(fileName);
+        failString += ", ";
+        failString += file;
+        failString += ":";
+        failString += line;
 
 #ifdef NDEBUG
         cout << errorText << " " << failString << endl;
         cerr << errorText << " " << failString << endl;
 #else
 
-    	assertFail( failString.c_str(), runtime_error( errorText.c_str() ) );
+        assertFail(failString.c_str(), runtime_error(errorText.c_str()));
 #endif
     }
 }
@@ -125,70 +129,69 @@ WEAK_SYMBOL void BaseAssertion::assertFileExists( const char* fileName, const ch
 // This function made sure that filenames weren't too long. It DID NOT assert any other validity.
 // Completely useless on modern systems
 
-bool BaseAssertion::validFileName( const char* fileName )
+bool BaseAssertion::validFileName(const char* fileName)
 {
     return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-WEAK_SYMBOL void BaseAssertion::assertFail( const char *msg, const xmsg& xms )
+WEAK_SYMBOL void BaseAssertion::assertFail(const char* msg, const xmsg& xms)
 {
     //  Need a semaphore on this in case one ASSERT triggers others
     //  as the program is exiting
 
-    static  bool    first = true;
+    static bool first = true;
 
-    if( first )
+    if (first)
     {
         first = false;
 
-    	_RAISE( xms );
-		std::string assertFileName( "assert.log" );
-		char* pAssertEnv = getenv("CB_ASSERT_TO");
-		if( pAssertEnv )
-			assertFileName = std::string( pAssertEnv );
+        _RAISE(xms);
+        std::string assertFileName("assert.log");
+        char* pAssertEnv = getenv("CB_ASSERT_TO");
+        if (pAssertEnv)
+            assertFileName = std::string(pAssertEnv);
 
-        std::ofstream ofs( assertFileName.c_str() );
+        std::ofstream ofs(assertFileName.c_str());
 
-        time_t  t = time( NULL );
-        ofs << ctime( &t );
+        time_t t = time(nullptr);
+        ofs << ctime(&t);
 
         ofs << std::endl;
-        writeLoggedInfo( ofs );
+        writeLoggedInfo(ofs);
         ofs << std::endl;
 
         ofs << xms.what() << ": " << msg << std::endl << std::endl;
 
         bool writeStackAnchor = true;
         uint32_t lineNumber = 0;
-        const char* extraString = NULL;
+        const char* extraString = nullptr;
 
         ofs << std::endl;
         ofs << "------ Stack trace start ------------------------------" << std::endl;
-        ProProfiler::instance().traceStack( ofs, writeStackAnchor, lineNumber, extraString );
+        ProProfiler::instance().traceStack(ofs, writeStackAnchor, lineNumber, extraString);
         ofs << "------ Stack trace finish -----------------------------" << std::endl << std::endl;
 
-        ofs << ctime( &t );
+        ofs << ctime(&t);
         ofs.close();
 
-        writeLoggedInfo( std::cerr );
+        writeLoggedInfo(std::cerr);
         std::cerr << std::endl;
         std::cerr << xms.what() << ": ";
         std::cerr << msg << std::endl << std::endl;
-
     }
 
     AssertionAction result = ASSERT_FAIL;
 
-    if( assertionHandler_ )
+    if (assertionHandler_)
     {
-        AssertionInfo   a;
+        AssertionInfo a;
 
-        result = assertionHandler_( a );
+        result = assertionHandler_(a);
     }
 
-    if( result == ASSERT_FAIL )
+    if (result == ASSERT_FAIL)
     {
         //  Make sure that all the diagnostic streams have been closed
 
@@ -230,14 +233,14 @@ bool BaseAssertion::inAssertionData()
 //////////////////////////////////////////////////////////////////////////////////
 
 //  TBD: Make this less of a hack
-size_t  BaseAssertion::index_ = 0;
-BaseAssertion::InfoEntry	BaseAssertion::info_[ BaseAssertion::N_SAVED_ENTRIES ];
+size_t BaseAssertion::index_ = 0;
+BaseAssertion::InfoEntry BaseAssertion::info_[BaseAssertion::N_SAVED_ENTRIES];
 
-size_t	BaseAssertion::nextIndex()
+size_t BaseAssertion::nextIndex()
 {
     size_t result = index_;
 
-    index_ = ( index_ + 1 ) % N_SAVED_ENTRIES;
+    index_ = (index_ + 1) % N_SAVED_ENTRIES;
 
     //  TBD: This is a hack - it works because this function is only called from the LOG_INFO macro
     inAssertionInfo_ = true;
@@ -245,33 +248,33 @@ size_t	BaseAssertion::nextIndex()
     return result;
 }
 
-void    BaseAssertion::logFilePositionInfo( size_t index, const char* file, size_t line, InfoType type )
+void BaseAssertion::logFilePositionInfo(size_t index, const char* file, size_t line, InfoType type)
 {
-    info_[ index ].logFilePositionInfo( file, line, type );
+    info_[index].logFilePositionInfo(file, line, type);
 
     //  TBD: This is a hack - it works because this function is only called from the LOG_INFO macro
     inAssertionInfo_ = false;
 }
 
-std::ostringstream&	BaseAssertion::str( size_t index )
+std::ostringstream& BaseAssertion::str(size_t index)
 {
-    return  info_[ index ].str();
+    return info_[index].str();
 }
 
-void	BaseAssertion::writeLoggedInfo( ostream& o )
+void BaseAssertion::writeLoggedInfo(ostream& o)
 {
-    for( size_t i = 0; i < N_SAVED_ENTRIES; ++i )
+    for (size_t i = 0; i < N_SAVED_ENTRIES; ++i)
     {
-        size_t  j = ( index_ + i ) % N_SAVED_ENTRIES;
+        size_t j = (index_ + i) % N_SAVED_ENTRIES;
 
-        if( info_[ j ].containsData() )
-            o << info_[ j ];
+        if (info_[j].containsData())
+            o << info_[j];
     }
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void BaseAssertion::set_assertion_handler( AssertionAction_fn_AssertionInfo fn )
+void BaseAssertion::set_assertion_handler(AssertionAction_fn_AssertionInfo fn)
 {
     assertionHandler_ = fn;
 }
@@ -279,13 +282,13 @@ void BaseAssertion::set_assertion_handler( AssertionAction_fn_AssertionInfo fn )
 //////////////////////////////////////////////////////////////////////////////////
 
 BaseAssertion::InfoEntry::InfoEntry()
-: stream_( dataBuffer_ ),
-  lineNumber_( 0 ),
-  containsData_( false )
+    : stream_(dataBuffer_)
+    , lineNumber_(0)
+    , containsData_(false)
 {
-     dataBuffer_[ 0 ] = '\0';
-     fileNameBuffer_[ 0 ] = '\0';
-     stream_.precision( 18 );
+    dataBuffer_[0] = '\0';
+    fileNameBuffer_[0] = '\0';
+    stream_.precision(18);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -294,17 +297,17 @@ std::ostringstream& BaseAssertion::InfoEntry::str()
 {
     stream_.str("");
     stream_.clear();
-    stream_.rdbuf()->pubseekoff( 0, std:: ios::beg, std::ios::in | std::ios::out );
+    stream_.rdbuf()->pubseekoff(0, std::ios::beg, std::ios::in | std::ios::out);
 
     return stream_;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void    BaseAssertion::InfoEntry::logFilePositionInfo( const char* file, size_t line, InfoType type )
+void BaseAssertion::InfoEntry::logFilePositionInfo(const char* file, size_t line, InfoType type)
 {
-    strncpy( fileNameBuffer_, file, MAX_FILENAME_LENGTH );
-    fileNameBuffer_[ MAX_FILENAME_LENGTH - 1 ] = '\0';
+    strncpy(fileNameBuffer_, file, MAX_FILENAME_LENGTH);
+    fileNameBuffer_[MAX_FILENAME_LENGTH - 1] = '\0';
     lineNumber_ = line;
     type_ = type;
 
@@ -313,14 +316,14 @@ void    BaseAssertion::InfoEntry::logFilePositionInfo( const char* file, size_t 
 
 //////////////////////////////////////////////////////////////////////////////////
 
-bool	BaseAssertion::InfoEntry::containsData() const
+bool BaseAssertion::InfoEntry::containsData() const
 {
     return containsData_;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const BaseAssertion::InfoEntry& i )
+ostream& operator<<(ostream& o, const BaseAssertion::InfoEntry& i)
 {
     /*char buffer[ BaseAssertion::InfoEntry::MAX_DATA_LENGTH + 1 ];
 
@@ -342,7 +345,7 @@ ostream& operator <<( ostream& o, const BaseAssertion::InfoEntry& i )
     o << i.fileNameBuffer_ << ", ";
     o << i.lineNumber_ << "  ";
 
-    switch( i.type_ )
+    switch (i.type_)
     {
         case BaseAssertion::PRE_TYPE:
             o << "( PRE )";

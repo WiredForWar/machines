@@ -7,8 +7,8 @@
 
 #include "world4d/valplan.hpp"
 
-W4dFloatValuePlan::W4dFloatValuePlan( const PhysRelativeTime& duration )
-: duration_( duration )
+W4dFloatValuePlan::W4dFloatValuePlan(const PhysRelativeTime& duration)
+    : duration_(duration)
 {
 
     TEST_INVARIANT;
@@ -17,7 +17,6 @@ W4dFloatValuePlan::W4dFloatValuePlan( const PhysRelativeTime& duration )
 W4dFloatValuePlan::~W4dFloatValuePlan()
 {
     TEST_INVARIANT;
-
 }
 
 const PhysRelativeTime& W4dFloatValuePlan::duration() const
@@ -25,22 +24,22 @@ const PhysRelativeTime& W4dFloatValuePlan::duration() const
     return duration_;
 }
 
-bool W4dFloatValuePlan::isDone( const PhysRelativeTime& timeOffset ) const
+bool W4dFloatValuePlan::isDone(const PhysRelativeTime& timeOffset) const
 {
     return timeOffset > duration_;
 }
 
-void W4dFloatValuePlan::duration( const PhysRelativeTime& newDuration)
+void W4dFloatValuePlan::duration(const PhysRelativeTime& newDuration)
 {
     duration_ = newDuration;
 }
 
 void W4dFloatValuePlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dFloatValuePlan& t )
+ostream& operator<<(ostream& o, const W4dFloatValuePlan& t)
 {
 
     o << "W4dFloatValuePlan " << (void*)&t << " start" << std::endl;

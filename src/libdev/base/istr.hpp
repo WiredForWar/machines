@@ -25,9 +25,9 @@ class PerIstream
 {
 public:
     //  Note that istr must be capable of accepting binary data
-    PerIstream( istream& istr );
+    PerIstream(istream& istr);
 
-    PerIstream( istream& istr, PerIstreamReporter* );
+    PerIstream(istream& istr, PerIstreamReporter*);
     // PRE( pReporter != NULL );
 
     virtual ~PerIstream();
@@ -39,16 +39,14 @@ public:
 
     size_t tellg() const;
 
-    static  bool&   logRead();
+    static bool& logRead();
 
 private:
-
     friend class PerIstreamBuffer;
 
-    PerIstreamImpl*   pImpl_;
+    PerIstreamImpl* pImpl_;
     istream& istr_;
 };
-
 
 #endif
 

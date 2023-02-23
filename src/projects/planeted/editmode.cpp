@@ -12,9 +12,9 @@
 #include "render/device.hpp"
 
 PedEditorMode::PedEditorMode()
-: 	pSceneManager_(NULL),
-	pPlanet_(NULL),
-	active_(false)
+    : pSceneManager_(nullptr)
+    , pPlanet_(nullptr)
+    , active_(false)
 {
 
     TEST_INVARIANT;
@@ -23,15 +23,14 @@ PedEditorMode::PedEditorMode()
 PedEditorMode::~PedEditorMode()
 {
     TEST_INVARIANT;
-
 }
 
 void PedEditorMode::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PedEditorMode& t )
+ostream& operator<<(ostream& o, const PedEditorMode& t)
 {
 
     o << "PedEditorMode " << (void*)&t << " start" << std::endl;
@@ -40,65 +39,63 @@ ostream& operator <<( ostream& o, const PedEditorMode& t )
     return o;
 }
 
-void PedEditorMode::initialise( W4dSceneManager* pSceneManager, MachLogPlanet* pPlanet )
+void PedEditorMode::initialise(W4dSceneManager* pSceneManager, MachLogPlanet* pPlanet)
 {
-	PRE( pPlanet != NULL );
-	PRE( pSceneManager != NULL );
+    PRE(pPlanet != nullptr);
+    PRE(pSceneManager != nullptr);
 
-	pSceneManager_ = pSceneManager;
-	pPlanet_ = pPlanet;
+    pSceneManager_ = pSceneManager;
+    pPlanet_ = pPlanet;
 }
 
-MexLine3d PedEditorMode::cameraThroughCursorLine( const MexPoint2d& cursorScreenPoint )
+MexLine3d PedEditorMode::cameraThroughCursorLine(const MexPoint2d& cursorScreenPoint)
 {
-	PRE( pSceneManager_ != NULL );
+    PRE(pSceneManager_ != nullptr);
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
     // Get corresponding world pos from cursor pos
-    MexPoint3d cursorWorldPos = pSceneManager_->pDevice()->screenToCamera( cursorScreenPoint );
+    MexPoint3d cursorWorldPos = pSceneManager_->pDevice()->screenToCamera(cursorScreenPoint);
 
-    //Construct a line from the camera origin through the cursor point in world coordinates
+    // Construct a line from the camera origin through the cursor point in world coordinates
     const MexTransform3d& cameraTransform = pSceneManager_->currentCamera()->globalTransform();
-    MexPoint3d cameraOrigin( cameraTransform.position() );
-    cameraTransform.transform( &cursorWorldPos );
-    MexLine3d shortLine( cameraOrigin, cursorWorldPos );
+    MexPoint3d cameraOrigin(cameraTransform.position());
+    cameraTransform.transform(&cursorWorldPos);
+    MexLine3d shortLine(cameraOrigin, cursorWorldPos);
 
-    //Now create one of length 500000m
+    // Now create one of length 500000m
     MATHEX_SCALAR lineLength = 500000.0;
-    MexPoint3d farPoint = shortLine.pointAtDistance( lineLength );
+    MexPoint3d farPoint = shortLine.pointAtDistance(lineLength);
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-    return MexLine3d( cameraOrigin, farPoint, lineLength );
+    return MexLine3d(cameraOrigin, farPoint, lineLength);
 }
 
 // virtual
 void PedEditorMode::activateMode()
 {
-	active_ = true;
+    active_ = true;
 }
 
 // virtual
 void PedEditorMode::changingMode()
 {
-	active_ = false;
+    active_ = false;
 }
 
 // virtual
 void PedEditorMode::validate()
-{}
+{
+}
 
 // virtual
 void PedEditorMode::displayWarningMsgs()
 {
-	for (	WarningMsgs::iterator warnIter = warnings_.begin();
-			warnIter != warnings_.end();
-			++warnIter )
-	{
-		pSceneManager_->out() << *warnIter << std::endl;
-	}
+    for (WarningMsgs::iterator warnIter = warnings_.begin(); warnIter != warnings_.end(); ++warnIter)
+    {
+        pSceneManager_->out() << *warnIter << std::endl;
+    }
 }
-
 
 /* End EDITMODE.CPP *************************************************/

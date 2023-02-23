@@ -1,5 +1,5 @@
 /*
- * G A R B C O L L . H P P 
+ * G A R B C O L L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,7 +24,7 @@
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
 
-//forward refs
+// forward refs
 class W4dEntity;
 
 class W4dGarbageCollector
@@ -35,31 +35,31 @@ public:
     static W4dGarbageCollector& instance();
     ~W4dGarbageCollector();
 
-    //queues pEntity to be deleted at or soon after time
-    void add( W4dEntity* pEntity, const PhysAbsoluteTime& time );
+    // queues pEntity to be deleted at or soon after time
+    void add(W4dEntity* pEntity, const PhysAbsoluteTime& time);
 
-    //dequeues pEntity 
-    void remove( W4dEntity* pEntity);
+    // dequeues pEntity
+    void remove(W4dEntity* pEntity);
 
-    //Deletes any queued objects.
-    //Called as required by Wd4Manager::update()
+    // Deletes any queued objects.
+    // Called as required by Wd4Manager::update()
     void collect();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dGarbageCollector& t );
+    friend ostream& operator<<(ostream& o, const W4dGarbageCollector& t);
 
 private:
-    W4dGarbageCollector( const W4dGarbageCollector& );
-    W4dGarbageCollector& operator =( const W4dGarbageCollector& );
-    bool operator ==( const W4dGarbageCollector& );
+    W4dGarbageCollector(const W4dGarbageCollector&);
+    W4dGarbageCollector& operator=(const W4dGarbageCollector&);
+    bool operator==(const W4dGarbageCollector&);
 
     W4dGarbageCollector();
 
-    //data members
-    PhysAbsoluteTime nextDeleteTime_; //Earliest scheduled time of a deletion
-    ctl_vector< PhysAbsoluteTime > times_; //Time of deletion for each entry
-    ctl_pvector< W4dEntity > entities_; //Objects to be deleted
+    // data members
+    PhysAbsoluteTime nextDeleteTime_; // Earliest scheduled time of a deletion
+    ctl_vector<PhysAbsoluteTime> times_; // Time of deletion for each entry
+    ctl_pvector<W4dEntity> entities_; // Objects to be deleted
 };
 
 #endif

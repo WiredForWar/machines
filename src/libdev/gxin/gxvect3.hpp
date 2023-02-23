@@ -1,5 +1,5 @@
 /*
- * G X V E C T 3 . H P P 
+ * G X V E C T 3 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,28 +20,28 @@ class GXVect3
 public:
     GXVect3();
     ~GXVect3();
-    GXVect3( const GXVect3& );
-	// POST(*this==copy);
-    GXVect3& operator =( const GXVect3& );
-	// POST(*this==copy);
-    friend bool operator ==(const GXVect3&, const GXVect3& );
+    GXVect3(const GXVect3&);
+    // POST(*this==copy);
+    GXVect3& operator=(const GXVect3&);
+    // POST(*this==copy);
+    friend bool operator==(const GXVect3&, const GXVect3&);
 
     float x() const { return x_; }
-	float y() const { return y_; }
-	float z() const { return z_; }
+    float y() const { return y_; }
+    float z() const { return z_; }
 
-    void x(float newX) { x_=newX; }
-	void y(float newY) { y_=newY; }
-	void z(float newZ) { z_=newZ; }
+    void x(float newX) { x_ = newX; }
+    void y(float newY) { y_ = newY; }
+    void z(float newZ) { z_ = newZ; }
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXVect3& t );
+    friend ostream& operator<<(ostream& o, const GXVect3& t);
 
 private:
-	float x_;
-	float y_;
-	float z_;
+    float x_;
+    float y_;
+    float z_;
 };
 
 #endif

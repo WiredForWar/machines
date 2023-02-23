@@ -73,7 +73,7 @@ public:
     void endFrame();
 
     // True within calls of startFrame() and endFrame().
-    bool rendering()   const;
+    bool rendering() const;
     // True within calls of start2D() and end2D().
     bool rendering2D() const;
     // True within calls of start3D() and end3D().
@@ -86,8 +86,8 @@ public:
     // useful for getting everything into a known state before starting to
     // compose a scene.  The entire screen area is cleared.  If a cursor is
     // (or was) displayed any saved areas are discarded.
-    void clearAllSurfaces(const RenColour&);			// PRE(!rendering());
-    void clearAllSurfaces();							// PRE(!rendering());
+    void clearAllSurfaces(const RenColour&); // PRE(!rendering());
+    void clearAllSurfaces(); // PRE(!rendering());
 
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);
@@ -116,17 +116,17 @@ public:
     // Which camera is currently in use?
     RenCamera* currentCamera() const;
 
-    //Return the coordinates of screenPosition (defined in screen 2d pixel space)
-    //in the 3d world coordinate frame of the camera
-    MexPoint3d screenToCamera( const MexPoint2d& screenPosition ) const;
+    // Return the coordinates of screenPosition (defined in screen 2d pixel space)
+    // in the 3d world coordinate frame of the camera
+    MexPoint3d screenToCamera(const MexPoint2d& screenPosition) const;
 
-    //Return the coordinates of worldPosition (defined in in the 3d world coordinate frame of the camera)
-    //in screen 2d pixel space
-    MexPoint2d cameraToScreen( const MexPoint3d& worldPosition ) const;
+    // Return the coordinates of worldPosition (defined in in the 3d world coordinate frame of the camera)
+    // in screen 2d pixel space
+    MexPoint2d cameraToScreen(const MexPoint3d& worldPosition) const;
 
     // Modify the list of objects which can potentially light the scene.
     // PRE(light);
-    void    addLight(RenLight* light);
+    void addLight(RenLight* light);
     void removeLight(RenLight* light);
 
     // The default value is a white light of 0.3 intensity.
@@ -175,7 +175,7 @@ public:
     float fogDensity() const;
 
     // The dimensions of the display, window or whatever.
-    int windowWidth () const;
+    int windowWidth() const;
     int windowHeight() const;
 
     // Point visibility test
@@ -199,7 +199,7 @@ public:
     // hand, static (see below) hardly obscures anything.  Interference carries a
     // fairly high performance penalty in terms of screen over-writes.
     // Calling interferenceOff is equivalent to interferenceOn(0) just more wordy.
-    void interferenceOn(double amount);		// PRE(amount >=0 && amount <= 1);
+    void interferenceOn(double amount); // PRE(amount >=0 && amount <= 1);
     void interferenceOff();
     double interferenceAmount() const;
     bool isInterferenceOn() const;
@@ -219,7 +219,7 @@ public:
     // Create surfaces which provide access to the front and back buffers.
     RenSurface backSurface();
     RenSurface frontSurface();
-    const RenSurface backSurface()  const;
+    const RenSurface backSurface() const;
     const RenSurface frontSurface() const;
 
     // Enable edge anti-aliasing.  In the only currently available implementation
@@ -241,7 +241,7 @@ public:
     void debugTextCoords(int x, int y);
     void debugTextCoords(int* x, int* y) const;
 
-    friend std::ostream& operator <<( std::ostream& o, const RenDevice& t );
+    friend std::ostream& operator<<(std::ostream& o, const RenDevice& t);
 
     bool activate();
 
@@ -253,64 +253,92 @@ public:
     // Features supported by this rendering system.
     const RenCapabilities& capabilities() const;
 
-    //colour filter
+    // colour filter
 
     class Filter
     {
     public:
-        Filter(RenDevice* pDevice, const RenColour& col);	// call setFilter
-        ~Filter();							// call resetFilter
+        Filter(RenDevice* pDevice, const RenColour& col); // call setFilter
+        ~Filter(); // call resetFilter
 
     private:
-        RenDevice * const pDevice_;
+        RenDevice* const pDevice_;
 
         Filter();
         Filter(const Filter&);
-        const Filter& operator=(const Filter&) ;
-    } ;
+        const Filter& operator=(const Filter&);
+    };
 
     RenIDeviceImpl& impl();
     const RenIDeviceImpl& impl() const;
 
     const GLuint loadShaders(const char* vertexPath, const char* fragmentPath);
 
-    void renderScreenspace(const RenIVertex* vertices, const size_t nVertices, GLenum mode, const int targetW = 0, const int targetH = 0)
+    void renderScreenspace(
+        const RenIVertex* vertices,
+        const size_t nVertices,
+        GLenum mode,
+        const int targetW = 0,
+        const int targetH = 0)
     {
         renderScreenspace(vertices, nVertices, mode, targetW, targetH, glTextureEmptyID_);
     };
 
-    void renderScreenspace(const RenIVertex* vertices, const size_t nVertices, const RenMaterial& mat, GLenum mode, const int targetW, const int targetH )
+    void renderScreenspace(
+        const RenIVertex* vertices,
+        const size_t nVertices,
+        const RenMaterial& mat,
+        GLenum mode,
+        const int targetW,
+        const int targetH)
     {
         renderScreenspace(vertices, nVertices, mode, targetW, targetH, mat.texture().handle());
     };
-    void renderSurface(const RenISurfBody* surf, const Ren::Rect& srcArea, const Ren::Rect& dstArea, const uint32_t targetW = 0, const uint32_t targetH = 0, const uint32_t colour = 0xFFFFFFFF);
-    void renderPrimitive(const RenIVertex* vertices, const size_t nVertices, const RenMaterial& mat, const GLenum mode = GL_TRIANGLE_FAN);
-    void renderIndexed(const RenIVertex* vertices,  const size_t nVertices, const Ren::VertexIdx* indices, const size_t nIndices, const RenMaterial& mat, GLenum mode);
-    void renderIndexedScreenspace(const RenIVertex* vertices,  const size_t nVertices, const Ren::VertexIdx* indices, const size_t nIndices, const RenMaterial& mat, GLenum mode);
+    void renderSurface(
+        const RenISurfBody* surf,
+        const Ren::Rect& srcArea,
+        const Ren::Rect& dstArea,
+        const uint32_t targetW = 0,
+        const uint32_t targetH = 0,
+        const uint32_t colour = 0xFFFFFFFF);
+    void renderPrimitive(
+        const RenIVertex* vertices,
+        const size_t nVertices,
+        const RenMaterial& mat,
+        const GLenum mode = GL_TRIANGLE_FAN);
+    void renderIndexed(
+        const RenIVertex* vertices,
+        const size_t nVertices,
+        const Ren::VertexIdx* indices,
+        const size_t nIndices,
+        const RenMaterial& mat,
+        GLenum mode);
+    void renderIndexedScreenspace(
+        const RenIVertex* vertices,
+        const size_t nVertices,
+        const Ren::VertexIdx* indices,
+        const size_t nIndices,
+        const RenMaterial& mat,
+        GLenum mode);
 
-    void setModelMatrix(glm::mat4& model)
-    {
-        model_ = model;
-    }
+    void setModelMatrix(glm::mat4& model) { model_ = model; }
 
-    const glm::mat4& getModelMatrix()
-    {
-        return model_;
-    }
+    const glm::mat4& getModelMatrix() { return model_; }
 
-    const glm::mat4& getProjectionMatrix()
-    {
-        return projection_;
-    }
+    const glm::mat4& getProjectionMatrix() { return projection_; }
 
-    const glm::mat4& getViewMatrix()
-    {
-        return view_;
-    }
+    const glm::mat4& getViewMatrix() { return view_; }
     void renderToTextureMode(const GLuint targetTexture, uint32_t viewPortW, uint32_t viewPortH);
 
-    //private:
-    void renderScreenspace(const RenIVertex* vertices, const size_t nVertices, GLenum mode, const int targetW, const int targetH, const GLuint texture);
+    // private:
+    void renderScreenspace(
+        const RenIVertex* vertices,
+        const size_t nVertices,
+        GLenum mode,
+        const int targetW,
+        const int targetH,
+        const GLuint texture);
+
 private:
     void createViewport();
     void updateMatrices();
@@ -337,32 +365,35 @@ private:
     // PRE(hither < yon);
     void overrideClipping(double hither, double yon);
 
-    RenIDeviceImpl* pImpl_{nullptr};
+    RenIDeviceImpl* pImpl_ { nullptr };
 
-    GLuint glProgramID_GIU2D_{0}, glProgramID_Standard_{0}, glProgramID_Billboard_{0};
+    GLuint glProgramID_GIU2D_ { 0 }, glProgramID_Standard_ { 0 }, glProgramID_Billboard_ { 0 };
 
-    GLuint gl2DVertexBufferID_{0}, glVertexUVID_{0}, glVertexPosition_screenspaceID_{0}, glVertexColour_screenspaceID_{0}, glScreenspaceID_{0};
+    GLuint gl2DVertexBufferID_ { 0 }, glVertexUVID_ { 0 }, glVertexPosition_screenspaceID_ { 0 },
+        glVertexColour_screenspaceID_ { 0 }, glScreenspaceID_ { 0 };
 
-    GLuint gl2DUniformID_{0}, glTextureSamplerID_{0}, glTextureSamplerBillboardID_{0};
-    GLuint glModelMatrixID_{0}, glViewMatrixID_{0}, glProjectionMatrixID_{0};
-    GLuint glFogColourID_{0}, glFogParamsID_{0};
+    GLuint gl2DUniformID_ { 0 }, glTextureSamplerID_ { 0 }, glTextureSamplerBillboardID_ { 0 };
+    GLuint glModelMatrixID_ { 0 }, glViewMatrixID_ { 0 }, glProjectionMatrixID_ { 0 };
+    GLuint glFogColourID_ { 0 }, glFogParamsID_ { 0 };
 
-    GLuint glVertexPosition_modelspaceID_{0}, glVertex_modelspaceUVID_{0}, glVertexColour_modelspaceID_{0}, glVertexDataBufferID_{0}, glElementBufferID_{0};
-    GLuint glViewProjMatrix_BillboardID_{0}, glVertexPosition_BillboardID_{0}, glVertex_BillboardUVID_{0}, glVertexColour_BillboardID_{0}, glVertexDataBufferBillboardID_{0}, glElementBufferBillboardID_{0};
-    GLuint glTextureEmptyID_{0}, glOffscreenFrameBuffID_{0};
+    GLuint glVertexPosition_modelspaceID_ { 0 }, glVertex_modelspaceUVID_ { 0 }, glVertexColour_modelspaceID_ { 0 },
+        glVertexDataBufferID_ { 0 }, glElementBufferID_ { 0 };
+    GLuint glViewProjMatrix_BillboardID_ { 0 }, glVertexPosition_BillboardID_ { 0 }, glVertex_BillboardUVID_ { 0 },
+        glVertexColour_BillboardID_ { 0 }, glVertexDataBufferBillboardID_ { 0 }, glElementBufferBillboardID_ { 0 };
+    GLuint glTextureEmptyID_ { 0 }, glOffscreenFrameBuffID_ { 0 };
 
-    SDL_GLContext SDLGlContext_{nullptr};
+    SDL_GLContext SDLGlContext_ { nullptr };
 
-    glm::mat4 model_{};
-    glm::mat4 view_{};
-    glm::mat4 projection_{};
-    glm::vec3 fogColour_{};
-    glm::vec3 fogParams_{};
+    glm::mat4 model_ {};
+    glm::mat4 view_ {};
+    glm::mat4 projection_ {};
+    glm::vec3 fogColour_ {};
+    glm::vec3 fogParams_ {};
 
-    bool      clearAll2D_{false};
+    bool clearAll2D_ { false };
 
     // Operations deliberately revoked
-    RenDevice( const RenDevice& );
-    RenDevice& operator =( const RenDevice& ) ;
-    bool operator ==( const RenDevice& ) ;
+    RenDevice(const RenDevice&);
+    RenDevice& operator=(const RenDevice&);
+    bool operator==(const RenDevice&);
 };

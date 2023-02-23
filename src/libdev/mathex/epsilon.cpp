@@ -10,8 +10,8 @@
 #include "mathex/mathex.hpp"
 #include "mathex/epsilon.hpp"
 
-#ifndef  _INLINE
-    #include "mathex/epsilon.ipp"
+#ifndef _INLINE
+#include "mathex/epsilon.ipp"
 #endif
-    
+
 /* End EPSILON.CPP *******************************************************/

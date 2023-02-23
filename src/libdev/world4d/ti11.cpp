@@ -5,6 +5,6 @@ class W4dEntity;
 
 void W4dDummyFunction11()
 {
-	// W4dMeshPlan::MeshIntervals
-    ctl_vector< pair<W4dEntity*, double> > dummy;
+    // W4dMeshPlan::MeshIntervals
+    ctl_vector<pair<W4dEntity*, double>> dummy;
 }

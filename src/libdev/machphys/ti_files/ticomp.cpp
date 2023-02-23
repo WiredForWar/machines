@@ -6,14 +6,13 @@
 #include "ctl/vector.hpp"
 #include "ctl/vector.ctp"
 
-
 class MachPhysComplexityBooleanItem;
 class MachPhysComplexityChoiceItem;
 
 void MachDummyFunctionComp()
 {
-    static  ctl_vector< MachPhysComplexityChoiceItem* > 	dummyVectorComplexityChoiceItem;
-    static  ctl_vector< MachPhysComplexityBooleanItem* >	dummyVectorComplexityBooleanItem;
+    static ctl_vector<MachPhysComplexityChoiceItem*> dummyVectorComplexityChoiceItem;
+    static ctl_vector<MachPhysComplexityBooleanItem*> dummyVectorComplexityBooleanItem;
 }
 
 /* End TI.CPP *****************************************************/

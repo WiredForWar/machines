@@ -26,35 +26,34 @@ class BaseAppendOstream : public std::ostream
 public:
     //  Initialise an append stream to write data out to the given file.
     //  Note that the file will not be cleared automatically
-    BaseAppendOstream( const char* fileName );
+    BaseAppendOstream(const char* fileName);
     //  PRE( fileName != NULL );
 
     BaseAppendOstream();
 
     //  Clear the file
-    void    clear();
+    void clear();
 
-    void    name( const char* fileName );
+    void name(const char* fileName);
 
-    virtual ~BaseAppendOstream();
+    ~BaseAppendOstream() override;
 
 private:
     // Operation deliberately revoked
-    BaseAppendOstream( const BaseAppendOstream& );
+    BaseAppendOstream(const BaseAppendOstream&);
 
     // Operation deliberately revoked
-    BaseAppendOstream& operator =( const BaseAppendOstream& );
+    BaseAppendOstream& operator=(const BaseAppendOstream&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseAppendOstream& );
+    bool operator==(const BaseAppendOstream&);
 
-//    BaseAppendBuffer* pBuffer( const char* fileName );
+    //    BaseAppendBuffer* pBuffer( const char* fileName );
 
-    BaseAppendBuffer  appendBuffer_;
+    BaseAppendBuffer appendBuffer_;
 
-    static  std::streambuf&  dummyStreamBuf();
+    static std::streambuf& dummyStreamBuf();
 };
-
 
 #endif
 

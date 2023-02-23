@@ -1,5 +1,5 @@
 /*
- * C O L L I N F O . H P P 
+ * C O L L I N F O . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -24,22 +24,20 @@ class MachLogCollisionInfo
 // Memberwise canonical
 {
 public:
-    typedef PhysConfigSpace2d::ObjectId ObjectId;
+    using ObjectId = PhysConfigSpace2d::ObjectId;
 
     MachLogCollisionInfo();
     //  POST( not valid() );
-    
+
     MachLogCollisionInfo(
         const MachPhysMachineMoveInfo& info,
         const MexTransform3d& parentTransform,
-        ObjectId            collisionObjectId,
-        PhysAbsoluteTime    collideTime );
+        ObjectId collisionObjectId,
+        PhysAbsoluteTime collideTime);
     //  POST( valid() );
     //  POST( collisionTimeValid() );
 
-    MachLogCollisionInfo(
-        const MexPoint2d&   collisionPoint,
-        ObjectId            collisionObjectId );
+    MachLogCollisionInfo(const MexPoint2d& collisionPoint, ObjectId collisionObjectId);
     //  POST( valid() );
     //  POST( not collisionTimeValid() );
 
@@ -64,18 +62,17 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogCollisionInfo& t );
+    friend ostream& operator<<(ostream& o, const MachLogCollisionInfo& t);
 
     // MachLogCollisionInfo( const MachLogCollisionInfo& );
     // MachLogCollisionInfo& operator =( const MachLogCollisionInfo& );
 
-    bool                    valid_;
-    bool                    collisionTimeValid_;
-    PhysAbsoluteTime        collisionTime_;
-    ObjectId                collisionObjectId_;
-    MexPoint2d              collisionPoint_;
+    bool valid_;
+    bool collisionTimeValid_;
+    PhysAbsoluteTime collisionTime_;
+    ObjectId collisionObjectId_;
+    MexPoint2d collisionPoint_;
 };
-
 
 #endif
 

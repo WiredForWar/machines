@@ -1,5 +1,5 @@
 /*
- * C O N D T I M E . H P P 
+ * C O N D T I M E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachLogBMUCountCondition
 
     This conditon code checks for the BMUs being at a certain level it can cope with greater than or less than
-	checks. 
+    checks.
 
 */
 
@@ -25,42 +25,43 @@ class MachLogBMUCountCondition : public SimCondition
 // Canonical form revoked
 {
 public:
-	enum CheckType{ LESS_THAN_EQUAL, GREATER_THAN_EQUAL };
+    enum CheckType
+    {
+        LESS_THAN_EQUAL,
+        GREATER_THAN_EQUAL
+    };
 
-	static MachLogBMUCountCondition* newFromParser( UtlLineTokeniser* );
+    static MachLogBMUCountCondition* newFromParser(UtlLineTokeniser*);
 
-	virtual bool doHasConditionBeenMet() const;
+    bool doHasConditionBeenMet() const override;
 
-    virtual ~MachLogBMUCountCondition();
+    ~MachLogBMUCountCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogBMUCountCondition );
-	PER_FRIEND_READ_WRITE( MachLogBMUCountCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogBMUCountCondition);
+    PER_FRIEND_READ_WRITE(MachLogBMUCountCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogBMUCountCondition(const string& keyName, MachPhys::Race, MachPhys::BuildingMaterialUnits, CheckType);
 
-    MachLogBMUCountCondition( const string& keyName, MachPhys::Race, MachPhys::BuildingMaterialUnits, CheckType );
+    friend ostream& operator<<(ostream& o, const MachLogBMUCountCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogBMUCountCondition& t );
+    MachLogBMUCountCondition(const MachLogBMUCountCondition&);
+    MachLogBMUCountCondition& operator=(const MachLogBMUCountCondition&);
 
-    MachLogBMUCountCondition( const MachLogBMUCountCondition& );
-    MachLogBMUCountCondition& operator =( const MachLogBMUCountCondition& );
-
-	MachPhys::Race								race_;
-	//the number to check against
-	MachPhys::BuildingMaterialUnits				number_;
-	CheckType									checkType_;
+    MachPhys::Race race_;
+    // the number to check against
+    MachPhys::BuildingMaterialUnits number_;
+    CheckType checkType_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogBMUCountCondition );
-PER_ENUM_PERSISTENT( MachLogBMUCountCondition::CheckType );
+PER_DECLARE_PERSISTENT(MachLogBMUCountCondition);
+PER_ENUM_PERSISTENT(MachLogBMUCountCondition::CheckType);
 
 #endif
 

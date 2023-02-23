@@ -1,5 +1,5 @@
 /*
- * C O N D T R E A . H P P 
+ * C O N D T R E A . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,38 +24,34 @@ class MachLogTechniciansTreacheriedCondition : public SimCondition
 // Canonical form revoked
 {
 public:
+    static MachLogTechniciansTreacheriedCondition* newFromParser(UtlLineTokeniser*);
 
-	static MachLogTechniciansTreacheriedCondition* newFromParser( UtlLineTokeniser* );
+    bool doHasConditionBeenMet() const override;
 
-	virtual bool doHasConditionBeenMet() const;
-
-    virtual ~MachLogTechniciansTreacheriedCondition();
+    ~MachLogTechniciansTreacheriedCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogTechniciansTreacheriedCondition );
-	PER_FRIEND_READ_WRITE( MachLogTechniciansTreacheriedCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTechniciansTreacheriedCondition);
+    PER_FRIEND_READ_WRITE(MachLogTechniciansTreacheriedCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogTechniciansTreacheriedCondition(const string& keyName, MachPhys::Race, int number);
 
-    MachLogTechniciansTreacheriedCondition( const string& keyName, MachPhys::Race, int number );
+    friend ostream& operator<<(ostream& o, const MachLogTechniciansTreacheriedCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogTechniciansTreacheriedCondition& t );
+    MachLogTechniciansTreacheriedCondition(const MachLogTechniciansTreacheriedCondition&);
+    MachLogTechniciansTreacheriedCondition& operator=(const MachLogTechniciansTreacheriedCondition&);
 
-    MachLogTechniciansTreacheriedCondition( const MachLogTechniciansTreacheriedCondition& );
-    MachLogTechniciansTreacheriedCondition& operator =( const MachLogTechniciansTreacheriedCondition& );
-
-	MachPhys::Race								race_;
-	int											number_;
+    MachPhys::Race race_;
+    int number_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogTechniciansTreacheriedCondition );
+PER_DECLARE_PERSISTENT(MachLogTechniciansTreacheriedCondition);
 
 #endif
 

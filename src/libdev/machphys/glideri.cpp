@@ -19,20 +19,20 @@
 #include "machphys/plansurf.hpp"
 #include "machphys/machine.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysGliderImpl );
+PER_DEFINE_PERSISTENT(MachPhysGliderImpl);
 
-MachPhysGliderImpl::MachPhysGliderImpl( MachPhysMachine* pMachine, MachPhysGlider* pGlider, MATHEX_SCALAR height )
-:   MachPhysLocomotionMethodImpl( pMachine ),
-    pGlider_( pGlider ),
-	height_( height ),
-	pBody_( NULL ),
-	pHip_( NULL ),
-	pBrake_( NULL ),
-	pThrust_( NULL ),
-	pLFan_( NULL ),
-	pRFan_( NULL ),
-	pLTurb_( NULL ),
-	pRTurb_( NULL )
+MachPhysGliderImpl::MachPhysGliderImpl(MachPhysMachine* pMachine, MachPhysGlider* pGlider, MATHEX_SCALAR height)
+    : MachPhysLocomotionMethodImpl(pMachine)
+    , pGlider_(pGlider)
+    , height_(height)
+    , pBody_(nullptr)
+    , pHip_(nullptr)
+    , pBrake_(nullptr)
+    , pThrust_(nullptr)
+    , pLFan_(nullptr)
+    , pRFan_(nullptr)
+    , pLTurb_(nullptr)
+    , pRTurb_(nullptr)
 {
 
     TEST_INVARIANT;
@@ -41,15 +41,14 @@ MachPhysGliderImpl::MachPhysGliderImpl( MachPhysMachine* pMachine, MachPhysGlide
 MachPhysGliderImpl::~MachPhysGliderImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysGliderImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGliderImpl& t )
+ostream& operator<<(ostream& o, const MachPhysGliderImpl& t)
 {
 
     o << "MachPhysGliderImpl " << (void*)&t << " start" << std::endl;
@@ -58,13 +57,13 @@ ostream& operator <<( ostream& o, const MachPhysGliderImpl& t )
     return o;
 }
 
-MachPhysGliderImpl::MachPhysGliderImpl( PerConstructor con )
-: MachPhysLocomotionMethodImpl( con ),
-  pGlider_( NULL )
+MachPhysGliderImpl::MachPhysGliderImpl(PerConstructor con)
+    : MachPhysLocomotionMethodImpl(con)
+    , pGlider_(nullptr)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysGliderImpl& glider )
+void perWrite(PerOstream& ostr, const MachPhysGliderImpl& glider)
 {
     const MachPhysLocomotionMethodImpl& base = glider;
 
@@ -75,15 +74,14 @@ void perWrite( PerOstream& ostr, const MachPhysGliderImpl& glider )
     ostr << glider.pHip_;
     ostr << glider.height_;
     ostr << glider.hipPosition_;
-	ostr << glider.pBrake_,
-	ostr << glider.pThrust_;
-	ostr << glider.pLFan_;
-	ostr << glider.pRFan_;
-	ostr << glider.pLTurb_;
-	ostr << glider.pRTurb_;
+    ostr << glider.pBrake_, ostr << glider.pThrust_;
+    ostr << glider.pLFan_;
+    ostr << glider.pRFan_;
+    ostr << glider.pLTurb_;
+    ostr << glider.pRTurb_;
 }
 
-void perRead( PerIstream& istr, MachPhysGliderImpl& glider )
+void perRead(PerIstream& istr, MachPhysGliderImpl& glider)
 {
     MachPhysLocomotionMethodImpl& base = glider;
 
@@ -94,29 +92,32 @@ void perRead( PerIstream& istr, MachPhysGliderImpl& glider )
     istr >> glider.pHip_;
     istr >> glider.height_;
     istr >> glider.hipPosition_;
-	istr >> glider.pBrake_,
-	istr >> glider.pThrust_;
-	istr >> glider.pLFan_;
-	istr >> glider.pRFan_;
-	istr >> glider.pLTurb_;
-	istr >> glider.pRTurb_;
+    istr >> glider.pBrake_, istr >> glider.pThrust_;
+    istr >> glider.pLFan_;
+    istr >> glider.pRFan_;
+    istr >> glider.pLTurb_;
+    istr >> glider.pRTurb_;
 }
 
-//virtual
-void MachPhysGliderImpl::machineSurfacePosition
-(
-    const MachPhysPlanetSurface& surface, const MexPoint3d& baseLocation, const MexVec3&,
-    MexPoint3d* pLocation, MexVec3* pNormal
-) const
+// virtual
+void MachPhysGliderImpl::machineSurfacePosition(
+    const MachPhysPlanetSurface& surface,
+    const MexPoint3d& baseLocation,
+    const MexVec3&,
+    MexPoint3d* pLocation,
+    MexVec3* pNormal) const
 {
-    *pLocation = MexPoint3d( baseLocation.x(), baseLocation.y(), surface.terrainHeight( baseLocation.x(), baseLocation.y(), machine().floors() ) );
-    *pNormal = MexVec3( 0.0, 0.0, 1.0 );
+    *pLocation = MexPoint3d(
+        baseLocation.x(),
+        baseLocation.y(),
+        surface.terrainHeight(baseLocation.x(), baseLocation.y(), machine().floors()));
+    *pNormal = MexVec3(0.0, 0.0, 1.0);
 }
 
-//virtual
-void MachPhysGliderImpl::firstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state )
+// virtual
+void MachPhysGliderImpl::firstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state)
 {
-    pGlider_->doFirstPersonMotionAnimations( state );
+    pGlider_->doFirstPersonMotionAnimations(state);
 }
 
 /* End GLIDERI.CPP **************************************************/

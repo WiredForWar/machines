@@ -14,25 +14,26 @@
 #include "machphys/damage.hpp"
 #include "profiler/profiler.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysConstructionImpl );
+PER_DEFINE_PERSISTENT(MachPhysConstructionImpl);
 
-MachPhysConstructionImpl::MachPhysConstructionImpl
-(
-    double height, size_t level, MachPhys::Race race,
-    const MachPhysConstructionData& data, const MexTransform3d& globalTransform
-)
-:  height_( height ),
-  level_( level ),
-  isWorking_( false ),
-  pInteriorDomain_( NULL ),
-  pInteriorComposite_( NULL ),
-  constructionData_( data, globalTransform ),
-  pDamage_( NULL ),
-  percentageComplete_( 0 ),
-  race_( race ),
-  pSavedPadsTransforms_( NULL ),
-  completionBand_( BAND0 ),
-  completionVisualised_( false )
+MachPhysConstructionImpl::MachPhysConstructionImpl(
+    double height,
+    size_t level,
+    MachPhys::Race race,
+    const MachPhysConstructionData& data,
+    const MexTransform3d& globalTransform)
+    : height_(height)
+    , level_(level)
+    , isWorking_(false)
+    , pInteriorDomain_(nullptr)
+    , pInteriorComposite_(nullptr)
+    , constructionData_(data, globalTransform)
+    , pDamage_(nullptr)
+    , percentageComplete_(0)
+    , race_(race)
+    , pSavedPadsTransforms_(nullptr)
+    , completionBand_(BAND0)
+    , completionVisualised_(false)
 {
 
     TEST_INVARIANT;
@@ -41,57 +42,55 @@ MachPhysConstructionImpl::MachPhysConstructionImpl
 MachPhysConstructionImpl::~MachPhysConstructionImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysConstructionImpl::createSavedPadsTransforms()
 {
-	PRE( pSavedPadsTransforms_ == NULL );
+    PRE(pSavedPadsTransforms_ == nullptr);
 
-	pSavedPadsTransforms_ = _NEW( LinkTransforms );
-	pSavedPadsTransforms_->reserve( 15 );
+    pSavedPadsTransforms_ = _NEW(LinkTransforms);
+    pSavedPadsTransforms_->reserve(15);
 }
 
 MachPhysConstructionImpl::LinkTransforms& MachPhysConstructionImpl::savedPadsTransforms()
 {
-	PRE( pSavedPadsTransforms_ != NULL );
+    PRE(pSavedPadsTransforms_ != nullptr);
 
-	return *pSavedPadsTransforms_;
+    return *pSavedPadsTransforms_;
 }
 
 const MachPhysConstructionImpl::LinkTransforms& MachPhysConstructionImpl::savedPadsTransforms() const
 {
-	PRE( pSavedPadsTransforms_ != NULL );
+    PRE(pSavedPadsTransforms_ != nullptr);
 
-	return *pSavedPadsTransforms_;
+    return *pSavedPadsTransforms_;
 }
 
 // If id is found in the saved transforms, the function returns successfully and the transform is returned
-bool MachPhysConstructionImpl::savedPadTransform( W4dLink::Id id, MexTransform3d* padTransform ) const
+bool MachPhysConstructionImpl::savedPadTransform(W4dLink::Id id, MexTransform3d* padTransform) const
 {
-	PRE( padTransform );
+    PRE(padTransform);
 
-	bool result = false;
-	LinkTransforms::const_iterator it;
-	for( it = savedPadsTransforms().begin(); it != savedPadsTransforms().end() and not result;  ++it )
-	{
-		if( (*it).id == id )
-		{
-			LIONEL_STREAM("(*it).id " << (*it).id << std::endl);
-			result = true;
-			*padTransform = (*it).transform;
-		}
-
-	}
-	return result;
+    bool result = false;
+    LinkTransforms::const_iterator it;
+    for (it = savedPadsTransforms().begin(); it != savedPadsTransforms().end() and not result; ++it)
+    {
+        if ((*it).id == id)
+        {
+            LIONEL_STREAM("(*it).id " << (*it).id << std::endl);
+            result = true;
+            *padTransform = (*it).transform;
+        }
+    }
+    return result;
 }
 
 void MachPhysConstructionImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysConstructionImpl& t )
+ostream& operator<<(ostream& o, const MachPhysConstructionImpl& t)
 {
 
     o << "MachPhysConstructionImpl " << (void*)&t << " start" << std::endl;
@@ -100,7 +99,7 @@ ostream& operator <<( ostream& o, const MachPhysConstructionImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysConstructionImpl& construction )
+void perWrite(PerOstream& ostr, const MachPhysConstructionImpl& construction)
 {
     ostr << construction.adornments_;
     ostr << construction.percentageComplete_;
@@ -113,7 +112,7 @@ void perWrite( PerOstream& ostr, const MachPhysConstructionImpl& construction )
     ostr << construction.pDamage_;
 }
 
-void perRead( PerIstream& istr, MachPhysConstructionImpl& construction )
+void perRead(PerIstream& istr, MachPhysConstructionImpl& construction)
 {
     istr >> construction.adornments_;
     istr >> construction.percentageComplete_;
@@ -126,15 +125,15 @@ void perRead( PerIstream& istr, MachPhysConstructionImpl& construction )
     istr >> construction.pDamage_;
 }
 
-MachPhysConstructionImpl::MachPhysConstructionImpl( PerConstructor )
-: isWorking_( false ),
-  pInteriorDomain_( NULL ),
-  pInteriorComposite_( NULL ),
-  pDamage_( NULL ),
-  percentageComplete_( 0 ),
-  pSavedPadsTransforms_( NULL ),
-  completionBand_( BAND0 ),
-  completionVisualised_( false )
+MachPhysConstructionImpl::MachPhysConstructionImpl(PerConstructor)
+    : isWorking_(false)
+    , pInteriorDomain_(nullptr)
+    , pInteriorComposite_(nullptr)
+    , pDamage_(nullptr)
+    , percentageComplete_(0)
+    , pSavedPadsTransforms_(nullptr)
+    , completionBand_(BAND0)
+    , completionVisualised_(false)
 {
 }
 

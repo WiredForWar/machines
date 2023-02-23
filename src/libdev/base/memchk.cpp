@@ -20,91 +20,90 @@
 
 #ifndef PRODUCTION
 #include "base/memwatch.hpp"
-void MemChkWatchNewBlock( void* address, size_t nRequestedBytes );
-void MemChkWatchDeleteBlock( void* address );
+void MemChkWatchNewBlock(void* address, size_t nRequestedBytes);
+void MemChkWatchDeleteBlock(void* address);
 #endif
 
 // TODO: some depricated dos stuff?
 #define MAX_PATH 0x00000104
 
-static  void    writeMemoryAllocationData( ostream& ostr );
+static void writeMemoryAllocationData(ostream& ostr);
 
 #ifdef NDEBUG
 
-void    DbgMemChkRecordAllMemory( bool  )
+void DbgMemChkRecordAllMemory(bool)
 {
 }
 
-void  DbgMemChkCheckAllMemory()
+void DbgMemChkCheckAllMemory()
 {
 }
 
-void DbgMemChkRegisterFileData( const char *, unsigned long )
+void DbgMemChkRegisterFileData(const char*, unsigned long)
 {
 }
-
 
 #endif
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  ostream& logStream()
+static ostream& logStream()
 {
     return Diag::instance().memoryStream();
 }
 
-size_t  DbgMemChkFreeMemory()
+size_t DbgMemChkFreeMemory()
 {
-    const   size_t  STORE_SIZE = 2048;
-    void*   pStore[ STORE_SIZE ];
-	size_t	blockSize = 0xffffffff;
-	size_t	totalAllocated = 0;
+    const size_t STORE_SIZE = 2048;
+    void* pStore[STORE_SIZE];
+    size_t blockSize = 0xffffffff;
+    size_t totalAllocated = 0;
 
-	size_t	nAllocatedBlocks = 0;
+    size_t nAllocatedBlocks = 0;
 
-	bool	finished = false;
+    bool finished = false;
 
     //  Halve the block size each time and allocate as much as we can
 
-    while( ! finished )
+    while (!finished)
     {
-        if( nAllocatedBlocks >= STORE_SIZE )
+        if (nAllocatedBlocks >= STORE_SIZE)
         {
             finished = true;
             std::cerr << "DbgMemChkFreeMemory : Not enough internal array space" << std::endl;
         }
         else
         {
-    		pStore[ nAllocatedBlocks ] = malloc( blockSize );
+            pStore[nAllocatedBlocks] = malloc(blockSize);
 
-    		if( pStore[ nAllocatedBlocks ] == 0 )
-    		{
-                if( blockSize < 10 )
-        			finished = true;
+            if (pStore[nAllocatedBlocks] == nullptr)
+            {
+                if (blockSize < 10)
+                    finished = true;
                 else
                     blockSize /= 2;
-    		}
-    		else
-    		{
+            }
+            else
+            {
 
-    			totalAllocated += blockSize;
-    			++nAllocatedBlocks;
-    		}
+                totalAllocated += blockSize;
+                ++nAllocatedBlocks;
+            }
         }
     }
 
     //  Free all of the memory we used in reverse order of
     //  allocation so we should be able to claim it all back
 
-    for( size_t i = 0; i < nAllocatedBlocks; ++i )
-        free( pStore[ nAllocatedBlocks - i - 1 ] );
+    for (size_t i = 0; i < nAllocatedBlocks; ++i)
+        free(pStore[nAllocatedBlocks - i - 1]);
 
-	return totalAllocated;
+    return totalAllocated;
 }
 
 static bool memoryWatchingOn = false;
-void MemChkMemoryWatchingOn( bool doWatch )
+void MemChkMemoryWatchingOn(bool doWatch)
 {
     memoryWatchingOn = doWatch;
 }
@@ -118,81 +117,87 @@ bool MemChkMemoryWatchingOn()
 
 #ifndef NDEBUG
 
-enum allocationType { SINGLE_ALLOCATION, ARRAY_ALLOCATION };
-enum checkType { BLOCK_ALLOCATED = 0xdeadbeef, BLOCK_DELETED = 0x00000000 };
+enum allocationType
+{
+    SINGLE_ALLOCATION,
+    ARRAY_ALLOCATION
+};
+enum checkType
+{
+    BLOCK_ALLOCATED = 0xdeadbeef,
+    BLOCK_DELETED = 0x00000000
+};
 
-#define MAX_FILE_CHARACTERS_TO_STORE    13
+#define MAX_FILE_CHARACTERS_TO_STORE 13
 
 // the debugging info struct
 struct DebugInfo
 {
-	char 			fname[ MAX_FILE_CHARACTERS_TO_STORE ];
-	uint32			lnumber;
-    uint32          mask;
-    size_t          nBytes;
-	checkType		CHECK_NUM;
-	DebugInfo*		previous;
-	DebugInfo*		next;
-    allocationType  allocType;
-    uint32          checkSum;
+    char fname[MAX_FILE_CHARACTERS_TO_STORE];
+    uint32 lnumber;
+    uint32 mask;
+    size_t nBytes;
+    checkType CHECK_NUM;
+    DebugInfo* previous;
+    DebugInfo* next;
+    allocationType allocType;
+    uint32 checkSum;
 };
 
-static	DebugInfo*	firstInList = NULL;
+static DebugInfo* firstInList = nullptr;
 
-static  bool    DbgRecordAllMemory = false;
-static  bool    memoryErrorsFound = false;
-static  bool    saveDebugInfo = true;
-static  bool    recordStackData = false;
-static  bool    tracedStackAnchor = false;
+static bool DbgRecordAllMemory = false;
+static bool memoryErrorsFound = false;
+static bool saveDebugInfo = true;
+static bool recordStackData = false;
+static bool tracedStackAnchor = false;
 
-static  unsigned    long    nNewCalls = 0;
-static  unsigned    long    nDeleteCalls = 0;
-static  unsigned    long    nNewArrayCalls = 0;
-static  unsigned    long    nDeleteArrayCalls = 0;
+static unsigned long nNewCalls = 0;
+static unsigned long nDeleteCalls = 0;
+static unsigned long nNewArrayCalls = 0;
+static unsigned long nDeleteArrayCalls = 0;
 
-static  unsigned    long    totalMemoryNewed = 0;
-static  unsigned    long    totalMemoryDeleted = 0;
-static  unsigned    long    maxMemoryNewed = 0;
-//static  unsigned    long    maxActuallyAllocated = 0;
-//static  unsigned    long    minFree = 0xffffffff;
-//static  unsigned    long    initialFree = 0;
+static unsigned long totalMemoryNewed = 0;
+static unsigned long totalMemoryDeleted = 0;
+static unsigned long maxMemoryNewed = 0;
+// static  unsigned    long    maxActuallyAllocated = 0;
+// static  unsigned    long    minFree = 0xffffffff;
+// static  unsigned    long    initialFree = 0;
 
-static  char                fileName[MAX_PATH];
-static  unsigned    long    lineNumber;
-static  const char*  ctorText = NULL;
-static  bool                fileDataValid = false;
+static char fileName[MAX_PATH];
+static unsigned long lineNumber;
+static const char* ctorText = nullptr;
+static bool fileDataValid = false;
 
-static  uint32              currentMask = 0;
+static uint32 currentMask = 0;
 
 // static  ofstream    logStream( "memchk.log" );
 
-typedef void (*v_fn_v)();
+using v_fn_v = void (*)();
 
-static  void    *getMemory( size_t amt );
-static  void    addBlockToList( DebugInfo* d );
-static  void    removeBlockFromList( DebugInfo* d );
-static  void    setupCommonData( DebugInfo *dPtr );
-static  void    checkCommonData( DebugInfo *dPtr );
-static  void    logNewBlock( const DebugInfo *dPtr );
-static  void    logDeleteBlock( const DebugInfo *dPtr );
-static  void    checkFirst();
-static  uint32  calculateCheckSum( DebugInfo *dPtr );
-static  void    checkMemoryBlock( DebugInfo* dPtr );
+static void* getMemory(size_t amt);
+static void addBlockToList(DebugInfo* d);
+static void removeBlockFromList(DebugInfo* d);
+static void setupCommonData(DebugInfo* dPtr);
+static void checkCommonData(DebugInfo* dPtr);
+static void logNewBlock(const DebugInfo* dPtr);
+static void logDeleteBlock(const DebugInfo* dPtr);
+static void checkFirst();
+static uint32 calculateCheckSum(DebugInfo* dPtr);
+static void checkMemoryBlock(DebugInfo* dPtr);
 
-static  void    recordNew( size_t nBytes, void* ptr );
-static  void    recordNewArray( size_t nBytes, void* ptr );
-static  void    recordAllocation( size_t nBytes, void* ptr );
-static  void    recordDelete( size_t nBytes );
-static  void    recordDeleteArray( size_t nBytes );
-static  void    recordDeallocation( size_t nBytes );
+static void recordNew(size_t nBytes, void* ptr);
+static void recordNewArray(size_t nBytes, void* ptr);
+static void recordAllocation(size_t nBytes, void* ptr);
+static void recordDelete(size_t nBytes);
+static void recordDeleteArray(size_t nBytes);
+static void recordDeallocation(size_t nBytes);
 
-static  void    writeMemoryAllocationData( ostream& ostr );
+static void writeMemoryAllocationData(ostream& ostr);
 
-#define BLOCK_WHERE( dPtr )     \
-     (dPtr)->fname << "  " << (dPtr)->lnumber
+#define BLOCK_WHERE(dPtr) (dPtr)->fname << "  " << (dPtr)->lnumber
 
-#define CURRENT_WHERE                            \
-    ( fileDataValid ? fileName : "Unknown file" ) << "  " << ( fileDataValid ? lineNumber : 0 )
+#define CURRENT_WHERE (fileDataValid ? fileName : "Unknown file") << "  " << (fileDataValid ? lineNumber : 0)
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
@@ -210,16 +215,16 @@ void *operator new( size_t amt )
 
     if( saveDebugInfo )
     {
-    	// allocate memory + room for debugging information
+        // allocate memory + room for debugging information
         //memory = getMemory( amt + sizeof( DebugInfo ) );
         memory = cbAlloc( amt + sizeof( DebugInfo ) );
 
         if( memory )
         {
-        	// create a debugInfo pointer and point it to the new memory block
-    	    DebugInfo* d = (DebugInfo*)memory;
+            // create a debugInfo pointer and point it to the new memory block
+            DebugInfo* d = (DebugInfo*)memory;
 
-        	// store the values in this memory block
+            // store the values in this memory block
             setupCommonData( d );
 
             d->nBytes = amt;
@@ -258,8 +263,8 @@ void *operator new( size_t amt )
 /*
 void operator delete( void *p )
 {
-	//cout << "in function delete" << endl;
-	//cout << "sizeof( debuginfo ) = " << sizeof( DebugInfo ) << endl;
+    //cout << "in function delete" << endl;
+    //cout << "sizeof( debuginfo ) = " << sizeof( DebugInfo ) << endl;
 
     if( p )
     {
@@ -268,9 +273,9 @@ void operator delete( void *p )
 
         if( saveDebugInfo )
         {
-    		// create a debugInfo pointer and point it to the relevant info block for object p
-    		//cout << "p = " << p << endl;
-    		DebugInfo* d = (DebugInfo*)( (uint8 *)( p ) - sizeof( DebugInfo ) );
+            // create a debugInfo pointer and point it to the relevant info block for object p
+            //cout << "p = " << p << endl;
+            DebugInfo* d = (DebugInfo*)( (uint8 *)( p ) - sizeof( DebugInfo ) );
 
             recordDelete( d->nBytes );
 
@@ -283,8 +288,8 @@ void operator delete( void *p )
             if( DbgRecordAllMemory )
                 logDeleteBlock( d );
 
-    		//cout << "d = " << d << endl;
-    		//cout << "name: " << d->fname << "   line: " << d->lnumber << endl;
+            //cout << "d = " << d << endl;
+            //cout << "name: " << d->fname << "   line: " << d->lnumber << endl;
 
             removeBlockFromList( d );
 
@@ -319,7 +324,7 @@ void *operator new []( size_t amt )
     if( amt == 0 )
         amt = 1;
 
-	// allocate memory + room for debugging information
+    // allocate memory + room for debugging information
     void    *memory;
 
     if( saveDebugInfo )
@@ -329,10 +334,10 @@ void *operator new []( size_t amt )
 
         if( memory )
         {
-        	// create a debugInfo pointer and point it to the new memory block
-        	DebugInfo* d = (DebugInfo*)memory;
+            // create a debugInfo pointer and point it to the new memory block
+            DebugInfo* d = (DebugInfo*)memory;
 
-        	// store the values in this memory block
+            // store the values in this memory block
             setupCommonData( d );
 
             d->nBytes = amt;
@@ -378,8 +383,8 @@ void operator delete []( void *p )
 
         if( saveDebugInfo )
         {
-    		// create a debugInfo pointer and point it to the relevant info block for object p
-    		DebugInfo* d = (DebugInfo*)( (uint8 *)( p ) - sizeof( DebugInfo ) );
+            // create a debugInfo pointer and point it to the relevant info block for object p
+            DebugInfo* d = (DebugInfo*)( (uint8 *)( p ) - sizeof( DebugInfo ) );
 
             recordDeleteArray( d->nBytes );
 
@@ -416,15 +421,15 @@ void operator delete []( void *p )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    *getMemory( size_t amt )
+static void* getMemory(size_t amt)
 
 {
-    bool    finished = false;
-    void    *memory;
+    bool finished = false;
+    void* memory;
 
-    while( !finished)
+    while (!finished)
     {
-        memory = malloc( amt );
+        memory = malloc(amt);
 
         if (memory)
             finished = true;
@@ -438,14 +443,14 @@ static  void    *getMemory( size_t amt )
 
             logStream() << CURRENT_WHERE << std::endl;
 
-            writeMemoryAllocationData( logStream() );
+            writeMemoryAllocationData(logStream());
 
             memoryErrorsFound = true;
 
-            v_fn_v  newHandler = std::set_new_handler( 0 );
-            std::set_new_handler( newHandler );
+            v_fn_v newHandler = std::set_new_handler(nullptr);
+            std::set_new_handler(newHandler);
 
-            if( newHandler)
+            if (newHandler)
                 (*newHandler)();
             else
                 finished = true;
@@ -458,84 +463,85 @@ static  void    *getMemory( size_t amt )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    addBlockToList( DebugInfo* d )
+static void addBlockToList(DebugInfo* d)
 {
-	d->previous = NULL;
-	d->next = firstInList;
+    d->previous = nullptr;
+    d->next = firstInList;
 
-	// reset the static variable
+    // reset the static variable
 
-	firstInList = d;
+    firstInList = d;
 
-	if( d->next != NULL )
-		d->next->previous = d;
+    if (d->next != nullptr)
+        d->next->previous = d;
 
-    d->checkSum = calculateCheckSum( d );
+    d->checkSum = calculateCheckSum(d);
 }
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    removeBlockFromList( DebugInfo* d )
+static void removeBlockFromList(DebugInfo* d)
 
 {
-    checkMemoryBlock( d );
+    checkMemoryBlock(d);
 
-	if( d == firstInList )
-		firstInList = d->next;
+    if (d == firstInList)
+        firstInList = d->next;
 
-	if( d->next != NULL )
-		d->next->previous = d->previous;
+    if (d->next != nullptr)
+        d->next->previous = d->previous;
 
-	if( d->previous != NULL )
-		d->previous->next = d->next;
+    if (d->previous != nullptr)
+        d->previous->next = d->next;
 }
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    setupCommonData( DebugInfo *dPtr )
+static void setupCommonData(DebugInfo* dPtr)
 {
-    if( fileDataValid )
+    if (fileDataValid)
     {
 
-        if( strlen( fileName ) < MAX_FILE_CHARACTERS_TO_STORE )
-            strcpy( dPtr->fname, fileName );
+        if (strlen(fileName) < MAX_FILE_CHARACTERS_TO_STORE)
+            strcpy(dPtr->fname, fileName);
         else
-        	strncpy( dPtr->fname,
-              &fileName[ strlen( fileName ) - ( MAX_FILE_CHARACTERS_TO_STORE - 1 ) ],
-              MAX_FILE_CHARACTERS_TO_STORE - 1 );
+            strncpy(
+                dPtr->fname,
+                &fileName[strlen(fileName) - (MAX_FILE_CHARACTERS_TO_STORE - 1)],
+                MAX_FILE_CHARACTERS_TO_STORE - 1);
 
-        dPtr->fname[ MAX_FILE_CHARACTERS_TO_STORE - 1 ] = '\0';
+        dPtr->fname[MAX_FILE_CHARACTERS_TO_STORE - 1] = '\0';
 
-	    dPtr->lnumber = lineNumber;
+        dPtr->lnumber = lineNumber;
 
-        //Removed 21/2/99 by JLG: set to false on exit from op new
-        //fileDataValid = false;
+        // Removed 21/2/99 by JLG: set to false on exit from op new
+        // fileDataValid = false;
     }
     else
     {
-    	strncpy( dPtr->fname, "Unknown file", MAX_FILE_CHARACTERS_TO_STORE );
-        dPtr->fname[ MAX_FILE_CHARACTERS_TO_STORE - 1 ] = '\0';
+        strncpy(dPtr->fname, "Unknown file", MAX_FILE_CHARACTERS_TO_STORE);
+        dPtr->fname[MAX_FILE_CHARACTERS_TO_STORE - 1] = '\0';
 
-	    dPtr->lnumber = 0;
+        dPtr->lnumber = 0;
     }
 
     dPtr->mask = currentMask;
-	dPtr->CHECK_NUM = BLOCK_ALLOCATED;
+    dPtr->CHECK_NUM = BLOCK_ALLOCATED;
 }
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    checkCommonData( DebugInfo *dPtr )
+static void checkCommonData(DebugInfo* dPtr)
 {
-    if( dPtr->CHECK_NUM == BLOCK_DELETED )
+    if (dPtr->CHECK_NUM == BLOCK_DELETED)
     {
         memoryErrorsFound = true;
         logStream() << "ERROR: Block deleted at " << CURRENT_WHERE << " already deleted" << std::endl;
     }
-    else if( dPtr->CHECK_NUM != BLOCK_ALLOCATED )
+    else if (dPtr->CHECK_NUM != BLOCK_ALLOCATED)
     {
         memoryErrorsFound = true;
         logStream() << "ERROR: Block deleted at " << CURRENT_WHERE << " has been corrupted" << std::endl;
@@ -547,104 +553,104 @@ static  void    checkCommonData( DebugInfo *dPtr )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    logNewBlock( const DebugInfo *dPtr )
+static void logNewBlock(const DebugInfo* dPtr)
 {
-    void* address = (void *)( (uint8 *)dPtr + sizeof( DebugInfo ) );
-    if( recordStackData )
+    void* address = (void*)((uint8*)dPtr + sizeof(DebugInfo));
+    if (recordStackData)
     {
-        if( not tracedStackAnchor )
+        if (not tracedStackAnchor)
         {
             tracedStackAnchor = true;
-            ProProfiler::instance().traceStack( logStream(), true, 0, NULL );
+            ProProfiler::instance().traceStack(logStream(), true, 0, nullptr);
         }
 
-        //Set up string detailing the extra information we want
+        // Set up string detailing the extra information we want
         char buffer[64];
-        if( ctorText != NULL )
+        if (ctorText != nullptr)
             snprintf(buffer, sizeof(buffer), "NEW %d %p @ %.32s @", static_cast<int>(dPtr->nBytes), address, ctorText);
         else
             snprintf(buffer, sizeof(buffer), "NEW %d %p", static_cast<int>(dPtr->nBytes), address);
 
-        ProProfiler::instance().traceStack( logStream(), false, dPtr->lnumber, buffer );
+        ProProfiler::instance().traceStack(logStream(), false, dPtr->lnumber, buffer);
     }
 
     logStream() << address;
     logStream() << " (" << dPtr->nBytes << " bytes)";
     logStream() << " allocated with ";
 
-    if( dPtr->allocType == ARRAY_ALLOCATION )
+    if (dPtr->allocType == ARRAY_ALLOCATION)
         logStream() << "_NEW_ARRAY ";
     else
         logStream() << "_NEW       ";
 
-    logStream() << "at " << BLOCK_WHERE( dPtr ) << std::endl;
+    logStream() << "at " << BLOCK_WHERE(dPtr) << std::endl;
 
-//     SysMetrics  metrics;
-//
-//     logStream() << " Free memory " << metrics.freeMemory() << endl;
+    //     SysMetrics  metrics;
+    //
+    //     logStream() << " Free memory " << metrics.freeMemory() << endl;
 }
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    logDeleteBlock( const DebugInfo *dPtr )
+static void logDeleteBlock(const DebugInfo* dPtr)
 {
-    void* address = (void *)( (uint8 *)dPtr + sizeof( DebugInfo ) );
-    if( recordStackData )
+    void* address = (void*)((uint8*)dPtr + sizeof(DebugInfo));
+    if (recordStackData)
     {
-        //Set up string detailing the extra information we want
+        // Set up string detailing the extra information we want
         char buffer[64];
         snprintf(buffer, sizeof(buffer), "DELETE %p", address);
-        ProProfiler::instance().traceStack( logStream(), false, dPtr->lnumber, buffer );
+        ProProfiler::instance().traceStack(logStream(), false, dPtr->lnumber, buffer);
     }
 
     logStream() << address;
     logStream() << " (" << dPtr->nBytes << " bytes)";
     logStream() << " deleted with ";
 
-    if( dPtr->allocType == ARRAY_ALLOCATION )
+    if (dPtr->allocType == ARRAY_ALLOCATION)
         logStream() << "_DELETE_ARRAY ";
     else
         logStream() << "_DELETE       ";
 
     logStream() << "at " << CURRENT_WHERE;
 
-    if( currentMask != 0 && !( dPtr->mask & currentMask ) )
+    if (currentMask != 0 && !(dPtr->mask & currentMask))
     {
         logStream() << " ( deleting a block not allocated with the current mask )" << std::endl;
     }
     else
         logStream() << std::endl;
 
-    //Removed 21/2/99 by JLG: set to false on exit from op delete
-    //fileDataValid = false;
+    // Removed 21/2/99 by JLG: set to false on exit from op delete
+    // fileDataValid = false;
 
-//     SysMetrics  metrics;
-//
-//     logStream() << " Free memory " << metrics.freeMemory() << endl;
+    //     SysMetrics  metrics;
+    //
+    //     logStream() << " Free memory " << metrics.freeMemory() << endl;
 }
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  uint32    calculateCheckSum( DebugInfo *dPtr )
+static uint32 calculateCheckSum(DebugInfo* dPtr)
 {
     //  Save the items in the structure that might legitimately change
     //  and set them to zero so that the checksum is repeatable.
 
-    uint32      saveCheckSum = dPtr->checkSum;
-    DebugInfo*  savePrevious = dPtr->previous;
-    DebugInfo*  saveNext = dPtr->next;
+    uint32 saveCheckSum = dPtr->checkSum;
+    DebugInfo* savePrevious = dPtr->previous;
+    DebugInfo* saveNext = dPtr->next;
 
     dPtr->checkSum = 0;
-    dPtr->previous = NULL;
-    dPtr->next = NULL;
+    dPtr->previous = nullptr;
+    dPtr->next = nullptr;
 
-    uint8*  pByte = (uint8*)dPtr;
-    size_t  i = 0;
-    uint32  checkSum = 0;
+    uint8* pByte = (uint8*)dPtr;
+    size_t i = 0;
+    uint32 checkSum = 0;
 
-    for( i = 0; i < sizeof( DebugInfo ); ++i, ++pByte )
+    for (i = 0; i < sizeof(DebugInfo); ++i, ++pByte)
     {
         checkSum += (*pByte);
     }
@@ -659,16 +665,16 @@ static  uint32    calculateCheckSum( DebugInfo *dPtr )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-void    DbgMemChkRegisterFileData( const char *fName, unsigned long lineNum )
+void DbgMemChkRegisterFileData(const char* fName, unsigned long lineNum)
 
 {
-//    PRE( isValid( fName ) );
+    //    PRE( isValid( fName ) );
 
-    strcpy( fileName, fName );
+    strcpy(fileName, fName);
     lineNumber = lineNum;
     fileDataValid = true;
-    ctorText = NULL;
-/*
+    ctorText = nullptr;
+    /*
     outStream << lastMemoryPointer << "  " << lastCount;
     outStream << "    " << fName << "  " << lineNum << endl;
 */
@@ -677,16 +683,16 @@ void    DbgMemChkRegisterFileData( const char *fName, unsigned long lineNum )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-void    DbgMemChkRegisterFileData2( const char *fName, unsigned long lineNum, const char* ctorString )
+void DbgMemChkRegisterFileData2(const char* fName, unsigned long lineNum, const char* ctorString)
 
 {
-//    PRE( isValid( fName ) );
+    //    PRE( isValid( fName ) );
 
-    strcpy( fileName, fName );
+    strcpy(fileName, fName);
     lineNumber = lineNum;
     fileDataValid = true;
     ctorText = ctorString;
-/*
+    /*
     outStream << lastMemoryPointer << "  " << lastCount;
     outStream << "    " << fName << "  " << lineNum << endl;
 */
@@ -695,7 +701,7 @@ void    DbgMemChkRegisterFileData2( const char *fName, unsigned long lineNum, co
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-void    DbgMemChkRecordAllMemory( bool record )
+void DbgMemChkRecordAllMemory(bool record)
 {
     DbgRecordAllMemory = record;
 }
@@ -703,7 +709,7 @@ void    DbgMemChkRecordAllMemory( bool record )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-void    DbgMemChkRecordStackData( bool record )
+void DbgMemChkRecordStackData(bool record)
 {
     recordStackData = record;
 }
@@ -711,9 +717,9 @@ void    DbgMemChkRecordStackData( bool record )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-void    DbgMemChkWriteMemoryAllocationData()
+void DbgMemChkWriteMemoryAllocationData()
 {
-    writeMemoryAllocationData( logStream() );
+    writeMemoryAllocationData(logStream());
 }
 
 /*--------------------------------------------------------------------------
@@ -721,79 +727,79 @@ Check all memory blocks to see if any of them have been corrupted. If they
 have, log this information.
 --------------------------------------------------------------------------*/
 
-void    DbgMemChkCheckAllMemory()
+void DbgMemChkCheckAllMemory()
 {
-	DebugInfo* d = firstInList;
+    DebugInfo* d = firstInList;
 
-	while( d != NULL )
-	{
-        checkMemoryBlock( d );
+    while (d != nullptr)
+    {
+        checkMemoryBlock(d);
 
-		d = d->next;
-	}
+        d = d->next;
+    }
 }
 
-void    DbgMemChkMask( uint32 newMask )
+void DbgMemChkMask(uint32 newMask)
 {
     currentMask = newMask;
 }
 
-void    DbgMemChkLogAllAllocatedMemory( uint32 mask )
+void DbgMemChkLogAllAllocatedMemory(uint32 mask)
 {
     logStream() << "~~~~~~ Start memory currently allocated with mask " << mask << " ~~~~~~~~~" << std::endl;
 
-	DebugInfo* d = firstInList;
+    DebugInfo* d = firstInList;
 
-	while( d != NULL )
-	{
-        if( ( mask == 0 ) || ( d->mask & mask ) )
+    while (d != nullptr)
+    {
+        if ((mask == 0) || (d->mask & mask))
         {
-		   	logStream() << "Memory ";
-            logStream() << (void *)( (uint8 *)d + sizeof( DebugInfo ) );
+            logStream() << "Memory ";
+            logStream() << (void*)((uint8*)d + sizeof(DebugInfo));
             logStream() << " (" << d->nBytes << " bytes)";
             logStream() << " allocated ";
-		   	logStream() << BLOCK_WHERE( d ) << std::endl;
-		}
+            logStream() << BLOCK_WHERE(d) << std::endl;
+        }
 
-       	d = d->next;
+        d = d->next;
     }
 
     logStream() << "~~~~~~ Finish memory currently allocated with mask " << mask << " ~~~~~~~~~" << std::endl;
 }
 
-const   DbgMemChkData& DbgMemChkAllocationData()
+const DbgMemChkData& DbgMemChkAllocationData()
 {
-    static  DbgMemChkData   memoryData;
+    static DbgMemChkData memoryData;
 
-    memoryData.nNewCalls( nNewCalls );
-    memoryData.nDeleteCalls( nDeleteCalls );
-    memoryData.nNewArrayCalls( nNewArrayCalls );
-    memoryData.nDeleteArrayCalls( nDeleteArrayCalls );
-    memoryData.totalMemoryNewed( totalMemoryNewed );
-    memoryData.totalMemoryDeleted( totalMemoryDeleted );
-    memoryData.maxMemoryNewed( maxMemoryNewed );
+    memoryData.nNewCalls(nNewCalls);
+    memoryData.nDeleteCalls(nDeleteCalls);
+    memoryData.nNewArrayCalls(nNewArrayCalls);
+    memoryData.nDeleteArrayCalls(nDeleteArrayCalls);
+    memoryData.totalMemoryNewed(totalMemoryNewed);
+    memoryData.totalMemoryDeleted(totalMemoryDeleted);
+    memoryData.maxMemoryNewed(maxMemoryNewed);
 
     return memoryData;
 }
 
-static  bool    canAllocateNextBlock( void** ppBlockPtr, size_t* pBlockSize );
+static bool canAllocateNextBlock(void** ppBlockPtr, size_t* pBlockSize);
 
-void    DbgMemChkWriteFragmentationData()
+void DbgMemChkWriteFragmentationData()
 {
-    void*   pBlock;
-    size_t  blockSize;
-    size_t  totalBlockSize = 0;
-    void*   pLast = NULL;
-//    void**  pFirst = NULL;
+    void* pBlock;
+    size_t blockSize;
+    size_t totalBlockSize = 0;
+    void* pLast = nullptr;
+    //    void**  pFirst = NULL;
 
     logStream() << "^^^^^^^^^ Fragmentation Data start ^^^^^^^^^^^" << std::endl;
 
-    while( canAllocateNextBlock( &pBlock, &blockSize ) )
+    while (canAllocateNextBlock(&pBlock, &blockSize))
     {
         totalBlockSize += blockSize;
         logStream() << "Block at " << pBlock << " size " << blockSize << std::endl;
 
-        if( pBlock == pLast )
+        if (pBlock == pLast)
         {
             logStream() << "ERROR Block pointer was repeated" << std::endl;
             break;
@@ -801,85 +807,89 @@ void    DbgMemChkWriteFragmentationData()
 
         *((void**)pBlock) = pLast;
 
-//         if( pLast == NULL )
-//         {
-//             pFirst = (void**)pBlock;
-//         }
-//         else
-//         {
-//         logStream() << pLast << endl;
-//             *pLast = pBlock;
-//         }
-//
-         pLast = pBlock;
-//        *pLast = NULL;
+        //         if( pLast == NULL )
+        //         {
+        //             pFirst = (void**)pBlock;
+        //         }
+        //         else
+        //         {
+        //         logStream() << pLast << endl;
+        //             *pLast = pBlock;
+        //         }
+        //
+        pLast = pBlock;
+        //        *pLast = NULL;
     }
 
     logStream() << "Total block size " << totalBlockSize << std::endl;
 
     logStream() << "^^^^^^^^^^ Fragmentation Data end ^^^^^^^^^^^^" << std::endl;
 
-    while( pLast != NULL )
+    while (pLast != nullptr)
     {
         void* pNext;
 
         pNext = *((void**)pLast);
 
-        free( pLast );
+        free(pLast);
 
         pLast = pNext;
     }
 }
 
-static  bool    canAllocateNextBlock( void** ppBlockPtr, size_t* pBlockSize )
+static bool canAllocateNextBlock(void** ppBlockPtr, size_t* pBlockSize)
 {
-    bool    canAllocate = false;
+    bool canAllocate = false;
 
     //  We must allocate a minimum of 4 bytes since we will use the
     //  block to store a pointer to the next block in.
-    const   size_t  MINIMUM_TO_ALLOCATE = 4;
+    const size_t MINIMUM_TO_ALLOCATE = 4;
 
-    void*   pBlock = malloc( MINIMUM_TO_ALLOCATE );
+    void* pBlock = malloc(MINIMUM_TO_ALLOCATE);
 
-    size_t  blockSize = MINIMUM_TO_ALLOCATE;
-    size_t  allocateSize = MINIMUM_TO_ALLOCATE;
+    size_t blockSize = MINIMUM_TO_ALLOCATE;
+    size_t allocateSize = MINIMUM_TO_ALLOCATE;
 
-    if( pBlock )
+    if (pBlock)
     {
-        free( pBlock );
-        bool    finished = false;
+        free(pBlock);
+        bool finished = false;
 
-        enum { INCREASING, DECREASING } direction = INCREASING;
+        enum
+        {
+            INCREASING,
+            DECREASING
+        } direction = INCREASING;
 
-        while( !finished )
+        while (!finished)
         {
             //  At this point in the loop, I know I can allocate a block
             //  of size blockSize at position startPtr. I do not have this
             //  block currently allocated.
 
-            void* pNew = malloc( blockSize + allocateSize );
+            void* pNew = malloc(blockSize + allocateSize);
 
-            if( pNew )
+            if (pNew)
             {
-                free( pNew );
+                free(pNew);
             }
 
-            if( pNew == pBlock )
+            if (pNew == pBlock)
             {
                 blockSize += allocateSize;
 
-                if( direction == INCREASING )
+                if (direction == INCREASING)
                     allocateSize *= 2;
             }
             else
             {
-                if( direction == INCREASING )
+                if (direction == INCREASING)
                 {
                     direction = DECREASING;
                 }
                 else
                 {
-                    if( allocateSize == 1 )
+                    if (allocateSize == 1)
                         finished = true;
                 }
 
@@ -889,10 +899,10 @@ static  bool    canAllocateNextBlock( void** ppBlockPtr, size_t* pBlockSize )
 
         void* pTemp;
 
-        while( ( pTemp = malloc( blockSize ) ) != NULL )
+        while ((pTemp = malloc(blockSize)) != nullptr)
         {
-            if( pTemp )
-                free( pTemp );
+            if (pTemp)
+                free(pTemp);
 
             --blockSize;
         }
@@ -903,57 +913,57 @@ static  bool    canAllocateNextBlock( void** ppBlockPtr, size_t* pBlockSize )
     *ppBlockPtr = pBlock;
     *pBlockSize = blockSize;
 
-    return  canAllocate;
+    return canAllocate;
 }
 
 /*--------------------------------------------------------------------------
 Check a single memory block for corruption.
 --------------------------------------------------------------------------*/
 
-static  void    checkMemoryBlock( DebugInfo* dPtr )
+static void checkMemoryBlock(DebugInfo* dPtr)
 {
-    if( dPtr->checkSum != calculateCheckSum( dPtr ) )
+    if (dPtr->checkSum != calculateCheckSum(dPtr))
     {
         memoryErrorsFound = true;
 
-	   	logStream() << "ERROR: Memory ";
-        logStream() << (void *)( (uint8 *)dPtr + sizeof( DebugInfo ) );
+        logStream() << "ERROR: Memory ";
+        logStream() << (void*)((uint8*)dPtr + sizeof(DebugInfo));
         logStream() << " (" << dPtr->nBytes << " bytes)";
         logStream() << " corrupted ";
-	   	logStream() << BLOCK_WHERE( dPtr ) << std::endl;
+        logStream() << BLOCK_WHERE(dPtr) << std::endl;
     }
 }
 
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    checkFirst()
+static void checkFirst()
 {
     static bool first = true;
 
-    if( first )
+    if (first)
     {
         first = false;
 
         //  Commented out by Bob, 8 Feb 1999 as I felt this was serving
         //  no useful purpose.
 
-//         cerr << endl;
-//         cerr << "=======================================" << endl;
-         std::cerr << "[Debug]" << std::endl;
-//         cerr << "=======================================" << endl;
+        //         cerr << endl;
+        //         cerr << "=======================================" << endl;
+        std::cerr << "[Debug]" << std::endl;
+        //         cerr << "=======================================" << endl;
 
-//         cerr << "logStream() bad " << logStream().bad() << endl;
-//         cerr << "logStream() fail " << logStream().fail() << endl;
-//         cerr << "logStream() eof " << logStream().eof() << endl;
-//         cerr << "logStream() rdstate " << logStream().rdstate() << endl;
+        //         cerr << "logStream() bad " << logStream().bad() << endl;
+        //         cerr << "logStream() fail " << logStream().fail() << endl;
+        //         cerr << "logStream() eof " << logStream().eof() << endl;
+        //         cerr << "logStream() rdstate " << logStream().rdstate() << endl;
 
         logStream() << std::endl;
         logStream() << "--------------------------------------------------------------------" << std::endl;
         logStream() << std::endl;
 
-        time_t  t = time( NULL );
-        logStream() << ctime( &t );
+        time_t t = time(nullptr);
+        logStream() << ctime(&t);
         logStream() << std::endl;
         logStream() << "Use the cb_memory environment variable to set debugging options:" << std::endl;
         logStream() << "  set cb_memory=[logall];[stacktrace]" << std::endl;
@@ -961,29 +971,29 @@ static  void    checkFirst()
         logStream() << "       stacktrace   Write out the stack with each allocation and deallocation" << std::endl;
         logStream() << std::endl;
 
-        const char* envText = getenv( "cb_memory" );
-        if( envText )
+        const char* envText = getenv("cb_memory");
+        if (envText)
         {
             logStream() << "Current memory setting '" << envText << "'" << std::endl;
 
-            char    text[100];
-            strcpy( text, envText );
+            char text[100];
+            strcpy(text, envText);
 
-            char* pToken = strtok( text, ";" );
+            char* pToken = strtok(text, ";");
 
-            while( pToken )
+            while (pToken)
             {
-                if ( !strncmp( pToken, "logall", 6 ) )
+                if (!strncmp(pToken, "logall", 6))
                 {
-                    DbgMemChkRecordAllMemory( true );
+                    DbgMemChkRecordAllMemory(true);
                 }
 
-                if ( !strncmp( pToken, "stacktrace", 10 ) )
+                if (!strncmp(pToken, "stacktrace", 10))
                 {
                     recordStackData = true;
                 }
 
-                pToken = strtok( NULL, ";" );
+                pToken = strtok(nullptr, ";");
             }
 
             logStream() << std::endl;
@@ -1001,38 +1011,37 @@ static  void    checkFirst()
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    recordNew( size_t nBytes, void* ptr )
+static void recordNew(size_t nBytes, void* ptr)
 {
     ++nNewCalls;
-    recordAllocation( nBytes, ptr );
+    recordAllocation(nBytes, ptr);
 }
 
-static  void    recordNewArray( size_t nBytes, void* ptr )
+static void recordNewArray(size_t nBytes, void* ptr)
 {
     ++nNewArrayCalls;
-    recordAllocation( nBytes, ptr );
+    recordAllocation(nBytes, ptr);
 }
 
-static  void    recordAllocation( size_t nBytes, void* /* ptr */ )
+static void recordAllocation(size_t nBytes, void* /* ptr */)
 {
     totalMemoryNewed += nBytes;
 
-    if( totalMemoryNewed - totalMemoryDeleted > maxMemoryNewed )
+    if (totalMemoryNewed - totalMemoryDeleted > maxMemoryNewed)
     {
         maxMemoryNewed = totalMemoryNewed - totalMemoryDeleted;
 
         //  Commented out because the call to DbgMemChkFreeMemory
         //  is too slow to make every time we allocate some more memory.
 
-//         size_t currentFree = DbgMemChkFreeMemory();
-//
-//         if( currentFree < minFree )
-//             minFree = currentFree;
-//
-//         if ( initialFree - currentFree > maxActuallyAllocated )
-//             maxActuallyAllocated = initialFree - currentFree;
+        //         size_t currentFree = DbgMemChkFreeMemory();
+        //
+        //         if( currentFree < minFree )
+        //             minFree = currentFree;
+        //
+        //         if ( initialFree - currentFree > maxActuallyAllocated )
+        //             maxActuallyAllocated = initialFree - currentFree;
     }
-
 }
 
 /*--------------------------------------------------------------------------
@@ -1041,7 +1050,7 @@ static  void    recordAllocation( size_t nBytes, void* /* ptr */ )
 //  Setting save debug info to false is a one shot operation - it will be
 //  reset to true after the first time it is used.
 
-void DbgMemChkSaveDebugInfo( bool saveDebug )
+void DbgMemChkSaveDebugInfo(bool saveDebug)
 {
     saveDebugInfo = saveDebug;
 }
@@ -1049,19 +1058,19 @@ void DbgMemChkSaveDebugInfo( bool saveDebug )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    recordDelete( size_t nBytes )
+static void recordDelete(size_t nBytes)
 {
     ++nDeleteCalls;
-    recordDeallocation( nBytes );
+    recordDeallocation(nBytes);
 }
 
-static  void    recordDeleteArray( size_t nBytes )
+static void recordDeleteArray(size_t nBytes)
 {
     ++nDeleteArrayCalls;
-    recordDeallocation( nBytes );
+    recordDeallocation(nBytes);
 }
 
-static  void    recordDeallocation( size_t nBytes )
+static void recordDeallocation(size_t nBytes)
 {
     totalMemoryDeleted += nBytes;
 }
@@ -1069,30 +1078,32 @@ static  void    recordDeallocation( size_t nBytes )
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static  void    writeMemoryAllocationData( ostream& ostr )
+static void writeMemoryAllocationData(ostream& ostr)
 {
     ostr << "...................................................................." << std::endl;
 
-    ostr << nNewCalls << " NEWs, " << nDeleteCalls << " DELETEs ( " << (int32)nNewCalls - (int32)nDeleteCalls << " outstanding NEWs )" << std::endl;
-    ostr << nNewArrayCalls << " NEW_ARRAYs, " << nDeleteArrayCalls << " DELETE_ARRAYs ( " << (int32)nNewArrayCalls - (int32)nDeleteArrayCalls << " outstanding NEW_ARRAYs )" << std::endl;
-    ostr << totalMemoryNewed << " bytes newed in total, " << (int32)totalMemoryDeleted << " bytes deleted in total " << std::endl;
-    ostr << totalMemoryNewed - totalMemoryDeleted << " bytes currently newed, " << maxMemoryNewed << " bytes maximum newed" << std::endl;
-//    ostr << maxActuallyAllocated << " bytes max actually allocated  " << minFree << " bytes minimum free " << endl;
+    ostr << nNewCalls << " NEWs, " << nDeleteCalls << " DELETEs ( " << (int32)nNewCalls - (int32)nDeleteCalls
+         << " outstanding NEWs )" << std::endl;
+    ostr << nNewArrayCalls << " NEW_ARRAYs, " << nDeleteArrayCalls << " DELETE_ARRAYs ( "
+         << (int32)nNewArrayCalls - (int32)nDeleteArrayCalls << " outstanding NEW_ARRAYs )" << std::endl;
+    ostr << totalMemoryNewed << " bytes newed in total, " << (int32)totalMemoryDeleted << " bytes deleted in total "
+         << std::endl;
+    ostr << totalMemoryNewed - totalMemoryDeleted << " bytes currently newed, " << maxMemoryNewed
+         << " bytes maximum newed" << std::endl;
+    //    ostr << maxActuallyAllocated << " bytes max actually allocated  " << minFree << " bytes minimum free " <<
+    //    endl;
     ostr << "...................................................................." << std::endl;
 }
 
 struct MEMCHK_LEAKS
 {
-    MEMCHK_LEAKS()
-    {
-    }
+    MEMCHK_LEAKS() { }
 
     ~MEMCHK_LEAKS()
     {
-        writeMemoryAllocationData( logStream() );
+        writeMemoryAllocationData(logStream());
 
-
-        if( nNewCalls != nDeleteCalls )
+        if (nNewCalls != nDeleteCalls)
         {
             memoryErrorsFound = true;
             logStream() << "ERROR: ";
@@ -1100,7 +1111,7 @@ struct MEMCHK_LEAKS
             logStream() << nDeleteCalls << " calls to delete" << std::endl;
         }
 
-        if( nNewArrayCalls != nDeleteArrayCalls )
+        if (nNewArrayCalls != nDeleteArrayCalls)
         {
             memoryErrorsFound = true;
             logStream() << "ERROR: ";
@@ -1108,34 +1119,34 @@ struct MEMCHK_LEAKS
             logStream() << nDeleteArrayCalls << " calls to delete[]" << std::endl;
         }
 
-		DebugInfo* d = firstInList;
+        DebugInfo* d = firstInList;
 
-		while( d != NULL )
-		{
+        while (d != nullptr)
+        {
             memoryErrorsFound = true;
 
-		   	logStream() << "ERROR: Memory ";
-            logStream() << (void *)( (uint8 *)d + sizeof( DebugInfo ) );
+            logStream() << "ERROR: Memory ";
+            logStream() << (void*)((uint8*)d + sizeof(DebugInfo));
             logStream() << " (" << d->nBytes << " bytes)";
             logStream() << " newed but never deleted ";
 
-            if( d->allocType == ARRAY_ALLOCATION )
+            if (d->allocType == ARRAY_ALLOCATION)
                 logStream() << "( _NEW_ARRAY ) ";
             else
                 logStream() << "( _NEW )       ";
 
-		   	logStream() << BLOCK_WHERE( d ) << std::endl;
+            logStream() << BLOCK_WHERE(d) << std::endl;
 
-			d = d->next;
-		}
+            d = d->next;
+        }
 
-        if( memoryErrorsFound )
+        if (memoryErrorsFound)
             std::cerr << "Memory errors found" << std::endl;
     }
 };
 
 #else
-//Disable those overloads for production version
+// Disable those overloads for production version
 /*void *operator new( size_t amt )
 {
     void* p = cbAlloc( amt );
@@ -1189,25 +1200,25 @@ void operator delete []( void *p )
 //==============================================
 #ifndef PRODUCTION
 
-void MemChkWatchNewBlock( void* address, size_t nRequestedBytes )
+void MemChkWatchNewBlock(void* address, size_t nRequestedBytes)
 {
     uint32_t watchLineNumber = 0;
-    const char* aNewText = NULL;
+    const char* aNewText = nullptr;
 
 #ifndef NDEBUG
-    if( fileDataValid )
+    if (fileDataValid)
     {
         watchLineNumber = lineNumber;
         aNewText = ctorText;
     }
 #endif
 
-    BaseMemWatcher::instance().addBlock( address, nRequestedBytes, watchLineNumber, aNewText );
+    BaseMemWatcher::instance().addBlock(address, nRequestedBytes, watchLineNumber, aNewText);
 }
 
-void MemChkWatchDeleteBlock( void* address )
+void MemChkWatchDeleteBlock(void* address)
 {
-    BaseMemWatcher::instance().removeBlock( address );
+    BaseMemWatcher::instance().removeBlock(address);
 }
 
 #endif
@@ -1228,10 +1239,7 @@ struct STREAM_INITIALISER
 #endif
     }
 
-    ~STREAM_INITIALISER()
-    {
-        cbClose();
-    }
+    ~STREAM_INITIALISER() { cbClose(); }
 };
 
 #ifdef __WATCOMC__
@@ -1247,9 +1255,8 @@ struct STREAM_INITIALISER
 
 #pragma initialize library
 
-static STREAM_INITIALISER    initialiser;
+static STREAM_INITIALISER initialiser;
 
 #pragma on(unreferenced);
-
 
 #endif

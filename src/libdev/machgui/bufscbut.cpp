@@ -1,5 +1,5 @@
 /*
- * B U F S C B U T . C P P 
+ * B U F S C B U T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -14,114 +14,117 @@
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachGuiBufferScrollButton::MachGuiBufferScrollButton( 	GuiDisplayable *pParent, 
-														const Gui::Coord& rel, 
-														const SysPathName& bitmap,
-														GuiSimpleScrollableList* pList,
-														ScrollDir scrollDir,
-														MachInGameScreen* pInGameScreen ) :
-	GuiListObserver (pList ),
-	GuiIcon( pParent, rel, bitmap ),
-	scrollDir_( scrollDir ),
-	pInGameScreen_( pInGameScreen )
-{}
+MachGuiBufferScrollButton::MachGuiBufferScrollButton(
+    GuiDisplayable* pParent,
+    const Gui::Coord& rel,
+    const SysPathName& bitmap,
+    GuiSimpleScrollableList* pList,
+    ScrollDir scrollDir,
+    MachInGameScreen* pInGameScreen)
+    : GuiListObserver(pList)
+    , GuiIcon(pParent, rel, bitmap)
+    , scrollDir_(scrollDir)
+    , pInGameScreen_(pInGameScreen)
+{
+}
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
-//virtual 
+// virtual
 MachGuiBufferScrollButton::~MachGuiBufferScrollButton()
-{}
+{
+}
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual 
-void MachGuiBufferScrollButton::doBeDepressed(const GuiMouseEvent& )
+// virtual
+void MachGuiBufferScrollButton::doBeDepressed(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
 }
 
-//virtual 
-void MachGuiBufferScrollButton::doBeReleased(const GuiMouseEvent& )
+// virtual
+void MachGuiBufferScrollButton::doBeReleased(const GuiMouseEvent&)
 {
-	switch ( scrollDir_ )
-	{
-		case FOWARD:
-			if ( list().canScrollFoward() )
-				list().scrollFoward();
-			break;
-		case BACKWARD:
-			if ( list().canScrollBackward() )
-				list().scrollBackward();
-			break;
-	}
+    switch (scrollDir_)
+    {
+        case FOWARD:
+            if (list().canScrollFoward())
+                list().scrollFoward();
+            break;
+        case BACKWARD:
+            if (list().canScrollBackward())
+                list().scrollBackward();
+            break;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void MachGuiBufferScrollButton::listUpdated()
 {
-	bool canScroll = list().canScrollBackward() or list().canScrollFoward();
+    bool canScroll = list().canScrollBackward() or list().canScrollFoward();
 
-	if ( canScroll !=isVisible() )
-	{
-		isVisible( canScroll );
-		
-		// Clean up control panel if this is being removed.
-		if ( not canScroll )
-		{
-			pInGameScreen_->controlPanel().redrawArea( *this );
-		}
-	}
+    if (canScroll != isVisible())
+    {
+        isVisible(canScroll);
 
-	changed();
+        // Clean up control panel if this is being removed.
+        if (not canScroll)
+        {
+            pInGameScreen_->controlPanel().redrawArea(*this);
+        }
+    }
+
+    changed();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual 
+// virtual
 const GuiBitmap& MachGuiBufferScrollButton::getBitmap() const
 {
-	static GuiBitmap scrollLeftBmp( Gui::bitmap( SysPathName( "gui/misc/scrolll.bmp" ) ) );
-	static GuiBitmap scrollLeftHighlightBmp( Gui::bitmap( SysPathName( "gui/misc/scrolllh.bmp" ) ) );
-	static GuiBitmap scrollRightBmp( Gui::bitmap( SysPathName( "gui/misc/scrollr.bmp" ) ) );
-	static GuiBitmap scrollRightHighlightBmp( Gui::bitmap( SysPathName( "gui/misc/scrollrh.bmp" ) ) );
+    static GuiBitmap scrollLeftBmp(Gui::bitmap(SysPathName("gui/misc/scrolll.bmp")));
+    static GuiBitmap scrollLeftHighlightBmp(Gui::bitmap(SysPathName("gui/misc/scrolllh.bmp")));
+    static GuiBitmap scrollRightBmp(Gui::bitmap(SysPathName("gui/misc/scrollr.bmp")));
+    static GuiBitmap scrollRightHighlightBmp(Gui::bitmap(SysPathName("gui/misc/scrollrh.bmp")));
 
-  	if ( scrollDir_ == LEFT )
-	{
-		if ( list().canScrollBackward() )
-		{
-			return scrollLeftHighlightBmp;
-		}
-		else
-		{
-			return scrollLeftBmp; 
-		}
-	}	
-	else
-	{
-		if ( list().canScrollFoward() )
-		{
-			return scrollRightHighlightBmp;
-		}
-		else
-		{
-			return scrollRightBmp;
-		}
-	}
-}		
+    if (scrollDir_ == LEFT)
+    {
+        if (list().canScrollBackward())
+        {
+            return scrollLeftHighlightBmp;
+        }
+        else
+        {
+            return scrollLeftBmp;
+        }
+    }
+    else
+    {
+        if (list().canScrollFoward())
+        {
+            return scrollRightHighlightBmp;
+        }
+        else
+        {
+            return scrollRightBmp;
+        }
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void MachGuiBufferScrollButton::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachGuiBufferScrollButton& t )
+ostream& operator<<(ostream& o, const MachGuiBufferScrollButton& t)
 {
 
     o << "MachGuiBufferScrollButton " << (void*)&t << " start" << std::endl;
@@ -131,6 +134,5 @@ ostream& operator <<( ostream& o, const MachGuiBufferScrollButton& t )
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 /* End BUFSCBUT.CPP *************************************************/

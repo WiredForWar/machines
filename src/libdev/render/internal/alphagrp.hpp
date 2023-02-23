@@ -22,20 +22,20 @@ class RenIDelayedAlphaGroup : public RenIDepthSortedItem
 public:
     RenIDelayedAlphaGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr&, const RenMaterial&, const glm::mat4&);
 
-	virtual ~RenIDelayedAlphaGroup();
-	virtual void render();
+    ~RenIDelayedAlphaGroup() override;
+    void render() override;
 
 protected:
-    const RenIMaterialGroup*	group_;
-	RenI::LitVtxAPtr			vertices_;
-	const glm::mat4				xform_;
+    const RenIMaterialGroup* group_;
+    RenI::LitVtxAPtr vertices_;
+    const glm::mat4 xform_;
 
     // Operations deliberately revoked.
-    RenIDelayedAlphaGroup( const RenIDelayedAlphaGroup& );
-    RenIDelayedAlphaGroup& operator =( const RenIDelayedAlphaGroup& );
-    bool operator ==( const RenIDelayedAlphaGroup& );
+    RenIDelayedAlphaGroup(const RenIDelayedAlphaGroup&);
+    RenIDelayedAlphaGroup& operator=(const RenIDelayedAlphaGroup&);
+    bool operator==(const RenIDelayedAlphaGroup&);
 
-	virtual void print(ostream&) const;
+    void print(ostream&) const override;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * O P P I C K U I . H P P 
+ * O P P I C K U I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -31,25 +31,24 @@ class MachActor;
 
 class MachLogPickUpOperationImpl
 {
-public:		
-	MachLogPickUpOperationImpl( MachLogResourceCarrier* );
-							
-	~MachLogPickUpOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogPickUpOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogPickUpOperationImpl );
-	
-	void CLASS_INVARIANT;
+public:
+    MachLogPickUpOperationImpl(MachLogResourceCarrier*);
 
-	friend class MachLogPickUpOperation;
-	
+    ~MachLogPickUpOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogPickUpOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogPickUpOperationImpl);
+
+    void CLASS_INVARIANT;
+
+    friend class MachLogPickUpOperation;
+
 private:
-
-	MachLogResourceCarrier *				pActor_;
-	bool									finished_;	
-	MexPoint2d								destinationPadPosition_;	
+    MachLogResourceCarrier* pActor_;
+    bool finished_;
+    MexPoint2d destinationPadPosition_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPickUpOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogPickUpOperationImpl);
 
 #endif
 

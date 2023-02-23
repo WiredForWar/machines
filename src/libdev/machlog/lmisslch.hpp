@@ -1,5 +1,5 @@
 /*
- * L M I S S L C H . H P P 
+ * L M I S S L C H . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,35 +21,35 @@ class MachLogLargeMissileLauncher : public MachLogLinearWeapon
 // Canonical form revoked
 {
 public:
-    MachLogLargeMissileLauncher( MachLogRace*, MachPhysLargeMissile*, MachActor* pOwner );
-    virtual ~MachLogLargeMissileLauncher();
+    MachLogLargeMissileLauncher(MachLogRace*, MachPhysLargeMissile*, MachActor* pOwner);
+    ~MachLogLargeMissileLauncher() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogLargeMissileLauncher& t );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLargeMissileLauncher );
-	PER_FRIEND_READ_WRITE( MachLogLargeMissileLauncher );
+    friend ostream& operator<<(ostream& o, const MachLogLargeMissileLauncher& t);
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLargeMissileLauncher);
+    PER_FRIEND_READ_WRITE(MachLogLargeMissileLauncher);
 
 protected:
-
-	virtual	MachLogLinearProjectile* createLinearProjectile
-	(
-		const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-	    const W4dEntity& target, const MexPoint3d& targetOffset
-	);
+    MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
 private:
-	//ops deliberately revoked
-    MachLogLargeMissileLauncher( const MachLogLargeMissileLauncher& );
-    MachLogLargeMissileLauncher& operator =( const MachLogLargeMissileLauncher& );
-    bool operator ==( const MachLogLargeMissileLauncher& );
+    // ops deliberately revoked
+    MachLogLargeMissileLauncher(const MachLogLargeMissileLauncher&);
+    MachLogLargeMissileLauncher& operator=(const MachLogLargeMissileLauncher&);
+    bool operator==(const MachLogLargeMissileLauncher&);
 
-	//data members
-	MachPhysLargeMissile*	pPhysLargeMissile_;
+    // data members
+    MachPhysLargeMissile* pPhysLargeMissile_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogLargeMissileLauncher );
+PER_DECLARE_PERSISTENT(MachLogLargeMissileLauncher);
 
 #endif
 

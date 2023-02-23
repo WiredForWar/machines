@@ -25,52 +25,43 @@
 #include "phys/internal/cs2dmarc.hpp"
 #include "phys/internal/cs2dmvtx.hpp"
 
-//Vertex/arc typedefs
-typedef GraVertex< PhysCS2dDomainVertex, PhysConfigSpace2d::DomainArcId
-                 > PhysCS2dDomainGraphVertex;
-typedef FtlSerialMap< PhysCS2dDomainGraphVertex > PhysCS2dDomainVertexMap;
+// Vertex/arc typedefs
+using PhysCS2dDomainGraphVertex = GraVertex<PhysCS2dDomainVertex, PhysConfigSpace2d::DomainArcId>;
+using PhysCS2dDomainVertexMap = FtlSerialMap<PhysCS2dDomainGraphVertex>;
 
-typedef GraArc< PhysCS2dDomainArc, PhysConfigSpace2d::DomainVertexId, MATHEX_SCALAR
-              > PhysCS2dDomainGraphArc;
-typedef FtlSerialMap< PhysCS2dDomainGraphArc > PhysCS2dDomainArcMap;
+using PhysCS2dDomainGraphArc = GraArc<PhysCS2dDomainArc, PhysConfigSpace2d::DomainVertexId, MATHEX_SCALAR>;
+using PhysCS2dDomainArcMap = FtlSerialMap<PhysCS2dDomainGraphArc>;
 
-//memberwise canonical
-class PhysCS2dDomainGraph : public GraGraph< PhysCS2dDomainVertexMap, PhysCS2dDomainArcMap >
+// memberwise canonical
+class PhysCS2dDomainGraph : public GraGraph<PhysCS2dDomainVertexMap, PhysCS2dDomainArcMap>
 {
 public:
-    //PhysCS2dDomainGraph();
+    // PhysCS2dDomainGraph();
     //~PhysCS2dDomainGraph();
 
-    FtlReusingIdGenerator& domainVertexIdGenerator()
-    {
-        return domainVertexIdGenerator_;
-    };
+    FtlReusingIdGenerator& domainVertexIdGenerator() { return domainVertexIdGenerator_; };
 
-    FtlReusingIdGenerator& domainArcIdGenerator()
-    {
-        return domainArcIdGenerator_;
-    };
+    FtlReusingIdGenerator& domainArcIdGenerator() { return domainArcIdGenerator_; };
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysCS2dDomainGraph& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dDomainGraph& t);
 
 protected:
-    //Callbacks when vertex/arc deleted. Used to free the id
-	virtual void doRemoveVertex( const VertexId& id );
-	virtual void doRemoveArc( const ArcId& id );
+    // Callbacks when vertex/arc deleted. Used to free the id
+    void doRemoveVertex(const VertexId& id) override;
+    void doRemoveArc(const ArcId& id) override;
 
 private:
     // Operation deliberately revoked
-    //PhysCS2dDomainGraph( const PhysCS2dDomainGraph& );
-    //PhysCS2dDomainGraph& operator =( const PhysCS2dDomainGraph& );
-    //bool operator ==( const PhysCS2dDomainGraph& );
+    // PhysCS2dDomainGraph( const PhysCS2dDomainGraph& );
+    // PhysCS2dDomainGraph& operator =( const PhysCS2dDomainGraph& );
+    // bool operator ==( const PhysCS2dDomainGraph& );
 
-    //data members
-    FtlReusingIdGenerator domainVertexIdGenerator_; //Generates domainVertex ids
-    FtlReusingIdGenerator domainArcIdGenerator_; //Generates domainArc ids
+    // data members
+    FtlReusingIdGenerator domainVertexIdGenerator_; // Generates domainVertex ids
+    FtlReusingIdGenerator domainArcIdGenerator_; // Generates domainArc ids
 };
-
 
 #endif
 

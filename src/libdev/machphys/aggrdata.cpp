@@ -16,41 +16,40 @@ MachPhysAggressorData::MachPhysAggressorData()
 MachPhysAggressorData::~MachPhysAggressorData()
 {
     TEST_INVARIANT;
-
 }
 
 MATHEX_SCALAR MachPhysAggressorData::accuracy() const
 {
-	return accuracy_;
+    return accuracy_;
 }
 
-void MachPhysAggressorData::accuracy( const MATHEX_SCALAR& newAccuracy)
+void MachPhysAggressorData::accuracy(const MATHEX_SCALAR& newAccuracy)
 {
-	accuracy_ = newAccuracy;
+    accuracy_ = newAccuracy;
 }
 
 MATHEX_SCALAR MachPhysAggressorData::nWeapons() const
 {
-	return nWeapons_;
+    return nWeapons_;
 }
 
-void MachPhysAggressorData::nWeapons( const MATHEX_SCALAR& newNumberOfWeapons)
+void MachPhysAggressorData::nWeapons(const MATHEX_SCALAR& newNumberOfWeapons)
 {
-	nWeapons_ = newNumberOfWeapons;
+    nWeapons_ = newNumberOfWeapons;
 }
 
 void MachPhysAggressorData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysAggressorData& t )
+ostream& operator<<(ostream& o, const MachPhysAggressorData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-	//o << (MachPhysMachineData)t;
-	o << "Accuracy " << t.accuracy() << std::endl;
-	o << "Number Weaps " << t.nWeapons() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysMachineData)t;
+    o << "Accuracy " << t.accuracy() << std::endl;
+    o << "Number Weaps " << t.nWeapons() << std::endl;
 
     return o;
 }

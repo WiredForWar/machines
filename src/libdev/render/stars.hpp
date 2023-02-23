@@ -31,34 +31,30 @@ class RenStars
 // Cannonical form revoked.
 {
 public:
-	enum Configuration
-	{
-		SPHERICAL,
-		HEMISPHERICAL
-	};
+    enum Configuration
+    {
+        SPHERICAL,
+        HEMISPHERICAL
+    };
 
-	RenStars(Configuration, MATHEX_SCALAR radius, uint nStars);
-	virtual ~RenStars();
+    RenStars(Configuration, MATHEX_SCALAR radius, uint nStars);
+    virtual ~RenStars();
 
-	void render(
-	    UtlPercentage opacity,
-	    const MexTransform3d& cameraXform,
-	    MexRadians verticalFOV,
-	    MexRadians horizontalFOV);
+    void
+    render(UtlPercentage opacity, const MexTransform3d& cameraXform, MexRadians verticalFOV, MexRadians horizontalFOV);
 
-	Configuration configuration() const;	
-	MATHEX_SCALAR radius() const;
-	uint nStars() const;
+    Configuration configuration() const;
+    MATHEX_SCALAR radius() const;
+    uint nStars() const;
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
 private:
-	// Operations deliberately revoked.
-	RenStars(const RenStars&);
-	RenStars& operator =(const RenStars&);
+    // Operations deliberately revoked.
+    RenStars(const RenStars&);
+    RenStars& operator=(const RenStars&);
 
-	RenIStarsImpl* pImpl_;
+    RenIStarsImpl* pImpl_;
 };
 
 #endif /* _RENDER_STARS_HPP *******************************/
-

@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 
 class RenIDriverImpl;
-template < class T > class CtlCountedPtr;
+template <class T> class CtlCountedPtr;
 
 // A class wrapper for DirectDraw/Direct3D driver info.
 // Objects of this type will be created by an RenDriverSelector only.
@@ -26,29 +26,29 @@ public:
 
     void CLASS_INVARIANT;
 
-	const std::string& name() const;
-	const std::string& description() const;
+    const std::string& name() const;
+    const std::string& description() const;
 
-	bool isBetterChoiceThan( const RenDriver& ) const;
+    bool isBetterChoiceThan(const RenDriver&) const;
 
-	const RenIDriverImpl& driverImpl() const;
-	RenIDriverImpl& driverImpl();
+    const RenIDriverImpl& driverImpl() const;
+    RenIDriverImpl& driverImpl();
 
 private:
-	friend class RenDriverSelector;
-	friend class RenDriverSelectorImpl;
+    friend class RenDriverSelector;
+    friend class RenDriverSelectorImpl;
 
-    RenDriver( RenIDriverImpl* );
-    RenDriver( const RenDriver& driver );
+    RenDriver(RenIDriverImpl*);
+    RenDriver(const RenDriver& driver);
 
-    friend ostream& operator <<( ostream& o, const RenDriver& t );
+    friend ostream& operator<<(ostream& o, const RenDriver& t);
 
-    RenDriver& operator =( const RenDriver& );
+    RenDriver& operator=(const RenDriver&);
 
-	RenIDriverImpl *pImpl_;
+    RenIDriverImpl* pImpl_;
 };
 
-typedef CtlCountedPtr< RenDriver > RenDriverPtr;
+using RenDriverPtr = CtlCountedPtr<RenDriver>;
 
 #endif
 

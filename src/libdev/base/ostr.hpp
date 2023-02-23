@@ -21,43 +21,41 @@ class PerOstream
 {
 public:
     //  Note that ostr must be capable of accepting binary data
-    PerOstream( ostream& ostr );
+    PerOstream(ostream& ostr);
 
     //  Not yet implemented
     // PerOstream( const char* fileName );
 
     virtual ~PerOstream();
 
-    void    write( const char*, size_t length );
+    void write(const char*, size_t length);
 
-    static  bool&   logWrite();
+    static bool& logWrite();
 
 protected:
-
-    void    outputCharacters( const char* pBuf, size_t nChars );
+    void outputCharacters(const char* pBuf, size_t nChars);
 
 private:
     // Operation deliberately revoked
-    PerOstream( const PerOstream& );
+    PerOstream(const PerOstream&);
 
     // Operation deliberately revoked
-    PerOstream& operator =( const PerOstream& );
+    PerOstream& operator=(const PerOstream&);
 
     // Operation deliberately revoked
-    bool operator ==( const PerOstream& );
+    bool operator==(const PerOstream&);
 
     friend class PerOstreamBuffer;
 
-    void    filterCharacters( const char* pBuf, size_t nChars );
+    void filterCharacters(const char* pBuf, size_t nChars);
 
-//    virtual void    doFilterCharacters( const char* pBuf, size_t nChars ) = 0;
+    //    virtual void    doFilterCharacters( const char* pBuf, size_t nChars ) = 0;
 
     PerOstreamBuffer* pFilterBuffer();
 
-    PerOstreamBuffer*   pBuffer_;
+    PerOstreamBuffer* pBuffer_;
     ostream& ostr_;
 };
-
 
 #endif
 

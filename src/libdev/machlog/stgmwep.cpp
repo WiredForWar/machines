@@ -1,5 +1,5 @@
 /*
- * STGMWEP . C P P 
+ * STGMWEP . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,16 +10,19 @@
 
 #include "machphys/weapon.hpp"
 #include "machphys/wepdata.hpp"
-//#include "machphys/random.hpp"
+// #include "machphys/random.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/stgmwep.hpp"
 #include "machlog/stingm.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogMetalStingWeapon );
+PER_DEFINE_PERSISTENT(MachLogMetalStingWeapon);
 
-MachLogMetalStingWeapon::MachLogMetalStingWeapon( MachLogRace* pRace, MachPhysLinearWeapon* pPhysWeapon, MachActor* pOwner )
-:	MachLogLinearWeapon( pRace, pPhysWeapon, pOwner )
+MachLogMetalStingWeapon::MachLogMetalStingWeapon(
+    MachLogRace* pRace,
+    MachPhysLinearWeapon* pPhysWeapon,
+    MachActor* pOwner)
+    : MachLogLinearWeapon(pRace, pPhysWeapon, pOwner)
 {
 
     TEST_INVARIANT;
@@ -28,32 +31,29 @@ MachLogMetalStingWeapon::MachLogMetalStingWeapon( MachLogRace* pRace, MachPhysLi
 MachLogMetalStingWeapon::~MachLogMetalStingWeapon()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogMetalStingWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//virtual
-MachLogLinearProjectile* MachLogMetalStingWeapon::createLinearProjectile
-(
-	const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)	
+// virtual
+MachLogLinearProjectile* MachLogMetalStingWeapon::createLinearProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	return _NEW( 
-		MachLogMetalSting( 
-			&logRace(), 
-			createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ), 
-			&owner(), 
-			physWeapon().weaponData()
-		)
-	);
+    return _NEW(MachLogMetalSting(
+        &logRace(),
+        createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
+        &owner(),
+        physWeapon().weaponData()));
 }
 
-ostream& operator <<( ostream& o, const MachLogMetalStingWeapon& t )
+ostream& operator<<(ostream& o, const MachLogMetalStingWeapon& t)
 {
 
     o << "MachLogMetalStingWeapon " << (void*)&t << " start" << std::endl;
@@ -62,22 +62,22 @@ ostream& operator <<( ostream& o, const MachLogMetalStingWeapon& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogMetalStingWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachLogMetalStingWeapon& weapon)
 {
-	const MachLogLinearWeapon& base1 = weapon;
+    const MachLogLinearWeapon& base1 = weapon;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogMetalStingWeapon& weapon )
+void perRead(PerIstream& istr, MachLogMetalStingWeapon& weapon)
 {
-	MachLogLinearWeapon& base1 = weapon;
+    MachLogLinearWeapon& base1 = weapon;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-MachLogMetalStingWeapon::MachLogMetalStingWeapon( PerConstructor con )
-:	MachLogLinearWeapon( con )
+MachLogMetalStingWeapon::MachLogMetalStingWeapon(PerConstructor con)
+    : MachLogLinearWeapon(con)
 {
 }
 

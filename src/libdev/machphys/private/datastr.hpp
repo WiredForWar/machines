@@ -1,5 +1,5 @@
 /*
- * D A T A S T R . H P P 
+ * D A T A S T R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,7 +16,7 @@
 #include "mathex/mathex.hpp"
 
 class SysPathName;
-template <class T > class ctl_vector;
+template <class T> class ctl_vector;
 
 class MachPhysDataStream
 // Canonical form revoked
@@ -24,19 +24,17 @@ class MachPhysDataStream
 public:
     ~MachPhysDataStream();
 
-	static ctl_vector< MATHEX_SCALAR > data(const SysPathName& fileName);
+    static ctl_vector<MATHEX_SCALAR> data(const SysPathName& fileName);
 
     void CLASS_INVARIANT;
 
 private:
     MachPhysDataStream();
-    friend ostream& operator <<( ostream& o, const MachPhysDataStream& t );
+    friend ostream& operator<<(ostream& o, const MachPhysDataStream& t);
 
-    MachPhysDataStream( const MachPhysDataStream& );
-    MachPhysDataStream& operator =( const MachPhysDataStream& );
-
+    MachPhysDataStream(const MachPhysDataStream&);
+    MachPhysDataStream& operator=(const MachPhysDataStream&);
 };
-
 
 #endif
 

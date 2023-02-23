@@ -1,8 +1,8 @@
 /*
- * O P E V A D E . H P P 
+ * O P E V A D E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
- 
+
 /*
  * Heal Operation
  */
@@ -32,58 +32,58 @@ class MachLogAdministrator;
 class MachActor;
 */
 
-
 // orthodox canonical (revoked)
 
-class MachLogEvadeOperation
-: public MachLogOperation
+class MachLogEvadeOperation : public MachLogOperation
 {
 public:
-	
-	virtual ~MachLogEvadeOperation();
+    ~MachLogEvadeOperation() override;
 
-	enum EvadeOpType { SEEK_GARRISON, SEEK_AGGRESSIVE, SEEK_TURRET, SEEK_POD, SEEK_SAFER_GROUND };
+    enum EvadeOpType
+    {
+        SEEK_GARRISON,
+        SEEK_AGGRESSIVE,
+        SEEK_TURRET,
+        SEEK_POD,
+        SEEK_SAFER_GROUND
+    };
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogEvadeOperation );
-	PER_FRIEND_READ_WRITE( MachLogEvadeOperation );
-	
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogEvadeOperation);
+    PER_FRIEND_READ_WRITE(MachLogEvadeOperation);
+
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
-	virtual void doOutputOperator( ostream& ) const;
-	
-	virtual bool doBeInterrupted();
-	
-	void storeOldFirstOperation( MachLogOperation* );
+    void doOutputOperator(ostream&) const override;
 
+    bool doBeInterrupted() override;
+
+    void storeOldFirstOperation(MachLogOperation*);
 
 private:
+    // Operations deliberately revoked
+    MachLogEvadeOperation(const MachLogEvadeOperation&);
+    MachLogEvadeOperation& operator=(const MachLogEvadeOperation&);
+    bool operator==(const MachLogEvadeOperation&);
 
-	// Operations deliberately revoked
-    MachLogEvadeOperation( const MachLogEvadeOperation& );
-    MachLogEvadeOperation& operator =( const MachLogEvadeOperation& );
-    bool operator ==( const MachLogEvadeOperation& );
-	
-	// private constructor - can only be built from within MachLogStrategy.
-	friend class MachLogStrategy;
+    // private constructor - can only be built from within MachLogStrategy.
+    friend class MachLogStrategy;
 
-	MachLogEvadeOperation( MachLogMachine * pActor );
+    MachLogEvadeOperation(MachLogMachine* pActor);
 
-	// data members
-	MachLogEvadeOperationImpl*		pImpl_;	  
+    // data members
+    MachLogEvadeOperationImpl* pImpl_;
 };
 
-
-PER_DECLARE_PERSISTENT( MachLogEvadeOperation );
-PER_ENUM_PERSISTENT( MachLogEvadeOperation::EvadeOpType );
+PER_DECLARE_PERSISTENT(MachLogEvadeOperation);
+PER_ENUM_PERSISTENT(MachLogEvadeOperation::EvadeOpType);
 
 /* //////////////////////////////////////////////////////////////// */
-	
-#endif	/*	#ifndef 	_MACHLOG_OPEVADE_HPP	*/
+
+#endif /*  #ifndef     _MACHLOG_OPEVADE_HPP    */
 
 /* End Heal.HPP ***************************************************/

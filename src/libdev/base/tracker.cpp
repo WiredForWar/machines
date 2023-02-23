@@ -9,7 +9,7 @@
 #include "base/internal/trackeri.hpp"
 
 DiagPointerTracker::DiagPointerTracker()
-: pImplementation_( _NEW( DiagPointerTrackerImpl ) )
+    : pImplementation_(_NEW(DiagPointerTrackerImpl))
 {
     TEST_INVARIANT;
 }
@@ -18,32 +18,32 @@ DiagPointerTracker::~DiagPointerTracker()
 {
     TEST_INVARIANT;
 
-    _DELETE( pImplementation_ );
+    _DELETE(pImplementation_);
 }
 
-void    DiagPointerTracker::addPointer( void* ptr )
+void DiagPointerTracker::addPointer(void* ptr)
 {
-    pImplementation_->addPointer( ptr );
+    pImplementation_->addPointer(ptr);
 }
 
-bool    DiagPointerTracker::pointerPresent( void* ptr ) const
+bool DiagPointerTracker::pointerPresent(void* ptr) const
 {
-    return pImplementation_->pointerPresent( ptr );
+    return pImplementation_->pointerPresent(ptr);
 }
 
-void    DiagPointerTracker::removePointer( void* ptr )
+void DiagPointerTracker::removePointer(void* ptr)
 {
-    PRE( pointerPresent( ptr ) );
+    PRE(pointerPresent(ptr));
 
-    pImplementation_->removePointer( ptr );
+    pImplementation_->removePointer(ptr);
 }
 
 void DiagPointerTracker::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const DiagPointerTracker& t )
+ostream& operator<<(ostream& o, const DiagPointerTracker& t)
 {
     o << *t.pImplementation_;
 

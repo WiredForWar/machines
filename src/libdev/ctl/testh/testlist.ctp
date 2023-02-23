@@ -13,82 +13,78 @@
 #include "ctl/testh/clargs.hpp"
 
 //  static
-template < class VECTOR, class ITERATOR >
-void    TestList< VECTOR, ITERATOR >::operatorPlusPlusPrefix( void )
+template <class VECTOR, class ITERATOR> void TestList<VECTOR, ITERATOR>::operatorPlusPlusPrefix(void)
 {
-    size_t  index = TestListAssert::randomIndex1();
+    size_t index = TestListAssert::randomIndex1();
 
-    if( index < TestListAssert::list1Size() )
-        TestListAssert::instance().expectedResult( SoakTestAssert::SUCCEED );
+    if (index < TestListAssert::list1Size())
+        TestListAssert::instance().expectedResult(SoakTestAssert::SUCCEED);
     else
-        TestListAssert::instance().expectedResult( SoakTestAssert::FAIL );
+        TestListAssert::instance().expectedResult(SoakTestAssert::FAIL);
 
-    LOG_DATA( TestListAssert::list1Size() );
-    LOG_DATA( index );
+    LOG_DATA(TestListAssert::list1Size());
+    LOG_DATA(index);
 
-    TestIterator    i = getIterator( TestListAssert::list1(), index );
+    TestIterator i = getIterator(TestListAssert::list1(), index);
     ++i;
 }
 
 //  static
-template < class VECTOR, class ITERATOR >
-void    TestList< VECTOR, ITERATOR >::operatorPlusPlusPostfix( void )
+template <class VECTOR, class ITERATOR> void TestList<VECTOR, ITERATOR>::operatorPlusPlusPostfix(void)
 {
-    size_t  index = TestListAssert::randomIndex1();
+    size_t index = TestListAssert::randomIndex1();
 
-    if( index < TestListAssert::list1Size() )
-        TestListAssert::instance().expectedResult( SoakTestAssert::SUCCEED );
+    if (index < TestListAssert::list1Size())
+        TestListAssert::instance().expectedResult(SoakTestAssert::SUCCEED);
     else
-        TestListAssert::instance().expectedResult( SoakTestAssert::FAIL );
+        TestListAssert::instance().expectedResult(SoakTestAssert::FAIL);
 
-    LOG_DATA( TestListAssert::list1Size() );
-    LOG_DATA( index );
+    LOG_DATA(TestListAssert::list1Size());
+    LOG_DATA(index);
 
-    TestIterator    i = getIterator( TestListAssert::list1(), index );
+    TestIterator i = getIterator(TestListAssert::list1(), index);
     i++;
 }
 
 //  static
-template < class VECTOR, class ITERATOR >
-void    TestList< VECTOR, ITERATOR >::operatorMinusMinusPrefix( void )
+template <class VECTOR, class ITERATOR> void TestList<VECTOR, ITERATOR>::operatorMinusMinusPrefix(void)
 {
-    size_t  index = TestListAssert::randomIndex1();
+    size_t index = TestListAssert::randomIndex1();
 
-    if( index > 0 and index <= TestListAssert::list1Size() )
-        TestListAssert::instance().expectedResult( SoakTestAssert::SUCCEED );
+    if (index > 0 and index <= TestListAssert::list1Size())
+        TestListAssert::instance().expectedResult(SoakTestAssert::SUCCEED);
     else
-        TestListAssert::instance().expectedResult( SoakTestAssert::FAIL );
+        TestListAssert::instance().expectedResult(SoakTestAssert::FAIL);
 
-    LOG_DATA( TestListAssert::list1Size() );
-    LOG_DATA( index );
+    LOG_DATA(TestListAssert::list1Size());
+    LOG_DATA(index);
 
-    TestIterator    i = getIterator( TestListAssert::list1(), index );
+    TestIterator i = getIterator(TestListAssert::list1(), index);
     --i;
 }
 
 //  static
-template < class VECTOR, class ITERATOR >
-void    TestList< VECTOR, ITERATOR >::operatorMinusMinusPostfix( void )
+template <class VECTOR, class ITERATOR> void TestList<VECTOR, ITERATOR>::operatorMinusMinusPostfix(void)
 {
-    size_t  index = TestListAssert::randomIndex1();
+    size_t index = TestListAssert::randomIndex1();
 
-    if( index > 0 and index <= TestListAssert::list1Size() )
-        TestListAssert::instance().expectedResult( SoakTestAssert::SUCCEED );
+    if (index > 0 and index <= TestListAssert::list1Size())
+        TestListAssert::instance().expectedResult(SoakTestAssert::SUCCEED);
     else
-        TestListAssert::instance().expectedResult( SoakTestAssert::FAIL );
+        TestListAssert::instance().expectedResult(SoakTestAssert::FAIL);
 
-    LOG_DATA( TestListAssert::list1Size() );
-    LOG_DATA( index );
+    LOG_DATA(TestListAssert::list1Size());
+    LOG_DATA(index);
 
-    TestIterator    i = getIterator( TestListAssert::list1(), index );
+    TestIterator i = getIterator(TestListAssert::list1(), index);
     i--;
 }
 
 // static
-template < class VECTOR, class ITERATOR >
-void TestList< VECTOR, ITERATOR >::comparisonData( Destinations* pDest, size_t* pIndex )
+template <class VECTOR, class ITERATOR>
+void TestList<VECTOR, ITERATOR>::comparisonData(Destinations* pDest, size_t* pIndex)
 {
-    switch( randomInt( 3 ) )
+    switch (randomInt(3))
     {
         case 0:
             *pDest = NOTHING;
@@ -100,26 +96,27 @@ void TestList< VECTOR, ITERATOR >::comparisonData( Destinations* pDest, size_t* 
             break;
     }
 
-    if( *pDest == VECTOR1 )
+    if (*pDest == VECTOR1)
         *pIndex = TestListAssert::randomIndex1();
-    if( *pDest == VECTOR2 )
+    if (*pDest == VECTOR2)
         *pIndex = TestListAssert::randomIndex2();
 }
 
 //  Get a random iterator that excludes end()
 //  static
-template < class VECTOR, class ITERATOR >
-typename TestList< VECTOR, ITERATOR >::TestIterator     TestList< VECTOR, ITERATOR >::getValidRandomIterator( TestListType& list, size_t* pIndex )
+template <class VECTOR, class ITERATOR>
+typename TestList<VECTOR, ITERATOR>::TestIterator
+TestList<VECTOR, ITERATOR>::getValidRandomIterator(TestListType& list, size_t* pIndex)
 {
-    PRE( list.size() != 0 );
+    PRE(list.size() != 0);
 
-    size_t index = randomInt( list.size() );
+    size_t index = randomInt(list.size());
 
     *pIndex = index;
 
-    TestIterator    i = list.begin();
+    TestIterator i = list.begin();
 
-    for( size_t j = 0; j < index; ++j )
+    for (size_t j = 0; j < index; ++j)
         ++i;
 
     return i;
@@ -127,16 +124,17 @@ typename TestList< VECTOR, ITERATOR >::TestIterator     TestList< VECTOR, ITERAT
 
 //  Get a random iterator that includes end()
 //  static
-template < class VECTOR, class ITERATOR >
-typename TestList< VECTOR, ITERATOR >::TestIterator    TestList< VECTOR, ITERATOR >::getValidRandomIteratorInclusive( TestListType& list, size_t* pIndex )
+template <class VECTOR, class ITERATOR>
+typename TestList<VECTOR, ITERATOR>::TestIterator
+TestList<VECTOR, ITERATOR>::getValidRandomIteratorInclusive(TestListType& list, size_t* pIndex)
 {
-    size_t index = randomInt( list.size() + 1 );
+    size_t index = randomInt(list.size() + 1);
 
     *pIndex = index;
 
-    TestIterator    i = list.begin();
+    TestIterator i = list.begin();
 
-    for( size_t j = 0; j < index; ++j )
+    for (size_t j = 0; j < index; ++j)
         ++i;
 
     return i;
@@ -146,31 +144,28 @@ typename TestList< VECTOR, ITERATOR >::TestIterator    TestList< VECTOR, ITERATO
 //  index is greater than the size of the list
 
 //  static
-template < class VECTOR, class ITERATOR >
-typename TestList< VECTOR, ITERATOR >::TestIterator    TestList< VECTOR, ITERATOR >::getIterator( TestListType& list, size_t index )
+template <class VECTOR, class ITERATOR>
+typename TestList<VECTOR, ITERATOR>::TestIterator
+TestList<VECTOR, ITERATOR>::getIterator(TestListType& list, size_t index)
 {
-    TestIterator    i = list.begin();
+    TestIterator i = list.begin();
 
-    for( size_t j = 0; j < index; ++j )
+    for (size_t j = 0; j < index; ++j)
         ++i;
 
     return i;
 }
 
-template < class VECTOR, class ITERATOR >
-TestList< VECTOR, ITERATOR >::~TestList()
+template <class VECTOR, class ITERATOR> TestList<VECTOR, ITERATOR>::~TestList()
 {
     TEST_INVARIANT;
-
 }
 
-template < class VECTOR, class ITERATOR >
-void TestList< VECTOR, ITERATOR >::CLASS_INVARIANT
+template <class VECTOR, class ITERATOR> void TestList<VECTOR, ITERATOR>::CLASS_INVARIANT
 {
 }
 
-template < class VECTOR, class ITERATOR >
-ostream& operator <<( ostream& o, const TestList< VECTOR, ITERATOR >& t )
+template <class VECTOR, class ITERATOR> ostream& operator<<(ostream& o, const TestList<VECTOR, ITERATOR>& t)
 {
 
     o << "TestList " << (void*)&t << " start" << std::endl;

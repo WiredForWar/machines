@@ -3,9 +3,9 @@
 #include "gxin/gxpolyvert3.hpp"
 #include "render/render.hpp"
 
-typedef ctl_map<GXPolyVert3,Ren::VertexIdx,less<GXPolyVert3> > IndexesMap;
+typedef ctl_map<GXPolyVert3, Ren::VertexIdx, less<GXPolyVert3>> IndexesMap;
 
 dummyFunction_gxindexmap()
 {
-  static IndexesMap dummygxindexesmap;
+    static IndexesMap dummygxindexesmap;
 }

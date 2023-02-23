@@ -1,5 +1,5 @@
 /*
- * S O U N D V O L . H P P 
+ * S O U N D V O L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,21 +21,24 @@ class MachGuiSoundVolumeSlideBar : public MachGuiSlideBar
 // Canonical form revoked
 {
 public:
-    MachGuiSoundVolumeSlideBar( MachGuiStartupScreens* pStartupScreens, GuiDisplayable* pParent, Gui::Coord topLeft, size_t width );
-    ~MachGuiSoundVolumeSlideBar();
+    MachGuiSoundVolumeSlideBar(
+        MachGuiStartupScreens* pStartupScreens,
+        GuiDisplayable* pParent,
+        Gui::Coord topLeft,
+        size_t width);
+    ~MachGuiSoundVolumeSlideBar() override;
 
-	// Sets new sound FX volume. Called when slide button is moved.
-	virtual void valueChanged( float value );
+    // Sets new sound FX volume. Called when slide button is moved.
+    void valueChanged(float value) override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiSoundVolumeSlideBar& t );
+    friend ostream& operator<<(ostream& o, const MachGuiSoundVolumeSlideBar& t);
 
-    MachGuiSoundVolumeSlideBar( const MachGuiSoundVolumeSlideBar& );
-    MachGuiSoundVolumeSlideBar& operator =( const MachGuiSoundVolumeSlideBar& );
+    MachGuiSoundVolumeSlideBar(const MachGuiSoundVolumeSlideBar&);
+    MachGuiSoundVolumeSlideBar& operator=(const MachGuiSoundVolumeSlideBar&);
 };
-
 
 #endif
 

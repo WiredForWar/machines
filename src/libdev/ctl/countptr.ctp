@@ -9,214 +9,197 @@
 
 #include "ctl/private/ptrvalid.hpp"
 
-template < class T >
-CtlCountedPtr< T >::CtlCountedPtr( T * pT )
-: pCount_( pT ? _NEW( CtlCountHolder< T > ) : NULL )
+template <class T>
+CtlCountedPtr<T>::CtlCountedPtr(T* pT)
+    : pCount_(pT ? _NEW(CtlCountHolder<T>) : nullptr)
 {
-    PRE_INFO( _STATIC_CAST( void*, pT ) );
-    ASSERT( implies( DiagInternal::checkCountedPointers_, ctlCountedPtrPointerValid( pT ) ),
-        "Raw pointer has already been assigned to a counted pointer" );
+    PRE_INFO(_STATIC_CAST(void*, pT));
+    ASSERT(
+        implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerValid(pT)),
+        "Raw pointer has already been assigned to a counted pointer");
 
-    if( pCount_ )
-    	pCount_->pT_ = pT;
+    if (pCount_)
+        pCount_->pT_ = pT;
 
-	init();
+    init();
 }
 
-template < class T >
-CtlCountedPtr< T >::CtlCountedPtr( const CtlCountedPtr& rhs )
-: pCount_( rhs.pCount_ )
+template <class T>
+CtlCountedPtr<T>::CtlCountedPtr(const CtlCountedPtr& rhs)
+    : pCount_(rhs.pCount_)
 {
-	init();
+    init();
 }
 
-template < class T >
-CtlCountedPtr< T >::~CtlCountedPtr()
+template <class T> CtlCountedPtr<T>::~CtlCountedPtr()
 {
-	if( pCount_ != NULL )
-		pCount_->removeReference();
+    if (pCount_ != nullptr)
+        pCount_->removeReference();
 }
 
-template < class T >
-CtlCountedPtr< T >& 
-CtlCountedPtr< T >::operator =( const CtlCountedPtr& rhs )
+template <class T> CtlCountedPtr<T>& CtlCountedPtr<T>::operator=(const CtlCountedPtr& rhs)
 {
-	if( pCount_ != rhs.pCount_ )
-	{
-		if( pCount_ != NULL )
-			pCount_->removeReference();
+    if (pCount_ != rhs.pCount_)
+    {
+        if (pCount_ != nullptr)
+            pCount_->removeReference();
 
-		pCount_ = rhs.pCount_;
-		init();
-	}
+        pCount_ = rhs.pCount_;
+        init();
+    }
 
-	return *this;
+    return *this;
 }
 
-template < class T >
-T * CtlCountedPtr< T >::operator ->() const
+template <class T> T* CtlCountedPtr<T>::operator->() const
 {
-	PRE( pCount_ != NULL );
-	return pCount_->pT_;
+    PRE(pCount_ != nullptr);
+    return pCount_->pT_;
 }
 
-template < class T >
-T&  CtlCountedPtr< T >::operator  *() const
+template <class T> T& CtlCountedPtr<T>::operator*() const
 {
-	PRE( pCount_ != NULL );
-	PRE( pCount_->pT_ != NULL );
+    PRE(pCount_ != nullptr);
+    PRE(pCount_->pT_ != nullptr);
 
-	return *(pCount_->pT_);
+    return *(pCount_->pT_);
 }
 
-template < class T >
-void CtlCountedPtr< T >::init()
+template <class T> void CtlCountedPtr<T>::init()
 {
-	if( pCount_ != NULL )
-	{
-		pCount_->addReference();
-	}
+    if (pCount_ != nullptr)
+    {
+        pCount_->addReference();
+    }
 }
 
-template < class T >
-CtlCountHolder< T >::CtlCountHolder()
+template <class T> CtlCountHolder<T>::CtlCountHolder()
 {
 }
 
-template < class T >
-CtlCountHolder< T >::~CtlCountHolder()
+template <class T> CtlCountHolder<T>::~CtlCountHolder()
 {
-    PRE_INFO( _STATIC_CAST( void*, pT_ ) );
+    PRE_INFO(_STATIC_CAST(void*, pT_));
 
-    ASSERT( implies( DiagInternal::checkCountedPointers_, ctlCountedPtrPointerDestructionValid( pT_ ) ),
-        "Raw pointer has already been deleted by another counted pointer" );
+    ASSERT(
+        implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerDestructionValid(pT_)),
+        "Raw pointer has already been deleted by another counted pointer");
 
-	_DELETE( pT_ ); 
+    _DELETE(pT_);
 }
 
-template < class T >
-bool CtlCountedPtr< T >::isShared() const
+template <class T> bool CtlCountedPtr<T>::isShared() const
 {
-	return (pCount_ != NULL ? pCount_->isShared() : false);
+    return (pCount_ != NULL ? pCount_->isShared() : false);
 }
 
-template < class T >
-bool CtlCountedPtr< T >::isDefined() const
+template <class T> bool CtlCountedPtr<T>::isDefined() const
 {
-	return (pCount_ != NULL  and  pCount_->pT_ != NULL);
+    return (pCount_ != nullptr and pCount_->pT_ != nullptr);
 }
 
-template < class T >
-void CtlCountedPtr< T >::clear()
+template <class T> void CtlCountedPtr<T>::clear()
 {
-	PRE( pCount_ != NULL );
+    PRE(pCount_ != nullptr);
 
-	pCount_->removeReference();
-	pCount_ = NULL;
+    pCount_->removeReference();
+    pCount_ = nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-template < class T >
-CtlConstCountedPtr< T >::CtlConstCountedPtr( T * pT )
-: pCount_( pT ? _NEW( CtlCountHolder< T > ) : NULL )
+template <class T>
+CtlConstCountedPtr<T>::CtlConstCountedPtr(T* pT)
+    : pCount_(pT ? _NEW(CtlCountHolder<T>) : nullptr)
 {
-    PRE_INFO( _STATIC_CAST( void*, pT ) );
-    ASSERT( implies( DiagInternal::checkCountedPointers_, ctlCountedPtrPointerValid( pT ) ),
-        "Raw pointer has already been assigned to a counted pointer" );
+    PRE_INFO(_STATIC_CAST(void*, pT));
+    ASSERT(
+        implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerValid(pT)),
+        "Raw pointer has already been assigned to a counted pointer");
 
-    if( pCount_ )
-    	pCount_->pT_ = pT;
-	init();
+    if (pCount_)
+        pCount_->pT_ = pT;
+    init();
 }
 
-template < class T >
-CtlConstCountedPtr< T >::CtlConstCountedPtr( const CtlConstCountedPtr& rhs )
-: pCount_( rhs.pCount_ )
+template <class T>
+CtlConstCountedPtr<T>::CtlConstCountedPtr(const CtlConstCountedPtr& rhs)
+    : pCount_(rhs.pCount_)
 {
-	init();
+    init();
 }
 
-template < class T >
-CtlConstCountedPtr< T >::CtlConstCountedPtr( const CtlCountedPtr<T>& rhs )
-: pCount_( rhs.pCount_ )
+template <class T>
+CtlConstCountedPtr<T>::CtlConstCountedPtr(const CtlCountedPtr<T>& rhs)
+    : pCount_(rhs.pCount_)
 {
-	init();
+    init();
 }
 
-template < class T >
-CtlConstCountedPtr< T >::~CtlConstCountedPtr()
+template <class T> CtlConstCountedPtr<T>::~CtlConstCountedPtr()
 {
 
-	if( pCount_ != NULL )
-		pCount_->removeReference();
+    if (pCount_ != nullptr)
+        pCount_->removeReference();
 }
 
-template < class T >
-CtlConstCountedPtr< T >& 
-CtlConstCountedPtr< T >::operator =( const CtlConstCountedPtr& rhs )
+template <class T> CtlConstCountedPtr<T>& CtlConstCountedPtr<T>::operator=(const CtlConstCountedPtr& rhs)
 {
-	if( pCount_ != rhs.pCount_ )
-	{
-		if( pCount_ != NULL )
-			pCount_->removeReference();
+    if (pCount_ != rhs.pCount_)
+    {
+        if (pCount_ != nullptr)
+            pCount_->removeReference();
 
-		pCount_ = rhs.pCount_;
-		init();
-	}
+        pCount_ = rhs.pCount_;
+        init();
+    }
 
-	return *this;
+    return *this;
 }
 
-template < class T >
-const T* CtlConstCountedPtr< T >::operator ->() const
+template <class T> const T* CtlConstCountedPtr<T>::operator->() const
 {
-	PRE( pCount_ != NULL );
-	return pCount_->pT_;
+    PRE(pCount_ != nullptr);
+    return pCount_->pT_;
 }
 
-template < class T >
-const T&  CtlConstCountedPtr< T >::operator  *() const
+template <class T> const T& CtlConstCountedPtr<T>::operator*() const
 {
-	PRE( pCount_ != NULL );
-	PRE( pCount_->pT_ != NULL );
-	return *(pCount_->pT_);
+    PRE(pCount_ != nullptr);
+    PRE(pCount_->pT_ != nullptr);
+    return *(pCount_->pT_);
 }
 
-template < class T >
-void CtlConstCountedPtr< T >::init()
+template <class T> void CtlConstCountedPtr<T>::init()
 {
-	if( pCount_ != NULL )
-	{
-		// if( not pCount_->isShareable() )
-		// {
-		//	pCount_ = new CountHolder;
-		//	pCount_->pT_ = new T( *pCount_->pT_ );
-		// }
+    if (pCount_ != nullptr)
+    {
+        // if( not pCount_->isShareable() )
+        // {
+        //  pCount_ = new CountHolder;
+        //  pCount_->pT_ = new T( *pCount_->pT_ );
+        // }
 
-		pCount_->addReference();
-	}
+        pCount_->addReference();
+    }
 }
 
-template < class T >
-bool CtlConstCountedPtr< T >::isShared() const
+template <class T> bool CtlConstCountedPtr<T>::isShared() const
 {
-	return (pCount_ != NULL ? pCount_->isShared() : false);
+    return (pCount_ != NULL ? pCount_->isShared() : false);
 }
 
-template < class T >
-bool CtlConstCountedPtr< T >::isDefined() const
+template <class T> bool CtlConstCountedPtr<T>::isDefined() const
 {
-	return (pCount_ != NULL  and  pCount_->pT_ != NULL);
+    return (pCount_ != nullptr and pCount_->pT_ != nullptr);
 }
 
-template < class T >
-void CtlConstCountedPtr< T >::clear()
+template <class T> void CtlConstCountedPtr<T>::clear()
 {
-	PRE( pCount_ != NULL )
+    PRE(pCount_ != NULL)
 
-	pCount_->removeReference();
-	pCount_ = NULL;
+    pCount_->removeReference();
+    pCount_ = NULL;
 }
 
 /*********************************************************************
@@ -224,39 +207,39 @@ void CtlConstCountedPtr< T >::clear()
 template < class T >
 T&  CtlConstCountedPtr< T >::dereference( const char *file, const char *line ) const
 {
-	PRE( pCount_ != NULL );
-	if( pCount_->pT_ == NULL )
-	{
-		cout << "trying to dereference null smart pointer" << endl;
-		cout << file << " " << line << endl;
-		assert( pCount_->pT_ != NULL, logic_error() );
-	}
+    PRE( pCount_ != NULL );
+    if( pCount_->pT_ == NULL )
+    {
+        cout << "trying to dereference null smart pointer" << endl;
+        cout << file << " " << line << endl;
+        assert( pCount_->pT_ != NULL, logic_error() );
+    }
 
-	return *(pCount_->pT_);
+    return *(pCount_->pT_);
 }
 
 template < class T >
-T * 
-CtlConstCountedPtr< T >::get() const 
-{ 
-	PRE( pCount_ != NULL );
-	return pCount_->pT_; 
+T *
+CtlConstCountedPtr< T >::get() const
+{
+    PRE( pCount_ != NULL );
+    return pCount_->pT_;
 }
 
 template < class T >
 void CtlConstCountedPtr< T >::destruct()
 {
-	PRE( pCount_ != NULL );
-	PRE( not pCount_->isShared() );
-	pCount_->removeReference();
-	pCount_ = NULL;
+    PRE( pCount_ != NULL );
+    PRE( not pCount_->isShared() );
+    pCount_->removeReference();
+    pCount_ = NULL;
 }
 
 template < class T >
 bool CtlConstCountedPtr< T >::isShared() const
 {
-	PRE( pCount_ != NULL );
-	return pCount_->isShared();
+    PRE( pCount_ != NULL );
+    return pCount_->isShared();
 }
 
 

@@ -23,64 +23,65 @@ class MachPhysNukeWave : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysNukeWave( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysNukeWave(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar  - ensures the bomb meshes and textures are loaded
+    // Return an exemplar  - ensures the bomb meshes and textures are loaded
     static const MachPhysNukeWave& exemplar();
 
-	//start the shock wave as planned
-	void startNukeWave( const PhysAbsoluteTime& startTime,
-                        const PhysRelativeTime& duration,
-                        const MATHEX_SCALAR& fromRadius,
-                        const MATHEX_SCALAR& toRadius,
-                        const MATHEX_SCALAR& zScale);
-    //dtor
-    ~MachPhysNukeWave();
+    // start the shock wave as planned
+    void startNukeWave(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& fromRadius,
+        const MATHEX_SCALAR& toRadius,
+        const MATHEX_SCALAR& zScale);
+    // dtor
+    ~MachPhysNukeWave() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	//shockwave reaches distance at *pTime. return true if distance <= shockwave radius
-	static bool reachDistance(const PhysRelativeTime& duration,
-                        	  const MATHEX_SCALAR& fromRadius,
-                        	  const MATHEX_SCALAR& toRadius,
-                        	  const  MATHEX_SCALAR& distance,
-                        	  PhysRelativeTime* pTime);
+    // shockwave reaches distance at *pTime. return true if distance <= shockwave radius
+    static bool reachDistance(
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& fromRadius,
+        const MATHEX_SCALAR& toRadius,
+        const MATHEX_SCALAR& distance,
+        PhysRelativeTime* pTime);
 
-	static const double& waveDefaultSize();
+    static const double& waveDefaultSize();
 
-	typedef  MachPhysFlame::Materials Materials;
-    static void addMaterial( MachPhysNukeWave::Materials*, const RenTexture&);
+    using Materials = MachPhysFlame::Materials;
+    static void addMaterial(MachPhysNukeWave::Materials*, const RenTexture&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysNukeWave& t );
+    friend ostream& operator<<(ostream& o, const MachPhysNukeWave& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysNukeWave );
+    PER_MEMBER_PERSISTENT(MachPhysNukeWave);
 
 private:
-    //Deliberately revoked
-    MachPhysNukeWave( const MachPhysNukeWave& );
-    MachPhysNukeWave& operator =( const MachPhysNukeWave& );
-    bool operator ==( const MachPhysNukeWave& );
+    // Deliberately revoked
+    MachPhysNukeWave(const MachPhysNukeWave&);
+    MachPhysNukeWave& operator=(const MachPhysNukeWave&);
+    bool operator==(const MachPhysNukeWave&);
 
-	friend class MachPhysOtherPersistence;
-	friend class MachPhysPreload;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    friend class MachPhysPreload;
+    // One-time constructor used to create the exemplar
     MachPhysNukeWave();
 
-	void setMaterialFogMultipliers();
+    void setMaterialFogMultipliers();
 
-	//typedef  MachPhysFlame::Materials Materials;
-	typedef  MachPhysFlame::MaterialsPtr MaterialsPtr;
+    // typedef  MachPhysFlame::Materials Materials;
+    using MaterialsPtr = MachPhysFlame::MaterialsPtr;
 
-    static  const MaterialsPtr& materialsPtr();
+    static const MaterialsPtr& materialsPtr();
 };
 
-PER_READ_WRITE( MachPhysNukeWave );
-PER_DECLARE_PERSISTENT( MachPhysNukeWave );
+PER_READ_WRITE(MachPhysNukeWave);
+PER_DECLARE_PERSISTENT(MachPhysNukeWave);
 
 #endif
 

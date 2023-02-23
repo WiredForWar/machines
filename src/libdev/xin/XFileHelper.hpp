@@ -40,7 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-
 /** @file Defines the helper data structures for importing XFiles */
 #ifndef AI_XFILEHELPER_H_INC
 #define AI_XFILEHELPER_H_INC
@@ -53,29 +52,34 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace XFile {
 
 /** Helper structure representing a XFile mesh face */
-struct Face {
+struct Face
+{
     std::vector<unsigned int> mIndices;
 };
 
 /** Helper structure representing a texture filename inside a material and its potential source */
-struct TexEntry {
+struct TexEntry
+{
     std::string mName;
     bool mIsNormalMap; // true if the texname was specified in a NormalmapFilename tag
 
     TexEntry()
-    : mName()
-    , mIsNormalMap(false) {
+        : mName()
+        , mIsNormalMap(false)
+    {
         // empty
     }
     TexEntry(const std::string& pName, bool pIsNormalMap = false)
-    : mName(pName)
-    , mIsNormalMap(pIsNormalMap) {
+        : mName(pName)
+        , mIsNormalMap(pIsNormalMap)
+    {
         // empty
     }
 };
 
 /** Helper structure representing a XFile material */
-struct Material {
+struct Material
+{
     std::string mName;
     bool mIsReference; // if true, mName holds a name by which the actual material can be found in the material list
     XFile::Color4D mDiffuse;
@@ -86,15 +90,17 @@ struct Material {
     size_t sceneIndex; ///< the index under which it was stored in the scene's material list
 
     Material()
-    : mIsReference(false)
-    , mSpecularExponent()
-    , sceneIndex(SIZE_MAX) {
+        : mIsReference(false)
+        , mSpecularExponent()
+        , sceneIndex(SIZE_MAX)
+    {
         // empty
     }
 };
 
 /** Helper structure to represent a bone weight */
-struct BoneWeight {
+struct BoneWeight
+{
     unsigned int mVertex;
     float mWeight;
 };
@@ -108,7 +114,8 @@ struct Bone
 };
 
 /** Helper structure to represent an XFile mesh */
-struct Mesh {
+struct Mesh
+{
     std::string mName;
     std::vector<XFile::Vector3D> mPositions;
     std::vector<Face> mPosFaces;
@@ -124,25 +131,27 @@ struct Mesh {
 
     std::vector<Bone> mBones;
 
-    explicit Mesh(const std::string &pName = "")
-    : mName( pName )
-    , mPositions()
-    , mPosFaces()
-    , mNormals()
-    , mNormFaces()
-    , mNumTextures(0)
-    , mTexCoords{}
-    , mNumColorSets(0)
-    , mColors{}
-    , mFaceMaterials()
-    , mMaterials()
-    , mBones() {
+    explicit Mesh(const std::string& pName = "")
+        : mName(pName)
+        , mPositions()
+        , mPosFaces()
+        , mNormals()
+        , mNormFaces()
+        , mNumTextures(0)
+        , mTexCoords {}
+        , mNumColorSets(0)
+        , mColors {}
+        , mFaceMaterials()
+        , mMaterials()
+        , mBones()
+    {
         // empty
     }
 };
 
 /** Helper structure to represent a XFile frame */
-struct Node {
+struct Node
+{
     std::string mName;
     XFile::Matrix4x4 mTrafoMatrix;
     Node* mParent;
@@ -150,41 +159,48 @@ struct Node {
     std::vector<Mesh*> mMeshes;
 
     Node()
-    : mName()
-    , mTrafoMatrix()
-    , mParent(NULL)
-    , mChildren()
-    , mMeshes() {
+        : mName()
+        , mTrafoMatrix()
+        , mParent(nullptr)
+        , mChildren()
+        , mMeshes()
+    {
         // empty
     }
-    explicit Node( Node* pParent)
-    : mName()
-    , mTrafoMatrix()
-    , mParent(pParent)
-    , mChildren()
-    , mMeshes() {
+    explicit Node(Node* pParent)
+        : mName()
+        , mTrafoMatrix()
+        , mParent(pParent)
+        , mChildren()
+        , mMeshes()
+    {
         // empty
     }
 
-    ~Node() {
-        for (unsigned int a = 0; a < mChildren.size(); ++a ) {
+    ~Node()
+    {
+        for (unsigned int a = 0; a < mChildren.size(); ++a)
+        {
             delete mChildren[a];
         }
-        for (unsigned int a = 0; a < mMeshes.size(); ++a) {
+        for (unsigned int a = 0; a < mMeshes.size(); ++a)
+        {
             delete mMeshes[a];
         }
     }
 };
 
-struct MatrixKey {
+struct MatrixKey
+{
     double mTime;
     XFile::Matrix4x4 mMatrix;
 };
 
 /** Helper structure representing a single animated bone in a XFile */
-struct AnimBone {
+struct AnimBone
+{
     std::string mBoneName;
-    std::vector<XFile::VectorKey> mPosKeys;  // either three separate key sequences for position, rotation, scaling
+    std::vector<XFile::VectorKey> mPosKeys; // either three separate key sequences for position, rotation, scaling
     std::vector<XFile::QuatKey> mRotKeys;
     std::vector<XFile::VectorKey> mScaleKeys;
     std::vector<XFile::MatrixKey> mTrafoKeys; // or a combined key sequence of transformation matrices.
@@ -198,7 +214,7 @@ struct Animation
 
     ~Animation()
     {
-        for( unsigned int a = 0; a < mAnims.size(); a++)
+        for (unsigned int a = 0; a < mAnims.size(); a++)
             delete mAnims[a];
     }
 };
@@ -215,22 +231,27 @@ struct Scene
     unsigned int mAnimTicksPerSecond;
 
     Scene()
-    : mRootNode(NULL)
-    , mGlobalMeshes()
-    , mGlobalMaterials()
-    , mAnimTicksPerSecond(0) {
+        : mRootNode(nullptr)
+        , mGlobalMeshes()
+        , mGlobalMaterials()
+        , mAnimTicksPerSecond(0)
+    {
         // empty
     }
-    ~Scene() {
+    ~Scene()
+    {
         delete mRootNode;
-        mRootNode = NULL;
-        for (unsigned int a = 0; a < mGlobalMeshes.size(); ++a ) {
+        mRootNode = nullptr;
+        for (unsigned int a = 0; a < mGlobalMeshes.size(); ++a)
+        {
             delete mGlobalMeshes[a];
         }
-        for (unsigned int a = 0; a < mGlobalMaterials.size(); ++a ) {
+        for (unsigned int a = 0; a < mGlobalMaterials.size(); ++a)
+        {
             delete mGlobalMaterials[a];
         }
-        for (unsigned int a = 0; a < mAnims.size(); ++a ) {
+        for (unsigned int a = 0; a < mAnims.size(); ++a)
+        {
             delete mAnims[a];
         }
     }

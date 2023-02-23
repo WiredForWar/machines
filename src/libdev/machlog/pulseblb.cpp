@@ -1,5 +1,5 @@
 /*
- * P U L S E B L B . C P P 
+ * P U L S E B L B . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -13,31 +13,30 @@
 #include "machlog/pulseblb.hpp"
 #include "machlog/plandoms.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogPulseBlob );
+PER_DEFINE_PERSISTENT(MachLogPulseBlob);
 
 MachLogPulseBlob::MachLogPulseBlob(
     MachLogRace* pRace,
-	MachPhysLinearProjectile* pPhysProjectile,
+    MachPhysLinearProjectile* pPhysProjectile,
     MachActor* pOwner,
-    const MachPhysWeaponData& weaponData )
-:	MachLogLinearProjectile( pRace, pPhysProjectile, pOwner, weaponData )
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData)
 {
-	HAL_STREAM("MLPulseBlob::CTOR\n" );
+    HAL_STREAM("MLPulseBlob::CTOR\n");
     TEST_INVARIANT;
 }
 
 MachLogPulseBlob::~MachLogPulseBlob()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogPulseBlob::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogPulseBlob& t )
+ostream& operator<<(ostream& o, const MachLogPulseBlob& t)
 {
 
     o << "MachLogPulseBlob " << (void*)&t << " start" << std::endl;
@@ -48,27 +47,25 @@ ostream& operator <<( ostream& o, const MachLogPulseBlob& t )
 
 void MachLogPulseBlob::doBeDestroyed()
 {
-	checkForDamage( 3.0, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::PULSE_RIFLE );
+    checkForDamage(3.0, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::PULSE_RIFLE);
 }
 
-void perWrite( PerOstream& ostr, const MachLogPulseBlob& actor )
+void perWrite(PerOstream& ostr, const MachLogPulseBlob& actor)
 {
-	const MachLogLinearProjectile& base1 = actor;
+    const MachLogLinearProjectile& base1 = actor;
 
-	ostr << base1;
-
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogPulseBlob& actor )
+void perRead(PerIstream& istr, MachLogPulseBlob& actor)
 {
-	MachLogLinearProjectile& base1 = actor;
+    MachLogLinearProjectile& base1 = actor;
 
-	istr >> base1;
-
+    istr >> base1;
 }
 
-MachLogPulseBlob::MachLogPulseBlob( PerConstructor con )
-:	MachLogLinearProjectile( con )
+MachLogPulseBlob::MachLogPulseBlob(PerConstructor con)
+    : MachLogLinearProjectile(con)
 {
 }
 

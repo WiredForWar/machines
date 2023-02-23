@@ -1,5 +1,5 @@
 /*
- * P R O T G E N . H P P 
+ * P R O T G E N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -24,28 +24,28 @@
 class MachPhysFacePlate : public W4dGeneric
 {
 public:
-    MachPhysFacePlate( W4dEntity* pParent, size_t level );
-    ~MachPhysFacePlate();
+    MachPhysFacePlate(W4dEntity* pParent, size_t level);
+    ~MachPhysFacePlate() override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysFacePlate );
-    
+    PER_MEMBER_PERSISTENT(MachPhysFacePlate);
+
 private:
     // Operation deliberately revoked
-    MachPhysFacePlate( const MachPhysFacePlate& );
+    MachPhysFacePlate(const MachPhysFacePlate&);
 
     // Operation deliberately revoked
-    MachPhysFacePlate& operator =( const MachPhysFacePlate& );
+    MachPhysFacePlate& operator=(const MachPhysFacePlate&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysFacePlate& );
+    bool operator==(const MachPhysFacePlate&);
 
-    SysPathName compositeFileName( size_t brainLevel ) const;
+    SysPathName compositeFileName(size_t brainLevel) const;
 };
 
-PER_READ_WRITE( MachPhysFacePlate );
-PER_DECLARE_PERSISTENT( MachPhysFacePlate );
+PER_READ_WRITE(MachPhysFacePlate);
+PER_DECLARE_PERSISTENT(MachPhysFacePlate);
 
 #endif
 

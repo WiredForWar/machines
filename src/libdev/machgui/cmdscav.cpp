@@ -25,31 +25,31 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 
-MachGuiScavengeCommand::MachGuiScavengeCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( false ),
-	action_( SCAVENGE )
+MachGuiScavengeCommand::MachGuiScavengeCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(false)
+    , action_(SCAVENGE)
 {
     TEST_INVARIANT;
 }
 
 MachGuiScavengeCommand::~MachGuiScavengeCommand()
 {
-	while( not suppliers_.empty() )
-	{
-		suppliers_.back()->detach( this );
-		suppliers_.pop_back();
-	}
+    while (not suppliers_.empty())
+    {
+        suppliers_.back()->detach(this);
+        suppliers_.pop_back();
+    }
 
     TEST_INVARIANT;
 }
 
 void MachGuiScavengeCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiScavengeCommand& t )
+ostream& operator<<(ostream& o, const MachGuiScavengeCommand& t)
 {
 
     o << "MachGuiScavengeCommand " << (void*)&t << " start" << std::endl;
@@ -58,72 +58,67 @@ ostream& operator <<( ostream& o, const MachGuiScavengeCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiScavengeCommand::pickOnTerrain( const MexPoint3d& , bool, bool, bool )
+// virtual
+void MachGuiScavengeCommand::pickOnTerrain(const MexPoint3d&, bool, bool, bool)
 {
-
 }
 
-//virtual
-void MachGuiScavengeCommand::pickOnActor
-(
-    MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiScavengeCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
-    //Check for a legal actor
-    if( cursorOnActor( pActor, ctrlPressed, shiftPressed, altPressed )
-        != MachGui::INVALID_CURSOR )
+    // Check for a legal actor
+    if (cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed) != MachGui::INVALID_CURSOR)
     {
-		ASSERT( pActor->objectIsDebris(), "Attempting to do scavenge on a non-debris actor." );
+        ASSERT(pActor->objectIsDebris(), "Attempting to do scavenge on a non-debris actor.");
 
-		MachLogDebris* pCandidateDebris = &pActor->asDebris();
+        MachLogDebris* pCandidateDebris = &pActor->asDebris();
 
-		if( not debrisIsDuplicate( pCandidateDebris ) )
-		{
-			// Add to list of constructions to deconstruct
-        	suppliers_.push_back( pCandidateDebris );
+        if (not debrisIsDuplicate(pCandidateDebris))
+        {
+            // Add to list of constructions to deconstruct
+            suppliers_.push_back(pCandidateDebris);
 
-        	pCandidateDebris->attach( this );
-		}
+            pCandidateDebris->attach(this);
+        }
 
-		if( not shiftPressed )
-		{
-	        hadFinalPick_ = true;
-		}
-		else
-		{
-			// Waypoint click (i.e. not final click)
-			MachGuiSoundManager::instance().playSound( "gui/sounds/waypoint.wav" );
-		}
+        if (not shiftPressed)
+        {
+            hadFinalPick_ = true;
+        }
+        else
+        {
+            // Waypoint click (i.e. not final click)
+            MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
+        }
     }
 }
 
-//virtual
-bool MachGuiScavengeCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiScavengeCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Administrators and aggressors can Scavenge
+    // Administrators and aggressors can Scavenge
     MachLog::ObjectType objectType = actor.objectType();
     return objectType == MachLog::RESOURCE_CARRIER and actor.asResourceCarrier().isScavenger();
 }
 
-//virtual
+// virtual
 bool MachGuiScavengeCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiScavengeCommand::doApply( MachActor* pActor, string* pReason )
+// virtual
+bool MachGuiScavengeCommand::doApply(MachActor* pActor, string* pReason)
 {
-    PRE( pActor->objectIsMachine() );
-	PRE( pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isScavenger() );
+    PRE(pActor->objectIsMachine());
+    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isScavenger());
 
-    //Take appropriate action
+    // Take appropriate action
     bool canDo = false;
-    switch( action_ )
+    switch (action_)
     {
         case SCAVENGE:
-            canDo = applyScavengeObject( pActor, pReason );
+            canDo = applyScavengeObject(pActor, pReason);
             break;
 
         default:
@@ -133,48 +128,48 @@ bool MachGuiScavengeCommand::doApply( MachActor* pActor, string* pReason )
     return canDo;
 }
 
-bool MachGuiScavengeCommand::applyScavengeObject( MachActor* pActor, string* )
+bool MachGuiScavengeCommand::applyScavengeObject(MachActor* pActor, string*)
 {
-    //Construct appropriate type of operation
+    // Construct appropriate type of operation
     MachLogOperation* pOp;
 
-	ASSERT_INFO( pActor->objectType() );
-	ASSERT( pActor->objectType() == MachLog::RESOURCE_CARRIER, "Unexpected actor type" );
-	ASSERT( pActor->asResourceCarrier().isScavenger(), "Resource carrier is not a scavenger!" );
+    ASSERT_INFO(pActor->objectType());
+    ASSERT(pActor->objectType() == MachLog::RESOURCE_CARRIER, "Unexpected actor type");
+    ASSERT(pActor->asResourceCarrier().isScavenger(), "Resource carrier is not a scavenger!");
 
-	pOp = _NEW( MachLogScavengeOperation( &pActor->asResourceCarrier(), suppliers_ ) );
+    pOp = _NEW(MachLogScavengeOperation(&pActor->asResourceCarrier(), suppliers_));
 
-    //Give it to the actor
-    pActor->newOperation( pOp );
+    // Give it to the actor
+    pActor->newOperation(pOp);
 
-	if( not hasPlayedVoiceMail() )
-	{
-		MachLogVoiceMailManager::instance().postNewMail( VID_RESOURCE_CARRIER_SCAVENGING, pActor->id(), pActor->race() );
-		hasPlayedVoiceMail( true );
-	}
+    if (not hasPlayedVoiceMail())
+    {
+        MachLogVoiceMailManager::instance().postNewMail(VID_RESOURCE_CARRIER_SCAVENGING, pActor->id(), pActor->race());
+        hasPlayedVoiceMail(true);
+    }
 
     return true;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnTerrain( const MexPoint3d&, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnTerrain(const MexPoint3d&, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-	bool myRace = ( MachLogRaces::instance().pcController().race() == pActor->race() );
+    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
 
-    //Check for a building or machine
-    if( pActor->objectType() == MachLog::DEBRIS )
+    // Check for a building or machine
+    if (pActor->objectType() == MachLog::DEBRIS)
     {
-        //Set the Scavenge object action
+        // Set the Scavenge object action
         action_ = SCAVENGE;
         cursor = MachGui::SCAVENGE_CURSOR;
     }
@@ -182,92 +177,90 @@ MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnActor( MachActor* pActor, 
     return cursor;
 }
 
-//virtual
-void MachGuiScavengeCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiScavengeCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiScavengeCommand::clone() const
 {
-    return _NEW( MachGuiScavengeCommand( &inGameScreen() ) );
+    return _NEW(MachGuiScavengeCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiScavengeCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/scavenge.bmp", "gui/commands/scavenge.bmp" );
+    static std::pair<string, string> names("gui/commands/scavenge.bmp", "gui/commands/scavenge.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiScavengeCommand::cursorPromptStringId() const
 {
     return IDS_SCAVENGE_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiScavengeCommand::commandPromptStringid() const
 {
     return IDS_SCAVENGE_START;
 }
 
-//virtual
-bool MachGuiScavengeCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiScavengeCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_Y and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_Y and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-bool MachGuiScavengeCommand::debrisIsDuplicate( const MachLogDebris* pCandidateDebris ) const
+bool MachGuiScavengeCommand::debrisIsDuplicate(const MachLogDebris* pCandidateDebris) const
 {
-	bool result = false;
+    bool result = false;
 
-	ctl_pvector< MachLogDebris >::const_iterator i = find( suppliers_.begin(), suppliers_.end(), pCandidateDebris );
+    ctl_pvector<MachLogDebris>::const_iterator i = find(suppliers_.begin(), suppliers_.end(), pCandidateDebris);
 
-	if( i != suppliers_.end() )
-		result = true;
+    if (i != suppliers_.end())
+        result = true;
 
-	return result;
+    return result;
 }
 
-//virtual
-bool MachGuiScavengeCommand::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/ )
+// virtual
+bool MachGuiScavengeCommand::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/)
 {
-	bool stayAttached = true;
+    bool stayAttached = true;
 
-	switch( event )
-	{
-	case W4dSubject::DELETED:
-	{
-		ctl_pvector< MachLogDebris >::iterator i = find( suppliers_.begin(), suppliers_.end(), pSubject );
-		if( i != suppliers_.end() )
-		{
-			// one of our constructions has been destroyed
-			stayAttached = false;
-			suppliers_.erase( i );
-		}
-	}
-	break;
+    switch (event)
+    {
+        case W4dSubject::DELETED:
+            {
+                ctl_pvector<MachLogDebris>::iterator i = find(suppliers_.begin(), suppliers_.end(), pSubject);
+                if (i != suppliers_.end())
+                {
+                    // one of our constructions has been destroyed
+                    stayAttached = false;
+                    suppliers_.erase(i);
+                }
+            }
+            break;
 
-	default:
-		;
-	}
+        default:;
+    }
 
-	return stayAttached;
+    return stayAttached;
 }
 
-
-//virtual
-void MachGuiScavengeCommand::domainDeleted( W4dDomain*  )
+// virtual
+void MachGuiScavengeCommand::domainDeleted(W4dDomain*)
 {
-	//intentionally empty...override as necessary
+    // intentionally empty...override as necessary
 }
 
 /* End CMDSCAV.CPP **************************************************/

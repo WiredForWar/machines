@@ -22,57 +22,58 @@
 #include "machphys/pulsplat.hpp"
 #include "machphys/pulsaura.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysPulseBlob );
+PER_DEFINE_PERSISTENT(MachPhysPulseBlob);
 
-MachPhysPulseBlob::MachPhysPulseBlob
-(
-	W4dEntity* pParent,
-	const MexTransform3d& localTransform,
-	MachPhys::WeaponType type,
-	CreateLights lights
-)
-:   MachPhysLinearProjectile( exemplar( type ), pParent, localTransform,
-							 (lights==CREATE_LIGHTS)? COPY_LIGHTS: DONT_COPY_LIGHTS ),
-    pFireball_( NULL )
+MachPhysPulseBlob::MachPhysPulseBlob(
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform,
+    MachPhys::WeaponType type,
+    CreateLights lights)
+    : MachPhysLinearProjectile(
+        exemplar(type),
+        pParent,
+        localTransform,
+        (lights == CREATE_LIGHTS) ? COPY_LIGHTS : DONT_COPY_LIGHTS)
+    , pFireball_(nullptr)
 {
-	// The current model is all emissive.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
     TEST_INVARIANT;
 }
 
 MachPhysPulseBlob::MachPhysPulseBlob(MachPhys::WeaponType type)
-:   MachPhysLinearProjectile( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d() ),
-    pFireball_( NULL )
+    : MachPhysLinearProjectile(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d())
+    , pFireball_(nullptr)
 {
-	// The current model is all emissive.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    //Load the STF mesh
-    switch( type )
+    // Load the STF mesh
+    switch (type)
     {
         case MachPhys::PULSE_RIFLE:
-        {
-            readCompositeFile( SysPathName( "models/weapons/pulboltr/pulboltr.cdf" ) );
-            break;
-        }
+            {
+                readCompositeFile(SysPathName("models/weapons/pulboltr/pulboltr.cdf"));
+                break;
+            }
 
         case MachPhys::PULSE_CANNON:
-        {
-            readCompositeFile( SysPathName( "models/weapons/pulboltc/pulboltc.cdf" ) );
-            break;
-        }
+            {
+                readCompositeFile(SysPathName("models/weapons/pulboltc/pulboltc.cdf"));
+                break;
+            }
 
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
     TEST_INVARIANT;
 }
 
-MachPhysPulseBlob::MachPhysPulseBlob( PerConstructor con )
-: MachPhysLinearProjectile( con )
+MachPhysPulseBlob::MachPhysPulseBlob(PerConstructor con)
+    : MachPhysLinearProjectile(con)
 {
 }
 
@@ -80,15 +81,15 @@ MachPhysPulseBlob::~MachPhysPulseBlob()
 {
     TEST_INVARIANT;
 
-    _DELETE( pFireball_ );
+    _DELETE(pFireball_);
 }
 
 void MachPhysPulseBlob::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysPulseBlob& t )
+ostream& operator<<(ostream& o, const MachPhysPulseBlob& t)
 {
 
     o << "MachPhysPulseBlob " << (void*)&t << " start" << std::endl;
@@ -97,81 +98,78 @@ ostream& operator <<( ostream& o, const MachPhysPulseBlob& t )
     return o;
 }
 
-//static
+// static
 const MachPhysPulseBlob& MachPhysPulseBlob::exemplar(MachPhys::WeaponType type)
 {
-    //Use the one time constructor
-/*    static MachPhysPulseBlob* result = NULL;
+    // Use the one time constructor
+    /*    static MachPhysPulseBlob* result = NULL;
 
-	switch(type)
-	{
-		case MachPhys::PULSE_RIFLE:
-		{
-    		static MachPhysPulseBlob* blob = _NEW( MachPhysPulseBlob( type ) );
-			result = blob;
-			break;
-		}
-		case MachPhys::PULSE_CANNON:
-		{
-    		static MachPhysPulseBlob* blob = _NEW( MachPhysPulseBlob(type) );
-			result = blob;
-			break;
-		}
+    switch(type)
+    {
+        case MachPhys::PULSE_RIFLE:
+        {
+            static MachPhysPulseBlob* blob = _NEW( MachPhysPulseBlob( type ) );
+            result = blob;
+            break;
+        }
+        case MachPhys::PULSE_CANNON:
+        {
+            static MachPhysPulseBlob* blob = _NEW( MachPhysPulseBlob(type) );
+            result = blob;
+            break;
+        }
 
         DEFAULT_ASSERT_BAD_CASE( type );
-	}
+    }
 
     return *result;
 */
-    return MachPhysOtherPersistence::instance().pulseBlobExemplar( type );
+    return MachPhysOtherPersistence::instance().pulseBlobExemplar(type);
 }
 
-//virtual
-PhysRelativeTime MachPhysPulseBlob::doBeDestroyedAt
-(
-    const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType
-)
+// virtual
+PhysRelativeTime MachPhysPulseBlob::doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType)
 {
     PhysRelativeTime duration = 0.33;
 
-    switch( strikeType )
+    switch (strikeType)
     {
         case MachPhys::ON_OBJECT:
         case MachPhys::ON_TERRAIN:
-        {
-            //get the local position of the blob at the destruct time
-            MexTransform3d destructPosition;
-            uint n;
-            const W4dEntityPlan& myEntityPlan = entityPlan();
-            if( myEntityPlan.hasMotionPlan() )
-                entityPlan().transform( time, &destructPosition, &n );
-            else
-                destructPosition = localTransform();
+            {
+                // get the local position of the blob at the destruct time
+                MexTransform3d destructPosition;
+                uint n;
+                const W4dEntityPlan& myEntityPlan = entityPlan();
+                if (myEntityPlan.hasMotionPlan())
+                    entityPlan().transform(time, &destructPosition, &n);
+                else
+                    destructPosition = localTransform();
 
-            //Create a disc owned by the blob's parent
-            //animationDuration =
-               // MachPhysPulseWeapon::createPulseDisc( pParent(), destructPosition, time );
-			//create splat and aura
+                // Create a disc owned by the blob's parent
+                // animationDuration =
+                //  MachPhysPulseWeapon::createPulseDisc( pParent(), destructPosition, time );
+                // create splat and aura
 
-			MachPhysPulseAura* pAura = _NEW( MachPhysPulseAura( pParent(), destructPosition) );
-			pAura->startPulseAura( time, duration );
+                MachPhysPulseAura* pAura = _NEW(MachPhysPulseAura(pParent(), destructPosition));
+                pAura->startPulseAura(time, duration);
 
-			MachPhysPulseSplat* pSplat = _NEW( MachPhysPulseSplat( pParent(), destructPosition) );
-			pSplat->startPulseSplat( time, duration );
+                MachPhysPulseSplat* pSplat = _NEW(MachPhysPulseSplat(pParent(), destructPosition));
+                pSplat->startPulseSplat(time, duration);
 
-		     //Add to the garbage collection list. Let it survive, so the sound
-		    //associated with it isn't stopped too early
-		    W4dGarbageCollector::instance().add( pSplat, time + duration );
-		    W4dGarbageCollector::instance().add( pAura, time + duration );
+                // Add to the garbage collection list. Let it survive, so the sound
+                // associated with it isn't stopped too early
+                W4dGarbageCollector::instance().add(pSplat, time + duration);
+                W4dGarbageCollector::instance().add(pAura, time + duration);
 
-            break;
-        }
+                break;
+            }
     }
 
     return duration;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysPulseBlob& blob )
+void perWrite(PerOstream& ostr, const MachPhysPulseBlob& blob)
 {
     const MachPhysLinearProjectile& base = blob;
 
@@ -179,7 +177,7 @@ void perWrite( PerOstream& ostr, const MachPhysPulseBlob& blob )
     ostr << blob.pFireball_;
 }
 
-void perRead( PerIstream& istr, MachPhysPulseBlob& blob )
+void perRead(PerIstream& istr, MachPhysPulseBlob& blob)
 {
     MachPhysLinearProjectile& base = blob;
 

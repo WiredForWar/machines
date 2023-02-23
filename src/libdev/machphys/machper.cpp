@@ -18,7 +18,7 @@
 
 #include "machphys/ofactory.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMachinePersistence );
+PER_DEFINE_PERSISTENT(MachPhysMachinePersistence);
 
 // static
 MachPhysMachinePersistence& MachPhysMachinePersistence::instance()
@@ -36,15 +36,14 @@ MachPhysMachinePersistence::MachPhysMachinePersistence()
 MachPhysMachinePersistence::~MachPhysMachinePersistence()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysMachinePersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMachinePersistence& t )
+ostream& operator<<(ostream& o, const MachPhysMachinePersistence& t)
 {
 
     o << "MachPhysMachinePersistence " << (void*)&t << " start" << std::endl;
@@ -53,7 +52,7 @@ ostream& operator <<( ostream& o, const MachPhysMachinePersistence& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMachinePersistence& )
+void perWrite(PerOstream& ostr, const MachPhysMachinePersistence&)
 {
     ostr << MachPhysAdministrator::factory();
     ostr << MachPhysAggressor::factory();
@@ -65,7 +64,7 @@ void perWrite( PerOstream& ostr, const MachPhysMachinePersistence& )
     ostr << MachPhysTechnician::factory();
 }
 
-void perRead( PerIstream& istr, MachPhysMachinePersistence& )
+void perRead(PerIstream& istr, MachPhysMachinePersistence&)
 {
     istr >> MachPhysAdministrator::factory();
     istr >> MachPhysAggressor::factory();

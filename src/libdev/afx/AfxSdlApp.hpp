@@ -8,33 +8,28 @@
 class AfxSdlApp : public AfxApp
 {
 public:
-
     static AfxSdlApp& sdlInstance();
 
     AfxSdlApp() = default;
 
-    virtual ~AfxSdlApp() = default;
+    ~AfxSdlApp() override = default;
 
-    SDL_Window* window()
-    {
-        return pWindow_;
-    }
+    SDL_Window* window() { return pWindow_; }
 
-    virtual void finish() override;
-    virtual bool isFinished() const override;
+    void finish() override;
+    bool isFinished() const override;
 
-    virtual void testPrint(const char*) const override;
+    void testPrint(const char*) const override;
 
 protected:
-
-    virtual bool OSStartup() override;
-    virtual void OSShutdown() override;
+    bool OSStartup() override;
+    void OSShutdown() override;
 
 private:
     // These are called only by this class from the run method.
     // The default implementations call the client and OS specific
     // start-up and shutdown methods.
-    virtual void coreLoop() override;
+    void coreLoop() override;
 
     void dispatchEvent(SDL_Event*);
     void dispatchMouseEvent(SDL_Event*, bool);
@@ -44,12 +39,12 @@ private:
     void dispatchTouchEvent(SDL_Event*, bool);
     void initialise(int argc, char* argv[]);
 
-    friend int main(int, char* []);
+    friend int main(int, char*[]);
 
-    bool finishing_{ false};
-    bool finished_{ false};
+    bool finishing_ { false };
+    bool finished_ { false };
     SDL_Window* pWindow_;
 
     // Config values needed at startup
     AfxConfiguration configuration_;
-} ;
+};

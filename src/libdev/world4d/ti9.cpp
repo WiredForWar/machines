@@ -18,19 +18,19 @@ class W4dColourPulseData;
 
 W4dDummyFunction9()
 {
-	// These are used by W4dComposite.
-	static ctl_vector<pair<size_t, MexQuaternion> >	dummy1;
-	static ctl_vector<pair<size_t, MexVec3> >				dummy2;
-    
-    static  ctl_vector< RenMaterial >     dummy3;
+    // These are used by W4dComposite.
+    static ctl_vector<pair<size_t, MexQuaternion>> dummy1;
+    static ctl_vector<pair<size_t, MexVec3>> dummy2;
 
-    static  W4dLinearFloatValuePlan         dummy4( 0, 1, 10 );
+    static ctl_vector<RenMaterial> dummy3;
 
-	static ctl_vector<pair< string, W4dGeneric* > >		dummy5;
-	static ctl_vector<pair<string, W4dGenericComposite*> >	dummy6;
-	static ctl_pvector< W4dAnimationData > dummy7;
-    static ctl_vector< RenTexture >   dummy8;
-    static ctl_vector< ctl_vector< RenTexture > >   dummy9;
-    static ctl_pvector< W4dCycleTextureData >   dummy10;
-    static ctl_pvector< W4dColourPulseData >   dummy11;
+    static W4dLinearFloatValuePlan dummy4(0, 1, 10);
+
+    static ctl_vector<pair<string, W4dGeneric*>> dummy5;
+    static ctl_vector<pair<string, W4dGenericComposite*>> dummy6;
+    static ctl_pvector<W4dAnimationData> dummy7;
+    static ctl_vector<RenTexture> dummy8;
+    static ctl_vector<ctl_vector<RenTexture>> dummy9;
+    static ctl_pvector<W4dCycleTextureData> dummy10;
+    static ctl_pvector<W4dColourPulseData> dummy11;
 }

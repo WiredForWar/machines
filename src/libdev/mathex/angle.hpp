@@ -19,59 +19,57 @@
 
 #include "mathex/mathex.hpp"
 
-//class ostream;
+// class ostream;
 
 class MexAngle
 {
 public:
     MexAngle();
-    MexAngle( MATHEX_SCALAR );
-    MexAngle( const MexAngle& );
+    MexAngle(MATHEX_SCALAR);
+    MexAngle(const MexAngle&);
 
-    MexAngle& operator =( const MexAngle& );
+    MexAngle& operator=(const MexAngle&);
 
-    void operator +=( const MexAngle& );
+    void operator+=(const MexAngle&);
 
-    void operator -=( const MexAngle& );
+    void operator-=(const MexAngle&);
 
-    void operator *=( MATHEX_SCALAR );
-    void operator /=( MATHEX_SCALAR );
+    void operator*=(MATHEX_SCALAR);
+    void operator/=(MATHEX_SCALAR);
 
-	friend ostream& operator<<(ostream& str, const MexAngle& t);
+    friend ostream& operator<<(ostream& str, const MexAngle& t);
 
-    //Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT( MexAngle );
-    PER_FRIEND_READ_WRITE( MexAngle );
+    // Persistence
+    PER_MEMBER_PERSISTENT_DEFAULT(MexAngle);
+    PER_FRIEND_READ_WRITE(MexAngle);
 
     void CLASS_INVARIANT;
 
 protected:
-
-	//	Only allow angles to be destructed by their
-	//  derived classes i.e. you cannot create a MexAngle directly.
+    //  Only allow angles to be destructed by their
+    //  derived classes i.e. you cannot create a MexAngle directly.
 
     ~MexAngle();
 
-    MexAngle& operator =( MATHEX_SCALAR );
+    MexAngle& operator=(MATHEX_SCALAR);
 
-    MATHEX_SCALAR   angleInRadians() const;
+    MATHEX_SCALAR angleInRadians() const;
 
 private:
+    MATHEX_SCALAR angleInRadians_;
 
-    MATHEX_SCALAR   angleInRadians_;
+    friend double sin(const MexAngle&);
+    friend double cos(const MexAngle&);
+    friend double tan(const MexAngle&);
 
-    friend  double  sin( const MexAngle& );
-    friend  double  cos( const MexAngle& );
-    friend  double  tan( const MexAngle& );
-
-    friend  bool operator ==( const MexAngle&, const MexAngle& );
-    friend  bool operator <( const MexAngle&, const MexAngle& );
-    friend  bool operator >( const MexAngle&, const MexAngle& );
-    friend  bool operator <=( const MexAngle&, const MexAngle& );
-    friend  bool operator >=( const MexAngle&, const MexAngle& );
+    friend bool operator==(const MexAngle&, const MexAngle&);
+    friend bool operator<(const MexAngle&, const MexAngle&);
+    friend bool operator>(const MexAngle&, const MexAngle&);
+    friend bool operator<=(const MexAngle&, const MexAngle&);
+    friend bool operator>=(const MexAngle&, const MexAngle&);
 };
 
-PER_DECLARE_PERSISTENT( MexAngle );
+PER_DECLARE_PERSISTENT(MexAngle);
 
 //  Because MexAngle, MexRadians and MexDegrees are all extremely
 //  closely linked all of the #includes go through angles.hpp. This
@@ -81,11 +79,10 @@ PER_DECLARE_PERSISTENT( MexAngle );
 #include "mathex/degrees.hpp"
 
 #ifdef _INLINE
-    #include "mathex/angle.ipp"
-    #include "mathex/radians.ipp"
-    #include "mathex/degrees.ipp"
+#include "mathex/angle.ipp"
+#include "mathex/radians.ipp"
+#include "mathex/degrees.ipp"
 #endif
-
 
 #endif
 

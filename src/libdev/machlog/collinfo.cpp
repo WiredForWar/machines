@@ -1,5 +1,5 @@
 /*
- * C O L L I N F O . C P P 
+ * C O L L I N F O . C P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -11,68 +11,65 @@
 #include "mathex/transf3d.hpp"
 
 MachLogCollisionInfo::MachLogCollisionInfo()
-: valid_( false ),
-  collisionTimeValid_( false )
+    : valid_(false)
+    , collisionTimeValid_(false)
 {
 
     TEST_INVARIANT;
 
-    POST( not valid() );
+    POST(not valid());
 }
 
 MachLogCollisionInfo::MachLogCollisionInfo(
     const MachPhysMachineMoveInfo& info,
     const MexTransform3d& parentTransform,
-    ObjectId            collisionObjectId,
-    PhysAbsoluteTime    collideTime )
-: valid_( true ),
-  collisionTimeValid_( true ),
-  collisionObjectId_( collisionObjectId )
+    ObjectId collisionObjectId,
+    PhysAbsoluteTime collideTime)
+    : valid_(true)
+    , collisionTimeValid_(true)
+    , collisionObjectId_(collisionObjectId)
 {
-    collisionPoint_ = info.transform( collideTime ).position();
+    collisionPoint_ = info.transform(collideTime).position();
 
-    parentTransform.transform( &collisionPoint_ );
+    parentTransform.transform(&collisionPoint_);
 
-    POST( valid() );
-    POST( collisionTimeValid() );
+    POST(valid());
+    POST(collisionTimeValid());
 }
 
-MachLogCollisionInfo::MachLogCollisionInfo(
-    const MexPoint2d&   collisionPoint,
-    ObjectId            collisionObjectId )
-: valid_( true ),
-  collisionTimeValid_( false ),
-  collisionObjectId_( collisionObjectId ),
-  collisionPoint_( collisionPoint )
+MachLogCollisionInfo::MachLogCollisionInfo(const MexPoint2d& collisionPoint, ObjectId collisionObjectId)
+    : valid_(true)
+    , collisionTimeValid_(false)
+    , collisionObjectId_(collisionObjectId)
+    , collisionPoint_(collisionPoint)
 {
-    POST( valid() );
-    POST( not collisionTimeValid() );
+    POST(valid());
+    POST(not collisionTimeValid());
 }
 
 MachLogCollisionInfo::~MachLogCollisionInfo()
 {
     TEST_INVARIANT;
-
 }
 
 const MexPoint2d& MachLogCollisionInfo::collisionPoint() const
 {
-    PRE( valid() );
+    PRE(valid());
 
     return collisionPoint_;
 }
 
 MachLogCollisionInfo::ObjectId MachLogCollisionInfo::collisionObjectId() const
 {
-    PRE( valid() );
+    PRE(valid());
 
     return collisionObjectId_;
 }
 
 PhysAbsoluteTime MachLogCollisionInfo::collisionTime() const
 {
-    PRE( valid() );
-    PRE( collisionTimeValid() );
+    PRE(valid());
+    PRE(collisionTimeValid());
 
     return collisionTime_;
 }
@@ -87,19 +84,18 @@ bool MachLogCollisionInfo::collisionTimeValid() const
     return collisionTimeValid_;
 }
 
-
 void MachLogCollisionInfo::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogCollisionInfo& t )
+ostream& operator<<(ostream& o, const MachLogCollisionInfo& t)
 {
-    if( t.valid_ )
+    if (t.valid_)
     {
         o << "Collision with object " << t.collisionObjectId_;
         o << " at point " << t.collisionPoint_;
-        if( t.collisionTimeValid_ )
+        if (t.collisionTimeValid_)
             o << " time " << t.collisionTime_;
     }
     else

@@ -7,16 +7,20 @@
 #include "ctl/algorith.hpp"
 #include "render/mesh.hpp"
 
-RenIVertexIntensities::RenIVertexIntensities(size_t nElements) :
-Base(0)
+RenIVertexIntensities::RenIVertexIntensities(size_t nElements)
+    : Base(0)
 {
     reserve(nElements);
 }
 
-RenIVertexIntensities::RenIVertexIntensities(const RenIVertexIntensities& copyMe) :
-Base(copyMe) { }
+RenIVertexIntensities::RenIVertexIntensities(const RenIVertexIntensities& copyMe)
+    : Base(copyMe)
+{
+}
 
-RenIVertexIntensities::~RenIVertexIntensities() { }
+RenIVertexIntensities::~RenIVertexIntensities()
+{
+}
 
 bool RenIVertexIntensities::contains(Ren::VertexIdx i, double* value) const
 {
@@ -33,7 +37,7 @@ bool RenIVertexIntensities::contains(Ren::VertexIdx i, double* value) const
             *value = (*it).int_;
     }
 
-    POST(implies(result == true  && value, *value != 1));
+    POST(implies(result == true && value, *value != 1));
     POST(implies(result == false && value, *value == 1));
     return result;
 }
@@ -69,17 +73,17 @@ void RenIVertexIntensities::value(Ren::VertexIdx i, double newValue)
         {
             RenIVtxIntensity newElement;
             newElement.index_ = i;
-            newElement.int_   = newValue;
+            newElement.int_ = newValue;
             push_back(newElement);
         }
     }
 
     POST(implies(newValue == 1, !contains(i)));
-    POST(implies(newValue != 1,  contains(i)));
+    POST(implies(newValue != 1, contains(i)));
 }
 
-RenIExpandedIntensityMap::RenIExpandedIntensityMap(size_t nElements) :
-Base(nElements, 1)
+RenIExpandedIntensityMap::RenIExpandedIntensityMap(size_t nElements)
+    : Base(nElements, 1)
 {
     POST(size() >= nElements);
 }

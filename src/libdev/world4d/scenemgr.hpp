@@ -31,138 +31,138 @@ class W4dLightImpl;
 class W4dSceneManager
 {
 public:
-	// There is a choice of ctors.  The window version shows the scene in
-	// the given window; the display version takes over the display and goes
-	// into full-screen exclusive mode.
-	// PRE(root);
-	// PRE(!root->hasParent());
-    W4dSceneManager( RenDisplay* pDisplay, W4dRoot* pRoot );
+    // There is a choice of ctors.  The window version shows the scene in
+    // the given window; the display version takes over the display and goes
+    // into full-screen exclusive mode.
+    // PRE(root);
+    // PRE(!root->hasParent());
+    W4dSceneManager(RenDisplay* pDisplay, W4dRoot* pRoot);
     ~W4dSceneManager();
 
-	// Render the tree using the current camera.
-	// PRE(currentCamera()) -- a camera must have been specified.
-	void render();
+    // Render the tree using the current camera.
+    // PRE(currentCamera()) -- a camera must have been specified.
+    void render();
 
-	// Use another camera.  The given camera must be part of the rendering
-	// tree which this object is managing:
-	// PRE(cam);
-	// PRE(cam->findRoot() == root_);
-	// PRE(cam->hitherClipDistance() < cam->yonClipDistance());
-	void useCamera(W4dCamera* cam);
+    // Use another camera.  The given camera must be part of the rendering
+    // tree which this object is managing:
+    // PRE(cam);
+    // PRE(cam->findRoot() == root_);
+    // PRE(cam->hitherClipDistance() < cam->yonClipDistance());
+    void useCamera(W4dCamera* cam);
 
-	// Which camera is currently in use?
-	W4dCamera* currentCamera() const;
+    // Which camera is currently in use?
+    W4dCamera* currentCamera() const;
 
-	// Disable LOD for highest detail rendering
-	void useLevelOfDetail( bool enableLod );
+    // Disable LOD for highest detail rendering
+    void useLevelOfDetail(bool enableLod);
 
-	void ambient(const RenColour&);
-	const RenColour& ambient() const;
+    void ambient(const RenColour&);
+    const RenColour& ambient() const;
 
-    void clearAllLights(); //Remove all lights currently attached
+    void clearAllLights(); // Remove all lights currently attached
 
-	void turnOffAllLocalLights();
+    void turnOffAllLocalLights();
 
-	// If set by the client app, this object is supposed to organise lights,
-	// background objects and the background colour.
-	void environment(W4dEnvironment*);
-	W4dEnvironment* environment();
+    // If set by the client app, this object is supposed to organise lights,
+    // background objects and the background colour.
+    void environment(W4dEnvironment*);
+    W4dEnvironment* environment();
 
-	// If set by the client app, this object is used to assign intersecting
-	// domains to dynamic lights (and possibly other objects in the future).
-	// If this object isn't set then dynamic lights will behave as if global,
-	// i.e. inefficiently.  (It should be set except in test harnesses.)
-	void domainAssignor(W4dDomainAssignor*);
-	W4dDomainAssignor* domainAssignor() const;
+    // If set by the client app, this object is used to assign intersecting
+    // domains to dynamic lights (and possibly other objects in the future).
+    // If this object isn't set then dynamic lights will behave as if global,
+    // i.e. inefficiently.  (It should be set except in test harnesses.)
+    void domainAssignor(W4dDomainAssignor*);
+    W4dDomainAssignor* domainAssignor() const;
 
-	// Every frame the back buffer can optionally be cleared to a flat colour.
-	// Alternatively, meshes can be drawn as background objects.  If these
-	// completely fill the frame buffer, then clearing is unnecessary.
-	// The default is a cleared background with no W4dBackground objects.
-	void clearBackground(bool);
-	bool clearBackground() const;
-	void backgroundColour(const RenColour&);
-	const RenColour& backgroundColour() const;
+    // Every frame the back buffer can optionally be cleared to a flat colour.
+    // Alternatively, meshes can be drawn as background objects.  If these
+    // completely fill the frame buffer, then clearing is unnecessary.
+    // The default is a cleared background with no W4dBackground objects.
+    void clearBackground(bool);
+    bool clearBackground() const;
+    void backgroundColour(const RenColour&);
+    const RenColour& backgroundColour() const;
 
-	// Only one background tree can be in use at any time.
-	void useBackground(W4dRoot*);
+    // Only one background tree can be in use at any time.
+    void useBackground(W4dRoot*);
 
     //  Over ride the root that was passed in at the constructor.
     void useRoot(W4dRoot* r);
 
-    //Export the root entity for the scene
+    // Export the root entity for the scene
     W4dRoot& root() const;
 
     //  Push and pop all background data (colour, clear flag, tree) onto an
     //  internal stack so that it can be reset then restored.
-    void    pushBackgroundData();
-    void    popBackgroundData();
+    void pushBackgroundData();
+    void popBackgroundData();
 
-	// Various rendering stats can be shown: frame times, nos. of polys, etc.
-	// The stats are not necessarily updated every frame because that's
-	// difficult to read.  Averages are computed over the given time interval.
-	void showStats(double updateInterval = 0.333);
-	void hideStats();		// default
+    // Various rendering stats can be shown: frame times, nos. of polys, etc.
+    // The stats are not necessarily updated every frame because that's
+    // difficult to read.  Averages are computed over the given time interval.
+    void showStats(double updateInterval = 0.333);
+    void hideStats(); // default
 
-	// Check the bounding volume of the given entity against any dynamic lights
-	// which are operational.  Disable any lights which don't intersect the
-	// entity's bounding volume.
-	void cullDynamicLights(const W4dEntity* entity);
+    // Check the bounding volume of the given entity against any dynamic lights
+    // which are operational.  Disable any lights which don't intersect the
+    // entity's bounding volume.
+    void cullDynamicLights(const W4dEntity* entity);
 
-	const W4dComplexity& complexity() const;
-	W4dComplexity& complexity();
+    const W4dComplexity& complexity() const;
+    W4dComplexity& complexity();
 
-	// Clients can print any debugging text here.  Any text will be overlayed
-	// on the 3D graphics.  The 3D is drawn first, then any internal text such
-	// as frame rate, then the client's text below that.
-	ostream& out();
+    // Clients can print any debugging text here.  Any text will be overlayed
+    // on the 3D graphics.  The 3D is drawn first, then any internal text such
+    // as frame rate, then the client's text below that.
+    ostream& out();
 
     void CLASS_INVARIANT;
 
-	void updateDisplay();
+    void updateDisplay();
 
     RenDevice* pDevice();
 
-	W4dCameraShake& cameraShakeForEdit();
+    W4dCameraShake& cameraShakeForEdit();
 
-	// Set the minimum requested frame rate to a high value for debugging
-	void setFrameRateForDebug();
+    // Set the minimum requested frame rate to a high value for debugging
+    void setFrameRateForDebug();
 
-	// true if we want the complexity of the scene
-	// to be adjusted so as to garantee a steady frame rate
+    // true if we want the complexity of the scene
+    // to be adjusted so as to garantee a steady frame rate
     bool autoAdjustFrameRate() const;
-    void autoAdjustFrameRate( bool autoAdjust );
+    void autoAdjustFrameRate(bool autoAdjust);
 
-	const double& requestedMinFrameRate() const;
-	void requestedMinFrameRate( const double & );
+    const double& requestedMinFrameRate() const;
+    void requestedMinFrameRate(const double&);
 
-	const double& highEnoughFrameRate() const;
-	void highEnoughFrameRate( const double & );
+    const double& highEnoughFrameRate() const;
+    void highEnoughFrameRate(const double&);
 
-	// enable/disable dynamic lights
-	void dynamicLightsEnabled( bool enabled );
-	bool dynamicLightsEnabled() const;
+    // enable/disable dynamic lights
+    void dynamicLightsEnabled(bool enabled);
+    bool dynamicLightsEnabled() const;
 
 private:
-	// Modify the list of objects which can potentially light the scene.
-	// Only the light ctor and dtor should do this.
-	friend class W4dLight;
-	void    addLight(W4dLight* pLight);		// PRE(pLight);
-	void removeLight(W4dLight* pLight);		// PRE(pLight);
+    // Modify the list of objects which can potentially light the scene.
+    // Only the light ctor and dtor should do this.
+    friend class W4dLight;
+    void addLight(W4dLight* pLight); // PRE(pLight);
+    void removeLight(W4dLight* pLight); // PRE(pLight);
 
-	void setShades();
-	void  printText(BaseLogBuffer& buf, int& lineNo);
-	void shakeCurrentCamera();
-	bool shakeCamera() const;
-	void cancelCameraShake();
-	void updateLights();
+    void setShades();
+    void printText(BaseLogBuffer& buf, int& lineNo);
+    void shakeCurrentCamera();
+    bool shakeCamera() const;
+    void cancelCameraShake();
+    void updateLights();
 
-	W4dSceneManagerImpl*	pImpl_;
+    W4dSceneManagerImpl* pImpl_;
 
     // Operation deliberately revoked
-    W4dSceneManager( const W4dSceneManager& );
-    W4dSceneManager& operator =( const W4dSceneManager& );
-    bool operator ==( const W4dSceneManager& );
+    W4dSceneManager(const W4dSceneManager&);
+    W4dSceneManager& operator=(const W4dSceneManager&);
+    bool operator==(const W4dSceneManager&);
 };
 
 #endif

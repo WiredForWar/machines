@@ -4,7 +4,7 @@
  */
 
 /*
-	Diagnostic code used internally by the base library. This class
+    Diagnostic code used internally by the base library. This class
     breaks a number of the normal rules regarding public data members
     and static variables. This is because access to these variables
     needs to be very efficient as they are used to turn off diagnostics
@@ -26,38 +26,37 @@ using std::ostream;
 class DiagInternal
 {
 public:
+    static bool streamEnabled(DiagStreamType);
+    static void enableStream(DiagStreamType);
+    static void disableStream(DiagStreamType);
 
-	static	bool	streamEnabled( DiagStreamType );
-    static  void    enableStream( DiagStreamType );
-    static  void    disableStream( DiagStreamType );
+    static size_t nStreams();
+    static const char* streamText(size_t index);
 
-	static	size_t	nStreams();
-	static	const char*	streamText( size_t index );
+    static ostream& stream(DiagStreamType type);
 
-	static	ostream& stream( DiagStreamType type );
+    static DiagPointerTracker& countedPointerTracker();
 
-    static  DiagPointerTracker&	countedPointerTracker();
+    static void setDestination(DiagStreamType type, const char* dest);
 
-    static  void setDestination( DiagStreamType type, const char* dest );
+    static bool checkFpException();
 
-    static  bool checkFpException();
-
-    static  void disableFPException();
-    static  void enableFPException();
+    static void disableFPException();
+    static void enableFPException();
 
     //  Data members
-    static  bool    checkCountedPointers_;
-	static	bool	trackAllObjects_;
-	static	bool	checkInvariants_;
+    static bool checkCountedPointers_;
+    static bool trackAllObjects_;
+    static bool checkInvariants_;
 
 private:
-	DiagInternal();
-	~DiagInternal();
+    DiagInternal();
+    ~DiagInternal();
 
     friend class Diag;
 
-    static  void    initialiseSignalHandler();
-    static  void    signalHandler( int sig );
+    static void initialiseSignalHandler();
+    static void signalHandler(int sig);
 };
 
 #endif

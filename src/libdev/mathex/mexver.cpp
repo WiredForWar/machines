@@ -1,13 +1,13 @@
 /*
-* M E X V E R . C P P
-* (c) Charybdis Limited, 1995. All Rights Reserved
-*/
+ * M E X V E R . C P P
+ * (c) Charybdis Limited, 1995. All Rights Reserved
+ */
 
 /*
-	HISTORY
+    HISTORY
 
-	01.00	First Release
-			30 August 1995  Bob Archer
+    01.00   First Release
+            30 August 1995  Bob Archer
 
     01.01   Invert functions added to MexTransform3d and MexTransformRep
             4 September 1995  Bob Archer
@@ -41,23 +41,23 @@
 
     01.09   Bug in MexTransformRep::isIdentity fixed. The z value of the
             position vector was not being checked.
-            
+
     01.10   MexTransformRep can now return its rotation as an EulerAngle.
             25 September 1995  Bob Archer
-            
+
     01.11   MexBoundary3d and associated classes added.
             28 September 1995  Bob Archer
-            
+
     01.12   MexPoint3d added as a boundary type.
             4 October 1995  Bob Archer
-            
+
     01.13   MexHalfSpace3d::intersects( MexUnalignedBoundingBox3d ) function speeded up.
             MexPlane3d::distanceFrom function speeded up.
             5 October 1995  Bob Archer
-            
+
     01.14   box3d.cpp, box3d.hpp & box3d.tpp split into two - abox3d & ubox3d.
             12 October 1995  Bob Archer
-            
+
     01.15   MexTransformRep removed. MexTransform3d is no longer parameterised
             over MexTransformRep. MexPoint3d, MexLine3d and MexPlane3d are no
             longer derived from MexBoundary3d. ALl MexBoundary 3ds can now
@@ -66,23 +66,23 @@
             17 October 1995  Bob Archer
 
     01.16
-        	const MexVec3< T >& operator =( const T * ) added
-        	const MexPoint3d< T >& operator =( const T * ) added
+            const MexVec3< T >& operator =( const T * ) added
+            const MexPoint3d< T >& operator =( const T * ) added
             17 October 1995  Bob Archer
-            
+
     01.17
             void transformVector( MexVec3< T > *v ) const; added
             17 October 1995  Bob Archer
 
-    01.18   Strict version of the mathex library created.            
+    01.18   Strict version of the mathex library created.
             20 October 1995  Bob Archer
-            
+
     01.19   MexVec3 method 'argument' renamed to 'angleBetween'
             8 December 1995  Bob Archer
-            
+
     01.20   MexBox2 and MexVec2 classes added
             17 January 1996  Bob Archer
-            
+
     01.21   MexPoint3d class extended to allow x, y and z
             elements to be set directly.
             21 January 1996  Bob Archer
@@ -132,7 +132,7 @@
 
     01.25
             operator < added to MexTransform3d.
-            
+
             4 March 1996        Bob Archer
 
     01.26
@@ -150,18 +150,18 @@
     01.29   zeroBox function added to MexAlignedBox3d.
             8 March 1996        Bob Archer
 
-	01.30	inlined functions restricted to simple functions
-			13 March 1996		Olly Headey
+    01.30   inlined functions restricted to simple functions
+            13 March 1996       Olly Headey
 
     01.31   Fixed bug in rotateAboutAxis postconditions which would
             cause an incorrect assertion if the point to be rotated
             was on the axis of rotation.
             13 March 1996       Bob Archer
-            
+
     01.32   lmo and rmo had been swapped over - they have now been
-            defined to be the right way round.            
+            defined to be the right way round.
             19 March 1996       Bob Archer
-            
+
     01.33   Interval functions in mathex.tpp now work properly:
                 inIntervalOO
                 inIntervalCC
@@ -169,29 +169,29 @@
                 inIntervalCO
             23 March 1996       Bob Archer
 
-	01.34	Template files rearranged into new standard format
+    01.34   Template files rearranged into new standard format
             ( .ctp, .itp, .ctf and .itf files )
             19 May 1996                         Bob Archer
 
-	01.35	Minor error fixes (point3d.ctp to point3d.itp)
-			x, y, x set function added to MexVec3 to add functionality
-			and consistency with MexPoint3d.
-			20 May 1996							Olly Headey
+    01.35   Minor error fixes (point3d.ctp to point3d.itp)
+            x, y, x set function added to MexVec3 to add functionality
+            and consistency with MexPoint3d.
+            20 May 1996                         Olly Headey
 
-	01.36	class MexFix16Pt16 for signed fixed 15.16 point arithmetic
-			added, together with corresponding template instantiation 
-			file tifix.cpp.
-			3 June 1996							Jerry Swan
+    01.36   class MexFix16Pt16 for signed fixed 15.16 point arithmetic
+            added, together with corresponding template instantiation
+            file tifix.cpp.
+            3 June 1996                         Jerry Swan
 
-	01.37	Increased use of forward references for interface 
-			dependencies, to achieve template instantiations for
-			float and MexFix16Pt16
-			3 June 1996							Jerry Swan
+    01.37   Increased use of forward references for interface
+            dependencies, to achieve template instantiations for
+            float and MexFix16Pt16
+            3 June 1996                         Jerry Swan
 
-	01.38	Replaced EPSILON with singleton template class MexEpsilon.
-			Replaced all calls to fabs with call to Mathex::abs,
-			which is overloaded for scalars and MexFix16Pt16.
-			6 June 1996							Jerry Swan
+    01.38   Replaced EPSILON with singleton template class MexEpsilon.
+            Replaced all calls to fabs with call to Mathex::abs,
+            which is overloaded for scalars and MexFix16Pt16.
+            6 June 1996                         Jerry Swan
 
     01.39   Fixed bug in MexVec3 class - the functions for setting y
             and z were actually setting the x value.
@@ -214,29 +214,29 @@
 
             In MexAlignedBox3d the width, height and isEmpty
             functions have all been removed.
-            
-            4th November 1996                       Bob Archer
-			
-	01.43	Templates have been removed from the 2D geometry classes.
 
-			New 2D geometry classes were added: MexLine2d, MexHalfPlane2d, 
-			MexPolygon2d and MexTriangle2d.
-			
-			Traingle-box and line-box intersection methods were added to 
-			MexAlignedBox2d.
-			
-			Methods minCorner and maxCorner were added to MexAlignedBox2d.
-			These replace topLeft and bottomRight which are now depreciated.
-			
-			Various stream insertion and extraction ops. were added.
-			
-			9 December 1996							Iain Cantlay
+            4th November 1996                       Bob Archer
+
+    01.43   Templates have been removed from the 2D geometry classes.
+
+            New 2D geometry classes were added: MexLine2d, MexHalfPlane2d,
+            MexPolygon2d and MexTriangle2d.
+
+            Traingle-box and line-box intersection methods were added to
+            MexAlignedBox2d.
+
+            Methods minCorner and maxCorner were added to MexAlignedBox2d.
+            These replace topLeft and bottomRight which are now depreciated.
+
+            Various stream insertion and extraction ops. were added.
+
+            9 December 1996                         Iain Cantlay
 
     01.44   MexAlignedBox2d::topLeft, MexAlignedBox2d::bottomRight,
             MexAlignedBox2d::width, MexAlignedBox2d::height all removed.
             Use minCorner instead of topLeft and maxCorner instead of
             bottomRight.
-            
+
             10 December 1996                        Bob Archer
 
     01.45   MexIntersectData class removed.
@@ -279,17 +279,17 @@
             the meantime, use MexEulerParameters.
             3 April 1997                        Bob Archer
 
-    01.49   MexVec3::cross_product renamed to crossProduct.    
-            MexVec3::dot_product renamed to dotProduct.    
+    01.49   MexVec3::cross_product renamed to crossProduct.
+            MexVec3::dot_product renamed to dotProduct.
             5 April 1997                        Bob Archer
 
     01.50   The MexTransform3d constructor which takes a MexEulerParameters
             argument was not initialising the position values. This has now
             been fixed.
             9 April 1997                        Bob Archer
-			
-	01.51	Added a MexQuad3d class.
-			11 April 1997						Iain Cantlay
+
+    01.51   Added a MexQuad3d class.
+            11 April 1997                       Iain Cantlay
 
     01.52   Reintroduced MexEulerAngles class
             16 April 1997                       Bob Archer
@@ -343,7 +343,7 @@
                 void transformVector( MexVec3* pVector ) const;
                     changed to
                 void transform( MexVec3* pVector ) const;
-                
+
                 void transformPoint( MexPoint3d* pPoint ) const;
                     changed to
                 void transform( MexPoint3d* pPoint ) const;
@@ -352,7 +352,7 @@
 
             MexVec3:
                 MexVec3( const MATHEX_SCALAR* );
-            	const MexVec3& operator =( const MATHEX_SCALAR* );
+                const MexVec3& operator =( const MATHEX_SCALAR* );
                 operator MATHEX_SCALAR *();
                 operator MATHEX_SCALAR const *() const;
                 removed
@@ -384,7 +384,7 @@
             Added MexConvexPolygon2d class.
             12 May 1997                       Jonathan Green
 
-    01.56   Added new constructors to MexAlignedBox2d and MexConvexPolygon2d.            
+    01.56   Added new constructors to MexAlignedBox2d and MexConvexPolygon2d.
             1 July 1997                       Jonathan Green
 
     01.57   Removed MexPoint3d::centre. Its implementation was meaningless.
@@ -430,9 +430,9 @@
             28 November 1997                        Yueai Liu
 
     01.67   Fixed two preconditions  in MexDouble.
-    		Added MexInt. Semantics as MexDouble.
-    		Added MexUnsigned. Semantics as MexDouble, except that -infinity is 
-    		not a permissible value.
+            Added MexInt. Semantics as MexDouble.
+            Added MexUnsigned. Semantics as MexDouble, except that -infinity is
+            not a permissible value.
             3 Febuary 1998                        Jerry Swan.
 
 
@@ -564,8 +564,8 @@
             6 January 1998          Bob Archer
 */
 
-#define	LIBRARY	"MEX"
-#define	VERSION	"01.93"
+#define LIBRARY "MEX"
+#define VERSION "01.93"
 
 #pragma off(unreferenced);
 

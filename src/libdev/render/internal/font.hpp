@@ -20,30 +20,30 @@ class RenIVertex;
 class RenIFont
 {
 public:
-	// PRE(!t.isNull());
+    // PRE(!t.isNull());
     RenIFont(const RenTexture& t, size_t h, size_t w, size_t vSpace, size_t hSpace);
     ~RenIFont();
 
-	void drawText(int x, int y, const std::string & text, const RenColour&);
-	void textDimensions(const std::string & text, Ren::Rect* dimensions) const;
+    void drawText(int x, int y, const std::string& text, const RenColour&);
+    void textDimensions(const std::string& text, Ren::Rect* dimensions) const;
 
-	size_t height() const;
+    size_t height() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const RenIFont& t );
+    friend ostream& operator<<(ostream& o, const RenIFont& t);
 
 private:
-	const size_t	height_, width_, vSpace_, hSpace_;
-	RenMaterial		mat_;
-	const std::string 	name_;
+    const size_t height_, width_, vSpace_, hSpace_;
+    RenMaterial mat_;
+    const std::string name_;
 
-	void wrapper(RenIVertex* vtx, Ren::VertexIdx* idx);
-	void renderCharPolygon(const char c, int x, int y, int w, int h, uint col);
+    void wrapper(RenIVertex* vtx, Ren::VertexIdx* idx);
+    void renderCharPolygon(const char c, int x, int y, int w, int h, uint col);
 
-    RenIFont( const RenIFont& );
-    RenIFont& operator =( const RenIFont& );
-    bool operator ==( const RenIFont& );
+    RenIFont(const RenIFont&);
+    RenIFont& operator=(const RenIFont&);
+    bool operator==(const RenIFont&);
 };
 
 #endif

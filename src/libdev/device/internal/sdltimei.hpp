@@ -15,32 +15,37 @@ class DevSdlTimeInternal
 {
 public:
     //  Singleton class
-    static DevSdlTimeInternal& instance(){ static DevSdlTimeInternal instance_; return instance_; };
+    static DevSdlTimeInternal& instance()
+    {
+        static DevSdlTimeInternal instance_;
+        return instance_;
+    };
     ~DevSdlTimeInternal();
 
-    double  resolution() const { return resolution_; };
+    double resolution() const { return resolution_; };
 
     enum TimeMethod
-    { RDTSC, PERFORMANCE_COUNTER, TIME_GET_TIME };
+    {
+        RDTSC,
+        PERFORMANCE_COUNTER,
+        TIME_GET_TIME
+    };
 
     TimeMethod method() const { return method_; };
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const DevSdlTimeInternal& t );
+    friend ostream& operator<<(ostream& o, const DevSdlTimeInternal& t);
 
-    DevSdlTimeInternal( const DevSdlTimeInternal& );
-    DevSdlTimeInternal& operator =( const DevSdlTimeInternal& );
+    DevSdlTimeInternal(const DevSdlTimeInternal&);
+    DevSdlTimeInternal& operator=(const DevSdlTimeInternal&);
 
     DevSdlTimeInternal();
 
-
     double resolution_;
     TimeMethod method_;
-
 };
-
 
 #endif
 

@@ -17,9 +17,9 @@
 
 PER_DEFINE_PERSISTENT(W4dUVTranslateData);
 
-W4dUVTranslateData::W4dUVTranslateData( const string& textureName, const MexVec2& speedVec, W4dLOD maxLod )
-:W4dAnimationData( textureName, maxLod ),
-speedVec_ ( speedVec )
+W4dUVTranslateData::W4dUVTranslateData(const string& textureName, const MexVec2& speedVec, W4dLOD maxLod)
+    : W4dAnimationData(textureName, maxLod)
+    , speedVec_(speedVec)
 {
 
     TEST_INVARIANT;
@@ -28,15 +28,14 @@ speedVec_ ( speedVec )
 W4dUVTranslateData::~W4dUVTranslateData()
 {
     TEST_INVARIANT;
-
 }
 
 void W4dUVTranslateData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dUVTranslateData& t )
+ostream& operator<<(ostream& o, const W4dUVTranslateData& t)
 {
 
     o << "W4dUVTranslateData " << (void*)&t << " start" << std::endl;
@@ -45,50 +44,48 @@ ostream& operator <<( ostream& o, const W4dUVTranslateData& t )
     return o;
 }
 
-//virtual
-void W4dUVTranslateData::apply( W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
+// virtual
+void W4dUVTranslateData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
 {
-	PRE(pEntity);
-	PRE(pEntity->hasMesh());
+    PRE(pEntity);
+    PRE(pEntity->hasMesh());
 
-	size_t nameLength = name().length();
-	string textureName = name();
+    size_t nameLength = name().length();
+    string textureName = name();
 
-	if( textureName.substr(nameLength-4, 4) != ".bmp" )
-	{
-		textureName += ".bmp";
-	}
+    if (textureName.substr(nameLength - 4, 4) != ".bmp")
+    {
+        textureName += ".bmp";
+    }
 
-    const RenTexture keyTexture = RenTexManager::instance().createTexture( textureName );
+    const RenTexture keyTexture = RenTexManager::instance().createTexture(textureName);
 
-	W4dUVTranslation* pUVTranslate = _NEW( W4dUVTranslation(forever(), maxLod(), speedVec_, MexVec2(0,0)) );
-	pUVTranslate->setFilterTexture( keyTexture );
-	W4dUVPlanPtr uvPlanPtr = pUVTranslate;
+    W4dUVTranslation* pUVTranslate = _NEW(W4dUVTranslation(forever(), maxLod(), speedVec_, MexVec2(0, 0)));
+    pUVTranslate->setFilterTexture(keyTexture);
+    W4dUVPlanPtr uvPlanPtr = pUVTranslate;
 
-	pEntity->entityPlanForEdit().uvPlan(uvPlanPtr, startTime);
-
+    pEntity->entityPlanForEdit().uvPlan(uvPlanPtr, startTime);
 }
 
-W4dUVTranslateData::W4dUVTranslateData( PerConstructor con )
-: W4dAnimationData( con )
+W4dUVTranslateData::W4dUVTranslateData(PerConstructor con)
+    : W4dAnimationData(con)
 {
 }
 
-void perWrite( PerOstream& str, const W4dUVTranslateData& t )
+void perWrite(PerOstream& str, const W4dUVTranslateData& t)
 {
-	const W4dAnimationData& data = t;
-	perWrite( str, data );
+    const W4dAnimationData& data = t;
+    perWrite(str, data);
 
-	str << t.speedVec_;
+    str << t.speedVec_;
 }
 
-void perRead( PerIstream& str, W4dUVTranslateData& t )
+void perRead(PerIstream& str, W4dUVTranslateData& t)
 {
-	W4dAnimationData& data = t;
-	perRead( str, data );
+    W4dAnimationData& data = t;
+    perRead(str, data);
 
-	str >> t.speedVec_;
+    str >> t.speedVec_;
 }
-
 
 /* End UVDATA.CPP ***************************************************/

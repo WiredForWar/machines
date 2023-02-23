@@ -1,5 +1,5 @@
 /*
- * P L A Y E R S . H P P 
+ * P L A Y E R S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,32 +17,36 @@
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
 
-class MachGuiPlayerNameList	: public GuiDisplayable
+class MachGuiPlayerNameList : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiPlayerNameList( GuiDisplayable *pParent, const Gui::Coord& topLeft, const string& fontName, uint title );
-    MachGuiPlayerNameList( GuiDisplayable *pParent, const Gui::Boundary& boundary, const string& fontName, uint title, bool isWhite );
-    ~MachGuiPlayerNameList();
+    MachGuiPlayerNameList(GuiDisplayable* pParent, const Gui::Coord& topLeft, const string& fontName, uint title);
+    MachGuiPlayerNameList(
+        GuiDisplayable* pParent,
+        const Gui::Boundary& boundary,
+        const string& fontName,
+        uint title,
+        bool isWhite);
+    ~MachGuiPlayerNameList() override;
 
     void CLASS_INVARIANT;
-	
-	virtual void doDisplay();
 
-	void names( const string& player1, const string& player2, const string& player3, const string& player4 );
+    void doDisplay() override;
+
+    void names(const string& player1, const string& player2, const string& player3, const string& player4);
 
 private:
-	// Truncate player's name if it will not fit in bounding box.
-	static string truncate( const string& name, uint maxWidth );
+    // Truncate player's name if it will not fit in bounding box.
+    static string truncate(const string& name, uint maxWidth);
 
-    friend ostream& operator <<( ostream& o, const MachGuiPlayerNameList& t );
+    friend ostream& operator<<(ostream& o, const MachGuiPlayerNameList& t);
 
-    MachGuiPlayerNameList( const MachGuiPlayerNameList& );
-    MachGuiPlayerNameList& operator =( const MachGuiPlayerNameList& );
+    MachGuiPlayerNameList(const MachGuiPlayerNameList&);
+    MachGuiPlayerNameList& operator=(const MachGuiPlayerNameList&);
 
-	bool isWhite_;
+    bool isWhite_;
 };
-
 
 #endif
 

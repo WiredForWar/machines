@@ -18,46 +18,43 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysLightStingAura : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysLightStingAura( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysLightStingAura(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysLightStingAura& exemplar();
 
-    //dtor
-    virtual ~MachPhysLightStingAura();
+    // dtor
+    ~MachPhysLightStingAura() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startLightStingAura( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration );
+    void startLightStingAura(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLightStingAura& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLightStingAura& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLightStingAura );
+    PER_MEMBER_PERSISTENT(MachPhysLightStingAura);
 
 private:
-    //Deliberately revoked
-    MachPhysLightStingAura( const MachPhysLightStingAura& );
-    MachPhysLightStingAura& operator =( const MachPhysLightStingAura& );
-    bool operator ==( const MachPhysLightStingAura& );
+    // Deliberately revoked
+    MachPhysLightStingAura(const MachPhysLightStingAura&);
+    MachPhysLightStingAura& operator=(const MachPhysLightStingAura&);
+    bool operator==(const MachPhysLightStingAura&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLightStingAura();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLightStingAura );
-PER_READ_WRITE( MachPhysLightStingAura );
+PER_DECLARE_PERSISTENT(MachPhysLightStingAura);
+PER_READ_WRITE(MachPhysLightStingAura);
 
 #endif
 

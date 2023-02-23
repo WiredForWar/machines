@@ -9,20 +9,20 @@
 #include "phys/motchunk.hpp"
 
 PhysCompressedMotionChunk::PhysCompressedMotionChunk()
-:   createTime_( 0 ),
-    motionTimeOffset_( 0 ),
-    expiryTime_( 0 ),
-    clearance_( 0 ),
-    hasExpiryTime_( false ),
-	minHeight_( 0 ),
-    maxHeight_( 0 )
+    : createTime_(0)
+    , motionTimeOffset_(0)
+    , expiryTime_(0)
+    , clearance_(0)
+    , hasExpiryTime_(false)
+    , minHeight_(0)
+    , maxHeight_(0)
 
 {
 
     TEST_INVARIANT;
 }
 
-PhysCompressedMotionChunk::PhysCompressedMotionChunk( const PhysMotionChunk& mot )
+PhysCompressedMotionChunk::PhysCompressedMotionChunk(const PhysMotionChunk& mot)
 {
     startPoint_ = mot.startPoint_;
     endPoint_ = mot.endPoint_;
@@ -36,19 +36,17 @@ PhysCompressedMotionChunk::PhysCompressedMotionChunk( const PhysMotionChunk& mot
     maxHeight_ = mot.maxHeight_;
 }
 
-
 PhysCompressedMotionChunk::~PhysCompressedMotionChunk()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysCompressedMotionChunk::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysCompressedMotionChunk& t )
+ostream& operator<<(ostream& o, const PhysCompressedMotionChunk& t)
 {
 
     o << "PhysCompressedMotionChunk " << (void*)&t << " start" << std::endl;

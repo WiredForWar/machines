@@ -1,5 +1,5 @@
 /*
- * W H E E L S I . H P P 
+ * W H E E L S I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,57 +26,61 @@ class MachPhysWheelsImpl : public MachPhysLocomotionMethodImpl
 // Canonical form revoked
 {
 public:
-
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysWheelsImpl );
-    PER_FRIEND_READ_WRITE( MachPhysWheelsImpl );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysWheelsImpl);
+    PER_FRIEND_READ_WRITE(MachPhysWheelsImpl);
 
 private:
     friend class MachPhysWheels;
 
-    typedef    ctl_vector< W4dLink* >  W4dLinks;
+    using W4dLinks = ctl_vector<W4dLink*>;
 
-    MachPhysWheelsImpl( MachPhysMachine* pMachine, MachPhysWheels* pWheels,
-        MATHEX_SCALAR wheelRadius, const W4dLinks& leftWheels, const W4dLinks& rightWheels );
+    MachPhysWheelsImpl(
+        MachPhysMachine* pMachine,
+        MachPhysWheels* pWheels,
+        MATHEX_SCALAR wheelRadius,
+        const W4dLinks& leftWheels,
+        const W4dLinks& rightWheels);
 
-    virtual ~MachPhysWheelsImpl();
+    ~MachPhysWheelsImpl() override;
 
     ///////////////////////////////////////////////////
     // Inherited from MachPhysLocomotionMethodImpl
 
-    //Compute the instantaneous position for the machine at baseLocation, facing along unitFacingDirection.
-    //Return the 3d location for the origin in pLocation, and the machine vertical normal in pNormal.
-    virtual void machineSurfacePosition
-    (
-        const MachPhysPlanetSurface& surface, const MexPoint3d& baseLocation, const MexVec3& unitFacingDirection,
-        MexPoint3d* pLocation, MexVec3* pNormal
-    ) const;
+    // Compute the instantaneous position for the machine at baseLocation, facing along unitFacingDirection.
+    // Return the 3d location for the origin in pLocation, and the machine vertical normal in pNormal.
+    void machineSurfacePosition(
+        const MachPhysPlanetSurface& surface,
+        const MexPoint3d& baseLocation,
+        const MexVec3& unitFacingDirection,
+        MexPoint3d* pLocation,
+        MexVec3* pNormal) const override;
 
-    //Update the locomotion animations for the machine depending on current activity as specified by state.
-    virtual void firstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state );
+    // Update the locomotion animations for the machine depending on current activity as specified by state.
+    void firstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state) override;
 
     ///////////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysWheelsImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysWheelsImpl& t);
 
-    MachPhysWheelsImpl( const MachPhysWheelsImpl& );
-    MachPhysWheelsImpl& operator =( const MachPhysWheelsImpl& );
+    MachPhysWheelsImpl(const MachPhysWheelsImpl&);
+    MachPhysWheelsImpl& operator=(const MachPhysWheelsImpl&);
 
-    //data members
-    MachPhysWheels* pWheels_; //The owning object
+    // data members
+    MachPhysWheels* pWheels_; // The owning object
     MATHEX_SCALAR wheelRadius_;
-    MexRadians leftLastAngle_; //Angle implied by previous move fro left wheels
-    MexRadians rightLastAngle_; //Angle implied by previous move fro right wheels
-    MexRadians leftLastAngleSpeed_; //Final rotation rate implied by previous move.
-                                    //Values close to zero are rounded to zero.
-    MexRadians rightLastAngleSpeed_; //Final rotation rate implied by previous move.
-                                    //Values close to zero are rounded to zero.
-    W4dLinks    leftWheels_;
-    W4dLinks    rightWheels_;
+    MexRadians leftLastAngle_; // Angle implied by previous move fro left wheels
+    MexRadians rightLastAngle_; // Angle implied by previous move fro right wheels
+    MexRadians leftLastAngleSpeed_; // Final rotation rate implied by previous move.
+                                    // Values close to zero are rounded to zero.
+    MexRadians rightLastAngleSpeed_; // Final rotation rate implied by previous move.
+                                     // Values close to zero are rounded to zero.
+    W4dLinks leftWheels_;
+    W4dLinks rightWheels_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysWheelsImpl );
+PER_DECLARE_PERSISTENT(MachPhysWheelsImpl);
 
 #endif
 

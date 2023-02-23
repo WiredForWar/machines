@@ -7,70 +7,70 @@
 #include "sound/internal/wavefmt.hpp"
 
 #ifndef _INLINE
-	#include "sound/internal/wavefmt.ipp"
+#include "sound/internal/wavefmt.ipp"
 #endif
 ////////////////////////////////////////////////////////////
 
-WaveFormat::WaveFormat( Channels c, SampleRateHz r,	BitsPerSample b )
-	:channels_( c ), sampleRateHz_( r ), bitsPerSample_( b )
+WaveFormat::WaveFormat(Channels c, SampleRateHz r, BitsPerSample b)
+    : channels_(c)
+    , sampleRateHz_(r)
+    , bitsPerSample_(b)
 {
 }
 
-WaveFormat::WaveFormat( Channels c, SampleRateKHz r, BitsPerSample b )
-	:channels_( c ), bitsPerSample_( b )
+WaveFormat::WaveFormat(Channels c, SampleRateKHz r, BitsPerSample b)
+    : channels_(c)
+    , bitsPerSample_(b)
 {
-	sampleRateKHz( r );
+    sampleRateKHz(r);
 }
 
-WaveFormat::WaveFormat( const WaveFormat& w )
+WaveFormat::WaveFormat(const WaveFormat& w)
 {
-	channels( w.channels() );
-	sampleRateHz( w.sampleRateHz() );
-	bitsPerSample( w.bitsPerSample() );
-}
-
-////////////////////////////////////////////////////////////
-
-void WaveFormat::format( Channels c, SampleRateHz r,
-	BitsPerSample b )
-{
-	channels( c );
-	sampleRateHz( r );
-	bitsPerSample( b );
-}
-
-void WaveFormat::format( Channels c, SampleRateKHz r,
-	BitsPerSample b )
-{
-	channels( c );
-	sampleRateKHz( r );
-	bitsPerSample( b );
+    channels(w.channels());
+    sampleRateHz(w.sampleRateHz());
+    bitsPerSample(w.bitsPerSample());
 }
 
 ////////////////////////////////////////////////////////////
 
-WaveFormat& WaveFormat::operator =( const WaveFormat& w )
+void WaveFormat::format(Channels c, SampleRateHz r, BitsPerSample b)
 {
-	channels( w.channels() );
-	sampleRateHz( w.sampleRateHz() );
-	bitsPerSample( w.bitsPerSample() );
+    channels(c);
+    sampleRateHz(r);
+    bitsPerSample(b);
+}
 
-	return *this;
+void WaveFormat::format(Channels c, SampleRateKHz r, BitsPerSample b)
+{
+    channels(c);
+    sampleRateKHz(r);
+    bitsPerSample(b);
+}
+
+////////////////////////////////////////////////////////////
+
+WaveFormat& WaveFormat::operator=(const WaveFormat& w)
+{
+    channels(w.channels());
+    sampleRateHz(w.sampleRateHz());
+    bitsPerSample(w.bitsPerSample());
+
+    return *this;
 }
 
 /** FRIEND **/
-bool operator ==( const WaveFormat& a, const WaveFormat& b )
+bool operator==(const WaveFormat& a, const WaveFormat& b)
 {
-	return ( a.channels() == b.channels() ) and
-		( a.sampleRateHz() == b.sampleRateHz() ) and
-		( a.bitsPerSample() == b.bitsPerSample() );
+    return (a.channels() == b.channels()) and (a.sampleRateHz() == b.sampleRateHz())
+        and (a.bitsPerSample() == b.bitsPerSample());
 }
 
 /** FRIEND **/
 // added for compliance with STL/CTL
-bool operator <( const WaveFormat& a, const WaveFormat& b )
+bool operator<(const WaveFormat& a, const WaveFormat& b)
 {
-	return a.nBytesPerSec() < b.nBytesPerSec();
+    return a.nBytesPerSec() < b.nBytesPerSec();
 }
 
 ////////////////////////////////////////////////////////////

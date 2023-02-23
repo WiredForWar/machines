@@ -1,5 +1,5 @@
 /*
- * S Y S M E S S . C P P 
+ * S Y S M E S S . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,15 +20,14 @@ MachLogSystemMessageHandler::MachLogSystemMessageHandler()
 MachLogSystemMessageHandler::~MachLogSystemMessageHandler()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogSystemMessageHandler::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogSystemMessageHandler& t )
+ostream& operator<<(ostream& o, const MachLogSystemMessageHandler& t)
 {
 
     o << "MachLogSystemMessageHandler " << (void*)&t << " start" << std::endl;
@@ -37,33 +36,35 @@ ostream& operator <<( ostream& o, const MachLogSystemMessageHandler& t )
     return o;
 }
 
-//virtual 
-bool	MachLogSystemMessageHandler::handleHostMessage()
+// virtual
+bool MachLogSystemMessageHandler::handleHostMessage()
 {
-	return false;
+    return false;
 }
 
-//virtual 
-bool	MachLogSystemMessageHandler::handleDestroyPlayerMessage( const string& /*playerString*/ )
+// virtual
+bool MachLogSystemMessageHandler::handleDestroyPlayerMessage(const string& /*playerString*/)
 {
-	return false;
+    return false;
 }
 
-//virtual 
-bool	MachLogSystemMessageHandler::handleSessionLostMessage()
+// virtual
+bool MachLogSystemMessageHandler::handleSessionLostMessage()
 {
-	return false;
+    return false;
 }
 
-bool MachLogSystemMessageHandler::logicalHandleDestroyPlayerMessage( MachPhys::Race r )
+bool MachLogSystemMessageHandler::logicalHandleDestroyPlayerMessage(MachPhys::Race r)
 {
-	//someone has fallen out of the network so destroy all their objects
-//	if( MachLogNetwork::instance().isNodeLogicalHost() )
-	{
-		for( MachLogRaces::Objects::iterator i = MachLogRaces::instance().raceObjects( r ).begin(); i != MachLogRaces::instance().raceObjects( r ).end(); ++i )
-			(*i)->beHit( 10000 );
-	}
-	return true;
+    // someone has fallen out of the network so destroy all their objects
+    //   if( MachLogNetwork::instance().isNodeLogicalHost() )
+    {
+        for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().raceObjects(r).begin();
+             i != MachLogRaces::instance().raceObjects(r).end();
+             ++i)
+            (*i)->beHit(10000);
+    }
+    return true;
 }
 
 /* End SYSMESS.CPP **************************************************/

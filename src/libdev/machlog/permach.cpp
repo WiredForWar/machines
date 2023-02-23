@@ -1,5 +1,5 @@
 /*
- * P E R M A C H . C P P 
+ * P E R M A C H . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,7 +18,7 @@
 #include "machlog/technici.hpp"
 #include "machlog/races.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogMachinePersistence );
+PER_DEFINE_PERSISTENT(MachLogMachinePersistence);
 
 // static
 MachLogMachinePersistence& MachLogMachinePersistence::instance()
@@ -29,22 +29,21 @@ MachLogMachinePersistence& MachLogMachinePersistence::instance()
 
 MachLogMachinePersistence::MachLogMachinePersistence()
 {
-	registerDerivedClasses();
+    registerDerivedClasses();
     TEST_INVARIANT;
 }
 
 MachLogMachinePersistence::~MachLogMachinePersistence()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogMachinePersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogMachinePersistence& t )
+ostream& operator<<(ostream& o, const MachLogMachinePersistence& t)
 {
 
     o << "MachLogMachinePersistence " << (void*)&t << " start" << std::endl;
@@ -55,44 +54,46 @@ ostream& operator <<( ostream& o, const MachLogMachinePersistence& t )
 
 void MachLogMachinePersistence::registerDerivedClasses()
 {
-	PER_REGISTER_DERIVED_CLASS( MachLogAdministrator );
-	PER_REGISTER_DERIVED_CLASS( MachLogAggressor );
-	PER_REGISTER_DERIVED_CLASS( MachLogAPC );
-	PER_REGISTER_DERIVED_CLASS( MachLogConstructor );
-	PER_REGISTER_DERIVED_CLASS( MachLogGeoLocator );
-	PER_REGISTER_DERIVED_CLASS( MachLogResourceCarrier );
-	PER_REGISTER_DERIVED_CLASS( MachLogSpyLocator );
-	PER_REGISTER_DERIVED_CLASS( MachLogTechnician );
+    PER_REGISTER_DERIVED_CLASS(MachLogAdministrator);
+    PER_REGISTER_DERIVED_CLASS(MachLogAggressor);
+    PER_REGISTER_DERIVED_CLASS(MachLogAPC);
+    PER_REGISTER_DERIVED_CLASS(MachLogConstructor);
+    PER_REGISTER_DERIVED_CLASS(MachLogGeoLocator);
+    PER_REGISTER_DERIVED_CLASS(MachLogResourceCarrier);
+    PER_REGISTER_DERIVED_CLASS(MachLogSpyLocator);
+    PER_REGISTER_DERIVED_CLASS(MachLogTechnician);
 }
 
 void MachLogMachinePersistence::setUpLocalVectorFromViews() const
 {
-	//clear down collection of machines before we begin.
-	MachLogMachinePersistence& nonConstPer = *( _CONST_CAST( MachLogMachinePersistence*, this ) );
-	nonConstPer.machines_.erase( nonConstPer.machines_.begin(), nonConstPer.machines_.end() );
-	for( MachLogRaces::Objects::iterator i = MachLogRaces::instance().objects().begin(); i != MachLogRaces::instance().objects().end(); ++i )
-		if( (*i)->objectIsMachine() )
-			nonConstPer.machines_.push_back( &(*i)->asMachine() );
+    // clear down collection of machines before we begin.
+    MachLogMachinePersistence& nonConstPer = *(_CONST_CAST(MachLogMachinePersistence*, this));
+    nonConstPer.machines_.erase(nonConstPer.machines_.begin(), nonConstPer.machines_.end());
+    for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().objects().begin();
+         i != MachLogRaces::instance().objects().end();
+         ++i)
+        if ((*i)->objectIsMachine())
+            nonConstPer.machines_.push_back(&(*i)->asMachine());
 }
 
 void MachLogMachinePersistence::setUpViewsFromLocalVector()
 {
-	//put all the machines back into the collections.
-	//this should update everything accordingly.
-	for( Machines::iterator i = machines_.begin(); i != machines_.end(); ++i )
-		MachLogRaces::instance().addToAllCollections( (*i) );
+    // put all the machines back into the collections.
+    // this should update everything accordingly.
+    for (Machines::iterator i = machines_.begin(); i != machines_.end(); ++i)
+        MachLogRaces::instance().addToAllCollections((*i));
 }
 
-void perWrite( PerOstream& ostr, const MachLogMachinePersistence& per )
+void perWrite(PerOstream& ostr, const MachLogMachinePersistence& per)
 {
-	per.setUpLocalVectorFromViews();
-	ostr << per.machines_;
+    per.setUpLocalVectorFromViews();
+    ostr << per.machines_;
 }
 
-void perRead( PerIstream& istr, MachLogMachinePersistence& per )
+void perRead(PerIstream& istr, MachLogMachinePersistence& per)
 {
-	istr >> per.machines_;
-	per.setUpViewsFromLocalVector();
+    istr >> per.machines_;
+    per.setUpViewsFromLocalVector();
 }
 
 /* End PERMACH.CPP **************************************************/

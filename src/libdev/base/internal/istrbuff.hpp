@@ -21,33 +21,32 @@ class PerIstream;
 class PerIstreamBuffer : public std::streambuf
 {
 public:
-    PerIstreamBuffer( PerIstream* pStream );
-    ~PerIstreamBuffer();
+    PerIstreamBuffer(PerIstream* pStream);
+    ~PerIstreamBuffer() override;
 
-    virtual int     overflow( int c );
-    virtual int     underflow();
-//
-    virtual int     do_sgetn( char *buf, int len );
-    virtual int     do_sputn( char const *buf, int len );
-//     virtual int     sync();
-//
-//     CLASS_INVARIANT
-//     {
-//     }
+    int overflow(int c) override;
+    int underflow() override;
+    //
+    virtual int do_sgetn(char* buf, int len);
+    virtual int do_sputn(char const* buf, int len);
+    //     virtual int     sync();
+    //
+    //     CLASS_INVARIANT
+    //     {
+    //     }
 
 private:
     // Operation deliberately revoked
-    PerIstreamBuffer( const PerIstreamBuffer& );
+    PerIstreamBuffer(const PerIstreamBuffer&);
 
     // Operation deliberately revoked
-    PerIstreamBuffer& operator =( const PerIstreamBuffer& );
+    PerIstreamBuffer& operator=(const PerIstreamBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const PerIstreamBuffer& );
+    bool operator==(const PerIstreamBuffer&);
 
-    PerIstream*  pFilter_;
+    PerIstream* pFilter_;
 };
-
 
 #endif
 

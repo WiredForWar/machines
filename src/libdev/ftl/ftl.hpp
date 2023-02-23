@@ -8,9 +8,8 @@
 
 #include <utility>
 
-template < class KEY, class VALUE >
-using FtlPair = std::pair< KEY, VALUE >;
+template <class KEY, class VALUE> using FtlPair = std::pair<KEY, VALUE>;
 
-#endif	/* #ifndef _FTL_FTL_HPP	*/
+#endif /* #ifndef _FTL_FTL_HPP */
 
 /* End FTL.HPP ******************************************************/

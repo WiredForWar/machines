@@ -8,25 +8,26 @@
 #include "machphys/artfdata.hpp"
 
 #ifndef _INLINE
-    #include "machphys/artfdata.ipp"
+#include "machphys/artfdata.ipp"
 #endif
 
-MachPhysArtefactData::MachPhysArtefactData(MATHEX_SCALAR height,
-										   MexConvexPolygon2d* pPolygon,
-										   const MachPhys::ArmourUnits& armour,
-										   const MachPhys::HitPointUnits& hitPoints,
-										   const MachPhys::BuildingMaterialUnits& cost,
-                				  		   int subType,
-				                 		   uint resourceStringId )
-:height_(height),
-pPolygon_(pPolygon),
-subType_( subType ),
-resourceStringId_( resourceStringId )
+MachPhysArtefactData::MachPhysArtefactData(
+    MATHEX_SCALAR height,
+    MexConvexPolygon2d* pPolygon,
+    const MachPhys::ArmourUnits& armour,
+    const MachPhys::HitPointUnits& hitPoints,
+    const MachPhys::BuildingMaterialUnits& cost,
+    int subType,
+    uint resourceStringId)
+    : height_(height)
+    , pPolygon_(pPolygon)
+    , subType_(subType)
+    , resourceStringId_(resourceStringId)
 {
 
-	this->armour( armour );
-	this->hitPoints( hitPoints );
-	this->cost( cost );
+    this->armour(armour);
+    this->hitPoints(hitPoints);
+    this->cost(cost);
 
     TEST_INVARIANT;
 }
@@ -34,15 +35,14 @@ resourceStringId_( resourceStringId )
 MachPhysArtefactData::~MachPhysArtefactData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysArtefactData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysArtefactData& t )
+ostream& operator<<(ostream& o, const MachPhysArtefactData& t)
 {
 
     o << "MachPhysArtefactData " << (void*)&t << " start" << std::endl;

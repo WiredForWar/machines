@@ -11,87 +11,83 @@
 #include "utility/linetok.hpp"
 #include "machlog/condnot.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogNotCondition);
 
-PER_DEFINE_PERSISTENT( MachLogNotCondition );
-
-MachLogNotCondition::MachLogNotCondition( const string& keyName, SimCondition* pNotCondition )
-:	SimCondition( keyName ),
-	pNotCondition_( pNotCondition )
+MachLogNotCondition::MachLogNotCondition(const string& keyName, SimCondition* pNotCondition)
+    : SimCondition(keyName)
+    , pNotCondition_(pNotCondition)
 {
     TEST_INVARIANT;
-	pNotCondition->incrementLinkedActionCount();
+    pNotCondition->incrementLinkedActionCount();
 }
 
 MachLogNotCondition::~MachLogNotCondition()
 {
     TEST_INVARIANT;
-	pNotCondition_->decrementLinkedActionCount();
-    if( pNotCondition_->nLinkedActions() == 0 )
-		_DELETE( pNotCondition_ );
-
+    pNotCondition_->decrementLinkedActionCount();
+    if (pNotCondition_->nLinkedActions() == 0)
+        _DELETE(pNotCondition_);
 }
 
-//virtual
+// virtual
 bool MachLogNotCondition::doHasConditionBeenMet() const
 {
-	return not pNotCondition_->hasConditionBeenMet();
+    return not pNotCondition_->hasConditionBeenMet();
 }
 
-//static
-MachLogNotCondition* MachLogNotCondition::newFromParser( UtlLineTokeniser* pParser, ConditionMap* pMap )
+// static
+MachLogNotCondition* MachLogNotCondition::newFromParser(UtlLineTokeniser* pParser, ConditionMap* pMap)
 {
-	SimCondition* pNotCondition = NULL;
-	ASSERT_INFO( pParser->tokens()[2] )
-	pNotCondition = pMap->operator[]( pParser->tokens()[2] );
-	return _NEW( MachLogNotCondition( pParser->tokens()[1], pNotCondition ) );
+    SimCondition* pNotCondition = nullptr;
+    ASSERT_INFO(pParser->tokens()[2])
+    pNotCondition = pMap->operator[](pParser->tokens()[2]);
+    return _NEW(MachLogNotCondition(pParser->tokens()[1], pNotCondition));
 }
 
 void MachLogNotCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogNotCondition& t )
+ostream& operator<<(ostream& o, const MachLogNotCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogNotCondition::recommendedCallBackTimeGap() const
 {
     static const PhysRelativeTime value = 1.54;
-	return value;
+    return value;
 }
 
-//virtual
-void MachLogNotCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogNotCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogNotCondition " << (void*)this << " start" << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogNotCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogNotCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.pNotCondition_;
-
+    ostr << base1;
+    ostr << condition.pNotCondition_;
 }
 
-void perRead( PerIstream& istr, MachLogNotCondition& condition )
+void perRead(PerIstream& istr, MachLogNotCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.pNotCondition_;
+    istr >> base1;
+    istr >> condition.pNotCondition_;
 }
 
-MachLogNotCondition::MachLogNotCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogNotCondition::MachLogNotCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

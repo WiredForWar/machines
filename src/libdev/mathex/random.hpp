@@ -31,25 +31,25 @@ public:
 
     static int upperLimit();
 
-    void    seed( uint32_t newSeed );
-    void    seedFromTime();
+    void seed(uint32_t newSeed);
+    void seedFromTime();
 
     //  Return the seed used for this RNG
-    uint32_t   seed() const;
+    uint32_t seed() const;
 
     //  Construct a random number generator seeded by the
     //  time and return it
-    static  MexBasicRandom constructSeededFromTime();
+    static MexBasicRandom constructSeededFromTime();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MexBasicRandom& t );
+    friend ostream& operator<<(ostream& o, const MexBasicRandom& t);
     friend class SeedRecorder;
 
     //  Used because of the poor resolution of the clock - ensures every call
     //  to seedFromTime will use a different seed.
-    static  size_t  seedIncrement();
+    static size_t seedIncrement();
 
     uint32_t state_;
     uint32_t seed_;
@@ -58,25 +58,22 @@ private:
 //  Acccessor functions for getting the results of a
 //  generator in different forms
 
-template< class RANDOM >
-MATHEX_SCALAR mexRandomScalar( RANDOM* pR, MATHEX_SCALAR lowerLimit, MATHEX_SCALAR upperLimit );
+template <class RANDOM> MATHEX_SCALAR mexRandomScalar(RANDOM* pR, MATHEX_SCALAR lowerLimit, MATHEX_SCALAR upperLimit);
 //  PRE( lowerLimit < upperLimit );
 //  POST( lowerLimit <= result and result < upperLimit );
 
-template< class RANDOM >
-int mexRandomInt( RANDOM* pR, int lowerLimit, int upperLimit );
+template <class RANDOM> int mexRandomInt(RANDOM* pR, int lowerLimit, int upperLimit);
 //  PRE( lowerLimit < upperLimit );
 //  POST( lowerLimit <= result and result < upperLimit );
 
-template< class RANDOM >
-int mexRandomInt( RANDOM* pR, int upperLimit );
+template <class RANDOM> int mexRandomInt(RANDOM* pR, int upperLimit);
 //  PRE( 0 < upperLimit );
 //  POST( 0 <= result and result < upperLimit );
 
 #endif
 
-//#ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
-    #include "mathex/random.ctf"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
+#include "mathex/random.ctf"
+// #endif
 
 /* End RANDOM.HPP ***************************************************/

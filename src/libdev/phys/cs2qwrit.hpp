@@ -1,5 +1,5 @@
 /*
- * C S 2 Q W R I T . H P P 
+ * C S 2 Q W R I T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,20 +21,19 @@ class PhysPathFindingQueueWriter
 // Canonical form revoked
 {
 public:
-    PhysPathFindingQueueWriter( const PhysConfigSpace2d& configSpace );
+    PhysPathFindingQueueWriter(const PhysConfigSpace2d& configSpace);
     ~PhysPathFindingQueueWriter();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const PhysPathFindingQueueWriter& t );
+    friend ostream& operator<<(ostream& o, const PhysPathFindingQueueWriter& t);
 
-    PhysPathFindingQueueWriter( const PhysPathFindingQueueWriter& );
-    PhysPathFindingQueueWriter& operator =( const PhysPathFindingQueueWriter& );
+    PhysPathFindingQueueWriter(const PhysPathFindingQueueWriter&);
+    PhysPathFindingQueueWriter& operator=(const PhysPathFindingQueueWriter&);
 
     const PhysConfigSpace2d& configSpace_;
 };
-
 
 #endif
 

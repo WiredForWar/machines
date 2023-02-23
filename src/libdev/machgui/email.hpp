@@ -17,43 +17,38 @@ class MachInGameScreen;
 class MachEmailWindow : public GuiDisplayable
 {
 public:
-
-	virtual ~MachEmailWindow() {};
+    ~MachEmailWindow() override {};
 
 protected:
-	// inherited from GuiDisplayable...
-	virtual void doDisplay() {};
+    // inherited from GuiDisplayable...
+    void doDisplay() override {};
 };
 
 class MachMenuBar : public GuiDisplayable
 {
 public:
+    MachMenuBar(MachInGameScreen* pParent, const Gui::Coord& rel);
 
-	MachMenuBar( MachInGameScreen * pParent, const Gui::Coord& rel );
-
-	virtual ~MachMenuBar() {};
+    ~MachMenuBar() override {};
 
 protected:
-	// inherited from GuiDisplayable...
-	virtual void doDisplay() {};
+    // inherited from GuiDisplayable...
+    void doDisplay() override {};
 };
 
 class MachEmailArrivalBar : public GuiDisplayable
 {
 public:
+    MachEmailArrivalBar(MachInGameScreen* pParent, const Gui::Coord& rel);
 
-	MachEmailArrivalBar( MachInGameScreen * pParent, 
-							const Gui::Coord& rel );
-
-	virtual ~MachEmailArrivalBar() {};
+    ~MachEmailArrivalBar() override {};
 
 protected:
-	// inherited from GuiDisplayable...
-	virtual void doDisplay() {};
+    // inherited from GuiDisplayable...
+    void doDisplay() override {};
 };
 
 /* //////////////////////////////////////////////////////////////// */
-
 
 /* //////////////////////////////////////////////////////////////// */
 

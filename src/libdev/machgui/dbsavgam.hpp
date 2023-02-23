@@ -1,5 +1,5 @@
 /*
- * D B S A V G A M . H P P 
+ * D B S A V G A M . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,7 +16,7 @@
 #include "base/persist.hpp"
 #include "stdlib/string.hpp"
 
-//forward refs
+// forward refs
 class MachGuiDbScenario;
 class MachGuiDbPlayer;
 class MachGuiDbISavedGame;
@@ -25,52 +25,52 @@ class MachGuiDbSavedGame
 // Canonical form revoked
 {
 public:
-    //Create with menu name userFileName, and external path fileName for the specfiied scenario
-    MachGuiDbSavedGame( const string& userFileName, const string& fileName, MachGuiDbScenario* pDbScenario );
+    // Create with menu name userFileName, and external path fileName for the specfiied scenario
+    MachGuiDbSavedGame(const string& userFileName, const string& fileName, MachGuiDbScenario* pDbScenario);
 
     ~MachGuiDbSavedGame();
 
-    //Set/get the user filename
+    // Set/get the user filename
     const string& userFileName() const;
-    void userFileName( const string& name );
+    void userFileName(const string& name);
 
-    //Set/get the external file name
+    // Set/get the external file name
     const string& externalFileName() const;
-    void externalFileName( const string& name );
+    void externalFileName(const string& name);
 
-    //true iff a player is associated with the saved game
+    // true iff a player is associated with the saved game
     bool hasPlayer() const;
 
-    //Set/get the player associated with the saved game
+    // Set/get the player associated with the saved game
     MachGuiDbPlayer& player() const;
-    //PRE( hasPlayer() );
-    void player( MachGuiDbPlayer* pDbPlayer ); //Use NULL to clear
+    // PRE( hasPlayer() );
+    void player(MachGuiDbPlayer* pDbPlayer); // Use NULL to clear
 
-    //Set/get flag indicating whether the saved game is for a campaign scenario
+    // Set/get flag indicating whether the saved game is for a campaign scenario
     bool isCampaignGame() const;
-    void isCampaignGame( bool isIt );
+    void isCampaignGame(bool isIt);
 
-    //Set/get the scenario used to start the game
+    // Set/get the scenario used to start the game
     MachGuiDbScenario& scenario() const;
-    void scenario( MachGuiDbScenario* pDbScenario );
-    //PRE( pDbScenario != NULL );
+    void scenario(MachGuiDbScenario* pDbScenario);
+    // PRE( pDbScenario != NULL );
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachGuiDbSavedGame );
-    PER_FRIEND_READ_WRITE( MachGuiDbSavedGame );
+    PER_MEMBER_PERSISTENT(MachGuiDbSavedGame);
+    PER_FRIEND_READ_WRITE(MachGuiDbSavedGame);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiDbSavedGame& t );
+    friend ostream& operator<<(ostream& o, const MachGuiDbSavedGame& t);
 
-    MachGuiDbSavedGame( const MachGuiDbSavedGame& );
-    MachGuiDbSavedGame& operator =( const MachGuiDbSavedGame& );
+    MachGuiDbSavedGame(const MachGuiDbSavedGame&);
+    MachGuiDbSavedGame& operator=(const MachGuiDbSavedGame&);
 
-    //data members
-    MachGuiDbISavedGame* pData_; //data implementation object
+    // data members
+    MachGuiDbISavedGame* pData_; // data implementation object
 };
 
-PER_DECLARE_PERSISTENT( MachGuiDbSavedGame );
+PER_DECLARE_PERSISTENT(MachGuiDbSavedGame);
 
 #endif
 

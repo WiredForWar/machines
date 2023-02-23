@@ -18,22 +18,23 @@
 
 #include "world4d/link.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysHoverBootsImpl );
+PER_DEFINE_PERSISTENT(MachPhysHoverBootsImpl);
 
-MachPhysHoverBootsImpl::MachPhysHoverBootsImpl( MachPhysMachine* pMachine, MachPhysHoverBoots* pHoverBoots,
-        W4dLink* pLHoverBoot,
-        W4dLink* pRHoverBoot,
-        W4dLink* pBobbingLink,
-        MATHEX_SCALAR bobHeight
- )
-:   MachPhysLocomotionMethodImpl( pMachine ),
-    pHoverBoots_( pHoverBoots ),
-	pLHoverBoot_( pLHoverBoot ),
-    pRHoverBoot_( pRHoverBoot ),
-    pBobbingLink_( pBobbingLink ),
-    lastLAngle_( 0 ),
-    lastRAngle_( 0 ),
-    bobHeight_( bobHeight )
+MachPhysHoverBootsImpl::MachPhysHoverBootsImpl(
+    MachPhysMachine* pMachine,
+    MachPhysHoverBoots* pHoverBoots,
+    W4dLink* pLHoverBoot,
+    W4dLink* pRHoverBoot,
+    W4dLink* pBobbingLink,
+    MATHEX_SCALAR bobHeight)
+    : MachPhysLocomotionMethodImpl(pMachine)
+    , pHoverBoots_(pHoverBoots)
+    , pLHoverBoot_(pLHoverBoot)
+    , pRHoverBoot_(pRHoverBoot)
+    , pBobbingLink_(pBobbingLink)
+    , lastLAngle_(0)
+    , lastRAngle_(0)
+    , bobHeight_(bobHeight)
 
 {
 
@@ -43,15 +44,14 @@ MachPhysHoverBootsImpl::MachPhysHoverBootsImpl( MachPhysMachine* pMachine, MachP
 MachPhysHoverBootsImpl::~MachPhysHoverBootsImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysHoverBootsImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysHoverBootsImpl& t )
+ostream& operator<<(ostream& o, const MachPhysHoverBootsImpl& t)
 {
 
     o << "MachPhysHoverBootsImpl " << (void*)&t << " start" << std::endl;
@@ -60,19 +60,19 @@ ostream& operator <<( ostream& o, const MachPhysHoverBootsImpl& t )
     return o;
 }
 
-MachPhysHoverBootsImpl::MachPhysHoverBootsImpl( PerConstructor con )
-:   MachPhysLocomotionMethodImpl( con ),
-    pHoverBoots_( NULL ),
-	pLHoverBoot_( NULL ),
-    pRHoverBoot_( NULL ),
-    pBobbingLink_( NULL ),
-    lastLAngle_( 0 ),
-    lastRAngle_( 0 ),
-    bobHeight_( 0 )
+MachPhysHoverBootsImpl::MachPhysHoverBootsImpl(PerConstructor con)
+    : MachPhysLocomotionMethodImpl(con)
+    , pHoverBoots_(nullptr)
+    , pLHoverBoot_(nullptr)
+    , pRHoverBoot_(nullptr)
+    , pBobbingLink_(nullptr)
+    , lastLAngle_(0)
+    , lastRAngle_(0)
+    , bobHeight_(0)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysHoverBootsImpl& boots )
+void perWrite(PerOstream& ostr, const MachPhysHoverBootsImpl& boots)
 {
     const MachPhysLocomotionMethodImpl& base = boots;
 
@@ -85,7 +85,7 @@ void perWrite( PerOstream& ostr, const MachPhysHoverBootsImpl& boots )
     ostr << boots.bobHeight_;
 }
 
-void perRead( PerIstream& istr, MachPhysHoverBootsImpl& boots )
+void perRead(PerIstream& istr, MachPhysHoverBootsImpl& boots)
 {
     MachPhysLocomotionMethodImpl& base = boots;
 
@@ -98,21 +98,25 @@ void perRead( PerIstream& istr, MachPhysHoverBootsImpl& boots )
     istr >> boots.bobHeight_;
 }
 
-//virtual
-void MachPhysHoverBootsImpl::machineSurfacePosition
-(
-    const MachPhysPlanetSurface& surface, const MexPoint3d& baseLocation, const MexVec3&,
-    MexPoint3d* pLocation, MexVec3* pNormal
-) const
+// virtual
+void MachPhysHoverBootsImpl::machineSurfacePosition(
+    const MachPhysPlanetSurface& surface,
+    const MexPoint3d& baseLocation,
+    const MexVec3&,
+    MexPoint3d* pLocation,
+    MexVec3* pNormal) const
 {
-    *pLocation = MexPoint3d( baseLocation.x(), baseLocation.y(), surface.terrainHeight( baseLocation.x(), baseLocation.y(), machine().floors() ) );
-    *pNormal = MexVec3( 0.0, 0.0, 1.0 );
+    *pLocation = MexPoint3d(
+        baseLocation.x(),
+        baseLocation.y(),
+        surface.terrainHeight(baseLocation.x(), baseLocation.y(), machine().floors()));
+    *pNormal = MexVec3(0.0, 0.0, 1.0);
 }
 
-//virtual
-void MachPhysHoverBootsImpl::firstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state )
+// virtual
+void MachPhysHoverBootsImpl::firstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state)
 {
-    pHoverBoots_->doFirstPersonMotionAnimations( state );
+    pHoverBoots_->doFirstPersonMotionAnimations(state);
 }
 
 /* End HOVERI.CPP **************************************************/

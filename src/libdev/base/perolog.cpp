@@ -8,31 +8,30 @@
 #include "base/internal/perolog.hpp"
 
 PersistenceObjectLog::PersistenceObjectLog()
-: ptr_( NULL )
+    : ptr_(nullptr)
 {
 
     TEST_INVARIANT;
 }
 
-PersistenceObjectLog::PersistenceObjectLog( const char* classname, const void* ptr )
-: classname_( classname ),
-  ptr_( ptr )
+PersistenceObjectLog::PersistenceObjectLog(const char* classname, const void* ptr)
+    : classname_(classname)
+    , ptr_(ptr)
 {
-    ASSERT_INFO( "A" );
+    ASSERT_INFO("A");
 }
 
 PersistenceObjectLog::~PersistenceObjectLog()
 {
     TEST_INVARIANT;
-
 }
 
 void PersistenceObjectLog::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PersistenceObjectLog& t )
+ostream& operator<<(ostream& o, const PersistenceObjectLog& t)
 {
 
     o << "PersistenceObjectLog " << (void*)&t << " " << t.classname_ << " " << (void*)t.ptr_;
@@ -40,30 +39,29 @@ ostream& operator <<( ostream& o, const PersistenceObjectLog& t )
     return o;
 }
 
-bool operator ==( const PersistenceObjectLog& a, const PersistenceObjectLog& b )
+bool operator==(const PersistenceObjectLog& a, const PersistenceObjectLog& b)
 {
-    ASSERT_INFO( "A" );
+    ASSERT_INFO("A");
 
-    const bool result = ( a.classname_ == b.classname_ ) and ( a.ptr_ == b.ptr_ );
+    const bool result = (a.classname_ == b.classname_) and (a.ptr_ == b.ptr_);
 
-    ASSERT_INFO( "A" );
+    ASSERT_INFO("A");
 
     return result;
 }
 
-bool operator <( const PersistenceObjectLog& a, const PersistenceObjectLog& b )
+bool operator<(const PersistenceObjectLog& a, const PersistenceObjectLog& b)
 {
     bool result;
 
-    if( a.ptr_ < b.ptr_ )
-        result =  true;
-    else if( a.ptr_ > b.ptr_ )
+    if (a.ptr_ < b.ptr_)
+        result = true;
+    else if (a.ptr_ > b.ptr_)
         result = false;
     else
         result = a.classname_ < b.classname_;
 
     return result;
 }
-
 
 /* End PEROLOG.CPP **************************************************/

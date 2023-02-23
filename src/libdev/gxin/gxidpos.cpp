@@ -7,9 +7,9 @@
 
 #include "gxin/gxidpos.hpp"
 
-GXIdPos::GXIdPos():
-pos_(0),
-gxid_(0)
+GXIdPos::GXIdPos()
+    : pos_(0)
+    , gxid_(0)
 {
 
     TEST_INVARIANT;
@@ -18,42 +18,40 @@ gxid_(0)
 GXIdPos::~GXIdPos()
 {
     TEST_INVARIANT;
-
 }
 
-GXIdPos::GXIdPos(const GXIdPos& copy):
-pos_(copy.pos_),
-gxid_(copy.gxid_)
+GXIdPos::GXIdPos(const GXIdPos& copy)
+    : pos_(copy.pos_)
+    , gxid_(copy.gxid_)
 {
-  POST(*this==copy);
-  TEST_INVARIANT;
+    POST(*this == copy);
+    TEST_INVARIANT;
 }
 
-GXIdPos& GXIdPos::operator =(const GXIdPos& copy)
+GXIdPos& GXIdPos::operator=(const GXIdPos& copy)
 {
-  TEST_INVARIANT;
+    TEST_INVARIANT;
 
-  if (this!=&copy)
-  {
-    pos_=copy.pos_;
-	gxid_=copy.gxid_;
-  }
+    if (this != &copy)
+    {
+        pos_ = copy.pos_;
+        gxid_ = copy.gxid_;
+    }
 
-  POST(*this==copy);
-  TEST_INVARIANT;
+    POST(*this == copy);
+    TEST_INVARIANT;
 
-  return *this;
+    return *this;
 }
 
 bool operator==(const GXIdPos& id1, const GXIdPos& id2)
 {
-  bool result=true;
+    bool result = true;
 
-  if ((id1.pos_!=id2.pos_) ||
-      (id1.gxid_!=id2.gxid_))
-	result=false;
+    if ((id1.pos_ != id2.pos_) || (id1.gxid_ != id2.gxid_))
+        result = false;
 
-  return result;
+    return result;
 }
 
 bool operator!=(const GXIdPos& id1, const GXIdPos& id2)
@@ -63,28 +61,29 @@ bool operator!=(const GXIdPos& id1, const GXIdPos& id2)
 
 bool operator<(const GXIdPos& id1, const GXIdPos& id2)
 {
-  bool result=false;
+    bool result = false;
 
-  if (id1.gxid_<id2.gxid_)
-  {
-    result=true;
-  } else if ((id1.gxid_==id2.gxid_) && (id1.pos_<id2.pos_))
-  {
-    result=true;
-  }
+    if (id1.gxid_ < id2.gxid_)
+    {
+        result = true;
+    }
+    else if ((id1.gxid_ == id2.gxid_) && (id1.pos_ < id2.pos_))
+    {
+        result = true;
+    }
 
-  return result;
+    return result;
 }
 
 void GXIdPos::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const GXIdPos& t )
+ostream& operator<<(ostream& o, const GXIdPos& t)
 {
 
-	o << "gxid_ " << t.gxid_ << " pos_ " << t.pos_;
+    o << "gxid_ " << t.gxid_ << " pos_ " << t.pos_;
 
     return o;
 }

@@ -9,14 +9,14 @@
 #include "stdlib/string.hpp"
 #include "gui/manager.hpp"
 
-MachGuiResourceDial::MachGuiResourceDial
-(
-    const SysPathName& bitmapName, GuiDisplayable* pParent,
-    const Gui::Coord& relativePosition, const Gui::Coord& textOffset
-)
-:   GuiImage( pParent, relativePosition, Gui::bitmap( bitmapName ) ),
-    lastDisplayedValue_( 0 ),
-    textOffset_( textOffset )
+MachGuiResourceDial::MachGuiResourceDial(
+    const SysPathName& bitmapName,
+    GuiDisplayable* pParent,
+    const Gui::Coord& relativePosition,
+    const Gui::Coord& textOffset)
+    : GuiImage(pParent, relativePosition, Gui::bitmap(bitmapName))
+    , lastDisplayedValue_(0)
+    , textOffset_(textOffset)
 {
 
     TEST_INVARIANT;
@@ -25,15 +25,14 @@ MachGuiResourceDial::MachGuiResourceDial
 MachGuiResourceDial::~MachGuiResourceDial()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiResourceDial::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiResourceDial& t )
+ostream& operator<<(ostream& o, const MachGuiResourceDial& t)
 {
 
     o << "MachGuiResourceDial " << (void*)&t << " start" << std::endl;
@@ -42,30 +41,29 @@ ostream& operator <<( ostream& o, const MachGuiResourceDial& t )
     return o;
 }
 
-void MachGuiResourceDial::updateValue( int newValue )
+void MachGuiResourceDial::updateValue(int newValue)
 {
-    //Check for change of value
-    if( newValue != lastDisplayedValue_ )
+    // Check for change of value
+    if (newValue != lastDisplayedValue_)
     {
         lastDisplayedValue_ = newValue;
         changed();
     }
 }
 
-//virtual
+// virtual
 void MachGuiResourceDial::doDisplay()
 {
-    //Do the background
+    // Do the background
     GuiImage::doDisplay();
 
-    //Convert value to text string
+    // Convert value to text string
     char buffer[64];
-//    itoa( lastDisplayedValue_, buffer, 10 );
+    //    itoa( lastDisplayedValue_, buffer, 10 );
     sprintf(buffer, "%d", lastDisplayedValue_);
 
-    //Draw the text
-	text( textOffset_, string( buffer ), Gui::BLACK() );
-
+    // Draw the text
+    text(textOffset_, string(buffer), Gui::BLACK());
 }
 
 /* End RESODIAL.CPP *************************************************/

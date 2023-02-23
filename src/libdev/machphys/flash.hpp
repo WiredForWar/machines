@@ -6,7 +6,7 @@
 /*
     MachPhysFlashDisc
 
-	defines a white flash when a MachPhysElectroChager is fired
+    defines a white flash when a MachPhysElectroChager is fired
 */
 
 #ifndef _MACHPHYS_FLASH_HPP
@@ -22,37 +22,45 @@ class MachPhysFlashDisc : public W4dEntity
 // Canonical form revoked
 {
 public:
-	enum  ColourType : unsigned char {WHITE, YELLOW};
-    //ctor
-    MachPhysFlashDisc( W4dEntity* pParent, const MexTransform3d& localTransform, const MATHEX_SCALAR& size, ColourType colour);
+    enum ColourType : unsigned char
+    {
+        WHITE,
+        YELLOW
+    };
+    // ctor
+    MachPhysFlashDisc(
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform,
+        const MATHEX_SCALAR& size,
+        ColourType colour);
 
-    //dtor
-    virtual ~MachPhysFlashDisc();
+    // dtor
+    ~MachPhysFlashDisc() override;
 
-	static const MachPhysFlashDisc& exemplar( const MATHEX_SCALAR& size, ColourType colour );
+    static const MachPhysFlashDisc& exemplar(const MATHEX_SCALAR& size, ColourType colour);
 
-	PhysRelativeTime flash(const PhysAbsoluteTime& startTime, ColourType colour);
-	virtual bool intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const;
+    PhysRelativeTime flash(const PhysAbsoluteTime& startTime, ColourType colour);
+    bool intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysFlashDisc& t );
+    friend ostream& operator<<(ostream& o, const MachPhysFlashDisc& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysFlashDisc );
+    PER_MEMBER_PERSISTENT(MachPhysFlashDisc);
+
 private:
-    //Deliberately revoked
-    MachPhysFlashDisc( const MachPhysFlashDisc& );
-    MachPhysFlashDisc& operator =( const MachPhysFlashDisc& );
-    bool operator ==( const MachPhysFlashDisc& );
+    // Deliberately revoked
+    MachPhysFlashDisc(const MachPhysFlashDisc&);
+    MachPhysFlashDisc& operator=(const MachPhysFlashDisc&);
+    bool operator==(const MachPhysFlashDisc&);
 
-	friend class MachPhysOtherPersistence;
-	//one time constructor
-	MachPhysFlashDisc( const MATHEX_SCALAR& size, ColourType colour );
-
+    friend class MachPhysOtherPersistence;
+    // one time constructor
+    MachPhysFlashDisc(const MATHEX_SCALAR& size, ColourType colour);
 };
 
-PER_DECLARE_PERSISTENT( MachPhysFlashDisc );
-PER_READ_WRITE( MachPhysFlashDisc );
-PER_ENUM_PERSISTENT( MachPhysFlashDisc::ColourType );
+PER_DECLARE_PERSISTENT(MachPhysFlashDisc);
+PER_READ_WRITE(MachPhysFlashDisc);
+PER_ENUM_PERSISTENT(MachPhysFlashDisc::ColourType);
 
 #endif
 

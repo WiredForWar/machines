@@ -3,7 +3,7 @@
 
 dummyFunctiongxmeshload()
 {
-	static RenIGXMeshLoader::GXMeshes set1;
-	static RenIGXMeshLoader::GXMeshesMap map2;
-	static RenIGXMeshLoader::GXHierMap map3;
+    static RenIGXMeshLoader::GXMeshes set1;
+    static RenIGXMeshLoader::GXMeshesMap map2;
+    static RenIGXMeshLoader::GXHierMap map3;
 }

@@ -1,27 +1,25 @@
 /*
- * G X . H P P 
+ * G X . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 #ifndef _GX_HPP
 #define _GX_HPP
 
-
 #ifndef UCHAR
-typedef unsigned char   UCHAR;
+using UCHAR = unsigned char;
 #endif
 
 #ifndef UINT
-typedef unsigned int    UINT;
+using UINT = unsigned int;
 #endif
 
 #ifndef USHORT
-typedef unsigned short  USHORT;
+using USHORT = unsigned short;
 #endif
 
 #ifndef ULONG
-typedef unsigned long   ULONG;
+using ULONG = unsigned long;
 #endif
-
 
 #endif

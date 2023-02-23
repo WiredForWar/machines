@@ -12,24 +12,19 @@
 class GuiIcon : public GuiBitmapButtonWithFilledBorder
 {
 public:
+    GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const std::pair<SysPathName, SysPathName>& bitmap);
 
-	GuiIcon(GuiDisplayable *pParent,
-			const Gui::Coord& rel,
-			const std::pair< SysPathName, SysPathName >& bitmap );
-
-	GuiIcon(GuiDisplayable *pParent,
-			const Gui::Coord& rel,
-			const SysPathName& bmp );
+    GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const SysPathName& bmp);
 
 protected:
-	virtual ~GuiIcon();
+    ~GuiIcon() override;
 
 private:
-	GuiIcon( const GuiIcon& );
-	GuiIcon& operator =( const GuiIcon& );
-	bool operator ==( const GuiIcon& ) const;
+    GuiIcon(const GuiIcon&);
+    GuiIcon& operator=(const GuiIcon&);
+    bool operator==(const GuiIcon&) const;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	// #ifndef _GUI_ICON_HPP
+#endif // #ifndef _GUI_ICON_HPP

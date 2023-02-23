@@ -27,80 +27,81 @@
 #include "world4d/observer.hpp"
 #include "sim/sim.hpp"
 
-
-//Forward declarations
+// Forward declarations
 class RenDomain;
 
-class SimActor : public W4dSubject, public W4dObserver
+class SimActor
+    : public W4dSubject
+    , public W4dObserver
 {
 public:
     // Constructor registers with pProcess.
     // The physical rep for the actor is pPhysObject.
-    SimActor (SimProcess* pProcess, W4dEntity* pPhysObject);
-    //PRE( pProcess != NULL);
+    SimActor(SimProcess* pProcess, W4dEntity* pPhysObject);
+    // PRE( pProcess != NULL);
 
-    enum Update { UPDATE_EVERY_CYCLE };
+    enum Update
+    {
+        UPDATE_EVERY_CYCLE
+    };
 
     // Constructor registers with pProcess.
     // The physical rep for the actor is pPhysObject.
     // This actor will be updated every frame
-    SimActor (SimProcess* pProcess, W4dEntity* pPhysObject, Update);
+    SimActor(SimProcess* pProcess, W4dEntity* pPhysObject, Update);
 
-    //The owning SimProcess
+    // The owning SimProcess
     const SimProcess& process() const;
 
-    //Set the priority. When CPU time is in short supply, an actor with
-    //priority 10 will get approx 10 times the CPU time as an actor with priority 1 owned
-    //by the same process.
-    //This balancing is achieved by the SimManager.
-    void priority( const SimPriority& );
+    // Set the priority. When CPU time is in short supply, an actor with
+    // priority 10 will get approx 10 times the CPU time as an actor with priority 1 owned
+    // by the same process.
+    // This balancing is achieved by the SimManager.
+    void priority(const SimPriority&);
     const SimPriority& priority() const;
 
-    //Sub-class must override to update the current state of the actor.
-    //This method is called regularly by the SimManager, depending on priorities.
-    //clearanceFromDisplayedVolume represents a minimum distance from any camera's
-    //view frustrum. If not displayed, the override may model behaviour with less accuracy.
-    //Return the time interval to next desired update call. So if actor knows that no
-    //work is required for the next 5 seconds, return 5. Alternatively, return 0 if, say
-    //in the middle of AI computation and want to be called again as soon as possible.
-    //This function must not use more than maxCPUTime milliseconds in this call.
-    virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime,
-                                     MATHEX_SCALAR clearanceFromDisplayedVolume ) = 0;
+    // Sub-class must override to update the current state of the actor.
+    // This method is called regularly by the SimManager, depending on priorities.
+    // clearanceFromDisplayedVolume represents a minimum distance from any camera's
+    // view frustrum. If not displayed, the override may model behaviour with less accuracy.
+    // Return the time interval to next desired update call. So if actor knows that no
+    // work is required for the next 5 seconds, return 5. Alternatively, return 0 if, say
+    // in the middle of AI computation and want to be called again as soon as possible.
+    // This function must not use more than maxCPUTime milliseconds in this call.
+    virtual PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) = 0;
 
-    //Must be overriden to return the RenDomain in which the actor currently resides
-//    virtual const RenDomain& renDomain() const = 0;
+    // Must be overriden to return the RenDomain in which the actor currently resides
+    //     virtual const RenDomain& renDomain() const = 0;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SimActor& t );
+    friend ostream& operator<<(ostream& o, const SimActor& t);
 
     // Get the isDead flag
     bool isDead() const;
 
-	//Actors may assign themselves to different processes
-	//in public interface as persistence mechanism may have to do this as well.
-	void assignToDifferentProcess( SimProcess* );
+    // Actors may assign themselves to different processes
+    // in public interface as persistence mechanism may have to do this as well.
+    void assignToDifferentProcess(SimProcess*);
 
-    PER_MEMBER_PERSISTENT_ABSTRACT( SimActor );
-    PER_FRIEND_READ_WRITE( SimActor );
+    PER_MEMBER_PERSISTENT_ABSTRACT(SimActor);
+    PER_FRIEND_READ_WRITE(SimActor);
 
 protected:
-
     // Set/get the time at which the actor has requested it should be next updated
-    void nextUpdateTime( const PhysAbsoluteTime& );
+    void nextUpdateTime(const PhysAbsoluteTime&);
     const PhysAbsoluteTime& nextUpdateTime() const;
 
-    //Default implementation does nothing
-	virtual bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
+    // Default implementation does nothing
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-    virtual void domainDeleted( W4dDomain* pDomain );
+    void domainDeleted(W4dDomain* pDomain) override;
 
     // Set the isDead flag
-    void isDead( bool die );
+    void isDead(bool die);
 
-    //Destructor unregisters with owning SimProcess.
-    virtual ~SimActor();
+    // Destructor unregisters with owning SimProcess.
+    ~SimActor() override;
 
 private:
     friend class SimManager;
@@ -108,38 +109,37 @@ private:
     friend class SimProjectile;
 
     // Operation deliberately revoked
-    SimActor( const SimActor& );
+    SimActor(const SimActor&);
 
     // Operation deliberately revoked
-    SimActor& operator =( const SimActor& );
+    SimActor& operator=(const SimActor&);
 
     // Operation deliberately revoked
-    bool operator ==( const SimActor& );
+    bool operator==(const SimActor&);
 
-    //Prevent derived classes from deleting actors
-   // static void operator delete( void* p )
-    //    { ::delete( p ); };
+    // Prevent derived classes from deleting actors
+    //  static void operator delete( void* p )
+    //     { ::delete( p ); };
 
-    bool    updateEveryCycle() const;
+    bool updateEveryCycle() const;
 
-    //Sets the isDead flag without adding to the dead actor list.
-    //Used during destruction of a SimProcess.
+    // Sets the isDead flag without adding to the dead actor list.
+    // Used during destruction of a SimProcess.
     void markAsDead();
 
-    //Data members
+    // Data members
     SimProcess* pProcess_; // The owning process
-    SimPriority priority_; //Actor's priority within its process
+    SimPriority priority_; // Actor's priority within its process
     PhysAbsoluteTime nextUpdateTime_; // Time at which next update was requested
-    bool isDead_; //true when flagged as dead
+    bool isDead_; // true when flagged as dead
     bool updateEveryCycle_;
 };
 
-PER_DECLARE_PERSISTENT( SimActor );
+PER_DECLARE_PERSISTENT(SimActor);
 
 #ifdef _INLINE
-    #include "sim/actor.ipp"
+#include "sim/actor.ipp"
 #endif
-
 
 #endif
 

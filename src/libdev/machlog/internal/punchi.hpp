@@ -1,5 +1,5 @@
 /*
- * P U N C H I . H P P 
+ * P U N C H I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,34 +23,32 @@ class MachLogPunchBlastImpl
 // Canonical form revoked
 {
 public:
-    MachLogPunchBlastImpl( const MachPhysWeaponData* const );
+    MachLogPunchBlastImpl(const MachPhysWeaponData* const);
     virtual ~MachLogPunchBlastImpl();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogPunchBlastImpl& t );
+    friend ostream& operator<<(ostream& o, const MachLogPunchBlastImpl& t);
 
-    MachLogPunchBlastImpl( const MachLogPunchBlastImpl& );
-    MachLogPunchBlastImpl& operator =( const MachLogPunchBlastImpl& );
+    MachLogPunchBlastImpl(const MachLogPunchBlastImpl&);
+    MachLogPunchBlastImpl& operator=(const MachLogPunchBlastImpl&);
 
-	friend class MachLogPunchBlast; 
+    friend class MachLogPunchBlast;
 
-	MachPhysPunchBlast*					pPhysPunchBlast_;	
-	const MachPhysWeaponData* const		pWeaponData_;	
-	PhysAbsoluteTime					destructionWaveStartTime_;
-	PhysAbsoluteTime					destructionWaveFinishTime_;
-	PhysAbsoluteTime					destructionTime_;	
+    MachPhysPunchBlast* pPhysPunchBlast_;
+    const MachPhysWeaponData* const pWeaponData_;
+    PhysAbsoluteTime destructionWaveStartTime_;
+    PhysAbsoluteTime destructionWaveFinishTime_;
+    PhysAbsoluteTime destructionTime_;
 };
 
-
-#define CB_MachLogPunchBlast_DEPIMPL() \
-	CB_DEPIMPL( MachPhysPunchBlast*					,pPhysPunchBlast_ ); \
-	CB_DEPIMPL( const MachPhysWeaponData* const		,pWeaponData_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,destructionWaveStartTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,destructionWaveFinishTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,destructionTime_ ); 
-
+#define CB_MachLogPunchBlast_DEPIMPL()                                                                                 \
+    CB_DEPIMPL(MachPhysPunchBlast*, pPhysPunchBlast_);                                                                 \
+    CB_DEPIMPL(const MachPhysWeaponData* const, pWeaponData_);                                                         \
+    CB_DEPIMPL(PhysAbsoluteTime, destructionWaveStartTime_);                                                           \
+    CB_DEPIMPL(PhysAbsoluteTime, destructionWaveFinishTime_);                                                          \
+    CB_DEPIMPL(PhysAbsoluteTime, destructionTime_);
 
 #endif
 

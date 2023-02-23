@@ -7,10 +7,10 @@
 
 ///////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 #include "base/base.hpp"
@@ -18,94 +18,89 @@
 ///////////////////////////////////
 
 _CODE_INLINE
-MATHEX_SCALAR MexPoint3d::x( void ) const
+MATHEX_SCALAR MexPoint3d::x() const
 {
-    return  point_[ X ];
+    return point_[X];
 }
 
 //////////////////////////////////////////////////////////////////////
 
 _CODE_INLINE
-MATHEX_SCALAR MexPoint3d::y( void ) const
+MATHEX_SCALAR MexPoint3d::y() const
 {
-    return  point_[ Y ];
+    return point_[Y];
 }
 
 //////////////////////////////////////////////////////////////////////
 
-
 _CODE_INLINE
-MATHEX_SCALAR MexPoint3d::z( void ) const
+MATHEX_SCALAR MexPoint3d::z() const
 {
-    return  point_[ Z ];
-}
-
-/////////////////////////////////////////////////////////////
-
-
-_CODE_INLINE
-void MexPoint3d::x( MATHEX_SCALAR newX )
-{
-    point_[ X ] = newX;
-}
-
-//////////////////////////////////////////////////////////////////////
-
-
-_CODE_INLINE
-void MexPoint3d::y( MATHEX_SCALAR newY )
-{
-    point_[ Y ] = newY;
-}
-
-//////////////////////////////////////////////////////////////////////
-
-
-_CODE_INLINE
-void MexPoint3d::z( MATHEX_SCALAR newZ )
-{
-    point_[ Z ] = newZ;
-}
-
-//////////////////////////////////////////////////////////////////////
-
-
-_CODE_INLINE
-MATHEX_SCALAR MexPoint3d::operator []( size_t i ) const
-{
-    PRE( i < 3 );
-	return ( i == 0 ) ? point_[ X ] : ( i == 1 ) ? point_[ Y ] : point_[ Z ];
+    return point_[Z];
 }
 
 /////////////////////////////////////////////////////////////
 
 _CODE_INLINE
-MATHEX_SCALAR& MexPoint3d::operator []( size_t i )
+void MexPoint3d::x(MATHEX_SCALAR newX)
 {
-    PRE( i < 3 );
-	return ( i == 0 ) ? point_[ X ] : ( i == 1 ) ? point_[ Y ] : point_[ Z ];
+    point_[X] = newX;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+_CODE_INLINE
+void MexPoint3d::y(MATHEX_SCALAR newY)
+{
+    point_[Y] = newY;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+_CODE_INLINE
+void MexPoint3d::z(MATHEX_SCALAR newZ)
+{
+    point_[Z] = newZ;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+_CODE_INLINE
+MATHEX_SCALAR MexPoint3d::operator[](size_t i) const
+{
+    PRE(i < 3);
+    return (i == 0) ? point_[X] : (i == 1) ? point_[Y] : point_[Z];
+}
+
+/////////////////////////////////////////////////////////////
+
+_CODE_INLINE
+MATHEX_SCALAR& MexPoint3d::operator[](size_t i)
+{
+    PRE(i < 3);
+    return (i == 0) ? point_[X] : (i == 1) ? point_[Y] : point_[Z];
 }
 
 ///////////////////////////////////
 
 _CODE_INLINE
-bool MexPoint3d::contains( const MexPlane3d& ) const
+bool MexPoint3d::contains(const MexPlane3d&) const
 {
     // A point can never contain a plane
-   
+
     return false;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 _CODE_INLINE
-MexPoint3d::MexPoint3d( const MexPoint2d& v2 )
+MexPoint3d::MexPoint3d(const MexPoint2d& v2)
 {
-    point_[ X ] = v2.x();
-    point_[ Y ] = v2.y();
-    point_[ Z ] = 0;
-    
-	POST( *this == MexPoint3d( v2.x(), v2.y(), 0 ) );
+    point_[X] = v2.x();
+    point_[Y] = v2.y();
+    point_[Z] = 0;
+
+    POST(*this == MexPoint3d(v2.x(), v2.y(), 0));
 }
 
 /* //////////////////////////////////////////////////////////////// */

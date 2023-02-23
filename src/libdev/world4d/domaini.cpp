@@ -11,7 +11,7 @@
 #include "world4d/internal/domaini.hpp"
 #include "world4d/entyfilt.hpp"
 
-PER_DEFINE_PERSISTENT( W4dDomainImpl );
+PER_DEFINE_PERSISTENT(W4dDomainImpl);
 
 W4dDomainImpl::W4dDomainImpl()
 {
@@ -22,14 +22,13 @@ W4dDomainImpl::W4dDomainImpl()
 W4dDomainImpl::~W4dDomainImpl()
 {
     TEST_INVARIANT;
-
 }
 void W4dDomainImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dDomainImpl& t )
+ostream& operator<<(ostream& o, const W4dDomainImpl& t)
 {
 
     o << "W4dDomainImpl " << (void*)&t << " start" << std::endl;
@@ -38,22 +37,22 @@ ostream& operator <<( ostream& o, const W4dDomainImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const W4dDomainImpl& t )
+void perWrite(PerOstream& ostr, const W4dDomainImpl& t)
 {
     ostr << t.portals_;
 
-    //Not persisted
-    //intersectingEntities_
-    //observers_
-    //subjects_
+    // Not persisted
+    // intersectingEntities_
+    // observers_
+    // subjects_
 }
 
-void perRead( PerIstream& istr, W4dDomainImpl& t )
+void perRead(PerIstream& istr, W4dDomainImpl& t)
 {
     istr >> t.portals_;
 }
 
-W4dDomainImpl::W4dDomainImpl( PerConstructor )
+W4dDomainImpl::W4dDomainImpl(PerConstructor)
 {
 }
 

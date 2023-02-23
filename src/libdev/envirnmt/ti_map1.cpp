@@ -8,7 +8,7 @@ class EnvElevationColourTable;
 
 void envDummyFunction2()
 {
-	ctl_map<string,		EnvElevationColourTable*, less<string> > cluts2;
-	ctl_map<string,		EnvSatellite*,			  less<string> > satellites;
-	ctl_map<string,		EnvOrbit*,     			  less<string> > orbits;
+    ctl_map<string, EnvElevationColourTable*, less<string>> cluts2;
+    ctl_map<string, EnvSatellite*, less<string>> satellites;
+    ctl_map<string, EnvOrbit*, less<string>> orbits;
 }

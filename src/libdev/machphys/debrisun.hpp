@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-
 /*
     MachPhysDebris
 
@@ -29,47 +28,48 @@
 class MachPhysDebrisUnit : public W4dEntity
 {
 public:
-    MachPhysDebrisUnit( W4dEntity* pParent,
-    				const W4dTransform3d& localTransform,
-    				const MexAlignedBox2d& boundary,
-    				const PhysRelativeTime& overallDuration
-    				);
+    MachPhysDebrisUnit(
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        const MexAlignedBox2d& boundary,
+        const PhysRelativeTime& overallDuration);
 
-    virtual ~MachPhysDebrisUnit();
+    ~MachPhysDebrisUnit() override;
 
-	void startBurning();
+    void startBurning();
 
     static const MachPhysDebrisUnit& factory();
-	static void preloadTextures();
+    static void preloadTextures();
 
     void CLASS_INVARIANT;
 
-	bool intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const;
+    bool intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const override;
 
-    PER_MEMBER_PERSISTENT( MachPhysDebrisUnit );
-    PER_FRIEND_READ_WRITE( MachPhysDebrisUnit );
+    PER_MEMBER_PERSISTENT(MachPhysDebrisUnit);
+    PER_FRIEND_READ_WRITE(MachPhysDebrisUnit);
+
 private:
     // Operations deliberately revoked
-    MachPhysDebrisUnit( const MachPhysDebrisUnit& );
-    MachPhysDebrisUnit& operator =( const MachPhysDebrisUnit& );
-    bool operator ==( const MachPhysDebrisUnit& );
+    MachPhysDebrisUnit(const MachPhysDebrisUnit&);
+    MachPhysDebrisUnit& operator=(const MachPhysDebrisUnit&);
+    bool operator==(const MachPhysDebrisUnit&);
 
-	friend class MachPhysOtherPersistence;
-    MachPhysDebrisUnit( W4dEntity* pParent, const MexTransform3d& transform );
+    friend class MachPhysOtherPersistence;
+    MachPhysDebrisUnit(W4dEntity* pParent, const MexTransform3d& transform);
 
-	MachPhysSmokePlume* pPlume1_;
-	MachPhysSmokePlume* pPlume2_;
-	MachPhysSmokePlume* pPlume3_;
-	MachPhysFlame* pFlame1_;
-	MachPhysFlame* pFlame2_;
-	MachPhysFlame* pFlame3_;
+    MachPhysSmokePlume* pPlume1_;
+    MachPhysSmokePlume* pPlume2_;
+    MachPhysSmokePlume* pPlume3_;
+    MachPhysFlame* pFlame1_;
+    MachPhysFlame* pFlame2_;
+    MachPhysFlame* pFlame3_;
 
-	PhysRelativeTime overallDuration_;
+    PhysRelativeTime overallDuration_;
 
-	MexAlignedBox2d boundary_;
+    MexAlignedBox2d boundary_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysDebrisUnit );
+PER_DECLARE_PERSISTENT(MachPhysDebrisUnit);
 
 #endif
 

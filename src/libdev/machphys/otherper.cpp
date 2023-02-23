@@ -58,91 +58,91 @@
 #include "machphys/light.hpp"
 #include "machphys/lmine.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysOtherPersistence );
+PER_DEFINE_PERSISTENT(MachPhysOtherPersistence);
 
-//a pimple for the MachPhysOtherPersistence singlton
+// a pimple for the MachPhysOtherPersistence singlton
 struct MachPhysOtherPersistenceImpl
 {
-    MachPhysPulseBlob*      pPulseRifle_;
-    MachPhysPulseBlob*      pPulseCannon_;
+    MachPhysPulseBlob* pPulseRifle_;
+    MachPhysPulseBlob* pPulseCannon_;
 
-	MachPhysPlasmaBolt*		pPlasmaBoltRifle_;
-	MachPhysPlasmaBolt*		pPlasmaBoltCannon1_;
-	MachPhysPlasmaBolt*		pPlasmaBoltCannon2_;
+    MachPhysPlasmaBolt* pPlasmaBoltRifle_;
+    MachPhysPlasmaBolt* pPlasmaBoltCannon1_;
+    MachPhysPlasmaBolt* pPlasmaBoltCannon2_;
 
-	MachPhysBeam* 			pBeam_;
-	MachPhysParticles* 		pParticles_;
+    MachPhysBeam* pBeam_;
+    MachPhysParticles* pParticles_;
 
-	MachPhysBlackSphere*	pBlackSphere_;
-	MachPhysWhiteSphere*	pWhiteSphere_;
+    MachPhysBlackSphere* pBlackSphere_;
+    MachPhysWhiteSphere* pWhiteSphere_;
 
-	MachPhysBlast*			pBlast_;
-	MachPhysCrackFire*		pGarillaCrackFire_;
-	MachPhysCrackFire*		pBeeCrackFire_;
+    MachPhysBlast* pBlast_;
+    MachPhysCrackFire* pGarillaCrackFire_;
+    MachPhysCrackFire* pBeeCrackFire_;
 
-	MachPhysMushroomEdge* 	pMushroomEdge_;
-	MachPhysMushroomShaft* 	pMushroomShaft_;
-	MachPhysMushroomTop* 	pMushroomTop_;
+    MachPhysMushroomEdge* pMushroomEdge_;
+    MachPhysMushroomShaft* pMushroomShaft_;
+    MachPhysMushroomTop* pMushroomTop_;
 
-	MachPhysElectro*		pElectricElectro_;
-	MachPhysElectro*		pVirusElectro_;
-	MachPhysLightningHalo*	pHaloElectric_;
-	MachPhysLightningHalo* 	pHaloVirus_;
+    MachPhysElectro* pElectricElectro_;
+    MachPhysElectro* pVirusElectro_;
+    MachPhysLightningHalo* pHaloElectric_;
+    MachPhysLightningHalo* pHaloVirus_;
 
-	W4dGeneric*		pCentralCrossHealAura_;
-	W4dGeneric*		pRadialCrossHealAura_;
+    W4dGeneric* pCentralCrossHealAura_;
+    W4dGeneric* pRadialCrossHealAura_;
 
-	MachPhysHelix* 	pLeftHelix_;
-	MachPhysHelix* 	pRightHelix_;
+    MachPhysHelix* pLeftHelix_;
+    MachPhysHelix* pRightHelix_;
 
-	MachPhysHemiSphere*			pHemiSphere_;
-	MachPhysJetRing* 			pJetRing_;
-	MachPhysSparks*				pSparks_;
+    MachPhysHemiSphere* pHemiSphere_;
+    MachPhysJetRing* pJetRing_;
+    MachPhysSparks* pSparks_;
 
-	//MachPhysGroundScorch*		pGroundScorch_;
-	MachPhysGroundSplat*		pGroundSplat_;
-	MachPhysDoublesidedFlame*	pDoubleSidedFlame_;
+    // MachPhysGroundScorch*     pGroundScorch_;
+    MachPhysGroundSplat* pGroundSplat_;
+    MachPhysDoublesidedFlame* pDoubleSidedFlame_;
 
-	MachPhysShockWave*		pShockWave_;
-	MachPhysBurstWave*   	pBurstWave_;
-	MachPhysNukeWave*   	pNukeWave_;
+    MachPhysShockWave* pShockWave_;
+    MachPhysBurstWave* pBurstWave_;
+    MachPhysNukeWave* pNukeWave_;
 
-	MachPhysRadialDisc* 	pRadialDisc_;
-	MachPhysWaterfall*		pWaterfall_;
+    MachPhysRadialDisc* pRadialDisc_;
+    MachPhysWaterfall* pWaterfall_;
 
-	MachPhysPlasmaAura*  	pPlasmaAura_;
-	MachPhysPlasmaSplat*  	pPlasmaSplat_;
-	MachPhysPulseAura*  	pPulseAura_;
-	MachPhysPulseSplat* 	pPulseSplat_;
+    MachPhysPlasmaAura* pPlasmaAura_;
+    MachPhysPlasmaSplat* pPlasmaSplat_;
+    MachPhysPulseAura* pPulseAura_;
+    MachPhysPulseSplat* pPulseSplat_;
 
-	MachPhysVortexSphere*	pVortexSphere_;
-	MachPhysBeeBomb*		pBeeBomb_;
-	MachPhysBeeBombWave*	pBeeBombWave_;
-	MachPhysBeeBlast*		pBeeBlast_;
+    MachPhysVortexSphere* pVortexSphere_;
+    MachPhysBeeBomb* pBeeBomb_;
+    MachPhysBeeBombWave* pBeeBombWave_;
+    MachPhysBeeBlast* pBeeBlast_;
 
-	MachPhysLightSting*				pLightSting_;
-	MachPhysLightStingAura*			pLightStingAura_;
-	MachPhysLightStingSplat*		pLightStingSplat_;
+    MachPhysLightSting* pLightSting_;
+    MachPhysLightStingAura* pLightStingAura_;
+    MachPhysLightStingSplat* pLightStingSplat_;
 
-	MachPhysMetalSting*				pMetalSting_;
+    MachPhysMetalSting* pMetalSting_;
 
-	MachPhysFlashDisc*		pFlashDiscYellow_;
-	MachPhysFlashDisc*		pFlashDiscWhite_;
+    MachPhysFlashDisc* pFlashDiscYellow_;
+    MachPhysFlashDisc* pFlashDiscWhite_;
 
-	MachPhysLoadingLight*		pLoadingLight_;
-	MachPhysLoadingOver*		pLoadingOver_;
-	MachPhysLoadingUnder*		pLoadingUnder_;
-	MachPhysScavenger*			pScavenger_;
-	MachPhysLocator*			pLocator_;
+    MachPhysLoadingLight* pLoadingLight_;
+    MachPhysLoadingOver* pLoadingOver_;
+    MachPhysLoadingUnder* pLoadingUnder_;
+    MachPhysScavenger* pScavenger_;
+    MachPhysLocator* pLocator_;
 
-	MachPhysFlameBall*		pGruntFlameBall_;
-	MachPhysFlameBall*		pTurretFlameBall_;
+    MachPhysFlameBall* pGruntFlameBall_;
+    MachPhysFlameBall* pTurretFlameBall_;
 
-	MachPhysDebrisUnit*		pDebris_;
-	MachPhysOreHolograph*	pHolograph_;
+    MachPhysDebrisUnit* pDebris_;
+    MachPhysOreHolograph* pHolograph_;
 
-	MachPhysLight*		pLightShadow_;
-	MachPhysLandMine*	pLandMine_;
+    MachPhysLight* pLightShadow_;
+    MachPhysLandMine* pLandMine_;
 };
 
 // static
@@ -153,91 +153,89 @@ MachPhysOtherPersistence& MachPhysOtherPersistence::instance()
 }
 
 MachPhysOtherPersistence::MachPhysOtherPersistence()
-: 	pImpl_( _NEW( MachPhysOtherPersistenceImpl() ) ),
-	root_(50000 )
+    : pImpl_(_NEW(MachPhysOtherPersistenceImpl()))
+    , root_(50000)
 {
-  	//pImpl_->root_ = W4dRoot(50000 );
-  	pImpl_->pPulseRifle_ = NULL;
-  	pImpl_->pPulseCannon_ = NULL;
-  	pImpl_->pPlasmaBoltRifle_ = NULL;
-  	pImpl_->pPlasmaBoltCannon1_ = NULL;
-  	pImpl_->pPlasmaBoltCannon2_ = NULL;
-  	pImpl_->pBeam_ = NULL;
-  	pImpl_->pParticles_ = NULL;
-  	pImpl_->pBlackSphere_ = NULL;
-  	pImpl_->pWhiteSphere_ = NULL;
-  	pImpl_->pBlast_ = NULL;
-  	pImpl_->pGarillaCrackFire_ = NULL;
-  	pImpl_->pBeeCrackFire_ = NULL;
-  	pImpl_->pMushroomEdge_ = NULL;
-  	pImpl_->pMushroomShaft_ = NULL;
-  	pImpl_->pMushroomTop_ = NULL;
-  	pImpl_->pElectricElectro_ = NULL;
-  	pImpl_->pVirusElectro_ = NULL;
-  	pImpl_->pHaloElectric_ = NULL;
-  	pImpl_->pHaloVirus_ = NULL;
-  	pImpl_->pCentralCrossHealAura_ = NULL;
-  	pImpl_->pRadialCrossHealAura_ = NULL;
-  	pImpl_->pLeftHelix_ = NULL;
-  	pImpl_->pRightHelix_ = NULL;
-  	pImpl_->pHemiSphere_ = NULL;
-  	pImpl_->pJetRing_ = NULL;
-  	pImpl_->pSparks_ = NULL;
-  	//pGroundScorch_ = NULL;
-  	pImpl_->pGroundSplat_ = NULL;
-  	pImpl_->pDoubleSidedFlame_ = NULL;
-  	pImpl_->pShockWave_ = NULL;
-  	pImpl_->pBurstWave_ = NULL;
-  	pImpl_->pNukeWave_ = NULL;
-  	pImpl_->pRadialDisc_ = NULL;
-  	pImpl_->pWaterfall_ = NULL;
-  	pImpl_->pPlasmaAura_ = NULL;
-  	pImpl_->pPlasmaSplat_ = NULL;
-  	pImpl_->pPulseAura_ = NULL;
-  	pImpl_->pPulseSplat_ = NULL;
-  	pImpl_->pVortexSphere_ = NULL;
-  	pImpl_->pBeeBomb_ = NULL;
-  	pImpl_->pBeeBombWave_ = NULL;
-  	pImpl_->pBeeBlast_ = NULL;
-  	pImpl_->pLightSting_ = NULL;
-  	pImpl_->pLightStingAura_ = NULL;
-  	pImpl_->pLightStingSplat_ = NULL;
-  	pImpl_->pMetalSting_ = NULL;
-  	pImpl_->pFlashDiscYellow_ = NULL;
-  	pImpl_->pFlashDiscWhite_ = NULL;
-  	pImpl_->pLoadingLight_ = NULL;
-  	pImpl_->pLoadingOver_ = NULL;
-  	pImpl_->pLoadingUnder_ = NULL;
-  	pImpl_->pScavenger_ = NULL;
-  	pImpl_->pLocator_ = NULL;
-  	pImpl_->pGruntFlameBall_ = NULL;
-  	pImpl_->pTurretFlameBall_ = NULL;
-  	pImpl_->pDebris_ = NULL;
-  	pImpl_->pHolograph_ = NULL;
-  	pImpl_->pLightShadow_ = NULL;
-  	pImpl_->pLandMine_ = NULL;
+    // pImpl_->root_ = W4dRoot(50000 );
+    pImpl_->pPulseRifle_ = nullptr;
+    pImpl_->pPulseCannon_ = nullptr;
+    pImpl_->pPlasmaBoltRifle_ = nullptr;
+    pImpl_->pPlasmaBoltCannon1_ = nullptr;
+    pImpl_->pPlasmaBoltCannon2_ = nullptr;
+    pImpl_->pBeam_ = nullptr;
+    pImpl_->pParticles_ = nullptr;
+    pImpl_->pBlackSphere_ = nullptr;
+    pImpl_->pWhiteSphere_ = nullptr;
+    pImpl_->pBlast_ = nullptr;
+    pImpl_->pGarillaCrackFire_ = nullptr;
+    pImpl_->pBeeCrackFire_ = nullptr;
+    pImpl_->pMushroomEdge_ = nullptr;
+    pImpl_->pMushroomShaft_ = nullptr;
+    pImpl_->pMushroomTop_ = nullptr;
+    pImpl_->pElectricElectro_ = nullptr;
+    pImpl_->pVirusElectro_ = nullptr;
+    pImpl_->pHaloElectric_ = nullptr;
+    pImpl_->pHaloVirus_ = nullptr;
+    pImpl_->pCentralCrossHealAura_ = nullptr;
+    pImpl_->pRadialCrossHealAura_ = nullptr;
+    pImpl_->pLeftHelix_ = nullptr;
+    pImpl_->pRightHelix_ = nullptr;
+    pImpl_->pHemiSphere_ = nullptr;
+    pImpl_->pJetRing_ = nullptr;
+    pImpl_->pSparks_ = nullptr;
+    // pGroundScorch_ = NULL;
+    pImpl_->pGroundSplat_ = nullptr;
+    pImpl_->pDoubleSidedFlame_ = nullptr;
+    pImpl_->pShockWave_ = nullptr;
+    pImpl_->pBurstWave_ = nullptr;
+    pImpl_->pNukeWave_ = nullptr;
+    pImpl_->pRadialDisc_ = nullptr;
+    pImpl_->pWaterfall_ = nullptr;
+    pImpl_->pPlasmaAura_ = nullptr;
+    pImpl_->pPlasmaSplat_ = nullptr;
+    pImpl_->pPulseAura_ = nullptr;
+    pImpl_->pPulseSplat_ = nullptr;
+    pImpl_->pVortexSphere_ = nullptr;
+    pImpl_->pBeeBomb_ = nullptr;
+    pImpl_->pBeeBombWave_ = nullptr;
+    pImpl_->pBeeBlast_ = nullptr;
+    pImpl_->pLightSting_ = nullptr;
+    pImpl_->pLightStingAura_ = nullptr;
+    pImpl_->pLightStingSplat_ = nullptr;
+    pImpl_->pMetalSting_ = nullptr;
+    pImpl_->pFlashDiscYellow_ = nullptr;
+    pImpl_->pFlashDiscWhite_ = nullptr;
+    pImpl_->pLoadingLight_ = nullptr;
+    pImpl_->pLoadingOver_ = nullptr;
+    pImpl_->pLoadingUnder_ = nullptr;
+    pImpl_->pScavenger_ = nullptr;
+    pImpl_->pLocator_ = nullptr;
+    pImpl_->pGruntFlameBall_ = nullptr;
+    pImpl_->pTurretFlameBall_ = nullptr;
+    pImpl_->pDebris_ = nullptr;
+    pImpl_->pHolograph_ = nullptr;
+    pImpl_->pLightShadow_ = nullptr;
+    pImpl_->pLandMine_ = nullptr;
 
     TEST_INVARIANT;
 }
 
 MachPhysOtherPersistence::~MachPhysOtherPersistence()
 {
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
     TEST_INVARIANT;
-
 }
-
 
 W4dRoot* MachPhysOtherPersistence::pRoot()
 {
     return &root_;
 }
 
-const MachPhysPulseBlob& MachPhysOtherPersistence::pulseBlobExemplar( MachPhys::WeaponType type )
+const MachPhysPulseBlob& MachPhysOtherPersistence::pulseBlobExemplar(MachPhys::WeaponType type)
 {
-    MachPhysPulseBlob** ppBlob = NULL;
+    MachPhysPulseBlob** ppBlob = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::PULSE_RIFLE:
             ppBlob = &(pImpl_->pPulseRifle_);
@@ -245,20 +243,20 @@ const MachPhysPulseBlob& MachPhysOtherPersistence::pulseBlobExemplar( MachPhys::
         case MachPhys::PULSE_CANNON:
             ppBlob = &(pImpl_->pPulseCannon_);
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppBlob == NULL )
-        *ppBlob = _NEW( MachPhysPulseBlob( type ) );
+    if (*ppBlob == nullptr)
+        *ppBlob = _NEW(MachPhysPulseBlob(type));
 
     return **ppBlob;
 }
 
-const MachPhysPlasmaBolt& MachPhysOtherPersistence::plasmaBoltExemplar( MachPhys::WeaponType type )
+const MachPhysPlasmaBolt& MachPhysOtherPersistence::plasmaBoltExemplar(MachPhys::WeaponType type)
 {
-    MachPhysPlasmaBolt** ppBolt = NULL;
+    MachPhysPlasmaBolt** ppBolt = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::PLASMA_RIFLE:
             ppBolt = &(pImpl_->pPlasmaBoltRifle_);
@@ -269,139 +267,134 @@ const MachPhysPlasmaBolt& MachPhysOtherPersistence::plasmaBoltExemplar( MachPhys
         case MachPhys::PLASMA_CANNON2:
             ppBolt = &(pImpl_->pPlasmaBoltCannon2_);
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppBolt == NULL )
-        *ppBolt = _NEW( MachPhysPlasmaBolt( type ) );
+    if (*ppBolt == nullptr)
+        *ppBolt = _NEW(MachPhysPlasmaBolt(type));
 
     return **ppBolt;
 }
 
 const MachPhysBeam& MachPhysOtherPersistence::beamExemplar()
 {
-    if( pImpl_->pBeam_ == NULL )
-        pImpl_->pBeam_ = _NEW( MachPhysBeam() );
+    if (pImpl_->pBeam_ == nullptr)
+        pImpl_->pBeam_ = _NEW(MachPhysBeam());
 
     return *(pImpl_->pBeam_);
 }
 
-
 const MachPhysBlast& MachPhysOtherPersistence::blastExemplar()
 {
-    if( pImpl_->pBlast_ == NULL )
-        pImpl_->pBlast_ = _NEW( MachPhysBlast() );
+    if (pImpl_->pBlast_ == nullptr)
+        pImpl_->pBlast_ = _NEW(MachPhysBlast());
 
     return *(pImpl_->pBlast_);
 }
 
 const MachPhysBlackSphere& MachPhysOtherPersistence::blackSphereExemplar()
 {
-    if( pImpl_->pBlackSphere_ == NULL )
-        pImpl_->pBlackSphere_ = _NEW( MachPhysBlackSphere() );
+    if (pImpl_->pBlackSphere_ == nullptr)
+        pImpl_->pBlackSphere_ = _NEW(MachPhysBlackSphere());
 
     return *(pImpl_->pBlackSphere_);
 }
 
-
-
-const MachPhysCrackFire& MachPhysOtherPersistence::crackFireExemplar( MachPhysCrackFire::ChasmType type)
+const MachPhysCrackFire& MachPhysOtherPersistence::crackFireExemplar(MachPhysCrackFire::ChasmType type)
 {
-	MachPhysCrackFire** ppCrackFire = NULL;
+    MachPhysCrackFire** ppCrackFire = nullptr;
 
-	switch( type )
-	{
-		case MachPhysCrackFire::GARILLA_PUNCH_CHASM:
+    switch (type)
+    {
+        case MachPhysCrackFire::GARILLA_PUNCH_CHASM:
 
-			ppCrackFire = &(pImpl_->pGarillaCrackFire_);
-			break;
+            ppCrackFire = &(pImpl_->pGarillaCrackFire_);
+            break;
 
-		case MachPhysCrackFire::BEE_BOMB_CHASM:
+        case MachPhysCrackFire::BEE_BOMB_CHASM:
 
-			ppCrackFire = &(pImpl_->pBeeCrackFire_);
-			break;
-	}
+            ppCrackFire = &(pImpl_->pBeeCrackFire_);
+            break;
+    }
 
-    if( *ppCrackFire == NULL )
-        *ppCrackFire = _NEW( MachPhysCrackFire( type ) );
+    if (*ppCrackFire == nullptr)
+        *ppCrackFire = _NEW(MachPhysCrackFire(type));
 
     return **ppCrackFire;
 }
 
 const MachPhysBurstWave& MachPhysOtherPersistence::burstWaveExemplar()
 {
-    if( pImpl_->pBurstWave_ == NULL )
-        pImpl_->pBurstWave_ = _NEW( MachPhysBurstWave() );
+    if (pImpl_->pBurstWave_ == nullptr)
+        pImpl_->pBurstWave_ = _NEW(MachPhysBurstWave());
 
     return *(pImpl_->pBurstWave_);
 }
 
-
 const MachPhysDoublesidedFlame& MachPhysOtherPersistence::doubleSidedFlameExemplar()
 {
-    if( pImpl_->pDoubleSidedFlame_ == NULL )
-        pImpl_->pDoubleSidedFlame_ = _NEW( MachPhysDoublesidedFlame() );
+    if (pImpl_->pDoubleSidedFlame_ == nullptr)
+        pImpl_->pDoubleSidedFlame_ = _NEW(MachPhysDoublesidedFlame());
 
     return *(pImpl_->pDoubleSidedFlame_);
 }
 
-
-const MachPhysElectro& MachPhysOtherPersistence::electroExemplar( MachPhysElectro::FlashType type )
+const MachPhysElectro& MachPhysOtherPersistence::electroExemplar(MachPhysElectro::FlashType type)
 {
-	MachPhysElectro** ppElectro = NULL;
+    MachPhysElectro** ppElectro = nullptr;
 
-	switch( type )
-	{
-		case MachPhysElectro::VIRUS:
-		{
-			ppElectro = &(pImpl_->pVirusElectro_);
-			break;
-		}
-		case MachPhysElectro::ELECTRIC:
-		{
-			ppElectro = &(pImpl_->pElectricElectro_);
-			break;
-		}
-	}
-    if( *ppElectro == NULL )
-	{
-        *ppElectro = _NEW( MachPhysElectro( type ) );
+    switch (type)
+    {
+        case MachPhysElectro::VIRUS:
+            {
+                ppElectro = &(pImpl_->pVirusElectro_);
+                break;
+            }
+        case MachPhysElectro::ELECTRIC:
+            {
+                ppElectro = &(pImpl_->pElectricElectro_);
+                break;
+            }
+    }
+    if (*ppElectro == nullptr)
+    {
+        *ppElectro = _NEW(MachPhysElectro(type));
 
-	    //TBD: Disable the back fuce cull via cast here.
-	    //These needs to be changed so the property is defined in the .x file.
-	    //Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *ppElectro).mesh().mesh();
-	    //_CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
-	}
+        // TBD: Disable the back fuce cull via cast here.
+        // These needs to be changed so the property is defined in the .x file.
+        // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *ppElectro).mesh().mesh();
+        //_CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
+    }
 
     return **ppElectro;
 }
 
-const MachPhysLightningHalo& MachPhysOtherPersistence::haloExemplar( MachPhysLightningHalo::HaloType type )
+const MachPhysLightningHalo& MachPhysOtherPersistence::haloExemplar(MachPhysLightningHalo::HaloType type)
 {
-	MachPhysLightningHalo** ppHalo;
+    MachPhysLightningHalo** ppHalo;
 
-	switch( type )
-	{
-		case MachPhysLightningHalo::VIRUS:
-		{
-			ppHalo = &(pImpl_->pHaloVirus_);
-			break;
-		}
-		case MachPhysLightningHalo::ELECTRIC:
-		{
-			ppHalo = &(pImpl_->pHaloElectric_);
-			break;
-		}
-	}
-    if( *ppHalo == NULL )
-        *ppHalo = _NEW( MachPhysLightningHalo( type ) );
+    switch (type)
+    {
+        case MachPhysLightningHalo::VIRUS:
+            {
+                ppHalo = &(pImpl_->pHaloVirus_);
+                break;
+            }
+        case MachPhysLightningHalo::ELECTRIC:
+            {
+                ppHalo = &(pImpl_->pHaloElectric_);
+                break;
+            }
+    }
+    if (*ppHalo == nullptr)
+        *ppHalo = _NEW(MachPhysLightningHalo(type));
 
     return **ppHalo;
 }
 
 const W4dGeneric& MachPhysOtherPersistence::healAuraCentralCrossExemplar()
 {
-    if( pImpl_->pCentralCrossHealAura_ == NULL )
+    if (pImpl_->pCentralCrossHealAura_ == nullptr)
         pImpl_->pCentralCrossHealAura_ = &MachPhysHealAura::newCentralCross();
 
     return *(pImpl_->pCentralCrossHealAura_);
@@ -410,76 +403,75 @@ const W4dGeneric& MachPhysOtherPersistence::healAuraCentralCrossExemplar()
 const W4dGeneric& MachPhysOtherPersistence::healAuraRadialCrossExemplar()
 {
 
-    if( pImpl_->pRadialCrossHealAura_ == NULL )
+    if (pImpl_->pRadialCrossHealAura_ == nullptr)
         pImpl_->pRadialCrossHealAura_ = &MachPhysHealAura::newRadialCross();
 
     return *(pImpl_->pRadialCrossHealAura_);
 }
 
-
 const MachPhysHelix& MachPhysOtherPersistence::helixExemplar(MachPhysHelix::Twist twist)
 {
-	MachPhysHelix** ppHelix = NULL;
+    MachPhysHelix** ppHelix = nullptr;
 
-	switch( twist )
-	{
-		case MachPhysHelix::LEFT_TWIST:
-			ppHelix = &(pImpl_->pLeftHelix_);
-			break;
-		case MachPhysHelix::RIGHT_TWIST:
-			ppHelix = &(pImpl_->pRightHelix_);
-			break;
-	}
-    if( *ppHelix == NULL )
-        *ppHelix = _NEW( MachPhysHelix(twist) );
+    switch (twist)
+    {
+        case MachPhysHelix::LEFT_TWIST:
+            ppHelix = &(pImpl_->pLeftHelix_);
+            break;
+        case MachPhysHelix::RIGHT_TWIST:
+            ppHelix = &(pImpl_->pRightHelix_);
+            break;
+    }
+    if (*ppHelix == nullptr)
+        *ppHelix = _NEW(MachPhysHelix(twist));
 
     return **ppHelix;
 }
 
 const MachPhysJetRing& MachPhysOtherPersistence::jetRingExemplar()
 {
-    if( pImpl_->pJetRing_ == NULL )
-        pImpl_->pJetRing_ = _NEW( MachPhysJetRing() );
+    if (pImpl_->pJetRing_ == nullptr)
+        pImpl_->pJetRing_ = _NEW(MachPhysJetRing());
 
     return *(pImpl_->pJetRing_);
 }
 
 const MachPhysMushroomEdge& MachPhysOtherPersistence::mushroomEdgeExemplar()
 {
-    if( pImpl_->pMushroomEdge_ == NULL )
-        pImpl_->pMushroomEdge_ = _NEW( MachPhysMushroomEdge() );
+    if (pImpl_->pMushroomEdge_ == nullptr)
+        pImpl_->pMushroomEdge_ = _NEW(MachPhysMushroomEdge());
 
     return *(pImpl_->pMushroomEdge_);
 }
 
 const MachPhysMushroomShaft& MachPhysOtherPersistence::mushroomShaftExemplar()
 {
-    if( pImpl_->pMushroomShaft_ == NULL )
-        pImpl_->pMushroomShaft_ = _NEW( MachPhysMushroomShaft() );
+    if (pImpl_->pMushroomShaft_ == nullptr)
+        pImpl_->pMushroomShaft_ = _NEW(MachPhysMushroomShaft());
 
     return *(pImpl_->pMushroomShaft_);
 }
 
 const MachPhysMushroomTop& MachPhysOtherPersistence::mushroomTopExemplar()
 {
-    if( pImpl_->pMushroomTop_ == NULL )
-        pImpl_->pMushroomTop_ = _NEW( MachPhysMushroomTop() );
+    if (pImpl_->pMushroomTop_ == nullptr)
+        pImpl_->pMushroomTop_ = _NEW(MachPhysMushroomTop());
 
     return *(pImpl_->pMushroomTop_);
 }
 
 const MachPhysParticles& MachPhysOtherPersistence::particlesExemplar()
 {
-    if( pImpl_->pParticles_ == NULL )
-        pImpl_->pParticles_ = _NEW( MachPhysParticles() );
+    if (pImpl_->pParticles_ == nullptr)
+        pImpl_->pParticles_ = _NEW(MachPhysParticles());
 
     return *(pImpl_->pParticles_);
 }
 
 const MachPhysRadialDisc& MachPhysOtherPersistence::radialDiscExemplar()
 {
-    if( pImpl_->pRadialDisc_ == NULL )
-        pImpl_->pRadialDisc_ = _NEW( MachPhysRadialDisc() );
+    if (pImpl_->pRadialDisc_ == nullptr)
+        pImpl_->pRadialDisc_ = _NEW(MachPhysRadialDisc());
 
     return *(pImpl_->pRadialDisc_);
 }
@@ -496,273 +488,275 @@ const MachPhysGroundScorch& MachPhysOtherPersistence::groundScorchExemplar()
 
 const MachPhysShockWave& MachPhysOtherPersistence::shockWaveExemplar()
 {
-    if( pImpl_->pShockWave_ == NULL )
-        pImpl_->pShockWave_ = _NEW( MachPhysShockWave() );
+    if (pImpl_->pShockWave_ == nullptr)
+        pImpl_->pShockWave_ = _NEW(MachPhysShockWave());
 
     return *(pImpl_->pShockWave_);
 }
 
 const MachPhysNukeWave& MachPhysOtherPersistence::nukeWaveExemplar()
 {
-    if( pImpl_->pNukeWave_ == NULL )
-        pImpl_->pNukeWave_ = _NEW( MachPhysNukeWave() );
+    if (pImpl_->pNukeWave_ == nullptr)
+        pImpl_->pNukeWave_ = _NEW(MachPhysNukeWave());
 
     return *(pImpl_->pNukeWave_);
 }
 
 const MachPhysSparks& MachPhysOtherPersistence::sparksExemplar()
 {
-    if( pImpl_->pSparks_ == NULL )
-        pImpl_->pSparks_ = _NEW( MachPhysSparks() );
+    if (pImpl_->pSparks_ == nullptr)
+        pImpl_->pSparks_ = _NEW(MachPhysSparks());
 
     return *(pImpl_->pSparks_);
 }
 
 const MachPhysGroundSplat& MachPhysOtherPersistence::groundSplatExemplar()
 {
-    if( pImpl_->pGroundSplat_ == NULL )
-        pImpl_->pGroundSplat_ = _NEW( MachPhysGroundSplat() );
+    if (pImpl_->pGroundSplat_ == nullptr)
+        pImpl_->pGroundSplat_ = _NEW(MachPhysGroundSplat());
 
     return *(pImpl_->pGroundSplat_);
 }
 
 const MachPhysWaterfall& MachPhysOtherPersistence::waterfallExemplar()
 {
-    if( pImpl_->pWaterfall_ == NULL )
-        pImpl_->pWaterfall_ = _NEW( MachPhysWaterfall() );
+    if (pImpl_->pWaterfall_ == nullptr)
+        pImpl_->pWaterfall_ = _NEW(MachPhysWaterfall());
 
     return *(pImpl_->pWaterfall_);
 }
 
 const MachPhysWhiteSphere& MachPhysOtherPersistence::whiteSphereExemplar()
 {
-    if( pImpl_->pWhiteSphere_ == NULL )
-        pImpl_->pWhiteSphere_ = _NEW( MachPhysWhiteSphere() );
+    if (pImpl_->pWhiteSphere_ == nullptr)
+        pImpl_->pWhiteSphere_ = _NEW(MachPhysWhiteSphere());
 
     return *(pImpl_->pWhiteSphere_);
 }
 
 const MachPhysPlasmaAura& MachPhysOtherPersistence::plasmaAuraExemplar()
 {
-    if( pImpl_->pPlasmaAura_ == NULL )
-        pImpl_->pPlasmaAura_ = _NEW( MachPhysPlasmaAura() );
+    if (pImpl_->pPlasmaAura_ == nullptr)
+        pImpl_->pPlasmaAura_ = _NEW(MachPhysPlasmaAura());
 
     return *(pImpl_->pPlasmaAura_);
 }
 
 const MachPhysPlasmaSplat& MachPhysOtherPersistence::plasmaSplatExemplar()
 {
-    if( pImpl_->pPlasmaSplat_ == NULL )
-        pImpl_->pPlasmaSplat_ = _NEW( MachPhysPlasmaSplat() );
+    if (pImpl_->pPlasmaSplat_ == nullptr)
+        pImpl_->pPlasmaSplat_ = _NEW(MachPhysPlasmaSplat());
 
     return *(pImpl_->pPlasmaSplat_);
 }
 
 const MachPhysPulseAura& MachPhysOtherPersistence::pulseAuraExemplar()
 {
-    if( pImpl_->pPulseAura_ == NULL )
-        pImpl_->pPulseAura_ = _NEW( MachPhysPulseAura() );
+    if (pImpl_->pPulseAura_ == nullptr)
+        pImpl_->pPulseAura_ = _NEW(MachPhysPulseAura());
 
     return *(pImpl_->pPulseAura_);
 }
 
 const MachPhysPulseSplat& MachPhysOtherPersistence::pulseSplatExemplar()
 {
-    if( pImpl_->pPulseSplat_ == NULL )
-        pImpl_->pPulseSplat_ = _NEW( MachPhysPulseSplat() );
+    if (pImpl_->pPulseSplat_ == nullptr)
+        pImpl_->pPulseSplat_ = _NEW(MachPhysPulseSplat());
 
     return *(pImpl_->pPulseSplat_);
 }
 
 const MachPhysHemiSphere& MachPhysOtherPersistence::hemiSphereExemplar()
 {
-    if( pImpl_->pHemiSphere_ == NULL )
-        pImpl_->pHemiSphere_ = _NEW( MachPhysHemiSphere() );
+    if (pImpl_->pHemiSphere_ == nullptr)
+        pImpl_->pHemiSphere_ = _NEW(MachPhysHemiSphere());
 
     return *(pImpl_->pHemiSphere_);
 }
 
 const MachPhysVortexSphere& MachPhysOtherPersistence::vortexSphereExemplar()
 {
-    if( pImpl_->pVortexSphere_ == NULL )
-        pImpl_->pVortexSphere_ = _NEW( MachPhysVortexSphere() );
+    if (pImpl_->pVortexSphere_ == nullptr)
+        pImpl_->pVortexSphere_ = _NEW(MachPhysVortexSphere());
 
     return *(pImpl_->pVortexSphere_);
 }
 
 const MachPhysBeeBomb& MachPhysOtherPersistence::beeBombExemplar()
 {
-    if( pImpl_->pBeeBomb_ == NULL )
-        pImpl_->pBeeBomb_ = _NEW( MachPhysBeeBomb() );
+    if (pImpl_->pBeeBomb_ == nullptr)
+        pImpl_->pBeeBomb_ = _NEW(MachPhysBeeBomb());
 
     return *(pImpl_->pBeeBomb_);
 }
 
 const MachPhysBeeBombWave& MachPhysOtherPersistence::beeBombWaveExemplar()
 {
-    if( pImpl_->pBeeBombWave_ == NULL )
-        pImpl_->pBeeBombWave_ = _NEW( MachPhysBeeBombWave() );
+    if (pImpl_->pBeeBombWave_ == nullptr)
+        pImpl_->pBeeBombWave_ = _NEW(MachPhysBeeBombWave());
 
     return *(pImpl_->pBeeBombWave_);
 }
 
 const MachPhysLightSting& MachPhysOtherPersistence::lightStingExemplar()
 {
-    if( pImpl_->pLightSting_ == NULL )
-        pImpl_->pLightSting_ = _NEW( MachPhysLightSting() );
+    if (pImpl_->pLightSting_ == nullptr)
+        pImpl_->pLightSting_ = _NEW(MachPhysLightSting());
 
     return *(pImpl_->pLightSting_);
 }
 
 const MachPhysLightStingAura& MachPhysOtherPersistence::lightStingAuraExemplar()
 {
-    if( pImpl_->pLightStingAura_ == NULL )
-        pImpl_->pLightStingAura_ = _NEW( MachPhysLightStingAura() );
+    if (pImpl_->pLightStingAura_ == nullptr)
+        pImpl_->pLightStingAura_ = _NEW(MachPhysLightStingAura());
 
     return *(pImpl_->pLightStingAura_);
 }
 
 const MachPhysLightStingSplat& MachPhysOtherPersistence::lightStingSplatExemplar()
 {
-    if( pImpl_->pLightStingSplat_ == NULL )
-        pImpl_->pLightStingSplat_ = _NEW( MachPhysLightStingSplat() );
+    if (pImpl_->pLightStingSplat_ == nullptr)
+        pImpl_->pLightStingSplat_ = _NEW(MachPhysLightStingSplat());
 
     return *(pImpl_->pLightStingSplat_);
 }
 
 const MachPhysMetalSting& MachPhysOtherPersistence::metalStingExemplar()
 {
-    if( pImpl_->pMetalSting_ == NULL )
-        pImpl_->pMetalSting_ = _NEW( MachPhysMetalSting() );
+    if (pImpl_->pMetalSting_ == nullptr)
+        pImpl_->pMetalSting_ = _NEW(MachPhysMetalSting());
 
     return *(pImpl_->pMetalSting_);
 }
 
-const MachPhysFlashDisc& MachPhysOtherPersistence::flashDiscExemplar( const MATHEX_SCALAR& size, MachPhysFlashDisc::ColourType colour )
+const MachPhysFlashDisc&
+MachPhysOtherPersistence::flashDiscExemplar(const MATHEX_SCALAR& size, MachPhysFlashDisc::ColourType colour)
 {
-	MachPhysFlashDisc** ppFlashDisc = NULL;
+    MachPhysFlashDisc** ppFlashDisc = nullptr;
 
-	switch ( colour )
-	{
-		case  MachPhysFlashDisc::YELLOW:
+    switch (colour)
+    {
+        case MachPhysFlashDisc::YELLOW:
 
-			ppFlashDisc = &(pImpl_->pFlashDiscYellow_);
-			break;
+            ppFlashDisc = &(pImpl_->pFlashDiscYellow_);
+            break;
 
-		case  MachPhysFlashDisc::WHITE:
+        case MachPhysFlashDisc::WHITE:
 
-			ppFlashDisc = &(pImpl_->pFlashDiscWhite_);
-			break;
-	}
+            ppFlashDisc = &(pImpl_->pFlashDiscWhite_);
+            break;
+    }
 
-	//each coloured type can only have one size which is defined in the parmdata file,
-	//but if some other size id defined first, then the size define in the file will not be in effect, which is an error
+    // each coloured type can only have one size which is defined in the parmdata file,
+    // but if some other size id defined first, then the size define in the file will not be in effect, which is an
+    // error
 
-	if( *ppFlashDisc == NULL )
-		*ppFlashDisc = _NEW( MachPhysFlashDisc( size, colour ) );
+    if (*ppFlashDisc == nullptr)
+        *ppFlashDisc = _NEW(MachPhysFlashDisc(size, colour));
 
-	return **ppFlashDisc;
+    return **ppFlashDisc;
 }
 
 const MachPhysLoadingLight& MachPhysOtherPersistence::lightLoadingExemplar()
 {
-    if( pImpl_->pLoadingLight_ == NULL )
-        pImpl_->pLoadingLight_ = _NEW( MachPhysLoadingLight() );
+    if (pImpl_->pLoadingLight_ == nullptr)
+        pImpl_->pLoadingLight_ = _NEW(MachPhysLoadingLight());
 
     return *(pImpl_->pLoadingLight_);
 }
 
 const MachPhysLoadingOver& MachPhysOtherPersistence::overLoadingExemplar()
 {
-    if( pImpl_->pLoadingOver_ == NULL )
-        pImpl_->pLoadingOver_ = _NEW( MachPhysLoadingOver() );
+    if (pImpl_->pLoadingOver_ == nullptr)
+        pImpl_->pLoadingOver_ = _NEW(MachPhysLoadingOver());
 
     return *(pImpl_->pLoadingOver_);
 }
 
 const MachPhysLoadingUnder& MachPhysOtherPersistence::underLoadingExemplar()
 {
-    if( pImpl_->pLoadingUnder_ == NULL )
-        pImpl_->pLoadingUnder_ = _NEW( MachPhysLoadingUnder() );
+    if (pImpl_->pLoadingUnder_ == nullptr)
+        pImpl_->pLoadingUnder_ = _NEW(MachPhysLoadingUnder());
 
     return *(pImpl_->pLoadingUnder_);
 }
 
 const MachPhysScavenger& MachPhysOtherPersistence::scavengerExemplar()
 {
-    if( pImpl_->pScavenger_ == NULL )
-        pImpl_->pScavenger_ = _NEW( MachPhysScavenger() );
+    if (pImpl_->pScavenger_ == nullptr)
+        pImpl_->pScavenger_ = _NEW(MachPhysScavenger());
 
     return *(pImpl_->pScavenger_);
 }
 
 const MachPhysLocator& MachPhysOtherPersistence::locatorExemplar()
 {
-    if( pImpl_->pLocator_ == NULL )
-        pImpl_->pLocator_ = _NEW( MachPhysLocator() );
+    if (pImpl_->pLocator_ == nullptr)
+        pImpl_->pLocator_ = _NEW(MachPhysLocator());
 
     return *(pImpl_->pLocator_);
 }
 
-const MachPhysFlameBall& MachPhysOtherPersistence::flameBallExemplar( MachPhysFlameBall::FlameBallType type )
+const MachPhysFlameBall& MachPhysOtherPersistence::flameBallExemplar(MachPhysFlameBall::FlameBallType type)
 {
-	MachPhysFlameBall** ppFlameBall = NULL;
-	switch ( type )
-	{
-		case MachPhysFlameBall::GRUNT_FLAME_BALL:
+    MachPhysFlameBall** ppFlameBall = nullptr;
+    switch (type)
+    {
+        case MachPhysFlameBall::GRUNT_FLAME_BALL:
 
-			ppFlameBall = &(pImpl_->pGruntFlameBall_);
-			break;
+            ppFlameBall = &(pImpl_->pGruntFlameBall_);
+            break;
 
-		case MachPhysFlameBall::TURRET_FLAME_BALL:
+        case MachPhysFlameBall::TURRET_FLAME_BALL:
 
-			ppFlameBall = &(pImpl_->pTurretFlameBall_);
-			break;
-	}
-	if( *ppFlameBall == NULL )
-		*ppFlameBall = _NEW( MachPhysFlameBall( type ) );
+            ppFlameBall = &(pImpl_->pTurretFlameBall_);
+            break;
+    }
+    if (*ppFlameBall == nullptr)
+        *ppFlameBall = _NEW(MachPhysFlameBall(type));
 
-	return **ppFlameBall;
+    return **ppFlameBall;
 }
 
 const MachPhysDebrisUnit& MachPhysOtherPersistence::debrisExemplar()
 {
-    if( pImpl_->pDebris_ == NULL )
-        pImpl_->pDebris_ = _NEW( MachPhysDebrisUnit(pRoot(), MexTransform3d()) );
+    if (pImpl_->pDebris_ == nullptr)
+        pImpl_->pDebris_ = _NEW(MachPhysDebrisUnit(pRoot(), MexTransform3d()));
 
     return *(pImpl_->pDebris_);
 }
 
 const MachPhysOreHolograph& MachPhysOtherPersistence::holographExemplar()
 {
-    if( pImpl_->pHolograph_ == NULL )
-        pImpl_->pHolograph_ = _NEW( MachPhysOreHolograph(pRoot(), MexTransform3d()) );
+    if (pImpl_->pHolograph_ == nullptr)
+        pImpl_->pHolograph_ = _NEW(MachPhysOreHolograph(pRoot(), MexTransform3d()));
 
     return *(pImpl_->pHolograph_);
 }
 
 const MachPhysLight& MachPhysOtherPersistence::lightShadowExemplar()
 {
-    if( pImpl_->pLightShadow_ == NULL )
-        pImpl_->pLightShadow_ = _NEW( MachPhysLight() );
+    if (pImpl_->pLightShadow_ == nullptr)
+        pImpl_->pLightShadow_ = _NEW(MachPhysLight());
 
     return *(pImpl_->pLightShadow_);
 }
 
 const MachPhysLandMine& MachPhysOtherPersistence::landMineExemplar()
 {
-    if( pImpl_->pLandMine_ == NULL )
-        pImpl_->pLandMine_ = _NEW( MachPhysLandMine() );
+    if (pImpl_->pLandMine_ == nullptr)
+        pImpl_->pLandMine_ = _NEW(MachPhysLandMine());
 
     return *(pImpl_->pLandMine_);
 }
 
 void MachPhysOtherPersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysOtherPersistence& t )
+ostream& operator<<(ostream& o, const MachPhysOtherPersistence& t)
 {
 
     o << "MachPhysOtherPersistence " << (void*)&t << " start" << std::endl;
@@ -771,178 +765,178 @@ ostream& operator <<( ostream& o, const MachPhysOtherPersistence& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysOtherPersistence& otherPersist )
+void perWrite(PerOstream& ostr, const MachPhysOtherPersistence& otherPersist)
 {
     ostr << otherPersist.root_;
 
-   	ostr << otherPersist.pImpl_->pPulseRifle_;
+    ostr << otherPersist.pImpl_->pPulseRifle_;
     ostr << otherPersist.pImpl_->pPulseCannon_;
 
     ostr << otherPersist.pImpl_->pPlasmaBoltRifle_;
     ostr << otherPersist.pImpl_->pPlasmaBoltCannon1_;
     ostr << otherPersist.pImpl_->pPlasmaBoltCannon2_;
 
-	ostr << otherPersist.pImpl_->pBeam_;
-	ostr << otherPersist.pImpl_->pParticles_;
+    ostr << otherPersist.pImpl_->pBeam_;
+    ostr << otherPersist.pImpl_->pParticles_;
 
- 	ostr << otherPersist.pImpl_->pBlackSphere_;
-	ostr << otherPersist.pImpl_->pWhiteSphere_;
+    ostr << otherPersist.pImpl_->pBlackSphere_;
+    ostr << otherPersist.pImpl_->pWhiteSphere_;
 
-	ostr << otherPersist.pImpl_->pBlast_;
- 	ostr << otherPersist.pImpl_->pGarillaCrackFire_;
- 	ostr << otherPersist.pImpl_->pBeeCrackFire_;
+    ostr << otherPersist.pImpl_->pBlast_;
+    ostr << otherPersist.pImpl_->pGarillaCrackFire_;
+    ostr << otherPersist.pImpl_->pBeeCrackFire_;
 
-	ostr << otherPersist.pImpl_->pMushroomEdge_;
-	ostr << otherPersist.pImpl_->pMushroomShaft_;
-	ostr << otherPersist.pImpl_->pMushroomTop_;
+    ostr << otherPersist.pImpl_->pMushroomEdge_;
+    ostr << otherPersist.pImpl_->pMushroomShaft_;
+    ostr << otherPersist.pImpl_->pMushroomTop_;
 
-	ostr << otherPersist.pImpl_->pElectricElectro_;
-	ostr << otherPersist.pImpl_->pVirusElectro_;
-	ostr << otherPersist.pImpl_->pHaloElectric_;
-	ostr << otherPersist.pImpl_->pHaloVirus_;
+    ostr << otherPersist.pImpl_->pElectricElectro_;
+    ostr << otherPersist.pImpl_->pVirusElectro_;
+    ostr << otherPersist.pImpl_->pHaloElectric_;
+    ostr << otherPersist.pImpl_->pHaloVirus_;
 
-	ostr << otherPersist.pImpl_->pCentralCrossHealAura_;
-	ostr << otherPersist.pImpl_->pRadialCrossHealAura_;
+    ostr << otherPersist.pImpl_->pCentralCrossHealAura_;
+    ostr << otherPersist.pImpl_->pRadialCrossHealAura_;
 
-	ostr << otherPersist.pImpl_->pLeftHelix_;
-	ostr << otherPersist.pImpl_->pRightHelix_;
+    ostr << otherPersist.pImpl_->pLeftHelix_;
+    ostr << otherPersist.pImpl_->pRightHelix_;
 
-	ostr << otherPersist.pImpl_->pHemiSphere_;
-	ostr << otherPersist.pImpl_->pJetRing_;
-	ostr << otherPersist.pImpl_->pSparks_;
+    ostr << otherPersist.pImpl_->pHemiSphere_;
+    ostr << otherPersist.pImpl_->pJetRing_;
+    ostr << otherPersist.pImpl_->pSparks_;
 
-	//ostr << otherPersist.pImpl_->pGroundScorch_;
-	ostr << otherPersist.pImpl_->pGroundSplat_;
-	ostr << otherPersist.pImpl_->pDoubleSidedFlame_;
+    // ostr << otherPersist.pImpl_->pGroundScorch_;
+    ostr << otherPersist.pImpl_->pGroundSplat_;
+    ostr << otherPersist.pImpl_->pDoubleSidedFlame_;
 
-	ostr << otherPersist.pImpl_->pShockWave_;
-	ostr << otherPersist.pImpl_->pBurstWave_;
-	ostr << otherPersist.pImpl_->pNukeWave_;
+    ostr << otherPersist.pImpl_->pShockWave_;
+    ostr << otherPersist.pImpl_->pBurstWave_;
+    ostr << otherPersist.pImpl_->pNukeWave_;
 
-	ostr << otherPersist.pImpl_->pRadialDisc_;
-	ostr << otherPersist.pImpl_->pWaterfall_;
+    ostr << otherPersist.pImpl_->pRadialDisc_;
+    ostr << otherPersist.pImpl_->pWaterfall_;
 
-	ostr << otherPersist.pImpl_->pPlasmaAura_;
-	ostr << otherPersist.pImpl_->pPlasmaSplat_;
-	ostr << otherPersist.pImpl_->pPulseAura_;
-	ostr << otherPersist.pImpl_->pPulseSplat_;
+    ostr << otherPersist.pImpl_->pPlasmaAura_;
+    ostr << otherPersist.pImpl_->pPlasmaSplat_;
+    ostr << otherPersist.pImpl_->pPulseAura_;
+    ostr << otherPersist.pImpl_->pPulseSplat_;
 
-	ostr << otherPersist.pImpl_->pVortexSphere_;
+    ostr << otherPersist.pImpl_->pVortexSphere_;
 
-	ostr << otherPersist.pImpl_->pBeeBomb_;
-	ostr << otherPersist.pImpl_->pBeeBombWave_;
+    ostr << otherPersist.pImpl_->pBeeBomb_;
+    ostr << otherPersist.pImpl_->pBeeBombWave_;
 
-	ostr << otherPersist.pImpl_->pLightSting_;
-	ostr << otherPersist.pImpl_->pLightStingAura_;
-	ostr << otherPersist.pImpl_->pLightStingSplat_;
+    ostr << otherPersist.pImpl_->pLightSting_;
+    ostr << otherPersist.pImpl_->pLightStingAura_;
+    ostr << otherPersist.pImpl_->pLightStingSplat_;
 
-	ostr << otherPersist.pImpl_->pMetalSting_;
+    ostr << otherPersist.pImpl_->pMetalSting_;
 
-	ostr << otherPersist.pImpl_->pFlashDiscYellow_;
-	ostr << otherPersist.pImpl_->pFlashDiscWhite_;
+    ostr << otherPersist.pImpl_->pFlashDiscYellow_;
+    ostr << otherPersist.pImpl_->pFlashDiscWhite_;
 
-	ostr << otherPersist.pImpl_->pLoadingLight_;
-	ostr << otherPersist.pImpl_->pLoadingOver_;
-	ostr << otherPersist.pImpl_->pLoadingUnder_;
+    ostr << otherPersist.pImpl_->pLoadingLight_;
+    ostr << otherPersist.pImpl_->pLoadingOver_;
+    ostr << otherPersist.pImpl_->pLoadingUnder_;
 
-	ostr << otherPersist.pImpl_->pScavenger_;
-	ostr << otherPersist.pImpl_->pLocator_;
+    ostr << otherPersist.pImpl_->pScavenger_;
+    ostr << otherPersist.pImpl_->pLocator_;
 
-	ostr << otherPersist.pImpl_->pGruntFlameBall_;
-	ostr << otherPersist.pImpl_->pTurretFlameBall_;
+    ostr << otherPersist.pImpl_->pGruntFlameBall_;
+    ostr << otherPersist.pImpl_->pTurretFlameBall_;
 
-	ostr << otherPersist.pImpl_->pDebris_;
-	ostr << otherPersist.pImpl_->pHolograph_;
+    ostr << otherPersist.pImpl_->pDebris_;
+    ostr << otherPersist.pImpl_->pHolograph_;
 
-	ostr << otherPersist.pImpl_->pLightShadow_;
-	ostr << otherPersist.pImpl_->pLandMine_;
+    ostr << otherPersist.pImpl_->pLightShadow_;
+    ostr << otherPersist.pImpl_->pLandMine_;
 }
 
-void perRead( PerIstream& istr, MachPhysOtherPersistence& otherPersist )
+void perRead(PerIstream& istr, MachPhysOtherPersistence& otherPersist)
 {
     istr >> otherPersist.root_;
 
-   	istr >> otherPersist.pImpl_->pPulseRifle_;
+    istr >> otherPersist.pImpl_->pPulseRifle_;
     istr >> otherPersist.pImpl_->pPulseCannon_;
 
     istr >> otherPersist.pImpl_->pPlasmaBoltRifle_;
     istr >> otherPersist.pImpl_->pPlasmaBoltCannon1_;
     istr >> otherPersist.pImpl_->pPlasmaBoltCannon2_;
 
-	istr >> otherPersist.pImpl_->pBeam_;
-	istr >> otherPersist.pImpl_->pParticles_;
+    istr >> otherPersist.pImpl_->pBeam_;
+    istr >> otherPersist.pImpl_->pParticles_;
 
- 	istr >> otherPersist.pImpl_->pBlackSphere_;
-	istr >> otherPersist.pImpl_->pWhiteSphere_;
+    istr >> otherPersist.pImpl_->pBlackSphere_;
+    istr >> otherPersist.pImpl_->pWhiteSphere_;
 
-	istr >> otherPersist.pImpl_->pBlast_;
- 	istr >> otherPersist.pImpl_->pGarillaCrackFire_;
- 	istr >> otherPersist.pImpl_->pBeeCrackFire_;
+    istr >> otherPersist.pImpl_->pBlast_;
+    istr >> otherPersist.pImpl_->pGarillaCrackFire_;
+    istr >> otherPersist.pImpl_->pBeeCrackFire_;
 
-	istr >> otherPersist.pImpl_->pMushroomEdge_;
-	istr >> otherPersist.pImpl_->pMushroomShaft_;
-	istr >> otherPersist.pImpl_->pMushroomTop_;
+    istr >> otherPersist.pImpl_->pMushroomEdge_;
+    istr >> otherPersist.pImpl_->pMushroomShaft_;
+    istr >> otherPersist.pImpl_->pMushroomTop_;
 
-	istr >> otherPersist.pImpl_->pElectricElectro_;
-	istr >> otherPersist.pImpl_->pVirusElectro_;
-	istr >> otherPersist.pImpl_->pHaloElectric_;
-	istr >> otherPersist.pImpl_->pHaloVirus_;
+    istr >> otherPersist.pImpl_->pElectricElectro_;
+    istr >> otherPersist.pImpl_->pVirusElectro_;
+    istr >> otherPersist.pImpl_->pHaloElectric_;
+    istr >> otherPersist.pImpl_->pHaloVirus_;
 
-	istr >> otherPersist.pImpl_->pCentralCrossHealAura_;
-	istr >> otherPersist.pImpl_->pRadialCrossHealAura_;
+    istr >> otherPersist.pImpl_->pCentralCrossHealAura_;
+    istr >> otherPersist.pImpl_->pRadialCrossHealAura_;
 
-	istr >> otherPersist.pImpl_->pLeftHelix_;
-	istr >> otherPersist.pImpl_->pRightHelix_;
+    istr >> otherPersist.pImpl_->pLeftHelix_;
+    istr >> otherPersist.pImpl_->pRightHelix_;
 
-	istr >> otherPersist.pImpl_->pHemiSphere_;
-	istr >> otherPersist.pImpl_->pJetRing_;
-	istr >> otherPersist.pImpl_->pSparks_;
+    istr >> otherPersist.pImpl_->pHemiSphere_;
+    istr >> otherPersist.pImpl_->pJetRing_;
+    istr >> otherPersist.pImpl_->pSparks_;
 
-	//istr >> otherPersist.pImpl_->pGroundScorch_;
-	istr >> otherPersist.pImpl_->pGroundSplat_;
-	istr >> otherPersist.pImpl_->pDoubleSidedFlame_;
+    // istr >> otherPersist.pImpl_->pGroundScorch_;
+    istr >> otherPersist.pImpl_->pGroundSplat_;
+    istr >> otherPersist.pImpl_->pDoubleSidedFlame_;
 
-	istr >> otherPersist.pImpl_->pShockWave_;
-	istr >> otherPersist.pImpl_->pBurstWave_;
-	istr >> otherPersist.pImpl_->pNukeWave_;
+    istr >> otherPersist.pImpl_->pShockWave_;
+    istr >> otherPersist.pImpl_->pBurstWave_;
+    istr >> otherPersist.pImpl_->pNukeWave_;
 
-	istr >> otherPersist.pImpl_->pRadialDisc_;
-	istr >> otherPersist.pImpl_->pWaterfall_;
+    istr >> otherPersist.pImpl_->pRadialDisc_;
+    istr >> otherPersist.pImpl_->pWaterfall_;
 
-	istr >> otherPersist.pImpl_->pPlasmaAura_;
-	istr >> otherPersist.pImpl_->pPlasmaSplat_;
-	istr >> otherPersist.pImpl_->pPulseAura_;
-	istr >> otherPersist.pImpl_->pPulseSplat_;
+    istr >> otherPersist.pImpl_->pPlasmaAura_;
+    istr >> otherPersist.pImpl_->pPlasmaSplat_;
+    istr >> otherPersist.pImpl_->pPulseAura_;
+    istr >> otherPersist.pImpl_->pPulseSplat_;
 
-	istr >> otherPersist.pImpl_->pVortexSphere_;
+    istr >> otherPersist.pImpl_->pVortexSphere_;
 
-	istr >> otherPersist.pImpl_->pBeeBomb_;
-	istr >> otherPersist.pImpl_->pBeeBombWave_;
+    istr >> otherPersist.pImpl_->pBeeBomb_;
+    istr >> otherPersist.pImpl_->pBeeBombWave_;
 
-	istr >> otherPersist.pImpl_->pLightSting_;
-	istr >> otherPersist.pImpl_->pLightStingAura_;
-	istr >> otherPersist.pImpl_->pLightStingSplat_;
+    istr >> otherPersist.pImpl_->pLightSting_;
+    istr >> otherPersist.pImpl_->pLightStingAura_;
+    istr >> otherPersist.pImpl_->pLightStingSplat_;
 
-	istr >> otherPersist.pImpl_->pMetalSting_;
+    istr >> otherPersist.pImpl_->pMetalSting_;
 
-	istr >> otherPersist.pImpl_->pFlashDiscYellow_;
-	istr >> otherPersist.pImpl_->pFlashDiscWhite_;
+    istr >> otherPersist.pImpl_->pFlashDiscYellow_;
+    istr >> otherPersist.pImpl_->pFlashDiscWhite_;
 
-	istr >> otherPersist.pImpl_->pLoadingLight_;
-	istr >> otherPersist.pImpl_->pLoadingOver_;
-	istr >> otherPersist.pImpl_->pLoadingUnder_;
+    istr >> otherPersist.pImpl_->pLoadingLight_;
+    istr >> otherPersist.pImpl_->pLoadingOver_;
+    istr >> otherPersist.pImpl_->pLoadingUnder_;
 
-	istr >> otherPersist.pImpl_->pScavenger_;
-	istr >> otherPersist.pImpl_->pLocator_;
+    istr >> otherPersist.pImpl_->pScavenger_;
+    istr >> otherPersist.pImpl_->pLocator_;
 
-	istr >> otherPersist.pImpl_->pGruntFlameBall_;
-	istr >> otherPersist.pImpl_->pTurretFlameBall_;
+    istr >> otherPersist.pImpl_->pGruntFlameBall_;
+    istr >> otherPersist.pImpl_->pTurretFlameBall_;
 
-	istr >> otherPersist.pImpl_->pDebris_;
-	istr >> otherPersist.pImpl_->pHolograph_;
+    istr >> otherPersist.pImpl_->pDebris_;
+    istr >> otherPersist.pImpl_->pHolograph_;
 
-	istr >> otherPersist.pImpl_->pLightShadow_;
-	istr >> otherPersist.pImpl_->pLandMine_;
+    istr >> otherPersist.pImpl_->pLightShadow_;
+    istr >> otherPersist.pImpl_->pLandMine_;
 }
 
 /* End OTHERPER.CPP **************************************************/

@@ -1,8 +1,7 @@
 /*
- * E R R O R . H P P 
+ * E R R O R . H P P
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
-
 
 /*
     ErrorHandler
@@ -24,35 +23,39 @@ public:
     static ErrorHandler& instance();
     ~ErrorHandler();
 
-    void    initialise();
-    size_t  nTests() const;
-    size_t  nFailures() const;
-    
-    static  BaseAssertion::AssertionAction assertionHandler( const BaseAssertion::AssertionInfo& );
-    
-    enum    ExpectedResult { SUCCEED, FAIL };
+    void initialise();
+    size_t nTests() const;
+    size_t nFailures() const;
 
-    void    errorCheck( ExpectedResult, const string& where );
-    
+    static BaseAssertion::AssertionAction assertionHandler(const BaseAssertion::AssertionInfo&);
+
+    enum ExpectedResult
+    {
+        SUCCEED,
+        FAIL
+    };
+
+    void errorCheck(ExpectedResult, const string& where);
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const ErrorHandler& t );
+    friend ostream& operator<<(ostream& o, const ErrorHandler& t);
 
 private:
     // Operation deliberately revoked
-    ErrorHandler( const ErrorHandler& );
+    ErrorHandler(const ErrorHandler&);
 
     // Operation deliberately revoked
-    ErrorHandler& operator =( const ErrorHandler& );
+    ErrorHandler& operator=(const ErrorHandler&);
 
     // Operation deliberately revoked
-    bool operator ==( const ErrorHandler& );
+    bool operator==(const ErrorHandler&);
 
     ErrorHandler();
 
-    size_t  nFailures_;
-    size_t  nTests_;
-    bool    assertionFailed_;
+    size_t nFailures_;
+    size_t nTests_;
+    bool assertionFailed_;
 };
 
 ErrorHandler& ERROR_HANDLER()

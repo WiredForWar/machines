@@ -4,7 +4,7 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include  "stdlib/string.hpp"
+#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 
 #include "mathex/transf3d.hpp"
@@ -15,48 +15,49 @@
 #include "machphys/machdata.hpp"
 #include "machphys/locomoti.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMachineImpl );
+PER_DEFINE_PERSISTENT(MachPhysMachineImpl);
 
 // Should only be called by the one time constructor of MachPhysMachine
 MachPhysMachineImpl::MachPhysMachineImpl()
-: maxTranslationSpeed_( 0.0 ),
-  maxTranslationAcceleration_( 0.0 ),
-  maxRotationSpeed_( 0.0 ),
-  maxRotationAcceleration_( 0.0 ),
-  pLocomotionMethod_( NULL ),
-  pExplosion_( NULL ),
-  explosionDataPtr_( _NEW( MachPhysMachineExplosionData() ) ),
-  pFaceplate_( NULL ),
-  pDamageData_( NULL ),
-  pUpperBodyTurnLink_( NULL ),
-  pTurnerTracker_( NULL ),
-  machineControlType_( MachPhysMachine::OTHER )
+    : maxTranslationSpeed_(0.0)
+    , maxTranslationAcceleration_(0.0)
+    , maxRotationSpeed_(0.0)
+    , maxRotationAcceleration_(0.0)
+    , pLocomotionMethod_(nullptr)
+    , pExplosion_(nullptr)
+    , explosionDataPtr_(_NEW(MachPhysMachineExplosionData()))
+    , pFaceplate_(nullptr)
+    , pDamageData_(nullptr)
+    , pUpperBodyTurnLink_(nullptr)
+    , pTurnerTracker_(nullptr)
+    , machineControlType_(MachPhysMachine::OTHER)
 {
 
     TEST_INVARIANT;
 }
 
-MachPhysMachineImpl::MachPhysMachineImpl
-(
-    const MachPhysMachineImpl& copyMe, const MachPhysMachineData& data, MachPhys::Race race,
-    size_t bodyLevel, size_t brainLevel
-)
-: maxTranslationSpeed_( data.speed() ),
-  maxTranslationAcceleration_( data.acceleration() ),
-  maxRotationSpeed_( data.rotationSpeed() ),
-  maxRotationAcceleration_( data.rotationAcceleration() ),
-  race_( race ),
-  pFaceplate_( NULL ),
-  pExplosion_( NULL ),
-  explosionDataPtr_( copyMe.explosionDataPtr_ ),
-  pLocomotionMethod_( NULL ),
-  brainLevel_( brainLevel ),
-  bodyLevel_( bodyLevel ),
-  shakeLinks_( copyMe.shakeLinks_ ),
-  pDamageData_( NULL ),
-  pUpperBodyTurnLink_( NULL ),
-  pTurnerTracker_( NULL ),
-  machineControlType_( MachPhysMachine::OTHER )
+MachPhysMachineImpl::MachPhysMachineImpl(
+    const MachPhysMachineImpl& copyMe,
+    const MachPhysMachineData& data,
+    MachPhys::Race race,
+    size_t bodyLevel,
+    size_t brainLevel)
+    : maxTranslationSpeed_(data.speed())
+    , maxTranslationAcceleration_(data.acceleration())
+    , maxRotationSpeed_(data.rotationSpeed())
+    , maxRotationAcceleration_(data.rotationAcceleration())
+    , race_(race)
+    , pFaceplate_(nullptr)
+    , pExplosion_(nullptr)
+    , explosionDataPtr_(copyMe.explosionDataPtr_)
+    , pLocomotionMethod_(nullptr)
+    , brainLevel_(brainLevel)
+    , bodyLevel_(bodyLevel)
+    , shakeLinks_(copyMe.shakeLinks_)
+    , pDamageData_(nullptr)
+    , pUpperBodyTurnLink_(nullptr)
+    , pTurnerTracker_(nullptr)
+    , machineControlType_(MachPhysMachine::OTHER)
 {
 
     TEST_INVARIANT;
@@ -65,15 +66,14 @@ MachPhysMachineImpl::MachPhysMachineImpl
 MachPhysMachineImpl::~MachPhysMachineImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysMachineImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMachineImpl& t )
+ostream& operator<<(ostream& o, const MachPhysMachineImpl& t)
 {
 
     o << "MachPhysMachineImpl " << (void*)&t << " start" << std::endl;
@@ -82,7 +82,7 @@ ostream& operator <<( ostream& o, const MachPhysMachineImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMachineImpl& machine )
+void perWrite(PerOstream& ostr, const MachPhysMachineImpl& machine)
 {
     ostr << machine.maxTranslationSpeed_;
     ostr << machine.maxRotationSpeed_;
@@ -98,7 +98,7 @@ void perWrite( PerOstream& ostr, const MachPhysMachineImpl& machine )
     ostr << machine.pUpperBodyTurnLink_;
 }
 
-void perRead( PerIstream& istr, MachPhysMachineImpl& machine )
+void perRead(PerIstream& istr, MachPhysMachineImpl& machine)
 {
     istr >> machine.maxTranslationSpeed_;
     istr >> machine.maxRotationSpeed_;
@@ -114,17 +114,17 @@ void perRead( PerIstream& istr, MachPhysMachineImpl& machine )
     istr >> machine.pUpperBodyTurnLink_;
 }
 
-MachPhysMachineImpl::MachPhysMachineImpl( PerConstructor )
-: maxTranslationSpeed_( 0.0 ),
-  maxTranslationAcceleration_( 0.0 ),
-  maxRotationSpeed_( 0.0 ),
-  maxRotationAcceleration_( 0.0 ),
-  pLocomotionMethod_( NULL ),
-  pExplosion_( NULL ),
-  pFaceplate_( NULL ),
-  pDamageData_( NULL ),
-  pTurnerTracker_( NULL ),
-  machineControlType_( MachPhysMachine::OTHER )
+MachPhysMachineImpl::MachPhysMachineImpl(PerConstructor)
+    : maxTranslationSpeed_(0.0)
+    , maxTranslationAcceleration_(0.0)
+    , maxRotationSpeed_(0.0)
+    , maxRotationAcceleration_(0.0)
+    , pLocomotionMethod_(nullptr)
+    , pExplosion_(nullptr)
+    , pFaceplate_(nullptr)
+    , pDamageData_(nullptr)
+    , pTurnerTracker_(nullptr)
+    , machineControlType_(MachPhysMachine::OTHER)
 {
 }
 

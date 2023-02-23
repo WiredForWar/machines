@@ -1,8 +1,8 @@
 /*
- * C T X B R I E F . H P P 
+ * C T X B R I E F . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
-	 
+
 /*
     MachGuiCtxBriefing
 
@@ -25,48 +25,47 @@ class MachGuiCtxBriefing : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxBriefing( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxBriefing();
+    MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxBriefing() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	void autoLoadGame();
+    void autoLoadGame();
 
-	void restartVoiceMailAndAnimation();
-	
+    void restartVoiceMailAndAnimation();
+
 protected:
-	void displayObjectives();
-	void displayHints();
+    void displayObjectives();
+    void displayHints();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxBriefing& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxBriefing& t);
 
-    MachGuiCtxBriefing( const MachGuiCtxBriefing& );
-    MachGuiCtxBriefing& operator =( const MachGuiCtxBriefing& );
+    MachGuiCtxBriefing(const MachGuiCtxBriefing&);
+    MachGuiCtxBriefing& operator=(const MachGuiCtxBriefing&);
 
-	void displayBriefingImage();
-	void playBriefingVoicemail();
-	void stopPlayingBriefingVoicemail();
+    void displayBriefingImage();
+    void playBriefingVoicemail();
+    void stopPlayingBriefingVoicemail();
 
-	// Data members...
-	MachGuiAnimations animations_;
-	MachGuiScrollableText* pTextInfo_;
-	MachGuiMenuButton* pHintsBtn_;
-	MachGuiMenuButton* pObjectiveBtn_;
-	MachGuiMenuButton* pOkBtn_;
-	GuiImage* pBriefImage_;
-	SndSampleHandle briefVoicemail_;
-	//Has this mail been played at all
-	bool playedMail_;
-	bool autoLoadGame_;
+    // Data members...
+    MachGuiAnimations animations_;
+    MachGuiScrollableText* pTextInfo_;
+    MachGuiMenuButton* pHintsBtn_;
+    MachGuiMenuButton* pObjectiveBtn_;
+    MachGuiMenuButton* pOkBtn_;
+    GuiImage* pBriefImage_;
+    SndSampleHandle briefVoicemail_;
+    // Has this mail been played at all
+    bool playedMail_;
+    bool autoLoadGame_;
 };
-
 
 #endif
 

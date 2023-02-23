@@ -5,5 +5,5 @@
 
 void dummyFunction17()
 {
-	static RenIMeshFactory& dummyFactory = RenIMeshFactory::instance();
+    static RenIMeshFactory& dummyFactory = RenIMeshFactory::instance();
 }

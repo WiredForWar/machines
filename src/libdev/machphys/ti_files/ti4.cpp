@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-//#define _INSTANTIATE_TEMPLATE_CLASSES
+// #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "stdlib/memory.hpp"
 #include "machphys/mcmovinf.hpp"
@@ -12,7 +12,7 @@
 
 void MachDummyFunction11()
 {
-	static unique_ptr< MachPhysMachineMoveInfo > dummy1;
+    static unique_ptr<MachPhysMachineMoveInfo> dummy1;
 }
 
 /* End TI11.CPP *****************************************************/

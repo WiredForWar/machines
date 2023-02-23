@@ -1,5 +1,5 @@
 /*
- * W I N D S T R . H P P 
+ * W I N D S T R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,22 +19,21 @@ class BaseWindowStream : public BaseFilterOstream
 // Canonical form revoked
 {
 public:
-    BaseWindowStream( const char* windowName );
-    ~BaseWindowStream();
+    BaseWindowStream(const char* windowName);
+    ~BaseWindowStream() override;
 
     void CLASS_INVARIANT;
-// 	ostream& ostr();
-// 	void sendCBMessage();
-    friend ostream& operator <<( ostream& o, const BaseWindowStream& t );
+    //  ostream& ostr();
+    //  void sendCBMessage();
+    friend ostream& operator<<(ostream& o, const BaseWindowStream& t);
 
 private:
-    BaseWindowStream( const BaseWindowStream& );
-    BaseWindowStream& operator =( const BaseWindowStream& );
-    bool operator ==( const BaseWindowStream& );
+    BaseWindowStream(const BaseWindowStream&);
+    BaseWindowStream& operator=(const BaseWindowStream&);
+    bool operator==(const BaseWindowStream&);
 
-    virtual void    doFilterCharacters( const char* pBuf, size_t nChars );
+    void doFilterCharacters(const char* pBuf, size_t nChars) override;
 };
-
 
 #endif
 

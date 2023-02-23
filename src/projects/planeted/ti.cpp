@@ -21,21 +21,20 @@ class W4dEntity;
 
 void TerrainDemoDummyFunction1()
 {
-	static ctl_list<MotionControl*> 								motionList;
-    static ctl_vector< string >    									dummyVectorString;
-	static ctl_vector< PedConstructionEditor::ConstructionMapping > dummyConstructionMappingCombo;
-	static ctl_vector< PedMachineEditor::MachineMapping > 			dummyMachineMappingCombo;
-	static ctl_vector< PedArtefactEditor::ArtefactMapping > 		dummyArtefactMapping;
-	static ctl_vector< PedArtefactEditor::ArtefactGroup >			dummyArtefactGroup;
-	static ctl_vector< PedScenarioFile::MineralSite >				dummyMineralSiteVector;
-	static ctl_vector< PedScenarioFile::RaceAI >					dummyRaceAIVector;
-	static ctl_vector< PedScenarioFile::AssemblyPoint >				dummyAssemblyPointVector;
-	static ctl_vector< PedScenarioFile::Miscellanious >				dummyMiscellaniousVector;
-	static ctl_vector< PedScenarioFile::Construction >				dummyConstructionVector;
-	static ctl_vector< PedScenarioFile::Machine >					dummyMachineVector;
-	static ctl_vector< PedScenarioFile::RaceInfo >					dummyRaceInfoVector;
-	static ctl_vector< MachPhys::WeaponCombo > 					dummyWeaponCombo;
-
+    static ctl_list<MotionControl*> motionList;
+    static ctl_vector<string> dummyVectorString;
+    static ctl_vector<PedConstructionEditor::ConstructionMapping> dummyConstructionMappingCombo;
+    static ctl_vector<PedMachineEditor::MachineMapping> dummyMachineMappingCombo;
+    static ctl_vector<PedArtefactEditor::ArtefactMapping> dummyArtefactMapping;
+    static ctl_vector<PedArtefactEditor::ArtefactGroup> dummyArtefactGroup;
+    static ctl_vector<PedScenarioFile::MineralSite> dummyMineralSiteVector;
+    static ctl_vector<PedScenarioFile::RaceAI> dummyRaceAIVector;
+    static ctl_vector<PedScenarioFile::AssemblyPoint> dummyAssemblyPointVector;
+    static ctl_vector<PedScenarioFile::Miscellanious> dummyMiscellaniousVector;
+    static ctl_vector<PedScenarioFile::Construction> dummyConstructionVector;
+    static ctl_vector<PedScenarioFile::Machine> dummyMachineVector;
+    static ctl_vector<PedScenarioFile::RaceInfo> dummyRaceInfoVector;
+    static ctl_vector<MachPhys::WeaponCombo> dummyWeaponCombo;
 }
 
 /* End TI.CPP *****************************************************/

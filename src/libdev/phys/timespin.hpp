@@ -30,72 +30,78 @@ class MexRadians;
 class MexTransform3d;
 class PhysTimedSpinPlanImpl;
 
-//orthodox canonical( revoked )
+// orthodox canonical( revoked )
 class PhysTimedSpinPlan : public PhysMotionPlan
 {
 public:
-    //ctor. Orientation is defined by rotation about axis beginning at startAngle.
-    //The location component of the transform is constant at position.
-    //The initial angle to use is startAngle, and the initial rate of rotation is
-    //startSpeed (actually radians/sec). Initially has a duration of zero,
-    //so the startAngle would always be implied.
-    //likelySegmentCount indicates the likely number of segments to be added, and is used
-    //to initialise the size of internal vectors etc.
-    PhysTimedSpinPlan( const MexVec3& axis, const MexPoint3d& position,
-                       const MexRadians& startAngle, const MexRadians& startSpeed,
-                       size_t likelySegmentCount );
+    // ctor. Orientation is defined by rotation about axis beginning at startAngle.
+    // The location component of the transform is constant at position.
+    // The initial angle to use is startAngle, and the initial rate of rotation is
+    // startSpeed (actually radians/sec). Initially has a duration of zero,
+    // so the startAngle would always be implied.
+    // likelySegmentCount indicates the likely number of segments to be added, and is used
+    // to initialise the size of internal vectors etc.
+    PhysTimedSpinPlan(
+        const MexVec3& axis,
+        const MexPoint3d& position,
+        const MexRadians& startAngle,
+        const MexRadians& startSpeed,
+        size_t likelySegmentCount);
 
-    PhysTimedSpinPlan( const MexVec3& axis, const MexTransform3d& baseTransform,
-                       const MexRadians& startAngle, const MexRadians& startSpeed,
-                       size_t likelySegmentCount );
+    PhysTimedSpinPlan(
+        const MexVec3& axis,
+        const MexTransform3d& baseTransform,
+        const MexRadians& startAngle,
+        const MexRadians& startSpeed,
+        size_t likelySegmentCount);
 
-    //dtor.
-    ~PhysTimedSpinPlan();
+    // dtor.
+    ~PhysTimedSpinPlan() override;
 
-    //Add another segment to the plan of duration segmentDuration, during which time
-    //the spin rate changes with specified acceleration, which may be negative to
-    //denote deceleration, or zero to imply constant velocity period.
-    //If the resulting implied speed at the end of the segment is close to zero,
-    //it will be reset to zero.
-    void addSegment( const PhysRelativeTime& segmentDuration, const MexRadians& acceleration );
+    // Add another segment to the plan of duration segmentDuration, during which time
+    // the spin rate changes with specified acceleration, which may be negative to
+    // denote deceleration, or zero to imply constant velocity period.
+    // If the resulting implied speed at the end of the segment is close to zero,
+    // it will be reset to zero.
+    void addSegment(const PhysRelativeTime& segmentDuration, const MexRadians& acceleration);
 
-    //Override defines result as a function of timeOffset.
-    //If time is greater than duration, the transform at time duration is returned.
-    virtual void transform( const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const;
-    //PRE( timeOffset >= 0 )
+    // Override defines result as a function of timeOffset.
+    // If time is greater than duration, the transform at time duration is returned.
+    void transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const override;
+    // PRE( timeOffset >= 0 )
 
-    //The angle at time timeOffset.
-    MexRadians angle( const PhysRelativeTime& timeOffset ) const;
-    //PRE( timeOffset >= 0 )
+    // The angle at time timeOffset.
+    MexRadians angle(const PhysRelativeTime& timeOffset) const;
+    // PRE( timeOffset >= 0 )
 
-    //The rotation rate at time timeOffset.
-    MexRadians speed( const PhysRelativeTime& timeOffset ) const;
-    //PRE( timeOffset >= 0 )
+    // The rotation rate at time timeOffset.
+    MexRadians speed(const PhysRelativeTime& timeOffset) const;
+    // PRE( timeOffset >= 0 )
 
-    //Inherited from PhysMotionPlan
-    //const PhysRelativeTime& duration() const;
-    //bool isDone( const PhysRelativeTime& timeOffset ) const;
+    // Inherited from PhysMotionPlan
+    // const PhysRelativeTime& duration() const;
+    // bool isDone( const PhysRelativeTime& timeOffset ) const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysTimedSpinPlan& t );
+    friend ostream& operator<<(ostream& o, const PhysTimedSpinPlan& t);
 
-    PER_MEMBER_PERSISTENT( PhysTimedSpinPlan );
-    PER_FRIEND_READ_WRITE( PhysTimedSpinPlan );
+    PER_MEMBER_PERSISTENT(PhysTimedSpinPlan);
+    PER_FRIEND_READ_WRITE(PhysTimedSpinPlan);
 
 private:
     // Operations deliberately revoked
-    PhysTimedSpinPlan( const PhysTimedSpinPlan& );
-    PhysTimedSpinPlan& operator =( const PhysTimedSpinPlan& );
-    bool operator ==( const PhysTimedSpinPlan& );
+    PhysTimedSpinPlan(const PhysTimedSpinPlan&);
+    PhysTimedSpinPlan& operator=(const PhysTimedSpinPlan&);
+    bool operator==(const PhysTimedSpinPlan&);
 
-    //Set cacheIndex_ to the segment containing time timeOffset
-    void setCacheSegment( const PhysRelativeTime& timeOffset );
+    // Set cacheIndex_ to the segment containing time timeOffset
+    void setCacheSegment(const PhysRelativeTime& timeOffset);
 
-	PhysTimedSpinPlanImpl* pImpl_;
+    PhysTimedSpinPlanImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( PhysTimedSpinPlan );
+PER_DECLARE_PERSISTENT(PhysTimedSpinPlan);
 
 #endif
 

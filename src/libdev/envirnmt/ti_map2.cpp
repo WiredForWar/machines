@@ -6,5 +6,5 @@ class EnvElevationColourTable;
 
 void envDummyFunction3()
 {
-	ctl_map<MexDegrees, EnvElevationColourTable*, less<MexDegrees> > cluts1;
+    ctl_map<MexDegrees, EnvElevationColourTable*, less<MexDegrees>> cluts1;
 }

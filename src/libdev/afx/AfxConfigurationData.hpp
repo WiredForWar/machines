@@ -6,4 +6,3 @@ struct AfxConfigurationData
     int multisampleBuffers;
     int multisampleSamples;
 };
-

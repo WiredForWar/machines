@@ -1,5 +1,5 @@
 /*
- * P E R C O N S . H P P 
+ * P E R C O N S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -27,29 +27,28 @@ public:
     ~MachLogConstructionPersistence();
 
     void CLASS_INVARIANT;
-	PER_MEMBER_PERSISTENT_DEFAULT( MachLogConstructionPersistence );
-	PER_FRIEND_READ_WRITE( MachLogConstructionPersistence );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogConstructionPersistence);
+    PER_FRIEND_READ_WRITE(MachLogConstructionPersistence);
 
 private:
-	void registerDerivedClasses();
-	//This const method is really non-const as it will set up the constructions data member
-	//takes MLRaces views and converts to local vector for persistence
-	void setUpLocalVectorFromViews() const;
-	//takes local vecotr that has been populated from perRead and sets up other thingies with
-	//pointers to actors.
-	void setUpViewsFromLocalVector();
-    friend ostream& operator <<( ostream& o, const MachLogConstructionPersistence& t );
+    void registerDerivedClasses();
+    // This const method is really non-const as it will set up the constructions data member
+    // takes MLRaces views and converts to local vector for persistence
+    void setUpLocalVectorFromViews() const;
+    // takes local vecotr that has been populated from perRead and sets up other thingies with
+    // pointers to actors.
+    void setUpViewsFromLocalVector();
+    friend ostream& operator<<(ostream& o, const MachLogConstructionPersistence& t);
 
-    MachLogConstructionPersistence( const MachLogConstructionPersistence& );
-    MachLogConstructionPersistence& operator =( const MachLogConstructionPersistence& );
+    MachLogConstructionPersistence(const MachLogConstructionPersistence&);
+    MachLogConstructionPersistence& operator=(const MachLogConstructionPersistence&);
 
     MachLogConstructionPersistence();
-	typedef ctl_pvector< MachLogConstruction >	Constructions;
-	Constructions								constructions_;
+    using Constructions = ctl_pvector<MachLogConstruction>;
+    Constructions constructions_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogConstructionPersistence );
-
+PER_DECLARE_PERSISTENT(MachLogConstructionPersistence);
 
 #endif
 

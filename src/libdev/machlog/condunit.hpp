@@ -7,8 +7,8 @@
     MachLogLowUnitCountCondition
 
     This conditon code checks for the existence (on a race basis) for a certain number of the specified
-	ObjectType - this pulls directly into the MLRaces collections.
-	ObjectTypes allowed Machines heirarchy, construction hierarchy
+    ObjectType - this pulls directly into the MLRaces collections.
+    ObjectTypes allowed Machines heirarchy, construction hierarchy
 
 */
 
@@ -26,44 +26,47 @@ class MachLogLowUnitCountCondition : public SimCondition
 // Canonical form revoked
 {
 public:
+    static MachLogLowUnitCountCondition* newFromParser(UtlLineTokeniser*);
 
-	static MachLogLowUnitCountCondition* newFromParser( UtlLineTokeniser* );
+    // this constructor will not normally be called directly but may be called for the dynamic creation of these
+    // objects.
+    MachLogLowUnitCountCondition(
+        const string& keyName,
+        MachPhys::Race,
+        MachLog::ObjectType,
+        size_t number,
+        int subType);
 
-	//this constructor will not normally be called directly but may be called for the dynamic creation of these objects.
-    MachLogLowUnitCountCondition( const string& keyName, MachPhys::Race, MachLog::ObjectType, size_t number, int subType );
+    bool doHasConditionBeenMet() const override;
 
-	virtual bool doHasConditionBeenMet() const;
-
-    virtual ~MachLogLowUnitCountCondition();
+    ~MachLogLowUnitCountCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLowUnitCountCondition );
-	PER_FRIEND_READ_WRITE( MachLogLowUnitCountCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLowUnitCountCondition);
+    PER_FRIEND_READ_WRITE(MachLogLowUnitCountCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    // MachLogLowUnitCountCondition( const string& keyName, MachPhys::Race, MachLog::ObjectType, size_t number, int
+    // subType );
 
-    //MachLogLowUnitCountCondition( const string& keyName, MachPhys::Race, MachLog::ObjectType, size_t number, int subType );
+    friend ostream& operator<<(ostream& o, const MachLogLowUnitCountCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogLowUnitCountCondition& t );
+    MachLogLowUnitCountCondition(const MachLogLowUnitCountCondition&);
+    MachLogLowUnitCountCondition& operator=(const MachLogLowUnitCountCondition&);
 
-    MachLogLowUnitCountCondition( const MachLogLowUnitCountCondition& );
-    MachLogLowUnitCountCondition& operator =( const MachLogLowUnitCountCondition& );
-
-	MachLog::ObjectType		objectType_;
-	MachPhys::Race			race_;
-	size_t					number_;
-	//the sub type is only valid for artefacts
-	int						subType_;
+    MachLog::ObjectType objectType_;
+    MachPhys::Race race_;
+    size_t number_;
+    // the sub type is only valid for artefacts
+    int subType_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogLowUnitCountCondition );
+PER_DECLARE_PERSISTENT(MachLogLowUnitCountCondition);
 
 #endif
 

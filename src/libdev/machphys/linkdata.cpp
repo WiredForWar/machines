@@ -13,10 +13,10 @@
 #include "machphys/mexpdata.hpp"
 
 MachPhysMachineExplosionData::LinkData::LinkData()
-: initialised_( false )
+    : initialised_(false)
 {
 
-    POST( not initialised_ );
+    POST(not initialised_);
     TEST_INVARIANT;
 }
 
@@ -25,40 +25,39 @@ MachPhysMachineExplosionData::LinkData::LinkData(
     MATHEX_SCALAR size,
     MATHEX_SCALAR shootOffProbability,
     const PhysRelativeTime& minExplosionTime,
-    const PhysRelativeTime& maxExplosionTime  )
-: initialised_( true ),
-  linkId_( linkId ),
-  size_( size ),
-  shootOffProbability_( shootOffProbability ),
-  minExplosionTime_( minExplosionTime ),
-  maxExplosionTime_( maxExplosionTime )
+    const PhysRelativeTime& maxExplosionTime)
+    : initialised_(true)
+    , linkId_(linkId)
+    , size_(size)
+    , shootOffProbability_(shootOffProbability)
+    , minExplosionTime_(minExplosionTime)
+    , maxExplosionTime_(maxExplosionTime)
 {
-    PRE( 0.0 <= shootOffProbability and shootOffProbability <= 1.0 );
-    PRE( maxExplosionTime >= minExplosionTime );
+    PRE(0.0 <= shootOffProbability and shootOffProbability <= 1.0);
+    PRE(maxExplosionTime >= minExplosionTime);
 
-    discreteSize_ = pow( size, 0.5 );
+    discreteSize_ = pow(size, 0.5);
 
-    discreteSize_ = std::max( 1U,  discreteSize_ );
-    discreteSize_ = std::min( 10U, discreteSize_ );
+    discreteSize_ = std::max(1U, discreteSize_);
+    discreteSize_ = std::min(10U, discreteSize_);
 
-    POST( initialised_ );
+    POST(initialised_);
 }
 
-MachPhysMachineExplosionData::LinkData::LinkData( const LinkData& copyMe )
-: initialised_( copyMe.initialised_ ),
-  linkId_( copyMe.linkId_ ),
-  size_( copyMe.size_ ),
-  discreteSize_( copyMe.discreteSize_ ),
-  shootOffProbability_( copyMe.shootOffProbability_ ),
-  minExplosionTime_( copyMe.minExplosionTime_ ),
-  maxExplosionTime_( copyMe.maxExplosionTime_ )
+MachPhysMachineExplosionData::LinkData::LinkData(const LinkData& copyMe)
+    : initialised_(copyMe.initialised_)
+    , linkId_(copyMe.linkId_)
+    , size_(copyMe.size_)
+    , discreteSize_(copyMe.discreteSize_)
+    , shootOffProbability_(copyMe.shootOffProbability_)
+    , minExplosionTime_(copyMe.minExplosionTime_)
+    , maxExplosionTime_(copyMe.maxExplosionTime_)
 {
 }
 
-MachPhysMachineExplosionData::LinkData&
-MachPhysMachineExplosionData::LinkData::operator =( const LinkData& copyMe )
+MachPhysMachineExplosionData::LinkData& MachPhysMachineExplosionData::LinkData::operator=(const LinkData& copyMe)
 {
-    PRE( copyMe.initialised_ );
+    PRE(copyMe.initialised_);
 
     initialised_ = copyMe.initialised_;
     linkId_ = copyMe.linkId_;
@@ -74,134 +73,128 @@ MachPhysMachineExplosionData::LinkData::operator =( const LinkData& copyMe )
 MachPhysMachineExplosionData::LinkData::~LinkData()
 {
     TEST_INVARIANT;
-
 }
 
 W4dLinkId MachPhysMachineExplosionData::LinkData::linkId() const
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     return linkId_;
 }
 
 MATHEX_SCALAR MachPhysMachineExplosionData::LinkData::size() const
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     return size_;
 }
 
-MATHEX_SCALAR   MachPhysMachineExplosionData::LinkData::shootOffProbability() const
+MATHEX_SCALAR MachPhysMachineExplosionData::LinkData::shootOffProbability() const
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     MATHEX_SCALAR result = shootOffProbability_;
 
-    POST( 0.0 <= result and result <= 1.0 );
+    POST(0.0 <= result and result <= 1.0);
 
     return result;
 }
 
 const PhysRelativeTime& MachPhysMachineExplosionData::LinkData::minExplosionTime() const
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     return minExplosionTime_;
 }
 
 const PhysRelativeTime& MachPhysMachineExplosionData::LinkData::maxExplosionTime() const
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     return maxExplosionTime_;
 }
 
-void MachPhysMachineExplosionData::LinkData::size( MATHEX_SCALAR newSize )
+void MachPhysMachineExplosionData::LinkData::size(MATHEX_SCALAR newSize)
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     size_ = newSize;
 }
 
-void MachPhysMachineExplosionData::LinkData::shootOffProbability( MATHEX_SCALAR newProbability )
+void MachPhysMachineExplosionData::LinkData::shootOffProbability(MATHEX_SCALAR newProbability)
 {
-    PRE( initialised_ );
-    PRE( 0.0 <= newProbability and newProbability <= 1.0 );
+    PRE(initialised_);
+    PRE(0.0 <= newProbability and newProbability <= 1.0);
 
     shootOffProbability_ = newProbability;
 }
 
-void MachPhysMachineExplosionData::LinkData::minExplosionTime( const PhysRelativeTime& newTime )
+void MachPhysMachineExplosionData::LinkData::minExplosionTime(const PhysRelativeTime& newTime)
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     minExplosionTime_ = newTime;
 }
 
-
-void MachPhysMachineExplosionData::LinkData::maxExplosionTime( const PhysRelativeTime& newTime )
+void MachPhysMachineExplosionData::LinkData::maxExplosionTime(const PhysRelativeTime& newTime)
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
     maxExplosionTime_ = newTime;
 }
 
 //  Return the size as one of 10 discrete sizes. All parts
 //  will be categorised in one of these sizes
-uint    MachPhysMachineExplosionData::LinkData::discreteSize() const
+uint MachPhysMachineExplosionData::LinkData::discreteSize() const
 {
-    PRE( initialised_ );
+    PRE(initialised_);
 
-    uint    result = discreteSize_;
+    uint result = discreteSize_;
 
-    POST( 1 <= result and result <= 10 );
+    POST(1 <= result and result <= 10);
 
     return result;
 }
 
-void MachPhysMachineExplosionData::LinkData::discreteSize( uint newDiscreteSize )
+void MachPhysMachineExplosionData::LinkData::discreteSize(uint newDiscreteSize)
 {
-    PRE( initialised_ );
-    PRE( 1 <= newDiscreteSize and newDiscreteSize <= 10 );
+    PRE(initialised_);
+    PRE(1 <= newDiscreteSize and newDiscreteSize <= 10);
 
     discreteSize_ = newDiscreteSize;
 }
 
 void MachPhysMachineExplosionData::LinkData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-bool operator ==( const MachPhysMachineExplosionData::LinkData& a, const MachPhysMachineExplosionData::LinkData& b )
+bool operator==(const MachPhysMachineExplosionData::LinkData& a, const MachPhysMachineExplosionData::LinkData& b)
 {
-    PRE( a.initialised_ );
-    PRE( b.initialised_ );
+    PRE(a.initialised_);
+    PRE(b.initialised_);
 
-    return
-        a.linkId_ == b.linkId_ and
-        a.size_ == b.size_ and
-        a.discreteSize_ == b.discreteSize_ and
-        a.shootOffProbability_ == b.shootOffProbability_ and
-        a.minExplosionTime_ == b.minExplosionTime_ and
-        a.maxExplosionTime_ == b.maxExplosionTime_;
+    return a.linkId_ == b.linkId_ and a.size_ == b.size_ and a.discreteSize_ == b.discreteSize_
+        and a.shootOffProbability_ == b.shootOffProbability_ and a.minExplosionTime_ == b.minExplosionTime_
+        and a.maxExplosionTime_ == b.maxExplosionTime_;
 }
 
 //  This is here purely for the ctl_list instantiation
-bool operator <( const MachPhysMachineExplosionData::LinkData&, const MachPhysMachineExplosionData::LinkData& )
+bool operator<(const MachPhysMachineExplosionData::LinkData&, const MachPhysMachineExplosionData::LinkData&)
 {
-    ASSERT_FAIL( "" );
+    ASSERT_FAIL("");
 
     return false;
 }
 
-ostream& operator <<( ostream& o, const MachPhysMachineExplosionData::LinkData& t )
+ostream& operator<<(ostream& o, const MachPhysMachineExplosionData::LinkData& t)
 {
-    INSPECT_ON( o, t.linkId_ );
-    INSPECT_ON( o, t.size_ );
-    INSPECT_ON( o, t.discreteSize_ );
-    INSPECT_ON( o, t.shootOffProbability_ );
-    INSPECT_ON( o, t.minExplosionTime_ );
-    INSPECT_ON( o, t.maxExplosionTime_ );
+    INSPECT_ON(o, t.linkId_);
+    INSPECT_ON(o, t.size_);
+    INSPECT_ON(o, t.discreteSize_);
+    INSPECT_ON(o, t.shootOffProbability_);
+    INSPECT_ON(o, t.minExplosionTime_);
+    INSPECT_ON(o, t.maxExplosionTime_);
 
     return o;
 }

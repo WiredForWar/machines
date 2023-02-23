@@ -8,9 +8,9 @@
 
 void MachDummyFunctionConstructionData()
 {
-	static	MachPhysConstructionData::Entrances		dummyEntrances_;
-//	static	ctl_vector< MachPhysConstructionData::EntranceData >	dummyEntrances2_;
-	static  MachPhysConstructionData::Locations		dummyLocations_;
+    static MachPhysConstructionData::Entrances dummyEntrances_;
+    //  static  ctl_vector< MachPhysConstructionData::EntranceData >    dummyEntrances2_;
+    static MachPhysConstructionData::Locations dummyLocations_;
 }
 
 /* End TI_CDATA.CPP *****************************************************/

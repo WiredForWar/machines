@@ -16,39 +16,39 @@
 //  so won't give us any memory allocation problems. They are needed to allow
 //  various diagnostics to be turned on and off efficiently.
 
-bool    DiagInternal::trackAllObjects_ = false;
-bool    DiagInternal::checkCountedPointers_ = false;
-bool    DiagInternal::checkInvariants_ = false;
+bool DiagInternal::trackAllObjects_ = false;
+bool DiagInternal::checkCountedPointers_ = false;
+bool DiagInternal::checkInvariants_ = false;
 
 // static
-bool	DiagInternal::streamEnabled( DiagStreamType type )
+bool DiagInternal::streamEnabled(DiagStreamType type)
 {
-    PRE( type < DiagStreams::instance().nStreams() );
+    PRE(type < DiagStreams::instance().nStreams());
 
-    return DiagStreams::instance().diagStreamEnabled_[ type ];
+    return DiagStreams::instance().diagStreamEnabled_[type];
 }
 
 // static
-void	DiagInternal::enableStream( DiagStreamType type )
+void DiagInternal::enableStream(DiagStreamType type)
 {
-    PRE( type < DiagStreams::instance().nStreams() );
+    PRE(type < DiagStreams::instance().nStreams());
 
-    if( DiagStreams::instance().diagStreams_[ type ].hasDestination() )
-        DiagStreams::instance().diagStreamEnabled_[ type ] = true;
+    if (DiagStreams::instance().diagStreams_[type].hasDestination())
+        DiagStreams::instance().diagStreamEnabled_[type] = true;
 }
 
 // static
-void	DiagInternal::disableStream( DiagStreamType type )
+void DiagInternal::disableStream(DiagStreamType type)
 {
-    PRE( type < DiagStreams::instance().nStreams() );
+    PRE(type < DiagStreams::instance().nStreams());
 
-    DiagStreams::instance().diagStreamEnabled_[ type ] = false;
+    DiagStreams::instance().diagStreamEnabled_[type] = false;
 }
 
 // static
-DiagPointerTracker&	DiagInternal::countedPointerTracker()
+DiagPointerTracker& DiagInternal::countedPointerTracker()
 {
-    static  DiagPointerTracker	countedPointerTracker_;
+    static DiagPointerTracker countedPointerTracker_;
 
     return countedPointerTracker_;
 }
@@ -56,7 +56,7 @@ DiagPointerTracker&	DiagInternal::countedPointerTracker()
 // static
 bool DiagInternal::checkFpException()
 {
-    static bool result = getenv( "CB_FP_EXCEPTION" ) != NULL;
+    static bool result = getenv("CB_FP_EXCEPTION") != nullptr;
 
     return result;
 }
@@ -67,38 +67,38 @@ void DiagInternal::disableFPException()
     //  This does not appear to disable the exceptions properly - it
     //  needs more investigation
 
-    if( checkFpException() )
+    if (checkFpException())
     {
-        signal( SIGFPE, SIG_IGN );
+        signal(SIGFPE, SIG_IGN);
     }
 }
 
 // static
 void DiagInternal::enableFPException()
 {
-    if( checkFpException() )
+    if (checkFpException())
     {
-        signal( SIGFPE, signalHandler );
+        signal(SIGFPE, signalHandler);
     }
 }
 
 // static
-void    DiagInternal::initialiseSignalHandler()
+void DiagInternal::initialiseSignalHandler()
 {
-    if( checkFpException() )
-        signal( SIGFPE, signalHandler );
+    if (checkFpException())
+        signal(SIGFPE, signalHandler);
 
-    signal( SIGILL, signalHandler );
-    signal( SIGINT, signalHandler );
-    signal( SIGSEGV, signalHandler );
+    signal(SIGILL, signalHandler);
+    signal(SIGINT, signalHandler);
+    signal(SIGSEGV, signalHandler);
 }
 
 // static
-void    DiagInternal::signalHandler( int sig )
+void DiagInternal::signalHandler(int sig)
 {
-    std::string  text;
+    std::string text;
 
-    switch( sig )
+    switch (sig)
     {
         case SIGABRT:
             text = "abnormal termination, such as caused by the  abort function";
@@ -125,7 +125,7 @@ void    DiagInternal::signalHandler( int sig )
         case SIGTERM:
             text = "a termination request is sent to the program";
             break;
-/*        case SIGUSR1:
+            /*        case SIGUSR1:
             text = "OS/2 process flag A via DosFlagProcess";
             break;
         case SIGUSR2:
@@ -133,28 +133,28 @@ void    DiagInternal::signalHandler( int sig )
             break; */
     }
 
-	std::string crashFileName( "crash.log" );
-	char* pCrashEnv = getenv("CB_CRASH_TO");
-	if( pCrashEnv )
-		crashFileName = std::string( pCrashEnv );
+    std::string crashFileName("crash.log");
+    char* pCrashEnv = getenv("CB_CRASH_TO");
+    if (pCrashEnv)
+        crashFileName = std::string(pCrashEnv);
 
-    std::ofstream ostr( crashFileName.c_str() );
+    std::ofstream ostr(crashFileName.c_str());
     ostr << text << std::endl;
-    time_t  t = time( NULL );
-    ostr << ctime( &t );
+    time_t t = time(nullptr);
+    ostr << ctime(&t);
     ostr << std::endl;
 
-    #ifndef NDEBUG
-        BaseAssertion::writeLoggedInfo( ostr );
-    #endif
+#ifndef NDEBUG
+    BaseAssertion::writeLoggedInfo(ostr);
+#endif
 
     ostr << std::endl;
     ostr << "------ Stack trace start ------------------------------" << std::endl;
-    ProProfiler::instance().traceStack( ostr, true, 0, NULL );
+    ProProfiler::instance().traceStack(ostr, true, 0, nullptr);
     ostr << "------ Stack trace finish -----------------------------" << std::endl << std::endl;
 
     ostr << std::endl;
-    ostr << ctime( &t );
+    ostr << ctime(&t);
     ostr << std::endl;
 
     DiagStreams::instance().close();

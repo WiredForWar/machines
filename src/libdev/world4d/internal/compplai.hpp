@@ -27,11 +27,10 @@ class W4dCompositePlanImpl
 // Canonical form revoked
 {
 public:
-
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT( W4dCompositePlanImpl );
-    PER_FRIEND_READ_WRITE( W4dCompositePlanImpl );
+    PER_MEMBER_PERSISTENT_DEFAULT(W4dCompositePlanImpl);
+    PER_FRIEND_READ_WRITE(W4dCompositePlanImpl);
 
 private:
     friend class W4dCompositePlan;
@@ -40,23 +39,22 @@ private:
 
     ~W4dCompositePlanImpl();
 
-    friend ostream& operator <<( ostream& o, const W4dCompositePlanImpl& t );
-	friend void perRead( PerIstream& istr, W4dCompositePlan& plan );
+    friend ostream& operator<<(ostream& o, const W4dCompositePlanImpl& t);
+    friend void perRead(PerIstream& istr, W4dCompositePlan& plan);
 
-    W4dCompositePlanImpl( const W4dCompositePlanImpl& );
-    W4dCompositePlanImpl& operator =( const W4dCompositePlanImpl& );
+    W4dCompositePlanImpl(const W4dCompositePlanImpl&);
+    W4dCompositePlanImpl& operator=(const W4dCompositePlanImpl&);
 
-    //data members
+    // data members
     W4dEntityPlan* pCompositePlan_; // The one for the composite itself
     W4dCompositePlan::Entries entries_; // The collection of link id, link plan pairs
     void* pad1_;
     void* pad2_;
-    string  name_;
-    PhysRelativeTime cachedFinishTime_; //Expensive to compute. -1 indicates needs re-evaluation.
+    string name_;
+    PhysRelativeTime cachedFinishTime_; // Expensive to compute. -1 indicates needs re-evaluation.
 };
 
-PER_DECLARE_PERSISTENT( W4dCompositePlanImpl );
-
+PER_DECLARE_PERSISTENT(W4dCompositePlanImpl);
 
 #endif
 

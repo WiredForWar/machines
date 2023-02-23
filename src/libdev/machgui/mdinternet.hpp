@@ -22,31 +22,30 @@ class MachGuiInternetNetworkMode : public MachGuiNetworkProtocolMode
 // Canonical form revoked
 {
 public:
-    MachGuiInternetNetworkMode( GuiDisplayable* , MachGuiStartupScreens* );
-    ~MachGuiInternetNetworkMode();
+    MachGuiInternetNetworkMode(GuiDisplayable*, MachGuiStartupScreens*);
+    ~MachGuiInternetNetworkMode() override;
 
     void CLASS_INVARIANT;
 
-	virtual void setNetworkDetails();
+    void setNetworkDetails() override;
 
-	virtual bool validNetworkDetails( bool isHost );
+    bool validNetworkDetails(bool isHost) override;
 
-	virtual void updateGUI();
+    void updateGUI() override;
 
-	virtual void charFocus();
+    void charFocus() override;
 
 protected:
-	virtual void readNetworkDetails();
+    void readNetworkDetails() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiInternetNetworkMode& t );
+    friend ostream& operator<<(ostream& o, const MachGuiInternetNetworkMode& t);
 
-    MachGuiInternetNetworkMode( const MachGuiInternetNetworkMode& );
-    MachGuiInternetNetworkMode& operator =( const MachGuiInternetNetworkMode& );
+    MachGuiInternetNetworkMode(const MachGuiInternetNetworkMode&);
+    MachGuiInternetNetworkMode& operator=(const MachGuiInternetNetworkMode&);
 
-	class MachGuiInternetNetworkModeImpl* pimpl_;
+    class MachGuiInternetNetworkModeImpl* pimpl_;
 };
-
 
 #endif
 

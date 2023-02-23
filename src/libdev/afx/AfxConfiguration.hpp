@@ -15,9 +15,9 @@ public:
 private:
     void validateAntiAliasingSettings(AfxConfigurationData& config);
 
-    AfxConfigurationLoader   defaultLoader_;
+    AfxConfigurationLoader defaultLoader_;
     IAfxConfigurationLoader* pLoader_;
 
-    bool                     configValidated_;
-    AfxConfigurationData*    pConfigData_;
+    bool configValidated_;
+    AfxConfigurationData* pConfigData_;
 };

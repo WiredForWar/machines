@@ -8,11 +8,11 @@
 #include "machphys/internal/plansuri.hpp"
 #include "world4d/root.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysPlanetSurfaceImpl );
+PER_DEFINE_PERSISTENT(MachPhysPlanetSurfaceImpl);
 
 MachPhysPlanetSurfaceImpl::MachPhysPlanetSurfaceImpl()
-: minMachineHeight_( -10000.0 ),
-  pPersistenceRoot_( _NEW( W4dRoot( 133 ) ) )
+    : minMachineHeight_(-10000.0)
+    , pPersistenceRoot_(_NEW(W4dRoot(133)))
 {
 
     TEST_INVARIANT;
@@ -21,15 +21,15 @@ MachPhysPlanetSurfaceImpl::MachPhysPlanetSurfaceImpl()
 MachPhysPlanetSurfaceImpl::~MachPhysPlanetSurfaceImpl()
 {
     TEST_INVARIANT;
-    _DELETE( pPersistenceRoot_ );
+    _DELETE(pPersistenceRoot_);
 }
 
 void MachPhysPlanetSurfaceImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysPlanetSurfaceImpl& t )
+ostream& operator<<(ostream& o, const MachPhysPlanetSurfaceImpl& t)
 {
 
     o << "MachPhysPlanetSurfaceImpl " << (void*)&t << " start" << std::endl;
@@ -38,18 +38,18 @@ ostream& operator <<( ostream& o, const MachPhysPlanetSurfaceImpl& t )
     return o;
 }
 
-MachPhysPlanetSurfaceImpl::MachPhysPlanetSurfaceImpl( PerConstructor )
-: minMachineHeight_( -10000.0 )
+MachPhysPlanetSurfaceImpl::MachPhysPlanetSurfaceImpl(PerConstructor)
+    : minMachineHeight_(-10000.0)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysPlanetSurfaceImpl& t )
+void perWrite(PerOstream& ostr, const MachPhysPlanetSurfaceImpl& t)
 {
     ostr << t.minMachineHeight_;
     ostr << t.pPersistenceRoot_;
 }
 
-void perRead( PerIstream& istr, MachPhysPlanetSurfaceImpl& t )
+void perRead(PerIstream& istr, MachPhysPlanetSurfaceImpl& t)
 {
     istr >> t.minMachineHeight_;
     istr >> t.pPersistenceRoot_;

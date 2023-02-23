@@ -1,5 +1,5 @@
 /*
- * C O N T R O L I . C P P 
+ * C O N T R O L I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,15 +16,14 @@ MachGuiControlPanelImpl::MachGuiControlPanelImpl()
 MachGuiControlPanelImpl::~MachGuiControlPanelImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiControlPanelImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiControlPanelImpl& t )
+ostream& operator<<(ostream& o, const MachGuiControlPanelImpl& t)
 {
 
     o << "MachGuiControlPanelImpl " << (void*)&t << " start" << std::endl;

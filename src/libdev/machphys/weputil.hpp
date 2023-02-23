@@ -1,5 +1,5 @@
 /*
- * W E P U T I L . H P P 
+ * W E P U T I L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,7 +17,7 @@
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
 
-//forward refs
+// forward refs
 class MexLine3d;
 class MachPhysMachine;
 class MachPhysConstruction;
@@ -27,33 +27,35 @@ class MachPhysWeaponUtility
 // Static methods only - no state
 {
 public:
-    //Apply the victim animation for weapon type  at startTime to
-    //machine pMachine or construction pConstruction or artefact pArtefact.
-    //fromDirection indicates the flight path of the hitting projectile.
-    //returns duration of the animation.
-    static PhysRelativeTime victimAnimation( MachPhys::WeaponType type,
-                                             const PhysAbsoluteTime& startTime,
-                                             const MexLine3d& fromDirection,
-                                             MachPhysMachine* pMachine );
-                                            
-    static PhysRelativeTime victimAnimation( MachPhys::WeaponType type,
-                                             const PhysAbsoluteTime& startTime,
-                                             const MexLine3d& fromDirection,
-                                             MachPhysConstruction* pConstruction );
-                                            
-    static PhysRelativeTime victimAnimation( MachPhys::WeaponType type,
-                                             const PhysAbsoluteTime& startTime,
-                                             const MexLine3d& fromDirection,
-                                             MachPhysArtefact* pArtefact );
-                                            
+    // Apply the victim animation for weapon type  at startTime to
+    // machine pMachine or construction pConstruction or artefact pArtefact.
+    // fromDirection indicates the flight path of the hitting projectile.
+    // returns duration of the animation.
+    static PhysRelativeTime victimAnimation(
+        MachPhys::WeaponType type,
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysMachine* pMachine);
+
+    static PhysRelativeTime victimAnimation(
+        MachPhys::WeaponType type,
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction);
+
+    static PhysRelativeTime victimAnimation(
+        MachPhys::WeaponType type,
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysArtefact* pArtefact);
+
 private:
     MachPhysWeaponUtility();
     ~MachPhysWeaponUtility();
-    MachPhysWeaponUtility( const MachPhysWeaponUtility& );
-    MachPhysWeaponUtility& operator =( const MachPhysWeaponUtility& );
-    bool operator ==( const MachPhysWeaponUtility& );
+    MachPhysWeaponUtility(const MachPhysWeaponUtility&);
+    MachPhysWeaponUtility& operator=(const MachPhysWeaponUtility&);
+    bool operator==(const MachPhysWeaponUtility&);
 };
-
 
 #endif
 

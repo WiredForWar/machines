@@ -1,5 +1,5 @@
 /*
- * M I N E D A T A . H P P 
+ * M I N E D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,40 +20,38 @@ class MachPhysMineData : public MachPhysConstructionData
 {
 public:
     MachPhysMineData();
-    MachPhysMineData(const MachPhysMineData&, const MexTransform3d& );
-    ~MachPhysMineData();
-	
-	//Get methods public
-	MachPhys::SizeUnits capacity() const;
-	MachPhys::BuildingMaterialUnits extractionRate() const;
-	MATHEX_SCALAR sqrMineralDistance() const;
+    MachPhysMineData(const MachPhysMineData&, const MexTransform3d&);
+    ~MachPhysMineData() override;
+
+    // Get methods public
+    MachPhys::SizeUnits capacity() const;
+    MachPhys::BuildingMaterialUnits extractionRate() const;
+    MATHEX_SCALAR sqrMineralDistance() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMineData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMineData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysMineData( const MachPhysMineData& );
-
-    // Operation deliberately revoked
-    MachPhysMineData& operator =( const MachPhysMineData& );
+    MachPhysMineData(const MachPhysMineData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysMineData& );
+    MachPhysMineData& operator=(const MachPhysMineData&);
 
-	//set methods private
-	void capacity( const MachPhys::SizeUnits& );
-	void extractionRate( const MachPhys::BuildingMaterialUnits&  );
-	void sqrMineralDistance( const MATHEX_SCALAR& );
+    // Operation deliberately revoked
+    bool operator==(const MachPhysMineData&);
 
-	MachPhys::SizeUnits				capacity_;
-	MachPhys::BuildingMaterialUnits extractionRate_;
-	MATHEX_SCALAR					mineralDistance_;	//Maximum Euclidian distance to mineral deposit to be valid site
+    // set methods private
+    void capacity(const MachPhys::SizeUnits&);
+    void extractionRate(const MachPhys::BuildingMaterialUnits&);
+    void sqrMineralDistance(const MATHEX_SCALAR&);
 
+    MachPhys::SizeUnits capacity_;
+    MachPhys::BuildingMaterialUnits extractionRate_;
+    MATHEX_SCALAR mineralDistance_; // Maximum Euclidian distance to mineral deposit to be valid site
 };
-
 
 #endif
 

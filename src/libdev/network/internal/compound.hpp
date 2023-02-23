@@ -13,65 +13,62 @@
 #define _NETWORK_COMPOUND_HPP
 
 #include "base/base.hpp"
-//#include "stdlib/memory.hpp"
+// #include "stdlib/memory.hpp"
 #include <memory>
 
 class NetMessageBody;
 
 struct NetCompoundMessageHeader
 {
-	NetCompoundMessageHeader();
-	char		subMessages_;
-	size_t		length_;
+    NetCompoundMessageHeader();
+    char subMessages_;
+    size_t length_;
 };
-
 
 class NetCompoundMessage
 // Canonical form revoked
 {
 public:
-	//For creation of a new buffer to send messages
-    NetCompoundMessage( size_t maxBufferSize );
-	//For a buffer returned from DX
-    NetCompoundMessage( const uint8* pBuffer );
+    // For creation of a new buffer to send messages
+    NetCompoundMessage(size_t maxBufferSize);
+    // For a buffer returned from DX
+    NetCompoundMessage(const uint8* pBuffer);
 
     ~NetCompoundMessage();
 
-	//Add a message into the system
-	bool 			addNetMessageBody( const NetMessageBody& );
-	//Remove all messages after transmission
-	void			clearAll();
+    // Add a message into the system
+    bool addNetMessageBody(const NetMessageBody&);
+    // Remove all messages after transmission
+    void clearAll();
 
-	//Current total length of buffer that needs to be transmitted
-	size_t			length() 		const;
-	//Noddy function simple returns number of subMessages added since last transmit.
-	char			subMessages() 	const;
+    // Current total length of buffer that needs to be transmitted
+    size_t length() const;
+    // Noddy function simple returns number of subMessages added since last transmit.
+    char subMessages() const;
 
-	//Use this accessor when copying the data around.
-	const uint8*	buffer() 		const;
+    // Use this accessor when copying the data around.
+    const uint8* buffer() const;
 
     void CLASS_INVARIANT;
 
-	static const uint8* compoundId();
-	static size_t compoundIdLength();
+    static const uint8* compoundId();
+    static size_t compoundIdLength();
 
-	std::unique_ptr< NetMessageBody > operator[]( size_t ) const;
+    std::unique_ptr<NetMessageBody> operator[](size_t) const;
 
 private:
-    friend ostream& operator <<( ostream& o, const NetCompoundMessage& t );
+    friend ostream& operator<<(ostream& o, const NetCompoundMessage& t);
 
-    NetCompoundMessage( const NetCompoundMessage& );
-    NetCompoundMessage& operator =( const NetCompoundMessage& );
+    NetCompoundMessage(const NetCompoundMessage&);
+    NetCompoundMessage& operator=(const NetCompoundMessage&);
 
-	NetCompoundMessageHeader 	header_;
+    NetCompoundMessageHeader header_;
 
-	size_t					 	currentOffset_;
-	size_t						maxBufferSize_;
+    size_t currentOffset_;
+    size_t maxBufferSize_;
 
-	uint8*						pBuffer_;
-
+    uint8* pBuffer_;
 };
-
 
 #endif
 

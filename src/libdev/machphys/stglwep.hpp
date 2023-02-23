@@ -22,60 +22,60 @@ class MachPhysMachine;
 class MachPhysConstruction;
 class MachPhysArtefact;
 
-
 class MachPhysLightStingWeapon : public MachPhysLinearWeapon
 // Canonical form revoked
 {
 public:
-	//public constructor
-    MachPhysLightStingWeapon( W4dEntity* pParent, const MexTransform3d& localTransform );
-    virtual ~MachPhysLightStingWeapon();
+    // public constructor
+    MachPhysLightStingWeapon(W4dEntity* pParent, const MexTransform3d& localTransform);
+    ~MachPhysLightStingWeapon() override;
 
-	static const MachPhysLightStingWeapon& exemplar();
+    static const MachPhysLightStingWeapon& exemplar();
 
-    virtual MachPhysLinearProjectile* createProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    MachPhysLinearProjectile* createProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
-	MachPhysLightSting* createLightSting
-	(
-		const PhysAbsoluteTime& burstStartTime,
-		uint index,
-		W4dEntity* pParent,
-		const W4dEntity& target,
-		const MexPoint3d& targetOffset
-	);
+    MachPhysLightSting* createLightSting(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
-	virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysLightStingWeapon );
-    PER_FRIEND_READ_WRITE( MachPhysLightStingWeapon );
+    PER_MEMBER_PERSISTENT(MachPhysLightStingWeapon);
+    PER_FRIEND_READ_WRITE(MachPhysLightStingWeapon);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysLightStingWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLightStingWeapon& t);
 
-    MachPhysLightStingWeapon( const MachPhysLightStingWeapon& );
-    MachPhysLightStingWeapon& operator =( const MachPhysLightStingWeapon& );
+    MachPhysLightStingWeapon(const MachPhysLightStingWeapon&);
+    MachPhysLightStingWeapon& operator=(const MachPhysLightStingWeapon&);
 
-	enum {GLOWING};
-	void startGlow( const PhysAbsoluteTime& startTime );
-	void stopGlow();
+    enum
+    {
+        GLOWING
+    };
+    void startGlow(const PhysAbsoluteTime& startTime);
+    void stopGlow();
 
-    //the composite file path for given type
+    // the composite file path for given type
     static const char* compositeFilePath();
 
-	//one time constructor
+    // one time constructor
     MachPhysLightStingWeapon();
 
     friend class MachPhysWeaponPersistence;
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLightStingWeapon );
+PER_DECLARE_PERSISTENT(MachPhysLightStingWeapon);
 
 #endif
 

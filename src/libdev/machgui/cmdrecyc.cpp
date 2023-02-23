@@ -15,10 +15,10 @@
 #include "machlog/oprecycl.hpp"
 #include "device/butevent.hpp"
 
-MachGuiRecycleCommand::MachGuiRecycleCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( false ),
-	pSmeltingBuilding_( NULL )
+MachGuiRecycleCommand::MachGuiRecycleCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(false)
+    , pSmeltingBuilding_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -27,15 +27,15 @@ MachGuiRecycleCommand::~MachGuiRecycleCommand()
 {
     TEST_INVARIANT;
 
-    inGameScreen().cursorFilter( W4dDomain::EXCLUDE_NOT_SOLID );
+    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 }
 
 void MachGuiRecycleCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiRecycleCommand& t )
+ostream& operator<<(ostream& o, const MachGuiRecycleCommand& t)
 {
 
     o << "MachGuiRecycleCommand " << (void*)&t << " start" << std::endl;
@@ -44,144 +44,147 @@ ostream& operator <<( ostream& o, const MachGuiRecycleCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiRecycleCommand::pickOnTerrain
-(
-    const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
-)
-{}
-
-//virtual
-void MachGuiRecycleCommand::pickOnActor
-(
-    MachActor* pActor, bool, bool, bool
+// virtual
+void MachGuiRecycleCommand::pickOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
 {
-    //Check for a pick on construction
-	//note that use of static cast relies on short-circuiting of AND operator
-    if( pActor->objectIsCanSmelt() and pActor->asConstruction().isComplete() )
-    {
-    	hadFinalPick_ = true;
-		pSmeltingBuilding_ = &pActor->asConstruction();
-    }
-	else
-   		pSmeltingBuilding_ = NULL;
 }
 
-//virtual
-bool MachGuiRecycleCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+void MachGuiRecycleCommand::pickOnActor(MachActor* pActor, bool, bool, bool)
 {
-    //All machine types can be recycled
+    // Check for a pick on construction
+    // note that use of static cast relies on short-circuiting of AND operator
+    if (pActor->objectIsCanSmelt() and pActor->asConstruction().isComplete())
+    {
+        hadFinalPick_ = true;
+        pSmeltingBuilding_ = &pActor->asConstruction();
+    }
+    else
+        pSmeltingBuilding_ = nullptr;
+}
+
+// virtual
+bool MachGuiRecycleCommand::canActorEverExecute(const MachActor& actor) const
+{
+    // All machine types can be recycled
     return actor.objectIsMachine();
 }
 
-//virtual
+// virtual
 bool MachGuiRecycleCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiRecycleCommand::cursorOnTerrain( const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool )
+// virtual
+MachGui::Cursor2dType
+MachGuiRecycleCommand::cursorOnTerrain(const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool)
 {
     return MachGui::MENU_CURSOR;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiRecycleCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiRecycleCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-	if ( pActor->objectIsCanSmelt() and ( _STATIC_CAST( MachLogConstruction*, pActor ) )->isComplete() )
-	{
-		cursor = MachGui::RECYCLE_CURSOR;
-	}
+    if (pActor->objectIsCanSmelt() and (_STATIC_CAST(MachLogConstruction*, pActor))->isComplete())
+    {
+        cursor = MachGui::RECYCLE_CURSOR;
+    }
 
     return cursor;
 }
 
-//virtal
-void MachGuiRecycleCommand::typeData( MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/ )
-{}
-
-//virtual
-bool MachGuiRecycleCommand::doApply( MachActor* pActor, string* )
+// virtal
+void MachGuiRecycleCommand::typeData(MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/)
 {
-    ASSERT( pSmeltingBuilding_ != NULL, "pSmeltingBuilding_ should not have a NULL assignment if MachGuiRecycleCommand::doApply is called" );
-
-	MachLogRecycleOperation* pOp =
-	    _NEW( MachLogRecycleOperation( &pActor->asMachine(), pSmeltingBuilding_ ) );
-
-	pActor->newOperation( pOp );
-
-	if( not hasPlayedVoiceMail() )
-	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::RECYCLE );
-		hasPlayedVoiceMail( true );
-	}
-
-	return true;
-
 }
 
-//virtual
+// virtual
+bool MachGuiRecycleCommand::doApply(MachActor* pActor, string*)
+{
+    ASSERT(
+        pSmeltingBuilding_ != nullptr,
+        "pSmeltingBuilding_ should not have a NULL assignment if MachGuiRecycleCommand::doApply is called");
+
+    MachLogRecycleOperation* pOp = _NEW(MachLogRecycleOperation(&pActor->asMachine(), pSmeltingBuilding_));
+
+    pActor->newOperation(pOp);
+
+    if (not hasPlayedVoiceMail())
+    {
+        MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::RECYCLE);
+        hasPlayedVoiceMail(true);
+    }
+
+    return true;
+}
+
+// virtual
 MachGuiCommand* MachGuiRecycleCommand::clone() const
 {
-    return _NEW( MachGuiRecycleCommand( &inGameScreen() ) );
+    return _NEW(MachGuiRecycleCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiRecycleCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/recycle.bmp", "gui/commands/recycle.bmp" );
+    static std::pair<string, string> names("gui/commands/recycle.bmp", "gui/commands/recycle.bmp");
     return names;
 }
 
-//virtual
+// virtual
 void MachGuiRecycleCommand::start()
-{}
+{
+}
 
-//virtual
+// virtual
 void MachGuiRecycleCommand::finish()
-{}
+{
+}
 
-//virtual
+// virtual
 uint MachGuiRecycleCommand::cursorPromptStringId() const
 {
     return IDS_RECYCLE_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiRecycleCommand::commandPromptStringid() const
 {
     return IDS_RECYCLE_START;
 }
 
-//virtual
+// virtual
 bool MachGuiRecycleCommand::canAdminApply() const
 {
     return false;
 }
 
-//virtual
-bool MachGuiRecycleCommand::doAdminApply( MachLogAdministrator* /*pAdministrator*/, string* )
+// virtual
+bool MachGuiRecycleCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
 {
-    PRE( canAdminApply() );
+    PRE(canAdminApply());
 
     return false;
 }
 
-
-//virtual
-bool MachGuiRecycleCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiRecycleCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_Q and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_Q and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /* End CMDRECYC.CPP **************************************************/

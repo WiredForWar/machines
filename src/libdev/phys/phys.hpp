@@ -9,30 +9,30 @@
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
 
-//Represents a level of detail value for use in eg bounding volume
-//intersection tests.
-typedef uint PhysLOD;
+// Represents a level of detail value for use in eg bounding volume
+// intersection tests.
+using PhysLOD = uint;
 
-//Represents the time of an event
-typedef MATHEX_SCALAR PhysRelativeTime;
-typedef MATHEX_SCALAR PhysAbsoluteTime;
+// Represents the time of an event
+using PhysRelativeTime = MATHEX_SCALAR;
+using PhysAbsoluteTime = MATHEX_SCALAR;
 
-typedef float PhysCompressedRelativeTime;
-typedef float PhysCompressedAbsoluteTime;
+using PhysCompressedRelativeTime = float;
+using PhysCompressedAbsoluteTime = float;
 
-typedef int   PhysPathFindingPriority;
+using PhysPathFindingPriority = int;
 
 class Phys
 {
 public:
-	static PhysAbsoluteTime time();
-    static PhysPathFindingPriority     defaultPathFindingPriority();
+    static PhysAbsoluteTime time();
+    static PhysPathFindingPriority defaultPathFindingPriority();
 };
 
-//Forward declarations
+// Forward declarations
 class PhysMotionPlan;
-template < class T > class CtlCountedPtr;
-typedef CtlCountedPtr<PhysMotionPlan> PhysMotionPlanPtr;
+template <class T> class CtlCountedPtr;
+using PhysMotionPlanPtr = CtlCountedPtr<PhysMotionPlan>;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -47,6 +47,6 @@ typedef CtlCountedPtr<PhysMotionPlan> PhysMotionPlanPtr;
 
 //////////////////////////////////////////////////////////////////////
 
-#endif  /*  #ifndef _MEX_MATHEX_HPP    */
+#endif /*  #ifndef _MEX_MATHEX_HPP    */
 
 /* End MATHEX.HPP *****************************************************/

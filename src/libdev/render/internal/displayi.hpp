@@ -32,53 +32,53 @@ public:
 
     void CLASS_INVARIANT;
 
-	// Observer pattern for display modes.
-	void prepareForModeChange(const RenDisplay::Mode& newMode);
-	bool modeChanged();
-	void    addObserver(RenIDisplayModeObserver*);
-	void removeObserver(RenIDisplayModeObserver*);
+    // Observer pattern for display modes.
+    void prepareForModeChange(const RenDisplay::Mode& newMode);
+    bool modeChanged();
+    void addObserver(RenIDisplayModeObserver*);
+    void removeObserver(RenIDisplayModeObserver*);
 
-	bool isPrimaryDriver() const;
+    bool isPrimaryDriver() const;
 
-	// PRE(dest);
-	void restoreUnderCursor(RenSurface* dest, const RenSurface& front, Ren::Rect srcArea, int destX, int destY) const;
+    // PRE(dest);
+    void restoreUnderCursor(RenSurface* dest, const RenSurface& front, Ren::Rect srcArea, int destX, int destY) const;
 
-	void useCursor(const RenCursor2d* c);
-	const RenCursor2d* currentCursor() const;
+    void useCursor(const RenCursor2d* c);
+    const RenCursor2d* currentCursor() const;
 
-	// This should be called if we entirely clear the screen, i.e., if the
-	// previous saved area is now irrelevant.
-	void discardCursorSaves();
+    // This should be called if we entirely clear the screen, i.e., if the
+    // previous saved area is now irrelevant.
+    void discardCursorSaves();
 
 private:
- 	friend class RenDisplay;
-	friend class RenDDEnumerator;
-    RenIDisplay( SDL_Window* wnd );
+    friend class RenDisplay;
+    friend class RenDDEnumerator;
+    RenIDisplay(SDL_Window* wnd);
 
-	void drawCursor(RenSurface& backBuf);
-	void restoreUnderCursor();
-	bool blitTest();
+    void drawCursor(RenSurface& backBuf);
+    void restoreUnderCursor();
+    bool blitTest();
 
-    friend ostream& operator <<( ostream& o, const RenIDisplay& t );
+    friend ostream& operator<<(ostream& o, const RenIDisplay& t);
 
-    RenIDisplay( const RenIDisplay& );
-    RenIDisplay& operator =( const RenIDisplay& );
+    RenIDisplay(const RenIDisplay&);
+    RenIDisplay& operator=(const RenIDisplay&);
 
-	SDL_Window*                 pWnd_;
-	ctl_list<RenDisplay::Mode>	modeList_;
-	RenDisplay::Mode			currentMode_;
-	bool						fullscreen_;
-	const RenCursor2d*			cursor_;
-	RenISavedArea*				backBufferCursorSave_;
-	RenISavedArea*				frontBufferCursorSave_;
-	uint32_t						frameNo_;
-	RenDisplay::Mode			lowestAllowedMode_;
-	RenDisplay::Mode			highestAllowedMode_;
-	bool						supportsGammaCorrection_;
-	double 						gammaCorrection_;
-	bool						isPrimaryDriver_;
+    SDL_Window* pWnd_;
+    ctl_list<RenDisplay::Mode> modeList_;
+    RenDisplay::Mode currentMode_;
+    bool fullscreen_;
+    const RenCursor2d* cursor_;
+    RenISavedArea* backBufferCursorSave_;
+    RenISavedArea* frontBufferCursorSave_;
+    uint32_t frameNo_;
+    RenDisplay::Mode lowestAllowedMode_;
+    RenDisplay::Mode highestAllowedMode_;
+    bool supportsGammaCorrection_;
+    double gammaCorrection_;
+    bool isPrimaryDriver_;
 
-	ctl_pvector<RenIDisplayModeObserver>	observers_;
+    ctl_pvector<RenIDisplayModeObserver> observers_;
 };
 
 #endif

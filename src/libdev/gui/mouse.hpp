@@ -1,5 +1,5 @@
 /*
- * M O U S E . H P P 
+ * M O U S E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -14,33 +14,32 @@ class GuiMouse
 // singleton
 {
 public:
+    static GuiMouse& instance();
 
-	static GuiMouse& instance();
+    ~GuiMouse();
 
-	~GuiMouse();
+    void update(const Gui::Coord& mouseCoord);
 
-	void update( const Gui::Coord& mouseCoord );
+    void cursor(const GuiBitmap& newCursor);
 
-	void cursor( const GuiBitmap& newCursor );
-
-	static const GuiBitmap& defaultCursor();
+    static const GuiBitmap& defaultCursor();
 
 private:
-	GuiMouse( const GuiMouse& );
-	bool operator ==( const GuiMouse& ) const;
-	GuiMouse& operator =( const GuiMouse& );
+    GuiMouse(const GuiMouse&);
+    bool operator==(const GuiMouse&) const;
+    GuiMouse& operator=(const GuiMouse&);
 
-	GuiMouse();
+    GuiMouse();
 
-	void pickUpBackground( unsigned frame );
-	void putDownBackground( unsigned frame );
+    void pickUpBackground(unsigned frame);
+    void putDownBackground(unsigned frame);
 
-	DevMouse::Position	position_[ 2 ];
-	int					frame_;
+    DevMouse::Position position_[2];
+    int frame_;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	// #ifndef _GUI_MOUSE_HPP
+#endif // #ifndef _GUI_MOUSE_HPP
 
 /* End MOUSE.HPP ****************************************************/

@@ -1,5 +1,5 @@
 /*
- * P L A N E N T R . H P P 
+ * P L A N E N T R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,39 +21,35 @@ class W4dCompositePlanEntry
 // Canonical form revoked
 {
 public:
-    W4dCompositePlanEntry( W4dLinkId id, W4dEntityPlan plan )
-    : id_( id ), plan_( plan )
-    {}
-    
+    W4dCompositePlanEntry(W4dLinkId id, W4dEntityPlan plan)
+        : id_(id)
+        , plan_(plan)
+    {
+    }
+
     ~W4dCompositePlanEntry();
 
-    const W4dLinkId&        id() const
-    {
-        return id_;
-    }
-    
-    const W4dEntityPlan&    plan() const
-    {
-        return plan_;
-    }
+    const W4dLinkId& id() const { return id_; }
+
+    const W4dEntityPlan& plan() const { return plan_; }
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dCompositePlanEntry& t );
+    friend ostream& operator<<(ostream& o, const W4dCompositePlanEntry& t);
 
-    PER_MEMBER_PERSISTENT( W4dCompositePlanEntry );
-    PER_FRIEND_READ_WRITE( W4dCompositePlanEntry );
+    PER_MEMBER_PERSISTENT(W4dCompositePlanEntry);
+    PER_FRIEND_READ_WRITE(W4dCompositePlanEntry);
 
 private:
-    W4dCompositePlanEntry( const W4dCompositePlanEntry& );
-    W4dCompositePlanEntry& operator =( const W4dCompositePlanEntry& );
-    bool operator ==( const W4dCompositePlanEntry& );
+    W4dCompositePlanEntry(const W4dCompositePlanEntry&);
+    W4dCompositePlanEntry& operator=(const W4dCompositePlanEntry&);
+    bool operator==(const W4dCompositePlanEntry&);
 
-    W4dLinkId       id_;
-    W4dEntityPlan   plan_;
+    W4dLinkId id_;
+    W4dEntityPlan plan_;
 };
 
-PER_DECLARE_PERSISTENT( W4dCompositePlanEntry );
+PER_DECLARE_PERSISTENT(W4dCompositePlanEntry);
 
 #endif
 

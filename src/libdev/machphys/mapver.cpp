@@ -4,35 +4,35 @@
  */
 
 /*
-	HISTORY
+    HISTORY
 
-	00.90	Development started
-			24 March 1997  		Bob Archer
+    00.90   Development started
+            24 March 1997       Bob Archer
 
-	00.91	Modified to use PhysRelative/AbsoluteTime
-			13 Aug 1997  		Jon Green
+    00.91   Modified to use PhysRelative/AbsoluteTime
+            13 Aug 1997         Jon Green
 
-	00.92	Modified to use MachPhysData classes
-			Constructor on MachMachine altered to pass in body level
-			which is stored. This should be purely internal and not
-			affect any other clients.
-			21 Aug 1997  		Hal Angseesing
+    00.92   Modified to use MachPhysData classes
+            Constructor on MachMachine altered to pass in body level
+            which is stored. This should be purely internal and not
+            affect any other clients.
+            21 Aug 1997         Hal Angseesing
 */
 
 //////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 
-#define	LIBRARY	"MAP"
-#define	VERSION	"00.92"
+#define LIBRARY "MAP"
+#define VERSION "00.92"
 
 static unsigned char verString[] = "$:VERSION:$ " LIBRARY "  " VERSION;
 static unsigned char dateString[] = "$:DATETIME:$ " LIBRARY "  " __DATE__ " " __TIME__;
 
 void printVersion()
 {
-    printf( "%s\n", verString );
-    printf( "%s\n", dateString );    
+    printf("%s\n", verString);
+    printf("%s\n", dateString);
 }
 
 /* End DEVVER.CPP ***************************************************/

@@ -33,63 +33,64 @@
 #include "machlog/machine.hpp"
 #include "profiler/stktrace.hpp"
 
-MachLogCamera::MachLogCamera(   W4dSceneManager* pMgr,
-							    W4dEntity* pParent,
-							    const W4dTransform3d& localTransform,
-							    Type cameraType )
-: 	W4dCamera( pMgr, pParent, localTransform ),
-	pImpl_( _NEW( MachLogCameraImpl() ) )
+MachLogCamera::MachLogCamera(
+    W4dSceneManager* pMgr,
+    W4dEntity* pParent,
+    const W4dTransform3d& localTransform,
+    Type cameraType)
+    : W4dCamera(pMgr, pParent, localTransform)
+    , pImpl_(_NEW(MachLogCameraImpl()))
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	onPad_ = false;
-	type_ = cameraType;
-	insideConstruction_ = false;
-	pConfigSpace_ = &MachLogPlanet::instance().configSpace();
-	pCurrentPadConstruction_ = NULL;
-	pForceDomain_ = NULL;
-	observingConstruction_ = false;
+    onPad_ = false;
+    type_ = cameraType;
+    insideConstruction_ = false;
+    pConfigSpace_ = &MachLogPlanet::instance().configSpace();
+    pCurrentPadConstruction_ = nullptr;
+    pForceDomain_ = nullptr;
+    observingConstruction_ = false;
 
-    PRE( pMgr != NULL );
-    PRE( pParent != NULL );
+    PRE(pMgr != nullptr);
+    PRE(pParent != nullptr);
 
-    switch( cameraType )
+    switch (cameraType)
     {
         case GROUND:
-		    yonClipDistance( 2000 );
-            verticalFOVAngle( 40 * Mathex::PI / 180.0 );
+            yonClipDistance(2000);
+            verticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case FREE_MOVING:
-		    yonClipDistance( 2000 );
-            verticalFOVAngle( 40 * Mathex::PI / 180.0 );
+            yonClipDistance(2000);
+            verticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case ZENITH:
-		    yonClipDistance( 1000 );
-            verticalFOVAngle( 40 * Mathex::PI / 180.0 );
+            yonClipDistance(1000);
+            verticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case THIRD_PERSON:
-		    yonClipDistance( 2000 );
-            verticalFOVAngle( 40 * Mathex::PI / 180.0 );
+            yonClipDistance(2000);
+            verticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case FIRST_PERSON:
-		    yonClipDistance( 2000 );
-			hitherClipDistance( 0.2 );
-            verticalFOVAngle( 60 * Mathex::PI / 180.0 );
+            yonClipDistance(2000);
+            hitherClipDistance(0.2);
+            verticalFOVAngle(60 * Mathex::PI / 180.0);
             break;
     }
 }
 
 MachLogCamera::~MachLogCamera()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     TEST_INVARIANT;
 
-    //Remove any observer relation
-    if( observingConstruction_ )
+    // Remove any observer relation
+    if (observingConstruction_)
         stopObservingConstruction();
 
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 // Activating a camera may produce a change in the inside building state.
@@ -97,110 +98,112 @@ MachLogCamera::~MachLogCamera()
 // vice versa, we need to switch environments etc.
 void MachLogCamera::enable(MachLogCamera* lastCamera)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	if (lastCamera)
-	{
-		if (lastCamera->insideConstruction() && !insideConstruction_)
-			lastCamera->leaveConstruction();
-		else if (!lastCamera->insideConstruction() && insideConstruction_)
-			enterConstruction();
-	}
+    if (lastCamera)
+    {
+        if (lastCamera->insideConstruction() && !insideConstruction_)
+            lastCamera->leaveConstruction();
+        else if (!lastCamera->insideConstruction() && insideConstruction_)
+            enterConstruction();
+    }
 }
 
 void MachLogCamera::update()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     MexPoint3d locationPoint;
-    globalTransform().position( &locationPoint );
+    globalTransform().position(&locationPoint);
 
-    if( type_ == GROUND )
-        updatePressurePad( locationPoint );
+    if (type_ == GROUND)
+        updatePressurePad(locationPoint);
 
-    if( not insideConstruction_ )
+    if (not insideConstruction_)
     {
-        updatePlanetDomain( locationPoint );
+        updatePlanetDomain(locationPoint);
     }
 }
 
-void MachLogCamera::updatePlanetDomain( const MexPoint3d& position )
+void MachLogCamera::updatePlanetDomain(const MexPoint3d& position)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    //If first person get the controlled entity
-    MachLogMachine* p1stPersonMachine = NULL;
-    W4dEntity* p1stPersonEntity = NULL;
+    // If first person get the controlled entity
+    MachLogMachine* p1stPersonMachine = nullptr;
+    W4dEntity* p1stPersonEntity = nullptr;
 
-    if( type_ == FIRST_PERSON )
+    if (type_ == FIRST_PERSON)
     {
         p1stPersonEntity = this;
-        while( p1stPersonEntity->hasParent() )
+        while (p1stPersonEntity->hasParent())
         {
             p1stPersonEntity = p1stPersonEntity->pParent();
-            if( p1stPersonEntity->isComposite() )
+            if (p1stPersonEntity->isComposite())
             {
-                MachActor& actor = MachLogRaces::instance().actor( p1stPersonEntity->id() );
-                if( actor.objectIsMachine() )
+                MachActor& actor = MachLogRaces::instance().actor(p1stPersonEntity->id());
+                if (actor.objectIsMachine())
                     p1stPersonMachine = &actor.asMachine();
             }
         }
     }
 
-
     // Get this camera into the correct domain on the planet's surface
-    //Get the domain defined by its current position
-    W4dDomain* pNewDomain = NULL;
-    if( p1stPersonMachine  and  p1stPersonMachine->insideBuilding() )
+    // Get the domain defined by its current position
+    W4dDomain* pNewDomain = nullptr;
+    if (p1stPersonMachine and p1stPersonMachine->insideBuilding())
     {
         pNewDomain = &p1stPersonMachine->insideWhichBuilding().interiorDomain();
     }
     else
     {
         MachPhysPlanetSurface* pSurface = MachLogPlanet::instance().surface();
-        pNewDomain = (pForceDomain_ == NULL ? pSurface->domainAt( position )
-                                            : pForceDomain_ );
+        pNewDomain = (pForceDomain_ == nullptr ? pSurface->domainAt(position) : pForceDomain_);
     }
-    ASSERT( pNewDomain != NULL, "" );
+    ASSERT(pNewDomain != nullptr, "");
 
-    //No need to change if camera already in this domain
-    if( not hasParent()                                     //Camera has no parent
-        or pParent() == MachLogPlanet::instance().pWorld()  //Camera owned directly by root
-        or containingDomain() != pNewDomain )               //Different domain
+    // No need to change if camera already in this domain
+    if (not hasParent() // Camera has no parent
+        or pParent() == MachLogPlanet::instance().pWorld() // Camera owned directly by root
+        or containingDomain() != pNewDomain) // Different domain
     {
-        //If a 1st person machine we attach the machine, otherwise the camera
-        if( p1stPersonMachine )
+        // If a 1st person machine we attach the machine, otherwise the camera
+        if (p1stPersonMachine)
         {
-            p1stPersonMachine->physMachine().attachTo( pNewDomain );
+            p1stPersonMachine->physMachine().attachTo(pNewDomain);
         }
         else
         {
-            attachTo( pNewDomain );
+            attachTo(pNewDomain);
         }
     }
 }
 
-void    MachLogCamera::updatePressurePad( const MexPoint3d& position )
+void MachLogCamera::updatePressurePad(const MexPoint3d& position)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     MachLogPressurePads& pressurePad = MachLogPlanet::instance().pressurePads();
 
-    MachLogConstruction*    pConstruction;
-    size_t  entrance;
+    MachLogConstruction* pConstruction;
+    size_t entrance;
 
-    if( pressurePad.onPad( cameraPolygon( position ), &pConstruction, &entrance ) )
+    if (pressurePad.onPad(cameraPolygon(position), &pConstruction, &entrance))
     {
         //  We are currently on a pad. There are three options:
 
-        enum State { STAYING_ON, MOVING_FROM_ANOTHER_PAD, NEW_PAD };
-
-        State   state;
-
-        if( onPad_ )
+        enum State
         {
-            if( ( pCurrentPadConstruction_ == pConstruction ) and
-                ( currentPadEntrance_ == entrance ) )
+            STAYING_ON,
+            MOVING_FROM_ANOTHER_PAD,
+            NEW_PAD
+        };
+
+        State state;
+
+        if (onPad_)
+        {
+            if ((pCurrentPadConstruction_ == pConstruction) and (currentPadEntrance_ == entrance))
                 state = STAYING_ON;
             else
                 state = MOVING_FROM_ANOTHER_PAD;
@@ -212,37 +215,37 @@ void    MachLogCamera::updatePressurePad( const MexPoint3d& position )
 
         //  If we have moved from another pad make sure we close the
         //  entrance for the other pad.
-        if( state == MOVING_FROM_ANOTHER_PAD )
-            pCurrentPadConstruction_->isEntranceOpen( currentPadEntrance_, false );
+        if (state == MOVING_FROM_ANOTHER_PAD)
+            pCurrentPadConstruction_->isEntranceOpen(currentPadEntrance_, false);
 
         //  Because we might move directly from one pad onto another
         //  we must always make sure these values are updated.
         //  We need to maintain the observer relation with the current construction
-        if( observingConstruction_  and  pCurrentPadConstruction_ != pConstruction )
+        if (observingConstruction_ and pCurrentPadConstruction_ != pConstruction)
             stopObservingConstruction();
 
         pCurrentPadConstruction_ = pConstruction;
         currentPadEntrance_ = entrance;
 
-        //Set up an observer relation with the new construction
-        if( not observingConstruction_ )
+        // Set up an observer relation with the new construction
+        if (not observingConstruction_)
             startObservingConstruction();
 
-        if( state == STAYING_ON )
+        if (state == STAYING_ON)
         {
             checkThreshold();
         }
         else
         {
-            pConstruction->isEntranceOpen( entrance, true );
+            pConstruction->isEntranceOpen(entrance, true);
             onPad_ = true;
 
             //  In a pathologically bad case this could lead to problems
             //  if the camera moved onto a pad but so close to the threshold
             //  that it counted as being on the threshold.
-            if( insideConstruction_ )
+            if (insideConstruction_)
             {
-                if( thresholdSide() == Mathex::VANILLA )
+                if (thresholdSide() == Mathex::VANILLA)
                     outsideThreshold_ = Mathex::CHOCOLATE;
                 else
                     outsideThreshold_ = Mathex::VANILLA;
@@ -250,35 +253,33 @@ void    MachLogCamera::updatePressurePad( const MexPoint3d& position )
             else
                 outsideThreshold_ = thresholdSide();
         }
-
-
     }
     else
     {
-        if( onPad_ )
+        if (onPad_)
         {
-            pCurrentPadConstruction_->isEntranceOpen( currentPadEntrance_, false );
+            pCurrentPadConstruction_->isEntranceOpen(currentPadEntrance_, false);
             onPad_ = false;
         }
 
-        //If we're not on the pad, and not inside the construction, we can remove the observer relation
-        if( not insideConstruction_  and  observingConstruction_ )
+        // If we're not on the pad, and not inside the construction, we can remove the observer relation
+        if (not insideConstruction_ and observingConstruction_)
         {
             stopObservingConstruction();
-            pCurrentPadConstruction_ = NULL;
+            pCurrentPadConstruction_ = nullptr;
         }
     }
 }
 
-bool    MachLogCamera::newPositionIsValid( const MexTransform3d& newPosition ) const
+bool MachLogCamera::newPositionIsValid(const MexTransform3d& newPosition) const
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    bool    positionAccepted = true;
+    bool positionAccepted = true;
 
-    if( type_ == GROUND )
+    if (type_ == GROUND)
     {
-        positionAccepted = groundPositionLegal( newPosition );
+        positionAccepted = groundPositionLegal(newPosition);
     }
 
     return positionAccepted;
@@ -286,43 +287,43 @@ bool    MachLogCamera::newPositionIsValid( const MexTransform3d& newPosition ) c
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-bool MachLogCamera::groundPositionLegal( const MexTransform3d& position ) const
+bool MachLogCamera::groundPositionLegal(const MexTransform3d& position) const
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     const MexPoint3d& groundPosition = position.position();
     MATHEX_SCALAR cameraHeight = groundPosition.z();
-	MexConvexPolygon2d cameraPoly =	cameraPolygon( groundPosition );
+    MexConvexPolygon2d cameraPoly = cameraPolygon(groundPosition);
 
     MachLogPressurePads& pressurePad = MachLogPlanet::instance().pressurePads();
 
-    MachLogConstruction*    pConstruction;
-    size_t  entrance;
+    MachLogConstruction* pConstruction;
+    size_t entrance;
 
-	bool targetOnPad = pressurePad.onPad( cameraPoly, &pConstruction, &entrance );
+    bool targetOnPad = pressurePad.onPad(cameraPoly, &pConstruction, &entrance);
 
-    if( targetOnPad )
+    if (targetOnPad)
     {
-        //Get the maximum height above ground for the camera.
-	    // Garrisons have larger doors than all other buildings
-        MATHEX_SCALAR maxHeight = (pConstruction->objectType() == MachLog::GARRISON ? 7.5 : 4.1 );
+        // Get the maximum height above ground for the camera.
+        //  Garrisons have larger doors than all other buildings
+        MATHEX_SCALAR maxHeight = (pConstruction->objectType() == MachLog::GARRISON ? 7.5 : 4.1);
 
-        //Check this height against the base height of the building
+        // Check this height against the base height of the building
         MATHEX_SCALAR constructionGroundHeight = pConstruction->position().z();
-        targetOnPad = (cameraHeight > constructionGroundHeight) and
-                      (cameraHeight < constructionGroundHeight + maxHeight);
+        targetOnPad
+            = (cameraHeight > constructionGroundHeight) and (cameraHeight < constructionGroundHeight + maxHeight);
     }
 
-	if( targetOnPad and onPad_ )
+    if (targetOnPad and onPad_)
     {
         //  Make sure that the target is actually on the same pad as our current position
-        if( pConstruction != pCurrentPadConstruction_ or entrance != currentPadEntrance_ )
+        if (pConstruction != pCurrentPadConstruction_ or entrance != currentPadEntrance_)
             targetOnPad = false;
     }
 
     bool positionLegal = false;
 
-    if( targetOnPad )
+    if (targetOnPad)
     {
         positionLegal = true;
     }
@@ -330,156 +331,160 @@ bool MachLogCamera::groundPositionLegal( const MexTransform3d& position ) const
     {
         PhysConfigSpace2d::PolygonId id;
 
-        positionLegal = pConfigSpace_->contains( cameraPoly, MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id );
+        positionLegal = pConfigSpace_->contains(cameraPoly, MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id);
 
-		// Double check to see if position is legal; We might be flying over
-		// the top of the obstacle ( not taken into account by above "contains"
-		// function.
-		if ( not positionLegal )
-		{
-			positionLegal = true;
+        // Double check to see if position is legal; We might be flying over
+        // the top of the obstacle ( not taken into account by above "contains"
+        // function.
+        if (not positionLegal)
+        {
+            positionLegal = true;
 
-			// Check camera poly to see if it is over the top of the obstacle
-			for ( int i = 0; i < 2 and positionLegal; ++i )
-			{
-				// Construct camera poly edge
-				MexPoint3d edgePoint1 = cameraPoly.vertex( i );
-				MexPoint3d edgePoint2 = cameraPoly.vertex( i + 2 );
-				edgePoint1.z( cameraHeight );
-				edgePoint2.z( cameraHeight );
+            // Check camera poly to see if it is over the top of the obstacle
+            for (int i = 0; i < 2 and positionLegal; ++i)
+            {
+                // Construct camera poly edge
+                MexPoint3d edgePoint1 = cameraPoly.vertex(i);
+                MexPoint3d edgePoint2 = cameraPoly.vertex(i + 2);
+                edgePoint1.z(cameraHeight);
+                edgePoint2.z(cameraHeight);
 
-				positionLegal = pConfigSpace_->contains( edgePoint1, edgePoint2, MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id );
-			}
-		}
+                positionLegal = pConfigSpace_->contains(
+                    edgePoint1,
+                    edgePoint2,
+                    MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER,
+                    &id);
+            }
+        }
     }
 
     return positionLegal;
 }
 
-bool MachLogCamera::canSnapToPosition( const MexPoint3d& newPosition )
+bool MachLogCamera::canSnapToPosition(const MexPoint3d& newPosition)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     //  We can only snap to a position if it isn't in a building.
     //  Check it against our planet configuration space.
-    MexConvexPolygon2d polygon( MexAlignedBox2d( MexPoint2d(
-						        newPosition.x(),
-						        newPosition.y() ), 1.5 ) );
+    MexConvexPolygon2d polygon(MexAlignedBox2d(MexPoint2d(newPosition.x(), newPosition.y()), 1.5));
 
     PhysConfigSpace2d::PolygonId id;
 
-	bool positionLegal = false;
+    bool positionLegal = false;
 
-	positionLegal = MachLogPlanet::instance().configSpace().contains( polygon, MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id );
+    positionLegal = MachLogPlanet::instance().configSpace().contains(
+        polygon,
+        MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER,
+        &id);
 
-	// Double check to see if position is legal; We might be flying over
-	// the top of the obstacle ( not taken into account by above "contains"
-	// function.
-	if ( not positionLegal )
-	{
-		positionLegal = true;
-
-		// Check camera poly to see if it is over the top of the obstacle
-		for ( int i = 0; i < 2 and positionLegal; ++i )
-		{
-			// Construct camera poly edge
-			MexPoint3d edgePoint1 = polygon.vertex( i );
-			MexPoint3d edgePoint2 = polygon.vertex( i + 2 );
-			edgePoint1.z( globalTransform().position().z() );
-			edgePoint2.z( globalTransform().position().z() );
-
-			positionLegal = pConfigSpace_->contains( edgePoint1, edgePoint2, MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id );
-		}
-	}
-
-    if( positionLegal )
+    // Double check to see if position is legal; We might be flying over
+    // the top of the obstacle ( not taken into account by above "contains"
+    // function.
+    if (not positionLegal)
     {
-        if( insideConstruction_ )
-			leaveConstruction();
+        positionLegal = true;
 
-        MexTransform3d  newTx( globalTransform() );
+        // Check camera poly to see if it is over the top of the obstacle
+        for (int i = 0; i < 2 and positionLegal; ++i)
+        {
+            // Construct camera poly edge
+            MexPoint3d edgePoint1 = polygon.vertex(i);
+            MexPoint3d edgePoint2 = polygon.vertex(i + 2);
+            edgePoint1.z(globalTransform().position().z());
+            edgePoint2.z(globalTransform().position().z());
+
+            positionLegal
+                = pConfigSpace_->contains(edgePoint1, edgePoint2, MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id);
+        }
+    }
+
+    if (positionLegal)
+    {
+        if (insideConstruction_)
+            leaveConstruction();
+
+        MexTransform3d newTx(globalTransform());
 
         //  Don't use the given height, use our previous height
-        MexPoint3d  pos( newPosition.x(), newPosition.y(), newTx.position().z() );
+        MexPoint3d pos(newPosition.x(), newPosition.y(), newTx.position().z());
 
-        newTx.position( pos );
+        newTx.position(pos);
 
-        globalTransform( newTx );
+        globalTransform(newTx);
     }
 
     return positionLegal;
 }
 
-
 void MachLogCamera::checkThreshold()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     //  Have we crossed the threshold of the current building whether
     //  entering or exiting?
 
-    PRE( onPad_ );
+    PRE(onPad_);
 
-    Mathex::Side    side = thresholdSide();
+    Mathex::Side side = thresholdSide();
 
     //  Only check for crossing the threshold if we are definitely on
     //  one side or the other - ignore the case where we are right on
     //  the line.
 
-    if( side == Mathex::VANILLA or side == Mathex::CHOCOLATE )
+    if (side == Mathex::VANILLA or side == Mathex::CHOCOLATE)
     {
-        if( insideConstruction_ )
+        if (insideConstruction_)
         {
-            if( side == outsideThreshold_ )
-				leaveConstruction();
+            if (side == outsideThreshold_)
+                leaveConstruction();
         }
         else
         {
-            if( side != outsideThreshold_ )
-				enterConstruction();
+            if (side != outsideThreshold_)
+                enterConstruction();
         }
     }
 }
 
 Mathex::Side MachLogCamera::thresholdSide()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    PRE( onPad_ );
+    PRE(onPad_);
 
-	const MachPhysConstructionData::EntranceData& entranceData =
-      pCurrentPadConstruction_->constructionData().entrances()[ currentPadEntrance_ ];
+    const MachPhysConstructionData::EntranceData& entranceData
+        = pCurrentPadConstruction_->constructionData().entrances()[currentPadEntrance_];
 
-    MexPoint2d  position = globalTransform().position();
+    MexPoint2d position = globalTransform().position();
 
-    Mathex::Side result = MexLine2d::side( entranceData.doorLine.end1(), entranceData.doorLine.end2(), position );
+    Mathex::Side result = MexLine2d::side(entranceData.doorLine.end1(), entranceData.doorLine.end2(), position);
 
     return result;
 }
 
-void    MachLogCamera::pushParent( W4dEntity* pNewParent, PhysConfigSpace2d* pConfigSpace )
+void MachLogCamera::pushParent(W4dEntity* pNewParent, PhysConfigSpace2d* pConfigSpace)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    PRE( pParent() != NULL );
-    PRE( pNewParent != NULL );
-    PRE( pConfigSpace != NULL );
+    PRE(pParent() != nullptr);
+    PRE(pNewParent != nullptr);
+    PRE(pConfigSpace != nullptr);
 
-    parentStack_.push( std::pair< W4dEntity*, PhysConfigSpace2d* >( pParent(), pConfigSpace_ ) );
+    parentStack_.push(std::pair<W4dEntity*, PhysConfigSpace2d*>(pParent(), pConfigSpace_));
 
-    attachTo( pNewParent );
+    attachTo(pNewParent);
 
     pConfigSpace_ = pConfigSpace;
-
 }
 
-void    MachLogCamera::popParent()
+void MachLogCamera::popParent()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    PRE( not parentStack_.empty() );
+    PRE(not parentStack_.empty());
 
-    attachTo( parentStack_.top().first );
+    attachTo(parentStack_.top().first);
     pConfigSpace_ = parentStack_.top().second;
 
     parentStack_.pop();
@@ -487,101 +492,97 @@ void    MachLogCamera::popParent()
 
 void MachLogCamera::CLASS_INVARIANT
 {
-	INVARIANT(this);
+    INVARIANT(this);
 }
 
-MexConvexPolygon2d MachLogCamera::cameraPolygon( const MexPoint2d& position ) const
+MexConvexPolygon2d MachLogCamera::cameraPolygon(const MexPoint2d& position) const
 {
 
-    MexConvexPolygon2d polygon(
-        MexAlignedBox2d( MexPoint2d(
-        position.x(),
-        position.y() ), 1.5 ) );
+    MexConvexPolygon2d polygon(MexAlignedBox2d(MexPoint2d(position.x(), position.y()), 1.5));
 
     return polygon;
 }
 
-void MachLogCamera::forceDomain( W4dDomain* pDomain )
+void MachLogCamera::forceDomain(W4dDomain* pDomain)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     pForceDomain_ = pDomain;
 }
 
 void MachLogCamera::leaveConstruction()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	if (pCurrentPadConstruction_)
-    	pCurrentPadConstruction_->leaveConstruction( this );
+    if (pCurrentPadConstruction_)
+        pCurrentPadConstruction_->leaveConstruction(this);
 
     insideConstruction_ = false;
 
-    floors_.erase( floors_.begin(), floors_.end() );
+    floors_.erase(floors_.begin(), floors_.end());
 
     manager()->popBackgroundData();
 
-    POST( floors_.size() == 0 );
+    POST(floors_.size() == 0);
 }
 
 void MachLogCamera::enterConstruction()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	if (pCurrentPadConstruction_)
-	    pCurrentPadConstruction_->enterConstruction( this );
+    if (pCurrentPadConstruction_)
+        pCurrentPadConstruction_->enterConstruction(this);
 
-	insideConstruction_ = true;
+    insideConstruction_ = true;
 
     //  While inside the building don't bother drawing the
     //  sky, just clear the background to black
     manager()->pushBackgroundData();
 
-    manager()->clearBackground( true );
-    manager()->backgroundColour( RenColour::black() );
-    manager()->useBackground( NULL );
+    manager()->clearBackground(true);
+    manager()->backgroundColour(RenColour::black());
+    manager()->useBackground(nullptr);
 
-    floors_.erase( floors_.begin(), floors_.end() );
+    floors_.erase(floors_.begin(), floors_.end());
 
-    if( pCurrentPadConstruction_ )
+    if (pCurrentPadConstruction_)
     {
         MachPhysConstruction& physConstruction = pCurrentPadConstruction_->physConstruction();
 
         const MachPhysPlanetSurface::Floor floor(
             physConstruction.externalGlobalBoundary(),
-            physConstruction.globalTransform().position().z() );
+            physConstruction.globalTransform().position().z());
 
-        floors_.push_back( floor );
+        floors_.push_back(floor);
     }
 }
 
 bool MachLogCamera::insideConstruction() const
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	return insideConstruction_;
+    return insideConstruction_;
 }
 
-//virtual
-bool MachLogCamera::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int )
+// virtual
+bool MachLogCamera::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     bool stayAsObserver = true;
 
-    //Only interested in a construction that the camera is in or at an entrance of being deleted
-    if( event == W4dSubject::DELETED  and  (onPad_ or insideConstruction_) and
-        pSubject == pCurrentPadConstruction_ )
+    // Only interested in a construction that the camera is in or at an entrance of being deleted
+    if (event == W4dSubject::DELETED and (onPad_ or insideConstruction_) and pSubject == pCurrentPadConstruction_)
     {
-        //If inside the building we must leave it immediately
-        if( insideConstruction_ )
+        // If inside the building we must leave it immediately
+        if (insideConstruction_)
             leaveConstruction();
 
-        //If marked as on a pad, will no longer be true
-        onPad_= false;
-        pCurrentPadConstruction_ = NULL;
+        // If marked as on a pad, will no longer be true
+        onPad_ = false;
+        pCurrentPadConstruction_ = nullptr;
 
-        //No longer want to observe
+        // No longer want to observe
         stayAsObserver = false;
         observingConstruction_ = false;
     }
@@ -589,172 +590,176 @@ bool MachLogCamera::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEv
     return stayAsObserver;
 }
 
-//virtual
-void MachLogCamera::domainDeleted( W4dDomain* )
+// virtual
+void MachLogCamera::domainDeleted(W4dDomain*)
 {
-    //No action needed
+    // No action needed
 }
 
 void MachLogCamera::startObservingConstruction()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    PRE( not observingConstruction_ );
-    PRE( pCurrentPadConstruction_ != NULL );
+    PRE(not observingConstruction_);
+    PRE(pCurrentPadConstruction_ != nullptr);
 
-    pCurrentPadConstruction_->attach( this );
+    pCurrentPadConstruction_->attach(this);
     observingConstruction_ = true;
 }
 
 void MachLogCamera::stopObservingConstruction()
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-    PRE( observingConstruction_ );
-    PRE( pCurrentPadConstruction_ != NULL );
+    PRE(observingConstruction_);
+    PRE(pCurrentPadConstruction_ != nullptr);
 
-    pCurrentPadConstruction_->detach( this );
+    pCurrentPadConstruction_->detach(this);
     observingConstruction_ = false;
 }
 
 struct ObstacleCollisionInfo
 {
-	MexPoint2d intersectionPoint_;
-	MexLine2d obstacleEdge_;
-	MATHEX_SCALAR collisionDistance_;
+    MexPoint2d intersectionPoint_;
+    MexLine2d obstacleEdge_;
+    MATHEX_SCALAR collisionDistance_;
 };
 
-void MachLogCamera::findObstacleCollisionPoints( const MexPolygon2d& obstacle,
-												 ctl_pvector<ObstacleCollisionInfo>* pCollisionInfo,
-												 const MexLine2d& motionDir ) const
+void MachLogCamera::findObstacleCollisionPoints(
+    const MexPolygon2d& obstacle,
+    ctl_pvector<ObstacleCollisionInfo>* pCollisionInfo,
+    const MexLine2d& motionDir) const
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	for ( int i = 0; i < obstacle.nVertices(); ++i )
-	{
-		// Construct obstacle edge
-		MexPoint2d edgePoint1 = obstacle.vertex( i );
-		MexPoint2d edgePoint2 = ( i == obstacle.nVertices() - 1 ) ? obstacle.vertex( 0 ) : obstacle.vertex( i + 1 );
+    for (int i = 0; i < obstacle.nVertices(); ++i)
+    {
+        // Construct obstacle edge
+        MexPoint2d edgePoint1 = obstacle.vertex(i);
+        MexPoint2d edgePoint2 = (i == obstacle.nVertices() - 1) ? obstacle.vertex(0) : obstacle.vertex(i + 1);
 
-		MexLine2d obstacleEdge = MexLine2d( edgePoint1, edgePoint2 );
+        MexLine2d obstacleEdge = MexLine2d(edgePoint1, edgePoint2);
 
-		MexPoint2d intersectPoint;
+        MexPoint2d intersectPoint;
 
-		// Find out if the motion direction intersects this edge
-		if ( obstacleEdge.intersects( motionDir, &intersectPoint ) )
-		{
-	 		// Collision detected...
-			MexVec2 motionEndToIntersectVec( motionDir.end2(), intersectPoint );
+        // Find out if the motion direction intersects this edge
+        if (obstacleEdge.intersects(motionDir, &intersectPoint))
+        {
+            // Collision detected...
+            MexVec2 motionEndToIntersectVec(motionDir.end2(), intersectPoint);
 
-		    ctl_pvector<ObstacleCollisionInfo>::iterator insertIter = pCollisionInfo->begin();
-			bool inserted = false;
+            ctl_pvector<ObstacleCollisionInfo>::iterator insertIter = pCollisionInfo->begin();
+            bool inserted = false;
 
-			// Calculate how far we area from colliding with this edge
-			MATHEX_SCALAR collisionDistance = motionEndToIntersectVec.squareModulus();
+            // Calculate how far we area from colliding with this edge
+            MATHEX_SCALAR collisionDistance = motionEndToIntersectVec.squareModulus();
 
-			// Insert collision info into sorted list. Closest collisions at front.
-			while ( not inserted and insertIter != pCollisionInfo->end() )
-			{
-				if ( collisionDistance < (*insertIter)->collisionDistance_ )
-				{
-					inserted = true;
-					ObstacleCollisionInfo* pNewCollisionInfo = _NEW( ObstacleCollisionInfo );
+            // Insert collision info into sorted list. Closest collisions at front.
+            while (not inserted and insertIter != pCollisionInfo->end())
+            {
+                if (collisionDistance < (*insertIter)->collisionDistance_)
+                {
+                    inserted = true;
+                    ObstacleCollisionInfo* pNewCollisionInfo = _NEW(ObstacleCollisionInfo);
 
-					pNewCollisionInfo->intersectionPoint_ = intersectPoint;
-					pNewCollisionInfo->obstacleEdge_ = obstacleEdge;
-					pNewCollisionInfo->collisionDistance_ = collisionDistance;
+                    pNewCollisionInfo->intersectionPoint_ = intersectPoint;
+                    pNewCollisionInfo->obstacleEdge_ = obstacleEdge;
+                    pNewCollisionInfo->collisionDistance_ = collisionDistance;
 
-					pCollisionInfo->insert( insertIter, pNewCollisionInfo );
-				}
+                    pCollisionInfo->insert(insertIter, pNewCollisionInfo);
+                }
 
-				++insertIter;
-			}
+                ++insertIter;
+            }
 
-			if ( not inserted )
-			{
-				ObstacleCollisionInfo* pNewCollisionInfo = _NEW( ObstacleCollisionInfo );
+            if (not inserted)
+            {
+                ObstacleCollisionInfo* pNewCollisionInfo = _NEW(ObstacleCollisionInfo);
 
-				pNewCollisionInfo->intersectionPoint_ = intersectPoint;
-				pNewCollisionInfo->obstacleEdge_ = obstacleEdge;
-				pNewCollisionInfo->collisionDistance_ = collisionDistance;
+                pNewCollisionInfo->intersectionPoint_ = intersectPoint;
+                pNewCollisionInfo->obstacleEdge_ = obstacleEdge;
+                pNewCollisionInfo->collisionDistance_ = collisionDistance;
 
-				pCollisionInfo->push_back( pNewCollisionInfo );
-			}
-		}
-	}
+                pCollisionInfo->push_back(pNewCollisionInfo);
+            }
+        }
+    }
 }
 
-bool MachLogCamera::alternativeNewPosition( MexTransform3d* pPosition )	const
+bool MachLogCamera::alternativeNewPosition(MexTransform3d* pPosition) const
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
-	PRE( pPosition );
-	PRE( not newPositionIsValid( *pPosition ) );
+    PRE(pPosition);
+    PRE(not newPositionIsValid(*pPosition));
 
     bool positionAccepted = true;
 
-	MexLine3d travelingFromTo( globalTransform().position(), pPosition->position() );
+    MexLine3d travelingFromTo(globalTransform().position(), pPosition->position());
 
-	MexVec2 travelingVector( travelingFromTo.end1(), travelingFromTo.end2() );
-	MexLine2d travelingFromTo2d( travelingFromTo.end1(), travelingFromTo.end2() );
+    MexVec2 travelingVector(travelingFromTo.end1(), travelingFromTo.end2());
+    MexLine2d travelingFromTo2d(travelingFromTo.end1(), travelingFromTo.end2());
 
-    if( type_ == GROUND )
+    if (type_ == GROUND)
     {
-		PhysConfigSpace2d::PolygonId id;
+        PhysConfigSpace2d::PolygonId id;
 
-		// Find the obstacle that we are colliding with...
-        positionAccepted = pConfigSpace_->contains( cameraPolygon( pPosition->position() ), MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER, &id );
+        // Find the obstacle that we are colliding with...
+        positionAccepted = pConfigSpace_->contains(
+            cameraPolygon(pPosition->position()),
+            MachLog::OBSTACLE_LOW | MachLog::OBSTACLE_WATER,
+            &id);
 
-		if ( not positionAccepted )
-		{
-			// Get the obstacle
-			const MexPolygon2d& obstacle = pConfigSpace_->polygon( id );
+        if (not positionAccepted)
+        {
+            // Get the obstacle
+            const MexPolygon2d& obstacle = pConfigSpace_->polygon(id);
 
-			ctl_pvector<ObstacleCollisionInfo> collisionInfo;
+            ctl_pvector<ObstacleCollisionInfo> collisionInfo;
 
-			// Get a list of collision points sorted by distance
-	 		findObstacleCollisionPoints( obstacle, &collisionInfo, travelingFromTo2d );
+            // Get a list of collision points sorted by distance
+            findObstacleCollisionPoints(obstacle, &collisionInfo, travelingFromTo2d);
 
-			int index = 0;
-			// Iterate through the collision points until we find one that slides the
-			// camera into a new acceptable position
-			while ( not positionAccepted and index < collisionInfo.size() )
-			{
-				// Split the obstacle edge in two from the point of intersection
-				MexVec2 obstEdge1( collisionInfo[index]->intersectionPoint_, collisionInfo[index]->obstacleEdge_.end1() );
+            int index = 0;
+            // Iterate through the collision points until we find one that slides the
+            // camera into a new acceptable position
+            while (not positionAccepted and index < collisionInfo.size())
+            {
+                // Split the obstacle edge in two from the point of intersection
+                MexVec2 obstEdge1(collisionInfo[index]->intersectionPoint_, collisionInfo[index]->obstacleEdge_.end1());
 
-				obstEdge1.makeUnitVector();
+                obstEdge1.makeUnitVector();
 
-				MexVec2 obstEdge2( -obstEdge1.x(), -obstEdge1.y() );
+                MexVec2 obstEdge2(-obstEdge1.x(), -obstEdge1.y());
 
-				MexPoint3d currentPosition = globalTransform().position();
+                MexPoint3d currentPosition = globalTransform().position();
 
-				// Move camera along edge towards the vertex that we a facing
-				if ( travelingVector.dotProduct( obstEdge1 ) > travelingVector.dotProduct( obstEdge2 ) )
-				{
-					currentPosition += obstEdge1;
-				}
-				else
-				{
-					currentPosition += obstEdge2;
-				}
+                // Move camera along edge towards the vertex that we a facing
+                if (travelingVector.dotProduct(obstEdge1) > travelingVector.dotProduct(obstEdge2))
+                {
+                    currentPosition += obstEdge1;
+                }
+                else
+                {
+                    currentPosition += obstEdge2;
+                }
 
-				// Update passed in transform to use new position
-				pPosition->position( currentPosition );
+                // Update passed in transform to use new position
+                pPosition->position(currentPosition);
 
-				// Are we happy with the new position?
-				positionAccepted = groundPositionLegal( *pPosition );
+                // Are we happy with the new position?
+                positionAccepted = groundPositionLegal(*pPosition);
 
-				++index;
-			}
+                ++index;
+            }
 
-			// Clean up list of collision info
-			while ( not collisionInfo.empty() )
-			{
-				_DELETE( collisionInfo.back() );
-				collisionInfo.pop_back();
-			}
-		}
+            // Clean up list of collision info
+            while (not collisionInfo.empty())
+            {
+                _DELETE(collisionInfo.back());
+                collisionInfo.pop_back();
+            }
+        }
     }
 
     return positionAccepted;
@@ -762,10 +767,9 @@ bool MachLogCamera::alternativeNewPosition( MexTransform3d* pPosition )	const
 
 const MachPhysPlanetSurface::Floors& MachLogCamera::floors() const
 {
-	CB_MachLogCamera_DEPIMPL();
+    CB_MachLogCamera_DEPIMPL();
 
     return floors_;
 }
-
 
 /* End CAMERA.CPP ***************************************************/

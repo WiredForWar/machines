@@ -1,5 +1,5 @@
 /*
- * M A C H D A T I . H P P 
+ * M A C H D A T I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,24 +22,23 @@ public:
     MachPhysIMachineData();
     ~MachPhysIMachineData();
 
-    MachPhys::LocomotionType    locomotionType() const;
-    void locomotionType( MachPhys::LocomotionType );
+    MachPhys::LocomotionType locomotionType() const;
+    void locomotionType(MachPhys::LocomotionType);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysIMachineData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysIMachineData& t);
 
-    MachPhysIMachineData( const MachPhysIMachineData& );
-    MachPhysIMachineData& operator =( const MachPhysIMachineData& );
+    MachPhysIMachineData(const MachPhysIMachineData&);
+    MachPhysIMachineData& operator=(const MachPhysIMachineData&);
 
-    MachPhys::LocomotionType    locomotionType_;
+    MachPhys::LocomotionType locomotionType_;
 };
 
 #ifdef _INLINE
-    #include "machphys/internal/machdati.ipp"
+#include "machphys/internal/machdati.ipp"
 #endif
-
 
 #endif
 

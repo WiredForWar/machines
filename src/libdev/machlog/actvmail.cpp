@@ -13,15 +13,15 @@
 #include "machlog/vmman.hpp"
 #include "machlog/scenario.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogVoiceMailAction );
+PER_DEFINE_PERSISTENT(MachLogVoiceMailAction);
 
-MachLogVoiceMailAction::MachLogVoiceMailAction( SimCondition* pCondition, bool enabled )
-:	SimAction( pCondition, enabled )
+MachLogVoiceMailAction::MachLogVoiceMailAction(SimCondition* pCondition, bool enabled)
+    : SimAction(pCondition, enabled)
 {
     TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MachLogVoiceMailAction::~MachLogVoiceMailAction()
 {
     TEST_INVARIANT;
@@ -29,10 +29,10 @@ MachLogVoiceMailAction::~MachLogVoiceMailAction()
 
 void MachLogVoiceMailAction::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogVoiceMailAction& t )
+ostream& operator<<(ostream& o, const MachLogVoiceMailAction& t)
 {
 
     o << "MachLogVoiceMailAction " << (void*)&t << " start" << std::endl;
@@ -41,59 +41,60 @@ ostream& operator <<( ostream& o, const MachLogVoiceMailAction& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachLogVoiceMailAction::doAction()
 {
-	MachLogVoiceMailManager::instance().postNewMail( mailID_, race_ );
+    MachLogVoiceMailManager::instance().postNewMail(mailID_, race_);
 }
 
-//static
-MachLogVoiceMailAction* MachLogVoiceMailAction::newFromParser( SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser )
+// static
+MachLogVoiceMailAction*
+MachLogVoiceMailAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-	MachLogVoiceMailAction* pResult = NULL;
-	pResult = _NEW( MachLogVoiceMailAction( pCondition, enabled ) );
-	for( int i = 0; i < pParser->tokens().size(); ++i )
-	{
-		const string& token = pParser->tokens()[i];
-		if( token == "RACE" )
-			pResult->race_ = MachLogScenario::machPhysRace( pParser->tokens()[i+1] );
-		else if( token == "VID" )
-//			pResult->mailID_ = MachLogVoiceMailManager::instance().veMailIDMap()[ pParser->tokens()[i+1] ];
-			pResult->mailID_ = _CONST_CAST(MachLogVoiceMailManager::VEmailIDMap&,
-                               MachLogVoiceMailManager::instance().veMailIDMap())[ pParser->tokens()[i+1] ];
-	}
-	return pResult;
+    MachLogVoiceMailAction* pResult = nullptr;
+    pResult = _NEW(MachLogVoiceMailAction(pCondition, enabled));
+    for (int i = 0; i < pParser->tokens().size(); ++i)
+    {
+        const string& token = pParser->tokens()[i];
+        if (token == "RACE")
+            pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
+        else if (token == "VID")
+            //          pResult->mailID_ = MachLogVoiceMailManager::instance().veMailIDMap()[ pParser->tokens()[i+1] ];
+            pResult->mailID_ = _CONST_CAST(
+                MachLogVoiceMailManager::VEmailIDMap&,
+                MachLogVoiceMailManager::instance().veMailIDMap())[pParser->tokens()[i + 1]];
+    }
+    return pResult;
 }
 
-//virtual
-void MachLogVoiceMailAction::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogVoiceMailAction::doOutputOperator(ostream& o) const
 {
-	SimAction::doOutputOperator( o );
-	o << "Race " << race_;
-	o << " MailId " << (int)mailID_ << std::endl;
+    SimAction::doOutputOperator(o);
+    o << "Race " << race_;
+    o << " MailId " << (int)mailID_ << std::endl;
 }
 
-void perWrite( PerOstream& ostr, const MachLogVoiceMailAction& action )
+void perWrite(PerOstream& ostr, const MachLogVoiceMailAction& action)
 {
-	const SimAction& base1 = action;
+    const SimAction& base1 = action;
 
-	ostr << base1;
-	ostr << action.mailID_;
-	ostr << action.race_;
-
+    ostr << base1;
+    ostr << action.mailID_;
+    ostr << action.race_;
 }
 
-void perRead( PerIstream& istr, MachLogVoiceMailAction& action )
+void perRead(PerIstream& istr, MachLogVoiceMailAction& action)
 {
-	SimAction& base1 = action;
+    SimAction& base1 = action;
 
-	istr >> base1;
-	istr >> action.mailID_;
-	istr >> action.race_;
+    istr >> base1;
+    istr >> action.mailID_;
+    istr >> action.race_;
 }
 
-MachLogVoiceMailAction::MachLogVoiceMailAction( PerConstructor con )
-:	SimAction( con )
+MachLogVoiceMailAction::MachLogVoiceMailAction(PerConstructor con)
+    : SimAction(con)
 {
 }
 

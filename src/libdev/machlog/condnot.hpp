@@ -18,47 +18,42 @@
 #include "stdlib/strfwd.hpp"
 
 class UtlLineTokeniser;
-template < class X, class Y, class Z > class ctl_map;
-template < class T > class less;
+template <class X, class Y, class Z> class ctl_map;
+template <class T> class less;
 
 class MachLogNotCondition : public SimCondition
 // Canonical form revoked
 {
 public:
+    using ConditionMap = ctl_map<string, SimCondition*, std::less<string>>;
 
-	typedef ctl_map< string , SimCondition*, std::less< string >	>	ConditionMap;
+    static MachLogNotCondition* newFromParser(UtlLineTokeniser*, ConditionMap*);
 
-	static MachLogNotCondition* newFromParser( UtlLineTokeniser*, ConditionMap* );
+    bool doHasConditionBeenMet() const override;
 
-	virtual bool doHasConditionBeenMet() const;
-
-    virtual ~MachLogNotCondition();
+    ~MachLogNotCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogNotCondition );
-	PER_FRIEND_READ_WRITE( MachLogNotCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogNotCondition);
+    PER_FRIEND_READ_WRITE(MachLogNotCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogNotCondition(const string& keyName, SimCondition*);
 
-    MachLogNotCondition( const string& keyName, SimCondition* );
+    friend ostream& operator<<(ostream& o, const MachLogNotCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogNotCondition& t );
+    MachLogNotCondition(const MachLogNotCondition&);
+    MachLogNotCondition& operator=(const MachLogNotCondition&);
 
-    MachLogNotCondition( const MachLogNotCondition& );
-    MachLogNotCondition& operator =( const MachLogNotCondition& );
-
-	SimCondition*	pNotCondition_;
-
+    SimCondition* pNotCondition_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogNotCondition );
+PER_DECLARE_PERSISTENT(MachLogNotCondition);
 
 #endif
 

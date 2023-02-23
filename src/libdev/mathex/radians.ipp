@@ -1,42 +1,42 @@
 /*
- * R A D I A N S . I P P 
+ * R A D I A N S . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
-MexRadians::MexRadians( void )
-: MexAngle()
+MexRadians::MexRadians()
+    : MexAngle()
 {
 }
 
 _CODE_INLINE
-MexRadians::MexRadians( MATHEX_SCALAR angle )
-: MexAngle( angle )
+MexRadians::MexRadians(MATHEX_SCALAR angle)
+    : MexAngle(angle)
 {
 }
 
 _CODE_INLINE
-MexRadians::MexRadians( const MexAngle& angle )
-: MexAngle( angle )
+MexRadians::MexRadians(const MexAngle& angle)
+    : MexAngle(angle)
 {
 }
 
 _CODE_INLINE
-MATHEX_SCALAR   MexRadians::asScalar( void ) const
+MATHEX_SCALAR MexRadians::asScalar() const
 {
     return angleInRadians();
 }
 
 _CODE_INLINE
-ostream& operator <<( ostream& o, const MexRadians& t )
+ostream& operator<<(ostream& o, const MexRadians& t)
 {
     o << t.angleInRadians();
 
@@ -44,49 +44,49 @@ ostream& operator <<( ostream& o, const MexRadians& t )
 }
 
 _CODE_INLINE
-const MexRadians   operator +( const MexRadians& a, const MexRadians& b )
+const MexRadians operator+(const MexRadians& a, const MexRadians& b)
 {
-    return MexRadians( a.asScalar() + b.asScalar() );
+    return MexRadians(a.asScalar() + b.asScalar());
 }
 
 _CODE_INLINE
-const MexRadians   operator +( const MexRadians& a, const MexDegrees& b )
+const MexRadians operator+(const MexRadians& a, const MexDegrees& b)
 {
-    return MexRadians( a.asScalar() + ( b.asScalar() * Mathex::PI / 180.0 ) );
+    return MexRadians(a.asScalar() + (b.asScalar() * Mathex::PI / 180.0));
 }
 
 _CODE_INLINE
-const MexRadians   operator -( const MexRadians& a, const MexRadians& b )
+const MexRadians operator-(const MexRadians& a, const MexRadians& b)
 {
-    return MexRadians( a.asScalar() - b.asScalar() );
+    return MexRadians(a.asScalar() - b.asScalar());
 }
 
 _CODE_INLINE
-const MexRadians   operator -( const MexRadians& a, const MexDegrees& b )
+const MexRadians operator-(const MexRadians& a, const MexDegrees& b)
 {
-    return MexRadians( a.asScalar() - ( b.asScalar() * Mathex::PI / 180.0 ) );
+    return MexRadians(a.asScalar() - (b.asScalar() * Mathex::PI / 180.0));
 }
 
 _CODE_INLINE
-const MexRadians   operator *( const MexRadians& a, MATHEX_SCALAR scalar )
+const MexRadians operator*(const MexRadians& a, MATHEX_SCALAR scalar)
 {
-    return MexRadians( a.asScalar() * scalar );
+    return MexRadians(a.asScalar() * scalar);
 }
 
 _CODE_INLINE
-const MexRadians   operator *( MATHEX_SCALAR scalar, const MexRadians& a )
+const MexRadians operator*(MATHEX_SCALAR scalar, const MexRadians& a)
 {
-    return MexRadians( a.asScalar() * scalar );
+    return MexRadians(a.asScalar() * scalar);
 }
 
 _CODE_INLINE
-const MexRadians   operator /( const MexRadians& a, MATHEX_SCALAR scalar )
+const MexRadians operator/(const MexRadians& a, MATHEX_SCALAR scalar)
 {
-    return MexRadians( a.asScalar() / scalar );
+    return MexRadians(a.asScalar() / scalar);
 }
 
 _CODE_INLINE
-const MexRadians   operator -( const MexRadians& a )
+const MexRadians operator-(const MexRadians& a)
 {
     return -a.asScalar();
 }

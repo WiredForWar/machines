@@ -8,35 +8,33 @@
 #include "world4d/obtrspln.hpp"
 #include "render/scale.hpp"
 
-PER_DEFINE_PERSISTENT( W4dObjectTrackerScalePlan );
+PER_DEFINE_PERSISTENT(W4dObjectTrackerScalePlan);
 
-W4dObjectTrackerScalePlan::W4dObjectTrackerScalePlan
-(
-    W4dObjectTrackerPtr objectTrackerPtr, const PhysRelativeTime& duration
-)
-:   W4dScalePlan( duration ),
-    objectTrackerPtr_( objectTrackerPtr )
+W4dObjectTrackerScalePlan::W4dObjectTrackerScalePlan(
+    W4dObjectTrackerPtr objectTrackerPtr,
+    const PhysRelativeTime& duration)
+    : W4dScalePlan(duration)
+    , objectTrackerPtr_(objectTrackerPtr)
 {
     TEST_INVARIANT;
 }
 
-W4dObjectTrackerScalePlan::W4dObjectTrackerScalePlan( PerConstructor con )
-: W4dScalePlan( con )
+W4dObjectTrackerScalePlan::W4dObjectTrackerScalePlan(PerConstructor con)
+    : W4dScalePlan(con)
 {
 }
 
 W4dObjectTrackerScalePlan::~W4dObjectTrackerScalePlan()
 {
     TEST_INVARIANT;
-
 }
 
 void W4dObjectTrackerScalePlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dObjectTrackerScalePlan& t )
+ostream& operator<<(ostream& o, const W4dObjectTrackerScalePlan& t)
 {
 
     o << "W4dObjectTrackerScalePlan " << (void*)&t << " start" << std::endl;
@@ -45,47 +43,40 @@ ostream& operator <<( ostream& o, const W4dObjectTrackerScalePlan& t )
     return o;
 }
 
-//virtual
+// virtual
 bool W4dObjectTrackerScalePlan::isNonUniform() const
 {
     return true;
 }
 
-//virtual
-void W4dObjectTrackerScalePlan::doScale( const PhysRelativeTime&, RenUniformScale* ) const
+// virtual
+void W4dObjectTrackerScalePlan::doScale(const PhysRelativeTime&, RenUniformScale*) const
 {
-    ASSERT( false, "" );
+    ASSERT(false, "");
 }
 
-//virtual
-void W4dObjectTrackerScalePlan::doScale
-(
-    const PhysRelativeTime&, RenNonUniformScale* pScale
-) const
+// virtual
+void W4dObjectTrackerScalePlan::doScale(const PhysRelativeTime&, RenNonUniformScale* pScale) const
 {
-    //Get the current length from the object tracker
+    // Get the current length from the object tracker
     MexTransform3d temp;
-    MATHEX_SCALAR length = objectTrackerPtr_->track( &temp );
+    MATHEX_SCALAR length = objectTrackerPtr_->track(&temp);
 
-    //Scale is determined by current length related to default length
+    // Scale is determined by current length related to default length
     MATHEX_SCALAR xScale = length / objectTrackerPtr_->defaultLength();
 
-    //Set the resultant non-uniform scale
-    pScale->factors( xScale, 1.0, 1.0 );
-
+    // Set the resultant non-uniform scale
+    pScale->factors(xScale, 1.0, 1.0);
 }
 
-//virtual
-W4dScalePlan* W4dObjectTrackerScalePlan::doTransformClone
-(
-    const MexTransform3d&
-) const
+// virtual
+W4dScalePlan* W4dObjectTrackerScalePlan::doTransformClone(const MexTransform3d&) const
 {
-    //Just clone this plan. NB only works if x axis not moved
-    return _NEW( W4dObjectTrackerScalePlan( objectTrackerPtr_, duration() ) );
+    // Just clone this plan. NB only works if x axis not moved
+    return _NEW(W4dObjectTrackerScalePlan(objectTrackerPtr_, duration()));
 }
 
-void perWrite( PerOstream& ostr, const W4dObjectTrackerScalePlan& plan )
+void perWrite(PerOstream& ostr, const W4dObjectTrackerScalePlan& plan)
 {
     const W4dScalePlan& base = plan;
 
@@ -93,7 +84,7 @@ void perWrite( PerOstream& ostr, const W4dObjectTrackerScalePlan& plan )
     ostr << plan.objectTrackerPtr_;
 }
 
-void perRead( PerIstream& istr, W4dObjectTrackerScalePlan& plan )
+void perRead(PerIstream& istr, W4dObjectTrackerScalePlan& plan)
 {
     W4dScalePlan& base = plan;
 

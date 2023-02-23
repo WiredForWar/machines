@@ -10,24 +10,20 @@
 #include "world4d/entity.hpp"
 #include "world4d/entyplan.hpp"
 
-void SDLApp::moveObject( W4dEntity* pObject )
+void SDLApp::moveObject(W4dEntity* pObject)
 {
-    //Construct start and endposition
-    MexPoint3d pos( 0.0, 0.0, 0.0 );
+    // Construct start and endposition
+    MexPoint3d pos(0.0, 0.0, 0.0);
 
     MexQuaternion rot;
-    MexVec3 axis( 0, 0, 1 );
-    rot.set( axis, MexDegrees(90) );
+    MexVec3 axis(0, 0, 1);
+    rot.set(axis, MexDegrees(90));
     MexTransform3d startPosition;
-    MexTransform3d endPosition( pos );
-    endPosition.rotation( rot );
-    PhysRelativeTime endTime( 5 );
+    MexTransform3d endPosition(pos);
+    endPosition.rotation(rot);
+    PhysRelativeTime endTime(5);
 
-    PhysMotionPlanPtr motionPlanPtr( _NEW( PhysLinearMotionPlan( startPosition,
-                                                                 endPosition,
-                                                                 endTime ) ) );
+    PhysMotionPlanPtr motionPlanPtr(_NEW(PhysLinearMotionPlan(startPosition, endPosition, endTime)));
 
-    pObject->entityPlanForEdit().absoluteMotion( motionPlanPtr, 10 );
+    pObject->entityPlanForEdit().absoluteMotion(motionPlanPtr, 10);
 }
-
-

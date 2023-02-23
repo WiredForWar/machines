@@ -16,29 +16,28 @@ BaseCrashInternal& BaseCrashInternal::instance()
 
 BaseCrashInternal::BaseCrashInternal()
 {
-    functions_.reserve( 4 );
+    functions_.reserve(4);
     TEST_INVARIANT;
 }
 
 BaseCrashInternal::~BaseCrashInternal()
 {
     TEST_INVARIANT;
-
 }
 
-void BaseCrashInternal::addCrashFunction( PFn pFn )
+void BaseCrashInternal::addCrashFunction(PFn pFn)
 {
-    functions_.push_back( pFn );
+    functions_.push_back(pFn);
 }
 
 void BaseCrashInternal::handleCrash() const
 {
-    for( size_t i = 0; i < functions_.size(); ++i )
+    for (size_t i = 0; i < functions_.size(); ++i)
     {
-        (*functions_[ i ])();
+        (*functions_[i])();
     }
 
-    for( Streams::const_iterator i = streams_.begin(); i != streams_.end(); ++i )
+    for (Streams::const_iterator i = streams_.begin(); i != streams_.end(); ++i)
     {
         std::ofstream& ostr = *(*i);
 
@@ -47,22 +46,22 @@ void BaseCrashInternal::handleCrash() const
     }
 }
 
-void BaseCrashInternal::addCrashStream( std::ofstream& str )
+void BaseCrashInternal::addCrashStream(std::ofstream& str)
 {
-    streams_.insert( &str );
+    streams_.insert(&str);
 }
 
-void BaseCrashInternal::removeCrashStream( std::ofstream& str )
+void BaseCrashInternal::removeCrashStream(std::ofstream& str)
 {
-    streams_.erase( &str );
+    streams_.erase(&str);
 }
 
 void BaseCrashInternal::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const BaseCrashInternal& t )
+ostream& operator<<(ostream& o, const BaseCrashInternal& t)
 {
 
     o << "BaseCrashInternal " << (void*)&t << " start" << std::endl;

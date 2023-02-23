@@ -1,5 +1,5 @@
 /*
- * V A P T R A I L . H P P 
+ * V A P T R A I L . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -27,52 +27,49 @@ class MachPhysWeaponData;
 class MachPhysVapourTrail
 {
 public:
-    MachPhysVapourTrail(
-        W4dEntity* pParent,
-        size_t nPuffs,
-        MATHEX_SCALAR averagePuffSize, size_t missile_level );
+    MachPhysVapourTrail(W4dEntity* pParent, size_t nPuffs, MATHEX_SCALAR averagePuffSize, size_t missile_level);
 
     ~MachPhysVapourTrail();
 
-//    void startTrail(
-//        const PhysAbsoluteTime& startTime );
-        
+    //    void startTrail(
+    //        const PhysAbsoluteTime& startTime );
+
     //  Pass in the current position of the object the vapour trail is attached to
     //  and the offset used to get the position of the vapour puff
-    void    update( const MexPoint3d& currentPosition, const MexVec3& offset );
+    void update(const MexPoint3d& currentPosition, const MexVec3& offset);
 
-    //Indicate that the vapour trail is not needed after endTime.
-    //Must be called to ensure deletion of vapour puffs
-    void finish( const PhysAbsoluteTime& endTime );
-        
+    // Indicate that the vapour trail is not needed after endTime.
+    // Must be called to ensure deletion of vapour puffs
+    void finish(const PhysAbsoluteTime& endTime);
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysVapourTrail& t );
+    friend ostream& operator<<(ostream& o, const MachPhysVapourTrail& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysVapourTrail );
-    PER_FRIEND_READ_WRITE( MachPhysVapourTrail );
+    PER_MEMBER_PERSISTENT(MachPhysVapourTrail);
+    PER_FRIEND_READ_WRITE(MachPhysVapourTrail);
 
 private:
     // Operation deliberately revoked
-    MachPhysVapourTrail( const MachPhysVapourTrail& );
+    MachPhysVapourTrail(const MachPhysVapourTrail&);
 
     // Operation deliberately revoked
-    MachPhysVapourTrail& operator =( const MachPhysVapourTrail& );
+    MachPhysVapourTrail& operator=(const MachPhysVapourTrail&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysVapourTrail& );
+    bool operator==(const MachPhysVapourTrail&);
 
-    ctl_pvector< MachPhysVapourPuff >    vapourPuffs_;
+    ctl_pvector<MachPhysVapourPuff> vapourPuffs_;
 
-    size_t  updateRate_;    // in frames
-    size_t  currentPuff_;
-    size_t  updateAtFrame_;
-    size_t  nPuffs_;
-    
-    MexPoint3d  lastPosition_;
+    size_t updateRate_; // in frames
+    size_t currentPuff_;
+    size_t updateAtFrame_;
+    size_t nPuffs_;
+
+    MexPoint3d lastPosition_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysVapourTrail );
+PER_DECLARE_PERSISTENT(MachPhysVapourTrail);
 
 #endif
 

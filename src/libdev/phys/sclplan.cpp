@@ -7,14 +7,14 @@
 
 #include "phys/sclplan.hpp"
 
-PER_DEFINE_PERSISTENT_ABSTRACT( PhysScalarPlan );
+PER_DEFINE_PERSISTENT_ABSTRACT(PhysScalarPlan);
 
 PhysScalarPlan::PhysScalarPlan()
 {
 }
 
 PhysScalarPlan::PhysScalarPlan(const PhysRelativeTime& duration)
-: duration_(duration)
+    : duration_(duration)
 {
 
     TEST_INVARIANT;
@@ -23,26 +23,25 @@ PhysScalarPlan::PhysScalarPlan(const PhysRelativeTime& duration)
 PhysScalarPlan::~PhysScalarPlan()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysScalarPlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 const PhysRelativeTime& PhysScalarPlan::duration() const
 {
-	return duration_;
+    return duration_;
 }
 
 void PhysScalarPlan::duration(const PhysRelativeTime& time)
 
 {
-	duration_ = time;
+    duration_ = time;
 }
 
-ostream& operator <<( ostream& o, const PhysScalarPlan& t )
+ostream& operator<<(ostream& o, const PhysScalarPlan& t)
 {
 
     o << "PhysScalarPlan " << (void*)&t << " start" << std::endl;
@@ -51,12 +50,12 @@ ostream& operator <<( ostream& o, const PhysScalarPlan& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const PhysScalarPlan& plan )
+void perWrite(PerOstream& ostr, const PhysScalarPlan& plan)
 {
     ostr << plan.duration_;
 }
 
-void perRead( PerIstream& istr, PhysScalarPlan& plan )
+void perRead(PerIstream& istr, PhysScalarPlan& plan)
 {
     istr >> plan.duration_;
 }

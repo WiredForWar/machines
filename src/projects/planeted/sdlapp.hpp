@@ -9,7 +9,7 @@
 #include "render/texmgr.hpp"
 #include "afx/osapp.hpp"
 
-//class DevButtonEvent;
+// class DevButtonEvent;
 class RenDisplay;
 class W4dEntity;
 class W4dSceneManager;
@@ -30,50 +30,50 @@ class EnvPlanetEnvironment;
 class SDLApp : public AfxOSSpecificApp<SDLApp>
 {
 public:
-	virtual ~SDLApp();
+    ~SDLApp() override;
 
 private:
-	friend class AfxSingletonApp;
-	SDLApp();
+    friend class AfxSingletonApp;
+    SDLApp();
 
-	// Provide virtual fns required by base classes.
-	virtual void clientShutdown();
-	virtual void loopCycle();
-	virtual void updateDisplay();
-//	virtual bool activate(WORD wParam);
-	virtual bool activate(/*WORD wParam*/);
-	virtual bool clientStartup ();
-    virtual const string& name() const;
+    // Provide virtual fns required by base classes.
+    void clientShutdown() override;
+    void loopCycle() override;
+    void updateDisplay() override;
+    //  virtual bool activate(WORD wParam);
+    virtual bool activate(/*WORD wParam*/);
+    bool clientStartup() override;
+    const string& name() const override;
 
-	void processInput();
-	void checkForCameraChange( const DevButtonEvent& );
-	void checkForQuit( const DevButtonEvent& );
+    void processInput();
+    void checkForCameraChange(const DevButtonEvent&);
+    void checkForQuit(const DevButtonEvent&);
 
-    void moveObject( W4dEntity* pObject );
+    void moveObject(W4dEntity* pObject);
 
-    SysPathName planetPath( const string& planetName, const string& texName, RenTexManager::PathNames* pSearchList );
-	void readEnvironment(const string& planetName);
+    SysPathName planetPath(const string& planetName, const string& texName, RenTexManager::PathNames* pSearchList);
+    void readEnvironment(const string& planetName);
 
-	// Allow a derived class to override this and provide a window size.
-	// This shouldn't be necessary when DevDisplay works with Win95 & D3D.
-	virtual void getWindowSize(int& ox, int& oy, int& w, int& h);
+    // Allow a derived class to override this and provide a window size.
+    // This shouldn't be necessary when DevDisplay works with Win95 & D3D.
+    virtual void getWindowSize(int& ox, int& oy, int& w, int& h);
 
-	void outputDebugInfo( const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor );
+    void outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor);
 
-    int				 	winWidth_, winHeight_;
-	double              runTime_;
-    MachLogPlanet*   	pPlanet_;
-	RenDisplay*		 	pDisplay_;
-    W4dRoot* 			pRoot_;
-	W4dSceneManager*	manager_;
-	bool    			showPosition_, showCurrentMachine_, showMemory_;
-	bool                aShowRace_[4];
-	bool			 	initialised_;
-    DevTimer		 	keyTimer_;
-	DevTimer            finishTimer_;
-    string				loadScenario_;
-	string 				loadArtefact_;
-    EnvPlanetEnvironment*   pEnvironment_;
+    int winWidth_, winHeight_;
+    double runTime_;
+    MachLogPlanet* pPlanet_;
+    RenDisplay* pDisplay_;
+    W4dRoot* pRoot_;
+    W4dSceneManager* manager_;
+    bool showPosition_, showCurrentMachine_, showMemory_;
+    bool aShowRace_[4];
+    bool initialised_;
+    DevTimer keyTimer_;
+    DevTimer finishTimer_;
+    string loadScenario_;
+    string loadArtefact_;
+    EnvPlanetEnvironment* pEnvironment_;
 };
 
 #endif

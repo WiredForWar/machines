@@ -1,5 +1,5 @@
 /*
- * V O R T W E A P . H P P 
+ * V O R T W E A P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,28 +20,27 @@ class MachLogIonWeapon : public MachLogWeapon
 // Canonical form revoked
 {
 public:
-    MachLogIonWeapon( MachLogRace*, MachPhysWeapon*, MachActor* pOwner );
-    virtual ~MachLogIonWeapon();
+    MachLogIonWeapon(MachLogRace*, MachPhysWeapon*, MachActor* pOwner);
+    ~MachLogIonWeapon() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogIonWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachLogIonWeapon& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogIonWeapon );
-	PER_FRIEND_READ_WRITE( MachLogIonWeapon );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogIonWeapon);
+    PER_FRIEND_READ_WRITE(MachLogIonWeapon);
 
 protected:
-	virtual void doFire( MachActor*, const MachLogFireData& );
-	virtual void doFire( const MexPoint3d& position );
+    void doFire(MachActor*, const MachLogFireData&) override;
+    void doFire(const MexPoint3d& position) override;
 
 private:
-    MachLogIonWeapon( const MachLogIonWeapon& );
-    MachLogIonWeapon& operator =( const MachLogIonWeapon& );
-    bool operator ==( const MachLogIonWeapon& );
-
+    MachLogIonWeapon(const MachLogIonWeapon&);
+    MachLogIonWeapon& operator=(const MachLogIonWeapon&);
+    bool operator==(const MachLogIonWeapon&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogIonWeapon );
+PER_DECLARE_PERSISTENT(MachLogIonWeapon);
 
 #endif
 

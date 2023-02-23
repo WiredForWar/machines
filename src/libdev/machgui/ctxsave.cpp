@@ -37,96 +37,96 @@ class MachGuiSaveGameListBoxItem : public MachGuiSingleSelectionListBoxItem
 // Canonical form revoked
 {
 public:
-    MachGuiSaveGameListBoxItem( MachGuiStartupScreens* pStartupScreens,
-    							MachGuiSingleSelectionListBox* pListBox,
-    							size_t width,
-    							MachGuiDbSavedGame& savedGame,
-    							MachGuiCtxSave* pSaveCtx )
-	:	MachGuiSingleSelectionListBoxItem( pStartupScreens, pListBox, width, displayText( savedGame ) ),
-		savedGame_( savedGame ),
-		pSaveCtx_( pSaveCtx )
-	{
-		disabled_ = false;
+    MachGuiSaveGameListBoxItem(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiSingleSelectionListBox* pListBox,
+        size_t width,
+        MachGuiDbSavedGame& savedGame,
+        MachGuiCtxSave* pSaveCtx)
+        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, displayText(savedGame))
+        , savedGame_(savedGame)
+        , pSaveCtx_(pSaveCtx)
+    {
+        disabled_ = false;
 
-		if ( savedGame.hasPlayer() and MachGuiDatabase::instance().hasCurrentPlayer() )
-		{
-			MachGuiDbPlayer* pPlayer1 = &savedGame.player();
-			MachGuiDbPlayer* pPlayer2 = &MachGuiDatabase::instance().currentPlayer();
+        if (savedGame.hasPlayer() and MachGuiDatabase::instance().hasCurrentPlayer())
+        {
+            MachGuiDbPlayer* pPlayer1 = &savedGame.player();
+            MachGuiDbPlayer* pPlayer2 = &MachGuiDatabase::instance().currentPlayer();
 
-			if ( pPlayer1 != pPlayer2 )
-			{
-				disabled_ = true;
-			}
- 		}
-	}
+            if (pPlayer1 != pPlayer2)
+            {
+                disabled_ = true;
+            }
+        }
+    }
 
-    ~MachGuiSaveGameListBoxItem()
-	{}
+    ~MachGuiSaveGameListBoxItem() override { }
 
-	static string displayText( MachGuiDbSavedGame& savedGame )
-	{
-		string retVal;
-		retVal = savedGame.userFileName();
+    static string displayText(MachGuiDbSavedGame& savedGame)
+    {
+        string retVal;
+        retVal = savedGame.userFileName();
 
-		if ( savedGame.hasPlayer() )
-		{
-		    MachGuiDbPlayer& player = savedGame.player();
-			retVal += " (";
-			retVal += player.name();
-			retVal += ")";
-		}
-		return retVal;
-	}
+        if (savedGame.hasPlayer())
+        {
+            MachGuiDbPlayer& player = savedGame.player();
+            retVal += " (";
+            retVal += player.name();
+            retVal += ")";
+        }
+        return retVal;
+    }
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel )
-	{
-		if ( not disabled_ )
-		{
-			MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent( rel );
-		}
-	}
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override
+    {
+        if (not disabled_)
+        {
+            MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent(rel);
+        }
+    }
 
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel )
-	{
-		if ( not disabled_ )
-		{
-			MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent( rel );
-		}
-	}
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override
+    {
+        if (not disabled_)
+        {
+            MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent(rel);
+        }
+    }
 
-	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel )
-	{
-		if ( not disabled_ )
-		{
-			MachGuiSingleSelectionListBoxItem::doHandleMouseClickEvent( rel );
-		}
-	}
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override
+    {
+        if (not disabled_)
+        {
+            MachGuiSingleSelectionListBoxItem::doHandleMouseClickEvent(rel);
+        }
+    }
 
-	virtual void select()
-	{
-		MachGuiSingleSelectionListBoxItem::select();
+    void select() override
+    {
+        MachGuiSingleSelectionListBoxItem::select();
 
-		pSaveCtx_->selectedSaveGame( &savedGame_ );
-	}
+        pSaveCtx_->selectedSaveGame(&savedGame_);
+    }
 
-	virtual void unselect()
-	{
-		MachGuiSingleSelectionListBoxItem::unselect();
+    void unselect() override
+    {
+        MachGuiSingleSelectionListBoxItem::unselect();
 
-		pSaveCtx_->clearSelectedSaveGame();
-	}
+        pSaveCtx_->clearSelectedSaveGame();
+    }
 
 private:
-    MachGuiSaveGameListBoxItem( const MachGuiSaveGameListBoxItem& );
-    MachGuiSaveGameListBoxItem& operator =( const MachGuiSaveGameListBoxItem& );
+    MachGuiSaveGameListBoxItem(const MachGuiSaveGameListBoxItem&);
+    MachGuiSaveGameListBoxItem& operator=(const MachGuiSaveGameListBoxItem&);
 
-	// Data members...
-	MachGuiDbSavedGame& savedGame_;
-	MachGuiCtxSave* pSaveCtx_;
-	bool disabled_;
+    // Data members...
+    MachGuiDbSavedGame& savedGame_;
+    MachGuiCtxSave* pSaveCtx_;
+    bool disabled_;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,78 +134,99 @@ private:
 class MachGuiSaveGameDeleteMessageBoxResponder : public MachGuiMessageBoxResponder
 {
 public:
-	MachGuiSaveGameDeleteMessageBoxResponder( MachGuiCtxSave* pSaveCtx )
-	:	pSaveCtx_( pSaveCtx )
-	{}
+    MachGuiSaveGameDeleteMessageBoxResponder(MachGuiCtxSave* pSaveCtx)
+        : pSaveCtx_(pSaveCtx)
+    {
+    }
 
-	virtual bool okPressed()
-	{
-		pSaveCtx_->deleteSavedGame();
-		return true;
-	}
+    bool okPressed() override
+    {
+        pSaveCtx_->deleteSavedGame();
+        return true;
+    }
 
 private:
-	MachGuiCtxSave* pSaveCtx_;
+    MachGuiCtxSave* pSaveCtx_;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-#define SAVE_LB_MINX  98
-#define SAVE_LB_MAXX  312
-#define SAVE_LB_MINY  72
-#define SAVE_LB_MAXY  412
-#define SCROLLBAR_WIDTH  17
+#define SAVE_LB_MINX 98
+#define SAVE_LB_MAXX 312
+#define SAVE_LB_MINY 72
+#define SAVE_LB_MAXY 412
+#define SCROLLBAR_WIDTH 17
 
-
-MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
-:	MachGuiStartupScreenContext( pStartupScreens ),
-	animations_( pStartupScreens, SysPathName("gui/menu/sh_anims.anm") ),
-	pSelectedSaveGame_( NULL )
+MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
+    : MachGuiStartupScreenContext(pStartupScreens)
+    , animations_(pStartupScreens, SysPathName("gui/menu/sh_anims.anm"))
+    , pSelectedSaveGame_(nullptr)
 {
-	// Display backdrop, play correct music, switch cursor on.
-	changeBackdrop( "gui/menu/sh.bmp" );
+    // Display backdrop, play correct music, switch cursor on.
+    changeBackdrop("gui/menu/sh.bmp");
 
     const auto& topLeft = getBackdropTopLeft();
 
-    pStartupScreens->cursorOn( true );
-    pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
+    pStartupScreens->cursorOn(true);
+    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
-	// Standard buttons...
-	pOkBtn_ 	= _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 111, 578, 154), IDS_MENUBTN_OK,
-                                        MachGuiStartupScreens::BE_OK));
-	pDeleteBtn_ = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 215, 578, 258), IDS_MENUBTN_DELETE,
-                                         MachGuiStartupScreens::BE_DELETE));
-	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(387, 312, 578, 356),
-                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
+    // Standard buttons...
+    pOkBtn_ = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(387, 111, 578, 154),
+        IDS_MENUBTN_OK,
+        MachGuiStartupScreens::BE_OK));
+    pDeleteBtn_ = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(387, 215, 578, 258),
+        IDS_MENUBTN_DELETE,
+        MachGuiStartupScreens::BE_DELETE));
+    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(387, 312, 578, 356),
+        IDS_MENUBTN_CANCEL,
+        MachGuiStartupScreens::EXIT));
 
-	pCancelBtn->escapeControl( true );
-	pOkBtn_->defaultControl( true );
+    pCancelBtn->escapeControl(true);
+    pOkBtn_->defaultControl(true);
 
-	// Display save list box heading
-	GuiResourceString saveHeading( IDS_MENULB_SAVEGAME );
-  	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/largefnt.bmp") );
-	MachGuiMenuText* pSaveText =
-		_NEW( MachGuiMenuText( pStartupScreens,
-							   Gui::Box( SAVE_LB_MINX, SAVE_LB_MINY,
-							   			 SAVE_LB_MINX + font.textWidth( saveHeading.asString() ),
-							   			 SAVE_LB_MINY + font.charHeight() + 2 ), IDS_MENULB_SAVEGAME, "gui/menu/largefnt.bmp" ) );
+    // Display save list box heading
+    GuiResourceString saveHeading(IDS_MENULB_SAVEGAME);
+    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    MachGuiMenuText* pSaveText = _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(
+            SAVE_LB_MINX,
+            SAVE_LB_MINY,
+            SAVE_LB_MINX + font.textWidth(saveHeading.asString()),
+            SAVE_LB_MINY + font.charHeight() + 2),
+        IDS_MENULB_SAVEGAME,
+        "gui/menu/largefnt.bmp"));
 
+    // Create save game list box
+    pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(
+            SAVE_LB_MINX,
+            pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first,
+            SAVE_LB_MAXX - SCROLLBAR_WIDTH,
+            SAVE_LB_MAXY),
+        1000,
+        MachGuiSingleSelectionListBoxItem::reqHeight(),
+        1));
 
-	// Create save game list box
-	pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
-                                                        Gui::Box(SAVE_LB_MINX,
-                                                                 pSaveText->absoluteBoundary().maxCorner().y() -
-                                                                 topLeft.first,
-                                                                 SAVE_LB_MAXX - SCROLLBAR_WIDTH,
-                                                                 SAVE_LB_MAXY),
-                                                        1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
+    MachGuiVerticalScrollBar::createWholeBar(
+        pStartupScreens,
+        Gui::Coord(SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first),
+        SAVE_LB_MAXY - SAVE_LB_MINY
+            - (pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y()),
+        pSaveGameList_);
 
-	MachGuiVerticalScrollBar::createWholeBar( 	pStartupScreens,
-												Gui::Coord( SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first ),
-												SAVE_LB_MAXY - SAVE_LB_MINY - ( pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y() ),
-												pSaveGameList_ );
-
-	updateSaveGameList();
+    updateSaveGameList();
 
     TEST_INVARIANT;
 }
@@ -213,15 +234,14 @@ MachGuiCtxSave::MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens )
 MachGuiCtxSave::~MachGuiCtxSave()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiCtxSave::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiCtxSave& t )
+ostream& operator<<(ostream& o, const MachGuiCtxSave& t)
 {
 
     o << "MachGuiCtxSave " << (void*)&t << " start" << std::endl;
@@ -230,202 +250,215 @@ ostream& operator <<( ostream& o, const MachGuiCtxSave& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachGuiCtxSave::update()
 {
-	animations_.update();
-	pNewSaveGameName_->update();
+    animations_.update();
+    pNewSaveGameName_->update();
 }
 
 void MachGuiCtxSave::updateSaveGameList()
 {
-	clearSelectedSaveGame();
-	pSaveGameList_->deleteAllItems();
+    clearSelectedSaveGame();
+    pSaveGameList_->deleteAllItems();
 
-	// Create special [new save game] entry in list box.
-	GuiResourceString newSaveGameStr( IDS_MENU_NEWSAVEGAME );
-	pNewSaveGameName_ = _NEW( MachGuiEditBoxListBoxItem( pStartupScreens_, pSaveGameList_, SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH, newSaveGameStr.asString() ) );
-	pNewSaveGameName_->maxChars( MAX_SAVEGAMENAME_LEN );
+    // Create special [new save game] entry in list box.
+    GuiResourceString newSaveGameStr(IDS_MENU_NEWSAVEGAME);
+    pNewSaveGameName_ = _NEW(MachGuiEditBoxListBoxItem(
+        pStartupScreens_,
+        pSaveGameList_,
+        SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH,
+        newSaveGameStr.asString()));
+    pNewSaveGameName_->maxChars(MAX_SAVEGAMENAME_LEN);
 
-	// Add previously saved games into list box.
-	uint numSavedGames = MachGuiDatabase::instance().nSavedGames();
+    // Add previously saved games into list box.
+    uint numSavedGames = MachGuiDatabase::instance().nSavedGames();
 
-	for ( uint loop = 0; loop < numSavedGames; ++loop )
-	{
-		MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame( loop );
-		_NEW( MachGuiSaveGameListBoxItem( pStartupScreens_, pSaveGameList_, SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH, savedGame, this ) );
-	}
+    for (uint loop = 0; loop < numSavedGames; ++loop)
+    {
+        MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
+        _NEW(MachGuiSaveGameListBoxItem(
+            pStartupScreens_,
+            pSaveGameList_,
+            SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH,
+            savedGame,
+            this));
+    }
 
-	// Get list to redraw.
-	pSaveGameList_->childrenUpdated();
+    // Get list to redraw.
+    pSaveGameList_->childrenUpdated();
 }
 
-//virtual
+// virtual
 bool MachGuiCtxSave::okayToSwitchContext()
 {
-	if ( pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK )
-	{
-		// Create new save game...
-		if ( pNewSaveGameName_->selected() )
-		{
-			if ( pNewSaveGameName_->text() != "" )
-			{
-				// Check for unique saved game name
-				bool uniqueSaveGameName = true;
- 				uint numSavedGames = MachGuiDatabase::instance().nSavedGames();
+    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK)
+    {
+        // Create new save game...
+        if (pNewSaveGameName_->selected())
+        {
+            if (pNewSaveGameName_->text() != "")
+            {
+                // Check for unique saved game name
+                bool uniqueSaveGameName = true;
+                uint numSavedGames = MachGuiDatabase::instance().nSavedGames();
 
-				for ( uint loop = 0; loop < numSavedGames; ++loop )
-				{
-					MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame( loop );
-//					if ( stricmp( savedGame.userFileName().c_str(), pNewSaveGameName_->text().c_str() ) == 0 )
-					if ( strcasecmp( savedGame.userFileName().c_str(), pNewSaveGameName_->text().c_str() ) == 0 )
-					{
-						uniqueSaveGameName = false;
-					}
-				}
+                for (uint loop = 0; loop < numSavedGames; ++loop)
+                {
+                    MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
+                    //                  if ( stricmp( savedGame.userFileName().c_str(),
+                    //                  pNewSaveGameName_->text().c_str() ) == 0 )
+                    if (strcasecmp(savedGame.userFileName().c_str(), pNewSaveGameName_->text().c_str()) == 0)
+                    {
+                        uniqueSaveGameName = false;
+                    }
+                }
 
-				if ( uniqueSaveGameName )
-				{
-					// Save the game, the name is unique so we can save it...
-					bool saveSuccess = saveGame( pNewSaveGameName_->text() );
+                if (uniqueSaveGameName)
+                {
+                    // Save the game, the name is unique so we can save it...
+                    bool saveSuccess = saveGame(pNewSaveGameName_->text());
 
-					if ( not saveSuccess )
-					{
-						// Display error message, game failed to save...
-						pStartupScreens_->displayMsgBox( IDS_MENUMSG_SAVEFAIL );
-					}
+                    if (not saveSuccess)
+                    {
+                        // Display error message, game failed to save...
+                        pStartupScreens_->displayMsgBox(IDS_MENUMSG_SAVEFAIL);
+                    }
 
-					return saveSuccess;
-				}
-				else
-				{
-					// Display error message, name is not unique...
-					pStartupScreens_->displayMsgBox( IDS_MENUMSG_SAVEDGAMENAMEEXISTS );
-					return false;
-				}
-			}
-			else
-			{
-				pStartupScreens_->displayMsgBox( IDS_MENUMSG_ENTERSAVEGAMENAME );
-				return false;
-			}
-		}
-		else // Select previously saved game ( save over )...
-		{
-			if ( not pSelectedSaveGame_ )
-			{
-				pStartupScreens_->displayMsgBox( IDS_MENUMSG_ENTERSAVEGAMENAME );
-				return false;
-			}
-			else
-			{
-				string saveDisplayName = pSelectedSaveGame_->userFileName();
-				deleteSavedGame();
-				saveGame( saveDisplayName );
-				return true;
-			}
-		}
-	}
+                    return saveSuccess;
+                }
+                else
+                {
+                    // Display error message, name is not unique...
+                    pStartupScreens_->displayMsgBox(IDS_MENUMSG_SAVEDGAMENAMEEXISTS);
+                    return false;
+                }
+            }
+            else
+            {
+                pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERSAVEGAMENAME);
+                return false;
+            }
+        }
+        else // Select previously saved game ( save over )...
+        {
+            if (not pSelectedSaveGame_)
+            {
+                pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERSAVEGAMENAME);
+                return false;
+            }
+            else
+            {
+                string saveDisplayName = pSelectedSaveGame_->userFileName();
+                deleteSavedGame();
+                saveGame(saveDisplayName);
+                return true;
+            }
+        }
+    }
 
-	return true;
+    return true;
 }
 
-//virtual
-void MachGuiCtxSave::buttonEvent( MachGuiStartupScreens::ButtonEvent be )
+// virtual
+void MachGuiCtxSave::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 {
-	if ( be == MachGuiStartupScreens::BE_DELETE )
-	{
-		if ( pSelectedSaveGame_ )
-		{
-			pStartupScreens_->displayMsgBox( IDS_MENUMSG_DELETESAVEDGAME, _NEW( MachGuiSaveGameDeleteMessageBoxResponder( this ) ) );
-		}
-	}
+    if (be == MachGuiStartupScreens::BE_DELETE)
+    {
+        if (pSelectedSaveGame_)
+        {
+            pStartupScreens_->displayMsgBox(
+                IDS_MENUMSG_DELETESAVEDGAME,
+                _NEW(MachGuiSaveGameDeleteMessageBoxResponder(this)));
+        }
+    }
 }
 
-void MachGuiCtxSave::selectedSaveGame( MachGuiDbSavedGame* pSavedGame )
+void MachGuiCtxSave::selectedSaveGame(MachGuiDbSavedGame* pSavedGame)
 {
-	pSelectedSaveGame_ = pSavedGame;
-	pDeleteBtn_->disabled( false );
+    pSelectedSaveGame_ = pSavedGame;
+    pDeleteBtn_->disabled(false);
 }
 
 void MachGuiCtxSave::clearSelectedSaveGame()
 {
-	// Disable delete button, shift focus if necessary
-	pSelectedSaveGame_ = NULL;
-	if ( pDeleteBtn_->hasFocusSet() )
-	{
-		pOkBtn_->hasFocus( true );
-		pDeleteBtn_->hasFocus( false );
-	}
+    // Disable delete button, shift focus if necessary
+    pSelectedSaveGame_ = nullptr;
+    if (pDeleteBtn_->hasFocusSet())
+    {
+        pOkBtn_->hasFocus(true);
+        pDeleteBtn_->hasFocus(false);
+    }
 
-	pDeleteBtn_->disabled( true );
+    pDeleteBtn_->disabled(true);
 }
 
 void MachGuiCtxSave::deleteSavedGame()
 {
-	PRE( pSelectedSaveGame_ );
+    PRE(pSelectedSaveGame_);
 
-	remove( pSelectedSaveGame_->externalFileName().c_str() );
-	MachGuiDatabase::instance().removeSavedGame( pSelectedSaveGame_ );
-	MachGuiDatabase::instance().writeDatabase();
-	updateSaveGameList();
+    remove(pSelectedSaveGame_->externalFileName().c_str());
+    MachGuiDatabase::instance().removeSavedGame(pSelectedSaveGame_);
+    MachGuiDatabase::instance().writeDatabase();
+    updateSaveGameList();
 }
 
-bool MachGuiCtxSave::saveGame( const string& saveDisplayName )
+bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
 {
-	// Display saving bmp
-	GuiBitmap savingBmp = Gui::bitmap( "gui/menu/saving.bmp" );
-	savingBmp.enableColourKeying();
-	GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
+    // Display saving bmp
+    GuiBitmap savingBmp = Gui::bitmap("gui/menu/saving.bmp");
+    savingBmp.enableColourKeying();
+    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     const auto& topLeft = getBackdropTopLeft();
-	frontBuffer.simpleBlit( savingBmp, topLeft.second, topLeft.first );
-	W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
+    frontBuffer.simpleBlit(savingBmp, topLeft.second, topLeft.first);
+    W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
 
-	// Create next filename...
+    // Create next filename...
     bool gotSavePathName = false;
     SysPathName savePathName;
     size_t count = 0;
 
-	while ( not gotSavePathName )
-	{
-		char buffer[20];
+    while (not gotSavePathName)
+    {
+        char buffer[20];
 
-        sprintf( buffer, "%04ld", count );
+        sprintf(buffer, "%04ld", count);
 
-        //savePathName = string( "savegame/save" ) + buffer + ".sav";
-        savePathName = SysPathName(string( "savegame/save" ) + buffer + ".sav");
+        // savePathName = string( "savegame/save" ) + buffer + ".sav";
+        savePathName = SysPathName(string("savegame/save") + buffer + ".sav");
 
-        if( not savePathName.existsAsFile() )
+        if (not savePathName.existsAsFile())
             gotSavePathName = true;
 
         ++count;
-	}
+    }
 
- 	// Save game...
-	MachGuiLoadSaveGameExtras lsgExtras( &pStartupScreens_->inGameScreen() );
+    // Save game...
+    MachGuiLoadSaveGameExtras lsgExtras(&pStartupScreens_->inGameScreen());
 
-   	bool saveSuccess = MachLogRaces::instance().saveGame( savePathName, &lsgExtras );
+    bool saveSuccess = MachLogRaces::instance().saveGame(savePathName, &lsgExtras);
 
-	if ( saveSuccess )
-	{
-		// Store reference to save file in database file...
-		MachGuiDbSavedGame* pNewSaveGame = _NEW( MachGuiDbSavedGame( saveDisplayName, savePathName.c_str(), pStartupScreens_->startupData()->scenario() ) );
+    if (saveSuccess)
+    {
+        // Store reference to save file in database file...
+        MachGuiDbSavedGame* pNewSaveGame = _NEW(
+            MachGuiDbSavedGame(saveDisplayName, savePathName.c_str(), pStartupScreens_->startupData()->scenario()));
 
-		if ( MachGuiDatabase::instance().hasCurrentPlayer() )
-		{
-			pNewSaveGame->player( &MachGuiDatabase::instance().currentPlayer() );
-		}
+        if (MachGuiDatabase::instance().hasCurrentPlayer())
+        {
+            pNewSaveGame->player(&MachGuiDatabase::instance().currentPlayer());
+        }
 
-		if ( pStartupScreens_->gameType() == MachGuiStartupScreens::CAMPAIGNGAME )
-		{
-			pNewSaveGame->isCampaignGame( true );
-		}
+        if (pStartupScreens_->gameType() == MachGuiStartupScreens::CAMPAIGNGAME)
+        {
+            pNewSaveGame->isCampaignGame(true);
+        }
 
-		MachGuiDatabase::instance().addSavedGame( pNewSaveGame );
-		MachGuiDatabase::instance().writeDatabase();
-	}
+        MachGuiDatabase::instance().addSavedGame(pNewSaveGame);
+        MachGuiDatabase::instance().writeDatabase();
+    }
 
-	return saveSuccess;
+    return saveSuccess;
 }
 
 /* End CTXSAVE.CPP **************************************************/

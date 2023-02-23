@@ -6,18 +6,18 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
-//#include "stdlib/algorith.hpp"
+// #include "stdlib/algorith.hpp"
 #include <algorithm>
 #include "sim/evdiary.hpp"
 
 #ifndef _INLINE
-    #include "sim/evdiary.ipp"
+#include "sim/evdiary.ipp"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
 SimEventDiary::SimEventDiary()
-: eventsSorted_( true )
+    : eventsSorted_(true)
 {
     TEST_INVARIANT;
 }
@@ -27,40 +27,40 @@ SimEventDiary::~SimEventDiary()
 {
     TEST_INVARIANT;
 
-    //Extract every event from the list, and disassociate it
+    // Extract every event from the list, and disassociate it
     while (not events_.empty())
     {
-        //Remove last element from queue
+        // Remove last element from queue
         SimDiscreteEventPtr event = events_.back();
         events_.pop_back();
 
-        //Disassociate the event from the diary
-        event->diary( NULL );
+        // Disassociate the event from the diary
+        event->diary(nullptr);
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-void SimEventDiary::add (const SimDiscreteEventPtr& event)
+void SimEventDiary::add(const SimDiscreteEventPtr& event)
 {
-    //Add the event to the back of the queue. This makes a copy of the ref-ptr
-    events_.push_back( event );
+    // Add the event to the back of the queue. This makes a copy of the ref-ptr
+    events_.push_back(event);
 
-    //Store the diary pointer in the event
-    event->diary( this );
+    // Store the diary pointer in the event
+    event->diary(this);
 
-    //The diary queue is no longer sorted
+    // The diary queue is no longer sorted
     eventsSorted_ = false;
 
     TEST_INVARIANT;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-void SimEventDiary::remove (const SimDiscreteEventPtr& event)
+void SimEventDiary::remove(const SimDiscreteEventPtr& event)
 {
-    //The event must be in this diary
-    PRE( event->diary() == this );
+    // The event must be in this diary
+    PRE(event->diary() == this);
 
-    //Iterate along the queue until we find a match
+    // Iterate along the queue until we find a match
     const SimDiscreteEvent* pEvent = &(*event);
 
     SimEventQueue::iterator i;
@@ -69,13 +69,13 @@ void SimEventDiary::remove (const SimDiscreteEventPtr& event)
         const SimDiscreteEvent& iEvent = *(*i);
         if (pEvent == &iEvent)
         {
-            //Disassociate the event
-            (*i)->diary( NULL );
+            // Disassociate the event
+            (*i)->diary(nullptr);
 
-            //Remove from the queue
-            events_.erase( i );
+            // Remove from the queue
+            events_.erase(i);
 
-            //No need to continue looking
+            // No need to continue looking
             break;
         }
     }
@@ -86,18 +86,18 @@ void SimEventDiary::remove (const SimDiscreteEventPtr& event)
 
 SimDiscreteEventPtr SimEventDiary::takeNextEvent()
 {
-    //Check the diary isn't empty
-    PRE( not events_.empty() );
+    // Check the diary isn't empty
+    PRE(not events_.empty());
 
-    //Ensure the order is correct
+    // Ensure the order is correct
     validateOrder();
 
-    //Remove an event from front of queue
+    // Remove an event from front of queue
     SimDiscreteEventPtr eventPtr = events_.front();
     events_.pop_front();
 
-    //Disassociate from the diary
-    eventPtr->diary( NULL );
+    // Disassociate from the diary
+    eventPtr->diary(nullptr);
 
     return eventPtr;
 }
@@ -105,17 +105,17 @@ SimDiscreteEventPtr SimEventDiary::takeNextEvent()
 
 void SimEventDiary::validateOrder() const
 {
-    //No action needed if events are already in order
+    // No action needed if events are already in order
     if (not eventsSorted_)
     {
 
-        //We need a non-const pointer to this item
+        // We need a non-const pointer to this item
         SimEventDiary* pNCT = (SimEventDiary*)this;
 
-        //Sort them into order
-        std::sort( pNCT->events_.begin(), pNCT->events_.end(), EventOrder() );
+        // Sort them into order
+        std::sort(pNCT->events_.begin(), pNCT->events_.end(), EventOrder());
 
-        //Update flag
+        // Update flag
         eventsSorted_ = true;
     }
 }
@@ -123,11 +123,11 @@ void SimEventDiary::validateOrder() const
 
 void SimEventDiary::CLASS_INVARIANT
 {
-	INVARIANT( this );
+    INVARIANT(this);
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const SimEventDiary& t )
+ostream& operator<<(ostream& o, const SimEventDiary& t)
 {
 
     o << "SimEventDiary " << (void*)&t << " start" << std::endl;
@@ -136,20 +136,19 @@ ostream& operator <<( ostream& o, const SimEventDiary& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const SimEventDiary& diary )
+void perWrite(PerOstream& ostr, const SimEventDiary& diary)
 {
-//	PER_WRITE_RAW_OBJECT( ostr, diary.eventsSorted_ );
-	ostr << diary.events_;
+    //  PER_WRITE_RAW_OBJECT( ostr, diary.eventsSorted_ );
+    ostr << diary.events_;
 }
 
-void perRead( PerIstream& istr, SimEventDiary& diary )
+void perRead(PerIstream& istr, SimEventDiary& diary)
 {
-//	bool temp;
-//	PER_READ_RAW_OBJECT( istr, temp );
-//	diary.eventsSorted_ = temp;
-	istr >> diary.events_;
+    //  bool temp;
+    //  PER_READ_RAW_OBJECT( istr, temp );
+    //  diary.eventsSorted_ = temp;
+    istr >> diary.events_;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

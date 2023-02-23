@@ -9,40 +9,39 @@
 #include "phys/rampacce.hpp"
 
 PhysCompressedRampAcceleration::PhysCompressedRampAcceleration()
-:   startSpeed_( 0 ),
-    firstAcceleration_( 0 ),
-    secondAcceleration_( 0 ),
-    totalTime_( 0 ),
-    firstAccelerationTime_( 0 ),
-    secondAccelerationTime_( 0 )
+    : startSpeed_(0)
+    , firstAcceleration_(0)
+    , secondAcceleration_(0)
+    , totalTime_(0)
+    , firstAccelerationTime_(0)
+    , secondAccelerationTime_(0)
 
 {
 
     TEST_INVARIANT;
 }
 
-PhysCompressedRampAcceleration::PhysCompressedRampAcceleration( const PhysRampAcceleration& ramp )
-:   startSpeed_( ramp.startSpeed() ),
-    firstAcceleration_( ramp.firstAcceleration() ),
-    secondAcceleration_( ramp.secondAcceleration() ),
-    totalTime_( ramp.totalTime() ),
-    firstAccelerationTime_( ramp.firstAccelerationTime() ),
-    secondAccelerationTime_( ramp.secondAccelerationTime() )
+PhysCompressedRampAcceleration::PhysCompressedRampAcceleration(const PhysRampAcceleration& ramp)
+    : startSpeed_(ramp.startSpeed())
+    , firstAcceleration_(ramp.firstAcceleration())
+    , secondAcceleration_(ramp.secondAcceleration())
+    , totalTime_(ramp.totalTime())
+    , firstAccelerationTime_(ramp.firstAccelerationTime())
+    , secondAccelerationTime_(ramp.secondAccelerationTime())
 {
 }
 
 PhysCompressedRampAcceleration::~PhysCompressedRampAcceleration()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysCompressedRampAcceleration::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysCompressedRampAcceleration& t )
+ostream& operator<<(ostream& o, const PhysCompressedRampAcceleration& t)
 {
 
     o << "PhysCompressedRampAcceleration " << (void*)&t << " start" << std::endl;

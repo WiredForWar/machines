@@ -9,13 +9,10 @@
 
 BaseLogStreamBuffer::BaseLogStreamBuffer()
 {
-
 }
 
 BaseLogStreamBuffer::~BaseLogStreamBuffer()
 {
-
 }
-
 
 /* End LSTRBUFF.CPP *************************************************/

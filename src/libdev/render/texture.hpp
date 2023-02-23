@@ -1,5 +1,5 @@
 /*
- * T E X T U R E . H P P 
+ * T E X T U R E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,32 +16,32 @@
 class RenTexture : public RenSurface
 {
 public:
-	RenTexture();
-    virtual ~RenTexture();
+    RenTexture();
+    ~RenTexture() override;
 
-	bool hasAlphaTransparency() const;
-	bool usesBilinear() const;
+    bool hasAlphaTransparency() const;
+    bool usesBilinear() const;
 
-	// These methods allow internal clients to keep track of how often
-	// this texture is drawn.
-	uint hitsPerFrame() const;
-	void incHits();
-	
-	void print(ostream& o) const;
+    // These methods allow internal clients to keep track of how often
+    // this texture is drawn.
+    uint hitsPerFrame() const;
+    void incHits();
+
+    void print(ostream& o) const;
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL( RenTexture );
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenTexture);
 
 private:
-	// Only the texture manager can create objects of this type.
-	friend class RenSurfaceManager;
+    // Only the texture manager can create objects of this type.
+    friend class RenSurfaceManager;
     RenTexture(Ren::TexId);
 };
 
-PER_READ_WRITE( RenTexture );
-PER_DECLARE_PERSISTENT( RenTexture );
+PER_READ_WRITE(RenTexture);
+PER_DECLARE_PERSISTENT(RenTexture);
 
-ostream& operator <<( ostream& o, const RenTexture& t );
+ostream& operator<<(ostream& o, const RenTexture& t);
 
 #endif
 

@@ -26,47 +26,47 @@ class EnvElevationColourTable;
 class EnvSatellite
 {
 public:
-	// TBD: add colour tables args for light colour and satellite colour.
-	// There are two ctors: with and without a visual representation.
+    // TBD: add colour tables args for light colour and satellite colour.
+    // There are two ctors: with and without a visual representation.
     EnvSatellite(const string& name, EnvOrbit*);
     ~EnvSatellite();
 
-	void update();
+    void update();
 
-	void visible( bool setVisible );
-	const string& name() const;
+    void visible(bool setVisible);
+    const string& name() const;
 
-	EnvOrbit& orbit();
-	const EnvOrbit& orbit() const;
+    EnvOrbit& orbit();
+    const EnvOrbit& orbit() const;
 
-	// this->name() is used as the mesh name.
-	void loadMesh(const SysPathName&, EnvElevationColourTable* colours=NULL);
+    // this->name() is used as the mesh name.
+    void loadMesh(const SysPathName&, EnvElevationColourTable* colours = nullptr);
 
-	void setDirectionalLight(EnvElevationColourTable*);
-	void setAmbientLight(EnvElevationColourTable*);
+    void setDirectionalLight(EnvElevationColourTable*);
+    void setAmbientLight(EnvElevationColourTable*);
 
-	// What is this satellite's contribution to ambient lighting (if any)?
-	RenColour ambient() const;
+    // What is this satellite's contribution to ambient lighting (if any)?
+    RenColour ambient() const;
 
-	W4dDirectionalLight* light();
-	const W4dDirectionalLight* light() const;
+    W4dDirectionalLight* light();
+    const W4dDirectionalLight* light() const;
 
-	MexRadians elevation() const;
+    MexRadians elevation() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator <<( ostream& o, const EnvSatellite& t );
+    friend ostream& operator<<(ostream& o, const EnvSatellite& t);
 
 private:
-	EnvOrbit* const				orbit_;
-	const string				name_;
-	W4dDirectionalLight*		light_;
-	EnvElevationColourTable*	lightTable_;
-	EnvElevationColourTable*	ambTable_;
-	EnvElevationColourTable*	matTable_;
+    EnvOrbit* const orbit_;
+    const string name_;
+    W4dDirectionalLight* light_;
+    EnvElevationColourTable* lightTable_;
+    EnvElevationColourTable* ambTable_;
+    EnvElevationColourTable* matTable_;
 
-    EnvSatellite( const EnvSatellite& );
-    EnvSatellite& operator =( const EnvSatellite& );
-    bool operator ==( const EnvSatellite& );
+    EnvSatellite(const EnvSatellite&);
+    EnvSatellite& operator=(const EnvSatellite&);
+    bool operator==(const EnvSatellite&);
 };
 
 #endif

@@ -8,21 +8,21 @@
 
 //////////////////////////////////////////////////////////////////////
 
-GuiImage::GuiImage( GuiDisplayable *pParent, const Gui::Coord& rel, const GuiBitmap& bitmap )
-: GuiDisplayable(  pParent, translateBox( Gui::Box( 0, 0, bitmap.width(), bitmap.height() ), rel ) ),
-  image_( bitmap )
+GuiImage::GuiImage(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap& bitmap)
+    : GuiDisplayable(pParent, translateBox(Gui::Box(0, 0, bitmap.width(), bitmap.height()), rel))
+    , image_(bitmap)
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 GuiImage::~GuiImage()
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 void GuiImage::doDisplay()
 {
-	GuiPainter::instance().blit( image_, absoluteCoord() );
+    GuiPainter::instance().blit(image_, absoluteCoord());
 }
 
 //////////////////////////////////////////////////////////////////////

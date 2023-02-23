@@ -6,6 +6,6 @@
 
 dummyFunction12()
 {
-	static ctl_min_memory_vector<RenMaterial> vec;
-	static unique_ptr<RenMaterialVec> ptr;
+    static ctl_min_memory_vector<RenMaterial> vec;
+    static unique_ptr<RenMaterialVec> ptr;
 }

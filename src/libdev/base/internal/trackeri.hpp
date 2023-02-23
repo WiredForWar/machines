@@ -1,5 +1,5 @@
 /*
- * T R A C K E R I . H P P 
+ * T R A C K E R I . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -23,28 +23,27 @@ public:
     DiagPointerTrackerImpl();
     ~DiagPointerTrackerImpl();
 
-    void    addPointer( void* ptr );
-    bool    pointerPresent( void* ptr ) const;
-    void    removePointer( void* ptr );
+    void addPointer(void* ptr);
+    bool pointerPresent(void* ptr) const;
+    void removePointer(void* ptr);
     //  PRE( pointerPresent( ptr ) );
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const DiagPointerTrackerImpl& t );
+    friend ostream& operator<<(ostream& o, const DiagPointerTrackerImpl& t);
 
 private:
     // Operation deliberately revoked
-    DiagPointerTrackerImpl( const DiagPointerTrackerImpl& );
+    DiagPointerTrackerImpl(const DiagPointerTrackerImpl&);
 
     // Operation deliberately revoked
-    DiagPointerTrackerImpl& operator =( const DiagPointerTrackerImpl& );
+    DiagPointerTrackerImpl& operator=(const DiagPointerTrackerImpl&);
 
     // Operation deliberately revoked
-    bool operator ==( const DiagPointerTrackerImpl& );
+    bool operator==(const DiagPointerTrackerImpl&);
 
-    ctl_set< void*, less_ptr< void > >    pointers_;
+    ctl_set<void*, less_ptr<void>> pointers_;
 };
-
 
 #endif
 

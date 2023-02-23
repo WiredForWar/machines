@@ -16,41 +16,39 @@ MachPhysSpyLocatorData::MachPhysSpyLocatorData()
 MachPhysSpyLocatorData::~MachPhysSpyLocatorData()
 {
     TEST_INVARIANT;
-
 }
 
 int MachPhysSpyLocatorData::mineCapacity() const
 {
-	return mineCapacity_;
+    return mineCapacity_;
 }
 
-void MachPhysSpyLocatorData::mineCapacity( int newMineCapacity )
+void MachPhysSpyLocatorData::mineCapacity(int newMineCapacity)
 {
-	mineCapacity_ = newMineCapacity;
+    mineCapacity_ = newMineCapacity;
 }
 
 MachPhys::ResearchUnits MachPhysSpyLocatorData::downloadRate() const
 {
-	return downloadRate_;
+    return downloadRate_;
 }
 
-void MachPhysSpyLocatorData::downloadRate (MachPhys::ResearchUnits newDownloadRate )
+void MachPhysSpyLocatorData::downloadRate(MachPhys::ResearchUnits newDownloadRate)
 {
-	downloadRate_ = newDownloadRate;
+    downloadRate_ = newDownloadRate;
 }
-
 
 void MachPhysSpyLocatorData::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysSpyLocatorData& t )
+ostream& operator<<(ostream& o, const MachPhysSpyLocatorData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-	//o << (MachPhysMachineData)t;
-	o << " Mine capacity " << t.mineCapacity_ << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysMachineData)t;
+    o << " Mine capacity " << t.mineCapacity_ << std::endl;
 
     return o;
 }

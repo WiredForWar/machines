@@ -19,18 +19,21 @@
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-MachConstructionSelectIcon::MachConstructionSelectIcon(	GuiDisplayable* pParent,
-													    MachInGameScreen* pInGameScreen,
-													    const MachLogConstructionItem& consItem )
-:   GuiIcon( pParent,
-             Gui::Coord(0,0), //Will be relocated by icon sequence parent
-             SysPathName( MachActorBitmaps::name( 	consItem.constructionType(),
-             										consItem.subType(),
-             										consItem.hwLevel(),
-             										consItem.weaponCombo(),
-             										MachLogRaces::instance().pcController().race() ) ) ),
-    pInGameScreen_( pInGameScreen ),
-	consItem_( consItem )
+MachConstructionSelectIcon::MachConstructionSelectIcon(
+    GuiDisplayable* pParent,
+    MachInGameScreen* pInGameScreen,
+    const MachLogConstructionItem& consItem)
+    : GuiIcon(
+        pParent,
+        Gui::Coord(0, 0), // Will be relocated by icon sequence parent
+        SysPathName(MachActorBitmaps::name(
+            consItem.constructionType(),
+            consItem.subType(),
+            consItem.hwLevel(),
+            consItem.weaponCombo(),
+            MachLogRaces::instance().pcController().race())))
+    , pInGameScreen_(pInGameScreen)
+    , consItem_(consItem)
 {
 
     TEST_INVARIANT;
@@ -39,15 +42,14 @@ MachConstructionSelectIcon::MachConstructionSelectIcon(	GuiDisplayable* pParent,
 MachConstructionSelectIcon::~MachConstructionSelectIcon()
 {
     TEST_INVARIANT;
-
 }
 
 void MachConstructionSelectIcon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachConstructionSelectIcon& t )
+ostream& operator<<(ostream& o, const MachConstructionSelectIcon& t)
 {
 
     o << "MachConstructionSelectIcon " << (void*)&t << " start" << std::endl;
@@ -56,67 +58,70 @@ ostream& operator <<( ostream& o, const MachConstructionSelectIcon& t )
     return o;
 }
 
-//virtual
-void MachConstructionSelectIcon::doBeDepressed( const GuiMouseEvent& )
+// virtual
+void MachConstructionSelectIcon::doBeDepressed(const GuiMouseEvent&)
 {
-    //Dispatch the type info to the active command
-	//TBD:
-	//Weapon combo needs to be passed though as well to allow different turret combinations.
-	//needs a change to MGCommand which isn't needed right now so I'm not doing it.
-    pInGameScreen_->activeCommand().typeData( 	consItem_.constructionType(),
-             									consItem_.subType(),
-             									consItem_.hwLevel()
-             									/*consItem_.weaponCombo()*/ );
+    // Dispatch the type info to the active command
+    // TBD:
+    // Weapon combo needs to be passed though as well to allow different turret combinations.
+    // needs a change to MGCommand which isn't needed right now so I'm not doing it.
+    pInGameScreen_->activeCommand().typeData(
+        consItem_.constructionType(),
+        consItem_.subType(),
+        consItem_.hwLevel()
+        /*consItem_.weaponCombo()*/);
 
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
 }
 
-//virtual
-void MachConstructionSelectIcon::doBeReleased( const GuiMouseEvent& )
-{}
+// virtual
+void MachConstructionSelectIcon::doBeReleased(const GuiMouseEvent&)
+{
+}
 
-//static
+// static
 size_t MachConstructionSelectIcon::reqHeight()
 {
-	return 42; 	// TODO : Remove hard coded value
+    return 42; // TODO : Remove hard coded value
 }
 
-//static
+// static
 size_t MachConstructionSelectIcon::reqWidth()
 {
-	return 42; // TODO : Remove hard coded value
+    return 42; // TODO : Remove hard coded value
 }
 
-//virtual
-void MachConstructionSelectIcon::doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachConstructionSelectIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
-	GuiIcon::doHandleMouseEnterEvent( mouseEvent );
+    GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-	GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(consItem_.constructionType(),
-             															consItem_.subType(),
-             															consItem_.weaponCombo(),
-						             									consItem_.hwLevel(),
-																		IDS_CONSTRUCT_PROMPT,
-																		IDS_CONSTRUCT_WITH_WEAPON_PROMPT );
+    GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
+        consItem_.constructionType(),
+        consItem_.subType(),
+        consItem_.weaponCombo(),
+        consItem_.hwLevel(),
+        IDS_CONSTRUCT_PROMPT,
+        IDS_CONSTRUCT_WITH_WEAPON_PROMPT);
 
-	// Add bmu cost to end of prompt text
-	char buffer[20];
-//	itoa( consItem_.buildingCost(), buffer, 10 );
+    // Add bmu cost to end of prompt text
+    char buffer[20];
+    //  itoa( consItem_.buildingCost(), buffer, 10 );
     sprintf(buffer, "%d", consItem_.buildingCost());
-	GuiResourceString bmuCostText( IDS_COST, GuiString( buffer ) );
+    GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
-	prompt += " " + bmuCostText.asString();
+    prompt += " " + bmuCostText.asString();
 
-	pInGameScreen_->cursorPromptText( prompt );
+    pInGameScreen_->cursorPromptText(prompt);
 }
 
-//virtual
-void MachConstructionSelectIcon::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachConstructionSelectIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 {
-    //Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 
-	GuiIcon::doHandleMouseExitEvent( mouseEvent );
+    GuiIcon::doHandleMouseExitEvent(mouseEvent);
 }
 
 /* End CONSELIC.CPP *************************************************/

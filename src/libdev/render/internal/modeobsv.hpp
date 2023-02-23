@@ -1,5 +1,5 @@
 /*
- * M O D E O B S V . H P P 
+ * M O D E O B S V . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,21 +16,21 @@
 class RenIDisplayModeObserver
 {
 public:
-	virtual void prepareForModeChange(const RenDisplay::Mode& currentMode, const RenDisplay::Mode& newMode) =0;
-	virtual bool modeChanged(const RenDisplay::Mode& currentMode) =0;
-	
-	RenDisplay* display()				{ return display_; }
-	const RenDisplay* display() const	{ return display_; }
-	
+    virtual void prepareForModeChange(const RenDisplay::Mode& currentMode, const RenDisplay::Mode& newMode) = 0;
+    virtual bool modeChanged(const RenDisplay::Mode& currentMode) = 0;
+
+    RenDisplay* display() { return display_; }
+    const RenDisplay* display() const { return display_; }
+
 protected:
-	RenIDisplayModeObserver(RenDisplay* d);			// PRE(d);
+    RenIDisplayModeObserver(RenDisplay* d); // PRE(d);
     virtual ~RenIDisplayModeObserver();
 
 private:
-	RenDisplay* const	display_;
+    RenDisplay* const display_;
 
-    RenIDisplayModeObserver( const RenIDisplayModeObserver& );
-    RenIDisplayModeObserver& operator =( const RenIDisplayModeObserver& );
+    RenIDisplayModeObserver(const RenIDisplayModeObserver&);
+    RenIDisplayModeObserver& operator=(const RenIDisplayModeObserver&);
 };
 
 #endif

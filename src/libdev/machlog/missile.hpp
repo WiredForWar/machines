@@ -1,5 +1,5 @@
 /*
- * M I S S I L E . H P P 
+ * M I S S I L E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,35 +22,30 @@ class MachLogMissile : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogMissile(
-        MachLogRace* pRace,
-		MachPhysMissile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogMissile(MachLogRace* pRace, MachPhysMissile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogMissile();
+    ~MachLogMissile() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogMissile& t );
+    friend ostream& operator<<(ostream& o, const MachLogMissile& t);
 
-    virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime,
-                                     MATHEX_SCALAR clearanceFromDisplayedVolume );
+    PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogMissile );
-	PER_FRIEND_READ_WRITE( MachLogMissile );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogMissile);
+    PER_FRIEND_READ_WRITE(MachLogMissile);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogMissile( const MachLogMissile& );
-    MachLogMissile& operator =( const MachLogMissile& );
-    bool operator ==( const MachLogMissile& );
+    MachLogMissile(const MachLogMissile&);
+    MachLogMissile& operator=(const MachLogMissile&);
+    bool operator==(const MachLogMissile&);
 
-	MachPhysMissile*	pPhysMissile_;
+    MachPhysMissile* pPhysMissile_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogMissile );
+PER_DECLARE_PERSISTENT(MachLogMissile);
 
 #endif
 

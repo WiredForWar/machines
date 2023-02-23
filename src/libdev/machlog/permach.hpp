@@ -1,5 +1,5 @@
 /*
- * P E R M A C H . H P P 
+ * P E R M A C H . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -27,30 +27,29 @@ public:
     ~MachLogMachinePersistence();
 
     void CLASS_INVARIANT;
-	PER_MEMBER_PERSISTENT_DEFAULT( MachLogMachinePersistence );
-	PER_FRIEND_READ_WRITE( MachLogMachinePersistence );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogMachinePersistence);
+    PER_FRIEND_READ_WRITE(MachLogMachinePersistence);
 
 private:
+    void registerDerivedClasses();
+    // This const method is really non-const as it will set up the machines data member
+    // takes MLRaces views and converts to local vector for persistence
+    void setUpLocalVectorFromViews() const;
+    // takes local vecotr that has been populated from perRead and sets up other thingies with
+    // pointers to actors.
+    void setUpViewsFromLocalVector();
 
-	void registerDerivedClasses();
-	//This const method is really non-const as it will set up the machines data member
-	//takes MLRaces views and converts to local vector for persistence
-	void setUpLocalVectorFromViews() const;
-	//takes local vecotr that has been populated from perRead and sets up other thingies with
-	//pointers to actors.
-	void setUpViewsFromLocalVector();
+    friend ostream& operator<<(ostream& o, const MachLogMachinePersistence& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogMachinePersistence& t );
-
-    MachLogMachinePersistence( const MachLogMachinePersistence& );
-    MachLogMachinePersistence& operator =( const MachLogMachinePersistence& );
+    MachLogMachinePersistence(const MachLogMachinePersistence&);
+    MachLogMachinePersistence& operator=(const MachLogMachinePersistence&);
 
     MachLogMachinePersistence();
-	typedef ctl_pvector< MachLogMachine >	Machines;
-	Machines								machines_;
+    using Machines = ctl_pvector<MachLogMachine>;
+    Machines machines_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogMachinePersistence );
+PER_DECLARE_PERSISTENT(MachLogMachinePersistence);
 
 #endif
 

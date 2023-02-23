@@ -23,61 +23,62 @@ class MachPhysShockWave : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysShockWave( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysShockWave(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar  - ensures the bomb meshes and textures are loaded
+    // Return an exemplar  - ensures the bomb meshes and textures are loaded
     static const MachPhysShockWave& exemplar();
 
-	//start the shock wave as planned
-	void startShockWave( const PhysAbsoluteTime& startTime,
-                        const PhysRelativeTime& duration,
-                        const MATHEX_SCALAR& fromRadius,
-                        const MATHEX_SCALAR& toRadius,
-                        const MATHEX_SCALAR& zScale);
-    //dtor
-    ~MachPhysShockWave();
+    // start the shock wave as planned
+    void startShockWave(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& fromRadius,
+        const MATHEX_SCALAR& toRadius,
+        const MATHEX_SCALAR& zScale);
+    // dtor
+    ~MachPhysShockWave() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	//shockwave reaches distance at *pTime. return true if distance <= shockwave radius
-	static bool reachDistance(const PhysRelativeTime& duration,
-                        	  const MATHEX_SCALAR& fromRadius,
-                        	  const MATHEX_SCALAR& toRadius,
-                        	  const  MATHEX_SCALAR& distance,
-                        	  PhysRelativeTime* pTime);
+    // shockwave reaches distance at *pTime. return true if distance <= shockwave radius
+    static bool reachDistance(
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& fromRadius,
+        const MATHEX_SCALAR& toRadius,
+        const MATHEX_SCALAR& distance,
+        PhysRelativeTime* pTime);
 
-	static const double& shockwaveDefaultSize();
+    static const double& shockwaveDefaultSize();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysShockWave& t );
-    typedef  MachPhysFlame::Materials Materials;
-    static void addMaterial( MachPhysShockWave::Materials* , const RenTexture&  );
+    friend ostream& operator<<(ostream& o, const MachPhysShockWave& t);
+    using Materials = MachPhysFlame::Materials;
+    static void addMaterial(MachPhysShockWave::Materials*, const RenTexture&);
 
-    PER_MEMBER_PERSISTENT( MachPhysShockWave );
+    PER_MEMBER_PERSISTENT(MachPhysShockWave);
 
 private:
-    //Deliberately revoked
-    MachPhysShockWave( const MachPhysShockWave& );
-    MachPhysShockWave& operator =( const MachPhysShockWave& );
-    bool operator ==( const MachPhysShockWave& );
+    // Deliberately revoked
+    MachPhysShockWave(const MachPhysShockWave&);
+    MachPhysShockWave& operator=(const MachPhysShockWave&);
+    bool operator==(const MachPhysShockWave&);
 
-	friend class MachPhysOtherPersistence;
-	friend class MachPhysPreload;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    friend class MachPhysPreload;
+    // One-time constructor used to create the exemplar
     MachPhysShockWave();
 
-	//typedef  MachPhysFlame::Materials Materials;
-	typedef  MachPhysFlame::MaterialsPtr MaterialsPtr;
+    // typedef  MachPhysFlame::Materials Materials;
+    using MaterialsPtr = MachPhysFlame::MaterialsPtr;
 
-    static  const MaterialsPtr& materialsPtr();
+    static const MaterialsPtr& materialsPtr();
 };
 
-PER_READ_WRITE( MachPhysShockWave );
-PER_DECLARE_PERSISTENT( MachPhysShockWave );
+PER_READ_WRITE(MachPhysShockWave);
+PER_DECLARE_PERSISTENT(MachPhysShockWave);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * M C G R O U N D . H P P 
+ * M C G R O U N D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,51 +18,51 @@
 #include "gui/gui.hpp"
 #include "machgui/cameras.hpp"
 
-//orthodox canonical ( revoked )
+// orthodox canonical ( revoked )
 class PhysGroundFlyControl : public PhysMotionControlWithTrans
 {
 public:
-	// *All* ctors share these pre- and post-conditions.
-	// PRE(PhysMotion::coordinateSystem().isSet()); (from base)
-	// PRE( pMotionControlled );
-	// POST( metresPerSecond() == 2.0 );
-	// POST( degreesPerSecond() == 5.0 );
-	// The forwards direction defaults to the +ve x axis.
-    PhysGroundFlyControl( PhysMotionControlled* );
-    PhysGroundFlyControl( PhysMotionControlled*, const MexVec2& forwards );
+    // *All* ctors share these pre- and post-conditions.
+    // PRE(PhysMotion::coordinateSystem().isSet()); (from base)
+    // PRE( pMotionControlled );
+    // POST( metresPerSecond() == 2.0 );
+    // POST( degreesPerSecond() == 5.0 );
+    // The forwards direction defaults to the +ve x axis.
+    PhysGroundFlyControl(PhysMotionControlled*);
+    PhysGroundFlyControl(PhysMotionControlled*, const MexVec2& forwards);
 
-	// PRE( pMotionConstraint );
-	PhysGroundFlyControl( PhysMotionControlled*, PhysMotionConstraint* );
-	// PRE( pMotionConstraint );
-	PhysGroundFlyControl( PhysMotionControlled*, PhysMotionConstraint*, const MexVec2& forwards );
+    // PRE( pMotionConstraint );
+    PhysGroundFlyControl(PhysMotionControlled*, PhysMotionConstraint*);
+    // PRE( pMotionConstraint );
+    PhysGroundFlyControl(PhysMotionControlled*, PhysMotionConstraint*, const MexVec2& forwards);
 
-    virtual ~PhysGroundFlyControl();
+    ~PhysGroundFlyControl() override;
 
-	// The speed at which the motionControlled object will accelerate
-	UtlProperty<double> metresPerSecond;
+    // The speed at which the motionControlled object will accelerate
+    UtlProperty<double> metresPerSecond;
 
-	// Controls the rotation acceleration of the motionControlled object
-	UtlProperty<MexDegrees> degreesPerSecond;
+    // Controls the rotation acceleration of the motionControlled object
+    UtlProperty<MexDegrees> degreesPerSecond;
 
-	virtual void update();
+    void update() override;
 
-	void reversePitchUpDownKeys( bool );
-	bool reversePitchUpDownKeys() const;
+    void reversePitchUpDownKeys(bool);
+    bool reversePitchUpDownKeys() const;
 
     void CLASS_INVARIANT;
 
 private:
     // Operations deliberately revoked
-    PhysGroundFlyControl( const PhysGroundFlyControl& );
-    PhysGroundFlyControl& operator =( const PhysGroundFlyControl& );
-    bool operator ==( const PhysGroundFlyControl& );
+    PhysGroundFlyControl(const PhysGroundFlyControl&);
+    PhysGroundFlyControl& operator=(const PhysGroundFlyControl&);
+    bool operator==(const PhysGroundFlyControl&);
 
-	void setupDefaultKeyboardMapping();
+    void setupDefaultKeyboardMapping();
     void updateMotion();
-	void ctor();
+    void ctor();
 
-	// Data members...
-	bool reversePitchUpDownKeys_;
+    // Data members...
+    bool reversePitchUpDownKeys_;
 
     friend void MachCameras::scrollWithWheel(const Gui::ScrollState, const double);
 };
@@ -70,27 +70,27 @@ private:
 class PhysGroundMotionConstraint : public PhysMotionConstraint
 {
 public:
-	PhysGroundMotionConstraint();
-	virtual ~PhysGroundMotionConstraint() {}
-	
-	virtual void move(MexTransform3d&, PhysMotion&, double elapsedTime);
+    PhysGroundMotionConstraint();
+    ~PhysGroundMotionConstraint() override { }
 
-	// Called when there is a request to move an actor to a new location. Gives the 
-	// motion constraint the chance to either modify the location slightly or
-	// return false if the location is not acceptable.
-	virtual bool snapTo( MexPoint3d* location );
-	virtual bool snapTo( MexTransform3d* trans );
+    void move(MexTransform3d&, PhysMotion&, double elapsedTime) override;
 
-	UtlProperty< MATHEX_SCALAR > maxHeight;
-	UtlProperty< MATHEX_SCALAR > minHeight;
-	UtlProperty< MATHEX_SCALAR > maxSpeed;
-	UtlProperty< MATHEX_SCALAR > minSpeed;
-	UtlProperty< MexRadians > maxTurnRate;
-	UtlProperty< MexRadians > minTurnRate;
-	UtlProperty< MexRadians > maxPitchRate;
-	UtlProperty< MexRadians > minPitchRate;
-	UtlProperty< MexRadians > maxPitch;
-	UtlProperty< MexRadians > minPitch;
+    // Called when there is a request to move an actor to a new location. Gives the
+    // motion constraint the chance to either modify the location slightly or
+    // return false if the location is not acceptable.
+    bool snapTo(MexPoint3d* location) override;
+    bool snapTo(MexTransform3d* trans) override;
+
+    UtlProperty<MATHEX_SCALAR> maxHeight;
+    UtlProperty<MATHEX_SCALAR> minHeight;
+    UtlProperty<MATHEX_SCALAR> maxSpeed;
+    UtlProperty<MATHEX_SCALAR> minSpeed;
+    UtlProperty<MexRadians> maxTurnRate;
+    UtlProperty<MexRadians> minTurnRate;
+    UtlProperty<MexRadians> maxPitchRate;
+    UtlProperty<MexRadians> minPitchRate;
+    UtlProperty<MexRadians> maxPitch;
+    UtlProperty<MexRadians> minPitch;
 };
 
 #endif

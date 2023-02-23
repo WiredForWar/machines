@@ -7,12 +7,11 @@
 
 #include "sim/destenty.hpp"
 
-SimDestructW4dEntityEvent::SimDestructW4dEntityEvent
-(
-    const CtlConstCountedPtr< W4dEntity >& entityPtr, const PhysAbsoluteTime& time
-)
-:   SimDiscreteEvent( time ),
-    entityPtr_( entityPtr )
+SimDestructW4dEntityEvent::SimDestructW4dEntityEvent(
+    const CtlConstCountedPtr<W4dEntity>& entityPtr,
+    const PhysAbsoluteTime& time)
+    : SimDiscreteEvent(time)
+    , entityPtr_(entityPtr)
 {
 
     TEST_INVARIANT;
@@ -22,23 +21,23 @@ SimDestructW4dEntityEvent::~SimDestructW4dEntityEvent()
 {
     TEST_INVARIANT;
 
-    //Nothing to do - the entity will be deleted if the counted ptr holds
-    //the only reference to it
+    // Nothing to do - the entity will be deleted if the counted ptr holds
+    // the only reference to it
 }
 
 // virtual
 void SimDestructW4dEntityEvent::execute()
 {
-    //Nothing to do - the entity will be deleted if the counted ptr holds
-    //the only reference to it
+    // Nothing to do - the entity will be deleted if the counted ptr holds
+    // the only reference to it
 }
 
 void SimDestructW4dEntityEvent::CLASS_INVARIANT
 {
 }
 
-//virtual
-void SimDestructW4dEntityEvent::doOutputOperator( ostream& o ) const
+// virtual
+void SimDestructW4dEntityEvent::doOutputOperator(ostream& o) const
 {
     o << "SimDestructW4dEntityEvent: entity = " << (void*)&(*entityPtr_) << std::endl;
 }

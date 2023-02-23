@@ -18,50 +18,51 @@
 #include "machphys/destroy.hpp"
 #include "machphys/machphys.hpp"
 
-//forward refs
+// forward refs
 class MexTransform3d;
 
-class MachPhysLandMine : public W4dEntity, public MachPhysCanBeDestroyed
+class MachPhysLandMine
+    : public W4dEntity
+    , public MachPhysCanBeDestroyed
 // Canonical form revoked
 {
 public:
-    //ctor. Object attached to pParent at localTransform
-    MachPhysLandMine( W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::Race );
+    // ctor. Object attached to pParent at localTransform
+    MachPhysLandMine(W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::Race);
 
-    //dtor
-    virtual ~MachPhysLandMine();
+    // dtor
+    ~MachPhysLandMine() override;
 
-    //Return an exemplar disc - ensures the disc mesh is loaded
+    // Return an exemplar disc - ensures the disc mesh is loaded
     static const MachPhysLandMine& exemplar();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
     //  Destroy yourself
     //  Return the time that will be taken for the animation
-    virtual PhysRelativeTime beDestroyed();
+    PhysRelativeTime beDestroyed() override;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLandMine& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLandMine& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLandMine );
-    PER_FRIEND_READ_WRITE( MachPhysLandMine );
+    PER_MEMBER_PERSISTENT(MachPhysLandMine);
+    PER_FRIEND_READ_WRITE(MachPhysLandMine);
 
 private:
-    MachPhysLandMine( const MachPhysLandMine& );
-    MachPhysLandMine& operator =( const MachPhysLandMine& );
-    bool operator ==( const MachPhysLandMine& );
+    MachPhysLandMine(const MachPhysLandMine&);
+    MachPhysLandMine& operator=(const MachPhysLandMine&);
+    bool operator==(const MachPhysLandMine&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLandMine();
 
-	MachPhys::Race			race_;
+    MachPhys::Race race_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLandMine );
+PER_DECLARE_PERSISTENT(MachPhysLandMine);
 
 #endif
 

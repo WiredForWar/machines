@@ -18,52 +18,52 @@
 #include "ctl/pvector.hpp"
 #include "planeted/editpoly.hpp"
 
-class PedDomainEditor	: public PedPolygonEditor
+class PedDomainEditor : public PedPolygonEditor
 // Canonical form revoked
 {
 public:
     PedDomainEditor();
-    ~PedDomainEditor();
+    ~PedDomainEditor() override;
 
     void CLASS_INVARIANT;
 
-	virtual void processInput( const DevButtonEvent& );
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void processInput(const DevButtonEvent&) override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayKeyboardCtrls();
+    void displayKeyboardCtrls() override;
 
-	virtual void displayModeInfo();
+    void displayModeInfo() override;
 
-	virtual void writeCspFile( std::ofstream& );
+    void writeCspFile(std::ofstream&) override;
 
-	virtual void readCspFile( const SysPathName& );
-	// PRE( cspFileName.existsAsFile() );
+    void readCspFile(const SysPathName&) override;
+    // PRE( cspFileName.existsAsFile() );
 
-	virtual void validate();
+    void validate() override;
 
-	void processInsertVertex();
-	void processDeleteVertex();
+    void processInsertVertex();
+    void processDeleteVertex();
 
 protected:
-	virtual PedPolygon* createPolygon( const PolyVerticies& verticies, MATHEX_SCALAR height, bool selected ) const;
-	virtual PedPolygon* createDefaultPolygon() const;
-	virtual void processVertexRight();
-	virtual void processVertexLeft();
-	virtual void processVertexUp();
-	virtual void processVertexDown();
-	virtual void updatePolygon();
+    PedPolygon* createPolygon(const PolyVerticies& verticies, MATHEX_SCALAR height, bool selected) const override;
+    PedPolygon* createDefaultPolygon() const override;
+    void processVertexRight() override;
+    void processVertexLeft() override;
+    void processVertexUp() override;
+    void processVertexDown() override;
+    void updatePolygon() override;
 
 private:
-	// Operations deliberately revoked
-    PedDomainEditor( const PedDomainEditor& );
-    PedDomainEditor& operator =( const PedDomainEditor& );
-    bool operator ==( const PedDomainEditor& );
+    // Operations deliberately revoked
+    PedDomainEditor(const PedDomainEditor&);
+    PedDomainEditor& operator=(const PedDomainEditor&);
+    bool operator==(const PedDomainEditor&);
 
-    friend ostream& operator <<( ostream& o, const PedDomainEditor& t );
+    friend ostream& operator<<(ostream& o, const PedDomainEditor& t);
 
-	void changeX( size_t fromX, size_t toX);
-	void changeY( size_t fromY, size_t toY);
+    void changeX(size_t fromX, size_t toX);
+    void changeY(size_t fromY, size_t toY);
 };
 
 #endif

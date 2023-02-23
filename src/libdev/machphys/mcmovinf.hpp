@@ -1,5 +1,5 @@
 /*
- * M C M O V I N F . H P P 
+ * M C M O V I N F . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -26,52 +26,52 @@
 
 #include "machphys/machphys.hpp"
 
-//memberwise canonical
+// memberwise canonical
 class MachPhysMachineMoveInfo
 {
 public:
-    typedef ctl_vector< MexTransform3d >        Transforms;
-    typedef CtlCountedPtr< Transforms >         TransformsPtr;
+    using Transforms = ctl_vector<MexTransform3d>;
+    using TransformsPtr = CtlCountedPtr<Transforms>;
 
-    typedef ctl_vector< PhysRampAcceleration >  RampAccelerations;
-    typedef CtlCountedPtr< RampAccelerations >  RampAccelerationsPtr;
+    using RampAccelerations = ctl_vector<PhysRampAcceleration>;
+    using RampAccelerationsPtr = CtlCountedPtr<RampAccelerations>;
 
     //  This exists only to keep vector happy. It should never be called.
     MachPhysMachineMoveInfo();
 
     // Construct move information. The first two transforms might be
     //  at the same position but have different orientations in which
-    //  case there is a turn before the motion.    
-    MachPhysMachineMoveInfo( 
-         TransformsPtr transformsPtr,
-         RampAccelerationsPtr rampAccelerationsPtr,
-         const PhysAbsoluteTime& startTime );
+    //  case there is a turn before the motion.
+    MachPhysMachineMoveInfo(
+        TransformsPtr transformsPtr,
+        RampAccelerationsPtr rampAccelerationsPtr,
+        const PhysAbsoluteTime& startTime);
     //  PRE( transformsPtr->size() > 1 );
     //  PRE( transformsPtr->size() == rampAccelerationsPtr->size() + 1 );
     //  PRE( MexUtility::inStraightLineXY( *transformsPtr ) );
 
-    //dtor.
+    // dtor.
     ~MachPhysMachineMoveInfo();
 
-    //Accessors
+    // Accessors
     const MexTransform3d& startTransform() const;
     const MexTransform3d& turnTransform() const;
     //  PRE( needsToTurn() );
-    
+
     const MexTransform3d& endTransform() const;
 
     const Transforms& transforms() const;
 
     PhysRelativeTime turnTime() const;
     // POST( implies( not NeedsToTurn(), result == 0.0 ) );
-    
+
     const RampAccelerations& moveProfiles() const;
 
     const PhysAbsoluteTime& startTime() const;
 
-    //  Note that the time is an _absolute_ time, i.e. it is 
+    //  Note that the time is an _absolute_ time, i.e. it is
     // _not_ relative to the beginning of this motion.
-    MexTransform3d transform( PhysAbsoluteTime time ) const;
+    MexTransform3d transform(PhysAbsoluteTime time) const;
     // PRE( time >= startTime() );
     // PRE( time <= startTime() + totalTime() );
 
@@ -83,34 +83,32 @@ public:
 
     //  Returns the total time for this movement including any
     //  time spent turning at the beginning
-    PhysRelativeTime    totalTime() const;
+    PhysRelativeTime totalTime() const;
 
     //  Returns an acceleration profile which averages out correctly
     //  for the translation part of the motion.
-    PhysRampAcceleration    averageProfile() const;
+    PhysRampAcceleration averageProfile() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMachineMoveInfo& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMachineMoveInfo& t);
 
 private:
-
-    //Data members
-    TransformsPtr           transformsPtr_;
-    RampAccelerationsPtr    rampAccelerationsPtr_;
-    PhysAbsoluteTime        startTime_; //Time the motion starts
-    MexRadians              turnAngle_;//Angle machine rotates about z axis when turning if needsToTurn_ true
-    bool                    needsToTurn_ :1; //True of a turn is needed.
-    PhysRelativeTime        totalTime_;
+    // Data members
+    TransformsPtr transformsPtr_;
+    RampAccelerationsPtr rampAccelerationsPtr_;
+    PhysAbsoluteTime startTime_; // Time the motion starts
+    MexRadians turnAngle_; // Angle machine rotates about z axis when turning if needsToTurn_ true
+    bool needsToTurn_ : 1; // True of a turn is needed.
+    PhysRelativeTime totalTime_;
 };
 
-bool operator ==( const MachPhysMachineMoveInfo&, const MachPhysMachineMoveInfo& );
-bool operator <( const MachPhysMachineMoveInfo&, const MachPhysMachineMoveInfo& );
+bool operator==(const MachPhysMachineMoveInfo&, const MachPhysMachineMoveInfo&);
+bool operator<(const MachPhysMachineMoveInfo&, const MachPhysMachineMoveInfo&);
 
 #ifdef _INLINE
-    #include "machphys/mcmovinf.ipp"
+#include "machphys/mcmovinf.ipp"
 #endif
-
 
 #endif
 

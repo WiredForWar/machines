@@ -22,81 +22,97 @@ class MachPhysAggressor;
 class MachPhysAggressorData;
 
 class MachLogAggressor
-: public MachLogMachine,
-  public MachLogCanAttack
+    : public MachLogMachine
+    , public MachLogCanAttack
 // canonical form revoked
 {
 public:
+    MachLogAggressor(
+        const MachPhys::AggressorSubType& subType,
+        Level hwLevel,
+        Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        MachPhys::WeaponCombo);
 
-    MachLogAggressor( const MachPhys::AggressorSubType& subType, Level hwLevel, Level swLevel,
-    					MachLogRace * pRace, const MexPoint3d& location,
-    					MachPhys::WeaponCombo );
+    MachLogAggressor(
+        const MachPhys::AggressorSubType& subType,
+        Level hwLevel,
+        Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        MachPhys::WeaponCombo,
+        UtlId withId);
 
-    MachLogAggressor( const MachPhys::AggressorSubType& subType, Level hwLevel, Level swLevel,
-    					MachLogRace * pRace, const MexPoint3d& location,
-    					MachPhys::WeaponCombo, UtlId withId );
+    ~MachLogAggressor() override {};
 
-    virtual ~MachLogAggressor() {};
+    ///////////////////////////////
 
-	///////////////////////////////
+    // view of MachPhys data objects
+    const MachPhysMachineData& machineData() const override;
+    const MachPhysAggressorData& data() const;
 
-	//view of MachPhys data objects
-	virtual const MachPhysMachineData& machineData() const;
-	const MachPhysAggressorData& data() const;
-
-	///////////////////////////////
+    ///////////////////////////////
 
     void CLASS_INVARIANT;
-	
 
-	// inherited from SimActor and MachActor
-	virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume );
+    // inherited from SimActor and MachActor
+    PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 
-	///////////////////////////////
-	
-	const MachPhysAggressor& physAggressor() const;
-	MachPhysAggressor& physAggressor();
+    ///////////////////////////////
 
-	const MachPhys::AggressorSubType& subType() const;
-	
-	// inherited from MachLogMachine
-    virtual bool fearsThisActor( const MachActor& otherActor ) const;
+    const MachPhysAggressor& physAggressor() const;
+    MachPhysAggressor& physAggressor();
+
+    const MachPhys::AggressorSubType& subType() const;
+
+    // inherited from MachLogMachine
+    bool fearsThisActor(const MachActor& otherActor) const override;
     // inherited from MachActor
-    virtual int militaryStrength() const;
+    int militaryStrength() const override;
 
-	//Amount of damage is passed in beHit()
-	virtual void beHit( const int&, MachPhys::WeaponType byType = MachPhys::N_WEAPON_TYPES,
-						MachActor* pByActor = NULL, MexLine3d* pByDirection = NULL, MachActor::EchoBeHit = MachActor::ECHO );
+    // Amount of damage is passed in beHit()
+    void beHit(
+        const int&,
+        MachPhys::WeaponType byType = MachPhys::N_WEAPON_TYPES,
+        MachActor* pByActor = nullptr,
+        MexLine3d* pByDirection = nullptr,
+        MachActor::EchoBeHit = MachActor::ECHO) override;
 
-	virtual void beHitWithoutAnimation( int damage, PhysRelativeTime physicalTimeDelay = 0, MachActor* pByActor = NULL, EchoBeHit = ECHO );
+    void beHitWithoutAnimation(
+        int damage,
+        PhysRelativeTime physicalTimeDelay = 0,
+        MachActor* pByActor = nullptr,
+        EchoBeHit = ECHO) override;
 
-	// useful for eradicator-specific logic
-	bool isEradicator() const;
+    // useful for eradicator-specific logic
+    bool isEradicator() const;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAggressor );
-	PER_FRIEND_READ_WRITE( MachLogAggressor );
-
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAggressor);
+    PER_FRIEND_READ_WRITE(MachLogAggressor);
 
 private:
+    static MachPhysAggressor* pNewPhysAggressor(
+        const MachPhys::AggressorSubType& subType,
+        Level hwLevel,
+        Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        MachPhys::WeaponCombo);
 
+    MachLogAggressor(const MachLogAggressor&);
+    MachLogAggressor& operator=(const MachLogAggressor&);
 
-    static MachPhysAggressor* pNewPhysAggressor( const MachPhys::AggressorSubType& subType, Level hwLevel, Level swLevel, MachLogRace * pRace,
-                                                 const MexPoint3d& location,
-                                                 MachPhys::WeaponCombo );
+    ///////////////////////////////
 
-    MachLogAggressor( const MachLogAggressor& );
-    MachLogAggressor& operator =( const MachLogAggressor& );
+    MachPhys::AggressorSubType subType_;
 
-	///////////////////////////////
-
-    MachPhys::AggressorSubType 		subType_;
-
-	///////////////////////////////
+    ///////////////////////////////
 };
 
-PER_DECLARE_PERSISTENT( MachLogAggressor );
+PER_DECLARE_PERSISTENT(MachLogAggressor);
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_AGGRESSR_HPP	*/
+#endif /*  #ifndef _MACHLOG_AGGRESSR_HPP   */
 
 /* End AGGRESSR.HPP *************************************************/

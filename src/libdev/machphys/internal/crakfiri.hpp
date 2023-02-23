@@ -1,5 +1,5 @@
 /*
- * C R A K F I R I . H P P 
+ * C R A K F I R I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,33 +25,31 @@ class MachPhysCrackFireImpl
 // Canonical form revoked
 {
 public:
+    PER_MEMBER_PERSISTENT(MachPhysCrackFireImpl);
+    PER_FRIEND_READ_WRITE(MachPhysCrackFireImpl);
 
-
-    PER_MEMBER_PERSISTENT( MachPhysCrackFireImpl );
-    PER_FRIEND_READ_WRITE( MachPhysCrackFireImpl );		  
-        
 private:
-    MachPhysCrackFireImpl( const MATHEX_SCALAR& length );
+    MachPhysCrackFireImpl(const MATHEX_SCALAR& length);
     MachPhysCrackFireImpl();
     ~MachPhysCrackFireImpl();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysCrackFireImpl& t );
-	friend void perRead( PerIstream& istr, MachPhysCrackFire& crackFire );
+    friend ostream& operator<<(ostream& o, const MachPhysCrackFireImpl& t);
+    friend void perRead(PerIstream& istr, MachPhysCrackFire& crackFire);
 
-    MachPhysCrackFireImpl( const MachPhysCrackFireImpl& );
-    MachPhysCrackFireImpl& operator =( const MachPhysCrackFireImpl& );
+    MachPhysCrackFireImpl(const MachPhysCrackFireImpl&);
+    MachPhysCrackFireImpl& operator=(const MachPhysCrackFireImpl&);
 
-	friend class MachPhysCrackFire;
+    friend class MachPhysCrackFire;
 
-	W4dLink* pCrack_;
-	W4dLink* pFire_;
-	MATHEX_SCALAR length_;
-	ctl_vector < W4dLink* > debris_;
+    W4dLink* pCrack_;
+    W4dLink* pFire_;
+    MATHEX_SCALAR length_;
+    ctl_vector<W4dLink*> debris_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysCrackFireImpl );
+PER_DECLARE_PERSISTENT(MachPhysCrackFireImpl);
 
 #endif
 

@@ -1,33 +1,32 @@
 /*
- * R A M P A C C E . I P P 
+ * R A M P A C C E . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-//static
-MATHEX_SCALAR PhysRampAcceleration::endSpeed
-(
-    MATHEX_SCALAR startSpeed, MATHEX_SCALAR acceleration, const PhysRelativeTime& time
-)
+// static
+MATHEX_SCALAR
+PhysRampAcceleration::endSpeed(MATHEX_SCALAR startSpeed, MATHEX_SCALAR acceleration, const PhysRelativeTime& time)
 {
     return startSpeed + acceleration * time;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-//static
-MATHEX_SCALAR PhysRampAcceleration::distance
-(
-    MATHEX_SCALAR startValue, MATHEX_SCALAR startSpeed,
-    MATHEX_SCALAR acceleration, const PhysRelativeTime& time
-)
+// static
+MATHEX_SCALAR
+PhysRampAcceleration::distance(
+    MATHEX_SCALAR startValue,
+    MATHEX_SCALAR startSpeed,
+    MATHEX_SCALAR acceleration,
+    const PhysRelativeTime& time)
 {
     return startValue + (startSpeed + 0.5 * acceleration * time) * time;
 }

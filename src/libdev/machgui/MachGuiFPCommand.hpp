@@ -18,15 +18,15 @@ public:
 
     ///////////////////////////////////////////////////
 
-    MachGuiFPCommand( GuiDisplayable* pParent, const Gui::Coord& relPos );
-    ~MachGuiFPCommand();
+    MachGuiFPCommand(GuiDisplayable* pParent, const Gui::Coord& relPos);
+    ~MachGuiFPCommand() override;
     // NON-COPYABLE
     MachGuiFPCommand(const MachGuiFPCommand&) = delete;
     MachGuiFPCommand& operator=(const MachGuiFPCommand&) = delete;
 
     ///////////////////////////////////////////////////
 
-    void logHandler( MachLog1stPersonHandler* logHandler);
+    void logHandler(MachLog1stPersonHandler* logHandler);
     void resetLogHandler();
 
     // Change the icon that displays within the control
@@ -43,7 +43,7 @@ public:
     void setMoveIconState(CommandIconState state);
 
 protected:
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
 private:
     static GuiBitmap& noSquadronSelected();
@@ -61,7 +61,7 @@ private:
 
     // Will either point to noSquadronSelected() OR activeSquadIcon_
     GuiBitmap* pActiveSquadIcon_;
-    int64_t    activeSquadNumber_;
+    int64_t activeSquadNumber_;
     MachLog1stPersonHandler* pLogHandler_;
 
     // Rendered text of the squad number.

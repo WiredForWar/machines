@@ -18,34 +18,34 @@ class RenIVertex;
 class RenITTFImpl
 {
 public:
-	RenITTFImpl(size_t nVertices, const Ren::VertexIdx*, size_t nIndices);
-	RenITTFImpl(const RenITTFImpl&);
-	~RenITTFImpl();
+    RenITTFImpl(size_t nVertices, const Ren::VertexIdx*, size_t nIndices);
+    RenITTFImpl(const RenITTFImpl&);
+    ~RenITTFImpl();
 
     void renderGL(RenIVertex*, const RenMaterial&, GLenum mode) const;
 
-	RenIVertex*			    vertices() const	{ return vertices_; }
-	size_t					nVertices() const	{ return nVertices_; }
-	const RenMaterial&		material() const	{ return material_; }
-	const Ren::VertexIdx*	indices() const		{ return indices_; }
-	size_t 					nIndices() const	{ return nIndices_; }
-	MexVec2*				uvs() const			{ return uvs_; }
+    RenIVertex* vertices() const { return vertices_; }
+    size_t nVertices() const { return nVertices_; }
+    const RenMaterial& material() const { return material_; }
+    const Ren::VertexIdx* indices() const { return indices_; }
+    size_t nIndices() const { return nIndices_; }
+    MexVec2* uvs() const { return uvs_; }
 
-	void material(const RenMaterial& m)			{ material_ = m; }
+    void material(const RenMaterial& m) { material_ = m; }
 
 private:
-	RenIVertex*			    vertices_;
-	size_t					nVertices_;
-	RenMaterial 			material_;
-	const Ren::VertexIdx*	indices_;
-	size_t 					nIndices_;
-	MexVec2*				uvs_;
+    RenIVertex* vertices_;
+    size_t nVertices_;
+    RenMaterial material_;
+    const Ren::VertexIdx* indices_;
+    size_t nIndices_;
+    MexVec2* uvs_;
 
-    RenITTFImpl& operator =( const RenITTFImpl& );
+    RenITTFImpl& operator=(const RenITTFImpl&);
 };
 
 #ifdef _INLINE
-    #include "render/internal/ttfpolyi.ipp"
+#include "render/internal/ttfpolyi.ipp"
 #endif
 
 #endif

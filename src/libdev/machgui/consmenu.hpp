@@ -1,5 +1,5 @@
 /*
- * C O N S M E N U . H P P 
+ * C O N S M E N U . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,36 +16,35 @@
 #include "base/base.hpp"
 #include "machgui/scrlarea.hpp"
 
-//forward refs
+// forward refs
 class MachInGameScreen;
 
-//orthodox canonical revoked
+// orthodox canonical revoked
 class MachConstructMenu : public MachGuiScrollArea
 {
 public:
-    //ctor. Parent is pInGameScreen. 
-    MachConstructMenu( GuiDisplayable* pParent, const Gui::Coord& relCoord, MachInGameScreen* pInGameScreen );
+    // ctor. Parent is pInGameScreen.
+    MachConstructMenu(GuiDisplayable* pParent, const Gui::Coord& relCoord, MachInGameScreen* pInGameScreen);
 
-    //dtor.
-    ~MachConstructMenu();
+    // dtor.
+    ~MachConstructMenu() override;
 
     void CLASS_INVARIANT;
 
- 	static size_t reqWidth();
-	static size_t reqHeight( MachInGameScreen* pInGameScreen );
+    static size_t reqWidth();
+    static size_t reqHeight(MachInGameScreen* pInGameScreen);
 
 protected:
-	virtual GuiSimpleScrollableList* createList( GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* );
+    GuiSimpleScrollableList* createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen*) override;
 
 private:
     // Operations deliberately revoked
-    MachConstructMenu( const MachConstructMenu& );
-    MachConstructMenu& operator =( const MachConstructMenu& );
-    bool operator ==( const MachConstructMenu& );
+    MachConstructMenu(const MachConstructMenu&);
+    MachConstructMenu& operator=(const MachConstructMenu&);
+    bool operator==(const MachConstructMenu&);
 
-	friend ostream& operator <<( ostream& o, const MachConstructMenu& t );
+    friend ostream& operator<<(ostream& o, const MachConstructMenu& t);
 };
-
 
 #endif
 

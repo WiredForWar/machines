@@ -1,5 +1,5 @@
 /*
- * V A L P L A N . H P P 
+ * V A L P L A N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -21,44 +21,43 @@
 class W4dFloatValuePlan
 {
 public:
-    W4dFloatValuePlan( const PhysRelativeTime& duration );
+    W4dFloatValuePlan(const PhysRelativeTime& duration);
     virtual ~W4dFloatValuePlan();
 
-    //Return the plan's duration
+    // Return the plan's duration
     const PhysRelativeTime& duration() const;
 
-    //Override to define result as a function of timeOffset.
-    //If time is greater than duration, the value at time duration is to be returned.
-    virtual MATHEX_SCALAR value( const PhysRelativeTime& timeOffset ) const = 0;
+    // Override to define result as a function of timeOffset.
+    // If time is greater than duration, the value at time duration is to be returned.
+    virtual MATHEX_SCALAR value(const PhysRelativeTime& timeOffset) const = 0;
 
-    //True iff the duration of the plan is <= timeOffset
-    bool isDone( const PhysRelativeTime& timeOffset ) const;
+    // True iff the duration of the plan is <= timeOffset
+    bool isDone(const PhysRelativeTime& timeOffset) const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dFloatValuePlan& t );
+    friend ostream& operator<<(ostream& o, const W4dFloatValuePlan& t);
 
 protected:
-    //set the duration of the plan to newDuration
-    void duration( const PhysRelativeTime& newDuration);
+    // set the duration of the plan to newDuration
+    void duration(const PhysRelativeTime& newDuration);
 
 private:
     // Operation deliberately revoked
-    W4dFloatValuePlan( const W4dFloatValuePlan& );
+    W4dFloatValuePlan(const W4dFloatValuePlan&);
 
     // Operation deliberately revoked
-    W4dFloatValuePlan& operator =( const W4dFloatValuePlan& );
+    W4dFloatValuePlan& operator=(const W4dFloatValuePlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dFloatValuePlan& );
+    bool operator==(const W4dFloatValuePlan&);
 
     // Data members
     PhysRelativeTime duration_; // The maximum time at which the mapping is defined
 };
 
-//Provides a reference counted pointer to a W4dFloatValuePlan
-typedef CtlCountedPtr< W4dFloatValuePlan > W4dFloatValuePlanPtr;
-
+// Provides a reference counted pointer to a W4dFloatValuePlan
+using W4dFloatValuePlanPtr = CtlCountedPtr<W4dFloatValuePlan>;
 
 #endif
 

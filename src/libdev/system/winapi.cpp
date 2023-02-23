@@ -17,15 +17,14 @@ SysWindowsAPI::SysWindowsAPI()
 SysWindowsAPI::~SysWindowsAPI()
 {
     TEST_INVARIANT;
-
 }
 
 void SysWindowsAPI::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const SysWindowsAPI& t )
+ostream& operator<<(ostream& o, const SysWindowsAPI& t)
 {
 
     o << "SysWindowsAPI " << (void*)&t << " start" << std::endl;
@@ -34,28 +33,27 @@ ostream& operator <<( ostream& o, const SysWindowsAPI& t )
     return o;
 }
 
-//static
-void SysWindowsAPI::sleep( double milliseconds )
+// static
+void SysWindowsAPI::sleep(double milliseconds)
 {
-	//Sleep( milliseconds );
+    // Sleep( milliseconds );
 }
 
-//static
-void SysWindowsAPI::messageBox( const char* pMessage, const char* pTitle )
+// static
+void SysWindowsAPI::messageBox(const char* pMessage, const char* pTitle)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, pTitle, pMessage, NULL);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, pTitle, pMessage, nullptr);
 }
 
-//static
-void SysWindowsAPI::messageBoxError( const char* pMessage, const char* pTitle )
+// static
+void SysWindowsAPI::messageBoxError(const char* pMessage, const char* pTitle)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, pTitle, pMessage, NULL);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, pTitle, pMessage, nullptr);
 }
 
-//static
+// static
 void SysWindowsAPI::peekMessage()
 {
-
 }
 
 /* End WINAPI.CPP ***************************************************/

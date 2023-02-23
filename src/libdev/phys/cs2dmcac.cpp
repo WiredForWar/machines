@@ -15,10 +15,10 @@ PhysCS2dDomainFindPathCache& PhysCS2dDomainFindPathCache::instance()
 }
 
 PhysCS2dDomainFindPathCache::PhysCS2dDomainFindPathCache()
-: oldestValue_( 0 ),
-  maxCacheValues_( 10 ),
-  succeed_( 0 ),
-  fail_( 0 )
+    : oldestValue_(0)
+    , maxCacheValues_(10)
+    , succeed_(0)
+    , fail_(0)
 {
 
     TEST_INVARIANT;
@@ -31,30 +31,28 @@ bool PhysCS2dDomainFindPathCache::findPath(
     const MexPoint2d& endPoint,
     MATHEX_SCALAR clearance,
     ObstacleFlags flags,
-    PortalPoints* pPath ) const
+    PortalPoints* pPath) const
 {
     bool result = false;
 
-    for( size_t i = 0; i < cache_.size() and not result; ++i )
+    for (size_t i = 0; i < cache_.size() and not result; ++i)
     {
         const MATHEX_SCALAR sqrMaxDistance = 15.0 * 15.0;
-        const PathData& data = cache_[ i ];
+        const PathData& data = cache_[i];
 
-        if( startDomainId == data.startPoint().domainId() and
-            endDomainId == data.endPoint().domainId() and
-            clearance <= data.searchData().clearance() and
-            flags == data.searchData().flags() and
-            startPoint.sqrEuclidianDistance( data.startPoint().point() ) < sqrMaxDistance and
-            endPoint.sqrEuclidianDistance( data.endPoint().point() ) < sqrMaxDistance )
+        if (startDomainId == data.startPoint().domainId() and endDomainId == data.endPoint().domainId()
+            and clearance <= data.searchData().clearance() and flags == data.searchData().flags()
+            and startPoint.sqrEuclidianDistance(data.startPoint().point()) < sqrMaxDistance
+            and endPoint.sqrEuclidianDistance(data.endPoint().point()) < sqrMaxDistance)
         {
             result = true;
             *pPath = data.path();
         }
     }
 
-    PhysCS2dDomainFindPathCache *nonConstThis = _CONST_CAST( PhysCS2dDomainFindPathCache*, this );
+    PhysCS2dDomainFindPathCache* nonConstThis = _CONST_CAST(PhysCS2dDomainFindPathCache*, this);
 
-    if( result )
+    if (result)
         ++nonConstThis->succeed_;
     else
         ++nonConstThis->fail_;
@@ -69,37 +67,36 @@ void PhysCS2dDomainFindPathCache::addPath(
     const MexPoint2d& endPoint,
     MATHEX_SCALAR clearance,
     ObstacleFlags flags,
-    const PortalPoints& path )
+    const PortalPoints& path)
 {
     PathData pathData(
-      Point( startDomainId, startPoint ),
-      Point( endDomainId, endPoint ),
-      SearchData( clearance, flags ),
-      path );
+        Point(startDomainId, startPoint),
+        Point(endDomainId, endPoint),
+        SearchData(clearance, flags),
+        path);
 
-    if( cache_.size() < maxCacheValues_ )
+    if (cache_.size() < maxCacheValues_)
     {
-        cache_.push_back( pathData );
+        cache_.push_back(pathData);
     }
     else
     {
-        cache_[ oldestValue_ ] = pathData;
-        oldestValue_ = ( oldestValue_ + 1 ) % maxCacheValues_;
+        cache_[oldestValue_] = pathData;
+        oldestValue_ = (oldestValue_ + 1) % maxCacheValues_;
     }
 }
 
 PhysCS2dDomainFindPathCache::~PhysCS2dDomainFindPathCache()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysCS2dDomainFindPathCache::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysCS2dDomainFindPathCache& t )
+ostream& operator<<(ostream& o, const PhysCS2dDomainFindPathCache& t)
 {
 
     o << "PhysCS2dDomainFindPathCache " << (void*)&t << " start" << std::endl;

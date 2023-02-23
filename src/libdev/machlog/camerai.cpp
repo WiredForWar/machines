@@ -1,5 +1,5 @@
 /*
- * C A M E R A I . C P P 
+ * C A M E R A I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,15 +16,14 @@ MachLogCameraImpl::MachLogCameraImpl()
 MachLogCameraImpl::~MachLogCameraImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogCameraImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogCameraImpl& t )
+ostream& operator<<(ostream& o, const MachLogCameraImpl& t)
 {
 
     o << "MachLogCameraImpl " << (void*)&t << " start" << std::endl;

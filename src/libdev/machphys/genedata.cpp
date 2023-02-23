@@ -22,34 +22,34 @@ public:
     MexRadians maxMoveGradient_;
     MATHEX_SCALAR startRotationDistance_;
     MATHEX_SCALAR maxTerrainUnevenness_;
-	PhysRelativeTime virtualDefConInterval_;
+    PhysRelativeTime virtualDefConInterval_;
     PhysPathFindingPriority pcPathFindingPriority_;
-	MachPhys::BuildingMaterialUnits	nukeLaunchCost_;
-	size_t	maxUnitsPerRace_;
-	size_t	campaignExtraUnitsPerRace_;
+    MachPhys::BuildingMaterialUnits nukeLaunchCost_;
+    size_t maxUnitsPerRace_;
+    size_t campaignExtraUnitsPerRace_;
 };
 
 MachPhysGeneralData::MachPhysGeneralData()
-:   pImpl_( NULL )
+    : pImpl_(nullptr)
 {
-    pImpl_ = _NEW( MachPhysGeneralDataImpl );
-    pImpl_->firstPersonLookUpDownRate_ = MexDegrees( 0.1 );
-    pImpl_->firstPersonLookUpDownMinAngle_ = MexDegrees( -85.0 );
-    pImpl_->firstPersonLookUpDownMaxAngle_ = MexDegrees( 85.0 );
-    pImpl_->firstPersonMaxFastTurnRate_ = MexDegrees( 60.0 );
-    pImpl_->firstPersonMaxSlowTurnRate_ = MexDegrees( 1.0 );
+    pImpl_ = _NEW(MachPhysGeneralDataImpl);
+    pImpl_->firstPersonLookUpDownRate_ = MexDegrees(0.1);
+    pImpl_->firstPersonLookUpDownMinAngle_ = MexDegrees(-85.0);
+    pImpl_->firstPersonLookUpDownMaxAngle_ = MexDegrees(85.0);
+    pImpl_->firstPersonMaxFastTurnRate_ = MexDegrees(60.0);
+    pImpl_->firstPersonMaxSlowTurnRate_ = MexDegrees(1.0);
     pImpl_->startRotationDistance_ = 2.0;
     pImpl_->maxMoveGradient_ = 65.0;
     pImpl_->maxTerrainUnevenness_ = 0.1;
-	pImpl_->virtualDefConInterval_ = 5.0;
-	pImpl_->pcPathFindingPriority_ = Phys::defaultPathFindingPriority();
-	pImpl_->nukeLaunchCost_ = 500;
-	pImpl_->maxUnitsPerRace_ = 400;
-	#ifndef PRODUCTION
-	if( getenv("CB_NO_POPULATION_LIMIT") )
-		pImpl_->maxUnitsPerRace_ = 650;
-	#endif
-	pImpl_->campaignExtraUnitsPerRace_ = 40;
+    pImpl_->virtualDefConInterval_ = 5.0;
+    pImpl_->pcPathFindingPriority_ = Phys::defaultPathFindingPriority();
+    pImpl_->nukeLaunchCost_ = 500;
+    pImpl_->maxUnitsPerRace_ = 400;
+#ifndef PRODUCTION
+    if (getenv("CB_NO_POPULATION_LIMIT"))
+        pImpl_->maxUnitsPerRace_ = 650;
+#endif
+    pImpl_->campaignExtraUnitsPerRace_ = 40;
 
     TEST_INVARIANT;
 }
@@ -58,15 +58,15 @@ MachPhysGeneralData::~MachPhysGeneralData()
 {
     TEST_INVARIANT;
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachPhysGeneralData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGeneralData& t )
+ostream& operator<<(ostream& o, const MachPhysGeneralData& t)
 {
 
     o << "MachPhysGeneralData " << (void*)&t << " start" << std::endl;
@@ -80,7 +80,7 @@ MexRadians MachPhysGeneralData::firstPersonLookUpDownRate() const
     return pImpl_->firstPersonLookUpDownRate_;
 }
 
-void MachPhysGeneralData::firstPersonLookUpDownRate( MexRadians rate )
+void MachPhysGeneralData::firstPersonLookUpDownRate(MexRadians rate)
 {
     pImpl_->firstPersonLookUpDownRate_ = rate;
 }
@@ -95,12 +95,12 @@ MexRadians MachPhysGeneralData::firstPersonLookUpDownMaxAngle() const
     return pImpl_->firstPersonLookUpDownMaxAngle_;
 }
 
-void MachPhysGeneralData::firstPersonLookUpDownMinAngle( MexRadians angle )
+void MachPhysGeneralData::firstPersonLookUpDownMinAngle(MexRadians angle)
 {
     pImpl_->firstPersonLookUpDownMinAngle_ = angle;
 }
 
-void MachPhysGeneralData::firstPersonLookUpDownMaxAngle( MexRadians angle )
+void MachPhysGeneralData::firstPersonLookUpDownMaxAngle(MexRadians angle)
 {
     pImpl_->firstPersonLookUpDownMaxAngle_ = angle;
 }
@@ -115,12 +115,12 @@ MexRadians MachPhysGeneralData::firstPersonMaxSlowTurnRate() const
     return pImpl_->firstPersonMaxSlowTurnRate_;
 }
 
-void MachPhysGeneralData::firstPersonMaxFastTurnRate( MexRadians angle )
+void MachPhysGeneralData::firstPersonMaxFastTurnRate(MexRadians angle)
 {
     pImpl_->firstPersonMaxFastTurnRate_ = angle;
 }
 
-void MachPhysGeneralData::firstPersonMaxSlowTurnRate( MexRadians angle )
+void MachPhysGeneralData::firstPersonMaxSlowTurnRate(MexRadians angle)
 {
     pImpl_->firstPersonMaxSlowTurnRate_ = angle;
 }
@@ -130,7 +130,7 @@ MATHEX_SCALAR MachPhysGeneralData::startRotationDistance() const
     return pImpl_->startRotationDistance_;
 }
 
-void MachPhysGeneralData::startRotationDistance( MATHEX_SCALAR distance )
+void MachPhysGeneralData::startRotationDistance(MATHEX_SCALAR distance)
 {
     pImpl_->startRotationDistance_ = distance;
 }
@@ -140,71 +140,69 @@ MexRadians MachPhysGeneralData::maxMoveGradient() const
     return pImpl_->maxMoveGradient_;
 }
 
-void MachPhysGeneralData::maxMoveGradient( MexRadians gradient )
+void MachPhysGeneralData::maxMoveGradient(MexRadians gradient)
 {
     pImpl_->maxMoveGradient_ = gradient;
 }
 
-MATHEX_SCALAR    MachPhysGeneralData::maxTerrainUnevenness() const
+MATHEX_SCALAR MachPhysGeneralData::maxTerrainUnevenness() const
 {
     return pImpl_->maxTerrainUnevenness_;
 }
 
-void MachPhysGeneralData::maxTerrainUnevenness( MATHEX_SCALAR unevenness )
+void MachPhysGeneralData::maxTerrainUnevenness(MATHEX_SCALAR unevenness)
 {
     pImpl_->maxTerrainUnevenness_ = unevenness;
 }
 
 PhysRelativeTime MachPhysGeneralData::virtualDefConInterval() const
 {
-	return pImpl_->virtualDefConInterval_;
+    return pImpl_->virtualDefConInterval_;
 }
 
-void MachPhysGeneralData::virtualDefConInterval( PhysRelativeTime interval )
+void MachPhysGeneralData::virtualDefConInterval(PhysRelativeTime interval)
 {
-	pImpl_->virtualDefConInterval_ = interval;
+    pImpl_->virtualDefConInterval_ = interval;
 }
 
 PhysPathFindingPriority MachPhysGeneralData::pcPathFindingPriority() const
 {
-	return pImpl_->pcPathFindingPriority_;
+    return pImpl_->pcPathFindingPriority_;
 }
 
-void MachPhysGeneralData::pcPathFindingPriority( PhysPathFindingPriority priority )
+void MachPhysGeneralData::pcPathFindingPriority(PhysPathFindingPriority priority)
 {
-	pImpl_->pcPathFindingPriority_ = priority;
+    pImpl_->pcPathFindingPriority_ = priority;
 }
 
-void MachPhysGeneralData::nukeLaunchCost( MachPhys::BuildingMaterialUnits cost )
+void MachPhysGeneralData::nukeLaunchCost(MachPhys::BuildingMaterialUnits cost)
 {
-	pImpl_->nukeLaunchCost_ = cost;
+    pImpl_->nukeLaunchCost_ = cost;
 }
 
 MachPhys::BuildingMaterialUnits MachPhysGeneralData::nukeLaunchCost() const
 {
-	return pImpl_->nukeLaunchCost_;
+    return pImpl_->nukeLaunchCost_;
 }
 
-void MachPhysGeneralData::maxUnitsPerRace( size_t maxUnits )
+void MachPhysGeneralData::maxUnitsPerRace(size_t maxUnits)
 {
-	pImpl_->maxUnitsPerRace_ = maxUnits;
+    pImpl_->maxUnitsPerRace_ = maxUnits;
 }
 
 size_t MachPhysGeneralData::maxUnitsPerRace() const
 {
-	return pImpl_->maxUnitsPerRace_;
+    return pImpl_->maxUnitsPerRace_;
 }
 
-void MachPhysGeneralData::campaignExtraUnitsPerRace( size_t campaignExtraUnits )
+void MachPhysGeneralData::campaignExtraUnitsPerRace(size_t campaignExtraUnits)
 {
-	pImpl_->campaignExtraUnitsPerRace_ = campaignExtraUnits;
+    pImpl_->campaignExtraUnitsPerRace_ = campaignExtraUnits;
 }
 
 size_t MachPhysGeneralData::campaignExtraUnitsPerRace() const
 {
-	return pImpl_->campaignExtraUnitsPerRace_;
+    return pImpl_->campaignExtraUnitsPerRace_;
 }
-
-
 
 /* End GENEDATA.CPP *************************************************/

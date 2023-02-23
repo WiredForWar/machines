@@ -27,49 +27,48 @@
 #include "world4d/gusplan.hpp"
 #include "world4d/scalplan.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysLocator );
+PER_DEFINE_PERSISTENT(MachPhysLocator);
 
-//One-time ctor
+// One-time ctor
 MachPhysLocator::MachPhysLocator()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/locate/radial.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/locate/radial.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysLocator::MachPhysLocator( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysLocator::MachPhysLocator(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
     TEST_INVARIANT;
 }
 
-MachPhysLocator::MachPhysLocator( PerConstructor con )
-: W4dEntity( con )
+MachPhysLocator::MachPhysLocator(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
 MachPhysLocator::~MachPhysLocator()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysLocator& MachPhysLocator::exemplar()
 {
-	return MachPhysOtherPersistence::instance().locatorExemplar();
+    return MachPhysOtherPersistence::instance().locatorExemplar();
 }
 
 void MachPhysLocator::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysLocator& t )
+ostream& operator<<(ostream& o, const MachPhysLocator& t)
 {
 
     o << "MachPhysLocator " << (void*)&t << " start" << std::endl;
@@ -78,73 +77,71 @@ ostream& operator <<( ostream& o, const MachPhysLocator& t )
     return o;
 }
 
-//virtual
-bool MachPhysLocator::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysLocator::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysLocator& locator )
+void perWrite(PerOstream& ostr, const MachPhysLocator& locator)
 {
     const W4dEntity& base = locator;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysLocator& locator )
+void perRead(PerIstream& istr, MachPhysLocator& locator)
 {
     W4dEntity& base = locator;
 
     istr >> base;
 }
 
-void MachPhysLocator::startLocate( const PhysAbsoluteTime& startTime,
-                                   const PhysRelativeTime& duration,
-                                   const MATHEX_SCALAR& maxSize,
-				                   uint nRepetations,
-				                   uint animId )
+void MachPhysLocator::startLocate(
+    const PhysAbsoluteTime& startTime,
+    const PhysRelativeTime& duration,
+    const MATHEX_SCALAR& maxSize,
+    uint nRepetations,
+    uint animId)
 {
-	//visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	visibilityPlanPtr->add(false, duration);
+    // visibility plan
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    visibilityPlanPtr->add(false, duration);
 
-	entityPlanForEdit().visibilityPlan( visibilityPlanPtr, startTime, nRepetations, animId );
+    entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime, nRepetations, animId);
 
-	//appear at 0.5*maxSize then scale to maxSize over 0.5 second and repeat
-	PhysLinearScalarPlan::ScalarVec times;
-		times.reserve(1);
-		times.push_back(0.5);
+    // appear at 0.5*maxSize then scale to maxSize over 0.5 second and repeat
+    PhysLinearScalarPlan::ScalarVec times;
+    times.reserve(1);
+    times.push_back(0.5);
 
-	PhysLinearScalarPlan::ScalarVec scales;
-		scales.reserve(2);
-	    scales.push_back(maxSize*0.5);
-	    scales.push_back(maxSize);
+    PhysLinearScalarPlan::ScalarVec scales;
+    scales.reserve(2);
+    scales.push_back(maxSize * 0.5);
+    scales.push_back(maxSize);
 
-	PhysLinearScalarPlan* pScalarPlan = _NEW( PhysLinearScalarPlan(times, scales) );
-	W4dScalePlanPtr scalePlanPtr = _NEW( W4dGeneralUniformScalePlan( PhysScalarPlanPtr( pScalarPlan ) ) );
+    PhysLinearScalarPlan* pScalarPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    W4dScalePlanPtr scalePlanPtr = _NEW(W4dGeneralUniformScalePlan(PhysScalarPlanPtr(pScalarPlan)));
 
-	const size_t nReps = duration/0.5 + 1;
-	entityPlanForEdit().scalePlan( scalePlanPtr, startTime, nReps*nRepetations, animId );
+    const size_t nReps = duration / 0.5 + 1;
+    entityPlanForEdit().scalePlan(scalePlanPtr, startTime, nReps * nRepetations, animId);
 
-	//spin around the z axis at 2 Hz
-    MexTransform3d spinTransform( MexEulerAngles( MexDegrees(180), 0.0, 0.0 ) );
+    // spin around the z axis at 2 Hz
+    MexTransform3d spinTransform(MexEulerAngles(MexDegrees(180), 0.0, 0.0));
 
-    //Set start and first position transforms
+    // Set start and first position transforms
     const MexTransform3d& startPosition = localTransform();
-    MexTransform3d endPosition( startPosition );
-    endPosition.transform( spinTransform );
+    MexTransform3d endPosition(startPosition);
+    endPosition.transform(spinTransform);
 
-    PhysLinearMotionPlan* pSpinPlan =
-        _NEW( PhysLinearMotionPlan( startPosition, endPosition, 0.5 ) );
+    PhysLinearMotionPlan* pSpinPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.5));
 
-    //move back to start position
-    pSpinPlan->add( startPosition, 1.0 );
+    // move back to start position
+    pSpinPlan->add(startPosition, 1.0);
 
-    //Add the plan
-    PhysMotionPlanPtr spinPlanPtr( pSpinPlan );
-   	entityPlanForEdit().absoluteMotion(spinPlanPtr, startTime, nReps*nRepetations, animId );
+    // Add the plan
+    PhysMotionPlanPtr spinPlanPtr(pSpinPlan);
+    entityPlanForEdit().absoluteMotion(spinPlanPtr, startTime, nReps * nRepetations, animId);
 }
 
 /* End LOCATOR.CPP *************************************************/
-

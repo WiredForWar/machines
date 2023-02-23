@@ -1,8 +1,7 @@
 /*
- * S O A K T E S T . H P P 
+ * S O A K T E S T . H P P
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
-
 
 /*
     SoakTestAssert
@@ -24,50 +23,54 @@ class SoakTestAssert
 public:
     virtual ~SoakTestAssert();
 
-    void    runSoakTestAssert();
+    void runSoakTestAssert();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SoakTestAssert& t );
+    friend ostream& operator<<(ostream& o, const SoakTestAssert& t);
 
-    enum    ExpectedResult { SUCCEED, FAIL, NOT_SET };
+    enum ExpectedResult
+    {
+        SUCCEED,
+        FAIL,
+        NOT_SET
+    };
 
-    void    expectedResult( ExpectedResult result );
-    ExpectedResult    expectedResult() const;
+    void expectedResult(ExpectedResult result);
+    ExpectedResult expectedResult() const;
 
 protected:
     SoakTestAssert();
 
     typedef void (*v_fn_v)();
 
-    void    addTestFunction( const string& name, v_fn_v fn );
-    
+    void addTestFunction(const string& name, v_fn_v fn);
+
 private:
     // Operation deliberately revoked
-    SoakTestAssert( const SoakTestAssert& );
+    SoakTestAssert(const SoakTestAssert&);
 
     // Operation deliberately revoked
-    SoakTestAssert& operator =( const SoakTestAssert& );
+    SoakTestAssert& operator=(const SoakTestAssert&);
 
     // Operation deliberately revoked
-    bool operator ==( const SoakTestAssert& );
+    bool operator==(const SoakTestAssert&);
 
-    ctl_vector< v_fn_v >    testFunctions_;
-    ctl_vector< string >    testFunctionName_;
-    
-    void    readCount();
-    void    writeCount();
-    void    updateFailureCount();
-    void    createFile( const string& fileName );
-    void    writeSucceedFailFiles( ExpectedResult expectedResult );
-    
-    size_t  nTests_;
-    size_t  nFailures_;
-    bool    displayLogInfo_;
-    
-    ExpectedResult  expectedResult_;
+    ctl_vector<v_fn_v> testFunctions_;
+    ctl_vector<string> testFunctionName_;
+
+    void readCount();
+    void writeCount();
+    void updateFailureCount();
+    void createFile(const string& fileName);
+    void writeSucceedFailFiles(ExpectedResult expectedResult);
+
+    size_t nTests_;
+    size_t nFailures_;
+    bool displayLogInfo_;
+
+    ExpectedResult expectedResult_;
 };
-
 
 #endif
 

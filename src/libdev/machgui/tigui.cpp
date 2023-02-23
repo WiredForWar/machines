@@ -14,10 +14,9 @@ class GuiDisplayable;
 
 static void tiGui()
 {
-	static ctl_vector< MexPoint2d >			dummy1;
-	static ctl_vector< GuiDisplayable * >	dummy2;
-	static ctl_vector< MachContinentMap::ActorPosInfo > dummy3;
+    static ctl_vector<MexPoint2d> dummy1;
+    static ctl_vector<GuiDisplayable*> dummy2;
+    static ctl_vector<MachContinentMap::ActorPosInfo> dummy3;
 }
 
 /* End TIGUI.CPP ****************************************************/
-

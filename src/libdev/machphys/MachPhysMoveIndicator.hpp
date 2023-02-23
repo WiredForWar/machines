@@ -12,22 +12,22 @@ class MachPhysMoveIndicator : public W4dSprite3d
 {
 public:
     MachPhysMoveIndicator(W4dEntity* pParent, const W4dTransform3d& localTransform, MATHEX_SCALAR size);
-    ~MachPhysMoveIndicator();
+    ~MachPhysMoveIndicator() override;
 
     // NON-COPYABLE /////////////////////////////////////////////////////////////
-    MachPhysMoveIndicator( const MachPhysMoveIndicator& ) = delete;
-    MachPhysMoveIndicator& operator =( const MachPhysMoveIndicator& ) = delete;
-    bool operator ==( const MachPhysMoveIndicator& ) = delete;
+    MachPhysMoveIndicator(const MachPhysMoveIndicator&) = delete;
+    MachPhysMoveIndicator& operator=(const MachPhysMoveIndicator&) = delete;
+    bool operator==(const MachPhysMoveIndicator&) = delete;
     /////////////////////////////////////////////////////////////////////////////
 
-    static constexpr PhysRelativeTime DisplayTime{ 1 };
+    static constexpr PhysRelativeTime DisplayTime { 1 };
     void startFadeOut(const PhysAbsoluteTime& startTime);
 
     /////////////////////////////////////////////////////////////////////////////
-    friend ostream& operator <<( ostream& o, const MachPhysMoveIndicator& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMoveIndicator& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysMoveIndicator );
-    PER_FRIEND_READ_WRITE( MachPhysMoveIndicator );
+    PER_MEMBER_PERSISTENT(MachPhysMoveIndicator);
+    PER_FRIEND_READ_WRITE(MachPhysMoveIndicator);
 
 private:
     static const W4dVisibilityPlanPtr& getFadeAwayPlan();
@@ -37,4 +37,4 @@ private:
     static RenMaterial createMaterial();
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMoveIndicator );
+PER_DECLARE_PERSISTENT(MachPhysMoveIndicator);

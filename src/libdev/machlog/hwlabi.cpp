@@ -1,5 +1,5 @@
 /*
- * H W L A B I . C P P 
+ * H W L A B I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,11 +9,11 @@
 #include "sim/manager.hpp"
 #include "machlog/resitem.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogHardwareLabImpl );
+PER_DEFINE_PERSISTENT(MachLogHardwareLabImpl);
 
-MachLogHardwareLabImpl::MachLogHardwareLabImpl( MachPhys::HardwareLabSubType subType )
-:	subType_( subType ),
-	lastUpdateTime_( SimManager::instance().currentTime() )
+MachLogHardwareLabImpl::MachLogHardwareLabImpl(MachPhys::HardwareLabSubType subType)
+    : subType_(subType)
+    , lastUpdateTime_(SimManager::instance().currentTime())
 {
 
     TEST_INVARIANT;
@@ -22,15 +22,14 @@ MachLogHardwareLabImpl::MachLogHardwareLabImpl( MachPhys::HardwareLabSubType sub
 MachLogHardwareLabImpl::~MachLogHardwareLabImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogHardwareLabImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogHardwareLabImpl& t )
+ostream& operator<<(ostream& o, const MachLogHardwareLabImpl& t)
 {
 
     o << "MachLogHardwareLabImpl " << (void*)&t << " start" << std::endl;
@@ -39,23 +38,23 @@ ostream& operator <<( ostream& o, const MachLogHardwareLabImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogHardwareLabImpl& actorImpl )
+void perWrite(PerOstream& ostr, const MachLogHardwareLabImpl& actorImpl)
 {
-	ostr << actorImpl.availableResearchItems_;
-	ostr << actorImpl.currentResearchQueue_;
-	ostr << actorImpl.lastUpdateTime_;
-	ostr << actorImpl.subType_;	
+    ostr << actorImpl.availableResearchItems_;
+    ostr << actorImpl.currentResearchQueue_;
+    ostr << actorImpl.lastUpdateTime_;
+    ostr << actorImpl.subType_;
 }
 
-void perRead( PerIstream& istr, MachLogHardwareLabImpl& actorImpl )
+void perRead(PerIstream& istr, MachLogHardwareLabImpl& actorImpl)
 {
- 	istr >> actorImpl.availableResearchItems_;
-	istr >> actorImpl.currentResearchQueue_;
-	istr >> actorImpl.lastUpdateTime_;
-	istr >> actorImpl.subType_;
+    istr >> actorImpl.availableResearchItems_;
+    istr >> actorImpl.currentResearchQueue_;
+    istr >> actorImpl.lastUpdateTime_;
+    istr >> actorImpl.subType_;
 }
 
-MachLogHardwareLabImpl::MachLogHardwareLabImpl( PerConstructor )
+MachLogHardwareLabImpl::MachLogHardwareLabImpl(PerConstructor)
 {
 }
 /* End HWLABI.CPP ***************************************************/

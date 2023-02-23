@@ -1,5 +1,5 @@
 /*
- * M I S S I L E I . H P P 
+ * M I S S I L E I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,33 +24,31 @@ class MachPhysMissileImpl
 // Canonical form revoked
 {
 public:
-
-    PER_MEMBER_PERSISTENT( MachPhysMissileImpl );
-    PER_FRIEND_READ_WRITE( MachPhysMissileImpl );
+    PER_MEMBER_PERSISTENT(MachPhysMissileImpl);
+    PER_FRIEND_READ_WRITE(MachPhysMissileImpl);
 
 private:
-
-    MachPhysMissileImpl( size_t level );
+    MachPhysMissileImpl(size_t level);
     ~MachPhysMissileImpl();
 
-    MachPhysMissileImpl( const MachPhysMissileImpl& );
-    MachPhysMissileImpl& operator =( const MachPhysMissileImpl& );
+    MachPhysMissileImpl(const MachPhysMissileImpl&);
+    MachPhysMissileImpl& operator=(const MachPhysMissileImpl&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMissileImpl& t );
-	friend class  MachPhysMissile;
+    friend ostream& operator<<(ostream& o, const MachPhysMissileImpl& t);
+    friend class MachPhysMissile;
 
-	//data members
+    // data members
     MachPhysVapourTrail* pVapourTrail_;
-    MexVec3         vapourTrailOffset_;
+    MexVec3 vapourTrailOffset_;
     PhysAbsoluteTime destructionTime_;
 
-	size_t level_;
-	W4dLink* pFlame_;
+    size_t level_;
+    W4dLink* pFlame_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMissileImpl );
+PER_DECLARE_PERSISTENT(MachPhysMissileImpl);
 
 #endif
 

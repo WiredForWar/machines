@@ -1,5 +1,5 @@
 /*
- * F O L L O W I . H P P 
+ * F O L L O W I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,30 +22,31 @@
 class MachLogFollowOperationImpl
 {
 public:
-	MachLogFollowOperationImpl( MachLogMachine * pActor, 
-							MachLogMachine* pTarget,
-                            const MexPoint2d& offset, 
-							MachLogFollowOperation::CamouflagedOp camoStatus,
-                            MachLogFollowOperation::TerminateFlag terminateFlag );
-	~MachLogFollowOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogFollowOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogFollowOperationImpl );
-	
-	void CLASS_INVARIANT;
+    MachLogFollowOperationImpl(
+        MachLogMachine* pActor,
+        MachLogMachine* pTarget,
+        const MexPoint2d& offset,
+        MachLogFollowOperation::CamouflagedOp camoStatus,
+        MachLogFollowOperation::TerminateFlag terminateFlag);
+    ~MachLogFollowOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogFollowOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogFollowOperationImpl);
 
-	friend class MachLogFollowOperation;
-	
+    void CLASS_INVARIANT;
+
+    friend class MachLogFollowOperation;
+
 private:
-
-	MachLogMachine* 							pActor_; //the object doing the following
-    MachLogMachine* 							pTarget_; //the object being followed
-    MexPoint2d 									offset_; //The offset
-	MachLogFollowOperation::CamouflagedOp 		camoStatus_;	// whether or not this operation is to be executed with camouflage enabled
-	MachLogFollowOperation::TerminateFlag       terminateFlag_; // whether or not we should terminate the op when sufficiently close to the target
-	
+    MachLogMachine* pActor_; // the object doing the following
+    MachLogMachine* pTarget_; // the object being followed
+    MexPoint2d offset_; // The offset
+    MachLogFollowOperation::CamouflagedOp
+        camoStatus_; // whether or not this operation is to be executed with camouflage enabled
+    MachLogFollowOperation::TerminateFlag
+        terminateFlag_; // whether or not we should terminate the op when sufficiently close to the target
 };
 
-PER_DECLARE_PERSISTENT( MachLogFollowOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogFollowOperationImpl);
 
 #endif
 

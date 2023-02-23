@@ -23,39 +23,37 @@ class MachPhysParticles : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysParticles( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysParticles(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysParticles& exemplar();
 
-    //dtor
-    ~MachPhysParticles();
+    // dtor
+    ~MachPhysParticles() override;
 
-     //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysParticles& t );
+    friend ostream& operator<<(ostream& o, const MachPhysParticles& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysParticles );
+    PER_MEMBER_PERSISTENT(MachPhysParticles);
 
 private:
-    //Deliberately revoked
-    MachPhysParticles( const MachPhysParticles& );
-    MachPhysParticles& operator =( const MachPhysParticles& );
-    bool operator ==( const MachPhysParticles& );
-	void createSTFParticle(const Ren::MeshPtr& mesh);
+    // Deliberately revoked
+    MachPhysParticles(const MachPhysParticles&);
+    MachPhysParticles& operator=(const MachPhysParticles&);
+    bool operator==(const MachPhysParticles&);
+    void createSTFParticle(const Ren::MeshPtr& mesh);
 
-	friend class MachPhysOtherPersistence;
-	//one time ctor
+    friend class MachPhysOtherPersistence;
+    // one time ctor
     MachPhysParticles();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysParticles );
-PER_READ_WRITE( MachPhysParticles );
+PER_DECLARE_PERSISTENT(MachPhysParticles);
+PER_READ_WRITE(MachPhysParticles);
 
 #endif
 

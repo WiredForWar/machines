@@ -1,5 +1,5 @@
 /*
- * M E N U B U T N . C P P 
+ * M E N U B U T N . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,35 +19,42 @@
 #include "system/winapi.hpp"
 #include "machgui/menus_helper.hpp"
 
-MachGuiMenuButton::MachGuiMenuButton(GuiRoot* pRootParent, MachGuiStartupScreens* pParent, const Gui::Box& box,
-                                     unsigned int stringId,
-                                     MachGuiStartupScreens::ButtonEvent buttonEvent)
-:	GuiDisplayable( pParent, box ),
-    MachGuiFocusCapableControl( pParent ),
-    pRootParent_( pRootParent),
-    pStartupScreens_( pParent ),
-    stringId_( stringId ),
-    highlighted_( false ),
-    flash_( false ),
-    disabled_( false ),
-    msgBoxButton_( false ),
-    buttonEvent_( buttonEvent )
+MachGuiMenuButton::MachGuiMenuButton(
+    GuiRoot* pRootParent,
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    unsigned int stringId,
+    MachGuiStartupScreens::ButtonEvent buttonEvent)
+    : GuiDisplayable(pParent, box)
+    , MachGuiFocusCapableControl(pParent)
+    , pRootParent_(pRootParent)
+    , pStartupScreens_(pParent)
+    , stringId_(stringId)
+    , highlighted_(false)
+    , flash_(false)
+    , disabled_(false)
+    , msgBoxButton_(false)
+    , buttonEvent_(buttonEvent)
 {
 
     TEST_INVARIANT;
 }
 
-MachGuiMenuButton::MachGuiMenuButton( 	MachGuiStartupScreens* pStartupScreens, const Gui::Box& box, unsigned int stringId, 
-                                        MachGuiStartupScreens::ButtonEvent buttonEvent, GuiDisplayable* pParent )
-:	GuiDisplayable( pParent, box ),
-    MachGuiFocusCapableControl( pStartupScreens ),
-    pStartupScreens_( pStartupScreens ),
-    stringId_( stringId ),
-    highlighted_( false ),
-    flash_( false ),
-    disabled_( false ),
-    msgBoxButton_( false ),
-    buttonEvent_( buttonEvent )
+MachGuiMenuButton::MachGuiMenuButton(
+    MachGuiStartupScreens* pStartupScreens,
+    const Gui::Box& box,
+    unsigned int stringId,
+    MachGuiStartupScreens::ButtonEvent buttonEvent,
+    GuiDisplayable* pParent)
+    : GuiDisplayable(pParent, box)
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , pStartupScreens_(pStartupScreens)
+    , stringId_(stringId)
+    , highlighted_(false)
+    , flash_(false)
+    , disabled_(false)
+    , msgBoxButton_(false)
+    , buttonEvent_(buttonEvent)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
@@ -56,15 +63,14 @@ MachGuiMenuButton::MachGuiMenuButton( 	MachGuiStartupScreens* pStartupScreens, c
 MachGuiMenuButton::~MachGuiMenuButton()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiMenuButton::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiMenuButton& t )
+ostream& operator<<(ostream& o, const MachGuiMenuButton& t)
 {
 
     o << "MachGuiMenuButton " << (void*)&t << " start" << std::endl;
@@ -73,78 +79,78 @@ ostream& operator <<( ostream& o, const MachGuiMenuButton& t )
     return o;
 }
 
-//virtual 
-void MachGuiMenuButton::doHandleMouseClickEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiMenuButton::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-	if ( disabled_ )
-	{
-		// Can not press button when disabled. Play discouraging sound...
-		if ( rel.leftButton() == Gui::RELEASED )
-		{
-			MachGuiSoundManager::instance().playSound( "gui/sounds/clickbad.wav" ); 
-		}
+    if (disabled_)
+    {
+        // Can not press button when disabled. Play discouraging sound...
+        if (rel.leftButton() == Gui::RELEASED)
+        {
+            MachGuiSoundManager::instance().playSound("gui/sounds/clickbad.wav");
+        }
 
-		return;
-	}
+        return;
+    }
 
-	if ( rel.leftButton() == Gui::PRESSED )
-	{
-		flash_ = true;
-		changed();
-	}
-	else
-	{
-		flash_ = false;
-		changed();
-		pStartupScreens_->buttonAction( buttonEvent_ );
-	}
+    if (rel.leftButton() == Gui::PRESSED)
+    {
+        flash_ = true;
+        changed();
+    }
+    else
+    {
+        flash_ = false;
+        changed();
+        pStartupScreens_->buttonAction(buttonEvent_);
+    }
 }
 
-//virtual 
-void MachGuiMenuButton::doHandleMouseExitEvent( const GuiMouseEvent& /*rel*/ )
+// virtual
+void MachGuiMenuButton::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
-	if ( disabled_ )
-		return;
+    if (disabled_)
+        return;
 
-	highlighted_ = false;
-	flash_ = false;
-	changed();
+    highlighted_ = false;
+    flash_ = false;
+    changed();
 }
 
-//virtual 
-void MachGuiMenuButton::doHandleMouseEnterEvent( const GuiMouseEvent& /*rel*/ )
+// virtual
+void MachGuiMenuButton::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
-	if ( disabled_ )
-		return;
+    if (disabled_)
+        return;
 
-	//Set up the sound to be played
-	MachGuiSoundManager::instance().playSound( "gui/sounds/highligh.wav" );
+    // Set up the sound to be played
+    MachGuiSoundManager::instance().playSound("gui/sounds/highligh.wav");
 
-	highlighted_ = true;
-	changed();
+    highlighted_ = true;
+    changed();
 }
 
-//virtual 
+// virtual
 void MachGuiMenuButton::doDisplay()
 {
     static uint glowWidth = MachGui::buttonGlowBmp().width();
     static uint glowHeight = MachGui::buttonGlowBmp().height();
 
-    ASSERT( glowWidth >= width(), "glow bitmap not wide enough" );
-    ASSERT( glowHeight >= height(), "glow bitmap not high enough" );
-    ASSERT( MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough" );
-    ASSERT( MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough" );
+    ASSERT(glowWidth >= width(), "glow bitmap not wide enough");
+    ASSERT(glowHeight >= height(), "glow bitmap not high enough");
+    ASSERT(MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough");
+    ASSERT(MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough");
 
-    uint glowX = ( glowWidth - width() ) / 2.0;
-    uint glowY = ( glowHeight - height() ) / 2.0;
+    uint glowX = (glowWidth - width()) / 2.0;
+    uint glowY = (glowHeight - height()) / 2.0;
 
     // Draw background to button ( glow or normal backdrop ).
-    if ( flash_ or highlighted_ )
+    if (flash_ or highlighted_)
     {
-        GuiPainter::instance().blit( 	MachGui::buttonGlowBmp(),
-                                        Gui::Box( 	Gui::Coord( glowX, glowY ),
-                                                    width(), height() ),
-                                        absoluteBoundary().minCorner() );
+        GuiPainter::instance().blit(
+            MachGui::buttonGlowBmp(),
+            Gui::Box(Gui::Coord(glowX, glowY), width(), height()),
+            absoluteBoundary().minCorner());
     }
     else
     {
@@ -153,165 +159,162 @@ void MachGuiMenuButton::doDisplay()
             auto* shared = pRootParent_->getSharedBitmaps();
             auto msgBoxBackdrop = shared->getNamedBitmap("msgbox");
             shared->blitNamedBitmapFromArea(
-                    msgBoxBackdrop,
-                    absoluteBoundary(),
-                    absoluteBoundary().minCorner(),
-                    [shared, msgBoxBackdrop](const Gui::Box& box) {
-                        using namespace machgui::helper::menus;
-                        return centered_bitmap_transform(
-                                box,
-                                shared->getWidthOfNamedBitmap(msgBoxBackdrop),
-                                shared->getHeightOfNamedBitmap(msgBoxBackdrop)
-                        );
-                    });
+                msgBoxBackdrop,
+                absoluteBoundary(),
+                absoluteBoundary().minCorner(),
+                [shared, msgBoxBackdrop](const Gui::Box& box) {
+                    using namespace machgui::helper::menus;
+                    return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(msgBoxBackdrop),
+                        shared->getHeightOfNamedBitmap(msgBoxBackdrop));
+                });
         }
         else
         {
             auto* shared = pRootParent_->getSharedBitmaps();
             auto backdrop = shared->getNamedBitmap("backdrop");
             shared->blitNamedBitmapFromArea(
-                    backdrop,
-                    absoluteBoundary(),
-                    absoluteBoundary().minCorner(),
-                    [shared, backdrop](const Gui::Box& box) {
-                        using namespace machgui::helper::menus;
-                        return centered_bitmap_transform(
-                                box,
-                                shared->getWidthOfNamedBitmap(backdrop),
-                                shared->getHeightOfNamedBitmap(backdrop)
-                        );
-                    });
+                backdrop,
+                absoluteBoundary(),
+                absoluteBoundary().minCorner(),
+                [shared, backdrop](const Gui::Box& box) {
+                    using namespace machgui::helper::menus;
+                    return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop));
+                });
         }
-
     }
 
-    GuiBmpFont darkfont( GuiBmpFont::getFont( "gui/menu/largdfnt.bmp" ) );
-    GuiBmpFont lightfont( GuiBmpFont::getFont( "gui/menu/largefnt.bmp" ) );
-    GuiBmpFont focusfont( GuiBmpFont::getFont( "gui/menu/largyfnt.bmp" ) );
+    GuiBmpFont darkfont(GuiBmpFont::getFont("gui/menu/largdfnt.bmp"));
+    GuiBmpFont lightfont(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    GuiBmpFont focusfont(GuiBmpFont::getFont("gui/menu/largyfnt.bmp"));
 
-    GuiResourceString str( stringId_ );
+    GuiResourceString str(stringId_);
     string text = str.asString();
 
-    size_t textWidth = darkfont.textWidth( text );
+    size_t textWidth = darkfont.textWidth(text);
     size_t textHeight = darkfont.charHeight();
 
-    size_t textX = absoluteBoundary().minCorner().x() + ( width() - textWidth ) / 2.0;
-    size_t textY = absoluteBoundary().minCorner().y() + ( height() - textHeight ) / 2.0;
+    size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
+    size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
 
     // Draw text
-    if ( flash_ )
+    if (flash_)
     {
-        darkfont.underline( true );
-        darkfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+        darkfont.underline(true);
+        darkfont.drawText(text, Gui::Coord(textX, textY), 1000);
     }
-    else if ( highlighted_ )
+    else if (highlighted_)
     {
-        darkfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+        darkfont.drawText(text, Gui::Coord(textX, textY), 1000);
     }
     else
     {
-        if ( isFocusControl() )
+        if (isFocusControl())
         {
-            focusfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+            focusfont.drawText(text, Gui::Coord(textX, textY), 1000);
         }
         else
         {
-            lightfont.drawText( text, Gui::Coord( textX, textY ), 1000 );
+            lightfont.drawText(text, Gui::Coord(textX, textY), 1000);
         }
     }
 
     // Show disabled button if necessary
-    if ( disabled_ )
+    if (disabled_)
     {
-        GuiPainter::instance().blit( 	MachGui::buttonDisableBmp(),
-                                        Gui::Box( 	Gui::Coord( 0, 0 ),
-                                                    width(), height() ),
-                                        absoluteBoundary().minCorner() );
+        GuiPainter::instance().blit(
+            MachGui::buttonDisableBmp(),
+            Gui::Box(Gui::Coord(0, 0), width(), height()),
+            absoluteBoundary().minCorner());
     }
-
 }
 
-void MachGuiMenuButton::disabled( bool disable )
+void MachGuiMenuButton::disabled(bool disable)
 {
-	if ( disabled_ != disable )
-	{
-		disabled_ = disable;
-		flash_ = false;
-		highlighted_ = false;
-		changed();
-	}
+    if (disabled_ != disable)
+    {
+        disabled_ = disable;
+        flash_ = false;
+        highlighted_ = false;
+        changed();
+    }
 }
 
 bool MachGuiMenuButton::highlighted() const
 {
-	return highlighted_;
+    return highlighted_;
 }
 
 uint MachGuiMenuButton::stringId() const
 {
-	return stringId_;
+    return stringId_;
 }
 
-//virtual 
+// virtual
 bool MachGuiMenuButton::isEnabled() const
 {
-	return !disabled_ && MachGuiFocusCapableControl::isEnabled();
+    return !disabled_ && MachGuiFocusCapableControl::isEnabled();
 }
 
-//virtual 
+// virtual
 bool MachGuiMenuButton::executeControl()
 {
-	static uint glowWidth = MachGui::buttonGlowBmp().width();
-	static uint glowHeight = MachGui::buttonGlowBmp().height();
+    static uint glowWidth = MachGui::buttonGlowBmp().width();
+    static uint glowHeight = MachGui::buttonGlowBmp().height();
 
-	ASSERT( glowWidth >= width(), "glow bitmap not wide enough" );
-	ASSERT( glowHeight >= height(), "glow bitmap not high enough" );
-	ASSERT( MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough" );
-	ASSERT( MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough" );
+    ASSERT(glowWidth >= width(), "glow bitmap not wide enough");
+    ASSERT(glowHeight >= height(), "glow bitmap not high enough");
+    ASSERT(MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough");
+    ASSERT(MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough");
 
-	uint glowX = ( glowWidth - width() ) / 2.0;
-	uint glowY = ( glowHeight - height() ) / 2.0;
+    uint glowX = (glowWidth - width()) / 2.0;
+    uint glowY = (glowHeight - height()) / 2.0;
 
-	// Draw glow background to button.
-	RenSurface frontSurface = RenDevice::current()->frontSurface();
-	frontSurface.simpleBlit(MachGui::buttonGlowBmp(), 
-							Ren::Rect( glowX, glowY, width(), height() ), 
-							absoluteBoundary().minCorner().x(),
-							absoluteBoundary().minCorner().y() );
+    // Draw glow background to button.
+    RenSurface frontSurface = RenDevice::current()->frontSurface();
+    frontSurface.simpleBlit(
+        MachGui::buttonGlowBmp(),
+        Ren::Rect(glowX, glowY, width(), height()),
+        absoluteBoundary().minCorner().x(),
+        absoluteBoundary().minCorner().y());
 
-	// Draw dark text
-	GuiBmpFont darkfont( GuiBmpFont::getFont( "gui/menu/largdfnt.bmp" ) );
-	
-	GuiResourceString str( stringId_ );
-	string text = str.asString();
+    // Draw dark text
+    GuiBmpFont darkfont(GuiBmpFont::getFont("gui/menu/largdfnt.bmp"));
 
-	size_t textWidth = darkfont.textWidth( text );
-	size_t textHeight = darkfont.charHeight();
+    GuiResourceString str(stringId_);
+    string text = str.asString();
 
-	size_t textX = absoluteBoundary().minCorner().x() + ( width() - textWidth ) / 2.0;
-	size_t textY = absoluteBoundary().minCorner().y() + ( height() - textHeight ) / 2.0;
+    size_t textWidth = darkfont.textWidth(text);
+    size_t textHeight = darkfont.charHeight();
 
-	// Draw text
-	darkfont.drawText( &frontSurface, text, Gui::Coord( textX, textY ), 1000 );
+    size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
+    size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
 
-	// Slight pause so on fast PCs you can still see buttons flash
-	SysWindowsAPI::sleep( 100 );
+    // Draw text
+    darkfont.drawText(&frontSurface, text, Gui::Coord(textX, textY), 1000);
 
-	// Refresh button
-	changed();
+    // Slight pause so on fast PCs you can still see buttons flash
+    SysWindowsAPI::sleep(100);
 
-	// Initiate button action
-	pStartupScreens_->buttonAction( buttonEvent_ );
-		
-	return true;
+    // Refresh button
+    changed();
+
+    // Initiate button action
+    pStartupScreens_->buttonAction(buttonEvent_);
+
+    return true;
 }
 
-//virtual 
-void MachGuiMenuButton::hasFocus( bool newValue )
+// virtual
+void MachGuiMenuButton::hasFocus(bool newValue)
 {
-	MachGuiFocusCapableControl::hasFocus( newValue );
+    MachGuiFocusCapableControl::hasFocus(newValue);
 
-	changed();
+    changed();
 }
 
 /* End MENUBUTN.CPP *************************************************/

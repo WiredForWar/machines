@@ -26,7 +26,7 @@
 #include "machphys/random.hpp"
 #include "machphys/effects.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysFlame );
+PER_DEFINE_PERSISTENT(MachPhysFlame);
 
 MachPhysFlame::MachPhysFlame(
     W4dEntity* pParent,
@@ -36,19 +36,19 @@ MachPhysFlame::MachPhysFlame(
     MATHEX_SCALAR height,
     MATHEX_SCALAR dOffset,
     const PhysAbsoluteTime& startTime,
-    const PhysRelativeTime& duration )
-: W4dSprite3d( pParent, localTransform, width, height, initialMaterial( flameType ) ),
-  flameType_( flameType ),
-  duration_(duration)
+    const PhysRelativeTime& duration)
+    : W4dSprite3d(pParent, localTransform, width, height, initialMaterial(flameType))
+    , flameType_(flameType)
+    , duration_(duration)
 {
-	// The current model is all black with emissive flames and things.  Hence,
-	// it should not need lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all black with emissive flames and things.  Hence,
+    // it should not need lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    depthOffset( dOffset );
-    visible( false );
+    depthOffset(dOffset);
+    visible(false);
 
-    startFlame( startTime );
+    startFlame(startTime);
 }
 
 MachPhysFlame::MachPhysFlame(
@@ -57,17 +57,17 @@ MachPhysFlame::MachPhysFlame(
     MachPhysFlameType flameType,
     MATHEX_SCALAR size,
     MATHEX_SCALAR dOffset,
-    const PhysRelativeTime& duration )
-: W4dSprite3d( pParent, localTransform, size, size, initialMaterial( flameType ) ),
-  flameType_( flameType ),
-  duration_(duration)
+    const PhysRelativeTime& duration)
+    : W4dSprite3d(pParent, localTransform, size, size, initialMaterial(flameType))
+    , flameType_(flameType)
+    , duration_(duration)
 {
-	// The current model is all black with emissive flames and things.  Hence,
-	// it should not need lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all black with emissive flames and things.  Hence,
+    // it should not need lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    depthOffset( dOffset );
-    visible( false );
+    depthOffset(dOffset);
+    visible(false);
 }
 
 MachPhysFlame::MachPhysFlame(
@@ -77,22 +77,22 @@ MachPhysFlame::MachPhysFlame(
     MATHEX_SCALAR width,
     MATHEX_SCALAR height,
     MATHEX_SCALAR dOffset,
-    const PhysRelativeTime& duration )
-: W4dSprite3d( pParent, localTransform, width, height, initialMaterial( flameType ) ),
-  flameType_( flameType ),
-  duration_(duration)
+    const PhysRelativeTime& duration)
+    : W4dSprite3d(pParent, localTransform, width, height, initialMaterial(flameType))
+    , flameType_(flameType)
+    , duration_(duration)
 {
-	// The current model is all black with emissive flames and things.  Hence,
-	// it should not need lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all black with emissive flames and things.  Hence,
+    // it should not need lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    depthOffset( dOffset );
-    visible( false );
-	YUEAI_STREAM( " MachPhysFlame ctor " << std::endl );
+    depthOffset(dOffset);
+    visible(false);
+    YUEAI_STREAM(" MachPhysFlame ctor " << std::endl);
 }
 
-MachPhysFlame::MachPhysFlame( PerConstructor con )
-: W4dSprite3d( con )
+MachPhysFlame::MachPhysFlame(PerConstructor con)
+    : W4dSprite3d(con)
 {
 }
 
@@ -101,34 +101,33 @@ MachPhysFlame::~MachPhysFlame()
     TEST_INVARIANT;
 }
 
-void MachPhysFlame::startFlame( const PhysRelativeTime& startTime )
+void MachPhysFlame::startFlame(const PhysRelativeTime& startTime)
 {
-    //Get the entity plan for this entity
+    // Get the entity plan for this entity
     W4dEntityPlan& entityPlan = entityPlanForEdit();
 
+    // static uint frameNumber = 0;
+    // Construct a frame based material plan with a random frame offset
+    W4dMaterialFramePlan* pMaterialPlan = _NEW(W4dMaterialFramePlan(
+        materialsPtr(flameType_),
+        /*frameNumber, */ MachPhysRandom::randomInt(0, 15),
+        duration_));
+    // frameNumber+= 5;
+    // frameNumber %= 16;
 
-	//static uint frameNumber = 0;
-    //Construct a frame based material plan with a random frame offset
-    W4dMaterialFramePlan* pMaterialPlan =
-        _NEW( W4dMaterialFramePlan( materialsPtr( flameType_ ),
-                                    /*frameNumber, */MachPhysRandom::randomInt(0, 15),
-                                    duration_ ) );
-	//frameNumber+= 5;
-	//frameNumber %= 16;
+    W4dMaterialPlanPtr materialPlanPtr(pMaterialPlan);
+    entityPlan.materialPlan(materialPlanPtr, startTime);
 
-    W4dMaterialPlanPtr materialPlanPtr( pMaterialPlan );
-    entityPlan.materialPlan( materialPlanPtr, startTime );
-
-    //Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW( W4dVisibilityPlan( true ) );
-    visibilityPlanPtr->add( false, duration_ );
-    entityPlan.visibilityPlan( visibilityPlanPtr, startTime );
+    // Add the visibility plan
+    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    visibilityPlanPtr->add(false, duration_);
+    entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 }
 
 // static
 MachPhysFlameType MachPhysFlame::randomFlame()
 {
-    MachPhysFlameType    result = FLAME_1;
+    MachPhysFlameType result = FLAME_1;
     return result;
 }
 
@@ -139,96 +138,91 @@ void MachPhysFlame::preload()
 }
 
 // static
-const MachPhysFlame::MaterialsPtr&   MachPhysFlame::materials1Ptr()
+const MachPhysFlame::MaterialsPtr& MachPhysFlame::materials1Ptr()
 {
     static MaterialsPtr materialsPtr;
     static bool once = true;
 
-    if( once )
+    if (once)
     {
         once = false;
 
-        //Get the textures
+        // Get the textures
         const MachPhysEffects::Textures& textures = MachPhysEffects::flameTextures();
         uint nTextures = textures.size();
 
-        //Construct a vector of materials
-        Materials* pMaterials = _NEW( Materials );
-        pMaterials->reserve( nTextures );
+        // Construct a vector of materials
+        Materials* pMaterials = _NEW(Materials);
+        pMaterials->reserve(nTextures);
 
-        for( size_t i = 0; i != nTextures; ++i )
-            addMaterial( pMaterials, textures[i] );
+        for (size_t i = 0; i != nTextures; ++i)
+            addMaterial(pMaterials, textures[i]);
 
-        //Store in counted pointer
+        // Store in counted pointer
         materialsPtr = pMaterials;
     }
 
     return materialsPtr;
 }
 
-void MachPhysFlame::addMaterial( Materials* pMaterials, const RenTexture& texture )
+void MachPhysFlame::addMaterial(Materials* pMaterials, const RenTexture& texture)
 {
-    //Create the material that uses it
+    // Create the material that uses it
     RenMaterial material(RenColour::black());
-	material.emissive(RenColour::white());
-    material.texture( texture );
+    material.emissive(RenColour::white());
+    material.texture(texture);
 
-    //Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW( RenMaterialVec( 1 ) );
-    pMaterialVec->push_back( material );
+    // Create a material vector consisting of the single material
+    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    pMaterialVec->push_back(material);
 
-    //Add a counted pointer to the material vector to the argument
-    pMaterials->push_back( Ren::MaterialVecPtr( pMaterialVec ) );
+    // Add a counted pointer to the material vector to the argument
+    pMaterials->push_back(Ren::MaterialVecPtr(pMaterialVec));
 }
 
-RenMaterial MachPhysFlame::initialMaterial( MachPhysFlameType flameType )
+RenMaterial MachPhysFlame::initialMaterial(MachPhysFlameType flameType)
 {
-    const Materials& flameMaterials = *materialsPtr( flameType );
-    const RenMaterialVec& materialVec = *(flameMaterials.front() );
+    const Materials& flameMaterials = *materialsPtr(flameType);
+    const RenMaterialVec& materialVec = *(flameMaterials.front());
     return materialVec.front();
 }
 
 void MachPhysFlame::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//static
-const MachPhysFlame::MaterialsPtr&   MachPhysFlame::materialsPtr
-(
-    MachPhysFlameType flameType
-)
+// static
+const MachPhysFlame::MaterialsPtr& MachPhysFlame::materialsPtr(MachPhysFlameType flameType)
 {
-    switch( flameType )
+    switch (flameType)
     {
         case FLAME_1:
             return materials1Ptr();
         default:
-            ASSERT_BAD_CASE_INFO( flameType );
+            ASSERT_BAD_CASE_INFO(flameType);
     }
 
     return materials1Ptr();
 }
 
-void MachPhysFlame::startBurning( const PhysAbsoluteTime& startTime )
+void MachPhysFlame::startBurning(const PhysAbsoluteTime& startTime)
 {
-    //Get the entity plan for this entity
+    // Get the entity plan for this entity
     W4dEntityPlan& entityPlan = entityPlanForEdit();
 
-    //Construct a frame based material plan with a random frame offset
-    W4dMaterialFramePlan* pMaterialPlan =
-        _NEW( W4dMaterialFramePlan( materialsPtr( flameType_ ),
-                                    MachPhysRandom::randomInt(0, 15),
-                                    duration_ ) );
+    // Construct a frame based material plan with a random frame offset
+    W4dMaterialFramePlan* pMaterialPlan
+        = _NEW(W4dMaterialFramePlan(materialsPtr(flameType_), MachPhysRandom::randomInt(0, 15), duration_));
 
-    W4dMaterialPlanPtr materialPlanPtr( pMaterialPlan );
-    entityPlan.materialPlan( materialPlanPtr, startTime );
+    W4dMaterialPlanPtr materialPlanPtr(pMaterialPlan);
+    entityPlan.materialPlan(materialPlanPtr, startTime);
 
-    //Make it visible immediately
-    visible( true );
+    // Make it visible immediately
+    visible(true);
 }
 
-void perWrite( PerOstream& ostr, const MachPhysFlame& flame )
+void perWrite(PerOstream& ostr, const MachPhysFlame& flame)
 {
     const W4dSprite3d& base = flame;
 
@@ -238,7 +232,7 @@ void perWrite( PerOstream& ostr, const MachPhysFlame& flame )
     ostr << flame.flameType_;
 }
 
-void perRead( PerIstream& istr, MachPhysFlame& flame )
+void perRead(PerIstream& istr, MachPhysFlame& flame)
 {
     W4dSprite3d& base = flame;
 
@@ -248,15 +242,15 @@ void perRead( PerIstream& istr, MachPhysFlame& flame )
     istr >> flame.flameType_;
 }
 
-ostream& operator <<( ostream& ostr, MachPhysFlameType type )
+ostream& operator<<(ostream& ostr, MachPhysFlameType type)
 {
-    switch( type )
+    switch (type)
     {
         case FLAME_1:
             ostr << "flame 1";
             break;
         default:
-            ASSERT_BAD_CASE_INFO( (int)type );
+            ASSERT_BAD_CASE_INFO((int)type);
     }
 
     return ostr;

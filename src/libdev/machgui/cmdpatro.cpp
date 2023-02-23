@@ -16,12 +16,12 @@
 #include "mathex/transf3d.hpp"
 #include "system/pathname.hpp"
 
-MachGuiPatrolCommand::MachGuiPatrolCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( false )
+MachGuiPatrolCommand::MachGuiPatrolCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(false)
 {
-    //Ensure reasonable vector size
-    path_.reserve( 8 );
+    // Ensure reasonable vector size
+    path_.reserve(8);
 
     TEST_INVARIANT;
 }
@@ -29,15 +29,14 @@ MachGuiPatrolCommand::MachGuiPatrolCommand( MachInGameScreen* pInGameScreen )
 MachGuiPatrolCommand::~MachGuiPatrolCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiPatrolCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiPatrolCommand& t )
+ostream& operator<<(ostream& o, const MachGuiPatrolCommand& t)
 {
 
     o << "MachGuiPatrolCommand " << (void*)&t << " start" << std::endl;
@@ -46,163 +45,160 @@ ostream& operator <<( ostream& o, const MachGuiPatrolCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiPatrolCommand::pickOnTerrain
-(
-    const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiPatrolCommand::pickOnTerrain(
+    const MexPoint3d& location,
+    bool ctrlPressed,
+    bool shiftPressed,
+    bool altPressed)
 {
-    //Check the location is on the ground - not up a hill
-    if( cursorOnTerrain( location, ctrlPressed, shiftPressed, altPressed ) == MachGui::PATROL_CURSOR )
+    // Check the location is on the ground - not up a hill
+    if (cursorOnTerrain(location, ctrlPressed, shiftPressed, altPressed) == MachGui::PATROL_CURSOR)
     {
-        //Store the location and set the action
-        path_.push_back( location );
+        // Store the location and set the action
+        path_.push_back(location);
 
-        if( not shiftPressed )
-		{
+        if (not shiftPressed)
+        {
             hadFinalPick_ = true;
-		}
-		else
-		{
-			// Waypoint click (i.e. not final click)
-			MachGuiSoundManager::instance().playSound( "gui/sounds/waypoint.wav" );
-		}
+        }
+        else
+        {
+            // Waypoint click (i.e. not final click)
+            MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
+        }
     }
 }
 
-//virtual
-void MachGuiPatrolCommand::pickOnActor
-(
-    MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiPatrolCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
-    //Check the location is on the ground - not up a hill
-    if( cursorOnActor( pActor, ctrlPressed, shiftPressed, altPressed ) == MachGui::PATROL_CURSOR )
+    // Check the location is on the ground - not up a hill
+    if (cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed) == MachGui::PATROL_CURSOR)
     {
-        //Store the location and set the action
-        path_.push_back( pActor->globalTransform().position() );
+        // Store the location and set the action
+        path_.push_back(pActor->globalTransform().position());
 
-        if( not shiftPressed )
-		{
+        if (not shiftPressed)
+        {
             hadFinalPick_ = true;
-		}
-		else
-		{
-			// Waypoint click (i.e. not final click)
-			MachGuiSoundManager::instance().playSound( "gui/sounds/waypoint.wav" );
-		}
+        }
+        else
+        {
+            // Waypoint click (i.e. not final click)
+            MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
+        }
     }
 }
 
-//virtual
-bool MachGuiPatrolCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiPatrolCommand::canActorEverExecute(const MachActor& actor) const
 {
     return actor.objectIsMachine();
 }
 
-//virtual
+// virtual
 bool MachGuiPatrolCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiPatrolCommand::doApply( MachActor* pActor, string* )
+// virtual
+bool MachGuiPatrolCommand::doApply(MachActor* pActor, string*)
 {
-    PRE( path_.size() != 0 );
+    PRE(path_.size() != 0);
 
-    //Only administrator's can do it at present
+    // Only administrator's can do it at present
     bool canDo = pActor->objectIsMachine();
-    if( canDo )
+    if (canDo)
     {
         MachLogPatrolOperation::Path path;
 
-		if ( convertPointsToValidPoints( IGNORE_SELECTED_ACTOR_OBSTACLES, &pActor->asMachine(), path_, &path ) )
-		{
-	        //Make the current position the last on the path
-        	path.push_back( pActor->position() );
+        if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, &pActor->asMachine(), path_, &path))
+        {
+            // Make the current position the last on the path
+            path.push_back(pActor->position());
 
-		    //Construct the patrol op
-	        MachLogPatrolOperation* pOp =
-	            _NEW( MachLogPatrolOperation( &pActor->asMachine(), path, true ) );
+            // Construct the patrol op
+            MachLogPatrolOperation* pOp = _NEW(MachLogPatrolOperation(&pActor->asMachine(), path, true));
 
-	        //Give to actor
-	        pActor->newOperation( pOp );
+            // Give to actor
+            pActor->newOperation(pOp);
 
-		   	if( not hasPlayedVoiceMail() )
-			{
-				MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TASKED );
-				hasPlayedVoiceMail( true );
-			}
-		}
+            if (not hasPlayedVoiceMail())
+            {
+                MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TASKED);
+                hasPlayedVoiceMail(true);
+            }
+        }
     }
 
     return canDo;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiPatrolCommand::cursorOnTerrain( const MexPoint3d& location, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiPatrolCommand::cursorOnTerrain(const MexPoint3d& location, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
-    if( cursorInFogOfWar() or isPointValidOnTerrain( location, IGNORE_SELECTED_ACTOR_OBSTACLES ) )
+    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::PATROL_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiPatrolCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiPatrolCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
-	if ( pActor->objectIsConstruction() )
-	{
-    	return MachGui::INVALID_CURSOR;
-	}
+    if (pActor->objectIsConstruction())
+    {
+        return MachGui::INVALID_CURSOR;
+    }
 
     return MachGui::PATROL_CURSOR;
 }
 
-//virtual
-void MachGuiPatrolCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiPatrolCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiPatrolCommand::clone() const
 {
-    return _NEW( MachGuiPatrolCommand( &inGameScreen() ) );
+    return _NEW(MachGuiPatrolCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiPatrolCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/patrol.bmp", "gui/commands/patrol.bmp" );
+    static std::pair<string, string> names("gui/commands/patrol.bmp", "gui/commands/patrol.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiPatrolCommand::cursorPromptStringId() const
 {
     return IDS_PATROL_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiPatrolCommand::commandPromptStringid() const
 {
     return IDS_PATROL_START;
 }
 
-//virtual
-bool MachGuiPatrolCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiPatrolCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_P and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_P and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /* End CMDPATRO.CPP **************************************************/

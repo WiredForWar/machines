@@ -24,200 +24,197 @@ MachLogVoiceMail::~MachLogVoiceMail()
 {
     TEST_INVARIANT;
 
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	if(sampleHandleValid_)
-		invalidateSample();
+    if (sampleHandleValid_)
+        invalidateSample();
 
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
-MachLogVoiceMail::MachLogVoiceMail( VoiceMailID id )
-:	pImpl_( _NEW( MachLogVoiceMailImpl() ) )
+MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id)
+    : pImpl_(_NEW(MachLogVoiceMailImpl()))
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	id_ = id;
-	actorId_ = 0;
-	hasPosition_ = false;
-	hasStarted_ = false;
+    id_ = id;
+    actorId_ = 0;
+    hasPosition_ = false;
+    hasStarted_ = false;
 }
 
-MachLogVoiceMail::MachLogVoiceMail( VoiceMailID id, UtlId actorId )
-:	pImpl_( _NEW( MachLogVoiceMailImpl() ) )
+MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId)
+    : pImpl_(_NEW(MachLogVoiceMailImpl()))
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	//Calculate position from actorId_
-	id_ = id;
-	actorId_ = actorId;
-	hasStarted_ = false;
+    // Calculate position from actorId_
+    id_ = id;
+    actorId_ = actorId;
+    hasStarted_ = false;
 }
 
-MachLogVoiceMail::MachLogVoiceMail( VoiceMailID id,
-				  UtlId actorId,
-				  MexPoint3d& position )
-:	pImpl_( _NEW( MachLogVoiceMailImpl() ) )
+MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId, MexPoint3d& position)
+    : pImpl_(_NEW(MachLogVoiceMailImpl()))
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	id_ = id;
-	actorId_ = actorId;
-	hasPosition_ = true;
-	position_ = position;
-	hasStarted_ = false;
+    id_ = id;
+    actorId_ = actorId;
+    hasPosition_ = true;
+    position_ = position;
+    hasStarted_ = false;
 }
 
-MachLogVoiceMail::MachLogVoiceMail( VoiceMailID id,
-									MexPoint3d& position )
-:	pImpl_( _NEW( MachLogVoiceMailImpl() ) )
+MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, MexPoint3d& position)
+    : pImpl_(_NEW(MachLogVoiceMailImpl()))
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	id_ = id;
-	actorId_ = 0;
-	hasPosition_ = true;
-	position_ = position;
-	hasStarted_ = false;
+    id_ = id;
+    actorId_ = 0;
+    hasPosition_ = true;
+    position_ = position;
+    hasStarted_ = false;
 }
 
 VoiceMailID MachLogVoiceMail::id() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return id_;
+    return id_;
 }
 
 bool MachLogVoiceMail::hasActorId() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return (bool)actorId_;
+    return (bool)actorId_;
 }
 
 UtlId MachLogVoiceMail::actorId() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return actorId_;
+    return actorId_;
 }
 
 bool MachLogVoiceMail::hasPosition() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return hasPosition_;
+    return hasPosition_;
 }
 
 MexPoint3d MachLogVoiceMail::position() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return position_;
+    return position_;
 }
 
 void MachLogVoiceMail::play()
 {
-	CB_MachLogVoiceMail_DEPIMPL();
-	PRE(!isSampleValid())
+    CB_MachLogVoiceMail_DEPIMPL();
+    PRE(!isSampleValid())
 
-	MachLogVoiceMailManager::MailInfoVector& availableMail = *MachLogVoiceMailManager::instance().pAvailableVEMails();
-	MachLogVoiceMailInfo* info = availableMail[id_];
-    SOUND_STREAM( "Playing voicemail with id " << uint(id_) << std::endl);
-	ASSERT(info, "Invalid info ptr");
+    MachLogVoiceMailManager::MailInfoVector& availableMail = *MachLogVoiceMailManager::instance().pAvailableVEMails();
+    MachLogVoiceMailInfo* info = availableMail[id_];
+    SOUND_STREAM("Playing voicemail with id " << uint(id_) << std::endl);
+    ASSERT(info, "Invalid info ptr");
 
-	SndWaveformId param(info->wavName_);
-	sampleHandle_ = SndMixer::instance().playSample(param);
-	sampleHandleValid_ = true;
-	bool internalSampleHandleIsValid = SndMixer::instance().isAllocated(sampleHandle_);
+    SndWaveformId param(info->wavName_);
+    sampleHandle_ = SndMixer::instance().playSample(param);
+    sampleHandleValid_ = true;
+    bool internalSampleHandleIsValid = SndMixer::instance().isAllocated(sampleHandle_);
 
-	POST(isSampleValid());
+    POST(isSampleValid());
 }
 
 bool MachLogVoiceMail::isPlaying() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
-	bool isPlaying = false;
+    CB_MachLogVoiceMail_DEPIMPL();
+    bool isPlaying = false;
 
-	if(isSampleValid() && SndMixer::instance().isActive(sampleHandle_))
-		isPlaying = true;
+    if (isSampleValid() && SndMixer::instance().isActive(sampleHandle_))
+        isPlaying = true;
 
-	return isPlaying;
+    return isPlaying;
 }
 
 bool MachLogVoiceMail::isSampleValid() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return sampleHandleValid_;
+    return sampleHandleValid_;
 }
 
 void MachLogVoiceMail::stop()
 {
-	CB_MachLogVoiceMail_DEPIMPL();
-	PRE(isSampleValid());
-    bool isIt = isPlaying(); //Recording prevents this call inside PRE()
-	PRE(isIt);
+    CB_MachLogVoiceMail_DEPIMPL();
+    PRE(isSampleValid());
+    bool isIt = isPlaying(); // Recording prevents this call inside PRE()
+    PRE(isIt);
 
-	SndMixer::instance().stopSample(sampleHandle_);
-	invalidateSample();
+    SndMixer::instance().stopSample(sampleHandle_);
+    invalidateSample();
 
     isIt = isPlaying();
-	POST(!isIt);
+    POST(!isIt);
 }
 
 PhysAbsoluteTime MachLogVoiceMail::timeStamp() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return timeStamp_;
+    return timeStamp_;
 }
 
 bool MachLogVoiceMail::hasStarted() const
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	return hasStarted_;
+    return hasStarted_;
 }
 
-void MachLogVoiceMail::hasStarted( bool newHasStarted )
+void MachLogVoiceMail::hasStarted(bool newHasStarted)
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	hasStarted_ = newHasStarted;
+    hasStarted_ = newHasStarted;
 }
 
 void MachLogVoiceMail::invalidateSample()
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	PRE(isSampleValid());
+    PRE(isSampleValid());
 
-    //This call is made outside the precondition for the benefit of the playback/recording mechanism.
-    //isPlaying() ends up calling a recorded function in the soundlibrary (SndMixer::isActive()),
-    //and the rule is we can't do any recording during preconditions.
+    // This call is made outside the precondition for the benefit of the playback/recording mechanism.
+    // isPlaying() ends up calling a recorded function in the soundlibrary (SndMixer::isActive()),
+    // and the rule is we can't do any recording during preconditions.
     bool isIt = isPlaying();
-	PRE(!isIt);
+    PRE(!isIt);
 
-	sampleHandleValid_ = false;
-	SndMixer::instance().freeSampleResources(sampleHandle_);
+    sampleHandleValid_ = false;
+    SndMixer::instance().freeSampleResources(sampleHandle_);
 
-	POST(!isSampleValid());
+    POST(!isSampleValid());
 }
 
-void MachLogVoiceMail::timeStamp( const PhysAbsoluteTime& newTimeStamp )
+void MachLogVoiceMail::timeStamp(const PhysAbsoluteTime& newTimeStamp)
 {
-	CB_MachLogVoiceMail_DEPIMPL();
+    CB_MachLogVoiceMail_DEPIMPL();
 
-	timeStamp_ = newTimeStamp;
+    timeStamp_ = newTimeStamp;
 }
 
 void MachLogVoiceMail::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogVoiceMail& t )
+ostream& operator<<(ostream& o, const MachLogVoiceMail& t)
 {
 
     o << "MachLogVoiceMail " << (void*)&t << " start" << std::endl;

@@ -13,12 +13,11 @@
 #include "machlog/races.hpp"
 #include "machlog/scenario.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogVortexHasBeenFiredCondition);
 
-PER_DEFINE_PERSISTENT( MachLogVortexHasBeenFiredCondition );
-
-MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition( const string& keyName, MachPhys::Race race )
-:	SimCondition( keyName ),
-	race_( race )
+MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition(const string& keyName, MachPhys::Race race)
+    : SimCondition(keyName)
+    , race_(race)
 {
     TEST_INVARIANT;
 }
@@ -26,78 +25,71 @@ MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition( const st
 MachLogVortexHasBeenFiredCondition::~MachLogVortexHasBeenFiredCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogVortexHasBeenFiredCondition::doHasConditionBeenMet() const
 {
-	HAL_STREAM("MachLogVortexHasBeenFiredCondition::doHasConditionBeenMet " << std::endl );
-	MachLogRaces& races = MachLogRaces::instance();
-	return races.vortexHasBeenFired( race_ );
+    HAL_STREAM("MachLogVortexHasBeenFiredCondition::doHasConditionBeenMet " << std::endl);
+    MachLogRaces& races = MachLogRaces::instance();
+    return races.vortexHasBeenFired(race_);
 }
 
-//static
-MachLogVortexHasBeenFiredCondition* MachLogVortexHasBeenFiredCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogVortexHasBeenFiredCondition* MachLogVortexHasBeenFiredCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	//format of a VORTEX_FIRED condition line is:
-	//<keyName> RACE <race>
+    // format of a VORTEX_FIRED condition line is:
+    //<keyName> RACE <race>
 
-	return _NEW(
-			MachLogVortexHasBeenFiredCondition(
-				pParser->tokens()[1],
-				MachLogScenario::machPhysRace( pParser->tokens()[3] )
-				)
-			);
+    return _NEW(
+        MachLogVortexHasBeenFiredCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3])));
 }
 
 void MachLogVortexHasBeenFiredCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogVortexHasBeenFiredCondition& t )
+ostream& operator<<(ostream& o, const MachLogVortexHasBeenFiredCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogVortexHasBeenFiredCondition::recommendedCallBackTimeGap() const
 {
-	static const PhysRelativeTime value = 1.9;
-	return value;
+    static const PhysRelativeTime value = 1.9;
+    return value;
 }
 
-//virtual
-void MachLogVortexHasBeenFiredCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogVortexHasBeenFiredCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogVortexHasBeenFiredCondition " << (void*)this << " start" << std::endl;
-	o << race_ << std::endl;
+    o << race_ << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogVortexHasBeenFiredCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogVortexHasBeenFiredCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.race_;
-
+    ostr << base1;
+    ostr << condition.race_;
 }
 
-void perRead( PerIstream& istr, MachLogVortexHasBeenFiredCondition& condition )
+void perRead(PerIstream& istr, MachLogVortexHasBeenFiredCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.race_;
+    istr >> base1;
+    istr >> condition.race_;
 }
 
-MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

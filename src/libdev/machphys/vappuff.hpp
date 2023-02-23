@@ -29,51 +29,52 @@ public:
     MachPhysVapourPuff(
         W4dEntity* pParent,
         const W4dTransform3d& localTransform,
-        MATHEX_SCALAR size, size_t missile_level );
-    ~MachPhysVapourPuff();
+        MATHEX_SCALAR size,
+        size_t missile_level);
+    ~MachPhysVapourPuff() override;
 
-    static  size_t  nFrames( size_t missile_level );
-    static  void preload();
+    static size_t nFrames(size_t missile_level);
+    static void preload();
 
     void startPuff();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysVapourPuff& t );
+    friend ostream& operator<<(ostream& o, const MachPhysVapourPuff& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysVapourPuff );
-	PER_FRIEND_READ_WRITE( MachPhysVapourPuff );
+    PER_MEMBER_PERSISTENT(MachPhysVapourPuff);
+    PER_FRIEND_READ_WRITE(MachPhysVapourPuff);
 
 private:
     // Operation deliberately revoked
-    MachPhysVapourPuff( const MachPhysVapourPuff& );
-    MachPhysVapourPuff& operator =( const MachPhysVapourPuff& );
-    bool operator ==( const MachPhysVapourPuff& );
+    MachPhysVapourPuff(const MachPhysVapourPuff&);
+    MachPhysVapourPuff& operator=(const MachPhysVapourPuff&);
+    bool operator==(const MachPhysVapourPuff&);
 
-    //Animation id for plans created to model wisp
-    enum {WISP_ANIMATION_ID = 1};
+    // Animation id for plans created to model wisp
+    enum
+    {
+        WISP_ANIMATION_ID = 1
+    };
 
-    static  W4dScalePlanPtr scalePlanPtr( size_t missile_level );
-    static  W4dVisibilityPlanPtr visibilityPlanPtr( size_t missile_level );
+    static W4dScalePlanPtr scalePlanPtr(size_t missile_level);
+    static W4dVisibilityPlanPtr visibilityPlanPtr(size_t missile_level);
 
-    typedef ctl_vector< Ren::MaterialVecPtr > Materials;
-    static  W4dMaterialPlanPtr materialPlanPtr( size_t missile_level  );
-    static  RenMaterial initialMaterial( size_t missile_level  );
-    static  const Materials&  materials( size_t missile_level );
-    static  Materials  createMaterials( size_t missile_level );
+    using Materials = ctl_vector<Ren::MaterialVecPtr>;
+    static W4dMaterialPlanPtr materialPlanPtr(size_t missile_level);
+    static RenMaterial initialMaterial(size_t missile_level);
+    static const Materials& materials(size_t missile_level);
+    static Materials createMaterials(size_t missile_level);
 
-    static  void        addMaterial(
-        Materials* pMaterials,
-        const RenTexture& texture,
-        MATHEX_SCALAR alpha,
-        const RenColour& colour );
+    static void
+    addMaterial(Materials* pMaterials, const RenTexture& texture, MATHEX_SCALAR alpha, const RenColour& colour);
 
-    static  const PhysRelativeTime timePerFrame();
+    static const PhysRelativeTime timePerFrame();
 
-	size_t missile_level_;
+    size_t missile_level_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysVapourPuff );
+PER_DECLARE_PERSISTENT(MachPhysVapourPuff);
 
 #endif
 

@@ -15,26 +15,26 @@
 #include "system/pathname.hpp"
 #include "ctl/list.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMushroomShaft );
+PER_DEFINE_PERSISTENT(MachPhysMushroomShaft);
 
-//One-time ctor
+// One-time ctor
 MachPhysMushroomShaft::MachPhysMushroomShaft()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/nuke/nuke_col.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/nuke/nuke_col.lod"));
 
-	setMaterialFogMultipliers();
+    setMaterialFogMultipliers();
 
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysMushroomShaft::MachPhysMushroomShaft( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysMushroomShaft::MachPhysMushroomShaft(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -42,10 +42,9 @@ MachPhysMushroomShaft::MachPhysMushroomShaft( W4dEntity* pParent, const MexTrans
 MachPhysMushroomShaft::~MachPhysMushroomShaft()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysMushroomShaft& MachPhysMushroomShaft::exemplar()
 {
     return MachPhysOtherPersistence::instance().mushroomShaftExemplar();
@@ -53,10 +52,10 @@ const MachPhysMushroomShaft& MachPhysMushroomShaft::exemplar()
 
 void MachPhysMushroomShaft::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMushroomShaft& t )
+ostream& operator<<(ostream& o, const MachPhysMushroomShaft& t)
 {
 
     o << "MachPhysMushroomShaft " << (void*)&t << " start" << std::endl;
@@ -65,60 +64,59 @@ ostream& operator <<( ostream& o, const MachPhysMushroomShaft& t )
     return o;
 }
 
-//virtual
-bool MachPhysMushroomShaft::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysMushroomShaft::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMushroomShaft& mush )
+void perWrite(PerOstream& ostr, const MachPhysMushroomShaft& mush)
 {
     const W4dEntity& base = mush;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysMushroomShaft& mush )
+void perRead(PerIstream& istr, MachPhysMushroomShaft& mush)
 {
     W4dEntity& base = mush;
 
     istr >> base;
 }
 
-MachPhysMushroomShaft::MachPhysMushroomShaft( PerConstructor c )
-:W4dEntity( c )
+MachPhysMushroomShaft::MachPhysMushroomShaft(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
-static void setFogMultipliers( const W4dEntity* entity )
+static void setFogMultipliers(const W4dEntity* entity)
 {
-	PRE( entity );
+    PRE(entity);
 
-	if( entity->hasMesh() )
-	{
-		RenMesh* meshPtr( _CONST_CAST( RenMesh*, &( *entity->mesh().mesh() ) ) );
+    if (entity->hasMesh())
+    {
+        RenMesh* meshPtr(_CONST_CAST(RenMesh*, &(*entity->mesh().mesh())));
 
-		std::unique_ptr<RenMaterialVec> materialASet = meshPtr->materialVec();
-		RenMaterialVec& materialSet = *materialASet;
-	    for( RenMaterialVec::iterator i = materialSet.begin(); i != materialSet.end(); ++i )
-	    {
-	        if( (*i).hasFogMultiplier() )
-	        {
-				(*i).fogMultiplier( 2.0 );
-			}
-	    }
+        std::unique_ptr<RenMaterialVec> materialASet = meshPtr->materialVec();
+        RenMaterialVec& materialSet = *materialASet;
+        for (RenMaterialVec::iterator i = materialSet.begin(); i != materialSet.end(); ++i)
+        {
+            if ((*i).hasFogMultiplier())
+            {
+                (*i).fogMultiplier(2.0);
+            }
+        }
 
-		meshPtr->materialVec( &materialSet );
-	}
+        meshPtr->materialVec(&materialSet);
+    }
 }
 
 void MachPhysMushroomShaft::setMaterialFogMultipliers()
 {
-	setFogMultipliers( this );
-	for( W4dEntity::W4dEntities::const_iterator it = children().begin(); it != children().end(); ++it )
-	{
-		setFogMultipliers( (*it) );
-	}
+    setFogMultipliers(this);
+    for (W4dEntity::W4dEntities::const_iterator it = children().begin(); it != children().end(); ++it)
+    {
+        setFogMultipliers((*it));
+    }
 }
 /* End MUSHSHAF.CPP *************************************************/
-

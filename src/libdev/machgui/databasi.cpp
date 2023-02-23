@@ -1,5 +1,5 @@
 /*
- * D A T A B A S I . C P P 
+ * D A T A B A S I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -11,21 +11,21 @@
 #include "machgui/dbsavgam.hpp"
 #include "machgui/dbhandlr.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiIDatabase );
+PER_DEFINE_PERSISTENT(MachGuiIDatabase);
 
 MachGuiIDatabase::MachGuiIDatabase()
-:   pElementMap_( NULL ),
-    nextPlayerId_( 0 ),
-    pDbCurrentPlayer_( NULL ),
-    nextUseSequenceId_( 0 ),
-    pDbHandler_( _NEW( MachGuiDatabaseHandler ) ),
-    pCurrentDbScenario_( NULL )
+    : pElementMap_(nullptr)
+    , nextPlayerId_(0)
+    , pDbCurrentPlayer_(nullptr)
+    , nextUseSequenceId_(0)
+    , pDbHandler_(_NEW(MachGuiDatabaseHandler))
+    , pCurrentDbScenario_(nullptr)
 {
-    campaignSystems_.reserve( 20 );
-    skirmishSystems_.reserve( 3 );
-    multiPlayerSystems_.reserve( 3 );
-    players_.reserve( 20 );
-    savedGames_.reserve( 64 );
+    campaignSystems_.reserve(20);
+    skirmishSystems_.reserve(3);
+    multiPlayerSystems_.reserve(3);
+    players_.reserve(20);
+    savedGames_.reserve(64);
 
     TEST_INVARIANT;
 }
@@ -34,16 +34,16 @@ MachGuiIDatabase::~MachGuiIDatabase()
 {
     TEST_INVARIANT;
 
-    _DELETE( pElementMap_ );
-    _DELETE( pDbHandler_ );
+    _DELETE(pElementMap_);
+    _DELETE(pDbHandler_);
 }
 
 void MachGuiIDatabase::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiIDatabase& t )
+ostream& operator<<(ostream& o, const MachGuiIDatabase& t)
 {
 
     o << "MachGuiIDatabase " << (void*)&t << " start" << std::endl;
@@ -52,7 +52,7 @@ ostream& operator <<( ostream& o, const MachGuiIDatabase& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiIDatabase& ob )
+void perWrite(PerOstream& ostr, const MachGuiIDatabase& ob)
 {
     ostr << ob.campaignSystems_;
     ostr << ob.skirmishSystems_;
@@ -63,7 +63,7 @@ void perWrite( PerOstream& ostr, const MachGuiIDatabase& ob )
     ostr << ob.nextUseSequenceId_;
 }
 
-void perRead( PerIstream& istr, MachGuiIDatabase& ob )
+void perRead(PerIstream& istr, MachGuiIDatabase& ob)
 {
     istr >> ob.campaignSystems_;
     istr >> ob.skirmishSystems_;
@@ -72,15 +72,14 @@ void perRead( PerIstream& istr, MachGuiIDatabase& ob )
     istr >> ob.savedGames_;
     istr >> ob.nextPlayerId_;
     istr >> ob.nextUseSequenceId_;
-    ob.pElementMap_ = NULL;
-    ob.pDbCurrentPlayer_ = NULL;
+    ob.pElementMap_ = nullptr;
+    ob.pDbCurrentPlayer_ = nullptr;
 }
 
-bool MachGuiIDatabase::PlayerNameComparator::operator ()
-(
-    const MachGuiDbPlayer_ptr& pLhs, const MachGuiDbPlayer_ptr& pRhs
-) const
+bool MachGuiIDatabase::PlayerNameComparator::operator()(
+    const MachGuiDbPlayer_ptr& pLhs,
+    const MachGuiDbPlayer_ptr& pRhs) const
 {
-	return pLhs->name() < pRhs->name();
+    return pLhs->name() < pRhs->name();
 }
 /* End DATABASI.CPP *************************************************/

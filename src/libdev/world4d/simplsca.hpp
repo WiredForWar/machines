@@ -1,5 +1,5 @@
 /*
- * S I M P L S C A . H P P 
+ * S I M P L S C A . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,97 +20,97 @@
 #include "render/scale.hpp"
 #include "world4d/scalplan.hpp"
 
-//Forward refs
+// Forward refs
 
-//orthodox canonical( revoked );
+// orthodox canonical( revoked );
 class W4dSimpleUniformScalePlan : public W4dScalePlan
 {
 public:
-    //scales uniformly from startScale to endScale over the duration
-    W4dSimpleUniformScalePlan( MATHEX_SCALAR startScale, MATHEX_SCALAR endScale,
-                               const PhysRelativeTime& duration );
+    // scales uniformly from startScale to endScale over the duration
+    W4dSimpleUniformScalePlan(MATHEX_SCALAR startScale, MATHEX_SCALAR endScale, const PhysRelativeTime& duration);
 
-    virtual ~W4dSimpleUniformScalePlan();
+    ~W4dSimpleUniformScalePlan() override;
 
-    //Inherited from W4dScalePlan
-    virtual bool isNonUniform() const;
+    // Inherited from W4dScalePlan
+    bool isNonUniform() const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dSimpleUniformScalePlan& t );
+    friend ostream& operator<<(ostream& o, const W4dSimpleUniformScalePlan& t);
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( W4dSimpleUniformScalePlan );
-    PER_FRIEND_READ_WRITE( W4dSimpleUniformScalePlan );
-    
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dSimpleUniformScalePlan);
+    PER_FRIEND_READ_WRITE(W4dSimpleUniformScalePlan);
+
 private:
     // Operation deliberately revoked
-    W4dSimpleUniformScalePlan( const W4dSimpleUniformScalePlan& );
-    W4dSimpleUniformScalePlan& operator =( const W4dSimpleUniformScalePlan& );
-    bool operator ==( const W4dSimpleUniformScalePlan& );
+    W4dSimpleUniformScalePlan(const W4dSimpleUniformScalePlan&);
+    W4dSimpleUniformScalePlan& operator=(const W4dSimpleUniformScalePlan&);
+    bool operator==(const W4dSimpleUniformScalePlan&);
 
     //////////////////////////////////////////////////
-    //Inherited from W4dScalePlan
-    virtual void doScale( const PhysRelativeTime& timeOffset, RenUniformScale* pScale ) const;
+    // Inherited from W4dScalePlan
+    void doScale(const PhysRelativeTime& timeOffset, RenUniformScale* pScale) const override;
 
-    //Illegal
-    virtual void doScale( const PhysRelativeTime& timeOffset, RenNonUniformScale* pScale ) const;
+    // Illegal
+    void doScale(const PhysRelativeTime& timeOffset, RenNonUniformScale* pScale) const override;
 
-    //Illegal
-    virtual W4dScalePlan* doTransformClone( const MexTransform3d& offsetTransform ) const;
+    // Illegal
+    W4dScalePlan* doTransformClone(const MexTransform3d& offsetTransform) const override;
     //////////////////////////////////////////////////
 
-    //data members
+    // data members
     MATHEX_SCALAR startScale_;
     MATHEX_SCALAR endScale_;
 };
 
-PER_DECLARE_PERSISTENT( W4dSimpleUniformScalePlan );
+PER_DECLARE_PERSISTENT(W4dSimpleUniformScalePlan);
 
-//orthodox canonical( revoked );
+// orthodox canonical( revoked );
 class W4dSimpleNonUniformScalePlan : public W4dScalePlan
 {
 public:
-    //scales uniformly from startScale to endScale over the duration
-    W4dSimpleNonUniformScalePlan( const RenNonUniformScale& startScale,
-                                  const RenNonUniformScale& endScale,
-                                  const PhysRelativeTime& duration );
+    // scales uniformly from startScale to endScale over the duration
+    W4dSimpleNonUniformScalePlan(
+        const RenNonUniformScale& startScale,
+        const RenNonUniformScale& endScale,
+        const PhysRelativeTime& duration);
 
-    virtual ~W4dSimpleNonUniformScalePlan();
+    ~W4dSimpleNonUniformScalePlan() override;
 
-    //Inherited from W4dScalePlan
-    virtual bool isNonUniform() const;
+    // Inherited from W4dScalePlan
+    bool isNonUniform() const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dSimpleUniformScalePlan& t );
+    friend ostream& operator<<(ostream& o, const W4dSimpleUniformScalePlan& t);
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( W4dSimpleNonUniformScalePlan );
-    PER_FRIEND_READ_WRITE( W4dSimpleNonUniformScalePlan );
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dSimpleNonUniformScalePlan);
+    PER_FRIEND_READ_WRITE(W4dSimpleNonUniformScalePlan);
 
 private:
     // Operation deliberately revoked
-    W4dSimpleNonUniformScalePlan( const W4dSimpleNonUniformScalePlan& );
-    W4dSimpleNonUniformScalePlan& operator =( const W4dSimpleNonUniformScalePlan& );
-    bool operator ==( const W4dSimpleNonUniformScalePlan& );
+    W4dSimpleNonUniformScalePlan(const W4dSimpleNonUniformScalePlan&);
+    W4dSimpleNonUniformScalePlan& operator=(const W4dSimpleNonUniformScalePlan&);
+    bool operator==(const W4dSimpleNonUniformScalePlan&);
 
     //////////////////////////////////////////////////
-    //Inherited from W4dScalePlan
-    virtual void doScale( const PhysRelativeTime& timeOffset, RenNonUniformScale* pScale ) const;
+    // Inherited from W4dScalePlan
+    void doScale(const PhysRelativeTime& timeOffset, RenNonUniformScale* pScale) const override;
 
-    //Illegal
-    virtual void doScale( const PhysRelativeTime& timeOffset, RenUniformScale* pScale ) const;
+    // Illegal
+    void doScale(const PhysRelativeTime& timeOffset, RenUniformScale* pScale) const override;
 
-    //Return a new plan allocated on the heap but modified to take account of the offset
-    //transform.
-    virtual W4dScalePlan* doTransformClone( const MexTransform3d& offsetTransform ) const;
+    // Return a new plan allocated on the heap but modified to take account of the offset
+    // transform.
+    W4dScalePlan* doTransformClone(const MexTransform3d& offsetTransform) const override;
     //////////////////////////////////////////////////
 
-    //data members
+    // data members
     RenNonUniformScale startScale_;
     RenNonUniformScale endScale_;
 };
 
-PER_DECLARE_PERSISTENT( W4dSimpleNonUniformScalePlan );
+PER_DECLARE_PERSISTENT(W4dSimpleNonUniformScalePlan);
 
 #endif
 

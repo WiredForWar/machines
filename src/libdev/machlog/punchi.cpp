@@ -1,5 +1,5 @@
 /*
- * P U N C H I . C P P 
+ * P U N C H I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,14 +9,13 @@
 
 #include "machphys/machphys.hpp"
 #include "machphys/mphydata.hpp"
-//#include "machlog/race.hpp"
-//#include "machlog/races.hpp"
-//#include "machlog/actor.hpp"
+// #include "machlog/race.hpp"
+// #include "machlog/races.hpp"
+// #include "machlog/actor.hpp"
 
-
-MachLogPunchBlastImpl::MachLogPunchBlastImpl( const MachPhysWeaponData* const pWeaponData )
-:	pWeaponData_( pWeaponData ),
-	pPhysPunchBlast_( NULL )
+MachLogPunchBlastImpl::MachLogPunchBlastImpl(const MachPhysWeaponData* const pWeaponData)
+    : pWeaponData_(pWeaponData)
+    , pPhysPunchBlast_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -24,15 +23,14 @@ MachLogPunchBlastImpl::MachLogPunchBlastImpl( const MachPhysWeaponData* const pW
 MachLogPunchBlastImpl::~MachLogPunchBlastImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogPunchBlastImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogPunchBlastImpl& t )
+ostream& operator<<(ostream& o, const MachLogPunchBlastImpl& t)
 {
 
     o << "MachLogPunchBlastImpl " << (void*)&t << " start" << std::endl;
@@ -40,8 +38,5 @@ ostream& operator <<( ostream& o, const MachLogPunchBlastImpl& t )
 
     return o;
 }
-
-
-
 
 /* End PUNCHI.CPP *************************************************/

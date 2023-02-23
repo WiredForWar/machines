@@ -18,54 +18,57 @@
 
 #include "machlog/mlnotif.hpp"
 
-//Forward refs
+// Forward refs
 class MachInGameScreen;
 class MachHWResearchBank;
 class MachLogHardwareLab;
 class MachLogResearchTree;
 
-class MachHWResearchIcons : public GuiSimpleScrollableList, public MachLogNotifiable
-//orthodox canonical (revoked)
+class MachHWResearchIcons
+    : public GuiSimpleScrollableList
+    , public MachLogNotifiable
+// orthodox canonical (revoked)
 {
 public:
-    //ctor. Located in pParent, covering area.
-    //In game screen passed.
-    MachHWResearchIcons( GuiDisplayable* pParent, const Gui::Coord& rel,
-                         MachHWResearchBank* pHWResearchBank, 
-                         MachLogHardwareLab* pHardwareLab, 
-                         MachInGameScreen* pInGameScreen );
-    virtual ~MachHWResearchIcons();
+    // ctor. Located in pParent, covering area.
+    // In game screen passed.
+    MachHWResearchIcons(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        MachHWResearchBank* pHWResearchBank,
+        MachLogHardwareLab* pHardwareLab,
+        MachInGameScreen* pInGameScreen);
+    ~MachHWResearchIcons() override;
 
-	virtual void notifiableBeNotified();
-	
+    void notifiableBeNotified() override;
+
     void CLASS_INVARIANT;
 
-	static size_t reqWidth();
-	static size_t reqHeight( MachInGameScreen*, const Gui::Coord& );
+    static size_t reqWidth();
+    static size_t reqHeight(MachInGameScreen*, const Gui::Coord&);
 
-protected:	
-	virtual void doDisplay();
+protected:
+    void doDisplay() override;
 
 private:
     // Operations deliberately revoked
-    MachHWResearchIcons( const MachHWResearchIcons& );
-    MachHWResearchIcons& operator =( const MachHWResearchIcons& );
-    bool operator ==( const MachHWResearchIcons& );
+    MachHWResearchIcons(const MachHWResearchIcons&);
+    MachHWResearchIcons& operator=(const MachHWResearchIcons&);
+    bool operator==(const MachHWResearchIcons&);
 
-    friend ostream& operator <<( ostream& o, const MachHWResearchIcons& t );
+    friend ostream& operator<<(ostream& o, const MachHWResearchIcons& t);
 
-    //Set up the list of icons
-    void addIcons( MachLogHardwareLab* pHardwareLab, MachInGameScreen* pInGameScreen,
-                   MachHWResearchBank* pHWResearchBank );
+    // Set up the list of icons
+    void
+    addIcons(MachLogHardwareLab* pHardwareLab, MachInGameScreen* pInGameScreen, MachHWResearchBank* pHWResearchBank);
 
-	// Data members...
-	MachHWResearchBank* pHWResearchBank_;
+    // Data members...
+    MachHWResearchBank* pHWResearchBank_;
     MachLogHardwareLab* pHardwareLab_;
-	MachInGameScreen* pInGameScreen_;
-	
-	MachLogResearchTree& researchTree_;
-};
+    MachInGameScreen* pInGameScreen_;
 
+    MachLogResearchTree& researchTree_;
+};
 
 #endif
 

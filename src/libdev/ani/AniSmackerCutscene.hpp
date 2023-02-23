@@ -5,18 +5,19 @@
 
 class FrameScaler;
 
-class AniSmackerCutscene : public AniSmackerRegular {
+class AniSmackerCutscene : public AniSmackerRegular
+{
 public:
     AniSmackerCutscene(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, size_t fsWidth, size_t fsHeight);
-    virtual ~AniSmackerCutscene();
+    ~AniSmackerCutscene() override;
 
     AniSmackerCutscene(const AniSmackerCutscene& other) = delete;
     AniSmackerCutscene& operator=(const AniSmackerCutscene) = delete;
-    bool operator==(const AniSmackerCutscene& ) const = delete;
+    bool operator==(const AniSmackerCutscene&) const = delete;
 
 protected:
-    virtual RenSurface createSmackerSurface(RenDevice *pDevice) override;
-    virtual void copyCurrentVideoFrameToBuffer(RenSurface& renderSurface) override;
+    RenSurface createSmackerSurface(RenDevice* pDevice) override;
+    void copyCurrentVideoFrameToBuffer(RenSurface& renderSurface) override;
 
 private:
     FrameScaler* fetchOrInitializeScaler();

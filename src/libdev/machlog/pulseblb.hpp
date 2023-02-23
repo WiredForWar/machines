@@ -1,5 +1,5 @@
 /*
- * P U L S E B L B . H P P 
+ * P U L S E B L B . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,33 +22,28 @@ class MachLogPulseBlob : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogPulseBlob(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogPulseBlob(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogPulseBlob();
+    ~MachLogPulseBlob() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogPulseBlob& t );
+    friend ostream& operator<<(ostream& o, const MachLogPulseBlob& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPulseBlob );
-	PER_FRIEND_READ_WRITE( MachLogPulseBlob );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPulseBlob);
+    PER_FRIEND_READ_WRITE(MachLogPulseBlob);
 
 private:
-	//static MachPhysPulseBlob* pNewPhysPulseBlob( size_t level, const MexPoint3d& startPosition );
+    // static MachPhysPulseBlob* pNewPhysPulseBlob( size_t level, const MexPoint3d& startPosition );
 
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogPulseBlob( const MachLogPulseBlob& );
-    MachLogPulseBlob& operator =( const MachLogPulseBlob& );
-    bool operator ==( const MachLogPulseBlob& );
-
+    MachLogPulseBlob(const MachLogPulseBlob&);
+    MachLogPulseBlob& operator=(const MachLogPulseBlob&);
+    bool operator==(const MachLogPulseBlob&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogPulseBlob );
+PER_DECLARE_PERSISTENT(MachLogPulseBlob);
 
 #endif
 

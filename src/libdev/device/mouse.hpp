@@ -15,13 +15,13 @@
 #include "base/base.hpp"
 
 #if defined _DOSAPP
-    #include "device/private/dosmouse.hpp"
+#include "device/private/dosmouse.hpp"
 #elif defined _WIN95APP
-    #include "device/private/w95mouse.hpp"
+#include "device/private/w95mouse.hpp"
 #elif defined _SDLAPP
-    #include "device/private/sdlmouse.hpp"
+#include "device/private/sdlmouse.hpp"
 #else
-    #error Use of the device lib: one of _DOSAPP, _WIN95APP, etc. must be defined.
+#error Use of the device lib: one of _DOSAPP, _WIN95APP, etc. must be defined.
 #endif
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * A R T F C T S I . C P P 
+ * A R T F C T S I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -12,14 +12,13 @@
 #include "system/pathname.hpp"
 #include "machlog/internal/artsdata.hpp"
 
-
-PER_DEFINE_PERSISTENT( MachLogArtefactsImpl );
+PER_DEFINE_PERSISTENT(MachLogArtefactsImpl);
 
 MachLogArtefactsImpl::MachLogArtefactsImpl()
-:   pExemplars_( _NEW( W4dGenericRepository ) ),
-    pData_( _NEW( MachLogArtefactsData ) ),
-	artefactsParsed_( false ),
-	pArtefactPathName_( NULL )
+    : pExemplars_(_NEW(W4dGenericRepository))
+    , pData_(_NEW(MachLogArtefactsData))
+    , artefactsParsed_(false)
+    , pArtefactPathName_(nullptr)
 {
 
     TEST_INVARIANT;
@@ -28,16 +27,16 @@ MachLogArtefactsImpl::MachLogArtefactsImpl()
 MachLogArtefactsImpl::~MachLogArtefactsImpl()
 {
     TEST_INVARIANT;
-	_DELETE( pExemplars_ );
-	_DELETE( pData_ );
+    _DELETE(pExemplars_);
+    _DELETE(pData_);
 }
 
 void MachLogArtefactsImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogArtefactsImpl& t )
+ostream& operator<<(ostream& o, const MachLogArtefactsImpl& t)
 {
 
     o << "MachLogArtefactsImpl " << (void*)&t << " start" << std::endl;
@@ -46,14 +45,14 @@ ostream& operator <<( ostream& o, const MachLogArtefactsImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogArtefactsImpl& artefactsImpl )
+void perWrite(PerOstream& ostr, const MachLogArtefactsImpl& artefactsImpl)
 {
-	ostr << artefactsImpl.pArtefactPathName_;
+    ostr << artefactsImpl.pArtefactPathName_;
 }
 
-void perRead( PerIstream& istr, MachLogArtefactsImpl& artefactsImpl )
+void perRead(PerIstream& istr, MachLogArtefactsImpl& artefactsImpl)
 {
-	istr >> artefactsImpl.pArtefactPathName_;
+    istr >> artefactsImpl.pArtefactPathName_;
 }
 
 /* End ARTFCTSI.CPP *************************************************/

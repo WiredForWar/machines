@@ -10,16 +10,16 @@
 #include "sim/manager.hpp"
 #include "machlog/actenabl.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogEnableActionAction );
+PER_DEFINE_PERSISTENT(MachLogEnableActionAction);
 
-MachLogEnableActionAction::MachLogEnableActionAction( SimCondition* pCondition, bool enabled )
-:	SimAction( pCondition, enabled ),
-	actionConditionKeyName_( "" )
+MachLogEnableActionAction::MachLogEnableActionAction(SimCondition* pCondition, bool enabled)
+    : SimAction(pCondition, enabled)
+    , actionConditionKeyName_("")
 {
     TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MachLogEnableActionAction::~MachLogEnableActionAction()
 {
     TEST_INVARIANT;
@@ -27,10 +27,10 @@ MachLogEnableActionAction::~MachLogEnableActionAction()
 
 void MachLogEnableActionAction::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogEnableActionAction& t )
+ostream& operator<<(ostream& o, const MachLogEnableActionAction& t)
 {
 
     o << "MachLogEnableActionAction " << (void*)&t << " start" << std::endl;
@@ -39,58 +39,58 @@ ostream& operator <<( ostream& o, const MachLogEnableActionAction& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachLogEnableActionAction::doAction()
 {
-	SimManager::instance().enableAction( actionConditionKeyName_ );
+    SimManager::instance().enableAction(actionConditionKeyName_);
 }
 
-//static
-MachLogEnableActionAction* MachLogEnableActionAction::newFromParser( SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser )
+// static
+MachLogEnableActionAction*
+MachLogEnableActionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-	MachLogEnableActionAction* pResult = NULL;
-	pResult = _NEW( MachLogEnableActionAction( pCondition, enabled ) );
-	pResult->actionConditionKeyName_ = pParser->tokens()[3];
-	return pResult;
+    MachLogEnableActionAction* pResult = nullptr;
+    pResult = _NEW(MachLogEnableActionAction(pCondition, enabled));
+    pResult->actionConditionKeyName_ = pParser->tokens()[3];
+    return pResult;
 }
 
-//virtual
-void MachLogEnableActionAction::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogEnableActionAction::doOutputOperator(ostream& o) const
 {
-	SimAction::doOutputOperator( o );
-	o << "actionConditionKeyName_ " << actionConditionKeyName_ << std::endl;
+    SimAction::doOutputOperator(o);
+    o << "actionConditionKeyName_ " << actionConditionKeyName_ << std::endl;
 }
 
-void perWrite( PerOstream& ostr, const MachLogEnableActionAction& action )
+void perWrite(PerOstream& ostr, const MachLogEnableActionAction& action)
 {
-	const SimAction& base1 = action;
+    const SimAction& base1 = action;
 
-	ostr << base1;
-	ostr << action.actionConditionKeyName_;
-
+    ostr << base1;
+    ostr << action.actionConditionKeyName_;
 }
 
-void perRead( PerIstream& istr, MachLogEnableActionAction& action )
+void perRead(PerIstream& istr, MachLogEnableActionAction& action)
 {
-	SimAction& base1 = action;
+    SimAction& base1 = action;
 
-	istr >> base1;
-	istr >> action.actionConditionKeyName_;
+    istr >> base1;
+    istr >> action.actionConditionKeyName_;
 }
 
-MachLogEnableActionAction::MachLogEnableActionAction( PerConstructor con )
-:	SimAction( con )
+MachLogEnableActionAction::MachLogEnableActionAction(PerConstructor con)
+    : SimAction(con)
 {
 }
 
-//static
-MachLogEnableActionAction* MachLogEnableActionAction::newDynamic( SimCondition* pCondition, bool enabled, const string& enableToken )
+// static
+MachLogEnableActionAction*
+MachLogEnableActionAction::newDynamic(SimCondition* pCondition, bool enabled, const string& enableToken)
 {
-	MachLogEnableActionAction* pResult = NULL;
-	pResult = _NEW( MachLogEnableActionAction( pCondition, enabled ) );
-	pResult->actionConditionKeyName_ = enableToken;
-	return pResult;
+    MachLogEnableActionAction* pResult = nullptr;
+    pResult = _NEW(MachLogEnableActionAction(pCondition, enabled));
+    pResult->actionConditionKeyName_ = enableToken;
+    return pResult;
 }
-
 
 /* End ACTREINF.CPP *************************************************/

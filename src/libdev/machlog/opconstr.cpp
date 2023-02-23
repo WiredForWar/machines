@@ -1,5 +1,5 @@
 /*
- * O P C O N S T R . C P P 
+ * O P C O N S T R . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -29,140 +29,143 @@
 #include "machlog/planet.hpp"
 #include "machlog/spacial.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogConstructOperation );
+PER_DEFINE_PERSISTENT(MachLogConstructOperation);
 
-MachLogConstructOperation::MachLogConstructOperation( MachLogConstructor * pActor, MachLogConstruction * pConstr )
-:	MachLogLabourOperation( pActor, pConstr, "CONSTRUCT_OPERATION", MachLogOperation::CONSTRUCT_OPERATION )		
-{   
-	// deliberately left blank
+MachLogConstructOperation::MachLogConstructOperation(MachLogConstructor* pActor, MachLogConstruction* pConstr)
+    : MachLogLabourOperation(pActor, pConstr, "CONSTRUCT_OPERATION", MachLogOperation::CONSTRUCT_OPERATION)
+{
+    // deliberately left blank
 }
 
-
-void MachLogConstructOperation::doOutputOperator( ostream& o ) const
+void MachLogConstructOperation::doOutputOperator(ostream& o) const
 {
-	MachLogLabourOperation::doOutputOperator( o );
-	
-	if( pConstruction() )
-		o << " Constructing (" << pConstruction()->id() << ")[" << pConstruction()->objectType() << "] Progress:" << pConstruction()->constructedUnits() << std::endl;
-	else
-		o << " Construction deleted!" << std::endl;
+    MachLogLabourOperation::doOutputOperator(o);
+
+    if (pConstruction())
+        o << " Constructing (" << pConstruction()->id() << ")[" << pConstruction()->objectType()
+          << "] Progress:" << pConstruction()->constructedUnits() << std::endl;
+    else
+        o << " Construction deleted!" << std::endl;
 }
 
 ///////////////////////////////////
 
-
 // virtual
 PhysRelativeTime MachLogConstructOperation::interactWithBuilding()
 {
-	PhysRelativeTime interval = 2.0;
+    PhysRelativeTime interval = 2.0;
 
-	MachLogConstructor* pConstructorGuy = pConstructor();
-	MachLogConstruction* pUnfinishedConstruction = pConstruction();
-	
-	MachPhys::BuildingMaterialUnits units = pConstructor()->data().constructionRate();
+    MachLogConstructor* pConstructorGuy = pConstructor();
+    MachLogConstruction* pUnfinishedConstruction = pConstruction();
 
-	MachPhys::BuildingMaterialUnits amountToAdd = ( units * ( SimManager::instance().currentTime() - lastUpdateTime() ) / 60 );
-	if( amountToAdd > 0 )
-	{
-		if( amountToAdd + pUnfinishedConstruction->constructedUnits() > pUnfinishedConstruction->objectData().cost() )
-			amountToAdd = pUnfinishedConstruction->objectData().cost() - pUnfinishedConstruction->constructedUnits();
-			
-		amountToAdd = MachLogRaces::instance().smartSubtractBMUs( pConstructorGuy->race(), amountToAdd );
+    MachPhys::BuildingMaterialUnits units = pConstructor()->data().constructionRate();
 
-		pUnfinishedConstruction->advanceConstructionState( amountToAdd );
-		
-	   	lastUpdateTime( SimManager::instance().currentTime() );
-		
-		// if we added nothing, it's cos we're out of money, so don't animate. The workers are on strike.
-		if( amountToAdd > 0 ) 
-			//subOperation( pConstructorGuy, _NEW( MachLogConstructAnimation( pConstructorGuy, pUnfinishedConstruction, units ) ) );
-			pConstructorGuy->constructing( true, pUnfinishedConstruction->id() );	
-		else
-			pConstructorGuy->constructing( false );
-		
-		// if the building is now complete, give a voicemail
-		if( pUnfinishedConstruction->isComplete() ) // pConstructor
-		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachineVoiceMailEventID::BUILDING_COMPLETE );
+    MachPhys::BuildingMaterialUnits amountToAdd
+        = (units * (SimManager::instance().currentTime() - lastUpdateTime()) / 60);
+    if (amountToAdd > 0)
+    {
+        if (amountToAdd + pUnfinishedConstruction->constructedUnits() > pUnfinishedConstruction->objectData().cost())
+            amountToAdd = pUnfinishedConstruction->objectData().cost() - pUnfinishedConstruction->constructedUnits();
 
-			// post voicemail if no more operations on the queue
-			if( not pConstructorGuy->isDoingSuperConstruct() )
-			        MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorGuy, MachineVoiceMailEventID::AWAITING_NEW_JOB );
+        amountToAdd = MachLogRaces::instance().smartSubtractBMUs(pConstructorGuy->race(), amountToAdd);
 
-			interval = 0.0;
-		}					
-	}
-	else
-	{
-		//oops didn't manage to add anything on lets try again....
-		state( MachLogLabourOperation::INTERACTING );
-		
-		pConstructorGuy->constructing( true, pUnfinishedConstruction->id() );
-	}
-	
-	return interval;
+        pUnfinishedConstruction->advanceConstructionState(amountToAdd);
+
+        lastUpdateTime(SimManager::instance().currentTime());
+
+        // if we added nothing, it's cos we're out of money, so don't animate. The workers are on strike.
+        if (amountToAdd > 0)
+            // subOperation( pConstructorGuy, _NEW( MachLogConstructAnimation( pConstructorGuy, pUnfinishedConstruction,
+            // units ) ) );
+            pConstructorGuy->constructing(true, pUnfinishedConstruction->id());
+        else
+            pConstructorGuy->constructing(false);
+
+        // if the building is now complete, give a voicemail
+        if (pUnfinishedConstruction->isComplete()) // pConstructor
+        {
+            MachLogMachineVoiceMailManager::instance().postNewMail(
+                *pConstructorGuy,
+                MachineVoiceMailEventID::BUILDING_COMPLETE);
+
+            // post voicemail if no more operations on the queue
+            if (not pConstructorGuy->isDoingSuperConstruct())
+                MachLogMachineVoiceMailManager::instance().postNewMail(
+                    *pConstructorGuy,
+                    MachineVoiceMailEventID::AWAITING_NEW_JOB);
+
+            interval = 0.0;
+        }
+    }
+    else
+    {
+        // oops didn't manage to add anything on lets try again....
+        state(MachLogLabourOperation::INTERACTING);
+
+        pConstructorGuy->constructing(true, pUnfinishedConstruction->id());
+    }
+
+    return interval;
 }
-	
+
 bool MachLogConstructOperation::doIsFinished() const
 {
-	bool finished = not pConstruction() 
-					or pConstruction()->isComplete();
-			
-	return finished;        
+    bool finished = not pConstruction() or pConstruction()->isComplete();
+
+    return finished;
 }
 
 // virtual
-bool MachLogConstructOperation::clientSpecificNotification( int clientData )
+bool MachLogConstructOperation::clientSpecificNotification(int clientData)
 {
-	PRE( pConstruction() );
-	PRE( pConstructor() );
+    PRE(pConstruction());
+    PRE(pConstructor());
 
-	bool stayAttached = true;
+    bool stayAttached = true;
 
-	switch( clientData )
-	{
-		case MachLog::RACE_CHANGED:				
-		{
-			MachLogRaces::DispositionToRace disposition = MachLogRaces::instance().dispositionToRace( pConstruction()->race(), pConstructor()->race() );
+    switch (clientData)
+    {
+        case MachLog::RACE_CHANGED:
+            {
+                MachLogRaces::DispositionToRace disposition
+                    = MachLogRaces::instance().dispositionToRace(pConstruction()->race(), pConstructor()->race());
 
-			if( disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL )
-			{
-				// not going to help construct an opponent's base. No way.
-				stayAttached = false;
-			}	
-		}
-		break;
+                if (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL)
+                {
+                    // not going to help construct an opponent's base. No way.
+                    stayAttached = false;
+                }
+            }
+            break;
 
-		default:
-			;
-	}
+        default:;
+    }
 
-	return stayAttached;
-}
-	
-
-void perWrite( PerOstream& ostr, const MachLogConstructOperation& op )
-{
-	const MachLogLabourOperation& base1 = op;
-
-	ostr << base1;   
+    return stayAttached;
 }
 
-void perRead( PerIstream& istr, MachLogConstructOperation& op )
+void perWrite(PerOstream& ostr, const MachLogConstructOperation& op)
 {
-	MachLogLabourOperation& base1 = op;
+    const MachLogLabourOperation& base1 = op;
 
-	istr >> base1;
+    ostr << base1;
 }
 
-MachLogConstructOperation::MachLogConstructOperation( PerConstructor con )
-:	MachLogLabourOperation( con )
+void perRead(PerIstream& istr, MachLogConstructOperation& op)
+{
+    MachLogLabourOperation& base1 = op;
+
+    istr >> base1;
+}
+
+MachLogConstructOperation::MachLogConstructOperation(PerConstructor con)
+    : MachLogLabourOperation(con)
 {
 }
 
 bool MachLogConstructOperation::constructingMissileEmplacement() const
 {
-	return pConstruction() and pConstruction()->objectIsMissileEmplacement() and pConstructor()->constructing();
-}	
+    return pConstruction() and pConstruction()->objectIsMissileEmplacement() and pConstructor()->constructing();
+}
 
 /* End OPCONSTR.CPP *************************************************/

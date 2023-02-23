@@ -1,5 +1,5 @@
 /*
- * V P O L Y M A R K . H P P 
+ * V P O L Y M A R K . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,22 +23,26 @@ class PedVerticalPolygonMarker : public W4dCustom
 // Canonical form revoked
 {
 public:
-    PedVerticalPolygonMarker( W4dEntity*, const MexTransform3d&, const MexPoint3d&, const MexPoint3d&, const MexPoint3d& );
-    ~PedVerticalPolygonMarker();
+    PedVerticalPolygonMarker(
+        W4dEntity*,
+        const MexTransform3d&,
+        const MexPoint3d&,
+        const MexPoint3d&,
+        const MexPoint3d&);
+    ~PedVerticalPolygonMarker() override;
 
-	void display( bool display );
+    void display(bool display);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const PedVerticalPolygonMarker& t );
+    friend ostream& operator<<(ostream& o, const PedVerticalPolygonMarker& t);
 
-    PedVerticalPolygonMarker( const PedVerticalPolygonMarker& );
-    PedVerticalPolygonMarker& operator =( const PedVerticalPolygonMarker& );
+    PedVerticalPolygonMarker(const PedVerticalPolygonMarker&);
+    PedVerticalPolygonMarker& operator=(const PedVerticalPolygonMarker&);
 
-	MexPoint3d position_;
+    MexPoint3d position_;
 };
-
 
 #endif
 

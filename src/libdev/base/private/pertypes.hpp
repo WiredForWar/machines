@@ -4,26 +4,25 @@
  */
 
 /*
-	Internal typedefs used by the persistence code
+    Internal typedefs used by the persistence code
 */
 
 #ifndef _PER_INTERNAL_PERTYPES_HPP
 #define _PER_INTERNAL_PERTYPES_HPP
 
-typedef uint32	PerIdentifier;
+using PerIdentifier = uint32;
 
 //  There seems to be some problem with storing pointers in a map so we use a
 //  type that should allow error free casting in both directions.
 
-typedef size_t  PerMapPtrType;
+using PerMapPtrType = size_t;
 
 class PerIstream;
 class PerOstream;
 
-typedef	void (*PerReadFnPtr)( PerIstream& );
-typedef	void (*PerWriteFnPtr)( PerOstream&, const void* );
+using PerReadFnPtr = void (*)(PerIstream&);
+using PerWriteFnPtr = void (*)(PerOstream&, const void*);
 
 #endif
 
 /* End PERSIST.HPP ******************************************************/
-

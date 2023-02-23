@@ -17,7 +17,7 @@
 #include "machphys/machphys.hpp"
 #include "machphys/wepline.hpp"
 
-//forward refs
+// forward refs
 class W4dEntity;
 class MexTransform3d;
 class MachPhysPlasmaBolt;
@@ -27,98 +27,106 @@ class MachPhysPlasmaWeapon : public MachPhysLinearWeapon
 // Canonical form revoked
 {
 public:
-    //ctor. Attached to pParent at offset localTransform.
-    //Actual weapon type is type, which must be one of the plasma types.
-    //Appropriate mounting is mounting.
-    MachPhysPlasmaWeapon( W4dEntity* pParent, const MexTransform3d& localTransform,
-                          MachPhys::WeaponType type, MachPhys::Mounting mounting );
+    // ctor. Attached to pParent at offset localTransform.
+    // Actual weapon type is type, which must be one of the plasma types.
+    // Appropriate mounting is mounting.
+    MachPhysPlasmaWeapon(
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform,
+        MachPhys::WeaponType type,
+        MachPhys::Mounting mounting);
 
-    //Return an exemplar plasma weapon - ensures the mesh is loaded
-    static const MachPhysPlasmaWeapon& exemplar( MachPhys::WeaponType type );
+    // Return an exemplar plasma weapon - ensures the mesh is loaded
+    static const MachPhysPlasmaWeapon& exemplar(MachPhys::WeaponType type);
 
-    //dtor.
-    virtual ~MachPhysPlasmaWeapon();
+    // dtor.
+    ~MachPhysPlasmaWeapon() override;
 
     //////////////////////////////////////////////////////////
     // Inherited from MachPhysLinearWeapon
-    //Construct and return a new projectile of the appropriate type for this weapon.
-    //It is the index'th projectile in a burst starting at burstStartTime.
-    //The projectile's owner is to be pParent.
-    //The projectile is to be aimed at a point targetOffset from target.
-    virtual MachPhysLinearProjectile* createProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    // Construct and return a new projectile of the appropriate type for this weapon.
+    // It is the index'th projectile in a burst starting at burstStartTime.
+    // The projectile's owner is to be pParent.
+    // The projectile is to be aimed at a point targetOffset from target.
+    MachPhysLinearProjectile* createProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
     //////////////////////////////////////////////////////////
 
-    //Construct and return a plasma bolt.
-    //Arguments as for createProjectile.
-    MachPhysPlasmaBolt* createPlasmaBolt
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    // Construct and return a plasma bolt.
+    // Arguments as for createProjectile.
+    MachPhysPlasmaBolt* createPlasmaBolt(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
     //////////////////////////////////////////////////////////
     // Inherited from MachPhysWeapon
 
-    //Induce the weapon's firing animation at startTime, returning the duration of the animation.
-    //This includes recoil, sound, smoke coming from end of gun, lights etc, but
-    //NOT launching of any projectiles, victim animations etc.
-    virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    // Induce the weapon's firing animation at startTime, returning the duration of the animation.
+    // This includes recoil, sound, smoke coming from end of gun, lights etc, but
+    // NOT launching of any projectiles, victim animations etc.
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
-    //Play the victim animation for a machine or construction at startTime.
-    //fromDirection indicates the flight path of the hitting projectile.
-    //Returns the duration of the animation.
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysMachine* pMachine ) const;
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysConstruction* pConstruction ) const;
+    // Play the victim animation for a machine or construction at startTime.
+    // fromDirection indicates the flight path of the hitting projectile.
+    // Returns the duration of the animation.
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysMachine* pMachine) const override;
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction) const override;
 
     //////////////////////////////////////////////////////////
 
-    //Do the work of applying a victim animation to machine/construction/artefact.
-    //Return animation duration.
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysMachine* pMachine );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysConstruction* pConstruction );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysArtefact* pArtefact );
+    // Do the work of applying a victim animation to machine/construction/artefact.
+    // Return animation duration.
+    static PhysRelativeTime
+    applyVictimAnimation(const PhysAbsoluteTime& startTime, const MexLine3d& fromDirection, MachPhysMachine* pMachine);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysArtefact* pArtefact);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPlasmaWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPlasmaWeapon& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPlasmaWeapon );
+    PER_MEMBER_PERSISTENT(MachPhysPlasmaWeapon);
 
 private:
-    //revoked
-    MachPhysPlasmaWeapon( const MachPhysPlasmaWeapon& );
-    MachPhysPlasmaWeapon& operator =( const MachPhysPlasmaWeapon& );
-    bool operator ==( const MachPhysPlasmaWeapon& );
+    // revoked
+    MachPhysPlasmaWeapon(const MachPhysPlasmaWeapon&);
+    MachPhysPlasmaWeapon& operator=(const MachPhysPlasmaWeapon&);
+    bool operator==(const MachPhysPlasmaWeapon&);
 
-    //One-time ctor used to read the mesh (once per plasma weapon type)
-    MachPhysPlasmaWeapon( MachPhys::WeaponType type );
+    // One-time ctor used to read the mesh (once per plasma weapon type)
+    MachPhysPlasmaWeapon(MachPhys::WeaponType type);
 
-    //Play the firing sounds at startTime
-    void playFiringSounds( const PhysAbsoluteTime& startTime );
+    // Play the firing sounds at startTime
+    void playFiringSounds(const PhysAbsoluteTime& startTime);
 
-    //The file path to the composite definition file
-    static const char* compositeFilePath( MachPhys::WeaponType type );
+    // The file path to the composite definition file
+    static const char* compositeFilePath(MachPhys::WeaponType type);
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPlasmaWeapon );
-PER_READ_WRITE( MachPhysPlasmaWeapon );
+PER_DECLARE_PERSISTENT(MachPhysPlasmaWeapon);
+PER_READ_WRITE(MachPhysPlasmaWeapon);
 
 #endif
 

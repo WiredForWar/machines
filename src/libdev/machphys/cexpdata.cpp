@@ -1,5 +1,5 @@
 /*
- * C E X P D A T A . C P P 
+ * C E X P D A T A . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -7,8 +7,8 @@
 
 #include "machphys/cexpdata.hpp"
 
-MachPhysConstructionExplosionData::MachPhysConstructionExplosionData( const PhysRelativeTime& duration )
-: duration_( duration )
+MachPhysConstructionExplosionData::MachPhysConstructionExplosionData(const PhysRelativeTime& duration)
+    : duration_(duration)
 {
 
     TEST_INVARIANT;
@@ -17,12 +17,11 @@ MachPhysConstructionExplosionData::MachPhysConstructionExplosionData( const Phys
 MachPhysConstructionExplosionData::~MachPhysConstructionExplosionData()
 {
     TEST_INVARIANT;
-
 }
 
-void    MachPhysConstructionExplosionData::addPoint( const ExplosionPoint& point )
+void MachPhysConstructionExplosionData::addPoint(const ExplosionPoint& point)
 {
-    explosionPoints_.push_back( point );
+    explosionPoints_.push_back(point);
 }
 
 const MachPhysConstructionExplosionData::ExplosionPoints& MachPhysConstructionExplosionData::explosionPoints() const
@@ -30,15 +29,14 @@ const MachPhysConstructionExplosionData::ExplosionPoints& MachPhysConstructionEx
     return explosionPoints_;
 }
 
-const PhysRelativeTime&    MachPhysConstructionExplosionData::duration() const
+const PhysRelativeTime& MachPhysConstructionExplosionData::duration() const
 {
     return duration_;
 }
 
 void MachPhysConstructionExplosionData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
-
 
 /* End CEXPDATA.CPP *************************************************/

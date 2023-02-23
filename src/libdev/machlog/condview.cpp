@@ -13,13 +13,15 @@
 #include "utility/linetok.hpp"
 #include "machlog/condview.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogCameraViewCondition);
 
-PER_DEFINE_PERSISTENT( MachLogCameraViewCondition );
-
-MachLogCameraViewCondition::MachLogCameraViewCondition( const string& keyName, const MexPoint3d& location, const MexRadians& angle )
-:	SimCondition( keyName ),
-	location_( location ),
-	angle_( angle )
+MachLogCameraViewCondition::MachLogCameraViewCondition(
+    const string& keyName,
+    const MexPoint3d& location,
+    const MexRadians& angle)
+    : SimCondition(keyName)
+    , location_(location)
+    , angle_(angle)
 {
     TEST_INVARIANT;
 }
@@ -27,84 +29,81 @@ MachLogCameraViewCondition::MachLogCameraViewCondition( const string& keyName, c
 MachLogCameraViewCondition::~MachLogCameraViewCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogCameraViewCondition::doHasConditionBeenMet() const
 {
-	W4dSceneManager* pSceneManager = W4dManager::instance().sceneManager();
-	W4dCamera* pCamera = pSceneManager->currentCamera();
-	return pCamera->canSee( location_ );
+    W4dSceneManager* pSceneManager = W4dManager::instance().sceneManager();
+    W4dCamera* pCamera = pSceneManager->currentCamera();
+    return pCamera->canSee(location_);
 }
 
-//static
-MachLogCameraViewCondition* MachLogCameraViewCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogCameraViewCondition* MachLogCameraViewCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	MexPoint3d location;
-	MexRadians angle;
-	for( int i = 0; i < pParser->tokens().size(); ++i )
-		if( pParser->tokens()[i] == "AT" )
-		{
-			location.x( atof( pParser->tokens()[i+1].c_str() ) );
-			location.y( atof( pParser->tokens()[i+2].c_str() ) );
-			location.z( atof( pParser->tokens()[i+3].c_str() ) );
-		}
-		else if( pParser->tokens()[i] == "ANGLE" )
-		{
-			angle = MexRadians( MexDegrees( atof( pParser->tokens()[i+1].c_str() ) ) );
-		}
-	return _NEW( MachLogCameraViewCondition( pParser->tokens()[1], location, angle ) );
+    MexPoint3d location;
+    MexRadians angle;
+    for (int i = 0; i < pParser->tokens().size(); ++i)
+        if (pParser->tokens()[i] == "AT")
+        {
+            location.x(atof(pParser->tokens()[i + 1].c_str()));
+            location.y(atof(pParser->tokens()[i + 2].c_str()));
+            location.z(atof(pParser->tokens()[i + 3].c_str()));
+        }
+        else if (pParser->tokens()[i] == "ANGLE")
+        {
+            angle = MexRadians(MexDegrees(atof(pParser->tokens()[i + 1].c_str())));
+        }
+    return _NEW(MachLogCameraViewCondition(pParser->tokens()[1], location, angle));
 }
 
 void MachLogCameraViewCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogCameraViewCondition& t )
+ostream& operator<<(ostream& o, const MachLogCameraViewCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogCameraViewCondition::recommendedCallBackTimeGap() const
 {
-	static const PhysRelativeTime value = 5;
-	return value;
+    static const PhysRelativeTime value = 5;
+    return value;
 }
 
-//virtual
-void MachLogCameraViewCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogCameraViewCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogCameraViewCondition " << (void*)this << " start" << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogCameraViewCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogCameraViewCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.location_;
-	ostr << condition.angle_;
-
+    ostr << base1;
+    ostr << condition.location_;
+    ostr << condition.angle_;
 }
 
-void perRead( PerIstream& istr, MachLogCameraViewCondition& condition )
+void perRead(PerIstream& istr, MachLogCameraViewCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.location_;
-	istr >> condition.angle_;
+    istr >> base1;
+    istr >> condition.location_;
+    istr >> condition.angle_;
 }
 
-MachLogCameraViewCondition::MachLogCameraViewCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogCameraViewCondition::MachLogCameraViewCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

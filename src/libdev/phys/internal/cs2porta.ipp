@@ -8,65 +8,62 @@
 #include "ctl/algorith.hpp"
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-PhysConfigSpace2d::DomainId PhysCS2dPortal::domainId1( void ) const
+PhysConfigSpace2d::DomainId PhysCS2dPortal::domainId1() const
 {
     return domainId1_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-PhysConfigSpace2d::DomainId PhysCS2dPortal::domainId2( void ) const
+PhysConfigSpace2d::DomainId PhysCS2dPortal::domainId2() const
 {
     return domainId2_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const MexPoint2d& PhysCS2dPortal::endPoint1( void ) const
+const MexPoint2d& PhysCS2dPortal::endPoint1() const
 {
     return endPoint1_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const MexPoint2d& PhysCS2dPortal::endPoint2( void ) const
+const MexPoint2d& PhysCS2dPortal::endPoint2() const
 {
     return endPoint2_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-MATHEX_SCALAR PhysCS2dPortal::length( void ) const
+MATHEX_SCALAR PhysCS2dPortal::length() const
 {
     return length_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-size_t PhysCS2dPortal::nDomainVertexs( void ) const
+size_t PhysCS2dPortal::nDomainVertexs() const
 {
     return domainVertexIds_.size();
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const PhysConfigSpace2d::DomainVertexId& PhysCS2dPortal::domainVertexId( size_t i ) const
+const PhysConfigSpace2d::DomainVertexId& PhysCS2dPortal::domainVertexId(size_t i) const
 {
-    PRE_INFO( i );
-    PRE_INFO( nDomainVertexs() );
-    PRE( i < nDomainVertexs() );
+    PRE_INFO(i);
+    PRE_INFO(nDomainVertexs());
+    PRE(i < nDomainVertexs());
 
-    return domainVertexIds_[ i ];
+    return domainVertexIds_[i];
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-bool PhysCS2dPortal::containsDomainVertex
-(
-    const PhysConfigSpace2d::DomainVertexId& domainVertexId
-) const
+bool PhysCS2dPortal::containsDomainVertex(const PhysConfigSpace2d::DomainVertexId& domainVertexId) const
 {
-    return ctl_contains( &domainVertexIds_, domainVertexId );
+    return ctl_contains(&domainVertexIds_, domainVertexId);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 /* End CS2PORTA.IPP *************************************************/

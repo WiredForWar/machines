@@ -13,61 +13,59 @@ MachPhysObjectData::MachPhysObjectData()
     TEST_INVARIANT;
 }
 
-MachPhysObjectData::MachPhysObjectData( const MachPhysObjectData& rhs )
-: armour_( rhs.armour_ ),
-  hitPoints_( rhs.hitPoints_ ),
-  cost_( rhs.cost_ )
+MachPhysObjectData::MachPhysObjectData(const MachPhysObjectData& rhs)
+    : armour_(rhs.armour_)
+    , hitPoints_(rhs.hitPoints_)
+    , cost_(rhs.cost_)
 {
 }
 
 MachPhysObjectData::~MachPhysObjectData()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::ArmourUnits MachPhysObjectData::armour() const
 {
-	return armour_;
+    return armour_;
 }
 
-void MachPhysObjectData::armour( const MachPhys::ArmourUnits& newArmour )
+void MachPhysObjectData::armour(const MachPhys::ArmourUnits& newArmour)
 {
-	armour_ = newArmour;
+    armour_ = newArmour;
 }
 
 MachPhys::HitPointUnits MachPhysObjectData::hitPoints() const
 {
-	return hitPoints_;
+    return hitPoints_;
 }
 
-void MachPhysObjectData::hitPoints( const MachPhys::HitPointUnits& newHp )
+void MachPhysObjectData::hitPoints(const MachPhys::HitPointUnits& newHp)
 {
-	hitPoints_ = newHp;
+    hitPoints_ = newHp;
 }
 
 MachPhys::BuildingMaterialUnits MachPhysObjectData::cost() const
 {
-	return cost_;
+    return cost_;
 }
 
-void MachPhysObjectData::cost( const MachPhys::BuildingMaterialUnits& newCost )
+void MachPhysObjectData::cost(const MachPhys::BuildingMaterialUnits& newCost)
 {
-	cost_ = newCost;
+    cost_ = newCost;
 }
-
 
 void MachPhysObjectData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysObjectData& t )
+ostream& operator<<(ostream& o, const MachPhysObjectData& t)
 {
 
-	o << "armour " << t.armour() << std::endl;
-	o << "hit points " << t.hitPoints() << std::endl;
-	o << "cost " << t.cost() << std::endl;
+    o << "armour " << t.armour() << std::endl;
+    o << "hit points " << t.hitPoints() << std::endl;
+    o << "cost " << t.cost() << std::endl;
 
     return o;
 }

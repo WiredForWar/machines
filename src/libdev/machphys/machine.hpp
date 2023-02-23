@@ -48,165 +48,166 @@ class MachPhysMachineImpl;
 class MachPhysFacePlate;
 class MachPhysConstruction;
 
-//template< class T > class ctl_vector< T >;
-template< class T > class CtlCountedPtr;
-typedef CtlCountedPtr< W4dCompositePlan > W4dCompositePlanPtr;
+// template< class T > class ctl_vector< T >;
+template <class T> class CtlCountedPtr;
+using W4dCompositePlanPtr = CtlCountedPtr<W4dCompositePlan>;
 
 class MachPhysMachine
-:   public W4dComposite,
-    public MachPhysCanMove,
-    public MachPhysCanTurn,
-    public MachPhysCanBeDestroyed
+    : public W4dComposite
+    , public MachPhysCanMove
+    , public MachPhysCanTurn
+    , public MachPhysCanBeDestroyed
 {
 public:
-    virtual ~MachPhysMachine();
+    ~MachPhysMachine() override;
 
-    //The machine's race
+    // The machine's race
     MachPhys::Race race() const;
 
-    typedef MachPhysCanMove::ProfilePtr ProfilePtr;
+    using ProfilePtr = MachPhysCanMove::ProfilePtr;
 
     ProfilePtr profile(
         const MexTransform3d& fromGlobalTransform,
-        OrientationInfo orientationInfo, const MexPoint3d& destination,
-        const MachPhysPlanetSurface& planetSurface ) const;
+        OrientationInfo orientationInfo,
+        const MexPoint3d& destination,
+        const MachPhysPlanetSurface& planetSurface) const;
 
-    //Compute move data including transforms, motion profile data etc for
-    //a move from fromGlobalPosition to toPoint, starting at startTime.
-    //Initial speed is startSpeed.
-    //The orientatinInfo tells us whether we should use the orientation
-    //given in fromGlobalPosition or whether we should calculate the starting
-    //orientation ourselves
-    //If comeToRest is true, must come to rest at toPoint. Otherwise, should
-    //be travelling with translation speed.
-    //  (From MachPhysCanMove)
+    // Compute move data including transforms, motion profile data etc for
+    // a move from fromGlobalPosition to toPoint, starting at startTime.
+    // Initial speed is startSpeed.
+    // The orientatinInfo tells us whether we should use the orientation
+    // given in fromGlobalPosition or whether we should calculate the starting
+    // orientation ourselves
+    // If comeToRest is true, must come to rest at toPoint. Otherwise, should
+    // be travelling with translation speed.
+    //   (From MachPhysCanMove)
 
-    virtual std::unique_ptr< MachPhysMachineMoveInfo > moveInfo(
+    std::unique_ptr<MachPhysMachineMoveInfo> moveInfo(
         ProfilePtr profilePtr,
-        const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,
-        MATHEX_SCALAR capSpeed, MachPhys::FinalState finalState );
+        const PhysAbsoluteTime& startTime,
+        MATHEX_SCALAR startSpeed,
+        MATHEX_SCALAR capSpeed,
+        MachPhys::FinalState finalState) override;
 
-    //Apply move animations to make the move as defined by info
-    virtual void move( const MachPhysMachineMoveInfo& info );
+    // Apply move animations to make the move as defined by info
+    void move(const MachPhysMachineMoveInfo& info) override;
 
     //  Stop the move dead. Apply appropriate animations.
-    virtual void stopDead();
+    void stopDead() override;
 
-    //Initiate turning through angle radians.
-    //returns time taken to complete the turn.
+    // Initiate turning through angle radians.
+    // returns time taken to complete the turn.
     //(From MachPhysCanTurn)
-    virtual PhysRelativeTime turn( const MexRadians& angle );
+    PhysRelativeTime turn(const MexRadians& angle) override;
 
-    //True iff the machine has the capability to turn its upper body while leaving base stationary
+    // True iff the machine has the capability to turn its upper body while leaving base stationary
     bool canTurnUpperBody() const;
 
-    //Make the upper body keep turning so as to face targetObject
-    void upperBodyTrackTarget( const W4dEntity& targetObject );
-    //PRE( canTurnUpperBody() );
+    // Make the upper body keep turning so as to face targetObject
+    void upperBodyTrackTarget(const W4dEntity& targetObject);
+    // PRE( canTurnUpperBody() );
 
-    //the current tracking target
+    // the current tracking target
     const W4dEntity& upperBodyTrackingTarget() const;
-    //PRE( upperBodyIsTrackingTarget() );
+    // PRE( upperBodyIsTrackingTarget() );
 
-    //True if tracking a target
+    // True if tracking a target
     bool upperBodyIsTrackingTarget() const;
 
-    //Stop tracking a target if doing so.
+    // Stop tracking a target if doing so.
     void upperBodyStopTrackingTarget();
 
-    //Make the upper body rotate by angle from current position, returning time for the animation
-    PhysRelativeTime upperBodyTurnBy( MexRadians angle );
-    //PRE( canTurnUpperBody() )
-    //PRE( not upperBodyIsTrackingTarget() )
+    // Make the upper body rotate by angle from current position, returning time for the animation
+    PhysRelativeTime upperBodyTurnBy(MexRadians angle);
+    // PRE( canTurnUpperBody() )
+    // PRE( not upperBodyIsTrackingTarget() )
 
-    //Make the upper body rotate to angle, returning time for the animation
-    PhysRelativeTime upperBodyTurnTo( MexRadians angle );
-    //PRE( canTurnUpperBody() )
-    //PRE( not upperBodyIsTrackingTarget() )
+    // Make the upper body rotate to angle, returning time for the animation
+    PhysRelativeTime upperBodyTurnTo(MexRadians angle);
+    // PRE( canTurnUpperBody() )
+    // PRE( not upperBodyIsTrackingTarget() )
 
-    //Make the upper body jump to specified angle from specified time
-    void upperBodySnapTo( MexRadians angle, const PhysAbsoluteTime& atTime );
-    //PRE( canTurnUpperBody() )
-    //PRE( not upperBodyIsTrackingTarget() )
+    // Make the upper body jump to specified angle from specified time
+    void upperBodySnapTo(MexRadians angle, const PhysAbsoluteTime& atTime);
+    // PRE( canTurnUpperBody() )
+    // PRE( not upperBodyIsTrackingTarget() )
 
-    //The current angle between upper body and base
+    // The current angle between upper body and base
     MexRadians upperBodyCurrentAngle() const;
 
-    //The current angle trying to move to
+    // The current angle trying to move to
     MexRadians upperBodyTargetAngle() const;
-    //PRE( not upperBodyIsTrackingTarget() )
+    // PRE( not upperBodyIsTrackingTarget() )
 
     //  Destroy yourself
     //  Return the time that will be taken for the animation
-    virtual PhysRelativeTime beDestroyed();
+    PhysRelativeTime beDestroyed() override;
 
-    //Do a shaking animation appropriate for eg being hit by a projectile.
-    PhysRelativeTime shake( const PhysAbsoluteTime startTime );
+    // Do a shaking animation appropriate for eg being hit by a projectile.
+    PhysRelativeTime shake(const PhysAbsoluteTime startTime);
 
-    //Set the machine burning from strtTime for duration, with percentage
-    //indicating the degree of burning
-    void burn( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration,
-               MATHEX_SCALAR percentage );
-    //PRE( percentage > 0.0 );
-    //PRE( percentage <= 100.0 );
+    // Set the machine burning from strtTime for duration, with percentage
+    // indicating the degree of burning
+    void burn(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration, MATHEX_SCALAR percentage);
+    // PRE( percentage > 0.0 );
+    // PRE( percentage <= 100.0 );
 
-	bool hasDamageData() const;
-	MachPhysMachineDamageData& damageData();
+    bool hasDamageData() const;
+    MachPhysMachineDamageData& damageData();
 
-	MachPhysMachineBurning& machineBurning( MachPhysMachine* pMachine );
-	bool isBurning() const;
-	bool isBurningFinished() const;
+    MachPhysMachineBurning& machineBurning(MachPhysMachine* pMachine);
+    bool isBurning() const;
+    bool isBurningFinished() const;
 
-	void damageLevel( const double& percent );
-	const double& damageLevel() const;
-	void updateDamageLevel(); //to be called every 60 seconds
-	bool isDamaged() const;
+    void damageLevel(const double& percent);
+    const double& damageLevel() const;
+    void updateDamageLevel(); // to be called every 60 seconds
+    bool isDamaged() const;
 
-	//Change machine's race to newRace
-	void changeRace( MachPhys::Race newRace );
+    // Change machine's race to newRace
+    void changeRace(MachPhys::Race newRace);
 
-    //chnage the colour of the machine to that of newRace's
-	void changeColour( MachPhys::Race newRace );
+    // chnage the colour of the machine to that of newRace's
+    void changeColour(MachPhys::Race newRace);
 
-	//virtual method returns the correct data element from the arrays held within MachPhysData
-	virtual const MachPhysMachineData& machineData() const = 0;
+    // virtual method returns the correct data element from the arrays held within MachPhysData
+    virtual const MachPhysMachineData& machineData() const = 0;
 
-    MATHEX_SCALAR   maxTranslationSpeed() const;
-    MexRadians      maxRotationSpeed() const;
-    MATHEX_SCALAR   maxTranslationAcceleration() const;
-    MexRadians      maxRotationAcceleration() const;
+    MATHEX_SCALAR maxTranslationSpeed() const;
+    MexRadians maxRotationSpeed() const;
+    MATHEX_SCALAR maxTranslationAcceleration() const;
+    MexRadians maxRotationAcceleration() const;
 
     //  Attach the given fireball to the given link
-    void attachFireball( MachPhysFireball* pFireball, W4dLink* pLink, const MexTransform3d& localTransform );
+    void attachFireball(MachPhysFireball* pFireball, W4dLink* pLink, const MexTransform3d& localTransform);
 
-	void convertMaterials( const MachPhysMachineData& data, MachPhys::Race race );
+    void convertMaterials(const MachPhysMachineData& data, MachPhys::Race race);
 
-	bool hasFacePlate() const;
-	W4dLink& facePlate();
-	//PRE(hasFacePlate());
+    bool hasFacePlate() const;
+    W4dLink& facePlate();
+    // PRE(hasFacePlate());
 
-	//Get the moving and idle sounds for this machine
-	void getLocomotionSounds(SoundId* pIdle, SoundId* pMove, const MachPhysMachineData& data) const;
+    // Get the moving and idle sounds for this machine
+    void getLocomotionSounds(SoundId* pIdle, SoundId* pMove, const MachPhysMachineData& data) const;
 
-    //Inherited from W4dEntity
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                             Accuracy accuracy ) const;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-    MachPhys::LocomotionType  locomotionType() const;
+    MachPhys::LocomotionType locomotionType() const;
 
-    //The object which controls various aspects of its locomotion type
+    // The object which controls various aspects of its locomotion type
     const MachPhysLocomotionMethod& locomotionMethod() const;
     MachPhysLocomotionMethod& locomotionMethod();
 
-	bool hasCanAttack() const;
-	//Return the associated MachPhysCanAttack
-	MachPhysCanAttack* canAttack() const;
-	//PRE(hasCanAttack());
-	//POST(pThisAttack);
+    bool hasCanAttack() const;
+    // Return the associated MachPhysCanAttack
+    MachPhysCanAttack* canAttack() const;
+    // PRE(hasCanAttack());
+    // POST(pThisAttack);
 
     //  In order for machines to behave correctly when in, entering
     //  or leaving a construction these calls must be made correctly.
-    void inOrOnPadConstruction( MachPhysConstruction* pPhysConstruction );
+    void inOrOnPadConstruction(MachPhysConstruction* pPhysConstruction);
     void notInOrOnPadConstruction();
 
     // Return any floors which are currently affecting the movement of
@@ -216,138 +217,142 @@ public:
     // the floor rather than from the underlying terrain.
     const MachPhysPlanetSurface::Floors& floors() const;
 
-	enum ControlType
-	{
-		FIRST_PERSON_LOCAL,
-		FIRST_PERSON_REMOTE,
-		OTHER
-	};
+    enum ControlType
+    {
+        FIRST_PERSON_LOCAL,
+        FIRST_PERSON_REMOTE,
+        OTHER
+    };
 
-	//Get and set machine control types
-	ControlType getMachineControlType() const;
-	void setMachineControlType(ControlType);
+    // Get and set machine control types
+    ControlType getMachineControlType() const;
+    void setMachineControlType(ControlType);
 
-	void doFadeInAnimation();
-	void doFadeOutAnimation();
+    void doFadeInAnimation();
+    void doFadeOutAnimation();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMachine& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMachine& t);
 
-    enum { N_BODY_LEVELS = 10 };
-    enum { N_BRAIN_LEVELS = 10 };
+    enum
+    {
+        N_BODY_LEVELS = 10
+    };
+    enum
+    {
+        N_BRAIN_LEVELS = 10
+    };
 
-    PER_MEMBER_PERSISTENT_ABSTRACT( MachPhysMachine );
-    PER_FRIEND_READ_WRITE( MachPhysMachine );
+    PER_MEMBER_PERSISTENT_ABSTRACT(MachPhysMachine);
+    PER_FRIEND_READ_WRITE(MachPhysMachine);
 
 protected:
     MachPhysMachine(
-      W4dEntity* pParent,
-      const W4dTransform3d& localTransform,
-      const SysPathName& compositeFileName,
-      const MachPhysMachineData& data );
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        const SysPathName& compositeFileName,
+        const MachPhysMachineData& data);
 
     // Copy a machine. Only the machine will be copied, nothing it is holding will be copied.
     MachPhysMachine(
-      const MachPhysMachine& copyMe,
-      W4dEntity* pParent,
-      const W4dTransform3d& localTransform,
-	  size_t bodyLevel,
-      size_t brainLevel,
-      MachPhys::Race race,
-      const MachPhysMachineData& data );
+        const MachPhysMachine& copyMe,
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        size_t bodyLevel,
+        size_t brainLevel,
+        MachPhys::Race race,
+        const MachPhysMachineData& data);
 
-    std::unique_ptr< MachPhysMachineMoveInfo > doMoveInfo
-    (
+    std::unique_ptr<MachPhysMachineMoveInfo> doMoveInfo(
         ProfilePtr profilePtr,
-        const PhysAbsoluteTime& startTime, MATHEX_SCALAR startSpeed,
-        MATHEX_SCALAR capSpeed, MachPhys::FinalState finalState
-    ) const;
+        const PhysAbsoluteTime& startTime,
+        MATHEX_SCALAR startSpeed,
+        MATHEX_SCALAR capSpeed,
+        MachPhys::FinalState finalState) const;
 
-    void doMove( const MachPhysMachineMoveInfo& info );
+    void doMove(const MachPhysMachineMoveInfo& info);
 
-    PhysRelativeTime doTurn( MATHEX_SCALAR angle );
+    PhysRelativeTime doTurn(MATHEX_SCALAR angle);
     PhysRelativeTime doExplode();
 
-    PhysRelativeTime    explodeLinks();
-    void    fireballEffect( PhysAbsoluteTime time );
+    PhysRelativeTime explodeLinks();
+    void fireballEffect(PhysAbsoluteTime time);
 
-    void    maxTranslationSpeed( MATHEX_SCALAR newSpeed );
-//     void            maxRotationSpeed( MATHEX_SCALAR newSpeed );
-//
-//     void            maxTranslationAcceleration( MATHEX_SCALAR newAcceleration );
-//     void            maxRotationAcceleration( MATHEX_SCALAR newAcceleration );
+    void maxTranslationSpeed(MATHEX_SCALAR newSpeed);
+    //     void            maxRotationSpeed( MATHEX_SCALAR newSpeed );
+    //
+    //     void            maxTranslationAcceleration( MATHEX_SCALAR newAcceleration );
+    //     void            maxRotationAcceleration( MATHEX_SCALAR newAcceleration );
 
-    const   MachPhysMachineExplosionData& explosionData() const;
+    const MachPhysMachineExplosionData& explosionData() const;
     MachPhysMachineExplosionData& explosionDataForEdit();
 
-	size_t	bodyLevel() const;
-	size_t  brainLevel() const;
+    size_t bodyLevel() const;
+    size_t brainLevel() const;
 
 private:
     // Operation deliberately revoked
-    MachPhysMachine( const MachPhysMachine& );
+    MachPhysMachine(const MachPhysMachine&);
 
     // Operation deliberately revoked
-    MachPhysMachine& operator =( const MachPhysMachine& );
+    MachPhysMachine& operator=(const MachPhysMachine&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysMachine& );
+    bool operator==(const MachPhysMachine&);
 
-    //Create the locomotion method
-    void createLocomotion( const MachPhysMachineData& data );
+    // Create the locomotion method
+    void createLocomotion(const MachPhysMachineData& data);
 
-    void createHoverBootLocomotion( MATHEX_SCALAR bobHeight );
-    void createWheelLocomotion( MATHEX_SCALAR wheelRadius );
+    void createHoverBootLocomotion(MATHEX_SCALAR bobHeight);
+    void createWheelLocomotion(MATHEX_SCALAR wheelRadius);
     void createSpiderLocomotion();
-    void createGliderLocomotion( MATHEX_SCALAR height );
+    void createGliderLocomotion(MATHEX_SCALAR height);
     void createTracksLocomotion(MATHEX_SCALAR repeatsPerMeter);
 
     void createRandomTransform(
-      const MexPoint3d& explosionPosition,
-      const MexTransform3d& objectTransform,
-      MexTransform3d* pResult );
+        const MexPoint3d& explosionPosition,
+        const MexTransform3d& objectTransform,
+        MexTransform3d* pResult);
 
-    static  MachPhysFacePlate&  faceplateFactory( size_t brainLevel );
+    static MachPhysFacePlate& faceplateFactory(size_t brainLevel);
 
     void defaultExplosionData();
 
-    //Set up the shakeLinks_ data
+    // Set up the shakeLinks_ data
     void initialiseShakeLinks();
 
-    //Add the locomotion sound for the machine
-    void addLocomotionSound( const MachPhysMachineData& data );
+    // Add the locomotion sound for the machine
+    void addLocomotionSound(const MachPhysMachineData& data);
 
-    typedef CtlCountedPtr< ctl_vector< MexTransform3d > > TransformsPtr;
+    using TransformsPtr = CtlCountedPtr<ctl_vector<MexTransform3d>>;
 
     void smoothProfile(
-        const ctl_vector< MexTransform3d >& inputTransforms,
-        const ctl_vector< MexTransform3d >& postMoveTransforms,
+        const ctl_vector<MexTransform3d>& inputTransforms,
+        const ctl_vector<MexTransform3d>& postMoveTransforms,
         MATHEX_SCALAR machineLength,
-        TransformsPtr outputTransformsPtr ) const;
+        TransformsPtr outputTransformsPtr) const;
 
-    MATHEX_SCALAR   angleWithHorizontal( const MexVec3& vec ) const;
+    MATHEX_SCALAR angleWithHorizontal(const MexVec3& vec) const;
 
     void smoothTransition(
         const MexTransform3d& lastTransform,
         const MexTransform3d& thisTransform,
         const MexTransform3d& nextTransform,
         MATHEX_SCALAR machineLength,
-        ctl_vector< MexTransform3d >* pTransforms ) const;
+        ctl_vector<MexTransform3d>* pTransforms) const;
 
-    void moveTransform( const MexTransform3d& transform,
-        MexVec3 direction,
-        MATHEX_SCALAR distance,
-        MexTransform3d* pResult ) const;
+    void
+    moveTransform(const MexTransform3d& transform, MexVec3 direction, MATHEX_SCALAR distance, MexTransform3d* pResult)
+        const;
 
-    void addTurnTransformIfNecessary(
-        TransformsPtr transformsPtr ) const;
+    void addTurnTransformIfNecessary(TransformsPtr transformsPtr) const;
 
     //  Data members
-    MachPhysMachineImpl* pImpl_; //pimple implementation object
+    MachPhysMachineImpl* pImpl_; // pimple implementation object
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMachine );
+PER_DECLARE_PERSISTENT(MachPhysMachine);
 
 #endif
 

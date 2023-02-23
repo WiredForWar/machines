@@ -6,66 +6,59 @@
 #ifndef _RANDOM_HPP
 #define _RANDOM_HPP
 
-#include<stdlib.h>
+#include <stdlib.h>
 ////////////////////////////////
 
-inline
-const unsigned int& randomInt( const unsigned int& n )
+inline const unsigned int& randomInt(const unsigned int& n)
 {
-	//PRE( isValid( n ) );
+    // PRE( isValid( n ) );
 
-	return rand() % n;
+    return rand() % n;
 }
 
-inline
-const int& randomInt( const int& minValue, const int& maxValue )
+inline const int& randomInt(const int& minValue, const int& maxValue)
 {
-	//PRE( isValid( n ) );
+    // PRE( isValid( n ) );
 
-	return ( rand() % ( maxValue - minValue ) ) + minValue;
+    return (rand() % (maxValue - minValue)) + minValue;
 }
 
-inline
-const unsigned int& randomInt()
+inline const unsigned int& randomInt()
 {
-	return rand();
+    return rand();
 }
 
-inline
-double randomFloat( double d )
+inline double randomFloat(double d)
 {
-	double	randDouble = rand() / (double) RAND_MAX;
+    double randDouble = rand() / (double)RAND_MAX;
 
-	double	result = randDouble * d;
+    double result = randDouble * d;
 
-	return result;
+    return result;
 }
 
-inline
-double randomFloat()
+inline double randomFloat()
 {
-	// get a value between 0 and 1
-	double	randDouble = rand() / (double) RAND_MAX;
+    // get a value between 0 and 1
+    double randDouble = rand() / (double)RAND_MAX;
 
-	double	result = randDouble * rand();
-								  
-	return result;
+    double result = randDouble * rand();
+
+    return result;
 }
 
-
-inline
-double randomFloat( double minValue, double maxValue )
+inline double randomFloat(double minValue, double maxValue)
 {
-//	PRE( minValue < maxValue );
+    //  PRE( minValue < maxValue );
 
-	// value between 0 and 1
-	double	randDouble = rand() / (double) RAND_MAX;
+    // value between 0 and 1
+    double randDouble = rand() / (double)RAND_MAX;
 
-	double	result = randDouble * ( maxValue - minValue ) + minValue;
+    double result = randDouble * (maxValue - minValue) + minValue;
 
-	return result;
+    return result;
 }
 
 //////////////////////////////
 
-#endif		/*		_RANDOM_HPP			*/
+#endif /*      _RANDOM_HPP         */

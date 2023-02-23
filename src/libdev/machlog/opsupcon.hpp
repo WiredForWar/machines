@@ -1,5 +1,5 @@
 /*
- * O P S U P C O N . H P P 
+ * O P S U P C O N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,8 +7,8 @@
     MachLogSuperConstructOperation
 
     This class takes an actor, a vector of constructions and one of 4 valid operation types,
-	and makes that actor perform that operation on each construction in turn, executing
-	suboperations in sequence. 
+    and makes that actor perform that operation on each construction in turn, executing
+    suboperations in sequence.
 */
 
 #ifndef _MACHLOG_OPSUPCON_HPP
@@ -27,69 +27,61 @@
 #include "machlog/constron.hpp"
 #include "machlog/operatio.hpp"
 
-
-
 class MachLogConstructor;
 class MachLogConstruction;
 
 // canonical form revoked
 
-class MachLogSuperConstructOperation
-: public MachLogOperation
+class MachLogSuperConstructOperation : public MachLogOperation
 {
-	typedef ctl_pvector< MachLogConstruction >	Constructions;
-	typedef ctl_pvector< MachLogConstructor >	Constructors;
+    using Constructions = ctl_pvector<MachLogConstruction>;
+    using Constructors = ctl_pvector<MachLogConstructor>;
 
 public:
+    MachLogSuperConstructOperation(
+        MachLogConstructor* pActor,
+        const Constructions& constructionArray,
+        MachLogOperation::OperationType opType);
+    ~MachLogSuperConstructOperation() override;
 
-	MachLogSuperConstructOperation( MachLogConstructor * pActor, const Constructions& constructionArray, MachLogOperation::OperationType opType );
-	virtual ~MachLogSuperConstructOperation();
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogSuperConstructOperation );
-	PER_FRIEND_READ_WRITE( MachLogSuperConstructOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogSuperConstructOperation);
+    PER_FRIEND_READ_WRITE(MachLogSuperConstructOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	
-	virtual void doOutputOperator( ostream& ) const;
-	virtual PhysRelativeTime doUpdate( );
-	virtual bool doBeInterrupted();
+    bool doIsFinished() const override;
 
+    void doOutputOperator(ostream&) const override;
+    PhysRelativeTime doUpdate() override;
+    bool doBeInterrupted() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogSuperConstructOperation(const MachLogSuperConstructOperation&);
+    MachLogSuperConstructOperation& operator=(const MachLogSuperConstructOperation&);
+    bool operator==(const MachLogSuperConstructOperation&);
 
-	// Operations deliberately revoked
-    MachLogSuperConstructOperation( const MachLogSuperConstructOperation& );
-    MachLogSuperConstructOperation& operator =( const MachLogSuperConstructOperation& );
-    bool operator ==( const MachLogSuperConstructOperation& );
-	
-	// void addConstructorToAllConstructions();
-	// void removeConstructorFromAllConstructions();
-	
-	void addReservationToAllConstructions();
-	void cancelReservationFromAllConstructions();
+    // void addConstructorToAllConstructions();
+    // void removeConstructorFromAllConstructions();
 
-	
-	MachLogConstructor *						pActor_;
-	Constructions								constructionArray_;
-	MachLogOperation::OperationType				opType_;
-	MachLogConstruction *						pTargetConstruction_;
-   	
-	PhysAbsoluteTime							lastUpdateTime_;
-	
-	bool										doingFirstOp_;
+    void addReservationToAllConstructions();
+    void cancelReservationFromAllConstructions();
 
+    MachLogConstructor* pActor_;
+    Constructions constructionArray_;
+    MachLogOperation::OperationType opType_;
+    MachLogConstruction* pTargetConstruction_;
+
+    PhysAbsoluteTime lastUpdateTime_;
+
+    bool doingFirstOp_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogSuperConstructOperation );
-
+PER_DECLARE_PERSISTENT(MachLogSuperConstructOperation);
 
 #endif
 

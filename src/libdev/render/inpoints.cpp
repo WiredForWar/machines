@@ -6,8 +6,8 @@
 #include "render/internal/inpoints.hpp"
 #include "render/internal/vtxdata.hpp"
 
-RenIPoints::RenIPoints(size_t initial):
-	ctl_min_memory_vector<RenIVertex>(initial)
+RenIPoints::RenIPoints(size_t initial)
+    : ctl_min_memory_vector<RenIVertex>(initial)
 {
 }
 

@@ -10,64 +10,52 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-class machLogTypePredicate
-: protected MachLogTypeRestorer
+class machLogTypePredicate : protected MachLogTypeRestorer
 {
-	machLogTypePredicate( MachActor * pActor )
-	: pActor_( pActor )
-	{
-	}
+    machLogTypePredicate(MachActor* pActor)
+        : pActor_(pActor)
+    {
+    }
 
-	operator bool()
-	{
-		process( pActor_ );
-		return result_;
-	}
+    operator bool()
+    {
+        process(pActor_);
+        return result_;
+    }
 
-	///////////////////////////////
+    ///////////////////////////////
 
 protected:
+    virtual ProcessAsSubtype doProcessConstruction(MachLogConstruction*) { return PROCESS_AS_SUBTYPE; }
 
-	virtual ProcessAsSubtype doProcessConstruction( MachLogConstruction * )
-	{
-		return PROCESS_AS_SUBTYPE;
-	}
-	
-	virtual ProcessAsSubtype doProcessMachine( MachLogMachine * )
-	{
-		return PROCESS_AS_SUBTYPE;
-	}
+    virtual ProcessAsSubtype doProcessMachine(MachLogMachine*) { return PROCESS_AS_SUBTYPE; }
 
-	virtual ProcessAsSubtype doDefaultProcess( MachActor * )
-	{
-		result_ = false;
-		return DO_NOT_PROCESS_AS_SUBTYPE;
-	}
-		
-	MachActor * pActor_;
-	bool		result_;
+    virtual ProcessAsSubtype doDefaultProcess(MachActor*)
+    {
+        result_ = false;
+        return DO_NOT_PROCESS_AS_SUBTYPE;
+    }
+
+    MachActor* pActor_;
+    bool result_;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-class machLogIsBoss
-: public machLogTypePredicate
+class machLogIsBoss : public machLogTypePredicate
 {
 public:
-
-	machLogIsBoss( MachActor * pActor )
-	: machLogTypePredicate( pActor )
-	{
-	}
-
+    machLogIsBoss(MachActor* pActor)
+        : machLogTypePredicate(pActor)
+    {
+    }
 
 protected:
-	
-	virtual ProcessAsSubtype doProcessBoss( MachLogAdministrator * )
-	{
-		result_ = true;
-		return DO_NOT_PROCESS_AS_SUBTYPE;
-	}
+    virtual ProcessAsSubtype doProcessBoss(MachLogAdministrator*)
+    {
+        result_ = true;
+        return DO_NOT_PROCESS_AS_SUBTYPE;
+    }
 };
 
 /* //////////////////////////////////////////////////////////////// */

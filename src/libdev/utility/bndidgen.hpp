@@ -1,5 +1,5 @@
 /*
- * B N D I D G E N . H P P 
+ * B N D I D G E N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -15,65 +15,64 @@
 #include "base/base.hpp"
 #include "utility/id.hpp"
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class UtlBoundedIdGenerator
 {
 public:
-    //ctor defines upper bound for ids as upperBound. This also limits the
-    //number of ids that can be concurrently allocated.
-    UtlBoundedIdGenerator( UtlId upperBound );
+    // ctor defines upper bound for ids as upperBound. This also limits the
+    // number of ids that can be concurrently allocated.
+    UtlBoundedIdGenerator(UtlId upperBound);
 
-    //dtor
+    // dtor
     ~UtlBoundedIdGenerator();
 
-    //The highest possible id + 1
+    // The highest possible id + 1
     UtlId upperBound() const;
 
-    //Number of ids that can still be allocated
+    // Number of ids that can still be allocated
     uint32_t nUnusedIds() const;
 
-    //True if id has been allocated
-    bool isAllocated( UtlId id ) const;
-    //PRE( id < upperBound() )
+    // True if id has been allocated
+    bool isAllocated(UtlId id) const;
+    // PRE( id < upperBound() )
 
-    //Allocate and return a new unique id
+    // Allocate and return a new unique id
     UtlId nextId();
-    //PRE( nUnusedIds() > 0 )
+    // PRE( nUnusedIds() > 0 )
 
-    //Allocate and return a new unique id
-    UtlId nextId( UtlId minId, UtlId maxId );
-    //PRE( nUnusedIds() > 0 )
+    // Allocate and return a new unique id
+    UtlId nextId(UtlId minId, UtlId maxId);
+    // PRE( nUnusedIds() > 0 )
 
-    //Allocates id (the id must have previously been determined to be free)
-	//example: might occur via a network message
-    void allocateId( UtlId id );
-	//PRE( not isAllocated( id ) )
+    // Allocates id (the id must have previously been determined to be free)
+    // example: might occur via a network message
+    void allocateId(UtlId id);
+    // PRE( not isAllocated( id ) )
 
-    //Frees id for re-use
-    void freeId( UtlId id );
-    //PRE( isAllocated( id ) )
+    // Frees id for re-use
+    void freeId(UtlId id);
+    // PRE( isAllocated( id ) )
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const UtlBoundedIdGenerator& t );
+    friend ostream& operator<<(ostream& o, const UtlBoundedIdGenerator& t);
 
 private:
     // Operations deliberately revoked
-    UtlBoundedIdGenerator( const UtlBoundedIdGenerator& );
-    UtlBoundedIdGenerator& operator =( const UtlBoundedIdGenerator& );
-    bool operator ==( const UtlBoundedIdGenerator& );
+    UtlBoundedIdGenerator(const UtlBoundedIdGenerator&);
+    UtlBoundedIdGenerator& operator=(const UtlBoundedIdGenerator&);
+    bool operator==(const UtlBoundedIdGenerator&);
 
-    //Data members
-    UtlId upperBound_; //Upper bound for ids
-    UtlId lastAllocatedId_; //Caches last id allocated
-    uint32_t nUnused_; //Number of ids not allocated
-    uchar* aFlags_; //Pointer to array of flags: 1 => allocated, 0 =>unallocated
+    // Data members
+    UtlId upperBound_; // Upper bound for ids
+    UtlId lastAllocatedId_; // Caches last id allocated
+    uint32_t nUnused_; // Number of ids not allocated
+    uchar* aFlags_; // Pointer to array of flags: 1 => allocated, 0 =>unallocated
 };
 
 #ifdef _INLINE
-    #include "utility/bndidgen.ipp"
+#include "utility/bndidgen.ipp"
 #endif
-
 
 #endif
 

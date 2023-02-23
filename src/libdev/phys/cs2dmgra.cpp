@@ -11,11 +11,11 @@
 
 void PhysCS2dDomainGraph::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const PhysCS2dDomainGraph& t )
+ostream& operator<<(ostream& o, const PhysCS2dDomainGraph& t)
 {
 
     o << "PhysCS2dDomainGraph " << (void*)&t << " start" << std::endl;
@@ -25,24 +25,24 @@ ostream& operator <<( ostream& o, const PhysCS2dDomainGraph& t )
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void PhysCS2dDomainGraph::doRemoveVertex( const VertexId& id )
+// virtual
+void PhysCS2dDomainGraph::doRemoveVertex(const VertexId& id)
 {
-    //Do base processing
-    GraGraph::doRemoveVertex( id );
+    // Do base processing
+    GraGraph::doRemoveVertex(id);
 
-    //free the id
-    domainVertexIdGenerator_.free( id );
+    // free the id
+    domainVertexIdGenerator_.free(id);
 }
 
-//virtual
-void PhysCS2dDomainGraph::doRemoveArc( const ArcId& id )
+// virtual
+void PhysCS2dDomainGraph::doRemoveArc(const ArcId& id)
 {
-    //Do base processing
-    GraGraph::doRemoveArc( id );
+    // Do base processing
+    GraGraph::doRemoveArc(id);
 
-    //free the id
-    domainArcIdGenerator_.free( id );
+    // free the id
+    domainArcIdGenerator_.free(id);
 }
 
 /* End CS2DMGRA.CPP *************************************************/

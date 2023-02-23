@@ -16,22 +16,19 @@
 
 #include "utility/percent.hpp"
 
-RenStars::RenStars(
-	Configuration config,
-	MATHEX_SCALAR radius,
-	uint nStars)
+RenStars::RenStars(Configuration config, MATHEX_SCALAR radius, uint nStars)
 
-	:pImpl_(_NEW(RenIStarsImpl(config, radius, nStars)))
+    : pImpl_(_NEW(RenIStarsImpl(config, radius, nStars)))
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
 // VIRTUAL //
 RenStars::~RenStars()
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	_DELETE(pImpl_);
+    _DELETE(pImpl_);
 }
 
 void RenStars::render(
@@ -40,41 +37,36 @@ void RenStars::render(
     MexRadians verticalFOV,
     MexRadians horizontalFOV)
 {
-	pImpl_->render(
-		opacity,
-	    cameraXform,
-		verticalFOV,
-	    horizontalFOV);
+    pImpl_->render(opacity, cameraXform, verticalFOV, horizontalFOV);
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
 RenStars::Configuration RenStars::configuration() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return pImpl_->configuration();
+    return pImpl_->configuration();
 }
 
 MATHEX_SCALAR RenStars::radius() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
     return pImpl_->radius();
 }
 
 uint RenStars::nStars() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return pImpl_->nStars();
+    return pImpl_->nStars();
 }
 
 void RenStars::CLASS_INVARIANT
 {
-	INVARIANT(this);
-	INVARIANT(pImpl_);
+    INVARIANT(this);
+    INVARIANT(pImpl_);
 }
 
 /* End STARS.CPP ******************************************/
-

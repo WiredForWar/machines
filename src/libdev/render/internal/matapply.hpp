@@ -22,32 +22,37 @@ class RenIFloatLightingBuffer;
 class RenIMaterialApplicator
 {
 public:
-	RenIMaterialApplicator(const RenIMatBody*, const RenColour& ambient, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
+    RenIMaterialApplicator(
+        const RenIMatBody*,
+        const RenColour& ambient,
+        const RenIExpandedIntensityMap*,
+        bool,
+        const RenColour& filter);
 
-	void perVertexMats(bool b)		{ perVertexMats_ = b; }
-	void specularRequired(bool b)	{ specularRequired_ = b; }
+    void perVertexMats(bool b) { perVertexMats_ = b; }
+    void specularRequired(bool b) { specularRequired_ = b; }
 
 protected:
-	void applySpecular(RenIVertex& vtx, float lambR, float lambG, float lambB) const;
+    void applySpecular(RenIVertex& vtx, float lambR, float lambG, float lambB) const;
 
-	// Initialisation order of alpha_ is important.
-	const float difR_, difG_, difB_, constR_, constG_, constB_;
-	uint32_t alpha_;
-	const uint packedAmbient_, packedBlack_;
+    // Initialisation order of alpha_ is important.
+    const float difR_, difG_, difB_, constR_, constG_, constB_;
+    uint32_t alpha_;
+    const uint packedAmbient_, packedBlack_;
 
-	// packedAmbient_ can only be used if every entry in map_ is 1.0.
-	// Otherwise, the ambient must be multiplied by the vertex intensity.
-	const bool mapUnity_;
-	const RenIExpandedIntensityMap* const map_;
+    // packedAmbient_ can only be used if every entry in map_ is 1.0.
+    // Otherwise, the ambient must be multiplied by the vertex intensity.
+    const bool mapUnity_;
+    const RenIExpandedIntensityMap* const map_;
 
-	// Have per-vertex materials been applied?
-	bool perVertexMats_;
+    // Have per-vertex materials been applied?
+    bool perVertexMats_;
 
-	// Is specular oversaturation indicated?
-	bool specularRequired_;
+    // Is specular oversaturation indicated?
+    bool specularRequired_;
 
-	// This is a filter which is applied to every output colour.
-	const RenColour	filter_;
+    // This is a filter which is applied to every output colour.
+    const RenColour filter_;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -55,10 +60,10 @@ protected:
 class RenILitMatApp : public RenIMaterialApplicator
 {
 public:
-    RenILitMatApp( const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter );
-    virtual void applyToVertex( RenIVertex& vtx, float lambR, float lambG, float lambB ) const = 0;
-    void applyViaIndices( const RenIIlluminator::Indices&, RenIFloatLightingBuffer* ) const;
-    void applyDirectToVertices( RenIFloatLightingBuffer*, size_t nVertices ) const;
+    RenILitMatApp(const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
+    virtual void applyToVertex(RenIVertex& vtx, float lambR, float lambG, float lambB) const = 0;
+    void applyViaIndices(const RenIIlluminator::Indices&, RenIFloatLightingBuffer*) const;
+    void applyDirectToVertices(RenIFloatLightingBuffer*, size_t nVertices) const;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -68,8 +73,13 @@ public:
 class RenINoOverflowMatApp : public RenILitMatApp
 {
 public:
-	RenINoOverflowMatApp(const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
-    void applyToVertex( RenIVertex& vtx, float lambR, float lambG, float lambB ) const final;
+    RenINoOverflowMatApp(
+        const RenIMatBody*,
+        const RenColour&,
+        const RenIExpandedIntensityMap*,
+        bool,
+        const RenColour& filter);
+    void applyToVertex(RenIVertex& vtx, float lambR, float lambG, float lambB) const final;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -78,8 +88,13 @@ public:
 class RenICheckedMatApp : public RenILitMatApp
 {
 public:
-	RenICheckedMatApp(const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
-    void applyToVertex( RenIVertex& vtx, float lambR, float lambG, float lambB ) const final;
+    RenICheckedMatApp(
+        const RenIMatBody*,
+        const RenColour&,
+        const RenIExpandedIntensityMap*,
+        bool,
+        const RenColour& filter);
+    void applyToVertex(RenIVertex& vtx, float lambR, float lambG, float lambB) const final;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -89,10 +104,15 @@ public:
 class RenIUnlitMatApp : public RenIMaterialApplicator
 {
 public:
-	RenIUnlitMatApp(const RenIMatBody*, const RenColour&, const RenIExpandedIntensityMap*, bool, const RenColour& filter);
-	void applyToVertex(RenIVertex& vtx) const;
-	void applyViaIndices(const RenIIlluminator::Indices&, RenILightingBuffer*) const;
-	void applyDirectToVertices(RenILightingBuffer*, size_t nVertices) const;
+    RenIUnlitMatApp(
+        const RenIMatBody*,
+        const RenColour&,
+        const RenIExpandedIntensityMap*,
+        bool,
+        const RenColour& filter);
+    void applyToVertex(RenIVertex& vtx) const;
+    void applyViaIndices(const RenIIlluminator::Indices&, RenILightingBuffer*) const;
+    void applyDirectToVertices(RenILightingBuffer*, size_t nVertices) const;
 };
 
 #endif

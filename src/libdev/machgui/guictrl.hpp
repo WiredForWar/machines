@@ -16,85 +16,88 @@ class MachGuiIconWithCounter : public GuiBitmapButtonWithFilledBorder
 // cannonical from revoked
 {
 public:
-	MachGuiIconWithCounter( GuiDisplayable *pParent, const Gui::Coord& rel, const SysPathName& bitmap, MachInGameScreen* pInGameScreen );
-	virtual ~MachGuiIconWithCounter();
+    MachGuiIconWithCounter(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        const SysPathName& bitmap,
+        MachInGameScreen* pInGameScreen);
+    ~MachGuiIconWithCounter() override;
 
 protected:
-	virtual void doDisplayInteriorEnabled( const Gui::Coord& abs );
+    void doDisplayInteriorEnabled(const Gui::Coord& abs) override;
 
-	string getRootDirectory() const;
+    string getRootDirectory() const;
 
-	size_t currentValue_;
-	MachInGameScreen *	pInGameScreen_;	
+    size_t currentValue_;
+    MachInGameScreen* pInGameScreen_;
 
 private:
-	MachGuiIconWithCounter( const MachGuiIconWithCounter& );
-	MachGuiIconWithCounter& operator =( const MachGuiIconWithCounter& );
-	bool operator ==( const MachGuiIconWithCounter& ) const;
+    MachGuiIconWithCounter(const MachGuiIconWithCounter&);
+    MachGuiIconWithCounter& operator=(const MachGuiIconWithCounter&);
+    bool operator==(const MachGuiIconWithCounter&) const;
 };
 
 class MachMachinesIcon : public MachGuiIconWithCounter
 // cannonical from revoked
 {
 public:
-	MachMachinesIcon( GuiDisplayable *pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen );
-	virtual ~MachMachinesIcon();
+    MachMachinesIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen);
+    ~MachMachinesIcon() override;
 
-	void refresh();
+    void refresh();
 
-	// Make the button pop up without calling the doBeRelease 
-	// functionality ( doBeReleased changes control panel context ).
-	void forceUp();
+    // Make the button pop up without calling the doBeRelease
+    // functionality ( doBeReleased changes control panel context ).
+    void forceUp();
 
-	// Change button bitmap to match race coloue
-	void loadGame();
+    // Change button bitmap to match race coloue
+    void loadGame();
 
 protected:
-	// inherited from GuiIcon...
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
+    // inherited from GuiIcon...
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-	MachMachinesIcon( const MachMachinesIcon& );
-	MachMachinesIcon& operator =( const MachMachinesIcon& );
-	bool operator ==( const MachMachinesIcon& ) const;
+    MachMachinesIcon(const MachMachinesIcon&);
+    MachMachinesIcon& operator=(const MachMachinesIcon&);
+    bool operator==(const MachMachinesIcon&) const;
 
-	// Data members...
-	bool forcingUp_;
+    // Data members...
+    bool forcingUp_;
 };
-
 
 class MachConstructionsIcon : public MachGuiIconWithCounter
 // cannonical from revoked
 {
 public:
-	MachConstructionsIcon( GuiDisplayable *pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen );
-	virtual ~MachConstructionsIcon();
+    MachConstructionsIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen);
+    ~MachConstructionsIcon() override;
 
-	void refresh();
+    void refresh();
 
-	// Make the button pop up without calling the doBeRelease 
-	// functionality ( doBeReleased changes control panel context ).
-	void forceUp();
+    // Make the button pop up without calling the doBeRelease
+    // functionality ( doBeReleased changes control panel context ).
+    void forceUp();
 
-	// Change button bitmap to match race coloue
-	void loadGame();
+    // Change button bitmap to match race coloue
+    void loadGame();
 
 protected:
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
-		
-private:
-	MachConstructionsIcon( const MachConstructionsIcon& );
-	MachConstructionsIcon& operator =( const MachConstructionsIcon& );
-	bool operator ==( const MachConstructionsIcon& ) const;
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
-	// Data members...
-	bool forcingUp_;
+private:
+    MachConstructionsIcon(const MachConstructionsIcon&);
+    MachConstructionsIcon& operator=(const MachConstructionsIcon&);
+    bool operator==(const MachConstructionsIcon&) const;
+
+    // Data members...
+    bool forcingUp_;
 };
 
 /* //////////////////////////////////////////////////////////////// */
@@ -103,27 +106,27 @@ class MachSquadronIcon : public MachGuiIconWithCounter
 // cannonical from revoked
 {
 public:
-	MachSquadronIcon( GuiDisplayable *pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen );
-	virtual ~MachSquadronIcon();
+    MachSquadronIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen);
+    ~MachSquadronIcon() override;
 
-	void update();
+    void update();
 
-	// Change button bitmap to match race coloue
-	void loadGame();
+    // Change button bitmap to match race coloue
+    void loadGame();
 
 protected:
-	// inherited from GuiIcon...
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
+    // inherited from GuiIcon...
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-	MachSquadronIcon( const MachSquadronIcon& );
-	MachSquadronIcon& operator =( const MachSquadronIcon& );
-	bool operator ==( const MachSquadronIcon& ) const;
+    MachSquadronIcon(const MachSquadronIcon&);
+    MachSquadronIcon& operator=(const MachSquadronIcon&);
+    bool operator==(const MachSquadronIcon&) const;
 
-	MachInGameScreen *	pInGameScreen_;
+    MachInGameScreen* pInGameScreen_;
 };
 
 /* //////////////////////////////////////////////////////////////// */

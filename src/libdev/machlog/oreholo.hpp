@@ -1,5 +1,5 @@
 /*
- * O R E H O L O . H P P 
+ * O R E H O L O . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,73 +16,70 @@
 
 #include "machlog/actor.hpp"
 
-//forward refs
+// forward refs
 class MachLogRace;
 class MexPoint3d;
 class MachPhysOreHolograph;
 class MachPhysConstructionData;
 class MachLogMineralSite;
 
-//orthodox canonical( revoked )
+// orthodox canonical( revoked )
 class MachLogOreHolograph : public MachActor
 {
 public:
-    //ctor
-    MachLogOreHolograph( MachLogRace* pRace, uint concentration, uint quantity,
-                         const MexPoint3d& location );
+    // ctor
+    MachLogOreHolograph(MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location);
 
-    MachLogOreHolograph( MachLogRace* pRace, uint concentration, uint quantity,
-                         const MexPoint3d& location, UtlId );
+    MachLogOreHolograph(MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location, UtlId);
 
-    //dtor.
-    virtual ~MachLogOreHolograph();
+    // dtor.
+    ~MachLogOreHolograph() override;
 
-	//view of MachPhysObject data
-	virtual const MachPhysObjectData& objectData() const;
-	const MachPhysConstructionData& constructionData() const;
-	const MachPhysConstructionData& data() const;
+    // view of MachPhysObject data
+    const MachPhysObjectData& objectData() const override;
+    const MachPhysConstructionData& constructionData() const;
+    const MachPhysConstructionData& data() const;
 
     void CLASS_INVARIANT;
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	// inherited from MachLogCanBeDestroyed
-	virtual PhysRelativeTime beDestroyed();
-	
-	virtual bool exists() const;
-	
-	///////////////////////////////
+    // inherited from MachLogCanBeDestroyed
+    PhysRelativeTime beDestroyed() override;
 
-	const MachLogMineralSite& mineralSite() const;
-	
-	friend class MachLogMineralSite;
+    virtual bool exists() const;
 
-	void assignToDifferentRace( MachLogRace& newRace );
+    ///////////////////////////////
+
+    const MachLogMineralSite& mineralSite() const;
+
+    friend class MachLogMineralSite;
+
+    void assignToDifferentRace(MachLogRace& newRace) override;
 
 protected:
-	virtual void doStartExplodingAnimation();
-	virtual void doEndExplodingAnimation();
+    void doStartExplodingAnimation() override;
+    void doEndExplodingAnimation() override;
 
 private:
-    //Subclass must override to modify the display.
-    //Called on change of state.
-    virtual void doVisualiseSelectionState();
+    // Subclass must override to modify the display.
+    // Called on change of state.
+    void doVisualiseSelectionState() override;
     // Operations deliberately revoked
-    MachLogOreHolograph( const MachLogOreHolograph& );
-    MachLogOreHolograph& operator =( const MachLogOreHolograph& );
-    bool operator ==( const MachLogOreHolograph& );
-	
-	// designed for when the associated mineral site has been exhausted
-	void removeMe();
+    MachLogOreHolograph(const MachLogOreHolograph&);
+    MachLogOreHolograph& operator=(const MachLogOreHolograph&);
+    bool operator==(const MachLogOreHolograph&);
 
-    //Construct a physical holograph at required location and in correct domain
-    static MachPhysOreHolograph* pNewOreHolograph( MachLogRace* pRace, uint concentration,
-                                                   uint quantity, const MexPoint3d& location );
-    //data members
-	
-	MachPhysOreHolograph* pPhysHolo_;
+    // designed for when the associated mineral site has been exhausted
+    void removeMe();
+
+    // Construct a physical holograph at required location and in correct domain
+    static MachPhysOreHolograph*
+    pNewOreHolograph(MachLogRace* pRace, uint concentration, uint quantity, const MexPoint3d& location);
+    // data members
+
+    MachPhysOreHolograph* pPhysHolo_;
 };
-
 
 #endif
 

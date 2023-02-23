@@ -5,22 +5,23 @@
 
 class GuiRoot;
 class GuiDisplayable;
- 
+
 class GuiManagerImpl
 {
 private:
-	GuiManagerImpl( const GuiColourScheme& colourScheme )
-	:	colourScheme_( colourScheme )
-	{}
-	
-	//Data members 
-	GuiColourScheme			colourScheme_;
-	GuiRoot *				pRoot_;
-	GuiDisplayable *		pMouseFocus_;
-	GuiDisplayable *		pKeyboardFocus_;
-	GuiDisplayable *		pCharacterFocus_;
+    GuiManagerImpl(const GuiColourScheme& colourScheme)
+        : colourScheme_(colourScheme)
+    {
+    }
 
-	friend class GuiManager; 
+    // Data members
+    GuiColourScheme colourScheme_;
+    GuiRoot* pRoot_;
+    GuiDisplayable* pMouseFocus_;
+    GuiDisplayable* pKeyboardFocus_;
+    GuiDisplayable* pCharacterFocus_;
+
+    friend class GuiManager;
 };
-		
-#endif	// _GUI_MANAGEI
+
+#endif // _GUI_MANAGEI

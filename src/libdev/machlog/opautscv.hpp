@@ -1,11 +1,11 @@
 /*
- * O P A U T S C V . H P P 
+ * O P A U T S C V . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
- 
+
 /*
- *	AutoScavenge operation
- * 	Supervising class for a self-initiated scavenge op, which stores a pending operation (what the scavenger was doing
+ *  AutoScavenge operation
+ *  Supervising class for a self-initiated scavenge op, which stores a pending operation (what the scavenger was doing
  *  before this began) and restores it when the scavenge op itself is finished.
  */
 
@@ -27,61 +27,53 @@ class MachLogStrategy;
 class MachLogResourceCarrier;
 class MachLogDebris;
 
-
 // orthodox canonical (revoked)
 
-class MachLogAutoScavengeOperation
-: public MachLogOperation
+class MachLogAutoScavengeOperation : public MachLogOperation
 {
 public:
-	
-	virtual ~MachLogAutoScavengeOperation();
+    ~MachLogAutoScavengeOperation() override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAutoScavengeOperation );
-	PER_FRIEND_READ_WRITE( MachLogAutoScavengeOperation );
-	
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAutoScavengeOperation);
+    PER_FRIEND_READ_WRITE(MachLogAutoScavengeOperation);
+
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
-	virtual void doOutputOperator( ostream& ) const;
-	
-	virtual bool doBeInterrupted();
-	
-	void storeOldFirstOperation( MachLogOperation* );
-	
-	virtual bool beNotified( W4dSubject* pSubject, 
-							 W4dSubject::NotificationEvent event, int clientData );
+    void doOutputOperator(ostream&) const override;
 
+    bool doBeInterrupted() override;
+
+    void storeOldFirstOperation(MachLogOperation*);
+
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
 private:
+    // Operations deliberately revoked
+    MachLogAutoScavengeOperation(const MachLogAutoScavengeOperation&);
+    MachLogAutoScavengeOperation& operator=(const MachLogAutoScavengeOperation&);
+    bool operator==(const MachLogAutoScavengeOperation&);
 
-	// Operations deliberately revoked
-    MachLogAutoScavengeOperation( const MachLogAutoScavengeOperation& );
-    MachLogAutoScavengeOperation& operator =( const MachLogAutoScavengeOperation& );
-    bool operator ==( const MachLogAutoScavengeOperation& );
-	
-	// private constructor - can only be built from within MachLogStrategy.
-	friend class MachLogStrategy;
+    // private constructor - can only be built from within MachLogStrategy.
+    friend class MachLogStrategy;
 
-	MachLogAutoScavengeOperation( MachLogResourceCarrier* pScavenger, MachLogDebris* pDebris );
-	// PRE( pScavenger->isScavenger() );
-	
-	bool shouldStopScavenging();
+    MachLogAutoScavengeOperation(MachLogResourceCarrier* pScavenger, MachLogDebris* pDebris);
+    // PRE( pScavenger->isScavenger() );
 
-	// data members
-	MachLogAutoScavengeOperationImpl*		pImpl_;	  
+    bool shouldStopScavenging();
+
+    // data members
+    MachLogAutoScavengeOperationImpl* pImpl_;
 };
 
-
-PER_DECLARE_PERSISTENT( MachLogAutoScavengeOperation );
+PER_DECLARE_PERSISTENT(MachLogAutoScavengeOperation);
 
 /* //////////////////////////////////////////////////////////////// */
-	
-#endif	/*	#ifndef 	_MACHLOG_OPAUTSCV_HPP	*/
+
+#endif /*  #ifndef     _MACHLOG_OPAUTSCV_HPP   */
 
 /* End OPAUTSCV.HPP ***************************************************/

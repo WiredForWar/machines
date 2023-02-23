@@ -1,22 +1,21 @@
 /*
- * O P P I C K U I . C P P 
+ * O P P I C K U I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of non-inline non-template methods and global functions
 
-
 #include "machlog/internal/opputdwi.hpp"
 
 #include "machlog/rescarr.hpp"
 
-//#include "mathex/point2d.hpp"
+// #include "mathex/point2d.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogPutDownOperationImpl );
+PER_DEFINE_PERSISTENT(MachLogPutDownOperationImpl);
 
-MachLogPutDownOperationImpl::MachLogPutDownOperationImpl( MachLogResourceCarrier * pActor )
-:	pActor_( pActor ),
-  	finished_( false )
+MachLogPutDownOperationImpl::MachLogPutDownOperationImpl(MachLogResourceCarrier* pActor)
+    : pActor_(pActor)
+    , finished_(false)
 {
     TEST_INVARIANT;
 }
@@ -28,10 +27,10 @@ MachLogPutDownOperationImpl::~MachLogPutDownOperationImpl()
 
 void MachLogPutDownOperationImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogPutDownOperationImpl& t )
+ostream& operator<<(ostream& o, const MachLogPutDownOperationImpl& t)
 {
 
     o << "MachLogPutDownOperationImpl " << (void*)&t << " start" << std::endl;
@@ -40,24 +39,22 @@ ostream& operator <<( ostream& o, const MachLogPutDownOperationImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogPutDownOperationImpl& putDownOpImpl )
+void perWrite(PerOstream& ostr, const MachLogPutDownOperationImpl& putDownOpImpl)
 {
-	ostr << putDownOpImpl.pActor_;
-	ostr << putDownOpImpl.destinationPadPosition_;
-	ostr << putDownOpImpl.finished_;
+    ostr << putDownOpImpl.pActor_;
+    ostr << putDownOpImpl.destinationPadPosition_;
+    ostr << putDownOpImpl.finished_;
 }
 
-void perRead( PerIstream& istr, MachLogPutDownOperationImpl& putDownOpImpl )
+void perRead(PerIstream& istr, MachLogPutDownOperationImpl& putDownOpImpl)
 {
-	istr >> putDownOpImpl.pActor_;
-	istr >> putDownOpImpl.destinationPadPosition_;
-	istr >> putDownOpImpl.finished_;
+    istr >> putDownOpImpl.pActor_;
+    istr >> putDownOpImpl.destinationPadPosition_;
+    istr >> putDownOpImpl.finished_;
 }
 
-MachLogPutDownOperationImpl::MachLogPutDownOperationImpl( PerConstructor )
+MachLogPutDownOperationImpl::MachLogPutDownOperationImpl(PerConstructor)
 {
 }
-
-
 
 /* End OPPUTDWI.CPP ***************************************************/

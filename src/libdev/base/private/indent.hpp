@@ -19,33 +19,32 @@
 class BaseIndentOstream : public BaseFilterOstream
 {
 public:
-    BaseIndentOstream( ostream& ostr, const std::string& indentString );
-    ~BaseIndentOstream();
+    BaseIndentOstream(ostream& ostr, const std::string& indentString);
+    ~BaseIndentOstream() override;
 
     //  Set a new output stream
-    void stream( ostream& ostr );
+    void stream(ostream& ostr);
 
     //  Set the indent string
-    void indentString( const std::string&, size_t repeatCount = 1 );
+    void indentString(const std::string&, size_t repeatCount = 1);
 
     void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    BaseIndentOstream( const BaseIndentOstream& );
+    BaseIndentOstream(const BaseIndentOstream&);
 
     // Operation deliberately revoked
-    BaseIndentOstream& operator =( const BaseIndentOstream& );
+    BaseIndentOstream& operator=(const BaseIndentOstream&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseIndentOstream& );
+    bool operator==(const BaseIndentOstream&);
 
-    virtual void    doFilterCharacters( const char* pBuf, size_t nChars );
+    void doFilterCharacters(const char* pBuf, size_t nChars) override;
 
-    std::string  indentString_;
-    bool    indent_;
+    std::string indentString_;
+    bool indent_;
 };
-
 
 #endif
 

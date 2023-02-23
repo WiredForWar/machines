@@ -10,18 +10,15 @@
 #include "phys/brake.hpp"
 #include "mathex/epsilon.hpp"
 
-Brake::Brake(
-    MATHEX_SCALAR minValue,
-    MATHEX_SCALAR maxValue,
-    MATHEX_SCALAR brakeBandFraction )
-: minValue_( minValue ),
-  maxValue_( maxValue ),
-  brakeBandWidth_( brakeBandFraction * ( maxValue - minValue ) ),
-  maxBandValue_( maxValue - brakeBandFraction * ( maxValue - minValue ) ),
-  minBandValue_( minValue + brakeBandFraction * ( maxValue - minValue ) )
+Brake::Brake(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction)
+    : minValue_(minValue)
+    , maxValue_(maxValue)
+    , brakeBandWidth_(brakeBandFraction * (maxValue - minValue))
+    , maxBandValue_(maxValue - brakeBandFraction * (maxValue - minValue))
+    , minBandValue_(minValue + brakeBandFraction * (maxValue - minValue))
 {
-    PRE( maxValue >= minValue );
-    PRE( 0.0 <= brakeBandFraction and brakeBandFraction <= 1.0 );
+    PRE(maxValue >= minValue);
+    PRE(0.0 <= brakeBandFraction and brakeBandFraction <= 1.0);
 
     TEST_INVARIANT;
 }
@@ -29,23 +26,19 @@ Brake::Brake(
 Brake::~Brake()
 {
     TEST_INVARIANT;
-
 }
 
-void Brake::setLimits(
-    MATHEX_SCALAR minValue,
-    MATHEX_SCALAR maxValue,
-    MATHEX_SCALAR brakeBandFraction )
+void Brake::setLimits(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction)
 {
     TEST_INVARIANT;
 
-    PRE( maxValue >= minValue );
-    PRE( 0.0 <= brakeBandFraction and brakeBandFraction <= 1.0 );
+    PRE(maxValue >= minValue);
+    PRE(0.0 <= brakeBandFraction and brakeBandFraction <= 1.0);
 
     minValue_ = minValue;
     maxValue_ = maxValue;
-    maxBandValue_ = maxValue - brakeBandFraction * ( maxValue - minValue );
-    minBandValue_ = minValue + brakeBandFraction * ( maxValue - minValue );
+    maxBandValue_ = maxValue - brakeBandFraction * (maxValue - minValue);
+    minBandValue_ = minValue + brakeBandFraction * (maxValue - minValue);
 
     TEST_INVARIANT;
 }
@@ -80,51 +73,51 @@ void Brake::setLimits(
 //     return factor;
 // }
 
-MATHEX_SCALAR Brake::newDelta( MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredDeltaValue ) const
+MATHEX_SCALAR Brake::newDelta(MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredDeltaValue) const
 {
-    MATHEX_SCALAR   result = desiredDeltaValue;
+    MATHEX_SCALAR result = desiredDeltaValue;
 
-    //Compute a braking factor based on the current value
+    // Compute a braking factor based on the current value
     MATHEX_SCALAR factor = 1.0;
-    if( desiredDeltaValue > 0.0 )
+    if (desiredDeltaValue > 0.0)
     {
-        if( currentValue > maxBandValue_ )
+        if (currentValue > maxBandValue_)
             factor = 1.0 - 0.8 * ((currentValue - maxBandValue_) / brakeBandWidth_);
     }
     else
     {
-        if( currentValue < minBandValue_ )
+        if (currentValue < minBandValue_)
             factor = 1.0 - 0.8 * ((minBandValue_ - currentValue) / brakeBandWidth_);
     }
 
-    factor = std::min( factor, 1.0 );
-    factor = std::max( factor, 0.2 );
+    factor = std::min(factor, 1.0);
+    factor = std::max(factor, 0.2);
 
     result = factor * desiredDeltaValue;
 
     //  Clamp to make sure we're in range
     MATHEX_SCALAR newValue = currentValue + result;
-    if( newValue > maxValue_ )
+    if (newValue > maxValue_)
         result = maxValue_ - currentValue;
-    else if( newValue < minValue_ )
+    else if (newValue < minValue_)
         result = minValue_ - currentValue;
 
-    POST_DATA( MATHEX_SCALAR eps = MexEpsilon::instance() );
-    POST_INFO( minValue_ );
-    POST_INFO( maxValue_ );
-    POST_INFO( currentValue );
-    POST_INFO( result );
-    POST( minValue_ <= currentValue + result + eps  and  currentValue + result - eps <= maxValue_ );
+    POST_DATA(MATHEX_SCALAR eps = MexEpsilon::instance());
+    POST_INFO(minValue_);
+    POST_INFO(maxValue_);
+    POST_INFO(currentValue);
+    POST_INFO(result);
+    POST(minValue_ <= currentValue + result + eps and currentValue + result - eps <= maxValue_);
 
     return result;
 }
 
 void Brake::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const Brake& t )
+ostream& operator<<(ostream& o, const Brake& t)
 {
 
     o << "Brake " << (void*)&t << " start" << std::endl;

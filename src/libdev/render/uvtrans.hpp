@@ -1,5 +1,5 @@
 /*
- * U V T R A N S . H P P 
+ * U V T R A N S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -14,27 +14,27 @@ class RenUVTranslation : public RenUVTransform
 public:
     RenUVTranslation();
     explicit RenUVTranslation(const MexVec2&);
-    virtual ~RenUVTranslation();
+    ~RenUVTranslation() override;
 
-	// PRE(uOut && vOut);
-	virtual void transform(float uIn, float vIn, float* uOut, float* vOut) const;
-	virtual void print(ostream&) const;
-	
-	// A virtual copy operation.  _NEW is used to allocate the return value.
-	// The caller is responsible for calling _DELETE.
-	virtual RenUVTransform* clone() const;
-	
-	void translation(const MexVec2&);
-	const MexVec2& translation() const;
+    // PRE(uOut && vOut);
+    void transform(float uIn, float vIn, float* uOut, float* vOut) const override;
+    void print(ostream&) const override;
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL( RenUVTranslation );
-    PER_FRIEND_READ_WRITE( RenUVTranslation );
+    // A virtual copy operation.  _NEW is used to allocate the return value.
+    // The caller is responsible for calling _DELETE.
+    RenUVTransform* clone() const override;
+
+    void translation(const MexVec2&);
+    const MexVec2& translation() const;
+
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenUVTranslation);
+    PER_FRIEND_READ_WRITE(RenUVTranslation);
 
 private:
-	MexVec2	translation_;
+    MexVec2 translation_;
 };
 
-PER_DECLARE_PERSISTENT( RenUVTranslation );
+PER_DECLARE_PERSISTENT(RenUVTranslation);
 
 #endif
 

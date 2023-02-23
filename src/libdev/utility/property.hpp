@@ -27,96 +27,75 @@
 #include "base/persist.hpp"
 
 //////////////////////////////////////////////////////////////////////
-template < class T > class UtlProperty;
-template < class T >
-T& utlGetPropertyReference( UtlProperty< T >& );
+template <class T> class UtlProperty;
+template <class T> T& utlGetPropertyReference(UtlProperty<T>&);
 
-
-template < class T >
-class UtlProperty
+template <class T> class UtlProperty
 {
 public:
+    UtlProperty();
+    UtlProperty(const T&);
 
-	UtlProperty();
-	UtlProperty( const T& );
+    // 'get' method
+    const T& operator()() const;
 
-	// 'get' method
-	const T& operator ()() const;
+    // 'set' method
+    void operator()(const T&);
 
-	// 'set' method
-	void operator ()( const T& );
-
-    PER_MEMBER_PERSISTENT_DEFAULT( UtlProperty );
+    PER_MEMBER_PERSISTENT_DEFAULT(UtlProperty);
 
     // hmmm
-	bool operator !=( const UtlProperty< T >& a)
-    {
-        return a.property_ != property_;
-    }
+    bool operator!=(const UtlProperty<T>& a) { return a.property_ != property_; }
 
 private:
-
     //  Compiler generated copy constructor is OK
-    //	UtlProperty( const UtlProperty< T >& );
+    //  UtlProperty( const UtlProperty< T >& );
 
-	// revoked...
-	UtlProperty< T >& operator =(  const UtlProperty< T >& );
+    // revoked...
+    UtlProperty<T>& operator=(const UtlProperty<T>&);
 
-	template<class T1>
-	friend bool operator ==( const UtlProperty< T1 >&, const UtlProperty< T1 >& );
-	//friend bool operator !=( const UtlProperty< T >&, const UtlProperty< T >& );
+    template <class T1> friend bool operator==(const UtlProperty<T1>&, const UtlProperty<T1>&);
+    // friend bool operator !=( const UtlProperty< T >&, const UtlProperty< T >& );
 
-    friend T& utlGetPropertyReference< T >( UtlProperty< T >& );
+    friend T& utlGetPropertyReference<T>(UtlProperty<T>&);
 
-	T	property_;
-
+    T property_;
 };
 
-PER_DEFINE_PERSISTENT_INLINE_T1( UtlProperty );
+PER_DEFINE_PERSISTENT_INLINE_T1(UtlProperty);
 
 //////////////////////////////////////////////////////////////////////
 
-template < class T >
-inline
-UtlProperty< T >::UtlProperty()
+template <class T> inline UtlProperty<T>::UtlProperty()
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-template < class T >
-inline
-UtlProperty< T >::UtlProperty( const T& t )
-: property_( t )
+template <class T>
+inline UtlProperty<T>::UtlProperty(const T& t)
+    : property_(t)
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-template < class T >
-inline
-const T& UtlProperty< T >::operator ()() const
+template <class T> inline const T& UtlProperty<T>::operator()() const
 {
-	return property_;
+    return property_;
 }
 
-template < class T >
-inline
-void UtlProperty< T >::operator ()( const T& t )
+template <class T> inline void UtlProperty<T>::operator()(const T& t)
 {
-	property_ = t;
+    property_ = t;
 }
 
-template < class T >
-inline
-bool operator ==( const UtlProperty< T >& a, const UtlProperty< T >& b )
+template <class T> inline bool operator==(const UtlProperty<T>& a, const UtlProperty<T>& b)
 {
     return a.property_ == b.property_;
 }
 
-template < class T >
-inline
-bool operator !=( const UtlProperty< T >& a, const UtlProperty< T >& b )
+template <class T> inline bool operator!=(const UtlProperty<T>& a, const UtlProperty<T>& b)
 {
-    //return !(a == b);
+    // return !(a == b);
     return a != b;
 }
 
@@ -128,28 +107,21 @@ bool operator !=( const UtlProperty< T >& a, const UtlProperty< T >& b )
 //  and I don't want that.
 
 // friend
-template < class T >
-inline
-T& utlGetPropertyReference( UtlProperty< T >& ob )
+template <class T> inline T& utlGetPropertyReference(UtlProperty<T>& ob)
 {
     return ob.property_;
 }
 
-template < class T >
-inline
-void perWrite( PerOstream& ostr, const UtlProperty< T >& ob )
+template <class T> inline void perWrite(PerOstream& ostr, const UtlProperty<T>& ob)
 {
     ostr << ob();
 }
 
-template < class T >
-inline
-void perRead( PerIstream& istr, UtlProperty< T >& ob )
+template <class T> inline void perRead(PerIstream& istr, UtlProperty<T>& ob)
 {
-    istr >> utlGetPropertyReference< T >( ob );
+    istr >> utlGetPropertyReference<T>(ob);
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 
-#endif  /*	#ifndef _UTL_PROPERTY_HPP	*/
+#endif /*  #ifndef _UTL_PROPERTY_HPP   */

@@ -7,11 +7,11 @@
 
 #include "machphys/internal/spylocai.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysSpyLocatorImpl );
+PER_DEFINE_PERSISTENT(MachPhysSpyLocatorImpl);
 
 MachPhysSpyLocatorImpl::MachPhysSpyLocatorImpl()
-: isLocating_( false ),
-  locatingPlanEndTime_( 0 )
+    : isLocating_(false)
+    , locatingPlanEndTime_(0)
 {
 
     TEST_INVARIANT;
@@ -20,15 +20,14 @@ MachPhysSpyLocatorImpl::MachPhysSpyLocatorImpl()
 MachPhysSpyLocatorImpl::~MachPhysSpyLocatorImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysSpyLocatorImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysSpyLocatorImpl& t )
+ostream& operator<<(ostream& o, const MachPhysSpyLocatorImpl& t)
 {
 
     o << "MachPhysSpyLocatorImpl " << (void*)&t << " start" << std::endl;
@@ -37,17 +36,17 @@ ostream& operator <<( ostream& o, const MachPhysSpyLocatorImpl& t )
     return o;
 }
 
-MachPhysSpyLocatorImpl::MachPhysSpyLocatorImpl( PerConstructor )
-: isLocating_( false ),
-  locatingPlanEndTime_( 0 )
+MachPhysSpyLocatorImpl::MachPhysSpyLocatorImpl(PerConstructor)
+    : isLocating_(false)
+    , locatingPlanEndTime_(0)
 {
 }
 
-void perWrite( PerOstream&, const MachPhysSpyLocatorImpl& )
+void perWrite(PerOstream&, const MachPhysSpyLocatorImpl&)
 {
 }
 
-void perRead( PerIstream&, MachPhysSpyLocatorImpl& )
+void perRead(PerIstream&, MachPhysSpyLocatorImpl&)
 {
 }
 

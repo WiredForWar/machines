@@ -1,5 +1,5 @@
 /*
- * T E X T . H P P 
+ * T E X T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,7 +18,6 @@
 #include "gui/font.hpp"
 #include "gui/root.hpp"
 
-
 class MachGuiText : public GuiDisplayable
 {
 public:
@@ -27,9 +26,9 @@ public:
 
     static size_t reqHeight();
 
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
-    void textOffset( int x, int y );
+    void textOffset(int x, int y);
 
 private:
     string text_;
@@ -40,7 +39,6 @@ private:
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 };
-
 
 #endif
 

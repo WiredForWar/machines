@@ -1,5 +1,5 @@
 /*
- * B O L T E R . H P P 
+ * B O L T E R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,94 +26,100 @@ class MachPhysBolter : public MachPhysWeapon
 // Canonical form revoked
 {
 public:
-    //Constructs appropriate 
-    MachPhysBolter( W4dEntity* pParent, const MexTransform3d& localTransform,
-                    MachPhys::WeaponType type, MachPhys::Mounting mounting );
+    // Constructs appropriate
+    MachPhysBolter(
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform,
+        MachPhys::WeaponType type,
+        MachPhys::Mounting mounting);
 
-    //dtor
-    virtual ~MachPhysBolter();
+    // dtor
+    ~MachPhysBolter() override;
 
-    //Return an exemplar bolter - ensures the mesh is loaded
-    static const MachPhysBolter& exemplar( MachPhys::WeaponType type );
+    // Return an exemplar bolter - ensures the mesh is loaded
+    static const MachPhysBolter& exemplar(MachPhys::WeaponType type);
 
-    //Return a flash mesh entity for use with firing animation
-    static const W4dGeneric& exemplarFlash( MachPhys::WeaponType type );
+    // Return a flash mesh entity for use with firing animation
+    static const W4dGeneric& exemplarFlash(MachPhys::WeaponType type);
 
     //////////////////////////////////////////////
     // Inherited from MachPhysWeapon
-    //Induce the weapon's firing animation at startTime, returning the duration of the animation.
-    //This includes recoil, sound, smoke coming from end of gun, lights etc, but
-    //NOT launching of any projectiles, victim animations etc.
-    //Default implementation does nothing.
-    virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    // Induce the weapon's firing animation at startTime, returning the duration of the animation.
+    // This includes recoil, sound, smoke coming from end of gun, lights etc, but
+    // NOT launching of any projectiles, victim animations etc.
+    // Default implementation does nothing.
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
-    //Play the victim animation for a machine or construction at startTime.
-    //fromDirection indicates the flight path of the hitting projectile.
-    //Returns the duration of the animation.
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysMachine* pMachine ) const;
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysConstruction* pConstruction ) const;
+    // Play the victim animation for a machine or construction at startTime.
+    // fromDirection indicates the flight path of the hitting projectile.
+    // Returns the duration of the animation.
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysMachine* pMachine) const override;
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction) const override;
 
     //////////////////////////////////////////////
 
-    //Do the work of applying a victim animation to machine/construction/artefact.
-    //Return animation duration.
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysMachine* pMachine );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysConstruction* pConstruction );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysArtefact* pArtefact );
+    // Do the work of applying a victim animation to machine/construction/artefact.
+    // Return animation duration.
+    static PhysRelativeTime
+    applyVictimAnimation(const PhysAbsoluteTime& startTime, const MexLine3d& fromDirection, MachPhysMachine* pMachine);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysArtefact* pArtefact);
 
-    //Display some bolter impact sparks attached to pEntity at startTime.
-    //They start at startPoint and fly off roughly in direction of direction
+    // Display some bolter impact sparks attached to pEntity at startTime.
+    // They start at startPoint and fly off roughly in direction of direction
     //(relative to pEntity).
-    static void impactSparks
-    (
-        const PhysAbsoluteTime& startTime, W4dEntity* pEntity,
-        const MexPoint3d& startPoint, const MexVec3& direction
-    );
-    
-    //the material to use for sparks
+    static void impactSparks(
+        const PhysAbsoluteTime& startTime,
+        W4dEntity* pEntity,
+        const MexPoint3d& startPoint,
+        const MexVec3& direction);
+
+    // the material to use for sparks
     static const RenMaterial& sparkMaterial();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysBolter& t );
+    friend ostream& operator<<(ostream& o, const MachPhysBolter& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysBolter );
-    PER_FRIEND_READ_WRITE( MachPhysBolter );
-    
+    PER_MEMBER_PERSISTENT(MachPhysBolter);
+    PER_FRIEND_READ_WRITE(MachPhysBolter);
+
 private:
-    MachPhysBolter( const MachPhysBolter& );
-    MachPhysBolter& operator =( const MachPhysBolter& );
-    bool operator ==( const MachPhysBolter& );
+    MachPhysBolter(const MachPhysBolter&);
+    MachPhysBolter& operator=(const MachPhysBolter&);
+    bool operator==(const MachPhysBolter&);
 
-    //One-time constructor (per type) used to create the exemplars
-    MachPhysBolter( MachPhys::WeaponType type );
+    // One-time constructor (per type) used to create the exemplars
+    MachPhysBolter(MachPhys::WeaponType type);
 
-    //the composite file path for given type
-    static const char* compositeFilePath( MachPhys::WeaponType type );
+    // the composite file path for given type
+    static const char* compositeFilePath(MachPhys::WeaponType type);
 
-    //Play the firing sounds at startTime
-    void playFiringSounds( const PhysAbsoluteTime& startTime );
+    // Play the firing sounds at startTime
+    void playFiringSounds(const PhysAbsoluteTime& startTime);
 
-    //Return a new flash object of type type
-    static W4dGeneric* newFlash( MachPhys::WeaponType type );
+    // Return a new flash object of type type
+    static W4dGeneric* newFlash(MachPhys::WeaponType type);
 
-    //data members
-    W4dLink* pTurnLink_; //The link which rotates on the auto-cannon only
+    // data members
+    W4dLink* pTurnLink_; // The link which rotates on the auto-cannon only
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysBolter );
+PER_DECLARE_PERSISTENT(MachPhysBolter);
 
 #endif
 

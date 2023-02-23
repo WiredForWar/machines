@@ -32,49 +32,49 @@
 #include "ctl/countptr.hpp"
 #include "profiler/profiler.hpp"
 
-//data class
+// data class
 class MachPhys1stPersonDriverImpl
 {
 public:
-    W4dAxisTurnerPlan* pAxisTurnerPlan_; //Turner plan for looking up/down
-    PhysMotionPlanPtr axisTurnerPlanPtr_; //Prevents deletion
-    W4dEntity* pAntiRollEntity_; //Owns the camera and rolls to level out the view
-    MexTransform3d cameraBaseTransform_; //Base transform for the camera from its parent
-    bool turnAtFastRate_; //true if to turn whole machine at the faster rate
-	MexTransform3dKey lastAntiRollParentTransformKey_; // determines whether the antiRollEntity transform needs update
-	MexDegrees lastRollAngle_;
-	MexDegrees lastElevationAngle_;
-    W4dEntityFilter* pAimDataFilter_; //Used on aim data findNearerEntity check.
+    W4dAxisTurnerPlan* pAxisTurnerPlan_; // Turner plan for looking up/down
+    PhysMotionPlanPtr axisTurnerPlanPtr_; // Prevents deletion
+    W4dEntity* pAntiRollEntity_; // Owns the camera and rolls to level out the view
+    MexTransform3d cameraBaseTransform_; // Base transform for the camera from its parent
+    bool turnAtFastRate_; // true if to turn whole machine at the faster rate
+    MexTransform3dKey lastAntiRollParentTransformKey_; // determines whether the antiRollEntity transform needs update
+    MexDegrees lastRollAngle_;
+    MexDegrees lastElevationAngle_;
+    W4dEntityFilter* pAimDataFilter_; // Used on aim data findNearerEntity check.
 };
 
-MachPhys1stPersonDriver::MachPhys1stPersonDriver
-(
-    W4dEntity* pEntity, MachPhysCanAttack* pCanAttack,
-    MATHEX_SCALAR scannerRange, bool remoteNode
-)
-:   pEntity_( pEntity ),
-    pCanAttack_( pCanAttack ),
-    movingForwards_( false ),
-    movingBackwards_( false ),
-    turningLeft_( false ),
-    turningRight_( false ),
-    maxWeaponRange_( 0.0 ),
-    scannerRange_( scannerRange ),
-    pCameraEntity_( NULL ),
-    pTrackEntity_( NULL ),
-    remoteNode_( remoteNode ),
-    pHitEntity_( NULL ),
-    hitDistance_( 20.0 ),
-    farCmdHitDistance_( 0.0 ),
-    pFarCmdHitEntity_( nullptr ),
-    lastUpdateTime_( W4dManager::instance().time() ),
-    pImpl_( NULL )
+MachPhys1stPersonDriver::MachPhys1stPersonDriver(
+    W4dEntity* pEntity,
+    MachPhysCanAttack* pCanAttack,
+    MATHEX_SCALAR scannerRange,
+    bool remoteNode)
+    : pEntity_(pEntity)
+    , pCanAttack_(pCanAttack)
+    , movingForwards_(false)
+    , movingBackwards_(false)
+    , turningLeft_(false)
+    , turningRight_(false)
+    , maxWeaponRange_(0.0)
+    , scannerRange_(scannerRange)
+    , pCameraEntity_(nullptr)
+    , pTrackEntity_(nullptr)
+    , remoteNode_(remoteNode)
+    , pHitEntity_(nullptr)
+    , hitDistance_(20.0)
+    , farCmdHitDistance_(0.0)
+    , pFarCmdHitEntity_(nullptr)
+    , lastUpdateTime_(W4dManager::instance().time())
+    , pImpl_(nullptr)
 {
-    pImpl_ = _NEW( MachPhys1stPersonDriverImpl );
-    pImpl_->pAxisTurnerPlan_ = NULL;
+    pImpl_ = _NEW(MachPhys1stPersonDriverImpl);
+    pImpl_->pAxisTurnerPlan_ = nullptr;
     pImpl_->turnAtFastRate_ = true;
-    pImpl_->pAntiRollEntity_ = NULL;
-    pImpl_->pAimDataFilter_ = NULL;
+    pImpl_->pAntiRollEntity_ = nullptr;
+    pImpl_->pAimDataFilter_ = nullptr;
 
     TEST_INVARIANT;
 }
@@ -83,40 +83,40 @@ MachPhys1stPersonDriver::~MachPhys1stPersonDriver()
 {
     TEST_INVARIANT;
 
-    //Stop tracking any target entity
-    if( pCanAttack_ )
+    // Stop tracking any target entity
+    if (pCanAttack_)
         pCanAttack_->stopTrackingTarget();
 
-    if( pCameraEntity_ )
+    if (pCameraEntity_)
         pCameraEntity_->entityPlanForEdit().clearMotionPlans();
 
-    _DELETE( pTrackEntity_ );
+    _DELETE(pTrackEntity_);
 
-    if( remoteNode_ )
+    if (remoteNode_)
     {
-        _DELETE( pCameraEntity_ );
+        _DELETE(pCameraEntity_);
     }
     else
     {
-        //If the camera is still attached to the anti-roll entity, attach it to its grandparent,
-        //so we can delete the anti-roll entity without inadvertently deleting the camera.
-        if( pCameraEntity_->pParent() == pImpl_->pAntiRollEntity_ )
-            pCameraEntity_->attachTo( pImpl_->pAntiRollEntity_->pParent() );
+        // If the camera is still attached to the anti-roll entity, attach it to its grandparent,
+        // so we can delete the anti-roll entity without inadvertently deleting the camera.
+        if (pCameraEntity_->pParent() == pImpl_->pAntiRollEntity_)
+            pCameraEntity_->attachTo(pImpl_->pAntiRollEntity_->pParent());
     }
 
-    _DELETE( pImpl_->pAntiRollEntity_ );
+    _DELETE(pImpl_->pAntiRollEntity_);
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachPhys1stPersonDriver::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
-    INVARIANT( not( movingForwards_ and movingBackwards_) );
-    INVARIANT( not( turningLeft_ and turningRight_) );
+    INVARIANT(this != nullptr);
+    INVARIANT(not(movingForwards_ and movingBackwards_));
+    INVARIANT(not(turningLeft_ and turningRight_));
 }
 
-ostream& operator <<( ostream& o, const MachPhys1stPersonDriver& t )
+ostream& operator<<(ostream& o, const MachPhys1stPersonDriver& t)
 {
 
     o << "MachPhys1stPersonDriver " << (void*)&t << " start" << std::endl;
@@ -193,10 +193,10 @@ bool MachPhys1stPersonDriver::isTurning() const
 
 bool MachPhys1stPersonDriver::isStationary() const
 {
-    return not( isTurning() or isMoving() );
+    return not(isTurning() or isMoving());
 }
 
-void MachPhys1stPersonDriver::maxWeaponRange( MATHEX_SCALAR range )
+void MachPhys1stPersonDriver::maxWeaponRange(MATHEX_SCALAR range)
 {
     maxWeaponRange_ = range;
 }
@@ -208,129 +208,146 @@ MATHEX_SCALAR MachPhys1stPersonDriver::maxWeaponRange() const
 
 void MachPhys1stPersonDriver::setupTrackEntity()
 {
-    PRE( pCameraEntity_ == NULL );
+    PRE(pCameraEntity_ == nullptr);
 
-    //Get the camera attachment entity and offset transform
+    // Get the camera attachment entity and offset transform
     MexTransform3d offsetTransform;
-    W4dEntity& cameraParent = cameraAttachment( &offsetTransform );
+    W4dEntity& cameraParent = cameraAttachment(&offsetTransform);
     pImpl_->cameraBaseTransform_ = offsetTransform;
 
-    //Create an entity whose transform will be adjusted every time the machine is moved to maintain
-    //a level view. This entity will own the camera entity.
-    W4dEntity* pAntiRollEntity = pImpl_->pAntiRollEntity_ =
-        _NEW( W4dGeneric( &cameraParent, offsetTransform, W4dEntity::NOT_SOLID ) );
+    // Create an entity whose transform will be adjusted every time the machine is moved to maintain
+    // a level view. This entity will own the camera entity.
+    W4dEntity* pAntiRollEntity = pImpl_->pAntiRollEntity_
+        = _NEW(W4dGeneric(&cameraParent, offsetTransform, W4dEntity::NOT_SOLID));
 
-    //If a remote node we need a dummy camera entity. Otherwise use current camera
-    if( remoteNode_ )
+    // If a remote node we need a dummy camera entity. Otherwise use current camera
+    if (remoteNode_)
     {
-        //Create dummy entity
-        pCameraEntity_ = _NEW( W4dGeneric( pAntiRollEntity, MexTransform3d(), W4dEntity::NOT_SOLID ) );
+        // Create dummy entity
+        pCameraEntity_ = _NEW(W4dGeneric(pAntiRollEntity, MexTransform3d(), W4dEntity::NOT_SOLID));
     }
     else
     {
-        //Get the current camera
+        // Get the current camera
         pCameraEntity_ = W4dManager::instance().sceneManager()->currentCamera();
 
-        //Attach it to the anti-roll entity with null transform
-        pCameraEntity_->attachTo( pAntiRollEntity, MexTransform3d() );
+        // Attach it to the anti-roll entity with null transform
+        pCameraEntity_->attachTo(pAntiRollEntity, MexTransform3d());
     }
 
-    //Set up a turner plan for the camera
-    PhysRelativeTime duration = 31536000.0; //One year
+    // Set up a turner plan for the camera
+    PhysRelativeTime duration = 31536000.0; // One year
     PhysAbsoluteTime now = W4dManager::instance().time();
-    pImpl_->pAxisTurnerPlan_ =
-        _NEW( W4dAxisTurnerPlan( pCameraEntity_->localTransform(), W4d::Y_AXIS, now,
-                                 0.0, 0.0, MachPhysData::instance().generalData().firstPersonLookUpDownRate(), duration ) );
+    pImpl_->pAxisTurnerPlan_ = _NEW(W4dAxisTurnerPlan(
+        pCameraEntity_->localTransform(),
+        W4d::Y_AXIS,
+        now,
+        0.0,
+        0.0,
+        MachPhysData::instance().generalData().firstPersonLookUpDownRate(),
+        duration));
     pImpl_->axisTurnerPlanPtr_ = pImpl_->pAxisTurnerPlan_;
 
-    pCameraEntity_->entityPlanForEdit().absoluteMotion( pImpl_->axisTurnerPlanPtr_, now );
+    pCameraEntity_->entityPlanForEdit().absoluteMotion(pImpl_->axisTurnerPlanPtr_, now);
 
-    //Set up tracking entity if can attack
-    if( pCanAttack_ )
+    // Set up tracking entity if can attack
+    if (pCanAttack_)
     {
-        //Construct an entity for the weapons to track at the target position
-        pTrackEntity_ = _NEW( W4dGeneric( pCameraEntity_, MexTransform3d( MexPoint3d( maxWeaponRange_, 0.0, 0.0 ) ),
-                              W4dEntity::NOT_SOLID ) );
+        // Construct an entity for the weapons to track at the target position
+        pTrackEntity_ = _NEW(
+            W4dGeneric(pCameraEntity_, MexTransform3d(MexPoint3d(maxWeaponRange_, 0.0, 0.0)), W4dEntity::NOT_SOLID));
 
-        //Set up the target tracking
-        pCanAttack_->trackTargetWithWeapons( *pTrackEntity_ );
+        // Set up the target tracking
+        pCanAttack_->trackTargetWithWeapons(*pTrackEntity_);
     }
 
-    //Level out the camera
+    // Level out the camera
     adjustCameraRoll();
 }
 
 void MachPhys1stPersonDriver::update()
 {
-    if( pCanAttack_ )
+    if (pCanAttack_)
     {
-        //Update the aim data
+        // Update the aim data
         aimData();
 
-        //Update the track entity position
+        // Update the track entity position
         setTrackEntityPosition();
     }
 
-    //Update the update time
+    // Update the update time
     lastUpdateTime_ = W4dManager::instance().time();
 }
 
 void MachPhys1stPersonDriver::aimData()
 {
-    PRE( pImpl_->pAimDataFilter_ != nullptr );
+    PRE(pImpl_->pAimDataFilter_ != nullptr);
     pHitEntity_ = nullptr;
 
-    //Need the current camera
+    // Need the current camera
     W4dCamera& camera = *W4dManager::instance().sceneManager()->currentCamera();
 
     // For far away commands: Find the 'sweet spot' between the machine's sensor range & clip distance.
-    MATHEX_SCALAR farCommandDistance = std::abs( camera.yonClipDistance() - scannerRange_ );
+    MATHEX_SCALAR farCommandDistance = std::abs(camera.yonClipDistance() - scannerRange_);
     farCommandDistance *= 0.25;
     farCommandDistance += scannerRange_;
 
-    //Construct a 3d line along the line of sight, given current maximum weapon range.
+    // Construct a 3d line along the line of sight, given current maximum weapon range.
     MATHEX_SCALAR lineLength = maxWeaponRange();
-    auto farPoint = MexPoint3d{ lineLength, 0.0, 0.0 };
+    auto farPoint = MexPoint3d { lineLength, 0.0, 0.0 };
     const MexTransform3d& cameraTransform = camera.globalTransform();
-    cameraTransform.transform( &farPoint );
+    cameraTransform.transform(&farPoint);
 
-    //We should be able to use the lineLength from above. However, due to rounding errors,
-    //the MexLine3d ctor below fails an assertion if we do.
-    lineLength = cameraTransform.position().euclidianDistance( farPoint );
-    auto lineOfSight = MexLine3d{ cameraTransform.position(), farPoint, lineLength };
+    // We should be able to use the lineLength from above. However, due to rounding errors,
+    // the MexLine3d ctor below fails an assertion if we do.
+    lineLength = cameraTransform.position().euclidianDistance(farPoint);
+    auto lineOfSight = MexLine3d { cameraTransform.position(), farPoint, lineLength };
 
-    //Find what this NEAR line intersects.
+    // Find what this NEAR line intersects.
     uint32_t checkId = W4dEntity::nextCheckId();
-    pEntity_->checkId( checkId );
+    pEntity_->checkId(checkId);
 
     pHitEntity_ = nullptr;
     hitDistance_ = lineLength;
-    camera.containingDomain()->findNearerEntity( lineOfSight, lineLength, checkId, W4dEntity::HIGH,
-                                                 &pHitEntity_, &hitDistance_, pImpl_->pAimDataFilter_ );
+    camera.containingDomain()->findNearerEntity(
+        lineOfSight,
+        lineLength,
+        checkId,
+        W4dEntity::HIGH,
+        &pHitEntity_,
+        &hitDistance_,
+        pImpl_->pAimDataFilter_);
 
-    //Update the NEAR hit point
-    hitPoint_ = lineOfSight.pointAtDistance( hitDistance_ );
+    // Update the NEAR hit point
+    hitPoint_ = lineOfSight.pointAtDistance(hitDistance_);
 
     pFarCmdHitEntity_ = nullptr;
-    //No entity in weap range? Look outside of weapon range for a far away entity as a command target
+    // No entity in weap range? Look outside of weapon range for a far away entity as a command target
     if (pHitEntity_ == nullptr)
     {
-        farPoint = MexPoint3d{ farCommandDistance, 0.0, 0.0 };
-        cameraTransform.transform( &farPoint );
+        farPoint = MexPoint3d { farCommandDistance, 0.0, 0.0 };
+        cameraTransform.transform(&farPoint);
         // following their lead :|
-        farCommandDistance = cameraTransform.position().euclidianDistance( farPoint );
-        lineOfSight = MexLine3d{ cameraTransform.position(), farPoint, farCommandDistance };
+        farCommandDistance = cameraTransform.position().euclidianDistance(farPoint);
+        lineOfSight = MexLine3d { cameraTransform.position(), farPoint, farCommandDistance };
 
-        //Find what this FAR line intersects.
+        // Find what this FAR line intersects.
         uint32_t checkId = W4dEntity::nextCheckId();
-        pEntity_->checkId( checkId );
+        pEntity_->checkId(checkId);
 
         farCmdHitDistance_ = farCommandDistance;
-        camera.containingDomain()->findNearerEntity( lineOfSight, farCommandDistance, checkId, W4dEntity::HIGH,
-                                                     &pFarCmdHitEntity_, &farCmdHitDistance_, pImpl_->pAimDataFilter_ );
+        camera.containingDomain()->findNearerEntity(
+            lineOfSight,
+            farCommandDistance,
+            checkId,
+            W4dEntity::HIGH,
+            &pFarCmdHitEntity_,
+            &farCmdHitDistance_,
+            pImpl_->pAimDataFilter_);
 
-        //Update the FAR hit point
-        farCmdHitPoint_ = lineOfSight.pointAtDistance( farCmdHitDistance_ );
+        // Update the FAR hit point
+        farCmdHitPoint_ = lineOfSight.pointAtDistance(farCmdHitDistance_);
     }
 }
 
@@ -341,12 +358,12 @@ MATHEX_SCALAR MachPhys1stPersonDriver::hitDistance() const
 
 bool MachPhys1stPersonDriver::hasHitEntity() const
 {
-    return pHitEntity_ != NULL;
+    return pHitEntity_ != nullptr;
 }
 
 W4dEntity& MachPhys1stPersonDriver::hitEntity() const
 {
-    PRE( hasHitEntity() );
+    PRE(hasHitEntity());
     return *pHitEntity_;
 }
 
@@ -372,86 +389,86 @@ bool MachPhys1stPersonDriver::hasFarCmdHitEntity() const
 
 W4dEntity& MachPhys1stPersonDriver::farCmdHitEntity() const
 {
-    PRE( hasFarCmdHitEntity() );
+    PRE(hasFarCmdHitEntity());
     return *pFarCmdHitEntity_;
 }
 
 void MachPhys1stPersonDriver::setTrackEntityPosition()
 {
-    PRE( pTrackEntity_ != NULL );
+    PRE(pTrackEntity_ != nullptr);
 
-    //Use the last computed hit distance along the x axis from parent entity
-    pTrackEntity_->localTransform( MexTransform3d( MexPoint3d( hitDistance_, 0.0, 0.0 ) ) );
+    // Use the last computed hit distance along the x axis from parent entity
+    pTrackEntity_->localTransform(MexTransform3d(MexPoint3d(hitDistance_, 0.0, 0.0)));
 }
 
-void MachPhys1stPersonDriver::lookDown( MexRadians byAngle )
+void MachPhys1stPersonDriver::lookDown(MexRadians byAngle)
 {
-    PRE( pImpl_->pAxisTurnerPlan_ != NULL );
+    PRE(pImpl_->pAxisTurnerPlan_ != nullptr);
 
-    //Get the plan and current angle
+    // Get the plan and current angle
     W4dAxisTurnerPlan& turnerPlan = *pImpl_->pAxisTurnerPlan_;
     PhysAbsoluteTime now = W4dManager::instance().time();
-    MexRadians currentAngle = turnerPlan.angle( now );
+    MexRadians currentAngle = turnerPlan.angle(now);
 
-    MexRadians newAngle  = currentAngle + byAngle;
+    MexRadians newAngle = currentAngle + byAngle;
 
-    //Limit the angle as required
+    // Limit the angle as required
     const MachPhysGeneralData& genData = MachPhysData::instance().generalData();
-    if( newAngle < genData.firstPersonLookUpDownMinAngle() )
+    if (newAngle < genData.firstPersonLookUpDownMinAngle())
         newAngle = genData.firstPersonLookUpDownMinAngle();
-    else if( newAngle > genData.firstPersonLookUpDownMaxAngle() )
+    else if (newAngle > genData.firstPersonLookUpDownMaxAngle())
         newAngle = genData.firstPersonLookUpDownMaxAngle();
 
-    //Get it moving
-    turnerPlan.turnTo( now, newAngle );
+    // Get it moving
+    turnerPlan.turnTo(now, newAngle);
 }
 
 void MachPhys1stPersonDriver::lookAhead()
 {
-    PRE( pImpl_->pAxisTurnerPlan_ != NULL );
+    PRE(pImpl_->pAxisTurnerPlan_ != nullptr);
 
-    //Get the plan
+    // Get the plan
     W4dAxisTurnerPlan& turnerPlan = *pImpl_->pAxisTurnerPlan_;
 
-    //Get it moving
-    turnerPlan.turnTo( W4dManager::instance().time(), MexRadians( 0.0 ) );
+    // Get it moving
+    turnerPlan.turnTo(W4dManager::instance().time(), MexRadians(0.0));
 }
 
 MexRadians MachPhys1stPersonDriver::lookUpDownAngle() const
 {
-    PRE( pImpl_->pAxisTurnerPlan_ != NULL );
+    PRE(pImpl_->pAxisTurnerPlan_ != nullptr);
 
-    //Get the plan
+    // Get the plan
     W4dAxisTurnerPlan& turnerPlan = *pImpl_->pAxisTurnerPlan_;
 
-    return turnerPlan.angle( W4dManager::instance().time() );
+    return turnerPlan.angle(W4dManager::instance().time());
 }
 
-bool MachPhys1stPersonDriver::targetPointAnglesValid( uint weaponIndex, const MexPoint3d& targetPoint ) const
+bool MachPhys1stPersonDriver::targetPointAnglesValid(uint weaponIndex, const MexPoint3d& targetPoint) const
 {
-    PRE( pCanAttack_ != NULL );
+    PRE(pCanAttack_ != nullptr);
 
-    //get the weapon and data object
-    const MachPhysWeapon& weapon = pCanAttack_->weapon( weaponIndex );
+    // get the weapon and data object
+    const MachPhysWeapon& weapon = pCanAttack_->weapon(weaponIndex);
     const MachPhysWeaponData& data = weapon.weaponData();
 
-    //get the point coords relative to the weapon
-    MexPoint3d localPoint( targetPoint );
-    weapon.globalTransform().transformInverse( &localPoint );
+    // get the point coords relative to the weapon
+    MexPoint3d localPoint(targetPoint);
+    weapon.globalTransform().transformInverse(&localPoint);
 
-    //Check in range
+    // Check in range
     MATHEX_SCALAR x = localPoint.x();
-    return (Mathex::abs( localPoint.y() ) <= 0.95 * x * data.tanHorizontalDeviationAngle()) and
-           (Mathex::abs( localPoint.z() ) <= 0.95 * x * data.tanVerticalDeviationAngle());
+    return (Mathex::abs(localPoint.y()) <= 0.95 * x * data.tanHorizontalDeviationAngle())
+        and (Mathex::abs(localPoint.z()) <= 0.95 * x * data.tanVerticalDeviationAngle());
 }
 
 void MachPhys1stPersonDriver::initialiseCamera()
 {
-    //Set up the camera stuff
+    // Set up the camera stuff
     setupTrackEntity();
 }
 
-void MachPhys1stPersonDriver::turnAtFastRate( bool fast )
+void MachPhys1stPersonDriver::turnAtFastRate(bool fast)
 {
     pImpl_->turnAtFastRate_ = fast;
 }
@@ -461,33 +478,33 @@ bool MachPhys1stPersonDriver::turnAtFastRate() const
     return pImpl_->turnAtFastRate_;
 }
 
-void MachPhys1stPersonDriver::updateState( const MachPhysFirstPersonStateVector& state )
+void MachPhys1stPersonDriver::updateState(const MachPhysFirstPersonStateVector& state)
 {
-    //Copy some data
-//    lastUpdateTime_ = state.lastUpdateTime_;
+    // Copy some data
+    //     lastUpdateTime_ = state.lastUpdateTime_;
     movingForwards_ = state.movingForwards_;
     movingBackwards_ = state.movingBackwards_;
     turningLeft_ = state.turningLeft_;
     turningRight_ = state.turningRight_;
     pImpl_->turnAtFastRate_ = state.turnAtFastRate_;
 
-    //Jump to specified position
-    snapTo( state.transform_, state.lastSpeed_, lastUpdateTime_ );
+    // Jump to specified position
+    snapTo(state.transform_, state.lastSpeed_, lastUpdateTime_);
 
-    //Deal with head
-    if( canTurnHead() )
+    // Deal with head
+    if (canTurnHead())
     {
-        snapHeadTo( state.headCurrentAngle_, lastUpdateTime_ );
-        turnHeadTo( state.headTargetAngle_ );
+        snapHeadTo(state.headCurrentAngle_, lastUpdateTime_);
+        turnHeadTo(state.headTargetAngle_);
     }
 
-    //Set the camera angles
+    // Set the camera angles
     W4dAxisTurnerPlan& cameraPlan = *pImpl_->pAxisTurnerPlan_;
-    cameraPlan.reset( lastUpdateTime_, state.cameraCurrentAngle_ );
-    cameraPlan.turnTo( lastUpdateTime_, state.cameraTargetAngle_ );
+    cameraPlan.reset(lastUpdateTime_, state.cameraCurrentAngle_);
+    cameraPlan.turnTo(lastUpdateTime_, state.cameraTargetAngle_);
 }
 
-void MachPhys1stPersonDriver::computeState( MachPhysFirstPersonStateVector* pState )
+void MachPhys1stPersonDriver::computeState(MachPhysFirstPersonStateVector* pState)
 {
     pState->transform_ = pEntity_->globalTransform();
     pState->lastUpdateTime_ = lastUpdateTime_;
@@ -501,11 +518,11 @@ void MachPhys1stPersonDriver::computeState( MachPhysFirstPersonStateVector* pSta
     pState->turnAtFastRate_ = pImpl_->turnAtFastRate_;
 
     W4dAxisTurnerPlan& cameraPlan = *pImpl_->pAxisTurnerPlan_;
-    pState->cameraCurrentAngle_ = cameraPlan.angle( lastUpdateTime_ ).asScalar();
+    pState->cameraCurrentAngle_ = cameraPlan.angle(lastUpdateTime_).asScalar();
     pState->cameraTargetAngle_ = cameraPlan.startAngle().asScalar() + cameraPlan.turnAngle().asScalar();
 }
 
-ostream& operator <<( ostream& o, const MachPhysFirstPersonStateVector& t )
+ostream& operator<<(ostream& o, const MachPhysFirstPersonStateVector& t)
 {
     o << "-------------------------" << std::endl;
     o << "transform" << std::endl;
@@ -513,7 +530,8 @@ ostream& operator <<( ostream& o, const MachPhysFirstPersonStateVector& t )
     o << "lastUpdateTime_ " << t.lastUpdateTime_ << " lastSpeed_ " << t.lastSpeed_ << std::endl;
     o << "headCurrentAngle_ " << t.headCurrentAngle_ << " headTargetAngle_ " << t.headTargetAngle_ << std::endl;
     o << "movingForwards_ " << t.movingForwards_ << " movingBackwards_ " << t.movingBackwards_ << std::endl;
-    o << "turningLeft_ " << t.turningLeft_ << " turningRight_ " << t.turningRight_ << " turnAtFastRate_ " << t.turnAtFastRate_ << std::endl;
+    o << "turningLeft_ " << t.turningLeft_ << " turningRight_ " << t.turningRight_ << " turnAtFastRate_ "
+      << t.turnAtFastRate_ << std::endl;
     o << "cameraCurrentAngle_ " << t.cameraCurrentAngle_ << " cameraTargetAngle_ " << t.cameraTargetAngle_ << std::endl;
     o << "-------------------------" << std::endl;
 
@@ -524,85 +542,85 @@ ostream& operator <<( ostream& o, const MachPhysFirstPersonStateVector& t )
 
 void MachPhys1stPersonDriver::adjustCameraRoll()
 {
-    //Compute the global transform down to the anti-roll's parent and include the base offset transform.
+    // Compute the global transform down to the anti-roll's parent and include the base offset transform.
     W4dEntity* pAntiRollEntity = pImpl_->pAntiRollEntity_;
     W4dEntity* pParent = pAntiRollEntity->pParent();
     const MexTransform3d globalOwnerTransform = pParent->globalTransform();
 
-	static double rollDamper = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Roll Damper");
-	static double elevationDamper = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Elevation Damper");
-	static double rollSpeed = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Roll Speed");
-	static double elevationSpeed = (double)SysRegistry::instance().queryIntegerValue( "1st Person", "Elevation Speed");
-	static bool checkValues = true;
+    static double rollDamper = (double)SysRegistry::instance().queryIntegerValue("1st Person", "Roll Damper");
+    static double elevationDamper = (double)SysRegistry::instance().queryIntegerValue("1st Person", "Elevation Damper");
+    static double rollSpeed = (double)SysRegistry::instance().queryIntegerValue("1st Person", "Roll Speed");
+    static double elevationSpeed = (double)SysRegistry::instance().queryIntegerValue("1st Person", "Elevation Speed");
+    static bool checkValues = true;
 
-	if ( checkValues )
-	{
-		checkValues = false;
+    if (checkValues)
+    {
+        checkValues = false;
 
-		if ( MexEpsilon::isWithinEpsilonOf( rollDamper, 0.0 ) )
-		{
-			rollDamper = 2.0;
-		}
-		if ( MexEpsilon::isWithinEpsilonOf( elevationDamper, 0.0 ) )
-		{
-			elevationDamper = 2.0;
-		}
-		if ( MexEpsilon::isWithinEpsilonOf( rollSpeed, 0.0 ) )
-		{
-			rollSpeed = 5.0;
-		}
-		if ( MexEpsilon::isWithinEpsilonOf( elevationSpeed, 0.0 ) )
-		{
-			elevationSpeed = 5.0;
-		}
-	}
+        if (MexEpsilon::isWithinEpsilonOf(rollDamper, 0.0))
+        {
+            rollDamper = 2.0;
+        }
+        if (MexEpsilon::isWithinEpsilonOf(elevationDamper, 0.0))
+        {
+            elevationDamper = 2.0;
+        }
+        if (MexEpsilon::isWithinEpsilonOf(rollSpeed, 0.0))
+        {
+            rollSpeed = 5.0;
+        }
+        if (MexEpsilon::isWithinEpsilonOf(elevationSpeed, 0.0))
+        {
+            elevationSpeed = 5.0;
+        }
+    }
 
-	// These lines commented out by NA. 2/2/99. Camera moves even if machine is not moving.
-	// The antiroll entity transform needs to be updated only if its parent node has moved
-	// This allows lazy evaluation of the camera transform to work in W4dCamera::domainRender()
-	//if( globalOwnerTransform.key() != pImpl_->lastAntiRollParentTransformKey_ )
-	//{
-	//	pImpl_->lastAntiRollParentTransformKey_ = globalOwnerTransform.key();
+    // These lines commented out by NA. 2/2/99. Camera moves even if machine is not moving.
+    // The antiroll entity transform needs to be updated only if its parent node has moved
+    // This allows lazy evaluation of the camera transform to work in W4dCamera::domainRender()
+    // if( globalOwnerTransform.key() != pImpl_->lastAntiRollParentTransformKey_ )
+    //{
+    //  pImpl_->lastAntiRollParentTransformKey_ = globalOwnerTransform.key();
 
-	    MexTransform3d rolledTransform;
+    MexTransform3d rolledTransform;
 
-	    globalOwnerTransform.transform( pImpl_->cameraBaseTransform_, &rolledTransform );
+    globalOwnerTransform.transform(pImpl_->cameraBaseTransform_, &rolledTransform);
 
-	    //Create a new global transform with desired levelling.
-		MexTransform3d levelledTransform( globalOwnerTransform );
-		MexEulerAngles maxAngles;
-		levelledTransform.rotation( &maxAngles );
+    // Create a new global transform with desired levelling.
+    MexTransform3d levelledTransform(globalOwnerTransform);
+    MexEulerAngles maxAngles;
+    levelledTransform.rotation(&maxAngles);
 
-		MexDegrees maxRollAngle = maxAngles.roll();
-		MexDegrees maxElevationAngle = maxAngles.elevation();
+    MexDegrees maxRollAngle = maxAngles.roll();
+    MexDegrees maxElevationAngle = maxAngles.elevation();
 
-		maxRollAngle = maxRollAngle / rollDamper;
-		maxElevationAngle = maxElevationAngle / elevationDamper;
+    maxRollAngle = maxRollAngle / rollDamper;
+    maxElevationAngle = maxElevationAngle / elevationDamper;
 
-		MexDegrees diffRollAngle = maxRollAngle - pImpl_->lastRollAngle_;
-		MexDegrees diffElevationAngle = maxElevationAngle - pImpl_->lastElevationAngle_;
+    MexDegrees diffRollAngle = maxRollAngle - pImpl_->lastRollAngle_;
+    MexDegrees diffElevationAngle = maxElevationAngle - pImpl_->lastElevationAngle_;
 
-		diffRollAngle = diffRollAngle / rollSpeed;
-		diffElevationAngle = diffElevationAngle / elevationSpeed;
+    diffRollAngle = diffRollAngle / rollSpeed;
+    diffElevationAngle = diffElevationAngle / elevationSpeed;
 
-		pImpl_->lastRollAngle_ += diffRollAngle;
-		pImpl_->lastElevationAngle_ += diffElevationAngle;
+    pImpl_->lastRollAngle_ += diffRollAngle;
+    pImpl_->lastElevationAngle_ += diffElevationAngle;
 
-		maxAngles.roll( pImpl_->lastRollAngle_ );
-		maxAngles.elevation( pImpl_->lastElevationAngle_ );
+    maxAngles.roll(pImpl_->lastRollAngle_);
+    maxAngles.elevation(pImpl_->lastElevationAngle_);
 
-		levelledTransform.rotation( maxAngles );
+    levelledTransform.rotation(maxAngles);
 
-	    //Hence compute the required transform for the anti-roll entity
-	    MexTransform3d antiRollTransform;
-	    globalOwnerTransform.transformInverse( levelledTransform, &antiRollTransform );
+    // Hence compute the required transform for the anti-roll entity
+    MexTransform3d antiRollTransform;
+    globalOwnerTransform.transformInverse(levelledTransform, &antiRollTransform);
 
-	    //And set the roll entity to this new value
-	    pAntiRollEntity->localTransform( antiRollTransform );
-	//}
+    // And set the roll entity to this new value
+    pAntiRollEntity->localTransform(antiRollTransform);
+    //}
 }
 
-void MachPhys1stPersonDriver::aimDataFilter( W4dEntityFilter* pFilter )
+void MachPhys1stPersonDriver::aimDataFilter(W4dEntityFilter* pFilter)
 {
     pImpl_->pAimDataFilter_ = pFilter;
 }

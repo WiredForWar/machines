@@ -13,38 +13,37 @@ MachPhysGarrisonData::MachPhysGarrisonData()
     TEST_INVARIANT;
 }
 
-MachPhysGarrisonData::MachPhysGarrisonData( const MachPhysGarrisonData& copyMe, const MexTransform3d& transform )
-: 	MachPhysConstructionData( copyMe, transform ),
-	repairRate_( copyMe.repairRate_ )
+MachPhysGarrisonData::MachPhysGarrisonData(const MachPhysGarrisonData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
+    , repairRate_(copyMe.repairRate_)
 {
 }
 
 MachPhysGarrisonData::~MachPhysGarrisonData()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::HitPointUnits MachPhysGarrisonData::repairRate() const
 {
-	return repairRate_;
+    return repairRate_;
 }
 
-void MachPhysGarrisonData::repairRate( MachPhys::HitPointUnits newRepairRate )
+void MachPhysGarrisonData::repairRate(MachPhys::HitPointUnits newRepairRate)
 {
-	repairRate_ = newRepairRate;
+    repairRate_ = newRepairRate;
 }
 
 void MachPhysGarrisonData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGarrisonData& t )
+ostream& operator<<(ostream& o, const MachPhysGarrisonData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
 
     return o;
 }

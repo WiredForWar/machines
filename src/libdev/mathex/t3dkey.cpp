@@ -10,20 +10,20 @@
 #include "mathex/t3dkey.hpp"
 
 #ifndef _INLINE
-    #include "mathex/t3dkey.ipp"
+#include "mathex/t3dkey.ipp"
 #endif
 
-//class variables
+// class variables
 uint32_t MexTransform3dKey::lastKey_ = 0;
 
 //---------------------------------------------------------------------
 void MexTransform3dKey::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-ostream& operator <<( ostream& o, const MexTransform3dKey& t )
+ostream& operator<<(ostream& o, const MexTransform3dKey& t)
 {
 
     o << "MexTransform3dKey " << t.key_ << std::endl;

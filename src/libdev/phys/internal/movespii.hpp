@@ -1,5 +1,5 @@
 /*
- * M O V E S P I I . H P P 
+ * M O V E S P I I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,33 +24,33 @@ class PhysMoveSpinPlanImpl
 // Canonical form revoked
 {
 public:
-
-    PER_MEMBER_PERSISTENT( PhysMoveSpinPlanImpl );
-    PER_FRIEND_READ_WRITE( PhysMoveSpinPlanImpl );
+    PER_MEMBER_PERSISTENT(PhysMoveSpinPlanImpl);
+    PER_FRIEND_READ_WRITE(PhysMoveSpinPlanImpl);
 
     void CLASS_INVARIANT;
 
 private:
-	friend class PhysMoveSpinPlan;
-    friend ostream& operator <<( ostream& o, const PhysMoveSpinPlanImpl& t );
+    friend class PhysMoveSpinPlan;
+    friend ostream& operator<<(ostream& o, const PhysMoveSpinPlanImpl& t);
 
-    PhysMoveSpinPlanImpl( const MexTransform3d& startLocation,
-                          const MexVec3& speedVector,
-						  const MexVec3& rotationAxis,
-						  MATHEX_SCALAR rotationSpeed,
-                          const PhysRelativeTime& endTime);
+    PhysMoveSpinPlanImpl(
+        const MexTransform3d& startLocation,
+        const MexVec3& speedVector,
+        const MexVec3& rotationAxis,
+        MATHEX_SCALAR rotationSpeed,
+        const PhysRelativeTime& endTime);
     ~PhysMoveSpinPlanImpl();
-    PhysMoveSpinPlanImpl( const PhysMoveSpinPlanImpl& );
-    PhysMoveSpinPlanImpl& operator =( const PhysMoveSpinPlanImpl& );
+    PhysMoveSpinPlanImpl(const PhysMoveSpinPlanImpl&);
+    PhysMoveSpinPlanImpl& operator=(const PhysMoveSpinPlanImpl&);
 
-	MexTransform3d startLocation_;
-	MexVec3 speedVector_;
-	MexVec3 rotationAxis_;
-	MATHEX_SCALAR  rotationSpeed_;
-    PhysRelativeTime endTime_; 
+    MexTransform3d startLocation_;
+    MexVec3 speedVector_;
+    MexVec3 rotationAxis_;
+    MATHEX_SCALAR rotationSpeed_;
+    PhysRelativeTime endTime_;
 };
 
-PER_DECLARE_PERSISTENT( PhysMoveSpinPlanImpl );
+PER_DECLARE_PERSISTENT(PhysMoveSpinPlanImpl);
 
 #endif
 

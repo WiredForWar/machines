@@ -1,5 +1,5 @@
 /*
- * C O N S I C N S . H P P 
+ * C O N S I C N S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,48 +18,47 @@
 
 #include "machlog/mlnotif.hpp"
 
-//Forward refs
+// Forward refs
 class MachInGameScreen;
 class MachLogConstructionTree;
 
-//orthodox canonical (revoked)
-class MachConstructMenuIcons : public GuiSimpleScrollableList, public MachLogNotifiable
+// orthodox canonical (revoked)
+class MachConstructMenuIcons
+    : public GuiSimpleScrollableList
+    , public MachLogNotifiable
 {
 public:
-    //ctor. Located in pParent, covering area.
-    //In game screen passed.
-    MachConstructMenuIcons( GuiDisplayable* pParent, 
-    						const Gui::Coord& rel,
-                            MachInGameScreen* pInGameScreen );
+    // ctor. Located in pParent, covering area.
+    // In game screen passed.
+    MachConstructMenuIcons(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen);
 
-    //dtor.
-    virtual ~MachConstructMenuIcons();
+    // dtor.
+    ~MachConstructMenuIcons() override;
 
-	void refreshConstructIcons();
-	
-	virtual void notifiableBeNotified();
-	
+    void refreshConstructIcons();
+
+    void notifiableBeNotified() override;
+
     void CLASS_INVARIANT;
 
-	static size_t reqWidth();
-	static size_t reqHeight( MachInGameScreen* pInGameScreen );
+    static size_t reqWidth();
+    static size_t reqHeight(MachInGameScreen* pInGameScreen);
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
     // Operations deliberately revoked
-    MachConstructMenuIcons( const MachConstructMenuIcons& );
-    MachConstructMenuIcons& operator =( const MachConstructMenuIcons& );
-    bool operator ==( const MachConstructMenuIcons& );
+    MachConstructMenuIcons(const MachConstructMenuIcons&);
+    MachConstructMenuIcons& operator=(const MachConstructMenuIcons&);
+    bool operator==(const MachConstructMenuIcons&);
 
-    friend ostream& operator <<( ostream& o, const MachConstructMenuIcons& t );
+    friend ostream& operator<<(ostream& o, const MachConstructMenuIcons& t);
 
-	// Data members...
-	MachInGameScreen* pInGameScreen_;
-	MachLogConstructionTree& consTree_;
+    // Data members...
+    MachInGameScreen* pInGameScreen_;
+    MachLogConstructionTree& consTree_;
 };
-
 
 #endif
 

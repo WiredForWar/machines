@@ -18,14 +18,14 @@ double DevTime::OSTime::resolution() const
 double DevTime::OSTime::time() const
 {
     double result;
-    if( RecRecorder::instance().state() == RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
         result = RecRecorderPrivate::instance().playbackTime();
     else
     {
         result = timeNoRecord();
 
-        if( RecRecorder::instance().state() == RecRecorder::RECORDING )
-            RecRecorderPrivate::instance().recordTime( result );
+        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
+            RecRecorderPrivate::instance().recordTime(result);
     }
 
     return result;
@@ -34,9 +34,8 @@ double DevTime::OSTime::time() const
 double DevTime::OSTime::timeNoRecord() const
 {
     double result;
-    //result = SDL_GetTicks() / 1000.0;
+    // result = SDL_GetTicks() / 1000.0;
     result = resolution() * SDL_GetTicks();
 
     return result;
 }
-

@@ -16,78 +16,70 @@
 #include "system/pathname.hpp"
 #include "ctl/vector.hpp"
 
-EnvSkyline::EnvSkyline
-(
-	W4dEntity* parent,
-	const SysPathName& meshFile
-):
-	entity_(_NEW(W4dGeneric(parent, MexTransform3d()))),
-	matTable_(NULL)
+EnvSkyline::EnvSkyline(W4dEntity* parent, const SysPathName& meshFile)
+    : entity_(_NEW(W4dGeneric(parent, MexTransform3d())))
+    , matTable_(nullptr)
 {
-	PRE(parent);
-	PRE(meshFile.existsAsFile());
+    PRE(parent);
+    PRE(meshFile.existsAsFile());
 
-	entity_->loadSingleMesh(meshFile, "skyline");
+    entity_->loadSingleMesh(meshFile, "skyline");
     TEST_INVARIANT;
 }
 
 EnvSkyline::~EnvSkyline()
 {
     TEST_INVARIANT;
-	_DELETE(matTable_);
+    _DELETE(matTable_);
 }
 
-void EnvSkyline::colourTable
-(
-	EnvElevationColourTable* clut,
-	const EnvSatellite* controller
-)
+void EnvSkyline::colourTable(EnvElevationColourTable* clut, const EnvSatellite* controller)
 {
-	PRE(clut);
-	PRE(controller);
-	PRE(entity_);
+    PRE(clut);
+    PRE(controller);
+    PRE(entity_);
 
-	const W4dGeneric* constEntity = entity_;
-	matTable_ = clut;
-	std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
-	plan_ = _NEW(EnvElevationMaterialPlan(*(mats.get()), *controller, *matTable_));
-	entity_->entityPlanForEdit().materialPlan(plan_, W4dManager::instance().time());
+    const W4dGeneric* constEntity = entity_;
+    matTable_ = clut;
+    std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
+    plan_ = _NEW(EnvElevationMaterialPlan(*(mats.get()), *controller, *matTable_));
+    entity_->entityPlanForEdit().materialPlan(plan_, W4dManager::instance().time());
 }
 
 // Temporarily change the skyline to some fixed colour.
 void EnvSkyline::overrideColour(const RenColour& col)
 {
-	W4dEntityPlan& ePlan = entity_->entityPlanForEdit();
+    W4dEntityPlan& ePlan = entity_->entityPlanForEdit();
 
-	// Remove any existing plans, there should only be one.
+    // Remove any existing plans, there should only be one.
     ePlan.clearMaterialPlans(ePlan.nMaterialPlans());
 
-	// This would appear to be the easiest way to make a material plan which
-	// applies an unchanging material to a mesh.  Unforunately, we need a
-	// dummy linear scale plan.
+    // This would appear to be the easiest way to make a material plan which
+    // applies an unchanging material to a mesh.  Unforunately, we need a
+    // dummy linear scale plan.
     PhysLinearScalarPlan::ScalarVec times;
-   	times.reserve(1);
-    times.push_back(HUGE_VAL); 		// last forever
+    times.reserve(1);
+    times.push_back(HUGE_VAL); // last forever
 
     PhysLinearScalarPlan::ScalarVec scales;
-   	scales.reserve(2);
+    scales.reserve(2);
     scales.push_back(1);
     scales.push_back(1);
 
-    PhysScalarPlanPtr lineScalarPlanPtr = _NEW( PhysLinearScalarPlan(times, scales) );
+    PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
 
-	const W4dGeneric* constEntity = entity_;
-	std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
-	ASSERT(mats->size() == 1, "Skyline can have only one material.");
+    const W4dGeneric* constEntity = entity_;
+    std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
+    ASSERT(mats->size() == 1, "Skyline can have only one material.");
 
-	RenMaterial mat = mats->operator[](0);
-	mat.diffuse(RenColour::black());
-	mat.emissive(col);
+    RenMaterial mat = mats->operator[](0);
+    mat.diffuse(RenColour::black());
+    mat.emissive(col);
 
-	IAIN_STREAM("Original skyline " << mat << "\n");
-	IAIN_STREAM("Skyline colour " << col << "\n");
-	IAIN_STREAM("Skyline " << mat << "\n");
-	IAIN_STREAM("Skyline material emissive=" << mat.emissive() << "\n");
+    IAIN_STREAM("Original skyline " << mat << "\n");
+    IAIN_STREAM("Skyline colour " << col << "\n");
+    IAIN_STREAM("Skyline " << mat << "\n");
+    IAIN_STREAM("Skyline material emissive=" << mat.emissive() << "\n");
 
     W4dMaterialPlanPtr matPlan = _NEW(W4dSimpleAlphaPlan(mat, 1, lineScalarPlanPtr, 1));
     ePlan.materialPlan(matPlan, W4dManager::instance().time());
@@ -96,18 +88,18 @@ void EnvSkyline::overrideColour(const RenColour& col)
 // Put the colour back to normal.
 void EnvSkyline::resetColour()
 {
-	W4dEntityPlan& ePlan = entity_->entityPlanForEdit();
+    W4dEntityPlan& ePlan = entity_->entityPlanForEdit();
 
-	// Remove any existing plans, there should only be one.
+    // Remove any existing plans, there should only be one.
     ePlan.clearMaterialPlans(ePlan.nMaterialPlans());
 
-	// Revert to the original plan.
-	ePlan.materialPlan(plan_, W4dManager::instance().time());
+    // Revert to the original plan.
+    ePlan.materialPlan(plan_, W4dManager::instance().time());
 }
 
 void EnvSkyline::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 /* End SKYLINE.CPP *************************************************/

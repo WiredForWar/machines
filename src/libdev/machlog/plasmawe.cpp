@@ -1,5 +1,5 @@
 /*
- * P U L S E W E P . C P P 
+ * P U L S E W E P . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,16 +10,16 @@
 
 #include "machphys/weapon.hpp"
 #include "machphys/wepdata.hpp"
-//#include "machphys/random.hpp"
+// #include "machphys/random.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/plasmawe.hpp"
 #include "machlog/plasmbol.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogPlasmaWeapon );
+PER_DEFINE_PERSISTENT(MachLogPlasmaWeapon);
 
-MachLogPlasmaWeapon::MachLogPlasmaWeapon( MachLogRace* pRace, MachPhysLinearWeapon* pPhysWeapon, MachActor* pOwner )
-:	MachLogLinearWeapon( pRace, pPhysWeapon, pOwner )
+MachLogPlasmaWeapon::MachLogPlasmaWeapon(MachLogRace* pRace, MachPhysLinearWeapon* pPhysWeapon, MachActor* pOwner)
+    : MachLogLinearWeapon(pRace, pPhysWeapon, pOwner)
 {
 
     TEST_INVARIANT;
@@ -28,32 +28,29 @@ MachLogPlasmaWeapon::MachLogPlasmaWeapon( MachLogRace* pRace, MachPhysLinearWeap
 MachLogPlasmaWeapon::~MachLogPlasmaWeapon()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogPlasmaWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//virtual
-MachLogLinearProjectile* MachLogPlasmaWeapon::createLinearProjectile
-(
-	const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)	
+// virtual
+MachLogLinearProjectile* MachLogPlasmaWeapon::createLinearProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	return _NEW( 
-		MachLogPlasmaBolt( 
-			&logRace(), 
-			createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ), 
-			&owner(), 
-			physWeapon().weaponData()
-		)
-	);
+    return _NEW(MachLogPlasmaBolt(
+        &logRace(),
+        createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
+        &owner(),
+        physWeapon().weaponData()));
 }
 
-ostream& operator <<( ostream& o, const MachLogPlasmaWeapon& t )
+ostream& operator<<(ostream& o, const MachLogPlasmaWeapon& t)
 {
 
     o << "MachLogPlasmaWeapon " << (void*)&t << " start" << std::endl;
@@ -62,22 +59,22 @@ ostream& operator <<( ostream& o, const MachLogPlasmaWeapon& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogPlasmaWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachLogPlasmaWeapon& weapon)
 {
-	const MachLogLinearWeapon& base1 = weapon;
+    const MachLogLinearWeapon& base1 = weapon;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogPlasmaWeapon& weapon )
+void perRead(PerIstream& istr, MachLogPlasmaWeapon& weapon)
 {
-	MachLogLinearWeapon& base1 = weapon;
+    MachLogLinearWeapon& base1 = weapon;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-MachLogPlasmaWeapon::MachLogPlasmaWeapon( PerConstructor con )
-:	MachLogLinearWeapon( con )
+MachLogPlasmaWeapon::MachLogPlasmaWeapon(PerConstructor con)
+    : MachLogLinearWeapon(con)
 {
 }
 

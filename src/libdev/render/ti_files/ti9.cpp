@@ -1,4 +1,4 @@
-//#define _INSTANTIATE_TEMPLATE_CLASSES
+// #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "ctl/vector.hpp"
 #include "ctl/vector.ctp"
@@ -9,6 +9,6 @@ class RenISurfBody;
 
 dummyFunction9()
 {
-	static ctl_vector<RenISurfBody*> vec2;
-	static ctl_vector<RenTexture> textures;
+    static ctl_vector<RenISurfBody*> vec2;
+    static ctl_vector<RenTexture> textures;
 }

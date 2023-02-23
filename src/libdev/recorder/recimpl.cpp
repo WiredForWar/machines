@@ -23,65 +23,65 @@ RecRecorderImplementation& RecRecorderImplementation::instance()
 }
 
 RecRecorderImplementation::RecRecorderImplementation()
-: nBytesRead_( 0 ),
-  nBytesWritten_( 0 ),
-  state_( RecRecorder::INACTIVE ),
-  fatalErrorFound_( false ),
-  allowedCount_( 0 ),
-  freeDiskSpaceRate_( 3.0 ),
-  fileRate_( 3.0 ),
-  updateDiskSpaceTime_( -10.0 ),
-  diskSpaceFreeBytes_( 0 ),
-  diskSpaceFreeSeconds_( 0 )
+    : nBytesRead_(0)
+    , nBytesWritten_(0)
+    , state_(RecRecorder::INACTIVE)
+    , fatalErrorFound_(false)
+    , allowedCount_(0)
+    , freeDiskSpaceRate_(3.0)
+    , fileRate_(3.0)
+    , updateDiskSpaceTime_(-10.0)
+    , diskSpaceFreeBytes_(0)
+    , diskSpaceFreeSeconds_(0)
 {
-    const char* filename = getenv( "cb_playback_from" );
+    const char* filename = getenv("cb_playback_from");
 
-    if( filename )
+    if (filename)
     {
-        SysPathName pathname( filename );
+        SysPathName pathname(filename);
 
-        if( pathname.existsAsFile() )
+        if (pathname.existsAsFile())
         {
-            playbackStream_.open( filename, std::ios::in | std::ios::binary );
+            playbackStream_.open(filename, std::ios::in | std::ios::binary);
 
             //  This assumes that the seek value returned from the end of
             //  a binary file is the number of characters in the file. This
             //  is true for a Win95 binary file, it is not necessarily true
             //  on other operating systems.
 
-            playbackStream_.seekg( 0, std::ios::end );
+            playbackStream_.seekg(0, std::ios::end);
             nBytesInFile_ = playbackStream_.tellg();
-            playbackStream_.seekg( 0, std::ios::beg );
+            playbackStream_.seekg(0, std::ios::beg);
 
             state_ = RecRecorder::PLAYING;
         }
     }
     else
     {
-        filename = getenv( "cb_record_to" );
+        filename = getenv("cb_record_to");
 
-        if( filename )
+        if (filename)
         {
-            recordStream_.open( filename, std::ios::out | std::ios::binary );
+            recordStream_.open(filename, std::ios::out | std::ios::binary);
             state_ = RecRecorder::RECORDING;
         }
     }
-//TODO windows dir
-    if( filename )
+    // TODO windows dir
+    if (filename)
     {
-        if( strlen( filename ) >= 2 and filename[ 1 ] == ':' )
-            drive_[ 0 ] = filename[ 0 ];
-        //else
-            //drive_[ 0 ] = _STATIC_CAST( char, 'a' + _getdrive() - 1 );
+        if (strlen(filename) >= 2 and filename[1] == ':')
+            drive_[0] = filename[0];
+        // else
+        // drive_[ 0 ] = _STATIC_CAST( char, 'a' + _getdrive() - 1 );
 
-        drive_[ 1 ] = ':';
-        drive_[ 2 ] = '\\';
-        drive_[ 3 ] = '\0';
+        drive_[1] = ':';
+        drive_[2] = '\\';
+        drive_[3] = '\0';
     }
 
     //  Make sure that the streams are properly closed on shutdown
 
-    Diag::instance().addCrashFunction( closeStreams );
+    Diag::instance().addCrashFunction(closeStreams);
 
     TEST_INVARIANT;
 }
@@ -89,7 +89,6 @@ RecRecorderImplementation::RecRecorderImplementation()
 RecRecorderImplementation::~RecRecorderImplementation()
 {
     TEST_INVARIANT;
-
 }
 
 RecRecorder::State RecRecorderImplementation::state() const
@@ -97,118 +96,118 @@ RecRecorder::State RecRecorderImplementation::state() const
     return state_;
 }
 
-void RecRecorderImplementation::putData( RecordType type, size_t nBytes, const void* pData )
+void RecRecorderImplementation::putData(RecordType type, size_t nBytes, const void* pData)
 {
-    PRE( type < 256 );
-    PRE( state() == RecRecorder::RECORDING );
+    PRE(type < 256);
+    PRE(state() == RecRecorder::RECORDING);
 
     checkOKToRecord();
 
-    const char   header = type;
+    const char header = type;
 
-    recordStream_.write( &header, sizeof( header ) );
-    recordStream_.write( _STATIC_CAST( const char*, pData ), nBytes );
+    recordStream_.write(&header, sizeof(header));
+    recordStream_.write(_STATIC_CAST(const char*, pData), nBytes);
 
-    nBytesWritten_ += sizeof( header ) + nBytes;
+    nBytesWritten_ += sizeof(header) + nBytes;
 
-    if( REC_RECORD_STREAM_ENABLED )
+    if (REC_RECORD_STREAM_ENABLED)
     {
-        REC_RECORD_STREAM( type << std::endl );
-        ProProfiler::instance().traceStack( Diag::instance().recRecordStream(), true, 0, "" );
+        REC_RECORD_STREAM(type << std::endl);
+        ProProfiler::instance().traceStack(Diag::instance().recRecordStream(), true, 0, "");
     }
 }
 
-void RecRecorderImplementation::putBool( bool value, RecordType trueType, RecordType falseType )
+void RecRecorderImplementation::putBool(bool value, RecordType trueType, RecordType falseType)
 {
-    PRE( state() == RecRecorder::RECORDING );
+    PRE(state() == RecRecorder::RECORDING);
 
     checkOKToRecord();
 
-    if( value )
-        putData( trueType, 0, NULL );
+    if (value)
+        putData(trueType, 0, nullptr);
     else
-        putData( falseType, 0, NULL );
+        putData(falseType, 0, nullptr);
 }
 
-void RecRecorderImplementation::getData( RecordType type, size_t nBytes, void* pData )
+void RecRecorderImplementation::getData(RecordType type, size_t nBytes, void* pData)
 {
-    PRE( state() == RecRecorder::PLAYING );
+    PRE(state() == RecRecorder::PLAYING);
 
     checkOKToRecord();
 
-    char   header;
+    char header;
 
-    playbackStream_.read( &header, sizeof( header ) );
+    playbackStream_.read(&header, sizeof(header));
 
-    RecordType readType = _STATIC_CAST( RecordType, header );
+    RecordType readType = _STATIC_CAST(RecordType, header);
 
-    if( REC_PLAYBACK_STREAM_ENABLED )
+    if (REC_PLAYBACK_STREAM_ENABLED)
     {
-        REC_PLAYBACK_STREAM( readType << std::endl );
-        ProProfiler::instance().traceStack( Diag::instance().recPlaybackStream(), true, 0, "" );
+        REC_PLAYBACK_STREAM(readType << std::endl);
+        ProProfiler::instance().traceStack(Diag::instance().recPlaybackStream(), true, 0, "");
 
-        if( type != readType )
+        if (type != readType)
         {
-            REC_PLAYBACK_STREAM( "**************** ERROR *****************" << std::endl );
-            REC_PLAYBACK_STREAM( "Expected to read " << type << " actually read " << readType << std::endl );
+            REC_PLAYBACK_STREAM("**************** ERROR *****************" << std::endl);
+            REC_PLAYBACK_STREAM("Expected to read " << type << " actually read " << readType << std::endl);
         }
     }
 
-    ASSERT_INFO( type );
-    ASSERT_INFO( readType );
+    ASSERT_INFO(type);
+    ASSERT_INFO(readType);
 
-    ASSERT( type == readType, "" );
+    ASSERT(type == readType, "");
 
-    playbackStream_.read( _STATIC_CAST( char*, pData ), nBytes );
+    playbackStream_.read(_STATIC_CAST(char*, pData), nBytes);
 
-    nBytesRead_ += sizeof( header ) + nBytes;
+    nBytesRead_ += sizeof(header) + nBytes;
 
-    if( playbackStream_.eof() or playbackStream_.bad() )
+    if (playbackStream_.eof() or playbackStream_.bad())
         state_ = RecRecorder::INACTIVE;
-
 }
 
-bool RecRecorderImplementation::getBool( RecordType trueType, RecordType falseType )
+bool RecRecorderImplementation::getBool(RecordType trueType, RecordType falseType)
 {
-    PRE( state() == RecRecorder::PLAYING );
+    PRE(state() == RecRecorder::PLAYING);
 
     checkOKToRecord();
 
-    //uint8   header;
-    char   header;
+    // uint8   header;
+    char header;
 
-    playbackStream_.read( &header, sizeof( header ) );
+    playbackStream_.read(&header, sizeof(header));
 
-    RecordType readType = _STATIC_CAST( RecordType, header );
+    RecordType readType = _STATIC_CAST(RecordType, header);
 
-    if( REC_PLAYBACK_STREAM_ENABLED )
+    if (REC_PLAYBACK_STREAM_ENABLED)
     {
-        REC_PLAYBACK_STREAM( readType << std::endl );
-        ProProfiler::instance().traceStack( Diag::instance().recPlaybackStream(), true, 0, "" );
+        REC_PLAYBACK_STREAM(readType << std::endl);
+        ProProfiler::instance().traceStack(Diag::instance().recPlaybackStream(), true, 0, "");
 
-        if( readType != trueType and readType != falseType )
+        if (readType != trueType and readType != falseType)
         {
-            REC_PLAYBACK_STREAM( "**************** ERROR *****************" << std::endl );
-            REC_PLAYBACK_STREAM( "Expected to read " << trueType << " or " << falseType << " actually read " << readType << std::endl );
+            REC_PLAYBACK_STREAM("**************** ERROR *****************" << std::endl);
+            REC_PLAYBACK_STREAM(
+                "Expected to read " << trueType << " or " << falseType << " actually read " << readType << std::endl);
         }
     }
 
-    ASSERT_INFO( readType );
-    ASSERT_INFO( trueType );
-    ASSERT_INFO( falseType );
+    ASSERT_INFO(readType);
+    ASSERT_INFO(trueType);
+    ASSERT_INFO(falseType);
 
-    ASSERT( readType == trueType or readType == falseType, "" );
+    ASSERT(readType == trueType or readType == falseType, "");
 
     bool result;
 
-    if( readType == trueType )
+    if (readType == trueType)
         result = true;
     else
         result = false;
 
-    nBytesRead_ += sizeof( header );
+    nBytesRead_ += sizeof(header);
 
-    if( playbackStream_.eof() or playbackStream_.bad() )
+    if (playbackStream_.eof() or playbackStream_.bad())
         state_ = RecRecorder::INACTIVE;
 
     return result;
@@ -233,45 +232,48 @@ void RecRecorderImplementation::checkOKToRecord()
     bool inAssertionData = BaseAssertion::inAssertionData();
 
     std::string errorText;
-    if( inAssertion )
+    if (inAssertion)
         errorText = "in assertion";
-    if( inAssertionInfo )
+    if (inAssertionInfo)
         errorText = "in assertion info";
-    if( inAssertionData )
+    if (inAssertionData)
         errorText = "in assertion data";
 
-    if( inAssertion or inAssertionInfo or inAssertionData )
+    if (inAssertion or inAssertionInfo or inAssertionData)
     {
-        REC_RECORD_STREAM( "***************** ERROR *****************" << std::endl );
-        REC_RECORD_STREAM( "Trying to record whilst " << errorText << std::endl );
-        ProProfiler::instance().traceStack( Diag::instance().recRecordStream(), true, 0, "" );
+        REC_RECORD_STREAM("***************** ERROR *****************" << std::endl);
+        REC_RECORD_STREAM("Trying to record whilst " << errorText << std::endl);
+        ProProfiler::instance().traceStack(Diag::instance().recRecordStream(), true, 0, "");
 
-        REC_PLAYBACK_STREAM( "***************** ERROR *****************" << std::endl );
-        REC_PLAYBACK_STREAM( "Trying to record whilst " << errorText << std::endl );
-        ProProfiler::instance().traceStack( Diag::instance().recPlaybackStream(), true, 0, "" );
+        REC_PLAYBACK_STREAM("***************** ERROR *****************" << std::endl);
+        REC_PLAYBACK_STREAM("Trying to record whilst " << errorText << std::endl);
+        ProProfiler::instance().traceStack(Diag::instance().recPlaybackStream(), true, 0, "");
 
-        ASSERT_INFO( "***************** ERROR *****************" << std::endl );
-        ASSERT_INFO( "Trying to record whilst " << errorText << std::endl );
+        ASSERT_INFO("***************** ERROR *****************" << std::endl);
+        ASSERT_INFO("Trying to record whilst " << errorText << std::endl);
 
         fatalErrorFound_ = true;
     }
 
-    if( not recordingAllowed() )
+    if (not recordingAllowed())
         fatalErrorFound_ = true;
 
-    ASSERT_INFO( recordingAllowed() );
+    ASSERT_INFO(recordingAllowed());
 
     //  The use of fatalErrorFound_ is because we might call this function
     //  whilst in a PRE, POST or ASSERT in which case any further assertion
     //  checks are disabled. We therefore save the fact that there has been
     //  an error so we can assert out as soon as possible.
-    ASSERT( not fatalErrorFound_, "Cannot record whilst doing debug code or when in Windows event loop. The stack trace produced in assert.log may be innaccurate - see record or playback streams for accurate stack" );
+    ASSERT(
+        not fatalErrorFound_,
+        "Cannot record whilst doing debug code or when in Windows event loop. The stack trace produced in "
+        "assert.log may be innaccurate - see record or playback streams for accurate stack");
 #endif
 }
 
-void RecRecorderImplementation::recordingAllowed( bool allowed )
+void RecRecorderImplementation::recordingAllowed(bool allowed)
 {
-    if( allowed )
+    if (allowed)
         --allowedCount_;
     else
         ++allowedCount_;
@@ -282,9 +284,9 @@ bool RecRecorderImplementation::recordingAllowed() const
     return allowedCount_ == 0;
 }
 
-void RecRecorderImplementation::writeDriveInfo( ostream& o ) const
+void RecRecorderImplementation::writeDriveInfo(ostream& o) const
 {
-    if( time() > updateDiskSpaceTime_ )
+    if (time() > updateDiskSpaceTime_)
     {
         /*TODO DWORD  sectorsPerCluster;
         DWORD  bytesPerSector;
@@ -301,29 +303,28 @@ void RecRecorderImplementation::writeDriveInfo( ostream& o ) const
 
         nonConstThis->freeDiskSpaceRate_.update( diskSpaceFreeBytes_, time() );*/
 
-        if( freeDiskSpaceRate_.rateDefined() )
+        if (freeDiskSpaceRate_.rateDefined())
         {
-            if( freeDiskSpaceRate_.rate() < 0.0 )
+            if (freeDiskSpaceRate_.rate() < 0.0)
             {
-                //nonConstThis->diskSpaceFreeSeconds_ = - ( diskSpaceFreeBytes_ / freeDiskSpaceRate_.rate() );
+                // nonConstThis->diskSpaceFreeSeconds_ = - ( diskSpaceFreeBytes_ / freeDiskSpaceRate_.rate() );
             }
         }
 
-        //nonConstThis->updateDiskSpaceTime_ = time() + 10.0;
+        // nonConstThis->updateDiskSpaceTime_ = time() + 10.0;
     }
 
     o << " Disk space free " << diskSpaceFreeBytes_ << " bytes";
 
-    if( freeDiskSpaceRate_.rateDefined() )
+    if (freeDiskSpaceRate_.rateDefined())
     {
         o << " ( approx ";
-        writeTime( o, diskSpaceFreeSeconds_ );
+        writeTime(o, diskSpaceFreeSeconds_);
         o << " )";
     }
-
 }
 
-void RecRecorderImplementation::writeTime( ostream& o, double timeSeconds ) const
+void RecRecorderImplementation::writeTime(ostream& o, double timeSeconds) const
 {
     size_t hours = timeSeconds / 3600.0;
     timeSeconds -= hours * 3600.0;
@@ -344,18 +345,18 @@ double RecRecorderImplementation::time() const
 
 void RecRecorderImplementation::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RecRecorderImplementation& t )
+ostream& operator<<(ostream& o, const RecRecorderImplementation& t)
 {
-    if( t.state() == RecRecorder::RECORDING )
+    if (t.state() == RecRecorder::RECORDING)
     {
         o << "RECORDING " << t.nBytesWritten_ << " bytes written";
 
-        t.writeDriveInfo( o );
+        t.writeDriveInfo(o);
     }
-    else if( t.state() == RecRecorder::PLAYING )
+    else if (t.state() == RecRecorder::PLAYING)
     {
         o << "PLAYING " << t.nBytesRead_ << " / " << t.nBytesInFile_;
         o << " (" << 100.0 * t.nBytesRead_ / t.nBytesInFile_ << "%)";
@@ -368,9 +369,9 @@ ostream& operator <<( ostream& o, const RecRecorderImplementation& t )
     return o;
 }
 
-ostream& operator <<( ostream& o, RecRecorderImplementation::RecordType type )
+ostream& operator<<(ostream& o, RecRecorderImplementation::RecordType type)
 {
-    switch( type )
+    switch (type)
     {
         case RecRecorderImplementation::TIME:
             o << "TIME";
@@ -520,7 +521,7 @@ ostream& operator <<( ostream& o, RecRecorderImplementation::RecordType type )
             o << "NETWORK_DOUBLE";
             break;
         default:
-            o << "UNKNOWN (" << _STATIC_CAST( int, type ) << ")";
+            o << "UNKNOWN (" << _STATIC_CAST(int, type) << ")";
             break;
     }
     return o;
@@ -528,17 +529,17 @@ ostream& operator <<( ostream& o, RecRecorderImplementation::RecordType type )
 
 double RecRecorderImplementation::percentageComplete() const
 {
-	PRE( state() == RecRecorder::PLAYING );
+    PRE(state() == RecRecorder::PLAYING);
 
-	double result = 100.0 * nBytesRead_ / nBytesInFile_;
+    double result = 100.0 * nBytesRead_ / nBytesInFile_;
 
-	result = std::max( 0.0, result );
-	result = std::min( 100.0, result );
+    result = std::max(0.0, result);
+    result = std::min(100.0, result);
 
-	POST( result >= 0.0 );
-	POST( result <= 100.0 );
+    POST(result >= 0.0);
+    POST(result <= 100.0);
 
-	return result;
+    return result;
 }
 
 /* End RECIMPL.CPP **************************************************/

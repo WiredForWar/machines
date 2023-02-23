@@ -19,52 +19,55 @@
 
 #include "machphys/machphys.hpp"
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class MachPhysOreHolograph : public W4dComposite
 {
 public:
-    //ctor. race determines its main colour.
-    //The size is defined by concentration.
-    //The number of satellites is defined by quantity .
-    MachPhysOreHolograph( W4dEntity* pParent, const W4dTransform3d& localTransform,
-                          MachPhys::Race race, uint concentration, uint quantity );
+    // ctor. race determines its main colour.
+    // The size is defined by concentration.
+    // The number of satellites is defined by quantity .
+    MachPhysOreHolograph(
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        MachPhys::Race race,
+        uint concentration,
+        uint quantity);
 
-    //dtor
-    ~MachPhysOreHolograph();
+    // dtor
+    ~MachPhysOreHolograph() override;
 
-    //Inherited from W4dEntity
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                             Accuracy accuracy ) const;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysOreHolograph );
-    PER_FRIEND_READ_WRITE( MachPhysOreHolograph );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysOreHolograph);
+    PER_FRIEND_READ_WRITE(MachPhysOreHolograph);
 
 private:
     // Operations deliberately revoked
-    MachPhysOreHolograph( const MachPhysOreHolograph& );
-    MachPhysOreHolograph& operator =( const MachPhysOreHolograph& );
-    bool operator ==( const MachPhysOreHolograph& );
+    MachPhysOreHolograph(const MachPhysOreHolograph&);
+    MachPhysOreHolograph& operator=(const MachPhysOreHolograph&);
+    bool operator==(const MachPhysOreHolograph&);
 
-	friend class MachPhysOtherPersistence;
-    //ctor used by the factory() method
-    MachPhysOreHolograph( W4dEntity* pParent, const MexTransform3d& transform );
+    friend class MachPhysOtherPersistence;
+    // ctor used by the factory() method
+    MachPhysOreHolograph(W4dEntity* pParent, const MexTransform3d& transform);
 
-    //Constructs and returns the original holograph
+    // Constructs and returns the original holograph
     static const MachPhysOreHolograph& factory();
 
-    //Returns the holo spin plan
+    // Returns the holo spin plan
     static const W4dCompositePlanPtr& spinPlan();
 
-    //Constructs and returns the spin plan for the holograph
-    static W4dCompositePlanPtr newSpinPlan( const MachPhysOreHolograph& holo );
+    // Constructs and returns the spin plan for the holograph
+    static W4dCompositePlanPtr newSpinPlan(const MachPhysOreHolograph& holo);
 
-    //Sets colours for different races
-    void convertMaterials( MachPhys::Race race );
+    // Sets colours for different races
+    void convertMaterials(MachPhys::Race race);
 };
 
-PER_DECLARE_PERSISTENT( MachPhysOreHolograph );
+PER_DECLARE_PERSISTENT(MachPhysOreHolograph);
 
 #endif
 

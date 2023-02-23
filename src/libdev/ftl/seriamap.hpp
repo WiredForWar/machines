@@ -19,55 +19,52 @@
 #include "ftl/serialid.hpp"
 #include "ctl/vector.hpp"
 
-//Orthodox canonical
-template< class VALUE >
-class FtlSerialMap : public FtlMap< FtlSerialId, VALUE >
+// Orthodox canonical
+template <class VALUE> class FtlSerialMap : public FtlMap<FtlSerialId, VALUE>
 {
 public:
-    //ctor.
+    // ctor.
     FtlSerialMap();
 
-    //dtor.
-    virtual ~FtlSerialMap() {};
+    // dtor.
+    ~FtlSerialMap() override {};
 
-	// inherited from FtlContainer...
-	virtual bool contains( const FtlSerialId& id ) const;
+    // inherited from FtlContainer...
+    bool contains(const FtlSerialId& id) const override;
 
-	// inherited from FtlAssociativeCollection...
-	virtual void add( const FtlPair< FtlSerialId, VALUE >& addMe );
-    //PRE( not contains( addMe.first )
+    // inherited from FtlAssociativeCollection...
+    void add(const FtlPair<FtlSerialId, VALUE>& addMe) override;
+    // PRE( not contains( addMe.first )
 
-	virtual void remove( const FtlSerialId& id );
-    //PRE( contains( id ) )
+    void remove(const FtlSerialId& id) override;
+    // PRE( contains( id ) )
 
     void CLASS_INVARIANT;
 
 protected:
-
-	virtual const VALUE& doSubscript( const FtlSerialId& id ) const;
-	// PRE( contains( id ) );
+    const VALUE& doSubscript(const FtlSerialId& id) const override;
+    // PRE( contains( id ) );
 
 private:
     // Operations deliberately revoked
-    FtlSerialMap( const FtlSerialMap< VALUE >& );
-    FtlSerialMap< VALUE >& operator =( const FtlSerialMap< VALUE >& );
-    bool operator ==( const FtlSerialMap< VALUE >& );
+    FtlSerialMap(const FtlSerialMap<VALUE>&);
+    FtlSerialMap<VALUE>& operator=(const FtlSerialMap<VALUE>&);
+    bool operator==(const FtlSerialMap<VALUE>&);
 
-	typedef std::pair< size_t, VALUE > Entry;
+    using Entry = std::pair<size_t, VALUE>;
 
-    //Data members
-    ctl_vector< size_t > index_;//index_[id] is the element of values_ storing the mapped value
-	ctl_vector< Entry > values_; //first of pair is location in index_ of ref
+    // Data members
+    ctl_vector<size_t> index_; // index_[id] is the element of values_ storing the mapped value
+    ctl_vector<Entry> values_; // first of pair is location in index_ of ref
 };
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "ftl/seriamap.ctp"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "ftl/seriamap.ctp"
+// #endif
 
 #ifdef _INLINE
-    #include "ftl/seriamap.itp"
+#include "ftl/seriamap.itp"
 #endif
-
 
 #endif
 

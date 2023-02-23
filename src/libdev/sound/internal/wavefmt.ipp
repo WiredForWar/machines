@@ -5,65 +5,65 @@
 ***********************************************************/
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-void WaveFormat::channels( Channels c )
+void WaveFormat::channels(Channels c)
 {
-	channels_ = c;
+    channels_ = c;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-void WaveFormat::sampleRateHz( SampleRateHz r )
+void WaveFormat::sampleRateHz(SampleRateHz r)
 {
-	sampleRateHz_ = r;
+    sampleRateHz_ = r;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-void WaveFormat::sampleRateKHz( SampleRateKHz r )
+void WaveFormat::sampleRateKHz(SampleRateKHz r)
 {
-	sampleRateHz_ = r * 1000;
+    sampleRateHz_ = r * 1000;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-void WaveFormat::bitsPerSample( BitsPerSample b )
+void WaveFormat::bitsPerSample(BitsPerSample b)
 {
-	bitsPerSample_ = b;
+    bitsPerSample_ = b;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-Channels WaveFormat::channels( void ) const
+Channels WaveFormat::channels() const
 {
-	return channels_;
+    return channels_;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-SampleRateHz WaveFormat::sampleRateHz( void ) const
+SampleRateHz WaveFormat::sampleRateHz() const
 {
-	return sampleRateHz_;
+    return sampleRateHz_;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-SampleRateKHz WaveFormat::sampleRateKHz( void ) const
+SampleRateKHz WaveFormat::sampleRateKHz() const
 {
-	SampleRateKHz pSRKHz;
-	pSRKHz = (sampleRateHz_ / 1000);
-	return pSRKHz;
+    SampleRateKHz pSRKHz;
+    pSRKHz = (sampleRateHz_ / 1000);
+    return pSRKHz;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-BitsPerSample WaveFormat::bitsPerSample( void ) const
+BitsPerSample WaveFormat::bitsPerSample() const
 {
-	return bitsPerSample_;
+    return bitsPerSample_;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-int WaveFormat::nBytesPerSec( void ) const
+int WaveFormat::nBytesPerSec() const
 {
-	return channels() * sampleRateHz() * bitsPerSample() / 8;
+    return channels() * sampleRateHz() * bitsPerSample() / 8;
 }
 ////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 /*
- * R A C E . H P P 
+ * R A C E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,34 +16,30 @@
 #include "sim/process.hpp"
 #include "machphys/machphys.hpp"
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class MachActor;
 
 class MachLogRace : public SimProcess
 {
 public:
-    MachLogRace( const MachPhys::Race& race );
-    ~MachLogRace();
+    MachLogRace(const MachPhys::Race& race);
+    ~MachLogRace() override;
 
-    const MachPhys::Race& race() const
-    {
-        return race_;
-    };
+    const MachPhys::Race& race() const { return race_; };
 
-	void addActor( MachActor* );
+    void addActor(MachActor*);
 
     void CLASS_INVARIANT;
 
 private:
     // Operations deliberately revoked
-    MachLogRace( const MachLogRace& );
-    MachLogRace& operator =( const MachLogRace& );
-    bool operator ==( const MachLogRace& );
+    MachLogRace(const MachLogRace&);
+    MachLogRace& operator=(const MachLogRace&);
+    bool operator==(const MachLogRace&);
 
-    //Data members
+    // Data members
     MachPhys::Race race_;
 };
-
 
 #endif
 

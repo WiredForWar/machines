@@ -26,104 +26,101 @@ class MachPhysSparks;
 class MachPhysJetRing;
 class W4dLink;
 class W4dPointLight;
-template< class ID, class PART > class MachPhysObjectFactory;
-template< class SUBTYPE > class MachPhysSubTypeId;
+template <class ID, class PART> class MachPhysObjectFactory;
+template <class SUBTYPE> class MachPhysSubTypeId;
 
 class MachPhysConstructor : public MachPhysMachine
 {
 public:
-
     MachPhysConstructor(
         W4dEntity* pParent,
         const W4dTransform3d& localTransform,
         MachPhys::ConstructorSubType subType,
         size_t bodyLevel,
         size_t brainLevel,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-    virtual ~MachPhysConstructor();
+    ~MachPhysConstructor() override;
 
-    //Run a constructing animation, returning time it will take
+    // Run a constructing animation, returning time it will take
     PhysRelativeTime construct();
 
-    void startConstructing( const MachPhysConstruction& construction, const PhysAbsoluteTime& startTime);
+    void startConstructing(const MachPhysConstruction& construction, const PhysAbsoluteTime& startTime);
     void stopConstructing();
 
-	bool isConstructing() const;
-	void isConstructing( bool isConstructing );
+    bool isConstructing() const;
+    void isConstructing(bool isConstructing);
 
-	virtual const MachPhysMachineData& machineData() const;
+    const MachPhysMachineData& machineData() const override;
 
-	const MachPhysConstructorData& data() const;
+    const MachPhysConstructorData& data() const;
 
     MachPhys::ConstructorSubType subType() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysConstructor& t );
+    friend ostream& operator<<(ostream& o, const MachPhysConstructor& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysConstructor );
-    PER_FRIEND_READ_WRITE( MachPhysConstructor );
+    PER_MEMBER_PERSISTENT(MachPhysConstructor);
+    PER_FRIEND_READ_WRITE(MachPhysConstructor);
 
-    typedef MachPhysSubTypeId< MachPhys::ConstructorSubType >    Id;
+    using Id = MachPhysSubTypeId<MachPhys::ConstructorSubType>;
 
 private:
     // Operation deliberately revoked
-    MachPhysConstructor( const MachPhysConstructor& );
+    MachPhysConstructor(const MachPhysConstructor&);
 
     // Operation deliberately revoked
-    MachPhysConstructor& operator =( const MachPhysConstructor& );
+    MachPhysConstructor& operator=(const MachPhysConstructor&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysConstructor& );
+    bool operator==(const MachPhysConstructor&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysConstructor >    Factory;
-
+    using Factory = MachPhysObjectFactory<Id, MachPhysConstructor>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-//    friend MachPhysConstructor& Factory::part( const ID&, size_t );
-//    friend MachPhysConstructor& Factory::part( size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysConstructor >;
+    //    friend MachPhysConstructor& Factory::part( const ID&, size_t );
+    //    friend MachPhysConstructor& Factory::part( size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysConstructor>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysMachinePersistence& );
-    friend void perRead( PerIstream&, MachPhysMachinePersistence& );
+    friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
+    friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    static  MachPhysConstructor& part( MachPhys::ConstructorSubType subType, size_t bodyLevel );
-    static  Factory& factory();
+    static MachPhysConstructor& part(MachPhys::ConstructorSubType subType, size_t bodyLevel);
+    static Factory& factory();
 
     void createExplosionData();
 
-    SysPathName compositeFileName( MachPhys::ConstructorSubType subType, size_t bodyLevel ) const;
+    SysPathName compositeFileName(MachPhys::ConstructorSubType subType, size_t bodyLevel) const;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a constructor from scratch
 
-    MachPhysConstructor(
-        W4dEntity* pParent, Id id );
+    MachPhysConstructor(W4dEntity* pParent, Id id);
 
-    //Data members
+    // Data members
     MachPhys::ConstructorSubType subType_;
-	bool isConstructing_;
+    bool isConstructing_;
 
-	W4dLink* pLJet_;
-	W4dLink* pRJet_;
+    W4dLink* pLJet_;
+    W4dLink* pRJet_;
 
-	MachPhysJetRing* pLJetRing_;
-	MachPhysJetRing* pRJetRing_;
+    MachPhysJetRing* pLJetRing_;
+    MachPhysJetRing* pRJetRing_;
 
-	MachPhysSparks* pLSparks_;
-	MachPhysSparks* pRSparks_;
+    MachPhysSparks* pLSparks_;
+    MachPhysSparks* pRSparks_;
 
-	W4dPointLight* pLLight_;
-	W4dPointLight* pRLight_;
+    W4dPointLight* pLLight_;
+    W4dPointLight* pRLight_;
 
-	MachPhysLight* pLLightShadow_;
-	MachPhysLight* pRLightShadow_;
+    MachPhysLight* pLLightShadow_;
+    MachPhysLight* pRLightShadow_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysConstructor );
+PER_DECLARE_PERSISTENT(MachPhysConstructor);
 
 #endif
 

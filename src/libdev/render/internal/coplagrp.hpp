@@ -21,20 +21,20 @@ class RenIDelayedCoplanarGroup : public RenIPrioritySortedItem
 public:
     RenIDelayedCoplanarGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr&, const RenMaterial&, const glm::mat4&);
 
-	virtual ~RenIDelayedCoplanarGroup();
-	virtual void render();
+    ~RenIDelayedCoplanarGroup() override;
+    void render() override;
 
 protected:
     // Operations deliberately revoked.
-    RenIDelayedCoplanarGroup( const RenIDelayedCoplanarGroup& );
-    RenIDelayedCoplanarGroup& operator =( const RenIDelayedCoplanarGroup& );
-    bool operator ==( const RenIDelayedCoplanarGroup& );
+    RenIDelayedCoplanarGroup(const RenIDelayedCoplanarGroup&);
+    RenIDelayedCoplanarGroup& operator=(const RenIDelayedCoplanarGroup&);
+    bool operator==(const RenIDelayedCoplanarGroup&);
 
-	virtual void print(ostream&) const;
+    void print(ostream&) const override;
 
-    const RenIMaterialGroup*	group_;
-	RenI::LitVtxAPtr			vertices_;
-	const glm::mat4				xform_;
+    const RenIMaterialGroup* group_;
+    RenI::LitVtxAPtr vertices_;
+    const glm::mat4 xform_;
 };
 
 #endif

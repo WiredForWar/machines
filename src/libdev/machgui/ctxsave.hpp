@@ -1,5 +1,5 @@
 /*
- * C T X S A V E . H P P 
+ * C T X S A V E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,43 +25,42 @@ class MachGuiCtxSave : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxSave( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxSave();
+    MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxSave() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	void selectedSaveGame( MachGuiDbSavedGame* );
-	void clearSelectedSaveGame();
+    void selectedSaveGame(MachGuiDbSavedGame*);
+    void clearSelectedSaveGame();
 
-	void deleteSavedGame();
-	// PRE( pSelectedSaveGame_ );
-						   
+    void deleteSavedGame();
+    // PRE( pSelectedSaveGame_ );
+
 protected:
-	void updateSaveGameList();
+    void updateSaveGameList();
 
-	bool saveGame( const string& saveDisplayName );
+    bool saveGame(const string& saveDisplayName);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxSave& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxSave& t);
 
-    MachGuiCtxSave( const MachGuiCtxSave& );
-    MachGuiCtxSave& operator =( const MachGuiCtxSave& );
+    MachGuiCtxSave(const MachGuiCtxSave&);
+    MachGuiCtxSave& operator=(const MachGuiCtxSave&);
 
-	// Data members...
-	MachGuiAnimations animations_;
-	MachGuiSingleSelectionListBox* pSaveGameList_;
-	MachGuiEditBoxListBoxItem* pNewSaveGameName_;
-	MachGuiDbSavedGame* pSelectedSaveGame_;
-	MachGuiMenuButton* pDeleteBtn_;
-	MachGuiMenuButton* pOkBtn_;
+    // Data members...
+    MachGuiAnimations animations_;
+    MachGuiSingleSelectionListBox* pSaveGameList_;
+    MachGuiEditBoxListBoxItem* pNewSaveGameName_;
+    MachGuiDbSavedGame* pSelectedSaveGame_;
+    MachGuiMenuButton* pDeleteBtn_;
+    MachGuiMenuButton* pOkBtn_;
 };
-
 
 #endif
 

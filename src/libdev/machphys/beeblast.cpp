@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-//#include "machphys/beeblast.hpp"
+// #include "machphys/beeblast.hpp"
 #include "machphys/private/otherper.hpp"
 
 #include "stdlib/string.hpp"
@@ -23,28 +23,28 @@
 #include "world4d/gusplan.hpp"
 #include "world4d/simplsca.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysBeeBlast );
+PER_DEFINE_PERSISTENT(MachPhysBeeBlast);
 
-//public constructor
-MachPhysBeeBlast::MachPhysBeeBlast(  W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dComposite( exemplar(), pParent, localTransform )
+// public constructor
+MachPhysBeeBlast::MachPhysBeeBlast(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dComposite(exemplar(), pParent, localTransform)
 {
-	visible ( false );
+    visible(false);
 
     TEST_INVARIANT;
 }
 
-//one time constructor
+// one time constructor
 MachPhysBeeBlast::MachPhysBeeBlast()
-:   W4dComposite( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID )
+    : W4dComposite(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID)
 {
-	//Load the mesh data
-    readCompositeFile( SysPathName( "models/weapons/bee/chasm.cdf" ) );
+    // Load the mesh data
+    readCompositeFile(SysPathName("models/weapons/bee/chasm.cdf"));
 
     TEST_INVARIANT;
 }
 
-//static
+// static
 const MachPhysBeeBlast& MachPhysBeeBlast::exemplar()
 {
     return MachPhysOtherPersistence::instance().beeBlastExemplar();
@@ -53,15 +53,14 @@ const MachPhysBeeBlast& MachPhysBeeBlast::exemplar()
 MachPhysBeeBlast::~MachPhysBeeBlast()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysBeeBlast::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != NULL);
 }
 
-ostream& operator <<( ostream& o, const MachPhysBeeBlast& t )
+ostream& operator<<(ostream& o, const MachPhysBeeBlast& t)
 {
 
     o << "MachPhysBeeBlast " << (void*)&t << " start" << endl;
@@ -70,72 +69,73 @@ ostream& operator <<( ostream& o, const MachPhysBeeBlast& t )
     return o;
 }
 
-//virtual
-bool MachPhysBeeBlast::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysBeeBlast::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void MachPhysBeeBlast::startBeeBlast( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration, const MATHEX_SCALAR& startScale )
+void MachPhysBeeBlast::startBeeBlast(
+    const PhysAbsoluteTime& startTime,
+    const PhysRelativeTime& duration,
+    const MATHEX_SCALAR& startScale)
 {
-	//visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	visibilityPlanPtr->add(false, duration);
+    // visibility plan
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    visibilityPlanPtr->add(false, duration);
 
-	entityPlanForEdit().visibilityPlan( visibilityPlanPtr, startTime );
+    entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
 
-	//scale plan
+    // scale plan
     RenNonUniformScale a(startScale, startScale, startScale);
-    RenNonUniformScale b(10*startScale, 10*startScale, 4*startScale);
-    W4dScalePlanPtr scalePlanPtr( _NEW( W4dSimpleNonUniformScalePlan( a, b, duration ) ) );
+    RenNonUniformScale b(10 * startScale, 10 * startScale, 4 * startScale);
+    W4dScalePlanPtr scalePlanPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
 
-	propogateScalePlan( scalePlanPtr, startTime );
+    propogateScalePlan(scalePlanPtr, startTime);
 
-/*
-	//alpha plan
-	RenMaterialVec* pMaterialVec =_CONST_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
+    /*
+    //alpha plan
+    RenMaterialVec* pMaterialVec =_CONST_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
 
-	uint nMaterials = pMaterialVec->size();
-	ASSERT( nMaterials>0, "not enought Materials" );
+    uint nMaterials = pMaterialVec->size();
+    ASSERT( nMaterials>0, "not enought Materials" );
 
-	if( nMaterials>0 )
-	{
-		RenMaterial& mat = (*pMaterialVec)[0];
+    if( nMaterials>0 )
+    {
+        RenMaterial& mat = (*pMaterialVec)[0];
 
-		PhysLinearScalarPlan::ScalarVec times;
-			times.reserve(1);
-			times.push_back(duration);
+        PhysLinearScalarPlan::ScalarVec times;
+            times.reserve(1);
+            times.push_back(duration);
 
-		PhysLinearScalarPlan::ScalarVec scales;
-			scales.reserve(2);
-		    scales.push_back(1.0);
-		    scales.push_back(0);
+        PhysLinearScalarPlan::ScalarVec scales;
+            scales.reserve(2);
+            scales.push_back(1.0);
+            scales.push_back(0);
 
-		PhysLinearScalarPlan* pPlan = _NEW( PhysLinearScalarPlan(times, scales) );
+        PhysLinearScalarPlan* pPlan = _NEW( PhysLinearScalarPlan(times, scales) );
 
-		PhysScalarPlanPtr alphaPlanPtr = pPlan;
+        PhysScalarPlanPtr alphaPlanPtr = pPlan;
 
-	    W4dMaterialPlanPtr materialAlphaPlanPtr = _NEW( W4dSimpleAlphaPlan( mat, nMaterials, alphaPlanPtr, 1 ) );
-	    entityPlanForEdit().materialPlan( materialAlphaPlanPtr, startTime );
-	}
+        W4dMaterialPlanPtr materialAlphaPlanPtr = _NEW( W4dSimpleAlphaPlan( mat, nMaterials, alphaPlanPtr, 1 ) );
+        entityPlanForEdit().materialPlan( materialAlphaPlanPtr, startTime );
+    }
 */
 }
 
-
-MachPhysBeeBlast::MachPhysBeeBlast( PerConstructor con )
-: W4dComposite( con )
+MachPhysBeeBlast::MachPhysBeeBlast(PerConstructor con)
+    : W4dComposite(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysBeeBlast& scorch )
+void perWrite(PerOstream& ostr, const MachPhysBeeBlast& scorch)
 {
     const W4dComposite& base = scorch;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysBeeBlast& scorch )
+void perRead(PerIstream& istr, MachPhysBeeBlast& scorch)
 {
     W4dComposite& base = scorch;
 

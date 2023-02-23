@@ -1,5 +1,5 @@
 /*
- * P U L S E B L B . H P P 
+ * P U L S E B L B . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,31 +22,26 @@ class MachLogPlasmaBolt : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogPlasmaBolt(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogPlasmaBolt(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogPlasmaBolt();
+    ~MachLogPlasmaBolt() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogPlasmaBolt& t );
+    friend ostream& operator<<(ostream& o, const MachLogPlasmaBolt& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPlasmaBolt );
-	PER_FRIEND_READ_WRITE( MachLogPlasmaBolt );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPlasmaBolt);
+    PER_FRIEND_READ_WRITE(MachLogPlasmaBolt);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogPlasmaBolt( const MachLogPlasmaBolt& );
-    MachLogPlasmaBolt& operator =( const MachLogPlasmaBolt& );
-    bool operator ==( const MachLogPlasmaBolt& );
-
+    MachLogPlasmaBolt(const MachLogPlasmaBolt&);
+    MachLogPlasmaBolt& operator=(const MachLogPlasmaBolt&);
+    bool operator==(const MachLogPlasmaBolt&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogPlasmaBolt );
+PER_DECLARE_PERSISTENT(MachLogPlasmaBolt);
 
 #endif
 

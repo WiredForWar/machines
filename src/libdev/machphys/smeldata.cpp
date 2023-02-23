@@ -13,49 +13,48 @@ MachPhysSmelterData::MachPhysSmelterData()
     TEST_INVARIANT;
 }
 
-MachPhysSmelterData::MachPhysSmelterData( const MachPhysSmelterData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform ),
-  capacity_( copyMe.capacity_ ),
-  mineDistance_( copyMe.mineDistance_)
+MachPhysSmelterData::MachPhysSmelterData(const MachPhysSmelterData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
+    , capacity_(copyMe.capacity_)
+    , mineDistance_(copyMe.mineDistance_)
 {
 }
 
 MachPhysSmelterData::~MachPhysSmelterData()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::SizeUnits MachPhysSmelterData::capacity() const
 {
-	return capacity_;
+    return capacity_;
 }
 
-void MachPhysSmelterData::capacity( const MachPhys::SizeUnits& newCapacity )
+void MachPhysSmelterData::capacity(const MachPhys::SizeUnits& newCapacity)
 {
-	capacity_ = newCapacity;
+    capacity_ = newCapacity;
 }
 
 MATHEX_SCALAR MachPhysSmelterData::sqrMineDistance() const
 {
-	return mineDistance_;
+    return mineDistance_;
 }
 
-void MachPhysSmelterData::sqrMineDistance( MATHEX_SCALAR newMineDistance)
+void MachPhysSmelterData::sqrMineDistance(MATHEX_SCALAR newMineDistance)
 {
-	mineDistance_ = newMineDistance;
+    mineDistance_ = newMineDistance;
 }
 
 void MachPhysSmelterData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysSmelterData& t )
+ostream& operator<<(ostream& o, const MachPhysSmelterData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
 
     return o;
 }

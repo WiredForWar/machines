@@ -33,84 +33,85 @@
 #include "machlog/race.hpp"
 #include "machlog/races.hpp"
 
-
-MachLogBeeBombExplosion::MachLogBeeBombExplosion(	MachLogRace* pRace,
-								        const MexPoint3d& startPosition,
-										const MachPhysWeaponData& weaponData,
-								        MachActor* pOwner )
-:	MachLogExpandingBlast( pRace,
-						   pNewPhysBeeBombExplosion( startPosition, weaponData ), 		// <- note that physical BombExplosion is created here
-						   startPosition,
-						   pOwner,
-						   40,
-						   CANT_HIT_AIR_UNITS )	// errrrm?
+MachLogBeeBombExplosion::MachLogBeeBombExplosion(
+    MachLogRace* pRace,
+    const MexPoint3d& startPosition,
+    const MachPhysWeaponData& weaponData,
+    MachActor* pOwner)
+    : MachLogExpandingBlast(
+        pRace,
+        pNewPhysBeeBombExplosion(startPosition, weaponData), // <- note that physical BombExplosion is created here
+        startPosition,
+        pOwner,
+        40,
+        CANT_HIT_AIR_UNITS) // errrrm?
 {
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-	ASSERT( pPhysBeeBombExplosion_, "Unexpected NULL for pPhysBeeBombExplosion_!" );
+    ASSERT(pPhysBeeBombExplosion_, "Unexpected NULL for pPhysBeeBombExplosion_!");
 
-	PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
+    PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
- 	firstWaveStartTime_ = timeNow;
-	firstWaveFinishTime_ = timeNow + pPhysBeeBombExplosion_->startExplosion( timeNow, *MachLogPlanet::instance().surface() ) - 1.3;
+    firstWaveStartTime_ = timeNow;
+    firstWaveFinishTime_
+        = timeNow + pPhysBeeBombExplosion_->startExplosion(timeNow, *MachLogPlanet::instance().surface()) - 1.3;
 
-	destructionTime_ = firstWaveFinishTime_ + 1.0;
+    destructionTime_ = firstWaveFinishTime_ + 1.0;
 
     // Echo explosion effect across network.
-	if( MachLogNetwork::instance().isNetworkGame() )
-	{
-		MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage( startPosition,
-																						 MachPhys::BEE_BOMB );
-	}
+    if (MachLogNetwork::instance().isNetworkGame())
+    {
+        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(
+            startPosition,
+            MachPhys::BEE_BOMB);
+    }
 
-	//set up collison data and animations
+    // set up collison data and animations
 
-	//setUpBuildingCollisions( startPosition );
+    // setUpBuildingCollisions( startPosition );
 
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 PhysAbsoluteTime MachLogBeeBombExplosion::firstWaveStartTime() const
 {
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-	return firstWaveStartTime_;
+    return firstWaveStartTime_;
 }
 
-//virtual
+// virtual
 PhysAbsoluteTime MachLogBeeBombExplosion::firstWaveFinishTime() const
 {
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-	return firstWaveFinishTime_;
+    return firstWaveFinishTime_;
 }
 
-//virtual
+// virtual
 PhysAbsoluteTime MachLogBeeBombExplosion::destructionTime() const
 {
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-	return destructionTime_;
+    return destructionTime_;
 }
-
 
 MachLogBeeBombExplosion::~MachLogBeeBombExplosion()
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachLogBeeBombExplosion::CLASS_INVARIANT
 {
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogBeeBombExplosion& t )
+ostream& operator<<(ostream& o, const MachLogBeeBombExplosion& t)
 {
 
     o << "MachLogBeeBombExplosion " << (void*)&t << " start" << std::endl;
@@ -121,81 +122,84 @@ ostream& operator <<( ostream& o, const MachLogBeeBombExplosion& t )
 
 void MachLogBeeBombExplosion::doBeDestroyed()
 {
-//	MachLogLinearProjectile::genericCheckForDamage( 0.25, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::PULSE_RIFLE );
-	TEST_INVARIANT;
+    //  MachLogLinearProjectile::genericCheckForDamage( 0.25, MachLogLinearProjectile::CONSTANT_DAMAGE,
+    //  MachPhys::PULSE_RIFLE );
+    TEST_INVARIANT;
 }
 
-MachPhysBeeBombExplosion* MachLogBeeBombExplosion::pNewPhysBeeBombExplosion( const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData )
+MachPhysBeeBombExplosion*
+MachLogBeeBombExplosion::pNewPhysBeeBombExplosion(const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData)
 {
-	pImpl_ = _NEW( MachLogBeeBombExplosionImpl( &weaponData ) );
+    pImpl_ = _NEW(MachLogBeeBombExplosionImpl(&weaponData));
 
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-	// just calls into static method
-	MachPhysBeeBombExplosion* pPhysBomb = pNewPhysBeeBombExplosion( startPosition , &pPhysBeeBombExplosion_ );
+    // just calls into static method
+    MachPhysBeeBombExplosion* pPhysBomb = pNewPhysBeeBombExplosion(startPosition, &pPhysBeeBombExplosion_);
 
-	ASSERT( pPhysBeeBombExplosion_, "Unexpected NULL for pPhysBeeBombExplosion_!" );
+    ASSERT(pPhysBeeBombExplosion_, "Unexpected NULL for pPhysBeeBombExplosion_!");
 
-	return pPhysBomb;
+    return pPhysBomb;
 }
 
 // static
 MachPhysBeeBombExplosion* MachLogBeeBombExplosion::pNewPhysBeeBombExplosion(
-    const MexPoint3d& startPosition, MachPhysBeeBombExplosion** ppPhysBeeBombExplosion )
+    const MexPoint3d& startPosition,
+    MachPhysBeeBombExplosion** ppPhysBeeBombExplosion)
 {
-	HAL_STREAM("MLBeeBombExplosion::pNewPhysBeeBombExplosion\n" );
-    //get domain and transform to use
+    HAL_STREAM("MLBeeBombExplosion::pNewPhysBeeBombExplosion\n");
+    // get domain and transform to use
     MexTransform3d localTransform;
 
-    const MexRadians    zAngle = 0.0;
+    const MexRadians zAngle = 0.0;
 
-    W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(
-      startPosition, zAngle, &localTransform );
+    W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(startPosition, zAngle, &localTransform);
 
-    //Construct the physical missile
+    // Construct the physical missile
 
-    MachPhysBeeBombExplosion* pPhysBeeBombExplosion = _NEW( MachPhysBeeBombExplosion( pDomain, localTransform ) );
-	*ppPhysBeeBombExplosion = pPhysBeeBombExplosion;
+    MachPhysBeeBombExplosion* pPhysBeeBombExplosion = _NEW(MachPhysBeeBombExplosion(pDomain, localTransform));
+    *ppPhysBeeBombExplosion = pPhysBeeBombExplosion;
     return pPhysBeeBombExplosion;
 
-	//
+    //
 }
 
-//virtual
-bool MachLogBeeBombExplosion::hitVictimFirstWave( const MachActor& victim ) const
+// virtual
+bool MachLogBeeBombExplosion::hitVictimFirstWave(const MachActor& victim) const
 {
-	MATHEX_SCALAR checkRadiusSize =  MachPhysBeeBombWave::radius( SimManager::instance().currentTime() - firstWaveStartTime() );
+    MATHEX_SCALAR checkRadiusSize
+        = MachPhysBeeBombWave::radius(SimManager::instance().currentTime() - firstWaveStartTime());
 
-  	bool result = actorWithinRadius( victim, checkRadiusSize );
+    bool result = actorWithinRadius(victim, checkRadiusSize);
 
-	return result;
+    return result;
 }
 
-//virtual
-void MachLogBeeBombExplosion::inflictDamageFirstWave( MachActor* pDamagedVictim )
+// virtual
+void MachLogBeeBombExplosion::inflictDamageFirstWave(MachActor* pDamagedVictim)
 {
-	CB_MachLogBeeBombExplosion_DEPIMPL();
+    CB_MachLogBeeBombExplosion_DEPIMPL();
 
-	MachActor* pByActor = pOwner();
-	if( pOwner() and pOwner()->isDead() )
-		pByActor = NULL;
+    MachActor* pByActor = pOwner();
+    if (pOwner() and pOwner()->isDead())
+        pByActor = nullptr;
 
-	// don't want to damage this victim any more after this
-	finishedWithVictim( pDamagedVictim );
+    // don't want to damage this victim any more after this
+    finishedWithVictim(pDamagedVictim);
 
-	int damageInflicted = pWeaponData_->damagePoints();
+    int damageInflicted = pWeaponData_->damagePoints();
 
-	pDamagedVictim->beHit( damageInflicted , MachPhys::BOLTER, pByActor );	//(??)
+    pDamagedVictim->beHit(damageInflicted, MachPhys::BOLTER, pByActor); //(??)
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MATHEX_SCALAR MachLogBeeBombExplosion::potentialKillRadiusMultiplier() const
 {
-	return 1.15;
+    return 1.15;
 }
 
-//forced recompile 3/2/99 CPS
+// forced recompile 3/2/99 CPS
 
 /* End BEEBombExplosion.CPP *************************************************/

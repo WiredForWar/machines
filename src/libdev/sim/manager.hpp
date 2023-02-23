@@ -35,8 +35,8 @@ class SimManagerImpl;
 class SimProcess;
 
 class SimDiscreteEvent;
-template < class X > class CtlCountedPtr;
-typedef CtlCountedPtr<SimDiscreteEvent> SimDiscreteEventPtr;
+template <class X> class CtlCountedPtr;
+using SimDiscreteEventPtr = CtlCountedPtr<SimDiscreteEvent>;
 
 class SimManager
 {
@@ -48,13 +48,13 @@ public:
     // Current simulation time
     const PhysAbsoluteTime& currentTime() const;
 
-	// Set time zero to be now.  Should be called when all other
-	// initialisation has been done and the game is about to start.
-	void resetTime();
+    // Set time zero to be now.  Should be called when all other
+    // initialisation has been done and the game is about to start.
+    void resetTime();
 
-	//sometime in multiplayer the times can go out of sync so we give the client
-	//code the ability to reset it every so often.
-	void setSimulationTime( const PhysAbsoluteTime& );
+    // sometime in multiplayer the times can go out of sync so we give the client
+    // code the ability to reset it every so often.
+    void setSimulationTime(const PhysAbsoluteTime&);
 
     // Perform a cycle of updating the simulation and refreshing the display
     void cycle();
@@ -65,40 +65,40 @@ public:
     // Resumes simulation activities and restarts time advancing
     void resume();
 
-	bool isSuspended();
+    bool isSuspended();
 
     // Adds eventPtr to the diary
-    void add (SimDiscreteEventPtr eventPtr);
+    void add(SimDiscreteEventPtr eventPtr);
 
     // Removes the discrete event referenced by eventPtr from the diary
-    void remove (SimDiscreteEventPtr eventPtr);
+    void remove(SimDiscreteEventPtr eventPtr);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SimManager& t );
+    friend ostream& operator<<(ostream& o, const SimManager& t);
 
-	void deleteAllProcesses();
+    void deleteAllProcesses();
 
     //  Clear all events out of the diary without executing them
     void clearDiary();
 
-	void addAction( SimAction* );
-	void enableAction( const string& );
+    void addAction(SimAction*);
+    void enableAction(const string&);
 
-	SimConditionsManager& conditionsManager() const;
+    SimConditionsManager& conditionsManager() const;
 
 private:
     friend class SimProcess; // To give access to the add/remove( SimProcess* ) methods.
     friend class SimActor;
 
     // Operation deliberately revoked
-    SimManager( const SimManager& );
+    SimManager(const SimManager&);
 
     // Operation deliberately revoked
-    SimManager& operator =( const SimManager& );
+    SimManager& operator=(const SimManager&);
 
     // Operation deliberately revoked
-    bool operator ==( const SimManager& );
+    bool operator==(const SimManager&);
 
     // We only want a single instance
     SimManager();
@@ -110,37 +110,34 @@ private:
     void executeDiscreteEvents();
 
     // Add pProcess to collection
-    void add( SimProcess* pProcess );
+    void add(SimProcess* pProcess);
 
     // Remove pProcess from collection
-    void remove( SimProcess* pProcess );
+    void remove(SimProcess* pProcess);
 
     //  Add an actor that will be updated every cycle without fail
-    void addUpdateEveryCycle( SimActor* pActor );
+    void addUpdateEveryCycle(SimActor* pActor);
 
     //  Remove an actor that was be updated every cycle without fail
-    void removeUpdateEveryCycle( SimActor* pActor );
+    void removeUpdateEveryCycle(SimActor* pActor);
 
     //  Update all of the processes we know about
-    void updateProcesses( PhysRelativeTime maxCPUTime );
+    void updateProcesses(PhysRelativeTime maxCPUTime);
 
     //  Pass to sort to get processes into order of increasing time taken.
-    static bool sortProcessByTime(
-      const SimProcess* pLeftProcess,
-      const SimProcess* pRightProcess );
+    static bool sortProcessByTime(const SimProcess* pLeftProcess, const SimProcess* pRightProcess);
 
-	//if a sim process changes its priority then we need to change the ratios that we work with.
-	void recomputePriorities();
+    // if a sim process changes its priority then we need to change the ratios that we work with.
+    void recomputePriorities();
 
-    //Add pActor to the list of actors to be deleted
-    void addDeadActor( SimActor* pActor );
+    // Add pActor to the list of actors to be deleted
+    void addDeadActor(SimActor* pActor);
 
-    //Delete all the dead actors
+    // Delete all the dead actors
     void deleteDeadActors();
 
-	SimManagerImpl* pImpl_;
+    SimManagerImpl* pImpl_;
 };
-
 
 #endif
 

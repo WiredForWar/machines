@@ -17,7 +17,7 @@ class AfxConfigurationLoader : public IAfxConfigurationLoader
 {
 public:
     AfxConfigurationLoader();
-    virtual ~AfxConfigurationLoader();
+    ~AfxConfigurationLoader() override;
 
-    virtual AfxConfigurationData* load() override;
+    AfxConfigurationData* load() override;
 };

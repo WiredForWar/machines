@@ -13,9 +13,7 @@
 #include "world4d/entyplan.hpp"
 #include "world4d/soundman.hpp"
 
-
-PER_DEFINE_PERSISTENT( MachPhysFireball );
-
+PER_DEFINE_PERSISTENT(MachPhysFireball);
 
 /////////////////////////////////////////////////////////////
 
@@ -26,22 +24,22 @@ MachPhysFireball::MachPhysFireball(
     MATHEX_SCALAR size,
     MATHEX_SCALAR dOffset,
     const PhysAbsoluteTime& startTime,
-    const PhysRelativeTime& duration )
-: W4dSprite3d( pParent, localTransform, size, size, MachPhysFireballImpl::initialMaterial( fireballType ) )
+    const PhysRelativeTime& duration)
+    : W4dSprite3d(pParent, localTransform, size, size, MachPhysFireballImpl::initialMaterial(fireballType))
 {
-	// The current model is all emissive or black.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive or black.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-	pImpl_ = _NEW(MachPhysFireballImpl( fireballType, size, duration ));
+    pImpl_ = _NEW(MachPhysFireballImpl(fireballType, size, duration));
 
     //  Move the fireball forward so that it is in front of the object that is exploding
-    depthOffset( dOffset );
+    depthOffset(dOffset);
 
     //  Make sure the fireball is only visibile while it is exploding
-    visible( false );
+    visible(false);
 
-    startFireball( startTime );
+    startFireball(startTime);
 }
 
 MachPhysFireball::MachPhysFireball(
@@ -50,26 +48,26 @@ MachPhysFireball::MachPhysFireball(
     MachPhysFireballType fireballType,
     MATHEX_SCALAR size,
     MATHEX_SCALAR dOffset,
-    const PhysRelativeTime& duration )
-: W4dSprite3d( pParent, localTransform, size, size, MachPhysFireballImpl::initialMaterial( fireballType ) )
+    const PhysRelativeTime& duration)
+    : W4dSprite3d(pParent, localTransform, size, size, MachPhysFireballImpl::initialMaterial(fireballType))
 {
-	// The current model is all emissive or black.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive or black.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-	pImpl_ = _NEW(MachPhysFireballImpl( fireballType, size, duration ));
+    pImpl_ = _NEW(MachPhysFireballImpl(fireballType, size, duration));
 
     //  Move the fireball forward so that it is in front of the object that is exploding
-    depthOffset( dOffset );
+    depthOffset(dOffset);
 
     //  Make sure the fireball is only visibile while it is exploding
-    visible( false );
+    visible(false);
 }
 
-MachPhysFireball::MachPhysFireball( PerConstructor con )
-: W4dSprite3d( con )
+MachPhysFireball::MachPhysFireball(PerConstructor con)
+    : W4dSprite3d(con)
 {
-	pImpl_ = _NEW(MachPhysFireballImpl());
+    pImpl_ = _NEW(MachPhysFireballImpl());
 }
 
 MachPhysFireball::~MachPhysFireball()
@@ -77,38 +75,38 @@ MachPhysFireball::~MachPhysFireball()
     TEST_INVARIANT;
 
     //  Stop any explosion sound associated with this fireball
-    W4dSoundManager::instance().stop( this );
+    W4dSoundManager::instance().stop(this);
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
-void MachPhysFireball::startFireball( const PhysRelativeTime& startTime )
+void MachPhysFireball::startFireball(const PhysRelativeTime& startTime)
 {
-	CB_DEPIMPL(MachPhysFireballType, fireballType_);
-	CB_DEPIMPL(MATHEX_SCALAR, size_);
+    CB_DEPIMPL(MachPhysFireballType, fireballType_);
+    CB_DEPIMPL(MATHEX_SCALAR, size_);
 
-    //Get the entity plan for this entity
+    // Get the entity plan for this entity
     W4dEntityPlan& entityPlan = entityPlanForEdit();
 
-    //Add the material plan
-    const W4dMaterialPlanPtr& matPlanPtr = MachPhysFireballImpl::materialPlanPtr( fireballType_ );
-    entityPlan.materialPlan( matPlanPtr, startTime );
+    // Add the material plan
+    const W4dMaterialPlanPtr& matPlanPtr = MachPhysFireballImpl::materialPlanPtr(fireballType_);
+    entityPlan.materialPlan(matPlanPtr, startTime);
 
-    //Add the visibility plan
-    entityPlan.visibilityPlan( MachPhysFireballImpl::visibilityPlanPtr( fireballType_ ), startTime );
+    // Add the visibility plan
+    entityPlan.visibilityPlan(MachPhysFireballImpl::visibilityPlanPtr(fireballType_), startTime);
 
-//    //get the number of frames
-//    uint nFrames = MachPhysFireballImpl::materials( fireballType_ ).size();
+    //    //get the number of frames
+    //    uint nFrames = MachPhysFireballImpl::materials( fireballType_ ).size();
 }
 
 // static
 MachPhysFireballType MachPhysFireball::randomFireball()
 {
-    MachPhysFireballType    result = FIREBALL_1;
+    MachPhysFireballType result = FIREBALL_1;
 
-    size_t fireball = MachPhysRandom::randomInt( N_FIREBALLS );
+    size_t fireball = MachPhysRandom::randomInt(N_FIREBALLS);
 
-    switch( fireball )
+    switch (fireball)
     {
         case 0:
             result = FIREBALL_1;
@@ -127,7 +125,7 @@ MachPhysFireballType MachPhysFireball::randomFireball()
             break;
 
         default:
-            ASSERT_BAD_CASE_INFO( fireball );
+            ASSERT_BAD_CASE_INFO(fireball);
             break;
     }
 
@@ -138,21 +136,20 @@ MachPhysFireballType MachPhysFireball::randomFireball()
 void MachPhysFireball::preload()
 {
     MachPhysFireballImpl::materialPlanPtr1();
-    //materialPlanPtr2();
-    //materialPlanPtr3();
-    //materialPlanPtr4();
+    // materialPlanPtr2();
+    // materialPlanPtr3();
+    // materialPlanPtr4();
 }
 
 // static
 void MachPhysFireball::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
+// static
 
-//static
-
-void perWrite( PerOstream& ostr, const MachPhysFireball& fireball )
+void perWrite(PerOstream& ostr, const MachPhysFireball& fireball)
 {
     const W4dSprite3d& base = fireball;
 
@@ -162,7 +159,7 @@ void perWrite( PerOstream& ostr, const MachPhysFireball& fireball )
     ostr << fireball.pImpl_->fireballType_;
 }
 
-void perRead( PerIstream& istr, MachPhysFireball& fireball )
+void perRead(PerIstream& istr, MachPhysFireball& fireball)
 {
     W4dSprite3d& base = fireball;
 

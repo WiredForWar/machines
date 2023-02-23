@@ -1,5 +1,5 @@
 /*
- * C T X D E B R F . H P P 
+ * C T X D E B R F . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,37 +23,36 @@ class MachGuiCtxDeBriefing : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxDeBriefing( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxDeBriefing();
+    MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxDeBriefing() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
 protected:
-	void playDeBriefingVoicemail();
-	void stopPlayingDeBriefingVoicemail();
+    void playDeBriefingVoicemail();
+    void stopPlayingDeBriefingVoicemail();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxDeBriefing& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxDeBriefing& t);
 
-    MachGuiCtxDeBriefing( const MachGuiCtxDeBriefing& );
-    MachGuiCtxDeBriefing& operator =( const MachGuiCtxDeBriefing& );
+    MachGuiCtxDeBriefing(const MachGuiCtxDeBriefing&);
+    MachGuiCtxDeBriefing& operator=(const MachGuiCtxDeBriefing&);
 
-	void displayDeBriefImage();
+    void displayDeBriefImage();
 
-	// Data members...
-	MachGuiAnimations animations_;
-	GuiImage* pDebriefImage_;
-	SndSampleHandle debriefVoicemail_;
-	//Has this mail been played yet
-	bool playedMail_;
+    // Data members...
+    MachGuiAnimations animations_;
+    GuiImage* pDebriefImage_;
+    SndSampleHandle debriefVoicemail_;
+    // Has this mail been played yet
+    bool playedMail_;
 };
-
 
 #endif
 

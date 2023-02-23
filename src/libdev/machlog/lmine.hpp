@@ -1,5 +1,5 @@
 /*
- * L M I N E . H P P 
+ * L M I N E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,69 +16,73 @@
 
 #include "machlog/actor.hpp"
 
-//forward refs
+// forward refs
 class MachLogRace;
 class MexPoint3d;
 class MachPhysLandMine;
 
-//orthodox canonical( revoked )
+// orthodox canonical( revoked )
 class MachLogLandMine : public MachActor
 {
 public:
-    //ctor
-    MachLogLandMine( MachLogRace* pRace, const MexPoint3d& location );
+    // ctor
+    MachLogLandMine(MachLogRace* pRace, const MexPoint3d& location);
 
-    MachLogLandMine( MachLogRace* pRace, const MexPoint3d& location, UtlId );
+    MachLogLandMine(MachLogRace* pRace, const MexPoint3d& location, UtlId);
 
-    //dtor.
-    virtual ~MachLogLandMine();
+    // dtor.
+    ~MachLogLandMine() override;
 
-	//view of MachPhysObject data
-	virtual const MachPhysObjectData& objectData() const;
+    // view of MachPhysObject data
+    const MachPhysObjectData& objectData() const override;
 
-    virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume );
+    PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 
     void CLASS_INVARIANT;
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	// inherited from MachLogCanBeDestroyed
-	virtual PhysRelativeTime beDestroyed();
+    // inherited from MachLogCanBeDestroyed
+    PhysRelativeTime beDestroyed() override;
 
-	//Amount of damage is passed in beHit()
-	virtual void beHit( const int&, MachPhys::WeaponType byType = MachPhys::N_WEAPON_TYPES);
-	
-	virtual void beHitWithoutAnimation( int damage, PhysRelativeTime physicalTimeDelay, MachActor* pByActor, MachActor::EchoBeHit echo );
+    // Amount of damage is passed in beHit()
+    virtual void beHit(const int&, MachPhys::WeaponType byType = MachPhys::N_WEAPON_TYPES);
 
-	int damage() const;	
-	///////////////////////////////
+    void beHitWithoutAnimation(
+        int damage,
+        PhysRelativeTime physicalTimeDelay,
+        MachActor* pByActor,
+        MachActor::EchoBeHit echo) override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLandMine );
-	PER_FRIEND_READ_WRITE( MachLogLandMine );
+    int damage() const;
+    ///////////////////////////////
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLandMine);
+    PER_FRIEND_READ_WRITE(MachLogLandMine);
 
 protected:
-	virtual void doStartExplodingAnimation();
-	virtual void doEndExplodingAnimation();
+    void doStartExplodingAnimation() override;
+    void doEndExplodingAnimation() override;
 
 private:
-    //Subclass must override to modify the display.
-    //Called on change of state.
-    virtual void doVisualiseSelectionState();
+    // Subclass must override to modify the display.
+    // Called on change of state.
+    void doVisualiseSelectionState() override;
     // Operations deliberately revoked
-    MachLogLandMine( const MachLogLandMine& );
-    MachLogLandMine& operator =( const MachLogLandMine& );
-    bool operator ==( const MachLogLandMine& );
+    MachLogLandMine(const MachLogLandMine&);
+    MachLogLandMine& operator=(const MachLogLandMine&);
+    bool operator==(const MachLogLandMine&);
 
-	bool thisIsClosestLandmineTo( const MexPoint2d& targetPosition ) const;
-	
-    //Construct a physical holograph at required location and in correct domain
-    static MachPhysLandMine* pNewLandMine( MachLogRace* pRace, const MexPoint3d& location );
-    //data members
-	MachPhysLandMine*		pPhysLandMine_;
-	int						damage_;
+    bool thisIsClosestLandmineTo(const MexPoint2d& targetPosition) const;
+
+    // Construct a physical holograph at required location and in correct domain
+    static MachPhysLandMine* pNewLandMine(MachLogRace* pRace, const MexPoint3d& location);
+    // data members
+    MachPhysLandMine* pPhysLandMine_;
+    int damage_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogLandMine );
+PER_DECLARE_PERSISTENT(MachLogLandMine);
 
 #endif
 

@@ -13,44 +13,42 @@
 
 #include "ctl/vector.hpp"
 
-//static
-ctl_vector< double > MachPhysDataStream::data( const SysPathName& fileName)
+// static
+ctl_vector<double> MachPhysDataStream::data(const SysPathName& fileName)
 {
 
-	ctl_vector< MATHEX_SCALAR > theData;
-	theData.reserve( 450 );
+    ctl_vector<MATHEX_SCALAR> theData;
+    theData.reserve(450);
 
-    ASSERT_INFO( fileName.pathname() );
-    ASSERT( fileName.existsAsFile(), " named file does not exist" );
+    ASSERT_INFO(fileName.pathname());
+    ASSERT(fileName.existsAsFile(), " named file does not exist");
 
-    UtlLineTokeniser   parser( fileName );
+    UtlLineTokeniser parser(fileName);
 
-    ASSERT( not parser.finished(), "named file empty" );
+    ASSERT(not parser.finished(), "named file empty");
 
-
-    while( not parser.finished() )
+    while (not parser.finished())
     {
 
-	    theData.push_back( atof( parser.tokens()[ 0 ].c_str() ) );
+        theData.push_back(atof(parser.tokens()[0].c_str()));
 
-	    parser.parseNextLine();
-	}
+        parser.parseNextLine();
+    }
 
-	return theData;
+    return theData;
 }
 
 MachPhysDataStream::~MachPhysDataStream()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysDataStream::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysDataStream& t )
+ostream& operator<<(ostream& o, const MachPhysDataStream& t)
 {
 
     o << "MachPhysDataStream " << (void*)&t << " start" << std::endl;

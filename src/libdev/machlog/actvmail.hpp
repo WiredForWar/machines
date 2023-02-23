@@ -1,5 +1,5 @@
 /*
- * A C T R E I N F . H P P 
+ * A C T R E I N F . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,32 +24,30 @@ class MachLogVoiceMailAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogVoiceMailAction();
-	static MachLogVoiceMailAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
+    ~MachLogVoiceMailAction() override;
+    static MachLogVoiceMailAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogVoiceMailAction );
-	PER_FRIEND_READ_WRITE( MachLogVoiceMailAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogVoiceMailAction);
+    PER_FRIEND_READ_WRITE(MachLogVoiceMailAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogVoiceMailAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogVoiceMailAction& t);
 
-    MachLogVoiceMailAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogVoiceMailAction& t );
+    MachLogVoiceMailAction(const MachLogVoiceMailAction&);
+    MachLogVoiceMailAction& operator=(const MachLogVoiceMailAction&);
 
-    MachLogVoiceMailAction( const MachLogVoiceMailAction& );
-    MachLogVoiceMailAction& operator =( const MachLogVoiceMailAction& );
-
-	VoiceMailID				mailID_;
-	MachPhys::Race			race_;
+    VoiceMailID mailID_;
+    MachPhys::Race race_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogVoiceMailAction );
+PER_DECLARE_PERSISTENT(MachLogVoiceMailAction);
 
 #endif
 

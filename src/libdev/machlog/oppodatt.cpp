@@ -37,199 +37,195 @@
 #include "machlog/vmman.hpp"
 #include "machlog/weapon.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogPodAttackOperation );
-PER_DEFINE_PERSISTENT( MachLogPodAttackAnimation );
+PER_DEFINE_PERSISTENT(MachLogPodAttackOperation);
+PER_DEFINE_PERSISTENT(MachLogPodAttackAnimation);
 
 /* //////////////////////////////////////////////////////////////// */
-MachLogPodAttackOperation::MachLogPodAttackOperation( MachLogPod * pActor, const MexPoint3d& targetPosition )
-:	MachLogOperation( "POD_ATTACK_OPERATION", MachLogOperation::POD_ATTACK_OPERATION ),
-	pActor_( pActor ),
-  	targetPosition_( targetPosition )
+MachLogPodAttackOperation::MachLogPodAttackOperation(MachLogPod* pActor, const MexPoint3d& targetPosition)
+    : MachLogOperation("POD_ATTACK_OPERATION", MachLogOperation::POD_ATTACK_OPERATION)
+    , pActor_(pActor)
+    , targetPosition_(targetPosition)
 {
-	ASSERT( pActor_->objectIsCanAttack() ,"Object passed to Attack operation is not a CanAttack\n" );
-	dealWithVoiceMails();
+    ASSERT(pActor_->objectIsCanAttack(), "Object passed to Attack operation is not a CanAttack\n");
+    dealWithVoiceMails();
 }
 
-MachLogPodAttackOperation::MachLogPodAttackOperation( MachLogPod * pActor, MachActor * pDirectObject )
-:	MachLogOperation( "POD_ATTACK_OPERATION", MachLogOperation::POD_ATTACK_OPERATION ),
-	pActor_( pActor ),
-  	targetPosition_( pDirectObject->position() )
+MachLogPodAttackOperation::MachLogPodAttackOperation(MachLogPod* pActor, MachActor* pDirectObject)
+    : MachLogOperation("POD_ATTACK_OPERATION", MachLogOperation::POD_ATTACK_OPERATION)
+    , pActor_(pActor)
+    , targetPosition_(pDirectObject->position())
 {
-	ASSERT( pActor_->objectIsCanAttack() ,"Object passed to Attack operation is not a CanAttack\n" );
-	dealWithVoiceMails();
+    ASSERT(pActor_->objectIsCanAttack(), "Object passed to Attack operation is not a CanAttack\n");
+    dealWithVoiceMails();
 }
 
 MachLogPodAttackOperation::~MachLogPodAttackOperation()
 {
-	// deliberately left blank
+    // deliberately left blank
 }
 
 void MachLogPodAttackOperation::dealWithVoiceMails()
 {
-	// now for the voicemail alerts - on this node if this is an AI race
-	// send voicemail if it wasn't me initiating this launch and I have the capability to detect it
+    // now for the voicemail alerts - on this node if this is an AI race
+    // send voicemail if it wasn't me initiating this launch and I have the capability to detect it
 
-	if( MachLogRaces::instance().pcController().race() != pActor_->race() )
-	{
- 		MachLogVoiceMailManager::instance().postNewMail( VID_POD_ENEMY_ION_CANNON, MachLogRaces::instance().pcController().race() );
-	}
+    if (MachLogRaces::instance().pcController().race() != pActor_->race())
+    {
+        MachLogVoiceMailManager::instance().postNewMail(
+            VID_POD_ENEMY_ION_CANNON,
+            MachLogRaces::instance().pcController().race());
+    }
 
-
-	// ........and whizz the warning round the network if it's a network game.
-	if( MachLogNetwork::instance().isNetworkGame() )
-			MachLogNetwork::instance().messageBroker().sendWeaponInformationMessage( MachLogMessageBroker::ION_CANNON_FIRED, pActor_->race() );
-
+    // ........and whizz the warning round the network if it's a network game.
+    if (MachLogNetwork::instance().isNetworkGame())
+        MachLogNetwork::instance().messageBroker().sendWeaponInformationMessage(
+            MachLogMessageBroker::ION_CANNON_FIRED,
+            pActor_->race());
 }
 
-void MachLogPodAttackOperation::doOutputOperator( ostream& o ) const
+void MachLogPodAttackOperation::doOutputOperator(ostream& o) const
 {
-	o << "MachLogPodAttackOperation\n";
+    o << "MachLogPodAttackOperation\n";
 }
 
 ///////////////////////////////////
 
 bool MachLogPodAttackOperation::doStart()
 {
-	return true;
+    return true;
 }
 
-MexRadians
-angleToTurnToFace( const MachLogPod& actor, const MexPoint3d& pos );
+MexRadians angleToTurnToFace(const MachLogPod& actor, const MexPoint3d& pos);
 
 /* //////////////////////////////////////////////////////////////// */
 
 PhysRelativeTime MachLogPodAttackOperation::doUpdate()
 {
-	PRE( not isFinished() );
-	PRE( pActor_ != NULL );
-	if( pSubOperation() )
-	{
-		return 0.5;
-	}
+    PRE(not isFinished());
+    PRE(pActor_ != nullptr);
+    if (pSubOperation())
+    {
+        return 0.5;
+    }
 
-	PhysRelativeTime interval = 0.1;
+    PhysRelativeTime interval = 0.1;
 
-	/*
-	//The owning aggressor is busy shooting something else right now.
-	if( pActor_->hasCurrentTarget() and &pActor_->currentTarget() != &directObject() )
-	{
-		return 0.5;
-	}
-	*/
+    /*
+    //The owning aggressor is busy shooting something else right now.
+    if( pActor_->hasCurrentTarget() and &pActor_->currentTarget() != &directObject() )
+    {
+        return 0.5;
+    }
+    */
 
-	subOperation( pActor_, _NEW( MachLogPodAttackAnimation( pActor_, targetPosition_ ) ) );
+    subOperation(pActor_, _NEW(MachLogPodAttackAnimation(pActor_, targetPosition_)));
 
-
-   	return interval;
+    return interval;
 }
 
 void MachLogPodAttackOperation::doFinish()
 {
-
 }
 
 bool MachLogPodAttackOperation::doIsFinished() const
 {
-	bool result = not _CONST_CAST( const MachLogPod&, *pActor_ ).weapons().front()->recharged();
+    bool result = not _CONST_CAST(const MachLogPod&, *pActor_).weapons().front()->recharged();
 
-	return result;
+    return result;
 }
 
 bool MachLogPodAttackOperation::doBeInterrupted()
 {
-	return true;
+    return true;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
-MachLogPodAttackAnimation::MachLogPodAttackAnimation( MachLogPod * pActor, const MexPoint3d& targetPosition )
-: pActor_( pActor ),
-  targetPosition_( targetPosition )
+MachLogPodAttackAnimation::MachLogPodAttackAnimation(MachLogPod* pActor, const MexPoint3d& targetPosition)
+    : pActor_(pActor)
+    , targetPosition_(targetPosition)
 {
-   // deliberately left blank
+    // deliberately left blank
 }
 
-void MachLogPodAttackAnimation::doOutputOperator( ostream& o ) const
+void MachLogPodAttackAnimation::doOutputOperator(ostream& o) const
 {
-	o << "MachLogPodAttackAnimation ";
+    o << "MachLogPodAttackAnimation ";
 }
 
 MachLogPodAttackAnimation::~MachLogPodAttackAnimation()
 {
-	// deliberately left blank
+    // deliberately left blank
 }
 
 ///////////////////////////////
 
 PhysRelativeTime MachLogPodAttackAnimation::doStartAnimation()
 {
-	return pActor_->attack( targetPosition_ );
+    return pActor_->attack(targetPosition_);
 }
 
-MexRadians
-angleToTurnToFace( const MachLogPod& actor, const MexPoint3d& pos )
+MexRadians angleToTurnToFace(const MachLogPod& actor, const MexPoint3d& pos)
 {
-	MexPoint2d actorPos( actor.position() );
+    MexPoint2d actorPos(actor.position());
 
-	MexVec2 bearingToTarget( pos.x() - actorPos.x(), pos.y() - actorPos.y() );
+    MexVec2 bearingToTarget(pos.x() - actorPos.x(), pos.y() - actorPos.y());
 
-	MexVec3 xBasis3;
-	actor.pPhysPod()->globalTransform().xBasis( &xBasis3 );
+    MexVec3 xBasis3;
+    actor.pPhysPod()->globalTransform().xBasis(&xBasis3);
 
-	MexVec2 xBasis2( xBasis3 );
-	return xBasis2.angleBetween( bearingToTarget );
+    MexVec2 xBasis2(xBasis3);
+    return xBasis2.angleBetween(bearingToTarget);
 }
-
 
 /////////////////////////////////////////////////// persistence /////////////////////////////////////////////////////
 
-void perWrite( PerOstream& ostr, const MachLogPodAttackOperation& op )
+void perWrite(PerOstream& ostr, const MachLogPodAttackOperation& op)
 {
-	const MachLogOperation& base1 = op;
+    const MachLogOperation& base1 = op;
 
-	ostr << base1;
-	ostr << op.pActor_;
-	ostr << op.targetPosition_;
+    ostr << base1;
+    ostr << op.pActor_;
+    ostr << op.targetPosition_;
     ostr << op.lastTargetPosition_;
 }
 
-void perRead( PerIstream& istr, MachLogPodAttackOperation& op )
+void perRead(PerIstream& istr, MachLogPodAttackOperation& op)
 {
-	MachLogOperation& base1 = op;
+    MachLogOperation& base1 = op;
 
-	istr >> base1;
-	istr >> op.pActor_;
-	istr >> op.targetPosition_;
+    istr >> base1;
+    istr >> op.pActor_;
+    istr >> op.targetPosition_;
     istr >> op.lastTargetPosition_;
 }
 
-MachLogPodAttackOperation::MachLogPodAttackOperation( PerConstructor con )
-:	MachLogOperation( con )
+MachLogPodAttackOperation::MachLogPodAttackOperation(PerConstructor con)
+    : MachLogOperation(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachLogPodAttackAnimation& op )
+void perWrite(PerOstream& ostr, const MachLogPodAttackAnimation& op)
 {
-	const MachLogAnimation& base1 = op;
+    const MachLogAnimation& base1 = op;
 
-	ostr << base1;
-	ostr << op.pActor_;
-	ostr << op.targetPosition_;
+    ostr << base1;
+    ostr << op.pActor_;
+    ostr << op.targetPosition_;
 }
 
-void perRead( PerIstream& istr, MachLogPodAttackAnimation& op )
+void perRead(PerIstream& istr, MachLogPodAttackAnimation& op)
 {
-	MachLogAnimation& base1 = op;
+    MachLogAnimation& base1 = op;
 
-	istr >> base1;
-	istr >> op.pActor_;
-	istr >> op.targetPosition_;
+    istr >> base1;
+    istr >> op.pActor_;
+    istr >> op.targetPosition_;
 }
 
-MachLogPodAttackAnimation::MachLogPodAttackAnimation( PerConstructor con )
-:	MachLogAnimation( con )
+MachLogPodAttackAnimation::MachLogPodAttackAnimation(PerConstructor con)
+    : MachLogAnimation(con)
 {
 }
-
 
 /* End OPPODATT.CPP *************************************************/

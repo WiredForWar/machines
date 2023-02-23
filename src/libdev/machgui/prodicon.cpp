@@ -21,83 +21,80 @@
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-unsigned char pPromptTextKey2[] = { 93, 244, 129, 78, 248, 239, 130, 241, 168, 152, 208, 119, 72, 187, 30, 27, 91, 132, 255, 200, 153, 110, 184, 59, 72, 107, 245, 26, 174, 235, 191, 198, 88, 166, 198, 61, 232, 209, 99, 246, 76, 244, 65, 133, 94, 99, 66, 104, 241, 252, 9, 233, 7 };
+unsigned char pPromptTextKey2[]
+    = { 93,  244, 129, 78,  248, 239, 130, 241, 168, 152, 208, 119, 72,  187, 30, 27,  91,  132,
+        255, 200, 153, 110, 184, 59,  72,  107, 245, 26,  174, 235, 191, 198, 88, 166, 198, 61,
+        232, 209, 99,  246, 76,  244, 65,  133, 94,  99,  66,  104, 241, 252, 9,  233, 7 };
 
 //////
 // ***************************************** Code for MachGuiNewProductionIcon *************************************
 //////
 
-
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachGuiNewProductionIcon::MachGuiNewProductionIcon( GuiDisplayable *pParent,
-													const Gui::Coord& rel,
-													const GuiBitmap& bitmap,
-													int index )
-: GuiButtonWithFilledBorder(	pParent,
-								MachGuiNewProductionIcon::exteriorRelativeBoundary( bitmap, GuiBorderMetrics( 1, 1, 1 ), rel ),
-								GuiBorderMetrics( 1, 1, 1 ),
-								GuiFilledBorderColours( Gui::BLACK(),
-														MachGui::OFFWHITE(),
-														MachGui::ALMOSTBLACK(),
-														Gui::RED() ),
-								Gui::Coord( 1, 1 ) ),
-  bitmap_( bitmap ),
-  index_( index )
+MachGuiNewProductionIcon::MachGuiNewProductionIcon(
+    GuiDisplayable* pParent,
+    const Gui::Coord& rel,
+    const GuiBitmap& bitmap,
+    int index)
+    : GuiButtonWithFilledBorder(
+        pParent,
+        MachGuiNewProductionIcon::exteriorRelativeBoundary(bitmap, GuiBorderMetrics(1, 1, 1), rel),
+        GuiBorderMetrics(1, 1, 1),
+        GuiFilledBorderColours(Gui::BLACK(), MachGui::OFFWHITE(), MachGui::ALMOSTBLACK(), Gui::RED()),
+        Gui::Coord(1, 1))
+    , bitmap_(bitmap)
+    , index_(index)
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachGuiNewProductionIcon::~MachGuiNewProductionIcon()
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachGuiNewProductionIcon::doDisplayInteriorEnabled( const Gui::Coord& abs )
+void MachGuiNewProductionIcon::doDisplayInteriorEnabled(const Gui::Coord& abs)
 {
-	static GuiBitmap numbers[10] = { Gui::bitmap( SysPathName( "gui/misc/numsqd0.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd1.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd2.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd3.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd4.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd5.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd6.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd7.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd8.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/misc/numsqd9.bmp" ) ) };
+    static GuiBitmap numbers[10]
+        = { Gui::bitmap(SysPathName("gui/misc/numsqd0.bmp")), Gui::bitmap(SysPathName("gui/misc/numsqd1.bmp")),
+            Gui::bitmap(SysPathName("gui/misc/numsqd2.bmp")), Gui::bitmap(SysPathName("gui/misc/numsqd3.bmp")),
+            Gui::bitmap(SysPathName("gui/misc/numsqd4.bmp")), Gui::bitmap(SysPathName("gui/misc/numsqd5.bmp")),
+            Gui::bitmap(SysPathName("gui/misc/numsqd6.bmp")), Gui::bitmap(SysPathName("gui/misc/numsqd7.bmp")),
+            Gui::bitmap(SysPathName("gui/misc/numsqd8.bmp")), Gui::bitmap(SysPathName("gui/misc/numsqd9.bmp")) };
 
-	Gui::Coord absCopy( abs );
-	absCopy.y( absCopy.y() + MachGuiBuildProgressBar::height() );
+    Gui::Coord absCopy(abs);
+    absCopy.y(absCopy.y() + MachGuiBuildProgressBar::height());
 
-	GuiPainter::instance().blit( bitmap_, absCopy );
+    GuiPainter::instance().blit(bitmap_, absCopy);
 
-	absCopy.x( absCopy.x() + bitmap_.width() );
+    absCopy.x(absCopy.x() + bitmap_.width());
 
-	// Display number to indicate position in production queue
-	MachGui::drawNumber( numbers, index_, &absCopy );
+    // Display number to indicate position in production queue
+    MachGui::drawNumber(numbers, index_, &absCopy);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-Gui::Box MachGuiNewProductionIcon::exteriorRelativeBoundary( const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel )
+Gui::Box MachGuiNewProductionIcon::exteriorRelativeBoundary(
+    const GuiBitmap& bitmap,
+    const GuiBorderMetrics& m,
+    const Gui::Coord& rel)
 {
-	return Gui::Box( rel, m.totalHorizontalThickness() + bitmap.width(),
-						m.totalVerticalThickness() + bitmap.height() + MachGuiBuildProgressBar::height() );
+    return Gui::Box(
+        rel,
+        m.totalHorizontalThickness() + bitmap.width(),
+        m.totalVerticalThickness() + bitmap.height() + MachGuiBuildProgressBar::height());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
 
 //////
 // ******************************************* Code for MachProductionIcon *************************************
@@ -109,18 +106,20 @@ Gui::Box MachGuiNewProductionIcon::exteriorRelativeBoundary( const GuiBitmap& bi
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachProductionIcon::MachProductionIcon(	GuiDisplayable* pParent,
-										MachInGameScreen* pInGameScreen,
-                                       const MachLogProductionUnit* pProductionUnit,
-                                       int index)
+MachProductionIcon::MachProductionIcon(
+    GuiDisplayable* pParent,
+    MachInGameScreen* pInGameScreen,
+    const MachLogProductionUnit* pProductionUnit,
+    int index)
     : MachGuiNewProductionIcon(
         pParent,
-        Gui::Coord(0, 0), //Will be relocated by icon sequence parent
-        Gui::bitmap(SysPathName(MachActorBitmaps::name(pProductionUnit->type(),
-                                                       pProductionUnit->subType(),
-                                                       pProductionUnit->hwLevel(),
-                                                       pProductionUnit->weaponCombo(),
-                                                       MachLogRaces::instance().pcController().race()))),
+        Gui::Coord(0, 0), // Will be relocated by icon sequence parent
+        Gui::bitmap(SysPathName(MachActorBitmaps::name(
+            pProductionUnit->type(),
+            pProductionUnit->subType(),
+            pProductionUnit->hwLevel(),
+            pProductionUnit->weaponCombo(),
+            MachLogRaces::instance().pcController().race()))),
         index)
     , pInGameScreen_(pInGameScreen)
     , subType_(pProductionUnit->subType())
@@ -133,21 +132,18 @@ MachProductionIcon::MachProductionIcon(	GuiDisplayable* pParent,
 
     TEST_INVARIANT;
 
-	pProgressBar_ = _NEW( MachGuiBuildProgressBar(	this,
-													Gui::Coord( 2, 2 ),
-													width() - 4 ) );
+    pProgressBar_ = _NEW(MachGuiBuildProgressBar(this, Gui::Coord(2, 2), width() - 4));
 
-	popupButton( false );
+    popupButton(false);
 }
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
-
 
 MachProductionIcon::~MachProductionIcon()
 {
     TEST_INVARIANT;
 
-    //Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 }
 
@@ -157,109 +153,118 @@ MachProductionIcon::~MachProductionIcon()
 
 void MachProductionIcon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachProductionIcon::doBeDepressed( const GuiMouseEvent& )
+// virtual
+void MachProductionIcon::doBeDepressed(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
-    pProgressBar_->depress( true );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
+    pProgressBar_->depress(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachProductionIcon::doBeReleased( const GuiMouseEvent& )
+// virtual
+void MachProductionIcon::doBeReleased(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
-	pProgressBar_->depress( false );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
+    pProgressBar_->depress(false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachProductionIcon::buttonHeight()
 {
-	// TODO : Remove hard coded values
-	return MachGuiBuildProgressBar::height() + 38 /* Bitmap height */ + 4 /* Border */;
+    // TODO : Remove hard coded values
+    return MachGuiBuildProgressBar::height() + 38 /* Bitmap height */ + 4 /* Border */;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachProductionIcon::buttonWidth()
 {
-	return 42; // TODO : Remove hard coded value
+    return 42; // TODO : Remove hard coded value
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachProductionIcon::updateProgress( float complete )
+void MachProductionIcon::updateProgress(float complete)
 {
-	pProgressBar_->percentageComplete( complete );
+    pProgressBar_->percentageComplete(complete);
 
-	needsPromptUpdate_ = true;
+    needsPromptUpdate_ = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachProductionIcon::doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachProductionIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
-	MachGuiNewProductionIcon::doHandleMouseEnterEvent( mouseEvent );
+    MachGuiNewProductionIcon::doHandleMouseEnterEvent(mouseEvent);
 
-	needsPromptUpdate_ = false;
+    needsPromptUpdate_ = false;
 
-	displayCursorPromptText();
+    displayCursorPromptText();
 }
 
 void MachProductionIcon::displayCursorPromptText()
 {
-	GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(   	machineType_,
-																			subType_,
-																			weaponCombo_,
-																			hwLevel_,
-																			IDS_BUILDING_PROMPT,
-																			IDS_BUILDING_WITH_WEAPON_PROMPT );
+    GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
+        machineType_,
+        subType_,
+        weaponCombo_,
+        hwLevel_,
+        IDS_BUILDING_PROMPT,
+        IDS_BUILDING_WITH_WEAPON_PROMPT);
 
-	// Add bmu cost to end of prompt text
-	char buffer[20];
-//	itoa( MachLogRaces::instance().researchTree().researchItem( machineType_, subType_, hwLevel_, weaponCombo_ ).factoryInstanceCost(), buffer, 10 );
-    sprintf(buffer, "%d", MachLogRaces::instance().researchTree().researchItem( machineType_, subType_, hwLevel_, weaponCombo_ ).factoryInstanceCost());
-	GuiResourceString bmuCostText( IDS_COST, GuiString( buffer ) );
+    // Add bmu cost to end of prompt text
+    char buffer[20];
+    //  itoa( MachLogRaces::instance().researchTree().researchItem( machineType_, subType_, hwLevel_, weaponCombo_
+    //  ).factoryInstanceCost(), buffer, 10 );
+    sprintf(
+        buffer,
+        "%d",
+        MachLogRaces::instance()
+            .researchTree()
+            .researchItem(machineType_, subType_, hwLevel_, weaponCombo_)
+            .factoryInstanceCost());
+    GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
-	prompt += "\n" + bmuCostText.asString();
+    prompt += "\n" + bmuCostText.asString();
 
-	// Percentage complete info
-//	GuiResourceString percentCompleteText( IDS_BUILDPERCENTAGECOMPLETE, GuiString( itoa( pProgressBar_->percentageComplete(), buffer, 10 ) ) );
-	sprintf(buffer, "%d", ( uint ) pProgressBar_->percentageComplete());
-	GuiResourceString percentCompleteText( IDS_BUILDPERCENTAGECOMPLETE, GuiString( buffer ) );
-	prompt += ", " + percentCompleteText.asString();
+    // Percentage complete info
+    //  GuiResourceString percentCompleteText( IDS_BUILDPERCENTAGECOMPLETE, GuiString( itoa(
+    //  pProgressBar_->percentageComplete(), buffer, 10 ) ) );
+    sprintf(buffer, "%d", (uint)pProgressBar_->percentageComplete());
+    GuiResourceString percentCompleteText(IDS_BUILDPERCENTAGECOMPLETE, GuiString(buffer));
+    prompt += ", " + percentCompleteText.asString();
 
-	// Max units reached?
-	if ( MachLogRaces::instance().maxUnitsExist( MachLogRaces::instance().pcController().race() ) )
-	{
-		GuiResourceString maxUnitsText( IDS_PRODUCTIONMAXUNITS );
-		prompt += ". " + maxUnitsText.asString();
-	}
+    // Max units reached?
+    if (MachLogRaces::instance().maxUnitsExist(MachLogRaces::instance().pcController().race()))
+    {
+        GuiResourceString maxUnitsText(IDS_PRODUCTIONMAXUNITS);
+        prompt += ". " + maxUnitsText.asString();
+    }
 
-    pInGameScreen_->cursorPromptText( prompt, not needsPromptUpdate_ );
+    pInGameScreen_->cursorPromptText(prompt, not needsPromptUpdate_);
 
-	needsPromptUpdate_ = false;
+    needsPromptUpdate_ = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachProductionIcon::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachProductionIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 {
-    //Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 
-	MachGuiNewProductionIcon::doHandleMouseExitEvent( mouseEvent );
+    MachGuiNewProductionIcon::doHandleMouseExitEvent(mouseEvent);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -271,7 +276,7 @@ const MachLogProductionUnit* MachProductionIcon::productionUnit() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachProductionIcon& t )
+ostream& operator<<(ostream& o, const MachProductionIcon& t)
 {
 
     o << "MachProductionIcon " << (void*)&t << " start" << std::endl;
@@ -282,37 +287,35 @@ ostream& operator <<( ostream& o, const MachProductionIcon& t )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
 //////
 // ******************************************* Code for MachIncSWLevelIcon *************************************
 //////
 
-typedef std::pair< SysPathName, SysPathName > SysPathNames;
+using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachIncSWLevelIcon::MachIncSWLevelIcon( GuiDisplayable *pParent,
-										const Gui::Coord& rel,
-										MachInGameScreen* pInGameScreen,
-										MachLog::ObjectType machineType,
-									    int subType,
-									    int hwLevel )
-: 	GuiIcon(	pParent, rel, SysPathNames("gui/misc/sw+.bmp", "gui/misc/sw+.bmp") ),
-	pInGameScreen_( pInGameScreen ),
-	subType_( subType ),
-	hwLevel_( hwLevel ),
-	machineType_( machineType )
+MachIncSWLevelIcon::MachIncSWLevelIcon(
+    GuiDisplayable* pParent,
+    const Gui::Coord& rel,
+    MachInGameScreen* pInGameScreen,
+    MachLog::ObjectType machineType,
+    int subType,
+    int hwLevel)
+    : GuiIcon(pParent, rel, SysPathNames("gui/misc/sw+.bmp", "gui/misc/sw+.bmp"))
+    , pInGameScreen_(pInGameScreen)
+    , subType_(subType)
+    , hwLevel_(hwLevel)
+    , machineType_(machineType)
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachIncSWLevelIcon::~MachIncSWLevelIcon()
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -321,73 +324,73 @@ MachIncSWLevelIcon::~MachIncSWLevelIcon()
 
 void MachIncSWLevelIcon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachIncSWLevelIcon::doBeDepressed( const GuiMouseEvent& )
+// virtual
+void MachIncSWLevelIcon::doBeDepressed(const GuiMouseEvent&)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachIncSWLevelIcon::doBeReleased( const GuiMouseEvent& )
+// virtual
+void MachIncSWLevelIcon::doBeReleased(const GuiMouseEvent&)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachIncSWLevelIcon::doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachIncSWLevelIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
-	GuiIcon::doHandleMouseEnterEvent( mouseEvent );
+    GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-	GuiResourceString::Id stringId = MachLogActorStringIdRestorer::stringId( machineType_, subType_ );
+    GuiResourceString::Id stringId = MachLogActorStringIdRestorer::stringId(machineType_, subType_);
 
-   	stringId += hwLevel_;
+    stringId += hwLevel_;
 
-    //Load the resource string
-	GuiResourceString machName( stringId );
+    // Load the resource string
+    GuiResourceString machName(stringId);
 
-	GuiResourceString prompt( IDS_INCREASE_SW_PROMPT, machName.asString() );
-	//Set the cursor prompt
-    pInGameScreen_->cursorPromptText( prompt.asString() );
+    GuiResourceString prompt(IDS_INCREASE_SW_PROMPT, machName.asString());
+    // Set the cursor prompt
+    pInGameScreen_->cursorPromptText(prompt.asString());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachIncSWLevelIcon::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachIncSWLevelIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 {
-    //Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 
-	GuiIcon::doHandleMouseExitEvent( mouseEvent );
+    GuiIcon::doHandleMouseExitEvent(mouseEvent);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachIncSWLevelIcon::buttonHeight()
 {
-	// TODO : Remove hard coded values
-	return 14;
+    // TODO : Remove hard coded values
+    return 14;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachIncSWLevelIcon::buttonWidth()
 {
-	return 42; // TODO : Remove hard coded value
+    return 42; // TODO : Remove hard coded value
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachIncSWLevelIcon& t )
+ostream& operator<<(ostream& o, const MachIncSWLevelIcon& t)
 {
 
     o << "MachIncSWLevelIcon " << (void*)&t << " start" << std::endl;
@@ -396,15 +399,15 @@ ostream& operator <<( ostream& o, const MachIncSWLevelIcon& t )
     return o;
 }
 
-//virtual
-void MachProductionIcon::doHandleContainsMouseEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachProductionIcon::doHandleContainsMouseEvent(const GuiMouseEvent& mouseEvent)
 {
-	MachGuiNewProductionIcon::doHandleContainsMouseEvent( mouseEvent );
+    MachGuiNewProductionIcon::doHandleContainsMouseEvent(mouseEvent);
 
-	if ( needsPromptUpdate_ )
-	{
-		displayCursorPromptText();
-	}
+    if (needsPromptUpdate_)
+    {
+        displayCursorPromptText();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

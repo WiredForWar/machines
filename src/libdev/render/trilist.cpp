@@ -16,14 +16,13 @@ RenTriangleList::RenTriangleList()
 RenTriangleList::~RenTriangleList()
 {
     TEST_INVARIANT;
-
 }
 
 void RenTriangleList::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const RenTriangleList& t )
+ostream& operator<<(ostream& o, const RenTriangleList& t)
 {
 
     o << "RenTriangleList " << (void*)&t << " start" << std::endl;

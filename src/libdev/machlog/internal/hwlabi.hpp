@@ -1,5 +1,5 @@
 /*
- * H W L A B I . H P P 
+ * H W L A B I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,29 +20,28 @@ class MachLogHardwareLabImpl
 // Canonical form revoked
 {
 public:
-    MachLogHardwareLabImpl( MachPhys::HardwareLabSubType subType );
+    MachLogHardwareLabImpl(MachPhys::HardwareLabSubType subType);
     ~MachLogHardwareLabImpl();
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT( MachLogHardwareLabImpl );
-	PER_FRIEND_READ_WRITE( MachLogHardwareLabImpl );
-
+    PER_MEMBER_PERSISTENT(MachLogHardwareLabImpl);
+    PER_FRIEND_READ_WRITE(MachLogHardwareLabImpl);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogHardwareLabImpl& t );
-	friend class MachLogHardwareLab;
+    friend ostream& operator<<(ostream& o, const MachLogHardwareLabImpl& t);
+    friend class MachLogHardwareLab;
 
-    MachLogHardwareLabImpl( const MachLogHardwareLabImpl& );
-    MachLogHardwareLabImpl& operator =( const MachLogHardwareLabImpl& );
+    MachLogHardwareLabImpl(const MachLogHardwareLabImpl&);
+    MachLogHardwareLabImpl& operator=(const MachLogHardwareLabImpl&);
 
-	MachLogResearchTree::ResearchItems 	availableResearchItems_;
-	MachLogResearchTree::ResearchItems 	currentResearchQueue_;
-	PhysAbsoluteTime					lastUpdateTime_;
-	MachPhys::HardwareLabSubType 		subType_;
+    MachLogResearchTree::ResearchItems availableResearchItems_;
+    MachLogResearchTree::ResearchItems currentResearchQueue_;
+    PhysAbsoluteTime lastUpdateTime_;
+    MachPhys::HardwareLabSubType subType_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogHardwareLabImpl );
+PER_DECLARE_PERSISTENT(MachLogHardwareLabImpl);
 
 #endif
 

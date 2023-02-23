@@ -1,5 +1,5 @@
 /*
- * C L A S S 1 3 . H P P 
+ * C L A S S 1 3 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,25 +22,24 @@ public:
     Class13();
     ~Class13();
 
-    Class13*    ptr_;
-    int         i1_;
-    
+    Class13* ptr_;
+    int i1_;
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const Class13& t );
+    friend ostream& operator<<(ostream& o, const Class13& t);
 
-    PER_MEMBER_PERSISTENT_DEFAULT( Class13 );
-    
+    PER_MEMBER_PERSISTENT_DEFAULT(Class13);
+
 private:
-    Class13( const Class13& );
-    Class13& operator =( const Class13& );
-
+    Class13(const Class13&);
+    Class13& operator=(const Class13&);
 };
 
-PER_READ_WRITE( Class13 );
-PER_DECLARE_PERSISTENT( Class13 );
+PER_READ_WRITE(Class13);
+PER_DECLARE_PERSISTENT(Class13);
 
-bool operator ==( const Class13& a, const Class13& b );
+bool operator==(const Class13& a, const Class13& b);
 
 #endif
 

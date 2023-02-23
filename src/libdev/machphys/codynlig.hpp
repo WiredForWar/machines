@@ -18,10 +18,10 @@
 class MachPhysDynamicLightsComplexity : public MachPhysComplexityBooleanItem
 {
 public:
-	MachPhysDynamicLightsComplexity( const ItemId& id, bool enabled );
-	~MachPhysDynamicLightsComplexity();
+    MachPhysDynamicLightsComplexity(const ItemId& id, bool enabled);
+    ~MachPhysDynamicLightsComplexity() override;
 
-	virtual	void update();
+    void update() override;
 };
 
 #endif

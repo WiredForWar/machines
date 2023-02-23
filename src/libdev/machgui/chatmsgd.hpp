@@ -1,5 +1,5 @@
 /*
- * C H A T M S G D . H P P 
+ * C H A T M S G D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,37 +21,36 @@ class MachGuiInGameChatMessagesDisplay : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiInGameChatMessagesDisplay( GuiDisplayable*, const Gui::Box& );
-    MachGuiInGameChatMessagesDisplay( GuiDisplayable*, const Gui::Box&, GuiDisplayable* );
-    ~MachGuiInGameChatMessagesDisplay();
+    MachGuiInGameChatMessagesDisplay(GuiDisplayable*, const Gui::Box&);
+    MachGuiInGameChatMessagesDisplay(GuiDisplayable*, const Gui::Box&, GuiDisplayable*);
+    ~MachGuiInGameChatMessagesDisplay() override;
 
     void CLASS_INVARIANT;
 
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	void forceUpdate();
+    void forceUpdate();
 
 protected:
-	//virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
-	//virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
-	//virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
-	//virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel );
 
-	// Pass mouse position in as relative to this GuiDisplayable. Updates
-	// mouse position to be relative to pPassEventsTo_.
-	//bool passEventTo( GuiMouseEvent* );
+    // Pass mouse position in as relative to this GuiDisplayable. Updates
+    // mouse position to be relative to pPassEventsTo_.
+    // bool passEventTo( GuiMouseEvent* );
 
-	virtual bool processesMouseEvents() const;
+    bool processesMouseEvents() const override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiInGameChatMessagesDisplay& t );
+    friend ostream& operator<<(ostream& o, const MachGuiInGameChatMessagesDisplay& t);
 
-    MachGuiInGameChatMessagesDisplay( const MachGuiInGameChatMessagesDisplay& );
-    MachGuiInGameChatMessagesDisplay& operator =( const MachGuiInGameChatMessagesDisplay& );
+    MachGuiInGameChatMessagesDisplay(const MachGuiInGameChatMessagesDisplay&);
+    MachGuiInGameChatMessagesDisplay& operator=(const MachGuiInGameChatMessagesDisplay&);
 
-	MachGuiInGameChatMessagesDisplayImpl* pImpl_;
+    MachGuiInGameChatMessagesDisplayImpl* pImpl_;
 };
-
 
 #endif
 

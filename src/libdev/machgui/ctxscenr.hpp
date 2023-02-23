@@ -1,5 +1,5 @@
 /*
- * C T X S C E N R . H P P 
+ * C T X S C E N R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,7 +19,7 @@
 class MachGuiSingleSelectionListBox;
 class MachGuiDbSystem;
 class MachGuiDbPlanet;
-class MachGuiDbScenario;  
+class MachGuiDbScenario;
 class MachGuiScrollableText;
 class GuiImage;
 
@@ -27,41 +27,40 @@ class MachGuiCtxScenario : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxScenario( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxScenario();
+    MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxScenario() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	void updatePlanetList( MachGuiDbSystem& );
-	void updateScenarioList( MachGuiDbPlanet& );
-	void updateSelectedScenario( MachGuiDbScenario& );
+    void updatePlanetList(MachGuiDbSystem&);
+    void updateScenarioList(MachGuiDbPlanet&);
+    void updateSelectedScenario(MachGuiDbScenario&);
 
-	void updateDisplayedInfo( const string& text, SysPathName animation );
+    void updateDisplayedInfo(const string& text, SysPathName animation);
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxScenario& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxScenario& t);
 
-    MachGuiCtxScenario( const MachGuiCtxScenario& );
-    MachGuiCtxScenario& operator =( const MachGuiCtxScenario& );
+    MachGuiCtxScenario(const MachGuiCtxScenario&);
+    MachGuiCtxScenario& operator=(const MachGuiCtxScenario&);
 
-	void updateSystemList();
+    void updateSystemList();
 
-	void workOutWhichScenarioToDefaultTo();
-	
-	// Data members...
-	MachGuiAnimations animations_;
-	MachGuiSingleSelectionListBox* pSystemList_;
-	MachGuiSingleSelectionListBox* pPlanetList_;
-	MachGuiSingleSelectionListBox* pScenarioList_;
-	MachGuiScrollableText* pTextInfo_;
-	GuiImage* pImage_;
-	MachGuiDbScenario* pDefaultScenario_;
+    void workOutWhichScenarioToDefaultTo();
+
+    // Data members...
+    MachGuiAnimations animations_;
+    MachGuiSingleSelectionListBox* pSystemList_;
+    MachGuiSingleSelectionListBox* pPlanetList_;
+    MachGuiSingleSelectionListBox* pScenarioList_;
+    MachGuiScrollableText* pTextInfo_;
+    GuiImage* pImage_;
+    MachGuiDbScenario* pDefaultScenario_;
 };
-
 
 #endif
 

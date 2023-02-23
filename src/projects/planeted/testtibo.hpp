@@ -1,5 +1,5 @@
 /*
- * T E S T T I B O . H P P 
+ * T E S T T I B O . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -24,11 +24,10 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachPhysTestTileBoundary( const MachPhysTestTileBoundary& );
-    MachPhysTestTileBoundary& operator =( const MachPhysTestTileBoundary& );
-    bool operator ==( const MachPhysTestTileBoundary& );
+    MachPhysTestTileBoundary(const MachPhysTestTileBoundary&);
+    MachPhysTestTileBoundary& operator=(const MachPhysTestTileBoundary&);
+    bool operator==(const MachPhysTestTileBoundary&);
 };
-
 
 #endif
 

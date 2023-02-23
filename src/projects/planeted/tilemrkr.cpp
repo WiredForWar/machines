@@ -15,48 +15,48 @@
 #include "mathex/point3d.hpp"
 #include "mathex/double.hpp"
 
-
-PedTileMarker::PedTileMarker( 	W4dEntity* pParent,
-								const W4dTransform3d& localTransform,
-								const MexAlignedBox3d& boundary,
-								bool permanent )
-:   W4dCustom( pParent, localTransform, W4dEntity::NOT_SOLID, W4dDistance( 10000 ) )
+PedTileMarker::PedTileMarker(
+    W4dEntity* pParent,
+    const W4dTransform3d& localTransform,
+    const MexAlignedBox3d& boundary,
+    bool permanent)
+    : W4dCustom(pParent, localTransform, W4dEntity::NOT_SOLID, W4dDistance(10000))
 {
-    //Construct a material of the appropriate colour
-    RenMaterial mat( permanent ? RenColour::green() : RenColour::yellow() );
+    // Construct a material of the appropriate colour
+    RenMaterial mat(permanent ? RenColour::green() : RenColour::yellow());
 
-    //get the boundary limits
+    // get the boundary limits
 
-	// Changed by Wayne Evans
+    // Changed by Wayne Evans
     // const MexPoint3d& minCorner = boundary.local().minCorner_;
     // const MexPoint3d& maxCorner = boundary.local().maxCorner_;
 
     const MexPoint3d& minCorner = boundary.minCorner();
     const MexPoint3d& maxCorner = boundary.maxCorner();
 
-    MATHEX_SCALAR xMin = minCorner.x();// - 1.0;
-    MATHEX_SCALAR yMin = minCorner.y();// - 1.0;
+    MATHEX_SCALAR xMin = minCorner.x(); // - 1.0;
+    MATHEX_SCALAR yMin = minCorner.y(); // - 1.0;
     MATHEX_SCALAR zMin = minCorner.z() + 0.5;
-    MATHEX_SCALAR xMax = maxCorner.x();// + 1.0;
-    MATHEX_SCALAR yMax = maxCorner.y();// + 1.0;
+    MATHEX_SCALAR xMax = maxCorner.x(); // + 1.0;
+    MATHEX_SCALAR yMax = maxCorner.y(); // + 1.0;
     MATHEX_SCALAR zMax = maxCorner.z() + 0.5;
 
-    //Construct a wire frame cuboid surrounding the boundary
+    // Construct a wire frame cuboid surrounding the boundary
     RenMesh& boxMesh = mesh();
-	boxMesh.addLine( MexPoint3d( xMin, yMin, zMin ), MexPoint3d( xMax, yMin, zMin ), mat );
-	boxMesh.addLine( MexPoint3d( xMax, yMin, zMin ), MexPoint3d( xMax, yMax, zMin ), mat );
-	boxMesh.addLine( MexPoint3d( xMax, yMax, zMin ), MexPoint3d( xMin, yMax, zMin ), mat );
-	boxMesh.addLine( MexPoint3d( xMin, yMax, zMin ), MexPoint3d( xMin, yMin, zMin ), mat );
+    boxMesh.addLine(MexPoint3d(xMin, yMin, zMin), MexPoint3d(xMax, yMin, zMin), mat);
+    boxMesh.addLine(MexPoint3d(xMax, yMin, zMin), MexPoint3d(xMax, yMax, zMin), mat);
+    boxMesh.addLine(MexPoint3d(xMax, yMax, zMin), MexPoint3d(xMin, yMax, zMin), mat);
+    boxMesh.addLine(MexPoint3d(xMin, yMax, zMin), MexPoint3d(xMin, yMin, zMin), mat);
 
-	boxMesh.addLine( MexPoint3d( xMin, yMin, zMax ), MexPoint3d( xMax, yMin, zMax ), mat );
-	boxMesh.addLine( MexPoint3d( xMax, yMin, zMax ), MexPoint3d( xMax, yMax, zMax ), mat );
-	boxMesh.addLine( MexPoint3d( xMax, yMax, zMax ), MexPoint3d( xMin, yMax, zMax ), mat );
-	boxMesh.addLine( MexPoint3d( xMin, yMax, zMax ), MexPoint3d( xMin, yMin, zMax ), mat );
+    boxMesh.addLine(MexPoint3d(xMin, yMin, zMax), MexPoint3d(xMax, yMin, zMax), mat);
+    boxMesh.addLine(MexPoint3d(xMax, yMin, zMax), MexPoint3d(xMax, yMax, zMax), mat);
+    boxMesh.addLine(MexPoint3d(xMax, yMax, zMax), MexPoint3d(xMin, yMax, zMax), mat);
+    boxMesh.addLine(MexPoint3d(xMin, yMax, zMax), MexPoint3d(xMin, yMin, zMax), mat);
 
-	boxMesh.addLine( MexPoint3d( xMin, yMin, zMin ), MexPoint3d( xMin, yMin, zMax ), mat );
-	boxMesh.addLine( MexPoint3d( xMax, yMin, zMin ), MexPoint3d( xMax, yMin, zMax ), mat );
-	boxMesh.addLine( MexPoint3d( xMax, yMax, zMin ), MexPoint3d( xMax, yMax, zMax ), mat );
-	boxMesh.addLine( MexPoint3d( xMin, yMax, zMin ), MexPoint3d( xMin, yMax, zMax ), mat );
+    boxMesh.addLine(MexPoint3d(xMin, yMin, zMin), MexPoint3d(xMin, yMin, zMax), mat);
+    boxMesh.addLine(MexPoint3d(xMax, yMin, zMin), MexPoint3d(xMax, yMin, zMax), mat);
+    boxMesh.addLine(MexPoint3d(xMax, yMax, zMin), MexPoint3d(xMax, yMax, zMax), mat);
+    boxMesh.addLine(MexPoint3d(xMin, yMax, zMin), MexPoint3d(xMin, yMax, zMax), mat);
 
     TEST_INVARIANT;
 }
@@ -64,15 +64,14 @@ PedTileMarker::PedTileMarker( 	W4dEntity* pParent,
 PedTileMarker::~PedTileMarker()
 {
     TEST_INVARIANT;
-
 }
 
 void PedTileMarker::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PedTileMarker& t )
+ostream& operator<<(ostream& o, const PedTileMarker& t)
 {
 
     o << "PedTileMarker " << (void*)&t << " start" << std::endl;
@@ -81,10 +80,9 @@ ostream& operator <<( ostream& o, const PedTileMarker& t )
     return o;
 }
 
-bool PedTileMarker::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+bool PedTileMarker::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
-
 
 /* End TILEMRKR.CPP *************************************************/

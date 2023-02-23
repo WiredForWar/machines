@@ -17,7 +17,7 @@
 #include "machphys/hwlab.hpp"
 #include "machphys/missile.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysConstructionPersistence );
+PER_DEFINE_PERSISTENT(MachPhysConstructionPersistence);
 
 // static
 MachPhysConstructionPersistence& MachPhysConstructionPersistence::instance()
@@ -35,15 +35,14 @@ MachPhysConstructionPersistence::MachPhysConstructionPersistence()
 MachPhysConstructionPersistence::~MachPhysConstructionPersistence()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysConstructionPersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysConstructionPersistence& t )
+ostream& operator<<(ostream& o, const MachPhysConstructionPersistence& t)
 {
 
     o << "MachPhysConstructionPersistence " << (void*)&t << " start" << std::endl;
@@ -52,7 +51,7 @@ ostream& operator <<( ostream& o, const MachPhysConstructionPersistence& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysConstructionPersistence& )
+void perWrite(PerOstream& ostr, const MachPhysConstructionPersistence&)
 {
     ostr << MachPhysBeacon::factory();
     ostr << MachPhysFactory::factory();
@@ -65,7 +64,7 @@ void perWrite( PerOstream& ostr, const MachPhysConstructionPersistence& )
     ostr << MachPhysMissile::factory();
 }
 
-void perRead( PerIstream& istr, MachPhysConstructionPersistence& )
+void perRead(PerIstream& istr, MachPhysConstructionPersistence&)
 {
     istr >> MachPhysBeacon::factory();
     istr >> MachPhysFactory::factory();

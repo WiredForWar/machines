@@ -1,23 +1,22 @@
 /*
- * O P D A P C I . C P P 
+ * O P D A P C I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of non-inline non-template methods and global functions
 
-
 #include "machlog/internal/opdapci.hpp"
 
 #include "machlog/apc.hpp"
 
-//#include "mathex/point2d.hpp"
+// #include "mathex/point2d.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogDeployAPCOperationImpl );
+PER_DEFINE_PERSISTENT(MachLogDeployAPCOperationImpl);
 
-MachLogDeployAPCOperationImpl::MachLogDeployAPCOperationImpl( MachLogAPC * pAPC )
-:	pAPC_( pAPC ),
-	finished_( false ),
-	status_( MachLogDeployAPCOperation::GOTO_DESTINATION )
+MachLogDeployAPCOperationImpl::MachLogDeployAPCOperationImpl(MachLogAPC* pAPC)
+    : pAPC_(pAPC)
+    , finished_(false)
+    , status_(MachLogDeployAPCOperation::GOTO_DESTINATION)
 {
     TEST_INVARIANT;
 }
@@ -29,10 +28,10 @@ MachLogDeployAPCOperationImpl::~MachLogDeployAPCOperationImpl()
 
 void MachLogDeployAPCOperationImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogDeployAPCOperationImpl& t )
+ostream& operator<<(ostream& o, const MachLogDeployAPCOperationImpl& t)
 {
 
     o << "MachLogDeployAPCOperationImpl " << (void*)&t << " start" << std::endl;
@@ -41,24 +40,22 @@ ostream& operator <<( ostream& o, const MachLogDeployAPCOperationImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogDeployAPCOperationImpl& deployAPCOpImpl )
+void perWrite(PerOstream& ostr, const MachLogDeployAPCOperationImpl& deployAPCOpImpl)
 {
-	ostr << deployAPCOpImpl.pAPC_;
-	ostr << deployAPCOpImpl.finished_;
-	ostr << deployAPCOpImpl.status_;
+    ostr << deployAPCOpImpl.pAPC_;
+    ostr << deployAPCOpImpl.finished_;
+    ostr << deployAPCOpImpl.status_;
 }
 
-void perRead( PerIstream& istr, MachLogDeployAPCOperationImpl& deployAPCOpImpl )
+void perRead(PerIstream& istr, MachLogDeployAPCOperationImpl& deployAPCOpImpl)
 {
-	istr >> deployAPCOpImpl.pAPC_;
-	istr >> deployAPCOpImpl.finished_;
-	istr >> deployAPCOpImpl.status_;
+    istr >> deployAPCOpImpl.pAPC_;
+    istr >> deployAPCOpImpl.finished_;
+    istr >> deployAPCOpImpl.status_;
 }
 
-MachLogDeployAPCOperationImpl::MachLogDeployAPCOperationImpl( PerConstructor )
+MachLogDeployAPCOperationImpl::MachLogDeployAPCOperationImpl(PerConstructor)
 {
 }
-
-
 
 /* End OPDAPCI.CPP ***************************************************/

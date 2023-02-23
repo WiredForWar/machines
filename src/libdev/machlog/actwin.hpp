@@ -1,5 +1,5 @@
 /*
- * A C T W I N . H P P 
+ * A C T W I N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,32 +23,30 @@ class MachLogWinAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogWinAction();
-	static MachLogWinAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
-	static MachLogWinAction* newDynamic( SimCondition*, bool enabled, MachPhys::Race race );
+    ~MachLogWinAction() override;
+    static MachLogWinAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static MachLogWinAction* newDynamic(SimCondition*, bool enabled, MachPhys::Race race);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogWinAction );
-	PER_FRIEND_READ_WRITE( MachLogWinAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogWinAction);
+    PER_FRIEND_READ_WRITE(MachLogWinAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogWinAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogWinAction& t);
 
-    MachLogWinAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogWinAction& t );
+    MachLogWinAction(const MachLogWinAction&);
+    MachLogWinAction& operator=(const MachLogWinAction&);
 
-    MachLogWinAction( const MachLogWinAction& );
-    MachLogWinAction& operator =( const MachLogWinAction& );
-
-	MachPhys::Race			race_;
+    MachPhys::Race race_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogWinAction );
+PER_DECLARE_PERSISTENT(MachLogWinAction);
 
 #endif
 

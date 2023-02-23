@@ -23,50 +23,45 @@ class MachLogAdminLocateOperationImpl;
 
 // orthodox canonical (revoked)
 
-class MachLogAdminLocateOperation
-: public MachLogOperation
+class MachLogAdminLocateOperation : public MachLogOperation
 {
 public:
+    using Path = ctl_list<MexPoint2d>;
+    // CTORs are used as follows:
+    // given to the AI controllers will go and find ore by cheating
+    MachLogAdminLocateOperation(MachLogAdministrator* pActor);
+    // single point
+    MachLogAdminLocateOperation(MachLogAdministrator* pActor, const MexPoint3d& dest);
+    // way point path
+    MachLogAdminLocateOperation(MachLogAdministrator* pActor, const Path& externalPath);
 
-	typedef ctl_list< MexPoint2d > Path;
-	//CTORs are used as follows:
-	//given to the AI controllers will go and find ore by cheating
-	MachLogAdminLocateOperation( MachLogAdministrator *  pActor );
-	//single point
-	MachLogAdminLocateOperation( MachLogAdministrator *  pActor, const MexPoint3d& dest );
-	//way point path
-	MachLogAdminLocateOperation( MachLogAdministrator *  pActor, const Path& externalPath );
+    ~MachLogAdminLocateOperation() override;
 
-	~MachLogAdminLocateOperation( );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAdminLocateOperation );
-	PER_FRIEND_READ_WRITE( MachLogAdminLocateOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAdminLocateOperation);
+    PER_FRIEND_READ_WRITE(MachLogAdminLocateOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
-	
-	virtual void doOutputOperator( ostream& ) const;
-	virtual bool doBeInterrupted();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
+    void doOutputOperator(ostream&) const override;
+    bool doBeInterrupted() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogAdminLocateOperation(const MachLogAdminLocateOperation&);
+    MachLogAdminLocateOperation& operator=(const MachLogAdminLocateOperation&);
+    bool operator==(const MachLogAdminLocateOperation&);
 
-	// Operations deliberately revoked
-    MachLogAdminLocateOperation( const MachLogAdminLocateOperation& );
-    MachLogAdminLocateOperation& operator =( const MachLogAdminLocateOperation& );
-    bool operator ==( const MachLogAdminLocateOperation& );
-	
-	void assignLocatorTask( MachLogGeoLocator* );
+    void assignLocatorTask(MachLogGeoLocator*);
 
-	MachLogAdminLocateOperationImpl* pImpl_;	
+    MachLogAdminLocateOperationImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAdminLocateOperation );
+PER_DECLARE_PERSISTENT(MachLogAdminLocateOperation);
 
 /* //////////////////////////////////////////////////////////////// */
 

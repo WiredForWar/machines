@@ -26,92 +26,83 @@ class MachPhysElectroCharger : public MachPhysLinearWeapon
 // Canonical form revoked
 {
 public:
+    // Constructs appropriate
+    MachPhysElectroCharger(W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::Mounting mounting);
 
-    //Constructs appropriate
-    MachPhysElectroCharger( W4dEntity* pParent, const MexTransform3d& localTransform,
-                            MachPhys::Mounting mounting );
+    // dtor
+    ~MachPhysElectroCharger() override;
 
-    //dtor
-    virtual ~MachPhysElectroCharger();
+    // Return an exemplar flamethrower - ensures the mesh is loaded
+    static const MachPhysElectroCharger& exemplar(MachPhys::Mounting mounting);
 
-    //Return an exemplar flamethrower - ensures the mesh is loaded
-    static const MachPhysElectroCharger& exemplar( MachPhys::Mounting mounting );
+    MachPhysLinearProjectile* createProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
-    virtual MachPhysLinearProjectile* createProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
-	virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
-
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysMachine* pMachine ) const;
-
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysConstruction* pConstruction ) const;
-
-	//Apply the victim animation to machine/construction/artefact at startTime.
-    //return animation duration.
-	static PhysRelativeTime applyVictimAnimation
-	(
-    	const PhysAbsoluteTime& startTime,
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
         const MexLine3d& fromDirection,
-    	MachPhysMachine* pMachine
-	);
+        MachPhysMachine* pMachine) const override;
 
-	static PhysRelativeTime applyVictimAnimation
-	(
-    	const PhysAbsoluteTime& startTime,
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
         const MexLine3d& fromDirection,
-    	MachPhysConstruction* pConstruction
-	);
+        MachPhysConstruction* pConstruction) const override;
 
-	static PhysRelativeTime applyVictimAnimation
-	(
-    	const PhysAbsoluteTime& startTime,
+    // Apply the victim animation to machine/construction/artefact at startTime.
+    // return animation duration.
+    static PhysRelativeTime
+    applyVictimAnimation(const PhysAbsoluteTime& startTime, const MexLine3d& fromDirection, MachPhysMachine* pMachine);
+
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
         const MexLine3d& fromDirection,
-    	MachPhysArtefact* pArtefact
-	);
+        MachPhysConstruction* pConstruction);
+
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysArtefact* pArtefact);
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysElectroCharger );
-    PER_FRIEND_READ_WRITE( MachPhysElectroCharger );
+    PER_MEMBER_PERSISTENT(MachPhysElectroCharger);
+    PER_FRIEND_READ_WRITE(MachPhysElectroCharger);
 
-    friend ostream& operator <<( ostream& o, const MachPhysElectroCharger& t );
+    friend ostream& operator<<(ostream& o, const MachPhysElectroCharger& t);
 
 private:
-    MachPhysElectroCharger( const MachPhysElectroCharger& );
-    MachPhysElectroCharger& operator =( const MachPhysElectroCharger& );
-    bool operator ==( const MachPhysElectroCharger& );
+    MachPhysElectroCharger(const MachPhysElectroCharger&);
+    MachPhysElectroCharger& operator=(const MachPhysElectroCharger&);
+    bool operator==(const MachPhysElectroCharger&);
 
-    //One-time constructor (per type) used to create the exemplars
-    MachPhysElectroCharger( MachPhys::Mounting mounting );
+    // One-time constructor (per type) used to create the exemplars
+    MachPhysElectroCharger(MachPhys::Mounting mounting);
 
-	MachPhysElectro* createElectro
-	(
-		const PhysAbsoluteTime& burstStartTime,
-		const PhysRelativeTime& duration,
-		W4dEntity* pParent,
-		const W4dEntity& target,
-		const MexPoint3d& targetOffset
-	);
+    MachPhysElectro* createElectro(
+        const PhysAbsoluteTime& burstStartTime,
+        const PhysRelativeTime& duration,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
-    //Do the halo lightning effect on a victim animation to entity pVictim.
-    //Return animation duration
-    static PhysRelativeTime startLightning( const PhysAbsoluteTime& startTime,
-                                      const PhysRelativeTime& lightningDuration, W4dEntity* pVictim);
+    // Do the halo lightning effect on a victim animation to entity pVictim.
+    // Return animation duration
+    static PhysRelativeTime
+    startLightning(const PhysAbsoluteTime& startTime, const PhysRelativeTime& lightningDuration, W4dEntity* pVictim);
 
-    //the composite file path for given type
+    // the composite file path for given type
     static const char* compositeFilePath();
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysElectroCharger );
+PER_DECLARE_PERSISTENT(MachPhysElectroCharger);
 
 #endif
 

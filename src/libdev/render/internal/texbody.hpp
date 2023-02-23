@@ -19,42 +19,41 @@ class RenDevice;
 class RenITexBody : public RenISurfBody
 {
 public:
-    virtual ~RenITexBody();
+    ~RenITexBody() override;
 
-	// This overrides the RenISurfBody::read.  It chooses the best matching
-	// pixel format for a texture.  It also handles alpha maps and recognises
-	// naming conventions for colour-keying, alpha and bilinear blending.
-	virtual bool read(const std::string& name);
-	virtual RenITexBody* castToTexBody();
-	virtual const RenITexBody* castToTexBody() const;
-	virtual void print(ostream&) const;
+    // This overrides the RenISurfBody::read.  It chooses the best matching
+    // pixel format for a texture.  It also handles alpha maps and recognises
+    // naming conventions for colour-keying, alpha and bilinear blending.
+    bool read(const std::string& name) override;
+    RenITexBody* castToTexBody() override;
+    const RenITexBody* castToTexBody() const override;
+    void print(ostream&) const override;
 
-	bool hasAlphaTransparency() const;
-	bool usesBilinear() const;
+    bool hasAlphaTransparency() const;
+    bool usesBilinear() const;
 
-
-	uint hitsPerFrame() const;
-	void incHits();
-	void resetHits();
+    uint hitsPerFrame() const;
+    void incHits();
+    void resetHits();
 
     void CLASS_INVARIANT;
 
-	// TBD: sort out access to ctor(s) via friends or sth.
+    // TBD: sort out access to ctor(s) via friends or sth.
     RenITexBody();
 
 private:
-	bool						loaded_;
-	uint						hitsPerFrame_;
-	bool						bilinear_, alpha_;
+    bool loaded_;
+    uint hitsPerFrame_;
+    bool bilinear_, alpha_;
 
     // Operations deliberately revoked (these objects are ref counted).
-    RenITexBody( const RenITexBody& );
-    RenITexBody& operator =( const RenITexBody& );
-    bool operator ==( const RenITexBody& );
+    RenITexBody(const RenITexBody&);
+    RenITexBody& operator=(const RenITexBody&);
+    bool operator==(const RenITexBody&);
 };
 
 #ifdef _INLINE
-    #include "internal/texbody.ipp"
+#include "internal/texbody.ipp"
 #endif
 
 #endif

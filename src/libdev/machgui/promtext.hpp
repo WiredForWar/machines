@@ -1,5 +1,5 @@
 /*
- * P R O M T E X T . H P P 
+ * P R O M T E X T . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,71 +22,78 @@ class MachCameras;
 class MachPromptTextImpl;
 class MachInGameScreen;
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class MachPromptText : public GuiSingleLineEditBox
 {
 public:
-    //ctor. Owner is pParent. Area covered is bounded by relativeBoundary.
-    MachPromptText( MachInGameScreen* pParent, const Gui::Boundary& relativeBoundary, MachCameras*, GuiDisplayable* pPassEventsTo );
+    // ctor. Owner is pParent. Area covered is bounded by relativeBoundary.
+    MachPromptText(
+        MachInGameScreen* pParent,
+        const Gui::Boundary& relativeBoundary,
+        MachCameras*,
+        GuiDisplayable* pPassEventsTo);
 
-    //dtor.
-    ~MachPromptText();
+    // dtor.
+    ~MachPromptText() override;
 
-    //Set/get the prompt text related to cursor position
-    void cursorPromptText( const string& prompt );
-	void cursorPromptText( const string& prompt, bool restartScroll );
+    // Set/get the prompt text related to cursor position
+    void cursorPromptText(const string& prompt);
+    void cursorPromptText(const string& prompt, bool restartScroll);
     const string& cursorPromptText() const;
 
-    //Clear any prompt text associated with the cursor position
+    // Clear any prompt text associated with the cursor position
     void clearCursorPromptText();
 
-    //Set/get the prompt text related to current command state
-    void commandPromptText( const string& prompt );
+    // Set/get the prompt text related to current command state
+    void commandPromptText(const string& prompt);
     const string& commandPromptText() const;
 
-    //Clear any prompt text associated with the current command state
+    // Clear any prompt text associated with the current command state
     void clearCommandPromptText();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPromptText& t );
+    friend ostream& operator<<(ostream& o, const MachPromptText& t);
 
-	enum PromptDisplayed { CURSORTEXT, COMMANDTEXT, NOTEXT }; 
+    enum PromptDisplayed
+    {
+        CURSORTEXT,
+        COMMANDTEXT,
+        NOTEXT
+    };
 
-	virtual bool doHandleKeyEvent( const GuiKeyEvent& event );
+    bool doHandleKeyEvent(const GuiKeyEvent& event) override;
 
 protected:
+    // Inherited from GuiDisplayable...
+    void doDisplay() override;
 
-    //Inherited from GuiDisplayable...
- 	virtual void doDisplay();
+    // virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
+    // virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
 
-	//virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel );
-	//virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
-	//virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
-	//virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
+    bool doHandleCharEvent(const GuiCharEvent& event) override;
 
-	virtual bool doHandleCharEvent( const GuiCharEvent& event );
+    void displayChatMessage();
 
-	void displayChatMessage();
+    int maxWidth() const override;
 
-	virtual int maxWidth() const;
+    // Pass mouse position in as relative to this GuiDisplayable. Updates
+    // mouse position to be relative to pPassEventsTo_.
+    // bool passEventTo( GuiMouseEvent* );
 
-	// Pass mouse position in as relative to this GuiDisplayable. Updates
-	// mouse position to be relative to pPassEventsTo_.
-	//bool passEventTo( GuiMouseEvent* );
-
-	virtual bool processesMouseEvents() const;
+    bool processesMouseEvents() const override;
 
 private:
     // Operations deliberately revoked
-    MachPromptText( const MachPromptText& );
-    MachPromptText& operator =( const MachPromptText& );
-    bool operator ==( const MachPromptText& );
+    MachPromptText(const MachPromptText&);
+    MachPromptText& operator=(const MachPromptText&);
+    bool operator==(const MachPromptText&);
 
-    //Data members...
-	MachPromptTextImpl* pImpl_;
+    // Data members...
+    MachPromptTextImpl* pImpl_;
 };
-
 
 #endif
 

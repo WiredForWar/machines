@@ -23,121 +23,120 @@
 // object which represents the primary light source (the sun).  It may
 // optionally create the cloud and celestial roots.  If these parameters
 // are null, then the corresponding objects will just be skipped.
-bool W4dReadBackground
-(
-	const SysPathName& pathname,
-	W4dEntity*  root,			// the root for unanimated objects
-	W4dEntity** primaryLight,	// an object representing the main light source
-	W4dEntity*  cloudRoot,		// root for objects animated as clouds
-	W4dEntity*  celestialRoot,	// root for objects animated as suns, moons, etc.
-	MATHEX_SCALAR* cloudSpeed,	// max translation speed of clouds per sec
-	MexDegrees* rotSpeed		// max rotation speed of celestials per sec
+bool W4dReadBackground(
+    const SysPathName& pathname,
+    W4dEntity* root, // the root for unanimated objects
+    W4dEntity** primaryLight, // an object representing the main light source
+    W4dEntity* cloudRoot, // root for objects animated as clouds
+    W4dEntity* celestialRoot, // root for objects animated as suns, moons, etc.
+    MATHEX_SCALAR* cloudSpeed, // max translation speed of clouds per sec
+    MexDegrees* rotSpeed // max rotation speed of celestials per sec
 )
 {
-	PRE(root);
-	PRE(primaryLight && !(*primaryLight));
+    PRE(root);
+    PRE(primaryLight && !(*primaryLight));
 
-	std::ifstream ifs(pathname.pathname().c_str());
-	std::istream& is = ifs;
+    std::ifstream ifs(pathname.pathname().c_str());
+    std::istream& is = ifs;
 
-	if (!is)
-	{
-		std::cout << "Couldn't read file " << pathname << std::endl;
-		return false;
-	}
+    if (!is)
+    {
+        std::cout << "Couldn't read file " << pathname << std::endl;
+        return false;
+    }
 
-	// Initially, new objects are added to the unanimated root.
-	W4dEntity* addTo = root;
+    // Initially, new objects are added to the unanimated root.
+    W4dEntity* addTo = root;
 
-	bool readingSun = false;
-	while (is)
-	{
-		string tmp;
-		is >> tmp;
+    bool readingSun = false;
+    while (is)
+    {
+        string tmp;
+        is >> tmp;
 
-		if (tmp == "clouds")
-		{
-			addTo = cloudRoot;
-			is >> *cloudSpeed;
-		}
-		else if (tmp == "celestial")
-		{
-			addTo = celestialRoot;
-			MATHEX_SCALAR degrees;
-			is >> degrees;
-			*rotSpeed = degrees;
-		}
-		else if (tmp == "sun")
-		{
-			readingSun = true;
-		}
-		else if (tmp.length() > 0)
-		{
-			// If the string isn't either of those keywords, treat it as a filename.
-			SysPathName meshFile = tmp;
+        if (tmp == "clouds")
+        {
+            addTo = cloudRoot;
+            is >> *cloudSpeed;
+        }
+        else if (tmp == "celestial")
+        {
+            addTo = celestialRoot;
+            MATHEX_SCALAR degrees;
+            is >> degrees;
+            *rotSpeed = degrees;
+        }
+        else if (tmp == "sun")
+        {
+            readingSun = true;
+        }
+        else if (tmp.length() > 0)
+        {
+            // If the string isn't either of those keywords, treat it as a filename.
+            SysPathName meshFile = tmp;
 
-			if (!meshFile.existsAsFile())
-			{
-				std::cout << "Couldn't read file " << meshFile << std::endl;
-				return false;
-			}
-			else
-			{
-				// Some file types require a model name.
-				string modelName;
-				if (!meshFile.hasExtension() || meshFile.extension() == "x")
-					is >> modelName;
+            if (!meshFile.existsAsFile())
+            {
+                std::cout << "Couldn't read file " << meshFile << std::endl;
+                return false;
+            }
+            else
+            {
+                // Some file types require a model name.
+                string modelName;
+                if (!meshFile.hasExtension() || meshFile.extension() == "x")
+                    is >> modelName;
 
-				MATHEX_SCALAR x,y,z, az, el, scale;
-				is >> x >> y >> z >> az >> el >> scale;
+                MATHEX_SCALAR x, y, z, az, el, scale;
+                is >> x >> y >> z >> az >> el >> scale;
 
-				// Only try to read the model if addTo has been set.  It may be
-				// null if cloudRoot or celestialRoot is null.
-				ASSERT(implies(!addTo, !cloudRoot || !celestialRoot), "Backgound parsing logic error.");
-				if (addTo)
-				{
-					MexEulerAngles angles(MexDegrees(az), MexDegrees(el), 0);
-					MexTransform3d xform(angles, MexPoint3d(x,y,z));
+                // Only try to read the model if addTo has been set.  It may be
+                // null if cloudRoot or celestialRoot is null.
+                ASSERT(implies(!addTo, !cloudRoot || !celestialRoot), "Backgound parsing logic error.");
+                if (addTo)
+                {
+                    MexEulerAngles angles(MexDegrees(az), MexDegrees(el), 0);
+                    MexTransform3d xform(angles, MexPoint3d(x, y, z));
 
-					W4dGeneric* gen = NULL;
-					if (!meshFile.hasExtension() || meshFile.extension() == "x")
-					{
-						ASSERT(modelName.length() != 0, "No model name specified");
-						gen = _NEW(W4dGeneric(addTo, xform));
-						gen->loadSingleMesh(meshFile, modelName, scale);
-					}
-					else if (meshFile.extension() == "lod")
-					{
-						gen = _NEW(W4dGeneric(addTo, xform));
-						gen->loadLODFile(meshFile);
-					}
-					else
-					{
-						std::cout << "Unsupported background extension " << meshFile.extension() << std::endl;
-						return false;
-					}
+                    W4dGeneric* gen = nullptr;
+                    if (!meshFile.hasExtension() || meshFile.extension() == "x")
+                    {
+                        ASSERT(modelName.length() != 0, "No model name specified");
+                        gen = _NEW(W4dGeneric(addTo, xform));
+                        gen->loadSingleMesh(meshFile, modelName, scale);
+                    }
+                    else if (meshFile.extension() == "lod")
+                    {
+                        gen = _NEW(W4dGeneric(addTo, xform));
+                        gen->loadLODFile(meshFile);
+                    }
+                    else
+                    {
+                        std::cout << "Unsupported background extension " << meshFile.extension() << std::endl;
+                        return false;
+                    }
 
-					ASSERT(gen, logic_error("Failed to read background object"));
+                    ASSERT(gen, logic_error("Failed to read background object"));
 
-					// If the sun keyword is encountered, assign the current object
-					// to the primary light pointer and then cancel the keyword.
-					if (readingSun)
-					{
-						if (*primaryLight)
-						{
-							std::cout << "Encountered two \"sun\" keywords in background file." << std::endl;
-							return false;
-						}
+                    // If the sun keyword is encountered, assign the current object
+                    // to the primary light pointer and then cancel the keyword.
+                    if (readingSun)
+                    {
+                        if (*primaryLight)
+                        {
+                            std::cout << "Encountered two \"sun\" keywords in background file." << std::endl;
+                            return false;
+                        }
 
-						*primaryLight  = gen;
-						readingSun = false;
-					}
-				}
-			}
-		}
-	}
+                        *primaryLight = gen;
+                        readingSun = false;
+                    }
+                }
+            }
+        }
+    }
 
-	return true;
+    return true;
 }
 
 /* End BACKGRND.CPP *************************************************/

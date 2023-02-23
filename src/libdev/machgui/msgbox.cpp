@@ -16,63 +16,79 @@
 #include "machgui/menus_helper.hpp"
 
 MachGuiMessageBoxResponder::MachGuiMessageBoxResponder()
-{}
+{
+}
 
-//virtual
+// virtual
 MachGuiMessageBoxResponder::~MachGuiMessageBoxResponder()
-{}
+{
+}
 
-//virtual
+// virtual
 bool MachGuiMessageBoxResponder::okPressed()
 {
-	return true;
+    return true;
 }
 
-//virtual
+// virtual
 bool MachGuiMessageBoxResponder::cancelPressed()
 {
-	return true;
+    return true;
 }
 
-MachGuiMessageBox::MachGuiMessageBox( MachGuiStartupScreens* pStartupScreens, uint stringResId, MBType mbType )
-:	GuiDisplayable( pStartupScreens, Gui::Box( 0,0,640,480 ), GuiDisplayable::LAYER5 ),
-	animations_( this, animationFile( mbType ) ),
-	mbType_( mbType ),
-	pStartupScreens_( pStartupScreens )
+MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uint stringResId, MBType mbType)
+    : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480), GuiDisplayable::LAYER5)
+    , animations_(this, animationFile(mbType))
+    , mbType_(mbType)
+    , pStartupScreens_(pStartupScreens)
 {
-	// Disable focus on all non-message box controls
-	pStartupScreens->messageBoxHasFocus( true );
+    // Disable focus on all non-message box controls
+    pStartupScreens->messageBoxHasFocus(true);
 
-	_NEW( MachGuiMenuText( this, Gui::Box( 203,157,484,293 ), stringResId, "gui/menu/largefnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    _NEW(MachGuiMenuText(
+        this,
+        Gui::Box(203, 157, 484, 293),
+        stringResId,
+        "gui/menu/largefnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
-	displayButtons( pStartupScreens );
+    displayButtons(pStartupScreens);
 
-	changed();
+    changed();
 
-	useFastSecondDisplay( false );
+    useFastSecondDisplay(false);
 
     TEST_INVARIANT;
 }
 
-MachGuiMessageBox::MachGuiMessageBox( MachGuiStartupScreens* pStartupScreens, uint stringResId, MBType mbType, const GuiStrings& strs )
-:	GuiDisplayable( pStartupScreens, Gui::Box( 0,0,640,480 ), GuiDisplayable::LAYER5 ),
-	animations_( this, animationFile( mbType ) ),
-	mbType_( mbType ),
-	pStartupScreens_( pStartupScreens )
+MachGuiMessageBox::MachGuiMessageBox(
+    MachGuiStartupScreens* pStartupScreens,
+    uint stringResId,
+    MBType mbType,
+    const GuiStrings& strs)
+    : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480), GuiDisplayable::LAYER5)
+    , animations_(this, animationFile(mbType))
+    , mbType_(mbType)
+    , pStartupScreens_(pStartupScreens)
 {
-	// Disable focus on all non-message box controls
-	pStartupScreens->messageBoxHasFocus( true );
+    // Disable focus on all non-message box controls
+    pStartupScreens->messageBoxHasFocus(true);
 
-	GuiResourceString str( stringResId, strs );
-	string wholeStr = str.asString();
+    GuiResourceString str(stringResId, strs);
+    string wholeStr = str.asString();
 
-	_NEW( MachGuiMenuText( this, Gui::Box( 203,157,484,293 ), wholeStr, "gui/menu/largefnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    _NEW(MachGuiMenuText(
+        this,
+        Gui::Box(203, 157, 484, 293),
+        wholeStr,
+        "gui/menu/largefnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
-	displayButtons( pStartupScreens );
+    displayButtons(pStartupScreens);
 
-	changed();
+    changed();
 
-	useFastSecondDisplay( false );
+    useFastSecondDisplay(false);
 
     TEST_INVARIANT;
 }
@@ -81,10 +97,10 @@ MachGuiMessageBox::~MachGuiMessageBox()
 {
     TEST_INVARIANT;
 
-	//_DELETE( pAnimations_ );
+    //_DELETE( pAnimations_ );
 
-	// Re-enable focus on all non-message box controls
-	pStartupScreens_->messageBoxHasFocus( false );
+    // Re-enable focus on all non-message box controls
+    pStartupScreens_->messageBoxHasFocus(false);
 }
 
 // virtual
@@ -96,36 +112,37 @@ void MachGuiMessageBox::doDisplay()
     auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
     using namespace machgui::helper::menus;
     int menuLeft = x_from_screen_left(pStartupScreens_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
-    int menuTop  = y_from_screen_bottom(pStartupScreens_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
+    int menuTop = y_from_screen_bottom(pStartupScreens_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
 
-    switch ( mbType_ )
+    switch (mbType_)
     {
         case MBOKCANCEL:
         case MBYESNO:
             msgBoxBmpWidth = MachGui::okCancelMsgBoxBmp().width();
             msgBoxBmpHeight = MachGui::okCancelMsgBoxBmp().height();
-            GuiPainter::instance().blit(	MachGui::okCancelMsgBoxBmp(),
-                                            Gui::Box( 0,0,msgBoxBmpWidth,msgBoxBmpHeight ),
-                                            Gui::Coord( menuLeft,menuTop ) );
+            GuiPainter::instance().blit(
+                MachGui::okCancelMsgBoxBmp(),
+                Gui::Box(0, 0, msgBoxBmpWidth, msgBoxBmpHeight),
+                Gui::Coord(menuLeft, menuTop));
             break;
 
         case MBOK:
             msgBoxBmpWidth = MachGui::okMsgBoxBmp().width();
             msgBoxBmpHeight = MachGui::okMsgBoxBmp().height();
-            GuiPainter::instance().blit( MachGui::okMsgBoxBmp(),
-                                         Gui::Box( 0,0,msgBoxBmpWidth,msgBoxBmpHeight ),
-                                         Gui::Coord( menuLeft,menuTop ) );
+            GuiPainter::instance().blit(
+                MachGui::okMsgBoxBmp(),
+                Gui::Box(0, 0, msgBoxBmpWidth, msgBoxBmpHeight),
+                Gui::Coord(menuLeft, menuTop));
             break;
-
     }
 }
 
 void MachGuiMessageBox::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiMessageBox& t )
+ostream& operator<<(ostream& o, const MachGuiMessageBox& t)
 {
 
     o << "MachGuiMessageBox " << (void*)&t << " start" << std::endl;
@@ -136,56 +153,76 @@ ostream& operator <<( ostream& o, const MachGuiMessageBox& t )
 
 void MachGuiMessageBox::update()
 {
-	animations_.update();
+    animations_.update();
 }
 
-void MachGuiMessageBox::displayButtons( MachGuiStartupScreens* pStartupScreens )
+void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
 {
-    if ( mbType_ == MBOKCANCEL )
+    if (mbType_ == MBOKCANCEL)
     {
-        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(348, 324, 491, 355),
-                                                               IDS_MENUBTN_CANCEL, MachGuiStartupScreens::BE_CANCEL, this));
-        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(175, 324, 319, 355),
-                                                           IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK, this));
-        pOkBtn->hasFocus( true );
-        pCancelBtn->escapeControl( true );
-        pCancelBtn->setMsgBoxButton( true );
-        pOkBtn->setMsgBoxButton( true );
+        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+            pStartupScreens,
+            Gui::Box(348, 324, 491, 355),
+            IDS_MENUBTN_CANCEL,
+            MachGuiStartupScreens::BE_CANCEL,
+            this));
+        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+            pStartupScreens,
+            Gui::Box(175, 324, 319, 355),
+            IDS_MENUBTN_OK,
+            MachGuiStartupScreens::BE_OK,
+            this));
+        pOkBtn->hasFocus(true);
+        pCancelBtn->escapeControl(true);
+        pCancelBtn->setMsgBoxButton(true);
+        pOkBtn->setMsgBoxButton(true);
     }
-    else if ( mbType_ == MBOK )
+    else if (mbType_ == MBOK)
     {
-        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(348, 324, 491, 355),
-                                                           IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK, this));
-        pOkBtn->hasFocus( true );
-        pOkBtn->setMsgBoxButton( true );
+        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+            pStartupScreens,
+            Gui::Box(348, 324, 491, 355),
+            IDS_MENUBTN_OK,
+            MachGuiStartupScreens::BE_OK,
+            this));
+        pOkBtn->hasFocus(true);
+        pOkBtn->setMsgBoxButton(true);
     }
-    else if ( mbType_ == MBYESNO )
+    else if (mbType_ == MBYESNO)
     {
-        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(348, 324, 491, 355),
-                                                               IDS_MENUBTN_NO, MachGuiStartupScreens::BE_CANCEL, this));
-        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, Gui::Box(175, 324, 319, 355),
-                                                           IDS_MENUBTN_YES, MachGuiStartupScreens::BE_OK, this));
-        pOkBtn->hasFocus( true );
-        pCancelBtn->escapeControl( true );
-        pCancelBtn->setMsgBoxButton( true );
-        pOkBtn->setMsgBoxButton( true );
+        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+            pStartupScreens,
+            Gui::Box(348, 324, 491, 355),
+            IDS_MENUBTN_NO,
+            MachGuiStartupScreens::BE_CANCEL,
+            this));
+        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+            pStartupScreens,
+            Gui::Box(175, 324, 319, 355),
+            IDS_MENUBTN_YES,
+            MachGuiStartupScreens::BE_OK,
+            this));
+        pOkBtn->hasFocus(true);
+        pCancelBtn->escapeControl(true);
+        pCancelBtn->setMsgBoxButton(true);
+        pOkBtn->setMsgBoxButton(true);
     }
 }
 
 const GuiBitmap& MachGuiMessageBox::image() const
 {
-	if ( mbType_ == MBOKCANCEL or mbType_ == MBYESNO )
-		return MachGui::okCancelMsgBoxBmp();
+    if (mbType_ == MBOKCANCEL or mbType_ == MBYESNO)
+        return MachGui::okCancelMsgBoxBmp();
 
-	return MachGui::okMsgBoxBmp();
+    return MachGui::okMsgBoxBmp();
 }
 
-//static
-SysPathName MachGuiMessageBox::animationFile( MBType mbType )
+// static
+SysPathName MachGuiMessageBox::animationFile(MBType mbType)
 {
-	if ( mbType == MBOKCANCEL or mbType == MBYESNO )
-		return SysPathName( "gui/menu/mb_anim2.anm" );
+    if (mbType == MBOKCANCEL or mbType == MBYESNO)
+        return SysPathName("gui/menu/mb_anim2.anm");
 
-	return SysPathName( "gui/menu/mb_anims.anm" );
+    return SysPathName("gui/menu/mb_anims.anm");
 }
 /* End MSGBOX.CPP ***************************************************/

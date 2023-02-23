@@ -7,10 +7,10 @@
 
 #include "gxin/gxtexture.hpp"
 
-GXTexture::GXTexture():
-transparancy_(0),
-isPaletted_(false),
-palette_(0)
+GXTexture::GXTexture()
+    : transparancy_(0)
+    , isPaletted_(false)
+    , palette_(0)
 {
 
     TEST_INVARIANT;
@@ -19,14 +19,13 @@ palette_(0)
 GXTexture::~GXTexture()
 {
     TEST_INVARIANT;
-
 }
 
-GXTexture::GXTexture( const GXTexture& copy):
-name_(copy.name_),
-transparancy_(copy.transparancy_),
-isPaletted_(copy.isPaletted_),
-palette_(copy.palette_)
+GXTexture::GXTexture(const GXTexture& copy)
+    : name_(copy.name_)
+    , transparancy_(copy.transparancy_)
+    , isPaletted_(copy.isPaletted_)
+    , palette_(copy.palette_)
 {
 
     TEST_INVARIANT;
@@ -34,53 +33,49 @@ palette_(copy.palette_)
 
 GXTexture& GXTexture::operator=(const GXTexture& copy)
 {
-  TEST_INVARIANT;
+    TEST_INVARIANT;
 
-  if (this!=&copy)
-  {
-    name_=copy.name_;
-	transparancy_=copy.transparancy_;
-	isPaletted_=copy.isPaletted_;
-	palette_=copy.palette_;
-  }
-  POST(*this==copy);
-  TEST_INVARIANT;
+    if (this != &copy)
+    {
+        name_ = copy.name_;
+        transparancy_ = copy.transparancy_;
+        isPaletted_ = copy.isPaletted_;
+        palette_ = copy.palette_;
+    }
+    POST(*this == copy);
+    TEST_INVARIANT;
 
-  return *this;
+    return *this;
 }
 
 void GXTexture::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 bool operator==(const GXTexture& tex1, const GXTexture& tex2)
 {
-  bool result=false;
+    bool result = false;
 
-  if (
-	  (tex1.name_==tex2.name_) &&
-	  (tex1.transparancy_==tex2.transparancy_) &&
-	  (tex1.isPaletted_==tex2.isPaletted_) &&
-	  (tex1.palette_==tex2.palette_)
-	 )
-	  result=true;
+    if ((tex1.name_ == tex2.name_) && (tex1.transparancy_ == tex2.transparancy_)
+        && (tex1.isPaletted_ == tex2.isPaletted_) && (tex1.palette_ == tex2.palette_))
+        result = true;
 
-  return result;
+    return result;
 }
 
-bool operator < (const GXTexture& tex1, const GXTexture& tex2)
+bool operator<(const GXTexture& tex1, const GXTexture& tex2)
 {
-  bool result=false;
-  // TODO:If necessary, should complete this method so as
-  // to compare other informations than names
-  if (tex1.name_<tex2.name_)
-    result =true;
+    bool result = false;
+    // TODO:If necessary, should complete this method so as
+    // to compare other informations than names
+    if (tex1.name_ < tex2.name_)
+        result = true;
 
-  return result;
+    return result;
 }
 
-ostream& operator <<( ostream& o, const GXTexture& t )
+ostream& operator<<(ostream& o, const GXTexture& t)
 {
 
     o << "name_ " << t.name_;

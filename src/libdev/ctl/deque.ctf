@@ -4,47 +4,45 @@
  */
 
 //////////////////////////////////////////////////////////////////////
-template< class T >
-void perWrite( PerOstream& ostr, const ctl_deque< T >& l )
+template <class T> void perWrite(PerOstream& ostr, const ctl_deque<T>& l)
 {
-    PER_WRITE_RAW_OBJECT( ostr, l.size() );
+    PER_WRITE_RAW_OBJECT(ostr, l.size());
 
-    for( typename ctl_deque< T >::const_iterator i = l.begin(); i != l.end(); ++i )
+    for (typename ctl_deque<T>::const_iterator i = l.begin(); i != l.end(); ++i)
     {
         ostr << *i;
     }
 }
 
-template< class T >
-void perRead( PerIstream& istr, ctl_deque< T >& l )
+template <class T> void perRead(PerIstream& istr, ctl_deque<T>& l)
 {
-    l.erase( l.begin(), l.end() );
-    ASSERT( l.size() == 0, "Deque has not been properly cleared" );
+    l.erase(l.begin(), l.end());
+    ASSERT(l.size() == 0, "Deque has not been properly cleared");
 
-    size_t  size;
-    PER_READ_RAW_OBJECT( istr, size );
+    size_t size;
+    PER_READ_RAW_OBJECT(istr, size);
 
-    for( size_t i = 0; i < size; ++i )
+    for (size_t i = 0; i < size; ++i)
     {
-        T   t;
+        T t;
         istr >> t;
-        l.push_back( t );
+        l.push_back(t);
     }
 }
 /*
 template < class T >
 bool operator ==( const ctl_deque< T >& x,
-					const ctl_deque< T >& y )
+                    const ctl_deque< T >& y )
 {
-	return x.size() == y.size()
-			and equal( x.begin(), x.end(), y.begin() );
+    return x.size() == y.size()
+            and equal( x.begin(), x.end(), y.begin() );
 }
 
 template < class T >
 bool operator <( const ctl_deque< T >& x, const ctl_deque< T >& y )
 {
-	return lexicographical_compare( x.begin(), x.end(),
-										y.begin(), y.end() );
+    return lexicographical_compare( x.begin(), x.end(),
+                                        y.begin(), y.end() );
 }
 
 */

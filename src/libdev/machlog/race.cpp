@@ -1,5 +1,5 @@
 /*
- * R A C E . C P P 
+ * R A C E . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -9,9 +9,9 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-MachLogRace::MachLogRace( const MachPhys::Race& race )
-:   SimProcess(),
-    race_( race )
+MachLogRace::MachLogRace(const MachPhys::Race& race)
+    : SimProcess()
+    , race_(race)
 {
 
     TEST_INVARIANT;
@@ -21,7 +21,6 @@ MachLogRace::MachLogRace( const MachPhys::Race& race )
 MachLogRace::~MachLogRace()
 {
     TEST_INVARIANT;
-
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

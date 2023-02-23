@@ -1,5 +1,5 @@
 /*
- * M A P P E R . H P P 
+ * M A P P E R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,27 +21,25 @@ class MachLogMapper
 // Canonical form revoked
 {
 public:
-    static  MachPhys::MachineType mapToPhysMachine( MachLog::ObjectType type );
+    static MachPhys::MachineType mapToPhysMachine(MachLog::ObjectType type);
     //  PRE( isMachine( type ) );
-    static  MachPhys::ConstructionType mapToPhysConstruction( MachLog::ObjectType );
+    static MachPhys::ConstructionType mapToPhysConstruction(MachLog::ObjectType);
     //  PRE( isConstruction( type ) );
 
-    static  bool    isMachine( MachLog::ObjectType );
-    static  bool    isConstruction( MachLog::ObjectType );
+    static bool isMachine(MachLog::ObjectType);
+    static bool isConstruction(MachLog::ObjectType);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogMapper& t );
+    friend ostream& operator<<(ostream& o, const MachLogMapper& t);
 
     MachLogMapper();
     ~MachLogMapper();
 
-    MachLogMapper( const MachLogMapper& );
-    MachLogMapper& operator =( const MachLogMapper& );
-
+    MachLogMapper(const MachLogMapper&);
+    MachLogMapper& operator=(const MachLogMapper&);
 };
-
 
 #endif
 

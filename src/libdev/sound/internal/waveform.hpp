@@ -23,7 +23,7 @@
 */
 
 #ifndef WAVEFORM_HPP
-	#define WAVEFORM_HPP
+#define WAVEFORM_HPP
 
 #include "base/base.hpp"
 #include "system/pathname.hpp"
@@ -32,53 +32,52 @@
 #include <audio/wave.h>
 #include <AL/al.h>
 
-
 ////////////////////////////////////////////////////////////
 
-	class SndWaveform
-	{
-	public:
-		SndWaveform(  const SndWaveformId& id );
-		~SndWaveform();
+class SndWaveform
+{
+public:
+    SndWaveform(const SndWaveformId& id);
+    ~SndWaveform();
 
-		static bool isWaveFile( const char* path );
+    static bool isWaveFile(const char* path);
 
-		WaveFormat* format();
-		// returns size of PCM data in bytes
-		uint dataSize();
+    WaveFormat* format();
+    // returns size of PCM data in bytes
+    uint dataSize();
 
-		// reads all the wave data to buf and
-		// returns the size of buf in bytes
-		uint read( void* buf );
-		// as above but copies from an offset into the
-		// wave data specified by from of size len.
-		uint read( void* buf, uint from, uint len );
+    // reads all the wave data to buf and
+    // returns the size of buf in bytes
+    uint read(void* buf);
+    // as above but copies from an offset into the
+    // wave data specified by from of size len.
+    uint read(void* buf, uint from, uint len);
 
-		// return the pathname of the SndWaveform
-		const SysPathName& pathname() const;
+    // return the pathname of the SndWaveform
+    const SysPathName& pathname() const;
 
-		const SndWaveformId& id() const;
+    const SndWaveformId& id() const;
 
-		SndWaveform& addReference();
-		SndWaveform& removeReference();
+    SndWaveform& addReference();
+    SndWaveform& removeReference();
 
-		size_t ref() const;
+    size_t ref() const;
 
-		ALenum toALformat();
+    ALenum toALformat();
 
-	private:
-		/** revoked operations **/
-		SndWaveform();
-		SndWaveform( const SndWaveform& );
-		SndWaveform& operator =( const SndWaveform& );
+private:
+    /** revoked operations **/
+    SndWaveform();
+    SndWaveform(const SndWaveform&);
+    SndWaveform& operator=(const SndWaveform&);
 
-		SndWaveformId	id_;
-		WaveInfo*       waveInfo_;
+    SndWaveformId id_;
+    WaveInfo* waveInfo_;
 
-		size_t 			ref_;
-        uint dataSize_; //The cached size of the sound. 0 ==> not calculated yet
-		WaveFormat*		pFormat_;
-	};
+    size_t ref_;
+    uint dataSize_; // The cached size of the sound. 0 ==> not calculated yet
+    WaveFormat* pFormat_;
+};
 
 ////////////////////////////////////////////////////////////
 

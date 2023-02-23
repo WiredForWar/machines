@@ -1,5 +1,5 @@
 /*
- * A C T O R I . H P P 
+ * A C T O R I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,43 +22,44 @@
 class MachActorImpl
 {
 public:
-	MachActorImpl( MachActor* pActor, MachLogRace* pLogRace, MachLog::ObjectType );
-	~MachActorImpl();
-	PER_MEMBER_PERSISTENT( MachActorImpl );
-	PER_FRIEND_READ_WRITE( MachActorImpl );
+    MachActorImpl(MachActor* pActor, MachLogRace* pLogRace, MachLog::ObjectType);
+    ~MachActorImpl();
+    PER_MEMBER_PERSISTENT(MachActorImpl);
+    PER_FRIEND_READ_WRITE(MachActorImpl);
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
-	friend class MachActor;
+    friend class MachActor;
+
 private:
-	MachLogStrategy *				pStrategy_;
-	bool							isInSpecialUpdateActorsList_;
-	PhysRelativeTime				maximumTimeInSpecialUpdateActors_;
-	PhysAbsoluteTime				startTimeInSpecialUpdateActors_;
-	MachActor::Actors	  			actorsThreateningMe_;
-	bool 							isIn1stPersonView_;
-	MachLog::ObjectType				objectType_;	//Unique object type..Note NOT the same as MachPhys::....Type
-	MachPhys::ArmourUnits			armour_;
-	MachPhys::HitPointUnits			hp_;
-	bool							selfDestructActive_;
-	PhysAbsoluteTime				selfDestructTime_;
-	MachLogRace*					pRace_;
-	MachLog::SelectionState         selectionState_; //Current state
-	MachLogRace*					pOriginalRace_;
-	PhysAbsoluteTime				changeRaceStartTime_;
-	int								localStrength_; 	
-	uint32_t						lastBeHitFrame_;
-	PhysAbsoluteTime				nextSOSOpportunity_;
-	PhysAbsoluteTime				nextSpecialUpdateOpportunity_;
-	PhysAbsoluteTime				nextFirstPersonSOSOpportunity_;	
-	PhysAbsoluteTime				nextPredictedPositionRecalculateTime_;
-	MexPoint3d						basicTargetOffset_;
-	MexPoint3d						cachedTargetOffset_;
-	PhysAbsoluteTime				busyUntil_;
-	MachPhys::Race					displayMapAndIconRace_;
+    MachLogStrategy* pStrategy_;
+    bool isInSpecialUpdateActorsList_;
+    PhysRelativeTime maximumTimeInSpecialUpdateActors_;
+    PhysAbsoluteTime startTimeInSpecialUpdateActors_;
+    MachActor::Actors actorsThreateningMe_;
+    bool isIn1stPersonView_;
+    MachLog::ObjectType objectType_; // Unique object type..Note NOT the same as MachPhys::....Type
+    MachPhys::ArmourUnits armour_;
+    MachPhys::HitPointUnits hp_;
+    bool selfDestructActive_;
+    PhysAbsoluteTime selfDestructTime_;
+    MachLogRace* pRace_;
+    MachLog::SelectionState selectionState_; // Current state
+    MachLogRace* pOriginalRace_;
+    PhysAbsoluteTime changeRaceStartTime_;
+    int localStrength_;
+    uint32_t lastBeHitFrame_;
+    PhysAbsoluteTime nextSOSOpportunity_;
+    PhysAbsoluteTime nextSpecialUpdateOpportunity_;
+    PhysAbsoluteTime nextFirstPersonSOSOpportunity_;
+    PhysAbsoluteTime nextPredictedPositionRecalculateTime_;
+    MexPoint3d basicTargetOffset_;
+    MexPoint3d cachedTargetOffset_;
+    PhysAbsoluteTime busyUntil_;
+    MachPhys::Race displayMapAndIconRace_;
 };
 
-PER_DECLARE_PERSISTENT( MachActorImpl );
+PER_DECLARE_PERSISTENT(MachActorImpl);
 
 #endif
 

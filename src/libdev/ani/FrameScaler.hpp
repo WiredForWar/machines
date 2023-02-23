@@ -3,10 +3,11 @@
 #include <cstddef>
 
 extern "C" {
-    #include <libswscale/swscale.h>
+#include <libswscale/swscale.h>
 }
 
-class FrameScaler {
+class FrameScaler
+{
 public:
     FrameScaler(size_t srcWidth, size_t srcHeight, size_t dstWidth, size_t dstHeight);
     virtual ~FrameScaler();

@@ -18,56 +18,53 @@
 class MachPhysConstructorData : public MachPhysMachineData
 {
 public:
-	MachPhysConstructorData();
-    ~MachPhysConstructorData();
+    MachPhysConstructorData();
+    ~MachPhysConstructorData() override;
 
-	//get methods public
-	MachPhys::SizeUnits capacity() const;
-	MachPhys::BuildingMaterialUnits constructionRate() const;
-	MachPhys::ConstructionType		mostAdvancedConstructionType() const;
-	int								mostAdvancedSubType() const;
-	size_t							mostAdvancedConstructionLevel() const;
+    // get methods public
+    MachPhys::SizeUnits capacity() const;
+    MachPhys::BuildingMaterialUnits constructionRate() const;
+    MachPhys::ConstructionType mostAdvancedConstructionType() const;
+    int mostAdvancedSubType() const;
+    size_t mostAdvancedConstructionLevel() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysConstructorData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysConstructorData& t);
 
 private:
-	// Friend classes allowed to use private set functions
-	friend class MachPhysDataParser;
-	//friend class MachLogScenario;
+    // Friend classes allowed to use private set functions
+    friend class MachPhysDataParser;
+    // friend class MachLogScenario;
 
     // Operation deliberately revoked
-    MachPhysConstructorData( const MachPhysConstructorData& );
+    MachPhysConstructorData(const MachPhysConstructorData&);
 
     // Operation deliberately revoked
-    MachPhysConstructorData& operator =( const MachPhysConstructorData& );
+    MachPhysConstructorData& operator=(const MachPhysConstructorData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysConstructorData& );
+    bool operator==(const MachPhysConstructorData&);
 
-    //MachPhysConstructorData();
+    // MachPhysConstructorData();
 
-	//set methods private
-	void capacity( const MachPhys::SizeUnits& );
-	void constructionRate( const MachPhys::BuildingMaterialUnits& );
+    // set methods private
+    void capacity(const MachPhys::SizeUnits&);
+    void constructionRate(const MachPhys::BuildingMaterialUnits&);
 
-	void mostAdvancedConstructionType( MachPhys::ConstructionType );
-	void mostAdvancedSubType( int );
-	void mostAdvancedConstructionLevel( size_t );
+    void mostAdvancedConstructionType(MachPhys::ConstructionType);
+    void mostAdvancedSubType(int);
+    void mostAdvancedConstructionLevel(size_t);
 
-	MachPhys::SizeUnits				capacity_;
-	MachPhys::BuildingMaterialUnits	constructionRate_;
+    MachPhys::SizeUnits capacity_;
+    MachPhys::BuildingMaterialUnits constructionRate_;
 
-
-	// Data specifying unique entry point into construction tree
-	MachPhys::ConstructionType		mostAdvancedConstructionType_;
-	int								mostAdvancedSubType_;
-	size_t							mostAdvancedConstructionLevel_;
-	//wcombo??
-
+    // Data specifying unique entry point into construction tree
+    MachPhys::ConstructionType mostAdvancedConstructionType_;
+    int mostAdvancedSubType_;
+    size_t mostAdvancedConstructionLevel_;
+    // wcombo??
 };
-
 
 #endif
 

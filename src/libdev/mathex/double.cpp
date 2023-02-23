@@ -5,15 +5,15 @@
 
 #include "mathex/double.hpp"
 
-PER_DEFINE_PERSISTENT( MexDouble );
+PER_DEFINE_PERSISTENT(MexDouble);
 
-void perWrite( PerOstream& ostr, const MexDouble& d )
+void perWrite(PerOstream& ostr, const MexDouble& d)
 {
-    PER_WRITE_RAW_DATA( ostr, &d.rep_, sizeof( MexDouble::IDouble ) );
+    PER_WRITE_RAW_DATA(ostr, &d.rep_, sizeof(MexDouble::IDouble));
 }
 
-void perRead( PerIstream& istr, MexDouble& d )
+void perRead(PerIstream& istr, MexDouble& d)
 {
-    PER_READ_RAW_DATA( istr, &d.rep_, sizeof( MexDouble::IDouble ) );
-    //PER_READ_RAW_DATA( istr, &d.rep_, 8 );
+    PER_READ_RAW_DATA(istr, &d.rep_, sizeof(MexDouble::IDouble));
+    // PER_READ_RAW_DATA( istr, &d.rep_, 8 );
 }

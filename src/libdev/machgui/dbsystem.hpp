@@ -16,8 +16,7 @@
 #include "base/persist.hpp"
 #include "machgui/dbelemen.hpp"
 
-
-//forward refs
+// forward refs
 class MachGuiDbISystem;
 class MachGuiDbPlanet;
 
@@ -25,44 +24,43 @@ class MachGuiDbSystem : public MachGuiDbElement
 // Canonical form revoked
 {
 public:
-    //The system is known by identifier systemName.
-    //The id of the string used in the menu list boxes is menuStringId.
-    MachGuiDbSystem( const string& systemName, uint menuStringId );
+    // The system is known by identifier systemName.
+    // The id of the string used in the menu list boxes is menuStringId.
+    MachGuiDbSystem(const string& systemName, uint menuStringId);
 
-    virtual ~MachGuiDbSystem();
+    ~MachGuiDbSystem() override;
 
-    //set/get the flic or bmp filename displayed in the campaign menu.
-    //string is empty if undefined.
-    void campaignPicture( const string& filename );
+    // set/get the flic or bmp filename displayed in the campaign menu.
+    // string is empty if undefined.
+    void campaignPicture(const string& filename);
     const string& campaignPicture() const;
 
-    //The number of planets in this system
+    // The number of planets in this system
     uint nPlanets() const;
 
-    //The index'th scenario
-    MachGuiDbPlanet& planet( uint index );
-    //PRE( index < nPlanets() );
+    // The index'th scenario
+    MachGuiDbPlanet& planet(uint index);
+    // PRE( index < nPlanets() );
 
-    //Add a planet to the system
-    void addPlanet( MachGuiDbPlanet* pPlanet );
+    // Add a planet to the system
+    void addPlanet(MachGuiDbPlanet* pPlanet);
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachGuiDbSystem );
-    PER_FRIEND_READ_WRITE( MachGuiDbSystem );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbSystem);
+    PER_FRIEND_READ_WRITE(MachGuiDbSystem);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiDbSystem& t );
+    friend ostream& operator<<(ostream& o, const MachGuiDbSystem& t);
 
-    MachGuiDbSystem( const MachGuiDbSystem& );
-    MachGuiDbSystem& operator =( const MachGuiDbSystem& );
+    MachGuiDbSystem(const MachGuiDbSystem&);
+    MachGuiDbSystem& operator=(const MachGuiDbSystem&);
 
-    //data members
-    MachGuiDbISystem* pData_; //implementation data object
+    // data members
+    MachGuiDbISystem* pData_; // implementation data object
 };
 
-PER_DECLARE_PERSISTENT( MachGuiDbSystem );
-
+PER_DECLARE_PERSISTENT(MachGuiDbSystem);
 
 #endif
 

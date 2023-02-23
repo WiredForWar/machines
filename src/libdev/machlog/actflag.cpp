@@ -1,5 +1,5 @@
 /*
- * A C T FLAG . C P P 
+ * A C T FLAG . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -14,15 +14,15 @@
 #include "machlog/races.hpp"
 #include "machlog/dbhandlr.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogSetFlagAction );
+PER_DEFINE_PERSISTENT(MachLogSetFlagAction);
 
-MachLogSetFlagAction::MachLogSetFlagAction( SimCondition* pCondition, bool enabled )
-:	SimAction( pCondition, enabled )
+MachLogSetFlagAction::MachLogSetFlagAction(SimCondition* pCondition, bool enabled)
+    : SimAction(pCondition, enabled)
 {
     TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MachLogSetFlagAction::~MachLogSetFlagAction()
 {
     TEST_INVARIANT;
@@ -30,10 +30,10 @@ MachLogSetFlagAction::~MachLogSetFlagAction()
 
 void MachLogSetFlagAction::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogSetFlagAction& t )
+ostream& operator<<(ostream& o, const MachLogSetFlagAction& t)
 {
 
     o << "MachLogSetFlagAction " << (void*)&t << " start" << std::endl;
@@ -42,62 +42,62 @@ ostream& operator <<( ostream& o, const MachLogSetFlagAction& t )
     return o;
 }
 
-//virtual 
+// virtual
 void MachLogSetFlagAction::doAction()
 {
-	MachLogRaces::instance().databaseHandler().setScenarioFlag( flagName_ );
+    MachLogRaces::instance().databaseHandler().setScenarioFlag(flagName_);
 }
 
-//static 
-MachLogSetFlagAction* MachLogSetFlagAction::newFromParser( SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser )
+// static
+MachLogSetFlagAction*
+MachLogSetFlagAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-	MachLogSetFlagAction* pResult = NULL;
-	pResult = _NEW( MachLogSetFlagAction( pCondition, enabled ) );
-	for( int i = 0; i < pParser->tokens().size(); ++i )
-	{
-		const string& token = pParser->tokens()[i];
-		if( token == "NAME" )
-			pResult->flagName_ = pParser->tokens()[i+1];
-	}
-	return pResult;
+    MachLogSetFlagAction* pResult = nullptr;
+    pResult = _NEW(MachLogSetFlagAction(pCondition, enabled));
+    for (int i = 0; i < pParser->tokens().size(); ++i)
+    {
+        const string& token = pParser->tokens()[i];
+        if (token == "NAME")
+            pResult->flagName_ = pParser->tokens()[i + 1];
+    }
+    return pResult;
 }
 
-//virtual
-void MachLogSetFlagAction::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogSetFlagAction::doOutputOperator(ostream& o) const
 {
-	SimAction::doOutputOperator( o );
-	o << "Flag " << flagName_ << std::endl;
+    SimAction::doOutputOperator(o);
+    o << "Flag " << flagName_ << std::endl;
 }
 
-void perWrite( PerOstream& ostr, const MachLogSetFlagAction& action )
+void perWrite(PerOstream& ostr, const MachLogSetFlagAction& action)
 {
-	const SimAction& base1 = action;
+    const SimAction& base1 = action;
 
-	ostr << base1;
-	ostr << action.flagName_;
-
+    ostr << base1;
+    ostr << action.flagName_;
 }
 
-void perRead( PerIstream& istr, MachLogSetFlagAction& action )
+void perRead(PerIstream& istr, MachLogSetFlagAction& action)
 {
-	SimAction& base1 = action;
+    SimAction& base1 = action;
 
-	istr >> base1;
-	istr >> action.flagName_;
+    istr >> base1;
+    istr >> action.flagName_;
 }
 
-MachLogSetFlagAction::MachLogSetFlagAction( PerConstructor con )
-:	SimAction( con )
+MachLogSetFlagAction::MachLogSetFlagAction(PerConstructor con)
+    : SimAction(con)
 {
 }
 
-//static 
-MachLogSetFlagAction* MachLogSetFlagAction::newDynamic( SimCondition* pCondition, bool enabled, const string& flagName )
+// static
+MachLogSetFlagAction* MachLogSetFlagAction::newDynamic(SimCondition* pCondition, bool enabled, const string& flagName)
 {
-	MachLogSetFlagAction* pResult = NULL;
-	pResult = _NEW( MachLogSetFlagAction( pCondition, enabled ) );
-	pResult->flagName_ = flagName;
-	return pResult;
+    MachLogSetFlagAction* pResult = nullptr;
+    pResult = _NEW(MachLogSetFlagAction(pCondition, enabled));
+    pResult->flagName_ = flagName;
+    return pResult;
 }
 
 /* End ACTFLAG.CPP *************************************************/

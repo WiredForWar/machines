@@ -15,27 +15,27 @@ enum class MachineVoiceMailEventID;
 class MachLogRecentEventsManager
 {
 public:
-	static MachLogRecentEventsManager& instance();
+    static MachLogRecentEventsManager& instance();
 
-	void setCameras( MachCameras* pCameras );
+    void setCameras(MachCameras* pCameras);
 
-	void clear();
+    void clear();
 
-	bool hasEvents() const;
+    bool hasEvents() const;
 
-	void onVoiceMailPosted(const MexPoint3d& position, VoiceMailID id);
-	void onVoiceMailPosted(const MachActor& fromActor, MachineVoiceMailEventID id);
+    void onVoiceMailPosted(const MexPoint3d& position, VoiceMailID id);
+    void onVoiceMailPosted(const MachActor& fromActor, MachineVoiceMailEventID id);
 
-	bool doHandleKeyEvent(const GuiKeyEvent& event);
+    bool doHandleKeyEvent(const GuiKeyEvent& event);
 
 private:
-	MachLogRecentEventsManager();
+    MachLogRecentEventsManager();
 
-	void addEventPosition(const MexPoint2d& newEventPos);
+    void addEventPosition(const MexPoint2d& newEventPos);
 
-	int skipEvents_ = 0;
-	std::vector<MexPoint2d> eventPositions_;
-	MachCameras *pCameras_ = nullptr;
+    int skipEvents_ = 0;
+    std::vector<MexPoint2d> eventPositions_;
+    MachCameras* pCameras_ = nullptr;
 };
 
 #endif // MACHLOG_RecentEventsManager_HPP

@@ -1,5 +1,5 @@
 /*
- * C T X M M E N U . C P P 
+ * C T X M M E N U . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,62 +20,99 @@
 class MachGuiMainMenuMessageBoxResponder : public MachGuiMessageBoxResponder
 {
 public:
-	MachGuiMainMenuMessageBoxResponder( MachGuiCtxMainMenu* pMainMenuCtx )
-	:	pMainMenuCtx_( pMainMenuCtx )
-	{}
-	
-	virtual bool okPressed()
-	{
-		pMainMenuCtx_->quit();
-		return true;
-	}
-	
+    MachGuiMainMenuMessageBoxResponder(MachGuiCtxMainMenu* pMainMenuCtx)
+        : pMainMenuCtx_(pMainMenuCtx)
+    {
+    }
+
+    bool okPressed() override
+    {
+        pMainMenuCtx_->quit();
+        return true;
+    }
+
 private:
-	MachGuiCtxMainMenu* pMainMenuCtx_;	
+    MachGuiCtxMainMenu* pMainMenuCtx_;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-MachGuiCtxMainMenu::MachGuiCtxMainMenu( MachGuiStartupScreens* pStartupScreens )
-:	MachGuiStartupScreenContext( pStartupScreens ),
-	animations_( pStartupScreens, SysPathName("gui/menu/sa_anims.anm") ),
-	quit_( false )
+MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
+    : MachGuiStartupScreenContext(pStartupScreens)
+    , animations_(pStartupScreens, SysPathName("gui/menu/sa_anims.anm"))
+    , quit_(false)
 {
-	// Access all menu fonts to make sure they are loaded ready for other context to use. This will
-	// stop annoying pauses as other context access and use fonts for the first time.
-	GuiBmpFont::getFont("gui/menu/smallfnt.bmp");
-	GuiBmpFont::getFont("gui/menu/smaldfnt.bmp");
-	GuiBmpFont::getFont("gui/menu/largefnt.bmp");
-	GuiBmpFont::getFont("gui/menu/largdfnt.bmp");
-	
+    // Access all menu fonts to make sure they are loaded ready for other context to use. This will
+    // stop annoying pauses as other context access and use fonts for the first time.
+    GuiBmpFont::getFont("gui/menu/smallfnt.bmp");
+    GuiBmpFont::getFont("gui/menu/smaldfnt.bmp");
+    GuiBmpFont::getFont("gui/menu/largefnt.bmp");
+    GuiBmpFont::getFont("gui/menu/largdfnt.bmp");
+
 #ifdef DEMO
-   	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 40,  527, 75  ), IDS_MENUBTN_CAMPAIGN, MachGuiStartupScreens::CAMPAIGN ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 130, 527, 165 ), IDS_MENUBTN_MULTIPLAYER, MachGuiStartupScreens::MULTIPLAYER ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 217, 527, 252 ), IDS_MENUBTN_SKIRMISH, MachGuiStartupScreens::SKIRMISH ) );
-	_NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 368, 297, 527, 332 ), IDS_MENUBTN_OPTIONS, MachGuiStartupScreens::OPTIONS ) );
-	MachGuiMenuButton* pExitBtn = _NEW( MachGuiMenuButton( pStartupScreens, Gui::Box( 117, 410, 275, 445 ), IDS_MENUBTN_EXIT, MachGuiStartupScreens::BE_DUMMY_OK ) );
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        Gui::Box(368, 40, 527, 75),
+        IDS_MENUBTN_CAMPAIGN,
+        MachGuiStartupScreens::CAMPAIGN));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        Gui::Box(368, 130, 527, 165),
+        IDS_MENUBTN_MULTIPLAYER,
+        MachGuiStartupScreens::MULTIPLAYER));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        Gui::Box(368, 217, 527, 252),
+        IDS_MENUBTN_SKIRMISH,
+        MachGuiStartupScreens::SKIRMISH));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        Gui::Box(368, 297, 527, 332),
+        IDS_MENUBTN_OPTIONS,
+        MachGuiStartupScreens::OPTIONS));
+    MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        Gui::Box(117, 410, 275, 445),
+        IDS_MENUBTN_EXIT,
+        MachGuiStartupScreens::BE_DUMMY_OK));
 
 #else
-   	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 40, 527, 75), IDS_MENUBTN_SINGLEPLAYER,
-                           MachGuiStartupScreens::SINGLEPLAYER));
-	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 130, 527, 165), IDS_MENUBTN_MULTIPLAYER,
-                           MachGuiStartupScreens::MULTIPLAYER));
-	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 217, 527, 252), IDS_MENUBTN_OPTIONS,
-                           MachGuiStartupScreens::OPTIONS));
-	MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(368, 297, 527, 332),
-                                                         IDS_MENUBTN_EXIT, MachGuiStartupScreens::BE_DUMMY_OK));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(368, 40, 527, 75),
+        IDS_MENUBTN_SINGLEPLAYER,
+        MachGuiStartupScreens::SINGLEPLAYER));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(368, 130, 527, 165),
+        IDS_MENUBTN_MULTIPLAYER,
+        MachGuiStartupScreens::MULTIPLAYER));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(368, 217, 527, 252),
+        IDS_MENUBTN_OPTIONS,
+        MachGuiStartupScreens::OPTIONS));
+    MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(368, 297, 527, 332),
+        IDS_MENUBTN_EXIT,
+        MachGuiStartupScreens::BE_DUMMY_OK));
 
 #endif
 
-	// Create exit button, responds to escape...
-	pExitBtn->escapeControl( true );
+    // Create exit button, responds to escape...
+    pExitBtn->escapeControl(true);
 
-	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 97, 32, 243, 122 ), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp" ) );
+    _NEW(MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp"));
 
-	changeBackdrop( "gui/menu/sa.bmp" );
+    changeBackdrop("gui/menu/sa.bmp");
 
-    pStartupScreens->cursorOn( true );
-	pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
+    pStartupScreens->cursorOn(true);
+    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     TEST_INVARIANT;
 }
@@ -83,15 +120,14 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu( MachGuiStartupScreens* pStartupScreens )
 MachGuiCtxMainMenu::~MachGuiCtxMainMenu()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiCtxMainMenu::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiCtxMainMenu& t )
+ostream& operator<<(ostream& o, const MachGuiCtxMainMenu& t)
 {
 
     o << "MachGuiCtxMainMenu " << (void*)&t << " start" << std::endl;
@@ -102,31 +138,31 @@ ostream& operator <<( ostream& o, const MachGuiCtxMainMenu& t )
 
 void MachGuiCtxMainMenu::update()
 {
-	if ( quit_ )
-	{
-		pStartupScreens_->buttonAction( MachGuiStartupScreens::EXIT );
-	}
-	else
-	{
-		animations_.update();
-	}
+    if (quit_)
+    {
+        pStartupScreens_->buttonAction(MachGuiStartupScreens::EXIT);
+    }
+    else
+    {
+        animations_.update();
+    }
 }
 
 // virtual
 bool MachGuiCtxMainMenu::okayToSwitchContext()
 {
-	if ( pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_DUMMY_OK )
-	{
-		pStartupScreens_->displayMsgBox( IDS_MENUMSG_QUIT, _NEW( MachGuiMainMenuMessageBoxResponder(this) ), true );
-		return false;	
-	}
+    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_DUMMY_OK)
+    {
+        pStartupScreens_->displayMsgBox(IDS_MENUMSG_QUIT, _NEW(MachGuiMainMenuMessageBoxResponder(this)), true);
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 void MachGuiCtxMainMenu::quit()
 {
-	quit_ = true;
-}	 
+    quit_ = true;
+}
 
 /* End CTXMMENU.CPP *************************************************/

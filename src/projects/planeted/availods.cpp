@@ -18,67 +18,66 @@ PedAvailableTileLods& PedAvailableTileLods::instance()
 }
 
 PedAvailableTileLods::PedAvailableTileLods()
-	: SysFileEnumerator( SysPathName(), SysPathName() )
+    : SysFileEnumerator(SysPathName(), SysPathName())
 {
-	lodIndex_ = 0;
+    lodIndex_ = 0;
 
     TEST_INVARIANT;
 
-	POST( lodIndex_ == 0 );
+    POST(lodIndex_ == 0);
 }
 
 PedAvailableTileLods::~PedAvailableTileLods()
 {
     TEST_INVARIANT;
-
 }
 
 void PedAvailableTileLods::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void PedAvailableTileLods::initialise( const SysPathName& lodDir )
+void PedAvailableTileLods::initialise(const SysPathName& lodDir)
 {
-	ASSERT_INFO( lodDir );
+    ASSERT_INFO(lodDir);
 
-	fileSpecification( "*.lod" );
-	directory( lodDir );
+    fileSpecification("*.lod");
+    directory(lodDir);
 
-	find();
+    find();
 
-	POST( not isEmpty() );
-	ALWAYS_ASSERT( not isEmpty(), ("No tile lods found for this planet: " + lodDir.pathname() ).c_str() )
+    POST(not isEmpty());
+    ALWAYS_ASSERT(not isEmpty(), ("No tile lods found for this planet: " + lodDir.pathname()).c_str())
 }
 
 const SysPathName& PedAvailableTileLods::next()
 {
-	++lodIndex_;
+    ++lodIndex_;
 
-	if ( files().size() <= lodIndex_ )
-		lodIndex_ = 0;
+    if (files().size() <= lodIndex_)
+        lodIndex_ = 0;
 
-	return files()[lodIndex_].pathName();
+    return files()[lodIndex_].pathName();
 }
 
 const SysPathName& PedAvailableTileLods::prev()
 {
-	if ( lodIndex_ == 0)
-	{
-	  lodIndex_ = files().size();
-	}
+    if (lodIndex_ == 0)
+    {
+        lodIndex_ = files().size();
+    }
 
-	--lodIndex_;
+    --lodIndex_;
 
-	return files()[lodIndex_].pathName();
+    return files()[lodIndex_].pathName();
 }
 
 const SysPathName& PedAvailableTileLods::current()
 {
-	return files()[lodIndex_].pathName();
+    return files()[lodIndex_].pathName();
 }
 
-ostream& operator <<( ostream& o, const PedAvailableTileLods& t )
+ostream& operator<<(ostream& o, const PedAvailableTileLods& t)
 {
 
     o << "PedAvailableTileLods " << (void*)&t << " start" << std::endl;

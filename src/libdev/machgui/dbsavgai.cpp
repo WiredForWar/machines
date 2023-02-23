@@ -1,5 +1,5 @@
 /*
- * D B S A V G A I . C P P 
+ * D B S A V G A I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,12 +9,12 @@
 #include "machgui/dbplayer.hpp"
 #include "machgui/dbscenar.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbISavedGame );
+PER_DEFINE_PERSISTENT(MachGuiDbISavedGame);
 
 MachGuiDbISavedGame::MachGuiDbISavedGame()
-:   pDbPlayer_( NULL ),
-    isCampaign_( false ),
-    pDbScenario_( NULL )
+    : pDbPlayer_(nullptr)
+    , isCampaign_(false)
+    , pDbScenario_(nullptr)
 {
 
     TEST_INVARIANT;
@@ -23,15 +23,14 @@ MachGuiDbISavedGame::MachGuiDbISavedGame()
 MachGuiDbISavedGame::~MachGuiDbISavedGame()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDbISavedGame::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbISavedGame& t )
+ostream& operator<<(ostream& o, const MachGuiDbISavedGame& t)
 {
 
     o << "MachGuiDbISavedGame " << (void*)&t << " start" << std::endl;
@@ -40,7 +39,7 @@ ostream& operator <<( ostream& o, const MachGuiDbISavedGame& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbISavedGame& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbISavedGame& ob)
 {
     ostr << ob.userFileName_;
     ostr << ob.fileName_;
@@ -49,7 +48,7 @@ void perWrite( PerOstream& ostr, const MachGuiDbISavedGame& ob )
     ostr << ob.pDbScenario_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbISavedGame& ob )
+void perRead(PerIstream& istr, MachGuiDbISavedGame& ob)
 {
     istr >> ob.userFileName_;
     istr >> ob.fileName_;

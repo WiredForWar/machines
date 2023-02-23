@@ -27,52 +27,48 @@ class MexConvexPolygon2d;
 class MachLogPressurePads
 {
 public:
-    MachLogPressurePads( const MexPoint2d& minBound, const MexPoint2d& maxBound );
+    MachLogPressurePads(const MexPoint2d& minBound, const MexPoint2d& maxBound);
     ~MachLogPressurePads();
 
-    void    add(
-        const MexPoint2d& p1,
+    void
+    add(const MexPoint2d& p1,
         const MexPoint2d& p2,
         const MexPoint2d& p3,
         const MexPoint2d& p4,
         MachLogConstruction* pConstruction,
-        size_t entranceNum );
+        size_t entranceNum);
 
-    bool onPad(
-        const MexConvexPolygon2d& polygon,
-        MachLogConstruction** ppConstruction,
-        size_t* pEntrance );
+    bool onPad(const MexConvexPolygon2d& polygon, MachLogConstruction** ppConstruction, size_t* pEntrance);
 
-    //True if circle intersects a pressure pad. If so returns the construction and entrance number
-    //in ppConstruction and pEntrance.
-    bool onPad( const MexCircle2d& circle, MachLogConstruction** ppConstruction, size_t* pEntrance );
+    // True if circle intersects a pressure pad. If so returns the construction and entrance number
+    // in ppConstruction and pEntrance.
+    bool onPad(const MexCircle2d& circle, MachLogConstruction** ppConstruction, size_t* pEntrance);
 
-    //removes all pressure pads associated with pConstruction
-    void remove( MachLogConstruction* pConstruction );
+    // removes all pressure pads associated with pConstruction
+    void remove(MachLogConstruction* pConstruction);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogPressurePads& t );
+    friend ostream& operator<<(ostream& o, const MachLogPressurePads& t);
 
 private:
     // Operation deliberately revoked
-    MachLogPressurePads( const MachLogPressurePads& );
+    MachLogPressurePads(const MachLogPressurePads&);
 
     // Operation deliberately revoked
-    MachLogPressurePads& operator =( const MachLogPressurePads& );
+    MachLogPressurePads& operator=(const MachLogPressurePads&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachLogPressurePads& );
+    bool operator==(const MachLogPressurePads&);
 
-    PhysConfigSpace2d* pEntranceConfigSpace_; //The config space for building entrances
+    PhysConfigSpace2d* pEntranceConfigSpace_; // The config space for building entrances
 
-    typedef std::pair< MachLogConstruction*, size_t >    EntranceData;
+    using EntranceData = std::pair<MachLogConstruction*, size_t>;
 
-    typedef ctl_map< PhysConfigSpace2d::PolygonId, EntranceData, std::less< PhysConfigSpace2d::PolygonId > > EntranceMap;
+    using EntranceMap = ctl_map<PhysConfigSpace2d::PolygonId, EntranceData, std::less<PhysConfigSpace2d::PolygonId>>;
 
     EntranceMap polygonToEntrance_;
 };
-
 
 #endif
 

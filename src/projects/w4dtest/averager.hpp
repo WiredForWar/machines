@@ -19,31 +19,30 @@ class DevTimer;
 template <class X> class UtlAverager
 {
 public:
-    UtlAverager();	// POST(period() == 0.5);
+    UtlAverager(); // POST(period() == 0.5);
     ~UtlAverager();
 
-	void accumulate(const X&);
-	const X& average();
-	double timeSinceLastSample() const;
+    void accumulate(const X&);
+    const X& average();
+    double timeSinceLastSample() const;
 
-	double period() const;
-	void period(double d);	// PRE(d > 0);
+    double period() const;
+    void period(double d); // PRE(d > 0);
 
 private:
-	void sampleAverageAndClear(double interval);
+    void sampleAverageAndClear(double interval);
 
-	DevTimer*	timer_;
-	double		lastSampleTime_, period_;
-	X			accumulation_, lastAverage_;
+    DevTimer* timer_;
+    double lastSampleTime_, period_;
+    X accumulation_, lastAverage_;
 
-    UtlAverager( const UtlAverager< X >& );
-    UtlAverager< X >& operator =( const UtlAverager< X >& );
+    UtlAverager(const UtlAverager<X>&);
+    UtlAverager<X>& operator=(const UtlAverager<X>&);
 };
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "w4dtest/averager.ctp"
-//#endif
-
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "w4dtest/averager.ctp"
+// #endif
 
 #endif
 

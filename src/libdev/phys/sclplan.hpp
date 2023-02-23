@@ -1,5 +1,5 @@
 /*
- * S C L P L A N . H P P 
+ * S C L P L A N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,34 +22,34 @@ class PhysScalarPlan
 // Canonical form revoked
 {
 public:
-	PhysScalarPlan();
-    PhysScalarPlan( const PhysRelativeTime& duration );
+    PhysScalarPlan();
+    PhysScalarPlan(const PhysRelativeTime& duration);
     virtual ~PhysScalarPlan();
 
-	const PhysRelativeTime& duration() const; 
-	virtual MATHEX_SCALAR scalar(const PhysRelativeTime& timeOffset) const = 0; 
+    const PhysRelativeTime& duration() const;
+    virtual MATHEX_SCALAR scalar(const PhysRelativeTime& timeOffset) const = 0;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysScalarPlan& t );
+    friend ostream& operator<<(ostream& o, const PhysScalarPlan& t);
 
-    PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT( PhysScalarPlan );
-    PER_FRIEND_READ_WRITE( PhysScalarPlan );
-    
+    PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT(PhysScalarPlan);
+    PER_FRIEND_READ_WRITE(PhysScalarPlan);
+
 protected:
-	void duration(const PhysRelativeTime& time);  
+    void duration(const PhysRelativeTime& time);
 
 private:
-    PhysScalarPlan( const PhysScalarPlan& );
-    PhysScalarPlan& operator =( const PhysScalarPlan& );
-    bool operator ==( const PhysScalarPlan& );
+    PhysScalarPlan(const PhysScalarPlan&);
+    PhysScalarPlan& operator=(const PhysScalarPlan&);
+    bool operator==(const PhysScalarPlan&);
 
-	PhysRelativeTime duration_;
+    PhysRelativeTime duration_;
 };
 
-PER_DECLARE_PERSISTENT( PhysScalarPlan );
+PER_DECLARE_PERSISTENT(PhysScalarPlan);
 
-typedef CtlCountedPtr< PhysScalarPlan > PhysScalarPlanPtr;
+using PhysScalarPlanPtr = CtlCountedPtr<PhysScalarPlan>;
 
 #endif
 

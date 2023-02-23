@@ -1,5 +1,5 @@
 /*
- * C S 2 D M C A C . H P P 
+ * C S 2 D M C A C . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -27,65 +27,56 @@ public:
     static PhysCS2dDomainFindPathCache& instance();
     ~PhysCS2dDomainFindPathCache();
 
-    typedef PhysConfigSpace2d::PortalPoints PortalPoints;
+    using PortalPoints = PhysConfigSpace2d::PortalPoints;
 
-    typedef PhysConfigSpace2d::ObstacleFlags ObstacleFlags;
+    using ObstacleFlags = PhysConfigSpace2d::ObstacleFlags;
 
     bool findPath(
         PhysConfigSpace2d::DomainId startDomainId,
-        const MexPoint2d& startPoint, 
+        const MexPoint2d& startPoint,
         PhysConfigSpace2d::DomainId endDomainId,
         const MexPoint2d& endPoint,
         MATHEX_SCALAR clearance,
         ObstacleFlags flags,
-        PortalPoints* pPath ) const;
-    
+        PortalPoints* pPath) const;
+
     void addPath(
         PhysConfigSpace2d::DomainId startDomainId,
-        const MexPoint2d& startPoint, 
+        const MexPoint2d& startPoint,
         PhysConfigSpace2d::DomainId endDomainId,
         const MexPoint2d& endPoint,
         MATHEX_SCALAR clearance,
         ObstacleFlags flags,
-        const PortalPoints& path );
-    
+        const PortalPoints& path);
+
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const PhysCS2dDomainFindPathCache& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dDomainFindPathCache& t);
 
-    PhysCS2dDomainFindPathCache( const PhysCS2dDomainFindPathCache& );
-    PhysCS2dDomainFindPathCache& operator =( const PhysCS2dDomainFindPathCache& );
+    PhysCS2dDomainFindPathCache(const PhysCS2dDomainFindPathCache&);
+    PhysCS2dDomainFindPathCache& operator=(const PhysCS2dDomainFindPathCache&);
 
     PhysCS2dDomainFindPathCache();
 
     //  To allow template instantiation
     friend void PhysDummyFunction2();
 
-    CTL_PAIR( Point, 
-        PhysConfigSpace2d::DomainId, domainId, 
-        MexPoint2d, point );    
+    CTL_PAIR(Point, PhysConfigSpace2d::DomainId, domainId, MexPoint2d, point);
 
-    CTL_PAIR( SearchData,
-        MATHEX_SCALAR, clearance,
-        ObstacleFlags, flags );
-    
-    CTL_QUAD( PathData, 
-        Point, startPoint, 
-        Point, endPoint, 
-        SearchData, searchData,
-        PortalPoints, path );
-    
-    typedef ctl_vector< PathData >  Cache;
-    
-    Cache   cache_;
-    uint    oldestValue_;
+    CTL_PAIR(SearchData, MATHEX_SCALAR, clearance, ObstacleFlags, flags);
+
+    CTL_QUAD(PathData, Point, startPoint, Point, endPoint, SearchData, searchData, PortalPoints, path);
+
+    using Cache = ctl_vector<PathData>;
+
+    Cache cache_;
+    uint oldestValue_;
     const uint maxCacheValues_;
 
-    uint    succeed_;
-    uint    fail_;
+    uint succeed_;
+    uint fail_;
 };
-
 
 #endif
 

@@ -7,5 +7,5 @@
 void W4dDummyFunction6()
 {
     W4dCompositePlan::Entries dummyCompositePlanEntries;
-    ctl_list< string > dummyString;
+    ctl_list<string> dummyString;
 }

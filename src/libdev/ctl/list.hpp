@@ -21,58 +21,52 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template < class T >
-class ctl_list
-: public std::list< T >
+template <class T> class ctl_list : public std::list<T>
 {
 protected:
-
-	typedef std::list< T >					rep_type;
+    using rep_type = std::list<T>;
 
 public:
+    using std::list<T>::list;
 
-    using std::list< T >::list;
+    virtual ~ctl_list() {};
 
-	virtual ~ctl_list(){};
+    // ctl_list< T >& operator =( const ctl_list< T >& );
 
-	//ctl_list< T >& operator =( const ctl_list< T >& );
+    ///////////////////////////////
 
-	///////////////////////////////
-
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL( ctl_list );
-
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_list);
 };
 
-PER_DEFINE_PERSISTENT_INLINE_T1( ctl_list );
+PER_DEFINE_PERSISTENT_INLINE_T1(ctl_list);
 
 //////////////////////////////////////////////////////////////////////
 
-//template < class T >
-//bool operator ==( const ctl_list< T >&, const ctl_list< T >& );
+// template < class T >
+// bool operator ==( const ctl_list< T >&, const ctl_list< T >& );
 
-//template < class T >
-//bool operator <( const ctl_list< T >&, const ctl_list< T >& );
+// template < class T >
+// bool operator <( const ctl_list< T >&, const ctl_list< T >& );
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef   _INLINE
-    #include "ctl/list.itf"
-    #ifndef NDEBUG
-        #include "ctl/private/listbit.itp"
-        #include "ctl/private/listit.itp"
-        #include "ctl/private/listcit.itp"
-    #endif
+#ifdef _INLINE
+#include "ctl/list.itf"
+#ifndef NDEBUG
+#include "ctl/private/listbit.itp"
+#include "ctl/private/listit.itp"
+#include "ctl/private/listcit.itp"
+#endif
 #endif
 
 #ifdef _INSTANTIATE_TEMPLATE_CLASSES
- //   #include "ctl/list.ctp"
+//   #include "ctl/list.ctp"
 #endif
 
-//#ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
-    #include "ctl/list.ctf"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
+#include "ctl/list.ctf"
+// #endif
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	/* ifndef	_CTL_LIST_HPP	*/
-
+#endif /* ifndef   _CTL_LIST_HPP   */

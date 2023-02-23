@@ -1,5 +1,5 @@
 /*
- * P R O D I C N S . C P P 
+ * P R O D I C N S . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -19,17 +19,16 @@
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachProductionIcons::MachProductionIcons(	GuiDisplayable * pParent, 
-											const Gui::Box& area, 
-											MachLogFactory* pFactory,
-											MachInGameScreen * pInGameScreen )
-: GuiSimpleScrollableList( 	pParent, area, 
-							MachProductionIcon::buttonWidth(), 
-							MachProductionIcon::buttonHeight(), 1 ),
-  pFactory_( pFactory ),
-  pInGameScreen_( pInGameScreen )
+MachProductionIcons::MachProductionIcons(
+    GuiDisplayable* pParent,
+    const Gui::Box& area,
+    MachLogFactory* pFactory,
+    MachInGameScreen* pInGameScreen)
+    : GuiSimpleScrollableList(pParent, area, MachProductionIcon::buttonWidth(), MachProductionIcon::buttonHeight(), 1)
+    , pFactory_(pFactory)
+    , pInGameScreen_(pInGameScreen)
 {
-    //Add the icons
+    // Add the icons
     updateIcons();
 
     TEST_INVARIANT;
@@ -56,7 +55,7 @@ MachProductionIcons::~MachProductionIcons()
 
 void MachProductionIcons::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,10 +69,10 @@ void MachProductionIcons::updateIcons()
     const MachLogFactory::ProductionLine& queue = pFactory_->productionLine();
 
     // Iterate through the queue and add an icon for each one
-	MachLogFactory::ProductionLine::const_iterator it = queue.begin();
-	int index = 1;
+    MachLogFactory::ProductionLine::const_iterator it = queue.begin();
+    int index = 1;
 
-    for( ; it != queue.end(); ++it )
+    for (; it != queue.end(); ++it)
     {
         const MachLogProductionUnit& item = *(*it);
         MachProductionIcon* pIcon = new MachProductionIcon(this, pInGameScreen_, &item, index++);
@@ -88,40 +87,40 @@ void MachProductionIcons::updateIcons()
 
 void MachProductionIcons::doDisplay()
 {
-	pInGameScreen_->controlPanel().redrawAreaImmediate( *this );
-	GuiSimpleScrollableList::doDisplay();
+    pInGameScreen_->controlPanel().redrawAreaImmediate(*this);
+    GuiSimpleScrollableList::doDisplay();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachProductionIcons::height()
 {
-	return MachProductionIcon::buttonHeight();
+    return MachProductionIcon::buttonHeight();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachProductionIcons::width()
 {
-	return ( 3 * MachProductionIcon::buttonWidth() );	
+    return (3 * MachProductionIcon::buttonWidth());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachProductionIcons::updateProgress( float percentageComplete )
+void MachProductionIcons::updateProgress(float percentageComplete)
 {
-	if ( not children().empty() and not canScrollBackward() )
-	{
-		MachProductionIcon* pHeadOfList = _REINTERPRET_CAST( MachProductionIcon*, children().front() );
-		pHeadOfList->updateProgress( percentageComplete );
-	}
+    if (not children().empty() and not canScrollBackward())
+    {
+        MachProductionIcon* pHeadOfList = _REINTERPRET_CAST(MachProductionIcon*, children().front());
+        pHeadOfList->updateProgress(percentageComplete);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachProductionIcons& t )
+ostream& operator<<(ostream& o, const MachProductionIcons& t)
 {
     o << "MachProductionIcons " << (void*)&t << " start" << std::endl;
     o << "MachProductionIcons " << (void*)&t << " end" << std::endl;

@@ -1,5 +1,5 @@
 /*
- * C O N S P L A N . H P P 
+ * C O N S P L A N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -19,17 +19,15 @@
 class MachLogConstructionPlan
 {
 public:
-
-	bool isFinished() const;
+    bool isFinished() const;
 
 private:
-
-	unsigned totalUnitsRequired_;
-	unsigned unitsRequired_;
+    unsigned totalUnitsRequired_;
+    unsigned unitsRequired_;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_CONSPLAN_HPP	*/
+#endif /*  #ifndef _MACHLOG_CONSPLAN_HPP   */
 
 /* End CONSPLAN.HPP *************************************************/

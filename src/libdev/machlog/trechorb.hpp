@@ -1,5 +1,5 @@
 /*
- * T R E C H O R B . H P P 
+ * T R E C H O R B . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,33 +22,28 @@ class MachLogTreacheryOrb : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogTreacheryOrb(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogTreacheryOrb(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogTreacheryOrb();
+    ~MachLogTreacheryOrb() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogTreacheryOrb& t );
+    friend ostream& operator<<(ostream& o, const MachLogTreacheryOrb& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogTreacheryOrb );
-	PER_FRIEND_READ_WRITE( MachLogTreacheryOrb );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTreacheryOrb);
+    PER_FRIEND_READ_WRITE(MachLogTreacheryOrb);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogTreacheryOrb( const MachLogTreacheryOrb& );
-    MachLogTreacheryOrb& operator =( const MachLogTreacheryOrb& );
-    bool operator ==( const MachLogTreacheryOrb& );
-	MachPhys::Race		race_;
-	MachLogRace*		pLogRace_;
-
+    MachLogTreacheryOrb(const MachLogTreacheryOrb&);
+    MachLogTreacheryOrb& operator=(const MachLogTreacheryOrb&);
+    bool operator==(const MachLogTreacheryOrb&);
+    MachPhys::Race race_;
+    MachLogRace* pLogRace_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogTreacheryOrb );
+PER_DECLARE_PERSISTENT(MachLogTreacheryOrb);
 
 #endif
 

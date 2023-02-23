@@ -1,5 +1,5 @@
 /*
- * A T T A F I L T . H P P 
+ * A T T A F I L T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,33 +22,32 @@ class MachLogAttackFilter : public W4dEntityFilter
 // Canonical form revoked
 {
 public:
-    //Filters out machines that are enemies of attackerRace if precision is SAME_RACE_OK
-    MachLogAttackFilter( MachPhys::Race attackerRace, MachLogCanAttack::SoftCoverAccuracy precision );
+    // Filters out machines that are enemies of attackerRace if precision is SAME_RACE_OK
+    MachLogAttackFilter(MachPhys::Race attackerRace, MachLogCanAttack::SoftCoverAccuracy precision);
 
-    virtual ~MachLogAttackFilter();
+    ~MachLogAttackFilter() override;
 
     //////////////////////////////////////////////
     // Inherited from W4dEntityFilter
 
-    //True if entity should be processed. 
-    //Returns option for continued tree processing in pOption.
-    virtual bool check( const W4dEntity& entity, TreeOption* pOption );
+    // True if entity should be processed.
+    // Returns option for continued tree processing in pOption.
+    bool check(const W4dEntity& entity, TreeOption* pOption) override;
 
     //////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogAttackFilter& t );
+    friend ostream& operator<<(ostream& o, const MachLogAttackFilter& t);
 
-    MachLogAttackFilter( const MachLogAttackFilter& );
-    MachLogAttackFilter& operator =( const MachLogAttackFilter& );
+    MachLogAttackFilter(const MachLogAttackFilter&);
+    MachLogAttackFilter& operator=(const MachLogAttackFilter&);
 
-    //data members
+    // data members
     MachPhys::Race attackerRace_;
     MachLogCanAttack::SoftCoverAccuracy precision_;
 };
-
 
 #endif
 

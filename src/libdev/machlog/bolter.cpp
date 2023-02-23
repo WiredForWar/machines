@@ -1,5 +1,5 @@
 /*
- * B O L T E R . C P P 
+ * B O L T E R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,10 +24,10 @@
 
 #include "machlog/internal/firedata.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogBolterWeapon );
+PER_DEFINE_PERSISTENT(MachLogBolterWeapon);
 
-MachLogBolterWeapon::MachLogBolterWeapon( MachLogRace* pRace, MachPhysWeapon* pPhysWeapon, MachActor* pOwner )
-:	MachLogWeapon( pRace, pPhysWeapon, pOwner )
+MachLogBolterWeapon::MachLogBolterWeapon(MachLogRace* pRace, MachPhysWeapon* pPhysWeapon, MachActor* pOwner)
+    : MachLogWeapon(pRace, pPhysWeapon, pOwner)
 {
 
     TEST_INVARIANT;
@@ -36,75 +36,75 @@ MachLogBolterWeapon::MachLogBolterWeapon( MachLogRace* pRace, MachPhysWeapon* pP
 MachLogBolterWeapon::~MachLogBolterWeapon()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogBolterWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//virtual
-void MachLogBolterWeapon::doFire( MachActor* pTarget, const MachLogFireData& fireData )
+// virtual
+void MachLogBolterWeapon::doFire(MachActor* pTarget, const MachLogFireData& fireData)
 {
-	ASSERT( fireData.burstSeed != MachLogWeapon::DUMMY_SEED, "MachLogBolterWeapon::doFire has received a dummy fireData struct as parameter." );
+    ASSERT(
+        fireData.burstSeed != MachLogWeapon::DUMMY_SEED,
+        "MachLogBolterWeapon::doFire has received a dummy fireData struct as parameter.");
 
-	//create Bolter blobs (the logical entites here).
+    // create Bolter blobs (the logical entites here).
 
+    MexPoint3d targetPosition = pTarget->physObject().isComposite()
+        ? pTarget->physObject().asComposite().compositeBoundingVolume().centroid()
+        : pTarget->physObject().boundingVolume().centroid();
 
-	MexPoint3d targetPosition = pTarget->physObject().isComposite() ? 
-		pTarget->physObject().asComposite().compositeBoundingVolume().centroid() : 
-		pTarget->physObject().boundingVolume().centroid();
+    pTarget->globalTransform().transform(&targetPosition);
 
-	pTarget->globalTransform().transform( &targetPosition );
+    MexLine3d line(owner().position(), targetPosition);
 
-	MexLine3d line( owner().position(), targetPosition );
-	
-	MexPoint3d burstPoint = line.end2();
-	
-	// is this a completely accurate shot?
-		
-	if ( fireData.missed )
-	{
-		// using firstDrift as y-drift and secondDrift as z-drift
-		
-		MexVec3 relativeDrift( (fireData.firstDrift/10.0), (fireData.secondDrift/10.0), 0 );
-		
-		burstPoint += relativeDrift;	
-		
-		// finally, push the burstPoint 5m away in the direction of the target
-		// (more likely to hit something behind the target than in front of it )
-		
-		MexVec3 pushVector ( owner().position(), targetPosition );
-		pushVector.makeUnitVector();
-		pushVector *= 5;
-		burstPoint += pushVector;
-		
-	}
+    MexPoint3d burstPoint = line.end2();
 
-	// ensure point drifted to is safely within world's boundaries
-	burstPoint = MachLogPlanet::instance().safeWorldCoordinate( burstPoint );
-	
-	int numberInBurst;
-		
-	if( physWeapon().weaponData().fixedBurst() )
-		numberInBurst = physWeapon().weaponData().nRoundsPerBurst();				 	
-	else
-		numberInBurst = (int)( fireData.burstSeed *(float)( physWeapon().weaponData().nRoundsPerBurst() ) ) + 1;
+    // is this a completely accurate shot?
 
-	
-	for( int i = 0; i < numberInBurst; ++i )
-	{
-		MachLogLinearProjectile::genericCheckForDamage( burstPoint, 1,
-														MachLogLinearProjectile::CONSTANT_DAMAGE, 
-														physWeapon().weaponData().damagePoints(), 
-														physWeapon().type(),
-														&line,
-														&owner() );
-	}	
+    if (fireData.missed)
+    {
+        // using firstDrift as y-drift and secondDrift as z-drift
+
+        MexVec3 relativeDrift((fireData.firstDrift / 10.0), (fireData.secondDrift / 10.0), 0);
+
+        burstPoint += relativeDrift;
+
+        // finally, push the burstPoint 5m away in the direction of the target
+        // (more likely to hit something behind the target than in front of it )
+
+        MexVec3 pushVector(owner().position(), targetPosition);
+        pushVector.makeUnitVector();
+        pushVector *= 5;
+        burstPoint += pushVector;
+    }
+
+    // ensure point drifted to is safely within world's boundaries
+    burstPoint = MachLogPlanet::instance().safeWorldCoordinate(burstPoint);
+
+    int numberInBurst;
+
+    if (physWeapon().weaponData().fixedBurst())
+        numberInBurst = physWeapon().weaponData().nRoundsPerBurst();
+    else
+        numberInBurst = (int)(fireData.burstSeed * (float)(physWeapon().weaponData().nRoundsPerBurst())) + 1;
+
+    for (int i = 0; i < numberInBurst; ++i)
+    {
+        MachLogLinearProjectile::genericCheckForDamage(
+            burstPoint,
+            1,
+            MachLogLinearProjectile::CONSTANT_DAMAGE,
+            physWeapon().weaponData().damagePoints(),
+            physWeapon().type(),
+            &line,
+            &owner());
+    }
 }
 
-ostream& operator <<( ostream& o, const MachLogBolterWeapon& t )
+ostream& operator<<(ostream& o, const MachLogBolterWeapon& t)
 {
 
     o << "MachLogBolterWeapon " << (void*)&t << " start" << std::endl;
@@ -113,39 +113,40 @@ ostream& operator <<( ostream& o, const MachLogBolterWeapon& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogBolterWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachLogBolterWeapon& weapon)
 {
-	const MachLogWeapon& base1 = weapon;
+    const MachLogWeapon& base1 = weapon;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogBolterWeapon& weapon )
+void perRead(PerIstream& istr, MachLogBolterWeapon& weapon)
 {
-	MachLogWeapon& base1 = weapon;
+    MachLogWeapon& base1 = weapon;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-MachLogBolterWeapon::MachLogBolterWeapon( PerConstructor con )
-:	MachLogWeapon( con )
+MachLogBolterWeapon::MachLogBolterWeapon(PerConstructor con)
+    : MachLogWeapon(con)
 {
 }
 
-//virtual
-void MachLogBolterWeapon::doFire( const MexPoint3d& targetPoint )
+// virtual
+void MachLogBolterWeapon::doFire(const MexPoint3d& targetPoint)
 {
-	MexLine3d line( owner().position(), targetPoint );
+    MexLine3d line(owner().position(), targetPoint);
 
-	for( int i = 0; i < physWeapon().weaponData().nRoundsPerBurst(); ++i )
-	{
-		MachLogLinearProjectile::genericCheckForDamage( line.end2(), 1,
-														MachLogLinearProjectile::CONSTANT_DAMAGE, 
-														physWeapon().weaponData().damagePoints(), 
-														physWeapon().type(),
-														&line );
-	}
+    for (int i = 0; i < physWeapon().weaponData().nRoundsPerBurst(); ++i)
+    {
+        MachLogLinearProjectile::genericCheckForDamage(
+            line.end2(),
+            1,
+            MachLogLinearProjectile::CONSTANT_DAMAGE,
+            physWeapon().weaponData().damagePoints(),
+            physWeapon().type(),
+            &line);
+    }
 }
-
 
 /* End BolterWEP.CPP *************************************************/

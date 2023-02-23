@@ -30,58 +30,59 @@ class W4dSprite3d : public W4dEntity
 {
 public:
     W4dSprite3d(
-      W4dEntity* pParent,
-      const W4dTransform3d& localTransform,
-      MATHEX_SCALAR width,
-      MATHEX_SCALAR height,
-      const RenMaterial& materialPtr );
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        MATHEX_SCALAR width,
+        MATHEX_SCALAR height,
+        const RenMaterial& materialPtr);
 
-    //Alternative ctor supplying uv coords
+    // Alternative ctor supplying uv coords
     W4dSprite3d(
-      W4dEntity* pParent,
-      const W4dTransform3d& localTransform,
-      MATHEX_SCALAR width,
-      MATHEX_SCALAR height,
-      const RenMaterial& materialPtr,
-      const MexVec2& uv0, const MexVec2& uv1, const MexVec2& uv2, const MexVec2& uv3 );
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        MATHEX_SCALAR width,
+        MATHEX_SCALAR height,
+        const RenMaterial& materialPtr,
+        const MexVec2& uv0,
+        const MexVec2& uv1,
+        const MexVec2& uv2,
+        const MexVec2& uv3);
 
-    ~W4dSprite3d();
+    ~W4dSprite3d() override;
 
-    void depthOffset( MATHEX_SCALAR offset );
+    void depthOffset(MATHEX_SCALAR offset);
 
-    //Will only be visible up to distance metres
-    void visibleRange( MATHEX_SCALAR distance );
+    // Will only be visible up to distance metres
+    void visibleRange(MATHEX_SCALAR distance);
 
     //  Note that some tiling effects might show up at non 90 degree angles
-    void rotate( const MexRadians& angle );
+    void rotate(const MexRadians& angle);
 
-    //Inherited from W4dEntity
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                             Accuracy accuracy ) const;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( W4dSprite3d );
-    PER_FRIEND_READ_WRITE( W4dSprite3d );
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dSprite3d);
+    PER_FRIEND_READ_WRITE(W4dSprite3d);
 
 private:
     // Operation deliberately revoked
-    W4dSprite3d( const W4dSprite3d& );
+    W4dSprite3d(const W4dSprite3d&);
 
     // Operation deliberately revoked
-    W4dSprite3d& operator =( const W4dSprite3d& );
+    W4dSprite3d& operator=(const W4dSprite3d&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dSprite3d& );
+    bool operator==(const W4dSprite3d&);
 
-    Ren::MeshPtr        pMesh_;
-    RenMeshInstance*    pMeshInstance_;
+    Ren::MeshPtr pMesh_;
+    RenMeshInstance* pMeshInstance_;
 
-    size_t              startFrame_;
+    size_t startFrame_;
 };
 
-PER_DECLARE_PERSISTENT( W4dSprite3d );
-
+PER_DECLARE_PERSISTENT(W4dSprite3d);
 
 #endif
 

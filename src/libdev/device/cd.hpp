@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-
 /*
     DevCD - this class was to handle a CD drive audio, now it loads and plays ogg music tracks
  */
@@ -24,7 +23,6 @@ class DevCD
 // singleton
 {
 public:
-
     enum CDMessage
     {
         ABORT,
@@ -32,7 +30,7 @@ public:
         SUCCESS,
         SUPERSEDED,
         UNKNOWN
-    } ;
+    };
 
     ///////////////////////////////
 
@@ -46,15 +44,15 @@ public:
     bool isPlayingAudioCd() const;
     // POST( implies( result, isAudioCDPresent() ) );
 
-    //Does this PC support volume control
+    // Does this PC support volume control
     bool supportsVolumeControl() const;
     Volume volume() const;
 
-    //The track currently playing
+    // The track currently playing
     DevCDTrackIndex currentTrackIndex() const;
     // PRE( isPlayingAudioCd() );
 
-    //Total number of CD tracks
+    // Total number of CD tracks
     DevCDTrackIndex numberOfTracks() const;
 
     Seconds currentTrackLengthInSeconds() const;
@@ -74,23 +72,23 @@ public:
     void play();
 
     // play only the specified track, auto track repeat can be set
-    void play( DevCDTrackIndex track, bool repeat = false );
+    void play(DevCDTrackIndex track, bool repeat = false);
     // PRE( track < nTracks() );
 
     // play from the specified track to the end
-    void playFrom( DevCDTrackIndex track );
+    void playFrom(DevCDTrackIndex track);
 
     // play in a requested fashion
-    void play( const DevCDPlayList& params );
+    void play(const DevCDPlayList& params);
 
     // Play random track between specified start and end tracks. You can specify first track to be played.
-    void randomPlay( DevCDTrackIndex startTrack, DevCDTrackIndex endTrack, DevCDTrackIndex firstTrack = -1 );
+    void randomPlay(DevCDTrackIndex startTrack, DevCDTrackIndex endTrack, DevCDTrackIndex firstTrack = -1);
 
     void stopPlaying();
 
     ///////////////////////////////
 
-    void volume( Volume newLevel );
+    void volume(Volume newLevel);
     // POST( volume() == newLevel );
 
     ///////////////////////////////
@@ -102,13 +100,13 @@ public:
     void enableMusic();
     void disableMusic();
 
-    friend std::ostream& operator <<( std::ostream&, const DevCD& ) ;
+    friend std::ostream& operator<<(std::ostream&, const DevCD&);
 
 private:
-    DevCD( const DevCD& );
-    DevCD& operator =( const DevCD& ) ;
-    bool operator ==( const DevCD& ) ;
-    void handleMessages( CDMessage, unsigned int);
+    DevCD(const DevCD&);
+    DevCD& operator=(const DevCD&);
+    bool operator==(const DevCD&);
+    void handleMessages(CDMessage, unsigned int);
 
     DevCD();
 

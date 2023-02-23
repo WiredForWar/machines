@@ -1,14 +1,14 @@
-/* 
+/*
  * P L A N E 3 D . I P P
  * (c) Charybdis Limited, 1995, 1996. All Rights Reserved
  */
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ MATHEX_SCALAR MexPlane3d::d() const
 }
 
 _CODE_INLINE
-const MexTransform3d& MexPlane3d::planeTransform( void ) const
+const MexTransform3d& MexPlane3d::planeTransform() const
 {
     return planeTransform_;
 }
@@ -46,7 +46,7 @@ const MexTransform3d& MexPlane3d::planeTransform( void ) const
 _CODE_INLINE
 const MexVec3& MexPlane3d::normal() const
 {
-	return normal_;
+    return normal_;
 }
 
 /* End PLANE3D.IPP *****************************************************/

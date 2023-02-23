@@ -12,9 +12,8 @@
 #include "machlog/actor.hpp"
 #include "machlog/machlog.hpp"
 
-
-MachGuiFormSquadronCommand::MachGuiFormSquadronCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiDefaultCommand( pInGameScreen )
+MachGuiFormSquadronCommand::MachGuiFormSquadronCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiDefaultCommand(pInGameScreen)
 {
     TEST_INVARIANT;
 }
@@ -22,15 +21,14 @@ MachGuiFormSquadronCommand::MachGuiFormSquadronCommand( MachInGameScreen* pInGam
 MachGuiFormSquadronCommand::~MachGuiFormSquadronCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiFormSquadronCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiFormSquadronCommand& t )
+ostream& operator<<(ostream& o, const MachGuiFormSquadronCommand& t)
 {
 
     o << "MachGuiFormSquadronCommand " << (void*)&t << " start" << std::endl;
@@ -39,92 +37,91 @@ ostream& operator <<( ostream& o, const MachGuiFormSquadronCommand& t )
     return o;
 }
 
-//virtual
-bool MachGuiFormSquadronCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiFormSquadronCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Machines can be formed into squadrons
-    return actor.objectIsMachine() and
-           inGameScreen().currentContext() == MachGui::MAIN_MENU;
+    // Machines can be formed into squadrons
+    return actor.objectIsMachine() and inGameScreen().currentContext() == MachGui::MAIN_MENU;
 }
 
-//virtual
+// virtual
 bool MachGuiFormSquadronCommand::isInteractionComplete() const
 {
     return false;
 }
 
-//virtual
-bool MachGuiFormSquadronCommand::doApply( MachActor*, string* )
+// virtual
+bool MachGuiFormSquadronCommand::doApply(MachActor*, string*)
 {
-    //This command interaction is all via the menu icons, so this function is not called
+    // This command interaction is all via the menu icons, so this function is not called
     return true;
 }
 
-//virtual
-void MachGuiFormSquadronCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiFormSquadronCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiFormSquadronCommand::clone() const
 {
-    return _NEW( MachGuiFormSquadronCommand( &inGameScreen() ) );
+    return _NEW(MachGuiFormSquadronCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiFormSquadronCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/formsqad.bmp", "gui/commands/formsqad.bmp" );
+    static std::pair<string, string> names("gui/commands/formsqad.bmp", "gui/commands/formsqad.bmp");
     return names;
 }
 
-//virtual
+// virtual
 void MachGuiFormSquadronCommand::start()
 {
-    //Cache the current control panel context
+    // Cache the current control panel context
     previousMenuContext_ = inGameScreen().currentContext();
 
-    //Enter the form squadron command context
-    inGameScreen().currentContext( MachGui::FORM_SQUADRON_COMMAND );
+    // Enter the form squadron command context
+    inGameScreen().currentContext(MachGui::FORM_SQUADRON_COMMAND);
 }
 
-//virtual
+// virtual
 void MachGuiFormSquadronCommand::finish()
 {
-    //If still in the form squadron command context, restore the cached context
-    if( inGameScreen().currentContext() == MachGui::FORM_SQUADRON_COMMAND )
-        inGameScreen().currentContext( previousMenuContext_ );
+    // If still in the form squadron command context, restore the cached context
+    if (inGameScreen().currentContext() == MachGui::FORM_SQUADRON_COMMAND)
+        inGameScreen().currentContext(previousMenuContext_);
 }
 
-//virtual
+// virtual
 uint MachGuiFormSquadronCommand::cursorPromptStringId() const
 {
     return IDS_FORM_SQUADRON_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiFormSquadronCommand::commandPromptStringid() const
 {
     return IDS_FORM_SQUADRON_START;
 }
 
-//virtual
-bool MachGuiFormSquadronCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiFormSquadronCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_F and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_F and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-//virtual
+// virtual
 bool MachGuiFormSquadronCommand::actorsCanExecute() const
 {
-	return MachGuiCommand::actorsCanExecute();
+    return MachGuiCommand::actorsCanExecute();
 }
 
 /* End CMDFRMSQ.CPP **************************************************/

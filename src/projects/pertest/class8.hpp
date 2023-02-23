@@ -1,5 +1,5 @@
 /*
- * C L A S S 8 . H P P 
+ * C L A S S 8 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,22 +20,19 @@ class Class8
 {
 public:
     Class8();
-    Class8( const Class8& );
+    Class8(const Class8&);
 
     ~Class8();
-    Class8& operator =( const Class8& );
+    Class8& operator=(const Class8&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const Class8& t );
+    friend ostream& operator<<(ostream& o, const Class8& t);
 
 private:
-
     // Operation deliberately revoked
-    bool operator ==( const Class8& );
-
+    bool operator==(const Class8&);
 };
-
 
 #endif
 

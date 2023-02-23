@@ -13,18 +13,19 @@
 #include "machlog/races.hpp"
 #include "machlog/scenario.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogAllOtherRacesUnitsDeadCondition);
 
-PER_DEFINE_PERSISTENT( MachLogAllOtherRacesUnitsDeadCondition );
-
-MachLogAllOtherRacesUnitsDeadCondition::MachLogAllOtherRacesUnitsDeadCondition( const string& keyName, MachPhys::Race race )
-:	SimCondition( keyName ),
-	race_( race )
+MachLogAllOtherRacesUnitsDeadCondition::MachLogAllOtherRacesUnitsDeadCondition(
+    const string& keyName,
+    MachPhys::Race race)
+    : SimCondition(keyName)
+    , race_(race)
 {
-    otherRace_.reserve( MachPhys::N_RACES );
+    otherRace_.reserve(MachPhys::N_RACES);
 
-	for( MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i) )
-		if( i != race )
-			otherRace_.push_back( i );
+    for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i))
+        if (i != race)
+            otherRace_.push_back(i);
 
     TEST_INVARIANT;
 }
@@ -32,84 +33,79 @@ MachLogAllOtherRacesUnitsDeadCondition::MachLogAllOtherRacesUnitsDeadCondition( 
 MachLogAllOtherRacesUnitsDeadCondition::~MachLogAllOtherRacesUnitsDeadCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogAllOtherRacesUnitsDeadCondition::doHasConditionBeenMet() const
 {
-	HAL_STREAM("MachLogAllOtherRacesUnitsDeadCondition::doHasConditionBeenMet " << std::endl );
-	MachLogRaces& races = MachLogRaces::instance();
-	bool result = true;
-	for( int i = 0; i < otherRace_.size(); ++i )
-		if( ( races.nConstructions( otherRace_[i] ) + races.nMachines( otherRace_[i] ) != 0 ) and not races.hasLost( otherRace_[i] ) )
-			result = false;
-	return result;
+    HAL_STREAM("MachLogAllOtherRacesUnitsDeadCondition::doHasConditionBeenMet " << std::endl);
+    MachLogRaces& races = MachLogRaces::instance();
+    bool result = true;
+    for (int i = 0; i < otherRace_.size(); ++i)
+        if ((races.nConstructions(otherRace_[i]) + races.nMachines(otherRace_[i]) != 0)
+            and not races.hasLost(otherRace_[i]))
+            result = false;
+    return result;
 }
 
-//static
-MachLogAllOtherRacesUnitsDeadCondition* MachLogAllOtherRacesUnitsDeadCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogAllOtherRacesUnitsDeadCondition* MachLogAllOtherRacesUnitsDeadCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	//format of a ALL_OTHER_UNITS_DEAD condition line is:
-	//<keyName> RACE <race>
+    // format of a ALL_OTHER_UNITS_DEAD condition line is:
+    //<keyName> RACE <race>
 
-	return _NEW(
-			MachLogAllOtherRacesUnitsDeadCondition(
-				pParser->tokens()[1],
-				MachLogScenario::machPhysRace( pParser->tokens()[3] )
-				)
-			);
+    return _NEW(MachLogAllOtherRacesUnitsDeadCondition(
+        pParser->tokens()[1],
+        MachLogScenario::machPhysRace(pParser->tokens()[3])));
 }
 
 void MachLogAllOtherRacesUnitsDeadCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogAllOtherRacesUnitsDeadCondition& t )
+ostream& operator<<(ostream& o, const MachLogAllOtherRacesUnitsDeadCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogAllOtherRacesUnitsDeadCondition::recommendedCallBackTimeGap() const
 {
-	static const PhysRelativeTime value = 2.0;
-	return value;
+    static const PhysRelativeTime value = 2.0;
+    return value;
 }
 
-//virtual
-void MachLogAllOtherRacesUnitsDeadCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogAllOtherRacesUnitsDeadCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogAllOtherRacesUnitsDeadCondition " << (void*)this << " start" << std::endl;
-	o << race_ << std::endl;
+    o << race_ << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogAllOtherRacesUnitsDeadCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogAllOtherRacesUnitsDeadCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.race_;
-	ostr << condition.otherRace_;
-
+    ostr << base1;
+    ostr << condition.race_;
+    ostr << condition.otherRace_;
 }
 
-void perRead( PerIstream& istr, MachLogAllOtherRacesUnitsDeadCondition& condition )
+void perRead(PerIstream& istr, MachLogAllOtherRacesUnitsDeadCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.race_;
-	istr >> condition.otherRace_;
+    istr >> base1;
+    istr >> condition.race_;
+    istr >> condition.otherRace_;
 }
 
-MachLogAllOtherRacesUnitsDeadCondition::MachLogAllOtherRacesUnitsDeadCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogAllOtherRacesUnitsDeadCondition::MachLogAllOtherRacesUnitsDeadCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

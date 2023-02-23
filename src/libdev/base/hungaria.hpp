@@ -8,12 +8,9 @@
 #ifndef _HUNGARIA_HPP
 #define _HUNGARIA_HPP
 
-typedef int (*i_fn_i)( int );
+typedef int (*i_fn_i)(int);
 typedef void (*v_fn_v)();
 
 #endif
 
 ////////////////////////////////////////////////////////////////
-
-
-

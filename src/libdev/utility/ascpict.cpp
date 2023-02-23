@@ -9,12 +9,14 @@
 #include "utility/internal/ascpicti.hpp"
 
 UtlAsciiPicture::UtlAsciiPicture(
-    MATHEX_SCALAR minX, MATHEX_SCALAR minY,
-    MATHEX_SCALAR maxX, MATHEX_SCALAR maxY,
-    uint nColumns )
-: pImpl_( _NEW( UtlAsciiPictureImpl( minX, minY, maxX, maxY, nColumns ) ) )
+    MATHEX_SCALAR minX,
+    MATHEX_SCALAR minY,
+    MATHEX_SCALAR maxX,
+    MATHEX_SCALAR maxY,
+    uint nColumns)
+    : pImpl_(_NEW(UtlAsciiPictureImpl(minX, minY, maxX, maxY, nColumns)))
 {
-    PRE( nColumns > 0 );
+    PRE(nColumns > 0);
 
     TEST_INVARIANT;
 }
@@ -23,7 +25,7 @@ UtlAsciiPicture::~UtlAsciiPicture()
 {
     TEST_INVARIANT;
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 uint UtlAsciiPicture::nColumns() const
@@ -36,60 +38,60 @@ uint UtlAsciiPicture::nRows() const
     return pImpl_->nRows();
 }
 
-void UtlAsciiPicture::pixel( uint x, uint y, char c )
+void UtlAsciiPicture::pixel(uint x, uint y, char c)
 {
-    PRE_INFO( x );
-    PRE_INFO( nColumns() );
-    PRE_INFO( y );
-    PRE_INFO( nRows() );
+    PRE_INFO(x);
+    PRE_INFO(nColumns());
+    PRE_INFO(y);
+    PRE_INFO(nRows());
 
-    PRE( x < nColumns() );
-    PRE( y < nRows() );
+    PRE(x < nColumns());
+    PRE(y < nRows());
 
-    pImpl_->pixel( x, y, c );
+    pImpl_->pixel(x, y, c);
 }
 
-char UtlAsciiPicture::pixel( uint x, uint y ) const
+char UtlAsciiPicture::pixel(uint x, uint y) const
 {
-    PRE_INFO( x );
-    PRE_INFO( nColumns() );
-    PRE_INFO( y );
-    PRE_INFO( nRows() );
+    PRE_INFO(x);
+    PRE_INFO(nColumns());
+    PRE_INFO(y);
+    PRE_INFO(nRows());
 
-    PRE( x < nColumns() );
-    PRE( y < nRows() );
+    PRE(x < nColumns());
+    PRE(y < nRows());
 
-    return pImpl_->pixel( x, y );
+    return pImpl_->pixel(x, y);
 }
 
-void UtlAsciiPicture::fill( const MexPolygon2d& poly, char c )
+void UtlAsciiPicture::fill(const MexPolygon2d& poly, char c)
 {
-    pImpl_->fill( poly, c );
+    pImpl_->fill(poly, c);
 }
 
-void UtlAsciiPicture::outline( const MexPolygon2d& poly, char c )
+void UtlAsciiPicture::outline(const MexPolygon2d& poly, char c)
 {
-    pImpl_->outline( poly, c );
+    pImpl_->outline(poly, c);
 }
 
-void UtlAsciiPicture::outline( const MexAlignedBox2d& box, char c )
+void UtlAsciiPicture::outline(const MexAlignedBox2d& box, char c)
 {
-    pImpl_->outline( box, c );
+    pImpl_->outline(box, c);
 }
 
-int UtlAsciiPicture::column( MATHEX_SCALAR x ) const
+int UtlAsciiPicture::column(MATHEX_SCALAR x) const
 {
-    return pImpl_->column( x );
+    return pImpl_->column(x);
 }
 
-int UtlAsciiPicture::row( MATHEX_SCALAR y ) const
+int UtlAsciiPicture::row(MATHEX_SCALAR y) const
 {
-    return pImpl_->row( y );
+    return pImpl_->row(y);
 }
 
-MexPoint2d  UtlAsciiPicture::point( int x, int y ) const
+MexPoint2d UtlAsciiPicture::point(int x, int y) const
 {
-    return pImpl_->point( x, y );
+    return pImpl_->point(x, y);
 }
 
 MATHEX_SCALAR UtlAsciiPicture::xRange() const
@@ -112,9 +114,9 @@ MATHEX_SCALAR UtlAsciiPicture::pixelHeight() const
     return pImpl_->pixelHeight();
 }
 
-void UtlAsciiPicture::line( const MexLine2d& line, char c )
+void UtlAsciiPicture::line(const MexLine2d& line, char c)
 {
-    pImpl_->line( line, c );
+    pImpl_->line(line, c);
 }
 
 void UtlAsciiPicture::grid()
@@ -122,22 +124,22 @@ void UtlAsciiPicture::grid()
     pImpl_->grid();
 }
 
-void UtlAsciiPicture::title( const std::string& title )
+void UtlAsciiPicture::title(const std::string& title)
 {
-    pImpl_->title( title );
+    pImpl_->title(title);
 }
 
-void UtlAsciiPicture::underText( const std::string& text )
+void UtlAsciiPicture::underText(const std::string& text)
 {
-    pImpl_->underText( text );
+    pImpl_->underText(text);
 }
 
 void UtlAsciiPicture::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const UtlAsciiPicture& t )
+ostream& operator<<(ostream& o, const UtlAsciiPicture& t)
 {
     o << *t.pImpl_;
 

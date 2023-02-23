@@ -22,35 +22,34 @@ class BaseInfiniteStreamBuffer : public BaseLogStreamBuffer
 {
 public:
     BaseInfiniteStreamBuffer();
-    ~BaseInfiniteStreamBuffer();
+    ~BaseInfiniteStreamBuffer() override;
 
-    virtual void    clear();
+    void clear() override;
 
-    virtual int     overflow( int c );
-    virtual int     underflow();
+    int overflow(int c) override;
+    int underflow() override;
 
-    virtual int     do_sgetn( char *buf, int len );
-    virtual int     do_sputn( char const *buf, int len );
-    virtual int     sync();
+    virtual int do_sgetn(char* buf, int len);
+    virtual int do_sputn(char const* buf, int len);
+    int sync() override;
 
 private:
     // Operation deliberately revoked
-    BaseInfiniteStreamBuffer( const BaseInfiniteStreamBuffer& );
+    BaseInfiniteStreamBuffer(const BaseInfiniteStreamBuffer&);
 
     // Operation deliberately revoked
-    BaseInfiniteStreamBuffer& operator =( const BaseInfiniteStreamBuffer& );
+    BaseInfiniteStreamBuffer& operator=(const BaseInfiniteStreamBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseInfiniteStreamBuffer& );
+    bool operator==(const BaseInfiniteStreamBuffer&);
 
-    virtual size_t  nCharactersInBuffer() const;
-    static  size_t  bufferIncrement();
+    size_t nCharactersInBuffer() const override;
+    static size_t bufferIncrement();
 
-    char*   pBuffer_;
-    size_t  bufferSize_;
-    size_t  nCharactersOutput_;
+    char* pBuffer_;
+    size_t bufferSize_;
+    size_t nCharactersOutput_;
 };
-
 
 #endif
 

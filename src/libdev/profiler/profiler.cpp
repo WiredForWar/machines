@@ -17,15 +17,15 @@
 
 // TODO: windows libs
 #ifdef _MSC_VER // Windows
-    #include <windows.h>
-    #include <direct.h>
-    #include <conio.h>
-    #include <process.h> // _beginthread, _endthread
-    //#include <dos.h>
+#include <windows.h>
+#include <direct.h>
+#include <conio.h>
+#include <process.h> // _beginthread, _endthread
+// #include <dos.h>
 #else // Linux
-    #include <unistd.h>
-    #include <sys/stat.h>
-    #include <sys/types.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #endif /*_MSC_VER*/
 
 #include "profiler/profiler.hpp"
@@ -33,31 +33,28 @@
 
 void ProProfilerAnchor();
 
-extern "C"
-{/*
-    extern	size_t	count;
-    extern	size_t	call_stack;
+extern "C" { /*
+               extern  size_t  count;
+               extern  size_t  call_stack;
 
-    extern  size_t  next_update_time_ls;
-    extern  size_t  next_update_time_ms;
-    extern  uint32  time_increment_ls;
-    extern  uint32  time_increment_ms;
+               extern  size_t  next_update_time_ls;
+               extern  size_t  next_update_time_ms;
+               extern  uint32  time_increment_ls;
+               extern  uint32  time_increment_ms;
 
-    extern  uint8   profiling_enabled;
-*/
+               extern  uint8   profiling_enabled;
+           */
 #ifdef _MSC_VER
-    void checkForProProfilerShutdown( void *dummy );
+void checkForProProfilerShutdown(void* dummy);
 #else
-    void* checkForProProfilerShutdown( void *dummy );
+void* checkForProProfilerShutdown(void* dummy);
 #endif // _MSC_VER
 }
 
-unsigned int RDTSC( uint32[ 2 ] );
-#pragma aux RDTSC =   \
-0x0f 0x31 /* RDTSC */ \
-" mov [esi],eax   "   \
-" mov [esi+4],edx "   \
-parm [esi] modify [eax edx] value [eax];
+unsigned int RDTSC(uint32[2]);
+#pragma aux RDTSC = 0x0f 0x31 /* RDTSC */                                                                              \
+    " mov [esi],eax   "                                                                                                \
+    " mov [esi+4],edx " parm[esi] modify[eax edx] value[eax];
 
 // static
 ProProfiler& ProProfiler::instance()
@@ -67,90 +64,89 @@ ProProfiler& ProProfiler::instance()
 }
 
 ProProfiler::ProProfiler()
-: traceIntervalSeconds_( 50.0 / 1000.0 ),
-  traceIntervalFixed_( false ),
-  outputStream_( "profiler.dat" ),
-  memoryProfilingOn_( false ),
-  isBufferingOutput_( false ),
-  pMemoryBuffer_( NULL ),
-  crashOnPrint_( false )
+    : traceIntervalSeconds_(50.0 / 1000.0)
+    , traceIntervalFixed_(false)
+    , outputStream_("profiler.dat")
+    , memoryProfilingOn_(false)
+    , isBufferingOutput_(false)
+    , pMemoryBuffer_(nullptr)
+    , crashOnPrint_(false)
 {
     calibrate();
 
-    //ProProfilerAnchor();
-    registerAnchor( "ProProfilerAnchor" );
+    // ProProfilerAnchor();
+    registerAnchor("ProProfilerAnchor");
 
     setupTraceInterval();
 
     // If this enviroment variable is set, lauch a separate thread
-	// which checks for the presence of a stop.now file.
-	const char* launchThread = getenv("CB_STOP_NOW");
+    // which checks for the presence of a stop.now file.
+    const char* launchThread = getenv("CB_STOP_NOW");
 
-	if (launchThread)
+    if (launchThread)
 #ifdef _WIN32
-    	//_beginthread( checkForProProfilerShutdown, 1024, NULL );
+    //_beginthread( checkForProProfilerShutdown, 1024, NULL );
 #else
-    	pthread_create(&threadId, NULL, checkForProProfilerShutdown, NULL);
+        pthread_create(&threadId, nullptr, checkForProProfilerShutdown, nullptr);
 #endif // _MSC_VER
 
-    TEST_INVARIANT;
+        TEST_INVARIANT;
 }
 
 ProProfiler::~ProProfiler()
 {
     TEST_INVARIANT;
-    _DELETE( pMemoryBuffer_ );
+    _DELETE(pMemoryBuffer_);
 }
 
-void    ProProfiler::traceInterval( double timeSeconds )
+void ProProfiler::traceInterval(double timeSeconds)
 {
-    PRE( not traceIntervalFixed() );
+    PRE(not traceIntervalFixed());
 
     traceIntervalSeconds_ = timeSeconds;
 
     setupTraceInterval();
 }
 
-void    ProProfiler::enableProfiling()
+void ProProfiler::enableProfiling()
 {
     profiling_enabled = true;
 
     traceIntervalFixed_ = true;
 
-    uint32  currentTime[ 2 ];
-    //RDTSC( currentTime );
+    uint32 currentTime[2];
+    // RDTSC( currentTime );
 
-    next_update_time_ls = currentTime[ 0 ];
-    next_update_time_ms = currentTime[ 1 ];
+    next_update_time_ls = currentTime[0];
+    next_update_time_ms = currentTime[1];
 
-    POST( traceIntervalFixed() );
+    POST(traceIntervalFixed());
 }
 
-void    ProProfiler::disableProfiling()
+void ProProfiler::disableProfiling()
 {
     profiling_enabled = false;
 }
 
-bool    ProProfiler::traceIntervalFixed() const
+bool ProProfiler::traceIntervalFixed() const
 {
     return traceIntervalFixed_;
 }
 
-void    ProProfiler::setupTraceInterval() const
+void ProProfiler::setupTraceInterval() const
 {
     double ticks = traceIntervalSeconds_ * ticksPerSecond_;
 
-    doubleToUint64( ticks, &time_increment_ls, &time_increment_ms );
+    doubleToUint64(ticks, &time_increment_ls, &time_increment_ms);
 
-//     const double TWO_POWER_32 =
-//         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
-//         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
-//         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
-//         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
-//
-//     time_increment_ms = ticks / TWO_POWER_32;
-//     time_increment_ls = ticks - time_increment_ms * TWO_POWER_32;
-
+    //     const double TWO_POWER_32 =
+    //         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
+    //         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
+    //         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
+    //         2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
+    //
+    //     time_increment_ms = ticks / TWO_POWER_32;
+    //     time_increment_ls = ticks - time_increment_ms * TWO_POWER_32;
 }
 
 ostream& ProProfiler::outputStream()
@@ -158,66 +154,66 @@ ostream& ProProfiler::outputStream()
     return outputStream_;
 }
 
-void    ProProfiler::closeOutputStream()
+void ProProfiler::closeOutputStream()
 {
     outputStream_.close();
 }
 
-void    ProProfiler::calibrate()
+void ProProfiler::calibrate()
 {
-    uint32  startTicks[ 2 ];
-    uint32  endTicks[ 2 ];
+    uint32 startTicks[2];
+    uint32 endTicks[2];
 
-    const double  calibrationTimeSeconds = 1.0;
-    const size_t minClocksToWait =  calibrationTimeSeconds * CLOCKS_PER_SEC;
+    const double calibrationTimeSeconds = 1.0;
+    const size_t minClocksToWait = calibrationTimeSeconds * CLOCKS_PER_SEC;
 
     //  First wait for the clock to change to get a reasonably
     //  accurate base point.
-    size_t  startClockValue = clock();
+    size_t startClockValue = clock();
 
-    while( clock() == startClockValue )
+    while (clock() == startClockValue)
     {
         // Do nothing
     }
 
     startClockValue = clock();
-    //RDTSC( startTicks );
+    // RDTSC( startTicks );
 
-    while( clock() <= startClockValue + minClocksToWait )
+    while (clock() <= startClockValue + minClocksToWait)
     {
         //  Do nothing
     }
 
-    size_t  endClockValue = clock();
-    //RDTSC( endTicks );
+    size_t endClockValue = clock();
+    // RDTSC( endTicks );
 
     //  This is a fairly crude calculation but it's probably
     //  good enough for our purposes
 
-    double startTicksDouble = startTicks[ 1 ];
+    double startTicksDouble = startTicks[1];
     startTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
     startTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
     startTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
     startTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
-    startTicksDouble += startTicks[ 0 ];
+    startTicksDouble += startTicks[0];
 
-    double endTicksDouble = endTicks[ 1 ];
+    double endTicksDouble = endTicks[1];
     endTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
     endTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
     endTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
     endTicksDouble *= 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
-    endTicksDouble += endTicks[ 0 ];
+    endTicksDouble += endTicks[0];
 
     ticksPerSecond_ = endTicksDouble - startTicksDouble;
-    ticksPerSecond_ /= ( ( endClockValue - startClockValue ) / CLOCKS_PER_SEC );
+    ticksPerSecond_ /= ((endClockValue - startClockValue) / CLOCKS_PER_SEC);
 }
 
 void ProProfiler::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const ProProfiler& t )
+ostream& operator<<(ostream& o, const ProProfiler& t)
 {
 
     o << "ProProfiler " << (void*)&t << " start" << std::endl;
@@ -226,85 +222,77 @@ ostream& operator <<( ostream& o, const ProProfiler& t )
     return o;
 }
 
-extern "C"
-{
-    //  This is not a member function. By keeping it separate I can call
-    //  it from the appropriate assembler code.
+extern "C" {
+//  This is not a member function. By keeping it separate I can call
+//  it from the appropriate assembler code.
 
-    void	ProProfilerPrintCallStack()
+void ProProfilerPrintCallStack()
+{
+    ProProfiler::instance().traceStack(ProProfiler::instance().outputStream(), false, 0, nullptr);
+    if (ProProfiler::instance().crashOnPrint())
     {
-        ProProfiler::instance().traceStack( ProProfiler::instance().outputStream(), false, 0, NULL );
-        if( ProProfiler::instance().crashOnPrint() )
-        {
-            Diag::instance().forceCrash();
-//            raise( SIGILL );
-            exit( 1 );
-        }
+        Diag::instance().forceCrash();
+        //            raise( SIGILL );
+        exit(1);
     }
+}
 
-}   //  End extern "C"
+} //  End extern "C"
 
-void	ProProfiler::registerAnchor( const char* anchorFunctionName )
+void ProProfiler::registerAnchor(const char* anchorFunctionName)
 {
-    anchorFunctionName_ = _NEW_ARRAY( char, strlen( anchorFunctionName ) + 1 );
-    strcpy( anchorFunctionName_, anchorFunctionName );
+    anchorFunctionName_ = _NEW_ARRAY(char, strlen(anchorFunctionName) + 1);
+    strcpy(anchorFunctionName_, anchorFunctionName);
 
-    anchorFunctionAddress_ = _REINTERPRET_CAST( void*, (*(&call_stack + count - 1)) );
+    anchorFunctionAddress_ = _REINTERPRET_CAST(void*, (*(&call_stack + count - 1)));
 
-    //ProProfiler::instance().outputStream() << "[[[ " << anchorFunctionName_ << "  " <<
-    outputStream() << "[[[ " << anchorFunctionName_ << "  " <<
-        anchorFunctionAddress_ << " ]]]" << std::endl;
+    // ProProfiler::instance().outputStream() << "[[[ " << anchorFunctionName_ << "  " <<
+    outputStream() << "[[[ " << anchorFunctionName_ << "  " << anchorFunctionAddress_ << " ]]]" << std::endl;
 }
 /*
 void    ProProfiler::writeStack( ostream& ostr ) const
 {
     ostr << "[[[ " << anchorFunctionAddress_ << " :: " << anchorFunctionName_ << " ]]]" << endl;
 
- 	for( size_t i = 0; i < count; ++i )
-	{
- 		void* p = _REINTERPRET_CAST( void*, (*(&call_stack + i)) );
+    for( size_t i = 0; i < count; ++i )
+    {
+        void* p = _REINTERPRET_CAST( void*, (*(&call_stack + i)) );
         ostr << "[[ " << p << " ]]" << endl;
     }
 }
 */
-void addToUpdate( uint32[ 2 ] );
-#pragma aux addToUpdate =           \
-" mov	eax, [esi]"                 \
-" add next_update_time_ls, eax"    \
-" mov	eax, [esi+4]"               \
-" adc next_update_time_ms, eax"    \
-parm [esi] modify [eax];
+void addToUpdate(uint32[2]);
+#pragma aux addToUpdate = " mov   eax, [esi]"                                                                          \
+                          " add next_update_time_ls, eax"                                                              \
+                          " mov   eax, [esi+4]"                                                                        \
+                          " adc next_update_time_ms, eax" parm[esi] modify[eax];
 
-void    ProProfiler::nextTraceTime( double offsetSeconds )
+void ProProfiler::nextTraceTime(double offsetSeconds)
 {
     //  Get the current time
 
-    uint32  currentTime[ 2 ];
-    //RDTSC( currentTime );
+    uint32 currentTime[2];
+    // RDTSC( currentTime );
 
-    next_update_time_ls = currentTime[ 0 ];
-    next_update_time_ms = currentTime[ 1 ];
+    next_update_time_ls = currentTime[0];
+    next_update_time_ms = currentTime[1];
 
     //  Now add on the time offset
 
-    uint32  offset[ 2 ];
+    uint32 offset[2];
 
-    doubleToUint64( offsetSeconds * ticksPerSecond_, &offset[ 0 ], &offset[ 1 ] );
+    doubleToUint64(offsetSeconds * ticksPerSecond_, &offset[0], &offset[1]);
 
-    //addToUpdate( offset );
+    // addToUpdate( offset );
 }
 
-void    ProProfiler::doubleToUint64( double value, uint32* pLs, uint32* pMs ) const
+void ProProfiler::doubleToUint64(double value, uint32* pLs, uint32* pMs) const
 {
-    const double TWO_POWER_32 =
-        2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
-        2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
-        2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 *
-        2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
+    const double TWO_POWER_32 = 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0
+        * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0 * 2.0;
 
     *pMs = value / TWO_POWER_32;
     *pLs = value - *pMs * TWO_POWER_32;
-
 }
 
 bool ProProfiler::isProfilingEnabled() const
@@ -312,7 +300,7 @@ bool ProProfiler::isProfilingEnabled() const
     return profiling_enabled;
 }
 
-void ProProfiler::isMemoryProfilingEnabled( bool isEnabled )
+void ProProfiler::isMemoryProfilingEnabled(bool isEnabled)
 {
     memoryProfilingOn_ = isEnabled;
 }
@@ -322,62 +310,69 @@ bool ProProfiler::isMemoryProfilingEnabled() const
     return memoryProfilingOn_;
 }
 
-    void traceStack( ostream& outStream, bool doTraceAnchor, size_t nStackFrames, const size_t* pCallStack,
-                     uint32_t lineNumber, const char* extraString );
-void ProProfiler::traceStack
-(
-    ostream& mystr, bool doTraceAnchor, size_t nStackFrames, const size_t* pCallStack,
-    uint32_t lineNumber, const char* extraString
-)
+void traceStack(
+    ostream& outStream,
+    bool doTraceAnchor,
+    size_t nStackFrames,
+    const size_t* pCallStack,
+    uint32_t lineNumber,
+    const char* extraString);
+void ProProfiler::traceStack(
+    ostream& mystr,
+    bool doTraceAnchor,
+    size_t nStackFrames,
+    const size_t* pCallStack,
+    uint32_t lineNumber,
+    const char* extraString)
 {
-    //This is necessary because of compiler rubbish
+    // This is necessary because of compiler rubbish
     ostream* pOstr = &mystr;
-    if( isBufferingOutput_  )
+    if (isBufferingOutput_)
         pOstr = pMemoryBuffer_;
     ostream& ostr = *pOstr;
 
-    //Do the left marker
+    // Do the left marker
     ostr << "[[[";
 
-    //If required, write the anchor function name and address
-    if( doTraceAnchor )
+    // If required, write the anchor function name and address
+    if (doTraceAnchor)
     {
         ostr << " " << anchorFunctionName_ << " " << anchorFunctionAddress_;
     }
 
-    //Now the actual call stack
- 	for( size_t i = 0; i < nStackFrames; ++i )
-	{
- 		void* p = _REINTERPRET_CAST( void*, (*(pCallStack + i)) );
+    // Now the actual call stack
+    for (size_t i = 0; i < nStackFrames; ++i)
+    {
+        void* p = _REINTERPRET_CAST(void*, (*(pCallStack + i)));
         ostr << " " << p;
     }
 
-    //And the line number
+    // And the line number
     ostr << " [" << lineNumber << "]";
 
-    //And any extra string
-    if( extraString and extraString[0] != '\0' )
+    // And any extra string
+    if (extraString and extraString[0] != '\0')
         ostr << " { " << extraString << " }";
 
-    //And the terminator
+    // And the terminator
     ostr << " ]]]" << std::endl;
 }
 
-void ProProfiler::isBufferingOutput( bool is )
+void ProProfiler::isBufferingOutput(bool is)
 {
-    //Check which way
-    if( is  and  not isBufferingOutput_ )
+    // Check which way
+    if (is and not isBufferingOutput_)
     {
-        //starting buffering
+        // starting buffering
         isBufferingOutput_ = true;
-        pMemoryBuffer_ = _NEW( BaseLogBuffer( 256000 ) );
+        pMemoryBuffer_ = _NEW(BaseLogBuffer(256000));
     }
-    else if( not is  and  isBufferingOutput_ )
+    else if (not is and isBufferingOutput_)
     {
-        //starting buffering
+        // starting buffering
         isBufferingOutput_ = false;
-        _DELETE( pMemoryBuffer_ );
-        pMemoryBuffer_ = NULL;
+        _DELETE(pMemoryBuffer_);
+        pMemoryBuffer_ = nullptr;
     }
 }
 
@@ -388,18 +383,18 @@ bool ProProfiler::isBufferingOutput() const
 
 void ProProfiler::clearBuffer()
 {
-    PRE( isBufferingOutput() );
+    PRE(isBufferingOutput());
     pMemoryBuffer_->clear();
 }
 
-void ProProfiler::writeBuffer( ostream& outStream )
+void ProProfiler::writeBuffer(ostream& outStream)
 {
-    PRE( isBufferingOutput() );
+    PRE(isBufferingOutput());
     outStream << *pMemoryBuffer_;
     pMemoryBuffer_->clear();
 }
 
-void ProProfiler::crashOnPrint( bool crash )
+void ProProfiler::crashOnPrint(bool crash)
 {
     crashOnPrint_ = crash;
 }
@@ -409,15 +404,14 @@ bool ProProfiler::crashOnPrint()
     return crashOnPrint_;
 }
 // TODO:
-extern "C"
-{
+extern "C" {
 #ifdef _MSC_VER
-    void checkForProProfilerShutdown( void* )
+void checkForProProfilerShutdown(void*)
 #else
-    void* checkForProProfilerShutdown( void *dummy )
+void* checkForProProfilerShutdown(void* dummy)
 #endif // _MSC_VER
 {
-	unsigned attr;
+    unsigned attr;
     bool result = false;
     /*
     while ( not result )
@@ -431,9 +425,10 @@ extern "C"
         Sleep( 10000 );
     }
     */
-	ProProfiler::instance().traceStack( ProProfiler::instance().outputStream(), true, 0, "User interrupt" );;
+    ProProfiler::instance().traceStack(ProProfiler::instance().outputStream(), true, 0, "User interrupt");
+    ;
     ProProfiler::instance().closeOutputStream();
-	exit( 1 );
+    exit(1);
 }
 }
 
@@ -447,9 +442,9 @@ size_t ProProfiler::nCallStackEntries() const
     return count;
 }
 
-void ProProfiler::traceStack( ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString )
+void ProProfiler::traceStack(ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString)
 {
-    traceStack( outStream, doTraceAnchor, count, &call_stack, lineNumber, extraString );
+    traceStack(outStream, doTraceAnchor, count, &call_stack, lineNumber, extraString);
 }
 
 /* End PROFILER.CPP *************************************************/

@@ -13,8 +13,8 @@ class ModelData;
 
 void TerrainDemoDummyFunction1()
 {
-	static ctl_list<MotionControl*> motionList;
-    static  ctl_vector<ModelData*>    dummyModels;
+    static ctl_list<MotionControl*> motionList;
+    static ctl_vector<ModelData*> dummyModels;
 }
 
 /* End TI.CPP *****************************************************/

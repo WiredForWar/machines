@@ -24,31 +24,28 @@ class MachPhysBeeBombExplosion : public W4dEntity
 // Canonical form revoked
 {
 public:
-    MachPhysBeeBombExplosion( W4dEntity* pParent, const MexTransform3d& localTransform );
-    virtual ~MachPhysBeeBombExplosion();
+    MachPhysBeeBombExplosion(W4dEntity* pParent, const MexTransform3d& localTransform);
+    ~MachPhysBeeBombExplosion() override;
 
-	const PhysRelativeTime startExplosion( const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface);
+    const PhysRelativeTime startExplosion(const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface);
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysBeeBombExplosion& t );
+    friend ostream& operator<<(ostream& o, const MachPhysBeeBombExplosion& t);
 
-    MachPhysBeeBombExplosion( const MachPhysBeeBombExplosion& );
-    MachPhysBeeBombExplosion& operator =( const MachPhysBeeBombExplosion& );
+    MachPhysBeeBombExplosion(const MachPhysBeeBombExplosion&);
+    MachPhysBeeBombExplosion& operator=(const MachPhysBeeBombExplosion&);
 
-	//creat concentric rings (6) of fire and crack
-	static const PhysRelativeTime createFireRings
-	(
-		W4dEntity* pParent,
-		const MexTransform3d& position,
-		const PhysAbsoluteTime& startTime,
-		const MachPhysPlanetSurface& surface
-	);
+    // creat concentric rings (6) of fire and crack
+    static const PhysRelativeTime createFireRings(
+        W4dEntity* pParent,
+        const MexTransform3d& position,
+        const PhysAbsoluteTime& startTime,
+        const MachPhysPlanetSurface& surface);
 };
 
 #endif

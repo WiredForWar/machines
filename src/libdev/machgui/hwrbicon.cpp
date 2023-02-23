@@ -17,80 +17,77 @@
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-typedef std::pair< SysPathName, SysPathName > SysPathNames;
+using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachGuiNewResearchIcon::MachGuiNewResearchIcon( GuiDisplayable *pParent,
-												const Gui::Coord& rel,
-												const GuiBitmap& bitmap )
-: GuiButtonWithFilledBorder(	pParent,
-								MachGuiNewResearchIcon::exteriorRelativeBoundary( bitmap, GuiBorderMetrics( 1, 1, 1 ), rel ),
-								GuiBorderMetrics( 1, 1, 1 ),
-								GuiFilledBorderColours( Gui::BLACK(),
-														MachGui::OFFWHITE(),
-														MachGui::ALMOSTBLACK(),
-														Gui::RED() ),
-								Gui::Coord( 1, 1 ) ),
-  bitmap_( bitmap )
+MachGuiNewResearchIcon::MachGuiNewResearchIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap& bitmap)
+    : GuiButtonWithFilledBorder(
+        pParent,
+        MachGuiNewResearchIcon::exteriorRelativeBoundary(bitmap, GuiBorderMetrics(1, 1, 1), rel),
+        GuiBorderMetrics(1, 1, 1),
+        GuiFilledBorderColours(Gui::BLACK(), MachGui::OFFWHITE(), MachGui::ALMOSTBLACK(), Gui::RED()),
+        Gui::Coord(1, 1))
+    , bitmap_(bitmap)
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
 
 MachGuiNewResearchIcon::~MachGuiNewResearchIcon()
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachGuiNewResearchIcon::doDisplayInteriorEnabled( const Gui::Coord& abs )
+void MachGuiNewResearchIcon::doDisplayInteriorEnabled(const Gui::Coord& abs)
 {
-	Gui::Coord absCopy( abs );
-	absCopy.y( absCopy.y() + MachGuiBuildProgressBar::height() );
+    Gui::Coord absCopy(abs);
+    absCopy.y(absCopy.y() + MachGuiBuildProgressBar::height());
 
-	GuiPainter::instance().blit( bitmap_, absCopy );
+    GuiPainter::instance().blit(bitmap_, absCopy);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-Gui::Box MachGuiNewResearchIcon::exteriorRelativeBoundary( const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel )
+Gui::Box MachGuiNewResearchIcon::exteriorRelativeBoundary(
+    const GuiBitmap& bitmap,
+    const GuiBorderMetrics& m,
+    const Gui::Coord& rel)
 {
-	return Gui::Box( rel, m.totalHorizontalThickness() + bitmap.width(),
-						m.totalVerticalThickness() + bitmap.height() + MachGuiBuildProgressBar::height() );
+    return Gui::Box(
+        rel,
+        m.totalHorizontalThickness() + bitmap.width(),
+        m.totalVerticalThickness() + bitmap.height() + MachGuiBuildProgressBar::height());
 }
-
-
-
-
-
-
 
 ///////
 // ***************************************** code for MachHWResearchBankIcon ******************************************
 ///////
 
-
 #include "machphys/machphys.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachHWResearchBankIcon::MachHWResearchBankIcon(GuiDisplayable* pParent,
-                                               MachInGameScreen* pInGameScreen,
-                                               const MachLogResearchItem* pResearchItem,
-                                               MachPhys::Race race)
-    : MachGuiNewResearchIcon(pParent,
-                             Gui::Coord(0, 0), //Will be relocated by icon sequence parent
-                             Gui::bitmap(SysPathName(MachActorBitmaps::name(pResearchItem->objectType(),
-                                                                            pResearchItem->subType(),
-                                                                            pResearchItem->hwLevel(),
-                                                                            pResearchItem->weaponCombo(),
-                                                                            race))))
+MachHWResearchBankIcon::MachHWResearchBankIcon(
+    GuiDisplayable* pParent,
+    MachInGameScreen* pInGameScreen,
+    const MachLogResearchItem* pResearchItem,
+    MachPhys::Race race)
+    : MachGuiNewResearchIcon(
+        pParent,
+        Gui::Coord(0, 0), // Will be relocated by icon sequence parent
+        Gui::bitmap(SysPathName(MachActorBitmaps::name(
+            pResearchItem->objectType(),
+            pResearchItem->subType(),
+            pResearchItem->hwLevel(),
+            pResearchItem->weaponCombo(),
+            race))))
     , pInGameScreen_(pInGameScreen)
     , pResearchItem_(pResearchItem)
     , needsPromptUpdate_(false)
@@ -98,19 +95,16 @@ MachHWResearchBankIcon::MachHWResearchBankIcon(GuiDisplayable* pParent,
 
     TEST_INVARIANT;
 
-	pProgressBar_ = _NEW( MachGuiBuildProgressBar(	this,
-													Gui::Coord( 2, 2 ),
-													width() - 4 ) );
+    pProgressBar_ = _NEW(MachGuiBuildProgressBar(this, Gui::Coord(2, 2), width() - 4));
 
-	popupButton( false );
+    popupButton(false);
 
-	//Sets its current level
+    // Sets its current level
 
-    double percentComplete = 100.0 *
-    	(double( pResearchItem->amountResearched( race ) ) /
-         double( pResearchItem->researchCost() ));
+    double percentComplete
+        = 100.0 * (double(pResearchItem->amountResearched(race)) / double(pResearchItem->researchCost()));
 
-	updateProgress( percentComplete );
+    updateProgress(percentComplete);
 }
 
 /* /////////////////////////////////////////////// destructor /////////////////////////////////////////////////// */
@@ -119,7 +113,7 @@ MachHWResearchBankIcon::~MachHWResearchBankIcon()
 {
     TEST_INVARIANT;
 
-	//Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 }
 
@@ -127,12 +121,12 @@ MachHWResearchBankIcon::~MachHWResearchBankIcon()
 
 void MachHWResearchBankIcon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachHWResearchBankIcon& t )
+ostream& operator<<(ostream& o, const MachHWResearchBankIcon& t)
 {
 
     o << "MachHWResearchBankIcon " << (void*)&t << " start" << std::endl;
@@ -143,48 +137,48 @@ ostream& operator <<( ostream& o, const MachHWResearchBankIcon& t )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchBankIcon::doBeDepressed( const GuiMouseEvent& )
+// virtual
+void MachHWResearchBankIcon::doBeDepressed(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
 
-    pProgressBar_->depress( true );
+    pProgressBar_->depress(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchBankIcon::doBeReleased( const GuiMouseEvent& )
+// virtual
+void MachHWResearchBankIcon::doBeReleased(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
 
-	pProgressBar_->depress( false );
+    pProgressBar_->depress(false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachHWResearchBankIcon::reqHeight()
 {
-	// TODO : Remove hard coded values
-	return MachGuiBuildProgressBar::height() + 38 /* Bitmap height */ + 4 /* Border */;
+    // TODO : Remove hard coded values
+    return MachGuiBuildProgressBar::height() + 38 /* Bitmap height */ + 4 /* Border */;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachHWResearchBankIcon::reqWidth()
 {
-	return 42; // TODO : Remove hard coded value
+    return 42; // TODO : Remove hard coded value
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachHWResearchBankIcon::updateProgress( float complete )
+void MachHWResearchBankIcon::updateProgress(float complete)
 {
-	pProgressBar_->percentageComplete( complete );
+    pProgressBar_->percentageComplete(complete);
 
-	needsPromptUpdate_ = true;
+    needsPromptUpdate_ = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,79 +190,81 @@ const MachLogResearchItem* MachHWResearchBankIcon::researchItem() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchBankIcon::doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachHWResearchBankIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
-	GuiButtonWithFilledBorder::doHandleMouseEnterEvent( mouseEvent );
+    GuiButtonWithFilledBorder::doHandleMouseEnterEvent(mouseEvent);
 
-	needsPromptUpdate_ = false;
+    needsPromptUpdate_ = false;
 
-	displayCursorPromptText();
+    displayCursorPromptText();
 }
 
 void MachHWResearchBankIcon::displayCursorPromptText()
 {
-	GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText( 	pResearchItem_->objectType(),
-																			pResearchItem_->subType(),
-																			pResearchItem_->weaponCombo(),
-																			pResearchItem_->hwLevel(),
-																			IDS_RESEARCHING_PROMPT,
-																			IDS_RESEARCHING_WITH_WEAPON_PROMPT );
+    GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
+        pResearchItem_->objectType(),
+        pResearchItem_->subType(),
+        pResearchItem_->weaponCombo(),
+        pResearchItem_->hwLevel(),
+        IDS_RESEARCHING_PROMPT,
+        IDS_RESEARCHING_WITH_WEAPON_PROMPT);
 
-	// Add bmu cost and rp cost to end of prompt text
-	char bmuBuffer[20];
-	char rpBuffer[20];
-//	itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
-//	itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
+    // Add bmu cost and rp cost to end of prompt text
+    char bmuBuffer[20];
+    char rpBuffer[20];
+    //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
+    //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
     sprintf(bmuBuffer, "%d", pResearchItem_->buildingCost());
     sprintf(rpBuffer, "%d", pResearchItem_->researchCost());
 
-	if ( pResearchItem_->buildingCost() != 0 )
-	{
-		GuiStrings strings;
-		strings.push_back( GuiString( bmuBuffer ) );
-		strings.push_back( GuiString( rpBuffer ) );
-		GuiResourceString costText( IDS_COST_WITH_RP, strings );
-		prompt += "\n" + costText.asString();
-	}
-	else
-	{
-		GuiResourceString costText( IDS_COST_RP, GuiString( rpBuffer ) );
-		prompt += "\n" + costText.asString();
-	}
+    if (pResearchItem_->buildingCost() != 0)
+    {
+        GuiStrings strings;
+        strings.push_back(GuiString(bmuBuffer));
+        strings.push_back(GuiString(rpBuffer));
+        GuiResourceString costText(IDS_COST_WITH_RP, strings);
+        prompt += "\n" + costText.asString();
+    }
+    else
+    {
+        GuiResourceString costText(IDS_COST_RP, GuiString(rpBuffer));
+        prompt += "\n" + costText.asString();
+    }
 
- 	// Percentage complete info
-	char buffer[20];
-	sprintf(buffer, "%d", (uint) pProgressBar_->percentageComplete());
-//	GuiResourceString percentCompleteText( IDS_RESEARCHPERCENTAGECOMPLETE, GuiString( itoa( pProgressBar_->percentageComplete(), buffer, 10 ) ) );
-	GuiResourceString percentCompleteText( IDS_RESEARCHPERCENTAGECOMPLETE, GuiString( buffer ) );
-	prompt += ", " + percentCompleteText.asString();
+    // Percentage complete info
+    char buffer[20];
+    sprintf(buffer, "%d", (uint)pProgressBar_->percentageComplete());
+    //  GuiResourceString percentCompleteText( IDS_RESEARCHPERCENTAGECOMPLETE, GuiString( itoa(
+    //  pProgressBar_->percentageComplete(), buffer, 10 ) ) );
+    GuiResourceString percentCompleteText(IDS_RESEARCHPERCENTAGECOMPLETE, GuiString(buffer));
+    prompt += ", " + percentCompleteText.asString();
 
-    pInGameScreen_->cursorPromptText( prompt, not needsPromptUpdate_ );
+    pInGameScreen_->cursorPromptText(prompt, not needsPromptUpdate_);
 
-	needsPromptUpdate_ = false;
+    needsPromptUpdate_ = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchBankIcon::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachHWResearchBankIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 {
-    //Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 
-	GuiButtonWithFilledBorder::doHandleMouseExitEvent( mouseEvent );
+    GuiButtonWithFilledBorder::doHandleMouseExitEvent(mouseEvent);
 }
 
-//virtual
-void MachHWResearchBankIcon::doHandleContainsMouseEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachHWResearchBankIcon::doHandleContainsMouseEvent(const GuiMouseEvent& mouseEvent)
 {
-	GuiButtonWithFilledBorder::doHandleContainsMouseEvent( mouseEvent );
+    GuiButtonWithFilledBorder::doHandleContainsMouseEvent(mouseEvent);
 
-	if ( needsPromptUpdate_ )
-	{
-		displayCursorPromptText();
-	}
+    if (needsPromptUpdate_)
+    {
+        displayCursorPromptText();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

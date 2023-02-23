@@ -6,5 +6,5 @@
 W4dDummyFunctionComp()
 {
 
-	ctl_vector< W4dComplexity::W4dRangeModifier > dummyLodModifiers;
+    ctl_vector<W4dComplexity::W4dRangeModifier> dummyLodModifiers;
 }

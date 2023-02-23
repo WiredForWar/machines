@@ -1,5 +1,5 @@
 /*
- * F W R D P L A N . H P P 
+ * F W R D P L A N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,13 +19,13 @@ class W4dScalePlan;
 class W4dUVPlan;
 class W4dCompositePlan;
 
-typedef CtlCountedPtr<W4dMeshPlan>			W4dMeshPlanPtr;
-typedef CtlCountedPtr<W4dMaterialPlan>		W4dMaterialPlanPtr;
-typedef CtlCountedPtr<W4dVisibilityPlan>	W4dVisibilityPlanPtr;
-typedef CtlCountedPtr<W4dScalePlan>	        W4dScalePlanPtr;
-typedef CtlCountedPtr<W4dUVPlan>	        W4dUVPlanPtr;
-typedef CtlCountedPtr<W4dCompositePlan>		W4dCompositePlanPtr;
-typedef CtlCountedPtr<PhysMotionPlan>		PhysMotionPlanPtr;
+using W4dMeshPlanPtr = CtlCountedPtr<W4dMeshPlan>;
+using W4dMaterialPlanPtr = CtlCountedPtr<W4dMaterialPlan>;
+using W4dVisibilityPlanPtr = CtlCountedPtr<W4dVisibilityPlan>;
+using W4dScalePlanPtr = CtlCountedPtr<W4dScalePlan>;
+using W4dUVPlanPtr = CtlCountedPtr<W4dUVPlan>;
+using W4dCompositePlanPtr = CtlCountedPtr<W4dCompositePlan>;
+using PhysMotionPlanPtr = CtlCountedPtr<PhysMotionPlan>;
 
 #endif
 

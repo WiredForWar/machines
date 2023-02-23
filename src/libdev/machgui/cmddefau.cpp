@@ -36,9 +36,9 @@
 
 #include "phys/cspace2.hpp"
 
-MachGuiDefaultCommand::MachGuiDefaultCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    pIntelligentCursorOnActor_( _NEW( MachGuiIntelligentCursorOnActor ) )
+MachGuiDefaultCommand::MachGuiDefaultCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , pIntelligentCursorOnActor_(_NEW(MachGuiIntelligentCursorOnActor))
 {
 
     TEST_INVARIANT;
@@ -47,15 +47,15 @@ MachGuiDefaultCommand::MachGuiDefaultCommand( MachInGameScreen* pInGameScreen )
 MachGuiDefaultCommand::~MachGuiDefaultCommand()
 {
     TEST_INVARIANT;
-    _DELETE( pIntelligentCursorOnActor_ );
+    _DELETE(pIntelligentCursorOnActor_);
 }
 
 void MachGuiDefaultCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDefaultCommand& t )
+ostream& operator<<(ostream& o, const MachGuiDefaultCommand& t)
 {
 
     o << "MachGuiDefaultCommand " << (void*)&t << " start" << std::endl;
@@ -64,443 +64,450 @@ ostream& operator <<( ostream& o, const MachGuiDefaultCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiDefaultCommand::pickOnTerrain
-(
-    const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiDefaultCommand::pickOnTerrain(
+    const MexPoint3d& location,
+    bool ctrlPressed,
+    bool shiftPressed,
+    bool altPressed)
 {
-    //Check the intelligent cursor
-    MachGui::Cursor2dType cursor = cursorOnTerrain( location, ctrlPressed, shiftPressed, altPressed );
+    // Check the intelligent cursor
+    MachGui::Cursor2dType cursor = cursorOnTerrain(location, ctrlPressed, shiftPressed, altPressed);
 
-	MachGuiCommand* pCommand = NULL;
+    MachGuiCommand* pCommand = nullptr;
 
-    if( cursor == MachGui::MOVETO_CURSOR )
+    if (cursor == MachGui::MOVETO_CURSOR)
     {
-        //Do intelligent move
-        pCommand =  _NEW( MachGuiMoveCommand( &inGameScreen() ) );
+        // Do intelligent move
+        pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
     }
-	else if ( cursor == MachGui::LOCATETO_CURSOR )
-	{
-		//Do intelligent locate
-		pCommand =  _NEW( MachGuiLocateToCommand( &inGameScreen() ) );
-	}
-	else if ( cursor == MachGui::ION_ATTACK_CURSOR )
-	{
-		//Do ion attack
-		pCommand =  _NEW( MachGuiIonAttackCommand( &inGameScreen() ) );
-	}
-	else if ( cursor == MachGui::DEPLOY_CURSOR )
-	{
-		//APC deploy
-		pCommand =  _NEW( MachGuiDeployCommand( &inGameScreen() ) );
-	}
-	else if ( cursor == MachGui::ASSEMBLEPOINT_CURSOR )
-	{
-		//Assemble At for factories
-		pCommand =  _NEW( MachGuiAssemblyPointCommand( &inGameScreen() ) );
-	}
-
-	if ( pCommand != NULL )
-	{
-	    //Pass on the pick
-	    pCommand->pickOnTerrain( location, ctrlPressed, shiftPressed, altPressed );
-
-	    //If this gives us a complete command, do it
-	    if( pCommand->isInteractionComplete() )
-	        pCommand->apply();
-
-	    //Tidy up
-	    _DELETE( pCommand );
-	}
-}
-
-//virtual
-void MachGuiDefaultCommand::pickOnActor
-(
-    MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
-{
-    MachGuiCommand* pCommand = NULL;
-
-    //Get the intelligent cursor
-    MachGui::Cursor2dType cursor = cursorOnActor( pActor, ctrlPressed, shiftPressed, altPressed );
-    switch( cursor )
+    else if (cursor == MachGui::LOCATETO_CURSOR)
     {
-        case MachGui::MOVETO_CURSOR:
-		case MachGui::FOLLOW_CURSOR:
-        {
-            pCommand = _NEW( MachGuiMoveCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::ATTACK_CURSOR:
-        {
-            pCommand = _NEW( MachGuiAttackCommand( &inGameScreen() ) );
-            break;
-        }
-
-		case MachGui::ION_ATTACK_CURSOR:
-        {
-            pCommand = _NEW( MachGuiIonAttackCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::CONSTRUCT_CURSOR:
-		case MachGui::JOINCONSTRUCT_CURSOR:
-        {
-            pCommand = _NEW( MachGuiConstructCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::LOCATETO_CURSOR:
-        {
-            pCommand = _NEW( MachGuiLocateToCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::PICKUP_CURSOR:
-        {
-            pCommand = _NEW( MachGuiPickUpCommand( &inGameScreen() ) );
-            break;
-        }
-
-		case MachGui::SCAVENGE_CURSOR:
-        {
-            pCommand = _NEW( MachGuiScavengeCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::TRANSPORT_CURSOR:
-        {
-            pCommand = _NEW( MachGuiTransportCommand( &inGameScreen(), false ) );
-            break;
-        }
-
-        case MachGui::ENTER_BUILDING_CURSOR:
-        {
-            pCommand = _NEW( MachGuiMoveCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::ENTER_APC_CURSOR:
-        {
-            pCommand = _NEW( MachGuiMoveCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::HEAL_CURSOR:
-        {
-            pCommand = _NEW( MachGuiHealCommand( &inGameScreen() ) );
-            break;
-        }
-
-		case MachGui::TREACHERY_CURSOR:
-        {
-            pCommand = _NEW( MachGuiTreacheryCommand( &inGameScreen() ) );
-            break;
-        }
-
-        case MachGui::REPAIR_CURSOR:
-        {
-            pCommand = _NEW( MachGuiRepairCommand( &inGameScreen() ) );
-            break;
-        }
-
-		case MachGui::CAPTURE_CURSOR:
-		{
-			pCommand = _NEW( MachGuiCaptureCommand( &inGameScreen() ) );
-			break;
-		}
-
-		case MachGui::DECONSTRUCT_CURSOR:
-		{
-			pCommand = _NEW( MachGuiDeconstructCommand( &inGameScreen() ) );
-			break;
-		}
-
-		case MachGui::RECYCLE_CURSOR:
-		{
-			pCommand =  _NEW( MachGuiRecycleCommand( &inGameScreen() ) );
-			break;
-		}
-
-        case MachGui::SELECT_CURSOR:
-        {
-            selectActors( pActor, ctrlPressed, shiftPressed, altPressed );
-            break;
-        }
+        // Do intelligent locate
+        pCommand = _NEW(MachGuiLocateToCommand(&inGameScreen()));
+    }
+    else if (cursor == MachGui::ION_ATTACK_CURSOR)
+    {
+        // Do ion attack
+        pCommand = _NEW(MachGuiIonAttackCommand(&inGameScreen()));
+    }
+    else if (cursor == MachGui::DEPLOY_CURSOR)
+    {
+        // APC deploy
+        pCommand = _NEW(MachGuiDeployCommand(&inGameScreen()));
+    }
+    else if (cursor == MachGui::ASSEMBLEPOINT_CURSOR)
+    {
+        // Assemble At for factories
+        pCommand = _NEW(MachGuiAssemblyPointCommand(&inGameScreen()));
     }
 
-    //Deal with an intelligent command
-    if( pCommand != NULL )
+    if (pCommand != nullptr)
     {
-        //Pass on the pick
-        pCommand->pickOnActor( pActor, ctrlPressed, shiftPressed, altPressed );
+        // Pass on the pick
+        pCommand->pickOnTerrain(location, ctrlPressed, shiftPressed, altPressed);
 
-        //If this gives us a complete command, do it
-        if( pCommand->isInteractionComplete() )
+        // If this gives us a complete command, do it
+        if (pCommand->isInteractionComplete())
             pCommand->apply();
 
-        //Tidy up
-        _DELETE( pCommand );
+        // Tidy up
+        _DELETE(pCommand);
     }
 }
 
-void MachGuiDefaultCommand::selectActors
-(
-	MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiDefaultCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
-	ASSERT( pActor->selectableType() == MachLog::FULLY_SELECTABLE, "Attempting to select into the corral an invalid actor" );
-	//Add the actor to the list, if a machine
-	if( ctrlPressed )
-	{
-		bool select = !inGameScreen().isSelected( *pActor );
-		if( select )
-		{
-			const ctl_pvector< MachActor > visibleActors = inGameScreen().getVisibleActors();
-			ctl_pvector< MachActor > actorsToAdd;
-			std::copy_if(visibleActors.begin(), visibleActors.end(), std::back_inserter(actorsToAdd), [pActor](MachActor *pReferenceActor)
-			{
-				if( pActor->race() != pReferenceActor->race() )
-					return false;
-				if( !MachActor::IsSameActorType(pActor, pReferenceActor) )
-					return false;
-				if( pReferenceActor->selectionState() == MachLog::SELECTED )
-					return false;
+    MachGuiCommand* pCommand = nullptr;
 
-				return true;
-			});
-			ASSERT( !actorsToAdd.empty(), "The must be at least one actor (the picked one)" );
-			inGameScreen().select( actorsToAdd );
-		}
-		else
-		{
-			const ctl_pvector< MachActor > currentSelection = inGameScreen().selectedActors();
-			ctl_pvector< MachActor > actorsToRemove;
-			std::copy_if(currentSelection.begin(), currentSelection.end(), std::back_inserter(actorsToRemove), [pActor](MachActor *pActorInSelection)
-			{
-				return MachActor::IsSameActorType(pActor, pActorInSelection);
-			});
-			ASSERT( !actorsToRemove.empty(), "The must be at least one actor (the picked one)" );
-			inGameScreen().deselect(actorsToRemove);
-		}
-	}
-	else if( shiftPressed )
-	{
-		//See if already selected: toggle state
-		if( inGameScreen().isSelected( *pActor ) )
-			inGameScreen().deselect( pActor );
-		else
-			inGameScreen().select( pActor );
-	}
-	else
-	{
-		double currentT = DevTime::instance().time();
-		if ( currentT - actorSelectedTime_ < MachGui::doubleClickInterval() )
-		{
-			actorSelectedTime_ = 0;
-			if( pActor == pLastSelectedActor_)
-			{
-				inGameScreen().deselectAll();
+    // Get the intelligent cursor
+    MachGui::Cursor2dType cursor = cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed);
+    switch (cursor)
+    {
+        case MachGui::MOVETO_CURSOR:
+        case MachGui::FOLLOW_CURSOR:
+            {
+                pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+                break;
+            }
 
-				// The actor is double-clicked
-				const ctl_pvector< MachActor > visibleActors = inGameScreen().getVisibleActors();
-				ctl_pvector< MachActor > actorsToAdd;
-				std::copy_if(visibleActors.begin(), visibleActors.end(), std::back_inserter(actorsToAdd), [pActor](MachActor *pReferenceActor)
-				{
-					if( pActor->race() != pReferenceActor->race() )
-						return false;
-					if( !MachActor::IsSameActorType(pActor, pReferenceActor) )
-						return false;
+        case MachGui::ATTACK_CURSOR:
+            {
+                pCommand = _NEW(MachGuiAttackCommand(&inGameScreen()));
+                break;
+            }
 
-					return true;
-				});
-				ASSERT( !actorsToAdd.empty(), "The must be at least one actor (the picked one)" );
-				inGameScreen().select( actorsToAdd );
-				return;
-			}
-		}
-		actorSelectedTime_ = currentT;
-		pLastSelectedActor_ = pActor;
+        case MachGui::ION_ATTACK_CURSOR:
+            {
+                pCommand = _NEW(MachGuiIonAttackCommand(&inGameScreen()));
+                break;
+            }
 
-		inGameScreen().deselectAll();
-		inGameScreen().select( pActor );
-	}
+        case MachGui::CONSTRUCT_CURSOR:
+        case MachGui::JOINCONSTRUCT_CURSOR:
+            {
+                pCommand = _NEW(MachGuiConstructCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::LOCATETO_CURSOR:
+            {
+                pCommand = _NEW(MachGuiLocateToCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::PICKUP_CURSOR:
+            {
+                pCommand = _NEW(MachGuiPickUpCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::SCAVENGE_CURSOR:
+            {
+                pCommand = _NEW(MachGuiScavengeCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::TRANSPORT_CURSOR:
+            {
+                pCommand = _NEW(MachGuiTransportCommand(&inGameScreen(), false));
+                break;
+            }
+
+        case MachGui::ENTER_BUILDING_CURSOR:
+            {
+                pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::ENTER_APC_CURSOR:
+            {
+                pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::HEAL_CURSOR:
+            {
+                pCommand = _NEW(MachGuiHealCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::TREACHERY_CURSOR:
+            {
+                pCommand = _NEW(MachGuiTreacheryCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::REPAIR_CURSOR:
+            {
+                pCommand = _NEW(MachGuiRepairCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::CAPTURE_CURSOR:
+            {
+                pCommand = _NEW(MachGuiCaptureCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::DECONSTRUCT_CURSOR:
+            {
+                pCommand = _NEW(MachGuiDeconstructCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::RECYCLE_CURSOR:
+            {
+                pCommand = _NEW(MachGuiRecycleCommand(&inGameScreen()));
+                break;
+            }
+
+        case MachGui::SELECT_CURSOR:
+            {
+                selectActors(pActor, ctrlPressed, shiftPressed, altPressed);
+                break;
+            }
+    }
+
+    // Deal with an intelligent command
+    if (pCommand != nullptr)
+    {
+        // Pass on the pick
+        pCommand->pickOnActor(pActor, ctrlPressed, shiftPressed, altPressed);
+
+        // If this gives us a complete command, do it
+        if (pCommand->isInteractionComplete())
+            pCommand->apply();
+
+        // Tidy up
+        _DELETE(pCommand);
+    }
 }
 
-//virtual
-bool MachGuiDefaultCommand::canActorEverExecute( const MachActor& ) const
+void MachGuiDefaultCommand::selectActors(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
+{
+    ASSERT(
+        pActor->selectableType() == MachLog::FULLY_SELECTABLE,
+        "Attempting to select into the corral an invalid actor");
+    // Add the actor to the list, if a machine
+    if (ctrlPressed)
+    {
+        bool select = !inGameScreen().isSelected(*pActor);
+        if (select)
+        {
+            const ctl_pvector<MachActor> visibleActors = inGameScreen().getVisibleActors();
+            ctl_pvector<MachActor> actorsToAdd;
+            std::copy_if(
+                visibleActors.begin(),
+                visibleActors.end(),
+                std::back_inserter(actorsToAdd),
+                [pActor](MachActor* pReferenceActor) {
+                    if (pActor->race() != pReferenceActor->race())
+                        return false;
+                    if (!MachActor::IsSameActorType(pActor, pReferenceActor))
+                        return false;
+                    if (pReferenceActor->selectionState() == MachLog::SELECTED)
+                        return false;
+
+                    return true;
+                });
+            ASSERT(!actorsToAdd.empty(), "The must be at least one actor (the picked one)");
+            inGameScreen().select(actorsToAdd);
+        }
+        else
+        {
+            const ctl_pvector<MachActor> currentSelection = inGameScreen().selectedActors();
+            ctl_pvector<MachActor> actorsToRemove;
+            std::copy_if(
+                currentSelection.begin(),
+                currentSelection.end(),
+                std::back_inserter(actorsToRemove),
+                [pActor](MachActor* pActorInSelection) {
+                    return MachActor::IsSameActorType(pActor, pActorInSelection);
+                });
+            ASSERT(!actorsToRemove.empty(), "The must be at least one actor (the picked one)");
+            inGameScreen().deselect(actorsToRemove);
+        }
+    }
+    else if (shiftPressed)
+    {
+        // See if already selected: toggle state
+        if (inGameScreen().isSelected(*pActor))
+            inGameScreen().deselect(pActor);
+        else
+            inGameScreen().select(pActor);
+    }
+    else
+    {
+        double currentT = DevTime::instance().time();
+        if (currentT - actorSelectedTime_ < MachGui::doubleClickInterval())
+        {
+            actorSelectedTime_ = 0;
+            if (pActor == pLastSelectedActor_)
+            {
+                inGameScreen().deselectAll();
+
+                // The actor is double-clicked
+                const ctl_pvector<MachActor> visibleActors = inGameScreen().getVisibleActors();
+                ctl_pvector<MachActor> actorsToAdd;
+                std::copy_if(
+                    visibleActors.begin(),
+                    visibleActors.end(),
+                    std::back_inserter(actorsToAdd),
+                    [pActor](MachActor* pReferenceActor) {
+                        if (pActor->race() != pReferenceActor->race())
+                            return false;
+                        if (!MachActor::IsSameActorType(pActor, pReferenceActor))
+                            return false;
+
+                        return true;
+                    });
+                ASSERT(!actorsToAdd.empty(), "The must be at least one actor (the picked one)");
+                inGameScreen().select(actorsToAdd);
+                return;
+            }
+        }
+        actorSelectedTime_ = currentT;
+        pLastSelectedActor_ = pActor;
+
+        inGameScreen().deselectAll();
+        inGameScreen().select(pActor);
+    }
+}
+
+// virtual
+bool MachGuiDefaultCommand::canActorEverExecute(const MachActor&) const
 {
     return true;
 }
 
-//virtual
+// virtual
 bool MachGuiDefaultCommand::isInteractionComplete() const
 {
     return true;
 }
 
-//virtual
-bool MachGuiDefaultCommand::doApply( MachActor*, string* )
+// virtual
+bool MachGuiDefaultCommand::doApply(MachActor*, string*)
 {
     return true;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain
-(
-    const MexPoint3d& location, bool, bool, bool altPressed
-)
+// virtual
+MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& location, bool, bool, bool altPressed)
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
-    //Check for a legal move position with at least one fristd::endly machine selected
+    // Check for a legal move position with at least one fristd::endly machine selected
 
-    //Get player race
+    // Get player race
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    //Check for any selected actors
+    // Check for any selected actors
     const MachInGameScreen::Actors& selectedActors = inGameScreen().selectedActors();
-    if( selectedActors.size() != 0 )
+    if (selectedActors.size() != 0)
     {
-        //Get the actor and the intelligent cursor it implies for the operand
-        MachActor* pSelectedActor = NULL;
+        // Get the actor and the intelligent cursor it implies for the operand
+        MachActor* pSelectedActor = nullptr;
 
-        for( MachInGameScreen::Actors::const_iterator it = selectedActors.begin(); it != selectedActors.end(); ++it )
-	    {
-			// Find an actor in corral that ain't in an APC
-			if ( not ( (*it)->objectIsMachine() and (*it)->asMachine().insideAPC() ) )
-			{
-				pSelectedActor = *it;
-				break;
-			}
-		}
+        for (MachInGameScreen::Actors::const_iterator it = selectedActors.begin(); it != selectedActors.end(); ++it)
+        {
+            // Find an actor in corral that ain't in an APC
+            if (not((*it)->objectIsMachine() and (*it)->asMachine().insideAPC()))
+            {
+                pSelectedActor = *it;
+                break;
+            }
+        }
 
-		if ( pSelectedActor )
-		{
-	        if( pSelectedActor->objectIsMachine()  and  pSelectedActor->race() == playerRace )
-			{
-				// If we are outside a building then we need to check if we are trying to move
-				// to a valid domain
-				if ( not inGameScreen().cameras()->currentCamera()->insideConstruction() )
-				{
-					if ( cursorInFogOfWar() or isPointValidOnTerrain( location, IGNORE_SELECTED_ACTOR_OBSTACLES ) )
-					{
-						// Locators default to Locate, move is alternative
-						if ( pSelectedActor->objectType() == MachLog::GEO_LOCATOR and not altPressed )
-						{
-			            	cursor = MachGui::LOCATETO_CURSOR;
-						}
-						// APC default to move, deploy is alternative
-						else if ( pSelectedActor->objectType() == MachLog::APC and altPressed )
-						{
-							cursor = MachGui::DEPLOY_CURSOR;
-						}
-						// All other machines move to terrain position
-						else
-						{
-							cursor = MachGui::MOVETO_CURSOR;
-						}
-					}
-		        }
-				else
-				{
-					cursor = MachGui::MOVETO_CURSOR;
-				}
-			}
-			// Factories get the "assemble at" cursor as an alternative
-			else if( pSelectedActor->objectType() == MachLog::FACTORY and
-					 pSelectedActor->race() == playerRace and
-					 altPressed )
-			{
-				if ( cursorInFogOfWar() or isPointValidOnTerrain( location, IGNORE_SELECTED_ACTOR_OBSTACLES ) )
-				{
-					cursor = MachGui::ASSEMBLEPOINT_CURSOR;
-				}
-			}
-		}
+        if (pSelectedActor)
+        {
+            if (pSelectedActor->objectIsMachine() and pSelectedActor->race() == playerRace)
+            {
+                // If we are outside a building then we need to check if we are trying to move
+                // to a valid domain
+                if (not inGameScreen().cameras()->currentCamera()->insideConstruction())
+                {
+                    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+                    {
+                        // Locators default to Locate, move is alternative
+                        if (pSelectedActor->objectType() == MachLog::GEO_LOCATOR and not altPressed)
+                        {
+                            cursor = MachGui::LOCATETO_CURSOR;
+                        }
+                        // APC default to move, deploy is alternative
+                        else if (pSelectedActor->objectType() == MachLog::APC and altPressed)
+                        {
+                            cursor = MachGui::DEPLOY_CURSOR;
+                        }
+                        // All other machines move to terrain position
+                        else
+                        {
+                            cursor = MachGui::MOVETO_CURSOR;
+                        }
+                    }
+                }
+                else
+                {
+                    cursor = MachGui::MOVETO_CURSOR;
+                }
+            }
+            // Factories get the "assemble at" cursor as an alternative
+            else if (
+                pSelectedActor->objectType() == MachLog::FACTORY and pSelectedActor->race() == playerRace
+                and altPressed)
+            {
+                if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+                {
+                    cursor = MachGui::ASSEMBLEPOINT_CURSOR;
+                }
+            }
+        }
     }
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnActor
-(
-    MachActor* pCursorActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+MachGui::Cursor2dType
+MachGuiDefaultCommand::cursorOnActor(MachActor* pCursorActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
     MachGui::Cursor2dType cursor = MachGui::SELECT_CURSOR;
 
-    //Get player race
+    // Get player race
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    //Check for any selected actor
+    // Check for any selected actor
     const MachInGameScreen::Actors& selectedActors = inGameScreen().selectedActors();
-    if( selectedActors.size() != 0 )
+    if (selectedActors.size() != 0)
     {
-		//Get the actor and the intelligent cursor it implies for the operand
-        MachActor* pSelectedActor = NULL;
+        // Get the actor and the intelligent cursor it implies for the operand
+        MachActor* pSelectedActor = nullptr;
 
-        for( MachInGameScreen::Actors::const_iterator it = selectedActors.begin(); it != selectedActors.end(); ++it )
-	    {
-			// Find an actor in corral that ain't in an APC
-			if ( not ( (*it)->objectIsMachine() and (*it)->asMachine().insideAPC() ) )
-			{
-				pSelectedActor = *it;
-				break;
-			}
-		}
+        for (MachInGameScreen::Actors::const_iterator it = selectedActors.begin(); it != selectedActors.end(); ++it)
+        {
+            // Find an actor in corral that ain't in an APC
+            if (not((*it)->objectIsMachine() and (*it)->asMachine().insideAPC()))
+            {
+                pSelectedActor = *it;
+                break;
+            }
+        }
 
-		if ( pSelectedActor )
-		{
-        	cursor = pIntelligentCursorOnActor_->cursorType( pSelectedActor, pCursorActor, &inGameScreen(), ctrlPressed, shiftPressed, altPressed );
-		}
-		else if( pCursorActor->selectableType() != MachLog::FULLY_SELECTABLE )
-		{
-			cursor = MachGui::MENU_CURSOR;
-		}
+        if (pSelectedActor)
+        {
+            cursor = pIntelligentCursorOnActor_->cursorType(
+                pSelectedActor,
+                pCursorActor,
+                &inGameScreen(),
+                ctrlPressed,
+                shiftPressed,
+                altPressed);
+        }
+        else if (pCursorActor->selectableType() != MachLog::FULLY_SELECTABLE)
+        {
+            cursor = MachGui::MENU_CURSOR;
+        }
     }
-    else if( pCursorActor->selectableType() != MachLog::FULLY_SELECTABLE )
+    else if (pCursorActor->selectableType() != MachLog::FULLY_SELECTABLE)
         cursor = MachGui::MENU_CURSOR;
 
     return cursor;
 }
 
-//virtual
-void MachGuiDefaultCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiDefaultCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiDefaultCommand::clone() const
 {
-    return _NEW( MachGuiDefaultCommand( &inGameScreen() ) );
+    return _NEW(MachGuiDefaultCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiDefaultCommand::iconNames() const
 {
-    static std::pair<string, string> names( "", "" );
+    static std::pair<string, string> names("", "");
     return names;
 }
 
-//virtual
+// virtual
 bool MachGuiDefaultCommand::actorsCanExecute() const
 {
     return true;
 }
 
-//virtual
+// virtual
 uint MachGuiDefaultCommand::cursorPromptStringId() const
 {
     return 0;
 }
 
-//virtual
+// virtual
 uint MachGuiDefaultCommand::commandPromptStringid() const
 {
     return 0;

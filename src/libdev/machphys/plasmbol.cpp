@@ -34,24 +34,25 @@
 #include "machphys/plasplat.hpp"
 #include "machphys/plasaura.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysPlasmaBolt );
+PER_DEFINE_PERSISTENT(MachPhysPlasmaBolt);
 
-MachPhysPlasmaBolt::MachPhysPlasmaBolt
-(
+MachPhysPlasmaBolt::MachPhysPlasmaBolt(
     W4dEntity* pParent,
-	const MexTransform3d& localTransform,
-	MachPhys::WeaponType type,
-	CreateLights lights
-)
-:   MachPhysLinearProjectile( exemplar( type ), pParent, localTransform,
-							 (lights==CREATE_LIGHTS)? COPY_LIGHTS: DONT_COPY_LIGHTS ),
-    boltType_( type )
+    const MexTransform3d& localTransform,
+    MachPhys::WeaponType type,
+    CreateLights lights)
+    : MachPhysLinearProjectile(
+        exemplar(type),
+        pParent,
+        localTransform,
+        (lights == CREATE_LIGHTS) ? COPY_LIGHTS : DONT_COPY_LIGHTS)
+    , boltType_(type)
 {
-	// The current model is all emissive.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-/*
+    /*
     //Apply the material plan
     PhysAbsoluteTime now = SimManager::instance().currentTime();
     uint nRepetitions = 10000;
@@ -67,58 +68,57 @@ MachPhysPlasmaBolt::MachPhysPlasmaBolt
     TEST_INVARIANT;
 }
 
-MachPhysPlasmaBolt::MachPhysPlasmaBolt( MachPhys::WeaponType type )
-:   MachPhysLinearProjectile( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d() ),
-    boltType_( type )
+MachPhysPlasmaBolt::MachPhysPlasmaBolt(MachPhys::WeaponType type)
+    : MachPhysLinearProjectile(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d())
+    , boltType_(type)
 {
-	// The current model is all emissive.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    //Load the STF mesh
-    switch( type )
+    // Load the STF mesh
+    switch (type)
     {
         case MachPhys::PLASMA_RIFLE:
-        {
-            readCompositeFile( SysPathName( "models/weapons/plaboltr/plaboltr.cdf" ) );
-            break;
-        }
+            {
+                readCompositeFile(SysPathName("models/weapons/plaboltr/plaboltr.cdf"));
+                break;
+            }
 
         case MachPhys::PLASMA_CANNON1:
-        {
-            readCompositeFile( SysPathName( "models/weapons/plaboltc/plaboltc.cdf" ) );
-            break;
-        }
+            {
+                readCompositeFile(SysPathName("models/weapons/plaboltc/plaboltc.cdf"));
+                break;
+            }
 
         case MachPhys::PLASMA_CANNON2:
-        {
-            readCompositeFile( SysPathName( "models/weapons/plabolt2/plabolt2.cdf" ) );
-            break;
-        }
+            {
+                readCompositeFile(SysPathName("models/weapons/plabolt2/plabolt2.cdf"));
+                break;
+            }
 
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
     TEST_INVARIANT;
 }
 
-MachPhysPlasmaBolt::MachPhysPlasmaBolt( PerConstructor con )
-: MachPhysLinearProjectile( con )
+MachPhysPlasmaBolt::MachPhysPlasmaBolt(PerConstructor con)
+    : MachPhysLinearProjectile(con)
 {
 }
 
 MachPhysPlasmaBolt::~MachPhysPlasmaBolt()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysPlasmaBolt::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysPlasmaBolt& t )
+ostream& operator<<(ostream& o, const MachPhysPlasmaBolt& t)
 {
 
     o << "MachPhysPlasmaBolt " << (void*)&t << " start" << std::endl;
@@ -127,11 +127,11 @@ ostream& operator <<( ostream& o, const MachPhysPlasmaBolt& t )
     return o;
 }
 
-//static
-const MachPhysPlasmaBolt& MachPhysPlasmaBolt::exemplar( MachPhys::WeaponType type )
+// static
+const MachPhysPlasmaBolt& MachPhysPlasmaBolt::exemplar(MachPhys::WeaponType type)
 {
-	return MachPhysOtherPersistence::instance().plasmaBoltExemplar(type);
-/*
+    return MachPhysOtherPersistence::instance().plasmaBoltExemplar(type);
+    /*
     //Use the one time constructor
     MachPhysPlasmaBolt* pResult = NULL;
 
@@ -165,94 +165,90 @@ const MachPhysPlasmaBolt& MachPhysPlasmaBolt::exemplar( MachPhys::WeaponType typ
 */
 }
 
-//virtual
-PhysRelativeTime MachPhysPlasmaBolt::doBeDestroyedAt
-(
-    const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType
-)
+// virtual
+PhysRelativeTime MachPhysPlasmaBolt::doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType)
 {
     PhysRelativeTime animationDuration = 0.0;
 
-    switch( strikeType )
+    switch (strikeType)
     {
         case MachPhys::ON_OBJECT:
         case MachPhys::ON_TERRAIN:
-        {
-            //get the local position of the bolt at the destruct time
-            MexTransform3d destructPosition;
-            uint n;
-            const W4dEntityPlan& myEntityPlan = entityPlan();
-            if( myEntityPlan.hasMotionPlan() )
-                entityPlan().transform( time, &destructPosition, &n );
-            else
-                destructPosition = localTransform();
+            {
+                // get the local position of the bolt at the destruct time
+                MexTransform3d destructPosition;
+                uint n;
+                const W4dEntityPlan& myEntityPlan = entityPlan();
+                if (myEntityPlan.hasMotionPlan())
+                    entityPlan().transform(time, &destructPosition, &n);
+                else
+                    destructPosition = localTransform();
 
-            //Create an impact flash TTF at this position
-            animationDuration = createImpactFlash( pParent(), destructPosition, time );
-            break;
-        }
+                // Create an impact flash TTF at this position
+                animationDuration = createImpactFlash(pParent(), destructPosition, time);
+                break;
+            }
     }
 
     return animationDuration;
 }
 
-//static
-W4dMaterialPlan* MachPhysPlasmaBolt::createBoltMaterialPlan( MachPhys::WeaponType type )
+// static
+W4dMaterialPlan* MachPhysPlasmaBolt::createBoltMaterialPlan(MachPhys::WeaponType type)
 {
-    //Get the base material for the type
-    const RenMeshInstance& meshInstance = exemplar( type ).mesh();
-  	std::unique_ptr<RenMaterialVec> materialVecAPtr = meshInstance.mesh()->materialVec();
+    // Get the base material for the type
+    const RenMeshInstance& meshInstance = exemplar(type).mesh();
+    std::unique_ptr<RenMaterialVec> materialVecAPtr = meshInstance.mesh()->materialVec();
 
     RenMaterial baseMaterial = materialVecAPtr->front();
     uint nMaterialsPerVector = materialVecAPtr->size();
 
-    //Construct the plan
+    // Construct the plan
     MachPhysEffects::Textures textures = MachPhysEffects::flameTextures();
     PhysAbsoluteTime duration = textures.size() * 0.05;
 
-    W4dMaterialSequencePlan* pPlan =
-        MachPhysEffects::createMaterialSequencePlan( baseMaterial, textures, nMaterialsPerVector,
-                                                     duration, W4dLOD( 0 ) );
+    W4dMaterialSequencePlan* pPlan
+        = MachPhysEffects::createMaterialSequencePlan(baseMaterial, textures, nMaterialsPerVector, duration, W4dLOD(0));
 
     return pPlan;
 }
 
-const W4dMaterialPlanPtr& MachPhysPlasmaBolt::boltMaterialPlan( MachPhys::WeaponType type ) const
+const W4dMaterialPlanPtr& MachPhysPlasmaBolt::boltMaterialPlan(MachPhys::WeaponType type) const
 {
     static W4dMaterialPlanPtr resultPtr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::PLASMA_RIFLE:
-        {
-            static W4dMaterialPlanPtr riflePlanPtr( createBoltMaterialPlan( type ) );
-            resultPtr = riflePlanPtr;
-            break;
-        }
+            {
+                static W4dMaterialPlanPtr riflePlanPtr(createBoltMaterialPlan(type));
+                resultPtr = riflePlanPtr;
+                break;
+            }
 
         case MachPhys::PLASMA_CANNON1:
         case MachPhys::PLASMA_CANNON2:
-        {
-            static W4dMaterialPlanPtr cannonPlanPtr( createBoltMaterialPlan( type ) );
-            resultPtr = cannonPlanPtr;
-            break;
-        }
+            {
+                static W4dMaterialPlanPtr cannonPlanPtr(createBoltMaterialPlan(type));
+                resultPtr = cannonPlanPtr;
+                break;
+            }
 
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
     return resultPtr;
 }
 
-//static
+// static
 const RenMaterial& MachPhysPlasmaBolt::centreMaterial()
 {
-    static RenMaterial theMaterial( RenColour( 0.0, 188.0/255.0, 0.0 ) );
+    static RenMaterial theMaterial(RenColour(0.0, 188.0 / 255.0, 0.0));
     static bool firstTime = true;
-    if( firstTime )
+    if (firstTime)
     {
         firstTime = false;
-        theMaterial.texture( RenTexManager::instance().createTexture("ptop_bt.bmp") );
+        theMaterial.texture(RenTexManager::instance().createTexture("ptop_bt.bmp"));
     }
 
     return theMaterial;
@@ -338,15 +334,15 @@ PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash
 //                                      100.0, 100.0, W4dSoundManager::PLAY_ONCE );
 
     SoundId sndData = (boltType_ == MachPhys::PLASMA_RIFLE ? SID_PLRHIT :
-                                                             	  SID_PLCHIT);
-	W4dSoundManager::instance().play( pTTF, sndData,
-	                                  startTime, 1 );
+                                                                  SID_PLCHIT);
+    W4dSoundManager::instance().play( pTTF, sndData,
+                                      startTime, 1 );
 
     return duration;
 }
 */
 
-void perWrite( PerOstream& ostr, const MachPhysPlasmaBolt& bolt )
+void perWrite(PerOstream& ostr, const MachPhysPlasmaBolt& bolt)
 {
     const MachPhysLinearProjectile& base = bolt;
 
@@ -354,7 +350,7 @@ void perWrite( PerOstream& ostr, const MachPhysPlasmaBolt& bolt )
     ostr << bolt.boltType_;
 }
 
-void perRead( PerIstream& istr, MachPhysPlasmaBolt& bolt )
+void perRead(PerIstream& istr, MachPhysPlasmaBolt& bolt)
 {
     MachPhysLinearProjectile& base = bolt;
 
@@ -362,46 +358,44 @@ void perRead( PerIstream& istr, MachPhysPlasmaBolt& bolt )
     istr >> bolt.boltType_;
 }
 
-PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash
-(
-    W4dEntity* pParent, const MexTransform3d& localPosition, const PhysAbsoluteTime& startTime
-)
+PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash(
+    W4dEntity* pParent,
+    const MexTransform3d& localPosition,
+    const PhysAbsoluteTime& startTime)
 {
-	PhysRelativeTime duration = 0.33;
+    PhysRelativeTime duration = 0.33;
 
-	MachPhysPlasmaAura* pAura = _NEW( MachPhysPlasmaAura( pParent, localPosition) );
-	pAura->startPlasmaAura( startTime, duration );
+    MachPhysPlasmaAura* pAura = _NEW(MachPhysPlasmaAura(pParent, localPosition));
+    pAura->startPlasmaAura(startTime, duration);
 
-	MachPhysPlasmaSplat* pSplat = _NEW( MachPhysPlasmaSplat( pParent, localPosition) );
-	pSplat->startPlasmaSplat( startTime, duration );
+    MachPhysPlasmaSplat* pSplat = _NEW(MachPhysPlasmaSplat(pParent, localPosition));
+    pSplat->startPlasmaSplat(startTime, duration);
 
-	SoundId sndData = (boltType_ == MachPhys::PLASMA_RIFLE ? SID_PLRHIT :
-	                                                         	  SID_PLCHIT);
-	//Cache the time that the last impact flash was played,
-	//so that we don't get too many sounds playing at
-	//the same time.
-	static PhysRelativeTime lastTimePlayed = 0;
-	const PhysRelativeTime acceptableTime = 1.0;
+    SoundId sndData = (boltType_ == MachPhys::PLASMA_RIFLE ? SID_PLRHIT : SID_PLCHIT);
+    // Cache the time that the last impact flash was played,
+    // so that we don't get too many sounds playing at
+    // the same time.
+    static PhysRelativeTime lastTimePlayed = 0;
+    const PhysRelativeTime acceptableTime = 1.0;
 
-    W4dGeneric* pSplatSite = NULL;
-	//Only play sound if it is an acceptable time away from the
-	//previous play
-	if(startTime > lastTimePlayed + acceptableTime)
-	{
-	    pSplatSite = _NEW(W4dGeneric(pParent, localPosition, W4dEntity::NOT_SOLID));
-		W4dSoundManager::instance().play( pSplatSite, sndData,
-	                                  startTime, 1 );
-		lastTimePlayed = startTime;
-	}
+    W4dGeneric* pSplatSite = nullptr;
+    // Only play sound if it is an acceptable time away from the
+    // previous play
+    if (startTime > lastTimePlayed + acceptableTime)
+    {
+        pSplatSite = _NEW(W4dGeneric(pParent, localPosition, W4dEntity::NOT_SOLID));
+        W4dSoundManager::instance().play(pSplatSite, sndData, startTime, 1);
+        lastTimePlayed = startTime;
+    }
 
-	 //Add to the garbage collection list. Let it survive, so the sound
-	//associated with it isn't stopped too early
-	W4dGarbageCollector::instance().add( pSplat, startTime + duration);
-	W4dGarbageCollector::instance().add( pAura, startTime + duration );
-	if(pSplatSite)
-		W4dGarbageCollector::instance().add( pSplatSite, startTime + duration + 5 );
+    // Add to the garbage collection list. Let it survive, so the sound
+    // associated with it isn't stopped too early
+    W4dGarbageCollector::instance().add(pSplat, startTime + duration);
+    W4dGarbageCollector::instance().add(pAura, startTime + duration);
+    if (pSplatSite)
+        W4dGarbageCollector::instance().add(pSplatSite, startTime + duration + 5);
 
-	return duration;
+    return duration;
 }
 
 /* End PLASMBOL.CPP *************************************************/

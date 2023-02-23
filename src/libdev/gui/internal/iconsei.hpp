@@ -8,41 +8,41 @@
 
 class GuiIconSequenceImpl
 {
-	private:
-		GuiIconSequence::ActiveChildren	activeChildren_;
-		GuiIconSequence::FixedChildren  fixedChildren_;
-		unsigned						nFixedChildren_;
-		ctl_bit_vector					allocatedPositions_;
-		GuiIconSequence::Coords			coords_;
-		bool							isDoingDisplay_;
+private:
+    GuiIconSequence::ActiveChildren activeChildren_;
+    GuiIconSequence::FixedChildren fixedChildren_;
+    unsigned nFixedChildren_;
+    ctl_bit_vector allocatedPositions_;
+    GuiIconSequence::Coords coords_;
+    bool isDoingDisplay_;
 
-		GuiIconSequenceImpl( const GuiIconSequence::Coords& c )
-		:
-		activeChildren_( c.size() ),
-		fixedChildren_( c.size() ),
-		allocatedPositions_( c.size() )
-		{}
+    GuiIconSequenceImpl(const GuiIconSequence::Coords& c)
+        : activeChildren_(c.size())
+        , fixedChildren_(c.size())
+        , allocatedPositions_(c.size())
+    {
+    }
 
-		friend class GuiIconSequence;
+    friend class GuiIconSequence;
 };
 
 class GuiScrollableIconSequenceImpl
 {
-	private:
-		GuiDisplayable * pLeftScroller_;
-		GuiDisplayable * pRightScroller_;
-		GuiDisplayable * pTwoWayScroller_;
+private:
+    GuiDisplayable* pLeftScroller_;
+    GuiDisplayable* pRightScroller_;
+    GuiDisplayable* pTwoWayScroller_;
 
-		GuiIconSequence::Coords::size_type leftScrollerIndex_;
-		GuiIconSequence::Coords::size_type rightScrollerIndex_;
-		GuiIconSequence::Coords::size_type twoWayScrollerIndex_;
+    GuiIconSequence::Coords::size_type leftScrollerIndex_;
+    GuiIconSequence::Coords::size_type rightScrollerIndex_;
+    GuiIconSequence::Coords::size_type twoWayScrollerIndex_;
 
-		bool canScrollLeft_;
-		bool canScrollRight_;
-		unsigned offset_;
-		unsigned scrollIncrement_;
-	
-		friend class GuiScrollableIconSequence;		
+    bool canScrollLeft_;
+    bool canScrollRight_;
+    unsigned offset_;
+    unsigned scrollIncrement_;
+
+    friend class GuiScrollableIconSequence;
 };
 
-#endif 	// _GUI_ICONSEI
+#endif // _GUI_ICONSEI

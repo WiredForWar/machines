@@ -11,22 +11,22 @@
 #include "base/internal/appbuff.hpp"
 #include "base/internal/memchk.hpp"
 
-BaseAppendOstream::BaseAppendOstream( const char* fileName )
-: ostream( &dummyStreamBuf() ),
-  appendBuffer_( fileName )
+BaseAppendOstream::BaseAppendOstream(const char* fileName)
+    : ostream(&dummyStreamBuf())
+    , appendBuffer_(fileName)
 {
-    //ostream& thisAsOStream = *this;
-    // TODO: figure out this construction:
-    //thisAsOStream = &appendBuffer_;
+    // ostream& thisAsOStream = *this;
+    //  TODO: figure out this construction:
+    // thisAsOStream = &appendBuffer_;
     this->rdbuf(&appendBuffer_);
 }
 
 BaseAppendOstream::BaseAppendOstream()
-: ostream( &dummyStreamBuf() )
+    : ostream(&dummyStreamBuf())
 {
-    //ostream& thisAsOStream = *this;
+    // ostream& thisAsOStream = *this;
 
-    //thisAsOStream = &appendBuffer_;
+    // thisAsOStream = &appendBuffer_;
     this->rdbuf(&appendBuffer_);
 }
 
@@ -34,9 +34,9 @@ BaseAppendOstream::~BaseAppendOstream()
 {
 }
 
-void    BaseAppendOstream::name( const char* fileName )
+void BaseAppendOstream::name(const char* fileName)
 {
-    appendBuffer_.name( fileName );
+    appendBuffer_.name(fileName);
 }
 
 // BaseAppendBuffer* BaseAppendOstream::pBuffer( const char* fileName )
@@ -50,12 +50,12 @@ void    BaseAppendOstream::name( const char* fileName )
 // }
 
 // static
-std::streambuf&  BaseAppendOstream::dummyStreamBuf()
+std::streambuf& BaseAppendOstream::dummyStreamBuf()
 {
     //  This is a dummy streambuf that is only used to keep
     //  the ostream constructor happy.
 
-    static  BaseAppendBuffer   str_;
+    static BaseAppendBuffer str_;
 
     return str_;
 }

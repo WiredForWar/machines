@@ -1,5 +1,5 @@
 /*
- * F L A M E B A L . C P P 
+ * F L A M E B A L . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,35 +10,34 @@
 #include "machphys/wepdata.hpp"
 #include "machlog/flamebal.hpp"
 #include "machlog/plandoms.hpp"
-//#include "machlog/races.hpp"
-//#include "machlog/actor.hpp"
-//#include "machlog/spacial.hpp"
+// #include "machlog/races.hpp"
+// #include "machlog/actor.hpp"
+// #include "machlog/spacial.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogFlameBall );
+PER_DEFINE_PERSISTENT(MachLogFlameBall);
 
 MachLogFlameBall::MachLogFlameBall(
     MachLogRace* pRace,
-	MachPhysLinearProjectile* pPhysProjectile,
+    MachPhysLinearProjectile* pPhysProjectile,
     MachActor* pOwner,
-    const MachPhysWeaponData& weaponData )
-:	MachLogLinearProjectile( pRace, pPhysProjectile, pOwner, weaponData )
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData)
 {
-	HAL_STREAM("MLFlameBall::CTOR\n" );
+    HAL_STREAM("MLFlameBall::CTOR\n");
     TEST_INVARIANT;
 }
 
 MachLogFlameBall::~MachLogFlameBall()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogFlameBall::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogFlameBall& t )
+ostream& operator<<(ostream& o, const MachLogFlameBall& t)
 {
 
     o << "MachLogFlameBall " << (void*)&t << " start" << std::endl;
@@ -49,29 +48,26 @@ ostream& operator <<( ostream& o, const MachLogFlameBall& t )
 
 void MachLogFlameBall::doBeDestroyed()
 {
-	checkForDamage( 4.0, MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::FLAME_THROWER1 );
+    checkForDamage(4.0, MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::FLAME_THROWER1);
 }
 
-void perWrite( PerOstream& ostr, const MachLogFlameBall& actor )
+void perWrite(PerOstream& ostr, const MachLogFlameBall& actor)
 {
-	const MachLogLinearProjectile& base1 = actor;
+    const MachLogLinearProjectile& base1 = actor;
 
-	ostr << base1;
-
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogFlameBall& actor )
+void perRead(PerIstream& istr, MachLogFlameBall& actor)
 {
-	MachLogLinearProjectile& base1 = actor;
+    MachLogLinearProjectile& base1 = actor;
 
-	istr >> base1;
-
+    istr >> base1;
 }
 
-MachLogFlameBall::MachLogFlameBall( PerConstructor con )
-:	MachLogLinearProjectile( con )
+MachLogFlameBall::MachLogFlameBall(PerConstructor con)
+    : MachLogLinearProjectile(con)
 {
 }
-
 
 /* End PULSEBLB.CPP *************************************************/

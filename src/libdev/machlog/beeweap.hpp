@@ -1,5 +1,5 @@
 /*
- * B E E W E A P . H P P 
+ * B E E W E A P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,32 +20,31 @@ class MachLogBeeBomber : public MachLogLinearWeapon
 // Canonical form revoked
 {
 public:
-    MachLogBeeBomber( MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner );
-    virtual ~MachLogBeeBomber();
+    MachLogBeeBomber(MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner);
+    ~MachLogBeeBomber() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogBeeBomber& t );
+    friend ostream& operator<<(ostream& o, const MachLogBeeBomber& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogBeeBomber );
-	PER_FRIEND_READ_WRITE( MachLogBeeBomber );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogBeeBomber);
+    PER_FRIEND_READ_WRITE(MachLogBeeBomber);
 
 protected:
-
-	virtual	MachLogLinearProjectile* createLinearProjectile
-	(
-		const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-	    const W4dEntity& target, const MexPoint3d& targetOffset
-	);
+    MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
 private:
-    MachLogBeeBomber( const MachLogBeeBomber& );
-    MachLogBeeBomber& operator =( const MachLogBeeBomber& );
-    bool operator ==( const MachLogBeeBomber& );
-
+    MachLogBeeBomber(const MachLogBeeBomber&);
+    MachLogBeeBomber& operator=(const MachLogBeeBomber&);
+    bool operator==(const MachLogBeeBomber&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogBeeBomber );
+PER_DECLARE_PERSISTENT(MachLogBeeBomber);
 
 #endif
 

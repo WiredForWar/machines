@@ -19,73 +19,76 @@
 #include "mathex/point3d.hpp"
 #include "machphys/machphys.hpp"
 
-PedCameraMarker::PedCameraMarker( W4dEntity* pParent, const MexTransform3d& localTransform, MachLogCamera::Type cameraType, const RenColour& colour )
-: 	W4dCustom(  pParent,
-				localTransform,
-				W4dEntity::NOT_SOLID,
-				W4dDistance( 10000 ) ),
-	cameraType_( cameraType ),
-	colour_( colour )
+PedCameraMarker::PedCameraMarker(
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform,
+    MachLogCamera::Type cameraType,
+    const RenColour& colour)
+    : W4dCustom(pParent, localTransform, W4dEntity::NOT_SOLID, W4dDistance(10000))
+    , cameraType_(cameraType)
+    , colour_(colour)
 
 {
 }
 
 void PedCameraMarker::draw()
 {
-	// Draws marker ( a big arrow along x-axis )
+    // Draws marker ( a big arrow along x-axis )
 
-	//Construct a material of the appropriate colour
-    RenMaterial mat( colour_ );
+    // Construct a material of the appropriate colour
+    RenMaterial mat(colour_);
 
     RenMesh& viewVolumeMesh = mesh();
 
-	//double alpha = camera.horizontalFOVAngle();
-   //	double beta = camera.verticalFOVAngle();
-   //	double gamma = alpha/2;
-   //	double theta = beta/2;
+    // double alpha = camera.horizontalFOVAngle();
+    //    double beta = camera.verticalFOVAngle();
+    //    double gamma = alpha/2;
+    //    double theta = beta/2;
 
-	int focalLength = 30;
+    int focalLength = 30;
 
-   	// Calculate offsets for viewing volume
-   //	int horizontalDisplacement = gamma * focalLength * tan( gamma );
-   //	int verticalDisplacement = theta * focalLength * tan( theta );
+    // Calculate offsets for viewing volume
+    //   int horizontalDisplacement = gamma * focalLength * tan( gamma );
+    //   int verticalDisplacement = theta * focalLength * tan( theta );
 
-	MATHEX_SCALAR minx, miny, minz;
-	minx = miny = minz = 0;
+    MATHEX_SCALAR minx, miny, minz;
+    minx = miny = minz = 0;
 
-	/*viewVolumeMesh.addLine(	MexPoint3d( minx, miny, minz ),
-							MexPoint3d( minx+focalLength, miny+horizontalDisplacement, minz ), mat );
-	viewVolumeMesh.addLine(	MexPoint3d( minx, miny, minz ),
-							MexPoint3d( minx+focalLength, miny-horizontalDisplacement, minz ), mat );
+    /*viewVolumeMesh.addLine(   MexPoint3d( minx, miny, minz ),
+                            MexPoint3d( minx+focalLength, miny+horizontalDisplacement, minz ), mat );
+    viewVolumeMesh.addLine( MexPoint3d( minx, miny, minz ),
+                            MexPoint3d( minx+focalLength, miny-horizontalDisplacement, minz ), mat );
 
-	viewVolumeMesh.addLine(	MexPoint3d( minx, miny, minz ),
-							MexPoint3d( minx+focalLength, miny, minz+verticalDisplacement ), mat );
-	viewVolumeMesh.addLine(	MexPoint3d( minx, miny, minz ),
-							MexPoint3d( minx+focalLength, miny, minz-verticalDisplacement ), mat );
-	*/
-	viewVolumeMesh.addLine(	MexPoint3d( minx, miny, minz ),
-							MexPoint3d( minx+focalLength, miny, minz ), mat );
+    viewVolumeMesh.addLine( MexPoint3d( minx, miny, minz ),
+                            MexPoint3d( minx+focalLength, miny, minz+verticalDisplacement ), mat );
+    viewVolumeMesh.addLine( MexPoint3d( minx, miny, minz ),
+                            MexPoint3d( minx+focalLength, miny, minz-verticalDisplacement ), mat );
+    */
+    viewVolumeMesh.addLine(MexPoint3d(minx, miny, minz), MexPoint3d(minx + focalLength, miny, minz), mat);
 
-	// Draw simple arrow head
-	viewVolumeMesh.addLine(	MexPoint3d( minx+focalLength, miny, minz ),
-							MexPoint3d( minx+focalLength-5, miny+5, minz ), mat );
-	viewVolumeMesh.addLine(	MexPoint3d( minx+focalLength, miny, minz ),
-							MexPoint3d( minx+focalLength-5, miny-5, minz ), mat );
-	TEST_INVARIANT;
+    // Draw simple arrow head
+    viewVolumeMesh.addLine(
+        MexPoint3d(minx + focalLength, miny, minz),
+        MexPoint3d(minx + focalLength - 5, miny + 5, minz),
+        mat);
+    viewVolumeMesh.addLine(
+        MexPoint3d(minx + focalLength, miny, minz),
+        MexPoint3d(minx + focalLength - 5, miny - 5, minz),
+        mat);
+    TEST_INVARIANT;
 }
 
 PedCameraMarker::~PedCameraMarker()
 {
     TEST_INVARIANT;
-
 }
 
 void PedCameraMarker::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PedCameraMarker& t )
+ostream& operator<<(ostream& o, const PedCameraMarker& t)
 {
 
     o << "PedCameraMarker " << (void*)&t << " start" << std::endl;

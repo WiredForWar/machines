@@ -1,5 +1,5 @@
 /*
- * O P D A P C I . H P P 
+ * O P D A P C I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,25 +26,24 @@ class MachLogAPC;
 
 class MachLogDeployAPCOperationImpl
 {
-public:		
-	MachLogDeployAPCOperationImpl( MachLogAPC* pAPC );
-							
-	~MachLogDeployAPCOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogDeployAPCOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogDeployAPCOperationImpl );
-	
-	void CLASS_INVARIANT;
+public:
+    MachLogDeployAPCOperationImpl(MachLogAPC* pAPC);
 
-	friend class MachLogDeployAPCOperation;
-	
+    ~MachLogDeployAPCOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogDeployAPCOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogDeployAPCOperationImpl);
+
+    void CLASS_INVARIANT;
+
+    friend class MachLogDeployAPCOperation;
+
 private:
-
-	MachLogAPC*								pAPC_;
-	bool 									finished_;
-	MachLogDeployAPCOperation::Status		status_;	
+    MachLogAPC* pAPC_;
+    bool finished_;
+    MachLogDeployAPCOperation::Status status_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogDeployAPCOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogDeployAPCOperationImpl);
 
 #endif
 

@@ -16,69 +16,66 @@
 #include "mathex/point3d.hpp"
 #include "machlog/operatio.hpp"
 
-
 class MachLogMachine;
 class MachLogSmelter;
 
 // canonical form revoked
 
-class MachLogRecycleOperation
-: public MachLogOperation
+class MachLogRecycleOperation : public MachLogOperation
 {
 public:
+    MachLogRecycleOperation(MachLogMachine* pActor, MachLogConstruction* pSmeltingBuilding);
+    ~MachLogRecycleOperation() override;
 
-	MachLogRecycleOperation( MachLogMachine* pActor, MachLogConstruction* pSmeltingBuilding  );
-	~MachLogRecycleOperation();
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	bool beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData );
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogRecycleOperation );
-	PER_FRIEND_READ_WRITE( MachLogRecycleOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogRecycleOperation);
+    PER_FRIEND_READ_WRITE(MachLogRecycleOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
 
-	virtual void doOutputOperator( ostream& ) const;
+    bool doBeInterrupted() override;
+    ///////////////////////////////
 
-	virtual bool doBeInterrupted();
-	///////////////////////////////
-
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
 private:
+    // Operations deliberately revoked
+    MachLogRecycleOperation(const MachLogRecycleOperation&);
+    MachLogRecycleOperation& operator=(const MachLogRecycleOperation&);
+    bool operator==(const MachLogRecycleOperation&);
 
-	// Operations deliberately revoked
-    MachLogRecycleOperation( const MachLogRecycleOperation& );
-    MachLogRecycleOperation& operator =( const MachLogRecycleOperation& );
-    bool operator ==( const MachLogRecycleOperation& );
+    // will perform a find space and change *pClearRecyclePoint if necessary to that of a position near its original
+    // value that is guaranteed to be both within recycle range of the pad and clear of all obstacles for the clearance
+    // designated
+    bool attemptToGuaranteeClearRecyclePoint(
+        const MexPoint2d& actorPos,
+        MATHEX_SCALAR machineClearance,
+        MexPoint2d* pClearRecyclePoint);
 
-	// will perform a find space and change *pClearRecyclePoint if necessary to that of a position near its original
-	// value that is guaranteed to be both within recycle range of the pad and clear of all obstacles for the clearance
-	// designated
-	bool attemptToGuaranteeClearRecyclePoint( const MexPoint2d& actorPos, MATHEX_SCALAR machineClearance, MexPoint2d* pClearRecyclePoint );
+    // will give destinationPadPosition_ a (potentially poor) default value of the first pad position if no pad
+    // is found with adequate space around it for this machine
+    bool selectBestRecyclePosition();
 
-	// will give destinationPadPosition_ a (potentially poor) default value of the first pad position if no pad
-	// is found with adequate space around it for this machine
-	bool selectBestRecyclePosition();
+    // nearest pad's position irrespective of clear space requirements
+    MexPoint2d nearestPadPosition() const;
 
-	// nearest pad's position irrespective of clear space requirements
-	MexPoint2d nearestPadPosition() const;
-
-	MachLogMachine *		pActor_;
-	MachLogConstruction *	pSmeltingBuilding_;
-	MexPoint2d				destinationPadPosition_;
-	bool					finished_;
+    MachLogMachine* pActor_;
+    MachLogConstruction* pSmeltingBuilding_;
+    MexPoint2d destinationPadPosition_;
+    bool finished_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogRecycleOperation );
-
+PER_DECLARE_PERSISTENT(MachLogRecycleOperation);
 
 #endif
 

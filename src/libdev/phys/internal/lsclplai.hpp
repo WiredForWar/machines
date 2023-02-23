@@ -1,5 +1,5 @@
 /*
- * L S C L P L A I . H P P 
+ * L S C L P L A I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,24 +22,23 @@ class PhysLinearScalarPlanImpl
 // Canonical form revoked
 {
 public:
-
 private:
-    PhysLinearScalarPlanImpl( const PhysLinearScalarPlan::ScalarVec& times, const PhysLinearScalarPlan::ScalarVec& scales );
+    PhysLinearScalarPlanImpl(
+        const PhysLinearScalarPlan::ScalarVec& times,
+        const PhysLinearScalarPlan::ScalarVec& scales);
     ~PhysLinearScalarPlanImpl();
 
-    PhysLinearScalarPlanImpl( const PhysLinearScalarPlanImpl& );
-    PhysLinearScalarPlanImpl& operator =( const PhysLinearScalarPlanImpl& );
+    PhysLinearScalarPlanImpl(const PhysLinearScalarPlanImpl&);
+    PhysLinearScalarPlanImpl& operator=(const PhysLinearScalarPlanImpl&);
 
-     void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysLinearScalarPlanImpl& t );
-	friend class PhysLinearScalarPlan;
+    friend ostream& operator<<(ostream& o, const PhysLinearScalarPlanImpl& t);
+    friend class PhysLinearScalarPlan;
 
-	PhysLinearScalarPlan::ScalarVec times_;
-	PhysLinearScalarPlan::ScalarVec scales_;
-
+    PhysLinearScalarPlan::ScalarVec times_;
+    PhysLinearScalarPlan::ScalarVec scales_;
 };
-
 
 #endif
 

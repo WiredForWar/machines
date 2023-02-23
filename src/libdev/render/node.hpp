@@ -14,66 +14,56 @@
 
 class Node;
 
-class Node : public ctl_vector< Node* >
+class Node : public ctl_vector<Node*>
 {
 public:
-    ~Node();
+    ~Node() override;
 
     void CLASS_INVARIANT;
 
     const MexTransform3d& transform() const;
     RenMeshInstance* pMeshInstance() const;
 
-    const std::string & instanceName() const;
+    const std::string& instanceName() const;
 
-    friend ostream& operator <<( ostream& o, const Node& t );
+    friend ostream& operator<<(ostream& o, const Node& t);
 
 private:
     // Operation deliberately revoked
-    Node( const Node& );
+    Node(const Node&);
 
     // Operation deliberately revoked
-    Node& operator =( const Node& );
+    Node& operator=(const Node&);
 
     // Operation deliberately revoked
-    bool operator ==( const Node& );
+    bool operator==(const Node&);
 
     friend class RenHierarchyBuilder;
 
     //  This is used to construct the root node - we don't know
     //  how many children the root can have, extra meshes can be
     //  introduced at any time
-    Node(
-        Node* pParent,
-        const MexTransform3d& transform );
+    Node(Node* pParent, const MexTransform3d& transform);
 
-    Node(
-        Node* pParent,
-        const MexTransform3d& transform,
-        size_t nChildren );
-    Node(
-        Node* pParent,
-        const MexTransform3d& transform,
-        size_t nChildren,
-        const RenIMeshID& id );
+    Node(Node* pParent, const MexTransform3d& transform, size_t nChildren);
+    Node(Node* pParent, const MexTransform3d& transform, size_t nChildren, const RenIMeshID& id);
 
-    bool    allChildrenSupplied() const;
-    Node*   pParent() const;
+    bool allChildrenSupplied() const;
+    Node* pParent() const;
 
     //  This is the number of children that will
     //  eventually be supplied
-    size_t  nChildren_;
-    Node*   pParent_;
-    bool    root_;
+    size_t nChildren_;
+    Node* pParent_;
+    bool root_;
 
-    MexTransform3d  transform_;
+    MexTransform3d transform_;
 
-    SysPathName     pathName_;
-    std::string           meshName_;
-    std::string           instanceName_;
-    double          scale_;
+    SysPathName pathName_;
+    std::string meshName_;
+    std::string instanceName_;
+    double scale_;
 };
-
 
 #endif
 

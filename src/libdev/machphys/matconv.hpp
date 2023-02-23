@@ -1,5 +1,5 @@
 /*
- * M A T C O N V . H P P 
+ * M A T C O N V . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -23,36 +23,35 @@ class W4dComposite;
 class MachPhysMaterialConverter
 {
 public:
-    MachPhysMaterialConverter( MachPhys::Race from, MachPhys::Race to );
+    MachPhysMaterialConverter(MachPhys::Race from, MachPhys::Race to);
     ~MachPhysMaterialConverter();
 
     //  If the material is 'close' to the from colour then convert it
     //  to the to colour and return true. Otherwise return false.
-    bool convert( RenMaterial* pMaterial ) const;
-	
-	// Apply this material conversion to all materials in a given composite.
-	void convert( W4dComposite* ) const;
-    
+    bool convert(RenMaterial* pMaterial) const;
+
+    // Apply this material conversion to all materials in a given composite.
+    void convert(W4dComposite*) const;
+
     void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    MachPhysMaterialConverter( const MachPhysMaterialConverter& );
+    MachPhysMaterialConverter(const MachPhysMaterialConverter&);
 
     // Operation deliberately revoked
-    MachPhysMaterialConverter& operator =( const MachPhysMaterialConverter& );
+    MachPhysMaterialConverter& operator=(const MachPhysMaterialConverter&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysMaterialConverter& );
+    bool operator==(const MachPhysMaterialConverter&);
 
-    double hue( MachPhys::Race race ) const;
-    bool close( double hue1, double hue2 ) const;
+    double hue(MachPhys::Race race) const;
+    bool close(double hue1, double hue2) const;
 
     //  Data members
-    double  toHue_;
-    double  fromHue_;
+    double toHue_;
+    double fromHue_;
 };
-
 
 #endif
 

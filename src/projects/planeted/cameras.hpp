@@ -21,7 +21,7 @@
 
 #include "gui/gui.hpp"
 
-//class DevButtonEvent;
+// class DevButtonEvent;
 class DevKeyToCommandTranslator;
 class PhysFlyControl;
 class PhysZenithFlyControl;
@@ -41,137 +41,167 @@ public:
     //  Singleton class
     static MachCameras& instance();
 
-	void initialise( W4dSceneManager*, W4dRoot* );
+    void initialise(W4dSceneManager*, W4dRoot*);
 
     void CLASS_INVARIANT;
 
-	// Called every time there is a buttonEvent. Returns true if the buttonEvent was
-	// processed (e.g. buttonEvent caused camera rotation).
-	bool processButtonEvent( const DevButtonEvent& buttonEvent );
+    // Called every time there is a buttonEvent. Returns true if the buttonEvent was
+    // processed (e.g. buttonEvent caused camera rotation).
+    bool processButtonEvent(const DevButtonEvent& buttonEvent);
 
-	// Called every frame before rendering to ensure that cameras are in the correct
-	// domain etc.
-	void updateCameras();
+    // Called every frame before rendering to ensure that cameras are in the correct
+    // domain etc.
+    void updateCameras();
 
-	MachLogCamera* currentCamera();
-	// PRE( pCurrentCamera_ != NULL );
+    MachLogCamera* currentCamera();
+    // PRE( pCurrentCamera_ != NULL );
 
-	MachLogCamera::Type currentCameraType();
-	// PRE( pCurrentCamera_ != NULL );
+    MachLogCamera::Type currentCameraType();
+    // PRE( pCurrentCamera_ != NULL );
 
-	// Make camera move to new position ( assuming camera can move without
-	// ending up inside an obstacle etc ).
-	void moveTo( const MexPoint2d& );
+    // Make camera move to new position ( assuming camera can move without
+    // ending up inside an obstacle etc ).
+    void moveTo(const MexPoint2d&);
 
-	// Make camera move into a position where it can look at the MachActor.
-	void lookAt( const MachActor& );
+    // Make camera move into a position where it can look at the MachActor.
+    void lookAt(const MachActor&);
 
-	// Change camera to appropriate view
-	void switchToZenithView();
+    // Change camera to appropriate view
+    void switchToZenithView();
 
-	void switchToSuperHighZenithView();
+    void switchToSuperHighZenithView();
 
-	void switchToGroundView();
+    void switchToGroundView();
 
-	void switchToThirdPersonView();
+    void switchToThirdPersonView();
 
-	void switchToFirstPersonView();
+    void switchToFirstPersonView();
 
-	// Called when mouse is at edge of screen.
-	enum ScrollDir { LEFT, RIGHT, UP, DOWN };
-	void scroll( ScrollDir, const GuiMouseEvent& event );
+    // Called when mouse is at edge of screen.
+    enum ScrollDir
+    {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    };
+    void scroll(ScrollDir, const GuiMouseEvent& event);
 
     // FIXME: Not impl for planeted
-    void scrollWithWheel(const Gui::ScrollState wheelDir, const double step) { /* ... */ }
+    void scrollWithWheel(const Gui::ScrollState wheelDir, const double step)
+    { /* ... */
+    }
 
 private:
-	// Private as class is Singleton
+    // Private as class is Singleton
     MachCameras();
-	// PRE( pSceneManager );
-	// PRE( pRoot );
+    // PRE( pSceneManager );
+    // PRE( pRoot );
 
     ~MachCameras();
 
-	// Operations revoked
-    MachCameras( const MachCameras& );
-    MachCameras& operator =( const MachCameras& );
-    bool operator ==( const MachCameras& );
+    // Operations revoked
+    MachCameras(const MachCameras&);
+    MachCameras& operator=(const MachCameras&);
+    bool operator==(const MachCameras&);
 
-    friend ostream& operator <<( ostream& o, const MachCameras& t );
+    friend ostream& operator<<(ostream& o, const MachCameras& t);
 
-	// Change camera to look at the pNewMachine.
-	void switchThirdPerson( MachLogMachine* pNewMachine );
-	MachLogMachine& currentMachine();
+    // Change camera to look at the pNewMachine.
+    void switchThirdPerson(MachLogMachine* pNewMachine);
+    MachLogMachine& currentMachine();
 
-	// Keeps currentCamera_ consistent with the W4dSceneManager's version.
-	void useCamera(MachLogCamera*);
+    // Keeps currentCamera_ consistent with the W4dSceneManager's version.
+    void useCamera(MachLogCamera*);
 
-	// Updates 3rd person camera to be in same domain as machine being followed.
-	void check3rdCameraDomain();
+    // Updates 3rd person camera to be in same domain as machine being followed.
+    void check3rdCameraDomain();
 
-	// Reduce fog for zenith view to enable planet surface to been seen from high up.
-	void reduceFog();
+    // Reduce fog for zenith view to enable planet surface to been seen from high up.
+    void reduceFog();
 
-	// Restore fog to default setting when switching from zenith view.
-	void restoreFog();
+    // Restore fog to default setting when switching from zenith view.
+    void restoreFog();
 
-	// Return the position that the zenith camera would have to be in in order for
-	// "lookAt" to be the centre of the sceen.
-	MexPoint3d zenithLookAt( const MexPoint3d& lookAt );
+    // Return the position that the zenith camera would have to be in in order for
+    // "lookAt" to be the centre of the sceen.
+    MexPoint3d zenithLookAt(const MexPoint3d& lookAt);
 
-	void switchToZenith( const MexPoint3d& lookAt );
-	void switchToSuperHighZenith( const MexPoint3d& lookAt );
+    void switchToZenith(const MexPoint3d& lookAt);
+    void switchToSuperHighZenith(const MexPoint3d& lookAt);
 
-	enum Command { 	ZENITHVIEW, SUPERHIGHZENITHVIEW, GROUNDVIEW, FIRSTPERSONVIEW, THIRDPERSONVIEW,
-					THIRDPERSONZOOMOUT, THIRDPERSONZOOMIN,
-					SAVEVIEW1, SAVEVIEW2, SAVEVIEW3, SAVEVIEW4,
-					RESTOREVIEW1, RESTOREVIEW2, RESTOREVIEW3, RESTOREVIEW4 };
+    enum Command
+    {
+        ZENITHVIEW,
+        SUPERHIGHZENITHVIEW,
+        GROUNDVIEW,
+        FIRSTPERSONVIEW,
+        THIRDPERSONVIEW,
+        THIRDPERSONZOOMOUT,
+        THIRDPERSONZOOMIN,
+        SAVEVIEW1,
+        SAVEVIEW2,
+        SAVEVIEW3,
+        SAVEVIEW4,
+        RESTOREVIEW1,
+        RESTOREVIEW2,
+        RESTOREVIEW3,
+        RESTOREVIEW4
+    };
 
-	// Nested structure for storing camera positions.
-	struct CameraSave
-	{
-		enum Saved { NOTHINGSAVED, ZENITHVIEW, SUPERHIGHZENITHVIEW, GROUNDVIEW, FIRSTPERSONVIEW, THIRDPERSONVIEW };
+    // Nested structure for storing camera positions.
+    struct CameraSave
+    {
+        enum Saved
+        {
+            NOTHINGSAVED,
+            ZENITHVIEW,
+            SUPERHIGHZENITHVIEW,
+            GROUNDVIEW,
+            FIRSTPERSONVIEW,
+            THIRDPERSONVIEW
+        };
 
-		CameraSave()
-		: saved_( NOTHINGSAVED ),
-		  pMachine_( NULL )
-		{}
+        CameraSave()
+            : saved_(NOTHINGSAVED)
+            , pMachine_(nullptr)
+        {
+        }
 
-		Saved saved_;
-		MexTransform3d position_;
-		const MachLogMachine* pMachine_;
-	};
+        Saved saved_;
+        MexTransform3d position_;
+        const MachLogMachine* pMachine_;
+    };
 
-	// Update CameraSave with the position etc of the currently selected camera.
-	void saveCamera( CameraSave* );
+    // Update CameraSave with the position etc of the currently selected camera.
+    void saveCamera(CameraSave*);
 
-	// Switch to camera and position as described in CameraSave.
-	void restoreCamera( const CameraSave& );
+    // Switch to camera and position as described in CameraSave.
+    void restoreCamera(const CameraSave&);
 
-	// Data members...
-	DevKeyToCommandTranslator* pKeyTranslator_;
-	PhysGroundFlyControl* 	pGroundControl_;
-	PhysFlyControl* 	 	pFreeControl_;
-	PhysFlyControl* 	 	pEyeControl_;
-    PhysZenithFlyControl* 	pZenithControl_;
-    PhysZenithFlyControl* 	pSuperHighZenithControl_;
- 	MachLogCamera*			pEyeCamera_;
- 	MachLogCamera*			pFreeCamera_;
- 	MachLogCamera*			pGroundCamera_;
- 	MachLogCamera*			pZenithCamera_;
- 	MachLogCamera*			pSuperHighZenithCamera_;
- 	MachLogCamera*			pCurrentCamera_;
-	W4dSceneManager*		pSceneManager_;
-	W4dRoot*				pRoot_;
-	size_t 					machineIndex_;
-	MachLogMachineThirdPerson* pThirdPerson_;
-	CameraSave				save1_;
-	CameraSave				save2_;
-	CameraSave				save3_;
-	CameraSave				save4_;
-	DevTimer				lastThirdPersonChange_;
+    // Data members...
+    DevKeyToCommandTranslator* pKeyTranslator_;
+    PhysGroundFlyControl* pGroundControl_;
+    PhysFlyControl* pFreeControl_;
+    PhysFlyControl* pEyeControl_;
+    PhysZenithFlyControl* pZenithControl_;
+    PhysZenithFlyControl* pSuperHighZenithControl_;
+    MachLogCamera* pEyeCamera_;
+    MachLogCamera* pFreeCamera_;
+    MachLogCamera* pGroundCamera_;
+    MachLogCamera* pZenithCamera_;
+    MachLogCamera* pSuperHighZenithCamera_;
+    MachLogCamera* pCurrentCamera_;
+    W4dSceneManager* pSceneManager_;
+    W4dRoot* pRoot_;
+    size_t machineIndex_;
+    MachLogMachineThirdPerson* pThirdPerson_;
+    CameraSave save1_;
+    CameraSave save2_;
+    CameraSave save3_;
+    CameraSave save4_;
+    DevTimer lastThirdPersonChange_;
 };
-
 
 #endif
 

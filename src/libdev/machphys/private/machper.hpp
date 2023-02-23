@@ -1,5 +1,5 @@
 /*
- * M A C H P E R . H P P 
+ * M A C H P E R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,20 +25,20 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMachinePersistence& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMachinePersistence& t);
 
-    PER_MEMBER_PERSISTENT_DEFAULT( MachPhysMachinePersistence );
-    
+    PER_MEMBER_PERSISTENT_DEFAULT(MachPhysMachinePersistence);
+
 private:
-    MachPhysMachinePersistence( const MachPhysMachinePersistence& );
-    MachPhysMachinePersistence& operator =( const MachPhysMachinePersistence& );
-    bool operator ==( const MachPhysMachinePersistence& );
+    MachPhysMachinePersistence(const MachPhysMachinePersistence&);
+    MachPhysMachinePersistence& operator=(const MachPhysMachinePersistence&);
+    bool operator==(const MachPhysMachinePersistence&);
 
     MachPhysMachinePersistence();
 };
 
-PER_READ_WRITE( MachPhysMachinePersistence );
-PER_DECLARE_PERSISTENT( MachPhysMachinePersistence );
+PER_READ_WRITE(MachPhysMachinePersistence);
+PER_DECLARE_PERSISTENT(MachPhysMachinePersistence);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * T I M E A N G I . H P P 
+ * T I M E A N G I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -28,36 +28,37 @@ class PhysTimedAnglePlanImpl
 // Canonical form revoked
 {
 public:
+    PER_MEMBER_PERSISTENT(PhysTimedAnglePlanImpl);
+    PER_FRIEND_READ_WRITE(PhysTimedAnglePlanImpl);
 
-    PER_MEMBER_PERSISTENT( PhysTimedAnglePlanImpl );
-    PER_FRIEND_READ_WRITE( PhysTimedAnglePlanImpl );
-    
 private:
-    PhysTimedAnglePlanImpl( const PhysMotionPlan::AnglesPtr& anglesPtr,
-                        const PhysMotionPlan::TimesPtr& timesPtr,
-                        const MexVec3& axis, const MexVec3& position );
+    PhysTimedAnglePlanImpl(
+        const PhysMotionPlan::AnglesPtr& anglesPtr,
+        const PhysMotionPlan::TimesPtr& timesPtr,
+        const MexVec3& axis,
+        const MexVec3& position);
 
     PhysTimedAnglePlanImpl();
     ~PhysTimedAnglePlanImpl();
 
-    PhysTimedAnglePlanImpl( const PhysTimedAnglePlanImpl& );
-    PhysTimedAnglePlanImpl& operator =( const PhysTimedAnglePlanImpl& );
+    PhysTimedAnglePlanImpl(const PhysTimedAnglePlanImpl&);
+    PhysTimedAnglePlanImpl& operator=(const PhysTimedAnglePlanImpl&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysTimedAnglePlanImpl& t );
-	friend class PhysTimedAnglePlan;
+    friend ostream& operator<<(ostream& o, const PhysTimedAnglePlanImpl& t);
+    friend class PhysTimedAnglePlan;
 
-    //data members
-    MexPoint3d position_; //The constant transform position
-    MexVec3 axis_; //The axis of rotation
-    PhysMotionPlan::TimesPtr timesPtr_; //times for angles( first angle is at
-                                        //time 0 and is not in the collection)
-    PhysMotionPlan::AnglesPtr anglesPtr_; //the angles
-    size_t cacheIndex_; //Used as quick check into the collections
+    // data members
+    MexPoint3d position_; // The constant transform position
+    MexVec3 axis_; // The axis of rotation
+    PhysMotionPlan::TimesPtr timesPtr_; // times for angles( first angle is at
+                                        // time 0 and is not in the collection)
+    PhysMotionPlan::AnglesPtr anglesPtr_; // the angles
+    size_t cacheIndex_; // Used as quick check into the collections
 };
 
-PER_DECLARE_PERSISTENT( PhysTimedAnglePlanImpl );
+PER_DECLARE_PERSISTENT(PhysTimedAnglePlanImpl);
 
 #endif
 

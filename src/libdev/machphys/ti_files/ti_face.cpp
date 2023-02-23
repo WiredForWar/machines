@@ -5,7 +5,7 @@
 
 #include "machphys/ofactory.hpp"
 #include "machphys/ofactory.ctp"
-// 
+//
 // #include "ctl/map.hpp"
 // #include "ctl/map.ctp"
 
@@ -17,7 +17,7 @@
 
 void MachDummyFunctionFacePlate()
 {
-    static  MachPhysObjectFactory< size_t, MachPhysFacePlate >   dummyFactory8( 1 );
+    static MachPhysObjectFactory<size_t, MachPhysFacePlate> dummyFactory8(1);
 }
 
 /* End TI_FACE.CPP *****************************************************/

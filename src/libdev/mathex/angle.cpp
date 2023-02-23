@@ -9,7 +9,7 @@
 #include <iostream>
 
 #ifndef _INLINE
-    #include "mathex/angle.ipp"
+#include "mathex/angle.ipp"
 #endif
 
 // MexAngle::MexAngle()
@@ -21,31 +21,29 @@
 MexAngle::~MexAngle()
 {
     TEST_INVARIANT;
-
 }
 
 void MexAngle::CLASS_INVARIANT
 {
-	INVARIANT(this != NULL);
+    INVARIANT(this != nullptr);
 }
 
 ostream& operator<<(ostream& str, const MexAngle& t)
 {
-	str << t.angleInRadians_;
-	return str << std::endl;
+    str << t.angleInRadians_;
+    return str << std::endl;
 }
 
-PER_DEFINE_PERSISTENT( MexAngle );
+PER_DEFINE_PERSISTENT(MexAngle);
 
-void perWrite( PerOstream& stream, const MexAngle& t )
+void perWrite(PerOstream& stream, const MexAngle& t)
 {
-	stream << t.angleInRadians_;
+    stream << t.angleInRadians_;
 }
 
-void perRead( PerIstream& stream, MexAngle& t )
+void perRead(PerIstream& stream, MexAngle& t)
 {
-	stream >> t.angleInRadians_;
-
+    stream >> t.angleInRadians_;
 }
 
 /* End ANGLE.CPP **************************************************/

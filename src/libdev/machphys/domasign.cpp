@@ -12,10 +12,10 @@
 #include "machphys/plansurf.hpp"
 #include <algorithm>
 
-MachPhysDomainAssignor::MachPhysDomainAssignor(const MachPhysPlanetSurface* p):
-	pPlanet_(p)
+MachPhysDomainAssignor::MachPhysDomainAssignor(const MachPhysPlanetSurface* p)
+    : pPlanet_(p)
 {
-	PRE(p);
+    PRE(p);
 }
 
 // virtual
@@ -26,12 +26,12 @@ MachPhysDomainAssignor::~MachPhysDomainAssignor()
 // virtual
 void MachPhysDomainAssignor::assignDomains(W4dRoot* root, W4dLight* light)
 {
-	//ASSERT(light->findRoot() == root, "wrong tree; roots don't match");
+    // ASSERT(light->findRoot() == root, "wrong tree; roots don't match");
 
-	if (light->hasBoundingSphere())
-	{
-		pPlanet_->domainsAt( light );
-	}
+    if (light->hasBoundingSphere())
+    {
+        pPlanet_->domainsAt(light);
+    }
 }
 
 /* End DOMASIGN.CPP *************************************************/

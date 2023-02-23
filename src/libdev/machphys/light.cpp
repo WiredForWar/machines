@@ -16,24 +16,23 @@
 #include "world4d/entyplan.hpp"
 #include "world4d/visplan.hpp"
 
+PER_DEFINE_PERSISTENT(MachPhysLight);
 
-PER_DEFINE_PERSISTENT( MachPhysLight );
-
-//One-time ctor
+// One-time ctor
 MachPhysLight::MachPhysLight()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/light/light.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/light/light.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysLight::MachPhysLight( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysLight::MachPhysLight(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -41,21 +40,20 @@ MachPhysLight::MachPhysLight( W4dEntity* pParent, const MexTransform3d& localTra
 MachPhysLight::~MachPhysLight()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysLight& MachPhysLight::exemplar()
 {
-	return MachPhysOtherPersistence::instance().lightShadowExemplar();
+    return MachPhysOtherPersistence::instance().lightShadowExemplar();
 }
 
 void MachPhysLight::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysLight& t )
+ostream& operator<<(ostream& o, const MachPhysLight& t)
 {
 
     o << "MachPhysLight " << (void*)&t << " start" << std::endl;
@@ -64,38 +62,37 @@ ostream& operator <<( ostream& o, const MachPhysLight& t )
     return o;
 }
 
-//virtual
-bool MachPhysLight::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysLight::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysLight& light )
+void perWrite(PerOstream& ostr, const MachPhysLight& light)
 {
     const W4dEntity& base = light;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysLight& light )
+void perRead(PerIstream& istr, MachPhysLight& light)
 {
     W4dEntity& base = light;
 
     istr >> base;
 }
 
-void MachPhysLight::startLight( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration )
+void MachPhysLight::startLight(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration)
 {
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	lightVisibilityPlanPtr->add(false, duration);
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    lightVisibilityPlanPtr->add(false, duration);
 
-	entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime );
+    entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
 }
 
-MachPhysLight::MachPhysLight( PerConstructor c )
-:W4dEntity( c )
+MachPhysLight::MachPhysLight(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
 /* End LIGHT.CPP *************************************************/
-

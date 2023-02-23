@@ -13,12 +13,11 @@
 #include "machlog/races.hpp"
 #include "machlog/scenario.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogPodCapturedCondition);
 
-PER_DEFINE_PERSISTENT( MachLogPodCapturedCondition );
-
-MachLogPodCapturedCondition::MachLogPodCapturedCondition( const string& keyName, MachPhys::Race race )
-:	SimCondition( keyName ),
-	race_( race )
+MachLogPodCapturedCondition::MachLogPodCapturedCondition(const string& keyName, MachPhys::Race race)
+    : SimCondition(keyName)
+    , race_(race)
 {
     TEST_INVARIANT;
 }
@@ -26,78 +25,70 @@ MachLogPodCapturedCondition::MachLogPodCapturedCondition( const string& keyName,
 MachLogPodCapturedCondition::~MachLogPodCapturedCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogPodCapturedCondition::doHasConditionBeenMet() const
 {
-	HAL_STREAM("MachLogPodCapturedCondition::doHasConditionBeenMet " << std::endl );
-	MachLogRaces& races = MachLogRaces::instance();
-	return races.podCaptured( race_ );
+    HAL_STREAM("MachLogPodCapturedCondition::doHasConditionBeenMet " << std::endl);
+    MachLogRaces& races = MachLogRaces::instance();
+    return races.podCaptured(race_);
 }
 
-//static
-MachLogPodCapturedCondition* MachLogPodCapturedCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogPodCapturedCondition* MachLogPodCapturedCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	//format of a VORTEX_FIRED condition line is:
-	//<keyName> RACE <race>
+    // format of a VORTEX_FIRED condition line is:
+    //<keyName> RACE <race>
 
-	return _NEW(
-			MachLogPodCapturedCondition(
-				pParser->tokens()[1],
-				MachLogScenario::machPhysRace( pParser->tokens()[3] )
-				)
-			);
+    return _NEW(MachLogPodCapturedCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3])));
 }
 
 void MachLogPodCapturedCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogPodCapturedCondition& t )
+ostream& operator<<(ostream& o, const MachLogPodCapturedCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogPodCapturedCondition::recommendedCallBackTimeGap() const
 {
-	static const PhysRelativeTime value = 2;
-	return value;
+    static const PhysRelativeTime value = 2;
+    return value;
 }
 
-//virtual
-void MachLogPodCapturedCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogPodCapturedCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogPodCapturedCondition " << (void*)this << " start" << std::endl;
-	o << race_ << std::endl;
+    o << race_ << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogPodCapturedCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogPodCapturedCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.race_;
-
+    ostr << base1;
+    ostr << condition.race_;
 }
 
-void perRead( PerIstream& istr, MachLogPodCapturedCondition& condition )
+void perRead(PerIstream& istr, MachLogPodCapturedCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.race_;
+    istr >> base1;
+    istr >> condition.race_;
 }
 
-MachLogPodCapturedCondition::MachLogPodCapturedCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogPodCapturedCondition::MachLogPodCapturedCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

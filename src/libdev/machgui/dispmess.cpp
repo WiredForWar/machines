@@ -1,5 +1,5 @@
 /*
- * D I S P M E S S . C P P 
+ * D I S P M E S S . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,57 +23,56 @@ MachGuiMessageDisplay::MachGuiMessageDisplay()
 
 MachGuiMessageDisplay::~MachGuiMessageDisplay()
 {
-	while( messages_.size() )
-	{
-		_DELETE( messages_.front() );
-		messages_.erase( messages_.begin() );
-	}
+    while (messages_.size())
+    {
+        _DELETE(messages_.front());
+        messages_.erase(messages_.begin());
+    }
 
     TEST_INVARIANT;
-
 }
 
 void MachGuiMessageDisplay::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void MachGuiMessageDisplay::addMessage( const char* displayText, PhysRelativeTime timeToDisplay )
+void MachGuiMessageDisplay::addMessage(const char* displayText, PhysRelativeTime timeToDisplay)
 {
-	DisplayMessage* dm = _NEW( DisplayMessage );
-	dm->messageText_ = displayText;
-	dm->duration_ = timeToDisplay;
-	dm->startTime_ = SimManager::instance().currentTime();
-	if( messages_.size() > 10 )
-	{
-		_DELETE( messages_.front() );
-		messages_.erase( messages_.begin() );
-	}
-	messages_.push_back( dm );
+    DisplayMessage* dm = _NEW(DisplayMessage);
+    dm->messageText_ = displayText;
+    dm->duration_ = timeToDisplay;
+    dm->startTime_ = SimManager::instance().currentTime();
+    if (messages_.size() > 10)
+    {
+        _DELETE(messages_.front());
+        messages_.erase(messages_.begin());
+    }
+    messages_.push_back(dm);
 }
 
-void MachGuiMessageDisplay::doOutput( ostream& o )
+void MachGuiMessageDisplay::doOutput(ostream& o)
 {
-	if( messages_.size() == 0 )
-		return;
-	for( int i = messages_.size() - 1; i > -1; )
-	{
-		if( ( messages_[i]->startTime_ + messages_[i]->duration_ ) < SimManager::instance().currentTime() )
-		{
-			_DELETE( messages_[i] );
-			messages_.erase( messages_.begin() + i );
-			if( i == 0 or i == messages_.size() )
-				i = -1;
-		}
-		else
-		{
-			o << messages_[i]->messageText_ << std::endl;
-			--i;
-		}
-	}
+    if (messages_.size() == 0)
+        return;
+    for (int i = messages_.size() - 1; i > -1;)
+    {
+        if ((messages_[i]->startTime_ + messages_[i]->duration_) < SimManager::instance().currentTime())
+        {
+            _DELETE(messages_[i]);
+            messages_.erase(messages_.begin() + i);
+            if (i == 0 or i == messages_.size())
+                i = -1;
+        }
+        else
+        {
+            o << messages_[i]->messageText_ << std::endl;
+            --i;
+        }
+    }
 }
 
-ostream& operator <<( ostream& o, const MachGuiMessageDisplay& t )
+ostream& operator<<(ostream& o, const MachGuiMessageDisplay& t)
 {
 
     o << "MachGuiMessageDisplay " << (void*)&t << " start" << std::endl;

@@ -1,5 +1,5 @@
 /*
- * W E A P O N . H P P 
+ * W E A P O N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -28,84 +28,82 @@ class MachLogWeapon : public W4dObserver
 // Canonical form revoked
 {
 public:
-	enum DummySeed{ DUMMY_SEED = -1 };
-	
-    MachLogWeapon( MachLogRace*, MachPhysWeapon*, MachActor* pOwner );
+    enum DummySeed
+    {
+        DUMMY_SEED = -1
+    };
+
+    MachLogWeapon(MachLogRace*, MachPhysWeapon*, MachActor* pOwner);
     virtual ~MachLogWeapon();
 
-	PhysRelativeTime fire( MachActor* pTarget, const MachLogFireData& fireData );
-	PhysRelativeTime fire( MachActor* pTarget );
-	PhysRelativeTime fire( const MexPoint3d& position );
-    
-	bool recharged() const;
+    PhysRelativeTime fire(MachActor* pTarget, const MachLogFireData& fireData);
+    PhysRelativeTime fire(MachActor* pTarget);
+    PhysRelativeTime fire(const MexPoint3d& position);
 
-	// instant discharge and instant recharge methods
-	void setChargeToZero();
-	void setChargeToMaximum();
+    bool recharged() const;
 
-	int	percentageRecharge() const;
-	const MachPhysWeapon& physWeapon() const;
-	MATHEX_SCALAR range() const;
-	const MachActor& owner() const;
+    // instant discharge and instant recharge methods
+    void setChargeToZero();
+    void setChargeToMaximum();
 
+    int percentageRecharge() const;
+    const MachPhysWeapon& physWeapon() const;
+    MATHEX_SCALAR range() const;
+    const MachActor& owner() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachLogWeapon& t);
 
-	virtual bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData = 0 );
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData = 0) override;
 
-    virtual void domainDeleted( W4dDomain* pDomain );
+    void domainDeleted(W4dDomain* pDomain) override;
 
     MachPhys::Mounting mounting() const;
     MachPhys::WeaponType type() const;
 
-	void fireWithoutEcho( int numberInBurst );
+    void fireWithoutEcho(int numberInBurst);
 
-	//the persistence mechanism has to reset which weapons go where
-	//so we have to allow it to remount the weapons.
-	void setPhysicalWeapon( MachPhysWeapon* );
-	
-	PhysAbsoluteTime lastFireTime() const;
+    // the persistence mechanism has to reset which weapons go where
+    // so we have to allow it to remount the weapons.
+    void setPhysicalWeapon(MachPhysWeapon*);
 
-	PER_MEMBER_PERSISTENT_ABSTRACT( MachLogWeapon );
-	PER_FRIEND_READ_WRITE( MachLogWeapon );
+    PhysAbsoluteTime lastFireTime() const;
+
+    PER_MEMBER_PERSISTENT_ABSTRACT(MachLogWeapon);
+    PER_FRIEND_READ_WRITE(MachLogWeapon);
 
 protected:
+    MachLogRace& logRace();
+    MachPhysWeapon& physWeapon();
+    virtual void doFire(MachActor* pTarget, const MachLogFireData& fireData) = 0;
+    virtual void doFire(const MexPoint3d& position);
+    MachActor& owner();
+    MexVec3 getDirection(const MexPoint3d& start, MachActor* pTarget);
 
-	MachLogRace&	logRace();
-	MachPhysWeapon& physWeapon();
-	virtual void doFire( MachActor* pTarget, const MachLogFireData& fireData )=0;
-	virtual void doFire( const MexPoint3d& position );
-	MachActor& owner();
-	MexVec3 getDirection( const MexPoint3d& start, MachActor* pTarget );
-	
-	//Attaching methods
-	bool currentlyAttached();
-	void currentlyAttached( bool );
+    // Attaching methods
+    bool currentlyAttached();
+    void currentlyAttached(bool);
 
-	MachActor& target();
-	void target( MachActor* );
+    MachActor& target();
+    void target(MachActor*);
 
 private:
-	void dt( const char* text, bool start );
-    MachLogWeapon( const MachLogWeapon& );
-    MachLogWeapon& operator =( const MachLogWeapon& );
-    bool operator ==( const MachLogWeapon& );
-	MachPhysWeapon*		pPhysWeapon_;
-	PhysAbsoluteTime	lastFireTime_;
-	MachLogRace*		pLogRace_;
-	MachActor*			pOwner_;
+    void dt(const char* text, bool start);
+    MachLogWeapon(const MachLogWeapon&);
+    MachLogWeapon& operator=(const MachLogWeapon&);
+    bool operator==(const MachLogWeapon&);
+    MachPhysWeapon* pPhysWeapon_;
+    PhysAbsoluteTime lastFireTime_;
+    MachLogRace* pLogRace_;
+    MachActor* pOwner_;
 
-	//only certain guns types will attach to targets
-	bool				currentlyAttached_;
-	MachActor*			pTarget_;
-
-
+    // only certain guns types will attach to targets
+    bool currentlyAttached_;
+    MachActor* pTarget_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogWeapon );
+PER_DECLARE_PERSISTENT(MachLogWeapon);
 
 #endif
 

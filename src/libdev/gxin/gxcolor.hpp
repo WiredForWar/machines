@@ -1,5 +1,5 @@
 /*
- * G X C O L O R . H P P 
+ * G X C O L O R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,41 +21,27 @@ class GXColor
 public:
     GXColor();
     ~GXColor();
-    GXColor( const GXColor& );
-    GXColor& operator =( const GXColor& );
-    friend bool operator ==( const GXColor&, const GXColor& );
-	friend bool operator  <(const GXColor&, const GXColor&);
+    GXColor(const GXColor&);
+    GXColor& operator=(const GXColor&);
+    friend bool operator==(const GXColor&, const GXColor&);
+    friend bool operator<(const GXColor&, const GXColor&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXColor& t );
+    friend ostream& operator<<(ostream& o, const GXColor& t);
 
-	UCHAR red(void) const {
-	  return red_;  
-	}
-	void red(UCHAR newRed) {
-	  red_=newRed;
-	}
-	UCHAR green(void) const {
-	  return green_;  
-	}
-	void green(UCHAR newGreen) {
-	  green_=newGreen;
-	}
-	UCHAR blue(void) const {
-	  return blue_;  
-	}
-	void blue(UCHAR newBlue) {
-	  blue_=newBlue;
-	}
+    UCHAR red() const { return red_; }
+    void red(UCHAR newRed) { red_ = newRed; }
+    UCHAR green() const { return green_; }
+    void green(UCHAR newGreen) { green_ = newGreen; }
+    UCHAR blue() const { return blue_; }
+    void blue(UCHAR newBlue) { blue_ = newBlue; }
 
 private:
-
-	UCHAR red_;
-	UCHAR green_;
-	UCHAR blue_;
+    UCHAR red_;
+    UCHAR green_;
+    UCHAR blue_;
 };
-
 
 #endif
 

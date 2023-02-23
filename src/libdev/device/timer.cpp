@@ -1,16 +1,15 @@
 /*
- * T I M E R . C P P 
+ * T I M E R . C P P
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
-
 
 #include "device/time.hpp"
 #include "device/timer.hpp"
 
-DevTimer::DevTimer( Direction direction )
-: paused_( false ),
-  direction_( direction ),
-  offset_( DevTime::instance().time() )
+DevTimer::DevTimer(Direction direction)
+    : paused_(false)
+    , direction_(direction)
+    , offset_(DevTime::instance().time())
 {
     //  Intentionally empty
 }
@@ -20,111 +19,109 @@ DevTimer::~DevTimer()
     //  Intentionally empty
 }
 
-double	DevTimer::time () const
+double DevTimer::time() const
 {
-    double  result;
-    
-	if ( paused_ )
+    double result;
+
+    if (paused_)
         result = offset_;
     else
-	{
-		if ( direction_ == COUNT_UP )
-			result = DevTime::instance().time() - offset_;
-		else
-			result = offset_ - DevTime::instance().time();
-	}
+    {
+        if (direction_ == COUNT_UP)
+            result = DevTime::instance().time() - offset_;
+        else
+            result = offset_ - DevTime::instance().time();
+    }
 
-	return result;
-
+    return result;
 }
 
-double	DevTimer::timeNoRecord() const
+double DevTimer::timeNoRecord() const
 {
-    double  result;
-    
-	if ( paused_ )
+    double result;
+
+    if (paused_)
         result = offset_;
     else
-	{
-		if ( direction_ == COUNT_UP )
-			result = DevTime::instance().timeNoRecord() - offset_;
-		else
-			result = offset_ - DevTime::instance().timeNoRecord();
-	}
+    {
+        if (direction_ == COUNT_UP)
+            result = DevTime::instance().timeNoRecord() - offset_;
+        else
+            result = offset_ - DevTime::instance().timeNoRecord();
+    }
 
-	return result;
-
+    return result;
 }
 
-void	DevTimer::time ( double newTime )
+void DevTimer::time(double newTime)
 {
-	if ( paused_ )
-		offset_ = newTime;
+    if (paused_)
+        offset_ = newTime;
     else
-	{
-		if ( direction_ == COUNT_UP )
-			offset_ = DevTime::instance().time() - newTime;
-		else
-			offset_ = DevTime::instance().time() + newTime;
-	}
+    {
+        if (direction_ == COUNT_UP)
+            offset_ = DevTime::instance().time() - newTime;
+        else
+            offset_ = DevTime::instance().time() + newTime;
+    }
 }
 
-void    DevTimer::pause()
+void DevTimer::pause()
 {
     offset_ = time();
     paused_ = true;
 }
 
-void    DevTimer::resume()
+void DevTimer::resume()
 {
-    if( paused_ )
+    if (paused_)
     {
-    	if ( direction_ == COUNT_UP )
-    		offset_ = DevTime::instance().time() - offset_;
-    	else
-    		offset_ = DevTime::instance().time() + offset_;
-            
+        if (direction_ == COUNT_UP)
+            offset_ = DevTime::instance().time() - offset_;
+        else
+            offset_ = DevTime::instance().time() + offset_;
+
         paused_ = false;
     }
 }
 
-bool    DevTimer::paused() const
+bool DevTimer::paused() const
 {
     return paused_;
 }
 
-DevTimer::Direction	DevTimer::direction () const
+DevTimer::Direction DevTimer::direction() const
 {
-    return  direction_;
+    return direction_;
 }
 
-void    DevTimer::direction ( DevTimer::Direction newDirection )
+void DevTimer::direction(DevTimer::Direction newDirection)
 {
-  	if ( direction_ != newDirection )
-	{
-		offset_ = 2.0 * DevTime::instance().time() - offset_;
+    if (direction_ != newDirection)
+    {
+        offset_ = 2.0 * DevTime::instance().time() - offset_;
         direction_ = newDirection;
-	}
+    }
 }
 
-ostream& operator <<( ostream& o, const DevTimer& t )
+ostream& operator<<(ostream& o, const DevTimer& t)
 {
     o << t.time();
 
     return o;
 }
 
-void	DevTimer::timeNoRecord ( double newTime )
+void DevTimer::timeNoRecord(double newTime)
 {
-	if ( paused_ )
-		offset_ = newTime;
+    if (paused_)
+        offset_ = newTime;
     else
-	{
-		if ( direction_ == COUNT_UP )
-			offset_ = DevTime::instance().timeNoRecord() - newTime;
-		else
-			offset_ = DevTime::instance().timeNoRecord() + newTime;
-	}
+    {
+        if (direction_ == COUNT_UP)
+            offset_ = DevTime::instance().timeNoRecord() - newTime;
+        else
+            offset_ = DevTime::instance().timeNoRecord() + newTime;
+    }
 }
 
 /* End TIMER.CPP ****************************************************/

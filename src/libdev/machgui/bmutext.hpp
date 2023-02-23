@@ -20,66 +20,67 @@
 class MachContinentMap;
 class MachInGameScreen;
 class GuiMouseEvent;
-typedef std::pair< SysPathName, SysPathName > SysPathNames;
+using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 class MachGuiBmuText : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiBmuText( GuiDisplayable* pParent, const Gui::Coord& relPos );
-    ~MachGuiBmuText();
+    MachGuiBmuText(GuiDisplayable* pParent, const Gui::Coord& relPos);
+    ~MachGuiBmuText() override;
 
     void CLASS_INVARIANT;
 
-	void refresh();
+    void refresh();
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
-	virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel );
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent& rel) override;
 
 private:
-    MachGuiBmuText( const MachGuiBmuText& );
-    MachGuiBmuText& operator =( const MachGuiBmuText& );
-    bool operator ==( const MachGuiBmuText& );
+    MachGuiBmuText(const MachGuiBmuText&);
+    MachGuiBmuText& operator=(const MachGuiBmuText&);
+    bool operator==(const MachGuiBmuText&);
 
-    friend ostream& operator <<( ostream& o, const MachGuiBmuText& t );
+    friend ostream& operator<<(ostream& o, const MachGuiBmuText& t);
 
-	size_t curValue_;
-	size_t maxValue_;
+    size_t curValue_;
+    size_t maxValue_;
 };
 
 class MachGuiBmuButton : public GuiBitmapButtonWithFilledBorder
 // cannonical from revoked
 {
 public:
-	MachGuiBmuButton(	GuiDisplayable* pParent,
-						const Gui::Coord& rel,
-						const SysPathName& bitmap,
-						MachGuiBmuText* pBmuText,
-						MachContinentMap* pContinentMap,
-						MachInGameScreen *pInGameScreen );
-	virtual ~MachGuiBmuButton();
+    MachGuiBmuButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        const SysPathName& bitmap,
+        MachGuiBmuText* pBmuText,
+        MachContinentMap* pContinentMap,
+        MachInGameScreen* pInGameScreen);
+    ~MachGuiBmuButton() override;
 
 protected:
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-	// Operations revoked
-	MachGuiBmuButton( const MachGuiBmuButton& );
-	MachGuiBmuButton& operator =( const MachGuiBmuButton& );
-	bool operator ==( const MachGuiBmuButton& ) const;
+    // Operations revoked
+    MachGuiBmuButton(const MachGuiBmuButton&);
+    MachGuiBmuButton& operator=(const MachGuiBmuButton&);
+    bool operator==(const MachGuiBmuButton&) const;
 
-	// Data members
-	MachGuiBmuText* pBmuText_;
-	MachContinentMap* pContinentMap_;
-	MachInGameScreen* pInGameScreen_;
+    // Data members
+    MachGuiBmuText* pBmuText_;
+    MachContinentMap* pContinentMap_;
+    MachInGameScreen* pInGameScreen_;
 };
 
 #endif

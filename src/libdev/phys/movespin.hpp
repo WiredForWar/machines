@@ -6,7 +6,7 @@
 /*
     PhysMoveSpinPlan
 
-	Implements a linear motion with a constant spinning over a fixed axis
+    Implements a linear motion with a constant spinning over a fixed axis
 */
 
 #ifndef _MOVESPIN_HPP
@@ -23,32 +23,33 @@ class PhysMoveSpinPlan : public PhysMotionPlan
 // Canonical form revoked
 {
 public:
-    PhysMoveSpinPlan( const MexTransform3d& startPosition,
-                          const MexVec3& speedVector,
-						  const MexVec3& rotationAxis,
-						  MATHEX_SCALAR rotationSpeed,
-                          const PhysRelativeTime& endTime);
+    PhysMoveSpinPlan(
+        const MexTransform3d& startPosition,
+        const MexVec3& speedVector,
+        const MexVec3& rotationAxis,
+        MATHEX_SCALAR rotationSpeed,
+        const PhysRelativeTime& endTime);
 
-    ~PhysMoveSpinPlan();
+    ~PhysMoveSpinPlan() override;
 
-    virtual void transform( const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const;
+    void transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( PhysMoveSpinPlan );
-    PER_FRIEND_READ_WRITE( PhysMoveSpinPlan );
+    PER_MEMBER_PERSISTENT(PhysMoveSpinPlan);
+    PER_FRIEND_READ_WRITE(PhysMoveSpinPlan);
 
 private:
-    friend ostream& operator <<( ostream& o, const PhysMoveSpinPlan& t );
+    friend ostream& operator<<(ostream& o, const PhysMoveSpinPlan& t);
 
     PhysMoveSpinPlan();
-    PhysMoveSpinPlan( const PhysMoveSpinPlan& );
-    PhysMoveSpinPlan& operator =( const PhysMoveSpinPlan& );
+    PhysMoveSpinPlan(const PhysMoveSpinPlan&);
+    PhysMoveSpinPlan& operator=(const PhysMoveSpinPlan&);
 
-	PhysMoveSpinPlanImpl* pImpl_;
+    PhysMoveSpinPlanImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( PhysMoveSpinPlan );
+PER_DECLARE_PERSISTENT(PhysMoveSpinPlan);
 
 #endif
 

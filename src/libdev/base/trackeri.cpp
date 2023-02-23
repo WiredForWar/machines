@@ -15,34 +15,33 @@ DiagPointerTrackerImpl::DiagPointerTrackerImpl()
 DiagPointerTrackerImpl::~DiagPointerTrackerImpl()
 {
     TEST_INVARIANT;
-
 }
 
-void    DiagPointerTrackerImpl::addPointer( void* ptr )
+void DiagPointerTrackerImpl::addPointer(void* ptr)
 {
-    pointers_.insert( ptr );
+    pointers_.insert(ptr);
 }
 
-bool    DiagPointerTrackerImpl::pointerPresent( void* ptr ) const
+bool DiagPointerTrackerImpl::pointerPresent(void* ptr) const
 {
-    return pointers_.find( ptr ) != pointers_.end();
+    return pointers_.find(ptr) != pointers_.end();
 }
 
-void    DiagPointerTrackerImpl::removePointer( void* ptr )
+void DiagPointerTrackerImpl::removePointer(void* ptr)
 {
-    PRE( pointerPresent( ptr ) );
+    PRE(pointerPresent(ptr));
 
-    pointers_.erase( ptr );
+    pointers_.erase(ptr);
 }
 
 void DiagPointerTrackerImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const DiagPointerTrackerImpl& t )
+ostream& operator<<(ostream& o, const DiagPointerTrackerImpl& t)
 {
-    for( ctl_set< void*, less_ptr< void > >::const_iterator i = t.pointers_.begin(); i != t.pointers_.end(); ++i )
+    for (ctl_set<void*, less_ptr<void>>::const_iterator i = t.pointers_.begin(); i != t.pointers_.end(); ++i)
     {
         o << *i << " ";
     }

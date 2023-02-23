@@ -31,7 +31,7 @@ class EventQueue : public DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate
 {
 public:
     EventQueue() {}
-    virtual ~EventQueue() {}
+    ~EventQueue() override {}
 
     void setMocks(MockRecRecorder* rec, MockRecRecorderPrivate* recPriv)
     {
@@ -48,7 +48,7 @@ class EventQueue_RealTime : public DevEventQueueT<MockRecRecorder, MockRecRecord
 {
 public:
     EventQueue_RealTime() {}
-    virtual ~EventQueue_RealTime() {}
+    ~EventQueue_RealTime() override {}
 
     void setMocks(MockRecRecorder* rec, MockRecRecorderPrivate* recPriv)
     {

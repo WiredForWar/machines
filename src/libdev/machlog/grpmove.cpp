@@ -1,5 +1,5 @@
 /*
- * G R P M O V E . C P P 
+ * G R P M O V E . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -13,8 +13,8 @@ MachLogGroupSimpleMove::MachLogGroupSimpleMove(
     const Points& points,
     size_t commandId,
     string* pReason,
-    PhysPathFindingPriority pathFindingPriority )
-: pImpl_( _NEW( MachLogGroupSimpleMoveImplementation( actors, points, commandId, pReason, pathFindingPriority ) ) )
+    PhysPathFindingPriority pathFindingPriority)
+    : pImpl_(_NEW(MachLogGroupSimpleMoveImplementation(actors, points, commandId, pReason, pathFindingPriority)))
 {
 
     TEST_INVARIANT;
@@ -24,22 +24,22 @@ MachLogGroupSimpleMove::~MachLogGroupSimpleMove()
 {
     TEST_INVARIANT;
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
-bool    MachLogGroupSimpleMove::moveOK() const
+bool MachLogGroupSimpleMove::moveOK() const
 {
-    PRE( pImpl_ != NULL );
-    
+    PRE(pImpl_ != nullptr);
+
     return pImpl_->moveOK();
 }
 
 void MachLogGroupSimpleMove::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogGroupSimpleMove& t )
+ostream& operator<<(ostream& o, const MachLogGroupSimpleMove& t)
 {
 
     o << "MachLogGroupSimpleMove " << (void*)&t << " start" << std::endl;
@@ -49,4 +49,3 @@ ostream& operator <<( ostream& o, const MachLogGroupSimpleMove& t )
 }
 
 /* End GRPMOVE.CPP **************************************************/
-

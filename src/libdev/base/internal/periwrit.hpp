@@ -35,76 +35,78 @@ public:
     //  Get the identifier for a given pointer. If the pointer
     //  does not currently have an identifier assign it one
     //  and return that.
-    PerIdentifier  identifier( const void* ptr );
+    PerIdentifier identifier(const void* ptr);
 
     //  Log the fact that the object at this address has been written
     //  out explicitly (i.e. as an object)
-    void    logWrittenAsObject( const char* classname, const void* ptr );
+    void logWrittenAsObject(const char* classname, const void* ptr);
 
     //  Log the fact that the object at this address has been written
     //  out explicitly (i.e. via a pointer)
-    void    logWrittenViaPointer( const void* ptr );
+    void logWrittenViaPointer(const void* ptr);
 
     //  Returns true if the object at ptr has already been written
     //  explicitly (i.e. as an object)
-    bool    writtenAsObject( const char* classname, const void* ptr );
+    bool writtenAsObject(const char* classname, const void* ptr);
 
     //  Returns true if the object at ptr has already been written
     //  implicitly (i.e. via a pointer to the object)
-    bool    writtenViaPointer( const void* ptr ) const;
+    bool writtenViaPointer(const void* ptr) const;
 
     //  Clear all logging and identifier information.
-    void    clear();
+    void clear();
 
     //  Write a text string to the stream
-    void	writeName( PerOstream& ostr, const char* name );
+    void writeName(PerOstream& ostr, const char* name);
 
     //  Do all preparetory work necessary for writing out an object
-    void writeObjectPre( PerOstream& ostr, const void* pOb, const char* className );
+    void writeObjectPre(PerOstream& ostr, const void* pOb, const char* className);
     //  Do all cleanup work necessary after writing out an object
-    void writeObjectPost( const void* pOb, const char* className );
+    void writeObjectPost(const void* pOb, const char* className);
 
     //  Do all preparetory work necessary for writing out a pointer to an object
     Persistence::PointerWriteResult writePointerPre(
-        PerOstream& ostr, const void* pOb, const char* className,
-        const void* pMostDerivedOb, const char* mostDerivedClassName );
+        PerOstream& ostr,
+        const void* pOb,
+        const char* className,
+        const void* pMostDerivedOb,
+        const char* mostDerivedClassName);
     //  Do all cleanup work necessary after writing out a pointer to an object
-    void writePointerPost( PerOstream& ostr,
-        const void* pOb, const char* className, const void* pMostDerivedOb );
+    void writePointerPost(PerOstream& ostr, const void* pOb, const char* className, const void* pMostDerivedOb);
 
-	void registerDerivedClass( const char* className, PerWriteFnPtr );
+    void registerDerivedClass(const char* className, PerWriteFnPtr);
 
-    void writeRawPointer( PerOstream& ostr, const void* ptr );
+    void writeRawPointer(PerOstream& ostr, const void* ptr);
 
-    void writeAsRaw( bool );
+    void writeAsRaw(bool);
 
-    void writeRawData( PerOstream& ostr, const char* ptr, size_t nBytes );
+    void writeRawData(PerOstream& ostr, const char* ptr, size_t nBytes);
 
     ostream& debugStream();
 
-    void logAddresses( bool );
+    void logAddresses(bool);
 
-    void    registerOpenOstream();
-    void    registerCloseOstream();
+    void registerOpenOstream();
+    void registerCloseOstream();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PersistenceImplementationWrite& t );
+    friend ostream& operator<<(ostream& o, const PersistenceImplementationWrite& t);
 
 private:
     // Operation deliberately revoked
-    PersistenceImplementationWrite( const PersistenceImplementationWrite& );
+    PersistenceImplementationWrite(const PersistenceImplementationWrite&);
 
     // Operation deliberately revoked
-    PersistenceImplementationWrite& operator =( const PersistenceImplementationWrite& );
+    PersistenceImplementationWrite& operator=(const PersistenceImplementationWrite&);
 
     // Operation deliberately revoked
-    bool operator ==( const PersistenceImplementationWrite& );
+    bool operator==(const PersistenceImplementationWrite&);
 
-    void write( PerOstream& ostr, PerDataType type );
-    void writeId( PerOstream& ostr, PerIdentifier id );
+    void write(PerOstream& ostr, PerDataType type);
+    void writeId(PerOstream& ostr, PerIdentifier id);
 
-    void writeNamedObject( PerOstream& istr, const char* className, const void* ptr );
+    void writeNamedObject(PerOstream& istr, const char* className, const void* ptr);
 
     void startWrite();
     void finishWrite();
@@ -112,33 +114,31 @@ private:
     bool writeAsRaw() const;
     bool logAddresses() const;
 
-    void writeAddress( const void* ptr ) const;
+    void writeAddress(const void* ptr) const;
 
-	typedef	ctl_map< PerMapPtrType, PerIdentifier, std::less< PerMapPtrType > >	PointerToIdMap;
-    typedef ctl_set< const void*, less_ptr< const void > >     Pointers;
-    typedef ctl_set< PersistenceObjectLog, std::less< PersistenceObjectLog > >     Objects;
+    using PointerToIdMap = ctl_map<PerMapPtrType, PerIdentifier, std::less<PerMapPtrType>>;
+    using Pointers = ctl_set<const void*, less_ptr<const void>>;
+    using Objects = ctl_set<PersistenceObjectLog, std::less<PersistenceObjectLog>>;
 
-	typedef	ctl_map< std::string, PerWriteFnPtr, std::less< std::string > >	        WriteFnMap;
+    using WriteFnMap = ctl_map<std::string, PerWriteFnPtr, std::less<std::string>>;
 
-	size_t	            outputCount_;
-    BaseIndentOstream   indentStream_;
+    size_t outputCount_;
+    BaseIndentOstream indentStream_;
 
-    PointerToIdMap  pointerToId_;
+    PointerToIdMap pointerToId_;
 
-    Objects         writtenAsObject_;
-    Pointers        writtenViaPointer_;
+    Objects writtenAsObject_;
+    Pointers writtenViaPointer_;
 
-    PerIdentifier   currentIdentifier_;
+    PerIdentifier currentIdentifier_;
 
-    WriteFnMap      writeFnMap_;
+    WriteFnMap writeFnMap_;
 
-    uint            writeAsRawCount_;
-    bool            logAddresses_;
+    uint writeAsRawCount_;
+    bool logAddresses_;
 
-    size_t          nOpenOstreams_;
+    size_t nOpenOstreams_;
 };
-
-
 
 #endif
 

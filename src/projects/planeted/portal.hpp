@@ -23,33 +23,33 @@ class ofstream;
 class PedPortal : public PedPolygon
 {
 public:
-    PedPortal( const PolyVerticies& , MATHEX_SCALAR height, bool selected );
-    ~PedPortal();
+    PedPortal(const PolyVerticies&, MATHEX_SCALAR height, bool selected);
+    ~PedPortal() override;
 
     void CLASS_INVARIANT;
 
-	virtual void save( std::ofstream& );
+    void save(std::ofstream&) override;
 
-	virtual RenColour getWireColour() const;
+    RenColour getWireColour() const override;
 
-	virtual size_t height() const;
+    size_t height() const override;
 
-	size_t domainOne() const;
-	size_t domainTwo() const;
+    size_t domainOne() const;
+    size_t domainTwo() const;
 
-	void setDomains(size_t domainOne, size_t domainTwo );
+    void setDomains(size_t domainOne, size_t domainTwo);
 
- private:
+private:
     // Operations deliberately revoked
-    PedPortal( const PedPortal& );
-    PedPortal& operator =( const PedPortal& );
-    bool operator ==( const PedPortal& );
+    PedPortal(const PedPortal&);
+    PedPortal& operator=(const PedPortal&);
+    bool operator==(const PedPortal&);
 
-	friend ostream& operator <<( ostream& o, const PedPortal& t );
+    friend ostream& operator<<(ostream& o, const PedPortal& t);
 
-	// Data...
-	size_t domainOne_;
-	size_t domainTwo_;
+    // Data...
+    size_t domainOne_;
+    size_t domainTwo_;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * W E P L I N E. H P P 
+ * W E P L I N E. H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,62 +24,71 @@ class MachLogLinearWeapon : public MachLogWeapon
 // Canonical form revoked
 {
 public:
-	enum CreateHolder { DO_NOT_CREATE_HOLDER, CREATE_HOLDER };
+    enum CreateHolder
+    {
+        DO_NOT_CREATE_HOLDER,
+        CREATE_HOLDER
+    };
 
-    MachLogLinearWeapon( MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner );
-    virtual ~MachLogLinearWeapon();
+    MachLogLinearWeapon(MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner);
+    ~MachLogLinearWeapon() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogLinearWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachLogLinearWeapon& t);
 
-	void doEchoFire( MachActor* pTarget,
-					 MexPoint3d targetOffset,
-                     const PhysAbsoluteTime& launchTime,
-					 int nRounds, 
-					 const MachLogMessageBroker::ProjectileDestroyData& extraData, 
-					 CreateHolder );
-					 
-	void doEchoFireForTerrain( MexPoint3d position,
-                                const PhysAbsoluteTime& launchTime,
-								int nRounds,
-    							const MachLogMessageBroker::ProjectileDestroyData& extraData, 
-								CreateHolder );
-    
-	//the persistence mechanism has to reset which weapons go where
-	//so we have to allow it to remount the weapons.
-	void setPhysicalLinearWeapon( MachPhysLinearWeapon* );
+    void doEchoFire(
+        MachActor* pTarget,
+        MexPoint3d targetOffset,
+        const PhysAbsoluteTime& launchTime,
+        int nRounds,
+        const MachLogMessageBroker::ProjectileDestroyData& extraData,
+        CreateHolder);
 
-	PER_MEMBER_PERSISTENT_ABSTRACT( MachLogLinearWeapon );
-	PER_FRIEND_READ_WRITE( MachLogLinearWeapon );
+    void doEchoFireForTerrain(
+        MexPoint3d position,
+        const PhysAbsoluteTime& launchTime,
+        int nRounds,
+        const MachLogMessageBroker::ProjectileDestroyData& extraData,
+        CreateHolder);
+
+    // the persistence mechanism has to reset which weapons go where
+    // so we have to allow it to remount the weapons.
+    void setPhysicalLinearWeapon(MachPhysLinearWeapon*);
+
+    PER_MEMBER_PERSISTENT_ABSTRACT(MachLogLinearWeapon);
+    PER_FRIEND_READ_WRITE(MachLogLinearWeapon);
 
 protected:
-	virtual void doFire( MachActor*, const MachLogFireData& );
-	virtual void doFire( const MexPoint3d& location );
-	MachPhysLinearWeapon&	physLinearWeapon();
+    void doFire(MachActor*, const MachLogFireData&) override;
+    void doFire(const MexPoint3d& location) override;
+    MachPhysLinearWeapon& physLinearWeapon();
 
-	MachPhysLinearProjectile* createPhysLinearProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    MachPhysLinearProjectile* createPhysLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
-	virtual MachLogLinearProjectile* createLinearProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    ) = 0;
+    virtual MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset)
+        = 0;
 
 private:
-	void dtlw( const char* text, bool start );
-    MachLogLinearWeapon( const MachLogLinearWeapon& );
-    MachLogLinearWeapon& operator =( const MachLogLinearWeapon& );
-    bool operator ==( const MachLogLinearWeapon& );
+    void dtlw(const char* text, bool start);
+    MachLogLinearWeapon(const MachLogLinearWeapon&);
+    MachLogLinearWeapon& operator=(const MachLogLinearWeapon&);
+    bool operator==(const MachLogLinearWeapon&);
 
-	MachPhysLinearWeapon*	pPhysLinearWeapon_;
+    MachPhysLinearWeapon* pPhysLinearWeapon_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogWeapon );
+PER_DECLARE_PERSISTENT(MachLogWeapon);
 
 #endif
 

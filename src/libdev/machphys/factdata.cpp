@@ -13,40 +13,38 @@ MachPhysFactoryData::MachPhysFactoryData()
     TEST_INVARIANT;
 }
 
-MachPhysFactoryData::MachPhysFactoryData( const MachPhysFactoryData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform ),
-  buildRate_( copyMe.buildRate_ )
+MachPhysFactoryData::MachPhysFactoryData(const MachPhysFactoryData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
+    , buildRate_(copyMe.buildRate_)
 {
 }
 
 MachPhysFactoryData::~MachPhysFactoryData()
 {
     TEST_INVARIANT;
-
 }
 
-void MachPhysFactoryData::buildRate( const MachPhys::BuildingMaterialUnits& newBuildRate )
+void MachPhysFactoryData::buildRate(const MachPhys::BuildingMaterialUnits& newBuildRate)
 {
-	buildRate_ = newBuildRate;
+    buildRate_ = newBuildRate;
 }
 
 MachPhys::BuildingMaterialUnits MachPhysFactoryData::buildRate() const
 {
-	return buildRate_;
+    return buildRate_;
 }
-
 
 void MachPhysFactoryData::CLASS_INVARIANT
 {
-    INVARIANT(this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysFactoryData& t )
+ostream& operator<<(ostream& o, const MachPhysFactoryData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
-	o << "Build Rate " << t.buildRate() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
+    o << "Build Rate " << t.buildRate() << std::endl;
 
     return o;
 }

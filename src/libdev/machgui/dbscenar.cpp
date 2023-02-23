@@ -1,5 +1,5 @@
 /*
- * D B S C E N A R . C P P 
+ * D B S C E N A R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -11,22 +11,26 @@
 #include "machgui/dbsystem.hpp"
 #include "machgui/internal/dbscenai.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbScenario );
+PER_DEFINE_PERSISTENT(MachGuiDbScenario);
 
-MachGuiDbScenario::MachGuiDbScenario( const string& scenarioName, const string& planetName, uint menuStringId, uint maxPlayers )
-:   MachGuiDbElement( menuStringId )
+MachGuiDbScenario::MachGuiDbScenario(
+    const string& scenarioName,
+    const string& planetName,
+    uint menuStringId,
+    uint maxPlayers)
+    : MachGuiDbElement(menuStringId)
 {
-	initialise( scenarioName, planetName );
-	pData_->maxPlayers_ = maxPlayers;
+    initialise(scenarioName, planetName);
+    pData_->maxPlayers_ = maxPlayers;
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
-void MachGuiDbScenario::initialise( const string& scenarioName, const string& planetName  )
+void MachGuiDbScenario::initialise(const string& scenarioName, const string& planetName)
 {
-    pData_ = _NEW( MachGuiDbIScenario );
-    name( scenarioName );
-    planetFile( planetName );
+    pData_ = _NEW(MachGuiDbIScenario);
+    name(scenarioName);
+    planetFile(planetName);
 
     TEST_INVARIANT;
 }
@@ -35,15 +39,15 @@ MachGuiDbScenario::~MachGuiDbScenario()
 {
     TEST_INVARIANT;
 
-    _DELETE( pData_ );
+    _DELETE(pData_);
 }
 
 void MachGuiDbScenario::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbScenario& t )
+ostream& operator<<(ostream& o, const MachGuiDbScenario& t)
 {
 
     o << "MachGuiDbScenario " << (void*)&t << " start" << std::endl;
@@ -52,7 +56,7 @@ ostream& operator <<( ostream& o, const MachGuiDbScenario& t )
     return o;
 }
 
-void MachGuiDbScenario::campaignPicture( const string& filename )
+void MachGuiDbScenario::campaignPicture(const string& filename)
 {
     pData_->campaignPicture_ = filename;
 }
@@ -62,7 +66,7 @@ const string& MachGuiDbScenario::campaignPicture() const
     return pData_->campaignPicture_;
 }
 
-void MachGuiDbScenario::briefingPicture( const string& filename )
+void MachGuiDbScenario::briefingPicture(const string& filename)
 {
     pData_->briefingPicture_ = filename;
 }
@@ -72,7 +76,7 @@ const string& MachGuiDbScenario::briefingPicture() const
     return pData_->briefingPicture_;
 }
 
-void MachGuiDbScenario::debriefingPicture( const string& filename )
+void MachGuiDbScenario::debriefingPicture(const string& filename)
 {
     pData_->debriefingPicture_ = filename;
 }
@@ -82,7 +86,7 @@ const string& MachGuiDbScenario::debriefingPicture() const
     return pData_->debriefingPicture_;
 }
 
-void MachGuiDbScenario::entryFlic( const string& filename )
+void MachGuiDbScenario::entryFlic(const string& filename)
 {
     pData_->entryFlic_ = filename;
 }
@@ -92,7 +96,7 @@ const string& MachGuiDbScenario::entryFlic() const
     return pData_->entryFlic_;
 }
 
-void MachGuiDbScenario::winFlic( const string& filename )
+void MachGuiDbScenario::winFlic(const string& filename)
 {
     pData_->winFlic_ = filename;
 }
@@ -102,7 +106,7 @@ const string& MachGuiDbScenario::winFlic() const
     return pData_->winFlic_;
 }
 
-void MachGuiDbScenario::loseFlic( const string& filename )
+void MachGuiDbScenario::loseFlic(const string& filename)
 {
     pData_->loseFlic_ = filename;
 }
@@ -112,23 +116,23 @@ const string& MachGuiDbScenario::loseFlic() const
     return pData_->loseFlic_;
 }
 
-void MachGuiDbScenario::planet( MachGuiDbPlanet* pPlanet )
+void MachGuiDbScenario::planet(MachGuiDbPlanet* pPlanet)
 {
     pData_->pPlanet_ = pPlanet;
 }
 
 MachGuiDbPlanet& MachGuiDbScenario::planet() const
 {
-    PRE( pData_->pPlanet_ != NULL );
+    PRE(pData_->pPlanet_ != nullptr);
     return *pData_->pPlanet_;
 }
 
 uint MachGuiDbScenario::maxPlayers() const
 {
-	return pData_->maxPlayers_;
+    return pData_->maxPlayers_;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbScenario& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbScenario& ob)
 {
     const MachGuiDbElement& base = ob;
 
@@ -137,7 +141,7 @@ void perWrite( PerOstream& ostr, const MachGuiDbScenario& ob )
     ostr << ob.pData_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbScenario& ob )
+void perRead(PerIstream& istr, MachGuiDbScenario& ob)
 {
     MachGuiDbElement& base = ob;
 
@@ -146,13 +150,13 @@ void perRead( PerIstream& istr, MachGuiDbScenario& ob )
     istr >> ob.pData_;
 }
 
-MachGuiDbScenario::MachGuiDbScenario( PerConstructor con )
-:   MachGuiDbElement( con ),
-    pData_( NULL )
+MachGuiDbScenario::MachGuiDbScenario(PerConstructor con)
+    : MachGuiDbElement(con)
+    , pData_(nullptr)
 {
 }
 
-void MachGuiDbScenario::planetFile( const string& filename )
+void MachGuiDbScenario::planetFile(const string& filename)
 {
     pData_->planetFile_ = filename;
 }
@@ -167,15 +171,15 @@ uint MachGuiDbScenario::nRacesToHaveSurvivingMachinesSaved() const
     return pData_->saveMachineRaces_.size();
 }
 
-MachPhys::Race MachGuiDbScenario::raceToHaveSurvivingMachinesSaved( uint index )
+MachPhys::Race MachGuiDbScenario::raceToHaveSurvivingMachinesSaved(uint index)
 {
-    PRE( index < nRacesToHaveSurvivingMachinesSaved() );
-    return pData_->saveMachineRaces_[ index ];
+    PRE(index < nRacesToHaveSurvivingMachinesSaved());
+    return pData_->saveMachineRaces_[index];
 }
 
-void MachGuiDbScenario::raceToHaveSurvivingMachinesSaved( MachPhys::Race race )
+void MachGuiDbScenario::raceToHaveSurvivingMachinesSaved(MachPhys::Race race)
 {
-    pData_->saveMachineRaces_.push_back( race );
+    pData_->saveMachineRaces_.push_back(race);
 }
 
 uint MachGuiDbScenario::musicTrack() const
@@ -183,24 +187,24 @@ uint MachGuiDbScenario::musicTrack() const
     return pData_->musicTrack_;
 }
 
-void MachGuiDbScenario::musicTrack( uint track )
+void MachGuiDbScenario::musicTrack(uint track)
 {
     pData_->musicTrack_ = track;
 }
 
 bool MachGuiDbScenario::isTrainingScenario() const
 {
-	bool retVal = false;
+    bool retVal = false;
 
-	if ( &planet().system() == &MachGuiDatabase::instance().campaignSystem( 0 ) )
-	{
-		retVal = true;
-	}
+    if (&planet().system() == &MachGuiDatabase::instance().campaignSystem(0))
+    {
+        retVal = true;
+    }
 
-	return retVal;
+    return retVal;
 }
 
-void MachGuiDbScenario::debriefingLosePicture( const string& filename )
+void MachGuiDbScenario::debriefingLosePicture(const string& filename)
 {
     pData_->debriefingLosePicture_ = filename;
 }
@@ -210,14 +214,14 @@ const string& MachGuiDbScenario::debriefingLosePicture() const
     return pData_->debriefingLosePicture_;
 }
 
-void MachGuiDbScenario::hasBeenWon( bool newValue )
+void MachGuiDbScenario::hasBeenWon(bool newValue)
 {
-	pData_->hasBeenWon_ = newValue;
+    pData_->hasBeenWon_ = newValue;
 }
 
 bool MachGuiDbScenario::hasBeenWon() const
 {
-	return pData_->hasBeenWon_;
+    return pData_->hasBeenWon_;
 }
 
 /* End DBSCENAR.CPP *************************************************/

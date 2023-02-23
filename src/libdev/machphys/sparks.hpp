@@ -18,44 +18,40 @@
 #include "phys/phys.hpp"
 #include "world4d/composit.hpp"
 
-
 class MachPhysSparks : public W4dComposite
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysSparks( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysSparks(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysSparks& exemplar();
 
-    //dtor
-    ~MachPhysSparks();
+    // dtor
+    ~MachPhysSparks() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSparks& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSparks& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysSparks );
+    PER_MEMBER_PERSISTENT(MachPhysSparks);
 
 private:
-    //Deliberately revoked
-    MachPhysSparks( const MachPhysSparks& );
-    MachPhysSparks& operator =( const MachPhysSparks& );
-    bool operator ==( const MachPhysSparks& );
+    // Deliberately revoked
+    MachPhysSparks(const MachPhysSparks&);
+    MachPhysSparks& operator=(const MachPhysSparks&);
+    bool operator==(const MachPhysSparks&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysSparks();
-
 };
 
-PER_READ_WRITE( MachPhysSparks );
-PER_DECLARE_PERSISTENT( MachPhysSparks );
-
+PER_READ_WRITE(MachPhysSparks);
+PER_DECLARE_PERSISTENT(MachPhysSparks);
 
 #endif
 

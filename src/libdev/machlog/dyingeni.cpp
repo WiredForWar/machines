@@ -16,15 +16,14 @@ MachLogDyingEntityEventImpl::MachLogDyingEntityEventImpl()
 MachLogDyingEntityEventImpl::~MachLogDyingEntityEventImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogDyingEntityEventImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogDyingEntityEventImpl& t )
+ostream& operator<<(ostream& o, const MachLogDyingEntityEventImpl& t)
 {
 
     o << "MachLogDyingEntityEventImpl " << (void*)&t << " start" << std::endl;

@@ -1,49 +1,49 @@
 /*
- * A C T O R . I P P 
+ * A C T O R . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const SimProcess& SimActor::process( void ) const
+const SimProcess& SimActor::process() const
 {
-	return *pProcess_;
+    return *pProcess_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
 const SimPriority& SimActor::priority() const
 {
-	return priority_;
+    return priority_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const PhysAbsoluteTime& SimActor::nextUpdateTime( void ) const
+const PhysAbsoluteTime& SimActor::nextUpdateTime() const
 {
-	return nextUpdateTime_;
+    return nextUpdateTime_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-void SimActor::nextUpdateTime( const PhysAbsoluteTime& t )
+void SimActor::nextUpdateTime(const PhysAbsoluteTime& t)
 {
-	nextUpdateTime_ = t;
+    nextUpdateTime_ = t;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-bool SimActor::isDead( void ) const
+bool SimActor::isDead() const
 {
-	return isDead_;
+    return isDead_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-bool    SimActor::updateEveryCycle() const
+bool SimActor::updateEveryCycle() const
 {
     return updateEveryCycle_;
 }

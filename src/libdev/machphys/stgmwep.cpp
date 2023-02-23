@@ -7,7 +7,6 @@
 
 #include "machphys/stgmwep.hpp"
 
-
 #include "system/pathname.hpp"
 
 #include "mathex/transf3d.hpp"
@@ -22,44 +21,46 @@
 #include "machphys/wepdata.hpp"
 #include "machphys/snddata.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMetalStingWeapon );
+PER_DEFINE_PERSISTENT(MachPhysMetalStingWeapon);
 
-//publiv constructor
-MachPhysMetalStingWeapon::MachPhysMetalStingWeapon( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   MachPhysLinearWeapon( exemplar(), MachPhys::TOP, pParent, localTransform )
+// publiv constructor
+MachPhysMetalStingWeapon::MachPhysMetalStingWeapon(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : MachPhysLinearWeapon(exemplar(), MachPhys::TOP, pParent, localTransform)
 {
 
     TEST_INVARIANT;
 }
 
-//one time constructor
+// one time constructor
 MachPhysMetalStingWeapon::MachPhysMetalStingWeapon()
-:   MachPhysLinearWeapon( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(),
-                    SysPathName( compositeFilePath() ), MachPhys::WASP_METAL_STING, MachPhys::TOP )
+    : MachPhysLinearWeapon(
+        MachPhysWeaponPersistence::instance().pRoot(),
+        MexTransform3d(),
+        SysPathName(compositeFilePath()),
+        MachPhys::WASP_METAL_STING,
+        MachPhys::TOP)
 {
 
     TEST_INVARIANT;
 }
 
-//static
+// static
 const char* MachPhysMetalStingWeapon::compositeFilePath()
 {
-	return "models/weapons/wasp/metal/metalgun.cdf";
+    return "models/weapons/wasp/metal/metalgun.cdf";
 }
-
 
 MachPhysMetalStingWeapon::~MachPhysMetalStingWeapon()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysMetalStingWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMetalStingWeapon& t )
+ostream& operator<<(ostream& o, const MachPhysMetalStingWeapon& t)
 {
 
     o << "MachPhysMetalStingWeapon " << (void*)&t << " start" << std::endl;
@@ -68,75 +69,71 @@ ostream& operator <<( ostream& o, const MachPhysMetalStingWeapon& t )
     return o;
 }
 
-//static
+// static
 const MachPhysMetalStingWeapon& MachPhysMetalStingWeapon::exemplar()
 {
     return MachPhysWeaponPersistence::instance().metalStingExemplar();
 }
 
-//virtual
-MachPhysLinearProjectile* MachPhysMetalStingWeapon::createProjectile
-(
-    const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)
+// virtual
+MachPhysLinearProjectile* MachPhysMetalStingWeapon::createProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	return createMetalSting( burstStartTime, index, pParent, target, targetOffset );
+    return createMetalSting(burstStartTime, index, pParent, target, targetOffset);
 }
 
-
-//virtual
-PhysRelativeTime MachPhysMetalStingWeapon::fire( const PhysAbsoluteTime& startTime, int numberInBurst )
+// virtual
+PhysRelativeTime MachPhysMetalStingWeapon::fire(const PhysAbsoluteTime& startTime, int numberInBurst)
 {
-	lighting(RenColour(5.1, 1.0, 1.0), startTime, 3.0);
+    lighting(RenColour(5.1, 1.0, 1.0), startTime, 3.0);
 
-	W4dSoundManager::instance().play(this, SID_WASP_STING_METAL, 0, 1 );
+    W4dSoundManager::instance().play(this, SID_WASP_STING_METAL, 0, 1);
 
-    //do recoil if any
-    return recoil( startTime, numberInBurst );
+    // do recoil if any
+    return recoil(startTime, numberInBurst);
 }
 
-MachPhysMetalSting* MachPhysMetalStingWeapon::createMetalSting
-(
-	const PhysAbsoluteTime& burstStartTime,
-	uint index,
-	W4dEntity* pParent,
-	const W4dEntity& target,
-	const MexPoint3d& targetOffset
-)
+MachPhysMetalSting* MachPhysMetalStingWeapon::createMetalSting(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
     MexTransform3d startTransform;
     MATHEX_SCALAR distance;
-    PhysAbsoluteTime launchTime =
-        launchData( burstStartTime, index, pParent, target, targetOffset,
-                    &startTransform, &distance );
+    PhysAbsoluteTime launchTime
+        = launchData(burstStartTime, index, pParent, target, targetOffset, &startTransform, &distance);
 
-	MachPhysMetalSting* pSting = _NEW( MachPhysMetalSting( pParent, startTransform ) );
+    MachPhysMetalSting* pSting = _NEW(MachPhysMetalSting(pParent, startTransform));
 
-    //let it fly
-    pSting->beLaunched( launchTime, weaponData(), targetOffset );
+    // let it fly
+    pSting->beLaunched(launchTime, weaponData(), targetOffset);
 
-	return  pSting;
+    return pSting;
 }
 
-MachPhysMetalStingWeapon::MachPhysMetalStingWeapon( PerConstructor con )
-: MachPhysLinearWeapon( con )
+MachPhysMetalStingWeapon::MachPhysMetalStingWeapon(PerConstructor con)
+    : MachPhysLinearWeapon(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMetalStingWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachPhysMetalStingWeapon& weapon)
 {
     const MachPhysLinearWeapon& base = weapon;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysMetalStingWeapon& weapon )
+void perRead(PerIstream& istr, MachPhysMetalStingWeapon& weapon)
 {
     MachPhysLinearWeapon& base = weapon;
 
     istr >> base;
 }
-
 
 /* End STGMWEP.CPP **************************************************/

@@ -38,11 +38,11 @@ class W4dEntityImpl
 public:
     ~W4dEntityImpl();
 
-	// These methods are public, available to entities and composites.
+    // These methods are public, available to entities and composites.
     bool hasAnimationData() const;
-	void applyAllAnimations( W4dEntity* pEntity, const PhysAbsoluteTime& startTime ) const;
-	void applyLightAnimations( W4dEntity* pEntity, const PhysAbsoluteTime& startTime ) const;
-	void applyNonLightAnimations( W4dEntity* pEntity, const PhysAbsoluteTime& startTime ) const;
+    void applyAllAnimations(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) const;
+    void applyLightAnimations(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) const;
+    void applyNonLightAnimations(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) const;
 
     bool hasParent() const;
     // True iff this object has a parent
@@ -52,67 +52,70 @@ public:
     // PRE( hasParent() );
     // POST( result != NULL );
 
-    //Get/set the render pass id;
-    void passId( uint32_t id );
+    // Get/set the render pass id;
+    void passId(uint32_t id);
     uint32_t passId() const;
 
-	bool hasMesh() const;
+    bool hasMesh() const;
 
-	void doNotLight(bool lightIt);
-	bool doNotLight() const;
+    void doNotLight(bool lightIt);
+    bool doNotLight() const;
 
-	// Any non-global lights which illuminate this object.
-	bool hasLightList() const;
-	W4dLocalLightList& lightListForEdit();
-	void lightList(W4dLocalLightList* pList);
-	const W4dLocalLightList& lightList() const;
+    // Any non-global lights which illuminate this object.
+    bool hasLightList() const;
+    W4dLocalLightList& lightListForEdit();
+    void lightList(W4dLocalLightList* pList);
+    const W4dLocalLightList& lightList() const;
 
-	// If this value is true, then the system turns off lighting for this
-	// object.  For emissive objects the value probably ought to be true.  If
-	// the object isn't emissive it will be rendered black.  It's the client's
-	// responsibility to set this correctly.  The render library tries to guess
-	// correct values by looking at an entity's materials during loading models.
-	// However, it doesn't take material plans etc. into account, so the client
-	// is ultimately responsible for getting this value correct.
-	//void doNotLight(bool lightIt);
-	//bool doNotLight() const;
+    // If this value is true, then the system turns off lighting for this
+    // object.  For emissive objects the value probably ought to be true.  If
+    // the object isn't emissive it will be rendered black.  It's the client's
+    // responsibility to set this correctly.  The render library tries to guess
+    // correct values by looking at an entity's materials during loading models.
+    // However, it doesn't take material plans etc. into account, so the client
+    // is ultimately responsible for getting this value correct.
+    // void doNotLight(bool lightIt);
+    // bool doNotLight() const;
 
-    //Set the isComposite flag
-    void isComposite( bool isIt );
-    //true iff this is a composite
+    // Set the isComposite flag
+    void isComposite(bool isIt);
+    // true iff this is a composite
     bool isComposite() const;
 
     const W4dEntity::W4dEntities& children() const;
     // Exports list of child entities
-    //Persistence
+    // Persistence
 
-	// Generic data that can be used by the client for any purpose.
-	void clientData( int );
-	int clientData() const;
+    // Generic data that can be used by the client for any purpose.
+    void clientData(int);
+    int clientData() const;
 
-    PER_MEMBER_PERSISTENT( W4dEntityImpl );
-    PER_FRIEND_READ_WRITE( W4dEntityImpl );
+    PER_MEMBER_PERSISTENT(W4dEntityImpl);
+    PER_FRIEND_READ_WRITE(W4dEntityImpl);
 
 private:
     /////////////////////////////////////////////////////////////////
-    //types
-	struct MeshData
-	{
-        MeshData(): mesh(NULL) {}
-        ~MeshData() {}
+    // types
+    struct MeshData
+    {
+        MeshData()
+            : mesh(nullptr)
+        {
+        }
+        ~MeshData() { }
 
-		RenMeshInstance*	mesh;
-		W4dEntity::W4dDistance	distance;
+        RenMeshInstance* mesh;
+        W4dEntity::W4dDistance distance;
 
-        PER_MEMBER_PERSISTENT_DEFAULT_INLINE( MeshData );
-        PER_FRIEND_READ_WRITE( MeshData );
-	};
-	PER_FRIEND_READ_WRITE( MeshData );
+        PER_MEMBER_PERSISTENT_DEFAULT_INLINE(MeshData);
+        PER_FRIEND_READ_WRITE(MeshData);
+    };
+    PER_FRIEND_READ_WRITE(MeshData);
 
-	typedef ctl_vector< MeshData >          Meshes;
+    using Meshes = ctl_vector<MeshData>;
 
-    //Used to cache the last time at which entity attributes have been
-    //updated from the entity plans
+    // Used to cache the last time at which entity attributes have been
+    // updated from the entity plans
     struct PlanUpdateTimes
     {
         PhysAbsoluteTime transformTime;
@@ -121,119 +124,123 @@ private:
         PhysAbsoluteTime uvTime;
         PhysAbsoluteTime materialTime;
 
-        PER_MEMBER_PERSISTENT_DEFAULT_INLINE( PlanUpdateTimes );
-        PER_FRIEND_READ_WRITE( PlanUpdateTimes );
+        PER_MEMBER_PERSISTENT_DEFAULT_INLINE(PlanUpdateTimes);
+        PER_FRIEND_READ_WRITE(PlanUpdateTimes);
     };
-    PER_FRIEND_READ_WRITE( PlanUpdateTimes );
+    PER_FRIEND_READ_WRITE(PlanUpdateTimes);
     /////////////////////////////////////////////////////////////////
 
-	friend class W4dEntity;
+    friend class W4dEntity;
 
-    W4dEntityImpl( W4dEntity* pParent, const W4dTransform3d& localTransform, W4dEntity::Solidity solid );
-    W4dEntityImpl( const W4dEntityImpl& copyMe, W4dEntity* pParent, const W4dTransform3d& localTransform );
-	W4dEntityImpl();
-	W4dEntityImpl( W4dEntity* pParent, const W4dTransform3d& newLocalTransform, W4dEntity::Solidity, W4dEntity::NotAChild);
+    W4dEntityImpl(W4dEntity* pParent, const W4dTransform3d& localTransform, W4dEntity::Solidity solid);
+    W4dEntityImpl(const W4dEntityImpl& copyMe, W4dEntity* pParent, const W4dTransform3d& localTransform);
+    W4dEntityImpl();
+    W4dEntityImpl(
+        W4dEntity* pParent,
+        const W4dTransform3d& newLocalTransform,
+        W4dEntity::Solidity,
+        W4dEntity::NotAChild);
 
-	void name(const string&);
-	const string& name() const;
+    void name(const string&);
+    const string& name() const;
 
-	typedef	CtlCountedPtr< W4dAnimationData > AnimationDataPtr;
-	typedef ctl_vector< AnimationDataPtr > AnimationDataPtrs;
+    using AnimationDataPtr = CtlCountedPtr<W4dAnimationData>;
+    using AnimationDataPtrs = ctl_vector<AnimationDataPtr>;
 
-	void addAnimationData( W4dAnimationData* animData );
-	void addLightAnimationData( W4dLightData* animData );
+    void addAnimationData(W4dAnimationData* animData);
+    void addLightAnimationData(W4dLightData* animData);
 
-	void filterColour( const RenColour& colour );
-	const RenColour& filterColour() const;
-	bool filterColourIsSet() const;
+    void filterColour(const RenColour& colour);
+    const RenColour& filterColour() const;
+    bool filterColourIsSet() const;
 
-	void updateHasMeshFlag();
+    void updateHasMeshFlag();
 
     static const string& dummyName();
 
     void CLASS_INVARIANT;
 
-    W4dEntityImpl& operator =( const W4dEntityImpl& );
+    W4dEntityImpl& operator=(const W4dEntityImpl&);
 
-	//data members
-	W4dTransform3d			localTransform_;
-	W4dTransform3d			globalTransform_;
-    W4dEntity*          	pParent_;
-    W4dEntity::W4dEntities*	childList_;
-    Meshes*          		meshes_;
+    // data members
+    W4dTransform3d localTransform_;
+    W4dTransform3d globalTransform_;
+    W4dEntity* pParent_;
+    W4dEntity::W4dEntities* childList_;
+    Meshes* meshes_;
 
-    W4dEntity::W4dDomains*	intersectingDomains_;
+    W4dEntity::W4dDomains* intersectingDomains_;
 
-    W4dComposite*       pHolder_;    //Any composite holding this object
+    W4dComposite* pHolder_; // Any composite holding this object
 
-    W4dEntityScale*     pEntityScale_; //The object holding all scale info
-	W4dEntityPlan*      pPlan_;// Pointer to a current W4dEntityPlan which may modify the
-                               // entity's local transform, mesh display etc
-    PlanUpdateTimes* pPlanUpdateTimes_; //Cache store for times plans last updated by attribute.
-                                        //Exists if and only if pPlan_ defined.
+    W4dEntityScale* pEntityScale_; // The object holding all scale info
+    W4dEntityPlan* pPlan_; // Pointer to a current W4dEntityPlan which may modify the
+                           // entity's local transform, mesh display etc
+    PlanUpdateTimes* pPlanUpdateTimes_; // Cache store for times plans last updated by attribute.
+                                        // Exists if and only if pPlan_ defined.
 
-    W4dSubject* pSubject_; //Optional logical owner of this entity
+    W4dSubject* pSubject_; // Optional logical owner of this entity
 
-	// A number which uniquely identifies the last camera traversal to draw this entity.
-	uint32_t				passId_;
+    // A number which uniquely identifies the last camera traversal to draw this entity.
+    uint32_t passId_;
 
-    //The time when the cached global transform was last updated
+    // The time when the cached global transform was last updated
     PhysAbsoluteTime timeGlobalTransformLastUpdated_;
 
-    //Cached transform keys for the parent's global and local transform last
-    //used to update the cached global transform
+    // Cached transform keys for the parent's global and local transform last
+    // used to update the cached global transform
     MexTransform3dKey lastParentGlobalTransformKey_;
     MexTransform3dKey lastLocalTransformKey_;
 
-    //An id used for various purposes in checking algorithms
+    // An id used for various purposes in checking algorithms
     uint32_t checkId_;
 
-    //This entity's id
+    // This entity's id
     W4dId id_;
 
     //  A very approximate bounding volume of this ebtities meshes - it does not
     //  include the children of this entity.
     MexAlignedBox3d* boundingVolume_;
 
-	// Warning: these variable are bitfields, thus it is not possible
-	// to reference them using CB_DEPIMPL
-	// W4dEntity has to access them using the indirection operator pImpl_->
+    // Warning: these variable are bitfields, thus it is not possible
+    // to reference them using CB_DEPIMPL
+    // W4dEntity has to access them using the indirection operator pImpl_->
     W4dEntity::Solidity solid_ : 2;
-    bool                isDomain_ : 1;
-    bool                ownedByParent_ : 1;
-    bool            visible_ : 1;
-    bool isStationary_ : 1; //True if the entity is considered as stationary.
-                            //False implies likely to move.
+    bool isDomain_ : 1;
+    bool ownedByParent_ : 1;
+    bool visible_ : 1;
+    bool isStationary_ : 1; // True if the entity is considered as stationary.
+                            // False implies likely to move.
 
-    bool notScaled_ : 1; //True iff the lod 0 mesh has unity scale,
-                         //and the entity has unity scale override.
-    bool isComposite_ : 1; //True if this is a composite
-    bool isGarbage_ : 1; //True if added to the garbage collection list
-    bool isOwnedByCountedPtr_ : 1; //True if a counted ptr references the entity.
-                                   //In this case it must only be deleted when the
-                                   //last counted ptr goes out of scope - NOT as a child
-                                   //of a deleting parent, or via garbage collection.
-                                   //Set when referenced by a W4dSubject
+    bool notScaled_ : 1; // True iff the lod 0 mesh has unity scale,
+                         // and the entity has unity scale override.
+    bool isComposite_ : 1; // True if this is a composite
+    bool isGarbage_ : 1; // True if added to the garbage collection list
+    bool isOwnedByCountedPtr_ : 1; // True if a counted ptr references the entity.
+                                   // In this case it must only be deleted when the
+                                   // last counted ptr goes out of scope - NOT as a child
+                                   // of a deleting parent, or via garbage collection.
+                                   // Set when referenced by a W4dSubject
 
-	bool hasMesh_ : 1;				// True if the entity has at least one mesh
+    bool hasMesh_ : 1; // True if the entity has at least one mesh
 
-	//This entity's local light list
-	W4dLocalLightList*	pLocalLightList_;
+    // This entity's local light list
+    W4dLocalLightList* pLocalLightList_;
 
-	string*				name_;
-	AnimationDataPtrs*  pAnimationDataPtrs_;
-	AnimationDataPtrs*  pAnimationLightDataPtrs_;
-	RenColour*		    pFilterColour_;
-    int                 nLinkedSounds_; //Count of sounds associated via W4dSoundManager
-	bool				doNotLight_;
-	int					clientData_;  // To be used as clients of this class see fit.
+    string* name_;
+    AnimationDataPtrs* pAnimationDataPtrs_;
+    AnimationDataPtrs* pAnimationLightDataPtrs_;
+    RenColour* pFilterColour_;
+    int nLinkedSounds_; // Count of sounds associated via W4dSoundManager
+    bool doNotLight_;
+    int clientData_; // To be used as clients of this class see fit.
 
-    OBJECT_TRACKER( W4dEntityImpl );
+    OBJECT_TRACKER(W4dEntityImpl);
 
     /////////////////////////////////////////////////////////////////
 };
 
-PER_DECLARE_PERSISTENT( W4dEntityImpl );
+PER_DECLARE_PERSISTENT(W4dEntityImpl);
 
 #ifdef _INLINE
 #include "internal\entityi.ipp"

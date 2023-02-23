@@ -1,5 +1,5 @@
 /*
- * C O M P M G R . H P P 
+ * C O M P M G R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
 
-typedef uint ItemId;
+using ItemId = uint;
 
 template <class T> class ctl_vector;
 class MachPhysComplexityBooleanItem;
@@ -32,42 +32,40 @@ public:
 
     void CLASS_INVARIANT;
 
-	typedef ctl_vector< MachPhysComplexityBooleanItem* > BooleanItems;
-	typedef ctl_vector< MachPhysComplexityChoiceItem* > ChoiceItems;
+    using BooleanItems = ctl_vector<MachPhysComplexityBooleanItem*>;
+    using ChoiceItems = ctl_vector<MachPhysComplexityChoiceItem*>;
 
+    const BooleanItems& booleanItems() const;
+    const ChoiceItems& choiceItems() const;
 
-	const BooleanItems& booleanItems() const;
-	const ChoiceItems& choiceItems() const;
+    void changeBooleanItem(const ItemId& id, bool enabled);
+    void changeChoiceItem(const ItemId& id, uint choice);
 
-	void changeBooleanItem( const ItemId& id, bool enabled );
-	void changeChoiceItem( const ItemId& id, uint choice );
-	
-	// update the scene rendering parameters of items having their changed_ flag set to true		 
-	void updateSceneParameters();
+    // update the scene rendering parameters of items having their changed_ flag set to true
+    void updateSceneParameters();
 
-	// planet surface
-	bool hasPlanetSurface() const;
-	void planetSurface( MachPhysPlanetSurface* pSurface );
-	MachPhysPlanetSurface* planetSurface();
+    // planet surface
+    bool hasPlanetSurface() const;
+    void planetSurface(MachPhysPlanetSurface* pSurface);
+    MachPhysPlanetSurface* planetSurface();
 
-	void vapourTrailsEnabled( bool );
-	bool vapourTrailsEnabled() const;
+    void vapourTrailsEnabled(bool);
+    bool vapourTrailsEnabled() const;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysComplexityManager& t );
+    friend ostream& operator<<(ostream& o, const MachPhysComplexityManager& t);
 
-    MachPhysComplexityManager( const MachPhysComplexityManager& );
-    MachPhysComplexityManager& operator =( const MachPhysComplexityManager& );
+    MachPhysComplexityManager(const MachPhysComplexityManager&);
+    MachPhysComplexityManager& operator=(const MachPhysComplexityManager&);
 
     MachPhysComplexityManager();
 
-	BooleanItems 			booleanItems_;
-	ChoiceItems 			choiceItems_;
+    BooleanItems booleanItems_;
+    ChoiceItems choiceItems_;
 
-	MachPhysPlanetSurface* 	pPlanetSurface_;
-	bool					vapourTrailsEnabled_;
+    MachPhysPlanetSurface* pPlanetSurface_;
+    bool vapourTrailsEnabled_;
 };
-
 
 #endif
 

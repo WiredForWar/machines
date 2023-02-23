@@ -4,7 +4,7 @@
 #include "device/butevent.hpp"
 #include <SDL2/SDL.h>
 
-//class DevButtonEvent;
+// class DevButtonEvent;
 
 //////////////////////////////////////////////////////////////////////
 // Implements the mechanism for determining key-presses under SDL2.0
@@ -12,19 +12,19 @@
 class DevSdlKeyboard : public DevKeyboard
 {
 private:
-	friend DevKeyboard& DevKeyboard::instance();
-	static DevSdlKeyboard& sdlInstance();
-	DevSdlKeyboard();
-	~DevSdlKeyboard();
+    friend DevKeyboard& DevKeyboard::instance();
+    static DevSdlKeyboard& sdlInstance();
+    DevSdlKeyboard();
+    ~DevSdlKeyboard();
 
-	// The Windows proceedure communicates key-press events to this
-	// class using these messages.
-	friend class AfxSdlApp;
+    // The Windows proceedure communicates key-press events to this
+    // class using these messages.
+    friend class AfxSdlApp;
     void wm_key(const DevButtonEvent& ev);
-	void wm_char(const DevButtonEvent& ev);
-	void wm_killfocus();
+    void wm_char(const DevButtonEvent& ev);
+    void wm_killfocus();
 
-	static const ushort scanCodeToKeyNumMap[SDL_NUM_SCANCODES];
+    static const ushort scanCodeToKeyNumMap[SDL_NUM_SCANCODES];
 };
 
 #undef DevButtonEvent

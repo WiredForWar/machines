@@ -1,5 +1,5 @@
 /*
- * S T A T D I S P . H P P 
+ * S T A T D I S P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,47 +26,46 @@ class MachGuiStatisticsDisplay : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiStatisticsDisplay( GuiDisplayable *pParent, const Gui::Coord& topLeft, MachPhys::Race race );
-  
-    ~MachGuiStatisticsDisplay();
+    MachGuiStatisticsDisplay(GuiDisplayable* pParent, const Gui::Coord& topLeft, MachPhys::Race race);
 
- 	// Set the values to be displayed
-	void setStatistics( int stat1, int stat2, int stat3, int stat4 );
+    ~MachGuiStatisticsDisplay() override;
 
-	// forces display to be redrawn if necessary
-	void update();
+    // Set the values to be displayed
+    void setStatistics(int stat1, int stat2, int stat3, int stat4);
 
-	// Determine if display needs updating
-	bool redraw() { return redraw_; }
+    // forces display to be redrawn if necessary
+    void update();
 
-	// Redraws the display
-	virtual void doDisplay();
+    // Determine if display needs updating
+    bool redraw() { return redraw_; }
 
-	static void setStartTime( double time ) { initialTime_ = time; }
+    // Redraws the display
+    void doDisplay() override;
 
-	static void setTime( double time );
+    static void setStartTime(double time) { initialTime_ = time; }
+
+    static void setTime(double time);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiStatisticsDisplay& t );
+    friend ostream& operator<<(ostream& o, const MachGuiStatisticsDisplay& t);
 
-    MachGuiStatisticsDisplay( const MachGuiStatisticsDisplay& );
-    MachGuiStatisticsDisplay& operator =( const MachGuiStatisticsDisplay& );
+    MachGuiStatisticsDisplay(const MachGuiStatisticsDisplay&);
+    MachGuiStatisticsDisplay& operator=(const MachGuiStatisticsDisplay&);
 
-	typedef ctl_pvector< MachGuiStatisticsBar > StatBars;
-	typedef ctl_vector< int > Stats;
+    using StatBars = ctl_pvector<MachGuiStatisticsBar>;
+    using Stats = ctl_vector<int>;
 
-	Gui::Coord 		topLeft_; // top left of the statistics display
-	GuiBitmap 		backgroundBmp_;	// bitmap for display background
-	StatBars		statBars_; // vector of stat bars
-	Stats			stats_; // vector of stat values
-	bool 			redraw_;  // flag to determine if display needs to be redrawn
-	static float	rampDuration_; // Time taken to perform ramping up of bars
-	static float 	initialTime_;	// Initial starting time 
-	static float 	ratioComplete_; // Amount of bar to be shown 
+    Gui::Coord topLeft_; // top left of the statistics display
+    GuiBitmap backgroundBmp_; // bitmap for display background
+    StatBars statBars_; // vector of stat bars
+    Stats stats_; // vector of stat values
+    bool redraw_; // flag to determine if display needs to be redrawn
+    static float rampDuration_; // Time taken to perform ramping up of bars
+    static float initialTime_; // Initial starting time
+    static float ratioComplete_; // Amount of bar to be shown
 };
-
 
 #endif
 

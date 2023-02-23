@@ -1,5 +1,5 @@
 /*
- * M V E C C P L E . H P P 
+ * M V E C C P L E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,9 +19,8 @@
 class W4dMaterialVecPtr_SetLess
 {
 public:
-    bool operator() ( const Ren::MaterialVecPtr& lhs, const Ren::MaterialVecPtr& rhs ) const;
+    bool operator()(const Ren::MaterialVecPtr& lhs, const Ren::MaterialVecPtr& rhs) const;
 };
-
 
 #endif
 

@@ -17,48 +17,46 @@
 #include "base/persist.hpp"
 #include "world4d/entity.hpp"
 
-//forward refs
+// forward refs
 class MexTransform3d;
 
 class MachPhysRadialDisc : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor. Object attached to pParent at localTransform
-    MachPhysRadialDisc( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor. Object attached to pParent at localTransform
+    MachPhysRadialDisc(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysRadialDisc();
+    // dtor
+    ~MachPhysRadialDisc() override;
 
-    //Return an exemplar disc - ensures the disc mesh is loaded
+    // Return an exemplar disc - ensures the disc mesh is loaded
     static const MachPhysRadialDisc& exemplar();
 
-    //The cutout texture that converts the disc into a ring
+    // The cutout texture that converts the disc into a ring
     static const RenTexture& circleTexture();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysRadialDisc& t );
+    friend ostream& operator<<(ostream& o, const MachPhysRadialDisc& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysRadialDisc );
+    PER_MEMBER_PERSISTENT(MachPhysRadialDisc);
 
 private:
-    MachPhysRadialDisc( const MachPhysRadialDisc& );
-    MachPhysRadialDisc& operator =( const MachPhysRadialDisc& );
-    bool operator ==( const MachPhysRadialDisc& );
+    MachPhysRadialDisc(const MachPhysRadialDisc&);
+    MachPhysRadialDisc& operator=(const MachPhysRadialDisc&);
+    bool operator==(const MachPhysRadialDisc&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysRadialDisc();
-
 };
 
-PER_READ_WRITE( MachPhysRadialDisc );
-PER_DECLARE_PERSISTENT( MachPhysRadialDisc );
+PER_READ_WRITE(MachPhysRadialDisc);
+PER_DECLARE_PERSISTENT(MachPhysRadialDisc);
 
 #endif
 

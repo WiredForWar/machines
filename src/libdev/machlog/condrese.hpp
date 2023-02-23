@@ -1,5 +1,5 @@
 /*
- * C O N D R E S E . H P P 
+ * C O N D R E S E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,52 +25,51 @@ class MachLogResearchCompleteCondition : public SimCondition
 // Canonical form revoked
 {
 public:
+    static MachLogResearchCompleteCondition* newFromParser(UtlLineTokeniser*);
 
-	static MachLogResearchCompleteCondition* newFromParser( UtlLineTokeniser* );
+    bool doHasConditionBeenMet() const override;
 
-	virtual bool doHasConditionBeenMet() const;
-
-    virtual ~MachLogResearchCompleteCondition();
+    ~MachLogResearchCompleteCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogResearchCompleteCondition );
-	PER_FRIEND_READ_WRITE( MachLogResearchCompleteCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogResearchCompleteCondition);
+    PER_FRIEND_READ_WRITE(MachLogResearchCompleteCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogResearchCompleteCondition(
+        const string& keyName,
+        MachPhys::Race,
+        MachLog::ObjectType,
+        int hwLevel,
+        int subType,
+        MachPhys::WeaponCombo);
 
-    MachLogResearchCompleteCondition( const string& keyName, MachPhys::Race, 
-    								  MachLog::ObjectType, int hwLevel, 
-    								  int subType, MachPhys::WeaponCombo );
+    friend ostream& operator<<(ostream& o, const MachLogResearchCompleteCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogResearchCompleteCondition& t );
+    MachLogResearchCompleteCondition(const MachLogResearchCompleteCondition&);
+    MachLogResearchCompleteCondition& operator=(const MachLogResearchCompleteCondition&);
 
-    MachLogResearchCompleteCondition( const MachLogResearchCompleteCondition& );
-    MachLogResearchCompleteCondition& operator =( const MachLogResearchCompleteCondition& );
-
-	//the item is not persisted directly it is reaquired from the research tree
-	MachLogResearchItem*	pItem_;
-	MachLog::ObjectType		objectType_;
-	int						subType_;
-	int						hwLevel_;
-	int						swLevel_;
-	MachPhys::WeaponCombo	weaponCombo_;
-	MachPhys::Race			race_;
-	PhysRelativeTime		callBackTimeGap_;
-	//the notifiable is also not persisted but recreated
-	//defined friendly so that it can change the call back time directly.
-	friend class MachLogResearchCompleteConditionNotifiable;
-	MachLogResearchCompleteConditionNotifiable*	pNotifiable_;
-
+    // the item is not persisted directly it is reaquired from the research tree
+    MachLogResearchItem* pItem_;
+    MachLog::ObjectType objectType_;
+    int subType_;
+    int hwLevel_;
+    int swLevel_;
+    MachPhys::WeaponCombo weaponCombo_;
+    MachPhys::Race race_;
+    PhysRelativeTime callBackTimeGap_;
+    // the notifiable is also not persisted but recreated
+    // defined friendly so that it can change the call back time directly.
+    friend class MachLogResearchCompleteConditionNotifiable;
+    MachLogResearchCompleteConditionNotifiable* pNotifiable_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogResearchCompleteCondition );
+PER_DECLARE_PERSISTENT(MachLogResearchCompleteCondition);
 
 #endif
 

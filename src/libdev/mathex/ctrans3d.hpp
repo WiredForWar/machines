@@ -18,25 +18,24 @@
 
 class MexTransform3d;
 
-#pragma pack(push,1)
+#pragma pack(push, 1)
 class MexCompressedTransform3d
 // Canonical form revoked
 {
 public:
-    MexCompressedTransform3d( const MexTransform3d& );
+    MexCompressedTransform3d(const MexTransform3d&);
     MexCompressedTransform3d();
     ~MexCompressedTransform3d();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MexCompressedTransform3d& t );
-	friend class MexTransform3d;
+    friend ostream& operator<<(ostream& o, const MexCompressedTransform3d& t);
+    friend class MexTransform3d;
 
-	MexCompressedPoint3d	position_;
-	MexCompressedVec3		xBasis_;
-	MexCompressedVec3		yBasis_;
-
+    MexCompressedPoint3d position_;
+    MexCompressedVec3 xBasis_;
+    MexCompressedVec3 yBasis_;
 };
 #pragma pack(pop)
 

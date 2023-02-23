@@ -1,5 +1,5 @@
 /*
- * P E R W E A P . C P P 
+ * P E R W E A P . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -57,7 +57,6 @@
 #include "machlog/optskloc.hpp"
 #include "machlog/optskpat.hpp"
 
-
 MachLogOperationPersistence::MachLogOperationPersistence()
 {
 
@@ -67,15 +66,14 @@ MachLogOperationPersistence::MachLogOperationPersistence()
 MachLogOperationPersistence::~MachLogOperationPersistence()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogOperationPersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogOperationPersistence& t )
+ostream& operator<<(ostream& o, const MachLogOperationPersistence& t)
 {
 
     o << "MachLogOperationPersistence " << (void*)&t << " start" << std::endl;
@@ -84,60 +82,60 @@ ostream& operator <<( ostream& o, const MachLogOperationPersistence& t )
     return o;
 }
 
-//static 
+// static
 void MachLogOperationPersistence::registerDerivedClasses()
 {
-	PER_REGISTER_DERIVED_CLASS( MachLogMoveToOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogMoveAndTurnOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAttackOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogFollowOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogSeekAndDestroyOperation );
-//	PER_REGISTER_DERIVED_CLASS( MachLogAnimation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminAttackOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminConstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminHealOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminLocateOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogCaptureOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogConstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogDeployAPCOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogEnterAPCOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogGotoLabOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogHealOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogDropLandMineOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogLocateOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogMissileEmplacementAttackOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogPickUpOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogPodAttackOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogPodAttackAnimation );
-	PER_REGISTER_DERIVED_CLASS( MachLogPutDownOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogRefillLandMinesOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogRepairOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTransportOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTreacheryOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTaskAttackOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTaskConstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTaskDropLandMineOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTaskLocateOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTaskPatrolOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogPatrolOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogEnterBuildingOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogLeaveBuildingOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogMoveAndTurnOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogDeconstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogRecycleOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminDeconstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminCaptureOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogSuperConstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAdminSuperConstructOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogStandGroundOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogTurnAnimation );
-	//PER_REGISTER_DERIVED_CLASS( MachLogConstructAnimation );
-	PER_REGISTER_DERIVED_CLASS( MachLogBeDestroyedAnimation );
-	PER_REGISTER_DERIVED_CLASS( MachLogResearchAnimation );
-	PER_REGISTER_DERIVED_CLASS( MachLogCounterattackOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogScavengeOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogAutoScavengeOperation );
-	PER_REGISTER_DERIVED_CLASS( MachLogEvadeOperation );
+    PER_REGISTER_DERIVED_CLASS(MachLogMoveToOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogMoveAndTurnOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAttackOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogFollowOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogSeekAndDestroyOperation);
+    //  PER_REGISTER_DERIVED_CLASS( MachLogAnimation );
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminAttackOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminConstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminHealOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminLocateOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogCaptureOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogConstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogDeployAPCOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogEnterAPCOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogGotoLabOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogHealOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogDropLandMineOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogLocateOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogMissileEmplacementAttackOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogPickUpOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogPodAttackOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogPodAttackAnimation);
+    PER_REGISTER_DERIVED_CLASS(MachLogPutDownOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogRefillLandMinesOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogRepairOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTransportOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTreacheryOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTaskAttackOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTaskConstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTaskDropLandMineOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTaskLocateOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTaskPatrolOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogPatrolOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogEnterBuildingOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogLeaveBuildingOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogMoveAndTurnOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogDeconstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogRecycleOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminDeconstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminCaptureOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogSuperConstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAdminSuperConstructOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogStandGroundOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogTurnAnimation);
+    // PER_REGISTER_DERIVED_CLASS( MachLogConstructAnimation );
+    PER_REGISTER_DERIVED_CLASS(MachLogBeDestroyedAnimation);
+    PER_REGISTER_DERIVED_CLASS(MachLogResearchAnimation);
+    PER_REGISTER_DERIVED_CLASS(MachLogCounterattackOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogScavengeOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogAutoScavengeOperation);
+    PER_REGISTER_DERIVED_CLASS(MachLogEvadeOperation);
 }
 
 // Forced recompile 12/1/99 CPS

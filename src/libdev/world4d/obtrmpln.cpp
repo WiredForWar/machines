@@ -7,12 +7,11 @@
 
 #include "world4d/obtrmpln.hpp"
 
-W4dObjectTrackerMotionPlan::W4dObjectTrackerMotionPlan
-(
-    const W4dObjectTrackerPtr& objectTrackerPtr, const PhysRelativeTime& duration
-)
-:   PhysMotionPlan( duration ),
-    objectTrackerPtr_( objectTrackerPtr )
+W4dObjectTrackerMotionPlan::W4dObjectTrackerMotionPlan(
+    const W4dObjectTrackerPtr& objectTrackerPtr,
+    const PhysRelativeTime& duration)
+    : PhysMotionPlan(duration)
+    , objectTrackerPtr_(objectTrackerPtr)
 {
     TEST_INVARIANT;
 }
@@ -24,10 +23,10 @@ W4dObjectTrackerMotionPlan::~W4dObjectTrackerMotionPlan()
 
 void W4dObjectTrackerMotionPlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dObjectTrackerMotionPlan& t )
+ostream& operator<<(ostream& o, const W4dObjectTrackerMotionPlan& t)
 {
 
     o << "W4dObjectTrackerMotionPlan " << (void*)&t << " start" << std::endl;
@@ -36,12 +35,9 @@ ostream& operator <<( ostream& o, const W4dObjectTrackerMotionPlan& t )
     return o;
 }
 
-//virtual
-void W4dObjectTrackerMotionPlan::transform
-(
-    const PhysRelativeTime&, MexTransform3d* pResult
-) const
+// virtual
+void W4dObjectTrackerMotionPlan::transform(const PhysRelativeTime&, MexTransform3d* pResult) const
 {
-    objectTrackerPtr_->track( pResult );
+    objectTrackerPtr_->track(pResult);
 }
 /* End OBTRMPLN.CPP *************************************************/

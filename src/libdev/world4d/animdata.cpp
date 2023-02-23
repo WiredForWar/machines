@@ -8,11 +8,11 @@
 #include "world4d/internal/animdata.hpp"
 #include "stdlib/string.hpp"
 
-PER_DEFINE_PERSISTENT_ABSTRACT( W4dAnimationData );
+PER_DEFINE_PERSISTENT_ABSTRACT(W4dAnimationData);
 
-W4dAnimationData::W4dAnimationData( const string& name, W4dLOD maxLod )
-:textureName_( _NEW(string(name)) ),
-maxLod_( maxLod )
+W4dAnimationData::W4dAnimationData(const string& name, W4dLOD maxLod)
+    : textureName_(_NEW(string(name)))
+    , maxLod_(maxLod)
 {
 
     TEST_INVARIANT;
@@ -20,17 +20,16 @@ maxLod_( maxLod )
 
 W4dAnimationData::~W4dAnimationData()
 {
-	_DELETE( textureName_ );
+    _DELETE(textureName_);
     TEST_INVARIANT;
-
 }
 
 void W4dAnimationData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dAnimationData& t )
+ostream& operator<<(ostream& o, const W4dAnimationData& t)
 {
 
     o << "W4dAnimationData " << (void*)&t << " start" << std::endl;
@@ -39,43 +38,43 @@ ostream& operator <<( ostream& o, const W4dAnimationData& t )
     return o;
 }
 
-void W4dAnimationData::name( const string& name)
+void W4dAnimationData::name(const string& name)
 {
-	*textureName_ = name;
+    *textureName_ = name;
 }
 
 const string& W4dAnimationData::name() const
 {
-	return *textureName_;
+    return *textureName_;
 }
 
 const W4dLOD& W4dAnimationData::maxLod() const
 {
-	return maxLod_;
+    return maxLod_;
 }
 
-//static
+// static
 const PhysRelativeTime& W4dAnimationData::forever()
 {
-	static const PhysRelativeTime oneYear = 31536000;
-	return oneYear;
+    static const PhysRelativeTime oneYear = 31536000;
+    return oneYear;
 }
 
-W4dAnimationData::W4dAnimationData( PerConstructor ):
-	textureName_(NULL)
+W4dAnimationData::W4dAnimationData(PerConstructor)
+    : textureName_(nullptr)
 {
 }
 
-void perWrite( PerOstream& ostr, const W4dAnimationData& t )
+void perWrite(PerOstream& ostr, const W4dAnimationData& t)
 {
-	ostr << t.textureName_;
-	ostr << t.maxLod_;
+    ostr << t.textureName_;
+    ostr << t.maxLod_;
 }
 
-void perRead( PerIstream& istr, W4dAnimationData& t )
+void perRead(PerIstream& istr, W4dAnimationData& t)
 {
-	istr >> t.textureName_;
-	istr >> t.maxLod_;
+    istr >> t.textureName_;
+    istr >> t.maxLod_;
 }
 
 /* End ANIMDATA.CPP *************************************************/

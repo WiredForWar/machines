@@ -16,24 +16,29 @@
 
 class MexVec3;
 
-#pragma pack(push,1)
+#pragma pack(push, 1)
 class MexCompressedVec3
 // Canonical form revoked
 {
 public:
     MexCompressedVec3();
-    MexCompressedVec3( const MexVec3& );
+    MexCompressedVec3(const MexVec3&);
     ~MexCompressedVec3();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MexCompressedVec3& t );
-	friend class MexVec3;
+    friend ostream& operator<<(ostream& o, const MexCompressedVec3& t);
+    friend class MexVec3;
 
-    enum: uint8 { X = 0, Y = 1, Z = 2 };
+    enum : uint8
+    {
+        X = 0,
+        Y = 1,
+        Z = 2
+    };
 
-    float	vec_[ 3 ];
+    float vec_[3];
 };
 #pragma pack(pop)
 

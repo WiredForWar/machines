@@ -10,16 +10,18 @@
 
 #include "phys/internal/timeangi.hpp"
 
-PER_DEFINE_PERSISTENT( PhysTimedAnglePlanImpl );
+PER_DEFINE_PERSISTENT(PhysTimedAnglePlanImpl);
 
-PhysTimedAnglePlanImpl::PhysTimedAnglePlanImpl( const PhysMotionPlan::AnglesPtr& anglesPtr,
-                                        const PhysMotionPlan::TimesPtr& timesPtr,
-                                        const MexVec3& axis, const MexVec3& position )
-:   position_( position ),
-    axis_( axis ),
-    timesPtr_( timesPtr ),
-    anglesPtr_( anglesPtr ),
-    cacheIndex_( 0 )
+PhysTimedAnglePlanImpl::PhysTimedAnglePlanImpl(
+    const PhysMotionPlan::AnglesPtr& anglesPtr,
+    const PhysMotionPlan::TimesPtr& timesPtr,
+    const MexVec3& axis,
+    const MexVec3& position)
+    : position_(position)
+    , axis_(axis)
+    , timesPtr_(timesPtr)
+    , anglesPtr_(anglesPtr)
+    , cacheIndex_(0)
 {
     TEST_INVARIANT;
 }
@@ -27,15 +29,14 @@ PhysTimedAnglePlanImpl::PhysTimedAnglePlanImpl( const PhysMotionPlan::AnglesPtr&
 PhysTimedAnglePlanImpl::~PhysTimedAnglePlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysTimedAnglePlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysTimedAnglePlanImpl& t )
+ostream& operator<<(ostream& o, const PhysTimedAnglePlanImpl& t)
 {
 
     o << "PhysTimedAnglePlanImpl " << (void*)&t << " start" << std::endl;
@@ -44,11 +45,11 @@ ostream& operator <<( ostream& o, const PhysTimedAnglePlanImpl& t )
     return o;
 }
 
-PhysTimedAnglePlanImpl::PhysTimedAnglePlanImpl( PerConstructor )
+PhysTimedAnglePlanImpl::PhysTimedAnglePlanImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const PhysTimedAnglePlanImpl& plan )
+void perWrite(PerOstream& ostr, const PhysTimedAnglePlanImpl& plan)
 {
     ostr << plan.position_;
     ostr << plan.axis_;
@@ -57,7 +58,7 @@ void perWrite( PerOstream& ostr, const PhysTimedAnglePlanImpl& plan )
     ostr << plan.cacheIndex_;
 }
 
-void perRead( PerIstream& istr, PhysTimedAnglePlanImpl& plan )
+void perRead(PerIstream& istr, PhysTimedAnglePlanImpl& plan)
 {
     istr >> plan.position_;
     istr >> plan.axis_;

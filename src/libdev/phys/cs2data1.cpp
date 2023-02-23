@@ -11,18 +11,18 @@
 
 void myFn()
 {
-    //TEST_INVARIANT;
+    // TEST_INVARIANT;
 
     int i, j;
-    for( i = 0; i < 100; ++i )
+    for (i = 0; i < 100; ++i)
         j += i;
 
-    //Delete all the domains
-    //PhysConfigSpace2d::DomainId id = domainIdGenerator_.begin();
-    //for( ; id != domainIdGenerator_.end(); ++id )
+    // Delete all the domains
+    // PhysConfigSpace2d::DomainId id = domainIdGenerator_.begin();
+    // for( ; id != domainIdGenerator_.end(); ++id )
     {
-      //  if( domains_.contains( id ) )
-      //      _DELETE( domains_[ id ] );
+        //  if( domains_.contains( id ) )
+        //      _DELETE( domains_[ id ] );
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////

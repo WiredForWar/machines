@@ -10,8 +10,8 @@
 
 W4dDummyFunction14()
 {
-     W4dSoundManagerImpl::EntitySounds dummy1;
-     W4dSoundManagerImpl::SoundIDMap   dummy2;
+    W4dSoundManagerImpl::EntitySounds dummy1;
+    W4dSoundManagerImpl::SoundIDMap dummy2;
 
-	ctl_vector< W4dSoundManagerImpl::EntitySounds::iterator > dummySoundsIt;
+    ctl_vector<W4dSoundManagerImpl::EntitySounds::iterator> dummySoundsIt;
 }

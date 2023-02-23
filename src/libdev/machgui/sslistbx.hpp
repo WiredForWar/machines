@@ -1,5 +1,5 @@
 /*
- * S S L I S T B X . H P P 
+ * S S L I S T B X . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,46 +21,53 @@
 class MachGuiStartupScreens;
 class MachGuiSingleSelectionListBoxItem;
 
-class MachGuiSingleSelectionListBox : public GuiSingleSelectionListBox, public MachGuiFocusCapableControl
+class MachGuiSingleSelectionListBox
+    : public GuiSingleSelectionListBox
+    , public MachGuiFocusCapableControl
 // Canonical form revoked
 {
 public:
-    //TODO: Eliminate entirely MachGuiStartupScreens from constructor. Focus capable control stuff is what MGSS still needed for
-    MachGuiSingleSelectionListBox(MachGuiStartupScreens* pStartupScreens, GuiDisplayable* pParent, const Gui::Box& box,
-                                  size_t horizontalSpacing, size_t verticalSpacing, size_t scrollInc);
-    ~MachGuiSingleSelectionListBox();
+    // TODO: Eliminate entirely MachGuiStartupScreens from constructor. Focus capable control stuff is what MGSS still
+    // needed for
+    MachGuiSingleSelectionListBox(
+        MachGuiStartupScreens* pStartupScreens,
+        GuiDisplayable* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc);
+    ~MachGuiSingleSelectionListBox() override;
 
     void CLASS_INVARIANT;
 
-    void addListItem( MachGuiSingleSelectionListBoxItem* pItem);
-    void removeListItem( MachGuiSingleSelectionListBoxItem* pItem);
+    void addListItem(MachGuiSingleSelectionListBoxItem* pItem);
+    void removeListItem(MachGuiSingleSelectionListBoxItem* pItem);
 
-    virtual bool doHandleNavigationKey( NavKey navKey, MachGuiFocusCapableControl** ppNavFocusControl) override;
-    virtual void hasFocus( bool newValue) override;
+    bool doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl** ppNavFocusControl) override;
+    void hasFocus(bool newValue) override;
 
-    virtual bool isEnabled() const override;
+    bool isEnabled() const override;
 
-    ctl_pvector< MachGuiSingleSelectionListBoxItem >& listItems();
+    ctl_pvector<MachGuiSingleSelectionListBoxItem>& listItems();
 
 protected:
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
-    virtual void doNavSelectNewItem( MachGuiSingleSelectionListBoxItem* );
+    virtual void doNavSelectNewItem(MachGuiSingleSelectionListBoxItem*);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiSingleSelectionListBox& t );
+    friend ostream& operator<<(ostream& o, const MachGuiSingleSelectionListBox& t);
 
-    MachGuiSingleSelectionListBox( const MachGuiSingleSelectionListBox& );
-    MachGuiSingleSelectionListBox& operator =( const MachGuiSingleSelectionListBox& );
+    MachGuiSingleSelectionListBox(const MachGuiSingleSelectionListBox&);
+    MachGuiSingleSelectionListBox& operator=(const MachGuiSingleSelectionListBox&);
 
-    //TODO: Remove this once the focus capable control refactor is done...
+    // TODO: Remove this once the focus capable control refactor is done...
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
-    ctl_pvector< MachGuiSingleSelectionListBoxItem > listItems_;
+    ctl_pvector<MachGuiSingleSelectionListBoxItem> listItems_;
 
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 };
-
 
 #endif
 

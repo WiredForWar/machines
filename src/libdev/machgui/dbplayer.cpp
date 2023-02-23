@@ -1,5 +1,5 @@
 /*
- * D B P L A Y E R . C P P 
+ * D B P L A Y E R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,13 +9,13 @@
 #include "machgui/internal/dbplayei.hpp"
 #include "machgui/dbplyscn.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbPlayer );
+PER_DEFINE_PERSISTENT(MachGuiDbPlayer);
 
-MachGuiDbPlayer::MachGuiDbPlayer( uint id, const string& name )
+MachGuiDbPlayer::MachGuiDbPlayer(uint id, const string& name)
 {
-    pData_ = _NEW( MachGuiDbIPlayer );
+    pData_ = _NEW(MachGuiDbIPlayer);
 
-    pData_->id_= id;
+    pData_->id_ = id;
     pData_->name_ = name;
 
     TEST_INVARIANT;
@@ -25,22 +25,22 @@ MachGuiDbPlayer::~MachGuiDbPlayer()
 {
     TEST_INVARIANT;
 
-    //Delete all the player scenario object
+    // Delete all the player scenario object
     uint nPlayerScenarios = pData_->playerScenarios_.size();
-    for( uint i = nPlayerScenarios; i--; )
+    for (uint i = nPlayerScenarios; i--;)
     {
-        _DELETE( pData_->playerScenarios_[i] );
+        _DELETE(pData_->playerScenarios_[i]);
     }
 
-    _DELETE( pData_ );
+    _DELETE(pData_);
 }
 
 void MachGuiDbPlayer::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbPlayer& t )
+ostream& operator<<(ostream& o, const MachGuiDbPlayer& t)
 {
 
     o << "MachGuiDbPlayer " << (void*)&t << " start" << std::endl;
@@ -49,18 +49,18 @@ ostream& operator <<( ostream& o, const MachGuiDbPlayer& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbPlayer& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbPlayer& ob)
 {
     ostr << ob.pData_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbPlayer& ob )
+void perRead(PerIstream& istr, MachGuiDbPlayer& ob)
 {
     istr >> ob.pData_;
 }
 
-MachGuiDbPlayer::MachGuiDbPlayer( PerConstructor )
-:   pData_( NULL )
+MachGuiDbPlayer::MachGuiDbPlayer(PerConstructor)
+    : pData_(nullptr)
 {
 }
 
@@ -74,7 +74,7 @@ const string& MachGuiDbPlayer::name() const
     return pData_->name_;
 }
 
-void MachGuiDbPlayer::name( const string& newName )
+void MachGuiDbPlayer::name(const string& newName)
 {
     pData_->name_ = newName;
 }
@@ -84,16 +84,16 @@ uint MachGuiDbPlayer::nextUpdateId()
     return pData_->nextUpdateId_++;
 }
 
-bool MachGuiDbPlayer::hasPlayed( const MachGuiDbScenario& scenario, MachGuiDbPlayerScenario** ppPlayerScenario ) const
+bool MachGuiDbPlayer::hasPlayed(const MachGuiDbScenario& scenario, MachGuiDbPlayerScenario** ppPlayerScenario) const
 {
     bool result = false;
 
-    //Find the entry in the collection
+    // Find the entry in the collection
     uint nPlayed = pData_->playerScenarios_.size();
-    for( uint i = 0; not result  and  i != nPlayed; ++i )
+    for (uint i = 0; not result and i != nPlayed; ++i)
     {
         MachGuiDbPlayerScenario* pPlayerScenario = pData_->playerScenarios_[i];
-        if( &(pPlayerScenario->scenario()) == &scenario )
+        if (&(pPlayerScenario->scenario()) == &scenario)
         {
             result = true;
             *ppPlayerScenario = pPlayerScenario;
@@ -103,14 +103,14 @@ bool MachGuiDbPlayer::hasPlayed( const MachGuiDbScenario& scenario, MachGuiDbPla
     return result;
 }
 
-MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario( MachGuiDbScenario* pDbScenario )
+MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario(MachGuiDbScenario* pDbScenario)
 {
     MachGuiDbPlayerScenario* pPlayerScenario;
-    if( not hasPlayed( *pDbScenario, &pPlayerScenario ) )
+    if (not hasPlayed(*pDbScenario, &pPlayerScenario))
     {
-        //This is a new one, so create it
-        pPlayerScenario = _NEW( MachGuiDbPlayerScenario( this, pDbScenario ) );
-        pData_->playerScenarios_.push_back( pPlayerScenario );
+        // This is a new one, so create it
+        pPlayerScenario = _NEW(MachGuiDbPlayerScenario(this, pDbScenario));
+        pData_->playerScenarios_.push_back(pPlayerScenario);
     }
 
     return *pPlayerScenario;
@@ -118,27 +118,27 @@ MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario( MachGuiDbScenario* pDb
 
 uint MachGuiDbPlayer::nPlayerScenarios() const
 {
-    return  pData_->playerScenarios_.size();
+    return pData_->playerScenarios_.size();
 }
 
-MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario( uint index ) const
+MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario(uint index) const
 {
-    PRE( index < nPlayerScenarios() );
-    return  *(pData_->playerScenarios_[ index ]);
+    PRE(index < nPlayerScenarios());
+    return *(pData_->playerScenarios_[index]);
 }
 
 MachGuiDbPlayerScenario& MachGuiDbPlayer::mostRecentPlayerScenario()
 {
-    PRE( nPlayerScenarios() != 0 );
+    PRE(nPlayerScenarios() != 0);
 
-    //Find the entry in the collection with highest update id
+    // Find the entry in the collection with highest update id
     MachGuiDbPlayerScenario* mostRecentPlayerScenario = pData_->playerScenarios_.front();
     uint nPlayed = pData_->playerScenarios_.size();
 
-    for( uint i = 1; i != nPlayed; ++i )
+    for (uint i = 1; i != nPlayed; ++i)
     {
         MachGuiDbPlayerScenario* pPlayerScenario = pData_->playerScenarios_[i];
-        if( pPlayerScenario->updateId() > mostRecentPlayerScenario->updateId() )
+        if (pPlayerScenario->updateId() > mostRecentPlayerScenario->updateId())
             mostRecentPlayerScenario = pPlayerScenario;
     }
 
@@ -150,19 +150,19 @@ uint MachGuiDbPlayer::useSequenceId() const
     return pData_->useSequenceId_;
 }
 
-void MachGuiDbPlayer::useSequenceId( uint id )
+void MachGuiDbPlayer::useSequenceId(uint id)
 {
     pData_->useSequenceId_ = id;
 }
 
-void MachGuiDbPlayer::lastSelectedScenario( MachGuiDbScenario* pScenario )
+void MachGuiDbPlayer::lastSelectedScenario(MachGuiDbScenario* pScenario)
 {
-	pData_->pLastSelectedScenario_ = pScenario;
+    pData_->pLastSelectedScenario_ = pScenario;
 }
 
 MachGuiDbScenario* MachGuiDbPlayer::lastSelectedScenario() const
 {
-	return pData_->pLastSelectedScenario_;
+    return pData_->pLastSelectedScenario_;
 }
 
 /* End DBPLAYER.CPP *************************************************/

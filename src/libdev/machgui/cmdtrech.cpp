@@ -18,11 +18,11 @@
 #include "machlog/patrol.hpp"
 #include "machlog/races.hpp"
 
-MachGuiTreacheryCommand::MachGuiTreacheryCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    action_( ATTACK_OBJECT ),
-    pDirectObject_( NULL ),
-    hadFinalPick_( false )
+MachGuiTreacheryCommand::MachGuiTreacheryCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , action_(ATTACK_OBJECT)
+    , pDirectObject_(nullptr)
+    , hadFinalPick_(false)
 {
     TEST_INVARIANT;
 }
@@ -30,15 +30,14 @@ MachGuiTreacheryCommand::MachGuiTreacheryCommand( MachInGameScreen* pInGameScree
 MachGuiTreacheryCommand::~MachGuiTreacheryCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiTreacheryCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiTreacheryCommand& t )
+ostream& operator<<(ostream& o, const MachGuiTreacheryCommand& t)
 {
 
     o << "MachGuiTreacheryCommand " << (void*)&t << " start" << std::endl;
@@ -47,61 +46,59 @@ ostream& operator <<( ostream& o, const MachGuiTreacheryCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiTreacheryCommand::pickOnTerrain( const MexPoint3d& location, bool ctrlPressed,
-                                bool shiftPressed, bool altPressed )
+// virtual
+void MachGuiTreacheryCommand::pickOnTerrain(
+    const MexPoint3d& location,
+    bool ctrlPressed,
+    bool shiftPressed,
+    bool altPressed)
 {
-    //Check the location is on the ground - not up a hill
-    if( cursorOnTerrain( location, ctrlPressed, shiftPressed, altPressed ) !=
-        MachGui::INVALID_CURSOR )
+    // Check the location is on the ground - not up a hill
+    if (cursorOnTerrain(location, ctrlPressed, shiftPressed, altPressed) != MachGui::INVALID_CURSOR)
     {
-        //Store the location and set the action
+        // Store the location and set the action
         action_ = MOVE_TO_LOCATION;
         location_ = location;
         hadFinalPick_ = true;
     }
 }
 
-//virtual
-void MachGuiTreacheryCommand::pickOnActor
-(
-    MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiTreacheryCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
-    hadFinalPick_ = cursorOnActor( pActor, ctrlPressed, shiftPressed, altPressed ) !=
-                        MachGui::INVALID_CURSOR;
+    hadFinalPick_ = cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed) != MachGui::INVALID_CURSOR;
 }
 
-//virtual
-bool MachGuiTreacheryCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiTreacheryCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Administrators and aggressors can Treachery
+    // Administrators and aggressors can Treachery
     MachLog::ObjectType objectType = actor.objectType();
-    return 	(objectType == MachLog::ADMINISTRATOR  or
-    		objectType == MachLog::AGGRESSOR) and actor.asCanAttack().hasTreacheryWeapon();
+    return (objectType == MachLog::ADMINISTRATOR or objectType == MachLog::AGGRESSOR)
+        and actor.asCanAttack().hasTreacheryWeapon();
 }
 
-//virtual
+// virtual
 bool MachGuiTreacheryCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiTreacheryCommand::doApply( MachActor* pActor, string* pReason )
+// virtual
+bool MachGuiTreacheryCommand::doApply(MachActor* pActor, string* pReason)
 {
-    PRE( pActor->objectIsCanAttack() );
+    PRE(pActor->objectIsCanAttack());
 
-    //Take appropriate action
+    // Take appropriate action
     bool canDo = false;
-    switch( action_ )
+    switch (action_)
     {
         case MOVE_TO_LOCATION:
-            canDo = applyMove( pActor, pReason );
+            canDo = applyMove(pActor, pReason);
             break;
 
         case ATTACK_OBJECT:
-            canDo = applyTreacheryObject( pActor, pReason );
+            canDo = applyTreacheryObject(pActor, pReason);
             break;
 
         default:
@@ -111,90 +108,90 @@ bool MachGuiTreacheryCommand::doApply( MachActor* pActor, string* pReason )
     return canDo;
 }
 
-bool MachGuiTreacheryCommand::applyMove( MachActor* pActor, string* )
+bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, string*)
 {
-    //Construct a move operation
-	bool result = false;
-	if( pActor->objectIsMachine() )
-	{
-		MexPoint2d validPoint;
-	 	bool valid = findClosestPointValidOnTerrain(location_,
-					 							    IGNORE_SELECTED_ACTOR_OBSTACLES,
-					 					    		&pActor->asMachine(),
-					 					    		&validPoint );
+    // Construct a move operation
+    bool result = false;
+    if (pActor->objectIsMachine())
+    {
+        MexPoint2d validPoint;
+        bool valid = findClosestPointValidOnTerrain(
+            location_,
+            IGNORE_SELECTED_ACTOR_OBSTACLES,
+            &pActor->asMachine(),
+            &validPoint);
 
-		if ( valid )
-		{
-		    MachLogMoveToOperation* pOp =
-		        _NEW( MachLogMoveToOperation( &pActor->asMachine(), validPoint ) );
+        if (valid)
+        {
+            MachLogMoveToOperation* pOp = _NEW(MachLogMoveToOperation(&pActor->asMachine(), validPoint));
 
-		    //Give it to the actor
-		    pActor->newOperation( pOp );
-			result = true;
+            // Give it to the actor
+            pActor->newOperation(pOp);
+            result = true;
 
-			if( not hasPlayedVoiceMail() )
-			{
-				MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
-				hasPlayedVoiceMail( true );
-			}
-		}
-	}
+            if (not hasPlayedVoiceMail())
+            {
+                MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
+                hasPlayedVoiceMail(true);
+            }
+        }
+    }
 
     return result;
 }
 
-bool MachGuiTreacheryCommand::applyTreacheryObject( MachActor* pActor, string* )
+bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, string*)
 {
-    //Check not trying to Treachery actor of same race (note that this trivially includes oneself).
+    // Check not trying to Treachery actor of same race (note that this trivially includes oneself).
     bool canDo = pActor->race() != pDirectObject_->race();
-    if( canDo )
+    if (canDo)
     {
-        //Construct appropriate type of operation
+        // Construct appropriate type of operation
         MachLogOperation* pOp;
 
-		ASSERT( ( pActor->objectType() == MachLog::ADMINISTRATOR or pActor->objectType() == MachLog::AGGRESSOR )
-				and pActor->asCanAttack().hasTreacheryWeapon(),
-				"Unexpected non-treachery-capable actor about to be issued a treachery op." );
+        ASSERT(
+            (pActor->objectType() == MachLog::ADMINISTRATOR or pActor->objectType() == MachLog::AGGRESSOR)
+                and pActor->asCanAttack().hasTreacheryWeapon(),
+            "Unexpected non-treachery-capable actor about to be issued a treachery op.");
 
-		pOp = _NEW( MachLogTreacheryOperation( &pActor->asMachine(), pDirectObject_ ) );
+        pOp = _NEW(MachLogTreacheryOperation(&pActor->asMachine(), pDirectObject_));
 
-        //Give it to the actor
-        pActor->newOperation( pOp );
+        // Give it to the actor
+        pActor->newOperation(pOp);
 
-		if( not hasPlayedVoiceMail() )
-		{
-			// Note: here we had passing objectType = MachLog::ADMINISTRATOR:
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TREACHERY_TARGET );
-			hasPlayedVoiceMail( true );
-		}
+        if (not hasPlayedVoiceMail())
+        {
+            // Note: here we had passing objectType = MachLog::ADMINISTRATOR:
+            MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TREACHERY_TARGET);
+            hasPlayedVoiceMail(true);
+        }
     }
 
     return canDo;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnTerrain( const MexPoint3d& location, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnTerrain(const MexPoint3d& location, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if( cursorInFogOfWar() or isPointValidOnTerrain( location, IGNORE_SELECTED_ACTOR_OBSTACLES  ) )
+    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::MOVETO_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursorType = MachGui::INVALID_CURSOR;
 
-	MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    //Check for a building or machine
-    if( pActor->objectIsMachine()
-    	and pActor->race() != playerRace )
+    // Check for a building or machine
+    if (pActor->objectIsMachine() and pActor->race() != playerRace)
     {
-        //Set the Treachery object action
+        // Set the Treachery object action
         action_ = ATTACK_OBJECT;
         cursorType = MachGui::TREACHERY_CURSOR;
         pDirectObject_ = pActor;
@@ -203,59 +200,59 @@ MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnActor( MachActor* pActor,
     return cursorType;
 }
 
-//virtual
-void MachGuiTreacheryCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiTreacheryCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiTreacheryCommand::clone() const
 {
-    return _NEW( MachGuiTreacheryCommand( &inGameScreen() ) );
+    return _NEW(MachGuiTreacheryCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiTreacheryCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/treach.bmp", "gui/commands/treach.bmp" );
+    static std::pair<string, string> names("gui/commands/treach.bmp", "gui/commands/treach.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiTreacheryCommand::cursorPromptStringId() const
 {
     return IDS_TREACHERY_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiTreacheryCommand::commandPromptStringid() const
 {
     return IDS_TREACHERY_START;
 }
 
-//virtual
+// virtual
 bool MachGuiTreacheryCommand::canAdminApply() const
 {
     return false;
 }
 
-//virtual
-bool MachGuiTreacheryCommand::doAdminApply( MachLogAdministrator* /*pAdministrator*/, string* )
+// virtual
+bool MachGuiTreacheryCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
 {
     return false;
 }
 
-//virtual
-bool MachGuiTreacheryCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiTreacheryCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_J and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_J and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /* End CMDATTAC.CPP **************************************************/

@@ -1,5 +1,5 @@
 /*
- * G A R R I S O I . C P P 
+ * G A R R I S O I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,10 +8,10 @@
 #include "machlog/internal/garrisoi.hpp"
 #include "sim/manager.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogGarrisonImpl );
+PER_DEFINE_PERSISTENT(MachLogGarrisonImpl);
 
 MachLogGarrisonImpl::MachLogGarrisonImpl()
-:	lastUpdateTime_( SimManager::instance().currentTime() )
+    : lastUpdateTime_(SimManager::instance().currentTime())
 {
     TEST_INVARIANT;
 }
@@ -19,15 +19,14 @@ MachLogGarrisonImpl::MachLogGarrisonImpl()
 MachLogGarrisonImpl::~MachLogGarrisonImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogGarrisonImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogGarrisonImpl& t )
+ostream& operator<<(ostream& o, const MachLogGarrisonImpl& t)
 {
 
     o << "MachLogGarrisonImpl " << (void*)&t << " start" << std::endl;
@@ -36,14 +35,14 @@ ostream& operator <<( ostream& o, const MachLogGarrisonImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogGarrisonImpl& actorImpl )
+void perWrite(PerOstream& ostr, const MachLogGarrisonImpl& actorImpl)
 {
-	ostr << actorImpl.lastUpdateTime_;	
+    ostr << actorImpl.lastUpdateTime_;
 }
 
-void perRead( PerIstream& istr, MachLogGarrisonImpl& actorImpl )
+void perRead(PerIstream& istr, MachLogGarrisonImpl& actorImpl)
 {
-	istr >> actorImpl.lastUpdateTime_;	
+    istr >> actorImpl.lastUpdateTime_;
 }
 
 /* End GARRISOI.CPP *************************************************/

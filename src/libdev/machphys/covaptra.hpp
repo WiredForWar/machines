@@ -18,10 +18,10 @@
 class MachPhysVapourTrailsComplexity : public MachPhysComplexityBooleanItem
 {
 public:
-	MachPhysVapourTrailsComplexity( const ItemId& id, bool enabled );
-	~MachPhysVapourTrailsComplexity();
+    MachPhysVapourTrailsComplexity(const ItemId& id, bool enabled);
+    ~MachPhysVapourTrailsComplexity() override;
 
-	virtual	void update();
+    void update() override;
 };
 
 #endif

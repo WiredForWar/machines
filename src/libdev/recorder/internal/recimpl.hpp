@@ -27,7 +27,7 @@ public:
 
     enum RecordType
     {
-        REPEAT,         //  Repeat the previous record
+        REPEAT, //  Repeat the previous record
         TIME,
         MOUSE_POSITION,
         LEFT_BUTTON_TRUE,
@@ -83,67 +83,66 @@ public:
         NETWORK_DOUBLE,
     };
 
-    void putData( RecordType type, size_t nBytes, const void* pData );
-    void putBool( bool value, RecordType trueType, RecordType falseType );
+    void putData(RecordType type, size_t nBytes, const void* pData);
+    void putBool(bool value, RecordType trueType, RecordType falseType);
 
-    void getData( RecordType type, size_t nBytes, void* pData );
-    bool getBool( RecordType trueType, RecordType falseType );
+    void getData(RecordType type, size_t nBytes, void* pData);
+    bool getBool(RecordType trueType, RecordType falseType);
 
     RecRecorder::State state() const;
 
-    void recordingAllowed( bool );
+    void recordingAllowed(bool);
 
-	double percentageComplete() const;
-	//	PRE( state() == RecRecorder::PLAYING );
-	//	POST( result >= 0.0 );
-	//	POST( result <= 100.0 );
+    double percentageComplete() const;
+    //  PRE( state() == RecRecorder::PLAYING );
+    //  POST( result >= 0.0 );
+    //  POST( result <= 100.0 );
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const RecRecorderImplementation& t );
+    friend ostream& operator<<(ostream& o, const RecRecorderImplementation& t);
 
-    RecRecorderImplementation( const RecRecorderImplementation& );
-    RecRecorderImplementation& operator =( const RecRecorderImplementation& );
+    RecRecorderImplementation(const RecRecorderImplementation&);
+    RecRecorderImplementation& operator=(const RecRecorderImplementation&);
 
     RecRecorderImplementation();
 
-    static  void closeStreams();
+    static void closeStreams();
     void checkOKToRecord();
 
     bool recordingAllowed() const;
 
-    void writeDriveInfo( ostream& o ) const;
+    void writeDriveInfo(ostream& o) const;
 
     //  This is a crude, 1/18 sec. resolution timer
     double time() const;
-    void writeTime( ostream& o, double timeSeconds ) const;
+    void writeTime(ostream& o, double timeSeconds) const;
 
-    RecRecorder::State  state_;
+    RecRecorder::State state_;
 
-    std::ofstream    recordStream_;
-    std::ifstream    playbackStream_;
+    std::ofstream recordStream_;
+    std::ifstream playbackStream_;
 
-    size_t      nBytesRead_;
-    size_t      nBytesInFile_;
-    size_t      nBytesWritten_;
+    size_t nBytesRead_;
+    size_t nBytesInFile_;
+    size_t nBytesWritten_;
 
-    bool        fatalErrorFound_;
+    bool fatalErrorFound_;
 
-    int         allowedCount_;
+    int allowedCount_;
 
-    DevRate     freeDiskSpaceRate_;
-    DevRate     fileRate_;
+    DevRate freeDiskSpaceRate_;
+    DevRate fileRate_;
 
-    char        drive_[ 4 ];
+    char drive_[4];
 
-    double      updateDiskSpaceTime_;
-    double      diskSpaceFreeBytes_;
-    double      diskSpaceFreeSeconds_;
-
+    double updateDiskSpaceTime_;
+    double diskSpaceFreeBytes_;
+    double diskSpaceFreeSeconds_;
 };
 
-ostream& operator <<( ostream&, RecRecorderImplementation::RecordType );
+ostream& operator<<(ostream&, RecRecorderImplementation::RecordType);
 
 #endif
 

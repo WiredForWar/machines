@@ -4,6 +4,6 @@
 
 W4dDummyFunction13()
 {
-	// Used by W4dEnvironment.
+    // Used by W4dEnvironment.
     static ctl_vector<string> dummySize_t;
 }

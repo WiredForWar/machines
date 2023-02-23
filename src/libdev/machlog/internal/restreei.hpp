@@ -1,5 +1,5 @@
 /*
- * R E S T R E E I . H P P 
+ * R E S T R E E I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,23 +26,22 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogResearchTreeImpl& t );
+    friend ostream& operator<<(ostream& o, const MachLogResearchTreeImpl& t);
 
-    MachLogResearchTreeImpl( const MachLogResearchTreeImpl& );
-    MachLogResearchTreeImpl& operator =( const MachLogResearchTreeImpl& );
+    MachLogResearchTreeImpl(const MachLogResearchTreeImpl&);
+    MachLogResearchTreeImpl& operator=(const MachLogResearchTreeImpl&);
 
-	friend class MachLogResearchTree;
+    friend class MachLogResearchTree;
 
-	MachLogResearchTree::ResearchItems	researchItems_;
-	MachLogResearchTree::Notifiables	notifiables_;
-	size_t 								nNotifiables_;
+    MachLogResearchTree::ResearchItems researchItems_;
+    MachLogResearchTree::Notifiables notifiables_;
+    size_t nNotifiables_;
 };
 
-
-#define CB_MachLogResearchTree_DEPIMPL() \
-	CB_DEPIMPL( MachLogResearchTree::ResearchItems, researchItems_ ); \
-	CB_DEPIMPL( MachLogResearchTree::Notifiables, notifiables_ ); \
-	CB_DEPIMPL( size_t, nNotifiables_ ); 
+#define CB_MachLogResearchTree_DEPIMPL()                                                                               \
+    CB_DEPIMPL(MachLogResearchTree::ResearchItems, researchItems_);                                                    \
+    CB_DEPIMPL(MachLogResearchTree::Notifiables, notifiables_);                                                        \
+    CB_DEPIMPL(size_t, nNotifiables_);
 
 #endif
 

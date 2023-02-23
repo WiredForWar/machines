@@ -21,15 +21,15 @@
 
 class W4dEntity;
 
-class W4dUVTranslateData: public  W4dAnimationData
+class W4dUVTranslateData : public W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dUVTranslateData( const string& textureName, const MexVec2& speedVec, W4dLOD maxLod );
-    virtual ~W4dUVTranslateData();
+    W4dUVTranslateData(const string& textureName, const MexVec2& speedVec, W4dLOD maxLod);
+    ~W4dUVTranslateData() override;
 
-	//apply the uv animation to pEntity	 start at statTime
-	virtual void apply( W4dEntity* pEntity, const PhysAbsoluteTime& startTime);
+    // apply the uv animation to pEntity  start at statTime
+    void apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) override;
 
     void CLASS_INVARIANT;
 
@@ -37,12 +37,12 @@ public:
     PER_FRIEND_READ_WRITE(W4dUVTranslateData);
 
 private:
-    friend ostream& operator <<( ostream& o, const W4dUVTranslateData& t );
+    friend ostream& operator<<(ostream& o, const W4dUVTranslateData& t);
 
-    W4dUVTranslateData( const W4dUVTranslateData& );
-    W4dUVTranslateData& operator =( const W4dUVTranslateData& );
+    W4dUVTranslateData(const W4dUVTranslateData&);
+    W4dUVTranslateData& operator=(const W4dUVTranslateData&);
 
-	MexVec2 speedVec_;
+    MexVec2 speedVec_;
 };
 
 PER_DECLARE_PERSISTENT(W4dUVTranslateData);

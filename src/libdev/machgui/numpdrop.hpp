@@ -1,5 +1,5 @@
 /*
- * N U M P D R O P . H P P 
+ * N U M P D R O P . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -22,59 +22,94 @@ class MachGuiNumPlayersDropDownListBoxCreator : public MachGuiDropDownListBoxCre
 // Canonical form revoked
 {
 public:
-    MachGuiNumPlayersDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, int width, const GuiStrings& availText );
-	MachGuiNumPlayersDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, int width, const GuiStrings& availText, bool whiteFont );
-    MachGuiNumPlayersDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, const Gui::Coord& relCoord, int width, const GuiStrings& availText, bool whiteFont, bool border );
-    ~MachGuiNumPlayersDropDownListBoxCreator();
+    MachGuiNumPlayersDropDownListBoxCreator(
+        GuiDisplayable* pParent,
+        MachGuiStartupScreens*,
+        int width,
+        const GuiStrings& availText);
+    MachGuiNumPlayersDropDownListBoxCreator(
+        GuiDisplayable* pParent,
+        MachGuiStartupScreens*,
+        int width,
+        const GuiStrings& availText,
+        bool whiteFont);
+    MachGuiNumPlayersDropDownListBoxCreator(
+        GuiDisplayable* pParent,
+        MachGuiStartupScreens*,
+        const Gui::Coord& relCoord,
+        int width,
+        const GuiStrings& availText,
+        bool whiteFont,
+        bool border);
+    ~MachGuiNumPlayersDropDownListBoxCreator() override;
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual MachGuiDropDownList* createDropDownList( 	MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    								size_t horizontalSpacing, size_t verticalSpacing,
-														size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-														MachGuiDropDownListBoxCreator* );
+    MachGuiDropDownList* createDropDownList(
+        MachGuiStartupScreens* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc,
+        size_t itemWidth,
+        const ctl_vector<string>& itemText,
+        MachGuiDropDownListBoxCreator*) override;
 
-	virtual bool doHandleNavigationKey( NavKey, MachGuiFocusCapableControl** );
+    bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t );
+    friend ostream& operator<<(ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t);
 
-    MachGuiNumPlayersDropDownListBoxCreator( const MachGuiNumPlayersDropDownListBoxCreator& );
-    MachGuiNumPlayersDropDownListBoxCreator& operator =( const MachGuiNumPlayersDropDownListBoxCreator& );
+    MachGuiNumPlayersDropDownListBoxCreator(const MachGuiNumPlayersDropDownListBoxCreator&);
+    MachGuiNumPlayersDropDownListBoxCreator& operator=(const MachGuiNumPlayersDropDownListBoxCreator&);
 };
 
 class MachGuiNumPlayersDropDownList : public MachGuiDropDownList
 {
 public:
-	MachGuiNumPlayersDropDownList(	MachGuiStartupScreens* pParent, const Gui::Box& box, 
-						    		size_t horizontalSpacing, size_t verticalSpacing,
-									size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-									MachGuiDropDownListBoxCreator* );
+    MachGuiNumPlayersDropDownList(
+        MachGuiStartupScreens* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc,
+        size_t itemWidth,
+        const ctl_vector<string>& itemText,
+        MachGuiDropDownListBoxCreator*);
 
-	MachGuiNumPlayersDropDownList(	MachGuiStartupScreens* pParent, const Gui::Box& box, 
-						    		size_t horizontalSpacing, size_t verticalSpacing,
-									size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-									MachGuiDropDownListBoxCreator*, bool whiteFont );
+    MachGuiNumPlayersDropDownList(
+        MachGuiStartupScreens* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc,
+        size_t itemWidth,
+        const ctl_vector<string>& itemText,
+        MachGuiDropDownListBoxCreator*,
+        bool whiteFont);
+
 protected:
-
-	virtual MachGuiDropDownListBoxItem* createListBoxItem(	MachGuiStartupScreens* pStartupScreens, 
-															MachGuiDropDownListBox* pListBox, 
-															size_t width, 
-															const string& text,
-															bool whiteFont );
+    MachGuiDropDownListBoxItem* createListBoxItem(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiDropDownListBox* pListBox,
+        size_t width,
+        const string& text,
+        bool whiteFont) override;
 };
 
 class MachGuiNumPlayersDropDownListBoxItem : public MachGuiDropDownListBoxItem
 {
 public:
-	MachGuiNumPlayersDropDownListBoxItem(	MachGuiStartupScreens* pStartupScreens, 
-											MachGuiDropDownListBox* pListBox, 
-											size_t width, 
-											const string& text,
-											bool whiteFont );
+    MachGuiNumPlayersDropDownListBoxItem(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiDropDownListBox* pListBox,
+        size_t width,
+        const string& text,
+        bool whiteFont);
+
 protected:
-	virtual void select();
+    void select() override;
 };
 
 #endif

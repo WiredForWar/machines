@@ -17,19 +17,19 @@
 #include "machlog/plandoms.hpp"
 #include "machlog/lineproj.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogExplosionAction );
+PER_DEFINE_PERSISTENT(MachLogExplosionAction);
 
-MachLogExplosionAction::MachLogExplosionAction( SimCondition* pCondition, bool enabled )
-:	SimAction( pCondition, enabled ),
-	point_( MexPoint2d( 0, 0 ) ),
-	range_( 0 ),
-	damage_( 0 ),
-	size_( 0 )
+MachLogExplosionAction::MachLogExplosionAction(SimCondition* pCondition, bool enabled)
+    : SimAction(pCondition, enabled)
+    , point_(MexPoint2d(0, 0))
+    , range_(0)
+    , damage_(0)
+    , size_(0)
 {
     TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MachLogExplosionAction::~MachLogExplosionAction()
 {
     TEST_INVARIANT;
@@ -37,10 +37,10 @@ MachLogExplosionAction::~MachLogExplosionAction()
 
 void MachLogExplosionAction::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogExplosionAction& t )
+ostream& operator<<(ostream& o, const MachLogExplosionAction& t)
 {
 
     o << "MachLogExplosionAction " << (void*)&t << " start" << std::endl;
@@ -49,79 +49,77 @@ ostream& operator <<( ostream& o, const MachLogExplosionAction& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachLogExplosionAction::doAction()
 {
-    MexPoint3d location( point_.x(), point_.y(), MachLogPlanetDomains::terrainHeight( point_ ) );
+    MexPoint3d location(point_.x(), point_.y(), MachLogPlanetDomains::terrainHeight(point_));
     MexTransform3d localTransform;
-    W4dDomain* pDomain =
-        MachLogPlanetDomains::pDomainPosition( location, 0, &localTransform );
+    W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
-    W4dEntity* pOwner = _NEW( W4dGeneric( pDomain, localTransform, W4dEntity::NOT_SOLID ) );
-	pOwner->boundingVolume( MexAlignedBox3d( location, size_, size_, size_ ) );
-    //Construct and use an explosion
-    MachPhysObjectExplosion exploder( pOwner );
-	exploder.explode( SimManager::instance().currentTime() );
-	_DELETE( pOwner );
-	MachLogLinearProjectile::genericCheckForDamage( location, range_,
-										MachLogLinearProjectile::LINEAR_DAMAGE, damage_ );
-
+    W4dEntity* pOwner = _NEW(W4dGeneric(pDomain, localTransform, W4dEntity::NOT_SOLID));
+    pOwner->boundingVolume(MexAlignedBox3d(location, size_, size_, size_));
+    // Construct and use an explosion
+    MachPhysObjectExplosion exploder(pOwner);
+    exploder.explode(SimManager::instance().currentTime());
+    _DELETE(pOwner);
+    MachLogLinearProjectile::genericCheckForDamage(location, range_, MachLogLinearProjectile::LINEAR_DAMAGE, damage_);
 }
 
-//static
-MachLogExplosionAction* MachLogExplosionAction::newFromParser( SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser )
+// static
+MachLogExplosionAction*
+MachLogExplosionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-	MachLogExplosionAction* pResult = NULL;
-	pResult = _NEW( MachLogExplosionAction( pCondition, enabled ) );
-	for( int i = 0; i < pParser->tokens().size(); ++i )
-	{
-		const string& token = pParser->tokens()[i];
-		if( token == "AT" )
-			pResult->point_ = MexPoint2d( atof( pParser->tokens()[i+1].c_str() ), atof( pParser->tokens()[i+2].c_str() ) );
-		else if( token == "RANGE" )
-			pResult->range_ = atof( pParser->tokens()[i+1].c_str() );
-		else if( token == "SIZE" )
-		{
-			pResult->size_ = atof( pParser->tokens()[i+1].c_str() );
-		}
-		else if( token == "DAMAGE" )
-			pResult->damage_ = atol( pParser->tokens()[i+1].c_str() );
-	}
-	ASSERT( pResult->size_ > 0,"SIZE of an explosion MUST be specified\n" );
-	return pResult;
+    MachLogExplosionAction* pResult = nullptr;
+    pResult = _NEW(MachLogExplosionAction(pCondition, enabled));
+    for (int i = 0; i < pParser->tokens().size(); ++i)
+    {
+        const string& token = pParser->tokens()[i];
+        if (token == "AT")
+            pResult->point_
+                = MexPoint2d(atof(pParser->tokens()[i + 1].c_str()), atof(pParser->tokens()[i + 2].c_str()));
+        else if (token == "RANGE")
+            pResult->range_ = atof(pParser->tokens()[i + 1].c_str());
+        else if (token == "SIZE")
+        {
+            pResult->size_ = atof(pParser->tokens()[i + 1].c_str());
+        }
+        else if (token == "DAMAGE")
+            pResult->damage_ = atol(pParser->tokens()[i + 1].c_str());
+    }
+    ASSERT(pResult->size_ > 0, "SIZE of an explosion MUST be specified\n");
+    return pResult;
 }
 
-//virtual
-void MachLogExplosionAction::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogExplosionAction::doOutputOperator(ostream& o) const
 {
-	SimAction::doOutputOperator( o );
+    SimAction::doOutputOperator(o);
 }
 
-void perWrite( PerOstream& ostr, const MachLogExplosionAction& action )
+void perWrite(PerOstream& ostr, const MachLogExplosionAction& action)
 {
-	const SimAction& base1 = action;
+    const SimAction& base1 = action;
 
-	ostr << base1;
-	ostr << action.point_;
-	ostr << action.range_;
-	ostr << action.size_;
-	ostr << action.damage_;
-
+    ostr << base1;
+    ostr << action.point_;
+    ostr << action.range_;
+    ostr << action.size_;
+    ostr << action.damage_;
 }
 
-void perRead( PerIstream& istr, MachLogExplosionAction& action )
+void perRead(PerIstream& istr, MachLogExplosionAction& action)
 {
-	SimAction& base1 = action;
+    SimAction& base1 = action;
 
-	istr >> base1;
-	istr >> action.point_;
-	istr >> action.range_;
-	istr >> action.size_;
-	istr >> action.damage_;
+    istr >> base1;
+    istr >> action.point_;
+    istr >> action.range_;
+    istr >> action.size_;
+    istr >> action.damage_;
 }
 
-MachLogExplosionAction::MachLogExplosionAction( PerConstructor con )
-:	SimAction( con )
+MachLogExplosionAction::MachLogExplosionAction(PerConstructor con)
+    : SimAction(con)
 {
 }
 

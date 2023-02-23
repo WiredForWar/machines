@@ -1,5 +1,5 @@
 /*
- * C T X S T A T S . H P P 
+ * C T X S T A T S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,24 +22,23 @@ class MachGuiCtxStatistics : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxStatistics(  MachGuiStartupScreens* pStartupScreens  );
-    ~MachGuiCtxStatistics();
+    MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxStatistics() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxStatistics& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxStatistics& t);
 
-    MachGuiCtxStatistics( const MachGuiCtxStatistics& );
-    MachGuiCtxStatistics& operator =( const MachGuiCtxStatistics& );
+    MachGuiCtxStatistics(const MachGuiCtxStatistics&);
+    MachGuiCtxStatistics& operator=(const MachGuiCtxStatistics&);
 
-	typedef ctl_pvector< MachGuiStatistics > Statistics;
-	Statistics statistics_;
-	int delayBarsGrowth_;
+    using Statistics = ctl_pvector<MachGuiStatistics>;
+    Statistics statistics_;
+    int delayBarsGrowth_;
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * D I S P N O T I . C P P 
+ * D I S P N O T I . C P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -14,8 +14,8 @@
 #include "machlog/cntrl_pc.hpp"
 #include "machgui/internal/strings.hpp"
 
-MachGuiDispositionChangeNotifiable::MachGuiDispositionChangeNotifiable( MachGuiStartupScreens* pStartupScreens )
-:  pStartupScreens_( pStartupScreens )
+MachGuiDispositionChangeNotifiable::MachGuiDispositionChangeNotifiable(MachGuiStartupScreens* pStartupScreens)
+    : pStartupScreens_(pStartupScreens)
 {
 
     TEST_INVARIANT;
@@ -24,15 +24,14 @@ MachGuiDispositionChangeNotifiable::MachGuiDispositionChangeNotifiable( MachGuiS
 MachGuiDispositionChangeNotifiable::~MachGuiDispositionChangeNotifiable()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDispositionChangeNotifiable::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDispositionChangeNotifiable& t )
+ostream& operator<<(ostream& o, const MachGuiDispositionChangeNotifiable& t)
 {
 
     o << "MachGuiDispositionChangeNotifiable " << (void*)&t << " start" << std::endl;
@@ -41,83 +40,92 @@ ostream& operator <<( ostream& o, const MachGuiDispositionChangeNotifiable& t )
     return o;
 }
 
-//virtual 
+// virtual
 void MachGuiDispositionChangeNotifiable::notifyGeneralDispositionChange()
 {
 }
 
-//virtual 
-void MachGuiDispositionChangeNotifiable::notifySpecificDispositionChange( MachPhys::Race, MachPhys::Race )
+// virtual
+void MachGuiDispositionChangeNotifiable::notifySpecificDispositionChange(MachPhys::Race, MachPhys::Race)
 {
 }
 
-//virtual 
-void MachGuiDispositionChangeNotifiable::notifyDispositionChangeToNoneAlly( MachPhys::Race checkRace, MachPhys::Race targetRace)
+// virtual
+void MachGuiDispositionChangeNotifiable::notifyDispositionChangeToNoneAlly(
+    MachPhys::Race checkRace,
+    MachPhys::Race targetRace)
 {
-	doDisplay( IDS_DISPOSITION_TO_NONE_ALLY, checkRace, targetRace );
+    doDisplay(IDS_DISPOSITION_TO_NONE_ALLY, checkRace, targetRace);
 }
 
-//virtual 
-void MachGuiDispositionChangeNotifiable::notifyDispositionChangeToAlly( MachPhys::Race checkRace, MachPhys::Race targetRace )
+// virtual
+void MachGuiDispositionChangeNotifiable::notifyDispositionChangeToAlly(
+    MachPhys::Race checkRace,
+    MachPhys::Race targetRace)
 {
-	doDisplay( IDS_DISPOSITION_TO_ALLY, checkRace, targetRace );
+    doDisplay(IDS_DISPOSITION_TO_ALLY, checkRace, targetRace);
 }
 
-
-void MachGuiDispositionChangeNotifiable::doDisplay( GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2 )
+void MachGuiDispositionChangeNotifiable::doDisplay(GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2)
 {
-	if ( pStartupScreens_->gameType() == MachGuiStartupScreens::MULTIGAME )
-	{
-		MachPhys::Race pcsRace = MachLogRaces::instance().pcController().race();
+    if (pStartupScreens_->gameType() == MachGuiStartupScreens::MULTIGAME)
+    {
+        MachPhys::Race pcsRace = MachLogRaces::instance().pcController().race();
 
-		bool bothRacesAreAI = 	MachLogRaces::instance().controller( race1 ).type() == MachLogController::AI_CONTROLLER and
-								MachLogRaces::instance().controller( race2 ).type() == MachLogController::AI_CONTROLLER;
+        bool bothRacesAreAI = MachLogRaces::instance().controller(race1).type() == MachLogController::AI_CONTROLLER
+            and MachLogRaces::instance().controller(race2).type() == MachLogController::AI_CONTROLLER;
 
-		if ( pStartupScreens_->startupData()->broadcastAlliances() or
-			 pcsRace == race1 or
-			 pcsRace == race2 )
-		{
-			if ( not bothRacesAreAI ) // Never show computer to computer alliances
-			{
-				GuiStrings strings;
-				strings.push_back( getDisplayName( race1 ) );
-				strings.push_back( getDisplayName( race2 ) );
+        if (pStartupScreens_->startupData()->broadcastAlliances() or pcsRace == race1 or pcsRace == race2)
+        {
+            if (not bothRacesAreAI) // Never show computer to computer alliances
+            {
+                GuiStrings strings;
+                strings.push_back(getDisplayName(race1));
+                strings.push_back(getDisplayName(race2));
 
-				GuiResourceString dispositionString( id, strings );
+                GuiResourceString dispositionString(id, strings);
 
-				MachGuiInGameChatMessages::instance().addMessage( dispositionString.asString() );
-			}
-		}
-	}
+                MachGuiInGameChatMessages::instance().addMessage(dispositionString.asString());
+            }
+        }
+    }
 }
 
-string MachGuiDispositionChangeNotifiable::getDisplayName( MachPhys::Race race )
+string MachGuiDispositionChangeNotifiable::getDisplayName(MachPhys::Race race)
 {
-	MachGuiStartupData::PlayerInfo* playerInfo = pStartupScreens_->startupData()->players();
-	string name;
-	//find a match with race
-	switch( race )
-	{
-		case MachPhys::RED:		name = "©"; break;
-		case MachPhys::GREEN:	name = "ª"; break;
-		case MachPhys::BLUE:	name = "«";break;
-		case MachPhys::YELLOW:	name = "¬"; break;
-	}
+    MachGuiStartupData::PlayerInfo* playerInfo = pStartupScreens_->startupData()->players();
+    string name;
+    // find a match with race
+    switch (race)
+    {
+        case MachPhys::RED:
+            name = "©";
+            break;
+        case MachPhys::GREEN:
+            name = "ª";
+            break;
+        case MachPhys::BLUE:
+            name = "«";
+            break;
+        case MachPhys::YELLOW:
+            name = "¬";
+            break;
+    }
 
-	for( int i = 0; i < 4; ++i )
-		if( playerInfo[i].race_ == race )
-		{
-			if( playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN 
-				or playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST )
-			{
-				name += playerInfo[i].playerName_;
-			}
-			else 
-			{
-				name +=  GuiResourceString( IDS_MENU_STSCOMPUTER ).asString();
-			} 
-		}
-	return name;
+    for (int i = 0; i < 4; ++i)
+        if (playerInfo[i].race_ == race)
+        {
+            if (playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
+                or playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST)
+            {
+                name += playerInfo[i].playerName_;
+            }
+            else
+            {
+                name += GuiResourceString(IDS_MENU_STSCOMPUTER).asString();
+            }
+        }
+    return name;
 }
 
 /* End DISPNOTI.CPP *************************************************/

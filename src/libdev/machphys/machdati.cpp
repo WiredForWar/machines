@@ -8,7 +8,7 @@
 #include "machphys/internal/machdati.hpp"
 
 #ifndef _INLINE
-    #include "machphys/internal/machdati.ipp"
+#include "machphys/internal/machdati.ipp"
 #endif
 
 MachPhysIMachineData::MachPhysIMachineData()
@@ -20,15 +20,14 @@ MachPhysIMachineData::MachPhysIMachineData()
 MachPhysIMachineData::~MachPhysIMachineData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysIMachineData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysIMachineData& t )
+ostream& operator<<(ostream& o, const MachPhysIMachineData& t)
 {
 
     o << "MachPhysIMachineData " << (void*)&t << " start" << std::endl;

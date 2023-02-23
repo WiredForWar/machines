@@ -12,15 +12,15 @@
 
 void ti8()
 {
-    static ctl_vector< PhysAbsoluteTime > dummyX;
+    static ctl_vector<PhysAbsoluteTime> dummyX;
 
     static MachLogMachineOperations dummy1;
 
-    static ctl_vector< MachLogGroupMoverUtility::Clump > dummy2;
+    static ctl_vector<MachLogGroupMoverUtility::Clump> dummy2;
 
-    typedef ctl_vector< MachLogProductionUnit > MachLogProductionUnits;
+    typedef ctl_vector<MachLogProductionUnit> MachLogProductionUnits;
     static MachLogProductionUnits dummy3;
-    static ctl_vector< MachLogProductionUnits > dummy4;
+    static ctl_vector<MachLogProductionUnits> dummy4;
 }
 
 /* End TI8.CPP *******************************************************/

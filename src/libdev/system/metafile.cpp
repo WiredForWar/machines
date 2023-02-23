@@ -10,7 +10,7 @@
 #include "system/metafile.hpp"
 #include "system/internal/metafili.hpp"
 
-SysMetaFile::SysMetaFile( const SysPathName& filename )
+SysMetaFile::SysMetaFile(const SysPathName& filename)
 {
 }
 
@@ -24,31 +24,32 @@ const SysPathName& SysMetaFile::filename() const
     return "";
 }
 
-bool SysMetaFile::hasFile( const SysPathName& filename ) const
+bool SysMetaFile::hasFile(const SysPathName& filename) const
 {
     return false;
 }
 
 // static
-void SysMetaFile::encryptionType( EncryptionType encryptionType )
+void SysMetaFile::encryptionType(EncryptionType encryptionType)
 {
 }
 
 // static
 bool SysMetaFile::useMetaFile()
 {
-    //static bool useMetaFile_ = not ( getenv( "CB_READ_FROM_METAFILE" ) and strcmp( getenv( "CB_READ_FROM_METAFILE" ), "false" ) == 0 );
+    // static bool useMetaFile_ = not ( getenv( "CB_READ_FROM_METAFILE" ) and strcmp( getenv( "CB_READ_FROM_METAFILE" ),
+    // "false" ) == 0 );
 
-    //return useMetaFile_;
+    // return useMetaFile_;
     return false;
 }
 
 void SysMetaFile::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const SysMetaFile& t )
+ostream& operator<<(ostream& o, const SysMetaFile& t)
 {
 
     o << "SysMetaFile " << (void*)&t << " start" << std::endl;

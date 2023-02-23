@@ -22,23 +22,23 @@
 #include "world4d/visplan.hpp"
 #include "world4d/gusplan.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysVortexSphere );
+PER_DEFINE_PERSISTENT(MachPhysVortexSphere);
 
-//One-time ctor
+// One-time ctor
 MachPhysVortexSphere::MachPhysVortexSphere()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/vortex/sphere.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/vortex/sphere.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysVortexSphere::MachPhysVortexSphere( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysVortexSphere::MachPhysVortexSphere(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -46,10 +46,9 @@ MachPhysVortexSphere::MachPhysVortexSphere( W4dEntity* pParent, const MexTransfo
 MachPhysVortexSphere::~MachPhysVortexSphere()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysVortexSphere& MachPhysVortexSphere::exemplar()
 {
     return MachPhysOtherPersistence::instance().vortexSphereExemplar();
@@ -57,10 +56,10 @@ const MachPhysVortexSphere& MachPhysVortexSphere::exemplar()
 
 void MachPhysVortexSphere::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysVortexSphere& t )
+ostream& operator<<(ostream& o, const MachPhysVortexSphere& t)
 {
 
     o << "MachPhysVortexSphere " << (void*)&t << " start" << std::endl;
@@ -69,30 +68,29 @@ ostream& operator <<( ostream& o, const MachPhysVortexSphere& t )
     return o;
 }
 
-//virtual
-bool MachPhysVortexSphere::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysVortexSphere::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysVortexSphere& sphere )
+void perWrite(PerOstream& ostr, const MachPhysVortexSphere& sphere)
 {
     const W4dEntity& base = sphere;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysVortexSphere& sphere )
+void perRead(PerIstream& istr, MachPhysVortexSphere& sphere)
 {
     W4dEntity& base = sphere;
 
     istr >> base;
 }
 
-MachPhysVortexSphere::MachPhysVortexSphere( PerConstructor c )
-:W4dEntity( c )
+MachPhysVortexSphere::MachPhysVortexSphere(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
 /* End VSPHERE.CPP *************************************************/
-

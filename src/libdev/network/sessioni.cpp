@@ -12,124 +12,122 @@
 
 const int MAXPLAYERS = 10;
 
-//static
+// static
 NetAppSession::NetSessionStatus& NetIAppSession::currentStatus()
 {
     NetAppSession::NetSessionStatus& status = currentStatusNoRecord();
 
-    if( RecRecorder::instance().state() == RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
         status = NetIRecorder::instance().playbackSessionStatus();
     }
     else
     {
-        if( RecRecorder::instance().state() == RecRecorder::RECORDING )
+        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
         {
-            NetIRecorder::instance().recordSessionStatus( status );
+            NetIRecorder::instance().recordSessionStatus(status);
         }
     }
 
-	return status;
+    return status;
 }
 
-//static
+// static
 NetAppSession::NetSessionStatus& NetIAppSession::currentStatusNoRecord()
 {
-	static NetAppSession::NetSessionStatus currentStatus_ = NetAppSession::NETSESS_OK;
-	return currentStatus_;
+    static NetAppSession::NetSessionStatus currentStatus_ = NetAppSession::NETSESS_OK;
+    return currentStatus_;
 }
 
 const NetAppSessionUid& NetIAppSession::appSessionUid() const
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-    if( RecRecorder::instance().state() == RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetIAppSession* nonConstThis = _CONST_CAST( NetIAppSession*, this );
+        NetIAppSession* nonConstThis = _CONST_CAST(NetIAppSession*, this);
 
         nonConstThis->appSessionUid_ = NetIRecorder::instance().playbackAppSessionUid();
     }
     else
     {
-        if( RecRecorder::instance().state() == RecRecorder::RECORDING )
+        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
         {
-            NetIRecorder::instance().recordAppSessionUid( appSessionUid_ );
+            NetIRecorder::instance().recordAppSessionUid(appSessionUid_);
         }
     }
 
-	return appSessionUid_;
+    return appSessionUid_;
 }
 
 const NetAppSessionName& NetIAppSession::appSessionName() const
 {
-	PRE( isValidNoRecord() );
-	return appSessionUid().appSessionName();
+    PRE(isValidNoRecord());
+    return appSessionUid().appSessionName();
 }
 
-bool NetIAppSession::hasMember( const NetNodeUid& nodeUid ) const
+bool NetIAppSession::hasMember(const NetNodeUid& nodeUid) const
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-	bool found = false;
+    bool found = false;
 
-    if( RecRecorder::instance().state() == RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
         found = NetIRecorder::instance().playbackHasMember();
     }
     else
     {
-        found = hasMemberNoRecord( nodeUid );
+        found = hasMemberNoRecord(nodeUid);
 
-        if( RecRecorder::instance().state() == RecRecorder::RECORDING )
+        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
         {
-            NetIRecorder::instance().recordHasMember( found );
+            NetIRecorder::instance().recordHasMember(found);
         }
     }
 
-
-	POST( isValidNoRecord() );
-	return found;
-// POST( implies( result, NetNetwork::instance().hasSessionMember( nUid ) ) );
+    POST(isValidNoRecord());
+    return found;
+    // POST( implies( result, NetNetwork::instance().hasSessionMember( nUid ) ) );
 }
 
-bool NetIAppSession::hasMemberNoRecord( const NetNodeUid& nodeUid ) const
+bool NetIAppSession::hasMemberNoRecord(const NetNodeUid& nodeUid) const
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-	bool found = false;
+    bool found = false;
 
-	NodeIds::const_iterator i = nodeIds_.begin();
-	NodeIds::const_iterator j = nodeIds_.end();
+    NodeIds::const_iterator i = nodeIds_.begin();
+    NodeIds::const_iterator j = nodeIds_.end();
 
-	while(i!=j && not found)
-	{
-		if(*(*i) == nodeUid)
-			found = true;
-		++i;
-	}
-
-
-	POST( isValidNoRecord() );
-	return found;
-// POST( implies( result, NetNetwork::instance().hasSessionMember( nUid ) ) );
-}
-
-void NetIAppSession::join( NetNode* pNode )
-{
-    if( RecRecorder::instance().state() != RecRecorder::PLAYING )
+    while (i != j && not found)
     {
-        RecRecorder::instance().recordingAllowed( false );
+        if (*(*i) == nodeUid)
+            found = true;
+        ++i;
+    }
 
-    	PRE( isValidNoRecord() );
-    	PRE(pNode);
-    	PRE( not hasMember( pNode->nodeUid() ) );
+    POST(isValidNoRecord());
+    return found;
+    // POST( implies( result, NetNetwork::instance().hasSessionMember( nUid ) ) );
+}
 
-    	nodeIds_.push_back( _NEW( NetNodeUid( pNode->nodeUid() ) ) );
+void NetIAppSession::join(NetNode* pNode)
+{
+    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
+    {
+        RecRecorder::instance().recordingAllowed(false);
 
-    	POST( hasMember( pNode->nodeUid() ) );
-    	POST( isValidNoRecord() );
+        PRE(isValidNoRecord());
+        PRE(pNode);
+        PRE(not hasMember(pNode->nodeUid()));
 
-        RecRecorder::instance().recordingAllowed( true );
+        nodeIds_.push_back(_NEW(NetNodeUid(pNode->nodeUid())));
+
+        POST(hasMember(pNode->nodeUid()));
+        POST(isValidNoRecord());
+
+        RecRecorder::instance().recordingAllowed(true);
     }
 }
 ///////////////////////////////
@@ -137,167 +135,166 @@ void NetIAppSession::join( NetNode* pNode )
 // call periodically to ensure that nodes() remains current.
 void NetIAppSession::updateNodes()
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-    if( RecRecorder::instance().state() != RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
-        RecRecorder::instance().recordingAllowed( false );
+        RecRecorder::instance().recordingAllowed(false);
 
-    	NodeIds::iterator i = nodeIds_.begin();
-    	NodeIds::iterator j = nodeIds_.end();
+        NodeIds::iterator i = nodeIds_.begin();
+        NodeIds::iterator j = nodeIds_.end();
 
-    	for(;i!=j;++i)
-    	{
-    		_DELETE((*i));
-    	}
+        for (; i != j; ++i)
+        {
+            _DELETE((*i));
+        }
 
-    	nodeIds_.erase(nodeIds_.begin(), nodeIds_.end());
+        nodeIds_.erase(nodeIds_.begin(), nodeIds_.end());
 
-        RecRecorder::instance().recordingAllowed( true );
+        RecRecorder::instance().recordingAllowed(true);
     }
 
-	POST( isValidNoRecord() );
+    POST(isValidNoRecord());
 }
 
 const NetAppSession::NodeIds& NetIAppSession::nodes() const
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-    if( RecRecorder::instance().state() == RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetIAppSession* nonConstThis = _CONST_CAST( NetIAppSession*, this );
+        NetIAppSession* nonConstThis = _CONST_CAST(NetIAppSession*, this);
 
-        NetIRecorder::instance().playbackNodeIds( &nonConstThis->nodeIds_ );
+        NetIRecorder::instance().playbackNodeIds(&nonConstThis->nodeIds_);
     }
     else
     {
-        if( RecRecorder::instance().state() == RecRecorder::RECORDING )
+        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
         {
-            NetIRecorder::instance().recordNodeIds( nodeIds_ );
+            NetIRecorder::instance().recordNodeIds(nodeIds_);
         }
     }
 
-	return nodeIds_;
+    return nodeIds_;
 }
 
 const NetAppSession::NodeIds& NetIAppSession::nodesNoRecord() const
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-	return nodeIds_;
+    return nodeIds_;
 }
 
 bool NetIAppSession::isEmpty() const
 {
-	PRE( isValidNoRecord() );
+    PRE(isValidNoRecord());
 
-	return nodes().empty();
+    return nodes().empty();
 }
 
 void NetIAppSession::init()
 {
-
 }
 
 NetIAppSession::~NetIAppSession()
 {
-	PRE( isValidNoRecord() );
-	NodeIds::iterator i = nodeIds_.begin();
-	NodeIds::iterator j = nodeIds_.end();
+    PRE(isValidNoRecord());
+    NodeIds::iterator i = nodeIds_.begin();
+    NodeIds::iterator j = nodeIds_.end();
 
-	for(;i!=j;++i)
-	{
-		if(*i)
-			_DELETE((*i));
-	}
-
-	i = nodeIds_.begin();
-
-	if(i!=j)
-		nodeIds_.erase(nodeIds_.begin(), j);
-
-	POST( isValidNoRecord() );
-}
-
-NetIAppSession::NetIAppSession( const NetAppSessionName& sessionName )
-:	appSessionUid_(NetNetwork::instance().appUid(), 0, "default")
-{
-	NETWORK_STREAM("NetIAppSession::NetIAppSession( " << sessionName <<" )\n" );
-
-	PRE( isValidNoRecord() );
-
-    if( RecRecorder::instance().state() != RecRecorder::PLAYING )
+    for (; i != j; ++i)
     {
-        RecRecorder::instance().recordingAllowed( false );
-
-    	init();
-
-        RecRecorder::instance().recordingAllowed( true );
+        if (*i)
+            _DELETE((*i));
     }
 
-	POST(isValidNoRecord());
+    i = nodeIds_.begin();
+
+    if (i != j)
+        nodeIds_.erase(nodeIds_.begin(), j);
+
+    POST(isValidNoRecord());
 }
 
-NetIAppSession::NetIAppSession( const NetAppSessionUid& newUid )
-: appSessionUid_(newUid)
+NetIAppSession::NetIAppSession(const NetAppSessionName& sessionName)
+    : appSessionUid_(NetNetwork::instance().appUid(), 0, "default")
 {
-	NETWORK_STREAM("NetIAppSession::NetIAppSession( const NetAppSessionUid& )\n" );
-	PRE( isValidNoRecord() );
+    NETWORK_STREAM("NetIAppSession::NetIAppSession( " << sessionName << " )\n");
 
-    if( RecRecorder::instance().state() != RecRecorder::PLAYING )
+    PRE(isValidNoRecord());
+
+    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
-        RecRecorder::instance().recordingAllowed( false );
+        RecRecorder::instance().recordingAllowed(false);
 
         init();
-        RecRecorder::instance().recordingAllowed( true );
+
+        RecRecorder::instance().recordingAllowed(true);
     }
 
-//	POST( isValidNoRecord() );
+    POST(isValidNoRecord());
+}
+
+NetIAppSession::NetIAppSession(const NetAppSessionUid& newUid)
+    : appSessionUid_(newUid)
+{
+    NETWORK_STREAM("NetIAppSession::NetIAppSession( const NetAppSessionUid& )\n");
+    PRE(isValidNoRecord());
+
+    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
+    {
+        RecRecorder::instance().recordingAllowed(false);
+
+        init();
+        RecRecorder::instance().recordingAllowed(true);
+    }
+
+    //  POST( isValidNoRecord() );
 }
 
 NetIAppSession::NetIAppSession()
-:	appSessionUid_(NetNetwork::instance().appUid(), 0, "default")
+    : appSessionUid_(NetNetwork::instance().appUid(), 0, "default")
 {
-   	NETWORK_STREAM("NetIAppSession::NetIAppSession - lobby connection\n" );
-   	NETWORK_INDENT( 2 );
-  	PRE( isValidNoRecord() );
+    NETWORK_STREAM("NetIAppSession::NetIAppSession - lobby connection\n");
+    NETWORK_INDENT(2);
+    PRE(isValidNoRecord());
 
-    if( RecRecorder::instance().state() != RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
-        RecRecorder::instance().recordingAllowed( false );
+        RecRecorder::instance().recordingAllowed(false);
 
         init();
-        RecRecorder::instance().recordingAllowed( true );
+        RecRecorder::instance().recordingAllowed(true);
     }
 
-	POST( isValidNoRecord() );
-	NETWORK_INDENT( -2 );
-	NETWORK_STREAM("NetIAppSession::NetIAppSession - lobby connection DONE\n" );
+    POST(isValidNoRecord());
+    NETWORK_INDENT(-2);
+    NETWORK_STREAM("NetIAppSession::NetIAppSession - lobby connection DONE\n");
 }
 
-void NetIAppSession::leave( NetNode* pNode )
+void NetIAppSession::leave(NetNode* pNode)
 {
-    if( RecRecorder::instance().state() != RecRecorder::PLAYING )
+    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
-        RecRecorder::instance().recordingAllowed( false );
+        RecRecorder::instance().recordingAllowed(false);
 
-    	PRE( hasMemberNoRecord( pNode->nodeUid() ) );
+        PRE(hasMemberNoRecord(pNode->nodeUid()));
 
-    	pNode = NULL;
-    	ASSERT(false, "Not yet implemented");
+        pNode = NULL;
+        ASSERT(false, "Not yet implemented");
 
-    	POST( not hasMemberNoRecord( pNode->nodeUid() ) );
+        POST(not hasMemberNoRecord(pNode->nodeUid()));
 
-        RecRecorder::instance().recordingAllowed( true );
+        RecRecorder::instance().recordingAllowed(true);
     }
 }
 
 bool NetIAppSession::isValid() const
 {
-	return (currentStatusNoRecord() == NetAppSession::NETSESS_OK);
+    return (currentStatusNoRecord() == NetAppSession::NETSESS_OK);
 }
 
 bool NetIAppSession::isValidNoRecord() const
 {
-	return (currentStatusNoRecord() == NetAppSession::NETSESS_OK);
+    return (currentStatusNoRecord() == NetAppSession::NETSESS_OK);
 }

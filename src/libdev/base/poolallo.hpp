@@ -1,5 +1,5 @@
 /*
- * P O O L A L L O . H P P 
+ * P O O L A L L O . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -20,42 +20,47 @@ class BasePoolAllocator
 // Canonical form revoked
 {
 public:
-    //nInitialPoolBytes is the size of the block of memory to be allocated initially for the pool.
-    //nExtensionBytes is the size of memory block to be allocated when additional memory is required
-    //for the pool.
+    // nInitialPoolBytes is the size of the block of memory to be allocated initially for the pool.
+    // nExtensionBytes is the size of memory block to be allocated when additional memory is required
+    // for the pool.
     BasePoolAllocator(uint32_t nInitialPoolBytes, uint32_t nExtensionBytes);
 
     ~BasePoolAllocator();
-    //PRE( allBlocksFreed() );
+    // PRE( allBlocksFreed() );
 
-    //Allocate a block of memory of at least nBytes in size, and return the ptr
-    void* alloc( size_t nBytes );
+    // Allocate a block of memory of at least nBytes in size, and return the ptr
+    void* alloc(size_t nBytes);
 
-    //Free a block of memory at pBlock, which must previously have been allocated from this pool
-    //using the alloc function
-    void free( void* pBlock );
+    // Free a block of memory at pBlock, which must previously have been allocated from this pool
+    // using the alloc function
+    void free(void* pBlock);
 
-    //True iff all blocks allocated using alloc() have been released using free()
+    // True iff all blocks allocated using alloc() have been released using free()
     bool allBlocksFreed() const;
 
     void CLASS_INVARIANT;
 
 private:
-    //revoked
-    BasePoolAllocator( const BasePoolAllocator& );
-    BasePoolAllocator& operator =( const BasePoolAllocator& );
+    // revoked
+    BasePoolAllocator(const BasePoolAllocator&);
+    BasePoolAllocator& operator=(const BasePoolAllocator&);
 
-    enum { UNIT_SIZE_P2 = 2, UNIT_SIZE = 4, UNIT_THRESHOLD = 4097 };
-
-    //Block that has been allocated. It always remains the same size.
-    typedef uint32_t Unit;
-    struct PoolBlock
+    enum
     {
-        size_t unitSize_; //Size of the block's usable space in units
-        PoolBlock* pNext_; //Pointer to next block of same size on freelist
+        UNIT_SIZE_P2 = 2,
+        UNIT_SIZE = 4,
+        UNIT_THRESHOLD = 4097
     };
 
-    //Block from which pool blocks can be allocated
+    // Block that has been allocated. It always remains the same size.
+    using Unit = uint32_t;
+    struct PoolBlock
+    {
+        size_t unitSize_; // Size of the block's usable space in units
+        PoolBlock* pNext_; // Pointer to next block of same size on freelist
+    };
+
+    // Block from which pool blocks can be allocated
     struct UnusedBlock
     {
         UnusedBlock* pNext_;
@@ -64,23 +69,22 @@ private:
         Unit* firstFreeUnit_;
     };
 
-    //Block allocated directly from the OS
+    // Block allocated directly from the OS
     struct SystemBlock
     {
         SystemBlock* pNext_;
         UnusedBlock unused_;
     };
 
-    //Data members
+    // Data members
     UnusedBlock* pFirstUnusedBlock_;
     SystemBlock* pFirstSystemBlock_;
     uint32_t nInitialPoolBytes_;
     uint32_t nExtensionBytes_;
     uint32_t nUnitsAllocated_;
     uint32_t nBlocksAllocated_;
-    PoolBlock* aPoolHeader_[ UNIT_THRESHOLD ];
+    PoolBlock* aPoolHeader_[UNIT_THRESHOLD];
 };
-
 
 #endif
 

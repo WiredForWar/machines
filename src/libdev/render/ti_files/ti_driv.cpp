@@ -6,11 +6,11 @@
 
 #include "render/driv.hpp"
 
-//class RenDriver;
+// class RenDriver;
 
 void W4dDummyFunctionDriv()
 {
-    static CtlCountedPtr< RenDriver >   dummyDriverPtr;
+    static CtlCountedPtr<RenDriver> dummyDriverPtr;
 
-    static ctl_list< CtlCountedPtr< RenDriver > >  dummyDrivers;
+    static ctl_list<CtlCountedPtr<RenDriver>> dummyDrivers;
 }

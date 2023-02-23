@@ -7,7 +7,7 @@
 #include "render/hierbuil.hpp"
 
 RenHierarchyBuilder::RenHierarchyBuilder()
-: pRoot_( _NEW( Node( NULL, MexTransform3d() ) ) )
+    : pRoot_(_NEW(Node(nullptr, MexTransform3d())))
 {
     pCurrentNode_ = pRoot_;
 
@@ -18,7 +18,7 @@ RenHierarchyBuilder::~RenHierarchyBuilder()
 {
     TEST_INVARIANT;
 
-    _DELETE( pRoot_ );
+    _DELETE(pRoot_);
 }
 
 const RenHierarchyBuilder::Node* RenHierarchyBuilder::pRoot() const
@@ -28,40 +28,40 @@ const RenHierarchyBuilder::Node* RenHierarchyBuilder::pRoot() const
 
 void RenHierarchyBuilder::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void    RenHierarchyBuilder::addFrame( const MexTransform3d& transform, size_t nChildren )
+void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChildren)
 {
-    addNode( _NEW( Node( pCurrentNode_, transform, nChildren ) ) );
+    addNode(_NEW(Node(pCurrentNode_, transform, nChildren)));
 }
 
-void    RenHierarchyBuilder::addFrame( const MexTransform3d& transform, size_t nChildren, const RenIMeshID& meshId )
+void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChildren, const RenIMeshID& meshId)
 {
-    addNode( _NEW( Node( pCurrentNode_, transform, nChildren, meshId ) ) );
+    addNode(_NEW(Node(pCurrentNode_, transform, nChildren, meshId)));
 }
 
-void    RenHierarchyBuilder::addNode( Node* pNode )
+void RenHierarchyBuilder::addNode(Node* pNode)
 {
 
-//     if( pCurrentNode_ == NULL )
-//     {
-//         BOB_STREAM( "Node is root" << std::endl );
-//
-//         pRoot_ = pNode;
-//         pCurrentNode_ = pNode;
-//     }
-//     else
+    //     if( pCurrentNode_ == NULL )
+    //     {
+    //         BOB_STREAM( "Node is root" << std::endl );
+    //
+    //         pRoot_ = pNode;
+    //         pCurrentNode_ = pNode;
+    //     }
+    //     else
     {
-        pCurrentNode_->push_back( pNode );
+        pCurrentNode_->push_back(pNode);
         pCurrentNode_ = pNode;
     }
 
-    while( pCurrentNode_ and pCurrentNode_->allChildrenSupplied() )
+    while (pCurrentNode_ and pCurrentNode_->allChildrenSupplied())
         pCurrentNode_ = pCurrentNode_->pParent();
 }
 
-ostream& operator <<( ostream& o, const RenHierarchyBuilder& t )
+ostream& operator<<(ostream& o, const RenHierarchyBuilder& t)
 {
 
     o << "RenHierarchyBuilder " << (void*)&t << " start" << std::endl;

@@ -12,7 +12,6 @@
 #ifndef _PLANETED_EDITPORT_HPP
 #define _PLANETED_EDITPORT_HPP
 
-
 #include "base/base.hpp"
 #include "mathex/point2d.hpp"
 #include "ctl/vector.hpp"
@@ -21,53 +20,53 @@
 
 class PedDomainEditor;
 
-class PedPortalEditor	: public PedPolygonEditor
+class PedPortalEditor : public PedPolygonEditor
 // Canonical form revoked
 {
 public:
-    PedPortalEditor( );
-    ~PedPortalEditor();
+    PedPortalEditor();
+    ~PedPortalEditor() override;
 
     void CLASS_INVARIANT;
 
-	virtual void processInput( const DevButtonEvent& );
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void processInput(const DevButtonEvent&) override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayKeyboardCtrls();
+    void displayKeyboardCtrls() override;
 
-	virtual void displayModeInfo();
+    void displayModeInfo() override;
 
-	virtual void readCspFile( const SysPathName& );
-	// PRE( cspFileName.existsAsFile() );
+    void readCspFile(const SysPathName&) override;
+    // PRE( cspFileName.existsAsFile() );
 
-	virtual void writeCspFile( std::ofstream& );
+    void writeCspFile(std::ofstream&) override;
 
-	virtual void validate();
+    void validate() override;
 
-	void domainEditor( PedDomainEditor* );
+    void domainEditor(PedDomainEditor*);
 
 protected:
-	virtual PedPolygon* createPolygon( const PolyVerticies& verticies, MATHEX_SCALAR height, bool selected ) const;
-	virtual PedPolygon* createDefaultPolygon() const;
-	virtual void processVertexRight();
-	virtual void processVertexLeft();
-	virtual void processVertexUp();
-	virtual void processVertexDown();
-	virtual void updatePolygon();
+    PedPolygon* createPolygon(const PolyVerticies& verticies, MATHEX_SCALAR height, bool selected) const override;
+    PedPolygon* createDefaultPolygon() const override;
+    void processVertexRight() override;
+    void processVertexLeft() override;
+    void processVertexUp() override;
+    void processVertexDown() override;
+    void updatePolygon() override;
 
 private:
-	void processCreatePortalsFromDomains();
+    void processCreatePortalsFromDomains();
 
-	// Operations deliberately revoked
-    PedPortalEditor( const PedPortalEditor& );
-    PedPortalEditor& operator =( const PedPortalEditor& );
-    bool operator ==( const PedPortalEditor& );
+    // Operations deliberately revoked
+    PedPortalEditor(const PedPortalEditor&);
+    PedPortalEditor& operator=(const PedPortalEditor&);
+    bool operator==(const PedPortalEditor&);
 
-    friend ostream& operator <<( ostream& o, const PedPortalEditor& t );
+    friend ostream& operator<<(ostream& o, const PedPortalEditor& t);
 
-	// Data...
-	PedDomainEditor* pDomainEditor_;
+    // Data...
+    PedDomainEditor* pDomainEditor_;
 };
 
 #endif

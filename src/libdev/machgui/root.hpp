@@ -10,30 +10,27 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-class GuiTestRoot
-: public GuiRoot
+class GuiTestRoot : public GuiRoot
 // cannonical form revoked
 {
 public:
-	
-	GuiTestRoot( const Gui::Box& abs );
+    GuiTestRoot(const Gui::Box& abs);
 
-	virtual ~GuiTestRoot();
+    virtual ~GuiTestRoot();
 
 protected:
+    // inherited from GuiRoot...
+    virtual void doDisplay();
 
-	// inherited from GuiRoot...
-	virtual void doDisplay();
-
-	virtual void doBecomeRoot();
-	virtual void doBecomeNotRoot();
+    virtual void doBecomeRoot();
+    virtual void doBecomeNotRoot();
 
 private:
-	GuiTestRoot( const GuiTestRoot& );
-	bool operator ==( const GuiTestRoot& ) const;
-	GuiTestRoot& operator =( const GuiTestRoot& );
+    GuiTestRoot(const GuiTestRoot&);
+    bool operator==(const GuiTestRoot&) const;
+    GuiTestRoot& operator=(const GuiTestRoot&);
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	// #ifndef _GUITEST_ROOT_HPP
+#endif // #ifndef _GUITEST_ROOT_HPP

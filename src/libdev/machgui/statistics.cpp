@@ -1,12 +1,11 @@
 /*
- * S T A T I S T I C S . C P P 
+ * S T A T I S T I C S . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/statistics.hpp"
-
 
 MachGuiStatistics::MachGuiStatistics()
 {
@@ -16,15 +15,14 @@ MachGuiStatistics::MachGuiStatistics()
 MachGuiStatistics::~MachGuiStatistics()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiStatistics::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiStatistics& t )
+ostream& operator<<(ostream& o, const MachGuiStatistics& t)
 {
 
     o << "MachGuiStatistics " << (void*)&t << " start" << std::endl;

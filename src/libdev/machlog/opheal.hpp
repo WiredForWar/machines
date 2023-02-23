@@ -1,8 +1,8 @@
 /*
- * A T T A C K . H P P 
+ * A T T A C K . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
- 
+
 /*
  * Heal Operation
  */
@@ -29,72 +29,71 @@ class MachActor;
 
 // orthodox canonical (revoked)
 
-class MachLogHealOperation
-: public MachLogOperation
+class MachLogHealOperation : public MachLogOperation
 {
 public:
+    MachLogHealOperation(MachLogAdministrator* pActor, MachActor* pDirectObject);
 
-	MachLogHealOperation( MachLogAdministrator * pActor,
-							MachActor * pDirectObject );
+    ~MachLogHealOperation() override;
 
-	~MachLogHealOperation();
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogHealOperation );
-	PER_FRIEND_READ_WRITE( MachLogHealOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogHealOperation);
+    PER_FRIEND_READ_WRITE(MachLogHealOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
-	virtual void doOutputOperator( ostream& ) const;
+    void doOutputOperator(ostream&) const override;
 
-	MachActor& directObject();
-	const MachActor& directObject() const;
-	
-	virtual bool doBeInterrupted();
+    MachActor& directObject();
+    const MachActor& directObject() const;
 
+    bool doBeInterrupted() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogHealOperation(const MachLogHealOperation&);
+    MachLogHealOperation& operator=(const MachLogHealOperation&);
+    bool operator==(const MachLogHealOperation&);
 
-	// Operations deliberately revoked
-    MachLogHealOperation( const MachLogHealOperation& );
-    MachLogHealOperation& operator =( const MachLogHealOperation& );
-    bool operator ==( const MachLogHealOperation& );
-	
-    //Possible actions decided upon in an update call
-    enum Action { WAIT_FOR_INTERVAL, MOVE_CLOSER, TURN_TO_FACE, MOVE_TO_SIDE, FIRE };
-    
-    //Attempt to move closer to the target. returns suggested update time obtained from
-    //the motion sequencer.
+    // Possible actions decided upon in an update call
+    enum Action
+    {
+        WAIT_FOR_INTERVAL,
+        MOVE_CLOSER,
+        TURN_TO_FACE,
+        MOVE_TO_SIDE,
+        FIRE
+    };
+
+    // Attempt to move closer to the target. returns suggested update time obtained from
+    // the motion sequencer.
     PhysRelativeTime moveCloserToTarget();
 
-    //Attempt to turn the whole attacking machine (Not just its head) to face the target.
+    // Attempt to turn the whole attacking machine (Not just its head) to face the target.
     PhysRelativeTime turnToFaceTarget();
 
-    //Do an avoidance move with respect to the target
+    // Do an avoidance move with respect to the target
     PhysRelativeTime moveToSide();
-	
-	// clears current target if currently identical to the target of this heal op
-	void clearHealTarget();
 
-	bool					currentlyAttached_;
-	MachLogAdministrator*	pActor_;
-	MachActor *				pDirectObject_;
-    MexPoint2d          	lastTargetPosition_;
-	bool					targetBehindCover_;
-	Action					lastAction_;
+    // clears current target if currently identical to the target of this heal op
+    void clearHealTarget();
+
+    bool currentlyAttached_;
+    MachLogAdministrator* pActor_;
+    MachActor* pDirectObject_;
+    MexPoint2d lastTargetPosition_;
+    bool targetBehindCover_;
+    Action lastAction_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogHealOperation );
+PER_DECLARE_PERSISTENT(MachLogHealOperation);
 
-
-#endif	/*	#ifndef 	_MACHLOG_Heal_HPP	*/
+#endif /*  #ifndef     _MACHLOG_Heal_HPP   */
 
 /* End Heal.HPP ***************************************************/

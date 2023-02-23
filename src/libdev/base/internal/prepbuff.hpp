@@ -20,29 +20,28 @@ class DiagOstreamPrepend;
 class DiagPrependBuffer : public std::streambuf
 {
 public:
-    DiagPrependBuffer( DiagOstreamPrepend* pFilter );
-    ~DiagPrependBuffer();
+    DiagPrependBuffer(DiagOstreamPrepend* pFilter);
+    ~DiagPrependBuffer() override;
 
-    virtual int     overflow( int c );
-    virtual int     underflow();
+    int overflow(int c) override;
+    int underflow() override;
 
-    virtual int     do_sgetn( char *buf, int len );
-    virtual int     do_sputn( char const *buf, int len );
-    virtual int     sync();
+    virtual int do_sgetn(char* buf, int len);
+    virtual int do_sputn(char const* buf, int len);
+    int sync() override;
 
 private:
     // Operation deliberately revoked
-    DiagPrependBuffer( const DiagPrependBuffer& );
+    DiagPrependBuffer(const DiagPrependBuffer&);
 
     // Operation deliberately revoked
-    DiagPrependBuffer& operator =( const DiagPrependBuffer& );
+    DiagPrependBuffer& operator=(const DiagPrependBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const DiagPrependBuffer& );
+    bool operator==(const DiagPrependBuffer&);
 
-    DiagOstreamPrepend*  pFilter_;
+    DiagOstreamPrepend* pFilter_;
 };
-
 
 #endif
 

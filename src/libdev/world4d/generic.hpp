@@ -22,35 +22,33 @@ public:
     W4dGeneric(W4dEntity* pParent, const W4dTransform3d& localXform, Solidity solidity = SOLID);
     W4dGeneric(const W4dGeneric& copyMe, W4dEntity* pParent, const W4dTransform3d& localXform);
 
-    //Makes a generic copy from the W4dEntity level parts of copyMe - ie slices
+    // Makes a generic copy from the W4dEntity level parts of copyMe - ie slices
     W4dGeneric(const W4dEntity& copyMe, W4dEntity* pParent, const W4dTransform3d& localXform);
 
+    ~W4dGeneric() override;
 
-    virtual ~W4dGeneric();
-
-	// You can scale a single mesh when you load it.  You can't at present
-	// scale the meshes in an LOD file because that would probably invalidate
-	// the transition ranges.
+    // You can scale a single mesh when you load it.  You can't at present
+    // scale the meshes in an LOD file because that would probably invalidate
+    // the transition ranges.
     bool loadSingleMesh(const SysPathName& filename, const string& meshName, double scale = 1.0);
-    bool loadLODFile   (const SysPathName& filename);
+    bool loadLODFile(const SysPathName& filename);
 
-    //Inherited from W4dEntity
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                             Accuracy accuracy ) const;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( W4dGeneric );
-    PER_FRIEND_READ_WRITE( W4dGeneric );
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dGeneric);
+    PER_FRIEND_READ_WRITE(W4dGeneric);
 
 private:
     // Operations deliberately revoked
-    W4dGeneric( const W4dGeneric& );
-    W4dGeneric& operator =( const W4dGeneric& );
-    bool operator ==( const W4dGeneric& );
+    W4dGeneric(const W4dGeneric&);
+    W4dGeneric& operator=(const W4dGeneric&);
+    bool operator==(const W4dGeneric&);
 };
 
-PER_DECLARE_PERSISTENT( W4dGeneric );
+PER_DECLARE_PERSISTENT(W4dGeneric);
 
 #endif
 

@@ -16,17 +16,16 @@ MachLogMapper::MachLogMapper()
 MachLogMapper::~MachLogMapper()
 {
     TEST_INVARIANT;
-
 }
 
 // static
-MachPhys::MachineType MachLogMapper::mapToPhysMachine( MachLog::ObjectType type )
+MachPhys::MachineType MachLogMapper::mapToPhysMachine(MachLog::ObjectType type)
 {
-    PRE( isMachine( type ) );
+    PRE(isMachine(type));
 
     MachPhys::MachineType result = MachPhys::ADMINISTRATOR;
 
-    switch( type )
+    switch (type)
     {
         case MachLog::ADMINISTRATOR:
             result = MachPhys::ADMINISTRATOR;
@@ -52,20 +51,20 @@ MachPhys::MachineType MachLogMapper::mapToPhysMachine( MachLog::ObjectType type 
         case MachLog::APC:
             result = MachPhys::APC;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
     return result;
 }
 
 // static
-MachPhys::ConstructionType MachLogMapper::mapToPhysConstruction( MachLog::ObjectType type )
+MachPhys::ConstructionType MachLogMapper::mapToPhysConstruction(MachLog::ObjectType type)
 {
-    PRE( isConstruction( type ) );
+    PRE(isConstruction(type));
 
-    MachPhys::ConstructionType  result = MachPhys::BEACON;
+    MachPhys::ConstructionType result = MachPhys::BEACON;
 
-    switch( type )
+    switch (type)
     {
         case MachLog::BEACON:
             result = MachPhys::BEACON;
@@ -91,50 +90,38 @@ MachPhys::ConstructionType MachLogMapper::mapToPhysConstruction( MachLog::Object
         case MachLog::SMELTER:
             result = MachPhys::SMELTER;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
     return result;
 }
 
 // static
-bool    MachLogMapper::isMachine( MachLog::ObjectType type )
+bool MachLogMapper::isMachine(MachLog::ObjectType type)
 {
-    bool result =
-        type == MachLog::ADMINISTRATOR or
-        type == MachLog::AGGRESSOR or
-        type == MachLog::CONSTRUCTOR or
-        type == MachLog::GEO_LOCATOR or
-        type == MachLog::SPY_LOCATOR or
-        type == MachLog::TECHNICIAN or
-        type == MachLog::RESOURCE_CARRIER or
-        type == MachLog::APC;
+    bool result = type == MachLog::ADMINISTRATOR or type == MachLog::AGGRESSOR or type == MachLog::CONSTRUCTOR
+        or type == MachLog::GEO_LOCATOR or type == MachLog::SPY_LOCATOR or type == MachLog::TECHNICIAN
+        or type == MachLog::RESOURCE_CARRIER or type == MachLog::APC;
 
     return result;
 }
 
 // static
-bool    MachLogMapper::isConstruction( MachLog::ObjectType type )
+bool MachLogMapper::isConstruction(MachLog::ObjectType type)
 {
-    bool result =
-        type == MachLog::BEACON or
-        type == MachLog::FACTORY or
-        type == MachLog::GARRISON or
-        type == MachLog::HARDWARE_LAB or
-        type == MachLog::POD or
-        type == MachLog::MINE or
-        type == MachLog::MISSILE_EMPLACEMENT or
-        type == MachLog::SMELTER;
+    bool result = type == MachLog::BEACON or type == MachLog::FACTORY or type == MachLog::GARRISON
+        or type == MachLog::HARDWARE_LAB or type == MachLog::POD or type == MachLog::MINE
+        or type == MachLog::MISSILE_EMPLACEMENT or type == MachLog::SMELTER;
 
     return result;
 }
 
 void MachLogMapper::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogMapper& t )
+ostream& operator<<(ostream& o, const MachLogMapper& t)
 {
 
     o << "MachLogMapper " << (void*)&t << " start" << std::endl;

@@ -29,10 +29,11 @@ public:
     std::weak_ptr<GuiBitmap> getSharedBitmap(const std::string& filePath) const noexcept;
 
     // Blit a section defined by `sourceArea` from `bitmap` to `destination`. Apply a transformation with a lambda.
-    void blitNamedBitmapFromArea(const std::shared_ptr<GuiBitmap>& bitmap,
-                                 const Gui::Box& sourceArea,
-                                 const Gui::Coord& destination,
-                                 std::function<Gui::Box(const Gui::Box&)> fnSourceAreaTransform) const;
+    void blitNamedBitmapFromArea(
+        const std::shared_ptr<GuiBitmap>& bitmap,
+        const Gui::Box& sourceArea,
+        const Gui::Coord& destination,
+        std::function<Gui::Box(const Gui::Box&)> fnSourceAreaTransform) const;
 
     // Blit the `bitmap` to `destination`
     void blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap, const Gui::Coord& destination) const;

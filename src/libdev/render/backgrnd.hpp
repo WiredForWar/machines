@@ -13,16 +13,15 @@ class RenBackground
 public:
     RenBackground();
     ~RenBackground();
-	void render() const;
+    void render() const;
 
 private:
-	RenIVertex* vertices_;
+    RenIVertex* vertices_;
 
-    RenBackground( const RenBackground& );
-    RenBackground& operator =( const RenBackground& );
-    bool operator ==( const RenBackground& );
+    RenBackground(const RenBackground&);
+    RenBackground& operator=(const RenBackground&);
+    bool operator==(const RenBackground&);
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * G A R R D A T A . H P P 
+ * G A R R D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,32 +20,30 @@ class MachPhysGarrisonData : public MachPhysConstructionData
 {
 public:
     MachPhysGarrisonData();
-    MachPhysGarrisonData( const MachPhysGarrisonData&, const MexTransform3d& );
-    ~MachPhysGarrisonData();
-	
-	MachPhys::HitPointUnits repairRate() const;
+    MachPhysGarrisonData(const MachPhysGarrisonData&, const MexTransform3d&);
+    ~MachPhysGarrisonData() override;
 
-	void repairRate( MachPhys::HitPointUnits newRepairRate );
+    MachPhys::HitPointUnits repairRate() const;
+
+    void repairRate(MachPhys::HitPointUnits newRepairRate);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysGarrisonData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGarrisonData& t);
 
 private:
-	friend class MachPhysData;
+    friend class MachPhysData;
     // Operation deliberately revoked
-    MachPhysGarrisonData( const MachPhysGarrisonData& );
+    MachPhysGarrisonData(const MachPhysGarrisonData&);
 
     // Operation deliberately revoked
-    MachPhysGarrisonData& operator =( const MachPhysGarrisonData& );
+    MachPhysGarrisonData& operator=(const MachPhysGarrisonData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysGarrisonData& );
-	
-	MachPhys::HitPointUnits repairRate_;
+    bool operator==(const MachPhysGarrisonData&);
 
+    MachPhys::HitPointUnits repairRate_;
 };
-
 
 #endif
 

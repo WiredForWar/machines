@@ -1,5 +1,5 @@
 /*
- * R E S T R E E I . C P P 
+ * R E S T R E E I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,22 +9,21 @@
 
 MachLogResearchTreeImpl::MachLogResearchTreeImpl()
 {
-	
+
     TEST_INVARIANT;
 }
 
 MachLogResearchTreeImpl::~MachLogResearchTreeImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogResearchTreeImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogResearchTreeImpl& t )
+ostream& operator<<(ostream& o, const MachLogResearchTreeImpl& t)
 {
 
     o << "MachLogResearchTreeImpl " << (void*)&t << " start" << std::endl;

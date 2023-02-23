@@ -10,23 +10,23 @@
 
 bool w4dNeedsLighting(const W4dEntity* entity)
 {
-	// Build a list of all the materials in the entity.
-	RenMaterialSet matSet;
-	entity->addMaterials(&matSet);
+    // Build a list of all the materials in the entity.
+    RenMaterialSet matSet;
+    entity->addMaterials(&matSet);
 
-	// Iterate thru those materials looking for ones which need lighting.
-	bool needsLighting = false;
-	RenMaterialSet::const_iterator it = matSet.begin();
-	while (it != matSet.end() && !needsLighting)
-	{
-		const RenMaterial& mat = *it;
-		if (mat.needsLighting())
-			needsLighting = true;
+    // Iterate thru those materials looking for ones which need lighting.
+    bool needsLighting = false;
+    RenMaterialSet::const_iterator it = matSet.begin();
+    while (it != matSet.end() && !needsLighting)
+    {
+        const RenMaterial& mat = *it;
+        if (mat.needsLighting())
+            needsLighting = true;
 
-		++it;
-	}
+        ++it;
+    }
 
-	return needsLighting;
+    return needsLighting;
 }
 
 /* End NOLIGHT.CPP **************************************************/

@@ -9,64 +9,63 @@ class DevCDPlayList
 // memberwise cannonical
 {
 public:
+    enum SelectionOrder
+    {
+        SEQUENTIAL,
+        RANDOM,
+    };
 
-	enum SelectionOrder 
-	{ 
-		SEQUENTIAL, 
-		RANDOM,
-	};
+    DevCDPlayList(DevCDTrackIndex nTracks, SelectionOrder o = SEQUENTIAL);
 
-	DevCDPlayList( DevCDTrackIndex nTracks, SelectionOrder o = SEQUENTIAL );
+    ///////////////////////////////
 
-	///////////////////////////////
+    bool isFinished() const;
 
-	bool isFinished() const;
+    SelectionOrder selectionOrder() const;
 
-	SelectionOrder selectionOrder() const;
+    DevCDTrackIndex nTracks() const;
 
-	DevCDTrackIndex nTracks() const;
-		
-	bool hasTrack( DevCDTrackIndex ) const;
-	// PRE( i < nTracks() );
-	
-	///////////////////////////////
-	
-	void selectionOrder( SelectionOrder );
-					
-	void addTrack( DevCDTrackIndex i );
-	// PRE( i < nTracks() );
-	// POST( not hasTrack( i ) );
+    bool hasTrack(DevCDTrackIndex) const;
+    // PRE( i < nTracks() );
 
-	void removeTrack( DevCDTrackIndex i );
-	// PRE( i < nTracks() );
-	// POST( not hasTrack( i ) );
-	
-	DevCDTrackIndex nextTrack();
-	// PRE( not isFinished() );
+    ///////////////////////////////
 
-	DevCDTrackIndex peekNextTrack() const;
-	// PRE( not isFinished() );
+    void selectionOrder(SelectionOrder);
 
-	DevCDTrackIndex firstTrack() const;
-		
-	DevCDTrackIndex lastTrack() const;
+    void addTrack(DevCDTrackIndex i);
+    // PRE( i < nTracks() );
+    // POST( not hasTrack( i ) );
 
-	size_t nSelections() const;
+    void removeTrack(DevCDTrackIndex i);
+    // PRE( i < nTracks() );
+    // POST( not hasTrack( i ) );
 
-	void reset();
+    DevCDTrackIndex nextTrack();
+    // PRE( not isFinished() );
 
-    DevCDPlayList& operator =( const DevCDPlayList& );
+    DevCDTrackIndex peekNextTrack() const;
+    // PRE( not isFinished() );
 
-	///////////////////////////////
+    DevCDTrackIndex firstTrack() const;
+
+    DevCDTrackIndex lastTrack() const;
+
+    size_t nSelections() const;
+
+    void reset();
+
+    DevCDPlayList& operator=(const DevCDPlayList&);
+
+    ///////////////////////////////
 
 private:
-	typedef ctl_vector<DevCDTrackIndex> PlayList;
+    using PlayList = ctl_vector<DevCDTrackIndex>;
 
-	PlayList			playList_;
-	SelectionOrder		selectionOrder_;
-	DevCDTrackIndex		currentTrack_;
-	DevCDTrackIndex		nTracks_;
-	size_t				nSelections_;
+    PlayList playList_;
+    SelectionOrder selectionOrder_;
+    DevCDTrackIndex currentTrack_;
+    DevCDTrackIndex nTracks_;
+    size_t nSelections_;
 };
 
 #endif

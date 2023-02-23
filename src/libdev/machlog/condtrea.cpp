@@ -13,13 +13,15 @@
 #include "machlog/races.hpp"
 #include "machlog/scenario.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogTechniciansTreacheriedCondition);
 
-PER_DEFINE_PERSISTENT( MachLogTechniciansTreacheriedCondition );
-
-MachLogTechniciansTreacheriedCondition::MachLogTechniciansTreacheriedCondition( const string& keyName, MachPhys::Race race, int number )
-:	SimCondition( keyName ),
-	race_( race ),
-	number_( number )
+MachLogTechniciansTreacheriedCondition::MachLogTechniciansTreacheriedCondition(
+    const string& keyName,
+    MachPhys::Race race,
+    int number)
+    : SimCondition(keyName)
+    , race_(race)
+    , number_(number)
 {
     TEST_INVARIANT;
 }
@@ -27,81 +29,75 @@ MachLogTechniciansTreacheriedCondition::MachLogTechniciansTreacheriedCondition( 
 MachLogTechniciansTreacheriedCondition::~MachLogTechniciansTreacheriedCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogTechniciansTreacheriedCondition::doHasConditionBeenMet() const
 {
-	HAL_STREAM("MachLogTechniciansTreacheriedCondition::doHasConditionBeenMet " << std::endl );
-	MachLogRaces& races = MachLogRaces::instance();
-	return races.techniciansTreacheried( race_ ) >= number_;
+    HAL_STREAM("MachLogTechniciansTreacheriedCondition::doHasConditionBeenMet " << std::endl);
+    MachLogRaces& races = MachLogRaces::instance();
+    return races.techniciansTreacheried(race_) >= number_;
 }
 
-//static
-MachLogTechniciansTreacheriedCondition* MachLogTechniciansTreacheriedCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogTechniciansTreacheriedCondition* MachLogTechniciansTreacheriedCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	//format of a TECHNICIANS_TREACHERIED condition line is:
-	//<keyName> RACE <race> <number>
+    // format of a TECHNICIANS_TREACHERIED condition line is:
+    //<keyName> RACE <race> <number>
 
-	return _NEW(
-			MachLogTechniciansTreacheriedCondition(
-				pParser->tokens()[1],
-				MachLogScenario::machPhysRace( pParser->tokens()[3] ),
-				atol( pParser->tokens()[4].c_str() )
-				)
-			);
+    return _NEW(MachLogTechniciansTreacheriedCondition(
+        pParser->tokens()[1],
+        MachLogScenario::machPhysRace(pParser->tokens()[3]),
+        atol(pParser->tokens()[4].c_str())));
 }
 
 void MachLogTechniciansTreacheriedCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogTechniciansTreacheriedCondition& t )
+ostream& operator<<(ostream& o, const MachLogTechniciansTreacheriedCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogTechniciansTreacheriedCondition::recommendedCallBackTimeGap() const
 {
     static const PhysRelativeTime value = 2;
-	return value;
+    return value;
 }
 
-//virtual
-void MachLogTechniciansTreacheriedCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogTechniciansTreacheriedCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogTechniciansTreacheriedCondition " << (void*)this << " start" << std::endl;
-	o << race_ << " number " << number_ << std::endl;
+    o << race_ << " number " << number_ << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogTechniciansTreacheriedCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogTechniciansTreacheriedCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.race_;
-	ostr << condition.number_;
-
+    ostr << base1;
+    ostr << condition.race_;
+    ostr << condition.number_;
 }
 
-void perRead( PerIstream& istr, MachLogTechniciansTreacheriedCondition& condition )
+void perRead(PerIstream& istr, MachLogTechniciansTreacheriedCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.race_;
-	istr >> condition.number_;
+    istr >> base1;
+    istr >> condition.race_;
+    istr >> condition.number_;
 }
 
-MachLogTechniciansTreacheriedCondition::MachLogTechniciansTreacheriedCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogTechniciansTreacheriedCondition::MachLogTechniciansTreacheriedCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

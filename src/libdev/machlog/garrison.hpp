@@ -1,5 +1,5 @@
 /*
- * GARRISON . H P P 
+ * GARRISON . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,7 +16,7 @@
 
 #include "machlog/constron.hpp"
 
-//Forward declarations
+// Forward declarations
 class MachPhysGarrison;
 class MachPhysGarrisonData;
 class MachLogRace;
@@ -24,78 +24,72 @@ class MexPoint3d;
 class MexRadians;
 class MachLogGarrisonImpl;
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class MachLogGarrison : public MachLogConstruction
 {
 public:
-    //Construct Garrison of deisgnated race and level at location, rotated thru angle about
-    //z axis.
-    MachLogGarrison( MachLogRace* pRace, uint level,
-                    const MexPoint3d& location, const MexRadians& angle );
+    // Construct Garrison of deisgnated race and level at location, rotated thru angle about
+    // z axis.
+    MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
 
-    MachLogGarrison( MachLogRace* pRace, uint level,
-                    const MexPoint3d& location, const MexRadians& angle, UtlId );
+    MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle, UtlId);
 
-    ~MachLogGarrison();
+    ~MachLogGarrison() override;
 
-    //Inherited from SimActor
-    virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime,
-                                     MATHEX_SCALAR clearanceFromDisplayedVolume );
+    // Inherited from SimActor
+    PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 
-	virtual const MachPhysConstructionData& constructionData() const;
-	const MachPhysGarrisonData& data() const;
+    const MachPhysConstructionData& constructionData() const override;
+    const MachPhysGarrisonData& data() const;
 
-	//inherited from MachActor
-    virtual int militaryStrength() const;
-	
-	void healAll();
-    	
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData ); 
+    // inherited from MachActor
+    int militaryStrength() const override;
+
+    void healAll();
+
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogGarrison& t );
+    friend ostream& operator<<(ostream& o, const MachLogGarrison& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogGarrison );
-	PER_FRIEND_READ_WRITE( MachLogGarrison );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogGarrison);
+    PER_FRIEND_READ_WRITE(MachLogGarrison);
 
 private:
     // Operations deliberately revoked
-    MachLogGarrison( const MachLogGarrison& );
-    MachLogGarrison& operator =( const MachLogGarrison& );
-    bool operator ==( const MachLogGarrison& );
+    MachLogGarrison(const MachLogGarrison&);
+    MachLogGarrison& operator=(const MachLogGarrison&);
+    bool operator==(const MachLogGarrison&);
 
-    //Construct a new physical Garrison. Used in ctor initializer list
-    static MachPhysGarrison* pNewPhysGarrison( MachLogRace* pRace, uint level,
-                     const MexPoint3d& location, const MexRadians& angle );
-					 
-	virtual void doOutputOperator( ostream& o ) const;
-					 
-	void startHealing( MachLogMachine* pMachine );
-	// PRE( not currentlyHealing( pMachine ) );
-	// POST( currentlyHealing( pMachine ) );
-	
-	void stopHealing( MachLogMachine* pMachine );
-	// PRE( currentlyHealing( pMachine ) );
-	// POST( not currentlyHealing( pMachine ) );
-	
-	bool currentlyHealing( MachLogMachine* pMachine );
-					 
-    //The physical garrison
+    // Construct a new physical Garrison. Used in ctor initializer list
+    static MachPhysGarrison*
+    pNewPhysGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
+
+    void doOutputOperator(ostream& o) const override;
+
+    void startHealing(MachLogMachine* pMachine);
+    // PRE( not currentlyHealing( pMachine ) );
+    // POST( currentlyHealing( pMachine ) );
+
+    void stopHealing(MachLogMachine* pMachine);
+    // PRE( currentlyHealing( pMachine ) );
+    // POST( not currentlyHealing( pMachine ) );
+
+    bool currentlyHealing(MachLogMachine* pMachine);
+
+    // The physical garrison
     MachPhysGarrison* pPhysGarrison();
     const MachPhysGarrison* pPhysGarrison() const;
 
-
-    //Data members
-	MachLogGarrisonImpl*			pImpl_;
+    // Data members
+    MachLogGarrisonImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogGarrison );
+PER_DECLARE_PERSISTENT(MachLogGarrison);
 
 #ifdef _INLINE
-    #include "machlog/Garrison.ipp"
+#include "machlog/Garrison.ipp"
 #endif
-
 
 #endif
 

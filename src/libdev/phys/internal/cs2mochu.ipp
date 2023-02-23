@@ -1,14 +1,14 @@
 /*
- * C S 2 M O C H U . I P P 
+ * C S 2 M O C H U . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -30,8 +30,8 @@ const PhysConfigSpace2d::ObjectId& PhysCS2dMotionChunk::objectId() const
 }
 
 _CODE_INLINE
-void PhysCS2dMotionChunk::boundary( MexAlignedBox2d* pBox ) const
+void PhysCS2dMotionChunk::boundary(MexAlignedBox2d* pBox) const
 {
-    motionChunk_.boundary( pBox );
+    motionChunk_.boundary(pBox);
 }
 /* End CS2MOCHU.IPP *************************************************/

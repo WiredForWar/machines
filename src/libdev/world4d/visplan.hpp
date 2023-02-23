@@ -1,5 +1,5 @@
 /*
- * V I S P L A N . H P P 
+ * V I S P L A N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -25,44 +25,45 @@ class W4dVisibilityPlan
 {
 public:
     //  Specify the visibility at time zero
-    W4dVisibilityPlan( bool visible );
+    W4dVisibilityPlan(bool visible);
     ~W4dVisibilityPlan();
 
     //  Specify the visibility at the given time
-    void add( bool visible, const PhysRelativeTime& time );
-    
+    void add(bool visible, const PhysRelativeTime& time);
+
     //  Return the value of the visibility flag at the given time
-    bool visible( const PhysRelativeTime& time ) const;
+    bool visible(const PhysRelativeTime& time) const;
 
     const PhysRelativeTime& duration() const;
-    
+
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( W4dVisibilityPlan );
-    PER_FRIEND_READ_WRITE( W4dVisibilityPlan );
+    PER_MEMBER_PERSISTENT(W4dVisibilityPlan);
+    PER_FRIEND_READ_WRITE(W4dVisibilityPlan);
+
 private:
     // Operation deliberately revoked
-    W4dVisibilityPlan( const W4dVisibilityPlan& );
+    W4dVisibilityPlan(const W4dVisibilityPlan&);
 
     // Operation deliberately revoked
-    W4dVisibilityPlan& operator =( const W4dVisibilityPlan& );
+    W4dVisibilityPlan& operator=(const W4dVisibilityPlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dVisibilityPlan& );
+    bool operator==(const W4dVisibilityPlan&);
 
-    typedef ctl_vector< PhysRelativeTime >  Times;
-    typedef ctl_vector< bool >      Visibles;
-    
-    Times       times_;
-    Visibles    visibleFlags_;
-    
-    PhysRelativeTime    duration_;
+    using Times = ctl_vector<PhysRelativeTime>;
+    using Visibles = ctl_vector<bool>;
+
+    Times times_;
+    Visibles visibleFlags_;
+
+    PhysRelativeTime duration_;
 };
 
-PER_DECLARE_PERSISTENT( W4dVisibilityPlan );
+PER_DECLARE_PERSISTENT(W4dVisibilityPlan);
 
-//Provides a reference counted pointer to a W4dVisibilityPlan
-typedef CtlCountedPtr< W4dVisibilityPlan > W4dVisibilityPlanPtr;
+// Provides a reference counted pointer to a W4dVisibilityPlan
+using W4dVisibilityPlanPtr = CtlCountedPtr<W4dVisibilityPlan>;
 
 #endif
 

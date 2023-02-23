@@ -16,30 +16,29 @@ MachPhysTechnicianData::MachPhysTechnicianData()
 MachPhysTechnicianData::~MachPhysTechnicianData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysTechnicianData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 MachPhys::ResearchUnits MachPhysTechnicianData::researchRate() const
 {
-	return researchRate_;
+    return researchRate_;
 }
 
-void MachPhysTechnicianData::researchRate( const MachPhys::ResearchUnits& newResearchRate )
+void MachPhysTechnicianData::researchRate(const MachPhys::ResearchUnits& newResearchRate)
 {
-	researchRate_ = newResearchRate;
+    researchRate_ = newResearchRate;
 }
 
-ostream& operator <<( ostream& o, const MachPhysTechnicianData& t )
+ostream& operator<<(ostream& o, const MachPhysTechnicianData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-	//o << (MachPhysMachineData)t;
-	o << "Research Rate " << t.researchRate() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysMachineData)t;
+    o << "Research Rate " << t.researchRate() << std::endl;
 
     return o;
 }

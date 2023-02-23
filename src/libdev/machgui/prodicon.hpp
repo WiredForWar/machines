@@ -1,5 +1,5 @@
 /*
- * P R O D I C O N . H P P 
+ * P R O D I C O N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,142 +18,132 @@
 #include "machlog/machlog.hpp"
 #include "machphys/machphys.hpp"
 
-//forward refs
+// forward refs
 class GuiDisplayable;
 
 class MachGuiNewProductionIcon : public GuiButtonWithFilledBorder
 {
 public:
+    MachGuiNewProductionIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap&, int index);
 
-	MachGuiNewProductionIcon( GuiDisplayable *pParent, 
-							  const Gui::Coord& rel,
-							  const GuiBitmap&,
-							  int index );
+    ~MachGuiNewProductionIcon() override;
 
-	virtual ~MachGuiNewProductionIcon();
-
-	static Gui::Box 
-	exteriorRelativeBoundary( const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel );
+    static Gui::Box exteriorRelativeBoundary(const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel);
 
 protected:
-	virtual void doDisplayInteriorEnabled( const Gui::Coord& absCoord );
+    void doDisplayInteriorEnabled(const Gui::Coord& absCoord) override;
 
 private:
-	// Operations revoked
-	MachGuiNewProductionIcon( const MachGuiNewProductionIcon& );
-	MachGuiNewProductionIcon& operator =( const MachGuiNewProductionIcon& );
-	bool operator ==( const MachGuiNewProductionIcon& ) const;
+    // Operations revoked
+    MachGuiNewProductionIcon(const MachGuiNewProductionIcon&);
+    MachGuiNewProductionIcon& operator=(const MachGuiNewProductionIcon&);
+    bool operator==(const MachGuiNewProductionIcon&) const;
 
-	GuiBitmap	bitmap_;
-	int index_;
+    GuiBitmap bitmap_;
+    int index_;
 };
-
-
-
 
 // ***************************************************************************************************** //
 
-//forward refs
+// forward refs
 class GuiDisplayable;
 class MachInGameScreen;
 class MachGuiBuildProgressBar;
 class MachLogProductionUnit;
 
-
 class MachProductionIcon : public MachGuiNewProductionIcon
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 {
 public:
-    MachProductionIcon( GuiDisplayable* pParent,
-                        MachInGameScreen* pInGameScreen,
-                       const MachLogProductionUnit* pProductionUnit,
-						int index );
-    virtual ~MachProductionIcon();
+    MachProductionIcon(
+        GuiDisplayable* pParent,
+        MachInGameScreen* pInGameScreen,
+        const MachLogProductionUnit* pProductionUnit,
+        int index);
+    ~MachProductionIcon() override;
 
     void CLASS_INVARIANT;
 
-	static size_t buttonHeight();
-	static size_t buttonWidth();
-	
+    static size_t buttonHeight();
+    static size_t buttonWidth();
+
     const MachLogProductionUnit* productionUnit() const;
 
-	void updateProgress( float percentageComplete );
-	
-protected:
-	// inherited from GuiButton...
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
-	virtual void doHandleContainsMouseEvent( const GuiMouseEvent& );
+    void updateProgress(float percentageComplete);
 
-	void displayCursorPromptText();
+protected:
+    // inherited from GuiButton...
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent&) override;
+
+    void displayCursorPromptText();
 
 private:
     // Operations deliberately revoked
-    MachProductionIcon( const MachProductionIcon& );
-    MachProductionIcon& operator =( const MachProductionIcon& );
-    bool operator ==( const MachProductionIcon& );
+    MachProductionIcon(const MachProductionIcon&);
+    MachProductionIcon& operator=(const MachProductionIcon&);
+    bool operator==(const MachProductionIcon&);
 
-    friend ostream& operator <<( ostream& o, const MachProductionIcon& t );
+    friend ostream& operator<<(ostream& o, const MachProductionIcon& t);
 
-    //Data members
-	MachGuiBuildProgressBar* pProgressBar_;
-	MachInGameScreen* pInGameScreen_;
-	MachLog::ObjectType machineType_;
+    // Data members
+    MachGuiBuildProgressBar* pProgressBar_;
+    MachInGameScreen* pInGameScreen_;
+    MachLog::ObjectType machineType_;
     MachPhys::WeaponCombo weaponCombo_;
-    int subType_; 
-    int hwLevel_; 
+    int subType_;
+    int hwLevel_;
     const MachLogProductionUnit* pProductionUnit_;
-	bool needsPromptUpdate_;
+    bool needsPromptUpdate_;
 };
-
-
 
 // ***************************************************************************************************** //
 
-//forward refs
+// forward refs
 class GuiDisplayable;
 class MachInGameScreen;
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class MachIncSWLevelIcon : public GuiIcon
 {
 public:
-    MachIncSWLevelIcon( GuiDisplayable* pParent, 
-    					const Gui::Coord&, 
-    					MachInGameScreen* pInGameScreen,
-    					MachLog::ObjectType machineType, 
-                        int subType, 
-                        int hwLevel );
-    virtual ~MachIncSWLevelIcon();
+    MachIncSWLevelIcon(
+        GuiDisplayable* pParent,
+        const Gui::Coord&,
+        MachInGameScreen* pInGameScreen,
+        MachLog::ObjectType machineType,
+        int subType,
+        int hwLevel);
+    ~MachIncSWLevelIcon() override;
 
     void CLASS_INVARIANT;
 
-	static size_t buttonHeight();
-	static size_t buttonWidth();
-	MachLogProductionUnit& productionUnit();
+    static size_t buttonHeight();
+    static size_t buttonWidth();
+    MachLogProductionUnit& productionUnit();
 
 protected:
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
-	
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
+
 private:
     // Operations deliberately revoked
-    MachIncSWLevelIcon( const MachIncSWLevelIcon& );
-    MachIncSWLevelIcon& operator =( const MachIncSWLevelIcon& );
-    bool operator ==( const MachIncSWLevelIcon& );
+    MachIncSWLevelIcon(const MachIncSWLevelIcon&);
+    MachIncSWLevelIcon& operator=(const MachIncSWLevelIcon&);
+    bool operator==(const MachIncSWLevelIcon&);
 
-    friend ostream& operator <<( ostream& o, const MachIncSWLevelIcon& t );
+    friend ostream& operator<<(ostream& o, const MachIncSWLevelIcon& t);
 
-	MachInGameScreen* pInGameScreen_;
-	MachLog::ObjectType machineType_;
-    int subType_; 
-    int hwLevel_; 
+    MachInGameScreen* pInGameScreen_;
+    MachLog::ObjectType machineType_;
+    int subType_;
+    int hwLevel_;
 };
-                                
 
 #endif
 

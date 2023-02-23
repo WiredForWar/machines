@@ -1,5 +1,5 @@
 /*
- * S C L A Y O U T . H P P 
+ * S C L A Y O U T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,16 +24,15 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachGuiScreenLayoutInfo& t );
+    friend ostream& operator<<(ostream& o, const MachGuiScreenLayoutInfo& t);
 
 private:
-    MachGuiScreenLayoutInfo( const MachGuiScreenLayoutInfo& );
-    MachGuiScreenLayoutInfo& operator =( const MachGuiScreenLayoutInfo& );
-    bool operator ==( const MachGuiScreenLayoutInfo& );
+    MachGuiScreenLayoutInfo(const MachGuiScreenLayoutInfo&);
+    MachGuiScreenLayoutInfo& operator=(const MachGuiScreenLayoutInfo&);
+    bool operator==(const MachGuiScreenLayoutInfo&);
 
     MachGuiScreenLayoutInfo();
 };
-
 
 #endif
 

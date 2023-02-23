@@ -27,7 +27,6 @@ RecRecorder::RecRecorder()
 RecRecorder::~RecRecorder()
 {
     TEST_INVARIANT;
-
 }
 
 RecRecorder::State RecRecorder::state() const
@@ -35,17 +34,17 @@ RecRecorder::State RecRecorder::state() const
     return RecRecorderImplementation::instance().state();
 }
 
-void RecRecorder::recordingAllowed( bool val )
+void RecRecorder::recordingAllowed(bool val)
 {
-    RecRecorderImplementation::instance().recordingAllowed( val );
+    RecRecorderImplementation::instance().recordingAllowed(val);
 }
 
 void RecRecorder::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RecRecorder& )
+ostream& operator<<(ostream& o, const RecRecorder&)
 {
     o << RecRecorderImplementation::instance();
 
@@ -54,14 +53,14 @@ ostream& operator <<( ostream& o, const RecRecorder& )
 
 double RecRecorder::percentageComplete() const
 {
-	PRE( state() == PLAYING );
+    PRE(state() == PLAYING);
 
     double result = RecRecorderImplementation::instance().percentageComplete();
 
-	POST( result >= 0.0 );
-	POST( result <= 100.0 );
+    POST(result >= 0.0);
+    POST(result <= 100.0);
 
-	return result;
+    return result;
 }
 
 /* End RECORDER.CPP *************************************************/

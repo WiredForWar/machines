@@ -1,5 +1,5 @@
 /*
- * M L N O T I F . C P P 
+ * M L N O T I F . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,36 +9,34 @@
 
 #include "machlog/mlnotif.hpp"
 
-#include "machlog/races.hpp"	
+#include "machlog/races.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
 
-MachLogNotifiable::MachLogNotifiable( MachPhys::Race r )
-:
-race_( r )
-{ 	
-	TEST_INVARIANT;		
+MachLogNotifiable::MachLogNotifiable(MachPhys::Race r)
+    : race_(r)
+{
+    TEST_INVARIANT;
 }
 
 //////////////////////////////////////////////////////////////////////////////
-  
-MachLogNotifiable::~MachLogNotifiable () 
+
+MachLogNotifiable::~MachLogNotifiable()
 {
-	TEST_INVARIANT;
-}	   
-    
+    TEST_INVARIANT;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 void MachLogNotifiable::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void MachLogNotifiable::changeRace( MachPhys::Race r )
+void MachLogNotifiable::changeRace(MachPhys::Race r)
 {
-	race_ = r;
+    race_ = r;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 /* End MLNOTIF.CPP **************************************************/
-	

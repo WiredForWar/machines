@@ -5,14 +5,12 @@
 #include "base/error.hpp"
 #include "system/winapi.hpp"
 
-namespace BaseErr
+namespace BaseErr {
+void TerminateOnError(const char* pMsg)
 {
-    void TerminateOnError( const char* pMsg )
-    {
-        SysWindowsAPI::messageBoxError( pMsg, "Error" );
-        exit(1);
-    }
+    SysWindowsAPI::messageBoxError(pMsg, "Error");
+    exit(1);
 }
-
+} // namespace BaseErr
 
 /* End ERROR.CPP *************************************************/

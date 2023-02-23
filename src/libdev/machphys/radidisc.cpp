@@ -19,47 +19,46 @@
 #include "mathex/transf3d.hpp"
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysRadialDisc );
+PER_DEFINE_PERSISTENT(MachPhysRadialDisc);
 
-MachPhysRadialDisc::MachPhysRadialDisc( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+MachPhysRadialDisc::MachPhysRadialDisc(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
     TEST_INVARIANT;
 }
 
-//One-time ctor
+// One-time ctor
 MachPhysRadialDisc::MachPhysRadialDisc()
-:   W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-    //Load the mesh data
-    readLODFile( SysPathName( "models/weapons/disc/disc.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/disc/disc.lod"));
 
-    //TBD: Disable the bcak fuce cull via static cast here.
-    //These needs to be changed so the property is defined in the .x file.
-    //Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *this).mesh().mesh();
+    // TBD: Disable the bcak fuce cull via static cast here.
+    // These needs to be changed so the property is defined in the .x file.
+    // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *this).mesh().mesh();
     //_CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
-	//requested Steve to work on the model already. 14.12.98. Yueai
+    // requested Steve to work on the model already. 14.12.98. Yueai
 
     TEST_INVARIANT;
 }
 
-MachPhysRadialDisc::MachPhysRadialDisc( PerConstructor con )
-: W4dEntity( con )
+MachPhysRadialDisc::MachPhysRadialDisc(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
 MachPhysRadialDisc::~MachPhysRadialDisc()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysRadialDisc::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysRadialDisc& t )
+ostream& operator<<(ostream& o, const MachPhysRadialDisc& t)
 {
 
     o << "MachPhysRadialDisc " << (void*)&t << " start" << std::endl;
@@ -68,33 +67,33 @@ ostream& operator <<( ostream& o, const MachPhysRadialDisc& t )
     return o;
 }
 
-//static
+// static
 const MachPhysRadialDisc& MachPhysRadialDisc::exemplar()
 {
     return MachPhysOtherPersistence::instance().radialDiscExemplar();
 }
 
-//virtual
-bool MachPhysRadialDisc::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysRadialDisc::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-//static
+// static
 const RenTexture& MachPhysRadialDisc::circleTexture()
 {
     static RenTexture theTex = RenTexManager::instance().createTexture("ring_bt.bmp");
     return theTex;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysRadialDisc& disc )
+void perWrite(PerOstream& ostr, const MachPhysRadialDisc& disc)
 {
     const W4dEntity& base = disc;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysRadialDisc& disc )
+void perRead(PerIstream& istr, MachPhysRadialDisc& disc)
 {
     W4dEntity& base = disc;
 
@@ -102,4 +101,3 @@ void perRead( PerIstream& istr, MachPhysRadialDisc& disc )
 }
 
 /* End RADIDISC.CPP *************************************************/
-

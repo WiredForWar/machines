@@ -1,5 +1,5 @@
 /*
- * A C Q S O U N D . H P P 
+ * A C Q S O U N D . H P P
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
 
@@ -17,19 +17,19 @@ class AcquireAILSound
 
 {
 public:
-    static  void    instance();
-    
+    static void instance();
+
     ~AcquireAILSound();
 
 private:
     // Operation deliberately revoked
-    AcquireAILSound( const AcquireAILSound& );
+    AcquireAILSound(const AcquireAILSound&);
 
     // Operation deliberately revoked
-    const AcquireAILSound& operator =( const AcquireAILSound& );
+    const AcquireAILSound& operator=(const AcquireAILSound&);
 
     // Operation deliberately revoked
-    bool operator ==( const AcquireAILSound& ) const;
+    bool operator==(const AcquireAILSound&) const;
 
     //  Singleton class
     AcquireAILSound();

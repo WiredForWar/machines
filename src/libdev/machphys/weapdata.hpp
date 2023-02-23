@@ -1,5 +1,5 @@
 /*
- * W E A P D A T A . H P P 
+ * W E A P D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,26 +20,24 @@ class MachPhysWeaponsLabData : public MachPhysConstructionData
 {
 public:
     MachPhysWeaponsLabData();
-    MachPhysWeaponsLabData( const MachPhysWeaponsLabData&, const MexTransform3d& );
-    ~MachPhysWeaponsLabData();
+    MachPhysWeaponsLabData(const MachPhysWeaponsLabData&, const MexTransform3d&);
+    ~MachPhysWeaponsLabData() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysWeaponsLabData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysWeaponsLabData& t);
 
 private:
-	friend class MachPhysData;
+    friend class MachPhysData;
     // Operation deliberately revoked
-    MachPhysWeaponsLabData( const MachPhysWeaponsLabData& );
+    MachPhysWeaponsLabData(const MachPhysWeaponsLabData&);
 
     // Operation deliberately revoked
-    MachPhysWeaponsLabData& operator =( const MachPhysWeaponsLabData& );
+    MachPhysWeaponsLabData& operator=(const MachPhysWeaponsLabData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysWeaponsLabData& );
-
+    bool operator==(const MachPhysWeaponsLabData&);
 };
-
 
 #endif
 

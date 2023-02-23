@@ -21,8 +21,8 @@ bool MachGuiDefconCommand::defconNormal_ = false;
 bool MachGuiDefconCommand::defconHigh_ = false;
 bool MachGuiDefconCommand::goHighFromNormal_ = true;
 
-MachGuiDefconCommand::MachGuiDefconCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen )
+MachGuiDefconCommand::MachGuiDefconCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
 {
     TEST_INVARIANT;
 }
@@ -31,15 +31,15 @@ MachGuiDefconCommand::~MachGuiDefconCommand()
 {
     TEST_INVARIANT;
 
-    inGameScreen().cursorFilter( W4dDomain::EXCLUDE_NOT_SOLID );
+    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 }
 
 void MachGuiDefconCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDefconCommand& t )
+ostream& operator<<(ostream& o, const MachGuiDefconCommand& t)
 {
 
     o << "MachGuiDefconCommand " << (void*)&t << " start" << std::endl;
@@ -48,219 +48,220 @@ ostream& operator <<( ostream& o, const MachGuiDefconCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiDefconCommand::pickOnTerrain
-(
-    const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
+// virtual
+void MachGuiDefconCommand::pickOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
-{}
-
-//virtual
-void MachGuiDefconCommand::pickOnActor
-(
-    MachActor* /*pActor*/, bool, bool /*shiftPressed*/, bool
-)
-{}
-
-//virtual
-bool MachGuiDefconCommand::canActorEverExecute( const MachActor& actor ) const
 {
-    //Machines can have defcon set
+}
+
+// virtual
+void MachGuiDefconCommand::pickOnActor(MachActor* /*pActor*/, bool, bool /*shiftPressed*/, bool)
+{
+}
+
+// virtual
+bool MachGuiDefconCommand::canActorEverExecute(const MachActor& actor) const
+{
+    // Machines can have defcon set
     return actor.objectIsMachine();
 }
 
-//virtual
+// virtual
 bool MachGuiDefconCommand::isInteractionComplete() const
 {
     return true;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDefconCommand::cursorOnTerrain( const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool )
+// virtual
+MachGui::Cursor2dType
+MachGuiDefconCommand::cursorOnTerrain(const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool)
 {
     return MachGui::INVALID_CURSOR;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDefconCommand::cursorOnActor( MachActor* /*pActor*/, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiDefconCommand::cursorOnActor(MachActor* /*pActor*/, bool, bool, bool)
 {
     return MachGui::INVALID_CURSOR;
 }
 
-//virtal
-void MachGuiDefconCommand::typeData( MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/ )
-{}
-
-//virtual
-bool MachGuiDefconCommand::doApply( MachActor* pActor, string* )
+// virtal
+void MachGuiDefconCommand::typeData(MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/)
 {
-	MachLog::DefCon newDefcon = MachLog::DEFCON_NORMAL;
+}
 
-	if ( defconLow_ and defconNormal_ and defconHigh_ )
-		newDefcon = MachLog::DEFCON_HIGH;
-	else if ( defconLow_ and defconNormal_ )
-		newDefcon = MachLog::DEFCON_NORMAL;
-	else if ( defconNormal_ and defconHigh_ )
-		newDefcon = MachLog::DEFCON_HIGH;
-	else if ( defconLow_ and defconHigh_ )
-		newDefcon = MachLog::DEFCON_HIGH;
-	else if ( defconLow_ )
-		newDefcon = MachLog::DEFCON_NORMAL;
-	else if ( defconNormal_ )
-	{
-		if( goHighFromNormal_ )
-		{
-			newDefcon = MachLog::DEFCON_HIGH;
-		}
-		else
-		{
-			newDefcon = MachLog::DEFCON_LOW;
-		}
-	}
+// virtual
+bool MachGuiDefconCommand::doApply(MachActor* pActor, string*)
+{
+    MachLog::DefCon newDefcon = MachLog::DEFCON_NORMAL;
 
-	DEBUG_STREAM( DIAG_NEIL, "MachGuiDefconCommand::doApply " << newDefcon << std::endl );
+    if (defconLow_ and defconNormal_ and defconHigh_)
+        newDefcon = MachLog::DEFCON_HIGH;
+    else if (defconLow_ and defconNormal_)
+        newDefcon = MachLog::DEFCON_NORMAL;
+    else if (defconNormal_ and defconHigh_)
+        newDefcon = MachLog::DEFCON_HIGH;
+    else if (defconLow_ and defconHigh_)
+        newDefcon = MachLog::DEFCON_HIGH;
+    else if (defconLow_)
+        newDefcon = MachLog::DEFCON_NORMAL;
+    else if (defconNormal_)
+    {
+        if (goHighFromNormal_)
+        {
+            newDefcon = MachLog::DEFCON_HIGH;
+        }
+        else
+        {
+            newDefcon = MachLog::DEFCON_LOW;
+        }
+    }
 
-	pActor->asMachine().defCon( newDefcon );
+    DEBUG_STREAM(DIAG_NEIL, "MachGuiDefconCommand::doApply " << newDefcon << std::endl);
+
+    pActor->asMachine().defCon(newDefcon);
 
     return true;
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiDefconCommand::clone() const
 {
-	return _NEW( MachGuiDefconCommand( &inGameScreen() ) );
+    return _NEW(MachGuiDefconCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiDefconCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/defco1.bmp", "gui/commands/defco1.bmp" );
+    static std::pair<string, string> names("gui/commands/defco1.bmp", "gui/commands/defco1.bmp");
     return names;
 }
 
-//virtual
+// virtual
 void MachGuiDefconCommand::start()
-{}
+{
+}
 
-//virtual
+// virtual
 void MachGuiDefconCommand::finish()
-{}
+{
+}
 
-//virtual
+// virtual
 uint MachGuiDefconCommand::cursorPromptStringId() const
 {
-	if ( defconLow_ )
-		return IDS_DEFCON3_COMMAND;
-	else if ( defconNormal_ )
-		return IDS_DEFCON2_COMMAND;
+    if (defconLow_)
+        return IDS_DEFCON3_COMMAND;
+    else if (defconNormal_)
+        return IDS_DEFCON2_COMMAND;
 
-	return IDS_DEFCON1_COMMAND;
+    return IDS_DEFCON1_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiDefconCommand::commandPromptStringid() const
 {
-	if ( defconLow_ )
-		return IDS_DEFCON3_COMMAND;
-	else if ( defconNormal_ )
-		return IDS_DEFCON2_COMMAND;
+    if (defconLow_)
+        return IDS_DEFCON3_COMMAND;
+    else if (defconNormal_)
+        return IDS_DEFCON2_COMMAND;
 
-	return IDS_DEFCON1_COMMAND;
+    return IDS_DEFCON1_COMMAND;
 }
 
-//virtual
+// virtual
 bool MachGuiDefconCommand::canAdminApply() const
 {
     return false;
 }
 
-//virtual
-bool MachGuiDefconCommand::doAdminApply( MachLogAdministrator* /*pAdministrator*/, string* )
+// virtual
+bool MachGuiDefconCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
 {
-    PRE( canAdminApply() );
+    PRE(canAdminApply());
 
     return false;
 }
 
-void MachGuiDefconCommand::update( const Actors& actors )
+void MachGuiDefconCommand::update(const Actors& actors)
 {
-	// Work out which lights are on
-	defconLow_ = false;
-	defconNormal_ = false;
-	defconHigh_ = false;
+    // Work out which lights are on
+    defconLow_ = false;
+    defconNormal_ = false;
+    defconHigh_ = false;
 
-	for ( Actors::const_iterator iter = actors.begin(); iter != actors.end(); ++iter )
-	{
-		if ( (*iter)->objectIsMachine() )  // Defcon only applies to machines
-		{
-			switch ( (*iter)->asMachine().defCon() )
-			{
-				case MachLog::DEFCON_HIGH:
-					defconHigh_ = true;
-					break;
-				case MachLog::DEFCON_NORMAL:
-					defconNormal_ = true;
-					break;
-				case MachLog::DEFCON_LOW:
-					defconLow_ = true;
-					break;
-				DEFAULT_ASSERT_BAD_CASE( (*iter)->asMachine().defCon() );
-			}
-		}
-	}
+    for (Actors::const_iterator iter = actors.begin(); iter != actors.end(); ++iter)
+    {
+        if ((*iter)->objectIsMachine()) // Defcon only applies to machines
+        {
+            switch ((*iter)->asMachine().defCon())
+            {
+                case MachLog::DEFCON_HIGH:
+                    defconHigh_ = true;
+                    break;
+                case MachLog::DEFCON_NORMAL:
+                    defconNormal_ = true;
+                    break;
+                case MachLog::DEFCON_LOW:
+                    defconLow_ = true;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE((*iter)->asMachine().defCon());
+            }
+        }
+    }
 
-		// now may need to alter the goHighFromNormal_ movement direction flag
-	if( defconLow_
-		and not defconNormal_
-		and not defconHigh_ )
-	{
-		goHighFromNormal_ = true;
-	}
-	else if( defconHigh_
-			 and not defconNormal_
-			 and not defconLow_ )
-	{
-		goHighFromNormal_ = false;
-	}
+    // now may need to alter the goHighFromNormal_ movement direction flag
+    if (defconLow_ and not defconNormal_ and not defconHigh_)
+    {
+        goHighFromNormal_ = true;
+    }
+    else if (defconHigh_ and not defconNormal_ and not defconLow_)
+    {
+        goHighFromNormal_ = false;
+    }
 
-
-	DEBUG_STREAM( DIAG_NEIL, "MachGuiDefconCommand::update " << defconLow_ << " " << defconNormal_ << " " << defconHigh_ << std::endl );
+    DEBUG_STREAM(
+        DIAG_NEIL,
+        "MachGuiDefconCommand::update " << defconLow_ << " " << defconNormal_ << " " << defconHigh_ << std::endl);
 }
 
-
-//static
+// static
 bool MachGuiDefconCommand::defconLow()
 {
-	return defconLow_;
+    return defconLow_;
 }
 
-//static
+// static
 bool MachGuiDefconCommand::defconNormal()
 {
-	return defconNormal_;
+    return defconNormal_;
 }
 
-//static
+// static
 bool MachGuiDefconCommand::defconHigh()
 {
-	return defconHigh_;
+    return defconHigh_;
 }
 
-//virtual
-bool MachGuiDefconCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiDefconCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::TAB and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::TAB and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 void MachGuiDefconCommand::resetDirectionFromDefConNormal()
 {
-	goHighFromNormal_ = true;
+    goHighFromNormal_ = true;
 }
 
 /* End CMDDEFCN.CPP **************************************************/

@@ -21,9 +21,9 @@
 PER_DEFINE_PERSISTENT(W4dMultiColourPulseData);
 
 W4dMultiColourPulseData::W4dMultiColourPulseData(const size_t& nData)
-:W4dAnimationData( "ColourPulseData", 0 )
+    : W4dAnimationData("ColourPulseData", 0)
 {
-	colourPulseDataVec_.reserve( nData );
+    colourPulseDataVec_.reserve(nData);
     TEST_INVARIANT;
 }
 
@@ -31,17 +31,16 @@ W4dMultiColourPulseData::~W4dMultiColourPulseData()
 {
     TEST_INVARIANT;
 
-	for( ctl_pvector< W4dColourPulseData >::iterator i = colourPulseDataVec_.begin(); i != colourPulseDataVec_.end(); ++i )
-		_DELETE( *i );
+    for (ctl_pvector<W4dColourPulseData>::iterator i = colourPulseDataVec_.begin(); i != colourPulseDataVec_.end(); ++i)
+        _DELETE(*i);
 }
-
 
 void W4dMultiColourPulseData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dMultiColourPulseData& t )
+ostream& operator<<(ostream& o, const W4dMultiColourPulseData& t)
 {
 
     o << "W4dMultiColourPulseData " << (void*)&t << " start" << std::endl;
@@ -50,50 +49,48 @@ ostream& operator <<( ostream& o, const W4dMultiColourPulseData& t )
     return o;
 }
 
-
-void W4dMultiColourPulseData::add( W4dColourPulseData* pData )
+void W4dMultiColourPulseData::add(W4dColourPulseData* pData)
 {
-	colourPulseDataVec_.push_back( pData );
+    colourPulseDataVec_.push_back(pData);
 }
 
-//virtual
-void W4dMultiColourPulseData::apply( W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
+// virtual
+void W4dMultiColourPulseData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
 {
-	PRE(pEntity);
-	PRE(pEntity->hasMesh());
+    PRE(pEntity);
+    PRE(pEntity->hasMesh());
 
-	Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, pEntity)->mesh().mesh();
-	std::unique_ptr< RenMaterialVec > pAnimMaterialVec =animMeshPtr->materialVec();
+    Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, pEntity)->mesh().mesh();
+    std::unique_ptr<RenMaterialVec> pAnimMaterialVec = animMeshPtr->materialVec();
 
-    W4dMaterialPlanPtr matPlanPtr = _NEW( W4dColourPulsePlan( colourPulseDataVec_, *pAnimMaterialVec) );
+    W4dMaterialPlanPtr matPlanPtr = _NEW(W4dColourPulsePlan(colourPulseDataVec_, *pAnimMaterialVec));
 
-	pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime);
-
-
+    pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime);
 }
 
-W4dMultiColourPulseData::W4dMultiColourPulseData( PerConstructor con )
-: W4dAnimationData( con )
+W4dMultiColourPulseData::W4dMultiColourPulseData(PerConstructor con)
+    : W4dAnimationData(con)
 {
 }
 
-void perWrite( PerOstream& str, const W4dMultiColourPulseData& t )
+void perWrite(PerOstream& str, const W4dMultiColourPulseData& t)
 {
-	const W4dAnimationData& data = t;
-	perWrite( str, data );
+    const W4dAnimationData& data = t;
+    perWrite(str, data);
 
-	str << t.colourPulseDataVec_;
+    str << t.colourPulseDataVec_;
 }
 
-void perRead( PerIstream& str, W4dMultiColourPulseData& t )
+void perRead(PerIstream& str, W4dMultiColourPulseData& t)
 {
-	W4dAnimationData& data = t;
-	perRead( str, data );
+    W4dAnimationData& data = t;
+    perRead(str, data);
 
-	for( ctl_pvector< W4dColourPulseData >::iterator i = t.colourPulseDataVec_.begin(); i != t.colourPulseDataVec_.end(); ++i )
-		_DELETE( *i );
+    for (ctl_pvector<W4dColourPulseData>::iterator i = t.colourPulseDataVec_.begin(); i != t.colourPulseDataVec_.end();
+         ++i)
+        _DELETE(*i);
 
-	str >> t.colourPulseDataVec_;
+    str >> t.colourPulseDataVec_;
 }
 
 /* End MULTICOL.CPP **************************************************/

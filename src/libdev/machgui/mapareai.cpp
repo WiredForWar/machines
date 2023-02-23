@@ -1,5 +1,5 @@
 /*
- * M A P A R E A I . C P P 
+ * M A P A R E A I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,7 +8,7 @@
 #include "machgui/internal/mapareai.hpp"
 
 MachGuiMapAreaImpl::MachGuiMapAreaImpl()
-:	pMapAreaMagic_( NULL )
+    : pMapAreaMagic_(nullptr)
 {
 
     TEST_INVARIANT;
@@ -17,15 +17,14 @@ MachGuiMapAreaImpl::MachGuiMapAreaImpl()
 MachGuiMapAreaImpl::~MachGuiMapAreaImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiMapAreaImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiMapAreaImpl& t )
+ostream& operator<<(ostream& o, const MachGuiMapAreaImpl& t)
 {
 
     o << "MachGuiMapAreaImpl " << (void*)&t << " start" << std::endl;

@@ -22,9 +22,8 @@ class MachGuiCommand;
 
 static void tiGui()
 {
-//	static ctl_list< unique_ptr< MachGuiCommand > >	dummy1;
-	static ctl_list< MachGuiCommand * >	dummy1;
+    //  static ctl_list< unique_ptr< MachGuiCommand > > dummy1;
+    static ctl_list<MachGuiCommand*> dummy1;
 }
 
 /* End TIGUI.CPP ****************************************************/
-

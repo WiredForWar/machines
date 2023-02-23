@@ -1,5 +1,5 @@
 /*
- * V M A I L I . C P P 
+ * V M A I L I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,8 +7,8 @@
 
 #include "machlog/internal/vmaili.hpp"
 
-MachLogVoiceMailImpl::MachLogVoiceMailImpl():
-sampleHandleValid_(false)
+MachLogVoiceMailImpl::MachLogVoiceMailImpl()
+    : sampleHandleValid_(false)
 {
 
     TEST_INVARIANT;
@@ -17,15 +17,14 @@ sampleHandleValid_(false)
 MachLogVoiceMailImpl::~MachLogVoiceMailImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogVoiceMailImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogVoiceMailImpl& t )
+ostream& operator<<(ostream& o, const MachLogVoiceMailImpl& t)
 {
 
     o << "MachLogVoiceMailImpl " << (void*)&t << " start" << std::endl;

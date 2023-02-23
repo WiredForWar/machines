@@ -13,15 +13,16 @@
 #include "phys/movespin.hpp"
 #include "phys/internal/movespii.hpp"
 
-PER_DEFINE_PERSISTENT( PhysMoveSpinPlan );
+PER_DEFINE_PERSISTENT(PhysMoveSpinPlan);
 
-PhysMoveSpinPlan::PhysMoveSpinPlan(const MexTransform3d& startPosition,
-                          const MexVec3& speedVector,
-						  const MexVec3& rotationAxis,
-						  MATHEX_SCALAR rotationSpeed,
-                          const PhysRelativeTime& endTime )
-: PhysMotionPlan( endTime ),
-  pImpl_( _NEW( PhysMoveSpinPlanImpl( startPosition, speedVector, rotationAxis, rotationSpeed, endTime ) ) )
+PhysMoveSpinPlan::PhysMoveSpinPlan(
+    const MexTransform3d& startPosition,
+    const MexVec3& speedVector,
+    const MexVec3& rotationAxis,
+    MATHEX_SCALAR rotationSpeed,
+    const PhysRelativeTime& endTime)
+    : PhysMotionPlan(endTime)
+    , pImpl_(_NEW(PhysMoveSpinPlanImpl(startPosition, speedVector, rotationAxis, rotationSpeed, endTime)))
 {
 
     TEST_INVARIANT;
@@ -30,40 +31,39 @@ PhysMoveSpinPlan::PhysMoveSpinPlan(const MexTransform3d& startPosition,
 PhysMoveSpinPlan::~PhysMoveSpinPlan()
 {
     TEST_INVARIANT;
-	_DELETE(pImpl_);
+    _DELETE(pImpl_);
 }
 
 void PhysMoveSpinPlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void PhysMoveSpinPlan::transform( const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const
+void PhysMoveSpinPlan::transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const
 {
 
-    CB_DEPIMPL( MexTransform3d, startLocation_ )
-    CB_DEPIMPL( MexVec3, speedVector_ )
-    CB_DEPIMPL( MexVec3, rotationAxis_ )
-    CB_DEPIMPL( MATHEX_SCALAR, rotationSpeed_ )
+    CB_DEPIMPL(MexTransform3d, startLocation_)
+    CB_DEPIMPL(MexVec3, speedVector_)
+    CB_DEPIMPL(MexVec3, rotationAxis_)
+    CB_DEPIMPL(MATHEX_SCALAR, rotationSpeed_)
 
-    PRE( pResult != NULL );
-    PRE( timeOffset >= 0.0 );
+    PRE(pResult != nullptr);
+    PRE(timeOffset >= 0.0);
 
-	// initialise
-	*pResult = startLocation_;
+    // initialise
+    *pResult = startLocation_;
 
-	// translate
-    MexVec3 displacementVector( speedVector_ );
-    displacementVector*=timeOffset;
-	pResult->translate( MexPoint3d( displacementVector ) );
+    // translate
+    MexVec3 displacementVector(speedVector_);
+    displacementVector *= timeOffset;
+    pResult->translate(MexPoint3d(displacementVector));
 
-	// rotate
-	MATHEX_SCALAR rotationAngle = rotationSpeed_ * timeOffset;
-	pResult->rotate( MexQuaternion( rotationAxis_, MexRadians( rotationAngle ) ) );
-
+    // rotate
+    MATHEX_SCALAR rotationAngle = rotationSpeed_ * timeOffset;
+    pResult->rotate(MexQuaternion(rotationAxis_, MexRadians(rotationAngle)));
 }
 
-ostream& operator <<( ostream& o, const PhysMoveSpinPlan& t )
+ostream& operator<<(ostream& o, const PhysMoveSpinPlan& t)
 {
 
     o << "PhysMoveSpinPlan " << (void*)&t << " start" << std::endl;
@@ -72,12 +72,12 @@ ostream& operator <<( ostream& o, const PhysMoveSpinPlan& t )
     return o;
 }
 
-PhysMoveSpinPlan::PhysMoveSpinPlan( PerConstructor con )
-: PhysMotionPlan( con )
+PhysMoveSpinPlan::PhysMoveSpinPlan(PerConstructor con)
+    : PhysMotionPlan(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const PhysMoveSpinPlan& plan )
+void perWrite(PerOstream& ostr, const PhysMoveSpinPlan& plan)
 {
     const PhysMotionPlan& base = plan;
 
@@ -86,7 +86,7 @@ void perWrite( PerOstream& ostr, const PhysMoveSpinPlan& plan )
     ostr << plan.pImpl_;
 }
 
-void perRead( PerIstream& istr, PhysMoveSpinPlan& plan )
+void perRead(PerIstream& istr, PhysMoveSpinPlan& plan)
 {
     PhysMotionPlan& base = plan;
 

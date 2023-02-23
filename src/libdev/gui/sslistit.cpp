@@ -1,5 +1,5 @@
 /*
- * S S L I S T I T . C P P 
+ * S S L I S T I T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,10 +9,13 @@
 #include "gui/sslistbx.hpp"
 #include "gui/event.hpp"
 
-GuiSingleSelectionListBoxItem::GuiSingleSelectionListBoxItem( GuiSingleSelectionListBox* pListBox, size_t width, size_t height )
-:	GuiDisplayable( pListBox, Gui::Box( 0, 0, width, height ) ),
-	pListBox_( pListBox ),
-	selected_( false )
+GuiSingleSelectionListBoxItem::GuiSingleSelectionListBoxItem(
+    GuiSingleSelectionListBox* pListBox,
+    size_t width,
+    size_t height)
+    : GuiDisplayable(pListBox, Gui::Box(0, 0, width, height))
+    , pListBox_(pListBox)
+    , selected_(false)
 {
 
     TEST_INVARIANT;
@@ -21,15 +24,14 @@ GuiSingleSelectionListBoxItem::GuiSingleSelectionListBoxItem( GuiSingleSelection
 GuiSingleSelectionListBoxItem::~GuiSingleSelectionListBoxItem()
 {
     TEST_INVARIANT;
-
 }
 
 void GuiSingleSelectionListBoxItem::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const GuiSingleSelectionListBoxItem& t )
+ostream& operator<<(ostream& o, const GuiSingleSelectionListBoxItem& t)
 {
 
     o << "GuiSingleSelectionListBoxItem " << (void*)&t << " start" << std::endl;
@@ -38,38 +40,38 @@ ostream& operator <<( ostream& o, const GuiSingleSelectionListBoxItem& t )
     return o;
 }
 
-//virtual 
-void GuiSingleSelectionListBoxItem::doHandleMouseClickEvent( const GuiMouseEvent& rel )
+// virtual
+void GuiSingleSelectionListBoxItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-	PRE( pListBox_);
+    PRE(pListBox_);
 
-	if ( ( rel.leftButton() == Gui::PRESSED and pListBox_->selectItemWhen() == GuiSingleSelectionListBox::PRESSED ) or
-	 	 ( rel.leftButton() == Gui::RELEASED and pListBox_->selectItemWhen() == GuiSingleSelectionListBox::RELEASED ) )
-	{
-		selectThisItem();
-	}
+    if ((rel.leftButton() == Gui::PRESSED and pListBox_->selectItemWhen() == GuiSingleSelectionListBox::PRESSED)
+        or (rel.leftButton() == Gui::RELEASED and pListBox_->selectItemWhen() == GuiSingleSelectionListBox::RELEASED))
+    {
+        selectThisItem();
+    }
 }
 
-void GuiSingleSelectionListBoxItem::selected( bool selected )
+void GuiSingleSelectionListBoxItem::selected(bool selected)
 {
-	selected_ = selected;
+    selected_ = selected;
 }
 
 bool GuiSingleSelectionListBoxItem::selected() const
 {
-	return selected_;
+    return selected_;
 }
 
 GuiSingleSelectionListBox& GuiSingleSelectionListBoxItem::listBox()
 {
-	PRE( pListBox_);
+    PRE(pListBox_);
 
-	return *pListBox_;
+    return *pListBox_;
 }
 
 void GuiSingleSelectionListBoxItem::selectThisItem()
 {
-	pListBox_->notifyListItemSelection( this );
+    pListBox_->notifyListItemSelection(this);
 }
 
 /* End SSLISTIT.CPP *************************************************/

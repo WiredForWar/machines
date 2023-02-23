@@ -1,5 +1,5 @@
 /*
- * T R A C E . H P P 
+ * T R A C E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,26 +20,25 @@ public:
 
     ~BaseTrace();
 
-    void    trace( bool );
-    bool    trace() const { return trace_; }
-    
-    void    log( const char* fileName, size_t line );
-    
+    void trace(bool);
+    bool trace() const { return trace_; }
+
+    void log(const char* fileName, size_t line);
+
 private:
     // Operation deliberately revoked
-    BaseTrace( const BaseTrace& );
+    BaseTrace(const BaseTrace&);
 
     // Operation deliberately revoked
-    BaseTrace& operator =( const BaseTrace& );
+    BaseTrace& operator=(const BaseTrace&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseTrace& );
+    bool operator==(const BaseTrace&);
 
     BaseTrace();
-    
-    bool    trace_;
-};
 
+    bool trace_;
+};
 
 #endif
 

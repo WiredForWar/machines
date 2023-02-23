@@ -16,20 +16,23 @@
 #include "machphys/wheels.hpp"
 #include "machphys/plansurf.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysWheelsImpl );
+PER_DEFINE_PERSISTENT(MachPhysWheelsImpl);
 
-MachPhysWheelsImpl::MachPhysWheelsImpl( MachPhysMachine* pMachine, MachPhysWheels* pWheels,
-        MATHEX_SCALAR wheelRadius, const W4dLinks& leftWheels, const W4dLinks& rightWheels
- )
-: MachPhysLocomotionMethodImpl( pMachine ),
-  pWheels_( pWheels ),
-  wheelRadius_( wheelRadius ),
-  leftWheels_( leftWheels ),
-  rightWheels_( rightWheels ),
-  leftLastAngle_( 0 ),
-  rightLastAngle_( 0 ),
-  leftLastAngleSpeed_( 0 ),
-  rightLastAngleSpeed_( 0 )
+MachPhysWheelsImpl::MachPhysWheelsImpl(
+    MachPhysMachine* pMachine,
+    MachPhysWheels* pWheels,
+    MATHEX_SCALAR wheelRadius,
+    const W4dLinks& leftWheels,
+    const W4dLinks& rightWheels)
+    : MachPhysLocomotionMethodImpl(pMachine)
+    , pWheels_(pWheels)
+    , wheelRadius_(wheelRadius)
+    , leftWheels_(leftWheels)
+    , rightWheels_(rightWheels)
+    , leftLastAngle_(0)
+    , rightLastAngle_(0)
+    , leftLastAngleSpeed_(0)
+    , rightLastAngleSpeed_(0)
 {
 
     TEST_INVARIANT;
@@ -38,15 +41,14 @@ MachPhysWheelsImpl::MachPhysWheelsImpl( MachPhysMachine* pMachine, MachPhysWheel
 MachPhysWheelsImpl::~MachPhysWheelsImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysWheelsImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysWheelsImpl& t )
+ostream& operator<<(ostream& o, const MachPhysWheelsImpl& t)
 {
 
     o << "MachPhysWheelsImpl " << (void*)&t << " start" << std::endl;
@@ -55,13 +57,13 @@ ostream& operator <<( ostream& o, const MachPhysWheelsImpl& t )
     return o;
 }
 
-MachPhysWheelsImpl::MachPhysWheelsImpl( PerConstructor con )
-: MachPhysLocomotionMethodImpl( con ),
-  pWheels_( NULL )
+MachPhysWheelsImpl::MachPhysWheelsImpl(PerConstructor con)
+    : MachPhysLocomotionMethodImpl(con)
+    , pWheels_(nullptr)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysWheelsImpl& wheels )
+void perWrite(PerOstream& ostr, const MachPhysWheelsImpl& wheels)
 {
     const MachPhysLocomotionMethodImpl& base = wheels;
 
@@ -77,7 +79,7 @@ void perWrite( PerOstream& ostr, const MachPhysWheelsImpl& wheels )
     ostr << wheels.rightWheels_;
 }
 
-void perRead( PerIstream& istr, MachPhysWheelsImpl& wheels )
+void perRead(PerIstream& istr, MachPhysWheelsImpl& wheels)
 {
     MachPhysLocomotionMethodImpl& base = wheels;
 
@@ -93,21 +95,22 @@ void perRead( PerIstream& istr, MachPhysWheelsImpl& wheels )
     istr >> wheels.rightWheels_;
 }
 
-//virtual
-void MachPhysWheelsImpl::machineSurfacePosition
-(
-    const MachPhysPlanetSurface& surface, const MexPoint3d& baseLocation, const MexVec3& unitFacingDirection,
-    MexPoint3d* pLocation, MexVec3* pNormal
-) const
+// virtual
+void MachPhysWheelsImpl::machineSurfacePosition(
+    const MachPhysPlanetSurface& surface,
+    const MexPoint3d& baseLocation,
+    const MexVec3& unitFacingDirection,
+    MexPoint3d* pLocation,
+    MexVec3* pNormal) const
 {
-    //Use the 'bicycle' method
-    foreAftSurfacePosition( surface, baseLocation, unitFacingDirection, pLocation, pNormal );
+    // Use the 'bicycle' method
+    foreAftSurfacePosition(surface, baseLocation, unitFacingDirection, pLocation, pNormal);
 }
 
-//virtual
-void MachPhysWheelsImpl::firstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state )
+// virtual
+void MachPhysWheelsImpl::firstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state)
 {
-    pWheels_->doFirstPersonMotionAnimations( state );
+    pWheels_->doFirstPersonMotionAnimations(state);
 }
 
 /* End WHEELSI.CPP **************************************************/

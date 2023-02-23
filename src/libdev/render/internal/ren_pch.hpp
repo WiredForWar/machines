@@ -4,7 +4,6 @@
 // there is no ctl stuff here.
 
 #include "mathex/transf3d.hpp"
-//#include "render/internal/d3d.hpp"
-//#include "render/internal/comptr.hpp"
-//#include "render/internal/ddraw.hpp"
-
+// #include "render/internal/d3d.hpp"
+// #include "render/internal/comptr.hpp"
+// #include "render/internal/ddraw.hpp"

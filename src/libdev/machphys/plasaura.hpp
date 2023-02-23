@@ -18,46 +18,43 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysPlasmaAura : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysPlasmaAura( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysPlasmaAura(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysPlasmaAura& exemplar();
 
-    //dtor
-    ~MachPhysPlasmaAura();
+    // dtor
+    ~MachPhysPlasmaAura() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startPlasmaAura( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration );
+    void startPlasmaAura(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPlasmaAura& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPlasmaAura& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPlasmaAura );
+    PER_MEMBER_PERSISTENT(MachPhysPlasmaAura);
 
 private:
-    //Deliberately revoked
-    MachPhysPlasmaAura( const MachPhysPlasmaAura& );
-    MachPhysPlasmaAura& operator =( const MachPhysPlasmaAura& );
-    bool operator ==( const MachPhysPlasmaAura& );
+    // Deliberately revoked
+    MachPhysPlasmaAura(const MachPhysPlasmaAura&);
+    MachPhysPlasmaAura& operator=(const MachPhysPlasmaAura&);
+    bool operator==(const MachPhysPlasmaAura&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysPlasmaAura();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPlasmaAura );
-PER_READ_WRITE( MachPhysPlasmaAura );
+PER_DECLARE_PERSISTENT(MachPhysPlasmaAura);
+PER_READ_WRITE(MachPhysPlasmaAura);
 
 #endif
 

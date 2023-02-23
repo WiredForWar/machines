@@ -1,5 +1,5 @@
 /*
- * G A M M A C O R . H P P 
+ * G A M M A C O R . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -21,22 +21,25 @@ class MachGuiGammaCorrectionSlideBar : public MachGuiSlideBar
 // Canonical form revoked
 {
 public:
-    MachGuiGammaCorrectionSlideBar( MachGuiStartupScreens* pStartupScreens, GuiDisplayable* pParent, Gui::Coord topLeft, size_t width, 
-   				 					float minVal, float maxVal );
-    ~MachGuiGammaCorrectionSlideBar();
+    MachGuiGammaCorrectionSlideBar(
+        MachGuiStartupScreens* pStartupScreens,
+        GuiDisplayable* pParent,
+        Gui::Coord topLeft,
+        size_t width,
+        float minVal,
+        float maxVal);
+    ~MachGuiGammaCorrectionSlideBar() override;
 
     void CLASS_INVARIANT;
 
-	virtual void valueChanged( float value );
+    void valueChanged(float value) override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiGammaCorrectionSlideBar& t );
+    friend ostream& operator<<(ostream& o, const MachGuiGammaCorrectionSlideBar& t);
 
-    MachGuiGammaCorrectionSlideBar( const MachGuiGammaCorrectionSlideBar& );
-    MachGuiGammaCorrectionSlideBar& operator =( const MachGuiGammaCorrectionSlideBar& );
-
+    MachGuiGammaCorrectionSlideBar(const MachGuiGammaCorrectionSlideBar&);
+    MachGuiGammaCorrectionSlideBar& operator=(const MachGuiGammaCorrectionSlideBar&);
 };
-
 
 #endif
 

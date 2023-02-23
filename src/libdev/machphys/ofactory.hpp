@@ -33,58 +33,50 @@
 
 #include "world4d/root.hpp"
 
-template< class ID, class PART > class MachPhysObjectFactory;
-template< class ID, class PART >
-void perWrite( PerOstream& ostr, const MachPhysObjectFactory< ID, PART >& factory );
-template< class ID, class PART >
-void perRead( PerIstream& ostr, MachPhysObjectFactory< ID, PART >& factory );
+template <class ID, class PART> class MachPhysObjectFactory;
+template <class ID, class PART> void perWrite(PerOstream& ostr, const MachPhysObjectFactory<ID, PART>& factory);
+template <class ID, class PART> void perRead(PerIstream& ostr, MachPhysObjectFactory<ID, PART>& factory);
 
-template< class ID, class PART >
-class MachPhysObjectFactory
+template <class ID, class PART> class MachPhysObjectFactory
 {
 public:
-    MachPhysObjectFactory( size_t nEntries );
+    MachPhysObjectFactory(size_t nEntries);
     virtual ~MachPhysObjectFactory();
 
-    PART& part( const ID& id, size_t index );
+    PART& part(const ID& id, size_t index);
 
-    PER_MEMBER_PERSISTENT( MachPhysObjectFactory );
-    PER_FRIEND_READ_WRITE( MachPhysObjectFactory );
+    PER_MEMBER_PERSISTENT(MachPhysObjectFactory);
+    PER_FRIEND_READ_WRITE(MachPhysObjectFactory);
 
-    friend void perWrite < >( PerOstream& ostr, const MachPhysObjectFactory< ID, PART > & factory );
-    friend void perRead < >( PerIstream& istr, MachPhysObjectFactory< ID, PART > & factory );
-
+    friend void perWrite<>(PerOstream& ostr, const MachPhysObjectFactory<ID, PART>& factory);
+    friend void perRead<>(PerIstream& istr, MachPhysObjectFactory<ID, PART>& factory);
 
 protected:
-
     void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    MachPhysObjectFactory( const MachPhysObjectFactory< ID, PART >& );
+    MachPhysObjectFactory(const MachPhysObjectFactory<ID, PART>&);
 
     // Operation deliberately revoked
-    MachPhysObjectFactory< ID, PART >& operator =( const MachPhysObjectFactory< ID, PART >& );
+    MachPhysObjectFactory<ID, PART>& operator=(const MachPhysObjectFactory<ID, PART>&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysObjectFactory< ID, PART >& );
+    bool operator==(const MachPhysObjectFactory<ID, PART>&);
 
     W4dRoot root_;
-    ctl_fixed_vector< PART* >   entries_;
-
-
+    ctl_fixed_vector<PART*> entries_;
 };
 
-PER_DECLARE_PERSISTENT_T2( MachPhysObjectFactory );
+PER_DECLARE_PERSISTENT_T2(MachPhysObjectFactory);
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "machphys/ofactory.ctp"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "machphys/ofactory.ctp"
+// #endif
 
-//#ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
-    #include "machphys/ofactory.ctf"
-//#endif
-
+// #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
+#include "machphys/ofactory.ctf"
+// #endif
 
 #endif
 

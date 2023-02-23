@@ -7,21 +7,21 @@
 
 #include "machphys/internal/crakfiri.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysCrackFireImpl );
+PER_DEFINE_PERSISTENT(MachPhysCrackFireImpl);
 
-MachPhysCrackFireImpl::MachPhysCrackFireImpl( const MATHEX_SCALAR& length )
-:	pCrack_( NULL ),
-	pFire_( NULL ),
-	length_( length )
+MachPhysCrackFireImpl::MachPhysCrackFireImpl(const MATHEX_SCALAR& length)
+    : pCrack_(nullptr)
+    , pFire_(nullptr)
+    , length_(length)
 {
 
     TEST_INVARIANT;
 }
 
 MachPhysCrackFireImpl::MachPhysCrackFireImpl()
-:	pCrack_( NULL ),
-	pFire_( NULL ),
-	length_( 0 )
+    : pCrack_(nullptr)
+    , pFire_(nullptr)
+    , length_(0)
 {
 
     TEST_INVARIANT;
@@ -30,15 +30,14 @@ MachPhysCrackFireImpl::MachPhysCrackFireImpl()
 MachPhysCrackFireImpl::~MachPhysCrackFireImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysCrackFireImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysCrackFireImpl& t )
+ostream& operator<<(ostream& o, const MachPhysCrackFireImpl& t)
 {
 
     o << "MachPhysCrackFireImpl " << (void*)&t << " start" << std::endl;
@@ -47,24 +46,24 @@ ostream& operator <<( ostream& o, const MachPhysCrackFireImpl& t )
     return o;
 }
 
-MachPhysCrackFireImpl::MachPhysCrackFireImpl( PerConstructor  )
+MachPhysCrackFireImpl::MachPhysCrackFireImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysCrackFireImpl& crackFire )
+void perWrite(PerOstream& ostr, const MachPhysCrackFireImpl& crackFire)
 {
-	ostr << crackFire.pCrack_;
-	ostr << crackFire.pFire_;
-	ostr << crackFire.length_;
-	ostr << crackFire.debris_;
+    ostr << crackFire.pCrack_;
+    ostr << crackFire.pFire_;
+    ostr << crackFire.length_;
+    ostr << crackFire.debris_;
 }
 
-void perRead( PerIstream& istr, MachPhysCrackFireImpl& crackFire )
+void perRead(PerIstream& istr, MachPhysCrackFireImpl& crackFire)
 {
     istr >> crackFire.pCrack_;
     istr >> crackFire.pFire_;
     istr >> crackFire.length_;
-	istr >> crackFire.debris_;
+    istr >> crackFire.debris_;
 }
 
 /* End CRAKFIRI.CPP *************************************************/

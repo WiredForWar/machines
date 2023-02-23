@@ -1,5 +1,5 @@
 /*
- * STINGL . H P P 
+ * STINGL . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,31 +22,26 @@ class MachLogLightSting : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogLightSting(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogLightSting(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogLightSting();
+    ~MachLogLightSting() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogLightSting& t );
+    friend ostream& operator<<(ostream& o, const MachLogLightSting& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLightSting );
-	PER_FRIEND_READ_WRITE( MachLogLightSting );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLightSting);
+    PER_FRIEND_READ_WRITE(MachLogLightSting);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogLightSting( const MachLogLightSting& );
-    MachLogLightSting& operator =( const MachLogLightSting& );
-    bool operator ==( const MachLogLightSting& );
-
+    MachLogLightSting(const MachLogLightSting&);
+    MachLogLightSting& operator=(const MachLogLightSting&);
+    bool operator==(const MachLogLightSting&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogLightSting );
+PER_DECLARE_PERSISTENT(MachLogLightSting);
 
 #endif
 

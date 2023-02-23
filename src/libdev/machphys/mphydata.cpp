@@ -47,135 +47,168 @@ MachPhysData::~MachPhysData()
 
 void MachPhysData::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-const MachPhysAggressorData& MachPhysData::aggressorData( MachPhys::AggressorSubType subType, size_t hwLevel, size_t swLevel ) const
+const MachPhysAggressorData&
+MachPhysData::aggressorData(MachPhys::AggressorSubType subType, size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ), "Machine Aggressor level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel),
+        "Machine Aggressor level is not valid");
 
-    return MachPhysDataImplementation::instance().aggressorData( subType, hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().aggressorData(subType, hwLevel, swLevel);
 }
 
-const MachPhysAdministratorData& MachPhysData::administratorData( MachPhys::AdministratorSubType subType, size_t hwLevel, size_t swLevel ) const
+const MachPhysAdministratorData&
+MachPhysData::administratorData(MachPhys::AdministratorSubType subType, size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ), "Machine Administrator level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel),
+        "Machine Administrator level is not valid");
 
-    return MachPhysDataImplementation::instance().administratorData( subType, hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().administratorData(subType, hwLevel, swLevel);
 }
 
-const MachPhysAPCData& MachPhysData::APCData( size_t hwLevel, size_t swLevel ) const
+const MachPhysAPCData& MachPhysData::APCData(size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::APC, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::APC, hwLevel, swLevel ), "Machine APC level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::APC, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::APC, hwLevel, swLevel),
+        "Machine APC level is not valid");
 
-    return MachPhysDataImplementation::instance().APCData( hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().APCData(hwLevel, swLevel);
 }
 
-const MachPhysResourceCarrierData& MachPhysData::resourceCarrierData( size_t hwLevel, size_t swLevel ) const
+const MachPhysResourceCarrierData& MachPhysData::resourceCarrierData(size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::RESOURCE_CARRIER, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::RESOURCE_CARRIER, hwLevel, swLevel ), "Machine ResourceCarrier level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::RESOURCE_CARRIER, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::RESOURCE_CARRIER, hwLevel, swLevel),
+        "Machine ResourceCarrier level is not valid");
 
-    return MachPhysDataImplementation::instance().resourceCarrierData( hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().resourceCarrierData(hwLevel, swLevel);
 }
 
-const MachPhysGeoLocatorData& MachPhysData::geoLocatorData( size_t hwLevel, size_t swLevel ) const
+const MachPhysGeoLocatorData& MachPhysData::geoLocatorData(size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::GEO_LOCATOR, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::GEO_LOCATOR, hwLevel, swLevel ), "Machine GeoLocator level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::GEO_LOCATOR, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::GEO_LOCATOR, hwLevel, swLevel),
+        "Machine GeoLocator level is not valid");
 
-    return MachPhysDataImplementation::instance().geoLocatorData( hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().geoLocatorData(hwLevel, swLevel);
 }
 
-const MachPhysSpyLocatorData& MachPhysData::spyLocatorData( size_t hwLevel, size_t swLevel ) const
+const MachPhysSpyLocatorData& MachPhysData::spyLocatorData(size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::SPY_LOCATOR, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::SPY_LOCATOR, hwLevel, swLevel ), "Machine Spy level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::SPY_LOCATOR, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::SPY_LOCATOR, hwLevel, swLevel),
+        "Machine Spy level is not valid");
 
-    return MachPhysDataImplementation::instance().spyLocatorData( hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().spyLocatorData(hwLevel, swLevel);
 }
 
-const MachPhysConstructorData& MachPhysData::constructorData( MachPhys::ConstructorSubType subType, size_t hwLevel, size_t swLevel ) const
+const MachPhysConstructorData&
+MachPhysData::constructorData(MachPhys::ConstructorSubType subType, size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ), "Machine Constructor level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel),
+        "Machine Constructor level is not valid");
 
-    return MachPhysDataImplementation::instance().constructorData( subType, hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().constructorData(subType, hwLevel, swLevel);
 }
 
-const MachPhysTechnicianData& MachPhysData::technicianData( MachPhys::TechnicianSubType subType, size_t hwLevel, size_t swLevel ) const
+const MachPhysTechnicianData&
+MachPhysData::technicianData(MachPhys::TechnicianSubType subType, size_t hwLevel, size_t swLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel, swLevel ), "Machine Technican level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel),
+        "Machine Technican level is not valid");
 
-    return MachPhysDataImplementation::instance().technicianData( subType, hwLevel, swLevel );
+    return MachPhysDataImplementation::instance().technicianData(subType, hwLevel, swLevel);
 }
 
-const MachPhysHardwareLabData& MachPhysData::hardwareLabData( MachPhys::HardwareLabSubType subType, size_t hwLevel ) const
+const MachPhysHardwareLabData& MachPhysData::hardwareLabData(MachPhys::HardwareLabSubType subType, size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel ), "Construction HardwareLab level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(subType, hwLevel),
+        "Construction HardwareLab level is not valid");
 
-    return MachPhysDataImplementation::instance().hardwareLabData( subType, hwLevel );
+    return MachPhysDataImplementation::instance().hardwareLabData(subType, hwLevel);
 }
 
-const MachPhysSmelterData& MachPhysData::smelterData( size_t hwLevel ) const
+const MachPhysSmelterData& MachPhysData::smelterData(size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::SMELTER, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::SMELTER, hwLevel ), "Construction Smelter level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::SMELTER, hwLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::SMELTER, hwLevel),
+        "Construction Smelter level is not valid");
 
-    return MachPhysDataImplementation::instance().smelterData( hwLevel );
+    return MachPhysDataImplementation::instance().smelterData(hwLevel);
 }
 
-const MachPhysFactoryData& MachPhysData::factoryData( MachPhys::FactorySubType subType, size_t hwLevel ) const
+const MachPhysFactoryData& MachPhysData::factoryData(MachPhys::FactorySubType subType, size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel ), "Construction Factory level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel));
+    ALWAYS_ASSERT(MachPhysLevels::instance().levelValid(subType, hwLevel), "Construction Factory level is not valid");
 
-    return MachPhysDataImplementation::instance().factoryData( subType, hwLevel );
+    return MachPhysDataImplementation::instance().factoryData(subType, hwLevel);
 }
 
-const MachPhysMissileEmplacementData& MachPhysData::missileEmplacementData( MachPhys::MissileEmplacementSubType subType, size_t hwLevel ) const
+const MachPhysMissileEmplacementData&
+MachPhysData::missileEmplacementData(MachPhys::MissileEmplacementSubType subType, size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( subType, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( subType, hwLevel ), "Construction MissileEmplacement level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(subType, hwLevel),
+        "Construction MissileEmplacement level is not valid");
 
-    return MachPhysDataImplementation::instance().missileEmplacementData( subType, hwLevel );
+    return MachPhysDataImplementation::instance().missileEmplacementData(subType, hwLevel);
 }
 
-const MachPhysGarrisonData& MachPhysData::garrisonData( size_t hwLevel ) const
+const MachPhysGarrisonData& MachPhysData::garrisonData(size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::GARRISON, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::GARRISON, hwLevel ), "Construction Garrison level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::GARRISON, hwLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::GARRISON, hwLevel),
+        "Construction Garrison level is not valid");
 
-    return MachPhysDataImplementation::instance().garrisonData( hwLevel );
+    return MachPhysDataImplementation::instance().garrisonData(hwLevel);
 }
 
-const MachPhysMineData& MachPhysData::mineData( size_t hwLevel ) const
+const MachPhysMineData& MachPhysData::mineData(size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::MINE, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::MINE, hwLevel ), "Construction Mine level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::MINE, hwLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::MINE, hwLevel),
+        "Construction Mine level is not valid");
 
-    return MachPhysDataImplementation::instance().mineData( hwLevel );
+    return MachPhysDataImplementation::instance().mineData(hwLevel);
 }
 
-const MachPhysBeaconData& MachPhysData::beaconData( size_t hwLevel ) const
+const MachPhysBeaconData& MachPhysData::beaconData(size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::BEACON, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::BEACON, hwLevel ), "Construction Beacon level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::BEACON, hwLevel));
+    ALWAYS_ASSERT(
+        MachPhysLevels::instance().levelValid(MachPhys::BEACON, hwLevel),
+        "Construction Beacon level is not valid");
 
-    return MachPhysDataImplementation::instance().beaconData( hwLevel );
+    return MachPhysDataImplementation::instance().beaconData(hwLevel);
 }
 
-const MachPhysPodData& MachPhysData::podData( size_t hwLevel ) const
+const MachPhysPodData& MachPhysData::podData(size_t hwLevel) const
 {
-    PRE( MachPhysLevels::instance().levelValid( MachPhys::POD, hwLevel ) );
-    ALWAYS_ASSERT( MachPhysLevels::instance().levelValid( MachPhys::POD, hwLevel ), "Construction Pod level is not valid" );
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::POD, hwLevel));
+    ALWAYS_ASSERT(MachPhysLevels::instance().levelValid(MachPhys::POD, hwLevel), "Construction Pod level is not valid");
 
-    return MachPhysDataImplementation::instance().podData( hwLevel );
+    return MachPhysDataImplementation::instance().podData(hwLevel);
 }
 
 const MachPhysOreHolographData& MachPhysData::oreHolographData() const
@@ -183,9 +216,9 @@ const MachPhysOreHolographData& MachPhysData::oreHolographData() const
     return MachPhysDataImplementation::instance().oreHolographData();
 }
 
-const MachPhysWeaponData& MachPhysData::weaponData( MachPhys::WeaponType type ) const
+const MachPhysWeaponData& MachPhysData::weaponData(MachPhys::WeaponType type) const
 {
-    return MachPhysDataImplementation::instance().weaponData( type );
+    return MachPhysDataImplementation::instance().weaponData(type);
 }
 
 const MachPhysGeneralData& MachPhysData::generalData() const
@@ -193,47 +226,49 @@ const MachPhysGeneralData& MachPhysData::generalData() const
     return MachPhysDataImplementation::instance().generalData();
 }
 
-const MachPhysConstructionData& MachPhysData::constructionData(
-    MachPhys::ConstructionType type, int subType, int hwLevel ) const
+const MachPhysConstructionData&
+MachPhysData::constructionData(MachPhys::ConstructionType type, int subType, int hwLevel) const
 {
-    const MachPhysConstructionData* pConstructionData = NULL;
+    const MachPhysConstructionData* pConstructionData = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::BEACON:
-            pConstructionData = &MachPhysData::instance().beaconData( hwLevel );
-			break;
+            pConstructionData = &MachPhysData::instance().beaconData(hwLevel);
+            break;
 
         case MachPhys::FACTORY:
-            pConstructionData = &MachPhysData::instance().factoryData(
-              _STATIC_CAST( MachPhys::FactorySubType, subType ), hwLevel );
-			break;
+            pConstructionData
+                = &MachPhysData::instance().factoryData(_STATIC_CAST(MachPhys::FactorySubType, subType), hwLevel);
+            break;
 
         case MachPhys::GARRISON:
-            pConstructionData = &MachPhysData::instance().garrisonData( hwLevel );
-			break;
+            pConstructionData = &MachPhysData::instance().garrisonData(hwLevel);
+            break;
 
         case MachPhys::HARDWARE_LAB:
             pConstructionData = &MachPhysData::instance().hardwareLabData(
-              _STATIC_CAST( MachPhys::HardwareLabSubType, subType ), hwLevel );
-			break;
+                _STATIC_CAST(MachPhys::HardwareLabSubType, subType),
+                hwLevel);
+            break;
 
         case MachPhys::POD:
-            pConstructionData = &MachPhysData::instance().podData( hwLevel );
-			break;
+            pConstructionData = &MachPhysData::instance().podData(hwLevel);
+            break;
 
         case MachPhys::MINE:
-            pConstructionData = &MachPhysData::instance().mineData( hwLevel );
-			break;
+            pConstructionData = &MachPhysData::instance().mineData(hwLevel);
+            break;
 
         case MachPhys::MISSILE_EMPLACEMENT:
             pConstructionData = &MachPhysData::instance().missileEmplacementData(
-              _STATIC_CAST( MachPhys::MissileEmplacementSubType, subType ), hwLevel );
-			break;
+                _STATIC_CAST(MachPhys::MissileEmplacementSubType, subType),
+                hwLevel);
+            break;
 
         case MachPhys::SMELTER:
-            pConstructionData = &MachPhysData::instance().smelterData( hwLevel );
-			break;
+            pConstructionData = &MachPhysData::instance().smelterData(hwLevel);
+            break;
     }
 
     return *pConstructionData;

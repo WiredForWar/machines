@@ -4,22 +4,21 @@
  */
 
 #include "machphys/ofactory.hpp"
-//#include "machphys/ofactory.ctp"
+// #include "machphys/ofactory.ctp"
 
 #include "ctl/map.hpp"
-//#include "ctl/map.ctp"
+// #include "ctl/map.ctp"
 
 #include "machphys/apc.hpp"
 
-typedef MachPhysAPC::Id   MachPhysAPCId;
+using MachPhysAPCId = MachPhysAPC::Id;
 
-PER_DEFINE_PERSISTENT_T2( MachPhysObjectFactory, MachPhysAPCId, MachPhysAPC );
-PER_PRIVATE_READ_WRITE_PERSISTENT_T2( MachPhysObjectFactory, MachPhysAPCId, MachPhysAPC );
-
+PER_DEFINE_PERSISTENT_T2(MachPhysObjectFactory, MachPhysAPCId, MachPhysAPC);
+PER_PRIVATE_READ_WRITE_PERSISTENT_T2(MachPhysObjectFactory, MachPhysAPCId, MachPhysAPC);
 
 void MachDummyFunctionPersonnelCarrier()
 {
-    static  MachPhysObjectFactory< size_t, MachPhysAPC >   dummyFactory( 1 );
+    static MachPhysObjectFactory<size_t, MachPhysAPC> dummyFactory(1);
 }
 
 /* End TI2.CPP *****************************************************/

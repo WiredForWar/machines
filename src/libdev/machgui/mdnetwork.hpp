@@ -1,5 +1,5 @@
 /*
- * N E T W M O D E . H P P 
+ * N E T W M O D E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,42 +23,40 @@ class MachGuiNetworkProtocolMode
 // Canonical form revoked
 {
 public:
-
-    MachGuiNetworkProtocolMode( GuiDisplayable*, MachGuiStartupScreens* );
+    MachGuiNetworkProtocolMode(GuiDisplayable*, MachGuiStartupScreens*);
     virtual ~MachGuiNetworkProtocolMode();
 
     void CLASS_INVARIANT;
 
-	virtual void setNetworkDetails() = 0;
+    virtual void setNetworkDetails() = 0;
 
-	virtual bool validNetworkDetails( bool isHost ) = 0;
+    virtual bool validNetworkDetails(bool isHost) = 0;
 
-	virtual void updateGUI() {}
+    virtual void updateGUI() { }
 
-	virtual void charFocus() {}
+    virtual void charFocus() { }
 
-	bool connectionSet();
+    bool connectionSet();
     //  Use the no record version in assertions
-	bool connectionSetNoRecord();
-	
-protected:
-	virtual void readNetworkDetails() = 0;
+    bool connectionSetNoRecord();
 
-	GuiDisplayable& parent();
-	MachGuiStartupScreens& startupScreens();
+protected:
+    virtual void readNetworkDetails() = 0;
+
+    GuiDisplayable& parent();
+    MachGuiStartupScreens& startupScreens();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiNetworkProtocolMode& t );
+    friend ostream& operator<<(ostream& o, const MachGuiNetworkProtocolMode& t);
 
-    MachGuiNetworkProtocolMode( const MachGuiNetworkProtocolMode& );
-    MachGuiNetworkProtocolMode& operator =( const MachGuiNetworkProtocolMode& );
+    MachGuiNetworkProtocolMode(const MachGuiNetworkProtocolMode&);
+    MachGuiNetworkProtocolMode& operator=(const MachGuiNetworkProtocolMode&);
 
-    bool connectionSetHelper( NetNetwork::NetNetworkStatus status );
+    bool connectionSetHelper(NetNetwork::NetNetworkStatus status);
 
-	GuiDisplayable* pParent_;
-	MachGuiStartupScreens* pStartupScreens_;
+    GuiDisplayable* pParent_;
+    MachGuiStartupScreens* pStartupScreens_;
 };
-
 
 #endif
 

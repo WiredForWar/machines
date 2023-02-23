@@ -4,5 +4,5 @@
 
 dummyFunction_vertex_material()
 {
-	static ctl_vector<RenIVtxMaterial> vec;
+    static ctl_vector<RenIVtxMaterial> vec;
 }

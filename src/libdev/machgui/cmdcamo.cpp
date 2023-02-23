@@ -16,9 +16,8 @@
 #include "world4d/domain.hpp"
 #include "device/butevent.hpp"
 
-
-MachGuiCamouflageCommand::MachGuiCamouflageCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen )
+MachGuiCamouflageCommand::MachGuiCamouflageCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
 {
     TEST_INVARIANT;
 }
@@ -27,15 +26,15 @@ MachGuiCamouflageCommand::~MachGuiCamouflageCommand()
 {
     TEST_INVARIANT;
 
-    inGameScreen().cursorFilter( W4dDomain::EXCLUDE_NOT_SOLID );
+    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 }
 
 void MachGuiCamouflageCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiCamouflageCommand& t )
+ostream& operator<<(ostream& o, const MachGuiCamouflageCommand& t)
 {
 
     o << "MachGuiCamouflageCommand " << (void*)&t << " start" << std::endl;
@@ -44,121 +43,137 @@ ostream& operator <<( ostream& o, const MachGuiCamouflageCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiCamouflageCommand::pickOnTerrain
-(
-    const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
+// virtual
+void MachGuiCamouflageCommand::pickOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
-{}
+{
+}
 
-//virtual
-void MachGuiCamouflageCommand::pickOnActor
-(
-    MachActor* /*pActor*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
+// virtual
+void MachGuiCamouflageCommand::pickOnActor(
+    MachActor* /*pActor*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
-{}
+{
+}
 
-//virtual
-bool MachGuiCamouflageCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiCamouflageCommand::canActorEverExecute(const MachActor& actor) const
 {
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    return 	MachLogNetwork::instance().isNetworkGame() and
-    		actor.objectType() == MachLog::SPY_LOCATOR and
-    		actor.race() == playerRace;
+    return MachLogNetwork::instance().isNetworkGame() and actor.objectType() == MachLog::SPY_LOCATOR
+        and actor.race() == playerRace;
 }
 
-//virtual
+// virtual
 bool MachGuiCamouflageCommand::isInteractionComplete() const
 {
     return true;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiCamouflageCommand::cursorOnTerrain( const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/ )
+// virtual
+MachGui::Cursor2dType MachGuiCamouflageCommand::cursorOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/)
 {
     return MachGui::INVALID_CURSOR;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiCamouflageCommand::cursorOnActor( MachActor* /*pActor*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/ )
+// virtual
+MachGui::Cursor2dType MachGuiCamouflageCommand::cursorOnActor(
+    MachActor* /*pActor*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/)
 {
     return MachGui::INVALID_CURSOR;
 }
 
-//virtal
-void MachGuiCamouflageCommand::typeData( MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/ )
-{}
-
-//virtual
-bool MachGuiCamouflageCommand::doApply( MachActor* pActor, string* )
+// virtal
+void MachGuiCamouflageCommand::typeData(MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/)
 {
-	PRE( pActor->objectIsMachine() );
-	PRE( pActor->objectType() == MachLog::SPY_LOCATOR );
+}
+
+// virtual
+bool MachGuiCamouflageCommand::doApply(MachActor* pActor, string*)
+{
+    PRE(pActor->objectIsMachine());
+    PRE(pActor->objectType() == MachLog::SPY_LOCATOR);
 
     // Toggle camouflage
-    pActor->asMachine().camouflaged( not pActor->asMachine().camouflaged() );
+    pActor->asMachine().camouflaged(not pActor->asMachine().camouflaged());
 
     return true;
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiCamouflageCommand::clone() const
 {
-    return _NEW( MachGuiCamouflageCommand( &inGameScreen() ) );
+    return _NEW(MachGuiCamouflageCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiCamouflageCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/camo.bmp", "gui/commands/camo.bmp" );
+    static std::pair<string, string> names("gui/commands/camo.bmp", "gui/commands/camo.bmp");
     return names;
 }
 
-//virtual
+// virtual
 void MachGuiCamouflageCommand::start()
-{}
+{
+}
 
-//virtual
+// virtual
 void MachGuiCamouflageCommand::finish()
-{}
+{
+}
 
-//virtual
+// virtual
 uint MachGuiCamouflageCommand::cursorPromptStringId() const
 {
     return IDS_CAMOUFLAGE_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiCamouflageCommand::commandPromptStringid() const
 {
     return IDS_CAMOUFLAGE_START;
 }
 
-//virtual
+// virtual
 bool MachGuiCamouflageCommand::canAdminApply() const
 {
     return false;
 }
 
-//virtual
-bool MachGuiCamouflageCommand::doAdminApply( MachLogAdministrator*, string* )
+// virtual
+bool MachGuiCamouflageCommand::doAdminApply(MachLogAdministrator*, string*)
 {
-    PRE( canAdminApply() );
+    PRE(canAdminApply());
 
     return false;
 }
 
-//virtual
-bool MachGuiCamouflageCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiCamouflageCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_O and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_O and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /* End CMDCAMO.CPP **************************************************/

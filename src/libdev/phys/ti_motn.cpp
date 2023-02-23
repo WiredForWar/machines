@@ -9,7 +9,7 @@
 
 void PhysDummyFunction4()
 {
-	static ctl_list<PhysMotionControl*> dummy14;
+    static ctl_list<PhysMotionControl*> dummy14;
 }
 
 /* End TI2.CPP *****************************************************/

@@ -39,11 +39,12 @@
 // The template parameter DERIVED_APP ought to be the same as the macro
 // MOST_DERIVED_APP; I can't think of a way to verify this.
 
-template < class DERIVED_APP >
-class AfxOSSpecificApp :
-public  FRAMEWORK_OSAPP,                                // a #define above
-protected AfxSingletonApp<DERIVED_APP>            // prevent casting to this type
+template <class DERIVED_APP>
+class AfxOSSpecificApp
+    : public FRAMEWORK_OSAPP
+    , // a #define above
+      protected AfxSingletonApp<DERIVED_APP> // prevent casting to this type
 {
 public:
     using AfxSingletonApp<DERIVED_APP>::instance;
-} ;
+};

@@ -23,50 +23,49 @@ class MachGuiRadar : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiRadar( GuiDisplayable* pParent, const Gui::Coord& relPos );
-    ~MachGuiRadar();
+    MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos);
+    ~MachGuiRadar() override;
 
     void CLASS_INVARIANT;
 
-	void actor( MachActor* );
-	void resetActor();
+    void actor(MachActor*);
+    void resetActor();
 
-	void logHandler( MachLog1stPersonHandler* );
-	void resetLogHandler();
+    void logHandler(MachLog1stPersonHandler*);
+    void resetLogHandler();
 
-	void initialise();
+    void initialise();
 
-	void loadBitmaps();
+    void loadBitmaps();
 
-	void unloadBitmaps();
+    void unloadBitmaps();
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	void displayHealthArmour();
-	void displayRadarBlips();
-	void displayMotionDirection();
-	void displayAnimatedRadarFrame();
+    void displayHealthArmour();
+    void displayRadarBlips();
+    void displayMotionDirection();
+    void displayAnimatedRadarFrame();
 
-	static GuiBitmap* machineImage();
-	static GuiBitmap* constructionImage();
-	static GuiBitmap* podImage();
-	static GuiBitmap* missileEmplacementImage();
-	static GuiBitmap& debrisImage();
-	static GuiBitmap& artefactImage();
-	static GuiBitmap& oreImage();
-	static GuiBitmap* arrowImage();
+    static GuiBitmap* machineImage();
+    static GuiBitmap* constructionImage();
+    static GuiBitmap* podImage();
+    static GuiBitmap* missileEmplacementImage();
+    static GuiBitmap& debrisImage();
+    static GuiBitmap& artefactImage();
+    static GuiBitmap& oreImage();
+    static GuiBitmap* arrowImage();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiRadar& t );
+    friend ostream& operator<<(ostream& o, const MachGuiRadar& t);
 
-    MachGuiRadar( const MachGuiRadar& );
-    MachGuiRadar& operator =( const MachGuiRadar& );
+    MachGuiRadar(const MachGuiRadar&);
+    MachGuiRadar& operator=(const MachGuiRadar&);
 
-	// Data members...
-	MachGuiRadarImpl* pImpl_;
+    // Data members...
+    MachGuiRadarImpl* pImpl_;
 };
-
 
 #endif
 

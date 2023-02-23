@@ -28,11 +28,11 @@ using uint64 = uint64_t;
 #define _SDLAPP
 
 #if defined(__GNUC__) && !defined(__MINGW32__)
-    #define WEAK_SYMBOL __attribute__((weak))
-    #define DECL_DEPRECATED __attribute__((__deprecated__))
+#define WEAK_SYMBOL __attribute__((weak))
+#define DECL_DEPRECATED __attribute__((__deprecated__))
 #else
-    #define WEAK_SYMBOL
-    #define DECL_DEPRECATED
+#define WEAK_SYMBOL
+#define DECL_DEPRECATED
 #endif
 
-#endif  /*  #ifndef COMPILER_HPP    */
+#endif /*  #ifndef COMPILER_HPP    */

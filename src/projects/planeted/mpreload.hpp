@@ -1,5 +1,5 @@
 /*
- * M P R E L O A D . H P P 
+ * M P R E L O A D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachPreload
 
     Preloads all machine objects then deletes them so things like wheels will
-	work i.e. animate.
+    work i.e. animate.
 */
 
 #ifndef _MPRELOAD_HPP
@@ -20,27 +20,24 @@ class W4dSceneManager;
 class MachPreload
 {
 public:
-    
-    MachPreload( W4dSceneManager * pManager );
+    MachPreload(W4dSceneManager* pManager);
 
     ~MachPreload();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPreload& t );
+    friend ostream& operator<<(ostream& o, const MachPreload& t);
 
 private:
     // Operation deliberately revoked
-    MachPreload( const MachPreload& );
+    MachPreload(const MachPreload&);
 
     // Operation deliberately revoked
-    MachPreload& operator =( const MachPreload& );
+    MachPreload& operator=(const MachPreload&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPreload& );
-
+    bool operator==(const MachPreload&);
 };
-
 
 #endif
 

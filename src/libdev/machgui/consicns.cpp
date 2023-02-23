@@ -1,5 +1,5 @@
 /*
- * C O N S I C N S . C P P 
+ * C O N S I C N S . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,20 +20,24 @@
 #include "machphys/machphys.hpp"
 #include "ctl/pvector.hpp"
 
-MachConstructMenuIcons::MachConstructMenuIcons( GuiDisplayable* pParent, 
-												const Gui::Coord& rel, 
-												MachInGameScreen* pInGameScreen )
-: GuiSimpleScrollableList( 	pParent, 
-							Gui::Box( rel, reqWidth(), reqHeight( pInGameScreen ) ), 
-							MachConstructionSelectIcon::reqWidth(), 
-							MachConstructionSelectIcon::reqHeight(), 3 ),
-  MachLogNotifiable(  MachLogRaces::instance().pcController().race() ),   // What race is the PC controller controlling?							
-  consTree_(MachLogRaces::instance().constructionTree() ),
-  pInGameScreen_( pInGameScreen )
+MachConstructMenuIcons::MachConstructMenuIcons(
+    GuiDisplayable* pParent,
+    const Gui::Coord& rel,
+    MachInGameScreen* pInGameScreen)
+    : GuiSimpleScrollableList(
+        pParent,
+        Gui::Box(rel, reqWidth(), reqHeight(pInGameScreen)),
+        MachConstructionSelectIcon::reqWidth(),
+        MachConstructionSelectIcon::reqHeight(),
+        3)
+    , MachLogNotifiable(MachLogRaces::instance().pcController().race())
+    , // What race is the PC controller controlling?
+    consTree_(MachLogRaces::instance().constructionTree())
+    , pInGameScreen_(pInGameScreen)
 {
-	consTree_.addMe( this );
-	
-    //Construct the construction icons
+    consTree_.addMe(this);
+
+    // Construct the construction icons
     refreshConstructIcons();
 
     TEST_INVARIANT;
@@ -42,15 +46,15 @@ MachConstructMenuIcons::MachConstructMenuIcons( GuiDisplayable* pParent,
 MachConstructMenuIcons::~MachConstructMenuIcons()
 {
     TEST_INVARIANT;
-	consTree_.removeMe( this );
+    consTree_.removeMe(this);
 }
 
 void MachConstructMenuIcons::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachConstructMenuIcons& t )
+ostream& operator<<(ostream& o, const MachConstructMenuIcons& t)
 {
 
     o << "MachConstructMenuIcons " << (void*)&t << " start" << std::endl;
@@ -59,61 +63,58 @@ ostream& operator <<( ostream& o, const MachConstructMenuIcons& t )
     return o;
 }
 
-//static 
-size_t MachConstructMenuIcons::reqHeight( MachInGameScreen* pInGameScreen )
+// static
+size_t MachConstructMenuIcons::reqHeight(MachInGameScreen* pInGameScreen)
 {
-	int height = pInGameScreen->controlPanel().getVisibleHeight() - 2;
+    int height = pInGameScreen->controlPanel().getVisibleHeight() - 2;
 
-	// Make height a multiple of MachBuildMachineIcon::reqHeight
-	height -= height % MachConstructionSelectIcon::reqHeight();
+    // Make height a multiple of MachBuildMachineIcon::reqHeight
+    height -= height % MachConstructionSelectIcon::reqHeight();
 
-	return height;	
+    return height;
 }
 
-//static 
+// static
 size_t MachConstructMenuIcons::reqWidth()
 {
-	return ( 3 * MachConstructionSelectIcon::reqWidth() );	
+    return (3 * MachConstructionSelectIcon::reqWidth());
 }
 
 // virtual
 void MachConstructMenuIcons::doDisplay()
 {
-	pInGameScreen_->controlPanel().redrawAreaImmediate( *this );
+    pInGameScreen_->controlPanel().redrawAreaImmediate(*this);
 
-	GuiSimpleScrollableList::doDisplay();
+    GuiSimpleScrollableList::doDisplay();
 }
 
 // virtual
 void MachConstructMenuIcons::notifiableBeNotified()
 {
-	deleteAllChildren();
-	refreshConstructIcons();
-	
-	TEST_INVARIANT;	
+    deleteAllChildren();
+    refreshConstructIcons();
+
+    TEST_INVARIANT;
 }
 
 void MachConstructMenuIcons::refreshConstructIcons()
 {
-	//Construct the construction icons
-  	  	
-	MachLogConstructionTree::ConstructionItems& consItems = consTree_.constructionItems();
-	MachLogConstructionTree::ConstructionItems::iterator i = consItems.begin();
-	//The activated check has to occur inside the loop as individual items may be deactivated
-	//This is slightly less efficient as we will now trawl through the whole lot.
-	while (i != consItems.end() /*and (*i)->activated( race() )*/ )
-	{
-		if( (*i)->activated( race() ) )
-			 _NEW( MachConstructionSelectIcon( 	this, 
-			 									pInGameScreen_,
-												*(*i) ) );
-		++i;	
-	}
-	
-	childrenUpdated();
-	
-	TEST_INVARIANT;	
-}
+    // Construct the construction icons
 
+    MachLogConstructionTree::ConstructionItems& consItems = consTree_.constructionItems();
+    MachLogConstructionTree::ConstructionItems::iterator i = consItems.begin();
+    // The activated check has to occur inside the loop as individual items may be deactivated
+    // This is slightly less efficient as we will now trawl through the whole lot.
+    while (i != consItems.end() /*and (*i)->activated( race() )*/)
+    {
+        if ((*i)->activated(race()))
+            _NEW(MachConstructionSelectIcon(this, pInGameScreen_, *(*i)));
+        ++i;
+    }
+
+    childrenUpdated();
+
+    TEST_INVARIANT;
+}
 
 /* End CONSICNS.CPP *************************************************/

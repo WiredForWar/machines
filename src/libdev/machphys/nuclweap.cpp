@@ -43,19 +43,25 @@
 
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysNuclearWeapon );
+PER_DEFINE_PERSISTENT(MachPhysNuclearWeapon);
 
-MachPhysNuclearWeapon::MachPhysNuclearWeapon( W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::Mounting mounting )
-: MachPhysLinearWeapon( exemplar(), mounting, pParent, localTransform )
+MachPhysNuclearWeapon::MachPhysNuclearWeapon(
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform,
+    MachPhys::Mounting mounting)
+    : MachPhysLinearWeapon(exemplar(), mounting, pParent, localTransform)
 {
     TEST_INVARIANT;
 }
 
-//One-time ctor
+// One-time ctor
 MachPhysNuclearWeapon::MachPhysNuclearWeapon()
-:MachPhysLinearWeapon( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(),
-                          SysPathName( compositeFilePath() ),
-                          MachPhys::NUCLEAR_MISSILE, MachPhys::LEFT )
+    : MachPhysLinearWeapon(
+        MachPhysWeaponPersistence::instance().pRoot(),
+        MexTransform3d(),
+        SysPathName(compositeFilePath()),
+        MachPhys::NUCLEAR_MISSILE,
+        MachPhys::LEFT)
 {
     TEST_INVARIANT;
 }
@@ -63,10 +69,9 @@ MachPhysNuclearWeapon::MachPhysNuclearWeapon()
 MachPhysNuclearWeapon::~MachPhysNuclearWeapon()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysNuclearWeapon& MachPhysNuclearWeapon::exemplar()
 {
     return MachPhysWeaponPersistence::instance().nuclearExemplar();
@@ -74,10 +79,10 @@ const MachPhysNuclearWeapon& MachPhysNuclearWeapon::exemplar()
 
 void MachPhysNuclearWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysNuclearWeapon& t )
+ostream& operator<<(ostream& o, const MachPhysNuclearWeapon& t)
 {
 
     o << "MachPhysNuclearWeapon " << (void*)&t << " start" << std::endl;
@@ -86,96 +91,94 @@ ostream& operator <<( ostream& o, const MachPhysNuclearWeapon& t )
     return o;
 }
 
-//static
+// static
 const char* MachPhysNuclearWeapon::compositeFilePath()
 {
-	return "models/weapons/nmissile/point.cdf";
+    return "models/weapons/nmissile/point.cdf";
 }
 
-//static
+// static
 PhysRelativeTime MachPhysNuclearWeapon::destroy(W4dComposite* pComposit, const PhysAbsoluteTime& startTime)
 {
-	PhysRelativeTime duration = 10;
+    PhysRelativeTime duration = 10;
 
-	//the victim becomes invisible once hit
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( false ) ) );
-	visibilityPlanPtr->add(false, duration);
+    // the victim becomes invisible once hit
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    visibilityPlanPtr->add(false, duration);
 
-    pComposit->entityPlanForEdit().visibilityPlan( visibilityPlanPtr, startTime );
-
-	return duration;
-
-}
-
-//virtual
-MachPhysLinearProjectile* MachPhysNuclearWeapon::createProjectile
-(
-    const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)
-{
-    return createMissile( burstStartTime, index, pParent, target, targetOffset );
-}
-
-MachPhysMissile* MachPhysNuclearWeapon::createMissile
-(
-    const PhysAbsoluteTime& startTime, uint, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)
-{
-    //Create a nuke missile
-	MexTransform3d xform = localTransform();
-	xform.translate(MexPoint3d(0, 0, 0.128));
-
-	//xform = globalTransform() * xForm
-	xform.preTransform( globalTransform() );  //global
-
-	MexTransform3d missileXform = pParent->globalTransform();
-
-    //this = inV(this) * t
- 	missileXform.transformInverse( xform );
-
-    MachPhysMissile* pMissile = _NEW( MachPhysMissile( pParent, missileXform, MachPhysMissile::NUCLEAR_MISSILE ) );
-
-    //Make it fly
-	MexPoint3d targetOffsetGlobal = targetOffset;
-	target.globalTransform().transform(&targetOffsetGlobal);
-
-	pMissile->beLaunched(startTime, weaponData(), targetOffsetGlobal);
-
-	W4dSoundManager::instance().play( pMissile, SID_NUKEMLAUNCH,
-	                                  startTime, 1 );
-
-	W4dSoundManager::instance().play( pMissile, SID_NUKEMFLY,
-	                                  startTime, 0 );
-
-    return pMissile;
-}
-
-//virtual
-PhysRelativeTime MachPhysNuclearWeapon::fire( const PhysAbsoluteTime& startTime, int )
-{
-
-	PhysRelativeTime duration = 5;
-	lighting(RenColour(0.784, 0.784, 0.784), startTime, 5);
+    pComposit->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
 
     return duration;
 }
 
-MachPhysNuclearWeapon::MachPhysNuclearWeapon( PerConstructor con )
-: MachPhysLinearWeapon( con )
+// virtual
+MachPhysLinearProjectile* MachPhysNuclearWeapon::createProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
+{
+    return createMissile(burstStartTime, index, pParent, target, targetOffset);
+}
+
+MachPhysMissile* MachPhysNuclearWeapon::createMissile(
+    const PhysAbsoluteTime& startTime,
+    uint,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
+{
+    // Create a nuke missile
+    MexTransform3d xform = localTransform();
+    xform.translate(MexPoint3d(0, 0, 0.128));
+
+    // xform = globalTransform() * xForm
+    xform.preTransform(globalTransform()); // global
+
+    MexTransform3d missileXform = pParent->globalTransform();
+
+    // this = inV(this) * t
+    missileXform.transformInverse(xform);
+
+    MachPhysMissile* pMissile = _NEW(MachPhysMissile(pParent, missileXform, MachPhysMissile::NUCLEAR_MISSILE));
+
+    // Make it fly
+    MexPoint3d targetOffsetGlobal = targetOffset;
+    target.globalTransform().transform(&targetOffsetGlobal);
+
+    pMissile->beLaunched(startTime, weaponData(), targetOffsetGlobal);
+
+    W4dSoundManager::instance().play(pMissile, SID_NUKEMLAUNCH, startTime, 1);
+
+    W4dSoundManager::instance().play(pMissile, SID_NUKEMFLY, startTime, 0);
+
+    return pMissile;
+}
+
+// virtual
+PhysRelativeTime MachPhysNuclearWeapon::fire(const PhysAbsoluteTime& startTime, int)
+{
+
+    PhysRelativeTime duration = 5;
+    lighting(RenColour(0.784, 0.784, 0.784), startTime, 5);
+
+    return duration;
+}
+
+MachPhysNuclearWeapon::MachPhysNuclearWeapon(PerConstructor con)
+    : MachPhysLinearWeapon(con)
 {
 }
 
-
-void perWrite( PerOstream& ostr, const MachPhysNuclearWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachPhysNuclearWeapon& weapon)
 {
     const MachPhysWeapon& base = weapon;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysNuclearWeapon& weapon )
+void perRead(PerIstream& istr, MachPhysNuclearWeapon& weapon)
 {
     MachPhysWeapon& base = weapon;
 

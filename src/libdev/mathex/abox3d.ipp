@@ -8,36 +8,32 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////
 
-
 _CODE_INLINE
 MexAlignedBox3d::MexAlignedBox3d()
-:   isEmpty_( true ),
-    spinSafe_( false )
+    : isEmpty_(true)
+    , spinSafe_(false)
 {
     TEST_INVARIANT;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-
-
 _CODE_INLINE
-bool MexAlignedBox3d::operator ==( const MexAlignedBox3d& b ) const
+bool MexAlignedBox3d::operator==(const MexAlignedBox3d& b) const
 {
-    return (minCorner_ == b.minCorner_) and
-           (maxCorner_ == b.maxCorner_);
+    return (minCorner_ == b.minCorner_) and (maxCorner_ == b.maxCorner_);
 }
 
 _CODE_INLINE
-bool MexAlignedBox3d::operator !=( const MexAlignedBox3d& b ) const
+bool MexAlignedBox3d::operator!=(const MexAlignedBox3d& b) const
 {
     return !(*this == b);
 }
@@ -55,31 +51,31 @@ const MexPoint3d& MexAlignedBox3d::maxCorner() const
 }
 
 _CODE_INLINE
-void MexAlignedBox3d::minCorner( const MexPoint3d& p )
+void MexAlignedBox3d::minCorner(const MexPoint3d& p)
 {
-    PRE( p.x() <= maxCorner_.x() );
-    PRE( p.y() <= maxCorner_.y() );
-    PRE( p.z() <= maxCorner_.z() );
+    PRE(p.x() <= maxCorner_.x());
+    PRE(p.y() <= maxCorner_.y());
+    PRE(p.z() <= maxCorner_.z());
 
     minCorner_ = p;
 }
 
 _CODE_INLINE
-void MexAlignedBox3d::maxCorner( const MexPoint3d& q )
+void MexAlignedBox3d::maxCorner(const MexPoint3d& q)
 {
-    PRE( q.x() >= minCorner_.x() );
-    PRE( q.y() >= minCorner_.y() );
-    PRE( q.z() >= minCorner_.z() );
+    PRE(q.x() >= minCorner_.x());
+    PRE(q.y() >= minCorner_.y());
+    PRE(q.z() >= minCorner_.z());
 
     maxCorner_ = q;
 }
 
 _CODE_INLINE
-void MexAlignedBox3d::corners( const MexPoint3d& p, const MexPoint3d& q )
+void MexAlignedBox3d::corners(const MexPoint3d& p, const MexPoint3d& q)
 {
-    PRE( p.x() <= q.x() );
-    PRE( p.y() <= q.y() );
-    PRE( p.z() <= q.z() );
+    PRE(p.x() <= q.x());
+    PRE(p.y() <= q.y());
+    PRE(p.z() <= q.z());
 
     minCorner_ = p;
     maxCorner_ = q;
@@ -106,6 +102,6 @@ MATHEX_SCALAR MexAlignedBox3d::zLength() const
 _CODE_INLINE
 MATHEX_SCALAR MexAlignedBox3d::volume() const
 {
-	return xLength() * yLength() * zLength();
+    return xLength() * yLength() * zLength();
 }
 /* End ABOX3D.IPP ***************************************************/

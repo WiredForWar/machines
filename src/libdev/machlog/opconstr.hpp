@@ -1,5 +1,5 @@
 /*
- * O P C O N S T R . H P P 
+ * O P C O N S T R . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -14,48 +14,41 @@
 
 #include "machlog/oplabour.hpp"
 
-
 class MachLogConstructor;
 class MachLogConstruction;
 
 // orthodox canonical (revoked)
 
-class MachLogConstructOperation
-: public MachLogLabourOperation
+class MachLogConstructOperation : public MachLogLabourOperation
 {
 public:
+    MachLogConstructOperation(MachLogConstructor* pActor, MachLogConstruction*);
 
-	MachLogConstructOperation( MachLogConstructor * pActor, MachLogConstruction * );	
+    // Useful for evade logic to know
+    bool constructingMissileEmplacement() const;
 
-	// Useful for evade logic to know
-	bool constructingMissileEmplacement() const;
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogConstructOperation );
-	PER_FRIEND_READ_WRITE( MachLogConstructOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogConstructOperation);
+    PER_FRIEND_READ_WRITE(MachLogConstructOperation);
 
 protected:
-	
-	virtual bool doIsFinished() const;
-	
-	virtual void doOutputOperator( ostream& ) const;
-	
-	// inherited from MLLabourOperation
-	virtual bool clientSpecificNotification( int clientData );		
+    bool doIsFinished() const override;
 
+    void doOutputOperator(ostream&) const override;
+
+    // inherited from MLLabourOperation
+    bool clientSpecificNotification(int clientData) override;
 
 private:
+    // Operations deliberately revoked
+    MachLogConstructOperation(const MachLogConstructOperation&);
+    MachLogConstructOperation& operator=(const MachLogConstructOperation&);
+    bool operator==(const MachLogConstructOperation&);
 
-	// Operations deliberately revoked
-    MachLogConstructOperation( const MachLogConstructOperation& );
-    MachLogConstructOperation& operator =( const MachLogConstructOperation& );
-    bool operator ==( const MachLogConstructOperation& );
-	
-	// inherited from MachLogLabourOperation
-	virtual PhysRelativeTime interactWithBuilding();
-		
+    // inherited from MachLogLabourOperation
+    PhysRelativeTime interactWithBuilding() override;
 };
 
-PER_DECLARE_PERSISTENT( MachLogConstructOperation );
+PER_DECLARE_PERSISTENT(MachLogConstructOperation);
 
 #endif
 

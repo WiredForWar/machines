@@ -17,44 +17,41 @@
 
 #include "world4d/entity.hpp"
 
-
-class MachPhysLoadingLight: public W4dEntity
+class MachPhysLoadingLight : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysLoadingLight( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysLoadingLight(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysLoadingLight();
+    // dtor
+    ~MachPhysLoadingLight() override;
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysLoadingLight& exemplar();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLoadingLight& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLoadingLight& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLoadingLight );
+    PER_MEMBER_PERSISTENT(MachPhysLoadingLight);
 
 private:
-    //Deliberately revoked
-    MachPhysLoadingLight( const MachPhysLoadingLight& );
-    MachPhysLoadingLight& operator =( const MachPhysLoadingLight& );
-    bool operator ==( const MachPhysLoadingLight& );
+    // Deliberately revoked
+    MachPhysLoadingLight(const MachPhysLoadingLight&);
+    MachPhysLoadingLight& operator=(const MachPhysLoadingLight&);
+    bool operator==(const MachPhysLoadingLight&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLoadingLight();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLoadingLight );
-PER_READ_WRITE( MachPhysLoadingLight );
+PER_DECLARE_PERSISTENT(MachPhysLoadingLight);
+PER_READ_WRITE(MachPhysLoadingLight);
 
 #endif
 

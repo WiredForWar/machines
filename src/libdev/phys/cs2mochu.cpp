@@ -8,16 +8,16 @@
 #include "phys/internal/cs2mochu.hpp"
 
 #ifndef _INLINE
-    #include "phys/internal/cs2mochu.ipp"
+#include "phys/internal/cs2mochu.ipp"
 #endif
 
-PhysCS2dMotionChunk::PhysCS2dMotionChunk
-(
-    const MotionChunkId& id, const ObjectId& objectId, const PhysMotionChunk& motionChunk
-)
-:   id_( id ),
-    objectId_( objectId ),
-    motionChunk_( motionChunk )
+PhysCS2dMotionChunk::PhysCS2dMotionChunk(
+    const MotionChunkId& id,
+    const ObjectId& objectId,
+    const PhysMotionChunk& motionChunk)
+    : id_(id)
+    , objectId_(objectId)
+    , motionChunk_(motionChunk)
 {
 
     TEST_INVARIANT;
@@ -26,15 +26,14 @@ PhysCS2dMotionChunk::PhysCS2dMotionChunk
 PhysCS2dMotionChunk::~PhysCS2dMotionChunk()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysCS2dMotionChunk::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysCS2dMotionChunk& t )
+ostream& operator<<(ostream& o, const PhysCS2dMotionChunk& t)
 {
 
     o << "PhysCS2dMotionChunk " << (void*)&t << " start" << std::endl;

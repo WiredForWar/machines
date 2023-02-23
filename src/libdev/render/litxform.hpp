@@ -1,5 +1,5 @@
 /*
- * L I T X F O R M . H P P 
+ * L I T X F O R M . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -15,9 +15,9 @@ class RenColour;
 class RenLightColourTransform
 {
 public:
-	// PRE(out);
-	virtual void transform(const RenColour& in, Ren::LightType, RenColour* out) const =0;
-	virtual ~RenLightColourTransform()	{}
+    // PRE(out);
+    virtual void transform(const RenColour& in, Ren::LightType, RenColour* out) const = 0;
+    virtual ~RenLightColourTransform() { }
 };
 
 #endif

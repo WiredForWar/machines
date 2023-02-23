@@ -1,5 +1,5 @@
 /*
- * D B S A V G A M . C P P 
+ * D B S A V G A M . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,14 +10,14 @@
 #include "machgui/dbplayer.hpp"
 #include "machgui/dbscenar.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbSavedGame );
+PER_DEFINE_PERSISTENT(MachGuiDbSavedGame);
 
-MachGuiDbSavedGame::MachGuiDbSavedGame
-(
-    const string& userFileName, const string& fileName, MachGuiDbScenario* pDbScenario
-)
+MachGuiDbSavedGame::MachGuiDbSavedGame(
+    const string& userFileName,
+    const string& fileName,
+    MachGuiDbScenario* pDbScenario)
 {
-    pData_ = _NEW( MachGuiDbISavedGame );
+    pData_ = _NEW(MachGuiDbISavedGame);
     pData_->userFileName_ = userFileName;
     pData_->fileName_ = fileName;
     pData_->pDbScenario_ = pDbScenario;
@@ -29,15 +29,15 @@ MachGuiDbSavedGame::~MachGuiDbSavedGame()
 {
     TEST_INVARIANT;
 
-    _DELETE( pData_ );
+    _DELETE(pData_);
 }
 
 void MachGuiDbSavedGame::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbSavedGame& t )
+ostream& operator<<(ostream& o, const MachGuiDbSavedGame& t)
 {
 
     o << "MachGuiDbSavedGame " << (void*)&t << " start" << std::endl;
@@ -46,18 +46,18 @@ ostream& operator <<( ostream& o, const MachGuiDbSavedGame& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbSavedGame& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbSavedGame& ob)
 {
     ostr << ob.pData_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbSavedGame& ob )
+void perRead(PerIstream& istr, MachGuiDbSavedGame& ob)
 {
     istr >> ob.pData_;
 }
 
-MachGuiDbSavedGame::MachGuiDbSavedGame( PerConstructor )
-:   pData_( NULL )
+MachGuiDbSavedGame::MachGuiDbSavedGame(PerConstructor)
+    : pData_(nullptr)
 {
 }
 
@@ -66,7 +66,7 @@ const string& MachGuiDbSavedGame::userFileName() const
     return pData_->userFileName_;
 }
 
-void MachGuiDbSavedGame::userFileName( const string& name )
+void MachGuiDbSavedGame::userFileName(const string& name)
 {
     pData_->userFileName_ = name;
 }
@@ -76,23 +76,23 @@ const string& MachGuiDbSavedGame::externalFileName() const
     return pData_->fileName_;
 }
 
-void MachGuiDbSavedGame::externalFileName( const string& name )
+void MachGuiDbSavedGame::externalFileName(const string& name)
 {
     pData_->fileName_ = name;
 }
 
 bool MachGuiDbSavedGame::hasPlayer() const
 {
-    return pData_->pDbPlayer_ != NULL;
+    return pData_->pDbPlayer_ != nullptr;
 }
 
 MachGuiDbPlayer& MachGuiDbSavedGame::player() const
 {
-    PRE( hasPlayer() );
+    PRE(hasPlayer());
     return *(pData_->pDbPlayer_);
 }
 
-void MachGuiDbSavedGame::player( MachGuiDbPlayer* pDbPlayer )
+void MachGuiDbSavedGame::player(MachGuiDbPlayer* pDbPlayer)
 {
     pData_->pDbPlayer_ = pDbPlayer;
 }
@@ -102,7 +102,7 @@ bool MachGuiDbSavedGame::isCampaignGame() const
     return pData_->isCampaign_;
 }
 
-void MachGuiDbSavedGame::isCampaignGame( bool isIt )
+void MachGuiDbSavedGame::isCampaignGame(bool isIt)
 {
     pData_->isCampaign_ = isIt;
 }
@@ -112,9 +112,9 @@ MachGuiDbScenario& MachGuiDbSavedGame::scenario() const
     return *(pData_->pDbScenario_);
 }
 
-void MachGuiDbSavedGame::scenario( MachGuiDbScenario* pDbScenario )
+void MachGuiDbSavedGame::scenario(MachGuiDbScenario* pDbScenario)
 {
-    PRE( pDbScenario != NULL );
+    PRE(pDbScenario != nullptr);
     pData_->pDbScenario_ = pDbScenario;
 }
 

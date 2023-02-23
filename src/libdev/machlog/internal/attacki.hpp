@@ -1,5 +1,5 @@
 /*
- * O P E R A T I I . H P P 
+ * O P E R A T I I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,34 +24,39 @@ class MachLogRace;
 class MachLogAttackOperationImpl
 {
 public:
-	MachLogAttackOperationImpl( MachLogMachine * pActor, MachActor * pDirectObject, MachLogAttackOperation::RaceChangeTerminate rct );
-	MachLogAttackOperationImpl( MachLogMachine * pActor, MachActor * pDirectObject, size_t commandId, MachLogAttackOperation::RaceChangeTerminate rct );
-	~MachLogAttackOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogAttackOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogAttackOperationImpl );
-	
-	void CLASS_INVARIANT;
+    MachLogAttackOperationImpl(
+        MachLogMachine* pActor,
+        MachActor* pDirectObject,
+        MachLogAttackOperation::RaceChangeTerminate rct);
+    MachLogAttackOperationImpl(
+        MachLogMachine* pActor,
+        MachActor* pDirectObject,
+        size_t commandId,
+        MachLogAttackOperation::RaceChangeTerminate rct);
+    ~MachLogAttackOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogAttackOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogAttackOperationImpl);
 
-	friend class MachLogAttackOperation;
-	
+    void CLASS_INVARIANT;
+
+    friend class MachLogAttackOperation;
+
 private:
-	bool											currentlyAttached_;
-	MachLogMachine *								pActor_;
-	MachLogAggressor*								pAgg_;
-	MachLogAdministrator*							pAdm_;
-	MachActor *										pDirectObject_;
-    MexPoint2d          							lastTargetPosition_;
-	bool											targetBehindCover_;
-	MachLogAttackOperation::Action					lastAction_; //Action decided on in previous update
-	MachLogAttackOperation::RaceChangeTerminate	 	raceChangeTerminate_;
-    size_t              							commandId_;
-	bool											hasGorillaPunch_;
-	PhysAbsoluteTime								nextHardCoverCheckTime_;
-
-	
+    bool currentlyAttached_;
+    MachLogMachine* pActor_;
+    MachLogAggressor* pAgg_;
+    MachLogAdministrator* pAdm_;
+    MachActor* pDirectObject_;
+    MexPoint2d lastTargetPosition_;
+    bool targetBehindCover_;
+    MachLogAttackOperation::Action lastAction_; // Action decided on in previous update
+    MachLogAttackOperation::RaceChangeTerminate raceChangeTerminate_;
+    size_t commandId_;
+    bool hasGorillaPunch_;
+    PhysAbsoluteTime nextHardCoverCheckTime_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAttackOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogAttackOperationImpl);
 
 #endif
 

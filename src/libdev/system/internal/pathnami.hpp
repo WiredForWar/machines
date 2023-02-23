@@ -22,11 +22,11 @@ class SysPathNameImpl
 // Memberwise Cannonical.
 {
 public:
-	friend class SysPathName;
+    friend class SysPathName;
 
-	string pathname_;
+    string pathname_;
 
-	// If this is a relative pathname this includes the root directory.
+    // If this is a relative pathname this includes the root directory.
     string fullPathname_;
     ctl_vector<string> components_;
 
@@ -41,4 +41,3 @@ public:
 };
 
 #endif /* _SYSTEM_INTERNAL_PATHNAME_IMPL_HPP **************/
-

@@ -7,18 +7,18 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////
 
 _CODE_INLINE
-void * operator new( size_t, void *p )
+void* operator new(size_t, void* p)
 {
-	return p;
+    return p;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -26,241 +26,241 @@ void * operator new( size_t, void *p )
 // _CODE_INLINE
 // void destroy( char * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( unsigned char * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( short * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( unsigned short * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( int * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( unsigned int * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( long * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( unsigned long * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( float * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( double * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
+//
 // _CODE_INLINE
 // void destroy( char * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
-// void destroy( unsigned char * * ) 
+//
+// _CODE_INLINE
+// void destroy( unsigned char * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
-// void destroy( short * * ) 
+//
+// _CODE_INLINE
+// void destroy( short * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
-// void destroy( unsigned short * * ) 
+//
+// _CODE_INLINE
+// void destroy( unsigned short * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( int * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned int * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( long * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned long * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( float * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( double * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
-// void destroy( char *, char * ) 
+//
+// _CODE_INLINE
+// void destroy( char *, char * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned char *, unsigned char * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( short *, short * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned short *, unsigned short * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( int *, int * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned int *, unsigned int * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( long *, long * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned long *, unsigned long * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( float *, float * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( double *, double * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( char * *, char * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned char * *, unsigned char * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( short * *, short * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned short * *, unsigned short * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( int * *, int * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
-// void destroy( unsigned int * *, unsigned int * * ) 
+//
+// _CODE_INLINE
+// void destroy( unsigned int * *, unsigned int * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( long * *, long * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( unsigned long * *, unsigned long * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( float * *, float * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
-// 
-// _CODE_INLINE 
+//
+// _CODE_INLINE
 // void destroy( double * *, double * * )
 // {
-// 	/* Intentionally Empty	*/
+//  /* Intentionally Empty  */
 // }
 
 //////////////////////////////////////////////////////////////////////

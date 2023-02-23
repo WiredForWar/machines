@@ -1,5 +1,5 @@
 /*
- * P 1 H A N D L R . H P P 
+ * P 1 H A N D L R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -33,114 +33,118 @@ class MachLog1stPersonHandler
 // Canonical form revoked
 {
 public:
-    //Indicates whether handler is controlling a remote or local first person machine
-    enum NetworkType{ LOCAL, REMOTE };
+    // Indicates whether handler is controlling a remote or local first person machine
+    enum NetworkType
+    {
+        LOCAL,
+        REMOTE
+    };
 
     virtual ~MachLog1stPersonHandler();
 
-    //The actor being controlled
+    // The actor being controlled
     MachActor& actor();
 
-    //Returns the entity to become the camera parent, and the local transform to give it
-    //in pOffsetTransform
-    virtual W4dEntity& cameraAttachment( MexTransform3d* pOffsetTransform ) const = 0;
+    // Returns the entity to become the camera parent, and the local transform to give it
+    // in pOffsetTransform
+    virtual W4dEntity& cameraAttachment(MexTransform3d* pOffsetTransform) const = 0;
 
-    //To be called immediately after camera has been attached to its parent entity
-    //The camera is supplied
-    void initialiseCamera( MachLogCamera* pCamera );
-    //PRE( pCamera != NULL )
+    // To be called immediately after camera has been attached to its parent entity
+    // The camera is supplied
+    void initialiseCamera(MachLogCamera* pCamera);
+    // PRE( pCamera != NULL )
 
-    //Movement set up. If not called every frame assumption is motion stopped
+    // Movement set up. If not called every frame assumption is motion stopped
     void moveForwards();
     void moveBackwards();
     void turnLeft();
     void turnRight();
 
-    //Set/get the fast/slow turn rate option
-    void turnAtFastRate( bool fast );
+    // Set/get the fast/slow turn rate option
+    void turnAtFastRate(bool fast);
     bool turnAtFastRate() const;
 
-    //Control for looking up and down
-    void lookDown( MexRadians byAngle ); //up is negative angle
-    void lookAhead(); //Centre up/down angle
-    MexRadians lookUpDownAngle() const; //Current angle
+    // Control for looking up and down
+    void lookDown(MexRadians byAngle); // up is negative angle
+    void lookAhead(); // Centre up/down angle
+    MexRadians lookUpDownAngle() const; // Current angle
 
-    //Control for looking left/right
+    // Control for looking left/right
     bool canTurnHead() const;
-    void turnHeadBy( MexRadians angle );
-    void turnHeadTo( MexRadians angle );
+    void turnHeadBy(MexRadians angle);
+    void turnHeadTo(MexRadians angle);
     MexRadians currentHeadAngle() const;
 
-    //True if any enabled weapon is in angle range of the current target point
+    // True if any enabled weapon is in angle range of the current target point
     bool targetAnglesValid() const;
 
-    //To be called every frame after the setup calls.
-    //Clears all setups after processing.
+    // To be called every frame after the setup calls.
+    // Clears all setups after processing.
     void update();
 
-    //Number of weapons mounted on the actor
+    // Number of weapons mounted on the actor
     uint nWeapons() const;
 
-    //The index'th weapon
-    MachLogWeapon& weapon( uint index );
-    //PRE( index < nWeapons() );
+    // The index'th weapon
+    MachLogWeapon& weapon(uint index);
+    // PRE( index < nWeapons() );
 
-    //Sets the status of the index'th weapon
-    void enableWeapon( uint index, bool isEnabled );
-    //PRE( index < nWeapons() );
+    // Sets the status of the index'th weapon
+    void enableWeapon(uint index, bool isEnabled);
+    // PRE( index < nWeapons() );
 
-    //The statu sof the index'th weapon
-    bool isWeaponEnabled( uint index ) const;
-    //PRE( index < nWeapons() );
+    // The statu sof the index'th weapon
+    bool isWeaponEnabled(uint index) const;
+    // PRE( index < nWeapons() );
 
-    //Maximum range of all selected weapons
+    // Maximum range of all selected weapons
     MATHEX_SCALAR maxWeaponRange() const;
-    
-    //True iff the index'th weapon cannot fire at a point, and must have an actor to aim at
-    bool weaponCanOnlyFireAtActor( uint index ) const;
-    //PRE( index < nWeapons() );
 
-    //returns info about what is in the line of sight, within maximum enabled weapon range.
+    // True iff the index'th weapon cannot fire at a point, and must have an actor to aim at
+    bool weaponCanOnlyFireAtActor(uint index) const;
+    // PRE( index < nWeapons() );
+
+    // returns info about what is in the line of sight, within maximum enabled weapon range.
     //`targetInfo.strikeType` indicates whether hits terrain, actor or nothing in range.
     //`targetInfo.shootingPoint` returns the location of line-of-sight impact or end-of-range location FOR WEAPONS.
     //`targetInfo.shootingTarget` returns the actor that would be hit BY WEAPONS.
-    // !! USE THE GETTERS IN TargetingInfo TO GET THE CORRECT DATA FOR COMMANDS !!
+    //  !! USE THE GETTERS IN TargetingInfo TO GET THE CORRECT DATA FOR COMMANDS !!
     using TargetingInfo = MachLog1stPersonTargetInfo;
     void acquireTargetingInfo(TargetingInfo& targetInfo) const;
 
-    //Are we pointing towards the ground for a "move to" command?
+    // Are we pointing towards the ground for a "move to" command?
     bool isPointingTowardsGround() const;
 
-    //Validate targeting info for move commands
+    // Validate targeting info for move commands
     bool isViableMoveToTarget(const TargetingInfo& targetInfo) const;
 
-    //Display the move indicator so player can see where the squad is going
+    // Display the move indicator so player can see where the squad is going
     void displayMoveIndicator(const MexPoint3d& targetPoint);
 
-    //Use to check if the indicator is still present
+    // Use to check if the indicator is still present
     bool isMoveIndicatorPresent() const;
 
-    //Fire each enabled weapon at targetPoint, unless requires an actor
-    void fire( const MexPoint3d& targetPoint );
+    // Fire each enabled weapon at targetPoint, unless requires an actor
+    void fire(const MexPoint3d& targetPoint);
 
-    //Fire each enabled weapon which requires an actor at pTargetActor
-    void fire( MachActor* pTargetActor );
+    // Fire each enabled weapon which requires an actor at pTargetActor
+    void fire(MachActor* pTargetActor);
 
-    //true iff handling an entity under 1st person control on a remote node
+    // true iff handling an entity under 1st person control on a remote node
     bool remotelyControlled() const;
 
-    //Update the state of the controlled entity from state
-    void updateState( const MachPhysFirstPersonStateVector& state );
+    // Update the state of the controlled entity from state
+    void updateState(const MachPhysFirstPersonStateVector& state);
 
-    //Fill out pState with current data for the controlled entity
-    void computeState( MachPhysFirstPersonStateVector* pState );
+    // Fill out pState with current data for the controlled entity
+    void computeState(MachPhysFirstPersonStateVector* pState);
 
-    //True if can return the MachLogCamera for first person
+    // True if can return the MachLogCamera for first person
     bool hasCamera() const;
 
-    //The first person camera
+    // The first person camera
     MachLogCamera& camera() const;
-    //PRE hasCamera()
+    // PRE hasCamera()
 
     // FP COMMAND - Get the active squadron
     const MachLog1stPersonActiveSquadron& getActiveSquadron() const;
@@ -148,65 +152,64 @@ public:
     void CLASS_INVARIANT;
 
 protected:
-    //pActor is the entity being controlled.
-    //The base class physical driver is pPhysDriver.
-    //Remote/local status indicated by networkType.
-    MachLog1stPersonHandler( MachActor* pActor, MachPhys1stPersonDriver* pPhysDriver, NetworkType networkType );
+    // pActor is the entity being controlled.
+    // The base class physical driver is pPhysDriver.
+    // Remote/local status indicated by networkType.
+    MachLog1stPersonHandler(MachActor* pActor, MachPhys1stPersonDriver* pPhysDriver, NetworkType networkType);
 
-    //Setup queries
+    // Setup queries
     bool isToMoveForwards() const;
     bool isToMoveBackwards() const;
     bool isToTurnLeft() const;
     bool isToTurnRight() const;
 
-    //Establish remote handlers for this entity on remote nodes
-    //Subclasses most call at end of ctor.
+    // Establish remote handlers for this entity on remote nodes
+    // Subclasses most call at end of ctor.
     void setupRemoteHandlers();
 
-    //Clear remote node handlers for this entity
-    //Subclasses most call in dtor.
+    // Clear remote node handlers for this entity
+    // Subclasses most call in dtor.
     void clearRemoteHandlers();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLog1stPersonHandler& t );
+    friend ostream& operator<<(ostream& o, const MachLog1stPersonHandler& t);
 
-    //Clear all the setup flags
+    // Clear all the setup flags
     void clearSetupFlags();
 
-    //True if any of the moving/turning flags differ in state from the physical driver
+    // True if any of the moving/turning flags differ in state from the physical driver
     bool setupFlagsChanged();
 
-    //Recompute the max weapon range
+    // Recompute the max weapon range
     void updateMaxWeaponRange();
 
-    //Implements the update of motion etc.
-    //Setups are cleared after this callback.
+    // Implements the update of motion etc.
+    // Setups are cleared after this callback.
     virtual void doUpdate() = 0;
 
-    //Callback to take action on maximum weapon raneg change.
-    //this occurs as different weapons are en/disabled
-    virtual void doUpdateMaxWeaponRange( MATHEX_SCALAR range ) = 0;
+    // Callback to take action on maximum weapon raneg change.
+    // this occurs as different weapons are en/disabled
+    virtual void doUpdateMaxWeaponRange(MATHEX_SCALAR range) = 0;
 
-    //Update the flag indicating can hit target point
+    // Update the flag indicating can hit target point
     void updateTargetAnglesValidFlag();
-    
-    //Transmit the current state if appropriate (network game, local)
+
+    // Transmit the current state if appropriate (network game, local)
     void updateAnyNetworkState();
 
-    //Send the current state of this entity round the network
+    // Send the current state of this entity round the network
     void xmitStateVector();
 
     // FP COMMAND - Get the active squadron
     virtual const MachLog1stPersonActiveSquadron& actuallyGetActiveSquadron() const = 0;
 
-    //revoked
-    MachLog1stPersonHandler( const MachLog1stPersonHandler& );
-    MachLog1stPersonHandler& operator =( const MachLog1stPersonHandler& );
+    // revoked
+    MachLog1stPersonHandler(const MachLog1stPersonHandler&);
+    MachLog1stPersonHandler& operator=(const MachLog1stPersonHandler&);
 
-    //data members
-    MachLog1stPersonHandlerData* pData_; //data implementation object
+    // data members
+    MachLog1stPersonHandlerData* pData_; // data implementation object
 };
-
 
 #endif
 

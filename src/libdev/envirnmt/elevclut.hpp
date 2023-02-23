@@ -22,49 +22,49 @@ class EnvElevationColourTable
 public:
     EnvElevationColourTable();
 
-	// Elevations outside the min/max range are valid, the nearest stored
-	// value will be returned.
-	RenColour colour(MexDegrees el) const;
+    // Elevations outside the min/max range are valid, the nearest stored
+    // value will be returned.
+    RenColour colour(MexDegrees el) const;
 
-	// Add a colour entry for the given elevation.  The entry closest to the
-	// given elevation will be set.
-	void addEntry(MexDegrees el, const RenColour&);
+    // Add a colour entry for the given elevation.  The entry closest to the
+    // given elevation will be set.
+    void addEntry(MexDegrees el, const RenColour&);
 
-	// Initialise from a bitmap.  Only the first vertical column is used. The
-	// texels represent equally spaced entries between the given elevations.
-	void readFromBitmap(const SysPathName& bm, MexDegrees minEl, MexDegrees maxEl);
+    // Initialise from a bitmap.  Only the first vertical column is used. The
+    // texels represent equally spaced entries between the given elevations.
+    void readFromBitmap(const SysPathName& bm, MexDegrees minEl, MexDegrees maxEl);
 
-	MexDegrees minElevation() const;
-	MexDegrees maxElevation() const;
+    MexDegrees minElevation() const;
+    MexDegrees maxElevation() const;
 
-	void name(const char*);
-	void name(const string&);
-	const string& name() const;
+    void name(const char*);
+    void name(const string&);
+    const string& name() const;
 
-	int nEntries() const;
+    int nEntries() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator <<( ostream& o, const EnvElevationColourTable& t );
+    friend ostream& operator<<(ostream& o, const EnvElevationColourTable& t);
 
-	struct Entry
-	{
-		MexDegrees	elevation;
-		RenColour	colour;
+    struct Entry
+    {
+        MexDegrees elevation;
+        RenColour colour;
 
-		bool operator==(const Entry& e) const { return elevation == e.elevation; }
-		bool operator< (const Entry& e) const { return elevation <  e.elevation; }
-	};
+        bool operator==(const Entry& e) const { return elevation == e.elevation; }
+        bool operator<(const Entry& e) const { return elevation < e.elevation; }
+    };
 
 private:
-	typedef ctl_min_memory_vector<Entry> ColourVec;
+    using ColourVec = ctl_min_memory_vector<Entry>;
 
-	ColourVec		colours_;
-	MexDegrees 		min_, max_;
-	string			name_;
+    ColourVec colours_;
+    MexDegrees min_, max_;
+    string name_;
 
-    EnvElevationColourTable( const EnvElevationColourTable& );
-    EnvElevationColourTable& operator =( const EnvElevationColourTable& );
-    bool operator ==( const EnvElevationColourTable& );
+    EnvElevationColourTable(const EnvElevationColourTable&);
+    EnvElevationColourTable& operator=(const EnvElevationColourTable&);
+    bool operator==(const EnvElevationColourTable&);
 };
 
 #endif

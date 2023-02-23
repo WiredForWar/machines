@@ -9,12 +9,12 @@
 #include "pertest/classpa.hpp"
 #include "pertest/per.hpp"
 
-PER_DEFINE_PERSISTENT( ClassPair );
+PER_DEFINE_PERSISTENT(ClassPair);
 
 ClassPair::ClassPair()
-: p1_( randomInt(), randomDouble() )
+    : p1_(randomInt(), randomDouble())
 {
-    pP1_ = _NEW( Pair( randomInt(), randomDouble() ) );
+    pP1_ = _NEW(Pair(randomInt(), randomDouble()));
 
     TEST_INVARIANT;
 }
@@ -23,41 +23,41 @@ ClassPair::~ClassPair()
 {
     TEST_INVARIANT;
 
-    _DELETE( pP1_ );
+    _DELETE(pP1_);
 }
 
 void ClassPair::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != NULL);
 }
 
-ostream& operator <<( ostream& o, const ClassPair& t )
+ostream& operator<<(ostream& o, const ClassPair& t)
 {
     o << "Pair ( " << t.p1_.first << t.p1_.second << " )" << std::endl;
 
     return o;
 }
 
-bool operator ==( const ClassPair& a, const ClassPair& b )
+bool operator==(const ClassPair& a, const ClassPair& b)
 {
-    bool    result = true;
+    bool result = true;
 
-    COMPARE_OBJECTS( a.p1_, b.p1_ );
+    COMPARE_OBJECTS(a.p1_, b.p1_);
 
     return result;
 }
 
-bool operator !=( const ClassPair& a, const ClassPair& b )
+bool operator!=(const ClassPair& a, const ClassPair& b)
 {
     return !(a == b);
 }
 
-void perWrite( PerOstream& ostr, const ClassPair& p )
+void perWrite(PerOstream& ostr, const ClassPair& p)
 {
     ostr << p.p1_;
 }
 
-void perRead( PerIstream& istr, ClassPair& p )
+void perRead(PerIstream& istr, ClassPair& p)
 {
     istr >> p.p1_;
 }

@@ -1,5 +1,5 @@
 /*
- * A C T FLAG . H P P 
+ * A C T FLAG . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,32 +24,30 @@ class MachLogSetFlagAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogSetFlagAction();
-	static MachLogSetFlagAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
-	static MachLogSetFlagAction* newDynamic( SimCondition*, bool enabled, const string& flag );
+    ~MachLogSetFlagAction() override;
+    static MachLogSetFlagAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static MachLogSetFlagAction* newDynamic(SimCondition*, bool enabled, const string& flag);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogSetFlagAction );
-	PER_FRIEND_READ_WRITE( MachLogSetFlagAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogSetFlagAction);
+    PER_FRIEND_READ_WRITE(MachLogSetFlagAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogSetFlagAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogSetFlagAction& t);
 
-    MachLogSetFlagAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogSetFlagAction& t );
+    MachLogSetFlagAction(const MachLogSetFlagAction&);
+    MachLogSetFlagAction& operator=(const MachLogSetFlagAction&);
 
-    MachLogSetFlagAction( const MachLogSetFlagAction& );
-    MachLogSetFlagAction& operator =( const MachLogSetFlagAction& );
-
-	string flagName_; //Name of the flag to be set
+    string flagName_; // Name of the flag to be set
 };
 
-PER_DECLARE_PERSISTENT( MachLogSetFlagAction );
+PER_DECLARE_PERSISTENT(MachLogSetFlagAction);
 
 #endif
 

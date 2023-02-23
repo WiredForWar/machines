@@ -1,5 +1,5 @@
 /*
- * M E T A F I L I . H P P 
+ * M E T A F I L I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,26 +20,25 @@ class SysMetaFileImpl
 // Canonical form revoked
 {
 public:
-    SysMetaFileImpl( const SysPathName& filename );
+    SysMetaFileImpl(const SysPathName& filename);
     // ASSERT_FILE_EXISTS( filename );
     ~SysMetaFileImpl();
 
     const SysPathName& filename() const;
-    
-    bool hasFile( const SysPathName& ) const;
+
+    bool hasFile(const SysPathName&) const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SysMetaFileImpl& t );
+    friend ostream& operator<<(ostream& o, const SysMetaFileImpl& t);
 
 private:
-    SysMetaFileImpl( const SysMetaFileImpl& );
-    SysMetaFileImpl& operator =( const SysMetaFileImpl& );
-    bool operator ==( const SysMetaFileImpl& );
+    SysMetaFileImpl(const SysMetaFileImpl&);
+    SysMetaFileImpl& operator=(const SysMetaFileImpl&);
+    bool operator==(const SysMetaFileImpl&);
 
     const SysPathName filename_;
 };
-
 
 #endif
 

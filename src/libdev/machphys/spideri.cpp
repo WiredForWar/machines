@@ -17,24 +17,25 @@
 #include "machphys/spider.hpp"
 #include "machphys/plansurf.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysSpiderLegsImpl );
+PER_DEFINE_PERSISTENT(MachPhysSpiderLegsImpl);
 
-MachPhysSpiderLegsImpl::MachPhysSpiderLegsImpl( MachPhysMachine* pMachine, MachPhysSpiderLegs* pSpider,
-					        const W4dCompositePlanPtr& restingPlanPtr,
-					        const W4dCompositePlanPtr& walkingPlanPtr,
-					        const W4dCompositePlanPtr& turningLeftPlanPtr,
-					        const W4dCompositePlanPtr& turningRightPlanPtr,
-					        const W4dCompositePlanPtr& startWalkingPlanPtr,
-					    	const W4dCompositePlanPtr& stopWalkingPlanPtr
- )
-: MachPhysLocomotionMethodImpl( pMachine ),
-  pSpider_( pSpider ),
-  restingPlanPtr_( restingPlanPtr ),
-  walkingPlanPtr_( walkingPlanPtr ),
-  turningLeftPlanPtr_( turningLeftPlanPtr ),
-  turningRightPlanPtr_( turningRightPlanPtr ),
-  startWalkingPlanPtr_( startWalkingPlanPtr ),
-  stopWalkingPlanPtr_( stopWalkingPlanPtr )
+MachPhysSpiderLegsImpl::MachPhysSpiderLegsImpl(
+    MachPhysMachine* pMachine,
+    MachPhysSpiderLegs* pSpider,
+    const W4dCompositePlanPtr& restingPlanPtr,
+    const W4dCompositePlanPtr& walkingPlanPtr,
+    const W4dCompositePlanPtr& turningLeftPlanPtr,
+    const W4dCompositePlanPtr& turningRightPlanPtr,
+    const W4dCompositePlanPtr& startWalkingPlanPtr,
+    const W4dCompositePlanPtr& stopWalkingPlanPtr)
+    : MachPhysLocomotionMethodImpl(pMachine)
+    , pSpider_(pSpider)
+    , restingPlanPtr_(restingPlanPtr)
+    , walkingPlanPtr_(walkingPlanPtr)
+    , turningLeftPlanPtr_(turningLeftPlanPtr)
+    , turningRightPlanPtr_(turningRightPlanPtr)
+    , startWalkingPlanPtr_(startWalkingPlanPtr)
+    , stopWalkingPlanPtr_(stopWalkingPlanPtr)
 {
 
     TEST_INVARIANT;
@@ -43,15 +44,14 @@ MachPhysSpiderLegsImpl::MachPhysSpiderLegsImpl( MachPhysMachine* pMachine, MachP
 MachPhysSpiderLegsImpl::~MachPhysSpiderLegsImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysSpiderLegsImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysSpiderLegsImpl& t )
+ostream& operator<<(ostream& o, const MachPhysSpiderLegsImpl& t)
 {
 
     o << "MachPhysSpiderLegsImpl " << (void*)&t << " start" << std::endl;
@@ -60,13 +60,13 @@ ostream& operator <<( ostream& o, const MachPhysSpiderLegsImpl& t )
     return o;
 }
 
-MachPhysSpiderLegsImpl::MachPhysSpiderLegsImpl( PerConstructor con )
-: MachPhysLocomotionMethodImpl( con ),
-  pSpider_( NULL )
+MachPhysSpiderLegsImpl::MachPhysSpiderLegsImpl(PerConstructor con)
+    : MachPhysLocomotionMethodImpl(con)
+    , pSpider_(nullptr)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysSpiderLegsImpl& legs )
+void perWrite(PerOstream& ostr, const MachPhysSpiderLegsImpl& legs)
 {
     const MachPhysLocomotionMethodImpl& base = legs;
 
@@ -81,7 +81,7 @@ void perWrite( PerOstream& ostr, const MachPhysSpiderLegsImpl& legs )
     ostr << legs.stopWalkingPlanPtr_;
 }
 
-void perRead( PerIstream& istr, MachPhysSpiderLegsImpl& legs )
+void perRead(PerIstream& istr, MachPhysSpiderLegsImpl& legs)
 {
     MachPhysLocomotionMethodImpl& base = legs;
 
@@ -96,20 +96,21 @@ void perRead( PerIstream& istr, MachPhysSpiderLegsImpl& legs )
     istr >> legs.stopWalkingPlanPtr_;
 }
 
-//virtual
-void MachPhysSpiderLegsImpl::machineSurfacePosition
-(
-    const MachPhysPlanetSurface& surface, const MexPoint3d& baseLocation, const MexVec3& unitFacingDirection,
-    MexPoint3d* pLocation, MexVec3* pNormal
-) const
+// virtual
+void MachPhysSpiderLegsImpl::machineSurfacePosition(
+    const MachPhysPlanetSurface& surface,
+    const MexPoint3d& baseLocation,
+    const MexVec3& unitFacingDirection,
+    MexPoint3d* pLocation,
+    MexVec3* pNormal) const
 {
-    //Use the 'bicycle' method
-    foreAftSurfacePosition( surface, baseLocation, unitFacingDirection, pLocation, pNormal );
+    // Use the 'bicycle' method
+    foreAftSurfacePosition(surface, baseLocation, unitFacingDirection, pLocation, pNormal);
 }
 
-//virtual
-void MachPhysSpiderLegsImpl::firstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state )
+// virtual
+void MachPhysSpiderLegsImpl::firstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state)
 {
-    pSpider_->doFirstPersonMotionAnimations( state );
+    pSpider_->doFirstPersonMotionAnimations(state);
 }
 /* End SPIDERI.CPP **************************************************/

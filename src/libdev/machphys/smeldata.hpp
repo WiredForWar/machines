@@ -1,5 +1,5 @@
 /*
- * S M E L D A T A . H P P 
+ * S M E L D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,40 +20,36 @@ class MachPhysSmelterData : public MachPhysConstructionData
 {
 public:
     MachPhysSmelterData();
-    MachPhysSmelterData( const MachPhysSmelterData&, const MexTransform3d& );
-    ~MachPhysSmelterData();
+    MachPhysSmelterData(const MachPhysSmelterData&, const MexTransform3d&);
+    ~MachPhysSmelterData() override;
 
-	// Get methods public
-	MachPhys::SizeUnits capacity() const;
-	MATHEX_SCALAR sqrMineDistance() const;
-	
+    // Get methods public
+    MachPhys::SizeUnits capacity() const;
+    MATHEX_SCALAR sqrMineDistance() const;
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysSmelterData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysSmelterData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
 
     // Operation deliberately revoked
-    MachPhysSmelterData( const MachPhysSmelterData& );
+    MachPhysSmelterData(const MachPhysSmelterData&);
 
     // Operation deliberately revoked
-    MachPhysSmelterData& operator =( const MachPhysSmelterData& );
+    MachPhysSmelterData& operator=(const MachPhysSmelterData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysSmelterData& );
+    bool operator==(const MachPhysSmelterData&);
 
-	// Set methods private
-    void capacity( const MachPhys::SizeUnits& newCapacity );
-	void sqrMineDistance( MATHEX_SCALAR );
+    // Set methods private
+    void capacity(const MachPhys::SizeUnits& newCapacity);
+    void sqrMineDistance(MATHEX_SCALAR);
 
-
-	MachPhys::SizeUnits				capacity_;
-   	MATHEX_SCALAR					mineDistance_;	//Minimum Euclidian distance to closest mine to be valid site
-	
-
+    MachPhys::SizeUnits capacity_;
+    MATHEX_SCALAR mineDistance_; // Minimum Euclidian distance to closest mine to be valid site
 };
-
 
 #endif
 

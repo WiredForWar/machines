@@ -10,29 +10,28 @@
 #include "machphys/machburn.hpp"
 #include "machphys/machdmg.hpp"
 
-MachPhysMachineDamageData::MachPhysMachineDamageData( MachPhysMachine* pTarget )
-:   pTargetMachine_( pTarget ),
-	pMachineBurning_( NULL ),
-    pMachineDamage_( NULL )
+MachPhysMachineDamageData::MachPhysMachineDamageData(MachPhysMachine* pTarget)
+    : pTargetMachine_(pTarget)
+    , pMachineBurning_(nullptr)
+    , pMachineDamage_(nullptr)
 {
     TEST_INVARIANT;
 }
 
 MachPhysMachineDamageData::~MachPhysMachineDamageData()
 {
-	_DELETE( pMachineBurning_ );
-	_DELETE( pMachineDamage_ );
+    _DELETE(pMachineBurning_);
+    _DELETE(pMachineDamage_);
 
     TEST_INVARIANT;
-
 }
 
 void MachPhysMachineDamageData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMachineDamageData& t )
+ostream& operator<<(ostream& o, const MachPhysMachineDamageData& t)
 {
 
     o << "MachPhysMachineDamageData " << (void*)&t << " start" << std::endl;
@@ -41,83 +40,83 @@ ostream& operator <<( ostream& o, const MachPhysMachineDamageData& t )
     return o;
 }
 
-PER_DEFINE_PERSISTENT( MachPhysMachineDamageData );
-MachPhysMachineDamageData::MachPhysMachineDamageData( PerConstructor )
+PER_DEFINE_PERSISTENT(MachPhysMachineDamageData);
+MachPhysMachineDamageData::MachPhysMachineDamageData(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMachineDamageData& t )
+void perWrite(PerOstream& ostr, const MachPhysMachineDamageData& t)
 {
-	ostr << t.pTargetMachine_;
-	ostr << t.pMachineBurning_;
-	ostr << t.pMachineDamage_;
+    ostr << t.pTargetMachine_;
+    ostr << t.pMachineBurning_;
+    ostr << t.pMachineDamage_;
 }
 
-void perRead( PerIstream& istr, MachPhysMachineDamageData& t )
+void perRead(PerIstream& istr, MachPhysMachineDamageData& t)
 {
-	istr >> t.pTargetMachine_;
-	istr >> t.pMachineBurning_;
-	istr >> t.pMachineDamage_;
+    istr >> t.pTargetMachine_;
+    istr >> t.pMachineBurning_;
+    istr >> t.pMachineDamage_;
 }
-
 
 bool MachPhysMachineDamageData::isDamaged() const
 {
-	return pMachineDamage_ != NULL;
+    return pMachineDamage_ != nullptr;
 }
 
-void MachPhysMachineDamageData::damageLevel( const double& percent )
+void MachPhysMachineDamageData::damageLevel(const double& percent)
 {
-	if( percent>0 )
-	{
-		if( not isDamaged() )
-			pMachineDamage_ = _NEW(MachPhysMachineDamage( pTargetMachine_ ) );
+    if (percent > 0)
+    {
+        if (not isDamaged())
+            pMachineDamage_ = _NEW(MachPhysMachineDamage(pTargetMachine_));
 
-		pMachineDamage_->damageLevel(percent);
-	}
+        pMachineDamage_->damageLevel(percent);
+    }
 }
 
 const double& MachPhysMachineDamageData::damageLevel() const
 {
     static const double zero = 0;
-	return (pMachineDamage_==NULL? zero : pMachineDamage_->damageLevel() );
+    return (pMachineDamage_ == nullptr ? zero : pMachineDamage_->damageLevel());
 }
 
 void MachPhysMachineDamageData::updateDamageLevel()
 {
-	if( isDamaged() )
-	{
-		pMachineDamage_->update();
-		if( damageLevel()>=100 ) pTargetMachine_->beDestroyed();
-	}
+    if (isDamaged())
+    {
+        pMachineDamage_->update();
+        if (damageLevel() >= 100)
+            pTargetMachine_->beDestroyed();
+    }
 }
 
 MachPhysMachineBurning& MachPhysMachineDamageData::machineBurning()
 {
-	if( not isBurning() )
-		pMachineBurning_ = _NEW( MachPhysMachineBurning( pTargetMachine_ ) );
+    if (not isBurning())
+        pMachineBurning_ = _NEW(MachPhysMachineBurning(pTargetMachine_));
 
-	return *pMachineBurning_;
+    return *pMachineBurning_;
 }
 
 void MachPhysMachineDamageData::finishBurning()
 {
-    //Check for finished burning
-    if( isBurningFinished() )
+    // Check for finished burning
+    if (isBurningFinished())
     {
-        _DELETE( pMachineBurning_ );
-        pMachineBurning_ = NULL;
+        _DELETE(pMachineBurning_);
+        pMachineBurning_ = nullptr;
     }
 }
 
 bool MachPhysMachineDamageData::isBurning() const
 {
-	return pMachineBurning_ != NULL;
+    return pMachineBurning_ != nullptr;
 }
 
 bool MachPhysMachineDamageData::isBurningFinished() const
 {
-	return 	isBurning()? pMachineBurning_->isBurningFinished():false;
+    return isBurning() ? pMachineBurning_->isBurningFinished() : false;
 }
 
 /* End MCDMGDAT.CPP *************************************************/

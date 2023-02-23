@@ -7,36 +7,35 @@
 
 /////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 #include "mathex/point2d.hpp"
 
 _CODE_INLINE
-MexVec2::MexVec2( MATHEX_SCALAR x, MATHEX_SCALAR y ):
-	x_(x),
-	y_(y)
+MexVec2::MexVec2(MATHEX_SCALAR x, MATHEX_SCALAR y)
+    : x_(x)
+    , y_(y)
 {
 }
 
 _CODE_INLINE
-MexVec2::MexVec2( const MexVec2& v):
-	x_(v.x_),
-	y_(v.y_)
+MexVec2::MexVec2(const MexVec2& v)
+    : x_(v.x_)
+    , y_(v.y_)
 
 {
 }
 
 _CODE_INLINE
-MexVec2::MexVec2( const MexPoint2d& rhs )
-:	x_(rhs.x()),
-	y_(rhs.y())
+MexVec2::MexVec2(const MexPoint2d& rhs)
+    : x_(rhs.x())
+    , y_(rhs.y())
 {
 }
-
 
 _CODE_INLINE
 MexVec2::~MexVec2()
@@ -45,19 +44,19 @@ MexVec2::~MexVec2()
 }
 
 _CODE_INLINE
-MATHEX_SCALAR MexVec2::x( void ) const
+MATHEX_SCALAR MexVec2::x() const
 {
     return x_;
 }
 
 _CODE_INLINE
-MATHEX_SCALAR MexVec2::y( void ) const
+MATHEX_SCALAR MexVec2::y() const
 {
     return y_;
 }
 
 _CODE_INLINE
-void MexVec2::setVector( MATHEX_SCALAR x, MATHEX_SCALAR y )
+void MexVec2::setVector(MATHEX_SCALAR x, MATHEX_SCALAR y)
 {
     x_ = x;
     y_ = y;
@@ -65,26 +64,26 @@ void MexVec2::setVector( MATHEX_SCALAR x, MATHEX_SCALAR y )
 
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-MATHEX_SCALAR MexVec2::dotProduct( const MexVec2& rhs ) const
+MATHEX_SCALAR MexVec2::dotProduct(const MexVec2& rhs) const
 {
-	return x_ * rhs.x_  +  y_ * rhs.y_;
+    return x_ * rhs.x_ + y_ * rhs.y_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 _CODE_INLINE
-MexVec2 MexVec2::normal( void ) const
+MexVec2 MexVec2::normal() const
 {
-	return MexVec2( y_, -x_ );
+    return MexVec2(y_, -x_);
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 _CODE_INLINE
-MexVec2::MexVec2( const MexVec3& rhs )
-: x_( rhs.x() ),
-  y_( rhs.y() )
+MexVec2::MexVec2(const MexVec3& rhs)
+    : x_(rhs.x())
+    , y_(rhs.y())
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -92,7 +91,7 @@ MexVec2::MexVec2( const MexVec3& rhs )
 _CODE_INLINE
 MATHEX_SCALAR MexVec2::modulus() const
 {
-    return sqrt( x_ * x_ + y_ * y_ );
+    return sqrt(x_ * x_ + y_ * y_);
 }
 
 _CODE_INLINE

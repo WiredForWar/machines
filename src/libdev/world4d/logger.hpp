@@ -16,7 +16,6 @@
 
 #include "base/base.hpp"
 
-
 class W4dLogger
 {
 public:
@@ -24,28 +23,27 @@ public:
     static W4dLogger& instance();
     ~W4dLogger();
 
-    bool    logTextureData() const;
+    bool logTextureData() const;
     std::ofstream& textureLogStream();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dLogger& t );
+    friend ostream& operator<<(ostream& o, const W4dLogger& t);
 
 private:
     // Operation deliberately revoked
-    W4dLogger( const W4dLogger& );
+    W4dLogger(const W4dLogger&);
 
     // Operation deliberately revoked
-    W4dLogger& operator =( const W4dLogger& );
+    W4dLogger& operator=(const W4dLogger&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dLogger& );
+    bool operator==(const W4dLogger&);
 
     W4dLogger();
 
     std::ofstream renderLogStream_;
 };
-
 
 #endif
 

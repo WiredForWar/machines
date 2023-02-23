@@ -21,8 +21,8 @@ class MachPhysFactoryData;
 class PhysTimedAnglePlan;
 class MachPhysConstructionPersistence;
 class MachPhysSmokePlume;
-template< class ID, class PART > class MachPhysObjectFactory;
-template< class SUBTYPE > class MachPhysSubTypeId;
+template <class ID, class PART> class MachPhysObjectFactory;
+template <class SUBTYPE> class MachPhysSubTypeId;
 
 class MachPhysFactory : public MachPhysConstruction
 {
@@ -32,63 +32,62 @@ public:
         const W4dTransform3d& localTransform,
         MachPhys::FactorySubType subType,
         size_t level,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-    virtual ~MachPhysFactory();
+    ~MachPhysFactory() override;
 
-	//return MachPhysData object for this building
-	virtual const MachPhysConstructionData& constructionData() const;
-	const MachPhysFactoryData& data() const;
+    // return MachPhysData object for this building
+    const MachPhysConstructionData& constructionData() const override;
+    const MachPhysFactoryData& data() const;
 
     MachPhys::FactorySubType subType() const;
 
-	virtual void damageLevel( const double& percent );
+    void damageLevel(const double& percent) override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysFactory );
-    PER_FRIEND_READ_WRITE( MachPhysFactory );
+    PER_MEMBER_PERSISTENT(MachPhysFactory);
+    PER_FRIEND_READ_WRITE(MachPhysFactory);
 
-    typedef MachPhysSubTypeId< MachPhys::FactorySubType >        Id;
+    using Id = MachPhysSubTypeId<MachPhys::FactorySubType>;
 
 private:
     // Operation deliberately revoked
-    MachPhysFactory( const MachPhysFactory& );
+    MachPhysFactory(const MachPhysFactory&);
 
     // Operation deliberately revoked
-    MachPhysFactory& operator =( const MachPhysFactory& );
+    MachPhysFactory& operator=(const MachPhysFactory&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysFactory& );
+    bool operator==(const MachPhysFactory&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysFactory >    Factory;
+    using Factory = MachPhysObjectFactory<Id, MachPhysFactory>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysFactory& Factory::part( const ID&, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysFactory >;
-
+    // friend MachPhysFactory& Factory::part( const ID&, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysFactory>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysConstructionPersistence& );
-    friend void perRead( PerIstream&, MachPhysConstructionPersistence& );
+    friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
+    friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
-    static  MachPhysFactory& part( MachPhys::FactorySubType subType, size_t level );
-    static  Factory& factory();
+    static MachPhysFactory& part(MachPhys::FactorySubType subType, size_t level);
+    static Factory& factory();
 
-    SysPathName compositeFileName( MachPhys::FactorySubType subType, size_t level ) const;
-    SysPathName wireframeFileName( MachPhys::FactorySubType subType, size_t level ) const;
-    SysPathName interiorCompositeFileName( MachPhys::FactorySubType subType, size_t level ) const;
+    SysPathName compositeFileName(MachPhys::FactorySubType subType, size_t level) const;
+    SysPathName wireframeFileName(MachPhys::FactorySubType subType, size_t level) const;
+    SysPathName interiorCompositeFileName(MachPhys::FactorySubType subType, size_t level) const;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a factory from scratch
 
-    MachPhysFactory( W4dEntity* pParent, Id id );
+    MachPhysFactory(W4dEntity* pParent, Id id);
 
-    void doWorking( bool isWorking );
+    void doWorking(bool isWorking) override;
 
-	// emit smoke if sufficient time has passed since the last puff was emitted
-	void dealWithSmoke();
+    // emit smoke if sufficient time has passed since the last puff was emitted
+    void dealWithSmoke();
 
     //  Handle the data initialisation when a construction is read in from
     //  a persistence file
@@ -97,23 +96,23 @@ private:
     MachPhysFactoryData* pData_;
     MachPhys::FactorySubType subType_;
 
-	W4dLink* pFan1_;
-	W4dLink* pFan2_;
-	W4dLink* pFan3_;
-	W4dLink* pFan4_;
+    W4dLink* pFan1_;
+    W4dLink* pFan2_;
+    W4dLink* pFan3_;
+    W4dLink* pFan4_;
 
-	size_t level_;
+    size_t level_;
 
-	MachPhysSmokePlume* pSmoke1_;
-	MachPhysSmokePlume* pSmoke2_;
-	MachPhysSmokePlume* pSmoke3_;
-	MachPhysSmokePlume* pSmoke4_;
-	MachPhysSmokePlume* pSmoke5_;
+    MachPhysSmokePlume* pSmoke1_;
+    MachPhysSmokePlume* pSmoke2_;
+    MachPhysSmokePlume* pSmoke3_;
+    MachPhysSmokePlume* pSmoke4_;
+    MachPhysSmokePlume* pSmoke5_;
 
-	PhysAbsoluteTime nextSmokeTime_;
+    PhysAbsoluteTime nextSmokeTime_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysFactory );
+PER_DECLARE_PERSISTENT(MachPhysFactory);
 
 #endif
 

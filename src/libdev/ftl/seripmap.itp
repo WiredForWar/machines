@@ -6,52 +6,51 @@
 //  Definitions of inline template methods
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
-template< class REF >
-_CODE_INLINE
-FtlSerialPMap< REF >::FtlSerialPMap( size_t reserveSize )
+template <class REF> _CODE_INLINE FtlSerialPMap<REF>::FtlSerialPMap(size_t reserveSize)
 {
-    refs_.reserve( reserveSize );
+    refs_.reserve(reserveSize);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-template< class REF >
-_CODE_INLINE //virtual
-bool FtlSerialPMap< REF >::contains( const FtlSerialId& id ) const
+template <class REF>
+_CODE_INLINE // virtual
+    bool
+    FtlSerialPMap<REF>::contains(const FtlSerialId& id) const
 {
     size_t index = id.asScalar();
-    return index < refs_.size() and refs_[index] != NULL;
+    return index < refs_.size() and refs_[index] != nullptr;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-template< class REF >
-_CODE_INLINE //virtual
-void FtlSerialPMap< REF >::remove( const FtlSerialId& id )
+template <class REF>
+_CODE_INLINE // virtual
+    void
+    FtlSerialPMap<REF>::remove(const FtlSerialId& id)
 {
-    PRE( contains( id ) );
+    PRE(contains(id));
 
-    refs_[ id.asScalar() ] = NULL;
+    refs_[id.asScalar()] = nullptr;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-template< class REF >
-_CODE_INLINE //virtual
-const typename FtlSerialPMap< REF >::PRef& FtlSerialPMap< REF >::doSubscript( const FtlSerialId& id ) const
+template <class REF>
+_CODE_INLINE // virtual
+    const typename FtlSerialPMap<REF>::PRef&
+    FtlSerialPMap<REF>::doSubscript(const FtlSerialId& id) const
 {
-    PRE( contains( id ) );
-    return (PRef&)refs_[ id.asScalar() ];
+    PRE(contains(id));
+    return (PRef&)refs_[id.asScalar()];
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-template< class REF >
-_CODE_INLINE
-void FtlSerialPMap< REF >::add( const FtlSerialId& id, REF* pValue )
+template <class REF> _CODE_INLINE void FtlSerialPMap<REF>::add(const FtlSerialId& id, REF* pValue)
 {
-    PRE( not contains( id ) );
+    PRE(not contains(id));
 
-    //Delegate to pair version
-    add( FtlPair< FtlSerialId, REF* >( id, pValue ) );
+    // Delegate to pair version
+    add(FtlPair<FtlSerialId, REF*>(id, pValue));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 /* End SERIPMAP.ITP *************************************************/

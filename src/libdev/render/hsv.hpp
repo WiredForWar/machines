@@ -1,8 +1,7 @@
 /*
- * H S V . H P P 
+ * H S V . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
-
 
 /*
     RenColourHSV
@@ -25,42 +24,41 @@ public:
     RenColourHSV();
     ~RenColourHSV();
 
-    RenColourHSV( const RenColour& rgb );
+    RenColourHSV(const RenColour& rgb);
 
     RenColour rgb() const;
 
-    bool    hueDefined() const;
-    double  hue() const;
+    bool hueDefined() const;
+    double hue() const;
     // PRE( hueDefined );
     // POST( 0.0 <= result and result <= 360.0 );
-    
-    double  saturation() const;
-    double  value() const;
 
-    void    hue( double newHue );
-    void    saturation( double newSaturation );
-    void    value( double newValue );
+    double saturation() const;
+    double value() const;
+
+    void hue(double newHue);
+    void saturation(double newSaturation);
+    void value(double newValue);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const RenColourHSV& t );
+    friend ostream& operator<<(ostream& o, const RenColourHSV& t);
 
 private:
     // Operation deliberately revoked
-    RenColourHSV( const RenColourHSV& );
+    RenColourHSV(const RenColourHSV&);
 
     // Operation deliberately revoked
-    RenColourHSV& operator =( const RenColourHSV& );
+    RenColourHSV& operator=(const RenColourHSV&);
 
     // Operation deliberately revoked
-    bool operator ==( const RenColourHSV& );
+    bool operator==(const RenColourHSV&);
 
-    bool    hueDefined_;
-    double  hue_;
-    double  saturation_;
-    double  value_;
+    bool hueDefined_;
+    double hue_;
+    double saturation_;
+    double value_;
 };
-
 
 #endif
 

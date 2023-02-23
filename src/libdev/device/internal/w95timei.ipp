@@ -6,19 +6,16 @@
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 // TODO old code
-unsigned int RDTSC2(uint32[ 2 ]);
-#pragma aux RDTSC2 =   \
-0x0f 0x31 /* RDTSC */ \
-" mov [esi],eax   "   \
-" mov [esi+4],edx "   \
-parm [esi] modify [eax edx] value [eax];
-
+unsigned int RDTSC2(uint32[2]);
+#pragma aux RDTSC2 = 0x0f 0x31 /* RDTSC */                                                                             \
+    " mov [esi],eax   "                                                                                                \
+    " mov [esi+4],edx " parm[esi] modify[eax edx] value[eax];
 
 // static
 _CODE_INLINE
@@ -29,7 +26,7 @@ DevW95TimeInternal& DevW95TimeInternal::instance()
 }
 
 _CODE_INLINE
-double  DevW95TimeInternal::resolution() const
+double DevW95TimeInternal::resolution() const
 {
     return resolution_;
 }
@@ -41,21 +38,21 @@ DevW95TimeInternal::TimeMethod DevW95TimeInternal::method() const
 }
 
 _CODE_INLINE
-double DevW95TimeInternal::pentiumTicks( void ) const
+double DevW95TimeInternal::pentiumTicks(void) const
 {
-    uint32  timer[ 2 ];
+    uint32 timer[2];
 
-    //RDTSC2( timer );
+    // RDTSC2( timer );
 
-    double  ticks;
+    double ticks;
 
-    ticks = timer[ 1 ];
+    ticks = timer[1];
 
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
-    ticks += timer[ 0 ];
+    ticks += timer[0];
 
     return ticks;
 }

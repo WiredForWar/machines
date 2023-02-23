@@ -1,5 +1,5 @@
 /*
- * S Q U A D I . H P P 
+ * S Q U A D I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,34 +20,33 @@ class MachLogSquadronImpl
 // Canonical form revoked
 {
 public:
-    MachLogSquadronImpl( int squadronId );
+    MachLogSquadronImpl(int squadronId);
     ~MachLogSquadronImpl();
 
     void CLASS_INVARIANT;
-	PER_MEMBER_PERSISTENT( MachLogSquadronImpl );
-	PER_FRIEND_READ_WRITE( MachLogSquadronImpl );
+    PER_MEMBER_PERSISTENT(MachLogSquadronImpl);
+    PER_FRIEND_READ_WRITE(MachLogSquadronImpl);
 
 private:
-	friend class MachLogSquadron;
-    friend ostream& operator <<( ostream& o, const MachLogSquadronImpl& t );
+    friend class MachLogSquadron;
+    friend ostream& operator<<(ostream& o, const MachLogSquadronImpl& t);
 
-    MachLogSquadronImpl( const MachLogSquadronImpl& );
-    MachLogSquadronImpl& operator =( const MachLogSquadronImpl& );
+    MachLogSquadronImpl(const MachLogSquadronImpl&);
+    MachLogSquadronImpl& operator=(const MachLogSquadronImpl&);
 
-	MachLogAdministrator*				pCommander_;
-	bool								hasCommander_;
-    MachLogMachine*                     pStrongestMachine_;
-    bool                                squadronHasChanged_;
-	MachLogSquadron::Machines			machines_;
-	int									squadronId_;
-	MachLogSquadron::DesiredMachineList	desiredMachineList_;
-	int									totalDesiredMachines_;
-	bool								setDefCon_;
-	MachLog::DefCon						defCon_;
-
+    MachLogAdministrator* pCommander_;
+    bool hasCommander_;
+    MachLogMachine* pStrongestMachine_;
+    bool squadronHasChanged_;
+    MachLogSquadron::Machines machines_;
+    int squadronId_;
+    MachLogSquadron::DesiredMachineList desiredMachineList_;
+    int totalDesiredMachines_;
+    bool setDefCon_;
+    MachLog::DefCon defCon_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogSquadronImpl );
+PER_DECLARE_PERSISTENT(MachLogSquadronImpl);
 
 #endif
 

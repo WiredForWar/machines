@@ -10,34 +10,33 @@
 
 MexCompressedVec3::MexCompressedVec3()
 {
-	vec_[0]=0;
-	vec_[1]=0;
-	vec_[2]=0;
+    vec_[0] = 0;
+    vec_[1] = 0;
+    vec_[2] = 0;
     TEST_INVARIANT;
 }
 
-MexCompressedVec3::MexCompressedVec3( const MexVec3& vec )
+MexCompressedVec3::MexCompressedVec3(const MexVec3& vec)
 {
-	vec_[0] = vec.x();
-	vec_[1] = vec.y();
-	vec_[2] = vec.z();
+    vec_[0] = vec.x();
+    vec_[1] = vec.y();
+    vec_[2] = vec.z();
 }
 
 MexCompressedVec3::~MexCompressedVec3()
 {
     TEST_INVARIANT;
-
 }
 
 void MexCompressedVec3::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MexCompressedVec3& t )
+ostream& operator<<(ostream& o, const MexCompressedVec3& t)
 {
 
-	o << " MexCVec3: ( " << t.vec_[0] << ", " << t.vec_[1] << ", " << t.vec_[2] << " )" << std::endl;
+    o << " MexCVec3: ( " << t.vec_[0] << ", " << t.vec_[1] << ", " << t.vec_[2] << " )" << std::endl;
 
     return o;
 }

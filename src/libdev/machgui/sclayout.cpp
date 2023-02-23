@@ -1,5 +1,5 @@
 /*
- * S C L A Y O U T . C P P 
+ * S C L A Y O U T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,15 +23,14 @@ MachGuiScreenLayoutInfo::MachGuiScreenLayoutInfo()
 MachGuiScreenLayoutInfo::~MachGuiScreenLayoutInfo()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiScreenLayoutInfo::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiScreenLayoutInfo& t )
+ostream& operator<<(ostream& o, const MachGuiScreenLayoutInfo& t)
 {
 
     o << "MachGuiScreenLayoutInfo " << (void*)&t << " start" << std::endl;

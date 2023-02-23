@@ -34,21 +34,21 @@
 #include "machphys/snddata.hpp"
 #include "machphys/vaptrail.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMetalSting );
+PER_DEFINE_PERSISTENT(MachPhysMetalSting);
 
-//public constructor
-MachPhysMetalSting::MachPhysMetalSting( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   MachPhysTrailedProjectile( exemplar(), pParent, localTransform )
+// public constructor
+MachPhysMetalSting::MachPhysMetalSting(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : MachPhysTrailedProjectile(exemplar(), pParent, localTransform)
 {
 
     TEST_INVARIANT;
 }
 
-//one time constructor
+// one time constructor
 MachPhysMetalSting::MachPhysMetalSting()
-:   MachPhysTrailedProjectile( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), METAL_STING )
+    : MachPhysTrailedProjectile(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), METAL_STING)
 {
-	readCompositeFile( SysPathName( "models/weapons/wasp/metal/missile.cdf" ) );
+    readCompositeFile(SysPathName("models/weapons/wasp/metal/missile.cdf"));
 
     TEST_INVARIANT;
 }
@@ -56,22 +56,20 @@ MachPhysMetalSting::MachPhysMetalSting()
 MachPhysMetalSting::~MachPhysMetalSting()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysMetalSting& MachPhysMetalSting::exemplar()
 {
-	return MachPhysOtherPersistence::instance().metalStingExemplar();
+    return MachPhysOtherPersistence::instance().metalStingExemplar();
 }
-
 
 void MachPhysMetalSting::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMetalSting& t )
+ostream& operator<<(ostream& o, const MachPhysMetalSting& t)
 {
 
     o << "MachPhysMetalSting " << (void*)&t << " start" << std::endl;
@@ -80,62 +78,60 @@ ostream& operator <<( ostream& o, const MachPhysMetalSting& t )
     return o;
 }
 
-//virtual
-PhysRelativeTime MachPhysMetalSting::doBeDestroyedAt( const PhysAbsoluteTime& time, MachPhys::StrikeType )
+// virtual
+PhysRelativeTime MachPhysMetalSting::doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType)
 {
     destructionTime_ = time;
     PhysRelativeTime duration = 2.0;
 
-    //Make sure the vapour trail gets garbage collected
-	if( pVapourTrail_ != NULL )
-    	pVapourTrail_->finish( time + duration );
+    // Make sure the vapour trail gets garbage collected
+    if (pVapourTrail_ != nullptr)
+        pVapourTrail_->finish(time + duration);
 
     //  Get the position of the missile when it explodes
-    MexTransform3d  explosionTransform;
+    MexTransform3d explosionTransform;
     uint n;
 
-    if( entityPlan().hasMotionPlan() )
-        entityPlan().transform( time, &explosionTransform, &n );
+    if (entityPlan().hasMotionPlan())
+        entityPlan().transform(time, &explosionTransform, &n);
     else
         explosionTransform = localTransform();
 
-	//start an explosion
-	explosion( pParent(), explosionTransform, time, duration, RenColour(5.1, 1, 1),  3.0 );
+    // start an explosion
+    explosion(pParent(), explosionTransform, time, duration, RenColour(5.1, 1, 1), 3.0);
 
-	SoundId explosionId = SID_XPLODE1_MISSILE;
-	MexBasicRandom tempRandom(MexBasicRandom::constructSeededFromTime());
-	int randomNumber =
-		mexRandomInt(&tempRandom, 0, 100);
-	if(randomNumber < 50)
-	{
-		explosionId = SID_XPLODE1_MISSILE;
-	}
-	else
-	{
-		explosionId = SID_XPLODE2_MISSILE;
-	}
-	SOUND_STREAM("Playing sting explosion at " << destructionTime_ << std::endl);
+    SoundId explosionId = SID_XPLODE1_MISSILE;
+    MexBasicRandom tempRandom(MexBasicRandom::constructSeededFromTime());
+    int randomNumber = mexRandomInt(&tempRandom, 0, 100);
+    if (randomNumber < 50)
+    {
+        explosionId = SID_XPLODE1_MISSILE;
+    }
+    else
+    {
+        explosionId = SID_XPLODE2_MISSILE;
+    }
+    SOUND_STREAM("Playing sting explosion at " << destructionTime_ << std::endl);
     W4dGeneric* pExplosionSite = _NEW(W4dGeneric(pParent(), explosionTransform));
     W4dGarbageCollector::instance().add(pExplosionSite, destructionTime_ + 10);
-	W4dSoundManager::instance().play(pExplosionSite, explosionId, destructionTime_, 1);
+    W4dSoundManager::instance().play(pExplosionSite, explosionId, destructionTime_, 1);
 
     return duration;
 }
 
-
-MachPhysMetalSting::MachPhysMetalSting( PerConstructor con )
-: MachPhysTrailedProjectile( con )
+MachPhysMetalSting::MachPhysMetalSting(PerConstructor con)
+    : MachPhysTrailedProjectile(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMetalSting& sting )
+void perWrite(PerOstream& ostr, const MachPhysMetalSting& sting)
 {
     const MachPhysTrailedProjectile& base = sting;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysMetalSting& sting )
+void perRead(PerIstream& istr, MachPhysMetalSting& sting)
 {
     MachPhysTrailedProjectile& base = sting;
 

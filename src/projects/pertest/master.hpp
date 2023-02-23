@@ -1,5 +1,5 @@
 /*
- * M A S T E R . H P P 
+ * M A S T E R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -30,37 +30,38 @@ class Master
 {
 public:
     Master();
-    Master( PerIstream& istr );
+    Master(PerIstream& istr);
     ~Master();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const Master& t );
-    friend bool operator ==( const Master&, const Master& );
+    friend ostream& operator<<(ostream& o, const Master& t);
+    friend bool operator==(const Master&, const Master&);
 
-    PER_MEMBER_PERSISTENT_DEFAULT( Master );
-    PER_FRIEND_READ_WRITE( Master );
+    PER_MEMBER_PERSISTENT_DEFAULT(Master);
+    PER_FRIEND_READ_WRITE(Master);
 
-    typedef TClass1< int, double >  TC1a;    
+    typedef TClass1<int, double> TC1a;
+
 private:
     // Operation deliberately revoked
-    Master( const Master& );
+    Master(const Master&);
 
     // Operation deliberately revoked
-    Master& operator =( const Master& );
+    Master& operator=(const Master&);
 
-	Class1	c1_;
+    Class1 c1_;
     Class1* pC1_;
 
-    TC1a    tc1_;
-    TC1a*   pTc1_;
+    TC1a tc1_;
+    TC1a* pTc1_;
 
-    ClassPair   p1_;
+    ClassPair p1_;
 
     Containers cContain_;
 };
 
-PER_DECLARE_PERSISTENT( Master );
+PER_DECLARE_PERSISTENT(Master);
 
 #endif
 

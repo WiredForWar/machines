@@ -1,19 +1,19 @@
 /*
- * C S 2 D M F N D . I P P 
+ * C S 2 D M F N D . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-bool PhysCS2dDomainFindPath::isFinished( void ) const
+bool PhysCS2dDomainFindPath::isFinished() const
 {
     return state_ == FINISHED;
 }
@@ -26,7 +26,7 @@ MATHEX_SCALAR PhysCS2dDomainFindPath::clearance() const
 
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-PhysCS2dDomainFindPath::ObstacleFlags   PhysCS2dDomainFindPath::flags() const
+PhysCS2dDomainFindPath::ObstacleFlags PhysCS2dDomainFindPath::flags() const
 {
     return flags_;
 }

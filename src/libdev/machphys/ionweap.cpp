@@ -34,23 +34,27 @@
 
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysIonWeapon );
+PER_DEFINE_PERSISTENT(MachPhysIonWeapon);
 
-MachPhysIonWeapon::MachPhysIonWeapon
-(
-    W4dEntity* pParent, const MexTransform3d& localTransform,
-    MachPhys::WeaponType type, MachPhys::Mounting mounting
-)
-:   MachPhysWeapon( exemplar(type), mounting, pParent, localTransform )
+MachPhysIonWeapon::MachPhysIonWeapon(
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform,
+    MachPhys::WeaponType type,
+    MachPhys::Mounting mounting)
+    : MachPhysWeapon(exemplar(type), mounting, pParent, localTransform)
 {
 
     TEST_INVARIANT;
 }
 
-//One-time ctor
-MachPhysIonWeapon::MachPhysIonWeapon( MachPhys::WeaponType type )
-:   MachPhysWeapon( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(),
-                    SysPathName( compositeFilePath( type ) ), type, MachPhys::LEFT )
+// One-time ctor
+MachPhysIonWeapon::MachPhysIonWeapon(MachPhys::WeaponType type)
+    : MachPhysWeapon(
+        MachPhysWeaponPersistence::instance().pRoot(),
+        MexTransform3d(),
+        SysPathName(compositeFilePath(type)),
+        type,
+        MachPhys::LEFT)
 {
     TEST_INVARIANT;
 }
@@ -58,21 +62,20 @@ MachPhysIonWeapon::MachPhysIonWeapon( MachPhys::WeaponType type )
 MachPhysIonWeapon::~MachPhysIonWeapon()
 {
     TEST_INVARIANT;
-
 }
 
-//static
-const MachPhysIonWeapon& MachPhysIonWeapon::exemplar( MachPhys::WeaponType type )
+// static
+const MachPhysIonWeapon& MachPhysIonWeapon::exemplar(MachPhys::WeaponType type)
 {
     return MachPhysWeaponPersistence::instance().ionExemplar(type);
 }
 
 void MachPhysIonWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysIonWeapon& t )
+ostream& operator<<(ostream& o, const MachPhysIonWeapon& t)
 {
 
     o << "MachPhysIonWeapon " << (void*)&t << " start" << std::endl;
@@ -81,146 +84,139 @@ ostream& operator <<( ostream& o, const MachPhysIonWeapon& t )
     return o;
 }
 
-//static
+// static
 const char* MachPhysIonWeapon::compositeFilePath(MachPhys::WeaponType)
 {
-	return  "models/weapons/nmissile/point.cdf";
+    return "models/weapons/nmissile/point.cdf";
 }
 
-//virtual
-PhysRelativeTime MachPhysIonWeapon::fire( const PhysAbsoluteTime&, int )
+// virtual
+PhysRelativeTime MachPhysIonWeapon::fire(const PhysAbsoluteTime&, int)
 {
     return 0;
 }
 
-
-//static
+// static
 PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsoluteTime& startTime)
 {
-	//create a copy of the object being destroyed  through a  generic
+    // create a copy of the object being destroyed  through a  generic
     W4dEntity* pCopyTarget;
 
-    if( pVictim->isComposite() )
-        pCopyTarget = _NEW( W4dGenericComposite( pVictim->asComposite(),
-                                                 pVictim->pParent(), pVictim->localTransform() ) );
+    if (pVictim->isComposite())
+        pCopyTarget = _NEW(W4dGenericComposite(pVictim->asComposite(), pVictim->pParent(), pVictim->localTransform()));
     else
-        pCopyTarget = _NEW( W4dGeneric( *pVictim, pVictim->pParent(), pVictim->localTransform() ) );
+        pCopyTarget = _NEW(W4dGeneric(*pVictim, pVictim->pParent(), pVictim->localTransform()));
 
-	PhysRelativeTime duration = 1.5;
+    PhysRelativeTime duration = 1.5;
 
-//	make plans for the original
+    //  make plans for the original
 
-    //Make a simple scale plan
+    // Make a simple scale plan
     PhysLinearScalarPlan::ScalarVec intTimes;
-    	intTimes.reserve(1);
-		intTimes.push_back(duration);
+    intTimes.reserve(1);
+    intTimes.push_back(duration);
 
     PhysLinearScalarPlan::ScalarVec intensities;
-    	intensities.reserve(2);
-        intensities.push_back(1);
-        intensities.push_back(3);
+    intensities.reserve(2);
+    intensities.push_back(1);
+    intensities.push_back(3);
 
-    PhysLinearScalarPlan* pScalePlan = _NEW( PhysLinearScalarPlan(intTimes, intensities) );
-    W4dScalePlanPtr planPtr( _NEW( W4dGeneralUniformScalePlan( pScalePlan ) ) );
+    PhysLinearScalarPlan* pScalePlan = _NEW(PhysLinearScalarPlan(intTimes, intensities));
+    W4dScalePlanPtr planPtr(_NEW(W4dGeneralUniformScalePlan(pScalePlan)));
 
-    //Propogate thru the current model
-	pVictim->propogateScalePlan( planPtr, startTime, 1);
+    // Propogate thru the current model
+    pVictim->propogateScalePlan(planPtr, startTime, 1);
 
-	//make a visibility plan
+    // make a visibility plan
 
-    W4dVisibilityPlanPtr wVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	wVisibilityPlanPtr->add(false, duration);
+    W4dVisibilityPlanPtr wVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    wVisibilityPlanPtr->add(false, duration);
 
-    pVictim->entityPlanForEdit().visibilityPlan( wVisibilityPlanPtr, startTime );
+    pVictim->entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
 
-
-	//alpha plan. Ensure construct material only once, since any change to a shared material involves
-    //searching the entire set of materials for a match.
-	static RenMaterial glowingWhite;
+    // alpha plan. Ensure construct material only once, since any change to a shared material involves
+    // searching the entire set of materials for a match.
+    static RenMaterial glowingWhite;
     static bool firstTime = true;
-    if( firstTime )
+    if (firstTime)
     {
-    	glowingWhite.diffuse(RenColour::black());
-    	glowingWhite.emissive(RenColour::white());
+        glowingWhite.diffuse(RenColour::black());
+        glowingWhite.emissive(RenColour::white());
         firstTime = false;
     }
 
     const int reasonableSize = 100;
-    RenMaterialVec* pMaterialVec = _NEW( RenMaterialVec( reasonableSize ) );
-    for( int i = reasonableSize; i--; )
-        pMaterialVec->push_back( glowingWhite );
+    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(reasonableSize));
+    for (int i = reasonableSize; i--;)
+        pMaterialVec->push_back(glowingWhite);
 
     PhysLinearScalarPlan::ScalarVec linearTimes;
-    	linearTimes.reserve(1);
-		linearTimes.push_back(duration);
+    linearTimes.reserve(1);
+    linearTimes.push_back(duration);
 
     PhysLinearScalarPlan::ScalarVec scales;
-    	scales.reserve(2);
-        scales.push_back(1);
-        scales.push_back(0);
+    scales.reserve(2);
+    scales.push_back(1);
+    scales.push_back(0);
 
-    PhysLinearScalarPlan* pAlphaPlan = _NEW( PhysLinearScalarPlan(linearTimes, scales) );
-    PhysScalarPlanPtr alphaPlanPtr( pAlphaPlan );
+    PhysLinearScalarPlan* pAlphaPlan = _NEW(PhysLinearScalarPlan(linearTimes, scales));
+    PhysScalarPlanPtr alphaPlanPtr(pAlphaPlan);
 
-    W4dSimpleAlphaPlan* pPlan =
-                    _NEW( W4dSimpleAlphaPlan( glowingWhite, reasonableSize, alphaPlanPtr, 5 ) );
+    W4dSimpleAlphaPlan* pPlan = _NEW(W4dSimpleAlphaPlan(glowingWhite, reasonableSize, alphaPlanPtr, 5));
 
-    W4dMaterialPlanPtr pMaterialPlanPtr( pPlan );
+    W4dMaterialPlanPtr pMaterialPlanPtr(pPlan);
 
-    for( W4dEntityIter it( pVictim ); not it.isFinished(); ++it )
-	{
-        (*it).entityPlanForEdit().materialPlan( pMaterialPlanPtr, startTime );
-        (*it).entityPlanForEdit().visibilityPlan( wVisibilityPlanPtr, startTime );
-	}
+    for (W4dEntityIter it(pVictim); not it.isFinished(); ++it)
+    {
+        (*it).entityPlanForEdit().materialPlan(pMaterialPlanPtr, startTime);
+        (*it).entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
+    }
 
-//	make plans for the copy
+    //  make plans for the copy
 
-	//apply the same material and visibility plan  to the copy
-    for( W4dEntityIter it( pCopyTarget ); not it.isFinished(); ++it )
-	{
-        (*it).entityPlanForEdit().materialPlan( pMaterialPlanPtr, startTime );
-        (*it).entityPlanForEdit().visibilityPlan( wVisibilityPlanPtr, startTime );
-	}
+    // apply the same material and visibility plan  to the copy
+    for (W4dEntityIter it(pCopyTarget); not it.isFinished(); ++it)
+    {
+        (*it).entityPlanForEdit().materialPlan(pMaterialPlanPtr, startTime);
+        (*it).entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
+    }
 
-	//but a different scale plan
+    // but a different scale plan
 
     PhysLinearScalarPlan::ScalarVec copyScales;
-    	copyScales.reserve(2);
-        copyScales.push_back(1);
-        copyScales.push_back(0.001);
+    copyScales.reserve(2);
+    copyScales.push_back(1);
+    copyScales.push_back(0.001);
 
-    PhysLinearScalarPlan* pCopyScalePlan = _NEW( PhysLinearScalarPlan(intTimes, copyScales) );
-    W4dScalePlanPtr copyPlanPtr( _NEW( W4dGeneralUniformScalePlan( pCopyScalePlan ) ) );
+    PhysLinearScalarPlan* pCopyScalePlan = _NEW(PhysLinearScalarPlan(intTimes, copyScales));
+    W4dScalePlanPtr copyPlanPtr(_NEW(W4dGeneralUniformScalePlan(pCopyScalePlan)));
 
-    //Propogate thru the current model
-	pCopyTarget->propogateScalePlan( copyPlanPtr, startTime, 1);
+    // Propogate thru the current model
+    pCopyTarget->propogateScalePlan(copyPlanPtr, startTime, 1);
 
-	//destroy the copytarget when it becomes invisible
-	W4dGarbageCollector::instance().add(pCopyTarget, startTime+ duration);
+    // destroy the copytarget when it becomes invisible
+    W4dGarbageCollector::instance().add(pCopyTarget, startTime + duration);
 
-	return duration;
+    return duration;
 }
 
-MachPhysIonWeapon::MachPhysIonWeapon( PerConstructor con )
-: MachPhysWeapon( con )
+MachPhysIonWeapon::MachPhysIonWeapon(PerConstructor con)
+    : MachPhysWeapon(con)
 {
 }
 
-
-void perWrite( PerOstream& ostr, const MachPhysIonWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachPhysIonWeapon& weapon)
 {
     const MachPhysWeapon& base = weapon;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysIonWeapon& weapon )
+void perRead(PerIstream& istr, MachPhysIonWeapon& weapon)
 {
     MachPhysWeapon& base = weapon;
 
     istr >> base;
 }
 
-
 /* End ionbeam.CPP ****************************************************/
-

@@ -20,108 +20,115 @@
 #include "machphys/machphys.hpp"
 #include "machphys/wepline.hpp"
 
-//forward refs
+// forward refs
 class MexTransform3d;
 class SysPathName;
 class MachPhysPulseBlob;
 class MachPhysArtefact;
 
 ////////////////////////////////////////////////////////////////////////////
-//Generic pulse weapon behaviour
+// Generic pulse weapon behaviour
 class MachPhysPulseWeapon : public MachPhysLinearWeapon
 // Canonical form revoked
 {
 public:
-
-    //dtor.
-    virtual ~MachPhysPulseWeapon();
+    // dtor.
+    ~MachPhysPulseWeapon() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPulseWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPulseWeapon& t);
 
     /////////////////////////////////////////////
-    //Inherited from MachPhysWeapon
+    // Inherited from MachPhysWeapon
 
-    //Induce the weapon's firing animation at startTime, returning the duration of the animation.
-    //This includes recoil, sound, smoke coming from end of gun, lights etc, but
-    //NOT launching of any projectiles, victim animations etc.
-    virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    // Induce the weapon's firing animation at startTime, returning the duration of the animation.
+    // This includes recoil, sound, smoke coming from end of gun, lights etc, but
+    // NOT launching of any projectiles, victim animations etc.
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
-    //Play the victim animation for a machine or construction.
-    //fromDirection indicates the flight path of the hitting projectile.
-    //Returns the duration of the animation.
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysMachine* pMachine ) const;
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysConstruction* pConstruction ) const;
+    // Play the victim animation for a machine or construction.
+    // fromDirection indicates the flight path of the hitting projectile.
+    // Returns the duration of the animation.
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysMachine* pMachine) const override;
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction) const override;
     /////////////////////////////////////////////
 
     /////////////////////////////////////////////
-    //Inherited from MachPhysLinearWeapon
+    // Inherited from MachPhysLinearWeapon
 
-    //Construct and return a new projectile of the appropriate ttype for this weapon.
-    //It is the index'th projectile in a burst starting at burstStartTime.
-    //The projectile's owner is to be pParent.
-    //The projectile is to be aimed at a point targetOffset from target.
-    virtual MachPhysLinearProjectile* createProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    // Construct and return a new projectile of the appropriate ttype for this weapon.
+    // It is the index'th projectile in a burst starting at burstStartTime.
+    // The projectile's owner is to be pParent.
+    // The projectile is to be aimed at a point targetOffset from target.
+    MachPhysLinearProjectile* createProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
     /////////////////////////////////////////////
 
-    //Construct and return a pulse blob projectile.
-    //Arguments as for createProjectile.
-    MachPhysPulseBlob* createPulseBlob
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    // Construct and return a pulse blob projectile.
+    // Arguments as for createProjectile.
+    MachPhysPulseBlob* createPulseBlob(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
-    //Do the work of applying a victim animation to machine/construction/artefact.
-    //Return animation duration.
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysMachine* pMachine );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysConstruction* pConstruction );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysArtefact* pArtefact );
+    // Do the work of applying a victim animation to machine/construction/artefact.
+    // Return animation duration.
+    static PhysRelativeTime
+    applyVictimAnimation(const PhysAbsoluteTime& startTime, const MexLine3d& fromDirection, MachPhysMachine* pMachine);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysArtefact* pArtefact);
 
-    //Initiate a single pulse disc attached to pParent with offset localPosition
-    //at startTime. Returns durstion of disc.
-    static PhysRelativeTime createPulseDisc( W4dEntity* pParent, const MexTransform3d& localPosition,
-                          const PhysAbsoluteTime& startTime );
+    // Initiate a single pulse disc attached to pParent with offset localPosition
+    // at startTime. Returns durstion of disc.
+    static PhysRelativeTime
+    createPulseDisc(W4dEntity* pParent, const MexTransform3d& localPosition, const PhysAbsoluteTime& startTime);
 
-    PER_MEMBER_PERSISTENT( MachPhysPulseWeapon );
+    PER_MEMBER_PERSISTENT(MachPhysPulseWeapon);
 
 protected:
-    //ctor. Creates a hidden version of the weapon which has type type.
-    //the composite fil defining the model is compositeFileName.
-    //For use with 1-time ctors.
-    MachPhysPulseWeapon( const SysPathName& compositeFileName, MachPhys::WeaponType type );
+    // ctor. Creates a hidden version of the weapon which has type type.
+    // the composite fil defining the model is compositeFileName.
+    // For use with 1-time ctors.
+    MachPhysPulseWeapon(const SysPathName& compositeFileName, MachPhys::WeaponType type);
 
-    //copy ctor
-    MachPhysPulseWeapon( const MachPhysPulseWeapon& copyMe, MachPhys::Mounting mounting,
-                         W4dEntity* pParent, const MexTransform3d& localTransform );
+    // copy ctor
+    MachPhysPulseWeapon(
+        const MachPhysPulseWeapon& copyMe,
+        MachPhys::Mounting mounting,
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform);
 
-    //Initiate the animation of the disc(s) at the gun barrel
-    void createFiringDiscs( const PhysAbsoluteTime& startTime );
+    // Initiate the animation of the disc(s) at the gun barrel
+    void createFiringDiscs(const PhysAbsoluteTime& startTime);
 
 private:
-    MachPhysPulseWeapon( const MachPhysPulseWeapon& );
-    MachPhysPulseWeapon& operator =( const MachPhysPulseWeapon& );
-    bool operator ==( const MachPhysPulseWeapon& );
+    MachPhysPulseWeapon(const MachPhysPulseWeapon&);
+    MachPhysPulseWeapon& operator=(const MachPhysPulseWeapon&);
+    bool operator==(const MachPhysPulseWeapon&);
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPulseWeapon );
-PER_READ_WRITE( MachPhysPulseWeapon );
+PER_DECLARE_PERSISTENT(MachPhysPulseWeapon);
+PER_READ_WRITE(MachPhysPulseWeapon);
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -129,36 +136,35 @@ class MachPhysPulseRifle : public MachPhysPulseWeapon
 // Canonical form revoked
 {
 public:
-    //ctor. Will owned by pParent at offset localTransform.
-    //Mounting version defined by mounting.
-    MachPhysPulseRifle( W4dEntity* pParent, const MexTransform3d& localTransform,
-                        MachPhys::Mounting mounting );
+    // ctor. Will owned by pParent at offset localTransform.
+    // Mounting version defined by mounting.
+    MachPhysPulseRifle(W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::Mounting mounting);
 
-    //dtor.
-    virtual ~MachPhysPulseRifle();
+    // dtor.
+    ~MachPhysPulseRifle() override;
 
-    //Return exemplar for given mounting
+    // Return exemplar for given mounting
     static const MachPhysPulseRifle& exemplar();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPulseRifle& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPulseRifle& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPulseRifle );
+    PER_MEMBER_PERSISTENT(MachPhysPulseRifle);
 
 private:
-    MachPhysPulseRifle( const MachPhysPulseRifle& );
-    MachPhysPulseRifle& operator =( const MachPhysPulseRifle& );
-    bool operator ==( const MachPhysPulseRifle& );
+    MachPhysPulseRifle(const MachPhysPulseRifle&);
+    MachPhysPulseRifle& operator=(const MachPhysPulseRifle&);
+    bool operator==(const MachPhysPulseRifle&);
 
-    //ctor used by exemplar method.
+    // ctor used by exemplar method.
     MachPhysPulseRifle();
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPulseRifle );
-PER_READ_WRITE( MachPhysPulseRifle );
+PER_DECLARE_PERSISTENT(MachPhysPulseRifle);
+PER_READ_WRITE(MachPhysPulseRifle);
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -166,42 +172,40 @@ class MachPhysPulseCannon : public MachPhysPulseWeapon
 // Canonical form revoked
 {
 public:
-    //ctor. Will owned by pParent at offset localTransform.
-    //Mounting version defined by mounting.
-    MachPhysPulseCannon( W4dEntity* pParent, const MexTransform3d& localTransform,
-                        MachPhys::Mounting mounting );
+    // ctor. Will owned by pParent at offset localTransform.
+    // Mounting version defined by mounting.
+    MachPhysPulseCannon(W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::Mounting mounting);
 
-    //dtor.
-    virtual ~MachPhysPulseCannon();
+    // dtor.
+    ~MachPhysPulseCannon() override;
 
-    //Return exemplar for given mounting
+    // Return exemplar for given mounting
     static const MachPhysPulseCannon& exemplar();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPulseCannon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPulseCannon& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPulseCannon );
+    PER_MEMBER_PERSISTENT(MachPhysPulseCannon);
 
 private:
-    MachPhysPulseCannon( const MachPhysPulseCannon& );
-    MachPhysPulseCannon& operator =( const MachPhysPulseCannon& );
-    bool operator ==( const MachPhysPulseCannon& );
+    MachPhysPulseCannon(const MachPhysPulseCannon&);
+    MachPhysPulseCannon& operator=(const MachPhysPulseCannon&);
+    bool operator==(const MachPhysPulseCannon&);
 
-    //ctor used by exemplar method.
+    // ctor used by exemplar method.
     MachPhysPulseCannon();
 
     friend class MachPhysWeaponPersistence;
 };
 ////////////////////////////////////////////////////////////////////////////
 
-PER_DECLARE_PERSISTENT( MachPhysPulseCannon );
-PER_READ_WRITE( MachPhysPulseCannon );
+PER_DECLARE_PERSISTENT(MachPhysPulseCannon);
+PER_READ_WRITE(MachPhysPulseCannon);
 
 #ifdef _INLINE
-    #include "machphys/pulsewep.ipp"
+#include "machphys/pulsewep.ipp"
 #endif
-
 
 #endif
 

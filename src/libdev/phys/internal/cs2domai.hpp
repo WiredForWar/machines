@@ -18,74 +18,72 @@
 
 #include "phys/cspace2.hpp"
 
-//Forward refs
+// Forward refs
 class MexPolygon2d;
 class PhysCS2dDomainGraph;
 
-//orthodox canonical( revoked )
+// orthodox canonical( revoked )
 class PhysCS2dDomain
 {
 public:
-    typedef PhysConfigSpace2d::DomainId DomainId;
+    using DomainId = PhysConfigSpace2d::DomainId;
 
-    //ctors.
-    PhysCS2dDomain( const DomainId& id, const MexAlignedBox2d& boundary );
+    // ctors.
+    PhysCS2dDomain(const DomainId& id, const MexAlignedBox2d& boundary);
 
-    PhysCS2dDomain( const DomainId& id, const MexAlignedBox2d& boundary,
-                    std::unique_ptr< MexPolygon2d >& polygonAPtr );
+    PhysCS2dDomain(const DomainId& id, const MexAlignedBox2d& boundary, std::unique_ptr<MexPolygon2d>& polygonAPtr);
 
-    //dtor.
+    // dtor.
     ~PhysCS2dDomain();
 
-    //Returns aligned bounding box in pBox
-    void boundary( MexAlignedBox2d* pBox ) const;
+    // Returns aligned bounding box in pBox
+    void boundary(MexAlignedBox2d* pBox) const;
 
-    //The domain's id
+    // The domain's id
     const PhysConfigSpace2d::DomainId& id() const;
 
     //////////////////////////////
-    //Maintain portal list
+    // Maintain portal list
 
-    void addPortal( const PhysConfigSpace2d::PortalId& id );
-    //PRE( not containsPortal( id ) )
+    void addPortal(const PhysConfigSpace2d::PortalId& id);
+    // PRE( not containsPortal( id ) )
 
-    void removePortal( const PhysConfigSpace2d::PortalId& id );
-    //PRE( containsPortal( id ) )
+    void removePortal(const PhysConfigSpace2d::PortalId& id);
+    // PRE( containsPortal( id ) )
 
-    bool containsPortal( const PhysConfigSpace2d::PortalId& id ) const;
+    bool containsPortal(const PhysConfigSpace2d::PortalId& id) const;
 
     size_t nPortals() const;
 
-    const ctl_vector< PhysConfigSpace2d::PortalId >& portals() const;
+    const ctl_vector<PhysConfigSpace2d::PortalId>& portals() const;
 
     //////////////////////////////
 
-    //True if contains point
-    bool contains( const MexPoint2d& point ) const;
+    // True if contains point
+    bool contains(const MexPoint2d& point) const;
 
     //////////////////////////////
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysCS2dDomain& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dDomain& t);
 
 private:
     // Operation deliberately revoked
-    PhysCS2dDomain( const PhysCS2dDomain& );
-    PhysCS2dDomain& operator =( const PhysCS2dDomain& );
-    bool operator ==( const PhysCS2dDomain& );
+    PhysCS2dDomain(const PhysCS2dDomain&);
+    PhysCS2dDomain& operator=(const PhysCS2dDomain&);
+    bool operator==(const PhysCS2dDomain&);
 
-    //Data members
-    DomainId id_; //This domain's id
-    MexAlignedBox2d boundary_; //Aligned bounding box
-    MexPolygon2d* pPolygon_; //Polygon defining actual boundary if different from boundary_
-    ctl_vector< PhysConfigSpace2d::PortalId > portals_; //Collection of portal ids
+    // Data members
+    DomainId id_; // This domain's id
+    MexAlignedBox2d boundary_; // Aligned bounding box
+    MexPolygon2d* pPolygon_; // Polygon defining actual boundary if different from boundary_
+    ctl_vector<PhysConfigSpace2d::PortalId> portals_; // Collection of portal ids
 };
 
 #ifdef _INLINE
-    #include "internal/cs2domai.ipp"
+#include "internal/cs2domai.ipp"
 #endif
-
 
 #endif
 

@@ -10,16 +10,16 @@
 #include "mathex/line3d.hpp"
 #include "mathex/transf3d.hpp"
 
-MexSphere3d::MexSphere3d():
- radius_(0)
+MexSphere3d::MexSphere3d()
+    : radius_(0)
 {
 
     TEST_INVARIANT;
 }
 
-MexSphere3d::MexSphere3d( const MexPoint3d& center, MATHEX_SCALAR radius):
- center_(center),
- radius_(radius)
+MexSphere3d::MexSphere3d(const MexPoint3d& center, MATHEX_SCALAR radius)
+    : center_(center)
+    , radius_(radius)
 {
 
     TEST_INVARIANT;
@@ -28,51 +28,51 @@ MexSphere3d::MexSphere3d( const MexPoint3d& center, MATHEX_SCALAR radius):
 MexSphere3d::~MexSphere3d()
 {
     TEST_INVARIANT;
-
 }
 
 void MexSphere3d::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void MexSphere3d::transform( const MexTransform3d& t )
+void MexSphere3d::transform(const MexTransform3d& t)
 {
-  t.transform(&center_);
+    t.transform(&center_);
 }
 
-bool MexSphere3d::intersects( const MexSausage3d & otherShape ) const
+bool MexSphere3d::intersects(const MexSausage3d& otherShape) const
 {
-  PRE(otherShape.length()>0);
+    PRE(otherShape.length() > 0);
 
-  bool result;
+    bool result;
 
-  MATHEX_SCALAR axisDistance=MexLine3d::sqrEuclidianDistance(
-                                   otherShape.startPoint(), otherShape.endPoint(), otherShape.length(),
-                                   center());
+    MATHEX_SCALAR axisDistance = MexLine3d::sqrEuclidianDistance(
+        otherShape.startPoint(),
+        otherShape.endPoint(),
+        otherShape.length(),
+        center());
 
-  result=(axisDistance <= (radius()+otherShape.radius())*(radius()+otherShape.radius()));
+    result = (axisDistance <= (radius() + otherShape.radius()) * (radius() + otherShape.radius()));
 
-  return result;
+    return result;
 }
 
-bool MexSphere3d::intersects( const MexSphere3d & otherShape ) const
+bool MexSphere3d::intersects(const MexSphere3d& otherShape) const
 {
 
-  bool result;
+    bool result;
 
-  MATHEX_SCALAR axisDistance=center().sqrEuclidianDistance(otherShape.center());
+    MATHEX_SCALAR axisDistance = center().sqrEuclidianDistance(otherShape.center());
 
-  result=(axisDistance <= (radius()+otherShape.radius())*(radius()+otherShape.radius()));
+    result = (axisDistance <= (radius() + otherShape.radius()) * (radius() + otherShape.radius()));
 
-  return result;
-
+    return result;
 }
 
-ostream& operator <<( ostream& o, const MexSphere3d& t )
+ostream& operator<<(ostream& o, const MexSphere3d& t)
 {
 
-	o << std::endl;
+    o << std::endl;
     o << "center_ " << t.center_ << std::endl;
     o << "radius_ " << t.radius_ << std::endl;
     return o;

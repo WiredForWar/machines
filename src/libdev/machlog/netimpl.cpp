@@ -1,5 +1,5 @@
 /*
- * N E T I M P L . C P P 
+ * N E T I M P L . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,15 +18,14 @@ MachLogNetworkDataImpl::MachLogNetworkDataImpl()
 MachLogNetworkDataImpl::~MachLogNetworkDataImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogNetworkDataImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogNetworkDataImpl& t )
+ostream& operator<<(ostream& o, const MachLogNetworkDataImpl& t)
 {
 
     o << "MachLogNetworkDataImpl " << (void*)&t << " start" << std::endl;

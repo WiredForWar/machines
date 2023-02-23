@@ -13,63 +13,61 @@ MachPhysMineData::MachPhysMineData()
     TEST_INVARIANT;
 }
 
-MachPhysMineData::MachPhysMineData( const MachPhysMineData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform ),
-  capacity_( copyMe.capacity_ ),
-  extractionRate_( copyMe.extractionRate_ ),
-  mineralDistance_(copyMe.mineralDistance_)
+MachPhysMineData::MachPhysMineData(const MachPhysMineData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
+    , capacity_(copyMe.capacity_)
+    , extractionRate_(copyMe.extractionRate_)
+    , mineralDistance_(copyMe.mineralDistance_)
 {
-
 }
 
 MachPhysMineData::~MachPhysMineData()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::SizeUnits MachPhysMineData::capacity() const
 {
-	return capacity_;
+    return capacity_;
 }
 
-void MachPhysMineData::capacity( const MachPhys::SizeUnits& newCapacity )
+void MachPhysMineData::capacity(const MachPhys::SizeUnits& newCapacity)
 {
-	capacity_ = newCapacity;
+    capacity_ = newCapacity;
 }
 
 MachPhys::BuildingMaterialUnits MachPhysMineData::extractionRate() const
 {
-	return extractionRate_;
+    return extractionRate_;
 }
 
-void MachPhysMineData::extractionRate( const MachPhys::BuildingMaterialUnits& newExtractionRate )
+void MachPhysMineData::extractionRate(const MachPhys::BuildingMaterialUnits& newExtractionRate)
 {
-	extractionRate_ = newExtractionRate;
+    extractionRate_ = newExtractionRate;
 }
 
 MATHEX_SCALAR MachPhysMineData::sqrMineralDistance() const
 {
-	return mineralDistance_;
+    return mineralDistance_;
 }
 
-void MachPhysMineData::sqrMineralDistance( const MATHEX_SCALAR& newMineralDistance)
+void MachPhysMineData::sqrMineralDistance(const MATHEX_SCALAR& newMineralDistance)
 {
-	mineralDistance_ = newMineralDistance;
+    mineralDistance_ = newMineralDistance;
 }
 
 void MachPhysMineData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMineData& t )
+ostream& operator<<(ostream& o, const MachPhysMineData& t)
 {
 
-   // o << (MachPhysObjectData)t;
-   // o << (MachPhysConstructionData)t;
-	o << "Capacity " << t.capacity() << std::endl;
-	o << "Extraction rate " << t.extractionRate() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
+    o << "Capacity " << t.capacity() << std::endl;
+    o << "Extraction rate " << t.extractionRate() << std::endl;
 
     return o;
 }

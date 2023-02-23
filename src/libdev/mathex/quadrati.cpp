@@ -1,5 +1,5 @@
 /*
- * Q U A D R A T I . C P P 
+ * Q U A D R A T I . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -9,17 +9,17 @@
 
 #include "mathex/quadrati.hpp"
 
-//static
-int MexQuadratic::solve( MATHEX_SCALAR a, MATHEX_SCALAR b, MATHEX_SCALAR c, Roots aRoots )
+// static
+int MexQuadratic::solve(MATHEX_SCALAR a, MATHEX_SCALAR b, MATHEX_SCALAR c, Roots aRoots)
 {
     MATHEX_SCALAR epsilon = MexEpsilon::instance();
     int nRoots;
 
-    //Check for linear
-    if( fabs( a ) < epsilon )
+    // Check for linear
+    if (fabs(a) < epsilon)
     {
-        //Check for bad
-        if( fabs( b ) < epsilon )
+        // Check for bad
+        if (fabs(b) < epsilon)
             nRoots = 0;
         else
         {
@@ -29,17 +29,17 @@ int MexQuadratic::solve( MATHEX_SCALAR a, MATHEX_SCALAR b, MATHEX_SCALAR c, Root
     }
     else
     {
-        //Valid equation. Compute the square bit.
+        // Valid equation. Compute the square bit.
         MATHEX_SCALAR square = b * b - 4.0 * a * c;
-        if( square > epsilon )
+        if (square > epsilon)
         {
-            //Normal situation
-            MATHEX_SCALAR root = sqrt( square );
-            MATHEX_SCALAR root1 =  (root - b) / (2.0 * a);
+            // Normal situation
+            MATHEX_SCALAR root = sqrt(square);
+            MATHEX_SCALAR root1 = (root - b) / (2.0 * a);
             MATHEX_SCALAR root2 = -(root + b) / (2.0 * a);
 
             nRoots = 2;
-            if( root1 < root2 )
+            if (root1 < root2)
             {
                 aRoots[0] = root1;
                 aRoots[1] = root2;
@@ -50,7 +50,7 @@ int MexQuadratic::solve( MATHEX_SCALAR a, MATHEX_SCALAR b, MATHEX_SCALAR c, Root
                 aRoots[1] = root1;
             }
         }
-        else if( square > -epsilon )
+        else if (square > -epsilon)
         {
             nRoots = 1;
             aRoots[0] = -b / (2.0 * a);

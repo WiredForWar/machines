@@ -1,5 +1,5 @@
 /*
- * M A R K E R . H P P 
+ * M A R K E R . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,40 +17,43 @@
 #include "base/persist.hpp"
 #include "world4d/custom.hpp"
 
-//Forward refs
+// Forward refs
 class MexAlignedBox3d;
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class MachPhysMarker : public W4dCustom
 {
 public:
-    //ctor. Marker encloses boundary.
-    //Colour depends on permanent flag.
-    MachPhysMarker( W4dEntity* pParent, const W4dTransform3d& localTransform,
-                    const MexAlignedBox3d& boundary, bool permanent = true, int percentageHp = 100 );
+    // ctor. Marker encloses boundary.
+    // Colour depends on permanent flag.
+    MachPhysMarker(
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        const MexAlignedBox3d& boundary,
+        bool permanent = true,
+        int percentageHp = 100);
 
-    //dtor
-    virtual ~MachPhysMarker();
+    // dtor
+    ~MachPhysMarker() override;
 
-    //Inherited from W4dEntity
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                             Accuracy accuracy ) const;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMarker& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMarker& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysMarker );
+    PER_MEMBER_PERSISTENT(MachPhysMarker);
+
 private:
     // Operations deliberately revoked
-    MachPhysMarker( const MachPhysMarker& );
-    MachPhysMarker& operator =( const MachPhysMarker& );
-    bool operator ==( const MachPhysMarker& );
-
+    MachPhysMarker(const MachPhysMarker&);
+    MachPhysMarker& operator=(const MachPhysMarker&);
+    bool operator==(const MachPhysMarker&);
 };
 
-PER_READ_WRITE( MachPhysMarker );
-PER_DECLARE_PERSISTENT( MachPhysMarker );
+PER_READ_WRITE(MachPhysMarker);
+PER_DECLARE_PERSISTENT(MachPhysMarker);
 
 #endif
 

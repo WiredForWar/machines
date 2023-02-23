@@ -17,9 +17,9 @@
 #include "world4d/mveccple.hpp"
 #include "world4d/mvecccha.hpp"
 
-MachPhysMaterialConverter::MachPhysMaterialConverter( MachPhys::Race from, MachPhys::Race to )
-: fromHue_( hue( from ) ),
-  toHue_( hue( to ) )
+MachPhysMaterialConverter::MachPhysMaterialConverter(MachPhys::Race from, MachPhys::Race to)
+    : fromHue_(hue(from))
+    , toHue_(hue(to))
 {
     TEST_INVARIANT;
 }
@@ -27,19 +27,18 @@ MachPhysMaterialConverter::MachPhysMaterialConverter( MachPhys::Race from, MachP
 MachPhysMaterialConverter::~MachPhysMaterialConverter()
 {
     TEST_INVARIANT;
-
 }
 
-bool MachPhysMaterialConverter::convert( RenMaterial* pMaterial ) const
+bool MachPhysMaterialConverter::convert(RenMaterial* pMaterial) const
 {
-    RenColourHSV    colour( pMaterial->diffuse() );
-    bool    converted = false;
+    RenColourHSV colour(pMaterial->diffuse());
+    bool converted = false;
 
-    if( colour.hueDefined() and close( colour.hue(), fromHue_ ) )
+    if (colour.hueDefined() and close(colour.hue(), fromHue_))
     {
-        colour.hue( colour.hue() + toHue_ - fromHue_ );
+        colour.hue(colour.hue() + toHue_ - fromHue_);
 
-        pMaterial->diffuse( colour.rgb() );
+        pMaterial->diffuse(colour.rgb());
         converted = true;
     }
     else
@@ -49,55 +48,55 @@ bool MachPhysMaterialConverter::convert( RenMaterial* pMaterial ) const
 }
 
 // Apply this material conversion to all materials in a given composite.
-void MachPhysMaterialConverter::convert( W4dComposite* comp ) const
+void MachPhysMaterialConverter::convert(W4dComposite* comp) const
 {
-	PRE(comp);
+    PRE(comp);
 
-    RenMaterialSet    materials;
-    comp->addMaterials( &materials );
+    RenMaterialSet materials;
+    comp->addMaterials(&materials);
 
-    RenMaterialMap  newMaterialMap;
+    RenMaterialMap newMaterialMap;
 
-    for( RenMaterialSet::iterator i = materials.begin(); i != materials.end(); ++i )
+    for (RenMaterialSet::iterator i = materials.begin(); i != materials.end(); ++i)
     {
         RenMaterial material = *i;
 
-        if( convert( &material ) )
-            newMaterialMap.insert( *i, material );
+        if (convert(&material))
+            newMaterialMap.insert(*i, material);
     }
 
-    //comp->materialMap( newMaterialMap );
-    //Test the new material changer classes
+    // comp->materialMap( newMaterialMap );
+    // Test the new material changer classes
     W4dMaterialVecPtrSet tempSet;
-    W4dCompositeMaterialVecChanger testChanger( *comp, newMaterialMap, &tempSet );
-    testChanger.applyOverrides( comp );
+    W4dCompositeMaterialVecChanger testChanger(*comp, newMaterialMap, &tempSet);
+    testChanger.applyOverrides(comp);
 }
 
-bool MachPhysMaterialConverter::close( double hue1, double hue2 ) const
+bool MachPhysMaterialConverter::close(double hue1, double hue2) const
 {
     const double epsilon = 10.0;
 
-    bool    result;
+    bool result;
 
-    //Return true if hue1 is within epsilon of hue2
+    // Return true if hue1 is within epsilon of hue2
     double diff = hue2 - hue1;
 
-    if( diff < 0.0 )
+    if (diff < 0.0)
         diff = -diff;
 
-    while( diff >= 360.0 )
+    while (diff >= 360.0)
         diff -= 360.0;
 
-    result = diff <= epsilon  or  diff >= (360.0 - epsilon);
+    result = diff <= epsilon or diff >= (360.0 - epsilon);
 
     return result;
 }
 
-double MachPhysMaterialConverter::hue( MachPhys::Race race ) const
+double MachPhysMaterialConverter::hue(MachPhys::Race race) const
 {
     double result = 0;
 
-    switch( race )
+    switch (race)
     {
         case MachPhys::RED:
             result = 0.0;
@@ -119,8 +118,7 @@ double MachPhysMaterialConverter::hue( MachPhys::Race race ) const
 
 void MachPhysMaterialConverter::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
-
 
 /* End MATCONV.CPP **************************************************/

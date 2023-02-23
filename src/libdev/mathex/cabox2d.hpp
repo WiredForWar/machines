@@ -17,24 +17,24 @@
 
 class MexAlignedBox2d;
 
-#pragma pack(push,1)
+#pragma pack(push, 1)
 class MexCompressedAlignedBox2d
 // Canonical form revoked
 {
 public:
     MexCompressedAlignedBox2d();
-    MexCompressedAlignedBox2d( const MexAlignedBox2d& );
+    MexCompressedAlignedBox2d(const MexAlignedBox2d&);
     ~MexCompressedAlignedBox2d();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MexCompressedAlignedBox2d& t );
-	friend class MexAlignedBox2d;
+    friend ostream& operator<<(ostream& o, const MexCompressedAlignedBox2d& t);
+    friend class MexAlignedBox2d;
 
-    MexCompressedPoint2d    vmin_;
-	MexCompressedPoint2d    vmax_;
-    bool                    isEmpty_;
+    MexCompressedPoint2d vmin_;
+    MexCompressedPoint2d vmax_;
+    bool isEmpty_;
 };
 #pragma pack(pop)
 

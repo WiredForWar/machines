@@ -14,60 +14,63 @@
 #include "gui/event.hpp"
 #include "machgui/menus_helper.hpp"
 
-MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* pParent,
-																MachGuiStartupScreens* pStartupScreens,
-																int width,
-																const GuiStrings& availText )
-: 	GuiDisplayable( pParent, Gui::Box(0,0,width,reqHeight() ) ),
-	MachGuiFocusCapableControl( pStartupScreens ),
-	highlighted_( false ),
-	strings_( availText ),
-	pStartupScreens_( pStartupScreens ),
-	whiteFont_( false ),
-	border_( false )
+MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
+    GuiDisplayable* pParent,
+    MachGuiStartupScreens* pStartupScreens,
+    int width,
+    const GuiStrings& availText)
+    : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , highlighted_(false)
+    , strings_(availText)
+    , pStartupScreens_(pStartupScreens)
+    , whiteFont_(false)
+    , border_(false)
 {
-	text_ = availText[0];
+    text_ = availText[0];
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
 
-MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* pParent,
-																MachGuiStartupScreens* pStartupScreens,
-																int width,
-																const GuiStrings& availText,
-																bool whiteFont )
-: 	GuiDisplayable( pParent, Gui::Box( 0,0,width,reqHeight() ) ),
-	MachGuiFocusCapableControl( pStartupScreens ),
-	highlighted_( false ),
-	strings_( availText ),
-	pStartupScreens_( pStartupScreens ),
-	whiteFont_( whiteFont ),
-	border_( false )
+MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
+    GuiDisplayable* pParent,
+    MachGuiStartupScreens* pStartupScreens,
+    int width,
+    const GuiStrings& availText,
+    bool whiteFont)
+    : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , highlighted_(false)
+    , strings_(availText)
+    , pStartupScreens_(pStartupScreens)
+    , whiteFont_(whiteFont)
+    , border_(false)
 {
-	text_ = availText[0];
+    text_ = availText[0];
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
 }
 
-MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* pParent,
-																MachGuiStartupScreens* pStartupScreens,
-																const Gui::Coord& relCoord,
-																int width,
-																const GuiStrings& availText,
-																bool whiteFont,
-																bool border )
-: 	GuiDisplayable( pParent, Gui::Box( relCoord, width, reqHeight( border ) ) ),
-	MachGuiFocusCapableControl( pStartupScreens ),
-	highlighted_( false ),
-	strings_( availText ),
-	pStartupScreens_( pStartupScreens ),
-	whiteFont_( whiteFont ),
-	border_( border )
+MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
+    GuiDisplayable* pParent,
+    MachGuiStartupScreens* pStartupScreens,
+    const Gui::Coord& relCoord,
+    int width,
+    const GuiStrings& availText,
+    bool whiteFont,
+    bool border)
+    : GuiDisplayable(pParent, Gui::Box(relCoord, width, reqHeight(border)))
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , highlighted_(false)
+    , strings_(availText)
+    , pStartupScreens_(pStartupScreens)
+    , whiteFont_(whiteFont)
+    , border_(border)
 {
-	PRE(availText.size() > 0);
-	text_ = availText[0];
+    PRE(availText.size() > 0);
+    text_ = availText[0];
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
@@ -76,15 +79,14 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator( 	GuiDisplayable* p
 MachGuiDropDownListBoxCreator::~MachGuiDropDownListBoxCreator()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDropDownListBoxCreator::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDropDownListBoxCreator& t )
+ostream& operator<<(ostream& o, const MachGuiDropDownListBoxCreator& t)
 {
 
     o << "MachGuiDropDownListBoxCreator " << (void*)&t << " start" << std::endl;
@@ -95,71 +97,73 @@ ostream& operator <<( ostream& o, const MachGuiDropDownListBoxCreator& t )
 
 const string& MachGuiDropDownListBoxCreator::text() const
 {
-	return text_;
+    return text_;
 }
 
-void MachGuiDropDownListBoxCreator::text( const string& newText )
+void MachGuiDropDownListBoxCreator::text(const string& newText)
 {
-	text_ = newText;
-	changed();
+    text_ = newText;
+    changed();
 }
 
 const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxCreator::item() const
 {
-	// Find value assosciated with currently selected text
-	PRE( items() );
+    // Find value assosciated with currently selected text
+    PRE(items());
 
-	uint i;
+    uint i;
 
-	for(  i = 0; i < strings_.size() and strings_[i] != text(); ++i )
-	{
-		// Intentionally empty
-	}
+    for (i = 0; i < strings_.size() and strings_[i] != text(); ++i)
+    {
+        // Intentionally empty
+    }
 
-	ASSERT_INFO( text() );
-	ASSERT( strings_[i] == text(), "The selected text in the listbox does not match any of the available text items in the listbox" );
+    ASSERT_INFO(text());
+    ASSERT(
+        strings_[i] == text(),
+        "The selected text in the listbox does not match any of the available text items in the listbox");
 
-	const DropDownListBoxItem returnItem = items_[i];
+    const DropDownListBoxItem returnItem = items_[i];
 
-	return returnItem;
+    return returnItem;
 }
 
 bool MachGuiDropDownListBoxCreator::items() const
 {
-	return ( items_.size() != 0 );
+    return (items_.size() != 0);
 }
 
-//static
-size_t MachGuiDropDownListBoxCreator::reqHeight(  bool border /*= false*/ )
+// static
+size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 {
-	size_t height = getFont().charHeight() + 4;
+    size_t height = getFont().charHeight() + 4;
 
-	if ( border )
-		height += 2;
+    if (border)
+        height += 2;
 
-	return height;
+    return height;
 }
 
-//virtual
-void MachGuiDropDownListBoxCreator::doHandleMouseEnterEvent( const GuiMouseEvent& /*rel*/ )
+// virtual
+void MachGuiDropDownListBoxCreator::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
-	highlighted_ = true;
-	changed();
+    highlighted_ = true;
+    changed();
 }
 
-//virtual
-void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent( const GuiMouseEvent& /*rel*/ )
+// virtual
+void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
-	highlighted_ = false;
-	changed();
+    highlighted_ = false;
+    changed();
 }
 
-//virtual
-void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if( !strings_.empty() )
+    if (!strings_.empty())
     {
-        if ( rel.leftButton() == Gui::RELEASED )
+        if (rel.leftButton() == Gui::RELEASED)
         {
             size_t dropDownHeight = strings_.size() * MachGuiSingleSelectionListBoxItem::reqHeight();
 
@@ -167,253 +171,282 @@ void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent( const GuiMouseEvent
 
             // Make sure that selected string appears first in list
             GuiStrings orderedStrings;
-            orderedStrings.push_back( text_ );
+            orderedStrings.push_back(text_);
 
-            for (auto iter = strings_.begin(); iter != strings_.end(); ++iter )
+            for (auto iter = strings_.begin(); iter != strings_.end(); ++iter)
             {
                 // Ignore text_, do not add into list again.
-//				if ( stricmp( (*iter).c_str(), text_.c_str() ) != 0 )
-                if ( strcasecmp( (*iter).c_str(), text_.c_str() ) != 0 )
+                //              if ( stricmp( (*iter).c_str(), text_.c_str() ) != 0 )
+                if (strcasecmp((*iter).c_str(), text_.c_str()) != 0)
                 {
-                    orderedStrings.push_back( (*iter) );
+                    orderedStrings.push_back((*iter));
                 }
             }
 
             auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
             using namespace machgui::helper::menus;
             int menuLeft = x_from_screen_left(pRootParent_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
-            int menuTop  = y_from_screen_bottom(pRootParent_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
+            int menuTop = y_from_screen_bottom(pRootParent_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
 
-            createDropDownList(	pStartupScreens_,
-                                Gui::Box( Gui::Coord( coord.x() - menuLeft,
-                                            coord.y() - menuTop ),
-                                            width(), dropDownHeight ),
-                                1000,
-                                MachGuiSingleSelectionListBoxItem::reqHeight() - 1 /* slight overlap*/,
-                                1,
-                                width(),
-                                orderedStrings,
-                                this );
+            createDropDownList(
+                pStartupScreens_,
+                Gui::Box(Gui::Coord(coord.x() - menuLeft, coord.y() - menuTop), width(), dropDownHeight),
+                1000,
+                MachGuiSingleSelectionListBoxItem::reqHeight() - 1 /* slight overlap*/,
+                1,
+                width(),
+                orderedStrings,
+                this);
         }
     }
 }
 
-//virtual
+// virtual
 void MachGuiDropDownListBoxCreator::doDisplay()
 {
-	int offset = 0;
-	if ( border_ )
-	{
-		offset = 1;
-	}
-	int offset2 = 2*offset;
+    int offset = 0;
+    if (border_)
+    {
+        offset = 1;
+    }
+    int offset2 = 2 * offset;
 
-	Gui::Coord textPos( absoluteBoundary().minCorner().x() + 1 + offset, absoluteBoundary().minCorner().y() + 1 + offset );
+    Gui::Coord textPos(
+        absoluteBoundary().minCorner().x() + 1 + offset,
+        absoluteBoundary().minCorner().y() + 1 + offset);
 
-	if ( highlighted_ )
-	{
-		if ( isFocusControl() )
-		{
-			GuiPainter::instance().blit( 	MachGui::longYellowGlowBmp(),
-											Gui::Box( 0,0,width(),height() - 1 ),
-											absoluteBoundary().minCorner() );
-		}
-		else
-		{
-			GuiPainter::instance().blit( 	MachGui::longGlowBmp(),
-											Gui::Box( 0,0,width(),height() - 1 ),
-											absoluteBoundary().minCorner() );
-		}
-		getHighlightFont().drawText( text_, textPos, width() - offset2 );
-	}
-	else
-	{
-		if ( isFocusControl() )
-		{
-			GuiPainter::instance().blit( 	MachGui::longYellowGlowBmp(),
-											Gui::Box( 0,0,width(),height() - 1 ),
-											absoluteBoundary().minCorner() );
+    if (highlighted_)
+    {
+        if (isFocusControl())
+        {
+            GuiPainter::instance().blit(
+                MachGui::longYellowGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
+        }
+        else
+        {
+            GuiPainter::instance().blit(
+                MachGui::longGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
+        }
+        getHighlightFont().drawText(text_, textPos, width() - offset2);
+    }
+    else
+    {
+        if (isFocusControl())
+        {
+            GuiPainter::instance().blit(
+                MachGui::longYellowGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
 
-			getHighlightFont().drawText( text_, textPos, width() - offset2 );
-		}
-		else
-		{
+            getHighlightFont().drawText(text_, textPos, width() - offset2);
+        }
+        else
+        {
             auto* shared = pRootParent_->getSharedBitmaps();
             auto backdrop = shared->getNamedBitmap("backdrop");
             shared->blitNamedBitmapFromArea(
-                    backdrop,
-                    absoluteBoundary(),
-                    absoluteBoundary().minCorner(),
-                    [shared, backdrop](const Gui::Box& box) {
-                        using namespace machgui::helper::menus;
-                        return centered_bitmap_transform(
-                                box,
-                                shared->getWidthOfNamedBitmap(backdrop),
-                                shared->getHeightOfNamedBitmap(backdrop)
-                        );
-                    });
+                backdrop,
+                absoluteBoundary(),
+                absoluteBoundary().minCorner(),
+                [shared, backdrop](const Gui::Box& box) {
+                    using namespace machgui::helper::menus;
+                    return centered_bitmap_transform(
+                        box,
+                        shared->getWidthOfNamedBitmap(backdrop),
+                        shared->getHeightOfNamedBitmap(backdrop));
+                });
 
-			// Draw list box item text
-			if ( whiteFont_ )
-			{
-				getWhiteFont().drawText( text_, textPos, width() - offset2 );
-			}
-			else
-			{
-				getFont().drawText( text_, textPos, width() - offset2 );
-			}
-		}
-	}
+            // Draw list box item text
+            if (whiteFont_)
+            {
+                getWhiteFont().drawText(text_, textPos, width() - offset2);
+            }
+            else
+            {
+                getFont().drawText(text_, textPos, width() - offset2);
+            }
+        }
+    }
 
-	if ( border_ )
-	{
-		GuiPainter::instance().hollowRectangle( absoluteBoundary(), MachGui::DARKSANDY(), 1 );
-	}
+    if (border_)
+    {
+        GuiPainter::instance().hollowRectangle(absoluteBoundary(), MachGui::DARKSANDY(), 1);
+    }
 }
 
-//virtual
-MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(	MachGuiStartupScreens* pParent,
-															const Gui::Box& box,
-					    									size_t horizontalSpacing,
-					    									size_t verticalSpacing,
-															size_t scrollInc, size_t itemWidth,
-															const ctl_vector<string>& itemText,
-															MachGuiDropDownListBoxCreator* listBoxCreator )
+// virtual
+MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc,
+    size_t itemWidth,
+    const ctl_vector<string>& itemText,
+    MachGuiDropDownListBoxCreator* listBoxCreator)
 {
-	return _NEW( MachGuiDropDownList(	pParent, box, horizontalSpacing, verticalSpacing,
-										scrollInc, itemWidth, itemText, listBoxCreator,
-										whiteFont_ ) );
+    return _NEW(MachGuiDropDownList(
+        pParent,
+        box,
+        horizontalSpacing,
+        verticalSpacing,
+        scrollInc,
+        itemWidth,
+        itemText,
+        listBoxCreator,
+        whiteFont_));
 }
 
-//static
+// static
 GuiBmpFont MachGuiDropDownListBoxCreator::getFont()
 {
-	GuiBmpFont bmpFont = GuiBmpFont::getFont( SysPathName("gui/menu/smallfnt.bmp") );
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
 
-	return bmpFont;
+    return bmpFont;
 }
 
-//static
+// static
 GuiBmpFont MachGuiDropDownListBoxCreator::getWhiteFont()
 {
-	GuiBmpFont bmpFont = GuiBmpFont::getFont( SysPathName("gui/menu/smalwfnt.bmp") );
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smalwfnt.bmp"));
 
-	return bmpFont;
+    return bmpFont;
 }
 
-//static
+// static
 GuiBmpFont MachGuiDropDownListBoxCreator::getHighlightFont()
 {
-	GuiBmpFont bmpFont = GuiBmpFont::getFont( SysPathName("gui/menu/smaldfnt.bmp") );
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
 
-	return bmpFont;
+    return bmpFont;
 }
 
-MachGuiDropDownList::MachGuiDropDownList(	MachGuiStartupScreens* pParent, const Gui::Box& box,
-										    size_t horizontalSpacing, size_t verticalSpacing,
-											size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-											MachGuiDropDownListBoxCreator* pCreator )
-:	MachGuiDropDownListBox( pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText ),
-	pCreator_( pCreator )
-{}
-
-MachGuiDropDownList::MachGuiDropDownList(	MachGuiStartupScreens* pParent, const Gui::Box& box,
-										    size_t horizontalSpacing, size_t verticalSpacing,
-											size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-											MachGuiDropDownListBoxCreator* pCreator, bool whiteFont )
-:	MachGuiDropDownListBox( pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText, whiteFont ),
-	pCreator_( pCreator )
-{}
-
-//virtual
-void MachGuiDropDownList::itemSelected( const string& text )
+MachGuiDropDownList::MachGuiDropDownList(
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc,
+    size_t itemWidth,
+    const ctl_vector<string>& itemText,
+    MachGuiDropDownListBoxCreator* pCreator)
+    : MachGuiDropDownListBox(pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText)
+    , pCreator_(pCreator)
 {
-	pCreator_->text( text );
-
-	MachGuiDropDownListBox::itemSelected( text );
 }
 
-void MachGuiDropDownListBoxCreator::items( const DropDownListBoxItems& items )
+MachGuiDropDownList::MachGuiDropDownList(
+    MachGuiStartupScreens* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc,
+    size_t itemWidth,
+    const ctl_vector<string>& itemText,
+    MachGuiDropDownListBoxCreator* pCreator,
+    bool whiteFont)
+    : MachGuiDropDownListBox(
+        pParent,
+        box,
+        horizontalSpacing,
+        verticalSpacing,
+        scrollInc,
+        itemWidth,
+        itemText,
+        whiteFont)
+    , pCreator_(pCreator)
 {
-	items_ = items;
 }
 
-//virtual
-bool MachGuiDropDownListBoxCreator::doHandleNavigationKey( NavKey navKey, MachGuiFocusCapableControl** )
+// virtual
+void MachGuiDropDownList::itemSelected(const string& text)
 {
-	bool retValue = false;
+    pCreator_->text(text);
 
-	if ( navKey == MachGuiFocusCapableControl::UP_ARROW )
-	{
-		string previousItem;
-		string currentItem;
-		bool itemSelected = false;
-
-		// Find item before one selected
-		for ( 	GuiStrings::iterator i = strings_.begin();
-			 	i != strings_.end() and not itemSelected;
-			 	++i )
-		{
-			previousItem = currentItem;
-
-			currentItem = *i;
-
-			itemSelected = currentItem == text();
-		}
-
-		// Didn't find previous item (first item was selected or there isn't any items to select)
-		if ( previousItem == "" and strings_.size() >= 1 )
-		{
-			previousItem = strings_.back();
-		}
-
-		// Select the new item
-		if ( previousItem != "" )
-		{
-			text( previousItem );
-			retValue = true;
-		}
-	}
-	else if ( navKey == MachGuiFocusCapableControl::DOWN_ARROW )
-	{
-		string nextItem;
-		bool itemSelected = false;
-
-		// Find item after one selected
-		GuiStrings::iterator i = strings_.begin();
-
-		for ( 	/*empty*/;
-				i != strings_.end() and not itemSelected;
-			 	++i )
-		{
-			itemSelected = (*i) == text();
-		}
-
-		// Found selected item, no select one after it...
-		if ( itemSelected )
-		{
-			if ( i != strings_.end() )
-			{
-				text( *i );
-			}
-			else
-			{
-				text( strings_.front() );
-			}
-
-			retValue = true;
-		}
-	}
-
-	return retValue;
+    MachGuiDropDownListBox::itemSelected(text);
 }
 
-//virtual
-void MachGuiDropDownListBoxCreator::hasFocus( bool newValue )
+void MachGuiDropDownListBoxCreator::items(const DropDownListBoxItems& items)
 {
-	MachGuiFocusCapableControl::hasFocus( newValue );
+    items_ = items;
+}
 
-	changed();
+// virtual
+bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl**)
+{
+    bool retValue = false;
+
+    if (navKey == MachGuiFocusCapableControl::UP_ARROW)
+    {
+        string previousItem;
+        string currentItem;
+        bool itemSelected = false;
+
+        // Find item before one selected
+        for (GuiStrings::iterator i = strings_.begin(); i != strings_.end() and not itemSelected; ++i)
+        {
+            previousItem = currentItem;
+
+            currentItem = *i;
+
+            itemSelected = currentItem == text();
+        }
+
+        // Didn't find previous item (first item was selected or there isn't any items to select)
+        if (previousItem == "" and strings_.size() >= 1)
+        {
+            previousItem = strings_.back();
+        }
+
+        // Select the new item
+        if (previousItem != "")
+        {
+            text(previousItem);
+            retValue = true;
+        }
+    }
+    else if (navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    {
+        string nextItem;
+        bool itemSelected = false;
+
+        // Find item after one selected
+        GuiStrings::iterator i = strings_.begin();
+
+        for (/*empty*/; i != strings_.end() and not itemSelected; ++i)
+        {
+            itemSelected = (*i) == text();
+        }
+
+        // Found selected item, no select one after it...
+        if (itemSelected)
+        {
+            if (i != strings_.end())
+            {
+                text(*i);
+            }
+            else
+            {
+                text(strings_.front());
+            }
+
+            retValue = true;
+        }
+    }
+
+    return retValue;
+}
+
+// virtual
+void MachGuiDropDownListBoxCreator::hasFocus(bool newValue)
+{
+    MachGuiFocusCapableControl::hasFocus(newValue);
+
+    changed();
 }
 
 /* End DROPDWNC.CPP *************************************************/

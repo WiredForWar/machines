@@ -4,5 +4,5 @@
 
 dummyFunctionColourVector()
 {
-	static ctl_vector<RenColour> vec1;
+    static ctl_vector<RenColour> vec1;
 }

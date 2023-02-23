@@ -1,12 +1,12 @@
 /*
- * N U C L W E A P . H P P 
+ * N U C L W E A P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     MachLogNuclearWeapon - a device capable of launching MLNuclearMissiles at targets.
 
-		Rifle and cannon
+        Rifle and cannon
 */
 
 #ifndef _MACHLOG_NUCLWEAP_HPP
@@ -21,32 +21,31 @@ class MachLogNuclearWeapon : public MachLogLinearWeapon
 // Canonical form revoked
 {
 public:
-    MachLogNuclearWeapon( MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner );
-    virtual ~MachLogNuclearWeapon();
+    MachLogNuclearWeapon(MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner);
+    ~MachLogNuclearWeapon() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogNuclearWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachLogNuclearWeapon& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogNuclearWeapon );
-	PER_FRIEND_READ_WRITE( MachLogNuclearWeapon );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogNuclearWeapon);
+    PER_FRIEND_READ_WRITE(MachLogNuclearWeapon);
 
 protected:
-
-	virtual	MachLogLinearProjectile* createLinearProjectile
-	(
-		const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-	    const W4dEntity& target, const MexPoint3d& targetOffset
-	);
+    MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
 private:
-    MachLogNuclearWeapon( const MachLogNuclearWeapon& );
-    MachLogNuclearWeapon& operator =( const MachLogNuclearWeapon& );
-    bool operator ==( const MachLogNuclearWeapon& );
-
+    MachLogNuclearWeapon(const MachLogNuclearWeapon&);
+    MachLogNuclearWeapon& operator=(const MachLogNuclearWeapon&);
+    bool operator==(const MachLogNuclearWeapon&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogNuclearWeapon );
+PER_DECLARE_PERSISTENT(MachLogNuclearWeapon);
 
 #endif
 

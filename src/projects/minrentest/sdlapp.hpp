@@ -12,22 +12,26 @@
 
 class SysPathName;
 
-
 class WrappingTimer
 {
 public:
-	WrappingTimer(double m): modulo_(m)		{ timer_.time(0); snapshot(); }
+    WrappingTimer(double m)
+        : modulo_(m)
+    {
+        timer_.time(0);
+        snapshot();
+    }
 
-//	void snapshot()			{ snapshot_ = fmod(timer_.time(), modulo_); }
-// Temporarily disable wrapping.
-	void snapshot()			{ snapshot_ = timer_.time(); }
-	double time() const		{ return snapshot_; }
-	void time(double t)		{ timer_.time(t); }
+    //  void snapshot()         { snapshot_ = fmod(timer_.time(), modulo_); }
+    // Temporarily disable wrapping.
+    void snapshot() { snapshot_ = timer_.time(); }
+    double time() const { return snapshot_; }
+    void time(double t) { timer_.time(t); }
 
 private:
-	const double 	modulo_;
-	double			snapshot_;
-	DevTimer		timer_;
+    const double modulo_;
+    double snapshot_;
+    DevTimer timer_;
 };
 
 // This class represents an application based on Direct3D.  When we know
@@ -37,36 +41,35 @@ private:
 class SDLApp : public AfxOSSpecificApp<SDLApp>
 {
 public:
-	virtual ~SDLApp();
+    virtual ~SDLApp();
+
 private:
-	friend class AfxSingletonApp;
-	SDLApp();
+    friend class AfxSingletonApp;
+    SDLApp();
 
-	// Provide virtual fns required by base classes.
-	virtual bool clientStartup ();
-	virtual void clientShutdown();
-	virtual void loopCycle();
-	virtual void updateDisplay();
-	//virtual bool activate(WORD wParam);
+    // Provide virtual fns required by base classes.
+    virtual bool clientStartup();
+    virtual void clientShutdown();
+    virtual void loopCycle();
+    virtual void updateDisplay();
+    // virtual bool activate(WORD wParam);
 
-	// Allow a derived class to override this and provide a window size.
-	// This shouldn't be necessary when DevDisplay works with Win95 & D3D.
-	virtual void getWindowSize(int& ox, int& oy, int& w, int& h);
+    // Allow a derived class to override this and provide a window size.
+    // This shouldn't be necessary when DevDisplay works with Win95 & D3D.
+    virtual void getWindowSize(int& ox, int& oy, int& w, int& h);
 
-	// Internal convenience methods.
-	void processInput();
-	void queueEvents();
+    // Internal convenience methods.
+    void processInput();
+    void queueEvents();
 
+    bool initialised_;
+    int winWidth_, winHeight_;
 
+    bool clearBack_, doFog_, nvgOn_;
+    double testTimer_;
 
-	bool					initialised_;
-	int						winWidth_, winHeight_;
-
-	bool				clearBack_, doFog_, nvgOn_;
-	double				testTimer_;
-
-	float				fogStart_, fogEnd_, fogDensity_;
-	bool				renderingForShot_;
+    float fogStart_, fogEnd_, fogDensity_;
+    bool renderingForShot_;
 };
 
 #endif

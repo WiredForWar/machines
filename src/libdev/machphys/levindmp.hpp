@@ -1,5 +1,5 @@
 /*
- * L E V I N D M P . H P P 
+ * L E V I N D M P . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -21,34 +21,32 @@
 class MachPhysLevelIndexMap
 {
 public:
-    MachPhysLevelIndexMap& operator =( const MachPhysLevelIndexMap& );
-    MachPhysLevelIndexMap( const MachPhysLevelIndexMap& );
+    MachPhysLevelIndexMap& operator=(const MachPhysLevelIndexMap&);
+    MachPhysLevelIndexMap(const MachPhysLevelIndexMap&);
     ~MachPhysLevelIndexMap();
 
-    size_t  nLevels() const;
-    
+    size_t nLevels() const;
+
     //  Return the level corresponding to a given index
-    size_t  level( size_t index ) const;
-    
+    size_t level(size_t index) const;
+
     //  Return the index corresponding to a given level
-    size_t  index( size_t level ) const;
+    size_t index(size_t level) const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLevelIndexMap& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLevelIndexMap& t);
 
 private:
-
     // Operation deliberately revoked
-    bool operator ==( const MachPhysLevelIndexMap& );
+    bool operator==(const MachPhysLevelIndexMap&);
 
     friend class MachPhysLevels;
-    MachPhysLevelIndexMap( const size_t* pLevelArray, size_t nLevels );
+    MachPhysLevelIndexMap(const size_t* pLevelArray, size_t nLevels);
 
-    const size_t*   pLevelArray_;
-    size_t          nLevels_;
+    const size_t* pLevelArray_;
+    size_t nLevels_;
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * S L I D E B A R . C P P 
+ * S L I D E B A R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -13,37 +13,45 @@
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
 
-MachGuiSlideBar::MachGuiSlideBar( 	MachGuiStartupScreens* pStartupScreens, GuiDisplayable* pParent, Gui::Coord topLeft, size_t width, 
-   				 					float minVal, float maxVal )
-:	GuiDisplayable( pParent, Gui::Box( topLeft, width, reqHeight() ) ),
-	MachGuiFocusCapableControl( pStartupScreens ),
-	minValue_(minVal),
-	maxValue_(maxVal),
-	highlighted_( false )
+MachGuiSlideBar::MachGuiSlideBar(
+    MachGuiStartupScreens* pStartupScreens,
+    GuiDisplayable* pParent,
+    Gui::Coord topLeft,
+    size_t width,
+    float minVal,
+    float maxVal)
+    : GuiDisplayable(pParent, Gui::Box(topLeft, width, reqHeight()))
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , minValue_(minVal)
+    , maxValue_(maxVal)
+    , highlighted_(false)
 {
-	barPos_ = 1.0;
-	
-	POST_INFO( value() );
-	POST( value() >= minValue_ );
-	POST( value() <= maxValue_ );
+    barPos_ = 1.0;
+
+    POST_INFO(value());
+    POST(value() >= minValue_);
+    POST(value() <= maxValue_);
 
     TEST_INVARIANT;
 }
 
-
-MachGuiSlideBar::MachGuiSlideBar( MachGuiStartupScreens* pStartupScreens, GuiDisplayable* pParent, Gui::Coord topLeft, size_t width )
-:	GuiDisplayable( pParent, Gui::Box( topLeft, width, reqHeight() ) ),
-	MachGuiFocusCapableControl( pStartupScreens ),
-	highlighted_( false )
+MachGuiSlideBar::MachGuiSlideBar(
+    MachGuiStartupScreens* pStartupScreens,
+    GuiDisplayable* pParent,
+    Gui::Coord topLeft,
+    size_t width)
+    : GuiDisplayable(pParent, Gui::Box(topLeft, width, reqHeight()))
+    , MachGuiFocusCapableControl(pStartupScreens)
+    , highlighted_(false)
 {
-	minValue_ = 0.0;
-	maxValue_ = 1.0;
-	barPos_ = 1.0;
-	
-	POST_INFO( value() );
-	POST( minValue_ == 0.0 );
-	POST( maxValue_ == 1.0 );
-	POST( value() == minValue_ );
+    minValue_ = 0.0;
+    maxValue_ = 1.0;
+    barPos_ = 1.0;
+
+    POST_INFO(value());
+    POST(minValue_ == 0.0);
+    POST(maxValue_ == 1.0);
+    POST(value() == minValue_);
 
     TEST_INVARIANT;
 }
@@ -51,15 +59,14 @@ MachGuiSlideBar::MachGuiSlideBar( MachGuiStartupScreens* pStartupScreens, GuiDis
 MachGuiSlideBar::~MachGuiSlideBar()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiSlideBar::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiSlideBar& t )
+ostream& operator<<(ostream& o, const MachGuiSlideBar& t)
 {
 
     o << "MachGuiSlideBar " << (void*)&t << " start" << std::endl;
@@ -68,199 +75,206 @@ ostream& operator <<( ostream& o, const MachGuiSlideBar& t )
     return o;
 }
 
-void MachGuiSlideBar::minMax( float minV, float maxV )
+void MachGuiSlideBar::minMax(float minV, float maxV)
 {
-	PRE( minV < maxV );
+    PRE(minV < maxV);
 
-	minValue_ = minV;
-	maxValue_ = maxV;
+    minValue_ = minV;
+    maxValue_ = maxV;
 
-	RICHARD_STREAM("Minmax value " << value() << std::endl);
+    RICHARD_STREAM("Minmax value " << value() << std::endl);
 
-	valueChanged( value() );
+    valueChanged(value());
 }
 
 float MachGuiSlideBar::value() const
 {
-	float usableWidth = width();
-	usableWidth -= 2; // sandy coloured border
-	usableWidth -= MachGui::slideBtnBmp().width();
+    float usableWidth = width();
+    usableWidth -= 2; // sandy coloured border
+    usableWidth -= MachGui::slideBtnBmp().width();
 
-	float barPos = barPos_ - 1.0;
-	RICHARD_STREAM("barPos_" << barPos_ << std::endl);
-	RICHARD_STREAM("usableWidth" << usableWidth << std::endl);
+    float barPos = barPos_ - 1.0;
+    RICHARD_STREAM("barPos_" << barPos_ << std::endl);
+    RICHARD_STREAM("usableWidth" << usableWidth << std::endl);
 
-	float minMaxDiff = maxValue_ - minValue_;
-	 
-	float barPosPercent = barPos / usableWidth;
+    float minMaxDiff = maxValue_ - minValue_;
 
-	float value = minValue_ + ( barPosPercent * minMaxDiff );
+    float barPosPercent = barPos / usableWidth;
 
-	RICHARD_STREAM("maxValue_" << maxValue_ << std::endl);
-	RICHARD_STREAM("minValue_ " << minValue_ << std::endl);
-	RICHARD_STREAM("Value set to " << value << std::endl);
+    float value = minValue_ + (barPosPercent * minMaxDiff);
 
-	return value;
+    RICHARD_STREAM("maxValue_" << maxValue_ << std::endl);
+    RICHARD_STREAM("minValue_ " << minValue_ << std::endl);
+    RICHARD_STREAM("Value set to " << value << std::endl);
+
+    return value;
 }
 
-void MachGuiSlideBar::value( float newVal )
+void MachGuiSlideBar::value(float newVal)
 {
-	PRE( newVal >= minValue_ and newVal <= maxValue_ );
+    PRE(newVal >= minValue_ and newVal <= maxValue_);
 
-	RICHARD_STREAM("Setting value to " << newVal << std::endl);
+    RICHARD_STREAM("Setting value to " << newVal << std::endl);
 
-	float usableWidth = width();
-	usableWidth -= 2; // sandy coloured border
-	usableWidth -= MachGui::slideBtnBmp().width();
-	RICHARD_STREAM("usableWidth(b) " << usableWidth  << std::endl);
+    float usableWidth = width();
+    usableWidth -= 2; // sandy coloured border
+    usableWidth -= MachGui::slideBtnBmp().width();
+    RICHARD_STREAM("usableWidth(b) " << usableWidth << std::endl);
 
-	float minMaxDiff = maxValue_ - minValue_;
-	RICHARD_STREAM("value maxValue_" << maxValue_ << std::endl);
-	RICHARD_STREAM("value minValue_ " << minValue_ << std::endl);
+    float minMaxDiff = maxValue_ - minValue_;
+    RICHARD_STREAM("value maxValue_" << maxValue_ << std::endl);
+    RICHARD_STREAM("value minValue_ " << minValue_ << std::endl);
 
-	float barPosPercent = ( newVal - minValue_ ) / minMaxDiff;
+    float barPosPercent = (newVal - minValue_) / minMaxDiff;
 
-	float barPos = barPosPercent * usableWidth;
+    float barPos = barPosPercent * usableWidth;
 
-	barPos_ = barPos + 1.0;
-	RICHARD_STREAM("barPos_(b) " << barPos_ << std::endl);
+    barPos_ = barPos + 1.0;
+    RICHARD_STREAM("barPos_(b) " << barPos_ << std::endl);
 
-	changed();
+    changed();
 
-	RICHARD_STREAM("New val " << newVal << std::endl);
+    RICHARD_STREAM("New val " << newVal << std::endl);
 
-	valueChanged( newVal );
+    valueChanged(newVal);
 }
 
-//virtual 
-void MachGuiSlideBar::valueChanged( float /*value*/ )
+// virtual
+void MachGuiSlideBar::valueChanged(float /*value*/)
 {
-	// Intentionally empty
+    // Intentionally empty
 }
 
-//static 
+// static
 size_t MachGuiSlideBar::reqHeight()
 {
-	return MachGui::slideBtnBmp().height() + 4;
+    return MachGui::slideBtnBmp().height() + 4;
 }
 
-//virtual 
+// virtual
 void MachGuiSlideBar::doDisplay()
 {
-	if ( isFocusControl() )
-	{
-		GuiPainter::instance().blit( MachGui::longYellowGlowBmp(), Gui::Box(0,0,width(),height()), absoluteBoundary().minCorner() );
-	}
-	else if ( highlighted_ )
-	{
-		GuiPainter::instance().blit( MachGui::longGlowBmp(), Gui::Box(0,0,width(),height()), absoluteBoundary().minCorner() );
-	}
-	else
-	{
-		GuiPainter::instance().filledRectangle( absoluteBoundary(), MachGui::MENUDARKGREEN() );
-	}
+    if (isFocusControl())
+    {
+        GuiPainter::instance().blit(
+            MachGui::longYellowGlowBmp(),
+            Gui::Box(0, 0, width(), height()),
+            absoluteBoundary().minCorner());
+    }
+    else if (highlighted_)
+    {
+        GuiPainter::instance().blit(
+            MachGui::longGlowBmp(),
+            Gui::Box(0, 0, width(), height()),
+            absoluteBoundary().minCorner());
+    }
+    else
+    {
+        GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::MENUDARKGREEN());
+    }
 
-	GuiPainter::instance().hollowRectangle( absoluteBoundary(), MachGui::DARKSANDY(), 1 );
-	GuiPainter::instance().blit( MachGui::slideBtnBmp(), 
-								 Gui::Coord( absoluteBoundary().minCorner().x() + (int)barPos_, absoluteBoundary().minCorner().y() + 2 ) );
+    GuiPainter::instance().hollowRectangle(absoluteBoundary(), MachGui::DARKSANDY(), 1);
+    GuiPainter::instance().blit(
+        MachGui::slideBtnBmp(),
+        Gui::Coord(absoluteBoundary().minCorner().x() + (int)barPos_, absoluteBoundary().minCorner().y() + 2));
 }
 
-//virtual 
-void MachGuiSlideBar::doHandleMouseClickEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiSlideBar::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-	if ( rel.leftButton() == Gui::PRESSED )
-	{
-		barMoved( rel.coord().x() );
-	}
+    if (rel.leftButton() == Gui::PRESSED)
+    {
+        barMoved(rel.coord().x());
+    }
 }
 
-//virtual 
-void MachGuiSlideBar::doHandleMouseExitEvent( const GuiMouseEvent& )
+// virtual
+void MachGuiSlideBar::doHandleMouseExitEvent(const GuiMouseEvent&)
 {
-	highlighted_ = false;
+    highlighted_ = false;
 
-	changed();
+    changed();
 }
 
-//virtual 
-void MachGuiSlideBar::doHandleMouseEnterEvent( const GuiMouseEvent& )
+// virtual
+void MachGuiSlideBar::doHandleMouseEnterEvent(const GuiMouseEvent&)
 {
-	highlighted_ = true;
+    highlighted_ = true;
 
-	changed();
+    changed();
 }
 
-//virtual 
-void MachGuiSlideBar::doHandleContainsMouseEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiSlideBar::doHandleContainsMouseEvent(const GuiMouseEvent& rel)
 {
-	if ( rel.leftButton() == Gui::PRESSED )
-	{		
-		barMoved( rel.coord().x() );
-	}
+    if (rel.leftButton() == Gui::PRESSED)
+    {
+        barMoved(rel.coord().x());
+    }
 }
 
-void MachGuiSlideBar::barMoved( Gui::XCoord newBarPos )
+void MachGuiSlideBar::barMoved(Gui::XCoord newBarPos)
 {
-	float wastedWidth = 2 /*sandy coloured border*/ + MachGui::slideBtnBmp().width();
-	float usableWidth = width() - wastedWidth;
+    float wastedWidth = 2 /*sandy coloured border*/ + MachGui::slideBtnBmp().width();
+    float usableWidth = width() - wastedWidth;
 
-	float validStartPos = wastedWidth / 2.0;
-	float validEndPos = width() - ( wastedWidth / 2.0 );
+    float validStartPos = wastedWidth / 2.0;
+    float validEndPos = width() - (wastedWidth / 2.0);
 
-	if ( newBarPos < validStartPos )
-		newBarPos = validStartPos;
-	else if ( newBarPos > validEndPos )
-		newBarPos = validEndPos;
+    if (newBarPos < validStartPos)
+        newBarPos = validStartPos;
+    else if (newBarPos > validEndPos)
+        newBarPos = validEndPos;
 
-	barPos_ = newBarPos - ( wastedWidth / 2.0 ) + 1.0;
+    barPos_ = newBarPos - (wastedWidth / 2.0) + 1.0;
 
-	changed();
-	valueChanged( value() );
+    changed();
+    valueChanged(value());
 }
 
-//virtual
-bool MachGuiSlideBar::doHandleNavigationKey( NavKey navKey, MachGuiFocusCapableControl** )
+// virtual
+bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl**)
 {
-	bool retValue = false;
+    bool retValue = false;
 
-	if ( navKey == MachGuiFocusCapableControl::RIGHT_ARROW )
-	{
-		double incAmount = ( maxValue_ - minValue_ ) / 100.0;
-		double newValue = value() + incAmount;
-		
-		if ( newValue > maxValue_ )
-		{
-			newValue = maxValue_;
-		}
+    if (navKey == MachGuiFocusCapableControl::RIGHT_ARROW)
+    {
+        double incAmount = (maxValue_ - minValue_) / 100.0;
+        double newValue = value() + incAmount;
 
-		value( newValue );
+        if (newValue > maxValue_)
+        {
+            newValue = maxValue_;
+        }
 
-		retValue = true;
-	}
-	else if ( navKey == MachGuiFocusCapableControl::LEFT_ARROW )
-	{
-		double decAmount = ( maxValue_ - minValue_ ) / 100.0;
-		double newValue = value() - decAmount;
+        value(newValue);
 
-		if ( newValue < minValue_ )
-		{
-			newValue = minValue_;
-		}
+        retValue = true;
+    }
+    else if (navKey == MachGuiFocusCapableControl::LEFT_ARROW)
+    {
+        double decAmount = (maxValue_ - minValue_) / 100.0;
+        double newValue = value() - decAmount;
 
-		value( newValue );
+        if (newValue < minValue_)
+        {
+            newValue = minValue_;
+        }
 
-		retValue = true;
-	}
+        value(newValue);
 
-	return retValue;
+        retValue = true;
+    }
+
+    return retValue;
 }
 
-//virtual 
-void MachGuiSlideBar::hasFocus( bool newValue )
+// virtual
+void MachGuiSlideBar::hasFocus(bool newValue)
 {
-	MachGuiFocusCapableControl::hasFocus( newValue );
+    MachGuiFocusCapableControl::hasFocus(newValue);
 
-	changed();
+    changed();
 }
 
 /* End SLIDEBAR.CPP *************************************************/

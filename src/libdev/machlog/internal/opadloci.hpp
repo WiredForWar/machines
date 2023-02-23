@@ -1,5 +1,5 @@
 /*
- * O P A D L O C I . H P P 
+ * O P A D L O C I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,34 +26,34 @@ class MachLogAdministrator;
 
 class MachLogAdminLocateOperationImpl
 {
-public:		
+public:
+    MachLogAdminLocateOperationImpl(MachLogAdministrator* pActor);
+    // single point
+    MachLogAdminLocateOperationImpl(MachLogAdministrator* pActor, const MexPoint3d& dest);
+    // way point path
+    MachLogAdminLocateOperationImpl(
+        MachLogAdministrator* pActor,
+        const MachLogAdminLocateOperation::Path& externalPath);
 
-	MachLogAdminLocateOperationImpl( MachLogAdministrator *  pActor );
-	//single point
-	MachLogAdminLocateOperationImpl( MachLogAdministrator *  pActor, const MexPoint3d& dest );
-	//way point path
-	MachLogAdminLocateOperationImpl( MachLogAdministrator *  pActor, const MachLogAdminLocateOperation::Path& externalPath );
-							
-	~MachLogAdminLocateOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogAdminLocateOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogAdminLocateOperationImpl );
-	
-	void CLASS_INVARIANT;
+    ~MachLogAdminLocateOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogAdminLocateOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogAdminLocateOperationImpl);
 
-	friend class MachLogAdminLocateOperation;
-	
+    void CLASS_INVARIANT;
+
+    friend class MachLogAdminLocateOperation;
+
 private:
-
-	MachLogAdministrator*				pActor_;
-    bool 								complete_;
-	MexPoint3d							dest_;
-	MachLogAdminLocateOperation::Path	path_;
-	MachLogAdminLocateOperation::Path	externalPath_;
-	bool								hasExternalPath_;
-	int									currentElement_;	
+    MachLogAdministrator* pActor_;
+    bool complete_;
+    MexPoint3d dest_;
+    MachLogAdminLocateOperation::Path path_;
+    MachLogAdminLocateOperation::Path externalPath_;
+    bool hasExternalPath_;
+    int currentElement_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAdminLocateOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogAdminLocateOperationImpl);
 
 #endif
 

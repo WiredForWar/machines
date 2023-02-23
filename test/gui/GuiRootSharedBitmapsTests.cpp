@@ -10,7 +10,7 @@ using ::testing::TypedEq;
 class MockPainter : public IGuiPainter
 {
 public:
-    virtual ~MockPainter() = default;
+    ~MockPainter() override = default;
 
     MOCK_METHOD(void, blit, (const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Coord& dest), (const, override));
     MOCK_METHOD(void, blit, (const GuiBitmap& source, const Gui::Coord& dest), (const, override));

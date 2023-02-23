@@ -11,30 +11,27 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-class GuiImage 
-: public GuiDisplayable
+class GuiImage : public GuiDisplayable
 {
 public:
+    GuiImage(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap& bmp);
 
-	GuiImage( GuiDisplayable *pParent, const Gui::Coord& rel, const GuiBitmap& bmp );
-
-	virtual ~GuiImage();
+    ~GuiImage() override;
 
 protected:
-
-	// inherited from GuiDisplayable...	
-	virtual void doDisplay();
+    // inherited from GuiDisplayable...
+    void doDisplay() override;
 
 private:
-	GuiImage( const GuiImage& );
-	GuiImage& operator =( const GuiImage& );
-	bool operator ==( const GuiImage& ) const;
+    GuiImage(const GuiImage&);
+    GuiImage& operator=(const GuiImage&);
+    bool operator==(const GuiImage&) const;
 
-	GuiBitmap	image_;
+    GuiBitmap image_;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	// #ifndef _GUI_IMAGE_HPP
+#endif // #ifndef _GUI_IMAGE_HPP
 
 /* End IMAGE.HPP ****************************************************/

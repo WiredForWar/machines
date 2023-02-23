@@ -24,43 +24,41 @@ class MachPhysJetRing : public W4dComposite
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysJetRing( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysJetRing(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysJetRing& exemplar();
 
-    //dtor
-    ~MachPhysJetRing();
+    // dtor
+    ~MachPhysJetRing() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startGlow( const PhysAbsoluteTime& startTime, const MexPoint3d& targetOffsetGlobal );
+    void startGlow(const PhysAbsoluteTime& startTime, const MexPoint3d& targetOffsetGlobal);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysJetRing& t );
+    friend ostream& operator<<(ostream& o, const MachPhysJetRing& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysJetRing );
-    PER_FRIEND_READ_WRITE( MachPhysJetRing );
+    PER_MEMBER_PERSISTENT(MachPhysJetRing);
+    PER_FRIEND_READ_WRITE(MachPhysJetRing);
 
 private:
-    //Deliberately revoked
-    MachPhysJetRing( const MachPhysJetRing& );
-    MachPhysJetRing& operator =( const MachPhysJetRing& );
-    bool operator ==( const MachPhysJetRing& );
+    // Deliberately revoked
+    MachPhysJetRing(const MachPhysJetRing&);
+    MachPhysJetRing& operator=(const MachPhysJetRing&);
+    bool operator==(const MachPhysJetRing&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysJetRing();
 
-	W4dLink* pTorch_;
+    W4dLink* pTorch_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysJetRing );
-
+PER_DECLARE_PERSISTENT(MachPhysJetRing);
 
 #endif
 

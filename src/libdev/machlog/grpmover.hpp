@@ -1,5 +1,5 @@
 /*
- * G R P M O V E R . H P P 
+ * G R P M O V E R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,21 +23,18 @@ class MachLogGroupMover
 // Canonical form revoked
 {
 public:
-    MachLogGroupMover( const MachLogMachineOperations& );
-    MachLogGroupMover( const MachLogMachineOperations&,
-      const MachLogGroupMoverUtility& );
+    MachLogGroupMover(const MachLogMachineOperations&);
+    MachLogGroupMover(const MachLogMachineOperations&, const MachLogGroupMoverUtility&);
     ~MachLogGroupMover();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogGroupMover& t );
+    friend ostream& operator<<(ostream& o, const MachLogGroupMover& t);
 
-    MachLogGroupMover( const MachLogGroupMover& );
-    MachLogGroupMover& operator =( const MachLogGroupMover& );
-
+    MachLogGroupMover(const MachLogGroupMover&);
+    MachLogGroupMover& operator=(const MachLogGroupMover&);
 };
-
 
 #endif
 

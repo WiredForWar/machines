@@ -12,9 +12,9 @@
 #include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 
-MachGuiDamageCommand::MachGuiDamageCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( true )
+MachGuiDamageCommand::MachGuiDamageCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(true)
 {
     TEST_INVARIANT;
 }
@@ -22,15 +22,14 @@ MachGuiDamageCommand::MachGuiDamageCommand( MachInGameScreen* pInGameScreen )
 MachGuiDamageCommand::~MachGuiDamageCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDamageCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDamageCommand& t )
+ostream& operator<<(ostream& o, const MachGuiDamageCommand& t)
 {
 
     o << "MachGuiDamageCommand " << (void*)&t << " start" << std::endl;
@@ -39,99 +38,97 @@ ostream& operator <<( ostream& o, const MachGuiDamageCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiDamageCommand::pickOnTerrain
-(
-    const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
+// virtual
+void MachGuiDamageCommand::pickOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
 {
-
 }
 
-//virtual
-void MachGuiDamageCommand::pickOnActor
-(
-    MachActor*, bool, bool, bool
-)
+// virtual
+void MachGuiDamageCommand::pickOnActor(MachActor*, bool, bool, bool)
 {
-    //Ignored
+    // Ignored
 }
 
-//virtual
-bool MachGuiDamageCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiDamageCommand::canActorEverExecute(const MachActor& actor) const
 {
-	return actor.objectIsMachine() or actor.objectIsConstruction();
+    return actor.objectIsMachine() or actor.objectIsConstruction();
 }
 
-//virtual
+// virtual
 bool MachGuiDamageCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiDamageCommand::doApply( MachActor* pActor, string* /*pReason*/ )
+// virtual
+bool MachGuiDamageCommand::doApply(MachActor* pActor, string* /*pReason*/)
 {
-    PRE( pActor->objectIsMachine() or pActor->objectIsConstruction() );
+    PRE(pActor->objectIsMachine() or pActor->objectIsConstruction());
 
-    //Check locator type
+    // Check locator type
     bool canDo = true;
-    pActor->beHit( ( pActor->hp() / 2 ) );
+    pActor->beHit((pActor->hp() / 2));
 
     return canDo;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDamageCommand::cursorOnTerrain( const MexPoint3d& /*location*/, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiDamageCommand::cursorOnTerrain(const MexPoint3d& /*location*/, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDamageCommand::cursorOnActor( MachActor*, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiDamageCommand::cursorOnActor(MachActor*, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     return cursor;
 }
 
-//virtual
-void MachGuiDamageCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiDamageCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiDamageCommand::clone() const
 {
-    return _NEW( MachGuiDamageCommand( &inGameScreen() ) );
+    return _NEW(MachGuiDamageCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiDamageCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/damage.bmp", "gui/commands/damage.bmp" );
+    static std::pair<string, string> names("gui/commands/damage.bmp", "gui/commands/damage.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiDamageCommand::cursorPromptStringId() const
 {
     return IDS_SELF_DESTRUCT_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiDamageCommand::commandPromptStringid() const
 {
     return IDS_SELF_DESTRUCT_START;
 }
 
-//virtual
+// virtual
 bool MachGuiDamageCommand::canAdminApply() const
 {
-	return false;
+    return false;
 }
 
 /* End CMDLOCTO.CPP **************************************************/

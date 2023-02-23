@@ -1,10 +1,10 @@
 /*
- * C A N M O V E . H P P 
+ * C A N M O V E . H P P
  * (c) Charybdis Limited, 1997/1998. All Rights Reserved
  */
- 
+
 /*
- * Mixin for logical objects that support 
+ * Mixin for logical objects that support
  * a translational operation.
  */
 
@@ -20,40 +20,37 @@ class MexRadians;
 class MachLogCanTurn
 {
 public:
+    MachLogCanTurn() {};
+    virtual ~MachLogCanTurn() {};
 
-	MachLogCanTurn() {};
-	virtual ~MachLogCanTurn() {};
-
-    // Turn through angle radians about the z axis. 
+    // Turn through angle radians about the z axis.
     // Motion is relative, not absolute.
     // Returns time it will take to complete.
-	virtual PhysRelativeTime turn( const MexRadians& angle ) = 0;
-	PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT( MachLogCanTurn );
+    virtual PhysRelativeTime turn(const MexRadians& angle) = 0;
+    PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT(MachLogCanTurn);
 };
 
-PER_READ_WRITE( MachLogCanTurn );
-PER_DECLARE_PERSISTENT( MachLogCanTurn );
+PER_READ_WRITE(MachLogCanTurn);
+PER_DECLARE_PERSISTENT(MachLogCanTurn);
 
 /* //////////////////////////////////////////////////////////////// */
 
 class MachLogCanMove
 {
 public:
+    MachLogCanMove() {};
+    virtual ~MachLogCanMove() {};
 
-	MachLogCanMove() {};
-	virtual ~MachLogCanMove() {};
-
-    //Move to point, returning the time it will take to arrive
-    //virtual PhysRelativeTime move( const MexPoint3d& point ) = 0;
-	PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL( MachLogCanMove );
+    // Move to point, returning the time it will take to arrive
+    // virtual PhysRelativeTime move( const MexPoint3d& point ) = 0;
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(MachLogCanMove);
 };
 
-PER_READ_WRITE( MachLogCanMove );
-PER_DECLARE_PERSISTENT( MachLogCanMove );
+PER_READ_WRITE(MachLogCanMove);
+PER_DECLARE_PERSISTENT(MachLogCanMove);
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	//	#ifndef _MACHLOG_CANMOVE_HPP
+#endif //  #ifndef _MACHLOG_CANMOVE_HPP
 
 /* End CANMOVE.HPP *****************************************************/
-

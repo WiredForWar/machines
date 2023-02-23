@@ -10,19 +10,21 @@
 #include "mathex/eulerang.hpp"
 #include "world4d/manager.hpp"
 
-W4dAxisTurnerPlan::W4dAxisTurnerPlan
-(
-    const MexTransform3d& baseTransform, W4d::Axis turningAxis, const PhysAbsoluteTime& startTime,
-    MexRadians startAngle, MexRadians turnAngle, MexRadians turnRate,
-    const PhysRelativeTime& duration
-)
-:   PhysMotionPlan( duration ),
-    baseTransform_( baseTransform ),
-    turningAxis_( turningAxis ),
-    startTime_( startTime ),
-    startAngle_( startAngle ),
-    turnAngle_( turnAngle ),
-    turnRate_( turnRate )
+W4dAxisTurnerPlan::W4dAxisTurnerPlan(
+    const MexTransform3d& baseTransform,
+    W4d::Axis turningAxis,
+    const PhysAbsoluteTime& startTime,
+    MexRadians startAngle,
+    MexRadians turnAngle,
+    MexRadians turnRate,
+    const PhysRelativeTime& duration)
+    : PhysMotionPlan(duration)
+    , baseTransform_(baseTransform)
+    , turningAxis_(turningAxis)
+    , startTime_(startTime)
+    , startAngle_(startAngle)
+    , turnAngle_(turnAngle)
+    , turnRate_(turnRate)
 {
 
     TEST_INVARIANT;
@@ -31,15 +33,14 @@ W4dAxisTurnerPlan::W4dAxisTurnerPlan
 W4dAxisTurnerPlan::~W4dAxisTurnerPlan()
 {
     TEST_INVARIANT;
-
 }
 
 void W4dAxisTurnerPlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dAxisTurnerPlan& t )
+ostream& operator<<(ostream& o, const W4dAxisTurnerPlan& t)
 {
 
     o << "PhysAxisTurner " << (void*)&t << " start" << std::endl;
@@ -48,71 +49,71 @@ ostream& operator <<( ostream& o, const W4dAxisTurnerPlan& t )
     return o;
 }
 
-PhysRelativeTime W4dAxisTurnerPlan::turnBy( const PhysAbsoluteTime& startTime, MexRadians turnAngle )
+PhysRelativeTime W4dAxisTurnerPlan::turnBy(const PhysAbsoluteTime& startTime, MexRadians turnAngle)
 {
-    //Update current motion
-    updateData( startTime );
+    // Update current motion
+    updateData(startTime);
 
-    //reset the turn angle
+    // reset the turn angle
     turnAngle_ = turnAngle;
 
     return turnAngle_.asScalar() / turnRate_.asScalar();
 }
 
-PhysRelativeTime W4dAxisTurnerPlan::turnTo( const PhysAbsoluteTime& startTime, MexRadians requiredAngle )
+PhysRelativeTime W4dAxisTurnerPlan::turnTo(const PhysAbsoluteTime& startTime, MexRadians requiredAngle)
 {
-    //Update current motion
-    updateData( startTime );
+    // Update current motion
+    updateData(startTime);
 
-    //The new turn angle needs to be rounded to the shortest route
+    // The new turn angle needs to be rounded to the shortest route
     turnAngle_ = requiredAngle - startAngle_;
 
     double twoPi = Mathex::PI * 2.0;
     double delta;
 
-    if( turnAngle_.asScalar() > 0.0 )
+    if (turnAngle_.asScalar() > 0.0)
         delta = -twoPi * double(long((turnAngle_.asScalar() + Mathex::PI) / twoPi));
 
     else
         delta = twoPi * double(long((turnAngle_.asScalar() - Mathex::PI) / (-twoPi)));
 
-    turnAngle_ = turnAngle_ + MexRadians( delta );
+    turnAngle_ = turnAngle_ + MexRadians(delta);
 
-	const PhysRelativeTime turnTime = fabs( turnAngle_.asScalar() / turnRate_.asScalar() );
+    const PhysRelativeTime turnTime = fabs(turnAngle_.asScalar() / turnRate_.asScalar());
 
     return turnTime;
 }
 
-void W4dAxisTurnerPlan::turnRate( const PhysAbsoluteTime& startTime, MexRadians rate )
+void W4dAxisTurnerPlan::turnRate(const PhysAbsoluteTime& startTime, MexRadians rate)
 {
-    //Update current motion
-    updateData( startTime );
+    // Update current motion
+    updateData(startTime);
 
     turnRate_ = rate;
 }
 
-MexRadians W4dAxisTurnerPlan::angle( const PhysAbsoluteTime& time ) const
+MexRadians W4dAxisTurnerPlan::angle(const PhysAbsoluteTime& time) const
 {
-    return startAngle_ + currentDeltaAngle( time );
+    return startAngle_ + currentDeltaAngle(time);
 }
 
-MexRadians W4dAxisTurnerPlan::currentDeltaAngle( const PhysAbsoluteTime& time ) const
+MexRadians W4dAxisTurnerPlan::currentDeltaAngle(const PhysAbsoluteTime& time) const
 {
     MexRadians angle;
 
     PhysRelativeTime interval = time - startTime_;
-    if( interval <= 0.0 )
+    if (interval <= 0.0)
         angle = 0.0;
-    else if( turnAngle_.asScalar() > 0.0 )
+    else if (turnAngle_.asScalar() > 0.0)
     {
         angle = turnRate_ * interval;
-        if( angle > turnAngle_ )
+        if (angle > turnAngle_)
             angle = turnAngle_;
     }
     else
     {
         angle = -turnRate_ * interval;
-        if( angle < turnAngle_ )
+        if (angle < turnAngle_)
             angle = turnAngle_;
     }
 
@@ -144,36 +145,36 @@ MexRadians W4dAxisTurnerPlan::turnAngle() const
     return turnAngle_;
 }
 
-//virtual
-void W4dAxisTurnerPlan::transform( const PhysRelativeTime&, MexTransform3d* pResult ) const
+// virtual
+void W4dAxisTurnerPlan::transform(const PhysRelativeTime&, MexTransform3d* pResult) const
 {
-    //Use current time to compute angle
-    MexRadians nowAngle = angle( W4dManager::instance().time() );
+    // Use current time to compute angle
+    MexRadians nowAngle = angle(W4dManager::instance().time());
 
-    //Compute an euler angle set based on the turning axis
+    // Compute an euler angle set based on the turning axis
     MexRadians angles[3];
     angles[0] = angles[1] = angles[2] = 0.0;
-    angles[ turningAxis_ ] = nowAngle;
+    angles[turningAxis_] = nowAngle;
 
-    //Hence evaluate the result
-    baseTransform_.transform( MexTransform3d( MexEulerAngles( angles[2], angles[1], angles[0] ) ), pResult );
+    // Hence evaluate the result
+    baseTransform_.transform(MexTransform3d(MexEulerAngles(angles[2], angles[1], angles[0])), pResult);
 }
 
-void W4dAxisTurnerPlan::updateData( const PhysAbsoluteTime& time )
+void W4dAxisTurnerPlan::updateData(const PhysAbsoluteTime& time)
 {
-    //Compute delta at this time
-    MexRadians delta = currentDeltaAngle( time );
+    // Compute delta at this time
+    MexRadians delta = currentDeltaAngle(time);
     startAngle_ += delta;
     turnAngle_ -= delta;
     startTime_ = time;
 }
 
-void W4dAxisTurnerPlan::baseTransform( const MexTransform3d& newTransform )
+void W4dAxisTurnerPlan::baseTransform(const MexTransform3d& newTransform)
 {
     baseTransform_ = newTransform;
 }
 
-void W4dAxisTurnerPlan::reset( const PhysAbsoluteTime& startTime, MexRadians startAngle )
+void W4dAxisTurnerPlan::reset(const PhysAbsoluteTime& startTime, MexRadians startAngle)
 {
     startTime_ = startTime;
     startAngle_ = startAngle;

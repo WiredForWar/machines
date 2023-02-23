@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-//TODO: This god class needs refactoring. 
+// TODO: This god class needs refactoring.
 #include "render/device.hpp"
 #include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 
@@ -65,7 +65,8 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-RenDevice::RenDevice(RenDisplay* display) : pImpl_(new RenIDeviceImpl(display, this))
+RenDevice::RenDevice(RenDisplay* display)
+    : pImpl_(new RenIDeviceImpl(display, this))
 {
     PRE(display);
 
@@ -82,7 +83,7 @@ RenDevice::RenDevice(RenDisplay* display) : pImpl_(new RenIDeviceImpl(display, t
     pImpl_->fogEnd_ = 500;
     pImpl_->fogDensity_ = 0.05;
     fogParams_ = glm::vec3(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_);
-    pImpl_-> interference_ = 0;
+    pImpl_->interference_ = 0;
     pImpl_->staticOn_ = false;
     pImpl_->currentCamera_ = nullptr;
     pImpl_->vpMapping_ = nullptr;
@@ -91,10 +92,10 @@ RenDevice::RenDevice(RenDisplay* display) : pImpl_(new RenIDeviceImpl(display, t
     pImpl_->rendering2D_ = false;
     pImpl_->illuminator_ = nullptr; // viewport must be created 1st, see below
     pImpl_->surfBackBuf_ = nullptr;
-    pImpl_->surfFrontBuf_ = 0;
+    pImpl_->surfFrontBuf_ = nullptr;
     pImpl_->surfacesMayBeLost_ = 0;
     pImpl_->shouldBeginScene_ = true;
-    pImpl_-> antiAliasingOn_ = true;
+    pImpl_->antiAliasingOn_ = true;
 
     PRE(Ren::initialised());
     PRE(MexCoordSystem::instance().isSet());
@@ -165,7 +166,7 @@ RenDevice::RenDevice(RenDisplay* display) : pImpl_(new RenIDeviceImpl(display, t
     RenStats* pStats = statistics();
     bool statsShown = true;
 
-    if (pStats == 0)
+    if (pStats == nullptr)
     {
         statsShown = false;
     }
@@ -190,7 +191,8 @@ RenDevice::RenDevice(RenDisplay* display) : pImpl_(new RenIDeviceImpl(display, t
     RenILinesDiagnostic::instance().testLines(lineSurf);
 
     // No luck, try another one test (TODO: why isn't test above working all the times?)
-    if (RenILinesDiagnostic::instance().verticalResult() == RenILinesDiagnostic::UNKNOWN and RenILinesDiagnostic::instance().horizontalResult() == RenILinesDiagnostic::UNKNOWN)
+    if (RenILinesDiagnostic::instance().verticalResult() == RenILinesDiagnostic::UNKNOWN
+        and RenILinesDiagnostic::instance().horizontalResult() == RenILinesDiagnostic::UNKNOWN)
     {
         RenSurface backSurf = backSurface();
         RenILinesDiagnostic::instance().setTestType(RenILinesDiagnostic::TEST2);
@@ -296,7 +298,9 @@ RenDevice::~RenDevice()
     SDL_GL_DeleteContext(SDLGlContext_);
 }
 
-void RenDevice::reset() { }
+void RenDevice::reset()
+{
+}
 
 const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
 {
@@ -343,7 +347,8 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
         }
         else
         {
-            std::cerr << "Impossible to open vertex shader file vertexShaderPath = '" << vertexShaderPath << "', fragmentShaderPath = '" << fragmentShaderPath << "'" << std::endl;
+            std::cerr << "Impossible to open vertex shader file vertexShaderPath = '" << vertexShaderPath
+                      << "', fragmentShaderPath = '" << fragmentShaderPath << "'" << std::endl;
             return 0;
         }
 
@@ -368,10 +373,9 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
     GLint result = GL_FALSE;
     int infoLogLength;
 
-
     // Compile Vertex Shader
     RENDER_STREAM("Compiling vx shader : " << vertexShaderPath << std::endl);
-    char const * vertexSourcePointer = vertexShaderCode.c_str();
+    char const* vertexSourcePointer = vertexShaderCode.c_str();
     glShaderSource(vertexShaderID, 1, &vertexSourcePointer, nullptr);
     glCompileShader(vertexShaderID);
 
@@ -385,10 +389,9 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
         std::cerr << "Error: " << &vertexShaderErrorMessage[0] << std::endl;
     }
 
-
     // Compile Fragment Shader
     RENDER_STREAM("Compiling fg shader : " << fragmentShaderPath << std::endl);
-    char const * fragmentSourcePointer = fragmentShaderCode.c_str();
+    char const* fragmentSourcePointer = fragmentShaderCode.c_str();
     glShaderSource(fragmentShaderID, 1, &fragmentSourcePointer, nullptr);
     glCompileShader(fragmentShaderID);
 
@@ -432,7 +435,9 @@ void RenDevice::clearAllSurfaces(const RenColour& colour)
 {
     PRE(!rendering3D() && !rendering2D());
 
-    RENDER_STREAM("Inside RenDevice::clearAllSurfaces( RenColour RGBA: " << colour.r() << ", " << colour.g() << ", " << colour.b() << ", " << colour.a() << " )" << std::endl);
+    RENDER_STREAM(
+        "Inside RenDevice::clearAllSurfaces( RenColour RGBA: " << colour.r() << ", " << colour.g() << ", " << colour.b()
+                                                               << ", " << colour.a() << " )" << std::endl);
     // Temporarily set, then reset the background colour.
     glClearColor(colour.r(), colour.g(), colour.b(), colour.a());
     clearAllSurfaces();
@@ -479,7 +484,9 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
 
     // We assume that some form of texture transparency is supported.  All
     // reasonable games apps. require transparency.
-    ASSERT(pImpl_->caps_->supportsColourKey() || pImpl_->caps_->supportsTextureAlpha(), runtime_error("No transparency supported by D3D."));
+    ASSERT(
+        pImpl_->caps_->supportsColourKey() || pImpl_->caps_->supportsTextureAlpha(),
+        runtime_error("No transparency supported by D3D."));
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -502,17 +509,19 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
     if (glew_status != GLEW_OK)
     {
         std::string msg("Fatal in glewInit: ");
-        msg += (char*) glewGetErrorString(glew_status);
+        msg += (char*)glewGetErrorString(glew_status);
         SysWindowsAPI::messageBox(msg.c_str(), "Error");
         return EXIT_FAILURE;
     }
     if (!GLEW_VERSION_2_1)
     {
-        SysWindowsAPI::messageBox("Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.", "Error");
+        SysWindowsAPI::messageBox(
+            "Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.",
+            "Error");
         return EXIT_FAILURE;
     }
 
-    //glEnable(GL_BLEND);
+    // glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -529,7 +538,7 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
     return true;
 }
 
-bool RenDevice::fitToDisplay(RenDisplay *pDisplay)
+bool RenDevice::fitToDisplay(RenDisplay* pDisplay)
 {
     PRE(pDisplay);
     return reinitializeDisplayAndCreateGlContext();
@@ -545,11 +554,11 @@ void RenDevice::setViewport(int left, int top, int width, int height)
     PRE(left + width <= windowWidth());
     PRE(top + height <= windowHeight());
 
-    const double ratio = (double) width / height;
+    const double ratio = (double)width / height;
 
-    //glViewport( left, top, width, height );
-    // NB: if the viewport is changed, these values *must* also
-    // be updated.
+    // glViewport( left, top, width, height );
+    //  NB: if the viewport is changed, these values *must* also
+    //  be updated.
     if (pImpl_->vpMapping_)
     {
         delete pImpl_->vpMapping_;
@@ -666,7 +675,7 @@ void RenDevice::start3D(bool clearBack)
     //    PRE(device_);
     PRE(idleRendering());
 
-    //Clear out any left-over unused material bodies, from eg a persistent load
+    // Clear out any left-over unused material bodies, from eg a persistent load
     RenIMatManager::instance().clearUnusedMatBodyList();
 
     const double now = DEBUG_FRAME_TIME;
@@ -706,7 +715,7 @@ void RenDevice::start3D(bool clearBack)
     if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
     {
         glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat) pImpl_->caps_->internal()->minZBias(), 1.0);
+        glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
     }
 
     glFrontFace(GL_CW);
@@ -795,7 +804,7 @@ void RenDevice::flush3DAlpha()
     if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
     {
         glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat) pImpl_->caps_->internal()->minZBias(), 1.0);
+        glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
     }
 
     if (pImpl_->caps_->supportsFlatAlpha() || pImpl_->caps_->supportsTextureAlpha())
@@ -824,7 +833,7 @@ void RenDevice::end3D()
     const double now2 = DEBUG_FRAME_TIME;
     RENDER_STREAM("  RenDevice::end3D() adding 2D effects at " << now2 << "(ms)\n");
 
-    if (pImpl_-> interference_ > 0.001)
+    if (pImpl_->interference_ > 0.001)
         addInterference();
 
     if (pImpl_->staticOn_)
@@ -868,9 +877,10 @@ void RenDevice::commonEndFrame()
     if (concat.length() > 0 and not isWhiteString(concat) and pImpl_->shouldBeginScene_)
     {
         RenSurface surf = backSurface();
-        auto const& yellowColour{ RenColour::yellow() };
+        auto const& yellowColour { RenColour::yellow() };
         // >trusting incremental rebuilds
-        //surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, yellowColour, RenSurface::FontSizes::Statistics, RenSurface::AvailableFonts::Terminus);
+        // surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, yellowColour, RenSurface::FontSizes::Statistics,
+        // RenSurface::AvailableFonts::Terminus);
         surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, yellowColour);
     }
 
@@ -924,20 +934,19 @@ void RenDevice::updateMatrices()
 // specified position. This matrix can be used to convert vertices to
 // camera coordinates.
 
-static void computeViewMatrix
-(
+static void computeViewMatrix(
     glm::vec3& rP, // position of the camera
     glm::vec3& rD, // direction of view
     glm::vec3& rN, // up vector
     glm::mat4* lpM // result
-    )
+)
 {
     // Set the rotation part of the matrix and invert it. Vertices must be
     // inverse rotated to achieve the same result of a corresponding
     // camera rotation.
     glm::mat4 tmp;
-    tmp[0][3] = tmp[1][3] = tmp[2][3] = tmp[3][0] = tmp[3][1] = tmp[3][2] = (float) 0.0;
-    tmp[3][3] = (float) 1.0;
+    tmp[0][3] = tmp[1][3] = tmp[2][3] = tmp[3][0] = tmp[3][1] = tmp[3][2] = (float)0.0;
+    tmp[3][3] = (float)1.0;
 
     GLMatSetRotation(&tmp, &rD, &rN);
     GLMatTranspose(lpM, &tmp);
@@ -991,20 +1000,15 @@ void RenDevice::updateViewMatrix(glm::mat4& view)
 
     computeViewMatrix(p, dir, up, &view);
 
-    //glm::mat4 view = glm::lookAt(p, dir, up);
-    //view = glm::lookAt(p, dir, up);
+    // glm::mat4 view = glm::lookAt(p, dir, up);
+    // view = glm::lookAt(p, dir, up);
     glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view[0][0]);
 }
 
 // Taken straight from the M$ samples.
 
-static void computePerspectiveProjection
-(
-    glm::mat4* lpd3dMatrix,
-    double dHalfHeight,
-    double dFrontClipping,
-    double dBackClipping
-    )
+static void
+computePerspectiveProjection(glm::mat4* lpd3dMatrix, double dHalfHeight, double dFrontClipping, double dBackClipping)
 {
     PRE(lpd3dMatrix);
     PRE(dHalfHeight > 0);
@@ -1046,7 +1050,12 @@ void RenDevice::updateProjMatrix(double hither, double yon, double h)
 
     const RenDisplay::Mode mode = pImpl_->display_->currentMode();
 
-    projection_ = glm::perspectiveFovLH<float>(pImpl_->currentCamera_->verticalFOVAngle(), mode.width(), mode.height(), hither, yon);
+    projection_ = glm::perspectiveFovLH<float>(
+        pImpl_->currentCamera_->verticalFOVAngle(),
+        mode.width(),
+        mode.height(),
+        hither,
+        yon);
 }
 
 void RenDevice::overrideClipping(double hither, double yon)
@@ -1263,22 +1272,22 @@ void RenDevice::useCamera(RenCamera* cam)
 void RenDevice::interferenceOn(double n)
 {
     PRE(n >= 0 && n <= 1);
-    pImpl_-> interference_ = n;
+    pImpl_->interference_ = n;
 }
 
 void RenDevice::interferenceOff()
 {
-    pImpl_-> interference_ = 0;
+    pImpl_->interference_ = 0;
 }
 
 double RenDevice::interferenceAmount() const
 {
-    return pImpl_-> interference_;
+    return pImpl_->interference_;
 }
 
 bool RenDevice::isInterferenceOn() const
 {
-    return pImpl_-> interference_ > 0.0001;
+    return pImpl_->interference_ > 0.0001;
 }
 
 inline float random0to1000()
@@ -1385,7 +1394,7 @@ void RenDevice::addInterference()
 
     // If the noise amount is small, don't do anything on one quarter of
     // occaisions (randomly).
-    if (pImpl_-> interference_ < 0.2 && mexRandomInt(&random, 0, 3) == 0)
+    if (pImpl_->interference_ < 0.2 && mexRandomInt(&random, 0, 3) == 0)
         return;
 
     // For OpenGL rendering viewport is always starting from 0,0
@@ -1400,12 +1409,12 @@ void RenDevice::addInterference()
     const int viewportRight = viewportWidth + viewportXOffset;
     const int viewportBottom = viewportHeight + viewportYOffset;
 
-    if (pImpl_-> interference_ < 0.8)
+    if (pImpl_->interference_ < 0.8)
     {
         // Use graduated noise.
-        const double fractionToCover = std::min(1.0, pImpl_-> interference_ + 0.4);
+        const double fractionToCover = std::min(1.0, pImpl_->interference_ + 0.4);
         const double fractionToClear = 1 - fractionToCover;
-        const double minAlpha = std::max(0.0, pImpl_-> interference_ - 0.6);
+        const double minAlpha = std::max(0.0, pImpl_->interference_ - 0.6);
 
         // Draw noise with some 100% clear gaps.
         if (fractionToClear > 0.0)
@@ -1425,23 +1434,23 @@ void RenDevice::addInterference()
 
                 fractionCovered += coverFraction;
                 fractionCleared += clearFraction;
-                const int top = lastHeight + (int) (clearFraction * viewportHeight);
-                const int bottom = std::min(viewportBottom, top + (int) (coverFraction * viewportHeight));
+                const int top = lastHeight + (int)(clearFraction * viewportHeight);
+                const int bottom = std::min(viewportBottom, top + (int)(coverFraction * viewportHeight));
                 lastHeight = bottom;
 
                 Ren::Rect rect1(viewportXOffset, top, viewportWidth, bottom);
-                graduatedNoisePolygon(this, rect1, minAlpha, pImpl_-> interference_);
+                graduatedNoisePolygon(this, rect1, minAlpha, pImpl_->interference_);
             }
         }
         else // Enirely cover the screen, but vary the alpha.
         {
-            const int coveredMinHeight = (int) (viewportHeight * 0.2);
-            const int coveredMaxHeight = (int) (viewportHeight * 0.4);
+            const int coveredMinHeight = (int)(viewportHeight * 0.2);
+            const int coveredMaxHeight = (int)(viewportHeight * 0.4);
 
             // The lower alpha value should increase smoothly with noise until
             // at 0.8 it matches the upper value.  Hence we transition
             // seamlessly into the uniform case.
-            const double alpha = mexInterpolate(pImpl_-> interference_, 0.6, 0.8, minAlpha, pImpl_-> interference_);
+            const double alpha = mexInterpolate(pImpl_->interference_, 0.6, 0.8, minAlpha, pImpl_->interference_);
 
             int lastHeight = viewportYOffset;
             for (int i = 0; i != 2 && lastHeight < viewportBottom; ++i)
@@ -1452,21 +1461,21 @@ void RenDevice::addInterference()
                 lastHeight = bottom;
 
                 Ren::Rect rect1(viewportXOffset, top, viewportWidth, bottom);
-                graduatedNoisePolygon(this, rect1, alpha, pImpl_-> interference_);
+                graduatedNoisePolygon(this, rect1, alpha, pImpl_->interference_);
             }
 
             // Ensure that we go right to the bottom of the screen.
             if (lastHeight < viewportBottom)
             {
                 Ren::Rect rect1(viewportXOffset, lastHeight, viewportWidth, viewportBottom);
-                graduatedNoisePolygon(this, rect1, alpha, pImpl_-> interference_);
+                graduatedNoisePolygon(this, rect1, alpha, pImpl_->interference_);
             }
         }
     }
     else // Use uniform noise rather than graduated.
     {
         Ren::Rect rect1(viewportXOffset, viewportYOffset, viewportWidth, viewportHeight);
-        uniformNoisePolygon(this, rect1, pImpl_-> interference_);
+        uniformNoisePolygon(this, rect1, pImpl_->interference_);
     }
 }
 
@@ -1515,7 +1524,7 @@ void RenDevice::addStatic()
             const int x1 = (viewportWidth * rand() / RAND_MAX) + viewportXOffset;
             pts[i].x = (x1);
 
-            //get random number from 2 to 13 for line length
+            // get random number from 2 to 13 for line length
             const int lineLength = mexRandomInt(&random, 2, 9);
 
             const int x2 = x1 + lineLength;
@@ -1539,7 +1548,7 @@ void RenDevice::addStatic()
     for (int i = 0; i != numVertices; i += 2)
     {
         // Randomize the y coordinates.
-        pts[i].y = float( (viewportHeight * rand() / RAND_MAX) + viewportYOffset);
+        pts[i].y = float((viewportHeight * rand() / RAND_MAX) + viewportYOffset);
 
         // All lines are horizontal.
         pts[i + 1].y = pts[i].y;
@@ -1563,13 +1572,13 @@ void RenDevice::backgroundColour(const RenColour& b)
 
 int RenDevice::windowWidth() const
 {
-    //return backSurface().width();
+    // return backSurface().width();
     return display()->currentMode().width();
 }
 
 int RenDevice::windowHeight() const
 {
-    //return backSurface().height();
+    // return backSurface().height();
     return display()->currentMode().height();
 }
 
@@ -1595,7 +1604,6 @@ void RenDevice::displayImage(const SysPathName& pathName)
     pImpl_->display_->flipBuffers();
     // This image is no longer needed
     surf.releaseDC();
-
 }
 
 bool RenDevice::canSee(const MexPoint3d& pt) const
@@ -1617,8 +1625,8 @@ bool RenDevice::canSee(const MexQuad3d& quad) const
 std::ostream& operator<<(std::ostream& o, const RenDevice& t)
 {
 
-    o << "RenDevice " << (void*) &t << " start" << std::endl;
-    o << "RenDevice " << (void*) &t << " end" << std::endl;
+    o << "RenDevice " << (void*)&t << " start" << std::endl;
+    o << "RenDevice " << (void*)&t << " end" << std::endl;
 
     return o;
 }
@@ -1633,7 +1641,7 @@ bool RenDevice::activate()
 bool RenDevice::setHighestAllowedDisplayMode()
 {
     PRE(pImpl_->display_);
-    PRE( pImpl_->caps_ );
+    PRE(pImpl_->caps_);
 
     return pImpl_->display_->setHighestAllowedMode(pImpl_->caps_->maxAvailableDisplayMemoryAfterTextures());
 }
@@ -1642,11 +1650,11 @@ MexPoint3d RenDevice::screenToCamera(const MexPoint2d& screenPosition) const
 {
     PRE(pImpl_->currentCamera_ != nullptr);
 
-    //Get needed data from the camera
+    // Get needed data from the camera
     double projectionDistance = pImpl_->currentCamera_->hitherClipDistance();
     double tanHalfVerticalFOVAngle = pImpl_->currentCamera_->tanHalfVerticalFOVAngle();
 
-    //Get the viewport dimensions
+    // Get the viewport dimensions
     GLint viewPort[4];
     glGetIntegerv(GL_VIEWPORT, viewPort);
     double viewportPixelLeft(viewPort[0]);
@@ -1654,15 +1662,13 @@ MexPoint3d RenDevice::screenToCamera(const MexPoint2d& screenPosition) const
     double viewportPixelWidth(viewPort[2]);
     double viewportPixelHeight(viewPort[3]);
 
-    //Compute the viewport dimensions in real world coordinates
+    // Compute the viewport dimensions in real world coordinates
     double realViewportHeight = 2.0 * projectionDistance * tanHalfVerticalFOVAngle;
     double realViewportWidth = realViewportHeight * (viewportPixelWidth / viewportPixelHeight);
 
-    //Compute the coordinates in world space in the projection plane of the screen position
-    double y = realViewportWidth *
-        ((screenPosition.x() - viewportPixelLeft) / viewportPixelWidth - 0.5);
-    double z = realViewportHeight *
-        (0.5 - (screenPosition.y() - viewportPixelTop) / viewportPixelHeight);
+    // Compute the coordinates in world space in the projection plane of the screen position
+    double y = realViewportWidth * ((screenPosition.x() - viewportPixelLeft) / viewportPixelWidth - 0.5);
+    double z = realViewportHeight * (0.5 - (screenPosition.y() - viewportPixelTop) / viewportPixelHeight);
 
     return MexPoint3d(projectionDistance, y, z);
 }
@@ -1697,13 +1703,13 @@ RenSurface RenDevice::frontSurface()
 
 const RenSurface RenDevice::backSurface() const
 {
-    RenDevice* ncThis = const_cast<RenDevice*> ( this);
+    RenDevice* ncThis = const_cast<RenDevice*>(this);
     return ncThis->backSurface();
 }
 
 const RenSurface RenDevice::frontSurface() const
 {
-    RenDevice* ncThis = const_cast<RenDevice*> ( this);
+    RenDevice* ncThis = const_cast<RenDevice*>(this);
     return ncThis->frontSurface();
 }
 
@@ -1711,11 +1717,11 @@ MexPoint2d RenDevice::cameraToScreen(const MexPoint3d& worldPosition) const
 {
     PRE(pImpl_->currentCamera_ != nullptr);
 
-    //Get needed data from the camera
+    // Get needed data from the camera
     double projectionDistance = pImpl_->currentCamera_->hitherClipDistance();
     double tanHalfVerticalFOVAngle = pImpl_->currentCamera_->tanHalfVerticalFOVAngle();
 
-    //Get the viewport dimensions
+    // Get the viewport dimensions
     GLint viewPort[4];
     glGetIntegerv(GL_VIEWPORT, viewPort);
     double viewportPixelLeft(viewPort[0]);
@@ -1723,12 +1729,12 @@ MexPoint2d RenDevice::cameraToScreen(const MexPoint3d& worldPosition) const
     double viewportPixelWidth(viewPort[2]);
     double viewportPixelHeight(viewPort[3]);
 
-    //Compute the viewport dimensions in real world coordinates
+    // Compute the viewport dimensions in real world coordinates
     double realViewportHeight = 2.0 * projectionDistance * tanHalfVerticalFOVAngle;
     double realViewportWidth = realViewportHeight * (viewportPixelWidth / viewportPixelHeight);
 
-    //Do the perspective projection of the point into the projection plane.
-    //If the point lies in the camera's x=0 plane, frig it a bit.
+    // Do the perspective projection of the point into the projection plane.
+    // If the point lies in the camera's x=0 plane, frig it a bit.
     double x = worldPosition.x();
     if (fabs(x) < 0.001)
         x = (x >= 0.0 ? 0.001 : -0.001);
@@ -1736,7 +1742,7 @@ MexPoint2d RenDevice::cameraToScreen(const MexPoint3d& worldPosition) const
     double y = worldPosition.y() * f;
     double z = worldPosition.z() * f;
 
-    //Now convert to screen pixel coordinates
+    // Now convert to screen pixel coordinates
     y = viewportPixelWidth * (y / realViewportWidth + 0.5) + viewportPixelLeft;
     z = viewportPixelHeight * (0.5 - z / realViewportHeight) + viewportPixelTop;
 
@@ -1744,7 +1750,7 @@ MexPoint2d RenDevice::cameraToScreen(const MexPoint3d& worldPosition) const
 }
 
 RenDevice::Filter::Filter(RenDevice* pDevice, const RenColour& col)
-: pDevice_(pDevice)
+    : pDevice_(pDevice)
 {
     pDevice_->setFilter(col);
 }
@@ -1784,7 +1790,7 @@ bool RenDevice::rendering() const
     return pImpl_->rendering_;
 }
 
-bool RenDevice::rendering2D(void) const
+bool RenDevice::rendering2D() const
 {
     return pImpl_->rendering2D_;
 }
@@ -1794,7 +1800,7 @@ bool RenDevice::rendering3D() const
     return pImpl_->rendering3D_;
 }
 
-bool RenDevice::idleRendering(void) const
+bool RenDevice::idleRendering() const
 {
     return true; // rendering() and not rendering3D() and not rendering2D();
 }
@@ -1825,7 +1831,7 @@ const RenDisplay* RenDevice::display() const
     return pImpl_->display_;
 }
 
-const RenColour& RenDevice::fogColour(void) const
+const RenColour& RenDevice::fogColour() const
 {
     return pImpl_->fogColour_;
 }
@@ -1847,7 +1853,7 @@ RenIDeviceImpl& RenDevice::impl()
     return *pImpl_;
 }
 
-const RenIDeviceImpl& RenDevice::impl(void) const
+const RenIDeviceImpl& RenDevice::impl() const
 {
     PRE(pImpl_);
     return *pImpl_;
@@ -1868,7 +1874,7 @@ void RenDevice::debugTextCoords(int* pX, int* pY) const
 
 void RenDevice::antiAliasingOn(bool o)
 {
-    pImpl_-> antiAliasingOn_ = true;
+    pImpl_->antiAliasingOn_ = true;
 }
 
 bool RenDevice::antiAliasingOn() const
@@ -1876,7 +1882,9 @@ bool RenDevice::antiAliasingOn() const
     return true;
 }
 
-void RenDevice::horizontalBannerText(const char* /*text*/, int /*nChars*/, double /*charsPerSecond*/) { }
+void RenDevice::horizontalBannerText(const char* /*text*/, int /*nChars*/, double /*charsPerSecond*/)
+{
+}
 
 void RenDevice::setMaterialHandles(const RenMaterial& mat)
 {
@@ -1894,7 +1902,7 @@ void RenDevice::renderToTextureMode(const GLuint targetTexture, uint32_t viewPor
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, targetTexture, 0);
         glViewport(0, 0, viewPortW, viewPortH);
     }
-        // Bind FBO to screen
+    // Bind FBO to screen
     else
     {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
@@ -1907,15 +1915,13 @@ void RenDevice::renderToTextureMode(const GLuint targetTexture, uint32_t viewPor
         std::cerr << "Error when binding FBO" << std::endl;
 }
 
-void RenDevice::renderScreenspace
-(
+void RenDevice::renderScreenspace(
     const RenIVertex* vertices,
     const size_t nVertices,
     GLenum mode,
     const int targetW,
     const int targetH,
-    const GLuint texture
-    )
+    const GLuint texture)
 {
     glUseProgram(glProgramID_GIU2D_);
 
@@ -1926,20 +1932,25 @@ void RenDevice::renderScreenspace
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(gl2DUniformID_, 0);
 
-    glUniform2f(glScreenspaceID_, (float) targetW, (float) targetH);
+    glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
 
     glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof (RenIVertex), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), &vertices[0], GL_STATIC_DRAW);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
     glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
-    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof (RenIVertex), (void*) 0);
+    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
     glEnableVertexAttribArray(glVertexUVID_);
-    glVertexAttribPointer(glVertexUVID_, 2, GL_FLOAT, GL_FALSE, sizeof (RenIVertex), // stride
-        (void*) (sizeof (RenIVertex) - 2 * sizeof (float)));
+    glVertexAttribPointer(
+        glVertexUVID_,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(RenIVertex), // stride
+        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)));
 
     // 3rd attribute vertex colours
     glEnableVertexAttribArray(glVertexColour_screenspaceID_);
@@ -1948,9 +1959,9 @@ void RenDevice::renderScreenspace
         4, // size
         GL_UNSIGNED_BYTE, // type
         GL_TRUE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (3 * sizeof (float) + sizeof (uint32_t)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
+    );
 
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
@@ -1969,28 +1980,29 @@ void RenDevice::renderScreenspace
     glDisableVertexAttribArray(glVertexColour_screenspaceID_);
 }
 
-void RenDevice::renderSurface
-(
+void RenDevice::renderSurface(
     const RenISurfBody* surf,
     const Ren::Rect& srcArea,
     const Ren::Rect& dstArea,
     const uint32_t targetW,
     const uint32_t targetH,
-    const uint32_t colour
-    )
+    const uint32_t colour)
 {
     RenIVertex vertices[6];
 
-    glm::vec2 vertex_up_left = glm::vec2(dstArea.originX, dstArea.originY + dstArea.height); //( x     , y+srcArea.height );
-    glm::vec2 vertex_up_right = glm::vec2(dstArea.originX + dstArea.width, dstArea.originY + dstArea.height); //( x+srcArea.width, y+srcArea.height );
-    glm::vec2 vertex_down_right = glm::vec2(dstArea.originX + dstArea.width, dstArea.originY); //( x+srcArea.width, y      );
+    glm::vec2 vertex_up_left
+        = glm::vec2(dstArea.originX, dstArea.originY + dstArea.height); //( x     , y+srcArea.height );
+    glm::vec2 vertex_up_right = glm::vec2(
+        dstArea.originX + dstArea.width,
+        dstArea.originY + dstArea.height); //( x+srcArea.width, y+srcArea.height );
+    glm::vec2 vertex_down_right = glm::vec2(dstArea.originX + dstArea.width, dstArea.originY); //( x+srcArea.width, y );
     glm::vec2 vertex_down_left = glm::vec2(dstArea.originX, dstArea.originY); //( x, y      );
 
     // TODO handle empty surf
-    float uvX = srcArea.originX / (float) surf->width();
-    float uvY = srcArea.originY / (float) surf->height();
-    float uvW = srcArea.width / (float) surf->width();
-    float uvH = srcArea.height / (float) surf->height();
+    float uvX = srcArea.originX / (float)surf->width();
+    float uvY = srcArea.originY / (float)surf->height();
+    float uvW = srcArea.width / (float)surf->width();
+    float uvH = srcArea.height / (float)surf->height();
     glm::vec2 uv_up_left = glm::vec2(uvX, uvY + uvH); //( 0.0f, 1.0f );
     glm::vec2 uv_up_right = glm::vec2(uvX + uvW, uvY + uvH); //( 1.0f, 1.0f );
     glm::vec2 uv_down_right = glm::vec2(uvX + uvW, uvY); //( 1.0f, 0.0f );
@@ -1999,10 +2011,11 @@ void RenDevice::renderSurface
     // Bind shader
     glUseProgram(glProgramID_GIU2D_);
 
-    vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color = vertices[5].color = colour;
+    vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
+        = vertices[5].color = colour;
     if (targetW)
     {
-        glUniform2f(glScreenspaceID_, (float) targetW, -(float) targetH);
+        glUniform2f(glScreenspaceID_, (float)targetW, -(float)targetH);
 
         vertices[2].x = vertex_up_left[0];
         vertices[2].y = vertex_up_left[1];
@@ -2035,7 +2048,7 @@ void RenDevice::renderSurface
     else
     {
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        glUniform2f(glScreenspaceID_, (float) mode.width(), (float) mode.height());
+        glUniform2f(glScreenspaceID_, (float)mode.width(), (float)mode.height());
 
         vertices[0].x = vertex_up_left[0];
         vertices[0].y = vertex_up_left[1];
@@ -2067,7 +2080,7 @@ void RenDevice::renderSurface
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof (RenIVertex), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(RenIVertex), &vertices[0], GL_STATIC_DRAW);
 
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
@@ -2081,12 +2094,17 @@ void RenDevice::renderSurface
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
     glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
-    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof (RenIVertex), (void*) 0);
+    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
     glEnableVertexAttribArray(glVertexUVID_);
-    glVertexAttribPointer(glVertexUVID_, 2, GL_FLOAT, GL_FALSE, sizeof (RenIVertex), // stride
-        (void*) (sizeof (RenIVertex) - 2 * sizeof (float)));
+    glVertexAttribPointer(
+        glVertexUVID_,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(RenIVertex), // stride
+        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)));
 
     // 3rd attribute vertex colours
     glEnableVertexAttribArray(glVertexColour_screenspaceID_);
@@ -2095,9 +2113,9 @@ void RenDevice::renderSurface
         4, // size
         GL_UNSIGNED_BYTE, // type
         GL_TRUE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (3 * sizeof (float) + sizeof (uint32_t)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
+    );
 
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
@@ -2115,13 +2133,11 @@ void RenDevice::renderSurface
     glDisableVertexAttribArray(glVertexColour_screenspaceID_);
 }
 
-void RenDevice::renderPrimitive
-(
+void RenDevice::renderPrimitive(
     const RenIVertex* vertices,
     const size_t nVertices,
     const RenMaterial& mat,
-    const GLenum mode
-    )
+    const GLenum mode)
 {
     PRE(vertices);
     PRE(nVertices < 5000);
@@ -2138,12 +2154,12 @@ void RenDevice::renderPrimitive
 
     glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
     glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
-    //std::cout<<glm::to_string(MVP)<<std::endl;
-    //glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-    //glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+    // std::cout<<glm::to_string(MVP)<<std::endl;
+    // glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+    // glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
-    //glm::vec3 lightPos = glm::vec3(4,4,4);
-    //glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
+    // glm::vec3 lightPos = glm::vec3(4,4,4);
+    // glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
     // Bind our texture in Texture Unit 0
     glActiveTexture(GL_TEXTURE0);
@@ -2158,15 +2174,15 @@ void RenDevice::renderPrimitive
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof (RenIVertex), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size
         GL_FLOAT, // type
         GL_FALSE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) 0 // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)nullptr // array buffer offset
+    );
 
     // 2nd attribute buffer : UVs
     glEnableVertexAttribArray(glVertex_modelspaceUVID_);
@@ -2175,9 +2191,9 @@ void RenDevice::renderPrimitive
         2, // size : U+V => 2
         GL_FLOAT, // type
         GL_FALSE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (sizeof (RenIVertex) - 2 * sizeof (float)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
+    );
 
     // vertex colours
     glEnableVertexAttribArray(glVertexColour_modelspaceID_);
@@ -2186,9 +2202,9 @@ void RenDevice::renderPrimitive
         4, // size
         GL_UNSIGNED_BYTE, // type
         GL_TRUE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (3 * sizeof (float) + sizeof (uint32_t)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
+    );
 
     /*// 3rd attribute buffer : normals
     glEnableVertexAttribArray(vertexNormal_modelspaceID);
@@ -2208,19 +2224,16 @@ void RenDevice::renderPrimitive
     glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
     glDisableVertexAttribArray(glVertex_modelspaceUVID_);
     glDisableVertexAttribArray(glVertexColour_modelspaceID_);
-    //glDisableVertexAttribArray(vertexNormal_modelspaceID);
-
+    // glDisableVertexAttribArray(vertexNormal_modelspaceID);
 }
 
-void RenDevice::renderIndexed
-(
+void RenDevice::renderIndexed(
     const RenIVertex* vertices,
     const size_t nVertices,
     const Ren::VertexIdx* indices,
     const size_t nIndices,
     const RenMaterial& mat,
-    GLenum mode
-    )
+    GLenum mode)
 {
     PRE(vertices);
     PRE(indices);
@@ -2258,15 +2271,15 @@ void RenDevice::renderIndexed
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof (RenIVertex), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size - 3 for XYZ 4 for XYZW
         GL_FLOAT, // type
         GL_FALSE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) 0 // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)nullptr // array buffer offset
+    );
 
     // 2nd attribute buffer : UVs
     glEnableVertexAttribArray(glVertex_modelspaceUVID_);
@@ -2275,9 +2288,9 @@ void RenDevice::renderIndexed
         2, // size : U+V => 2
         GL_FLOAT, // type
         GL_FALSE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (sizeof (RenIVertex) - 2 * sizeof (float)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
+    );
 
     // vertex colours
     glEnableVertexAttribArray(glVertexColour_modelspaceID_);
@@ -2286,9 +2299,9 @@ void RenDevice::renderIndexed
         4, // size
         GL_UNSIGNED_BYTE, // type
         GL_TRUE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (3 * sizeof (float) + sizeof (uint32_t)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
+    );
 
     // 3rd attribute buffer : normals
     /*glEnableVertexAttribArray(vertexNormal_modelspaceID);
@@ -2304,31 +2317,29 @@ void RenDevice::renderIndexed
 
     // Index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferID_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof (unsigned short), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STATIC_DRAW);
 
     // Draw the triangles !
     glDrawElements(
         mode, // mode
         nIndices, // count
         GL_UNSIGNED_SHORT, // type
-        (void*) 0 // element array buffer offset
-        );
+        (void*)nullptr // element array buffer offset
+    );
 
     glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
     glDisableVertexAttribArray(glVertex_modelspaceUVID_);
     glDisableVertexAttribArray(glVertexColour_modelspaceID_);
-    //glDisableVertexAttribArray(vertexNormal_modelspaceID);
+    // glDisableVertexAttribArray(vertexNormal_modelspaceID);
 }
 
-void RenDevice::renderIndexedScreenspace
-(
+void RenDevice::renderIndexedScreenspace(
     const RenIVertex* vertices,
     const size_t nVertices,
     const Ren::VertexIdx* indices,
     const size_t nIndices,
     const RenMaterial& mat,
-    GLenum mode
-    )
+    GLenum mode)
 {
     PRE(vertices);
     PRE(indices);
@@ -2350,15 +2361,15 @@ void RenDevice::renderIndexedScreenspace
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);
     glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferBillboardID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof (RenIVertex), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(
         glVertexPosition_BillboardID_, // The attribute we want to configure
         4, // size - 3 for XYZ 4 for XYZW
         GL_FLOAT, // type
         GL_FALSE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) 0 // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)nullptr // array buffer offset
+    );
 
     // 2nd attribute buffer : UVs
     glEnableVertexAttribArray(glVertex_BillboardUVID_);
@@ -2367,9 +2378,9 @@ void RenDevice::renderIndexedScreenspace
         2, // size : U+V => 2
         GL_FLOAT, // type
         GL_FALSE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (sizeof (RenIVertex) - 2 * sizeof (float)) // array buffer offset
-        );
+        sizeof(RenIVertex), // stride
+        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
+    );
 
     // vertex colours
     glEnableVertexAttribArray(glVertexColour_BillboardID_);
@@ -2378,22 +2389,21 @@ void RenDevice::renderIndexedScreenspace
         4, // size
         GL_UNSIGNED_BYTE, // type
         GL_TRUE, // normalized?
-        sizeof (RenIVertex), // stride
-        (void*) (3 * sizeof (float) + sizeof (uint32_t)) // array buffer offset
-        );
-
+        sizeof(RenIVertex), // stride
+        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
+    );
 
     // Index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferBillboardID_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof (unsigned short), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STATIC_DRAW);
 
     // Draw the triangles !
     glDrawElements(
         mode, // mode
         nIndices, // count
         GL_UNSIGNED_SHORT, // type
-        (void*) 0 // element array buffer offset
-        );
+        (void*)nullptr // element array buffer offset
+    );
 
     glDisableVertexAttribArray(glVertexPosition_BillboardID_);
     glDisableVertexAttribArray(glVertex_BillboardUVID_);

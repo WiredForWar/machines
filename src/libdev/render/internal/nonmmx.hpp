@@ -6,8 +6,8 @@
 /*
     RenINonMMXIlluminator
 
-	A concrete class derived from RenIIlluminator which implements lighting
-	calculations in the absence of an MMX CPU.
+    A concrete class derived from RenIIlluminator which implements lighting
+    calculations in the absence of an MMX CPU.
 */
 
 #ifndef _RENDER_NONMMX_HPP
@@ -21,20 +21,20 @@ class RenIFloatLightingBuffer;
 class RenINonMMXIlluminator : public RenIIlluminator
 {
 public:
-	RenINonMMXIlluminator(RenIDeviceImpl*);
-	virtual ~RenINonMMXIlluminator();
+    RenINonMMXIlluminator(RenIDeviceImpl*);
+    ~RenINonMMXIlluminator() override;
 
-	virtual const RenIVertex* applyMaterial(const RenMaterial&, const RenIVertexData& in, const Indices&);
+    const RenIVertex* applyMaterial(const RenMaterial&, const RenIVertexData& in, const Indices&) override;
 
 private:
-	virtual void computeLambertian(const RenIVertexData&, const MexTransform3d& world, const MexAlignedBox3d* pVolume);
-	virtual void applyVertexMaterials(const RenIVertexData& in);
-	virtual void doStartFrame();
-	bool overflowPossible(const RenIMatBody*) const;
-	bool specularRequired() const;
+    void computeLambertian(const RenIVertexData&, const MexTransform3d& world, const MexAlignedBox3d* pVolume) override;
+    void applyVertexMaterials(const RenIVertexData& in) override;
+    void doStartFrame() override;
+    bool overflowPossible(const RenIMatBody*) const;
+    bool specularRequired() const;
 
-	RenIFloatLightingBuffer*	lightingBuffer_;
-	uint32_t		   				overflows_, applications_;
+    RenIFloatLightingBuffer* lightingBuffer_;
+    uint32_t overflows_, applications_;
 };
 
 #endif

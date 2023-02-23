@@ -1,5 +1,5 @@
 /*
- * C H A T W I N D . H P P 
+ * C H A T W I N D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,42 +22,41 @@ class MachGuiChatWindow : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    //TODO: Eliminate entirely MachGuiStartupScreens from this constructor
+    // TODO: Eliminate entirely MachGuiStartupScreens from this constructor
     MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens* pStartupScreens, const Gui::Box& box);
-    virtual ~MachGuiChatWindow();
+    ~MachGuiChatWindow() override;
 
-	static void addText( const string& text );
+    static void addText(const string& text);
 
-	static void clearAllText();
+    static void clearAllText();
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	typedef ctl_vector< string > strings;
+    using strings = ctl_vector<string>;
 
-	static size_t& numLines();
-	static strings& linesOfText();
-	static size_t& chatWidth();
+    static size_t& numLines();
+    static strings& linesOfText();
+    static size_t& chatWidth();
 
-	static MachGuiChatWindow*& chatWindow();
+    static MachGuiChatWindow*& chatWindow();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiChatWindow& t );
+    friend ostream& operator<<(ostream& o, const MachGuiChatWindow& t);
 
-    MachGuiChatWindow( const MachGuiChatWindow& );
-    MachGuiChatWindow& operator =( const MachGuiChatWindow& );
+    MachGuiChatWindow(const MachGuiChatWindow&);
+    MachGuiChatWindow& operator=(const MachGuiChatWindow&);
 
-	// Data members...
+    // Data members...
 
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 
-    //TODO: Eliminate dependency. Still required for message box stuff >.<
+    // TODO: Eliminate dependency. Still required for message box stuff >.<
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
 };
-
 
 #endif
 

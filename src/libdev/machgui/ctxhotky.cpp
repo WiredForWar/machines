@@ -24,232 +24,236 @@
 #include <fstream>
 #include <algorithm>
 
-MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
-:	MachGuiStartupScreenContext( pStartupScreens ),
-	animations_( pStartupScreens, SysPathName("gui/menu/so_anims.anm") )
+MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
+    : MachGuiStartupScreenContext(pStartupScreens)
+    , animations_(pStartupScreens, SysPathName("gui/menu/so_anims.anm"))
 {
-	changeBackdrop( "gui/menu/so.bmp" );
+    changeBackdrop("gui/menu/so.bmp");
 
-    pStartupScreens->cursorOn( true );
-    pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
+    pStartupScreens->cursorOn(true);
+    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
-	const uint HOTKEY_MIN_X 		= 128;
-	const uint HOTKEY_MIN_Y 		= 15;
-	const uint HOTKEY_MAX_Y			= 350;
-	const uint HOTKEY_ACTION_WIDTH 	= 111;
-	const uint HOTKEY_KEY_WIDTH 	= 131;
-	const uint HOTKEY_SEPARATION	= 2;
-	const uint HOTKEY_KEY_X 		=	HOTKEY_MIN_X +
-										HOTKEY_ACTION_WIDTH;
-	const uint HOTKEY_2NDCOLUMN_X 	= 	HOTKEY_MIN_X +
-										HOTKEY_ACTION_WIDTH +
-										HOTKEY_KEY_WIDTH +
-										HOTKEY_SEPARATION;
+    const uint HOTKEY_MIN_X = 128;
+    const uint HOTKEY_MIN_Y = 15;
+    const uint HOTKEY_MAX_Y = 350;
+    const uint HOTKEY_ACTION_WIDTH = 111;
+    const uint HOTKEY_KEY_WIDTH = 131;
+    const uint HOTKEY_SEPARATION = 2;
+    const uint HOTKEY_KEY_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH;
+    const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
-	uint smallFontHeight = GuiBmpFont::getFont( SysPathName("gui/menu/smallfnt.bmp") ).charHeight() + 2;
-	uint largeFontHeight = GuiBmpFont::getFont( SysPathName("gui/menu/largefnt.bmp") ).charHeight() + 2;
+    uint smallFontHeight = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp")).charHeight() + 2;
+    uint largeFontHeight = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp")).charHeight() + 2;
 
-	// Display First Person Control heading
-	//
-	GuiBmpFont font = GuiBmpFont::getFont( SysPathName("gui/menu/largefnt.bmp") );
-	GuiResourceString optionsHeading( IDS_MENU_FIRSTPERSONCONTROL );
-	uint headingMaxY = HOTKEY_MIN_Y + largeFontHeight;
-	_NEW( MachGuiMenuText( pStartupScreens,
-						   Gui::Box( HOTKEY_MIN_X, HOTKEY_MIN_Y,
-						   			 HOTKEY_MIN_X + font.textWidth( optionsHeading.asString() ),
-						   			 headingMaxY ),
-						   IDS_MENU_FIRSTPERSONCONTROL, "gui/menu/largefnt.bmp",  MachGuiMenuText::LEFT_JUSTIFY ) );
+    // Display First Person Control heading
+    //
+    GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
+    GuiResourceString optionsHeading(IDS_MENU_FIRSTPERSONCONTROL);
+    uint headingMaxY = HOTKEY_MIN_Y + largeFontHeight;
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(HOTKEY_MIN_X, HOTKEY_MIN_Y, HOTKEY_MIN_X + font.textWidth(optionsHeading.asString()), headingMaxY),
+        IDS_MENU_FIRSTPERSONCONTROL,
+        "gui/menu/largefnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
+    // Create First Person Actions text below First Person Control heading
+    //
+    uint noLines;
+    string hotKey1stPersonActions;
+    readHotkeyData("gui/menu/hk1pAction.dat", hotKey1stPersonActions, noLines);
 
+    uint fstPersonWindowMaxY = headingMaxY + (noLines * smallFontHeight);
 
-	// Create First Person Actions text below First Person Control heading
-	//
-	uint noLines;
-	string hotKey1stPersonActions;
-	readHotkeyData( "gui/menu/hk1pAction.dat", hotKey1stPersonActions, noLines );
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(HOTKEY_MIN_X, headingMaxY, HOTKEY_KEY_X, fstPersonWindowMaxY),
+        hotKey1stPersonActions,
+        "gui/menu/smallfnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
-	uint fstPersonWindowMaxY = headingMaxY + ( noLines * smallFontHeight );
+    // Create First Person Keys text next to First Person Action text
+    //
+    string hotKey1stPersonKeys;
+    readHotkeyData("gui/menu/hk1pKeys.dat", hotKey1stPersonKeys, noLines);
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(HOTKEY_KEY_X, headingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, fstPersonWindowMaxY),
+        hotKey1stPersonKeys,
+        "gui/menu/smalwfnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
-	_NEW( MachGuiMenuText( 	pStartupScreens,
-							Gui::Box( 	HOTKEY_MIN_X,
-										headingMaxY,
-										HOTKEY_KEY_X,
-										fstPersonWindowMaxY ),
-							hotKey1stPersonActions, "gui/menu/smallfnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    // Display General Controls heading underneath First Person Controls hot keys
+    //
+    font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
+    GuiResourceString optionsGeneralHeading(IDS_MENU_GENERALCONTROL);
+    uint genHeadingMaxY = fstPersonWindowMaxY + largeFontHeight;
 
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(
+            HOTKEY_MIN_X,
+            fstPersonWindowMaxY,
+            HOTKEY_MIN_X + font.textWidth(optionsGeneralHeading.asString()),
+            genHeadingMaxY),
+        IDS_MENU_GENERALCONTROL,
+        "gui/menu/largefnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
+    // Calculate the number of lines of General hotkeys that can be displayed under
+    // the First Person hotkeys
+    font = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
 
-	// Create First Person Keys text next to First Person Action text
-	//
-	string hotKey1stPersonKeys;
-	readHotkeyData( "gui/menu/hk1pKeys.dat", hotKey1stPersonKeys, noLines );
-	_NEW( MachGuiMenuText( 	pStartupScreens,
-							Gui::Box( 	HOTKEY_KEY_X,
-										headingMaxY,
-										HOTKEY_KEY_X + HOTKEY_KEY_WIDTH,
-										fstPersonWindowMaxY ),
-							hotKey1stPersonKeys, "gui/menu/smalwfnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    uint noDisplayableLines = (HOTKEY_MAX_Y - genHeadingMaxY) / smallFontHeight;
 
+    string hotKeyGeneralActions;
 
+    readHotkeyData("gui/menu/hkGenActions.dat", hotKeyGeneralActions, noLines);
 
-	// Display General Controls heading underneath First Person Controls hot keys
-	//
-	font = GuiBmpFont::getFont( SysPathName("gui/menu/largefnt.bmp") );
-	GuiResourceString optionsGeneralHeading( IDS_MENU_GENERALCONTROL );
-	uint genHeadingMaxY = fstPersonWindowMaxY + largeFontHeight;
+    strings choppedText;
 
-	_NEW( MachGuiMenuText( pStartupScreens,
-						   Gui::Box(	HOTKEY_MIN_X,
-						   				fstPersonWindowMaxY,
-						   			 	HOTKEY_MIN_X + font.textWidth( optionsGeneralHeading.asString() ),
-						   			 	genHeadingMaxY ),
-						   IDS_MENU_GENERALCONTROL, "gui/menu/largefnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    MachGuiMenuText::chopUpText(hotKeyGeneralActions, 200, font, &choppedText);
 
+    uint noRemainingLines = noLines - noDisplayableLines;
 
+    WAYNE_STREAM(" noDisplayableLines " << noDisplayableLines << std::endl);
+    WAYNE_STREAM(" noRemainingLines - " << noRemainingLines << std::endl);
 
-	// Calculate the number of lines of General hotkeys that can be displayed under
-	// the First Person hotkeys
-	font = GuiBmpFont::getFont( SysPathName("gui/menu/smallfnt.bmp") );
+    string headString, remainderString;
 
-	uint noDisplayableLines = ( HOTKEY_MAX_Y - genHeadingMaxY ) / smallFontHeight;
+    // Create new strings to be displayed
+    for (uint i = 0; i < noDisplayableLines; i++)
+    {
+        headString += choppedText[i];
+        headString += "\n";
+    }
+    uint stringSize = choppedText.size();
 
-	string hotKeyGeneralActions;
+    for (uint i = noDisplayableLines; i < stringSize; i++)
+    {
+        remainderString += choppedText[i];
+        remainderString += "\n";
+    }
+    WAYNE_STREAM("headString - " << headString << std::endl);
+    WAYNE_STREAM("remainderString - " << remainderString << std::endl);
 
-	readHotkeyData( "gui/menu/hkGenActions.dat", hotKeyGeneralActions, noLines );
+    uint generalWindowMaxY = genHeadingMaxY + (noDisplayableLines * smallFontHeight);
 
-   	strings choppedText;
+    WAYNE_STREAM("generalHeadingMaxY - " << genHeadingMaxY << std::endl);
+    WAYNE_STREAM("generalWindowMaxY - " << generalWindowMaxY << std::endl);
 
-	MachGuiMenuText::chopUpText( hotKeyGeneralActions, 200, font, &choppedText );
+    WAYNE_STREAM(
+        "Head box dimensions: " << HOTKEY_MIN_X << "," << genHeadingMaxY << "," << HOTKEY_MIN_X << ","
+                                << generalWindowMaxY << std::endl);
 
-	uint noRemainingLines = noLines - noDisplayableLines;
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(HOTKEY_MIN_X, genHeadingMaxY, HOTKEY_KEY_X, generalWindowMaxY),
+        headString,
+        "gui/menu/smallfnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
-	WAYNE_STREAM( "	noDisplayableLines " << noDisplayableLines << std::endl );
-	WAYNE_STREAM( " noRemainingLines - " << noRemainingLines << std::endl );
+    uint generalRemainderMaxY = HOTKEY_MIN_Y + (noRemainingLines * smallFontHeight);
 
-	string headString, remainderString;
+    WAYNE_STREAM("generalRemainderMaxY - " << generalRemainderMaxY << std::endl);
 
-	// Create new strings to be displayed
-	for( uint i = 0; i < noDisplayableLines; i++ )
-	{
-		headString += choppedText[ i ];
-		headString += "\n";
-	}
-	uint stringSize = choppedText.size();
+    WAYNE_STREAM(
+        " Remainder box dimensions: " << HOTKEY_2NDCOLUMN_X << "," << HOTKEY_MIN_Y << "," << HOTKEY_2NDCOLUMN_X << ","
+                                      << generalRemainderMaxY << std::endl);
 
-	for( uint i = noDisplayableLines; i < stringSize; i++ )
-	{
-		remainderString += choppedText[ i ];
-		remainderString += "\n";
-	}
-	WAYNE_STREAM( "headString - " << headString	<< std::endl );
-	WAYNE_STREAM( "remainderString - " << remainderString	<< std::endl );
-
-	uint generalWindowMaxY = genHeadingMaxY + ( noDisplayableLines * smallFontHeight	);
-
-	WAYNE_STREAM( "generalHeadingMaxY - " << genHeadingMaxY << std::endl );
-	WAYNE_STREAM( "generalWindowMaxY - " << generalWindowMaxY << std::endl );
-
-	WAYNE_STREAM( 	"Head box dimensions: " << HOTKEY_MIN_X << "," << genHeadingMaxY << "," << HOTKEY_MIN_X << ","
-					<< generalWindowMaxY << std::endl );
-
-	_NEW( MachGuiMenuText( 	pStartupScreens,
-							Gui::Box(	HOTKEY_MIN_X ,
-										genHeadingMaxY,
-										HOTKEY_KEY_X,
-										generalWindowMaxY ),
-							headString, "gui/menu/smallfnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
-
-	uint generalRemainderMaxY = HOTKEY_MIN_Y + ( noRemainingLines * smallFontHeight );
-
-	WAYNE_STREAM( "generalRemainderMaxY - " << generalRemainderMaxY << std::endl );
-
-	WAYNE_STREAM( 	" Remainder box dimensions: " << HOTKEY_2NDCOLUMN_X << "," <<  HOTKEY_MIN_Y << "," << HOTKEY_2NDCOLUMN_X
-					<< "," <<  generalRemainderMaxY << std::endl );
-
-	_NEW( MachGuiMenuText( 	pStartupScreens,
-							Gui::Box(	HOTKEY_2NDCOLUMN_X,
-										HOTKEY_MIN_Y,
-										HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH,
-										generalRemainderMaxY ),
-							remainderString, "gui/menu/smallfnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(HOTKEY_2NDCOLUMN_X, HOTKEY_MIN_Y, HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH, generalRemainderMaxY),
+        remainderString,
+        "gui/menu/smallfnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
     string hotKeyGeneralKeys;
-	readHotkeyData( "gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines );
+    readHotkeyData("gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines);
 
-	strings choppedupText;
-	MachGuiMenuText::chopUpText( hotKeyGeneralKeys, 200, font, &choppedupText );
+    strings choppedupText;
+    MachGuiMenuText::chopUpText(hotKeyGeneralKeys, 200, font, &choppedupText);
 
+    headString = remainderString = "";
 
-	headString = remainderString = "";
+    // Create new strings to be displayed
+    for (uint i = 0; i < noDisplayableLines; i++)
+    {
+        headString += choppedupText[i];
+        headString += "\n";
+    }
+    for (uint i = noDisplayableLines; i < stringSize; i++)
+    {
+        remainderString += choppedupText[i];
+        remainderString += "\n";
+    }
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(HOTKEY_KEY_X, genHeadingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, generalWindowMaxY),
+        headString,
+        "gui/menu/smalwfnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
-	// Create new strings to be displayed
-	for( uint i = 0; i < noDisplayableLines; i++ )
-	{
-		headString += choppedupText[ i ];
-		headString += "\n";
-	}
-	for( uint i = noDisplayableLines; i < stringSize; i++ )
-	{
-		remainderString += choppedupText[ i ];
-		remainderString += "\n";
-	}
-	_NEW( MachGuiMenuText( 	pStartupScreens,
-							Gui::Box(	HOTKEY_KEY_X,
-										genHeadingMaxY,
-										HOTKEY_KEY_X + HOTKEY_KEY_WIDTH,
-										generalWindowMaxY ),
-							headString, "gui/menu/smalwfnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(
+            HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH,
+            HOTKEY_MIN_Y,
+            HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH,
+            generalRemainderMaxY),
+        remainderString,
+        "gui/menu/smalwfnt.bmp",
+        MachGuiMenuText::LEFT_JUSTIFY));
 
+    // Add flick to bottom left of window
+    SysPathName hotkeySmackerFile("flics/gui/hotkeys.smk");
 
-	_NEW( MachGuiMenuText( 	pStartupScreens,
-							Gui::Box(	HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH ,
-										HOTKEY_MIN_Y,
-										HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH,
-										generalRemainderMaxY ),
-							remainderString, "gui/menu/smalwfnt.bmp", MachGuiMenuText::LEFT_JUSTIFY ) );
+    // Get flic off hard-disk or CD-Rom
+    if (not hotkeySmackerFile.existsAsFile())
+    {
+        // Make sure the cd is stopped before accessing files on it.
+        if (DevCD::instance().isPlayingAudioCd())
+        {
+            DevCD::instance().stopPlaying();
+        }
 
-	// Add flick to bottom left of window
-	SysPathName hotkeySmackerFile( "flics/gui/hotkeys.smk" );
+        string cdRomDrive;
 
-	// Get flic off hard-disk or CD-Rom
-	if ( not hotkeySmackerFile.existsAsFile() )
-	{
-		// Make sure the cd is stopped before accessing files on it.
-		if ( DevCD::instance().isPlayingAudioCd() )
-		{
-			DevCD::instance().stopPlaying();
-		}
+        if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/gui/hotkeys.smk"))
+        {
+            hotkeySmackerFile = SysPathName(cdRomDrive + "flics/gui/hotkeys.smk");
 
-		string cdRomDrive;
+            // Can't play music and smacker anim off CD at same time
+            if (hotkeySmackerFile.existsAsFile())
+            {
+                pStartupScreens_->desiredCdTrack(MachGuiStartupScreens::DONT_PLAY_CD);
+            }
+        }
+    }
 
-		if ( MachGui::getCDRomDriveContainingFile( cdRomDrive, "flics/gui/hotkeys.smk" ) )
-		{
-			hotkeySmackerFile = SysPathName( cdRomDrive + "flics/gui/hotkeys.smk" );
-
-			// Can't play music and smacker anim off CD at same time
-			if ( hotkeySmackerFile.existsAsFile() )
-			{
-				pStartupScreens_->desiredCdTrack( MachGuiStartupScreens::DONT_PLAY_CD );
-			}
-		}
-	}
-
-	// Play animation only if it exists
-	if ( hotkeySmackerFile.existsAsFile() )
-	{
-//		HWND targetWindow = RenDevice::current()->display()->window();
-//	 	AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, targetWindow, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) );
-//	 	AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) );
+    // Play animation only if it exists
+    if (hotkeySmackerFile.existsAsFile())
+    {
+        //      HWND targetWindow = RenDevice::current()->display()->window();
+        //      AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, targetWindow, 430 +
+        //      pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) ); AniSmacker*
+        //      pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 +
+        //      pStartupScreens_->yMenuOffset() ) );
         const auto& topLeft = getBackdropTopLeft();
-        AniSmacker* pSmackerAnimation = new AniSmackerRegular(hotkeySmackerFile, 430 + topLeft.second, 199 + topLeft.first);
-        pStartupScreens_->addSmackerAnimation( pSmackerAnimation );
- 	 }
+        AniSmacker* pSmackerAnimation
+            = new AniSmackerRegular(hotkeySmackerFile, 430 + topLeft.second, 199 + topLeft.first);
+        pStartupScreens_->addSmackerAnimation(pSmackerAnimation);
+    }
 
-   	MachGuiMenuButton* pContinueBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(351, 420, 553, 464),
-                                                             IDS_MENUBTN_CONTINUE, MachGuiStartupScreens::EXIT));
-	_NEW( MachGuiMenuText( pStartupScreens, Gui::Box( 42, 353, 224, 464 ), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp" ) );
+    MachGuiMenuButton* pContinueBtn = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(351, 420, 553, 464),
+        IDS_MENUBTN_CONTINUE,
+        MachGuiStartupScreens::EXIT));
+    _NEW(MachGuiMenuText(pStartupScreens, Gui::Box(42, 353, 224, 464), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp"));
 
-	pContinueBtn->escapeControl( true );
+    pContinueBtn->escapeControl(true);
 
     TEST_INVARIANT;
 }
@@ -257,15 +261,14 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys( MachGuiStartupScreens* pStartupScreens )
 MachGuiCtxHotKeys::~MachGuiCtxHotKeys()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiCtxHotKeys::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiCtxHotKeys& t )
+ostream& operator<<(ostream& o, const MachGuiCtxHotKeys& t)
 {
 
     o << "MachGuiCtxHotKeys " << (void*)&t << " start" << std::endl;
@@ -274,33 +277,33 @@ ostream& operator <<( ostream& o, const MachGuiCtxHotKeys& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachGuiCtxHotKeys::update()
 {
-	animations_.update();
+    animations_.update();
 }
 
-void MachGuiCtxHotKeys::readHotkeyData( const string& hotKeyDataFileName, string& hotkeyString, uint& linesInString )
+void MachGuiCtxHotKeys::readHotkeyData(const string& hotKeyDataFileName, string& hotkeyString, uint& linesInString)
 {
     SysPathName hotKeyFilePath = SysPathName(hotKeyDataFileName);
     string path = string(hotKeyDataFileName.c_str());
 
     if (hotKeyFilePath.containsCapitals() and not hotKeyFilePath.existsAsFile())
     {
-        std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c){ return std::tolower(c); });
+        std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c) { return std::tolower(c); });
     }
 
     ASSERT(hotKeyFilePath.insensitiveExistsAsFile(), hotKeyFilePath.c_str());
-    std::ifstream hotKeyFile( path.c_str() );
-	char nextChar;
-	uint noLines = 0;
+    std::ifstream hotKeyFile(path.c_str());
+    char nextChar;
+    uint noLines = 0;
 
-	while( hotKeyFile.get( nextChar ) )
-	{
-		if ( nextChar == '\n' )
-			++noLines;
-		hotkeyString += nextChar;
-	}
-	linesInString = noLines;
+    while (hotKeyFile.get(nextChar))
+    {
+        if (nextChar == '\n')
+            ++noLines;
+        hotkeyString += nextChar;
+    }
+    linesInString = noLines;
 }
 /* End CTXHOTKY.CPP *************************************************/

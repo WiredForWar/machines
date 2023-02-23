@@ -1,7 +1,7 @@
 // Slimline version of <windows.h>. Defines things required by header files to avoid
 // including the whole of <windows.h>.
 
-//#ifndef _WINDOWS_ // Shared with <windows.h>
+// #ifndef _WINDOWS_ // Shared with <windows.h>
 #ifndef _WINDEF_H
 // Don't #define _WINDOWS_ otherwise any subsiquent #include <windows.h> won't work.
 /*

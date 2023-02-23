@@ -16,29 +16,28 @@ MachPhysAPCData::MachPhysAPCData()
 MachPhysAPCData::~MachPhysAPCData()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::SizeUnits MachPhysAPCData::capacity() const
 {
-	return capacity_;
+    return capacity_;
 }
 
-void MachPhysAPCData::capacity( const MachPhys::SizeUnits& newCapacity )
+void MachPhysAPCData::capacity(const MachPhys::SizeUnits& newCapacity)
 {
-	capacity_ = newCapacity;
+    capacity_ = newCapacity;
 }
 
 void MachPhysAPCData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysAPCData& t )
+ostream& operator<<(ostream& o, const MachPhysAPCData& t)
 {
-    //o << (MachPhysObjectData)t;
-	//o << (MachPhysMachineData)t;
-	o << "Capacity " << t.capacity() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysMachineData)t;
+    o << "Capacity " << t.capacity() << std::endl;
 
     return o;
 }

@@ -1,5 +1,5 @@
 /*
- * S Q U A D I . C P P 
+ * S Q U A D I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,33 +9,32 @@
 #include "machlog/administ.hpp"
 #include "machlog/cntrl_ai.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogSquadronImpl )
+PER_DEFINE_PERSISTENT(MachLogSquadronImpl)
 
-MachLogSquadronImpl::MachLogSquadronImpl( int squadronId )
-:	hasCommander_( false ),
-    pStrongestMachine_( nullptr ),
-    squadronHasChanged_( true ),
-	squadronId_( squadronId ),
-	totalDesiredMachines_( 0 ),
-	setDefCon_( false ),
-	defCon_( MachLog::DEFCON_LOW )
+MachLogSquadronImpl::MachLogSquadronImpl(int squadronId)
+    : hasCommander_(false)
+    , pStrongestMachine_(nullptr)
+    , squadronHasChanged_(true)
+    , squadronId_(squadronId)
+    , totalDesiredMachines_(0)
+    , setDefCon_(false)
+    , defCon_(MachLog::DEFCON_LOW)
 {
-	machines_.reserve( 20 );
+    machines_.reserve(20);
     TEST_INVARIANT;
 }
 
 MachLogSquadronImpl::~MachLogSquadronImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogSquadronImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogSquadronImpl& t )
+ostream& operator<<(ostream& o, const MachLogSquadronImpl& t)
 {
 
     o << "MachLogSquadronImpl " << (void*)&t << " start" << std::endl;
@@ -44,38 +43,38 @@ ostream& operator <<( ostream& o, const MachLogSquadronImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogSquadronImpl& actorImpl )
+void perWrite(PerOstream& ostr, const MachLogSquadronImpl& actorImpl)
 {
-	ostr << actorImpl.hasCommander_;
-	if( actorImpl.hasCommander_ )
-		ostr << actorImpl.pCommander_;
-	ostr << actorImpl.machines_;
-	ostr << actorImpl.squadronId_;
-	ostr << actorImpl.desiredMachineList_;
-	ostr << actorImpl.totalDesiredMachines_;
-	ostr << actorImpl.setDefCon_;
-	ostr << actorImpl.defCon_;
+    ostr << actorImpl.hasCommander_;
+    if (actorImpl.hasCommander_)
+        ostr << actorImpl.pCommander_;
+    ostr << actorImpl.machines_;
+    ostr << actorImpl.squadronId_;
+    ostr << actorImpl.desiredMachineList_;
+    ostr << actorImpl.totalDesiredMachines_;
+    ostr << actorImpl.setDefCon_;
+    ostr << actorImpl.defCon_;
 }
 
-void perRead( PerIstream& istr, MachLogSquadronImpl& actorImpl )
+void perRead(PerIstream& istr, MachLogSquadronImpl& actorImpl)
 {
-	istr >> actorImpl.hasCommander_;
-	if( actorImpl.hasCommander_ )
-		istr >> actorImpl.pCommander_;
-	else
-		actorImpl.pCommander_ = NULL;
-	istr >> actorImpl.machines_;
-	istr >> actorImpl.squadronId_;
-	istr >> actorImpl.desiredMachineList_;
-	istr >> actorImpl.totalDesiredMachines_;
-	istr >> actorImpl.setDefCon_;
-	istr >> actorImpl.defCon_;
+    istr >> actorImpl.hasCommander_;
+    if (actorImpl.hasCommander_)
+        istr >> actorImpl.pCommander_;
+    else
+        actorImpl.pCommander_ = nullptr;
+    istr >> actorImpl.machines_;
+    istr >> actorImpl.squadronId_;
+    istr >> actorImpl.desiredMachineList_;
+    istr >> actorImpl.totalDesiredMachines_;
+    istr >> actorImpl.setDefCon_;
+    istr >> actorImpl.defCon_;
 
-	actorImpl.pStrongestMachine_ = nullptr;
-	actorImpl.squadronHasChanged_ = true;
+    actorImpl.pStrongestMachine_ = nullptr;
+    actorImpl.squadronHasChanged_ = true;
 }
 
-MachLogSquadronImpl::MachLogSquadronImpl( PerConstructor )
+MachLogSquadronImpl::MachLogSquadronImpl(PerConstructor)
 {
 }
 

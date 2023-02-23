@@ -16,9 +16,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 MachPhysEntrance::MachPhysEntrance()
-:   pDoor1_( NULL ),
-    pDoor2_( NULL ),
-    openCount_( 0 )
+    : pDoor1_(nullptr)
+    , pDoor2_(nullptr)
+    , openCount_(0)
 {
 
     TEST_INVARIANT;
@@ -29,26 +29,28 @@ MachPhysEntrance::~MachPhysEntrance()
 {
     TEST_INVARIANT;
 
-    _DELETE( pDoor1_ );
-    _DELETE( pDoor2_ );
+    _DELETE(pDoor1_);
+    _DELETE(pDoor2_);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void MachPhysEntrance::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysEntrance::addDoor( W4dEntity* pPhysDoor, const MexVec3& displacement,
-                                MATHEX_SCALAR speed, MATHEX_SCALAR acceleration )
+void MachPhysEntrance::addDoor(
+    W4dEntity* pPhysDoor,
+    const MexVec3& displacement,
+    MATHEX_SCALAR speed,
+    MATHEX_SCALAR acceleration)
 {
-    PRE( nDoors() < 2 );
+    PRE(nDoors() < 2);
 
-    //Create a new door
-    MachPhysDoor* pDoor = _NEW( MachPhysDoor( pPhysDoor, displacement,
-                                              speed, acceleration) );
-    if( pDoor1_ == NULL )
+    // Create a new door
+    MachPhysDoor* pDoor = _NEW(MachPhysDoor(pPhysDoor, displacement, speed, acceleration));
+    if (pDoor1_ == nullptr)
         pDoor1_ = pDoor;
     else
         pDoor2_ = pDoor;
@@ -58,10 +60,10 @@ void MachPhysEntrance::addDoor( W4dEntity* pPhysDoor, const MexVec3& displacemen
 uint MachPhysEntrance::nDoors() const
 {
     uint count = 0;
-    if( pDoor1_ != NULL )
+    if (pDoor1_ != nullptr)
     {
         ++count;
-        if( pDoor2_ != NULL )
+        if (pDoor2_ != nullptr)
             ++count;
     }
 
@@ -69,45 +71,46 @@ uint MachPhysEntrance::nDoors() const
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-PhysRelativeTime MachPhysEntrance::isOpen( bool doOpen )
+PhysRelativeTime MachPhysEntrance::isOpen(bool doOpen)
 {
     PhysRelativeTime interval = 0;
 
     size_t oldOpenCount = openCount_;
 
-    if( doOpen )
+    if (doOpen)
         ++openCount_;
-    else if( openCount_ > 0 )
+    else if (openCount_ > 0)
         --openCount_;
 
-    bool    changeState = ( openCount_ == 1 and doOpen ) or ( openCount_ == 0 and oldOpenCount != 0 );
+    bool changeState = (openCount_ == 1 and doOpen) or (openCount_ == 0 and oldOpenCount != 0);
 
-    //Check changing state
-    if( changeState )
+    // Check changing state
+    if (changeState)
     {
-      	//DevSound::instance().playSampleFromMemory( "sounds/move05.wav" );
+        // DevSound::instance().playSampleFromMemory( "sounds/move05.wav" );
 
-        if( pDoor1_ != NULL )
+        if (pDoor1_ != nullptr)
         {
-		    W4dSoundManager::instance().play( &(pDoor1_->doorEntity()), SID_DOOR,
-                                      SimManager::instance().currentTime(), 1 );
-//            W4dSoundManager::instance().play( &(pDoor1_->doorEntity()), SysPathName( "sounds/move05.wav" ),
-//                                          SimManager::instance().currentTime(), 100.0, 30.0,
-//                                          W4dSoundManager::PLAY_ONCE );
+            W4dSoundManager::instance()
+                .play(&(pDoor1_->doorEntity()), SID_DOOR, SimManager::instance().currentTime(), 1);
+            //            W4dSoundManager::instance().play( &(pDoor1_->doorEntity()), SysPathName( "sounds/move05.wav"
+            //            ),
+            //                                          SimManager::instance().currentTime(), 100.0, 30.0,
+            //                                          W4dSoundManager::PLAY_ONCE );
         }
 
-        //Initiate animation for the doors
-        if( pDoor1_ != NULL )
+        // Initiate animation for the doors
+        if (pDoor1_ != nullptr)
         {
-            PhysRelativeTime duration = pDoor1_->changeState( openCount_ == 1 );
-            if( duration > interval )
+            PhysRelativeTime duration = pDoor1_->changeState(openCount_ == 1);
+            if (duration > interval)
                 interval = duration;
         }
 
-        if( pDoor2_ != NULL )
+        if (pDoor2_ != nullptr)
         {
-            PhysRelativeTime duration = pDoor2_->changeState( openCount_ == 1 );
-            if( duration > interval )
+            PhysRelativeTime duration = pDoor2_->changeState(openCount_ == 1);
+            if (duration > interval)
                 interval = duration;
         }
     }

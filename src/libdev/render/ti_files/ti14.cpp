@@ -10,7 +10,7 @@ class RenISortedItem;
 
 dummyFunction14()
 {
-	static ctl_vector<RenIDepthSortedItem*>	items1;
-	static ctl_vector<RenIPrioritySortedItem*>	items2;
-    RenHierarchyBuilder                 builder;
+    static ctl_vector<RenIDepthSortedItem*> items1;
+    static ctl_vector<RenIPrioritySortedItem*> items2;
+    RenHierarchyBuilder builder;
 }

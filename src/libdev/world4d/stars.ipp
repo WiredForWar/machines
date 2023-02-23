@@ -6,9 +6,9 @@
 ***********************************************************/
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 #include "mathex/angle.hpp"
@@ -16,38 +16,37 @@
 _CODE_INLINE
 RenStars::Configuration W4dStars::configuration() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return pStars_->configuration();
+    return pStars_->configuration();
 }
 
 _CODE_INLINE
-MATHEX_SCALAR W4dStars::radius( void ) const
+MATHEX_SCALAR W4dStars::radius() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return pStars_->radius();
+    return pStars_->radius();
 }
 
 _CODE_INLINE
-uint W4dStars::nStars( void ) const
+uint W4dStars::nStars() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return pStars_->nStars();
+    return pStars_->nStars();
 }
 
 _CODE_INLINE
-UtlPercentage W4dStars::opacity( void ) const
+UtlPercentage W4dStars::opacity() const
 {
-	return opacity_;
+    return opacity_;
 }
 
 _CODE_INLINE
 void W4dStars::opacity(UtlPercentage newOpacity)
 {
-	opacity_ = newOpacity;
+    opacity_ = newOpacity;
 }
 
 /* End STARS.HPP ******************************************/
-

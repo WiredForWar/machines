@@ -1,5 +1,5 @@
 /*
- * W H E E L S . H P P 
+ * W H E E L S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,7 +17,6 @@
 
 #include "machphys/locomoti.hpp"
 
-
 class W4dLink;
 class MachPhysMachineMoveInfo;
 class MachPhysWheelsImpl;
@@ -27,42 +26,45 @@ class MachPhysWheels : public MachPhysLocomotionMethod
 public:
     MachPhysWheels(
         MachPhysMachine* pMachine,
-        MATHEX_SCALAR wheelRadius, const W4dLinks& leftWheels, const W4dLinks& rightWheels );
+        MATHEX_SCALAR wheelRadius,
+        const W4dLinks& leftWheels,
+        const W4dLinks& rightWheels);
 
-    ~MachPhysWheels();
+    ~MachPhysWheels() override;
 
-    virtual MachPhysLocomotionMethod* clone( MachPhysMachine* pMachine, const W4dLinks& links );
+    MachPhysLocomotionMethod* clone(MachPhysMachine* pMachine, const W4dLinks& links) override;
 
-    virtual void moveAnimations( const PhysLinearTravelPlan& linearTravelPlan, const TurnAngles& turnAngles,
-                                 const MachPhysMachineMoveInfo& info );
+    void moveAnimations(
+        const PhysLinearTravelPlan& linearTravelPlan,
+        const TurnAngles& turnAngles,
+        const MachPhysMachineMoveInfo& info) override;
 
     //  Stop the move dead. Apply appropriate animations.
-    virtual void stopDead();
+    void stopDead() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysWheels& t );
+    friend ostream& operator<<(ostream& o, const MachPhysWheels& t);
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysWheels );
-    PER_FRIEND_READ_WRITE( MachPhysWheels );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysWheels);
+    PER_FRIEND_READ_WRITE(MachPhysWheels);
 
 private:
     friend class MachPhysWheelsImpl;
 
     // Operation deliberately revoked
-    MachPhysWheels( const MachPhysWheels& );
-    MachPhysWheels& operator =( const MachPhysWheels& );
-    bool operator ==( const MachPhysWheels& );
+    MachPhysWheels(const MachPhysWheels&);
+    MachPhysWheels& operator=(const MachPhysWheels&);
+    bool operator==(const MachPhysWheels&);
 
-    //Callback to do the work of displaying the locomotion animations
-    void doFirstPersonMotionAnimations( MachPhysLocomotionMethod::FirstPersonMotionState state );
-	void firstPersonMotionAnimations( bool leftForwards, bool rightForwards );
+    // Callback to do the work of displaying the locomotion animations
+    void doFirstPersonMotionAnimations(MachPhysLocomotionMethod::FirstPersonMotionState state);
+    void firstPersonMotionAnimations(bool leftForwards, bool rightForwards);
 
     MachPhysWheelsImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysWheels );
-
+PER_DECLARE_PERSISTENT(MachPhysWheels);
 
 #endif
 

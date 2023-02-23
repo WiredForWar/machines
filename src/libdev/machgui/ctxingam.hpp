@@ -1,5 +1,5 @@
 /*
- * C T X I N G A M . H P P 
+ * C T X I N G A M . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,27 +20,26 @@ class MachGuiCtxInGameOptions : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxInGameOptions( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxInGameOptions();
+    MachGuiCtxInGameOptions(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxInGameOptions() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxInGameOptions& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxInGameOptions& t);
 
-    MachGuiCtxInGameOptions( const MachGuiCtxInGameOptions& );
-    MachGuiCtxInGameOptions& operator =( const MachGuiCtxInGameOptions& );
+    MachGuiCtxInGameOptions(const MachGuiCtxInGameOptions&);
+    MachGuiCtxInGameOptions& operator=(const MachGuiCtxInGameOptions&);
 
-	// Data members...
-	MachGuiAnimations animations_;
+    // Data members...
+    MachGuiAnimations animations_;
 };
-
 
 #endif
 

@@ -12,9 +12,9 @@
 SysMetaFileIstream::SysMetaFileIstream(
     const SysMetaFile& metaFile,
     const SysPathName& fileName,
-    std::ios::open_mode openMode )
+    std::ios::open_mode openMode)
 {
-    PRE( metaFile.hasFile( fileName ) );
+    PRE(metaFile.hasFile(fileName));
 }
 
 SysMetaFileIstream::~SysMetaFileIstream()
@@ -25,7 +25,7 @@ void SysMetaFileIstream::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const SysMetaFileIstream& t )
+ostream& operator<<(ostream& o, const SysMetaFileIstream& t)
 {
 
     o << "SysMetaFileIstream " << (void*)&t << " start" << std::endl;

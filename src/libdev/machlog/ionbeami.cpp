@@ -1,5 +1,5 @@
 /*
- * I O N B E A M I . C P P 
+ * I O N B E A M I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,10 +10,9 @@
 #include "machphys/machphys.hpp"
 #include "machphys/mphydata.hpp"
 
-
-MachLogIonBeamImpl::MachLogIonBeamImpl( const MachPhysWeaponData* const pWeaponData )
-:	pWeaponData_( pWeaponData ),
-	pPhysIonBeam_( NULL )
+MachLogIonBeamImpl::MachLogIonBeamImpl(const MachPhysWeaponData* const pWeaponData)
+    : pWeaponData_(pWeaponData)
+    , pPhysIonBeam_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -21,15 +20,14 @@ MachLogIonBeamImpl::MachLogIonBeamImpl( const MachPhysWeaponData* const pWeaponD
 MachLogIonBeamImpl::~MachLogIonBeamImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogIonBeamImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogIonBeamImpl& t )
+ostream& operator<<(ostream& o, const MachLogIonBeamImpl& t)
 {
 
     o << "MachLogIonBeamImpl " << (void*)&t << " start" << std::endl;
@@ -37,8 +35,5 @@ ostream& operator <<( ostream& o, const MachLogIonBeamImpl& t )
 
     return o;
 }
-
-
-
 
 /* End IONBEAMI.CPP *************************************************/

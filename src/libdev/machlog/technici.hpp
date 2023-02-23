@@ -10,63 +10,73 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-//class ostream;
+// class ostream;
 class MachPhysTechnician;
 class MachPhysTechnicianData;
 
-class MachLogTechnician
-: public MachLogMachine // ,
+class MachLogTechnician : public MachLogMachine // ,
 //  public MachLogCanResearch
 // cannonical form revoked
 {
 public:
+    MachLogTechnician(
+        const MachPhys::TechnicianSubType& subType,
+        MachLogMachine::Level hwLevel,
+        MachLogMachine::Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location);
 
-	MachLogTechnician( const MachPhys::TechnicianSubType& subType, MachLogMachine::Level hwLevel, MachLogMachine::Level swLevel, 
-    						MachLogRace * pRace, const MexPoint3d& location );
+    MachLogTechnician(
+        const MachPhys::TechnicianSubType& subType,
+        MachLogMachine::Level hwLevel,
+        MachLogMachine::Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        UtlId);
 
-	MachLogTechnician( const MachPhys::TechnicianSubType& subType, MachLogMachine::Level hwLevel, MachLogMachine::Level swLevel, 
-    						MachLogRace * pRace, const MexPoint3d& location, UtlId );
+    ~MachLogTechnician() override;
 
-	virtual ~MachLogTechnician();
-	
-	///////////////////////////////
+    ///////////////////////////////
 
-	//view of MachPhys data objects
-	virtual const MachPhysMachineData& machineData() const;
-	const MachPhysTechnicianData& data() const;
+    // view of MachPhys data objects
+    const MachPhysMachineData& machineData() const override;
+    const MachPhysTechnicianData& data() const;
 
-	// inherited from MachLogCanResearch
-	virtual PhysRelativeTime research();
+    // inherited from MachLogCanResearch
+    virtual PhysRelativeTime research();
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	const MachPhysTechnician& physTechnician() const;
+    const MachPhysTechnician& physTechnician() const;
 
-	const MachPhys::TechnicianSubType& subType() const;
+    const MachPhys::TechnicianSubType& subType() const;
 
-	int technologyLevel() const;
+    int technologyLevel() const;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogTechnician );
-	PER_FRIEND_READ_WRITE( MachLogTechnician );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTechnician);
+    PER_FRIEND_READ_WRITE(MachLogTechnician);
 
 private:
+    MachPhysTechnician& physTechnician();
 
-	MachPhysTechnician& physTechnician();
+    MachLogTechnician(const MachLogTechnician&);
+    MachLogTechnician& operator=(const MachLogTechnician&);
+    bool operator==(const MachLogTechnician&) const;
 
-	MachLogTechnician( const MachLogTechnician& );
-	MachLogTechnician& operator =( const MachLogTechnician& );
-	bool operator ==( const MachLogTechnician& ) const;
+    static MachPhysTechnician* pNewPhysTechnician(
+        const MachPhys::TechnicianSubType& subType,
+        Level hwlevel,
+        Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location);
 
-    static MachPhysTechnician* pNewPhysTechnician( const MachPhys::TechnicianSubType& subType, Level hwlevel, Level swLevel, MachLogRace * pRace,
-                                                const MexPoint3d& location );
-
-	virtual void doOutputOperator( ostream& o ) const;
-	MachPhys::TechnicianSubType subType_;
+    void doOutputOperator(ostream& o) const override;
+    MachPhys::TechnicianSubType subType_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogTechnician );
+PER_DECLARE_PERSISTENT(MachLogTechnician);
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_TECHNICIAN_HPP	*/
+#endif /*  #ifndef _MACHLOG_TECHNICIAN_HPP */
 
 /* End TECHNICI.HPP **************************************************/

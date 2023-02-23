@@ -13,7 +13,7 @@ class RenIVertex;
 class RenIPoints : public ctl_min_memory_vector<RenIVertex>
 {
 public:
-	RenIPoints(size_t initial);
+    RenIPoints(size_t initial);
 };
 
 #endif

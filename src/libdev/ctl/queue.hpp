@@ -17,51 +17,45 @@
 #ifndef _CTL_QUEUE_HPP
 #define _CTL_QUEUE_HPP
 
-//#include "stdlib/private/ospace.hpp"
+// #include "stdlib/private/ospace.hpp"
 #include <queue>
 
 //////////////////////////////////////////////////////////////////////
 
-template < class CONTAINER >
-class ctl_queue
-: public std::queue< CONTAINER >
+template <class CONTAINER> class ctl_queue : public std::queue<CONTAINER>
 {
 private:
-
-	typedef std::queue< CONTAINER >	rep_type;
+    using rep_type = std::queue<CONTAINER>;
 
 public:
+    using std::queue<CONTAINER>::queue;
+    ///////////////////////////////
 
-    using std::queue< CONTAINER >::queue;
-	///////////////////////////////
+    virtual ~ctl_queue() {};
 
-	virtual ~ctl_queue() {};
-
-	///////////////////////////////
-
+    ///////////////////////////////
 };
 
 //////////////////////////////////////////////////////////////////////
 /*
 template < class CONTAINER >
 bool operator ==( const ctl_queue< CONTAINER >&,
-					const ctl_queue< CONTAINER >& );
+                    const ctl_queue< CONTAINER >& );
 
 template < class CONTAINER >
 bool operator <( const ctl_queue< CONTAINER >&,
-					const ctl_queue< CONTAINER >& );
+                    const ctl_queue< CONTAINER >& );
 */
 //////////////////////////////////////////////////////////////////////
 
 #ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    //#include "ctl/queue.ctp"
+// #include "ctl/queue.ctp"
 #endif
 
 #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
-    //#include "ctl/queue.ctf"
+// #include "ctl/queue.ctf"
 #endif
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	/*	#ifndef _CTL_QUEUE_HPP	*/
-
+#endif /*  #ifndef _CTL_QUEUE_HPP  */

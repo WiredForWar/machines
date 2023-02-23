@@ -20,8 +20,8 @@
 
 class MachPhysTechnicianData;
 class MachPhysMachinePersistence;
-template< class ID, class PART > class MachPhysObjectFactory;
-template< class SUBTYPE > class MachPhysSubTypeId;
+template <class ID, class PART> class MachPhysObjectFactory;
+template <class SUBTYPE> class MachPhysSubTypeId;
 
 class MachPhysTechnician : public MachPhysMachine
 {
@@ -32,64 +32,64 @@ public:
         MachPhys::TechnicianSubType subType,
         size_t bodyLevel,
         size_t brainLevel,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-    virtual ~MachPhysTechnician();
+    ~MachPhysTechnician() override;
 
-	virtual const MachPhysMachineData& machineData() const;
+    const MachPhysMachineData& machineData() const override;
 
-	const MachPhysTechnicianData& data() const;
+    const MachPhysTechnicianData& data() const;
 
     MachPhys::TechnicianSubType subType() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysTechnician& t );
+    friend ostream& operator<<(ostream& o, const MachPhysTechnician& t);
 
-	PhysRelativeTime research();
+    PhysRelativeTime research();
 
-    PER_MEMBER_PERSISTENT( MachPhysTechnician );
-    PER_FRIEND_READ_WRITE( MachPhysTechnician );
+    PER_MEMBER_PERSISTENT(MachPhysTechnician);
+    PER_FRIEND_READ_WRITE(MachPhysTechnician);
 
-    typedef MachPhysSubTypeId< MachPhys::TechnicianSubType > Id;
+    using Id = MachPhysSubTypeId<MachPhys::TechnicianSubType>;
 
 private:
     // Operation deliberately revoked
-    MachPhysTechnician( const MachPhysTechnician& );
+    MachPhysTechnician(const MachPhysTechnician&);
 
     // Operation deliberately revoked
-    MachPhysTechnician& operator =( const MachPhysTechnician& );
+    MachPhysTechnician& operator=(const MachPhysTechnician&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysTechnician& );
+    bool operator==(const MachPhysTechnician&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysTechnician >    Factory;
+    using Factory = MachPhysObjectFactory<Id, MachPhysTechnician>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysTechnician& Factory::part( const ID&, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysTechnician >;
+    // friend MachPhysTechnician& Factory::part( const ID&, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysTechnician>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysMachinePersistence& );
-    friend void perRead( PerIstream&, MachPhysMachinePersistence& );
+    friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
+    friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    static  MachPhysTechnician& part( MachPhys::TechnicianSubType subType, size_t bodyLevel );
-    static  Factory& factory();
+    static MachPhysTechnician& part(MachPhys::TechnicianSubType subType, size_t bodyLevel);
+    static Factory& factory();
 
-	void createExplosionData();
-    SysPathName compositeFileName( MachPhys::TechnicianSubType subType, size_t bodyLevel ) const;
+    void createExplosionData();
+    SysPathName compositeFileName(MachPhys::TechnicianSubType subType, size_t bodyLevel) const;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds an administrator from scratch
 
-    MachPhysTechnician( W4dEntity* pParent, Id id );
+    MachPhysTechnician(W4dEntity* pParent, Id id);
 
-    //Data members
+    // Data members
     MachPhys::TechnicianSubType subType_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysTechnician );
+PER_DECLARE_PERSISTENT(MachPhysTechnician);
 
 #endif
 

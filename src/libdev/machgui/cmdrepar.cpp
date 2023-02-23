@@ -28,9 +28,9 @@
 
 #include "machphys/objdata.hpp"
 
-MachGuiRepairCommand::MachGuiRepairCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( false )
+MachGuiRepairCommand::MachGuiRepairCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(false)
 {
     TEST_INVARIANT;
 }
@@ -39,21 +39,21 @@ MachGuiRepairCommand::~MachGuiRepairCommand()
 {
     TEST_INVARIANT;
 
-    inGameScreen().cursorFilter( W4dDomain::EXCLUDE_NOT_SOLID );
+    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
-	while( not constructions_.empty() )
-	{
-		constructions_.back()->detach( this );
-		constructions_.pop_back();
-	}
+    while (not constructions_.empty())
+    {
+        constructions_.back()->detach(this);
+        constructions_.pop_back();
+    }
 }
 
 void MachGuiRepairCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiRepairCommand& t )
+ostream& operator<<(ostream& o, const MachGuiRepairCommand& t)
 {
 
     o << "MachGuiRepairCommand " << (void*)&t << " start" << std::endl;
@@ -62,230 +62,233 @@ ostream& operator <<( ostream& o, const MachGuiRepairCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiRepairCommand::pickOnTerrain
-(
-    const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
-)
-{}
-
-//virtual
-void MachGuiRepairCommand::pickOnActor
-(
-    MachActor* pActor, bool, bool shiftPressed, bool
+// virtual
+void MachGuiRepairCommand::pickOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
 {
-    //Check for a pick on construction
-    if( pActor->objectIsConstruction() and 	// It's a construction
-    	pActor->asConstruction().isComplete() and // It's been built
-    	pActor->hp() < pActor->objectData().hitPoints() ) // It's damaged
+}
+
+// virtual
+void MachGuiRepairCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
+{
+    // Check for a pick on construction
+    if (pActor->objectIsConstruction() and // It's a construction
+        pActor->asConstruction().isComplete() and // It's been built
+        pActor->hp() < pActor->objectData().hitPoints()) // It's damaged
     {
-		MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
+        MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-		if( not constructionIsDuplicate( pCandidateConstruction ) )
-		{
-			// Add to list of constructions to repair
-        	constructions_.push_back( pCandidateConstruction );
+        if (not constructionIsDuplicate(pCandidateConstruction))
+        {
+            // Add to list of constructions to repair
+            constructions_.push_back(pCandidateConstruction);
 
-			pCandidateConstruction->attach( this );
-		}
+            pCandidateConstruction->attach(this);
+        }
 
-
-		if ( not shiftPressed )
-		{
-		  	hadFinalPick_ = true;
-		}
-		else
-		{
-			// Waypoint click (i.e. not final click)
-			MachGuiSoundManager::instance().playSound( "gui/sounds/waypoint.wav" );
-		}
+        if (not shiftPressed)
+        {
+            hadFinalPick_ = true;
+        }
+        else
+        {
+            // Waypoint click (i.e. not final click)
+            MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
+        }
     }
 }
 
-bool MachGuiRepairCommand::constructionIsDuplicate( const MachLogConstruction* pCandidateConstruction ) const
+bool MachGuiRepairCommand::constructionIsDuplicate(const MachLogConstruction* pCandidateConstruction) const
 {
-	ctl_pvector< MachLogConstruction >::const_iterator i = find( constructions_.begin(), constructions_.end(), pCandidateConstruction );
+    ctl_pvector<MachLogConstruction>::const_iterator i
+        = find(constructions_.begin(), constructions_.end(), pCandidateConstruction);
 
-	return i != constructions_.end();
+    return i != constructions_.end();
 }
 
-//virtual
-bool MachGuiRepairCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiRepairCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Constructors can repair
     MachLog::ObjectType objectType = actor.objectType();
     return objectType == MachLog::CONSTRUCTOR;
 }
 
-//virtual
+// virtual
 bool MachGuiRepairCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiRepairCommand::cursorOnTerrain( const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool )
+// virtual
+MachGui::Cursor2dType
+MachGuiRepairCommand::cursorOnTerrain(const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool)
 {
     return MachGui::MENU_CURSOR;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiRepairCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiRepairCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-	if ( pActor->objectIsConstruction() and // It's a construction
-		 pActor->asConstruction().isComplete() and 	// It's been built
-		 pActor->hp() < pActor->objectData().hitPoints() ) // It's damaged
-	{
-		cursor = MachGui::REPAIR_CURSOR;
-	}
+    if (pActor->objectIsConstruction() and // It's a construction
+        pActor->asConstruction().isComplete() and // It's been built
+        pActor->hp() < pActor->objectData().hitPoints()) // It's damaged
+    {
+        cursor = MachGui::REPAIR_CURSOR;
+    }
 
     return cursor;
 }
 
-//virtal
-void MachGuiRepairCommand::typeData( MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/ )
-{}
-
-//virtual
-bool MachGuiRepairCommand::doApply( MachActor* pActor, string* )
+// virtal
+void MachGuiRepairCommand::typeData(MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/)
 {
-	PRE( hadFinalPick_ );
+}
 
-    //Create a superconstruct(repair) operation for the constructor
-    MachLogSuperConstructOperation* pOp =
-        _NEW( MachLogSuperConstructOperation( &pActor->asConstructor(), constructions_, MachLogOperation::REPAIR_OPERATION ) );
-    pActor->newOperation( pOp );
+// virtual
+bool MachGuiRepairCommand::doApply(MachActor* pActor, string*)
+{
+    PRE(hadFinalPick_);
 
-	ASSERT( pActor->objectIsMachine(), "Hey! That actor should have been a machine!" );
-   	pActor->asMachine().manualCommandIssued();
+    // Create a superconstruct(repair) operation for the constructor
+    MachLogSuperConstructOperation* pOp = _NEW(
+        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::REPAIR_OPERATION));
+    pActor->newOperation(pOp);
 
-	if( not hasPlayedVoiceMail() )
-	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVE_TO_SITE );
-		hasPlayedVoiceMail( true );
-	}
+    ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
+    pActor->asMachine().manualCommandIssued();
+
+    if (not hasPlayedVoiceMail())
+    {
+        MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVE_TO_SITE);
+        hasPlayedVoiceMail(true);
+    }
 
     return true;
-
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiRepairCommand::clone() const
 {
-    return _NEW( MachGuiRepairCommand( &inGameScreen() ) );
+    return _NEW(MachGuiRepairCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiRepairCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/repair.bmp", "gui/commands/repair.bmp" );
+    static std::pair<string, string> names("gui/commands/repair.bmp", "gui/commands/repair.bmp");
     return names;
 }
 
-//virtual
+// virtual
 void MachGuiRepairCommand::start()
-{}
+{
+}
 
-//virtual
+// virtual
 void MachGuiRepairCommand::finish()
-{}
+{
+}
 
-//virtual
+// virtual
 uint MachGuiRepairCommand::cursorPromptStringId() const
 {
     return IDS_REPAIR_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiRepairCommand::commandPromptStringid() const
 {
     return IDS_REPAIR_START;
 }
 
-//virtual
+// virtual
 bool MachGuiRepairCommand::canAdminApply() const
 {
     return true;
 }
 
-//virtual
-bool MachGuiRepairCommand::doAdminApply( MachLogAdministrator* pAdministrator, string* )
+// virtual
+bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
 {
-    PRE( canAdminApply() );
+    PRE(canAdminApply());
 
-    //Create an admin superconstruct(repair) operation for the administrator
-	MachLogAdminSuperConstructOperation* pOp =
-        _NEW( MachLogAdminSuperConstructOperation( pAdministrator, constructions_, MachLogOperation::REPAIR_OPERATION ) );
+    // Create an admin superconstruct(repair) operation for the administrator
+    MachLogAdminSuperConstructOperation* pOp
+        = _NEW(MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::REPAIR_OPERATION));
 
-	pAdministrator->newOperation( pOp );
-	ASSERT( pAdministrator->squadron(), "Administrator didn't have a squadron!" );
-	pAdministrator->squadron()->manualCommandIssuedToSquadron();
+    pAdministrator->newOperation(pOp);
+    ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
+    pAdministrator->squadron()->manualCommandIssuedToSquadron();
 
-	MachActor* pFirstConstructor = NULL;
+    MachActor* pFirstConstructor = nullptr;
 
-	bool found = false;
-	for( MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin(); not found and i != inGameScreen().selectedActors().end(); ++i )
-		if( (*i)->objectType() == MachLog::CONSTRUCTOR )
-		{
-			found = true;
-			pFirstConstructor = (*i);
-		}
+    bool found = false;
+    for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
+         not found and i != inGameScreen().selectedActors().end();
+         ++i)
+        if ((*i)->objectType() == MachLog::CONSTRUCTOR)
+        {
+            found = true;
+            pFirstConstructor = (*i);
+        }
 
-	ASSERT( found, "No constructor found in corral!" );
+    ASSERT(found, "No constructor found in corral!");
 
-	// give out voicemail
-	MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE );
+    // give out voicemail
+    MachLogMachineVoiceMailManager::instance().postNewMail(*pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE);
 
     return true;
 }
 
-//virtual
-bool MachGuiRepairCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiRepairCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_R and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_R and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-//virtual
-bool MachGuiRepairCommand::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/ )
+// virtual
+bool MachGuiRepairCommand::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/)
 {
-	bool stayAttached = true;
+    bool stayAttached = true;
 
-	switch( event )
-	{
-	case W4dSubject::DELETED:
-	{
-		ctl_pvector< MachLogConstruction >::iterator i = find( constructions_.begin(), constructions_.end(), pSubject );
-		if( i != constructions_.end() )
-		{
-			// one of our constructions has been destroyed
-			stayAttached = false;
-			constructions_.erase( i );
-		}
-	}
-	break;
+    switch (event)
+    {
+        case W4dSubject::DELETED:
+            {
+                ctl_pvector<MachLogConstruction>::iterator i
+                    = find(constructions_.begin(), constructions_.end(), pSubject);
+                if (i != constructions_.end())
+                {
+                    // one of our constructions has been destroyed
+                    stayAttached = false;
+                    constructions_.erase(i);
+                }
+            }
+            break;
 
-	default:
-		;
-	}
+        default:;
+    }
 
-	return stayAttached;
+    return stayAttached;
 }
 
-
-//virtual
-void MachGuiRepairCommand::domainDeleted( W4dDomain*  )
+// virtual
+void MachGuiRepairCommand::domainDeleted(W4dDomain*)
 {
-	//inentionally empty...override as necessary
+    // inentionally empty...override as necessary
 }
-
 
 /* End CMDREPAR.CPP **************************************************/

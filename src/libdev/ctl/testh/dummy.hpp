@@ -1,5 +1,5 @@
 /*
- * D U M M Y . H P P 
+ * D U M M Y . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,18 +18,16 @@ class DummyClass
 {
 public:
     DummyClass();
-    DummyClass( const DummyClass& );
-    DummyClass& operator =( const DummyClass& );
+    DummyClass(const DummyClass&);
+    DummyClass& operator=(const DummyClass&);
     ~DummyClass();
 
     void CLASS_INVARIANT;
 
 private:
-
 };
 
-bool operator ==( const DummyClass&, const DummyClass& );
-
+bool operator==(const DummyClass&, const DummyClass&);
 
 #endif
 

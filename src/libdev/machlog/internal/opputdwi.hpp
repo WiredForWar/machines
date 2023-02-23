@@ -1,5 +1,5 @@
 /*
- * O P P U T D W I . H P P 
+ * O P P U T D W I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,25 +26,24 @@ class MachLogResourceCarrier;
 
 class MachLogPutDownOperationImpl
 {
-public:		
-	MachLogPutDownOperationImpl( MachLogResourceCarrier* );
-							
-	~MachLogPutDownOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogPutDownOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogPutDownOperationImpl );
-	
-	void CLASS_INVARIANT;
+public:
+    MachLogPutDownOperationImpl(MachLogResourceCarrier*);
 
-	friend class MachLogPutDownOperation;
-	
+    ~MachLogPutDownOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogPutDownOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogPutDownOperationImpl);
+
+    void CLASS_INVARIANT;
+
+    friend class MachLogPutDownOperation;
+
 private:
-
-	MachLogResourceCarrier*		pActor_;
-	MexPoint2d					destinationPadPosition_;
-	bool						finished_;	
+    MachLogResourceCarrier* pActor_;
+    MexPoint2d destinationPadPosition_;
+    bool finished_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPutDownOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogPutDownOperationImpl);
 
 #endif
 

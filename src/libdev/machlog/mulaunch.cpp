@@ -16,11 +16,11 @@
 #include "machlog/mulaunch.hpp"
 #include "machlog/missile.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogMultiLauncher );
+PER_DEFINE_PERSISTENT(MachLogMultiLauncher);
 
-MachLogMultiLauncher::MachLogMultiLauncher( MachLogRace* pRace, MachPhysMultiLauncher* pPhysWeapon, MachActor* pOwner )
-:	MachLogLinearWeapon( pRace, pPhysWeapon, pOwner ),
-	pPhysMultiLauncher_( pPhysWeapon )
+MachLogMultiLauncher::MachLogMultiLauncher(MachLogRace* pRace, MachPhysMultiLauncher* pPhysWeapon, MachActor* pOwner)
+    : MachLogLinearWeapon(pRace, pPhysWeapon, pOwner)
+    , pPhysMultiLauncher_(pPhysWeapon)
 {
 
     TEST_INVARIANT;
@@ -29,42 +29,40 @@ MachLogMultiLauncher::MachLogMultiLauncher( MachLogRace* pRace, MachPhysMultiLau
 MachLogMultiLauncher::~MachLogMultiLauncher()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogMultiLauncher::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void MachLogMultiLauncher::setPhysicalMultiLauncher( MachPhysMultiLauncher* pPhysWeapon )
+void MachLogMultiLauncher::setPhysicalMultiLauncher(MachPhysMultiLauncher* pPhysWeapon)
 {
-	pPhysMultiLauncher_ = pPhysWeapon;
-	setPhysicalLinearWeapon( pPhysWeapon );
+    pPhysMultiLauncher_ = pPhysWeapon;
+    setPhysicalLinearWeapon(pPhysWeapon);
 }
 
-//virtual
-MachLogLinearProjectile* MachLogMultiLauncher::createLinearProjectile
-(
-	const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)
+// virtual
+MachLogLinearProjectile* MachLogMultiLauncher::createLinearProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	HAL_STREAM("MLMultiLauncher::createLinearProjectile\n" );
-	return _NEW(
-		MachLogMissile(
-			&logRace(),
-			//pPhysMultiLauncher_->createMissile( burstStartTime, index, pParent, target, targetOffset ),
-			pPhysMultiLauncher_->createMissile( burstStartTime, index, pParent, _CONST_CAST(W4dEntity&, target), targetOffset ),
-//			createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ),
-			&owner(),
-			physWeapon().weaponData()
-		)
-	);
-	HAL_STREAM("MLMultiLauncher::createLinearProjectile exit\n" );
+    HAL_STREAM("MLMultiLauncher::createLinearProjectile\n");
+    return _NEW(MachLogMissile(
+        &logRace(),
+        // pPhysMultiLauncher_->createMissile( burstStartTime, index, pParent, target, targetOffset ),
+        pPhysMultiLauncher_
+            ->createMissile(burstStartTime, index, pParent, _CONST_CAST(W4dEntity&, target), targetOffset),
+        //          createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ),
+        &owner(),
+        physWeapon().weaponData()));
+    HAL_STREAM("MLMultiLauncher::createLinearProjectile exit\n");
 }
 
-ostream& operator <<( ostream& o, const MachLogMultiLauncher& t )
+ostream& operator<<(ostream& o, const MachLogMultiLauncher& t)
 {
 
     o << "MachLogMultiLauncher " << (void*)&t << " start" << std::endl;
@@ -73,25 +71,23 @@ ostream& operator <<( ostream& o, const MachLogMultiLauncher& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogMultiLauncher& weapon )
+void perWrite(PerOstream& ostr, const MachLogMultiLauncher& weapon)
 {
-	const MachLogLinearWeapon& base1 = weapon;
+    const MachLogLinearWeapon& base1 = weapon;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogMultiLauncher& weapon )
+void perRead(PerIstream& istr, MachLogMultiLauncher& weapon)
 {
-	MachLogLinearWeapon& base1 = weapon;
+    MachLogLinearWeapon& base1 = weapon;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-MachLogMultiLauncher::MachLogMultiLauncher( PerConstructor con )
-:	MachLogLinearWeapon( con )
+MachLogMultiLauncher::MachLogMultiLauncher(PerConstructor con)
+    : MachLogLinearWeapon(con)
 {
 }
-
-
 
 /* End PULSEWEP.CPP *************************************************/

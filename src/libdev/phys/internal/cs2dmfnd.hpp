@@ -25,145 +25,147 @@
 #include "phys/internal/cs2dmgra.hpp"
 #include "phys/internal/cs2dmvtx.hpp"
 
-//Forward declarations
+// Forward declarations
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class PhysCS2dDomainFindPath
 {
 public:
-    //Default ctor for collections etc.
+    // Default ctor for collections etc.
     PhysCS2dDomainFindPath();
 
-    typedef PhysConfigSpace2d::ObstacleFlags ObstacleFlags;
+    using ObstacleFlags = PhysConfigSpace2d::ObstacleFlags;
 
-    //ctor. Finds a path contained in pSpace from startPoint to endPoint
-    //flags indicates those obstacles which can be ignored
-    PhysCS2dDomainFindPath( PhysConfigSpace2d* pSpace, const MexPoint2d& startPoint,
-                      const MexPoint2d& endPoint, MATHEX_SCALAR clearance,
-                      ObstacleFlags flags,
-                      PhysPathFindingPriority );
+    // ctor. Finds a path contained in pSpace from startPoint to endPoint
+    // flags indicates those obstacles which can be ignored
+    PhysCS2dDomainFindPath(
+        PhysConfigSpace2d* pSpace,
+        const MexPoint2d& startPoint,
+        const MexPoint2d& endPoint,
+        MATHEX_SCALAR clearance,
+        ObstacleFlags flags,
+        PhysPathFindingPriority);
 
-    //dtor
+    // dtor
     ~PhysCS2dDomainFindPath();
 
-    //Useful types
-    typedef PhysConfigSpace2d::Path Path;
-    typedef PhysConfigSpace2d::PortalId PortalId;
-    typedef PhysConfigSpace2d::PortalPoint PortalPoint;
-    typedef PhysConfigSpace2d::PortalPoints PortalPoints;
+    // Useful types
+    using Path = PhysConfigSpace2d::Path;
+    using PortalId = PhysConfigSpace2d::PortalId;
+    using PortalPoint = PhysConfigSpace2d::PortalPoint;
+    using PortalPoints = PhysConfigSpace2d::PortalPoints;
 
-    //True if the algorithm is finished
+    // True if the algorithm is finished
     bool isFinished() const;
 
-    //Run the algorithm (for no longer than maxTime)
-    void update( const PhysRelativeTime& maxTime );
-    //PRE( state_ != UNDEFINED )
+    // Run the algorithm (for no longer than maxTime)
+    void update(const PhysRelativeTime& maxTime);
+    // PRE( state_ != UNDEFINED )
 
-    //True if a path was found. In this case, the portal points are returned in
-    //pPortalPoints. If the start and end point both lie in the same domain,
-    //the path will be empty, as it does not include the start and end points.
-    bool output( PortalPoints* pPortalPoints ) const;
-    //PRE( state_ == FINISHED )
+    // True if a path was found. In this case, the portal points are returned in
+    // pPortalPoints. If the start and end point both lie in the same domain,
+    // the path will be empty, as it does not include the start and end points.
+    bool output(PortalPoints* pPortalPoints) const;
+    // PRE( state_ == FINISHED )
 
     MATHEX_SCALAR clearance() const;
 
-    ObstacleFlags   flags() const;
+    ObstacleFlags flags() const;
 
     PhysPathFindingPriority priority() const;
     void increasePriority();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysCS2dDomainFindPath& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dDomainFindPath& t);
 
 private:
     // Operations deliberately revoked
-    PhysCS2dDomainFindPath( const PhysCS2dDomainFindPath& );
-    PhysCS2dDomainFindPath& operator =( const PhysCS2dDomainFindPath& );
-    bool operator ==( const PhysCS2dDomainFindPath& );
+    PhysCS2dDomainFindPath(const PhysCS2dDomainFindPath&);
+    PhysCS2dDomainFindPath& operator=(const PhysCS2dDomainFindPath&);
+    bool operator==(const PhysCS2dDomainFindPath&);
 
-    //Private types etc
+    // Private types etc
     enum State
     {
-        UNDEFINED, //No search data
-        NOT_STARTED, //Haven't got going yet
-        PENDING_MACRO, //Waiting for the domain graph to be free
-        MACRO, //Doing macro search in the domain graph
+        UNDEFINED, // No search data
+        NOT_STARTED, // Haven't got going yet
+        PENDING_MACRO, // Waiting for the domain graph to be free
+        MACRO, // Doing macro search in the domain graph
         FINISHED
     };
 
-    //Stuff for the A* algorithm on the domain graph
-    typedef GraAStarVertex< PhysCS2dDomainGraph > AStarDomainVertex;
-    typedef FtlSerialMap< AStarDomainVertex > AStarDomainVertexMap;
+    // Stuff for the A* algorithm on the domain graph
+    using AStarDomainVertex = GraAStarVertex<PhysCS2dDomainGraph>;
+    using AStarDomainVertexMap = FtlSerialMap<AStarDomainVertex>;
 
-    class DomainAStarAlg : public GraAStarAlg< PhysCS2dDomainGraph, AStarDomainVertexMap >
+    class DomainAStarAlg : public GraAStarAlg<PhysCS2dDomainGraph, AStarDomainVertexMap>
     {
     public:
         //  Specify the minimum clearance a vertex must have in order to be available
         //  Also specify the obstacle flags this machine can move over
-        DomainAStarAlg( MATHEX_SCALAR minClearance, ObstacleFlags flags );
+        DomainAStarAlg(MATHEX_SCALAR minClearance, ObstacleFlags flags);
+
     private:
-        virtual MATHEX_SCALAR estimatedCost( const PhysCS2dDomainVertex& from,
-                                             const PhysCS2dDomainVertex& to ) const;
-        virtual bool vertexAvailable( const PhysCS2dDomainVertex& vertex ) const;
+        MATHEX_SCALAR estimatedCost(const PhysCS2dDomainVertex& from, const PhysCS2dDomainVertex& to) const override;
+        bool vertexAvailable(const PhysCS2dDomainVertex& vertex) const override;
 
         MATHEX_SCALAR minClearance_;
         ObstacleFlags flags_;
     };
 
-    //Updates at various stages
+    // Updates at various stages
     void start();
 
     //////////////////////////////////////////////////
-    //True if start and end points in different domains.
-    //If so, need to do a macro search using the domain graph.
+    // True if start and end points in different domains.
+    // If so, need to do a macro search using the domain graph.
     bool needMacroSearch();
 
-    //If the domain graph is available, lock it. Then add a domain vertex
-    //for the start and endpoint to the domain graph, with arcs joining each
-    //existing domain vertex in the respective domains. Set up the A* search
-    //algorithm on the graph. Enter MACRO state.
-    //If the domain graph is not avaliable, do nothing.
+    // If the domain graph is available, lock it. Then add a domain vertex
+    // for the start and endpoint to the domain graph, with arcs joining each
+    // existing domain vertex in the respective domains. Set up the A* search
+    // algorithm on the graph. Enter MACRO state.
+    // If the domain graph is not avaliable, do nothing.
     void startMacroSearch();
-    //PRE( state_ == PENDING_MACRO )
+    // PRE( state_ == PENDING_MACRO )
 
-    //Advance the macro search algorithm (for no longer than maxTime)
-    void updateMacroSearch( const PhysRelativeTime& maxTime );
-    //PRE( state_ == MACRO )
+    // Advance the macro search algorithm (for no longer than maxTime)
+    void updateMacroSearch(const PhysRelativeTime& maxTime);
+    // PRE( state_ == MACRO )
 
-    //True iff the domain graph search has completed.
+    // True iff the domain graph search has completed.
     bool isMacroSearchFinished() const;
-    //PRE( state_ == MACRO )
+    // PRE( state_ == MACRO )
 
-    //Get the results of the domain graph pathFind, and tidy up
+    // Get the results of the domain graph pathFind, and tidy up
     void endMacroSearch();
     //////////////////////////////////////////////////
 
-    //Data members
+    // Data members
     State state_; // Indicates where at
-    MexPoint2d startPoint_;// Start position
-    MexPoint2d endPoint_;// End position
-    PhysConfigSpace2d* pConfigSpace_;//The config space through which we try to find the path
+    MexPoint2d startPoint_; // Start position
+    MexPoint2d endPoint_; // End position
+    PhysConfigSpace2d* pConfigSpace_; // The config space through which we try to find the path
     PortalPoints domainPath_; // Path for navigating between domains
     PhysCS2dDomainGraph::Version domainGraphVersion_; // Version of domain graph used as basis
                                                       // for search
-    PhysConfigSpace2d::DomainId startDomainId_; //Id of domain containing start point
-    PhysConfigSpace2d::DomainId endDomainId_; //Id of domain containing end point
-    PhysConfigSpace2d::DomainVertexId startDomainVertexId_; //Vertex add to domain graph for
-                                                            //start point
-    PhysConfigSpace2d::DomainVertexId endDomainVertexId_; //Vertex add to domain graph for
-                                                          //end point
-    DomainAStarAlg* pDomainAlg_; //The domain A* algorithm, if running
-    bool foundPath_; //True if succeeded in finding a (possibly empty) path
-    MATHEX_SCALAR   clearance_;
-    ObstacleFlags   flags_;
+    PhysConfigSpace2d::DomainId startDomainId_; // Id of domain containing start point
+    PhysConfigSpace2d::DomainId endDomainId_; // Id of domain containing end point
+    PhysConfigSpace2d::DomainVertexId startDomainVertexId_; // Vertex add to domain graph for
+                                                            // start point
+    PhysConfigSpace2d::DomainVertexId endDomainVertexId_; // Vertex add to domain graph for
+                                                          // end point
+    DomainAStarAlg* pDomainAlg_; // The domain A* algorithm, if running
+    bool foundPath_; // True if succeeded in finding a (possibly empty) path
+    MATHEX_SCALAR clearance_;
+    ObstacleFlags flags_;
     PhysPathFindingPriority priority_;
 };
 
 #ifdef _INLINE
-    #include "internal/cs2dmfnd.ipp"
+#include "internal/cs2dmfnd.ipp"
 #endif
-
 
 #endif
 

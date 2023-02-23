@@ -10,15 +10,15 @@
 class PhysTest
 {
 public:
-	PhysTest();
-	~PhysTest();
+    PhysTest();
+    ~PhysTest();
 
-    bool testPhysLinearMotionPlan( ostream& out) const;
-    bool testPhysLinearTravelPlan( ostream& out) const;
-    bool testPhysTimedSpinPlan( ostream& out) const;
-    bool testPhysAccelerationTumblePlan( ostream& out) const;
-    bool testAlignedBSPTree2d( ostream& out ) const;
-    bool testPhysMotionChunk( ostream& out ) const;
-    bool testPhysRampAccelerationByDistanceTime( ostream& ) const;
-    bool testPhysRampAccelerationBySpeed( ostream& ) const;
+    bool testPhysLinearMotionPlan(ostream& out) const;
+    bool testPhysLinearTravelPlan(ostream& out) const;
+    bool testPhysTimedSpinPlan(ostream& out) const;
+    bool testPhysAccelerationTumblePlan(ostream& out) const;
+    bool testAlignedBSPTree2d(ostream& out) const;
+    bool testPhysMotionChunk(ostream& out) const;
+    bool testPhysRampAccelerationByDistanceTime(ostream&) const;
+    bool testPhysRampAccelerationBySpeed(ostream&) const;
 };

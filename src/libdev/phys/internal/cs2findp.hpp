@@ -24,134 +24,141 @@
 #include "phys/internal/cs2dmgra.hpp"
 #include "phys/internal/cs2dmvtx.hpp"
 
-//Forward declarations
+// Forward declarations
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class PhysCS2dFindPath
 {
 public:
-    //Default ctor for collections etc.
+    // Default ctor for collections etc.
     PhysCS2dFindPath();
 
-    typedef PhysConfigSpace2d::ObstacleFlags ObstacleFlags;
+    using ObstacleFlags = PhysConfigSpace2d::ObstacleFlags;
 
-    //ctor. Finds a path contained in pSpace from startPoint to endPoint, when
-    //the line segments are expanded by clearance.
-    //flags indicates those obstacles which can be ignored
-    PhysCS2dFindPath( PhysConfigSpace2d* pSpace, const MexPoint2d& startPoint,
-                      const MexPoint2d& endPoint, MATHEX_SCALAR clearance,
-                      ObstacleFlags flags,
-                      PhysPathFindingPriority priority );
+    // ctor. Finds a path contained in pSpace from startPoint to endPoint, when
+    // the line segments are expanded by clearance.
+    // flags indicates those obstacles which can be ignored
+    PhysCS2dFindPath(
+        PhysConfigSpace2d* pSpace,
+        const MexPoint2d& startPoint,
+        const MexPoint2d& endPoint,
+        MATHEX_SCALAR clearance,
+        ObstacleFlags flags,
+        PhysPathFindingPriority priority);
 
-    //dtor
+    // dtor
     ~PhysCS2dFindPath();
 
-    //Useful types
-    typedef PhysConfigSpace2d::PolygonIds PolygonIds;
-    typedef PhysConfigSpace2d::Path Path;
+    // Useful types
+    using PolygonIds = PhysConfigSpace2d::PolygonIds;
+    using Path = PhysConfigSpace2d::Path;
 
-    //Ignore the polygons with ids listed in polygons for pathfinding.
-    //This is not cumulative (ie in successive calls only the latest is used).
-    //The client must ensure that the polygons collection persists as long as
-    //the pathFind exists.
-    void ignorePolygons( const PolygonIds& polygons );
+    // Ignore the polygons with ids listed in polygons for pathfinding.
+    // This is not cumulative (ie in successive calls only the latest is used).
+    // The client must ensure that the polygons collection persists as long as
+    // the pathFind exists.
+    void ignorePolygons(const PolygonIds& polygons);
 
-    //True if the algorithm is finished
+    // True if the algorithm is finished
     bool isFinished() const;
 
-    //Run the algorithm (for no longer than maxTime)
-    void update( const PhysRelativeTime& maxTime );
-    //PRE( state_ != UNDEFINED )
+    // Run the algorithm (for no longer than maxTime)
+    void update(const PhysRelativeTime& maxTime);
+    // PRE( state_ != UNDEFINED )
 
-    //True if a path was found. In this case, the points are returned in pPath
-    bool output( Path* pPath ) const;
-    //PRE( state_ == FINISHED )
+    // True if a path was found. In this case, the points are returned in pPath
+    bool output(Path* pPath) const;
+    // PRE( state_ == FINISHED )
 
     PhysPathFindingPriority priority() const;
     void increasePriority();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysCS2dFindPath& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dFindPath& t);
 
 private:
     // Operations deliberately revoked
-    PhysCS2dFindPath( const PhysCS2dFindPath& );
-    PhysCS2dFindPath& operator =( const PhysCS2dFindPath& );
-    bool operator ==( const PhysCS2dFindPath& );
+    PhysCS2dFindPath(const PhysCS2dFindPath&);
+    PhysCS2dFindPath& operator=(const PhysCS2dFindPath&);
+    bool operator==(const PhysCS2dFindPath&);
 
-    //Private types etc
+    // Private types etc
     enum State
     {
-        UNDEFINED, //No search data
-        NOT_STARTED, //Haven't got going yet
-        PENDING_PATHFIND, //Waiting to do a pathFind
-        PATHFIND, //Doing a pathFind
+        UNDEFINED, // No search data
+        NOT_STARTED, // Haven't got going yet
+        PENDING_PATHFIND, // Waiting to do a pathFind
+        PATHFIND, // Doing a pathFind
         FINISHED
     };
 
-    //Updates at various stages
+    // Updates at various stages
     void start();
 
-    //tell the config space to ignore/not ignore the registered ignore polygons
-    void ignorePolygons( bool doIgnore );
+    // tell the config space to ignore/not ignore the registered ignore polygons
+    void ignorePolygons(bool doIgnore);
 
     //////////////////////////////////////////////////
 
-    //Tries to initiate a search using the expansion space's visibility
-    //graph. If successful enters PATHFIND state. Otherwise remains in pending state.
+    // Tries to initiate a search using the expansion space's visibility
+    // graph. If successful enters PATHFIND state. Otherwise remains in pending state.
     void startPathSearch();
-    //PRE( state_ == PENDING_PATHFIND );
+    // PRE( state_ == PENDING_PATHFIND );
 
-    //True if the current path is contained in the config space.
-    //Otherwise adds each polygon the path intersects to the open expansion space,
-    //returning the number added which were not previously contained in the
-    //expansion space in nExtraPolygons.
-    bool checkPath( size_t* nExtraPolygons );
+    // True if the current path is contained in the config space.
+    // Otherwise adds each polygon the path intersects to the open expansion space,
+    // returning the number added which were not previously contained in the
+    // expansion space in nExtraPolygons.
+    bool checkPath(size_t* nExtraPolygons);
 
-    //True if the current path visibility graph search is complete
+    // True if the current path visibility graph search is complete
     bool isPathSearchFinished() const;
-    //PRE( state_ == PATHFIND );
+    // PRE( state_ == PATHFIND );
 
-    //Advance the path search algorithm (for no longer than maxTime)
-    void updatePathSearch( const PhysRelativeTime& maxTime );
-    //PRE( state_ == PATHFIND )
+    // Advance the path search algorithm (for no longer than maxTime)
+    void updatePathSearch(const PhysRelativeTime& maxTime);
+    // PRE( state_ == PATHFIND )
 
-    enum Abort { FORCE_ABORT, DO_NOT_FORCE_ABORT };
+    enum Abort
+    {
+        FORCE_ABORT,
+        DO_NOT_FORCE_ABORT
+    };
 
-    //A path search has been completed. Checks results, restarts if necessary, or
-    //adds result to the full path.
-    void endPathSearch( Abort );
-    //PRE( state_ == PATHFIND )
-    //PRE( isPathSearchFinished() );
+    // A path search has been completed. Checks results, restarts if necessary, or
+    // adds result to the full path.
+    void endPathSearch(Abort);
+    // PRE( state_ == PATHFIND )
+    // PRE( isPathSearchFinished() );
 
     //////////////////////////////////////////////////
 
-    //True if permanent polygons in the ConfigSpace intersect the polygon
-    //generated by sweeping p1 to p2 with a clearance clearance.
-    //Any intersecting polygon ids are pushed onto pPolygonIds.
-    bool spaceIntersections( const MexPoint2d& p1, const MexPoint2d& p2,
-                             MATHEX_SCALAR clearance, PolygonIds* pPolygonIds ) const;
+    // True if permanent polygons in the ConfigSpace intersect the polygon
+    // generated by sweeping p1 to p2 with a clearance clearance.
+    // Any intersecting polygon ids are pushed onto pPolygonIds.
+    bool
+    spaceIntersections(const MexPoint2d& p1, const MexPoint2d& p2, MATHEX_SCALAR clearance, PolygonIds* pPolygonIds)
+        const;
 
-    //Data members
+    // Data members
     State state_; // Indicates where at
-    MexPoint2d startPoint_;// Start position
-    MexPoint2d endPoint_;// End position
-    MATHEX_SCALAR clearance_;//The clearance needed all round the path
-    MATHEX_SCALAR expansionDistance_; //Expansion distance used around obstacles during
-                                      //subpath collision avoidance
-    PhysConfigSpace2d* pConfigSpace_;//The config space through which we try to find the path
+    MexPoint2d startPoint_; // Start position
+    MexPoint2d endPoint_; // End position
+    MATHEX_SCALAR clearance_; // The clearance needed all round the path
+    MATHEX_SCALAR expansionDistance_; // Expansion distance used around obstacles during
+                                      // subpath collision avoidance
+    PhysConfigSpace2d* pConfigSpace_; // The config space through which we try to find the path
     Path fullPath_; // Full path for getting from start to end
-    const PolygonIds* pIgnorePolygons_; //Pointer to polygons to be ignored. This does not own it.
+    const PolygonIds* pIgnorePolygons_; // Pointer to polygons to be ignored. This does not own it.
 
-    ObstacleFlags   flags_; //The obstacles that can be ignored for this find path
+    ObstacleFlags flags_; // The obstacles that can be ignored for this find path
     PhysPathFindingPriority priority_;
 };
 
 #ifdef _INLINE
-    #include "internal/cs2findp.ipp"
+#include "internal/cs2findp.ipp"
 #endif
-
 
 #endif
 

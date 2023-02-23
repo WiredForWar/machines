@@ -1,5 +1,5 @@
 /*
- * I N T C U R A C . H P P 
+ * I N T C U R A C . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,75 +17,75 @@
 #include "machgui/restorer.hpp"
 #include "machgui/gui.hpp"
 
-//Forward refs
+// Forward refs
 class MachActor;
 class MachInGameScreen;
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class MachGuiIntelligentCursorOnActor : public MachLogTypeRestorer
 {
 public:
-    //ctor.
+    // ctor.
     MachGuiIntelligentCursorOnActor();
 
-    //dtor.
-    virtual ~MachGuiIntelligentCursorOnActor();
+    // dtor.
+    ~MachGuiIntelligentCursorOnActor() override;
 
-    //returns the intelligent cursor to be displayed for the action to be performed
-    //by pSelectedActor if a click is made on pActorUnderCursor.
-    MachGui::Cursor2dType cursorType( MachActor* pSelectedActor,
-                                      MachActor* pActorUnderCursor,
-									  MachInGameScreen* pInGameScreen,
-                                      bool ctrlPressed,
-                                      bool shiftPressed,
-                                      bool altPressed );
+    // returns the intelligent cursor to be displayed for the action to be performed
+    // by pSelectedActor if a click is made on pActorUnderCursor.
+    MachGui::Cursor2dType cursorType(
+        MachActor* pSelectedActor,
+        MachActor* pActorUnderCursor,
+        MachInGameScreen* pInGameScreen,
+        bool ctrlPressed,
+        bool shiftPressed,
+        bool altPressed);
 
 protected:
     ////////////////////////////////////////////////////////////
     // Inherited from MachGuiTypeRestorer
 
-	virtual ProcessAsSubtype doProcessConstruction( MachLogConstruction * );
-	virtual ProcessAsSubtype doProcessMachine( MachLogMachine * );
-	virtual ProcessAsSubtype doDefaultProcess( MachActor * );
+    ProcessAsSubtype doProcessConstruction(MachLogConstruction*) override;
+    ProcessAsSubtype doProcessMachine(MachLogMachine*) override;
+    ProcessAsSubtype doDefaultProcess(MachActor*) override;
 
-	virtual ProcessAsSubtype doProcessAdministrator( MachLogAdministrator * );
-	virtual ProcessAsSubtype doProcessAggressor( MachLogAggressor * );
-	virtual ProcessAsSubtype doProcessConstructor( MachLogConstructor * );
-	virtual ProcessAsSubtype doProcessGeoLocator( MachLogGeoLocator * );
-	virtual ProcessAsSubtype doProcessSpyLocator( MachLogSpyLocator * );
-	virtual ProcessAsSubtype doProcessTechnician( MachLogTechnician * );
-	virtual ProcessAsSubtype doProcessPersonnelCarrier( MachLogAPC * );
-	virtual ProcessAsSubtype doProcessResourceCarrier( MachLogResourceCarrier * );
+    ProcessAsSubtype doProcessAdministrator(MachLogAdministrator*) override;
+    ProcessAsSubtype doProcessAggressor(MachLogAggressor*) override;
+    ProcessAsSubtype doProcessConstructor(MachLogConstructor*) override;
+    ProcessAsSubtype doProcessGeoLocator(MachLogGeoLocator*) override;
+    ProcessAsSubtype doProcessSpyLocator(MachLogSpyLocator*) override;
+    ProcessAsSubtype doProcessTechnician(MachLogTechnician*) override;
+    ProcessAsSubtype doProcessPersonnelCarrier(MachLogAPC*) override;
+    ProcessAsSubtype doProcessResourceCarrier(MachLogResourceCarrier*) override;
 
-	virtual ProcessAsSubtype doProcessLocator( MachLogMachine * );
-	virtual ProcessAsSubtype doProcessTransporter( MachLogMachine * );
+    ProcessAsSubtype doProcessLocator(MachLogMachine*) override;
+    ProcessAsSubtype doProcessTransporter(MachLogMachine*) override;
 
     ////////////////////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachGuiIntelligentCursorOnActor& t );
+    friend ostream& operator<<(ostream& o, const MachGuiIntelligentCursorOnActor& t);
 
 private:
     // Operations deliberately revoked
-    MachGuiIntelligentCursorOnActor( const MachGuiIntelligentCursorOnActor& );
-    MachGuiIntelligentCursorOnActor& operator =( const MachGuiIntelligentCursorOnActor& );
-    bool operator ==( const MachGuiIntelligentCursorOnActor& );
+    MachGuiIntelligentCursorOnActor(const MachGuiIntelligentCursorOnActor&);
+    MachGuiIntelligentCursorOnActor& operator=(const MachGuiIntelligentCursorOnActor&);
+    bool operator==(const MachGuiIntelligentCursorOnActor&);
 
-    //Do standard machine processing
-    void processStandardMachine( MachLogMachine* pActor );
+    // Do standard machine processing
+    void processStandardMachine(MachLogMachine* pActor);
 
-	//bool canAtLeastOneCorralActorEnterConstruction( const MachLogConstruction& );
- 	
-    //Data members
-    MachActor* pCursorActor_; //The actor under the cursor
-    MachGui::Cursor2dType useCursor_; //Set as the cursor type to use
-	bool ctrlPressed_;
-	bool shiftPressed_;
-	bool altPressed_;
-	MachInGameScreen* pInGameScreen_;
+    // bool canAtLeastOneCorralActorEnterConstruction( const MachLogConstruction& );
+
+    // Data members
+    MachActor* pCursorActor_; // The actor under the cursor
+    MachGui::Cursor2dType useCursor_; // Set as the cursor type to use
+    bool ctrlPressed_;
+    bool shiftPressed_;
+    bool altPressed_;
+    MachInGameScreen* pInGameScreen_;
 };
-
 
 #endif
 

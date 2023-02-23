@@ -5,10 +5,10 @@
 
 /////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 #include "mathex/eulerang.hpp"
@@ -18,58 +18,56 @@
 
 /////////////////////////////////////////////////////////
 
-
 //---------------------------------------------------------------------
 _CODE_INLINE
-const MexTransform3dKey& MexTransform3d::key( void ) const
+const MexTransform3dKey& MexTransform3d::key() const
 {
-	return tkey_;
+    return tkey_;
 }
 //---------------------------------------------------------------------
 
 _CODE_INLINE
-MexVec3 MexTransform3d::xBasis( void ) const
+MexVec3 MexTransform3d::xBasis() const
 {
-    return MexVec3( forward_[0][0], forward_[0][1], forward_[0][2] );
+    return MexVec3(forward_[0][0], forward_[0][1], forward_[0][2]);
 }
 
 _CODE_INLINE
-MexVec3 MexTransform3d::yBasis( void ) const
+MexVec3 MexTransform3d::yBasis() const
 {
-    return MexVec3( forward_[1][0], forward_[1][1], forward_[1][2] );
+    return MexVec3(forward_[1][0], forward_[1][1], forward_[1][2]);
 }
 
 _CODE_INLINE
-MexVec3 MexTransform3d::zBasis( void ) const
+MexVec3 MexTransform3d::zBasis() const
 {
-    return MexVec3( forward_[2][0], forward_[2][1], forward_[2][2] );
+    return MexVec3(forward_[2][0], forward_[2][1], forward_[2][2]);
 }
 
 _CODE_INLINE
-MexPoint3d  MexTransform3d::position( void ) const
+MexPoint3d MexTransform3d::position() const
 {
-    return MexPoint3d( forward_[3][0], forward_[3][1], forward_[3][2] );
+    return MexPoint3d(forward_[3][0], forward_[3][1], forward_[3][2]);
 }
 
 _CODE_INLINE
-MexEulerAngles  MexTransform3d::rotationAsEulerAngles( void ) const
+MexEulerAngles MexTransform3d::rotationAsEulerAngles() const
 {
-    MexEulerAngles  angles;
-    rotation( &angles );
+    MexEulerAngles angles;
+    rotation(&angles);
 
     return angles;
 }
 
 _CODE_INLINE
-MexQuaternion  MexTransform3d::rotationAsQuaternion( void ) const
+MexQuaternion MexTransform3d::rotationAsQuaternion() const
 {
-    MexQuaternion  quaternion;
-    rotation( &quaternion );
+    MexQuaternion quaternion;
+    rotation(&quaternion);
 
     return quaternion;
 }
 
 /////////////////////////////////////////////////////////
-
 
 /* End TRANSF3D.IPP ************************************/

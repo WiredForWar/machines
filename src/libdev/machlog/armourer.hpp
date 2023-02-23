@@ -1,5 +1,5 @@
 /*
- * A R M O U R E R . H P P 
+ * A R M O U R E R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,9 +7,9 @@
     MachLogArmourer
 
     static methods only.
-	This class will take the various types of MLCanAttack and arm them accordingly.
-	The physical weapons will already have been applied to the model. This class
-	will create the MLWeapon instances, tie them to the MPWeapons and then assign them to the MLCanAttack.
+    This class will take the various types of MLCanAttack and arm them accordingly.
+    The physical weapons will already have been applied to the model. This class
+    will create the MLWeapon instances, tie them to the MPWeapons and then assign them to the MLCanAttack.
 
 */
 
@@ -33,32 +33,29 @@ class MachLogArmourer
 public:
     ~MachLogArmourer();
 
-	static void arm( MachLogAggressor* );
-	static void rearm( MachLogAggressor* );
-	static void arm( MachLogAdministrator* );
-	static void rearm( MachLogAdministrator* );
-	static void arm( MachLogMissileEmplacement* );
-	static void rearm( MachLogMissileEmplacement* );
-	static void arm( MachLogPod* );
-	static void rearm( MachLogPod* );
+    static void arm(MachLogAggressor*);
+    static void rearm(MachLogAggressor*);
+    static void arm(MachLogAdministrator*);
+    static void rearm(MachLogAdministrator*);
+    static void arm(MachLogMissileEmplacement*);
+    static void rearm(MachLogMissileEmplacement*);
+    static void arm(MachLogPod*);
+    static void rearm(MachLogPod*);
 
-	static void checkAndSetSpecialWeapons( MachLogWeapon*, MachPhysWeapon* );
+    static void checkAndSetSpecialWeapons(MachLogWeapon*, MachPhysWeapon*);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogArmourer& t );
+    friend ostream& operator<<(ostream& o, const MachLogArmourer& t);
 
 private:
-
-	static MachLogWeapon* createWeapon( MachLogRace*, MachPhysWeapon*, MachActor* );
+    static MachLogWeapon* createWeapon(MachLogRace*, MachPhysWeapon*, MachActor*);
 
     MachLogArmourer();
-    MachLogArmourer( const MachLogArmourer& );
-    MachLogArmourer& operator =( const MachLogArmourer& );
-    bool operator ==( const MachLogArmourer& );
-
+    MachLogArmourer(const MachLogArmourer&);
+    MachLogArmourer& operator=(const MachLogArmourer&);
+    bool operator==(const MachLogArmourer&);
 };
-
 
 #endif
 

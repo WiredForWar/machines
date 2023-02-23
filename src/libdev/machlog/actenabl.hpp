@@ -1,5 +1,5 @@
 /*
- * A C T W I N . H P P 
+ * A C T W I N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,32 +23,30 @@ class MachLogEnableActionAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogEnableActionAction();
-	static MachLogEnableActionAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
-	static MachLogEnableActionAction* newDynamic( SimCondition*, bool enabled, const string& enableToken );
+    ~MachLogEnableActionAction() override;
+    static MachLogEnableActionAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static MachLogEnableActionAction* newDynamic(SimCondition*, bool enabled, const string& enableToken);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogEnableActionAction );
-	PER_FRIEND_READ_WRITE( MachLogEnableActionAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogEnableActionAction);
+    PER_FRIEND_READ_WRITE(MachLogEnableActionAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogEnableActionAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogEnableActionAction& t);
 
-    MachLogEnableActionAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogEnableActionAction& t );
+    MachLogEnableActionAction(const MachLogEnableActionAction&);
+    MachLogEnableActionAction& operator=(const MachLogEnableActionAction&);
 
-    MachLogEnableActionAction( const MachLogEnableActionAction& );
-    MachLogEnableActionAction& operator =( const MachLogEnableActionAction& );
-
-	string		actionConditionKeyName_;
+    string actionConditionKeyName_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogEnableActionAction );
+PER_DECLARE_PERSISTENT(MachLogEnableActionAction);
 
 #endif
 

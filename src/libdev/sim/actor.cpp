@@ -13,42 +13,42 @@
 #include "sim/manager.hpp"
 
 #ifndef _INLINE
-    #include "sim/actor.ipp"
+#include "sim/actor.ipp"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-PER_DEFINE_PERSISTENT_ABSTRACT( SimActor )
+PER_DEFINE_PERSISTENT_ABSTRACT(SimActor)
 
-SimActor::SimActor( SimProcess* pProcess, W4dEntity* pPhysObject )
-:   W4dSubject( pPhysObject ),
-    pProcess_( pProcess ),
-    priority_( 1 ),
-    nextUpdateTime_( 0 ),
-    isDead_( false ),
-    updateEveryCycle_( false )
+SimActor::SimActor(SimProcess* pProcess, W4dEntity* pPhysObject)
+    : W4dSubject(pPhysObject)
+    , pProcess_(pProcess)
+    , priority_(1)
+    , nextUpdateTime_(0)
+    , isDead_(false)
+    , updateEveryCycle_(false)
 {
-    PRE( pProcess != NULL );
+    PRE(pProcess != nullptr);
 
     // Register with the process
-    pProcess->add( this );
+    pProcess->add(this);
 
     TEST_INVARIANT;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-SimActor::SimActor( SimProcess* pProcess, W4dEntity* pPhysObject, Update )
-:   W4dSubject( pPhysObject ),
-    pProcess_( pProcess ),
-    priority_( 1 ),
-    nextUpdateTime_( 0 ),
-    isDead_( false ),
-    updateEveryCycle_( true )
+SimActor::SimActor(SimProcess* pProcess, W4dEntity* pPhysObject, Update)
+    : W4dSubject(pPhysObject)
+    , pProcess_(pProcess)
+    , priority_(1)
+    , nextUpdateTime_(0)
+    , isDead_(false)
+    , updateEveryCycle_(true)
 {
-    PRE( pProcess != NULL );
+    PRE(pProcess != nullptr);
 
     // Register with the process
-    pProcess->add( this );
+    pProcess->add(this);
 
     TEST_INVARIANT;
 }
@@ -57,15 +57,15 @@ SimActor::SimActor( SimProcess* pProcess, W4dEntity* pPhysObject, Update )
 SimActor::~SimActor()
 {
     TEST_INVARIANT;
-    //Unregister with the owning process
-	HAL_STREAM("SimActor::DTOR calling remove\n" );
-    if( pProcess_ )
-    	pProcess_->remove( this );
-	HAL_STREAM(" done" );
+    // Unregister with the owning process
+    HAL_STREAM("SimActor::DTOR calling remove\n");
+    if (pProcess_)
+        pProcess_->remove(this);
+    HAL_STREAM(" done");
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-void SimActor::priority( const SimPriority& priority )
+void SimActor::priority(const SimPriority& priority)
 {
     TEST_INVARIANT;
 
@@ -75,11 +75,11 @@ void SimActor::priority( const SimPriority& priority )
 
 void SimActor::CLASS_INVARIANT
 {
-	INVARIANT( this );
+    INVARIANT(this);
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const SimActor& t )
+ostream& operator<<(ostream& o, const SimActor& t)
 {
 
     o << "SimActor " << (void*)&t << " start" << std::endl;
@@ -89,81 +89,81 @@ ostream& operator <<( ostream& o, const SimActor& t )
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-bool SimActor::beNotified( W4dSubject* , W4dSubject::NotificationEvent , int )
+// virtual
+bool SimActor::beNotified(W4dSubject*, W4dSubject::NotificationEvent, int)
 {
     return false;
 }
 
-//virtual
-void SimActor::domainDeleted( W4dDomain* )
+// virtual
+void SimActor::domainDeleted(W4dDomain*)
 {
 }
 
-void SimActor::assignToDifferentProcess( SimProcess* pNewProcess )
+void SimActor::assignToDifferentProcess(SimProcess* pNewProcess)
 {
-	HAL_STREAM("Assign to different process\n" );
-	//pProcess MAY be NULL at this point as persistence mechanism may call into this
-	//to get the actors registered again
-	if( pProcess_ )
-	    pProcess_->remove( this );
-	pProcess_ = pNewProcess;
-	pProcess_->add( this );
+    HAL_STREAM("Assign to different process\n");
+    // pProcess MAY be NULL at this point as persistence mechanism may call into this
+    // to get the actors registered again
+    if (pProcess_)
+        pProcess_->remove(this);
+    pProcess_ = pNewProcess;
+    pProcess_->add(this);
 }
 
-void perWrite( PerOstream& ostr, const SimActor& actor )
+void perWrite(PerOstream& ostr, const SimActor& actor)
 {
-	const W4dSubject& base1 = actor;
-	const W4dObserver& base2 = actor;
+    const W4dSubject& base1 = actor;
+    const W4dObserver& base2 = actor;
 
-	ostr << base1;
-	ostr << base2;
+    ostr << base1;
+    ostr << base2;
 
     ostr << actor.priority_;
     ostr << actor.nextUpdateTime_;
-	ostr << actor.isDead_;
+    ostr << actor.isDead_;
     ostr << actor.updateEveryCycle_;
 }
 
-void perRead( PerIstream& istr, SimActor& actor )
+void perRead(PerIstream& istr, SimActor& actor)
 {
-	W4dSubject& base1 = actor;
-	W4dObserver& base2 = actor;
+    W4dSubject& base1 = actor;
+    W4dObserver& base2 = actor;
 
-	istr >> base1;
-	istr >> base2;
+    istr >> base1;
+    istr >> base2;
 
     istr >> actor.priority_;
     istr >> actor.nextUpdateTime_;
-	istr >> actor.isDead_;
+    istr >> actor.isDead_;
     istr >> actor.updateEveryCycle_;
-	actor.pProcess_ = NULL;
+    actor.pProcess_ = nullptr;
 }
 
-SimActor::SimActor( PerConstructor con )
-:	W4dSubject( con )
+SimActor::SimActor(PerConstructor con)
+    : W4dSubject(con)
 {
 }
 
-void SimActor::isDead( bool die )
+void SimActor::isDead(bool die)
 {
-    //The manager will delete this actor very soon
-    if( die )
+    // The manager will delete this actor very soon
+    if (die)
     {
-        if( not isDead_ )
-            SimManager::instance().addDeadActor( this );
+        if (not isDead_)
+            SimManager::instance().addDeadActor(this);
     }
     else
     {
-        ASSERT( not isDead_, "Attempt to resurrect dead actor" );
+        ASSERT(not isDead_, "Attempt to resurrect dead actor");
     }
 
-	isDead_ = die;
+    isDead_ = die;
 }
 
 void SimActor::markAsDead()
 {
-	isDead_ = true;
+    isDead_ = true;
 }
 
 /* End ACTOR.CPP ****************************************************/

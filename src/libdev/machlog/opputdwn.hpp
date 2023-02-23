@@ -1,5 +1,5 @@
 /*
- * O P P U T D W N . H P P 
+ * O P P U T D W N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,66 +16,62 @@
 
 #include "machlog/operatio.hpp"
 
-
 class MachLogResourceCarrier;
 class MachLogPutDownOperationImpl;
 class MexPoint3d;
 
 // canonical form revoked
 
-class MachLogPutDownOperation
-: public MachLogOperation
+class MachLogPutDownOperation : public MachLogOperation
 {
 public:
+    MachLogPutDownOperation(MachLogResourceCarrier* pActor);
+    // PRE( pActor_->isNormalResourceCarrier() );
 
-	MachLogPutDownOperation( MachLogResourceCarrier * pActor );
-	// PRE( pActor_->isNormalResourceCarrier() );	
-	
-	~MachLogPutDownOperation();
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPutDownOperation );
-	PER_FRIEND_READ_WRITE( MachLogPutDownOperation );
+    ~MachLogPutDownOperation() override;
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPutDownOperation);
+    PER_FRIEND_READ_WRITE(MachLogPutDownOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate( );
-		
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
-	virtual bool doBeInterrupted();
-	///////////////////////////////
+    void doOutputOperator(ostream&) const override;
 
-	
+    bool doBeInterrupted() override;
+    ///////////////////////////////
+
 private:
+    // Operations deliberately revoked
+    MachLogPutDownOperation(const MachLogPutDownOperation&);
+    MachLogPutDownOperation& operator=(const MachLogPutDownOperation&);
+    bool operator==(const MachLogPutDownOperation&);
 
-	// Operations deliberately revoked
-    MachLogPutDownOperation( const MachLogPutDownOperation& );
-    MachLogPutDownOperation& operator =( const MachLogPutDownOperation& );
-    bool operator ==( const MachLogPutDownOperation& );
+    // updates destination to nearest unoccupied pad (chooses pad at random if all pads are occupied)
+    void chooseMostViablePad();
 
-	// updates destination to nearest unoccupied pad (chooses pad at random if all pads are occupied)
-	void chooseMostViablePad();
-	
-	// updates destination pad, and cancels current subop and movement if destination pad is now different
-	void possiblyChangeDestinationPad();
-	
-	// will perform a find space and change *pClearPutDownPoint if necessary to that of a position near its original
-	// value that is guaranteed to be both within putdown range of the pad and clear of all obstacles for the clearance
-	// designated
-	bool attemptToGuaranteeClearPutDownPoint( const MexPoint2d& actorPos, MATHEX_SCALAR carrierClearance, MexPoint2d* pClearPutDownPoint );
-	
-	// data members
-	MachLogPutDownOperationImpl* pImpl_;	
+    // updates destination pad, and cancels current subop and movement if destination pad is now different
+    void possiblyChangeDestinationPad();
+
+    // will perform a find space and change *pClearPutDownPoint if necessary to that of a position near its original
+    // value that is guaranteed to be both within putdown range of the pad and clear of all obstacles for the clearance
+    // designated
+    bool attemptToGuaranteeClearPutDownPoint(
+        const MexPoint2d& actorPos,
+        MATHEX_SCALAR carrierClearance,
+        MexPoint2d* pClearPutDownPoint);
+
+    // data members
+    MachLogPutDownOperationImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPutDownOperation );
-
+PER_DECLARE_PERSISTENT(MachLogPutDownOperation);
 
 #endif
 

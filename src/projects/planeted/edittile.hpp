@@ -33,81 +33,87 @@ class PedTileMarker;
 
 class PedTileEditor : public PedEditorMode
 {
-// Canonical form revoked
-public:
-   	PedTileEditor( PedArtefactEditor& artefactEditor );
-	// POST( selectedTiles_.empty() );
+    // Canonical form revoked
 
-	~PedTileEditor();
+public:
+    PedTileEditor(PedArtefactEditor& artefactEditor);
+    // POST( selectedTiles_.empty() );
+
+    ~PedTileEditor() override;
 
     void CLASS_INVARIANT;
 
-	virtual void processInput( const DevButtonEvent& );
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void processInput(const DevButtonEvent&) override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayKeyboardCtrls();
+    void displayKeyboardCtrls() override;
 
-	virtual void displayModeInfo();
+    void displayModeInfo() override;
 
-	virtual void preRenderUpdate();
+    void preRenderUpdate() override;
 
-	virtual void readCspFile( const SysPathName& );
-	// PRE( cspFileName.existsAsFile() );
+    void readCspFile(const SysPathName&) override;
+    // PRE( cspFileName.existsAsFile() );
 
-	virtual void writeCspFile( std::ofstream& );
+    void writeCspFile(std::ofstream&) override;
 
-	virtual void changingMode();
+    void changingMode() override;
 
 private:
-	enum CycleDir { NEXT, PREV, CURRENT };
+    enum CycleDir
+    {
+        NEXT,
+        PREV,
+        CURRENT
+    };
 
-	struct SelectedTile
-	{
-		SelectedTile()
-		: 	xPos_(0),
-			yPos_(0),
-			pSelectedTile_(NULL),
-			pSelIndicator_(NULL)
-		{}
+    struct SelectedTile
+    {
+        SelectedTile()
+            : xPos_(0)
+            , yPos_(0)
+            , pSelectedTile_(nullptr)
+            , pSelIndicator_(nullptr)
+        {
+        }
 
-		size_t xPos_;
-		size_t yPos_;
-		MachPhysTerrainTile* pSelectedTile_;
-		PedTileMarker* pSelIndicator_;
-	};
+        size_t xPos_;
+        size_t yPos_;
+        MachPhysTerrainTile* pSelectedTile_;
+        PedTileMarker* pSelIndicator_;
+    };
 
-	void processAttatchCeilingArtefact( bool attatch );
+    void processAttatchCeilingArtefact(bool attatch);
 
-	typedef ctl_list< SelectedTile* > SelectedTiles;
+    using SelectedTiles = ctl_list<SelectedTile*>;
 
-	 // Operation deliberately revoked
-    PedTileEditor( const PedTileEditor& );
-	PedTileEditor& operator =( const PedTileEditor& );
-	bool operator ==( const PedTileEditor& );
+    // Operation deliberately revoked
+    PedTileEditor(const PedTileEditor&);
+    PedTileEditor& operator=(const PedTileEditor&);
+    bool operator==(const PedTileEditor&);
 
-	void highlightTile();
-	// PRE( pSceneManager_ != NULL );
+    void highlightTile();
+    // PRE( pSceneManager_ != NULL );
 
-	void processSelection( const DevButtonEvent& devButtonEvent );
-	void processRotation( bool clockwise );
-	void processHeightChange( bool up, bool shiftPressed );
-	void processCycleTile( CycleDir dir );
+    void processSelection(const DevButtonEvent& devButtonEvent);
+    void processRotation(bool clockwise);
+    void processHeightChange(bool up, bool shiftPressed);
+    void processCycleTile(CycleDir dir);
 
-	// Called by displayInfo
-	void displayTileCoords();
+    // Called by displayInfo
+    void displayTileCoords();
 
-	bool isSelected( MachPhysTerrainTile* );
-	void clearAllSelectedTiles();
+    bool isSelected(MachPhysTerrainTile*);
+    void clearAllSelectedTiles();
 
-	friend ostream& operator <<( ostream& o, const PedTileEditor& t );
+    friend ostream& operator<<(ostream& o, const PedTileEditor& t);
 
-	// Data...
-	PedTileMarker* pHighlightTile_;
-	SelectedTiles selectedTiles_;
-	PedArtefactEditor& artefactEditor_;
+    // Data...
+    PedTileMarker* pHighlightTile_;
+    SelectedTiles selectedTiles_;
+    PedArtefactEditor& artefactEditor_;
 };
-
 
 #endif
 

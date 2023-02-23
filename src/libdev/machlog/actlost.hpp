@@ -1,5 +1,5 @@
 /*
- * A C T L O S T . H P P 
+ * A C T L O S T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,32 +23,30 @@ class MachLogLostAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogLostAction();
-	static MachLogLostAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
-	static MachLogLostAction* newDynamic( SimCondition*, bool enabled, MachPhys::Race );
+    ~MachLogLostAction() override;
+    static MachLogLostAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static MachLogLostAction* newDynamic(SimCondition*, bool enabled, MachPhys::Race);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLostAction );
-	PER_FRIEND_READ_WRITE( MachLogLostAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLostAction);
+    PER_FRIEND_READ_WRITE(MachLogLostAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogLostAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogLostAction& t);
 
-    MachLogLostAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogLostAction& t );
+    MachLogLostAction(const MachLogLostAction&);
+    MachLogLostAction& operator=(const MachLogLostAction&);
 
-    MachLogLostAction( const MachLogLostAction& );
-    MachLogLostAction& operator =( const MachLogLostAction& );
-
-	MachPhys::Race			race_;
+    MachPhys::Race race_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogLostAction );
+PER_DECLARE_PERSISTENT(MachLogLostAction);
 
 #endif
 

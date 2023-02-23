@@ -4,5 +4,5 @@
 
 void dummyTIObjectDataPop()
 {
-	static ctl_vector< string >		dummyCtlVectorString;
+    static ctl_vector<string> dummyCtlVectorString;
 }

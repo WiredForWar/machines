@@ -23,66 +23,61 @@ class MachPhysSmelterData;
 class PhysTimedAnglePlan;
 class MachPhysSmokePlume;
 class MachPhysConstructionPersistence;
-template< class ID, class PART > class MachPhysObjectFactory;
+template <class ID, class PART> class MachPhysObjectFactory;
 
 class MachPhysSmelter : public MachPhysConstruction
 {
 public:
-    MachPhysSmelter(
-        W4dEntity* pParent,
-        const W4dTransform3d& localTransform,
-        size_t level,
-        MachPhys::Race race );
+    MachPhysSmelter(W4dEntity* pParent, const W4dTransform3d& localTransform, size_t level, MachPhys::Race race);
 
-    virtual ~MachPhysSmelter();
+    ~MachPhysSmelter() override;
 
-	//return MachPhysData object for this building
-	virtual const MachPhysConstructionData& constructionData() const;
-	const MachPhysSmelterData& data() const;
+    // return MachPhysData object for this building
+    const MachPhysConstructionData& constructionData() const override;
+    const MachPhysSmelterData& data() const;
 
-	virtual void damageLevel( const double& percent );
+    void damageLevel(const double& percent) override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysSmelter );
-    PER_FRIEND_READ_WRITE( MachPhysSmelter );
+    PER_MEMBER_PERSISTENT(MachPhysSmelter);
+    PER_FRIEND_READ_WRITE(MachPhysSmelter);
 
-    typedef size_t  Id;
+    using Id = size_t;
 
 private:
     // Operation deliberately revoked
-    MachPhysSmelter( const MachPhysSmelter& );
+    MachPhysSmelter(const MachPhysSmelter&);
 
     // Operation deliberately revoked
-    MachPhysSmelter& operator =( const MachPhysSmelter& );
+    MachPhysSmelter& operator=(const MachPhysSmelter&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysSmelter& );
+    bool operator==(const MachPhysSmelter&);
 
-
-    typedef MachPhysObjectFactory< size_t, MachPhysSmelter >    Factory;
+    using Factory = MachPhysObjectFactory<size_t, MachPhysSmelter>;
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysSmelter& Factory::part( const ID&, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< size_t, MachPhysSmelter >;
+    // friend MachPhysSmelter& Factory::part( const ID&, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<size_t, MachPhysSmelter>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysConstructionPersistence& );
-    friend void perRead( PerIstream&, MachPhysConstructionPersistence& );
+    friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
+    friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
-    static  MachPhysSmelter& part( size_t level );
-    static  Factory& factory();
+    static MachPhysSmelter& part(size_t level);
+    static Factory& factory();
 
-    SysPathName compositeFileName( size_t level ) const;
-    SysPathName wireframeFileName( size_t level ) const;
-    SysPathName interiorCompositeFileName( size_t level ) const;
+    SysPathName compositeFileName(size_t level) const;
+    SysPathName wireframeFileName(size_t level) const;
+    SysPathName interiorCompositeFileName(size_t level) const;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a smelter from scratch
 
-    MachPhysSmelter( W4dEntity* pParent, size_t bodyLevel );
+    MachPhysSmelter(W4dEntity* pParent, size_t bodyLevel);
 
-    void doWorking( bool isWorking );
+    void doWorking(bool isWorking) override;
     void turnFansOn();
 
     //  Handle the data initialisation when a construction is read in from
@@ -91,17 +86,17 @@ private:
 
     MachPhysSmelterData* pData_;
 
-	W4dLink* pFan1_;
-	W4dLink* pFan2_;
-	PhysTimedAnglePlan* pAnglePlan1_;
-	PhysTimedAnglePlan* pAnglePlan2_;
+    W4dLink* pFan1_;
+    W4dLink* pFan2_;
+    PhysTimedAnglePlan* pAnglePlan1_;
+    PhysTimedAnglePlan* pAnglePlan2_;
 
-	MachPhysSmokePlume* pSmoke_;
+    MachPhysSmokePlume* pSmoke_;
     PhysAbsoluteTime lastSmokePlumeTime_;
-	size_t level_;
+    size_t level_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysSmelter );
+PER_DECLARE_PERSISTENT(MachPhysSmelter);
 
 #endif
 

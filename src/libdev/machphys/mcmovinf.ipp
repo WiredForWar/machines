@@ -1,14 +1,14 @@
 /*
- * M C M O V I N F . I P P 
+ * M C M O V I N F . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 #include "mathex/epsilon.hpp"
@@ -16,15 +16,15 @@
 _CODE_INLINE
 const MexTransform3d& MachPhysMachineMoveInfo::startTransform() const
 {
-    return transforms()[ 0 ];
+    return transforms()[0];
 }
 
 _CODE_INLINE
 const MexTransform3d& MachPhysMachineMoveInfo::turnTransform() const
 {
-    PRE( needsToTurn() );
-    
-    return transforms()[ 1 ];
+    PRE(needsToTurn());
+
+    return transforms()[1];
 }
 
 _CODE_INLINE
@@ -44,9 +44,9 @@ PhysRelativeTime MachPhysMachineMoveInfo::turnTime() const
 {
     PhysRelativeTime result = 0.0;
 
-    if( needsToTurn() )
+    if (needsToTurn())
         result = rampAccelerationsPtr_->front().totalTime();
-    
+
     return result;
 }
 
@@ -77,9 +77,9 @@ bool MachPhysMachineMoveInfo::needsToTurn() const
 _CODE_INLINE
 MachPhys::FinalState MachPhysMachineMoveInfo::finalState() const
 {
-    MachPhys::FinalState  result;
+    MachPhys::FinalState result;
 
-    if( MexEpsilon::isWithinEpsilonOf( rampAccelerationsPtr_->back().endSpeed(), 0.0 ) )
+    if (MexEpsilon::isWithinEpsilonOf(rampAccelerationsPtr_->back().endSpeed(), 0.0))
         result = MachPhys::AT_REST;
     else
         result = MachPhys::IN_MOTION;

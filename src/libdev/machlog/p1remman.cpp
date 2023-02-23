@@ -1,5 +1,5 @@
 /*
- * P 1 R E M M A N . C P P 
+ * P 1 R E M M A N . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -14,23 +14,23 @@
 #include "machlog/races.hpp"
 #include "machlog/actor.hpp"
 
-typedef ctl_pvector< MachLog1stPersonHandler > Handlers;
+using Handlers = ctl_pvector<MachLog1stPersonHandler>;
 class MachLogRemoteFirstPersonManagerImpl
 {
 public:
-     Handlers handlers_;
+    Handlers handlers_;
 };
 
 MachLogRemoteFirstPersonManager::MachLogRemoteFirstPersonManager()
 {
-    //Create and initialise the pimple
-    pImpl_ = _NEW( MachLogRemoteFirstPersonManagerImpl );
+    // Create and initialise the pimple
+    pImpl_ = _NEW(MachLogRemoteFirstPersonManagerImpl);
 
-   	Handlers& handlers_ = pImpl_->handlers_;
+    Handlers& handlers_ = pImpl_->handlers_;
 
-    handlers_.reserve( MachPhys::N_RACES );
-    for( size_t i = 0; i != MachPhys::N_RACES; ++i )
-        handlers_.push_back( NULL );
+    handlers_.reserve(MachPhys::N_RACES);
+    for (size_t i = 0; i != MachPhys::N_RACES; ++i)
+        handlers_.push_back(nullptr);
 
     TEST_INVARIANT;
 }
@@ -39,18 +39,18 @@ MachLogRemoteFirstPersonManager::~MachLogRemoteFirstPersonManager()
 {
     TEST_INVARIANT;
 
-    //Delete the handlers
+    // Delete the handlers
     closeAll();
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachLogRemoteFirstPersonManager::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogRemoteFirstPersonManager& t )
+ostream& operator<<(ostream& o, const MachLogRemoteFirstPersonManager& t)
 {
 
     o << "MachLogRemoteFirstPersonManager " << (void*)&t << " start" << std::endl;
@@ -61,139 +61,136 @@ ostream& operator <<( ostream& o, const MachLogRemoteFirstPersonManager& t )
 
 void MachLogRemoteFirstPersonManager::update()
 {
-    //Update any handlers
-   	Handlers& handlers_ = pImpl_->handlers_;
-    for( size_t i = 0; i != MachPhys::N_RACES; ++i )
+    // Update any handlers
+    Handlers& handlers_ = pImpl_->handlers_;
+    for (size_t i = 0; i != MachPhys::N_RACES; ++i)
     {
         MachLog1stPersonHandler* pHandler = handlers_[i];
-        if( pHandler != NULL )
+        if (pHandler != nullptr)
             pHandler->update();
     }
 }
 
-void MachLogRemoteFirstPersonManager::actorOpen( UtlId actorId, MachPhys::Race race )
+void MachLogRemoteFirstPersonManager::actorOpen(UtlId actorId, MachPhys::Race race)
 {
-    PRE( MachLogRaces::instance().actorExists( actorId ) );
-    PRE( race < MachPhys::N_RACES );
+    PRE(MachLogRaces::instance().actorExists(actorId));
+    PRE(race < MachPhys::N_RACES);
 
-    //Get the specified actor
+    // Get the specified actor
     MachLogRaces& races = MachLogRaces::instance();
-    MachActor& actor = races.actor( actorId );
+    MachActor& actor = races.actor(actorId);
 
-    //Create a new handler of the appropriate kind
-   	Handlers& handlers_ = pImpl_->handlers_;
-    ASSERT( handlers_[ race ] == NULL, "Remote first person already exists" );
+    // Create a new handler of the appropriate kind
+    Handlers& handlers_ = pImpl_->handlers_;
+    ASSERT(handlers_[race] == nullptr, "Remote first person already exists");
 
-    MachLog1stPersonHandler* pHandler = NULL;
-    if( actor.objectIsMachine() )
+    MachLog1stPersonHandler* pHandler = nullptr;
+    if (actor.objectIsMachine())
     {
-        //Create the handler
-        pHandler = _NEW( MachLog1stPersonMachineHandler( &actor.asMachine(), MachLog1stPersonHandler::REMOTE ) );
-        handlers_[ race ] = pHandler;
+        // Create the handler
+        pHandler = _NEW(MachLog1stPersonMachineHandler(&actor.asMachine(), MachLog1stPersonHandler::REMOTE));
+        handlers_[race] = pHandler;
 
-        //Setup the camera and tracking entity
-        pHandler->initialiseCamera( NULL );
+        // Setup the camera and tracking entity
+        pHandler->initialiseCamera(nullptr);
     }
 
-    //Observe the actor in case it gets deleted locally before a close message arrives
-    actor.attach( this );
+    // Observe the actor in case it gets deleted locally before a close message arrives
+    actor.attach(this);
 }
 
-void MachLogRemoteFirstPersonManager::actorClose( UtlId actorId, MachPhys::Race race )
+void MachLogRemoteFirstPersonManager::actorClose(UtlId actorId, MachPhys::Race race)
 {
-    PRE( MachLogRaces::instance().actorExists( actorId ) );
-    PRE( race < MachPhys::N_RACES );
+    PRE(MachLogRaces::instance().actorExists(actorId));
+    PRE(race < MachPhys::N_RACES);
 
-    //Get the specified actor
+    // Get the specified actor
     MachLogRaces& races = MachLogRaces::instance();
-    MachActor& actor = races.actor( actorId );
+    MachActor& actor = races.actor(actorId);
 
-    //Delete the handler
-   	Handlers& handlers_ = pImpl_->handlers_;
-    _DELETE( handlers_[ race ] );
-    handlers_[ race ] = NULL;
+    // Delete the handler
+    Handlers& handlers_ = pImpl_->handlers_;
+    _DELETE(handlers_[race]);
+    handlers_[race] = nullptr;
 
-    //Stop observing the actor
-    actor.detach( this );
+    // Stop observing the actor
+    actor.detach(this);
 }
 
 void MachLogRemoteFirstPersonManager::closeAll()
 {
-   	Handlers& handlers_ = pImpl_->handlers_;
+    Handlers& handlers_ = pImpl_->handlers_;
 
-    for( size_t i = 0; i != handlers_.size(); ++i )
+    for (size_t i = 0; i != handlers_.size(); ++i)
     {
         MachLog1stPersonHandler* handler = handlers_[i];
-        if( handler )
+        if (handler)
         {
-            //Stop observing the actor
-            handler->actor().detach( this );
+            // Stop observing the actor
+            handler->actor().detach(this);
 
-            //delete the handler
-            _DELETE( handlers_[ i ] );
-            handlers_[ i ] = NULL;
+            // delete the handler
+            _DELETE(handlers_[i]);
+            handlers_[i] = nullptr;
         }
     }
 }
 
-void MachLogRemoteFirstPersonManager::actorState
-(
-    UtlId actorId, MachPhys::Race race, const MachPhysFirstPersonStateVector& state
-)
+void MachLogRemoteFirstPersonManager::actorState(
+    UtlId actorId,
+    MachPhys::Race race,
+    const MachPhysFirstPersonStateVector& state)
 {
-    PRE( MachLogRaces::instance().actorExists( actorId ) );
-    PRE( race < MachPhys::N_RACES );
+    PRE(MachLogRaces::instance().actorExists(actorId));
+    PRE(race < MachPhys::N_RACES);
 
-    //Do the update provided we have a handler
-   	Handlers& handlers_ = pImpl_->handlers_;
-    MachLog1stPersonHandler* handler = handlers_[ race ];
-    if( handler )
-        handler->updateState( state );
+    // Do the update provided we have a handler
+    Handlers& handlers_ = pImpl_->handlers_;
+    MachLog1stPersonHandler* handler = handlers_[race];
+    if (handler)
+        handler->updateState(state);
 }
 
-//virtual
-bool MachLogRemoteFirstPersonManager::beNotified
-(
-    W4dSubject* pSubject, W4dSubject::NotificationEvent event, int
-)
+// virtual
+bool MachLogRemoteFirstPersonManager::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
     bool stayObserving = true;
 
-	switch( event )
-	{
-    	case W4dSubject::DELETED:
-		{
-            //Get the actor via the id
-            stayObserving = false;
-            UtlId actorId = pSubject->id();
-            MachLogRaces& races = MachLogRaces::instance();
-            if( races.actorExists( actorId ) )
+    switch (event)
+    {
+        case W4dSubject::DELETED:
             {
-                //get the actor and race
-                MachActor& actor = races.actor( actorId );
-                MachPhys::Race race = actor.race();
-
-                //hence get the handler
-               	Handlers& handlers_ = pImpl_->handlers_;
-                MachLog1stPersonHandler* handler = handlers_[ race ];
-                if( handler )
+                // Get the actor via the id
+                stayObserving = false;
+                UtlId actorId = pSubject->id();
+                MachLogRaces& races = MachLogRaces::instance();
+                if (races.actorExists(actorId))
                 {
-                    _DELETE( handler );
-                    handlers_[ race ] = NULL;
+                    // get the actor and race
+                    MachActor& actor = races.actor(actorId);
+                    MachPhys::Race race = actor.race();
+
+                    // hence get the handler
+                    Handlers& handlers_ = pImpl_->handlers_;
+                    MachLog1stPersonHandler* handler = handlers_[race];
+                    if (handler)
+                    {
+                        _DELETE(handler);
+                        handlers_[race] = nullptr;
+                    }
                 }
+
+                break;
             }
+    }
 
-			break;
-		}
-	}
-
-	return stayObserving;
+    return stayObserving;
 }
 
-//virtual
-void MachLogRemoteFirstPersonManager::domainDeleted( W4dDomain* )
+// virtual
+void MachLogRemoteFirstPersonManager::domainDeleted(W4dDomain*)
 {
-    //Nothing to do
+    // Nothing to do
 }
 
 /* End P1REMMAN.CPP *************************************************/

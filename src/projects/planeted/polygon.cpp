@@ -17,14 +17,14 @@
 #include "render/colour.hpp"
 #include <fstream>
 
-PedPolygon::PedPolygon( const PolyVerticies& verticies, MATHEX_SCALAR z, bool selected )
-: 	W4dCustom( MachLogPlanet::instance().pWorld(), W4dTransform3d(), W4dEntity::NOT_SOLID, W4dDistance( 10000 ) ),
-	verticies_( verticies ),
-	z_( z ),
-	selected_( selected ),
-	hidden_( false ),
-	flatten_( false ),
-	uniqueId_( 0 )
+PedPolygon::PedPolygon(const PolyVerticies& verticies, MATHEX_SCALAR z, bool selected)
+    : W4dCustom(MachLogPlanet::instance().pWorld(), W4dTransform3d(), W4dEntity::NOT_SOLID, W4dDistance(10000))
+    , verticies_(verticies)
+    , z_(z)
+    , selected_(selected)
+    , hidden_(false)
+    , flatten_(false)
+    , uniqueId_(0)
 {
 
     TEST_INVARIANT;
@@ -33,65 +33,63 @@ PedPolygon::PedPolygon( const PolyVerticies& verticies, MATHEX_SCALAR z, bool se
 PedPolygon::~PedPolygon()
 {
     TEST_INVARIANT;
-
 }
 
 void PedPolygon::refreshMesh()
 {
-	//Construct a material of the appropriate colour
-    RenMaterial mat( selected_ ? RenColour::green() : getWireColour() );
+    // Construct a material of the appropriate colour
+    RenMaterial mat(selected_ ? RenColour::green() : getWireColour());
 
-	// Even if obstacle is hidden show it when it is selected
-	if ( hidden_ and selected_ )
-		attachTo( MachLogPlanet::instance().pWorld() );
-	else if ( hidden_ and not selected_ )
-		attachTo( &MachLogPlanet::instance().hiddenRoot() );
+    // Even if obstacle is hidden show it when it is selected
+    if (hidden_ and selected_)
+        attachTo(MachLogPlanet::instance().pWorld());
+    else if (hidden_ and not selected_)
+        attachTo(&MachLogPlanet::instance().hiddenRoot());
 
-    //Construct a wire frame cuboid surrounding the boundary
-	if ( hasMesh() )
-	    emptyMesh( W4dDistance( 10000 ) );
+    // Construct a wire frame cuboid surrounding the boundary
+    if (hasMesh())
+        emptyMesh(W4dDistance(10000));
 
     RenMesh& boxMesh = mesh();
 
-	MexPoint2d firstPoint = verticies_.front();
-	for ( PolyVerticies::const_iterator iter = verticies_.begin();
-		  iter != verticies_.end();)
-	{
-		MexPoint3d pointOne  ( (*iter).x(), (*iter).y(), 0 );
-		MexPoint3d pointThree( (*iter).x(), (*iter).y(), 0 + height() );
+    MexPoint2d firstPoint = verticies_.front();
+    for (PolyVerticies::const_iterator iter = verticies_.begin(); iter != verticies_.end();)
+    {
+        MexPoint3d pointOne((*iter).x(), (*iter).y(), 0);
+        MexPoint3d pointThree((*iter).x(), (*iter).y(), 0 + height());
 
-		++iter;
+        ++iter;
 
-		MexPoint3d pointTwo( 0, 0, 0 );
-		MexPoint3d pointFour( 0, 0, 0 );
+        MexPoint3d pointTwo(0, 0, 0);
+        MexPoint3d pointFour(0, 0, 0);
 
-		if ( iter == verticies_.end() )
-		{
-			pointTwo = MexPoint3d( firstPoint.x(), firstPoint.y(), 0 );
-			pointFour = MexPoint3d( firstPoint.x(), firstPoint.y(), 0 + height() );
-		}
-		else
-		{
-			pointTwo = MexPoint3d( (*iter).x(), (*iter).y(), 0 );
-			pointFour = MexPoint3d( (*iter).x(), (*iter).y(), 0 + height() );
-		}
+        if (iter == verticies_.end())
+        {
+            pointTwo = MexPoint3d(firstPoint.x(), firstPoint.y(), 0);
+            pointFour = MexPoint3d(firstPoint.x(), firstPoint.y(), 0 + height());
+        }
+        else
+        {
+            pointTwo = MexPoint3d((*iter).x(), (*iter).y(), 0);
+            pointFour = MexPoint3d((*iter).x(), (*iter).y(), 0 + height());
+        }
 
-		boxMesh.addLine( pointOne, pointTwo, mat );
+        boxMesh.addLine(pointOne, pointTwo, mat);
 
-		if ( not flatten_ )
-		{
-			boxMesh.addLine( pointOne, pointThree, mat );
-			boxMesh.addLine( pointThree, pointFour, mat );
-		}
-	}
+        if (not flatten_)
+        {
+            boxMesh.addLine(pointOne, pointThree, mat);
+            boxMesh.addLine(pointThree, pointFour, mat);
+        }
+    }
 }
 
 void PedPolygon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PedPolygon& t )
+ostream& operator<<(ostream& o, const PedPolygon& t)
 {
 
     o << "PedPolygon " << (void*)&t << " start" << std::endl;
@@ -102,67 +100,67 @@ ostream& operator <<( ostream& o, const PedPolygon& t )
 
 PolyVerticies& PedPolygon::verticies()
 {
-	return verticies_;
+    return verticies_;
 }
 
 const PolyVerticies& PedPolygon::verticies() const
 {
-	return verticies_;
+    return verticies_;
 }
 
 // virtual
-void PedPolygon::select( bool selected )
+void PedPolygon::select(bool selected)
 {
-	selected_ = selected;
+    selected_ = selected;
 }
 
-void PedPolygon::hide( bool hide )
+void PedPolygon::hide(bool hide)
 {
-	hidden_ = hide;
+    hidden_ = hide;
 
-	// Only hide if it isn't selected
-	if ( not selected_ )
-		attachTo( hidden_ ? &MachLogPlanet::instance().hiddenRoot() : MachLogPlanet::instance().pWorld() );
+    // Only hide if it isn't selected
+    if (not selected_)
+        attachTo(hidden_ ? &MachLogPlanet::instance().hiddenRoot() : MachLogPlanet::instance().pWorld());
 }
 
 bool PedPolygon::hidden()
 {
-	return hidden_;
+    return hidden_;
 }
 
 // virtual
 size_t PedPolygon::height() const
 {
-	return z_;
+    return z_;
 }
 
-void PedPolygon::flatten( bool flatten )
+void PedPolygon::flatten(bool flatten)
 {
-	flatten_ = flatten;
+    flatten_ = flatten;
 }
 
-void PedPolygon::uniqueId( size_t uniqueId )
+void PedPolygon::uniqueId(size_t uniqueId)
 {
-	uniqueId_ = uniqueId;
+    uniqueId_ = uniqueId;
 }
 
 size_t PedPolygon::uniqueId() const
 {
-	return uniqueId_;
+    return uniqueId_;
 }
 
-//virtual
-void PedPolygon::height( size_t z )
+// virtual
+void PedPolygon::height(size_t z)
 {
-	z_ = z;
-	refreshMesh();
+    z_ = z;
+    refreshMesh();
 }
 
 bool PedPolygon::isConvex() const
 {
-	MexConvexPolygon2d testPoly( verticies() );
+    MexConvexPolygon2d testPoly(verticies());
 
-	return testPoly.isClockwiseAndConvex();
+    return testPoly.isClockwiseAndConvex();
 }
 
 /* End POLYGON.CPP **************************************************/

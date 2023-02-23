@@ -23,24 +23,24 @@ class PhysAcceleratedScalarPlanImpl
 // Canonical form revoked
 {
 private:
-
-	PhysAcceleratedScalarPlanImpl(const PhysAcceleratedScalarPlan::RampAccelerations& rampAccelerations, MATHEX_SCALAR scale);
+    PhysAcceleratedScalarPlanImpl(
+        const PhysAcceleratedScalarPlan::RampAccelerations& rampAccelerations,
+        MATHEX_SCALAR scale);
 
     ~PhysAcceleratedScalarPlanImpl();
 
-    PhysAcceleratedScalarPlanImpl( const PhysAcceleratedScalarPlanImpl& );
-    PhysAcceleratedScalarPlanImpl& operator =( const PhysAcceleratedScalarPlanImpl& );
+    PhysAcceleratedScalarPlanImpl(const PhysAcceleratedScalarPlanImpl&);
+    PhysAcceleratedScalarPlanImpl& operator=(const PhysAcceleratedScalarPlanImpl&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysAcceleratedScalarPlanImpl& t );
-	friend class PhysAcceleratedScalarPlan;
+    friend ostream& operator<<(ostream& o, const PhysAcceleratedScalarPlanImpl& t);
+    friend class PhysAcceleratedScalarPlan;
 
-	PhysAcceleratedScalarPlan::RampAccelerations rampAccelerations_;
-	PhysAcceleratedScalarPlan::Distances distances_;
-	MATHEX_SCALAR initialScale_;
+    PhysAcceleratedScalarPlan::RampAccelerations rampAccelerations_;
+    PhysAcceleratedScalarPlan::Distances distances_;
+    MATHEX_SCALAR initialScale_;
 };
-
 
 #endif
 

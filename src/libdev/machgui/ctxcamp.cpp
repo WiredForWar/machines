@@ -36,53 +36,53 @@ class MachGuiPlayerListBoxItem : public MachGuiSingleSelectionListBoxItem
 // Canonical form revoked
 {
 public:
-    MachGuiPlayerListBoxItem( 	MachGuiStartupScreens* pStartupScreens,
-    							MachGuiSingleSelectionListBox* pListBox,
-    							size_t width,
-    							MachGuiDbPlayer& player,
-    							MachGuiCtxCampaign* pCampaignCtx )
-	:	MachGuiSingleSelectionListBoxItem( pStartupScreens, pListBox, width, player.name() ),
-		player_( player ),
-		pCampaignCtx_( pCampaignCtx )
-	{
-		// Select this list box item if it was the last one selected
-		if ( player.name() == SysRegistry::instance().queryStringValue( "Misc", "Current Player Name") )
-		{
-			selectThisItem();
-		}
-	}
+    MachGuiPlayerListBoxItem(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiSingleSelectionListBox* pListBox,
+        size_t width,
+        MachGuiDbPlayer& player,
+        MachGuiCtxCampaign* pCampaignCtx)
+        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, player.name())
+        , player_(player)
+        , pCampaignCtx_(pCampaignCtx)
+    {
+        // Select this list box item if it was the last one selected
+        if (player.name() == SysRegistry::instance().queryStringValue("Misc", "Current Player Name"))
+        {
+            selectThisItem();
+        }
+    }
 
-    ~MachGuiPlayerListBoxItem()
-	{}
+    ~MachGuiPlayerListBoxItem() override { }
 
     void CLASS_INVARIANT;
 
 protected:
-	virtual void select()
-	{
-		MachGuiSingleSelectionListBoxItem::select();
+    void select() override
+    {
+        MachGuiSingleSelectionListBoxItem::select();
 
-		pCampaignCtx_->selectedPlayer( &player_ );
-		MachGuiDatabase::instance().currentPlayer( &player_ );
+        pCampaignCtx_->selectedPlayer(&player_);
+        MachGuiDatabase::instance().currentPlayer(&player_);
 
-		// Store the fact that this item was just selected
-		SysRegistry::instance().setStringValue( "Misc", "Current Player Name", player_.name());
-	}
+        // Store the fact that this item was just selected
+        SysRegistry::instance().setStringValue("Misc", "Current Player Name", player_.name());
+    }
 
-	virtual void unselect()
-	{
-		MachGuiSingleSelectionListBoxItem::unselect();
+    void unselect() override
+    {
+        MachGuiSingleSelectionListBoxItem::unselect();
 
-		pCampaignCtx_->clearSelectedPlayer();
-	}
+        pCampaignCtx_->clearSelectedPlayer();
+    }
 
 private:
-    MachGuiPlayerListBoxItem( const MachGuiPlayerListBoxItem& );
-    MachGuiPlayerListBoxItem& operator =( const MachGuiPlayerListBoxItem& );
+    MachGuiPlayerListBoxItem(const MachGuiPlayerListBoxItem&);
+    MachGuiPlayerListBoxItem& operator=(const MachGuiPlayerListBoxItem&);
 
-	// Data members...
-	MachGuiDbPlayer& player_;
-	MachGuiCtxCampaign* pCampaignCtx_;
+    // Data members...
+    MachGuiDbPlayer& player_;
+    MachGuiCtxCampaign* pCampaignCtx_;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,87 +90,117 @@ private:
 class MachGuiPlayerDeleteMessageBoxResponder : public MachGuiMessageBoxResponder
 {
 public:
-	MachGuiPlayerDeleteMessageBoxResponder( MachGuiCtxCampaign* pCampaignCtx )
-	:	pCampaignCtx_( pCampaignCtx )
-	{}
+    MachGuiPlayerDeleteMessageBoxResponder(MachGuiCtxCampaign* pCampaignCtx)
+        : pCampaignCtx_(pCampaignCtx)
+    {
+    }
 
-	virtual bool okPressed()
-	{
-		pCampaignCtx_->deletePlayer();
-		return true;
-	}
+    bool okPressed() override
+    {
+        pCampaignCtx_->deletePlayer();
+        return true;
+    }
 
 private:
-	MachGuiCtxCampaign* pCampaignCtx_;
+    MachGuiCtxCampaign* pCampaignCtx_;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-MachGuiCtxCampaign::MachGuiCtxCampaign( MachGuiStartupScreens* pStartupScreens )
-:	MachGuiStartupScreenContext( pStartupScreens ),
-	animations_( pStartupScreens, SysPathName("gui/menu/sm_anims.anm") ),
-	pSelectedPlayer_( NULL ),
-	pScenarioText_( NULL ),
-	pLastScenarioText_( NULL ),
-	pScoreText_( NULL ),
-	pLastScoreText_( NULL ),
-	pNumScenariosPlayedText_( NULL ),
-	pNumScenariosText_( NULL ),
-	pTotalScoreHeadingText_( NULL ),
-	pTotalScoreText_( NULL )
+MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
+    : MachGuiStartupScreenContext(pStartupScreens)
+    , animations_(pStartupScreens, SysPathName("gui/menu/sm_anims.anm"))
+    , pSelectedPlayer_(nullptr)
+    , pScenarioText_(nullptr)
+    , pLastScenarioText_(nullptr)
+    , pScoreText_(nullptr)
+    , pLastScoreText_(nullptr)
+    , pNumScenariosPlayedText_(nullptr)
+    , pNumScenariosText_(nullptr)
+    , pTotalScoreHeadingText_(nullptr)
+    , pTotalScoreText_(nullptr)
 {
-	const int PLAYERS_LB_MINX = 84;
-	const int PLAYERS_LB_MINY = 93;
-	const int PLAYERS_LB_MAXX = 237;
-	const int PLAYERS_LB_MAXY = 378;
-	const int CURRENTSTATUS_MINX = 378;
-	const int CURRENTSTATUS_MINY = 225;
-	const int CURRENTSTATUS_MAXX = 532;
-	const int CURRENTSTATUS_MAXY = 376;
+    const int PLAYERS_LB_MINX = 84;
+    const int PLAYERS_LB_MINY = 93;
+    const int PLAYERS_LB_MAXX = 237;
+    const int PLAYERS_LB_MAXY = 378;
+    const int CURRENTSTATUS_MINX = 378;
+    const int CURRENTSTATUS_MINY = 225;
+    const int CURRENTSTATUS_MAXX = 532;
+    const int CURRENTSTATUS_MAXY = 376;
 
-	MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(83, 408, 255, 445),
-                                                       IDS_MENUBTN_OK, MachGuiStartupScreens::BE_OK));
-	MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(327, 408, 497, 445),
-                                                           IDS_MENUBTN_CANCEL, MachGuiStartupScreens::EXIT));
-	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(376, 40, 546, 77), IDS_MENUBTN_NEW,
-                           MachGuiStartupScreens::BE_NEW));
-	_NEW(MachGuiMenuButton(pStartupScreens, pStartupScreens, Gui::Box(376, 134, 546, 172), IDS_MENUBTN_DELETE,
-                           MachGuiStartupScreens::BE_DELETE));
+    MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(83, 408, 255, 445),
+        IDS_MENUBTN_OK,
+        MachGuiStartupScreens::BE_OK));
+    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(327, 408, 497, 445),
+        IDS_MENUBTN_CANCEL,
+        MachGuiStartupScreens::EXIT));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(376, 40, 546, 77),
+        IDS_MENUBTN_NEW,
+        MachGuiStartupScreens::BE_NEW));
+    _NEW(MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(376, 134, 546, 172),
+        IDS_MENUBTN_DELETE,
+        MachGuiStartupScreens::BE_DELETE));
 
-	pCancelBtn->escapeControl( true );
-	pOkBtn->defaultControl( true );
+    pCancelBtn->escapeControl(true);
+    pOkBtn->defaultControl(true);
 
-	// Display list box heading
-	GuiResourceString players( IDS_MENULB_PLAYERS );
-  	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/largefnt.bmp") );
-	MachGuiMenuText* pPlayersText =
-		_NEW( MachGuiMenuText( pStartupScreens,
-							   Gui::Box( PLAYERS_LB_MINX, PLAYERS_LB_MINY,
-							   			 PLAYERS_LB_MINX + font.textWidth( players.asString() ),
-							   			 PLAYERS_LB_MINY + font.charHeight() + 2 ), IDS_MENULB_PLAYERS, "gui/menu/largefnt.bmp" ) );
+    // Display list box heading
+    GuiResourceString players(IDS_MENULB_PLAYERS);
+    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    MachGuiMenuText* pPlayersText = _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(
+            PLAYERS_LB_MINX,
+            PLAYERS_LB_MINY,
+            PLAYERS_LB_MINX + font.textWidth(players.asString()),
+            PLAYERS_LB_MINY + font.charHeight() + 2),
+        IDS_MENULB_PLAYERS,
+        "gui/menu/largefnt.bmp"));
 
-	// Display current status heading
-	GuiResourceString status( IDS_MENU_PLAYERSTATUS );
-	MachGuiMenuText* pCurrentStatusHeading =
-		_NEW( MachGuiMenuText( pStartupScreens,
-							   Gui::Box( CURRENTSTATUS_MINX, CURRENTSTATUS_MINY,
-							   			 CURRENTSTATUS_MINX + font.textWidth( status.asString() ),
-							   			 CURRENTSTATUS_MINY + font.charHeight() + 2 ), IDS_MENU_PLAYERSTATUS, "gui/menu/largefnt.bmp" ) );
+    // Display current status heading
+    GuiResourceString status(IDS_MENU_PLAYERSTATUS);
+    MachGuiMenuText* pCurrentStatusHeading = _NEW(MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(
+            CURRENTSTATUS_MINX,
+            CURRENTSTATUS_MINY,
+            CURRENTSTATUS_MINX + font.textWidth(status.asString()),
+            CURRENTSTATUS_MINY + font.charHeight() + 2),
+        IDS_MENU_PLAYERSTATUS,
+        "gui/menu/largefnt.bmp"));
 
-	// Create players list box
-	pPlayersList_ = _NEW(MachGuiSingleSelectionListBox(pStartupScreens, pStartupScreens,
-                                                       Gui::Box(PLAYERS_LB_MINX,
-                                                                pPlayersText->absoluteBoundary().maxCorner().y() -
-                                                                getBackdropTopLeft().first, PLAYERS_LB_MAXX,
-                                                                PLAYERS_LB_MAXY),
-                                                       1000, MachGuiSingleSelectionListBoxItem::reqHeight(), 1));
-	updatePlayersList();
+    // Create players list box
+    pPlayersList_ = _NEW(MachGuiSingleSelectionListBox(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(
+            PLAYERS_LB_MINX,
+            pPlayersText->absoluteBoundary().maxCorner().y() - getBackdropTopLeft().first,
+            PLAYERS_LB_MAXX,
+            PLAYERS_LB_MAXY),
+        1000,
+        MachGuiSingleSelectionListBoxItem::reqHeight(),
+        1));
+    updatePlayersList();
 
-	// Display backdrop, play correct music, switch cursor on.
-	changeBackdrop( "gui/menu/sm.bmp" );
+    // Display backdrop, play correct music, switch cursor on.
+    changeBackdrop("gui/menu/sm.bmp");
 
-    pStartupScreens->cursorOn( true );
-    pStartupScreens->desiredCdTrack( MachGuiStartupScreens::MENU_MUSIC );
+    pStartupScreens->cursorOn(true);
+    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     TEST_INVARIANT;
 }
@@ -178,15 +208,14 @@ MachGuiCtxCampaign::MachGuiCtxCampaign( MachGuiStartupScreens* pStartupScreens )
 MachGuiCtxCampaign::~MachGuiCtxCampaign()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiCtxCampaign::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiCtxCampaign& t )
+ostream& operator<<(ostream& o, const MachGuiCtxCampaign& t)
 {
 
     o << "MachGuiCtxCampaign " << (void*)&t << " start" << std::endl;
@@ -195,321 +224,360 @@ ostream& operator <<( ostream& o, const MachGuiCtxCampaign& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachGuiCtxCampaign::update()
 {
-	animations_.update();
-	pNewPlayerName_->update();
+    animations_.update();
+    pNewPlayerName_->update();
 }
 
 void MachGuiCtxCampaign::updatePlayersList()
 {
-	const int PLAYERS_LB_MINX = 84;
-	const int PLAYERS_LB_MINY = 93;
-	const int PLAYERS_LB_MAXX = 237;
-	const int PLAYERS_LB_MAXY = 378;
+    const int PLAYERS_LB_MINX = 84;
+    const int PLAYERS_LB_MINY = 93;
+    const int PLAYERS_LB_MAXX = 237;
+    const int PLAYERS_LB_MAXY = 378;
 
-	pPlayersList_->deleteAllItems();
-	pSelectedPlayer_ = NULL;
+    pPlayersList_->deleteAllItems();
+    pSelectedPlayer_ = nullptr;
 
-	// Create special [new player name] entry in list box.
-	GuiResourceString newPlayerNameStr( IDS_MENU_NEWPLAYERNAME );
-	pNewPlayerName_ = _NEW( MachGuiEditBoxListBoxItem( pStartupScreens_, pPlayersList_, PLAYERS_LB_MAXX - PLAYERS_LB_MINX, newPlayerNameStr.asString() ) );
-	pNewPlayerName_->maxChars( MAX_PLAYERNAME_LEN );
+    // Create special [new player name] entry in list box.
+    GuiResourceString newPlayerNameStr(IDS_MENU_NEWPLAYERNAME);
+    pNewPlayerName_ = _NEW(MachGuiEditBoxListBoxItem(
+        pStartupScreens_,
+        pPlayersList_,
+        PLAYERS_LB_MAXX - PLAYERS_LB_MINX,
+        newPlayerNameStr.asString()));
+    pNewPlayerName_->maxChars(MAX_PLAYERNAME_LEN);
 
-	// Add previously created players into list box.
-	uint numPlayers = MachGuiDatabase::instance().nPlayers();
+    // Add previously created players into list box.
+    uint numPlayers = MachGuiDatabase::instance().nPlayers();
 
-	for ( uint loop = 0; loop < numPlayers; ++loop )
-	{
-		MachGuiDbPlayer& player = MachGuiDatabase::instance().player( loop );
-		_NEW( MachGuiPlayerListBoxItem( pStartupScreens_, pPlayersList_, PLAYERS_LB_MAXX - PLAYERS_LB_MINX, player, this ) );
-	}
+    for (uint loop = 0; loop < numPlayers; ++loop)
+    {
+        MachGuiDbPlayer& player = MachGuiDatabase::instance().player(loop);
+        _NEW(
+            MachGuiPlayerListBoxItem(pStartupScreens_, pPlayersList_, PLAYERS_LB_MAXX - PLAYERS_LB_MINX, player, this));
+    }
 
-	// Get list to redraw.
-	pPlayersList_->childrenUpdated();
+    // Get list to redraw.
+    pPlayersList_->childrenUpdated();
 
-	displayCurrentStatus();
+    displayCurrentStatus();
 }
 
-
-//virtual
+// virtual
 bool MachGuiCtxCampaign::okayToSwitchContext()
 {
-	if ( pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK )
-	{
-		// Create new player...
-		if ( pNewPlayerName_->selected() )
-		{
-			if ( pNewPlayerName_->text() != "" )
-			{
-				// Store the name of the last selected player in the registry
-				SysRegistry::instance().setStringValue( "Misc", "Current Player Name", pNewPlayerName_->text());
+    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK)
+    {
+        // Create new player...
+        if (pNewPlayerName_->selected())
+        {
+            if (pNewPlayerName_->text() != "")
+            {
+                // Store the name of the last selected player in the registry
+                SysRegistry::instance().setStringValue("Misc", "Current Player Name", pNewPlayerName_->text());
 
-				MachGuiDbPlayer& newPlayer = MachGuiDatabase::instance().addPlayer( pNewPlayerName_->text() );
-				MachGuiDatabase::instance().currentPlayer( &newPlayer );
-				MachGuiDatabase::instance().writeDatabase();
+                MachGuiDbPlayer& newPlayer = MachGuiDatabase::instance().addPlayer(pNewPlayerName_->text());
+                MachGuiDatabase::instance().currentPlayer(&newPlayer);
+                MachGuiDatabase::instance().writeDatabase();
 
-				return true;
-			}
-			else
-			{
-				pStartupScreens_->displayMsgBox( IDS_MENUMSG_ENTERPLAYERNAME );
-				return false;
-			}
-		}
-		else // Select previously created player...
-		{
-			if ( not pSelectedPlayer_ )
-			{
-				pStartupScreens_->displayMsgBox( IDS_MENUMSG_ENTERPLAYERNAME );
-				return false;
-			}
-		}
-	}
-	else if ( pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::EXIT )
-	{
-		MachGuiDatabase::instance().clearCurrentPlayer();
-	}
+                return true;
+            }
+            else
+            {
+                pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERPLAYERNAME);
+                return false;
+            }
+        }
+        else // Select previously created player...
+        {
+            if (not pSelectedPlayer_)
+            {
+                pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERPLAYERNAME);
+                return false;
+            }
+        }
+    }
+    else if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::EXIT)
+    {
+        MachGuiDatabase::instance().clearCurrentPlayer();
+    }
 
-	return true;
+    return true;
 }
 
-void MachGuiCtxCampaign::selectedPlayer( MachGuiDbPlayer* pPlayer )
+void MachGuiCtxCampaign::selectedPlayer(MachGuiDbPlayer* pPlayer)
 {
-	pSelectedPlayer_ = pPlayer;
-	displayCurrentStatus();
+    pSelectedPlayer_ = pPlayer;
+    displayCurrentStatus();
 }
 
 void MachGuiCtxCampaign::clearSelectedPlayer()
 {
-	pSelectedPlayer_ = NULL;
-	displayCurrentStatus();
+    pSelectedPlayer_ = nullptr;
+    displayCurrentStatus();
 }
 
-//virtual
-void MachGuiCtxCampaign::buttonEvent( MachGuiStartupScreens::ButtonEvent be )
+// virtual
+void MachGuiCtxCampaign::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 {
-	if ( be == MachGuiStartupScreens::BE_NEW )
-	{
-		pNewPlayerName_->selectThisItem();
-		pStartupScreens_->displayMsgBox( IDS_MENUMSG_NEWPLAYERNAME );
-	}
-	else if ( be == MachGuiStartupScreens::BE_DELETE )
-	{
-		if ( pSelectedPlayer_ )
-		{
-			// Confirm deletion. Display players name in delete msg.
-			GuiStrings strings;
-			strings.push_back( pSelectedPlayer_->name() );
-			pStartupScreens_->displayMsgBox( IDS_MENUMSG_DELETEPLAYER, _NEW( MachGuiPlayerDeleteMessageBoxResponder( this ) ), strings );
-		}
-		else
-		{
-			if ( pNewPlayerName_->selected() )
-			{
-				// Reset new player name
-				pNewPlayerName_->text("");
-			}
-		}
-	}
+    if (be == MachGuiStartupScreens::BE_NEW)
+    {
+        pNewPlayerName_->selectThisItem();
+        pStartupScreens_->displayMsgBox(IDS_MENUMSG_NEWPLAYERNAME);
+    }
+    else if (be == MachGuiStartupScreens::BE_DELETE)
+    {
+        if (pSelectedPlayer_)
+        {
+            // Confirm deletion. Display players name in delete msg.
+            GuiStrings strings;
+            strings.push_back(pSelectedPlayer_->name());
+            pStartupScreens_->displayMsgBox(
+                IDS_MENUMSG_DELETEPLAYER,
+                _NEW(MachGuiPlayerDeleteMessageBoxResponder(this)),
+                strings);
+        }
+        else
+        {
+            if (pNewPlayerName_->selected())
+            {
+                // Reset new player name
+                pNewPlayerName_->text("");
+            }
+        }
+    }
 }
 
 void MachGuiCtxCampaign::deletePlayer()
 {
-	PRE( pSelectedPlayer_ );
+    PRE(pSelectedPlayer_);
 
-	// Delete player
-	MachGuiDatabase::instance().removePlayer( pSelectedPlayer_ );
+    // Delete player
+    MachGuiDatabase::instance().removePlayer(pSelectedPlayer_);
 
-    //Construct a list of saved games with no player attached
-    typedef ctl_vector< MachGuiDbSavedGame* > SavedGames;
+    // Construct a list of saved games with no player attached
+    typedef ctl_vector<MachGuiDbSavedGame*> SavedGames;
     SavedGames savedGamesWithNoPlayer;
-    savedGamesWithNoPlayer.reserve( 64 );
+    savedGamesWithNoPlayer.reserve(64);
 
-	uint numSavedGames = MachGuiDatabase::instance().nSavedGames();
+    uint numSavedGames = MachGuiDatabase::instance().nSavedGames();
 
-	for ( uint loop = 0; loop < numSavedGames; ++loop )
-	{
-		MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame( loop );
-		if ( savedGame.isCampaignGame() and not savedGame.hasPlayer() )
-            savedGamesWithNoPlayer.push_back( &savedGame );
-	}
-
-    //Now delete these saved games.
-    //Note this 2-stage process is necessary, otherwise we will be modifying a collection
-    //whilst iterating through it.
-	for ( uint loop = 0; loop < savedGamesWithNoPlayer.size(); ++loop )
-	{
-        MachGuiDbSavedGame* pSavedGame = savedGamesWithNoPlayer[ loop ];
-		remove( pSavedGame->externalFileName().c_str() );
-		MachGuiDatabase::instance().removeSavedGame( pSavedGame );
+    for (uint loop = 0; loop < numSavedGames; ++loop)
+    {
+        MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
+        if (savedGame.isCampaignGame() and not savedGame.hasPlayer())
+            savedGamesWithNoPlayer.push_back(&savedGame);
     }
 
-	// Update persistent version of database
-	MachGuiDatabase::instance().writeDatabase();
-	updatePlayersList();
+    // Now delete these saved games.
+    // Note this 2-stage process is necessary, otherwise we will be modifying a collection
+    // whilst iterating through it.
+    for (uint loop = 0; loop < savedGamesWithNoPlayer.size(); ++loop)
+    {
+        MachGuiDbSavedGame* pSavedGame = savedGamesWithNoPlayer[loop];
+        remove(pSavedGame->externalFileName().c_str());
+        MachGuiDatabase::instance().removeSavedGame(pSavedGame);
+    }
+
+    // Update persistent version of database
+    MachGuiDatabase::instance().writeDatabase();
+    updatePlayersList();
 }
 
 void MachGuiCtxCampaign::displayCurrentStatus()
 {
-	const int CURRENTSTATUS_MINX = 378;
-	const int CURRENTSTATUS_MINY = 260;
-	const int CURRENTSTATUS_MAXX = 532;
-	const int CURRENTSTATUS_MAXY = 376;
-	const int CURRENTSTATUS_WIDTH = CURRENTSTATUS_MAXX - CURRENTSTATUS_MINX;
+    const int CURRENTSTATUS_MINX = 378;
+    const int CURRENTSTATUS_MINY = 260;
+    const int CURRENTSTATUS_MAXX = 532;
+    const int CURRENTSTATUS_MAXY = 376;
+    const int CURRENTSTATUS_WIDTH = CURRENTSTATUS_MAXX - CURRENTSTATUS_MINX;
 
-	// Clean up old text
-	_DELETE( pScenarioText_ );
-	_DELETE( pLastScenarioText_ );
-	_DELETE( pScoreText_ );
-	_DELETE( pLastScoreText_ );
-	_DELETE( pNumScenariosPlayedText_ );
-	_DELETE( pNumScenariosText_ );
-	_DELETE( pTotalScoreHeadingText_ );
-	_DELETE( pTotalScoreText_ );
-	pScenarioText_ = NULL;
-	pLastScenarioText_ = NULL;
-	pScoreText_ = NULL;
-	pLastScoreText_ = NULL;
-	pNumScenariosPlayedText_ = NULL;
-	pNumScenariosText_ = NULL;
-	pTotalScoreHeadingText_ = NULL;
-	pTotalScoreText_ = NULL;
+    // Clean up old text
+    _DELETE(pScenarioText_);
+    _DELETE(pLastScenarioText_);
+    _DELETE(pScoreText_);
+    _DELETE(pLastScoreText_);
+    _DELETE(pNumScenariosPlayedText_);
+    _DELETE(pNumScenariosText_);
+    _DELETE(pTotalScoreHeadingText_);
+    _DELETE(pTotalScoreText_);
+    pScenarioText_ = nullptr;
+    pLastScenarioText_ = nullptr;
+    pScoreText_ = nullptr;
+    pLastScoreText_ = nullptr;
+    pNumScenariosPlayedText_ = nullptr;
+    pNumScenariosText_ = nullptr;
+    pTotalScoreHeadingText_ = nullptr;
+    pTotalScoreText_ = nullptr;
 
-	pStartupScreens_->changed();
+    pStartupScreens_->changed();
 
     const auto& topLeft = getBackdropTopLeft();
 
-	// Only display information if a player has been selected
-	if ( pSelectedPlayer_ )
-	{
-		// Load resource strings
-		GuiResourceString scenarioStr( IDS_MENU_STATUSSCENARIO );
-	 	GuiResourceString scoreStr( IDS_MENU_STATUSSCORE );
-		GuiResourceString numScenariosPlayedStr( IDS_MENU_STATUSNUMSCENARIOS );
-		GuiResourceString totalScoreStr( IDS_MENU_STATUSTOTALSCORE );
-		GuiResourceString lastScenarioGuiStr( IDS_MENU_STATUSNOTPLAYED );
+    // Only display information if a player has been selected
+    if (pSelectedPlayer_)
+    {
+        // Load resource strings
+        GuiResourceString scenarioStr(IDS_MENU_STATUSSCENARIO);
+        GuiResourceString scoreStr(IDS_MENU_STATUSSCORE);
+        GuiResourceString numScenariosPlayedStr(IDS_MENU_STATUSNUMSCENARIOS);
+        GuiResourceString totalScoreStr(IDS_MENU_STATUSTOTALSCORE);
+        GuiResourceString lastScenarioGuiStr(IDS_MENU_STATUSNOTPLAYED);
 
-		// Default text
-		string lastScenarioStr( lastScenarioGuiStr.asString() );
-		string lastScoreStr("0");
-		string numScenariosPlayed("0");
-		string totalScore("0");
+        // Default text
+        string lastScenarioStr(lastScenarioGuiStr.asString());
+        string lastScoreStr("0");
+        string numScenariosPlayed("0");
+        string totalScore("0");
 
-		if ( pSelectedPlayer_->nPlayerScenarios() != 0 )
-		{
-		  	MachGuiDbPlayerScenario& lastScenario = pSelectedPlayer_->mostRecentPlayerScenario();
+        if (pSelectedPlayer_->nPlayerScenarios() != 0)
+        {
+            MachGuiDbPlayerScenario& lastScenario = pSelectedPlayer_->mostRecentPlayerScenario();
 
-			// Info about last scenario played
-			lastScenarioStr = lastScenario.scenario().menuString();
+            // Info about last scenario played
+            lastScenarioStr = lastScenario.scenario().menuString();
 
-			char buffer[ 255 ];
+            char buffer[255];
 
-//			lastScoreStr = itoa( lastScenario.lastScore(), buffer, 10 );
-			sprintf(buffer, "%d", lastScenario.lastScore());
-			lastScoreStr = buffer;
-//			numScenariosPlayed = itoa( pSelectedPlayer_->nPlayerScenarios(), buffer, 10 );
+            //          lastScoreStr = itoa( lastScenario.lastScore(), buffer, 10 );
+            sprintf(buffer, "%d", lastScenario.lastScore());
+            lastScoreStr = buffer;
+            //          numScenariosPlayed = itoa( pSelectedPlayer_->nPlayerScenarios(), buffer, 10 );
             sprintf(buffer, "%d", pSelectedPlayer_->nPlayerScenarios());
             numScenariosPlayed = buffer;
 
-			// Total all the scores for scenarios played
-			int nTotalScore = 0;
-			for ( int loop = 0; loop < pSelectedPlayer_->nPlayerScenarios(); ++loop )
-			{
-				nTotalScore += pSelectedPlayer_->playerScenario( loop ).lastScore();
-			}
+            // Total all the scores for scenarios played
+            int nTotalScore = 0;
+            for (int loop = 0; loop < pSelectedPlayer_->nPlayerScenarios(); ++loop)
+            {
+                nTotalScore += pSelectedPlayer_->playerScenario(loop).lastScore();
+            }
             sprintf(buffer, "%d", nTotalScore);
             totalScore = buffer;
-//			totalScore = itoa( nTotalScore, buffer, 10 );
+            //          totalScore = itoa( nTotalScore, buffer, 10 );
+        }
 
-		}
+        GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
 
-		GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smallfnt.bmp") );
+        Gui::Box scenarioTextBox(
+            Gui::Coord(CURRENTSTATUS_MINX, CURRENTSTATUS_MINY),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box scenarioTextBox( Gui::Coord( CURRENTSTATUS_MINX, CURRENTSTATUS_MINY ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pScenarioText_ " << scenarioTextBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pScenarioText_ " << scenarioTextBox << std::endl );
+        pScenarioText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            scenarioTextBox,
+            scenarioStr.asString(),
+            "gui/menu/smallfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pScenarioText_ = _NEW( MachGuiMenuText( pStartupScreens_,
-								   				scenarioTextBox,
-								   			 	scenarioStr.asString(),
-								   			 	"gui/menu/smallfnt.bmp",
-								   			 	MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box lastScenarioTextBox(
+            Gui::Coord(CURRENTSTATUS_MINX, pScenarioText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            (2 * font.charHeight()) + 1);
 
-		Gui::Box lastScenarioTextBox( Gui::Coord( CURRENTSTATUS_MINX, pScenarioText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first ), CURRENTSTATUS_WIDTH, (2 * font.charHeight()) + 1 );
+        DEBUG_STREAM(DIAG_NEIL, "pLastScenarioText_ " << lastScenarioTextBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pLastScenarioText_ " << lastScenarioTextBox << std::endl );
+        pLastScenarioText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            lastScenarioTextBox,
+            lastScenarioStr,
+            "gui/menu/smalwfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pLastScenarioText_ = _NEW( MachGuiMenuText( pStartupScreens_,
-								   					lastScenarioTextBox,
-								   					lastScenarioStr,
-								   					"gui/menu/smalwfnt.bmp",
-								   					MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box scoreTextBox(
+            Gui::Coord(CURRENTSTATUS_MINX, pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box scoreTextBox( Gui::Coord( CURRENTSTATUS_MINX, pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 - topLeft.first ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pScoreText_ " << scoreTextBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pScoreText_ " << scoreTextBox << std::endl );
+        pScoreText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            scoreTextBox,
+            scoreStr.asString(),
+            "gui/menu/smallfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pScoreText_ = _NEW( MachGuiMenuText(	pStartupScreens_,
-								   				scoreTextBox,
-								   				scoreStr.asString(),
-								   				"gui/menu/smallfnt.bmp",
-								   				MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box lastScoreTextBox(
+            Gui::Coord(CURRENTSTATUS_MINX, pScoreText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box lastScoreTextBox( Gui::Coord( CURRENTSTATUS_MINX, pScoreText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pLastScoreText_ " << lastScoreTextBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pLastScoreText_ " << lastScoreTextBox << std::endl );
+        pLastScoreText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            lastScoreTextBox,
+            lastScoreStr,
+            "gui/menu/smalwfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pLastScoreText_ = _NEW( MachGuiMenuText(	pStartupScreens_,
-									   				lastScoreTextBox,
-									   				lastScoreStr,
-									   				"gui/menu/smalwfnt.bmp",
-									   				MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box numScenariosPlayedStrBox(
+            Gui::Coord(CURRENTSTATUS_MINX, pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box numScenariosPlayedStrBox( Gui::Coord( CURRENTSTATUS_MINX, pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pNumScenariosPlayedText_ " << numScenariosPlayedStrBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pNumScenariosPlayedText_ " << numScenariosPlayedStrBox << std::endl );
+        pNumScenariosPlayedText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            numScenariosPlayedStrBox,
+            numScenariosPlayedStr.asString(),
+            "gui/menu/smallfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pNumScenariosPlayedText_ = _NEW( MachGuiMenuText(	pStartupScreens_,
-											   				numScenariosPlayedStrBox,
-											   				numScenariosPlayedStr.asString(),
-											   				"gui/menu/smallfnt.bmp",
-											   				MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box numScenariosPlayedBox(
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pNumScenariosPlayedText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box numScenariosPlayedBox( Gui::Coord( CURRENTSTATUS_MINX, pNumScenariosPlayedText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pNumScenariosText_ " << numScenariosPlayedBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pNumScenariosText_ " << numScenariosPlayedBox << std::endl );
+        pNumScenariosText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            numScenariosPlayedBox,
+            numScenariosPlayed,
+            "gui/menu/smalwfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pNumScenariosText_ = _NEW( MachGuiMenuText(	pStartupScreens_,
-									   				numScenariosPlayedBox,
-									   				numScenariosPlayed,
-									   				"gui/menu/smalwfnt.bmp",
-									   				MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box totalScoreStrBox(
+            Gui::Coord(CURRENTSTATUS_MINX, pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box totalScoreStrBox( Gui::Coord( CURRENTSTATUS_MINX, pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pTotalScoreHeadingText_ " << totalScoreStrBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pTotalScoreHeadingText_ " << totalScoreStrBox << std::endl );
+        pTotalScoreHeadingText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            totalScoreStrBox,
+            totalScoreStr.asString(),
+            "gui/menu/smallfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
 
-		pTotalScoreHeadingText_ = _NEW( MachGuiMenuText(	pStartupScreens_,
-											   				totalScoreStrBox,
-											   				totalScoreStr.asString(),
-											   				"gui/menu/smallfnt.bmp",
-											   				MachGuiMenuText::LEFT_JUSTIFY ) );
+        Gui::Box totalScoreBox(
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pTotalScoreHeadingText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+            CURRENTSTATUS_WIDTH,
+            font.charHeight());
 
-		Gui::Box totalScoreBox( Gui::Coord( CURRENTSTATUS_MINX, pTotalScoreHeadingText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first ), CURRENTSTATUS_WIDTH, font.charHeight() );
+        DEBUG_STREAM(DIAG_NEIL, "pTotalScoreText_ " << totalScoreBox << std::endl);
 
-		DEBUG_STREAM( DIAG_NEIL, "pTotalScoreText_ " << totalScoreBox << std::endl );
-
-		pTotalScoreText_ = _NEW( MachGuiMenuText(	pStartupScreens_,
-									   				totalScoreBox,
-									   				totalScore,
-									   				"gui/menu/smalwfnt.bmp",
-									   				MachGuiMenuText::LEFT_JUSTIFY ) );
-	}
+        pTotalScoreText_ = _NEW(MachGuiMenuText(
+            pStartupScreens_,
+            totalScoreBox,
+            totalScore,
+            "gui/menu/smalwfnt.bmp",
+            MachGuiMenuText::LEFT_JUSTIFY));
+    }
 }
-
-
-
 
 /* End CTXCAMP.CPP **************************************************/

@@ -1,5 +1,5 @@
 /*
- * C E X P D A T A . H P P 
+ * C E X P D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,37 +22,35 @@
 class MachPhysConstructionExplosionData
 {
 public:
-    MachPhysConstructionExplosionData( const PhysRelativeTime& duration );
+    MachPhysConstructionExplosionData(const PhysRelativeTime& duration);
     ~MachPhysConstructionExplosionData();
 
-    #include "machphys/private/exppoint.hpp"
+#include "machphys/private/exppoint.hpp"
 
-    void    addPoint( const ExplosionPoint& point );
+    void addPoint(const ExplosionPoint& point);
 
-    typedef ctl_vector< ExplosionPoint >    ExplosionPoints;
-    
+    using ExplosionPoints = ctl_vector<ExplosionPoint>;
+
     const ExplosionPoints& explosionPoints() const;
 
-    const PhysRelativeTime&    duration() const;
-        
+    const PhysRelativeTime& duration() const;
+
     void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    MachPhysConstructionExplosionData( const MachPhysConstructionExplosionData& );
+    MachPhysConstructionExplosionData(const MachPhysConstructionExplosionData&);
 
     // Operation deliberately revoked
-    MachPhysConstructionExplosionData& operator =( const MachPhysConstructionExplosionData& );
+    MachPhysConstructionExplosionData& operator=(const MachPhysConstructionExplosionData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysConstructionExplosionData& );
+    bool operator==(const MachPhysConstructionExplosionData&);
 
     ExplosionPoints explosionPoints_;
-    PhysRelativeTime        duration_;
+    PhysRelativeTime duration_;
 };
-
 
 #endif
 
 /* End CEXPDATA.HPP *************************************************/
-

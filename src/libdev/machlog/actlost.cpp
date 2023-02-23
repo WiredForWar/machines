@@ -13,15 +13,15 @@
 #include "machlog/scenario.hpp"
 #include "machlog/races.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogLostAction );
+PER_DEFINE_PERSISTENT(MachLogLostAction);
 
-MachLogLostAction::MachLogLostAction( SimCondition* pCondition, bool enabled )
-:	SimAction( pCondition, enabled )
+MachLogLostAction::MachLogLostAction(SimCondition* pCondition, bool enabled)
+    : SimAction(pCondition, enabled)
 {
     TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MachLogLostAction::~MachLogLostAction()
 {
     TEST_INVARIANT;
@@ -29,10 +29,10 @@ MachLogLostAction::~MachLogLostAction()
 
 void MachLogLostAction::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogLostAction& t )
+ostream& operator<<(ostream& o, const MachLogLostAction& t)
 {
 
     o << "MachLogLostAction " << (void*)&t << " start" << std::endl;
@@ -41,61 +41,60 @@ ostream& operator <<( ostream& o, const MachLogLostAction& t )
     return o;
 }
 
-//virtual
+// virtual
 void MachLogLostAction::doAction()
 {
-	MachLogRaces::instance().hasLost( race_, true );
+    MachLogRaces::instance().hasLost(race_, true);
 }
 
-//static
-MachLogLostAction* MachLogLostAction::newFromParser( SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser )
+// static
+MachLogLostAction* MachLogLostAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-	MachLogLostAction* pResult = NULL;
-	pResult = _NEW( MachLogLostAction( pCondition, enabled ) );
-	for( int i = 0; i < pParser->tokens().size(); ++i )
-	{
-		const string& token = pParser->tokens()[i];
-		if( token == "RACE" )
-			pResult->race_ = MachLogScenario::machPhysRace( pParser->tokens()[i+1] );
-	}
-	return pResult;
+    MachLogLostAction* pResult = nullptr;
+    pResult = _NEW(MachLogLostAction(pCondition, enabled));
+    for (int i = 0; i < pParser->tokens().size(); ++i)
+    {
+        const string& token = pParser->tokens()[i];
+        if (token == "RACE")
+            pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
+    }
+    return pResult;
 }
 
-//virtual
-void MachLogLostAction::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogLostAction::doOutputOperator(ostream& o) const
 {
-	SimAction::doOutputOperator( o );
-	o << "Race " << race_ << std::endl;
+    SimAction::doOutputOperator(o);
+    o << "Race " << race_ << std::endl;
 }
 
-void perWrite( PerOstream& ostr, const MachLogLostAction& action )
+void perWrite(PerOstream& ostr, const MachLogLostAction& action)
 {
-	const SimAction& base1 = action;
+    const SimAction& base1 = action;
 
-	ostr << base1;
-	ostr << action.race_;
-
+    ostr << base1;
+    ostr << action.race_;
 }
 
-void perRead( PerIstream& istr, MachLogLostAction& action )
+void perRead(PerIstream& istr, MachLogLostAction& action)
 {
-	SimAction& base1 = action;
+    SimAction& base1 = action;
 
-	istr >> base1;
-	istr >> action.race_;
+    istr >> base1;
+    istr >> action.race_;
 }
 
-MachLogLostAction::MachLogLostAction( PerConstructor con )
-:	SimAction( con )
+MachLogLostAction::MachLogLostAction(PerConstructor con)
+    : SimAction(con)
 {
 }
 
-//static
-MachLogLostAction* MachLogLostAction::newDynamic( SimCondition* pCondition, bool enabled, MachPhys::Race race )
+// static
+MachLogLostAction* MachLogLostAction::newDynamic(SimCondition* pCondition, bool enabled, MachPhys::Race race)
 {
-	MachLogLostAction* pResult = _NEW( MachLogLostAction( pCondition, enabled ) );
-	pResult->race_ = race;
-	return pResult;
+    MachLogLostAction* pResult = _NEW(MachLogLostAction(pCondition, enabled));
+    pResult->race_ = race;
+    return pResult;
 }
 
 /* End ACTREINF.CPP *************************************************/

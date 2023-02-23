@@ -1,5 +1,5 @@
 /*
- * C S 2 M O C H U . H P P 
+ * C S 2 M O C H U . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,48 +18,46 @@
 #include "phys/cspace2.hpp"
 #include "phys/motchunk.hpp"
 
-//Orthodox canonical
+// Orthodox canonical
 class PhysCS2dMotionChunk
 {
 public:
-    //Useful types
-    typedef PhysConfigSpace2d::ObjectId ObjectId;
-    typedef PhysConfigSpace2d::MotionChunkId MotionChunkId;
+    // Useful types
+    using ObjectId = PhysConfigSpace2d::ObjectId;
+    using MotionChunkId = PhysConfigSpace2d::MotionChunkId;
 
-    //ctor. Specifies config space allocated id, client defined related objectId,
-    //and the motion chunk data.
-    PhysCS2dMotionChunk( const MotionChunkId& id, const ObjectId& objectId,
-                         const PhysMotionChunk& motionChunk );
+    // ctor. Specifies config space allocated id, client defined related objectId,
+    // and the motion chunk data.
+    PhysCS2dMotionChunk(const MotionChunkId& id, const ObjectId& objectId, const PhysMotionChunk& motionChunk);
 
-    //dtor.
+    // dtor.
     ~PhysCS2dMotionChunk();
 
-    //Accessors
+    // Accessors
     const PhysMotionChunk& motionChunk() const;
     const MotionChunkId& id() const;
     const ObjectId& objectId() const;
-    void boundary( MexAlignedBox2d* pBox ) const;
+    void boundary(MexAlignedBox2d* pBox) const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysCS2dMotionChunk& t );
+    friend ostream& operator<<(ostream& o, const PhysCS2dMotionChunk& t);
 
 private:
     // Operation deliberately revoked
-    PhysCS2dMotionChunk( const PhysCS2dMotionChunk& );
-    PhysCS2dMotionChunk& operator =( const PhysCS2dMotionChunk& );
-    bool operator ==( const PhysCS2dMotionChunk& );
+    PhysCS2dMotionChunk(const PhysCS2dMotionChunk&);
+    PhysCS2dMotionChunk& operator=(const PhysCS2dMotionChunk&);
+    bool operator==(const PhysCS2dMotionChunk&);
 
-    //Data members
-    PhysMotionChunk motionChunk_; //Defines the motion in space and time
-    ObjectId objectId_; //Id of the related object
-    MotionChunkId id_; //Config space allocated id for this chunk
+    // Data members
+    PhysMotionChunk motionChunk_; // Defines the motion in space and time
+    ObjectId objectId_; // Id of the related object
+    MotionChunkId id_; // Config space allocated id for this chunk
 };
 
 #ifdef _INLINE
-    #include "internal/cs2mochu.ipp"
+#include "internal/cs2mochu.ipp"
 #endif
-
 
 #endif
 

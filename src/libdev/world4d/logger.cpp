@@ -15,7 +15,7 @@ W4dLogger& W4dLogger::instance()
 }
 
 W4dLogger::W4dLogger()
-: renderLogStream_( "render.log" )
+    : renderLogStream_("render.log")
 {
 
     TEST_INVARIANT;
@@ -24,10 +24,9 @@ W4dLogger::W4dLogger()
 W4dLogger::~W4dLogger()
 {
     TEST_INVARIANT;
-
 }
 
-bool    W4dLogger::logTextureData() const
+bool W4dLogger::logTextureData() const
 {
     return true;
 }
@@ -39,10 +38,10 @@ std::ofstream& W4dLogger::textureLogStream()
 
 void W4dLogger::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dLogger& t )
+ostream& operator<<(ostream& o, const W4dLogger& t)
 {
 
     o << "W4dLogger " << (void*)&t << " start" << std::endl;

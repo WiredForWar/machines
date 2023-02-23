@@ -1,14 +1,14 @@
 /*
- * M O T C H U N K . I P P 
+ * M O T C H U N K . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -50,7 +50,7 @@ const PhysRelativeTime& PhysMotionChunk::motionTimeOffset() const
 _CODE_INLINE
 const PhysAbsoluteTime& PhysMotionChunk::expiryTime() const
 {
-	PRE( hasExpiryTime() );
+    PRE(hasExpiryTime());
 
     return expiryTime_;
 }
@@ -70,7 +70,7 @@ const MexDouble& PhysMotionChunk::maxHeight() const
 _CODE_INLINE
 bool PhysMotionChunk::hasExpiryTime() const
 {
-	return hasExpiryTime_;
+    return hasExpiryTime_;
 }
 
 /* End MOTCHUNK.IPP *************************************************/

@@ -8,14 +8,14 @@
 #include "machgui/internal/dbelemei.hpp"
 #include "machgui/dbelemen.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbIElement );
+PER_DEFINE_PERSISTENT(MachGuiDbIElement);
 
 MachGuiDbIElement::MachGuiDbIElement()
-:   menuStringId_( 0 ),
-    pTextData_( NULL )
+    : menuStringId_(0)
+    , pTextData_(nullptr)
 {
-    //Use sensible collection sizes
-    antecedents_.reserve( 4 );
+    // Use sensible collection sizes
+    antecedents_.reserve(4);
 
     TEST_INVARIANT;
 }
@@ -23,15 +23,14 @@ MachGuiDbIElement::MachGuiDbIElement()
 MachGuiDbIElement::~MachGuiDbIElement()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDbIElement::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbIElement& t )
+ostream& operator<<(ostream& o, const MachGuiDbIElement& t)
 {
 
     o << "MachGuiDbIElement " << (void*)&t << " start" << std::endl;
@@ -40,7 +39,7 @@ ostream& operator <<( ostream& o, const MachGuiDbIElement& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbIElement& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbIElement& ob)
 {
     ostr << ob.antecedents_;
     ostr << ob.menuStringId_;
@@ -48,7 +47,7 @@ void perWrite( PerOstream& ostr, const MachGuiDbIElement& ob )
     ostr << ob.textDataFileName_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbIElement& ob )
+void perRead(PerIstream& istr, MachGuiDbIElement& ob)
 {
     istr >> ob.antecedents_;
     istr >> ob.menuStringId_;
@@ -57,7 +56,7 @@ void perRead( PerIstream& istr, MachGuiDbIElement& ob )
 
     ob.isComplete_ = false;
     ob.isCustom_ = false;
-    ob.pTextData_ = NULL;
+    ob.pTextData_ = nullptr;
 }
 
 /* End DBELEMEI.CPP *************************************************/

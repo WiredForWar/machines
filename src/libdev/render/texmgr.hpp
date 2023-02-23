@@ -1,5 +1,5 @@
 /*
- * T E X M G R . H P P 
+ * T E X M G R . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -10,7 +10,7 @@
 
 // The name of this class was changed when surfaces were introduced.  An alias
 // for the old name is provided for backwards compatibility.
-typedef RenSurfaceManager RenTexManager;
+using RenTexManager = RenSurfaceManager;
 
 #endif
 

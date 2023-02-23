@@ -19,24 +19,23 @@
 class Class1
 {
 public:
-	Class1();
-	~Class1();
+    Class1();
+    ~Class1();
 
-	int		i_;
-	double	d_;
+    int i_;
+    double d_;
 
-    friend bool operator ==( const Class1& a, const Class1& b );
-    friend bool operator !=( const Class1& a, const Class1& b );
+    friend bool operator==(const Class1& a, const Class1& b);
+    friend bool operator!=(const Class1& a, const Class1& b);
 
-	PER_MEMBER_PERSISTENT_DEFAULT( Class1 );
+    PER_MEMBER_PERSISTENT_DEFAULT(Class1);
 
 private:
-
 };
 
-ostream& operator<<( ostream& ostr, const Class1& t );
+ostream& operator<<(ostream& ostr, const Class1& t);
 
-PER_READ_WRITE( Class1 );
-PER_DECLARE_PERSISTENT( Class1 );
+PER_READ_WRITE(Class1);
+PER_DECLARE_PERSISTENT(Class1);
 
 #endif

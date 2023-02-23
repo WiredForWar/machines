@@ -2,7 +2,7 @@
  * A N I M A T I O . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
- 
+
 #ifndef _MACH_ANIMATIO_HPP
 #define _MACH_ANIMATIO_HPP
 
@@ -14,88 +14,79 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-class MachLogAnimation
-: public MachLogOperation
+class MachLogAnimation : public MachLogOperation
 // cannonical form revoked
 {
 public:
-	
-	MachLogAnimation();
+    MachLogAnimation();
 
-	virtual ~MachLogAnimation();
-	
-	///////////////////////////////
+    ~MachLogAnimation() override;
 
-	PER_MEMBER_PERSISTENT_ABSTRACT( MachLogAnimation );
-	PER_FRIEND_READ_WRITE( MachLogAnimation );
+    ///////////////////////////////
+
+    PER_MEMBER_PERSISTENT_ABSTRACT(MachLogAnimation);
+    PER_FRIEND_READ_WRITE(MachLogAnimation);
 
 protected:
+    virtual PhysRelativeTime doStartAnimation() = 0;
 
-	virtual PhysRelativeTime doStartAnimation() = 0;
+    bool doStart() override;
 
-	virtual bool doStart();
+    // redefinition optional, invocation optional
+    PhysRelativeTime doUpdate() override;
 
-	// redefinition optional, invocation optional
-	virtual PhysRelativeTime doUpdate( );
+    void doFinish() override;
 
-	virtual void doFinish();
+    // inherited from MachIrreducibleOperation
+    // redefinition optional, invocation optional
+    bool doBeInterrupted() override;
 
-	// inherited from MachIrreducibleOperation	
-	// redefinition optional, invocation optional
-	virtual bool doBeInterrupted();
+    bool doIsFinished() const override;
 
-	virtual bool doIsFinished() const;
-		
-	virtual void doOutputOperator( ostream& ) const = 0;
+    void doOutputOperator(ostream&) const override = 0;
 
 private:
+    MachLogAnimation(const MachLogAnimation&);
+    MachLogAnimation& operator=(const MachLogAnimation&);
+    bool operator==(const MachLogAnimation&) const;
 
-	MachLogAnimation( const MachLogAnimation& );
-	MachLogAnimation& operator =( const MachLogAnimation& );
-	bool operator ==( const MachLogAnimation& ) const;
-
-	PhysAbsoluteTime	endTime_;
+    PhysAbsoluteTime endTime_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAnimation );
+PER_DECLARE_PERSISTENT(MachLogAnimation);
 
 /* //////////////////////////////////////////////////////////////// */
 
 // forward refs
 class MachLogCanTurn;
 
-class MachLogTurnAnimation
-: public MachLogAnimation
+class MachLogTurnAnimation : public MachLogAnimation
 // cannonical form revoked
 {
 public:
-	
-	MachLogTurnAnimation( MachLogCanTurn * pActor, MexRadians angle );
+    MachLogTurnAnimation(MachLogCanTurn* pActor, MexRadians angle);
 
-	virtual ~MachLogTurnAnimation();
-	
-	///////////////////////////////
+    ~MachLogTurnAnimation() override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogTurnAnimation );
-	PER_FRIEND_READ_WRITE( MachLogTurnAnimation );
+    ///////////////////////////////
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTurnAnimation);
+    PER_FRIEND_READ_WRITE(MachLogTurnAnimation);
 
 protected:
-
-	virtual PhysRelativeTime doStartAnimation();
-	virtual void doOutputOperator( ostream& ) const;
+    PhysRelativeTime doStartAnimation() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogTurnAnimation(const MachLogTurnAnimation&);
+    MachLogTurnAnimation& operator=(const MachLogTurnAnimation&);
+    bool operator==(const MachLogTurnAnimation&) const;
 
-	MachLogTurnAnimation( const MachLogTurnAnimation& );
-	MachLogTurnAnimation& operator =( const MachLogTurnAnimation& );
-	bool operator ==( const MachLogTurnAnimation& ) const;
-
-	MachLogCanTurn *	pActor_;
-	MexRadians			turnBy_;
+    MachLogCanTurn* pActor_;
+    MexRadians turnBy_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogTurnAnimation );
-
+PER_DECLARE_PERSISTENT(MachLogTurnAnimation);
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -108,36 +99,36 @@ class MachLogConstructAnimation
 // cannonical form revoked
 {
 public:
-	
-	MachLogConstructAnimation( MachLogConstructor * pActor, 
-							MachLogConstruction *pConstr, 
-							MachPhys::BuildingMaterialUnits units );
 
-	virtual ~MachLogConstructAnimation();
-	
-	///////////////////////////////
+    MachLogConstructAnimation( MachLogConstructor * pActor,
+                            MachLogConstruction *pConstr,
+                            MachPhys::BuildingMaterialUnits units );
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogConstructAnimation );
-	PER_FRIEND_READ_WRITE( MachLogConstructAnimation );
+    virtual ~MachLogConstructAnimation();
+
+    ///////////////////////////////
+
+    PER_MEMBER_PERSISTENT_VIRTUAL( MachLogConstructAnimation );
+    PER_FRIEND_READ_WRITE( MachLogConstructAnimation );
 
 protected:
-	
-	virtual PhysRelativeTime doStartAnimation();
-	
-	virtual PhysRelativeTime doUpdate( );
 
-	virtual void doOutputOperator( ostream& ) const;
-	
+    virtual PhysRelativeTime doStartAnimation();
+
+    virtual PhysRelativeTime doUpdate( );
+
+    virtual void doOutputOperator( ostream& ) const;
+
 private:
 
-	MachLogConstructAnimation( const MachLogConstructAnimation& );
-	MachLogConstructAnimation& operator =( const MachLogConstructAnimation& );
-	bool operator ==( const MachLogConstructAnimation& ) const;
+    MachLogConstructAnimation( const MachLogConstructAnimation& );
+    MachLogConstructAnimation& operator =( const MachLogConstructAnimation& );
+    bool operator ==( const MachLogConstructAnimation& ) const;
 
-	MachLogConstructor *						pActor_;
-	MachLogConstruction *						pConstruction_;
-	MachPhys::BuildingMaterialUnits				units_;
-	PhysAbsoluteTime							lastUpdateTime_;
+    MachLogConstructor *                        pActor_;
+    MachLogConstruction *                       pConstruction_;
+    MachPhys::BuildingMaterialUnits             units_;
+    PhysAbsoluteTime                            lastUpdateTime_;
 };
 
 PER_DECLARE_PERSISTENT( MachLogConstructAnimation );
@@ -148,41 +139,37 @@ PER_DECLARE_PERSISTENT( MachLogConstructAnimation );
 // forward refs
 class MachActor;
 
-class MachLogBeDestroyedAnimation
-: public MachLogAnimation
+class MachLogBeDestroyedAnimation : public MachLogAnimation
 // cannonical form revoked
 {
 public:
-	
-	MachLogBeDestroyedAnimation( MachActor * pActor );
+    MachLogBeDestroyedAnimation(MachActor* pActor);
 
-	virtual ~MachLogBeDestroyedAnimation();
-	
-	///////////////////////////////
+    ~MachLogBeDestroyedAnimation() override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogBeDestroyedAnimation );
-	PER_FRIEND_READ_WRITE( MachLogBeDestroyedAnimation );
+    ///////////////////////////////
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogBeDestroyedAnimation);
+    PER_FRIEND_READ_WRITE(MachLogBeDestroyedAnimation);
 
 protected:
-	
-	virtual PhysRelativeTime doStartAnimation();
-	virtual void doFinish();
-	
-	virtual void doOutputOperator( ostream& ) const;
+    PhysRelativeTime doStartAnimation() override;
+    void doFinish() override;
+
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogBeDestroyedAnimation(const MachLogBeDestroyedAnimation&);
+    MachLogBeDestroyedAnimation& operator=(const MachLogBeDestroyedAnimation&);
+    bool operator==(const MachLogBeDestroyedAnimation&) const;
 
-	MachLogBeDestroyedAnimation( const MachLogBeDestroyedAnimation& );
-	MachLogBeDestroyedAnimation& operator =( const MachLogBeDestroyedAnimation& );
-	bool operator ==( const MachLogBeDestroyedAnimation& ) const;
-
-	MachActor *	pActor_;
+    MachActor* pActor_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogBeDestroyedAnimation );
+PER_DECLARE_PERSISTENT(MachLogBeDestroyedAnimation);
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACH_ANIMATIO_HPP	*/
+#endif /*  #ifndef _MACH_ANIMATIO_HPP  */
 
 /* End ANIMATIO.HPP *************************************************/

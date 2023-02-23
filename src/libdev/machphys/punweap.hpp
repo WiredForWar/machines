@@ -1,5 +1,5 @@
 /*
- * P U N W E A P . H P P 
+ * P U N W E A P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,52 +23,51 @@ class MachPhysPunchWeapon : public MachPhysWeapon
 // Canonical form revoked
 {
 public:
-    //Constructs appropriate 
-    MachPhysPunchWeapon( W4dEntity* pParent, const MexTransform3d& localTransform);
+    // Constructs appropriate
+    MachPhysPunchWeapon(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysPunchWeapon();
+    // dtor
+    ~MachPhysPunchWeapon() override;
 
-    //Return an exemplar  - ensures the mesh is loaded
+    // Return an exemplar  - ensures the mesh is loaded
     static const MachPhysPunchWeapon& exemplar();
 
-    
-     //Construct and return a MachPhysPunchBlast.
-    MachPhysPunchBlast* createPunchBlast( const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface );
-    
+    // Construct and return a MachPhysPunchBlast.
+    MachPhysPunchBlast* createPunchBlast(const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface);
+
     //////////////////////////////////////////////////////////
     // Inherited from MachPhysWeapon
 
-    //Induce the weapon's firing animation at startTime, returning the duration of the animation.
-    //This includes recoil, sound, smoke coming from end of gun, lights etc, but
-    //NOT launching of any projectiles, victim animations etc.
-    //Default implementation does nothing.
-    virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
-    
+    // Induce the weapon's firing animation at startTime, returning the duration of the animation.
+    // This includes recoil, sound, smoke coming from end of gun, lights etc, but
+    // NOT launching of any projectiles, victim animations etc.
+    // Default implementation does nothing.
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
+
     //////////////////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPunchWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPunchWeapon& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPunchWeapon );
+    PER_MEMBER_PERSISTENT(MachPhysPunchWeapon);
 
 private:
-    MachPhysPunchWeapon( const MachPhysPunchWeapon& );
-    MachPhysPunchWeapon& operator =( const MachPhysPunchWeapon& );
-    bool operator ==( const MachPhysPunchWeapon& );
+    MachPhysPunchWeapon(const MachPhysPunchWeapon&);
+    MachPhysPunchWeapon& operator=(const MachPhysPunchWeapon&);
+    bool operator==(const MachPhysPunchWeapon&);
 
-    //One-time constructor  used to create the exemplar
+    // One-time constructor  used to create the exemplar
     MachPhysPunchWeapon();
 
-    //the composite file path 
+    // the composite file path
     static const char* compositeFilePath();
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPunchWeapon );
-PER_READ_WRITE( MachPhysPunchWeapon );
+PER_DECLARE_PERSISTENT(MachPhysPunchWeapon);
+PER_READ_WRITE(MachPhysPunchWeapon);
 
 #endif
 

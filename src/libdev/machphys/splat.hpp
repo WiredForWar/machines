@@ -18,43 +18,40 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysGroundSplat : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysGroundSplat( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysGroundSplat(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysGroundSplat& exemplar();
 
-    //dtor
-    ~MachPhysGroundSplat();
+    // dtor
+    ~MachPhysGroundSplat() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysGroundSplat& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGroundSplat& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysGroundSplat );
+    PER_MEMBER_PERSISTENT(MachPhysGroundSplat);
 
 private:
-    //Deliberately revoked
-    MachPhysGroundSplat( const MachPhysGroundSplat& );
-    MachPhysGroundSplat& operator =( const MachPhysGroundSplat& );
-    bool operator ==( const MachPhysGroundSplat& );
+    // Deliberately revoked
+    MachPhysGroundSplat(const MachPhysGroundSplat&);
+    MachPhysGroundSplat& operator=(const MachPhysGroundSplat&);
+    bool operator==(const MachPhysGroundSplat&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysGroundSplat();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysGroundSplat );
-PER_READ_WRITE( MachPhysGroundSplat );
+PER_DECLARE_PERSISTENT(MachPhysGroundSplat);
+PER_READ_WRITE(MachPhysGroundSplat);
 
 #endif
 

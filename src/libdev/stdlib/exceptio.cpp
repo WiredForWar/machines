@@ -13,45 +13,45 @@
 
 //////////////////////////////////////////////////////////////////////
 
-xmsg::raise_handler xmsg::_Handler = 0;
+xmsg::raise_handler xmsg::_Handler = nullptr;
 
 //////////////////////////////////////////////////////////////////////
 
-static const char *hs( const char *s )
+static const char* hs(const char* s)
 // copy string to heap
 {
-    const char *d;
-    if( s != 0 )
-	{
-		d = (const char *)malloc( 1 + strlen( s ) );
-		if(  d != 0 )
-			return (const char *)strcpy( ( char *)d, s );
-	}
+    const char* d;
+    if (s != nullptr)
+    {
+        d = (const char*)malloc(1 + strlen(s));
+        if (d != nullptr)
+            return (const char*)strcpy((char*)d, s);
+    }
 
-	return 0;
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-xmsg::xmsg( const char * what )
-: _What( hs( what ) ),
-  _Alloced( 1 )
+xmsg::xmsg(const char* what)
+    : _What(hs(what))
+    , _Alloced(true)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-xmsg::xmsg( const char *what, bool copyfl )
-: _What( copyfl ? hs( what ) : what ),
-  _Alloced( copyfl )
+xmsg::xmsg(const char* what, bool copyfl)
+    : _What(copyfl ? hs(what) : what)
+    , _Alloced(copyfl)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-xmsg::xmsg( const xmsg& rhs )
-: _What( hs( rhs.what() ) ),
-  _Alloced( 1 )
+xmsg::xmsg(const xmsg& rhs)
+    : _What(hs(rhs.what()))
+    , _Alloced(true)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 xmsg::~xmsg()
@@ -59,14 +59,14 @@ xmsg::~xmsg()
     _Tidy();
 }
 
-const xmsg& xmsg::operator =( const xmsg& rhs )
+const xmsg& xmsg::operator=(const xmsg& rhs)
 {
-    if( this == &rhs )
+    if (this == &rhs)
         return *this;
 
     _Tidy();
-    _What = hs( rhs.what() );
-    _Alloced = 1;
+    _What = hs(rhs.what());
+    _Alloced = true;
 
     return *this;
 }
@@ -75,30 +75,30 @@ const xmsg& xmsg::operator =( const xmsg& rhs )
 
 void xmsg::_Raise()
 {
-    if( _Handler != 0 )
-        (*_Handler)( *this );
+    if (_Handler != nullptr)
+        (*_Handler)(*this);
 
     do_raise();
 
-    _RAISE( *this );
+    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-const char *xmsg::what() const
+const char* xmsg::what() const
 {
-    return _What != 0 ? _What : "";
+    return _What != nullptr ? _What : "";
 }
 
-void xmsg::_Throw( xmsg *ePtr )
+void xmsg::_Throw(xmsg* ePtr)
 // handle an unthrowable xmsg
 {
-    std::cerr << "xmsg: " << ( ePtr ? ePtr->what() : "unknown" );
+    std::cerr << "xmsg: " << (ePtr ? ePtr->what() : "unknown");
     std::cerr << std::endl;
-    ::raise( SIGABRT );
+    ::raise(SIGABRT);
 }
 
-xmsg::raise_handler xmsg::set_raise_handler( xmsg::raise_handler newh )
+xmsg::raise_handler xmsg::set_raise_handler(xmsg::raise_handler newh)
 {
     const raise_handler oldh = xmsg::_Handler;
     xmsg::_Handler = newh;
@@ -107,120 +107,151 @@ xmsg::raise_handler xmsg::set_raise_handler( xmsg::raise_handler newh )
 
 void xmsg::do_raise()
 {
-	/* no special handling by default */
+    /* no special handling by default */
 }
 
 void xmsg::_Tidy()
 {
-    if( _Alloced )
+    if (_Alloced)
     {
-        free( (void *)_What );
-        _Alloced = 0;
+        free((void*)_What);
+        _Alloced = false;
     }
 }
 
 //////////////////////////////////////////////////////////////////////
 
-logic_error::logic_error( const char *what )
-: xmsg( what )
+logic_error::logic_error(const char* what)
+    : xmsg(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 logic_error::~logic_error()
 {
-	/*  Intentionally Empty  */
+    /*  Intentionally Empty  */
 }
 
-void logic_error::do_raise() { _RAISE( *this ); }
+void logic_error::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-bad_cast::bad_cast( const char *what )
-: logic_error( what )
+bad_cast::bad_cast(const char* what)
+    : logic_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-bad_cast::~bad_cast() {   /*  Intentionally Empty  */ }
+bad_cast::~bad_cast()
+{ /*  Intentionally Empty  */
+}
 
-void bad_cast::do_raise() { _RAISE( *this ); }
+void bad_cast::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-bad_typeid::bad_typeid( const char *what )
-: logic_error( what )
+bad_typeid::bad_typeid(const char* what)
+    : logic_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-bad_typeid::~bad_typeid() {   /*  Intentionally Empty  */ }
+bad_typeid::~bad_typeid()
+{ /*  Intentionally Empty  */
+}
 
-void bad_typeid::do_raise() { _RAISE( *this ); }
+void bad_typeid::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-invalid_argument::invalid_argument( const char *what )
-: logic_error( what )
+invalid_argument::invalid_argument(const char* what)
+    : logic_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 invalid_argument::~invalid_argument()
 {
-	/*  Intentionally Empty  */
+    /*  Intentionally Empty  */
 }
 
-void invalid_argument::do_raise() { _RAISE( *this ); }
+void invalid_argument::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-length_error::length_error( const char *what )
-: logic_error( what )
+length_error::length_error(const char* what)
+    : logic_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-length_error::~length_error() {   /*  Intentionally Empty  */ }
+length_error::~length_error()
+{ /*  Intentionally Empty  */
+}
 
-void length_error::do_raise() { _RAISE( *this ); }
+void length_error::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-out_of_range::out_of_range( const char *what )
-: logic_error( what )
+out_of_range::out_of_range(const char* what)
+    : logic_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-out_of_range::~out_of_range() {   /*  Intentionally Empty  */ }
+out_of_range::~out_of_range()
+{ /*  Intentionally Empty  */
+}
 
-void out_of_range::do_raise() { _RAISE( *this ); }
+void out_of_range::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-domain_error::domain_error( const char *what )
-: logic_error( what )
+domain_error::domain_error(const char* what)
+    : logic_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-domain_error::~domain_error() {   /*  Intentionally Empty  */ }
+domain_error::~domain_error()
+{ /*  Intentionally Empty  */
+}
 
-void domain_error::do_raise() { _RAISE( *this ); }
+void domain_error::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-runtime_error::runtime_error( const char *what )
-: xmsg( what )
+runtime_error::runtime_error(const char* what)
+    : xmsg(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-runtime_error::runtime_error( const char *what,	bool copy )
-: xmsg( what, copy )
+runtime_error::runtime_error(const char* what, bool copy)
+    : xmsg(what, copy)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 runtime_error::~runtime_error()
@@ -230,15 +261,15 @@ runtime_error::~runtime_error()
 
 void runtime_error::do_raise()
 {
-    _RAISE( *this );
+    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-overflow_error::overflow_error( const char *what )
-: runtime_error( what )
+overflow_error::overflow_error(const char* what)
+    : runtime_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 overflow_error::~overflow_error()
@@ -248,40 +279,50 @@ overflow_error::~overflow_error()
 
 void overflow_error::do_raise()
 {
-    _RAISE( *this );
+    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-range_error::range_error( const char *what )
-: runtime_error( what )
+range_error::range_error(const char* what)
+    : runtime_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-range_error::~range_error() { /*  Intentionally Empty */ }
+range_error::~range_error()
+{ /*  Intentionally Empty */
+}
 
-void range_error::do_raise() {_RAISE( *this ); }
+void range_error::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-bad_alloc::bad_alloc( const char *what )
-: runtime_error( what )
+bad_alloc::bad_alloc(const char* what)
+    : runtime_error(what)
 {
-    /* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-bad_alloc::~bad_alloc() { /*  Intentionally Empty */ }
+bad_alloc::~bad_alloc()
+{ /*  Intentionally Empty */
+}
 
-void bad_alloc::do_raise() { _RAISE( *this ); }
+void bad_alloc::do_raise()
+{
+    _RAISE(*this);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-static fvoid_t *terminate_handler = &abort;
+static fvoid_t* terminate_handler = &abort;
 
-fvoid_t *set_terminate( fvoid_t *newh )
+fvoid_t* set_terminate(fvoid_t* newh)
 {
-    fvoid_t *oldh = terminate_handler;
+    fvoid_t* oldh = terminate_handler;
     terminate_handler = newh;
     return oldh;
 }
@@ -289,7 +330,7 @@ fvoid_t *set_terminate( fvoid_t *newh )
 void terminate()
 // call terminate handler or abort
 {
-    if( terminate_handler != 0 )
+    if (terminate_handler != nullptr)
         (*terminate_handler)();
 
     abort();
@@ -297,11 +338,11 @@ void terminate()
 
 //////////////////////////////////////////////////////////////////////
 
-static fvoid_t *unexpected_handler = &terminate;
+static fvoid_t* unexpected_handler = &terminate;
 
-fvoid_t *set_unexpected( fvoid_t *newh )
+fvoid_t* set_unexpected(fvoid_t* newh)
 {
-    fvoid_t *oldh = unexpected_handler;
+    fvoid_t* oldh = unexpected_handler;
     unexpected_handler = newh;
     return oldh;
 }
@@ -309,11 +350,10 @@ fvoid_t *set_unexpected( fvoid_t *newh )
 void unexpected()
 // call unexpected handler or terminate
 {
-    if( unexpected_handler != 0 )
+    if (unexpected_handler != nullptr)
         (*unexpected_handler)();
 
     terminate();
 }
 
 /* End EXCEPTIO.CPP *************************************************/
-

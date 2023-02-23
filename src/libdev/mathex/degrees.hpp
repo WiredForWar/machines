@@ -1,5 +1,5 @@
 /*
- * D E G R E E S . H P P 
+ * D E G R E E S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -25,34 +25,33 @@ class MexDegrees : public MexAngle
 {
 public:
     MexDegrees();
-    MexDegrees( MATHEX_SCALAR );
-    MexDegrees( const MexAngle& );
+    MexDegrees(MATHEX_SCALAR);
+    MexDegrees(const MexAngle&);
 
-    MATHEX_SCALAR   asScalar() const;
-    
-    friend ostream& operator <<( ostream& o, const MexDegrees& t );
+    MATHEX_SCALAR asScalar() const;
 
-    //Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT( MexDegrees );
-    PER_FRIEND_READ_WRITE( MexDegrees );
+    friend ostream& operator<<(ostream& o, const MexDegrees& t);
 
+    // Persistence
+    PER_MEMBER_PERSISTENT_DEFAULT(MexDegrees);
+    PER_FRIEND_READ_WRITE(MexDegrees);
 };
 
-PER_DECLARE_PERSISTENT( MexDegrees );
+PER_DECLARE_PERSISTENT(MexDegrees);
 
 class MexRadians;
 
-const MexDegrees   operator +( const MexDegrees& a, const MexDegrees& b );
-const MexDegrees   operator +( const MexDegrees& a, const MexRadians& b );
+const MexDegrees operator+(const MexDegrees& a, const MexDegrees& b);
+const MexDegrees operator+(const MexDegrees& a, const MexRadians& b);
 
-const MexDegrees   operator -( const MexDegrees& a, const MexDegrees& b );
-const MexDegrees   operator -( const MexDegrees& a, const MexRadians& b );
-const MexDegrees   operator -( const MexDegrees& a );
+const MexDegrees operator-(const MexDegrees& a, const MexDegrees& b);
+const MexDegrees operator-(const MexDegrees& a, const MexRadians& b);
+const MexDegrees operator-(const MexDegrees& a);
 
-const MexDegrees   operator *( const MexDegrees&, MATHEX_SCALAR );
-const MexDegrees   operator *( MATHEX_SCALAR, const MexDegrees& );
+const MexDegrees operator*(const MexDegrees&, MATHEX_SCALAR);
+const MexDegrees operator*(MATHEX_SCALAR, const MexDegrees&);
 
-const MexDegrees   operator /( const MexDegrees&, MATHEX_SCALAR );
+const MexDegrees operator/(const MexDegrees&, MATHEX_SCALAR);
 
 #endif
 

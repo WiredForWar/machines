@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
 
-
 #include "base/base.hpp"
 #include "base/memcdata.hpp"
 
@@ -15,98 +14,102 @@ DbgMemChkData::~DbgMemChkData()
 {
 }
 
-size_t  DbgMemChkData::nNewCalls() const
+size_t DbgMemChkData::nNewCalls() const
 {
     return nNewCalls_;
 }
 
-void    DbgMemChkData::nNewCalls( size_t newNNewCalls )
+void DbgMemChkData::nNewCalls(size_t newNNewCalls)
 {
     nNewCalls_ = newNNewCalls;
 }
 
-size_t  DbgMemChkData::nDeleteCalls() const
+size_t DbgMemChkData::nDeleteCalls() const
 {
     return nDeleteCalls_;
 }
 
-void    DbgMemChkData::nDeleteCalls( size_t newNDeleteCalls )
+void DbgMemChkData::nDeleteCalls(size_t newNDeleteCalls)
 {
     nDeleteCalls_ = newNDeleteCalls;
 }
 
-size_t  DbgMemChkData::nNewArrayCalls() const
+size_t DbgMemChkData::nNewArrayCalls() const
 {
     return nNewArrayCalls_;
 }
 
-void    DbgMemChkData::nNewArrayCalls( size_t newNNewArrayCalls )
+void DbgMemChkData::nNewArrayCalls(size_t newNNewArrayCalls)
 {
     nNewArrayCalls_ = newNNewArrayCalls;
 }
 
-size_t  DbgMemChkData::nDeleteArrayCalls() const
+size_t DbgMemChkData::nDeleteArrayCalls() const
 {
     return nDeleteArrayCalls_;
 }
 
-void    DbgMemChkData::nDeleteArrayCalls( size_t newNDeleteArrayCalls )
+void DbgMemChkData::nDeleteArrayCalls(size_t newNDeleteArrayCalls)
 {
     nDeleteArrayCalls_ = newNDeleteArrayCalls;
 }
 
-size_t  DbgMemChkData::totalMemoryNewed() const
+size_t DbgMemChkData::totalMemoryNewed() const
 {
     return totalMemoryNewed_;
 }
 
-void    DbgMemChkData::totalMemoryNewed( size_t newTotalMemoryNewed )
+void DbgMemChkData::totalMemoryNewed(size_t newTotalMemoryNewed)
 {
     totalMemoryNewed_ = newTotalMemoryNewed;
 }
 
-size_t  DbgMemChkData::totalMemoryDeleted() const
+size_t DbgMemChkData::totalMemoryDeleted() const
 {
     return totalMemoryDeleted_;
 }
 
-void    DbgMemChkData::totalMemoryDeleted( size_t newTotalMemoryDeleted )
+void DbgMemChkData::totalMemoryDeleted(size_t newTotalMemoryDeleted)
 {
     totalMemoryDeleted_ = newTotalMemoryDeleted;
 }
 
-size_t  DbgMemChkData::maxMemoryNewed() const
+size_t DbgMemChkData::maxMemoryNewed() const
 {
     return maxMemoryNewed_;
 }
 
-void    DbgMemChkData::maxMemoryNewed( size_t newMaxMemoryNewed )
+void DbgMemChkData::maxMemoryNewed(size_t newMaxMemoryNewed)
 {
     maxMemoryNewed_ = newMaxMemoryNewed;
 }
 
-int32  DbgMemChkData::nOutstandingNewCalls() const
+int32 DbgMemChkData::nOutstandingNewCalls() const
 {
-    return  (int32)nNewCalls_ - (int32)nDeleteCalls_;
+    return (int32)nNewCalls_ - (int32)nDeleteCalls_;
 }
 
-int32  DbgMemChkData::nOutstandingNewArrayCalls() const
+int32 DbgMemChkData::nOutstandingNewArrayCalls() const
 {
-    return  (int32)nNewArrayCalls_ - (int32)nDeleteArrayCalls_;
+    return (int32)nNewArrayCalls_ - (int32)nDeleteArrayCalls_;
 }
 
-int32   DbgMemChkData::currentMemoryNewed() const
+int32 DbgMemChkData::currentMemoryNewed() const
 {
-    return  (int32)totalMemoryNewed_ - (int32)totalMemoryDeleted_;
+    return (int32)totalMemoryNewed_ - (int32)totalMemoryDeleted_;
 }
 
-ostream& operator <<( ostream& o, const DbgMemChkData& t )
+ostream& operator<<(ostream& o, const DbgMemChkData& t)
 {
     o << "...................................................................." << std::endl;
-    o << t.nNewCalls() << " NEWs, " << t.nDeleteCalls() << " DELETEs ( " << (int32)t.nNewCalls() - (int32)t.nDeleteCalls() << " outstanding NEWs )" << std::endl;
-    o << t.nNewArrayCalls() << " NEW_ARRAYs, " << t.nDeleteArrayCalls() << " DELETE_ARRAYs ( " << (int32)t.nNewArrayCalls() - (int32)t.nDeleteArrayCalls() << " outstanding NEW_ARRAYs )" << std::endl;
-    o << t.totalMemoryNewed() << " bytes newed in total, " << (int32)t.totalMemoryDeleted() << " bytes deleted in total " << std::endl;
-    o << t.totalMemoryNewed() - t.totalMemoryDeleted() << " bytes currently newed, " << t.maxMemoryNewed() << " bytes maximum newed" << std::endl;
+    o << t.nNewCalls() << " NEWs, " << t.nDeleteCalls() << " DELETEs ( "
+      << (int32)t.nNewCalls() - (int32)t.nDeleteCalls() << " outstanding NEWs )" << std::endl;
+    o << t.nNewArrayCalls() << " NEW_ARRAYs, " << t.nDeleteArrayCalls() << " DELETE_ARRAYs ( "
+      << (int32)t.nNewArrayCalls() - (int32)t.nDeleteArrayCalls() << " outstanding NEW_ARRAYs )" << std::endl;
+    o << t.totalMemoryNewed() << " bytes newed in total, " << (int32)t.totalMemoryDeleted()
+      << " bytes deleted in total " << std::endl;
+    o << t.totalMemoryNewed() - t.totalMemoryDeleted() << " bytes currently newed, " << t.maxMemoryNewed()
+      << " bytes maximum newed" << std::endl;
     o << "...................................................................." << std::endl;
 
     return o;

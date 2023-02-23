@@ -1,5 +1,5 @@
 /*
- * C L A S S 1 4 . H P P 
+ * C L A S S 1 4 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,7 +16,7 @@
 #include "base/persist.hpp"
 #include "ctl/mmvector.hpp"
 
-class Class14 : public ctl_min_memory_vector< int >
+class Class14 : public ctl_min_memory_vector<int>
 // Canonical form revoked
 {
 public:
@@ -25,22 +25,21 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL( Class14 );
-    
-    friend ostream& operator <<( ostream& o, const Class14& t );
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(Class14);
 
-    typedef ctl_min_memory_vector< int >    Base;
-    
+    friend ostream& operator<<(ostream& o, const Class14& t);
+
+    typedef ctl_min_memory_vector<int> Base;
+
 private:
-    Class14( const Class14& );
-    Class14& operator =( const Class14& );
-
+    Class14(const Class14&);
+    Class14& operator=(const Class14&);
 };
 
-PER_READ_WRITE( Class14 );
-PER_DECLARE_PERSISTENT( Class14 );
+PER_READ_WRITE(Class14);
+PER_DECLARE_PERSISTENT(Class14);
 
-bool operator ==( const Class14&, const Class14& );
+bool operator==(const Class14&, const Class14&);
 
 #endif
 

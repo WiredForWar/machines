@@ -1,5 +1,5 @@
 /*
- * F L A M E T H R  . H P P 
+ * F L A M E T H R  . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,32 +20,31 @@ class MachLogFlameThrower : public MachLogLinearWeapon
 // Canonical form revoked
 {
 public:
-    MachLogFlameThrower( MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner );
-    virtual ~MachLogFlameThrower();
+    MachLogFlameThrower(MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner);
+    ~MachLogFlameThrower() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogFlameThrower& t );
+    friend ostream& operator<<(ostream& o, const MachLogFlameThrower& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogFlameThrower );
-	PER_FRIEND_READ_WRITE( MachLogFlameThrower );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogFlameThrower);
+    PER_FRIEND_READ_WRITE(MachLogFlameThrower);
 
 protected:
-
-	virtual	MachLogLinearProjectile* createLinearProjectile
-	(
-		const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-	    const W4dEntity& target, const MexPoint3d& targetOffset
-	);
+    MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
 private:
-    MachLogFlameThrower( const MachLogFlameThrower& );
-    MachLogFlameThrower& operator =( const MachLogFlameThrower& );
-    bool operator ==( const MachLogFlameThrower& );
-
+    MachLogFlameThrower(const MachLogFlameThrower&);
+    MachLogFlameThrower& operator=(const MachLogFlameThrower&);
+    bool operator==(const MachLogFlameThrower&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogFlameThrower );
+PER_DECLARE_PERSISTENT(MachLogFlameThrower);
 
 #endif
 

@@ -9,58 +9,57 @@
 #include "render/texset.hpp"
 
 RenTextureSet::RenTextureSet()
-: pImpl_( _NEW( RenTextureSetImpl( ) ) )
+    : pImpl_(_NEW(RenTextureSetImpl()))
 {
     TEST_INVARIANT;
-	POST( not isLoaded() );
+    POST(not isLoaded());
 }
 
-RenTextureSet::RenTextureSet( const SysPathName& pathName )
-: pImpl_( _NEW( RenTextureSetImpl( pathName ) ) )
+RenTextureSet::RenTextureSet(const SysPathName& pathName)
+    : pImpl_(_NEW(RenTextureSetImpl(pathName)))
 {
     TEST_INVARIANT;
-	POST( isLoaded() );
+    POST(isLoaded());
 }
 
-RenTextureSet::RenTextureSet( const SysPathName& pathName, BaseProgressReporter* pReporter )
-: pImpl_( _NEW( RenTextureSetImpl( pathName, pReporter ) ) )
+RenTextureSet::RenTextureSet(const SysPathName& pathName, BaseProgressReporter* pReporter)
+    : pImpl_(_NEW(RenTextureSetImpl(pathName, pReporter)))
 {
     TEST_INVARIANT;
-	POST( isLoaded() );
+    POST(isLoaded());
 }
 
 RenTextureSet::~RenTextureSet()
 {
     TEST_INVARIANT;
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
-void RenTextureSet::load(const SysPathName& pathName )
+void RenTextureSet::load(const SysPathName& pathName)
 {
-	PRE(not isLoaded());
-	pImpl_->load( pathName );
+    PRE(not isLoaded());
+    pImpl_->load(pathName);
 }
 
-void RenTextureSet::load(const SysPathName& pathName, BaseProgressReporter* pReporter )
+void RenTextureSet::load(const SysPathName& pathName, BaseProgressReporter* pReporter)
 {
-	PRE(not isLoaded());
-	PRE(pReporter);
+    PRE(not isLoaded());
+    PRE(pReporter);
 
-	pImpl_->load( pathName, pReporter );
+    pImpl_->load(pathName, pReporter);
 }
 
 bool RenTextureSet::isLoaded() const
 {
-	return pImpl_->isLoaded_;
+    return pImpl_->isLoaded_;
 }
-
 
 void RenTextureSet::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RenTextureSet& t )
+ostream& operator<<(ostream& o, const RenTextureSet& t)
 {
 
     o << "RenTextureSet " << (void*)&t << " start" << std::endl;

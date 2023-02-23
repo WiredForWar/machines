@@ -31,25 +31,21 @@ class SysMetaFileIstream : public std::istream
 // Canonical form revoked
 {
 public:
-    SysMetaFileIstream(
-        const SysMetaFile& metaFile,
-        const SysPathName& fileName,
-        std::ios::open_mode );
+    SysMetaFileIstream(const SysMetaFile& metaFile, const SysPathName& fileName, std::ios::open_mode);
     // PRE( metaFile.hasFile( filename ) );
 
-    ~SysMetaFileIstream();
+    ~SysMetaFileIstream() override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const SysMetaFileIstream& t );
+    friend ostream& operator<<(ostream& o, const SysMetaFileIstream& t);
 
-    SysMetaFileIstream( const SysMetaFileIstream& );
-    SysMetaFileIstream& operator =( const SysMetaFileIstream& );
+    SysMetaFileIstream(const SysMetaFileIstream&);
+    SysMetaFileIstream& operator=(const SysMetaFileIstream&);
 
     SysMetaFileIstreamImpl* pImpl_;
 };
-
 
 #endif
 

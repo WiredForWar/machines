@@ -1,5 +1,5 @@
 /*
- * L I N V P L A N . H P P 
+ * L I N V P L A N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -21,54 +21,47 @@
 class W4dLinearFloatValuePlan : public W4dFloatValuePlan
 {
 public:
-    W4dLinearFloatValuePlan(
-        MATHEX_SCALAR initialValue,
-        MATHEX_SCALAR finalValue,
-        const PhysRelativeTime& time );
-     // PRE( time > 0 );
-        
-    ~W4dLinearFloatValuePlan();
+    W4dLinearFloatValuePlan(MATHEX_SCALAR initialValue, MATHEX_SCALAR finalValue, const PhysRelativeTime& time);
+    // PRE( time > 0 );
 
-    void add( MATHEX_SCALAR value, const PhysRelativeTime& time );
+    ~W4dLinearFloatValuePlan() override;
+
+    void add(MATHEX_SCALAR value, const PhysRelativeTime& time);
     // PRE( time > duration() );
-    
-    virtual MATHEX_SCALAR value( const PhysRelativeTime& timeOffset ) const;
+
+    MATHEX_SCALAR value(const PhysRelativeTime& timeOffset) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dLinearFloatValuePlan& t );
+    friend ostream& operator<<(ostream& o, const W4dLinearFloatValuePlan& t);
 
 private:
     // Operation deliberately revoked
-    W4dLinearFloatValuePlan( const W4dLinearFloatValuePlan& );
+    W4dLinearFloatValuePlan(const W4dLinearFloatValuePlan&);
 
     // Operation deliberately revoked
-    W4dLinearFloatValuePlan& operator =( const W4dLinearFloatValuePlan& );
+    W4dLinearFloatValuePlan& operator=(const W4dLinearFloatValuePlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dLinearFloatValuePlan& );
+    bool operator==(const W4dLinearFloatValuePlan&);
 
     struct Entry
     {
-        PhysRelativeTime        time_;  // Time at which the value is defined
-        MATHEX_SCALAR   value_; // The value
+        PhysRelativeTime time_; // Time at which the value is defined
+        MATHEX_SCALAR value_; // The value
 
         //  This constructor here purely to keep ctl_vector happy
-        Entry()
-        {
-        }
-        
-        Entry( MATHEX_SCALAR value, const PhysRelativeTime& time )
-        : value_( value ), time_( time )
-        {
-        };
+        Entry() { }
+
+        Entry(MATHEX_SCALAR value, const PhysRelativeTime& time)
+            : value_(value)
+            , time_(time) {};
     };
 
-    typedef ctl_vector< Entry > Entries;
+    using Entries = ctl_vector<Entry>;
 
     Entries entries_;
 };
-
 
 #endif
 

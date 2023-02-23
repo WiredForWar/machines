@@ -6,8 +6,8 @@
 /*
     RenIMMXIlluminator
 
-	A concrete class derived from RenIIlluminator which implements lighting
-	calculations using the mmxlight library.
+    A concrete class derived from RenIIlluminator which implements lighting
+    calculations using the mmxlight library.
 */
 
 #ifndef _RENDER_MMX_HPP
@@ -22,16 +22,16 @@ class RenIVertex;
 class RenIMMXIlluminator : public RenIIlluminator
 {
 public:
-	RenIMMXIlluminator(RenIDeviceImpl*);
-	virtual ~RenIMMXIlluminator();
+    RenIMMXIlluminator(RenIDeviceImpl*);
+    ~RenIMMXIlluminator() override;
 
-	virtual const RenIVertex* applyMaterial(const RenMaterial&, const RenIVertexData& in, const Indices&);
+    const RenIVertex* applyMaterial(const RenMaterial&, const RenIVertexData& in, const Indices&) override;
 
 private:
-	virtual void computeLambertian(const RenIVertexData&, const MexTransform3d& world, const MexAlignedBox3d* pVolume);
-	virtual void applyVertexMaterials(const RenIVertexData& in);
+    void computeLambertian(const RenIVertexData&, const MexTransform3d& world, const MexAlignedBox3d* pVolume) override;
+    void applyVertexMaterials(const RenIVertexData& in) override;
 
-	RenIFixPtLightingBuffer*	lightingBuffer_;
+    RenIFixPtLightingBuffer* lightingBuffer_;
 };
 
 #endif

@@ -7,7 +7,7 @@
     NetSystemMessageHandler
 
     ABC designed to give higher level libraries access to directx system messages.
-	The messages are sent via virtual functions and hence there is no dependancy on directx
+    The messages are sent via virtual functions and hence there is no dependancy on directx
 */
 
 #ifndef _NETWORK_SYSMESS_HPP
@@ -22,21 +22,19 @@ class NetSystemMessageHandler
 public:
     NetSystemMessageHandler();
     virtual ~NetSystemMessageHandler() = 0;
-	virtual bool	handleHostMessage() = 0;
-	virtual bool	handleDestroyPlayerMessage( const string& ) = 0;
-	virtual bool	handleSessionLostMessage() = 0;
+    virtual bool handleHostMessage() = 0;
+    virtual bool handleDestroyPlayerMessage(const string&) = 0;
+    virtual bool handleSessionLostMessage() = 0;
 
     void CLASS_INVARIANT;
-	void playerHasBeenLost( const string& );
+    void playerHasBeenLost(const string&);
 
 private:
-    friend ostream& operator <<( ostream& o, const NetSystemMessageHandler& t );
+    friend ostream& operator<<(ostream& o, const NetSystemMessageHandler& t);
 
-    NetSystemMessageHandler( const NetSystemMessageHandler& );
-    NetSystemMessageHandler& operator =( const NetSystemMessageHandler& );
-
+    NetSystemMessageHandler(const NetSystemMessageHandler&);
+    NetSystemMessageHandler& operator=(const NetSystemMessageHandler&);
 };
-
 
 #endif
 

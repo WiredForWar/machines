@@ -9,31 +9,31 @@
 
 MachPhysConstructionExplosionData::ExplosionPoint::ExplosionPoint()
 {
-    ASSERT_FAIL( "" );
+    ASSERT_FAIL("");
 }
 
 MachPhysConstructionExplosionData::ExplosionPoint::ExplosionPoint(
-    const MexPoint3d&      position,
-    MATHEX_SCALAR   maxFireballOffset,
-    size_t          minFireballs,
-    size_t          maxFireballs,
-    MATHEX_SCALAR   minTimeFactor,
-    MATHEX_SCALAR   maxTimeFactor,
-    MATHEX_SCALAR   size,
-    MATHEX_SCALAR   depthOffset )
-: position_( position ),
-  maxFireballOffset_( maxFireballOffset ),
-  minFireballs_( minFireballs ),
-  maxFireballs_( maxFireballs ),
-  minTimeFactor_( minTimeFactor ),
-  maxTimeFactor_( maxTimeFactor ),
-  size_( size ),
-  depthOffset_( depthOffset )
+    const MexPoint3d& position,
+    MATHEX_SCALAR maxFireballOffset,
+    size_t minFireballs,
+    size_t maxFireballs,
+    MATHEX_SCALAR minTimeFactor,
+    MATHEX_SCALAR maxTimeFactor,
+    MATHEX_SCALAR size,
+    MATHEX_SCALAR depthOffset)
+    : position_(position)
+    , maxFireballOffset_(maxFireballOffset)
+    , minFireballs_(minFireballs)
+    , maxFireballs_(maxFireballs)
+    , minTimeFactor_(minTimeFactor)
+    , maxTimeFactor_(maxTimeFactor)
+    , size_(size)
+    , depthOffset_(depthOffset)
 {
-    PRE_INFO( minTimeFactor );
-    PRE_INFO( maxTimeFactor );
-    PRE( 0.0 <= minTimeFactor and minTimeFactor <= 1.0 );
-    PRE( 0.0 <= maxTimeFactor and maxTimeFactor <= 1.0 );
+    PRE_INFO(minTimeFactor);
+    PRE_INFO(maxTimeFactor);
+    PRE(0.0 <= minTimeFactor and minTimeFactor <= 1.0);
+    PRE(0.0 <= maxTimeFactor and maxTimeFactor <= 1.0);
 
     TEST_INVARIANT;
 }
@@ -41,7 +41,6 @@ MachPhysConstructionExplosionData::ExplosionPoint::ExplosionPoint(
 MachPhysConstructionExplosionData::ExplosionPoint::~ExplosionPoint()
 {
     TEST_INVARIANT;
-
 }
 
 const MexPoint3d& MachPhysConstructionExplosionData::ExplosionPoint::position() const
@@ -64,42 +63,42 @@ size_t MachPhysConstructionExplosionData::ExplosionPoint::maxFireballs() const
     return maxFireballs_;
 }
 
-MATHEX_SCALAR   MachPhysConstructionExplosionData::ExplosionPoint::minTimeFactor() const
+MATHEX_SCALAR MachPhysConstructionExplosionData::ExplosionPoint::minTimeFactor() const
 {
-    MATHEX_SCALAR   result = minTimeFactor_;
+    MATHEX_SCALAR result = minTimeFactor_;
 
-    POST_INFO( minTimeFactor_ );
-    POST( 0.0 <= result and result <= 1.0 );
+    POST_INFO(minTimeFactor_);
+    POST(0.0 <= result and result <= 1.0);
 
     return result;
 }
 
-MATHEX_SCALAR   MachPhysConstructionExplosionData::ExplosionPoint::maxTimeFactor() const
+MATHEX_SCALAR MachPhysConstructionExplosionData::ExplosionPoint::maxTimeFactor() const
 {
-    MATHEX_SCALAR   result = maxTimeFactor_;
+    MATHEX_SCALAR result = maxTimeFactor_;
 
-    POST_INFO( maxTimeFactor_ );
-    POST( 0.0 <= result and result <= 1.0 );
+    POST_INFO(maxTimeFactor_);
+    POST(0.0 <= result and result <= 1.0);
 
     return result;
 }
 
-MATHEX_SCALAR   MachPhysConstructionExplosionData::ExplosionPoint::size() const
+MATHEX_SCALAR MachPhysConstructionExplosionData::ExplosionPoint::size() const
 {
     return size_;
 }
 
-MATHEX_SCALAR   MachPhysConstructionExplosionData::ExplosionPoint::depthOffset() const
+MATHEX_SCALAR MachPhysConstructionExplosionData::ExplosionPoint::depthOffset() const
 {
     return depthOffset_;
 }
 
 void MachPhysConstructionExplosionData::ExplosionPoint::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysConstructionExplosionData::ExplosionPoint& t )
+ostream& operator<<(ostream& o, const MachPhysConstructionExplosionData::ExplosionPoint& t)
 {
 
     o << "ExplosionPoint " << (void*)&t << " start" << std::endl;

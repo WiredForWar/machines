@@ -7,9 +7,9 @@
 
 #include "world4d/planentr.hpp"
 
-PER_DEFINE_PERSISTENT( W4dCompositePlanEntry );
+PER_DEFINE_PERSISTENT(W4dCompositePlanEntry);
 
-W4dCompositePlanEntry::W4dCompositePlanEntry( PerConstructor )
+W4dCompositePlanEntry::W4dCompositePlanEntry(PerConstructor)
 {
 
     TEST_INVARIANT;
@@ -18,16 +18,15 @@ W4dCompositePlanEntry::W4dCompositePlanEntry( PerConstructor )
 W4dCompositePlanEntry::~W4dCompositePlanEntry()
 {
     TEST_INVARIANT;
-
 }
 
-void perWrite( PerOstream& ostr, const W4dCompositePlanEntry& entry )
+void perWrite(PerOstream& ostr, const W4dCompositePlanEntry& entry)
 {
     ostr << entry.id_;
     ostr << entry.plan_;
 }
 
-void perRead( PerIstream& istr, W4dCompositePlanEntry& entry )
+void perRead(PerIstream& istr, W4dCompositePlanEntry& entry)
 {
     istr >> entry.id_;
     istr >> entry.plan_;
@@ -35,10 +34,10 @@ void perRead( PerIstream& istr, W4dCompositePlanEntry& entry )
 
 void W4dCompositePlanEntry::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dCompositePlanEntry& t )
+ostream& operator<<(ostream& o, const W4dCompositePlanEntry& t)
 {
 
     o << "W4dCompositePlanEntry " << (void*)&t << " start" << std::endl;

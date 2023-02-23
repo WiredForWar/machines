@@ -1,5 +1,5 @@
 /*
- * D O M A I N I . H P P 
+ * D O M A I N I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -33,28 +33,27 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( W4dDomainImpl );
-    PER_FRIEND_READ_WRITE( W4dDomainImpl );
+    PER_MEMBER_PERSISTENT(W4dDomainImpl);
+    PER_FRIEND_READ_WRITE(W4dDomainImpl);
 
 private:
-//    friend void W4dPortal::partner( W4dDomain* );
-//    friend W4dPortal::W4dPortal(W4dDomain*, W4dDomain*, const MexQuad3d&, const W4dTransform3d&);
-//    friend W4dPortal::~W4dPortal();
+    //    friend void W4dPortal::partner( W4dDomain* );
+    //    friend W4dPortal::W4dPortal(W4dDomain*, W4dDomain*, const MexQuad3d&, const W4dTransform3d&);
+    //    friend W4dPortal::~W4dPortal();
     friend class W4dDomain;
-            
-    friend ostream& operator <<( ostream& o, const W4dDomainImpl& t );
 
-    W4dDomainImpl( const W4dDomainImpl& );
-    W4dDomainImpl& operator =( const W4dDomainImpl& );
+    friend ostream& operator<<(ostream& o, const W4dDomainImpl& t);
 
-    W4dDomain::W4dPortals		portals_;
-    W4dEntity::W4dEntities		intersectingEntities_;
-	W4dObservers 				observers_; //Observers interested in the domain's subjects
-	W4dSubjects 				subjects_; //logical objects in the domain
+    W4dDomainImpl(const W4dDomainImpl&);
+    W4dDomainImpl& operator=(const W4dDomainImpl&);
 
+    W4dDomain::W4dPortals portals_;
+    W4dEntity::W4dEntities intersectingEntities_;
+    W4dObservers observers_; // Observers interested in the domain's subjects
+    W4dSubjects subjects_; // logical objects in the domain
 };
 
-PER_DECLARE_PERSISTENT( W4dDomainImpl );
+PER_DECLARE_PERSISTENT(W4dDomainImpl);
 
 #endif
 

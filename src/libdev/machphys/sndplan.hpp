@@ -1,5 +1,5 @@
 /*
- * S N D P L A N . H P P 
+ * S N D P L A N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -24,16 +24,14 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachPhysSoundPlan( const MachPhysSoundPlan& );
+    MachPhysSoundPlan(const MachPhysSoundPlan&);
 
     // Operation deliberately revoked
-    MachPhysSoundPlan& operator =( const MachPhysSoundPlan& );
+    MachPhysSoundPlan& operator=(const MachPhysSoundPlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysSoundPlan& );
-
+    bool operator==(const MachPhysSoundPlan&);
 };
-
 
 #endif
 

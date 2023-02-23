@@ -1,5 +1,5 @@
 /*
- * D B P L A N E I . H P P 
+ * D B P L A N E I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,7 +17,7 @@
 #include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 
-//forward refs
+// forward refs
 class MachGuiDbScenario;
 class MachGuiDbSystem;
 
@@ -25,30 +25,28 @@ class MachGuiDbIPlanet
 // Canonical form revoked
 {
 public:
-
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT( MachGuiDbIPlanet );
-    PER_FRIEND_READ_WRITE( MachGuiDbIPlanet );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachGuiDbIPlanet);
+    PER_FRIEND_READ_WRITE(MachGuiDbIPlanet);
 
 private:
     friend class MachGuiDbPlanet;
 
-    friend ostream& operator <<( ostream& o, const MachGuiDbIPlanet& t );
+    friend ostream& operator<<(ostream& o, const MachGuiDbIPlanet& t);
 
     MachGuiDbIPlanet();
     ~MachGuiDbIPlanet();
-    MachGuiDbIPlanet( const MachGuiDbIPlanet& );
-    MachGuiDbIPlanet& operator =( const MachGuiDbIPlanet& );
+    MachGuiDbIPlanet(const MachGuiDbIPlanet&);
+    MachGuiDbIPlanet& operator=(const MachGuiDbIPlanet&);
 
-    //data members
-    MachGuiDbSystem* pSystem_; //Owning system/terrain type
-    string campaignPicture_; //Flic or bmp displayed in campaign menu
-    ctl_vector< MachGuiDbScenario* > scenarios_; //Collection of scenarios
+    // data members
+    MachGuiDbSystem* pSystem_; // Owning system/terrain type
+    string campaignPicture_; // Flic or bmp displayed in campaign menu
+    ctl_vector<MachGuiDbScenario*> scenarios_; // Collection of scenarios
 };
 
-PER_DECLARE_PERSISTENT( MachGuiDbIPlanet );
-
+PER_DECLARE_PERSISTENT(MachGuiDbIPlanet);
 
 #endif
 

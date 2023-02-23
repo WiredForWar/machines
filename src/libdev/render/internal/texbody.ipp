@@ -4,25 +4,25 @@
  */
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
-//#include "render/internal/d3d.hpp"
+// #include "render/internal/d3d.hpp"
 
 /*_CODE_INLINE
 void RenITexBody::applyD3DHandle(IDirect3DDevice2* dev) const
 {
-	PRE(dev);
-	PRE_INFO((void*) handleDev_);
-	PRE_INFO((void*) dev);
-	PRE(!handleDev_ || handleDev_ == dev);
+    PRE(dev);
+    PRE_INFO((void*) handleDev_);
+    PRE_INFO((void*) dev);
+    PRE(!handleDev_ || handleDev_ == dev);
 
     TRYRENDX(dev->SetRenderState(D3DRENDERSTATE_TEXTUREHANDLE, handle_));
 
-	// Detailed debugging: there's a large overhead in writing this many times per frame.
-	// RENDER_STREAM("Using tex handle " << handle_ << endl);
+    // Detailed debugging: there's a large overhead in writing this many times per frame.
+    // RENDER_STREAM("Using tex handle " << handle_ << endl);
 }
 */
 /* End MATERIAL.IPP **************************************************/

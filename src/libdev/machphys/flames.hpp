@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-
 /*
     Flames
 
@@ -22,7 +21,10 @@
 class RenTexture;
 class MexTransform3d;
 
-enum MachPhysFlameType : unsigned char { FLAME_1 };
+enum MachPhysFlameType : unsigned char
+{
+    FLAME_1
+};
 
 class MachPhysFlame : public W4dSprite3d
 {
@@ -36,7 +38,7 @@ public:
         MATHEX_SCALAR height,
         MATHEX_SCALAR depthOffset,
         const PhysAbsoluteTime& startTime,
-        const PhysRelativeTime& duration );
+        const PhysRelativeTime& duration);
 
     //  Construct the flame but don't start it going yet
     MachPhysFlame(
@@ -45,9 +47,9 @@ public:
         MachPhysFlameType flameType,
         MATHEX_SCALAR size,
         MATHEX_SCALAR depthOffset,
-        const PhysRelativeTime& duration );
+        const PhysRelativeTime& duration);
 
-	//a rectangular flame
+    // a rectangular flame
     MachPhysFlame(
         W4dEntity* pParent,
         const MexTransform3d& localTransform,
@@ -55,57 +57,57 @@ public:
         MATHEX_SCALAR width,
         MATHEX_SCALAR height,
         MATHEX_SCALAR depthOffset,
-        const PhysRelativeTime& duration );
+        const PhysRelativeTime& duration);
 
-    ~MachPhysFlame();
+    ~MachPhysFlame() override;
 
     //  Start the flame at the given time, and turning off after the duration
-    //defined in the constructor.
-    void startFlame( const PhysAbsoluteTime& startTime );
+    // defined in the constructor.
+    void startFlame(const PhysAbsoluteTime& startTime);
 
-    //Applies the material plan to get the flame burning from startTime,
-    //and makes immediately visible. However does not apply a visibility plan to turn
-    //the flame on/off. The client is left to do this.
-    void startBurning( const PhysAbsoluteTime& startTime );
+    // Applies the material plan to get the flame burning from startTime,
+    // and makes immediately visible. However does not apply a visibility plan to turn
+    // the flame on/off. The client is left to do this.
+    void startBurning(const PhysAbsoluteTime& startTime);
 
     //  Load all of the flame bitmaps in advance so that the
     //  flame can be created 'instantly'
 
-    static  void preload();
+    static void preload();
 
     //  return a random flame type out of those available
-    static  MachPhysFlameType randomFlame();
+    static MachPhysFlameType randomFlame();
 
-    typedef ctl_vector< Ren::MaterialVecPtr > Materials;
-    typedef CtlCountedPtr< Materials > MaterialsPtr;
+    using Materials = ctl_vector<Ren::MaterialVecPtr>;
+    using MaterialsPtr = CtlCountedPtr<Materials>;
 
-    static  const MaterialsPtr&   materialsPtr( MachPhysFlameType flameType );
-    static  RenMaterial initialMaterial( MachPhysFlameType );
+    static const MaterialsPtr& materialsPtr(MachPhysFlameType flameType);
+    static RenMaterial initialMaterial(MachPhysFlameType);
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysFlame );
-    PER_FRIEND_READ_WRITE( MachPhysFlame );
+    PER_MEMBER_PERSISTENT(MachPhysFlame);
+    PER_FRIEND_READ_WRITE(MachPhysFlame);
 
 private:
     // Operations deliberately revoked
-    MachPhysFlame( const MachPhysFlame& );
-    MachPhysFlame& operator =( const MachPhysFlame& );
-    bool operator ==( const MachPhysFlame& );
+    MachPhysFlame(const MachPhysFlame&);
+    MachPhysFlame& operator=(const MachPhysFlame&);
+    bool operator==(const MachPhysFlame&);
 
-    static  const MaterialsPtr&   materials1Ptr();
-    static  void addMaterial( Materials* pMaterials, const RenTexture& texture );
+    static const MaterialsPtr& materials1Ptr();
+    static void addMaterial(Materials* pMaterials, const RenTexture& texture);
 
-    //data members
+    // data members
     PhysRelativeTime duration_;
     MachPhysFlameType flameType_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysFlame );
+PER_DECLARE_PERSISTENT(MachPhysFlame);
 
-PER_ENUM_PERSISTENT( MachPhysFlameType );
+PER_ENUM_PERSISTENT(MachPhysFlameType);
 
-ostream& operator <<( ostream&, MachPhysFlameType );
+ostream& operator<<(ostream&, MachPhysFlameType);
 
 #endif
 

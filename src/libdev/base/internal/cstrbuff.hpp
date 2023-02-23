@@ -21,35 +21,34 @@
 class BaseCircularStreamBuffer : public BaseLogStreamBuffer
 {
 public:
-    BaseCircularStreamBuffer( size_t nCharactersInBuffer );
-    ~BaseCircularStreamBuffer();
+    BaseCircularStreamBuffer(size_t nCharactersInBuffer);
+    ~BaseCircularStreamBuffer() override;
 
-    virtual void    clear();
-    virtual size_t  nCharactersInBuffer() const;
+    void clear() override;
+    size_t nCharactersInBuffer() const override;
 
-    virtual int     overflow( int c );
-    virtual int     underflow();
+    int overflow(int c) override;
+    int underflow() override;
 
-    virtual int     do_sgetn( char *buf, int len );
-    virtual int     do_sputn( char const *buf, int len );
-    virtual int     sync();
+    virtual int do_sgetn(char* buf, int len);
+    virtual int do_sputn(char const* buf, int len);
+    int sync() override;
 
 private:
     // Operation deliberately revoked
-    BaseCircularStreamBuffer( const BaseCircularStreamBuffer& );
+    BaseCircularStreamBuffer(const BaseCircularStreamBuffer&);
 
     // Operation deliberately revoked
-    BaseCircularStreamBuffer& operator =( const BaseCircularStreamBuffer& );
+    BaseCircularStreamBuffer& operator=(const BaseCircularStreamBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseCircularStreamBuffer& );
+    bool operator==(const BaseCircularStreamBuffer&);
 
-    char*   pBuffer_;
-    size_t  bufferSize_;
-    bool    bufferWrapped_;
-    size_t  nCharactersOutput_;
+    char* pBuffer_;
+    size_t bufferSize_;
+    bool bufferWrapped_;
+    size_t nCharactersOutput_;
 };
-
 
 #endif
 

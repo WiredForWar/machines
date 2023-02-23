@@ -1,5 +1,5 @@
 /*
- * E X P A N D B I . C P P 
+ * E X P A N D B I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,25 +17,26 @@
 #include "machlog/race.hpp"
 #include "machlog/races.hpp"
 
-MachLogExpandingBlastImpl::MachLogExpandingBlastImpl( MachActor* pOwner, 
-													  MachLogRace* pLogRace, 
-													  const MexPoint3d& startPosition, 
-													  MATHEX_SCALAR blastRadius,
-													  MachLogExpandingBlast::CanHitAirUnits canHitAirUnits )
-:	pOwner_( pOwner ),
-	startPosition_( startPosition ),
-	pRace_( pLogRace ),
-	finished_( false ),
-	blastRadius_( blastRadius ),
-	startedFirstWave_( false ),
-	startedSecondWave_( false ),
-	startedThirdWave_( false ),
-	creationTime_( SimManager::instance().currentTime() ),
-	nVictims_( 0 ),
-	canHitAirUnits_( canHitAirUnits ), 
-	pConstruction_( NULL )				// this represents the building the explosion is inside (if any)
+MachLogExpandingBlastImpl::MachLogExpandingBlastImpl(
+    MachActor* pOwner,
+    MachLogRace* pLogRace,
+    const MexPoint3d& startPosition,
+    MATHEX_SCALAR blastRadius,
+    MachLogExpandingBlast::CanHitAirUnits canHitAirUnits)
+    : pOwner_(pOwner)
+    , startPosition_(startPosition)
+    , pRace_(pLogRace)
+    , finished_(false)
+    , blastRadius_(blastRadius)
+    , startedFirstWave_(false)
+    , startedSecondWave_(false)
+    , startedThirdWave_(false)
+    , creationTime_(SimManager::instance().currentTime())
+    , nVictims_(0)
+    , canHitAirUnits_(canHitAirUnits)
+    , pConstruction_(nullptr) // this represents the building the explosion is inside (if any)
 {
-	victims_.reserve( 50 );
+    victims_.reserve(50);
 
     TEST_INVARIANT;
 }
@@ -43,15 +44,14 @@ MachLogExpandingBlastImpl::MachLogExpandingBlastImpl( MachActor* pOwner,
 MachLogExpandingBlastImpl::~MachLogExpandingBlastImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogExpandingBlastImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogExpandingBlastImpl& t )
+ostream& operator<<(ostream& o, const MachLogExpandingBlastImpl& t)
 {
 
     o << "MachLogExpandingBlastImpl " << (void*)&t << " start" << std::endl;
@@ -59,6 +59,5 @@ ostream& operator <<( ostream& o, const MachLogExpandingBlastImpl& t )
 
     return o;
 }
-
 
 /* End EXPANDBI.CPP *************************************************/

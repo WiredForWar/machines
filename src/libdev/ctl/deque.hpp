@@ -20,28 +20,23 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template < class T >
-class ctl_deque
-: public std::deque< T >
+template <class T> class ctl_deque : public std::deque<T>
 {
 public:
+    using rep_type = std::deque<T>;
 
-	typedef std::deque< T >							rep_type;
+    using std::deque<T>::deque;
 
-    using std::deque< T >::deque;
+    virtual ~ctl_deque() {};
 
-	virtual ~ctl_deque() {};
+    // ctl_deque< T >& operator =( const ctl_deque< T >& x );
 
-	//ctl_deque< T >& operator =( const ctl_deque< T >& x );
-
-
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL( ctl_deque );
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_deque);
 
 private:
-
 };
 
-PER_DEFINE_PERSISTENT_INLINE_T1( ctl_deque );
+PER_DEFINE_PERSISTENT_INLINE_T1(ctl_deque);
 
 //////////////////////////////////////////////////////////////////////
 /*
@@ -53,18 +48,18 @@ bool operator <( const ctl_deque< T >&, const ctl_deque< T >& );
 */
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
- //   #include "ctl/deque.itp"
+#ifdef _INLINE
+//   #include "ctl/deque.itp"
 #endif
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    //#include "ctl/deque.ctp"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+// #include "ctl/deque.ctp"
+// #endif
 
-//#ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
-    #include "ctl/deque.ctf"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
+#include "ctl/deque.ctf"
+// #endif
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	/* #ifndef _CTL_DEQUE_HPP	*/
+#endif /* #ifndef _CTL_DEQUE_HPP   */

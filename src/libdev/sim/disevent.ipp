@@ -1,5 +1,5 @@
 /*
- * D I S E V E N T . I P P 
+ * D I S E V E N T . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -8,9 +8,9 @@
 #include "phys/phys.hpp"
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -18,24 +18,24 @@
 _CODE_INLINE
 const PhysAbsoluteTime& SimDiscreteEvent::time() const
 {
-	return time_;
+    return time_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
 _CODE_INLINE
-void SimDiscreteEvent::diary( SimEventDiary* pDiary )
+void SimDiscreteEvent::diary(SimEventDiary* pDiary)
 {
-	//Mustn't already be in a diary except the new one
-	PRE( (pDiary == NULL) or (pDiary_ == NULL) or (pDiary_ == pDiary) );
+    // Mustn't already be in a diary except the new one
+    PRE((pDiary == nullptr) or (pDiary_ == nullptr) or (pDiary_ == pDiary));
 
-	pDiary_ = pDiary;
+    pDiary_ = pDiary;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
 _CODE_INLINE
-SimEventDiary* SimDiscreteEvent::diary( void ) const
+SimEventDiary* SimDiscreteEvent::diary() const
 {
-	return pDiary_;
+    return pDiary_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 /* End DISEVENT.IPP *************************************************/

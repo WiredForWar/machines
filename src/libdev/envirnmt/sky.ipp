@@ -7,103 +7,102 @@
 ***********************************************************/
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
-
 
 _CODE_INLINE
 void EnvSky::attachStars(W4dStars* const pStars)
 {
-	PRE(pStars);
+    PRE(pStars);
 
-	pStars_ = pStars;
+    pStars_ = pStars;
 }
 
 _CODE_INLINE
-void EnvSky::detachStars( void )
+void EnvSky::detachStars()
 {
-	PRE(pStars_);
+    PRE(pStars_);
 
-	pStars_ = 0;
+    pStars_ = nullptr;
 }
 
 _CODE_INLINE
-const W4dStars* EnvSky::pStars( void ) const
+const W4dStars* EnvSky::pStars() const
 {
-	return pStars_;
+    return pStars_;
 }
 
 _CODE_INLINE
-W4dStars* EnvSky::pStars( void )
+W4dStars* EnvSky::pStars()
 {
-	return pStars_;
+    return pStars_;
 }
 
 _CODE_INLINE
 const RenColour& EnvSky::overrideColour() const
 {
-	return overrideColour_;
+    return overrideColour_;
 }
 
 _CODE_INLINE
 bool EnvSky::doColourOverride() const
 {
-	return doColourOverride_;
+    return doColourOverride_;
 }
 
 _CODE_INLINE
 bool EnvSky::colourChanged() const
 {
-	return colourChanged_;
-}	
+    return colourChanged_;
+}
 
 _CODE_INLINE
 void EnvSky::colourChangeUpdated()
 {
-	colourChanged_ = false;
-	POST(!colourChanged());
-}	
+    colourChanged_ = false;
+    POST(!colourChanged());
+}
 
 ////////////////////////////////////////////////////////////
 
 _CODE_INLINE
 void EnvControlledSky::controller(const EnvSatellite* pController)
 {
-	PRE(pController);
+    PRE(pController);
 
-	pController_ = pController;
+    pController_ = pController;
 }
 
 _CODE_INLINE
-const EnvSatellite* EnvControlledSky::controller( void ) const
+const EnvSatellite* EnvControlledSky::controller() const
 {
-	return pController_;
+    return pController_;
 }
 
 ////////////////////////////////////////////////////////////
 
 // VIRTUAL //
 _CODE_INLINE
-bool EnvUniformSky::visible( void ) const
+bool EnvUniformSky::visible() const
 {
-	return visible_;
+    return visible_;
 }
 
 // VIRTUAL //
 _CODE_INLINE
 void EnvUniformSky::visible(bool yesNo)
 {
-	visible_ = yesNo;
+    visible_ = yesNo;
 }
 
 _CODE_INLINE
 void EnvUniformSky::colourTable(EnvElevationColourTable* pColourTable)
 {
-	PRE(pColourTable);
+    PRE(pColourTable);
 
-	pColourTable_ = pColourTable;
+    pColourTable_ = pColourTable;
 }
 
 ////////////////////////////////////////////////////////////
@@ -111,14 +110,13 @@ void EnvUniformSky::colourTable(EnvElevationColourTable* pColourTable)
 _CODE_INLINE
 void EnvStaticSky::backgroundColour(RenColour newBackgroundColour)
 {
-	backgroundColour_ = newBackgroundColour;
+    backgroundColour_ = newBackgroundColour;
 }
 
 _CODE_INLINE
-const RenColour& EnvStaticSky::backgroundColour( void ) const
+const RenColour& EnvStaticSky::backgroundColour() const
 {
-	return backgroundColour_;
+    return backgroundColour_;
 }
 
 /* End SKY.IPP ********************************************/
-

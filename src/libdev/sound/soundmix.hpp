@@ -55,205 +55,204 @@ class SndMixer
 // Singleton.
 {
 public:
+    static bool isInitialised();
 
-	static bool isInitialised();
-
-    static void initialise( const SndMixerParameters& params );
+    static void initialise(const SndMixerParameters& params);
     // PRE( not SndMixer::isInitialised() );
-	// POST( isInitialised() );
+    // POST( isInitialised() );
 
     static SndMixer& instance();
     // PRE( isInitialised() );
 
-	static Snd::RelativeTime SndSampleLength(const SndWaveformId& id);
-	//PRE(SndWaveform::isWaveFile(id.pathname().c_str());
+    static Snd::RelativeTime SndSampleLength(const SndWaveformId& id);
+    // PRE(SndWaveform::isWaveFile(id.pathname().c_str());
 
     ~SndMixer();
 
-	///////////////////////////////
-	//Return a pointer to the DirectSound object
-	IDirectSound* pIDirectSound();
+    ///////////////////////////////
+    // Return a pointer to the DirectSound object
+    IDirectSound* pIDirectSound();
 
-	bool isActive( const SndSampleHandle& handle ) const;
+    bool isActive(const SndSampleHandle& handle) const;
     // A sample is active iff it has been started and has not yet reached
     // its finishing time.
 
-	bool isAudible( const SndSampleHandle& handle ) const;
-	// POST( implies( result, isActive( handle ) );
+    bool isAudible(const SndSampleHandle& handle) const;
+    // POST( implies( result, isActive( handle ) );
 
-	//Has this sample stopped playing
-	bool isStopped( const SndSampleHandle& handle ) const;
-	//PRE(isAllocated(pHandle));
+    // Has this sample stopped playing
+    bool isStopped(const SndSampleHandle& handle) const;
+    // PRE(isAllocated(pHandle));
 
-	//Is this sample handle a valid allocated handle
-	bool isAllocated( const SndSampleHandle& handle ) const;
+    // Is this sample handle a valid allocated handle
+    bool isAllocated(const SndSampleHandle& handle) const;
 
-	//When a sample is played via this method it does not start playing
-	//automatically, it has a sample handle allocated to it,
-	//and only starts playing after the next call to update()
-	//NB Default resource management responsibility is
-	//with the CLIENT
-	SndSampleHandle playSample( const SndSampleParameters& p );
-	// PRE(noOfFreeLogicalChannels() > 0);
-	// POST(isAllocated(handle));
+    // When a sample is played via this method it does not start playing
+    // automatically, it has a sample handle allocated to it,
+    // and only starts playing after the next call to update()
+    // NB Default resource management responsibility is
+    // with the CLIENT
+    SndSampleHandle playSample(const SndSampleParameters& p);
+    // PRE(noOfFreeLogicalChannels() > 0);
+    // POST(isAllocated(handle));
 
-	//Query methods for the libraries responsibility
-	bool isClientResponsible( const SndSampleHandle& handle ) const;
-	//PRE(isAllocated(handle));
-	bool isLibraryResponsible( const SndSampleHandle& handle ) const;
-	//PRE(isAllocated(handle));
+    // Query methods for the libraries responsibility
+    bool isClientResponsible(const SndSampleHandle& handle) const;
+    // PRE(isAllocated(handle));
+    bool isLibraryResponsible(const SndSampleHandle& handle) const;
+    // PRE(isAllocated(handle));
 
-	//Set the responsibility for freeing sample resources
-	void setResourcesResponsibilityLibrary( const SndSampleHandle& handle );
-	//PRE(isAllocated(handle));
-	//PRE(activeSamples_[handle]);
-	//POST(isLibraryResponsible(handle));
+    // Set the responsibility for freeing sample resources
+    void setResourcesResponsibilityLibrary(const SndSampleHandle& handle);
+    // PRE(isAllocated(handle));
+    // PRE(activeSamples_[handle]);
+    // POST(isLibraryResponsible(handle));
 
-	void setResourcesResponsibilityClient( const SndSampleHandle& handle );
-	//PRE(isAllocated(handle));
-	//PRE(activeSamples_[handle]);
-	//POST(isClientResponsible(handle));
+    void setResourcesResponsibilityClient(const SndSampleHandle& handle);
+    // PRE(isAllocated(handle));
+    // PRE(activeSamples_[handle]);
+    // POST(isClientResponsible(handle));
 
-	//Stopping a sample only stops a sample playing,
-	//it will not free any sample resources.
-	//This is not a valid operation on a sample
-	//with library resource responsibility
-	void stopSample( const SndSampleHandle& handle );
-	//PRE(isClientResponsible(handle));
-    //PRE(isAllocated(handle));
-    //POST(!isActive(handle));
+    // Stopping a sample only stops a sample playing,
+    // it will not free any sample resources.
+    // This is not a valid operation on a sample
+    // with library resource responsibility
+    void stopSample(const SndSampleHandle& handle);
+    // PRE(isClientResponsible(handle));
+    // PRE(isAllocated(handle));
+    // POST(!isActive(handle));
 
-	//Frees sample memory and its handle
-	void freeSampleResources( const SndSampleHandle& handle );
-    //PRE( isAllocated(handle) );
-    //POST( !isAllocated(handle) );
+    // Frees sample memory and its handle
+    void freeSampleResources(const SndSampleHandle& handle);
+    // PRE( isAllocated(handle) );
+    // POST( !isAllocated(handle) );
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	bool hasLoadedWaveform( const SndWaveformId& pathname ) const;
+    bool hasLoadedWaveform(const SndWaveformId& pathname) const;
 
     //  Load a waveform into memory. If the waveform has already been loaded,
     // return a reference to the existing SndWaveform.
-	const SndWaveform& loadWaveform( const SndWaveformId& id, bool threeD = false);
-	// POST( hasLoadedWaveform( id ) );
+    const SndWaveform& loadWaveform(const SndWaveformId& id, bool threeD = false);
+    // POST( hasLoadedWaveform( id ) );
 
     // Unload the waveform from memory. No attempt should be made to play
     // the waveform after it has been unloaded.
-    void unloadWaveform( const SndWaveformId& id );
-	// PRE( hasLoadedWaveform( id ) );
+    void unloadWaveform(const SndWaveformId& id);
+    // PRE( hasLoadedWaveform( id ) );
 
-	//Unload all preloaded waveforms
+    // Unload all preloaded waveforms
     void unloadAll();
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	void update();
+    void update();
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	typedef ctl_list< SndSampleHandle > SampleHandles;
+    using SampleHandles = ctl_list<SndSampleHandle>;
 
-	// currently active samples
+    // currently active samples
     //  This call has not currently been implemented. At such point as it is
     //  implemented it will need to be recorded as it might affect the running
     //  of the application. Bob 7 Oct 1998
     // const SampleHandles& activeSamples() const;
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	typedef ctl_list< SndWaveform* > Waveforms;
+    using Waveforms = ctl_list<SndWaveform*>;
 
-	// waveforms currently resident in memory
+    // waveforms currently resident in memory
     //  This call has not currently been implemented. At such point as it is
     //  implemented it will need to be recorded as it might affect the running
     //  of the application. Bob 7 Oct 1998
-   	// const Waveforms& waveforms() const;
+    // const Waveforms& waveforms() const;
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	typedef ctl_vector<Sample*> SampleList;
+    using SampleList = ctl_vector<Sample*>;
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	typedef ctl_vector<SndSampleId> SampleIdVector;
+    using SampleIdVector = ctl_vector<SndSampleId>;
 
-	///////////////////////////////
+    ///////////////////////////////
 
-	bool is3dSound( const SndSampleHandle& handle ) const;
-	// PRE( isActive( handle ) );
+    bool is3dSound(const SndSampleHandle& handle) const;
+    // PRE( isActive( handle ) );
 
-	MexPoint3d samplePosition(const SndSampleHandle& handle);
-	// PRE( isActive( handle ) );
-	// PRE( is3dSound( handle ) );
+    MexPoint3d samplePosition(const SndSampleHandle& handle);
+    // PRE( isActive( handle ) );
+    // PRE( is3dSound( handle ) );
 
-	void samplePosition(const SndSampleHandle& handle, const MexPoint3d& newPos);
-	// PRE( isActive( handle ) );
-	// POST( samplePosition( handle ) == newPos );
+    void samplePosition(const SndSampleHandle& handle, const MexPoint3d& newPos);
+    // PRE( isActive( handle ) );
+    // POST( samplePosition( handle ) == newPos );
 
-	MexPoint3d listenerPosition() const;
+    MexPoint3d listenerPosition() const;
 
-	void listenerPosition(const MexPoint3d& newPos);
-	// PRE(is3dMixer());
-	// POST( listenerPosition() == newPos );
+    void listenerPosition(const MexPoint3d& newPos);
+    // PRE(is3dMixer());
+    // POST( listenerPosition() == newPos );
 
-	MexEulerAngles listenerOrientation() const;
+    MexEulerAngles listenerOrientation() const;
 
-	void listenerOrientation(const MexEulerAngles& newOrientation);
-	// PRE(is3dMixer());
-	// POST( listenerOrientation() == newOrientation );
+    void listenerOrientation(const MexEulerAngles& newOrientation);
+    // PRE(is3dMixer());
+    // POST( listenerOrientation() == newOrientation );
 
-	MexTransform3d listenerTransform() const;
+    MexTransform3d listenerTransform() const;
 
-	void listenerTransform(const MexTransform3d& newTransform);
+    void listenerTransform(const MexTransform3d& newTransform);
 
-	Snd::Volume sampleVolume( const SndSampleHandle& handle ) const;
-	// PRE( isActive( handle ) );
+    Snd::Volume sampleVolume(const SndSampleHandle& handle) const;
+    // PRE( isActive( handle ) );
 
-	void sampleVolume( const SndSampleHandle& handle, Snd::Volume newVolume);
-	// PRE( isActive( handle ) );
-	// POST( sampleVolume( handle ) == newVolume );
+    void sampleVolume(const SndSampleHandle& handle, Snd::Volume newVolume);
+    // PRE( isActive( handle ) );
+    // POST( sampleVolume( handle ) == newVolume );
 
-	bool is3dMixer() const;
+    bool is3dMixer() const;
 
-	//The number of channels available for allocation
-	uint32_t noOfFreeLogicalChannels() const;
+    // The number of channels available for allocation
+    uint32_t noOfFreeLogicalChannels() const;
 
-	//The number of channels already allocated
-	uint32_t noOfUsedLogicalChannels() const;
+    // The number of channels already allocated
+    uint32_t noOfUsedLogicalChannels() const;
 
-	Snd::Volume masterSampleVolume() const;
-	void masterSampleVolume( Snd::Volume newVolume );
-	// POST( masterSampleVolume() == newVolume );
+    Snd::Volume masterSampleVolume() const;
+    void masterSampleVolume(Snd::Volume newVolume);
+    // POST( masterSampleVolume() == newVolume );
 
-	void shutdown();
+    void shutdown();
 
-	//Is the sound switched on?
-	//This is accomplished by not setting CB_SOUND_OFF
-	static bool soundOn();
+    // Is the sound switched on?
+    // This is accomplished by not setting CB_SOUND_OFF
+    static bool soundOn();
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
 private:
-    SndMixer( const SndMixer& );
-    SndMixer& operator =( const SndMixer& );
-    bool operator ==( const SndMixer& );
-	SndMixer();
+    SndMixer(const SndMixer&);
+    SndMixer& operator=(const SndMixer&);
+    bool operator==(const SndMixer&);
+    SndMixer();
 
     //  The "NoRecord" versions of these functions will not call
     //  the RecRecorder code at all. This means they can be used
     //  in PREconditions etc.
-    bool is3dSoundNoRecord( const SndSampleHandle& handle ) const;
-    bool isActiveNoRecord( const SndSampleHandle& handle ) const;
-    MexPoint3d samplePositionNoRecord( const SndSampleHandle& handle ) const;
-	uint32_t noOfFreeLogicalChannelsNoRecord() const;
-	Snd::Volume sampleVolumeNoRecord( const SndSampleHandle& handle ) const;
-	void actualFreeSampleResources( const SndSampleHandle& handle );
+    bool is3dSoundNoRecord(const SndSampleHandle& handle) const;
+    bool isActiveNoRecord(const SndSampleHandle& handle) const;
+    MexPoint3d samplePositionNoRecord(const SndSampleHandle& handle) const;
+    uint32_t noOfFreeLogicalChannelsNoRecord() const;
+    Snd::Volume sampleVolumeNoRecord(const SndSampleHandle& handle) const;
+    void actualFreeSampleResources(const SndSampleHandle& handle);
 
-	SndMixerImpl* pImpl_;
+    SndMixerImpl* pImpl_;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	// #ifndef _SND_MIXER_HPP
+#endif // #ifndef _SND_MIXER_HPP
 
 /* End MIXER.HPP ****************************************************/

@@ -11,7 +11,7 @@ void BaseAssertion::preconditionFail(const char* exprStr, const char* file, cons
 {
     std::cerr << "BaseAssertion::preconditionFail disabled for unit testing." << std::endl;
     std::cerr << "\tPRE( " << exprStr << " ) in " << file << ":" << line << std::endl;
-	return;
+    return;
 }
 
 void BaseAssertion::postconditionFail(const char* exprStr, const char* file, const char* line)

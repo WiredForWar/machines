@@ -1,5 +1,5 @@
 /*
- * N U C L B O M I . C P P 
+ * N U C L B O M I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,10 +10,9 @@
 #include "machphys/machphys.hpp"
 #include "machphys/mphydata.hpp"
 
-
-MachLogNuclearBombImpl::MachLogNuclearBombImpl( const MachPhysWeaponData* const pWeaponData )
-:	pWeaponData_( pWeaponData ),
-	pPhysNuclearBomb_( NULL )
+MachLogNuclearBombImpl::MachLogNuclearBombImpl(const MachPhysWeaponData* const pWeaponData)
+    : pWeaponData_(pWeaponData)
+    , pPhysNuclearBomb_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -21,15 +20,14 @@ MachLogNuclearBombImpl::MachLogNuclearBombImpl( const MachPhysWeaponData* const 
 MachLogNuclearBombImpl::~MachLogNuclearBombImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogNuclearBombImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogNuclearBombImpl& t )
+ostream& operator<<(ostream& o, const MachLogNuclearBombImpl& t)
 {
 
     o << "MachLogNuclearBombImpl " << (void*)&t << " start" << std::endl;
@@ -37,8 +35,5 @@ ostream& operator <<( ostream& o, const MachLogNuclearBombImpl& t )
 
     return o;
 }
-
-
-
 
 /* End NuclearBombI.CPP *************************************************/

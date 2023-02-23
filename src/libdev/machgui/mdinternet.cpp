@@ -21,62 +21,63 @@
 
 struct MachGuiInternetNetworkModeImpl
 {
-	MachGuiInternetNetworkModeImpl()
-	:	pIPAddressEntryBox_( NULL )
-	{}
-	MachGuiSingleLineEditBox* pIPAddressEntryBox_;
+    MachGuiInternetNetworkModeImpl()
+        : pIPAddressEntryBox_(nullptr)
+    {
+    }
+    MachGuiSingleLineEditBox* pIPAddressEntryBox_;
 };
 
-MachGuiInternetNetworkMode::MachGuiInternetNetworkMode( GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens )
-:	MachGuiNetworkProtocolMode( pParent, pStartupScreens )
+MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
+    : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-	pimpl_ = _NEW( MachGuiInternetNetworkModeImpl );
+    pimpl_ = _NEW(MachGuiInternetNetworkModeImpl);
 
-	readNetworkDetails();
+    readNetworkDetails();
 
     TEST_INVARIANT;
 }
 
 MachGuiInternetNetworkMode::~MachGuiInternetNetworkMode()
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	_DELETE( pimpl_ );
+    _DELETE(pimpl_);
 }
 
 void MachGuiInternetNetworkMode::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 // virtual
 void MachGuiInternetNetworkMode::setNetworkDetails()
 {
-	// This function will use the settings from the drop downs to configure network settings
-	string ipAddress = pimpl_->pIPAddressEntryBox_->text();
+    // This function will use the settings from the drop downs to configure network settings
+    string ipAddress = pimpl_->pIPAddressEntryBox_->text();
 
-	NetNetwork::instance().IPAddress( ipAddress );
-    SysRegistry::instance().setStringValue("Network", "IP Address", ipAddress );
-	NetNetwork::instance().initialiseConnection();
+    NetNetwork::instance().IPAddress(ipAddress);
+    SysRegistry::instance().setStringValue("Network", "IP Address", ipAddress);
+    NetNetwork::instance().initialiseConnection();
 }
 
 // virtual
-bool MachGuiInternetNetworkMode::validNetworkDetails( bool /*isHost*/ )
+bool MachGuiInternetNetworkMode::validNetworkDetails(bool /*isHost*/)
 {
-	return true;
+    return true;
 }
 
 // virtual
 void MachGuiInternetNetworkMode::updateGUI()
 {
-	// Flash caret
-	pimpl_->pIPAddressEntryBox_->update();
+    // Flash caret
+    pimpl_->pIPAddressEntryBox_->update();
 }
 
 // virtual
 void MachGuiInternetNetworkMode::charFocus()
 {
-	GuiManager::instance().charFocus( pimpl_->pIPAddressEntryBox_ );
+    GuiManager::instance().charFocus(pimpl_->pIPAddressEntryBox_);
 }
 
 #define INM_MINX 62
@@ -86,34 +87,32 @@ void MachGuiInternetNetworkMode::charFocus()
 
 void MachGuiInternetNetworkMode::readNetworkDetails()
 {
-	GuiResourceString IPAddressHeading( IDS_MENU_IPADDRESS );
-  	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smalwfnt.bmp") );
-	const int textHeight = font.charHeight() + 2;
+    GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
+    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    const int textHeight = font.charHeight() + 2;
 
+    MachGuiMenuText* pIPAddressText = _NEW(MachGuiMenuText(
+        &parent(),
+        Gui::Box(Gui::Coord(INM_MINX, INM_MINY), font.textWidth(IPAddressHeading.asString()), textHeight),
+        IDS_MENU_IPADDRESS,
+        "gui/menu/smallfnt.bmp"));
 
-	MachGuiMenuText* pIPAddressText =
-		_NEW( MachGuiMenuText( &parent(),
-							   Gui::Box( Gui::Coord( INM_MINX, INM_MINY ),
-							   			 font.textWidth( IPAddressHeading.asString() ),
-							   			 textHeight ),
-							   IDS_MENU_IPADDRESS, "gui/menu/smallfnt.bmp" ) );
-
-	pimpl_->pIPAddressEntryBox_ = _NEW( MachGuiSingleLineEditBox( 	&startupScreens(),
-																	Gui::Box( Gui::Coord( INM_MINX, INM_MINY+textHeight ),
-																		  	  INM_WIDTH,
-																		  	  textHeight + 4 ), font ) );
-	pimpl_->pIPAddressEntryBox_->borderColour( MachGui::DARKSANDY() );
-	pimpl_->pIPAddressEntryBox_->border( true );
-    std::string ipAddress = SysRegistry::instance().queryStringValue("Network", "IP Address" );
-    if(ipAddress.empty())
+    pimpl_->pIPAddressEntryBox_ = _NEW(MachGuiSingleLineEditBox(
+        &startupScreens(),
+        Gui::Box(Gui::Coord(INM_MINX, INM_MINY + textHeight), INM_WIDTH, textHeight + 4),
+        font));
+    pimpl_->pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
+    pimpl_->pIPAddressEntryBox_->border(true);
+    std::string ipAddress = SysRegistry::instance().queryStringValue("Network", "IP Address");
+    if (ipAddress.empty())
         ipAddress = "localhost";
 
     pimpl_->pIPAddressEntryBox_->text(ipAddress);
 
-	charFocus();
+    charFocus();
 }
 
-ostream& operator <<( ostream& o, const MachGuiInternetNetworkMode& t )
+ostream& operator<<(ostream& o, const MachGuiInternetNetworkMode& t)
 {
 
     o << "MachGuiInternetNetworkMode " << (void*)&t << " start" << std::endl;

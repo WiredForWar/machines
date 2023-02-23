@@ -16,19 +16,19 @@
 class RenIPrioritySortedItem
 {
 public:
-	RenIPrioritySortedItem( const RenMaterial& material);
-	virtual ~RenIPrioritySortedItem()	{}
-	virtual void render() = 0;
-	MATHEX_SCALAR depth() const;
+    RenIPrioritySortedItem(const RenMaterial& material);
+    virtual ~RenIPrioritySortedItem() { }
+    virtual void render() = 0;
+    MATHEX_SCALAR depth() const;
 
-	// The default implementation orders the items in decreasing depth.
-	virtual bool operator<(const RenIPrioritySortedItem&) const;
+    // The default implementation orders the items in decreasing depth.
+    virtual bool operator<(const RenIPrioritySortedItem&) const;
 
-	virtual void print(ostream&) const = 0;
+    virtual void print(ostream&) const = 0;
 
 protected:
-	const RenMaterial		material_;
-	MATHEX_SCALAR			depth_;
+    const RenMaterial material_;
+    MATHEX_SCALAR depth_;
 };
 
 ostream& operator<<(ostream&, const RenIPrioritySortedItem&);
@@ -43,20 +43,20 @@ public:
     RenIPriorityPostSorter();
     ~RenIPriorityPostSorter();
 
-	// Ownership of the item *passes* from the caller to this object.
-	void addItem(std::unique_ptr<RenIPrioritySortedItem>& item);
-	void render();
+    // Ownership of the item *passes* from the caller to this object.
+    void addItem(std::unique_ptr<RenIPrioritySortedItem>& item);
+    void render();
 
     void CLASS_INVARIANT;
 
 private:
-	typedef ctl_vector<RenIPrioritySortedItem*>	ItemVector;
-	ItemVector items_;
+    using ItemVector = ctl_vector<RenIPrioritySortedItem*>;
+    ItemVector items_;
 
     // Operations deliberately revoked
-    RenIPriorityPostSorter( const RenIPriorityPostSorter& );
-    RenIPriorityPostSorter& operator =( const RenIPriorityPostSorter& );
-    bool operator ==( const RenIPriorityPostSorter& );
+    RenIPriorityPostSorter(const RenIPriorityPostSorter&);
+    RenIPriorityPostSorter& operator=(const RenIPriorityPostSorter&);
+    bool operator==(const RenIPriorityPostSorter&);
 };
 
 #endif

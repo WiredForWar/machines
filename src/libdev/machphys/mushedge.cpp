@@ -10,23 +10,23 @@
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMushroomEdge );
+PER_DEFINE_PERSISTENT(MachPhysMushroomEdge);
 
-//One-time ctor
+// One-time ctor
 MachPhysMushroomEdge::MachPhysMushroomEdge()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/nuke/nuke_cov.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/nuke/nuke_cov.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysMushroomEdge::MachPhysMushroomEdge( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysMushroomEdge::MachPhysMushroomEdge(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -34,10 +34,9 @@ MachPhysMushroomEdge::MachPhysMushroomEdge( W4dEntity* pParent, const MexTransfo
 MachPhysMushroomEdge::~MachPhysMushroomEdge()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysMushroomEdge& MachPhysMushroomEdge::exemplar()
 {
     return MachPhysOtherPersistence::instance().mushroomEdgeExemplar();
@@ -45,10 +44,10 @@ const MachPhysMushroomEdge& MachPhysMushroomEdge::exemplar()
 
 void MachPhysMushroomEdge::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysMushroomEdge& t )
+ostream& operator<<(ostream& o, const MachPhysMushroomEdge& t)
 {
 
     o << "MachPhysMushroomEdge " << (void*)&t << " start" << std::endl;
@@ -57,30 +56,29 @@ ostream& operator <<( ostream& o, const MachPhysMushroomEdge& t )
     return o;
 }
 
-//virtual
-bool MachPhysMushroomEdge::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysMushroomEdge::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMushroomEdge& mush )
+void perWrite(PerOstream& ostr, const MachPhysMushroomEdge& mush)
 {
     const W4dEntity& base = mush;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysMushroomEdge& mush )
+void perRead(PerIstream& istr, MachPhysMushroomEdge& mush)
 {
     W4dEntity& base = mush;
 
     istr >> base;
 }
 
-MachPhysMushroomEdge::MachPhysMushroomEdge( PerConstructor c )
-:W4dEntity( c )
+MachPhysMushroomEdge::MachPhysMushroomEdge(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
 /* End MUSHEDGE.CPP *************************************************/
-

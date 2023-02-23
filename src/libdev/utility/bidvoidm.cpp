@@ -8,21 +8,21 @@
 #include "utility/private/bidvoidm.hpp"
 
 #ifndef _INLINE
-    #include "utility/private/bidvoidm.ipp"
+#include "utility/private/bidvoidm.ipp"
 #endif
 
-UtlBoundedIdVoidPMap::UtlBoundedIdVoidPMap( UtlId upperBound )
-:   upperBound_( upperBound ),
-    aPointers_( NULL )
+UtlBoundedIdVoidPMap::UtlBoundedIdVoidPMap(UtlId upperBound)
+    : upperBound_(upperBound)
+    , aPointers_(nullptr)
 {
-    PRE( upperBound > 1 );
+    PRE(upperBound > 1);
 
-    //Allocate the array to use for the void*
-    aPointers_ = _NEW_ARRAY( void*, upperBound );
+    // Allocate the array to use for the void*
+    aPointers_ = _NEW_ARRAY(void*, upperBound);
 
-    //Initialise them
-    for( UtlId i = upperBound; i--; )
-        aPointers_[i] = NULL;
+    // Initialise them
+    for (UtlId i = upperBound; i--;)
+        aPointers_[i] = nullptr;
 
     TEST_INVARIANT;
 }
@@ -31,32 +31,32 @@ UtlBoundedIdVoidPMap::~UtlBoundedIdVoidPMap()
 {
     TEST_INVARIANT;
 
-    //Delete the allocated memory
-    _DELETE_ARRAY( aPointers_ );
+    // Delete the allocated memory
+    _DELETE_ARRAY(aPointers_);
 }
 
-void UtlBoundedIdVoidPMap::add( UtlId id, void* p )
+void UtlBoundedIdVoidPMap::add(UtlId id, void* p)
 {
-    PRE( id < upperBound() );
-    PRE( not contains( id ) );
+    PRE(id < upperBound());
+    PRE(not contains(id));
 
     aPointers_[id] = p;
 }
 
-void UtlBoundedIdVoidPMap::remove( UtlId id )
+void UtlBoundedIdVoidPMap::remove(UtlId id)
 {
-    PRE( id < upperBound() );
-    PRE( contains( id ) );
+    PRE(id < upperBound());
+    PRE(contains(id));
 
-    aPointers_[id] = NULL;
+    aPointers_[id] = nullptr;
 }
 
 void UtlBoundedIdVoidPMap::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const UtlBoundedIdVoidPMap& t )
+ostream& operator<<(ostream& o, const UtlBoundedIdVoidPMap& t)
 {
 
     o << "UtlBoundedIdVoidPMap " << (void*)&t << " start" << std::endl;

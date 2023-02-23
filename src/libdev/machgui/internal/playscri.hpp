@@ -1,5 +1,5 @@
 /*
- * P L A Y S C R I . H P P 
+ * P L A Y S C R I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,29 +18,28 @@
 #include "machgui/statdisp.hpp"
 
 class MachGuiPlayerScore
-:	public MachGuiStatistics,
-	public MachGuiPlayerNameList
+    : public MachGuiStatistics
+    , public MachGuiPlayerNameList
 // Canonical form revoked
 {
 public:
-    MachGuiPlayerScore( GuiDisplayable *pParent, const Gui::Coord& topLeft );
-    ~MachGuiPlayerScore();
+    MachGuiPlayerScore(GuiDisplayable* pParent, const Gui::Coord& topLeft);
+    ~MachGuiPlayerScore() override;
 
     void CLASS_INVARIANT;
 
-	virtual	void update();
+    void update() override;
 
-	virtual void setStatistics( int, int, int, int );
+    void setStatistics(int, int, int, int) override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiPlayerScore& t );
+    friend ostream& operator<<(ostream& o, const MachGuiPlayerScore& t);
 
-    MachGuiPlayerScore( const MachGuiPlayerScore& );
-    MachGuiPlayerScore& operator =( const MachGuiPlayerScore& );
+    MachGuiPlayerScore(const MachGuiPlayerScore&);
+    MachGuiPlayerScore& operator=(const MachGuiPlayerScore&);
 
-	MachGuiStatisticsDisplay statDisplay_;
+    MachGuiStatisticsDisplay statDisplay_;
 };
-
 
 #endif
 

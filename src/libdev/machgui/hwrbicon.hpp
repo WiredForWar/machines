@@ -18,7 +18,7 @@
 
 #include "machphys/machphys.hpp"
 
-//forward refs
+// forward refs
 class GuiDisplayable;
 class MachInGameScreen;
 class MachLogResearchItem;
@@ -27,75 +27,71 @@ class MachGuiBuildProgressBar;
 class MachGuiNewResearchIcon : public GuiButtonWithFilledBorder
 {
 public:
+    MachGuiNewResearchIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap&);
 
-	MachGuiNewResearchIcon( GuiDisplayable *pParent, 
-							  const Gui::Coord& rel,
-							  const GuiBitmap& );
+    ~MachGuiNewResearchIcon() override;
 
-	virtual ~MachGuiNewResearchIcon();
-
-	static Gui::Box 
-	exteriorRelativeBoundary( const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel );
+    static Gui::Box exteriorRelativeBoundary(const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel);
 
 protected:
-	virtual void doDisplayInteriorEnabled( const Gui::Coord& absCoord );
+    void doDisplayInteriorEnabled(const Gui::Coord& absCoord) override;
 
 private:
-	// Operations revoked
-	MachGuiNewResearchIcon( const MachGuiNewResearchIcon& );
-	MachGuiNewResearchIcon& operator =( const MachGuiNewResearchIcon& );
-	bool operator ==( const MachGuiNewResearchIcon& ) const;
+    // Operations revoked
+    MachGuiNewResearchIcon(const MachGuiNewResearchIcon&);
+    MachGuiNewResearchIcon& operator=(const MachGuiNewResearchIcon&);
+    bool operator==(const MachGuiNewResearchIcon&) const;
 
-	GuiBitmap	bitmap_;
+    GuiBitmap bitmap_;
 };
 
 class MachHWResearchBankIcon : public MachGuiNewResearchIcon
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 {
 public:
-    //ctor.
-    MachHWResearchBankIcon(GuiDisplayable* pParent,
-                           MachInGameScreen* pInGameScreen,
-                           const MachLogResearchItem* pResearchItem,
-                           MachPhys::Race race);
+    // ctor.
+    MachHWResearchBankIcon(
+        GuiDisplayable* pParent,
+        MachInGameScreen* pInGameScreen,
+        const MachLogResearchItem* pResearchItem,
+        MachPhys::Race race);
 
-    //dtor.
-    ~MachHWResearchBankIcon();
+    // dtor.
+    ~MachHWResearchBankIcon() override;
 
     void CLASS_INVARIANT;
 
-	static size_t reqHeight();
-	static size_t reqWidth();
+    static size_t reqHeight();
+    static size_t reqWidth();
 
     const MachLogResearchItem* researchItem() const;
 
-	void updateProgress( float percentageComplete );
+    void updateProgress(float percentageComplete);
 
 protected:
-	// inherited from GuiButton...
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& );
-	virtual void doHandleContainsMouseEvent( const GuiMouseEvent& );
+    // inherited from GuiButton...
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent&) override;
 
-	void displayCursorPromptText();
-	
+    void displayCursorPromptText();
+
 private:
     // Operations deliberately revoked
-    MachHWResearchBankIcon( const MachHWResearchBankIcon& );
-    MachHWResearchBankIcon& operator =( const MachHWResearchBankIcon& );
-    bool operator ==( const MachHWResearchBankIcon& );
+    MachHWResearchBankIcon(const MachHWResearchBankIcon&);
+    MachHWResearchBankIcon& operator=(const MachHWResearchBankIcon&);
+    bool operator==(const MachHWResearchBankIcon&);
 
-    friend ostream& operator <<( ostream& o, const MachHWResearchBankIcon& t );
+    friend ostream& operator<<(ostream& o, const MachHWResearchBankIcon& t);
 
-    //Data members
-	MachGuiBuildProgressBar* pProgressBar_;
-	MachInGameScreen* pInGameScreen_;
+    // Data members
+    MachGuiBuildProgressBar* pProgressBar_;
+    MachInGameScreen* pInGameScreen_;
     const MachLogResearchItem* pResearchItem_;
-	bool needsPromptUpdate_;
+    bool needsPromptUpdate_;
 };
-
 
 #endif
 

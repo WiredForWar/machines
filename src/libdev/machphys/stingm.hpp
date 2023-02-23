@@ -1,5 +1,5 @@
 /*
- * S T I N G M . H P P 
+ * S T I N G M . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,38 +21,37 @@ class MachPhysMetalSting : public MachPhysTrailedProjectile
 // Canonical form revoked
 {
 public:
-    MachPhysMetalSting( W4dEntity* pParent, const MexTransform3d& localTransform );
-    virtual ~MachPhysMetalSting();
+    MachPhysMetalSting(W4dEntity* pParent, const MexTransform3d& localTransform);
+    ~MachPhysMetalSting() override;
 
-	static const MachPhysMetalSting& exemplar();
+    static const MachPhysMetalSting& exemplar();
 
     void CLASS_INVARIANT;
 
     //////////////////////////////////////////////////////////
     // Inherited from MachPhysLinearProjectile
 
-    //Override to add specific animations for the projectile destruction at time.
-    //Return duration of such animation.
-    virtual PhysRelativeTime doBeDestroyedAt( const PhysAbsoluteTime& time,
-                                              MachPhys::StrikeType strikeType );
+    // Override to add specific animations for the projectile destruction at time.
+    // Return duration of such animation.
+    PhysRelativeTime doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType) override;
     //////////////////////////////////////////////////////////
 
-    PER_MEMBER_PERSISTENT( MachPhysMetalSting );
-    PER_FRIEND_READ_WRITE( MachPhysMetalSting );
+    PER_MEMBER_PERSISTENT(MachPhysMetalSting);
+    PER_FRIEND_READ_WRITE(MachPhysMetalSting);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysMetalSting& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMetalSting& t);
 
-    MachPhysMetalSting( const MachPhysMetalSting& );
-    MachPhysMetalSting& operator =( const MachPhysMetalSting& );
+    MachPhysMetalSting(const MachPhysMetalSting&);
+    MachPhysMetalSting& operator=(const MachPhysMetalSting&);
 
-	friend class MachPhysOtherPersistence;
+    friend class MachPhysOtherPersistence;
 
-	//one time constructor
+    // one time constructor
     MachPhysMetalSting();
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMetalSting );
+PER_DECLARE_PERSISTENT(MachPhysMetalSting);
 
 #endif
 

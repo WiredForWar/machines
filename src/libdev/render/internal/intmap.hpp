@@ -14,30 +14,20 @@
 class RenIVtxIntensity
 {
 public:
+    Ren::VertexIdx index() const { return index_; }
 
-    Ren::VertexIdx	index() const
-    {
-        return index_;
-    }
-
-    double	intensity() const
-    {
-        return int_;
-    }
+    double intensity() const { return int_; }
 
     // For the purposes of running find on the intensity map, this is useful.
 
-    bool operator==(const RenIVtxIntensity& r) const
-    {
-        return index_ == r.index_;
-    }
+    bool operator==(const RenIVtxIntensity& r) const { return index_ == r.index_; }
 
 private:
     friend class RenIVertexIntensities;
 
-    Ren::VertexIdx	index_;
-    double	int_;
-} ;
+    Ren::VertexIdx index_;
+    double int_;
+};
 
 // Provide a mapping from meshed vertex index to vertex intensity.
 // We require traversal which is as efficient as possible, but we don't
@@ -46,11 +36,11 @@ private:
 class RenIVertexIntensities : private ctl_vector<RenIVtxIntensity>
 {
 public:
-    typedef ctl_vector<RenIVtxIntensity> Base;
+    using Base = ctl_vector<RenIVtxIntensity>;
 
     RenIVertexIntensities(size_t nElements);
     RenIVertexIntensities(const RenIVertexIntensities& copyMe);
-    ~RenIVertexIntensities();
+    ~RenIVertexIntensities() override;
 
     // Does this map contain an entry for the given index?
     // POST(implies(result == true  && value, *value!=1));
@@ -67,25 +57,24 @@ public:
     using ctl_vector<RenIVtxIntensity>::begin;
     using ctl_vector<RenIVtxIntensity>::end;
 
-
 private:
     // Operation deliberately revoked
-    //RenIVertexIntensities( const RenIVertexIntensities& );
-    RenIVertexIntensities& operator =( const RenIVertexIntensities& ) ;
-    bool operator ==( const RenIVertexIntensities& ) ;
-} ;
+    // RenIVertexIntensities( const RenIVertexIntensities& );
+    RenIVertexIntensities& operator=(const RenIVertexIntensities&);
+    bool operator==(const RenIVertexIntensities&);
+};
 
 // This is a less-sparse exapansion of a RenIVertexIntensities.
 
 class RenIExpandedIntensityMap : public ctl_vector<double>
 {
 public:
-    typedef ctl_vector<double> Base;
+    using Base = ctl_vector<double>;
 
-    RenIExpandedIntensityMap(size_t nElements);		// POST(size() >= nElements);
-    void checkSize(size_t nElements);				// POST(size() >= nElements);
+    RenIExpandedIntensityMap(size_t nElements); // POST(size() >= nElements);
+    void checkSize(size_t nElements); // POST(size() >= nElements);
     void expand(const RenIVertexIntensities*);
-} ;
+};
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * E D I T B O X . H P P 
+ * E D I T B O X . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,26 +21,26 @@
 class MachGuiSingleLineEditBox : public GuiSingleLineEditBox
 {
 public:
-    MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font );
-    virtual ~MachGuiSingleLineEditBox();
+    MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
+    ~MachGuiSingleLineEditBox() override;
 
-    void clearTextOnNextChar( bool );
+    void clearTextOnNextChar(bool);
     bool clearTextOnNextChar() const;
 
     // Do/Don't allow space characters to be entered at beginning of edit box.
-    void ignoreSpaceAtBeginning( bool );
+    void ignoreSpaceAtBeginning(bool);
 
 protected:
-    virtual void drawBackground() override;
-    virtual bool doHandleCharEvent( const GuiCharEvent& e ) override;
+    void drawBackground() override;
+    bool doHandleCharEvent(const GuiCharEvent& e) override;
 
 private:
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachGuiSingleLineEditBox& t );
+    friend ostream& operator<<(ostream& o, const MachGuiSingleLineEditBox& t);
 
-    MachGuiSingleLineEditBox( const MachGuiSingleLineEditBox& );
-    MachGuiSingleLineEditBox& operator =( const MachGuiSingleLineEditBox& );
+    MachGuiSingleLineEditBox(const MachGuiSingleLineEditBox&);
+    MachGuiSingleLineEditBox& operator=(const MachGuiSingleLineEditBox&);
 
     bool clearTextOnNextChar_;
     bool ignoreSpaceAtBeginning_;
@@ -48,7 +48,6 @@ private:
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 };
-
 
 #endif
 

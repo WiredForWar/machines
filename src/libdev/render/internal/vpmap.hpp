@@ -16,20 +16,20 @@
 class RenIViewportMapping
 {
 public:
-	RenIViewportMapping(const int width, const int height, const int left = 0, const int top = 0);
-	void mapPoint(RenIVertex& vtx) const; // Not used now in fact
-	int screenLeft  () const;
-	int screenTop   () const;
-	int screenWidth () const;
-	int screenHeight() const;
+    RenIViewportMapping(const int width, const int height, const int left = 0, const int top = 0);
+    void mapPoint(RenIVertex& vtx) const; // Not used now in fact
+    int screenLeft() const;
+    int screenTop() const;
+    int screenWidth() const;
+    int screenHeight() const;
 
 private:
-	const float scaleX, scaleY, offsetX, offsetY;
-	const int      left_, top_, width_, height_;
+    const float scaleX, scaleY, offsetX, offsetY;
+    const int left_, top_, width_, height_;
 };
 
 #ifdef _INLINE
-    #include "render/internal/vpmap.ipp"
+#include "render/internal/vpmap.ipp"
 #endif
 
 #endif

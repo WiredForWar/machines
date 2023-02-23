@@ -29,110 +29,110 @@
 #include "machphys/stglwep.hpp"
 #include "machphys/stgmwep.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysWeaponPersistence );
+PER_DEFINE_PERSISTENT(MachPhysWeaponPersistence);
 
-//a pimple for the MachPhysWeaponPersistence singlton
+// a pimple for the MachPhysWeaponPersistence singlton
 struct MachPhysWeaponPersistenceImpl
 {
-    MachPhysPlasmaWeapon*   pPlasmaRifle_;
-    MachPhysPlasmaWeapon*   pPlasmaCannon1_;
-    MachPhysPlasmaWeapon*   pPlasmaCannon2_;
+    MachPhysPlasmaWeapon* pPlasmaRifle_;
+    MachPhysPlasmaWeapon* pPlasmaCannon1_;
+    MachPhysPlasmaWeapon* pPlasmaCannon2_;
 
-    MachPhysFlameThrower*   pFlameThrower1_;
-    MachPhysFlameThrower*   pFlameThrower2_;
+    MachPhysFlameThrower* pFlameThrower1_;
+    MachPhysFlameThrower* pFlameThrower2_;
 
-    MachPhysBolter*         pBolter_;
-    MachPhysBolter*         pAutoCannon_;
-    MachPhysBolter*         pHeavyBolter1_;
-    MachPhysBolter*         pHeavyBolter2_;
+    MachPhysBolter* pBolter_;
+    MachPhysBolter* pAutoCannon_;
+    MachPhysBolter* pHeavyBolter1_;
+    MachPhysBolter* pHeavyBolter2_;
 
-    MachPhysVirusSpreader*  pVirusSpreaderLeft_;
-    MachPhysVirusSpreader*  pVirusSpreaderRight_;
-    MachPhysVirusSpreader*  pVirusSpreaderTop_;
+    MachPhysVirusSpreader* pVirusSpreaderLeft_;
+    MachPhysVirusSpreader* pVirusSpreaderRight_;
+    MachPhysVirusSpreader* pVirusSpreaderTop_;
 
     MachPhysElectroCharger* pElectroChargerLeft_;
     MachPhysElectroCharger* pElectroChargerRight_;
     MachPhysElectroCharger* pElectroChargerTop_;
 
-    MachPhysMultiLauncher*  pMultiLauncher1_;
-    MachPhysMultiLauncher*  pMultiLauncher2_;
-    MachPhysMultiLauncher*  pMultiLauncher3_;
-    MachPhysMultiLauncher*  pMultiLauncher4_;
-    MachPhysMultiLauncher*  pMultiLauncher5_;
-    MachPhysMultiLauncher*  pMultiLauncher6_;
-    MachPhysMultiLauncher*  pMultiLauncher7_;
+    MachPhysMultiLauncher* pMultiLauncher1_;
+    MachPhysMultiLauncher* pMultiLauncher2_;
+    MachPhysMultiLauncher* pMultiLauncher3_;
+    MachPhysMultiLauncher* pMultiLauncher4_;
+    MachPhysMultiLauncher* pMultiLauncher5_;
+    MachPhysMultiLauncher* pMultiLauncher6_;
+    MachPhysMultiLauncher* pMultiLauncher7_;
 
-    MachPhysPulseRifle*     pPulseRifle_;
-    MachPhysPulseCannon*    pPulseCannon_;
-    MachPhysPulseBlob*      pPulseBlobRifle_;
-    MachPhysPulseBlob*      pPulseBLobCannon_;
-    MachPhysLargeMissile*   pLargeMissile_;
+    MachPhysPulseRifle* pPulseRifle_;
+    MachPhysPulseCannon* pPulseCannon_;
+    MachPhysPulseBlob* pPulseBlobRifle_;
+    MachPhysPulseBlob* pPulseBLobCannon_;
+    MachPhysLargeMissile* pLargeMissile_;
 
-    MachPhysTreacheryWeapon*    pTreacheryWeapon_;
+    MachPhysTreacheryWeapon* pTreacheryWeapon_;
 
-	MachPhysVortexWeapon*   pVortex_;
-	MachPhysNuclearWeapon*  pNuke_;
-	MachPhysIonWeapon*      pIon_;
+    MachPhysVortexWeapon* pVortex_;
+    MachPhysNuclearWeapon* pNuke_;
+    MachPhysIonWeapon* pIon_;
 
-	MachPhysSuperCharger*   pAdvancedSuperCharger_;
-    MachPhysSuperCharger*   pSuperSuperCharger_;
-	MachPhysPunchWeapon*    pPunch_;
+    MachPhysSuperCharger* pAdvancedSuperCharger_;
+    MachPhysSuperCharger* pSuperSuperCharger_;
+    MachPhysPunchWeapon* pPunch_;
 
-	// TODO: Object demolition sequences should be in a separate class
-	MachPhysObjDemolish*	pObjectDemolish_;
+    // TODO: Object demolition sequences should be in a separate class
+    MachPhysObjDemolish* pObjectDemolish_;
 
-	MachPhysObjDemolish*	pCivilianHardwareLabL1Demolish_;
-	MachPhysObjDemolish*	pCivilianHardwareLabL3Demolish_;
-	void*	                pDummy1_;
+    MachPhysObjDemolish* pCivilianHardwareLabL1Demolish_;
+    MachPhysObjDemolish* pCivilianHardwareLabL3Demolish_;
+    void* pDummy1_;
 
-	MachPhysObjDemolish*	pMilitaryHardwareLabL1Demolish_;
-	MachPhysObjDemolish*	pMilitaryHardwareLabL3Demolish_;
-	void*	                pDummy2_;
+    MachPhysObjDemolish* pMilitaryHardwareLabL1Demolish_;
+    MachPhysObjDemolish* pMilitaryHardwareLabL3Demolish_;
+    void* pDummy2_;
 
-	MachPhysObjDemolish*	pSmelterL1Demolish_;
-	MachPhysObjDemolish*	pSmelterL3Demolish_;
-	MachPhysObjDemolish*	pMilitaryFactoryL4Demolish_;
+    MachPhysObjDemolish* pSmelterL1Demolish_;
+    MachPhysObjDemolish* pSmelterL3Demolish_;
+    MachPhysObjDemolish* pMilitaryFactoryL4Demolish_;
 
-	MachPhysObjDemolish*	pCivilianFactoryL1Demolish_;
-	MachPhysObjDemolish*	pCivilianFactoryL3Demolish_;
-	MachPhysObjDemolish*	pCivilianFactoryL5Demolish_;
+    MachPhysObjDemolish* pCivilianFactoryL1Demolish_;
+    MachPhysObjDemolish* pCivilianFactoryL3Demolish_;
+    MachPhysObjDemolish* pCivilianFactoryL5Demolish_;
 
-	MachPhysObjDemolish*	pMilitaryFactoryL1Demolish_;
-	MachPhysObjDemolish*	pMilitaryFactoryL3Demolish_;
-	MachPhysObjDemolish*	pMilitaryFactoryL5Demolish_;
+    MachPhysObjDemolish* pMilitaryFactoryL1Demolish_;
+    MachPhysObjDemolish* pMilitaryFactoryL3Demolish_;
+    MachPhysObjDemolish* pMilitaryFactoryL5Demolish_;
 
-	MachPhysObjDemolish*	pTurretMissileEmplacementL1Demolish_;
-	MachPhysObjDemolish*	pTurretMissileEmplacementL2Demolish_;
-	MachPhysObjDemolish*	pTurretMissileEmplacementL3Demolish_;
+    MachPhysObjDemolish* pTurretMissileEmplacementL1Demolish_;
+    MachPhysObjDemolish* pTurretMissileEmplacementL2Demolish_;
+    MachPhysObjDemolish* pTurretMissileEmplacementL3Demolish_;
 
-	MachPhysObjDemolish*	pSentryMissileEmplacementL3Demolish_;
-	MachPhysObjDemolish*	pSentryMissileEmplacementL4Demolish_;
+    MachPhysObjDemolish* pSentryMissileEmplacementL3Demolish_;
+    MachPhysObjDemolish* pSentryMissileEmplacementL4Demolish_;
 
-	MachPhysObjDemolish*	pLauncherMissileEmplacementL4Demolish_;
+    MachPhysObjDemolish* pLauncherMissileEmplacementL4Demolish_;
 
-	MachPhysObjDemolish*	pIcbmMissileEmplacementL5Demolish_;
+    MachPhysObjDemolish* pIcbmMissileEmplacementL5Demolish_;
 
-	MachPhysObjDemolish*	pGarrisonL1Demolish_;
-	void*	                pDummy4_;
-	void*	                pDummy5_;
+    MachPhysObjDemolish* pGarrisonL1Demolish_;
+    void* pDummy4_;
+    void* pDummy5_;
 
-	MachPhysObjDemolish*	pMineL1Demolish_;
-	MachPhysObjDemolish*	pMineL3Demolish_;
-	MachPhysObjDemolish*	pMineL5Demolish_;
+    MachPhysObjDemolish* pMineL1Demolish_;
+    MachPhysObjDemolish* pMineL3Demolish_;
+    MachPhysObjDemolish* pMineL5Demolish_;
 
-	MachPhysObjDemolish*	pBeaconL1Demolish_;
-	MachPhysObjDemolish*	pBeaconL3Demolish_;
-	MachPhysObjDemolish*	pBeaconL5Demolish_;
+    MachPhysObjDemolish* pBeaconL1Demolish_;
+    MachPhysObjDemolish* pBeaconL3Demolish_;
+    MachPhysObjDemolish* pBeaconL5Demolish_;
 
-	MachPhysObjDemolish*	pPodL1Demolish_;
+    MachPhysObjDemolish* pPodL1Demolish_;
 
-	MachPhysBeeBomber* pBee_;
-	MachPhysLightStingWeapon* pLightSting_;
-	MachPhysMetalStingWeapon* pMetalSting_;
+    MachPhysBeeBomber* pBee_;
+    MachPhysLightStingWeapon* pLightSting_;
+    MachPhysMetalStingWeapon* pMetalSting_;
 
-	W4dGeneric* pBolterFlash_;
-	W4dGeneric* pHeavyBolterFlash_;
-	W4dGeneric* pAutoCannonFlash_;
+    W4dGeneric* pBolterFlash_;
+    W4dGeneric* pHeavyBolterFlash_;
+    W4dGeneric* pAutoCannonFlash_;
 };
 
 // static
@@ -143,96 +143,95 @@ MachPhysWeaponPersistence& MachPhysWeaponPersistence::instance()
 }
 
 MachPhysWeaponPersistence::MachPhysWeaponPersistence()
-: root_( 50000 ),
-  pImpl_( _NEW( MachPhysWeaponPersistenceImpl() ) )
+    : root_(50000)
+    , pImpl_(_NEW(MachPhysWeaponPersistenceImpl()))
 {
-  	pImpl_->pPlasmaRifle_ = NULL;
-  	pImpl_->pPlasmaCannon1_ = NULL;
-  	pImpl_->pPlasmaCannon2_ = NULL;
-  	pImpl_->pFlameThrower1_ = NULL;
-  	pImpl_->pFlameThrower2_ = NULL;
-  	pImpl_->pBolter_ = NULL;
-  	pImpl_->pAutoCannon_ = NULL;
-  	pImpl_->pHeavyBolter1_ = NULL;
-  	pImpl_->pHeavyBolter2_ = NULL;
+    pImpl_->pPlasmaRifle_ = nullptr;
+    pImpl_->pPlasmaCannon1_ = nullptr;
+    pImpl_->pPlasmaCannon2_ = nullptr;
+    pImpl_->pFlameThrower1_ = nullptr;
+    pImpl_->pFlameThrower2_ = nullptr;
+    pImpl_->pBolter_ = nullptr;
+    pImpl_->pAutoCannon_ = nullptr;
+    pImpl_->pHeavyBolter1_ = nullptr;
+    pImpl_->pHeavyBolter2_ = nullptr;
 
-  	pImpl_->pVirusSpreaderLeft_ = NULL;
-  	pImpl_->pVirusSpreaderRight_ = NULL;
-  	pImpl_->pVirusSpreaderTop_ = NULL;
-  	pImpl_->pElectroChargerLeft_ = NULL;
-  	pImpl_->pElectroChargerRight_ = NULL;
-  	pImpl_->pElectroChargerTop_ = NULL;
-  	pImpl_->pMultiLauncher1_ = NULL;
-  	pImpl_->pMultiLauncher2_ = NULL;
-  	pImpl_->pMultiLauncher3_ = NULL;
-  	pImpl_->pMultiLauncher4_ = NULL;
-  	pImpl_->pMultiLauncher5_ = NULL;
-  	pImpl_->pMultiLauncher6_ = NULL;
-  	pImpl_->pMultiLauncher7_ = NULL;
-  	pImpl_->pPulseRifle_ = NULL;
-  	pImpl_->pPulseCannon_ = NULL;
-  	pImpl_->pPulseBlobRifle_ = NULL;
-  	pImpl_->pPulseBLobCannon_ = NULL;
-  	pImpl_->pLargeMissile_ = NULL;
-  	pImpl_->pTreacheryWeapon_ = NULL;
-  	pImpl_->pVortex_ = NULL;
-  	pImpl_->pNuke_ = NULL;
-  	pImpl_->pIon_ = NULL;
-  	pImpl_->pAdvancedSuperCharger_ = NULL;
-  	pImpl_->pSuperSuperCharger_ = NULL;
-  	pImpl_->pPunch_ = NULL;
-  	pImpl_->pObjectDemolish_ = NULL;
-  	pImpl_->pCivilianHardwareLabL1Demolish_ = NULL;
-  	pImpl_->pCivilianHardwareLabL3Demolish_ = NULL;
-  	pImpl_->pMilitaryHardwareLabL1Demolish_ = NULL;
-  	pImpl_->pMilitaryHardwareLabL3Demolish_ = NULL;
-  	pImpl_->pSmelterL1Demolish_ = NULL;
-  	pImpl_->pSmelterL3Demolish_ = NULL;
-  	pImpl_->pCivilianFactoryL1Demolish_ = NULL;
-  	pImpl_->pCivilianFactoryL3Demolish_ = NULL;
-  	pImpl_->pCivilianFactoryL5Demolish_ = NULL;
-  	pImpl_->pMilitaryFactoryL1Demolish_ = NULL;
-  	pImpl_->pMilitaryFactoryL3Demolish_ = NULL;
-  	pImpl_->pMilitaryFactoryL4Demolish_ = NULL;
-  	pImpl_->pMilitaryFactoryL5Demolish_ = NULL;
-  	pImpl_->pTurretMissileEmplacementL1Demolish_ = NULL;
-  	pImpl_->pTurretMissileEmplacementL2Demolish_ = NULL;
-  	pImpl_->pTurretMissileEmplacementL3Demolish_ = NULL;
-  	pImpl_->pSentryMissileEmplacementL3Demolish_ = NULL;
-  	pImpl_->pSentryMissileEmplacementL4Demolish_ = NULL;
-  	pImpl_->pLauncherMissileEmplacementL4Demolish_ = NULL;
-  	pImpl_->pIcbmMissileEmplacementL5Demolish_ = NULL;
-  	pImpl_->pGarrisonL1Demolish_ = NULL;
-  	pImpl_->pMineL1Demolish_ = NULL;
-  	pImpl_->pMineL3Demolish_ = NULL;
-  	pImpl_->pMineL5Demolish_ = NULL;
-  	pImpl_->pBeaconL1Demolish_ = NULL;
-  	pImpl_->pBeaconL3Demolish_ = NULL;
-  	pImpl_->pBeaconL5Demolish_ = NULL;
-  	pImpl_->pPodL1Demolish_ = NULL;
-  	pImpl_->pBee_ = NULL;
-  	pImpl_->pLightSting_ = NULL;
-  	pImpl_->pMetalSting_ =  NULL;
+    pImpl_->pVirusSpreaderLeft_ = nullptr;
+    pImpl_->pVirusSpreaderRight_ = nullptr;
+    pImpl_->pVirusSpreaderTop_ = nullptr;
+    pImpl_->pElectroChargerLeft_ = nullptr;
+    pImpl_->pElectroChargerRight_ = nullptr;
+    pImpl_->pElectroChargerTop_ = nullptr;
+    pImpl_->pMultiLauncher1_ = nullptr;
+    pImpl_->pMultiLauncher2_ = nullptr;
+    pImpl_->pMultiLauncher3_ = nullptr;
+    pImpl_->pMultiLauncher4_ = nullptr;
+    pImpl_->pMultiLauncher5_ = nullptr;
+    pImpl_->pMultiLauncher6_ = nullptr;
+    pImpl_->pMultiLauncher7_ = nullptr;
+    pImpl_->pPulseRifle_ = nullptr;
+    pImpl_->pPulseCannon_ = nullptr;
+    pImpl_->pPulseBlobRifle_ = nullptr;
+    pImpl_->pPulseBLobCannon_ = nullptr;
+    pImpl_->pLargeMissile_ = nullptr;
+    pImpl_->pTreacheryWeapon_ = nullptr;
+    pImpl_->pVortex_ = nullptr;
+    pImpl_->pNuke_ = nullptr;
+    pImpl_->pIon_ = nullptr;
+    pImpl_->pAdvancedSuperCharger_ = nullptr;
+    pImpl_->pSuperSuperCharger_ = nullptr;
+    pImpl_->pPunch_ = nullptr;
+    pImpl_->pObjectDemolish_ = nullptr;
+    pImpl_->pCivilianHardwareLabL1Demolish_ = nullptr;
+    pImpl_->pCivilianHardwareLabL3Demolish_ = nullptr;
+    pImpl_->pMilitaryHardwareLabL1Demolish_ = nullptr;
+    pImpl_->pMilitaryHardwareLabL3Demolish_ = nullptr;
+    pImpl_->pSmelterL1Demolish_ = nullptr;
+    pImpl_->pSmelterL3Demolish_ = nullptr;
+    pImpl_->pCivilianFactoryL1Demolish_ = nullptr;
+    pImpl_->pCivilianFactoryL3Demolish_ = nullptr;
+    pImpl_->pCivilianFactoryL5Demolish_ = nullptr;
+    pImpl_->pMilitaryFactoryL1Demolish_ = nullptr;
+    pImpl_->pMilitaryFactoryL3Demolish_ = nullptr;
+    pImpl_->pMilitaryFactoryL4Demolish_ = nullptr;
+    pImpl_->pMilitaryFactoryL5Demolish_ = nullptr;
+    pImpl_->pTurretMissileEmplacementL1Demolish_ = nullptr;
+    pImpl_->pTurretMissileEmplacementL2Demolish_ = nullptr;
+    pImpl_->pTurretMissileEmplacementL3Demolish_ = nullptr;
+    pImpl_->pSentryMissileEmplacementL3Demolish_ = nullptr;
+    pImpl_->pSentryMissileEmplacementL4Demolish_ = nullptr;
+    pImpl_->pLauncherMissileEmplacementL4Demolish_ = nullptr;
+    pImpl_->pIcbmMissileEmplacementL5Demolish_ = nullptr;
+    pImpl_->pGarrisonL1Demolish_ = nullptr;
+    pImpl_->pMineL1Demolish_ = nullptr;
+    pImpl_->pMineL3Demolish_ = nullptr;
+    pImpl_->pMineL5Demolish_ = nullptr;
+    pImpl_->pBeaconL1Demolish_ = nullptr;
+    pImpl_->pBeaconL3Demolish_ = nullptr;
+    pImpl_->pBeaconL5Demolish_ = nullptr;
+    pImpl_->pPodL1Demolish_ = nullptr;
+    pImpl_->pBee_ = nullptr;
+    pImpl_->pLightSting_ = nullptr;
+    pImpl_->pMetalSting_ = nullptr;
 
-	pImpl_->pBolterFlash_ =  NULL;
-	pImpl_->pHeavyBolterFlash_ =  NULL;
-	pImpl_->pAutoCannonFlash_ =  NULL;
-
+    pImpl_->pBolterFlash_ = nullptr;
+    pImpl_->pHeavyBolterFlash_ = nullptr;
+    pImpl_->pAutoCannonFlash_ = nullptr;
 
     TEST_INVARIANT;
 }
 
 MachPhysWeaponPersistence::~MachPhysWeaponPersistence()
 {
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
     TEST_INVARIANT;
 }
 
-const MachPhysPlasmaWeapon& MachPhysWeaponPersistence::plasmaWeaponExemplar( MachPhys::WeaponType type )
+const MachPhysPlasmaWeapon& MachPhysWeaponPersistence::plasmaWeaponExemplar(MachPhys::WeaponType type)
 {
-    MachPhysPlasmaWeapon** ppWeapon = NULL;
+    MachPhysPlasmaWeapon** ppWeapon = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::PLASMA_RIFLE:
             ppWeapon = &pImpl_->pPlasmaRifle_;
@@ -243,23 +242,23 @@ const MachPhysPlasmaWeapon& MachPhysWeaponPersistence::plasmaWeaponExemplar( Mac
         case MachPhys::PLASMA_CANNON2:
             ppWeapon = &pImpl_->pPlasmaCannon2_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppWeapon == NULL )
+    if (*ppWeapon == nullptr)
     {
         std::cout << "Make new plasma weapon" << std::endl;
-        *ppWeapon = _NEW( MachPhysPlasmaWeapon( type ) );
+        *ppWeapon = _NEW(MachPhysPlasmaWeapon(type));
     }
 
     return **ppWeapon;
 }
 
-const MachPhysFlameThrower& MachPhysWeaponPersistence::flameThrowerExemplar( MachPhys::WeaponType type )
+const MachPhysFlameThrower& MachPhysWeaponPersistence::flameThrowerExemplar(MachPhys::WeaponType type)
 {
-    MachPhysFlameThrower** ppWeapon = NULL;
+    MachPhysFlameThrower** ppWeapon = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::FLAME_THROWER1:
             ppWeapon = &pImpl_->pFlameThrower1_;
@@ -267,22 +266,22 @@ const MachPhysFlameThrower& MachPhysWeaponPersistence::flameThrowerExemplar( Mac
         case MachPhys::FLAME_THROWER2:
             ppWeapon = &pImpl_->pFlameThrower2_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppWeapon == NULL )
+    if (*ppWeapon == nullptr)
     {
-        *ppWeapon = _NEW( MachPhysFlameThrower( type ) );
+        *ppWeapon = _NEW(MachPhysFlameThrower(type));
     }
 
     return **ppWeapon;
 }
 
-const MachPhysBolter& MachPhysWeaponPersistence::bolterExemplar( MachPhys::WeaponType type )
+const MachPhysBolter& MachPhysWeaponPersistence::bolterExemplar(MachPhys::WeaponType type)
 {
-    MachPhysBolter** ppWeapon = NULL;
+    MachPhysBolter** ppWeapon = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::BOLTER:
             ppWeapon = &pImpl_->pBolter_;
@@ -296,20 +295,20 @@ const MachPhysBolter& MachPhysWeaponPersistence::bolterExemplar( MachPhys::Weapo
         case MachPhys::HEAVY_BOLTER2:
             ppWeapon = &pImpl_->pHeavyBolter2_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppWeapon == NULL )
-        *ppWeapon = _NEW( MachPhysBolter( type ) );
+    if (*ppWeapon == nullptr)
+        *ppWeapon = _NEW(MachPhysBolter(type));
 
     return **ppWeapon;
 }
 
-const W4dGeneric& MachPhysWeaponPersistence::bolterFlashExemplar( MachPhys::WeaponType type )
+const W4dGeneric& MachPhysWeaponPersistence::bolterFlashExemplar(MachPhys::WeaponType type)
 {
-    W4dGeneric** ppFlash = NULL;
+    W4dGeneric** ppFlash = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::BOLTER:
             ppFlash = &pImpl_->pBolterFlash_;
@@ -321,399 +320,396 @@ const W4dGeneric& MachPhysWeaponPersistence::bolterFlashExemplar( MachPhys::Weap
         case MachPhys::HEAVY_BOLTER2:
             ppFlash = &pImpl_->pHeavyBolterFlash_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppFlash == NULL )
-        *ppFlash = MachPhysBolter::newFlash( type );
+    if (*ppFlash == nullptr)
+        *ppFlash = MachPhysBolter::newFlash(type);
 
     return **ppFlash;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::objDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::objDemolishExemplar(MachPhys::DemolitionType type)
 {
 
-     PRE(type.objectType==MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType == MachPhys::NOT_CONSTRUCTION);
     MachPhysObjDemolish** ppObjectDemolish;
 
-	  ppObjectDemolish=&pImpl_->pObjectDemolish_;
-	  if (*ppObjectDemolish == NULL)
-	  {
-	      *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-	  }
-
-
-	 return **ppObjectDemolish;
-}
-
-const MachPhysObjDemolish& MachPhysWeaponPersistence::hardwareLabDemolishExemplar( MachPhys::DemolitionType type )
-{
-
-     PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-     PRE(type.constructionType==MachPhys::HARDWARE_LAB);
-
-     MachPhysObjDemolish** ppObjectDemolish = NULL;
-
-     switch ( type.subType )
-	 {
-	  case 0:
-        switch ( type.level )
-	    {
-		 case 1:
-		  ppObjectDemolish=&pImpl_->pCivilianHardwareLabL1Demolish_;
-		  break;
-		 case 3:
-		  ppObjectDemolish=&pImpl_->pCivilianHardwareLabL3Demolish_;
-		  break;
-         DEFAULT_ASSERT_BAD_CASE( type.level );
-	    }
-	    break;
-	  case 1:
-        switch ( type.level )
-	    {
-		 case 1:
-		  ppObjectDemolish=&pImpl_->pMilitaryHardwareLabL1Demolish_;
-		  break;
-		 case 3:
-		  ppObjectDemolish=&pImpl_->pMilitaryHardwareLabL3Demolish_;
-		  break;
-         DEFAULT_ASSERT_BAD_CASE( type.level );
-	    }
-	   break;
-       DEFAULT_ASSERT_BAD_CASE( type.subType );
-	 }
-
-     if (*ppObjectDemolish == NULL)
-	 {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
-   	 }
-
-	 return **ppObjectDemolish;
-}
-
-const MachPhysObjDemolish& MachPhysWeaponPersistence::smelterDemolishExemplar( MachPhys::DemolitionType type )
-{
-
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::SMELTER);
-    MachPhysObjDemolish** ppObjectDemolish = NULL;
-
-    switch ( type.level )
+    ppObjectDemolish = &pImpl_->pObjectDemolish_;
+    if (*ppObjectDemolish == nullptr)
     {
-		 case 1:
-		  ppObjectDemolish=&pImpl_->pSmelterL1Demolish_;
-		  break;
-		 case 3:
-		  ppObjectDemolish=&pImpl_->pSmelterL3Demolish_;
-		  break;
-         DEFAULT_ASSERT_BAD_CASE( type.level );
+        *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
     }
 
-
-   if (*ppObjectDemolish == NULL)
-   {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
-   }
-
-   return **ppObjectDemolish;
+    return **ppObjectDemolish;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::factoryDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::hardwareLabDemolishExemplar(MachPhys::DemolitionType type)
 {
 
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::FACTORY);
-    MachPhysObjDemolish** ppObjectDemolish = NULL;
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::HARDWARE_LAB);
 
-        switch ( type.subType )
-		{
-		  case 0:
-           switch ( type.level )
-           {
-		    case 1:
-		     ppObjectDemolish=&pImpl_->pCivilianFactoryL1Demolish_;
-		     break;
-		    case 3:
-		     ppObjectDemolish=&pImpl_->pCivilianFactoryL3Demolish_;
-		     break;
-		    case 5:
-		     ppObjectDemolish=&pImpl_->pCivilianFactoryL5Demolish_;
-		     break;
-            DEFAULT_ASSERT_BAD_CASE( type.level );
-	       }
-		   break;
-		  case 1:
-           switch ( type.level )
-           {
-		    case 1:
-		     ppObjectDemolish=&pImpl_->pMilitaryFactoryL1Demolish_;
-		     break;
-		    case 3:
-		     ppObjectDemolish=&pImpl_->pMilitaryFactoryL3Demolish_;
-		     break;
-		    case 4:
-		     ppObjectDemolish=&pImpl_->pMilitaryFactoryL4Demolish_;
-		     break;
-		    case 5:
-		     ppObjectDemolish=&pImpl_->pMilitaryFactoryL5Demolish_;
-		     break;
-            DEFAULT_ASSERT_BAD_CASE( type.level );
-	       }
-		   break;
-          DEFAULT_ASSERT_BAD_CASE( type.subType );
-		 }
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
 
-	  if (*ppObjectDemolish == NULL)
-	  {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
-   	  }
+    switch (type.subType)
+    {
+        case 0:
+            switch (type.level)
+            {
+                case 1:
+                    ppObjectDemolish = &pImpl_->pCivilianHardwareLabL1Demolish_;
+                    break;
+                case 3:
+                    ppObjectDemolish = &pImpl_->pCivilianHardwareLabL3Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+        case 1:
+            switch (type.level)
+            {
+                case 1:
+                    ppObjectDemolish = &pImpl_->pMilitaryHardwareLabL1Demolish_;
+                    break;
+                case 3:
+                    ppObjectDemolish = &pImpl_->pMilitaryHardwareLabL3Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.subType);
+    }
 
-	 return **ppObjectDemolish;
+    if (*ppObjectDemolish == nullptr)
+    {
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
+    }
+
+    return **ppObjectDemolish;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::missileEmplacementDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::smelterDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::MISSILE_EMPLACEMENT);
 
-    MachPhysObjDemolish** ppObjectDemolish = NULL;
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::SMELTER);
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
 
-        switch ( type.subType )
-		{
-		  case 0:
-           switch ( type.level )
-           {
-		    case 1:
-		     ppObjectDemolish=&pImpl_->pTurretMissileEmplacementL1Demolish_;
-		     break;
-		    case 2:
-		     ppObjectDemolish=&pImpl_->pTurretMissileEmplacementL2Demolish_;
-		     break;
-		    case 3:
-		     ppObjectDemolish=&pImpl_->pTurretMissileEmplacementL3Demolish_;
-		     break;
-            DEFAULT_ASSERT_BAD_CASE( type.level );
-	       }
-		   break;
-		  case 1:
-           switch ( type.level )
-           {
-		    case 3:
-		     ppObjectDemolish=&pImpl_->pSentryMissileEmplacementL3Demolish_;
-		     break;
-		    case 4:
-		     ppObjectDemolish=&pImpl_->pSentryMissileEmplacementL3Demolish_;
-		     break;
-            DEFAULT_ASSERT_BAD_CASE( type.level );
-	       }
-		   break;
-		  case 2:
-           switch ( type.level )
-           {
-		    case 4:
-		     ppObjectDemolish=&pImpl_->pLauncherMissileEmplacementL4Demolish_;
-		     break;
-            DEFAULT_ASSERT_BAD_CASE( type.level );
-	       }
-		   break;
-		  case 3:
-           switch ( type.level )
-           {
-		    case 5:
-		     ppObjectDemolish=&pImpl_->pIcbmMissileEmplacementL5Demolish_;
-		     break;
-            DEFAULT_ASSERT_BAD_CASE( type.level );
-	       }
-		   break;
-          DEFAULT_ASSERT_BAD_CASE( type.subType );
-		 }
+    switch (type.level)
+    {
+        case 1:
+            ppObjectDemolish = &pImpl_->pSmelterL1Demolish_;
+            break;
+        case 3:
+            ppObjectDemolish = &pImpl_->pSmelterL3Demolish_;
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.level);
+    }
 
-	  if (*ppObjectDemolish == NULL)
-	  {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
-   	  }
+    if (*ppObjectDemolish == nullptr)
+    {
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
+    }
 
-	 return **ppObjectDemolish;
+    return **ppObjectDemolish;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::garrisonDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::factoryDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::GARRISON);
 
-    MachPhysObjDemolish** ppObjectDemolish = NULL;
-    switch ( type.level )
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::FACTORY);
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
+
+    switch (type.subType)
     {
-	    case 1:
-	     ppObjectDemolish=&pImpl_->pGarrisonL1Demolish_;
-	     break;
-        DEFAULT_ASSERT_BAD_CASE( type.level );
+        case 0:
+            switch (type.level)
+            {
+                case 1:
+                    ppObjectDemolish = &pImpl_->pCivilianFactoryL1Demolish_;
+                    break;
+                case 3:
+                    ppObjectDemolish = &pImpl_->pCivilianFactoryL3Demolish_;
+                    break;
+                case 5:
+                    ppObjectDemolish = &pImpl_->pCivilianFactoryL5Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+        case 1:
+            switch (type.level)
+            {
+                case 1:
+                    ppObjectDemolish = &pImpl_->pMilitaryFactoryL1Demolish_;
+                    break;
+                case 3:
+                    ppObjectDemolish = &pImpl_->pMilitaryFactoryL3Demolish_;
+                    break;
+                case 4:
+                    ppObjectDemolish = &pImpl_->pMilitaryFactoryL4Demolish_;
+                    break;
+                case 5:
+                    ppObjectDemolish = &pImpl_->pMilitaryFactoryL5Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.subType);
     }
 
-    if (*ppObjectDemolish == NULL)
+    if (*ppObjectDemolish == nullptr)
     {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
     }
 
-	 return **ppObjectDemolish;
+    return **ppObjectDemolish;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::mineDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::missileEmplacementDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::MINE);
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::MISSILE_EMPLACEMENT);
 
-    MachPhysObjDemolish** ppObjectDemolish = NULL;
-    switch ( type.level )
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
+
+    switch (type.subType)
     {
-	    case 1:
-	     ppObjectDemolish=&pImpl_->pMineL1Demolish_;
-	     break;
-	    case 3:
-	     ppObjectDemolish=&pImpl_->pMineL3Demolish_;
-	     break;
-	    case 5:
-	     ppObjectDemolish=&pImpl_->pMineL5Demolish_;
-	     break;
-        DEFAULT_ASSERT_BAD_CASE( type.level );
+        case 0:
+            switch (type.level)
+            {
+                case 1:
+                    ppObjectDemolish = &pImpl_->pTurretMissileEmplacementL1Demolish_;
+                    break;
+                case 2:
+                    ppObjectDemolish = &pImpl_->pTurretMissileEmplacementL2Demolish_;
+                    break;
+                case 3:
+                    ppObjectDemolish = &pImpl_->pTurretMissileEmplacementL3Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+        case 1:
+            switch (type.level)
+            {
+                case 3:
+                    ppObjectDemolish = &pImpl_->pSentryMissileEmplacementL3Demolish_;
+                    break;
+                case 4:
+                    ppObjectDemolish = &pImpl_->pSentryMissileEmplacementL3Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+        case 2:
+            switch (type.level)
+            {
+                case 4:
+                    ppObjectDemolish = &pImpl_->pLauncherMissileEmplacementL4Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+        case 3:
+            switch (type.level)
+            {
+                case 5:
+                    ppObjectDemolish = &pImpl_->pIcbmMissileEmplacementL5Demolish_;
+                    break;
+                    DEFAULT_ASSERT_BAD_CASE(type.level);
+            }
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.subType);
     }
 
-    if (*ppObjectDemolish == NULL)
+    if (*ppObjectDemolish == nullptr)
     {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
     }
 
-	 return **ppObjectDemolish;
+    return **ppObjectDemolish;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::beaconDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::garrisonDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::BEACON);
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::GARRISON);
 
-    MachPhysObjDemolish** ppObjectDemolish = NULL;
-    switch ( type.level )
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
+    switch (type.level)
     {
-	    case 1:
-	     ppObjectDemolish=&pImpl_->pBeaconL1Demolish_;
-	     break;
-	    case 3:
-	     ppObjectDemolish=&pImpl_->pBeaconL3Demolish_;
-	     break;
-	    case 5:
-	     ppObjectDemolish=&pImpl_->pBeaconL5Demolish_;
-	     break;
-        DEFAULT_ASSERT_BAD_CASE( type.level );
+        case 1:
+            ppObjectDemolish = &pImpl_->pGarrisonL1Demolish_;
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.level);
     }
 
-    if (*ppObjectDemolish == NULL)
+    if (*ppObjectDemolish == nullptr)
     {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
     }
 
-	 return **ppObjectDemolish;
+    return **ppObjectDemolish;
 }
 
-const MachPhysObjDemolish& MachPhysWeaponPersistence::podDemolishExemplar( MachPhys::DemolitionType type )
+const MachPhysObjDemolish& MachPhysWeaponPersistence::mineDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(not type.objectType==MachPhys::NOT_CONSTRUCTION);
-    PRE(type.constructionType==MachPhys::POD);
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::MINE);
+
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
+    switch (type.level)
+    {
+        case 1:
+            ppObjectDemolish = &pImpl_->pMineL1Demolish_;
+            break;
+        case 3:
+            ppObjectDemolish = &pImpl_->pMineL3Demolish_;
+            break;
+        case 5:
+            ppObjectDemolish = &pImpl_->pMineL5Demolish_;
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.level);
+    }
+
+    if (*ppObjectDemolish == nullptr)
+    {
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
+    }
+
+    return **ppObjectDemolish;
+}
+
+const MachPhysObjDemolish& MachPhysWeaponPersistence::beaconDemolishExemplar(MachPhys::DemolitionType type)
+{
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::BEACON);
+
+    MachPhysObjDemolish** ppObjectDemolish = nullptr;
+    switch (type.level)
+    {
+        case 1:
+            ppObjectDemolish = &pImpl_->pBeaconL1Demolish_;
+            break;
+        case 3:
+            ppObjectDemolish = &pImpl_->pBeaconL3Demolish_;
+            break;
+        case 5:
+            ppObjectDemolish = &pImpl_->pBeaconL5Demolish_;
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.level);
+    }
+
+    if (*ppObjectDemolish == nullptr)
+    {
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
+    }
+
+    return **ppObjectDemolish;
+}
+
+const MachPhysObjDemolish& MachPhysWeaponPersistence::podDemolishExemplar(MachPhys::DemolitionType type)
+{
+    PRE(not type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.constructionType == MachPhys::POD);
 
     MachPhysObjDemolish** ppObjectDemolish;
-    switch ( type.level )
+    switch (type.level)
     {
-	    case 1:
-	     ppObjectDemolish=&pImpl_->pPodL1Demolish_;
-	     break;
-        DEFAULT_ASSERT_BAD_CASE( type.level );
+        case 1:
+            ppObjectDemolish = &pImpl_->pPodL1Demolish_;
+            break;
+            DEFAULT_ASSERT_BAD_CASE(type.level);
     }
 
-    if (*ppObjectDemolish == NULL)
+    if (*ppObjectDemolish == nullptr)
     {
-		  if (MachPhysObjDemolish::useGenericDemolition( type ) )
-		  {
-			MachPhys::DemolitionType notConstructionType;
-			notConstructionType.objectType=MachPhys::NOT_CONSTRUCTION;
-		    *ppObjectDemolish= _NEW( MachPhysObjDemolish( instance().pRoot(), MexTransform3d(),  notConstructionType ) );
-		  }
-		  else
-		  {
-		    *ppObjectDemolish=_NEW( MachPhysObjDemolish( type ) );
-		  }
+        if (MachPhysObjDemolish::useGenericDemolition(type))
+        {
+            MachPhys::DemolitionType notConstructionType;
+            notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+        }
+        else
+        {
+            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        }
     }
 
-	 return **ppObjectDemolish;
+    return **ppObjectDemolish;
 }
 
-
-const MachPhysVirusSpreader& MachPhysWeaponPersistence::virusSpreaderExemplar( MachPhys::Mounting mounting )
+const MachPhysVirusSpreader& MachPhysWeaponPersistence::virusSpreaderExemplar(MachPhys::Mounting mounting)
 {
-    MachPhysVirusSpreader** ppWeapon = NULL;
+    MachPhysVirusSpreader** ppWeapon = nullptr;
 
-    switch( mounting )
+    switch (mounting)
     {
         case MachPhys::LEFT:
             ppWeapon = &pImpl_->pVirusSpreaderLeft_;
@@ -724,20 +720,20 @@ const MachPhysVirusSpreader& MachPhysWeaponPersistence::virusSpreaderExemplar( M
         case MachPhys::TOP:
             ppWeapon = &pImpl_->pVirusSpreaderTop_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( mounting );
+            DEFAULT_ASSERT_BAD_CASE(mounting);
     }
 
-    if( *ppWeapon == NULL )
-        *ppWeapon = _NEW( MachPhysVirusSpreader( mounting ) );
+    if (*ppWeapon == nullptr)
+        *ppWeapon = _NEW(MachPhysVirusSpreader(mounting));
 
     return **ppWeapon;
 }
 
-const MachPhysElectroCharger& MachPhysWeaponPersistence::electroChargerExemplar( MachPhys::Mounting mounting )
+const MachPhysElectroCharger& MachPhysWeaponPersistence::electroChargerExemplar(MachPhys::Mounting mounting)
 {
-    MachPhysElectroCharger** ppWeapon = NULL;
+    MachPhysElectroCharger** ppWeapon = nullptr;
 
-    switch( mounting )
+    switch (mounting)
     {
         case MachPhys::LEFT:
             ppWeapon = &pImpl_->pElectroChargerLeft_;
@@ -748,20 +744,20 @@ const MachPhysElectroCharger& MachPhysWeaponPersistence::electroChargerExemplar(
         case MachPhys::TOP:
             ppWeapon = &pImpl_->pElectroChargerTop_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( mounting );
+            DEFAULT_ASSERT_BAD_CASE(mounting);
     }
 
-    if( *ppWeapon == NULL )
-        *ppWeapon = _NEW( MachPhysElectroCharger( mounting ) );
+    if (*ppWeapon == nullptr)
+        *ppWeapon = _NEW(MachPhysElectroCharger(mounting));
 
     return **ppWeapon;
 }
 
-const MachPhysMultiLauncher& MachPhysWeaponPersistence::multiLauncherExemplar( MachPhys::WeaponType type )
+const MachPhysMultiLauncher& MachPhysWeaponPersistence::multiLauncherExemplar(MachPhys::WeaponType type)
 {
-    MachPhysMultiLauncher** ppWeapon = NULL;
+    MachPhysMultiLauncher** ppWeapon = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::MULTI_LAUNCHER1:
             ppWeapon = &pImpl_->pMultiLauncher1_;
@@ -785,36 +781,36 @@ const MachPhysMultiLauncher& MachPhysWeaponPersistence::multiLauncherExemplar( M
             ppWeapon = &pImpl_->pMultiLauncher7_;
             break;
 
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppWeapon == NULL )
-        *ppWeapon = _NEW( MachPhysMultiLauncher( type ) );
+    if (*ppWeapon == nullptr)
+        *ppWeapon = _NEW(MachPhysMultiLauncher(type));
 
     return **ppWeapon;
 }
 
 const MachPhysPulseRifle& MachPhysWeaponPersistence::pulseRifleExemplar()
 {
-    if( pImpl_->pPulseRifle_ == NULL )
-        pImpl_->pPulseRifle_ = _NEW( MachPhysPulseRifle() );
+    if (pImpl_->pPulseRifle_ == nullptr)
+        pImpl_->pPulseRifle_ = _NEW(MachPhysPulseRifle());
 
     return *pImpl_->pPulseRifle_;
 }
 
 const MachPhysPulseCannon& MachPhysWeaponPersistence::pulseCannonExemplar()
 {
-    if( pImpl_->pPulseCannon_ == NULL )
-        pImpl_->pPulseCannon_ = _NEW( MachPhysPulseCannon() );
+    if (pImpl_->pPulseCannon_ == nullptr)
+        pImpl_->pPulseCannon_ = _NEW(MachPhysPulseCannon());
 
     return *pImpl_->pPulseCannon_;
 }
 
-const MachPhysPulseBlob& MachPhysWeaponPersistence::pulseBlobExemplar( MachPhys::WeaponType type )
+const MachPhysPulseBlob& MachPhysWeaponPersistence::pulseBlobExemplar(MachPhys::WeaponType type)
 {
-    MachPhysPulseBlob** ppWeapon = NULL;
+    MachPhysPulseBlob** ppWeapon = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::PULSE_RIFLE:
             ppWeapon = &pImpl_->pPulseBlobRifle_;
@@ -822,60 +818,60 @@ const MachPhysPulseBlob& MachPhysWeaponPersistence::pulseBlobExemplar( MachPhys:
         case MachPhys::PULSE_CANNON:
             ppWeapon = &pImpl_->pPulseBLobCannon_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppWeapon == NULL )
-        *ppWeapon = _NEW( MachPhysPulseBlob( type ) );
+    if (*ppWeapon == nullptr)
+        *ppWeapon = _NEW(MachPhysPulseBlob(type));
 
     return **ppWeapon;
 }
 
 const MachPhysTreacheryWeapon& MachPhysWeaponPersistence::treacheryWeaponExemplar()
 {
-    if( pImpl_->pTreacheryWeapon_ == NULL )
-        pImpl_->pTreacheryWeapon_ = _NEW( MachPhysTreacheryWeapon() );
+    if (pImpl_->pTreacheryWeapon_ == nullptr)
+        pImpl_->pTreacheryWeapon_ = _NEW(MachPhysTreacheryWeapon());
 
     return *pImpl_->pTreacheryWeapon_;
 }
 
 const MachPhysLargeMissile& MachPhysWeaponPersistence::largeMissileExemplar()
 {
-    if( pImpl_->pLargeMissile_ == NULL )
-        pImpl_->pLargeMissile_ = _NEW( MachPhysLargeMissile() );
+    if (pImpl_->pLargeMissile_ == nullptr)
+        pImpl_->pLargeMissile_ = _NEW(MachPhysLargeMissile());
 
     return *pImpl_->pLargeMissile_;
 }
 
 const MachPhysVortexWeapon& MachPhysWeaponPersistence::vortexExemplar()
 {
-    if( pImpl_->pVortex_ == NULL )
-        pImpl_->pVortex_ = _NEW( MachPhysVortexWeapon() );
+    if (pImpl_->pVortex_ == nullptr)
+        pImpl_->pVortex_ = _NEW(MachPhysVortexWeapon());
 
     return *pImpl_->pVortex_;
 }
 
 const MachPhysNuclearWeapon& MachPhysWeaponPersistence::nuclearExemplar()
 {
-    if( pImpl_->pNuke_ == NULL )
-        pImpl_->pNuke_ = _NEW( MachPhysNuclearWeapon() );
+    if (pImpl_->pNuke_ == nullptr)
+        pImpl_->pNuke_ = _NEW(MachPhysNuclearWeapon());
 
     return *pImpl_->pNuke_;
 }
 
-const MachPhysIonWeapon& MachPhysWeaponPersistence::ionExemplar( MachPhys::WeaponType type )
+const MachPhysIonWeapon& MachPhysWeaponPersistence::ionExemplar(MachPhys::WeaponType type)
 {
-    if( pImpl_->pIon_ == NULL )
-        pImpl_->pIon_ = _NEW( MachPhysIonWeapon( type ) );
+    if (pImpl_->pIon_ == nullptr)
+        pImpl_->pIon_ = _NEW(MachPhysIonWeapon(type));
 
     return *pImpl_->pIon_;
 }
 
-const MachPhysSuperCharger& MachPhysWeaponPersistence::superChargerExemplar( MachPhys::WeaponType type )
+const MachPhysSuperCharger& MachPhysWeaponPersistence::superChargerExemplar(MachPhys::WeaponType type)
 {
-    MachPhysSuperCharger** ppWeapon = NULL;
+    MachPhysSuperCharger** ppWeapon = nullptr;
 
-    switch( type )
+    switch (type)
     {
         case MachPhys::SUPERCHARGE_ADVANCED:
             ppWeapon = &pImpl_->pAdvancedSuperCharger_;
@@ -883,11 +879,11 @@ const MachPhysSuperCharger& MachPhysWeaponPersistence::superChargerExemplar( Mac
         case MachPhys::SUPERCHARGE_SUPER:
             ppWeapon = &pImpl_->pSuperSuperCharger_;
             break;
-        DEFAULT_ASSERT_BAD_CASE( type );
+            DEFAULT_ASSERT_BAD_CASE(type);
     }
 
-    if( *ppWeapon == NULL )
-        *ppWeapon = _NEW( MachPhysSuperCharger( type ) );
+    if (*ppWeapon == nullptr)
+        *ppWeapon = _NEW(MachPhysSuperCharger(type));
 
     return **ppWeapon;
 }
@@ -895,8 +891,8 @@ const MachPhysSuperCharger& MachPhysWeaponPersistence::superChargerExemplar( Mac
 const MachPhysPunchWeapon& MachPhysWeaponPersistence::punchExemplar()
 {
 
-    if( pImpl_->pPunch_ == NULL )
-        pImpl_->pPunch_ = _NEW( MachPhysPunchWeapon() );
+    if (pImpl_->pPunch_ == nullptr)
+        pImpl_->pPunch_ = _NEW(MachPhysPunchWeapon());
 
     return *pImpl_->pPunch_;
 }
@@ -904,8 +900,8 @@ const MachPhysPunchWeapon& MachPhysWeaponPersistence::punchExemplar()
 const MachPhysBeeBomber& MachPhysWeaponPersistence::beeExemplar()
 {
 
-    if( pImpl_->pBee_ == NULL )
-        pImpl_->pBee_ = _NEW( MachPhysBeeBomber() );
+    if (pImpl_->pBee_ == nullptr)
+        pImpl_->pBee_ = _NEW(MachPhysBeeBomber());
 
     return *pImpl_->pBee_;
 }
@@ -913,8 +909,8 @@ const MachPhysBeeBomber& MachPhysWeaponPersistence::beeExemplar()
 const MachPhysLightStingWeapon& MachPhysWeaponPersistence::lightStingExemplar()
 {
 
-    if( pImpl_->pLightSting_ == NULL )
-        pImpl_->pLightSting_ = _NEW( MachPhysLightStingWeapon() );
+    if (pImpl_->pLightSting_ == nullptr)
+        pImpl_->pLightSting_ = _NEW(MachPhysLightStingWeapon());
 
     return *pImpl_->pLightSting_;
 }
@@ -922,8 +918,8 @@ const MachPhysLightStingWeapon& MachPhysWeaponPersistence::lightStingExemplar()
 const MachPhysMetalStingWeapon& MachPhysWeaponPersistence::metalStingExemplar()
 {
 
-    if( pImpl_->pMetalSting_ == NULL )
-        pImpl_->pMetalSting_ = _NEW( MachPhysMetalStingWeapon() );
+    if (pImpl_->pMetalSting_ == nullptr)
+        pImpl_->pMetalSting_ = _NEW(MachPhysMetalStingWeapon());
 
     return *pImpl_->pMetalSting_;
 }
@@ -935,10 +931,10 @@ W4dRoot* MachPhysWeaponPersistence::pRoot()
 
 void MachPhysWeaponPersistence::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysWeaponPersistence& t )
+ostream& operator<<(ostream& o, const MachPhysWeaponPersistence& t)
 {
 
     o << "MachPhysWeaponPersistence " << (void*)&t << " start" << std::endl;
@@ -947,7 +943,7 @@ ostream& operator <<( ostream& o, const MachPhysWeaponPersistence& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysWeaponPersistence& weaponPersist )
+void perWrite(PerOstream& ostr, const MachPhysWeaponPersistence& weaponPersist)
 {
     ostr << weaponPersist.root_;
 
@@ -981,7 +977,7 @@ void perWrite( PerOstream& ostr, const MachPhysWeaponPersistence& weaponPersist 
 
     ostr << weaponPersist.pImpl_->pPulseRifle_;
     ostr << weaponPersist.pImpl_->pPulseCannon_;
-   	ostr << weaponPersist.pImpl_->pPulseBlobRifle_;
+    ostr << weaponPersist.pImpl_->pPulseBlobRifle_;
     ostr << weaponPersist.pImpl_->pPulseBLobCannon_;
 
     ostr << weaponPersist.pImpl_->pLargeMissile_;
@@ -991,7 +987,7 @@ void perWrite( PerOstream& ostr, const MachPhysWeaponPersistence& weaponPersist 
     ostr << weaponPersist.pImpl_->pNuke_;
     ostr << weaponPersist.pImpl_->pIon_;
 
-	ostr << weaponPersist.pImpl_->pAdvancedSuperCharger_;
+    ostr << weaponPersist.pImpl_->pAdvancedSuperCharger_;
     ostr << weaponPersist.pImpl_->pSuperSuperCharger_;
     ostr << weaponPersist.pImpl_->pPunch_;
 
@@ -1033,7 +1029,7 @@ void perWrite( PerOstream& ostr, const MachPhysWeaponPersistence& weaponPersist 
     ostr << weaponPersist.pImpl_->pAutoCannonFlash_;
 }
 
-void perRead( PerIstream& istr, MachPhysWeaponPersistence& weaponPersist )
+void perRead(PerIstream& istr, MachPhysWeaponPersistence& weaponPersist)
 {
     istr >> weaponPersist.root_;
 
@@ -1077,7 +1073,7 @@ void perRead( PerIstream& istr, MachPhysWeaponPersistence& weaponPersist )
     istr >> weaponPersist.pImpl_->pNuke_;
     istr >> weaponPersist.pImpl_->pIon_;
 
-	istr >> weaponPersist.pImpl_->pAdvancedSuperCharger_;
+    istr >> weaponPersist.pImpl_->pAdvancedSuperCharger_;
     istr >> weaponPersist.pImpl_->pSuperSuperCharger_;
     istr >> weaponPersist.pImpl_->pPunch_;
 
@@ -1117,7 +1113,6 @@ void perRead( PerIstream& istr, MachPhysWeaponPersistence& weaponPersist )
     istr >> weaponPersist.pImpl_->pBolterFlash_;
     istr >> weaponPersist.pImpl_->pHeavyBolterFlash_;
     istr >> weaponPersist.pImpl_->pAutoCannonFlash_;
-
 }
 
 /* End WEAPPER.CPP **************************************************/

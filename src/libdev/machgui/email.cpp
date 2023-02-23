@@ -5,24 +5,24 @@
 
 #include "machgui/email.hpp"
 
-
 /* //////////////////////////////////////////////////////////////// */
 
-MachMenuBar::MachMenuBar( MachInGameScreen * pParent, const Gui::Coord& rel )
-: //GuiDisplayable( pParent, Gui::Box( 0, 0, rel.x(), rel.y() ) )
-  GuiDisplayable( _REINTERPRET_CAST(GuiDisplayable*, pParent), Gui::Box( 0, 0, rel.x(), rel.y() ) )
+MachMenuBar::MachMenuBar(MachInGameScreen* pParent, const Gui::Coord& rel)
+    : // GuiDisplayable( pParent, Gui::Box( 0, 0, rel.x(), rel.y() ) )
+    GuiDisplayable(_REINTERPRET_CAST(GuiDisplayable*, pParent), Gui::Box(0, 0, rel.x(), rel.y()))
 {
     // TODO check cast above
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
-MachEmailArrivalBar::MachEmailArrivalBar( MachInGameScreen * pParent,
-											const Gui::Coord& rel )
-: //GuiDisplayable( pParent, Gui::Box( 0, 0, rel.x(), rel.y() ) )
-  GuiDisplayable( _REINTERPRET_CAST(GuiDisplayable*, pParent), Gui::Box( 0, 0, rel.x(), rel.y() ) )
+MachEmailArrivalBar::MachEmailArrivalBar(
+    MachInGameScreen* pParent,
+    const Gui::Coord& rel)
+    : // GuiDisplayable( pParent, Gui::Box( 0, 0, rel.x(), rel.y() ) )
+    GuiDisplayable(_REINTERPRET_CAST(GuiDisplayable*, pParent), Gui::Box(0, 0, rel.x(), rel.y()))
 {
     // TODO check cast above
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* End EMAIL.CPP ***************************************************/

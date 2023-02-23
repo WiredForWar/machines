@@ -13,13 +13,15 @@
 #include "machlog/races.hpp"
 #include "machlog/scenario.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogFiredAtCondition);
 
-PER_DEFINE_PERSISTENT( MachLogFiredAtCondition );
-
-MachLogFiredAtCondition::MachLogFiredAtCondition( const string& keyName, MachPhys::Race firingRace, MachPhys::Race firedAtRace )
-:	SimCondition( keyName ),
-	firingRace_( firingRace ),
-	firedAtRace_( firedAtRace )
+MachLogFiredAtCondition::MachLogFiredAtCondition(
+    const string& keyName,
+    MachPhys::Race firingRace,
+    MachPhys::Race firedAtRace)
+    : SimCondition(keyName)
+    , firingRace_(firingRace)
+    , firedAtRace_(firedAtRace)
 {
     TEST_INVARIANT;
 }
@@ -27,81 +29,75 @@ MachLogFiredAtCondition::MachLogFiredAtCondition( const string& keyName, MachPhy
 MachLogFiredAtCondition::~MachLogFiredAtCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogFiredAtCondition::doHasConditionBeenMet() const
 {
-	HAL_STREAM("MachLogFiredAtCondition::doHasConditionBeenMet " << std::endl );
-	MachLogRaces& races = MachLogRaces::instance();
-	return races.firedAt( firingRace_, firedAtRace_ );
+    HAL_STREAM("MachLogFiredAtCondition::doHasConditionBeenMet " << std::endl);
+    MachLogRaces& races = MachLogRaces::instance();
+    return races.firedAt(firingRace_, firedAtRace_);
 }
 
-//static
-MachLogFiredAtCondition* MachLogFiredAtCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogFiredAtCondition* MachLogFiredAtCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	//format of a VORTEX_FIRED condition line is:
-	//<keyName> RACE <race> FIRED AT <race>
+    // format of a VORTEX_FIRED condition line is:
+    //<keyName> RACE <race> FIRED AT <race>
 
-	return _NEW(
-			MachLogFiredAtCondition(
-				pParser->tokens()[1],
-				MachLogScenario::machPhysRace( pParser->tokens()[3] ),
-				MachLogScenario::machPhysRace( pParser->tokens()[6] )
-				)
-			);
+    return _NEW(MachLogFiredAtCondition(
+        pParser->tokens()[1],
+        MachLogScenario::machPhysRace(pParser->tokens()[3]),
+        MachLogScenario::machPhysRace(pParser->tokens()[6])));
 }
 
 void MachLogFiredAtCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogFiredAtCondition& t )
+ostream& operator<<(ostream& o, const MachLogFiredAtCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogFiredAtCondition::recommendedCallBackTimeGap() const
 {
-	static const PhysRelativeTime value = 2;
-	return value;
+    static const PhysRelativeTime value = 2;
+    return value;
 }
 
-//virtual
-void MachLogFiredAtCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogFiredAtCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogFiredAtCondition " << (void*)this << " start" << std::endl;
-	o << "Firing " << firingRace_ << " At " << firedAtRace_ << std::endl;
+    o << "Firing " << firingRace_ << " At " << firedAtRace_ << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogFiredAtCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogFiredAtCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.firingRace_;
-	ostr << condition.firedAtRace_;
-
+    ostr << base1;
+    ostr << condition.firingRace_;
+    ostr << condition.firedAtRace_;
 }
 
-void perRead( PerIstream& istr, MachLogFiredAtCondition& condition )
+void perRead(PerIstream& istr, MachLogFiredAtCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.firingRace_;
-	istr >> condition.firedAtRace_;
+    istr >> base1;
+    istr >> condition.firingRace_;
+    istr >> condition.firedAtRace_;
 }
 
-MachLogFiredAtCondition::MachLogFiredAtCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogFiredAtCondition::MachLogFiredAtCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

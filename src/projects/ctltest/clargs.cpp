@@ -18,8 +18,8 @@ CommandLineArguments& CommandLineArguments::instance()
 }
 
 CommandLineArguments::CommandLineArguments()
-: seed_( time( NULL ) + clock() ),
-  displayLogInfo_( false )
+    : seed_(time(NULL) + clock())
+    , displayLogInfo_(false)
 {
 
     TEST_INVARIANT;
@@ -28,40 +28,39 @@ CommandLineArguments::CommandLineArguments()
 CommandLineArguments::~CommandLineArguments()
 {
     TEST_INVARIANT;
-
 }
 
-void CommandLineArguments::parseArguments( int argc, char** argv )
+void CommandLineArguments::parseArguments(int argc, char** argv)
 {
-    for( size_t i = 1; i < argc; ++i )
+    for (size_t i = 1; i < argc; ++i)
     {
-        if( not strncmp( argv[ i ], "-seed", 5 ) )
+        if (not strncmp(argv[i], "-seed", 5))
         {
-            seed_ = atoi( &argv[ i ][ 5 ] );
+            seed_ = atoi(&argv[i][5]);
         }
 
-        if( not strncmp( argv[ i ], "-d", 2 ) )
+        if (not strncmp(argv[i], "-d", 2))
             displayLogInfo_ = true;
     }
 
-    srand( seed_ );
+    srand(seed_);
 }
 
-size_t  CommandLineArguments::seed() const
+size_t CommandLineArguments::seed() const
 {
-    return  seed_;
+    return seed_;
 }
 
-bool    CommandLineArguments::displayLogInfo() const
+bool CommandLineArguments::displayLogInfo() const
 {
-    return  displayLogInfo_;
+    return displayLogInfo_;
 }
 
 void CommandLineArguments::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const CommandLineArguments& t )
+ostream& operator<<(ostream& o, const CommandLineArguments& t)
 {
 
     o << "CommandLineArguments " << (void*)&t << " start" << std::endl;

@@ -15,16 +15,14 @@ MachPhysOreHolographData::MachPhysOreHolographData()
 MachPhysOreHolographData::~MachPhysOreHolographData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysOreHolographData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-
-ostream& operator <<( ostream& o, const MachPhysOreHolographData& t )
+ostream& operator<<(ostream& o, const MachPhysOreHolographData& t)
 {
 
     o << "OreHolograph is empty " << std::endl;

@@ -16,17 +16,17 @@ class DevButtonEvent;
 class DevWin95Keyboard : public DevKeyboard
 {
 private:
-	friend DevKeyboard& DevKeyboard::instance();
-	static DevWin95Keyboard& win95Instance();
-	DevWin95Keyboard();
-	~DevWin95Keyboard();
+    friend DevKeyboard& DevKeyboard::instance();
+    static DevWin95Keyboard& win95Instance();
+    DevWin95Keyboard();
+    ~DevWin95Keyboard();
 
-	// The Windows proceedure communicates key-press events to this
-	// class using these messages.
-	friend class AfxWin95App;
-	void wm_key(const DevButtonEvent& ev);
-	void wm_char(const DevButtonEvent& ev);
-	void wm_killfocus();
+    // The Windows proceedure communicates key-press events to this
+    // class using these messages.
+    friend class AfxWin95App;
+    void wm_key(const DevButtonEvent& ev);
+    void wm_char(const DevButtonEvent& ev);
+    void wm_killfocus();
 };
 
 #endif

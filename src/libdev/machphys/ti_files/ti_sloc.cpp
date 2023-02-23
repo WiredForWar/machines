@@ -4,17 +4,16 @@
  */
 
 #include "machphys/ofactory.hpp"
-//#include "machphys/ofactory.ctp"
+// #include "machphys/ofactory.ctp"
 
 #include "machphys/spylocat.hpp"
 
-PER_DEFINE_PERSISTENT_T2( MachPhysObjectFactory, size_t, MachPhysSpyLocator );
-PER_PRIVATE_READ_WRITE_PERSISTENT_T2( MachPhysObjectFactory, size_t, MachPhysSpyLocator );
-
+PER_DEFINE_PERSISTENT_T2(MachPhysObjectFactory, size_t, MachPhysSpyLocator);
+PER_PRIVATE_READ_WRITE_PERSISTENT_T2(MachPhysObjectFactory, size_t, MachPhysSpyLocator);
 
 void MachDummyFunctionSpyLocator()
 {
-    static  MachPhysObjectFactory< size_t, MachPhysSpyLocator >       dummyFactory3( 1 );
+    static MachPhysObjectFactory<size_t, MachPhysSpyLocator> dummyFactory3(1);
 }
 
 /* End TI_GLOC.CPP *****************************************************/

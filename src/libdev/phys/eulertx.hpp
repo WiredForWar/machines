@@ -1,5 +1,5 @@
 /*
- * E U L E R T X . H P P 
+ * E U L E R T X . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -27,38 +27,36 @@ class PhysEulerTransform3d
 {
 public:
     PhysEulerTransform3d();
-    PhysEulerTransform3d( const MexEulerAngles& );
-    PhysEulerTransform3d( const MexEulerAngles&, const MexPoint3d& );
-    PhysEulerTransform3d( const PhysEulerTransform3d& );
-    PhysEulerTransform3d( const MexTransform3d& );
+    PhysEulerTransform3d(const MexEulerAngles&);
+    PhysEulerTransform3d(const MexEulerAngles&, const MexPoint3d&);
+    PhysEulerTransform3d(const PhysEulerTransform3d&);
+    PhysEulerTransform3d(const MexTransform3d&);
 
     ~PhysEulerTransform3d();
 
-    PhysEulerTransform3d& operator =( const PhysEulerTransform3d& );
+    PhysEulerTransform3d& operator=(const PhysEulerTransform3d&);
 
     const MexEulerAngles& rotation() const;
     const MexPoint3d& position() const;
 
-    void transform( MexTransform3d* pTransform ) const;
-        
+    void transform(MexTransform3d* pTransform) const;
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysEulerTransform3d& t );
+    friend ostream& operator<<(ostream& o, const PhysEulerTransform3d& t);
 
-    PER_MEMBER_PERSISTENT_DEFAULT( PhysEulerTransform3d );
-    PER_FRIEND_READ_WRITE( PhysEulerTransform3d );
-    
+    PER_MEMBER_PERSISTENT_DEFAULT(PhysEulerTransform3d);
+    PER_FRIEND_READ_WRITE(PhysEulerTransform3d);
+
 private:
-
-
     // Operation deliberately revoked
-    bool operator ==( const PhysEulerTransform3d& );
+    bool operator==(const PhysEulerTransform3d&);
 
-    MexEulerAngles  angles_;
-    MexPoint3d      position_;
+    MexEulerAngles angles_;
+    MexPoint3d position_;
 };
 
-PER_DECLARE_PERSISTENT( PhysEulerTransform3d );
+PER_DECLARE_PERSISTENT(PhysEulerTransform3d);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * B E E W A V E . H P P 
+ * B E E W A V E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -31,42 +31,42 @@ public:
     MachLogBeeBombExplosion(
         MachLogRace* pRace,
         const MexPoint3d& startPosition,
-		const MachPhysWeaponData&,
-        MachActor* pOwner );
+        const MachPhysWeaponData&,
+        MachActor* pOwner);
 
-    ~MachLogBeeBombExplosion();
-									 								 									 
+    ~MachLogBeeBombExplosion() override;
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogBeeBombExplosion& t );
-	
-	static MachPhysBeeBombExplosion* pNewPhysBeeBombExplosion( const MexPoint3d& startPosition, MachPhysBeeBombExplosion** ppPhysBeeBombExplosion );
+    friend ostream& operator<<(ostream& o, const MachLogBeeBombExplosion& t);
+
+    static MachPhysBeeBombExplosion*
+    pNewPhysBeeBombExplosion(const MexPoint3d& startPosition, MachPhysBeeBombExplosion** ppPhysBeeBombExplosion);
 
 protected:
+    PhysAbsoluteTime firstWaveStartTime() const override;
+    PhysAbsoluteTime firstWaveFinishTime() const override;
 
-	virtual PhysAbsoluteTime firstWaveStartTime() const;	
-	virtual PhysAbsoluteTime firstWaveFinishTime() const;	
-	
-	virtual bool hitVictimFirstWave( const MachActor& victim ) const ;
-	virtual void inflictDamageFirstWave( MachActor* pVictim );
-	
-	virtual PhysAbsoluteTime destructionTime() const;		
-	virtual MATHEX_SCALAR potentialKillRadiusMultiplier() const;
-	
+    bool hitVictimFirstWave(const MachActor& victim) const override;
+    void inflictDamageFirstWave(MachActor* pVictim) override;
+
+    PhysAbsoluteTime destructionTime() const override;
+    MATHEX_SCALAR potentialKillRadiusMultiplier() const override;
+
 private:
-	// opeartions deliberately revoked
-    MachLogBeeBombExplosion( const MachLogBeeBombExplosion& );
-    MachLogBeeBombExplosion& operator =( const MachLogBeeBombExplosion& );
-    bool operator ==( const MachLogBeeBombExplosion& );
-	
-	
-	MachLogBeeBombExplosionImpl* pImpl();
-	MachPhysBeeBombExplosion* pNewPhysBeeBombExplosion( const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData );
+    // opeartions deliberately revoked
+    MachLogBeeBombExplosion(const MachLogBeeBombExplosion&);
+    MachLogBeeBombExplosion& operator=(const MachLogBeeBombExplosion&);
+    bool operator==(const MachLogBeeBombExplosion&);
 
-	void doBeDestroyed();
-	
-	// data members
-	MachLogBeeBombExplosionImpl* pImpl_;
+    MachLogBeeBombExplosionImpl* pImpl();
+    MachPhysBeeBombExplosion*
+    pNewPhysBeeBombExplosion(const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData);
+
+    void doBeDestroyed();
+
+    // data members
+    MachLogBeeBombExplosionImpl* pImpl_;
 };
 
 #endif

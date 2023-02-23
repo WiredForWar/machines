@@ -1,5 +1,5 @@
 /*
- * O B S T E D I T . H P P 
+ * O B S T E D I T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,60 +21,60 @@
 
 class PedVerticalPolygonMarker;
 
-class PedObstacleEditor	: public PedPolygonEditor
+class PedObstacleEditor : public PedPolygonEditor
 // Canonical form revoked
 {
 public:
     PedObstacleEditor();
-    ~PedObstacleEditor();
+    ~PedObstacleEditor() override;
 
     void CLASS_INVARIANT;
 
-	virtual void initialise( W4dSceneManager*, MachLogPlanet* );
-	// PRE( pPlanet_ != NULL );
-	// PRE( pSceneManager_ != NULL );
+    void initialise(W4dSceneManager*, MachLogPlanet*) override;
+    // PRE( pPlanet_ != NULL );
+    // PRE( pSceneManager_ != NULL );
 
-	virtual void processInput( const DevButtonEvent& );
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
-	
-	virtual void displayKeyboardCtrls();
+    void processInput(const DevButtonEvent&) override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayModeInfo();
+    void displayKeyboardCtrls() override;
 
-	virtual void readCspFile( const SysPathName& );
-	// PRE( cspFileName.existsAsFile() );
+    void displayModeInfo() override;
 
-	virtual void validate();
+    void readCspFile(const SysPathName&) override;
+    // PRE( cspFileName.existsAsFile() );
+
+    void validate() override;
 
 protected:
-	virtual PedPolygon* createPolygon( const PolyVerticies& verticies, MATHEX_SCALAR height, bool selected ) const;
-	virtual PedPolygon* createDefaultPolygon() const;
-	virtual void updatePolygon();
-	virtual void processVertexRight();
-	virtual void processVertexLeft();
-	virtual void processVertexUp();
-	virtual void processVertexDown();
-	void processInsertVertex();
-	void processDeleteVertex();
-	void processDisplayVerticalPolygons( bool displayPolygons );
-	void processComputeVerticalPolygons();
-	void highlightAllObstacles();
-	void processSelectPolygon();
-	void processChangeObstacleType();
+    PedPolygon* createPolygon(const PolyVerticies& verticies, MATHEX_SCALAR height, bool selected) const override;
+    PedPolygon* createDefaultPolygon() const override;
+    void updatePolygon() override;
+    void processVertexRight() override;
+    void processVertexLeft() override;
+    void processVertexUp() override;
+    void processVertexDown() override;
+    void processInsertVertex();
+    void processDeleteVertex();
+    void processDisplayVerticalPolygons(bool displayPolygons);
+    void processComputeVerticalPolygons();
+    void highlightAllObstacles();
+    void processSelectPolygon();
+    void processChangeObstacleType();
 
 private:
-	// Operations deliberately revoked
-    PedObstacleEditor( const PedObstacleEditor& );
-    PedObstacleEditor& operator =( const PedObstacleEditor& );
-    bool operator ==( const PedObstacleEditor& );
+    // Operations deliberately revoked
+    PedObstacleEditor(const PedObstacleEditor&);
+    PedObstacleEditor& operator=(const PedObstacleEditor&);
+    bool operator==(const PedObstacleEditor&);
 
-    friend ostream& operator <<( ostream& o, const PedObstacleEditor& t );
-	
-	typedef ctl_pvector< PedVerticalPolygonMarker > VerticalPolygons;
+    friend ostream& operator<<(ostream& o, const PedObstacleEditor& t);
 
-	VerticalPolygons verticalPolygons_;
-	bool displayVerticalPolygons_;   
+    using VerticalPolygons = ctl_pvector<PedVerticalPolygonMarker>;
+
+    VerticalPolygons verticalPolygons_;
+    bool displayVerticalPolygons_;
 };
 #endif
 

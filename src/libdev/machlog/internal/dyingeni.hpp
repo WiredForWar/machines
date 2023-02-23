@@ -1,5 +1,5 @@
 /*
- * D Y I N G E N I . H P P 
+ * D Y I N G E N I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,19 +26,17 @@ public:
     void CLASS_INVARIANT;
 
 private:
-	friend class MachLogDyingEntityEvent;
-    friend ostream& operator <<( ostream& o, const MachLogDyingEntityEventImpl& t );
+    friend class MachLogDyingEntityEvent;
+    friend ostream& operator<<(ostream& o, const MachLogDyingEntityEventImpl& t);
 
-    MachLogDyingEntityEventImpl( const MachLogDyingEntityEventImpl& );
-    MachLogDyingEntityEventImpl& operator =( const MachLogDyingEntityEventImpl& );
+    MachLogDyingEntityEventImpl(const MachLogDyingEntityEventImpl&);
+    MachLogDyingEntityEventImpl& operator=(const MachLogDyingEntityEventImpl&);
 
-	MachLogDyingEntityEvent::Polygons	polygons_;
-	CtlConstCountedPtr< W4dEntity >		physObjectPtr_;
-	MachLogConstruction*				pConstruction_;
-	bool								insideBuilding_;
-
+    MachLogDyingEntityEvent::Polygons polygons_;
+    CtlConstCountedPtr<W4dEntity> physObjectPtr_;
+    MachLogConstruction* pConstruction_;
+    bool insideBuilding_;
 };
-
 
 #endif
 

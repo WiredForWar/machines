@@ -1,5 +1,5 @@
 #include "network/buffer.hpp"
 
 #ifndef _INLINE
-	#include "network/buffer.ipp"
+#include "network/buffer.ipp"
 #endif

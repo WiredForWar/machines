@@ -28,108 +28,105 @@ class PedMachineEditor : public PedActorEditor
 {
 public:
     PedMachineEditor();
-    ~PedMachineEditor();
+    ~PedMachineEditor() override;
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
-	virtual void processInput( const DevButtonEvent& );
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void processInput(const DevButtonEvent&) override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayModeInfo();
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void displayModeInfo() override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayKeyboardCtrls();
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void displayKeyboardCtrls() override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-    //virtual void preRenderUpdate();
-//	virtual void displayModeInfo();
+    // virtual void preRenderUpdate();
+    //   virtual void displayModeInfo();
 
-	virtual void readScnFile( PedScenarioFile& );
+    void readScnFile(PedScenarioFile&) override;
 
-	virtual void writeScnFile( PedScenarioFile& );
-
+    void writeScnFile(PedScenarioFile&) override;
 
 protected:
-
-	void initialiseActors();
-	virtual W4dEntity* currentActor();
-	virtual void processCycle( PedActorEditor::CycleDir dir );
- 	virtual void processSelection();
- 	virtual void processDelete();
-	virtual void processRace();
-	virtual void createEntity( W4dEntity&, const MexTransform3d& );
-	virtual void rotateAfterMove();
-	virtual void processHide( bool hidden );
-	virtual void changeAllSolidities( W4dEntity::Solidity );
+    void initialiseActors();
+    W4dEntity* currentActor() override;
+    void processCycle(PedActorEditor::CycleDir dir) override;
+    void processSelection() override;
+    void processDelete() override;
+    void processRace() override;
+    void createEntity(W4dEntity&, const MexTransform3d&) override;
+    void rotateAfterMove() override;
+    void processHide(bool hidden) override;
+    void changeAllSolidities(W4dEntity::Solidity) override;
 
 private:
+    struct Machine
+    {
+        Machine(
+            MachPhys::MachineType machType = MachPhys::AGGRESSOR,
+            int subType = 0,
+            size_t bodyLevel = 1,
+            size_t brainboxLevel = 1,
+            string description = "",
+            MachPhys::WeaponCombo weaponCombo = MachPhys::L_BOLTER)
+            : machineType_(machType)
+            , subType_(subType)
+            , bodyLevel_(bodyLevel)
+            , brainboxLevel_(brainboxLevel)
+            , description_(description)
+            , weaponCombo_(weaponCombo)
+        {
+        }
 
-	struct Machine
-	{
-		Machine( MachPhys::MachineType machType = MachPhys::AGGRESSOR,
-					int subType = 0,
-					size_t bodyLevel = 1,
-					size_t brainboxLevel = 1,
-					string description = "",
-					MachPhys::WeaponCombo weaponCombo = MachPhys::L_BOLTER )
-		:	machineType_( machType ),
-			subType_( subType ),
-			bodyLevel_( bodyLevel),
-			brainboxLevel_( brainboxLevel ),
-			description_( description ),
-			weaponCombo_( weaponCombo )
-		{}
+        MachPhys::MachineType machineType_;
+        int subType_;
+        size_t bodyLevel_;
+        size_t brainboxLevel_;
+        string description_;
+        MachPhys::WeaponCombo weaponCombo_;
+    };
 
-		MachPhys::MachineType machineType_;
-		int subType_;
-		size_t bodyLevel_;
-		size_t brainboxLevel_;
-		string description_;
-		MachPhys::WeaponCombo weaponCombo_;
-	};
+    struct MachineMapping
+    {
+        MachineMapping() { }
+        MachineMapping(MachPhysMachine* machine, Machine* data, PedScenarioFile::Machine scnMach)
+            : machine_(machine)
+            , data_(data)
+            , scnMachine_(scnMach)
+        {
+        }
 
-	struct MachineMapping
-	{
-		MachineMapping()
-		{}
-		MachineMapping( MachPhysMachine* machine, Machine* data, PedScenarioFile::Machine scnMach )
-		:	machine_( machine ),
-			data_( data ),
-			scnMachine_( scnMach )
-		{}
+        MachPhysMachine* machine_;
+        Machine* data_;
+        PedScenarioFile::Machine scnMachine_;
+    };
 
-		MachPhysMachine* machine_;
-		Machine* data_;
-		PedScenarioFile::Machine scnMachine_;
-	};
+    using Machines = ctl_pvector<Machine>;
+    using MachineMappings = ctl_vector<MachineMapping>;
 
-	typedef ctl_pvector< Machine > Machines;
- 	typedef ctl_vector< MachineMapping > MachineMappings;
+    PedMachineEditor(const PedMachineEditor&);
+    PedMachineEditor& operator=(const PedMachineEditor&);
 
-    PedMachineEditor( const PedMachineEditor& );
-    PedMachineEditor& operator =( const PedMachineEditor& );
+    //  void initialiseActors();
+    void deleteMachines();
+    MachPhys::MachineType machineType(const string& type);
+    int subType(const string& type);
 
-//	void initialiseActors();
- 	void deleteMachines();
-	MachPhys::MachineType machineType( const string& type );
-	int subType( const string& type );
+    friend ostream& operator<<(ostream& o, const PedMachineEditor& t);
 
-    friend ostream& operator <<( ostream& o, const PedMachineEditor& t );
+    MachPhysMachine* createMachine(W4dEntity&, const MexTransform3d&, const Machine&);
+    void createMapping(MachPhysMachine*, Machine*, PedScenarioFile::Machine);
 
-	MachPhysMachine* createMachine( W4dEntity&, const MexTransform3d&, const Machine& );
-	void createMapping( MachPhysMachine*, Machine*, PedScenarioFile::Machine );
-
-	Machines machineData_;
-	MachineMappings machineMap_;
-	Machines::iterator machDataIter_;
-	MachineMappings::iterator mapIterator_;
-	MachPhysMachine* pSelectedMachine_;
-
+    Machines machineData_;
+    MachineMappings machineMap_;
+    Machines::iterator machDataIter_;
+    MachineMappings::iterator mapIterator_;
+    MachPhysMachine* pSelectedMachine_;
 };
-
 
 #endif
 

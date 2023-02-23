@@ -20,15 +20,15 @@
 
 #include "machlog/internal/firedata.hpp"
 
-PER_DEFINE_PERSISTENT_ABSTRACT( MachLogWeapon );
+PER_DEFINE_PERSISTENT_ABSTRACT(MachLogWeapon);
 
-MachLogWeapon::MachLogWeapon( MachLogRace* pLogRace, MachPhysWeapon* pPhysWeapon, MachActor* pOwner )
-:	pPhysWeapon_( pPhysWeapon ),
-	lastFireTime_( SimManager::instance().currentTime() ),
-	pLogRace_( pLogRace ),
-	pOwner_( pOwner ),
-	pTarget_( NULL ),
-	currentlyAttached_( false )
+MachLogWeapon::MachLogWeapon(MachLogRace* pLogRace, MachPhysWeapon* pPhysWeapon, MachActor* pOwner)
+    : pPhysWeapon_(pPhysWeapon)
+    , lastFireTime_(SimManager::instance().currentTime())
+    , pLogRace_(pLogRace)
+    , pOwner_(pOwner)
+    , pTarget_(nullptr)
+    , currentlyAttached_(false)
 {
 
     TEST_INVARIANT;
@@ -37,170 +37,167 @@ MachLogWeapon::MachLogWeapon( MachLogRace* pLogRace, MachPhysWeapon* pPhysWeapon
 MachLogWeapon::~MachLogWeapon()
 {
     TEST_INVARIANT;
-
 }
 
-PhysRelativeTime MachLogWeapon::fire( MachActor* pTarget, const MachLogFireData& fireData )
+PhysRelativeTime MachLogWeapon::fire(MachActor* pTarget, const MachLogFireData& fireData)
 {
-  	PhysRelativeTime result = 0.0;	// meaningless default value
+    PhysRelativeTime result = 0.0; // meaningless default value
 
-	//Is this weapon ready to fire again yet?
-	if( percentageRecharge() < 100 )
-	{
-		//not charged - return interval until full recharge.
-		result = lastFireTime_ + pPhysWeapon_->weaponData().reloadTime() - SimManager::instance().currentTime();
-	}
-	else
-	{
-		// weapon is charged and ready to fire
-		//fire gun and retrun animation time.
-		setChargeToZero();
-		dt("",true );
+    // Is this weapon ready to fire again yet?
+    if (percentageRecharge() < 100)
+    {
+        // not charged - return interval until full recharge.
+        result = lastFireTime_ + pPhysWeapon_->weaponData().reloadTime() - SimManager::instance().currentTime();
+    }
+    else
+    {
+        // weapon is charged and ready to fire
+        // fire gun and retrun animation time.
+        setChargeToZero();
+        dt("", true);
 
-		doFire( pTarget, fireData );
-		dt("MLWeapon::doFire",false );
-		dt("",true );
+        doFire(pTarget, fireData);
+        dt("MLWeapon::doFire", false);
+        dt("", true);
 
-		int numberInBurst = (int)( fireData.burstSeed *(float)( physWeapon().weaponData().nRoundsPerBurst() ) ) + 1;
-		result = pPhysWeapon_->fire( lastFireTime_, numberInBurst );
+        int numberInBurst = (int)(fireData.burstSeed * (float)(physWeapon().weaponData().nRoundsPerBurst())) + 1;
+        result = pPhysWeapon_->fire(lastFireTime_, numberInBurst);
 
-		MachLogRaces::instance().firedAt( pOwner_->race(), pTarget->race(), true );
+        MachLogRaces::instance().firedAt(pOwner_->race(), pTarget->race(), true);
 
-		if( MachLogNetwork::instance().isNetworkGame() )
-			MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage( pOwner_->id(), mounting(), numberInBurst );
+        if (MachLogNetwork::instance().isNetworkGame())
+            MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage(
+                pOwner_->id(),
+                mounting(),
+                numberInBurst);
 
-		dt("MLWeapon::physWeapon->fire",false);
-	}
+        dt("MLWeapon::physWeapon->fire", false);
+    }
 
-	return result;
+    return result;
 }
 
-PhysRelativeTime MachLogWeapon::fire( MachActor* pTarget )
+PhysRelativeTime MachLogWeapon::fire(MachActor* pTarget)
 {
-	//Is this weapon ready to fire again yet?
-	//if not return gap to recharge.
-	if( percentageRecharge() < 100 )
-	{
-		return lastFireTime_ + pPhysWeapon_->weaponData().reloadTime() - SimManager::instance().currentTime();
-	}
-	//fire gun and retrun animation time.
-	lastFireTime_ = SimManager::instance().currentTime();
-	dt("",true );
+    // Is this weapon ready to fire again yet?
+    // if not return gap to recharge.
+    if (percentageRecharge() < 100)
+    {
+        return lastFireTime_ + pPhysWeapon_->weaponData().reloadTime() - SimManager::instance().currentTime();
+    }
+    // fire gun and retrun animation time.
+    lastFireTime_ = SimManager::instance().currentTime();
+    dt("", true);
 
-	MachLogFireData dummyData;
-	dummyData.burstSeed = DUMMY_SEED;
+    MachLogFireData dummyData;
+    dummyData.burstSeed = DUMMY_SEED;
 
-	doFire( pTarget, dummyData );
-	dt("MLWeapon::doFire",false );
-	dt("",true );
-	PhysRelativeTime result = pPhysWeapon_->fire( lastFireTime_, 1 );
+    doFire(pTarget, dummyData);
+    dt("MLWeapon::doFire", false);
+    dt("", true);
+    PhysRelativeTime result = pPhysWeapon_->fire(lastFireTime_, 1);
 
-	if( MachLogNetwork::instance().isNetworkGame() )
-		MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage( pOwner_->id(), mounting(), 1 );
+    if (MachLogNetwork::instance().isNetworkGame())
+        MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), 1);
 
-	dt("MLWeapon::physWeapon->fire",false);
-	return result;
+    dt("MLWeapon::physWeapon->fire", false);
+    return result;
 }
 
-
-
-PhysRelativeTime MachLogWeapon::fire( const MexPoint3d& position )
+PhysRelativeTime MachLogWeapon::fire(const MexPoint3d& position)
 {
-	//Is this weapon ready to fire again yet?
-	//if not return gap to recharge.
-	if( percentageRecharge() < 100 )
-	{
-		return lastFireTime_ + pPhysWeapon_->weaponData().reloadTime() - SimManager::instance().currentTime();
-	}
-	//fire gun and retrun animation time.
-	lastFireTime_ = SimManager::instance().currentTime();
-	dt("",true );
-	doFire( position );
-	dt("MLWeapon::doFire",false );
-	dt("",true );
-	PhysRelativeTime result = pPhysWeapon_->fire( lastFireTime_, 1 );
+    // Is this weapon ready to fire again yet?
+    // if not return gap to recharge.
+    if (percentageRecharge() < 100)
+    {
+        return lastFireTime_ + pPhysWeapon_->weaponData().reloadTime() - SimManager::instance().currentTime();
+    }
+    // fire gun and retrun animation time.
+    lastFireTime_ = SimManager::instance().currentTime();
+    dt("", true);
+    doFire(position);
+    dt("MLWeapon::doFire", false);
+    dt("", true);
+    PhysRelativeTime result = pPhysWeapon_->fire(lastFireTime_, 1);
 
-	if( MachLogNetwork::instance().isNetworkGame() )
-		MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage( pOwner_->id(), mounting(), 1 );
+    if (MachLogNetwork::instance().isNetworkGame())
+        MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), 1);
 
-	dt("MLWeapon::physWeapon->fire",false);
-	return result;
+    dt("MLWeapon::physWeapon->fire", false);
+    return result;
 }
 
-MexVec3 MachLogWeapon::getDirection( const MexPoint3d& start, MachActor* pTarget )
+MexVec3 MachLogWeapon::getDirection(const MexPoint3d& start, MachActor* pTarget)
 {
-	MexPoint3d targetPosition( pTarget->position() );
-	if( targetPosition.z() < 1 )
-		targetPosition.z( 1 );
-	MexVec3 direction( start, targetPosition, start.euclidianDistance( pTarget->position() ) );
-	//I want to fire with a flat trajectory.
-//	direction.z( 0 );
-	MATHEX_SCALAR x = direction.x();
-	MATHEX_SCALAR y = direction.y();
-	const MATHEX_SCALAR PERCENTAGE_DRIFT = 0.05;
-	MATHEX_SCALAR yDelta = MachPhysRandom::randomDouble( -1, 1 ) * y * PERCENTAGE_DRIFT;
-	MATHEX_SCALAR xDelta = MachPhysRandom::randomDouble( -1, 1 ) * x * PERCENTAGE_DRIFT;
-	direction = MexVec3( x + xDelta , y + yDelta, direction.z() );
-	direction.makeUnitVector();
-	return direction;
+    MexPoint3d targetPosition(pTarget->position());
+    if (targetPosition.z() < 1)
+        targetPosition.z(1);
+    MexVec3 direction(start, targetPosition, start.euclidianDistance(pTarget->position()));
+    // I want to fire with a flat trajectory.
+    //   direction.z( 0 );
+    MATHEX_SCALAR x = direction.x();
+    MATHEX_SCALAR y = direction.y();
+    const MATHEX_SCALAR PERCENTAGE_DRIFT = 0.05;
+    MATHEX_SCALAR yDelta = MachPhysRandom::randomDouble(-1, 1) * y * PERCENTAGE_DRIFT;
+    MATHEX_SCALAR xDelta = MachPhysRandom::randomDouble(-1, 1) * x * PERCENTAGE_DRIFT;
+    direction = MexVec3(x + xDelta, y + yDelta, direction.z());
+    direction.makeUnitVector();
+    return direction;
 }
 
 bool MachLogWeapon::recharged() const
 {
-	return percentageRecharge() >= 100;
+    return percentageRecharge() >= 100;
 }
 
-int	MachLogWeapon::percentageRecharge() const
+int MachLogWeapon::percentageRecharge() const
 {
-	int result = (int)(
-		100 * (
-			( SimManager::instance().currentTime() - lastFireTime_ ) / pPhysWeapon_->weaponData().reloadTime()
-			)
-		);
-	if( result > 100 )
-		result = 100;
+    int result
+        = (int)(100 * ((SimManager::instance().currentTime() - lastFireTime_) / pPhysWeapon_->weaponData().reloadTime()));
+    if (result > 100)
+        result = 100;
 
-	return result;
+    return result;
 }
 
 void MachLogWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-MachLogRace&	MachLogWeapon::logRace()
+MachLogRace& MachLogWeapon::logRace()
 {
-	return *pLogRace_;
+    return *pLogRace_;
 }
 
 MachPhysWeapon& MachLogWeapon::physWeapon()
 {
-	ASSERT( pPhysWeapon_, "Unexpected NULL value for pPhysWeapon_" );
-	return *pPhysWeapon_;
+    ASSERT(pPhysWeapon_, "Unexpected NULL value for pPhysWeapon_");
+    return *pPhysWeapon_;
 }
 
 const MachPhysWeapon& MachLogWeapon::physWeapon() const
 {
-	ASSERT( pPhysWeapon_, "Unexpected NULL value for pPhysWeapon_" );
-	return *pPhysWeapon_;
+    ASSERT(pPhysWeapon_, "Unexpected NULL value for pPhysWeapon_");
+    return *pPhysWeapon_;
 }
 
 MATHEX_SCALAR MachLogWeapon::range() const
 {
-	return physWeapon().weaponData().range();
+    return physWeapon().weaponData().range();
 }
 
 const MachActor& MachLogWeapon::owner() const
 {
-	return *pOwner_;
+    return *pOwner_;
 }
 
 MachActor& MachLogWeapon::owner()
 {
-	return *pOwner_;
+    return *pOwner_;
 }
 
-ostream& operator <<( ostream& o, const MachLogWeapon& t )
+ostream& operator<<(ostream& o, const MachLogWeapon& t)
 {
 
     o << "MachLogWeapon " << (void*)&t << " start" << std::endl;
@@ -209,139 +206,134 @@ ostream& operator <<( ostream& o, const MachLogWeapon& t )
     return o;
 }
 
-//virtual
-bool MachLogWeapon::beNotified( W4dSubject* ,
-	                         W4dSubject::NotificationEvent , int )
+// virtual
+bool MachLogWeapon::beNotified(W4dSubject*, W4dSubject::NotificationEvent, int)
 {
-	return true;
+    return true;
 }
 
-//virtual
-void MachLogWeapon::domainDeleted( W4dDomain* )
+// virtual
+void MachLogWeapon::domainDeleted(W4dDomain*)
 {
 }
 
-//Attaching methods
+// Attaching methods
 bool MachLogWeapon::currentlyAttached()
 {
-	return currentlyAttached_;
+    return currentlyAttached_;
 }
 
-void MachLogWeapon::currentlyAttached( bool newAttachement )
+void MachLogWeapon::currentlyAttached(bool newAttachement)
 {
-	// Note - we have chosen "attachement" to appear French and sophisticated.
+    // Note - we have chosen "attachement" to appear French and sophisticated.
 
-	currentlyAttached_ = newAttachement;
+    currentlyAttached_ = newAttachement;
 
-    //If we don't do this we get a crash writing the op, because pTarget is left dangling.
-    if( not newAttachement )
-        pTarget_ = NULL;
+    // If we don't do this we get a crash writing the op, because pTarget is left dangling.
+    if (not newAttachement)
+        pTarget_ = nullptr;
 }
 
 MachActor& MachLogWeapon::target()
 {
-	PRE( currentlyAttached_ );
-	return *pTarget_;
+    PRE(currentlyAttached_);
+    return *pTarget_;
 }
 
-void MachLogWeapon::target( MachActor* pTarget )
+void MachLogWeapon::target(MachActor* pTarget)
 {
-	pTarget_ = pTarget;
+    pTarget_ = pTarget;
 }
 /* End WEAPON.CPP ***************************************************/
 
-
-void MachLogWeapon::dt( const char* text, bool start )
+void MachLogWeapon::dt(const char* text, bool start)
 {
-	static PhysAbsoluteTime startTime;
-	static PhysAbsoluteTime endTime;
-	if( start )
-		startTime = Phys::time();
-	else
-	{
-		endTime = Phys::time();
-		DEBUG_STREAM( DIAG_MISC, pOwner_->id() << "," << pPhysWeapon_->type() << "," << text << "," << endTime - startTime << std::endl );
-	}
+    static PhysAbsoluteTime startTime;
+    static PhysAbsoluteTime endTime;
+    if (start)
+        startTime = Phys::time();
+    else
+    {
+        endTime = Phys::time();
+        DEBUG_STREAM(
+            DIAG_MISC,
+            pOwner_->id() << "," << pPhysWeapon_->type() << "," << text << "," << endTime - startTime << std::endl);
+    }
 }
-
 
 MachPhys::Mounting MachLogWeapon::mounting() const
 {
-	return pPhysWeapon_->mounting();
+    return pPhysWeapon_->mounting();
 }
 
 MachPhys::WeaponType MachLogWeapon::type() const
 {
-	return pPhysWeapon_->type();
+    return pPhysWeapon_->type();
 }
 
-
-void MachLogWeapon::fireWithoutEcho( int numberInBurst )
+void MachLogWeapon::fireWithoutEcho(int numberInBurst)
 {
-	pPhysWeapon_->fire( SimManager::instance().currentTime(), numberInBurst );
+    pPhysWeapon_->fire(SimManager::instance().currentTime(), numberInBurst);
 }
 
-void MachLogWeapon::setPhysicalWeapon( MachPhysWeapon* pPhysWeapon )
+void MachLogWeapon::setPhysicalWeapon(MachPhysWeapon* pPhysWeapon)
 {
-	pPhysWeapon_ = pPhysWeapon;
+    pPhysWeapon_ = pPhysWeapon;
 }
 
-void perWrite( PerOstream& ostr, const MachLogWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachLogWeapon& weapon)
 {
-	const W4dObserver& base1 = weapon;
+    const W4dObserver& base1 = weapon;
 
-	ostr << base1;
-	ostr << weapon.lastFireTime_;
-	MachPhys::Race race = weapon.pLogRace_->race();
-	PER_WRITE_RAW_OBJECT( ostr, race );
-	ostr << weapon.pOwner_;
-	ostr << weapon.currentlyAttached_;
-	ostr << weapon.pTarget_;
-
+    ostr << base1;
+    ostr << weapon.lastFireTime_;
+    MachPhys::Race race = weapon.pLogRace_->race();
+    PER_WRITE_RAW_OBJECT(ostr, race);
+    ostr << weapon.pOwner_;
+    ostr << weapon.currentlyAttached_;
+    ostr << weapon.pTarget_;
 }
 
-void perRead( PerIstream& istr, MachLogWeapon& weapon )
+void perRead(PerIstream& istr, MachLogWeapon& weapon)
 {
-	W4dObserver& base1 = weapon;
+    W4dObserver& base1 = weapon;
 
-	istr >> base1;
-	istr >> weapon.lastFireTime_;
-	MachPhys::Race race;
-	uint raceInt; // TODO: mismatch? is it stored as uchar and read as uint32?
-	PER_READ_RAW_OBJECT( istr, (uint&)raceInt );
-	race = _STATIC_CAST(MachPhys::Race, raceInt);
-	istr >> weapon.pOwner_;
-	istr >> weapon.currentlyAttached_;
-	istr >> weapon.pTarget_;
-	weapon.pLogRace_ = &MachLogRaces::instance().race( race );
-	if( weapon.currentlyAttached_ )
-		weapon.pTarget_->attach( &weapon );
-
-
+    istr >> base1;
+    istr >> weapon.lastFireTime_;
+    MachPhys::Race race;
+    uint raceInt; // TODO: mismatch? is it stored as uchar and read as uint32?
+    PER_READ_RAW_OBJECT(istr, (uint&)raceInt);
+    race = _STATIC_CAST(MachPhys::Race, raceInt);
+    istr >> weapon.pOwner_;
+    istr >> weapon.currentlyAttached_;
+    istr >> weapon.pTarget_;
+    weapon.pLogRace_ = &MachLogRaces::instance().race(race);
+    if (weapon.currentlyAttached_)
+        weapon.pTarget_->attach(&weapon);
 }
 
-MachLogWeapon::MachLogWeapon( PerConstructor )
+MachLogWeapon::MachLogWeapon(PerConstructor)
 {
 }
 
-//virtual
-void MachLogWeapon::doFire( const MexPoint3d& /*position*/ )
+// virtual
+void MachLogWeapon::doFire(const MexPoint3d& /*position*/)
 {
-	//intentionally left blank
-	ASSERT( false, "This default method should never have been called by anything." );
+    // intentionally left blank
+    ASSERT(false, "This default method should never have been called by anything.");
 }
 
 PhysAbsoluteTime MachLogWeapon::lastFireTime() const
 {
-	return lastFireTime_;
+    return lastFireTime_;
 }
 
 void MachLogWeapon::setChargeToZero()
 {
-	lastFireTime_ = SimManager::instance().currentTime();
+    lastFireTime_ = SimManager::instance().currentTime();
 }
 
 void MachLogWeapon::setChargeToMaximum()
 {
-	lastFireTime_ = SimManager::instance().currentTime() - pPhysWeapon_->weaponData().reloadTime();
+    lastFireTime_ = SimManager::instance().currentTime() - pPhysWeapon_->weaponData().reloadTime();
 }

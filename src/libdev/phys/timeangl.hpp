@@ -19,53 +19,55 @@
 
 #include "phys/motplan.hpp"
 
-//forward refs
+// forward refs
 class MexVec3;
 class MexTransform3d;
 class PhysTimedAnglePlanImpl;
 
-//orthodox canonical
+// orthodox canonical
 class PhysTimedAnglePlan : public PhysMotionPlan
 {
 public:
-    //anglesPtr references a collection of the required angles. First angle is at time 0.
-    //timesPtr references a collection of the times at which we reach the angles.
-    //axis is the axis about which we rotate.
-    //position is the constant location component of the resulting transform.
-    PhysTimedAnglePlan( const PhysMotionPlan::AnglesPtr& anglesPtr,
-                        const PhysMotionPlan::TimesPtr& timesPtr,
-                        const MexVec3& axis, const MexVec3& position );
-    //PRE( (*anglesPtr).size() > 1 )
-    //PRE( (*timesPtr).size() == (*anglesPtr).size() - 1 )
-    //PRE( times in timesPtr in ascending order )
+    // anglesPtr references a collection of the required angles. First angle is at time 0.
+    // timesPtr references a collection of the times at which we reach the angles.
+    // axis is the axis about which we rotate.
+    // position is the constant location component of the resulting transform.
+    PhysTimedAnglePlan(
+        const PhysMotionPlan::AnglesPtr& anglesPtr,
+        const PhysMotionPlan::TimesPtr& timesPtr,
+        const MexVec3& axis,
+        const MexVec3& position);
+    // PRE( (*anglesPtr).size() > 1 )
+    // PRE( (*timesPtr).size() == (*anglesPtr).size() - 1 )
+    // PRE( times in timesPtr in ascending order )
 
-    //dtor
-    ~PhysTimedAnglePlan();
+    // dtor
+    ~PhysTimedAnglePlan() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysTimedAnglePlan& t );
+    friend ostream& operator<<(ostream& o, const PhysTimedAnglePlan& t);
 
-    //Override defines pResult as a function of timeOffset.
-    //If time is greater than duration, the transform at time duration is returned.
-    virtual void transform( const PhysRelativeTime& timeOffset, MexTransform3d* pResult ) const;
+    // Override defines pResult as a function of timeOffset.
+    // If time is greater than duration, the transform at time duration is returned.
+    void transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const override;
 
-	// Return the angle as a function of timeOffset.
-	MexRadians angle(const PhysRelativeTime& timeOffset) const;
+    // Return the angle as a function of timeOffset.
+    MexRadians angle(const PhysRelativeTime& timeOffset) const;
 
-    PER_MEMBER_PERSISTENT( PhysTimedAnglePlan );
-    PER_FRIEND_READ_WRITE( PhysTimedAnglePlan );
+    PER_MEMBER_PERSISTENT(PhysTimedAnglePlan);
+    PER_FRIEND_READ_WRITE(PhysTimedAnglePlan);
 
 private:
     // Operation deliberately revoked
-    PhysTimedAnglePlan( const PhysTimedAnglePlan& );
-    PhysTimedAnglePlan& operator =( const PhysTimedAnglePlan& );
-    bool operator ==( const PhysTimedAnglePlan& );
+    PhysTimedAnglePlan(const PhysTimedAnglePlan&);
+    PhysTimedAnglePlan& operator=(const PhysTimedAnglePlan&);
+    bool operator==(const PhysTimedAnglePlan&);
 
     PhysTimedAnglePlanImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( PhysTimedAnglePlan );
+PER_DECLARE_PERSISTENT(PhysTimedAnglePlan);
 
 #endif
 

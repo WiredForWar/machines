@@ -1,5 +1,5 @@
 /*
- * P U N W E A P . H P P 
+ * P U N W E A P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,40 +18,39 @@
 class MachPhysPunchWeapon;
 class MachLogFireData;
 
-
 class MachLogPunchWeapon : public MachLogWeapon
 // Canonical form revoked
 {
 public:
-    MachLogPunchWeapon( MachLogRace*, MachPhysPunchWeapon*, MachActor* pOwner );
-    virtual ~MachLogPunchWeapon();
+    MachLogPunchWeapon(MachLogRace*, MachPhysPunchWeapon*, MachActor* pOwner);
+    ~MachLogPunchWeapon() override;
 
-	//the persistence mechanism has to reset which weapons go where
-	//so we have to allow it to remount the weapons.
-	void setPhysicalPunchWeapon( MachPhysPunchWeapon* );
+    // the persistence mechanism has to reset which weapons go where
+    // so we have to allow it to remount the weapons.
+    void setPhysicalPunchWeapon(MachPhysPunchWeapon*);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogPunchWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachLogPunchWeapon& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPunchWeapon );
-	PER_FRIEND_READ_WRITE( MachLogPunchWeapon );
-	
-	void doEchoPunch();
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPunchWeapon);
+    PER_FRIEND_READ_WRITE(MachLogPunchWeapon);
+
+    void doEchoPunch();
 
 protected:
-	virtual void doFire( MachActor*, const MachLogFireData& );
-	virtual void doFire( const MexPoint3d& position );
+    void doFire(MachActor*, const MachLogFireData&) override;
+    void doFire(const MexPoint3d& position) override;
 
 private:
-    MachLogPunchWeapon( const MachLogPunchWeapon& );
-    MachLogPunchWeapon& operator =( const MachLogPunchWeapon& );
-    bool operator ==( const MachLogPunchWeapon& );
+    MachLogPunchWeapon(const MachLogPunchWeapon&);
+    MachLogPunchWeapon& operator=(const MachLogPunchWeapon&);
+    bool operator==(const MachLogPunchWeapon&);
 
-	MachPhysPunchWeapon* pPhysPunchWeapon_;
+    MachPhysPunchWeapon* pPhysPunchWeapon_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPunchWeapon );
+PER_DECLARE_PERSISTENT(MachLogPunchWeapon);
 
 #endif
 

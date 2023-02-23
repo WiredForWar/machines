@@ -5,20 +5,17 @@
 
 struct SdlDelegate
 {
-    SdlDelegate() {}
-    virtual ~SdlDelegate() {}
+    SdlDelegate() { }
+    virtual ~SdlDelegate() { }
 
-//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-    virtual int showCursor(const int toggle)
-    {
-        return SDL_ShowCursor(toggle);
-    }
+    virtual int showCursor(const int toggle) { return SDL_ShowCursor(toggle); }
 
     virtual std::pair<int, int> getCursorPosition()
     {
         int x, y;
-        SDL_GetMouseState( &x, &y );
+        SDL_GetMouseState(&x, &y);
         return std::make_pair(x, y);
     }
 

@@ -20,79 +20,88 @@
 
 #include "machphys/trailprj.hpp"
 
-template< class ID, class PART > class MachPhysObjectFactory;
+template <class ID, class PART> class MachPhysObjectFactory;
 class MachPhysConstructionPersistence;
 
 class MachPhysMissile : public MachPhysTrailedProjectile
 {
 public:
-    //ctor. Attached to pParent at relative position localTransform.
-    //level indicates missile level.
+    // ctor. Attached to pParent at relative position localTransform.
+    // level indicates missile level.
 
-	enum CreateLights { CREATE_LIGHTS, DONT_CREATE_LIGHTS };
-    MachPhysMissile( W4dEntity* pParent, const W4dTransform3d& localTransform, size_t level, CreateLights=CREATE_LIGHTS );
+    enum CreateLights
+    {
+        CREATE_LIGHTS,
+        DONT_CREATE_LIGHTS
+    };
+    MachPhysMissile(
+        W4dEntity* pParent,
+        const W4dTransform3d& localTransform,
+        size_t level,
+        CreateLights = CREATE_LIGHTS);
 
-    //dtor
-    virtual ~MachPhysMissile();
+    // dtor
+    ~MachPhysMissile() override;
 
-    //Start flying at time startTime.
-    //Relevant weapon data in data.
-    virtual PhysRelativeTime beLaunched(  const PhysAbsoluteTime& startTime,
-                                  const MachPhysWeaponData& data,
-                                  const MexPoint3d& targetOffsetGlobal);
+    // Start flying at time startTime.
+    // Relevant weapon data in data.
+    PhysRelativeTime beLaunched(
+        const PhysAbsoluteTime& startTime,
+        const MachPhysWeaponData& data,
+        const MexPoint3d& targetOffsetGlobal) override;
 
-	static MachPhys::WeaponType weaponType(size_t level);
+    static MachPhys::WeaponType weaponType(size_t level);
 
-	MachPhys::WeaponType weaponType() const;
+    MachPhys::WeaponType weaponType() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMissile& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMissile& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysMissile );
-    PER_FRIEND_READ_WRITE( MachPhysMissile );
+    PER_MEMBER_PERSISTENT(MachPhysMissile);
+    PER_FRIEND_READ_WRITE(MachPhysMissile);
 
 private:
     // Operation deliberately revoked
-    MachPhysMissile( const MachPhysMissile& );
-    MachPhysMissile& operator =( const MachPhysMissile& );
-    bool operator ==( const MachPhysMissile& );
+    MachPhysMissile(const MachPhysMissile&);
+    MachPhysMissile& operator=(const MachPhysMissile&);
+    bool operator==(const MachPhysMissile&);
 
-    enum    { MAX_LEVELS = 10 };
-
+    enum
+    {
+        MAX_LEVELS = 10
+    };
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysMissile& Factory::part( const ID& id, size_t );
-	typedef MachPhysObjectFactory< size_t, MachPhysMissile >    Factory;
-	//friend class Factory;
-	friend class MachPhysObjectFactory< size_t, MachPhysMissile > ;
+    // friend MachPhysMissile& Factory::part( const ID& id, size_t );
+    using Factory = MachPhysObjectFactory<size_t, MachPhysMissile>;
+    // friend class Factory;
+    friend class MachPhysObjectFactory<size_t, MachPhysMissile>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysConstructionPersistence& );
-    friend void perRead( PerIstream&, MachPhysConstructionPersistence& );
+    friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
+    friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
-    static  MachPhysMissile& part( size_t level );
-    static  Factory& factory();
+    static MachPhysMissile& part(size_t level);
+    static Factory& factory();
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a missile from scratch
-    MachPhysMissile( W4dEntity* pParent, size_t level );
+    MachPhysMissile(W4dEntity* pParent, size_t level);
 
-    SysPathName compositeFileName( size_t level ) const;
+    SysPathName compositeFileName(size_t level) const;
 
     ////////////////////////////////////////////////////////////
     // Inherited from MachPhysLinearProjectile
 
-    //Override to add specific animations for the projectile destruction at time.
-    //Return duration of such animation.
-    virtual PhysRelativeTime doBeDestroyedAt( const PhysAbsoluteTime& time,
-                                              MachPhys::StrikeType strikeType );
+    // Override to add specific animations for the projectile destruction at time.
+    // Return duration of such animation.
+    PhysRelativeTime doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType) override;
 
     ////////////////////////////////////////////////////////////
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMissile );
-
+PER_DECLARE_PERSISTENT(MachPhysMissile);
 
 #endif
 

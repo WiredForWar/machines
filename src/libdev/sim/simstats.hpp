@@ -1,5 +1,5 @@
 /*
- * S I M S T A T S . H P P 
+ * S I M S T A T S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,29 +23,28 @@ public:
     static SimStats& instance();
     ~SimStats();
 
-	PhysRelativeTime		minComputationTime();
-	PhysRelativeTime		targetRenderInterval();
+    PhysRelativeTime minComputationTime();
+    PhysRelativeTime targetRenderInterval();
 
     //  This is the minimum time that a process will get to update itself
-	PhysRelativeTime		minProcessUpdateTime();
+    PhysRelativeTime minProcessUpdateTime();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SimStats& t );
+    friend ostream& operator<<(ostream& o, const SimStats& t);
 
 private:
-	void readInitialisationFile();
+    void readInitialisationFile();
 
-    SimStats( const SimStats& );
-    SimStats& operator =( const SimStats& );
-    bool operator ==( const SimStats& );
+    SimStats(const SimStats&);
+    SimStats& operator=(const SimStats&);
+    bool operator==(const SimStats&);
 
     SimStats();
-	PhysRelativeTime		minComputationTime_;
-	PhysRelativeTime		targetRenderInterval_;
-	PhysRelativeTime		minProcessUpdateTime_;
+    PhysRelativeTime minComputationTime_;
+    PhysRelativeTime targetRenderInterval_;
+    PhysRelativeTime minProcessUpdateTime_;
 };
-
 
 #endif
 

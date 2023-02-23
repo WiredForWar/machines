@@ -28,20 +28,19 @@ class UtlAsciiPicture
 // Canonical form revoked
 {
 public:
-
     //  Constructor where the number of rows is calculated automatically to
     //  maintain the aspect ratio.
-    UtlAsciiPicture(
-        MATHEX_SCALAR minX, MATHEX_SCALAR minY,
-        MATHEX_SCALAR maxX, MATHEX_SCALAR maxY,
-        uint nColumns );
+    UtlAsciiPicture(MATHEX_SCALAR minX, MATHEX_SCALAR minY, MATHEX_SCALAR maxX, MATHEX_SCALAR maxY, uint nColumns);
 
     //  Constructor where it is possible to have different scales on the
     //  X and Y axes
     UtlAsciiPicture(
-        MATHEX_SCALAR minX, MATHEX_SCALAR minY,
-        MATHEX_SCALAR maxX, MATHEX_SCALAR maxY,
-        uint nColumns, uint nRows );
+        MATHEX_SCALAR minX,
+        MATHEX_SCALAR minY,
+        MATHEX_SCALAR maxX,
+        MATHEX_SCALAR maxY,
+        uint nColumns,
+        uint nRows);
 
     ~UtlAsciiPicture();
 
@@ -50,25 +49,25 @@ public:
 
     void clear();
 
-    void pixel( uint x, uint y, char );
+    void pixel(uint x, uint y, char);
     // PRE( x < nColumns() );
     // PRE( y < nRows() );
 
-    char pixel( uint x, uint y ) const;
+    char pixel(uint x, uint y) const;
     // PRE( x < nColumns() );
     // PRE( y < nRows() );
 
-    void fill( const MexPolygon2d&, char );
-    void outline( const MexPolygon2d&, char );
+    void fill(const MexPolygon2d&, char);
+    void outline(const MexPolygon2d&, char);
 
-    void outline( const MexAlignedBox2d&, char );
+    void outline(const MexAlignedBox2d&, char);
 
-    int column( MATHEX_SCALAR x ) const;
-    int row( MATHEX_SCALAR y ) const;
+    int column(MATHEX_SCALAR x) const;
+    int row(MATHEX_SCALAR y) const;
 
-    MexPoint2d  point( int x, int y ) const;
+    MexPoint2d point(int x, int y) const;
 
-    void line( const MexLine2d&, char );
+    void line(const MexLine2d&, char);
 
     MATHEX_SCALAR pixelWidth() const;
     MATHEX_SCALAR pixelHeight() const;
@@ -80,7 +79,7 @@ public:
 
     //  Specify a title to be displayed above the picture. Only the
     //  last title defined will be displayed
-    void title( const std::string& title );
+    void title(const std::string& title);
 
     //  Specify a string to be printed under the picture. All strings will
     //  be displayed in the order they were given with no extra line feeds
@@ -89,19 +88,18 @@ public:
     //  underText( "*  obstacles\n" );
     //  underText( ".  domains\n" );
 
-    void underText( const std::string& text );
+    void underText(const std::string& text);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const UtlAsciiPicture& t );
+    friend ostream& operator<<(ostream& o, const UtlAsciiPicture& t);
 
-    UtlAsciiPicture( const UtlAsciiPicture& );
-    UtlAsciiPicture& operator =( const UtlAsciiPicture& );
+    UtlAsciiPicture(const UtlAsciiPicture&);
+    UtlAsciiPicture& operator=(const UtlAsciiPicture&);
 
     UtlAsciiPictureImpl* pImpl_;
 };
-
 
 #endif
 

@@ -13,28 +13,25 @@
 #include "world4d/soundman.hpp"
 #include "system/winapi.hpp"
 
-MachGuiExitToInternetMessageBoxResponder::MachGuiExitToInternetMessageBoxResponder
-(
-	MachGuiStartupScreens* pStartupScreens,
-	MachGuiExitToInternetMessageBoxResponder::UnloadGame unloadGame
-)
-: pStartupScreens_( pStartupScreens ),
-  unloadGame_( unloadGame )
+MachGuiExitToInternetMessageBoxResponder::MachGuiExitToInternetMessageBoxResponder(
+    MachGuiStartupScreens* pStartupScreens,
+    MachGuiExitToInternetMessageBoxResponder::UnloadGame unloadGame)
+    : pStartupScreens_(pStartupScreens)
+    , unloadGame_(unloadGame)
 {
 }
 
 MachGuiExitToInternetMessageBoxResponder::~MachGuiExitToInternetMessageBoxResponder()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiExitToInternetMessageBoxResponder::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiExitToInternetMessageBoxResponder& t )
+ostream& operator<<(ostream& o, const MachGuiExitToInternetMessageBoxResponder& t)
 {
 
     o << "MachGuiExitToInternetMessageBoxResponder " << (void*)&t << " start" << std::endl;
@@ -43,38 +40,38 @@ ostream& operator <<( ostream& o, const MachGuiExitToInternetMessageBoxResponder
     return o;
 }
 
-//virtual
+// virtual
 bool MachGuiExitToInternetMessageBoxResponder::okPressed()
 {
-	if( unloadGame_ == UNLOAD_GAME )
-	{
-		pStartupScreens_->unloadGame();
-		W4dSoundManager::instance().unloadAll();
-	}
-	else
-	{
-		if ( pStartupScreens_->startupData()->isHost() )
-		{
-			pStartupScreens_->messageBroker().sendHostCancelMessage();
-		}
-		else
-		{
-			pStartupScreens_->messageBroker().sendClientCancelMessage( pStartupScreens_->startupData()->playerName() );
-		}
-		// Sleep to make sure that message gets sent
-		for ( int i = 0; i < 10; ++i )
-		{
-			//Transmit the termination messages!
-			MachLogNetwork::instance().update();
-			SysWindowsAPI::sleep( 100 );
-			SysWindowsAPI::peekMessage();
-		}
-	}
+    if (unloadGame_ == UNLOAD_GAME)
+    {
+        pStartupScreens_->unloadGame();
+        W4dSoundManager::instance().unloadAll();
+    }
+    else
+    {
+        if (pStartupScreens_->startupData()->isHost())
+        {
+            pStartupScreens_->messageBroker().sendHostCancelMessage();
+        }
+        else
+        {
+            pStartupScreens_->messageBroker().sendClientCancelMessage(pStartupScreens_->startupData()->playerName());
+        }
+        // Sleep to make sure that message gets sent
+        for (int i = 0; i < 10; ++i)
+        {
+            // Transmit the termination messages!
+            MachLogNetwork::instance().update();
+            SysWindowsAPI::sleep(100);
+            SysWindowsAPI::peekMessage();
+        }
+    }
 
-	MachLogNetwork::instance().terminateAndReset();
-// Disabled for now
-//	pStartupScreens_->contextFinishFromLobby();
-	return true;
+    MachLogNetwork::instance().terminateAndReset();
+    // Disabled for now
+    //  pStartupScreens_->contextFinishFromLobby();
+    return true;
 }
 
 /* End MSGBOXEI.CPP *************************************************/

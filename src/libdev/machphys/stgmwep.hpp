@@ -22,58 +22,54 @@ class MachPhysMachine;
 class MachPhysConstruction;
 class MachPhysArtefact;
 
-
 class MachPhysMetalStingWeapon : public MachPhysLinearWeapon
 // Canonical form revoked
 {
 public:
-	//public constructor
-    MachPhysMetalStingWeapon( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // public constructor
+    MachPhysMetalStingWeapon(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    virtual ~MachPhysMetalStingWeapon();
+    ~MachPhysMetalStingWeapon() override;
 
     static const MachPhysMetalStingWeapon& exemplar();
 
-    virtual MachPhysLinearProjectile* createProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    MachPhysLinearProjectile* createProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
-	MachPhysMetalSting* createMetalSting
-	(
-		const PhysAbsoluteTime& burstStartTime,
-		uint index,
-		W4dEntity* pParent,
-		const W4dEntity& target,
-		const MexPoint3d& targetOffset
-	);
+    MachPhysMetalSting* createMetalSting(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
-
-	virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysMetalStingWeapon );
-    PER_FRIEND_READ_WRITE( MachPhysMetalStingWeapon );
+    PER_MEMBER_PERSISTENT(MachPhysMetalStingWeapon);
+    PER_FRIEND_READ_WRITE(MachPhysMetalStingWeapon);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysMetalStingWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMetalStingWeapon& t);
 
-    MachPhysMetalStingWeapon( const MachPhysMetalStingWeapon& );
-    MachPhysMetalStingWeapon& operator =( const MachPhysMetalStingWeapon& );
+    MachPhysMetalStingWeapon(const MachPhysMetalStingWeapon&);
+    MachPhysMetalStingWeapon& operator=(const MachPhysMetalStingWeapon&);
 
-	//one tiem constructor
+    // one tiem constructor
     MachPhysMetalStingWeapon();
 
     friend class MachPhysWeaponPersistence;
 
-    //the composite file path for given type
+    // the composite file path for given type
     static const char* compositeFilePath();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMetalStingWeapon );
+PER_DECLARE_PERSISTENT(MachPhysMetalStingWeapon);
 
 #endif
 

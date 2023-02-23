@@ -40,22 +40,28 @@
 
 #include "sim/manager.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysGeoLocator );
+PER_DEFINE_PERSISTENT(MachPhysGeoLocator);
 
 MachPhysGeoLocator::MachPhysGeoLocator(
     W4dEntity* pParent,
     const W4dTransform3d& localTransform,
     size_t bodyLevel,
     size_t brainLevel,
-    MachPhys::Race race )
-: MachPhysMachine( part( bodyLevel ), pParent, localTransform, bodyLevel, brainLevel, race,
-   MachPhysData::instance().geoLocatorData( bodyLevel, brainLevel ) ),
-   pImpl_( _NEW( MachPhysGeoLocatorImpl ) )
+    MachPhys::Race race)
+    : MachPhysMachine(
+        part(bodyLevel),
+        pParent,
+        localTransform,
+        bodyLevel,
+        brainLevel,
+        race,
+        MachPhysData::instance().geoLocatorData(bodyLevel, brainLevel))
+    , pImpl_(_NEW(MachPhysGeoLocatorImpl))
 {
-    CB_DEPIMPL( W4dCompositePlanPtr, locatingPlanPtr_ );
+    CB_DEPIMPL(W4dCompositePlanPtr, locatingPlanPtr_);
 
-    if( findCompositePlan( "geo1_Anim1", &locatingPlanPtr_ ))
-		cycleAnims( &locatingPlanPtr_ );
+    if (findCompositePlan("geo1_Anim1", &locatingPlanPtr_))
+        cycleAnims(&locatingPlanPtr_);
 
     TEST_INVARIANT;
 }
@@ -63,33 +69,36 @@ MachPhysGeoLocator::MachPhysGeoLocator(
 //  This is the constructor that is used by the factory. It is the
 //  only constructor that actually builds a locator from scratch
 
-MachPhysGeoLocator::MachPhysGeoLocator( W4dEntity* pParent, size_t bodyLevel )
-: MachPhysMachine( pParent, W4dTransform3d(), compositeFileName( bodyLevel ),
-                   MachPhysData::instance().geoLocatorData( bodyLevel, 1 ) ),
-   pImpl_( _NEW( MachPhysGeoLocatorImpl ) )
+MachPhysGeoLocator::MachPhysGeoLocator(W4dEntity* pParent, size_t bodyLevel)
+    : MachPhysMachine(
+        pParent,
+        W4dTransform3d(),
+        compositeFileName(bodyLevel),
+        MachPhysData::instance().geoLocatorData(bodyLevel, 1))
+    , pImpl_(_NEW(MachPhysGeoLocatorImpl))
 {
     createExplosionData();
 
     TEST_INVARIANT;
 }
 
-MachPhysGeoLocator::MachPhysGeoLocator( PerConstructor con )
-: MachPhysMachine( con ),
-    pImpl_( NULL )
+MachPhysGeoLocator::MachPhysGeoLocator(PerConstructor con)
+    : MachPhysMachine(con)
+    , pImpl_(nullptr)
 {
 }
 
 MachPhysGeoLocator::~MachPhysGeoLocator()
 {
     TEST_INVARIANT;
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
-SysPathName MachPhysGeoLocator::compositeFileName( size_t bodyLevel ) const
+SysPathName MachPhysGeoLocator::compositeFileName(size_t bodyLevel) const
 {
     SysPathName result;
 
-    switch( bodyLevel )
+    switch (bodyLevel)
     {
         case 1:
             result = "models/locator/geo/level1/log1.cdf";
@@ -104,7 +113,7 @@ SysPathName MachPhysGeoLocator::compositeFileName( size_t bodyLevel ) const
             break;
 
         default:
-            ASSERT_BAD_CASE_INFO( bodyLevel );
+            ASSERT_BAD_CASE_INFO(bodyLevel);
             break;
     }
 
@@ -112,38 +121,38 @@ SysPathName MachPhysGeoLocator::compositeFileName( size_t bodyLevel ) const
 }
 
 // static
-MachPhysGeoLocator& MachPhysGeoLocator::part( size_t hardwareLevel )
+MachPhysGeoLocator& MachPhysGeoLocator::part(size_t hardwareLevel)
 {
     return factory().part(
         hardwareLevel,
-        MachPhysLevels::instance().uniqueHardwareIndex( MachPhys::GEO_LOCATOR, hardwareLevel ) );
+        MachPhysLevels::instance().uniqueHardwareIndex(MachPhys::GEO_LOCATOR, hardwareLevel));
 }
 
 // static
 MachPhysGeoLocator::Factory& MachPhysGeoLocator::factory()
 {
-    static  Factory   factory_( MachPhysLevels::instance().nHardwareIndices( MachPhys::GEO_LOCATOR ) );
+    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::GEO_LOCATOR));
 
     return factory_;
 }
 
-//virtual
+// virtual
 const MachPhysMachineData& MachPhysGeoLocator::machineData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysGeoLocatorData& MachPhysGeoLocator::data() const
 {
-	return MachPhysData::instance().geoLocatorData( bodyLevel(), brainLevel() );
+    return MachPhysData::instance().geoLocatorData(bodyLevel(), brainLevel());
 }
 
 void MachPhysGeoLocator::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGeoLocator& t )
+ostream& operator<<(ostream& o, const MachPhysGeoLocator& t)
 {
 
     o << "MachPhysGeoLocator " << (void*)&t << " start" << std::endl;
@@ -154,118 +163,117 @@ ostream& operator <<( ostream& o, const MachPhysGeoLocator& t )
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysGeoLocator::isLocating( bool doLocate )
+void MachPhysGeoLocator::isLocating(bool doLocate)
 {
-    CB_DEPIMPL( bool, isLocating_ );
-	CB_DEPIMPL( MachPhysLocator*, pLocator_ );
-	CB_DEPIMPL( MATHEX_SCALAR, locatorSize_ );
+    CB_DEPIMPL(bool, isLocating_);
+    CB_DEPIMPL(MachPhysLocator*, pLocator_);
+    CB_DEPIMPL(MATHEX_SCALAR, locatorSize_);
 
-    if( doLocate != isLocating_ )
+    if (doLocate != isLocating_)
     {
-        //Set mode flag
+        // Set mode flag
         isLocating_ = doLocate;
 
-		if(isLocating_)
-		{
-			if( pLocator_ == NULL )
-			{
-				W4dLink* pHip;
-				if( findLink( "hip", &pHip ) or findLink( "hips", &pHip) )
-				{
-					const MexAlignedBox3d& hipBox = pHip->boundingVolume();
-					locatorSize_ = MachPhysData::instance().geoLocatorData( bodyLevel(), brainLevel() ).scannerRange();
+        if (isLocating_)
+        {
+            if (pLocator_ == nullptr)
+            {
+                W4dLink* pHip;
+                if (findLink("hip", &pHip) or findLink("hips", &pHip))
+                {
+                    const MexAlignedBox3d& hipBox = pHip->boundingVolume();
+                    locatorSize_ = MachPhysData::instance().geoLocatorData(bodyLevel(), brainLevel()).scannerRange();
 
-					//locator position in the hip system
-					MexPoint3d position(0, 0, 0.5*hipBox.zLength());
-					//transform to the global system
-					pHip->globalTransform().transform(&position);
+                    // locator position in the hip system
+                    MexPoint3d position(0, 0, 0.5 * hipBox.zLength());
+                    // transform to the global system
+                    pHip->globalTransform().transform(&position);
 
-					//transform to the machine system
-					globalTransform().transformInverse( &position );
+                    // transform to the machine system
+                    globalTransform().transformInverse(&position);
 
-					pLocator_ = _NEW( MachPhysLocator( this,  position ) );
-				}
-				else
-				{
-					pHip = NULL;
-					ASSERT( pHip, "hip not found" );
-				}
-			}
+                    pLocator_ = _NEW(MachPhysLocator(this, position));
+                }
+                else
+                {
+                    pHip = nullptr;
+                    ASSERT(pHip, "hip not found");
+                }
+            }
 
-			ASSERT( pLocator_, " ");
-			pLocator_->startLocate( SimManager::instance().currentTime(), 5.0, locatorSize_, 10000, LOCATOR_LOCATING );
+            ASSERT(pLocator_, " ");
+            pLocator_->startLocate(SimManager::instance().currentTime(), 5.0, locatorSize_, 10000, LOCATOR_LOCATING);
 
-			//The locator sound is attached to the first link in the list,
-			//so that it is not stopped when the locomotion sounds
-			//are stopped
-			//SOUND_STREAM("Locating for " << _STATIC_CAST(int, links()[0]) << std::endl);
-			SOUND_STREAM("Locating for " << _REINTERPRET_CAST(size_t, links()[0]) << std::endl);
-			W4dSoundManager::instance().play(links()[0], SID_GEOLOCATE, PhysAbsoluteTime(0), 0);
-		}
-		else
-		{
-			if( pLocator_ )
-			{
-				//pLocator_->entityPlanForEdit().clearAnimation( LOCATOR_LOCATING );
-				//pLocator_->visible( false );
-				_DELETE( pLocator_ );
-				pLocator_ = NULL;
-			}
+            // The locator sound is attached to the first link in the list,
+            // so that it is not stopped when the locomotion sounds
+            // are stopped
+            // SOUND_STREAM("Locating for " << _STATIC_CAST(int, links()[0]) << std::endl);
+            SOUND_STREAM("Locating for " << _REINTERPRET_CAST(size_t, links()[0]) << std::endl);
+            W4dSoundManager::instance().play(links()[0], SID_GEOLOCATE, PhysAbsoluteTime(0), 0);
+        }
+        else
+        {
+            if (pLocator_)
+            {
+                // pLocator_->entityPlanForEdit().clearAnimation( LOCATOR_LOCATING );
+                // pLocator_->visible( false );
+                _DELETE(pLocator_);
+                pLocator_ = nullptr;
+            }
 
-			//SOUND_STREAM("Stopped locating for " << _STATIC_CAST(int, links()[0]) << std::endl);
-			SOUND_STREAM("Stopped locating for " << _REINTERPRET_CAST(size_t, links()[0]) << std::endl);
-			W4dSoundManager::instance().stop(links()[0]);
-		}
+            // SOUND_STREAM("Stopped locating for " << _STATIC_CAST(int, links()[0]) << std::endl);
+            SOUND_STREAM("Stopped locating for " << _REINTERPRET_CAST(size_t, links()[0]) << std::endl);
+            W4dSoundManager::instance().stop(links()[0]);
+        }
 
-        //Modify walking speed - set to half normal when locating
-        maxTranslationSpeed( maxTranslationSpeed() * (doLocate ? 0.5 : 2.0) );
+        // Modify walking speed - set to half normal when locating
+        maxTranslationSpeed(maxTranslationSpeed() * (doLocate ? 0.5 : 2.0));
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool MachPhysGeoLocator::isLocating() const
 {
-    CB_DEPIMPL( bool, isLocating_ );
+    CB_DEPIMPL(bool, isLocating_);
 
     return isLocating_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachPhysGeoLocator::move( const MachPhysMachineMoveInfo& info )
+// virtual
+void MachPhysGeoLocator::move(const MachPhysMachineMoveInfo& info)
 {
-    CB_DEPIMPL( bool, isLocating_ );
-    CB_DEPIMPL( W4dCompositePlanPtr, locatingPlanPtr_ );
-    CB_DEPIMPL( PhysAbsoluteTime, locatingPlanEndTime_ );
+    CB_DEPIMPL(bool, isLocating_);
+    CB_DEPIMPL(W4dCompositePlanPtr, locatingPlanPtr_);
+    CB_DEPIMPL(PhysAbsoluteTime, locatingPlanEndTime_);
 
-    //Use the generic method to set up basic move animations
-    MachPhysMachine::move( info );
+    // Use the generic method to set up basic move animations
+    MachPhysMachine::move(info);
 
-    //Get the data we need from info
+    // Get the data we need from info
     PhysRelativeTime interval = info.totalTime();
 
     MATHEX_SCALAR startTime = info.startTime();
 
-    //If locating, need to ensure we have a locating animation to cover the move period
+    // If locating, need to ensure we have a locating animation to cover the move period
     PhysAbsoluteTime moveEndTime = startTime + interval;
-    if( isLocating_ and locatingPlanPtr_.isDefined() and (moveEndTime > locatingPlanEndTime_) )
+    if (isLocating_ and locatingPlanPtr_.isDefined() and (moveEndTime > locatingPlanEndTime_))
     {
-        //Get time to start new locating animation
+        // Get time to start new locating animation
         PhysAbsoluteTime locatingStartTime = locatingPlanEndTime_;
-        if( locatingStartTime < startTime )
+        if (locatingStartTime < startTime)
             locatingStartTime = startTime;
 
-        //Get its duration, and hence compute number of animations to play
+        // Get its duration, and hence compute number of animations to play
         PhysRelativeTime animationDuration = locatingPlanPtr_->finishTime();
-        POST( animationDuration > 0.0 );
+        POST(animationDuration > 0.0);
 
-        uint nTimes = (uint)((moveEndTime - locatingStartTime + 0.95 * animationDuration) /
-                             animationDuration );
+        uint nTimes = (uint)((moveEndTime - locatingStartTime + 0.95 * animationDuration) / animationDuration);
 
-        //Queue these animations
-        if( nTimes != 0 )
+        // Queue these animations
+        if (nTimes != 0)
         {
-            plan( *locatingPlanPtr_, locatingStartTime, nTimes - 1);
+            plan(*locatingPlanPtr_, locatingStartTime, nTimes - 1);
             locatingPlanEndTime_ = locatingStartTime + nTimes * animationDuration;
         }
     }
@@ -276,10 +284,10 @@ void MachPhysGeoLocator::createExplosionData()
 {
     MachPhysMachineExplosionData& dataForEdit = explosionDataForEdit();
 
-    dataForEdit.minToShootOff( 4 );
+    dataForEdit.minToShootOff(4);
 }
 
-void perWrite( PerOstream& ostr, const MachPhysGeoLocator& machine )
+void perWrite(PerOstream& ostr, const MachPhysGeoLocator& machine)
 {
     const MachPhysMachine& base = machine;
     ostr << base;
@@ -287,7 +295,7 @@ void perWrite( PerOstream& ostr, const MachPhysGeoLocator& machine )
     ostr << machine.pImpl_;
 }
 
-void perRead( PerIstream& istr, MachPhysGeoLocator& machine )
+void perRead(PerIstream& istr, MachPhysGeoLocator& machine)
 {
     MachPhysMachine& base = machine;
     istr >> base;

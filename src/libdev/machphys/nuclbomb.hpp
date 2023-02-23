@@ -22,7 +22,7 @@ class MachPhysNukeWave;
 class MachPhysMushroomTop;
 class MachPhysMushroomShaft;
 class MachPhysMushroomEdge;
-//class MachPhysGroundSplat;
+// class MachPhysGroundSplat;
 class MachPhysFlashDisc;
 class W4dUniformLight;
 class MachPhysPlanetSurface;
@@ -31,47 +31,47 @@ class MachPhysNuclearBomb : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
+    // ctor
     MachPhysNuclearBomb(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysNuclearBomb();
+    // dtor
+    ~MachPhysNuclearBomb() override;
 
-    //Begin the explosion animation at startTime.
-    //Returns the duration of the explosion.
-    PhysRelativeTime startExplosion( const PhysAbsoluteTime& startTime, MachPhysPlanetSurface* pSurface );
+    // Begin the explosion animation at startTime.
+    // Returns the duration of the explosion.
+    PhysRelativeTime startExplosion(const PhysAbsoluteTime& startTime, MachPhysPlanetSurface* pSurface);
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	//returns the nuke shockwave radius at timeOffset
-	static MATHEX_SCALAR shockwaveRadius( const PhysRelativeTime& timeOffset );
+    // returns the nuke shockwave radius at timeOffset
+    static MATHEX_SCALAR shockwaveRadius(const PhysRelativeTime& timeOffset);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysNuclearBomb& t );
+    friend ostream& operator<<(ostream& o, const MachPhysNuclearBomb& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysNuclearBomb );
-    PER_FRIEND_READ_WRITE( MachPhysNuclearBomb );
+    PER_MEMBER_PERSISTENT(MachPhysNuclearBomb);
+    PER_FRIEND_READ_WRITE(MachPhysNuclearBomb);
+
 private:
-    //Deliberately revoked
-    MachPhysNuclearBomb( const MachPhysNuclearBomb& );
-    MachPhysNuclearBomb& operator =( const MachPhysNuclearBomb& );
-    bool operator ==( const MachPhysNuclearBomb& );
+    // Deliberately revoked
+    MachPhysNuclearBomb(const MachPhysNuclearBomb&);
+    MachPhysNuclearBomb& operator=(const MachPhysNuclearBomb&);
+    bool operator==(const MachPhysNuclearBomb&);
 
-	static const PhysRelativeTime& exPlosionDuration();
+    static const PhysRelativeTime& exPlosionDuration();
 
-	MachPhysNukeWave* pNukeWave_;
-	MachPhysMushroomTop* pMushroomTop_;
-	MachPhysMushroomShaft* pMushroomShaft_;
-	MachPhysMushroomEdge* pMushroomEdge_;
-	//MachPhysGroundSplat* pSplat_;
-	MachPhysFlashDisc* pFlash_;
-	W4dUniformLight* pLight_;
+    MachPhysNukeWave* pNukeWave_;
+    MachPhysMushroomTop* pMushroomTop_;
+    MachPhysMushroomShaft* pMushroomShaft_;
+    MachPhysMushroomEdge* pMushroomEdge_;
+    // MachPhysGroundSplat* pSplat_;
+    MachPhysFlashDisc* pFlash_;
+    W4dUniformLight* pLight_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysNuclearBomb );
+PER_DECLARE_PERSISTENT(MachPhysNuclearBomb);
 
 #endif
 

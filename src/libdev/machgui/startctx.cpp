@@ -1,5 +1,5 @@
 /*
- * S T A R T C T X . C P P 
+ * S T A R T C T X . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,8 +8,8 @@
 #include "machgui/startctx.hpp"
 #include "machgui/menus_helper.hpp"
 
-MachGuiStartupScreenContext::MachGuiStartupScreenContext( MachGuiStartupScreens* pStartupScreens ) 
-:	pStartupScreens_( pStartupScreens )
+MachGuiStartupScreenContext::MachGuiStartupScreenContext(MachGuiStartupScreens* pStartupScreens)
+    : pStartupScreens_(pStartupScreens)
 {
 
     TEST_INVARIANT;
@@ -18,10 +18,9 @@ MachGuiStartupScreenContext::MachGuiStartupScreenContext( MachGuiStartupScreens*
 MachGuiStartupScreenContext::~MachGuiStartupScreenContext()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 void MachGuiStartupScreenContext::update()
 {
     // Intentionally empty
@@ -33,14 +32,14 @@ bool MachGuiStartupScreenContext::okayToSwitchContext()
     return true;
 }
 
-//virtual 
-void MachGuiStartupScreenContext::buttonEvent( MachGuiStartupScreens::ButtonEvent )
+// virtual
+void MachGuiStartupScreenContext::buttonEvent(MachGuiStartupScreens::ButtonEvent)
 {
     // Intentionally empty
 }
 
-//virtual 
-bool MachGuiStartupScreenContext::doHandleKeyEvent( const GuiKeyEvent& )
+// virtual
+bool MachGuiStartupScreenContext::doHandleKeyEvent(const GuiKeyEvent&)
 {
     // Intentionally empty
     return false;
@@ -48,14 +47,16 @@ bool MachGuiStartupScreenContext::doHandleKeyEvent( const GuiKeyEvent& )
 
 void MachGuiStartupScreenContext::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiStartupScreenContext& t )
+ostream& operator<<(ostream& o, const MachGuiStartupScreenContext& t)
 {
 
-    o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>( const_cast<MachGuiStartupScreenContext*>(&t) ) << " start" << std::endl;
-    o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>( const_cast<MachGuiStartupScreenContext*>(&t) ) << " end" << std::endl;
+    o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>(const_cast<MachGuiStartupScreenContext*>(&t))
+      << " start" << std::endl;
+    o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>(const_cast<MachGuiStartupScreenContext*>(&t))
+      << " end" << std::endl;
 
     return o;
 }
@@ -68,7 +69,7 @@ std::pair<int, int> MachGuiStartupScreenContext::getBackdropTopLeft()
     auto backdrop = root->getSharedBitmaps()->getNamedBitmap("backdrop");
     using namespace machgui::helper::menus;
     // If the backdrop is the screen size, this would be the true top-left.
-    int top  = y_from_screen_bottom(root->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
+    int top = y_from_screen_bottom(root->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
     int left = x_from_screen_left(root->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
 
     return std::make_pair(top, left);

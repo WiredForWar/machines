@@ -1,5 +1,5 @@
 /*
- * O P G O L A B . H P P 
+ * O P G O L A B . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,47 +22,42 @@ class MachLogTechnician;
 class MachLogGotoLabOperation : public MachLogOperation
 {
 public:
+    MachLogGotoLabOperation(MachLogTechnician*);
 
-    MachLogGotoLabOperation( MachLogTechnician* );
+    ~MachLogGotoLabOperation() override;
 
-    ~MachLogGotoLabOperation();
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogGotoLabOperation );
-	PER_FRIEND_READ_WRITE( MachLogGotoLabOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogGotoLabOperation);
+    PER_FRIEND_READ_WRITE(MachLogGotoLabOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
+    bool doIsFinished() const override;
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-		
-	virtual void doOutputOperator( ostream& ) const;
+    void doOutputOperator(ostream&) const override;
 
-	virtual PhysRelativeTime doUpdate( );
+    PhysRelativeTime doUpdate() override;
 
-	virtual bool doBeInterrupted();
-	///////////////////////////////
+    bool doBeInterrupted() override;
+    ///////////////////////////////
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogGotoLabOperation& t );
+    friend ostream& operator<<(ostream& o, const MachLogGotoLabOperation& t);
 
 private:
-
     // Operations deliberately revoked
-    MachLogGotoLabOperation( const MachLogGotoLabOperation& );
-    MachLogGotoLabOperation& operator =( const MachLogGotoLabOperation& );
-    bool operator ==( const MachLogGotoLabOperation& );
+    MachLogGotoLabOperation(const MachLogGotoLabOperation&);
+    MachLogGotoLabOperation& operator=(const MachLogGotoLabOperation&);
+    bool operator==(const MachLogGotoLabOperation&);
 
-	MachLogTechnician*		pActor_;
-	bool 				finished_;
-
+    MachLogTechnician* pActor_;
+    bool finished_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogGotoLabOperation );
+PER_DECLARE_PERSISTENT(MachLogGotoLabOperation);
 
 #endif
 

@@ -20,29 +20,32 @@
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachHWResearchIcons::MachHWResearchIcons
-(
-    GuiDisplayable* pParent, const Gui::Coord& rel,
-    MachHWResearchBank* pHWResearchBank, 
+MachHWResearchIcons::MachHWResearchIcons(
+    GuiDisplayable* pParent,
+    const Gui::Coord& rel,
+    MachHWResearchBank* pHWResearchBank,
     MachLogHardwareLab* pHardwareLab,
-    MachInGameScreen* pInGameScreen
-)
-:   GuiSimpleScrollableList( pParent, Gui::Box( rel,
-												MachHWResearchIcons::reqWidth(),
-												MachHWResearchIcons::reqHeight( pInGameScreen, pParent->relativeCoord() ) ), 
-												MachHWResearchIcon::reqWidth(), 
-												MachHWResearchIcon::reqHeight(), 
-												3 ),
-	MachLogNotifiable(  MachLogRaces::instance().pcController().race() ),   // What race is the PC controller controlling?
-	researchTree_( MachLogRaces::instance().researchTree() ),
-	pHWResearchBank_( pHWResearchBank ),
-	pHardwareLab_( pHardwareLab ),
-	pInGameScreen_( pInGameScreen )
+    MachInGameScreen* pInGameScreen)
+    : GuiSimpleScrollableList(
+        pParent,
+        Gui::Box(
+            rel,
+            MachHWResearchIcons::reqWidth(),
+            MachHWResearchIcons::reqHeight(pInGameScreen, pParent->relativeCoord())),
+        MachHWResearchIcon::reqWidth(),
+        MachHWResearchIcon::reqHeight(),
+        3)
+    , MachLogNotifiable(MachLogRaces::instance().pcController().race())
+    , // What race is the PC controller controlling?
+    researchTree_(MachLogRaces::instance().researchTree())
+    , pHWResearchBank_(pHWResearchBank)
+    , pHardwareLab_(pHardwareLab)
+    , pInGameScreen_(pInGameScreen)
 {
-	researchTree_.addMe( this );
+    researchTree_.addMe(this);
 
-    //Add the icons
-    addIcons( pHardwareLab_, pInGameScreen_, pHWResearchBank_ );
+    // Add the icons
+    addIcons(pHardwareLab_, pInGameScreen_, pHWResearchBank_);
 
     TEST_INVARIANT;
 }
@@ -52,42 +55,43 @@ MachHWResearchIcons::MachHWResearchIcons
 MachHWResearchIcons::~MachHWResearchIcons()
 {
     TEST_INVARIANT;
-	researchTree_.removeMe( this );
+    researchTree_.removeMe(this);
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachHWResearchIcons::reqWidth()
 {
-	return ( 3 * MachHWResearchIcon::reqWidth() );
+    return (3 * MachHWResearchIcon::reqWidth());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
-size_t MachHWResearchIcons::reqHeight( MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord )
+// static
+size_t MachHWResearchIcons::reqHeight(MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord)
 {
-	int height = pInGameScreen->controlPanel().getVisibleHeight() - ( 2 + relCoord.y() + MachHWResearchBank::reqHeight() );
+    int height
+        = pInGameScreen->controlPanel().getVisibleHeight() - (2 + relCoord.y() + MachHWResearchBank::reqHeight());
 
-	// Make height a multiple of MachHWResearchIcon::reqHeight
-	height -= height % MachHWResearchIcon::reqHeight();
+    // Make height a multiple of MachHWResearchIcon::reqHeight
+    height -= height % MachHWResearchIcon::reqHeight();
 
-	return height;	
+    return height;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void MachHWResearchIcons::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachHWResearchIcons& t )
+ostream& operator<<(ostream& o, const MachHWResearchIcons& t)
 {
 
     o << "MachHWResearchIcons " << (void*)&t << " start" << std::endl;
@@ -98,35 +102,34 @@ ostream& operator <<( ostream& o, const MachHWResearchIcons& t )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachHWResearchIcons::addIcons( MachLogHardwareLab* pHardwareLab, 
-									MachInGameScreen* pInGameScreen,
-									MachHWResearchBank* pHWResearchBank )
+void MachHWResearchIcons::addIcons(
+    MachLogHardwareLab* pHardwareLab,
+    MachInGameScreen* pInGameScreen,
+    MachHWResearchBank* pHWResearchBank)
 {
     // Get the list of valid research items for the lab using the research item list
-	const MachLogResearchTree::ResearchItems& items = pHardwareLab->availableResearchItems();
+    const MachLogResearchTree::ResearchItems& items = pHardwareLab->availableResearchItems();
 
     // Iterate through the items and add an icon for each one that hasn't been researched
-    for( MachLogResearchTree::ResearchItems::const_iterator it = items.begin();
-         it != items.end(); ++it )
+    for (MachLogResearchTree::ResearchItems::const_iterator it = items.begin(); it != items.end(); ++it)
     {
-        //Check not already researched
+        // Check not already researched
         MachLogResearchItem* pResearchItem = (*it);
-        if( not pResearchItem->researched( pHardwareLab->race() ) )
+        if (not pResearchItem->researched(pHardwareLab->race()))
         {
-            _NEW( MachHWResearchIcon( this, pInGameScreen, pHWResearchBank, pHardwareLab,
-                                      pResearchItem ) );
+            _NEW(MachHWResearchIcon(this, pInGameScreen, pHWResearchBank, pHardwareLab, pResearchItem));
         }
     }
-// JERRY_STREAM( WHERE_STR << std::endl );
-	childrenUpdated();
+    // JERRY_STREAM( WHERE_STR << std::endl );
+    childrenUpdated();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void MachHWResearchIcons::doDisplay()
 {
-	pInGameScreen_->controlPanel().redrawAreaImmediate( *this );	
-	GuiSimpleScrollableList::doDisplay();
+    pInGameScreen_->controlPanel().redrawAreaImmediate(*this);
+    GuiSimpleScrollableList::doDisplay();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,8 +137,8 @@ void MachHWResearchIcons::doDisplay()
 // virtual
 void MachHWResearchIcons::notifiableBeNotified()
 {
-	deleteAllChildren();
-	addIcons( pHardwareLab_, pInGameScreen_, pHWResearchBank_ );
+    deleteAllChildren();
+    addIcons(pHardwareLab_, pInGameScreen_, pHWResearchBank_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

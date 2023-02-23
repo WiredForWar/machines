@@ -13,8 +13,8 @@
 #include "machlog/machlog.hpp"
 #include "ctl/pvector.hpp"
 
-MachGuiBuildCommand::MachGuiBuildCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen )
+MachGuiBuildCommand::MachGuiBuildCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
 {
     TEST_INVARIANT;
 }
@@ -22,15 +22,14 @@ MachGuiBuildCommand::MachGuiBuildCommand( MachInGameScreen* pInGameScreen )
 MachGuiBuildCommand::~MachGuiBuildCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiBuildCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiBuildCommand& t )
+ostream& operator<<(ostream& o, const MachGuiBuildCommand& t)
 {
 
     o << "MachGuiBuildCommand " << (void*)&t << " start" << std::endl;
@@ -39,136 +38,132 @@ ostream& operator <<( ostream& o, const MachGuiBuildCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiBuildCommand::pickOnTerrain( const MexPoint3d&, bool, bool, bool )
+// virtual
+void MachGuiBuildCommand::pickOnTerrain(const MexPoint3d&, bool, bool, bool)
 {
-    //Nothing to do
+    // Nothing to do
 }
 
-//virtual
-void MachGuiBuildCommand::pickOnActor
-(
-    MachActor* pActor, bool ctrlPressed, bool, bool
-)
+// virtual
+void MachGuiBuildCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool, bool)
 {
-    //Usual selection of the actor
-    if( ctrlPressed )
+    // Usual selection of the actor
+    if (ctrlPressed)
     {
-        if( inGameScreen().isSelected( *pActor ) )
-            inGameScreen().deselect( pActor );
+        if (inGameScreen().isSelected(*pActor))
+            inGameScreen().deselect(pActor);
         else
-            inGameScreen().select( pActor );
+            inGameScreen().select(pActor);
     }
     else
     {
         inGameScreen().deselectAll();
-        inGameScreen().select( pActor );
+        inGameScreen().select(pActor);
     }
 }
 
-//virtual
-bool MachGuiBuildCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiBuildCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Factories can build
+    // Factories can build
     MachLog::ObjectType objectType = actor.objectType();
     return objectType == MachLog::FACTORY;
 }
 
-//virtual
+// virtual
 bool MachGuiBuildCommand::isInteractionComplete() const
 {
-    //Is complete if the selection set no longer consists of single factory
+    // Is complete if the selection set no longer consists of single factory
     return not actorsCanExecute();
 }
 
-//virtual
-bool MachGuiBuildCommand::doApply( MachActor*, string* )
+// virtual
+bool MachGuiBuildCommand::doApply(MachActor*, string*)
 {
-    //This command interaction is all via the menu icons, so this function is not called
+    // This command interaction is all via the menu icons, so this function is not called
     return true;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiBuildCommand::cursorOnTerrain( const MexPoint3d&, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiBuildCommand::cursorOnTerrain(const MexPoint3d&, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiBuildCommand::cursorOnActor( MachActor*, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiBuildCommand::cursorOnActor(MachActor*, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::SELECT_CURSOR;
 
     return cursor;
 }
 
-//virtual
-void MachGuiBuildCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiBuildCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiBuildCommand::clone() const
 {
-    return _NEW( MachGuiBuildCommand( &inGameScreen() ) );
+    return _NEW(MachGuiBuildCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiBuildCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/const.bmp", "gui/commands/const.bmp" );
+    static std::pair<string, string> names("gui/commands/const.bmp", "gui/commands/const.bmp");
     return names;
 }
 
 bool MachGuiBuildCommand::actorsCanExecute() const
 {
-    //Check there is exactly one selected entity, and it is a factory
+    // Check there is exactly one selected entity, and it is a factory
     const MachInGameScreen::Actors& selectionSet = inGameScreen().selectedActors();
-    return selectionSet.size() == 1  and
-           selectionSet.front()->objectType() == MachLog::FACTORY;
+    return selectionSet.size() == 1 and selectionSet.front()->objectType() == MachLog::FACTORY;
 }
 
 void MachGuiBuildCommand::start()
 {
-    //Cache the current control panel context
+    // Cache the current control panel context
     previousMenuContext_ = inGameScreen().currentContext();
 
-    //Enter the build menu context
+    // Enter the build menu context
     inGameScreen().buildCommandContext();
 }
 
 void MachGuiBuildCommand::finish()
 {
-    //If still in the build command context, restore the cached context
-    if( inGameScreen().isBuildCommandContext() )
-        inGameScreen().currentContext( previousMenuContext_ );
+    // If still in the build command context, restore the cached context
+    if (inGameScreen().isBuildCommandContext())
+        inGameScreen().currentContext(previousMenuContext_);
 }
 
-//virtual
+// virtual
 uint MachGuiBuildCommand::cursorPromptStringId() const
 {
     return IDS_BUILD_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiBuildCommand::commandPromptStringid() const
 {
     return IDS_BUILD_START;
 }
 
-//virtual
-bool MachGuiBuildCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiBuildCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_B and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_B and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /* End CMDBUILD.CPP **************************************************/

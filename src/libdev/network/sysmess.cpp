@@ -17,7 +17,6 @@
 #include "network/internal/netinet.hpp"
 #include "network/internal/sessioni.hpp"
 
-
 NetSystemMessageHandler::NetSystemMessageHandler()
 {
 
@@ -27,15 +26,14 @@ NetSystemMessageHandler::NetSystemMessageHandler()
 NetSystemMessageHandler::~NetSystemMessageHandler()
 {
     TEST_INVARIANT;
-
 }
 
 void NetSystemMessageHandler::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const NetSystemMessageHandler& t )
+ostream& operator<<(ostream& o, const NetSystemMessageHandler& t)
 {
 
     o << "NetSystemMessageHandler " << (void*)&t << " start" << std::endl;
@@ -44,15 +42,15 @@ ostream& operator <<( ostream& o, const NetSystemMessageHandler& t )
     return o;
 }
 
-void NetSystemMessageHandler::playerHasBeenLost( const string& name )
+void NetSystemMessageHandler::playerHasBeenLost(const string& name)
 {
-	NETWORK_STREAM("NetSystemMessageHandler::playerHasBeenLost " << name << std::endl );
-	NETWORK_INDENT( 2 );
-//	NetNetwork::instance().netINetwork().pLocalSession_->updateNodes();
+    NETWORK_STREAM("NetSystemMessageHandler::playerHasBeenLost " << name << std::endl);
+    NETWORK_INDENT(2);
+    //  NetNetwork::instance().netINetwork().pLocalSession_->updateNodes();
 
-	handleDestroyPlayerMessage( name );
-	NETWORK_INDENT( -2 );
-	NETWORK_STREAM("NetSystemMessageHandler::playerHasBeenLost DONE\n" );
+    handleDestroyPlayerMessage(name);
+    NETWORK_INDENT(-2);
+    NETWORK_STREAM("NetSystemMessageHandler::playerHasBeenLost DONE\n");
 }
 
 /* End SYSMESS.CPP **************************************************/

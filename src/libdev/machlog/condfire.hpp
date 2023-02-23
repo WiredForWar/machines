@@ -1,5 +1,5 @@
 /*
- * C O N D F I R E . H P P 
+ * C O N D F I R E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,37 +24,34 @@ class MachLogFiredAtCondition : public SimCondition
 // Canonical form revoked
 {
 public:
-	static MachLogFiredAtCondition* newFromParser( UtlLineTokeniser* );
+    static MachLogFiredAtCondition* newFromParser(UtlLineTokeniser*);
 
-	virtual bool doHasConditionBeenMet() const;
+    bool doHasConditionBeenMet() const override;
 
-    virtual ~MachLogFiredAtCondition();
+    ~MachLogFiredAtCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogFiredAtCondition );
-	PER_FRIEND_READ_WRITE( MachLogFiredAtCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogFiredAtCondition);
+    PER_FRIEND_READ_WRITE(MachLogFiredAtCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogFiredAtCondition(const string& keyName, MachPhys::Race firingRace, MachPhys::Race firedAtRace);
 
-    MachLogFiredAtCondition( const string& keyName, MachPhys::Race firingRace, MachPhys::Race firedAtRace );
+    friend ostream& operator<<(ostream& o, const MachLogFiredAtCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogFiredAtCondition& t );
+    MachLogFiredAtCondition(const MachLogFiredAtCondition&);
+    MachLogFiredAtCondition& operator=(const MachLogFiredAtCondition&);
 
-    MachLogFiredAtCondition( const MachLogFiredAtCondition& );
-    MachLogFiredAtCondition& operator =( const MachLogFiredAtCondition& );
-
-	MachPhys::Race								firingRace_;
-	MachPhys::Race								firedAtRace_;
+    MachPhys::Race firingRace_;
+    MachPhys::Race firedAtRace_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogFiredAtCondition );
+PER_DECLARE_PERSISTENT(MachLogFiredAtCondition);
 
 #endif
 

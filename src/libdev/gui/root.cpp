@@ -2,43 +2,42 @@
 #include "gui/manager.hpp"
 #include "root.hpp"
 
-
 /* //////////////////////////////////////////////////////////////// */
 
-GuiRoot::GuiRoot( const Gui::Box& abs )
-: GuiDisplayable( abs )
+GuiRoot::GuiRoot(const Gui::Box& abs)
+    : GuiDisplayable(abs)
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 GuiRoot::~GuiRoot()
 {
-	// Intentionally Empty
+    // Intentionally Empty
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 void GuiRoot::becomeRoot()
 {
-	GuiManager& manager = GuiManager::instance();
-	
-	if ( manager.hasRoot() )
-		manager.root().doBecomeNotRoot();
+    GuiManager& manager = GuiManager::instance();
 
-	manager.changeRoot( this );
+    if (manager.hasRoot())
+        manager.root().doBecomeNotRoot();
 
-	doBecomeRoot();
-		
-	changed( true );
+    manager.changeRoot(this);
 
-	POST( &GuiManager::instance().root() == this );
+    doBecomeRoot();
+
+    changed(true);
+
+    POST(&GuiManager::instance().root() == this);
 }
 
-bool GuiRoot::recursivelyHasChild( GuiDisplayable * pChild ) const
+bool GuiRoot::recursivelyHasChild(GuiDisplayable* pChild) const
 {
-	bool result = pChild != this;
-	POST( iff( pChild != this, result ) );
-	return result;
+    bool result = pChild != this;
+    POST(iff(pChild != this, result));
+    return result;
 }
 
 GuiRootSharedBitmaps* GuiRoot::getSharedBitmaps()

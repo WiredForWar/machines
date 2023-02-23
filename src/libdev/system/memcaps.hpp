@@ -1,5 +1,5 @@
 /*
- * M E M C A P S . H P P 
+ * M E M C A P S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,29 +18,29 @@ class SysMemoryCaps
 // Canonical form revoked
 {
 public:
-    // percent of memory in use 
+    // percent of memory in use
     static size_t percentageUsedMem();
 
-	// bytes of physical memory
+    // bytes of physical memory
     static unsigned int totalPhysicalMem();
 
-	// available physical memory in bytes 
+    // available physical memory in bytes
     static unsigned int availPhysicalMem();
 
-	// total bytes in page file
+    // total bytes in page file
     static unsigned int totalPageSpace();
 
-	// total bytes available in page file
+    // total bytes available in page file
     static unsigned int availPageSpace();
 
-	// total number of user bytes of address space
+    // total number of user bytes of address space
     static unsigned int totalVirtual();
 
-	// available number of user bytes
-    static unsigned int availVirtual(); 
+    // available number of user bytes
+    static unsigned int availVirtual();
 
-	//write the information to an ostream.
-	static void outputInfo( ostream& );
+    // write the information to an ostream.
+    static void outputInfo(ostream&);
 
     void CLASS_INVARIANT;
 
@@ -48,13 +48,11 @@ private:
     SysMemoryCaps();
     ~SysMemoryCaps();
 
-    friend ostream& operator <<( ostream& o, const SysMemoryCaps& t );
+    friend ostream& operator<<(ostream& o, const SysMemoryCaps& t);
 
-    SysMemoryCaps( const SysMemoryCaps& );
-    SysMemoryCaps& operator =( const SysMemoryCaps& );
-
+    SysMemoryCaps(const SysMemoryCaps&);
+    SysMemoryCaps& operator=(const SysMemoryCaps&);
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * D B P L A N E I . C P P 
+ * D B P L A N E I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,13 +9,13 @@
 #include "machgui/dbsystem.hpp"
 #include "machgui/dbscenar.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbIPlanet );
+PER_DEFINE_PERSISTENT(MachGuiDbIPlanet);
 
 MachGuiDbIPlanet::MachGuiDbIPlanet()
-:   pSystem_( NULL )
+    : pSystem_(nullptr)
 {
 
-    scenarios_.reserve( 4 );
+    scenarios_.reserve(4);
 
     TEST_INVARIANT;
 }
@@ -23,15 +23,14 @@ MachGuiDbIPlanet::MachGuiDbIPlanet()
 MachGuiDbIPlanet::~MachGuiDbIPlanet()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDbIPlanet::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbIPlanet& t )
+ostream& operator<<(ostream& o, const MachGuiDbIPlanet& t)
 {
 
     o << "MachGuiDbIPlanet " << (void*)&t << " start" << std::endl;
@@ -40,14 +39,14 @@ ostream& operator <<( ostream& o, const MachGuiDbIPlanet& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbIPlanet& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbIPlanet& ob)
 {
     ostr << ob.pSystem_;
     ostr << ob.campaignPicture_;
     ostr << ob.scenarios_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbIPlanet& ob )
+void perRead(PerIstream& istr, MachGuiDbIPlanet& ob)
 {
     istr >> ob.pSystem_;
     istr >> ob.campaignPicture_;

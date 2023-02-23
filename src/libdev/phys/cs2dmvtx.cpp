@@ -8,18 +8,18 @@
 #include "phys/internal/cs2dmvtx.hpp"
 
 #ifndef _INLINE
-    #include "phys/internal/cs2dmvtx.ipp"
+#include "phys/internal/cs2dmvtx.ipp"
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void PhysCS2dDomainVertex::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const PhysCS2dDomainVertex& t )
+ostream& operator<<(ostream& o, const PhysCS2dDomainVertex& t)
 {
     o << "portal id " << t.portalId_.asScalar();
     o << " point " << t.point_;

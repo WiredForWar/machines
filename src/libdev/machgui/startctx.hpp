@@ -1,5 +1,5 @@
 /*
- * S T A R T C T X . H P P 
+ * S T A R T C T X . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,7 +21,7 @@ class MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    explicit MachGuiStartupScreenContext( MachGuiStartupScreens* pStartupScreens );
+    explicit MachGuiStartupScreenContext(MachGuiStartupScreens* pStartupScreens);
     virtual ~MachGuiStartupScreenContext();
 
     // Called every frame.
@@ -34,26 +34,25 @@ public:
 
     // Called when a button is pressed if the default processing by MachGuiStartupScreens
     // does not "use" the button event.
-    virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    virtual void buttonEvent(MachGuiStartupScreens::ButtonEvent);
 
     // Called if the startup screens does not use the GuiKeyEvent.
-    virtual bool doHandleKeyEvent( const GuiKeyEvent& );
+    virtual bool doHandleKeyEvent(const GuiKeyEvent&);
 
     void CLASS_INVARIANT;
 
 protected:
     MachGuiStartupScreens* pStartupScreens_;
 
-    std::pair<int, int>     getBackdropTopLeft();
-    void                    changeBackdrop( const char* newBackdrop );
+    std::pair<int, int> getBackdropTopLeft();
+    void changeBackdrop(const char* newBackdrop);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiStartupScreenContext& t );
+    friend ostream& operator<<(ostream& o, const MachGuiStartupScreenContext& t);
 
-    MachGuiStartupScreenContext( const MachGuiStartupScreenContext& );
-    MachGuiStartupScreenContext& operator =( const MachGuiStartupScreenContext& );
+    MachGuiStartupScreenContext(const MachGuiStartupScreenContext&);
+    MachGuiStartupScreenContext& operator=(const MachGuiStartupScreenContext&);
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * N U C L M I S S . C P P 
+ * N U C L M I S S . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,46 +20,46 @@
 #include "machlog/nuclbomb.hpp"
 #include "machlog/vmman.hpp"
 
-
 #include "machlog/race.hpp"
 #include "machlog/races.hpp"
 #include "machlog/stats.hpp"
 #include "machlog/actor.hpp"
-//#include "machlog/actor.hpp"
-//#include "machlog/spacial.hpp"
+// #include "machlog/actor.hpp"
+// #include "machlog/spacial.hpp"
 
 #include "sim/manager.hpp"
 
-#include"world4d/garbcoll.hpp"
+#include "world4d/garbcoll.hpp"
 
 MachLogNuclearMissile::MachLogNuclearMissile(
     MachLogRace* pRace,
-	MachPhysLinearProjectile* pPhysProjectile,
+    MachPhysLinearProjectile* pPhysProjectile,
     MachActor* pOwner,
-    const MachPhysWeaponData& weaponData )
-:	MachLogLinearProjectile( pRace, pPhysProjectile, pOwner, weaponData, DO_NOT_DETECT_INTERSECTIONS ),
-	weaponData_( weaponData ),
-	pLogRace_( pRace )
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData, DO_NOT_DETECT_INTERSECTIONS)
+    , weaponData_(weaponData)
+    , pLogRace_(pRace)
 {
-	// send voicemail if it wasn't me initiating this launch
-	if( MachLogRaces::instance().pcController().race() != pOwner->race() )
-		MachLogVoiceMailManager::instance().postNewMail( VID_POD_ENEMY_NUKE_LAUNCH, MachLogRaces::instance().pcController().race() );
-	
+    // send voicemail if it wasn't me initiating this launch
+    if (MachLogRaces::instance().pcController().race() != pOwner->race())
+        MachLogVoiceMailManager::instance().postNewMail(
+            VID_POD_ENEMY_NUKE_LAUNCH,
+            MachLogRaces::instance().pcController().race());
+
     TEST_INVARIANT;
 }
 
 MachLogNuclearMissile::~MachLogNuclearMissile()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogNuclearMissile::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogNuclearMissile& t )
+ostream& operator<<(ostream& o, const MachLogNuclearMissile& t)
 {
 
     o << "MachLogNuclearMissile " << (void*)&t << " start" << std::endl;
@@ -68,37 +68,37 @@ ostream& operator <<( ostream& o, const MachLogNuclearMissile& t )
     return o;
 }
 
-
-
 void MachLogNuclearMissile::doBeDestroyed()
 {
 
-	// network stuff....
+    // network stuff....
 
-	if( MachLogNetwork::instance().isNetworkGame() )
-	{		
-		MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage( position(), MachPhys::NUCLEAR_MISSILE );
-	}	
-	
-	// and create the physical entity on my own node.
+    if (MachLogNetwork::instance().isNetworkGame())
+    {
+        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(
+            position(),
+            MachPhys::NUCLEAR_MISSILE);
+    }
 
-	_NEW( MachLogNuclearBomb( pLogRace_, globalDestructionPosition(), weaponData_, pOwner() ) );	
+    // and create the physical entity on my own node.
 
-/*		
-	MachLogNuclearBomb* pPhysNuclearBomb = NULL;
-	MachLogNuclearMissile::pNewPhysNuclearBomb( globalDestructionPosition(), &pPhysNuclearBomb );
-	
-	ASSERT( pPhysNuclearBomb, "We have a NULL pointer to the pPhysNuclearBomb." );
-	
-	PhysRelativeTime relTime = 12; // a figure I've chosen arbitrarily that seems to be about long enough.
-	pPhysNuclearBomb->startExplosion( SimManager::instance().currentTime(), MachLogPlanet::instance().surface() );
-	W4dGarbageCollector::instance().add( pPhysNuclearBomb, relTime + SimManager::instance().currentTime() );
-		
-	checkForDamage( MachLogRaces::instance().stats().nuclearMissileBlastRange(), MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::NUCLEAR_MISSILE );
-	*/
-	
+    _NEW(MachLogNuclearBomb(pLogRace_, globalDestructionPosition(), weaponData_, pOwner()));
+
+    /*
+    MachLogNuclearBomb* pPhysNuclearBomb = NULL;
+    MachLogNuclearMissile::pNewPhysNuclearBomb( globalDestructionPosition(), &pPhysNuclearBomb );
+
+    ASSERT( pPhysNuclearBomb, "We have a NULL pointer to the pPhysNuclearBomb." );
+
+    PhysRelativeTime relTime = 12; // a figure I've chosen arbitrarily that seems to be about long enough.
+    pPhysNuclearBomb->startExplosion( SimManager::instance().currentTime(), MachLogPlanet::instance().surface() );
+    W4dGarbageCollector::instance().add( pPhysNuclearBomb, relTime + SimManager::instance().currentTime() );
+
+    checkForDamage( MachLogRaces::instance().stats().nuclearMissileBlastRange(), MachLogLinearProjectile::LINEAR_DAMAGE,
+    MachPhys::NUCLEAR_MISSILE );
+    */
 }
 
-//forced recompile 3/2/99 CPS
+// forced recompile 3/2/99 CPS
 
 /* End NUCLMISS.CPP *************************************************/

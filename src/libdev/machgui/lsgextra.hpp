@@ -21,21 +21,21 @@ class MachGuiLoadSaveGameExtras : public MachLogLoadSaveGameExtras
 // Canonical form revoked
 {
 public:
-    MachGuiLoadSaveGameExtras( MachInGameScreen* pInGameScreen );
-    virtual ~MachGuiLoadSaveGameExtras();
-	virtual void perReadExtras( PerIstream& );
-	virtual void perWriteExtras( PerOstream& );
+    MachGuiLoadSaveGameExtras(MachInGameScreen* pInGameScreen);
+    ~MachGuiLoadSaveGameExtras() override;
+    void perReadExtras(PerIstream&) override;
+    void perWriteExtras(PerOstream&) override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiLoadSaveGameExtras& t );
+    friend ostream& operator<<(ostream& o, const MachGuiLoadSaveGameExtras& t);
 
-    MachGuiLoadSaveGameExtras( const MachGuiLoadSaveGameExtras& );
-    MachGuiLoadSaveGameExtras& operator =( const MachGuiLoadSaveGameExtras& );
+    MachGuiLoadSaveGameExtras(const MachGuiLoadSaveGameExtras&);
+    MachGuiLoadSaveGameExtras& operator=(const MachGuiLoadSaveGameExtras&);
 
-	// Data members...
-	MachInGameScreen* pInGameScreen_;
+    // Data members...
+    MachInGameScreen* pInGameScreen_;
 };
 
 #endif

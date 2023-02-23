@@ -31,57 +31,49 @@ class W4dCamera;
 class W4dStars : public W4dEntity
 {
 public:
-	// Attach to parent and construct stars.
-	W4dStars(
-		W4dEntity* pParent,
-		RenStars::Configuration,
-		MATHEX_SCALAR radius,
-		uint nStars);
-	W4dStars(const W4dStars& copyMe, W4dEntity* pParent);
+    // Attach to parent and construct stars.
+    W4dStars(W4dEntity* pParent, RenStars::Configuration, MATHEX_SCALAR radius, uint nStars);
+    W4dStars(const W4dStars& copyMe, W4dEntity* pParent);
 
-	virtual ~W4dStars();
+    ~W4dStars() override;
 
-	// Have to provide this.
-    virtual bool intersectsLine(
-        const MexLine3d& line,
-        MATHEX_SCALAR* pDistance,
-		Accuracy accuracy) const;
+    // Have to provide this.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	RenStars::Configuration configuration() const;
-	MATHEX_SCALAR radius() const;
-	uint nStars() const;
+    RenStars::Configuration configuration() const;
+    MATHEX_SCALAR radius() const;
+    uint nStars() const;
 
-	UtlPercentage opacity() const;
-	void opacity(UtlPercentage newOpacity);
+    UtlPercentage opacity() const;
+    void opacity(UtlPercentage newOpacity);
 
-	// It needs to get to the render() method.
-	friend class W4dCamera;
+    // It needs to get to the render() method.
+    friend class W4dCamera;
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
-	// DO NOT USE. Persitence is needed as W4dEntity uses it. The preRead and perWrite
-	// are dummy functions that will assert out.
-	PER_MEMBER_PERSISTENT_VIRTUAL(W4dStars);
-	PER_FRIEND_READ_WRITE(W4dStars);
+    // DO NOT USE. Persitence is needed as W4dEntity uses it. The preRead and perWrite
+    // are dummy functions that will assert out.
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dStars);
+    PER_FRIEND_READ_WRITE(W4dStars);
 
 protected:
-	// Overidden so the stars can be rendered as part of the environment tree.
-    virtual RenderType render(const W4dCamera&,  W4dComplexity& );
+    // Overidden so the stars can be rendered as part of the environment tree.
+    RenderType render(const W4dCamera&, W4dComplexity&) override;
 
 private:
-	// Operation deliberately revoked.
-	W4dStars(const W4dStars&);
+    // Operation deliberately revoked.
+    W4dStars(const W4dStars&);
 
-	// Used by the RenStars::render() call from within render().
-	UtlPercentage opacity_;
-	RenStars* pStars_;
+    // Used by the RenStars::render() call from within render().
+    UtlPercentage opacity_;
+    RenStars* pStars_;
 };
 
 PER_DECLARE_PERSISTENT(W4dStars);
 
 #ifdef _INLINE
-	#include "world4d/stars.ipp"
+#include "world4d/stars.ipp"
 #endif
 
 #endif /* _WORLD4D_STARS_HPP ******************************/
-

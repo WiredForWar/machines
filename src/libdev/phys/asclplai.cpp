@@ -7,17 +7,19 @@
 
 #include "phys/internal/asclplai.hpp"
 
-PhysAcceleratedScalarPlanImpl::PhysAcceleratedScalarPlanImpl(const PhysAcceleratedScalarPlan::RampAccelerations& rampAccelerations, MATHEX_SCALAR scale)
-:	rampAccelerations_(rampAccelerations),
-	initialScale_(scale)
+PhysAcceleratedScalarPlanImpl::PhysAcceleratedScalarPlanImpl(
+    const PhysAcceleratedScalarPlan::RampAccelerations& rampAccelerations,
+    MATHEX_SCALAR scale)
+    : rampAccelerations_(rampAccelerations)
+    , initialScale_(scale)
 {
 
     TEST_INVARIANT;
 }
 
-PhysAcceleratedScalarPlanImpl::PhysAcceleratedScalarPlanImpl(const PhysAcceleratedScalarPlanImpl& copyMe )
-:	rampAccelerations_(copyMe.rampAccelerations_),
-	initialScale_(copyMe.initialScale_)
+PhysAcceleratedScalarPlanImpl::PhysAcceleratedScalarPlanImpl(const PhysAcceleratedScalarPlanImpl& copyMe)
+    : rampAccelerations_(copyMe.rampAccelerations_)
+    , initialScale_(copyMe.initialScale_)
 {
 
     TEST_INVARIANT;
@@ -26,15 +28,14 @@ PhysAcceleratedScalarPlanImpl::PhysAcceleratedScalarPlanImpl(const PhysAccelerat
 PhysAcceleratedScalarPlanImpl::~PhysAcceleratedScalarPlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysAcceleratedScalarPlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysAcceleratedScalarPlanImpl& t )
+ostream& operator<<(ostream& o, const PhysAcceleratedScalarPlanImpl& t)
 {
 
     o << "PhysAcceleratedScalarPlanImpl " << (void*)&t << " start" << std::endl;

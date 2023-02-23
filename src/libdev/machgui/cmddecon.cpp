@@ -28,9 +28,9 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/ingame.hpp"
 
-MachGuiDeconstructCommand::MachGuiDeconstructCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( false )
+MachGuiDeconstructCommand::MachGuiDeconstructCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(false)
 {
     TEST_INVARIANT;
 }
@@ -39,21 +39,21 @@ MachGuiDeconstructCommand::~MachGuiDeconstructCommand()
 {
     TEST_INVARIANT;
 
-    inGameScreen().cursorFilter( W4dDomain::EXCLUDE_NOT_SOLID );
+    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
-	while( not constructions_.empty() )
-	{
-		constructions_.back()->detach( this );
-		constructions_.pop_back();
-	}
+    while (not constructions_.empty())
+    {
+        constructions_.back()->detach(this);
+        constructions_.pop_back();
+    }
 }
 
 void MachGuiDeconstructCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDeconstructCommand& t )
+ostream& operator<<(ostream& o, const MachGuiDeconstructCommand& t)
 {
 
     o << "MachGuiDeconstructCommand " << (void*)&t << " start" << std::endl;
@@ -62,231 +62,239 @@ ostream& operator <<( ostream& o, const MachGuiDeconstructCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiDeconstructCommand::pickOnTerrain
-(
-    const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
-)
-{}
-
-//virtual
-void MachGuiDeconstructCommand::pickOnActor
-(
-    MachActor* pActor, bool, bool shiftPressed, bool
+// virtual
+void MachGuiDeconstructCommand::pickOnTerrain(
+    const MexPoint3d& /*location*/,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
 {
-    //Check for a pick on construction
-    if( pActor->objectIsConstruction() )
+}
+
+// virtual
+void MachGuiDeconstructCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
+{
+    // Check for a pick on construction
+    if (pActor->objectIsConstruction())
     {
-		MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
+        MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-		if( not constructionIsDuplicate( pCandidateConstruction ) )
-		{
-			// Add to list of constructions to deconstruct
-        	constructions_.push_back( pCandidateConstruction );
+        if (not constructionIsDuplicate(pCandidateConstruction))
+        {
+            // Add to list of constructions to deconstruct
+            constructions_.push_back(pCandidateConstruction);
 
-        	pCandidateConstruction->attach( this );
-		}
+            pCandidateConstruction->attach(this);
+        }
 
-
-		if ( not shiftPressed )
-		{
-		  	hadFinalPick_ = true;
-		}
-		else
-		{
-			// Waypoint click (i.e. not final click)
-			MachGuiSoundManager::instance().playSound( "gui/sounds/waypoint.wav" );
-		}
+        if (not shiftPressed)
+        {
+            hadFinalPick_ = true;
+        }
+        else
+        {
+            // Waypoint click (i.e. not final click)
+            MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
+        }
     }
 }
 
-bool MachGuiDeconstructCommand::constructionIsDuplicate( const MachLogConstruction* pCandidateConstruction ) const
+bool MachGuiDeconstructCommand::constructionIsDuplicate(const MachLogConstruction* pCandidateConstruction) const
 {
-	bool result = false;
+    bool result = false;
 
-	ctl_pvector< MachLogConstruction >::const_iterator i = find( constructions_.begin(), constructions_.end(), pCandidateConstruction );
+    ctl_pvector<MachLogConstruction>::const_iterator i
+        = find(constructions_.begin(), constructions_.end(), pCandidateConstruction);
 
-	if( i != constructions_.end() )
-		result = true;
+    if (i != constructions_.end())
+        result = true;
 
-	return result;
+    return result;
 }
 
-//virtual
-bool MachGuiDeconstructCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiDeconstructCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Constructions can be deconstructed
+    // Constructions can be deconstructed
     MachLog::ObjectType objectType = actor.objectType();
     return objectType == MachLog::CONSTRUCTOR;
 }
 
-//virtual
+// virtual
 bool MachGuiDeconstructCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDeconstructCommand::cursorOnTerrain( const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool )
+// virtual
+MachGui::Cursor2dType
+MachGuiDeconstructCommand::cursorOnTerrain(const MexPoint3d& /*location*/, bool /*ctrlPressed*/, bool, bool)
 {
     return MachGui::MENU_CURSOR;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiDeconstructCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiDeconstructCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-	if ( pActor->objectIsConstruction() )
-	{
-		cursor = MachGui::DECONSTRUCT_CURSOR;
-	}
+    if (pActor->objectIsConstruction())
+    {
+        cursor = MachGui::DECONSTRUCT_CURSOR;
+    }
 
     return cursor;
 }
 
-//virtal
-void MachGuiDeconstructCommand::typeData( MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/ )
-{}
-
-//virtual
-bool MachGuiDeconstructCommand::doApply( MachActor* pActor, string* )
+// virtal
+void MachGuiDeconstructCommand::typeData(MachLog::ObjectType /*objectType*/, int /*subType*/, uint /*level*/)
 {
-    //Create a superconstruct operation for the constructor
-    MachLogSuperConstructOperation* pOp =
-        _NEW( MachLogSuperConstructOperation( &pActor->asConstructor(), constructions_, MachLogOperation::DECONSTRUCT_OPERATION ) );
-
-    pActor->newOperation( pOp );
-
-	ASSERT( pActor->objectIsMachine(), "Hey! That actor should have been a machine!" );
-   	pActor->asMachine().manualCommandIssued();
-
-	if( not hasPlayedVoiceMail() )
-	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVE_TO_SITE );
-		hasPlayedVoiceMail( true );
-	}
-
-	return true;
 }
 
-//virtual
+// virtual
+bool MachGuiDeconstructCommand::doApply(MachActor* pActor, string*)
+{
+    // Create a superconstruct operation for the constructor
+    MachLogSuperConstructOperation* pOp = _NEW(MachLogSuperConstructOperation(
+        &pActor->asConstructor(),
+        constructions_,
+        MachLogOperation::DECONSTRUCT_OPERATION));
+
+    pActor->newOperation(pOp);
+
+    ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
+    pActor->asMachine().manualCommandIssued();
+
+    if (not hasPlayedVoiceMail())
+    {
+        MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVE_TO_SITE);
+        hasPlayedVoiceMail(true);
+    }
+
+    return true;
+}
+
+// virtual
 MachGuiCommand* MachGuiDeconstructCommand::clone() const
 {
-    return _NEW( MachGuiDeconstructCommand( &inGameScreen() ) );
+    return _NEW(MachGuiDeconstructCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiDeconstructCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/deconst.bmp", "gui/commands/deconst.bmp" );
+    static std::pair<string, string> names("gui/commands/deconst.bmp", "gui/commands/deconst.bmp");
     return names;
 }
 
-//virtual
+// virtual
 void MachGuiDeconstructCommand::start()
-{}
+{
+}
 
-//virtual
+// virtual
 void MachGuiDeconstructCommand::finish()
-{}
+{
+}
 
-//virtual
+// virtual
 uint MachGuiDeconstructCommand::cursorPromptStringId() const
 {
     return IDS_DECONSTRUCT_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiDeconstructCommand::commandPromptStringid() const
 {
     return IDS_DECONSTRUCT_START;
 }
 
-//virtual
+// virtual
 bool MachGuiDeconstructCommand::canAdminApply() const
 {
     return true;
 }
 
-//virtual
-bool MachGuiDeconstructCommand::doAdminApply( MachLogAdministrator* pAdministrator, string* )
+// virtual
+bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
 {
-    PRE( canAdminApply() );;
+    PRE(canAdminApply());
+    ;
 
-    //Create an admin superconstruct operation for the administrator
-	MachLogAdminSuperConstructOperation* pOp =
-        _NEW( MachLogAdminSuperConstructOperation( pAdministrator, constructions_, MachLogOperation::DECONSTRUCT_OPERATION ) );
+    // Create an admin superconstruct operation for the administrator
+    MachLogAdminSuperConstructOperation* pOp = _NEW(
+        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::DECONSTRUCT_OPERATION));
 
-	pAdministrator->newOperation( pOp );
-	ASSERT( pAdministrator->squadron(), "Administrator didn't have a squadron!" );
-	pAdministrator->squadron()->manualCommandIssuedToSquadron();
+    pAdministrator->newOperation(pOp);
+    ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
+    pAdministrator->squadron()->manualCommandIssuedToSquadron();
 
-	MachActor* pFirstConstructor = NULL;
+    MachActor* pFirstConstructor = nullptr;
 
-	bool found = false;
-	for( MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin(); not found and i != inGameScreen().selectedActors().end(); ++i )
-		if( (*i)->objectType() == MachLog::CONSTRUCTOR )
-		{
-			found = true;
-			pFirstConstructor = (*i);
-		}
+    bool found = false;
+    for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
+         not found and i != inGameScreen().selectedActors().end();
+         ++i)
+        if ((*i)->objectType() == MachLog::CONSTRUCTOR)
+        {
+            found = true;
+            pFirstConstructor = (*i);
+        }
 
-	ASSERT( found, "No constructor found in corral!" );
+    ASSERT(found, "No constructor found in corral!");
 
-	// give out voicemail
-	MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE );
-
-
+    // give out voicemail
+    MachLogMachineVoiceMailManager::instance().postNewMail(*pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE);
 
     return true;
 }
 
-//virtual
-bool MachGuiDeconstructCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiDeconstructCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_D and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_D and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-//virtual
-bool MachGuiDeconstructCommand::beNotified( W4dSubject* pSubject, W4dSubject::NotificationEvent event, int /*clientData*/ )
+// virtual
+bool MachGuiDeconstructCommand::beNotified(
+    W4dSubject* pSubject,
+    W4dSubject::NotificationEvent event,
+    int /*clientData*/)
 {
-	bool stayAttached = true;
+    bool stayAttached = true;
 
-	switch( event )
-	{
-	case W4dSubject::DELETED:
-	{
-		ctl_pvector< MachLogConstruction >::iterator i = find( constructions_.begin(), constructions_.end(), pSubject );
-		if( i != constructions_.end() )
-		{
-			// one of our constructions has been destroyed
-			stayAttached = false;
-			constructions_.erase( i );
-		}
-	}
-	break;
+    switch (event)
+    {
+        case W4dSubject::DELETED:
+            {
+                ctl_pvector<MachLogConstruction>::iterator i
+                    = find(constructions_.begin(), constructions_.end(), pSubject);
+                if (i != constructions_.end())
+                {
+                    // one of our constructions has been destroyed
+                    stayAttached = false;
+                    constructions_.erase(i);
+                }
+            }
+            break;
 
-	default:
-		;
-	}
+        default:;
+    }
 
-	return stayAttached;
+    return stayAttached;
 }
 
-
-//virtual
-void MachGuiDeconstructCommand::domainDeleted( W4dDomain*  )
+// virtual
+void MachGuiDeconstructCommand::domainDeleted(W4dDomain*)
 {
-	//intentionally empty...override as necessary
+    // intentionally empty...override as necessary
 }
-
 
 /* End CMDDECON.CPP **************************************************/

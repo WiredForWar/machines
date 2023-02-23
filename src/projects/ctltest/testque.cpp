@@ -6,26 +6,26 @@
 #include "ctl/deque.hpp"
 #include "ctl/vector.hpp"
 
-void	testQueue();
-void	testPriorityQueue();
+void testQueue();
+void testPriorityQueue();
 
 int main()
 {
-	testQueue();
-	testPriorityQueue();
+    testQueue();
+    testPriorityQueue();
 
-	return 0;
+    return 0;
 }
 
-void	testQueue()
+void testQueue()
 {
-    //ctl_queue< ctl_deque< int > >  q;
-    ctl_queue< int >  q;
+    // ctl_queue< ctl_deque< int > >  q;
+    ctl_queue<int> q;
 
-    q.push( 2 );
-    q.push( 3 );
-    q.push( 1 );
-    q.push( -50 );
+    q.push(2);
+    q.push(3);
+    q.push(1);
+    q.push(-50);
 
     std::cout << q.front() << std::endl;
     q.pop();
@@ -35,26 +35,25 @@ void	testQueue()
     q.pop();
     std::cout << q.front() << std::endl;
     q.pop();
-
 }
 
-void	testPriorityQueue()
+void testPriorityQueue()
 {
-// //    ctl_priority_queue< ctl_vector< int >, less< int > >  q;
-//     priority_queue< vector< int >, less< int > >  q;
-// //    ctl_priority_queue< vector< int >, less< int > >  q;
-//
-//     q.push( 2 );
-//     q.push( 3 );
-//     q.push( 1 );
-//     q.push( -50 );
-//
-//     cout << q.top() << endl;
-//     q.pop();
-//     cout << q.top() << endl;
-//     q.pop();
-//     cout << q.top() << endl;
-//     q.pop();
-//     cout << q.top() << endl;
-//     q.pop();
+    // //    ctl_priority_queue< ctl_vector< int >, less< int > >  q;
+    //     priority_queue< vector< int >, less< int > >  q;
+    // //    ctl_priority_queue< vector< int >, less< int > >  q;
+    //
+    //     q.push( 2 );
+    //     q.push( 3 );
+    //     q.push( 1 );
+    //     q.push( -50 );
+    //
+    //     cout << q.top() << endl;
+    //     q.pop();
+    //     cout << q.top() << endl;
+    //     q.pop();
+    //     cout << q.top() << endl;
+    //     q.pop();
+    //     cout << q.top() << endl;
+    //     q.pop();
 }

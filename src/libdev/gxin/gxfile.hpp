@@ -36,44 +36,42 @@
 #include "gxin/gxvect4.hpp"
 #include "gxin/gxvect3.hpp"
 
-#define LINESIZE        1024
+#define LINESIZE 1024
 
 enum
 {
-  SECTION_START,
-  SECTION_END,
-  LABEL_TAG,
-  AGID_TAG
+    SECTION_START,
+    SECTION_END,
+    LABEL_TAG,
+    AGID_TAG
 };
 
-typedef enum
+enum GXNumTypes
 {
- CHAR_T,
- SHORT_T,
- USHORT_T,
- LONG_T,
- ULONG_T,
- FLOAT_T,
- DOUBLE_T,
-} GXNumTypes;
-
+    CHAR_T,
+    SHORT_T,
+    USHORT_T,
+    LONG_T,
+    ULONG_T,
+    FLOAT_T,
+    DOUBLE_T,
+};
 
 class GXFile
 // Canonical form revoked
 {
 public:
-
     GXFile();
     ~GXFile();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXFile& t );
+    friend ostream& operator<<(ostream& o, const GXFile& t);
 
     // Open a file for reading
-    GXError open(const std::string & );
-	// PRE(not isOpen())
-	// POST(iff(isOpen(),result!=NULL)
+    GXError open(const std::string&);
+    // PRE(not isOpen())
+    // POST(iff(isOpen(),result!=NULL)
 
     // Test whether file is opened or not
     bool isOpen();
@@ -84,99 +82,95 @@ public:
 
     // Skip header section
     GXError skipHeader();
-	// PRE(isOpen());
+    // PRE(isOpen());
 
-	// Find AGT section tag '{' '}' '&' '@'
-	GXError findTag(short, bool);
-	// PRE(isOpen());
+    // Find AGT section tag '{' '}' '&' '@'
+    GXError findTag(short, bool);
+    // PRE(isOpen());
 
-	// Skip section that we don't want to read
-	GXError skipSection(void);
-	// PRE(isOpen());
+    // Skip section that we don't want to read
+    GXError skipSection();
+    // PRE(isOpen());
 
-	// Read Gamut-X mesh @TriMesh or @QuadMesh
-	GXError readMesh(GXMesh& , const GXLabel& );
-	// PRE(isOpen());
+    // Read Gamut-X mesh @TriMesh or @QuadMesh
+    GXError readMesh(GXMesh&, const GXLabel&);
+    // PRE(isOpen());
 
     // Read Gamut-X section &identifier
-	GXError readGXIdPos(GXIdPos& , bool , bool , void* );
-	// PRE(isOpen());
+    GXError readGXIdPos(GXIdPos&, bool, bool, void*);
+    // PRE(isOpen());
 
-	// Read a Gamut-X label @label
-	GXError readLabel(GXLabel& , bool );
-	// PRE(isOpen());
+    // Read a Gamut-X label @label
+    GXError readLabel(GXLabel&, bool);
+    // PRE(isOpen());
 
-	// Read the Gamut-X textures @Textures
-	GXError readTextures(GXTextures& );
+    // Read the Gamut-X textures @Textures
+    GXError readTextures(GXTextures&);
 
-	GXError readHierarchy(GXHier& );
+    GXError readHierarchy(GXHier&);
 
-    GXError reportAGTError(GXError , void *);
+    GXError reportAGTError(GXError, void*);
 
 private:
-	// deliberately revoked: do not want two instances to access the same file
-    GXFile( const GXFile& );
-    GXFile& operator =( const GXFile& );
-    bool operator ==( const GXFile& );
+    // deliberately revoked: do not want two instances to access the same file
+    GXFile(const GXFile&);
+    GXFile& operator=(const GXFile&);
+    bool operator==(const GXFile&);
 
-	// For all the following methods :
-	// PRE(isOpen());
+    // For all the following methods :
+    // PRE(isOpen());
 
-// @Hierarchy field
+    // @Hierarchy field
 
-	GXError readChild( GXHier& );
-	GXError readChildInfo( GXHier& , GXIdPos );
-	GXError readTransform(GXHier& );
-	GXError readTransformFromMatrix3X3(GXHier& );
-	GXError readTransformFromMatrix4X4( GXHier& );
-	GXError readComponentTransform( GXHier& );
+    GXError readChild(GXHier&);
+    GXError readChildInfo(GXHier&, GXIdPos);
+    GXError readTransform(GXHier&);
+    GXError readTransformFromMatrix3X3(GXHier&);
+    GXError readTransformFromMatrix4X4(GXHier&);
+    GXError readComponentTransform(GXHier&);
 
+    // @Textures field
 
-// @Textures field
+    GXError readBitmapTexture(GXTexture&);
+    // Read a mesh made-up of triangles, method called by
+    // readMesh which is the regular interface for
+    // building meshes
 
-	GXError readBitmapTexture(GXTexture& );
-	// Read a mesh made-up of triangles, method called by
-	// readMesh which is the regular interface for
-	// building meshes
+    // @Objects field
 
-
-// @Objects field
-
-	GXError readTriMesh(GXMesh& );
+    GXError readTriMesh(GXMesh&);
 
     // Read a mesh made-up of triangles and quadrangles
-	GXError readQuadMesh(GXMesh& );
+    GXError readQuadMesh(GXMesh&);
 
     // Read the mesh's set of points
-	GXError read3DPointArray(GXMesh& );
+    GXError read3DPointArray(GXMesh&);
 
-	// Read a point of the mesh
-	GXError read3DPoint(GXPoint3& );
+    // Read a point of the mesh
+    GXError read3DPoint(GXPoint3&);
 
     // Read the mesh's set of normals
-	GXError readNormalArray(GXMesh& );
+    GXError readNormalArray(GXMesh&);
 
-	// Read an array of polygons
-	GXError	readPolygonArray(GXMesh& , UCHAR );
-    GXError readPolygon(GXPolygon3& , UCHAR );
-    GXError readPolygonVertex(GXPolyVert3& );
+    // Read an array of polygons
+    GXError readPolygonArray(GXMesh&, UCHAR);
+    GXError readPolygon(GXPolygon3&, UCHAR);
+    GXError readPolygonVertex(GXPolyVert3&);
 
     // Read a RGB color
-	GXError readColor(GXColor& );
+    GXError readColor(GXColor&);
 
     // Read uv coords of texture
-	GXError readUVCoords(GXUVCoords &uv);
+    GXError readUVCoords(GXUVCoords& uv);
 
-
-// Common to multiple @ fields
+    // Common to multiple @ fields
 
     // Read a vector (normal), so far same function as
-	// read3DPoint() but could be subject to changes if
-	// Gamut-X file format evolves
-	GXError readVector3(GXVect3& );
+    // read3DPoint() but could be subject to changes if
+    // Gamut-X file format evolves
+    GXError readVector3(GXVect3&);
 
-	GXError readVector4(GXVect4& );
-
+    GXError readVector4(GXVect4&);
 
     // Skip spaces and comments until first valid character is found
     GXError skipSpaces();
@@ -185,52 +179,51 @@ private:
     char getCharMoveToNext();
 
     // Get current char
-    char getChar(void);
+    char getChar();
 
     // Increment cursor then read current character
-    char moveToNextGetChar(void);
+    char moveToNextGetChar();
 
-	// Increment column cursor (+1)
+    // Increment column cursor (+1)
     void moveToNext();
 
- 	// Increment column cursor (amount)
-    void moveCursor(short );
+    // Increment column cursor (amount)
+    void moveCursor(short);
 
-	GXError getNextValidChar(char, bool);
+    GXError getNextValidChar(char, bool);
 
     // Read a line from file in buffer
     GXError readLine();
-	// POST(lineCount_==old(lineCount_+1));
+    // POST(lineCount_==old(lineCount_+1));
 
-    GXError readChar(char *);
-    GXError readUChar(UCHAR *);
-	GXError readShort(short *);
-	GXError readUShort(USHORT *);
-	GXError readLong(long *);
-	// PRE(number);
-
-    GXError readNumber(ULONG *, const GXNumTypes& );
+    GXError readChar(char*);
+    GXError readUChar(UCHAR*);
+    GXError readShort(short*);
+    GXError readUShort(USHORT*);
+    GXError readLong(long*);
     // PRE(number);
 
-    GXError readFloat(float* );
-	// PRE(number);
+    GXError readNumber(ULONG*, const GXNumTypes&);
+    // PRE(number);
 
-    GXError readFloatNum(double* , const GXNumTypes& );
-	// PRE(number);
+    GXError readFloat(float*);
+    // PRE(number);
 
-    GXError readName(GXName&, bool );
+    GXError readFloatNum(double*, const GXNumTypes&);
+    // PRE(number);
+
+    GXError readName(GXName&, bool);
 
     // Could be out of this class
     bool validNumberDigit(char, char, short, GXNumTypes);
     // could be out of this class
-    bool charIsWhiteSpace( char );
-	// could be out of this class
-	bool validHexDigit(char );
+    bool charIsWhiteSpace(char);
+    // could be out of this class
+    bool validHexDigit(char);
 
     static char numTypeChar_[8];
 
-
-    FILE *inFile_;
+    FILE* inFile_;
     char currentLine_[LINESIZE]; // line buffer
     ULONG sectionCount_;
     short linePos_; // Current position in line buffer

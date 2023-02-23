@@ -1,5 +1,5 @@
 /*
- * P R E L O A D . H P P 
+ * P R E L O A D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,55 +18,57 @@
 
 class PerIstreamReporter;
 
-//static methods only - cannot be instantiated
+// static methods only - cannot be instantiated
 class MachPhysPreload
 {
 public:
-	enum DoLoadingProgressUpdate { ECHO_PROGRESS, QUIET_PROGRESS };
+    enum DoLoadingProgressUpdate
+    {
+        ECHO_PROGRESS,
+        QUIET_PROGRESS
+    };
 
-    //Force load all the models from the .x files
-    static void swPreload( DoLoadingProgressUpdate );
+    // Force load all the models from the .x files
+    static void swPreload(DoLoadingProgressUpdate);
 
-	//preload only the machines from .x files
-	static void preloadMachines( DoLoadingProgressUpdate );
-	    
-	//preload only the constructions from .x files
-	static void preloadConstructions( DoLoadingProgressUpdate );
+    // preload only the machines from .x files
+    static void preloadMachines(DoLoadingProgressUpdate);
 
-	//preload only the weapons and special effects from .x files
-	static void preloadWeaponsAndEffects( DoLoadingProgressUpdate );
+    // preload only the constructions from .x files
+    static void preloadConstructions(DoLoadingProgressUpdate);
 
-    //Preload the models not currently covered by persistence
-    static void extrasPreload( DoLoadingProgressUpdate );
+    // preload only the weapons and special effects from .x files
+    static void preloadWeaponsAndEffects(DoLoadingProgressUpdate);
 
-    //Save all the preloaded models to the persistent file
-    static void persistentSave( DoLoadingProgressUpdate );
+    // Preload the models not currently covered by persistence
+    static void extrasPreload(DoLoadingProgressUpdate);
 
-    //Load all the preloaded models from the persistent file
-    static void persistentPreload( DoLoadingProgressUpdate, PerIstreamReporter* );
+    // Save all the preloaded models to the persistent file
+    static void persistentSave(DoLoadingProgressUpdate);
+
+    // Load all the preloaded models from the persistent file
+    static void persistentPreload(DoLoadingProgressUpdate, PerIstreamReporter*);
     //  PRE( persistentFileName().existsAsFile() );
-    
-    //Register soundIds
+
+    // Register soundIds
     static void registerSounds();
 
-    static  SysPathName persistentFileName();
-    
-    //Indicate loading progress
-    static void doLoadingProgressUpdate( DoLoadingProgressUpdate );
+    static SysPathName persistentFileName();
 
-	static void persistentFileName( const SysPathName& name );
+    // Indicate loading progress
+    static void doLoadingProgressUpdate(DoLoadingProgressUpdate);
+
+    static void persistentFileName(const SysPathName& name);
 
 private:
-    //Revoked
+    // Revoked
     MachPhysPreload();
     ~MachPhysPreload();
-    MachPhysPreload( const MachPhysPreload& );
-    MachPhysPreload& operator =( const MachPhysPreload& );
-    bool operator ==( const MachPhysPreload& );
-	static SysPathName& storedPersistentFileName();
-
+    MachPhysPreload(const MachPhysPreload&);
+    MachPhysPreload& operator=(const MachPhysPreload&);
+    bool operator==(const MachPhysPreload&);
+    static SysPathName& storedPersistentFileName();
 };
-
 
 #endif
 

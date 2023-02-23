@@ -1,5 +1,5 @@
 /*
- * O P A U T S C I . H P P 
+ * O P A U T S C I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -28,34 +28,32 @@ class MachLogAutoScavengeOperation;
 class MachLogAutoScavengeOperationImpl
 {
 public:
-	MachLogAutoScavengeOperationImpl( MachLogResourceCarrier* pScavenger, MachLogDebris* pDebris );
-	// 	PRE( pScavenger->isScavenger() );
-	
-	~MachLogAutoScavengeOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogAutoScavengeOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogAutoScavengeOperationImpl );
-	
-	void CLASS_INVARIANT;
+    MachLogAutoScavengeOperationImpl(MachLogResourceCarrier* pScavenger, MachLogDebris* pDebris);
+    //  PRE( pScavenger->isScavenger() );
 
-	friend class MachLogAutoScavengeOperation;
-    friend void perRead( PerIstream& istr, MachLogAutoScavengeOperation& op );
-	
+    ~MachLogAutoScavengeOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogAutoScavengeOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogAutoScavengeOperationImpl);
+
+    void CLASS_INVARIANT;
+
+    friend class MachLogAutoScavengeOperation;
+    friend void perRead(PerIstream& istr, MachLogAutoScavengeOperation& op);
+
 private:
+    MachLogResourceCarrier* pScavenger_;
 
-	MachLogResourceCarrier*							pScavenger_;
-	
-	MachLogDebris*									pDebris_;
-	
-	bool											finished_;
-	bool											initiatedScavengeOp_;	
-													
-													// stores the topmost op the machine was doing before
-													// all this AutoScavenge nonsense was started
-	MachLogOperation*								pCachedOperation_;
-													
+    MachLogDebris* pDebris_;
+
+    bool finished_;
+    bool initiatedScavengeOp_;
+
+    // stores the topmost op the machine was doing before
+    // all this AutoScavenge nonsense was started
+    MachLogOperation* pCachedOperation_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAutoScavengeOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogAutoScavengeOperationImpl);
 
 #endif
 

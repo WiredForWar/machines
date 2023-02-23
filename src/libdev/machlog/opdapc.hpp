@@ -1,5 +1,5 @@
 /*
- * O P E A P C . H P P 
+ * O P E A P C . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachLogDeployAPCOperation
 
     This operation will be applied to a machine wishing to enter
-	an APC.
+    an APC.
 */
 
 #ifndef _MACHLOG_OPDAPC_HPP
@@ -26,57 +26,57 @@ class MachLogDeployAPCOperationImpl;
 class MachLogDeployAPCOperation : public MachLogOperation
 {
 public:
+    MachLogDeployAPCOperation(MachLogAPC*, const MexPoint3d&);
 
-    MachLogDeployAPCOperation( MachLogAPC* , const MexPoint3d& );
+    ~MachLogDeployAPCOperation() override;
 
-    ~MachLogDeployAPCOperation();
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogDeployAPCOperation);
+    PER_FRIEND_READ_WRITE(MachLogDeployAPCOperation);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogDeployAPCOperation );
-	PER_FRIEND_READ_WRITE( MachLogDeployAPCOperation );
-	
-	friend class MachLogDeployAPCOperationImpl;
+    friend class MachLogDeployAPCOperationImpl;
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-		
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
 
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
 
-	virtual bool doBeInterrupted();
-	
-	virtual void pushFurtherOut( MachLogMachine* pMachine, MATHEX_SCALAR additionalDistance );
-	// PRE (pMachine != NULL );
-	
-	///////////////////////////////
-	
+    PhysRelativeTime doUpdate() override;
+
+    bool doBeInterrupted() override;
+
+    virtual void pushFurtherOut(MachLogMachine* pMachine, MATHEX_SCALAR additionalDistance);
+    // PRE (pMachine != NULL );
+
+    ///////////////////////////////
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogDeployAPCOperation& t );
+    friend ostream& operator<<(ostream& o, const MachLogDeployAPCOperation& t);
 
 private:
-
-	enum Status { GOTO_DESTINATION, DEPLOY_MACHINES };
-	PER_FRIEND_ENUM_PERSISTENT( Status );
+    enum Status
+    {
+        GOTO_DESTINATION,
+        DEPLOY_MACHINES
+    };
+    PER_FRIEND_ENUM_PERSISTENT(Status);
 
     // Operations deliberately revoked
-    MachLogDeployAPCOperation( const MachLogDeployAPCOperation& );
-    MachLogDeployAPCOperation& operator =( const MachLogDeployAPCOperation& );
-    bool operator ==( const MachLogDeployAPCOperation& );
+    MachLogDeployAPCOperation(const MachLogDeployAPCOperation&);
+    MachLogDeployAPCOperation& operator=(const MachLogDeployAPCOperation&);
+    bool operator==(const MachLogDeployAPCOperation&);
 
-	MachLogDeployAPCOperationImpl* pImpl_;	   
+    MachLogDeployAPCOperationImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogDeployAPCOperation );
+PER_DECLARE_PERSISTENT(MachLogDeployAPCOperation);
 
 #endif
 

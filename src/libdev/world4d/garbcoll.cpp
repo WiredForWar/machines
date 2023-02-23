@@ -19,11 +19,11 @@ W4dGarbageCollector& W4dGarbageCollector::instance()
 }
 
 W4dGarbageCollector::W4dGarbageCollector()
-:   nextDeleteTime_( 0.0 )
+    : nextDeleteTime_(0.0)
 {
-    //Set reasonable vector sizes
-    times_.reserve( 256 );
-    entities_.reserve( 256 );
+    // Set reasonable vector sizes
+    times_.reserve(256);
+    entities_.reserve(256);
 
     TEST_INVARIANT;
 }
@@ -32,61 +32,61 @@ W4dGarbageCollector::~W4dGarbageCollector()
 {
     TEST_INVARIANT;
 
-    //Reset the flags for all the entities, so they will get destructed in the normal way
+    // Reset the flags for all the entities, so they will get destructed in the normal way
     uint n = entities_.size();
-    while( n-- )
+    while (n--)
     {
         W4dEntity* pEntity = entities_[n];
-        if( pEntity != NULL )
-            pEntity->isGarbage( false );
+        if (pEntity != nullptr)
+            pEntity->isGarbage(false);
     }
 }
 
-void W4dGarbageCollector::add( W4dEntity* pEntity, const PhysAbsoluteTime& time )
+void W4dGarbageCollector::add(W4dEntity* pEntity, const PhysAbsoluteTime& time)
 {
     TEST_INVARIANT;
 
-    //Store the time and entity
-    times_.push_back( time );
-    entities_.push_back( pEntity );
+    // Store the time and entity
+    times_.push_back(time);
+    entities_.push_back(pEntity);
 
-    //Update earliest time if applicable
-    if( time < nextDeleteTime_ )
+    // Update earliest time if applicable
+    if (time < nextDeleteTime_)
         nextDeleteTime_ = time;
 
-    //Mark the entity as garbage
-    pEntity->isGarbage( true );
+    // Mark the entity as garbage
+    pEntity->isGarbage(true);
 }
 
 void W4dGarbageCollector::collect()
 {
     TEST_INVARIANT;
 
-    //Check it's time
+    // Check it's time
     PhysAbsoluteTime now = W4dManager::instance().time();
-    if( now > nextDeleteTime_ )
+    if (now > nextDeleteTime_)
     {
-        //We'll update the delete time as we go
+        // We'll update the delete time as we go
         nextDeleteTime_ = now + 10000.0;
-        for( size_t i = times_.size(); i-- != 0; )
+        for (size_t i = times_.size(); i-- != 0;)
         {
             W4dEntity* pEntity = entities_[i];
             PhysAbsoluteTime iTime = times_[i];
-            if( pEntity == NULL or iTime <= now )
+            if (pEntity == nullptr or iTime <= now)
             {
-                //Delete the entity
-                if( pEntity != NULL )
+                // Delete the entity
+                if (pEntity != nullptr)
                 {
-                    ASSERT( pEntity->isGarbage(), "" );
-                    pEntity->isGarbage( false );
-                    _DELETE( pEntity );
+                    ASSERT(pEntity->isGarbage(), "");
+                    pEntity->isGarbage(false);
+                    _DELETE(pEntity);
                 }
 
-                //Remove these 2 entries
-                times_.erase( times_.begin() + i );
-                entities_.erase( entities_.begin() + i );
+                // Remove these 2 entries
+                times_.erase(times_.begin() + i);
+                entities_.erase(entities_.begin() + i);
             }
-            else if( iTime < nextDeleteTime_ )
+            else if (iTime < nextDeleteTime_)
             {
                 nextDeleteTime_ = iTime;
             }
@@ -98,11 +98,11 @@ void W4dGarbageCollector::collect()
 
 void W4dGarbageCollector::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
-    INVARIANT( times_.size() == entities_.size() );
+    INVARIANT(this != nullptr);
+    INVARIANT(times_.size() == entities_.size());
 }
 
-ostream& operator <<( ostream& o, const W4dGarbageCollector& t )
+ostream& operator<<(ostream& o, const W4dGarbageCollector& t)
 {
 
     o << "W4dGarbageCollector " << (void*)&t << " start" << std::endl;
@@ -111,15 +111,15 @@ ostream& operator <<( ostream& o, const W4dGarbageCollector& t )
     return o;
 }
 
-void W4dGarbageCollector::remove( W4dEntity* pEntity)
+void W4dGarbageCollector::remove(W4dEntity* pEntity)
 {
     TEST_INVARIANT;
 
-    //Find the entry, and set it to null rather than removing it. Otherwise we might be editing
-    //the vector while iterating through it in collect().
-    ctl_pvector< W4dEntity >::iterator itEnd = entities_.end();
-    ctl_pvector< W4dEntity >::iterator it = find( entities_.begin(), itEnd, pEntity );
-    if( it != itEnd )
+    // Find the entry, and set it to null rather than removing it. Otherwise we might be editing
+    // the vector while iterating through it in collect().
+    ctl_pvector<W4dEntity>::iterator itEnd = entities_.end();
+    ctl_pvector<W4dEntity>::iterator it = find(entities_.begin(), itEnd, pEntity);
+    if (it != itEnd)
         (*it) = NULL;
 }
 /* End GARBCOLL.CPP *************************************************/

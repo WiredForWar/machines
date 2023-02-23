@@ -2,112 +2,111 @@
 
 #include "base/base.hpp"
 
-
-//static
+// static
 NetMappings::GUIDVector& NetMappings::currentGUIDS()
 {
-	static GUIDVector currentGUIDS;
-	return currentGUIDS;
+    static GUIDVector currentGUIDS;
+    return currentGUIDS;
 }
 
-//static
+// static
 NetMappings::DPIDVector& NetMappings::currentDPIDS()
 {
-	static DPIDVector currentDPIDS;
-	return currentDPIDS;
+    static DPIDVector currentDPIDS;
+    return currentDPIDS;
 }
 
-//static
-unsigned NetMappings::mapDPIDtoUnsigned( DPID_t mapDPID )
+// static
+unsigned NetMappings::mapDPIDtoUnsigned(DPID_t mapDPID)
 {
-	DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
+    DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
 
-	DPIDVector::iterator i = currentDPIDS.begin();
-	DPIDVector::iterator j = currentDPIDS.end();
+    DPIDVector::iterator i = currentDPIDS.begin();
+    DPIDVector::iterator j = currentDPIDS.end();
 
-	unsigned index = 0;
-	bool found = false;
+    unsigned index = 0;
+    bool found = false;
 
-	while(i!=j && !found)
-	{
-		if(*i == mapDPID)
-			found = true;
-		else
-		{
-			++i;
-			++index;
-		}
-	}
+    while (i != j && !found)
+    {
+        if (*i == mapDPID)
+            found = true;
+        else
+        {
+            ++i;
+            ++index;
+        }
+    }
 
-	if(!found)
-	{
-		currentDPIDS.push_back(mapDPID);
-		index = currentDPIDS.size() - 1;
-	}
+    if (!found)
+    {
+        currentDPIDS.push_back(mapDPID);
+        index = currentDPIDS.size() - 1;
+    }
 
-	return index;
+    return index;
 }
 
-//static
-DPID_t NetMappings::mapUnsignedtoDPID( unsigned mapUnsigned )
+// static
+DPID_t NetMappings::mapUnsignedtoDPID(unsigned mapUnsigned)
 {
-	PRE(mapUnsigned < currentDPIDS().size());
+    PRE(mapUnsigned < currentDPIDS().size());
 
-	DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
+    DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
 
-	if( mapUnsigned >= currentDPIDS.size() )
-		return 0;
+    if (mapUnsigned >= currentDPIDS.size())
+        return 0;
 
-	return currentDPIDS[mapUnsigned];
+    return currentDPIDS[mapUnsigned];
 }
 
-//static
-void NetMappings::updateDPID( unsigned mapUnsigned, DPID_t newMapID )
+// static
+void NetMappings::updateDPID(unsigned mapUnsigned, DPID_t newMapID)
 {
-	PRE(mapUnsigned < currentDPIDS().size());
+    PRE(mapUnsigned < currentDPIDS().size());
 
-	DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
+    DPIDVector& currentDPIDS = NetMappings::currentDPIDS();
 
-	currentDPIDS[mapUnsigned] = newMapID;
+    currentDPIDS[mapUnsigned] = newMapID;
 }
 
-//static
-unsigned NetMappings::mapGUIDtoUnsigned( GUID_t mapGUID )
+// static
+unsigned NetMappings::mapGUIDtoUnsigned(GUID_t mapGUID)
 {
-	GUIDVector& currentGUIDS = NetMappings::currentGUIDS();
+    GUIDVector& currentGUIDS = NetMappings::currentGUIDS();
 
-	GUIDVector::iterator i = currentGUIDS.begin();
-	GUIDVector::iterator j = currentGUIDS.end();
+    GUIDVector::iterator i = currentGUIDS.begin();
+    GUIDVector::iterator j = currentGUIDS.end();
 
-	unsigned index = 0;
-	bool found = false;
+    unsigned index = 0;
+    bool found = false;
 
-	while(i!=j && !found)
-	{
-		if(*i == mapGUID)
-			found = true;
-		else
-		{
-			++i;
-			++index;
-		}
-	}
+    while (i != j && !found)
+    {
+        if (*i == mapGUID)
+            found = true;
+        else
+        {
+            ++i;
+            ++index;
+        }
+    }
 
-	if(!found)
-	{
-		currentGUIDS.push_back(mapGUID);
-		index = currentGUIDS.size() - 1;
-	}
+    if (!found)
+    {
+        currentGUIDS.push_back(mapGUID);
+        index = currentGUIDS.size() - 1;
+    }
 
-	return index;
+    return index;
 }
 
-//static
-GUID_t NetMappings::mapUnsignedtoGUID( unsigned mapUnsigned )
+// static
+GUID_t NetMappings::mapUnsignedtoGUID(unsigned mapUnsigned)
 {
-	PRE(mapUnsigned < currentGUIDS().size());
+    PRE(mapUnsigned < currentGUIDS().size());
 
-	GUIDVector& currentGUIDS = NetMappings::currentGUIDS();
+    GUIDVector& currentGUIDS = NetMappings::currentGUIDS();
 
-	return currentGUIDS[mapUnsigned];
+    return currentGUIDS[mapUnsigned];
 }

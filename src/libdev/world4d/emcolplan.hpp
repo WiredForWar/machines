@@ -1,5 +1,5 @@
 /*
- * S I M P L E E M C O L P L A N . H P P 
+ * S I M P L E E M C O L P L A N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -34,32 +34,34 @@ class W4dSimpleEmColPlan : public W4dMaterialPlan
 {
 public:
     //  Specify the visibility at time zero
-    W4dSimpleEmColPlan( const RenMaterial& mat, uint nMaterialsInVector,
-    const W4dColourPlanDataPtr& colourDataPtr, W4dLOD maxLOD );
+    W4dSimpleEmColPlan(
+        const RenMaterial& mat,
+        uint nMaterialsInVector,
+        const W4dColourPlanDataPtr& colourDataPtr,
+        W4dLOD maxLOD);
 
-    virtual ~W4dSimpleEmColPlan();
+    ~W4dSimpleEmColPlan() override;
 
-    virtual bool isLODDefined( W4dLOD lodId ) const;
-    
-    //Override to define result as a function of timeOffset.
-    //If timeOffset is greater than duration, the mapping at time duration is to be returned.
-    //The mapping for level of detail defined by lodId is to be returned.
-    virtual const Ren::MaterialVecPtr& materialVec( const PhysRelativeTime& timeOffset,
-                                                    W4dLOD lodId ) const;
+    bool isLODDefined(W4dLOD lodId) const override;
+
+    // Override to define result as a function of timeOffset.
+    // If timeOffset is greater than duration, the mapping at time duration is to be returned.
+    // The mapping for level of detail defined by lodId is to be returned.
+    const Ren::MaterialVecPtr& materialVec(const PhysRelativeTime& timeOffset, W4dLOD lodId) const override;
 
     void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    W4dSimpleEmColPlan( const W4dSimpleEmColPlan& );
+    W4dSimpleEmColPlan(const W4dSimpleEmColPlan&);
 
     // Operation deliberately revoked
-    W4dSimpleEmColPlan& operator =( const W4dSimpleEmColPlan& );
+    W4dSimpleEmColPlan& operator=(const W4dSimpleEmColPlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dSimpleEmColPlan& );
+    bool operator==(const W4dSimpleEmColPlan&);
 
-    RenMaterial material_; //Non-shareable material to be adjusted
+    RenMaterial material_; // Non-shareable material to be adjusted
     W4dColourPlanDataPtr colourPlanPtr_; // Collection defining color value value
     Ren::MaterialVecPtr materialVecPtr_; // The vector of RenMaterials to use
 };

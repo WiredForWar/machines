@@ -22,24 +22,22 @@ public:
 
     void CLASS_INVARIANT;
 
-	//calls into Sleep
-	static void sleep( double milliseconds );
-	//calls MessageBox with NULL parent and MB_OK as the two other parameters.
-	static void messageBox( const char* pMessage, const char* pTitle );
-	static void messageBoxError( const char* pMessage, const char* pTitle );
+    // calls into Sleep
+    static void sleep(double milliseconds);
+    // calls MessageBox with NULL parent and MB_OK as the two other parameters.
+    static void messageBox(const char* pMessage, const char* pTitle);
+    static void messageBoxError(const char* pMessage, const char* pTitle);
 
-	//calls peekMessage, translatemessage and dispatchmessage
-	static void peekMessage();
+    // calls peekMessage, translatemessage and dispatchmessage
+    static void peekMessage();
 
 private:
-    friend ostream& operator <<( ostream& o, const SysWindowsAPI& t );
+    friend ostream& operator<<(ostream& o, const SysWindowsAPI& t);
 
     SysWindowsAPI();
-    SysWindowsAPI( const SysWindowsAPI& );
-    SysWindowsAPI& operator =( const SysWindowsAPI& );
-
+    SysWindowsAPI(const SysWindowsAPI&);
+    SysWindowsAPI& operator=(const SysWindowsAPI&);
 };
-
 
 #endif
 

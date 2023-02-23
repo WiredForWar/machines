@@ -15,12 +15,20 @@ template <class T> class unique_ptr_array;
 // scopes, e.g. RenTexManager::TexId.  However, putting them here helps
 // reduce dependencies.
 // Hence, this file is supposed to be **small & simple**.
-namespace RenI
+namespace RenI {
+using LitVtxAPtr = unique_ptr_array<RenIVertex>;
+enum DisplayType
 {
-	typedef unique_ptr_array<RenIVertex> LitVtxAPtr;
-	enum DisplayType { FRONT, BACK, NOT_DISPLAY };
-	enum UpdateType { FORCE_UPDATE, LAZY_UPDATE };
+    FRONT,
+    BACK,
+    NOT_DISPLAY
 };
+enum UpdateType
+{
+    FORCE_UPDATE,
+    LAZY_UPDATE
+};
+}; // namespace RenI
 
 #endif
 

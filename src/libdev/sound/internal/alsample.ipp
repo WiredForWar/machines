@@ -5,52 +5,52 @@
 ***********************************************************/
 
 /*
-*/
+ */
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 ////////////////////////////////////////////////////////////
-//VIRTUAL
+// VIRTUAL
 _CODE_INLINE
-bool ALSample::isPlaying( void )
+bool ALSample::isPlaying()
 {
-	bool rval = true;
-	if(state_ == STOPPED)
-		rval = false;
+    bool rval = true;
+    if (state_ == STOPPED)
+        rval = false;
 
-	return rval;
+    return rval;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
 bool ALSample::isValid() const
 {
-	//Check that our Buffer pointer is meaningful
-	return alBuffer_ != 0 && alSource_ != 0;
+    // Check that our Buffer pointer is meaningful
+    return alBuffer_ != 0 && alSource_ != 0;
 }
 
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-Snd::RelativeTime ALSample::length( void ) const
+Snd::RelativeTime ALSample::length() const
 {
-	ASSERT(false, "Not implemented yet");
-	return 0;
+    ASSERT(false, "Not implemented yet");
+    return 0;
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-void ALSample::pause(void)
+void ALSample::pause()
 {
-	state_ = _STATIC_CAST(ALSample::SampleState , Sample::PAUSED );
+    state_ = _STATIC_CAST(ALSample::SampleState, Sample::PAUSED);
     alSourcePause(alSource_);
 }
 ////////////////////////////////////////////////////////////
 _CODE_INLINE
-void ALSample::restart(void)
+void ALSample::restart()
 {
-	state_ = PLAYING;
+    state_ = PLAYING;
     alSourcei(alSource_, AL_LOOPING, AL_TRUE);
     alSourceRewind(alSource_);
     alSourcePlay(alSource_);

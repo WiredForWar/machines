@@ -31,17 +31,23 @@
 // ti avoid instantiation errors
 #include "ctl/list.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysResourceCarrier );
+PER_DEFINE_PERSISTENT(MachPhysResourceCarrier);
 
 MachPhysResourceCarrier::MachPhysResourceCarrier(
     W4dEntity* pParent,
     const W4dTransform3d& localTransform,
     size_t bodyLevel,
     size_t brainLevel,
-    MachPhys::Race race )
-: MachPhysMachine( part( bodyLevel ), pParent, localTransform, bodyLevel, brainLevel, race,
-   MachPhysData::instance().resourceCarrierData( bodyLevel, brainLevel ) ),
-   bodyLevel_( bodyLevel )
+    MachPhys::Race race)
+    : MachPhysMachine(
+        part(bodyLevel),
+        pParent,
+        localTransform,
+        bodyLevel,
+        brainLevel,
+        race,
+        MachPhysData::instance().resourceCarrierData(bodyLevel, brainLevel))
+    , bodyLevel_(bodyLevel)
 {
     TEST_INVARIANT;
 }
@@ -49,25 +55,28 @@ MachPhysResourceCarrier::MachPhysResourceCarrier(
 //  This is the constructor that is used by the factory. It is the
 //  only constructor that actually builds a transporter from scratch
 
-MachPhysResourceCarrier::MachPhysResourceCarrier( W4dEntity* pParent, size_t bodyLevel )
-: MachPhysMachine( pParent, W4dTransform3d(), compositeFileName( bodyLevel ),
-                   MachPhysData::instance().resourceCarrierData( bodyLevel, 1 ) )
+MachPhysResourceCarrier::MachPhysResourceCarrier(W4dEntity* pParent, size_t bodyLevel)
+    : MachPhysMachine(
+        pParent,
+        W4dTransform3d(),
+        compositeFileName(bodyLevel),
+        MachPhysData::instance().resourceCarrierData(bodyLevel, 1))
 {
     createExplosionData();
 
     TEST_INVARIANT;
 }
 
-MachPhysResourceCarrier::MachPhysResourceCarrier( PerConstructor con )
-: MachPhysMachine( con )
+MachPhysResourceCarrier::MachPhysResourceCarrier(PerConstructor con)
+    : MachPhysMachine(con)
 {
 }
 
-SysPathName MachPhysResourceCarrier::compositeFileName( size_t bodyLevel ) const
+SysPathName MachPhysResourceCarrier::compositeFileName(size_t bodyLevel) const
 {
     SysPathName result;
 
-    switch( bodyLevel )
+    switch (bodyLevel)
     {
         case 1:
             result = "models/transpor/resource/level1/trr1.cdf";
@@ -90,7 +99,7 @@ SysPathName MachPhysResourceCarrier::compositeFileName( size_t bodyLevel ) const
             break;
 
         default:
-            ASSERT_BAD_CASE_INFO( bodyLevel );
+            ASSERT_BAD_CASE_INFO(bodyLevel);
             break;
     }
 
@@ -98,44 +107,43 @@ SysPathName MachPhysResourceCarrier::compositeFileName( size_t bodyLevel ) const
 }
 
 // static
-MachPhysResourceCarrier& MachPhysResourceCarrier::part( size_t bodyLevel )
+MachPhysResourceCarrier& MachPhysResourceCarrier::part(size_t bodyLevel)
 {
     return factory().part(
         bodyLevel,
-        MachPhysLevels::instance().uniqueHardwareIndex( MachPhys::RESOURCE_CARRIER, bodyLevel ) );
+        MachPhysLevels::instance().uniqueHardwareIndex(MachPhys::RESOURCE_CARRIER, bodyLevel));
 }
 
 // static
 MachPhysResourceCarrier::Factory& MachPhysResourceCarrier::factory()
 {
-    static  Factory   factory_( MachPhysLevels::instance().nHardwareIndices( MachPhys::RESOURCE_CARRIER ) );
+    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::RESOURCE_CARRIER));
 
     return factory_;
 }
 
-//virtual
+// virtual
 const MachPhysMachineData& MachPhysResourceCarrier::machineData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysResourceCarrierData& MachPhysResourceCarrier::data() const
 {
-	return MachPhysData::instance().resourceCarrierData( bodyLevel(), brainLevel() );
+    return MachPhysData::instance().resourceCarrierData(bodyLevel(), brainLevel());
 }
 
 MachPhysResourceCarrier::~MachPhysResourceCarrier()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysResourceCarrier::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysResourceCarrier& t )
+ostream& operator<<(ostream& o, const MachPhysResourceCarrier& t)
 {
 
     o << "MachPhysResourceCarrier " << (void*)&t << " start" << std::endl;
@@ -148,77 +156,79 @@ void MachPhysResourceCarrier::createExplosionData()
 {
     MachPhysMachineExplosionData& dataForEdit = explosionDataForEdit();
 
-//      for( MachPhysMachineExplosionData::LinkDatas::const_iterator i = dataForEdit.links().begin(); i != dataForEdit.links().end(); ++i )
-//      {
-//          MachPhysMachineExplosionData::LinkData  linkData = *i;
-//
-//  		W4dLink* pLink = links()[ linkData.linkId() ];
-//          if( ( pLink->name() == "head" )
-//  		    or
-//  			( pLink->name() == "hip" )
-//  		    or
-//  			( pLink->name() == "fplat" ) )
-//          {
-//              linkData.shootOffProbability( 1.0 );
-//              linkData.minExplosionTime( 0.3 );
-//              linkData.maxExplosionTime( 0.6 );
-//          }
-//          else
-//          {
-//              linkData.shootOffProbability( 0.5 );
-//              linkData.minExplosionTime( 0.3 );
-//              linkData.maxExplosionTime( 0.6 );
-//          }
-//
-//      }
-//      dataForEdit.minToShootOff( 3 );
+    //      for( MachPhysMachineExplosionData::LinkDatas::const_iterator i = dataForEdit.links().begin(); i !=
+    //      dataForEdit.links().end(); ++i )
+    //      {
+    //          MachPhysMachineExplosionData::LinkData  linkData = *i;
+    //
+    //          W4dLink* pLink = links()[ linkData.linkId() ];
+    //          if( ( pLink->name() == "head" )
+    //              or
+    //              ( pLink->name() == "hip" )
+    //              or
+    //              ( pLink->name() == "fplat" ) )
+    //          {
+    //              linkData.shootOffProbability( 1.0 );
+    //              linkData.minExplosionTime( 0.3 );
+    //              linkData.maxExplosionTime( 0.6 );
+    //          }
+    //          else
+    //          {
+    //              linkData.shootOffProbability( 0.5 );
+    //              linkData.minExplosionTime( 0.3 );
+    //              linkData.maxExplosionTime( 0.6 );
+    //          }
+    //
+    //      }
+    //      dataForEdit.minToShootOff( 3 );
 }
 
-void perWrite( PerOstream& ostr, const MachPhysResourceCarrier& machine )
+void perWrite(PerOstream& ostr, const MachPhysResourceCarrier& machine)
 {
     const MachPhysMachine& base = machine;
     ostr << base;
-	ostr << machine.bodyLevel_;
+    ostr << machine.bodyLevel_;
 }
 
-void perRead( PerIstream& istr, MachPhysResourceCarrier& machine )
+void perRead(PerIstream& istr, MachPhysResourceCarrier& machine)
 {
     MachPhysMachine& base = machine;
     istr >> base;
-	istr >> machine.bodyLevel_;
+    istr >> machine.bodyLevel_;
 }
 
-const PhysRelativeTime MachPhysResourceCarrier::doLoading( const PhysAbsoluteTime& startTime )
+const PhysRelativeTime MachPhysResourceCarrier::doLoading(const PhysAbsoluteTime& startTime)
 {
-	MachPhysResourceLoading* pLoading = _NEW(MachPhysResourceLoading( this, MexTransform3d() ) );
-	MATHEX_SCALAR size = 1.05 * std::max( compositeBoundingVolume().xLength(), compositeBoundingVolume().yLength() );
-	const PhysRelativeTime loadingTime = pLoading->startLoading( startTime, size );
+    MachPhysResourceLoading* pLoading = _NEW(MachPhysResourceLoading(this, MexTransform3d()));
+    MATHEX_SCALAR size = 1.05 * std::max(compositeBoundingVolume().xLength(), compositeBoundingVolume().yLength());
+    const PhysRelativeTime loadingTime = pLoading->startLoading(startTime, size);
 
-//	W4dSoundManager::instance().play(pLoading, SID_RECYCLE, startTime, 1); // this sound is not present in final game in this context
+    //  W4dSoundManager::instance().play(pLoading, SID_RECYCLE, startTime, 1); // this sound is not present in final
+    //  game in this context
 
-	W4dGarbageCollector::instance().add( pLoading, startTime + loadingTime );
+    W4dGarbageCollector::instance().add(pLoading, startTime + loadingTime);
 
- 	return loadingTime;
+    return loadingTime;
 }
 
 bool MachPhysResourceCarrier::isScavenger() const
 {
-	return bodyLevel_ == 3;
+    return bodyLevel_ == 3;
 }
 
-//perform the scavenging animations
-const PhysRelativeTime MachPhysResourceCarrier::doScavenge( const PhysAbsoluteTime& startTime )
+// perform the scavenging animations
+const PhysRelativeTime MachPhysResourceCarrier::doScavenge(const PhysAbsoluteTime& startTime)
 {
-	PRE( isScavenger() );
+    PRE(isScavenger());
 
-	const PhysRelativeTime duration = 1.0;
+    const PhysRelativeTime duration = 1.0;
 
-	MachPhysScavenger* pScavenger = _NEW( MachPhysScavenger( this, MexTransform3d() ) );
-	pScavenger->startScavenge( startTime, duration );
+    MachPhysScavenger* pScavenger = _NEW(MachPhysScavenger(this, MexTransform3d()));
+    pScavenger->startScavenge(startTime, duration);
 
-	W4dGarbageCollector::instance().add( pScavenger, startTime + duration );
+    W4dGarbageCollector::instance().add(pScavenger, startTime + duration);
 
-	return duration;
+    return duration;
 }
 
 /* End RESCARR.CPP *************************************************/

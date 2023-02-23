@@ -8,7 +8,7 @@
 
 #include "base/base.hpp"
 
-//class ostream;
+// class ostream;
 class RenMesh;
 class RenMaterialVec;
 class RenUVTransform;
@@ -22,45 +22,61 @@ template <class T> class CtlConstCountedPtr;
 struct Ren
 {
     static const uint NullTexId = 0;
-	// This returns RenDevice::current()->out for classes which don't need the
-	// full definition of RenDevice.
-	// PRE(RenDevice::current());
-	static ostream& out();
+    // This returns RenDevice::current()->out for classes which don't need the
+    // full definition of RenDevice.
+    // PRE(RenDevice::current());
+    static ostream& out();
 
-	// This invokes the various render library Singletons in an order which
-	// will guarantee correct destruction order.  This must be called before
-	// any other render library Singletons are invoked.
-	// Chose a co-ordinate system before starting the render lib.
-	// PRE(MexCoordSystem::instance().isSet());
-	static void initialise();
-	static bool initialised();		// a pre-condition for many things
+    // This invokes the various render library Singletons in an order which
+    // will guarantee correct destruction order.  This must be called before
+    // any other render library Singletons are invoked.
+    // Chose a co-ordinate system before starting the render lib.
+    // PRE(MexCoordSystem::instance().isSet());
+    static void initialise();
+    static bool initialised(); // a pre-condition for many things
 
-	typedef ushort VertexIdx;
-	typedef ushort TriangleIdx;
-	typedef uchar  MaterialIdx;
-	typedef uint   TexId;
-	// TODO init
-	// static const uint NullTexId;
+    using VertexIdx = ushort;
+    using TriangleIdx = ushort;
+    using MaterialIdx = uchar;
+    using TexId = uint;
+    // TODO init
+    // static const uint NullTexId;
 
-	// These are maximum values per mesh.
-	enum { maxVertices = 65535, maxTriangles = 65535, maxMaterials = 255 };
+    // These are maximum values per mesh.
+    enum
+    {
+        maxVertices = 65535,
+        maxTriangles = 65535,
+        maxMaterials = 255
+    };
 
-	typedef CtlCountedPtr<RenMesh>			MeshPtr;
-	typedef CtlConstCountedPtr<RenMesh>		ConstMeshPtr;
+    using MeshPtr = CtlCountedPtr<RenMesh>;
+    using ConstMeshPtr = CtlConstCountedPtr<RenMesh>;
 
-	typedef CtlCountedPtr< RenMaterialVec >	MaterialVecPtr;
-	typedef CtlConstCountedPtr< RenMaterialVec > ConstMaterialVecPtr;
+    using MaterialVecPtr = CtlCountedPtr<RenMaterialVec>;
+    using ConstMaterialVecPtr = CtlConstCountedPtr<RenMaterialVec>;
 
-	typedef CtlCountedPtr< RenUVTransform >	UVTransformPtr;
-	typedef CtlConstCountedPtr< RenUVTransform > ConstUVTransformPtr;
+    using UVTransformPtr = CtlCountedPtr<RenUVTransform>;
+    using ConstUVTransformPtr = CtlConstCountedPtr<RenUVTransform>;
 
-	struct Rect
-	{
-        constexpr Rect(int x=0, int y=0, int w=0, int h=0): originX(x), originY(y), width(w), height(h)	{}
-		int originX, originY, width, height;
-	};
+    struct Rect
+    {
+        constexpr Rect(int x = 0, int y = 0, int w = 0, int h = 0)
+            : originX(x)
+            , originY(y)
+            , width(w)
+            , height(h)
+        {
+        }
+        int originX, originY, width, height;
+    };
 
-	enum LightType { DIRECTIONAL, POINT, UNIFORM };
+    enum LightType
+    {
+        DIRECTIONAL,
+        POINT,
+        UNIFORM
+    };
 };
 
 ostream& operator<<(ostream&, const Ren::Rect&);

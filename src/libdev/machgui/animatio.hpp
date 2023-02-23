@@ -24,83 +24,87 @@ class MachGuiAnimation : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-	struct Cell
-	{
-		Cell();
+    struct Cell
+    {
+        Cell();
 
-		enum CellTime { STATIC, RANDOM };
-		GuiBitmap cell_;
-		double finishTime_;
-		double duration_;
-		double randomDurationMinTime_;
-		double randomDurationMaxTime_;
-		CellTime cellTimeType_;
-		bool hasSound_;
-		string wavFile_;
-	};
+        enum CellTime
+        {
+            STATIC,
+            RANDOM
+        };
+        GuiBitmap cell_;
+        double finishTime_;
+        double duration_;
+        double randomDurationMinTime_;
+        double randomDurationMaxTime_;
+        CellTime cellTimeType_;
+        bool hasSound_;
+        string wavFile_;
+    };
 
-	typedef ctl_pvector<Cell> Cells;
+    using Cells = ctl_pvector<Cell>;
 
-	// Create animation from file describing animation
-	static MachGuiAnimation* createAnimation( GuiDisplayable* pParent, const SysPathName& animPath );
+    // Create animation from file describing animation
+    static MachGuiAnimation* createAnimation(GuiDisplayable* pParent, const SysPathName& animPath);
 
-	// Create animation from file describing animation. colourKey bool is used to switch colourKeying on for
-	// each frame of the animation.
-	static MachGuiAnimation* createAnimation( GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey );
+    // Create animation from file describing animation. colourKey bool is used to switch colourKeying on for
+    // each frame of the animation.
+    static MachGuiAnimation* createAnimation(GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey);
 
-	// Create animation from file describing animation. colourKey bool is used to switch colourKeying on for
-	// each frame of the animation. xOffset and yOffset will change the x/y values specified in the .anm file.
-	static MachGuiAnimation* createAnimation( GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey, int xOffset, int yOffset );
+    // Create animation from file describing animation. colourKey bool is used to switch colourKeying on for
+    // each frame of the animation. xOffset and yOffset will change the x/y values specified in the .anm file.
+    static MachGuiAnimation*
+    createAnimation(GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey, int xOffset, int yOffset);
 
-	// MachGuiAnimationCells* must be newed and will be deleted by this class.
-    MachGuiAnimation( GuiDisplayable* pParent, const Gui::Box&, Cells* );
-    ~MachGuiAnimation();
+    // MachGuiAnimationCells* must be newed and will be deleted by this class.
+    MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box&, Cells*);
+    ~MachGuiAnimation() override;
 
     void CLASS_INVARIANT;
 
-	void update();
+    void update();
 
-	// Force the animation to jump to a particular cell (frame).
-	void jumpToCell( size_t cellIndex );
-	// PRE( cellIndex < pCells_->size() );
+    // Force the animation to jump to a particular cell (frame).
+    void jumpToCell(size_t cellIndex);
+    // PRE( cellIndex < pCells_->size() );
 
-	// Return the cell that the animation is currently on.
-	size_t cellIndex() const;
+    // Return the cell that the animation is currently on.
+    size_t cellIndex() const;
 
-	// Get the number of cells in the animation.
-	size_t numCells() const;
+    // Get the number of cells in the animation.
+    size_t numCells() const;
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	void updateCellTimes();
-	void playSound( const string& wavFile );
+    void updateCellTimes();
+    void playSound(const string& wavFile);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiAnimation& t );
+    friend ostream& operator<<(ostream& o, const MachGuiAnimation& t);
 
-    MachGuiAnimation( const MachGuiAnimation& );
-    MachGuiAnimation& operator =( const MachGuiAnimation& );
+    MachGuiAnimation(const MachGuiAnimation&);
+    MachGuiAnimation& operator=(const MachGuiAnimation&);
 
-	// Data members...
-	Cells* pCells_;
-	double startTime_;
-	size_t cellIndex_;
-	size_t loopBack_;
+    // Data members...
+    Cells* pCells_;
+    double startTime_;
+    size_t cellIndex_;
+    size_t loopBack_;
 };
 
 class MachGuiAnimations
 {
 public:
-	MachGuiAnimations( GuiDisplayable*, const SysPathName& pathName );
-	~MachGuiAnimations();
+    MachGuiAnimations(GuiDisplayable*, const SysPathName& pathName);
+    ~MachGuiAnimations();
 
-	void update();
+    void update();
 
 private:
-	ctl_pvector<MachGuiAnimation> animations_;
+    ctl_pvector<MachGuiAnimation> animations_;
 };
-
 
 #endif
 

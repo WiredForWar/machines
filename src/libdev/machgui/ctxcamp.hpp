@@ -1,5 +1,5 @@
 /*
- * C T X C A M P . H P P 
+ * C T X C A M P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,48 +25,47 @@ class MachGuiCtxCampaign : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxCampaign( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxCampaign();
+    MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxCampaign() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	void selectedPlayer( MachGuiDbPlayer* );
-	void clearSelectedPlayer();
+    void selectedPlayer(MachGuiDbPlayer*);
+    void clearSelectedPlayer();
 
-	void deletePlayer();
-	// PRE( pSelectedPlayer_ );
+    void deletePlayer();
+    // PRE( pSelectedPlayer_ );
 
 protected:
-	void updatePlayersList();
+    void updatePlayersList();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxCampaign& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxCampaign& t);
 
-    MachGuiCtxCampaign( const MachGuiCtxCampaign& );
-    MachGuiCtxCampaign& operator =( const MachGuiCtxCampaign& );
+    MachGuiCtxCampaign(const MachGuiCtxCampaign&);
+    MachGuiCtxCampaign& operator=(const MachGuiCtxCampaign&);
 
-	void displayCurrentStatus();
-	// Data members...
-	MachGuiAnimations animations_;
-	MachGuiSingleSelectionListBox* pPlayersList_;
-	MachGuiEditBoxListBoxItem* pNewPlayerName_;
-	MachGuiDbPlayer* pSelectedPlayer_;
-	MachGuiMenuText* pScenarioText_;
-	MachGuiMenuText* pLastScenarioText_;
-	MachGuiMenuText* pScoreText_;
-	MachGuiMenuText* pLastScoreText_;
-	MachGuiMenuText* pNumScenariosPlayedText_;
-	MachGuiMenuText* pNumScenariosText_;
-	MachGuiMenuText* pTotalScoreHeadingText_;
-	MachGuiMenuText* pTotalScoreText_;
+    void displayCurrentStatus();
+    // Data members...
+    MachGuiAnimations animations_;
+    MachGuiSingleSelectionListBox* pPlayersList_;
+    MachGuiEditBoxListBoxItem* pNewPlayerName_;
+    MachGuiDbPlayer* pSelectedPlayer_;
+    MachGuiMenuText* pScenarioText_;
+    MachGuiMenuText* pLastScenarioText_;
+    MachGuiMenuText* pScoreText_;
+    MachGuiMenuText* pLastScoreText_;
+    MachGuiMenuText* pNumScenariosPlayedText_;
+    MachGuiMenuText* pNumScenariosText_;
+    MachGuiMenuText* pTotalScoreHeadingText_;
+    MachGuiMenuText* pTotalScoreText_;
 };
-
 
 #endif
 

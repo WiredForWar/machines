@@ -1,5 +1,5 @@
 /*
- * A V A I L O D S . H P P 
+ * A V A I L O D S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,33 +20,32 @@ class PedAvailableTileLods : public SysFileEnumerator
 public:
     //  Singleton class
     static PedAvailableTileLods& instance();
-    
-	void initialise( const SysPathName& );
-	// POST( not isEmpty() );
-	
+
+    void initialise(const SysPathName&);
+    // POST( not isEmpty() );
+
     void CLASS_INVARIANT;
 
-	const SysPathName& next();
-	const SysPathName& prev();
-	const SysPathName& current();
+    const SysPathName& next();
+    const SysPathName& prev();
+    const SysPathName& current();
 
 private:
     // Operations deliberately revoked
-    PedAvailableTileLods( const PedAvailableTileLods& );
-    PedAvailableTileLods& operator =( const PedAvailableTileLods& );
-    bool operator ==( const PedAvailableTileLods& );
+    PedAvailableTileLods(const PedAvailableTileLods&);
+    PedAvailableTileLods& operator=(const PedAvailableTileLods&);
+    bool operator==(const PedAvailableTileLods&);
 
     PedAvailableTileLods();
-	// POST( lodIndex == 0 );
+    // POST( lodIndex == 0 );
 
-    ~PedAvailableTileLods();
+    ~PedAvailableTileLods() override;
 
-    friend ostream& operator <<( ostream& o, const PedAvailableTileLods& t );
+    friend ostream& operator<<(ostream& o, const PedAvailableTileLods& t);
 
-	//Data...
-	size_t lodIndex_;
+    // Data...
+    size_t lodIndex_;
 };
-
 
 #endif
 

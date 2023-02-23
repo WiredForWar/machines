@@ -15,17 +15,17 @@
 class RenIDelayedSpinPolygon : public RenIDepthSortedItem
 {
 public:
-	// PRE(nVtx >= 3);
-	RenIDelayedSpinPolygon(RenI::LitVtxAPtr& vertices, size_t nVtx, const RenMaterial& mat, const glm::mat4&);
+    // PRE(nVtx >= 3);
+    RenIDelayedSpinPolygon(RenI::LitVtxAPtr& vertices, size_t nVtx, const RenMaterial& mat, const glm::mat4&);
 
-	virtual ~RenIDelayedSpinPolygon();
-	virtual void render();
-	virtual void print(ostream&) const;
+    ~RenIDelayedSpinPolygon() override;
+    void render() override;
+    void print(ostream&) const override;
 
 private:
-	RenI::LitVtxAPtr			vertices_;
-	const glm::mat4				xform_;
-	const size_t				nVertices_;
+    RenI::LitVtxAPtr vertices_;
+    const glm::mat4 xform_;
+    const size_t nVertices_;
 };
 
 #endif

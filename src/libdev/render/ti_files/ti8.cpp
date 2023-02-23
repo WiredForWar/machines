@@ -1,5 +1,5 @@
 #ifndef _WIN32
-    #define _WIN32
+#define _WIN32
 #endif
 
 #include "stdlib/memory.hpp"
@@ -11,6 +11,6 @@
 
 dummyFunction8()
 {
-	static unique_ptr_array< D3DTLVERTEX > dummy1;
-	static ctl_min_memory_vector<D3DLVERTEX> vertices2;
+    static unique_ptr_array<D3DTLVERTEX> dummy1;
+    static ctl_min_memory_vector<D3DLVERTEX> vertices2;
 }

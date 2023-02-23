@@ -3,7 +3,8 @@
 #include "render/device.hpp"
 #include "render/surface.hpp"
 
-class AniSmacker {
+class AniSmacker
+{
 public:
     virtual ~AniSmacker() = default;
 
@@ -18,12 +19,12 @@ public:
     virtual void rewind() = 0;
 
     // Ability to switch between front and back buffer blitting.
-	// If using the front buffer the code assumes that you are not flipping the buffers.
-	virtual void useFrontBuffer(bool ufb) = 0;
-	virtual bool useFrontBuffer() const = 0;
+    // If using the front buffer the code assumes that you are not flipping the buffers.
+    virtual void useFrontBuffer(bool ufb) = 0;
+    virtual bool useFrontBuffer() const = 0;
 
 protected:
-    virtual RenSurface createSmackerSurface(RenDevice *pDevice) = 0;
+    virtual RenSurface createSmackerSurface(RenDevice* pDevice) = 0;
     virtual void copyCurrentVideoFrameToBuffer(RenSurface& renderSurface) = 0;
     virtual uint* fillBufferForCurrentFrame() = 0;
 };

@@ -22,23 +22,21 @@ class BaseLogStreamBuffer : public std::streambuf
 {
 public:
     BaseLogStreamBuffer();
-    virtual ~BaseLogStreamBuffer();
+    ~BaseLogStreamBuffer() override;
 
-    virtual void    clear() = 0;
-    virtual size_t  nCharactersInBuffer() const = 0;
+    virtual void clear() = 0;
+    virtual size_t nCharactersInBuffer() const = 0;
 
 private:
     // Operation deliberately revoked
-    BaseLogStreamBuffer( const BaseLogStreamBuffer& );
+    BaseLogStreamBuffer(const BaseLogStreamBuffer&);
 
     // Operation deliberately revoked
-    BaseLogStreamBuffer& operator =( const BaseLogStreamBuffer& );
+    BaseLogStreamBuffer& operator=(const BaseLogStreamBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseLogStreamBuffer& );
-
+    bool operator==(const BaseLogStreamBuffer&);
 };
-
 
 #endif
 

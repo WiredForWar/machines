@@ -1,10 +1,9 @@
 /*
- * O P A U T S C I . C P P 
+ * O P A U T S C I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of non-inline non-template methods and global functions
-
 
 #include "machlog/internal/opautsci.hpp"
 
@@ -14,17 +13,18 @@
 
 #include "mathex/point2d.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogAutoScavengeOperationImpl);
 
-PER_DEFINE_PERSISTENT( MachLogAutoScavengeOperationImpl );
-
-MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl( MachLogResourceCarrier* pScavenger, MachLogDebris* pDebris )
-:	pScavenger_( pScavenger ),
-	pDebris_( pDebris ),
-	finished_( false ),
-	initiatedScavengeOp_( false ),
-	pCachedOperation_( NULL )
+MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl(
+    MachLogResourceCarrier* pScavenger,
+    MachLogDebris* pDebris)
+    : pScavenger_(pScavenger)
+    , pDebris_(pDebris)
+    , finished_(false)
+    , initiatedScavengeOp_(false)
+    , pCachedOperation_(nullptr)
 {
-	PRE( pScavenger->isScavenger() );
+    PRE(pScavenger->isScavenger());
 
     TEST_INVARIANT;
 }
@@ -36,10 +36,10 @@ MachLogAutoScavengeOperationImpl::~MachLogAutoScavengeOperationImpl()
 
 void MachLogAutoScavengeOperationImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogAutoScavengeOperationImpl& t )
+ostream& operator<<(ostream& o, const MachLogAutoScavengeOperationImpl& t)
 {
 
     o << "MachLogAutoScavengeOperationImpl " << (void*)&t << " start" << std::endl;
@@ -48,27 +48,26 @@ ostream& operator <<( ostream& o, const MachLogAutoScavengeOperationImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogAutoScavengeOperationImpl& AutoScavengeOpImpl )
+void perWrite(PerOstream& ostr, const MachLogAutoScavengeOperationImpl& AutoScavengeOpImpl)
 {
-	ostr << AutoScavengeOpImpl.pScavenger_;
-	ostr << AutoScavengeOpImpl.pDebris_;
-	ostr << AutoScavengeOpImpl.finished_;
-	ostr << AutoScavengeOpImpl.initiatedScavengeOp_;	
-	ostr << AutoScavengeOpImpl.pCachedOperation_;		
+    ostr << AutoScavengeOpImpl.pScavenger_;
+    ostr << AutoScavengeOpImpl.pDebris_;
+    ostr << AutoScavengeOpImpl.finished_;
+    ostr << AutoScavengeOpImpl.initiatedScavengeOp_;
+    ostr << AutoScavengeOpImpl.pCachedOperation_;
 }
 
-void perRead( PerIstream& istr, MachLogAutoScavengeOperationImpl& AutoScavengeOpImpl )
+void perRead(PerIstream& istr, MachLogAutoScavengeOperationImpl& AutoScavengeOpImpl)
 {
-	istr >> AutoScavengeOpImpl.pScavenger_;
-	istr >> AutoScavengeOpImpl.pDebris_;
-	istr >> AutoScavengeOpImpl.finished_;
-	istr >> AutoScavengeOpImpl.initiatedScavengeOp_;	
-	istr >> AutoScavengeOpImpl.pCachedOperation_;													
+    istr >> AutoScavengeOpImpl.pScavenger_;
+    istr >> AutoScavengeOpImpl.pDebris_;
+    istr >> AutoScavengeOpImpl.finished_;
+    istr >> AutoScavengeOpImpl.initiatedScavengeOp_;
+    istr >> AutoScavengeOpImpl.pCachedOperation_;
 }
 
-MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl( PerConstructor )
+MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl(PerConstructor)
 {
 }
-
 
 /* End OPAUTSCI.CPP ***************************************************/

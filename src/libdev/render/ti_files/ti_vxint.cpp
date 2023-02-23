@@ -4,5 +4,5 @@
 
 dummyFunction_vertex_intensity()
 {
-	static ctl_vector<RenIVtxIntensity> vec;
+    static ctl_vector<RenIVtxIntensity> vec;
 }

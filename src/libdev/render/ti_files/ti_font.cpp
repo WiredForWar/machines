@@ -4,5 +4,5 @@
 
 dummyFunction_surf_font()
 {
-	static ctl_vector<RenISurfBody::Font> vec;
+    static ctl_vector<RenISurfBody::Font> vec;
 }

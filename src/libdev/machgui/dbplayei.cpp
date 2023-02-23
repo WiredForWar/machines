@@ -1,5 +1,5 @@
 /*
- * D B P L A Y E I . C P P 
+ * D B P L A Y E I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,15 +9,15 @@
 #include "machgui/dbplyscn.hpp"
 #include "machgui/dbscenar.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbIPlayer );
+PER_DEFINE_PERSISTENT(MachGuiDbIPlayer);
 
 MachGuiDbIPlayer::MachGuiDbIPlayer()
-:   id_( 0 ),
-    nextUpdateId_( 0 ),
-    useSequenceId_( 0 ),
-	pLastSelectedScenario_( NULL )
+    : id_(0)
+    , nextUpdateId_(0)
+    , useSequenceId_(0)
+    , pLastSelectedScenario_(nullptr)
 {
-    playerScenarios_.reserve( 10 );
+    playerScenarios_.reserve(10);
 
     TEST_INVARIANT;
 }
@@ -25,15 +25,14 @@ MachGuiDbIPlayer::MachGuiDbIPlayer()
 MachGuiDbIPlayer::~MachGuiDbIPlayer()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiDbIPlayer::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbIPlayer& t )
+ostream& operator<<(ostream& o, const MachGuiDbIPlayer& t)
 {
 
     o << "MachGuiDbIPlayer " << (void*)&t << " start" << std::endl;
@@ -42,23 +41,23 @@ ostream& operator <<( ostream& o, const MachGuiDbIPlayer& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbIPlayer& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbIPlayer& ob)
 {
     ostr << ob.id_;
     ostr << ob.name_;
     ostr << ob.nextUpdateId_;
     ostr << ob.playerScenarios_;
     ostr << ob.useSequenceId_;
-	ostr << ob.pLastSelectedScenario_;
+    ostr << ob.pLastSelectedScenario_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbIPlayer& ob )
+void perRead(PerIstream& istr, MachGuiDbIPlayer& ob)
 {
     istr >> ob.id_;
     istr >> ob.name_;
     istr >> ob.nextUpdateId_;
     istr >> ob.playerScenarios_;
     istr >> ob.useSequenceId_;
-	istr >> ob.pLastSelectedScenario_;
+    istr >> ob.pLastSelectedScenario_;
 }
 /* End DBPLAYEI.CPP *************************************************/

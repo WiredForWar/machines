@@ -21,31 +21,31 @@
 
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysJetRing );
+PER_DEFINE_PERSISTENT(MachPhysJetRing);
 
-//One-time ctor
+// One-time ctor
 MachPhysJetRing::MachPhysJetRing()
-:   W4dComposite( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID ),
-	pTorch_( NULL )
+    : W4dComposite(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID)
+    , pTorch_(nullptr)
 {
-	//Load the model
-    readCompositeFile( SysPathName( "models/construc/torch/torch.cdf" ) );
+    // Load the model
+    readCompositeFile(SysPathName("models/construc/torch/torch.cdf"));
 
-	if( !findLink( "torch", &pTorch_ ) )
-		pTorch_ = NULL;
+    if (!findLink("torch", &pTorch_))
+        pTorch_ = nullptr;
 
-	ASSERT( pTorch_ != NULL, " torch not found " );
+    ASSERT(pTorch_ != nullptr, " torch not found ");
 
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysJetRing::MachPhysJetRing( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dComposite( exemplar(), pParent, localTransform ),
-	pTorch_( NULL )
+// public ctor
+MachPhysJetRing::MachPhysJetRing(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dComposite(exemplar(), pParent, localTransform)
+    , pTorch_(nullptr)
 {
-	visible( false );
-	pTorch_ = links()[ exemplar().pTorch_->id() ];
+    visible(false);
+    pTorch_ = links()[exemplar().pTorch_->id()];
 
     TEST_INVARIANT;
 }
@@ -53,10 +53,9 @@ MachPhysJetRing::MachPhysJetRing( W4dEntity* pParent, const MexTransform3d& loca
 MachPhysJetRing::~MachPhysJetRing()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysJetRing& MachPhysJetRing::exemplar()
 {
     return MachPhysOtherPersistence::instance().jetRingExemplar();
@@ -64,10 +63,10 @@ const MachPhysJetRing& MachPhysJetRing::exemplar()
 
 void MachPhysJetRing::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysJetRing& t )
+ostream& operator<<(ostream& o, const MachPhysJetRing& t)
 {
 
     o << "MachPhysJetRing " << (void*)&t << " start" << std::endl;
@@ -76,52 +75,50 @@ ostream& operator <<( ostream& o, const MachPhysJetRing& t )
     return o;
 }
 
-//virtual
-bool MachPhysJetRing::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysJetRing::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-MachPhysJetRing::MachPhysJetRing( PerConstructor con )
-: W4dComposite( con )
+MachPhysJetRing::MachPhysJetRing(PerConstructor con)
+    : W4dComposite(con)
 {
 }
 
-void perWrite( PerOstream& ostr, const MachPhysJetRing& jetRing )
+void perWrite(PerOstream& ostr, const MachPhysJetRing& jetRing)
 {
     const W4dComposite& base = jetRing;
 
     ostr << base;
-	ostr << jetRing.pTorch_;
+    ostr << jetRing.pTorch_;
 }
 
-void perRead( PerIstream& istr, MachPhysJetRing& jetRing )
+void perRead(PerIstream& istr, MachPhysJetRing& jetRing)
 {
     W4dComposite& base = jetRing;
 
     istr >> base;
-	istr >> jetRing.pTorch_;
+    istr >> jetRing.pTorch_;
 }
 
-void MachPhysJetRing::startGlow( const PhysAbsoluteTime& startTime, const MexPoint3d& targetOffsetGlobal )
+void MachPhysJetRing::startGlow(const PhysAbsoluteTime& startTime, const MexPoint3d& targetOffsetGlobal)
 {
 
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	visibilityPlanPtr->add(false, 360000);
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    visibilityPlanPtr->add(false, 360000);
 
-    entityPlanForEdit().visibilityPlan( visibilityPlanPtr, startTime, 0, MachPhys::CONSTRUCTION_CONSTRUCTING );
+    entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime, 0, MachPhys::CONSTRUCTION_CONSTRUCTING);
 
-	//scale plan
-	MexVec3 aVec(pTorch_->globalTransform().position(), targetOffsetGlobal );
-	aVec.z( 0 );
+    // scale plan
+    MexVec3 aVec(pTorch_->globalTransform().position(), targetOffsetGlobal);
+    aVec.z(0);
 
-	MATHEX_SCALAR scale = aVec.modulus()/5.0;
+    MATHEX_SCALAR scale = aVec.modulus() / 5.0;
 
-	pTorch_->temporaryScale( RenNonUniformScale(scale, 1, 1), W4dEntity::NOT_PROPOGATE );
+    pTorch_->temporaryScale(RenNonUniformScale(scale, 1, 1), W4dEntity::NOT_PROPOGATE);
 
-	PhysMotionPlanPtr torchPlanPtr( _NEW( MachPhysJetRingPlan( this, targetOffsetGlobal, 200.0 ) ) );
-    pTorch_->entityPlanForEdit().absoluteMotion( torchPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING );
-
+    PhysMotionPlanPtr torchPlanPtr(_NEW(MachPhysJetRingPlan(this, targetOffsetGlobal, 200.0)));
+    pTorch_->entityPlanForEdit().absoluteMotion(torchPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
 }
 /* End JETRINGM.CPP *************************************************/
-

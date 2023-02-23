@@ -23,8 +23,7 @@ class MachLogPlanetImpl
 // Canonical form revoked
 {
 public:
-
-	typedef ctl_map< int , MachLogMineralSite*, std::less< int >	>	SiteMap;
+    using SiteMap = ctl_map<int, MachLogMineralSite*, std::less<int>>;
 
     MachLogPlanetImpl();
     ~MachLogPlanetImpl();
@@ -32,33 +31,31 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogPlanetImpl& t );
-	friend class MachLogPlanet;
+    friend ostream& operator<<(ostream& o, const MachLogPlanetImpl& t);
+    friend class MachLogPlanet;
 
-    MachLogPlanetImpl( const MachLogPlanetImpl& );
-    MachLogPlanetImpl& operator =( const MachLogPlanetImpl& );
+    MachLogPlanetImpl(const MachLogPlanetImpl&);
+    MachLogPlanetImpl& operator=(const MachLogPlanetImpl&);
 
-    MachPhysPlanetSurface* 		pSurface_; //The planet surface
-    W4dEntity* 					pWorld_; //The world entity
-	W4dRoot*	   				pHiddenRoot_;
-	W4dDomain*	   				pHiddenRootDomain_;
-    PhysConfigSpace2d* 			pConfigSpace_; //The main config space for the entire planet
-    PhysConfigSpace2d* 			pHiddenConfigSpace_; //The hidden config space for hidding ML entities in.
+    MachPhysPlanetSurface* pSurface_; // The planet surface
+    W4dEntity* pWorld_; // The world entity
+    W4dRoot* pHiddenRoot_;
+    W4dDomain* pHiddenRootDomain_;
+    PhysConfigSpace2d* pConfigSpace_; // The main config space for the entire planet
+    PhysConfigSpace2d* pHiddenConfigSpace_; // The hidden config space for hidding ML entities in.
 
-    MachLogPressurePads* 		pPressurePads_;
+    MachLogPressurePads* pPressurePads_;
 
-	MachLogPlanet::Sites		oreSites_;
-	MachLogPlanet::DebrisSites	debrisSites_;
+    MachLogPlanet::Sites oreSites_;
+    MachLogPlanet::DebrisSites debrisSites_;
 
-	int							idsGenerated_;
+    int idsGenerated_;
 
-	SiteMap						siteMap_;
+    SiteMap siteMap_;
 
-    SysPathName                 spaceFilePath_;
-    SysPathName                 surfaceFilePath_;
-
+    SysPathName spaceFilePath_;
+    SysPathName surfaceFilePath_;
 };
-
 
 #endif
 

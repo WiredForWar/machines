@@ -6,10 +6,10 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 /*
@@ -18,296 +18,219 @@ _CODE_INLINE String::~String() { delete [] str_; }
 _CODE_INLINE
 const String& String::operator =( const char *s )
 {
-	return assign( s );
+    return assign( s );
 }
 
 _CODE_INLINE
 const String& String::operator =( const String& s )
 {
-	return assign( s );
+    return assign( s );
 }
 */
 
-template< class T >
-_CODE_INLINE
-basic_string< T >::basic_string()
+template <class T> _CODE_INLINE basic_string<T>::basic_string()
 {
-    _Tidy( false );
-}
-   
-template< class T >
-_CODE_INLINE
-basic_string< T >::basic_string( const basic_string< T >& _X, size_t _P, size_t _N )
-{
-    _Tidy( false );
-    assign( _X, _P, _N );
+    _Tidy(false);
 }
 
-template< class T >
-_CODE_INLINE
-basic_string< T >::basic_string( const T *_S, size_t _N )
+template <class T> _CODE_INLINE basic_string<T>::basic_string(const basic_string<T>& _X, size_t _P, size_t _N)
 {
-    _Tidy( false );
-    assign( _S, _N );           
+    _Tidy(false);
+    assign(_X, _P, _N);
 }
 
-template< class T >
-_CODE_INLINE
-basic_string< T >::basic_string( T _C, size_t _N )
+template <class T> _CODE_INLINE basic_string<T>::basic_string(const T* _S, size_t _N)
 {
-    _Tidy( false );
-    assign( _C, _N );           
+    _Tidy(false);
+    assign(_S, _N);
 }
 
-template< class T >
-_CODE_INLINE
-basic_string< T >::~basic_string()
+template <class T> _CODE_INLINE basic_string<T>::basic_string(T _C, size_t _N)
 {
-    _Tidy( 1 );
+    _Tidy(false);
+    assign(_C, _N);
+}
+
+template <class T> _CODE_INLINE basic_string<T>::~basic_string()
+{
+    _Tidy(1);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-const basic_string< T >&
-basic_string< T >::operator =( const basic_string< T >& _X )
+template <class T> _CODE_INLINE const basic_string<T>& basic_string<T>::operator=(const basic_string<T>& _X)
 {
-    return assign( _X );
+    return assign(_X);
 }
 
-template< class T >
-_CODE_INLINE
-const basic_string< T >&
-basic_string< T >::operator =( const T *_S )
+template <class T> _CODE_INLINE const basic_string<T>& basic_string<T>::operator=(const T* _S)
 {
-    return assign( _S );
+    return assign(_S);
 }
 
-template< class T >
-_CODE_INLINE
-const basic_string< T >& basic_string< T >::operator =( T _C )
+template <class T> _CODE_INLINE const basic_string<T>& basic_string<T>::operator=(T _C)
 {
-    return assign( _C );
+    return assign(_C);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-basic_string< T >& basic_string< T >::operator +=( const basic_string< T >& _X )
+template <class T> _CODE_INLINE basic_string<T>& basic_string<T>::operator+=(const basic_string<T>& _X)
 {
-    return append( _X );
+    return append(_X);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-basic_string< T > operator +( const basic_string< T >& a, const basic_string< T >& b )
+template <class T> _CODE_INLINE basic_string<T> operator+(const basic_string<T>& a, const basic_string<T>& b)
 {
-    basic_string< T > res = a;
-	res += b;
-	return res;
+    basic_string<T> res = a;
+    res += b;
+    return res;
 }
 
-template< class T >
-_CODE_INLINE
-basic_string< T > operator +( const basic_string< T >& a, const T * b )
+template <class T> _CODE_INLINE basic_string<T> operator+(const basic_string<T>& a, const T* b)
 {
-    basic_string< T > res = a;
-	res += b;
-	return res;
+    basic_string<T> res = a;
+    res += b;
+    return res;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-basic_string< T >& basic_string< T >::operator +=( const T *_S )
+template <class T> _CODE_INLINE basic_string<T>& basic_string<T>::operator+=(const T* _S)
 {
-    return append( _S );
+    return append(_S);
 }
 
-template< class T >
-_CODE_INLINE
-basic_string< T >& basic_string< T >::operator +=( T _C )
+template <class T> _CODE_INLINE basic_string<T>& basic_string<T>::operator+=(T _C)
 {
-    return append( _C );
+    return append(_C);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-char basic_string< T >::operator []( size_t _N ) const
+template <class T> _CODE_INLINE char basic_string<T>::operator[](size_t _N) const
 {
-    return _Ptr[ _N ];
+    return _Ptr[_N];
 }
 
-template< class T >
-_CODE_INLINE
-T& basic_string< T >::operator []( size_t _N )
+template <class T> _CODE_INLINE T& basic_string<T>::operator[](size_t _N)
 {
-    return _Ptr[ _N ];
-}    
+    return _Ptr[_N];
+}
 
-template< class T >
-_CODE_INLINE
-basic_string< T > basic_string< T >::substr( size_t p, size_t n ) const
+template <class T> _CODE_INLINE basic_string<T> basic_string<T>::substr(size_t p, size_t n) const
 {
-    return string( *this, p, n );
-}   
+    return string(*this, p, n);
+}
 
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-const T *basic_string< T >::data() const
+template <class T> _CODE_INLINE const T* basic_string<T>::data() const
 {
-    return _Ptr != 0 ? _Ptr : (const T *)(0);
+    return _Ptr != 0 ? _Ptr : (const T*)(0);
 }
 
-template< class T >
-_CODE_INLINE
-const T *basic_string< T >::c_str() const
+template <class T> _CODE_INLINE const T* basic_string<T>::c_str() const
 {
-    return _Ptr != 0 ? _Ptr : (const T *)"";
+    return _Ptr != 0 ? _Ptr : (const T*)"";
 }
 
-template< class T >
-_CODE_INLINE
-size_t basic_string< T >::length() const
+template <class T> _CODE_INLINE size_t basic_string<T>::length() const
 {
     return _Len;
 }
 
-template< class T >
-_CODE_INLINE
-size_t basic_string< T >::reserve() const
+template <class T> _CODE_INLINE size_t basic_string<T>::reserve() const
 {
     return _Res;
 }
 
-template< class T >
-_CODE_INLINE
-void basic_string< T >::reserve( size_t _N )
+template <class T> _CODE_INLINE void basic_string<T>::reserve(size_t _N)
 {
-    if( _Ptr == 0 )
-	_Res = _N;    
+    if (_Ptr == 0)
+        _Res = _N;
 }
 
 // operators etc /////////////////////////////////////////////////////
 
-
-template< class T >
-_CODE_INLINE 
-ostream& operator <<( ostream& o, const basic_string< T >& str )
+template <class T> _CODE_INLINE ostream& operator<<(ostream& o, const basic_string<T>& str)
 {
-    return o.write( str.data(), str.length() );
+    return o.write(str.data(), str.length());
 }
 
-
-template< class T >
-_CODE_INLINE 
-bool operator <( const T *s, const basic_string< T >&  str )
+template <class T> _CODE_INLINE bool operator<(const T* s, const basic_string<T>& str)
 {
-    return str.compare( s ) < 0;
+    return str.compare(s) < 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator <( const basic_string< T >&  str, const T *s )
+template <class T> _CODE_INLINE bool operator<(const basic_string<T>& str, const T* s)
 {
-    return str.compare( s ) < 0;
+    return str.compare(s) < 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator <( const basic_string< T >& s1, const basic_string< T >& s2 )
+template <class T> _CODE_INLINE bool operator<(const basic_string<T>& s1, const basic_string<T>& s2)
 {
-    return s1.compare( s2 ) < 0;
+    return s1.compare(s2) < 0;
 }
 
-
-template< class T >
-_CODE_INLINE 
-bool operator ==( const T *s, const basic_string< T >&  str )
+template <class T> _CODE_INLINE bool operator==(const T* s, const basic_string<T>& str)
 {
-    return str.compare( s ) == 0;
+    return str.compare(s) == 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator ==( const basic_string< T >&  str, const T *s )
+template <class T> _CODE_INLINE bool operator==(const basic_string<T>& str, const T* s)
 {
-    return str.compare( s ) == 0;
+    return str.compare(s) == 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator ==( const basic_string< T >& s1, const basic_string< T >& s2 )
+template <class T> _CODE_INLINE bool operator==(const basic_string<T>& s1, const basic_string<T>& s2)
 {
-    return s1.compare( s2 ) == 0;
+    return s1.compare(s2) == 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator !=( const T *s, const basic_string< T >&  str )
+template <class T> _CODE_INLINE bool operator!=(const T* s, const basic_string<T>& str)
 {
-    return str.compare( s ) != 0;
+    return str.compare(s) != 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator !=( const basic_string< T >&  str, const T *s )
+template <class T> _CODE_INLINE bool operator!=(const basic_string<T>& str, const T* s)
 {
-    return str.compare( s ) != 0;
+    return str.compare(s) != 0;
 }
 
-template< class T >
-_CODE_INLINE 
-bool operator !=( const basic_string< T >& s1, const basic_string< T >& s2 )
+template <class T> _CODE_INLINE bool operator!=(const basic_string<T>& s1, const basic_string<T>& s2)
 {
-	return s1.compare( s2 ) != 0;
+    return s1.compare(s2) != 0;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-template< class T >
-_CODE_INLINE
-basic_string_iter< T >::basic_string_iter( const basic_string< T >& s )
-: strPtr( &s ),
-  index( 0 )
+template <class T>
+_CODE_INLINE basic_string_iter<T>::basic_string_iter(const basic_string<T>& s)
+    : strPtr(&s)
+    , index(0)
 {
     // intentionally empty
 }
 
-template< class T >
-_CODE_INLINE
-basic_string_iter< T >::~basic_string_iter()
+template <class T> _CODE_INLINE basic_string_iter<T>::~basic_string_iter()
 {
     // intentionally empty
 }
 
 ///////////////////////////////
-    
-template< class T >
-_CODE_INLINE
-bool basic_string_iter< T >::isFinished() const
+
+template <class T> _CODE_INLINE bool basic_string_iter<T>::isFinished() const
 {
-    return (*strPtr)[ index ] == T( '\0' );
+    return (*strPtr)[index] == T('\0');
 }
 
-template< class T >
-_CODE_INLINE
-basic_string_iter< T >::operator T() const
+template <class T> _CODE_INLINE basic_string_iter<T>::operator T() const
 {
-    return (*strPtr)[ index ];
+    return (*strPtr)[index];
 }
-
-   
 
 /* End STRING.ITP ***************************************************/

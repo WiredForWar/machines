@@ -6,5 +6,5 @@
 
 dummyFunction10()
 {
-	static ctl_vector<SysPathName> vec1;
+    static ctl_vector<SysPathName> vec1;
 }

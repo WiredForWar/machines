@@ -13,49 +13,45 @@
 // FtlMap represents an abstract mapping bwteen items
 // of type Key and items of type Value.
 
-template <	class KEY, class VALUE >
-class FtlMap
-: public FtlAssociativeCollection< KEY, VALUE >
+template <class KEY, class VALUE> class FtlMap : public FtlAssociativeCollection<KEY, VALUE>
 {
 public:
+    FtlMap() {};
 
-	FtlMap() {};
+    using Key = typename FtlAssociativeCollection<KEY, VALUE>::Key;
+    using Value = typename FtlAssociativeCollection<KEY, VALUE>::Value;
 
-	typedef typename FtlAssociativeCollection< KEY, VALUE >::Key Key;
-	typedef typename FtlAssociativeCollection< KEY, VALUE >::Value Value;
+    // inherited from FtlContainer...
+    // virtual bool contains( const Key& ) const = 0;
 
-	// inherited from FtlContainer...
-	// virtual bool contains( const Key& ) const = 0;
+    Value& operator[](const Key& key)
+    {
+        PRE(this->contains(key));
+        return (Value&)doSubscript(key);
+    }
 
-	Value& operator []( const Key& key )
-	{
-		PRE( this->contains( key ) );
-		return (Value&)doSubscript( key );
-	}
+    const Value& operator[](const Key& key) const
+    {
+        PRE(this->contains(key));
+        return doSubscript(key);
+    }
 
-	const Value& operator []( const Key& key ) const
-	{
-		PRE( this->contains( key ) );
-		return doSubscript( key );
-	}
+    // inherited from FtlAssociativeCollection...
+    // virtual void add( const FtlPair< KEY, VALUE >& addMe ) = 0;
+    // PRE( not contains( addMe ) );
+    // POST( contains( addMe ) );
 
-	// inherited from FtlAssociativeCollection...
-	// virtual void add( const FtlPair< KEY, VALUE >& addMe ) = 0;
-	// PRE( not contains( addMe ) );
-	// POST( contains( addMe ) );
-
-	// virtual void remove( const Key& removeMe ) = 0;
-	// PRE( contains( removeMe ) );
-	// POST( not contains( removeMe ) );
+    // virtual void remove( const Key& removeMe ) = 0;
+    // PRE( contains( removeMe ) );
+    // POST( not contains( removeMe ) );
 
 protected:
-
-	// PRE( contains( key ) );
-	virtual const Value& doSubscript( const Key& ) const = 0;
+    // PRE( contains( key ) );
+    virtual const Value& doSubscript(const Key&) const = 0;
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/* #ifndef _FTL_MAP_HPP	*/
+#endif /* #ifndef _FTL_MAP_HPP */
 
 /* End MAP.HPP ******************************************************/

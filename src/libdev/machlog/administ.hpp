@@ -10,91 +10,104 @@
 
 #include "machlog/canattac.hpp"
 #include "machlog/canadmin.hpp"
-//#include "machlog/cntrl.hpp"
+// #include "machlog/cntrl.hpp"
 /* //////////////////////////////////////////////////////////////// */
 
-//class ostream;
+// class ostream;
 class MachPhysAdministrator;
 class MachPhysAdministratorData;
 
 class MachLogAdministrator
-: public MachLogMachine,
-//  public MachLogCanPickUp,
-//  public MachLogCanPutDown,
-  public MachLogCanAttack,
-  public MachLogCanAdminister
+    : public MachLogMachine
+    ,
+      //  public MachLogCanPickUp,
+      //  public MachLogCanPutDown,
+      public MachLogCanAttack
+    , public MachLogCanAdminister
 // cannonical form revoked
 {
 public:
+    MachLogAdministrator(
+        const MachPhys::AdministratorSubType& subType,
+        MachLogMachine::Level hwLevel,
+        MachLogMachine::Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        MachPhys::WeaponCombo wc);
 
-	MachLogAdministrator( 	const MachPhys::AdministratorSubType& subType, 
-							MachLogMachine::Level hwLevel,  MachLogMachine::Level swLevel, 
-    						MachLogRace * pRace, const MexPoint3d& location,
-    						MachPhys::WeaponCombo wc );
+    MachLogAdministrator(
+        const MachPhys::AdministratorSubType& subType,
+        MachLogMachine::Level hwLevel,
+        MachLogMachine::Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        MachPhys::WeaponCombo wc,
+        UtlId);
 
-	MachLogAdministrator( 	const MachPhys::AdministratorSubType& subType, 
-							MachLogMachine::Level hwLevel,  MachLogMachine::Level swLevel, 
-    						MachLogRace * pRace, const MexPoint3d& location,
-    						MachPhys::WeaponCombo wc, UtlId );
+    ~MachLogAdministrator() override;
 
-	virtual ~MachLogAdministrator();
-	
-	///////////////////////////////
+    ///////////////////////////////
 
-	//view of MachPhys data objects
-	virtual const MachPhysMachineData& machineData() const;
-	const MachPhysAdministratorData& data() const;
-	
-	//inherited from MachLogCanCommunicate
-	virtual void receiveMessage( const MachLogMessage& message );
+    // view of MachPhys data objects
+    const MachPhysMachineData& machineData() const override;
+    const MachPhysAdministratorData& data() const;
 
-	void handleIdleTechnician( MachLogCommsId obj );
+    // inherited from MachLogCanCommunicate
+    void receiveMessage(const MachLogMessage& message) override;
 
-	const MachPhysAdministrator& physAdministrator() const;
-	MachPhysAdministrator& physAdministrator();
+    void handleIdleTechnician(MachLogCommsId obj) override;
 
-	const MachPhys::AdministratorSubType& subType() const;
+    const MachPhysAdministrator& physAdministrator() const;
+    MachPhysAdministrator& physAdministrator();
 
-	// inherited from SimActor and MachActor
-	virtual PhysRelativeTime update( const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume );
-	
-	// inherited from MachLogMachine
-    virtual bool fearsThisActor( const MachActor& otherActor ) const;
+    const MachPhys::AdministratorSubType& subType() const;
+
+    // inherited from SimActor and MachActor
+    PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
+
+    // inherited from MachLogMachine
+    bool fearsThisActor(const MachActor& otherActor) const override;
     // inherited from MachActor
-    virtual int militaryStrength() const;
-	
-	//Amount of damage is passed in beHit()
-	virtual void beHit( const int&, MachPhys::WeaponType byType = MachPhys::N_WEAPON_TYPES,
-						MachActor* pByActor = NULL, MexLine3d* pByDirection = NULL, MachActor::EchoBeHit = MachActor::ECHO );
+    int militaryStrength() const override;
 
-	virtual void beHitWithoutAnimation( int damage, PhysRelativeTime physicalTimeDelay = 0, MachActor* pByActor = NULL, EchoBeHit = ECHO );
+    // Amount of damage is passed in beHit()
+    void beHit(
+        const int&,
+        MachPhys::WeaponType byType = MachPhys::N_WEAPON_TYPES,
+        MachActor* pByActor = nullptr,
+        MexLine3d* pByDirection = nullptr,
+        MachActor::EchoBeHit = MachActor::ECHO) override;
 
-    
+    void beHitWithoutAnimation(
+        int damage,
+        PhysRelativeTime physicalTimeDelay = 0,
+        MachActor* pByActor = nullptr,
+        EchoBeHit = ECHO) override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAdministrator );
-	PER_FRIEND_READ_WRITE( MachLogAdministrator );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAdministrator);
+    PER_FRIEND_READ_WRITE(MachLogAdministrator);
 
 private:
+    MachLogAdministrator(const MachLogAdministrator&);
+    MachLogAdministrator& operator=(const MachLogAdministrator&);
+    bool operator==(const MachLogAdministrator&) const;
 
+    static MachPhysAdministrator* pNewPhysAdministrator(
+        const MachPhys::AdministratorSubType& subType,
+        Level hwLevel,
+        Level swLevel,
+        MachLogRace* pRace,
+        const MexPoint3d& location,
+        MachPhys::WeaponCombo);
 
-	MachLogAdministrator( const MachLogAdministrator& );
-	MachLogAdministrator& operator =( const MachLogAdministrator& );
-	bool operator ==( const MachLogAdministrator& ) const;
-
-    static MachPhysAdministrator* pNewPhysAdministrator( const MachPhys::AdministratorSubType& subType, 
-    											Level hwLevel, Level swLevel, MachLogRace * pRace,
-                                                const MexPoint3d& location,
-                                                MachPhys::WeaponCombo );
-
-	virtual void doOutputOperator( ostream& o ) const;
-	MachPhys::AdministratorSubType		subType_;
-
+    void doOutputOperator(ostream& o) const override;
+    MachPhys::AdministratorSubType subType_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAdministrator );
+PER_DECLARE_PERSISTENT(MachLogAdministrator);
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_ADMINIST_HPP	*/
+#endif /*  #ifndef _MACHLOG_ADMINIST_HPP   */
 
 /* End ADMINIST.HPP *************************************************/

@@ -16,17 +16,16 @@
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachHWResearchBankIcons::MachHWResearchBankIcons(	GuiDisplayable* pParent, 
-													const Gui::Box& area, 
-													MachLogHardwareLab* pHardwareLab,
-    												MachInGameScreen* pInGameScreen )
-:   GuiSimpleScrollableList( 	pParent, area, 
-								MachHWResearchBankIcon::reqWidth(), 
-								MachHWResearchBankIcon::reqHeight(), 1 ),
-  	pHardwareLab_( pHardwareLab ),
-    pInGameScreen_( pInGameScreen )
+MachHWResearchBankIcons::MachHWResearchBankIcons(
+    GuiDisplayable* pParent,
+    const Gui::Box& area,
+    MachLogHardwareLab* pHardwareLab,
+    MachInGameScreen* pInGameScreen)
+    : GuiSimpleScrollableList(pParent, area, MachHWResearchBankIcon::reqWidth(), MachHWResearchBankIcon::reqHeight(), 1)
+    , pHardwareLab_(pHardwareLab)
+    , pInGameScreen_(pInGameScreen)
 {
-    //Add the icons
+    // Add the icons
     updateIcons();
 
     TEST_INVARIANT;
@@ -45,7 +44,6 @@ void MachHWResearchBankIcons::onIconClicked(GuiButton* pIcon)
 MachHWResearchBankIcons::~MachHWResearchBankIcons()
 {
     TEST_INVARIANT;
-
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -54,12 +52,12 @@ MachHWResearchBankIcons::~MachHWResearchBankIcons()
 
 void MachHWResearchBankIcons::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachHWResearchBankIcons& t )
+ostream& operator<<(ostream& o, const MachHWResearchBankIcons& t)
 {
 
     o << "MachHWResearchBankIcons " << (void*)&t << " start" << std::endl;
@@ -72,24 +70,23 @@ ostream& operator <<( ostream& o, const MachHWResearchBankIcons& t )
 
 void MachHWResearchBankIcons::updateIcons()
 {
-    //Delete the existing icons
+    // Delete the existing icons
     deleteAllChildren();
 
-    //Get the current research queue
+    // Get the current research queue
     const MachLogResearchTree::ResearchItems& queue = pHardwareLab_->currentResearchQueue();
 
-	MachPhys::Race race = pHardwareLab_->race();
-	
-    //Iterate through the queue and add an icon for each one
-    for( MachLogResearchTree::ResearchItems::const_iterator it = queue.begin();
-         it != queue.end(); ++it )
+    MachPhys::Race race = pHardwareLab_->race();
+
+    // Iterate through the queue and add an icon for each one
+    for (MachLogResearchTree::ResearchItems::const_iterator it = queue.begin(); it != queue.end(); ++it)
     {
         MachLogResearchItem* pResearchItem = (*it);
         MachHWResearchBankIcon* pIcon = new MachHWResearchBankIcon(this, pInGameScreen_, pResearchItem, race);
         pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
     }
 
-    //Ensure redisplayed
+    // Ensure redisplayed
     childrenUpdated();
 }
 
@@ -97,35 +94,35 @@ void MachHWResearchBankIcons::updateIcons()
 
 void MachHWResearchBankIcons::doDisplay()
 {
-	pInGameScreen_->controlPanel().redrawAreaImmediate( *this );
-	GuiSimpleScrollableList::doDisplay();
+    pInGameScreen_->controlPanel().redrawAreaImmediate(*this);
+    GuiSimpleScrollableList::doDisplay();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachHWResearchBankIcons::reqHeight()
 {
-	return MachHWResearchBankIcon::reqHeight();
+    return MachHWResearchBankIcon::reqHeight();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachHWResearchBankIcons::reqWidth()
 {
-	return ( 3 * MachHWResearchBankIcon::reqWidth() );	
+    return (3 * MachHWResearchBankIcon::reqWidth());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachHWResearchBankIcons::updateProgress( float percentageComplete )
+void MachHWResearchBankIcons::updateProgress(float percentageComplete)
 {
-	if ( not children().empty() and not canScrollBackward() )
-	{
-		MachHWResearchBankIcon* pHeadOfList = _REINTERPRET_CAST( MachHWResearchBankIcon*, children().front() );
-		pHeadOfList->updateProgress( percentageComplete );
-	}
+    if (not children().empty() and not canScrollBackward())
+    {
+        MachHWResearchBankIcon* pHeadOfList = _REINTERPRET_CAST(MachHWResearchBankIcon*, children().front());
+        pHeadOfList->updateProgress(percentageComplete);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

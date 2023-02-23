@@ -58,8 +58,8 @@ void AfxConfiguration::validateAntiAliasingSettings(AfxConfigurationData& config
     else
     {
         // Put a number like 3, 15, etc.? NO PROBLEM!!
-        const auto        y = static_cast<double>(sampleRate);
-        auto       powerOf2 = std::floor(std::log2(y));
+        const auto y = static_cast<double>(sampleRate);
+        auto powerOf2 = std::floor(std::log2(y));
 
         // 2^1 minimum value
         if (powerOf2 < 1.0)

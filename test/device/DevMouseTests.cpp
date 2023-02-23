@@ -81,7 +81,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
     // Essentially AfxSdlApp::dispatchMouseEvent()
     const auto code = DevKey::LEFT_MOUSE;
     const auto act  = DevButtonEventT<MockDevTime>::PRESS;
-    const bool previous = 0;
+    const bool previous = false;
     const bool shift = false;
     const bool ctrl = false;
     const bool alt = false;
@@ -118,7 +118,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
     // Essentially AfxSdlApp::dispatchMouseScrollEvent()
     const auto code = DevKey::MIDDLE_MOUSE;
     const auto act  = DevButtonEventT<MockDevTime>::SCROLL_UP;
-    const bool previous = 0;
+    const bool previous = false;
     const bool shift = false;
     const bool ctrl = false;
     const bool alt = false;
@@ -159,7 +159,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
     // Essentially AfxSdlApp::dispatchMouseScrollEvent()
     const auto code = DevKey::MIDDLE_MOUSE;
     const auto act  = DevButtonEventT<MockDevTime>::SCROLL_DOWN;
-    const bool previous = 0;
+    const bool previous = false;
     const bool shift = false;
     const bool ctrl = false;
     const bool alt = false;

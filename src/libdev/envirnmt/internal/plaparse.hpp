@@ -40,69 +40,69 @@ public:
     static EnvIPlanetParser& instance();
     ~EnvIPlanetParser();
 
-	void parse(const SysPathName&, EnvPlanetEnvironment*);
+    void parse(const SysPathName&, EnvPlanetEnvironment*);
 
-    //Clear out any stored data following a parse. This leaves the maps etc in virgin state.
+    // Clear out any stored data following a parse. This leaves the maps etc in virgin state.
     void clear();
 
-	void startOrbit(const string*);
-	EnvIOrbitParams* orbitInConstruction();
-	void orbitComplete();
-	EnvOrbit* lookUpOrbit(const string*);
+    void startOrbit(const string*);
+    EnvIOrbitParams* orbitInConstruction();
+    void orbitComplete();
+    EnvOrbit* lookUpOrbit(const string*);
 
-	void startSatellite(const string*);
-	EnvISatelliteParams* satelliteInConstruction();
-	void satelliteComplete();
-	EnvSatellite* lookUpSatellite(const string*);
-	void copySatellites(ctl_pvector<EnvSatellite>* vec);	// PRE(vec);
+    void startSatellite(const string*);
+    EnvISatelliteParams* satelliteInConstruction();
+    void satelliteComplete();
+    EnvSatellite* lookUpSatellite(const string*);
+    void copySatellites(ctl_pvector<EnvSatellite>* vec); // PRE(vec);
 
-	void addClut(EnvElevationColourTable*);
-	EnvElevationColourTable* lookUpClut(const string*);
+    void addClut(EnvElevationColourTable*);
+    EnvElevationColourTable* lookUpClut(const string*);
 
-	EnvISkyDeclaration& skyDeclaration(void);
-	EnvUniformSky* createUniformSky(void);
-	EnvStaticSky* createStaticSky(void);
-	EnvDynamicSky* createDynamicSky(void);
+    EnvISkyDeclaration& skyDeclaration();
+    EnvUniformSky* createUniformSky();
+    EnvStaticSky* createStaticSky();
+    EnvDynamicSky* createDynamicSky();
 
-	void startSkyline();
-	void completeSkyline();
-	void skylineMeshFile(const string*);
-	void skylineController(const string*);
-	void skylineColourTable(const string*);
+    void startSkyline();
+    void completeSkyline();
+    void skylineMeshFile(const string*);
+    void skylineController(const string*);
+    void skylineColourTable(const string*);
 
-	W4dStars* pStars() const;
-	void createStars(RenStars::Configuration, MATHEX_SCALAR radius, int nStars);
+    W4dStars* pStars() const;
+    void createStars(RenStars::Configuration, MATHEX_SCALAR radius, int nStars);
 
-	EnvPlanetEnvironment* planet()	{ return planet_; }
+    EnvPlanetEnvironment* planet() { return planet_; }
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const EnvIPlanetParser& t );
+    friend ostream& operator<<(ostream& o, const EnvIPlanetParser& t);
 
 private:
-	EnvPlanetEnvironment*	planet_;
-	EnvIOrbitParams*		orbParams_;
-	EnvISatelliteParams*	satParams_;
-	EnvISkyDeclaration 		skyDeclaration_;
-	W4dStars* 				pStars_;
+    EnvPlanetEnvironment* planet_;
+    EnvIOrbitParams* orbParams_;
+    EnvISatelliteParams* satParams_;
+    EnvISkyDeclaration skyDeclaration_;
+    W4dStars* pStars_;
 
-	// Sky-line parameters.
-	bool						contructingSkyline_;
-	string						skylineMesh_;
-	EnvElevationColourTable*	skylineClut_;
-	EnvSatellite*				skylineController_;
+    // Sky-line parameters.
+    bool contructingSkyline_;
+    string skylineMesh_;
+    EnvElevationColourTable* skylineClut_;
+    EnvSatellite* skylineController_;
 
-	typedef ctl_map<string, EnvElevationColourTable*, std::less<string> > ClutMap;
-	typedef ctl_map<string, EnvSatellite*, 			  std::less<string> > SatelliteMap;
-	typedef ctl_map<string, EnvOrbit*,				  std::less<string> > OrbitMap;
+    using ClutMap = ctl_map<string, EnvElevationColourTable*, std::less<string>>;
+    using SatelliteMap = ctl_map<string, EnvSatellite*, std::less<string>>;
+    using OrbitMap = ctl_map<string, EnvOrbit*, std::less<string>>;
 
-	ClutMap			cluts_;
-	OrbitMap		orbits_;
-	SatelliteMap	satellites_;
+    ClutMap cluts_;
+    OrbitMap orbits_;
+    SatelliteMap satellites_;
 
-    EnvIPlanetParser( const EnvIPlanetParser& );
-    EnvIPlanetParser& operator =( const EnvIPlanetParser& );
-    bool operator ==( const EnvIPlanetParser& );
+    EnvIPlanetParser(const EnvIPlanetParser&);
+    EnvIPlanetParser& operator=(const EnvIPlanetParser&);
+    bool operator==(const EnvIPlanetParser&);
 
     EnvIPlanetParser();
 };

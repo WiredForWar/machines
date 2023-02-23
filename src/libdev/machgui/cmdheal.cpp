@@ -17,11 +17,11 @@
 #include "machlog/opadheal.hpp"
 #include "ctl/pvector.hpp"
 
-MachGuiHealCommand::MachGuiHealCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    action_( HEAL_OBJECT ),
-    pDirectObject_( NULL ),
-    hadFinalPick_( false )
+MachGuiHealCommand::MachGuiHealCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , action_(HEAL_OBJECT)
+    , pDirectObject_(nullptr)
+    , hadFinalPick_(false)
 {
     TEST_INVARIANT;
 }
@@ -29,15 +29,14 @@ MachGuiHealCommand::MachGuiHealCommand( MachInGameScreen* pInGameScreen )
 MachGuiHealCommand::~MachGuiHealCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiHealCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiHealCommand& t )
+ostream& operator<<(ostream& o, const MachGuiHealCommand& t)
 {
 
     o << "MachGuiHealCommand " << (void*)&t << " start" << std::endl;
@@ -46,67 +45,61 @@ ostream& operator <<( ostream& o, const MachGuiHealCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiHealCommand::pickOnTerrain( const MexPoint3d& location, bool ctrlPressed,
-                                bool shiftPressed, bool altPressed )
+// virtual
+void MachGuiHealCommand::pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
-    //Check the location is on the ground - not up a hill
-    if( cursorOnTerrain( location, ctrlPressed, shiftPressed, altPressed ) !=
-        MachGui::INVALID_CURSOR )
+    // Check the location is on the ground - not up a hill
+    if (cursorOnTerrain(location, ctrlPressed, shiftPressed, altPressed) != MachGui::INVALID_CURSOR)
     {
-        //Store the location and set the action
+        // Store the location and set the action
         action_ = MOVE_TO_LOCATION;
         location_ = location;
         hadFinalPick_ = true;
     }
 }
 
-//virtual
-void MachGuiHealCommand::pickOnActor
-(
-    MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed
-)
+// virtual
+void MachGuiHealCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
-    hadFinalPick_ = cursorOnActor( pActor, ctrlPressed, shiftPressed, altPressed ) !=
-                        MachGui::INVALID_CURSOR;
+    hadFinalPick_ = cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed) != MachGui::INVALID_CURSOR;
 }
 
-//virtual
-bool MachGuiHealCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiHealCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Administrators and aggressors can Heal
-	bool result = false;
+    // Administrators and aggressors can Heal
+    bool result = false;
     MachLog::ObjectType objectType = actor.objectType();
-	if( objectType == MachLog::ADMINISTRATOR )
-	{
-		const MachLogAdministrator& mla = actor.asAdministrator();
-		if( mla.hasHealingWeapon() )
-			result = true;
-	}
+    if (objectType == MachLog::ADMINISTRATOR)
+    {
+        const MachLogAdministrator& mla = actor.asAdministrator();
+        if (mla.hasHealingWeapon())
+            result = true;
+    }
     return result;
 }
 
-//virtual
+// virtual
 bool MachGuiHealCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiHealCommand::doApply( MachActor* pActor, string* pReason )
+// virtual
+bool MachGuiHealCommand::doApply(MachActor* pActor, string* pReason)
 {
-    PRE( pActor->objectIsMachine() );
+    PRE(pActor->objectIsMachine());
 
-    //Take appropriate action
+    // Take appropriate action
     bool canDo = false;
-    switch( action_ )
+    switch (action_)
     {
         case MOVE_TO_LOCATION:
-            canDo = applyMove( pActor, pReason );
+            canDo = applyMove(pActor, pReason);
             break;
 
         case HEAL_OBJECT:
-            canDo = applyHealObject( pActor, pReason );
+            canDo = applyHealObject(pActor, pReason);
             break;
 
         default:
@@ -116,87 +109,81 @@ bool MachGuiHealCommand::doApply( MachActor* pActor, string* pReason )
     return canDo;
 }
 
-bool MachGuiHealCommand::applyMove( MachActor* pActor, string* )
+bool MachGuiHealCommand::applyMove(MachActor* pActor, string*)
 {
-	PRE( pActor->objectIsMachine() );
+    PRE(pActor->objectIsMachine());
 
-	MexPoint2d validPoint;
+    MexPoint2d validPoint;
 
-	bool valid = findClosestPointValidOnTerrain(location_,
-				 							    IGNORE_SELECTED_ACTOR_OBSTACLES,
-				 					    		&pActor->asMachine(),
-				 					    		&validPoint );
+    bool valid
+        = findClosestPointValidOnTerrain(location_, IGNORE_SELECTED_ACTOR_OBSTACLES, &pActor->asMachine(), &validPoint);
 
-	if ( valid )
-	{
-	    //Construct a move operation
-	    MachLogMoveToOperation* pOp =
-	        _NEW( MachLogMoveToOperation( &pActor->asMachine(), validPoint, commandId() ) );
+    if (valid)
+    {
+        // Construct a move operation
+        MachLogMoveToOperation* pOp = _NEW(MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId()));
 
-	    //Give it to the actor
-	    pActor->newOperation( pOp );
+        // Give it to the actor
+        pActor->newOperation(pOp);
 
-		if( not hasPlayedVoiceMail() )
-		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::MOVING );
-			hasPlayedVoiceMail( true );
-		}
-	}
+        if (not hasPlayedVoiceMail())
+        {
+            MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
+            hasPlayedVoiceMail(true);
+        }
+    }
 
     return true;
 }
 
-bool MachGuiHealCommand::applyHealObject( MachActor* pActor, string* )
+bool MachGuiHealCommand::applyHealObject(MachActor* pActor, string*)
 {
-    //Check not trying to Heal oneself
+    // Check not trying to Heal oneself
     bool canDo = pActor != pDirectObject_;
-    if( canDo )
+    if (canDo)
     {
-        //Construct appropriate type of operation
+        // Construct appropriate type of operation
         MachLogOperation* pOp;
 
-		ASSERT( pActor->objectType() == MachLog::ADMINISTRATOR
-				and pActor->asAdministrator().hasHealingWeapon(),
-				"Non-administrator or non-heal-capable administrator about to be issued heal op!" );
+        ASSERT(
+            pActor->objectType() == MachLog::ADMINISTRATOR and pActor->asAdministrator().hasHealingWeapon(),
+            "Non-administrator or non-heal-capable administrator about to be issued heal op!");
 
-		pOp = _NEW( MachLogHealOperation( &pActor->asAdministrator(), pDirectObject_ ) );
+        pOp = _NEW(MachLogHealOperation(&pActor->asAdministrator(), pDirectObject_));
 
-        //Give it to the actor
-        pActor->newOperation( pOp );
+        // Give it to the actor
+        pActor->newOperation(pOp);
 
-		if( not hasPlayedVoiceMail() )
-		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::HEAL_TARGET );
-			hasPlayedVoiceMail( true );
-		}
-
+        if (not hasPlayedVoiceMail())
+        {
+            MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::HEAL_TARGET);
+            hasPlayedVoiceMail(true);
+        }
     }
 
     return canDo;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiHealCommand::cursorOnTerrain( const MexPoint3d& location, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiHealCommand::cursorOnTerrain(const MexPoint3d& location, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if( cursorInFogOfWar() or isPointValidOnTerrain( location, IGNORE_SELECTED_ACTOR_OBSTACLES ) )
+    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::MOVETO_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiHealCommand::cursorOnActor( MachActor* pActor, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiHealCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursorType = MachGui::INVALID_CURSOR;
 
-    //Check for a machine at less than 100% hps.
-    if( pActor->objectIsMachine()
-    	and pActor->hpRatio() != 1.0
-    	and atLeastOneCanHeal( &pActor->asMachine() ) )
+    // Check for a machine at less than 100% hps.
+    if (pActor->objectIsMachine() and pActor->hpRatio() != 1.0 and atLeastOneCanHeal(&pActor->asMachine()))
     {
-        //Set the Heal object action
+        // Set the Heal object action
         action_ = HEAL_OBJECT;
         cursorType = MachGui::HEAL_CURSOR;
         pDirectObject_ = pActor;
@@ -205,109 +192,109 @@ MachGui::Cursor2dType MachGuiHealCommand::cursorOnActor( MachActor* pActor, bool
     return cursorType;
 }
 
-//virtual
-void MachGuiHealCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiHealCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiHealCommand::clone() const
 {
-    return _NEW( MachGuiHealCommand( &inGameScreen() ) );
+    return _NEW(MachGuiHealCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiHealCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/heal.bmp", "gui/commands/heal.bmp" );
+    static std::pair<string, string> names("gui/commands/heal.bmp", "gui/commands/heal.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiHealCommand::cursorPromptStringId() const
 {
     return IDS_HEAL_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiHealCommand::commandPromptStringid() const
 {
     return IDS_HEAL_START;
 }
 
-//virtual
+// virtual
 bool MachGuiHealCommand::canAdminApply() const
 {
     return false;
 }
 
-//virtual
-bool MachGuiHealCommand::doAdminApply( MachLogAdministrator* pAdministrator, string* )
+// virtual
+bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
 {
-    PRE( canAdminApply() );
+    PRE(canAdminApply());
 
-    //Check not trying to Heal oneself
+    // Check not trying to Heal oneself
     bool canDo = pAdministrator != pDirectObject_;
-    if( canDo )
+    if (canDo)
     {
-	    //Create an admin Heal operation for the administrator
-	    MachLogAdminHealOperation* pOp =
-	        _NEW( MachLogAdminHealOperation( pAdministrator, pDirectObject_ ) );
-	    pAdministrator->newOperation( pOp );
+        // Create an admin Heal operation for the administrator
+        MachLogAdminHealOperation* pOp = _NEW(MachLogAdminHealOperation(pAdministrator, pDirectObject_));
+        pAdministrator->newOperation(pOp);
 
-		MachActor* pFirstHealingMachine = NULL;
+        MachActor* pFirstHealingMachine = nullptr;
 
-		bool found = false;
-		for( MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin(); not found and i != inGameScreen().selectedActors().end(); ++i )
-			if( (*i)->objectIsMachine() and (*i)->objectIsCanAttack() and (*i)->asCanAttack().hasHealingWeapon() )
-			{
-				found = true;
-				pFirstHealingMachine = (*i);
-			}
+        bool found = false;
+        for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
+             not found and i != inGameScreen().selectedActors().end();
+             ++i)
+            if ((*i)->objectIsMachine() and (*i)->objectIsCanAttack() and (*i)->asCanAttack().hasHealingWeapon())
+            {
+                found = true;
+                pFirstHealingMachine = (*i);
+            }
 
-		ASSERT( found, "No heal-capable machine found in corral!" );
+        ASSERT(found, "No heal-capable machine found in corral!");
 
-		// give out voicemail
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pFirstHealingMachine, MachineVoiceMailEventID::HEAL_TARGET );
-
-	}
+        // give out voicemail
+        MachLogMachineVoiceMailManager::instance().postNewMail(
+            *pFirstHealingMachine,
+            MachineVoiceMailEventID::HEAL_TARGET);
+    }
 
     return canDo;
 }
 
-//virtual
-bool MachGuiHealCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiHealCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_H and be.action() == DevButtonEvent::PRESS and be.previous() == 0  )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_H and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-bool MachGuiHealCommand::atLeastOneCanHeal( const MachLogMachine* pTargetMachine ) const
+bool MachGuiHealCommand::atLeastOneCanHeal(const MachLogMachine* pTargetMachine) const
 {
-	bool noneCanHealThis = true;
+    bool noneCanHealThis = true;
 
-	for( MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-		 iter != inGameScreen().selectedActors().end() and noneCanHealThis;
-		 ++iter )
-	{
-		MachActor* pActor = (*iter);
+    for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
+         iter != inGameScreen().selectedActors().end() and noneCanHealThis;
+         ++iter)
+    {
+        MachActor* pActor = (*iter);
 
-		if( pActor->objectType() == MachLog::ADMINISTRATOR
-			and pActor->asAdministrator().hasHealingWeapon()
-			and pActor != pTargetMachine )					// can't heal oneself.......
-		{
-			noneCanHealThis = false;
-		}
-	}
+        if (pActor->objectType() == MachLog::ADMINISTRATOR and pActor->asAdministrator().hasHealingWeapon()
+            and pActor != pTargetMachine) // can't heal oneself.......
+        {
+            noneCanHealThis = false;
+        }
+    }
 
-	return not( noneCanHealThis );
-
+    return not(noneCanHealThis);
 }
 
 /* End CMDATTAC.CPP **************************************************/

@@ -1,5 +1,5 @@
 /*
- * C T X S I N G L . H P P 
+ * C T X S I N G L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,22 +20,21 @@ class MachGuiCtxSinglePlayer : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxSinglePlayer( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxSinglePlayer();
+    MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxSinglePlayer() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxSinglePlayer& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxSinglePlayer& t);
 
-    MachGuiCtxSinglePlayer( const MachGuiCtxSinglePlayer& );
-    MachGuiCtxSinglePlayer& operator =( const MachGuiCtxSinglePlayer& );
+    MachGuiCtxSinglePlayer(const MachGuiCtxSinglePlayer&);
+    MachGuiCtxSinglePlayer& operator=(const MachGuiCtxSinglePlayer&);
 
-	MachGuiAnimations animations_;
+    MachGuiAnimations animations_;
 };
-
 
 #endif
 

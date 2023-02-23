@@ -25,45 +25,46 @@ class MachPhysDoublesidedFlame : public W4dEntity
 // Canonical form revoked
 {
 public:
-    MachPhysDoublesidedFlame( W4dEntity* pParent, const MexTransform3d& localTransform);
-    ~MachPhysDoublesidedFlame();
+    MachPhysDoublesidedFlame(W4dEntity* pParent, const MexTransform3d& localTransform);
+    ~MachPhysDoublesidedFlame() override;
 
-	static const MachPhysDoublesidedFlame& exemplar();
+    static const MachPhysDoublesidedFlame& exemplar();
 
+    void startFlame(
+        const MATHEX_SCALAR& w,
+        const MATHEX_SCALAR& h,
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration);
 
-	void startFlame(const MATHEX_SCALAR& w, const MATHEX_SCALAR& h,
-    					      const PhysAbsoluteTime& startTime,
-    					      const PhysRelativeTime& duration );
-
-    //Inherited from W4dEntity. Returns false.
-	virtual	bool intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysDoublesidedFlame );
-	PER_FRIEND_READ_WRITE( MachPhysDoublesidedFlame );
+    PER_MEMBER_PERSISTENT(MachPhysDoublesidedFlame);
+    PER_FRIEND_READ_WRITE(MachPhysDoublesidedFlame);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysDoublesidedFlame& t );
+    friend ostream& operator<<(ostream& o, const MachPhysDoublesidedFlame& t);
 
-    MachPhysDoublesidedFlame( const MachPhysDoublesidedFlame& );
-    MachPhysDoublesidedFlame& operator =( const MachPhysDoublesidedFlame& );
+    MachPhysDoublesidedFlame(const MachPhysDoublesidedFlame&);
+    MachPhysDoublesidedFlame& operator=(const MachPhysDoublesidedFlame&);
 
-	friend class MachPhysOtherPersistence;
+    friend class MachPhysOtherPersistence;
 
-	//one time constructor
+    // one time constructor
     MachPhysDoublesidedFlame();
 
-    typedef ctl_vector< Ren::MaterialVecPtr > Materials;
-    typedef CtlCountedPtr< Materials > MaterialsPtr;
+    using Materials = ctl_vector<Ren::MaterialVecPtr>;
+    using MaterialsPtr = CtlCountedPtr<Materials>;
 
-    static  const MaterialsPtr&  materialsPtr();
-	static void addMaterial( Materials* pMaterials, const RenTexture& texture );
+    static const MaterialsPtr& materialsPtr();
+    static void addMaterial(Materials* pMaterials, const RenTexture& texture);
 
-	PhysAbsoluteTime endTime_;
+    PhysAbsoluteTime endTime_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysDoublesidedFlame );
+PER_DECLARE_PERSISTENT(MachPhysDoublesidedFlame);
 
 #endif
 

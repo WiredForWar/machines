@@ -1,5 +1,5 @@
 /*
- * E X P H O L D R . H P P 
+ * E X P H O L D R . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -21,25 +21,23 @@ class MachPhysGenericExplosionData
 {
 public:
     ~MachPhysGenericExplosionData();
-	static const CtlConstCountedPtr< MachPhysConstructionExplosionData >& genericExplosion( size_t level );
+    static const CtlConstCountedPtr<MachPhysConstructionExplosionData>& genericExplosion(size_t level);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysGenericExplosionData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGenericExplosionData& t);
 
 private:
     MachPhysGenericExplosionData();
     // Operation deliberately revoked
-    MachPhysGenericExplosionData( const MachPhysGenericExplosionData& );
+    MachPhysGenericExplosionData(const MachPhysGenericExplosionData&);
 
     // Operation deliberately revoked
-    MachPhysGenericExplosionData& operator =( const MachPhysGenericExplosionData& );
+    MachPhysGenericExplosionData& operator=(const MachPhysGenericExplosionData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysGenericExplosionData& );
-
+    bool operator==(const MachPhysGenericExplosionData&);
 };
-
 
 #endif
 

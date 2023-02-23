@@ -1,14 +1,14 @@
 /*
- * B N D I D G E N . I P P 
+ * B N D I D G E N . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -24,12 +24,11 @@ uint32_t UtlBoundedIdGenerator::nUnusedIds() const
 }
 
 _CODE_INLINE
-bool UtlBoundedIdGenerator::isAllocated( UtlId id ) const
+bool UtlBoundedIdGenerator::isAllocated(UtlId id) const
 {
-    PRE( id < upperBound() );
+    PRE(id < upperBound());
 
-    return aFlags_[ id ] != 0;
+    return aFlags_[id] != 0;
 }
-
 
 /* End BNDIDGEN.IPP *************************************************/

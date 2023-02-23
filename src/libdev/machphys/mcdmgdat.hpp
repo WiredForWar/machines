@@ -24,41 +24,40 @@ class MachPhysMachineDamageData
 // Canonical form revoked
 {
 public:
-
-    //Persistence
-    PER_MEMBER_PERSISTENT( MachPhysMachineDamageData );
-    PER_FRIEND_READ_WRITE( MachPhysMachineDamageData );
+    // Persistence
+    PER_MEMBER_PERSISTENT(MachPhysMachineDamageData);
+    PER_FRIEND_READ_WRITE(MachPhysMachineDamageData);
 
 private:
-	MachPhysMachineDamageData( MachPhysMachine* pTargetMachine );
-    MachPhysMachineDamageData( const MachPhysMachineDamageData& );
+    MachPhysMachineDamageData(MachPhysMachine* pTargetMachine);
+    MachPhysMachineDamageData(const MachPhysMachineDamageData&);
 
     ~MachPhysMachineDamageData();
 
-	MachPhysMachineBurning& machineBurning();
-	void finishBurning();
-	bool isBurning() const;
-	bool isBurningFinished() const;
+    MachPhysMachineBurning& machineBurning();
+    void finishBurning();
+    bool isBurning() const;
+    bool isBurningFinished() const;
 
-	bool isDamaged() const;
-	void damageLevel( const double& percent );
-	const double& damageLevel() const;
-	void updateDamageLevel(); //to be called every 60 seconds
+    bool isDamaged() const;
+    void damageLevel(const double& percent);
+    const double& damageLevel() const;
+    void updateDamageLevel(); // to be called every 60 seconds
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMachineDamageData& t );
-    MachPhysMachineDamageData& operator =( const MachPhysMachineDamageData& );
+    friend ostream& operator<<(ostream& o, const MachPhysMachineDamageData& t);
+    MachPhysMachineDamageData& operator=(const MachPhysMachineDamageData&);
 
-	friend class MachPhysMachine;
+    friend class MachPhysMachine;
 
-	//data members
-	MachPhysMachine*			pTargetMachine_;
-    MachPhysMachineBurning* 	pMachineBurning_;          //Data related to being on fire
-	MachPhysMachineDamage*		pMachineDamage_;
+    // data members
+    MachPhysMachine* pTargetMachine_;
+    MachPhysMachineBurning* pMachineBurning_; // Data related to being on fire
+    MachPhysMachineDamage* pMachineDamage_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysMachineDamageData );
+PER_DECLARE_PERSISTENT(MachPhysMachineDamageData);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * A C T I O N S . H P P 
+ * A C T I O N S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,22 +24,20 @@ class MachLogActions
 public:
     ~MachLogActions();
 
-    //Parse the ACTIONS section of a scenario file
-    static void parseActionsSection( UtlLineTokeniser* pParser );
-	static void registerDerivedClasses();
-	static void createDynamically( MachLog::VictoryCondition, const PhysRelativeTime& timerFireAt );
+    // Parse the ACTIONS section of a scenario file
+    static void parseActionsSection(UtlLineTokeniser* pParser);
+    static void registerDerivedClasses();
+    static void createDynamically(MachLog::VictoryCondition, const PhysRelativeTime& timerFireAt);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogActions& t );
+    friend ostream& operator<<(ostream& o, const MachLogActions& t);
 
     MachLogActions();
-    MachLogActions( const MachLogActions& );
-    MachLogActions& operator =( const MachLogActions& );
-
+    MachLogActions(const MachLogActions&);
+    MachLogActions& operator=(const MachLogActions&);
 };
-
 
 #endif
 

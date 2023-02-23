@@ -7,10 +7,10 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////
@@ -29,8 +29,8 @@ T* allocate( ptrdiff_t size, T * )
     T * tmp = (T *)( ::operator new( (size_t)( size * sizeof( T ) ) ) );
     if( tmp == 0 )
     {
-		cerr << "out of memory" << endl;
-		exit( 1 );
+        cerr << "out of memory" << endl;
+        exit( 1 );
     }
     return tmp;
 }
@@ -46,8 +46,8 @@ T* allocate( int size, T * )
 //    T *tmp = (T*)( _NEW_ARRAY( (unsigned int), ( size * sizeof( T ) ) ) );
     if( tmp == 0 )
     {
-		cerr << "out of memory" << endl; 
-		exit( 1 );
+        cerr << "out of memory" << endl;
+        exit( 1 );
     }
 
     return tmp;
@@ -58,14 +58,14 @@ template < class T >
 _CODE_INLINE
 T * allocate( long size, T * )
 {
-	// set_new_handler( 0 );
+    // set_new_handler( 0 );
     T *tmp = (T*)( ::operator new( (unsigned long)( size * sizeof( T ) ) ) );
 //    T *tmp = (T*)( _NEW_ARRAY( (unsigned long), ( size * sizeof( T ) ) ) );
 
     if( tmp == 0 )
     {
-		cerr << "out of memory" << endl; 
-		exit( 1 );
+        cerr << "out of memory" << endl;
+        exit( 1 );
     }
 
     return tmp;
@@ -98,7 +98,6 @@ void construct( T1 *p, const T2& value )
 }
 */
 //////////////////////////////////////////////////////////////////////
-
 
 //////////////////////////////////////////////////////////////////////
 

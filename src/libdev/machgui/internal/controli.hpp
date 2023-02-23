@@ -1,5 +1,5 @@
 /*
- * C O N T R O L I . H P P 
+ * C O N T R O L I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,26 +26,25 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiControlPanelImpl& t );
+    friend ostream& operator<<(ostream& o, const MachGuiControlPanelImpl& t);
 
-    MachGuiControlPanelImpl( const MachGuiControlPanelImpl& );
-    MachGuiControlPanelImpl& operator =( const MachGuiControlPanelImpl& );
+    MachGuiControlPanelImpl(const MachGuiControlPanelImpl&);
+    MachGuiControlPanelImpl& operator=(const MachGuiControlPanelImpl&);
 
-	friend class MachGuiControlPanel;
+    friend class MachGuiControlPanel;
 
-    //Data members...
-	struct RedrawArea
-	{
-		Gui::Box area_;
-		size_t count_;
-	};
-	typedef ctl_pvector< RedrawArea > RedrawAreas;
+    // Data members...
+    struct RedrawArea
+    {
+        Gui::Box area_;
+        size_t count_;
+    };
+    using RedrawAreas = ctl_pvector<RedrawArea>;
 
-	RedrawAreas redrawAreas_;
-	GuiBitmap 	decals_[8];
-	Gui::Coord 	decalCoord_[8];
+    RedrawAreas redrawAreas_;
+    GuiBitmap decals_[8];
+    Gui::Coord decalCoord_[8];
 };
-
 
 #endif
 

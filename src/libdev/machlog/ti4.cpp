@@ -23,7 +23,6 @@ class MachActor;
 #include "world4d/entity.hpp"
 #include "machlog/internal/grpmovei.hpp"
 
-
 class W4dEntity;
 class PhysConfigSpace2d;
 class MachLogEntrance;
@@ -32,14 +31,13 @@ void ti4()
 {
     static ctl_fixed_vector<unsigned> dummyX;
 
-    static ctl_stack< ctl_vector< pair< W4dEntity*, PhysConfigSpace2d* > > >   dummyY;
-    
-    static  ctl_vector< MachLogEntrance* > dummyZ;
-    static UtlBoundedIdPMap< MachActor > dummyA( 12 );
-    static ctl_vector< ctl_pvector< MachActor > > dummy;
+    static ctl_stack<ctl_vector<pair<W4dEntity*, PhysConfigSpace2d*>>> dummyY;
 
-    static ctl_vector< MachLogGroupSimpleMoveImplementation::MachineData >   dummy0;
+    static ctl_vector<MachLogEntrance*> dummyZ;
+    static UtlBoundedIdPMap<MachActor> dummyA(12);
+    static ctl_vector<ctl_pvector<MachActor>> dummy;
+
+    static ctl_vector<MachLogGroupSimpleMoveImplementation::MachineData> dummy0;
 }
 
 /* End TI4.CPP *******************************************************/
-

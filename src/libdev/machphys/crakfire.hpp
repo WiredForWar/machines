@@ -24,83 +24,93 @@ class MexTransform3d;
 class MexPoint2d;
 class MexPoint3d;
 
-template < class T > class ctl_vector;
+template <class T> class ctl_vector;
 
 class MachPhysCrackFire : public W4dComposite
 // Canonical form revoked
 {
 public:
+    enum ChasmType : unsigned char
+    {
+        GARILLA_PUNCH_CHASM,
+        BEE_BOMB_CHASM
+    };
+    // ctor
+    MachPhysCrackFire(
+        W4dEntity* pParent,
+        const MexTransform3d& startTransform,
+        const MATHEX_SCALAR& length,
+        const ChasmType& type = GARILLA_PUNCH_CHASM);
 
-	enum ChasmType : unsigned char { GARILLA_PUNCH_CHASM, BEE_BOMB_CHASM };
-    //ctor
-    MachPhysCrackFire( W4dEntity* pParent, const MexTransform3d& startTransform,
-                       const MATHEX_SCALAR& length, const ChasmType& type = GARILLA_PUNCH_CHASM );
+    MachPhysCrackFire(
+        W4dEntity* pParent,
+        const MexPoint3d& startPoint,
+        const MexPoint3d& endPoint,
+        const ChasmType& type = GARILLA_PUNCH_CHASM);
 
-    MachPhysCrackFire( W4dEntity* pParent, const MexPoint3d& startPoint,
-	                                   const MexPoint3d& endPoint, const ChasmType& type = GARILLA_PUNCH_CHASM );
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    static const MachPhysCrackFire& exemplar(const ChasmType& type);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
-    static const MachPhysCrackFire& exemplar( const ChasmType& type );
+    // dtor
+    ~MachPhysCrackFire() override;
 
-    //dtor
-    virtual ~MachPhysCrackFire();
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    enum DisplayDebris : unsigned char
+    {
+        DEBRIS_DISPLAY,
+        DEBRIS_NOT_DISPLAY
+    };
+    void startCrackAndFire(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& crackYScale,
+        const MATHEX_SCALAR& fireZScale,
+        const ChasmType& type = GARILLA_PUNCH_CHASM,
+        DisplayDebris debris = DEBRIS_DISPLAY);
 
-	enum DisplayDebris : unsigned char { DEBRIS_DISPLAY, DEBRIS_NOT_DISPLAY };
-	void startCrackAndFire( const PhysAbsoluteTime& startTime,
-	                        const PhysRelativeTime& duration,
-	                        const MATHEX_SCALAR& crackYScale,
-	                        const MATHEX_SCALAR& fireZScale,
-	                        const ChasmType& type = GARILLA_PUNCH_CHASM,
-	                        DisplayDebris  debris = DEBRIS_DISPLAY );
+    using Points = ctl_vector<MexPoint2d>;
 
-	typedef ctl_vector < MexPoint2d >  Points;
-
-	//create crack and fires on a segmented line defined by points, start them from startTime
-	static void createCrackFires
-	(
-		W4dEntity* pParent,
-		const MexTransform3d& position,
-		const Points& points,
-		const PhysAbsoluteTime& startTime,
-		const PhysRelativeTime& duration,
-		const MachPhysPlanetSurface& surface,
-		const MATHEX_SCALAR& crackScale,
-		const MATHEX_SCALAR& fireScale,
-		DisplayDebris  debris = DEBRIS_DISPLAY,
-		MachPhysCrackFire::ChasmType type = MachPhysCrackFire::BEE_BOMB_CHASM
-	);
+    // create crack and fires on a segmented line defined by points, start them from startTime
+    static void createCrackFires(
+        W4dEntity* pParent,
+        const MexTransform3d& position,
+        const Points& points,
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration,
+        const MachPhysPlanetSurface& surface,
+        const MATHEX_SCALAR& crackScale,
+        const MATHEX_SCALAR& fireScale,
+        DisplayDebris debris = DEBRIS_DISPLAY,
+        MachPhysCrackFire::ChasmType type = MachPhysCrackFire::BEE_BOMB_CHASM);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysCrackFire& t );
+    friend ostream& operator<<(ostream& o, const MachPhysCrackFire& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysCrackFire );
-    PER_FRIEND_READ_WRITE( MachPhysCrackFire );
+    PER_MEMBER_PERSISTENT(MachPhysCrackFire);
+    PER_FRIEND_READ_WRITE(MachPhysCrackFire);
 
 private:
-    //Deliberately revoked
-    MachPhysCrackFire( const MachPhysCrackFire& );
-    MachPhysCrackFire& operator =( const MachPhysCrackFire& );
-    bool operator ==( const MachPhysCrackFire& );
+    // Deliberately revoked
+    MachPhysCrackFire(const MachPhysCrackFire&);
+    MachPhysCrackFire& operator=(const MachPhysCrackFire&);
+    bool operator==(const MachPhysCrackFire&);
 
-	friend class MachPhysOtherPersistence;
+    friend class MachPhysOtherPersistence;
 
-    //One-time constructor used to create the exemplar
+    // One-time constructor used to create the exemplar
     MachPhysCrackFire(const ChasmType& type);
 
-	void setMaterialFogMultipliers();
+    void setMaterialFogMultipliers();
 
-	MachPhysCrackFireImpl* pImpl_;
-
+    MachPhysCrackFireImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysCrackFire );
-PER_ENUM_PERSISTENT( MachPhysCrackFire::ChasmType );
-PER_ENUM_PERSISTENT( MachPhysCrackFire::DisplayDebris );
+PER_DECLARE_PERSISTENT(MachPhysCrackFire);
+PER_ENUM_PERSISTENT(MachPhysCrackFire::ChasmType);
+PER_ENUM_PERSISTENT(MachPhysCrackFire::DisplayDebris);
 
 #endif
 

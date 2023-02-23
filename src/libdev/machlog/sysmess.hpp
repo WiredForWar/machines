@@ -1,5 +1,5 @@
 /*
- * S Y S M E S S . H P P 
+ * S Y S M E S S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,26 +21,23 @@ class MachLogSystemMessageHandler : public NetSystemMessageHandler
 {
 public:
     MachLogSystemMessageHandler();
-    virtual ~MachLogSystemMessageHandler();
+    ~MachLogSystemMessageHandler() override;
 
-	virtual bool	handleHostMessage();
-	virtual bool	handleDestroyPlayerMessage( const string& );
-	virtual bool	handleSessionLostMessage();
+    bool handleHostMessage() override;
+    bool handleDestroyPlayerMessage(const string&) override;
+    bool handleSessionLostMessage() override;
 
     void CLASS_INVARIANT;
 
 protected:
-
-	bool logicalHandleDestroyPlayerMessage( MachPhys::Race );
+    bool logicalHandleDestroyPlayerMessage(MachPhys::Race);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogSystemMessageHandler& t );
+    friend ostream& operator<<(ostream& o, const MachLogSystemMessageHandler& t);
 
-    MachLogSystemMessageHandler( const MachLogSystemMessageHandler& );
-    MachLogSystemMessageHandler& operator =( const MachLogSystemMessageHandler& );
-
+    MachLogSystemMessageHandler(const MachLogSystemMessageHandler&);
+    MachLogSystemMessageHandler& operator=(const MachLogSystemMessageHandler&);
 };
-
 
 #endif
 

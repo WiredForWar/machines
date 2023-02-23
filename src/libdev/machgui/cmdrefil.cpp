@@ -15,9 +15,9 @@
 #include "machlog/oprefill.hpp"
 #include "machlog/administ.hpp"
 
-MachGuiRefillLandMineCommand::MachGuiRefillLandMineCommand( MachInGameScreen* pInGameScreen )
-:   MachGuiCommand( pInGameScreen ),
-    hadFinalPick_( true )
+MachGuiRefillLandMineCommand::MachGuiRefillLandMineCommand(MachInGameScreen* pInGameScreen)
+    : MachGuiCommand(pInGameScreen)
+    , hadFinalPick_(true)
 {
     TEST_INVARIANT;
 }
@@ -25,15 +25,14 @@ MachGuiRefillLandMineCommand::MachGuiRefillLandMineCommand( MachInGameScreen* pI
 MachGuiRefillLandMineCommand::~MachGuiRefillLandMineCommand()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiRefillLandMineCommand::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiRefillLandMineCommand& t )
+ostream& operator<<(ostream& o, const MachGuiRefillLandMineCommand& t)
 {
 
     o << "MachGuiRefillLandMineCommand " << (void*)&t << " start" << std::endl;
@@ -42,136 +41,138 @@ ostream& operator <<( ostream& o, const MachGuiRefillLandMineCommand& t )
     return o;
 }
 
-//virtual
-void MachGuiRefillLandMineCommand::pickOnTerrain
-(
-    const MexPoint3d&, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
+// virtual
+void MachGuiRefillLandMineCommand::pickOnTerrain(
+    const MexPoint3d&,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
 {
-	//Ignored
+    // Ignored
 }
 
-//virtual
-void MachGuiRefillLandMineCommand::pickOnActor
-(
-    MachActor*, bool /*ctrlPressed*/, bool /*shiftPressed*/, bool /*altPressed*/
+// virtual
+void MachGuiRefillLandMineCommand::pickOnActor(
+    MachActor*,
+    bool /*ctrlPressed*/,
+    bool /*shiftPressed*/,
+    bool /*altPressed*/
 )
 {
-    //Ignored
+    // Ignored
 }
 
-//virtual
-bool MachGuiRefillLandMineCommand::canActorEverExecute( const MachActor& actor ) const
+// virtual
+bool MachGuiRefillLandMineCommand::canActorEverExecute(const MachActor& actor) const
 {
-    //Locators can locate
+    // Locators can locate
     MachLog::ObjectType objectType = actor.objectType();
     return objectType == MachLog::SPY_LOCATOR;
 }
 
-//virtual
+// virtual
 bool MachGuiRefillLandMineCommand::isInteractionComplete() const
 {
     return hadFinalPick_;
 }
 
-//virtual
-bool MachGuiRefillLandMineCommand::doApply( MachActor* pActor, string* /*pReason*/ )
+// virtual
+bool MachGuiRefillLandMineCommand::doApply(MachActor* pActor, string* /*pReason*/)
 {
-    PRE( pActor->objectIsMachine() );
+    PRE(pActor->objectIsMachine());
 
-    //Check locator type
+    // Check locator type
     bool canDo = false;
-    if( pActor->objectType() == MachLog::SPY_LOCATOR )
+    if (pActor->objectType() == MachLog::SPY_LOCATOR)
     {
-        MachLogRefillLandMinesOperation* pOp =
-            _NEW( MachLogRefillLandMinesOperation( &pActor->asSpyLocator() ) );
+        MachLogRefillLandMinesOperation* pOp = _NEW(MachLogRefillLandMinesOperation(&pActor->asSpyLocator()));
 
-        //Give to actor
-        pActor->newOperation( pOp );
+        // Give to actor
+        pActor->newOperation(pOp);
         canDo = true;
 
-		if( not hasPlayedVoiceMail() )
-		{
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pActor, MachineVoiceMailEventID::TASKED );
-			hasPlayedVoiceMail( true );
-		}
-
+        if (not hasPlayedVoiceMail())
+        {
+            MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TASKED);
+            hasPlayedVoiceMail(true);
+        }
     }
 
     return canDo;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiRefillLandMineCommand::cursorOnTerrain( const MexPoint3d&, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiRefillLandMineCommand::cursorOnTerrain(const MexPoint3d&, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     return cursor;
 }
 
-//virtual
-MachGui::Cursor2dType MachGuiRefillLandMineCommand::cursorOnActor( MachActor*, bool, bool, bool )
+// virtual
+MachGui::Cursor2dType MachGuiRefillLandMineCommand::cursorOnActor(MachActor*, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
     return cursor;
 }
 
-//virtual
-void MachGuiRefillLandMineCommand::typeData( MachLog::ObjectType, int, uint )
+// virtual
+void MachGuiRefillLandMineCommand::typeData(MachLog::ObjectType, int, uint)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
+// virtual
 MachGuiCommand* MachGuiRefillLandMineCommand::clone() const
 {
-    return _NEW( MachGuiRefillLandMineCommand( &inGameScreen() ) );
+    return _NEW(MachGuiRefillLandMineCommand(&inGameScreen()));
 }
 
-//virtual
+// virtual
 const std::pair<string, string>& MachGuiRefillLandMineCommand::iconNames() const
 {
-    static std::pair<string, string> names( "gui/commands/refill.bmp", "gui/commands/refill.bmp" );
+    static std::pair<string, string> names("gui/commands/refill.bmp", "gui/commands/refill.bmp");
     return names;
 }
 
-//virtual
+// virtual
 uint MachGuiRefillLandMineCommand::cursorPromptStringId() const
 {
     return IDS_REFILLLANDMINE_COMMAND;
 }
 
-//virtual
+// virtual
 uint MachGuiRefillLandMineCommand::commandPromptStringid() const
 {
     return IDS_REFILLLANDMINE_START;
 }
 
-//virtual
+// virtual
 bool MachGuiRefillLandMineCommand::canAdminApply() const
 {
-	return false;
+    return false;
 }
 
-//virtual
-bool MachGuiRefillLandMineCommand::doAdminApply( MachLogAdministrator* /*pAdministrator*/, string* )
+// virtual
+bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
 {
-    PRE( canAdminApply() );;
-	return false;
-
+    PRE(canAdminApply());
+    ;
+    return false;
 }
 
-//virtual
-bool MachGuiRefillLandMineCommand::processButtonEvent( const DevButtonEvent& be )
+// virtual
+bool MachGuiRefillLandMineCommand::processButtonEvent(const DevButtonEvent& be)
 {
-	if ( isVisible() and be.scanCode() == DevKey::KEY_G and be.action() == DevButtonEvent::PRESS and be.previous() == 0 )
-	{
-		inGameScreen().activeCommand( *this );
-		return true;
-	}
+    if (isVisible() and be.scanCode() == DevKey::KEY_G and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /* End CMDLOCTO.CPP **************************************************/

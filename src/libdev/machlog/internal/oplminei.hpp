@@ -1,5 +1,5 @@
 /*
- * O P L M I N E I . H P P 
+ * O P L M I N E I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -29,28 +29,27 @@ class MachLogSpyLocator;
 
 class MachLogDropLandMineOperationImpl
 {
-public:		
-	MachLogDropLandMineOperationImpl( MachLogSpyLocator * pActor, const MexPoint3d& dest );
-	MachLogDropLandMineOperationImpl( MachLogSpyLocator * pActor, const MachLogDropLandMineOperation::Path& externalPath );
-							
-	~MachLogDropLandMineOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogDropLandMineOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogDropLandMineOperationImpl );
-	
-	void CLASS_INVARIANT;
+public:
+    MachLogDropLandMineOperationImpl(MachLogSpyLocator* pActor, const MexPoint3d& dest);
+    MachLogDropLandMineOperationImpl(MachLogSpyLocator* pActor, const MachLogDropLandMineOperation::Path& externalPath);
 
-	friend class MachLogDropLandMineOperation;
-	
+    ~MachLogDropLandMineOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogDropLandMineOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogDropLandMineOperationImpl);
+
+    void CLASS_INVARIANT;
+
+    friend class MachLogDropLandMineOperation;
+
 private:
-
-	MachLogSpyLocator*						pActor_;
-	MexPoint3d								dest_;
-	MachLogDropLandMineOperation::Path		path_;
-	int										failedAttempts_;
-	bool									moved_;	
+    MachLogSpyLocator* pActor_;
+    MexPoint3d dest_;
+    MachLogDropLandMineOperation::Path path_;
+    int failedAttempts_;
+    bool moved_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogDropLandMineOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogDropLandMineOperationImpl);
 
 #endif
 

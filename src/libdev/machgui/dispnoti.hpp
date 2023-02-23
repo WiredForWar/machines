@@ -1,5 +1,5 @@
 /*
- * D I S P N O T I . H P P 
+ * D I S P N O T I . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -22,34 +22,31 @@ class MachGuiDispositionChangeNotifiable : public MachLogDispositionChangeNotifi
 // Canonical form revoked
 {
 public:
+    MachGuiDispositionChangeNotifiable(MachGuiStartupScreens*);
 
-    MachGuiDispositionChangeNotifiable( MachGuiStartupScreens* );
+    ~MachGuiDispositionChangeNotifiable() override;
 
-    virtual ~MachGuiDispositionChangeNotifiable();
-
-	virtual void notifyGeneralDispositionChange();
-	//one of these is generated for the actual specifics of a race
-	virtual void notifySpecificDispositionChange( MachPhys::Race, MachPhys::Race );
-	//This is called when a class changes disposition to move to enemy or neutral, if they started as ally
-	virtual void notifyDispositionChangeToNoneAlly( MachPhys::Race, MachPhys::Race );
-	//This is called when a class changes disposition to move to ally, if they started as non-ally
-	virtual void notifyDispositionChangeToAlly( MachPhys::Race, MachPhys::Race );
+    void notifyGeneralDispositionChange() override;
+    // one of these is generated for the actual specifics of a race
+    void notifySpecificDispositionChange(MachPhys::Race, MachPhys::Race) override;
+    // This is called when a class changes disposition to move to enemy or neutral, if they started as ally
+    void notifyDispositionChangeToNoneAlly(MachPhys::Race, MachPhys::Race) override;
+    // This is called when a class changes disposition to move to ally, if they started as non-ally
+    void notifyDispositionChangeToAlly(MachPhys::Race, MachPhys::Race) override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiDispositionChangeNotifiable& t );
+    friend ostream& operator<<(ostream& o, const MachGuiDispositionChangeNotifiable& t);
 
-	void doDisplay( GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2 );
-	string getDisplayName( MachPhys::Race race );
+    void doDisplay(GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2);
+    string getDisplayName(MachPhys::Race race);
 
-    MachGuiDispositionChangeNotifiable( const MachGuiDispositionChangeNotifiable& );
-    MachGuiDispositionChangeNotifiable& operator =( const MachGuiDispositionChangeNotifiable& );
+    MachGuiDispositionChangeNotifiable(const MachGuiDispositionChangeNotifiable&);
+    MachGuiDispositionChangeNotifiable& operator=(const MachGuiDispositionChangeNotifiable&);
 
-	MachGuiStartupScreens* pStartupScreens_;
-
+    MachGuiStartupScreens* pStartupScreens_;
 };
-
 
 #endif
 

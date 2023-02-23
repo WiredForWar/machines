@@ -1,5 +1,5 @@
 /*
- * C H A T M S G D . C P P 
+ * C H A T M S G D . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,49 +19,59 @@
 
 struct MachGuiInGameChatMessagesDisplayImpl
 {
-	MachGuiInGameChatMessagesDisplayImpl();
+    MachGuiInGameChatMessagesDisplayImpl();
 
-	GuiBitmap textBmp_;
-	GuiBmpFont font_;
-	GuiBmpFont shadowFont_;
-	bool forceUpdate_;
-	GuiDisplayable* pPassEventsTo_;
+    GuiBitmap textBmp_;
+    GuiBmpFont font_;
+    GuiBmpFont shadowFont_;
+    bool forceUpdate_;
+    GuiDisplayable* pPassEventsTo_;
 };
 
 MachGuiInGameChatMessagesDisplayImpl::MachGuiInGameChatMessagesDisplayImpl()
-:	font_( GuiBmpFont::getFont( "gui/menu/promtfnt.bmp" ) ),
-	shadowFont_( GuiBmpFont::getFont( "gui/menu/promdfnt.bmp" ) ),
-	forceUpdate_( true ),
-	pPassEventsTo_( NULL )
-{}
-
-MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay( GuiDisplayable* pParent, const Gui::Box& relBox )
-:	GuiDisplayable( pParent, relBox, GuiDisplayable::LAYER4 ),
-	pImpl_( _NEW( MachGuiInGameChatMessagesDisplayImpl() ) )
+    : font_(GuiBmpFont::getFont("gui/menu/promtfnt.bmp"))
+    , shadowFont_(GuiBmpFont::getFont("gui/menu/promdfnt.bmp"))
+    , forceUpdate_(true)
+    , pPassEventsTo_(nullptr)
 {
-	CB_DEPIMPL( GuiBitmap, textBmp_ );
+}
 
-	textBmp_ = RenSurface::createAnonymousSurface( width(), height(), W4dManager::instance().sceneManager()->pDevice()->backSurface() );
-	textBmp_.enableColourKeying();
+MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(GuiDisplayable* pParent, const Gui::Box& relBox)
+    : GuiDisplayable(pParent, relBox, GuiDisplayable::LAYER4)
+    , pImpl_(_NEW(MachGuiInGameChatMessagesDisplayImpl()))
+{
+    CB_DEPIMPL(GuiBitmap, textBmp_);
 
-	redrawEveryFrame( true );
+    textBmp_ = RenSurface::createAnonymousSurface(
+        width(),
+        height(),
+        W4dManager::instance().sceneManager()->pDevice()->backSurface());
+    textBmp_.enableColourKeying();
+
+    redrawEveryFrame(true);
 
     TEST_INVARIANT;
 }
 
-MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay( GuiDisplayable* pParent, const Gui::Box& relBox, GuiDisplayable* pPassEventsTo )
-:	GuiDisplayable( pParent, relBox, GuiDisplayable::LAYER4 ),
-	pImpl_( _NEW( MachGuiInGameChatMessagesDisplayImpl() ) )
+MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(
+    GuiDisplayable* pParent,
+    const Gui::Box& relBox,
+    GuiDisplayable* pPassEventsTo)
+    : GuiDisplayable(pParent, relBox, GuiDisplayable::LAYER4)
+    , pImpl_(_NEW(MachGuiInGameChatMessagesDisplayImpl()))
 {
-	CB_DEPIMPL( GuiBitmap, textBmp_ );
-	CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
+    CB_DEPIMPL(GuiBitmap, textBmp_);
+    CB_DEPIMPL(GuiDisplayable*, pPassEventsTo_);
 
-	textBmp_ = RenSurface::createAnonymousSurface( width(), height(), W4dManager::instance().sceneManager()->pDevice()->backSurface() );
-	textBmp_.enableColourKeying();
+    textBmp_ = RenSurface::createAnonymousSurface(
+        width(),
+        height(),
+        W4dManager::instance().sceneManager()->pDevice()->backSurface());
+    textBmp_.enableColourKeying();
 
-	pPassEventsTo_ = pPassEventsTo;
+    pPassEventsTo_ = pPassEventsTo;
 
-	redrawEveryFrame( true );
+    redrawEveryFrame(true);
 
     TEST_INVARIANT;
 }
@@ -70,15 +80,15 @@ MachGuiInGameChatMessagesDisplay::~MachGuiInGameChatMessagesDisplay()
 {
     TEST_INVARIANT;
 
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachGuiInGameChatMessagesDisplay::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiInGameChatMessagesDisplay& t )
+ostream& operator<<(ostream& o, const MachGuiInGameChatMessagesDisplay& t)
 {
 
     o << "MachGuiInGameChatMessagesDisplay " << (void*)&t << " start" << std::endl;
@@ -90,133 +100,133 @@ ostream& operator <<( ostream& o, const MachGuiInGameChatMessagesDisplay& t )
 // virtual
 void MachGuiInGameChatMessagesDisplay::doDisplay()
 {
-	CB_DEPIMPL( GuiBitmap, textBmp_ );
-	CB_DEPIMPL( GuiBmpFont, font_ );
-	CB_DEPIMPL( GuiBmpFont, shadowFont_ );
-	CB_DEPIMPL( bool, forceUpdate_ );
+    CB_DEPIMPL(GuiBitmap, textBmp_);
+    CB_DEPIMPL(GuiBmpFont, font_);
+    CB_DEPIMPL(GuiBmpFont, shadowFont_);
+    CB_DEPIMPL(bool, forceUpdate_);
 
-	bool needsUpdate = MachGuiInGameChatMessages::instance().update();
+    bool needsUpdate = MachGuiInGameChatMessages::instance().update();
 
-	if ( ( needsUpdate and MachGuiInGameChatMessages::instance().messages().size() > 0 ) or forceUpdate_ )
-	{
-		forceUpdate_ = false;
+    if ((needsUpdate and MachGuiInGameChatMessages::instance().messages().size() > 0) or forceUpdate_)
+    {
+        forceUpdate_ = false;
 
-		// Reset bitmap to magenta ( transparent )
-		textBmp_.filledRectangle( RenSurface::Rect( 0, 0, textBmp_.width(), textBmp_.height() ), Gui::MAGENTA() );
+        // Reset bitmap to magenta ( transparent )
+        textBmp_.filledRectangle(RenSurface::Rect(0, 0, textBmp_.width(), textBmp_.height()), Gui::MAGENTA());
 
-		// Render up to five lines of chat messages
-		int fontHeight = shadowFont_.charHeight() + 1;
-		int index = 0;
+        // Render up to five lines of chat messages
+        int fontHeight = shadowFont_.charHeight() + 1;
+        int index = 0;
 
-		for ( ctl_list<string>::const_iterator iter = MachGuiInGameChatMessages::instance().messages().begin();
-			  iter != MachGuiInGameChatMessages::instance().messages().end();
-			  ++iter )
-		{
-			shadowFont_.drawText( &textBmp_, *iter, Gui::Coord( 1, 1 + ( fontHeight * index ) ), width() );
-			font_.drawText( &textBmp_, *iter, Gui::Coord( 0, fontHeight * index ), width() );
-			++index;
-		}
-	}
-	
-	if ( MachGuiInGameChatMessages::instance().messages().size() > 0 )
-	{
-		// Blit text.
-		GuiPainter::instance().blit( textBmp_, absoluteBoundary().minCorner() );
-	}
+        for (ctl_list<string>::const_iterator iter = MachGuiInGameChatMessages::instance().messages().begin();
+             iter != MachGuiInGameChatMessages::instance().messages().end();
+             ++iter)
+        {
+            shadowFont_.drawText(&textBmp_, *iter, Gui::Coord(1, 1 + (fontHeight * index)), width());
+            font_.drawText(&textBmp_, *iter, Gui::Coord(0, fontHeight * index), width());
+            ++index;
+        }
+    }
+
+    if (MachGuiInGameChatMessages::instance().messages().size() > 0)
+    {
+        // Blit text.
+        GuiPainter::instance().blit(textBmp_, absoluteBoundary().minCorner());
+    }
 }
 
 void MachGuiInGameChatMessagesDisplay::forceUpdate()
 {
-	CB_DEPIMPL( bool, forceUpdate_ );
+    CB_DEPIMPL(bool, forceUpdate_);
 
-	forceUpdate_ = true;
+    forceUpdate_ = true;
 }
 
 /* NA 30/11/98. New processesMouseEvents added to GuiDisplayable means I don't need these
-//virtual 
+//virtual
 void MachGuiInGameChatMessagesDisplay::doHandleMouseClickEvent( const GuiMouseEvent& rel )
 {
-	CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
+    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
 
-	GuiMouseEvent relToOther = rel;
-	
-	if ( passEventTo( &relToOther ) )
-	{
-		pPassEventsTo_->doHandleMouseClickEvent( relToOther );	
-	}
+    GuiMouseEvent relToOther = rel;
+
+    if ( passEventTo( &relToOther ) )
+    {
+        pPassEventsTo_->doHandleMouseClickEvent( relToOther );
+    }
 }
 
-//virtual 
+//virtual
 void MachGuiInGameChatMessagesDisplay::doHandleMouseEnterEvent( const GuiMouseEvent& rel )
 {
-	CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
+    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
 
-	GuiMouseEvent relToOther = rel;
-	
-	if ( passEventTo( &relToOther ) )
-	{
-		pPassEventsTo_->doHandleMouseEnterEvent( relToOther );	
-	}
+    GuiMouseEvent relToOther = rel;
+
+    if ( passEventTo( &relToOther ) )
+    {
+        pPassEventsTo_->doHandleMouseEnterEvent( relToOther );
+    }
 }
 
-//virtual 
+//virtual
 void MachGuiInGameChatMessagesDisplay::doHandleMouseExitEvent( const GuiMouseEvent& rel )
 {
-	CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
+    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
 
-	GuiMouseEvent relToOther = rel;
-	
-	if ( passEventTo( &relToOther ) )
-	{
-		pPassEventsTo_->doHandleContainsMouseEvent( relToOther );	
-	}
-	else
-	{
-		pPassEventsTo_->doHandleMouseExitEvent( relToOther );	
-	}
+    GuiMouseEvent relToOther = rel;
+
+    if ( passEventTo( &relToOther ) )
+    {
+        pPassEventsTo_->doHandleContainsMouseEvent( relToOther );
+    }
+    else
+    {
+        pPassEventsTo_->doHandleMouseExitEvent( relToOther );
+    }
 }
 
-//virtual 
+//virtual
 void MachGuiInGameChatMessagesDisplay::doHandleContainsMouseEvent( const GuiMouseEvent& rel )
 {
-	CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
+    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
 
-	GuiMouseEvent relToOther = rel;
-	
-	if ( passEventTo( &relToOther ) )
-	{
-		pPassEventsTo_->doHandleContainsMouseEvent( relToOther );	
-	}
+    GuiMouseEvent relToOther = rel;
+
+    if ( passEventTo( &relToOther ) )
+    {
+        pPassEventsTo_->doHandleContainsMouseEvent( relToOther );
+    }
 }
 
 
 bool MachGuiInGameChatMessagesDisplay::passEventTo( GuiMouseEvent* pMouseEvent )
 {
-	CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
+    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
 
-	bool returnValue = false;
+    bool returnValue = false;
 
-	if ( pPassEventsTo_ )
-	{
-		Gui::Coord absEventPos = absoluteBoundary().minCorner();
-		absEventPos.x( absEventPos.x() + pMouseEvent->coord().x() );
-		absEventPos.y( absEventPos.y() + pMouseEvent->coord().y() );
+    if ( pPassEventsTo_ )
+    {
+        Gui::Coord absEventPos = absoluteBoundary().minCorner();
+        absEventPos.x( absEventPos.x() + pMouseEvent->coord().x() );
+        absEventPos.y( absEventPos.y() + pMouseEvent->coord().y() );
 
-		if ( pPassEventsTo_->contains( absEventPos ) )
-		{
-			pMouseEvent->translate( Gui::Vec( ( absEventPos.x() - pPassEventsTo_->absoluteCoord().x() ) - pMouseEvent->coord().x(), 
-											  ( absEventPos.y() - pPassEventsTo_->absoluteCoord().y() ) - pMouseEvent->coord().y() ) );
-			returnValue = true;
-		}
-	}
+        if ( pPassEventsTo_->contains( absEventPos ) )
+        {
+            pMouseEvent->translate( Gui::Vec( ( absEventPos.x() - pPassEventsTo_->absoluteCoord().x() ) -
+pMouseEvent->coord().x(), ( absEventPos.y() - pPassEventsTo_->absoluteCoord().y() ) - pMouseEvent->coord().y() ) );
+            returnValue = true;
+        }
+    }
 
-	return returnValue;
+    return returnValue;
 } */
 
-//virtual 
-bool MachGuiInGameChatMessagesDisplay::processesMouseEvents()	const
+// virtual
+bool MachGuiInGameChatMessagesDisplay::processesMouseEvents() const
 {
-	return false;
+    return false;
 }
 
 /* End CHATMSGD.CPP *************************************************/

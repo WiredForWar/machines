@@ -22,41 +22,46 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 //////
 // ******************************************* Code for MachHWResearchBank *************************************
 //////
 
-
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachHWResearchBank::MachHWResearchBank
-(
-    GuiDisplayable * pParent, const Gui::Boundary& relativeBoundary,
-    MachLogHardwareLab* pHardwareLab, MachInGameScreen* pInGameScreen
-)
-:   GuiDisplayable( pParent, relativeBoundary, GuiDisplayable::LAYER3 ),
-    pHardwareLab_( pHardwareLab ),
-    pIcons_( NULL ),
-    observingLab_( false )
+MachHWResearchBank::MachHWResearchBank(
+    GuiDisplayable* pParent,
+    const Gui::Boundary& relativeBoundary,
+    MachLogHardwareLab* pHardwareLab,
+    MachInGameScreen* pInGameScreen)
+    : GuiDisplayable(pParent, relativeBoundary, GuiDisplayable::LAYER3)
+    , pHardwareLab_(pHardwareLab)
+    , pIcons_(nullptr)
+    , observingLab_(false)
 {
 
-    //Construct the icon sequence depicting the queue
-	Gui::Box iconsArea( MachGuiBufferScrollButton::width(), 0,
-	                    MachHWResearchBankIcons::reqWidth() + MachGuiBufferScrollButton::width(),
-	                    MachHWResearchBankIcons::reqHeight() );
+    // Construct the icon sequence depicting the queue
+    Gui::Box iconsArea(
+        MachGuiBufferScrollButton::width(),
+        0,
+        MachHWResearchBankIcons::reqWidth() + MachGuiBufferScrollButton::width(),
+        MachHWResearchBankIcons::reqHeight());
 
-    pIcons_ = _NEW( MachHWResearchBankIcons( this, iconsArea, pHardwareLab_, pInGameScreen ) );
+    pIcons_ = _NEW(MachHWResearchBankIcons(this, iconsArea, pHardwareLab_, pInGameScreen));
 
-    //Become an observer of the lab
-    pHardwareLab_->attach( this );
+    // Become an observer of the lab
+    pHardwareLab_->attach(this);
     observingLab_ = true;
 
-    //Create and display a build progress indicator if required
+    // Create and display a build progress indicator if required
     updateProgress();
 
-	pScrollLeft_ = _NEW( MachGuiBufferScrollButton( this, Gui::Coord(0,0), SysPathName( "gui/misc/scrolll.bmp" ), pIcons_, MachGuiBufferScrollButton::LEFT, pInGameScreen ) );
+    pScrollLeft_ = _NEW(MachGuiBufferScrollButton(
+        this,
+        Gui::Coord(0, 0),
+        SysPathName("gui/misc/scrolll.bmp"),
+        pIcons_,
+        MachGuiBufferScrollButton::LEFT,
+        pInGameScreen));
     pScrollRight_ = _NEW(MachGuiBufferScrollButton(
         this,
         Gui::Coord(MachGuiBufferScrollButton::width() + MachHWResearchBankIcons::reqWidth(), 0),
@@ -76,10 +81,9 @@ MachHWResearchBank::~MachHWResearchBank()
 {
     TEST_INVARIANT;
 
-    //Cease observing the factory
-    if( observingLab_ )
-        pHardwareLab_->detach( this );
-
+    // Cease observing the factory
+    if (observingLab_)
+        pHardwareLab_->detach(this);
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -88,7 +92,7 @@ MachHWResearchBank::~MachHWResearchBank()
 
 void MachHWResearchBank::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,29 +100,28 @@ void MachHWResearchBank::CLASS_INVARIANT
 void MachHWResearchBank::updateQueueIcons()
 {
     pIcons_->updateIcons();
-	updateProgress();
+    updateProgress();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void MachHWResearchBank::updateProgress()
 {
-    //If the hw lab is researching, we'll need a progress bar
+    // If the hw lab is researching, we'll need a progress bar
     MachLogResearchItem* pCurrentItem;
-    if( pHardwareLab_->currentlyResearching( &pCurrentItem ) )
+    if (pHardwareLab_->currentlyResearching(&pCurrentItem))
     {
-        //Sets its current level
-        double percentComplete = 100.0 * 
-            (double( pCurrentItem->amountResearched( pHardwareLab_->race() ) ) /
-             double( pCurrentItem->researchCost() ));
+        // Sets its current level
+        double percentComplete = 100.0
+            * (double(pCurrentItem->amountResearched(pHardwareLab_->race())) / double(pCurrentItem->researchCost()));
 
-       	pIcons_->updateProgress( percentComplete ); 
+        pIcons_->updateProgress(percentComplete);
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
+// virtual
 void MachHWResearchBank::doDisplay()
 {
 }
@@ -127,49 +130,46 @@ void MachHWResearchBank::doDisplay()
 
 MachLogHardwareLab& MachHWResearchBank::hardwareLab()
 {
-    PRE( pHardwareLab_ != NULL );
+    PRE(pHardwareLab_ != nullptr);
 
     return *pHardwareLab_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchBank::domainDeleted( W4dDomain* )
+// virtual
+void MachHWResearchBank::domainDeleted(W4dDomain*)
 {
-    //Do nothing
+    // Do nothing
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-bool MachHWResearchBank::beNotified
-(
-    W4dSubject*, W4dSubject::NotificationEvent event, int clientData
-)
+// virtual
+bool MachHWResearchBank::beNotified(W4dSubject*, W4dSubject::NotificationEvent event, int clientData)
 {
-    //Since we only ever observe the factory, it must be the subject.
-    switch( event )
+    // Since we only ever observe the factory, it must be the subject.
+    switch (event)
     {
         case W4dSubject::DELETED:
-        {
-            observingLab_ = false;
-            break;
-        }
+            {
+                observingLab_ = false;
+                break;
+            }
 
         case W4dSubject::CLIENT_SPECIFIC:
-        {
-            switch( clientData )
             {
-                case MachLog::HW_RESEARCH_COMPLETE:
+                switch (clientData)
                 {
-                    //Update the research queue icon display
-                    updateQueueIcons();
-                    break;
+                    case MachLog::HW_RESEARCH_COMPLETE:
+                        {
+                            // Update the research queue icon display
+                            updateQueueIcons();
+                            break;
+                        }
                 }
+                break;
             }
-            break;
-        }
     }
 
     return observingLab_;
@@ -177,23 +177,24 @@ bool MachHWResearchBank::beNotified
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachHWResearchBank::reqWidth()
 {
-	return ( MachGuiBufferScrollButton::width() + MachHWResearchBankIcons::reqWidth() + MachGuiBufferScrollButton::width() );
+    return (
+        MachGuiBufferScrollButton::width() + MachHWResearchBankIcons::reqWidth() + MachGuiBufferScrollButton::width());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static 
+// static
 size_t MachHWResearchBank::reqHeight()
 {
-	return ( MachHWResearchBankIcons::reqHeight() );
+    return (MachHWResearchBankIcons::reqHeight());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachHWResearchBank& t )
+ostream& operator<<(ostream& o, const MachHWResearchBank& t)
 {
 
     o << "MachHWResearchBank " << (void*)&t << " start" << std::endl;

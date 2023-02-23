@@ -1,5 +1,5 @@
 /*
- * B I L D I C N S . H P P 
+ * B I L D I C N S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,54 +18,56 @@
 
 #include "machlog/mlnotif.hpp"
 
-//Forward refs
+// Forward refs
 class MachInGameScreen;
 class MachProductionBank;
 class MachLogFactory;
 class MachLogResearchTree;
 
-
-class MachBuildMenuIcons : public GuiSimpleScrollableList, public MachLogNotifiable
-//orthodox canonical (revoked)
+class MachBuildMenuIcons
+    : public GuiSimpleScrollableList
+    , public MachLogNotifiable
+// orthodox canonical (revoked)
 {
 public:
-    //ctor. Located in pParent, covering area.
-    //In game screen passed.
-    MachBuildMenuIcons( GuiDisplayable* pParent, const Gui::Coord& rel,
-                        MachProductionBank* pProductionBank, 
-                        MachLogFactory* pFactory, 
-                        MachInGameScreen* pInGameScreen );
+    // ctor. Located in pParent, covering area.
+    // In game screen passed.
+    MachBuildMenuIcons(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        MachProductionBank* pProductionBank,
+        MachLogFactory* pFactory,
+        MachInGameScreen* pInGameScreen);
 
-    virtual ~MachBuildMenuIcons();
+    ~MachBuildMenuIcons() override;
 
-	virtual void notifiableBeNotified();
-	
+    void notifiableBeNotified() override;
+
     void CLASS_INVARIANT;
 
-	static size_t reqWidth();
-	static size_t reqHeight( MachInGameScreen*,	const Gui::Coord& );
-	
+    static size_t reqWidth();
+    static size_t reqHeight(MachInGameScreen*, const Gui::Coord&);
+
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
     // Operations deliberately revoked
-    MachBuildMenuIcons( const MachBuildMenuIcons& );
-    MachBuildMenuIcons& operator =( const MachBuildMenuIcons& );
-    bool operator ==( const MachBuildMenuIcons& );
+    MachBuildMenuIcons(const MachBuildMenuIcons&);
+    MachBuildMenuIcons& operator=(const MachBuildMenuIcons&);
+    bool operator==(const MachBuildMenuIcons&);
 
-    friend ostream& operator <<( ostream& o, const MachBuildMenuIcons& t );
+    friend ostream& operator<<(ostream& o, const MachBuildMenuIcons& t);
 
-    //Set up the list of icons
+    // Set up the list of icons
     void addIcons();
 
-	MachInGameScreen* pInGameScreen_;
-	MachProductionBank* pProductionBank_;
-	MachLogFactory* pFactory_;
-	
-	MachLogResearchTree& researchTree_;
-};
+    MachInGameScreen* pInGameScreen_;
+    MachProductionBank* pProductionBank_;
+    MachLogFactory* pFactory_;
 
+    MachLogResearchTree& researchTree_;
+};
 
 #endif
 

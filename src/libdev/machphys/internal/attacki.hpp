@@ -31,35 +31,34 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT( MachPhysCanAttackImpl );
-    PER_FRIEND_READ_WRITE( MachPhysCanAttackImpl );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachPhysCanAttackImpl);
+    PER_FRIEND_READ_WRITE(MachPhysCanAttackImpl);
 
-    typedef ctl_pvector< MachPhysWeapon > Weapons;
-    typedef ctl_pvector< MachPhysTurnerTracker > TurnerTrackers;
+    using Weapons = ctl_pvector<MachPhysWeapon>;
+    using TurnerTrackers = ctl_pvector<MachPhysTurnerTracker>;
 
 private:
     friend class MachPhysCanAttack;
-    friend ostream& operator <<( ostream& o, const MachPhysCanAttackImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysCanAttackImpl& t);
 
-    MachPhysCanAttackImpl( const MachPhysCanAttackImpl& );
-    MachPhysCanAttackImpl& operator =( const MachPhysCanAttackImpl& );
+    MachPhysCanAttackImpl(const MachPhysCanAttackImpl&);
+    MachPhysCanAttackImpl& operator=(const MachPhysCanAttackImpl&);
 
-    //typedef ctl_pvector< MachPhysWeapon > Weapons;
-    //typedef ctl_pvector< MachPhysTurnerTracker > TurnerTrackers;
+    // typedef ctl_pvector< MachPhysWeapon > Weapons;
+    // typedef ctl_pvector< MachPhysTurnerTracker > TurnerTrackers;
 
-    //data members
-    ctl_fixed_vector< W4dLink* > mountingLinks_; //The links to which weapons are attached
-    Weapons weapons_; //The mounted weapons
-    TurnerTrackers turnerTrackers_; //Objects doing tilt control for each weapon
+    // data members
+    ctl_fixed_vector<W4dLink*> mountingLinks_; // The links to which weapons are attached
+    Weapons weapons_; // The mounted weapons
+    TurnerTrackers turnerTrackers_; // Objects doing tilt control for each weapon
 
-	MachPhys::WeaponType	lastSoundWeapon_;		// Most recently weapon which played a sound
-	PhysAbsoluteTime		lastSoundPlayTime_;		// Time at which this weapon was fired
-	MachPhys::WeaponType	lastLightWeapon_;		// Most recently weapon which launched a light
-	PhysAbsoluteTime		lastLightLaunchTime_;	// The time at which this weapon was fired
+    MachPhys::WeaponType lastSoundWeapon_; // Most recently weapon which played a sound
+    PhysAbsoluteTime lastSoundPlayTime_; // Time at which this weapon was fired
+    MachPhys::WeaponType lastLightWeapon_; // Most recently weapon which launched a light
+    PhysAbsoluteTime lastLightLaunchTime_; // The time at which this weapon was fired
 };
 
-PER_DECLARE_PERSISTENT( MachPhysCanAttackImpl );
-
+PER_DECLARE_PERSISTENT(MachPhysCanAttackImpl);
 
 #endif
 

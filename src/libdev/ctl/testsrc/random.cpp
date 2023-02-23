@@ -5,8 +5,8 @@
 
 #include "ctl/testh/random.hpp"
 
-//#ifndef _INLINE
-	#include "ctl/testh/random.ipp"
-//#endif
+// #ifndef _INLINE
+#include "ctl/testh/random.ipp"
+// #endif
 
 ///////////////////////////////////

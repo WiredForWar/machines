@@ -3,28 +3,22 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#ifdef  _INLINE
-    #define _CODE_INLINE    inline
+#ifdef _INLINE
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 //////////////////////////////////////////////////////////////////////
 
-template < class T >
-_CODE_INLINE
-bool operator ==( const ctl_list< T >& x, const ctl_list< T >& y )
+template <class T> _CODE_INLINE bool operator==(const ctl_list<T>& x, const ctl_list<T>& y)
 {
-	return x.size() == y.size()
-			&& equal( x.begin(), x.end(), y.begin() );
+    return x.size() == y.size() && equal(x.begin(), x.end(), y.begin());
 }
 
-template < class T >
-_CODE_INLINE
-bool operator <( const ctl_list< T >& x, const ctl_list< T >& y )
+template <class T> _CODE_INLINE bool operator<(const ctl_list<T>& x, const ctl_list<T>& y)
 {
-	return lexicographical_compare( x.begin(), x.end(),
-									y.begin(), y.end() );
+    return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 }
 
 //////////////////////////////////////////////////////////////////////

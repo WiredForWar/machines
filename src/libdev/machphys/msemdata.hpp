@@ -1,5 +1,5 @@
 /*
- * M S E M D A T A . H P P 
+ * M S E M D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -21,41 +21,38 @@ class MachPhysMissileEmplacementData : public MachPhysConstructionData
 {
 public:
     MachPhysMissileEmplacementData();
-    MachPhysMissileEmplacementData( const MachPhysMissileEmplacementData&, const MexTransform3d& );
-    ~MachPhysMissileEmplacementData();
+    MachPhysMissileEmplacementData(const MachPhysMissileEmplacementData&, const MexTransform3d&);
+    ~MachPhysMissileEmplacementData() override;
 
-	//Get methods public
-	MATHEX_SCALAR nWeapons() const;
-	MATHEX_SCALAR accuracy() const;
-	MexRadians maxRotation() const;
+    // Get methods public
+    MATHEX_SCALAR nWeapons() const;
+    MATHEX_SCALAR accuracy() const;
+    MexRadians maxRotation() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMissileEmplacementData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMissileEmplacementData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysMissileEmplacementData( const MachPhysMissileEmplacementData& );
-
-    // Operation deliberately revoked
-    MachPhysMissileEmplacementData& operator =( const MachPhysMissileEmplacementData& );
+    MachPhysMissileEmplacementData(const MachPhysMissileEmplacementData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysMissileEmplacementData& );
+    MachPhysMissileEmplacementData& operator=(const MachPhysMissileEmplacementData&);
 
-	//Set methods public
-	void nWeapons( const MATHEX_SCALAR& );
-	void accuracy( const MATHEX_SCALAR& );
-	void maxRotation( const MexRadians& );
+    // Operation deliberately revoked
+    bool operator==(const MachPhysMissileEmplacementData&);
 
-	MATHEX_SCALAR			nWeapons_;
-	MATHEX_SCALAR			accuracy_;
-	MexRadians				maxRotation_;
+    // Set methods public
+    void nWeapons(const MATHEX_SCALAR&);
+    void accuracy(const MATHEX_SCALAR&);
+    void maxRotation(const MexRadians&);
 
-
+    MATHEX_SCALAR nWeapons_;
+    MATHEX_SCALAR accuracy_;
+    MexRadians maxRotation_;
 };
-
 
 #endif
 

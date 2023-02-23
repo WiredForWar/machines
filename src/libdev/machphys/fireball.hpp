@@ -1,5 +1,5 @@
 /*
- * F I R E B A L L . H P P 
+ * F I R E B A L L . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -31,45 +31,45 @@ public:
         MATHEX_SCALAR size,
         MATHEX_SCALAR depthOffset,
         const PhysAbsoluteTime& startTime,
-        const PhysRelativeTime& duration );
+        const PhysRelativeTime& duration);
 
-    //  Construct the fireball but don't start it going yet        
+    //  Construct the fireball but don't start it going yet
     MachPhysFireball(
         W4dEntity* pParent,
         const MexTransform3d& localTransform,
         MachPhysFireballType fireballType,
         MATHEX_SCALAR size,
         MATHEX_SCALAR depthOffset,
-        const PhysRelativeTime& duration );
-        
-    ~MachPhysFireball();
+        const PhysRelativeTime& duration);
+
+    ~MachPhysFireball() override;
 
     //  Start the fireball at the given time
-    void startFireball( const PhysAbsoluteTime& startTime );
-    
+    void startFireball(const PhysAbsoluteTime& startTime);
+
     //  Load all of the fireball bitmaps in advance so that the
     //  fireball can be created 'instantly'
-    
-    static  void preload();
+
+    static void preload();
 
     //  return a random fireball type out of those available
-    static  MachPhysFireballType randomFireball();
-    
+    static MachPhysFireballType randomFireball();
+
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysFireball );
-    PER_FRIEND_READ_WRITE( MachPhysFireball );
-    
+    PER_MEMBER_PERSISTENT(MachPhysFireball);
+    PER_FRIEND_READ_WRITE(MachPhysFireball);
+
 private:
     // Operations deliberately revoked
-    MachPhysFireball( const MachPhysFireball& );
-    MachPhysFireball& operator =( const MachPhysFireball& );
-    bool operator ==( const MachPhysFireball& );
+    MachPhysFireball(const MachPhysFireball&);
+    MachPhysFireball& operator=(const MachPhysFireball&);
+    bool operator==(const MachPhysFireball&);
 
-	MachPhysFireballImpl* pImpl_;
+    MachPhysFireballImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysFireball );
+PER_DECLARE_PERSISTENT(MachPhysFireball);
 
 #endif
 

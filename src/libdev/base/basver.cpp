@@ -1,29 +1,29 @@
 /*
-* B A S V E R . C P P
-* (c) Charybdis Limited, 1995. All Rights Reserved
-*/
+ * B A S V E R . C P P
+ * (c) Charybdis Limited, 1995. All Rights Reserved
+ */
 
 /*
     Mission statement:
-    
+
     Obtain a flat language across different compiler / hardware platforms.
-    
+
     Add general diagnostic and debugging functions
 */
 
 /*
-	HISTORY
+    HISTORY
 
-	01.00	First Release
-			20 October 1995  Bob Archer
-            
+    01.00   First Release
+            20 October 1995  Bob Archer
+
     01.01   HeapPtr class added
-			23 October 1995  Bob Archer
+            23 October 1995  Bob Archer
 
     01.02   watc1000.hpp and watc1050.hpp moved to the base library from clibplus
             Uses and HeapPtr classes moved to the system library
             11 December 1995  Bob Archer
-            
+
     01.03   The implies macro has been rewritten so that it only evaluates
             its second argument if its first argument is true.
 
@@ -31,14 +31,14 @@
             also need to include the stdlib library.
 
             The memory debugging code has been moved into here.
-            
+
             The environment variable 'memlog' can now be used to control
             the memory debugging information that is output.
 
             There is now an ASSERT_FILE_EXISTS macro which prints out the
             name of the file if it doesn't exist.
             23 February 1996    Bob Archer
-            
+
     01.04   suppress.hpp added. This contains code necessary to suppress
             warnings given by inadequate compilers.
             6 March 1996    Bob Archer
@@ -47,12 +47,12 @@
             will check the header blocks of all memory allocated for
             corruption.
             4 April 1996    Bob Archer
-    
-	01.06	Template files rearranged into new standard format
+
+    01.06   Template files rearranged into new standard format
             ( .ctp, .itp, .ctf and .itf files )
             19 May 1996                         Bob Archer
 
-	01.07	Introduced mutual exclusion on ASSERTion testing and firing.
+    01.07   Introduced mutual exclusion on ASSERTion testing and firing.
             13 June 1996                         Jerry Swan
 
     01.08   More memory allocation data is now saved and output.
@@ -79,31 +79,31 @@
             and _DELETE_ARRAY if the pointers being deleted are not 0.
             The delete and delete[] operators are not called if the
             pointer is zero which was giving incorrect file data.
-            
+
             15th July 1996                      Bob Archer
 
     01.13   All assertion code moved from stdlib to base. Use of
             assert now deprecated, ASSERT should be used instead.
             PRE_INFO, POST_INFO & ASSERT_INFO added.
-            ASSERT_ALWAYS renamed to ASSERT_FAIL    
+            ASSERT_ALWAYS renamed to ASSERT_FAIL
             BaseAssertion class added largely to act as a namespace
             for the various assertion functions.
             Invariants are now included if the _TEST_INVARIANTS
             symbol is set, this replaces the old _STRICT symbol.
-            
+
             6th August 1996                     Bob Archer
 
     01.14   BaseLogBuffer added
             19th September 1996                 Bob Archer
 
     01.15   #define for if( 0 ) ; else for
-    
+
             added to allow Watcom to simulate the new for scope rules.
-            
+
             #pragma warning 368 9;
-            
+
             also added to disable "conditional expression in if
-            statement is always false" warning 
+            statement is always false" warning
 
             30th September 1996                 Bob Archer
 
@@ -111,11 +111,11 @@
             front of it so that it can be used in the .hpp file and in
             the .cpp file. Version 01.08 of genclass will use the macro
             correctly.
-            
+
             The ASSERT_FILE_EXISTS call will now check that the pathname
             it is given is a valid DOS pathname. If it isn't, it will fail
             with an invalid pathname error rather than a file not found error.
-            
+
             15th October 1996                   Bob Archer
 
     01.17   Added a virtual destructor to BaseLogStreamBuffer so that the
@@ -165,7 +165,7 @@
     01.27   Removed the definition of ZERO from base.hpp. Removed isValid
             for pointers and references.
             Disable "assuming unary 'operator &' not overloaded for type" warning.
-            Diagnostic streams added - see diag.hpp            
+            Diagnostic streams added - see diag.hpp
             The memchk environment variable has now been renamed the cb_memory
             environment variable.
             Increased the number of saved _INFO entries from 20 to 50.
@@ -248,7 +248,7 @@
             Timing code added to persistence read.
             Invariant checking can now be turned on and off using
             the CB_INVARIENT_CHECKING environment variable (default is on).
-            Invariant checking can also be controlled using the 
+            Invariant checking can also be controlled using the
             Diag::instance().invariantCheckingActive functions.
             Counted pointer checking is now off by default but can be turned
             on using CB_COUNTED_POINTER_CHECKING.
@@ -273,8 +273,8 @@
             with debugging.
             21st April 1998
 
-	01.47	DIAG_NETWORK added.
-			22nd April 1998						Hal Angseesing.
+    01.47   DIAG_NETWORK added.
+            22nd April 1998                     Hal Angseesing.
 
     01.48   On an assertion the stack trace is now written out to assert.log
             Persistence optimisations added.
@@ -337,13 +337,13 @@
             10 September 1998                   Bob Archer
 
     01.61   Added a new environment variable CB_ASSERT_TO=filename may now be used to override
-			the default file name for assert.log - if the env var. has not been defined then
-			it will default to assert.log as normal.
+            the default file name for assert.log - if the env var. has not been defined then
+            it will default to assert.log as normal.
             11 September 1998                   Hal Angseesing
 
     01.62   Added a new environment variable CB_CRASH_TO=filename may now be used to override
-			the default file name for crash.log - if the env var. has not been defined then
-			it will default to crash.log as normal.
+            the default file name for crash.log - if the env var. has not been defined then
+            it will default to crash.log as normal.
             11 September 1998                   Hal Angseesing
 
     01.63   All diagnostic streams now have a xxxx_STREAM_ENABLED macro available.
@@ -353,7 +353,7 @@
     01.64   Diag::forceCrash now calls abort
             17 September 1998                   Bob Archer
 
-    01.65   The floating point precision for the xxxx_INFO streams 
+    01.65   The floating point precision for the xxxx_INFO streams
             is now set to 18 decimal places.
             18 September 1998                   Bob Archer
 
@@ -364,7 +364,7 @@
     01.67   REC_RECORD_STREAM and REC_PLAYBACK_STREAM added
             7 October 1998                      Bob Archer
 
-    01.68   It is now possible to specify functions to be called 
+    01.68   It is now possible to specify functions to be called
             if the system crashes or asserts out using Diag::addCrashFunction.
             7 October 1998                      Bob Archer
 
@@ -380,7 +380,7 @@
     01.71   Removed the following from the header files:
                 PerIstream( const char* fileName );
                 PerOstream( const char* fileName );
-                
+
             The functions were not implemented which caused link
             errors. They now cause a compile error
             15 October 1998                     Bob Archer
@@ -395,7 +395,7 @@
             28 October 1998                     Bob Archer
 
     01.74   Added NET_ANALYSIS stream which (when active) will output some useful
-			numbers from various networking libraries.
+            numbers from various networking libraries.
             28 October 1998                     Hal Angseesing
 
     01.75   A_STAR diagnostic stream added
@@ -432,15 +432,15 @@
             21 November 1998                    Bob Archer
 
 
-    01.81   Added the PLANET_SURFACE stream - this stream should be used for all validation 
-			results on the planet surface.
+    01.81   Added the PLANET_SURFACE stream - this stream should be used for all validation
+            results on the planet surface.
             15 December 1998                    Hal Angseesing
 
     01.82   PHYS_MOTION_STREAM added for tracking details of the physical motion.
             15 Jan 1999                         Bob Archer
 
-    01.83   xxxx_STREAM_ENABLE and xxxx_STREAM_DISABLE macros added for all streams. 
-            These allow stream output to be enabled or disabled. 
+    01.83   xxxx_STREAM_ENABLE and xxxx_STREAM_DISABLE macros added for all streams.
+            These allow stream output to be enabled or disabled.
             Note:
                 The CB_xxxx_TO environment variable must have been set up
                 The stream will be enabled by default
@@ -448,10 +448,10 @@
             1 Feb 1999                          Bob Archer
 
     01.84   Added the NETWORK_ERRORS stream - this stream should be used specifically for network errors
-			(loss of synchronicity and not for general networking).
+            (loss of synchronicity and not for general networking).
             1 Feb 1999                    Hal Angseesing
 
-    01.85   Added MEX_GRID2D_STREAM (a class so error prone it deserves 
+    01.85   Added MEX_GRID2D_STREAM (a class so error prone it deserves
             stream of its own)
             11 Feb 1999                         Bob Archer
 
@@ -461,8 +461,8 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#define	LIBRARY	"BAS"
-#define	VERSION	"01.86"
+#define LIBRARY "BAS"
+#define VERSION "01.86"
 
 static unsigned char verString[] = "$:VERSION:$ " LIBRARY "  " VERSION;
 static unsigned char dateString[] = "$:DATETIME:$ " LIBRARY "  " __DATE__ " " __TIME__;
@@ -473,8 +473,8 @@ static unsigned char dateString[] = "$:DATETIME:$ " LIBRARY "  " __DATE__ " " __
 
 void printVersion()
 {
-	printf( "%s\n", verString );
-	printf( "%s\n", dateString );
+    printf("%s\n", verString);
+    printf("%s\n", dateString);
 }
 
 //////////////////////////////////////////////////////////////////////

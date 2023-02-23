@@ -33,23 +33,26 @@
 #include "machphys/wepdata.hpp"
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysVortexWeapon );
+PER_DEFINE_PERSISTENT(MachPhysVortexWeapon);
 
-MachPhysVortexWeapon::MachPhysVortexWeapon
-(
-    W4dEntity* pParent, const MexTransform3d& localTransform,
-    MachPhys::Mounting mounting
-)
-:   MachPhysWeapon( exemplar(), mounting, pParent, localTransform )
+MachPhysVortexWeapon::MachPhysVortexWeapon(
+    W4dEntity* pParent,
+    const MexTransform3d& localTransform,
+    MachPhys::Mounting mounting)
+    : MachPhysWeapon(exemplar(), mounting, pParent, localTransform)
 {
 
     TEST_INVARIANT;
 }
 
-//One-time ctor
+// One-time ctor
 MachPhysVortexWeapon::MachPhysVortexWeapon()
-:   MachPhysWeapon( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(),
-                    SysPathName( compositeFilePath() ), MachPhys::VORTEX, MachPhys::TOP )
+    : MachPhysWeapon(
+        MachPhysWeaponPersistence::instance().pRoot(),
+        MexTransform3d(),
+        SysPathName(compositeFilePath()),
+        MachPhys::VORTEX,
+        MachPhys::TOP)
 {
     TEST_INVARIANT;
 }
@@ -57,10 +60,9 @@ MachPhysVortexWeapon::MachPhysVortexWeapon()
 MachPhysVortexWeapon::~MachPhysVortexWeapon()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysVortexWeapon& MachPhysVortexWeapon::exemplar()
 {
     return MachPhysWeaponPersistence::instance().vortexExemplar();
@@ -68,10 +70,10 @@ const MachPhysVortexWeapon& MachPhysVortexWeapon::exemplar()
 
 void MachPhysVortexWeapon::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysVortexWeapon& t )
+ostream& operator<<(ostream& o, const MachPhysVortexWeapon& t)
 {
 
     o << "MachPhysVortexWeapon " << (void*)&t << " start" << std::endl;
@@ -80,14 +82,14 @@ ostream& operator <<( ostream& o, const MachPhysVortexWeapon& t )
     return o;
 }
 
-//static
+// static
 const char* MachPhysVortexWeapon::compositeFilePath()
 {
-	return "models/weapons/vortex/vrtx.cdf";
+    return "models/weapons/vortex/vrtx.cdf";
 }
 
-//virtual
-PhysRelativeTime MachPhysVortexWeapon::fire( const PhysAbsoluteTime&, int  )
+// virtual
+PhysRelativeTime MachPhysVortexWeapon::fire(const PhysAbsoluteTime&, int)
 {
 
     return 0;
@@ -95,74 +97,72 @@ PhysRelativeTime MachPhysVortexWeapon::fire( const PhysAbsoluteTime&, int  )
 
 PhysRelativeTime MachPhysVortexWeapon::destroy(W4dEntity* pVictim, const PhysAbsoluteTime& startTime)
 {
-	PhysRelativeTime duration = 0.5;
-    //Make a simple scale plan
-    RenNonUniformScale a(1,1,1);
-    RenNonUniformScale b(0.125,0.125,20);
-    W4dScalePlanPtr planPtr( _NEW( W4dSimpleNonUniformScalePlan( a, b, duration ) ) );
+    PhysRelativeTime duration = 0.5;
+    // Make a simple scale plan
+    RenNonUniformScale a(1, 1, 1);
+    RenNonUniformScale b(0.125, 0.125, 20);
+    W4dScalePlanPtr planPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
 
-    //Propogate thru the current model
-	pVictim->propogateScalePlan( planPtr, startTime, 1);
+    // Propogate thru the current model
+    pVictim->propogateScalePlan(planPtr, startTime, 1);
 
-	//make a visibility plan
+    // make a visibility plan
 
-    W4dVisibilityPlanPtr wVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	wVisibilityPlanPtr->add(false, duration);
+    W4dVisibilityPlanPtr wVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    wVisibilityPlanPtr->add(false, duration);
 
-    pVictim->entityPlanForEdit().visibilityPlan( wVisibilityPlanPtr, startTime );
+    pVictim->entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
 
-	// Add a brief light so that he victim is lit up
-	const MATHEX_SCALAR lightRange = 20.0;
-	W4dUniformLight* pLight = _NEW(W4dUniformLight(pVictim, MexVec3(0, 0, 1), lightRange));
-	pLight->colour(RenColour(2, 2, 2.3));
-	pLight->constantAttenuation(0);
-	pLight->linearAttenuation(0.177);
-	pLight->quadraticAttenuation(0.823);
-	pLight->scope(W4dLight::DYNAMIC);
-	pLight->visible( false );
+    // Add a brief light so that he victim is lit up
+    const MATHEX_SCALAR lightRange = 20.0;
+    W4dUniformLight* pLight = _NEW(W4dUniformLight(pVictim, MexVec3(0, 0, 1), lightRange));
+    pLight->colour(RenColour(2, 2, 2.3));
+    pLight->constantAttenuation(0);
+    pLight->linearAttenuation(0.177);
+    pLight->quadraticAttenuation(0.823);
+    pLight->scope(W4dLight::DYNAMIC);
+    pLight->visible(false);
 
-	PhysAbsoluteTime lightStartTime = startTime-0.5;
-	PhysRelativeTime lightDuration = duration + 0.5;
-    W4dVisibilityPlanPtr visibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
-	visibilityPlanPtr->add(false, duration);
-    pLight->entityPlanForEdit().visibilityPlan( visibilityPlanPtr, lightStartTime);
-
+    PhysAbsoluteTime lightStartTime = startTime - 0.5;
+    PhysRelativeTime lightDuration = duration + 0.5;
+    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    visibilityPlanPtr->add(false, duration);
+    pLight->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, lightStartTime);
 
     PhysLinearScalarPlan::ScalarVec lightTimes;
-    	lightTimes.reserve(2);
-		lightTimes.push_back(0.3);
-		lightTimes.push_back(lightDuration);
+    lightTimes.reserve(2);
+    lightTimes.push_back(0.3);
+    lightTimes.push_back(lightDuration);
 
     PhysLinearScalarPlan::ScalarVec intensities;
-    	intensities.reserve(3);
-        intensities.push_back(1);
-        intensities.push_back(1);
-        intensities.push_back(0);
+    intensities.reserve(3);
+    intensities.push_back(1);
+    intensities.push_back(1);
+    intensities.push_back(0);
 
-    PhysLinearScalarPlan* plightIntensityPlan = _NEW( PhysLinearScalarPlan(lightTimes, intensities) );
+    PhysLinearScalarPlan* plightIntensityPlan = _NEW(PhysLinearScalarPlan(lightTimes, intensities));
 
-	PhysScalarPlanPtr intensityPlanPtr = plightIntensityPlan;
-	pLight->intensityPlan(intensityPlanPtr, lightStartTime);
+    PhysScalarPlanPtr intensityPlanPtr = plightIntensityPlan;
+    pLight->intensityPlan(intensityPlanPtr, lightStartTime);
 
-    W4dGarbageCollector::instance().add( pLight, lightStartTime + lightDuration );
+    W4dGarbageCollector::instance().add(pLight, lightStartTime + lightDuration);
 
-	return duration;
+    return duration;
 }
 
-MachPhysVortexWeapon::MachPhysVortexWeapon( PerConstructor con )
-: MachPhysWeapon( con )
+MachPhysVortexWeapon::MachPhysVortexWeapon(PerConstructor con)
+    : MachPhysWeapon(con)
 {
 }
 
-
-void perWrite( PerOstream& ostr, const MachPhysVortexWeapon& weapon )
+void perWrite(PerOstream& ostr, const MachPhysVortexWeapon& weapon)
 {
     const MachPhysWeapon& base = weapon;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysVortexWeapon& weapon )
+void perRead(PerIstream& istr, MachPhysVortexWeapon& weapon)
 {
     MachPhysWeapon& base = weapon;
 

@@ -1,5 +1,5 @@
 /*
- * M C C O N V O Y . C P P 
+ * M C C O N V O Y . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -14,23 +14,23 @@
 #include "machphys/machine.hpp"
 
 #ifndef _INLINE
-    #include "machlog/mcconvoy.ipp"
+#include "machlog/mcconvoy.ipp"
 #endif
 
-MachLogMachineConvoy::MachLogMachineConvoy( MachLogMachineMotionSequencer* pSequencer )
-:	pImpl_( _NEW( MachLogMachineConvoyImpl() ) )   
+MachLogMachineConvoy::MachLogMachineConvoy(MachLogMachineMotionSequencer* pSequencer)
+    : pImpl_(_NEW(MachLogMachineConvoyImpl()))
 {
-	CB_MachLogMachineConvoy_DEPIMPL();
+    CB_MachLogMachineConvoy_DEPIMPL();
 
-    PRE( pSequencer != NULL );
+    PRE(pSequencer != nullptr);
 
-	minTopSpeedUpToDate_ = false;
+    minTopSpeedUpToDate_ = false;
 
-    //Set up for a reasonable amount of memory
-    sequencers_.reserve( 8 );
+    // Set up for a reasonable amount of memory
+    sequencers_.reserve(8);
 
-    //Add the machine
-    sequencers_.push_back( pSequencer );
+    // Add the machine
+    sequencers_.push_back(pSequencer);
 
     TEST_INVARIANT;
 }
@@ -39,14 +39,14 @@ MachLogMachineConvoy::~MachLogMachineConvoy()
 {
     TEST_INVARIANT;
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachLogMachineConvoy::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const MachLogMachineConvoy& t )
+ostream& operator<<(ostream& o, const MachLogMachineConvoy& t)
 {
 
     o << "MachLogMachineConvoy " << (void*)&t << " start" << std::endl;
@@ -55,55 +55,55 @@ ostream& operator <<( ostream& o, const MachLogMachineConvoy& t )
     return o;
 }
 
-void MachLogMachineConvoy::add( MachLogMachineMotionSequencer* pSequencer )
+void MachLogMachineConvoy::add(MachLogMachineMotionSequencer* pSequencer)
 {
-	CB_MachLogMachineConvoy_DEPIMPL();
+    CB_MachLogMachineConvoy_DEPIMPL();
 
-    PRE( not pSequencer->isInConvoy() );
+    PRE(not pSequencer->isInConvoy());
 
-    //Add to the vector
-    sequencers_.push_back( pSequencer );
+    // Add to the vector
+    sequencers_.push_back(pSequencer);
 
-    //Top speed out of date
+    // Top speed out of date
     minTopSpeedUpToDate_ = false;
 }
 
-void MachLogMachineConvoy::remove( MachLogMachineMotionSequencer* pSequencer )
+void MachLogMachineConvoy::remove(MachLogMachineMotionSequencer* pSequencer)
 {
-	CB_MachLogMachineConvoy_DEPIMPL();
-	
-    PRE( pSequencer->isInConvoy()  and  &(pSequencer->convoy()) == this );
+    CB_MachLogMachineConvoy_DEPIMPL();
 
-    //Find the entry in the list
-    Sequencers::iterator it = find( sequencers_.begin(), sequencers_.end(), pSequencer );
-    ASSERT( it != sequencers_.end(), "" );
+    PRE(pSequencer->isInConvoy() and &(pSequencer->convoy()) == this);
 
-    //Erase it
-    sequencers_.erase( it );
+    // Find the entry in the list
+    Sequencers::iterator it = find(sequencers_.begin(), sequencers_.end(), pSequencer);
+    ASSERT(it != sequencers_.end(), "");
 
-    //Top speed out of date
+    // Erase it
+    sequencers_.erase(it);
+
+    // Top speed out of date
     minTopSpeedUpToDate_ = false;
 }
 
 MATHEX_SCALAR MachLogMachineConvoy::minTopSpeed() const
 {
-    CB_DEPIMPL( const MachLogMachineConvoy::Sequencers, sequencers_ );
-    CB_DEPIMPL( MATHEX_SCALAR, minTopSpeed_ );
-    CB_DEPIMPL( bool, minTopSpeedUpToDate_ );
-	
-    PRE( sequencers_.size() != 0 );
+    CB_DEPIMPL(const MachLogMachineConvoy::Sequencers, sequencers_);
+    CB_DEPIMPL(MATHEX_SCALAR, minTopSpeed_);
+    CB_DEPIMPL(bool, minTopSpeedUpToDate_);
 
-    //Update the minimum top speed
-    if( not minTopSpeedUpToDate_ )
+    PRE(sequencers_.size() != 0);
+
+    // Update the minimum top speed
+    if (not minTopSpeedUpToDate_)
     {
-        //Initialise to first speed
+        // Initialise to first speed
         Sequencers::const_iterator cit = sequencers_.begin();
         minTopSpeed_ = (*cit)->physMachine().maxTranslationSpeed();
 
-        while( ++cit != sequencers_.end() )
+        while (++cit != sequencers_.end())
         {
             MATHEX_SCALAR speed = (*cit)->physMachine().maxTranslationSpeed();
-            if( speed < minTopSpeed_ )
+            if (speed < minTopSpeed_)
                 minTopSpeed_ = speed;
         }
 
@@ -115,7 +115,7 @@ MATHEX_SCALAR MachLogMachineConvoy::minTopSpeed() const
 
 const MachLogMachineConvoy::Sequencers& MachLogMachineConvoy::sequencers() const
 {
-	CB_MachLogMachineConvoy_DEPIMPL();
+    CB_MachLogMachineConvoy_DEPIMPL();
 
     return sequencers_;
 }

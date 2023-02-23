@@ -1,5 +1,5 @@
 /*
- * A U T O D E L . C P P 
+ * A U T O D E L . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,12 +8,12 @@
 #include "machgui/autodel.hpp"
 #include "machgui/startup.hpp"
 
-MachGuiAutoDeleteDisplayable::MachGuiAutoDeleteDisplayable( MachGuiStartupScreens* pStartupScreens )
-:	pStartupScreens_( pStartupScreens )
+MachGuiAutoDeleteDisplayable::MachGuiAutoDeleteDisplayable(MachGuiStartupScreens* pStartupScreens)
+    : pStartupScreens_(pStartupScreens)
 {
-	PRE( pStartupScreens );
+    PRE(pStartupScreens);
 
-	pStartupScreens_->registerAutoDeleteGuiElement( this );
+    pStartupScreens_->registerAutoDeleteGuiElement(this);
 
     TEST_INVARIANT;
 }
@@ -23,30 +23,31 @@ MachGuiAutoDeleteDisplayable::~MachGuiAutoDeleteDisplayable()
 {
     TEST_INVARIANT;
 
-	pStartupScreens_->unregisterAutoDeleteGuiElement();
-	// Make sure the screen redraws it's self. We don't know what this control may
-	// have wiped over so redraw whole screen just to be sure. This isn't ideal
-	// by "gui" lib isn't that sophisticated.
-	pStartupScreens_->changed();
+    pStartupScreens_->unregisterAutoDeleteGuiElement();
+    // Make sure the screen redraws it's self. We don't know what this control may
+    // have wiped over so redraw whole screen just to be sure. This isn't ideal
+    // by "gui" lib isn't that sophisticated.
+    pStartupScreens_->changed();
 }
 
 MachGuiStartupScreens& MachGuiAutoDeleteDisplayable::startupScreens()
 {
-	PRE( pStartupScreens_ );
+    PRE(pStartupScreens_);
 
-	return *pStartupScreens_;
+    return *pStartupScreens_;
 }
 
-//virtual
+// virtual
 void MachGuiAutoDeleteDisplayable::update()
-{}
+{
+}
 
 void MachGuiAutoDeleteDisplayable::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiAutoDeleteDisplayable& t )
+ostream& operator<<(ostream& o, const MachGuiAutoDeleteDisplayable& t)
 {
 
     o << "MachGuiAutoDeleteDisplayable " << (void*)&t << " start" << std::endl;

@@ -1,5 +1,5 @@
 /*
- * B R A K E . H P P 
+ * B R A K E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -23,35 +23,35 @@ class Brake
 public:
     //  The bandFraction is the fraction of the distance between minValue
     //  and maxValue in which the brake should operatate
-    Brake( MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction );
+    Brake(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction);
     // PRE( maxValue >= minValue );
     // PRE( 0.0 <= brakeBandFraction and brakeBandFraction <= 1.0 );
-    
+
     ~Brake();
 
-    void setLimits( MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction );
+    void setLimits(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction);
     // PRE( maxValue >= minValue );
     // PRE( 0.0 <= brakeBandFraction and brakeBandFraction <= 1.0 );
 
-//     MATHEX_SCALAR brakeFactor( MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredDeltaValue ) const;
-//     // POST( 0.0 <= result and result <= 1.0 );
-    
-    MATHEX_SCALAR newDelta( MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredDeltaValue ) const;
+    //     MATHEX_SCALAR brakeFactor( MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredDeltaValue ) const;
+    //     // POST( 0.0 <= result and result <= 1.0 );
+
+    MATHEX_SCALAR newDelta(MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredDeltaValue) const;
     // POST( minValue <= currentValue + result and currentValue + result <= maxValue );
-    
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const Brake& t );
+    friend ostream& operator<<(ostream& o, const Brake& t);
 
 private:
     // Operation deliberately revoked
-    Brake( const Brake& );
+    Brake(const Brake&);
 
     // Operation deliberately revoked
-    Brake& operator =( const Brake& );
+    Brake& operator=(const Brake&);
 
     // Operation deliberately revoked
-    bool operator ==( const Brake& );
+    bool operator==(const Brake&);
 
     MATHEX_SCALAR minValue_;
     MATHEX_SCALAR maxValue_;
@@ -59,7 +59,6 @@ private:
     MATHEX_SCALAR minBandValue_;
     MATHEX_SCALAR maxBandValue_;
 };
-
 
 #endif
 

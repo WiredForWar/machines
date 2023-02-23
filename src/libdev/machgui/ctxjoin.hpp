@@ -1,5 +1,5 @@
 /*
- * C T X J O I N . H P P 
+ * C T X J O I N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -25,45 +25,44 @@ class MachGuiCtxJoin : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxJoin( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxJoin();
+    MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxJoin() override;
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	virtual void update();
-	
-	void changeFocus();
+    void update() override;
 
-	bool validNetworkSettings( bool isHost );
+    void changeFocus();
 
-	void editingGameName( bool );
-	void joinGameSelected( bool );
+    bool validNetworkSettings(bool isHost);
+
+    void editingGameName(bool);
+    void joinGameSelected(bool);
 
     void CLASS_INVARIANT;
 
 protected:
-	void showGames();
-	
+    void showGames();
+
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxJoin& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxJoin& t);
 
-    MachGuiCtxJoin( const MachGuiCtxJoin& );
-    MachGuiCtxJoin& operator =( const MachGuiCtxJoin& );
+    MachGuiCtxJoin(const MachGuiCtxJoin&);
+    MachGuiCtxJoin& operator=(const MachGuiCtxJoin&);
 
-	// Data members...
-	MachGuiSingleSelectionListBox* pGamesList_;
-	MachGuiNewGameName* pNewGameName_;
-	MachGuiAnimations animations_;
-	MachGuiNetworkProtocolMode* pNetworkProtocol_;
-	bool editingGameName_;
-	bool joinGameSelected_;
-	MachGuiMenuButton* pJoinBtn_;
-	MachGuiMenuButton* pCreateBtn_;
-	MachGuiMenuButton* pShowGamesBtn_;
+    // Data members...
+    MachGuiSingleSelectionListBox* pGamesList_;
+    MachGuiNewGameName* pNewGameName_;
+    MachGuiAnimations animations_;
+    MachGuiNetworkProtocolMode* pNetworkProtocol_;
+    bool editingGameName_;
+    bool joinGameSelected_;
+    MachGuiMenuButton* pJoinBtn_;
+    MachGuiMenuButton* pCreateBtn_;
+    MachGuiMenuButton* pShowGamesBtn_;
 };
-
 
 #endif
 

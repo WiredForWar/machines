@@ -12,29 +12,29 @@
 #include "utility/indent.hpp"
 
 #ifndef _INLINE
-    #include "phys/internal/cs2polyg.ipp"
+#include "phys/internal/cs2polyg.ipp"
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-PhysCS2dPolygon::PhysCS2dPolygon
-(
-    const PolygonId& id, std::unique_ptr< MexPolygon2d >& polygonUPtr,
-    MATHEX_SCALAR height, Flags flags,
-    const PhysConfigSpace2d::Longevity& longevity
-)
-:   id_( id ),
-    polygon_(*(polygonUPtr.release()) ),
-    height_( height ),
-    longevity_( longevity ),
-    enabled_( true ),
-    flags_( flags )
+PhysCS2dPolygon::PhysCS2dPolygon(
+    const PolygonId& id,
+    std::unique_ptr<MexPolygon2d>& polygonUPtr,
+    MATHEX_SCALAR height,
+    Flags flags,
+    const PhysConfigSpace2d::Longevity& longevity)
+    : id_(id)
+    , polygon_(*(polygonUPtr.release()))
+    , height_(height)
+    , longevity_(longevity)
+    , enabled_(true)
+    , flags_(flags)
 {
-    //Construct the bounding volume
-    polygon_.boundary( &boundary_ );
+    // Construct the bounding volume
+    polygon_.boundary(&boundary_);
 
-    //Cache the edge lengths
-    polygon_.isCachingData( true );
+    // Cache the edge lengths
+    polygon_.isCachingData(true);
 
     TEST_INVARIANT;
 }
@@ -44,22 +44,23 @@ PhysCS2dPolygon::~PhysCS2dPolygon()
 {
     TEST_INVARIANT;
 
-    //Delete the polygon
+    // Delete the polygon
     MexPolygon2d* pPolygon = &polygon_;
-    if( pPolygon != NULL ) _DELETE( pPolygon );
+    if (pPolygon != nullptr)
+        _DELETE(pPolygon);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-bool PhysCS2dPolygon::isEnabled( Flags flags ) const
+bool PhysCS2dPolygon::isEnabled(Flags flags) const
 {
-    bool    result;
+    bool result;
 
-    if( enabled_ )
+    if (enabled_)
     {
-        if( flags == 0 or flags_ == 0 )
+        if (flags == 0 or flags_ == 0)
             result = true;
         else
-            result = ( flags & flags_ ) == 0;
+            result = (flags & flags_) == 0;
     }
     else
         result = false;
@@ -71,21 +72,21 @@ bool PhysCS2dPolygon::isEnabled( Flags flags ) const
 
 void PhysCS2dPolygon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const PhysCS2dPolygon& t )
+ostream& operator<<(ostream& o, const PhysCS2dPolygon& t)
 {
 
-    UtlIndentOstream    indentOstr( o, "  " );
+    UtlIndentOstream indentOstr(o, "  ");
 
     o << "PhysCS2dPolygon " << (void*)&t << " start" << std::endl;
 
     indentOstr << "  id " << t.id_.asScalar() << "  height " << t.height_;
-    if( t.longevity_ == PhysConfigSpace2d::PERMANENT )
+    if (t.longevity_ == PhysConfigSpace2d::PERMANENT)
         indentOstr << " permanent ";
-    else if( t.longevity_ == PhysConfigSpace2d::TEMPORARY )
+    else if (t.longevity_ == PhysConfigSpace2d::TEMPORARY)
         indentOstr << " temporary ";
     indentOstr << t.boundary_ << std::endl;
     indentOstr << "Enabled " << t.enabled_ << std::endl;

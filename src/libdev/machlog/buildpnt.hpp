@@ -1,13 +1,13 @@
 /*
- * B U I L D P N T . H P P 
+ * B U I L D P N T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     MachLogBuildPoint
 
-    Simple struct of boolean and MexPoint2d. 
-	Knows whether or not it has a constructor who has "reserved" it.
+    Simple struct of boolean and MexPoint2d.
+    Knows whether or not it has a constructor who has "reserved" it.
 */
 
 #ifndef _MACHLOG_BUILDPNT_HPP
@@ -15,7 +15,7 @@
 
 #include "base/base.hpp"
 
-//#include "phys/cspace2.hpp"
+// #include "phys/cspace2.hpp"
 
 #include "machphys/machphys.hpp"
 
@@ -24,36 +24,35 @@
 class MachLogBuildPoint
 {
 public:
-    MachLogBuildPoint( const MexPoint2d& position );
-	MachLogBuildPoint();		// to satisfy the requirements of ctl_vector - not intended for use
+    MachLogBuildPoint(const MexPoint2d& position);
+    MachLogBuildPoint(); // to satisfy the requirements of ctl_vector - not intended for use
     ~MachLogBuildPoint();
 
-	MexPoint2d position() const;
+    MexPoint2d position() const;
     bool isReserved() const;
-	bool reserve( MachPhys::ConstructorSubType );
-	MachPhys::ConstructorSubType subTypeOfReserver() const;
-	// PRE( isReserved() );
-	
-	void unReserve();
+    bool reserve(MachPhys::ConstructorSubType);
+    MachPhys::ConstructorSubType subTypeOfReserver() const;
+    // PRE( isReserved() );
 
-    void CLASS_INVARIANT;	
-	
-	friend bool operator <( const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs );
-	friend bool operator ==( const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs );
+    void unReserve();
 
-    friend ostream& operator <<( ostream& o, const MachLogBuildPoint& t );
-	
-	PER_MEMBER_PERSISTENT_DEFAULT( MachLogBuildPoint );
-	PER_FRIEND_READ_WRITE( MachLogBuildPoint );
+    void CLASS_INVARIANT;
+
+    friend bool operator<(const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs);
+    friend bool operator==(const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs);
+
+    friend ostream& operator<<(ostream& o, const MachLogBuildPoint& t);
+
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogBuildPoint);
+    PER_FRIEND_READ_WRITE(MachLogBuildPoint);
 
 private:
-    MexPoint2d 						position_;
-	bool							reserved_;
-	MachPhys::ConstructorSubType	subTypeOfReserver_;
-	
+    MexPoint2d position_;
+    bool reserved_;
+    MachPhys::ConstructorSubType subTypeOfReserver_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogBuildPoint );
+PER_DECLARE_PERSISTENT(MachLogBuildPoint);
 
 #endif
 

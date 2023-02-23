@@ -1,5 +1,5 @@
 /*
- * L E A K T R A K . H P P 
+ * L E A K T R A K . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -12,23 +12,33 @@
 #ifndef _LEAKTRAK_HPP
 #define _LEAKTRAK_HPP
 
-//static methods only
+// static methods only
 class LeakTracker
 {
 public:
-    enum Action { INLOOP, SAMPLE, TERMINATE };
-	enum SampleRate { NONE = 0, FAST = 10, MEDIUM = 25, SLOW = 200 };
+    enum Action
+    {
+        INLOOP,
+        SAMPLE,
+        TERMINATE
+    };
+    enum SampleRate
+    {
+        NONE = 0,
+        FAST = 10,
+        MEDIUM = 25,
+        SLOW = 200
+    };
 
-    static void update( Action action, SampleRate );
+    static void update(Action action, SampleRate);
 
 private:
     // Operations deliberately revoked
     LeakTracker();
     ~LeakTracker();
-    LeakTracker( const LeakTracker& );
-    LeakTracker& operator =( const LeakTracker& );
-    bool operator ==( const LeakTracker& );
-
+    LeakTracker(const LeakTracker&);
+    LeakTracker& operator=(const LeakTracker&);
+    bool operator==(const LeakTracker&);
 };
 
 #endif

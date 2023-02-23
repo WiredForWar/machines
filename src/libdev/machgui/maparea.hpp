@@ -1,5 +1,5 @@
 /*
- * M A P A R E A . H P P 
+ * M A P A R E A . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,26 +21,25 @@ class MachGuiMapArea : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiMapArea( GuiDisplayable* pParent, const Gui::Box& );
-    ~MachGuiMapArea();
+    MachGuiMapArea(GuiDisplayable* pParent, const Gui::Box&);
+    ~MachGuiMapArea() override;
 
     void CLASS_INVARIANT;
 
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	void controlPanelSliding( bool );
+    void controlPanelSliding(bool);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiMapArea& t );
+    friend ostream& operator<<(ostream& o, const MachGuiMapArea& t);
 
-    MachGuiMapArea( const MachGuiMapArea& );
-    MachGuiMapArea& operator =( const MachGuiMapArea& );
+    MachGuiMapArea(const MachGuiMapArea&);
+    MachGuiMapArea& operator=(const MachGuiMapArea&);
 
-	void redrawAreaImmediate( const Gui::Box& area );
+    void redrawAreaImmediate(const Gui::Box& area);
 
-	MachGuiMapAreaImpl* pImpl_;
+    MachGuiMapAreaImpl* pImpl_;
 };
-
 
 #endif
 

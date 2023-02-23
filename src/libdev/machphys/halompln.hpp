@@ -1,5 +1,5 @@
 /*
- * H A L O M P L N . H P P 
+ * H A L O M P L N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachPhysLightningHaloMaterialPlan
 
     create a unique material plam for the electric lightning halo associated with the
-	victim effect of an electric charger
+    victim effect of an electric charger
 */
 
 #ifndef _MACHPHYS_HALOMPLN_HPP
@@ -21,50 +21,45 @@
 #include "phys/sclplan.hpp"
 #include "world4d/matplan.hpp"
 
-class MachPhysLightningHaloMaterialPlan: public W4dMaterialPlan
+class MachPhysLightningHaloMaterialPlan : public W4dMaterialPlan
 // Canonical form revoked
 {
 public:
-    //Collection of (counted pointers to) material vectors
-    typedef ctl_vector< Ren::MaterialVecPtr > MaterialVecPtrs;
+    // Collection of (counted pointers to) material vectors
+    using MaterialVecPtrs = ctl_vector<Ren::MaterialVecPtr>;
 
-	//public ctor
-    MachPhysLightningHaloMaterialPlan
-    (
-    	const PhysRelativeTime& duration, W4dLOD maxLOD,    
-        MachPhysLightningHalo::HaloType type
-    );
+    // public ctor
+    MachPhysLightningHaloMaterialPlan(
+        const PhysRelativeTime& duration,
+        W4dLOD maxLOD,
+        MachPhysLightningHalo::HaloType type);
 
+    ~MachPhysLightningHaloMaterialPlan() override;
 
-    ~MachPhysLightningHaloMaterialPlan();
+    // True if the plan is defined for level of detail lodId.
+    bool isLODDefined(W4dLOD lodId) const override;
 
-
-    //True if the plan is defined for level of detail lodId.
-    virtual bool isLODDefined( W4dLOD lodId ) const;
-
-    //Override to define result as a function of timeOffset.
-    virtual const Ren::MaterialVecPtr& materialVec( const PhysRelativeTime& timeOffset,
-                                                    W4dLOD lodId ) const;
+    // Override to define result as a function of timeOffset.
+    const Ren::MaterialVecPtr& materialVec(const PhysRelativeTime& timeOffset, W4dLOD lodId) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLightningHaloMaterialPlan& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLightningHaloMaterialPlan& t);
 
 private:
-    MachPhysLightningHaloMaterialPlan( const MachPhysLightningHaloMaterialPlan& );
-    MachPhysLightningHaloMaterialPlan& operator =( const MachPhysLightningHaloMaterialPlan& );
-    bool operator ==( const MachPhysLightningHaloMaterialPlan& );
- 	
-	RenMaterial mat1_;
-	RenMaterial mat2_;
-	RenMaterial mat3_;
-	RenMaterial mat4_;
+    MachPhysLightningHaloMaterialPlan(const MachPhysLightningHaloMaterialPlan&);
+    MachPhysLightningHaloMaterialPlan& operator=(const MachPhysLightningHaloMaterialPlan&);
+    bool operator==(const MachPhysLightningHaloMaterialPlan&);
 
-    PhysScalarPlanPtr alphaPlanPtr_; //Scalar plan defining alpha value
+    RenMaterial mat1_;
+    RenMaterial mat2_;
+    RenMaterial mat3_;
+    RenMaterial mat4_;
 
-	MaterialVecPtrs materialVecPtrs_;
+    PhysScalarPlanPtr alphaPlanPtr_; // Scalar plan defining alpha value
+
+    MaterialVecPtrs materialVecPtrs_;
 };
-
 
 #endif
 

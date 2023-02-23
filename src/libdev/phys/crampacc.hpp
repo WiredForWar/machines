@@ -17,28 +17,28 @@
 
 class PhysRampAcceleration;
 
-#pragma pack(push,1)
+#pragma pack(push, 1)
 class PhysCompressedRampAcceleration
 // Canonical form revoked
 {
 public:
     PhysCompressedRampAcceleration();
-    PhysCompressedRampAcceleration( const PhysRampAcceleration& );
+    PhysCompressedRampAcceleration(const PhysRampAcceleration&);
     ~PhysCompressedRampAcceleration();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const PhysCompressedRampAcceleration& t );
-	friend class PhysRampAcceleration;
+    friend ostream& operator<<(ostream& o, const PhysCompressedRampAcceleration& t);
+    friend class PhysRampAcceleration;
 
-    //data members
-    float 						startSpeed_; //Initial speed
-    float 						firstAcceleration_; //Signed
-    float 						secondAcceleration_; //Signed
-    PhysCompressedRelativeTime 	totalTime_; //Cumulative time of all 3 sections
-    PhysCompressedRelativeTime 	firstAccelerationTime_; //Time of 1st acceleration period
-    PhysCompressedRelativeTime 	secondAccelerationTime_; //Time of 2nd acceleration period
+    // data members
+    float startSpeed_; // Initial speed
+    float firstAcceleration_; // Signed
+    float secondAcceleration_; // Signed
+    PhysCompressedRelativeTime totalTime_; // Cumulative time of all 3 sections
+    PhysCompressedRelativeTime firstAccelerationTime_; // Time of 1st acceleration period
+    PhysCompressedRelativeTime secondAccelerationTime_; // Time of 2nd acceleration period
 };
 #pragma pack(pop)
 

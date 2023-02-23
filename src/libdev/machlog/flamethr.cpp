@@ -1,5 +1,5 @@
 /*
- * F L A M E T H R . C P P 
+ * F L A M E T H R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,16 +10,16 @@
 
 #include "machphys/weapon.hpp"
 #include "machphys/wepdata.hpp"
-//#include "machphys/random.hpp"
+// #include "machphys/random.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/flamethr.hpp"
 #include "machlog/flamebal.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogFlameThrower );
+PER_DEFINE_PERSISTENT(MachLogFlameThrower);
 
-MachLogFlameThrower::MachLogFlameThrower( MachLogRace* pRace, MachPhysLinearWeapon* pPhysWeapon, MachActor* pOwner )
-:	MachLogLinearWeapon( pRace, pPhysWeapon, pOwner )
+MachLogFlameThrower::MachLogFlameThrower(MachLogRace* pRace, MachPhysLinearWeapon* pPhysWeapon, MachActor* pOwner)
+    : MachLogLinearWeapon(pRace, pPhysWeapon, pOwner)
 {
 
     TEST_INVARIANT;
@@ -28,32 +28,29 @@ MachLogFlameThrower::MachLogFlameThrower( MachLogRace* pRace, MachPhysLinearWeap
 MachLogFlameThrower::~MachLogFlameThrower()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogFlameThrower::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//virtual
-MachLogLinearProjectile* MachLogFlameThrower::createLinearProjectile
-(
-	const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)	
+// virtual
+MachLogLinearProjectile* MachLogFlameThrower::createLinearProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	return _NEW( 
-		MachLogFlameBall( 
-			&logRace(), 
-			createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ), 
-			&owner(), 
-			physWeapon().weaponData()
-		)
-	);
+    return _NEW(MachLogFlameBall(
+        &logRace(),
+        createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
+        &owner(),
+        physWeapon().weaponData()));
 }
 
-ostream& operator <<( ostream& o, const MachLogFlameThrower& t )
+ostream& operator<<(ostream& o, const MachLogFlameThrower& t)
 {
 
     o << "MachLogFlameThrower " << (void*)&t << " start" << std::endl;
@@ -62,24 +59,23 @@ ostream& operator <<( ostream& o, const MachLogFlameThrower& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachLogFlameThrower& weapon )
+void perWrite(PerOstream& ostr, const MachLogFlameThrower& weapon)
 {
-	const MachLogLinearWeapon& base1 = weapon;
+    const MachLogLinearWeapon& base1 = weapon;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogFlameThrower& weapon )
+void perRead(PerIstream& istr, MachLogFlameThrower& weapon)
 {
-	MachLogLinearWeapon& base1 = weapon;
+    MachLogLinearWeapon& base1 = weapon;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-MachLogFlameThrower::MachLogFlameThrower( PerConstructor con )
-:	MachLogLinearWeapon( con )
+MachLogFlameThrower::MachLogFlameThrower(PerConstructor con)
+    : MachLogLinearWeapon(con)
 {
 }
-
 
 /* End PULSEWEP.CPP *************************************************/

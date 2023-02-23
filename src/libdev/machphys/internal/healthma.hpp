@@ -1,5 +1,5 @@
 /*
- * H E A L T H M A . H P P 
+ * H E A L T H M A . H P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -18,33 +18,33 @@
 class MachPhysIHealthMaterials
 {
 public:
-	MachPhysIHealthMaterials(int nMats, double alpha=1);
-	MachPhysIHealthMaterials(int nMats, const RenTexture&, double alpha=1);
-	~MachPhysIHealthMaterials();
+    MachPhysIHealthMaterials(int nMats, double alpha = 1);
+    MachPhysIHealthMaterials(int nMats, const RenTexture&, double alpha = 1);
+    ~MachPhysIHealthMaterials();
 
-	// These post-conditions apply to both of these functions.
-	// POST(result.texture() == texture());
-	// POST(result.diffuse().a() == alpha());
-	const RenMaterial& material(double percentageHp) const;
-	const RenMaterial& blueMaterial() const;
+    // These post-conditions apply to both of these functions.
+    // POST(result.texture() == texture());
+    // POST(result.diffuse().a() == alpha());
+    const RenMaterial& material(double percentageHp) const;
+    const RenMaterial& blueMaterial() const;
 
-	// Change the alpha or texture of all current materials.  The materials 
-	// are shared amoung markers, so this will affect them all.	
-	// void alpha(double);
-	// void texture(const RenTexture&);
-	
-	double alpha() const				{ return alpha_; }
-	const RenTexture& texture() const	{ return texture_; }
-	
+    // Change the alpha or texture of all current materials.  The materials
+    // are shared amoung markers, so this will affect them all.
+    // void alpha(double);
+    // void texture(const RenTexture&);
+
+    double alpha() const { return alpha_; }
+    const RenTexture& texture() const { return texture_; }
+
 private:
-	RenColour computeColour(double percentageHp) const;
-	void sharedCtor();
+    RenColour computeColour(double percentageHp) const;
+    void sharedCtor();
 
-	RenMaterial* const	materials_;
-	const int			nMats_;
-	RenMaterial			blue_;
-	const double		alpha_;
-	const RenTexture	texture_;
+    RenMaterial* const materials_;
+    const int nMats_;
+    RenMaterial blue_;
+    const double alpha_;
+    const RenTexture texture_;
 };
 
 #endif

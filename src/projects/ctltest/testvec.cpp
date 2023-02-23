@@ -4,20 +4,20 @@
 #include "ctl/fixedvec.hpp"
 // #include "ctl/mmvector.hpp"
 
-void	testVector();
+void testVector();
 
-int	main( int argc, char* argv[] )
+int main(int argc, char* argv[])
 {
     testVector();
 
-	return 0;
+    return 0;
 }
 
-void    testVector()
+void testVector()
 {
-  
-    ctl_fixed_vector< int >    v1( 10 );
 
-    v1[ 0 ] = 10;
-    v1[ 1 ] = 20;
+    ctl_fixed_vector<int> v1(10);
+
+    v1[0] = 10;
+    v1[1] = 20;
 }

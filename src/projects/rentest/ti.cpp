@@ -4,13 +4,13 @@
  */
 
 #include "ctl/list.hpp"
-//#include "ctl/list.ctp"
+// #include "ctl/list.ctp"
 
 class MotionControl;
 
 void renderTestDummyFunction1()
 {
-	static ctl_list<MotionControl*> motionList;
+    static ctl_list<MotionControl*> motionList;
 }
 
 /* End TI.CPP *****************************************************/

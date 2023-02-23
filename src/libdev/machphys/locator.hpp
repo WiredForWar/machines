@@ -17,50 +17,48 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
-class MachPhysLocator: public W4dEntity
+class MachPhysLocator : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysLocator( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysLocator(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysLocator();
+    // dtor
+    ~MachPhysLocator() override;
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysLocator& exemplar();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startLocate( const PhysAbsoluteTime& startTime,
-	                  const PhysRelativeTime& duration,
-	                  const MATHEX_SCALAR& maxSize,
-	                  uint nRepetations,
-	                  uint animId );
+    void startLocate(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& maxSize,
+        uint nRepetations,
+        uint animId);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLocator& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLocator& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLocator );
-	PER_FRIEND_READ_WRITE( MachPhysLocator );
+    PER_MEMBER_PERSISTENT(MachPhysLocator);
+    PER_FRIEND_READ_WRITE(MachPhysLocator);
 
 private:
-    //Deliberately revoked
-    MachPhysLocator( const MachPhysLocator& );
-    MachPhysLocator& operator =( const MachPhysLocator& );
-    bool operator ==( const MachPhysLocator& );
+    // Deliberately revoked
+    MachPhysLocator(const MachPhysLocator&);
+    MachPhysLocator& operator=(const MachPhysLocator&);
+    bool operator==(const MachPhysLocator&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLocator();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLocator );
+PER_DECLARE_PERSISTENT(MachPhysLocator);
 
 #endif
 

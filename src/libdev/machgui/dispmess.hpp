@@ -1,5 +1,5 @@
 /*
- * D I S P M E S S . H P P 
+ * D I S P M E S S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -27,33 +27,32 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachGuiMessageDisplay& t );
-	void addMessage( const char* displayText, PhysRelativeTime timeToDisplay );
-	void doOutput( ostream& );
+    friend ostream& operator<<(ostream& o, const MachGuiMessageDisplay& t);
+    void addMessage(const char* displayText, PhysRelativeTime timeToDisplay);
+    void doOutput(ostream&);
 
 private:
-    MachGuiMessageDisplay( const MachGuiMessageDisplay& );
-    MachGuiMessageDisplay& operator =( const MachGuiMessageDisplay& );
-    bool operator ==( const MachGuiMessageDisplay& );
+    MachGuiMessageDisplay(const MachGuiMessageDisplay&);
+    MachGuiMessageDisplay& operator=(const MachGuiMessageDisplay&);
+    bool operator==(const MachGuiMessageDisplay&);
 
     MachGuiMessageDisplay();
-	struct DisplayMessage
-	{
-		string				messageText_;
-		PhysAbsoluteTime	startTime_;
-		PhysRelativeTime	duration_;
-		DisplayMessage& operator =( const DisplayMessage& rhs )
-		{
-			messageText_ = rhs.messageText_;
-			startTime_ = rhs.startTime_;
-			duration_ = rhs.duration_;
-			return *this;
-		}
-	};
+    struct DisplayMessage
+    {
+        string messageText_;
+        PhysAbsoluteTime startTime_;
+        PhysRelativeTime duration_;
+        DisplayMessage& operator=(const DisplayMessage& rhs)
+        {
+            messageText_ = rhs.messageText_;
+            startTime_ = rhs.startTime_;
+            duration_ = rhs.duration_;
+            return *this;
+        }
+    };
 
-	ctl_pvector< DisplayMessage >	messages_;
+    ctl_pvector<DisplayMessage> messages_;
 };
-
 
 #endif
 

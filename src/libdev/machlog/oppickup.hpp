@@ -1,5 +1,5 @@
 /*
- * O P P I C K U P . H P P 
+ * O P P I C K U P . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,67 +16,61 @@
 
 #include "machlog/operatio.hpp"
 
-
 class MachLogResourceCarrier;
 class MachLogPickUpOperationImpl;
 
 // canonical form revoked
 
-class MachLogPickUpOperation
-: public MachLogOperation
+class MachLogPickUpOperation : public MachLogOperation
 {
 public:
-	
-    MachLogPickUpOperation( MachLogResourceCarrier* );
-	// PRE( pActor_->isNormalResourceCarrier() );	
-	
-    ~MachLogPickUpOperation();
-							 
-	void CLASS_INVARIANT;							 
-							 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPickUpOperation );
-	PER_FRIEND_READ_WRITE( MachLogPickUpOperation );
+    MachLogPickUpOperation(MachLogResourceCarrier*);
+    // PRE( pActor_->isNormalResourceCarrier() );
 
+    ~MachLogPickUpOperation() override;
+
+    void CLASS_INVARIANT;
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPickUpOperation);
+    PER_FRIEND_READ_WRITE(MachLogPickUpOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-		
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
 
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
 
-	virtual bool doBeInterrupted();
-	///////////////////////////////
-	
+    PhysRelativeTime doUpdate() override;
+
+    bool doBeInterrupted() override;
+    ///////////////////////////////
+
 private:
+    // Operations deliberately revoked
+    MachLogPickUpOperation(const MachLogPickUpOperation&);
+    MachLogPickUpOperation& operator=(const MachLogPickUpOperation&);
+    bool operator==(const MachLogPickUpOperation&);
 
-	// Operations deliberately revoked
-    MachLogPickUpOperation( const MachLogPickUpOperation& );
-    MachLogPickUpOperation& operator =( const MachLogPickUpOperation& );
-    bool operator ==( const MachLogPickUpOperation& );
+    bool moveToNextSupplier();
 
-	bool moveToNextSupplier();	
-	
-	void terminateOp();
-	
-	// will perform a find space and change *pClearPickupPoint if necessary to that of a position near its original
-	// value that is guaranteed to be both within pickup range of the pad and clear of all obstacles for the clearance
-	// designated
-	bool attemptToGuaranteeClearPickupPoint( const MexPoint2d& actorPos, MATHEX_SCALAR carrierClearance, MexPoint2d* pClearPickupPoint );
-	
-	MachLogPickUpOperationImpl*		pImpl_;
-	
-	
+    void terminateOp();
+
+    // will perform a find space and change *pClearPickupPoint if necessary to that of a position near its original
+    // value that is guaranteed to be both within pickup range of the pad and clear of all obstacles for the clearance
+    // designated
+    bool attemptToGuaranteeClearPickupPoint(
+        const MexPoint2d& actorPos,
+        MATHEX_SCALAR carrierClearance,
+        MexPoint2d* pClearPickupPoint);
+
+    MachLogPickUpOperationImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPickUpOperation );
-
+PER_DECLARE_PERSISTENT(MachLogPickUpOperation);
 
 #endif
 

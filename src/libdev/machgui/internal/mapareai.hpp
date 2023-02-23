@@ -1,5 +1,5 @@
 /*
- * M A P A R E A I . H P P 
+ * M A P A R E A I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,17 +26,16 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiMapAreaImpl& t );
+    friend ostream& operator<<(ostream& o, const MachGuiMapAreaImpl& t);
 
-    MachGuiMapAreaImpl( const MachGuiMapAreaImpl& );
-    MachGuiMapAreaImpl& operator =( const MachGuiMapAreaImpl& );
+    MachGuiMapAreaImpl(const MachGuiMapAreaImpl&);
+    MachGuiMapAreaImpl& operator=(const MachGuiMapAreaImpl&);
 
-	friend class MachGuiMapArea;
+    friend class MachGuiMapArea;
 
-	// Data members
-	MachGuiMapAreaMagic* pMapAreaMagic_;
+    // Data members
+    MachGuiMapAreaMagic* pMapAreaMagic_;
 };
-
 
 #endif
 

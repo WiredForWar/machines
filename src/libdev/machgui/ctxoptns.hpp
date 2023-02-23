@@ -1,5 +1,5 @@
 /*
- * C T X O P T N S . H P P 
+ * C T X O P T N S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -38,59 +38,58 @@ class MachGuiCtxOptions : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxOptions( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxOptions();
+    MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxOptions() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
-	virtual bool okayToSwitchContext();
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void update() override;
+    bool okayToSwitchContext() override;
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	void exitFromOptions();
+    void exitFromOptions();
 
-	static void load3dSoundFiles( bool enabled );
+    static void load3dSoundFiles(bool enabled);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxOptions& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxOptions& t);
 
-	void getOptions();
-	void setOptions();
-	void showDirect3DDrivers();
+    void getOptions();
+    void setOptions();
+    void showDirect3DDrivers();
 
-    MachGuiCtxOptions( const MachGuiCtxOptions& );
-    MachGuiCtxOptions& operator =( const MachGuiCtxOptions& );
+    MachGuiCtxOptions(const MachGuiCtxOptions&);
+    MachGuiCtxOptions& operator=(const MachGuiCtxOptions&);
 
-	typedef ctl_pvector< MachGuiCheckBox > BooleanOptimisations;
-	typedef ctl_pvector< MachGuiDropDownListBoxCreator > ChoicesOptimisations;
+    using BooleanOptimisations = ctl_pvector<MachGuiCheckBox>;
+    using ChoicesOptimisations = ctl_pvector<MachGuiDropDownListBoxCreator>;
 
-	friend class MachGuiDDrawDropDownCallback;
+    friend class MachGuiDDrawDropDownCallback;
 
-	// Data members...
-	MachGuiStartupScreens::Context exitContext_;
-	MachGuiAnimations animations_;
+    // Data members...
+    MachGuiStartupScreens::Context exitContext_;
+    MachGuiAnimations animations_;
 
-	MachGuiMusicVolumeSlideBar* pMusicVolume_;
-	MachGuiSoundVolumeSlideBar* pSoundVolume_;
-	MachGuiCheckBox* pSound3d_;
-	MachGuiCheckBox* pTransitions_;
-	MachGuiCheckBox* pScreenResolutionLock_;
-	MachGuiCheckBox* pCursorType_;
-	MachGuiCheckBox* pReverseKeys_;
-	MachGuiCheckBox* pReverseMouse_;
-	MachGuiDropDownListBoxCreator* pScreenSize_;
-	BooleanOptimisations booleanOptimisations_;
-	ChoicesOptimisations choicesOptimisations_;
-	float musicVolume_, soundVolume_, gammaCorrection_;
-	RenDriverSelector* pDriverSelector_;
-	MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_;
-	MachGuiDropDownListBoxCreator* pDirect3DDrivers_;
-	bool exitFromOptions_;
-	RenDriverPtr initialDDrawDriver_;
-	bool cursorType2d_;
-	MachGuiGammaCorrectionSlideBar* pGammaCorrection_;
+    MachGuiMusicVolumeSlideBar* pMusicVolume_;
+    MachGuiSoundVolumeSlideBar* pSoundVolume_;
+    MachGuiCheckBox* pSound3d_;
+    MachGuiCheckBox* pTransitions_;
+    MachGuiCheckBox* pScreenResolutionLock_;
+    MachGuiCheckBox* pCursorType_;
+    MachGuiCheckBox* pReverseKeys_;
+    MachGuiCheckBox* pReverseMouse_;
+    MachGuiDropDownListBoxCreator* pScreenSize_;
+    BooleanOptimisations booleanOptimisations_;
+    ChoicesOptimisations choicesOptimisations_;
+    float musicVolume_, soundVolume_, gammaCorrection_;
+    RenDriverSelector* pDriverSelector_;
+    MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_;
+    MachGuiDropDownListBoxCreator* pDirect3DDrivers_;
+    bool exitFromOptions_;
+    RenDriverPtr initialDDrawDriver_;
+    bool cursorType2d_;
+    MachGuiGammaCorrectionSlideBar* pGammaCorrection_;
 };
-
 
 #endif
 

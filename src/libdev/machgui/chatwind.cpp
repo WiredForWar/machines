@@ -1,5 +1,5 @@
 /*
- * C H A T W I N D . C P P 
+ * C H A T W I N D . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -14,17 +14,17 @@
 #include "machgui/menus_helper.hpp"
 
 MachGuiChatWindow::MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens* pStartupScreens, const Gui::Box& box)
-:	GuiDisplayable( pStartupScreens, box ) ,
-    pRootParent_( pRootParent),
-	pStartupScreens_( pStartupScreens )
+    : GuiDisplayable(pStartupScreens, box)
+    , pRootParent_(pRootParent)
+    , pStartupScreens_(pStartupScreens)
 {
-	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smallfnt.bmp") );
-	// Work out how may lines we can display in the chat window
-	numLines() = height() / ( font.charHeight() + 1.0 /*spacing*/ );
+    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
+    // Work out how may lines we can display in the chat window
+    numLines() = height() / (font.charHeight() + 1.0 /*spacing*/);
 
-	chatWidth() = width();
+    chatWidth() = width();
 
-	chatWindow() = this;
+    chatWindow() = this;
 
     TEST_INVARIANT;
 }
@@ -33,42 +33,42 @@ MachGuiChatWindow::~MachGuiChatWindow()
 {
     TEST_INVARIANT;
 
-	chatWindow() = NULL;
+    chatWindow() = nullptr;
 }
 
-//static 
+// static
 size_t& MachGuiChatWindow::numLines()
 {
-	static size_t numLines = 1;
-	return numLines;
+    static size_t numLines = 1;
+    return numLines;
 }
 
-//static 
+// static
 MachGuiChatWindow::strings& MachGuiChatWindow::linesOfText()
 {
-	static strings lines;
-	return lines;
+    static strings lines;
+    return lines;
 }
 
-//static 
+// static
 size_t& MachGuiChatWindow::chatWidth()
 {
-	static size_t width = 315;
-	return width;
+    static size_t width = 315;
+    return width;
 }
 
-//static 
+// static
 void MachGuiChatWindow::clearAllText()
 {
-	linesOfText().erase( linesOfText().begin(), linesOfText().end() );
+    linesOfText().erase(linesOfText().begin(), linesOfText().end());
 }
 
 void MachGuiChatWindow::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiChatWindow& t )
+ostream& operator<<(ostream& o, const MachGuiChatWindow& t)
 {
 
     o << "MachGuiChatWindow " << (void*)&t << " start" << std::endl;
@@ -77,64 +77,63 @@ ostream& operator <<( ostream& o, const MachGuiChatWindow& t )
     return o;
 }
 
-//virtual 
+// virtual
 void MachGuiChatWindow::doDisplay()
 {
-	// Blit background to list box item
+    // Blit background to list box item
     auto* shared = pRootParent_->getSharedBitmaps();
     auto backdrop = shared->getNamedBitmap("backdrop");
     shared->blitNamedBitmapFromArea(
-            backdrop,
-            absoluteBoundary(),
-            absoluteBoundary().minCorner(),
-            [shared, backdrop](const Gui::Box& box) {
-                using namespace machgui::helper::menus;
-                return centered_bitmap_transform(
-                        box,
-                        shared->getWidthOfNamedBitmap(backdrop),
-                        shared->getHeightOfNamedBitmap(backdrop)
-                );
-            });
+        backdrop,
+        absoluteBoundary(),
+        absoluteBoundary().minCorner(),
+        [shared, backdrop](const Gui::Box& box) {
+            using namespace machgui::helper::menus;
+            return centered_bitmap_transform(
+                box,
+                shared->getWidthOfNamedBitmap(backdrop),
+                shared->getHeightOfNamedBitmap(backdrop));
+        });
 
-	GuiBmpFont font( GuiBmpFont::getFont("gui/menu/smallfnt.bmp") );
+    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
 
-	size_t startY = absoluteBoundary().maxCorner().y();
-	size_t loop = linesOfText().size();
+    size_t startY = absoluteBoundary().maxCorner().y();
+    size_t loop = linesOfText().size();
 
-	// Display each line of text, starting from the bottom of the GuiDisplayable		  
-	while ( loop )
-	{
-		--loop;
-		startY -= font.charHeight() + 1;
-		font.drawText( linesOfText()[loop], Gui::Coord( absoluteBoundary().minCorner().x(), startY ), width() );
-	}	
+    // Display each line of text, starting from the bottom of the GuiDisplayable
+    while (loop)
+    {
+        --loop;
+        startY -= font.charHeight() + 1;
+        font.drawText(linesOfText()[loop], Gui::Coord(absoluteBoundary().minCorner().x(), startY), width());
+    }
 }
 
-//static
-void MachGuiChatWindow::addText( const string& text )
+// static
+void MachGuiChatWindow::addText(const string& text)
 {
-	MachGuiMenuText::chopUpText( text, chatWidth(), GuiBmpFont::getFont("gui/menu/smallfnt.bmp"), &linesOfText() );
+    MachGuiMenuText::chopUpText(text, chatWidth(), GuiBmpFont::getFont("gui/menu/smallfnt.bmp"), &linesOfText());
 
-	while ( linesOfText().size() > numLines() )
-	{
-		linesOfText().erase( linesOfText().begin() );
-	}
+    while (linesOfText().size() > numLines())
+    {
+        linesOfText().erase(linesOfText().begin());
+    }
 
-	if ( chatWindow() )
-	{
-		// Don't update if message box is filling screen
-		if ( not chatWindow()->pStartupScreens_->msgBoxIsBeingDisplayed() )
-		{
-			chatWindow()->changed();
-		}
-	}
+    if (chatWindow())
+    {
+        // Don't update if message box is filling screen
+        if (not chatWindow()->pStartupScreens_->msgBoxIsBeingDisplayed())
+        {
+            chatWindow()->changed();
+        }
+    }
 }
 
-//static 
+// static
 MachGuiChatWindow*& MachGuiChatWindow::chatWindow()
 {
-	static MachGuiChatWindow* pChatWindow = NULL;
-	return pChatWindow;
+    static MachGuiChatWindow* pChatWindow = nullptr;
+    return pChatWindow;
 }
 
 /* End CHATWIND.CPP *************************************************/

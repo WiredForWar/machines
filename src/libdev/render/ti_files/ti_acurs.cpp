@@ -4,6 +4,6 @@
 
 dummyFunction_anim_curs()
 {
-	// Required by RenIAnimCursor2d.
-	static ctl_vector<RenSurface> vec;
+    // Required by RenIAnimCursor2d.
+    static ctl_vector<RenSurface> vec;
 }

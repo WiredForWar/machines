@@ -1,10 +1,9 @@
 /*
- * M C C O N V O I . C P P 
+ * M C C O N V O I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of non-inline non-template methods and global functions
-
 
 #include "machlog/internal/mcconvoi.hpp"
 
@@ -17,15 +16,14 @@ MachLogMachineConvoyImpl::MachLogMachineConvoyImpl()
 MachLogMachineConvoyImpl::~MachLogMachineConvoyImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogMachineConvoyImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogMachineConvoyImpl& t )
+ostream& operator<<(ostream& o, const MachLogMachineConvoyImpl& t)
 {
 
     o << "MachLogMachineConvoyImpl " << (void*)&t << " start" << std::endl;

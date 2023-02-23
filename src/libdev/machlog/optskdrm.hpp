@@ -3,8 +3,8 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
 
 
-		AI squadron module.
-		Designed for using spys to drop mines in various different types of shape.
+        AI squadron module.
+        Designed for using spys to drop mines in various different types of shape.
  */
 
 #ifndef _MACHLOG_OPTSKDRM_HPP
@@ -22,50 +22,48 @@ class MachLogSquadron;
 
 // canonical form revoked
 
-class MachLogTaskDropLandMineOperation
-: public MachLogTaskOperation
+class MachLogTaskDropLandMineOperation : public MachLogTaskOperation
 {
 public:
+    MachLogTaskDropLandMineOperation(MachLogSquadron* pActor, MATHEX_SCALAR minRange, MATHEX_SCALAR maxRange);
+    MachLogTaskDropLandMineOperation(
+        MachLogSquadron* pActor,
+        MATHEX_SCALAR minRange,
+        MATHEX_SCALAR maxRange,
+        const MexPoint2d& start);
 
-	MachLogTaskDropLandMineOperation( MachLogSquadron *  pActor, MATHEX_SCALAR minRange, MATHEX_SCALAR maxRange );
-	MachLogTaskDropLandMineOperation( MachLogSquadron *  pActor, MATHEX_SCALAR minRange, MATHEX_SCALAR maxRange,
-										const MexPoint2d& start );
+    ~MachLogTaskDropLandMineOperation() override;
 
-	virtual ~MachLogTaskDropLandMineOperation( );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogTaskDropLandMineOperation );
-	PER_FRIEND_READ_WRITE( MachLogTaskDropLandMineOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTaskDropLandMineOperation);
+    PER_FRIEND_READ_WRITE(MachLogTaskDropLandMineOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
-	
-	virtual void doOutputOperator( ostream& ) const;
-	virtual bool doBeInterrupted();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
+    void doOutputOperator(ostream&) const override;
+    bool doBeInterrupted() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogTaskDropLandMineOperation(const MachLogTaskDropLandMineOperation&);
+    MachLogTaskDropLandMineOperation& operator=(const MachLogTaskDropLandMineOperation&);
+    bool operator==(const MachLogTaskDropLandMineOperation&);
 
-	// Operations deliberately revoked
-    MachLogTaskDropLandMineOperation( const MachLogTaskDropLandMineOperation& );
-    MachLogTaskDropLandMineOperation& operator =( const MachLogTaskDropLandMineOperation& );
-    bool operator ==( const MachLogTaskDropLandMineOperation& );
-	
-	bool setCompleteState();
+    bool setCompleteState();
 
-	MachLogSquadron *	pActor_;
-    bool 				complete_;
-	MATHEX_SCALAR		minRange_;
-	MATHEX_SCALAR		maxRange_;
-	MexPoint2d			start_;
-	bool				startDefined_;
+    MachLogSquadron* pActor_;
+    bool complete_;
+    MATHEX_SCALAR minRange_;
+    MATHEX_SCALAR maxRange_;
+    MexPoint2d start_;
+    bool startDefined_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogTaskDropLandMineOperation );
+PER_DECLARE_PERSISTENT(MachLogTaskDropLandMineOperation);
 
 /* //////////////////////////////////////////////////////////////// */
 

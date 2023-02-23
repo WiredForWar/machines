@@ -1,5 +1,5 @@
 /*
- * C T X M U L T I . H P P 
+ * C T X M U L T I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,28 +18,27 @@
 
 class MachGuiSingleLineEditBox;
 
-class MachGuiCtxMultiplayer	: public MachGuiStartupScreenContext
+class MachGuiCtxMultiplayer : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxMultiplayer( MachGuiStartupScreens* );
-    ~MachGuiCtxMultiplayer();
+    MachGuiCtxMultiplayer(MachGuiStartupScreens*);
+    ~MachGuiCtxMultiplayer() override;
 
-	virtual bool okayToSwitchContext();
-	virtual void update();
+    bool okayToSwitchContext() override;
+    void update() override;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxMultiplayer& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxMultiplayer& t);
 
-    MachGuiCtxMultiplayer( const MachGuiCtxMultiplayer& );
-    MachGuiCtxMultiplayer& operator =( const MachGuiCtxMultiplayer& );
+    MachGuiCtxMultiplayer(const MachGuiCtxMultiplayer&);
+    MachGuiCtxMultiplayer& operator=(const MachGuiCtxMultiplayer&);
 
-	MachGuiSingleLineEditBox* pSingleLineEditBox_;
-	MachGuiAnimations animations_;
+    MachGuiSingleLineEditBox* pSingleLineEditBox_;
+    MachGuiAnimations animations_;
 };
-
 
 #endif
 

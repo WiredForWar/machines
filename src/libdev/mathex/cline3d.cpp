@@ -14,24 +14,23 @@ MexCompressedLine3d::MexCompressedLine3d()
     TEST_INVARIANT;
 }
 
-MexCompressedLine3d::MexCompressedLine3d(const MexLine3d& line )
-: end1_( line.end1() ),
-  end2_( line.end2() )
+MexCompressedLine3d::MexCompressedLine3d(const MexLine3d& line)
+    : end1_(line.end1())
+    , end2_(line.end2())
 {
 }
 
 MexCompressedLine3d::~MexCompressedLine3d()
 {
     TEST_INVARIANT;
-
 }
 
 void MexCompressedLine3d::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MexCompressedLine3d& t )
+ostream& operator<<(ostream& o, const MexCompressedLine3d& t)
 {
 
     o << "MexCompressedLine3d " << t.end1_ << " - " << t.end2_ << std::endl;

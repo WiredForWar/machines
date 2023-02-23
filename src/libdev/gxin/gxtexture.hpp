@@ -1,5 +1,5 @@
 /*
- * G X T E X T U R E . H P P 
+ * G X T E X T U R E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,37 +24,27 @@ class GXTexture
 public:
     GXTexture();
     ~GXTexture();
-    GXTexture( const GXTexture& );
-    GXTexture& operator =( const GXTexture& );
-    friend bool operator ==( const GXTexture& , const GXTexture& );
-    friend bool operator < ( const GXTexture& , const GXTexture& );
+    GXTexture(const GXTexture&);
+    GXTexture& operator=(const GXTexture&);
+    friend bool operator==(const GXTexture&, const GXTexture&);
+    friend bool operator<(const GXTexture&, const GXTexture&);
 
     void CLASS_INVARIANT;
 
-    const GXName& name() const {
-	  return name_;
-	}
-	void name(const GXName& newName) {
-	  name_=newName;
-	}
-    const GXIdPos& id() const {
-      return id_;
-    }
-    void id(const GXIdPos& newId) {
-      id_=newId;
-    }
-	   
-    friend ostream& operator <<( ostream& o, const GXTexture& t );
+    const GXName& name() const { return name_; }
+    void name(const GXName& newName) { name_ = newName; }
+    const GXIdPos& id() const { return id_; }
+    void id(const GXIdPos& newId) { id_ = newId; }
+
+    friend ostream& operator<<(ostream& o, const GXTexture& t);
 
 private:
-	GXIdPos id_;
-	GXName name_;
-	short transparancy_;
-	bool isPaletted_;
-	USHORT palette_;
-
+    GXIdPos id_;
+    GXName name_;
+    short transparancy_;
+    bool isPaletted_;
+    USHORT palette_;
 };
-
 
 #endif
 

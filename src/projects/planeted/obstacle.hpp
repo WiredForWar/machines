@@ -21,41 +21,45 @@
 class PedObstacle : public PedPolygon
 {
 public:
-	enum CspType { NORMAL, LOW, WATER };
+    enum CspType
+    {
+        NORMAL,
+        LOW,
+        WATER
+    };
 
-    PedObstacle( const PolyVerticies& , MATHEX_SCALAR height, bool selected, CspType cspType );
-    ~PedObstacle();
+    PedObstacle(const PolyVerticies&, MATHEX_SCALAR height, bool selected, CspType cspType);
+    ~PedObstacle() override;
 
     void CLASS_INVARIANT;
 
-	virtual void save( std::ofstream& );
+    void save(std::ofstream&) override;
 
-	virtual RenColour getWireColour() const;
+    RenColour getWireColour() const override;
 
-	virtual void select( bool selected );
+    void select(bool selected) override;
 
-	CspType cspType() const { return cspType_; }
+    CspType cspType() const { return cspType_; }
 
-	void cspType( CspType cspType ) { cspType_ = cspType; }
+    void cspType(CspType cspType) { cspType_ = cspType; }
 
-	static CspType highlightedType() { return highlightedType_; }
+    static CspType highlightedType() { return highlightedType_; }
 
-	static void highlightedType( CspType cspType ) { highlightedType_ = cspType; }
+    static void highlightedType(CspType cspType) { highlightedType_ = cspType; }
 
- private:
+private:
     // Operations deliberately revoked
-    PedObstacle( const PedObstacle& );
-    PedObstacle& operator =( const PedObstacle& );
-    bool operator ==( const PedObstacle& );
+    PedObstacle(const PedObstacle&);
+    PedObstacle& operator=(const PedObstacle&);
+    bool operator==(const PedObstacle&);
 
-	friend ostream& operator <<( ostream& o, const PedObstacle& t );
+    friend ostream& operator<<(ostream& o, const PedObstacle& t);
 
-	CspType cspType_;
-	static CspType highlightedType_;
+    CspType cspType_;
+    static CspType highlightedType_;
 };
 
-ostream& operator <<( ostream& o, PedObstacle::CspType cspType );
-
+ostream& operator<<(ostream& o, PedObstacle::CspType cspType);
 
 #endif
 

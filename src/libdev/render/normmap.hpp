@@ -1,5 +1,5 @@
 /*
- * N O R M M A P . H P P 
+ * N O R M M A P . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,20 +22,18 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const RenNormalMap& t );
+    friend ostream& operator<<(ostream& o, const RenNormalMap& t);
 
 private:
     // Operation deliberately revoked
-    RenNormalMap( const RenNormalMap& );
+    RenNormalMap(const RenNormalMap&);
 
     // Operation deliberately revoked
-    RenNormalMap& operator =( const RenNormalMap& );
+    RenNormalMap& operator=(const RenNormalMap&);
 
     // Operation deliberately revoked
-    bool operator ==( const RenNormalMap& );
-
+    bool operator==(const RenNormalMap&);
 };
-
 
 #endif
 

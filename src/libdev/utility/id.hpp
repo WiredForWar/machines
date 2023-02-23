@@ -1,5 +1,5 @@
 /*
- * I D . H P P 
+ * I D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -10,8 +10,8 @@
 #ifndef _UTILITY_ID_HPP
 #define _UTILITY_ID_HPP
 
-//Current definition for id type
-typedef unsigned UtlId;
+// Current definition for id type
+using UtlId = unsigned int;
 
 #endif
 

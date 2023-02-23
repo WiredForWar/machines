@@ -1,5 +1,5 @@
 /*
- * P E R S I S T . H P P 
+ * P E R S I S T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,16 +24,15 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysPersistence& t );
+    friend ostream& operator<<(ostream& o, const PhysPersistence& t);
 
 private:
-    PhysPersistence( const PhysPersistence& );
-    PhysPersistence& operator =( const PhysPersistence& );
-    bool operator ==( const PhysPersistence& );
+    PhysPersistence(const PhysPersistence&);
+    PhysPersistence& operator=(const PhysPersistence&);
+    bool operator==(const PhysPersistence&);
 
     PhysPersistence();
 };
-
 
 #endif
 

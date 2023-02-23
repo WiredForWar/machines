@@ -17,45 +17,42 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
-class MachPhysScavenger: public W4dEntity
+class MachPhysScavenger : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysScavenger( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysScavenger(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysScavenger();
+    // dtor
+    ~MachPhysScavenger() override;
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysScavenger& exemplar();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startScavenge( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration );
+    void startScavenge(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysScavenger& t );
+    friend ostream& operator<<(ostream& o, const MachPhysScavenger& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysScavenger );
+    PER_MEMBER_PERSISTENT(MachPhysScavenger);
 
 private:
-    //Deliberately revoked
-    MachPhysScavenger( const MachPhysScavenger& );
-    MachPhysScavenger& operator =( const MachPhysScavenger& );
-    bool operator ==( const MachPhysScavenger& );
+    // Deliberately revoked
+    MachPhysScavenger(const MachPhysScavenger&);
+    MachPhysScavenger& operator=(const MachPhysScavenger&);
+    bool operator==(const MachPhysScavenger&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysScavenger();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysScavenger );
-PER_READ_WRITE( MachPhysScavenger );
+PER_DECLARE_PERSISTENT(MachPhysScavenger);
+PER_READ_WRITE(MachPhysScavenger);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * O P L M I N E . H P P 
+ * O P L M I N E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,51 +20,46 @@
 class MachLogDropLandMineOperationImpl;
 class MachLogSpyLocator;
 class MexPoint2d;
-template< class T > class ctl_list;
+template <class T> class ctl_list;
 
 // orthodox canonical (revoked)
 
-class MachLogDropLandMineOperation
-: public MachLogOperation
+class MachLogDropLandMineOperation : public MachLogOperation
 {
 public:
+    using Path = ctl_list<MexPoint2d>;
+    MachLogDropLandMineOperation(MachLogSpyLocator* pActor, const MexPoint3d& dest);
+    MachLogDropLandMineOperation(MachLogSpyLocator* pActor, const Path& externalPath);
 
-	typedef ctl_list< MexPoint2d > Path;
-	MachLogDropLandMineOperation( MachLogSpyLocator * pActor, const MexPoint3d& dest );
-	MachLogDropLandMineOperation( MachLogSpyLocator * pActor, const Path& externalPath );
+    ~MachLogDropLandMineOperation() override;
 
-	~MachLogDropLandMineOperation( );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogDropLandMineOperation );
-	PER_FRIEND_READ_WRITE( MachLogDropLandMineOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogDropLandMineOperation);
+    PER_FRIEND_READ_WRITE(MachLogDropLandMineOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual bool doBeInterrupted();
-	
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
+    bool doBeInterrupted() override;
 
-	// redefinition required, invocation revoked	
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
+
+    // redefinition required, invocation revoked
+    PhysRelativeTime doUpdate() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogDropLandMineOperation(const MachLogDropLandMineOperation&);
+    MachLogDropLandMineOperation& operator=(const MachLogDropLandMineOperation&);
+    bool operator==(const MachLogDropLandMineOperation&);
 
-	// Operations deliberately revoked
-    MachLogDropLandMineOperation( const MachLogDropLandMineOperation& );
-    MachLogDropLandMineOperation& operator =( const MachLogDropLandMineOperation& );
-    bool operator ==( const MachLogDropLandMineOperation& );
-	
-	void buildPathFromExternalPath();
+    void buildPathFromExternalPath();
 
-	MachLogDropLandMineOperationImpl*	pImpl_;	
+    MachLogDropLandMineOperationImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogDropLandMineOperation );
-
+PER_DECLARE_PERSISTENT(MachLogDropLandMineOperation);
 
 #endif
 

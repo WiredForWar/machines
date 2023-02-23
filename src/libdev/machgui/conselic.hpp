@@ -1,5 +1,5 @@
 /*
- * C O N S E L I C . H P P 
+ * C O N S E L I C . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -19,51 +19,51 @@
 #include "gui/icon.hpp"
 #include "machphys/machphys.hpp"
 
-//Forward refs
+// Forward refs
 class MachInGameScreen;
 class MachLogConstructionItem;
 
-//Orthodox canonical (revoked)
+// Orthodox canonical (revoked)
 class MachConstructionSelectIcon : public GuiIcon
 {
 public:
-    //ctor. pParent is the immediate parent displayable.
-    //The in game screen can be accessed from pInGameScreen.
-    //The icon is to represent a construction of type objectType,
-    //with subType defined, and hardware level hwLevel.
-    MachConstructionSelectIcon( GuiDisplayable* pParent,
-                                MachInGameScreen* pInGameScreen,
-                                const MachLogConstructionItem& );
+    // ctor. pParent is the immediate parent displayable.
+    // The in game screen can be accessed from pInGameScreen.
+    // The icon is to represent a construction of type objectType,
+    // with subType defined, and hardware level hwLevel.
+    MachConstructionSelectIcon(
+        GuiDisplayable* pParent,
+        MachInGameScreen* pInGameScreen,
+        const MachLogConstructionItem&);
 
-    //dtor.
-    virtual ~MachConstructionSelectIcon();
+    // dtor.
+    ~MachConstructionSelectIcon() override;
 
-	// inherited from GuiButton...
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
+    // inherited from GuiButton...
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachConstructionSelectIcon& t );
+    friend ostream& operator<<(ostream& o, const MachConstructionSelectIcon& t);
 
-	static size_t reqWidth();
-	static size_t reqHeight();
+    static size_t reqWidth();
+    static size_t reqHeight();
 
 protected:
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent );	
+    void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override;
 
 private:
     // Operations deliberately revoked
-    MachConstructionSelectIcon( const MachConstructionSelectIcon& );
-    MachConstructionSelectIcon& operator =( const MachConstructionSelectIcon& );
-    bool operator ==( const MachConstructionSelectIcon& );
+    MachConstructionSelectIcon(const MachConstructionSelectIcon&);
+    MachConstructionSelectIcon& operator=(const MachConstructionSelectIcon&);
+    bool operator==(const MachConstructionSelectIcon&);
 
-    //Data members
+    // Data members
     MachInGameScreen* pInGameScreen_; // The in game screen
     const MachLogConstructionItem& consItem_; // The construction item
 };
-
 
 #endif
 

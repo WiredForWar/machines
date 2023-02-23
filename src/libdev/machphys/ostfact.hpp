@@ -29,37 +29,36 @@
 #include "world4d/root.hpp"
 #include "ctl/fixedvec.hpp"
 
-template< class SUB_TYPE, class PART >
-class MachPhysSubTypedObjectFactory
+template <class SUB_TYPE, class PART> class MachPhysSubTypedObjectFactory
 {
 public:
-    MachPhysObjectFactory( size_t nEntries );
+    MachPhysObjectFactory(size_t nEntries);
     virtual ~MachPhysObjectFactory();
 
-    PART& part( SUB_TYPE subType, size_t hardwareLevel )
+    PART& part(SUB_TYPE subType, size_t hardwareLevel)
 
-protected:
+        protected
+        :
 
-    void CLASS_INVARIANT;
+        void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    MachPhysObjectFactory( const MachPhysObjectFactory< SUB_TYPE, PART >& );
+    MachPhysObjectFactory(const MachPhysObjectFactory<SUB_TYPE, PART>&);
 
     // Operation deliberately revoked
-    MachPhysObjectFactory< ID, PART >& operator =( const MachPhysObjectFactory< SUB_TYPE, PART >& );
+    MachPhysObjectFactory<ID, PART>& operator=(const MachPhysObjectFactory<SUB_TYPE, PART>&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysObjectFactory< SUB_TYPE, PART >& );
+    bool operator==(const MachPhysObjectFactory<SUB_TYPE, PART>&);
 
     W4dRoot root_;
-    ctl_fixed_vector< PART* >   entries_;
+    ctl_fixed_vector<PART*> entries_;
 };
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "machphys/ostfact.ctp"
-//#endif
-
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "machphys/ostfact.ctp"
+// #endif
 
 #endif
 

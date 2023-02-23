@@ -27,46 +27,45 @@
 
 #include "machphys/private/otherper.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysGroundScorch );
+PER_DEFINE_PERSISTENT(MachPhysGroundScorch);
 
-//One-time ctor
+// One-time ctor
 MachPhysGroundScorch::MachPhysGroundScorch()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	// The current model is all emissive or black.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive or black.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/vortex/vxfloor.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/vortex/vxfloor.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysGroundScorch::MachPhysGroundScorch( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysGroundScorch::MachPhysGroundScorch(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-	// The current model is all emissive or black.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive or black.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
     TEST_INVARIANT;
 }
 
-MachPhysGroundScorch::MachPhysGroundScorch( PerConstructor con )
-: W4dEntity( con )
+MachPhysGroundScorch::MachPhysGroundScorch(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
 MachPhysGroundScorch::~MachPhysGroundScorch()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysGroundScorch& MachPhysGroundScorch::exemplar()
 {
     return MachPhysOtherPersistence::instance().groundScorchExemplar();
@@ -74,10 +73,10 @@ const MachPhysGroundScorch& MachPhysGroundScorch::exemplar()
 
 void MachPhysGroundScorch::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != NULL);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGroundScorch& t )
+ostream& operator<<(ostream& o, const MachPhysGroundScorch& t)
 {
 
     o << "MachPhysGroundScorch " << (void*)&t << " start" << endl;
@@ -86,21 +85,20 @@ ostream& operator <<( ostream& o, const MachPhysGroundScorch& t )
     return o;
 }
 
-//virtual
-bool MachPhysGroundScorch::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysGroundScorch::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysGroundScorch& scorch )
+void perWrite(PerOstream& ostr, const MachPhysGroundScorch& scorch)
 {
     const W4dEntity& base = scorch;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysGroundScorch& scorch )
+void perRead(PerIstream& istr, MachPhysGroundScorch& scorch)
 {
     W4dEntity& base = scorch;
 
@@ -108,4 +106,3 @@ void perRead( PerIstream& istr, MachPhysGroundScorch& scorch )
 }
 
 /* End VORTBOMB.CPP *************************************************/
-

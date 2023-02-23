@@ -15,51 +15,53 @@
 #include "gui/scrolist.hpp"
 #include "gui/gui.hpp"
 
-//Forward refs
+// Forward refs
 class GuiButton;
 class MachInGameScreen;
 class MachLogHardwareLab;
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class MachHWResearchBankIcons : public GuiSimpleScrollableList
 {
 public:
-    //ctor. Located in pParent, covering area.
-    //In game screen passed.
-    MachHWResearchBankIcons( GuiDisplayable* pParent, const Gui::Box& area,
-                             MachLogHardwareLab* pHardwareLab, MachInGameScreen* pInGameScreen );
+    // ctor. Located in pParent, covering area.
+    // In game screen passed.
+    MachHWResearchBankIcons(
+        GuiDisplayable* pParent,
+        const Gui::Box& area,
+        MachLogHardwareLab* pHardwareLab,
+        MachInGameScreen* pInGameScreen);
 
-    //dtor.
-    virtual ~MachHWResearchBankIcons();
+    // dtor.
+    ~MachHWResearchBankIcons() override;
 
-    //Set up the list of icons
+    // Set up the list of icons
     void updateIcons();
 
-	static size_t reqHeight();
-	static size_t reqWidth();
+    static size_t reqHeight();
+    static size_t reqWidth();
 
-	void updateProgress( float percentageComplete );
+    void updateProgress(float percentageComplete);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachHWResearchBankIcons& t );
+    friend ostream& operator<<(ostream& o, const MachHWResearchBankIcons& t);
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
     // Operations deliberately revoked
-    MachHWResearchBankIcons( const MachHWResearchBankIcons& );
-    MachHWResearchBankIcons& operator =( const MachHWResearchBankIcons& );
-    bool operator ==( const MachHWResearchBankIcons& );
+    MachHWResearchBankIcons(const MachHWResearchBankIcons&);
+    MachHWResearchBankIcons& operator=(const MachHWResearchBankIcons&);
+    bool operator==(const MachHWResearchBankIcons&);
 
     void onIconClicked(GuiButton* pIcon);
 
-    //data members
-    MachLogHardwareLab* pHardwareLab_; //The hw lab whose research queue is depicted
-    MachInGameScreen* pInGameScreen_; //The gui root
+    // data members
+    MachLogHardwareLab* pHardwareLab_; // The hw lab whose research queue is depicted
+    MachInGameScreen* pInGameScreen_; // The gui root
 };
-
 
 #endif
 

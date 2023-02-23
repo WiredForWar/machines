@@ -1,5 +1,5 @@
 /*
- * R E S C A R R I . H P P 
+ * R E S C A R R I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -13,7 +13,7 @@
 #define _MACHLOG_RESCARRI_HPP
 
 #include "base/base.hpp"
-//#include "ctl/list.hpp"
+// #include "ctl/list.hpp"
 
 #include "machlog/rescarr.hpp"
 
@@ -29,42 +29,39 @@ class MachLogResourceCarrierImpl
 public:
     MachLogResourceCarrierImpl();
     ~MachLogResourceCarrierImpl();
-	
-	typedef  MachLogResourceCarrier::Suppliers	Suppliers;
+
+    using Suppliers = MachLogResourceCarrier::Suppliers;
 
     void CLASS_INVARIANT;
-	PER_MEMBER_PERSISTENT_DEFAULT( MachLogResourceCarrierImpl );
-	PER_FRIEND_READ_WRITE( MachLogResourceCarrierImpl );
-	
-	// returns nearest supplier from listOfCandidateSuppliers to position
-	static Suppliers::iterator iNearestSupplier( Suppliers& listOfCandidateSuppliers,
-										   		  const MexPoint2d& position );
-	// PRE( not listOfCandidateSuppliers.empty() );
-	// POST( iNearestSupplierFound != listOfCandidateSuppliers.end() );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogResourceCarrierImpl);
+    PER_FRIEND_READ_WRITE(MachLogResourceCarrierImpl);
 
-	
-	friend class MachLogResourceCarrier;
+    // returns nearest supplier from listOfCandidateSuppliers to position
+    static Suppliers::iterator iNearestSupplier(Suppliers& listOfCandidateSuppliers, const MexPoint2d& position);
+    // PRE( not listOfCandidateSuppliers.empty() );
+    // POST( iNearestSupplierFound != listOfCandidateSuppliers.end() );
+
+    friend class MachLogResourceCarrier;
 
 private:
-    
-	MachPhys::BuildingMaterialUnits			amountCarried_;
-	bool 									isTransporting_;
-	bool 									isPickingUp_;
-	bool 									isPuttingDown_;
-	MachLogResourceCarrier::Suppliers		suppliers_;
-	MachLogConstruction* 					pDestinationSmeltingBuilding_;
-	bool									smeltingBuildingExplicitlyAssigned_;
-	bool									protectNodesFromClearance_;
-	
-	// if the carrier is doing a pickup, which supplier the carrier is currently moving to pick up from. 
-	size_t									currentElement_;
-	
-	// If this is set to FOREVER, transport ops run using this carrier
-	// do not terminate unless the op is actively removed from the queue.
-	int										iterations_;
+    MachPhys::BuildingMaterialUnits amountCarried_;
+    bool isTransporting_;
+    bool isPickingUp_;
+    bool isPuttingDown_;
+    MachLogResourceCarrier::Suppliers suppliers_;
+    MachLogConstruction* pDestinationSmeltingBuilding_;
+    bool smeltingBuildingExplicitlyAssigned_;
+    bool protectNodesFromClearance_;
+
+    // if the carrier is doing a pickup, which supplier the carrier is currently moving to pick up from.
+    size_t currentElement_;
+
+    // If this is set to FOREVER, transport ops run using this carrier
+    // do not terminate unless the op is actively removed from the queue.
+    int iterations_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogResourceCarrierImpl );
+PER_DECLARE_PERSISTENT(MachLogResourceCarrierImpl);
 
 #endif
 

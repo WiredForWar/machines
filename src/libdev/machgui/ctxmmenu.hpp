@@ -1,5 +1,5 @@
 /*
- * C T X M M E N U . H P P 
+ * C T X M M E N U . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,28 +20,27 @@ class MachGuiCtxMainMenu : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxMainMenu( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxMainMenu();
+    MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxMainMenu() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	void quit();
+    void quit();
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxMainMenu& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxMainMenu& t);
 
-    MachGuiCtxMainMenu( const MachGuiCtxMainMenu& );
-    MachGuiCtxMainMenu& operator =( const MachGuiCtxMainMenu& );
+    MachGuiCtxMainMenu(const MachGuiCtxMainMenu&);
+    MachGuiCtxMainMenu& operator=(const MachGuiCtxMainMenu&);
 
-	// Data members...
-	MachGuiAnimations animations_;
-	bool quit_;
+    // Data members...
+    MachGuiAnimations animations_;
+    bool quit_;
 };
-
 
 #endif
 

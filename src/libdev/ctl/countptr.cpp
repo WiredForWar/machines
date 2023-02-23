@@ -8,54 +8,53 @@
 //////////////////////////////////////////////////////////////////////
 
 CtlCountedObject::CtlCountedObject()
-: refs_( 0 ) // ,
-  // shareable_( true )
+    : refs_(0) // ,
+// shareable_( true )
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-CtlCountedObject::CtlCountedObject( const CtlCountedObject& )
-: refs_( 0 ) // ,
-  // shareable_( true )
+CtlCountedObject::CtlCountedObject(const CtlCountedObject&)
+    : refs_(0) // ,
+// shareable_( true )
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
-CtlCountedObject&
-CtlCountedObject::operator =( const CtlCountedObject& )
+CtlCountedObject& CtlCountedObject::operator=(const CtlCountedObject&)
 {
-	return *this;
+    return *this;
 }
 
 CtlCountedObject::~CtlCountedObject()
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 void CtlCountedObject::addReference()
 {
-	++refs_;
+    ++refs_;
 }
 
 void CtlCountedObject::removeReference()
 {
-	if( --refs_ == 0 )
-		_DELETE( this );
+    if (--refs_ == 0)
+        _DELETE(this);
 }
 
 // void CtlCountedObject::markUnshareable()
 // {
-//	shareable_ = false;
+//  shareable_ = false;
 // }
 
 // bool CtlCountedObject::isShareable() const
 // {
-//	return shareable_;
+//  return shareable_;
 // }
 
 bool CtlCountedObject::isShared() const
 {
-	return refs_ > 1;
+    return refs_ > 1;
 }
 
 //////////////////////////////////////////////////////////////////////

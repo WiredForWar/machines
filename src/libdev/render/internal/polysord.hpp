@@ -16,23 +16,23 @@
 class RenIDepthSortedItem
 {
 public:
-	RenIDepthSortedItem( const RenMaterial& );
-	virtual ~RenIDepthSortedItem()	{}
-	virtual void render() = 0;
-	MATHEX_SCALAR depth() const;
+    RenIDepthSortedItem(const RenMaterial&);
+    virtual ~RenIDepthSortedItem() { }
+    virtual void render() = 0;
+    MATHEX_SCALAR depth() const;
 
-	ushort meshId() const			{ return meshId_; }
-	void meshId(ushort i)			{ meshId_ = i; }
+    ushort meshId() const { return meshId_; }
+    void meshId(ushort i) { meshId_ = i; }
 
-	// The default implementation orders the items in decreasing depth.
-	virtual bool operator<(const RenIDepthSortedItem&) const;
+    // The default implementation orders the items in decreasing depth.
+    virtual bool operator<(const RenIDepthSortedItem&) const;
 
-	virtual void print(ostream&) const = 0;
+    virtual void print(ostream&) const = 0;
 
 protected:
     const RenMaterial material_;
-	MATHEX_SCALAR depth_;
-	ushort meshId_;
+    MATHEX_SCALAR depth_;
+    ushort meshId_;
 };
 
 ostream& operator<<(ostream&, const RenIDepthSortedItem&);
@@ -47,20 +47,20 @@ public:
     RenIDepthPostSorter();
     ~RenIDepthPostSorter();
 
-	// Ownership of the item *passes* from the caller to this object.
-	void addItem(std::unique_ptr<RenIDepthSortedItem>& item);
-	void render();
+    // Ownership of the item *passes* from the caller to this object.
+    void addItem(std::unique_ptr<RenIDepthSortedItem>& item);
+    void render();
 
     void CLASS_INVARIANT;
 
 private:
-	typedef ctl_vector<RenIDepthSortedItem*>	ItemVector;
-	ItemVector items_;
+    using ItemVector = ctl_vector<RenIDepthSortedItem*>;
+    ItemVector items_;
 
     // Operations deliberately revoked
-    RenIDepthPostSorter( const RenIDepthPostSorter& );
-    RenIDepthPostSorter& operator =( const RenIDepthPostSorter& );
-    bool operator ==( const RenIDepthPostSorter& );
+    RenIDepthPostSorter(const RenIDepthPostSorter&);
+    RenIDepthPostSorter& operator=(const RenIDepthPostSorter&);
+    bool operator==(const RenIDepthPostSorter&);
 };
 
 #endif

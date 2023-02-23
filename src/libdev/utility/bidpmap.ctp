@@ -6,32 +6,29 @@
 //  Definitions of non-inline template methods
 
 #ifndef _INLINE
-    #include "utility/bidpmap.itp"
+#include "utility/bidpmap.itp"
 #endif
 
-template< class X >
-UtlBoundedIdPMap< X >::UtlBoundedIdPMap( UtlId upperBound )
-:   UtlBoundedIdVoidPMap( upperBound )
+template <class X>
+UtlBoundedIdPMap<X>::UtlBoundedIdPMap(UtlId upperBound)
+    : UtlBoundedIdVoidPMap(upperBound)
 {
 
     TEST_INVARIANT;
 }
 
-template< class X >
-UtlBoundedIdPMap< X >::~UtlBoundedIdPMap()
+template <class X> UtlBoundedIdPMap<X>::~UtlBoundedIdPMap()
 {
     TEST_INVARIANT;
-    //Intentionally empty
+    // Intentionally empty
 }
 
-template< class X >
-void UtlBoundedIdPMap< X >::CLASS_INVARIANT
+template <class X> void UtlBoundedIdPMap<X>::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-template< class X >
-ostream& operator <<( ostream& o, const UtlBoundedIdPMap< X >& t )
+template <class X> ostream& operator<<(ostream& o, const UtlBoundedIdPMap<X>& t)
 {
 
     o << "UtlBoundedIdPMap< X > " << (void*)&t << " start" << std::endl;

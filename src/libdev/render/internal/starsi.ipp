@@ -6,29 +6,27 @@
 ***********************************************************/
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
-RenStars::Configuration RenIStarsImpl
-::configuration() const
+RenStars::Configuration RenIStarsImpl ::configuration() const
 {
-	return configuration_;
+    return configuration_;
 }
 
 _CODE_INLINE
 uint RenIStarsImpl::nStars() const
 {
-	return nStars_;
+    return nStars_;
 }
 
 _CODE_INLINE
 MATHEX_SCALAR RenIStarsImpl::radius() const
 {
-	return radius_;
+    return radius_;
 }
 
 /* STARS.IPP **********************************************/
-

@@ -7,17 +7,19 @@
 
 #include "phys/internal/lsclplai.hpp"
 
-PhysLinearScalarPlanImpl::PhysLinearScalarPlanImpl(const PhysLinearScalarPlan::ScalarVec& times, const PhysLinearScalarPlan::ScalarVec& scales)
-:times_(times),
-scales_(scales)
+PhysLinearScalarPlanImpl::PhysLinearScalarPlanImpl(
+    const PhysLinearScalarPlan::ScalarVec& times,
+    const PhysLinearScalarPlan::ScalarVec& scales)
+    : times_(times)
+    , scales_(scales)
 {
 
     TEST_INVARIANT;
 }
 
-PhysLinearScalarPlanImpl::PhysLinearScalarPlanImpl(const PhysLinearScalarPlanImpl& copyMe )
-:times_(copyMe.times_),
-scales_(copyMe.scales_)
+PhysLinearScalarPlanImpl::PhysLinearScalarPlanImpl(const PhysLinearScalarPlanImpl& copyMe)
+    : times_(copyMe.times_)
+    , scales_(copyMe.scales_)
 {
 
     TEST_INVARIANT;
@@ -26,15 +28,14 @@ scales_(copyMe.scales_)
 PhysLinearScalarPlanImpl::~PhysLinearScalarPlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysLinearScalarPlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysLinearScalarPlanImpl& t )
+ostream& operator<<(ostream& o, const PhysLinearScalarPlanImpl& t)
 {
 
     o << "PhysLinearScalarPlanImpl " << (void*)&t << " start" << std::endl;

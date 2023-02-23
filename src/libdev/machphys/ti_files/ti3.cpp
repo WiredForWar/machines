@@ -11,7 +11,7 @@
 
 void MachDummyFunction10()
 {
-    MachPhysMachineExplosionData::LinkDatas   dummy1;
+    MachPhysMachineExplosionData::LinkDatas dummy1;
 }
 
 /* End TI.CPP *****************************************************/

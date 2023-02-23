@@ -1,12 +1,12 @@
 /*
- * P U L S E W E P . H P P 
+ * P U L S E W E P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     MachLogMultiLauncher
 
-	Multi launcher classes
+    Multi launcher classes
 */
 
 #ifndef _MACHLOG_MULAUNCH_HPP
@@ -22,37 +22,37 @@ class MachLogMultiLauncher : public MachLogLinearWeapon
 // Canonical form revoked
 {
 public:
-    MachLogMultiLauncher( MachLogRace*, MachPhysMultiLauncher*, MachActor* pOwner );
-    virtual ~MachLogMultiLauncher();
+    MachLogMultiLauncher(MachLogRace*, MachPhysMultiLauncher*, MachActor* pOwner);
+    ~MachLogMultiLauncher() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogMultiLauncher& t );
+    friend ostream& operator<<(ostream& o, const MachLogMultiLauncher& t);
 
-	//the persistence mechanism has to reset which weapons go where
-	//so we have to allow it to remount the weapons.
-	void setPhysicalMultiLauncher( MachPhysMultiLauncher* );
+    // the persistence mechanism has to reset which weapons go where
+    // so we have to allow it to remount the weapons.
+    void setPhysicalMultiLauncher(MachPhysMultiLauncher*);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogMultiLauncher );
-	PER_FRIEND_READ_WRITE( MachLogMultiLauncher );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogMultiLauncher);
+    PER_FRIEND_READ_WRITE(MachLogMultiLauncher);
 
 protected:
-
-	virtual	MachLogLinearProjectile* createLinearProjectile
-	(
-		const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-	    const W4dEntity& target, const MexPoint3d& targetOffset
-	);
+    MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
 private:
-    MachLogMultiLauncher( const MachLogMultiLauncher& );
-    MachLogMultiLauncher& operator =( const MachLogMultiLauncher& );
-    bool operator ==( const MachLogMultiLauncher& );
+    MachLogMultiLauncher(const MachLogMultiLauncher&);
+    MachLogMultiLauncher& operator=(const MachLogMultiLauncher&);
+    bool operator==(const MachLogMultiLauncher&);
 
-	MachPhysMultiLauncher*	pPhysMultiLauncher_;
+    MachPhysMultiLauncher* pPhysMultiLauncher_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogMultiLauncher );
+PER_DECLARE_PERSISTENT(MachLogMultiLauncher);
 
 #endif
 

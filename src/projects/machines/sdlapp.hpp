@@ -27,71 +27,75 @@ class MachGuiStartupScreens;
 class SDLApp : public AfxOSSpecificApp<SDLApp>
 {
 public:
-        virtual ~SDLApp();
-        enum StartedFromLobby { LOBBY_START, NORMAL_START };
+    ~SDLApp() override;
+    enum StartedFromLobby
+    {
+        LOBBY_START,
+        NORMAL_START
+    };
 
 private:
-        friend class AfxSingletonApp;
-        SDLApp();
+    friend class AfxSingletonApp;
+    SDLApp();
 
-        // Provide virtual fns required by base classes.
-        virtual void clientShutdown();
-        virtual void loopCycle();
-        virtual void updateDisplay();
-        virtual bool activate();
-        virtual bool clientStartup ();
-    virtual const string& name() const;
+    // Provide virtual fns required by base classes.
+    void clientShutdown() override;
+    void loopCycle() override;
+    void updateDisplay() override;
+    virtual bool activate();
+    bool clientStartup() override;
+    const string& name() const override;
 
-    void moveObject( W4dEntity* pObject );
+    void moveObject(W4dEntity* pObject);
 
-        // Allow a derived class to override this and provide a window size.
-        // This shouldn't be necessary when DevDisplay works with Win95 & D3D.
-        virtual void getWindowSize(int& ox, int& oy, int& w, int& h);
+    // Allow a derived class to override this and provide a window size.
+    // This shouldn't be necessary when DevDisplay works with Win95 & D3D.
+    virtual void getWindowSize(int& ox, int& oy, int& w, int& h);
 
-        void outputDebugInfo( const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor );
+    void outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor);
 
-        // Sim
-        void checkSuspendSimManager();
-        void performSimCycle();
-        void simResetTime();
-        void simSuspend();
-        void simResume();
+    // Sim
+    void checkSuspendSimManager();
+    void performSimCycle();
+    void simResetTime();
+    void simSuspend();
+    void simResume();
 
-        // Gui
-        void cleanUpGui();
-        void initialiseGui( StartedFromLobby, BaseProgressReporter* );
-        void updateGui();
-        void displayGui();
-        void checkSwitchGuiRoot();
-        void checkFinishApp();
-        void activateGui();
+    // Gui
+    void cleanUpGui();
+    void initialiseGui(StartedFromLobby, BaseProgressReporter*);
+    void updateGui();
+    void displayGui();
+    void checkSwitchGuiRoot();
+    void checkFinishApp();
+    void activateGui();
 
-        // Sound
-        void initSound();
-        //Load sounds loads either the 3D or 2D sounds according to
-        //the registry setting
-        void loadSounds();
-        void cleanUpSound();
-        void updateSound( const MexPoint3d& pos );
+    // Sound
+    void initSound();
+    // Load sounds loads either the 3D or 2D sounds according to
+    // the registry setting
+    void loadSounds();
+    void cleanUpSound();
+    void updateSound(const MexPoint3d& pos);
 
-        void loadPlanets();
+    void loadPlanets();
 
-    int                                 winWidth_, winHeight_;
-        double              runTime_;
-        RenDisplay*                     pDisplay_;
-    W4dRoot*                    pRoot_;
-        W4dSceneManager*        manager_;
-        MachKeyFocus*           pKeyboardFocus_;
-        bool                            showPosition_, showCurrentMachine_, showMemory_;
-        bool                aShowRace_[4];
-        bool                            initialised_;
-    DevTimer                    keyTimer_;
-        DevTimer            finishTimer_;
-        MachGuiStartupScreens* pStartupScreens_;
-        RenTextureSet*          pTextureSet_;
+    int winWidth_, winHeight_;
+    double runTime_;
+    RenDisplay* pDisplay_;
+    W4dRoot* pRoot_;
+    W4dSceneManager* manager_;
+    MachKeyFocus* pKeyboardFocus_;
+    bool showPosition_, showCurrentMachine_, showMemory_;
+    bool aShowRace_[4];
+    bool initialised_;
+    DevTimer keyTimer_;
+    DevTimer finishTimer_;
+    MachGuiStartupScreens* pStartupScreens_;
+    RenTextureSet* pTextureSet_;
 
-        size_t                          savedSampleVolume_;
-        size_t                          savedCDVolume_;
+    size_t savedSampleVolume_;
+    size_t savedCDVolume_;
 };
 
 #endif

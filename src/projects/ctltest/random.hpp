@@ -10,17 +10,17 @@
 
 //////////////////////////////
 
-//unsigned int randomInt( unsigned int );
-int randomInt( int, int );
+// unsigned int randomInt( unsigned int );
+int randomInt(int, int);
 unsigned int randomInt();
-double randomFloat( double d );
+double randomFloat(double d);
 double randomFloat();
-double randomFloat( double minValue, double maxValue );
+double randomFloat(double minValue, double maxValue);
 
 //////////////////////////////
 
 #ifdef _INLINE
-	#include "testh/random.ipp"
+#include "testh/random.ipp"
 #endif
 
 //////////////////////////////

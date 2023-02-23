@@ -17,24 +17,24 @@
 
 class MexLine3d;
 
-#pragma pack(push,1)
+#pragma pack(push, 1)
 class MexCompressedLine3d
 // Canonical form revoked
 {
 public:
     MexCompressedLine3d();
-    MexCompressedLine3d( const MexLine3d& );
+    MexCompressedLine3d(const MexLine3d&);
     ~MexCompressedLine3d();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MexCompressedLine3d& t );
-	friend class MexLine3d;
+    friend ostream& operator<<(ostream& o, const MexCompressedLine3d& t);
+    friend class MexLine3d;
 
     MexCompressedPoint3d end1_;
     MexCompressedPoint3d end2_;
-	//A compressed line does not cache the length - it must be computed when the actual line object is constructed
+    // A compressed line does not cache the length - it must be computed when the actual line object is constructed
 };
 #pragma pack(pop)
 

@@ -1,5 +1,5 @@
 /*
- * C T X R E A D Y . H P P 
+ * C T X R E A D Y . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -29,51 +29,50 @@ class MachGuiCtxImReady : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxImReady( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxImReady();
+    MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxImReady() override;
 
-	virtual bool doHandleKeyEvent( const GuiKeyEvent& );
+    bool doHandleKeyEvent(const GuiKeyEvent&) override;
 
-	virtual void update();
+    void update() override;
 
-	void createPlayerList();
-	void updatePlayerList();
+    void createPlayerList();
+    void updatePlayerList();
 
-	void updateGameSettings();
+    void updateGameSettings();
 
     void CLASS_INVARIANT;
-   
+
 protected:
-	void updateStartAndReadyButtons();
-	void displaySystemMessages();
+    void updateStartAndReadyButtons();
+    void displaySystemMessages();
 
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	virtual bool okayToSwitchContext();
+    bool okayToSwitchContext() override;
 
-	MachGuiStartupData& startupData();
-	// PRE( pStartupScreens_ );
-	// PRE( pStartupScreens_->startupData() );
+    MachGuiStartupData& startupData();
+    // PRE( pStartupScreens_ );
+    // PRE( pStartupScreens_->startupData() );
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxImReady& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxImReady& t);
 
-    MachGuiCtxImReady( const MachGuiCtxImReady& );
-    MachGuiCtxImReady& operator =( const MachGuiCtxImReady& );
+    MachGuiCtxImReady(const MachGuiCtxImReady&);
+    MachGuiCtxImReady& operator=(const MachGuiCtxImReady&);
 
-	MachGuiChatWindow* pChatWindow_;
-	MachGuiSingleLineEditBox* pSingleLineEditBox_;
-	GuiSimpleScrollableList* pPlayerList_;
-	MachGuiPlayerListItem* pPlayerListItem_[4];
-	MachGuiImReadyButton* pImReadyButton_;
-	MachGuiMenuButton* pStartButton_;
-	MachGuiMenuButton* pSettingsButton_;
-	MachGuiAnimations animations_;
-	GuiSimpleScrollableList* pReadOnlySettings_;
-	DevTimer*				 pCreationTimer_;
-	DevTimer*				 pHasCDTransmissionTimer_;
+    MachGuiChatWindow* pChatWindow_;
+    MachGuiSingleLineEditBox* pSingleLineEditBox_;
+    GuiSimpleScrollableList* pPlayerList_;
+    MachGuiPlayerListItem* pPlayerListItem_[4];
+    MachGuiImReadyButton* pImReadyButton_;
+    MachGuiMenuButton* pStartButton_;
+    MachGuiMenuButton* pSettingsButton_;
+    MachGuiAnimations animations_;
+    GuiSimpleScrollableList* pReadOnlySettings_;
+    DevTimer* pCreationTimer_;
+    DevTimer* pHasCDTransmissionTimer_;
 };
-
 
 #endif
 

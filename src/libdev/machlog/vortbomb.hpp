@@ -1,5 +1,5 @@
 /*
- * V O R T B O M B . H P P 
+ * V O R T B O M B . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -31,43 +31,43 @@ public:
     MachLogVortexBomb(
         MachLogRace* pRace,
         const MexPoint3d& startPosition,
-		const MachPhysWeaponData&,
-        MachActor* pOwner );
+        const MachPhysWeaponData&,
+        MachActor* pOwner);
 
-    ~MachLogVortexBomb();									
-								 									 
+    ~MachLogVortexBomb() override;
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogVortexBomb& t );
-	
-	static MachPhysVortexBomb* pNewPhysVortexBomb( const MexPoint3d& startPosition, UtlId firingActorId, MachPhysVortexBomb** ppPhysVortexBomb );
+    friend ostream& operator<<(ostream& o, const MachLogVortexBomb& t);
+
+    static MachPhysVortexBomb*
+    pNewPhysVortexBomb(const MexPoint3d& startPosition, UtlId firingActorId, MachPhysVortexBomb** ppPhysVortexBomb);
 
 protected:
+    bool hitVictimFirstWave(const MachActor& victim) const override;
+    void inflictDamageFirstWave(MachActor* pVictim) override;
 
-	virtual bool hitVictimFirstWave( const MachActor& victim ) const ;
-	virtual void inflictDamageFirstWave( MachActor* pVictim );
-	
-	virtual PhysAbsoluteTime firstWaveStartTime() const;	
-	virtual PhysAbsoluteTime firstWaveFinishTime() const;	
-	
-	virtual PhysAbsoluteTime destructionTime() const;
-	
-	virtual MATHEX_SCALAR potentialKillRadiusMultiplier() const;
-	
+    PhysAbsoluteTime firstWaveStartTime() const override;
+    PhysAbsoluteTime firstWaveFinishTime() const override;
+
+    PhysAbsoluteTime destructionTime() const override;
+
+    MATHEX_SCALAR potentialKillRadiusMultiplier() const override;
+
 private:
-	// opeartions deliberately revoked
-    MachLogVortexBomb( const MachLogVortexBomb& );
-    MachLogVortexBomb& operator =( const MachLogVortexBomb& );
-    bool operator ==( const MachLogVortexBomb& );
-	
-	
-	MachLogVortexBombImpl* pImpl();
-	MachPhysVortexBomb* pNewPhysVortexBomb( const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData, MachActor* pOwnerActor );
+    // opeartions deliberately revoked
+    MachLogVortexBomb(const MachLogVortexBomb&);
+    MachLogVortexBomb& operator=(const MachLogVortexBomb&);
+    bool operator==(const MachLogVortexBomb&);
 
-	void doBeDestroyed();		
-	
-	// data members
-	MachLogVortexBombImpl* pImpl_;
+    MachLogVortexBombImpl* pImpl();
+    MachPhysVortexBomb*
+    pNewPhysVortexBomb(const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData, MachActor* pOwnerActor);
+
+    void doBeDestroyed();
+
+    // data members
+    MachLogVortexBombImpl* pImpl_;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * M A P B M P . H P P 
+ * M A P B M P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,27 +20,27 @@ class PedMapCreator
 // Canonical form revoked
 {
 public:
-    PedMapCreator( 	const PedPolygonEditor& domainEditor,
-    				const PedPolygonEditor& portalEditor, 
-					const PedPolygonEditor& obstacleEditor );
+    PedMapCreator(
+        const PedPolygonEditor& domainEditor,
+        const PedPolygonEditor& portalEditor,
+        const PedPolygonEditor& obstacleEditor);
     ~PedMapCreator();
 
-	void createBmp();
+    void createBmp();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PedMapCreator& t );
+    friend ostream& operator<<(ostream& o, const PedMapCreator& t);
 
 private:
-    PedMapCreator( const PedMapCreator& );
-    PedMapCreator& operator =( const PedMapCreator& );
-    bool operator ==( const PedMapCreator& );
+    PedMapCreator(const PedMapCreator&);
+    PedMapCreator& operator=(const PedMapCreator&);
+    bool operator==(const PedMapCreator&);
 
-	const PedPolygonEditor& domainEditor_;
-	const PedPolygonEditor& portalEditor_; 
-	const PedPolygonEditor& obstacleEditor_; 
+    const PedPolygonEditor& domainEditor_;
+    const PedPolygonEditor& portalEditor_;
+    const PedPolygonEditor& obstacleEditor_;
 };
-
 
 #endif
 

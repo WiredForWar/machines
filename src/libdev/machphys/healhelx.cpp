@@ -24,126 +24,121 @@
 #include "phys/timeangl.hpp"
 #include "ctl/vector.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysHealHelix );
+PER_DEFINE_PERSISTENT(MachPhysHealHelix);
 
-MachPhysHealHelix::MachPhysHealHelix( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( pParent, localTransform, NOT_SOLID )
+MachPhysHealHelix::MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(pParent, localTransform, NOT_SOLID)
 {
-	// The current model is all emissive or black.  Hence, it should not need
-	// lighting.  This could change if the model changes.
-	doNotLight(true);
+    // The current model is all emissive or black.  Hence, it should not need
+    // lighting.  This could change if the model changes.
+    doNotLight(true);
 
-    //Helix models vary x coordinates from 0 to 5 metres
-    const MexVec3 origin( 0.0, 0.0, 0.0 );
+    // Helix models vary x coordinates from 0 to 5 metres
+    const MexVec3 origin(0.0, 0.0, 0.0);
 
-    //Add a pair of left and right helixes
+    // Add a pair of left and right helixes
     const MexTransform3d identityTransform;
-    MachPhysHelix* pLeftHelix = _NEW( MachPhysHelix( this, identityTransform,
-                                                     MachPhysHelix::LEFT_TWIST ) );
-    MachPhysHelix* pRightHelix = _NEW( MachPhysHelix( this, identityTransform,
-                                                      MachPhysHelix::RIGHT_TWIST ) );
+    MachPhysHelix* pLeftHelix = _NEW(MachPhysHelix(this, identityTransform, MachPhysHelix::LEFT_TWIST));
+    MachPhysHelix* pRightHelix = _NEW(MachPhysHelix(this, identityTransform, MachPhysHelix::RIGHT_TWIST));
 
-    //First time construct various plans and things
+    // First time construct various plans and things
     static bool firstTime = true;
     static PhysScalarPlanPtr alphaValuePlanPtr;
     static W4dMaterialPlanPtr alphaPlanPtr;
     static PhysMotionPlanPtr leftSpinPlanPtr;
     static PhysMotionPlanPtr rightSpinPlanPtr;
 
-    if( firstTime )
+    if (firstTime)
     {
         firstTime = false;
 
-        //Construct an alpha value plan
+        // Construct an alpha value plan
         PhysLinearScalarPlan::ScalarVec times;
         PhysLinearScalarPlan::ScalarVec values;
-        times.reserve( 2 );
-        times.push_back( 0.5 );
-        times.push_back( 1.0 );
-        values.reserve( 3 );
-        values.push_back( 0.8 );
-        values.push_back( 0.2 );
-        values.push_back( 0.8 );
+        times.reserve(2);
+        times.push_back(0.5);
+        times.push_back(1.0);
+        values.reserve(3);
+        values.push_back(0.8);
+        values.push_back(0.2);
+        values.push_back(0.8);
 
-        PhysLinearScalarPlan* pAlphaValuePlan = _NEW( PhysLinearScalarPlan( times, values ) );
+        PhysLinearScalarPlan* pAlphaValuePlan = _NEW(PhysLinearScalarPlan(times, values));
         alphaValuePlanPtr = pAlphaValuePlan;
 
-        //Set up an alpha plan for them
-        W4dSimpleAlphaPlan* pAlphaPlan =
-            _NEW( W4dSimpleAlphaPlan( helixMaterial(), 1, alphaValuePlanPtr, 2 ) );
+        // Set up an alpha plan for them
+        W4dSimpleAlphaPlan* pAlphaPlan = _NEW(W4dSimpleAlphaPlan(helixMaterial(), 1, alphaValuePlanPtr, 2));
         alphaPlanPtr = pAlphaPlan;
 
-        //Set up the motion plans
-        //Create left spin angles
-        PhysMotionPlan::Angles* pLeftAngles = _NEW( PhysMotionPlan::Angles );
-        pLeftAngles->reserve( 4 );
-        pLeftAngles->push_back( MexDegrees( 0.0 ) );
-        pLeftAngles->push_back( MexDegrees( 120.0 ) );
-        pLeftAngles->push_back( MexDegrees( 240.0 ) );
-        pLeftAngles->push_back( MexDegrees( 360.0 ) );
-        PhysMotionPlan::AnglesPtr leftAnglesPtr( pLeftAngles );
+        // Set up the motion plans
+        // Create left spin angles
+        PhysMotionPlan::Angles* pLeftAngles = _NEW(PhysMotionPlan::Angles);
+        pLeftAngles->reserve(4);
+        pLeftAngles->push_back(MexDegrees(0.0));
+        pLeftAngles->push_back(MexDegrees(120.0));
+        pLeftAngles->push_back(MexDegrees(240.0));
+        pLeftAngles->push_back(MexDegrees(360.0));
+        PhysMotionPlan::AnglesPtr leftAnglesPtr(pLeftAngles);
 
-        //Create right spin angles
-        PhysMotionPlan::Angles* pRightAngles = _NEW( PhysMotionPlan::Angles );
-        pRightAngles->reserve( 4 );
-        pRightAngles->push_back( MexDegrees( 360.0 ) );
-        pRightAngles->push_back( MexDegrees( 240.0 ) );
-        pRightAngles->push_back( MexDegrees( 120.0 ) );
-        pRightAngles->push_back( MexDegrees( 0.0 ) );
-        PhysMotionPlan::AnglesPtr rightAnglesPtr( pRightAngles );
+        // Create right spin angles
+        PhysMotionPlan::Angles* pRightAngles = _NEW(PhysMotionPlan::Angles);
+        pRightAngles->reserve(4);
+        pRightAngles->push_back(MexDegrees(360.0));
+        pRightAngles->push_back(MexDegrees(240.0));
+        pRightAngles->push_back(MexDegrees(120.0));
+        pRightAngles->push_back(MexDegrees(0.0));
+        PhysMotionPlan::AnglesPtr rightAnglesPtr(pRightAngles);
 
-        //Set up the times
-        PhysMotionPlan::Times* pTimes = _NEW( PhysMotionPlan::Times );
-        pTimes->reserve( 3 );
-        pTimes->push_back( 1.0 );
-        pTimes->push_back( 2.0 );
-        pTimes->push_back( 3.0 );
-        PhysMotionPlan::TimesPtr timesPtr( pTimes );
+        // Set up the times
+        PhysMotionPlan::Times* pTimes = _NEW(PhysMotionPlan::Times);
+        pTimes->reserve(3);
+        pTimes->push_back(1.0);
+        pTimes->push_back(2.0);
+        pTimes->push_back(3.0);
+        PhysMotionPlan::TimesPtr timesPtr(pTimes);
 
-        //Now the motion plans
-        PhysTimedAnglePlan* pLeftSpinPlan =
-            _NEW( PhysTimedAnglePlan( leftAnglesPtr, timesPtr,
-                                      MexVec3(1.0,0.0,0.0), origin ) );
+        // Now the motion plans
+        PhysTimedAnglePlan* pLeftSpinPlan
+            = _NEW(PhysTimedAnglePlan(leftAnglesPtr, timesPtr, MexVec3(1.0, 0.0, 0.0), origin));
         leftSpinPlanPtr = pLeftSpinPlan;
 
-        PhysTimedAnglePlan* pRightSpinPlan =
-            _NEW( PhysTimedAnglePlan( rightAnglesPtr, timesPtr,
-                                      MexVec3(1.0,0.0,0.0), origin ) );
+        PhysTimedAnglePlan* pRightSpinPlan
+            = _NEW(PhysTimedAnglePlan(rightAnglesPtr, timesPtr, MexVec3(1.0, 0.0, 0.0), origin));
         rightSpinPlanPtr = pRightSpinPlan;
     }
 
-    //Get current time and entity plans
+    // Get current time and entity plans
     PhysAbsoluteTime now = SimManager::instance().currentTime();
     W4dEntityPlan& leftEntityPlan = pLeftHelix->entityPlanForEdit();
     W4dEntityPlan& rightEntityPlan = pRightHelix->entityPlanForEdit();
 
-    //Apply the material plan
-    leftEntityPlan.materialPlan( alphaPlanPtr, now, 10000 );
-    rightEntityPlan.materialPlan( alphaPlanPtr, now, 10000 );
+    // Apply the material plan
+    leftEntityPlan.materialPlan(alphaPlanPtr, now, 10000);
+    rightEntityPlan.materialPlan(alphaPlanPtr, now, 10000);
 
-    //Apply the motion plans
-    leftEntityPlan.absoluteMotion( leftSpinPlanPtr, now - 2.0, 10000 );
-    rightEntityPlan.absoluteMotion( rightSpinPlanPtr, now, 10000 );
+    // Apply the motion plans
+    leftEntityPlan.absoluteMotion(leftSpinPlanPtr, now - 2.0, 10000);
+    rightEntityPlan.absoluteMotion(rightSpinPlanPtr, now, 10000);
 
     TEST_INVARIANT;
 }
 
-MachPhysHealHelix::MachPhysHealHelix( PerConstructor con )
-: W4dEntity( con )
+MachPhysHealHelix::MachPhysHealHelix(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
-//static
+// static
 const RenMaterial& MachPhysHealHelix::helixMaterial()
 {
-    static RenMaterial mat( RenColour::black() );
+    static RenMaterial mat(RenColour::black());
     static bool firstTime = true;
 
-    if( firstTime )
+    if (firstTime)
     {
-        //Set colour to self-luminous green
+        // Set colour to self-luminous green
         firstTime = false;
-        mat.emissive( RenColour( 0.0, 1.0, 0.0 ) );
+        mat.emissive(RenColour(0.0, 1.0, 0.0));
     }
 
     return mat;
@@ -152,15 +147,14 @@ const RenMaterial& MachPhysHealHelix::helixMaterial()
 MachPhysHealHelix::~MachPhysHealHelix()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysHealHelix::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysHealHelix& t )
+ostream& operator<<(ostream& o, const MachPhysHealHelix& t)
 {
 
     o << "MachPhysHealHelix " << (void*)&t << " start" << std::endl;
@@ -169,21 +163,20 @@ ostream& operator <<( ostream& o, const MachPhysHealHelix& t )
     return o;
 }
 
-//virtual
-bool MachPhysHealHelix::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysHealHelix::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysHealHelix& helix )
+void perWrite(PerOstream& ostr, const MachPhysHealHelix& helix)
 {
     const W4dEntity& base = helix;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysHealHelix& helix )
+void perRead(PerIstream& istr, MachPhysHealHelix& helix)
 {
     W4dEntity& base = helix;
 

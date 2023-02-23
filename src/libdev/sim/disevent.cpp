@@ -9,16 +9,16 @@
 #include "sim/evdiary.hpp"
 
 #ifndef _INLINE
-    #include "sim/disevent.ipp"
+#include "sim/disevent.ipp"
 #endif
 
-PER_DEFINE_PERSISTENT_ABSTRACT( SimDiscreteEvent );
+PER_DEFINE_PERSISTENT_ABSTRACT(SimDiscreteEvent);
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-SimDiscreteEvent::SimDiscreteEvent( const PhysAbsoluteTime& time )
-:   time_( time ),
-    pDiary_( NULL )
+SimDiscreteEvent::SimDiscreteEvent(const PhysAbsoluteTime& time)
+    : time_(time)
+    , pDiary_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -28,18 +28,18 @@ SimDiscreteEvent::~SimDiscreteEvent()
 {
     TEST_INVARIANT;
 
-    //Since deletion occurs when reference count reaches zero,
-    // this must not be in a diary
-    PRE( pDiary_ == NULL );
+    // Since deletion occurs when reference count reaches zero,
+    //  this must not be in a diary
+    PRE(pDiary_ == nullptr);
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-void SimDiscreteEvent::time( const PhysAbsoluteTime& time )
+void SimDiscreteEvent::time(const PhysAbsoluteTime& time)
 {
-    //Change the time
+    // Change the time
     time_ = time;
 
-    //Notify the diary, if any
+    // Notify the diary, if any
     if (pDiary_)
         pDiary_->eventTimeChanged();
 }
@@ -47,40 +47,39 @@ void SimDiscreteEvent::time( const PhysAbsoluteTime& time )
 
 void SimDiscreteEvent::CLASS_INVARIANT
 {
-	INVARIANT( this );
+    INVARIANT(this);
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const SimDiscreteEvent& t )
+ostream& operator<<(ostream& o, const SimDiscreteEvent& t)
 {
 
     o << "SimDiscreteEvent " << (void*)&t << " start" << std::endl;
-    t.doOutputOperator( o );
+    t.doOutputOperator(o);
     o << "SimDiscreteEvent " << (void*)&t << " end" << std::endl;
 
     return o;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void SimDiscreteEvent::doOutputOperator( ostream& ) const
+// virtual
+void SimDiscreteEvent::doOutputOperator(ostream&) const
 {
-    //Default implementation does nothing
+    // Default implementation does nothing
 }
 
-void perWrite( PerOstream& ostr, const SimDiscreteEvent& event )
+void perWrite(PerOstream& ostr, const SimDiscreteEvent& event)
 {
-	ostr << event.time_;
+    ostr << event.time_;
 }
 
-void perRead( PerIstream& istr, SimDiscreteEvent& event )
+void perRead(PerIstream& istr, SimDiscreteEvent& event)
 {
     istr >> event.time_;
 }
 
-SimDiscreteEvent::SimDiscreteEvent( PerConstructor )
+SimDiscreteEvent::SimDiscreteEvent(PerConstructor)
 {
 }
-
 
 /* End DISEVENT.CPP *************************************************/

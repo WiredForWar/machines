@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-
 #include "base/diag.hpp"
 #include "base/tracker.hpp"
 #include "base/private/diagint.hpp"
@@ -18,7 +17,7 @@
 
 Diag& Diag::instance()
 {
-    static  Diag    instance_;
+    static Diag instance_;
 
     return instance_;
 }
@@ -31,60 +30,60 @@ Diag::Diag()
     BaseTrace::instance();
 #endif
 
-    const char* pStr = getenv( "CB_OBJECT_TRACKING" );
+    const char* pStr = getenv("CB_OBJECT_TRACKING");
 
-    if( pStr )
+    if (pStr)
     {
-        if( strcmp( pStr, "all" ) == 0 )
+        if (strcmp(pStr, "all") == 0)
         {
             DiagInternal::trackAllObjects_ = true;
         }
     }
 
-    pStr = getenv( "CB_COUNTED_POINTER_CHECKING" );
+    pStr = getenv("CB_COUNTED_POINTER_CHECKING");
 
-    if( pStr )
+    if (pStr)
     {
-        if( strcmp( pStr, "on" ) == 0 )
+        if (strcmp(pStr, "on") == 0)
         {
             DiagInternal::checkCountedPointers_ = true;
         }
     }
 
-    pStr = getenv( "CB_INVARIANT_CHECKING" );
+    pStr = getenv("CB_INVARIANT_CHECKING");
 
-    if( pStr )
+    if (pStr)
     {
-        if( strcmp( pStr, "on" ) == 0 )
+        if (strcmp(pStr, "on") == 0)
         {
             DiagInternal::checkInvariants_ = true;
         }
     }
 
-    for( size_t i = 0; i < DiagStreams::instance().nStreams(); ++i )
+    for (size_t i = 0; i < DiagStreams::instance().nStreams(); ++i)
     {
-        char envName[ 200 ];
+        char envName[200];
 
-        strcpy( envName, "CB_" );
-        strcat( envName, DiagInternal::streamText( i ) );
-        strcat( envName, "_TO" );
+        strcpy(envName, "CB_");
+        strcat(envName, DiagInternal::streamText(i));
+        strcat(envName, "_TO");
 
-        char defaultSetting[ 200 ];
-        defaultSetting[ 0 ] = '\0';
+        char defaultSetting[200];
+        defaultSetting[0] = '\0';
 
-        if( strcmp( DiagInternal::streamText( i ), "memory" ) == 0 )
-            strcpy( defaultSetting, "memory.log" );
+        if (strcmp(DiagInternal::streamText(i), "memory") == 0)
+            strcpy(defaultSetting, "memory.log");
 
-        if( strcmp( DiagInternal::streamText( i ), "where" ) == 0 )
-            strcpy( defaultSetting, "cout" );
+        if (strcmp(DiagInternal::streamText(i), "where") == 0)
+            strcpy(defaultSetting, "cout");
 
-        if( strcmp( DiagInternal::streamText( i ), "trace" ) == 0 )
-            strcpy( defaultSetting, "trace.log" );
+        if (strcmp(DiagInternal::streamText(i), "trace") == 0)
+            strcpy(defaultSetting, "trace.log");
 
-        DiagStreams::instance().diagStreams_[ i ].setup( envName, defaultSetting );
+        DiagStreams::instance().diagStreams_[i].setup(envName, defaultSetting);
 
-        if( DiagStreams::instance().diagStreams_[ i ].hasDestination() )
-            DiagStreams::instance().diagStreamEnabled_[ i ] = true;
+        if (DiagStreams::instance().diagStreams_[i].hasDestination())
+            DiagStreams::instance().diagStreamEnabled_[i] = true;
     }
 
 #ifndef PRODUCTION
@@ -96,131 +95,130 @@ Diag::~Diag()
 {
 }
 
-ostream& Diag::stream( DiagStreamType type )
+ostream& Diag::stream(DiagStreamType type)
 {
-    return DiagStreams::instance().diagStreams_[ type ].ostr();
+    return DiagStreams::instance().diagStreams_[type].ostr();
 }
 
-void Diag::indent( DiagStreamType type, int nSpaces )
+void Diag::indent(DiagStreamType type, int nSpaces)
 {
-    DiagStreams::instance().diagStreams_[ type ].indent( nSpaces );
+    DiagStreams::instance().diagStreams_[type].indent(nSpaces);
 }
 
-const char*	Diag::getenv( const char* name )
+const char* Diag::getenv(const char* name)
 {
-    return ::getenv( name );
+    return ::getenv(name);
 }
 
 ostream& Diag::bobStream()
 {
-    return stream( DIAG_BOB );
+    return stream(DIAG_BOB);
 }
 
 ostream& Diag::halStream()
 {
-    return stream( DIAG_HAL );
+    return stream(DIAG_HAL);
 }
 
 ostream& Diag::iainStream()
 {
-    return stream( DIAG_IAIN );
+    return stream(DIAG_IAIN);
 }
 
 ostream& Diag::jerryStream()
 {
-    return stream( DIAG_JERRY );
+    return stream(DIAG_JERRY);
 }
 
 ostream& Diag::jonStream()
 {
-    return stream( DIAG_JON );
+    return stream(DIAG_JON);
 }
 
 ostream& Diag::richardStream()
 {
-    return stream( DIAG_RICHARD );
+    return stream(DIAG_RICHARD);
 }
 
 ostream& Diag::yueaiStream()
 {
-    return stream( DIAG_YUEAI );
+    return stream(DIAG_YUEAI);
 }
 
 ostream& Diag::lionelStream()
 {
-    return stream( DIAG_LIONEL );
+    return stream(DIAG_LIONEL);
 }
 
 ostream& Diag::ceriStream()
 {
-    return stream( DIAG_CERI );
+    return stream(DIAG_CERI);
 }
 
 ostream& Diag::neilStream()
 {
-    return stream( DIAG_NEIL );
+    return stream(DIAG_NEIL);
 }
 
 ostream& Diag::wayneStream()
 {
-    return stream( DIAG_WAYNE );
+    return stream(DIAG_WAYNE);
 }
 
 ostream& Diag::miscStream()
 {
-    return stream( DIAG_MISC );
+    return stream(DIAG_MISC);
 }
 
 ostream& Diag::whereStream()
 {
-    return stream( DIAG_WHERE );
+    return stream(DIAG_WHERE);
 }
 
 ostream& Diag::perReadStream()
 {
-    return stream( DIAG_PER_READ );
+    return stream(DIAG_PER_READ);
 }
 
 ostream& Diag::perWriteStream()
 {
-    return stream( DIAG_PER_WRITE );
+    return stream(DIAG_PER_WRITE);
 }
 
 ostream& Diag::traceStream()
 {
-    return stream( DIAG_TRACE );
+    return stream(DIAG_TRACE);
 }
 
 ostream& Diag::danielStream()
 {
-    return stream( DIAG_DANIEL );
+    return stream(DIAG_DANIEL);
 }
 
 ostream& Diag::motseqStream()
 {
-    return stream( DIAG_MOTSEQ );
+    return stream(DIAG_MOTSEQ);
 }
 
 ostream& Diag::cs2pathStream()
 {
-    return stream( DIAG_CS2PATH );
+    return stream(DIAG_CS2PATH);
 }
 
 ostream& Diag::cs2vgraStream()
 {
-    return stream( DIAG_CS2VGRA );
+    return stream(DIAG_CS2VGRA);
 }
 
 ostream& Diag::observerStream()
 {
-    return stream( DIAG_OBSERVER );
+    return stream(DIAG_OBSERVER);
 }
 
 ostream& Diag::pathProfileStream()
 {
-    return stream( DIAG_PATH_PROFILE );
+    return stream(DIAG_PATH_PROFILE);
 }
-
 
 ostream& Diag::memoryStream()
 {
@@ -231,7 +229,7 @@ ostream& Diag::memoryStream()
 
     static bool alreadyInFunction = false;
 
-    if( alreadyInFunction )
+    if (alreadyInFunction)
     {
         static std::ofstream ostr;
         return ostr;
@@ -239,7 +237,7 @@ ostream& Diag::memoryStream()
 
     alreadyInFunction = true;
 
-    ostream& result = stream( DIAG_MEMORY );
+    ostream& result = stream(DIAG_MEMORY);
 
     alreadyInFunction = false;
 
@@ -248,144 +246,144 @@ ostream& Diag::memoryStream()
 
 ostream& Diag::renderStream()
 {
-    return stream( DIAG_RENDER );
+    return stream(DIAG_RENDER);
 }
 
 ostream& Diag::soundStream()
 {
-    return stream( DIAG_SOUND );
+    return stream(DIAG_SOUND);
 }
 
 ostream& Diag::networkStream()
 {
-    return stream( DIAG_NETWORK );
+    return stream(DIAG_NETWORK);
 }
 
 ostream& Diag::recRecordStream()
 {
-    return stream( DIAG_REC_RECORD );
+    return stream(DIAG_REC_RECORD);
 }
 
 ostream& Diag::recPlaybackStream()
 {
-    return stream( DIAG_REC_PLAYBACK );
+    return stream(DIAG_REC_PLAYBACK);
 }
 
 ostream& Diag::netAnalysisStream()
 {
-    return stream( DIAG_NET_ANALYSIS );
+    return stream(DIAG_NET_ANALYSIS);
 }
 
 ostream& Diag::aStarStream()
 {
-    return stream( DIAG_A_STAR );
+    return stream(DIAG_A_STAR);
 }
 
 ostream& Diag::linearTravelStream()
 {
-    return stream( DIAG_LINEAR_TRAVEL );
+    return stream(DIAG_LINEAR_TRAVEL);
 }
 
 ostream& Diag::planetSurfaceStream()
 {
-    return stream( DIAG_PLANET_SURFACE );
+    return stream(DIAG_PLANET_SURFACE);
 }
 
 ostream& Diag::physMotionStream()
 {
-    return stream( DIAG_PHYS_MOTION );
+    return stream(DIAG_PHYS_MOTION);
 }
 
 ostream& Diag::networkErrorsStream()
 {
-    return stream( DIAG_NETWORK_ERRORS );
+    return stream(DIAG_NETWORK_ERRORS);
 }
 
 ostream& Diag::mexGrid2dStream()
 {
-    return stream( DIAG_MEX_GRID2D );
+    return stream(DIAG_MEX_GRID2D);
 }
 
 ostream& Diag::configSpaceStream()
 {
-    return stream( DIAG_CONFIG_SPACE );
+    return stream(DIAG_CONFIG_SPACE);
 }
 
-void    Diag::invariantCheckingActive( bool flag )
+void Diag::invariantCheckingActive(bool flag)
 {
     DiagInternal::checkInvariants_ = flag;
 }
 
-bool    Diag::invariantCheckingActive() const
+bool Diag::invariantCheckingActive() const
 {
     return DiagInternal::checkInvariants_;
 }
 
-const char*	DiagInternal::streamText( size_t index )
+const char* DiagInternal::streamText(size_t index)
 {
-	const char* result;
+    const char* result;
 
-	DiagStreamType type = _STATIC_CAST( DiagStreamType, index );
+    DiagStreamType type = _STATIC_CAST(DiagStreamType, index);
 
-	switch( type )
-	{
-		case DIAG_BOB:
-			result = "BOB";
-			break;
-		case DIAG_HAL:
-			result = "HAL";
-			break;
-		case DIAG_IAIN:
-			result = "IAIN";
-			break;
-		case DIAG_JERRY:
-			result = "JERRY";
-			break;
-		case DIAG_RICHARD:
-			result = "RICHARD";
-			break;
-		case DIAG_JON:
-			result = "JON";
-			break;
-		case DIAG_YUEAI:
-			result = "YUEAI";
-			break;
-		case DIAG_LIONEL:
-			result = "LIONEL";
-			break;
-		case DIAG_CERI:
-			result = "CERI";
-			break;
-		case DIAG_NEIL:
-			result = "NEIL";
-			break;
-		case DIAG_MISC:
-			result = "MISC";
-			break;
-		case DIAG_WHERE:
-			result = "WHERE";
-			break;
-		case DIAG_TRACE:
-			result = "TRACE";
-			break;
-		case DIAG_MEMORY:
-			result = "MEMORY";
-			break;
-		case DIAG_RENDER:
-			result = "RENDER";
-			break;
-		case DIAG_PER_WRITE:
-			result = "PER_WRITE";
-			break;
-		case DIAG_PER_READ:
-			result = "PER_READ";
-			break;
-		case DIAG_NETWORK:
-			result = "NETWORK";
-			break;
-		case DIAG_WAYNE:
-			result = "WAYNE";
-			break;
+    switch (type)
+    {
+        case DIAG_BOB:
+            result = "BOB";
+            break;
+        case DIAG_HAL:
+            result = "HAL";
+            break;
+        case DIAG_IAIN:
+            result = "IAIN";
+            break;
+        case DIAG_JERRY:
+            result = "JERRY";
+            break;
+        case DIAG_RICHARD:
+            result = "RICHARD";
+            break;
+        case DIAG_JON:
+            result = "JON";
+            break;
+        case DIAG_YUEAI:
+            result = "YUEAI";
+            break;
+        case DIAG_LIONEL:
+            result = "LIONEL";
+            break;
+        case DIAG_CERI:
+            result = "CERI";
+            break;
+        case DIAG_NEIL:
+            result = "NEIL";
+            break;
+        case DIAG_MISC:
+            result = "MISC";
+            break;
+        case DIAG_WHERE:
+            result = "WHERE";
+            break;
+        case DIAG_TRACE:
+            result = "TRACE";
+            break;
+        case DIAG_MEMORY:
+            result = "MEMORY";
+            break;
+        case DIAG_RENDER:
+            result = "RENDER";
+            break;
+        case DIAG_PER_WRITE:
+            result = "PER_WRITE";
+            break;
+        case DIAG_PER_READ:
+            result = "PER_READ";
+            break;
+        case DIAG_NETWORK:
+            result = "NETWORK";
+            break;
+        case DIAG_WAYNE:
+            result = "WAYNE";
+            break;
         case DIAG_DANIEL:
             result = "DANIEL";
             break;
@@ -438,26 +436,26 @@ const char*	DiagInternal::streamText( size_t index )
             result = "CONFIG_SPACE";
             break;
         default:
-        #ifndef NDEBUG
+#ifndef NDEBUG
             WHERE;
-        #endif
+#endif
             std::cout << "Unknown stream type" << std::endl;
             break;
-	}
+    }
 
-	return result;
+    return result;
 }
 
 void Diag::forceCrash() const
 {
-    DiagInternal::signalHandler( 0 );
+    DiagInternal::signalHandler(0);
 
     abort();
 }
 
-void Diag::addCrashFunction( PFn pFn )
+void Diag::addCrashFunction(PFn pFn)
 {
-    BaseCrashInternal::instance().addCrashFunction( pFn );
+    BaseCrashInternal::instance().addCrashFunction(pFn);
 }
 
 //  TBD: Put this into a class somewhere. We really need to make
@@ -475,25 +473,24 @@ void Diag::disableFPException()
 
 void Diag::enableFPException()
 {
-    PRE( fpExceptionCount != 0 );
+    PRE(fpExceptionCount != 0);
 
     --fpExceptionCount;
 
-    if( fpExceptionCount == 0 )
+    if (fpExceptionCount == 0)
         DiagInternal::enableFPException();
 }
 
-void Diag::addCrashStream( std::ofstream& str )
+void Diag::addCrashStream(std::ofstream& str)
 {
-    BaseCrashInternal::instance().addCrashStream( str );
+    BaseCrashInternal::instance().addCrashStream(str);
 }
 
-void Diag::removeCrashStream( std::ofstream& str )
+void Diag::removeCrashStream(std::ofstream& str)
 {
-    BaseCrashInternal::instance().addCrashStream( str );
+    BaseCrashInternal::instance().addCrashStream(str);
 }
 
 //////////////////////////////////////////////////////////////////////
 
 /* End DIAG.CPP *****************************************************/
-

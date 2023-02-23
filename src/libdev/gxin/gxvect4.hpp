@@ -1,5 +1,5 @@
 /*
- * G X V E C T 4 . H P P 
+ * G X V E C T 4 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,31 +20,31 @@ class GXVect4
 public:
     GXVect4();
     ~GXVect4();
-    GXVect4( const GXVect4& );
-	// POST(*this==copy);
-    GXVect4& operator =( const GXVect4& );
-	// POST(*this==copy);
-    friend bool operator ==(const GXVect4&, const GXVect4& );
+    GXVect4(const GXVect4&);
+    // POST(*this==copy);
+    GXVect4& operator=(const GXVect4&);
+    // POST(*this==copy);
+    friend bool operator==(const GXVect4&, const GXVect4&);
 
     float x() const { return x_; }
-	float y() const { return y_; }
-	float z() const { return z_; }
-	float h() const { return h_; }
+    float y() const { return y_; }
+    float z() const { return z_; }
+    float h() const { return h_; }
 
-    void x(float newX) { x_=newX; }
-	void y(float newY) { y_=newY; }
-	void z(float newZ) { z_=newZ; }
-	void h(float newH) { h_=newH; }
+    void x(float newX) { x_ = newX; }
+    void y(float newY) { y_ = newY; }
+    void z(float newZ) { z_ = newZ; }
+    void h(float newH) { h_ = newH; }
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const GXVect4& t );
+    friend ostream& operator<<(ostream& o, const GXVect4& t);
 
 private:
-	float x_;
-	float y_;
-	float z_;
-	float h_;
+    float x_;
+    float y_;
+    float z_;
+    float h_;
 };
 
 #endif

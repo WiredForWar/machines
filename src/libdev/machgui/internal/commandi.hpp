@@ -1,5 +1,5 @@
 /*
- * C O M M A N D I . H P P 
+ * C O M M A N D I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,10 +21,10 @@ class MachGuiCommandImpl
 // Canonical form revoked
 {
 public:
-    MachGuiCommandImpl( MachInGameScreen* );
+    MachGuiCommandImpl(MachInGameScreen*);
     ~MachGuiCommandImpl();
 
-    void add( const MachLogMachineOperation& );
+    void add(const MachLogMachineOperation&);
 
     void clearMachineOperations();
     const MachLogMachineOperations& machineOperations() const;
@@ -32,17 +32,16 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCommandImpl& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCommandImpl& t);
     friend class MachGuiCommand;
 
-    MachGuiCommandImpl( const MachGuiCommandImpl& );
-    MachGuiCommandImpl& operator =( const MachGuiCommandImpl& );
+    MachGuiCommandImpl(const MachGuiCommandImpl&);
+    MachGuiCommandImpl& operator=(const MachGuiCommandImpl&);
 
-    MachLogMachineOperations  machineOperations_;
-    
-    MachInGameScreen* pInGameScreen_; //The in-game screen
+    MachLogMachineOperations machineOperations_;
+
+    MachInGameScreen* pInGameScreen_; // The in-game screen
 };
-
 
 #endif
 

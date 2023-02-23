@@ -7,7 +7,7 @@
 
 #include "machlog/opdecons.hpp"
 
-//#include "ctl/algorith.hpp"
+// #include "ctl/algorith.hpp"
 
 #include "mathex/abox2d.hpp"
 
@@ -28,31 +28,30 @@
 #include "machlog/stats.hpp"
 #include "machlog/planet.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogDeconstructOperation );
+PER_DEFINE_PERSISTENT(MachLogDeconstructOperation);
 
-MachLogDeconstructOperation::MachLogDeconstructOperation( MachLogConstructor * pActor, MachLogConstruction * pConstr )
-:	MachLogLabourOperation( pActor, pConstr, "DECONSTRUCT_OPERATION", MachLogOperation::DECONSTRUCT_OPERATION )
+MachLogDeconstructOperation::MachLogDeconstructOperation(MachLogConstructor* pActor, MachLogConstruction* pConstr)
+    : MachLogLabourOperation(pActor, pConstr, "DECONSTRUCT_OPERATION", MachLogOperation::DECONSTRUCT_OPERATION)
 {
-	pConstr->addThreat( pActor->id() );
+    pConstr->addThreat(pActor->id());
 }
 
 MachLogDeconstructOperation::~MachLogDeconstructOperation()
 {
-	if( pConstruction() )
-		pConstruction()->removeThreat( pConstructor()->id() );
+    if (pConstruction())
+        pConstruction()->removeThreat(pConstructor()->id());
 }
 
-
-void MachLogDeconstructOperation::doOutputOperator( ostream& o ) const
+void MachLogDeconstructOperation::doOutputOperator(ostream& o) const
 {
 
-	o << "CAPTURE OPERATION " << std::endl;
+    o << "CAPTURE OPERATION " << std::endl;
 
-	MachLogLabourOperation::doOutputOperator( o );
-	if( pConstruction() )
-		o << " Deconstructing (" << pConstruction()->id() << ")[" << pConstruction()->objectType() << "]\n";
-	else
-		o << " Target destroyed or invalid. " << std::endl;
+    MachLogLabourOperation::doOutputOperator(o);
+    if (pConstruction())
+        o << " Deconstructing (" << pConstruction()->id() << ")[" << pConstruction()->objectType() << "]\n";
+    else
+        o << " Target destroyed or invalid. " << std::endl;
 }
 
 ///////////////////////////////////
@@ -60,123 +59,127 @@ void MachLogDeconstructOperation::doOutputOperator( ostream& o ) const
 // virtual
 PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
 {
-	PhysRelativeTime interval = 2.0;
+    PhysRelativeTime interval = 2.0;
 
-	MachLogConstruction* pConstron = pConstruction();
-	MachLogConstructor* pConstructorMachine = pConstructor();
-	HAL_STREAM("(" << pConstructorMachine->id() << ") MachLogDeconstructOperation::interactWithBuilding\n" );
-	HAL_INDENT( 2 );
+    MachLogConstruction* pConstron = pConstruction();
+    MachLogConstructor* pConstructorMachine = pConstructor();
+    HAL_STREAM("(" << pConstructorMachine->id() << ") MachLogDeconstructOperation::interactWithBuilding\n");
+    HAL_INDENT(2);
 
-	MachPhys::BuildingMaterialUnits units = pConstructorMachine->data().constructionRate();
+    MachPhys::BuildingMaterialUnits units = pConstructorMachine->data().constructionRate();
 
-	// rate of deconstruction varies according to whether or not this is a fristd::endly or
-	// enemy construction. Deconstructing an enemy location should be much slower as they're
-	// hardly likely to be co-operating. These rates are defined in statimpl.cpp, in the
-	// assignment list.
+    // rate of deconstruction varies according to whether or not this is a fristd::endly or
+    // enemy construction. Deconstructing an enemy location should be much slower as they're
+    // hardly likely to be co-operating. These rates are defined in statimpl.cpp, in the
+    // assignment list.
 
-	if ( pConstron->race() == pConstructorMachine->race() )
-		units *= MachLogRaces::instance().stats().friendlyDeconstructMultiplier();
-	else
-		units *= MachLogRaces::instance().stats().enemyDeconstructMultiplier();
+    if (pConstron->race() == pConstructorMachine->race())
+        units *= MachLogRaces::instance().stats().friendlyDeconstructMultiplier();
+    else
+        units *= MachLogRaces::instance().stats().enemyDeconstructMultiplier();
 
-	MachPhys::BuildingMaterialUnits BMUValueOfRemoved = ( units * ( SimManager::instance().currentTime() - lastUpdateTime() ) / 60 );
+    MachPhys::BuildingMaterialUnits BMUValueOfRemoved
+        = (units * (SimManager::instance().currentTime() - lastUpdateTime()) / 60);
 
-	MachPhys::HitPointUnits hpsRemoved = pConstron->hitPointValueOfBMUs( BMUValueOfRemoved );
+    MachPhys::HitPointUnits hpsRemoved = pConstron->hitPointValueOfBMUs(BMUValueOfRemoved);
 
-	HAL_STREAM("BMUValueOfRemoved = " << BMUValueOfRemoved << " hpsRemoved " << hpsRemoved << std::endl );
-   	// can't take what's not there
+    HAL_STREAM("BMUValueOfRemoved = " << BMUValueOfRemoved << " hpsRemoved " << hpsRemoved << std::endl);
+    // can't take what's not there
 
-	MachPhys::HitPointUnits remainingConstructionhps = pConstron->hp();
-	HAL_STREAM("remaining hp " << remainingConstructionhps << std::endl );
+    MachPhys::HitPointUnits remainingConstructionhps = pConstron->hp();
+    HAL_STREAM("remaining hp " << remainingConstructionhps << std::endl);
 
-	if( remainingConstructionhps < hpsRemoved and hpsRemoved > 0 )
-	{
-		HAL_STREAM("rejigging BMUVlaueOfRemoved and hpsRemoved...\n" );
-		BMUValueOfRemoved *= ( (float)remainingConstructionhps / (float)hpsRemoved );
-		hpsRemoved = remainingConstructionhps;
-		HAL_STREAM("BMUValueOfRemoved = " << BMUValueOfRemoved << " hpsRemoved " << hpsRemoved << std::endl );
-	}
+    if (remainingConstructionhps < hpsRemoved and hpsRemoved > 0)
+    {
+        HAL_STREAM("rejigging BMUVlaueOfRemoved and hpsRemoved...\n");
+        BMUValueOfRemoved *= ((float)remainingConstructionhps / (float)hpsRemoved);
+        hpsRemoved = remainingConstructionhps;
+        HAL_STREAM("BMUValueOfRemoved = " << BMUValueOfRemoved << " hpsRemoved " << hpsRemoved << std::endl);
+    }
 
-	// Only weld away happily if we actually removed something.
-	if( hpsRemoved > 0 )
-	{
-		//subOperation( pConstructorMachine, _NEW( MachLogConstructAnimation( pConstructorMachine, pConstron, units ) ) );
-		pConstructorMachine->constructing( true, pConstron->id() );
-		HAL_STREAM("hpsRemoved is > 0 so set constructing animation going\n" );
-		//REMEMBER - this call could delete the object pointed to by pConstruction_
-		HAL_STREAM("calling beHit with damage " << hpsRemoved << std::endl );
-		pConstron->beHit( hpsRemoved, MachPhys::N_WEAPON_TYPES, pConstructorMachine );
-	}
-	else
-		pConstructorMachine->constructing( false );
+    // Only weld away happily if we actually removed something.
+    if (hpsRemoved > 0)
+    {
+        // subOperation( pConstructorMachine, _NEW( MachLogConstructAnimation( pConstructorMachine, pConstron, units ) )
+        // );
+        pConstructorMachine->constructing(true, pConstron->id());
+        HAL_STREAM("hpsRemoved is > 0 so set constructing animation going\n");
+        // REMEMBER - this call could delete the object pointed to by pConstruction_
+        HAL_STREAM("calling beHit with damage " << hpsRemoved << std::endl);
+        pConstron->beHit(hpsRemoved, MachPhys::N_WEAPON_TYPES, pConstructorMachine);
+    }
+    else
+        pConstructorMachine->constructing(false);
 
-	MachPhys::BuildingMaterialUnits amountToCashIn = (int)( (float)BMUValueOfRemoved *
-			MachLogRaces::instance().stats().secondhandRefundablePercentage() );
+    MachPhys::BuildingMaterialUnits amountToCashIn
+        = (int)((float)BMUValueOfRemoved * MachLogRaces::instance().stats().secondhandRefundablePercentage());
 
+    MachLogRaces::instance().smartAddBMUs(pConstructorMachine->race(), amountToCashIn);
 
-	MachLogRaces::instance().smartAddBMUs( pConstructorMachine->race(), amountToCashIn );
+    // now, if that caused the destruction of the thing, let's have a notification e-mail
+    if (pConstron->hpRatio() <= 0)
+    {
+        MachLogMachineVoiceMailManager::instance().postNewMail(
+            *pConstructorMachine,
+            MachineVoiceMailEventID::BUILDING_DECONSTRUCTED);
 
-	//now, if that caused the destruction of the thing, let's have a notification e-mail
-	if( pConstron->hpRatio() <= 0 )
-	{
-		MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachineVoiceMailEventID::BUILDING_DECONSTRUCTED );
+        // post "awaiting new job" voicemail if no more operations on the queue
 
-		// post "awaiting new job" voicemail if no more operations on the queue
+        if (not pConstructorMachine->isDoingSuperConstruct())
+            MachLogMachineVoiceMailManager::instance().postNewMail(
+                *pConstructorMachine,
+                MachineVoiceMailEventID::AWAITING_NEW_JOB);
+    }
 
-		if( not pConstructorMachine->isDoingSuperConstruct() )
-			MachLogMachineVoiceMailManager::instance().postNewMail( *pConstructorMachine, MachineVoiceMailEventID::AWAITING_NEW_JOB );
+    // only update time if removed something.
+    //           HAL_STREAM(" checking not( amountToRemove == 0 [ " << ( amountToRemove == 0 ) << "] and nBMU != 0 [" <<
+    //           ( nBMU != 0 ) << "] " << std::endl );
+    if (BMUValueOfRemoved != 0)
+    {
+        HAL_STREAM("BMUValueOfRemoved != 0 therefore setting lastUpdateTime \n");
+        lastUpdateTime(SimManager::instance().currentTime());
+    }
+    else
+    {
+        // oops didn't manage to add anything on lets try again....
+        //               HAL_STREAM(" didn't buiold anything setting state to DISMANTLING again\n" );
+        state(MachLogLabourOperation::INTERACTING);
+    }
 
-	}
-
-	//only update time if removed something.
-//			HAL_STREAM(" checking not( amountToRemove == 0 [ " << ( amountToRemove == 0 ) << "] and nBMU != 0 [" << ( nBMU != 0 ) << "] " << std::endl );
-	if( BMUValueOfRemoved != 0 )
-	{
-		HAL_STREAM("BMUValueOfRemoved != 0 therefore setting lastUpdateTime \n" );
-		lastUpdateTime( SimManager::instance().currentTime() );
-	}
-	else
-	{
-		//oops didn't manage to add anything on lets try again....
-//				HAL_STREAM(" didn't buiold anything setting state to DISMANTLING again\n" );
-		state( MachLogLabourOperation::INTERACTING );
-	}
-
-	HAL_INDENT( -2 );
-	HAL_STREAM("(" << pConstructorMachine->id() << ") MachLogDeconstructOperation::interactWithBuilding\n" );
-	return interval;
+    HAL_INDENT(-2);
+    HAL_STREAM("(" << pConstructorMachine->id() << ") MachLogDeconstructOperation::interactWithBuilding\n");
+    return interval;
 }
 
 bool MachLogDeconstructOperation::doIsFinished() const
 {
-	bool finished = not currentlyAttached();
+    bool finished = not currentlyAttached();
 
-	return finished;
+    return finished;
 }
 
 // virtual
-bool MachLogDeconstructOperation::clientSpecificNotification( int /*clientData*/ )
+bool MachLogDeconstructOperation::clientSpecificNotification(int /*clientData*/)
 {
-	return true;
+    return true;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogDeconstructOperation& op )
+void perWrite(PerOstream& ostr, const MachLogDeconstructOperation& op)
 {
-	const MachLogLabourOperation& base1 = op;
+    const MachLogLabourOperation& base1 = op;
 
-	ostr << base1;
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogDeconstructOperation& op )
+void perRead(PerIstream& istr, MachLogDeconstructOperation& op)
 {
-	MachLogLabourOperation& base1 = op;
+    MachLogLabourOperation& base1 = op;
 
-	istr >> base1;
+    istr >> base1;
 }
 
-MachLogDeconstructOperation::MachLogDeconstructOperation( PerConstructor con )
-:	MachLogLabourOperation( con )
+MachLogDeconstructOperation::MachLogDeconstructOperation(PerConstructor con)
+    : MachLogLabourOperation(con)
 {
 }
 

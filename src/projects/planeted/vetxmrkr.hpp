@@ -1,5 +1,5 @@
 /*
- * V E T X M R K R . H P P 
+ * V E T X M R K R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,28 +23,27 @@ class MexPoint3d;
 class PedVertexMarker : public W4dCustom
 {
 public:
-    PedVertexMarker( size_t x, size_t y, bool highlight );
-    PedVertexMarker( const MexPoint3d& point, bool highlight );
-    ~PedVertexMarker();
+    PedVertexMarker(size_t x, size_t y, bool highlight);
+    PedVertexMarker(const MexPoint3d& point, bool highlight);
+    ~PedVertexMarker() override;
 
     void CLASS_INVARIANT;
 
-	const MexPoint2d& position() const;
+    const MexPoint2d& position() const;
 
-    friend ostream& operator <<( ostream& o, const PedVertexMarker& t );
+    friend ostream& operator<<(ostream& o, const PedVertexMarker& t);
 
 private:
     // Operations deliberately revoked
-    PedVertexMarker( const PedVertexMarker& );
-    PedVertexMarker& operator =( const PedVertexMarker& );
-    bool operator ==( const PedVertexMarker& );
+    PedVertexMarker(const PedVertexMarker&);
+    PedVertexMarker& operator=(const PedVertexMarker&);
+    bool operator==(const PedVertexMarker&);
 
-	void addSmallBox( MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z, bool highlight );
+    void addSmallBox(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z, bool highlight);
 
-	// Data...
-	MexPoint2d position_;
+    // Data...
+    MexPoint2d position_;
 };
-
 
 #endif
 

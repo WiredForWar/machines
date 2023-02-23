@@ -1,5 +1,5 @@
 /*
- * M O T C H U N K . H P P 
+ * M O T C H U N K . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -15,8 +15,8 @@
           considered to remain at the end point.
     HAS-A Clearance defining distance around the object for collision avoidance.
 
-	If you change the data members in this class it is very important to remember to change
-	the compressed version as well.
+    If you change the data members in this class it is very important to remember to change
+    the compressed version as well.
 
 */
 
@@ -31,26 +31,25 @@
 #include "phys/phys.hpp"
 #include "phys/rampacce.hpp"
 
-//Forward declarations
+// Forward declarations
 class MexCircle2d;
 class MexSausage2d;
 class MexAlignedBox2d;
 class PhysCompressedMotionChunk;
 
-//Bitwise canonical
+// Bitwise canonical
 class PhysMotionChunk
 {
 public:
     //  This is suppied purely to keep ctl_vector happy - do not call it.
     PhysMotionChunk();
-   
-    //ctor. Motion is from startPoint to endPoint with radius of clearance required
-    //for collision avoidance.
-    //motionProfile defines the speed profile, which start at motionTimeOffset from
-    //createTime. Between these 2 times the object is considered to remain at startPoint.
-    //After the motion is complete, the object is considered to remain at endPoint.
-    PhysMotionChunk
-    (
+
+    // ctor. Motion is from startPoint to endPoint with radius of clearance required
+    // for collision avoidance.
+    // motionProfile defines the speed profile, which start at motionTimeOffset from
+    // createTime. Between these 2 times the object is considered to remain at startPoint.
+    // After the motion is complete, the object is considered to remain at endPoint.
+    PhysMotionChunk(
         const MexPoint2d& startPoint,
         const MexPoint2d& endPoint,
         MATHEX_SCALAR clearance,
@@ -58,63 +57,60 @@ public:
         const PhysAbsoluteTime& createTime,
         const PhysRelativeTime& motionTimeOffset,
         const MexDouble& minHeight,
-        const MexDouble& maxHeight
-    );
-    //PRE( clearance >= 0.0 )
-    //PRE( motionTimeOffset >= 0.0 );
-    //PRE( motionProfile defines motion covering same distance as that from startPoint to endPoint)
+        const MexDouble& maxHeight);
+    // PRE( clearance >= 0.0 )
+    // PRE( motionTimeOffset >= 0.0 );
+    // PRE( motionProfile defines motion covering same distance as that from startPoint to endPoint)
 
-	PhysMotionChunk( const PhysCompressedMotionChunk& );
+    PhysMotionChunk(const PhysCompressedMotionChunk&);
 
-    //dtor
+    // dtor
     ~PhysMotionChunk();
 
-    //Set expiry time. After this time the object is considered not to be at any
-    //location defined by the motion chunk.
-    void expiryTime( const PhysAbsoluteTime& expiryTime );
-	//  POST( hasExpiryTime() );
+    // Set expiry time. After this time the object is considered not to be at any
+    // location defined by the motion chunk.
+    void expiryTime(const PhysAbsoluteTime& expiryTime);
+    //  POST( hasExpiryTime() );
 
-    //Accessors
+    // Accessors
     const MexPoint2d& startPoint() const;
     const MexPoint2d& endPoint() const;
     MATHEX_SCALAR clearance() const;
     const PhysRampAcceleration& motionProfile() const;
     const PhysAbsoluteTime& createTime() const;
     const PhysRelativeTime& motionTimeOffset() const;
-	bool hasExpiryTime() const;
+    bool hasExpiryTime() const;
     const PhysAbsoluteTime& expiryTime() const;
-	//	PRE( hasExpiryTime() );
+    //  PRE( hasExpiryTime() );
 
-    //returns bounding box for the motion chunk in pBox
-    void boundary( MexAlignedBox2d* pBox ) const;
+    // returns bounding box for the motion chunk in pBox
+    void boundary(MexAlignedBox2d* pBox) const;
 
-    //True iff intersects with rhs, taking time and space into account.
-    //If so returns the time at which collision occurs in pCollideTime.
-    //Note that no bounding box check is performed - the client is advised to do this first.
-    bool intersects( const PhysMotionChunk& rhs, PhysAbsoluteTime* pCollideTime ) const;
+    // True iff intersects with rhs, taking time and space into account.
+    // If so returns the time at which collision occurs in pCollideTime.
+    // Note that no bounding box check is performed - the client is advised to do this first.
+    bool intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* pCollideTime) const;
 
-	bool timeIntersects( PhysAbsoluteTime ) const;
-	bool timeIntersects( PhysAbsoluteTime startTime, PhysAbsoluteTime endTime ) const;
+    bool timeIntersects(PhysAbsoluteTime) const;
+    bool timeIntersects(PhysAbsoluteTime startTime, PhysAbsoluteTime endTime) const;
 
     const MexDouble& minHeight() const;
     const MexDouble& maxHeight() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysMotionChunk& t );
+    friend ostream& operator<<(ostream& o, const PhysMotionChunk& t);
 
 private:
-	friend class PhysCompressedMotionChunk;
+    friend class PhysCompressedMotionChunk;
     // Operation deliberately revoked
 
-    //True iff lhsCircle intersects rhsCircle in both time and space.
-    //If so returns earliest collision time in pCollideTime.
-    //lhsCircle exists from lhsStartTime, until lhsEndTime (if lhsHasEndTime, or
-    //indefinitely otherwise).
-    //Similar for rhs.
-    static
-    bool circleIntersectsCircle
-    (
+    // True iff lhsCircle intersects rhsCircle in both time and space.
+    // If so returns earliest collision time in pCollideTime.
+    // lhsCircle exists from lhsStartTime, until lhsEndTime (if lhsHasEndTime, or
+    // indefinitely otherwise).
+    // Similar for rhs.
+    static bool circleIntersectsCircle(
         const MexCircle2d& lhsCircle,
         const PhysAbsoluteTime& lhsStartTime,
         bool lhsHasEndTime,
@@ -123,18 +119,15 @@ private:
         const PhysAbsoluteTime& rhsStartTime,
         bool rhsHasEndTime,
         const PhysAbsoluteTime& rhsEndTime,
-        PhysAbsoluteTime* pCollideTime
-    );
+        PhysAbsoluteTime* pCollideTime);
 
-    //True iff lhsCircle intersects rhsSausage in both time and space.
-    //If so returns earliest collision time in pCollideTime.
-    //lhsCircle exists from lhsStartTime, until lhsEndTime (if lhsHasEndTime, or
-    //indefinitely otherwise).
-    //rhsSausage represents an object accelerating form its start to end point,
-    //starting at rhsStartTime, and arriving at rhsEndTime.
-    static
-    bool circleIntersectsAccelerationSausage
-    (
+    // True iff lhsCircle intersects rhsSausage in both time and space.
+    // If so returns earliest collision time in pCollideTime.
+    // lhsCircle exists from lhsStartTime, until lhsEndTime (if lhsHasEndTime, or
+    // indefinitely otherwise).
+    // rhsSausage represents an object accelerating form its start to end point,
+    // starting at rhsStartTime, and arriving at rhsEndTime.
+    static bool circleIntersectsAccelerationSausage(
         const MexCircle2d& lhsCircle,
         const PhysAbsoluteTime& lhsStartTime,
         bool lhsHasEndTime,
@@ -142,18 +135,15 @@ private:
         const MexSausage2d& rhsSausage,
         const PhysAbsoluteTime& rhsStartTime,
         const PhysAbsoluteTime& rhsEndTime,
-        PhysAbsoluteTime* pCollideTime
-    );
+        PhysAbsoluteTime* pCollideTime);
 
-    //True iff lhsCircle intersects rhsSausage in both time and space.
-    //If so returns earliest collision time in pCollideTime.
-    //lhsCircle exists from lhsStartTime, until lhsEndTime (if lhsHasEndTime, or
-    //indefinitely otherwise).
-    //rhsSausage represents an object moving at constant speed from its start to end point,
-    //starting at rhsStartTime, and arriving at rhsEndTime.
-    static
-    bool circleIntersectsConstantSpeedSausage
-    (
+    // True iff lhsCircle intersects rhsSausage in both time and space.
+    // If so returns earliest collision time in pCollideTime.
+    // lhsCircle exists from lhsStartTime, until lhsEndTime (if lhsHasEndTime, or
+    // indefinitely otherwise).
+    // rhsSausage represents an object moving at constant speed from its start to end point,
+    // starting at rhsStartTime, and arriving at rhsEndTime.
+    static bool circleIntersectsConstantSpeedSausage(
         const MexCircle2d& lhsCircle,
         const PhysAbsoluteTime& lhsStartTime,
         bool lhsHasEndTime,
@@ -161,80 +151,69 @@ private:
         const MexSausage2d& rhsSausage,
         const PhysAbsoluteTime& rhsStartTime,
         const PhysAbsoluteTime& rhsEndTime,
-        PhysAbsoluteTime* pCollideTime
-    );
+        PhysAbsoluteTime* pCollideTime);
 
-    //True iff lhsSausage intersects rhsSausage in both time and space.
-    //If so returns earliest collision time in pCollideTime.
-    //lhsSausage represents an object accelerating form its start to end point,
-    //starting at lhsStartTime, and arriving at lhsEndTime.
-    //Similar for rhsSausage.
-    static
-    bool accelerationSausageIntersectsAccelerationSausage
-    (
+    // True iff lhsSausage intersects rhsSausage in both time and space.
+    // If so returns earliest collision time in pCollideTime.
+    // lhsSausage represents an object accelerating form its start to end point,
+    // starting at lhsStartTime, and arriving at lhsEndTime.
+    // Similar for rhsSausage.
+    static bool accelerationSausageIntersectsAccelerationSausage(
         const MexSausage2d& lhsSausage,
         const PhysAbsoluteTime& lhsStartTime,
         const PhysAbsoluteTime& lhsEndTime,
         const MexSausage2d& rhsSausage,
         const PhysAbsoluteTime& rhsStartTime,
         const PhysAbsoluteTime& rhsEndTime,
-        PhysAbsoluteTime* pCollideTime
-    );
+        PhysAbsoluteTime* pCollideTime);
 
-    //True iff lhsAccnSausage intersects rhsCSSausage in both time and space.
-    //If so returns earliest collision time in pCollideTime.
-    //lhsSausage represents an object accelerating form its start to end point,
-    //starting at lhsStartTime, and arriving at lhsEndTime.
-    //rhsSausage represents an object moving at constant speed from its start to end point,
-    //starting at rhsStartTime, and arriving at rhsEndTime.
-    static
-    bool accelerationSausageIntersectsConstantSpeedSausage
-    (
+    // True iff lhsAccnSausage intersects rhsCSSausage in both time and space.
+    // If so returns earliest collision time in pCollideTime.
+    // lhsSausage represents an object accelerating form its start to end point,
+    // starting at lhsStartTime, and arriving at lhsEndTime.
+    // rhsSausage represents an object moving at constant speed from its start to end point,
+    // starting at rhsStartTime, and arriving at rhsEndTime.
+    static bool accelerationSausageIntersectsConstantSpeedSausage(
         const MexSausage2d& lhsAccnSausage,
         const PhysAbsoluteTime& lhsStartTime,
         const PhysAbsoluteTime& lhsEndTime,
         const MexSausage2d& rhsCSSausage,
         const PhysAbsoluteTime& rhsStartTime,
         const PhysAbsoluteTime& rhsEndTime,
-        PhysAbsoluteTime* pCollideTime
-    );
+        PhysAbsoluteTime* pCollideTime);
 
-    //True iff lhsSausage intersects rhsSausage in both time and space.
-    //If so returns earliest collision time in pCollideTime.
-    //lhsSausage represents an object moving at constant speed from its start to end point,
-    //starting at lhsStartTime, and arriving at lhsEndTime.
-    //Similar for rhsSausage.
-    static
-    bool constantSpeedSausageIntersectsConstantSpeedSausage
-    (
+    // True iff lhsSausage intersects rhsSausage in both time and space.
+    // If so returns earliest collision time in pCollideTime.
+    // lhsSausage represents an object moving at constant speed from its start to end point,
+    // starting at lhsStartTime, and arriving at lhsEndTime.
+    // Similar for rhsSausage.
+    static bool constantSpeedSausageIntersectsConstantSpeedSausage(
         const MexSausage2d& lhsSausage,
         const PhysAbsoluteTime& lhsStartTime,
         const PhysAbsoluteTime& lhsEndTime,
         const MexSausage2d& rhsSausage,
         const PhysAbsoluteTime& rhsStartTime,
         const PhysAbsoluteTime& rhsEndTime,
-        PhysAbsoluteTime* pCollideTime
-    );
+        PhysAbsoluteTime* pCollideTime);
 
-    //Data members
-    MexPoint2d startPoint_; //start location
-    MexPoint2d endPoint_; //end location
-    PhysRampAcceleration motionProfile_; //Velocity profile for motion between points
-    PhysAbsoluteTime createTime_; //Time at which object appears at start point
-    PhysRelativeTime motionTimeOffset_; //Offset to start of motion
-    PhysAbsoluteTime expiryTime_; //Offset from createTime to time at which object
-                                        //disappears from end point
+    // Data members
+    MexPoint2d startPoint_; // start location
+    MexPoint2d endPoint_; // end location
+    PhysRampAcceleration motionProfile_; // Velocity profile for motion between points
+    PhysAbsoluteTime createTime_; // Time at which object appears at start point
+    PhysRelativeTime motionTimeOffset_; // Offset to start of motion
+    PhysAbsoluteTime expiryTime_; // Offset from createTime to time at which object
+                                  // disappears from end point
     MATHEX_SCALAR clearance_; // Radius required around object centre for collision avoidance
-    bool hasExpiryTime_ :1;//True if expiry time defined
+    bool hasExpiryTime_ : 1; // True if expiry time defined
 
-    MexDouble   minHeight_;
-    MexDouble   maxHeight_;
+    MexDouble minHeight_;
+    MexDouble maxHeight_;
 };
 
 #ifdef _INLINE
-    #include "phys/motchunk.ipp"
+#include "phys/motchunk.ipp"
 #endif
-
 
 #endif
 

@@ -16,15 +16,14 @@ NetPingHelper::NetPingHelper()
 NetPingHelper::~NetPingHelper()
 {
     TEST_INVARIANT;
-
 }
 
 void NetPingHelper::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const NetPingHelper& t )
+ostream& operator<<(ostream& o, const NetPingHelper& t)
 {
 
     o << "NetPingHelper " << (void*)&t << " start" << std::endl;
@@ -35,8 +34,8 @@ ostream& operator <<( ostream& o, const NetPingHelper& t )
 
 void NetPingHelper::pingAll() const
 {
-	//?void NetNode::ping( const NetNodeUid& recipientUid )
-	//NetNode::ping( const NetNodeUid& recipientUid );
+    //?void NetNode::ping( const NetNodeUid& recipientUid )
+    // NetNode::ping( const NetNodeUid& recipientUid );
 }
 
 /* End PINGHELP.CPP *************************************************/

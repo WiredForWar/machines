@@ -9,15 +9,15 @@
 #include "machgui/internal/dbsystei.hpp"
 #include "machgui/dbplanet.hpp"
 
-PER_DEFINE_PERSISTENT( MachGuiDbSystem );
+PER_DEFINE_PERSISTENT(MachGuiDbSystem);
 
-MachGuiDbSystem::MachGuiDbSystem( const string& systemName, uint menuStringId )
-:   MachGuiDbElement( menuStringId )
+MachGuiDbSystem::MachGuiDbSystem(const string& systemName, uint menuStringId)
+    : MachGuiDbElement(menuStringId)
 {
-    pData_ = _NEW( MachGuiDbISystem );
+    pData_ = _NEW(MachGuiDbISystem);
 
     isCustom(false);
-    name( systemName );
+    name(systemName);
 
     TEST_INVARIANT;
 }
@@ -26,22 +26,21 @@ MachGuiDbSystem::~MachGuiDbSystem()
 {
     TEST_INVARIANT;
 
-    //Delete all the dependent planets
-    for( size_t i = pData_->planets_.size(); i--; )
+    // Delete all the dependent planets
+    for (size_t i = pData_->planets_.size(); i--;)
     {
-        _DELETE( pData_->planets_[i] );
+        _DELETE(pData_->planets_[i]);
     }
 
-    _DELETE( pData_ );
-
+    _DELETE(pData_);
 }
 
 void MachGuiDbSystem::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiDbSystem& t )
+ostream& operator<<(ostream& o, const MachGuiDbSystem& t)
 {
 
     o << "MachGuiDbSystem " << (void*)&t << " start" << std::endl;
@@ -50,7 +49,7 @@ ostream& operator <<( ostream& o, const MachGuiDbSystem& t )
     return o;
 }
 
-void MachGuiDbSystem::campaignPicture( const string& filename )
+void MachGuiDbSystem::campaignPicture(const string& filename)
 {
     pData_->campaignPicture_ = filename;
 }
@@ -65,23 +64,23 @@ uint MachGuiDbSystem::nPlanets() const
     return pData_->planets_.size();
 }
 
-MachGuiDbPlanet& MachGuiDbSystem::planet( uint index )
+MachGuiDbPlanet& MachGuiDbSystem::planet(uint index)
 {
-    PRE( index < nPlanets() );
+    PRE(index < nPlanets());
 
-    return *(pData_->planets_[ index ]);
+    return *(pData_->planets_[index]);
 }
 
-void MachGuiDbSystem::addPlanet( MachGuiDbPlanet* pPlanet )
+void MachGuiDbSystem::addPlanet(MachGuiDbPlanet* pPlanet)
 {
-    //Add to own list
-    pData_->planets_.push_back( pPlanet );
+    // Add to own list
+    pData_->planets_.push_back(pPlanet);
 
-    //Store back pointer in planet
-    pPlanet->system( this );
+    // Store back pointer in planet
+    pPlanet->system(this);
 }
 
-void perWrite( PerOstream& ostr, const MachGuiDbSystem& ob )
+void perWrite(PerOstream& ostr, const MachGuiDbSystem& ob)
 {
     const MachGuiDbElement& base = ob;
 
@@ -90,7 +89,7 @@ void perWrite( PerOstream& ostr, const MachGuiDbSystem& ob )
     ostr << ob.pData_;
 }
 
-void perRead( PerIstream& istr, MachGuiDbSystem& ob )
+void perRead(PerIstream& istr, MachGuiDbSystem& ob)
 {
     MachGuiDbElement& base = ob;
 
@@ -99,9 +98,9 @@ void perRead( PerIstream& istr, MachGuiDbSystem& ob )
     istr >> ob.pData_;
 }
 
-MachGuiDbSystem::MachGuiDbSystem( PerConstructor con )
-:   MachGuiDbElement( con ),
-    pData_( NULL )
+MachGuiDbSystem::MachGuiDbSystem(PerConstructor con)
+    : MachGuiDbElement(con)
+    , pData_(nullptr)
 {
 }
 /* End DBSYSTEM.CPP *************************************************/

@@ -6,17 +6,17 @@
 
 class GuiSimpleScrollableListImpl
 {
-	private:
-		bool canScrollFoward_;
-		bool canScrollBackward_;
-		size_t scrollOffset_;
-		size_t scrollInc_;
-		size_t horizontalSpacing_;
-		size_t verticalSpacing_;
-		size_t numPositions_;
-		GuiSimpleScrollableList::Observers observers_;
-		
-		friend class GuiSimpleScrollableList;
+private:
+    bool canScrollFoward_;
+    bool canScrollBackward_;
+    size_t scrollOffset_;
+    size_t scrollInc_;
+    size_t horizontalSpacing_;
+    size_t verticalSpacing_;
+    size_t numPositions_;
+    GuiSimpleScrollableList::Observers observers_;
+
+    friend class GuiSimpleScrollableList;
 };
 
-#endif	// _GUI_SCROLISI
+#endif // _GUI_SCROLISI

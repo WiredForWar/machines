@@ -1,5 +1,5 @@
 /*
- * S N D P L A N . C P P 
+ * S N D P L A N . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,12 +16,10 @@ MachPhysSoundPlan::MachPhysSoundPlan()
 MachPhysSoundPlan::~MachPhysSoundPlan()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysSoundPlan::CLASS_INVARIANT
 {
 }
-
 
 /* End SNDPLAN.CPP **************************************************/

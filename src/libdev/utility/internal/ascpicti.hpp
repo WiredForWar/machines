@@ -30,16 +30,16 @@ class UtlAsciiPictureImpl
 public:
     //  Constructor where the number of rows is calculated automatically to
     //  maintain the aspect ratio.
-    UtlAsciiPictureImpl(
-        MATHEX_SCALAR minX, MATHEX_SCALAR minY,
-        MATHEX_SCALAR maxX, MATHEX_SCALAR maxY,
-        uint nColumns );
+    UtlAsciiPictureImpl(MATHEX_SCALAR minX, MATHEX_SCALAR minY, MATHEX_SCALAR maxX, MATHEX_SCALAR maxY, uint nColumns);
     //  Constructor where it is possible to have different scales on the
     //  X and Y axes
     UtlAsciiPictureImpl(
-        MATHEX_SCALAR minX, MATHEX_SCALAR minY,
-        MATHEX_SCALAR maxX, MATHEX_SCALAR maxY,
-        uint nColumns, uint nRows );
+        MATHEX_SCALAR minX,
+        MATHEX_SCALAR minY,
+        MATHEX_SCALAR maxX,
+        MATHEX_SCALAR maxY,
+        uint nColumns,
+        uint nRows);
 
     ~UtlAsciiPictureImpl();
 
@@ -48,25 +48,25 @@ public:
 
     void clear();
 
-    void pixel( uint x, uint y, char );
+    void pixel(uint x, uint y, char);
     // PRE( x < nColumns() );
     // PRE( y < nRows() );
 
-    char pixel( uint x, uint y ) const;
+    char pixel(uint x, uint y) const;
     // PRE( x < nColumns() );
     // PRE( y < nRows() );
 
-    void fill( const MexPolygon2d&, char );
-    void outline( const MexPolygon2d&, char );
+    void fill(const MexPolygon2d&, char);
+    void outline(const MexPolygon2d&, char);
 
-    void outline( const MexAlignedBox2d&, char );
+    void outline(const MexAlignedBox2d&, char);
 
-    int column( MATHEX_SCALAR x ) const;
-    int row( MATHEX_SCALAR y ) const;
+    int column(MATHEX_SCALAR x) const;
+    int row(MATHEX_SCALAR y) const;
 
-    MexPoint2d  point( int x, int y ) const;
+    MexPoint2d point(int x, int y) const;
 
-    void line( const MexLine2d&, char );
+    void line(const MexLine2d&, char);
 
     MATHEX_SCALAR pixelWidth() const;
     MATHEX_SCALAR pixelHeight() const;
@@ -76,17 +76,16 @@ public:
 
     void grid();
 
-    void title( const std::string& title );
-    void underText( const std::string& text );
+    void title(const std::string& title);
+    void underText(const std::string& text);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const UtlAsciiPictureImpl& t );
+    friend ostream& operator<<(ostream& o, const UtlAsciiPictureImpl& t);
 
-    UtlAsciiPictureImpl( const UtlAsciiPictureImpl& );
-    UtlAsciiPictureImpl& operator =( const UtlAsciiPictureImpl& );
-
+    UtlAsciiPictureImpl(const UtlAsciiPictureImpl&);
+    UtlAsciiPictureImpl& operator=(const UtlAsciiPictureImpl&);
 
     MATHEX_SCALAR minX_;
     MATHEX_SCALAR minY_;
@@ -99,15 +98,14 @@ private:
     int yFieldWidth_;
     int yPrecision_;
 
-    ctl_vector< std::string >    picture_;
+    ctl_vector<std::string> picture_;
 
-    ctl_vector< std::string >    xLabels_;
-    ctl_vector< std::string >    yLabels_;
+    ctl_vector<std::string> xLabels_;
+    ctl_vector<std::string> yLabels_;
 
-    std::string                  title_;
-    ctl_vector< std::string >    underText_;
+    std::string title_;
+    ctl_vector<std::string> underText_;
 };
-
 
 #endif
 

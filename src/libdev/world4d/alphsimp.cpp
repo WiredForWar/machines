@@ -17,22 +17,22 @@
 #include "world4d/entity.hpp"
 #include "world4d/entyplan.hpp"
 
-W4dSimpleAlphaPlan::W4dSimpleAlphaPlan
-(
-    const RenMaterial& mat, uint nMaterialsInVector,
-    const PhysScalarPlanPtr& alphaPlanPtr, W4dLOD maxLOD
-)
-:   W4dMaterialPlan( alphaPlanPtr->duration(), maxLOD ),
-    material_( mat ),
-    alphaPlanPtr_( alphaPlanPtr )
+W4dSimpleAlphaPlan::W4dSimpleAlphaPlan(
+    const RenMaterial& mat,
+    uint nMaterialsInVector,
+    const PhysScalarPlanPtr& alphaPlanPtr,
+    W4dLOD maxLOD)
+    : W4dMaterialPlan(alphaPlanPtr->duration(), maxLOD)
+    , material_(mat)
+    , alphaPlanPtr_(alphaPlanPtr)
 {
-    //Make the material non-shareable
+    // Make the material non-shareable
     material_.makeNonSharable();
 
-    //Construct a material vec referencing this single material
-    RenMaterialVec* pMaterialVec = _NEW( RenMaterialVec( nMaterialsInVector ) );
-    while( nMaterialsInVector-- )
-        pMaterialVec->push_back( material_ );
+    // Construct a material vec referencing this single material
+    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(nMaterialsInVector));
+    while (nMaterialsInVector--)
+        pMaterialVec->push_back(material_);
 
     materialVecPtr_ = pMaterialVec;
 
@@ -42,15 +42,14 @@ W4dSimpleAlphaPlan::W4dSimpleAlphaPlan
 W4dSimpleAlphaPlan::~W4dSimpleAlphaPlan()
 {
     TEST_INVARIANT;
-
 }
 
 void W4dSimpleAlphaPlan::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dSimpleAlphaPlan& t )
+ostream& operator<<(ostream& o, const W4dSimpleAlphaPlan& t)
 {
 
     o << "W4dSimpleAlphaPlan " << (void*)&t << " start" << std::endl;
@@ -59,64 +58,61 @@ ostream& operator <<( ostream& o, const W4dSimpleAlphaPlan& t )
     return o;
 }
 
-//virtual
-bool W4dSimpleAlphaPlan::isLODDefined( W4dLOD lodId ) const
+// virtual
+bool W4dSimpleAlphaPlan::isLODDefined(W4dLOD lodId) const
 {
     return lodId <= maxLOD();
 }
 
-//virtual
-const Ren::MaterialVecPtr& W4dSimpleAlphaPlan::materialVec
-(
-    const PhysRelativeTime& timeOffset, W4dLOD lodId
-) const
+// virtual
+const Ren::MaterialVecPtr& W4dSimpleAlphaPlan::materialVec(const PhysRelativeTime& timeOffset, W4dLOD lodId) const
 {
-    PRE( isLODDefined( lodId ) );
+    PRE(isLODDefined(lodId));
 
-    //Compute the result of the alpha scalar plan
-    MATHEX_SCALAR alpha = alphaPlanPtr_->scalar( timeOffset );
+    // Compute the result of the alpha scalar plan
+    MATHEX_SCALAR alpha = alphaPlanPtr_->scalar(timeOffset);
 
-    //Set the material alpha
+    // Set the material alpha
     RenColour diffuseColour = material_.diffuse();
-    diffuseColour.a( alpha );
-    _CONST_CAST(W4dSimpleAlphaPlan*, this)->material_.diffuse( diffuseColour );
+    diffuseColour.a(alpha);
+    _CONST_CAST(W4dSimpleAlphaPlan*, this)->material_.diffuse(diffuseColour);
 
-    //Return the material vector
+    // Return the material vector
     return materialVecPtr_;
 }
 
-//static
+// static
 void W4dSimpleAlphaPlan::makePlan(
-									W4dEntity* pEntity,
-									const PhysAbsoluteTime& startTime,
-									const PhysScalarPlanPtr& alphaPlanPtr,
-									W4dLOD maxLOD  )
+    W4dEntity* pEntity,
+    const PhysAbsoluteTime& startTime,
+    const PhysScalarPlanPtr& alphaPlanPtr,
+    W4dLOD maxLOD)
 {
     const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
     const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
-	RenMaterialVec* pMaterialVec;
+    RenMaterialVec* pMaterialVec;
 
-	if( materialVecPtr.isDefined() )
-	{
-		pMaterialVec = _NEW( RenMaterialVec( *materialVecPtr ) );
-	}
-	else
-	{
+    if (materialVecPtr.isDefined())
+    {
+        pMaterialVec = _NEW(RenMaterialVec(*materialVecPtr));
+    }
+    else
+    {
 
-		pMaterialVec =meshInst.mesh()->materialVec().release();
-	}
+        pMaterialVec = meshInst.mesh()->materialVec().release();
+    }
 
-	size_t nMat = pMaterialVec->size();
+    size_t nMat = pMaterialVec->size();
 
-	ASSERT( nMat > 0, "no material " );
+    ASSERT(nMat > 0, "no material ");
 
-	if( nMat > 0 )
-	{
-		RenMaterial mat = (*pMaterialVec)[0];
-	    W4dMaterialPlanPtr matPlanPtr = _NEW( W4dSimpleAlphaPlan( mat, nMat, alphaPlanPtr, maxLOD) );
-		pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime );
-	}
+    if (nMat > 0)
+    {
+        RenMaterial mat = (*pMaterialVec)[0];
+        W4dMaterialPlanPtr matPlanPtr = _NEW(W4dSimpleAlphaPlan(mat, nMat, alphaPlanPtr, maxLOD));
+        pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime);
+    }
 
-	_DELETE( pMaterialVec );
+    _DELETE(pMaterialVec);
 }
 /* End ALPHSIMP.CPP *************************************************/

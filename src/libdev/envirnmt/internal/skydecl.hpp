@@ -31,143 +31,143 @@ class EnvDynamicSky;
 
 class EnvISkyDeclaration
 {
-// Cannonical form revoked.
+    // Cannonical form revoked.
+
 public:
-	class UniformSky
-	{
-	public:
-		void controller(const string& name);
-		void colourTable(const string& name);
+    class UniformSky
+    {
+    public:
+        void controller(const string& name);
+        void colourTable(const string& name);
 
-		void completeSky();
+        void completeSky();
 
-		friend class EnvISkyDeclaration;
+        friend class EnvISkyDeclaration;
 
-	private:
-		UniformSky(EnvUniformSky* const pSky);
+    private:
+        UniformSky(EnvUniformSky* const pSky);
 
-		// Operations deliberatly revoked.
-		UniformSky(const UniformSky& copyMe);
-		UniformSky& operator =(const UniformSky& assignMe);
+        // Operations deliberatly revoked.
+        UniformSky(const UniformSky& copyMe);
+        UniformSky& operator=(const UniformSky& assignMe);
 
-		bool controllerSet_;
-		bool colourTableSet_;
-		EnvUniformSky* const pSky_;
-	};
+        bool controllerSet_;
+        bool colourTableSet_;
+        EnvUniformSky* const pSky_;
+    };
 
-	class StaticSky
-	{
-	public:
-		void meshFile(const string& pathname);
-		void backgroundColour(const RenColour&);
+    class StaticSky
+    {
+    public:
+        void meshFile(const string& pathname);
+        void backgroundColour(const RenColour&);
 
-		void completeSky();
+        void completeSky();
 
-		friend class EnvISkyDeclaration;
+        friend class EnvISkyDeclaration;
 
-	private:
-		StaticSky(EnvStaticSky* const pSky);
+    private:
+        StaticSky(EnvStaticSky* const pSky);
 
-		// Operations deliberatly revoked.
-		StaticSky(const StaticSky& copyMe);
-		StaticSky& operator =(const StaticSky& assignMe);
+        // Operations deliberatly revoked.
+        StaticSky(const StaticSky& copyMe);
+        StaticSky& operator=(const StaticSky& assignMe);
 
-		bool meshFileSet_;
-		bool backgroundColourSet_;
-		EnvStaticSky* const pSky_;
-	};
+        bool meshFileSet_;
+        bool backgroundColourSet_;
+        EnvStaticSky* const pSky_;
+    };
 
-	class DynamicSky
-	{
-	public:
-		void meshFile(const string& pathname);
-		void controller(const string& name);
-		void colourTable(MexDegrees at, const string& clutName);
+    class DynamicSky
+    {
+    public:
+        void meshFile(const string& pathname);
+        void controller(const string& name);
+        void colourTable(MexDegrees at, const string& clutName);
 
-		void completeSky();
+        void completeSky();
 
-		friend class EnvISkyDeclaration;
+        friend class EnvISkyDeclaration;
 
-	private:
-		DynamicSky(EnvDynamicSky* const pSky);
+    private:
+        DynamicSky(EnvDynamicSky* const pSky);
 
-		// Operations deliberatly revoked.
-		DynamicSky(const DynamicSky& copyMe);
-		DynamicSky& operator =(const DynamicSky& assignMe);
+        // Operations deliberatly revoked.
+        DynamicSky(const DynamicSky& copyMe);
+        DynamicSky& operator=(const DynamicSky& assignMe);
 
-		bool meshFileSet_;
-		bool controllerSet_;
-		bool atLeastOneColourTableSet_;
-		EnvDynamicSky* const pSky_;
-	};
+        bool meshFileSet_;
+        bool controllerSet_;
+        bool atLeastOneColourTableSet_;
+        EnvDynamicSky* const pSky_;
+    };
 
-	EnvISkyDeclaration();
-	~EnvISkyDeclaration();
+    EnvISkyDeclaration();
+    ~EnvISkyDeclaration();
 
-	void createUniformSkyDeclaration(EnvUniformSky* const pSky);
-	// PRE(isClear());
-	// POST(isUniformSkyDeclaration());
-	void createStaticSkyDeclaration(EnvStaticSky* const pSky);
-	// PRE(isClear());
-	// POST(isStaticSkyDeclaration());
-	void createDynamicSkyDeclaration(EnvDynamicSky* const pSky);
-	// PRE(isClear());
-	// POST(isDynamicSkyDeclaration());
+    void createUniformSkyDeclaration(EnvUniformSky* const pSky);
+    // PRE(isClear());
+    // POST(isUniformSkyDeclaration());
+    void createStaticSkyDeclaration(EnvStaticSky* const pSky);
+    // PRE(isClear());
+    // POST(isStaticSkyDeclaration());
+    void createDynamicSkyDeclaration(EnvDynamicSky* const pSky);
+    // PRE(isClear());
+    // POST(isDynamicSkyDeclaration());
 
-	// Allow another declaration to be processed.
-	void clear();
-	// PRE(isClear() or isComplete());
+    // Allow another declaration to be processed.
+    void clear();
+    // PRE(isClear() or isComplete());
 
-	const UniformSky& uniformSky() const;
-	// PRE(isUniformSkyDeclaration());
-	UniformSky& uniformSky();
-	// PRE(isUniformSkyDeclaration());
+    const UniformSky& uniformSky() const;
+    // PRE(isUniformSkyDeclaration());
+    UniformSky& uniformSky();
+    // PRE(isUniformSkyDeclaration());
 
-	const StaticSky& staticSky() const;
-	// PRE(isStaticSkyDeclaration());
-	StaticSky& staticSky();
-	// PRE(isStaticSkyDeclaration());
+    const StaticSky& staticSky() const;
+    // PRE(isStaticSkyDeclaration());
+    StaticSky& staticSky();
+    // PRE(isStaticSkyDeclaration());
 
-	const DynamicSky& dynamicSky() const;
-	// PRE(isDynamicSkyDeclaration());
-	DynamicSky& dynamicSky();
-	// PRE(isDynamicSkyDeclaration());
+    const DynamicSky& dynamicSky() const;
+    // PRE(isDynamicSkyDeclaration());
+    DynamicSky& dynamicSky();
+    // PRE(isDynamicSkyDeclaration());
 
-	bool isUniformSkyDeclaration() const;
-	// PRE(not isClear());
-	bool isStaticSkyDeclaration() const;
-	// PRE(not isClear());
-	bool isDynamicSkyDeclaration() const;
-	// PRE(not isClear());
-	bool isClear() const;
-	bool isBuilding() const;
-	bool isComplete() const;
+    bool isUniformSkyDeclaration() const;
+    // PRE(not isClear());
+    bool isStaticSkyDeclaration() const;
+    // PRE(not isClear());
+    bool isDynamicSkyDeclaration() const;
+    // PRE(not isClear());
+    bool isClear() const;
+    bool isBuilding() const;
+    bool isComplete() const;
 
-	// Polymorphic pointer to the sky object passed to the create method.
-	EnvSky*	completedSky() const;
-	// PRE(isComplete());
+    // Polymorphic pointer to the sky object passed to the create method.
+    EnvSky* completedSky() const;
+    // PRE(isComplete());
 
-	// These methods call the completeSky() member of this class.
-	friend void UniformSky::completeSky();
-	friend void StaticSky::completeSky();
-	friend void DynamicSky::completeSky();
+    // These methods call the completeSky() member of this class.
+    friend void UniformSky::completeSky();
+    friend void StaticSky::completeSky();
+    friend void DynamicSky::completeSky();
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
 private:
-	// Operations deliberatly revoked.
-	EnvISkyDeclaration(const EnvISkyDeclaration&);
-	EnvISkyDeclaration& operator =(const EnvISkyDeclaration&);
-	bool operator ==(const EnvISkyDeclaration&);
+    // Operations deliberatly revoked.
+    EnvISkyDeclaration(const EnvISkyDeclaration&);
+    EnvISkyDeclaration& operator=(const EnvISkyDeclaration&);
+    bool operator==(const EnvISkyDeclaration&);
 
-	// Called by the completeSky methods of the nested classes.
-	void setCompleteSky(EnvSky* const pSky);
+    // Called by the completeSky methods of the nested classes.
+    void setCompleteSky(EnvSky* const pSky);
 
-	EnvSky* pCompletedSky_;
-	UniformSky* pUniformSky_;
-	StaticSky* pStaticSky_;
-	DynamicSky* pDynamicSky_;
+    EnvSky* pCompletedSky_;
+    UniformSky* pUniformSky_;
+    StaticSky* pStaticSky_;
+    DynamicSky* pDynamicSky_;
 };
 
 #endif /* _ENVIRNMT_INTERNAL_SKY_DECLARATION_HPP **********/
-

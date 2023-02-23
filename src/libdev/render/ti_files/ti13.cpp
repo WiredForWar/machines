@@ -3,6 +3,6 @@
 
 dummyFunction13()
 {
-	static RenID3DMeshLoader::MeshMap map1;
-	static RenID3DMeshLoader::FileMap map2;
+    static RenID3DMeshLoader::MeshMap map1;
+    static RenID3DMeshLoader::FileMap map2;
 }

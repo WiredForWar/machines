@@ -1,5 +1,5 @@
 /*
- * O N E I C O N . H P P 
+ * O N E I C O N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -26,65 +26,65 @@ class MachGuiCorralSingleIconInfo : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiCorralSingleIconInfo( GuiDisplayable* pParent, Gui::Coord rel, MachInGameScreen* pInGameScreen );
-    ~MachGuiCorralSingleIconInfo();
+    MachGuiCorralSingleIconInfo(GuiDisplayable* pParent, Gui::Coord rel, MachInGameScreen* pInGameScreen);
+    ~MachGuiCorralSingleIconInfo() override;
 
     void CLASS_INVARIANT;
 
-	static size_t reqWidth();
-	static size_t reqHeight();
+    static size_t reqWidth();
+    static size_t reqHeight();
 
-	void doDisplay();
+    void doDisplay() override;
 
-	void setActor( MachActor* );
+    void setActor(MachActor*);
 
 private:
-    MachGuiCorralSingleIconInfo( const MachGuiCorralSingleIconInfo& );
-    MachGuiCorralSingleIconInfo& operator =( const MachGuiCorralSingleIconInfo& );
-    bool operator ==( const MachGuiCorralSingleIconInfo& );
+    MachGuiCorralSingleIconInfo(const MachGuiCorralSingleIconInfo&);
+    MachGuiCorralSingleIconInfo& operator=(const MachGuiCorralSingleIconInfo&);
+    bool operator==(const MachGuiCorralSingleIconInfo&);
 
-    friend ostream& operator <<( ostream& o, const MachGuiCorralSingleIconInfo& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCorralSingleIconInfo& t);
 
-	MachActor *pActor_;
-	MachInGameScreen* pInGameScreen_;
+    MachActor* pActor_;
+    MachInGameScreen* pInGameScreen_;
 };
 
-class MachGuiCorralSingleIcon : public GuiDisplayable, public W4dObserver
+class MachGuiCorralSingleIcon
+    : public GuiDisplayable
+    , public W4dObserver
 // cannonical form revoked
 {
 public:
-	MachGuiCorralSingleIcon( GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen );
-	virtual ~MachGuiCorralSingleIcon();
+    MachGuiCorralSingleIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen);
+    ~MachGuiCorralSingleIcon() override;
 
-	static size_t reqWidth();
-	static size_t reqHeight();
-			
-    void setActor( MachActor* pActor );
-	void setActor( MachActor*, bool forceUpdate );
+    static size_t reqWidth();
+    static size_t reqHeight();
 
-	void clear();
+    void setActor(MachActor* pActor);
+    void setActor(MachActor*, bool forceUpdate);
 
-protected:	
-	virtual void doDisplay();
-		
+    void clear();
+
+protected:
+    void doDisplay() override;
+
 private:
-	// Operations revoked
-	MachGuiCorralSingleIcon( const MachGuiCorralSingleIcon& );
-	MachGuiCorralSingleIcon& operator =( const MachGuiCorralSingleIcon& );
-	bool operator ==( const MachGuiCorralSingleIcon& ) const;
+    // Operations revoked
+    MachGuiCorralSingleIcon(const MachGuiCorralSingleIcon&);
+    MachGuiCorralSingleIcon& operator=(const MachGuiCorralSingleIcon&);
+    bool operator==(const MachGuiCorralSingleIcon&) const;
 
-	virtual bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, 
-	                         int clientData = 0 );
-    virtual void domainDeleted( W4dDomain* pDomain );
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData = 0) override;
+    void domainDeleted(W4dDomain* pDomain) override;
 
-	MachGuiCorralSingleIconInfo* pIconInfo_;
-	MachGuiCorralResource* pIcon_;
-	MachActor* pActor_;
-	MachInGameScreen* pInGameScreen_;
-	MachGuiSelectInsideBuildingIcon* pSelectInsideBuildingIcon_;
-	MachGuiInHeadIcon* pInHeadIcon_;
-	bool isObservingActor_;
+    MachGuiCorralSingleIconInfo* pIconInfo_;
+    MachGuiCorralResource* pIcon_;
+    MachActor* pActor_;
+    MachInGameScreen* pInGameScreen_;
+    MachGuiSelectInsideBuildingIcon* pSelectInsideBuildingIcon_;
+    MachGuiInHeadIcon* pInHeadIcon_;
+    bool isObservingActor_;
 };
 
 #endif

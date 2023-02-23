@@ -1,5 +1,5 @@
 /*
- * B U I L D B A R . H P P 
+ * B U I L D B A R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,40 +20,46 @@ class MachGuiBuildProgressBar : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiBuildProgressBar(GuiDisplayable * pParent,
-    						const Gui::Coord& rel,
-							size_t width );
-    ~MachGuiBuildProgressBar();
+    MachGuiBuildProgressBar(GuiDisplayable* pParent, const Gui::Coord& rel, size_t width);
+    ~MachGuiBuildProgressBar() override;
 
     void CLASS_INVARIANT;
 
-	static size_t height();
+    static size_t height();
 
-	void depress( bool doDepress );
+    void depress(bool doDepress);
 
-	void percentageComplete( float );
-	float percentageComplete() const;
+    void percentageComplete(float);
+    float percentageComplete() const;
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
-	// Operations revoked
-    MachGuiBuildProgressBar( const MachGuiBuildProgressBar& );
-    MachGuiBuildProgressBar& operator =( const MachGuiBuildProgressBar& );
-    bool operator ==( const MachGuiBuildProgressBar& );
+    // Operations revoked
+    MachGuiBuildProgressBar(const MachGuiBuildProgressBar&);
+    MachGuiBuildProgressBar& operator=(const MachGuiBuildProgressBar&);
+    bool operator==(const MachGuiBuildProgressBar&);
 
-	Gui::Colour barColour() const;
+    Gui::Colour barColour() const;
 
-    friend ostream& operator <<( ostream& o, const MachGuiBuildProgressBar& t );
+    friend ostream& operator<<(ostream& o, const MachGuiBuildProgressBar& t);
 
-	enum { BORDER_THICKNESS = 1 };
-	enum { BAR_THICKNESS = 2 };
-	enum { SHADOW_THICKNESS = 1 };
+    enum
+    {
+        BORDER_THICKNESS = 1
+    };
+    enum
+    {
+        BAR_THICKNESS = 2
+    };
+    enum
+    {
+        SHADOW_THICKNESS = 1
+    };
 
-	float percentageComplete_;
+    float percentageComplete_;
 };
-
 
 #endif
 

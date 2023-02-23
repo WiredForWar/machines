@@ -4,5 +4,5 @@ class RenILight;
 
 dummyFunction5()
 {
-	static ctl_list<RenILight*>	lights;
+    static ctl_list<RenILight*> lights;
 }

@@ -7,7 +7,7 @@
 
 void dummyFunctionStarsInstantiations()
 {
-	static ctl_vector< ctl_vector<D3DLVERTEX> > d3dLVerticesVec;
-	static ctl_vector< D3DLVERTEX* > pVertices;
-	static ctl_vector<ctl_vector<D3DLVERTEX>*> pSectors;
+    static ctl_vector<ctl_vector<D3DLVERTEX>> d3dLVerticesVec;
+    static ctl_vector<D3DLVERTEX*> pVertices;
+    static ctl_vector<ctl_vector<D3DLVERTEX>*> pSectors;
 }

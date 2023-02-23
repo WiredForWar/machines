@@ -18,29 +18,28 @@ DiagStreams& DiagStreams::instance()
 DiagStreams::DiagStreams()
 {
 
-    for( size_t i = 0; i < nStreams(); ++i )
-        diagStreamEnabled_[ i ] = false;
+    for (size_t i = 0; i < nStreams(); ++i)
+        diagStreamEnabled_[i] = false;
 }
 
 DiagStreams::~DiagStreams()
 {
-
 }
 
-size_t	DiagStreams::nStreams()
+size_t DiagStreams::nStreams()
 {
-	return DIAG_N_DIAG_STREAMS;
+    return DIAG_N_DIAG_STREAMS;
 }
 
 void DiagStreams::close()
 {
-    for( size_t i = 0; i < nStreams(); ++i )
+    for (size_t i = 0; i < nStreams(); ++i)
     {
-        diagStreams_[ i ].close();
+        diagStreams_[i].close();
     }
 }
 
-ostream& operator <<( ostream& o, const DiagStreams& t )
+ostream& operator<<(ostream& o, const DiagStreams& t)
 {
 
     o << "DiagStreams " << (void*)&t << " start" << std::endl;

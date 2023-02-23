@@ -11,29 +11,26 @@
 // FtlContainer is the base class of the Ftl Container
 // heirarchy.
 
-template <	class KEY >
-class FtlContainer
+template <class KEY> class FtlContainer
 // cannonical form revoked
 {
 public:
+    using Key = KEY;
 
-	typedef KEY		Key;
-	
-	FtlContainer() {};
+    FtlContainer() {};
 
-	virtual ~FtlContainer() {};
+    virtual ~FtlContainer() {};
 
-	virtual bool contains( const Key& key ) const = 0;
+    virtual bool contains(const Key& key) const = 0;
 
 protected:
-
-	FtlContainer( const FtlContainer& );
-	FtlContainer& operator =( const FtlContainer& );	
-	bool operator ==( const FtlContainer& );
+    FtlContainer(const FtlContainer&);
+    FtlContainer& operator=(const FtlContainer&);
+    bool operator==(const FtlContainer&);
 };
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/* #ifndef _FTL_CONTAIN_HPP	*/
+#endif /* #ifndef _FTL_CONTAIN_HPP */
 
 /* End CONTAIN.HPP **************************************************/

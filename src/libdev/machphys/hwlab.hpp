@@ -21,8 +21,8 @@
 
 class MachPhysHardwareLabData;
 class MachPhysConstructionPersistence;
-template< class ID, class PART > class MachPhysObjectFactory;
-template< class SUBTYPE > class MachPhysSubTypeId;
+template <class ID, class PART> class MachPhysObjectFactory;
+template <class SUBTYPE> class MachPhysSubTypeId;
 
 class MachPhysHardwareLab : public MachPhysConstruction
 {
@@ -30,63 +30,63 @@ public:
     MachPhysHardwareLab(
         W4dEntity* pParent,
         const W4dTransform3d& localTransform,
-		MachPhys::HardwareLabSubType subType,
+        MachPhys::HardwareLabSubType subType,
         size_t level,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-    virtual ~MachPhysHardwareLab();
+    ~MachPhysHardwareLab() override;
 
-	//return MachPhysData object for this building
-	virtual const MachPhysConstructionData& constructionData() const;
-	const MachPhysHardwareLabData& data() const;
+    // return MachPhysData object for this building
+    const MachPhysConstructionData& constructionData() const override;
+    const MachPhysHardwareLabData& data() const;
 
     MachPhys::HardwareLabSubType subType() const;
 
-	virtual void damageLevel( const double& percent );
+    void damageLevel(const double& percent) override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysHardwareLab );
-    PER_FRIEND_READ_WRITE( MachPhysHardwareLab );
+    PER_MEMBER_PERSISTENT(MachPhysHardwareLab);
+    PER_FRIEND_READ_WRITE(MachPhysHardwareLab);
 
-    typedef MachPhysSubTypeId< MachPhys::HardwareLabSubType >        Id;
+    using Id = MachPhysSubTypeId<MachPhys::HardwareLabSubType>;
 
 private:
     // Operation deliberately revoked
-    MachPhysHardwareLab( const MachPhysHardwareLab& );
+    MachPhysHardwareLab(const MachPhysHardwareLab&);
 
     // Operation deliberately revoked
-    MachPhysHardwareLab& operator =( const MachPhysHardwareLab& );
+    MachPhysHardwareLab& operator=(const MachPhysHardwareLab&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysHardwareLab& );
+    bool operator==(const MachPhysHardwareLab&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysHardwareLab >    Factory;
+    using Factory = MachPhysObjectFactory<Id, MachPhysHardwareLab>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysHardwareLab& Factory::part( const ID&, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysHardwareLab >;
+    // friend MachPhysHardwareLab& Factory::part( const ID&, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysHardwareLab>;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysConstructionPersistence& );
-    friend void perRead( PerIstream&, MachPhysConstructionPersistence& );
+    friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
+    friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
-    //static  MachPhysHardwareLab& factory( MachPhys::HardwareLabSubType, size_t level );
-    static  MachPhysHardwareLab& part( MachPhys::HardwareLabSubType, size_t level );
-    static  Factory& factory();
+    // static  MachPhysHardwareLab& factory( MachPhys::HardwareLabSubType, size_t level );
+    static MachPhysHardwareLab& part(MachPhys::HardwareLabSubType, size_t level);
+    static Factory& factory();
 
-    SysPathName compositeFileName( MachPhys::HardwareLabSubType, size_t level ) const;
-    SysPathName wireframeFileName( MachPhys::HardwareLabSubType, size_t level ) const;
-    SysPathName interiorCompositeFileName( MachPhys::HardwareLabSubType, size_t level ) const;
+    SysPathName compositeFileName(MachPhys::HardwareLabSubType, size_t level) const;
+    SysPathName wireframeFileName(MachPhys::HardwareLabSubType, size_t level) const;
+    SysPathName interiorCompositeFileName(MachPhys::HardwareLabSubType, size_t level) const;
 
-    //Inherited from MachPhysConstruction
-    virtual void doWorking( bool isWorking );
+    // Inherited from MachPhysConstruction
+    void doWorking(bool isWorking) override;
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a hardware lab from scratch
 
-    MachPhysHardwareLab( W4dEntity* pParent, Id bodyLevel );
+    MachPhysHardwareLab(W4dEntity* pParent, Id bodyLevel);
 
     //  Handle the data initialisation when a construction is read in from
     //  a persistence file
@@ -94,11 +94,11 @@ private:
 
     MachPhysHardwareLabData* pData_;
     MachPhys::HardwareLabSubType subType_;
-	size_t level_;
-	ctl_vector< W4dLink* > neons_;
+    size_t level_;
+    ctl_vector<W4dLink*> neons_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysHardwareLab );
+PER_DECLARE_PERSISTENT(MachPhysHardwareLab);
 
 #endif
 

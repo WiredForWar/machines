@@ -4,6 +4,6 @@
 
 dummyFunction15()
 {
-	Ren::MeshPtr		p1;
-	Ren::ConstMeshPtr	p2;
+    Ren::MeshPtr p1;
+    Ren::ConstMeshPtr p2;
 }

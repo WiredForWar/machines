@@ -18,48 +18,45 @@
 #include "phys/phys.hpp"
 #include "world4d/composit.hpp"
 
-
 class MachPhysLightStingSplat : public W4dComposite
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysLightStingSplat( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysLightStingSplat(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysLightStingSplat& exemplar();
 
-    //dtor
-    virtual ~MachPhysLightStingSplat();
+    // dtor
+    ~MachPhysLightStingSplat() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	void startLightStingSplat( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration );
+    void startLightStingSplat(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
 
-	static void preloadTextures();
+    static void preloadTextures();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLightStingSplat& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLightStingSplat& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLightStingSplat );
+    PER_MEMBER_PERSISTENT(MachPhysLightStingSplat);
 
 private:
-    //Deliberately revoked
-    MachPhysLightStingSplat( const MachPhysLightStingSplat& );
-    MachPhysLightStingSplat& operator =( const MachPhysLightStingSplat& );
-    bool operator ==( const MachPhysLightStingSplat& );
+    // Deliberately revoked
+    MachPhysLightStingSplat(const MachPhysLightStingSplat&);
+    MachPhysLightStingSplat& operator=(const MachPhysLightStingSplat&);
+    bool operator==(const MachPhysLightStingSplat&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLightStingSplat();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLightStingSplat );
-PER_READ_WRITE( MachPhysLightStingSplat );
+PER_DECLARE_PERSISTENT(MachPhysLightStingSplat);
+PER_READ_WRITE(MachPhysLightStingSplat);
 
 #endif
 

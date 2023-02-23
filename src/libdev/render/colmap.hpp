@@ -1,5 +1,5 @@
 /*
- * C O L M A P . H P P 
+ * C O L M A P . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,20 +22,18 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const RenColourMap& t );
+    friend ostream& operator<<(ostream& o, const RenColourMap& t);
 
 private:
     // Operation deliberately revoked
-    RenColourMap( const RenColourMap& );
+    RenColourMap(const RenColourMap&);
 
     // Operation deliberately revoked
-    RenColourMap& operator =( const RenColourMap& );
+    RenColourMap& operator=(const RenColourMap&);
 
     // Operation deliberately revoked
-    bool operator ==( const RenColourMap& );
-
+    bool operator==(const RenColourMap&);
 };
-
 
 #endif
 

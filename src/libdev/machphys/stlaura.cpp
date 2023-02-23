@@ -24,49 +24,48 @@
 
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysLightStingAura );
+PER_DEFINE_PERSISTENT(MachPhysLightStingAura);
 
-//One-time ctor
+// One-time ctor
 MachPhysLightStingAura::MachPhysLightStingAura()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/weapons/wasp/light/aura.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/weapons/wasp/light/aura.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysLightStingAura::MachPhysLightStingAura( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysLightStingAura::MachPhysLightStingAura(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
     TEST_INVARIANT;
 }
 
-MachPhysLightStingAura::MachPhysLightStingAura( PerConstructor con )
-: W4dEntity( con )
+MachPhysLightStingAura::MachPhysLightStingAura(PerConstructor con)
+    : W4dEntity(con)
 {
 }
 
 MachPhysLightStingAura::~MachPhysLightStingAura()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysLightStingAura& MachPhysLightStingAura::exemplar()
 {
-	return MachPhysOtherPersistence::instance().lightStingAuraExemplar();
+    return MachPhysOtherPersistence::instance().lightStingAuraExemplar();
 }
 
 void MachPhysLightStingAura::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysLightStingAura& t )
+ostream& operator<<(ostream& o, const MachPhysLightStingAura& t)
 {
 
     o << "MachPhysLightStingAura " << (void*)&t << " start" << std::endl;
@@ -75,76 +74,73 @@ ostream& operator <<( ostream& o, const MachPhysLightStingAura& t )
     return o;
 }
 
-//virtual
-bool MachPhysLightStingAura::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysLightStingAura::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysLightStingAura& scorch )
+void perWrite(PerOstream& ostr, const MachPhysLightStingAura& scorch)
 {
     const W4dEntity& base = scorch;
 
     ostr << base;
-
 }
 
-void perRead( PerIstream& istr, MachPhysLightStingAura& aura )
+void perRead(PerIstream& istr, MachPhysLightStingAura& aura)
 {
     W4dEntity& base = aura;
 
     istr >> base;
 }
 
-void MachPhysLightStingAura::startLightStingAura( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration )
+void MachPhysLightStingAura::startLightStingAura(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration)
 {
-/*
-	//set the colour
-	Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, this)->mesh().mesh();
-	RenMaterialVec* pAnimMaterialVec =animMeshPtr->materialVec().release();
+    /*
+    //set the colour
+    Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, this)->mesh().mesh();
+    RenMaterialVec* pAnimMaterialVec =animMeshPtr->materialVec().release();
 
-	(*pAnimMaterialVec)[0].diffuse( RenColour( 0, 188.0/255.0, 0) );
+    (*pAnimMaterialVec)[0].diffuse( RenColour( 0, 188.0/255.0, 0) );
 */
-    //Counted pointers etc for standard plans
+    // Counted pointers etc for standard plans
     static W4dVisibilityPlanPtr visibilityPlanPtr;
     static W4dScalePlanPtr scalePlanPtr;
 
-    //First time set up standard plans
+    // First time set up standard plans
     static bool firstTime = true;
-    if( firstTime )
+    if (firstTime)
     {
         firstTime = false;
 
-        //Create the visibility plan
-        W4dVisibilityPlan* pVisibilityPlan = _NEW( W4dVisibilityPlan( true ) );
-        pVisibilityPlan->add( false, duration );
+        // Create the visibility plan
+        W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+        pVisibilityPlan->add(false, duration);
         visibilityPlanPtr = pVisibilityPlan;
 
-		//scale plan
-		PhysRelativeTime interval = duration/3.0;
-	    PhysLinearScalarPlan::ScalarVec times;
-	    	times.reserve(3);
-			times.push_back(interval);
-			times.push_back(interval*2.0);
-			times.push_back(duration);
+        // scale plan
+        PhysRelativeTime interval = duration / 3.0;
+        PhysLinearScalarPlan::ScalarVec times;
+        times.reserve(3);
+        times.push_back(interval);
+        times.push_back(interval * 2.0);
+        times.push_back(duration);
 
-	    PhysLinearScalarPlan::ScalarVec scales;
-	    	scales.reserve(4);
-	        scales.push_back(1);
-	        scales.push_back(2);
-	        scales.push_back(1);
-	        scales.push_back(0.5);
+        PhysLinearScalarPlan::ScalarVec scales;
+        scales.reserve(4);
+        scales.push_back(1);
+        scales.push_back(2);
+        scales.push_back(1);
+        scales.push_back(0.5);
 
-		scalePlanPtr = _NEW( W4dGeneralUniformScalePlan(_NEW( PhysLinearScalarPlan(times, scales) )) );
-
+        scalePlanPtr = _NEW(W4dGeneralUniformScalePlan(_NEW(PhysLinearScalarPlan(times, scales))));
     }
 
-    //Set its visibility plan
+    // Set its visibility plan
     W4dEntityPlan& entityPlan = entityPlanForEdit();
-    entityPlan.visibilityPlan( visibilityPlanPtr, startTime );
+    entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
-    //Set the scaling plan
-    entityPlan.scalePlan( scalePlanPtr, startTime );
+    // Set the scaling plan
+    entityPlan.scalePlan(scalePlanPtr, startTime);
 }
 /* End STLAURA.CPP *************************************************/
-

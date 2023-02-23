@@ -4,20 +4,20 @@
  */
 
 #include "render/internal/modeobsv.hpp"
-//#include "render/internal/d3d.hpp"
+// #include "render/internal/d3d.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/display.hpp"
 
-RenIDisplayModeObserver::RenIDisplayModeObserver(RenDisplay* d):
-	display_(d)
+RenIDisplayModeObserver::RenIDisplayModeObserver(RenDisplay* d)
+    : display_(d)
 {
-	PRE(d);
-	display_->displayImpl().addObserver(this);
+    PRE(d);
+    display_->displayImpl().addObserver(this);
 }
 
 RenIDisplayModeObserver::~RenIDisplayModeObserver()
 {
-	display_->displayImpl().removeObserver(this);
+    display_->displayImpl().removeObserver(this);
 }
 
 /* End MODEOBSV.CPP *************************************************/

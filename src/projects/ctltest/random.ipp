@@ -4,62 +4,61 @@
  */
 
 #ifdef _INLINE
-	#define _CODE_INLINE	inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 ////////////////////////////////
 
 _CODE_INLINE
-unsigned int randomInt( unsigned int n )
+unsigned int randomInt(unsigned int n)
 {
-	return rand() % n;
+    return rand() % n;
 }
 
 _CODE_INLINE
-int randomInt( int minInt, int maxInt )
+int randomInt(int minInt, int maxInt)
 {
-	return ( rand() % ( maxInt - minInt ) ) + minInt;
+    return (rand() % (maxInt - minInt)) + minInt;
 }
 
 _CODE_INLINE
 unsigned int randomInt()
 {
-	return rand();
+    return rand();
 }
 
 _CODE_INLINE
-double randomFloat( double d )
+double randomFloat(double d)
 {
-	double	randDouble = rand() / (double) RAND_MAX;
+    double randDouble = rand() / (double)RAND_MAX;
 
-	double	result = randDouble * d;
+    double result = randDouble * d;
 
-	return result;
+    return result;
 }
 
 _CODE_INLINE
 double randomFloat()
 {
-	// get a value between 0 and 1
-	double	randDouble = rand() / (double) RAND_MAX;
+    // get a value between 0 and 1
+    double randDouble = rand() / (double)RAND_MAX;
 
-	double	result = randDouble * rand();
-								  
-	return result;
+    double result = randDouble * rand();
+
+    return result;
 }
 
-
 _CODE_INLINE
-double randomFloat( double minValue, double maxValue )
+double randomFloat(double minValue, double maxValue)
 {
-	// value between 0 and 1
-	double	randDouble = rand() / (double) RAND_MAX;
+    // value between 0 and 1
+    double randDouble = rand() / (double)RAND_MAX;
 
-	double	result = randDouble * ( maxValue - minValue ) + minValue;
+    double result = randDouble * (maxValue - minValue) + minValue;
 
-	return result;
+    return result;
 }
 
 ///////////////////////////////////

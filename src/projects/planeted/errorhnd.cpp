@@ -1,5 +1,5 @@
 /*
- * E R R O R H N D . C P P 
+ * E R R O R H N D . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,10 +16,10 @@ ErrorHandler& ErrorHandler::instance()
 }
 
 ErrorHandler::ErrorHandler()
-: pDisplay_( NULL )
+    : pDisplay_(nullptr)
 {
 #ifndef NDEBUG
-    BaseAssertion::set_assertion_handler( handleAssertionError );
+    BaseAssertion::set_assertion_handler(handleAssertionError);
 #endif
 
     TEST_INVARIANT;
@@ -28,32 +28,30 @@ ErrorHandler::ErrorHandler()
 ErrorHandler::~ErrorHandler()
 {
     TEST_INVARIANT;
-
 }
 
-void ErrorHandler::pDisplay( RenDisplay* pDisplay )
+void ErrorHandler::pDisplay(RenDisplay* pDisplay)
 {
     pDisplay_ = pDisplay;
 }
 
 #ifndef NDEBUG
 // static
-BaseAssertion::AssertionAction ErrorHandler::handleAssertionError( const BaseAssertion::AssertionInfo& )
+BaseAssertion::AssertionAction ErrorHandler::handleAssertionError(const BaseAssertion::AssertionInfo&)
 {
     //  Get rid of the display so that we get the screen back
-    if( ErrorHandler::instance().pDisplay_ )
-        _DELETE( ErrorHandler::instance().pDisplay_ );
-        
-    ErrorHandler::instance().pDisplay_ = NULL;
-    
+    if (ErrorHandler::instance().pDisplay_)
+        _DELETE(ErrorHandler::instance().pDisplay_);
+
+    ErrorHandler::instance().pDisplay_ = nullptr;
+
     return BaseAssertion::ASSERT_FAIL;
 }
 #endif
 
 void ErrorHandler::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
-
 
 /* End ERRORHND.CPP *************************************************/

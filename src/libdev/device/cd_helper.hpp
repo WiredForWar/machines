@@ -1,14 +1,14 @@
 #pragma once
 
-//forward decls
+// forward decls
 class DevCD;
 
 namespace device {
 namespace helper {
-namespace cd     {
+    namespace cd {
 
-    void configure(DevCD* cd);
-    
-}
-}
-} // end device::helper::cd
+        void configure(DevCD* cd);
+
+    }
+} // namespace helper
+} // namespace device

@@ -1,5 +1,5 @@
 /*
- * P U L S E B L B . H P P 
+ * P U L S E B L B . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,57 +19,63 @@
 #include "machphys/lineproj.hpp"
 #include "machphys/machphys.hpp"
 
-//forward refs
+// forward refs
 class MachPhysFireball;
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class MachPhysPulseBlob : public MachPhysLinearProjectile
 {
 public:
-	enum CreateLights { CREATE_LIGHTS, DONT_CREATE_LIGHTS };
+    enum CreateLights
+    {
+        CREATE_LIGHTS,
+        DONT_CREATE_LIGHTS
+    };
 
-    //ctor. Parent is to be pParent, with relative transform localTransform.
-    MachPhysPulseBlob(W4dEntity* pParent, const MexTransform3d& localTransform, 
-					  MachPhys::WeaponType type, CreateLights=CREATE_LIGHTS);
+    // ctor. Parent is to be pParent, with relative transform localTransform.
+    MachPhysPulseBlob(
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform,
+        MachPhys::WeaponType type,
+        CreateLights = CREATE_LIGHTS);
 
-    //Return an exemplar pulse blob - ensures the pulse meshes and textures are loaded
+    // Return an exemplar pulse blob - ensures the pulse meshes and textures are loaded
     static const MachPhysPulseBlob& exemplar(MachPhys::WeaponType type);
 
-    //dtor
-    virtual ~MachPhysPulseBlob();
+    // dtor
+    ~MachPhysPulseBlob() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysPulseBlob& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPulseBlob& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysPulseBlob );
-    PER_FRIEND_READ_WRITE( MachPhysPulseBlob );
-    
+    PER_MEMBER_PERSISTENT(MachPhysPulseBlob);
+    PER_FRIEND_READ_WRITE(MachPhysPulseBlob);
+
 private:
     // Operations deliberately revoked
-    MachPhysPulseBlob( const MachPhysPulseBlob& );
-    MachPhysPulseBlob& operator =( const MachPhysPulseBlob& );
-    bool operator ==( const MachPhysPulseBlob& );
+    MachPhysPulseBlob(const MachPhysPulseBlob&);
+    MachPhysPulseBlob& operator=(const MachPhysPulseBlob&);
+    bool operator==(const MachPhysPulseBlob&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysPulseBlob(MachPhys::WeaponType type);
-														     
+
     //////////////////////////////////////////////////////////
     // Inherited from MachPhysLinearProjectile
 
-    //Override to add specific animations for the projectile destruction at time.
-    //Return duration of such animation.
-    //Default implementation does nothing and returns zero.
-    virtual PhysRelativeTime doBeDestroyedAt( const PhysAbsoluteTime& time,
-                                              MachPhys::StrikeType strikeType );
+    // Override to add specific animations for the projectile destruction at time.
+    // Return duration of such animation.
+    // Default implementation does nothing and returns zero.
+    PhysRelativeTime doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType) override;
     //////////////////////////////////////////////////////////
-	friend class MachPhysWeaponPersistence;
-    //data members
+    friend class MachPhysWeaponPersistence;
+    // data members
     MachPhysFireball* pFireball_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPulseBlob );
+PER_DECLARE_PERSISTENT(MachPhysPulseBlob);
 
 #endif
 

@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
 
-
 /*
     TestFixedVector
 
@@ -18,8 +17,7 @@
 #include "base/base.hpp"
 #include "ctl/testh/soaktest.hpp"
 
-template < class VECTOR, class ITERATOR >
-class TestFixedVector
+template <class VECTOR, class ITERATOR> class TestFixedVector
 {
 public:
     //  Singleton class
@@ -28,52 +26,58 @@ public:
 
     void CLASS_INVARIANT;
 
-    //template < VECTOR, ITERATOR > friend ostream& operator <<( ostream& o, const TestFixedVector< VECTOR, ITERATOR >& t );
+    // template < VECTOR, ITERATOR > friend ostream& operator <<( ostream& o, const TestFixedVector< VECTOR, ITERATOR >&
+    // t );
 
-    static void    operatorSquareBrackets();
-    static void    iteratorOperatorAddition();
-    static void    iteratorOperatorAddEquals();
-    static void    iteratorOperatorSubtraction();
-    static void    iteratorOperatorSubtractEquals();
-    static void    iteratorOperatorPlusPlusPrefix();
-    static void    iteratorOperatorPlusPlusPostfix();
-    static void    iteratorOperatorMinusMinusPrefix();
-    static void    iteratorOperatorMinusMinusPostfix();
-    static void    iteratorOperatorSquareBrackets();
-    static void    iteratorDereference();
-    static void    iteratorComparison();
-    static void    iteratorInvalidation();
+    static void operatorSquareBrackets();
+    static void iteratorOperatorAddition();
+    static void iteratorOperatorAddEquals();
+    static void iteratorOperatorSubtraction();
+    static void iteratorOperatorSubtractEquals();
+    static void iteratorOperatorPlusPlusPrefix();
+    static void iteratorOperatorPlusPlusPostfix();
+    static void iteratorOperatorMinusMinusPrefix();
+    static void iteratorOperatorMinusMinusPostfix();
+    static void iteratorOperatorSquareBrackets();
+    static void iteratorDereference();
+    static void iteratorComparison();
+    static void iteratorInvalidation();
 
 private:
     // Operation deliberately revoked
-    TestFixedVector( const TestFixedVector& );
+    TestFixedVector(const TestFixedVector&);
 
     // Operation deliberately revoked
-    TestFixedVector& operator =( const TestFixedVector& );
+    TestFixedVector& operator=(const TestFixedVector&);
 
     // Operation deliberately revoked
-    bool operator ==( const TestFixedVector& );
+    bool operator==(const TestFixedVector&);
 
     TestFixedVector();
 
-    void    initialiseVectors();
-    void    initialiseTestFunctions();
+    void initialiseVectors();
+    void initialiseTestFunctions();
 
-    typedef int                         TestType;
-    typedef ctl_vector< TestType >      TestFixedVectorType;
-    typedef ITERATOR                    TestIterator;
+    typedef int TestType;
+    typedef ctl_vector<TestType> TestFixedVectorType;
+    typedef ITERATOR TestIterator;
 
-    enum    Destinations { NOTHING, VECTOR1, VECTOR2 };
-//    friend  ostream& operator <<( ostream& o, const TestFixedVector< ITERATOR >::Destinations& d );
-    static  void    comparisonData( Destinations* pDest, size_t* pIndex );
+    enum Destinations
+    {
+        NOTHING,
+        VECTOR1,
+        VECTOR2
+    };
+    //    friend  ostream& operator <<( ostream& o, const TestFixedVector< ITERATOR >::Destinations& d );
+    static void comparisonData(Destinations* pDest, size_t* pIndex);
 };
 
 // template< class ITERATOR >
 // ostream& operator <<( ostream& o, const TestFixedVector< ITERATOR >::Destinations& d );
 
-//#ifdef _INSTANTIATE_TEMPLATE_CLASSES
-    #include "ctl/testh/testfvec.ctp"
-//#endif
+// #ifdef _INSTANTIATE_TEMPLATE_CLASSES
+#include "ctl/testh/testfvec.ctp"
+// #endif
 
 #endif
 

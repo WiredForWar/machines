@@ -18,46 +18,42 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysMushroomShaft : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysMushroomShaft( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysMushroomShaft(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysMushroomShaft& exemplar();
 
-    //dtor
-    ~MachPhysMushroomShaft();
+    // dtor
+    ~MachPhysMushroomShaft() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysMushroomShaft& t );
+    friend ostream& operator<<(ostream& o, const MachPhysMushroomShaft& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysMushroomShaft );
+    PER_MEMBER_PERSISTENT(MachPhysMushroomShaft);
 
 private:
-    //Deliberately revoked
-    MachPhysMushroomShaft( const MachPhysMushroomShaft& );
-    MachPhysMushroomShaft& operator =( const MachPhysMushroomShaft& );
-    bool operator ==( const MachPhysMushroomShaft& );
+    // Deliberately revoked
+    MachPhysMushroomShaft(const MachPhysMushroomShaft&);
+    MachPhysMushroomShaft& operator=(const MachPhysMushroomShaft&);
+    bool operator==(const MachPhysMushroomShaft&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysMushroomShaft();
 
-	void setMaterialFogMultipliers();
-
+    void setMaterialFogMultipliers();
 };
 
-PER_READ_WRITE( MachPhysMushroomShaft );
-PER_DECLARE_PERSISTENT( MachPhysMushroomShaft );
-
+PER_READ_WRITE(MachPhysMushroomShaft);
+PER_DECLARE_PERSISTENT(MachPhysMushroomShaft);
 
 #endif
 

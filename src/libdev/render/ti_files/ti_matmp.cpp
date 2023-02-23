@@ -3,6 +3,6 @@
 
 dummyFunction16()
 {
-	static RenMaterialMap matMap;
-	static RenMaterialSet matSet;
+    static RenMaterialMap matMap;
+    static RenMaterialSet matSet;
 }

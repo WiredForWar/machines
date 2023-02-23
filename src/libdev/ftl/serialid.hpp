@@ -1,5 +1,5 @@
 /*
- * S E R I A L I D . H P P 
+ * S E R I A L I D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,47 +17,55 @@
 
 #include "base/base.hpp"
 
-//Memberwise canonical
+// Memberwise canonical
 class FtlSerialId
 {
 public:
-    //The type used for implementation
-    typedef unsigned long RepType;
+    // The type used for implementation
+    using RepType = unsigned long;
 
-    //ctors
+    // ctors
     FtlSerialId()
-        : id_( 0 ) {};
+        : id_(0) {};
 
-    FtlSerialId( const RepType& value )
-        : id_( value ) {};
+    FtlSerialId(const RepType& value)
+        : id_(value) {};
 
-    FtlSerialId( const FtlSerialId& id )
-        : id_( id.asScalar() ) {};
+    FtlSerialId(const FtlSerialId& id)
+        : id_(id.asScalar()) {};
 
-    FtlSerialId& operator =( const FtlSerialId& rhs )
-        { id_ = rhs.id_; return *this; };
-
-    //Next in sequence
-    FtlSerialId& operator++ () { ++id_; return *this; };
-
-    //Previous in sequence
-    FtlSerialId& operator-- () { --id_; return *this;  };
-
-    //Id in format suitable for indexing vector etc
-    size_t asScalar() const { return id_; };
-
-    //An invalid id.
-    static FtlSerialId invalidId() { return FtlSerialId( 0xFFFFFFFF ); };
-
-    friend ostream& operator <<( ostream& o, const FtlSerialId& t )
+    FtlSerialId& operator=(const FtlSerialId& rhs)
     {
-        return o << t.asScalar();
+        id_ = rhs.id_;
+        return *this;
     };
 
-    //Comparators
-    bool operator< ( const FtlSerialId& rhs )  const { return id_ <  rhs.id_; };
-    bool operator== ( const FtlSerialId& rhs ) const { return id_ == rhs.id_; };
-    bool operator!= ( const FtlSerialId& rhs ) const { return id_ != rhs.id_; };
+    // Next in sequence
+    FtlSerialId& operator++()
+    {
+        ++id_;
+        return *this;
+    };
+
+    // Previous in sequence
+    FtlSerialId& operator--()
+    {
+        --id_;
+        return *this;
+    };
+
+    // Id in format suitable for indexing vector etc
+    size_t asScalar() const { return id_; };
+
+    // An invalid id.
+    static FtlSerialId invalidId() { return FtlSerialId(0xFFFFFFFF); };
+
+    friend ostream& operator<<(ostream& o, const FtlSerialId& t) { return o << t.asScalar(); };
+
+    // Comparators
+    bool operator<(const FtlSerialId& rhs) const { return id_ < rhs.id_; };
+    bool operator==(const FtlSerialId& rhs) const { return id_ == rhs.id_; };
+    bool operator!=(const FtlSerialId& rhs) const { return id_ != rhs.id_; };
 
 private:
     RepType id_; // The id
@@ -65,14 +73,15 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-//Related class used to generate sequence of ids
+// Related class used to generate sequence of ids
 class FtlSerialIdGenerator
 {
 public:
-    //ctor start ids at zero
-    FtlSerialIdGenerator() : nextId_( 0 ) {};
+    // ctor start ids at zero
+    FtlSerialIdGenerator()
+        : nextId_(0) {};
 
-    //Generate and return next id in sequence    
+    // Generate and return next id in sequence
     FtlSerialId next()
     {
         FtlSerialId id = nextId_;
@@ -80,12 +89,12 @@ public:
         return id;
     };
 
-    //First/last+1 generated ids
-    FtlSerialId begin() const { return FtlSerialId( 0 ); };
+    // First/last+1 generated ids
+    FtlSerialId begin() const { return FtlSerialId(0); };
     const FtlSerialId& end() const { return nextId_; };
 
 private:
-    FtlSerialId nextId_; //The next id to use
+    FtlSerialId nextId_; // The next id to use
 };
 //////////////////////////////////////////////////////////////////////////////////////////
 

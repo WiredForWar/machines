@@ -14,13 +14,13 @@
 #include <cstring>
 
 DiagStream::DiagStream()
-: pDependantStream_( NULL ),
-  pNextStream_( NULL ),
-  exists_( false ),
-  append_( false ),
-  name_( NULL ),
-  cout_( false ),
-  pWindowStream_( NULL )///
+    : pDependantStream_(nullptr)
+    , pNextStream_(nullptr)
+    , exists_(false)
+    , append_(false)
+    , name_(nullptr)
+    , cout_(false)
+    , pWindowStream_(nullptr) ///
 {
 }
 
@@ -28,19 +28,17 @@ DiagStream::~DiagStream()
 {
     close();
 
-    if( name_ )
+    if (name_)
     {
-        free( name_ );
+        free(name_);
     }
 
     exists_ = false;
 }
 
-void DiagStream::setup(
-    const char* environmentVariable,
-    const char* defaultSetting )
+void DiagStream::setup(const char* environmentVariable, const char* defaultSetting)
 {
-    interpretEnvironmentVariable( environmentVariable, defaultSetting );
+    interpretEnvironmentVariable(environmentVariable, defaultSetting);
 
     setupStream();
 
@@ -54,27 +52,25 @@ void DiagStream::setupStream()
 
     DiagStream* pStream = DiagStream::pFirstStream();
 
-    bool    firstFileOfThisName = true;
+    bool firstFileOfThisName = true;
 
-    while( pStream != NULL )
+    while (pStream != nullptr)
     {
-        if( /* pStream->exists() and */
-          ( name() != NULL ) and
-          ( pStream->name() != NULL ) and
-          strcmp( pStream->name(), name() ) == 0 )
+        if (/* pStream->exists() and */
+            (name() != nullptr) and (pStream->name() != nullptr) and strcmp(pStream->name(), name()) == 0)
         {
             //  We have our match. Now check for whether this is an append
             //  file or not. If a file is an append file for any debug stream
             //  it must be an append file for them all.
 
-            if( append() )
+            if (append())
                 pStream->forceAppendFile();
 
-            if( pStream->append() )
+            if (pStream->append())
                 append_ = true;
 
             //  If this is not an append stream then make it dependant.
-            if( not append() )
+            if (not append())
                 pDependantStream_ = pStream;
 
             firstFileOfThisName = false;
@@ -85,34 +81,34 @@ void DiagStream::setupStream()
 
     //  Add this stream to the internal list
 
-    pNextStream( DiagStream::pFirstStream() );
+    pNextStream(DiagStream::pFirstStream());
 
     DiagStream::pFirstStream() = this;
 
     //  Set up the master ostream which does any prepending that might be necessary
 
-    if( pDependantStream_ )
+    if (pDependantStream_)
     {
-        masterOstr_.stream( &pDependantStream_->nonPrependOstr() );
+        masterOstr_.stream(&pDependantStream_->nonPrependOstr());
     }
     else
     {
-        if( name() != NULL )
+        if (name() != nullptr)
         {
-            if( append() )
+            if (append())
             {
-                appendOstr_.name( name_ );
+                appendOstr_.name(name_);
 
-                if( firstFileOfThisName )
+                if (firstFileOfThisName)
                     appendOstr_.clear();
 
-                masterOstr_.stream( &appendOstr_ );
+                masterOstr_.stream(&appendOstr_);
             }
             else
             {
                 std::ios::openmode openMode;
 
-                if( firstFileOfThisName )
+                if (firstFileOfThisName)
                 {
                     openMode = std::ios::out;
                 }
@@ -121,39 +117,39 @@ void DiagStream::setupStream()
                     openMode = std::ios::app;
                 }
 
-                ostr_.open( name(), openMode );
+                ostr_.open(name(), openMode);
 
-                masterOstr_.stream( &ostr_ );
+                masterOstr_.stream(&ostr_);
             }
         }
 
-        if( cout_ )
-            masterOstr_.stream( &std::cout );
+        if (cout_)
+            masterOstr_.stream(&std::cout);
 
-        if( pWindowStream_ )
-            masterOstr_.stream( pWindowStream_ );
+        if (pWindowStream_)
+            masterOstr_.stream(pWindowStream_);
     }
 }
 
-void    DiagStream::close()
+void DiagStream::close()
 {
     const char* separator = "======================";
     ostr() << std::endl << separator;
     ostr() << " Stream closed under control ";
     ostr() << separator << std::endl;
 
-    if( not pDependantStream_ and name() != NULL and not append() )
+    if (not pDependantStream_ and name() != nullptr and not append())
         ostr_.close();
 
-    pDependantStream_ = NULL;
-    pNextStream_ = NULL;
+    pDependantStream_ = nullptr;
+    pNextStream_ = nullptr;
     exists_ = false;
     append_ = false;
-    if( name_ )
+    if (name_)
         free(name_);
-    name_ = NULL;
+    name_ = nullptr;
     cout_ = false;
-    pWindowStream_ = NULL;
+    pWindowStream_ = nullptr;
 }
 
 // bool    DiagStream::exists()
@@ -166,84 +162,82 @@ void    DiagStream::close()
 //     return exists_;
 // }
 
-ostream&    DiagStream::ostr()
+ostream& DiagStream::ostr()
 {
-//     if( pDependantStream_ )
-//     {
-//         ASSERT( pDependantStream_->exists(), "" );
-//     }
+    //     if( pDependantStream_ )
+    //     {
+    //         ASSERT( pDependantStream_->exists(), "" );
+    //     }
 
     return masterOstr_;
 
-//     if( append() )
-//         return appendOstr_;
-//
-//     if( cout_ )
-//         return cout;
-//
-//     return ostr_;
+    //     if( append() )
+    //         return appendOstr_;
+    //
+    //     if( cout_ )
+    //         return cout;
+    //
+    //     return ostr_;
 }
 
-ostream&    DiagStream::nonPrependOstr()
+ostream& DiagStream::nonPrependOstr()
 {
-    if( pDependantStream_ )
+    if (pDependantStream_)
     {
-//        ASSERT( pDependantStream_->exists(), "" );
+        //        ASSERT( pDependantStream_->exists(), "" );
 
         return pDependantStream_->nonPrependOstr();
     }
 
-    if( append() )
+    if (append())
         return appendOstr_;
 
-    if( cout_ )
+    if (cout_)
         return std::cout;
 
     return ostr_;
 }
 
-void DiagStream::interpretEnvironmentVariable(
-    const char* environmentVariable,
-    const char* defaultSetting )
+void DiagStream::interpretEnvironmentVariable(const char* environmentVariable, const char* defaultSetting)
 {
-    //const char* envText = Diag::instance().getenv( environmentVariable );
-    // TODO: some recursive error above
-    const char* envText = getenv( environmentVariable );
+    // const char* envText = Diag::instance().getenv( environmentVariable );
+    //  TODO: some recursive error above
+    const char* envText = getenv(environmentVariable);
 
-    if( envText == NULL )
+    if (envText == nullptr)
         envText = defaultSetting;
 
-    if( envText != NULL )
+    if (envText != nullptr)
     {
-        char* copyText = (char*)malloc( strlen( envText ) + 1 );
-        strcpy( copyText, envText );
+        char* copyText = (char*)malloc(strlen(envText) + 1);
+        strcpy(copyText, envText);
 
-        char* token = strtok( copyText, ";" );
+        char* token = strtok(copyText, ";");
 
-        while( token != NULL )
+        while (token != nullptr)
         {
-            if( strcmp( token, "append" ) == 0 )
+            if (strcmp(token, "append") == 0)
             {
                 append_ = true;
             }
-            else if( strcmp( token, "cout" ) == 0 )
+            else if (strcmp(token, "cout") == 0)
             {
                 cout_ = true;
             }
-            else if( strcmp( token, "clock" ) == 0 )
+            else if (strcmp(token, "clock") == 0)
             {
-                masterOstr_.prependClock( true );
+                masterOstr_.prependClock(true);
             }
-            else if( strcmp( token, "date" ) == 0 )
+            else if (strcmp(token, "date") == 0)
             {
-                masterOstr_.prependDate( true );
+                masterOstr_.prependDate(true);
             }
-            else if( strcmp( token, "none" ) == 0 )
+            else if (strcmp(token, "none") == 0)
             {
                 //  Don't have to do anything, none simply allows
                 //  the user to stop the default setting being used.
             }
-            //TODO what window stream does?
+            // TODO what window stream does?
             /*else if( strcmp( token, "window" ) == 0 or
                      strncmp( token, "window:", 7 ) == 0 )
             {
@@ -256,11 +250,11 @@ void DiagStream::interpretEnvironmentVariable(
             }*/
             else
             {
-                name_ = (char*)malloc( strlen( token ) + 1 );
-                strcpy( name_, token );
+                name_ = (char*)malloc(strlen(token) + 1);
+                strcpy(name_, token);
             }
 
-            token = strtok( NULL, ";" );
+            token = strtok(nullptr, ";");
         }
         free(copyText);
     }
@@ -278,13 +272,13 @@ bool DiagStream::append() const
 
 void DiagStream::forceAppendFile()
 {
-    if( not append_ )
+    if (not append_)
     {
         ostr_.close();
 
         append_ = true;
 
-        appendOstr_.name( name_ );
+        appendOstr_.name(name_);
     }
 }
 
@@ -293,7 +287,7 @@ DiagStream* DiagStream::pNextStream()
     return pNextStream_;
 }
 
-void DiagStream::pNextStream( DiagStream* pNext )
+void DiagStream::pNextStream(DiagStream* pNext)
 {
     pNextStream_ = pNext;
 }
@@ -301,20 +295,19 @@ void DiagStream::pNextStream( DiagStream* pNext )
 // static
 DiagStream*& DiagStream::pFirstStream()
 {
-    static  DiagStream* pFirstStream_ = NULL;
+    static DiagStream* pFirstStream_ = nullptr;
 
     return pFirstStream_;
 }
 
-bool    DiagStream::hasDestination() const
+bool DiagStream::hasDestination() const
 {
     return masterOstr_.hasStream();
 }
 
-void    DiagStream::indent( int nSpaces )
+void DiagStream::indent(int nSpaces)
 {
-    masterOstr_.nSpacesToIndent( nSpaces );
+    masterOstr_.nSpacesToIndent(nSpaces);
 }
-
 
 /* End DIAGSTR.CPP **************************************************/

@@ -16,14 +16,13 @@ RenColourMap::RenColourMap()
 RenColourMap::~RenColourMap()
 {
     TEST_INVARIANT;
-
 }
 
 void RenColourMap::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const RenColourMap& t )
+ostream& operator<<(ostream& o, const RenColourMap& t)
 {
 
     o << "RenColourMap " << (void*)&t << " start" << std::endl;

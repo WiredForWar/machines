@@ -13,69 +13,65 @@
 class MachLogMachine;
 
 /* //////////////////////////////////////////////////////////////// */
-    
 
-class MachLogSeekAndDestroyOperation
-: public MachLogOperation
+class MachLogSeekAndDestroyOperation : public MachLogOperation
 {
 public:
+    MachLogSeekAndDestroyOperation(
+        MachLogMachine* pActor,
+        MachLog::TargetSystemType targetSystemType = MachLog::TARGET_NORMAL,
+        MachLog::ObjectType objectType = MachLog::AGGRESSOR,
+        const MexPoint3d& searchStartingPoint = MexPoint3d(0, 0, 0));
 
-	MachLogSeekAndDestroyOperation( MachLogMachine * pActor, 
-							MachLog::TargetSystemType targetSystemType = MachLog::TARGET_NORMAL, 
-							MachLog::ObjectType objectType = MachLog::AGGRESSOR, 
-							const MexPoint3d& searchStartingPoint = MexPoint3d(0,0,0) );
+    MachLogSeekAndDestroyOperation(
+        MachLogMachine* pActor,
+        size_t commandId,
+        MachLog::TargetSystemType targetSystemType = MachLog::TARGET_NORMAL,
+        MachLog::ObjectType objectType = MachLog::AGGRESSOR,
+        const MexPoint3d& searchStartingPoint = MexPoint3d(0, 0, 0));
 
-	MachLogSeekAndDestroyOperation( MachLogMachine * pActor, 
-							size_t commandId,
-							MachLog::TargetSystemType targetSystemType = MachLog::TARGET_NORMAL, 
-							MachLog::ObjectType objectType = MachLog::AGGRESSOR, 
-							const MexPoint3d& searchStartingPoint = MexPoint3d(0,0,0) );
+    ~MachLogSeekAndDestroyOperation() override;
 
-	~MachLogSeekAndDestroyOperation();
-	
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogSeekAndDestroyOperation );
-	PER_FRIEND_READ_WRITE( MachLogSeekAndDestroyOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogSeekAndDestroyOperation);
+    PER_FRIEND_READ_WRITE(MachLogSeekAndDestroyOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	
-	virtual void doOutputOperator( ostream& ) const;
-	
-	virtual PhysRelativeTime doUpdate( );
+    bool doIsFinished() const override;
 
-	virtual bool doBeInterrupted();
+    void doOutputOperator(ostream&) const override;
 
+    PhysRelativeTime doUpdate() override;
+
+    bool doBeInterrupted() override;
 
 private:
+    void aggressorUpdateWithTarget(MachActor* pTarget);
+    void administratorUpdateWithTarget(MachActor* pTarget);
+    int issueOrderToSquadronMachine(
+        MachLogMachine* pSquadronMachine,
+        MachActor* pTarget,
+        bool issueAttack,
+        int convoyIndex);
 
-	void aggressorUpdateWithTarget( MachActor* pTarget );
-	void administratorUpdateWithTarget( MachActor* pTarget );
-	int issueOrderToSquadronMachine( MachLogMachine* pSquadronMachine, 
-							  		 MachActor* pTarget, 
-							  		 bool issueAttack,
-							  		 int convoyIndex );
-									 
-	bool canAttackEvenIfInsideBuilding( const MachLogMachine& targetMachine ) const;
+    bool canAttackEvenIfInsideBuilding(const MachLogMachine& targetMachine) const;
 
-	bool							currentlyAttached_;
-	MachActor*						pCurrentTarget_;
-	MachLogMachine *				pActor_;
-	MexPoint3d						searchStartingPoint_;
-	MachLog::TargetSystemType 		targetSystemType_;
-	MachLog::ObjectType				objectType_;
-	size_t							commandId_;
+    bool currentlyAttached_;
+    MachActor* pCurrentTarget_;
+    MachLogMachine* pActor_;
+    MexPoint3d searchStartingPoint_;
+    MachLog::TargetSystemType targetSystemType_;
+    MachLog::ObjectType objectType_;
+    size_t commandId_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogSeekAndDestroyOperation );
+PER_DECLARE_PERSISTENT(MachLogSeekAndDestroyOperation);
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_SEEKDEST_HPP	*/
+#endif /*  #ifndef _MACHLOG_SEEKDEST_HPP   */
 
 /* End SEEKDEST.HPP *************************************************/

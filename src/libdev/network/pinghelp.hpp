@@ -7,7 +7,7 @@
     NetPingHelper
 
     A central repository of all ping information collected so far.
-	This class also contains a few helper functions to determine the ping - hence the name
+    This class also contains a few helper functions to determine the ping - hence the name
 */
 
 #ifndef _NETWORK_PINGHELP_HPP
@@ -24,29 +24,27 @@ class NetPingHelper
 public:
     NetPingHelper();
     ~NetPingHelper();
-	struct PingInformation
-	{
-		PhysAbsoluteTime		lastTimePingAsked_;
-		PhysAbsoluteTime		lastTimePingSet_;
-		int						ping_;
-	};
+    struct PingInformation
+    {
+        PhysAbsoluteTime lastTimePingAsked_;
+        PhysAbsoluteTime lastTimePingSet_;
+        int ping_;
+    };
 
-	typedef ctl_map< NetNodeUid, PingInformation, std::less< NetNodeUid > >		Ping;
+    using Ping = ctl_map<NetNodeUid, PingInformation, std::less<NetNodeUid>>;
 
-	void pingAll() const;
+    void pingAll() const;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const NetPingHelper& t );
+    friend ostream& operator<<(ostream& o, const NetPingHelper& t);
 
-    NetPingHelper( const NetPingHelper& );
-    NetPingHelper& operator =( const NetPingHelper& );
+    NetPingHelper(const NetPingHelper&);
+    NetPingHelper& operator=(const NetPingHelper&);
 
-	Ping			ping_;
-
+    Ping ping_;
 };
-
 
 #endif
 

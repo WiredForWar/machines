@@ -9,9 +9,9 @@
 #include "machphys/mphydata.hpp"
 
 MachLog1stPersonActiveSquadron::MachLog1stPersonActiveSquadron(MachLogSquadron* initialActiveSquad)
-    : attackDispatcher_(&pActiveSquadron_),
-      followDispatcher_(&pActiveSquadron_),
-      moveDispatcher_(&pActiveSquadron_)
+    : attackDispatcher_(&pActiveSquadron_)
+    , followDispatcher_(&pActiveSquadron_)
+    , moveDispatcher_(&pActiveSquadron_)
 {
     pActiveSquadron_ = initialActiveSquad;
 }
@@ -19,18 +19,16 @@ MachLog1stPersonActiveSquadron::MachLog1stPersonActiveSquadron(MachLogSquadron* 
 MachLog1stPersonActiveSquadron::MachLog1stPersonActiveSquadron()
     : MachLog1stPersonActiveSquadron(nullptr)
 {
-
 }
 
 MachLog1stPersonActiveSquadron::~MachLog1stPersonActiveSquadron()
 {
-
 }
 
 MachLog1stPersonActiveSquadron::MachLog1stPersonActiveSquadron(MachLog1stPersonActiveSquadron&& other)
-    : attackDispatcher_(&pActiveSquadron_),
-      followDispatcher_(&pActiveSquadron_),
-      moveDispatcher_(&pActiveSquadron_)
+    : attackDispatcher_(&pActiveSquadron_)
+    , followDispatcher_(&pActiveSquadron_)
+    , moveDispatcher_(&pActiveSquadron_)
 {
     pActiveSquadron_ = std::move(other.pActiveSquadron_);
 }
@@ -47,7 +45,7 @@ MachLog1stPersonActiveSquadron& MachLog1stPersonActiveSquadron::operator=(MachLo
 
 bool MachLog1stPersonActiveSquadron::hasActiveSquadron() const
 {
-    return ( (pActiveSquadron_ != nullptr) );
+    return ((pActiveSquadron_ != nullptr));
 }
 
 int64_t MachLog1stPersonActiveSquadron::getActiveSquadronId() const
@@ -97,7 +95,10 @@ void MachLog1stPersonActiveSquadron::issueFollowCommand(MachActor* followTarget)
     if (followTarget->objectIsMachine())
     {
         followDispatcher_.setSkipThisMachine(static_cast<MachLogMachine*>(followTarget));
-        followDispatcher_.dispatchOperation(static_cast<MachLogMachine*>(followTarget), MexPoint2d( 0, 0 ), getPathfindingPriority());
+        followDispatcher_.dispatchOperation(
+            static_cast<MachLogMachine*>(followTarget),
+            MexPoint2d(0, 0),
+            getPathfindingPriority());
     }
 }
 
@@ -130,7 +131,7 @@ void MachLog1stPersonActiveSquadron::clearActiveSquadron()
     pActiveSquadron_ = nullptr;
 }
 
-//static
+// static
 inline PhysPathFindingPriority MachLog1stPersonActiveSquadron::getPathfindingPriority()
 {
     return Phys::defaultPathFindingPriority() + MachPhysData::instance().generalData().pcPathFindingPriority();

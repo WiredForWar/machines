@@ -22,22 +22,25 @@
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
-MachHWResearchIcon::MachHWResearchIcon(	GuiDisplayable* pParent,
-										MachInGameScreen* pInGameScreen,
-    									MachHWResearchBank* pHWResearchBank,
-    									MachLogHardwareLab* pHardwareLab,
-    									MachLogResearchItem* pResearchItem )
-:   GuiIcon(pParent,
-        	Gui::Coord(0,0), //Will be relocated by icon sequence parent
-        	SysPathName( MachActorBitmaps::name( pResearchItem->objectType(),
-                                                 pResearchItem->subType(),
-                                                 pResearchItem->hwLevel(),
-                                                 pResearchItem->weaponCombo(),
-                                                 MachLogRaces::instance().pcController().race() ) ) ),
-    pInGameScreen_( pInGameScreen ),
-    pHWResearchBank_( pHWResearchBank ),
-    pHardwareLab_( pHardwareLab ),
-    pResearchItem_( pResearchItem )
+MachHWResearchIcon::MachHWResearchIcon(
+    GuiDisplayable* pParent,
+    MachInGameScreen* pInGameScreen,
+    MachHWResearchBank* pHWResearchBank,
+    MachLogHardwareLab* pHardwareLab,
+    MachLogResearchItem* pResearchItem)
+    : GuiIcon(
+        pParent,
+        Gui::Coord(0, 0), // Will be relocated by icon sequence parent
+        SysPathName(MachActorBitmaps::name(
+            pResearchItem->objectType(),
+            pResearchItem->subType(),
+            pResearchItem->hwLevel(),
+            pResearchItem->weaponCombo(),
+            MachLogRaces::instance().pcController().race())))
+    , pInGameScreen_(pInGameScreen)
+    , pHWResearchBank_(pHWResearchBank)
+    , pHardwareLab_(pHardwareLab)
+    , pResearchItem_(pResearchItem)
 {
 
     TEST_INVARIANT;
@@ -48,7 +51,6 @@ MachHWResearchIcon::MachHWResearchIcon(	GuiDisplayable* pParent,
 MachHWResearchIcon::~MachHWResearchIcon()
 {
     TEST_INVARIANT;
-
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -57,12 +59,12 @@ MachHWResearchIcon::~MachHWResearchIcon()
 
 void MachHWResearchIcon::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const MachHWResearchIcon& t )
+ostream& operator<<(ostream& o, const MachHWResearchIcon& t)
 {
 
     o << "MachHWResearchIcon " << (void*)&t << " start" << std::endl;
@@ -73,89 +75,90 @@ ostream& operator <<( ostream& o, const MachHWResearchIcon& t )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchIcon::doBeDepressed( const GuiMouseEvent& )
+// virtual
+void MachHWResearchIcon::doBeDepressed(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchIcon::doBeReleased( const GuiMouseEvent& )
+// virtual
+void MachHWResearchIcon::doBeReleased(const GuiMouseEvent&)
 {
-    //Add the item to the queue
-	if( pHardwareLab_->addResearchItem( *pResearchItem_ ) )
+    // Add the item to the queue
+    if (pHardwareLab_->addResearchItem(*pResearchItem_))
     {
-        //Wasn't in the queue previously, so update the bank icons
+        // Wasn't in the queue previously, so update the bank icons
         pHWResearchBank_->updateQueueIcons();
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachHWResearchIcon::reqWidth()
 {
-	return 42; // Todo : remove hardcoding
+    return 42; // Todo : remove hardcoding
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//static
+// static
 size_t MachHWResearchIcon::reqHeight()
 {
-	return 42; // todo : remove hardcoding
+    return 42; // todo : remove hardcoding
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchIcon::doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachHWResearchIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
-	GuiIcon::doHandleMouseEnterEvent( mouseEvent );
+    GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-	GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText( 	pResearchItem_->objectType(),
-																			pResearchItem_->subType(),
-																			pResearchItem_->weaponCombo(),
-																			pResearchItem_->hwLevel(),
-																			IDS_RESEARCH_PROMPT,
-																			IDS_RESEARCH_WITH_WEAPON_PROMPT );
+    GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
+        pResearchItem_->objectType(),
+        pResearchItem_->subType(),
+        pResearchItem_->weaponCombo(),
+        pResearchItem_->hwLevel(),
+        IDS_RESEARCH_PROMPT,
+        IDS_RESEARCH_WITH_WEAPON_PROMPT);
 
-	// Add bmu cost and rp cost to end of prompt text
-	char bmuBuffer[20];
-	char rpBuffer[20];
-//	itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
-//	itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
+    // Add bmu cost and rp cost to end of prompt text
+    char bmuBuffer[20];
+    char rpBuffer[20];
+    //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
+    //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
     sprintf(bmuBuffer, "%d", pResearchItem_->buildingCost());
     sprintf(rpBuffer, "%d", pResearchItem_->researchCost());
 
-	if ( pResearchItem_->buildingCost() != 0 )
-	{
-		GuiStrings strings;
-		strings.push_back( GuiString( bmuBuffer ) );
-		strings.push_back( GuiString( rpBuffer ) );
-		GuiResourceString costText( IDS_COST_WITH_RP, strings );
-		prompt += "\n" + costText.asString();
-	}
-	else
-	{
-		GuiResourceString costText( IDS_COST_RP, GuiString( rpBuffer ) );
-		prompt += "\n" + costText.asString();
-	}
+    if (pResearchItem_->buildingCost() != 0)
+    {
+        GuiStrings strings;
+        strings.push_back(GuiString(bmuBuffer));
+        strings.push_back(GuiString(rpBuffer));
+        GuiResourceString costText(IDS_COST_WITH_RP, strings);
+        prompt += "\n" + costText.asString();
+    }
+    else
+    {
+        GuiResourceString costText(IDS_COST_RP, GuiString(rpBuffer));
+        prompt += "\n" + costText.asString();
+    }
 
-    pInGameScreen_->cursorPromptText( prompt );
+    pInGameScreen_->cursorPromptText(prompt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//virtual
-void MachHWResearchIcon::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachHWResearchIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 {
-    //Clear the cursor prompt string
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 
-	GuiIcon::doHandleMouseExitEvent( mouseEvent );
+    GuiIcon::doHandleMouseExitEvent(mouseEvent);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

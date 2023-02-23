@@ -23,58 +23,56 @@ class UtlFilterBuffer;
 class DiagOstreamPrepend : public ostream
 {
 public:
-    DiagOstreamPrepend( ostream* pOstr );
+    DiagOstreamPrepend(ostream* pOstr);
     DiagOstreamPrepend();
 
-    void stream( ostream* pOstr );
+    void stream(ostream* pOstr);
 
-    bool    hasStream() const;
+    bool hasStream() const;
 
-    void    prependDate( bool value );
-    void    prependClock( bool value );
+    void prependDate(bool value);
+    void prependClock(bool value);
 
     //  Adjust the number of spaces by which we will
     //  indent the output from the stream. This call
     //  is cumulative i.e. a call will a value of 2 will
     //  indent by 2 more spaces than were previously being
     //  used.
-    void    nSpacesToIndent( int nSpaces );
+    void nSpacesToIndent(int nSpaces);
 
-    virtual ~DiagOstreamPrepend();
+    ~DiagOstreamPrepend() override;
 
 protected:
-
-    void    outputCharacters( const char* pBuf, size_t nChars );
+    void outputCharacters(const char* pBuf, size_t nChars);
 
 private:
     // Operation deliberately revoked
-    DiagOstreamPrepend( const DiagOstreamPrepend& );
+    DiagOstreamPrepend(const DiagOstreamPrepend&);
 
     // Operation deliberately revoked
-    DiagOstreamPrepend& operator =( const DiagOstreamPrepend& );
+    DiagOstreamPrepend& operator=(const DiagOstreamPrepend&);
 
     // Operation deliberately revoked
-    bool operator ==( const DiagOstreamPrepend& );
+    bool operator==(const DiagOstreamPrepend&);
 
     friend class DiagPrependBuffer;
 
-    void    streamData( const char* pBuf, size_t nChars );
-    void    doPrepend();
+    void streamData(const char* pBuf, size_t nChars);
+    void doPrepend();
 
-    DiagPrependBuffer   buffer_;
+    DiagPrependBuffer buffer_;
     ostream* pOstr_;
 
-    bool    date_;
-    bool    clock_;
+    bool date_;
+    bool clock_;
 
-    bool    prependNow_;
+    bool prependNow_;
 
-    char*   prependString_;
-    size_t  nCharsAllocated_;
+    char* prependString_;
+    size_t nCharsAllocated_;
 
-    static  std::streambuf&  dummyStreamBuf( DiagOstreamPrepend* pOwner );
+    static std::streambuf& dummyStreamBuf(DiagOstreamPrepend* pOwner);
 };
-
 
 #endif
 

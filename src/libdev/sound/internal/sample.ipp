@@ -1,99 +1,99 @@
 /*
  * S A M P L E . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
-*/
+ */
 
 #ifdef _INLINE
-	#define _CODE_INLINE inline
+#define _CODE_INLINE inline
 #else
-	#define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 bool Sample::isPaused() const
 {
-	return isPaused_;
+    return isPaused_;
 }
 /////////////////////////////////////////////////
 _CODE_INLINE
-void Sample::silence( void )
+void Sample::silence()
 {
-	isSilenced_ = true;
-	unSilencedVolume_ = volume_;
-	volume(0);
+    isSilenced_ = true;
+    unSilencedVolume_ = volume_;
+    volume(0);
 }
 /////////////////////////////////////////////////
 _CODE_INLINE
-void Sample::unsilence( void )
+void Sample::unsilence()
 {
-	isSilenced_ = false;
-	volume(unSilencedVolume_);
+    isSilenced_ = false;
+    volume(unSilencedVolume_);
 }
 /////////////////////////////////////////////////
 _CODE_INLINE
 bool Sample::isSilenced() const
 {
-	return isSilenced_;
+    return isSilenced_;
 }
 /////////////////////////////////////////////////
 _CODE_INLINE
-Snd::SamplePriority Sample::priority( void ) const
+Snd::SamplePriority Sample::priority() const
 {
-	return samplePriority_;
+    return samplePriority_;
 }
 /////////////////////////////////////////////////
 _CODE_INLINE
 bool Sample::isAudible() const
 {
-	return !isSilenced_;
+    return !isSilenced_;
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 bool Sample::is3D() const
 {
-	return sampleParameters_.is3dSound();
+    return sampleParameters_.is3dSound();
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 bool Sample::loopForever() const
 {
-	return loopForever_;
+    return loopForever_;
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 Sample::SampleState Sample::state() const
 {
-	return state_;
+    return state_;
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
-Sample::Participant Sample::getResourceResponsibility( void )
+Sample::Participant Sample::getResourceResponsibility()
 {
-	return resourceResponsibility_;
+    return resourceResponsibility_;
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 void Sample::setResourceResponsibility(Participant owner)
 {
-	resourceResponsibility_ = owner;
+    resourceResponsibility_ = owner;
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 bool Sample::stopPending() const
 {
-	return stopPending_;
+    return stopPending_;
 }
 
 /////////////////////////////////////////////////
 _CODE_INLINE
 void Sample::stopPending(bool newPending)
 {
-	stopPending_ = newPending;
+    stopPending_ = newPending;
 }

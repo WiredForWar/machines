@@ -1,14 +1,14 @@
 /*
- * B I D V O I D M . I P P 
+ * B I D V O I D M . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -18,16 +18,16 @@ UtlId UtlBoundedIdVoidPMap::upperBound() const
 }
 
 _CODE_INLINE
-bool UtlBoundedIdVoidPMap::contains( UtlId id ) const
+bool UtlBoundedIdVoidPMap::contains(UtlId id) const
 {
-    PRE( id < upperBound_ );
-    return aPointers_[id] != NULL;
+    PRE(id < upperBound_);
+    return aPointers_[id] != nullptr;
 }
 
 _CODE_INLINE
-void* UtlBoundedIdVoidPMap::entry( UtlId id ) const
+void* UtlBoundedIdVoidPMap::entry(UtlId id) const
 {
-    PRE( contains( id ) );
+    PRE(contains(id));
     return aPointers_[id];
 }
 /* End BIDVOIDM.IPP *************************************************/

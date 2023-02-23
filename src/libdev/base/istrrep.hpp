@@ -1,5 +1,5 @@
 /*
- * I S T R R E P . H P P 
+ * I S T R R E P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,21 +24,20 @@ public:
     //  Override this functino to provide whatever monitoring you want.
     //  The function must return the number of bytes it wants read
     //  before it is called again.
-    virtual size_t report( size_t bytesRead, size_t fileSize ) = 0;
+    virtual size_t report(size_t bytesRead, size_t fileSize) = 0;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const PerIstreamReporter& t );
+    friend ostream& operator<<(ostream& o, const PerIstreamReporter& t);
 
-    PerIstreamReporter( const PerIstreamReporter& );
-    PerIstreamReporter& operator =( const PerIstreamReporter& );
-
+    PerIstreamReporter(const PerIstreamReporter&);
+    PerIstreamReporter& operator=(const PerIstreamReporter&);
 };
 
 // This class is useful in situations other than just reading from a PerIstream, therefore
 // a more general name has been typedefed.
-typedef PerIstreamReporter BaseProgressReporter;
+using BaseProgressReporter = PerIstreamReporter;
 
 #endif
 

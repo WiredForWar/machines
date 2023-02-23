@@ -4,5 +4,5 @@
  */
 
 #ifndef _INLINE
-	#include "stdlib/memory.itp"
+#include "stdlib/memory.itp"
 #endif

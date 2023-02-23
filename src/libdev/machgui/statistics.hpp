@@ -1,5 +1,5 @@
 /*
- * S T A T I S T I C S . H P P 
+ * S T A T I S T I C S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "stdlib/string.hpp"
 
-class MachGuiStatistics 
+class MachGuiStatistics
 // Canonical form revoked
 {
 public:
@@ -24,16 +24,15 @@ public:
 
     void CLASS_INVARIANT;
 
-	virtual	void update() = 0;
-	virtual void setStatistics( int, int, int, int ) = 0;
+    virtual void update() = 0;
+    virtual void setStatistics(int, int, int, int) = 0;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiStatistics& t );
+    friend ostream& operator<<(ostream& o, const MachGuiStatistics& t);
 
-    MachGuiStatistics( const MachGuiStatistics& );
-    MachGuiStatistics& operator =( const MachGuiStatistics& );
+    MachGuiStatistics(const MachGuiStatistics&);
+    MachGuiStatistics& operator=(const MachGuiStatistics&);
 };
-
 
 #endif
 

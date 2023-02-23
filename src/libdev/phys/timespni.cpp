@@ -8,27 +8,32 @@
 
 #include "phys/internal/timespni.hpp"
 
-PER_DEFINE_PERSISTENT( PhysTimedSpinPlanImpl );
+PER_DEFINE_PERSISTENT(PhysTimedSpinPlanImpl);
 
-
-PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl( const MexVec3& axis, const MexPoint3d& position,
-                                      const MexRadians& startAngle, const MexRadians& startSpeed )
-:   axis_( axis ),
-    baseTransform_( MexTransform3d(position) ),
-    startAngle_( startAngle ),
-    startSpeed_( startSpeed ),
-    cacheIndex_( 0 )
+PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl(
+    const MexVec3& axis,
+    const MexPoint3d& position,
+    const MexRadians& startAngle,
+    const MexRadians& startSpeed)
+    : axis_(axis)
+    , baseTransform_(MexTransform3d(position))
+    , startAngle_(startAngle)
+    , startSpeed_(startSpeed)
+    , cacheIndex_(0)
 {
     TEST_INVARIANT;
 }
 
-PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl( const MexVec3& axis, const MexTransform3d& baseTransform,
-                                      const MexRadians& startAngle, const MexRadians& startSpeed )
-:   axis_( axis ),
-    baseTransform_( baseTransform ),
-    startAngle_( startAngle ),
-    startSpeed_( startSpeed ),
-    cacheIndex_( 0 )
+PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl(
+    const MexVec3& axis,
+    const MexTransform3d& baseTransform,
+    const MexRadians& startAngle,
+    const MexRadians& startSpeed)
+    : axis_(axis)
+    , baseTransform_(baseTransform)
+    , startAngle_(startAngle)
+    , startSpeed_(startSpeed)
+    , cacheIndex_(0)
 {
     TEST_INVARIANT;
 }
@@ -36,15 +41,14 @@ PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl( const MexVec3& axis, const MexTran
 PhysTimedSpinPlanImpl::~PhysTimedSpinPlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysTimedSpinPlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysTimedSpinPlanImpl& t )
+ostream& operator<<(ostream& o, const PhysTimedSpinPlanImpl& t)
 {
 
     o << "PhysTimedSpinPlanImpl " << (void*)&t << " start" << std::endl;
@@ -53,11 +57,11 @@ ostream& operator <<( ostream& o, const PhysTimedSpinPlanImpl& t )
     return o;
 }
 
-PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl( PerConstructor )
+PhysTimedSpinPlanImpl::PhysTimedSpinPlanImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const PhysTimedSpinPlanImpl& plan )
+void perWrite(PerOstream& ostr, const PhysTimedSpinPlanImpl& plan)
 {
     ostr << plan.axis_;
     ostr << plan.baseTransform_;
@@ -70,7 +74,7 @@ void perWrite( PerOstream& ostr, const PhysTimedSpinPlanImpl& plan )
     ostr << plan.cacheIndex_;
 }
 
-void perRead( PerIstream& istr, PhysTimedSpinPlanImpl& plan )
+void perRead(PerIstream& istr, PhysTimedSpinPlanImpl& plan)
 {
     istr >> plan.axis_;
     istr >> plan.baseTransform_;

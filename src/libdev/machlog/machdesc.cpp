@@ -1,5 +1,5 @@
 /*
- * M A C H D E S C . C P P 
+ * M A C H D E S C . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,14 +16,13 @@ MachLogMachineDescriptor::MachLogMachineDescriptor()
 MachLogMachineDescriptor::~MachLogMachineDescriptor()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogMachineDescriptor::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const MachLogMachineDescriptor& t )
+ostream& operator<<(ostream& o, const MachLogMachineDescriptor& t)
 {
 
     o << "MachLogMachineDescriptor " << (void*)&t << " start" << std::endl;

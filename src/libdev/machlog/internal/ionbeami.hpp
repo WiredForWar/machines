@@ -1,5 +1,5 @@
 /*
- * I O N B E A M I . H P P 
+ * I O N B E A M I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,42 +23,41 @@ class MachLogIonBeamImpl
 // Canonical form revoked
 {
 public:
-    MachLogIonBeamImpl( const MachPhysWeaponData* const );
+    MachLogIonBeamImpl(const MachPhysWeaponData* const);
     virtual ~MachLogIonBeamImpl();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogIonBeamImpl& t );
+    friend ostream& operator<<(ostream& o, const MachLogIonBeamImpl& t);
 
-    MachLogIonBeamImpl( const MachLogIonBeamImpl& );
-    MachLogIonBeamImpl& operator =( const MachLogIonBeamImpl& );
+    MachLogIonBeamImpl(const MachLogIonBeamImpl&);
+    MachLogIonBeamImpl& operator=(const MachLogIonBeamImpl&);
 
-	friend class MachLogIonBeam; 
+    friend class MachLogIonBeam;
 
-	MachPhysIonBeam*					pPhysIonBeam_;	
-	const MachPhysWeaponData* const		pWeaponData_;	
-	PhysAbsoluteTime					firstWaveStartTime_;
-	PhysAbsoluteTime					firstWaveFinishTime_;
-	PhysAbsoluteTime					secondWaveStartTime_;
-	PhysAbsoluteTime					secondWaveFinishTime_;
-	PhysAbsoluteTime					thirdWaveStartTime_;
-	PhysAbsoluteTime					thirdWaveFinishTime_;
-	PhysAbsoluteTime					destructionTime_;	
+    MachPhysIonBeam* pPhysIonBeam_;
+    const MachPhysWeaponData* const pWeaponData_;
+    PhysAbsoluteTime firstWaveStartTime_;
+    PhysAbsoluteTime firstWaveFinishTime_;
+    PhysAbsoluteTime secondWaveStartTime_;
+    PhysAbsoluteTime secondWaveFinishTime_;
+    PhysAbsoluteTime thirdWaveStartTime_;
+    PhysAbsoluteTime thirdWaveFinishTime_;
+    PhysAbsoluteTime destructionTime_;
 };
 
-
-#define CB_MachLogIonBeam_DEPIMPL() \
-	CB_DEPIMPL( MachPhysIonBeam*					,pPhysIonBeam_ ); \
-	CB_DEPIMPL( const MachPhysWeaponData* const		,pWeaponData_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,firstWaveStartTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,firstWaveFinishTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,secondWaveStartTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,secondWaveFinishTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,thirdWaveStartTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,thirdWaveFinishTime_ ); \	
-	CB_DEPIMPL( PhysAbsoluteTime					,destructionTime_ ); 
-
+#define CB_MachLogIonBeam_DEPIMPL()                                                                                    \
+    CB_DEPIMPL(MachPhysIonBeam*, pPhysIonBeam_);                                                                       \
+    CB_DEPIMPL(const MachPhysWeaponData* const, pWeaponData_);                                                         \
+    CB_DEPIMPL(PhysAbsoluteTime, firstWaveStartTime_);                                                                 \
+    CB_DEPIMPL(PhysAbsoluteTime, firstWaveFinishTime_);                                                                \
+    CB_DEPIMPL(PhysAbsoluteTime, secondWaveStartTime_);                                                                \
+    CB_DEPIMPL(PhysAbsoluteTime, secondWaveFinishTime_);                                                               \
+    CB_DEPIMPL(PhysAbsoluteTime, thirdWaveStartTime_);                                                                 \
+    CB_DEPIMPL(PhysAbsoluteTime, thirdWaveFinishTime_);                                                                \
+    \  
+    CB_DEPIMPL(PhysAbsoluteTime, destructionTime_);
 
 #endif
 

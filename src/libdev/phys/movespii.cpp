@@ -7,35 +7,35 @@
 
 #include "phys/internal/movespii.hpp"
 
-PER_DEFINE_PERSISTENT( PhysMoveSpinPlanImpl );
+PER_DEFINE_PERSISTENT(PhysMoveSpinPlanImpl);
 
-PhysMoveSpinPlanImpl::PhysMoveSpinPlanImpl(const MexTransform3d& startLocation,
-                          const MexVec3& speedVector,
-						  const MexVec3& rotationAxis,
-						  MATHEX_SCALAR rotationSpeed,
-                          const PhysRelativeTime& endTime )
-: startLocation_( startLocation ),
-  speedVector_( speedVector ),
-  rotationAxis_( rotationAxis ),
-  rotationSpeed_(rotationSpeed ),
-  endTime_( endTime )
+PhysMoveSpinPlanImpl::PhysMoveSpinPlanImpl(
+    const MexTransform3d& startLocation,
+    const MexVec3& speedVector,
+    const MexVec3& rotationAxis,
+    MATHEX_SCALAR rotationSpeed,
+    const PhysRelativeTime& endTime)
+    : startLocation_(startLocation)
+    , speedVector_(speedVector)
+    , rotationAxis_(rotationAxis)
+    , rotationSpeed_(rotationSpeed)
+    , endTime_(endTime)
 {
 
     TEST_INVARIANT;
 }
 
-PhysMoveSpinPlanImpl::~ PhysMoveSpinPlanImpl()
+PhysMoveSpinPlanImpl::~PhysMoveSpinPlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
-void  PhysMoveSpinPlanImpl::CLASS_INVARIANT
+void PhysMoveSpinPlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const  PhysMoveSpinPlanImpl& t )
+ostream& operator<<(ostream& o, const PhysMoveSpinPlanImpl& t)
 {
 
     o << " PhysMoveSpinPlanImpl " << (void*)&t << " start" << std::endl;
@@ -44,21 +44,20 @@ ostream& operator <<( ostream& o, const  PhysMoveSpinPlanImpl& t )
     return o;
 }
 
-PhysMoveSpinPlanImpl:: PhysMoveSpinPlanImpl( PerConstructor )
+PhysMoveSpinPlanImpl::PhysMoveSpinPlanImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const  PhysMoveSpinPlanImpl& plan )
+void perWrite(PerOstream& ostr, const PhysMoveSpinPlanImpl& plan)
 {
     ostr << plan.startLocation_;
     ostr << plan.speedVector_;
     ostr << plan.rotationAxis_;
     ostr << plan.rotationSpeed_;
     ostr << plan.endTime_;
-
 }
 
-void perRead( PerIstream& istr,  PhysMoveSpinPlanImpl& plan )
+void perRead(PerIstream& istr, PhysMoveSpinPlanImpl& plan)
 {
     istr >> plan.startLocation_;
     istr >> plan.speedVector_;

@@ -5,298 +5,270 @@
 
 #include <time.h>
 
-unsigned int RDTSC(uint32[ 2 ]);
-#pragma aux RDTSC =   \
-0x0f 0x31 /* RDTSC */ \
-" mov [esi],eax   "   \
-" mov [esi+4],edx "   \
-parm [esi] modify [eax edx] value [eax];
+unsigned int RDTSC(uint32[2]);
+#pragma aux RDTSC = 0x0f 0x31 /* RDTSC */                                                                              \
+    " mov [esi],eax   "                                                                                                \
+    " mov [esi+4],edx " parm[esi] modify[eax edx] value[eax];
 
 //  Create a timer that takes its time from
 //  the master timer.
-inline
-UtlDebugTimer::UtlDebugTimer( void )
-: paused_( false )
+inline UtlDebugTimer::UtlDebugTimer()
+    : paused_(false)
 {
-	//RDTSC( offset_.data() );
+    // RDTSC( offset_.data() );
 }
 
-inline
-UtlDebugTimer::UtlDebugTimer( InitialState state )
-: paused_( state == PAUSED )
+inline UtlDebugTimer::UtlDebugTimer(InitialState state)
+    : paused_(state == PAUSED)
 {
-	//RDTSC( offset_.data() );
+    // RDTSC( offset_.data() );
 
-    if( paused_ )
-       	pausedTime_ = offset_;
+    if (paused_)
+        pausedTime_ = offset_;
 }
 
 //  Return the built in master timer
 // static
-inline
-UtlDebugTimer&  UtlDebugTimer::masterTimer( void )
+inline UtlDebugTimer& UtlDebugTimer::masterTimer()
 {
-    static  UtlDebugTimer  masterTimer_( MASTER_TIMER );
+    static UtlDebugTimer masterTimer_(MASTER_TIMER);
 
     return masterTimer_;
 }
 
 //  Create the master timer
-inline
-UtlDebugTimer::UtlDebugTimer( TimerType )
-: paused_( false )
+inline UtlDebugTimer::UtlDebugTimer(TimerType)
+    : paused_(false)
 {
-	//RDTSC( offset_.data() );
+    // RDTSC( offset_.data() );
 }
 
-inline
-UtlDebugTimer::~UtlDebugTimer()
+inline UtlDebugTimer::~UtlDebugTimer()
 {
 }
-
 
 //  static
-inline
-void    UtlDebugTimer::calibrate( double calibrationTimeSeconds )
+inline void UtlDebugTimer::calibrate(double calibrationTimeSeconds)
 {
     startCalibration();
-    finishCalibration( calibrationTimeSeconds );
+    finishCalibration(calibrationTimeSeconds);
 }
 
 //  static
-inline
-void    UtlDebugTimer::startCalibration( void )
+inline void UtlDebugTimer::startCalibration()
 {
     //  First wait for the clock to change to get a reasonably
     //  accurate base point.
-    size_t  initialClockValue = clock();
+    size_t initialClockValue = clock();
 
-    while( clock() == initialClockValue )
-        /* Do nothing */ ;
+    while (clock() == initialClockValue)
+        /* Do nothing */;
 
     calibrationInitialClock() = clock();
     calibrationInitialTicks() = pentiumTicks();
-
 }
 
 //  static
-inline
-void    UtlDebugTimer::finishCalibration( double minCalibrationTimeSeconds )
+inline void UtlDebugTimer::finishCalibration(double minCalibrationTimeSeconds)
 {
-    size_t minClocksToWait =  minCalibrationTimeSeconds * CLOCKS_PER_SEC;
+    size_t minClocksToWait = minCalibrationTimeSeconds * CLOCKS_PER_SEC;
 
-
-    while( clock() <= calibrationInitialClock() + minClocksToWait )
+    while (clock() <= calibrationInitialClock() + minClocksToWait)
     {
         //  Do nothing
     }
 
-    size_t  lastClock = clock();
+    size_t lastClock = clock();
 
-    while ( clock() == lastClock );
+    while (clock() == lastClock)
+        ;
     {
         //  Do nothing
     }
 
-    const size_t  finalClock = clock();
+    const size_t finalClock = clock();
     const double finalTicks = pentiumTicks();
 
-    pentiumTicksPerSecond() =
-      ( finalTicks - calibrationInitialTicks() ) * CLOCKS_PER_SEC / ( finalClock - calibrationInitialClock() );
+    pentiumTicksPerSecond()
+        = (finalTicks - calibrationInitialTicks()) * CLOCKS_PER_SEC / (finalClock - calibrationInitialClock());
 
     calibrated() = true;
 }
 
-inline
-double UtlDebugTimer::pentiumTicks( void )
+inline double UtlDebugTimer::pentiumTicks()
 {
-    uint32  timer[ 2 ];
+    uint32 timer[2];
 
     // TODO check this
-    //RDTSC( timer );
+    // RDTSC( timer );
 
-    double  ticks;
+    double ticks;
 
-    ticks = timer[ 1 ];
+    ticks = timer[1];
 
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
     ticks *= 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2;
-    ticks += timer[ 0 ];
+    ticks += timer[0];
 
     return ticks;
 }
 
-inline
-UtlDebugTimer::Time    UtlDebugTimer::time( void ) const
+inline UtlDebugTimer::Time UtlDebugTimer::time() const
 {
-    PRE( calibrated() );
+    PRE(calibrated());
 
-	Time realTime;
+    Time realTime;
 
-    if( paused_ )
+    if (paused_)
     {
         realTime.reading_ = pausedTime_;
         realTime.offset_ = offset_;
     }
     else
     {
-    	//RDTSC( realTime.reading_.data() );
+        // RDTSC( realTime.reading_.data() );
         realTime.offset_ = offset_;
     }
 
-	return realTime;
+    return realTime;
 }
 
-inline
-void    UtlDebugTimer::time( Time* pTime ) const
+inline void UtlDebugTimer::time(Time* pTime) const
 {
-    PRE( calibrated() );
+    PRE(calibrated());
 
-    if( paused_ )
+    if (paused_)
     {
         pTime->reading_ = pausedTime_;
         pTime->offset_ = offset_;
     }
     else
     {
-    	//RDTSC( pTime->reading_.data() );
+        // RDTSC( pTime->reading_.data() );
         pTime->offset_ = offset_;
     }
 }
 
-inline
-void    UtlDebugTimer::time( double newTime )
+inline void UtlDebugTimer::time(double newTime)
 {
-    PRE( calibrated() );
+    PRE(calibrated());
 
     newTime *= UtlDebugTimer::pentiumTicksPerSecond();
 
-    if( paused_ )
+    if (paused_)
     {
         pausedTime_ = offset_;
         pausedTime_ += newTime;
     }
     else
     {
-    	//RDTSC( offset_.data() );
+        // RDTSC( offset_.data() );
         offset_ -= newTime;
     }
 }
 
-inline
-void UtlDebugTimer::pause()
+inline void UtlDebugTimer::pause()
 {
-    PRE( calibrated() );
+    PRE(calibrated());
 
-	if( !paused_ )
-	{
+    if (!paused_)
+    {
 
-    	//RDTSC( pausedTime_.data() );
+        // RDTSC( pausedTime_.data() );
 
-		paused_ = true;
-	}
+        paused_ = true;
+    }
 }
 
-inline
-void UtlDebugTimer::resume()
+inline void UtlDebugTimer::resume()
 {
-    PRE( calibrated() );
+    PRE(calibrated());
 
-	if( paused_ )
-	{
+    if (paused_)
+    {
         UtlUint64 newOffset;
 
-    	//RDTSC( newOffset.data() );
+        // RDTSC( newOffset.data() );
 
         newOffset -= pausedTime_;
         newOffset += offset_;
 
         offset_ = newOffset;
 
-		paused_ = false;
-	}
+        paused_ = false;
+    }
 }
 
-inline
-bool UtlDebugTimer::paused() const
+inline bool UtlDebugTimer::paused() const
 {
     return paused_;
 }
 
 // static
-inline
-size_t& UtlDebugTimer::calibrationInitialClock( void )
+inline size_t& UtlDebugTimer::calibrationInitialClock()
 {
-    static  size_t  calibrationInitialClock_;
+    static size_t calibrationInitialClock_;
 
     return calibrationInitialClock_;
 }
 
 // static
-inline
-double& UtlDebugTimer::calibrationInitialTicks( void )
+inline double& UtlDebugTimer::calibrationInitialTicks()
 {
-    static  double  calibrationInitialTicks_;
+    static double calibrationInitialTicks_;
 
     return calibrationInitialTicks_;
 }
 
 // static
-inline
-double& UtlDebugTimer::pentiumTicksPerSecond( void )
+inline double& UtlDebugTimer::pentiumTicksPerSecond()
 {
-    static  double  pentiumTicksPerSecond_;
+    static double pentiumTicksPerSecond_;
 
     return pentiumTicksPerSecond_;
 }
 
 //  static
-inline
-bool&   UtlDebugTimer::calibrated( void )
+inline bool& UtlDebugTimer::calibrated()
 {
-    static  bool    calibrated_ = false;
+    static bool calibrated_ = false;
 
     return calibrated_;
 }
 
-inline
-ostream& operator<<( ostream& o, const UtlDebugTimer& t )
+inline ostream& operator<<(ostream& o, const UtlDebugTimer& t)
 {
     o << t.time().asDouble();
 
     return o;
 }
 
-inline
-double  UtlDebugTimer::Time::asDouble() const
+inline double UtlDebugTimer::Time::asDouble() const
 {
-    PRE( UtlDebugTimer::calibrated() );
+    PRE(UtlDebugTimer::calibrated());
 
-    UtlUint64  u64 = reading_;
+    UtlUint64 u64 = reading_;
     u64 -= offset_;
 
     return u64.asDouble() / UtlDebugTimer::pentiumTicksPerSecond();
 }
 
-inline
-ostream& operator<<( ostream& o, const UtlDebugTimer::Time& t )
+inline ostream& operator<<(ostream& o, const UtlDebugTimer::Time& t)
 {
     o << t.asDouble();
 
     return o;
 }
 
-inline
-UtlDebugBlockTimer::UtlDebugBlockTimer( UtlDebugTimer& t )
-: timer_( t )
+inline UtlDebugBlockTimer::UtlDebugBlockTimer(UtlDebugTimer& t)
+    : timer_(t)
 {
     timer_.resume();
 }
 
-inline
-UtlDebugBlockTimer::~UtlDebugBlockTimer()
+inline UtlDebugBlockTimer::~UtlDebugBlockTimer()
 {
     timer_.pause();
 }

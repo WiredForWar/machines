@@ -16,15 +16,14 @@ PerIstreamReporter::PerIstreamReporter()
 PerIstreamReporter::~PerIstreamReporter()
 {
     TEST_INVARIANT;
-
 }
 
 void PerIstreamReporter::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PerIstreamReporter& t )
+ostream& operator<<(ostream& o, const PerIstreamReporter& t)
 {
 
     o << "PerIstreamReporter " << (void*)&t << " start" << std::endl;

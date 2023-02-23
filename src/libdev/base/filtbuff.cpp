@@ -11,8 +11,8 @@
 
 #include "base/internal/filtbuff.hpp"
 
-BaseFilterBuffer::BaseFilterBuffer( BaseFilterOstream* pFilter )
-: pFilter_( pFilter )
+BaseFilterBuffer::BaseFilterBuffer(BaseFilterOstream* pFilter)
+    : pFilter_(pFilter)
 {
     TEST_INVARIANT;
 }
@@ -23,13 +23,13 @@ BaseFilterBuffer::~BaseFilterBuffer()
 }
 
 // virtual
-int BaseFilterBuffer::overflow( int c )
+int BaseFilterBuffer::overflow(int c)
 {
-//    cout << "overflow " << (char)c << endl;
+    //    cout << "overflow " << (char)c << endl;
 
-    char    c1 = (char)c;
+    char c1 = (char)c;
 
-    do_sputn( &c1, 1 );
+    do_sputn(&c1, 1);
 
     return !EOF;
 }
@@ -37,33 +37,33 @@ int BaseFilterBuffer::overflow( int c )
 // virtual
 int BaseFilterBuffer::underflow()
 {
-//    cout << "underflow" << endl;
+    //    cout << "underflow" << endl;
     return EOF;
 }
 
 // virtual
-int        BaseFilterBuffer::do_sgetn( char *, int len )
+int BaseFilterBuffer::do_sgetn(char*, int len)
 {
-//    cout << "do_sgetn" << endl;
+    //    cout << "do_sgetn" << endl;
 
     return len;
 }
 
 // virtual
-int        BaseFilterBuffer::do_sputn( char const *buf, int len )
+int BaseFilterBuffer::do_sputn(char const* buf, int len)
 {
-//      cout << "do_sputn " << len << endl;
-//
-//      for( size_t i = 0; i < len; ++i )
-//          cout << buf[ i ];
+    //      cout << "do_sputn " << len << endl;
+    //
+    //      for( size_t i = 0; i < len; ++i )
+    //          cout << buf[ i ];
 
-    pFilter_->filterCharacters( buf, len );
+    pFilter_->filterCharacters(buf, len);
 
     return len;
 }
 
 // virtual
-int        BaseFilterBuffer::sync()
+int BaseFilterBuffer::sync()
 {
     //  Dummy sync - always succeed
 

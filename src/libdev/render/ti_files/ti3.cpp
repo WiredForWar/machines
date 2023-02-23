@@ -4,5 +4,5 @@
 
 dummyFunction3()
 {
-	ctl_list<RenDisplay::Mode> modes;
+    ctl_list<RenDisplay::Mode> modes;
 }

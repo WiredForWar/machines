@@ -14,46 +14,45 @@
 
 #include "base/base.hpp"
 
-//#include <strfwd.hpp>
+// #include <strfwd.hpp>
 #include "stdlib/string.hpp"
 
 class MachScreenDumper
 // Canonical form revoked.
 {
 public:
-	enum DumpAction
-	{
-		DUMPING,
-		IDLE
-	};
+    enum DumpAction
+    {
+        DUMPING,
+        IDLE
+    };
 
     static MachScreenDumper& instance();
 
-	// Decides whether to dump next time dump() is called.
-	// This should be called before any code that looks at keyboard input.
-	void update();
+    // Decides whether to dump next time dump() is called.
+    // This should be called before any code that looks at keyboard input.
+    void update();
 
-	// This should be called after update(), keyboard input and also after rendering.
-	void dump();
+    // This should be called after update(), keyboard input and also after rendering.
+    void dump();
 
-	// This produces filenames from the major and minor version members. The names it produces
-	// are of the form : MacX0000.bmp, where X is the major version letter and 0000 is the dump number.
-	string filename() const;
+    // This produces filenames from the major and minor version members. The names it produces
+    // are of the form : MacX0000.bmp, where X is the major version letter and 0000 is the dump number.
+    string filename() const;
 
     void CLASS_INVARIANT;
 
 private:
-	// Operation deliberatly revoked.
-    MachScreenDumper( const MachScreenDumper& );
-    MachScreenDumper& operator =( const MachScreenDumper& );
+    // Operation deliberatly revoked.
+    MachScreenDumper(const MachScreenDumper&);
+    MachScreenDumper& operator=(const MachScreenDumper&);
 
-	DumpAction dumpAction_;
-	char majorVersion_;
-	int minorVersion_;
+    DumpAction dumpAction_;
+    char majorVersion_;
+    int minorVersion_;
 
     MachScreenDumper();
 };
-
 
 #endif
 

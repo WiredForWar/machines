@@ -1,5 +1,5 @@
 /*
- * E L E C T R O . H P P 
+ * E L E C T R O . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,32 +22,26 @@ class MachLogElectro : public MachLogLinearProjectile
 // Canonical form revoked
 {
 public:
-    MachLogElectro(
-        MachLogRace* pRace,
-		MachPhysLinearProjectile*,
-        MachActor* pOwner,
-        const MachPhysWeaponData& );
+    MachLogElectro(MachLogRace* pRace, MachPhysLinearProjectile*, MachActor* pOwner, const MachPhysWeaponData&);
 
-    ~MachLogElectro();
+    ~MachLogElectro() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogElectro& t );
+    friend ostream& operator<<(ostream& o, const MachLogElectro& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogElectro );
-	PER_FRIEND_READ_WRITE( MachLogElectro );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogElectro);
+    PER_FRIEND_READ_WRITE(MachLogElectro);
 
 private:
-	void doBeDestroyed();
+    void doBeDestroyed() override;
 
-    MachLogElectro( const MachLogElectro& );
-    MachLogElectro& operator =( const MachLogElectro& );
-    bool operator ==( const MachLogElectro& );
-
+    MachLogElectro(const MachLogElectro&);
+    MachLogElectro& operator=(const MachLogElectro&);
+    bool operator==(const MachLogElectro&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogElectro );
-
+PER_DECLARE_PERSISTENT(MachLogElectro);
 
 #endif
 

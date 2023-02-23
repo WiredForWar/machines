@@ -1,5 +1,5 @@
 /*
- * S S L I S T I T . C P P 
+ * S S L I S T I T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -15,14 +15,18 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/menus_helper.hpp"
 
-MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, MachGuiSingleSelectionListBox* pParentListBox, size_t width, const string& text )
-: 	GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight() ),
-    text_( text ),
-    highlighted_( false ),
-    pStartupScreens_( pStartupScreens ),
-    pMyListBox_(pParentListBox )
+MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(
+    MachGuiStartupScreens* pStartupScreens,
+    MachGuiSingleSelectionListBox* pParentListBox,
+    size_t width,
+    const string& text)
+    : GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight())
+    , text_(text)
+    , highlighted_(false)
+    , pStartupScreens_(pStartupScreens)
+    , pMyListBox_(pParentListBox)
 {
-    pMyListBox_->addListItem( this );
+    pMyListBox_->addListItem(this);
 
     pRootParent_ = static_cast<GuiRoot*>(pParentListBox->findRoot(this));
 
@@ -30,12 +34,16 @@ MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(MachGuiStar
 }
 
 // This variant utilized by MachGuiDropDownListBoxItem to initialize it. Hence, pMyListBox_ is null.
-MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(MachGuiStartupScreens* pStartupScreens, GuiSingleSelectionListBox* pParentListBox, size_t width, const string& text )
-: 	GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight() ),
-    text_( text ),
-    highlighted_( false ),
-    pStartupScreens_( pStartupScreens ),
-    pMyListBox_( nullptr )
+MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(
+    MachGuiStartupScreens* pStartupScreens,
+    GuiSingleSelectionListBox* pParentListBox,
+    size_t width,
+    const string& text)
+    : GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight())
+    , text_(text)
+    , highlighted_(false)
+    , pStartupScreens_(pStartupScreens)
+    , pMyListBox_(nullptr)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParentListBox->findRoot(this));
 
@@ -46,25 +54,27 @@ MachGuiSingleSelectionListBoxItem::~MachGuiSingleSelectionListBoxItem()
 {
     TEST_INVARIANT;
 
-    if ( pMyListBox_ )
-        pMyListBox_->removeListItem( this );
+    if (pMyListBox_)
+        pMyListBox_->removeListItem(this);
 }
 
 void MachGuiSingleSelectionListBoxItem::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiSingleSelectionListBoxItem& t )
+ostream& operator<<(ostream& o, const MachGuiSingleSelectionListBoxItem& t)
 {
 
-    o << "MachGuiSingleSelectionListBoxItem " << reinterpret_cast<void*>( const_cast<MachGuiSingleSelectionListBoxItem*>(&t) ) << " start" << std::endl;
-    o << "MachGuiSingleSelectionListBoxItem " << reinterpret_cast<void*>( const_cast<MachGuiSingleSelectionListBoxItem*>(&t) ) << " end" << std::endl;
+    o << "MachGuiSingleSelectionListBoxItem "
+      << reinterpret_cast<void*>(const_cast<MachGuiSingleSelectionListBoxItem*>(&t)) << " start" << std::endl;
+    o << "MachGuiSingleSelectionListBoxItem "
+      << reinterpret_cast<void*>(const_cast<MachGuiSingleSelectionListBoxItem*>(&t)) << " end" << std::endl;
 
     return o;
 }
 
-//static 
+// static
 size_t MachGuiSingleSelectionListBoxItem::reqHeight()
 {
     size_t myReqHeight = getFont().charHeight();
@@ -74,75 +84,93 @@ size_t MachGuiSingleSelectionListBoxItem::reqHeight()
     return myReqHeight;
 }
 
-//static 
+// static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont( SysPathName("gui/menu/smallfnt.bmp") );
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
 
     return bmpFont;
 }
 
-//static 
+// static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont( SysPathName("gui/menu/smaldfnt.bmp") );
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
 
     return bmpFont;
 }
 
-//static 
+// static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getUnderlineFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont( SysPathName("gui/menu/smaldfnt.bmp") );
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
 
-    bmpFont.underline( true );
+    bmpFont.underline(true);
 
     return bmpFont;
 }
 
-//virtual 
+// virtual
 void MachGuiSingleSelectionListBoxItem::select()
 {
     // Play select sound
-    MachGuiSoundManager::instance().playSound( "gui/sounds/listclik.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/listclik.wav");
 
     changed();
 }
 
-//virtual 
+// virtual
 void MachGuiSingleSelectionListBoxItem::unselect()
 {
     changed();
 }
 
-//virtual 
+// virtual
 void MachGuiSingleSelectionListBoxItem::doDisplay()
 {
-    if ( selected() )
+    if (selected())
     {
-        if ( pMyListBox_ and pMyListBox_->isFocusControl() )
+        if (pMyListBox_ and pMyListBox_->isFocusControl())
         {
-            GuiPainter::instance().blit( MachGui::longYellowGlowBmp(), Gui::Box(0,0,width(),height() - 1), absoluteBoundary().minCorner() );
+            GuiPainter::instance().blit(
+                MachGui::longYellowGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
         }
         else
         {
-            GuiPainter::instance().blit( MachGui::longGlowBmp(), Gui::Box(0,0,width(),height() - 1), absoluteBoundary().minCorner() );
+            GuiPainter::instance().blit(
+                MachGui::longGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
         }
 
-        getUnderlineFont().drawText( text_, Gui::Coord( absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1 ), static_cast<int>(width()) );
+        getUnderlineFont().drawText(
+            text_,
+            Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
+            static_cast<int>(width()));
     }
-    else if ( highlighted() )
+    else if (highlighted())
     {
-        if ( pMyListBox_ and pMyListBox_->isFocusControl() )
+        if (pMyListBox_ and pMyListBox_->isFocusControl())
         {
-            GuiPainter::instance().blit( MachGui::longYellowGlowBmp(), Gui::Box(0,0,width(),height() - 1), absoluteBoundary().minCorner() );
+            GuiPainter::instance().blit(
+                MachGui::longYellowGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
         }
         else
         {
-            GuiPainter::instance().blit( MachGui::longGlowBmp(), Gui::Box(0,0,width(),height() - 1), absoluteBoundary().minCorner() );
+            GuiPainter::instance().blit(
+                MachGui::longGlowBmp(),
+                Gui::Box(0, 0, width(), height() - 1),
+                absoluteBoundary().minCorner());
         }
 
-        getHighlightFont().drawText( text_, Gui::Coord( absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1 ), static_cast<int>(width()) );
+        getHighlightFont().drawText(
+            text_,
+            Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
+            static_cast<int>(width()));
     }
     else
     {
@@ -150,46 +178,48 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
         auto* shared = pRootParent_->getSharedBitmaps();
         auto backdrop = shared->getNamedBitmap("backdrop");
         shared->blitNamedBitmapFromArea(
-                backdrop,
-                absoluteBoundary(),
-                absoluteBoundary().minCorner(),
-                [shared, backdrop](const Gui::Box& box) {
-                    using namespace machgui::helper::menus;
-                    return centered_bitmap_transform(
-                            box,
-                            shared->getWidthOfNamedBitmap(backdrop),
-                            shared->getHeightOfNamedBitmap(backdrop)
-                    );
-                });
+            backdrop,
+            absoluteBoundary(),
+            absoluteBoundary().minCorner(),
+            [shared, backdrop](const Gui::Box& box) {
+                using namespace machgui::helper::menus;
+                return centered_bitmap_transform(
+                    box,
+                    shared->getWidthOfNamedBitmap(backdrop),
+                    shared->getHeightOfNamedBitmap(backdrop));
+            });
 
         // Draw list box item text
-        getFont().drawText( text_, Gui::Coord( absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1 ), static_cast<int>(width()) );
+        getFont().drawText(
+            text_,
+            Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
+            static_cast<int>(width()));
     }
 }
 
 bool MachGuiSingleSelectionListBoxItem::highlighted() const
 {
     return highlighted_;
-}	   
+}
 
-//virtual 
-void MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent( const GuiMouseEvent& /*rel*/ )
+// virtual
+void MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
     // Play enter sound
-    MachGuiSoundManager::instance().playSound( "gui/sounds/listhigh.wav" );
+    MachGuiSoundManager::instance().playSound("gui/sounds/listhigh.wav");
 
     highlighted_ = true;
 
-    if ( not selected() )
+    if (not selected())
         changed();
 }
 
-//virtual 
-void MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent( const GuiMouseEvent& /*rel*/ )
+// virtual
+void MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
     highlighted_ = false;
 
-    if ( not selected() )
+    if (not selected())
         changed();
 }
 

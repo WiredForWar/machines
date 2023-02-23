@@ -1,8 +1,8 @@
 /*
- * O P N U K E A T . H P P 
+ * O P N U K E A T . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
- 
+
 /*
  * Mixin for logical objects that support an
  * attack operation.
@@ -28,54 +28,46 @@ class MachActor;
 
 // canonical form revoked
 
-class MachLogNukeAttackOperation
-: public MachLogOperation
+class MachLogNukeAttackOperation : public MachLogOperation
 {
 public:
+    MachLogNukeAttackOperation(MachLogMissileEmplacement* pActor, MachActor* pDirectObject);
 
-	MachLogNukeAttackOperation( MachLogMissileEmplacement * pActor,
-							MachActor * pDirectObject );
-	
-	MachLogNukeAttackOperation( MachLogMissileEmplacement * pActor,
-							const MexPoint3d& targetPosition );						
-							
-	~MachLogNukeAttackOperation();
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogNukeAttackOperation );
-	PER_FRIEND_READ_WRITE( MachLogNukeAttackOperation );
+    MachLogNukeAttackOperation(MachLogMissileEmplacement* pActor, const MexPoint3d& targetPosition);
+
+    ~MachLogNukeAttackOperation() override;
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogNukeAttackOperation);
+    PER_FRIEND_READ_WRITE(MachLogNukeAttackOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
-	virtual void doOutputOperator( ostream& ) const;
+    void doOutputOperator(ostream&) const override;
 
-	MachActor& directObject();
-	const MachActor& directObject() const;
-	
-	virtual bool doBeInterrupted();
+    MachActor& directObject();
+    const MachActor& directObject() const;
 
+    bool doBeInterrupted() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogNukeAttackOperation(const MachLogNukeAttackOperation&);
+    MachLogNukeAttackOperation& operator=(const MachLogNukeAttackOperation&);
+    bool operator==(const MachLogNukeAttackOperation&);
 
-	// Operations deliberately revoked
-    MachLogNukeAttackOperation( const MachLogNukeAttackOperation& );
-    MachLogNukeAttackOperation& operator =( const MachLogNukeAttackOperation& );
-    bool operator ==( const MachLogNukeAttackOperation& );
-	
-	MachLogMissileEmplacement*				pActor_;
-	MexPoint3d								targetPosition_;
+    MachLogMissileEmplacement* pActor_;
+    MexPoint3d targetPosition_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogNukeAttackOperation );
-
+PER_DECLARE_PERSISTENT(MachLogNukeAttackOperation);
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef 	_MACHLOG_OPNUKEAT_HPP	*/
+#endif /*  #ifndef     _MACHLOG_OPNUKEAT_HPP   */
 
 /* End OPNUKEAT.HPP ***************************************************/

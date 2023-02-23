@@ -6,11 +6,12 @@
 #include <iostream>
 #include "render/matvec.hpp"
 
-PER_DEFINE_PERSISTENT( RenMaterialVec );
+PER_DEFINE_PERSISTENT(RenMaterialVec);
 
-RenMaterialVec::RenMaterialVec(size_t nMats): Base(0)
+RenMaterialVec::RenMaterialVec(size_t nMats)
+    : Base(0)
 {
-	reserve(nMats);
+    reserve(nMats);
     TEST_INVARIANT;
 }
 
@@ -21,34 +22,34 @@ RenMaterialVec::~RenMaterialVec()
 
 void RenMaterialVec::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RenMaterialVec& t )
+ostream& operator<<(ostream& o, const RenMaterialVec& t)
 {
     o << "RenMaterialVec of " << t.size() << " materials";
-	o << ((t.size() > 0)? ":": ".") << "\n";
+    o << ((t.size() > 0) ? ":" : ".") << "\n";
 
-	for (RenMaterialVec::const_iterator it=t.begin(); it!=t.end(); ++it)
-		o << "  " << *it << "\n";
+    for (RenMaterialVec::const_iterator it = t.begin(); it != t.end(); ++it)
+        o << "  " << *it << "\n";
 
     return o;
 }
 
-void perWrite( PerOstream& ostr, const RenMaterialVec& vec )
+void perWrite(PerOstream& ostr, const RenMaterialVec& vec)
 {
     const RenMaterialVec::Base& base = vec;
     ostr << base;
 }
 
-void perRead( PerIstream& istr, RenMaterialVec& vec )
+void perRead(PerIstream& istr, RenMaterialVec& vec)
 {
     RenMaterialVec::Base& base = vec;
     istr >> base;
 }
 
-RenMaterialVec::RenMaterialVec( PerConstructor )
-: Base( 0 )
+RenMaterialVec::RenMaterialVec(PerConstructor)
+    : Base(0)
 {
 }
 

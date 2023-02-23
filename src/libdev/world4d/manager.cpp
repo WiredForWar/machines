@@ -12,7 +12,7 @@
 #include "world4d/root.hpp"
 
 #ifndef _INLINE
-    #include "world4d/manager.ipp"
+#include "world4d/manager.ipp"
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -25,18 +25,18 @@ W4dManager& W4dManager::instance()
 //////////////////////////////////////////////////////////////////////////////////////////
 
 W4dManager::W4dManager()
-:   currentTime_( 0 ),
-    pSceneManager_( NULL ),
-    frameNumber_( 0 ),
-	currentPassId_( 0 ),
-    generalPositionId_( 0 ),
-    hasArtificialTime_( false )
+    : currentTime_(0)
+    , pSceneManager_(nullptr)
+    , frameNumber_(0)
+    , currentPassId_(0)
+    , generalPositionId_(0)
+    , hasArtificialTime_(false)
 {
     TEST_INVARIANT;
 
-    //Constrain order of construction of hidden root and garbage collector, so destruction
-    //works. We need the garbage collector to be destructed first.
-    //This assumes garbage collector hasn't been invoked yet.
+    // Constrain order of construction of hidden root and garbage collector, so destruction
+    // works. We need the garbage collector to be destructed first.
+    // This assumes garbage collector hasn't been invoked yet.
     W4dRoot::hiddenRoot();
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -51,8 +51,8 @@ void W4dManager::render()
 {
     TEST_INVARIANT;
 
-    //Just render the scene if we have one
-    if( pSceneManager_ != NULL )
+    // Just render the scene if we have one
+    if (pSceneManager_ != nullptr)
         pSceneManager_->render();
 
     ++frameNumber_;
@@ -66,28 +66,28 @@ size_t W4dManager::frameNumber() const
 //////////////////////////////////////////////////////////////////////////////////////////
 uint32_t W4dManager::generateRenderPassId()
 {
-	return ++currentPassId_;
+    return ++currentPassId_;
 }
 
 void W4dManager::emergencyShutdown()
 {
-	std::cout << "W4dManager::emergencyShutdown trying to restore screen mode." << std::endl;
+    std::cout << "W4dManager::emergencyShutdown trying to restore screen mode." << std::endl;
 }
 
 void W4dManager::renderingSuspended()
 {
-	std::cout << "W4dManager::renderingSuspended rendering is unavailable." << std::endl;
+    std::cout << "W4dManager::renderingSuspended rendering is unavailable." << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void W4dManager::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const W4dManager& t )
+ostream& operator<<(ostream& o, const W4dManager& t)
 {
 
     o << "W4dManager " << (void*)&t << " start" << std::endl;
@@ -101,7 +101,7 @@ void W4dManager::update()
 {
     W4dDomain::initialiseNewSubjects();
 
-    //Do any outstanding garbage collection
+    // Do any outstanding garbage collection
     W4dGarbageCollector::instance().collect();
 }
 /* End MANAGER.CPP **************************************************/

@@ -1,5 +1,5 @@
 /*
- * I O N W E A P . H P P 
+ * I O N W E A P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,48 +23,51 @@ class MachPhysIonWeapon : public MachPhysWeapon
 // Canonical form revoked
 {
 public:
-    //Constructs appropriate 
-    MachPhysIonWeapon( W4dEntity* pParent, const MexTransform3d& localTransform,
-                    MachPhys::WeaponType type, MachPhys::Mounting mounting );
+    // Constructs appropriate
+    MachPhysIonWeapon(
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform,
+        MachPhys::WeaponType type,
+        MachPhys::Mounting mounting);
 
-    //dtor
-    virtual ~MachPhysIonWeapon();
+    // dtor
+    ~MachPhysIonWeapon() override;
 
-    //Return an exemplar ionWeapon - ensures the mesh is loaded
-    static const MachPhysIonWeapon& exemplar( MachPhys::WeaponType type );
+    // Return an exemplar ionWeapon - ensures the mesh is loaded
+    static const MachPhysIonWeapon& exemplar(MachPhys::WeaponType type);
 
-    //apply the destruction animation to pVictim at startTime
-	static PhysRelativeTime destroy(W4dEntity* pVictim, const PhysAbsoluteTime& startTime);
+    // apply the destruction animation to pVictim at startTime
+    static PhysRelativeTime destroy(W4dEntity* pVictim, const PhysAbsoluteTime& startTime);
 
     //////////////////////////////////////////////
     // Inherited from MachPhysWeapon
     // does nothing.
-    virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
     //////////////////////////////////////////////
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysIonWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachPhysIonWeapon& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysIonWeapon );
+    PER_MEMBER_PERSISTENT(MachPhysIonWeapon);
 
 private:
-    MachPhysIonWeapon( const MachPhysIonWeapon& );
-    MachPhysIonWeapon& operator =( const MachPhysIonWeapon& );
-    bool operator ==( const MachPhysIonWeapon& );
+    MachPhysIonWeapon(const MachPhysIonWeapon&);
+    MachPhysIonWeapon& operator=(const MachPhysIonWeapon&);
+    bool operator==(const MachPhysIonWeapon&);
 
-    //One-time constructor (per type) used to create the exemplars
-    MachPhysIonWeapon( MachPhys::WeaponType type );
+    // One-time constructor (per type) used to create the exemplars
+    MachPhysIonWeapon(MachPhys::WeaponType type);
 
-    //the composite file path for given type
-    static const char* compositeFilePath( MachPhys::WeaponType type );
+    // the composite file path for given type
+    static const char* compositeFilePath(MachPhys::WeaponType type);
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysIonWeapon );
-PER_READ_WRITE( MachPhysIonWeapon );
+PER_DECLARE_PERSISTENT(MachPhysIonWeapon);
+PER_READ_WRITE(MachPhysIonWeapon);
 
 #endif
 

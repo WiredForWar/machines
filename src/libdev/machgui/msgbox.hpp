@@ -1,5 +1,5 @@
 /*
- * M S G B O X . H P P 
+ * M S G B O X . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,47 +24,50 @@ class MachGuiMessageBoxResponder
 // Canonical form
 {
 public:
-	MachGuiMessageBoxResponder();
-	virtual ~MachGuiMessageBoxResponder();
+    MachGuiMessageBoxResponder();
+    virtual ~MachGuiMessageBoxResponder();
 
-	virtual bool okPressed();
-	virtual bool cancelPressed();
+    virtual bool okPressed();
+    virtual bool cancelPressed();
 };
 
-class MachGuiMessageBox	: public GuiDisplayable
+class MachGuiMessageBox : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-	enum MBType { MBOK, MBOKCANCEL, MBYESNO };
+    enum MBType
+    {
+        MBOK,
+        MBOKCANCEL,
+        MBYESNO
+    };
 
-    MachGuiMessageBox( MachGuiStartupScreens*, uint stringResId, MBType );
-	MachGuiMessageBox( MachGuiStartupScreens*, uint stringResId, MBType, const GuiStrings& );
-    ~MachGuiMessageBox();
+    MachGuiMessageBox(MachGuiStartupScreens*, uint stringResId, MBType);
+    MachGuiMessageBox(MachGuiStartupScreens*, uint stringResId, MBType, const GuiStrings&);
+    ~MachGuiMessageBox() override;
 
-	
     void CLASS_INVARIANT;
 
-	void update();
-	const GuiBitmap& image() const;
+    void update();
+    const GuiBitmap& image() const;
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiMessageBox& t );
+    friend ostream& operator<<(ostream& o, const MachGuiMessageBox& t);
 
-    MachGuiMessageBox( const MachGuiMessageBox& );
-    MachGuiMessageBox& operator =( const MachGuiMessageBox& );
+    MachGuiMessageBox(const MachGuiMessageBox&);
+    MachGuiMessageBox& operator=(const MachGuiMessageBox&);
 
-	void displayButtons( MachGuiStartupScreens* );
-	static SysPathName animationFile( MBType );
+    void displayButtons(MachGuiStartupScreens*);
+    static SysPathName animationFile(MBType);
 
-	// Data members...
-	MachGuiAnimations animations_;
-	MBType mbType_;
-	MachGuiStartupScreens* pStartupScreens_;
+    // Data members...
+    MachGuiAnimations animations_;
+    MBType mbType_;
+    MachGuiStartupScreens* pStartupScreens_;
 };
-
 
 #endif
 

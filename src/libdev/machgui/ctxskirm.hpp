@@ -1,5 +1,5 @@
 /*
- * C T X S K I R M . H P P 
+ * C T X S K I R M . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -29,57 +29,56 @@ class MachGuiCtxSkirmish : public MachGuiStartupScreenContext
 // Canonical form revoked
 {
 public:
-    MachGuiCtxSkirmish( MachGuiStartupScreens* pStartupScreens );
-    ~MachGuiCtxSkirmish();
+    MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens);
+    ~MachGuiCtxSkirmish() override;
 
     void CLASS_INVARIANT;
 
-	virtual void update();
+    void update() override;
 
-	void updateTerrainTypeList( MachGuiDbSystem& );
-	void updateScenarioList( MachGuiDbPlanet& );
-	void updateSelectedScenario( MachGuiDbScenario& );
+    void updateTerrainTypeList(MachGuiDbSystem&);
+    void updateScenarioList(MachGuiDbPlanet&);
+    void updateSelectedScenario(MachGuiDbScenario&);
 
-	virtual bool okayToSwitchContext();
-	virtual void buttonEvent( MachGuiStartupScreens::ButtonEvent );
+    bool okayToSwitchContext() override;
+    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
-	void autoLoadGame();
+    void autoLoadGame();
 
-	static int& chosenNumPlayers();
+    static int& chosenNumPlayers();
 
 protected:
-	MachGuiText* addSetting( bool numPlayers, MachGuiDropDownListBoxCreator*&, uint labelStrId, int numStrs, ... );
+    MachGuiText* addSetting(bool numPlayers, MachGuiDropDownListBoxCreator*&, uint labelStrId, int numStrs, ...);
 
-	void updateMaxPlayersList( MachGuiDbScenario& );
+    void updateMaxPlayersList(MachGuiDbScenario&);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiCtxSkirmish& t );
+    friend ostream& operator<<(ostream& o, const MachGuiCtxSkirmish& t);
 
-    MachGuiCtxSkirmish( const MachGuiCtxSkirmish& );
-    MachGuiCtxSkirmish& operator =( const MachGuiCtxSkirmish& );
+    MachGuiCtxSkirmish(const MachGuiCtxSkirmish&);
+    MachGuiCtxSkirmish& operator=(const MachGuiCtxSkirmish&);
 
-	void updateMapSizeList();
-	void initSettings();
+    void updateMapSizeList();
+    void initSettings();
 
-	// Data members...
-	MachGuiAnimations animations_;
-	MachGuiScrollableText* pScenarioDesc_;
-	MachGuiSingleSelectionListBox* pMapSizeList_;
-	MachGuiSingleSelectionListBox* pTerrainTypeList_;
-	MachGuiSingleSelectionListBox* pScenarioList_;
-	GuiSimpleScrollableList* pSettingsList_;
-	MachGuiDropDownListBoxCreator* pFogOfWarSelector_;
-	MachGuiDropDownListBoxCreator* pResourcesSelector_;
-	MachGuiDropDownListBoxCreator* pStartingResourcesSelector_;
-	MachGuiDropDownListBoxCreator* pStartingPosSelector_;
-	MachGuiDropDownListBoxCreator* pVictorySelector_;
-	MachGuiDropDownListBoxCreator* pNumPlayersSelector_;
-	MachGuiDropDownListBoxCreator* pTechLevelSelector_;
-	MachGuiDropDownListBoxCreator* pColourSelector_;
-	MachGuiText* pNumPlayersText_;
-	bool autoLoadGame_;
+    // Data members...
+    MachGuiAnimations animations_;
+    MachGuiScrollableText* pScenarioDesc_;
+    MachGuiSingleSelectionListBox* pMapSizeList_;
+    MachGuiSingleSelectionListBox* pTerrainTypeList_;
+    MachGuiSingleSelectionListBox* pScenarioList_;
+    GuiSimpleScrollableList* pSettingsList_;
+    MachGuiDropDownListBoxCreator* pFogOfWarSelector_;
+    MachGuiDropDownListBoxCreator* pResourcesSelector_;
+    MachGuiDropDownListBoxCreator* pStartingResourcesSelector_;
+    MachGuiDropDownListBoxCreator* pStartingPosSelector_;
+    MachGuiDropDownListBoxCreator* pVictorySelector_;
+    MachGuiDropDownListBoxCreator* pNumPlayersSelector_;
+    MachGuiDropDownListBoxCreator* pTechLevelSelector_;
+    MachGuiDropDownListBoxCreator* pColourSelector_;
+    MachGuiText* pNumPlayersText_;
+    bool autoLoadGame_;
 };
-
 
 #endif
 

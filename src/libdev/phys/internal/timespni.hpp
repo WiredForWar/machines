@@ -1,5 +1,5 @@
 /*
- * T I M E S P N I . H P P 
+ * T I M E S P N I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -28,38 +28,44 @@ class PhysTimedSpinPlanImpl
 // Canonical form revoked
 {
 public:
-
-    PER_MEMBER_PERSISTENT( PhysTimedSpinPlanImpl );
-    PER_FRIEND_READ_WRITE( PhysTimedSpinPlanImpl );
+    PER_MEMBER_PERSISTENT(PhysTimedSpinPlanImpl);
+    PER_FRIEND_READ_WRITE(PhysTimedSpinPlanImpl);
 
 private:
-
-    PhysTimedSpinPlanImpl( const MexVec3& axis, const MexPoint3d& position, const MexRadians& startAngle, const MexRadians& startSpeed );
-    PhysTimedSpinPlanImpl( const MexVec3& axis, const MexTransform3d& baseTransform, const MexRadians& startAngle, const MexRadians& startSpeed );
+    PhysTimedSpinPlanImpl(
+        const MexVec3& axis,
+        const MexPoint3d& position,
+        const MexRadians& startAngle,
+        const MexRadians& startSpeed);
+    PhysTimedSpinPlanImpl(
+        const MexVec3& axis,
+        const MexTransform3d& baseTransform,
+        const MexRadians& startAngle,
+        const MexRadians& startSpeed);
 
     ~PhysTimedSpinPlanImpl();
 
-    PhysTimedSpinPlanImpl( const PhysTimedSpinPlanImpl& );
-    PhysTimedSpinPlanImpl& operator =( const PhysTimedSpinPlanImpl& );
+    PhysTimedSpinPlanImpl(const PhysTimedSpinPlanImpl&);
+    PhysTimedSpinPlanImpl& operator=(const PhysTimedSpinPlanImpl&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysTimedSpinPlanImpl& t );
-	friend class PhysTimedSpinPlan;
+    friend ostream& operator<<(ostream& o, const PhysTimedSpinPlanImpl& t);
+    friend class PhysTimedSpinPlan;
 
-    //data members
+    // data members
     MexVec3 axis_; // Axis of rotation
-    MexTransform3d baseTransform_; //Constant location component of the transform
-    MexRadians startAngle_; //Angle at start of motion
-    MexRadians startSpeed_; //Initial rate of rotation (rad/sec)
-    PhysMotionPlan::Times times_; //cumulative segment end times
-    PhysMotionPlan::Angles accelerations_; //The acceleration rate for each segment (rad/sec/sec)
-    PhysMotionPlan::Angles endAngles_; //Caches the end angle for each segment
-    PhysMotionPlan::Angles endSpeeds_; //Caches the ending rotation rate for each segment
-    size_t cacheIndex_; //Cached segment index
+    MexTransform3d baseTransform_; // Constant location component of the transform
+    MexRadians startAngle_; // Angle at start of motion
+    MexRadians startSpeed_; // Initial rate of rotation (rad/sec)
+    PhysMotionPlan::Times times_; // cumulative segment end times
+    PhysMotionPlan::Angles accelerations_; // The acceleration rate for each segment (rad/sec/sec)
+    PhysMotionPlan::Angles endAngles_; // Caches the end angle for each segment
+    PhysMotionPlan::Angles endSpeeds_; // Caches the ending rotation rate for each segment
+    size_t cacheIndex_; // Cached segment index
 };
 
-PER_DECLARE_PERSISTENT( PhysTimedSpinPlanImpl );
+PER_DECLARE_PERSISTENT(PhysTimedSpinPlanImpl);
 
 #endif
 

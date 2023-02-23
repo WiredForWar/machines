@@ -20,66 +20,61 @@
 #include "ctl/map.hpp"
 #include <AL/al.h>
 
-
 class SndCountedSoundBuffer
 {
 public:
-	SndCountedSoundBuffer( ALuint buffer )
-		: 	buffer_( buffer ),
-			count_( 1 )
-			{};
-	SndCountedSoundBuffer():
-			buffer_( 0 ),
-			count_( 0 )
-			{};
+    SndCountedSoundBuffer(ALuint buffer)
+        : buffer_(buffer)
+        , count_(1) {};
+    SndCountedSoundBuffer()
+        : buffer_(0)
+        , count_(0) {};
 
-    ALuint              buffer_;
-	int					count_;
+    ALuint buffer_;
+    int count_;
 };
 
-bool operator<( const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b );
-bool operator==( const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b );
+bool operator<(const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b);
+bool operator==(const SndCountedSoundBuffer& a, const SndCountedSoundBuffer& b);
 
 class SndWaveManager
 // Canonical form revoked
 {
 public:
-    typedef ctl_map< SndWaveformId, SndWaveform*, std::less<SndWaveformId> > WaveFormMap;
-    typedef ctl_map< SndWaveformId, SndCountedSoundBuffer, std::less<SndWaveformId> > ALBufferMap;
-
+    using WaveFormMap = ctl_map<SndWaveformId, SndWaveform*, std::less<SndWaveformId>>;
+    using ALBufferMap = ctl_map<SndWaveformId, SndCountedSoundBuffer, std::less<SndWaveformId>>;
 
     //  Singleton class
     static SndWaveManager& instance();
     ~SndWaveManager();
-	void shutdown( );
+    void shutdown();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const SndWaveManager& t );
+    friend ostream& operator<<(ostream& o, const SndWaveManager& t);
 
-	SndWaveform* getWaveForm( const SndWaveformId& id );
-	ALuint getSoundBuffer( const SndWaveformId& id, bool& isFound );
+    SndWaveform* getWaveForm(const SndWaveformId& id);
+    ALuint getSoundBuffer(const SndWaveformId& id, bool& isFound);
 
-	void freeWaveForm( const SndWaveformId& id );
-    void freeSoundBuffer( const SndWaveformId& id);
+    void freeWaveForm(const SndWaveformId& id);
+    void freeSoundBuffer(const SndWaveformId& id);
 
-	bool isLoaded( const SndWaveformId& id );
+    bool isLoaded(const SndWaveformId& id);
 
-	void freeAll();
+    void freeAll();
 
 private:
-    SndWaveManager( const SndWaveManager& );
-    SndWaveManager& operator =( const SndWaveManager& );
-    bool operator ==( const SndWaveManager& );
+    SndWaveManager(const SndWaveManager&);
+    SndWaveManager& operator=(const SndWaveManager&);
+    bool operator==(const SndWaveManager&);
 
     SndWaveManager();
 
-	WaveFormMap loadedWaveForms_;
-	ALBufferMap loadedSoundBuffers_;
+    WaveFormMap loadedWaveForms_;
+    ALBufferMap loadedSoundBuffers_;
 
-	friend class SndMixer;
+    friend class SndMixer;
 };
-
 
 #endif
 

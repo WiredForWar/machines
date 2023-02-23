@@ -13,7 +13,7 @@
     at the origin from a point on the positive axis in question.
     Azimuth is performed first, then elevation, then roll.
 */
- 
+
 #ifndef _MEX_EULER_HPP
 #define _MEX_EULER_HPP
 
@@ -27,48 +27,46 @@
 class MexEulerAngles
 {
 public:
-
-    MexEulerAngles( const MexRadians& azimuth=0, const MexRadians& elevation=0, const MexRadians& roll=0 );
-    MexEulerAngles( const MexEulerAngles& );
+    MexEulerAngles(const MexRadians& azimuth = 0, const MexRadians& elevation = 0, const MexRadians& roll = 0);
+    MexEulerAngles(const MexEulerAngles&);
 
     ~MexEulerAngles();
 
-    const MexEulerAngles& operator =( const MexEulerAngles& );
+    const MexEulerAngles& operator=(const MexEulerAngles&);
 
-    bool operator ==( const MexEulerAngles& ) const;
+    bool operator==(const MexEulerAngles&) const;
 
-    const MexRadians&   azimuth() const;
-    const MexRadians&   elevation() const;
-    const MexRadians&   roll() const;
+    const MexRadians& azimuth() const;
+    const MexRadians& elevation() const;
+    const MexRadians& roll() const;
 
-    void    azimuth( const MexRadians& );
-    void    elevation( const MexRadians& );
-    void    roll( const MexRadians& );
+    void azimuth(const MexRadians&);
+    void elevation(const MexRadians&);
+    void roll(const MexRadians&);
 
     static const MexEulerAngles& zeroAngles();
-    friend ostream& operator <<( ostream& o, const MexEulerAngles& t );
-    
-    //Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT( MexEulerAngles );
-    PER_FRIEND_READ_WRITE( MexEulerAngles );
-    
-private:
+    friend ostream& operator<<(ostream& o, const MexEulerAngles& t);
 
+    // Persistence
+    PER_MEMBER_PERSISTENT_DEFAULT(MexEulerAngles);
+    PER_FRIEND_READ_WRITE(MexEulerAngles);
+
+private:
     MexRadians azimuth_;
     MexRadians elevation_;
     MexRadians roll_;
-}; 
+};
 
-PER_DECLARE_PERSISTENT( MexEulerAngles );
+PER_DECLARE_PERSISTENT(MexEulerAngles);
 
 //////////////////////////////////////////////////////////////////////
 
 #ifdef _INLINE
-    #include "mathex/eulerang.ipp"
+#include "mathex/eulerang.ipp"
 #endif
 
 //////////////////////////////////////////////////////////////////////
 
-#endif  /* #ifndef _MEX_EULER_HPP */
+#endif /* #ifndef _MEX_EULER_HPP */
 
 /* End EULER.HPP *****************************************************/

@@ -22,44 +22,46 @@ class MachPhysObjDemolish : public W4dComposite
 // Canonical form revoked
 {
 public:
+    MachPhysObjDemolish(W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::DemolitionType type);
 
-    MachPhysObjDemolish( W4dEntity* pParent, const MexTransform3d& localTransform, MachPhys::DemolitionType type );
+    void startDemolition(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& demolitionDuration,
+        MATHEX_SCALAR ObjectToGenericRatio,
+        MATHEX_SCALAR objectExpansion);
 
-	void startDemolition( const PhysAbsoluteTime& startTime, const PhysRelativeTime& demolitionDuration, MATHEX_SCALAR ObjectToGenericRatio, MATHEX_SCALAR objectExpansion );
+    ~MachPhysObjDemolish() override;
 
-    ~MachPhysObjDemolish();
+    static const MachPhysObjDemolish& exemplar(MachPhys::DemolitionType type);
 
-    static const MachPhysObjDemolish& exemplar( MachPhys::DemolitionType type );
+    static bool useGenericDemolition(MachPhys::DemolitionType type);
 
-	static bool useGenericDemolition( MachPhys::DemolitionType type );
-
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL( MachPhysObjDemolish );
-    PER_FRIEND_READ_WRITE( MachPhysObjDemolish );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysObjDemolish);
+    PER_FRIEND_READ_WRITE(MachPhysObjDemolish);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysObjDemolish& t );
-    //One-time constructor used to create the exemplar
-    MachPhysObjDemolish( MachPhys::DemolitionType type );
-    MachPhysObjDemolish( const MachPhysObjDemolish& copyMe, W4dEntity* pParent, const MexTransform3d& localTransform );
-	// operations revoked
-    MachPhysObjDemolish( const MachPhysObjDemolish& );
-    MachPhysObjDemolish& operator =( const MachPhysObjDemolish& );
+    friend ostream& operator<<(ostream& o, const MachPhysObjDemolish& t);
+    // One-time constructor used to create the exemplar
+    MachPhysObjDemolish(MachPhys::DemolitionType type);
+    MachPhysObjDemolish(const MachPhysObjDemolish& copyMe, W4dEntity* pParent, const MexTransform3d& localTransform);
+    // operations revoked
+    MachPhysObjDemolish(const MachPhysObjDemolish&);
+    MachPhysObjDemolish& operator=(const MachPhysObjDemolish&);
 
-	SysPathName compositeFileName( MachPhys::DemolitionType type );
+    SysPathName compositeFileName(MachPhys::DemolitionType type);
 
     friend class MachPhysWeaponPersistence;
 
-	// Is the demolition generic or dedicated
-	bool isGeneric_;
+    // Is the demolition generic or dedicated
+    bool isGeneric_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysObjDemolish );
+PER_DECLARE_PERSISTENT(MachPhysObjDemolish);
 
 #endif
 

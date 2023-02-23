@@ -4,26 +4,24 @@
  *
  */
 
-template< class T >
-void perWrite( PerOstream& o, const basic_string< T >& str )
+template <class T> void perWrite(PerOstream& o, const basic_string<T>& str)
 {
-	PER_WRITE_RAW_OBJECT( o, str.length() );
-	o.write( str.data(), str.length() );
+    PER_WRITE_RAW_OBJECT(o, str.length());
+    o.write(str.data(), str.length());
 }
 
-template< class T >
-void perRead( PerIstream& i, basic_string< T >& str )
+template <class T> void perRead(PerIstream& i, basic_string<T>& str)
 {
-	size_t	length;
+    size_t length;
 
-	PER_READ_RAW_OBJECT( i, length );
+    PER_READ_RAW_OBJECT(i, length);
 
-	char* data = _NEW_ARRAY( char, length + 1 );
+    char* data = _NEW_ARRAY(char, length + 1);
 
-	i.read( data, length );
-	data[ length ] = '\0';
+    i.read(data, length);
+    data[length] = '\0';
 
-	str = data;
+    str = data;
 
-	_DELETE_ARRAY( data );
+    _DELETE_ARRAY(data);
 }

@@ -16,25 +16,24 @@ MexHierShape3d::MexHierShape3d()
 MexHierShape3d::~MexHierShape3d()
 {
     TEST_INVARIANT;
-
 }
 
 void MexHierShape3d::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MexHierShape3d& t )
+ostream& operator<<(ostream& o, const MexHierShape3d& t)
 {
-   t.streamout(o);
+    t.streamout(o);
 
     return o;
 }
 
-void MexHierShape3d::streamout(ostream &o) const
+void MexHierShape3d::streamout(ostream& o) const
 {
-    o << "MexHierShape3d " << (void*) this << " start" << std::endl;
-    o << "MexHierShape3d " << (void*) this << " end" << std::endl;
+    o << "MexHierShape3d " << (void*)this << " start" << std::endl;
+    o << "MexHierShape3d " << (void*)this << " end" << std::endl;
 }
 
 /* End SHAPE3D.CPP ******************************************************/

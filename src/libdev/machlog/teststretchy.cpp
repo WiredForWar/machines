@@ -1,1 +1,1 @@
-#include "machlog/stretchy.hpp" 
+#include "machlog/stretchy.hpp"

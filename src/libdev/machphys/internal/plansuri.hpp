@@ -1,5 +1,5 @@
 /*
- * P L A N S U R I . H P P 
+ * P L A N S U R I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -27,23 +27,23 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysPlanetSurfaceImpl );
-    PER_FRIEND_READ_WRITE( MachPhysPlanetSurfaceImpl );
+    PER_MEMBER_PERSISTENT(MachPhysPlanetSurfaceImpl);
+    PER_FRIEND_READ_WRITE(MachPhysPlanetSurfaceImpl);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysPlanetSurfaceImpl& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPlanetSurfaceImpl& t);
 
-    MachPhysPlanetSurfaceImpl( const MachPhysPlanetSurfaceImpl& );
-    MachPhysPlanetSurfaceImpl& operator =( const MachPhysPlanetSurfaceImpl& );
+    MachPhysPlanetSurfaceImpl(const MachPhysPlanetSurfaceImpl&);
+    MachPhysPlanetSurfaceImpl& operator=(const MachPhysPlanetSurfaceImpl&);
 
     friend class MachPhysPlanetSurface;
-    
+
     //  The minumum height that any machine should have on the terrain
     MATHEX_SCALAR minMachineHeight_;
-    W4dRoot* pPersistenceRoot_; //A temporary root used to keep the surface self-contained for persistence
+    W4dRoot* pPersistenceRoot_; // A temporary root used to keep the surface self-contained for persistence
 };
 
-PER_DECLARE_PERSISTENT( MachPhysPlanetSurfaceImpl );
+PER_DECLARE_PERSISTENT(MachPhysPlanetSurfaceImpl);
 
 #endif
 

@@ -24,80 +24,85 @@ class MachPhysFlameThrower : public MachPhysLinearWeapon
 // Canonical form revoked
 {
 public:
-    //Constructs appropriate
-    MachPhysFlameThrower( W4dEntity* pParent, const MexTransform3d& localTransform,
-                    MachPhys::WeaponType type, MachPhys::Mounting mounting );
+    // Constructs appropriate
+    MachPhysFlameThrower(
+        W4dEntity* pParent,
+        const MexTransform3d& localTransform,
+        MachPhys::WeaponType type,
+        MachPhys::Mounting mounting);
 
-    //dtor
-    virtual ~MachPhysFlameThrower();
+    // dtor
+    ~MachPhysFlameThrower() override;
 
-    //Return an exemplar flamethrower - ensures the mesh is loaded
-    static const MachPhysFlameThrower& exemplar( MachPhys::WeaponType type );
+    // Return an exemplar flamethrower - ensures the mesh is loaded
+    static const MachPhysFlameThrower& exemplar(MachPhys::WeaponType type);
 
-    virtual MachPhysLinearProjectile* createProjectile
-    (
-        const PhysAbsoluteTime& burstStartTime, uint flameIndex, W4dEntity* pParent,
-        const W4dEntity& target, const MexPoint3d& targetOffset
-    );
+    MachPhysLinearProjectile* createProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint flameIndex,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
     /////////////////////////////////////////////////////////
     // Inherited from MachPhysWeapon
-	virtual PhysRelativeTime fire( const PhysAbsoluteTime& startTime, int numberInBurst );
+    PhysRelativeTime fire(const PhysAbsoluteTime& startTime, int numberInBurst) override;
 
-    //Play the victim animation for a machine or construction at startTime.
-    //fromDirection indicates the flight path of the hitting projectile.
-    //Returns the duration of the animation.
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysMachine* pMachine ) const;
-    virtual PhysRelativeTime victimAnimation( const PhysAbsoluteTime& startTime,
-                                              const MexLine3d& fromDirection,
-                                              MachPhysConstruction* pConstruction ) const;
+    // Play the victim animation for a machine or construction at startTime.
+    // fromDirection indicates the flight path of the hitting projectile.
+    // Returns the duration of the animation.
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysMachine* pMachine) const override;
+    PhysRelativeTime victimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction) const override;
 
     /////////////////////////////////////////////////////////
 
-    //Do the work of applying a victim animation to machine/construction/artefact
-    //Return animation duration.
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysMachine* pMachine );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysConstruction* pConstruction );
-    static PhysRelativeTime applyVictimAnimation( const PhysAbsoluteTime& startTime,
-                                                  const MexLine3d& fromDirection,
-                                                  MachPhysArtefact* pArtefact );
+    // Do the work of applying a victim animation to machine/construction/artefact
+    // Return animation duration.
+    static PhysRelativeTime
+    applyVictimAnimation(const PhysAbsoluteTime& startTime, const MexLine3d& fromDirection, MachPhysMachine* pMachine);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysConstruction* pConstruction);
+    static PhysRelativeTime applyVictimAnimation(
+        const PhysAbsoluteTime& startTime,
+        const MexLine3d& fromDirection,
+        MachPhysArtefact* pArtefact);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysFlameThrower& t );
+    friend ostream& operator<<(ostream& o, const MachPhysFlameThrower& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysFlameThrower );
+    PER_MEMBER_PERSISTENT(MachPhysFlameThrower);
 
 private:
-    MachPhysFlameThrower( const MachPhysFlameThrower& );
-    MachPhysFlameThrower& operator =( const MachPhysFlameThrower& );
-    bool operator ==( const MachPhysFlameThrower& );
+    MachPhysFlameThrower(const MachPhysFlameThrower&);
+    MachPhysFlameThrower& operator=(const MachPhysFlameThrower&);
+    bool operator==(const MachPhysFlameThrower&);
 
-    //One-time constructor (per type) used to create the exemplars
-    MachPhysFlameThrower( MachPhys::WeaponType type );
+    // One-time constructor (per type) used to create the exemplars
+    MachPhysFlameThrower(MachPhys::WeaponType type);
 
-    //the composite file path for given type
-    static const char* compositeFilePath( MachPhys::WeaponType type );
-	MachPhysFlameBall* createFlameBall
-	(
-		const PhysAbsoluteTime& burstStartTime,
-		uint flameIndex,
-		W4dEntity* pParent,
-		const W4dEntity& target,
-		const MexPoint3d& targetOffset
-	);
+    // the composite file path for given type
+    static const char* compositeFilePath(MachPhys::WeaponType type);
+    MachPhysFlameBall* createFlameBall(
+        const PhysAbsoluteTime& burstStartTime,
+        uint flameIndex,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset);
 
     friend class MachPhysWeaponPersistence;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysFlameThrower );
-PER_READ_WRITE( MachPhysFlameThrower );
+PER_DECLARE_PERSISTENT(MachPhysFlameThrower);
+PER_READ_WRITE(MachPhysFlameThrower);
 
 #endif
 

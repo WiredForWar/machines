@@ -16,52 +16,51 @@ MachPhysAdministratorData::MachPhysAdministratorData()
 MachPhysAdministratorData::~MachPhysAdministratorData()
 {
     TEST_INVARIANT;
-
 }
 
 MATHEX_SCALAR MachPhysAdministratorData::accuracy() const
 {
-	return accuracy_;
+    return accuracy_;
 }
 
-void MachPhysAdministratorData::accuracy( const MATHEX_SCALAR& newAccuracy)
+void MachPhysAdministratorData::accuracy(const MATHEX_SCALAR& newAccuracy)
 {
-	accuracy_ = newAccuracy;
+    accuracy_ = newAccuracy;
 }
 
 MATHEX_SCALAR MachPhysAdministratorData::nWeapons() const
 {
-	return nWeapons_;
+    return nWeapons_;
 }
 
-void MachPhysAdministratorData::nWeapons( const MATHEX_SCALAR& newNumberOfWeapons)
+void MachPhysAdministratorData::nWeapons(const MATHEX_SCALAR& newNumberOfWeapons)
 {
-	nWeapons_ = newNumberOfWeapons;
+    nWeapons_ = newNumberOfWeapons;
 }
 
 MATHEX_SCALAR MachPhysAdministratorData::maxSubordinates() const
 {
-	return maxSubordinates_;
+    return maxSubordinates_;
 }
 
-void MachPhysAdministratorData::maxSubordinates( const MATHEX_SCALAR& newMaxSubordinates )
+void MachPhysAdministratorData::maxSubordinates(const MATHEX_SCALAR& newMaxSubordinates)
 {
-	maxSubordinates_ = newMaxSubordinates;
+    maxSubordinates_ = newMaxSubordinates;
 }
 
 void MachPhysAdministratorData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysAdministratorData& t )
+ostream& operator<<(ostream& o, const MachPhysAdministratorData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-	//o << (MachPhysMachineData)t;
-	o << "Accuracy " << t.accuracy() << std::endl;
-	o << "Number Weaps " << t.nWeapons() << std::endl;
-	o << "Max Subordinates " << t.maxSubordinates() << std::endl;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysMachineData)t;
+    o << "Accuracy " << t.accuracy() << std::endl;
+    o << "Number Weaps " << t.nWeapons() << std::endl;
+    o << "Max Subordinates " << t.maxSubordinates() << std::endl;
 
     return o;
 }

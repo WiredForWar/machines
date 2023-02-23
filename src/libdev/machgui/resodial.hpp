@@ -1,5 +1,5 @@
 /*
- * R E S O D I A L . H P P 
+ * R E S O D I A L . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -19,46 +19,46 @@
 #include "gui/image.hpp"
 #include "gui/gui.hpp"
 
-//Forward refs
+// Forward refs
 class SysPathName;
 
-//orthodox canonical (revoked)
-class MachGuiResourceDial 
-: public GuiImage
+// orthodox canonical (revoked)
+class MachGuiResourceDial : public GuiImage
 {
 public:
-    //ctor. Background bitmap path is bitmapName.
-    //Parent is pParent.
-    //Position of entire displayable relative to parent is relativePosition.
-    //Offset to text from local origin is textOffset.
-    MachGuiResourceDial( const SysPathName& bitmapName, GuiDisplayable* pParent,
-                         const Gui::Coord& relativePosition, const Gui::Coord& textOffset );
+    // ctor. Background bitmap path is bitmapName.
+    // Parent is pParent.
+    // Position of entire displayable relative to parent is relativePosition.
+    // Offset to text from local origin is textOffset.
+    MachGuiResourceDial(
+        const SysPathName& bitmapName,
+        GuiDisplayable* pParent,
+        const Gui::Coord& relativePosition,
+        const Gui::Coord& textOffset);
 
-    //dtor.
-    virtual ~MachGuiResourceDial();
+    // dtor.
+    ~MachGuiResourceDial() override;
 
-    //Redisplay with using newValue
-    void updateValue( int newValue );
+    // Redisplay with using newValue
+    void updateValue(int newValue);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachGuiResourceDial& t );
+    friend ostream& operator<<(ostream& o, const MachGuiResourceDial& t);
 
 protected:
-
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
     // Operations deliberately revoked
-    MachGuiResourceDial( const MachGuiResourceDial& );
-    MachGuiResourceDial& operator =( const MachGuiResourceDial& );
-    bool operator ==( const MachGuiResourceDial& );
+    MachGuiResourceDial(const MachGuiResourceDial&);
+    MachGuiResourceDial& operator=(const MachGuiResourceDial&);
+    bool operator==(const MachGuiResourceDial&);
 
-    //Data members
-    int lastDisplayedValue_; //the last value displayed on an update
-    Gui::Coord textOffset_; //Offset to draw the text value at
+    // Data members
+    int lastDisplayedValue_; // the last value displayed on an update
+    Gui::Coord textOffset_; // Offset to draw the text value at
 };
-
 
 #endif
 

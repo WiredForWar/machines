@@ -32,34 +32,33 @@ public:
 
     //  Create a finite buffer which will store the last
     //  bufferSize characters
-    BaseLogBuffer( size_t bufferSize );
+    BaseLogBuffer(size_t bufferSize);
 
-    ~BaseLogBuffer();
+    ~BaseLogBuffer() override;
 
     //  Clear the buffer of all characters
-    void    clear();
+    void clear();
 
     std::string dataAsString() const;
 
     //  Note that writing the buffer out does not clear it
-    friend ostream& operator <<( ostream& o, const BaseLogBuffer& t );
+    friend ostream& operator<<(ostream& o, const BaseLogBuffer& t);
 
 private:
     // Operation deliberately revoked
-    BaseLogBuffer( const BaseLogBuffer& );
+    BaseLogBuffer(const BaseLogBuffer&);
 
     // Operation deliberately revoked
-    BaseLogBuffer& operator =( const BaseLogBuffer& );
+    BaseLogBuffer& operator=(const BaseLogBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseLogBuffer& );
+    bool operator==(const BaseLogBuffer&);
 
     BaseLogStreamBuffer* pStreamBuffer_;
 
     BaseLogStreamBuffer* pInfiniteStreamBuffer();
-    BaseLogStreamBuffer* pCircularStreamBuffer( size_t bufferSize );
+    BaseLogStreamBuffer* pCircularStreamBuffer(size_t bufferSize);
 };
-
 
 #endif
 

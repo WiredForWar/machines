@@ -1,5 +1,5 @@
 /*
- * C O N V Y O F F . H P P 
+ * C O N V Y O F F . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -18,31 +18,29 @@
 class MachLogConvoyOffsets
 {
 public:
-
-	enum ConvoyType
-	{
-		PATROL_CONVOY,
-		KILLER_CONVOY,
-		LOCATOR_CONVOY
-	};
+    enum ConvoyType
+    {
+        PATROL_CONVOY,
+        KILLER_CONVOY,
+        LOCATOR_CONVOY
+    };
 
     ~MachLogConvoyOffsets();
-	
-	static const MexPoint2d convoyOffset( const ConvoyType&, const size_t& index, const MATHEX_SCALAR& clearence );
+
+    static const MexPoint2d convoyOffset(const ConvoyType&, const size_t& index, const MATHEX_SCALAR& clearence);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogConvoyOffsets& t );
+    friend ostream& operator<<(ostream& o, const MachLogConvoyOffsets& t);
 
 private:
     // Operation deliberately revoked
-    MachLogConvoyOffsets( const MachLogConvoyOffsets& );
-    MachLogConvoyOffsets& operator =( const MachLogConvoyOffsets& );
-    bool operator ==( const MachLogConvoyOffsets& );
+    MachLogConvoyOffsets(const MachLogConvoyOffsets&);
+    MachLogConvoyOffsets& operator=(const MachLogConvoyOffsets&);
+    bool operator==(const MachLogConvoyOffsets&);
 
     MachLogConvoyOffsets();
 };
-
 
 #endif
 

@@ -21,74 +21,73 @@ class MexTransform3d;
 class MexRadians;
 class PhysRampAcceleration;
 
-template < class T > class CtlCountedPtr;
-template < class T > class ctl_vector;
+template <class T> class CtlCountedPtr;
+template <class T> class ctl_vector;
 
-//abstract, canonical (revoked)
+// abstract, canonical (revoked)
 class PhysMotionPlan
 {
 public:
-    //Some useful typedefs
-    typedef ctl_vector< MATHEX_SCALAR >         Times;
-    typedef CtlCountedPtr< Times >              TimesPtr;
-    typedef ctl_vector< MATHEX_SCALAR >         Speeds;
-    typedef CtlCountedPtr< Speeds >             SpeedsPtr;
-    typedef ctl_vector< MexTransform3d >        Transforms;
-    typedef CtlCountedPtr< Transforms >         TransformsPtr;
-    typedef ctl_vector< MexRadians >            Angles;
-    typedef CtlCountedPtr< Angles >             AnglesPtr;
-    typedef ctl_vector< PhysRampAcceleration >  RampAccelerations;
-    typedef CtlCountedPtr< RampAccelerations >  RampAccelerationsPtr;
+    // Some useful typedefs
+    using Times = ctl_vector<MATHEX_SCALAR>;
+    using TimesPtr = CtlCountedPtr<Times>;
+    using Speeds = ctl_vector<MATHEX_SCALAR>;
+    using SpeedsPtr = CtlCountedPtr<Speeds>;
+    using Transforms = ctl_vector<MexTransform3d>;
+    using TransformsPtr = CtlCountedPtr<Transforms>;
+    using Angles = ctl_vector<MexRadians>;
+    using AnglesPtr = CtlCountedPtr<Angles>;
+    using RampAccelerations = ctl_vector<PhysRampAcceleration>;
+    using RampAccelerationsPtr = CtlCountedPtr<RampAccelerations>;
 
-    //duration specifies the maximum time at which the motion is defined.
-    //type specifies whether motion is absolute or relative.
-    PhysMotionPlan( const PhysRelativeTime& duration );
+    // duration specifies the maximum time at which the motion is defined.
+    // type specifies whether motion is absolute or relative.
+    PhysMotionPlan(const PhysRelativeTime& duration);
 
     virtual ~PhysMotionPlan();
 
-    //Return the motion duration
+    // Return the motion duration
     const PhysRelativeTime& duration() const;
 
-    //Override to define result as a function of timeOffset.
-    //If time is greater than duration, the transform at time duration is to be returned.
-    virtual void transform( const PhysRelativeTime& timeOffset, MexTransform3d* result) const = 0;
+    // Override to define result as a function of timeOffset.
+    // If time is greater than duration, the transform at time duration is to be returned.
+    virtual void transform(const PhysRelativeTime& timeOffset, MexTransform3d* result) const = 0;
 
-    //True iff the duration of the plan is <= timeOffset
-    bool isDone( const PhysRelativeTime& timeOffset ) const;
+    // True iff the duration of the plan is <= timeOffset
+    bool isDone(const PhysRelativeTime& timeOffset) const;
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_ABSTRACT( PhysMotionPlan );
-    PER_FRIEND_READ_WRITE( PhysMotionPlan );
+    PER_MEMBER_PERSISTENT_ABSTRACT(PhysMotionPlan);
+    PER_FRIEND_READ_WRITE(PhysMotionPlan);
 
 protected:
-    //set the duration of the motion plan to newDuration
-    void duration( const PhysRelativeTime& newDuration);
+    // set the duration of the motion plan to newDuration
+    void duration(const PhysRelativeTime& newDuration);
 
-    //True iff the times in times are in ascending order
-    bool inAscendingOrder( const Times& times ) const;
-    //PRE( times.size() > 0 )
+    // True iff the times in times are in ascending order
+    bool inAscendingOrder(const Times& times) const;
+    // PRE( times.size() > 0 )
 
 private:
     // Operation deliberately revoked
-    PhysMotionPlan( const PhysMotionPlan& );
+    PhysMotionPlan(const PhysMotionPlan&);
 
     // Operation deliberately revoked
-    PhysMotionPlan& operator =( const PhysMotionPlan& );
+    PhysMotionPlan& operator=(const PhysMotionPlan&);
 
     // Operation deliberately revoked
-    bool operator ==( const PhysMotionPlan& );
+    bool operator==(const PhysMotionPlan&);
 
     // Data members
     PhysRelativeTime duration_; // The maximum time at which the mapping is defined
 };
 
-PER_DECLARE_PERSISTENT( PhysMotionPlan );
+PER_DECLARE_PERSISTENT(PhysMotionPlan);
 
 #ifdef _INLINE
-    #include "phys/motplan.ipp"
+#include "phys/motplan.ipp"
 #endif
-
 
 #endif
 

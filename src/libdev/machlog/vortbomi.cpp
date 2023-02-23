@@ -1,5 +1,5 @@
 /*
- * V O R T B O M I . C P P 
+ * V O R T B O M I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -9,14 +9,13 @@
 
 #include "machphys/machphys.hpp"
 #include "machphys/mphydata.hpp"
-//#include "machlog/race.hpp"
-//#include "machlog/races.hpp"
-//#include "machlog/actor.hpp"
+// #include "machlog/race.hpp"
+// #include "machlog/races.hpp"
+// #include "machlog/actor.hpp"
 
-
-MachLogVortexBombImpl::MachLogVortexBombImpl( const MachPhysWeaponData* const pWeaponData )
-:	pWeaponData_( pWeaponData ),
-	pPhysVortexBomb_( NULL )
+MachLogVortexBombImpl::MachLogVortexBombImpl(const MachPhysWeaponData* const pWeaponData)
+    : pWeaponData_(pWeaponData)
+    , pPhysVortexBomb_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -24,15 +23,14 @@ MachLogVortexBombImpl::MachLogVortexBombImpl( const MachPhysWeaponData* const pW
 MachLogVortexBombImpl::~MachLogVortexBombImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogVortexBombImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogVortexBombImpl& t )
+ostream& operator<<(ostream& o, const MachLogVortexBombImpl& t)
 {
 
     o << "MachLogVortexBombImpl " << (void*)&t << " start" << std::endl;
@@ -40,8 +38,5 @@ ostream& operator <<( ostream& o, const MachLogVortexBombImpl& t )
 
     return o;
 }
-
-
-
 
 /* End VORTBOMI.CPP *************************************************/

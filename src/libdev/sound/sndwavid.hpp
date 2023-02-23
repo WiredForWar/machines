@@ -14,24 +14,23 @@ class SysPathName;
 class SndWaveformId
 {
 public:
-	SndWaveformId();
+    SndWaveformId();
 
-	SndWaveformId(const SysPathName& pathname);
+    SndWaveformId(const SysPathName& pathname);
 
-	SndWaveformId(const SndWaveformId& newId);
+    SndWaveformId(const SndWaveformId& newId);
 
-	~SndWaveformId();
+    ~SndWaveformId();
 
-	const SysPathName& pathname() const;
+    const SysPathName& pathname() const;
 
-	SndWaveformId& operator=(const SndWaveformId& rhs);
+    SndWaveformId& operator=(const SndWaveformId& rhs);
 
-	friend bool operator==(const SndWaveformId& lhs, const SndWaveformId& rhs);
-	friend bool operator<(const SndWaveformId& lhs, const SndWaveformId& rhs);
+    friend bool operator==(const SndWaveformId& lhs, const SndWaveformId& rhs);
+    friend bool operator<(const SndWaveformId& lhs, const SndWaveformId& rhs);
 
 private:
-
-	SndWaveformIdImpl* pImpl_;
+    SndWaveformIdImpl* pImpl_;
 };
 
 #endif

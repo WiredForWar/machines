@@ -1,5 +1,5 @@
 /*
- * O P C O N S T I . H P P 
+ * O P C O N S T I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,29 +24,27 @@ class MachLogBuildPoint;
 class MachLogConstructOperationImpl
 {
 public:
-	MachLogConstructOperationImpl( MachLogConstructor * pActor, MachLogConstruction * pConstr );
-	~MachLogConstructOperationImpl();
-	PER_MEMBER_PERSISTENT( MachLogConstructOperationImpl );
-	PER_FRIEND_READ_WRITE( MachLogConstructOperationImpl );
-	
-	void CLASS_INVARIANT;
+    MachLogConstructOperationImpl(MachLogConstructor* pActor, MachLogConstruction* pConstr);
+    ~MachLogConstructOperationImpl();
+    PER_MEMBER_PERSISTENT(MachLogConstructOperationImpl);
+    PER_FRIEND_READ_WRITE(MachLogConstructOperationImpl);
 
-	friend class MachLogConstructOperation;
-	
+    void CLASS_INVARIANT;
+
+    friend class MachLogConstructOperation;
+
 private:
-
-	MachLogConstructor *					pActor_;
-	MexPoint3d								dest_;
-	MachLogConstruction *					pConstruction_;
-	MachLogConstructOperation::State		state_;
-	PhysAbsoluteTime						lastUpdateTime_;
-	bool									currentlyAttached_;
-	bool									hasBuildPoint_;
-	MachLogBuildPoint*						pBuildPoint_;	
-													
+    MachLogConstructor* pActor_;
+    MexPoint3d dest_;
+    MachLogConstruction* pConstruction_;
+    MachLogConstructOperation::State state_;
+    PhysAbsoluteTime lastUpdateTime_;
+    bool currentlyAttached_;
+    bool hasBuildPoint_;
+    MachLogBuildPoint* pBuildPoint_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogConstructOperationImpl );
+PER_DECLARE_PERSISTENT(MachLogConstructOperationImpl);
 
 #endif
 

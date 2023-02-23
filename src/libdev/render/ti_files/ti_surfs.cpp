@@ -5,6 +5,6 @@
 #include "render/render.hpp"
 
 void dummyFunctionNameMap()
-{				
-  static ctl_map< string, Ren::TexId, less<string> > dummyBiteMap;
+{
+    static ctl_map<string, Ren::TexId, less<string>> dummyBiteMap;
 }

@@ -1,5 +1,5 @@
 /*
- * D I S P N O T I . C P P 
+ * D I S P N O T I . C P P
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
@@ -16,15 +16,14 @@ MachLogDispositionChangeNotifiable::MachLogDispositionChangeNotifiable()
 MachLogDispositionChangeNotifiable::~MachLogDispositionChangeNotifiable()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogDispositionChangeNotifiable::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogDispositionChangeNotifiable& t )
+ostream& operator<<(ostream& o, const MachLogDispositionChangeNotifiable& t)
 {
 
     o << "MachLogDispositionChangeNotifiable " << (void*)&t << " start" << std::endl;

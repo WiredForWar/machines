@@ -1,5 +1,5 @@
 /*
- * W 9 5 T I M E I . H P P 
+ * W 9 5 T I M E I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,11 +23,15 @@ public:
     static DevW95TimeInternal& instance();
     ~DevW95TimeInternal();
 
-    double  resolution() const;
+    double resolution() const;
 
     enum TimeMethod
-    { RDTSC, PERFORMANCE_COUNTER, TIME_GET_TIME };
-    
+    {
+        RDTSC,
+        PERFORMANCE_COUNTER,
+        TIME_GET_TIME
+    };
+
     TimeMethod method() const;
 
     double pentiumTicks() const;
@@ -35,10 +39,10 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const DevW95TimeInternal& t );
+    friend ostream& operator<<(ostream& o, const DevW95TimeInternal& t);
 
-    DevW95TimeInternal( const DevW95TimeInternal& );
-    DevW95TimeInternal& operator =( const DevW95TimeInternal& );
+    DevW95TimeInternal(const DevW95TimeInternal&);
+    DevW95TimeInternal& operator=(const DevW95TimeInternal&);
 
     DevW95TimeInternal();
 
@@ -47,13 +51,11 @@ private:
 
     double resolution_;
     TimeMethod method_;
-    
 };
 
 #ifdef _INLINE
-    #include "internal/w95timei.ipp"
+#include "internal/w95timei.ipp"
 #endif
-
 
 #endif
 

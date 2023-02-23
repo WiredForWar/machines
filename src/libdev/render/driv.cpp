@@ -14,60 +14,60 @@
 // class RenDriver
 //
 
-RenDriver::RenDriver( const RenDriver& copy )
-: pImpl_( copy.pImpl_->clone() )
+RenDriver::RenDriver(const RenDriver& copy)
+    : pImpl_(copy.pImpl_->clone())
 {
-  TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
-RenDriver::RenDriver( RenIDriverImpl *pImpl )
+RenDriver::RenDriver(RenIDriverImpl* pImpl)
 {
-  PRE( pImpl );
-  pImpl_ = pImpl;
+    PRE(pImpl);
+    pImpl_ = pImpl;
 
-  TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
 RenDriver::~RenDriver()
 {
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
-RenIDriverImpl&	RenDriver::driverImpl()
+RenIDriverImpl& RenDriver::driverImpl()
 {
-	PRE( pImpl_ );
-	return *pImpl_;
+    PRE(pImpl_);
+    return *pImpl_;
 }
 
 const RenIDriverImpl& RenDriver::driverImpl() const
 {
-	PRE( pImpl_ );
-	return *pImpl_;
+    PRE(pImpl_);
+    return *pImpl_;
 }
 
 const std::string& RenDriver::name() const
 {
-	return pImpl_->name_;
+    return pImpl_->name_;
 }
 
 const std::string& RenDriver::description() const
 {
-	return pImpl_->description_;
+    return pImpl_->description_;
 }
 
-bool RenDriver::isBetterChoiceThan( const RenDriver& driver ) const
+bool RenDriver::isBetterChoiceThan(const RenDriver& driver) const
 {
-	return driverImpl().isBetterChoiceThan( driver.driverImpl() );
+    return driverImpl().isBetterChoiceThan(driver.driverImpl());
 }
 
 void RenDriver::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RenDriver& t )
+ostream& operator<<(ostream& o, const RenDriver& t)
 {
-	o << t.name() << ", " << t.description();
+    o << t.name() << ", " << t.description();
     return o;
 }
 

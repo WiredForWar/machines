@@ -25,24 +25,21 @@ class PersistenceObjectLog
 {
 public:
     PersistenceObjectLog();
-    PersistenceObjectLog( const char* classname, const void* ptr );
+    PersistenceObjectLog(const char* classname, const void* ptr);
 
     ~PersistenceObjectLog();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PersistenceObjectLog& t );
+    friend ostream& operator<<(ostream& o, const PersistenceObjectLog& t);
 
 private:
+    std::string classname_;
+    const void* ptr_;
 
-    std::string  classname_;
-    const void*   ptr_;
-
-    friend bool operator ==( const PersistenceObjectLog&, const PersistenceObjectLog& );
-    friend bool operator <( const PersistenceObjectLog&, const PersistenceObjectLog& );
+    friend bool operator==(const PersistenceObjectLog&, const PersistenceObjectLog&);
+    friend bool operator<(const PersistenceObjectLog&, const PersistenceObjectLog&);
 };
-
-
 
 #endif
 

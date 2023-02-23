@@ -5,62 +5,59 @@
 
 #include "base/tracker.hpp"
 
-template< class T >
-bool ctlCountedPtrPointerValid( T* ptr )
+template <class T> bool ctlCountedPtrPointerValid(T* ptr)
 {
-	bool	result;
+    bool result;
 
-	if( ptr == NULL )
-	{
-		result = true;
-	}
-	else
-	{
-		void*	voidPtr = _STATIC_CAST( void*, ptr );
+    if (ptr == nullptr)
+    {
+        result = true;
+    }
+    else
+    {
+        void* voidPtr = _STATIC_CAST(void*, ptr);
 
-		// cout << "Check pointer " << voidPtr << endl;
+        // cout << "Check pointer " << voidPtr << endl;
 
-		//	The pointer is only valid if it has not already been assigned to
-		//  a counted pointer.
+        //  The pointer is only valid if it has not already been assigned to
+        //  a counted pointer.
 
-		if( DiagInternal::countedPointerTracker().pointerPresent( voidPtr ) )
-		{
-			result = false;
-		}
-		else
-		{
-			result = true;
-			DiagInternal::countedPointerTracker().addPointer( voidPtr );
-		}
-	}
+        if (DiagInternal::countedPointerTracker().pointerPresent(voidPtr))
+        {
+            result = false;
+        }
+        else
+        {
+            result = true;
+            DiagInternal::countedPointerTracker().addPointer(voidPtr);
+        }
+    }
 
-	return result;
+    return result;
 }
 
-template< class T >
-bool ctlCountedPtrPointerDestructionValid( const T* pT )
+template <class T> bool ctlCountedPtrPointerDestructionValid(const T* pT)
 {
-	bool	result;
+    bool result;
 
-	if( pT == NULL )
-	{
-		result = true;
-	}
-	else
-	{
-		void*	voidPtr = _CONST_CAST(void*, _STATIC_CAST( const void*, pT ) );
+    if (pT == nullptr)
+    {
+        result = true;
+    }
+    else
+    {
+        void* voidPtr = _CONST_CAST(void*, _STATIC_CAST(const void*, pT));
 
-		if( DiagInternal::countedPointerTracker().pointerPresent( voidPtr ) )
-		{
-			result = true;
-			DiagInternal::countedPointerTracker().removePointer( voidPtr );
-		}
-		else
-		{
-			result = false;
-		}
-	}
+        if (DiagInternal::countedPointerTracker().pointerPresent(voidPtr))
+        {
+            result = true;
+            DiagInternal::countedPointerTracker().removePointer(voidPtr);
+        }
+        else
+        {
+            result = false;
+        }
+    }
 
-	return result;
+    return result;
 }
-

@@ -28,86 +28,86 @@ class RenILinesDiagnostic
 // Cannonical form revoked.
 {
 public:
-	enum DrawMethod
-	{
-		// Draws the line as the GDI would, misses out the last pixel.
-		NORMAL,
-		// Draws as NORMAL would except for vertex dominance, the same
-		// pixel is missed out no matter how you order the vertices.
-		SORTED,
-		// Draws as a sorted line but is moved by an offset.
-		OFFSET_SORTED,
-		// The lines are drawn with the last pixel.
-		LARGE,
-		// The tests look for known errors in line drawing. If the tests
-		// are inconclusive the results are set to this.
-		UNKNOWN
-	};
+    enum DrawMethod
+    {
+        // Draws the line as the GDI would, misses out the last pixel.
+        NORMAL,
+        // Draws as NORMAL would except for vertex dominance, the same
+        // pixel is missed out no matter how you order the vertices.
+        SORTED,
+        // Draws as a sorted line but is moved by an offset.
+        OFFSET_SORTED,
+        // The lines are drawn with the last pixel.
+        LARGE,
+        // The tests look for known errors in line drawing. If the tests
+        // are inconclusive the results are set to this.
+        UNKNOWN
+    };
 
     enum TestType
     {
-        TEST1, TEST2
+        TEST1,
+        TEST2
     };
 
-	static RenILinesDiagnostic& instance();
+    static RenILinesDiagnostic& instance();
 
-	~RenILinesDiagnostic();
+    ~RenILinesDiagnostic();
 
-	// This is called to draw the test lines onto a surface. Allocates some line vertices.
-	void drawLines(RenSurface* pSurface) const;
-	// PRE(pSurface);
-	// PRE(RenDevice::current());
-	// PRE(RenDevice::current()->rendering2D());
+    // This is called to draw the test lines onto a surface. Allocates some line vertices.
+    void drawLines(RenSurface* pSurface) const;
+    // PRE(pSurface);
+    // PRE(RenDevice::current());
+    // PRE(RenDevice::current()->rendering2D());
 
-	// Tests a surface for line drawing method. As this is normally called as soon after
-	// drawLines() as possible the idleRendering() precondition must be upheld to ensure
-	// that any batched drawing operatons are sent.
-	void testLines(const RenSurface& surface);
-	// PRE(RenDevice::current());
-	//	PRE(RenDevice::current()->idleRendering() or not RenDevice::current()->rendering());
-	// POST(hasTestedLines());
+    // Tests a surface for line drawing method. As this is normally called as soon after
+    // drawLines() as possible the idleRendering() precondition must be upheld to ensure
+    // that any batched drawing operatons are sent.
+    void testLines(const RenSurface& surface);
+    // PRE(RenDevice::current());
+    //  PRE(RenDevice::current()->idleRendering() or not RenDevice::current()->rendering());
+    // POST(hasTestedLines());
 
-	DrawMethod horizontalResult() const;
-	// PRE(hasTestedLines());
-	DrawMethod verticalResult() const;
-	// PRE(hasTestedLines());
+    DrawMethod horizontalResult() const;
+    // PRE(hasTestedLines());
+    DrawMethod verticalResult() const;
+    // PRE(hasTestedLines());
 
-	bool hasTestedLines() const;
-    void setTestType( TestType type );
-	
-	void CLASS_INVARIANT;
+    bool hasTestedLines() const;
+    void setTestType(TestType type);
+
+    void CLASS_INVARIANT;
 
 private:
-	RenILinesDiagnostic();
+    RenILinesDiagnostic();
 
-	// Operations deliberatly revoked.
-	RenILinesDiagnostic(const RenILinesDiagnostic& copyMe);
-	RenILinesDiagnostic& operator =(const RenILinesDiagnostic& assignMe);
+    // Operations deliberatly revoked.
+    RenILinesDiagnostic(const RenILinesDiagnostic& copyMe);
+    RenILinesDiagnostic& operator=(const RenILinesDiagnostic& assignMe);
 
-	// These are the vertices actual used in the drawing.
-	static const RenSurface::Points& horizontalVertices();
-	static const RenSurface::Points& verticalVertices();
+    // These are the vertices actual used in the drawing.
+    static const RenSurface::Points& horizontalVertices();
+    static const RenSurface::Points& verticalVertices();
 
-	// These are vertices gained from tests on machines with and without
-	// drawing errors. They are tested against the actual results to determine
-	// whether the drawing method is a known and fixable one.
-	static const RenSurface::Points& horizontalStockVertices(DrawMethod method);
-	static const RenSurface::Points& verticalStockVertices(DrawMethod method);
+    // These are vertices gained from tests on machines with and without
+    // drawing errors. They are tested against the actual results to determine
+    // whether the drawing method is a known and fixable one.
+    static const RenSurface::Points& horizontalStockVertices(DrawMethod method);
+    static const RenSurface::Points& verticalStockVertices(DrawMethod method);
 
     bool pixelsMatchColour(const RenSurface& surface, const RenSurface::Points& points, RenColour colour);
-	
-	RenColour lineColour_;
 
-	bool hasTestedLines_;
+    RenColour lineColour_;
 
-	DrawMethod horizontalResult_;
-	DrawMethod verticalResult_;
-    TestType   testTypeMethod_;
+    bool hasTestedLines_;
+
+    DrawMethod horizontalResult_;
+    DrawMethod verticalResult_;
+    TestType testTypeMethod_;
 };
 
 #ifdef _INLINE
-	#include "internal/linediag.ipp"
+#include "internal/linediag.ipp"
 #endif
 
 #endif /* _RENDER_INTERNAL_LINE_DIAGNOSTIC_HPP ************/
-

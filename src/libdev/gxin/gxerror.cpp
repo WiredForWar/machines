@@ -1,5 +1,5 @@
 /*
- * G X E R R O R . C P P 
+ * G X E R R O R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -7,88 +7,102 @@
 
 #include "gxin/GXError.hpp"
 
-GXError::GXError() : val_(NO_ERROR_AGT)
+GXError::GXError()
+    : val_(NO_ERROR_AGT)
 {
 
     TEST_INVARIANT;
 }
 
-GXError::GXError(const GXError& copy) : val_(copy.val_)
+GXError::GXError(const GXError& copy)
+    : val_(copy.val_)
 {
 
     TEST_INVARIANT;
 }
 
-GXError& GXError::operator =(const GXErrorCode& copy)
+GXError& GXError::operator=(const GXErrorCode& copy)
 {
-   TEST_INVARIANT;
-   val_=copy;
-   TEST_INVARIANT;
-   return *this;
+    TEST_INVARIANT;
+    val_ = copy;
+    TEST_INVARIANT;
+    return *this;
 }
 
-GXError& GXError::operator =(const GXError& copy)
+GXError& GXError::operator=(const GXError& copy)
 {
-        TEST_INVARIANT;
+    TEST_INVARIANT;
 
-        if (this!=&copy) {
-                val_=copy.val_;
-        }
+    if (this != &copy)
+    {
+        val_ = copy.val_;
+    }
 
     TEST_INVARIANT;
-        return *this;
+    return *this;
 }
 
-bool operator==(const GXError& err1, const GXError& err2) {
-        bool result=true;
-        if (err1.val_!=err2.val_) result=false;
-        return result;
+bool operator==(const GXError& err1, const GXError& err2)
+{
+    bool result = true;
+    if (err1.val_ != err2.val_)
+        result = false;
+    return result;
 }
 
-bool operator==(const GXError& err1, const GXErrorCode& err2) {
-        bool result=true;
-        if (err1.val_!=err2) result=false;
+bool operator==(const GXError& err1, const GXErrorCode& err2)
+{
+    bool result = true;
+    if (err1.val_ != err2)
+        result = false;
 
-        return result;
+    return result;
 }
 
-bool operator==(const GXErrorCode& err1, const GXError& err2) {
-        bool result=true;
-        if (err1!=err2.val_) result=false;
-        return result;
+bool operator==(const GXErrorCode& err1, const GXError& err2)
+{
+    bool result = true;
+    if (err1 != err2.val_)
+        result = false;
+    return result;
 }
 
-bool operator!=(const GXError& err1, const GXError& err2) {
-        bool result=true;
-        if (err1.val_==err2.val_) result=false;
-        return result;
+bool operator!=(const GXError& err1, const GXError& err2)
+{
+    bool result = true;
+    if (err1.val_ == err2.val_)
+        result = false;
+    return result;
 }
 
-bool operator!=(const GXError& err1, const GXErrorCode& err2) {
-        bool result=true;
-        if (err1.val_==err2) result=false;
+bool operator!=(const GXError& err1, const GXErrorCode& err2)
+{
+    bool result = true;
+    if (err1.val_ == err2)
+        result = false;
 
-        return result;
+    return result;
 }
 
-bool operator!=(const GXErrorCode& err1, const GXError& err2) {
-        bool result=true;
-        if (err1==err2.val_) result=false;
-        return result;
+bool operator!=(const GXErrorCode& err1, const GXError& err2)
+{
+    bool result = true;
+    if (err1 == err2.val_)
+        result = false;
+    return result;
 }
 
 GXError::~GXError()
 {
     TEST_INVARIANT;
-
 }
 
 void GXError::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != NULL);
 }
 
-ostream& operator <<( ostream& o, const GXError& t )
+ostream& operator<<(ostream& o, const GXError& t)
 {
 
     o << "GXError " << (void*)&t << " start" << endl;

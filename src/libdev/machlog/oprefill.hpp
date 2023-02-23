@@ -1,5 +1,5 @@
 /*
- * O P L M I N E . H P P 
+ * O P L M I N E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,57 +16,49 @@
 #include "mathex/point3d.hpp"
 #include "machlog/operatio.hpp"
 
-
-
 class MachLogSpyLocator;
 class MachLogGarrison;
 
 // canonical form revoked
 
-class MachLogRefillLandMinesOperation
-: public MachLogOperation
+class MachLogRefillLandMinesOperation : public MachLogOperation
 {
 public:
+    MachLogRefillLandMinesOperation(MachLogSpyLocator* pActor);
+    MachLogRefillLandMinesOperation(MachLogSpyLocator* pActor, MachLogGarrison* pGarrison);
 
-	MachLogRefillLandMinesOperation( MachLogSpyLocator * pActor );
-	MachLogRefillLandMinesOperation( MachLogSpyLocator * pActor, MachLogGarrison* pGarrison );
+    ~MachLogRefillLandMinesOperation() override;
 
-	~MachLogRefillLandMinesOperation( );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogRefillLandMinesOperation );
-	PER_FRIEND_READ_WRITE( MachLogRefillLandMinesOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogRefillLandMinesOperation);
+    PER_FRIEND_READ_WRITE(MachLogRefillLandMinesOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual bool doBeInterrupted();
-	
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
+    bool doBeInterrupted() override;
 
-	// redefinition required, invocation revoked	
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
+
+    // redefinition required, invocation revoked
+    PhysRelativeTime doUpdate() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogRefillLandMinesOperation(const MachLogRefillLandMinesOperation&);
+    MachLogRefillLandMinesOperation& operator=(const MachLogRefillLandMinesOperation&);
+    bool operator==(const MachLogRefillLandMinesOperation&);
 
-	// Operations deliberately revoked
-    MachLogRefillLandMinesOperation( const MachLogRefillLandMinesOperation& );
-    MachLogRefillLandMinesOperation& operator =( const MachLogRefillLandMinesOperation& );
-    bool operator ==( const MachLogRefillLandMinesOperation& );
-	
-	MachLogSpyLocator *	pActor_;
-	MachLogGarrison*	pGarrison_;
-	bool				complete_;
-	bool				clientSuppliedGarrison_;
-	MexPoint3d			dest_;
-	bool				doneMove_;
-
+    MachLogSpyLocator* pActor_;
+    MachLogGarrison* pGarrison_;
+    bool complete_;
+    bool clientSuppliedGarrison_;
+    MexPoint3d dest_;
+    bool doneMove_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogRefillLandMinesOperation );
-
+PER_DECLARE_PERSISTENT(MachLogRefillLandMinesOperation);
 
 #endif
 

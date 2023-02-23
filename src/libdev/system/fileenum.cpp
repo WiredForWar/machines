@@ -7,60 +7,59 @@
 
 #include "system/fileenum.hpp"
 
-SysFileEnumerator::SysFileEnumerator( const SysPathName& directory, const SysPathName& fileSpecification )
-: SysFileFinder( directory, fileSpecification )
+SysFileEnumerator::SysFileEnumerator(const SysPathName& directory, const SysPathName& fileSpecification)
+    : SysFileFinder(directory, fileSpecification)
 {
-    files_.reserve( 512 );
+    files_.reserve(512);
     TEST_INVARIANT;
 }
 
 SysFileEnumerator::~SysFileEnumerator()
 {
     TEST_INVARIANT;
-
 }
 
 void SysFileEnumerator::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 const SysFileEnumerator::FileDatas& SysFileEnumerator::files() const
 {
-	return files_;
+    return files_;
 }
 
 void SysFileEnumerator::clearFiles()
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	files_.erase( files_.begin(), files_.end() );
+    files_.erase(files_.begin(), files_.end());
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	POST( isEmpty() );
+    POST(isEmpty());
 }
 
 bool SysFileEnumerator::isEmpty() const
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return (files_.empty());
+    return (files_.empty());
 }
 
-//virtual
-SysFileFinder::ResultType SysFileEnumerator::processFile( const SysFileData& fileData )
+// virtual
+SysFileFinder::ResultType SysFileEnumerator::processFile(const SysFileData& fileData)
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	files_.push_back( fileData );
+    files_.push_back(fileData);
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	return SysFileFinder::CONTINUE;
+    return SysFileFinder::CONTINUE;
 }
 
-ostream& operator <<( ostream& o, const SysFileEnumerator& t )
+ostream& operator<<(ostream& o, const SysFileEnumerator& t)
 {
 
     o << "SysFileEnumerator " << (void*)&t << " start" << std::endl;

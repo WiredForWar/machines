@@ -17,7 +17,7 @@
 #include "gxin/gxtexture.hpp"
 #include "gxin/gxidpos.hpp"
 
-typedef ctl_map<GXIdPos, GXTexture, std::less<GXIdPos> >	 GXTextures;
+using GXTextures = ctl_map<GXIdPos, GXTexture, std::less<GXIdPos>>;
 
 #endif
 

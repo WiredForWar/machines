@@ -23,103 +23,114 @@ class MachInGameScreen;
 class MachGuiScrollBar;
 class MachGuiScrollArea;
 
-typedef std::pair< SysPathName, SysPathName > SysPathNames;
+using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 class MachGuiScrollButton : public GuiIcon
 // cannonical from revoked
 {
 public:
-	enum ScrollDir { UP, DOWN, TOP, BOTTOM };
+    enum ScrollDir
+    {
+        UP,
+        DOWN,
+        TOP,
+        BOTTOM
+    };
 
-	MachGuiScrollButton( GuiDisplayable *pParent,
-						 const Gui::Coord& rel,
-						 const SysPathNames& bitmaps,
-						 GuiSimpleScrollableList*,
-						 ScrollDir,
-						 MachGuiScrollArea* );
-	virtual ~MachGuiScrollButton();
+    MachGuiScrollButton(
+        GuiDisplayable* pParent,
+        const Gui::Coord& rel,
+        const SysPathNames& bitmaps,
+        GuiSimpleScrollableList*,
+        ScrollDir,
+        MachGuiScrollArea*);
+    ~MachGuiScrollButton() override;
 
-	void update();
+    void update();
 
-	static size_t reqWidth();
-	static size_t reqHeight();
+    static size_t reqWidth();
+    static size_t reqHeight();
 
 protected:
-	virtual void doBeDepressed( const GuiMouseEvent& rel );
-	virtual void doBeReleased( const GuiMouseEvent& rel );
+    void doBeDepressed(const GuiMouseEvent& rel) override;
+    void doBeReleased(const GuiMouseEvent& rel) override;
 
-	virtual const GuiBitmap& getBitmap() const;
+    const GuiBitmap& getBitmap() const override;
 
 private:
-	// Operations revoked
-	MachGuiScrollButton( const MachGuiScrollButton& );
-	MachGuiScrollButton& operator =( const MachGuiScrollButton& );
-	bool operator ==( const MachGuiScrollButton& ) const;
+    // Operations revoked
+    MachGuiScrollButton(const MachGuiScrollButton&);
+    MachGuiScrollButton& operator=(const MachGuiScrollButton&);
+    bool operator==(const MachGuiScrollButton&) const;
 
-	// Data members...
-	GuiSimpleScrollableList* pIcons_;
-	ScrollDir scrollDir_;
-	MachGuiScrollArea* pScrollArea_;
+    // Data members...
+    GuiSimpleScrollableList* pIcons_;
+    ScrollDir scrollDir_;
+    MachGuiScrollArea* pScrollArea_;
 };
 
 class MachGuiScrollBar : public GuiDisplayable
 {
 public:
-	enum ScrollType { UPDOWN, TOPBOTTOM };
+    enum ScrollType
+    {
+        UPDOWN,
+        TOPBOTTOM
+    };
 
-	MachGuiScrollBar(	MachGuiScrollArea *pParent,
-						const Gui::Coord& rel,
-						GuiSimpleScrollableList*,
-						MachInGameScreen*,
-						ScrollType );
-	~MachGuiScrollBar();
+    MachGuiScrollBar(
+        MachGuiScrollArea* pParent,
+        const Gui::Coord& rel,
+        GuiSimpleScrollableList*,
+        MachInGameScreen*,
+        ScrollType);
+    ~MachGuiScrollBar() override;
 
-	static size_t reqWidth();
-	static size_t reqHeight();
+    static size_t reqWidth();
+    static size_t reqHeight();
 
-	void update();
+    void update();
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
-	MachGuiScrollButton* pUpButton_;
-	MachGuiScrollButton* pDownButton_;
-	GuiSimpleScrollableList* pIcons_;
-	MachInGameScreen* pInGameScreen_;
+    MachGuiScrollButton* pUpButton_;
+    MachGuiScrollButton* pDownButton_;
+    GuiSimpleScrollableList* pIcons_;
+    MachInGameScreen* pInGameScreen_;
 };
 
-class MachGuiScrollArea	: public GuiDisplayable
+class MachGuiScrollArea : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiScrollArea( GuiDisplayable* pParent, const Gui::Box& area, MachInGameScreen* );
-    ~MachGuiScrollArea();
+    MachGuiScrollArea(GuiDisplayable* pParent, const Gui::Box& area, MachInGameScreen*);
+    ~MachGuiScrollArea() override;
 
-	void initialise();
+    void initialise();
 
-	void update();
+    void update();
 
 protected:
-	virtual GuiSimpleScrollableList* createList( GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* ) = 0;
-	virtual void doDisplay();
+    virtual GuiSimpleScrollableList* createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen*) = 0;
+    void doDisplay() override;
 
 private:
-	// Operations revoked
-    MachGuiScrollArea( const MachGuiScrollArea& );
-    MachGuiScrollArea& operator =( const MachGuiScrollArea& );
-    bool operator ==( const MachGuiScrollArea& );
+    // Operations revoked
+    MachGuiScrollArea(const MachGuiScrollArea&);
+    MachGuiScrollArea& operator=(const MachGuiScrollArea&);
+    bool operator==(const MachGuiScrollArea&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachGuiScrollArea& t );
+    friend ostream& operator<<(ostream& o, const MachGuiScrollArea& t);
 
-	GuiSimpleScrollableList* pList_;
-	MachGuiScrollBar* pLHSScrollBar_;
-	MachGuiScrollBar* pRHSScrollBar_;
-	MachInGameScreen* pInGameScreen_;
+    GuiSimpleScrollableList* pList_;
+    MachGuiScrollBar* pLHSScrollBar_;
+    MachGuiScrollBar* pRHSScrollBar_;
+    MachInGameScreen* pInGameScreen_;
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * G L O C D A T A . H P P 
+ * G L O C D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,32 +17,30 @@
 class MachPhysGeoLocatorData : public MachPhysMachineData
 {
 public:
-    ~MachPhysGeoLocatorData();
+    ~MachPhysGeoLocatorData() override;
 
     void CLASS_INVARIANT;
 
-	MachPhys::MineralGrade		mineralGrade() const;
+    MachPhys::MineralGrade mineralGrade() const;
 
-    friend ostream& operator <<( ostream& o, const MachPhysGeoLocatorData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysGeoLocatorData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysGeoLocatorData( const MachPhysGeoLocatorData& );
+    MachPhysGeoLocatorData(const MachPhysGeoLocatorData&);
 
     // Operation deliberately revoked
-    MachPhysGeoLocatorData& operator =( const MachPhysGeoLocatorData& );
+    MachPhysGeoLocatorData& operator=(const MachPhysGeoLocatorData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysGeoLocatorData& );
+    bool operator==(const MachPhysGeoLocatorData&);
 
-	void mineralGrade( const MachPhys::MineralGrade& );
+    void mineralGrade(const MachPhys::MineralGrade&);
 
     MachPhysGeoLocatorData();
-	MachPhys::MineralGrade		mineralGrade_;
-
+    MachPhys::MineralGrade mineralGrade_;
 };
-
 
 #endif
 

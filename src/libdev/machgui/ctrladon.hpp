@@ -1,5 +1,5 @@
 /*
- * C T R L A D O N . H P P 
+ * C T R L A D O N . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,25 +22,24 @@ class MachGuiControlPanelAddOn : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiControlPanelAddOn( GuiDisplayable* pParent, const Gui::Coord& coord, MachInGameScreen* pInGameScreen );
-    ~MachGuiControlPanelAddOn();
+    MachGuiControlPanelAddOn(GuiDisplayable* pParent, const Gui::Coord& coord, MachInGameScreen* pInGameScreen);
+    ~MachGuiControlPanelAddOn() override;
 
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	void refresh();
+    void refresh();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiControlPanelAddOn& t );
+    friend ostream& operator<<(ostream& o, const MachGuiControlPanelAddOn& t);
 
-    MachGuiControlPanelAddOn( const MachGuiControlPanelAddOn& );
-    MachGuiControlPanelAddOn& operator =( const MachGuiControlPanelAddOn& );
+    MachGuiControlPanelAddOn(const MachGuiControlPanelAddOn&);
+    MachGuiControlPanelAddOn& operator=(const MachGuiControlPanelAddOn&);
 
-	// Data members...
-	MachGuiControlPanelAddOnImpl* pImpl_;
+    // Data members...
+    MachGuiControlPanelAddOnImpl* pImpl_;
 };
-
 
 #endif
 

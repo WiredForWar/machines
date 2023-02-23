@@ -1,5 +1,5 @@
 /*
- * O P S T A N D G . H P P 
+ * O P S T A N D G . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -15,49 +15,44 @@
 #include "base/base.hpp"
 #include "machlog/operatio.hpp"
 
-
 class MachLogMachine;
 
 // canonical form revoked
 
-class MachLogStandGroundOperation
-: public MachLogOperation
+class MachLogStandGroundOperation : public MachLogOperation
 {
 public:
+    MachLogStandGroundOperation(MachLogMachine*);
+    ~MachLogStandGroundOperation() override;
 
-    MachLogStandGroundOperation( MachLogMachine* );
-    ~MachLogStandGroundOperation();
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogStandGroundOperation );
-	PER_FRIEND_READ_WRITE( MachLogStandGroundOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogStandGroundOperation);
+    PER_FRIEND_READ_WRITE(MachLogStandGroundOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-	
-	virtual PhysRelativeTime doUpdate( );
-		
-	virtual void doOutputOperator( ostream& ) const;
-	
-	virtual bool doBeInterrupted();
-	///////////////////////////////
-	
+    bool doIsFinished() const override;
+
+    PhysRelativeTime doUpdate() override;
+
+    void doOutputOperator(ostream&) const override;
+
+    bool doBeInterrupted() override;
+    ///////////////////////////////
+
 private:
+    // Operations deliberately revoked
+    MachLogStandGroundOperation(const MachLogStandGroundOperation&);
+    MachLogStandGroundOperation& operator=(const MachLogStandGroundOperation&);
+    bool operator==(const MachLogStandGroundOperation&);
 
-	// Operations deliberately revoked
-    MachLogStandGroundOperation( const MachLogStandGroundOperation& );
-    MachLogStandGroundOperation& operator =( const MachLogStandGroundOperation& );
-    bool operator ==( const MachLogStandGroundOperation& );
-	
-	MachLogMachine *		pActor_;
+    MachLogMachine* pActor_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogStandGroundOperation );
+PER_DECLARE_PERSISTENT(MachLogStandGroundOperation);
 
 #endif
 

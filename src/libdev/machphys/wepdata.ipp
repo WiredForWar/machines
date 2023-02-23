@@ -1,14 +1,14 @@
 /*
- * W E P D A T A . I P P 
+ * W E P D A T A . I P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -48,43 +48,43 @@ PhysRelativeTime MachPhysWeaponData::reloadTime() const
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::damagePoints( int newDamagePoint )
+void MachPhysWeaponData::damagePoints(int newDamagePoint)
 {
     damagePoints_ = newDamagePoint;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::range( MATHEX_SCALAR newRange )
+void MachPhysWeaponData::range(MATHEX_SCALAR newRange)
 {
-    PRE( newRange > 0.0 );
+    PRE(newRange > 0.0);
     range_ = newRange;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::projectileSpeed( MATHEX_SCALAR newProjectileSpeed )
+void MachPhysWeaponData::projectileSpeed(MATHEX_SCALAR newProjectileSpeed)
 {
-    PRE( newProjectileSpeed > 0.0 );
+    PRE(newProjectileSpeed > 0.0);
     projectileSpeed_ = newProjectileSpeed;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::nRoundsPerBurst( uint newNRoundsPerBurst )
+void MachPhysWeaponData::nRoundsPerBurst(uint newNRoundsPerBurst)
 {
-    PRE( newNRoundsPerBurst != 0 );
+    PRE(newNRoundsPerBurst != 0);
     nRoundsPerBurst_ = newNRoundsPerBurst;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::burstDuration( PhysRelativeTime newBurstDuration )
+void MachPhysWeaponData::burstDuration(PhysRelativeTime newBurstDuration)
 {
-    PRE( newBurstDuration > 0.0 );
+    PRE(newBurstDuration > 0.0);
     burstDuration_ = newBurstDuration;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::reloadTime( PhysRelativeTime newReloadTime )
+void MachPhysWeaponData::reloadTime(PhysRelativeTime newReloadTime)
 {
-    PRE( newReloadTime > 0.0 );
+    PRE(newReloadTime > 0.0);
     reloadTime_ = newReloadTime;
 }
 
@@ -95,7 +95,7 @@ const MachPhysWeaponData::LaunchOffsets& MachPhysWeaponData::launchOffsets() con
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::launchOffsets( const LaunchOffsets& offsets )
+void MachPhysWeaponData::launchOffsets(const LaunchOffsets& offsets)
 {
     launchOffsets_ = offsets;
 }
@@ -125,27 +125,27 @@ const MachPhysWeaponData::Extras& MachPhysWeaponData::extras() const
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::recoilDistance( MATHEX_SCALAR distance )
+void MachPhysWeaponData::recoilDistance(MATHEX_SCALAR distance)
 {
     recoilDistance_ = distance;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::recoilBackTime( PhysRelativeTime time )
+void MachPhysWeaponData::recoilBackTime(PhysRelativeTime time)
 {
-    PRE( time >= 0.0 );
+    PRE(time >= 0.0);
     recoilBackTime_ = time;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::recoilForeTime( PhysRelativeTime time )
+void MachPhysWeaponData::recoilForeTime(PhysRelativeTime time)
 {
-    PRE( time >= 0.0 );
+    PRE(time >= 0.0);
     recoilForeTime_ = time;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::extras( const Extras& values )
+void MachPhysWeaponData::extras(const Extras& values)
 {
     extras_ = values;
 }
@@ -169,9 +169,9 @@ const MexRadians& MachPhysWeaponData::maxTiltAngle() const
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::tiltAngles( const MexRadians& minAngle, const MexRadians& maxAngle )
+void MachPhysWeaponData::tiltAngles(const MexRadians& minAngle, const MexRadians& maxAngle)
 {
-    PRE( minAngle.asScalar() <= maxAngle.asScalar() );
+    PRE(minAngle.asScalar() <= maxAngle.asScalar());
     minTiltAngle_ = minAngle;
     maxTiltAngle_ = maxAngle;
 }
@@ -189,16 +189,16 @@ const MexRadians& MachPhysWeaponData::horizontalDeviationAngle() const
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::verticalDeviationAngle( const MexRadians& angle )
+void MachPhysWeaponData::verticalDeviationAngle(const MexRadians& angle)
 {
-    PRE( angle.asScalar() > 0.0 );
+    PRE(angle.asScalar() > 0.0);
     verticalDeviationAngle_ = angle;
 }
 
 _CODE_INLINE
-void MachPhysWeaponData::horizontalDeviationAngle( const MexRadians& angle )
+void MachPhysWeaponData::horizontalDeviationAngle(const MexRadians& angle)
 {
-    PRE( angle.asScalar() > 0.0 );
+    PRE(angle.asScalar() > 0.0);
     horizontalDeviationAngle_ = angle;
 }
 /* End WEPDATA.IPP **************************************************/

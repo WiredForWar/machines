@@ -25,67 +25,62 @@ class RenID3dDeviceImpl;
 class RenIDriverImpl
 {
 public:
+    // double dispatch here
+    virtual bool isBetterChoiceThan(const RenIDriverImpl&) const = 0;
+    virtual bool isBetterChoiceThan(const RenIDDrawDriverImpl&) const;
+    virtual bool isBetterChoiceThan(const RenID3dDeviceImpl&) const;
 
-	// double dispatch here
-	virtual bool isBetterChoiceThan( const RenIDriverImpl& ) const = 0;
-	virtual bool isBetterChoiceThan( const RenIDDrawDriverImpl& ) const;
-	virtual bool isBetterChoiceThan( const RenID3dDeviceImpl& ) const;
-
-	bool hasGuid() const;
-	bool isAutomatic() const;
-	bool isHardware() const;
-	virtual int zBufferBitDepth() const;
-	// return -1
+    bool hasGuid() const;
+    bool isAutomatic() const;
+    bool isHardware() const;
+    virtual int zBufferBitDepth() const;
+    // return -1
 
 protected:
-	// Direct draw driver
-	RenIDriverImpl( const RenIDriverImpl& );
-	virtual ~RenIDriverImpl();
+    // Direct draw driver
+    RenIDriverImpl(const RenIDriverImpl&);
+    virtual ~RenIDriverImpl();
 
-	virtual RenIDriverImpl* clone() const = 0;
+    virtual RenIDriverImpl* clone() const = 0;
 
-	const std::string& description() const;
+    const std::string& description() const;
 
-	const std::string& name() const;
-	void name( const std::string& );
+    const std::string& name() const;
+    void name(const std::string&);
 
-	void isAutomatic( bool );
+    void isAutomatic(bool);
 
-	virtual void writeToRegistry() = 0;
-
+    virtual void writeToRegistry() = 0;
 
 private:
-	friend class RenDriver;
-	friend class RenDriverSelector;
-	friend class RenDriverSelectorImpl;
+    friend class RenDriver;
+    friend class RenDriverSelector;
+    friend class RenDriverSelectorImpl;
 
-	std::string				name_;
-	const std::string		description_;
-	const bool 			hw_;
-	bool				isAutomatic_;
+    std::string name_;
+    const std::string description_;
+    const bool hw_;
+    bool isAutomatic_;
 };
 
-//directdraw driver
-class RenIDDrawDriverImpl :public RenIDriverImpl
+// directdraw driver
+class RenIDDrawDriverImpl : public RenIDriverImpl
 {
 public:
-
-
 private:
-	friend class RenDriverSelector;
-	friend class RenDriverSelectorImpl;
+    friend class RenDriverSelector;
+    friend class RenDriverSelectorImpl;
 
-	RenIDDrawDriverImpl( const RenIDDrawDriverImpl& );
-	~RenIDDrawDriverImpl();
+    RenIDDrawDriverImpl(const RenIDDrawDriverImpl&);
+    ~RenIDDrawDriverImpl() override;
 
-	virtual RenIDriverImpl* clone() const;
+    RenIDriverImpl* clone() const override;
 
-	virtual void writeToRegistry();
+    void writeToRegistry() override;
 
-	// double dispatch here
-	virtual bool isBetterChoiceThan( const RenIDriverImpl& ) const;
-	virtual bool isBetterChoiceThan( const RenIDDrawDriverImpl& ) const;
-
+    // double dispatch here
+    bool isBetterChoiceThan(const RenIDriverImpl&) const override;
+    bool isBetterChoiceThan(const RenIDDrawDriverImpl&) const override;
 };
 
 // direct3d device
@@ -93,22 +88,21 @@ class RenID3dDeviceImpl : public RenIDriverImpl
 {
 public:
 private:
-	friend class RenDriverSelector;
-	friend class RenDriverSelectorImpl;
+    friend class RenDriverSelector;
+    friend class RenDriverSelectorImpl;
 
-	virtual int zBufferBitDepth() const;
+    int zBufferBitDepth() const override;
 
-	RenID3dDeviceImpl( const RenID3dDeviceImpl& );
-	virtual ~RenID3dDeviceImpl();
+    RenID3dDeviceImpl(const RenID3dDeviceImpl&);
+    ~RenID3dDeviceImpl() override;
 
-	virtual RenIDriverImpl* clone() const;
+    RenIDriverImpl* clone() const override;
 
-	virtual void writeToRegistry();
+    void writeToRegistry() override;
 
-	// double dispatch here
-	virtual bool isBetterChoiceThan( const RenIDriverImpl& ) const;
-	virtual bool isBetterChoiceThan( const RenID3dDeviceImpl& ) const;
-
+    // double dispatch here
+    bool isBetterChoiceThan(const RenIDriverImpl&) const override;
+    bool isBetterChoiceThan(const RenID3dDeviceImpl&) const override;
 };
 
 #endif

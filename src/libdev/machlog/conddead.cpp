@@ -13,12 +13,11 @@
 #include "machlog/races.hpp"
 #include "machlog/scenario.hpp"
 
+PER_DEFINE_PERSISTENT(MachLogAllUnitsDeadCondition);
 
-PER_DEFINE_PERSISTENT( MachLogAllUnitsDeadCondition );
-
-MachLogAllUnitsDeadCondition::MachLogAllUnitsDeadCondition( const string& keyName, MachPhys::Race race )
-:	SimCondition( keyName ),
-	race_( race )
+MachLogAllUnitsDeadCondition::MachLogAllUnitsDeadCondition(const string& keyName, MachPhys::Race race)
+    : SimCondition(keyName)
+    , race_(race)
 {
     TEST_INVARIANT;
 }
@@ -26,78 +25,74 @@ MachLogAllUnitsDeadCondition::MachLogAllUnitsDeadCondition( const string& keyNam
 MachLogAllUnitsDeadCondition::~MachLogAllUnitsDeadCondition()
 {
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 bool MachLogAllUnitsDeadCondition::doHasConditionBeenMet() const
 {
-	MachLogRaces& races = MachLogRaces::instance();
-	HAL_STREAM("MachLogAllUnitsDeadCondition::doHasConditionBeenMet " << race_ << " constructions " << races.nConstructions( race_ ) << " machines " << races.nMachines( race_ ) << std::endl );
-	return ( races.nConstructions( race_ ) + races.nMachines( race_ ) ) == 0;
+    MachLogRaces& races = MachLogRaces::instance();
+    HAL_STREAM(
+        "MachLogAllUnitsDeadCondition::doHasConditionBeenMet "
+        << race_ << " constructions " << races.nConstructions(race_) << " machines " << races.nMachines(race_)
+        << std::endl);
+    return (races.nConstructions(race_) + races.nMachines(race_)) == 0;
 }
 
-//static
-MachLogAllUnitsDeadCondition* MachLogAllUnitsDeadCondition::newFromParser( UtlLineTokeniser* pParser )
+// static
+MachLogAllUnitsDeadCondition* MachLogAllUnitsDeadCondition::newFromParser(UtlLineTokeniser* pParser)
 {
-	//format of a ALL_UNITS_DEAD condition line is:
-	//<keyName> RACE <race>
+    // format of a ALL_UNITS_DEAD condition line is:
+    //<keyName> RACE <race>
 
-	return _NEW(
-			MachLogAllUnitsDeadCondition(
-				pParser->tokens()[1],
-				MachLogScenario::machPhysRace( pParser->tokens()[3] )
-				)
-			);
+    return _NEW(
+        MachLogAllUnitsDeadCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3])));
 }
 
 void MachLogAllUnitsDeadCondition::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogAllUnitsDeadCondition& t )
+ostream& operator<<(ostream& o, const MachLogAllUnitsDeadCondition& t)
 {
 
-	t.doOutputOperator( o );
+    t.doOutputOperator(o);
     return o;
 }
 
-//virtual
+// virtual
 const PhysRelativeTime& MachLogAllUnitsDeadCondition::recommendedCallBackTimeGap() const
 {
-	static const PhysRelativeTime result = 2.0;
-	return result;
+    static const PhysRelativeTime result = 2.0;
+    return result;
 }
 
-//virtual
-void MachLogAllUnitsDeadCondition::doOutputOperator( ostream& o ) const
+// virtual
+void MachLogAllUnitsDeadCondition::doOutputOperator(ostream& o) const
 {
-	SimCondition::doOutputOperator( o );
+    SimCondition::doOutputOperator(o);
     o << "MachLogAllUnitsDeadCondition " << (void*)this << " start" << std::endl;
-	o << race_ << std::endl;
+    o << race_ << std::endl;
 }
 
-
-void perWrite( PerOstream& ostr, const MachLogAllUnitsDeadCondition& condition )
+void perWrite(PerOstream& ostr, const MachLogAllUnitsDeadCondition& condition)
 {
-	const SimCondition& base1 = condition;
+    const SimCondition& base1 = condition;
 
-	ostr << base1;
-	ostr << condition.race_;
-
+    ostr << base1;
+    ostr << condition.race_;
 }
 
-void perRead( PerIstream& istr, MachLogAllUnitsDeadCondition& condition )
+void perRead(PerIstream& istr, MachLogAllUnitsDeadCondition& condition)
 {
-	SimCondition& base1 = condition;
+    SimCondition& base1 = condition;
 
-	istr >> base1;
-	istr >> condition.race_;
+    istr >> base1;
+    istr >> condition.race_;
 }
 
-MachLogAllUnitsDeadCondition::MachLogAllUnitsDeadCondition( PerConstructor con )
-:	SimCondition( con )
+MachLogAllUnitsDeadCondition::MachLogAllUnitsDeadCondition(PerConstructor con)
+    : SimCondition(con)
 {
 }
 

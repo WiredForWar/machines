@@ -45,75 +45,69 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template < class KEY, class T, class COMPARE >
-class ctl_map
-: public std::map< KEY, T, COMPARE >
+template <class KEY, class T, class COMPARE> class ctl_map : public std::map<KEY, T, COMPARE>
 {
 public:
-
-    typedef std::map< KEY, T, COMPARE >                  rep_type;
+    using rep_type = std::map<KEY, T, COMPARE>;
 
     ///////////////////////////////
 
-    using std::map< KEY, T, COMPARE >::map;
+    using std::map<KEY, T, COMPARE>::map;
 
-    virtual ~ctl_map() { /* Intentionally empty */ }
-
-    using std::map< KEY, T, COMPARE >::insert;
-    std::pair<typename ctl_map<KEY,T,COMPARE>::iterator,bool>  insert (KEY key, T val)
-    {
-        return insert(std::pair< KEY, T >(key, val));
+    virtual ~ctl_map()
+    { /* Intentionally empty */
     }
 
-    //ctl_map< KEY, T, COMPARE >&
-    //operator =( const ctl_map< KEY, T, COMPARE >& );
+    using std::map<KEY, T, COMPARE>::insert;
+    std::pair<typename ctl_map<KEY, T, COMPARE>::iterator, bool> insert(KEY key, T val)
+    {
+        return insert(std::pair<KEY, T>(key, val));
+    }
 
+    // ctl_map< KEY, T, COMPARE >&
+    // operator =( const ctl_map< KEY, T, COMPARE >& );
 
 protected:
-
     // value to insert if key is not present
     // in associative lookup
-    //virtual T new_value() const;
+    // virtual T new_value() const;
 };
 
-template < class KEY, class T, class COMPARE >
-class ctl_multimap
-: public std::multimap< KEY, T, COMPARE >
+template <class KEY, class T, class COMPARE> class ctl_multimap : public std::multimap<KEY, T, COMPARE>
 {
 public:
-
-    typedef std::multimap< KEY, T, COMPARE >                  rep_type;
+    using rep_type = std::multimap<KEY, T, COMPARE>;
 
     ///////////////////////////////
 
-    using std::multimap< KEY, T, COMPARE >::multimap;
+    using std::multimap<KEY, T, COMPARE>::multimap;
 
-    virtual ~ctl_multimap() { /* Intentionally empty */ }
+    virtual ~ctl_multimap()
+    { /* Intentionally empty */
+    }
 
-    //ctl_multimap< KEY, T, COMPARE >&
-    //operator =( const ctl_multimap< KEY, T, COMPARE >& );
-
+    // ctl_multimap< KEY, T, COMPARE >&
+    // operator =( const ctl_multimap< KEY, T, COMPARE >& );
 
 protected:
-
     // value to insert if key is not present
     // in associative lookup
-    //virtual T new_value() const;
+    // virtual T new_value() const;
 };
 
 //////////////////////////////////////////////////////////////////////F
 
-#ifdef  _INLINE
+#ifdef _INLINE
 //    #include "ctl/map.itp"
- //   #include "ctl/map.itf"
+//   #include "ctl/map.itf"
 #endif
 
 #ifdef _INSTANTIATE_TEMPLATE_CLASSES
- //   #include "ctl/map.ctp"
+//   #include "ctl/map.ctp"
 #endif
 
 #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
- //   #include "ctl/map.ctf"
+//   #include "ctl/map.ctf"
 #endif
 
 //////////////////////////////////////////////////////////////////////
@@ -122,5 +116,4 @@ protected:
 
 //////////////////////////////////////////////////////////////////////
 
-#endif  /* #ifndef _ctl_multimap_HPP */
-
+#endif /* #ifndef _ctl_multimap_HPP */

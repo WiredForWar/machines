@@ -1,5 +1,5 @@
 /*
- * B E E B O M X I . H P P 
+ * B E E B O M X I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,34 +23,32 @@ class MachLogBeeBombExplosionImpl
 // Canonical form revoked
 {
 public:
-    MachLogBeeBombExplosionImpl( const MachPhysWeaponData* const );
+    MachLogBeeBombExplosionImpl(const MachPhysWeaponData* const);
     virtual ~MachLogBeeBombExplosionImpl();
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogBeeBombExplosionImpl& t );
+    friend ostream& operator<<(ostream& o, const MachLogBeeBombExplosionImpl& t);
 
-    MachLogBeeBombExplosionImpl( const MachLogBeeBombExplosionImpl& );
-    MachLogBeeBombExplosionImpl& operator =( const MachLogBeeBombExplosionImpl& );
+    MachLogBeeBombExplosionImpl(const MachLogBeeBombExplosionImpl&);
+    MachLogBeeBombExplosionImpl& operator=(const MachLogBeeBombExplosionImpl&);
 
-	friend class MachLogBeeBombExplosion; 
+    friend class MachLogBeeBombExplosion;
 
-	MachPhysBeeBombExplosion* 			pPhysBeeBombExplosion_;	
-	const MachPhysWeaponData* const		pWeaponData_;	
-	PhysAbsoluteTime					firstWaveStartTime_;
-	PhysAbsoluteTime					firstWaveFinishTime_;
-	PhysAbsoluteTime					destructionTime_;	
+    MachPhysBeeBombExplosion* pPhysBeeBombExplosion_;
+    const MachPhysWeaponData* const pWeaponData_;
+    PhysAbsoluteTime firstWaveStartTime_;
+    PhysAbsoluteTime firstWaveFinishTime_;
+    PhysAbsoluteTime destructionTime_;
 };
 
-
-#define CB_MachLogBeeBombExplosion_DEPIMPL() \
-	CB_DEPIMPL( MachPhysBeeBombExplosion*			,pPhysBeeBombExplosion_ ); \
-	CB_DEPIMPL( const MachPhysWeaponData* const		,pWeaponData_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,firstWaveStartTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,firstWaveFinishTime_ ); \
-	CB_DEPIMPL( PhysAbsoluteTime					,destructionTime_ ); 
-
+#define CB_MachLogBeeBombExplosion_DEPIMPL()                                                                           \
+    CB_DEPIMPL(MachPhysBeeBombExplosion*, pPhysBeeBombExplosion_);                                                     \
+    CB_DEPIMPL(const MachPhysWeaponData* const, pWeaponData_);                                                         \
+    CB_DEPIMPL(PhysAbsoluteTime, firstWaveStartTime_);                                                                 \
+    CB_DEPIMPL(PhysAbsoluteTime, firstWaveFinishTime_);                                                                \
+    CB_DEPIMPL(PhysAbsoluteTime, destructionTime_);
 
 #endif
 

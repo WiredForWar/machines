@@ -1,5 +1,5 @@
 /*
- * M E S S A G E . H P P 
+ * M E S S A G E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -19,41 +19,37 @@
 #include "network/messhead.hpp"
 #include "network/messbody.hpp"
 
-typedef ctl_pvector<NetNodeUid> NetMessageRecipients;
+using NetMessageRecipients = ctl_pvector<NetNodeUid>;
 
 class NetMessage
 // Canonical form revoked
 {
 public:
-    NetMessage( const NetMessageHeader& , const NetMessageBody& );
-    NetMessage( const NetMessage& );
+    NetMessage(const NetMessageHeader&, const NetMessageBody&);
+    NetMessage(const NetMessage&);
     ~NetMessage();
 
-	const NetMessageHeader& header() const;
-	const NetMessageBody& body() const;
+    const NetMessageHeader& header() const;
+    const NetMessageBody& body() const;
 
-//	void* data() const;
-//	size_t length() const;
+    //  void* data() const;
+    //  size_t length() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const NetMessage& t );
+    friend ostream& operator<<(ostream& o, const NetMessage& t);
 
 private:
+    NetMessageHeader header_;
+    NetMessageBody body_;
 
-	NetMessageHeader header_;
-	NetMessageBody body_;
+    unsigned char* pData_;
 
-	unsigned char* pData_;
+    size_t length_;
 
-	size_t length_;
-
-
-    NetMessage& operator =( const NetMessage& );
-    bool operator ==( const NetMessage& );
-
+    NetMessage& operator=(const NetMessage&);
+    bool operator==(const NetMessage&);
 };
-
 
 #endif
 

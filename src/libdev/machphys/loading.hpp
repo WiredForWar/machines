@@ -22,34 +22,33 @@ class MachPhysResourceLoading : public W4dEntity
 // Canonical form revoked
 {
 public:
-	//public constructor
-    MachPhysResourceLoading( W4dEntity* pParent, const MexTransform3d& localTransform );
-    virtual ~MachPhysResourceLoading();
+    // public constructor
+    MachPhysResourceLoading(W4dEntity* pParent, const MexTransform3d& localTransform);
+    ~MachPhysResourceLoading() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-	//start the loading animation, returns the duration
-	const PhysRelativeTime startLoading( const PhysAbsoluteTime& startTime, const MATHEX_SCALAR& size );
+    // start the loading animation, returns the duration
+    const PhysRelativeTime startLoading(const PhysAbsoluteTime& startTime, const MATHEX_SCALAR& size);
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysResourceLoading );
+    PER_MEMBER_PERSISTENT(MachPhysResourceLoading);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysResourceLoading& t );
+    friend ostream& operator<<(ostream& o, const MachPhysResourceLoading& t);
 
-    MachPhysResourceLoading( const MachPhysResourceLoading& );
-    MachPhysResourceLoading& operator =( const MachPhysResourceLoading& );
+    MachPhysResourceLoading(const MachPhysResourceLoading&);
+    MachPhysResourceLoading& operator=(const MachPhysResourceLoading&);
 
-	friend class MachPhysOtherPersistence;
+    friend class MachPhysOtherPersistence;
 
     MachPhysResourceLoading();
 };
 
-PER_DECLARE_PERSISTENT( MachPhysResourceLoading );
-PER_READ_WRITE( MachPhysResourceLoading );
+PER_DECLARE_PERSISTENT(MachPhysResourceLoading);
+PER_READ_WRITE(MachPhysResourceLoading);
 
 #endif
 

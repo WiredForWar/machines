@@ -22,15 +22,15 @@ class MachLogMineralSite;
 
 void ti3()
 {
-	//static ctl_stack< ctl_list<MachOperation*> >					dummyOps;
-	static ctl_map< unsigned, MachLogMachine*, less<unsigned> >		dummyMachinesRep;
+    // static ctl_stack< ctl_list<MachOperation*> >                  dummyOps;
+    static ctl_map<unsigned, MachLogMachine*, less<unsigned>> dummyMachinesRep;
 
-    static ctl_map< PhysConfigSpace2d::PolygonId, pair< MachLogConstruction*, size_t >, less< PhysConfigSpace2d::PolygonId > > dummyMap;
+    static ctl_map<PhysConfigSpace2d::PolygonId, pair<MachLogConstruction*, size_t>, less<PhysConfigSpace2d::PolygonId>>
+        dummyMap;
 
-    static ctl_map< string, VoiceMailID, less< string > > dummyMap2;
-    static ctl_map< string, VoiceMailType, less< string > > dummyMap3;
-	static ctl_map< int, MachLogMineralSite*, less< int > > dummyMap4;
-
+    static ctl_map<string, VoiceMailID, less<string>> dummyMap2;
+    static ctl_map<string, VoiceMailType, less<string>> dummyMap3;
+    static ctl_map<int, MachLogMineralSite*, less<int>> dummyMap4;
 }
 
 /* End TI3.CPP *******************************************************/

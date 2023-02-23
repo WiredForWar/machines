@@ -1,5 +1,5 @@
 /*
- * T E C H D A T A . H P P 
+ * T E C H D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,35 +17,33 @@
 class MachPhysTechnicianData : public MachPhysMachineData
 {
 public:
-    ~MachPhysTechnicianData();
+    ~MachPhysTechnicianData() override;
 
-	//get methods public
-	MachPhys::ResearchUnits researchRate() const;
+    // get methods public
+    MachPhys::ResearchUnits researchRate() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysTechnicianData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysTechnicianData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysTechnicianData( const MachPhysTechnicianData& );
+    MachPhysTechnicianData(const MachPhysTechnicianData&);
 
     // Operation deliberately revoked
-    MachPhysTechnicianData& operator =( const MachPhysTechnicianData& );
+    MachPhysTechnicianData& operator=(const MachPhysTechnicianData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysTechnicianData& );
+    bool operator==(const MachPhysTechnicianData&);
 
     MachPhysTechnicianData();
 
-	//set methods private
-	void researchRate( const MachPhys::ResearchUnits& );
+    // set methods private
+    void researchRate(const MachPhys::ResearchUnits&);
 
-	MachPhys::ResearchUnits		researchRate_;
-
+    MachPhys::ResearchUnits researchRate_;
 };
-
 
 #endif
 

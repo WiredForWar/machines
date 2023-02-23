@@ -20,52 +20,48 @@
 class MachLogGroupMoverInternal
 {
 public:
+    static void
+    processClump(const MachLogGroupMoverUtility::Clump& clump, const MachLogMachineOperations& machineOperations);
 
-    static void processClump(
-        const MachLogGroupMoverUtility::Clump& clump,
-        const MachLogMachineOperations& machineOperations );
-
-    static MachLogOperation* pOperation(
-        const MachLogMachine* pMachine,
-        const MachLogMachineOperations& machineOperations );
+    static MachLogOperation*
+    pOperation(const MachLogMachine* pMachine, const MachLogMachineOperations& machineOperations);
 
 private:
     MachLogGroupMoverInternal();
     ~MachLogGroupMoverInternal();
-    MachLogGroupMoverInternal( const MachLogGroupMoverInternal& );
-    MachLogGroupMoverInternal& operator =( const MachLogGroupMoverInternal& );
+    MachLogGroupMoverInternal(const MachLogGroupMoverInternal&);
+    MachLogGroupMoverInternal& operator=(const MachLogGroupMoverInternal&);
 };
 
-MachLogGroupMover::MachLogGroupMover( const MachLogMachineOperations& machineOperations )
+MachLogGroupMover::MachLogGroupMover(const MachLogMachineOperations& machineOperations)
 {
     MachLogGroupMoverUtility::Machines machines;
-    machines.reserve( machineOperations.size() );
+    machines.reserve(machineOperations.size());
 
-    for( MachLogMachineOperations::const_iterator i = machineOperations.begin();
-      i != machineOperations.end(); ++i )
+    for (MachLogMachineOperations::const_iterator i = machineOperations.begin(); i != machineOperations.end(); ++i)
     {
-        machines.push_back( (*i).pMachine() );
+        machines.push_back((*i).pMachine());
     }
 
     const MATHEX_SCALAR groupDistance = 20.0;
 
-    MachLogGroupMoverUtility utility( machines, groupDistance );
+    MachLogGroupMoverUtility utility(machines, groupDistance);
 
-    for( size_t i = 0; i < utility.nClumps(); ++i )
+    for (size_t i = 0; i < utility.nClumps(); ++i)
     {
-        MachLogGroupMoverInternal::processClump( utility.clump( i ), machineOperations );
+        MachLogGroupMoverInternal::processClump(utility.clump(i), machineOperations);
     }
 
     TEST_INVARIANT;
 }
 
 MachLogGroupMover::MachLogGroupMover(
-  const MachLogMachineOperations& machineOperations,
-  const MachLogGroupMoverUtility& moverUtility )
+    const MachLogMachineOperations& machineOperations,
+    const MachLogGroupMoverUtility& moverUtility)
 {
-    for( size_t i = 0; i < moverUtility.nClumps(); ++i )
+    for (size_t i = 0; i < moverUtility.nClumps(); ++i)
     {
-        MachLogGroupMoverInternal::processClump( moverUtility.clump( i ), machineOperations );
+        MachLogGroupMoverInternal::processClump(moverUtility.clump(i), machineOperations);
     }
 
     TEST_INVARIANT;
@@ -74,56 +70,55 @@ MachLogGroupMover::MachLogGroupMover(
 MachLogGroupMover::~MachLogGroupMover()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogGroupMoverInternal::processClump(
     const MachLogGroupMoverUtility::Clump& clump,
-    const MachLogMachineOperations& machineOperations )
+    const MachLogMachineOperations& machineOperations)
 {
     const MachLogGroupMoverUtility::Machines& machines = clump.machines();
 
-    for( MachLogGroupMoverUtility::Machines::const_iterator i = machines.begin(); i != machines.end(); ++i )
+    for (MachLogGroupMoverUtility::Machines::const_iterator i = machines.begin(); i != machines.end(); ++i)
     {
         MachLogMachine* pMachine = (*i);
-        MachLogOperation* pOperation = MachLogGroupMoverInternal::pOperation( pMachine, machineOperations );
+        MachLogOperation* pOperation = MachLogGroupMoverInternal::pOperation(pMachine, machineOperations);
 
-        MexVec2 offset( clump.centroid(), pMachine->position() );
+        MexVec2 offset(clump.centroid(), pMachine->position());
 
-        MachLogGroupMoveInfo info( offset, clump.radius() );
-        pOperation->groupMoveInfo( info );
+        MachLogGroupMoveInfo info(offset, clump.radius());
+        pOperation->groupMoveInfo(info);
 
         // We must make sure that we don't give the new operation to the
         // machine until after we have set up the group move information.
 
-        pMachine->newOperation( pOperation );
+        pMachine->newOperation(pOperation);
     }
 }
 
-MachLogOperation* MachLogGroupMoverInternal::pOperation(
-    const MachLogMachine* pMachine,
-    const MachLogMachineOperations& machineOperations )
+MachLogOperation*
+MachLogGroupMoverInternal::pOperation(const MachLogMachine* pMachine, const MachLogMachineOperations& machineOperations)
 {
-    MachLogOperation* result = NULL;
+    MachLogOperation* result = nullptr;
 
-    for( MachLogMachineOperations::const_iterator i = machineOperations.begin();
-      i != machineOperations.end() and result == NULL; ++i )
+    for (MachLogMachineOperations::const_iterator i = machineOperations.begin();
+         i != machineOperations.end() and result == nullptr;
+         ++i)
     {
-        if( pMachine == (*i).pMachine() )
+        if (pMachine == (*i).pMachine())
             result = (*i).pOperation();
     }
 
-    POST( result != NULL );
+    POST(result != nullptr);
 
     return result;
 }
 
 void MachLogGroupMover::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogGroupMover& t )
+ostream& operator<<(ostream& o, const MachLogGroupMover& t)
 {
 
     o << "MachLogGroupMover " << (void*)&t << " start" << std::endl;

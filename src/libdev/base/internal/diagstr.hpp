@@ -27,7 +27,7 @@ class BaseWindowStream;
 class DiagStream
 {
 public:
-//    enum StreamType { INITIAL, REPLACEMENT };
+    //    enum StreamType { INITIAL, REPLACEMENT };
 
     //  Construct the basic DiagStream that acts as a sink
     DiagStream();
@@ -35,65 +35,60 @@ public:
     //  Setup the DiagStream from the given envuironment variable. If
     //  the environment variable does not exist use the supplied
     //  default setting.
-    void setup(
-        const char* environmentVariable,
-        const char* defaultSetting );
+    void setup(const char* environmentVariable, const char* defaultSetting);
 
     ~DiagStream();
 
     //  Return the ostream associated with this DiagStream
-    ostream&    ostr();
+    ostream& ostr();
 
     //  True iff this stream is going to a file
-    bool    hasDestination() const;
+    bool hasDestination() const;
 
     //  Close any file associated with this stream
-    void    close();
+    void close();
 
-    void    indent( int nSpaces );
+    void indent(int nSpaces);
 
 private:
     // Operation deliberately revoked
-    DiagStream( const DiagStream& );
+    DiagStream(const DiagStream&);
 
     // Operation deliberately revoked
-    DiagStream& operator =( const DiagStream& );
+    DiagStream& operator=(const DiagStream&);
 
     // Operation deliberately revoked
-    bool operator ==( const DiagStream& );
+    bool operator==(const DiagStream&);
 
-    void interpretEnvironmentVariable(
-        const char* environmentVariable,
-        const char* defaultSetting );
+    void interpretEnvironmentVariable(const char* environmentVariable, const char* defaultSetting);
     void setupStream();
     const char* name() const;
 
     DiagStream* pNextStream();
-    void pNextStream( DiagStream* pNext );
+    void pNextStream(DiagStream* pNext);
 
     bool append() const;
     void forceAppendFile();
 
-    static  DiagStream*& pFirstStream();
+    static DiagStream*& pFirstStream();
 
-    ostream&    nonPrependOstr();
+    ostream& nonPrependOstr();
 
-    std::ofstream    ostr_;
-    BaseAppendOstream    appendOstr_;
+    std::ofstream ostr_;
+    BaseAppendOstream appendOstr_;
 
-    bool        exists_;
+    bool exists_;
 
     DiagStream* pDependantStream_;
     DiagStream* pNextStream_;
-    bool        append_;
-    bool        cout_;
-    BaseWindowStream*   pWindowStream_;
+    bool append_;
+    bool cout_;
+    BaseWindowStream* pWindowStream_;
 
-    char*       name_;
+    char* name_;
 
-    DiagOstreamPrepend  masterOstr_;
+    DiagOstreamPrepend masterOstr_;
 };
-
 
 #endif
 

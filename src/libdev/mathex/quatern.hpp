@@ -22,64 +22,61 @@
 
 class MexRadians;
 
-//Memberwise canonical
+// Memberwise canonical
 class MexQuaternion
 {
 public:
-    //Default constructor initialises to null rotation
+    // Default constructor initialises to null rotation
     MexQuaternion();
 
-    //Set the euler parameters directly.
-    MexQuaternion( MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z, MATHEX_SCALAR s );
+    // Set the euler parameters directly.
+    MexQuaternion(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z, MATHEX_SCALAR s);
     // PRE( fabs( x*x + y*y + z*z + s*s - 1.0 )  < MexEpsilon::instance() )
 
-    //Set the euler parameters from a non-zero direction vector and angle in radians
-    MexQuaternion( const MexVec3& d, const MexRadians& angle );
+    // Set the euler parameters from a non-zero direction vector and angle in radians
+    MexQuaternion(const MexVec3& d, const MexRadians& angle);
     // PRE( d.modulus() > 0.0 );
 
-    //Export the vector and scalar values
+    // Export the vector and scalar values
     const MexVec3& vector() const;
     const MATHEX_SCALAR& scalar() const;
 
-    //Return the direction of the rotation axis in pUnitVector, and the angle of
-    //rotation in radians as result
-    MATHEX_SCALAR rotation( MexVec3* pUnitVector ) const;
+    // Return the direction of the rotation axis in pUnitVector, and the angle of
+    // rotation in radians as result
+    MATHEX_SCALAR rotation(MexVec3* pUnitVector) const;
     // POST( fabs( pUnitVector.modulus - 1.0 ) < MexEpsilon::instance() );
 
-
-    //Set the euler parameters directly.
-    void set( MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z, MATHEX_SCALAR s );
+    // Set the euler parameters directly.
+    void set(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z, MATHEX_SCALAR s);
     //  PRE( fabs( x*x + y*y + z*z + s*s - 1.0 )  < MexEpsilon::instance() )
 
-    //Set the euler parameters from a non-zero direction vector and angle in radians
-    void set( const MexVec3& d, const MexRadians& angle );
+    // Set the euler parameters from a non-zero direction vector and angle in radians
+    void set(const MexVec3& d, const MexRadians& angle);
 
-	static void normalise( MATHEX_SCALAR* pX, MATHEX_SCALAR* pY, MATHEX_SCALAR* pZ, MATHEX_SCALAR* pS );
-	// POST( fabs( (*pX)*(*pX) + (*pY)*(*pY) + (*pZ)*(*pZ) + (*pS)*(*pS) - 1.0 )  < MexEpsilon::instance() );
+    static void normalise(MATHEX_SCALAR* pX, MATHEX_SCALAR* pY, MATHEX_SCALAR* pZ, MATHEX_SCALAR* pS);
+    // POST( fabs( (*pX)*(*pX) + (*pY)*(*pY) + (*pZ)*(*pZ) + (*pS)*(*pS) - 1.0 )  < MexEpsilon::instance() );
 
     void CLASS_INVARIANT;
-    friend ostream& operator <<( ostream& o, const MexQuaternion& t );
+    friend ostream& operator<<(ostream& o, const MexQuaternion& t);
 
-    //Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT( MexQuaternion );
-    PER_FRIEND_READ_WRITE( MexQuaternion );
+    // Persistence
+    PER_MEMBER_PERSISTENT_DEFAULT(MexQuaternion);
+    PER_FRIEND_READ_WRITE(MexQuaternion);
 
 private:
-    //Data members
-    MexVec3         v_; //Unit direction vector * sin(half rotation angle)
-    MATHEX_SCALAR   s_; // cos(half rotation angle)
+    // Data members
+    MexVec3 v_; // Unit direction vector * sin(half rotation angle)
+    MATHEX_SCALAR s_; // cos(half rotation angle)
 
-    friend bool operator ==( const MexQuaternion&, const MexQuaternion& );
-    friend bool operator !=( const MexQuaternion&, const MexQuaternion& );
+    friend bool operator==(const MexQuaternion&, const MexQuaternion&);
+    friend bool operator!=(const MexQuaternion&, const MexQuaternion&);
 };
 
-
-PER_DECLARE_PERSISTENT( MexQuaternion );
+PER_DECLARE_PERSISTENT(MexQuaternion);
 
 #ifdef _INLINE
-    #include "mathex/quatern.ipp"
+#include "mathex/quatern.ipp"
 #endif
-
 
 #endif
 

@@ -9,15 +9,15 @@
 #ifndef _ERROR_HPP
 #define _ERROR_HPP
 
-namespace BaseErr
-{
-    void TerminateOnError( const char* pMsg );
+namespace BaseErr {
+void TerminateOnError(const char* pMsg);
 }
 
-#define ALWAYS_ASSERT( exp, xmsg )		\
-    if( !( exp ) ) BaseErr::TerminateOnError( xmsg );
+#define ALWAYS_ASSERT(exp, xmsg)                                                                                       \
+    if (!(exp))                                                                                                        \
+        BaseErr::TerminateOnError(xmsg);
 
-#define ALWAYS_ASSERT_FAIL( xmsg ) BaseErr::TerminateOnError( xmsg );
+#define ALWAYS_ASSERT_FAIL(xmsg) BaseErr::TerminateOnError(xmsg);
 
 #endif
 

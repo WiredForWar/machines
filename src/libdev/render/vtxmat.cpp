@@ -7,19 +7,23 @@
 #include "ctl/algorith.hpp"
 #include "render/mesh.hpp"
 
-PER_DEFINE_PERSISTENT( RenIVtxMaterial );
-PER_DEFINE_PERSISTENT( RenIVertexMaterials );
+PER_DEFINE_PERSISTENT(RenIVtxMaterial);
+PER_DEFINE_PERSISTENT(RenIVertexMaterials);
 
-RenIVertexMaterials::RenIVertexMaterials(size_t nElements) :
-Base(0)
+RenIVertexMaterials::RenIVertexMaterials(size_t nElements)
+    : Base(0)
 {
     reserve(nElements);
 }
 
-RenIVertexMaterials::RenIVertexMaterials(const RenIVertexMaterials& copyMe) :
-Base(copyMe) { }
+RenIVertexMaterials::RenIVertexMaterials(const RenIVertexMaterials& copyMe)
+    : Base(copyMe)
+{
+}
 
-RenIVertexMaterials::~RenIVertexMaterials() { }
+RenIVertexMaterials::~RenIVertexMaterials()
+{
+}
 
 bool RenIVertexMaterials::contains(Ren::VertexIdx i) const
 {
@@ -47,7 +51,7 @@ void RenIVertexMaterials::insert(Ren::VertexIdx i, RenMaterial newValue)
     {
         RenIVtxMaterial newElement;
         newElement.index_ = i;
-        newElement.mat_   = newValue;
+        newElement.mat_ = newValue;
         Base::push_back(newElement);
     }
 
@@ -74,8 +78,8 @@ ctl_vector<RenIVtxMaterial>::iterator RenIVertexMaterials::findIter(Ren::VertexI
     // iterator rather than a const_iterator.
 #ifdef NDEBUG
     iterator it = std::find(begin(), end(), target);
-    //	const_iterator cit = ::find(begin(), end(), target);
-    //	iterator it = const_cast<iterator>( cit);
+    //  const_iterator cit = ::find(begin(), end(), target);
+    //  iterator it = const_cast<iterator>( cit);
 #else
     iterator it = std::find(begin(), end(), target);
 #endif
@@ -85,33 +89,35 @@ ctl_vector<RenIVtxMaterial>::iterator RenIVertexMaterials::findIter(Ren::VertexI
 
 ctl_vector<RenIVtxMaterial>::const_iterator RenIVertexMaterials::findIter(Ren::VertexIdx i) const
 {
-    return const_cast<RenIVertexMaterials*> ( this)->findIter(i);
+    return const_cast<RenIVertexMaterials*>(this)->findIter(i);
 }
 
-RenIVertexMaterials::RenIVertexMaterials( PerConstructor con )
-: Base( con ) { }
+RenIVertexMaterials::RenIVertexMaterials(PerConstructor con)
+    : Base(con)
+{
+}
 
-void perWrite( PerOstream& ostr, const RenIVertexMaterials& t )
+void perWrite(PerOstream& ostr, const RenIVertexMaterials& t)
 {
     const RenIVertexMaterials::Base& base = t;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, RenIVertexMaterials& t )
+void perRead(PerIstream& istr, RenIVertexMaterials& t)
 {
     RenIVertexMaterials::Base& base = t;
 
     istr >> base;
 }
 
-void perWrite( PerOstream& ostr, const RenIVtxMaterial& t )
+void perWrite(PerOstream& ostr, const RenIVtxMaterial& t)
 {
     ostr << t.index_;
     ostr << t.mat_;
 }
 
-void perRead( PerIstream& istr, RenIVtxMaterial& t )
+void perRead(PerIstream& istr, RenIVtxMaterial& t)
 {
     istr >> t.index_;
     istr >> t.mat_;

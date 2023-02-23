@@ -3,6 +3,6 @@
 
 void dummyFunction_stats()
 {
-	// Required by RenStats.
-	static ctl_list<double> l;
+    // Required by RenStats.
+    static ctl_list<double> l;
 }

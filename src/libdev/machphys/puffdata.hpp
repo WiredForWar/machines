@@ -1,5 +1,5 @@
 /*
- * P U F F D A T A . H P P 
+ * P U F F D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -21,49 +21,43 @@ class PuffData
 public:
     //  Constructor only supplied for ctl_vector
     PuffData()
-    : pSmokePuff_( NULL),
-      pPlan_( NULL )
+        : pSmokePuff_(nullptr)
+        , pPlan_(nullptr)
     {
     }
-    
-    PuffData(
-    	MachPhysSmokePuff* pSmokePuff,
-    	W4dEntityPlan* pPlan,
-    	const PhysRelativeTime& startTimeOffset )
-    : pSmokePuff_( pSmokePuff ),
-	  pPlan_( pPlan ),
-      startTimeOffset_( startTimeOffset )
+
+    PuffData(MachPhysSmokePuff* pSmokePuff, W4dEntityPlan* pPlan, const PhysRelativeTime& startTimeOffset)
+        : pSmokePuff_(pSmokePuff)
+        , pPlan_(pPlan)
+        , startTimeOffset_(startTimeOffset)
     {
     }
-    
-    ~PuffData(){}
+
+    ~PuffData() { }
 
     MachPhysSmokePuff* pSmokePuff() const
     {
-        PRE( pSmokePuff_ != NULL );
-        
+        PRE(pSmokePuff_ != nullptr);
+
         return pSmokePuff_;
     }
-    
-	W4dEntityPlan*	pPlan() const
-	{
-        PRE( pPlan_ != NULL );
 
-		return pPlan_;
-	}
-
-    const PhysRelativeTime& startTimeOffset() const
+    W4dEntityPlan* pPlan() const
     {
-        return startTimeOffset_;
+        PRE(pPlan_ != nullptr);
+
+        return pPlan_;
     }
-    
+
+    const PhysRelativeTime& startTimeOffset() const { return startTimeOffset_; }
+
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PuffData& t );
+    friend ostream& operator<<(ostream& o, const PuffData& t);
 
-    PER_MEMBER_PERSISTENT_INLINE( PuffData );
-    PER_FRIEND_READ_WRITE( PuffData );
-    
+    PER_MEMBER_PERSISTENT_INLINE(PuffData);
+    PER_FRIEND_READ_WRITE(PuffData);
+
 private:
     // Compiler supplied copy constructor is OK
     // PuffData( const PuffData& );
@@ -72,14 +66,12 @@ private:
     // PuffData& operator =( const PuffData& );
 
     // Operation deliberately revoked
-    bool operator ==( const PuffData& );
+    bool operator==(const PuffData&);
 
-    MachPhysSmokePuff*   pSmokePuff_;
-	W4dEntityPlan*		pPlan_;
-    PhysRelativeTime            startTimeOffset_;
-    
+    MachPhysSmokePuff* pSmokePuff_;
+    W4dEntityPlan* pPlan_;
+    PhysRelativeTime startTimeOffset_;
 };
-
 
 #endif
 

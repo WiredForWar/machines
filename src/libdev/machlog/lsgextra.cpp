@@ -1,5 +1,5 @@
 /*
- * L S G E X T R A . C P P 
+ * L S G E X T R A . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,15 +16,14 @@ MachLogLoadSaveGameExtras::MachLogLoadSaveGameExtras()
 MachLogLoadSaveGameExtras::~MachLogLoadSaveGameExtras()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogLoadSaveGameExtras::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogLoadSaveGameExtras& t )
+ostream& operator<<(ostream& o, const MachLogLoadSaveGameExtras& t)
 {
 
     o << "MachLogLoadSaveGameExtras " << (void*)&t << " start" << std::endl;

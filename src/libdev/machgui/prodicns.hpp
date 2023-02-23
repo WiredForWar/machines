@@ -1,5 +1,5 @@
 /*
- * P R O D I C N S . H P P 
+ * P R O D I C N S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,51 +16,53 @@
 #include "gui/scrolist.hpp"
 #include "gui/gui.hpp"
 
-//Forward refs
+// Forward refs
 class GuiButton;
 class MachInGameScreen;
 class MachLogFactory;
 
-//orthodox canonical (revoked)
+// orthodox canonical (revoked)
 class MachProductionIcons : public GuiSimpleScrollableList
 {
 public:
-    //ctor. Located in pParent, covering area.
-    //In game screen passed.
-    MachProductionIcons( GuiDisplayable* pParent, const Gui::Box& area,
-                         MachLogFactory* pFactory, MachInGameScreen* pInGameScreen );
+    // ctor. Located in pParent, covering area.
+    // In game screen passed.
+    MachProductionIcons(
+        GuiDisplayable* pParent,
+        const Gui::Box& area,
+        MachLogFactory* pFactory,
+        MachInGameScreen* pInGameScreen);
 
-    //dtor.
-    virtual ~MachProductionIcons();
+    // dtor.
+    ~MachProductionIcons() override;
 
-    //Set up the list of icons
+    // Set up the list of icons
     void updateIcons();
 
-	static size_t height();
-	static size_t width();
+    static size_t height();
+    static size_t width();
 
-	void updateProgress( float percentageComplete );
+    void updateProgress(float percentageComplete);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachProductionIcons& t );
+    friend ostream& operator<<(ostream& o, const MachProductionIcons& t);
 
 protected:
-	virtual void doDisplay();
+    void doDisplay() override;
 
 private:
     // Operations deliberately revoked
-    MachProductionIcons( const MachProductionIcons& );
-    MachProductionIcons& operator =( const MachProductionIcons& );
-    bool operator ==( const MachProductionIcons& );
+    MachProductionIcons(const MachProductionIcons&);
+    MachProductionIcons& operator=(const MachProductionIcons&);
+    bool operator==(const MachProductionIcons&);
 
     void onIconClicked(GuiButton* pIcon);
 
-    //data members
-    MachLogFactory* pFactory_; //The factory whose production queu is depicted
-    MachInGameScreen* pInGameScreen_; //The gui root
+    // data members
+    MachLogFactory* pFactory_; // The factory whose production queu is depicted
+    MachInGameScreen* pInGameScreen_; // The gui root
 };
-
 
 #endif
 

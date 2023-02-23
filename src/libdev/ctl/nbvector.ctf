@@ -6,33 +6,30 @@
 //  These functions work because ctl_nb_vector can only be
 //  instantiated over bitwise canonical types.
 
-template< class T >
-void perWrite( PerOstream& ostr, const ctl_nb_vector< T >& vec )
+template <class T> void perWrite(PerOstream& ostr, const ctl_nb_vector<T>& vec)
 {
     size_t nEntries = vec.size();
-    PER_WRITE_RAW_OBJECT( ostr, nEntries );
+    PER_WRITE_RAW_OBJECT(ostr, nEntries);
 
-    if( nEntries > 0 )
-        PER_WRITE_RAW_DATA( ostr, &vec[ 0 ], nEntries * sizeof( T ) );
+    if (nEntries > 0)
+        PER_WRITE_RAW_DATA(ostr, &vec[0], nEntries * sizeof(T));
 }
 
-template< class T >
-void perRead( PerIstream& istr, ctl_nb_vector< T >& vec )
+template <class T> void perRead(PerIstream& istr, ctl_nb_vector<T>& vec)
 {
     size_t nEntries;
-    PER_READ_RAW_OBJECT( istr, nEntries );
+    PER_READ_RAW_OBJECT(istr, nEntries);
 
-    ctl_nb_vector< T >   dummyVec( nEntries, T() );
+    ctl_nb_vector<T> dummyVec(nEntries, T());
     vec = dummyVec;
 
-    if( nEntries > 0 )
-	    PER_READ_RAW_DATA( istr, &vec[ 0 ], nEntries * sizeof( T ) );
+    if (nEntries > 0)
+        PER_READ_RAW_DATA(istr, &vec[0], nEntries * sizeof(T));
 }
 
-template< class T >
-ostream& operator <<( ostream& ostr, const ctl_nb_vector< T >& vec )
+template <class T> ostream& operator<<(ostream& ostr, const ctl_nb_vector<T>& vec)
 {
-    for( typename ctl_nb_vector< T >::const_iterator i = vec.begin(); i != vec.end(); ++i )
+    for (typename ctl_nb_vector<T>::const_iterator i = vec.begin(); i != vec.end(); ++i)
     {
         ostr << *i << std::endl;
     }

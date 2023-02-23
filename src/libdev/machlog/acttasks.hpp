@@ -1,5 +1,5 @@
 /*
- * A C T TASKS . H P P 
+ * A C T TASKS . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,34 +24,33 @@ class MachLogTaskStateAction : public SimAction
 // Canonical form revoked
 {
 public:
-
-    virtual ~MachLogTaskStateAction();
-	static MachLogTaskStateAction* newFromParser( SimCondition*, bool enabled, UtlLineTokeniser* );
-	static MachLogTaskStateAction* newDynamic( SimCondition*, bool enabled, uint taskIndex, bool isAvailabe, bool isComplete );
+    ~MachLogTaskStateAction() override;
+    static MachLogTaskStateAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static MachLogTaskStateAction*
+    newDynamic(SimCondition*, bool enabled, uint taskIndex, bool isAvailabe, bool isComplete);
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogTaskStateAction );
-	PER_FRIEND_READ_WRITE( MachLogTaskStateAction );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTaskStateAction);
+    PER_FRIEND_READ_WRITE(MachLogTaskStateAction);
 
 protected:
-	virtual void doAction();
-	virtual void doOutputOperator( ostream& ) const;
+    void doAction() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    MachLogTaskStateAction(SimCondition*, bool enabled);
+    friend ostream& operator<<(ostream& o, const MachLogTaskStateAction& t);
 
-    MachLogTaskStateAction( SimCondition*, bool enabled );
-    friend ostream& operator <<( ostream& o, const MachLogTaskStateAction& t );
+    MachLogTaskStateAction(const MachLogTaskStateAction&);
+    MachLogTaskStateAction& operator=(const MachLogTaskStateAction&);
 
-    MachLogTaskStateAction( const MachLogTaskStateAction& );
-    MachLogTaskStateAction& operator =( const MachLogTaskStateAction& );
-
-	uint taskIndex_; //Number of the task, (starts counting at 1)
-    bool isAvailable_; //When the user is to b einformed of it
-    bool isComplete_; //When he has completed it
+    uint taskIndex_; // Number of the task, (starts counting at 1)
+    bool isAvailable_; // When the user is to b einformed of it
+    bool isComplete_; // When he has completed it
 };
 
-PER_DECLARE_PERSISTENT( MachLogTaskStateAction );
+PER_DECLARE_PERSISTENT(MachLogTaskStateAction);
 
 #endif
 

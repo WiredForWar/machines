@@ -22,36 +22,32 @@ class PerIstreamImpl
 // Canonical form revoked
 {
 public:
-    PerIstreamImpl( PerIstream* pStream );
-    PerIstreamImpl(
-      PerIstream* pStream,
-      std::istream& istr,
-      PerIstreamReporter* pReporter );
+    PerIstreamImpl(PerIstream* pStream);
+    PerIstreamImpl(PerIstream* pStream, std::istream& istr, PerIstreamReporter* pReporter);
 
     ~PerIstreamImpl();
 
-    void logDataRead( size_t bytesRead );
+    void logDataRead(size_t bytesRead);
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const PerIstreamImpl& t );
+    friend ostream& operator<<(ostream& o, const PerIstreamImpl& t);
 
-    PerIstreamImpl( const PerIstreamImpl& );
-    PerIstreamImpl& operator =( const PerIstreamImpl& );
+    PerIstreamImpl(const PerIstreamImpl&);
+    PerIstreamImpl& operator=(const PerIstreamImpl&);
 
     friend class PerIstream;
 
-    PerIstreamBuffer*   pBuffer_;
+    PerIstreamBuffer* pBuffer_;
     PerIstreamReporter* pReporter_;
 
-    size_t              fileSize_;
-    size_t              bytesRead_;
+    size_t fileSize_;
+    size_t bytesRead_;
 
     //  The number of bytes to call back after
-    size_t              callBackAfter_;
+    size_t callBackAfter_;
 };
-
 
 #endif
 

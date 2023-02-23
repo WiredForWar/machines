@@ -1,5 +1,5 @@
 /*
- * M A N A G E R . H P P 
+ * M A N A G E R . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -20,11 +20,11 @@
 #include "base/base.hpp"
 #include "phys/phys.hpp"
 
-//Forward declarations
+// Forward declarations
 class W4dSceneManager;
 class RenDisplay;
 
-//Singleton, orthodox canonical(revoked)
+// Singleton, orthodox canonical(revoked)
 class W4dManager
 {
 public:
@@ -33,30 +33,30 @@ public:
     ~W4dManager();
 
     // Set/get the current simulation time
-    void time( const PhysAbsoluteTime& newTime );
+    void time(const PhysAbsoluteTime& newTime);
     const PhysAbsoluteTime& time() const;
 
-    //set/get/clear the artificial time.
-    //When set, time() returns the artificial time instead of actual current time.
-    //This can be used to perform position computations ahead of time etc
-    void artificialTime( const PhysAbsoluteTime& newTime );
+    // set/get/clear the artificial time.
+    // When set, time() returns the artificial time instead of actual current time.
+    // This can be used to perform position computations ahead of time etc
+    void artificialTime(const PhysAbsoluteTime& newTime);
     void clearArtificialTime();
     bool hasArtificialTime() const;
 
-    //Call from the app's core loop to handle updating of any library level conditions.
+    // Call from the app's core loop to handle updating of any library level conditions.
     void update();
 
-    //Set/get the current scene manager.
-    //This is a temporary interface until multiple concurrent scenes are supported.
-    void sceneManager( W4dSceneManager* pSceneManager );
+    // Set/get the current scene manager.
+    // This is a temporary interface until multiple concurrent scenes are supported.
+    void sceneManager(W4dSceneManager* pSceneManager);
 
-	// Set sceneManager back to NULL.
-	void clearSceneManager();
+    // Set sceneManager back to NULL.
+    void clearSceneManager();
 
     W4dSceneManager* sceneManager() const;
-	//PRE( pSceneManager != NULL );
+    // PRE( pSceneManager != NULL );
 
-    //True iff there is a current scene manager
+    // True iff there is a current scene manager
     bool hasSceneManager() const;
 
     // Perform any rendering required to maintain the frame rates of the
@@ -65,55 +65,54 @@ public:
 
     //  Return the frame number. The frame number is incremented after
     //  each call to render
-    size_t  frameNumber() const;
-    
-	// A number which a camera or scene manager can use to uniquely
-	// identify a render pass.
-	uint32_t generateRenderPassId();
+    size_t frameNumber() const;
 
-    //Increments an id to denote that some object may have changed its position
+    // A number which a camera or scene manager can use to uniquely
+    // identify a render pass.
+    uint32_t generateRenderPassId();
+
+    // Increments an id to denote that some object may have changed its position
     uint32_t generateGeneralPositionId();
 
-    //The last generated id
+    // The last generated id
     uint32_t generalPositionId() const;
-	
-	// These are error handling functions for DirectX errors.  The first
-	// attempts to restore the screen before an abnormal termination.
-	// The second simply notes that rendering is unavailable.
-	void emergencyShutdown();
-	void renderingSuspended();
+
+    // These are error handling functions for DirectX errors.  The first
+    // attempts to restore the screen before an abnormal termination.
+    // The second simply notes that rendering is unavailable.
+    void emergencyShutdown();
+    void renderingSuspended();
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const W4dManager& t );
+    friend ostream& operator<<(ostream& o, const W4dManager& t);
 
 private:
     // Operation deliberately revoked
-    W4dManager( const W4dManager& );
+    W4dManager(const W4dManager&);
 
     // Operation deliberately revoked
-    W4dManager& operator =( const W4dManager& );
+    W4dManager& operator=(const W4dManager&);
 
     // Operation deliberately revoked
-    bool operator ==( const W4dManager& );
+    bool operator==(const W4dManager&);
 
     W4dManager();
 
-    //data members
-    PhysAbsoluteTime	currentTime_;	//Current simulation time
-    PhysAbsoluteTime	artificialTime_; //Current time to be used artificially
-    W4dSceneManager*	pSceneManager_; //The visualisation scene
-	uint32_t				currentPassId_;
-    uint32_t               generalPositionId_; //Updated whenever anything occurs
-                                            //which could change the position of any object
-    size_t              frameNumber_;
-    bool hasArtificialTime_; //true if artificialTime_ has been set
+    // data members
+    PhysAbsoluteTime currentTime_; // Current simulation time
+    PhysAbsoluteTime artificialTime_; // Current time to be used artificially
+    W4dSceneManager* pSceneManager_; // The visualisation scene
+    uint32_t currentPassId_;
+    uint32_t generalPositionId_; // Updated whenever anything occurs
+                                 // which could change the position of any object
+    size_t frameNumber_;
+    bool hasArtificialTime_; // true if artificialTime_ has been set
 };
 
 #ifdef _INLINE
-    #include "world4d/manager.ipp"
+#include "world4d/manager.ipp"
 #endif
-
 
 #endif
 

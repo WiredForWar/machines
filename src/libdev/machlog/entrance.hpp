@@ -1,5 +1,5 @@
 /*
- * E N T R A N C E . H P P 
+ * E N T R A N C E . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -26,55 +26,55 @@ class MachLogEntrance
 public:
     MachLogEntrance(
         const MachPhysConstructionData::EntranceData& physEntrance,
-        size_t  entranceNum,
+        size_t entranceNum,
         MachLogConstruction* pConstruction,
-        PhysConfigSpace2d* pInteriorConfigSpace );
+        PhysConfigSpace2d* pInteriorConfigSpace);
 
     ~MachLogEntrance();
 
     //  Try and lock this entrance, return true if successful
-    bool    lock();
+    bool lock();
     //  POST( locked() );
-    
+
     //  Unlock the entrance
-    void    unlock();
+    void unlock();
     // PRE( locked() );
     // POST( not locked() );
-    
-    //  Return true if the entrance is locked
-    bool    locked() const;
 
-    PhysConfigSpace2d::PolygonId    interiorPolygonId() const;
-    PhysConfigSpace2d::PolygonId    exteriorPolygonId() const;
-    
-    //The owning construction
+    //  Return true if the entrance is locked
+    bool locked() const;
+
+    PhysConfigSpace2d::PolygonId interiorPolygonId() const;
+    PhysConfigSpace2d::PolygonId exteriorPolygonId() const;
+
+    // The owning construction
     MachLogConstruction& construction() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogEntrance& t );
+    friend ostream& operator<<(ostream& o, const MachLogEntrance& t);
 
-	PER_MEMBER_PERSISTENT( MachLogEntrance );
-	PER_FRIEND_READ_WRITE( MachLogEntrance );
+    PER_MEMBER_PERSISTENT(MachLogEntrance);
+    PER_FRIEND_READ_WRITE(MachLogEntrance);
 
 private:
     // Operation deliberately revoked
-    MachLogEntrance( const MachLogEntrance& );
+    MachLogEntrance(const MachLogEntrance&);
 
     // Operation deliberately revoked
-    MachLogEntrance& operator =( const MachLogEntrance& );
+    MachLogEntrance& operator=(const MachLogEntrance&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachLogEntrance& );
+    bool operator==(const MachLogEntrance&);
 
-    bool    locked_;
+    bool locked_;
 
-    PhysConfigSpace2d::PolygonId    interiorPolygonId_;
-    PhysConfigSpace2d::PolygonId    exteriorPolygonId_;
-    MachLogConstruction* pConstruction_; //Back pointer to owning construction
+    PhysConfigSpace2d::PolygonId interiorPolygonId_;
+    PhysConfigSpace2d::PolygonId exteriorPolygonId_;
+    MachLogConstruction* pConstruction_; // Back pointer to owning construction
 };
 
-PER_DECLARE_PERSISTENT( MachLogEntrance );
+PER_DECLARE_PERSISTENT(MachLogEntrance);
 
 #endif
 

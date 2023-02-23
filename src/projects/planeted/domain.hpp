@@ -23,27 +23,27 @@ class PedPortal;
 class PedDomain : public PedPolygon
 {
 public:
-    PedDomain( const PolyVerticies& , MATHEX_SCALAR height, bool selected );
-    ~PedDomain();
+    PedDomain(const PolyVerticies&, MATHEX_SCALAR height, bool selected);
+    ~PedDomain() override;
 
     void CLASS_INVARIANT;
 
-	virtual void save( std::ofstream& );
+    void save(std::ofstream&) override;
 
-	virtual RenColour getWireColour() const;
+    RenColour getWireColour() const override;
 
-	bool intersectsPortal( const PedPortal& ) const;
-	// PRE( portal.verticies().size() == 2 );
+    bool intersectsPortal(const PedPortal&) const;
+    // PRE( portal.verticies().size() == 2 );
 
-	bool intersectsDomain( const PedDomain&, MexPoint2d* pPoint1, MexPoint2d* pPoint2 ) const;
+    bool intersectsDomain(const PedDomain&, MexPoint2d* pPoint1, MexPoint2d* pPoint2) const;
 
- private:
+private:
     // Operations deliberately revoked
-    PedDomain( const PedDomain& );
-    PedDomain& operator =( const PedDomain& );
-    bool operator ==( const PedDomain& );
+    PedDomain(const PedDomain&);
+    PedDomain& operator=(const PedDomain&);
+    bool operator==(const PedDomain&);
 
-	friend ostream& operator <<( ostream& o, const PedDomain& t );
+    friend ostream& operator<<(ostream& o, const PedDomain& t);
 };
 
 #endif

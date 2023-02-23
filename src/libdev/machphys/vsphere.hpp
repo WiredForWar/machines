@@ -17,43 +17,40 @@
 #include "phys/phys.hpp"
 #include "world4d/entity.hpp"
 
-
 class MachPhysVortexSphere : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysVortexSphere( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysVortexSphere(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysVortexSphere& exemplar();
 
-    //dtor
-    ~MachPhysVortexSphere();
+    // dtor
+    ~MachPhysVortexSphere() override;
 
-     //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysVortexSphere& t );
+    friend ostream& operator<<(ostream& o, const MachPhysVortexSphere& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysVortexSphere );
+    PER_MEMBER_PERSISTENT(MachPhysVortexSphere);
 
 private:
-    //Deliberately revoked
-    MachPhysVortexSphere( const MachPhysVortexSphere& );
-    MachPhysVortexSphere& operator =( const MachPhysVortexSphere& );
-    bool operator ==( const MachPhysVortexSphere& );
+    // Deliberately revoked
+    MachPhysVortexSphere(const MachPhysVortexSphere&);
+    MachPhysVortexSphere& operator=(const MachPhysVortexSphere&);
+    bool operator==(const MachPhysVortexSphere&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysVortexSphere();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysVortexSphere );
-PER_READ_WRITE( MachPhysVortexSphere );
+PER_DECLARE_PERSISTENT(MachPhysVortexSphere);
+PER_READ_WRITE(MachPhysVortexSphere);
 
 #endif
 

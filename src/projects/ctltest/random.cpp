@@ -6,7 +6,7 @@
 #include "ctltest/random.hpp"
 
 #ifndef _INLINE
-	#include "ctltest/random.ipp"
+#include "ctltest/random.ipp"
 #endif
 
 ///////////////////////////////////

@@ -1,5 +1,5 @@
 /*
- * P L A N E T E D . H P P 
+ * P L A N E T E D . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,7 +20,7 @@
 
 class W4dSceneManager;
 class MachLogPlanet;
-//class DevButtonEvent;
+// class DevButtonEvent;
 class PedEditorMode;
 
 class PedPlanetEditor
@@ -29,62 +29,61 @@ class PedPlanetEditor
 public:
     //  Singleton class
     static PedPlanetEditor& instance();
-  
+
     void CLASS_INVARIANT;
 
-	void initialise( W4dSceneManager*, MachLogPlanet* );
-	// PRE( pPlanet_ != NULL );
-	// PRE( pSceneManager_ != NULL );
+    void initialise(W4dSceneManager*, MachLogPlanet*);
+    // PRE( pPlanet_ != NULL );
+    // PRE( pSceneManager_ != NULL );
 
-	void processInput( const DevButtonEvent& );
+    void processInput(const DevButtonEvent&);
 
-	void preRenderUpdate();
+    void preRenderUpdate();
 
-	void readCspFile( const SysPathName& );
-	void readScnFile( const SysPathName& );
-	void readArfFile( const SysPathName& );
+    void readCspFile(const SysPathName&);
+    void readScnFile(const SysPathName&);
+    void readArfFile(const SysPathName&);
 
 private:
-	// Private as class is Singleton
+    // Private as class is Singleton
     PedPlanetEditor();
-	~PedPlanetEditor();
+    ~PedPlanetEditor();
 
-	// Operations deliberately revoked
-    PedPlanetEditor( const PedPlanetEditor& );
-    PedPlanetEditor& operator =( const PedPlanetEditor& );
-    bool operator ==( const PedPlanetEditor& );
+    // Operations deliberately revoked
+    PedPlanetEditor(const PedPlanetEditor&);
+    PedPlanetEditor& operator=(const PedPlanetEditor&);
+    bool operator==(const PedPlanetEditor&);
 
-    friend ostream& operator <<( ostream& o, const PedPlanetEditor& t );
+    friend ostream& operator<<(ostream& o, const PedPlanetEditor& t);
 
-	void initDeviceEvents();
-	void processSave();
-	void displayKeyboardCtrls();
-	void displaySavedStatus();
-	// void writeScnFile( ofstream& );
+    void initDeviceEvents();
+    void processSave();
+    void displayKeyboardCtrls();
+    void displaySavedStatus();
+    // void writeScnFile( ofstream& );
 
-	// Data...
-	PedEditorMode* pTileMode_;
-	PedEditorMode* pObstacleMode_;
-	PedEditorMode* pDomainMode_;
-	PedEditorMode* pPortalMode_;
-	PedEditorMode* pConstructionMode_;
-	PedEditorMode* pMachineMode_;
-	PedEditorMode* pArtefactMode_;
-	PedEditorMode* pCameraMode_;
+    // Data...
+    PedEditorMode* pTileMode_;
+    PedEditorMode* pObstacleMode_;
+    PedEditorMode* pDomainMode_;
+    PedEditorMode* pPortalMode_;
+    PedEditorMode* pConstructionMode_;
+    PedEditorMode* pMachineMode_;
+    PedEditorMode* pArtefactMode_;
+    PedEditorMode* pCameraMode_;
 
-	PedEditorMode* pCurrentMode_;
-	MachLogPlanet* pPlanet_;
-	W4dSceneManager* pSceneManager_;
-	bool saved_;
-	bool saveSuccessful_;
-	bool dispKeyboardControls_;
-	bool dispWarnings_;
-	SysPathName cspFileName_;
-	SysPathName scnFileName_;
-	SysPathName arfFileName_;
-	PedScenarioFile scenarioFile_;
+    PedEditorMode* pCurrentMode_;
+    MachLogPlanet* pPlanet_;
+    W4dSceneManager* pSceneManager_;
+    bool saved_;
+    bool saveSuccessful_;
+    bool dispKeyboardControls_;
+    bool dispWarnings_;
+    SysPathName cspFileName_;
+    SysPathName scnFileName_;
+    SysPathName arfFileName_;
+    PedScenarioFile scenarioFile_;
 };
-
 
 #endif
 

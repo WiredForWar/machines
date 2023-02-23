@@ -1,5 +1,5 @@
 /*
- * L M I S S I L E . C P P 
+ * L M I S S I L E . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -13,33 +13,29 @@
 #include "machlog/lmissile.hpp"
 #include "machlog/plandoms.hpp"
 
-
-
-
 MachLogLargeMissile::MachLogLargeMissile(
     MachLogRace* pRace,
-	MachPhysMissile* pPhysProjectile,
+    MachPhysMissile* pPhysProjectile,
     MachActor* pOwner,
-    const MachPhysWeaponData& weaponData )
-:	MachLogLinearProjectile( pRace, pPhysProjectile, pOwner, weaponData ),
-	pPhysMissile_( pPhysProjectile )
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData)
+    , pPhysMissile_(pPhysProjectile)
 {
-	HAL_STREAM("MLMissile::CTOR\n" );
+    HAL_STREAM("MLMissile::CTOR\n");
     TEST_INVARIANT;
 }
 
 MachLogLargeMissile::~MachLogLargeMissile()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogLargeMissile::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogLargeMissile& t )
+ostream& operator<<(ostream& o, const MachLogLargeMissile& t)
 {
 
     o << "MachLogLargeMissile " << (void*)&t << " start" << std::endl;
@@ -50,15 +46,15 @@ ostream& operator <<( ostream& o, const MachLogLargeMissile& t )
 
 void MachLogLargeMissile::doBeDestroyed()
 {
-	checkForDamage( 20.0, MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::LARGE_MISSILE );
+    checkForDamage(20.0, MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::LARGE_MISSILE);
 }
 
-//virtual 
-PhysRelativeTime MachLogLargeMissile::update( const PhysRelativeTime& cpu, MATHEX_SCALAR clearance )
+// virtual
+PhysRelativeTime MachLogLargeMissile::update(const PhysRelativeTime& cpu, MATHEX_SCALAR clearance)
 {
-	pPhysMissile_->update();
-	MachLogLinearProjectile::update( cpu, clearance );
-	return 0.0;
+    pPhysMissile_->update();
+    MachLogLinearProjectile::update(cpu, clearance);
+    return 0.0;
 }
 
 /* End LMISSILE.CPP *************************************************/

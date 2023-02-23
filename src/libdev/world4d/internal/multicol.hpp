@@ -24,18 +24,18 @@
 class W4dEntity;
 class W4dColourPulseData;
 
-class W4dMultiColourPulseData: public  W4dAnimationData
+class W4dMultiColourPulseData : public W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dMultiColourPulseData( const size_t& nData );
+    W4dMultiColourPulseData(const size_t& nData);
 
-    virtual ~W4dMultiColourPulseData();
+    ~W4dMultiColourPulseData() override;
 
-	//apply the texture cucling animation to pEntity  start at statTime
-	virtual void apply( W4dEntity* pEntity, const PhysAbsoluteTime& startTime);
+    // apply the texture cucling animation to pEntity  start at statTime
+    void apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) override;
 
-	void add( W4dColourPulseData* pData );
+    void add(W4dColourPulseData* pData);
 
     void CLASS_INVARIANT;
 
@@ -43,12 +43,12 @@ public:
     PER_FRIEND_READ_WRITE(W4dMultiColourPulseData);
 
 private:
-    friend ostream& operator <<( ostream& o, const W4dMultiColourPulseData& t );
+    friend ostream& operator<<(ostream& o, const W4dMultiColourPulseData& t);
 
-    W4dMultiColourPulseData( const W4dMultiColourPulseData& );
-    W4dMultiColourPulseData& operator =( const W4dMultiColourPulseData& );
+    W4dMultiColourPulseData(const W4dMultiColourPulseData&);
+    W4dMultiColourPulseData& operator=(const W4dMultiColourPulseData&);
 
-	ctl_pvector< W4dColourPulseData > colourPulseDataVec_;
+    ctl_pvector<W4dColourPulseData> colourPulseDataVec_;
 };
 
 PER_DECLARE_PERSISTENT(W4dMultiColourPulseData);

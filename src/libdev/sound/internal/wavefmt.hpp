@@ -39,47 +39,47 @@
 */
 
 #ifndef WAVE_FORMAT_HPP
-	#define WAVE_FORMAT_HPP
+#define WAVE_FORMAT_HPP
 
 #include "base/base.hpp"
 #include "sound/internal/dxs.hpp"
 ////////////////////////////////////////////////////////////
 
-	class WaveFormat
-	{
-	public:
-		WaveFormat( Channels, SampleRateHz, BitsPerSample );
-		WaveFormat( Channels, SampleRateKHz, BitsPerSample );
-		WaveFormat( const WaveFormat& );
-		WaveFormat& operator =( const WaveFormat& );
+class WaveFormat
+{
+public:
+    WaveFormat(Channels, SampleRateHz, BitsPerSample);
+    WaveFormat(Channels, SampleRateKHz, BitsPerSample);
+    WaveFormat(const WaveFormat&);
+    WaveFormat& operator=(const WaveFormat&);
 
-		void format( Channels, SampleRateHz, BitsPerSample );
-		void format( Channels, SampleRateKHz, BitsPerSample );
+    void format(Channels, SampleRateHz, BitsPerSample);
+    void format(Channels, SampleRateKHz, BitsPerSample);
 
-		void channels( Channels );
-		void sampleRateHz( SampleRateHz );
-		void sampleRateKHz( SampleRateKHz );
-		void bitsPerSample( BitsPerSample );
+    void channels(Channels);
+    void sampleRateHz(SampleRateHz);
+    void sampleRateKHz(SampleRateKHz);
+    void bitsPerSample(BitsPerSample);
 
-		Channels channels() const;
-		SampleRateHz sampleRateHz() const;
-		SampleRateKHz sampleRateKHz() const;
-		BitsPerSample bitsPerSample() const;
-		int nBytesPerSec() const;
+    Channels channels() const;
+    SampleRateHz sampleRateHz() const;
+    SampleRateKHz sampleRateKHz() const;
+    BitsPerSample bitsPerSample() const;
+    int nBytesPerSec() const;
 
-	    friend bool operator ==( const WaveFormat& a, const WaveFormat& b);
-		friend bool operator <( const WaveFormat& a, const WaveFormat& b);
+    friend bool operator==(const WaveFormat& a, const WaveFormat& b);
+    friend bool operator<(const WaveFormat& a, const WaveFormat& b);
 
-	private:
-		Channels channels_;
-		SampleRateHz sampleRateHz_;
-		BitsPerSample bitsPerSample_;
-	};
+private:
+    Channels channels_;
+    SampleRateHz sampleRateHz_;
+    BitsPerSample bitsPerSample_;
+};
 
 ////////////////////////////////////////////////////////////
 
 #ifdef _INLINE
-	#include "wavefmt.ipp"
+#include "wavefmt.ipp"
 #endif
 
 ////////////////////////////////////////////////////////////

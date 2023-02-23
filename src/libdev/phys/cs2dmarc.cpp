@@ -8,22 +8,21 @@
 #include "phys/internal/cs2dmarc.hpp"
 
 #ifndef _INLINE
-    #include "phys/internal/cs2dmarc.ipp"
+#include "phys/internal/cs2dmarc.ipp"
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void PhysCS2dDomainArc::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator <<( ostream& o, const PhysCS2dDomainArc& t )
+ostream& operator<<(ostream& o, const PhysCS2dDomainArc& t)
 {
 
-    o << "PhysCS2dDomainArc " << (void*)&t <<
-         " domain id = " << t.domainId_.asScalar() << std::endl;
+    o << "PhysCS2dDomainArc " << (void*)&t << " domain id = " << t.domainId_.asScalar() << std::endl;
 
     return o;
 }

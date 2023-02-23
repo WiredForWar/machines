@@ -11,24 +11,28 @@
 #define _BASE_CBALLOC_HPP
 
 #include "base/base.hpp"
-//#include <strfwd>
+// #include <strfwd>
 
-void* cbAlloc( size_t nBytes );
-void cbFree( void* pBlock );
-void* cbRealloc( void* pBlock, size_t nBytes );
+void* cbAlloc(size_t nBytes);
+void cbFree(void* pBlock);
+void* cbRealloc(void* pBlock, size_t nBytes);
 void cbInitialise();
 void cbClose();
 void cbTouchAll();
 
-//Temporray interface. Allows a pool allocator to be used instead of the standard.
-//Although the interface is for a stack, only one allocator can currently be pushed
-//at a time.
+// Temporray interface. Allows a pool allocator to be used instead of the standard.
+// Although the interface is for a stack, only one allocator can currently be pushed
+// at a time.
 class BasePoolAllocator;
-void pushCurrentPoolAllocator( BasePoolAllocator* pAllocator );
+void pushCurrentPoolAllocator(BasePoolAllocator* pAllocator);
 void popCurrentPoolAllocator();
 
-enum AllocTraceOptions{ CB_ALLOC_DETAIL_BLOCKS, CB_ALLOC_DETAIL_NOBLOCKS };
-void cbAllocTrace( ostream& o, const std::string& title,  AllocTraceOptions option );
+enum AllocTraceOptions
+{
+    CB_ALLOC_DETAIL_BLOCKS,
+    CB_ALLOC_DETAIL_NOBLOCKS
+};
+void cbAllocTrace(ostream& o, const std::string& title, AllocTraceOptions option);
 
 #endif
 

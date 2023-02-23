@@ -1,5 +1,5 @@
 /*
- * L I N E T R A I . H P P 
+ * L I N E T R A I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -31,55 +31,53 @@ class PhysLinearTravelPlanImpl
 // Canonical form revoked
 {
 public:
-
-    PER_MEMBER_PERSISTENT( PhysLinearTravelPlanImpl );
-    PER_FRIEND_READ_WRITE( PhysLinearTravelPlanImpl );
+    PER_MEMBER_PERSISTENT(PhysLinearTravelPlanImpl);
+    PER_FRIEND_READ_WRITE(PhysLinearTravelPlanImpl);
 
 private:
-
-    PhysLinearTravelPlanImpl( const PhysMotionPlan::TransformsPtr& transformsPtr );
+    PhysLinearTravelPlanImpl(const PhysMotionPlan::TransformsPtr& transformsPtr);
 
     PhysLinearTravelPlanImpl(
-      const PhysMotionPlan::TransformsPtr& transformsPtr,
-      const PhysMotionPlan::RampAccelerationsPtr& rampAccelerationsPtr );
+        const PhysMotionPlan::TransformsPtr& transformsPtr,
+        const PhysMotionPlan::RampAccelerationsPtr& rampAccelerationsPtr);
 
     PhysLinearTravelPlanImpl();
     ~PhysLinearTravelPlanImpl();
 
-    PhysLinearTravelPlanImpl( const PhysLinearTravelPlanImpl& );
-    PhysLinearTravelPlanImpl& operator =( const PhysLinearTravelPlanImpl& );
+    PhysLinearTravelPlanImpl(const PhysLinearTravelPlanImpl&);
+    PhysLinearTravelPlanImpl& operator=(const PhysLinearTravelPlanImpl&);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const PhysLinearTravelPlanImpl& t );
-	friend class PhysLinearTravelPlan;
+    friend ostream& operator<<(ostream& o, const PhysLinearTravelPlanImpl& t);
+    friend class PhysLinearTravelPlan;
 
     PhysMotionPlan::TransformsPtr transformsPtr_;
     PhysMotionPlan::RampAccelerationsPtr rampAccelerationsPtr_;
 
     PhysMotionPlan::TimesPtr segmentTimesPtr_;
 
-    ctl_vector< bool > isRotationSegment_;
+    ctl_vector<bool> isRotationSegment_;
 
-    MATHEX_SCALAR   startRotationDistance_; //  The distance before a turn point to start rotating to face the new direction
-    
-    //Cached transform data
+    MATHEX_SCALAR
+    startRotationDistance_; //  The distance before a turn point to start rotating to face the new direction
 
-    bool cacheValid_; //true iff the cache data exists
-    size_t cacheSegment_; //Segment number of the cached data
-    MexPoint3d cacheTranslation_; //Translation component of modifying transform
-    MexVec3 cacheRotationAxis_; //Unit direction vector for axis of rotation change
-    MATHEX_SCALAR cacheAngle_; //Angle of full rotation between bounding positions
-    PhysRelativeTime cacheSegmentTime_;//Time spent in cached segment
-    PhysRelativeTime cacheAccelerationTime_;//Time spent accelerating in cached segment
-    PhysRelativeTime cacheDecelerationTime_;//Time spent decelerating in cached segment
+    // Cached transform data
+
+    bool cacheValid_; // true iff the cache data exists
+    size_t cacheSegment_; // Segment number of the cached data
+    MexPoint3d cacheTranslation_; // Translation component of modifying transform
+    MexVec3 cacheRotationAxis_; // Unit direction vector for axis of rotation change
+    MATHEX_SCALAR cacheAngle_; // Angle of full rotation between bounding positions
+    PhysRelativeTime cacheSegmentTime_; // Time spent in cached segment
+    PhysRelativeTime cacheAccelerationTime_; // Time spent accelerating in cached segment
+    PhysRelativeTime cacheDecelerationTime_; // Time spent decelerating in cached segment
     MATHEX_SCALAR cacheStartSpeed_;
     bool cacheIsRotationSegment_;
-    MATHEX_SCALAR   cacheRotationLowerS_;   //The proportion along the move at which we start the turn
-
+    MATHEX_SCALAR cacheRotationLowerS_; // The proportion along the move at which we start the turn
 };
 
-PER_DECLARE_PERSISTENT( PhysLinearTravelPlanImpl );
+PER_DECLARE_PERSISTENT(PhysLinearTravelPlanImpl);
 
 #endif
 

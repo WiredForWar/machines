@@ -14,11 +14,11 @@ MexCompressedTransform3d::MexCompressedTransform3d()
     TEST_INVARIANT;
 }
 
-MexCompressedTransform3d::MexCompressedTransform3d( const MexTransform3d& trans )
+MexCompressedTransform3d::MexCompressedTransform3d(const MexTransform3d& trans)
 {
-	position_ = trans.position();
-	xBasis_ = trans.xBasis();
-	yBasis_ = trans.yBasis();
+    position_ = trans.position();
+    xBasis_ = trans.xBasis();
+    yBasis_ = trans.yBasis();
 
     TEST_INVARIANT;
 }
@@ -26,21 +26,20 @@ MexCompressedTransform3d::MexCompressedTransform3d( const MexTransform3d& trans 
 MexCompressedTransform3d::~MexCompressedTransform3d()
 {
     TEST_INVARIANT;
-
 }
 
 void MexCompressedTransform3d::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MexCompressedTransform3d& t )
+ostream& operator<<(ostream& o, const MexCompressedTransform3d& t)
 {
 
     o << "MexCompressedTransform3d " << (void*)&t << " start" << std::endl;
-	o << " position " << t.position_ << std::endl;
-	o << " xBasis " << t.xBasis_ << std::endl;
-	o << " yBasis " << t.yBasis_ << std::endl;
+    o << " position " << t.position_ << std::endl;
+    o << " xBasis " << t.xBasis_ << std::endl;
+    o << " yBasis " << t.yBasis_ << std::endl;
     o << "MexCompressedTransform3d " << (void*)&t << " end" << std::endl;
 
     return o;

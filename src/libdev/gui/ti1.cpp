@@ -13,11 +13,11 @@ class GuiDisplayable;
 
 void Gui_ti1()
 {
-	static ctl_vector< GuiDisplayable * >	dummy1;
-	static ctl_list< GuiDisplayable * >		dummy2;
-	static ctl_list< DevKey::ScanCode >		dummy3;
-	static ctl_vector< GuiBmpFontCoreCharData > dummy10;
-	static ctl_vector< GuiBmpFont > 		dummy11;
+    static ctl_vector<GuiDisplayable*> dummy1;
+    static ctl_list<GuiDisplayable*> dummy2;
+    static ctl_list<DevKey::ScanCode> dummy3;
+    static ctl_vector<GuiBmpFontCoreCharData> dummy10;
+    static ctl_vector<GuiBmpFont> dummy11;
 }
 
 /* End **************************************************************/

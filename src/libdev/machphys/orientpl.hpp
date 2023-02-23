@@ -26,29 +26,29 @@ class MachPhysOrientationAndPositionPlan : public PhysMotionPlan
 // Canonical form revoked
 {
 public:
-    MachPhysOrientationAndPositionPlan( W4dEntity* pEntity,  const PhysRelativeTime& duration );
-    ~MachPhysOrientationAndPositionPlan();
+    MachPhysOrientationAndPositionPlan(W4dEntity* pEntity, const PhysRelativeTime& duration);
+    ~MachPhysOrientationAndPositionPlan() override;
 
-    virtual void transform( const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const;
-    //PRE( pResult != NULL )
+    void transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const override;
+    // PRE( pResult != NULL )
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT( MachPhysOrientationAndPositionPlan );
-    PER_FRIEND_READ_WRITE( MachPhysOrientationAndPositionPlan );
+    PER_MEMBER_PERSISTENT(MachPhysOrientationAndPositionPlan);
+    PER_FRIEND_READ_WRITE(MachPhysOrientationAndPositionPlan);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysOrientationAndPositionPlan& t );
+    friend ostream& operator<<(ostream& o, const MachPhysOrientationAndPositionPlan& t);
 
-    MachPhysOrientationAndPositionPlan( const MachPhysOrientationAndPositionPlan& );
-    MachPhysOrientationAndPositionPlan& operator =( const MachPhysOrientationAndPositionPlan& );
+    MachPhysOrientationAndPositionPlan(const MachPhysOrientationAndPositionPlan&);
+    MachPhysOrientationAndPositionPlan& operator=(const MachPhysOrientationAndPositionPlan&);
 
-	W4dEntity* pEntity_; //the entity the plan is going to be applied to.
-	MexPoint3d localPosition_;
-	MATHEX_SCALAR zGlobal_;
+    W4dEntity* pEntity_; // the entity the plan is going to be applied to.
+    MexPoint3d localPosition_;
+    MATHEX_SCALAR zGlobal_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysOrientationAndPositionPlan );
+PER_DECLARE_PERSISTENT(MachPhysOrientationAndPositionPlan);
 
 #endif
 

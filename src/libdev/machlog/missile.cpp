@@ -1,5 +1,5 @@
 /*
- * P U L S E B L B . C P P 
+ * P U L S E B L B . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -12,32 +12,31 @@
 #include "machlog/missile.hpp"
 #include "machlog/plandoms.hpp"
 
-PER_DEFINE_PERSISTENT( MachLogMissile );
+PER_DEFINE_PERSISTENT(MachLogMissile);
 
 MachLogMissile::MachLogMissile(
     MachLogRace* pRace,
-	MachPhysMissile* pPhysProjectile,
+    MachPhysMissile* pPhysProjectile,
     MachActor* pOwner,
-    const MachPhysWeaponData& weaponData )
-:	MachLogLinearProjectile( pRace, pPhysProjectile, pOwner, weaponData ),
-	pPhysMissile_( pPhysProjectile )
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData)
+    , pPhysMissile_(pPhysProjectile)
 {
-	HAL_STREAM("MLMissile::CTOR\n" );
+    HAL_STREAM("MLMissile::CTOR\n");
     TEST_INVARIANT;
 }
 
 MachLogMissile::~MachLogMissile()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogMissile::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogMissile& t )
+ostream& operator<<(ostream& o, const MachLogMissile& t)
 {
 
     o << "MachLogMissile " << (void*)&t << " start" << std::endl;
@@ -48,35 +47,33 @@ ostream& operator <<( ostream& o, const MachLogMissile& t )
 
 void MachLogMissile::doBeDestroyed()
 {
-	checkForDamage( 10.0, MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::MULTI_LAUNCHER1 );
+    checkForDamage(10.0, MachLogLinearProjectile::LINEAR_DAMAGE, MachPhys::MULTI_LAUNCHER1);
 }
 
-//virtual 
-PhysRelativeTime MachLogMissile::update( const PhysRelativeTime& cpu, MATHEX_SCALAR clearance )
+// virtual
+PhysRelativeTime MachLogMissile::update(const PhysRelativeTime& cpu, MATHEX_SCALAR clearance)
 {
-	pPhysMissile_->update();
-	MachLogLinearProjectile::update( cpu, clearance );
-	return 0.0;
+    pPhysMissile_->update();
+    MachLogLinearProjectile::update(cpu, clearance);
+    return 0.0;
 }
 
-void perWrite( PerOstream& ostr, const MachLogMissile& actor )
+void perWrite(PerOstream& ostr, const MachLogMissile& actor)
 {
-	const MachLogLinearProjectile& base1 = actor;
+    const MachLogLinearProjectile& base1 = actor;
 
-	ostr << base1;
-
+    ostr << base1;
 }
 
-void perRead( PerIstream& istr, MachLogMissile& actor )
+void perRead(PerIstream& istr, MachLogMissile& actor)
 {
-	MachLogLinearProjectile& base1 = actor;
+    MachLogLinearProjectile& base1 = actor;
 
-	istr >> base1;
-
+    istr >> base1;
 }
 
-MachLogMissile::MachLogMissile( PerConstructor con )
-:	MachLogLinearProjectile( con )
+MachLogMissile::MachLogMissile(PerConstructor con)
+    : MachLogLinearProjectile(con)
 {
 }
 

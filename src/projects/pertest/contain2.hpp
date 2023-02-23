@@ -1,5 +1,5 @@
 /*
- * C O N T A I N 2 . H P P 
+ * C O N T A I N 2 . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -30,25 +30,24 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT( Containers2 );
-    PER_FRIEND_READ_WRITE( Containers2 );
+    PER_MEMBER_PERSISTENT_DEFAULT(Containers2);
+    PER_FRIEND_READ_WRITE(Containers2);
 
-    friend ostream& operator <<( ostream& o, const Containers2& t );
+    friend ostream& operator<<(ostream& o, const Containers2& t);
 
 private:
-    Containers2( const Containers2& );
-    Containers2& operator =( const Containers2& );
+    Containers2(const Containers2&);
+    Containers2& operator=(const Containers2&);
 
-    typedef ctl_pvector< int >   PVectorInt;
-    PVectorInt   pvi1_;
-    PVectorInt*  pPVi1_;
-    PVectorInt*  pPVi2_;
+    typedef ctl_pvector<int> PVectorInt;
+    PVectorInt pvi1_;
+    PVectorInt* pPVi1_;
+    PVectorInt* pPVi2_;
 
-    friend bool operator ==( const Containers2&, const Containers2& );
+    friend bool operator==(const Containers2&, const Containers2&);
 };
 
-
-PER_DECLARE_PERSISTENT( Containers2 );
+PER_DECLARE_PERSISTENT(Containers2);
 
 #endif
 

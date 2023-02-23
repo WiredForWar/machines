@@ -16,7 +16,7 @@
 #include "mathex/point3d.hpp"
 #include "mathex/eulerang.hpp"
 
-//void    bobTest();
+// void    bobTest();
 
 static void rampAccelerationTest();
 static void rampAccelerationTest2();
@@ -27,188 +27,186 @@ static void motionChunkTest();
 static PhysMotionChunk chunk1();
 static PhysMotionChunk chunk2();
 
-static void timedSpinPlanTest( MexBasicRandom* pR, PhysTimedSpinPlan* pPlan );
-static MexVec3 randomNonZeroVec3( MexBasicRandom* pR );
-static MexVec3 randomVec3( MexBasicRandom* pR );
-static MexPoint3d randomPoint3d( MexBasicRandom* pR );
-static MexTransform3d randomTransform3d( MexBasicRandom* pR );
+static void timedSpinPlanTest(MexBasicRandom* pR, PhysTimedSpinPlan* pPlan);
+static MexVec3 randomNonZeroVec3(MexBasicRandom* pR);
+static MexVec3 randomVec3(MexBasicRandom* pR);
+static MexPoint3d randomPoint3d(MexBasicRandom* pR);
+static MexTransform3d randomTransform3d(MexBasicRandom* pR);
 
 int main()
 
 {
-	PhysTest	tester;
+    PhysTest tester;
 
-	//tester.testAlignedBSPTree2d(std::cout);
+    // tester.testAlignedBSPTree2d(std::cout);
 
-	//motionChunkTest(); //OK
+    // motionChunkTest(); //OK
 
-    //rampAccelerationTest();
+    // rampAccelerationTest();
 
-    //timedSpinTest(); // OK? memleak/dev timer?
+    // timedSpinTest(); // OK? memleak/dev timer?
 
-    //bobTest();
+    // bobTest();
 
-	return 0;
+    return 0;
 }
-
 
 void timedSpinTest()
 {
     const size_t N_TESTS = 100000;
 
-    MexBasicRandom  r1;
+    MexBasicRandom r1;
 
-    r1.seed( 20 );
+    r1.seed(20);
 
-    for( size_t i = 0; i < N_TESTS; ++i )
+    for (size_t i = 0; i < N_TESTS; ++i)
     {
         std::cout << "Test " << i << "\r";
 
-        MexVec3 axis( randomNonZeroVec3( &r1 ) );
-        MexRadians startAngle = mexRandomScalar( &r1, -100.0, 100.0 );
-        MexRadians startSpeed = mexRandomScalar( &r1, -100.0, 100.0 );
-        size_t likelySegmentCount = mexRandomInt( &r1, 0, 100 );
+        MexVec3 axis(randomNonZeroVec3(&r1));
+        MexRadians startAngle = mexRandomScalar(&r1, -100.0, 100.0);
+        MexRadians startSpeed = mexRandomScalar(&r1, -100.0, 100.0);
+        size_t likelySegmentCount = mexRandomInt(&r1, 0, 100);
 
-        if( mexRandomInt( &r1, 2 ) == 0 )
+        if (mexRandomInt(&r1, 2) == 0)
         {
-            MexPoint3d position( randomPoint3d( &r1 ) );
+            MexPoint3d position(randomPoint3d(&r1));
 
-            PhysTimedSpinPlan plan( axis, position, startAngle, startSpeed, likelySegmentCount );
+            PhysTimedSpinPlan plan(axis, position, startAngle, startSpeed, likelySegmentCount);
 
-            timedSpinPlanTest( &r1, &plan );
+            timedSpinPlanTest(&r1, &plan);
         }
         else
         {
-            MexTransform3d baseTransform( randomTransform3d( &r1 ) );
+            MexTransform3d baseTransform(randomTransform3d(&r1));
 
-            PhysTimedSpinPlan plan( axis, baseTransform, startAngle, startSpeed, likelySegmentCount );
+            PhysTimedSpinPlan plan(axis, baseTransform, startAngle, startSpeed, likelySegmentCount);
 
-            timedSpinPlanTest( &r1, &plan );
+            timedSpinPlanTest(&r1, &plan);
         }
     }
 }
 
-void timedSpinPlanTest( MexBasicRandom* pR, PhysTimedSpinPlan* pPlan )
+void timedSpinPlanTest(MexBasicRandom* pR, PhysTimedSpinPlan* pPlan)
 {
     int nSegments;
 
-    if( mexRandomInt( pR, 2 ) )
-        nSegments = mexRandomInt( pR, 0, 5 );
+    if (mexRandomInt(pR, 2))
+        nSegments = mexRandomInt(pR, 0, 5);
     else
-        nSegments = mexRandomInt( pR, 0, 500 );
+        nSegments = mexRandomInt(pR, 0, 500);
 
-    for( size_t i = 0; i < nSegments; ++i )
+    for (size_t i = 0; i < nSegments; ++i)
     {
-        const PhysRelativeTime segmentDuration = mexRandomScalar( pR, 0.0, 100.0 );
-        const MexRadians acceleration = mexRandomScalar( pR, 0.0, 100.0 );
+        const PhysRelativeTime segmentDuration = mexRandomScalar(pR, 0.0, 100.0);
+        const MexRadians acceleration = mexRandomScalar(pR, 0.0, 100.0);
 
-        pPlan->addSegment( segmentDuration, acceleration );
+        pPlan->addSegment(segmentDuration, acceleration);
     }
 
     const size_t N_TESTS = 100;
 
-    for( size_t i = 0; i < N_TESTS; ++i )
+    for (size_t i = 0; i < N_TESTS; ++i)
     {
-        MexTransform3d  tx;
+        MexTransform3d tx;
 
-        PhysRelativeTime offset = mexRandomScalar( pR, 0.0, 10000.0 );
+        PhysRelativeTime offset = mexRandomScalar(pR, 0.0, 10000.0);
 
-        pPlan->transform( offset, &tx );
-        pPlan->angle( offset );
-        pPlan->speed( offset );
+        pPlan->transform(offset, &tx);
+        pPlan->angle(offset);
+        pPlan->speed(offset);
     }
 }
 
-MexVec3 randomNonZeroVec3( MexBasicRandom* pR )
+MexVec3 randomNonZeroVec3(MexBasicRandom* pR)
 {
     MexVec3 vec;
 
     do
     {
-        vec = randomVec3( pR );
-    } while( vec.modulus() == 0.0 );
+        vec = randomVec3(pR);
+    } while (vec.modulus() == 0.0);
 
     return vec;
 }
 
-MexVec3 randomVec3( MexBasicRandom* pR )
+MexVec3 randomVec3(MexBasicRandom* pR)
 {
     MexVec3 vec(
-      mexRandomScalar( pR, -100.0, 100.0 ),
-      mexRandomScalar( pR, -100.0, 100.0 ),
-      mexRandomScalar( pR, -100.0, 100.0 ) );
+        mexRandomScalar(pR, -100.0, 100.0),
+        mexRandomScalar(pR, -100.0, 100.0),
+        mexRandomScalar(pR, -100.0, 100.0));
 
     return vec;
 }
 
-MexPoint3d randomPoint3d( MexBasicRandom* pR )
+MexPoint3d randomPoint3d(MexBasicRandom* pR)
 {
     MexPoint3d point(
-      mexRandomScalar( pR, -100.0, 100.0 ),
-      mexRandomScalar( pR, -100.0, 100.0 ),
-      mexRandomScalar( pR, -100.0, 100.0 ) );
+        mexRandomScalar(pR, -100.0, 100.0),
+        mexRandomScalar(pR, -100.0, 100.0),
+        mexRandomScalar(pR, -100.0, 100.0));
 
     return point;
 }
 
-MexTransform3d randomTransform3d( MexBasicRandom* pR )
+MexTransform3d randomTransform3d(MexBasicRandom* pR)
 {
-    const MexEulerAngles  angles(
-      mexRandomScalar( pR, -100.0, 100.0 ),
-      mexRandomScalar( pR, -100.0, 100.0 ),
-      mexRandomScalar( pR, -100.0, 100.0 ) );
+    const MexEulerAngles angles(
+        mexRandomScalar(pR, -100.0, 100.0),
+        mexRandomScalar(pR, -100.0, 100.0),
+        mexRandomScalar(pR, -100.0, 100.0));
 
-    MexTransform3d transform( angles, randomPoint3d( pR ) );
+    MexTransform3d transform(angles, randomPoint3d(pR));
 
     return transform;
 }
 
 void motionChunkTest()
 {
-	const PhysMotionChunk ch1 = chunk1();
-	const PhysMotionChunk ch2 = chunk2();
+    const PhysMotionChunk ch1 = chunk1();
+    const PhysMotionChunk ch2 = chunk2();
 
-	PhysAbsoluteTime collideTime;
+    PhysAbsoluteTime collideTime;
 
-    if( ch1.intersects( ch2, &collideTime ) )
+    if (ch1.intersects(ch2, &collideTime))
     {
-		std::cout << "Chunks intersect at time " << collideTime << std::endl;
+        std::cout << "Chunks intersect at time " << collideTime << std::endl;
     }
     else
     {
-		std::cout << "Chunks do not intersect" << std::endl;
+        std::cout << "Chunks do not intersect" << std::endl;
     }
 
-	const PhysRampAcceleration& ra2 = ch2.motionProfile();
+    const PhysRampAcceleration& ra2 = ch2.motionProfile();
 
-	const uint N_STEPS = 100;
-	const PhysRelativeTime timeIncrement = ra2.totalTime() / N_STEPS;
+    const uint N_STEPS = 100;
+    const PhysRelativeTime timeIncrement = ra2.totalTime() / N_STEPS;
 
-	const MexPoint2d& startPoint1 = ch1.startPoint();
-	const MexPoint2d& startPoint2 = ch2.startPoint();
-	const MexPoint2d& endPoint2 = ch2.endPoint();
+    const MexPoint2d& startPoint1 = ch1.startPoint();
+    const MexPoint2d& startPoint2 = ch2.startPoint();
+    const MexPoint2d& endPoint2 = ch2.endPoint();
 
-	for( PhysRelativeTime t = 0.0; t < ra2.totalTime(); t += timeIncrement )
-	{
-	    const MATHEX_SCALAR distance = ra2.distance( t );
-		const MATHEX_SCALAR f = distance / ra2.totalDistance();
-	    const MexPoint2d point( startPoint2, endPoint2, f );
+    for (PhysRelativeTime t = 0.0; t < ra2.totalTime(); t += timeIncrement)
+    {
+        const MATHEX_SCALAR distance = ra2.distance(t);
+        const MATHEX_SCALAR f = distance / ra2.totalDistance();
+        const MexPoint2d point(startPoint2, endPoint2, f);
 
-		std::cout << t + ch2.createTime() + ch2.motionTimeOffset();
-		std::cout << "  " << point;
-		std::cout << "  " << point.euclidianDistance( startPoint1 ) << std::endl;
-	}
-
+        std::cout << t + ch2.createTime() + ch2.motionTimeOffset();
+        std::cout << "  " << point;
+        std::cout << "  " << point.euclidianDistance(startPoint1) << std::endl;
+    }
 }
 
 PhysMotionChunk chunk1()
 {
-	const MATHEX_SCALAR startSpeed = 0;
-	const MATHEX_SCALAR firstAcceleration = 400;
-	const MATHEX_SCALAR secondAcceleration = -400;
-  	const PhysRelativeTime totalTime = 0.01 + 1.0;
-	const PhysRelativeTime firstAccelerationTime = 0.005;
-	const PhysRelativeTime secondAccelerationTime = 0.005;
+    const MATHEX_SCALAR startSpeed = 0;
+    const MATHEX_SCALAR firstAcceleration = 400;
+    const MATHEX_SCALAR secondAcceleration = -400;
+    const PhysRelativeTime totalTime = 0.01 + 1.0;
+    const PhysRelativeTime firstAccelerationTime = 0.005;
+    const PhysRelativeTime secondAccelerationTime = 0.005;
 
     PhysRampAcceleration ramp(
         startSpeed,
@@ -216,37 +214,30 @@ PhysMotionChunk chunk1()
         secondAcceleration,
         totalTime,
         firstAccelerationTime,
-        secondAccelerationTime );
+        secondAccelerationTime);
 
-	const MexPoint2d startPoint(241.036,391.177);
-	const MexPoint2d endPoint(241.036,391.177);
-	const MATHEX_SCALAR clearance = 1.2;
+    const MexPoint2d startPoint(241.036, 391.177);
+    const MexPoint2d endPoint(241.036, 391.177);
+    const MATHEX_SCALAR clearance = 1.2;
     const PhysAbsoluteTime createTime = 2350.41 - 0.5;
     const PhysRelativeTime& motionTimeOffset = 0;
     const MexDouble minHeight = 0;
     const MexDouble maxHeight = 10.0;
 
-    const PhysMotionChunk chunk(
-		startPoint,
-		endPoint,
-		clearance,
-		ramp,
-		createTime,
-		motionTimeOffset,
-		minHeight,
-		maxHeight );
+    const PhysMotionChunk
+        chunk(startPoint, endPoint, clearance, ramp, createTime, motionTimeOffset, minHeight, maxHeight);
 
-	return chunk;
+    return chunk;
 }
 
 PhysMotionChunk chunk2()
 {
-	const MATHEX_SCALAR startSpeed = 0;
-	const MATHEX_SCALAR firstAcceleration = 76;
-	const MATHEX_SCALAR secondAcceleration = -76;
-  	const PhysRelativeTime totalTime = 3.47951;
-	const PhysRelativeTime firstAccelerationTime = 0.178541;
-	const PhysRelativeTime secondAccelerationTime = 0.178541;
+    const MATHEX_SCALAR startSpeed = 0;
+    const MATHEX_SCALAR firstAcceleration = 76;
+    const MATHEX_SCALAR secondAcceleration = -76;
+    const PhysRelativeTime totalTime = 3.47951;
+    const PhysRelativeTime firstAccelerationTime = 0.178541;
+    const PhysRelativeTime secondAccelerationTime = 0.178541;
 
     PhysRampAcceleration ramp(
         startSpeed,
@@ -254,26 +245,18 @@ PhysMotionChunk chunk2()
         secondAcceleration,
         totalTime,
         firstAccelerationTime,
-        secondAccelerationTime );
+        secondAccelerationTime);
 
-	const MexPoint2d startPoint(240.03,382.756);
-	const MexPoint2d endPoint(245.346,427.23);
-	const MATHEX_SCALAR clearance = 1.2;
+    const MexPoint2d startPoint(240.03, 382.756);
+    const MexPoint2d endPoint(245.346, 427.23);
+    const MATHEX_SCALAR clearance = 1.2;
     const PhysAbsoluteTime createTime = 2349.29;
     const PhysRelativeTime& motionTimeOffset = 0.177004;
     const MexDouble minHeight = 0;
     const MexDouble maxHeight = 10.0;
 
-    const PhysMotionChunk chunk(
-		startPoint,
-		endPoint,
-		clearance,
-		ramp,
-		createTime,
-		motionTimeOffset,
-		minHeight,
-		maxHeight );
+    const PhysMotionChunk
+        chunk(startPoint, endPoint, clearance, ramp, createTime, motionTimeOffset, minHeight, maxHeight);
 
-	return chunk;
+    return chunk;
 }
-

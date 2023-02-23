@@ -1,14 +1,14 @@
 /*
- * M A T P L A N . I P P 
+ * M A T P L A N . I P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 
 _CODE_INLINE
@@ -18,13 +18,13 @@ const PhysRelativeTime& W4dMaterialPlan::duration() const
 }
 
 _CODE_INLINE
-bool W4dMaterialPlan::isDone( const PhysRelativeTime& timeOffset ) const
+bool W4dMaterialPlan::isDone(const PhysRelativeTime& timeOffset) const
 {
     return timeOffset >= duration_;
 }
 
 _CODE_INLINE
-void W4dMaterialPlan::duration( const PhysRelativeTime& newDuration )
+void W4dMaterialPlan::duration(const PhysRelativeTime& newDuration)
 {
     duration_ = newDuration;
 }

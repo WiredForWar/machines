@@ -50,29 +50,30 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "xin/XFileTypes.hpp"
 
-#define LOG_WARN( exp ) std::cout << exp << std::endl
+#define LOG_WARN(exp) std::cout << exp << std::endl
 
-    namespace XFile {
-        struct Node;
-        struct Mesh;
-        struct Scene;
-        struct Material;
-        struct Animation;
-        struct AnimBone;
-    }
+namespace XFile {
+struct Node;
+struct Mesh;
+struct Scene;
+struct Material;
+struct Animation;
+struct AnimBone;
+} // namespace XFile
 
 /**
-  *     @brief  The XFileParser reads a XFile either in text or binary form and builds a temporary
-  *             data structure out of it.
-  */
-class XFileParser {
+ *     @brief  The XFileParser reads a XFile either in text or binary form and builds a temporary
+ *             data structure out of it.
+ */
+class XFileParser
+{
 public:
     /// Constructor. Creates a data structure out of the XFile given in the memory block.
     /// @param pBuffer Null-terminated memory buffer containing the XFile
     XFileParser() = default;
 
-    void LoadFromFile( const std::string& fileName );
-    void LoadData( const std::vector<char>& pBuffer );
+    void LoadFromFile(const std::string& fileName);
+    void LoadData(const std::vector<char>& pBuffer);
 
     /// Destructor. Does not destroy all imported data along with it
     ~XFileParser();
@@ -80,25 +81,24 @@ public:
     /// Returns the temporary representation of the imported data.
     XFile::Scene* GetImportedData() const { return mScene; }
 
-
 protected:
     void ParseFile();
     void ParseDataObjectTemplate();
-    void ParseDataObjectFrame( XFile::Node *pParent);
-    void ParseDataObjectTransformationMatrix( XFile::Matrix4x4& pMatrix);
-    void ParseDataObjectMesh( XFile::Mesh* pMesh);
-    void ParseDataObjectSkinWeights( XFile::Mesh* pMesh);
-    void ParseDataObjectSkinMeshHeader( XFile::Mesh* pMesh);
-    void ParseDataObjectMeshNormals( XFile::Mesh* pMesh);
-    void ParseDataObjectMeshTextureCoords( XFile::Mesh* pMesh);
-    void ParseDataObjectMeshVertexColors( XFile::Mesh* pMesh);
-    void ParseDataObjectMeshMaterialList( XFile::Mesh* pMesh);
-    void ParseDataObjectMaterial( XFile::Material* pMaterial);
+    void ParseDataObjectFrame(XFile::Node* pParent);
+    void ParseDataObjectTransformationMatrix(XFile::Matrix4x4& pMatrix);
+    void ParseDataObjectMesh(XFile::Mesh* pMesh);
+    void ParseDataObjectSkinWeights(XFile::Mesh* pMesh);
+    void ParseDataObjectSkinMeshHeader(XFile::Mesh* pMesh);
+    void ParseDataObjectMeshNormals(XFile::Mesh* pMesh);
+    void ParseDataObjectMeshTextureCoords(XFile::Mesh* pMesh);
+    void ParseDataObjectMeshVertexColors(XFile::Mesh* pMesh);
+    void ParseDataObjectMeshMaterialList(XFile::Mesh* pMesh);
+    void ParseDataObjectMaterial(XFile::Material* pMaterial);
     void ParseDataObjectAnimTicksPerSecond();
     void ParseDataObjectAnimationSet();
-    void ParseDataObjectAnimation( XFile::Animation* pAnim);
-    void ParseDataObjectAnimationKey( XFile::AnimBone *pAnimBone);
-    void ParseDataObjectTextureFilename( std::string& pName);
+    void ParseDataObjectAnimation(XFile::Animation* pAnim);
+    void ParseDataObjectAnimationKey(XFile::AnimBone* pAnimBone);
+    void ParseDataObjectTextureFilename(std::string& pName);
     void ParseUnknownDataObject();
 
     //! places pointer to next begin of a token, and ignores comments
@@ -110,7 +110,7 @@ protected:
     //! reads header of data object including the opening brace.
     //! returns false if error happened, and writes name of object
     //! if there is one
-    void readHeadOfDataObject( std::string* poName = NULL);
+    void readHeadOfDataObject(std::string* poName = nullptr);
 
     //! checks for closing curly brace, throws exception if not there
     void CheckForClosingBrace();
@@ -125,7 +125,7 @@ protected:
     void TestForSeparator();
 
     //! reads a x file style string
-    void GetNextTokenAsString( std::string& poString);
+    void GetNextTokenAsString(std::string& poString);
 
     void ReadUntilEndOfLine();
 
@@ -139,13 +139,13 @@ protected:
     XFile::Color4D ReadRGBA();
 
     /** Throws an exception with a line number and the given text. */
-    void ThrowException( const std::string& pText);
+    void ThrowException(const std::string& pText);
 
     /**
-      * @brief  Filters the imported hierarchy for some degenerated cases that some exporters produce.
-      * @param pData The sub-hierarchy to filter
-      */
-    void FilterHierarchy( XFile::Node* pNode);
+     * @brief  Filters the imported hierarchy for some degenerated cases that some exporters produce.
+     * @param pData The sub-hierarchy to filter
+     */
+    void FilterHierarchy(XFile::Node* pNode);
 
 protected:
     unsigned int mMajorVersion = 0; ///< version numbers
@@ -159,6 +159,5 @@ protected:
     XFile::Scene* mScene = nullptr; ///< Imported data
     std::string mFileName;
 };
-
 
 #endif // AI_XFILEPARSER_H_INC

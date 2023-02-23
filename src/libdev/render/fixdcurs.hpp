@@ -1,5 +1,5 @@
 /*
- * F I X D C U R S . H P P 
+ * F I X D C U R S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -15,13 +15,13 @@ class RenFixedCursor2d : public RenCursor2d
 {
 public:
     RenFixedCursor2d(const RenSurface&);
-    virtual ~RenFixedCursor2d();
+    ~RenFixedCursor2d() override;
 
-	virtual const RenSurface& currentBitmap() const;
-	virtual void print(ostream& o) const;
+    const RenSurface& currentBitmap() const override;
+    void print(ostream& o) const override;
 
 private:
-	const RenSurface surf_;
+    const RenSurface surf_;
 };
 
 #endif

@@ -14,49 +14,44 @@
 #include "machlog/operatio.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
-		   
+
 // forward refs
 class MachLogAdministrator;
 class MachLogAggressor;
 class MachLogMachine;
 class MachActor;
 
-class MachLogPatrolOperation
-: public MachLogOperation
+class MachLogPatrolOperation : public MachLogOperation
 {
 public:
+    using Path = ctl_vector<MexPoint2d>;
 
-	typedef ctl_vector< MexPoint2d > Path;
+    MachLogPatrolOperation(MachLogMachine* pActor, const Path& path, const bool& loop);
 
-	MachLogPatrolOperation( MachLogMachine * pActor, const Path& path, const bool& loop );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogPatrolOperation );
-	PER_FRIEND_READ_WRITE( MachLogPatrolOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPatrolOperation);
+    PER_FRIEND_READ_WRITE(MachLogPatrolOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate( );
-	virtual bool doBeInterrupted();	
-	virtual void doOutputOperator( ostream& ) const;
-	
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
+    bool doBeInterrupted() override;
+    void doOutputOperator(ostream&) const override;
 
 private:
-
-	MachLogMachine*			pActor_;
-	Path					path_;
-	int						pathElement_;
-	bool					finished_;
-	bool					loop_;
+    MachLogMachine* pActor_;
+    Path path_;
+    int pathElement_;
+    bool finished_;
+    bool loop_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogPatrolOperation );
+PER_DECLARE_PERSISTENT(MachLogPatrolOperation);
 
 /* //////////////////////////////////////////////////////////////// */
 
-#endif	/*	#ifndef _MACHLOG_PATROL_HPP	*/
+#endif /*  #ifndef _MACHLOG_PATROL_HPP */
 
 /* End PATROL.HPP ***************************************************/

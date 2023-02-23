@@ -25,31 +25,43 @@
 class W4dEntity;
 class W4dComposite;
 
-class W4dLightData: public  W4dAnimationData
+class W4dLightData : public W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dLightData( const string& DummyMeshName, W4dLOD maxLod );
-    virtual ~W4dLightData();
+    W4dLightData(const string& DummyMeshName, W4dLOD maxLod);
+    ~W4dLightData() override;
 
-	enum Scope : unsigned char {LOCAL_LIGHT, DOMAIN_LIGHT, DOMAIN_COMPOSITE, GLOBAL_LIGHT, DYNAMIC_LIGHT};
-	enum Type : unsigned char {POINT, UNIFORM, DIRECTIONAL};
+    enum Scope : unsigned char
+    {
+        LOCAL_LIGHT,
+        DOMAIN_LIGHT,
+        DOMAIN_COMPOSITE,
+        GLOBAL_LIGHT,
+        DYNAMIC_LIGHT
+    };
+    enum Type : unsigned char
+    {
+        POINT,
+        UNIFORM,
+        DIRECTIONAL
+    };
 
-	void scope( const Scope& scope );
-	void type( const Type& type );
-	void colour( const RenColour& colour );
-	void position( const MexPoint3d& position );
-	void direction( const MexVec3& direction );
-	void attenuations( MATHEX_SCALAR a1, MATHEX_SCALAR a2, MATHEX_SCALAR a3  );
-	void maxRange( MATHEX_SCALAR maxRange );
-	void composite( W4dComposite* pComposite);
-	void times( const ctl_vector< MATHEX_SCALAR >& times );
-	void intensities( const ctl_vector< MATHEX_SCALAR >& intensities );
+    void scope(const Scope& scope);
+    void type(const Type& type);
+    void colour(const RenColour& colour);
+    void position(const MexPoint3d& position);
+    void direction(const MexVec3& direction);
+    void attenuations(MATHEX_SCALAR a1, MATHEX_SCALAR a2, MATHEX_SCALAR a3);
+    void maxRange(MATHEX_SCALAR maxRange);
+    void composite(W4dComposite* pComposite);
+    void times(const ctl_vector<MATHEX_SCALAR>& times);
+    void intensities(const ctl_vector<MATHEX_SCALAR>& intensities);
 
-	const Type& type() const;
+    const Type& type() const;
 
-	//apply the uv animation to pEntity	 start at statTime
-	virtual void apply( W4dEntity* pEntity, const PhysAbsoluteTime& startTime);
+    // apply the uv animation to pEntity  start at statTime
+    void apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) override;
 
     void CLASS_INVARIANT;
 
@@ -57,21 +69,21 @@ public:
     PER_FRIEND_READ_WRITE(W4dLightData);
 
 private:
-    friend ostream& operator <<( ostream& o, const W4dLightData& t );
+    friend ostream& operator<<(ostream& o, const W4dLightData& t);
 
-    W4dLightData( const W4dLightData& );
-    W4dLightData& operator =( const W4dLightData& );
+    W4dLightData(const W4dLightData&);
+    W4dLightData& operator=(const W4dLightData&);
 
-	Type type_;
-	Scope scope_;
-	RenColour colour_;
-	MexPoint3d position_;
-	MexVec3 direction_;
-	MATHEX_SCALAR attenuations_[3];
-	MATHEX_SCALAR maxRange_;
-	W4dComposite* pComposite_;
-	ctl_vector< MATHEX_SCALAR > times_;
-	ctl_vector< MATHEX_SCALAR > intensities_;
+    Type type_;
+    Scope scope_;
+    RenColour colour_;
+    MexPoint3d position_;
+    MexVec3 direction_;
+    MATHEX_SCALAR attenuations_[3];
+    MATHEX_SCALAR maxRange_;
+    W4dComposite* pComposite_;
+    ctl_vector<MATHEX_SCALAR> times_;
+    ctl_vector<MATHEX_SCALAR> intensities_;
 };
 
 PER_DECLARE_PERSISTENT(W4dLightData);

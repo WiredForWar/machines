@@ -24,133 +24,130 @@
 #include "machphys/wepdata.hpp"
 #include "machphys/snddata.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysBeeBomber );
+PER_DEFINE_PERSISTENT(MachPhysBeeBomber);
 
-//public constructor
+// public constructor
 MachPhysBeeBomber::MachPhysBeeBomber(W4dEntity* pParent, const MexTransform3d& localXform)
-:   MachPhysLinearWeapon( exemplar(), MachPhys::TOP, pParent, localXform ),
-pBeeBomb_( _NEW( MachPhysBeeBomb( this, MexTransform3d() ) )	)
+    : MachPhysLinearWeapon(exemplar(), MachPhys::TOP, pParent, localXform)
+    , pBeeBomb_(_NEW(MachPhysBeeBomb(this, MexTransform3d())))
 {
-	pBeeBomb_->visible( true );
+    pBeeBomb_->visible(true);
 
-	//tilt the weapon downwards
-	//MexTransform3d newXform = localXform;
-	//newXform.rotate( MexEulerAngles(MexDegrees(weaponData().extras()[0]),
-	//                                MexDegrees(weaponData().extras()[1]),
-	//                                MexDegrees(weaponData().extras()[2]) ) );
-	//newXform.position( MexPoint3d(-10, 0, 0 ) );
-	//localTransform( newXform );
+    // tilt the weapon downwards
+    // MexTransform3d newXform = localXform;
+    // newXform.rotate( MexEulerAngles(MexDegrees(weaponData().extras()[0]),
+    //                                 MexDegrees(weaponData().extras()[1]),
+    //                                 MexDegrees(weaponData().extras()[2]) ) );
+    // newXform.position( MexPoint3d(-10, 0, 0 ) );
+    // localTransform( newXform );
 
     TEST_INVARIANT;
 }
 
-//one time constructor
+// one time constructor
 MachPhysBeeBomber::MachPhysBeeBomber()
-:   MachPhysLinearWeapon( MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(),
-                    SysPathName( compositeFilePath() ), MachPhys::BEE_BOMB, MachPhys::TOP )
+    : MachPhysLinearWeapon(
+        MachPhysWeaponPersistence::instance().pRoot(),
+        MexTransform3d(),
+        SysPathName(compositeFilePath()),
+        MachPhys::BEE_BOMB,
+        MachPhys::TOP)
 {
 
     TEST_INVARIANT;
 }
 
-//static
+// static
 const char* MachPhysBeeBomber::compositeFilePath()
 {
-	return "models/weapons/bee/hold.cdf";
+    return "models/weapons/bee/hold.cdf";
 }
 
-
-MachPhysBeeBomber::MachPhysBeeBomber( PerConstructor con )
-: MachPhysLinearWeapon( con )
+MachPhysBeeBomber::MachPhysBeeBomber(PerConstructor con)
+    : MachPhysLinearWeapon(con)
 {
 }
 
 MachPhysBeeBomber::~MachPhysBeeBomber()
 {
-	_DELETE( pBeeBomb_ );
+    _DELETE(pBeeBomb_);
 
     TEST_INVARIANT;
-
 }
 
 void MachPhysBeeBomber::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//static
+// static
 const MachPhysBeeBomber& MachPhysBeeBomber::exemplar()
 {
     return MachPhysWeaponPersistence::instance().beeExemplar();
 }
 
-//virtual
-MachPhysLinearProjectile* MachPhysBeeBomber::createProjectile
-(
-    const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-    const W4dEntity& target, const MexPoint3d& targetOffset
-)
+// virtual
+MachPhysLinearProjectile* MachPhysBeeBomber::createProjectile(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	return createBeeBomb( burstStartTime, index, pParent, target, targetOffset );
+    return createBeeBomb(burstStartTime, index, pParent, target, targetOffset);
 }
 
-
-//virtual
-PhysRelativeTime MachPhysBeeBomber::fire( const PhysAbsoluteTime& startTime, int )
+// virtual
+PhysRelativeTime MachPhysBeeBomber::fire(const PhysAbsoluteTime& startTime, int)
 {
-	lighting(RenColour(1.0, 5.1, 1.0), startTime, 1.5);
+    lighting(RenColour(1.0, 5.1, 1.0), startTime, 1.5);
 
-    //do recoil if any
-    //return recoil( startTime );
-	return 1.5;
+    // do recoil if any
+    // return recoil( startTime );
+    return 1.5;
 }
 
-MachPhysBeeBomb* MachPhysBeeBomber::createBeeBomb
-(
-	const PhysAbsoluteTime& burstStartTime,
-	uint index,
-	W4dEntity* pParent,
-	const W4dEntity& target,
-	const MexPoint3d& targetOffset
-)
+MachPhysBeeBomb* MachPhysBeeBomber::createBeeBomb(
+    const PhysAbsoluteTime& burstStartTime,
+    uint index,
+    W4dEntity* pParent,
+    const W4dEntity& target,
+    const MexPoint3d& targetOffset)
 {
-	PRE( pBeeBomb_ != NULL );
+    PRE(pBeeBomb_ != nullptr);
 
     MexTransform3d startTransform;
     MATHEX_SCALAR distance;
-    PhysAbsoluteTime launchTime =
-        launchData( burstStartTime, index, pParent, target, targetOffset,
-                    &startTransform, &distance );
+    PhysAbsoluteTime launchTime
+        = launchData(burstStartTime, index, pParent, target, targetOffset, &startTransform, &distance);
 
-	MachPhysBeeBomb* pBeeBomb = pBeeBomb_;
-	pBeeBomb_= NULL;
+    MachPhysBeeBomb* pBeeBomb = pBeeBomb_;
+    pBeeBomb_ = nullptr;
 
-	pBeeBomb->attachTo(pParent, startTransform);
+    pBeeBomb->attachTo(pParent, startTransform);
 
-    //Make it fly
-	MexPoint3d targetOffsetGlobal = targetOffset;
-	target.globalTransform().transform(&targetOffsetGlobal);
+    // Make it fly
+    MexPoint3d targetOffsetGlobal = targetOffset;
+    target.globalTransform().transform(&targetOffsetGlobal);
 
-	pBeeBomb->beLaunched(launchTime, weaponData(), targetOffsetGlobal);
+    pBeeBomb->beLaunched(launchTime, weaponData(), targetOffsetGlobal);
 
-	W4dSoundManager::instance().play(pBeeBomb, SID_BEE_BOMB, burstStartTime, 1);
+    W4dSoundManager::instance().play(pBeeBomb, SID_BEE_BOMB, burstStartTime, 1);
 
-	//hold another one
-	pBeeBomb_ = _NEW( MachPhysBeeBomb( this, MexTransform3d() ) );
+    // hold another one
+    pBeeBomb_ = _NEW(MachPhysBeeBomb(this, MexTransform3d()));
 
-	PhysRelativeTime reloadTime = weaponData().reloadTime();
+    PhysRelativeTime reloadTime = weaponData().reloadTime();
 
-    W4dVisibilityPlanPtr beeBombVisibilityPlanPtr( _NEW( W4dVisibilityPlan( false ) ) );
+    W4dVisibilityPlanPtr beeBombVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
 
-	beeBombVisibilityPlanPtr->add(true,  reloadTime);
-    pBeeBomb_->entityPlanForEdit().visibilityPlan( beeBombVisibilityPlanPtr, launchTime );
+    beeBombVisibilityPlanPtr->add(true, reloadTime);
+    pBeeBomb_->entityPlanForEdit().visibilityPlan(beeBombVisibilityPlanPtr, launchTime);
 
-	return  pBeeBomb;
+    return pBeeBomb;
 }
 
-
-
-ostream& operator <<( ostream& o, const MachPhysBeeBomber& t )
+ostream& operator<<(ostream& o, const MachPhysBeeBomber& t)
 {
 
     o << "MachPhysBeeBomber " << (void*)&t << " start" << std::endl;
@@ -159,20 +156,20 @@ ostream& operator <<( ostream& o, const MachPhysBeeBomber& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysBeeBomber& weapon )
+void perWrite(PerOstream& ostr, const MachPhysBeeBomber& weapon)
 {
     const MachPhysLinearWeapon& base = weapon;
 
     ostr << base;
-	ostr << weapon.pBeeBomb_;
+    ostr << weapon.pBeeBomb_;
 }
 
-void perRead( PerIstream& istr, MachPhysBeeBomber& weapon )
+void perRead(PerIstream& istr, MachPhysBeeBomber& weapon)
 {
     MachPhysLinearWeapon& base = weapon;
 
     istr >> base;
-	istr >> weapon.pBeeBomb_;
+    istr >> weapon.pBeeBomb_;
 }
 
 /* End BEEWEAP.CPP **************************************************/

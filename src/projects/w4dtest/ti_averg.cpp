@@ -8,7 +8,7 @@
 
 void TerrainDemoDummyFunction2()
 {
-	static UtlAverager<double> frob;
+    static UtlAverager<double> frob;
 }
 
 /* End TI.CPP *****************************************************/

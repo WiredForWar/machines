@@ -23,23 +23,23 @@ MachPhysRaceChanger& MachPhysRaceChanger::instance()
 
 MachPhysRaceChanger::MachPhysRaceChanger()
 {
-    //Construct the body
-    pBody_ = _NEW( MachPhysRaceChangerBody );
+    // Construct the body
+    pBody_ = _NEW(MachPhysRaceChangerBody);
     TEST_INVARIANT;
 }
 
 MachPhysRaceChanger::~MachPhysRaceChanger()
 {
     TEST_INVARIANT;
-    _DELETE( pBody_ );
+    _DELETE(pBody_);
 }
 
 void MachPhysRaceChanger::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysRaceChanger& t )
+ostream& operator<<(ostream& o, const MachPhysRaceChanger& t)
 {
 
     o << "MachPhysRaceChanger " << (void*)&t << " start" << std::endl;
@@ -48,64 +48,57 @@ ostream& operator <<( ostream& o, const MachPhysRaceChanger& t )
     return o;
 }
 
-const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer
-(
-    const MachPhysMachine& machine, MachPhys::Race toRace
-) const
+const W4dCompositeMaterialVecChanger&
+MachPhysRaceChanger::changer(const MachPhysMachine& machine, MachPhys::Race toRace) const
 {
-    return pBody_->changer( machine, machine.machineData(), toRace );
+    return pBody_->changer(machine, machine.machineData(), toRace);
 }
 
-const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer
-(
-    const MachPhysMachine& machine, const MachPhysMachineData& data, MachPhys::Race toRace
-) const
+const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer(
+    const MachPhysMachine& machine,
+    const MachPhysMachineData& data,
+    MachPhys::Race toRace) const
 {
-    return pBody_->changer( machine, data, toRace );
+    return pBody_->changer(machine, data, toRace);
 }
 
-const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer
-(
-    const MachPhysConstruction& construction, MachPhys::Race toRace
-) const
+const W4dCompositeMaterialVecChanger&
+MachPhysRaceChanger::changer(const MachPhysConstruction& construction, MachPhys::Race toRace) const
 {
-    return pBody_->changer( construction, construction.constructionData(), toRace );
+    return pBody_->changer(construction, construction.constructionData(), toRace);
 }
 
-const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer
-(
-    const MachPhysConstruction& construction, const MachPhysConstructionData& data,
-    MachPhys::Race toRace
-) const
+const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer(
+    const MachPhysConstruction& construction,
+    const MachPhysConstructionData& data,
+    MachPhys::Race toRace) const
 {
-    return pBody_->changer( construction, data, toRace );
+    return pBody_->changer(construction, data, toRace);
 }
 
-const W4dCompositeMaterialVecChanger& MachPhysRaceChanger::changer
-(
-    const MachPhysWeapon& weapon, MachPhys::Race toRace
-) const
+const W4dCompositeMaterialVecChanger&
+MachPhysRaceChanger::changer(const MachPhysWeapon& weapon, MachPhys::Race toRace) const
 {
-    return pBody_->changer( weapon, toRace );
+    return pBody_->changer(weapon, toRace);
 }
 
-const RenColour& MachPhysRaceChanger::raceColour( MachPhys::Race race ) const
+const RenColour& MachPhysRaceChanger::raceColour(MachPhys::Race race) const
 {
     static RenColour colour;
 
-    switch( race )
+    switch (race)
     {
         case MachPhys::RED:
-            colour = RenColour( 180.0/255.0, 0.0, 0.0 );
+            colour = RenColour(180.0 / 255.0, 0.0, 0.0);
             break;
         case MachPhys::BLUE:
-            colour = RenColour( 62/255.0, 86/255.0, 141/255.0 );
+            colour = RenColour(62 / 255.0, 86 / 255.0, 141 / 255.0);
             break;
         case MachPhys::GREEN:
-            colour = RenColour( 94/255.0, 114/255.0, 0.0 );
+            colour = RenColour(94 / 255.0, 114 / 255.0, 0.0);
             break;
         case MachPhys::YELLOW:
-            colour = RenColour( 229/255.0, 189/255.0, 0.0 );
+            colour = RenColour(229 / 255.0, 189 / 255.0, 0.0);
             break;
     }
 
@@ -119,65 +112,65 @@ const RenColour& MachPhysRaceChanger::raceColour( MachPhys::Race race ) const
     switch( race )
     {
         case MachPhys::RED:
-		{
-			static RenColour red;
-			static bool first = true;
-			if( first )
-			{
-				first = false;
+        {
+            static RenColour red;
+            static bool first = true;
+            if( first )
+            {
+                first = false;
 
-				RenColourHSV hsvColour;
-				hsvColour.hue( pBody_->hue( MachPhys::RED ) );
-				red = hsvColour.rgb();
-			}
+                RenColourHSV hsvColour;
+                hsvColour.hue( pBody_->hue( MachPhys::RED ) );
+                red = hsvColour.rgb();
+            }
             colour = &red;
             break;
-		}
+        }
         case MachPhys::BLUE:
-		{
-			static RenColour blue;
-			static bool first = true;
-			if( first )
-			{
-				first = false;
+        {
+            static RenColour blue;
+            static bool first = true;
+            if( first )
+            {
+                first = false;
 
-				RenColourHSV hsvColour;
- 				hsvColour.hue(pBody_->hue( MachPhys::BLUE ) );
-			 	blue = hsvColour.rgb();
-			}
+                RenColourHSV hsvColour;
+                hsvColour.hue(pBody_->hue( MachPhys::BLUE ) );
+                blue = hsvColour.rgb();
+            }
             colour = &blue;
             break;
-		}
+        }
         case MachPhys::GREEN:
-		{
-			static RenColour green;
-			static bool first = true;
-			if( first )
-			{
-				first = false;
+        {
+            static RenColour green;
+            static bool first = true;
+            if( first )
+            {
+                first = false;
 
-				RenColourHSV hsvColour;
-			 	hsvColour.hue( pBody_->hue( MachPhys::GREEN ) );
-			 	green = hsvColour.rgb();
-			}
+                RenColourHSV hsvColour;
+                hsvColour.hue( pBody_->hue( MachPhys::GREEN ) );
+                green = hsvColour.rgb();
+            }
             colour = &green;
             break;
-		}
+        }
         case MachPhys::YELLOW:
-		{
-			static RenColour yellow;
-			static bool first = true;
-			if( first )
-			{
-				first = false;
+        {
+            static RenColour yellow;
+            static bool first = true;
+            if( first )
+            {
+                first = false;
 
-				RenColourHSV hsvColour;
-			 	hsvColour.hue( pBody_->hue( MachPhys::YELLOW ) );
-			 	yellow = hsvColour.rgb();
-			}
+                RenColourHSV hsvColour;
+                hsvColour.hue( pBody_->hue( MachPhys::YELLOW ) );
+                yellow = hsvColour.rgb();
+            }
             colour = &yellow;
             break;
-		}
+        }
     }
 
     return *colour;

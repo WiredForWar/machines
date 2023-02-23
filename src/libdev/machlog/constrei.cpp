@@ -1,5 +1,5 @@
 /*
- * C O N S T R E I . C P P 
+ * C O N S T R E I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,15 +16,14 @@ MachLogConstructionTreeImpl::MachLogConstructionTreeImpl()
 MachLogConstructionTreeImpl::~MachLogConstructionTreeImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogConstructionTreeImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogConstructionTreeImpl& t )
+ostream& operator<<(ostream& o, const MachLogConstructionTreeImpl& t)
 {
 
     o << "MachLogConstructionTreeImpl " << (void*)&t << " start" << std::endl;

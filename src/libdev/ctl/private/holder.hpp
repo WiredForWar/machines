@@ -4,7 +4,7 @@
  */
 
 /*
-	Private classes used by the counted pointer code.
+    Private classes used by the counted pointer code.
 */
 
 #ifndef _CTL_HOLDER_HPP
@@ -18,41 +18,38 @@
 class CtlCountedObject
 {
 public:
+    CtlCountedObject();
+    CtlCountedObject(const CtlCountedObject&);
+    CtlCountedObject& operator=(const CtlCountedObject&);
 
-	CtlCountedObject();
-	CtlCountedObject( const CtlCountedObject& );
-	CtlCountedObject& operator =( const CtlCountedObject& );
+    virtual ~CtlCountedObject() = 0;
 
-	virtual ~CtlCountedObject() = 0;
+    void addReference();
+    void removeReference();
 
-	void addReference();
-	void removeReference();
-
-	bool isShared() const;
+    bool isShared() const;
 
 private:
-
-	int		refs_;
+    int refs_;
 };
 
-template< class T >
-class CtlCountHolder : public CtlCountedObject
+template <class T> class CtlCountHolder : public CtlCountedObject
 {
 public:
     CtlCountHolder();
-    
-	virtual ~CtlCountHolder();
 
-	T * pT_;
-    
-    typedef CtlCountHolder< T >*    pointer;
-    
+    ~CtlCountHolder() override;
+
+    T* pT_;
+
+    using pointer = CtlCountHolder<T>*;
+
     //  This doesn't need to be virtual because nothing
     //  derives from this class. It is an exception to the
     //  normal persistence rules.
-    PER_MEMBER_PERSISTENT_DEFAULT( CtlCountHolder );
+    PER_MEMBER_PERSISTENT_DEFAULT(CtlCountHolder);
 };
 
-PER_DEFINE_PERSISTENT_INLINE_T1( CtlCountHolder );
+PER_DEFINE_PERSISTENT_INLINE_T1(CtlCountHolder);
 
 #endif

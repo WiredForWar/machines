@@ -26,41 +26,41 @@ class MachPhysVortexBomb : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
+    // ctor
     MachPhysVortexBomb(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysVortexBomb();
+    // dtor
+    ~MachPhysVortexBomb() override;
 
-    //Begin the explosion animation at startTime.
-    //Returns the duration of the explosion.
-    PhysRelativeTime startExplosion( const PhysAbsoluteTime& startTime );
+    // Begin the explosion animation at startTime.
+    // Returns the duration of the explosion.
+    PhysRelativeTime startExplosion(const PhysAbsoluteTime& startTime);
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-	//returns the time offset when black sphere expandes to distance
-	static bool radiusTime(const  MATHEX_SCALAR& distance, PhysRelativeTime* pTime);
-	static MATHEX_SCALAR radius(const  PhysRelativeTime& timeOffset );
+    // returns the time offset when black sphere expandes to distance
+    static bool radiusTime(const MATHEX_SCALAR& distance, PhysRelativeTime* pTime);
+    static MATHEX_SCALAR radius(const PhysRelativeTime& timeOffset);
 
-    friend ostream& operator <<( ostream& o, const MachPhysVortexBomb& t );
+    friend ostream& operator<<(ostream& o, const MachPhysVortexBomb& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysVortexBomb );
-    PER_FRIEND_READ_WRITE( MachPhysVortexBomb );
+    PER_MEMBER_PERSISTENT(MachPhysVortexBomb);
+    PER_FRIEND_READ_WRITE(MachPhysVortexBomb);
+
 private:
-    //Deliberately revoked
-    MachPhysVortexBomb( const MachPhysVortexBomb& );
-    MachPhysVortexBomb& operator =( const MachPhysVortexBomb& );
-    bool operator ==( const MachPhysVortexBomb& );
+    // Deliberately revoked
+    MachPhysVortexBomb(const MachPhysVortexBomb&);
+    MachPhysVortexBomb& operator=(const MachPhysVortexBomb&);
+    bool operator==(const MachPhysVortexBomb&);
 
-	MachPhysBlackSphere* pBlackSphere_;
-	MachPhysWhiteSphere* pWhiteSphere_;
-	MachPhysVortexSphere* pVortexSphere_;
+    MachPhysBlackSphere* pBlackSphere_;
+    MachPhysWhiteSphere* pWhiteSphere_;
+    MachPhysVortexSphere* pVortexSphere_;
 };
 
-PER_DECLARE_PERSISTENT( MachPhysVortexBomb );
+PER_DECLARE_PERSISTENT(MachPhysVortexBomb);
 
 #endif
 

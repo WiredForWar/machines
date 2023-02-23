@@ -7,6 +7,6 @@
 typedef ctl_vector<int> PolygonIndexes;
 dummyFunction_gxpolygonmap()
 {
-  static PolygonIndexes dummypolygonindexes;
-  static ctl_map<GXMat, PolygonIndexes, less<GXMat> > dummygxpolygonmap;
+    static PolygonIndexes dummypolygonindexes;
+    static ctl_map<GXMat, PolygonIndexes, less<GXMat>> dummygxpolygonmap;
 }

@@ -18,43 +18,39 @@
 #include "phys/phys.hpp"
 #include "world4d/composit.hpp"
 
-
 class MachPhysTorch : public W4dComposite
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysTorch( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysTorch(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysTorch& exemplar();
 
-    //dtor
-    ~MachPhysTorch();
+    // dtor
+    ~MachPhysTorch() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysTorch& t );
+    friend ostream& operator<<(ostream& o, const MachPhysTorch& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysTorch );
+    PER_MEMBER_PERSISTENT(MachPhysTorch);
 
 private:
-    //Deliberately revoked
-    MachPhysTorch( const MachPhysTorch& );
-    MachPhysTorch& operator =( const MachPhysTorch& );
-    bool operator ==( const MachPhysTorch& );
+    // Deliberately revoked
+    MachPhysTorch(const MachPhysTorch&);
+    MachPhysTorch& operator=(const MachPhysTorch&);
+    bool operator==(const MachPhysTorch&);
 
-    //One-time constructor used to create the exemplar
+    // One-time constructor used to create the exemplar
     MachPhysTorch();
-
 };
 
-PER_READ_WRITE( MachPhysTorch );
-PER_DECLARE_PERSISTENT( MachPhysTorch );
-
+PER_READ_WRITE(MachPhysTorch);
+PER_DECLARE_PERSISTENT(MachPhysTorch);
 
 #endif
 

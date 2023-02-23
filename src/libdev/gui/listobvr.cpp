@@ -1,5 +1,5 @@
 /*
- * L I S T O B V R . C P P 
+ * L I S T O B V R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,12 +8,12 @@
 #include "gui/listobvr.hpp"
 #include "gui/scrolist.hpp"
 
-GuiListObserver::GuiListObserver( GuiSimpleScrollableList* pList ) :
-	pList_( pList )
+GuiListObserver::GuiListObserver(GuiSimpleScrollableList* pList)
+    : pList_(pList)
 {
-	PRE( pList );
+    PRE(pList);
 
-	list().notifyMe( this );
+    list().notifyMe(this);
 
     TEST_INVARIANT;
 }
@@ -23,18 +23,18 @@ GuiListObserver::~GuiListObserver()
 {
     TEST_INVARIANT;
 
-	if ( hasList() )
-	{
-		list().dontNotifyMe( this );
-	}
+    if (hasList())
+    {
+        list().dontNotifyMe(this);
+    }
 }
 
 void GuiListObserver::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const GuiListObserver& t )
+ostream& operator<<(ostream& o, const GuiListObserver& t)
 {
 
     o << "GuiListObserver " << (void*)&t << " start" << std::endl;
@@ -43,29 +43,29 @@ ostream& operator <<( ostream& o, const GuiListObserver& t )
     return o;
 }
 
-//virtual 
+// virtual
 void GuiListObserver::listDeleted()
 {
-	pList_ = NULL;
+    pList_ = nullptr;
 }
 
 bool GuiListObserver::hasList() const
 {
-	return pList_ != NULL;
+    return pList_ != nullptr;
 }
 
 GuiSimpleScrollableList& GuiListObserver::list()
 {
-	PRE( hasList() );
+    PRE(hasList());
 
-	return *pList_;
+    return *pList_;
 }
 
 const GuiSimpleScrollableList& GuiListObserver::list() const
 {
-	PRE( hasList() );
+    PRE(hasList());
 
-	return *pList_;
+    return *pList_;
 }
 
 /* End LISTOBVR.CPP *************************************************/

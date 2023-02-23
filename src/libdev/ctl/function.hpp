@@ -12,40 +12,24 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template < class FIRST, class SECOND >
-struct ctl_select1st
-: public std::unary_function< std::pair< FIRST, SECOND >, FIRST >
+template <class FIRST, class SECOND> struct ctl_select1st : public std::unary_function<std::pair<FIRST, SECOND>, FIRST>
 {
-	FIRST& operator ()( std::pair< FIRST, SECOND >& p ) const
-	{
-		return p.first;
-	}
+    FIRST& operator()(std::pair<FIRST, SECOND>& p) const { return p.first; }
 
-	const FIRST& operator ()( const std::pair< FIRST, SECOND >& p ) const
-	{
-		return p.first;
-	}
+    const FIRST& operator()(const std::pair<FIRST, SECOND>& p) const { return p.first; }
 };
 
 //////////////////////////////////////////////////////////////////////
 
-template < class FIRST, class SECOND >
-struct ctl_select2nd
-: public std::unary_function< std::pair< FIRST, SECOND >, SECOND >
+template <class FIRST, class SECOND> struct ctl_select2nd : public std::unary_function<std::pair<FIRST, SECOND>, SECOND>
 {
-	SECOND& operator ()( std::pair< FIRST, SECOND >& p ) const
-	{
-		return p.second;
-	}
+    SECOND& operator()(std::pair<FIRST, SECOND>& p) const { return p.second; }
 
-	const SECOND& operator ()( const std::pair< FIRST, SECOND >& p ) const
-	{
-		return p.second;
-	}
+    const SECOND& operator()(const std::pair<FIRST, SECOND>& p) const { return p.second; }
 };
 
 //////////////////////////////////////////////////////////////////////
 
-#endif	// #ifndef _CTL_FUNCTION_HPP
+#endif // #ifndef _CTL_FUNCTION_HPP
 
 /* End **************************************************************/

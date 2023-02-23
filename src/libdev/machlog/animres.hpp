@@ -1,5 +1,5 @@
 /*
- * A N I M R E S . H P P 
+ * A N I M R E S . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,38 +17,34 @@
 
 class MachLogTechnician;
 
-class MachLogResearchAnimation
-: public MachLogAnimation
+class MachLogResearchAnimation : public MachLogAnimation
 // cannonical form revoked
 {
 public:
-	
-	MachLogResearchAnimation( MachLogTechnician * pActor );
+    MachLogResearchAnimation(MachLogTechnician* pActor);
 
-	virtual ~MachLogResearchAnimation();
-	
-	///////////////////////////////
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogResearchAnimation );
-	PER_FRIEND_READ_WRITE( MachLogResearchAnimation );
+    ~MachLogResearchAnimation() override;
+
+    ///////////////////////////////
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogResearchAnimation);
+    PER_FRIEND_READ_WRITE(MachLogResearchAnimation);
 
 protected:
-	
-	virtual PhysRelativeTime doStartAnimation();
-	
-	virtual PhysRelativeTime doUpdate( );
+    PhysRelativeTime doStartAnimation() override;
 
-	virtual void doOutputOperator( ostream& ) const;
-	
+    PhysRelativeTime doUpdate() override;
+
+    void doOutputOperator(ostream&) const override;
+
 private:
+    MachLogResearchAnimation(const MachLogResearchAnimation&);
+    MachLogResearchAnimation& operator=(const MachLogResearchAnimation&);
+    bool operator==(const MachLogResearchAnimation&) const;
 
-	MachLogResearchAnimation( const MachLogResearchAnimation& );
-	MachLogResearchAnimation& operator =( const MachLogResearchAnimation& );
-	bool operator ==( const MachLogResearchAnimation& ) const;
-
-	MachLogTechnician*						pActor_;
+    MachLogTechnician* pActor_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogResearchAnimation );
+PER_DECLARE_PERSISTENT(MachLogResearchAnimation);
 
 #endif
 

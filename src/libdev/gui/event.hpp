@@ -11,10 +11,10 @@
 #include "device/mouse.hpp"
 #include "gui/gui.hpp"
 
-//class DevButtonEvent;
+// class DevButtonEvent;
 
 // GuiCharEvent. We may want to add a separate class at some point.
-typedef DevButtonEvent GuiCharEvent;
+using GuiCharEvent = DevButtonEvent;
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -22,7 +22,6 @@ class GuiEventBase
 // memberwise cannonical
 {
 public:
-
     ///////////////////////////////
 
     GuiEventBase();
@@ -33,14 +32,14 @@ public:
 
     enum ModiferKey
     {
-        ALT        = 0x0001,
-        CTRL    = 0x0002,
-        SHIFT    = 0x0004
-    } ;
+        ALT = 0x0001,
+        CTRL = 0x0002,
+        SHIFT = 0x0004
+    };
 
-    typedef int ModifierKeys;
+    using ModifierKeys = int;
 
-    GuiEventBase( ModifierKeys );
+    GuiEventBase(ModifierKeys);
 
     ///////////////////////////////
 
@@ -51,32 +50,26 @@ public:
     ///////////////////////////////
 
 protected:
-
     ModifierKeys modifierKeys() const;
 
 private:
-
-    ModifierKeys    modifierKeys_;
-} ;
+    ModifierKeys modifierKeys_;
+};
 
 /* //////////////////////////////////////////////////////////////// */
 
-class GuiMouseEvent
-: private GuiEventBase
+class GuiMouseEvent : private GuiEventBase
 // memberwise cannonical
 {
 public:
+    GuiMouseEvent(const Gui::Coord& at, Gui::ButtonState left, Gui::ButtonState right, ModifierKeys);
 
-    GuiMouseEvent(  const Gui::Coord& at,
-        Gui::ButtonState left,
-        Gui::ButtonState right,
-        ModifierKeys );
-
-    GuiMouseEvent(  const Gui::Coord& at,
+    GuiMouseEvent(
+        const Gui::Coord& at,
         Gui::ButtonState left,
         Gui::ButtonState right,
         Gui::ScrollState scroll,
-        ModifierKeys );
+        ModifierKeys);
 
     ///////////////////////////////
 
@@ -89,7 +82,7 @@ public:
 
     ///////////////////////////////
 
-    void translate( const Gui::Vec& );
+    void translate(const Gui::Vec&);
     // POST( coord() == old( coord() ) + rel );
 
     ///////////////////////////////
@@ -101,27 +94,24 @@ public:
     ///////////////////////////////
 
 private:
+    Gui::Coord coord_;
+    Gui::ButtonState leftButton_;
+    Gui::ButtonState rightButton_;
+    Gui::ScrollState scroll_;
 
-    Gui::Coord            coord_;
-    Gui::ButtonState    leftButton_;
-    Gui::ButtonState    rightButton_;
-    Gui::ScrollState    scroll_;
-
-    friend bool operator <( const GuiMouseEvent& a, const GuiMouseEvent& b );
-    friend bool operator ==( const GuiMouseEvent& a, const GuiMouseEvent& b );
-} ;
+    friend bool operator<(const GuiMouseEvent& a, const GuiMouseEvent& b);
+    friend bool operator==(const GuiMouseEvent& a, const GuiMouseEvent& b);
+};
 
 /* //////////////////////////////////////////////////////////////// */
 
-typedef int GuiKey;
+using GuiKey = int;
 
-class GuiKeyEvent
-: private GuiEventBase
+class GuiKeyEvent : private GuiEventBase
 // memberwise cannonical
 {
 public:
-
-    GuiKeyEvent( const GuiKey& key, Gui::ButtonState state, ModifierKeys, const DevButtonEvent& );
+    GuiKeyEvent(const GuiKey& key, Gui::ButtonState state, ModifierKeys, const DevButtonEvent&);
 
     ///////////////////////////////
 
@@ -138,14 +128,13 @@ public:
     ///////////////////////////////
 
 private:
+    GuiKey key_;
+    Gui::ButtonState state_;
+    const DevButtonEvent& buttonEvent_;
 
-    GuiKey                    key_;
-    Gui::ButtonState        state_;
-    const DevButtonEvent&     buttonEvent_;
-
-    friend bool operator  <( const GuiKeyEvent& a, const GuiKeyEvent& b );
-    friend bool operator ==( const GuiKeyEvent& a, const GuiKeyEvent& b );
-} ;
+    friend bool operator<(const GuiKeyEvent& a, const GuiKeyEvent& b);
+    friend bool operator==(const GuiKeyEvent& a, const GuiKeyEvent& b);
+};
 
 /* //////////////////////////////////////////////////////////////// */
 

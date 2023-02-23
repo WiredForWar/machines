@@ -5,8 +5,7 @@
 #include "machlog/squad.hpp"
 #include "machlog/strategy.hpp"
 
-template<class Operation>
-class MachLog1stPersonOpDispatch
+template <class Operation> class MachLog1stPersonOpDispatch
 {
 public:
     explicit MachLog1stPersonOpDispatch(MachLogSquadron** ppSquad)
@@ -14,11 +13,10 @@ public:
         ppSquad_ = ppSquad;
         pSkipThisMachine_ = nullptr;
     }
-    ~MachLog1stPersonOpDispatch() {}
+    ~MachLog1stPersonOpDispatch() { }
 
     // YO!: The first parameter of an operation, pActor, is handled internally.
-    template<typename ...OperationArgs>
-    void dispatchOperation(OperationArgs... args) const
+    template <typename... OperationArgs> void dispatchOperation(OperationArgs... args) const
     {
         MachLogSquadron* dispatchTo = *ppSquad_;
 
@@ -49,10 +47,7 @@ public:
 
     // Set a machine (if any) to skip when dispatching the op to the squad
     // ...For example, we don't want to tell a machine to follow itself.
-    void setSkipThisMachine(MachLogMachine* skipMe) const
-    {
-        pSkipThisMachine_ = skipMe;
-    }
+    void setSkipThisMachine(MachLogMachine* skipMe) const { pSkipThisMachine_ = skipMe; }
 
 private:
     MachLogSquadron** ppSquad_;

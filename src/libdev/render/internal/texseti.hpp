@@ -1,5 +1,5 @@
 /*
- * T E X S E T I . H P P 
+ * T E X S E T I . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,7 +17,6 @@
 #include "render/texture.hpp"
 #include "render/texset.hpp"
 
-
 class RenTextureSetImpl
 // Canonical form revoked
 {
@@ -27,22 +26,21 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const RenTextureSetImpl& t );
-	friend class RenTextureSet;
+    friend ostream& operator<<(ostream& o, const RenTextureSetImpl& t);
+    friend class RenTextureSet;
 
     RenTextureSetImpl();
-    RenTextureSetImpl( const SysPathName& directory );
-	RenTextureSetImpl( const SysPathName& directory, BaseProgressReporter* pReporter );
+    RenTextureSetImpl(const SysPathName& directory);
+    RenTextureSetImpl(const SysPathName& directory, BaseProgressReporter* pReporter);
 
-    RenTextureSetImpl( const RenTextureSetImpl& );
-    RenTextureSetImpl& operator =( const RenTextureSetImpl& );
+    RenTextureSetImpl(const RenTextureSetImpl&);
+    RenTextureSetImpl& operator=(const RenTextureSetImpl&);
 
-	void load( const SysPathName&, BaseProgressReporter* pReporter = NULL );
+    void load(const SysPathName&, BaseProgressReporter* pReporter = nullptr);
 
-	RenTextureSet::RenTextures textures_;
-	bool isLoaded_;
+    RenTextureSet::RenTextures textures_;
+    bool isLoaded_;
 };
-
 
 #endif
 

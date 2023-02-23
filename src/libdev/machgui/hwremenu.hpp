@@ -15,49 +15,49 @@
 #include "base/base.hpp"
 #include "machgui/scrlarea.hpp"
 
-//forward refs
+// forward refs
 class MachInGameScreen;
 class MachLogHardwareLab;
 class MachHWResearchBank;
 
-//orthodox canonical revoked
+// orthodox canonical revoked
 class MachHWResearchMenu : public MachGuiScrollArea
 {
 public:
-    //ctor. Parent is pInGameScreen. Available area is area.
-    MachHWResearchMenu( GuiDisplayable* pParent, 
-    					MachHWResearchBank* pHWResearchBank,
-                        const Gui::Coord& relCoord,
-                        MachInGameScreen* pInGameScreen );
+    // ctor. Parent is pInGameScreen. Available area is area.
+    MachHWResearchMenu(
+        GuiDisplayable* pParent,
+        MachHWResearchBank* pHWResearchBank,
+        const Gui::Coord& relCoord,
+        MachInGameScreen* pInGameScreen);
 
-    //dtor.
-    ~MachHWResearchMenu();
+    // dtor.
+    ~MachHWResearchMenu() override;
 
     void CLASS_INVARIANT;
 
-	static size_t reqWidth();
-	static size_t reqHeight( MachInGameScreen*, const Gui::Coord& );
+    static size_t reqWidth();
+    static size_t reqHeight(MachInGameScreen*, const Gui::Coord&);
 
 protected:
-	virtual GuiSimpleScrollableList* createList( GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* );
+    GuiSimpleScrollableList* createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen*) override;
 
 private:
     // Operations deliberately revoked
-    MachHWResearchMenu( const MachHWResearchMenu& );
-    MachHWResearchMenu& operator =( const MachHWResearchMenu& );
-    bool operator ==( const MachHWResearchMenu& );
+    MachHWResearchMenu(const MachHWResearchMenu&);
+    MachHWResearchMenu& operator=(const MachHWResearchMenu&);
+    bool operator==(const MachHWResearchMenu&);
 
-    friend ostream& operator <<( ostream& o, const MachHWResearchMenu& t );
+    friend ostream& operator<<(ostream& o, const MachHWResearchMenu& t);
 
-    //The selected hardware lab
-    MachLogHardwareLab& selectedLab( MachInGameScreen* pInGameScreen ) const;
+    // The selected hardware lab
+    MachLogHardwareLab& selectedLab(MachInGameScreen* pInGameScreen) const;
 
-    //Data members
-    MachInGameScreen* pInGameScreen_; //The gui root
-    MachHWResearchBank* pHWResearchBank_; //The bank depicting research queue state
-    MachLogHardwareLab* pHardwareLab_; //The hw lab being edited
+    // Data members
+    MachInGameScreen* pInGameScreen_; // The gui root
+    MachHWResearchBank* pHWResearchBank_; // The bank depicting research queue state
+    MachLogHardwareLab* pHardwareLab_; // The hw lab being edited
 };
-
 
 #endif
 

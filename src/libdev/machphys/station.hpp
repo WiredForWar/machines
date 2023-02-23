@@ -1,5 +1,5 @@
 /*
- * S T A T I O N . H P P 
+ * S T A T I O N . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -22,43 +22,45 @@ class MexTransform3d;
 class MachPhysStation
 {
 public:
-    enum Type { PARKING_BAY, RESEARCH_BAY };
-    
+    enum Type
+    {
+        PARKING_BAY,
+        RESEARCH_BAY
+    };
+
     //  This constructor is here purely to satisfy ctl_vector
-    MachPhysStation() { ASSERT_FAIL( "Illegal constructor" ); }
-    
-    MachPhysStation( const MexPoint2d& position, Type type );
-    MachPhysStation( const MachPhysStation& );
+    MachPhysStation() { ASSERT_FAIL("Illegal constructor"); }
+
+    MachPhysStation(const MexPoint2d& position, Type type);
+    MachPhysStation(const MachPhysStation&);
     //  Copy and transform the station
-    MachPhysStation( const MachPhysStation&, const MexTransform3d& );
+    MachPhysStation(const MachPhysStation&, const MexTransform3d&);
     ~MachPhysStation();
 
-    MachPhysStation& operator =( const MachPhysStation& );
+    MachPhysStation& operator=(const MachPhysStation&);
 
     const MexPoint2d& position() const;
-    
-    Type    type() const;
-    
+
+    Type type() const;
+
     //  Is this station currently locked?
-    bool    locked() const;
-    
+    bool locked() const;
+
     //  Set the lock status
-    void    lock( bool isLocked );
+    void lock(bool isLocked);
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysStation& t );
+    friend ostream& operator<<(ostream& o, const MachPhysStation& t);
 
 private:
-
     // Operation deliberately revoked
-    bool operator ==( const MachPhysStation& );
+    bool operator==(const MachPhysStation&);
 
-    MexPoint2d  position_;
-    Type        type_;
-    bool        locked_;
+    MexPoint2d position_;
+    Type type_;
+    bool locked_;
 };
-
 
 #endif
 

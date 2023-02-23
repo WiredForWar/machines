@@ -21,34 +21,30 @@ class BaseFilterOstream;
 class BaseFilterBuffer : public std::streambuf
 {
 public:
-    BaseFilterBuffer( BaseFilterOstream* pFilter );
-    ~BaseFilterBuffer();
+    BaseFilterBuffer(BaseFilterOstream* pFilter);
+    ~BaseFilterBuffer() override;
 
-    virtual int     overflow( int c );
-    virtual int     underflow();
+    int overflow(int c) override;
+    int underflow() override;
 
-    virtual int     do_sgetn( char *buf, int len );
-    virtual int     do_sputn( char const *buf, int len );
-    virtual int     sync();
+    virtual int do_sgetn(char* buf, int len);
+    virtual int do_sputn(char const* buf, int len);
+    int sync() override;
 
-    void CLASS_INVARIANT
-    {
-        INVARIANT( this != NULL );
-    }
+    void CLASS_INVARIANT { INVARIANT(this != nullptr); }
 
 private:
     // Operation deliberately revoked
-    BaseFilterBuffer( const BaseFilterBuffer& );
+    BaseFilterBuffer(const BaseFilterBuffer&);
 
     // Operation deliberately revoked
-    BaseFilterBuffer& operator =( const BaseFilterBuffer& );
+    BaseFilterBuffer& operator=(const BaseFilterBuffer&);
 
     // Operation deliberately revoked
-    bool operator ==( const BaseFilterBuffer& );
+    bool operator==(const BaseFilterBuffer&);
 
-    BaseFilterOstream*  pFilter_;
+    BaseFilterOstream* pFilter_;
 };
-
 
 #endif
 

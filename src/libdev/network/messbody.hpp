@@ -8,16 +8,14 @@
 class NetMessageBody
 {
 public:
+    NetMessageBody(const uint8* body, size_t bodyLengthInBytes);
 
-	NetMessageBody( const uint8* body, size_t bodyLengthInBytes );
-
-	size_t lengthInBytes() const;
-	const uint8* body() const;
+    size_t lengthInBytes() const;
+    const uint8* body() const;
 
 private:
-	friend ostream& operator<<( ostream&, const NetMessageBody& );
-	UtlBuffer< uint8 >	body_;
+    friend ostream& operator<<(ostream&, const NetMessageBody&);
+    UtlBuffer<uint8> body_;
 };
-
 
 #endif //_MESSAGE_BODY_HPP

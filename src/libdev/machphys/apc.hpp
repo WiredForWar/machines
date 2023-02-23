@@ -20,77 +20,77 @@
 
 class MachPhysAPCData;
 class MachPhysMachinePersistence;
-template< class ID, class PART > class MachPhysObjectFactory;
+template <class ID, class PART> class MachPhysObjectFactory;
 
 class MachPhysAPC : public MachPhysMachine
 {
 public:
-//     MachPhysAPC(
-//         W4dEntity* pParent,
-//         const W4dTransform3d& localTransform,
-//         const SysPathName& compositeFileName );
+    //     MachPhysAPC(
+    //         W4dEntity* pParent,
+    //         const W4dTransform3d& localTransform,
+    //         const SysPathName& compositeFileName );
 
     MachPhysAPC(
         W4dEntity* pParent,
         const W4dTransform3d& localTransform,
         size_t bodyLevel,
         size_t brainLevel,
-        MachPhys::Race race );
+        MachPhys::Race race);
 
-//     MachPhysAPC(
-//         W4dEntity* pParent,
-//         const MexTransform3d& transform,
-//         const MachPhysAPC& copyMe,
-//         const W4dLink& faceplate );
+    //     MachPhysAPC(
+    //         W4dEntity* pParent,
+    //         const MexTransform3d& transform,
+    //         const MachPhysAPC& copyMe,
+    //         const W4dLink& faceplate );
 
-    virtual ~MachPhysAPC();
+    ~MachPhysAPC() override;
 
-	virtual const MachPhysMachineData& machineData() const;
+    const MachPhysMachineData& machineData() const override;
 
-	const MachPhysAPCData& data() const;
+    const MachPhysAPCData& data() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysAPC& t );
+    friend ostream& operator<<(ostream& o, const MachPhysAPC& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysAPC );
-    PER_FRIEND_READ_WRITE( MachPhysAPC );
+    PER_MEMBER_PERSISTENT(MachPhysAPC);
+    PER_FRIEND_READ_WRITE(MachPhysAPC);
 
-    typedef size_t  Id;
+    using Id = size_t;
 
 private:
     // Operation deliberately revoked
-    MachPhysAPC( const MachPhysAPC& );
+    MachPhysAPC(const MachPhysAPC&);
 
     // Operation deliberately revoked
-    MachPhysAPC& operator =( const MachPhysAPC& );
+    MachPhysAPC& operator=(const MachPhysAPC&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysAPC& );
+    bool operator==(const MachPhysAPC&);
 
-    typedef MachPhysObjectFactory< Id, MachPhysAPC >    Factory;
+    using Factory = MachPhysObjectFactory<Id, MachPhysAPC>;
 
     //  This is necessary to allow the ti file to instantiate the factory class
-    //friend MachPhysAPC& Factory::part( const ID& id, size_t );
-    //friend class Factory;
-    friend class MachPhysObjectFactory< Id, MachPhysAPC >;
+    // friend MachPhysAPC& Factory::part( const ID& id, size_t );
+    // friend class Factory;
+    friend class MachPhysObjectFactory<Id, MachPhysAPC>;
 
     //  This constructor for use by the factory only
-    MachPhysAPC( W4dEntity* pParent, Id bodyLevel );
+    MachPhysAPC(W4dEntity* pParent, Id bodyLevel);
 
-    SysPathName compositeFileName( size_t bodyLevel ) const;
+    SysPathName compositeFileName(size_t bodyLevel) const;
 
     //  Necessary to allow the persistence mechanism write out the factory
-    friend void perWrite( PerOstream&, const MachPhysMachinePersistence& );
-    friend void perRead( PerIstream&, MachPhysMachinePersistence& );
+    friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
+    friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    static  MachPhysAPC&    part( size_t bodyLevel );
-    static  Factory& factory();
+    static MachPhysAPC& part(size_t bodyLevel);
+    static Factory& factory();
 
     void createExplosionData();
 };
 
-PER_DECLARE_PERSISTENT( MachPhysAPC );
+PER_DECLARE_PERSISTENT(MachPhysAPC);
 
 #endif
 

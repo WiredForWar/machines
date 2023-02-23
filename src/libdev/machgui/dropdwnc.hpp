@@ -1,5 +1,5 @@
 /*
- * D R O P D W N C . H P P 
+ * D R O P D W N C . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -23,73 +23,97 @@ class MachGuiStartupScreens;
 class GuiBmpFont;
 class MachGuiDropDownList;
 
-class MachGuiDropDownListBoxCreator	: public GuiDisplayable, public MachGuiFocusCapableControl
+class MachGuiDropDownListBoxCreator
+    : public GuiDisplayable
+    , public MachGuiFocusCapableControl
 // Canonical form revoked
 {
 public:
-	typedef void* DropDownListBoxItem;
-	typedef ctl_vector< DropDownListBoxItem > DropDownListBoxItems;
+    using DropDownListBoxItem = void*;
+    using DropDownListBoxItems = ctl_vector<DropDownListBoxItem>;
 
-    //TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS still needed for
-    MachGuiDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, int width, const GuiStrings& availText );
-	MachGuiDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, int width, const GuiStrings& availText, bool whiteFont );
-    MachGuiDropDownListBoxCreator( GuiDisplayable* pParent, MachGuiStartupScreens*, const Gui::Coord& relCoord, int width, const GuiStrings& availText, bool whiteFont, bool border );
-    ~MachGuiDropDownListBoxCreator();
+    // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS
+    // still needed for
+    MachGuiDropDownListBoxCreator(
+        GuiDisplayable* pParent,
+        MachGuiStartupScreens*,
+        int width,
+        const GuiStrings& availText);
+    MachGuiDropDownListBoxCreator(
+        GuiDisplayable* pParent,
+        MachGuiStartupScreens*,
+        int width,
+        const GuiStrings& availText,
+        bool whiteFont);
+    MachGuiDropDownListBoxCreator(
+        GuiDisplayable* pParent,
+        MachGuiStartupScreens*,
+        const Gui::Coord& relCoord,
+        int width,
+        const GuiStrings& availText,
+        bool whiteFont,
+        bool border);
+    ~MachGuiDropDownListBoxCreator() override;
 
     void CLASS_INVARIANT;
 
-	// Get and set the text shown in the control.
-	const string& text() const;
-	void text( const string& );
-	
-	// Get ptr to item associated with currently highlighted text
-	const DropDownListBoxItem item() const;
-	// PRE ( items() )
+    // Get and set the text shown in the control.
+    const string& text() const;
+    void text(const string&);
 
-	// Establish if there are values associated with drop down list box entries
-	bool items() const;
+    // Get ptr to item associated with currently highlighted text
+    const DropDownListBoxItem item() const;
+    // PRE ( items() )
 
-	// Set item data associated with list box item text
-	void items( const DropDownListBoxItems& items );
-	
-	// Get minimum height required for the gui item.
-	static size_t reqHeight( bool border = false );
+    // Establish if there are values associated with drop down list box entries
+    bool items() const;
 
-	virtual bool doHandleNavigationKey( NavKey, MachGuiFocusCapableControl** );
-	virtual void hasFocus( bool );
+    // Set item data associated with list box item text
+    void items(const DropDownListBoxItems& items);
+
+    // Get minimum height required for the gui item.
+    static size_t reqHeight(bool border = false);
+
+    bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
+    void hasFocus(bool) override;
 
 protected:
-	static GuiBmpFont getFont();
-	static GuiBmpFont getWhiteFont();
-	static GuiBmpFont getHighlightFont();
+    static GuiBmpFont getFont();
+    static GuiBmpFont getWhiteFont();
+    static GuiBmpFont getHighlightFont();
 
-	virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel );
-	virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel );
-	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
 
-	virtual void doDisplay();
+    void doDisplay() override;
 
-	virtual MachGuiDropDownList* createDropDownList( 	MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    								size_t horizontalSpacing, size_t verticalSpacing,
-														size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-														MachGuiDropDownListBoxCreator* );
+    virtual MachGuiDropDownList* createDropDownList(
+        MachGuiStartupScreens* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc,
+        size_t itemWidth,
+        const ctl_vector<string>& itemText,
+        MachGuiDropDownListBoxCreator*);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiDropDownListBoxCreator& t );
+    friend ostream& operator<<(ostream& o, const MachGuiDropDownListBoxCreator& t);
 
-    MachGuiDropDownListBoxCreator( const MachGuiDropDownListBoxCreator& );
-    MachGuiDropDownListBoxCreator& operator =( const MachGuiDropDownListBoxCreator& );
+    MachGuiDropDownListBoxCreator(const MachGuiDropDownListBoxCreator&);
+    MachGuiDropDownListBoxCreator& operator=(const MachGuiDropDownListBoxCreator&);
 
-	// Data members...
-	bool highlighted_;
-	GuiStrings strings_;
-	GuiString text_;
-	DropDownListBoxItems items_;
-	DropDownListBoxItem item_;
-    //TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...
+    // Data members...
+    bool highlighted_;
+    GuiStrings strings_;
+    GuiString text_;
+    DropDownListBoxItems items_;
+    DropDownListBoxItem item_;
+    // TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     bool whiteFont_;
-	bool border_;
+    bool border_;
 
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
@@ -98,21 +122,33 @@ private:
 class MachGuiDropDownList : public MachGuiDropDownListBox
 {
 public:
-    //TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control & auto-delete stuff is what MGSS still needed for
-	MachGuiDropDownList(MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    size_t horizontalSpacing, size_t verticalSpacing,
-						size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-						MachGuiDropDownListBoxCreator* );
+    // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control & auto-delete stuff
+    // is what MGSS still needed for
+    MachGuiDropDownList(
+        MachGuiStartupScreens* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc,
+        size_t itemWidth,
+        const ctl_vector<string>& itemText,
+        MachGuiDropDownListBoxCreator*);
 
-	MachGuiDropDownList(MachGuiStartupScreens* pParent, const Gui::Box& box, 
-					    size_t horizontalSpacing, size_t verticalSpacing,
-						size_t scrollInc, size_t itemWidth, const ctl_vector<string>& itemText,
-						MachGuiDropDownListBoxCreator*, bool whiteFont );
+    MachGuiDropDownList(
+        MachGuiStartupScreens* pParent,
+        const Gui::Box& box,
+        size_t horizontalSpacing,
+        size_t verticalSpacing,
+        size_t scrollInc,
+        size_t itemWidth,
+        const ctl_vector<string>& itemText,
+        MachGuiDropDownListBoxCreator*,
+        bool whiteFont);
 
-	virtual void itemSelected( const string& text );
+    void itemSelected(const string& text) override;
 
 private:
-	MachGuiDropDownListBoxCreator* pCreator_;
+    MachGuiDropDownListBoxCreator* pCreator_;
 };
 
 #endif

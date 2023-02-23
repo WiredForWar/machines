@@ -8,73 +8,72 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-MachReductionStrategy::MachReductionStrategy( MachActor * pActor )
-: MachStrategy( pActor )
+MachReductionStrategy::MachReductionStrategy(MachActor* pActor)
+    : MachStrategy(pActor)
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 MachReductionStrategy::~MachReductionStrategy()
 {
-	/* Intentionally Empty	*/
+    /* Intentionally Empty  */
 }
 
 bool MachReductionStrategy::isFinished() const
 {
-	return stack_.empty();
+    return stack_.empty();
 }
 
-void MachReductionStrategy::newOperation( MachOperation * pNewOperation )
+void MachReductionStrategy::newOperation(MachOperation* pNewOperation)
 {
-	while( not stack_.empty() )
-	{
-		MachOperation * pO = stack_.top();
-		if( not pO->isFinished() )
-			pO->doBeInterrupted();
+    while (not stack_.empty())
+    {
+        MachOperation* pO = stack_.top();
+        if (not pO->isFinished())
+            pO->doBeInterrupted();
 
-		_DELETE( pO );
-		stack_.pop();
-	}
+        _DELETE(pO);
+        stack_.pop();
+    }
 
-	stack_.push( pNewOperation );
+    stack_.push(pNewOperation);
 }
 
-void MachReductionStrategy::subOperation( MachOperation * pNewOperation )
+void MachReductionStrategy::subOperation(MachOperation* pNewOperation)
 {
-	stack_.push( pNewOperation );
+    stack_.push(pNewOperation);
 }
 
-PhysRelativeTime
-MachReductionStrategy::update( const PhysRelativeTime& maxCPUTime )
+PhysRelativeTime MachReductionStrategy::update(const PhysRelativeTime& maxCPUTime)
 {
-	PRE( not isFinished() );
+    PRE(not isFinished());
 
-	PhysRelativeTime result = 0.0;
-	MachOperation * pO = stack_.top();
+    PhysRelativeTime result = 0.0;
+    MachOperation* pO = stack_.top();
 
-	if( not pO->isFinished() )
-	{
-		result = pO->update( maxCPUTime );
-	}
-	else
-	{
-		_DELETE( pO );
-		stack_.pop();
-	}
+    if (not pO->isFinished())
+    {
+        result = pO->update(maxCPUTime);
+    }
+    else
+    {
+        _DELETE(pO);
+        stack_.pop();
+    }
 
-	return result;
+    return result;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
-ostream& operator <<( ostream& o, const MachReductionStrategy& s )
+ostream& operator<<(ostream& o, const MachReductionStrategy& s)
 {
-	if( s.isFinished() )
-		o << "idle";
-	else
-		o << *s.stack_.top();
+    if (s.isFinished())
+        o << "idle";
+    else
+        o << *s.stack_.top();
 
-	return o;
+    return o;
 }
 
 /* //////////////////////////////////////////////////////////////// */

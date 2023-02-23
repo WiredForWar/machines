@@ -15,16 +15,16 @@ class RenITTFImpl;
 class RenITLPolygon : public RenIDepthSortedItem
 {
 public:
-	RenITLPolygon(const RenITTFImpl*, const RenMaterial& mat, MATHEX_SCALAR w, GLenum);
+    RenITLPolygon(const RenITTFImpl*, const RenMaterial& mat, MATHEX_SCALAR w, GLenum);
 
-	virtual ~RenITLPolygon();
-	virtual void render();
-	virtual void print(ostream&) const;
+    ~RenITLPolygon() override;
+    void render() override;
+    void print(ostream&) const override;
 
 private:
-	const RenITTFImpl* const	pImpl_;
-    RenIVertex*				    vertices_;
-    GLenum	            		geomType_;
+    const RenITTFImpl* const pImpl_;
+    RenIVertex* vertices_;
+    GLenum geomType_;
 };
 
 #endif

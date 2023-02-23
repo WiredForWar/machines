@@ -23,45 +23,45 @@ class MachPhysBurstWave : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysBurstWave( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysBurstWave(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //Return an exemplar  - ensures the bomb meshes and textures are loaded
+    // Return an exemplar  - ensures the bomb meshes and textures are loaded
     static const MachPhysBurstWave& exemplar();
 
-	//start the shock wave as planned
-	void startBurstWave( const PhysAbsoluteTime& startTime,
-                        const PhysRelativeTime& duration,
-                        const MATHEX_SCALAR& fromRadius,
-                        const MATHEX_SCALAR& toRadius,
-                        const MATHEX_SCALAR& zScale);
-    //dtor
-    ~MachPhysBurstWave();
+    // start the shock wave as planned
+    void startBurstWave(
+        const PhysAbsoluteTime& startTime,
+        const PhysRelativeTime& duration,
+        const MATHEX_SCALAR& fromRadius,
+        const MATHEX_SCALAR& toRadius,
+        const MATHEX_SCALAR& zScale);
+    // dtor
+    ~MachPhysBurstWave() override;
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysBurstWave& t );
+    friend ostream& operator<<(ostream& o, const MachPhysBurstWave& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysBurstWave );
+    PER_MEMBER_PERSISTENT(MachPhysBurstWave);
 
 private:
-    //Deliberately revoked
-    MachPhysBurstWave( const MachPhysBurstWave& );
-    MachPhysBurstWave& operator =( const MachPhysBurstWave& );
-    bool operator ==( const MachPhysBurstWave& );
-	static const double& burstWaveDefaultSize();
+    // Deliberately revoked
+    MachPhysBurstWave(const MachPhysBurstWave&);
+    MachPhysBurstWave& operator=(const MachPhysBurstWave&);
+    bool operator==(const MachPhysBurstWave&);
+    static const double& burstWaveDefaultSize();
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysBurstWave();
 };
 
-PER_READ_WRITE( MachPhysBurstWave );
-PER_DECLARE_PERSISTENT( MachPhysBurstWave );
+PER_READ_WRITE(MachPhysBurstWave);
+PER_DECLARE_PERSISTENT(MachPhysBurstWave);
 
 #endif
 

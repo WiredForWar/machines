@@ -18,21 +18,21 @@
 // static
 AfxApp& AfxApp::abstractInstance()
 {
-	return MOST_DERIVED_APP::instance();
+    return MOST_DERIVED_APP::instance();
 }
 
 #if defined _DOSAPP
-  #define METHOD_NAME dosInstance
+#define METHOD_NAME dosInstance
 #elif defined _WIN95APP
-  #define METHOD_NAME win95Instance
+#define METHOD_NAME win95Instance
 #elif defined _SDLAPP
-  #define METHOD_NAME sdlInstance
+#define METHOD_NAME sdlInstance
 #else
-  #error Use of the framework lib: one of DOSAPP, WIN95APP, etc. must be defined.
+#error Use of the framework lib: one of DOSAPP, WIN95APP, etc. must be defined.
 #endif
 
 // static
 FRAMEWORK_OSAPP& FRAMEWORK_OSAPP::METHOD_NAME()
 {
-	return MOST_DERIVED_APP::instance();
+    return MOST_DERIVED_APP::instance();
 }

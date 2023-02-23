@@ -1,5 +1,5 @@
 /*
- * O P E A P C . H P P 
+ * O P E A P C . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -7,7 +7,7 @@
     MachLogEnterAPCOperation
 
     This operation will be applied to a machine wishing to enter
-	an APC.
+    an APC.
 */
 
 #ifndef _MACHLOG_OPEAPC_HPP
@@ -24,62 +24,59 @@ class MachLogAPC;
 class MachLogEnterAPCOperation : public MachLogOperation
 {
 public:
+    MachLogEnterAPCOperation(MachLogMachine*, MachLogAPC*);
+    MachLogEnterAPCOperation(MachLogMachine*, MachLogAPC*, PhysPathFindingPriority);
 
-    MachLogEnterAPCOperation( MachLogMachine* , MachLogAPC* );
-    MachLogEnterAPCOperation( MachLogMachine* , MachLogAPC*, PhysPathFindingPriority );
+    ~MachLogEnterAPCOperation() override;
 
-    ~MachLogEnterAPCOperation();
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogEnterAPCOperation );
-	PER_FRIEND_READ_WRITE( MachLogEnterAPCOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogEnterAPCOperation);
+    PER_FRIEND_READ_WRITE(MachLogEnterAPCOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
+    bool doIsFinished() const override;
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-		
-	virtual void doOutputOperator( ostream& ) const;
+    void doOutputOperator(ostream&) const override;
 
-	virtual PhysRelativeTime doUpdate( );
+    PhysRelativeTime doUpdate() override;
 
-	virtual bool doBeInterrupted();
-	///////////////////////////////
+    bool doBeInterrupted() override;
+    ///////////////////////////////
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogEnterAPCOperation& t );
+    friend ostream& operator<<(ostream& o, const MachLogEnterAPCOperation& t);
 
 private:
+    // Operations deliberately revoked
+    MachLogEnterAPCOperation(const MachLogEnterAPCOperation&);
+    MachLogEnterAPCOperation& operator=(const MachLogEnterAPCOperation&);
+    bool operator==(const MachLogEnterAPCOperation&);
 
-	// Operations deliberately revoked
-    MachLogEnterAPCOperation( const MachLogEnterAPCOperation& );
-    MachLogEnterAPCOperation& operator =( const MachLogEnterAPCOperation& );
-    bool operator ==( const MachLogEnterAPCOperation& );
-	
-	enum Status { PREPARING_TO_GO_TO_APC, GOING_TO_APC, ENTERING_APC };
-	PER_FRIEND_ENUM_PERSISTENT( Status );
-    	
-	void checkAndDoStopGoingToAPC();
-	
-	
-	// data members
-	MachLogMachine*		pActor_;
-	MachLogAPC*			pAPC_;
-	bool 				finished_;
-	MATHEX_SCALAR		desiredRange_;
-	Status				status_;
+    enum Status
+    {
+        PREPARING_TO_GO_TO_APC,
+        GOING_TO_APC,
+        ENTERING_APC
+    };
+    PER_FRIEND_ENUM_PERSISTENT(Status);
 
+    void checkAndDoStopGoingToAPC();
+
+    // data members
+    MachLogMachine* pActor_;
+    MachLogAPC* pAPC_;
+    bool finished_;
+    MATHEX_SCALAR desiredRange_;
+    Status status_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogEnterAPCOperation );
-
+PER_DECLARE_PERSISTENT(MachLogEnterAPCOperation);
 
 #endif
 

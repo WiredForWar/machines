@@ -1,5 +1,5 @@
 /*
- * O P S C A V . H P P 
+ * O P S C A V . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,70 +16,60 @@
 
 #include "machlog/operatio.hpp"
 
-
 class MachLogDebris;
 class MachLogResourceCarrier;
 class MachLogScavengeOperationImpl;
-template < class X > class ctl_pvector;
+template <class X> class ctl_pvector;
 
 // canonical form revoked
 
-class MachLogScavengeOperation
-: public MachLogOperation
+class MachLogScavengeOperation : public MachLogOperation
 {
 public:
+    using Suppliers = ctl_pvector<MachLogDebris>;
 
-	typedef ctl_pvector< MachLogDebris >	Suppliers;
-	
-	// PRE( targetActor != NULL );
-    MachLogScavengeOperation( MachLogResourceCarrier* , MachLogDebris* );
-	
-	// PRE( listOfSuppliers.size() > 0 );
-    MachLogScavengeOperation( MachLogResourceCarrier* , const Suppliers& );
-	
-    ~MachLogScavengeOperation();
+    // PRE( targetActor != NULL );
+    MachLogScavengeOperation(MachLogResourceCarrier*, MachLogDebris*);
 
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
-							 
-	void CLASS_INVARIANT;							 
-							 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogScavengeOperation );
-	PER_FRIEND_READ_WRITE( MachLogScavengeOperation );
+    // PRE( listOfSuppliers.size() > 0 );
+    MachLogScavengeOperation(MachLogResourceCarrier*, const Suppliers&);
 
+    ~MachLogScavengeOperation() override;
+
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
+
+    void CLASS_INVARIANT;
+
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogScavengeOperation);
+    PER_FRIEND_READ_WRITE(MachLogScavengeOperation);
 
 protected:
+    bool doStart() override;
+    // PRE( not isFinished() );
+    void doFinish() override;
+    // PRE( isFinished() );
 
-	virtual bool doStart();
-	// PRE( not isFinished() );
-	virtual void doFinish();
-	// PRE( isFinished() );
-	
-	virtual bool doIsFinished() const;
-		
-	virtual void doOutputOperator( ostream& ) const;
+    bool doIsFinished() const override;
 
-	virtual PhysRelativeTime doUpdate( );
+    void doOutputOperator(ostream&) const override;
 
-	virtual bool doBeInterrupted();
-	///////////////////////////////
-	
+    PhysRelativeTime doUpdate() override;
+
+    bool doBeInterrupted() override;
+    ///////////////////////////////
+
 private:
+    // Operations deliberately revoked
+    MachLogScavengeOperation(const MachLogScavengeOperation&);
+    MachLogScavengeOperation& operator=(const MachLogScavengeOperation&);
+    bool operator==(const MachLogScavengeOperation&);
 
-	// Operations deliberately revoked
-    MachLogScavengeOperation( const MachLogScavengeOperation& );
-    MachLogScavengeOperation& operator =( const MachLogScavengeOperation& );
-    bool operator ==( const MachLogScavengeOperation& );
-	
-	Suppliers& suppliers();
+    Suppliers& suppliers();
 
-	MachLogScavengeOperationImpl*		pImpl_;
-	
-	
+    MachLogScavengeOperationImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogScavengeOperation );
-
+PER_DECLARE_PERSISTENT(MachLogScavengeOperation);
 
 #endif
 

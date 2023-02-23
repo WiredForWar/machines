@@ -5,18 +5,17 @@ class NetPriority
 // memberwise cannonical
 {
 public:
+    using Urgency = unsigned char;
+    using RedeliveryAttempts = unsigned char;
 
-	typedef unsigned char 		Urgency;
-	typedef unsigned char		RedeliveryAttempts;
+    NetPriority(Urgency = 0, RedeliveryAttempts = 0);
 
-	NetPriority( Urgency = 0, RedeliveryAttempts = 0 );
-
-	Urgency				urgency() const;
-	RedeliveryAttempts	redeliveryAttempts() const;
+    Urgency urgency() const;
+    RedeliveryAttempts redeliveryAttempts() const;
 
 private:
-	Urgency					urgency_;
-	RedeliveryAttempts		redeliveryAttempts_;
+    Urgency urgency_;
+    RedeliveryAttempts redeliveryAttempts_;
 };
 
 #endif //_NETPRIORITY_HPP

@@ -4,5 +4,5 @@
 
 dummyFunction6()
 {
-	static RenIMatManager::Bodies dummyBodies;
+    static RenIMatManager::Bodies dummyBodies;
 }

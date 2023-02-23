@@ -1,5 +1,5 @@
 /*
- * I P X M O D E . C P P 
+ * I P X M O D E . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,8 +8,8 @@
 #include "machgui/mdipx.hpp"
 #include "network/netnet.hpp"
 
-MachGuiIPXNetworkMode::MachGuiIPXNetworkMode( GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens )
-:	MachGuiNetworkProtocolMode( pParent, pStartupScreens )	
+MachGuiIPXNetworkMode::MachGuiIPXNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
+    : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
 
     TEST_INVARIANT;
@@ -18,32 +18,31 @@ MachGuiIPXNetworkMode::MachGuiIPXNetworkMode( GuiDisplayable* pParent, MachGuiSt
 MachGuiIPXNetworkMode::~MachGuiIPXNetworkMode()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiIPXNetworkMode::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-//virtual 
+// virtual
 void MachGuiIPXNetworkMode::setNetworkDetails()
 {
-	NetNetwork::instance().initialiseConnection();
+    NetNetwork::instance().initialiseConnection();
 }
 
-//virtual 
-bool MachGuiIPXNetworkMode::validNetworkDetails( bool /*isHost*/ )
+// virtual
+bool MachGuiIPXNetworkMode::validNetworkDetails(bool /*isHost*/)
 {
-	return true;
+    return true;
 }
 
-//virtual
+// virtual
 void MachGuiIPXNetworkMode::readNetworkDetails()
 {
 }
 
-ostream& operator <<( ostream& o, const MachGuiIPXNetworkMode& t )
+ostream& operator<<(ostream& o, const MachGuiIPXNetworkMode& t)
 {
 
     o << "MachGuiIPXNetworkMode " << (void*)&t << " start" << std::endl;

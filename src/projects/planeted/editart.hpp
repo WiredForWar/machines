@@ -19,7 +19,6 @@
 #include "machphys/machphys.hpp"
 #include "mathex/degrees.hpp"
 
-
 class MachPhysArtefact;
 class MachPhysTerrainTile;
 class W4dComposite;
@@ -33,106 +32,104 @@ class PedArtefactEditor : public PedActorEditor
 {
 public:
     PedArtefactEditor();
-    ~PedArtefactEditor();
+    ~PedArtefactEditor() override;
 
-	void CLASS_INVARIANT;
+    void CLASS_INVARIANT;
 
-	virtual void processInput( const DevButtonEvent& );
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void processInput(const DevButtonEvent&) override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-	virtual void displayModeInfo();
-	// PRE( pSceneManager_ != NULL );
-	// PRE( pPlanet_ != NULL );
+    void displayModeInfo() override;
+    // PRE( pSceneManager_ != NULL );
+    // PRE( pPlanet_ != NULL );
 
-    //virtual void preRenderUpdate();
-	//virtual void displayModeInfo();
+    // virtual void preRenderUpdate();
+    // virtual void displayModeInfo();
 
-	virtual void readScnFile( PedScenarioFile& );
-	// PRE( cspFileName.existsAsFile() );
+    void readScnFile(PedScenarioFile&) override;
+    // PRE( cspFileName.existsAsFile() );
 
-	virtual void writeScnFile( PedScenarioFile& );
+    void writeScnFile(PedScenarioFile&) override;
 
-	void displayKeyboardCtrls();
-	//virtual void changingMode();
+    void displayKeyboardCtrls() override;
+    // virtual void changingMode();
 
-	void createCeilingArtefact( const MachPhysTerrainTile& terrainTile );
+    void createCeilingArtefact(const MachPhysTerrainTile& terrainTile);
 
-	void deleteCeilingArtefact( const MachPhysTerrainTile& terrainTile );
+    void deleteCeilingArtefact(const MachPhysTerrainTile& terrainTile);
 
 protected:
-
-	void initialiseActors();
-	virtual W4dEntity* currentActor();
-	virtual void processCycle( PedActorEditor::CycleDir dir );
- 	virtual void processSelection();
- 	virtual void processDelete();
-	virtual void processRace();
-	virtual void processRotation( bool );
-	virtual void createEntity( W4dEntity&, const MexTransform3d& );
-	virtual void rotateAfterMove();
-	virtual void processHide( bool hidden );
-	virtual void changeAllSolidities( W4dEntity::Solidity );
-	virtual void processHeightChange( int deltaz );
+    void initialiseActors();
+    W4dEntity* currentActor() override;
+    void processCycle(PedActorEditor::CycleDir dir) override;
+    void processSelection() override;
+    void processDelete() override;
+    void processRace() override;
+    virtual void processRotation(bool);
+    void createEntity(W4dEntity&, const MexTransform3d&) override;
+    void rotateAfterMove() override;
+    void processHide(bool hidden) override;
+    void changeAllSolidities(W4dEntity::Solidity) override;
+    virtual void processHeightChange(int deltaz);
 
 private:
+    class ArtefactMapping
+    {
+    public:
+        ArtefactMapping(W4dEntity* artefact = nullptr, MexDegrees orientation = 0)
+            : artefact_(artefact)
+            , orientation_(orientation)
+        {
+        }
+        W4dEntity* artefact_;
+        MexDegrees orientation_;
+    };
 
-	class ArtefactMapping
-	{
-		public:
-		ArtefactMapping( W4dEntity* artefact = NULL, MexDegrees orientation = 0 )
-		:	artefact_( artefact ),
-			orientation_( orientation )
-		{}
-		W4dEntity* artefact_;
-		MexDegrees orientation_;
-	};
+    using ArtefactGroup = ctl_vector<ArtefactMapping>;
+    using ArtefactTable = ctl_vector<ArtefactGroup>;
 
-	typedef ctl_vector< ArtefactMapping > ArtefactGroup;
-	typedef ctl_vector< ArtefactGroup > ArtefactTable;
+    struct artefactIndex
+    {
+        artefactIndex(ArtefactTable::iterator col, ArtefactGroup::iterator row)
+            : col_(col)
+            , row_(row)
+        {
+        }
 
-	struct artefactIndex
-	{
-		artefactIndex( ArtefactTable::iterator col, ArtefactGroup::iterator row )
-		:	col_( col ),
-			row_( row )
-		{}
+        ArtefactGroup::iterator row_;
+        ArtefactTable::iterator col_;
+    };
 
-		ArtefactGroup::iterator row_;
-		ArtefactTable::iterator col_;
-	};
+    PedArtefactEditor(const PedArtefactEditor&);
+    PedArtefactEditor& operator=(const PedArtefactEditor&);
 
-    PedArtefactEditor( const PedArtefactEditor& );
-    PedArtefactEditor& operator =( const PedArtefactEditor& );
+    void createEntity(W4dEntity&, const MexTransform3d&, const string& key, MexDegrees orientation);
 
-	void createEntity(  W4dEntity&, const MexTransform3d&, const string& key, MexDegrees orientation );
+    //  void initialiseActors();
+    void deleteArtefacts();
+    //   MachPhys::ArtefactType artefactType( const string& type );
+    int subType(const string& type);
+    artefactIndex storeIndex(W4dEntity* pSelectedArtefact);
 
-//	void initialiseActors();
- 	void deleteArtefacts();
-   //	MachPhys::ArtefactType artefactType( const string& type );
-	int subType( const string& type );
-	artefactIndex storeIndex( W4dEntity* pSelectedArtefact );
+    // Reads artefact file to populate artefact repository
+    void readArfFile(const SysPathName&) override;
 
-	// Reads artefact file to populate artefact repository
-	void readArfFile( const SysPathName& );
+    // Converts between a lanscape tile's name and the ceiling artefact associated with it
+    // ( if there is one ) - else returns ""
+    string tileToKey(const MachPhysTerrainTile& terrainTile);
 
-	// Converts between a lanscape tile's name and the ceiling artefact associated with	it
-	// ( if there is one ) - else returns ""
-	string tileToKey( const MachPhysTerrainTile& terrainTile );
+    friend ostream& operator<<(ostream& o, const PedArtefactEditor& t);
 
-    friend ostream& operator <<( ostream& o, const PedArtefactEditor& t );
+    // Artefact artefactData_;
 
-	//Artefact artefactData_;
+    W4dEntity* pSelectedArtefact_;
+    W4dGenericRepository artefactStore_;
+    ArtefactTable artefacts_;
+    uint artefactIndex_;
 
-	W4dEntity* pSelectedArtefact_;
-	W4dGenericRepository artefactStore_;
-	ArtefactTable artefacts_;
-	uint artefactIndex_;
-
-
-	SysPathName arfFileName_ ;
+    SysPathName arfFileName_;
 };
-
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * D B H A N D L R . C P P 
+ * D B H A N D L R . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -17,18 +17,18 @@
 
 struct MachLogDatabaseHandlerImpl
 {
-    typedef ctl_vector< string > Strings;
+    using Strings = ctl_vector<string>;
     Strings setFlags_;
 
-    typedef ctl_vector< bool > TaskFlags;
+    using TaskFlags = ctl_vector<bool>;
     TaskFlags tasksAvailable_;
     TaskFlags tasksComplete_;
 };
 
 MachLogDatabaseHandler::MachLogDatabaseHandler()
 {
-    pImpl_ = _NEW( MachLogDatabaseHandlerImpl );
-    pImpl_->setFlags_.reserve( 8 );
+    pImpl_ = _NEW(MachLogDatabaseHandlerImpl);
+    pImpl_->setFlags_.reserve(8);
 
     TEST_INVARIANT;
 }
@@ -37,15 +37,15 @@ MachLogDatabaseHandler::~MachLogDatabaseHandler()
 {
     TEST_INVARIANT;
 
-    _DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 void MachLogDatabaseHandler::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogDatabaseHandler& t )
+ostream& operator<<(ostream& o, const MachLogDatabaseHandler& t)
 {
 
     o << "MachLogDatabaseHandler " << (void*)&t << " start" << std::endl;
@@ -54,160 +54,160 @@ ostream& operator <<( ostream& o, const MachLogDatabaseHandler& t )
     return o;
 }
 
-void MachLogDatabaseHandler::raceUnits( MachPhys::Race race, Units* pUnits ) const
+void MachLogDatabaseHandler::raceUnits(MachPhys::Race race, Units* pUnits) const
 {
-    //Get the collection of actors for the race
-    const MachLogRaces::Objects& actors = MachLogRaces::instance().raceObjects( race );
+    // Get the collection of actors for the race
+    const MachLogRaces::Objects& actors = MachLogRaces::instance().raceObjects(race);
 
-    //Check em all
-    for( MachLogRaces::Objects::const_iterator cit = actors.begin(); cit != actors.end(); ++cit )
+    // Check em all
+    for (MachLogRaces::Objects::const_iterator cit = actors.begin(); cit != actors.end(); ++cit)
     {
-        //Deal only with machines
+        // Deal only with machines
         const MachActor& actor = *(*cit);
-        if( actor.objectIsMachine() )
+        if (actor.objectIsMachine())
         {
-            //Extract the data we need to make a production unit
+            // Extract the data we need to make a production unit
             const MachLogMachine& machine = actor.asMachine();
-            MachLog::ObjectType	type = machine.objectType();
+            MachLog::ObjectType type = machine.objectType();
             int subType = machine.subType();
             int hwLevel = machine.hwLevel();
             int swLevel = machine.swLevel();
-            MachLogProductionUnit unit( type, subType, hwLevel, swLevel, MachLogProductionUnit::UNCHECKED_PRIORITY );
+            MachLogProductionUnit unit(type, subType, hwLevel, swLevel, MachLogProductionUnit::UNCHECKED_PRIORITY);
 
-            if( machine.objectIsCanAttack() )
-                unit.weaponCombo( machine.asCanAttack().weaponCombo() );
+            if (machine.objectIsCanAttack())
+                unit.weaponCombo(machine.asCanAttack().weaponCombo());
 
-            //Add this unit to the collection
-            pUnits->push_back( unit );
+            // Add this unit to the collection
+            pUnits->push_back(unit);
         }
     }
 }
 
-void MachLogDatabaseHandler::setScenarioFlag( const string& flag )
+void MachLogDatabaseHandler::setScenarioFlag(const string& flag)
 {
-    CB_DEPIMPL( MachLogDatabaseHandlerImpl::Strings, setFlags_ );
-    setFlags_.push_back( flag );
+    CB_DEPIMPL(MachLogDatabaseHandlerImpl::Strings, setFlags_);
+    setFlags_.push_back(flag);
 }
 
 uint MachLogDatabaseHandler::nSetFlags() const
 {
-    CB_DEPIMPL( MachLogDatabaseHandlerImpl::Strings, setFlags_ );
+    CB_DEPIMPL(MachLogDatabaseHandlerImpl::Strings, setFlags_);
     return setFlags_.size();
 }
 
-const string& MachLogDatabaseHandler::setFlag( uint index ) const
+const string& MachLogDatabaseHandler::setFlag(uint index) const
 {
-    PRE( index < nSetFlags() );
-    CB_DEPIMPL( MachLogDatabaseHandlerImpl::Strings, setFlags_ );
-    return setFlags_[ index ];
+    PRE(index < nSetFlags());
+    CB_DEPIMPL(MachLogDatabaseHandlerImpl::Strings, setFlags_);
+    return setFlags_[index];
 }
 
 void MachLogDatabaseHandler::clearSetFlags()
 {
-    CB_DEPIMPL( MachLogDatabaseHandlerImpl::Strings, setFlags_ );
-    setFlags_.erase( setFlags_.begin(), setFlags_.end() );
+    CB_DEPIMPL(MachLogDatabaseHandlerImpl::Strings, setFlags_);
+    setFlags_.erase(setFlags_.begin(), setFlags_.end());
 }
 
-void MachLogDatabaseHandler::taskIsAvailable( uint index, bool isNow )
+void MachLogDatabaseHandler::taskIsAvailable(uint index, bool isNow)
 {
-    PRE( index < nTasksInCurrentScenario() );
-    pImpl_->tasksAvailable_[ index ] = isNow;
+    PRE(index < nTasksInCurrentScenario());
+    pImpl_->tasksAvailable_[index] = isNow;
 }
 
-bool MachLogDatabaseHandler::taskIsAvailable( uint index ) const
+bool MachLogDatabaseHandler::taskIsAvailable(uint index) const
 {
-    PRE( index < nTasksInCurrentScenario() );
-    return pImpl_->tasksAvailable_[ index ];
+    PRE(index < nTasksInCurrentScenario());
+    return pImpl_->tasksAvailable_[index];
 }
 
-void MachLogDatabaseHandler::taskIsComplete( uint index, bool isNow )
+void MachLogDatabaseHandler::taskIsComplete(uint index, bool isNow)
 {
-    PRE( index < nTasksInCurrentScenario() );
-    pImpl_->tasksComplete_[ index ] = isNow;
+    PRE(index < nTasksInCurrentScenario());
+    pImpl_->tasksComplete_[index] = isNow;
 }
 
-bool MachLogDatabaseHandler::taskIsComplete( uint index ) const
+bool MachLogDatabaseHandler::taskIsComplete(uint index) const
 {
-    PRE( index < nTasksInCurrentScenario() );
-    return pImpl_->tasksComplete_[ index ];
+    PRE(index < nTasksInCurrentScenario());
+    return pImpl_->tasksComplete_[index];
 }
 
 void MachLogDatabaseHandler::initialiseTaskFlags()
 {
-    //Ensure the vectors are cleared
+    // Ensure the vectors are cleared
     clearTaskFlags();
 
-    //Get the number of tasks
+    // Get the number of tasks
     uint nTasks = nTasksInCurrentScenario();
-    if( nTasks != 0 )
+    if (nTasks != 0)
     {
-        pImpl_->tasksAvailable_.reserve( nTasks );
-        pImpl_->tasksComplete_.reserve( nTasks );
-        for( uint i = 0; i != nTasks; ++i )
+        pImpl_->tasksAvailable_.reserve(nTasks);
+        pImpl_->tasksComplete_.reserve(nTasks);
+        for (uint i = 0; i != nTasks; ++i)
         {
-            pImpl_->tasksAvailable_.push_back( taskStartsAvailable( i ) );
-            pImpl_->tasksComplete_.push_back( false );
+            pImpl_->tasksAvailable_.push_back(taskStartsAvailable(i));
+            pImpl_->tasksComplete_.push_back(false);
         }
     }
 }
 
 void MachLogDatabaseHandler::clearTaskFlags()
 {
-    pImpl_->tasksAvailable_.erase( pImpl_->tasksAvailable_.begin(), pImpl_->tasksAvailable_.end() );
-    pImpl_->tasksComplete_.erase( pImpl_->tasksComplete_.begin(), pImpl_->tasksComplete_.end() );
+    pImpl_->tasksAvailable_.erase(pImpl_->tasksAvailable_.begin(), pImpl_->tasksAvailable_.end());
+    pImpl_->tasksComplete_.erase(pImpl_->tasksComplete_.begin(), pImpl_->tasksComplete_.end());
 }
 
-void MachLogDatabaseHandler::writePersistenceData( PerOstream& ostr )
+void MachLogDatabaseHandler::writePersistenceData(PerOstream& ostr)
 {
-    //Write any scenario flags that have been set
+    // Write any scenario flags that have been set
     uint nFlags = nSetFlags();
-    PER_WRITE_RAW_OBJECT( ostr, nFlags );
+    PER_WRITE_RAW_OBJECT(ostr, nFlags);
 
-    for( uint i = 0; i != nFlags; ++i )
+    for (uint i = 0; i != nFlags; ++i)
     {
-        string tempString = setFlag( i );
-        PER_WRITE_RAW_OBJECT( ostr, tempString );
+        string tempString = setFlag(i);
+        PER_WRITE_RAW_OBJECT(ostr, tempString);
     }
 
-    //Write the task states
+    // Write the task states
     uint nTaskStates = nTasksInCurrentScenario();
-    PER_WRITE_RAW_OBJECT( ostr, nTaskStates );
+    PER_WRITE_RAW_OBJECT(ostr, nTaskStates);
 
-    for( uint i = 0; i != nTaskStates; ++i )
+    for (uint i = 0; i != nTaskStates; ++i)
     {
-        bool isAvailable = taskIsAvailable( i );
-        PER_WRITE_RAW_OBJECT( ostr, isAvailable );
+        bool isAvailable = taskIsAvailable(i);
+        PER_WRITE_RAW_OBJECT(ostr, isAvailable);
 
-        bool isComplete = taskIsComplete( i );
-        PER_WRITE_RAW_OBJECT( ostr, isComplete );
+        bool isComplete = taskIsComplete(i);
+        PER_WRITE_RAW_OBJECT(ostr, isComplete);
     }
 }
 
-void MachLogDatabaseHandler::readPersistenceData( PerIstream& istr )
+void MachLogDatabaseHandler::readPersistenceData(PerIstream& istr)
 {
-    //Read any scenario flags that have been set
+    // Read any scenario flags that have been set
     uint nFlags;
-    PER_READ_RAW_OBJECT( istr, nFlags );
-    for( uint i = 0; i != nFlags; ++i )
+    PER_READ_RAW_OBJECT(istr, nFlags);
+    for (uint i = 0; i != nFlags; ++i)
     {
         string tempString;
-        PER_READ_RAW_OBJECT( istr, tempString );
-        setScenarioFlag( tempString );
+        PER_READ_RAW_OBJECT(istr, tempString);
+        setScenarioFlag(tempString);
     }
 
-    //Read the task states
+    // Read the task states
     uint nTaskStates;
-    PER_READ_RAW_OBJECT( istr, nTaskStates );
+    PER_READ_RAW_OBJECT(istr, nTaskStates);
 
-    for( uint i = 0; i != nTaskStates; ++i )
+    for (uint i = 0; i != nTaskStates; ++i)
     {
         bool isAvailable;
-        PER_READ_RAW_OBJECT( istr, isAvailable );
-        taskIsAvailable( i, isAvailable );
+        PER_READ_RAW_OBJECT(istr, isAvailable);
+        taskIsAvailable(i, isAvailable);
 
         bool isComplete;
-        PER_READ_RAW_OBJECT( istr, isComplete );
-        taskIsComplete( i, isComplete );
+        PER_READ_RAW_OBJECT(istr, isComplete);
+        taskIsComplete(i, isComplete);
     }
 }
 

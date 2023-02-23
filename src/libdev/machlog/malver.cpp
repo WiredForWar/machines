@@ -4,15 +4,15 @@
  */
 
 /*
-	HISTORY
+    HISTORY
 
-	00.90	Development started
-			24 March 1997  		Bob Archer
-	00.91	MachPhysData classes now started to being used.
-			01/09/1997			Hal Angseesing
-	00.92	The new sub-classes from MachPhys have been incorrporated.
-			All of the main operantions have also been implemented.
-			07/11/1997			Hal Angseesing
+    00.90   Development started
+            24 March 1997       Bob Archer
+    00.91   MachPhysData classes now started to being used.
+            01/09/1997          Hal Angseesing
+    00.92   The new sub-classes from MachPhys have been incorrporated.
+            All of the main operantions have also been implemented.
+            07/11/1997          Hal Angseesing
 */
 
 // machine must be in initial position before
@@ -25,16 +25,16 @@
 
 #include <stdio.h>
 
-#define	LIBRARY	"MAC"
-#define	VERSION	"00.92"
+#define LIBRARY "MAC"
+#define VERSION "00.92"
 
 static unsigned char verString[] = "$:VERSION:$ " LIBRARY "  " VERSION;
 static unsigned char dateString[] = "$:DATETIME:$ " LIBRARY "  " __DATE__ " " __TIME__;
 
 void printVersion()
 {
-    printf( "%s\n", verString );
-    printf( "%s\n", dateString );    
+    printf("%s\n", verString);
+    printf("%s\n", dateString);
 }
 
 /* End DEVVER.CPP ***************************************************/

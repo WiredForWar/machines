@@ -1,5 +1,5 @@
 /*
- * E R R O R H N D . H P P 
+ * E R R O R H N D . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -23,29 +23,28 @@ public:
     static ErrorHandler& instance();
     ~ErrorHandler();
 
-    void pDisplay( RenDisplay* pDisplay );
+    void pDisplay(RenDisplay* pDisplay);
 
 #ifndef NDEBUG
-    static  BaseAssertion::AssertionAction handleAssertionError( const BaseAssertion::AssertionInfo& );
+    static BaseAssertion::AssertionAction handleAssertionError(const BaseAssertion::AssertionInfo&);
 #endif
-    
+
     void CLASS_INVARIANT;
 
 private:
     // Operation deliberately revoked
-    ErrorHandler( const ErrorHandler& );
+    ErrorHandler(const ErrorHandler&);
 
     // Operation deliberately revoked
-    ErrorHandler& operator =( const ErrorHandler& );
+    ErrorHandler& operator=(const ErrorHandler&);
 
     // Operation deliberately revoked
-    bool operator ==( const ErrorHandler& );
+    bool operator==(const ErrorHandler&);
 
     ErrorHandler();
-    
+
     RenDisplay* pDisplay_;
 };
-
 
 #endif
 

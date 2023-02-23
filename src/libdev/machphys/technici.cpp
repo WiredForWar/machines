@@ -21,7 +21,7 @@
 
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysTechnician );
+PER_DEFINE_PERSISTENT(MachPhysTechnician);
 
 MachPhysTechnician::MachPhysTechnician(
     W4dEntity* pParent,
@@ -29,35 +29,43 @@ MachPhysTechnician::MachPhysTechnician(
     MachPhys::TechnicianSubType subType,
     size_t bodyLevel,
     size_t brainLevel,
-    MachPhys::Race race )
-: MachPhysMachine( part( subType, bodyLevel ), pParent, localTransform, bodyLevel, brainLevel, race,
-   MachPhysData::instance().technicianData( subType, bodyLevel, brainLevel ) ),
-  subType_( subType )
+    MachPhys::Race race)
+    : MachPhysMachine(
+        part(subType, bodyLevel),
+        pParent,
+        localTransform,
+        bodyLevel,
+        brainLevel,
+        race,
+        MachPhysData::instance().technicianData(subType, bodyLevel, brainLevel))
+    , subType_(subType)
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
 //  This is the constructor that is used by the factory. It is the
 //  only constructor that actually builds a technician from scratch
 
-MachPhysTechnician::MachPhysTechnician( W4dEntity* pParent, Id id )
-: MachPhysMachine( pParent, W4dTransform3d(), compositeFileName( id.subType_, id.level_ ),
-                   MachPhysData::instance().technicianData( id.subType_, id.level_, id.level_ ) ),
-  subType_( id.subType_ )
+MachPhysTechnician::MachPhysTechnician(W4dEntity* pParent, Id id)
+    : MachPhysMachine(
+        pParent,
+        W4dTransform3d(),
+        compositeFileName(id.subType_, id.level_),
+        MachPhysData::instance().technicianData(id.subType_, id.level_, id.level_))
+    , subType_(id.subType_)
 {
-	createExplosionData();
+    createExplosionData();
     TEST_INVARIANT;
 }
 
-MachPhysTechnician::MachPhysTechnician( PerConstructor con )
-: MachPhysMachine( con )
+MachPhysTechnician::MachPhysTechnician(PerConstructor con)
+    : MachPhysMachine(con)
 {
 }
 
 MachPhysTechnician::~MachPhysTechnician()
 {
     TEST_INVARIANT;
-
 }
 
 MachPhys::TechnicianSubType MachPhysTechnician::subType() const
@@ -65,59 +73,59 @@ MachPhys::TechnicianSubType MachPhysTechnician::subType() const
     return subType_;
 }
 
-SysPathName MachPhysTechnician::compositeFileName( MachPhys::TechnicianSubType subType, size_t bodyLevel ) const
+SysPathName MachPhysTechnician::compositeFileName(MachPhys::TechnicianSubType subType, size_t bodyLevel) const
 {
     SysPathName result;
 
-    switch( subType )
+    switch (subType)
     {
         case MachPhys::LAB_TECH:
 
-            switch( bodyLevel )
+            switch (bodyLevel)
             {
                 case 2:
                     result = "models/technici/labtech/level2/tel2.cdf";
                     break;
 
                 default:
-                    ASSERT_BAD_CASE_INFO( bodyLevel );
+                    ASSERT_BAD_CASE_INFO(bodyLevel);
                     break;
             }
 
-        	break;
+            break;
 
         case MachPhys::TECH_BOY:
 
-            switch( bodyLevel )
+            switch (bodyLevel)
             {
                 case 3:
                     result = "models/technici/techboy/level3/tet3.cdf";
                     break;
 
                 default:
-                    ASSERT_BAD_CASE_INFO( bodyLevel );
+                    ASSERT_BAD_CASE_INFO(bodyLevel);
                     break;
             }
 
-        	break;
+            break;
 
         case MachPhys::BRAIN_BOX:
 
-            switch( bodyLevel )
+            switch (bodyLevel)
             {
                 case 5:
                     result = "models/technici/brainbox/level5/teb5.cdf";
                     break;
 
                 default:
-                    ASSERT_BAD_CASE_INFO( bodyLevel );
+                    ASSERT_BAD_CASE_INFO(bodyLevel);
                     break;
             }
 
-        	break;
+            break;
 
         default:
-            ASSERT_BAD_CASE_INFO( subType );
+            ASSERT_BAD_CASE_INFO(subType);
             break;
     }
 
@@ -125,38 +133,38 @@ SysPathName MachPhysTechnician::compositeFileName( MachPhys::TechnicianSubType s
 }
 
 // static
-MachPhysTechnician& MachPhysTechnician::part( MachPhys::TechnicianSubType subType, size_t hardwareLevel )
+MachPhysTechnician& MachPhysTechnician::part(MachPhys::TechnicianSubType subType, size_t hardwareLevel)
 {
     return factory().part(
-        Id( subType, hardwareLevel ),
-        MachPhysLevels::instance().uniqueHardwareIndex( subType, hardwareLevel ) );
+        Id(subType, hardwareLevel),
+        MachPhysLevels::instance().uniqueHardwareIndex(subType, hardwareLevel));
 }
 
 // static
 MachPhysTechnician::Factory& MachPhysTechnician::factory()
 {
-    static  Factory   factory_( MachPhysLevels::instance().nHardwareIndices( MachPhys::TECHNICIAN ) );
+    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::TECHNICIAN));
 
     return factory_;
 }
 
-//virtual
+// virtual
 const MachPhysMachineData& MachPhysTechnician::machineData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysTechnicianData& MachPhysTechnician::data() const
 {
-	return MachPhysData::instance().technicianData( subType_, bodyLevel(), brainLevel() );
+    return MachPhysData::instance().technicianData(subType_, bodyLevel(), brainLevel());
 }
 
 void MachPhysTechnician::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysTechnician& t )
+ostream& operator<<(ostream& o, const MachPhysTechnician& t)
 {
 
     o << "MachPhysTechnician " << (void*)&t << " start" << std::endl;
@@ -168,25 +176,25 @@ ostream& operator <<( ostream& o, const MachPhysTechnician& t )
 PhysRelativeTime MachPhysTechnician::research()
 {
     PhysRelativeTime interval;
-	static int animation = 0;
+    static int animation = 0;
 
-	W4dCompositePlanPtr thePlan;
-	if(  not cycleAnims( &thePlan ) )
+    W4dCompositePlanPtr thePlan;
+    if (not cycleAnims(&thePlan))
         interval = 1;
-	else
-	{
+    else
+    {
         const uint nTimes = 4;
-		if(animation)
-		{
-			cycleAnims( &thePlan );
-			--animation;
-		}
-		else
-			++animation;
+        if (animation)
+        {
+            cycleAnims(&thePlan);
+            --animation;
+        }
+        else
+            ++animation;
 
-        plan( *thePlan, SimManager::instance().currentTime(), nTimes - 1 );
+        plan(*thePlan, SimManager::instance().currentTime(), nTimes - 1);
         interval = nTimes * thePlan->finishTime();
-	}
+    }
 
     return interval;
 }
@@ -194,40 +202,40 @@ PhysRelativeTime MachPhysTechnician::research()
 void MachPhysTechnician::createExplosionData()
 {
     MachPhysMachineExplosionData& expData = explosionDataForEdit();
-    switch( subType() )
+    switch (subType())
     {
         case MachPhys::LAB_TECH:
             break;
         case MachPhys::BRAIN_BOX:
-        {
-            switch( bodyLevel() )
             {
-                case 5:
-				{
-        	  		// just update the position of the explosion center
-	        		MexPoint3d explosionCenter( expData.explosionCenter() );
-	        		explosionCenter.z( explosionCenter.z() + 0.20 );
- 	        		expData.explosionCenter( explosionCenter );
-                    break;
-				}
-			    default:
-            		ASSERT_BAD_CASE_INFO( bodyLevel() );
-			}
-        }
+                switch (bodyLevel())
+                {
+                    case 5:
+                        {
+                            // just update the position of the explosion center
+                            MexPoint3d explosionCenter(expData.explosionCenter());
+                            explosionCenter.z(explosionCenter.z() + 0.20);
+                            expData.explosionCenter(explosionCenter);
+                            break;
+                        }
+                    default:
+                        ASSERT_BAD_CASE_INFO(bodyLevel());
+                }
+            }
         case MachPhys::TECH_BOY:
-        {
-           	// just update the position of the explosion center
-	        MexPoint3d explosionCenter( expData.explosionCenter() );
-	        explosionCenter.z( explosionCenter.z() + 0.25 );
- 	        expData.explosionCenter( explosionCenter );
-            break;
-        }
+            {
+                // just update the position of the explosion center
+                MexPoint3d explosionCenter(expData.explosionCenter());
+                explosionCenter.z(explosionCenter.z() + 0.25);
+                expData.explosionCenter(explosionCenter);
+                break;
+            }
         default:
-            ASSERT_BAD_CASE_INFO( subType() );
+            ASSERT_BAD_CASE_INFO(subType());
     }
 }
 
-void perWrite( PerOstream& ostr, const MachPhysTechnician& machine )
+void perWrite(PerOstream& ostr, const MachPhysTechnician& machine)
 {
     const MachPhysMachine& base = machine;
     ostr << base;
@@ -235,7 +243,7 @@ void perWrite( PerOstream& ostr, const MachPhysTechnician& machine )
     ostr << machine.subType_;
 }
 
-void perRead( PerIstream& istr, MachPhysTechnician& machine )
+void perRead(PerIstream& istr, MachPhysTechnician& machine)
 {
     MachPhysMachine& base = machine;
     istr >> base;

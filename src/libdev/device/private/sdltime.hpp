@@ -9,14 +9,15 @@
 class OSTime
 {
 public:
-	double 			time() const;
-    double 			resolution() const;
+    double time() const;
+    double resolution() const;
+
 private:
     //  The "NoRecord" function is only suppied to allow the sound library
     //  to work without making any non-repeatable recorded calls to the
     //  timers.
     friend double DevTime::timeNoRecord() const;
-	double 			timeNoRecord() const;
+    double timeNoRecord() const;
 };
 
 #endif

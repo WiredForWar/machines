@@ -1,5 +1,5 @@
 /*
- * S S L I S T I T . H P P 
+ * S S L I S T I T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,50 +21,49 @@ class GuiSingleSelectionListBoxItem : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    GuiSingleSelectionListBoxItem( GuiSingleSelectionListBox* pListBox, size_t width, size_t height );
-    ~GuiSingleSelectionListBoxItem();
+    GuiSingleSelectionListBoxItem(GuiSingleSelectionListBox* pListBox, size_t width, size_t height);
+    ~GuiSingleSelectionListBoxItem() override;
 
-	// True if this is the selected item in the list box.
-	bool selected() const;
+    // True if this is the selected item in the list box.
+    bool selected() const;
 
-	// Notifies list box of selection change. Calling this will indirectly cause
-	// "select" to get called. This is the only way to select a list box item
-	// other than using the mouse pointer.
-	void selectThisItem();
+    // Notifies list box of selection change. Calling this will indirectly cause
+    // "select" to get called. This is the only way to select a list box item
+    // other than using the mouse pointer.
+    void selectThisItem();
 
     void CLASS_INVARIANT;
 
 protected:
-	// Called when the list box item has been unselected. The selected status is set
-	// before this function is called.
-	virtual void unselect() = 0;
-	// PRE( selected() == false );
+    // Called when the list box item has been unselected. The selected status is set
+    // before this function is called.
+    virtual void unselect() = 0;
+    // PRE( selected() == false );
 
-	// Called when the list box item has been selected. The selected status is set
-	// before this function is called.
-	virtual void select() = 0;
-	// PRE( selected() == true );
+    // Called when the list box item has been selected. The selected status is set
+    // before this function is called.
+    virtual void select() = 0;
+    // PRE( selected() == true );
 
-	virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
 
-	// Get the list box that this list item is associated with.
-	GuiSingleSelectionListBox& listBox();
-	// PRE( pListBox_);
+    // Get the list box that this list item is associated with.
+    GuiSingleSelectionListBox& listBox();
+    // PRE( pListBox_);
 
 private:
-	friend ostream& operator <<( ostream& o, const GuiSingleSelectionListBoxItem& t );
+    friend ostream& operator<<(ostream& o, const GuiSingleSelectionListBoxItem& t);
 
-    GuiSingleSelectionListBoxItem( const GuiSingleSelectionListBoxItem& );
-    GuiSingleSelectionListBoxItem& operator =( const GuiSingleSelectionListBoxItem& ); 
-	
-	friend class GuiSingleSelectionListBox;
+    GuiSingleSelectionListBoxItem(const GuiSingleSelectionListBoxItem&);
+    GuiSingleSelectionListBoxItem& operator=(const GuiSingleSelectionListBoxItem&);
 
-	void selected( bool );
+    friend class GuiSingleSelectionListBox;
 
-	bool selected_;
-	GuiSingleSelectionListBox* pListBox_;
+    void selected(bool);
+
+    bool selected_;
+    GuiSingleSelectionListBox* pListBox_;
 };
-
 
 #endif
 

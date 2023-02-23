@@ -1,5 +1,5 @@
 /*
- * S T I N G L . H P P 
+ * S T I N G L . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -21,46 +21,44 @@ class MachPhysLightSting : public MachPhysLinearProjectile
 // Canonical form revoked
 {
 public:
-	//public constructor
-    MachPhysLightSting( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // public constructor
+    MachPhysLightSting(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    virtual ~MachPhysLightSting();
+    ~MachPhysLightSting() override;
 
-	static const MachPhysLightSting& exemplar();
+    static const MachPhysLightSting& exemplar();
 
     void CLASS_INVARIANT;
 
     //////////////////////////////////////////////////////////
     // Inherited from MachPhysLinearProjectile
 
-    //Override to add specific animations for the projectile destruction at time.
-    //Return duration of such animation.
-    virtual PhysRelativeTime doBeDestroyedAt( const PhysAbsoluteTime& time,
-                                              MachPhys::StrikeType strikeType );
+    // Override to add specific animations for the projectile destruction at time.
+    // Return duration of such animation.
+    PhysRelativeTime doBeDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType) override;
     //////////////////////////////////////////////////////////
 
-    PER_MEMBER_PERSISTENT( MachPhysLightSting );
-    PER_FRIEND_READ_WRITE( MachPhysLightSting );
+    PER_MEMBER_PERSISTENT(MachPhysLightSting);
+    PER_FRIEND_READ_WRITE(MachPhysLightSting);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysLightSting& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLightSting& t);
 
-    MachPhysLightSting( const MachPhysLightSting& );
-    MachPhysLightSting& operator =( const MachPhysLightSting& );
+    MachPhysLightSting(const MachPhysLightSting&);
+    MachPhysLightSting& operator=(const MachPhysLightSting&);
 
+    // Create an impact flash attached tp pParent at localPosition offset at startTime.
+    // Returns duration of the flash.
+    PhysRelativeTime
+    createImpactSplat(W4dEntity* pParent, const MexTransform3d& localPosition, const PhysAbsoluteTime& startTime);
 
-    //Create an impact flash attached tp pParent at localPosition offset at startTime.
-    //Returns duration of the flash.
-    PhysRelativeTime createImpactSplat( W4dEntity* pParent,
-                     const MexTransform3d& localPosition, const PhysAbsoluteTime& startTime );
+    friend class MachPhysOtherPersistence;
 
-	friend class MachPhysOtherPersistence;
-
-	//one time constructor
+    // one time constructor
     MachPhysLightSting();
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLightSting );
+PER_DECLARE_PERSISTENT(MachPhysLightSting);
 
 #endif
 

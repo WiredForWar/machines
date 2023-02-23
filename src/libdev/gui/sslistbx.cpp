@@ -1,5 +1,5 @@
 /*
- * S S L I S T B X . C P P 
+ * S S L I S T B X . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -8,12 +8,15 @@
 #include "gui/sslistbx.hpp"
 #include "gui/sslistit.hpp"
 
-GuiSingleSelectionListBox::GuiSingleSelectionListBox( 	GuiDisplayable* pParent, const Gui::Box& box, 
-    													size_t horizontalSpacing, size_t verticalSpacing,
-    													size_t scrollInc )
-:	GuiSimpleScrollableList( pParent, box, horizontalSpacing, verticalSpacing, scrollInc ),
-	pCurrentSelection_( NULL ),
-	selectItemWhen_( PRESSED )
+GuiSingleSelectionListBox::GuiSingleSelectionListBox(
+    GuiDisplayable* pParent,
+    const Gui::Box& box,
+    size_t horizontalSpacing,
+    size_t verticalSpacing,
+    size_t scrollInc)
+    : GuiSimpleScrollableList(pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
+    , pCurrentSelection_(nullptr)
+    , selectItemWhen_(PRESSED)
 {
 
     TEST_INVARIANT;
@@ -22,15 +25,14 @@ GuiSingleSelectionListBox::GuiSingleSelectionListBox( 	GuiDisplayable* pParent, 
 GuiSingleSelectionListBox::~GuiSingleSelectionListBox()
 {
     TEST_INVARIANT;
-
 }
 
 void GuiSingleSelectionListBox::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const GuiSingleSelectionListBox& t )
+ostream& operator<<(ostream& o, const GuiSingleSelectionListBox& t)
 {
 
     o << "GuiSingleSelectionListBox " << (void*)&t << " start" << std::endl;
@@ -39,37 +41,37 @@ ostream& operator <<( ostream& o, const GuiSingleSelectionListBox& t )
     return o;
 }
 
-void GuiSingleSelectionListBox::notifyListItemSelection( GuiSingleSelectionListBoxItem* pNewSelection )
+void GuiSingleSelectionListBox::notifyListItemSelection(GuiSingleSelectionListBoxItem* pNewSelection)
 {
-	if ( pNewSelection != pCurrentSelection_ )
-	{
-		if ( pCurrentSelection_ )
-		{
-			pCurrentSelection_->selected( false );
-			pCurrentSelection_->unselect();	
-		}
+    if (pNewSelection != pCurrentSelection_)
+    {
+        if (pCurrentSelection_)
+        {
+            pCurrentSelection_->selected(false);
+            pCurrentSelection_->unselect();
+        }
 
-		pCurrentSelection_ =  pNewSelection;
+        pCurrentSelection_ = pNewSelection;
 
-		pCurrentSelection_->selected( true );
-		pCurrentSelection_->select();
-	}
+        pCurrentSelection_->selected(true);
+        pCurrentSelection_->select();
+    }
 }
 
-void GuiSingleSelectionListBox::selectItemWhen( GuiSingleSelectionListBox::SelectItemWhen newSelectItemWhen )
+void GuiSingleSelectionListBox::selectItemWhen(GuiSingleSelectionListBox::SelectItemWhen newSelectItemWhen)
 {
-	selectItemWhen_ = newSelectItemWhen;
+    selectItemWhen_ = newSelectItemWhen;
 }
 
 GuiSingleSelectionListBox::SelectItemWhen GuiSingleSelectionListBox::selectItemWhen() const
 {
-	return selectItemWhen_;
+    return selectItemWhen_;
 }
 
 void GuiSingleSelectionListBox::deleteAllItems()
 {
-	deleteAllChildren();
-	pCurrentSelection_ = NULL;
+    deleteAllChildren();
+    pCurrentSelection_ = nullptr;
 }
 
 /* End SSLISTBX.CPP *************************************************/

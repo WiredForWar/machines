@@ -1,12 +1,12 @@
 /*
- * G R P M V I N F . H P P 
+ * G R P M V I N F . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     MachLogGroupMoveInfo
 
-    Information to assist with a group move. It gives the motion sequencer 
+    Information to assist with a group move. It gives the motion sequencer
     some idea of where an individual machine is relative to the rest of the group.
 */
 
@@ -22,7 +22,7 @@ class MachLogGroupMoveInfo
 public:
     MachLogGroupMoveInfo();
     //  POST( not valid() );
-    MachLogGroupMoveInfo( const MexVec2& offset, MATHEX_SCALAR groupRadius );
+    MachLogGroupMoveInfo(const MexVec2& offset, MATHEX_SCALAR groupRadius);
     //  POST( valid() );
 
     ~MachLogGroupMoveInfo();
@@ -33,23 +33,22 @@ public:
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT_DEFAULT( MachLogGroupMoveInfo );
-	PER_FRIEND_READ_WRITE( MachLogGroupMoveInfo );
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogGroupMoveInfo);
+    PER_FRIEND_READ_WRITE(MachLogGroupMoveInfo);
 
 private:
-    friend ostream& operator <<( ostream& o, const MachLogGroupMoveInfo& t );
+    friend ostream& operator<<(ostream& o, const MachLogGroupMoveInfo& t);
 
-    bool            valid_;
-    MexVec2         offset_;
-    MATHEX_SCALAR   groupRadius_;
+    bool valid_;
+    MexVec2 offset_;
+    MATHEX_SCALAR groupRadius_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogGroupMoveInfo );
+PER_DECLARE_PERSISTENT(MachLogGroupMoveInfo);
 
 #ifdef _INLINE
-    #include "machlog/grpmvinf.ipp"
+#include "machlog/grpmvinf.ipp"
 #endif
-
 
 #endif
 

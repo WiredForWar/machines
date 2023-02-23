@@ -9,11 +9,11 @@
 #include "world4d/planentr.hpp"
 #include "world4d/internal/compplai.hpp"
 
-PER_DEFINE_PERSISTENT( W4dCompositePlanImpl );
+PER_DEFINE_PERSISTENT(W4dCompositePlanImpl);
 
 W4dCompositePlanImpl::W4dCompositePlanImpl()
-:  pCompositePlan_( NULL ),
-   cachedFinishTime_( 0.0 )
+    : pCompositePlan_(nullptr)
+    , cachedFinishTime_(0.0)
 {
 
     TEST_INVARIANT;
@@ -23,24 +23,24 @@ W4dCompositePlanImpl::~W4dCompositePlanImpl()
 {
     TEST_INVARIANT;
 
-    //Delete the composite's plan
-    if( pCompositePlan_ )
-        _DELETE( pCompositePlan_ );
+    // Delete the composite's plan
+    if (pCompositePlan_)
+        _DELETE(pCompositePlan_);
 
-    //Delete all the link entries
-    while( entries_.size() != 0 )
+    // Delete all the link entries
+    while (entries_.size() != 0)
     {
-        _DELETE( entries_.front() );
+        _DELETE(entries_.front());
         entries_.pop_front();
     }
 }
 
 void W4dCompositePlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const W4dCompositePlanImpl& t )
+ostream& operator<<(ostream& o, const W4dCompositePlanImpl& t)
 {
 
     o << "W4dCompositePlanImpl " << (void*)&t << " start" << std::endl;
@@ -49,7 +49,7 @@ ostream& operator <<( ostream& o, const W4dCompositePlanImpl& t )
     return o;
 }
 
-void perWrite( PerOstream& ostr, const W4dCompositePlanImpl& ob )
+void perWrite(PerOstream& ostr, const W4dCompositePlanImpl& ob)
 {
     ostr << ob.pCompositePlan_;
     ostr << ob.entries_;
@@ -57,7 +57,7 @@ void perWrite( PerOstream& ostr, const W4dCompositePlanImpl& ob )
     ostr << ob.cachedFinishTime_;
 }
 
-void perRead( PerIstream& istr, W4dCompositePlanImpl& ob )
+void perRead(PerIstream& istr, W4dCompositePlanImpl& ob)
 {
     istr >> ob.pCompositePlan_;
     istr >> ob.entries_;

@@ -7,7 +7,7 @@
 #include <string.h>
 
 #ifndef _INLINE
-    #include "mathex/coordsys.ipp"
+#include "mathex/coordsys.ipp"
 #endif
 
 // static
@@ -22,20 +22,20 @@ void MexCoordSystem::setFromEnvironment()
     char* cs = getenv("CB_COORD_SYS");
     if (cs)
     {
-		//if (stricmp(cs, "right") == 0)
-		if (strcasecmp(cs, "right") == 0)
-			set(MexCoordSystem::RIGHT_HANDED);
-		else
-		{
-			//ASSERT(stricmp(cs, "left") == 0, "CB_COORD_SYS set to unrecognised value.");
-			ASSERT(strcasecmp(cs, "left") == 0, "CB_COORD_SYS set to unrecognised value.");
-			set(MexCoordSystem::LEFT_HANDED);
-		}
+        // if (stricmp(cs, "right") == 0)
+        if (strcasecmp(cs, "right") == 0)
+            set(MexCoordSystem::RIGHT_HANDED);
+        else
+        {
+            // ASSERT(stricmp(cs, "left") == 0, "CB_COORD_SYS set to unrecognised value.");
+            ASSERT(strcasecmp(cs, "left") == 0, "CB_COORD_SYS set to unrecognised value.");
+            set(MexCoordSystem::LEFT_HANDED);
+        }
     }
-	else
-	{
-		set(MexCoordSystem::LEFT_HANDED);
-	}
+    else
+    {
+        set(MexCoordSystem::LEFT_HANDED);
+    }
 }
 
 /* End COORDSYS.CPP *************************************************/

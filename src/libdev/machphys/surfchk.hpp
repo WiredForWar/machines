@@ -27,26 +27,26 @@ class MachPhysPlanetSurfaceChecker
 // Canonical form revoked
 {
 public:
-    MachPhysPlanetSurfaceChecker( const MachPhysPlanetSurface& );
+    MachPhysPlanetSurfaceChecker(const MachPhysPlanetSurface&);
     ~MachPhysPlanetSurfaceChecker();
 
-    CTL_TRIPLE( Triangle, MexPoint3d, point1, MexPoint3d, point2, MexPoint3d, point3 );
-    typedef ctl_vector< Triangle >  Triangles;
+    CTL_TRIPLE(Triangle, MexPoint3d, point1, MexPoint3d, point2, MexPoint3d, point3);
+    using Triangles = ctl_vector<Triangle>;
 
     //  Check that any triangles not inside an obstacle have gradients
     //  within acceptable limits - i.e. do not allow machines to attempt
     //  to move over surfaces that are too steep.
     //  Return the coordinates of any triangles whose gradients
     //  are too steep.
-    void    checkGradients( const PhysConfigSpace2d&, Triangles* ) const;
+    void checkGradients(const PhysConfigSpace2d&, Triangles*) const;
 
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachPhysPlanetSurfaceChecker& t );
+    friend ostream& operator<<(ostream& o, const MachPhysPlanetSurfaceChecker& t);
 
-    MachPhysPlanetSurfaceChecker( const MachPhysPlanetSurfaceChecker& );
-    MachPhysPlanetSurfaceChecker& operator =( const MachPhysPlanetSurfaceChecker& );
+    MachPhysPlanetSurfaceChecker(const MachPhysPlanetSurfaceChecker&);
+    MachPhysPlanetSurfaceChecker& operator=(const MachPhysPlanetSurfaceChecker&);
 
     //  Purely to allow template instantiation
     friend void MachDummyFunction1();
@@ -63,26 +63,24 @@ private:
         OBSTACLE_ALL = 3
     };
 
+    void getTriangles(Triangles* pTriangles) const;
+    bool triangleIsVertical(const Triangle& triangle) const;
+    MexDegrees triangleGradient(const Triangle& triangle) const;
 
-    void getTriangles( Triangles* pTriangles ) const;
-    bool triangleIsVertical( const Triangle& triangle ) const;
-    MexDegrees triangleGradient( const Triangle& triangle ) const;
+    bool checkProjectedSegmentOK(const Triangle& triangle, MexDegrees gradient, const PhysConfigSpace2d&) const;
+    bool segmentInsideObstacle(const MexLine2d& triangle, ObstacleFlag flag, const PhysConfigSpace2d&) const;
 
-    bool checkProjectedSegmentOK( const Triangle& triangle, MexDegrees gradient, const PhysConfigSpace2d& ) const;
-    bool segmentInsideObstacle( const MexLine2d& triangle, ObstacleFlag flag, const PhysConfigSpace2d& ) const;
-
-    bool checkTriangleOK( const Triangle& triangle, MexDegrees gradient, const PhysConfigSpace2d& ) const;
-    bool triangleInsideObstacle( const MexTriangle2d& triangle, ObstacleFlag flag, const PhysConfigSpace2d& ) const;
+    bool checkTriangleOK(const Triangle& triangle, MexDegrees gradient, const PhysConfigSpace2d&) const;
+    bool triangleInsideObstacle(const MexTriangle2d& triangle, ObstacleFlag flag, const PhysConfigSpace2d&) const;
 
     const MachPhysPlanetSurface& surface_;
 
     //  Order dependancy - leave these in the order they are defined here.
-    const MexDegrees    maxNormalGradient_;
-    const MexDegrees    maxLowObstacleGradient_;
-    const MexDegrees    maxWaterGradient_;
-    const MexDegrees    minMaxGradient_;
+    const MexDegrees maxNormalGradient_;
+    const MexDegrees maxLowObstacleGradient_;
+    const MexDegrees maxWaterGradient_;
+    const MexDegrees minMaxGradient_;
 };
-
 
 #endif
 

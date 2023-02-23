@@ -1,5 +1,5 @@
 /*
- * S C O R E . H P P 
+ * S C O R E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -22,100 +22,103 @@ class MachLogScore
 // Canonical form revoked
 {
 public:
-    MachLogScore( MachPhys::Race );
+    MachLogScore(MachPhys::Race);
     ~MachLogScore();
 
     void CLASS_INVARIANT;
 
-	PER_MEMBER_PERSISTENT( MachLogScore );
-	PER_FRIEND_READ_WRITE( MachLogScore );
+    PER_MEMBER_PERSISTENT(MachLogScore);
+    PER_FRIEND_READ_WRITE(MachLogScore);
 
-	int machinesBuilt() const;
-	void machineBuilt();
+    int machinesBuilt() const;
+    void machineBuilt();
 
-	int militaryMachinesBuilt() const;
-	void militaryMachineBuilt();
+    int militaryMachinesBuilt() const;
+    void militaryMachineBuilt();
 
-	int constructionsBuilt() const;
-	void constructionBuilt();
+    int constructionsBuilt() const;
+    void constructionBuilt();
 
-	//When one of my machines is destroyed the following data is updated
-	int myMachinesDestroyed() const;
-	void myMachineDestroyed();
-	
-	//total of all machines I destroyed
-	int otherMachinesDestroyed() const;
-	void otherMachineDestroyed();
-	
-	//total of all machines I destroyed by RACE
-	int raceMachinesDestroyed( MachPhys::Race ) const;
-	void raceMachineDestroyed( MachPhys::Race );
-	
-	//total of all my machines destroyed by another race, by RACE
-	int raceMyMachinesDestroyed( MachPhys::Race ) const;
-	void raceMyMachineDestroyed( MachPhys::Race );
+    // When one of my machines is destroyed the following data is updated
+    int myMachinesDestroyed() const;
+    void myMachineDestroyed();
 
-	int myConstructionsDestroyed() const;
-	void myConstructionDestroyed();
+    // total of all machines I destroyed
+    int otherMachinesDestroyed() const;
+    void otherMachineDestroyed();
 
-	int otherConstructionsDestroyed() const;
-	void otherConstructionDestroyed();
+    // total of all machines I destroyed by RACE
+    int raceMachinesDestroyed(MachPhys::Race) const;
+    void raceMachineDestroyed(MachPhys::Race);
 
-	//total of all constructions I destroyed by RACE
-	int raceConstructionsDestroyed( MachPhys::Race ) const;
-	void raceConstructionDestroyed( MachPhys::Race );
-	
-	//total of all my constructions destroyed by another race, by RACE
-	int raceMyConstructionsDestroyed( MachPhys::Race ) const;
-	void raceMyConstructionDestroyed( MachPhys::Race );
+    // total of all my machines destroyed by another race, by RACE
+    int raceMyMachinesDestroyed(MachPhys::Race) const;
+    void raceMyMachineDestroyed(MachPhys::Race);
 
-	int itemsResearched() const;
-	void itemResearched();
+    int myConstructionsDestroyed() const;
+    void myConstructionDestroyed();
 
-	int totalResearchCost() const;
-	void totalResearchIncreased( int increase );
+    int otherConstructionsDestroyed() const;
+    void otherConstructionDestroyed();
 
-	MachPhys::BuildingMaterialUnits	BMUsMined() const;
-	void BMUsMinedIncreased( MachPhys::BuildingMaterialUnits increase );
+    // total of all constructions I destroyed by RACE
+    int raceConstructionsDestroyed(MachPhys::Race) const;
+    void raceConstructionDestroyed(MachPhys::Race);
 
-	int grossScore() const;
-	void changeGrossScore( int difference );
-	
-	void actorDestroyedNoCulprit( int value, const MachActor& victimActor );
-	void actorDestroyedByRace( int value, const MachActor& victimActor, MachPhys::Race destroyingRace );
-	void destroyedAnotherRacesActor( int value, const MachActor& victimActor, MachPhys::Race victimRace );
+    // total of all my constructions destroyed by another race, by RACE
+    int raceMyConstructionsDestroyed(MachPhys::Race) const;
+    void raceMyConstructionDestroyed(MachPhys::Race);
 
-	//Value which will be used by the debrief to determine if a score should be displayed on screen.
-	//defaults to true.
-	bool scoreShouldBeDisplayed() const;
-	void scoreShouldBeDisplayed( bool );
+    int itemsResearched() const;
+    void itemResearched();
 
-	//used to reset the score object to zero.
-	//Not normally called except if a score is being supressed
-	//The race and the displayed flag are RETAINED though
-	void resetNumbers();
+    int totalResearchCost() const;
+    void totalResearchIncreased(int increase);
 
-	//reset the array based numbers of this score object
-	void resetPartialNumbers( MachPhys::Race );
+    MachPhys::BuildingMaterialUnits BMUsMined() const;
+    void BMUsMinedIncreased(MachPhys::BuildingMaterialUnits increase);
+
+    int grossScore() const;
+    void changeGrossScore(int difference);
+
+    void actorDestroyedNoCulprit(int value, const MachActor& victimActor);
+    void actorDestroyedByRace(int value, const MachActor& victimActor, MachPhys::Race destroyingRace);
+    void destroyedAnotherRacesActor(int value, const MachActor& victimActor, MachPhys::Race victimRace);
+
+    // Value which will be used by the debrief to determine if a score should be displayed on screen.
+    // defaults to true.
+    bool scoreShouldBeDisplayed() const;
+    void scoreShouldBeDisplayed(bool);
+
+    // used to reset the score object to zero.
+    // Not normally called except if a score is being supressed
+    // The race and the displayed flag are RETAINED though
+    void resetNumbers();
+
+    // reset the array based numbers of this score object
+    void resetPartialNumbers(MachPhys::Race);
 
 private:
+    enum KillerOrVictim
+    {
+        KILLER,
+        VICTIM
+    };
 
-	enum KillerOrVictim{ KILLER, VICTIM };
-	
-	void adjustStatsForDestruction( KillerOrVictim killVictFlag, const MachActor& victimActor );
-	
-    friend ostream& operator <<( ostream& o, const MachLogScore& t );
-	friend class MachLogMessageBroker;
+    void adjustStatsForDestruction(KillerOrVictim killVictFlag, const MachActor& victimActor);
 
-    MachLogScore( const MachLogScore& );
-    MachLogScore& operator =( const MachLogScore& );
+    friend ostream& operator<<(ostream& o, const MachLogScore& t);
+    friend class MachLogMessageBroker;
 
-	void assignScoreFromImpl( const MachLogScoreImpl& ) const;
+    MachLogScore(const MachLogScore&);
+    MachLogScore& operator=(const MachLogScore&);
 
-	MachLogScoreImpl*		pImpl_;
+    void assignScoreFromImpl(const MachLogScoreImpl&) const;
+
+    MachLogScoreImpl* pImpl_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogScore );
+PER_DECLARE_PERSISTENT(MachLogScore);
 
 #endif
 

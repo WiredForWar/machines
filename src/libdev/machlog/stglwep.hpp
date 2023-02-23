@@ -1,5 +1,5 @@
 /*
- * S T G L W E P . H P P 
+ * S T G L W E P . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -20,32 +20,31 @@ class MachLogLightStingWeapon : public MachLogLinearWeapon
 // Canonical form revoked
 {
 public:
-    MachLogLightStingWeapon( MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner );
-    virtual ~MachLogLightStingWeapon();
+    MachLogLightStingWeapon(MachLogRace*, MachPhysLinearWeapon*, MachActor* pOwner);
+    ~MachLogLightStingWeapon() override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachLogLightStingWeapon& t );
+    friend ostream& operator<<(ostream& o, const MachLogLightStingWeapon& t);
 
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogLightStingWeapon );
-	PER_FRIEND_READ_WRITE( MachLogLightStingWeapon );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLightStingWeapon);
+    PER_FRIEND_READ_WRITE(MachLogLightStingWeapon);
 
 protected:
-
-	virtual	MachLogLinearProjectile* createLinearProjectile
-	(
-		const PhysAbsoluteTime& burstStartTime, uint index, W4dEntity* pParent,
-	    const W4dEntity& target, const MexPoint3d& targetOffset
-	);
+    MachLogLinearProjectile* createLinearProjectile(
+        const PhysAbsoluteTime& burstStartTime,
+        uint index,
+        W4dEntity* pParent,
+        const W4dEntity& target,
+        const MexPoint3d& targetOffset) override;
 
 private:
-    MachLogLightStingWeapon( const MachLogLightStingWeapon& );
-    MachLogLightStingWeapon& operator =( const MachLogLightStingWeapon& );
-    bool operator ==( const MachLogLightStingWeapon& );
-
+    MachLogLightStingWeapon(const MachLogLightStingWeapon&);
+    MachLogLightStingWeapon& operator=(const MachLogLightStingWeapon&);
+    bool operator==(const MachLogLightStingWeapon&);
 };
 
-PER_DECLARE_PERSISTENT( MachLogLightStingWeapon );
+PER_DECLARE_PERSISTENT(MachLogLightStingWeapon);
 
 #endif
 

@@ -1,13 +1,13 @@
 /*
- * L I S T O B V R . H P P 
+ * L I S T O B V R . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 /*
     GuiListObserver
 
-	The base class for such things as ScrollBars, ScrollButtons etc. They will automatically
-	get informed of changes to the list box ( e.g. children added, scroll events etc. ).
+    The base class for such things as ScrollBars, ScrollButtons etc. They will automatically
+    get informed of changes to the list box ( e.g. children added, scroll events etc. ).
 */
 
 #ifndef _GUI_LISTOBVR_HPP
@@ -21,31 +21,31 @@ class GuiListObserver
 // Canonical form
 {
 public:
-    GuiListObserver( GuiSimpleScrollableList* pList );
-	// PRE( pList );
+    GuiListObserver(GuiSimpleScrollableList* pList);
+    // PRE( pList );
 
     virtual ~GuiListObserver();
 
-	virtual void listUpdated() = 0;
-	virtual void listDeleted();
+    virtual void listUpdated() = 0;
+    virtual void listDeleted();
 
 protected:
-	bool hasList() const;
+    bool hasList() const;
 
-	GuiSimpleScrollableList& list();
-	const GuiSimpleScrollableList& list() const;
-	// PRE( hasList() );
+    GuiSimpleScrollableList& list();
+    const GuiSimpleScrollableList& list() const;
+    // PRE( hasList() );
 
 private:
-    friend ostream& operator <<( ostream& o, const GuiListObserver& t );
+    friend ostream& operator<<(ostream& o, const GuiListObserver& t);
 
     void CLASS_INVARIANT;
 
-    GuiListObserver( const GuiListObserver& );
-    GuiListObserver& operator =( const GuiListObserver& );
+    GuiListObserver(const GuiListObserver&);
+    GuiListObserver& operator=(const GuiListObserver&);
 
-	GuiSimpleScrollableList* pList_;
-};							   
+    GuiSimpleScrollableList* pList_;
+};
 
 #endif
 

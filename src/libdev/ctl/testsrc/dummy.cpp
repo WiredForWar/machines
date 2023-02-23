@@ -1,5 +1,5 @@
 /*
- * D U M M Y . C P P 
+ * D U M M Y . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -16,12 +16,10 @@ DummyClass::DummyClass()
 DummyClass::~DummyClass()
 {
     TEST_INVARIANT;
-
 }
 
 void DummyClass::CLASS_INVARIANT
 {
 }
-
 
 /* End DUMMY.CPP ****************************************************/

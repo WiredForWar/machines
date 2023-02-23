@@ -8,23 +8,23 @@
  *
  * Always provide a specialization of getProvided() for a given dependency.
  */
-template<typename Dependency>
-class DependencyProvider
+template <typename Dependency> class DependencyProvider
 {
 public:
     DependencyProvider()
-        : defaultProvided_(nullptr),
-          dep_(DependencyProvider<Dependency>::getProvided())
-    { }
+        : defaultProvided_(nullptr)
+        , dep_(DependencyProvider<Dependency>::getProvided())
+    {
+    }
 
-    ~DependencyProvider() {}
+    ~DependencyProvider() { }
 
     Dependency& get() const { return dep_.get(); }
     void set(Dependency& dependency) { dep_ = std::ref(dependency); }
 
 protected:
-    //To use with a singleton object, specialize template & declare this method.
-    //The specialized method will be declared instead of the below method
+    // To use with a singleton object, specialize template & declare this method.
+    // The specialized method will be declared instead of the below method
     Dependency& getProvided()
     {
         defaultProvided_ = std::make_shared<Dependency>();

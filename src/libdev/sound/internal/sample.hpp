@@ -11,7 +11,7 @@
 */
 
 #ifndef _SAMPLE_HPP
-	#define _SAMPLE_HPP
+#define _SAMPLE_HPP
 
 #include "sound/internal/wavefmt.hpp"
 #include "sound/internal/waveform.hpp"
@@ -26,98 +26,97 @@ class DevTimer;
 
 class Sample
 {
-	public:
+public:
+    enum SampleState
+    {
+        INITIALISED = 0,
+        PLAYING = 1,
+        STOPPED = 2,
+        PAUSED = 3
+    };
 
-		enum SampleState {
-			INITIALISED = 0,
-			PLAYING = 1,
-			STOPPED = 2,
-			PAUSED = 3
-		};
+    enum SampleStorage
+    {
+        WAVE_STATIC,
+        WAVE_STREAMING
+    };
 
-		enum SampleStorage {
-			WAVE_STATIC,
-			WAVE_STREAMING
-		};
+    enum Participant
+    {
+        CLIENT,
+        LIBRARY
+    };
 
-		enum Participant
-		{
-			CLIENT,
-			LIBRARY
-		};
+    Sample(const SndSampleParameters& params);
 
-		Sample( const SndSampleParameters& params );
+    virtual ~Sample();
 
-		virtual ~Sample();
+    virtual void play() = 0;
+    virtual void stop() = 0;
+    virtual void stopAtEnd() = 0;
+    virtual bool isPlaying() = 0;
+    virtual Snd::RelativeTime length() const = 0;
+    virtual SampleState update() = 0;
+    virtual void volume(int newVolume) = 0;
+    virtual void pause() = 0;
+    virtual void restart() = 0;
+    virtual void restart(int offset) = 0;
+    virtual void newPosition(const MexVec3& newPos) = 0;
+    virtual void position3D(MexVec3* position) = 0;
 
-		virtual void 			play() = 0;
-		virtual void 			stop() = 0;
-		virtual void 			stopAtEnd() = 0;
-		virtual bool 			isPlaying() = 0;
-		virtual Snd::RelativeTime	length() const = 0;
-		virtual SampleState 	update() = 0;
-		virtual void 			volume( int newVolume ) = 0;
-		virtual void 			pause() = 0;
-		virtual void			restart(void) = 0;
-		virtual void 			restart( int offset) = 0;
-		virtual void 			newPosition( const MexVec3& newPos ) = 0;
-		virtual void			position3D( MexVec3* position ) = 0;
+    // Set and get methods for mainting resource responibility
+    void setResourceResponsibility(Participant owner);
+    Participant getResourceResponsibility();
 
-		//Set and get methods for mainting resource responibility
-		void setResourceResponsibility(Participant owner);
-		Participant getResourceResponsibility();
+    const char* path() const;
+    int volume() const;
+    bool isPaused() const;
+    bool isSilenced() const;
+    bool isAudible() const;
+    bool is3D() const;
+    Snd::SamplePriority priority() const;
+    size_t id() const;
+    bool loopForever() const;
+    SampleState state() const;
+    bool stopPending() const;
+    void stopPending(bool);
 
-		const char*			path() const;
-		int 				volume() const;
-		bool				isPaused() const;
-		bool				isSilenced() const;
-		bool				isAudible() const;
-		bool				is3D() const;
-    	Snd::SamplePriority priority() const;
-		size_t 				id() const;
-		bool				loopForever() const;
-		SampleState 		state() const;
-		bool				stopPending() const;
-		void				stopPending(bool);
+    virtual void silence();
+    virtual void unsilence();
 
-		virtual void		silence();
-		virtual void		unsilence();
+    bool operator==(const Sample& rhs);
+    bool operator<(const Sample& rhs);
+    bool operator>(const Sample& rhs);
 
+protected:
+    static size_t nextID();
 
-		bool operator ==(const Sample& rhs);
-		bool operator <(const Sample& rhs);
-		bool operator >(const Sample& rhs);
+    size_t id_;
+    bool isPaused_;
+    bool isSilenced_;
+    size_t loopCount_;
+    SampleState state_;
+    SampleStorage storageType_;
+    Snd::Volume volume_;
+    Snd::Volume unSilencedVolume_;
+    Snd::SamplePriority samplePriority_;
+    bool loopForever_;
+    // Who is responsible for this samples resources
+    Participant resourceResponsibility_;
 
-	protected:
-		static size_t 		nextID();
+    DevTimer* internalTimer_;
 
-		size_t					id_;
-		bool					isPaused_;
-		bool					isSilenced_;
-		size_t					loopCount_;
-		SampleState				state_;
-		SampleStorage			storageType_;
-		Snd::Volume				volume_;
-		Snd::Volume				unSilencedVolume_;
-		Snd::SamplePriority		samplePriority_;
-		bool					loopForever_;
-		//Who is responsible for this samples resources
-		Participant 			resourceResponsibility_;
+    const SndSampleParameters sampleParameters_;
 
-		DevTimer*				internalTimer_;
+    bool stopPending_;
 
-		const SndSampleParameters		sampleParameters_;
-
-		bool					stopPending_;
-
-		//Operations revoked
-		Sample( const Sample& );
-		Sample& operator =( const Sample& );
+    // Operations revoked
+    Sample(const Sample&);
+    Sample& operator=(const Sample&);
 };
 
-
 #ifdef _INLINE
-	#include "sample.ipp"
+#include "sample.ipp"
 #endif
 
 ////////////////////////////////////////////////////////////

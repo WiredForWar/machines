@@ -29,21 +29,17 @@
 
 #include "system/pathname.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysMine );
+PER_DEFINE_PERSISTENT(MachPhysMine);
 
-MachPhysMine::MachPhysMine(
-    W4dEntity* pParent,
-    const W4dTransform3d& localTransform,
-    size_t level,
-    MachPhys::Race race )
-: MachPhysConstruction( part( level ), pParent, localTransform, level, race ),
-  pData_( _NEW( MachPhysMineData( part( level ).data(), globalTransform() ) ) )
+MachPhysMine::MachPhysMine(W4dEntity* pParent, const W4dTransform3d& localTransform, size_t level, MachPhys::Race race)
+    : MachPhysConstruction(part(level), pParent, localTransform, level, race)
+    , pData_(_NEW(MachPhysMineData(part(level).data(), globalTransform())))
 {
-	size_t nFans = part(level).fans_.size();
-	fans_.reserve(nFans);
+    size_t nFans = part(level).fans_.size();
+    fans_.reserve(nFans);
 
-	for( size_t iFan=0; iFan<nFans; ++iFan)
-    	fans_.push_back( links()[ (part(level).fans_)[iFan]->id() ] );
+    for (size_t iFan = 0; iFan < nFans; ++iFan)
+        fans_.push_back(links()[(part(level).fans_)[iFan]->id()]);
 
     TEST_INVARIANT;
 }
@@ -51,54 +47,59 @@ MachPhysMine::MachPhysMine(
 //  This is the constructor that is used by the factory. It is the
 //  only constructor that actually builds a mine from scratch
 
-MachPhysMine::MachPhysMine( W4dEntity* pParent, size_t level )
-: MachPhysConstruction( pParent, W4dTransform3d(), compositeFileName( level ), wireframeFileName( level ), 21.0, level,
-  MachPhysData::instance().mineData( level ) ),
-  pData_( _NEW( MachPhysMineData( MachPhysData::instance().mineData( level ), W4dTransform3d() ) ) )
+MachPhysMine::MachPhysMine(W4dEntity* pParent, size_t level)
+    : MachPhysConstruction(
+        pParent,
+        W4dTransform3d(),
+        compositeFileName(level),
+        wireframeFileName(level),
+        21.0,
+        level,
+        MachPhysData::instance().mineData(level))
+    , pData_(_NEW(MachPhysMineData(MachPhysData::instance().mineData(level), W4dTransform3d())))
 {
-	//This function altered by SJA 21/11 to handle cases 1 and 3
-    W4dLinks    mineAdornments;
-    W4dLink*    pArm;
-    W4dLink*    pDecals;
+    // This function altered by SJA 21/11 to handle cases 1 and 3
+    W4dLinks mineAdornments;
+    W4dLink* pArm;
+    W4dLink* pDecals;
 
-    if( findLink( "arm", &pArm ) )
-    	mineAdornments.push_back( pArm );
+    if (findLink("arm", &pArm))
+        mineAdornments.push_back(pArm);
 
-    if( findLink( "decals", &pDecals ) )
-        mineAdornments.push_back( pDecals );
+    if (findLink("decals", &pDecals))
+        mineAdornments.push_back(pDecals);
 
-	fans_.reserve( 10 );
-	string fanLinkName0 = "fan0";
-	for( int i = 1; i<= 10; ++i )
-	{
-	    // TODO check this
-		char textN[4];
-//		itoa(i, textN, 10 );
+    fans_.reserve(10);
+    string fanLinkName0 = "fan0";
+    for (int i = 1; i <= 10; ++i)
+    {
+        // TODO check this
+        char textN[4];
+        //      itoa(i, textN, 10 );
         sprintf(textN, "%d", i);
-		string fanLinkName = fanLinkName0 + string(textN);
-		if( i == 10 )
-		{
-			fanLinkName = "fan" + string(textN);
-//			itoa(0, textN, 10 );
+        string fanLinkName = fanLinkName0 + string(textN);
+        if (i == 10)
+        {
+            fanLinkName = "fan" + string(textN);
+            //          itoa(0, textN, 10 );
             sprintf(textN, "%d", 0);
-			fanLinkName += string(textN);
-		}
+            fanLinkName += string(textN);
+        }
 
+        W4dLink* fanLink = nullptr;
+        if (findLink(fanLinkName, &fanLink))
+        {
+            fans_.push_back(fanLink);
+        }
+    }
 
-		W4dLink* fanLink = NULL;
- 	    if( findLink(fanLinkName, &fanLink) )
-		{
-	    	fans_.push_back( fanLink );
-		}
-	}
-
-    adornments( mineAdornments );
+    adornments(mineAdornments);
     TEST_INVARIANT;
 }
 
-MachPhysMine::MachPhysMine( PerConstructor con )
-: MachPhysConstruction( con ),
-  pData_( NULL )
+MachPhysMine::MachPhysMine(PerConstructor con)
+    : MachPhysConstruction(con)
+    , pData_(nullptr)
 {
 }
 
@@ -106,83 +107,81 @@ MachPhysMine::~MachPhysMine()
 {
     TEST_INVARIANT;
 
-    _DELETE( pData_ );
+    _DELETE(pData_);
 }
 
 // static
-MachPhysMine& MachPhysMine::part( size_t level )
+MachPhysMine& MachPhysMine::part(size_t level)
 {
-    return factory().part(
-        level,
-        MachPhysLevels::instance().uniqueHardwareIndex( MachPhys::MINE, level ) );
+    return factory().part(level, MachPhysLevels::instance().uniqueHardwareIndex(MachPhys::MINE, level));
 }
 
 // static
 MachPhysMine::Factory& MachPhysMine::factory()
 {
-    static  Factory   factory_( MachPhysLevels::instance().nHardwareIndices( MachPhys::MINE ) );
+    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::MINE));
 
     return factory_;
 }
 
-//virtual
+// virtual
 const MachPhysConstructionData& MachPhysMine::constructionData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysMineData& MachPhysMine::data() const
 {
-	return *pData_;
+    return *pData_;
 }
 
-SysPathName MachPhysMine::compositeFileName( size_t level ) const
+SysPathName MachPhysMine::compositeFileName(size_t level) const
 {
     SysPathName result;
 
-    switch( level )
+    switch (level)
     {
         case 1:
-			//Altered path SJA 19/11 and added case 3
+            // Altered path SJA 19/11 and added case 3
             result = "models/mine/level1/exterior/mn1e.cdf";
             break;
 
-		case 3:
+        case 3:
             result = "models/mine/level3/exterior/mn3e.cdf";
             break;
 
-		case 5:
+        case 5:
             result = "models/mine/level5/exterior/mn5e.cdf";
             break;
 
         default:
-            ASSERT_BAD_CASE_INFO( level );
+            ASSERT_BAD_CASE_INFO(level);
             break;
     }
 
     return result;
 }
 
-SysPathName MachPhysMine::wireframeFileName( size_t level ) const
+SysPathName MachPhysMine::wireframeFileName(size_t level) const
 {
     SysPathName result;
 
-    switch( level )
+    switch (level)
     {
         case 1:
             result = "models/mine/level1/wirefram/mn1w.cdf";
             break;
 
-		case 3:
+        case 3:
             result = "models/mine/level3/wirefram/mn3w.cdf";
             break;
 
-		case 5:
+        case 5:
             result = "models/mine/level5/wirefram/mn5w.cdf";
             break;
 
         default:
-            ASSERT_BAD_CASE_INFO( level );
+            ASSERT_BAD_CASE_INFO(level);
             break;
     }
 
@@ -191,140 +190,142 @@ SysPathName MachPhysMine::wireframeFileName( size_t level ) const
 
 void MachPhysMine::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 W4dCompositePlanPtr MachPhysMine::workingAnimationLevel4()
 {
-    //Find the arm link
+    // Find the arm link
     W4dLink* pArmLink;
-    bool linkFound = findLink( "minearm04", &pArmLink );
-    ASSERT( linkFound, "No arm link in mine level 1" );
+    bool linkFound = findLink("minearm04", &pArmLink);
+    ASSERT(linkFound, "No arm link in mine level 1");
 
-    //Construct a timed angle plan for the arm
-    PhysTimedSpinPlan* pSpinPlan = _NEW( PhysTimedSpinPlan( MexVec3( 1, 0, 0),
-                                         MexVec3(pArmLink->localTransform().position()),
-                                         MexRadians( 0 ), MexRadians( 0 ), 5 ) );
+    // Construct a timed angle plan for the arm
+    PhysTimedSpinPlan* pSpinPlan = _NEW(PhysTimedSpinPlan(
+        MexVec3(1, 0, 0),
+        MexVec3(pArmLink->localTransform().position()),
+        MexRadians(0),
+        MexRadians(0),
+        5));
 
     const MATHEX_SCALAR turnAngle = 40;
     const MATHEX_SCALAR maxTurnRate = 10;
     const MATHEX_SCALAR turnAcceleration = 20;
     PhysRelativeTime accelerationTime;
-    PhysRelativeTime moveTime = PhysRampAcceleration::totalTime( 0, turnAngle,
-                               maxTurnRate, turnAcceleration, &accelerationTime );
+    PhysRelativeTime moveTime
+        = PhysRampAcceleration::totalTime(0, turnAngle, maxTurnRate, turnAcceleration, &accelerationTime);
 
-    pSpinPlan->addSegment( accelerationTime, MexDegrees( turnAcceleration ) );
-    pSpinPlan->addSegment( moveTime - 2 * accelerationTime, 0 );
-    pSpinPlan->addSegment( accelerationTime * 2, MexDegrees( -turnAcceleration ) );
-    pSpinPlan->addSegment( moveTime - 2 * accelerationTime, 0 );
-    pSpinPlan->addSegment( accelerationTime, MexDegrees( turnAcceleration ) );
+    pSpinPlan->addSegment(accelerationTime, MexDegrees(turnAcceleration));
+    pSpinPlan->addSegment(moveTime - 2 * accelerationTime, 0);
+    pSpinPlan->addSegment(accelerationTime * 2, MexDegrees(-turnAcceleration));
+    pSpinPlan->addSegment(moveTime - 2 * accelerationTime, 0);
+    pSpinPlan->addSegment(accelerationTime, MexDegrees(turnAcceleration));
 
-    //Hence make a composite plan
-    PhysMotionPlanPtr spinPlanPtr( pSpinPlan );
+    // Hence make a composite plan
+    PhysMotionPlanPtr spinPlanPtr(pSpinPlan);
     W4dEntityPlan linkPlan;
-    linkPlan.absoluteMotion( spinPlanPtr, 0 );
-    W4dCompositePlan* pMinePlan = _NEW( W4dCompositePlan( "mine" ) );
-    pMinePlan->linkPlan( pArmLink->id(), linkPlan );
+    linkPlan.absoluteMotion(spinPlanPtr, 0);
+    W4dCompositePlan* pMinePlan = _NEW(W4dCompositePlan("mine"));
+    pMinePlan->linkPlan(pArmLink->id(), linkPlan);
 
-    return W4dCompositePlanPtr( pMinePlan );
+    return W4dCompositePlanPtr(pMinePlan);
 }
 
-//virtual
-void MachPhysMine::doWorking( bool setWorking )
+// virtual
+void MachPhysMine::doWorking(bool setWorking)
 {
 
-	// only do anything if situation has changed
-	if( setWorking != isWorking() )
-	{
-	    //Enable or disable the animation and sound
-	    if( not isWorking() )			// setWorking must == true
-	    {
-	        W4dCompositePlanPtr workingPlanPtr;
-	        if( cycleAnims( &workingPlanPtr ) )
-	            plan( *workingPlanPtr, SimManager::instance().currentTime(),
-	                  1000000, MachPhys::CONSTRUCTION_WORKING );
+    // only do anything if situation has changed
+    if (setWorking != isWorking())
+    {
+        // Enable or disable the animation and sound
+        if (not isWorking()) // setWorking must == true
+        {
+            W4dCompositePlanPtr workingPlanPtr;
+            if (cycleAnims(&workingPlanPtr))
+                plan(*workingPlanPtr, SimManager::instance().currentTime(), 1000000, MachPhys::CONSTRUCTION_WORKING);
 
-			SoundId newID = SID_MINE1;
+            SoundId newID = SID_MINE1;
 
-			switch(level())
-			{
-				case 1:
-					newID = SID_MINE1;
-					break;
-				case 3:
-					newID = SID_MINE3;
-					break;
-				case 5:
-					newID = SID_MINE5;
-					break;
-				default:
-					newID = SID_MINE1;
-				break;
-			}
-			W4dSoundManager::instance().stop( this );
-			W4dSoundManager::instance().play( this, newID,
-	                                  PhysAbsoluteTime(0), 0 );
-	        //Construct transform for rotating by 120 degrees
-	        //MexTransform3d spinTransform( MexEulerAngles( 0.0, 0.0, MexDegrees(120) ) );
-	        MexTransform3d spinTransform( MexEulerAngles( 0.0, 0.0, MexDegrees(120) ) );
+            switch (level())
+            {
+                case 1:
+                    newID = SID_MINE1;
+                    break;
+                case 3:
+                    newID = SID_MINE3;
+                    break;
+                case 5:
+                    newID = SID_MINE5;
+                    break;
+                default:
+                    newID = SID_MINE1;
+                    break;
+            }
+            W4dSoundManager::instance().stop(this);
+            W4dSoundManager::instance().play(this, newID, PhysAbsoluteTime(0), 0);
+            // Construct transform for rotating by 120 degrees
+            // MexTransform3d spinTransform( MexEulerAngles( 0.0, 0.0, MexDegrees(120) ) );
+            MexTransform3d spinTransform(MexEulerAngles(0.0, 0.0, MexDegrees(120)));
 
-			size_t nFans = fans_.size();
-			for( size_t iFan = 0; iFan < nFans; ++iFan )
-			{
-		        if( fans_[iFan] != NULL )
-		        {
-		            //Set start and first position transforms
-		            const MexTransform3d& startPosition = (fans_[iFan])->localTransform();
+            size_t nFans = fans_.size();
+            for (size_t iFan = 0; iFan < nFans; ++iFan)
+            {
+                if (fans_[iFan] != nullptr)
+                {
+                    // Set start and first position transforms
+                    const MexTransform3d& startPosition = (fans_[iFan])->localTransform();
 
-		            MexTransform3d endPosition( startPosition );
-		            endPosition.transform( spinTransform );
+                    MexTransform3d endPosition(startPosition);
+                    endPosition.transform(spinTransform);
 
-		            PhysLinearMotionPlan* pPlan =
-		                _NEW( PhysLinearMotionPlan( startPosition, endPosition, 0.25 ) );
+                    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
 
-		            //Add a further rotation of 120 degrees
-		            endPosition.transform( spinTransform );
-		            pPlan->add( endPosition, 0.5 );
+                    // Add a further rotation of 120 degrees
+                    endPosition.transform(spinTransform);
+                    pPlan->add(endPosition, 0.5);
 
-		            //Finally move back to start position
-		            pPlan->add( startPosition, 0.75 );
+                    // Finally move back to start position
+                    pPlan->add(startPosition, 0.75);
 
-		            //Add the plan
-				    PhysMotionPlanPtr planPtr( pPlan );
-		           	(fans_[iFan])->entityPlanForEdit().absoluteMotion(planPtr,
-		            						  SimManager::instance().currentTime(),
-		                                      1000000, MachPhys::CONSTRUCTION_WORKING);
-				}
-	        }
-	    }
-	    else if( isWorking() )			// setWorking must == false
-	    {
-	        finishAnimation( MachPhys::CONSTRUCTION_WORKING );
+                    // Add the plan
+                    PhysMotionPlanPtr planPtr(pPlan);
+                    (fans_[iFan])
+                        ->entityPlanForEdit()
+                        .absoluteMotion(
+                            planPtr,
+                            SimManager::instance().currentTime(),
+                            1000000,
+                            MachPhys::CONSTRUCTION_WORKING);
+                }
+            }
+        }
+        else if (isWorking()) // setWorking must == false
+        {
+            finishAnimation(MachPhys::CONSTRUCTION_WORKING);
 
-			size_t nFans = fans_.size();
-			for( size_t iFan = 0; iFan < nFans; ++iFan )
-			{
-				ASSERT( fans_[iFan] != NULL, "" );
-	    		fans_[iFan]->entityPlanForEdit().clearAnimation( MachPhys::CONSTRUCTION_WORKING );
-			}
+            size_t nFans = fans_.size();
+            for (size_t iFan = 0; iFan < nFans; ++iFan)
+            {
+                ASSERT(fans_[iFan] != nullptr, "");
+                fans_[iFan]->entityPlanForEdit().clearAnimation(MachPhys::CONSTRUCTION_WORKING);
+            }
 
-	        W4dSoundManager::instance().stop( this );
-		    W4dSoundManager::instance().play( this, SID_IDLE_CONSTRUCTION,
-	                                     PhysAbsoluteTime( 0 ),
-	                                     W4dSoundManager::LOOP_CONTINUOUSLY );
-	    }
-	}
+            W4dSoundManager::instance().stop(this);
+            W4dSoundManager::instance()
+                .play(this, SID_IDLE_CONSTRUCTION, PhysAbsoluteTime(0), W4dSoundManager::LOOP_CONTINUOUSLY);
+        }
+    }
 }
 
 void MachPhysMine::persistenceInitialiseData()
 {
-    pData_ = _NEW( MachPhysMineData(
-      MachPhysData::instance().mineData( level() ), W4dTransform3d() ) );
+    pData_ = _NEW(MachPhysMineData(MachPhysData::instance().mineData(level()), W4dTransform3d()));
 
-    persistenceConstructionData( *pData_ );
+    persistenceConstructionData(*pData_);
 }
 
-void perWrite( PerOstream& ostr, const MachPhysMine& construction )
+void perWrite(PerOstream& ostr, const MachPhysMine& construction)
 {
     const MachPhysConstruction& base = construction;
 
@@ -332,7 +333,7 @@ void perWrite( PerOstream& ostr, const MachPhysMine& construction )
     ostr << construction.fans_;
 }
 
-void perRead( PerIstream& istr, MachPhysMine& construction )
+void perRead(PerIstream& istr, MachPhysMine& construction)
 {
     MachPhysConstruction& base = construction;
 
@@ -342,11 +343,11 @@ void perRead( PerIstream& istr, MachPhysMine& construction )
     construction.persistenceInitialiseData();
 }
 
-void MachPhysMine::damageLevel( const double& percent )
+void MachPhysMine::damageLevel(const double& percent)
 {
-	MachPhysConstruction::damageLevel( percent );
-	damageSmoke1Type( MINE_YELLOW );
-	damageSmoke2Type( PUFF_2 );
+    MachPhysConstruction::damageLevel(percent);
+    damageSmoke1Type(MINE_YELLOW);
+    damageSmoke2Type(PUFF_2);
 }
 
 /* End MINE.CPP *****************************************************/

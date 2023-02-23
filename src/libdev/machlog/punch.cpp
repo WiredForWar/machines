@@ -31,84 +31,82 @@
 #include "machlog/races.hpp"
 #include "machlog/spacial.hpp"
 
-
-MachLogPunchBlast::MachLogPunchBlast(	MachLogRace* pRace,
-								        MachPhysPunchBlast* pPhysPunchBlast,
-										const MachPhysWeaponData& weaponData,
-								        MachActor* pOwner )
-:	MachLogExpandingBlast( pRace,
-						   pPhysPunchBlast,
-						   pPhysPunchBlast->globalTransform().position(),
-						   pOwner,
-						   MachPhysPunchBlast::range(),
-						   CANT_HIT_AIR_UNITS ),
-	pImpl_( _NEW( MachLogPunchBlastImpl( &weaponData ) ) )
+MachLogPunchBlast::MachLogPunchBlast(
+    MachLogRace* pRace,
+    MachPhysPunchBlast* pPhysPunchBlast,
+    const MachPhysWeaponData& weaponData,
+    MachActor* pOwner)
+    : MachLogExpandingBlast(
+        pRace,
+        pPhysPunchBlast,
+        pPhysPunchBlast->globalTransform().position(),
+        pOwner,
+        MachPhysPunchBlast::range(),
+        CANT_HIT_AIR_UNITS)
+    , pImpl_(_NEW(MachLogPunchBlastImpl(&weaponData)))
 {
 
+    CB_MachLogPunchBlast_DEPIMPL();
 
-	CB_MachLogPunchBlast_DEPIMPL();
+    pPhysPunchBlast_ = pPhysPunchBlast;
 
-	pPhysPunchBlast_ = pPhysPunchBlast;
+    PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
-	PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
+    ASSERT(pPhysPunchBlast_, "Unexpected NULL for pPhysPunchBlast_!");
 
-	ASSERT( pPhysPunchBlast_, "Unexpected NULL for pPhysPunchBlast_!" );
-
-	destructionTime_ = pPhysPunchBlast->blastEndTime();
-	destructionWaveStartTime_ = pPhysPunchBlast->blastBeginTime();
-	destructionWaveFinishTime_ = destructionWaveStartTime_ + 1.2;	// best guess
+    destructionTime_ = pPhysPunchBlast->blastEndTime();
+    destructionWaveStartTime_ = pPhysPunchBlast->blastBeginTime();
+    destructionWaveFinishTime_ = destructionWaveStartTime_ + 1.2; // best guess
 
     TEST_INVARIANT;
-
 }
 
-//virtual
+// virtual
 PhysAbsoluteTime MachLogPunchBlast::firstWaveStartTime() const
 {
-	CB_MachLogPunchBlast_DEPIMPL();
+    CB_MachLogPunchBlast_DEPIMPL();
 
-	return destructionWaveStartTime_;
+    return destructionWaveStartTime_;
 }
 
-//virtual
+// virtual
 PhysAbsoluteTime MachLogPunchBlast::firstWaveFinishTime() const
 {
-	CB_MachLogPunchBlast_DEPIMPL();
+    CB_MachLogPunchBlast_DEPIMPL();
 
-	return destructionWaveFinishTime_;
+    return destructionWaveFinishTime_;
 }
 
-//virtual
+// virtual
 PhysAbsoluteTime MachLogPunchBlast::destructionTime() const
 {
-	CB_MachLogPunchBlast_DEPIMPL();
+    CB_MachLogPunchBlast_DEPIMPL();
 
-	return destructionTime_;
+    return destructionTime_;
 }
-
 
 MachLogPunchBlast::~MachLogPunchBlast()
 {
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 
-	_DELETE( pImpl_ );
+    _DELETE(pImpl_);
 }
 
 /*
 MachLogPunchBlastImpl* MachLogPunchBlast::pImpl()
 {
-	pImpl_ = _NEW( MachLogPunchBlastImpl( &weaponData ) );
-	return pImpl_;
+    pImpl_ = _NEW( MachLogPunchBlastImpl( &weaponData ) );
+    return pImpl_;
 }
 */
 void MachLogPunchBlast::CLASS_INVARIANT
 {
-	CB_MachLogPunchBlast_DEPIMPL();
+    CB_MachLogPunchBlast_DEPIMPL();
 
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogPunchBlast& t )
+ostream& operator<<(ostream& o, const MachLogPunchBlast& t)
 {
 
     o << "MachLogPunchBlast " << (void*)&t << " start" << std::endl;
@@ -119,73 +117,76 @@ ostream& operator <<( ostream& o, const MachLogPunchBlast& t )
 
 void MachLogPunchBlast::doBeDestroyed()
 {
-//	MachLogLinearProjectile::genericCheckForDamage( 0.25, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::PULSE_RIFLE );
-	TEST_INVARIANT;
+    //  MachLogLinearProjectile::genericCheckForDamage( 0.25, MachLogLinearProjectile::CONSTANT_DAMAGE,
+    //  MachPhys::PULSE_RIFLE );
+    TEST_INVARIANT;
 }
 
-//virtual
-bool MachLogPunchBlast::hitVictimFirstWave( const MachActor& victim ) const
+// virtual
+bool MachLogPunchBlast::hitVictimFirstWave(const MachActor& victim) const
 {
-	CB_MachLogPunchBlast_DEPIMPL();
+    CB_MachLogPunchBlast_DEPIMPL();
 
-	bool result = false;
+    bool result = false;
 
-	MATHEX_SCALAR basicWaveRadius = MachPhysPunchBlast::radius( SimManager::instance().currentTime() - firstWaveStartTime() );
-	MATHEX_SCALAR minimumCheckRadiusSize =  basicWaveRadius - 8.0;
+    MATHEX_SCALAR basicWaveRadius
+        = MachPhysPunchBlast::radius(SimManager::instance().currentTime() - firstWaveStartTime());
+    MATHEX_SCALAR minimumCheckRadiusSize = basicWaveRadius - 8.0;
 
-  	bool targetIsAtHitDistance = actorWithinRadius( victim, basicWaveRadius )
-  				  				 and not actorWithinRadius( victim, minimumCheckRadiusSize );
+    bool targetIsAtHitDistance
+        = actorWithinRadius(victim, basicWaveRadius) and not actorWithinRadius(victim, minimumCheckRadiusSize);
 
-	if( targetIsAtHitDistance )
-	{
-		// certainly within range.....but is it within angle?
+    if (targetIsAtHitDistance)
+    {
+        // certainly within range.....but is it within angle?
 
-		// use the punch blast's global transform to calculate which actors are within its cone of influence
-		const MexTransform3d& blastOriginAsTransform = pPhysPunchBlast_->globalTransform();
+        // use the punch blast's global transform to calculate which actors are within its cone of influence
+        const MexTransform3d& blastOriginAsTransform = pPhysPunchBlast_->globalTransform();
 
-		MexRadians absTempRelativeAngle = fabs( MachLogSpacialManipulation::angleToTurnToFace( blastOriginAsTransform, victim.position() ).asScalar() );
+        MexRadians absTempRelativeAngle
+            = fabs(MachLogSpacialManipulation::angleToTurnToFace(blastOriginAsTransform, victim.position()).asScalar());
 
-		if( absTempRelativeAngle < MachPhysPunchBlast::absMaxDestructionAngle() )
-		{
-			// yup, that's the monkey.
-			result = true;
-		}
-	}
+        if (absTempRelativeAngle < MachPhysPunchBlast::absMaxDestructionAngle())
+        {
+            // yup, that's the monkey.
+            result = true;
+        }
+    }
 
-	return result;
+    return result;
 }
 
-//virtual
-void MachLogPunchBlast::inflictDamageFirstWave( MachActor* pDamagedVictim )
+// virtual
+void MachLogPunchBlast::inflictDamageFirstWave(MachActor* pDamagedVictim)
 {
-	CB_MachLogPunchBlast_DEPIMPL();
+    CB_MachLogPunchBlast_DEPIMPL();
 
-	MachActor* pByActor = pOwner();
-	if( pOwner() and pOwner()->isDead() )
-		pByActor = NULL;
+    MachActor* pByActor = pOwner();
+    if (pOwner() and pOwner()->isDead())
+        pByActor = nullptr;
 
-	// don't want to damage this victim any more after this
-	finishedWithVictim( pDamagedVictim );
+    // don't want to damage this victim any more after this
+    finishedWithVictim(pDamagedVictim);
 
-	int damageInflicted = pWeaponData_->damagePoints();
+    int damageInflicted = pWeaponData_->damagePoints();
 
-	pDamagedVictim->beHit( damageInflicted , MachPhys::BOLTER, pByActor );	//(??)
+    pDamagedVictim->beHit(damageInflicted, MachPhys::BOLTER, pByActor); //(??)
 
-	TEST_INVARIANT;
+    TEST_INVARIANT;
 }
 
-//virtual
+// virtual
 MATHEX_SCALAR MachLogPunchBlast::potentialKillRadiusMultiplier() const
 {
-	return 3.0;
+    return 3.0;
 }
 
-//virtual
+// virtual
 void MachLogPunchBlast::ownerDestroyed()
 {
-	finished( true );
+    finished(true);
 
-	MachLogExpandingBlast::ownerDestroyed();
+    MachLogExpandingBlast::ownerDestroyed();
 }
 
 /* End VORTBOMB.CPP *************************************************/

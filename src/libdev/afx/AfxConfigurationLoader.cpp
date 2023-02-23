@@ -6,25 +6,23 @@ IAfxConfigurationLoader::~IAfxConfigurationLoader() = default;
 
 AfxConfigurationLoader::AfxConfigurationLoader()
 {
-
 }
 
-//virtual
+// virtual
 AfxConfigurationLoader::~AfxConfigurationLoader()
 {
-
 }
 
-//virtual
+// virtual
 AfxConfigurationData* AfxConfigurationLoader::load()
 {
     // Caller will be responsible for cleanup
     AfxConfigurationData* config = new AfxConfigurationData();
 
-    constexpr char msaaBuffers[]       = "Options\\MSAA\\Buffers";
-    constexpr char msaaSamples[]       = "Options\\MSAA\\Samples";
-    auto configValue                   = std::string{};
-    auto dummy                         = SysRegistry::KeyHandle{};
+    constexpr char msaaBuffers[] = "Options\\MSAA\\Buffers";
+    constexpr char msaaSamples[] = "Options\\MSAA\\Samples";
+    auto configValue = std::string {};
+    auto dummy = SysRegistry::KeyHandle {};
 
     // defaults for when not present in config
     int buffers = 1;

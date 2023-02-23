@@ -1,5 +1,5 @@
 /*
- * B M U T E X T . C P P 
+ * B M U T E X T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -18,10 +18,10 @@
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-MachGuiBmuText::MachGuiBmuText( GuiDisplayable* pParent, const Gui::Coord& relPos )
-:	GuiDisplayable( pParent, Gui::Boundary( relPos, 126, 10 ) )
+MachGuiBmuText::MachGuiBmuText(GuiDisplayable* pParent, const Gui::Coord& relPos)
+    : GuiDisplayable(pParent, Gui::Boundary(relPos, 126, 10))
 {
-	DEBUG_STREAM( DIAG_NEIL, "Creating MachGuiBmuText" << std::endl );
+    DEBUG_STREAM(DIAG_NEIL, "Creating MachGuiBmuText" << std::endl);
 
     TEST_INVARIANT;
 }
@@ -29,12 +29,11 @@ MachGuiBmuText::MachGuiBmuText( GuiDisplayable* pParent, const Gui::Coord& relPo
 MachGuiBmuText::~MachGuiBmuText()
 {
     TEST_INVARIANT;
-
 }
 
 void MachGuiBmuText::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 void MachGuiBmuText::refresh()
@@ -42,65 +41,62 @@ void MachGuiBmuText::refresh()
     MachLogRaces& races = MachLogRaces::instance();
     MachPhys::Race playerRace = races.pcController().race();
 
-    curValue_ = races.nBuildingMaterialUnits( playerRace );
-	maxValue_ = races.nMaxBuildingMaterialUnits( playerRace );
+    curValue_ = races.nBuildingMaterialUnits(playerRace);
+    maxValue_ = races.nMaxBuildingMaterialUnits(playerRace);
 }
 
-//virtual
+// virtual
 void MachGuiBmuText::doDisplay()
 {
-	static GuiBitmap numbers[10] = { Gui::bitmap( SysPathName( "gui/navigate/numbmu0.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu1.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu2.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu3.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu4.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu5.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu6.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu7.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu8.bmp" ) ),
-									 Gui::bitmap( SysPathName( "gui/navigate/numbmu9.bmp" ) ) };
-	static GuiBitmap slash( Gui::bitmap( SysPathName( "gui/navigate/numbmus.bmp" ) ) );
+    static GuiBitmap numbers[10] = {
+        Gui::bitmap(SysPathName("gui/navigate/numbmu0.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu1.bmp")),
+        Gui::bitmap(SysPathName("gui/navigate/numbmu2.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu3.bmp")),
+        Gui::bitmap(SysPathName("gui/navigate/numbmu4.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu5.bmp")),
+        Gui::bitmap(SysPathName("gui/navigate/numbmu6.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu7.bmp")),
+        Gui::bitmap(SysPathName("gui/navigate/numbmu8.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu9.bmp"))
+    };
+    static GuiBitmap slash(Gui::bitmap(SysPathName("gui/navigate/numbmus.bmp")));
 
-	Gui::Coord absCopy( absoluteBoundary().minCorner().x() + width(), absoluteBoundary().minCorner().y() );
+    Gui::Coord absCopy(absoluteBoundary().minCorner().x() + width(), absoluteBoundary().minCorner().y());
 
-	for ( size_t loop = 0; loop < 2; ++loop )
-	{
-		MachGui::drawNumber( numbers, loop == 0 ? maxValue_ : curValue_, &absCopy );
+    for (size_t loop = 0; loop < 2; ++loop)
+    {
+        MachGui::drawNumber(numbers, loop == 0 ? maxValue_ : curValue_, &absCopy);
 
-		if ( loop == 0 )
-		{
-			absCopy.x( absCopy.x() - slash.width() );
+        if (loop == 0)
+        {
+            absCopy.x(absCopy.x() - slash.width());
 
-			GuiPainter::instance().blit( slash, absCopy );
-		}
-	}
+            GuiPainter::instance().blit(slash, absCopy);
+        }
+    }
 }
 
-//virtual 
-void MachGuiBmuText::doHandleMouseClickEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiBmuText::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-	parent().doHandleMouseClickEvent( rel );
+    parent().doHandleMouseClickEvent(rel);
 }
 
-//virtual 
-void MachGuiBmuText::doHandleMouseEnterEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiBmuText::doHandleMouseEnterEvent(const GuiMouseEvent& rel)
 {
-	parent().doHandleMouseEnterEvent( rel );
+    parent().doHandleMouseEnterEvent(rel);
 }
 
-//virtual 
-void MachGuiBmuText::doHandleMouseExitEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiBmuText::doHandleMouseExitEvent(const GuiMouseEvent& rel)
 {
-	parent().doHandleMouseExitEvent( rel );
+    parent().doHandleMouseExitEvent(rel);
 }
 
-//virtual 
-void MachGuiBmuText::doHandleContainsMouseEvent( const GuiMouseEvent& rel )
+// virtual
+void MachGuiBmuText::doHandleContainsMouseEvent(const GuiMouseEvent& rel)
 {
-	parent().doHandleContainsMouseEvent( rel );
+    parent().doHandleContainsMouseEvent(rel);
 }
 
-ostream& operator <<( ostream& o, const MachGuiBmuText& t )
+ostream& operator<<(ostream& o, const MachGuiBmuText& t)
 {
 
     o << "MachGuiBmuText " << (void*)&t << " start" << std::endl;
@@ -109,69 +105,71 @@ ostream& operator <<( ostream& o, const MachGuiBmuText& t )
     return o;
 }
 
-
-
-MachGuiBmuButton::MachGuiBmuButton( GuiDisplayable* pParent,
-									const Gui::Coord& rel,
-									const SysPathName& bitmap,
-									MachGuiBmuText* pBmuText,
-									MachContinentMap* pContinentMap,
-									MachInGameScreen *pInGameScreen )
-: 	GuiBitmapButtonWithFilledBorder(pParent, 
-									rel, 
-									GuiBorderMetrics(1,1,1), 
-									GuiFilledBorderColours( Gui::Colour(144.0/255.0,148.0/255.0,160.0/255.0), 
-															Gui::Colour(232.0/255.0,232.0/255.0,232.0/255.0), 
-														   	Gui::Colour(62.0/255.0,62.0/255.0,62.0/255.0),
-														    Gui::RED() ), 
-									Gui::bitmap(bitmap), 
-									Gui::Coord(1,1) ),
- 	pBmuText_( pBmuText ),
- 	pContinentMap_( pContinentMap ),
-	pInGameScreen_( pInGameScreen )
+MachGuiBmuButton::MachGuiBmuButton(
+    GuiDisplayable* pParent,
+    const Gui::Coord& rel,
+    const SysPathName& bitmap,
+    MachGuiBmuText* pBmuText,
+    MachContinentMap* pContinentMap,
+    MachInGameScreen* pInGameScreen)
+    : GuiBitmapButtonWithFilledBorder(
+        pParent,
+        rel,
+        GuiBorderMetrics(1, 1, 1),
+        GuiFilledBorderColours(
+            Gui::Colour(144.0 / 255.0, 148.0 / 255.0, 160.0 / 255.0),
+            Gui::Colour(232.0 / 255.0, 232.0 / 255.0, 232.0 / 255.0),
+            Gui::Colour(62.0 / 255.0, 62.0 / 255.0, 62.0 / 255.0),
+            Gui::RED()),
+        Gui::bitmap(bitmap),
+        Gui::Coord(1, 1))
+    , pBmuText_(pBmuText)
+    , pContinentMap_(pContinentMap)
+    , pInGameScreen_(pInGameScreen)
 {
-	popupButton( false );
+    popupButton(false);
 }
 
-//virtual 
-MachGuiBmuButton::~MachGuiBmuButton() 
-{}
-
-//virtual 
-void MachGuiBmuButton::doBeDepressed( const GuiMouseEvent& ) 
+// virtual
+MachGuiBmuButton::~MachGuiBmuButton()
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
-	pBmuText_->isVisible( true );
-	pContinentMap_->forceUpdate();
 }
 
-//virtual 
-void MachGuiBmuButton::doBeReleased( const GuiMouseEvent& )
+// virtual
+void MachGuiBmuButton::doBeDepressed(const GuiMouseEvent&)
 {
-	MachGuiSoundManager::instance().playSound( "gui/sounds/igclick.wav" );
-	pBmuText_->isVisible( false );
-	pContinentMap_->forceUpdate();
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
+    pBmuText_->isVisible(true);
+    pContinentMap_->forceUpdate();
 }
 
-//virtual
-void MachGuiBmuButton::doHandleMouseEnterEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachGuiBmuButton::doBeReleased(const GuiMouseEvent&)
 {
-	GuiBitmapButtonWithFilledBorder::doHandleMouseEnterEvent( mouseEvent );
-
-    //Load the resource string
-	GuiResourceString prompt( IDS_BMU_BUTTON );
-
-    //Set the cursor prompt
-    pInGameScreen_->cursorPromptText( prompt.asString() );
+    MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
+    pBmuText_->isVisible(false);
+    pContinentMap_->forceUpdate();
 }
 
-//virtual
-void MachGuiBmuButton::doHandleMouseExitEvent( const GuiMouseEvent& mouseEvent )
+// virtual
+void MachGuiBmuButton::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
-    //Clear the cursor prompt string
+    GuiBitmapButtonWithFilledBorder::doHandleMouseEnterEvent(mouseEvent);
+
+    // Load the resource string
+    GuiResourceString prompt(IDS_BMU_BUTTON);
+
+    // Set the cursor prompt
+    pInGameScreen_->cursorPromptText(prompt.asString());
+}
+
+// virtual
+void MachGuiBmuButton::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
+{
+    // Clear the cursor prompt string
     pInGameScreen_->clearCursorPromptText();
 
-	GuiBitmapButtonWithFilledBorder::doHandleMouseExitEvent( mouseEvent );
+    GuiBitmapButtonWithFilledBorder::doHandleMouseExitEvent(mouseEvent);
 }
 
 // Forced recompile 19/2/99 CPS

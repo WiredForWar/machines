@@ -1,26 +1,26 @@
 /*
- * C S 2 D M A R C . I P P 
+ * C S 2 D M A R C . I P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
 //  Definitions of inline non-template methods and inline global functions
 
 #ifdef _INLINE
-    #define _CODE_INLINE    inline
+#define _CODE_INLINE inline
 #else
-    #define _CODE_INLINE
+#define _CODE_INLINE
 #endif
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-PhysCS2dDomainArc::PhysCS2dDomainArc( void )
-:   domainId_( 0 )
+PhysCS2dDomainArc::PhysCS2dDomainArc()
+    : domainId_(0)
 {
     TEST_INVARIANT;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-PhysCS2dDomainArc::PhysCS2dDomainArc( PhysConfigSpace2d::DomainId domainId )
-:   domainId_( domainId )
+PhysCS2dDomainArc::PhysCS2dDomainArc(PhysConfigSpace2d::DomainId domainId)
+    : domainId_(domainId)
 {
     TEST_INVARIANT;
 }
@@ -32,19 +32,19 @@ PhysCS2dDomainArc::~PhysCS2dDomainArc()
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-bool operator== ( const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs )
+bool operator==(const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs)
 {
     return lhs.domainId_ == rhs.domainId_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-bool operator< ( const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs )
+bool operator<(const PhysCS2dDomainArc& lhs, const PhysCS2dDomainArc& rhs)
 {
     return lhs.domainId_ < rhs.domainId_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE
-const PhysConfigSpace2d::DomainId& PhysCS2dDomainArc::domainId( void ) const
+const PhysConfigSpace2d::DomainId& PhysCS2dDomainArc::domainId() const
 {
     return domainId_;
 }

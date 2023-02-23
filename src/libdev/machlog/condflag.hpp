@@ -1,5 +1,5 @@
 /*
- * C O N D FLAG . H P P 
+ * C O N D FLAG . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -24,38 +24,33 @@ class MachLogScenarioFlagCondition : public SimCondition
 // Canonical form revoked
 {
 public:
+    static MachLogScenarioFlagCondition* newFromParser(UtlLineTokeniser*);
 
-	static MachLogScenarioFlagCondition* newFromParser( UtlLineTokeniser* );
+    MachLogScenarioFlagCondition(const string& keyName, bool isSet);
 
-    MachLogScenarioFlagCondition( const string& keyName, bool isSet );
+    bool doHasConditionBeenMet() const override;
 
-	virtual bool doHasConditionBeenMet() const;
-
-    virtual ~MachLogScenarioFlagCondition();
+    ~MachLogScenarioFlagCondition() override;
 
     void CLASS_INVARIANT;
 
-
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogScenarioFlagCondition );
-	PER_FRIEND_READ_WRITE( MachLogScenarioFlagCondition );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogScenarioFlagCondition);
+    PER_FRIEND_READ_WRITE(MachLogScenarioFlagCondition);
 
 protected:
-
-	virtual const PhysRelativeTime& recommendedCallBackTimeGap() const;
-	virtual void doOutputOperator( ostream& ) const;
+    const PhysRelativeTime& recommendedCallBackTimeGap() const override;
+    void doOutputOperator(ostream&) const override;
 
 private:
+    friend ostream& operator<<(ostream& o, const MachLogScenarioFlagCondition& t);
 
-    friend ostream& operator <<( ostream& o, const MachLogScenarioFlagCondition& t );
+    MachLogScenarioFlagCondition(const MachLogScenarioFlagCondition&);
+    MachLogScenarioFlagCondition& operator=(const MachLogScenarioFlagCondition&);
 
-    MachLogScenarioFlagCondition( const MachLogScenarioFlagCondition& );
-    MachLogScenarioFlagCondition& operator =( const MachLogScenarioFlagCondition& );
-
-	bool flagSet_;
-
+    bool flagSet_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogScenarioFlagCondition );
+PER_DECLARE_PERSISTENT(MachLogScenarioFlagCondition);
 
 #endif
 

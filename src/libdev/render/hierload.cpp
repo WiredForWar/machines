@@ -15,32 +15,33 @@
 
 // Note the file should not have an extension
 // static
-void RenHierarchyLoader::load( const SysPathName& pathName, RenHierarchyBuilder* pBuilder )
+void RenHierarchyLoader::load(const SysPathName& pathName, RenHierarchyBuilder* pBuilder)
 {
-	PRE((not pathName.hasExtension()) or (pathName.extension() !="agt") or (pathName.extension() !="x"));
+    PRE((not pathName.hasExtension()) or (pathName.extension() != "agt") or (pathName.extension() != "x"));
 
     SysPathName withExtDX(pathName);
-    withExtDX.extension( "x" );
-    SysPathName withExtAGT( pathName );
-    withExtAGT.extension( "agt" );
+    withExtDX.extension("x");
+    SysPathName withExtAGT(pathName);
+    withExtAGT.extension("agt");
 
     ASSERT(withExtDX.existsAsFile() || withExtAGT.existsAsFile(), "");
 
-	if (withExtDX.existsAsFile())
-	{
-      RenID3DMeshLoader::instance().load( withExtDX, pBuilder );
-	} else if (withExtAGT.existsAsFile())
-	{
-	  RenIGXMeshLoader::instance().load( withExtAGT, pBuilder	);
-	}
+    if (withExtDX.existsAsFile())
+    {
+        RenID3DMeshLoader::instance().load(withExtDX, pBuilder);
+    }
+    else if (withExtAGT.existsAsFile())
+    {
+        RenIGXMeshLoader::instance().load(withExtAGT, pBuilder);
+    }
 }
 
 void RenHierarchyLoader::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const RenHierarchyLoader& t )
+ostream& operator<<(ostream& o, const RenHierarchyLoader& t)
 {
 
     o << "RenHierarchyLoader " << (void*)&t << " start" << std::endl;

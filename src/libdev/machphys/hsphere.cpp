@@ -19,23 +19,23 @@
 #include "render/colour.hpp"
 
 #include "system/pathname.hpp"
-PER_DEFINE_PERSISTENT( MachPhysHemiSphere );
+PER_DEFINE_PERSISTENT(MachPhysHemiSphere);
 
-//One-time ctor
+// One-time ctor
 MachPhysHemiSphere::MachPhysHemiSphere()
-:W4dEntity( MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID )
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
 {
-	//Load the mesh data
-    readLODFile( SysPathName( "models/construc/hemisphe/glow.lod" ) );
+    // Load the mesh data
+    readLODFile(SysPathName("models/construc/hemisphe/glow.lod"));
     TEST_INVARIANT;
 }
 
-//public ctor
-MachPhysHemiSphere::MachPhysHemiSphere( W4dEntity* pParent, const MexTransform3d& localTransform )
-:   W4dEntity( exemplar(), pParent, localTransform )
+// public ctor
+MachPhysHemiSphere::MachPhysHemiSphere(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
 {
-    //make invisible until required
-    visible( false );
+    // make invisible until required
+    visible(false);
 
     TEST_INVARIANT;
 }
@@ -43,57 +43,59 @@ MachPhysHemiSphere::MachPhysHemiSphere( W4dEntity* pParent, const MexTransform3d
 MachPhysHemiSphere::~MachPhysHemiSphere()
 {
     TEST_INVARIANT;
-
 }
 
-//static
+// static
 const MachPhysHemiSphere& MachPhysHemiSphere::exemplar()
 {
     return MachPhysOtherPersistence::instance().hemiSphereExemplar();
 }
 
-W4dVisibilityPlanPtr MachPhysHemiSphere::startGlow( const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration, const uint& frameOffset )
+W4dVisibilityPlanPtr MachPhysHemiSphere::startGlow(
+    const PhysAbsoluteTime& startTime,
+    const PhysRelativeTime& duration,
+    const uint& frameOffset)
 {
-    W4dVisibilityPlanPtr hVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
+    W4dVisibilityPlanPtr hVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
 
-	//each frame lasts 1/15 second
-	uint frames = duration*15.0;
+    // each frame lasts 1/15 second
+    uint frames = duration * 15.0;
 
-	uint i=1;
+    uint i = 1;
 
-	//the hemi sphere turns on and off every other frame and stays off every fifth frame
-	while(i< frames) // 16777216 =  just a large number
-	{
-		PhysRelativeTime  currentTime = i/15.0;
-		uint trueFrame = i + frameOffset;
+    // the hemi sphere turns on and off every other frame and stays off every fifth frame
+    while (i < frames) // 16777216 =  just a large number
+    {
+        PhysRelativeTime currentTime = i / 15.0;
+        uint trueFrame = i + frameOffset;
 
-		if( trueFrame%2 == 0 or trueFrame%5 == 0)
-		{
-			hVisibilityPlanPtr->add(false, currentTime);
-		}
+        if (trueFrame % 2 == 0 or trueFrame % 5 == 0)
+        {
+            hVisibilityPlanPtr->add(false, currentTime);
+        }
 
-		else
-		{
-			hVisibilityPlanPtr->add(true, currentTime);
-		}
+        else
+        {
+            hVisibilityPlanPtr->add(true, currentTime);
+        }
 
-		++i;
-	}
+        ++i;
+    }
 
-    entityPlanForEdit().visibilityPlan( hVisibilityPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING );
+    entityPlanForEdit().visibilityPlan(hVisibilityPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
 
-	W4dFrameRegulator regulator( startTime, duration, duration*2.0, frames*2);
-	entityPlanForEdit().frameRegulator( regulator );
+    W4dFrameRegulator regulator(startTime, duration, duration * 2.0, frames * 2);
+    entityPlanForEdit().frameRegulator(regulator);
 
-	return hVisibilityPlanPtr;
+    return hVisibilityPlanPtr;
 }
 
 void MachPhysHemiSphere::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysHemiSphere& t )
+ostream& operator<<(ostream& o, const MachPhysHemiSphere& t)
 {
 
     o << "MachPhysHemiSphere " << (void*)&t << " start" << std::endl;
@@ -102,30 +104,29 @@ ostream& operator <<( ostream& o, const MachPhysHemiSphere& t )
     return o;
 }
 
-//virtual
-bool MachPhysHemiSphere::intersectsLine( const MexLine3d&, MATHEX_SCALAR*, Accuracy ) const
+// virtual
+bool MachPhysHemiSphere::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
 {
     return false;
 }
 
-void perWrite( PerOstream& ostr, const MachPhysHemiSphere& sphere )
+void perWrite(PerOstream& ostr, const MachPhysHemiSphere& sphere)
 {
     const W4dEntity& base = sphere;
 
     ostr << base;
 }
 
-void perRead( PerIstream& istr, MachPhysHemiSphere& sphere )
+void perRead(PerIstream& istr, MachPhysHemiSphere& sphere)
 {
     W4dEntity& base = sphere;
 
     istr >> base;
 }
 
-MachPhysHemiSphere::MachPhysHemiSphere( PerConstructor c )
-:W4dEntity( c )
+MachPhysHemiSphere::MachPhysHemiSphere(PerConstructor c)
+    : W4dEntity(c)
 {
 }
 
 /* End HSPHERE.CPP *************************************************/
-

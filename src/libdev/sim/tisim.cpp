@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-
 #define _INSTANTIATE_TEMPLATE_CLASSES
 #include "ctl/deque.hpp"
 #undef _INSTANTIATE_TEMPLATE_CLASSES
@@ -38,10 +37,10 @@
 void SimDummyFunction1()
 {
     static SimDiscreteEventPtr eventPtr;
-	static SimEventDiary::SimEventQueue eventQueue;
+    static SimEventDiary::SimEventQueue eventQueue;
     static SimManagerImpl::SimProcesses processes;
     static SimActors actors;
-    static CtlConstCountedPtr< W4dEntity > dummy7;
+    static CtlConstCountedPtr<W4dEntity> dummy7;
 }
 
 /* End TISIM.CPP *****************************************************/

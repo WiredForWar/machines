@@ -8,13 +8,13 @@
 #include "machphys/internal/geolocai.hpp"
 #include "machphys/locator.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysGeoLocatorImpl );
+PER_DEFINE_PERSISTENT(MachPhysGeoLocatorImpl);
 
 MachPhysGeoLocatorImpl::MachPhysGeoLocatorImpl()
-:   isLocating_( false ),
-    locatingPlanEndTime_( 0 ),
-	pLocator_( NULL ),
-	locatorSize_( 0 )
+    : isLocating_(false)
+    , locatingPlanEndTime_(0)
+    , pLocator_(nullptr)
+    , locatorSize_(0)
 {
 
     TEST_INVARIANT;
@@ -22,16 +22,16 @@ MachPhysGeoLocatorImpl::MachPhysGeoLocatorImpl()
 
 MachPhysGeoLocatorImpl::~MachPhysGeoLocatorImpl()
 {
-	_DELETE( pLocator_ );
+    _DELETE(pLocator_);
     TEST_INVARIANT;
 }
 
 void MachPhysGeoLocatorImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysGeoLocatorImpl& t )
+ostream& operator<<(ostream& o, const MachPhysGeoLocatorImpl& t)
 {
 
     o << "MachPhysGeoLocatorImpl " << (void*)&t << " start" << std::endl;
@@ -40,24 +40,24 @@ ostream& operator <<( ostream& o, const MachPhysGeoLocatorImpl& t )
     return o;
 }
 
-MachPhysGeoLocatorImpl::MachPhysGeoLocatorImpl( PerConstructor )
-: isLocating_( false ),
-  locatingPlanEndTime_( 0 ),
-  pLocator_( NULL ),
-  locatorSize_( 0 )
+MachPhysGeoLocatorImpl::MachPhysGeoLocatorImpl(PerConstructor)
+    : isLocating_(false)
+    , locatingPlanEndTime_(0)
+    , pLocator_(nullptr)
+    , locatorSize_(0)
 {
 }
 
-void perWrite( PerOstream& str, const MachPhysGeoLocatorImpl& geoLocatorImpl )
+void perWrite(PerOstream& str, const MachPhysGeoLocatorImpl& geoLocatorImpl)
 {
-	//str << geoLocatorImpl.pLocator_;
-	//str << geoLocatorImpl.locatorSize_;
+    // str << geoLocatorImpl.pLocator_;
+    // str << geoLocatorImpl.locatorSize_;
 }
 
-void perRead( PerIstream& str, MachPhysGeoLocatorImpl& geoLocatorImpl)
+void perRead(PerIstream& str, MachPhysGeoLocatorImpl& geoLocatorImpl)
 {
-	//str >> geoLocatorImpl.pLocator_;
-	//str >> geoLocatorImpl.locatorSize_;
+    // str >> geoLocatorImpl.pLocator_;
+    // str >> geoLocatorImpl.locatorSize_;
 }
 
 /* End GEOLOCAI.CPP *************************************************/

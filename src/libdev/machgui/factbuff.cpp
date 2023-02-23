@@ -15,26 +15,26 @@
 #include "machlog/factory.hpp"
 #include "gui/gui.hpp"
 
-MachGuiFactoryBuffer::MachGuiFactoryBuffer(	GuiDisplayable* pParent,
-											const Gui::Boundary& relativeBoundary,
-											MachLogFactory* pFactory,
-											MachInGameScreen* pInGameScreen	)
-:   GuiDisplayable( pParent, relativeBoundary ),
-    pFactory_( pFactory ),
-    pIcons_( NULL ),
-    observingFactory_( false )
+MachGuiFactoryBuffer::MachGuiFactoryBuffer(
+    GuiDisplayable* pParent,
+    const Gui::Boundary& relativeBoundary,
+    MachLogFactory* pFactory,
+    MachInGameScreen* pInGameScreen)
+    : GuiDisplayable(pParent, relativeBoundary)
+    , pFactory_(pFactory)
+    , pIcons_(nullptr)
+    , observingFactory_(false)
 {
 
-    //Construct the icon sequence depicting the queue
-    Gui::Box iconsArea( 20, 8, MachProductionIcon::buttonWidth() * 3 + 29,
-                               MachProductionIcon::buttonHeight() + 12);
-    pIcons_ = _NEW( MachProductionIcons( this, iconsArea, pFactory, pInGameScreen ) );
+    // Construct the icon sequence depicting the queue
+    Gui::Box iconsArea(20, 8, MachProductionIcon::buttonWidth() * 3 + 29, MachProductionIcon::buttonHeight() + 12);
+    pIcons_ = _NEW(MachProductionIcons(this, iconsArea, pFactory, pInGameScreen));
 
-    //Become an observer of the factory
-    pFactory_->attach( this );
+    // Become an observer of the factory
+    pFactory_->attach(this);
     observingFactory_ = true;
 
-    //Create and display a build progress indicator if required
+    // Create and display a build progress indicator if required
     updateProgress();
 
     TEST_INVARIANT;
@@ -44,17 +44,17 @@ MachGuiFactoryBuffer::~MachGuiFactoryBuffer()
 {
     TEST_INVARIANT;
 
-    //Cease observing the factory
-    if( observingFactory_ )
-        pFactory_->detach( this );
+    // Cease observing the factory
+    if (observingFactory_)
+        pFactory_->detach(this);
 }
 
 void MachGuiFactoryBuffer::CLASS_INVARIANT
 {
-	INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachGuiFactoryBuffer& t )
+ostream& operator<<(ostream& o, const MachGuiFactoryBuffer& t)
 {
 
     o << "MachGuiFactoryBuffer " << (void*)&t << " start" << std::endl;
@@ -63,12 +63,12 @@ ostream& operator <<( ostream& o, const MachGuiFactoryBuffer& t )
     return o;
 }
 
-//static
+// static
 int MachGuiFactoryBuffer::requiredHeight()
 {
     // TODO missing actorIconHeight
-    //return MachGui::actorIconHeight() + 12;
-    return  12;
+    // return MachGui::actorIconHeight() + 12;
+    return 12;
 }
 
 void MachGuiFactoryBuffer::updateQueueIcons()
@@ -78,12 +78,12 @@ void MachGuiFactoryBuffer::updateQueueIcons()
 
 void MachGuiFactoryBuffer::updateProgress()
 {
-/*    //If the factory is building, we'll need a progress bar
+    /*    //If the factory is building, we'll need a progress bar
     MachLog::ObjectType objectType;
     int subType;
     MachLogMachine::Level hwLevel;
     MachLogMachine::Level swLevel;
-	MachPhys::WeaponCombo	wc;
+    MachPhys::WeaponCombo   wc;
 
     //NB the arguments are for return value, passed by non-const reference.
     if( pFactory_->currentlyBuilding( objectType, subType, hwLevel, swLevel, wc) )
@@ -106,50 +106,51 @@ void MachGuiFactoryBuffer::updateProgress()
         //No progress bar required
         _DELETE( pProgressBar_ );
         pProgressBar_ = NULL;
-		changed();
-    }	 */
+        changed();
+    }    */
 }
 
-//virtual
+// virtual
 void MachGuiFactoryBuffer::doDisplay()
-{}
+{
+}
 
 MachLogFactory& MachGuiFactoryBuffer::factory()
 {
     return *pFactory_;
 }
 
-//virtual
-void MachGuiFactoryBuffer::domainDeleted( W4dDomain* )
+// virtual
+void MachGuiFactoryBuffer::domainDeleted(W4dDomain*)
 {
-    //Do nothing
+    // Do nothing
 }
 
-//virtual
-bool MachGuiFactoryBuffer::beNotified( W4dSubject*, W4dSubject::NotificationEvent event, int clientData )
+// virtual
+bool MachGuiFactoryBuffer::beNotified(W4dSubject*, W4dSubject::NotificationEvent event, int clientData)
 {
-    //Since we only ever observe the factory, it must be the subject.
-    switch( event )
+    // Since we only ever observe the factory, it must be the subject.
+    switch (event)
     {
         case W4dSubject::DELETED:
-        {
-            observingFactory_ = false;
-            break;
-        }
+            {
+                observingFactory_ = false;
+                break;
+            }
 
         case W4dSubject::CLIENT_SPECIFIC:
-        {
-            switch( clientData )
             {
-                case MachLog::MACHINE_BUILT:
+                switch (clientData)
                 {
-                    //Update the production queue icon display
-                    updateQueueIcons();
-                    break;
+                    case MachLog::MACHINE_BUILT:
+                        {
+                            // Update the production queue icon display
+                            updateQueueIcons();
+                            break;
+                        }
                 }
+                break;
             }
-            break;
-        }
     }
 
     return observingFactory_;

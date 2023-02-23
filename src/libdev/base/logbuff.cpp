@@ -14,10 +14,9 @@
 BaseLogBuffer::BaseLogBuffer()
 //: ostream( pInfiniteStreamBuffer() )
 {
-
 }
 
-BaseLogBuffer::BaseLogBuffer( size_t bufferSize )
+BaseLogBuffer::BaseLogBuffer(size_t bufferSize)
 //: ostream( pCircularStreamBuffer( bufferSize ) )
 {
 }
@@ -25,25 +24,25 @@ BaseLogBuffer::BaseLogBuffer( size_t bufferSize )
 BaseLogBuffer::~BaseLogBuffer()
 {
 
-//    _DELETE( pStreamBuffer_ );
+    //    _DELETE( pStreamBuffer_ );
 }
 
 void BaseLogBuffer::clear()
 {
 
-//    pStreamBuffer_->clear();
+    //    pStreamBuffer_->clear();
     this->str("");
 }
 
 BaseLogStreamBuffer* BaseLogBuffer::pInfiniteStreamBuffer()
 {
-    pStreamBuffer_ = _NEW( BaseInfiniteStreamBuffer() );
+    pStreamBuffer_ = _NEW(BaseInfiniteStreamBuffer());
     return pStreamBuffer_;
 }
 
-BaseLogStreamBuffer* BaseLogBuffer::pCircularStreamBuffer( size_t bufferSize )
+BaseLogStreamBuffer* BaseLogBuffer::pCircularStreamBuffer(size_t bufferSize)
 {
-    pStreamBuffer_ = _NEW( BaseCircularStreamBuffer( bufferSize ) );
+    pStreamBuffer_ = _NEW(BaseCircularStreamBuffer(bufferSize));
 
     return pStreamBuffer_;
 }
@@ -72,7 +71,7 @@ std::string BaseLogBuffer::dataAsString() const
     return this->str();
 }
 
-ostream& operator <<( ostream& o, const BaseLogBuffer& t )
+ostream& operator<<(ostream& o, const BaseLogBuffer& t)
 {
     o << t.rdbuf();
 

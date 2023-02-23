@@ -18,47 +18,41 @@ class MachLogConstruction;
 
 // orthodox canonical (revoked)
 
-class MachLogAdminDeconstructOperation
-: public MachLogOperation
+class MachLogAdminDeconstructOperation : public MachLogOperation
 {
 public:
+    MachLogAdminDeconstructOperation(MachLogAdministrator* pActor, MachLogConstruction*);
 
-	MachLogAdminDeconstructOperation( MachLogAdministrator * pActor, MachLogConstruction* );
+    ~MachLogAdminDeconstructOperation() override;
 
-	virtual ~MachLogAdminDeconstructOperation();
+    bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 
-	virtual	bool beNotified( W4dSubject* pSubject,
-	                         W4dSubject::NotificationEvent event, int clientData );
-	
-	PER_MEMBER_PERSISTENT_VIRTUAL( MachLogAdminDeconstructOperation );
-	PER_FRIEND_READ_WRITE( MachLogAdminDeconstructOperation );
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAdminDeconstructOperation);
+    PER_FRIEND_READ_WRITE(MachLogAdminDeconstructOperation);
 
 protected:
+    bool doStart() override;
+    void doFinish() override;
 
-	virtual bool doStart();
-	virtual void doFinish();
-	
-	virtual bool doIsFinished() const;
-	virtual PhysRelativeTime doUpdate();
-	
-	virtual void doOutputOperator( ostream& ) const;
-	virtual bool doBeInterrupted();
+    bool doIsFinished() const override;
+    PhysRelativeTime doUpdate() override;
 
+    void doOutputOperator(ostream&) const override;
+    bool doBeInterrupted() override;
 
 private:
+    // Operations deliberately revoked
+    MachLogAdminDeconstructOperation(const MachLogAdminDeconstructOperation&);
+    MachLogAdminDeconstructOperation& operator=(const MachLogAdminDeconstructOperation&);
+    bool operator==(const MachLogAdminDeconstructOperation&);
 
-	// Operations deliberately revoked
-    MachLogAdminDeconstructOperation( const MachLogAdminDeconstructOperation& );
-    MachLogAdminDeconstructOperation& operator =( const MachLogAdminDeconstructOperation& );
-    bool operator ==( const MachLogAdminDeconstructOperation& );
+    MachLogAdministrator* pActor_;
+    MachLogConstruction* pConstruction_;
 
-	MachLogAdministrator *					pActor_;
-	MachLogConstruction *					pConstruction_;
-	
-    bool 									complete_;
-	bool									currentlyAttached_;
+    bool complete_;
+    bool currentlyAttached_;
 };
 
-PER_DECLARE_PERSISTENT( MachLogAdminDeconstructOperation );
+PER_DECLARE_PERSISTENT(MachLogAdminDeconstructOperation);
 
 #endif

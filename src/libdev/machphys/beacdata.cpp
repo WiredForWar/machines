@@ -13,27 +13,26 @@ MachPhysBeaconData::MachPhysBeaconData()
     TEST_INVARIANT;
 }
 
-MachPhysBeaconData::MachPhysBeaconData( const MachPhysBeaconData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform )
+MachPhysBeaconData::MachPhysBeaconData(const MachPhysBeaconData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
 {
 }
 
 MachPhysBeaconData::~MachPhysBeaconData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysBeaconData::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachPhysBeaconData& t )
+ostream& operator<<(ostream& o, const MachPhysBeaconData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
 
     return o;
 }

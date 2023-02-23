@@ -1,5 +1,5 @@
 /*
- * B E E B O M X I . C P P 
+ * B E E B O M X I . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -10,10 +10,9 @@
 #include "machphys/machphys.hpp"
 #include "machphys/mphydata.hpp"
 
-
-MachLogBeeBombExplosionImpl::MachLogBeeBombExplosionImpl( const MachPhysWeaponData* const pWeaponData )
-:	pWeaponData_( pWeaponData ),
-	pPhysBeeBombExplosion_( NULL )
+MachLogBeeBombExplosionImpl::MachLogBeeBombExplosionImpl(const MachPhysWeaponData* const pWeaponData)
+    : pWeaponData_(pWeaponData)
+    , pPhysBeeBombExplosion_(nullptr)
 {
     TEST_INVARIANT;
 }
@@ -21,15 +20,14 @@ MachLogBeeBombExplosionImpl::MachLogBeeBombExplosionImpl( const MachPhysWeaponDa
 MachLogBeeBombExplosionImpl::~MachLogBeeBombExplosionImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void MachLogBeeBombExplosionImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const MachLogBeeBombExplosionImpl& t )
+ostream& operator<<(ostream& o, const MachLogBeeBombExplosionImpl& t)
 {
 
     o << "MachLogBeeBombExplosionImpl " << (void*)&t << " start" << std::endl;
@@ -37,8 +35,5 @@ ostream& operator <<( ostream& o, const MachLogBeeBombExplosionImpl& t )
 
     return o;
 }
-
-
-
 
 /* End BEEBOMXI.CPP *************************************************/

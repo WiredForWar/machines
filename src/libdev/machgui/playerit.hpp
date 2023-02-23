@@ -1,5 +1,5 @@
 /*
- * P L A Y E R I T . H P P 
+ * P L A Y E R I T . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -39,8 +39,8 @@ struct MachGuiSharedPlayerInfo
 class MachGuiPlayerColour : public GuiDisplayable
 {
 public:
-    MachGuiPlayerColour( MachGuiStartupScreens*, MachGuiPlayerListItem* pParent, MachGuiSharedPlayerInfo* );
-    ~MachGuiPlayerColour();
+    MachGuiPlayerColour(MachGuiStartupScreens*, MachGuiPlayerListItem* pParent, MachGuiSharedPlayerInfo*);
+    ~MachGuiPlayerColour() override;
 
     static size_t reqWidth();
 
@@ -49,14 +49,14 @@ public:
     static void releaseBmpMemory();
 
 protected:
-    static Gui::Box getRelPos( MachGuiPlayerListItem* );
+    static Gui::Box getRelPos(MachGuiPlayerListItem*);
 
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
-    virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel ) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent& rel) override;
 
     static GuiBitmap*& pRedBmp();
     static GuiBitmap*& pGreenBmp();
@@ -67,8 +67,8 @@ protected:
     bool canInteract() const;
 
 private:
-    MachGuiPlayerColour( const MachGuiPlayerColour& );
-    MachGuiPlayerColour& operator =( const MachGuiPlayerColour& );
+    MachGuiPlayerColour(const MachGuiPlayerColour&);
+    MachGuiPlayerColour& operator=(const MachGuiPlayerColour&);
 
     bool highlighted_;
     MachGuiStartupScreens* pStartupScreens_;
@@ -81,47 +81,54 @@ class MachGuiPlayerListItem : public GuiDisplayable
 {
 public:
     // TODO: Removing MGSS. Many usages here. This "list item" updates the game state in startupData and more!
-    MachGuiPlayerListItem(  MachGuiStartupScreens* pStartupScreens,
-                            GuiSimpleScrollableList* pParentList,
-                            size_t 		   width,
-                            const string&  playerName,
-                            MachPhys::Race playerRace,
-                            size_t 		   playerIndex,
-                            bool 		   playerReady,
-                            bool		   playerIsHost,
-                            double		   ping,
-                            bool hasMachinesCD );
-    ~MachGuiPlayerListItem();
+    MachGuiPlayerListItem(
+        MachGuiStartupScreens* pStartupScreens,
+        GuiSimpleScrollableList* pParentList,
+        size_t width,
+        const string& playerName,
+        MachPhys::Race playerRace,
+        size_t playerIndex,
+        bool playerReady,
+        bool playerIsHost,
+        double ping,
+        bool hasMachinesCD);
+    ~MachGuiPlayerListItem() override;
 
     void CLASS_INVARIANT;
 
     static size_t reqHeight();
 
-    void updateInfo( const string& playerName, MachPhys::Race playerRace, bool playerReady, bool playerIsHost, double ping, bool hasMachinesCD );
+    void updateInfo(
+        const string& playerName,
+        MachPhys::Race playerRace,
+        bool playerReady,
+        bool playerIsHost,
+        double ping,
+        bool hasMachinesCD);
 
-    void dropDownListDisplayed( MachGuiDropDownListBox* );
+    void dropDownListDisplayed(MachGuiDropDownListBox*);
 
 protected:
     static GuiBmpFont getFont();
     static GuiBmpFont getHighlightFont();
 
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
-    virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleContainsMouseEvent( const GuiMouseEvent& rel ) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent& rel) override;
 
-    void colourHighlighted( bool );
+    void colourHighlighted(bool);
     bool canInteract() const;
     bool canDisplayDropDownList() const;
 
 private:
     friend class MachGuiPlayerColour;
-    friend ostream& operator <<( ostream& o, const MachGuiPlayerListItem& t );
+    friend ostream& operator<<(ostream& o, const MachGuiPlayerListItem& t);
 
-    MachGuiPlayerListItem( const MachGuiPlayerListItem& );
-    MachGuiPlayerListItem& operator =( const MachGuiPlayerListItem& );
+    MachGuiPlayerListItem(const MachGuiPlayerListItem&);
+    MachGuiPlayerListItem& operator=(const MachGuiPlayerListItem&);
 
     bool highlighted_;
     bool colourHighlighted_;
@@ -134,45 +141,49 @@ private:
     GuiRoot* pRootParent_;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class MachGuiColourList : public MachGuiAutoDeleteDisplayable, public GuiDisplayable
+class MachGuiColourList
+    : public MachGuiAutoDeleteDisplayable
+    , public GuiDisplayable
 {
 public:
-    MachGuiColourList( 	MachGuiStartupScreens* pStartupScreens,
-                        MachGuiPlayerColour* pParent,
-                        const Gui::Box& box,
-                        MachGuiSharedPlayerInfo* );
-    ~MachGuiColourList();
+    MachGuiColourList(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiPlayerColour* pParent,
+        const Gui::Box& box,
+        MachGuiSharedPlayerInfo*);
+    ~MachGuiColourList() override;
 
-    virtual bool containsMousePointer() override;
+    bool containsMousePointer() override;
 
 protected:
-    virtual void doDisplay() override;
+    void doDisplay() override;
 
 private:
-    MachGuiColourList( const MachGuiColourList& );
-    MachGuiColourList& operator =( const MachGuiColourList& );
+    MachGuiColourList(const MachGuiColourList&);
+    MachGuiColourList& operator=(const MachGuiColourList&);
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MachGuiColourSelector : public GuiDisplayable
 {
 public:
-    MachGuiColourSelector( 	MachGuiStartupScreens* pStartupScreens,
-                            MachGuiColourList* pParent,
-                            const Gui::Box& box,
-                            MachPhys::Race race,
-                            MachGuiSharedPlayerInfo* );
-    ~MachGuiColourSelector();
+    MachGuiColourSelector(
+        MachGuiStartupScreens* pStartupScreens,
+        MachGuiColourList* pParent,
+        const Gui::Box& box,
+        MachPhys::Race race,
+        MachGuiSharedPlayerInfo*);
+    ~MachGuiColourSelector() override;
 
 protected:
-    virtual void doDisplay() override;
- 
-    virtual void doHandleMouseEnterEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseExitEvent( const GuiMouseEvent& rel ) override;
-    virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel ) override;
+    void doDisplay() override;
+
+    void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
 
 private:
-    MachGuiColourSelector( const MachGuiColourSelector& );
-    MachGuiColourSelector& operator =( const MachGuiColourSelector& );
+    MachGuiColourSelector(const MachGuiColourSelector&);
+    MachGuiColourSelector& operator=(const MachGuiColourSelector&);
 
     // Data members
     bool highlighted_;

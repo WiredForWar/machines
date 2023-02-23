@@ -17,43 +17,41 @@
 
 #include "world4d/entity.hpp"
 
-class MachPhysLoadingUnder: public W4dEntity
+class MachPhysLoadingUnder : public W4dEntity
 // Canonical form revoked
 {
 public:
-    //ctor
-    MachPhysLoadingUnder( W4dEntity* pParent, const MexTransform3d& localTransform );
+    // ctor
+    MachPhysLoadingUnder(W4dEntity* pParent, const MexTransform3d& localTransform);
 
-    //dtor
-    virtual ~MachPhysLoadingUnder();
+    // dtor
+    ~MachPhysLoadingUnder() override;
 
-    //Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
+    // Return an exemplar vortex bomb - ensures the bomb meshes and textures are loaded
     static const MachPhysLoadingUnder& exemplar();
 
-    //Inherited from W4dEntity. Returns false.
-    virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-                                 Accuracy accuracy ) const;
+    // Inherited from W4dEntity. Returns false.
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysLoadingUnder& t );
+    friend ostream& operator<<(ostream& o, const MachPhysLoadingUnder& t);
 
-    PER_MEMBER_PERSISTENT( MachPhysLoadingUnder );
+    PER_MEMBER_PERSISTENT(MachPhysLoadingUnder);
 
 private:
-    //Deliberately revoked
-    MachPhysLoadingUnder( const MachPhysLoadingUnder& );
-    MachPhysLoadingUnder& operator =( const MachPhysLoadingUnder& );
-    bool operator ==( const MachPhysLoadingUnder& );
+    // Deliberately revoked
+    MachPhysLoadingUnder(const MachPhysLoadingUnder&);
+    MachPhysLoadingUnder& operator=(const MachPhysLoadingUnder&);
+    bool operator==(const MachPhysLoadingUnder&);
 
-	friend class MachPhysOtherPersistence;
-    //One-time constructor used to create the exemplar
+    friend class MachPhysOtherPersistence;
+    // One-time constructor used to create the exemplar
     MachPhysLoadingUnder();
-
 };
 
-PER_DECLARE_PERSISTENT( MachPhysLoadingUnder );
-PER_READ_WRITE( MachPhysLoadingUnder );
+PER_DECLARE_PERSISTENT(MachPhysLoadingUnder);
+PER_READ_WRITE(MachPhysLoadingUnder);
 
 #endif
 

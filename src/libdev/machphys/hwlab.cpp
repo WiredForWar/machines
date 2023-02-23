@@ -46,28 +46,28 @@
 #include "machphys/levels.hpp"
 #include "machphys/snddata.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysHardwareLab );
+PER_DEFINE_PERSISTENT(MachPhysHardwareLab);
 
 MachPhysHardwareLab::MachPhysHardwareLab(
     W4dEntity* pParent,
     const W4dTransform3d& localTransform,
     MachPhys::HardwareLabSubType subType,
     size_t level,
-    MachPhys::Race race )
-: MachPhysConstruction( part( subType, level ), pParent, localTransform, level, race ),
-  pData_( _NEW( MachPhysHardwareLabData( part( subType, level ).data(), globalTransform() ) ) ),
-  subType_( subType ),
-  level_(level)
+    MachPhys::Race race)
+    : MachPhysConstruction(part(subType, level), pParent, localTransform, level, race)
+    , pData_(_NEW(MachPhysHardwareLabData(part(subType, level).data(), globalTransform())))
+    , subType_(subType)
+    , level_(level)
 {
-//    W4dSoundManager::instance().play( this, SysPathName( "sounds/hlab.wav" ),
-//                                      PhysAbsoluteTime( 0 ), 100.0, 15.0,
-//                                      W4dSoundManager::LOOP_CONTINUOUSLY );
+    //    W4dSoundManager::instance().play( this, SysPathName( "sounds/hlab.wav" ),
+    //                                      PhysAbsoluteTime( 0 ), 100.0, 15.0,
+    //                                      W4dSoundManager::LOOP_CONTINUOUSLY );
 
-	size_t nNeons = part( subType, level ).neons_.size();
-	neons_.reserve(nNeons);
+    size_t nNeons = part(subType, level).neons_.size();
+    neons_.reserve(nNeons);
 
-	for( size_t iNeon=0; iNeon<nNeons; ++iNeon)
-    	neons_.push_back( links()[ (part( subType, level ).neons_)[iNeon]->id() ] );
+    for (size_t iNeon = 0; iNeon < nNeons; ++iNeon)
+        neons_.push_back(links()[(part(subType, level).neons_)[iNeon]->id()]);
 
     TEST_INVARIANT;
 }
@@ -75,36 +75,42 @@ MachPhysHardwareLab::MachPhysHardwareLab(
 //  This is the constructor that is used by the factory. It is the
 //  only constructor that actually builds a hardware lab from scratch
 
-MachPhysHardwareLab::MachPhysHardwareLab( W4dEntity* pParent, Id id )
-: MachPhysConstruction( pParent, W4dTransform3d(), compositeFileName( id.subType_, id.level_ ),
-	wireframeFileName( id.subType_, id.level_ ),
-    interiorCompositeFileName( id.subType_, id.level_ ), 10.0, id.level_,
-    MachPhysData::instance().hardwareLabData( id.subType_, id.level_ ) ),
-  pData_( _NEW( MachPhysHardwareLabData( MachPhysData::instance().hardwareLabData( id.subType_, id.level_ ), W4dTransform3d() ) ) ),
-  subType_( id.subType_ ),
-  level_(id.level_)
+MachPhysHardwareLab::MachPhysHardwareLab(W4dEntity* pParent, Id id)
+    : MachPhysConstruction(
+        pParent,
+        W4dTransform3d(),
+        compositeFileName(id.subType_, id.level_),
+        wireframeFileName(id.subType_, id.level_),
+        interiorCompositeFileName(id.subType_, id.level_),
+        10.0,
+        id.level_,
+        MachPhysData::instance().hardwareLabData(id.subType_, id.level_))
+    , pData_(_NEW(
+          MachPhysHardwareLabData(MachPhysData::instance().hardwareLabData(id.subType_, id.level_), W4dTransform3d())))
+    , subType_(id.subType_)
+    , level_(id.level_)
 {
 
-	neons_.reserve( 4 );
-	for( int i = 1; i<= 4; ++i )
-	{
-		char textN[4];
-//		itoa(i, textN, 10 );
+    neons_.reserve(4);
+    for (int i = 1; i <= 4; ++i)
+    {
+        char textN[4];
+        //      itoa(i, textN, 10 );
         sprintf(textN, "%d", i);
-		string neonLinkName = "neon" + string(textN);
-		W4dLink* pLink = NULL;
- 	    if( findLink(neonLinkName, &pLink) )
-		{
-	    	neons_.push_back( pLink );
-		}
-	}
+        string neonLinkName = "neon" + string(textN);
+        W4dLink* pLink = nullptr;
+        if (findLink(neonLinkName, &pLink))
+        {
+            neons_.push_back(pLink);
+        }
+    }
 
     TEST_INVARIANT;
 }
 
-MachPhysHardwareLab::MachPhysHardwareLab( PerConstructor con )
-: MachPhysConstruction( con ),
-  pData_( NULL )
+MachPhysHardwareLab::MachPhysHardwareLab(PerConstructor con)
+    : MachPhysConstruction(con)
+    , pData_(nullptr)
 {
 }
 
@@ -112,7 +118,7 @@ MachPhysHardwareLab::~MachPhysHardwareLab()
 {
     TEST_INVARIANT;
 
-    _DELETE( pData_ );
+    _DELETE(pData_);
 }
 /*
 // static
@@ -126,17 +132,15 @@ MachPhysHardwareLab& MachPhysHardwareLab::factory( MachPhys::HardwareLabSubType 
 }
 */
 // static
-MachPhysHardwareLab& MachPhysHardwareLab::part( MachPhys::HardwareLabSubType subType, size_t level )
+MachPhysHardwareLab& MachPhysHardwareLab::part(MachPhys::HardwareLabSubType subType, size_t level)
 {
-    return factory().part(
-        Id( subType, level ),
-        MachPhysLevels::instance().uniqueHardwareIndex( subType, level ) );
+    return factory().part(Id(subType, level), MachPhysLevels::instance().uniqueHardwareIndex(subType, level));
 }
 
 // static
 MachPhysHardwareLab::Factory& MachPhysHardwareLab::factory()
 {
-    static  Factory factory_( MachPhysLevels::instance().nHardwareIndices( MachPhys::HARDWARE_LAB ) );
+    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::HARDWARE_LAB));
 
     return factory_;
 }
@@ -146,193 +150,192 @@ MachPhys::HardwareLabSubType MachPhysHardwareLab::subType() const
     return subType_;
 }
 
-//virtual
+// virtual
 const MachPhysConstructionData& MachPhysHardwareLab::constructionData() const
 {
-	return data();
+    return data();
 }
 
 const MachPhysHardwareLabData& MachPhysHardwareLab::data() const
 {
-	return *pData_;
+    return *pData_;
 }
 
-SysPathName MachPhysHardwareLab::compositeFileName( MachPhys::HardwareLabSubType subType, size_t level ) const
+SysPathName MachPhysHardwareLab::compositeFileName(MachPhys::HardwareLabSubType subType, size_t level) const
 {
     SysPathName result;
 
-	switch( subType )
-	{
-		case MachPhys::LAB_MILITARY:
-		{
-			switch( level )
-		    {
-        		case 1:
-		            result = "models/lab/military/level1/exterior/lam1e.cdf";
-	            	break;
+    switch (subType)
+    {
+        case MachPhys::LAB_MILITARY:
+            {
+                switch (level)
+                {
+                    case 1:
+                        result = "models/lab/military/level1/exterior/lam1e.cdf";
+                        break;
 
-        		case 3:
-		            result = "models/lab/military/level3/exterior/lam3e.cdf";
-	            	break;
+                    case 3:
+                        result = "models/lab/military/level3/exterior/lam3e.cdf";
+                        break;
 
-		        default:
-        	    	ASSERT_BAD_CASE_INFO( level );
-					break;
-			}
+                    default:
+                        ASSERT_BAD_CASE_INFO(level);
+                        break;
+                }
+                break;
+            }
+
+        case MachPhys::LAB_CIVILIAN:
+            {
+                switch (level)
+                {
+                    case 1:
+                        result = "models/lab/civilian/level1/exterior/lac1e.cdf";
+                        break;
+
+                    case 3:
+                        result = "models/lab/civilian/level3/exterior/lac3e.cdf";
+                        break;
+
+                    default:
+                        ASSERT_BAD_CASE_INFO(level);
+                        break;
+                }
+                break;
+            }
+
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
             break;
-		}
-
-		case MachPhys::LAB_CIVILIAN:
-		{
-			switch( level )
-		    {
-        		case 1:
-        		    result = "models/lab/civilian/level1/exterior/lac1e.cdf";
-					break;
-
-        		case 3:
-        		    result = "models/lab/civilian/level3/exterior/lac3e.cdf";
-					break;
-
-				default:
-        	    	ASSERT_BAD_CASE_INFO( level );
-					break;
-			}
-			break;
-		}
-
-		default:
-			ASSERT_BAD_CASE_INFO( subType );
-			break;
     }
 
     return result;
 }
 
-SysPathName MachPhysHardwareLab::wireframeFileName( MachPhys::HardwareLabSubType subType, size_t level ) const
+SysPathName MachPhysHardwareLab::wireframeFileName(MachPhys::HardwareLabSubType subType, size_t level) const
 {
     SysPathName result;
 
-	switch( subType )
-	{
-		case MachPhys::LAB_MILITARY:
-		{
-			switch( level )
-		    {
-        		case 1:
-		            result = "models/lab/military/level1/wirefram/lam1w.cdf";
-	            	break;
+    switch (subType)
+    {
+        case MachPhys::LAB_MILITARY:
+            {
+                switch (level)
+                {
+                    case 1:
+                        result = "models/lab/military/level1/wirefram/lam1w.cdf";
+                        break;
 
-        		case 3:
-		            result = "models/lab/military/level3/wirefram/lam3w.cdf";
-	            	break;
+                    case 3:
+                        result = "models/lab/military/level3/wirefram/lam3w.cdf";
+                        break;
 
-		        default:
-        	    	ASSERT_BAD_CASE_INFO( level );
-					break;
-			}
+                    default:
+                        ASSERT_BAD_CASE_INFO(level);
+                        break;
+                }
+                break;
+            }
+
+        case MachPhys::LAB_CIVILIAN:
+            {
+                switch (level)
+                {
+                    case 1:
+                        result = "models/lab/civilian/level1/wirefram/lac1w.cdf";
+                        break;
+
+                    case 3:
+                        result = "models/lab/civilian/level3/wirefram/lac3w.cdf";
+                        break;
+
+                    default:
+                        ASSERT_BAD_CASE_INFO(level);
+                        break;
+                }
+                break;
+            }
+
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
             break;
-		}
-
-		case MachPhys::LAB_CIVILIAN:
-		{
-			switch( level )
-		    {
-        		case 1:
-		            result = "models/lab/civilian/level1/wirefram/lac1w.cdf";
-					break;
-
-        		case 3:
-		            result = "models/lab/civilian/level3/wirefram/lac3w.cdf";
-					break;
-
-				default:
-        	    	ASSERT_BAD_CASE_INFO( level );
-					break;
-			}
-			break;
-		}
-
-		default:
-			ASSERT_BAD_CASE_INFO( subType );
-			break;
     }
 
     return result;
 }
 
-SysPathName MachPhysHardwareLab::interiorCompositeFileName( MachPhys::HardwareLabSubType subType, size_t level ) const
+SysPathName MachPhysHardwareLab::interiorCompositeFileName(MachPhys::HardwareLabSubType subType, size_t level) const
 {
     SysPathName result;
 
-	HAL_STREAM(" MPHWLab::interiorCompositeFileName " << subType << std::endl );
-	switch( subType )
-	{
-	case MachPhys::LAB_MILITARY:
-	    switch( level )
-	    {
-	        case 1:
-	            result = "models/lab/military/level1/interior/lam1i.cdf";
-	            break;
+    HAL_STREAM(" MPHWLab::interiorCompositeFileName " << subType << std::endl);
+    switch (subType)
+    {
+        case MachPhys::LAB_MILITARY:
+            switch (level)
+            {
+                case 1:
+                    result = "models/lab/military/level1/interior/lam1i.cdf";
+                    break;
 
-	        case 3:
-	            result = "models/lab/military/level3/interior/lam3i.cdf";
-	            break;
+                case 3:
+                    result = "models/lab/military/level3/interior/lam3i.cdf";
+                    break;
 
-	        default:
-	            ASSERT_BAD_CASE_INFO( level );
-	            break;
-	    }
-		break;
-	case MachPhys::LAB_CIVILIAN:
-	    switch( level )
-	    {
-	        case 1:
-	            result = "models/lab/civilian/level1/interior/lac1i.cdf";
-	            break;
+                default:
+                    ASSERT_BAD_CASE_INFO(level);
+                    break;
+            }
+            break;
+        case MachPhys::LAB_CIVILIAN:
+            switch (level)
+            {
+                case 1:
+                    result = "models/lab/civilian/level1/interior/lac1i.cdf";
+                    break;
 
+                case 3:
+                    result = "models/lab/civilian/level3/interior/lac3i.cdf";
+                    break;
 
-	        case 3:
-	            result = "models/lab/civilian/level3/interior/lac3i.cdf";
-	            break;
-
-	        default:
-	            ASSERT_BAD_CASE_INFO( level );
-	            break;
-	    }
-		break;
-    default:
-        ASSERT_BAD_CASE_INFO( subType );
-        break;
-
-	}
+                default:
+                    ASSERT_BAD_CASE_INFO(level);
+                    break;
+            }
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
     return result;
 }
 
 void MachPhysHardwareLab::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
 void MachPhysHardwareLab::persistenceInitialiseData()
 {
-    pData_ = _NEW( MachPhysHardwareLabData( MachPhysData::instance().hardwareLabData( subType(), level() ), W4dTransform3d() ) );
+    pData_
+        = _NEW(MachPhysHardwareLabData(MachPhysData::instance().hardwareLabData(subType(), level()), W4dTransform3d()));
 
-    persistenceConstructionData( *pData_ );
+    persistenceConstructionData(*pData_);
 }
 
-void perWrite( PerOstream& ostr, const MachPhysHardwareLab& lab )
+void perWrite(PerOstream& ostr, const MachPhysHardwareLab& lab)
 {
     const MachPhysConstruction& base = lab;
 
     ostr << base;
 
     ostr << lab.subType_;
-	ostr << lab.level_;
-	ostr << lab.neons_;
+    ostr << lab.level_;
+    ostr << lab.neons_;
 }
 
-void perRead( PerIstream& istr, MachPhysHardwareLab& lab )
+void perRead(PerIstream& istr, MachPhysHardwareLab& lab)
 {
     MachPhysConstruction& base = lab;
 
@@ -345,154 +348,161 @@ void perRead( PerIstream& istr, MachPhysHardwareLab& lab )
     lab.persistenceInitialiseData();
 }
 
-//virtual
-void MachPhysHardwareLab::doWorking( bool setWorking )
+// virtual
+void MachPhysHardwareLab::doWorking(bool setWorking)
 {
-	// only do anything if situation has changed
-	if( setWorking != isWorking() )
-	{
-		const PhysRelativeTime duration = 60;
-		PhysAbsoluteTime now = SimManager::instance().currentTime();
+    // only do anything if situation has changed
+    if (setWorking != isWorking())
+    {
+        const PhysRelativeTime duration = 60;
+        PhysAbsoluteTime now = SimManager::instance().currentTime();
 
-	    static const RenTexture keyTexture1 = RenTexManager::instance().createTexture( "SCRN1.BMP" );
-	    static const RenTexture keyTexture2 = RenTexManager::instance().createTexture( "STATIC.BMP" );
-		static W4dUVPlanPtr uvPlanIsWorkingPtr;
-		static W4dUVPlanPtr uvPlanNotWorkingPtr;
-		static bool first = true;
-		if( first )
-		{
-			first = false;
+        static const RenTexture keyTexture1 = RenTexManager::instance().createTexture("SCRN1.BMP");
+        static const RenTexture keyTexture2 = RenTexManager::instance().createTexture("STATIC.BMP");
+        static W4dUVPlanPtr uvPlanIsWorkingPtr;
+        static W4dUVPlanPtr uvPlanNotWorkingPtr;
+        static bool first = true;
+        if (first)
+        {
+            first = false;
 
-			W4dUVTranslation* pUVIsWorkingTranslate = _NEW( W4dUVTranslation(100000, 0, MexVec2(0.1, 0), MexVec2(0,0)) );
-			pUVIsWorkingTranslate->setFilterTexture( keyTexture1 );
-			uvPlanIsWorkingPtr = pUVIsWorkingTranslate;
+            W4dUVTranslation* pUVIsWorkingTranslate = _NEW(W4dUVTranslation(100000, 0, MexVec2(0.1, 0), MexVec2(0, 0)));
+            pUVIsWorkingTranslate->setFilterTexture(keyTexture1);
+            uvPlanIsWorkingPtr = pUVIsWorkingTranslate;
 
-			W4dUVTranslation* pUVNotWorkingTranslate = _NEW( W4dUVTranslation(100000, 0, MexVec2(0.87, 0.37), MexVec2(0,0)) );
-			pUVNotWorkingTranslate->setFilterTexture( keyTexture1 );
-			uvPlanNotWorkingPtr = pUVNotWorkingTranslate;
-		}
+            W4dUVTranslation* pUVNotWorkingTranslate
+                = _NEW(W4dUVTranslation(100000, 0, MexVec2(0.87, 0.37), MexVec2(0, 0)));
+            pUVNotWorkingTranslate->setFilterTexture(keyTexture1);
+            uvPlanNotWorkingPtr = pUVNotWorkingTranslate;
+        }
 
-		const size_t nLinks = links().size();
-		const size_t nInterLinks = pInteror()->links().size();
+        const size_t nLinks = links().size();
+        const size_t nInterLinks = pInteror()->links().size();
 
-	    if( not isWorking() )	// setWorking must == true
-	    {
-			//working animations on the interiors of both c and m labs
-			pInteror()->clearAnimation( MachPhys::CONSTRUCTION_NOT_WORKING );
+        if (not isWorking()) // setWorking must == true
+        {
+            // working animations on the interiors of both c and m labs
+            pInteror()->clearAnimation(MachPhys::CONSTRUCTION_NOT_WORKING);
 
-			for( size_t iLink=0; iLink<nInterLinks; ++iLink)
-			{
-				W4dLink* pLink = pInteror()->links()[iLink];
-				if ( pLink->hasMesh() )
-				{
-					bool isChanged = W4dMaterialSequencePlan::changeTexture( pLink, keyTexture2, keyTexture1 );
+            for (size_t iLink = 0; iLink < nInterLinks; ++iLink)
+            {
+                W4dLink* pLink = pInteror()->links()[iLink];
+                if (pLink->hasMesh())
+                {
+                    bool isChanged = W4dMaterialSequencePlan::changeTexture(pLink, keyTexture2, keyTexture1);
 
-					pLink->entityPlanForEdit().uvPlan(uvPlanIsWorkingPtr, now, 0, MachPhys::CONSTRUCTION_WORKING);
-				}
-			}
+                    pLink->entityPlanForEdit().uvPlan(uvPlanIsWorkingPtr, now, 0, MachPhys::CONSTRUCTION_WORKING);
+                }
+            }
 
-			switch( subType() )
-			{
-				case MachPhys::MILITARY:
-				{
-					//neon objects blink for all level mlabs
-					size_t nNeons = neons_.size();
-					for(size_t i = 0; i< nNeons; ++i )
-					{
-						ASSERT( neons_[i] != NULL, "" );
-						W4dColourPulsePlan::changeAllColour( neons_[i], RenColour::black(), RenColour::white(), 0.2, now + i*0.25, 100000, MachPhys::CONSTRUCTION_WORKING);
-					}
+            switch (subType())
+            {
+                case MachPhys::MILITARY:
+                    {
+                        // neon objects blink for all level mlabs
+                        size_t nNeons = neons_.size();
+                        for (size_t i = 0; i < nNeons; ++i)
+                        {
+                            ASSERT(neons_[i] != nullptr, "");
+                            W4dColourPulsePlan::changeAllColour(
+                                neons_[i],
+                                RenColour::black(),
+                                RenColour::white(),
+                                0.2,
+                                now + i * 0.25,
+                                100000,
+                                MachPhys::CONSTRUCTION_WORKING);
+                        }
 
-					W4dSoundManager::instance().play( this, SID_MILITARYLAB,
-				                                  PhysAbsoluteTime( 0 ), 0 );
+                        W4dSoundManager::instance().play(this, SID_MILITARYLAB, PhysAbsoluteTime(0), 0);
 
-					break;
-				}
-				case MachPhys::CIVILIAN:
-				{
-					clearAnimation( MachPhys::CONSTRUCTION_NOT_WORKING );
+                        break;
+                    }
+                case MachPhys::CIVILIAN:
+                    {
+                        clearAnimation(MachPhys::CONSTRUCTION_NOT_WORKING);
 
-					for( size_t iLink=0; iLink<nLinks; ++iLink)
-					{
-						W4dLink* pLink = links()[iLink];
-						if ( pLink->hasMesh() )
-						{
-							bool isChanged = W4dMaterialSequencePlan::changeTexture( pLink, keyTexture2, keyTexture1 );
+                        for (size_t iLink = 0; iLink < nLinks; ++iLink)
+                        {
+                            W4dLink* pLink = links()[iLink];
+                            if (pLink->hasMesh())
+                            {
+                                bool isChanged
+                                    = W4dMaterialSequencePlan::changeTexture(pLink, keyTexture2, keyTexture1);
 
-							pLink->entityPlanForEdit().uvPlan(uvPlanIsWorkingPtr, now, 0, MachPhys::CONSTRUCTION_WORKING);
-						}
-					}
+                                pLink->entityPlanForEdit()
+                                    .uvPlan(uvPlanIsWorkingPtr, now, 0, MachPhys::CONSTRUCTION_WORKING);
+                            }
+                        }
 
-					W4dSoundManager::instance().play( this, SID_CIVILIANLAB,
-				                                  PhysAbsoluteTime( 0 ), 0 );
-					break;
-				}
+                        W4dSoundManager::instance().play(this, SID_CIVILIANLAB, PhysAbsoluteTime(0), 0);
+                        break;
+                    }
 
-				default:
-				{
-					ASSERT_BAD_CASE_INFO( subType() );
-					break;
-				}
-			}
-		}
-		else if( isWorking() ) // setWorking must == false
-		{
-			clearAnimation( MachPhys::CONSTRUCTION_WORKING );
+                default:
+                    {
+                        ASSERT_BAD_CASE_INFO(subType());
+                        break;
+                    }
+            }
+        }
+        else if (isWorking()) // setWorking must == false
+        {
+            clearAnimation(MachPhys::CONSTRUCTION_WORKING);
 
-		    W4dSoundManager::instance().play( this, SID_IDLE_CONSTRUCTION,
-	                                     PhysAbsoluteTime( 0 ),
-	                                     W4dSoundManager::LOOP_CONTINUOUSLY );
-			W4dSoundManager::instance().stop( this );
+            W4dSoundManager::instance()
+                .play(this, SID_IDLE_CONSTRUCTION, PhysAbsoluteTime(0), W4dSoundManager::LOOP_CONTINUOUSLY);
+            W4dSoundManager::instance().stop(this);
 
-	        if( subType() == MachPhys::CIVILIAN )
-	        {
-				for( size_t iLink=0; iLink<nLinks; ++iLink)
-				{
-					W4dLink* pLink = links()[iLink];
-					if ( pLink->hasMesh() )
-					{
-						bool isChanged = W4dMaterialSequencePlan::changeTexture( pLink, keyTexture1, keyTexture2 );
+            if (subType() == MachPhys::CIVILIAN)
+            {
+                for (size_t iLink = 0; iLink < nLinks; ++iLink)
+                {
+                    W4dLink* pLink = links()[iLink];
+                    if (pLink->hasMesh())
+                    {
+                        bool isChanged = W4dMaterialSequencePlan::changeTexture(pLink, keyTexture1, keyTexture2);
 
-						pLink->entityPlanForEdit().uvPlan(uvPlanNotWorkingPtr, now, 0, MachPhys::CONSTRUCTION_NOT_WORKING);
-					}
-				}
-			}
+                        pLink->entityPlanForEdit()
+                            .uvPlan(uvPlanNotWorkingPtr, now, 0, MachPhys::CONSTRUCTION_NOT_WORKING);
+                    }
+                }
+            }
 
-			//the interior
-			pInteror()->clearAnimation( MachPhys::CONSTRUCTION_WORKING );
-			for( size_t iLink=0; iLink<nInterLinks; ++iLink)
-			{
-				W4dLink* pLink = pInteror()->links()[iLink];
-				if ( pLink->hasMesh() )
-				{
-					bool isChanged = W4dMaterialSequencePlan::changeTexture( pLink, keyTexture1, keyTexture2 );
+            // the interior
+            pInteror()->clearAnimation(MachPhys::CONSTRUCTION_WORKING);
+            for (size_t iLink = 0; iLink < nInterLinks; ++iLink)
+            {
+                W4dLink* pLink = pInteror()->links()[iLink];
+                if (pLink->hasMesh())
+                {
+                    bool isChanged = W4dMaterialSequencePlan::changeTexture(pLink, keyTexture1, keyTexture2);
 
-					pLink->entityPlanForEdit().uvPlan(uvPlanNotWorkingPtr, now, 0, MachPhys::CONSTRUCTION_NOT_WORKING);
-				}
-			}
-		}
-	}
+                    pLink->entityPlanForEdit().uvPlan(uvPlanNotWorkingPtr, now, 0, MachPhys::CONSTRUCTION_NOT_WORKING);
+                }
+            }
+        }
+    }
 }
-void MachPhysHardwareLab::damageLevel( const double& percent )
+void MachPhysHardwareLab::damageLevel(const double& percent)
 {
-	MachPhysConstruction::damageLevel( percent );
+    MachPhysConstruction::damageLevel(percent);
 
-	switch ( subType() )
-	{
+    switch (subType())
+    {
 
-		case MachPhys::MILITARY:
+        case MachPhys::MILITARY:
 
-			damageSmoke1Type( M_LAB_BLUE );
-			damageSmoke2Type( M_LAB_BROWN );
-			break;
+            damageSmoke1Type(M_LAB_BLUE);
+            damageSmoke2Type(M_LAB_BROWN);
+            break;
 
-		case MachPhys::CIVILIAN:
+        case MachPhys::CIVILIAN:
 
-			damageSmoke1Type( C_LAB_BLUE );
-			damageSmoke2Type( C_LAB_WHITE );
-			break;
-	}
+            damageSmoke1Type(C_LAB_BLUE);
+            damageSmoke2Type(C_LAB_WHITE);
+            break;
+    }
 }
-
 
 /* End HWLAB.CPP *****************************************************/

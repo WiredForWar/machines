@@ -1,5 +1,5 @@
 /*
- * C H A T M S G S . H P P 
+ * C H A T M S G S . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -16,8 +16,8 @@
 #include "machphys/machphys.hpp"
 #include "stdlib/strfwd.hpp"
 
-template < class T > class ctl_list;
-template < class T > class ctl_vector;
+template <class T> class ctl_list;
+template <class T> class ctl_vector;
 
 struct MachGuiInGameChatMessagesImpl;
 class MachGuiMessageBroker;
@@ -31,47 +31,46 @@ public:
     static MachGuiInGameChatMessages& instance();
     ~MachGuiInGameChatMessages();
 
-	void initialise( MachGuiMessageBroker*, MachGuiStartupScreens* );
+    void initialise(MachGuiMessageBroker*, MachGuiStartupScreens*);
 
     void CLASS_INVARIANT;
 
-	// Call every frame. Returns true if it has been updated.
-	bool update();
+    // Call every frame. Returns true if it has been updated.
+    bool update();
 
-	void addMessage( const string& );
+    void addMessage(const string&);
 
-	void clearAllMessages();
+    void clearAllMessages();
 
-	const ctl_list< string >& messages() const;
+    const ctl_list<string>& messages() const;
 
-	void sendMessage( const string& message, MachPhys::Race intendedRace );
-	// PRE( pMessageBroker_ );
+    void sendMessage(const string& message, MachPhys::Race intendedRace);
+    // PRE( pMessageBroker_ );
 
-	const string& playerName() const;
-	MachPhys::Race playerRace() const;
+    const string& playerName() const;
+    MachPhys::Race playerRace() const;
 
-	bool opponentExists( int index ) const;
-	string opponentName( int index ) const;
-	MachPhys::Race opponentRace( int index ) const;
-		
-	static int reqWidth();
-	static int reqHeight();
+    bool opponentExists(int index) const;
+    string opponentName(int index) const;
+    MachPhys::Race opponentRace(int index) const;
 
-	// Get a list of standard messages that can be sent. This saves typing
-	const ctl_vector< string >& standardMessages() const;
+    static int reqWidth();
+    static int reqHeight();
+
+    // Get a list of standard messages that can be sent. This saves typing
+    const ctl_vector<string>& standardMessages() const;
 
 private:
-    friend ostream& operator <<( ostream& o, const MachGuiInGameChatMessages& t );
+    friend ostream& operator<<(ostream& o, const MachGuiInGameChatMessages& t);
 
-    MachGuiInGameChatMessages( const MachGuiInGameChatMessages& );
-    MachGuiInGameChatMessages& operator =( const MachGuiInGameChatMessages& );
+    MachGuiInGameChatMessages(const MachGuiInGameChatMessages&);
+    MachGuiInGameChatMessages& operator=(const MachGuiInGameChatMessages&);
 
     MachGuiInGameChatMessages();
 
-	// Data members...
-	MachGuiInGameChatMessagesImpl* pImpl_;
+    // Data members...
+    MachGuiInGameChatMessagesImpl* pImpl_;
 };
-
 
 #endif
 

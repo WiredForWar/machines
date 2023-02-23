@@ -13,26 +13,25 @@ MachPhysWeaponsLabData::MachPhysWeaponsLabData()
     TEST_INVARIANT;
 }
 
-MachPhysWeaponsLabData::MachPhysWeaponsLabData( const MachPhysWeaponsLabData& copyMe, const MexTransform3d& transform )
-: MachPhysConstructionData( copyMe, transform )
+MachPhysWeaponsLabData::MachPhysWeaponsLabData(const MachPhysWeaponsLabData& copyMe, const MexTransform3d& transform)
+    : MachPhysConstructionData(copyMe, transform)
 {
 }
 
 MachPhysWeaponsLabData::~MachPhysWeaponsLabData()
 {
     TEST_INVARIANT;
-
 }
 
 void MachPhysWeaponsLabData::CLASS_INVARIANT
 {
 }
 
-ostream& operator <<( ostream& o, const MachPhysWeaponsLabData& t )
+ostream& operator<<(ostream& o, const MachPhysWeaponsLabData& t)
 {
 
-    //o << (MachPhysObjectData)t;
-    //o << (MachPhysConstructionData)t;
+    // o << (MachPhysObjectData)t;
+    // o << (MachPhysConstructionData)t;
 
     return o;
 }

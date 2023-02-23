@@ -1,7 +1,7 @@
 /*
- * S M P H A N D L . H P P 
+ * S M P H A N D L . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
-*/
+ */
 
 /*
 
@@ -17,6 +17,6 @@
 
 #include "utility/id.hpp"
 
-typedef UtlId SndSampleHandle;
+using SndSampleHandle = UtlId;
 
 #endif /* SMPHANDL.HPP ************************************/

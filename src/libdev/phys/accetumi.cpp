@@ -11,18 +11,16 @@
 
 #include "phys/internal/accetumi.hpp"
 
-PER_DEFINE_PERSISTENT( PhysAccelerateTumblePlanImpl );
+PER_DEFINE_PERSISTENT(PhysAccelerateTumblePlanImpl);
 
-PhysAccelerateTumblePlanImpl::PhysAccelerateTumblePlanImpl
-(
-	const PhysAccelerateTumblePlan::EulerTransformsPtr& transformsPtr,
+PhysAccelerateTumblePlanImpl::PhysAccelerateTumblePlanImpl(
+    const PhysAccelerateTumblePlan::EulerTransformsPtr& transformsPtr,
     const PhysMotionPlan::TimesPtr& segmentTimesPtr,
-  	const MexVec3& acceleration
-)
-: transformsPtr_( transformsPtr ),
-  segmentTimesPtr_( segmentTimesPtr ),
-  acceleration_( acceleration ),
-  currentSegmentIndex_( 0 )
+    const MexVec3& acceleration)
+    : transformsPtr_(transformsPtr)
+    , segmentTimesPtr_(segmentTimesPtr)
+    , acceleration_(acceleration)
+    , currentSegmentIndex_(0)
 {
 
     TEST_INVARIANT;
@@ -31,15 +29,14 @@ PhysAccelerateTumblePlanImpl::PhysAccelerateTumblePlanImpl
 PhysAccelerateTumblePlanImpl::~PhysAccelerateTumblePlanImpl()
 {
     TEST_INVARIANT;
-
 }
 
 void PhysAccelerateTumblePlanImpl::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-ostream& operator <<( ostream& o, const PhysAccelerateTumblePlanImpl& t )
+ostream& operator<<(ostream& o, const PhysAccelerateTumblePlanImpl& t)
 {
 
     o << "PhysAccelerateTumblePlanImpl " << (void*)&t << " start" << std::endl;
@@ -48,13 +45,13 @@ ostream& operator <<( ostream& o, const PhysAccelerateTumblePlanImpl& t )
 
     PhysMotionPlan::Times::const_iterator j = t.segmentTimesPtr_->begin();
 
-    for( PhysAccelerateTumblePlan::EulerTransforms::const_iterator i = t.transformsPtr_->begin();
-      i != t.transformsPtr_->end();
-      ++i )
+    for (PhysAccelerateTumblePlan::EulerTransforms::const_iterator i = t.transformsPtr_->begin();
+         i != t.transformsPtr_->end();
+         ++i)
     {
         o << *i;
 
-        if( j != t.segmentTimesPtr_->end() )
+        if (j != t.segmentTimesPtr_->end())
         {
             o << "Time = " << *j << std::endl;
             ++j;
@@ -68,11 +65,11 @@ ostream& operator <<( ostream& o, const PhysAccelerateTumblePlanImpl& t )
     return o;
 }
 
-PhysAccelerateTumblePlanImpl::PhysAccelerateTumblePlanImpl( PerConstructor )
+PhysAccelerateTumblePlanImpl::PhysAccelerateTumblePlanImpl(PerConstructor)
 {
 }
 
-void perWrite( PerOstream& ostr, const PhysAccelerateTumblePlanImpl& plan )
+void perWrite(PerOstream& ostr, const PhysAccelerateTumblePlanImpl& plan)
 {
     ostr << plan.transformsPtr_;
     ostr << plan.segmentTimesPtr_;
@@ -83,7 +80,7 @@ void perWrite( PerOstream& ostr, const PhysAccelerateTumblePlanImpl& plan )
     ostr << plan.initialVelocity_;
 }
 
-void perRead( PerIstream& istr, PhysAccelerateTumblePlanImpl& plan )
+void perRead(PerIstream& istr, PhysAccelerateTumblePlanImpl& plan)
 {
     istr >> plan.transformsPtr_;
     istr >> plan.segmentTimesPtr_;

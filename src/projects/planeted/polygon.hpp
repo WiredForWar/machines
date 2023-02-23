@@ -22,59 +22,59 @@
 
 class ofstream;
 
-typedef ctl_vector< MexPoint2d > PolyVerticies;
+using PolyVerticies = ctl_vector<MexPoint2d>;
 
 class PedPolygon : public W4dCustom
 {
 public:
-    PedPolygon( const PolyVerticies& , MATHEX_SCALAR z, bool selected );
-    ~PedPolygon();
+    PedPolygon(const PolyVerticies&, MATHEX_SCALAR z, bool selected);
+    ~PedPolygon() override;
 
     void CLASS_INVARIANT;
 
-	PolyVerticies& verticies();
-	const PolyVerticies& verticies() const;
+    PolyVerticies& verticies();
+    const PolyVerticies& verticies() const;
 
-	bool isConvex() const;
+    bool isConvex() const;
 
-	void refreshMesh();
+    void refreshMesh();
 
-	virtual void select( bool selected );
+    virtual void select(bool selected);
 
-	virtual void save( std::ofstream& ) = 0;
+    virtual void save(std::ofstream&) = 0;
 
-	virtual RenColour getWireColour() const = 0;
+    virtual RenColour getWireColour() const = 0;
 
-	void hide( bool hide );
+    void hide(bool hide);
 
-	bool hidden();
+    bool hidden();
 
-	virtual size_t height() const;
+    virtual size_t height() const;
 
-	virtual void height( size_t );
+    virtual void height(size_t);
 
-	void flatten( bool );
+    void flatten(bool);
 
-	void uniqueId( size_t );
+    void uniqueId(size_t);
 
-	size_t uniqueId() const;
+    size_t uniqueId() const;
 
 protected:
-	//Data...
-	PolyVerticies verticies_;
-	MATHEX_SCALAR z_;
-	bool selected_;
-	bool hidden_;
-	bool flatten_;
-	size_t uniqueId_;
+    // Data...
+    PolyVerticies verticies_;
+    MATHEX_SCALAR z_;
+    bool selected_;
+    bool hidden_;
+    bool flatten_;
+    size_t uniqueId_;
 
 private:
     // Operations deliberately revoked
-    PedPolygon( const PedPolygon& );
-    PedPolygon& operator =( const PedPolygon& );
-    bool operator ==( const PedPolygon& );
+    PedPolygon(const PedPolygon&);
+    PedPolygon& operator=(const PedPolygon&);
+    bool operator==(const PedPolygon&);
 
-	friend ostream& operator <<( ostream& o, const PedPolygon& t );
+    friend ostream& operator<<(ostream& o, const PedPolygon& t);
 };
 
 #endif

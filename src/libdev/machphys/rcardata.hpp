@@ -1,5 +1,5 @@
 /*
- * R C A R D A T A . H P P 
+ * R C A R D A T A . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -17,34 +17,33 @@
 class MachPhysResourceCarrierData : public MachPhysMachineData
 {
 public:
-    ~MachPhysResourceCarrierData();
+    ~MachPhysResourceCarrierData() override;
 
-	//Get methods public
-	MachPhys::SizeUnits capacity() const;
+    // Get methods public
+    MachPhys::SizeUnits capacity() const;
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator <<( ostream& o, const MachPhysResourceCarrierData& t );
+    friend ostream& operator<<(ostream& o, const MachPhysResourceCarrierData& t);
 
 private:
-	friend class MachPhysDataParser;
+    friend class MachPhysDataParser;
     // Operation deliberately revoked
-    MachPhysResourceCarrierData( const MachPhysResourceCarrierData& );
+    MachPhysResourceCarrierData(const MachPhysResourceCarrierData&);
 
     // Operation deliberately revoked
-    MachPhysResourceCarrierData& operator =( const MachPhysResourceCarrierData& );
+    MachPhysResourceCarrierData& operator=(const MachPhysResourceCarrierData&);
 
     // Operation deliberately revoked
-    bool operator ==( const MachPhysResourceCarrierData& );
+    bool operator==(const MachPhysResourceCarrierData&);
 
     MachPhysResourceCarrierData();
 
-	//set methods private
-	void capacity( const MachPhys::SizeUnits& );
+    // set methods private
+    void capacity(const MachPhys::SizeUnits&);
 
-	MachPhys::SizeUnits		capacity_;
+    MachPhys::SizeUnits capacity_;
 };
-
 
 #endif
 

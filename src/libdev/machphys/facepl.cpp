@@ -1,5 +1,5 @@
 /*
- * P R O T G E N . C P P 
+ * P R O T G E N . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -11,34 +11,33 @@
 
 #include "mathex/transf3d.hpp"
 
-PER_DEFINE_PERSISTENT( MachPhysFacePlate );
+PER_DEFINE_PERSISTENT(MachPhysFacePlate);
 
-MachPhysFacePlate::MachPhysFacePlate( W4dEntity* pParent, size_t level )
-: W4dGeneric( pParent, W4dTransform3d() )
+MachPhysFacePlate::MachPhysFacePlate(W4dEntity* pParent, size_t level)
+    : W4dGeneric(pParent, W4dTransform3d())
 {
-    loadLODFile( compositeFileName( level ) );
+    loadLODFile(compositeFileName(level));
 
     TEST_INVARIANT;
 }
 
-MachPhysFacePlate::MachPhysFacePlate( PerConstructor con )
-: W4dGeneric( con )
+MachPhysFacePlate::MachPhysFacePlate(PerConstructor con)
+    : W4dGeneric(con)
 {
 }
 
 MachPhysFacePlate::~MachPhysFacePlate()
 {
     TEST_INVARIANT;
-
 }
 
-SysPathName MachPhysFacePlate::compositeFileName( size_t brainLevel ) const
+SysPathName MachPhysFacePlate::compositeFileName(size_t brainLevel) const
 {
-    PRE( 1 <= brainLevel and brainLevel <= 10 );
-    
+    PRE(1 <= brainLevel and brainLevel <= 10);
+
     SysPathName result;
-    
-    switch( brainLevel )
+
+    switch (brainLevel)
     {
         case 1:
             result = "models/facepl/facepl1.lod";
@@ -71,32 +70,31 @@ SysPathName MachPhysFacePlate::compositeFileName( size_t brainLevel ) const
             result = "models/facepl/facepl1.lod";
             break;
     }
-    
-    return result;    
-}
 
+    return result;
+}
 
 void MachPhysFacePlate::CLASS_INVARIANT
 {
-    INVARIANT( this != NULL );
+    INVARIANT(this != nullptr);
 }
 
-void perWrite( PerOstream& ostr, const MachPhysFacePlate& facePlate )
+void perWrite(PerOstream& ostr, const MachPhysFacePlate& facePlate)
 {
     const W4dGeneric& base = facePlate;
-    
+
     ostr << base;
-    
-    ASSERT_FAIL( "Can't write out face plates yet" );
+
+    ASSERT_FAIL("Can't write out face plates yet");
 }
 
-void perRead( PerIstream& istr, MachPhysFacePlate& facePlate )
+void perRead(PerIstream& istr, MachPhysFacePlate& facePlate)
 {
     W4dGeneric& base = facePlate;
-    
+
     istr >> base;
-    
-    ASSERT_FAIL( "Can't read in face plates yet" );
+
+    ASSERT_FAIL("Can't read in face plates yet");
 }
 
 /* End PROTGEN.CPP **************************************************/

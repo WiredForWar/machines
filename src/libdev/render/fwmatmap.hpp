@@ -1,5 +1,5 @@
 /*
- * F W M A T M A P . H P P 
+ * F W M A T M A P . H P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
@@ -10,12 +10,12 @@
 // lots of interfaces, so forward declarations are useful in several places.
 #include "render/material.hpp"
 
-template <class T,			class C> class ctl_set;
+template <class T, class C> class ctl_set;
 template <class K, class T, class C> class ctl_map;
 
 // Note: less<RenMaterial> isn't used simply to reduce STL dependencies.
-typedef  ctl_set< RenMaterial, 				RenMaterial::Less > RenMaterialSet;
-typedef  ctl_map< RenMaterial, RenMaterial, RenMaterial::Less > RenMaterialMap;
+using RenMaterialSet = ctl_set<RenMaterial, RenMaterial::Less>;
+using RenMaterialMap = ctl_map<RenMaterial, RenMaterial, RenMaterial::Less>;
 
 #endif
 
