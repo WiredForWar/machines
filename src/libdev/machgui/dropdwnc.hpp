@@ -63,10 +63,10 @@ public:
 
     // Get ptr to item associated with currently highlighted text
     const DropDownListBoxItem item() const;
-    // PRE ( items() )
+    // PRE ( hasItems() )
 
     // Establish if there are values associated with drop down list box entries
-    bool items() const;
+    bool hasItems() const;
 
     // Set item data associated with list box item text
     void items(const DropDownListBoxItems& items);

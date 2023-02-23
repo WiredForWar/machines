@@ -109,7 +109,7 @@ void MachGuiDropDownListBoxCreator::text(const string& newText)
 const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxCreator::item() const
 {
     // Find value assosciated with currently selected text
-    PRE(items());
+    PRE(hasItems());
 
     uint i;
 
@@ -128,9 +128,9 @@ const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxC
     return returnItem;
 }
 
-bool MachGuiDropDownListBoxCreator::items() const
+bool MachGuiDropDownListBoxCreator::hasItems() const
 {
-    return (items_.size() != 0);
+    return !items_.empty();
 }
 
 // static
