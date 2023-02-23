@@ -177,7 +177,6 @@ GuiBmpFont GuiBmpFont::getFont(
 
 GuiBmpFont::GuiBmpFont()
 {
-    ASSERT(false, "Don't call the GuiBmpFont default constructor!!");
 }
 
 GuiBmpFont::GuiBmpFont(const SysPathName& fontPath)
@@ -193,6 +192,9 @@ GuiBmpFont::GuiBmpFont(const SysPathName& fontPath)
 GuiBmpFont::~GuiBmpFont()
 {
     TEST_INVARIANT;
+
+    if (!pFontCore_)
+        return;
 
     --pFontCore_->coreCount_;
     if (pFontCore_->coreCount_ == 0)
@@ -210,7 +212,10 @@ GuiBmpFont::GuiBmpFont(const GuiBmpFont& copy)
     underlineColour_ = copy.underlineColour_;
     underline_ = copy.underline_;
 
-    ++pFontCore_->coreCount_;
+    if (pFontCore_)
+    {
+        ++pFontCore_->coreCount_;
+    }
 }
 
 GuiBmpFont& GuiBmpFont::operator=(const GuiBmpFont& rhs)
@@ -224,7 +229,10 @@ GuiBmpFont& GuiBmpFont::operator=(const GuiBmpFont& rhs)
         underlineColour_ = rhs.underlineColour_;
         underline_ = rhs.underline_;
 
-        ++pFontCore_->coreCount_;
+        if (pFontCore_)
+        {
+            ++pFontCore_->coreCount_;
+        }
     }
 
     return *this;
