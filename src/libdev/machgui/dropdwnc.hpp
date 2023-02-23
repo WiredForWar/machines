@@ -32,6 +32,17 @@ public:
     using DropDownListBoxItem = const void*;
     using DropDownListBoxItems = ctl_vector<DropDownListBoxItem>;
 
+    template <typename T, int Size> static DropDownListBoxItems createBoxItems(T (&Values)[Size])
+    {
+        MachGuiDropDownListBoxCreator::DropDownListBoxItems items;
+        items.reserve(Size);
+        for (const T& Value : Values)
+        {
+            items.push_back(&Value);
+        }
+        return items;
+    };
+
     // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS
     // still needed for
     MachGuiDropDownListBoxCreator(
