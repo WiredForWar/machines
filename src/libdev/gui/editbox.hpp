@@ -22,6 +22,7 @@ class GuiSingleLineEditBox : public GuiDisplayable
 // Canonical form revoked
 {
 public:
+    GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box);
     GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
     ~GuiSingleLineEditBox() override;
 
@@ -73,7 +74,7 @@ protected:
 
     virtual int maxWidth() const;
 
-private:
+protected:
     friend ostream& operator<<(ostream& o, const GuiSingleLineEditBox& t);
 
     GuiSingleLineEditBox(const GuiSingleLineEditBox&);
@@ -82,14 +83,14 @@ private:
     // Data members...
     string rightText_;
     string leftText_;
-    Gui::XCoord caretPos_;
+    Gui::XCoord caretPos_ = 0;
     GuiBmpFont font_;
     bool showCaret_;
-    size_t maxChars_;
+    size_t maxChars_ = 0;
     GuiColour backgroundColour_;
     GuiColour caretColour_;
     bool dontUpdate_;
-    bool border_;
+    bool border_ = false;
     GuiColour borderColour_;
 };
 

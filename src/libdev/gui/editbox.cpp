@@ -12,19 +12,20 @@
 #include "device/time.hpp"
 #include "device/butevent.hpp"
 
-GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font)
+GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box)
     : GuiDisplayable(pParent, box)
-    , font_(font)
     , showCaret_(true)
     , backgroundColour_(Gui::BLACK())
     , caretColour_(Gui::WHITE())
-    , maxChars_(0)
-    , caretPos_(0)
     , dontUpdate_(true)
-    , border_(false)
     , borderColour_(Gui::WHITE())
 {
+}
 
+GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font)
+    : GuiSingleLineEditBox(pParent, box)
+{
+    font_ = font;
     TEST_INVARIANT;
 }
 
