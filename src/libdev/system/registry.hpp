@@ -25,6 +25,8 @@ public:
     static SysRegistry& instance();
     ~SysRegistry();
 
+    void reload();
+
     // complex interface for accessing the registry properly but with no windows dependancies
     enum ReturnValue
     {

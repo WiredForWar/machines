@@ -106,6 +106,15 @@ SysRegistry::~SysRegistry()
     _DELETE(pImpl_);
 }
 
+void SysRegistry::reload()
+{
+    while (pImpl_->openKeys_.size())
+        closeKey(pImpl_->openKeys_.front());
+    delete pImpl_;
+
+    pImpl_ = new SysRegistryImpl;
+}
+
 void SysRegistry::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
