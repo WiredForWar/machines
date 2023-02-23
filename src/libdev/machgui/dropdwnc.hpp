@@ -65,6 +65,8 @@ public:
     const DropDownListBoxItem item() const;
     // PRE ( hasItems() )
 
+    bool setCurrentItem(const DropDownListBoxItem item);
+
     // Establish if there are values associated with drop down list box entries
     bool hasItems() const;
 

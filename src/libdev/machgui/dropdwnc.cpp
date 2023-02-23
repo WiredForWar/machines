@@ -128,6 +128,20 @@ const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxC
     return returnItem;
 }
 
+bool MachGuiDropDownListBoxCreator::setCurrentItem(const DropDownListBoxItem item)
+{
+    for (size_t i = 0; i < items_.size(); ++i)
+    {
+        if (items_.at(i) == item)
+        {
+            text(strings_[i]);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool MachGuiDropDownListBoxCreator::hasItems() const
 {
     return !items_.empty();
