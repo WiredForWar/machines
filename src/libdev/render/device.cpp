@@ -330,9 +330,6 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
     {
         // Read the Vertex Shader code from the file
         std::string shadersDir("data/shaders/");
-        // Check if GLSL is too old
-        if(glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
-            shadersDir.append("120/");
         std::ifstream vertexShaderStream(shadersDir+vertexShaderPath, std::ios::in);
         if(vertexShaderStream.is_open()){
             std::string line = "";
@@ -480,7 +477,7 @@ bool RenDevice::fitToDisplay(RenDisplay* display)
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	if (SDL_GL_CreateContext(display_->window()) == NULL)
 	{
 		std::string msg("Fatal in SDL_GL_CreateContext: ");
