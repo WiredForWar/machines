@@ -5,15 +5,12 @@
 #ifndef _AFX_INVKARGS_INCLUDED
 #define _AFX_INVKARGS_INCLUDED
 
-// #include <string>
-#include "stdlib/string.hpp"
-#include "ctl/vector.hpp"
-// #include "ctl/algorith.hpp"
+#include <string>
+#include <vector>
 
-class AfxInvokeArgs : public ctl_vector<string>
+class AfxInvokeArgs : public std::vector<std::string>
 {
 public:
-    ~AfxInvokeArgs() override;
     int argc() const;
 
     int containsFlag(char flag) const;
