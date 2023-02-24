@@ -124,16 +124,16 @@ void MachInGameCursors2d::loadCursors()
     // Get the back buffer
     const GuiBitmap& backBuffer = Gui::backBuffer();
 
-    pMenuCursor_ = loadCursor(MachCursorSpec("large/arrow", 1));
+    pMenuCursor_ = loadCursor(MachCursorSpec("large/arrow", 1, { 0, 0 }));
     pEnterBuildingCursor_ = loadCursor(MachCursorSpec("large/enter", 6));
     pAttackCursor_ = loadCursor(MachCursorSpec("large/attack", 2));
-    pIonAttackCursor_ = loadCursor(MachCursorSpec("large/ioncan", 10));
-    pConstructCursor_ = loadCursor(MachCursorSpec("large/arrow", 1));
-    pLocateToCursor_ = loadCursor(MachCursorSpec("large/locat", 5));
+    pIonAttackCursor_ = loadCursor(MachCursorSpec("large/ioncan", 10, { 27, 38 }));
+    pConstructCursor_ = loadCursor(MachCursorSpec("large/arrow", 1, { 0, 0 }));
+    pLocateToCursor_ = loadCursor(MachCursorSpec("large/locat", 5, { 8, 14 }));
     pPatrolCursor_ = loadCursor(MachCursorSpec("large/patrol", 6));
     pDeployCursor_ = loadCursor(MachCursorSpec("large/deploy", 2));
     pPickUpCursor_ = loadCursor(MachCursorSpec("large/pickup", 2));
-    pScavengeCursor_ = loadCursor(MachCursorSpec("large/scav", 10));
+    pScavengeCursor_ = loadCursor(MachCursorSpec("large/scav", 10, { 8, 15 }));
     pTransportCursor_ = loadCursor(MachCursorSpec("large/putdn", 2));
     pEnterAPCCursor_ = loadCursor(MachCursorSpec("large/entapc", 6));
     pFollowCursor_ = loadCursor(MachCursorSpec("large/follow", 4));
@@ -146,16 +146,16 @@ void MachInGameCursors2d::loadCursors()
     pJoinConstructCursor_ = loadCursor(MachCursorSpec("large/jconst", 11));
     pAssemblePointCursor_ = loadCursor(MachCursorSpec("large/assembl", 4));
     pNukeAttackCursor_ = loadCursor(MachCursorSpec("large/nukattk", 5));
-    pScrollSouthCursor_ = loadCursor(MachCursorSpec("large/scrls", 1));
-    pScrollNorthCursor_ = loadCursor(MachCursorSpec("large/scrln", 1));
-    pScrollEastCursor_ = loadCursor(MachCursorSpec("large/scrle", 1));
-    pScrollWestCursor_ = loadCursor(MachCursorSpec("large/scrlw", 1));
-    pScrollNorthWestCursor_ = loadCursor(MachCursorSpec("large/scrlnw", 1));
-    pScrollNorthEastCursor_ = loadCursor(MachCursorSpec("large/scrlne", 1));
-    pScrollSouthWestCursor_ = loadCursor(MachCursorSpec("large/scrlsw", 1));
-    pScrollSouthEastCursor_ = loadCursor(MachCursorSpec("large/scrlse", 1));
+    pScrollSouthCursor_ = loadCursor(MachCursorSpec("large/scrls", 1, { 6, 13 }));
+    pScrollNorthCursor_ = loadCursor(MachCursorSpec("large/scrln", 1, { 6, 0 }));
+    pScrollEastCursor_ = loadCursor(MachCursorSpec("large/scrle", 1, { 13, 6 }));
+    pScrollWestCursor_ = loadCursor(MachCursorSpec("large/scrlw", 1, { 0, 6 }));
+    pScrollNorthWestCursor_ = loadCursor(MachCursorSpec("large/scrlnw", 1, { 0, 0 }));
+    pScrollNorthEastCursor_ = loadCursor(MachCursorSpec("large/scrlne", 1, { 14, 0 }));
+    pScrollSouthWestCursor_ = loadCursor(MachCursorSpec("large/scrlsw", 1, { 0, 14 }));
+    pScrollSouthEastCursor_ = loadCursor(MachCursorSpec("large/scrlse", 1, { 14, 14 }));
     pChooseConstructionCursor_ = loadCursor(MachCursorSpec("large/const", 11));
-    pTreacheryCursor_ = loadCursor(MachCursorSpec("large/treach", 5));
+    pTreacheryCursor_ = loadCursor(MachCursorSpec("large/treach", 5, { 4, 4 }));
 
     pSelectCursor_[LARGECURSORS] = loadCursor(MachCursorSpec("large/select", 1));
     pSelectCursor_[SMALLCURSORS] = loadCursor(MachCursorSpec("small/select", 1));
@@ -163,28 +163,13 @@ void MachInGameCursors2d::loadCursors()
     pNoEntryCursor_[SMALLCURSORS] = loadCursor(MachCursorSpec("small/noentry", 1));
     pMoveCursor_[LARGECURSORS] = loadCursor(MachCursorSpec("large/move", 4));
     pMoveCursor_[SMALLCURSORS] = loadCursor(MachCursorSpec("small/move", 4));
-
-    // The menu cursor and construct cursors has its origin at top left
-    pMenuCursor_->origin(0, 0);
-    pConstructCursor_->origin(0, 0);
-    pScrollSouthCursor_->origin(6, 13);
-    pScrollNorthCursor_->origin(6, 0);
-    pScrollEastCursor_->origin(13, 6);
-    pScrollWestCursor_->origin(0, 6);
-    pScrollNorthWestCursor_->origin(0, 0);
-    pScrollNorthEastCursor_->origin(14, 0);
-    pScrollSouthWestCursor_->origin(0, 14);
-    pScrollSouthEastCursor_->origin(14, 14);
-    pIonAttackCursor_->origin(27, 38);
-    pScavengeCursor_->origin(8, 15);
-    pLocateToCursor_->origin(8, 14);
-    pTreacheryCursor_->origin(4, 4);
 }
 
 RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
 {
     int nFrames = cursorSpec.getFramesNumber();
     std::string baseName = cursorSpec.getName();
+    MexPoint2d origin = cursorSpec.origin();
 
     ASSERT(nFrames < 100, "No more than 99 frames allowed for animated cursors - this is the current arbitrary limit.");
 
@@ -195,10 +180,6 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
     RenAnimCursor2d* pCursor = _NEW(RenAnimCursor2d);
 
     // Create and add the surface for each frame
-    int width = 0;
-    int height = 0;
-    // char index = '1';
-
     char buffer[3];
 
     for (int i = 0; i < nFrames; ++i)
@@ -222,9 +203,11 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
 
         if (i == 0)
         {
-            // Get the surface dimensions
-            width = surface.width();
-            height = surface.height();
+            if (!cursorSpec.hasCustomOrigin())
+            {
+                // Get the surface dimensions
+                origin = MexPoint2d(surface.width(), surface.height()) * 0.5;
+            }
         }
 
         // Add to the cursor
@@ -232,7 +215,7 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
     }
 
     // Set the origin
-    pCursor->origin(width / 2, height / 2);
+    pCursor->origin(origin.x(), origin.y());
 
     // set the frame rate
     pCursor->targetFrequency(10);

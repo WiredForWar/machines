@@ -13,6 +13,7 @@
 #define _MACHGUI_IGCURS2D_HPP
 
 #include "base/base.hpp"
+#include "mathex/point2d.hpp"
 #include "stdlib/string.hpp"
 #include "machgui/gui.hpp"
 
@@ -29,13 +30,26 @@ public:
     {
     }
 
+    MachCursorSpec(const std::string& name, int nFrames, const MexPoint2d& origin)
+        : MachCursorSpec(name, nFrames)
+    {
+        customOrigin_ = true;
+        origin_ = origin;
+    }
+
     std::string getName() const { return name_; }
 
     int getFramesNumber() const { return nFrames_; }
 
+    bool hasCustomOrigin() const { return customOrigin_; }
+
+    MexPoint2d origin() const { return origin_; }
+
 private:
     std::string name_;
     int nFrames_ = 0;
+    MexPoint2d origin_;
+    bool customOrigin_ = false;
 };
 
 // orthodox canonical (revoked)
