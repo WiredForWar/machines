@@ -233,7 +233,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     ignoreHostLostSystemMessage_ = false;
     cdCheckTime_ = 0.0;
 
-    pMenuCursor_ = MachInGameCursors2d::loadCursor("large/arrow", 1);
+    pMenuCursor_ = MachInGameCursors2d::loadCursor(MachCursorSpec("large/arrow", 1));
 
     pMenuCursor_->origin(0, 0);
 

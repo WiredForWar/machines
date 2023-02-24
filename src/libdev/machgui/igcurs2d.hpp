@@ -20,6 +20,24 @@
 class RenAnimCursor2d;
 class MachInGameScreen;
 
+class MachCursorSpec
+{
+public:
+    MachCursorSpec(const std::string& name, int nFrames)
+        : name_(name)
+        , nFrames_(nFrames)
+    {
+    }
+
+    std::string getName() const { return name_; }
+
+    int getFramesNumber() const { return nFrames_; }
+
+private:
+    std::string name_;
+    int nFrames_ = 0;
+};
+
 // orthodox canonical (revoked)
 class MachInGameCursors2d
 {
@@ -30,7 +48,7 @@ public:
     // dtor
     ~MachInGameCursors2d();
 
-    static RenAnimCursor2d* loadCursor(const string& baseName, int nFrames);
+    static RenAnimCursor2d* loadCursor(const MachCursorSpec& cursorSpec);
 
     // Get/Select the appropriate current cursor
     void cursor(MachGui::Cursor2dType type);
