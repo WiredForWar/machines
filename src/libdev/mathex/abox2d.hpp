@@ -22,7 +22,7 @@ class MexCompressedAlignedBox2d;
 class MexAlignedBox2d
 {
 public:
-    MexAlignedBox2d();
+    MexAlignedBox2d() = default;
 
     // Constructs the aligend box bounding both p1 and p2
     MexAlignedBox2d(const MexPoint2d& p1, const MexPoint2d& p2);
@@ -140,7 +140,7 @@ private:
 
     MexPoint2d vmin_;
     MexPoint2d vmax_;
-    bool isEmpty_;
+    bool isEmpty_ = false;
 };
 
 inline MexAlignedBox2d operator*(MexAlignedBox2d rhs, MATHEX_SCALAR c)

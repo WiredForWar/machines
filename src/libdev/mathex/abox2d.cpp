@@ -24,18 +24,9 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////
-
-MexAlignedBox2d::MexAlignedBox2d()
-    : vmin_(MexPoint2d(0, 0))
-    , vmax_(MexPoint2d(0, 0))
-{
-    isEmpty_ = false;
-}
-
 MexAlignedBox2d::MexAlignedBox2d(const MexPoint2d& p1, const MexPoint2d& p2)
     : vmin_(p1)
     , vmax_(p2)
-    , isEmpty_(false)
 {
     MATHEX_SCALAR x1 = p1.x();
     MATHEX_SCALAR y1 = p1.y();
@@ -68,7 +59,6 @@ MexAlignedBox2d::MexAlignedBox2d(const MexSize2d& size)
 MexAlignedBox2d::MexAlignedBox2d(const MexPoint2d& minCorner, double width, double height)
     : vmin_(minCorner)
     , vmax_(minCorner.x() + width, minCorner.y() + height)
-    , isEmpty_(false)
 {
     PRE(width >= 0);
     PRE(height >= 0);
@@ -88,7 +78,6 @@ MexAlignedBox2d::MexAlignedBox2d(
 
     vmin_ = v;
     vmax_ = v2;
-    isEmpty_ = false;
 
     POST(vmin_.x() == x1);
     POST(vmin_.y() == y1);
