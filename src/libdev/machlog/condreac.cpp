@@ -213,7 +213,7 @@ MachLogReachedLocationCondition* MachLogReachedLocationCondition::newFromParser(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
         atol(pParser->tokens()[4].c_str()),
-        MexPoint2d(0, 0, 0),
+        MexPoint2d(),
         0));
 
     pResult->booleanType_ = booleanType;

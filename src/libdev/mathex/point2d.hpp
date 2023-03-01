@@ -29,7 +29,8 @@ class MexPoint2d
 {
 public:
     // ctors
-    MexPoint2d(MATHEX_SCALAR x = 0, MATHEX_SCALAR y = 0);
+    MexPoint2d() = default;
+    MexPoint2d(MATHEX_SCALAR x, MATHEX_SCALAR y);
     MexPoint2d(const MexPoint2d& rhs);
     MexPoint2d(const MexVec2& rhs);
 
@@ -88,8 +89,8 @@ public:
 
 private:
     // The coordinates
-    MATHEX_SCALAR x_;
-    MATHEX_SCALAR y_;
+    MATHEX_SCALAR x_ = 0;
+    MATHEX_SCALAR y_ = 0;
 };
 
 bool operator<(const MexPoint2d&, const MexPoint2d&);
