@@ -55,11 +55,6 @@
 
 #include "gui/restring.hpp"
 
-unsigned char pPromptText2[]
-    = { 36,  155, 244, 110, 148, 128, 237, 154, 136, 235, 164, 5,   39,  213, 121, 59,  62,  234,
-        144, 189, 254, 6,   152, 79,  39,  75,  133, 111, 194, 135, 159, 178, 48,  195, 230, 88,
-        137, 163, 16,  214, 35,  146, 39,  165, 63,  67,  37,  29,  159, 152, 104, 155, 41,  0 };
-
 MachGuiConstructCommand::MachGuiConstructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen)
     , hadFinalPick_(false)

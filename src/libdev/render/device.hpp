@@ -233,9 +233,6 @@ public:
     // as frame rate, then the client's text below that.
     std::ostream& out();
 
-    // Display the given text as a horizonal scrolling banner.
-    void horizontalBannerText(const char* text, int nChars, double charsPerSecond);
-
     // The debug text appears at these co-ordinates.  (Well actually, the internal
     // stuff like stats appears first, then the debug text below that).
     void debugTextCoords(int x, int y);

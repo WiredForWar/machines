@@ -19,10 +19,6 @@
 #include "ctl/pvector.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-unsigned char pPromptText5[]
-    = { 180, 210, 47, 227, 51, 90, 137, 155, 240, 173, 174, 32,  220, 14,  59, 25,  84,  149, 74, 247, 23,
-        48,  98,  49, 34,  12, 7,  66,  4,   124, 7,   200, 229, 126, 154, 94, 234, 129, 16,  80, 214 };
-
 MachGuiIconWithCounter::MachGuiIconWithCounter(
     GuiDisplayable* pParent,
     const Gui::Coord& rel,

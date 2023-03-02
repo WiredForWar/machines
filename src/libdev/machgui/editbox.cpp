@@ -13,10 +13,6 @@
 #include "device/butevent.hpp"
 #include "machgui/menus_helper.hpp"
 
-unsigned char pPromptText1[] = { 87,  244, 105, 128, 48, 182, 149, 151, 72,  203, 222, 59, 150, 19,  218, 139, 154,
-                                 243, 40,  190, 242, 54, 243, 50,  98,  159, 84,  250, 37, 136, 151, 150, 0 };
-unsigned char pPromptText8[] = { 4, 212, 167, 27, 173, 11, 155, 126, 58, 37, 114, 151, 128 };
-
 MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font)
     : GuiSingleLineEditBox(pParent, box, font)
     , clearTextOnNextChar_(false)

@@ -13,11 +13,6 @@
 #include "gui/font.hpp"
 #include <stdlib.h>
 
-unsigned char pPromptText7[]
-    = { 191, 72,  239, 110, 89,  145, 9,  168, 237, 122, 240, 53,  6,   122, 152, 185, 174, 227,
-        32,  17,  46,  227, 120, 123, 10, 151, 202, 140, 224, 150, 104, 118, 36,  236, 142, 225,
-        56,  216, 196, 242, 2,   63,  31, 164, 108, 64,  37,  45,  233, 200, 179, 129, 128 };
-
 MachGuiStatisticsBar::MachGuiStatisticsBar(
     GuiDisplayable* pParent,
     const Gui::Coord& topLeft,

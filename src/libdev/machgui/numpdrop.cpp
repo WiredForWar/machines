@@ -11,9 +11,6 @@
 #include "system/registry.hpp"
 #include <cstring>
 
-unsigned char pPromptTextKey3[] = { 91,  30, 219, 198, 38,  235, 91, 65, 137, 222, 133, 82,  205, 65,
-                                    237, 5,  118, 0,   225, 63,  59, 56, 112, 160, 143, 211, 82,  76 };
-
 MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartup,

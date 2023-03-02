@@ -19,9 +19,6 @@
 #include "gui/event.hpp"
 #include "machgui/menus_helper.hpp"
 
-unsigned char pPromptText3[] = { 40,  106, 186, 168, 66, 203, 57, 56, 169, 183, 234, 60, 237, 34, 130,
-                                 107, 2,   114, 142, 83, 21,  22, 94, 198, 230, 161, 55, 98,  0 };
-
 // virtual
 void MachGuiColourList::doDisplay()
 {

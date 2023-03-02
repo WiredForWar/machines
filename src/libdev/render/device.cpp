@@ -1882,10 +1882,6 @@ bool RenDevice::antiAliasingOn() const
     return true;
 }
 
-void RenDevice::horizontalBannerText(const char* /*text*/, int /*nChars*/, double /*charsPerSecond*/)
-{
-}
-
 void RenDevice::setMaterialHandles(const RenMaterial& mat)
 {
     pImpl_->setMaterialHandles(mat);

@@ -11,11 +11,6 @@
 
 #include "device/cd.hpp"
 
-unsigned char pPromptTextKey7[]
-    = { 203, 32,  138, 78,  52,  240, 106, 192, 132, 20,  149, 70,  38,  8,   247, 202, 203, 195,
-        70,  99,  65,  142, 88,  15,  98,  242, 234, 237, 147, 254, 13,  5,   4,   131, 232, 193,
-        76,  176, 161, 210, 108, 74,  124, 200, 9,   33,  87,  13,  143, 161, 193, 228, 174 };
-
 MachGuiMusicVolumeSlideBar::MachGuiMusicVolumeSlideBar(
     MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,

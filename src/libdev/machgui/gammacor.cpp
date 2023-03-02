@@ -11,10 +11,6 @@
 #include "render/display.hpp"
 #include "render/device.hpp"
 
-unsigned char pPromptTextKey4[]
-    = { 232, 186, 25,  98,  183, 104, 237, 167, 239, 2,   162, 148, 53, 32, 245, 241, 119, 175, 189, 175, 48, 216,
-        19,  250, 184, 167, 252, 170, 21,  71,  133, 250, 60,  106, 0,  6,  176, 62,  106, 178, 116, 140, 23 };
-
 MachGuiGammaCorrectionSlideBar::MachGuiGammaCorrectionSlideBar(
     MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,

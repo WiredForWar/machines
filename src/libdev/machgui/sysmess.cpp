@@ -31,16 +31,6 @@
 #include "machgui/strtdata.hpp"
 #include "machgui/chatmsgs.hpp"
 
-unsigned char pPromptTextKey5[] = { 180, 136, 148, 74, 77, 198, 4, 194, 208, 181, 12, 106, 220, 202, 95, 245, 222, 0 };
-unsigned char pPromptText6[]
-    = { 173, 46, 120, 216, 105, 232, 200, 189, 72, 13,  147, 196, 148, 3,  5,   145, 206, 192, 84, 168,
-        97,  38, 233, 83,  193, 218, 102, 201, 77, 223, 217, 110, 78,  42, 142, 73,  132, 86,  0 };
-unsigned char pPromptTextKey6[]
-    = { 195, 91, 27,  180, 12,  137, 186, 157, 63, 104, 242, 180, 251, 109, 118, 177, 173, 161, 58, 136,
-        5,   71, 132, 50,  166, 191, 70,  176, 34, 170, 171, 78,  38,  79,  239, 37,  240, 62,  0 };
-unsigned char pPromptText9[] = { 161, 50, 124, 148, 107, 252, 212, 238, 31, 9, 128, 209, 219, 11, 3, 223, 0 };
-unsigned char pPromptTextKey9[] = { 195, 91, 27, 180, 12, 137, 186, 157, 63, 104, 242, 180, 251, 109, 118, 177, 0 };
-
 class MachGuiSessionLostGameTerminatorEvent : public SimDiscreteEvent
 {
 public:

@@ -8,10 +8,6 @@
 #include "machgui/focusctl.hpp"
 #include "machgui/startup.hpp"
 
-unsigned char pPromptTextKey1[] = { 35,  156, 8,  244, 23,  197, 181, 254, 60, 234, 254, 79,  254, 118, 250, 249,
-                                    255, 145, 77, 210, 129, 22,  146, 64,  7,  191, 32,  146, 64,  250, 242, 184 };
-unsigned char pPromptTextKey8[] = { 83, 188, 200, 59, 201, 98, 255, 94, 77, 77, 19, 227, 191 };
-
 class MachGuiFocusCapableControlImpl
 {
 private:
