@@ -306,8 +306,6 @@ set(MACHGUI_SOURCES
     restorer.cpp
     restorer.hpp
     root.hpp
-    sclayout.cpp
-    sclayout.hpp
     scrlarea.cpp
     scrlarea.hpp
     scrltext.cpp
