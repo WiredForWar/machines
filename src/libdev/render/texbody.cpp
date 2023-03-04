@@ -249,14 +249,14 @@ static bool checkTextureSize(const SysPathName& fileName, const SDL_Surface* sur
     // the models must be built with this in mind, hence it's hardcoded.
     // TBD: we could maybe devise a better strategy for dealing with this, i.e.
     // automatically down-sizing some textures which are too large???
-    const static uint16 maxTextureSize = 2048;
+    const static uint16 maxTextureSize = 4096;
 
     if (surface->w > maxTextureSize || surface->h > maxTextureSize)
     {
         RENDER_STREAM("  Texture " << fileName << " must be smaller than " << maxTextureSize << "." << std::endl);
         RENDER_STREAM("  (Its size is " << surface->w << "x" << surface->h << ".)" << std::endl);
 
-        ASSERT_FAIL("Texture size is greater than the maximum (2048x2048).");
+        ASSERT_FAIL("Texture size is greater than the maximum (4096x4096).");
         return false;
     }
 
