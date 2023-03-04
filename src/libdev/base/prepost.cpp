@@ -78,36 +78,10 @@ WEAK_SYMBOL void BaseAssertion::assertFileExists(const char* fileName, const cha
     return;
 #endif
 
-    bool assertionFailed = false;
-    std::string errorText;
-
-    if (!validFileName(fileName))
+    std::ifstream f(fileName);
+    if (!f.good())
     {
-        assertionFailed = true;
-        errorText = "File name invalid";
-    }
-    else
-    {
-        unsigned attr;
-        std::ifstream f(fileName);
-        if (!f.good())
-        {
-            assertionFailed = true;
-            errorText = "File not found";
-        }
-
-        /*else
-        {
-            if( ( attr & _A_SUBDIR ) == _A_SUBDIR )
-            {
-                assertionFailed = true;
-                errorText = "File not found (this is actually a directory)";
-            }
-        }*/
-    }
-
-    if (assertionFailed)
-    {
+        std::string errorText = "File not found";
         std::string failString(fileName);
         failString += ", ";
         failString += file;
@@ -122,16 +96,6 @@ WEAK_SYMBOL void BaseAssertion::assertFileExists(const char* fileName, const cha
         assertFail(failString.c_str(), runtime_error(errorText.c_str()));
 #endif
     }
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-
-// This function made sure that filenames weren't too long. It DID NOT assert any other validity.
-// Completely useless on modern systems
-
-bool BaseAssertion::validFileName(const char* fileName)
-{
-    return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////

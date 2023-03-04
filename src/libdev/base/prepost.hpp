@@ -58,8 +58,6 @@ public:
         const char* calledFromFile,
         const char* calledFromLine);
 
-    static bool validFileName(const char* fileName);
-
     //  True iff we are currently in an ASSERT, PRE or POST
     static bool inAssertion();
     //  True iff we are currently in an ASSERT_INFO, PRE_INFO or POST_INFO
