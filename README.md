@@ -1,8 +1,9 @@
 # Machines: Wired For War
-### 3D Real Time Strategy video game GL port source code
+
+**3D Real Time Strategy video game GL port source code**
 Released as a [free software](https://en.wikipedia.org/wiki/Free_software) under a permission of [Night Dive Studios](https://www.nightdivestudios.com/) who owns the rights to the game.
 
-**Followed conventions:**
+#### Followed conventions
 - file names use a DOS convention (8 chars + 3 for extension), not strictly followed any more,
 - macros are all UPPER_CASE in code, sometimes it may be enum cases, 
 - classes are named WithUpperCaseLetter on the beginning and between words,
@@ -41,41 +42,48 @@ Released as a [free software](https://en.wikipedia.org/wiki/Free_software) under
 - world4d - built on top of the render libraries, turned basic rendering into multi-mesh entities (W4dEntity is a base class for lot of things),
 - xin - .X mesh file loading into game engine (added now),
 
-**Build dependencies**
+#### Build dependencies
 Use provided Docker image for building or manually setup your environment.
 
 `libsdl2-dev libsdl2-image-dev libopenal-dev libalure-dev libenet-dev libfreetype6-dev libglew-dev libglm-dev libaudio-dev libswscale-dev`
 
-**Building**
+####  Building
 `git clone && git lfs pull`
 
-***Windows exe on linux/docker:***
-+ `sudo apt-get install mingw-w64`
-+ `mkdir buildMingw64 && cd buildMingw64`
-+ `cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..`
-+ or 32-bit cpu:
-+ `mkdir buildMingw32 && cd buildMingw32`
-+ `cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw32.cmake -DBUILD_32=1 ..`
+##### For Windows on linux/docker
+```
+sudo apt-get install mingw-w64
+mkdir buildMingw64 && cd buildMingw64
+cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..
+```
+or 32-bit cpu:
+```
+mkdir buildMingw32 && cd buildMingw32
+cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw32.cmake -DBUILD_32=1 ..
+```
 
 Extra parameters for release optimizations: 
 `-DCMAKE_BUILD_TYPE=RELEASE -DDEV_BUILD=OFF`
 
-***For linux:***
+##### For GNU/Linux
 + `mkdir build && cd build`
 + `cmake ..`
-+ `make -j 9`
++ `cmake --build . -j 9`
 
 For ARM SoC development boards (like Raspberry or Nitrogen8M) if you do not have cross compilation toolchain prepared it will be easier to boot-up one of dedicated system distribution and build it within this enviroment (takes approx one hour for 4 cores).
 
-**Making a distribution (Collect everything for installation)**
-Run `make distribution` to collect all of the data files, graphics files, and compiled binaries into a single folder. You may then copy the contents of the `distribution` folder into your game's directory.
+##### Making a package
+Run `make package` to collect all of the data files, graphics files, and compiled binaries into a single package file. You may then copy the contents of the package into your game's directory.
 
-**Class invariant checks (for debugging)**
+### Debugging
+
+#### Class invariant checks
 `export CB_INVARIANT_CHECKING=on`
 
-**Debug streams**
+#### Debug streams
 To turn on a stream define environment variable with correct name, eg. `set CB_HAL_TO=cout` or in linux shell `export CB_HAL_TO=cout`.
 Target cout is a current shell of course, replace it with filename to write log into or leave empty to turn off.
+
 Avaiable streams: (*base/diag.hpp*)
 - BOB
 - HAL
