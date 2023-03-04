@@ -47,7 +47,7 @@ static void loading(MachGuiDbSystem& system, W4dSceneManager* pSceneManager)
 
 void SDLApp::loadPlanets()
 {
-    typedef ctl_vector<SysFileData> FileDatas;
+    using FileDatas = SysFileEnumerator::FileDatas;
 
     // Construct a file enumerator for all the models\planet\...\*.arf files
     SysFileEnumerator arfEnum(SysPathName("models/planet"), SysPathName("*.arf"));

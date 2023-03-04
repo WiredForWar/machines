@@ -23,20 +23,16 @@
 #include "ctl/vector.hpp"
 
 class SysFileEnumerator : public SysFileFinder
-// canonical form revoked
 {
 public:
     SysFileEnumerator(const SysPathName& directory, const SysPathName& fileSpecification);
-    // POST( isEmpty() );
+    ~SysFileEnumerator() override = default;
 
-    ~SysFileEnumerator() override;
-
-    using FileDatas = ctl_vector<SysFileData>;
+    using FileDatas = std::vector<SysFileData>;
 
     const FileDatas& files() const;
 
     void clearFiles();
-    // POST( isEmpty() );
 
     bool isEmpty() const;
 

@@ -11,17 +11,10 @@ SysFileEnumerator::SysFileEnumerator(const SysPathName& directory, const SysPath
     : SysFileFinder(directory, fileSpecification)
 {
     files_.reserve(512);
-    TEST_INVARIANT;
-}
-
-SysFileEnumerator::~SysFileEnumerator()
-{
-    TEST_INVARIANT;
 }
 
 void SysFileEnumerator::CLASS_INVARIANT
 {
-    INVARIANT(this != nullptr);
 }
 
 const SysFileEnumerator::FileDatas& SysFileEnumerator::files() const
@@ -31,31 +24,18 @@ const SysFileEnumerator::FileDatas& SysFileEnumerator::files() const
 
 void SysFileEnumerator::clearFiles()
 {
-    TEST_INVARIANT;
-
-    files_.erase(files_.begin(), files_.end());
-
-    TEST_INVARIANT;
-
-    POST(isEmpty());
+    files_.clear();
 }
 
 bool SysFileEnumerator::isEmpty() const
 {
-    TEST_INVARIANT;
-
-    return (files_.empty());
+    return files_.empty();
 }
 
 // virtual
 SysFileFinder::ResultType SysFileEnumerator::processFile(const SysFileData& fileData)
 {
-    TEST_INVARIANT;
-
     files_.push_back(fileData);
-
-    TEST_INVARIANT;
-
     return SysFileFinder::CONTINUE;
 }
 

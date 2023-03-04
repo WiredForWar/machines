@@ -93,7 +93,7 @@ void RenTextureSetImpl::load(const SysPathName& directory, BaseProgressReporter*
     SysFileEnumerator fileFinder(directory, "*.bmp");
     fileFinder.examineSubdirectories(true);
     fileFinder.find();
-    const ctl_vector<SysFileData>& files = fileFinder.files();
+    const SysFileEnumerator::FileDatas& files = fileFinder.files();
 
     TEXSET_STREAM("Found " << files.size() << " .bmp files" << std::endl);
     textures_.reserve(files.size());
