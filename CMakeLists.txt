@@ -111,7 +111,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     endif()
 
     set(RELEASE_CXX_FLAGS "-O2")
-    set(DEBUG_CXX_FLAGS "-gstabs -O0")
+    set(DEBUG_CXX_FLAGS "-g -O0")
     set(TEST_CXX_FLAGS "-pthread")
     add_definitions(-DNOEXCEPT=noexcept -DHAVE_DEMANGLE)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
