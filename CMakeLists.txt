@@ -153,6 +153,12 @@ endif()
 # CMake Freetype find package sets only the capital-case variable
 set(Freetype_INCLUDE_DIRS ${FREETYPE_INCLUDE_DIRS})
 
+# Some glm versions export only `glm` target
+if(TARGET glm AND NOT TARGET glm::glm)
+    add_library(glm::glm INTERFACE IMPORTED)
+    target_link_libraries(glm::glm INTERFACE glm)
+endif()
+
 if(PLATFORM_WINDOWS)
   if(NOT BUILD_32)
     find_library(MSVCRT_LIBRARY msvcrt HINTS ${WINDOWS_DEPENDENCIES_DIR})
