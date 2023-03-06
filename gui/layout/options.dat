@@ -1,0 +1,48 @@
+// Options screen layout data for slide bars and labels
+
+// Music volume
+SB 353 79 153
+MT 7020 270 79 346 90 gui/menu/smallfnt.bmp
+
+// SFX Volume
+SB 353 99 153
+MT 7021 270 99 346 110 gui/menu/smallfnt.bmp
+
+// Gamma Correction
+SB 353 179 153
+MT 6991 270 179 346 190 gui/menu/smallfnt.bmp
+
+// Screen Resolution
+MT 7023 270 119 346 130 gui/menu/smallfnt.bmp
+
+// Direct draw display driver label
+MT 6999 250 139 346 150	gui/menu/smallfnt.bmp
+ 
+ // 3D Driver label
+MT 6998 270 159 346 170 gui/menu/smallfnt.bmp
+
+// 3DSound
+CB 7098 240 79
+
+// Screen Transitions
+CB 7099 240 99
+
+// Lock Resolution
+CB 6997 240 119
+
+// 2D cursors enabled
+CB 6996 240 139
+
+// Reverse up/down keys
+CB 6995 240 159
+
+// Reverse mouse
+CB 6994 240 179
+
+
+
+
+
+
+								
+								   
