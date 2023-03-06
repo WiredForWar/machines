@@ -18,6 +18,8 @@ class DevKey
 public:
     enum ScanCode
     {
+        UNKNOWN = 0,
+
         // keypad keys
         UP_ARROW_PAD = 72,
         DOWN_ARROW_PAD = 80,
