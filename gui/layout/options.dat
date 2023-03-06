@@ -17,9 +17,9 @@ MT 7023 270 119 346 130 gui/menu/smallfnt.bmp
 
 // Direct draw display driver label
 MT 6999 250 139 346 150	gui/menu/smallfnt.bmp
- 
- // 3D Driver label
-MT 6998 270 159 346 170 gui/menu/smallfnt.bmp
+
+// Scale Factor
+MT 11000 270 159 346 170 gui/menu/smallfnt.bmp
 
 // 3DSound
 CB 7098 240 79
@@ -38,11 +38,3 @@ CB 6995 240 159
 
 // Reverse mouse
 CB 6994 240 179
-
-
-
-
-
-
-								
-								   

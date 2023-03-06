@@ -47,6 +47,8 @@
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
 #define OPTIMISATIONS_AREA_MINY 209
 
+const char c_ScaleFactorOptionKey[] = "Options\\Scale Factor";
+
 class MachGuiCtxOptions;
 
 class MachGuiDDrawDropDownCallback : public MachGuiDropDownCallback
@@ -154,6 +156,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     const MachGuiOptionsLayout::MenuTextInfo& screenSizeTxt = screenLayout.menuTextInfo(3);
     const MachGuiOptionsLayout::MenuTextInfo& directDrawTxt = screenLayout.menuTextInfo(4);
     const MachGuiOptionsLayout::MenuTextInfo& direct3DTxt = screenLayout.menuTextInfo(5);
+    const MachGuiOptionsLayout::MenuTextInfo& scaleFactorTxt = screenLayout.menuTextInfo(5);
     const MachGuiOptionsLayout::CheckBoxInfo& sound3dCB = screenLayout.checkBoxInfo(0);
     const MachGuiOptionsLayout::CheckBoxInfo& transitionsCB = screenLayout.checkBoxInfo(1);
     const MachGuiOptionsLayout::CheckBoxInfo& screenResolutionLock = screenLayout.checkBoxInfo(2);
@@ -192,6 +195,13 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     //  _NEW( MachGuiMenuText( pStartupScreens, Gui::Box( direct3DTxt.topLeft, direct3DTxt.bottomRight ),
     //                         direct3DTxt.idsStringId, direct3DTxt.font, MachGuiMenuText::RIGHT_JUSTIFY ) );
+
+    new MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(scaleFactorTxt.topLeft, scaleFactorTxt.bottomRight),
+        scaleFactorTxt.idsStringId,
+        scaleFactorTxt.font,
+        MachGuiMenuText::RIGHT_JUSTIFY);
 
     // Create check boxes
     pSound3d_ = _NEW(MachGuiCheckBox(pStartupScreens, pStartupScreens, sound3dCB.topLeft, sound3dCB.stringId));
@@ -405,6 +415,30 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     soundVolume_ = pSoundVolume_->value();
 
     initialDDrawDriver_ = pDriverSelector_->currentDDrawDriver();
+    GuiResourceString defaultStr(IDS_MENU_DEFAULT);
+
+    GuiStrings scaleNames = {
+        defaultStr.asString(),
+        "100%",
+        "200%",
+    };
+
+    static const int scaleValues[] = {
+        0,
+        100,
+        200,
+    };
+
+    pScaleFactorSelector_ = new MachGuiDropDownListBoxCreator(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Coord(353, 159),
+        153,
+        scaleNames,
+        false,
+        true);
+    auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
+    pScaleFactorSelector_->items(items);
 
     setOptions();
 
@@ -454,7 +488,11 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
 {
     if (buttonEvent == MachGuiStartupScreens::BE_DUMMY_OK)
     {
+        int currentScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
+
         getOptions();
+
+        SysRegistry::instance().reload();
 
         uint idsMessage;
 
@@ -473,6 +511,8 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
         const RenDisplay::Mode& pCurrentMode
             = W4dManager::instance().sceneManager()->pDevice()->display()->currentMode();
 
+        int newScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
+
         if (pScreenResolutionLock_->checked()
             and ((pNewMode->width() != pCurrentMode.width()) or (pNewMode->height() != pCurrentMode.height())))
         {
@@ -485,6 +525,12 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
             {
                 idsMessage = IDS_MENUMESSAGE_RESOLUTION;
             }
+            bDisplayMessageBox = true;
+        }
+
+        if (!bDisplayMessageBox && (currentScaleFactorValue != newScaleFactorValue))
+        {
+            idsMessage = IDS_MENUMESSAGE_SCALE_FACTOR;
             bDisplayMessageBox = true;
         }
 
@@ -633,6 +679,12 @@ void MachGuiCtxOptions::getOptions()
 
     // Save display driver info in registry
     //   pDriverSelector_->updateDriverRegistries();
+
+    {
+        MachGuiDropDownListBoxCreator::DropDownListBoxItem currentItem = pScaleFactorSelector_->item();
+        int ScaleValue = *static_cast<const int*>(currentItem);
+        SysRegistry::instance().setIntegerValue(c_ScaleFactorOptionKey, "Value", ScaleValue);
+    }
 }
 
 void MachGuiCtxOptions::setOptions()
@@ -688,6 +740,23 @@ void MachGuiCtxOptions::setOptions()
     }
 
     cursorType2d_ = pCursorType_->checked();
+
+    {
+        int scaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
+
+        const MachGuiDropDownListBoxCreator::DropDownListBoxItems& scaleItems = pScaleFactorSelector_->items();
+        size_t scaleItemIndex = 0;
+        for (size_t i = 0; i < scaleItems.size(); ++i)
+        {
+            const int* scale = static_cast<const int*>(scaleItems.at(i));
+            if (scaleFactorValue == *scale)
+            {
+                scaleItemIndex = i;
+                break;
+            }
+        }
+        pScaleFactorSelector_->setCurrentItem(scaleItems.at(scaleItemIndex));
+    }
 }
 
 // static

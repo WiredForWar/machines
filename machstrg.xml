@@ -1489,4 +1489,9 @@ BELONGING TO</string>
 	>Sky without satellites</string>
 <string id="10023"
 	>Sky with satellites</string>
+
+<string id="11000"
+	>Scale Factor</string>
+<string id="11001"
+	>The UI Scale Factor settings will not take effect until you re-run the game.</string>
 </resources>

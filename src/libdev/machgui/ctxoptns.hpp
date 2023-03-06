@@ -85,6 +85,7 @@ private:
     RenDriverSelector* pDriverSelector_;
     MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_;
     MachGuiDropDownListBoxCreator* pDirect3DDrivers_;
+    MachGuiDropDownListBoxCreator* pScaleFactorSelector_ = nullptr;
     bool exitFromOptions_;
     RenDriverPtr initialDDrawDriver_;
     bool cursorType2d_;
