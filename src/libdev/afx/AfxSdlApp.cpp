@@ -358,9 +358,9 @@ void AfxSdlApp::dispatchCharEvent(SDL_Event* event)
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->text.timestamp;
 
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, rpt, (char)*(event->text.text));
+    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, rpt, event->text.text[0]);
 
-    DEBUG_STREAM(DIAG_NEIL, "char event " << (char)*(event->text.text) << std::endl);
+    DEBUG_STREAM(DIAG_NEIL, "char event " << event->text.text[0] << std::endl);
 
     DevSdlKeyboard::sdlInstance().wm_char(ev);
 }
