@@ -24,7 +24,7 @@ private:
     void wm_char(const DevButtonEvent& ev);
     void wm_killfocus();
 
-    static const ushort scanCodeToKeyNumMap[SDL_NUM_SCANCODES];
+    static ScanCode translateScanCode(SDL_Scancode sdlCode);
 };
 
 #undef DevButtonEvent

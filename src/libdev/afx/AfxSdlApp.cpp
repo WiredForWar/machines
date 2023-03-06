@@ -331,8 +331,7 @@ void AfxSdlApp::dispatchKeybrdEvent(SDL_Event* event, bool pressed)
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->key.timestamp;
 
-    const DevButtonEvent::ScanCode code
-        = static_cast<DevButtonEvent::ScanCode>(DevSdlKeyboard::scanCodeToKeyNumMap[event->key.keysym.scancode]);
+    const DevButtonEvent::ScanCode code = DevSdlKeyboard::translateScanCode(event->key.keysym.scancode);
     const bool previous = false;
     const uint16_t rpt = event->key.repeat + 1;
 

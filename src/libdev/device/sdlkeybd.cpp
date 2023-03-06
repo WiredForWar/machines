@@ -66,7 +66,7 @@ void DevSdlKeyboard::wm_char(const DevButtonEvent& ev)
 }
 
 // Keys are remapped from sdl to make codes same as it was defined in shrkeybd
-const ushort DevSdlKeyboard::scanCodeToKeyNumMap[SDL_NUM_SCANCODES] = {
+static const ushort scanCodeToKeyNumMap[SDL_NUM_SCANCODES] = {
     0x0, //  SDL_SCANCODE_UNKNOWN = 0, => 0 should also work for dinput codes as "not assigned/unknown"
     0x0, //  // 1 (unused)
     0x0, //  // 2 (unused)
@@ -632,5 +632,10 @@ const ushort DevSdlKeyboard::scanCodeToKeyNumMap[SDL_NUM_SCANCODES] = {
     0,
     0 // 501-511 unused
 };
+
+DevKey::ScanCode DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
+{
+    return static_cast<DevKey::ScanCode>(scanCodeToKeyNumMap[sdlCode]);
+}
 
 ///////////////////////////////////
