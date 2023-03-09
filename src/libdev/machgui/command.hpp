@@ -67,11 +67,11 @@ public:
 
     // Respond to pick at location on the terrain.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
-    virtual void pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed) = 0;
+    virtual void pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed);
 
     // respond to pick on pActor in the world view window.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
-    virtual void pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed) = 0;
+    virtual void pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed);
 
     // Respond to cursor at location on the terrain.
     // ctrl/shift/altPressed indicate which modifier keys are pressed.

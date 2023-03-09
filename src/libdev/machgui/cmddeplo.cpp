@@ -59,12 +59,6 @@ void MachGuiDeployCommand::pickOnTerrain(
 }
 
 // virtual
-void MachGuiDeployCommand::pickOnActor(MachActor*, bool, bool, bool)
-{
-    // Nothing to do
-}
-
-// virtual
 bool MachGuiDeployCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Only laden APCs can deploy.

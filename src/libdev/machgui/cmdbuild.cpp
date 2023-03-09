@@ -39,12 +39,6 @@ ostream& operator<<(ostream& o, const MachGuiBuildCommand& t)
 }
 
 // virtual
-void MachGuiBuildCommand::pickOnTerrain(const MexPoint3d&, bool, bool, bool)
-{
-    // Nothing to do
-}
-
-// virtual
 void MachGuiBuildCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool, bool)
 {
     // Usual selection of the actor

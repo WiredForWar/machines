@@ -57,11 +57,6 @@ ostream& operator<<(ostream& o, const MachGuiTransportCommand& t)
 }
 
 // virtual
-void MachGuiTransportCommand::pickOnTerrain(const MexPoint3d&, bool, bool, bool)
-{
-}
-
-// virtual
 void MachGuiTransportCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
     bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());

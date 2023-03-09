@@ -59,11 +59,6 @@ ostream& operator<<(ostream& o, const MachGuiScavengeCommand& t)
 }
 
 // virtual
-void MachGuiScavengeCommand::pickOnTerrain(const MexPoint3d&, bool, bool, bool)
-{
-}
-
-// virtual
 void MachGuiScavengeCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
     // Check for a legal actor

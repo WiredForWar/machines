@@ -46,21 +46,6 @@ ostream& operator<<(ostream& o, const MachGuiStandGroundCommand& t)
 }
 
 // virtual
-void MachGuiStandGroundCommand::pickOnTerrain(
-    const MexPoint3d& /*location*/,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-}
-
-// virtual
-void MachGuiStandGroundCommand::pickOnActor(MachActor* /*pActor*/, bool, bool, bool)
-{
-}
-
-// virtual
 bool MachGuiStandGroundCommand::canActorEverExecute(const MachActor& actor) const
 {
     // All machines can stand ground

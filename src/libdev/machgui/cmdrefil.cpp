@@ -42,28 +42,6 @@ ostream& operator<<(ostream& o, const MachGuiRefillLandMineCommand& t)
 }
 
 // virtual
-void MachGuiRefillLandMineCommand::pickOnTerrain(
-    const MexPoint3d&,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-    // Ignored
-}
-
-// virtual
-void MachGuiRefillLandMineCommand::pickOnActor(
-    MachActor*,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-    // Ignored
-}
-
-// virtual
 bool MachGuiRefillLandMineCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Locators can locate

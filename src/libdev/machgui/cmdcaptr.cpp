@@ -59,16 +59,6 @@ ostream& operator<<(ostream& o, const MachGuiCaptureCommand& t)
 }
 
 // virtual
-void MachGuiCaptureCommand::pickOnTerrain(
-    const MexPoint3d& /*location*/,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-}
-
-// virtual
 void MachGuiCaptureCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();

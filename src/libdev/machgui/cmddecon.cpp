@@ -63,16 +63,6 @@ ostream& operator<<(ostream& o, const MachGuiDeconstructCommand& t)
 }
 
 // virtual
-void MachGuiDeconstructCommand::pickOnTerrain(
-    const MexPoint3d& /*location*/,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-}
-
-// virtual
 void MachGuiDeconstructCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
     // Check for a pick on construction

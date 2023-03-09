@@ -63,16 +63,6 @@ ostream& operator<<(ostream& o, const MachGuiRepairCommand& t)
 }
 
 // virtual
-void MachGuiRepairCommand::pickOnTerrain(
-    const MexPoint3d& /*location*/,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-}
-
-// virtual
 void MachGuiRepairCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
     // Check for a pick on construction

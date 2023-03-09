@@ -49,21 +49,6 @@ ostream& operator<<(ostream& o, const MachGuiDefconCommand& t)
 }
 
 // virtual
-void MachGuiDefconCommand::pickOnTerrain(
-    const MexPoint3d& /*location*/,
-    bool /*ctrlPressed*/,
-    bool /*shiftPressed*/,
-    bool /*altPressed*/
-)
-{
-}
-
-// virtual
-void MachGuiDefconCommand::pickOnActor(MachActor* /*pActor*/, bool, bool /*shiftPressed*/, bool)
-{
-}
-
-// virtual
 bool MachGuiDefconCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Machines can have defcon set

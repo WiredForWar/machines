@@ -25,7 +25,7 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const MexSize2d& t);
 
 private:
-    //The coordinates
+    // The coordinates
     MATHEX_SCALAR width_ = 0;
     MATHEX_SCALAR height_ = 0;
 };

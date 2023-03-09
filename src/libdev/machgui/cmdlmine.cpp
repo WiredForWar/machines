@@ -77,12 +77,6 @@ void MachGuiDropLandMineCommand::pickOnTerrain(
 }
 
 // virtual
-void MachGuiDropLandMineCommand::pickOnActor(MachActor*, bool, bool, bool)
-{
-    // Ignored
-}
-
-// virtual
 bool MachGuiDropLandMineCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Spies with at least one mine can initiate a drop land mine operation.

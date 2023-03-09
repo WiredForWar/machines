@@ -54,14 +54,6 @@ public:
     // Default override does nothing
     void finish() override;
 
-    // Respond to pick at location on the terrain.
-    // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
-    void pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed) override;
-
-    // respond to pick on pActor in the world view window.
-    // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
-    void pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed) override;
-
     // Respond to cursor at location on the terrain.
     // ctrl/shift/altPressed indicate which modifier keys are pressed.
     // Returns 2d cursor to be displayed.

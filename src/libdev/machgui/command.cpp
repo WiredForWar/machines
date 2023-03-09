@@ -215,6 +215,14 @@ void MachGuiCommand::finish()
     // Do nothing
 }
 
+void MachGuiCommand::pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed)
+{
+}
+
+void MachGuiCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
+{
+}
+
 // virtual
 bool MachGuiCommand::canAdminApply() const
 {

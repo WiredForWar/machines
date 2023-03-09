@@ -75,12 +75,6 @@ void MachGuiLocateToCommand::pickOnTerrain(
 }
 
 // virtual
-void MachGuiLocateToCommand::pickOnActor(MachActor*, bool, bool, bool)
-{
-    // Ignored
-}
-
-// virtual
 bool MachGuiLocateToCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Locators can locate
