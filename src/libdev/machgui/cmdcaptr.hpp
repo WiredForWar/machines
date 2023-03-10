@@ -24,13 +24,8 @@
 #include "machgui/command.hpp"
 #include "machgui/gui.hpp"
 
-// Forward refs
-class MachPhysConstruction;
 class MachLogConstruction;
-class MachLogAdministrator;
-class W4dDomain;
 
-// orthodox canonical (revoked)
 class MachGuiCaptureCommand
     : public MachGuiCommand
     , public W4dObserver
