@@ -41,6 +41,7 @@ public:
     bool switchToInGameRequested() const;
     void resetSwitchToMenus();
     void resetSwitchToInGame();
+    void switchToInGame();
 
     // Set the actor that we are controlling
     void setActor(MachActor*);

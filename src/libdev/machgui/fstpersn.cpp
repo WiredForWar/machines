@@ -531,7 +531,6 @@ void MachGuiFirstPerson::update()
     CB_DEPIMPL(bool, justEnteredFirstPerson_);
     CB_DEPIMPL(bool, isDead_);
     CB_DEPIMPL(PhysAbsoluteTime, timeOfDeath_);
-    CB_DEPIMPL(bool, switchToInGame_);
     CB_DEPIMPL(bool, rightMouseButtonHeadTurningUsed_);
     CB_DEPIMPL(double, timeWeaponsFired_);
     CB_DEPIMPL(bool, reverseUpDownKeys_);
@@ -576,7 +575,7 @@ void MachGuiFirstPerson::update()
         pInGameScreen_->sceneManager().pDevice()->interferenceOn(std::min((Phys::time() - timeOfDeath_) + 0.1, 1.0));
         if (Phys::time() - timeOfDeath_ > 0.5)
         {
-            switchToInGame_ = true;
+            switchToInGame();
         }
         return;
     }
@@ -1450,14 +1449,12 @@ bool MachGuiFirstPerson::doHandleRightClickEvent(const GuiMouseEvent& event)
 {
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(double, lastRightClickTime_);
-    CB_DEPIMPL(bool, switchToInGame_);
-
     // Right button used to exit 1st person ( when double clicked )
     if (event.rightButton() == Gui::RELEASED)
     {
         if (DevTime::instance().time() - lastRightClickTime_ < MachGui::doubleClickInterval())
         {
-            switchToInGame_ = true;
+            switchToInGame();
         }
         else
         {
@@ -1474,7 +1471,6 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(DevKeyToCommandTranslator::CommandList, commandList_);
     CB_DEPIMPL(DevKeyToCommandTranslator*, pKeyTranslator_);
-    CB_DEPIMPL(bool, switchToInGame_);
     CB_DEPIMPL(bool, switchToMenus_);
     CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
@@ -1494,7 +1490,7 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
 
         if ((event.key() == DevKey::ESCAPE or event.key() == DevKey::SPACE) and event.state() == Gui::PRESSED)
         {
-            switchToInGame_ = true;
+            switchToInGame();
         }
     }
 
@@ -1520,19 +1516,19 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
             case 2: // Exit first person
                 if (event.key() == DevKey::ESCAPE and event.state() == Gui::PRESSED)
                 {
-                    switchToInGame_ = true;
+                    switchToInGame();
                     processed = true;
                 }
                 else if (event.key() == DevKey::PAD_0 and event.state() == Gui::PRESSED)
                 {
                     switchBackToGroundCamera_ = true;
-                    switchToInGame_ = true;
+                    switchToInGame();
                     processed = true;
                 }
                 else if (event.key() == DevKey::PAD_2 and event.state() == Gui::PRESSED)
                 {
                     switchBackToGroundCamera_ = false;
-                    switchToInGame_ = true;
+                    switchToInGame();
                     processed = true;
                 }
                 break;
@@ -1634,6 +1630,11 @@ void MachGuiFirstPerson::resetSwitchToInGame()
     CB_DEPIMPL(bool, switchToInGame_);
 
     switchToInGame_ = false;
+}
+
+void MachGuiFirstPerson::switchToInGame()
+{
+    pImpl_->switchToInGame_ = true;
 }
 
 void MachGuiFirstPerson::setActor(MachActor* pActor)
