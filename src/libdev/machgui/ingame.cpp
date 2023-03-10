@@ -2634,7 +2634,7 @@ void MachInGameScreen::checkSwitchGuiRoot()
     if (inFirstPerson_)
     {
         // Switch to ingame gui?
-        if (pFirstPerson_->switchToInGame())
+        if (pFirstPerson_->switchToInGameRequested())
         {
             inFirstPerson_ = false;
             pFirstPerson_->resetSwitchToInGame();

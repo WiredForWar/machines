@@ -1612,7 +1612,7 @@ bool MachGuiFirstPerson::switchToMenus() const
     return switchToMenus_;
 }
 
-bool MachGuiFirstPerson::switchToInGame() const
+bool MachGuiFirstPerson::switchToInGameRequested() const
 {
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(bool, switchToInGame_);

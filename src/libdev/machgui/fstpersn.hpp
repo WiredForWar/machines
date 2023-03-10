@@ -38,7 +38,7 @@ public:
     void CLASS_INVARIANT;
 
     bool switchToMenus() const;
-    bool switchToInGame() const;
+    bool switchToInGameRequested() const;
     void resetSwitchToMenus();
     void resetSwitchToInGame();
 
