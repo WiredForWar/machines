@@ -87,6 +87,7 @@ static ScanCodes& scanCodes()
         s_.push_back(DevKey::SPACE);
         s_.push_back(DevKey::BACK_SPACE);
         s_.push_back(DevKey::TAB);
+        s_.push_back(DevKey::GRAVE);
         s_.push_back(DevKey::LEFT_SHIFT);
         s_.push_back(DevKey::RIGHT_SHIFT);
         s_.push_back(DevKey::CAPS_LOCK);

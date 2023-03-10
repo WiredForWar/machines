@@ -70,6 +70,7 @@ public:
         SPACE = 57,
         BACK_SPACE = 14,
         TAB = 15,
+        GRAVE = 41,
         LEFT_SHIFT = 42,
         RIGHT_SHIFT = 54,
         CAPS_LOCK = 58,

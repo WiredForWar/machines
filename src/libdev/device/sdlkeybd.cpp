@@ -167,6 +167,8 @@ DevKey::ScanCode DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
         { SDL_SCANCODE_TAB, ScanCode::TAB },
         { SDL_SCANCODE_SPACE, ScanCode::SPACE },
 
+        { SDL_SCANCODE_GRAVE, ScanCode::GRAVE },
+
         { SDL_SCANCODE_INSERT, ScanCode::INSERT },
         { SDL_SCANCODE_DELETE, ScanCode::KEY_DELETE },
         { SDL_SCANCODE_HOME, ScanCode::HOME },

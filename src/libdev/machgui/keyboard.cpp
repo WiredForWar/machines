@@ -136,7 +136,8 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 12: // Go inhead
-                if (e.key() == DevKey::PAD_1 and e.state() == Gui::PRESSED and pFirstPerson_->okayToSwitchTo1stPerson())
+                if ((e.key() == DevKey::PAD_1 || e.key() == DevKey::GRAVE) && e.state() == Gui::PRESSED
+                    && pFirstPerson_->okayToSwitchTo1stPerson())
                 {
                     switchToInHead();
                     processed = true;

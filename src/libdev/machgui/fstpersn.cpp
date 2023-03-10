@@ -1514,7 +1514,8 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                 processed = pKeyTranslator_->translate(event.buttonEvent(), &commandList_);
                 break;
             case 2: // Exit first person
-                if (event.key() == DevKey::ESCAPE and event.state() == Gui::PRESSED)
+                if (((event.key() == DevKey::ESCAPE) || (event.key() == DevKey::GRAVE))
+                    && event.state() == Gui::PRESSED)
                 {
                     switchToInGame();
                     processed = true;
