@@ -1455,7 +1455,7 @@ bool MachGuiFirstPerson::doHandleRightClickEvent(const GuiMouseEvent& event)
     // Right button used to exit 1st person ( when double clicked )
     if (event.rightButton() == Gui::RELEASED)
     {
-        if (DevTime::instance().time() - lastRightClickTime_ < 0.5)
+        if (DevTime::instance().time() - lastRightClickTime_ < MachGui::doubleClickInterval())
         {
             switchToInGame_ = true;
         }
