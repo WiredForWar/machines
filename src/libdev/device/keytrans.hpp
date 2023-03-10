@@ -15,8 +15,8 @@
 
 #include "base/base.hpp"
 #include "device/keycomnd.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
+
+#include <vector>
 
 // class DevButtonEvent;
 
@@ -39,7 +39,7 @@ public:
 
         friend class DevKeyToCommandTranslator;
     };
-    using CommandList = ctl_vector<Command>; // Index pos is commandId
+    using CommandList = std::vector<Command>; // Index pos is commandId
 
     DevKeyToCommandTranslator();
     ~DevKeyToCommandTranslator();
@@ -89,7 +89,7 @@ private:
     bool needsPressedState(Command&, DevKeyToCommand::Modifier modifier);
 
     // data members
-    ctl_pvector<DevKeyToCommand> commandTranslations_;
+    std::vector<DevKeyToCommand*> commandTranslations_;
 };
 
 #endif

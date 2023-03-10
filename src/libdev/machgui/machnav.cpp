@@ -25,6 +25,7 @@
 #include "device/keytrans.hpp"
 #include "machgui/internal/strings.hpp"
 #include "ctl/list.hpp"
+#include "ctl/pvector.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
 //////
