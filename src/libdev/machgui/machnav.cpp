@@ -1771,7 +1771,7 @@ MachGuiNavigatorBase::MachGuiNavigatorBase(
     MachInGameScreen* pInGameScreen)
     : GuiDisplayable(pParent, box)
     , updateReq_(false)
-    , cycleIndex_(false)
+    , cycleIndex_(0)
     , pInGameScreen_(pInGameScreen)
 {
     pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
@@ -2001,7 +2001,7 @@ void MachGuiNavigatorBase::viewNext()
 
     if (not pSwitchToActor)
     {
-        cycleIndex_ = true;
+        cycleIndex_ = 1;
         if (pFirstActor)
             pInGameScreen_->cameras()->lookAt(*pFirstActor);
     }
