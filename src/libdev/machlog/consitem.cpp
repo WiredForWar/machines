@@ -177,7 +177,7 @@ ostream& operator<<(ostream& o, const MachLogConstructionItem& t)
     o << " hwLevel " << t.hwLevel() << std::endl;
     o << " weapon combo " << t.weaponCombo() << " hasWC defined " << t.hasWeaponCombo() << std::endl;
     // for( MachPhys::Race i = 0; i != MachPhys::N_RACES; ++((int&)i) )
-    for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++i)
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         o << " activated[" << i << "] " << t.activated(i) << " activation locked " << t.activationLocked(i)
           << std::endl;

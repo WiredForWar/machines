@@ -119,9 +119,11 @@ PhysRelativeTime MachLogLandMine::update(const PhysRelativeTime& maxCPUTime, MAT
 
         MATHEX_SCALAR sqrClosestFound = 999999999;
 
-        //      race() == MachPhys::RED ? targetRace = MachPhys::BLUE : targetRace = MachPhys::RED;
-        for (MachPhys::Race ridx = MachPhys::RED; not isDead() and ridx != MachPhys::N_RACES; ++ridx)
+        for (MachPhys::Race ridx : MachPhys::AllRaces)
         {
+            if (isDead())
+                break;
+
             MachLogRaces::DispositionToRace disp = races.dispositionToRace(race(), ridx);
             if (disp != MachLogRaces::ALLY and disp != MachLogRaces::OUR_RACE)
             {

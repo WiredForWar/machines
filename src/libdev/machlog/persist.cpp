@@ -121,7 +121,7 @@ void MachLogPersistence::setDataForWrite() const
     // removed for now   }
     // remove any left over from the time before.
     nonConstPer.controllers_.erase(nonConstPer.controllers_.begin(), nonConstPer.controllers_.end());
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++i)
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         if (MachLogRaces::instance().raceObjects(i).size() > 0)
         {
@@ -160,7 +160,7 @@ void perWrite(PerOstream& ostr, const MachLogPersistence& per)
                                                           << std::endl);
     MachPhys::Race pcControllerRace = MachLogRaces::instance().pcController().race();
     PER_WRITE_RAW_OBJECT(ostr, pcControllerRace);
-    for (MachPhys::Race race = MachPhys::RED; race < MachPhys::N_RACES; ++race)
+    for (MachPhys::Race race : MachPhys::AllRaces)
     {
         if (MachLogRaces::instance().raceInGame(race))
             raceExists[race] = true;
@@ -207,7 +207,7 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
     PER_READ_RAW_OBJECT(istr, (int&)pcControllerRace);
     HAL_STREAM("read in raceExist flags\n");
     PER_READ_RAW_DATA(istr, raceExists, MachPhys::N_RACES * sizeof(bool));
-    for (MachPhys::Race race = MachPhys::RED; race < MachPhys::N_RACES; ++race)
+    for (MachPhys::Race race : MachPhys::AllRaces)
     {
         if (raceExists[race])
         {

@@ -23,6 +23,13 @@ struct MachPhys
         NORACE
     };
 
+    static constexpr Race AllRaces[N_RACES] = {
+        Race::RED,
+        Race::BLUE,
+        Race::GREEN,
+        Race::YELLOW,
+    };
+
     enum MachineType : unsigned char
     {
         AGGRESSOR,
@@ -250,12 +257,6 @@ struct MachPhys
         ECD_DONTAPPLYANIMATION
     };
 };
-
-// Added missing operator
-inline MachPhys::Race& operator++(MachPhys::Race& race)
-{
-    return race = _STATIC_CAST(MachPhys::Race, (_STATIC_CAST(unsigned char, race) + 1));
-}
 
 ostream& operator<<(ostream& o, MachPhys::Race race);
 ostream& operator<<(ostream& o, MachPhys::MachineType type);

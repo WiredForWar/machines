@@ -585,7 +585,7 @@ int MachGuiStartupData::getNextAvailablePlayerSlot() const
 
 MachPhys::Race MachGuiStartupData::getNextAvailableRace() const
 {
-    for (MachPhys::Race race = MachPhys::RED; race < MachPhys::N_RACES; ++race)
+    for (MachPhys::Race race : MachPhys::AllRaces)
     {
         if (isRaceAvailable(race)) // Found an available race
             return race;

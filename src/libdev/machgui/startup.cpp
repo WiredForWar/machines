@@ -938,7 +938,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
         {
             bool checkAllOk = true;
             MachLogNetwork::instance().update();
-            for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++i)
+            for (MachPhys::Race i : MachPhys::AllRaces)
                 if (not MachLogNetwork::instance().ready(i))
                     checkAllOk = false;
             allOk = checkAllOk;
@@ -955,7 +955,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
                 SysWindowsAPI::peekMessage();
                 SysWindowsAPI::sleep(100);
                 DEBUG_STREAM(DIAG_NETWORK, "Looking for ready status: at " << Phys::time() << " ");
-                for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++i)
+                for (MachPhys::Race i : MachPhys::AllRaces)
                     DEBUG_STREAM(DIAG_NETWORK, i << " ready " << MachLogNetwork::instance().ready(i) << " ");
                 DEBUG_STREAM(DIAG_NETWORK, "\n");
                 if (Phys::time() - lastStartMessageTime > 3.0)

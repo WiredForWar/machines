@@ -84,8 +84,8 @@ void MachLogNetwork::terminateAndReset()
     //   pBroker_ = NULL;
     isNetworkGame_ = false;
     isNodeLogicalHost_ = false;
-    for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++i)
-        readyStatus_[i] = false;
+    for (bool& status : pImpl_->readyStatus_)
+        status = false;
     desiredProtocol_ = "";
     protocolChosen_ = false;
     NetNetwork::instance().resetStatus();
