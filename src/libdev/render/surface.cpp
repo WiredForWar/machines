@@ -371,6 +371,13 @@ void RenSurface::stretchBlit(const RenSurface& source, const Rect& srcArea, cons
     internals()->unclippedStretchBlit(source.internals(), srcArea, destArea);
 }
 
+void RenSurface::stretchBlit(const RenSurface& source)
+{
+    const Ren::Rect srcArea(0, 0, source.width(), source.height());
+    const Ren::Rect destArea(0, 0, width(), height());
+    stretchBlit(source, srcArea, destArea);
+}
+
 void RenSurface::copyFromRGBABuffer(const uint* buff)
 {
     internals()->copyFromBuffer(buff);
