@@ -99,13 +99,13 @@ protected:
 
     void updateMapToWorldMetrics();
 
-    static GuiBitmap* logoImage();
-    static GuiBitmap* machineImage();
-    static GuiBitmap* constructionImage();
-    static GuiBitmap* podImage();
-    static GuiBitmap* selectedMachineImage();
-    static GuiBitmap* selectedConstructionImage();
-    static GuiBitmap* selectedPodImage();
+    static GuiBitmap& logoImage(MachPhys::Race race);
+    static GuiBitmap& machineImage(MachPhys::Race race);
+    static GuiBitmap& constructionImage(MachPhys::Race race);
+    static GuiBitmap& podImage(MachPhys::Race race);
+    static GuiBitmap& selectedMachineImage(MachPhys::Race race);
+    static GuiBitmap& selectedConstructionImage(MachPhys::Race race);
+    static GuiBitmap& selectedPodImage(MachPhys::Race race);
     static GuiBitmap& debrisImage();
     static GuiBitmap& artifactImage();
     static GuiBitmap& oreImage();

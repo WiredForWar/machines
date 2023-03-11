@@ -228,7 +228,7 @@ MachContinentMap::MachContinentMap(
     , pCameras_(pCameras)
     , firstDraw_(false)
     , pInGameScreen_(pInGameScreen)
-    , mapBackground_(logoImage()[MachPhys::RED])
+    , mapBackground_(logoImage(MachPhys::RED))
     , pBeenHere_(nullptr)
     , fogOfWarOn_(true)
     , mapMode_(UNITS_ONLY)
@@ -244,14 +244,14 @@ MachContinentMap::MachContinentMap(
     // Switch on colour keying for map images
     for (MachPhys::Race race : MachPhys::AllRaces)
     {
-        machineImage()[race].colourKey(black);
-        podImage()[race].colourKey(black);
-        selectedMachineImage()[race].colourKey(black);
-        selectedPodImage()[race].colourKey(black);
-        machineImage()[race].enableColourKeying();
-        podImage()[race].enableColourKeying();
-        selectedMachineImage()[race].enableColourKeying();
-        selectedPodImage()[race].enableColourKeying();
+        machineImage(race).colourKey(black);
+        podImage(race).colourKey(black);
+        selectedMachineImage(race).colourKey(black);
+        selectedPodImage(race).colourKey(black);
+        machineImage(race).enableColourKeying();
+        podImage(race).enableColourKeying();
+        selectedMachineImage(race).enableColourKeying();
+        selectedPodImage(race).enableColourKeying();
     }
 
     // Turn on colour keying for various map images
@@ -389,76 +389,90 @@ void MachContinentMap::doDisplay()
 }
 
 // static
-GuiBitmap* MachContinentMap::logoImage()
+GuiBitmap& MachContinentMap::logoImage(MachPhys::Race race)
 {
-    static GuiBitmap machinePixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rlogo.bmp"),
-                                                         Gui::bitmap("gui/map/blogo.bmp"),
-                                                         Gui::bitmap("gui/map/glogo.bmp"),
-                                                         Gui::bitmap("gui/map/ylogo.bmp") };
+    static GuiBitmap logoPixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rlogo.bmp"),
+        Gui::bitmap("gui/map/blogo.bmp"),
+        Gui::bitmap("gui/map/glogo.bmp"),
+        Gui::bitmap("gui/map/ylogo.bmp"),
+    };
 
-    return machinePixel;
+    return logoPixel[race];
 }
 
 // static
-GuiBitmap* MachContinentMap::machineImage()
+GuiBitmap& MachContinentMap::machineImage(MachPhys::Race race)
 {
-    static GuiBitmap machinePixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rmachpix.bmp"),
-                                                         Gui::bitmap("gui/map/bmachpix.bmp"),
-                                                         Gui::bitmap("gui/map/gmachpix.bmp"),
-                                                         Gui::bitmap("gui/map/ymachpix.bmp") };
+    static GuiBitmap machinePixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rmachpix.bmp"),
+        Gui::bitmap("gui/map/bmachpix.bmp"),
+        Gui::bitmap("gui/map/gmachpix.bmp"),
+        Gui::bitmap("gui/map/ymachpix.bmp"),
+    };
 
-    return machinePixel;
+    return machinePixel[race];
 }
 
 // static
-GuiBitmap* MachContinentMap::selectedMachineImage()
+GuiBitmap& MachContinentMap::selectedMachineImage(MachPhys::Race race)
 {
-    static GuiBitmap machinePixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rmachpxs.bmp"),
-                                                         Gui::bitmap("gui/map/bmachpxs.bmp"),
-                                                         Gui::bitmap("gui/map/gmachpxs.bmp"),
-                                                         Gui::bitmap("gui/map/ymachpxs.bmp") };
+    static GuiBitmap machinePixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rmachpxs.bmp"),
+        Gui::bitmap("gui/map/bmachpxs.bmp"),
+        Gui::bitmap("gui/map/gmachpxs.bmp"),
+        Gui::bitmap("gui/map/ymachpxs.bmp"),
+    };
 
-    return machinePixel;
+    return machinePixel[race];
 }
 
-GuiBitmap* MachContinentMap::constructionImage()
+GuiBitmap& MachContinentMap::constructionImage(MachPhys::Race race)
 {
-    static GuiBitmap constructionPixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rconspix.bmp"),
-                                                              Gui::bitmap("gui/map/bconspix.bmp"),
-                                                              Gui::bitmap("gui/map/gconspix.bmp"),
-                                                              Gui::bitmap("gui/map/yconspix.bmp") };
+    static GuiBitmap constructionPixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rconspix.bmp"),
+        Gui::bitmap("gui/map/bconspix.bmp"),
+        Gui::bitmap("gui/map/gconspix.bmp"),
+        Gui::bitmap("gui/map/yconspix.bmp"),
+    };
 
-    return constructionPixel;
+    return constructionPixel[race];
 }
 
-GuiBitmap* MachContinentMap::selectedConstructionImage()
+GuiBitmap& MachContinentMap::selectedConstructionImage(MachPhys::Race race)
 {
-    static GuiBitmap constructionPixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rconspxs.bmp"),
-                                                              Gui::bitmap("gui/map/bconspxs.bmp"),
-                                                              Gui::bitmap("gui/map/gconspxs.bmp"),
-                                                              Gui::bitmap("gui/map/yconspxs.bmp") };
+    static GuiBitmap constructionPixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rconspxs.bmp"),
+        Gui::bitmap("gui/map/bconspxs.bmp"),
+        Gui::bitmap("gui/map/gconspxs.bmp"),
+        Gui::bitmap("gui/map/yconspxs.bmp"),
+    };
 
-    return constructionPixel;
+    return constructionPixel[race];
 }
 
-GuiBitmap* MachContinentMap::podImage()
+GuiBitmap& MachContinentMap::podImage(MachPhys::Race race)
 {
-    static GuiBitmap podPixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rpodpix.bmp"),
-                                                     Gui::bitmap("gui/map/bpodpix.bmp"),
-                                                     Gui::bitmap("gui/map/gpodpix.bmp"),
-                                                     Gui::bitmap("gui/map/ypodpix.bmp") };
+    static GuiBitmap podPixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rpodpix.bmp"),
+        Gui::bitmap("gui/map/bpodpix.bmp"),
+        Gui::bitmap("gui/map/gpodpix.bmp"),
+        Gui::bitmap("gui/map/ypodpix.bmp"),
+    };
 
-    return podPixel;
+    return podPixel[race];
 }
 
-GuiBitmap* MachContinentMap::selectedPodImage()
+GuiBitmap& MachContinentMap::selectedPodImage(MachPhys::Race race)
 {
-    static GuiBitmap podPixel[MachPhys::N_RACES] = { Gui::bitmap("gui/map/rpodpxs.bmp"),
-                                                     Gui::bitmap("gui/map/bpodpxs.bmp"),
-                                                     Gui::bitmap("gui/map/gpodpxs.bmp"),
-                                                     Gui::bitmap("gui/map/ypodpxs.bmp") };
+    static GuiBitmap podPixel[MachPhys::N_RACES] = {
+        Gui::bitmap("gui/map/rpodpxs.bmp"),
+        Gui::bitmap("gui/map/bpodpxs.bmp"),
+        Gui::bitmap("gui/map/gpodpxs.bmp"),
+        Gui::bitmap("gui/map/ypodpxs.bmp"),
+    };
 
-    return podPixel;
+    return podPixel[race];
 }
 
 // static
@@ -573,12 +587,12 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
     PRE(not artifactImage().empty());
     PRE(not mapFrameOne_.empty());
 
-    static size_t podImageWidth = podImage()[0].width();
-    static size_t podImageHeight = podImage()[0].height();
-    static size_t machineImageWidth = machineImage()[0].width();
-    static size_t machineImageHeight = machineImage()[0].height();
-    static size_t constructionImageWidth = constructionImage()[0].width();
-    static size_t constructionImageHeight = constructionImage()[0].height();
+    static size_t podImageWidth = podImage(MachPhys::RED).width();
+    static size_t podImageHeight = podImage(MachPhys::RED).height();
+    static size_t machineImageWidth = machineImage(MachPhys::RED).width();
+    static size_t machineImageHeight = machineImage(MachPhys::RED).height();
+    static size_t constructionImageWidth = constructionImage(MachPhys::RED).width();
+    static size_t constructionImageHeight = constructionImage(MachPhys::RED).height();
     static size_t oreImageWidth = oreImage().width();
     static size_t oreImageHeight = oreImage().height();
     static size_t debrisImageWidth = debrisImage().width();
@@ -600,33 +614,33 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
         {
             // Draw pod...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedPodImage()[race], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedPodImage(race), pos.x(), pos.y());
             else
-                mapFrameOne_.simpleBlit(podImage()[race], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(podImage(race), pos.x(), pos.y());
         }
         else if (actorPositions_[loop].type_ == MACHINE and mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedMachineImage()[race], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedMachineImage(race), pos.x(), pos.y());
             else
-                mapFrameOne_.simpleBlit(machineImage()[race], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(machineImage(race), pos.x(), pos.y());
         }
         else if (actorPositions_[loop].type_ == CAMOUFLAGEDMACHINE and mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedMachineImage()[playerRace_], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedMachineImage(playerRace_), pos.x(), pos.y());
             else
-                mapFrameOne_.simpleBlit(machineImage()[playerRace_], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(machineImage(playerRace_), pos.x(), pos.y());
         }
         else if (actorPositions_[loop].type_ == CONSTRUCTION and mapMode_ != RESOURCES_ONLY)
         {
             // Draw construction...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedConstructionImage()[race], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedConstructionImage(race), pos.x(), pos.y());
             else
-                mapFrameOne_.simpleBlit(constructionImage()[race], pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(constructionImage(race), pos.x(), pos.y());
         }
         else if (actorPositions_[loop].type_ == DEBRIS)
         {
@@ -778,12 +792,12 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
     GuiBitmap& selectedPodAttackedImage = selectedAttackedPodImage();
     static GuiBitmap constructionAttackedImage = Gui::bitmap("gui/map/aconspix.bmp");
     static GuiBitmap selectedConstructionAttackedImage = Gui::bitmap("gui/map/aconspxs.bmp");
-    static size_t podImageWidth = podImage()[0].width();
-    static size_t podImageHeight = podImage()[0].height();
-    static size_t machineImageWidth = machineImage()[0].width();
-    static size_t machineImageHeight = machineImage()[0].height();
-    static size_t constructionImageWidth = constructionImage()[0].width();
-    static size_t constructionImageHeight = constructionImage()[0].height();
+    static size_t podImageWidth = podImage(MachPhys::RED).width();
+    static size_t podImageHeight = podImage(MachPhys::RED).height();
+    static size_t machineImageWidth = machineImage(MachPhys::RED).width();
+    static size_t machineImageHeight = machineImage(MachPhys::RED).height();
+    static size_t constructionImageWidth = constructionImage(MachPhys::RED).width();
+    static size_t constructionImageHeight = constructionImage(MachPhys::RED).height();
 
     const Gui::Coord& pos = secondFrameActorPositions_[loop].drawPos_;
     MachPhys::Race race = secondFrameActorPositions_[loop].displayAsRace_;
@@ -875,12 +889,12 @@ size_t MachContinentMap::yOffset() const
 
 void MachContinentMap::updateRacePos()
 {
-    static size_t podImageWidth = podImage()[0].width();
-    static size_t podImageHeight = podImage()[0].height();
-    static size_t machineImageWidth = machineImage()[0].width();
-    static size_t machineImageHeight = machineImage()[0].height();
-    static size_t constructionImageWidth = constructionImage()[0].width();
-    static size_t constructionImageHeight = constructionImage()[0].height();
+    static size_t podImageWidth = podImage(MachPhys::RED).width();
+    static size_t podImageHeight = podImage(MachPhys::RED).height();
+    static size_t machineImageWidth = machineImage(MachPhys::RED).width();
+    static size_t machineImageHeight = machineImage(MachPhys::RED).height();
+    static size_t constructionImageWidth = constructionImage(MachPhys::RED).width();
+    static size_t constructionImageHeight = constructionImage(MachPhys::RED).height();
     static size_t oreImageWidth = oreImage().width();
     static size_t oreImageHeight = oreImage().height();
     static size_t debrisImageWidth = debrisImage().width();
@@ -1626,7 +1640,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
         // If we don't have any form of beacon then the map just shows the race logo
         if (currentBeacon_ == MachLog::NO_BEACON)
         {
-            mapBackground_ = logoImage()[playerRace_];
+            mapBackground_ = logoImage(playerRace_);
         }
         else
         {
