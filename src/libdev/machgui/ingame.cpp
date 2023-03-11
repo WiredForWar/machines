@@ -162,11 +162,14 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
         = _NEW(MachGuiMapArea(this, Gui::Boundary(0, 0, MachGui::controlPanelOutXPos(), MachGui::mapAreaHeight())));
     pReporter->report(10, 100); // 10% done
 
+    // Set the viewport boundary for the world view window
+    RenDevice& device = *pSceneManager->pDevice();
+    const int w = device.windowWidth();
+    const int h = device.windowHeight();
+
     // Set up sliding control panel section
-    pControlPanel_ = _NEW(MachGuiControlPanel(
-        this,
-        Gui::Boundary(0, MachGui::mapAreaHeight(), MachGui::controlPanelOutXPos(), 2000),
-        this));
+    pControlPanel_ = _NEW(
+        MachGuiControlPanel(this, Gui::Boundary(0, MachGui::mapAreaHeight(), MachGui::controlPanelOutXPos(), h), this));
     pReporter->report(15, 100); // 15% done
 
     // Create cameras
@@ -181,11 +184,6 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     // Construct the set of available commands
     initialiseAllCommands();
     pReporter->report(28, 100); // 28% done
-
-    // Set the viewport boundary for the world view window
-    RenDevice& device = *pSceneManager->pDevice();
-    const int w = device.windowWidth();
-    const int h = device.windowHeight();
 
     // Create the world view window
     pWorldViewWindow_
