@@ -31,7 +31,7 @@ class SysMetaFileIstream : public std::istream
 // Canonical form revoked
 {
 public:
-    SysMetaFileIstream(const SysMetaFile& metaFile, const SysPathName& fileName, std::ios::open_mode);
+    SysMetaFileIstream(const SysMetaFile& metaFile, const SysPathName& fileName, std::ios::openmode);
     // PRE( metaFile.hasFile( filename ) );
 
     ~SysMetaFileIstream() override;
