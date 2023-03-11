@@ -229,7 +229,6 @@ MachContinentMap::MachContinentMap(
     , firstDraw_(false)
     , pInGameScreen_(pInGameScreen)
     , mapBackground_(logoImage(MachPhys::RED))
-    , pBeenHere_(nullptr)
     , fogOfWarOn_(true)
     , mapMode_(UNITS_ONLY)
     , currentBeacon_(MachLog::NO_BEACON)
@@ -372,8 +371,7 @@ void MachContinentMap::loadGame(const string& planet)
 
 void MachContinentMap::unloadGame()
 {
-    _DELETE(pBeenHere_);
-    pBeenHere_ = nullptr;
+    pBeenHere_.clear();
 }
 
 void MachContinentMap::doDisplay()
@@ -688,14 +686,14 @@ void MachContinentMap::updateVisibleAreas(size_t loop)
 
         // Check to see if an actor with a particular scanner range has already visited
         // the area of the map.
-        short beenHereScannerSize = (*pBeenHere_)[(beenHereCheckY * BEENHERE_ARRAYWIDTH) + beenHereCheckX];
+        short beenHereScannerSize = pBeenHere_[(beenHereCheckY * BEENHERE_ARRAYWIDTH) + beenHereCheckX];
 
         ASSERT(actorPositions_[loop].scanner_ < 6, "scanner size is invalid");
 
         if (beenHereScannerSize < actorPositions_[loop].scanner_)
         {
             // Update the size of scanner that has visited a particular cell
-            (*pBeenHere_)[(beenHereCheckY * BEENHERE_ARRAYWIDTH) + beenHereCheckX] = actorPositions_[loop].scanner_;
+            pBeenHere_[(beenHereCheckY * BEENHERE_ARRAYWIDTH) + beenHereCheckX] = actorPositions_[loop].scanner_;
 
             Gui::Coord scannerDrawPos = actorPositions_[loop].actualPos_;
 
@@ -869,7 +867,7 @@ void MachContinentMap::updateMapToWorldMetrics()
     // Fog of war stuff...
     beenHereXRatio_ = planetX / BEENHERE_ARRAYWIDTH;
     beenHereYRatio_ = planetY / BEENHERE_ARRAYHEIGHT;
-    pBeenHere_ = _NEW(ctl_fixed_vector<BYTE>(BEENHERE_ARRAYWIDTH * BEENHERE_ARRAYHEIGHT, 0));
+    pBeenHere_.resize(BEENHERE_ARRAYWIDTH * BEENHERE_ARRAYHEIGHT, 0);
 }
 
 MATHEX_SCALAR MachContinentMap::mapToWorldRatio() const

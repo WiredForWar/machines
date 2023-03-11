@@ -22,6 +22,8 @@
 #include "machphys/machphys.hpp"
 #include "machlog/machlog.hpp"
 
+#include <vector>
+
 // Forward refs
 class MachInGameScreen;
 class MachGuiBmuText;
@@ -207,7 +209,7 @@ private:
     MachLog::BeaconType currentBeacon_;
     MachGuiTerrainOnOffButton* pTerrainOnOffButton_;
     MachGuiMapModeButton* pMapModeButton_;
-    ctl_fixed_vector<BYTE>* pBeenHere_; // Stores the largest scanner type that has visited an area of the map.
+    std::vector<BYTE> pBeenHere_; // Stores the largest scanner type that has visited an area of the map.
     bool noFastChangeInLightLevel_;
 };
 
