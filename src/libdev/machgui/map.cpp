@@ -286,14 +286,14 @@ MachContinentMap::MachContinentMap(
 
 void MachContinentMap::loadGame(const string& planet)
 {
-    string mapPath = "models/planet/";
+    std::string mapPath = "models/planet/";
     mapPath += planet;
-    string mapBmp = mapPath + "/map.bmp";
+    std::string mapBmp = mapPath + "/map.bmp";
 
     ASSERT_FILE_EXISTS(mapBmp.c_str());
 
     // Store map directory.
-    mapDir_ = mapBmp;
+    mapPath_ = mapBmp;
 
     DEBUG_STREAM(DIAG_NEIL, "Changing map to " << mapBmp << std::endl);
 
@@ -1643,7 +1643,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
         else
         {
             // Load the actual map terrain
-            mapBackground_ = Gui::bitmap(mapDir_);
+            mapBackground_ = Gui::bitmap(mapPath_);
         }
     }
 }

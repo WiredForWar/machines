@@ -200,7 +200,7 @@ private:
     bool zenithCamera_;
     Gui::Coord cameraFov_[4];
     MapMode mapMode_;
-    SysPathName mapDir_;
+    std::string mapPath_;
     bool fogOfWarOn_;
     double fogOfWarFrameTimer_;
     double fogOfWarLightLevel_;
