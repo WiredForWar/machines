@@ -172,8 +172,8 @@ void Gui::writeScreenAsBmp(const char* startFilename)
 
         sprintf(buffer, "%04ld", count);
 
-        // bmpPathName = string( startFilename ) + buffer + ".bmp";
-        bmpPathName = SysPathName(string(startFilename) + buffer + ".bmp");
+        // bmpPathName = string( startFilename ) + buffer + ".png";
+        bmpPathName = SysPathName(string(startFilename) + buffer + ".png");
 
         if (not bmpPathName.existsAsFile())
             gotBmpPathName = true;
@@ -181,7 +181,7 @@ void Gui::writeScreenAsBmp(const char* startFilename)
         ++count;
     }
 
-    surface.saveAsBmp(bmpPathName);
+    surface.saveAsPng(bmpPathName);
 }
 
 /* //////////////////////////////////////////////////////////////// */

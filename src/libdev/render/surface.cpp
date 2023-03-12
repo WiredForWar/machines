@@ -23,6 +23,8 @@
 #include "render/internal/vtxdata.hpp"
 #include "render/device.hpp"
 
+#include <SDL2/SDL_image.h>
+
 #include <stdio.h>
 
 //--------------------------------Creation & destruction--------------------------------
@@ -1059,7 +1061,7 @@ ostream& operator<<(ostream& o, const RenSurface& t)
     return o;
 }
 
-void RenSurface::saveAsBmp(const SysPathName& filename, const Rect& area) const
+void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
 {
     TEST_INVARIANT;
 
@@ -1144,7 +1146,7 @@ void RenSurface::saveAsBmp(const SysPathName& filename, const Rect& area) const
         free(t);
 
         // Write the file
-        SDL_SaveBMP(surface, filename.pathname().c_str());
+        IMG_SavePNG(surface, filename.pathname().c_str());
 
         // Free everything
         SDL_FreeSurface(surface);

@@ -54,7 +54,7 @@ void MachScreenDumper::dump()
     if (dumpAction_ == DUMPING)
     {
         RenSurface frontBuf = RenDevice::current()->frontSurface();
-        frontBuf.saveAsBmp(filename());
+        frontBuf.saveAsPng(filename());
 
         ++minorVersion_;
     }
@@ -75,7 +75,7 @@ string MachScreenDumper::filename() const
     while (minor.length() < 4)
         minor.insert(0, "0");
 
-    result += minor + ".bmp";
+    result += minor + ".png";
 
     return result;
 }

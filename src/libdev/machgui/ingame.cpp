@@ -3171,29 +3171,28 @@ void MachInGameScreen::saveScreenShot()
 {
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
-    bool gotBmpPathName = false;
-    SysPathName bmpPathName;
+    bool gotPathName = false;
+    SysPathName pathName;
     size_t count = 0;
 
     // Search for the first numbered file which doesn't exist already.
-    while (not gotBmpPathName)
+    while (!gotPathName)
     {
         char buffer[20];
 
         sprintf(buffer, "%04ld", count);
 
-        // bmpPathName = string( "mach" ) + buffer + ".bmp";
-        bmpPathName = SysPathName(string("mach") + buffer + ".bmp");
+        pathName = SysPathName(string("mach") + buffer + ".png");
 
-        if (not bmpPathName.existsAsFile())
-            gotBmpPathName = true;
+        if (not pathName.existsAsFile())
+            gotPathName = true;
 
         ++count;
     }
 
     RenDevice& device = *pSceneManager_->pDevice();
     RenSurface front = device.frontSurface();
-    front.saveAsBmp(bmpPathName);
+    front.saveAsPng(pathName);
 }
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const

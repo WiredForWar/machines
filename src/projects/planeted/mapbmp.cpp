@@ -113,7 +113,7 @@ void PedMapCreator::createBmp()
         }
 
         filename += buffer;
-        filename += ".bmp";
+        filename += ".png";
 
         SysPathName bmpfilename(filename);
         nextBmpFilename = not bmpfilename.existsAsFile();
@@ -226,7 +226,7 @@ void PedMapCreator::createBmp()
         }
     }
 
-    surface.saveAsBmp(filename, RenSurface::Rect(0, 0, xMax, yMax));
+    surface.saveAsPng(filename, RenSurface::Rect(0, 0, xMax, yMax));
 
     TEST_INVARIANT;
 }
