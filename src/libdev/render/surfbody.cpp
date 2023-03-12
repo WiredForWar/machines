@@ -399,9 +399,18 @@ void RenISurfBody::unclippedStretchBlit(const RenISurfBody* source, const Ren::R
     PRE_DATA(const bool displayDest = displayType_ == RenI::FRONT || displayType_ == RenI::BACK);
     PRE(dev);
     PRE(dev->display());
-    PRE(implies(displayDest && dev->display()->currentCursor(), dev->rendering()));
+    // PRE(implies(displayDest && dev->display()->currentCursor(), dev->rendering()));
 
-    dev->renderSurface(source, srcArea, dstArea);
+    if (displayType_ == RenI::NOT_DISPLAY)
+    {
+        dev->renderToTextureMode(textureID_, width_, height_);
+        dev->renderSurface(source, srcArea, dstArea, width_, height_);
+        dev->renderToTextureMode(0, 0, 0);
+    }
+    else
+    {
+        dev->renderSurface(source, srcArea, dstArea);
+    }
 }
 
 void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
