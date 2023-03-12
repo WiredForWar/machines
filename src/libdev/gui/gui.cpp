@@ -181,7 +181,7 @@ void Gui::writeScreenAsBmp(const char* startFilename)
         ++count;
     }
 
-    surface.saveAsBmp(RenSurface::Rect(0, 0, surface.width(), surface.height()), bmpPathName);
+    surface.saveAsBmp(bmpPathName);
 }
 
 /* //////////////////////////////////////////////////////////////// */

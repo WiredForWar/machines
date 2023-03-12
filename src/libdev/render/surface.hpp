@@ -122,7 +122,7 @@ public:
     void getPixel(int x, int y, RenColour*) const;
     void setPixel(int x, int y, const RenColour&);
 
-    void saveAsBmp(const Rect& area, const SysPathName&) const;
+    void saveAsBmp(const SysPathName&, const Rect& area = Rect()) const;
 
     void ellipse(const Rect& area, const RenColour& outlineColour, const RenColour& fillColour);
 

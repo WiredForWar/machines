@@ -226,7 +226,7 @@ void PedMapCreator::createBmp()
         }
     }
 
-    surface.saveAsBmp(RenSurface::Rect(0, 0, xMax, yMax), filename);
+    surface.saveAsBmp(filename, RenSurface::Rect(0, 0, xMax, yMax));
 
     TEST_INVARIANT;
 }

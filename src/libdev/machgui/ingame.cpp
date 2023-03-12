@@ -3193,7 +3193,7 @@ void MachInGameScreen::saveScreenShot()
 
     RenDevice& device = *pSceneManager_->pDevice();
     RenSurface front = device.frontSurface();
-    front.saveAsBmp(RenSurface::Rect(0, 0, front.width(), front.height()), bmpPathName);
+    front.saveAsBmp(bmpPathName);
 }
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const

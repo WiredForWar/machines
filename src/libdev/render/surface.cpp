@@ -1059,7 +1059,7 @@ ostream& operator<<(ostream& o, const RenSurface& t)
     return o;
 }
 
-void RenSurface::saveAsBmp(const Rect& area, const SysPathName& filename) const
+void RenSurface::saveAsBmp(const SysPathName& filename, const Rect& area) const
 {
     TEST_INVARIANT;
 
