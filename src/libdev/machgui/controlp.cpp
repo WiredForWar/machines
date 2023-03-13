@@ -32,14 +32,14 @@ public:
     MachGuiControlPanelOnOffBtn(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
         : GuiButton(pParent, Gui::Box(rel, reqWidth(), reqHeight()))
         , pInGameScreen_(pInGameScreen)
-        , slideHoleBmp_(Gui::bitmap("gui/misc/slidhole.bmp"))
-        , sliderBmp_(Gui::bitmap("gui/misc/slider.bmp"))
+        , slideHoleBmp_(MachGui::getScaledImage("gui/misc/slidhole.bmp"))
+        , sliderBmp_(MachGui::getScaledImage("gui/misc/slider.bmp"))
     {
     }
 
-    static int reqWidth() { return 6; }
+    static int reqWidth() { return 6 * MachGui::uiScaleFactor(); }
 
-    static int reqHeight() { return 49; }
+    static int reqHeight() { return 49 * MachGui::uiScaleFactor(); }
 
 protected:
     void doBeReleased(const GuiMouseEvent&) override
@@ -87,7 +87,9 @@ protected:
         GuiPainter::instance().blit(slideHoleBmp_, absoluteBoundary().minCorner());
         GuiPainter::instance().blit(
             sliderBmp_,
-            Gui::Coord(absoluteBoundary().minCorner().x(), absoluteBoundary().minCorner().y() + 12));
+            Gui::Coord(
+                absoluteBoundary().minCorner().x(),
+                absoluteBoundary().minCorner().y() + 12 * MachGui::uiScaleFactor()));
     }
 
     void doDisplayReleasedEnabled() override
@@ -99,7 +101,9 @@ protected:
         else
             GuiPainter::instance().blit(
                 sliderBmp_,
-                Gui::Coord(absoluteBoundary().minCorner().x(), absoluteBoundary().minCorner().y() + 24));
+                Gui::Coord(
+                    absoluteBoundary().minCorner().x(),
+                    absoluteBoundary().minCorner().y() + 24 * MachGui::uiScaleFactor()));
     }
 
 private:
@@ -127,7 +131,9 @@ MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box
 
     _NEW(MachGuiControlPanelOnOffBtn(
         this,
-        Gui::Coord(MachGui::controlPanelOutXPos() - MachGuiControlPanelOnOffBtn::reqWidth(), 8),
+        Gui::Coord(
+            MachGui::controlPanelOutXPos() - MachGuiControlPanelOnOffBtn::reqWidth(),
+            8 * MachGui::uiScaleFactor()),
         pInGameScreen));
 
     useFastSecondDisplay(false);
@@ -313,14 +319,21 @@ void MachGuiControlPanel::setupDecalCoords()
     CB_DEPIMPL_ARRAY(Gui::Coord, decalCoord_);
     CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
 
-    decalCoord_[0] = Gui::Coord(0, 78);
-    decalCoord_[1] = Gui::Coord(1, 175);
-    decalCoord_[2] = Gui::Coord(127, 60);
-    decalCoord_[3] = Gui::Coord(79, 155);
-    decalCoord_[4] = Gui::Coord(0, 0);
-    decalCoord_[5] = Gui::Coord(60, getVisibleHeight() - (decals_[5].height() + 5));
-    decalCoord_[6] = Gui::Coord(5, getVisibleHeight() - (decals_[6].height() + 3));
-    decalCoord_[7] = Gui::Coord(136, getVisibleHeight() - (decals_[7].height() + 3));
+    decalCoord_[0] = Gui::Coord(0, 78) * MachGui::uiScaleFactor();
+    decalCoord_[1] = Gui::Coord(1, 175) * MachGui::uiScaleFactor();
+    decalCoord_[2] = Gui::Coord(127, 60) * MachGui::uiScaleFactor();
+    decalCoord_[3] = Gui::Coord(79, 155) * MachGui::uiScaleFactor();
+    decalCoord_[4] = Gui::Coord(0, 0) * MachGui::uiScaleFactor();
+
+    decalCoord_[5] = Gui::Coord(
+        60 * MachGui::uiScaleFactor(),
+        getVisibleHeight() - (decals_[5].height() + 5 * MachGui::uiScaleFactor()));
+    decalCoord_[6] = Gui::Coord(
+        5 * MachGui::uiScaleFactor(),
+        getVisibleHeight() - (decals_[6].height() + 3 * MachGui::uiScaleFactor()));
+    decalCoord_[7] = Gui::Coord(
+        136 * MachGui::uiScaleFactor(),
+        getVisibleHeight() - (decals_[7].height() + 3 * MachGui::uiScaleFactor()));
 }
 
 void MachGuiControlPanel::repositionNavigators(
@@ -366,14 +379,14 @@ void MachGuiControlPanel::setupDecalBitmaps()
     CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
 
     // Setup decal bitmaps
-    decals_[0] = Gui::bitmap(getDecalRootDirectory() + "decal1.bmp");
-    decals_[1] = Gui::bitmap(getDecalRootDirectory() + "decal2.bmp");
-    decals_[2] = Gui::bitmap(getDecalRootDirectory() + "decal3.bmp");
-    decals_[3] = Gui::bitmap(getDecalRootDirectory() + "decal4.bmp");
-    decals_[4] = Gui::bitmap("gui/misc/decal5.bmp");
-    decals_[5] = Gui::bitmap("gui/misc/decal6.bmp");
-    decals_[6] = Gui::bitmap("gui/misc/decal7.bmp");
-    decals_[7] = Gui::bitmap("gui/misc/decal7.bmp");
+    decals_[0] = MachGui::getScaledImage(getDecalRootDirectory() + "decal1.bmp");
+    decals_[1] = MachGui::getScaledImage(getDecalRootDirectory() + "decal2.bmp");
+    decals_[2] = MachGui::getScaledImage(getDecalRootDirectory() + "decal3.bmp");
+    decals_[3] = MachGui::getScaledImage(getDecalRootDirectory() + "decal4.bmp");
+    decals_[4] = MachGui::getScaledImage("gui/misc/decal5.bmp");
+    decals_[5] = MachGui::getScaledImage("gui/misc/decal6.bmp");
+    decals_[6] = MachGui::getScaledImage("gui/misc/decal7.bmp");
+    decals_[7] = MachGui::getScaledImage("gui/misc/decal7.bmp");
 
     for (int loop = 0; loop < 8; ++loop)
     {

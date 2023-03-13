@@ -434,7 +434,7 @@ GuiBitmap& MachGui::controlPanelBmp()
     {
         ASSERT_FILE_EXISTS("gui/misc/backtile.bmp");
 
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/misc/backtile.bmp")));
+        pBmp = _NEW(GuiBitmap(MachGui::getScaledImage("gui/misc/backtile")));
     }
 
     return *pBmp;
@@ -716,13 +716,13 @@ GuiBitmap MachGui::getScaledImage(std::string path)
 // static
 int MachGui::controlPanelInXPos()
 {
-    return 6;
+    return 6 * uiScaleFactor();
 }
 
 // static
 int MachGui::controlPanelOutXPos()
 {
-    return 169;
+    return 169 * uiScaleFactor();
 }
 
 // static
@@ -752,7 +752,7 @@ int MachGui::promptTextYOffset()
 // static
 int MachGui::mapAreaHeight()
 {
-    return 129;
+    return 129 * uiScaleFactor();
 }
 
 // static

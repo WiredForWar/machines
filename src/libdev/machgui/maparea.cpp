@@ -34,7 +34,7 @@ public:
         }
 
         // Render the underside of the map area.
-        static GuiBitmap slideRailBmp = Gui::bitmap("gui/misc/slide.bmp");
+        static GuiBitmap slideRailBmp = MachGui::getScaledImage("gui/misc/slide.bmp");
 
         if (not slideRailBmp.isColourKeyingOn())
         {
