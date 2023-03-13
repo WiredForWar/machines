@@ -709,6 +709,11 @@ GuiBitmap MachGui::getScaledImage(std::string path)
         mapBitmap1x.width() * MachGui::uiScaleFactor(),
         mapBitmap1x.height() * MachGui::uiScaleFactor(),
         mapBitmap1x);
+
+    // Workaround artefacts in transparent pixels:
+    result.filledRectangle(RenSurface::Rect(0, 0, result.width(), result.height()), Gui::MAGENTA());
+    result.enableColourKeying();
+
     result.stretchBlit(mapBitmap1x);
     return result;
 }
