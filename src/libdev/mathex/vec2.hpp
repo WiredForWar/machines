@@ -50,6 +50,13 @@ public:
     void operator/=(MATHEX_SCALAR);
     // PRE( t != 0 );
 
+    friend MexVec2 operator+(const MexVec2& rhs, const MexVec2& lhs)
+    {
+        return MexVec2(rhs.x_ + lhs.x_, rhs.y_ + lhs.y_);
+    }
+
+    friend MexVec2 operator*(const MexVec2& rhs, MATHEX_SCALAR c) noexcept { return MexVec2(rhs.x_ * c, rhs.y_ * c); }
+
     static const MexVec2& zeroVector();
 
     MATHEX_SCALAR operator[](size_t i) const;

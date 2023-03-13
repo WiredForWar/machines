@@ -416,8 +416,8 @@ void MachPromptText::displayChatMessage()
     if (GuiManager::instance().charFocusExists() and &GuiManager::instance().charFocus() == this
         and showCaret()) // Only show caret if we have focus
     {
-        Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Coord(caretPosition, startY);
-        Gui::Coord to = from + Gui::Coord(0, font_.charHeight());
+        Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Vec(caretPosition, startY);
+        Gui::Coord to = from + Gui::Vec(0, font_.charHeight());
         GuiPainter::instance().line(from, to, caretColour(), 1 * MachGui::uiScaleFactor());
     }
 
@@ -445,7 +445,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vecto
         for (const string& line : textLines)
         {
             Gui::Coord textPos(0, startY);
-            Gui::Coord shadowPos = textPos + Gui::Coord(1, 1) * MachGui::uiScaleFactor();
+            Gui::Coord shadowPos = textPos + Gui::Vec(1, 1) * MachGui::uiScaleFactor();
             pImpl_->shadowFont_
                 .drawText(&pImpl_->promptBmp_, line, shadowPos, pImpl_->promptBmp_.width() - shadowPos.x());
             pImpl_->font_.drawText(&pImpl_->promptBmp_, line, textPos, pImpl_->promptBmp_.width());
@@ -726,7 +726,7 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
     const int hSpacing = 1 * MachGui::uiScaleFactor();
     const int xOffset = lightOn_.width() + hSpacing;
 
-    return absoluteBoundary().minCorner() + Gui::Coord(xOffset, yOffset);
+    return absoluteBoundary().minCorner() + Gui::Vec(xOffset, yOffset);
 }
 
 /* NA 30/11/98. New processesMouseEvents added to GuiDisplayable means I don't need these
