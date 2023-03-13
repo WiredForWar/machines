@@ -30,12 +30,16 @@ class MachGuiControlPanelOnOffBtn : public GuiButton
 {
 public:
     MachGuiControlPanelOnOffBtn(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
-        : GuiButton(pParent, Gui::Box(rel, 6, 49))
+        : GuiButton(pParent, Gui::Box(rel, reqWidth(), reqHeight()))
         , pInGameScreen_(pInGameScreen)
         , slideHoleBmp_(Gui::bitmap("gui/misc/slidhole.bmp"))
         , sliderBmp_(Gui::bitmap("gui/misc/slider.bmp"))
     {
     }
+
+    static int reqWidth() { return 6; }
+
+    static int reqHeight() { return 49; }
 
 protected:
     void doBeReleased(const GuiMouseEvent&) override
@@ -121,7 +125,10 @@ MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box
     setupDecalBitmaps();
     setupDecalCoords();
 
-    _NEW(MachGuiControlPanelOnOffBtn(this, Gui::Coord(MachGui::controlPanelOutXPos() - 6, 8), pInGameScreen));
+    _NEW(MachGuiControlPanelOnOffBtn(
+        this,
+        Gui::Coord(MachGui::controlPanelOutXPos() - MachGuiControlPanelOnOffBtn::reqWidth(), 8),
+        pInGameScreen));
 
     useFastSecondDisplay(false);
 
