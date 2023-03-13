@@ -204,7 +204,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     pBmuButton_ = _NEW(MachGuiBmuButton(
         pMapArea_,
         Gui::Coord(x, 0),
-        SysPathName("gui/navigate/bmus.bmp"),
+        MachGui::getScaledImagePath("gui/navigate/bmus.bmp"),
         pContinentMap_->bmuText(),
         pContinentMap_,
         this));
