@@ -19,7 +19,7 @@
 #include "machgui/internal/mgsndman.hpp"
 
 MachGuiBmuText::MachGuiBmuText(GuiDisplayable* pParent, const Gui::Coord& relPos)
-    : GuiDisplayable(pParent, Gui::Boundary(relPos, 126, 10))
+    : GuiDisplayable(pParent, Gui::Boundary(relPos, 126 * MachGui::uiScaleFactor(), 10 * MachGui::uiScaleFactor()))
 {
     DEBUG_STREAM(DIAG_NEIL, "Creating MachGuiBmuText" << std::endl);
 
@@ -49,13 +49,13 @@ void MachGuiBmuText::refresh()
 void MachGuiBmuText::doDisplay()
 {
     static GuiBitmap numbers[10] = {
-        Gui::bitmap(SysPathName("gui/navigate/numbmu0.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu1.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numbmu2.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu3.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numbmu4.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu5.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numbmu6.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu7.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numbmu8.bmp")), Gui::bitmap(SysPathName("gui/navigate/numbmu9.bmp"))
+        MachGui::getScaledImage("gui/navigate/numbmu0.bmp"), MachGui::getScaledImage("gui/navigate/numbmu1.bmp"),
+        MachGui::getScaledImage("gui/navigate/numbmu2.bmp"), MachGui::getScaledImage("gui/navigate/numbmu3.bmp"),
+        MachGui::getScaledImage("gui/navigate/numbmu4.bmp"), MachGui::getScaledImage("gui/navigate/numbmu5.bmp"),
+        MachGui::getScaledImage("gui/navigate/numbmu6.bmp"), MachGui::getScaledImage("gui/navigate/numbmu7.bmp"),
+        MachGui::getScaledImage("gui/navigate/numbmu8.bmp"), MachGui::getScaledImage("gui/navigate/numbmu9.bmp"),
     };
-    static GuiBitmap slash(Gui::bitmap(SysPathName("gui/navigate/numbmus.bmp")));
+    static GuiBitmap slash(MachGui::getScaledImage("gui/navigate/numbmus.bmp"));
 
     Gui::Coord absCopy(absoluteBoundary().minCorner().x() + width(), absoluteBoundary().minCorner().y());
 
