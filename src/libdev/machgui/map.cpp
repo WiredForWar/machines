@@ -734,6 +734,8 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
 
     if (currentBeacon_ != MachLog::NO_BEACON)
     {
+        Gui::Coord cameraImageOffset = Gui::Coord(-2, -2);
+        int cameraPolygonThickness = 1;
         if (zenithCamera_)
         {
             // Draw box representing visible terrain area.
@@ -744,22 +746,28 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
             cameraFovPoints.push_back(cameraFov_[2]);
             cameraFovPoints.push_back(cameraFov_[3]);
             cameraFovPoints.push_back(cameraFov_[0]);
-            pMapFrame->polyLine(cameraFovPoints, Gui::LIGHTGREY(), 1);
+            pMapFrame->polyLine(cameraFovPoints, Gui::LIGHTGREY(), cameraPolygonThickness);
 
             // Draw camera pos
-            pMapFrame->simpleBlit(cameraPosImage_, cameraPos_.x() - 2, cameraPos_.y() - 2);
+            pMapFrame->simpleBlit(
+                cameraPosImage_,
+                cameraPos_.x() + cameraImageOffset.x(),
+                cameraPos_.y() + cameraImageOffset.y());
         }
         else
         {
             // Draw camera pos
-            pMapFrame->simpleBlit(cameraPosImage_, cameraPos_.x() - 2, cameraPos_.y() - 2);
+            pMapFrame->simpleBlit(
+                cameraPosImage_,
+                cameraPos_.x() + cameraImageOffset.x(),
+                cameraPos_.y() + cameraImageOffset.y());
 
             // Draw line of sight
             RenSurface::Points lineOfSight;
             lineOfSight.reserve(2);
             lineOfSight.push_back(cameraPos_);
             lineOfSight.push_back(cameraEndPos_);
-            pMapFrame->polyLine(lineOfSight, Gui::LIGHTGREY(), 1);
+            pMapFrame->polyLine(lineOfSight, Gui::LIGHTGREY(), cameraPolygonThickness);
         }
     }
 }
