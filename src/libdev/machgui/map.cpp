@@ -63,7 +63,7 @@ public:
             rel,
             GuiBorderMetrics(1, 1, 1),
             GuiFilledBorderColours(MachGui::VERYDARKGREY(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::GREEN()),
-            Gui::bitmap(SysPathName("gui/map/mapt.bmp")),
+            MachGui::getScaledImage("gui/map/mapt.bmp"),
             Gui::Coord(1, 1))
         , pMap_(nullptr)
         , pInGameScreen_(pInGameScreen)
@@ -75,9 +75,9 @@ public:
 
     bool mapOn() { return isDepressed(); }
 
-    static size_t reqWidth() { return 14; }
+    static size_t reqWidth() { return 14 * MachGui::uiScaleFactor(); }
 
-    static size_t reqHeight() { return 11; }
+    static size_t reqHeight() { return 11 * MachGui::uiScaleFactor(); }
 
 protected:
     void doBeDepressed(const GuiMouseEvent&) override
@@ -129,7 +129,7 @@ public:
             rel,
             GuiBorderMetrics(1, 1, 1),
             GuiFilledBorderColours(MachGui::VERYDARKGREY(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::GREEN()),
-            Gui::bitmap(SysPathName("gui/map/mapm.bmp")),
+            MachGui::getScaledImage("gui/map/mapm.bmp"),
             Gui::Coord(1, 1))
         , pMap_(nullptr)
         , pInGameScreen_(pInGameScreen)
@@ -137,9 +137,9 @@ public:
         pMap_ = pMap;
     }
 
-    static size_t reqWidth() { return 14; }
+    static size_t reqWidth() { return 14 * MachGui::uiScaleFactor(); }
 
-    static size_t reqHeight() { return 11; }
+    static size_t reqHeight() { return 11 * MachGui::uiScaleFactor(); }
 
 protected:
     void doBeDepressed(const GuiMouseEvent&) override { }
@@ -223,7 +223,7 @@ MachContinentMap::MachContinentMap(
     MachInGameScreen* pInGameScreen)
     : GuiDisplayable(
         pParent,
-        Gui::translateBitmapDimensions(SysPathName("gui/map/rlogo.bmp"), rel),
+        Gui::translateBitmapDimensions(MachGui::getScaledImagePath("gui/map/rlogo.bmp"), rel),
         GuiDisplayable::LAYER2)
     , pCameras_(pCameras)
     , firstDraw_(false)
@@ -236,7 +236,7 @@ MachContinentMap::MachContinentMap(
     actorPositions_.reserve(512);
 
     RenColour black(0, 0, 0);
-    cameraPosImage_ = Gui::bitmap("gui/map/campos.bmp");
+    cameraPosImage_ = MachGui::getScaledImage("gui/map/campos.bmp");
     cameraPosImage_.colourKey(black); // Black is colourKey
     cameraPosImage_.enableColourKeying();
 
@@ -265,7 +265,7 @@ MachContinentMap::MachContinentMap(
     selectedAttackedMachineImage().enableColourKeying();
     selectedAttackedPodImage().enableColourKeying();
 
-    pBmuText_ = _NEW(MachGuiBmuText(this, Gui::Coord(1, 1)));
+    pBmuText_ = _NEW(MachGuiBmuText(this, Gui::Coord(1, 1) * MachGui::uiScaleFactor()));
 
     pTerrainOnOffButton_ = _NEW(MachGuiTerrainOnOffButton(
         this,
@@ -402,10 +402,10 @@ void MachContinentMap::doDisplay()
 GuiBitmap& MachContinentMap::logoImage(MachPhys::Race race)
 {
     static GuiBitmap logoPixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rlogo.bmp"),
-        Gui::bitmap("gui/map/blogo.bmp"),
-        Gui::bitmap("gui/map/glogo.bmp"),
-        Gui::bitmap("gui/map/ylogo.bmp"),
+        MachGui::getScaledImage("gui/map/rlogo.bmp"),
+        MachGui::getScaledImage("gui/map/blogo.bmp"),
+        MachGui::getScaledImage("gui/map/glogo.bmp"),
+        MachGui::getScaledImage("gui/map/ylogo.bmp"),
     };
 
     return logoPixel[race];
@@ -415,10 +415,10 @@ GuiBitmap& MachContinentMap::logoImage(MachPhys::Race race)
 GuiBitmap& MachContinentMap::machineImage(MachPhys::Race race)
 {
     static GuiBitmap machinePixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rmachpix.bmp"),
-        Gui::bitmap("gui/map/bmachpix.bmp"),
-        Gui::bitmap("gui/map/gmachpix.bmp"),
-        Gui::bitmap("gui/map/ymachpix.bmp"),
+        MachGui::getScaledImage("gui/map/rmachpix.bmp"),
+        MachGui::getScaledImage("gui/map/bmachpix.bmp"),
+        MachGui::getScaledImage("gui/map/gmachpix.bmp"),
+        MachGui::getScaledImage("gui/map/ymachpix.bmp"),
     };
 
     return machinePixel[race];
@@ -428,10 +428,10 @@ GuiBitmap& MachContinentMap::machineImage(MachPhys::Race race)
 GuiBitmap& MachContinentMap::selectedMachineImage(MachPhys::Race race)
 {
     static GuiBitmap machinePixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rmachpxs.bmp"),
-        Gui::bitmap("gui/map/bmachpxs.bmp"),
-        Gui::bitmap("gui/map/gmachpxs.bmp"),
-        Gui::bitmap("gui/map/ymachpxs.bmp"),
+        MachGui::getScaledImage("gui/map/rmachpxs.bmp"),
+        MachGui::getScaledImage("gui/map/bmachpxs.bmp"),
+        MachGui::getScaledImage("gui/map/gmachpxs.bmp"),
+        MachGui::getScaledImage("gui/map/ymachpxs.bmp"),
     };
 
     return machinePixel[race];
@@ -440,10 +440,10 @@ GuiBitmap& MachContinentMap::selectedMachineImage(MachPhys::Race race)
 GuiBitmap& MachContinentMap::constructionImage(MachPhys::Race race)
 {
     static GuiBitmap constructionPixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rconspix.bmp"),
-        Gui::bitmap("gui/map/bconspix.bmp"),
-        Gui::bitmap("gui/map/gconspix.bmp"),
-        Gui::bitmap("gui/map/yconspix.bmp"),
+        MachGui::getScaledImage("gui/map/rconspix.bmp"),
+        MachGui::getScaledImage("gui/map/bconspix.bmp"),
+        MachGui::getScaledImage("gui/map/gconspix.bmp"),
+        MachGui::getScaledImage("gui/map/yconspix.bmp"),
     };
 
     return constructionPixel[race];
@@ -452,10 +452,10 @@ GuiBitmap& MachContinentMap::constructionImage(MachPhys::Race race)
 GuiBitmap& MachContinentMap::selectedConstructionImage(MachPhys::Race race)
 {
     static GuiBitmap constructionPixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rconspxs.bmp"),
-        Gui::bitmap("gui/map/bconspxs.bmp"),
-        Gui::bitmap("gui/map/gconspxs.bmp"),
-        Gui::bitmap("gui/map/yconspxs.bmp"),
+        MachGui::getScaledImage("gui/map/rconspxs.bmp"),
+        MachGui::getScaledImage("gui/map/bconspxs.bmp"),
+        MachGui::getScaledImage("gui/map/gconspxs.bmp"),
+        MachGui::getScaledImage("gui/map/yconspxs.bmp"),
     };
 
     return constructionPixel[race];
@@ -464,10 +464,10 @@ GuiBitmap& MachContinentMap::selectedConstructionImage(MachPhys::Race race)
 GuiBitmap& MachContinentMap::podImage(MachPhys::Race race)
 {
     static GuiBitmap podPixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rpodpix.bmp"),
-        Gui::bitmap("gui/map/bpodpix.bmp"),
-        Gui::bitmap("gui/map/gpodpix.bmp"),
-        Gui::bitmap("gui/map/ypodpix.bmp"),
+        MachGui::getScaledImage("gui/map/rpodpix.bmp"),
+        MachGui::getScaledImage("gui/map/bpodpix.bmp"),
+        MachGui::getScaledImage("gui/map/gpodpix.bmp"),
+        MachGui::getScaledImage("gui/map/ypodpix.bmp"),
     };
 
     return podPixel[race];
@@ -476,10 +476,10 @@ GuiBitmap& MachContinentMap::podImage(MachPhys::Race race)
 GuiBitmap& MachContinentMap::selectedPodImage(MachPhys::Race race)
 {
     static GuiBitmap podPixel[MachPhys::N_RACES] = {
-        Gui::bitmap("gui/map/rpodpxs.bmp"),
-        Gui::bitmap("gui/map/bpodpxs.bmp"),
-        Gui::bitmap("gui/map/gpodpxs.bmp"),
-        Gui::bitmap("gui/map/ypodpxs.bmp"),
+        MachGui::getScaledImage("gui/map/rpodpxs.bmp"),
+        MachGui::getScaledImage("gui/map/bpodpxs.bmp"),
+        MachGui::getScaledImage("gui/map/gpodpxs.bmp"),
+        MachGui::getScaledImage("gui/map/ypodpxs.bmp"),
     };
 
     return podPixel[race];
@@ -488,21 +488,21 @@ GuiBitmap& MachContinentMap::selectedPodImage(MachPhys::Race race)
 // static
 GuiBitmap& MachContinentMap::debrisImage()
 {
-    static GuiBitmap debrisPixel = Gui::bitmap("gui/map/debris.bmp");
+    static GuiBitmap debrisPixel = MachGui::getScaledImage("gui/map/debris.bmp");
     return debrisPixel;
 }
 
 // static
 GuiBitmap& MachContinentMap::artifactImage()
 {
-    static GuiBitmap artifactPixel = Gui::bitmap("gui/map/artifact.bmp");
+    static GuiBitmap artifactPixel = MachGui::getScaledImage("gui/map/artifact.bmp");
     return artifactPixel;
 }
 
 // static
 GuiBitmap& MachContinentMap::oreImage()
 {
-    static GuiBitmap orePixel = Gui::bitmap("gui/map/ore.bmp");
+    static GuiBitmap orePixel = MachGui::getScaledImage("gui/map/ore.bmp");
     return orePixel;
 }
 
@@ -734,7 +734,7 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
 
     if (currentBeacon_ != MachLog::NO_BEACON)
     {
-        Gui::Coord cameraImageOffset = Gui::Coord(-2, -2);
+        Gui::Coord cameraImageOffset = Gui::Coord(-2, -2) * MachGui::uiScaleFactor();
         int cameraPolygonThickness = 1;
         if (zenithCamera_)
         {
@@ -762,11 +762,15 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
                 cameraPos_.x() + cameraImageOffset.x(),
                 cameraPos_.y() + cameraImageOffset.y());
 
+            Gui::Vec vecToEndPos(cameraPos_, cameraEndPos_);
+            vecToEndPos *= MachGui::uiScaleFactor();
+            Gui::Coord realEndPos = cameraPos_ + vecToEndPos;
+
             // Draw line of sight
             RenSurface::Points lineOfSight;
             lineOfSight.reserve(2);
             lineOfSight.push_back(cameraPos_);
-            lineOfSight.push_back(cameraEndPos_);
+            lineOfSight.push_back(realEndPos);
             pMapFrame->polyLine(lineOfSight, Gui::LIGHTGREY(), cameraPolygonThickness);
         }
     }
@@ -775,28 +779,28 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
 // static
 GuiBitmap& MachContinentMap::attackedMachineImage()
 {
-    static GuiBitmap machineAttackedImage = Gui::bitmap("gui/map/amachpix.bmp");
+    static GuiBitmap machineAttackedImage = MachGui::getScaledImage("gui/map/amachpix.bmp");
     return machineAttackedImage;
 }
 
 // static
 GuiBitmap& MachContinentMap::selectedAttackedMachineImage()
 {
-    static GuiBitmap selectedMachineAttackedImage = Gui::bitmap("gui/map/amachpxs.bmp");
+    static GuiBitmap selectedMachineAttackedImage = MachGui::getScaledImage("gui/map/amachpxs.bmp");
     return selectedMachineAttackedImage;
 }
 
 // static
 GuiBitmap& MachContinentMap::attackedPodImage()
 {
-    static GuiBitmap podAttackedImage = Gui::bitmap("gui/map/apodpix.bmp");
+    static GuiBitmap podAttackedImage = MachGui::getScaledImage("gui/map/apodpix.bmp");
     return podAttackedImage;
 }
 
 // static
 GuiBitmap& MachContinentMap::selectedAttackedPodImage()
 {
-    static GuiBitmap selectedPodAttackedImage = Gui::bitmap("gui/map/apodpxs.bmp");
+    static GuiBitmap selectedPodAttackedImage = MachGui::getScaledImage("gui/map/apodpxs.bmp");
     return selectedPodAttackedImage;
 }
 
@@ -808,8 +812,8 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
     GuiBitmap& podAttackedImage = attackedPodImage();
     GuiBitmap& selectedMachineAttackedImage = selectedAttackedMachineImage();
     GuiBitmap& selectedPodAttackedImage = selectedAttackedPodImage();
-    static GuiBitmap constructionAttackedImage = Gui::bitmap("gui/map/aconspix.bmp");
-    static GuiBitmap selectedConstructionAttackedImage = Gui::bitmap("gui/map/aconspxs.bmp");
+    static GuiBitmap constructionAttackedImage = MachGui::getScaledImage("gui/map/aconspix.bmp");
+    static GuiBitmap selectedConstructionAttackedImage = MachGui::getScaledImage("gui/map/aconspxs.bmp");
     static size_t podImageWidth = podImage(MachPhys::RED).width();
     static size_t podImageHeight = podImage(MachPhys::RED).height();
     static size_t machineImageWidth = machineImage(MachPhys::RED).width();
