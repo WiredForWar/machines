@@ -745,7 +745,7 @@ int MachGui::controlPanelSlideOutSpeed()
 // static
 int MachGui::promptTextXOffset()
 {
-    return -7;
+    return -7 * MachGui::uiScaleFactor();
 }
 
 // static
