@@ -64,8 +64,8 @@ public:
 
     void setConstruction(MachLogConstruction* pConstruction) { pConstruction_ = pConstruction; }
 
-    static size_t reqWidth() { return 24; }
-    static size_t reqHeight() { return 24; }
+    static size_t reqWidth() { return 24 * MachGui::uiScaleFactor(); }
+    static size_t reqHeight() { return 24 * MachGui::uiScaleFactor(); }
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override
     {
@@ -151,24 +151,24 @@ public:
             switch (pMachine_->race())
             {
                 case MachPhys::RED:
-                    bitmap(Gui::bitmap("gui/misc/red/inhead.bmp"));
+                    bitmap(MachGui::getScaledImage("gui/misc/red/inhead.bmp"));
                     break;
                 case MachPhys::GREEN:
-                    bitmap(Gui::bitmap("gui/misc/green/inhead.bmp"));
+                    bitmap(MachGui::getScaledImage("gui/misc/green/inhead.bmp"));
                     break;
                 case MachPhys::BLUE:
-                    bitmap(Gui::bitmap("gui/misc/blue/inhead.bmp"));
+                    bitmap(MachGui::getScaledImage("gui/misc/blue/inhead.bmp"));
                     break;
                 case MachPhys::YELLOW:
-                    bitmap(Gui::bitmap("gui/misc/yellow/inhead.bmp"));
+                    bitmap(MachGui::getScaledImage("gui/misc/yellow/inhead.bmp"));
                     break;
                     DEFAULT_ASSERT_BAD_CASE(pMachine_->race());
             }
         }
     }
 
-    static size_t reqWidth() { return 24; }
-    static size_t reqHeight() { return 24; }
+    static size_t reqWidth() { return 24 * MachGui::uiScaleFactor(); }
+    static size_t reqHeight() { return 24 * MachGui::uiScaleFactor(); }
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override
     {
@@ -510,12 +510,16 @@ MachGuiCorralSingleIcon::MachGuiCorralSingleIcon(
     pSelectInsideBuildingIcon_ = _NEW(MachGuiSelectInsideBuildingIcon(
         this,
         Gui::Coord(MachGuiCorralResource::buttonWidth() + MachGuiCorralSingleIconInfo::reqWidth(), 0),
-        SysPathNames(SysPathName("gui/misc/contents.bmp"), SysPathName("gui/misc/contents.bmp")),
+        SysPathNames(
+            MachGui::getScaledImagePath("gui/misc/contents.bmp"),
+            MachGui::getScaledImagePath("gui/misc/contents.bmp")),
         pInGameScreen_));
     pInHeadIcon_ = _NEW(MachGuiInHeadIcon(
         this,
         Gui::Coord(MachGuiCorralResource::buttonWidth() + MachGuiCorralSingleIconInfo::reqWidth(), 0),
-        SysPathNames(SysPathName("gui/misc/red/inhead.bmp"), SysPathName("gui/misc/red/inhead.bmp")),
+        SysPathNames(
+            MachGui::getScaledImagePath("gui/misc/red/inhead.bmp"),
+            MachGui::getScaledImagePath("gui/misc/red/inhead.bmp")),
         pInGameScreen_));
 }
 
