@@ -1,38 +1,27 @@
 
 #include "gui/icon.hpp"
-#include "gui/painter.hpp"
 
 //////////////////////////////////////////////////////////////////////
 
 GuiIcon::GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const std::pair<SysPathName, SysPathName>& bmps)
-    : GuiBitmapButtonWithFilledBorder(
-        pParent,
-        rel,
-        GuiBorderMetrics(1, 1, 1),
-        GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::RED()),
-        Gui::bitmap(bmps.first),
-        Gui::Coord(1, 1))
+    : GuiIcon(pParent, rel, Gui::bitmap(bmps.first))
 {
-    // Intentionally Empty
 }
 
 GuiIcon::GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const SysPathName& bmp)
+    : GuiIcon(pParent, rel, Gui::bitmap(bmp))
+{
+}
+
+GuiIcon::GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap& bitmap)
     : GuiBitmapButtonWithFilledBorder(
         pParent,
         rel,
         GuiBorderMetrics(1, 1, 1),
         GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::RED()),
-        Gui::bitmap(bmp),
+        bitmap,
         Gui::Coord(1, 1))
 {
-    // Intentionally Empty
 }
 
-GuiIcon::~GuiIcon()
-{
-    // Intentionally Empty
-}
-
-/* //////////////////////////////////////////////////////////////// */
-
-/* End ICON.CPP *****************************************************/
+GuiIcon::~GuiIcon() = default;

@@ -13,8 +13,8 @@ class GuiIcon : public GuiBitmapButtonWithFilledBorder
 {
 public:
     GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const std::pair<SysPathName, SysPathName>& bitmap);
-
     GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const SysPathName& bmp);
+    GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap& bitmap);
 
 protected:
     ~GuiIcon() override;
