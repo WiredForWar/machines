@@ -110,12 +110,12 @@ MachProductionIcon::MachProductionIcon(
     : MachGuiNewProductionIcon(
         pParent,
         Gui::Coord(0, 0), // Will be relocated by icon sequence parent
-        Gui::bitmap(SysPathName(MachActorBitmaps::name(
+        MachGui::getScaledImage(MachActorBitmaps::name(
             pProductionUnit->type(),
             pProductionUnit->subType(),
             pProductionUnit->hwLevel(),
             pProductionUnit->weaponCombo(),
-            MachLogRaces::instance().pcController().race()))),
+            MachLogRaces::instance().pcController().race())),
         index)
     , pInGameScreen_(pInGameScreen)
     , subType_(pProductionUnit->subType())
@@ -176,7 +176,7 @@ void MachProductionIcon::doBeReleased(const GuiMouseEvent&)
 size_t MachProductionIcon::buttonHeight()
 {
     // TODO : Remove hard coded values
-    return MachGuiBuildProgressBar::height() + 38 /* Bitmap height */ + 4 /* Border */;
+    return MachGuiBuildProgressBar::height() + (38 /* Bitmap height */ + 4 /* Border */) * MachGui::uiScaleFactor();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +184,7 @@ size_t MachProductionIcon::buttonHeight()
 // static
 size_t MachProductionIcon::buttonWidth()
 {
-    return 42; // TODO : Remove hard coded value
+    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
