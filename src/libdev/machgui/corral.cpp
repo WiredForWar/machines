@@ -129,16 +129,8 @@ void MachGuiCorralResource::updateHealthBar()
     MachPhys::HitPointUnits hp = pActor_->hp();
 
     // TBD: remove this check when MachPhysObjectData behaves reasonably
-    if (ap > pHealthBar_->maxArmour())
-        ap = pHealthBar_->maxArmour();
-    else if (ap < 0)
-        ap = 0;
-
-    // TBD: remove this check when MachPhysObjectData behaves reasonably
-    if (hp > pHealthBar_->maxHits())
-        hp = pHealthBar_->maxHits();
-    else if (hp < 0)
-        hp = 0;
+    std::clamp(hp, 0, pHealthBar_->maxHits());
+    std::clamp(ap, 0, pHealthBar_->maxArmour());
 
     pHealthBar_->hp(hp);
     pHealthBar_->armour(ap);
