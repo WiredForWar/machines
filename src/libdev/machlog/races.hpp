@@ -207,7 +207,7 @@ public:
 
     ///////////////////////////////
 
-    using Squadrons = ctl_pvector<MachLogSquadron>;
+    using Squadrons = std::vector<MachLogSquadron*>;
     using AssemblyPoints = ctl_vector<MexPoint2d>;
 
     using Artefacts = ctl_pvector<MachLogArtefact>;
