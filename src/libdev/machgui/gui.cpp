@@ -29,13 +29,13 @@ GuiBitmap MachGui::createIconForMachine(MachLogMachine* machine, bool firstPerso
         wc = machine->asCanAttack().weaponCombo();
     }
 
-    auto icon = GuiBitmap { Gui::bitmap(MachActorBitmaps::name(
+    GuiBitmap icon = MachGui::getScaledImage(MachActorBitmaps::name(
         machine->objectType(),
         machine->subType(),
         machine->asMachine().hwLevel(),
         wc,
         machine->race(),
-        firstPersonIcon)) };
+        firstPersonIcon));
     return icon;
 }
 

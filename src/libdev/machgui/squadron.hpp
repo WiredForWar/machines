@@ -42,6 +42,7 @@ public:
 
     static size_t reqWidth();
     static size_t reqHeight();
+    static size_t spacing();
 
     void update();
 
@@ -148,7 +149,7 @@ private:
     MachGuiSquadronBankIcon& operator=(const MachGuiSquadronBankIcon&);
     bool operator==(const MachGuiSquadronBankIcon&);
 
-    static const SysPathName& iconBitmaps(unsigned squadronIndex);
+    static const std::string& iconBitmaps(unsigned squadronIndex);
     // PRE( squadronIndex <= MachGuiSquadronIcon::N_SQUADRON_ICONS );
 
     size_t squadronIndex_;
