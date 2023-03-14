@@ -38,7 +38,7 @@ class MachGuiDismissNavIcon : public GuiIcon
 {
 public:
     MachGuiDismissNavIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
-        : GuiIcon(pParent, rel, SysPathName("gui/navigate/nonav.bmp"))
+        : GuiIcon(pParent, rel, MachGui::getScaledImage("gui/navigate/nonav.bmp"))
         , pInGameScreen_(pInGameScreen)
     {
     }
@@ -94,7 +94,7 @@ public:
             rel,
             GuiBorderMetrics(1, 1, 1),
             GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::GREEN()),
-            Gui::bitmap(bitmapFilename),
+            MachGui::getScaledImage(bitmapFilename.pathname()),
             Gui::Coord(1, 1))
         , numThisType_(0)
         , stringId_(stringId)
@@ -142,11 +142,11 @@ protected:
     void doDisplayInteriorEnabled(const Gui::Coord& abs) override
     {
         static GuiBitmap numbers[10] = {
-            Gui::bitmap(SysPathName("gui/navigate/navi0.bmp")), Gui::bitmap(SysPathName("gui/navigate/navi1.bmp")),
-            Gui::bitmap(SysPathName("gui/navigate/navi2.bmp")), Gui::bitmap(SysPathName("gui/navigate/navi3.bmp")),
-            Gui::bitmap(SysPathName("gui/navigate/navi4.bmp")), Gui::bitmap(SysPathName("gui/navigate/navi5.bmp")),
-            Gui::bitmap(SysPathName("gui/navigate/navi6.bmp")), Gui::bitmap(SysPathName("gui/navigate/navi7.bmp")),
-            Gui::bitmap(SysPathName("gui/navigate/navi8.bmp")), Gui::bitmap(SysPathName("gui/navigate/navi9.bmp"))
+            MachGui::getScaledImage("gui/navigate/navi0.bmp"), MachGui::getScaledImage("gui/navigate/navi1.bmp"),
+            MachGui::getScaledImage("gui/navigate/navi2.bmp"), MachGui::getScaledImage("gui/navigate/navi3.bmp"),
+            MachGui::getScaledImage("gui/navigate/navi4.bmp"), MachGui::getScaledImage("gui/navigate/navi5.bmp"),
+            MachGui::getScaledImage("gui/navigate/navi6.bmp"), MachGui::getScaledImage("gui/navigate/navi7.bmp"),
+            MachGui::getScaledImage("gui/navigate/navi8.bmp"), MachGui::getScaledImage("gui/navigate/navi9.bmp"),
         };
 
         GuiBitmapButtonWithFilledBorder::doDisplayInteriorEnabled(abs);
@@ -154,7 +154,7 @@ protected:
         if (numThisType_ != 0)
         {
             Gui::Coord absCopy(abs);
-            absCopy.y(absCopy.y() + 23); // TODO : remove hard coded values
+            absCopy.y(absCopy.y() + 23 * MachGui::uiScaleFactor()); // TODO : remove hard coded values
             absCopy.x(absCopy.x() + width() - 4);
 
             MachGui::drawNumber(numbers, numThisType_, &absCopy);
@@ -195,11 +195,11 @@ public:
 
     static size_t reqWidth()
     {
-        return 28; // TODO : remove hardcoded value
+        return 28 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
     }
     static size_t reqHeight()
     {
-        return 33; // TODO : remove hardcoded value
+        return 33 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
     }
 
     void refresh()
@@ -232,7 +232,7 @@ public:
         return greyBitmap_;
     }
 
-    void updateBitmap() { bitmap(Gui::bitmap(getBitmapFilename(objType_, subType_, false))); }
+    void updateBitmap() { bitmap(MachGui::getScaledImage(getBitmapFilename(objType_, subType_, false))); }
 
 protected:
     void cycleThroughActors()
@@ -376,9 +376,9 @@ protected:
         MachGuiNavButtonWithCounter::doHandleMouseExitEvent(mouseEvent);
     }
 
-    static SysPathName getBitmapFilename(MachLog::ObjectType objType, size_t subType, bool grey)
+    static std::string getBitmapFilename(MachLog::ObjectType objType, size_t subType, bool grey)
     {
-        string retValue;
+        std::string retValue;
 
         switch (objType)
         {
@@ -624,7 +624,7 @@ public:
 
     static size_t reqWidth()
     {
-        return 20; // TODO : remove hardcoded value
+        return 20 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
     }
     static size_t reqHeight()
     {
@@ -838,7 +838,7 @@ MachGuiNavButton::MachGuiNavButton(
     , selected_(false)
     , cycleIndex_(0)
 {
-    greyBitmap_ = Gui::bitmap(getBitmapFilename(ot, subType, true));
+    greyBitmap_ = MachGui::getScaledImage(getBitmapFilename(ot, subType, true));
     isVisible(false);
     disable();
 }
