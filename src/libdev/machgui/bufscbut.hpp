@@ -38,7 +38,6 @@ public:
     MachGuiBufferScrollButton(
         GuiDisplayable* pParent,
         const Gui::Coord& rel,
-        const SysPathName& bitmap,
         GuiSimpleScrollableList* pList,
         ScrollDir dir,
         MachInGameScreen* pInGameScreen);
@@ -59,6 +58,8 @@ protected:
     void doBeReleased(const GuiMouseEvent&) override;
 
     const GuiBitmap& getBitmap() const override;
+    static const GuiBitmap&
+    getBitmap(ScrollDir scrollDir, bool canScrollBackward = false, bool canScrollForward = false);
 
 private:
     // Operations revoked

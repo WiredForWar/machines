@@ -17,12 +17,11 @@
 MachGuiBufferScrollButton::MachGuiBufferScrollButton(
     GuiDisplayable* pParent,
     const Gui::Coord& rel,
-    const SysPathName& bitmap,
     GuiSimpleScrollableList* pList,
     ScrollDir scrollDir,
     MachInGameScreen* pInGameScreen)
     : GuiListObserver(pList)
-    , GuiIcon(pParent, rel, bitmap)
+    , GuiIcon(pParent, rel, getBitmap(scrollDir))
     , scrollDir_(scrollDir)
     , pInGameScreen_(pInGameScreen)
 {
@@ -86,14 +85,20 @@ void MachGuiBufferScrollButton::listUpdated()
 // virtual
 const GuiBitmap& MachGuiBufferScrollButton::getBitmap() const
 {
+    return getBitmap(scrollDir_, list().canScrollBackward(), list().canScrollFoward());
+}
+
+const GuiBitmap&
+MachGuiBufferScrollButton::getBitmap(ScrollDir scrollDir, bool canScrollBackward, bool canScrollForward)
+{
     static GuiBitmap scrollLeftBmp(Gui::bitmap(SysPathName("gui/misc/scrolll.bmp")));
     static GuiBitmap scrollLeftHighlightBmp(Gui::bitmap(SysPathName("gui/misc/scrolllh.bmp")));
     static GuiBitmap scrollRightBmp(Gui::bitmap(SysPathName("gui/misc/scrollr.bmp")));
     static GuiBitmap scrollRightHighlightBmp(Gui::bitmap(SysPathName("gui/misc/scrollrh.bmp")));
 
-    if (scrollDir_ == LEFT)
+    if (scrollDir == LEFT)
     {
-        if (list().canScrollBackward())
+        if (canScrollBackward)
         {
             return scrollLeftHighlightBmp;
         }
@@ -104,7 +109,7 @@ const GuiBitmap& MachGuiBufferScrollButton::getBitmap() const
     }
     else
     {
-        if (list().canScrollFoward())
+        if (canScrollForward)
         {
             return scrollRightHighlightBmp;
         }
