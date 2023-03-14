@@ -267,13 +267,13 @@ ostream& operator<<(ostream& o, const MachLogScore& t)
     o << " otherMachinesDestroyed_ " << t.otherMachinesDestroyed() << std::endl;
     o << " myConstructionsDestroyed_ " << t.myConstructionsDestroyed() << std::endl;
     o << " otherConstructionsDestroyed_ " << t.otherConstructionsDestroyed() << std::endl;
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
         o << " raceMyMachinesDestroyed_[ " << i << " ] " << t.raceMyMachinesDestroyed(i) << std::endl;
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
         o << " raceMachinesDestroyed_[ " << i << " ] " << t.raceMachinesDestroyed(i) << std::endl;
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
         o << " raceMyConstructionsDestroyed_[ " << i << " ] " << t.raceMyConstructionsDestroyed(i) << std::endl;
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
         o << " raceConstructionsDestroyed_[ " << i << " ] " << t.raceConstructionsDestroyed(i) << std::endl;
 
     o << " itemsResearched_ " << t.itemsResearched() << std::endl;

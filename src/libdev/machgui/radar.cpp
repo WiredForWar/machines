@@ -69,7 +69,7 @@ MachGuiRadar::MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos)
     pImpl_ = _NEW(MachGuiRadarImpl);
 
     // Switch on colour keying for radar images
-    for (MachPhys::Race race = MachPhys::RED; race < MachPhys::N_RACES; ++((int&)race))
+    for (MachPhys::Race race : MachPhys::AllRaces)
     {
         machineImage()[race].enableColourKeying();
         podImage()[race].enableColourKeying();

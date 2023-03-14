@@ -49,7 +49,7 @@ void MachLogWinOrLoseAction::doAction()
     MachLogRaces& races = MachLogRaces::instance();
     MachPhys::Race raceWithHighestScore = MachPhys::N_RACES;
     int highestScore = 0;
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         HAL_STREAM("checking score for race " << i << " score: " << races.score(i) << std::endl);
         if (races.score(i).grossScore() > highestScore)

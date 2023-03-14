@@ -160,7 +160,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     useData.reserve(MachPhys::N_RACES);
 
     // all defaults to not defined.
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         MachLogGameCreationData::PlayerCreationData data;
         data.colour_ = i;
@@ -190,7 +190,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         parser.parseNextLine();
     }
 
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         if (useCreationData)
         {
@@ -210,7 +210,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         // first things first set up an array of booleans as a short hand for which races have been marked as used
         bool gotRace[MachPhys::N_RACES] = { false, false, false, false };
         bool usedRace[MachPhys::N_RACES] = { false, false, false, false };
-        for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+        for (MachPhys::Race i : MachPhys::AllRaces)
         {
             if (defaultData[i].type_ != MachLog::NOT_DEFINED)
                 gotRace[i] = true;
@@ -219,11 +219,11 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         //      if( randomStarts == MachLog::FIXED_START_LOCATIONS )
         {
             // go through each of the races and mark which ones we have matches for already
-            for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+            for (MachPhys::Race i : MachPhys::AllRaces)
                 if (useData[i].type_ != MachLog::NOT_DEFINED and gotRace[i])
                     usedRace[i] = true;
             // now go through each of the races and see if a useData does not have usedRace marked.
-            for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+            for (MachPhys::Race i : MachPhys::AllRaces)
                 if (useData[i].type_ != MachLog::NOT_DEFINED and not usedRace[i])
                 {
                     // we need to allocate this useData element to a race which has been defined by the scenario file
@@ -245,7 +245,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     }
 
     HAL_STREAM("MachLogScneario::Load useData after processing\n");
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         HAL_STREAM("MachLogScenario::Load useData element " << i << " " << useData[i] << std::endl);
     }
@@ -944,7 +944,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         MachLogActions::createDynamically(MachLog::VICTORY_ANNIHILATION, 0);
     }
 
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
         if (not doneRace[i])
             MachLogNetwork::instance().ready(i, true);
 

@@ -105,7 +105,7 @@ MachLogRaces::MachLogRaces()
     pDataImpl_->pGameCreationData_ = nullptr;
     pDataImpl_->scores_.reserve(MachPhys::N_RACES);
     MachLogScore* pScore = nullptr;
-    for (MachPhys::Race r = MachPhys::RED; r < MachPhys::N_RACES; ++((int&)r))
+    for (MachPhys::Race r : MachPhys::AllRaces)
     {
         pDataImpl_->scores_.push_back(pScore);
 
@@ -117,12 +117,9 @@ MachLogRaces::MachLogRaces()
         pDataImpl_->squadrons_[r].reserve(20);
 
         // set race contact flag to true (trivially) for your own race, false for all others
-        for (MachPhys::Race rOther = MachPhys::RED; rOther < MachPhys::N_RACES; ++((int&)rOther))
+        for (MachPhys::Race rOther : MachPhys::AllRaces)
         {
-            if (r == rOther)
-                pDataImpl_->contactBetweenRaces_[r][rOther] = true;
-            else
-                pDataImpl_->contactBetweenRaces_[r][rOther] = false;
+            pDataImpl_->contactBetweenRaces_[r][rOther] = r == rOther;
         }
     }
 
@@ -2544,7 +2541,7 @@ void MachLogRaces::initialise()
     pDataImpl_->inSpecialActorUpdate_ = false;
 
     // Initialise the statistics
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         pDataImpl_->nMachines_[i] = 0;
         pDataImpl_->nConstructions_[i] = 0;

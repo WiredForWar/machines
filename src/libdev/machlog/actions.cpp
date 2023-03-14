@@ -424,7 +424,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                         = MachLogEnableActionAction::newDynamic(pTimerForPodLost, true, "dynamic_low_unit_count");
                     SimManager::instance().addAction(pEnablePodLost);
                 }
-                for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+                for (MachPhys::Race i : MachPhys::AllRaces)
                 {
                     bool doWork;
                     doWork = false;

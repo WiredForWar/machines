@@ -623,7 +623,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     progressIndicator.report(15, 100);
 
     // Initialise all player info to NOT_DEFINED
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         MachLogGameCreationData::PlayerCreationData pcd;
         pcd.type_ = MachLog::NOT_DEFINED;
@@ -774,7 +774,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     // Setup info about players
     MachLogGameCreationData::PlayersCreationData creationData;
 
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         MachLogGameCreationData::PlayerCreationData pcd;
         pcd.type_ = MachLog::NOT_DEFINED;
@@ -831,7 +831,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     progressIndicator.report(15, 100);
 
     // now we need to remark the colours of any unused ones.
-    for (MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         if (creationData[i].type_ == MachLog::NOT_DEFINED)
         {
