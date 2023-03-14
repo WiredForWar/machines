@@ -99,7 +99,7 @@ void GuiPainter::bevel(const Gui::Box& b, unsigned thickness, const Gui::Colour&
 
 //////////////////////////////////////////////////////////////////////
 
-void GuiPainter::drawText(const Gui::Coord& c, const string& text, const Gui::Colour& col) const
+void GuiPainter::drawText(const Gui::Coord& c, const string& text, const Gui::Colour& col, int pixelSize) const
 {
     RenSurface backBuffer = Gui::backBuffer();
     backBuffer.useFontHeight(12);

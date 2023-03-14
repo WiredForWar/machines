@@ -24,7 +24,7 @@ public:
     MOCK_METHOD(void, line, ( const Gui::Coord& c1, const Gui::Coord& c2, const Gui::Colour&, unsigned thickness), (const, override));
     MOCK_METHOD(void, horizontalLine, ( const Gui::Coord& c1, unsigned length, const Gui::Colour&, unsigned thickness), (const, override));
     MOCK_METHOD(void, verticalLine, ( const Gui::Coord& c1, unsigned height, const Gui::Colour&, unsigned thickness), (const, override));
-    MOCK_METHOD(void, text, ( const Gui::Coord& c, const string& text, const Gui::Colour&), (const, override));
+    MOCK_METHOD(void, drawText, (const Gui::Coord& c, const string& text, const Gui::Colour&, int), (const, override));
     MOCK_METHOD(void, rightAlignText, (const Gui::Coord& c, const string& theText, const Gui::Colour& col), (const, override));
     MOCK_METHOD(void, filledBorder, ( const Gui::Coord& absCoord, const GuiBorderDimensions&, const GuiFilledBorderColours&, const GuiBorderMetrics&), (const, override));
 };
