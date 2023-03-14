@@ -46,10 +46,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    static size_t width()
-    {
-        return 17; // TODO: remove hard coding
-    }
+    static size_t width();
 
 protected:
     void listUpdated() override;

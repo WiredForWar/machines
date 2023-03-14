@@ -34,6 +34,11 @@ MachGuiBufferScrollButton::~MachGuiBufferScrollButton()
 {
 }
 
+size_t MachGuiBufferScrollButton::width()
+{
+    return 17 * MachGui::uiScaleFactor();
+}
+
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,10 +96,10 @@ const GuiBitmap& MachGuiBufferScrollButton::getBitmap() const
 const GuiBitmap&
 MachGuiBufferScrollButton::getBitmap(ScrollDir scrollDir, bool canScrollBackward, bool canScrollForward)
 {
-    static GuiBitmap scrollLeftBmp(Gui::bitmap(SysPathName("gui/misc/scrolll.bmp")));
-    static GuiBitmap scrollLeftHighlightBmp(Gui::bitmap(SysPathName("gui/misc/scrolllh.bmp")));
-    static GuiBitmap scrollRightBmp(Gui::bitmap(SysPathName("gui/misc/scrollr.bmp")));
-    static GuiBitmap scrollRightHighlightBmp(Gui::bitmap(SysPathName("gui/misc/scrollrh.bmp")));
+    static GuiBitmap scrollLeftBmp(MachGui::getScaledImage("gui/misc/scrolll.bmp"));
+    static GuiBitmap scrollLeftHighlightBmp(MachGui::getScaledImage("gui/misc/scrolllh.bmp"));
+    static GuiBitmap scrollRightBmp(MachGui::getScaledImage("gui/misc/scrollr.bmp"));
+    static GuiBitmap scrollRightHighlightBmp(MachGui::getScaledImage("gui/misc/scrollrh.bmp"));
 
     if (scrollDir == LEFT)
     {
