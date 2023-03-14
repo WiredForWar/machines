@@ -218,7 +218,7 @@ MachSmallCommandIcons::MachSmallCommandIcons(
     MachInGameScreen* pInGameScreen)
     : GuiScrollableIconSequence(
         pParent,
-        translateBox(arrayDimensions((MachCommandIcon::reqWidth() * 2) + 5, MachCommandIcon::reqHeight(), 1, 1), rel),
+        translateBox(arrayDimensions(MachCommandIcons::reqWidth(), MachCommandIcon::reqHeight(), 1, 1), rel),
         staticCoords(),
         1)
     , pInGameScreen_(pInGameScreen)
