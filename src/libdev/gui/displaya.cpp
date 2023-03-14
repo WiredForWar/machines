@@ -611,7 +611,7 @@ void GuiDisplayable::bevel(const Gui::Box& rel, unsigned thickness, const Gui::C
 
 void GuiDisplayable::text(const Gui::Coord& c, const string& theText, const Gui::Colour& col)
 {
-    GuiPainter::instance().text(translate(c), theText, col);
+    GuiPainter::instance().drawText(translate(c), theText, col);
 }
 
 void GuiDisplayable::rightAlignText(const Gui::Coord& c, const string& theText, const Gui::Colour& col)

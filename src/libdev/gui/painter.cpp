@@ -99,11 +99,11 @@ void GuiPainter::bevel(const Gui::Box& b, unsigned thickness, const Gui::Colour&
 
 //////////////////////////////////////////////////////////////////////
 
-void GuiPainter::text(const Gui::Coord& c, const string& theText, const Gui::Colour& col) const
+void GuiPainter::drawText(const Gui::Coord& c, const string& text, const Gui::Colour& col) const
 {
     RenSurface backBuffer = Gui::backBuffer();
     backBuffer.useFontHeight(12);
-    backBuffer.drawText(c.x(), c.y(), theText, col);
+    backBuffer.drawText(c.x(), c.y(), text, col);
 }
 
 void GuiPainter::rightAlignText(const Gui::Coord& c, const string& theText, const Gui::Colour& col) const
