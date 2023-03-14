@@ -33,7 +33,7 @@ public:
                 Gui::Colour(232.0 / 255.0, 232.0 / 255.0, 232.0 / 255.0),
                 Gui::Colour(62.0 / 255.0, 62.0 / 255.0, 62.0 / 255.0),
                 Gui::RED()),
-            Gui::bitmap(SysPathName("gui/misc/zenith.bmp")),
+            MachGui::getScaledImage("gui/misc/zenith.bmp"),
             Gui::Coord(1, 1))
         , pInGameScreen_(pInGameScreen)
     {
@@ -68,8 +68,8 @@ protected:
 
     const GuiBitmap& getBitmap() const override
     {
-        static GuiBitmap zenithBmp = Gui::bitmap("gui/misc/zenith.bmp");
-        static GuiBitmap groundBmp = Gui::bitmap("gui/misc/ground.bmp");
+        static GuiBitmap zenithBmp = MachGui::getScaledImage("gui/misc/zenith.bmp");
+        static GuiBitmap groundBmp = MachGui::getScaledImage("gui/misc/ground.bmp");
 
         if (pInGameScreen_->cameras()->isZenithCameraActive())
             return groundBmp;
@@ -117,10 +117,10 @@ class MachGuiReturnToMenuBtn : public GuiButton
 {
 public:
     MachGuiReturnToMenuBtn(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
-        : GuiButton(pParent, Gui::Box(rel, 20, 20))
+        : GuiButton(pParent, Gui::Box(rel, Gui::Size(20, 20) * MachGui::uiScaleFactor()))
         , pInGameScreen_(pInGameScreen)
-        , return1Bmp_(Gui::bitmap("gui/misc/return1.bmp"))
-        , return2Bmp_(Gui::bitmap("gui/misc/return2.bmp"))
+        , return1Bmp_(MachGui::getScaledImage("gui/misc/return1.bmp"))
+        , return2Bmp_(MachGui::getScaledImage("gui/misc/return2.bmp"))
     {
     }
 
@@ -236,7 +236,7 @@ public:
 };
 
 MachGuiControlPanelAddOnImpl::MachGuiControlPanelAddOnImpl()
-    : backgroundBmp_(Gui::bitmap("gui/misc/camtab.bmp"))
+    : backgroundBmp_(MachGui::getScaledImage("gui/misc/camtab.bmp"))
 {
     backgroundBmp_.enableColourKeying();
 }
@@ -250,7 +250,9 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
     MachInGameScreen* pInGameScreen)
     : GuiDisplayable(
         pParent,
-        Gui::Box(coord, MachGuiControlPanelAddOnWidth, MachGuiControlPanelAddOnHeight),
+        Gui::Box(
+            coord,
+            Gui::Size(MachGuiControlPanelAddOnWidth, MachGuiControlPanelAddOnHeight) * MachGui::uiScaleFactor()),
         GuiDisplayable::LAYER3)
 {
     pImpl_ = _NEW(MachGuiControlPanelAddOnImpl());
@@ -259,8 +261,8 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
 
     pInGameScreen_ = pInGameScreen;
 
-    _NEW(MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0), pInGameScreen));
-    _NEW(MachGuiCameraToggleBtn(this, Gui::Coord(4, 22), pInGameScreen));
+    _NEW(MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0) * MachGui::uiScaleFactor(), pInGameScreen));
+    _NEW(MachGuiCameraToggleBtn(this, Gui::Coord(4, 22) * MachGui::uiScaleFactor(), pInGameScreen));
 
     redrawEveryFrame(true);
 
