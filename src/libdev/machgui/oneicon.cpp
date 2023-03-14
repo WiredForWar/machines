@@ -249,13 +249,13 @@ ostream& operator<<(ostream& o, const MachGuiCorralSingleIconInfo& t)
 // static
 size_t MachGuiCorralSingleIconInfo::reqWidth()
 {
-    return 93;
+    return 93 * MachGui::uiScaleFactor();
 }
 
 // static
 size_t MachGuiCorralSingleIconInfo::reqHeight()
 {
-    return 47;
+    return 47 * MachGui::uiScaleFactor();
 }
 
 // virtual

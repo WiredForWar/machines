@@ -94,7 +94,7 @@ MachGuiCorralResource::MachGuiCorralResource(
     , pHealthBar_(nullptr)
     , isObservingActor_(false)
     , pInGameScreen_(pInGameScreen)
-    , MachGuiNewCorralIcon(pParent, rel, Gui::bitmap(MachGuiCorralResource_hack(pActor)))
+    , MachGuiNewCorralIcon(pParent, rel, MachGui::getScaledImage(MachGuiCorralResource_hack(pActor).c_str()))
 {
     const MachPhysObjectData& objData = pActor->objectData();
 
@@ -263,14 +263,14 @@ void MachGuiCorralResource::doHandleContainsMouseEvent(const GuiMouseEvent& mous
 // static
 size_t MachGuiCorralResource::buttonWidth()
 {
-    return 42; // TODO : Remove hard coded value
+    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 // static
 size_t MachGuiCorralResource::buttonHeight()
 {
     // TODO : Remove hard coded values
-    return MachGuiHealthBar::healthBarHeight() + 38 /* Bitmap height */ + 4 /* Border */;
+    return MachGuiHealthBar::healthBarHeight() + (38 /* Bitmap height */ + 4 /* Border */) * MachGui::uiScaleFactor();
 }
 
 // virtual
