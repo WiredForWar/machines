@@ -473,7 +473,8 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
         // Render the text
         Gui::Coord textPos(absoluteBoundary().minCorner());
-        Gui::Coord shadowTextPos(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1);
+        Gui::Vec shadowOffset(1, 1);
+        Gui::Coord shadowTextPos(textPos + shadowOffset);
         GuiPainter::instance().drawText(shadowTextPos, concat.c_str(), Gui::BLACK());
         GuiPainter::instance().drawText(textPos, concat.c_str(), MachGui::OFFWHITE());
     }
