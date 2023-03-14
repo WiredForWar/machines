@@ -27,7 +27,7 @@ public:
         : GuiBitmapButtonWithFilledBorder(
             pParent,
             rel,
-            GuiBorderMetrics(1, 1, 1),
+            GuiBorderMetrics(1 * MachGui::uiScaleFactor(), 1 * MachGui::uiScaleFactor(), 1 * MachGui::uiScaleFactor()),
             GuiFilledBorderColours(
                 Gui::Colour(144.0 / 255.0, 148.0 / 255.0, 160.0 / 255.0),
                 Gui::Colour(232.0 / 255.0, 232.0 / 255.0, 232.0 / 255.0),
