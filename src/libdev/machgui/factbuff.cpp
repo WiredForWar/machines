@@ -27,7 +27,11 @@ MachGuiFactoryBuffer::MachGuiFactoryBuffer(
 {
 
     // Construct the icon sequence depicting the queue
-    Gui::Box iconsArea(20, 8, MachProductionIcon::buttonWidth() * 3 + 29, MachProductionIcon::buttonHeight() + 12);
+    Gui::Box iconsArea(
+        20,
+        8,
+        MachProductionIcon::buttonWidth() * 3 + 29 * MachGui::uiScaleFactor(),
+        MachProductionIcon::buttonHeight() + 12 * MachGui::uiScaleFactor());
     pIcons_ = _NEW(MachProductionIcons(this, iconsArea, pFactory, pInGameScreen));
 
     // Become an observer of the factory

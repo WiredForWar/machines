@@ -26,7 +26,7 @@ MachConstructionSelectIcon::MachConstructionSelectIcon(
     : GuiIcon(
         pParent,
         Gui::Coord(0, 0), // Will be relocated by icon sequence parent
-        SysPathName(MachActorBitmaps::name(
+        MachGui::getScaledImage(MachActorBitmaps::name(
             consItem.constructionType(),
             consItem.subType(),
             consItem.hwLevel(),
@@ -82,13 +82,13 @@ void MachConstructionSelectIcon::doBeReleased(const GuiMouseEvent&)
 // static
 size_t MachConstructionSelectIcon::reqHeight()
 {
-    return 42; // TODO : Remove hard coded value
+    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 // static
 size_t MachConstructionSelectIcon::reqWidth()
 {
-    return 42; // TODO : Remove hard coded value
+    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 // virtual
