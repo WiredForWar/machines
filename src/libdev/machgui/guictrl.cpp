@@ -22,7 +22,7 @@
 MachGuiIconWithCounter::MachGuiIconWithCounter(
     GuiDisplayable* pParent,
     const Gui::Coord& rel,
-    const SysPathName& bitmap,
+    const GuiBitmap& bitmap,
     MachInGameScreen* pInGameScreen)
     : GuiBitmapButtonWithFilledBorder(
         pParent,
@@ -33,7 +33,7 @@ MachGuiIconWithCounter::MachGuiIconWithCounter(
             Gui::Colour(232.0 / 255.0, 232.0 / 255.0, 232.0 / 255.0),
             Gui::Colour(62.0 / 255.0, 62.0 / 255.0, 62.0 / 255.0),
             Gui::RED()),
-        Gui::bitmap(bitmap),
+        bitmap,
         Gui::Coord(1, 1))
     , pInGameScreen_(pInGameScreen)
 {
@@ -61,11 +61,11 @@ void MachGuiIconWithCounter::doDisplayInteriorEnabled(const Gui::Coord& abs)
     GuiBitmapButtonWithFilledBorder::doDisplayInteriorEnabled(abs);
 
     static GuiBitmap numbers[10] = {
-        Gui::bitmap(SysPathName("gui/navigate/numtop0.bmp")), Gui::bitmap(SysPathName("gui/navigate/numtop1.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numtop2.bmp")), Gui::bitmap(SysPathName("gui/navigate/numtop3.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numtop4.bmp")), Gui::bitmap(SysPathName("gui/navigate/numtop5.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numtop6.bmp")), Gui::bitmap(SysPathName("gui/navigate/numtop7.bmp")),
-        Gui::bitmap(SysPathName("gui/navigate/numtop8.bmp")), Gui::bitmap(SysPathName("gui/navigate/numtop9.bmp"))
+        MachGui::getScaledImage("gui/navigate/numtop0.bmp"), MachGui::getScaledImage("gui/navigate/numtop1.bmp"),
+        MachGui::getScaledImage("gui/navigate/numtop2.bmp"), MachGui::getScaledImage("gui/navigate/numtop3.bmp"),
+        MachGui::getScaledImage("gui/navigate/numtop4.bmp"), MachGui::getScaledImage("gui/navigate/numtop5.bmp"),
+        MachGui::getScaledImage("gui/navigate/numtop6.bmp"), MachGui::getScaledImage("gui/navigate/numtop7.bmp"),
+        MachGui::getScaledImage("gui/navigate/numtop8.bmp"), MachGui::getScaledImage("gui/navigate/numtop9.bmp"),
     };
 
     Gui::Coord absCopy(abs);
@@ -76,7 +76,7 @@ void MachGuiIconWithCounter::doDisplayInteriorEnabled(const Gui::Coord& abs)
 }
 
 MachMachinesIcon::MachMachinesIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
-    : MachGuiIconWithCounter(pParent, rel, SysPathName("gui/navigate/red/machines.bmp"), pInGameScreen)
+    : MachGuiIconWithCounter(pParent, rel, MachGui::getScaledImage("gui/navigate/red/machines.bmp"), pInGameScreen)
     , forcingUp_(false)
 {
     popupButton(false);
@@ -146,7 +146,7 @@ MachConstructionsIcon::MachConstructionsIcon(
     GuiDisplayable* pParent,
     const Gui::Coord& rel,
     MachInGameScreen* pInGameScreen)
-    : MachGuiIconWithCounter(pParent, rel, SysPathName("gui/navigate/red/construc.bmp"), pInGameScreen)
+    : MachGuiIconWithCounter(pParent, rel, MachGui::getScaledImage("gui/navigate/red/construc.bmp"), pInGameScreen)
     , forcingUp_(false)
 {
     popupButton(false);
@@ -212,7 +212,7 @@ void MachConstructionsIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEve
 /* //////////////////////////////////////////////////////////////// */
 
 MachSquadronIcon::MachSquadronIcon(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
-    : MachGuiIconWithCounter(pParent, rel, SysPathName("gui/navigate/red/squads.bmp"), pInGameScreen)
+    : MachGuiIconWithCounter(pParent, rel, MachGui::getScaledImage("gui/navigate/red/squads.bmp"), pInGameScreen)
     , pInGameScreen_(pInGameScreen)
 {
     // Intentionally Empty
@@ -303,21 +303,21 @@ string MachGuiIconWithCounter::getRootDirectory() const
 
 void MachConstructionsIcon::loadGame()
 {
-    bitmap(Gui::bitmap(getRootDirectory() + "construc.bmp"));
+    bitmap(MachGui::getScaledImage(getRootDirectory() + "construc.bmp"));
 
     refresh();
 }
 
 void MachMachinesIcon::loadGame()
 {
-    bitmap(Gui::bitmap(getRootDirectory() + "machines.bmp"));
+    bitmap(MachGui::getScaledImage(getRootDirectory() + "machines.bmp"));
 
     refresh();
 }
 
 void MachSquadronIcon::loadGame()
 {
-    bitmap(Gui::bitmap(getRootDirectory() + "squads.bmp"));
+    bitmap(MachGui::getScaledImage(getRootDirectory() + "squads.bmp"));
 
     update();
 }

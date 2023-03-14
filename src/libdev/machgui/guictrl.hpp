@@ -19,7 +19,7 @@ public:
     MachGuiIconWithCounter(
         GuiDisplayable* pParent,
         const Gui::Coord& rel,
-        const SysPathName& bitmap,
+        const GuiBitmap& bitmap,
         MachInGameScreen* pInGameScreen);
     ~MachGuiIconWithCounter() override;
 
