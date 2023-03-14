@@ -19,7 +19,7 @@ MachGuiScrollButton::MachGuiScrollButton(
     GuiSimpleScrollableList* pIcons,
     MachGuiScrollButton::ScrollDir scrollDir,
     MachGuiScrollArea* pScrollArea)
-    : GuiIcon(pParent, rel, bitmaps)
+    : GuiIcon(pParent, rel, MachGui::getScaledImage(bitmaps.first.pathname()))
     , pIcons_(pIcons)
     , scrollDir_(scrollDir)
     , pScrollArea_(pScrollArea)
@@ -34,13 +34,13 @@ MachGuiScrollButton::~MachGuiScrollButton()
 // static
 size_t MachGuiScrollButton::reqWidth()
 {
-    return 17; // todo
+    return 17 * MachGui::uiScaleFactor(); // todo
 }
 
 // static
 size_t MachGuiScrollButton::reqHeight()
 {
-    return 50; // todo
+    return 50 * MachGui::uiScaleFactor(); // todo
 }
 
 // virtual
@@ -75,14 +75,14 @@ void MachGuiScrollButton::update()
 // virtual
 const GuiBitmap& MachGuiScrollButton::getBitmap() const
 {
-    static GuiBitmap scrollUpBmp(Gui::bitmap(SysPathName("gui/corral/scrlup.bmp")));
-    static GuiBitmap scrollUpHighlightBmp(Gui::bitmap(SysPathName("gui/corral/scrlupH.bmp")));
-    static GuiBitmap scrollDownBmp(Gui::bitmap(SysPathName("gui/corral/scrldn.bmp")));
-    static GuiBitmap scrollDownHighlightBmp(Gui::bitmap(SysPathName("gui/corral/scrldnH.bmp")));
-    static GuiBitmap scrollTopBmp(Gui::bitmap(SysPathName("gui/corral/scrlup2.bmp")));
-    static GuiBitmap scrollTopHighlightBmp(Gui::bitmap(SysPathName("gui/corral/scrlup2H.bmp")));
-    static GuiBitmap scrollBottomBmp(Gui::bitmap(SysPathName("gui/corral/scrldn2.bmp")));
-    static GuiBitmap scrollBottomHighlightBmp(Gui::bitmap(SysPathName("gui/corral/scrldn2H.bmp")));
+    static GuiBitmap scrollUpBmp(MachGui::getScaledImage("gui/corral/scrlup.bmp"));
+    static GuiBitmap scrollUpHighlightBmp(MachGui::getScaledImage("gui/corral/scrlupH.bmp"));
+    static GuiBitmap scrollDownBmp(MachGui::getScaledImage("gui/corral/scrldn.bmp"));
+    static GuiBitmap scrollDownHighlightBmp(MachGui::getScaledImage("gui/corral/scrldnH.bmp"));
+    static GuiBitmap scrollTopBmp(MachGui::getScaledImage("gui/corral/scrlup2.bmp"));
+    static GuiBitmap scrollTopHighlightBmp(MachGui::getScaledImage("gui/corral/scrlup2H.bmp"));
+    static GuiBitmap scrollBottomBmp(MachGui::getScaledImage("gui/corral/scrldn2.bmp"));
+    static GuiBitmap scrollBottomHighlightBmp(MachGui::getScaledImage("gui/corral/scrldn2H.bmp"));
 
     GuiBitmap* pRetBitmap = nullptr;
 
