@@ -218,6 +218,7 @@ private:
 
         RenIFont* renFont_;
         size_t actualHeight_;
+        int requestedHeight = 0;
 
         GLuint tex; // texture atlas object
 
@@ -241,7 +242,8 @@ private:
         } c[128]; // character information
     };
 
-    static ctl_vector<Font> fonts_;
+    const struct Font* pCurrentFont_ = nullptr;
+    static std::vector<Font> fonts_;
     friend Font::~Font();
 
     RenISurfBody(const RenISurfBody&);

@@ -104,6 +104,7 @@ void GuiPainter::drawText(const Gui::Coord& c, const string& text, const Gui::Co
     RenSurface backBuffer = Gui::backBuffer();
     backBuffer.useFontHeight(pixelSize > 0 ? pixelSize : RenSurface::getDefaultFontHeight());
     backBuffer.drawText(c.x(), c.y(), text, col);
+    backBuffer.useFontHeight(RenSurface::getDefaultFontHeight());
 }
 
 void GuiPainter::rightAlignText(const Gui::Coord& c, const string& theText, const Gui::Colour& col) const

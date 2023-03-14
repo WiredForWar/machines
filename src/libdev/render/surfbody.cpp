@@ -16,6 +16,7 @@
 #include "render/internal/surfbody.hpp"
 #include "render/internal/font.hpp"
 #include "device/timer.hpp"
+#include <algorithm>
 #include <stdlib.h>
 #include <string>
 #include <sstream>
@@ -24,7 +25,7 @@
 #include "render/internal/colpack.hpp"
 
 // static
-ctl_vector<RenISurfBody::Font> RenISurfBody::fonts_;
+std::vector<RenISurfBody::Font> RenISurfBody::fonts_;
 
 // Maximum font texture width
 #define MAXWIDTH 1024
@@ -40,6 +41,7 @@ ctl_vector<RenISurfBody::Font> RenISurfBody::fonts_;
 RenISurfBody::Font::Font(FT_Face face, int height)
     : renFont_(nullptr)
     , actualHeight_(0)
+    , requestedHeight(height)
 {
     FT_Set_Pixel_Sizes(face, 0, height);
     FT_GlyphSlot g = face->glyph;
@@ -483,11 +485,17 @@ size_t RenISurfBody::useFontHeight(size_t pixelHeight)
     if (currentHeight_ == 0)
         currentHeight_ = pixelHeight;
 
-    if (fonts_.empty())
-    {
-        // Set this whatever results are
-        currentHeight_ = pixelHeight;
+    // Set this whatever results are
+    currentHeight_ = pixelHeight;
 
+    const auto it = std::find_if(fonts_.cbegin(), fonts_.cend(), [pixelHeight](const RenISurfBody::Font& font) {
+        if (font.requestedHeight == pixelHeight)
+            return true;
+        return false;
+    });
+
+    if (it == fonts_.cend())
+    {
         FT_Library ft;
         FT_Face face;
         /* Initialize the FreeType2 library */
@@ -506,6 +514,12 @@ size_t RenISurfBody::useFontHeight(size_t pixelHeight)
         }
         /* Create texture atlasses for font sizes */
         fonts_.push_back(Font(face, pixelHeight));
+
+        pCurrentFont_ = &fonts_.back();
+    }
+    else
+    {
+        pCurrentFont_ = it.base();
     }
 
     return pixelHeight;
@@ -524,14 +538,14 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColo
     if (currentHeight_ == 0)
         useFontHeight(defaultHeight());
 
-    if (!fonts_.empty())
+    if (pCurrentFont_)
     {
         int originX = x;
         std::vector<RenIVertex> vertices;
         vertices.reserve(text.size() * 6);
         uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
         y += currentHeight_;
-        Font& font = fonts_.front();
+        const Font& font = *pCurrentFont_;
         for (int i = 0; i < text.size(); ++i)
         {
             uint character = text[i];
