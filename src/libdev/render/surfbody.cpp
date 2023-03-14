@@ -472,28 +472,7 @@ const std::string& RenISurfBody::fontName()
 // static
 size_t RenISurfBody::defaultHeight()
 {
-    static bool first = true;
-    static size_t size = 12;
-
-    if (first)
-    {
-        first = false;
-
-        const char* envVar = getenv("CB_RENDER_FONT");
-        if (envVar)
-        {
-            char* copy = strdup(envVar);
-            strtok(copy, ":");
-            const char* sizeStr = strtok(nullptr, ":");
-
-            if (sizeStr)
-                size = atoi(sizeStr);
-
-            free(copy);
-        }
-    }
-
-    return size;
+    return RenSurface::getDefaultFontHeight();
 }
 
 size_t RenISurfBody::useFontHeight(size_t pixelHeight)
