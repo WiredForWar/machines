@@ -23,18 +23,21 @@ public:
         MachInGameScreen* pInGameScreen);
     ~MachGuiIconWithCounter() override;
 
+    void setCounterValue(size_t value);
+
 protected:
     void doDisplayInteriorEnabled(const Gui::Coord& abs) override;
 
     string getRootDirectory() const;
 
-    size_t currentValue_;
-    MachInGameScreen* pInGameScreen_;
+    MachInGameScreen* pInGameScreen_ = nullptr;
 
 private:
     MachGuiIconWithCounter(const MachGuiIconWithCounter&);
     MachGuiIconWithCounter& operator=(const MachGuiIconWithCounter&);
     bool operator==(const MachGuiIconWithCounter&) const;
+
+    size_t currentValue_ = 0;
 };
 
 class MachMachinesIcon : public MachGuiIconWithCounter

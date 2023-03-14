@@ -36,7 +36,6 @@ MachGuiIconWithCounter::MachGuiIconWithCounter(
         Gui::bitmap(bitmap),
         Gui::Coord(1, 1))
     , pInGameScreen_(pInGameScreen)
-    , currentValue_(0)
 {
     // Intentionally Empty
 }
@@ -45,6 +44,15 @@ MachGuiIconWithCounter::MachGuiIconWithCounter(
 MachGuiIconWithCounter::~MachGuiIconWithCounter()
 {
     // Intentionally Empty
+}
+
+void MachGuiIconWithCounter::setCounterValue(size_t value)
+{
+    if (value == currentValue_)
+        return;
+
+    currentValue_ = value;
+    changed();
 }
 
 // virtual
@@ -110,12 +118,7 @@ void MachMachinesIcon::refresh()
     MachPhys::Race playerRace = races.pcController().race();
 
     size_t newValue = races.nMachines(playerRace);
-
-    if (newValue != currentValue_)
-    {
-        currentValue_ = newValue;
-        changed();
-    }
+    setCounterValue(newValue);
 }
 
 // virtual
@@ -180,16 +183,9 @@ void MachConstructionsIcon::forceUp()
 
 void MachConstructionsIcon::refresh()
 {
-    MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
-
-    size_t newValue = races.nConstructions(playerRace);
-
-    if (newValue != currentValue_)
-    {
-        currentValue_ = newValue;
-        changed();
-    }
+    const MachLogRaces& races = MachLogRaces::instance();
+    const MachPhys::Race playerRace = races.pcController().race();
+    setCounterValue(races.nConstructions(playerRace));
 }
 
 // virtual
@@ -243,24 +239,19 @@ void MachSquadronIcon::doBeReleased(const GuiMouseEvent&)
 
 void MachSquadronIcon::update()
 {
-    size_t newValue = 0;
+    const MachLogRaces& races = MachLogRaces::instance();
+    const MachPhys::Race race = races.pcController().race();
 
-    for (size_t i = 0; i < 10; ++i)
+    size_t newValue = 0;
+    for (MachLogSquadron* pSquadron : races.squadrons(race))
     {
-        MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race race = races.pcController().race();
-        MachLogSquadron* pSquadron = races.squadrons(race)[i];
-        if (not pSquadron->machines().empty())
+        if (!pSquadron->machines().empty())
         {
             ++newValue;
         }
     }
 
-    if (currentValue_ != newValue)
-    {
-        currentValue_ = newValue;
-        changed();
-    }
+    setCounterValue(newValue);
 }
 
 // virtual
