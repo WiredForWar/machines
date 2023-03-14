@@ -61,8 +61,8 @@ void MachGuiIconWithCounter::doDisplayInteriorEnabled(const Gui::Coord& abs)
     };
 
     Gui::Coord absCopy(abs);
-    absCopy.y(absCopy.y() + 20); // TODO : remove hard coded values
-    absCopy.x(absCopy.x() + 20);
+    Gui::Vec offset(getBitmap().width(), getBitmap().width());
+    absCopy += offset;
 
     MachGui::drawNumber(numbers, currentValue_, &absCopy);
 }
