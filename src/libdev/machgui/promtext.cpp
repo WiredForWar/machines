@@ -723,7 +723,9 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
     CB_DEPIMPL(GuiBitmap, lightOn_);
 
     const int yOffset = 7 * MachGui::uiScaleFactor();
-    const int hSpacing = 1 * MachGui::uiScaleFactor();
+    const int w = W4dManager::instance().sceneManager()->pDevice()->windowWidth();
+    const int baseSpacing = w < 1024 ? 1 : 2;
+    const int hSpacing = baseSpacing * MachGui::uiScaleFactor();
     const int xOffset = lightOn_.width() + hSpacing;
 
     return absoluteBoundary().minCorner() + Gui::Vec(xOffset, yOffset);
