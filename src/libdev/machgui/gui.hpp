@@ -91,6 +91,8 @@ public:
 
     static int iconIndexYOffset();
 
+    static int corralInfoTextSize();
+
     static double doubleClickInterval();
 
     // Context enumerations

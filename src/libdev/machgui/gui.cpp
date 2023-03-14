@@ -793,6 +793,11 @@ int MachGui::iconIndexYOffset()
     return MachGui::uiScaleFactor() - 1;
 }
 
+int MachGui::corralInfoTextSize()
+{
+    return MachGui::uiScaleFactor() == 1 ? 12 : 20;
+}
+
 // static
 double MachGui::doubleClickInterval()
 {
