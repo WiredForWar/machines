@@ -39,11 +39,12 @@
 #include "render/device.hpp"
 #include "render/surfmgr.hpp"
 #include "device/cd.hpp"
+#include <string>
 // #include <mbstring.h>
 
 #define SYSTEM_MESSAGE 100
 
-using strings = ctl_vector<string>;
+using strings = std::vector<std::string>;
 
 bool checkEnteredText(const unsigned char* pEncryptedText, const unsigned char* pDecryptKey, const string& enteredText)
 {
@@ -425,7 +426,7 @@ void MachPromptText::displayChatMessage()
     GuiPainter::instance().blit(lightOn_, absoluteBoundary().minCorner());
 }
 
-void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vector<string>& textLines)
+void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vector<std::string>& textLines)
 {
     if (pImpl_->refresh_ || pImpl_->promptDisplayed_ != textType)
     {
@@ -442,7 +443,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vecto
             startY += pImpl_->shadowFont_.charHeight() / 2;
         }
 
-        for (const string& line : textLines)
+        for (const std::string& line : textLines)
         {
             Gui::Coord textPos(0, startY);
             Gui::Coord shadowPos = textPos + Gui::Vec(1, 1) * MachGui::uiScaleFactor();

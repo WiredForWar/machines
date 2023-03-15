@@ -18,7 +18,7 @@
 #include "gui/displaya.hpp"
 #include "system/pathname.hpp"
 
-using strings = ctl_vector<string>;
+using strings = std::vector<std::string>;
 class GuiBmpFont;
 
 class MachGuiMenuText : public GuiDisplayable

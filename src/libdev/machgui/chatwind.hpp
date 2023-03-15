@@ -35,7 +35,7 @@ public:
 protected:
     void doDisplay() override;
 
-    using strings = ctl_vector<string>;
+    using strings = std::vector<std::string>;
 
     static size_t& numLines();
     static strings& linesOfText();

@@ -11,7 +11,6 @@
 #include "phys/phys.hpp"
 #include "stdlib/string.hpp"
 #include "ctl/list.hpp"
-#include "ctl/vector.hpp"
 #include "machgui/messbrok.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
@@ -35,7 +34,7 @@ struct MachGuiInGameChatMessagesImpl
     bool messageAdded_;
     MachGuiMessageBroker* pMessageBroker_;
     MachGuiStartupScreens* pStartupScreens_;
-    ctl_vector<string> standardMessages_;
+    std::vector<std::string> standardMessages_;
 };
 
 #define CB_MachGuiInGameChatMessagesImpl_DEPIMPL()                                                                     \
@@ -45,7 +44,7 @@ struct MachGuiInGameChatMessagesImpl
     CB_DEPIMPL(bool, messageAdded_)                                                                                    \
     CB_DEPIMPL(MachGuiMessageBroker*, pMessageBroker_)                                                                 \
     CB_DEPIMPL(MachGuiStartupScreens*, pStartupScreens_)                                                               \
-    CB_DEPIMPL(ctl_vector<string>, standardMessages_)
+    CB_DEPIMPL(std::vector<std::string>, standardMessages_)
 
 // static
 MachGuiInGameChatMessages& MachGuiInGameChatMessages::instance()
@@ -108,7 +107,7 @@ bool MachGuiInGameChatMessages::update()
     // Clear out oldest message every five seconds
     if (Phys::time() - lastUpdateTime_ > 8.0)
     {
-        if (chatMessages_.size() > 0)
+        if (!chatMessages_.empty())
         {
             chatMessages_.pop_front();
             returnVal = true;
@@ -291,7 +290,7 @@ int MachGuiInGameChatMessages::reqHeight()
     return (font.charHeight() + 1 * MachGui::uiScaleFactor()) * 5;
 }
 
-const ctl_vector<string>& MachGuiInGameChatMessages::standardMessages() const
+const std::vector<std::string>& MachGuiInGameChatMessages::standardMessages() const
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
 

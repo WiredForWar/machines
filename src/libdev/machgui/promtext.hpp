@@ -76,7 +76,7 @@ protected:
     bool doHandleCharEvent(const GuiCharEvent& event) override;
 
     void displayChatMessage();
-    void displayPromptText(PromptDisplayed textType, const ctl_vector<string>& textLines);
+    void displayPromptText(PromptDisplayed textType, const std::vector<std::string>& textLines);
 
     int maxWidth() const override;
     Gui::Coord getPromptTextAbsolutePosition() const;

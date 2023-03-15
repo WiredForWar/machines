@@ -16,6 +16,8 @@
 #include "machphys/machphys.hpp"
 #include "stdlib/strfwd.hpp"
 
+#include <vector>
+
 template <class T> class ctl_list;
 template <class T> class ctl_vector;
 
@@ -58,7 +60,7 @@ public:
     static int reqHeight();
 
     // Get a list of standard messages that can be sent. This saves typing
-    const ctl_vector<string>& standardMessages() const;
+    const std::vector<std::string>& standardMessages() const;
 
 private:
     friend ostream& operator<<(ostream& o, const MachGuiInGameChatMessages& t);

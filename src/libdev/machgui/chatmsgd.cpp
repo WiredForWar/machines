@@ -108,7 +108,7 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
 
     bool needsUpdate = MachGuiInGameChatMessages::instance().update();
 
-    if ((needsUpdate and MachGuiInGameChatMessages::instance().messages().size() > 0) or forceUpdate_)
+    if ((needsUpdate && !MachGuiInGameChatMessages::instance().messages().empty()) || forceUpdate_)
     {
         forceUpdate_ = false;
 
