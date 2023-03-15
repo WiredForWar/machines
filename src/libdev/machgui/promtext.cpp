@@ -112,8 +112,8 @@ MachPromptTextImpl::MachPromptTextImpl(
     : font_(GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing))
     , shadowFont_(GuiBmpFont::getFont(shadowFont, fontType, spaceCharWidth, spacing))
     , refresh_(true)
-    , lightOn_(Gui::bitmap("gui/misc/tplight2.bmp"))
-    , lightOff_(Gui::bitmap("gui/misc/tplight1.bmp"))
+    , lightOn_(Gui::bitmap(MachGui::getScaledImagePath("gui/misc/tplight2")))
+    , lightOff_(Gui::bitmap(MachGui::getScaledImagePath("gui/misc/tplight1")))
     , enteringChatMessage_(false)
     , chatMessageIntendedForRace_(MachPhys::N_RACES)
     , beginningTextWidth_(0)
@@ -135,8 +135,8 @@ MachPromptText::MachPromptText(
     std::string normalFont = MachGui::getScaledImagePath("gui/menu/promtfnt");
     std::string shadowFont = MachGui::getScaledImagePath("gui/menu/promdfnt");
     GuiBmpFont::FontType fontType = GuiBmpFont::PROPORTIONAL;
-    size_t spaceCharWidth = 7;
-    size_t spacing = 1;
+    size_t spaceCharWidth = 7 * MachGui::uiScaleFactor();
+    size_t spacing = 1 * MachGui::uiScaleFactor();
 
     font_ = GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing);
     pImpl_ = _NEW(MachPromptTextImpl(normalFont, shadowFont, fontType, spaceCharWidth, spacing));
@@ -418,7 +418,7 @@ void MachPromptText::displayChatMessage()
     {
         Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Coord(caretPosition, startY);
         Gui::Coord to = from + Gui::Coord(0, font_.charHeight());
-        GuiPainter::instance().line(from, to, caretColour(), 1);
+        GuiPainter::instance().line(from, to, caretColour(), 1 * MachGui::uiScaleFactor());
     }
 
     // Blit light on graphic
@@ -445,11 +445,11 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vecto
         for (const string& line : textLines)
         {
             Gui::Coord textPos(0, startY);
-            Gui::Coord shadowPos = textPos + Gui::Coord(1, 1);
+            Gui::Coord shadowPos = textPos + Gui::Coord(1, 1) * MachGui::uiScaleFactor();
             pImpl_->shadowFont_
                 .drawText(&pImpl_->promptBmp_, line, shadowPos, pImpl_->promptBmp_.width() - shadowPos.x());
             pImpl_->font_.drawText(&pImpl_->promptBmp_, line, textPos, pImpl_->promptBmp_.width());
-            startY += pImpl_->shadowFont_.charHeight() + 1;
+            startY += pImpl_->shadowFont_.charHeight() + 1 * MachGui::uiScaleFactor();
         }
 
         if (pImpl_->restartScroll_)
@@ -722,8 +722,8 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
 {
     CB_DEPIMPL(GuiBitmap, lightOn_);
 
-    const int yOffset = 7;
-    const int hSpacing = 1;
+    const int yOffset = 7 * MachGui::uiScaleFactor();
+    const int hSpacing = 1 * MachGui::uiScaleFactor();
     const int xOffset = lightOn_.width() + hSpacing;
 
     return absoluteBoundary().minCorner() + Gui::Coord(xOffset, yOffset);
