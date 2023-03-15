@@ -89,6 +89,8 @@ public:
     static int barValueLineOffset();
     static int barValueLineThickness();
 
+    static int iconIndexYOffset();
+
     static double doubleClickInterval();
 
     // Context enumerations

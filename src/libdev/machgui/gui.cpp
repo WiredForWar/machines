@@ -785,6 +785,11 @@ int MachGui::barValueLineThickness()
     return 2;
 }
 
+int MachGui::iconIndexYOffset()
+{
+    return 0;
+}
+
 // static
 double MachGui::doubleClickInterval()
 {
