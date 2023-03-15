@@ -2340,6 +2340,14 @@ void MachGuiStartupScreens::contextAnimation()
                 flicExists = true;
             }
         }
+
+        if (flicExists)
+        {
+            desiredCdTrack_ = DONT_PLAY_CD;
+
+            // Clear the entire screen to stop previous screen from showing through black borders.
+            RenDevice::current()->clearAllSurfaces(RenColour::black());
+        }
     }
     else if (context_ == CTX_ENTRYFLIC or context_ == CTX_VICTORYFLIC or context_ == CTX_DEFEATFLIC)
     {
