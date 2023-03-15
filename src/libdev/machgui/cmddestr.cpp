@@ -244,6 +244,7 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
     PRE(isVisible());
 
     static GuiBitmap retVal;
+    const char* pBitmapPath = nullptr;
     // GuiDisplayable* pThis = _CONST_CAST( GuiDisplayable*, this );
     GuiDisplayable* pThis = _STATIC_CAST(GuiDisplayable*, _CONST_CAST(MachGuiSelfDestructCommandIcon*, this));
 
@@ -251,7 +252,7 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
     if (MachGuiSelfDestructCommand::buttonState() == MachGuiSelfDestructCommand::BTN_HIDDEN)
     {
         pThis->redrawEveryFrame(false);
-        retVal = Gui::bitmap(SysPathName("gui/commands/selfdes1.bmp"));
+        pBitmapPath = "gui/commands/selfdes1.bmp";
     }
     // Display rotating self-destruct button
     else if (MachGuiSelfDestructCommand::buttonState() == MachGuiSelfDestructCommand::BTN_SHOWN)
@@ -271,28 +272,29 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
             pThis->redrawEveryFrame(true);
         }
         // Display relevant frame
+
         switch (rotateFrame)
         {
             case 1:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes2.bmp"));
+                pBitmapPath = "gui/commands/selfdes2.bmp";
                 break;
             case 2:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes3.bmp"));
+                pBitmapPath = "gui/commands/selfdes3.bmp";
                 break;
             case 3:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes4.bmp"));
+                pBitmapPath = "gui/commands/selfdes4.bmp";
                 break;
             case 4:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes5.bmp"));
+                pBitmapPath = "gui/commands/selfdes5.bmp";
                 break;
             case 5:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes6.bmp"));
+                pBitmapPath = "gui/commands/selfdes6.bmp";
                 break;
             case 6:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes7.bmp"));
+                pBitmapPath = "gui/commands/selfdes7.bmp";
                 break;
             case 7:
-                retVal = Gui::bitmap(SysPathName("gui/commands/selfdes7.bmp"));
+                pBitmapPath = "gui/commands/selfdes7.bmp";
                 // Stop redraws
                 pThis->redrawEveryFrame(false);
                 break;
@@ -308,13 +310,15 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
 
         if (itime % 2)
         {
-            retVal = Gui::bitmap(SysPathName("gui/commands/selfdes8.bmp"));
+            pBitmapPath = "gui/commands/selfdes8.bmp";
         }
         else
         {
-            retVal = Gui::bitmap(SysPathName("gui/commands/selfdes7.bmp"));
+            pBitmapPath = "gui/commands/selfdes7.bmp";
         }
     }
+
+    retVal = Gui::bitmap(SysPathName(MachGui::getScaledImagePath(pBitmapPath)));
 
     return retVal;
 }
