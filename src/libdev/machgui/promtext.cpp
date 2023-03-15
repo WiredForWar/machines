@@ -101,6 +101,8 @@ public:
     MachInGameScreen* pInGameScreen_;
 };
 
+constexpr int c_textScrollSpeed = 20;
+
 MachPromptTextImpl::MachPromptTextImpl(
     const std::string& normalFont,
     const std::string& shadowFont,
@@ -304,114 +306,19 @@ void MachPromptText::doDisplay()
     CB_DEPIMPL(bool, restartScroll_);
     CB_DEPIMPL(bool, enteringChatMessage_);
 
-    const int textScrollSpeed = 20;
-
     if (enteringChatMessage_)
     {
         displayChatMessage();
+        return;
     }
     // Decide which text to display. Cursor prompt takes priority
-    else if (cursorPromptText_.length() != 0)
+    if (cursorPromptText_.length() != 0)
     {
-        if (refresh_ or promptDisplayed_ != CURSORTEXT)
-        {
-            promptDisplayed_ = CURSORTEXT;
-            refresh_ = false;
-            promptBmp_.filledRectangle(RenSurface::Rect(0, 0, promptBmp_.width(), promptBmp_.height()), Gui::MAGENTA());
-
-            // Render all the lines
-            int startY = 0;
-            if (cursorPromptTextLines_.size() == 1)
-            {
-                startY += shadowFont_.charHeight() / 2;
-            }
-
-            for (strings::iterator iter = cursorPromptTextLines_.begin(); iter != cursorPromptTextLines_.end(); ++iter)
-            {
-                shadowFont_.drawText(&promptBmp_, *iter, Gui::Coord(1, startY + 1), promptBmp_.width() - 1);
-                font_.drawText(&promptBmp_, *iter, Gui::Coord(0, startY), promptBmp_.width());
-                startY += shadowFont_.charHeight() + 1;
-            }
-
-            if (restartScroll_)
-                blitToX_ = 0;
-        }
-        // Blit text.
-        GuiPainter::instance().blit(
-            promptBmp_,
-            Gui::Box(0, 0, blitToX_, promptBmp_.height()),
-            Gui::Coord(
-                absoluteBoundary().minCorner().x() + lightOn_.width() + 1,
-                absoluteBoundary().minCorner().y() + 7));
-
-        // Scroll text to new pos for next frame.
-        if (blitToX_ != promptBmp_.width())
-        {
-            blitToX_ += textScrollSpeed;
-            if (blitToX_ >= width())
-            {
-                blitToX_ = promptBmp_.width();
-            }
-
-            // Blit light on graphic
-            GuiPainter::instance().blit(lightOn_, absoluteBoundary().minCorner());
-        }
-        else
-        {
-            // Blit light off graphic
-            GuiPainter::instance().blit(lightOff_, absoluteBoundary().minCorner());
-        }
+        displayPromptText(CURSORTEXT, cursorPromptTextLines_);
     }
     else if (commandPromptText_.length() != 0)
     {
-        if (refresh_ or promptDisplayed_ != COMMANDTEXT)
-        {
-            promptDisplayed_ = COMMANDTEXT;
-            refresh_ = false;
-            promptBmp_.filledRectangle(RenSurface::Rect(0, 0, promptBmp_.width(), promptBmp_.height()), Gui::MAGENTA());
-
-            // Render all the lines
-            int startY = 0;
-            if (commandPromptTextLines_.size() == 1)
-            {
-                startY += shadowFont_.charHeight() / 2;
-            }
-
-            for (strings::iterator iter = commandPromptTextLines_.begin(); iter != commandPromptTextLines_.end();
-                 ++iter)
-            {
-                shadowFont_.drawText(&promptBmp_, *iter, Gui::Coord(1, startY + 1), promptBmp_.width() - 1);
-                font_.drawText(&promptBmp_, *iter, Gui::Coord(0, startY), promptBmp_.width());
-                startY += shadowFont_.charHeight() + 1;
-            }
-
-            if (restartScroll_)
-                blitToX_ = 0;
-        }
-        // Blit text.
-        GuiPainter::instance().blit(
-            promptBmp_,
-            Gui::Box(0, 0, blitToX_, promptBmp_.height()),
-            Gui::Coord(
-                absoluteBoundary().minCorner().x() + lightOn_.width() + 1,
-                absoluteBoundary().minCorner().y() + 7));
-
-        if (blitToX_ != promptBmp_.width())
-        {
-            blitToX_ += textScrollSpeed;
-            if (blitToX_ >= width())
-            {
-                blitToX_ = promptBmp_.width();
-            }
-
-            // Blit light on graphic
-            GuiPainter::instance().blit(lightOn_, absoluteBoundary().minCorner());
-        }
-        else
-        {
-            // Blit light off graphic
-            GuiPainter::instance().blit(lightOff_, absoluteBoundary().minCorner());
-        }
+        displayPromptText(COMMANDTEXT, commandPromptTextLines_);
     }
     else
     {
@@ -421,7 +328,7 @@ void MachPromptText::doDisplay()
         if (blitToX_ != 0)
         {
             {
-                blitToX_ -= std::min(blitToX_, textScrollSpeed);
+                blitToX_ -= std::min(blitToX_, c_textScrollSpeed);
 
                 // Blit text.
                 GuiPainter::instance().blit(
@@ -524,6 +431,63 @@ void MachPromptText::displayChatMessage()
 
     // Blit light on graphic
     GuiPainter::instance().blit(lightOn_, absoluteBoundary().minCorner());
+}
+
+void MachPromptText::displayPromptText(PromptDisplayed textType, const ctl_vector<string>& textLines)
+{
+    if (pImpl_->refresh_ || pImpl_->promptDisplayed_ != textType)
+    {
+        pImpl_->promptDisplayed_ = textType;
+        pImpl_->refresh_ = false;
+        pImpl_->promptBmp_.filledRectangle(
+            RenSurface::Rect(0, 0, pImpl_->promptBmp_.width(), pImpl_->promptBmp_.height()),
+            Gui::MAGENTA());
+
+        // Render all the lines
+        int startY = 0;
+        if (textLines.size() == 1)
+        {
+            startY += pImpl_->shadowFont_.charHeight() / 2;
+        }
+
+        for (const string& line : textLines)
+        {
+            pImpl_->shadowFont_
+                .drawText(&pImpl_->promptBmp_, line, Gui::Coord(1, startY + 1), pImpl_->promptBmp_.width() - 1);
+            pImpl_->font_.drawText(&pImpl_->promptBmp_, line, Gui::Coord(0, startY), pImpl_->promptBmp_.width());
+            startY += pImpl_->shadowFont_.charHeight() + 1;
+        }
+
+        if (pImpl_->restartScroll_)
+        {
+            pImpl_->blitToX_ = 0;
+        }
+    }
+    // Blit text.
+    GuiPainter::instance().blit(
+        pImpl_->promptBmp_,
+        Gui::Box(0, 0, pImpl_->blitToX_, pImpl_->promptBmp_.height()),
+        Gui::Coord(
+            absoluteBoundary().minCorner().x() + pImpl_->lightOn_.width() + 1,
+            absoluteBoundary().minCorner().y() + 7));
+
+    // Scroll text to new pos for next frame.
+    if (pImpl_->blitToX_ != pImpl_->promptBmp_.width())
+    {
+        pImpl_->blitToX_ += c_textScrollSpeed;
+        if (pImpl_->blitToX_ >= width())
+        {
+            pImpl_->blitToX_ = pImpl_->promptBmp_.width();
+        }
+
+        // Blit light on graphic
+        GuiPainter::instance().blit(pImpl_->lightOn_, absoluteBoundary().minCorner());
+    }
+    else
+    {
+        // Blit light off graphic
+        GuiPainter::instance().blit(pImpl_->lightOff_, absoluteBoundary().minCorner());
+    }
 }
 
 // virtual
