@@ -628,7 +628,7 @@ public:
     }
     static size_t reqHeight()
     {
-        return 33; // TODO : remove hardcoded value
+        return 33 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
     }
 
 protected:
