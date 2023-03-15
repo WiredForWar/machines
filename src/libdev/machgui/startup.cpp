@@ -1808,7 +1808,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         // Save menu screen shot
         if (e.key() == DevKey::F12 and e.isShiftPressed() and e.isCtrlPressed())
         {
-            Gui::writeScreenAsBmp("menu");
+            Gui::writeScreenAsFile("menu");
         }
 
         // Do we have a control with focus that can respond to the key press?

@@ -127,9 +127,9 @@ struct Gui
 
     // Saves the screen as a bitmap file. startFilename is the first few
     // characters of the bitmap filename, the function will add a four digit
-    // number to startFilename ( e.g. writeScreenAsBmp( "XXXX" ) would store
-    // a bitmap with the name "XXXX0000.bmp" followed by "XXXX0001.bmp" etc ).
-    static void writeScreenAsBmp(const char* startFilename);
+    // number to startFilename ( e.g. writeScreenAsFile( "XXXX" ) would store
+    // a file with name e.g "XXXX0000.png" followed by "XXXX0001.png" etc ).
+    static void writeScreenAsFile(const char* startFilename);
 
 private:
     static RenSurface& staticBackBuffer();

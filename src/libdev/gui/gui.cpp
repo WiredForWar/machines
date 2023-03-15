@@ -156,7 +156,7 @@ Gui::Box Gui::translateBitmapDimensions(const SysPathName& path, const Gui::Coor
 }
 
 // static
-void Gui::writeScreenAsBmp(const char* startFilename)
+void Gui::writeScreenAsFile(const char* startFilename)
 {
     const RenSurface& surface = Gui::backBuffer();
 
