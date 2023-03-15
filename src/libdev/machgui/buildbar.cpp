@@ -11,7 +11,7 @@
 #include "gui/painter.hpp"
 
 MachGuiBuildProgressBar::MachGuiBuildProgressBar(GuiDisplayable* pParent, const Gui::Coord& rel, size_t width)
-    : GuiDisplayable(pParent, Gui::Box(rel, width, SHADOW_THICKNESS + BAR_THICKNESS + (2 * BORDER_THICKNESS)))
+    : GuiDisplayable(pParent, Gui::Box(rel, width, MachGuiBuildProgressBar::height()))
     , percentageComplete_(0.0)
 {
 
@@ -62,28 +62,36 @@ Gui::Colour MachGuiBuildProgressBar::barColour() const
 
 void MachGuiBuildProgressBar::doDisplay()
 {
-    GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::WHITE(), BORDER_THICKNESS);
+    const int borderThickness = MachGui::barBorderThickness();
+    const int shadowThickness = MachGui::barShadowThickness();
+    const int barOffset = MachGui::barValueLineOffset();
+    const int barThickness = MachGui::barValueLineThickness();
 
-    size_t interiorWidth = width() - (2 * BORDER_THICKNESS) - SHADOW_THICKNESS;
-    size_t barWidth = (percentageComplete_ / 100.0) * ((double)interiorWidth - 1.0);
+    GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::PURPLE());
 
-    Gui::Coord topLeft(absoluteCoord().x() + BORDER_THICKNESS, absoluteCoord().y() + BORDER_THICKNESS);
-    Gui::Coord sc(absoluteCoord().x() + BORDER_THICKNESS + SHADOW_THICKNESS, absoluteCoord().y() + BORDER_THICKNESS);
-    Gui::Coord bc(
-        absoluteCoord().x() + BORDER_THICKNESS + SHADOW_THICKNESS,
-        absoluteCoord().y() + 1 + BORDER_THICKNESS + SHADOW_THICKNESS);
+    size_t interiorWidth = width() - (2 * borderThickness) - shadowThickness;
+    size_t barWidth = (percentageComplete_ / 100.0) * interiorWidth;
 
-    GuiPainter::instance().horizontalLine(sc, interiorWidth, Gui::BLACK(), SHADOW_THICKNESS);
-    GuiPainter::instance().horizontalLine(bc, interiorWidth - 1, MachGui::PURPLE(), BAR_THICKNESS);
-    if (barWidth) // Only draw if the barWidth is not zero
-        GuiPainter::instance().horizontalLine(bc, barWidth, barColour(), BAR_THICKNESS);
-    GuiPainter::instance().verticalLine(topLeft, SHADOW_THICKNESS + BAR_THICKNESS, Gui::BLACK(), SHADOW_THICKNESS);
+    Gui::Coord topLeft(absoluteCoord().x() + borderThickness, absoluteCoord().y() + borderThickness);
+    Gui::Coord sc(topLeft + Gui::Vec(shadowThickness, 0));
+
+    GuiPainter::instance().horizontalLine(sc, interiorWidth, Gui::BLACK(), shadowThickness);
+    if (barWidth)
+    {
+        // Only draw if the barWidth is not zero
+        Gui::Coord bc(topLeft + Gui::Vec(shadowThickness, shadowThickness + barOffset));
+        GuiPainter::instance().horizontalLine(bc, barWidth, barColour(), barThickness);
+    }
+    GuiPainter::instance().verticalLine(topLeft, height() - borderThickness, Gui::BLACK(), shadowThickness);
+
+    GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::WHITE(), borderThickness);
 }
 
 // static
 size_t MachGuiBuildProgressBar::height()
 {
-    return (BORDER_THICKNESS + SHADOW_THICKNESS + BAR_THICKNESS + BORDER_THICKNESS);
+    return MachGui::barBorderThickness() + MachGui::barShadowThickness() + MachGui::barValueLineThickness()
+        + MachGui::barBorderThickness();
 }
 
 void MachGuiBuildProgressBar::percentageComplete(float complete)
