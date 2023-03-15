@@ -762,32 +762,35 @@ int MachGui::mapAreaHeight()
 
 int MachGui::barBorderThickness()
 {
-    return 1;
+    return 1 * MachGui::uiScaleFactor();
 }
 
 int MachGui::barShadowThickness()
 {
-    return 1;
+    return 1 * MachGui::uiScaleFactor();
 }
 
 int MachGui::barDividerThickness()
 {
-    return 1;
+    return 1 * MachGui::uiScaleFactor();
 }
 
 int MachGui::barValueLineOffset()
 {
-    return 1;
+    return 1 * MachGui::uiScaleFactor();
 }
 
 int MachGui::barValueLineThickness()
 {
-    return 2;
+    // The '+' below is intentional:
+    // We want 2px for 1X and 3px for 2X scales.
+    return 1 + MachGui::uiScaleFactor();
 }
 
 int MachGui::iconIndexYOffset()
 {
-    return 0;
+    // We want 0px for 1X and 1px for 2X scales.
+    return MachGui::uiScaleFactor() - 1;
 }
 
 // static
