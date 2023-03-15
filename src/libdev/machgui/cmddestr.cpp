@@ -318,7 +318,7 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
         }
     }
 
-    retVal = Gui::bitmap(SysPathName(MachGui::getScaledImagePath(pBitmapPath)));
+    retVal = MachGui::getScaledImage(pBitmapPath);
 
     return retVal;
 }

@@ -41,7 +41,7 @@ public:
     {
         MachCommandIcon::doDisplayInteriorEnabled(abs);
 
-        static GuiBitmap rechargeBmp = Gui::bitmap(SysPathName("gui/commands/nukeatkr.bmp"));
+        static GuiBitmap rechargeBmp = MachGui::getScaledImage("gui/commands/nukeatkr.bmp");
 
         float displayWidth
             = ((float)rechargeBmp.width() / 100.0) * (float)MachGuiNukeAttackCommand::highestPercentageRecharged();
@@ -70,7 +70,7 @@ public:
     {
         MachCommandIcon::doDisplayInteriorEnabled(abs);
 
-        static GuiBitmap rechargeBmp = Gui::bitmap(SysPathName("gui/commands/ionattkr.bmp"));
+        static GuiBitmap rechargeBmp = MachGui::getScaledImage("gui/commands/ionattkr.bmp");
 
         float displayWidth
             = ((float)rechargeBmp.width() / 100.0) * (float)MachGuiIonAttackCommand::highestPercentageRecharged();
@@ -99,13 +99,13 @@ public:
     // Inherited from GuiBitmapButtonWithFilledBorder
     const GuiBitmap& getBitmap() const override
     {
-        static GuiBitmap bmpDefcon1 = Gui::bitmap(SysPathName("gui/commands/defco1.bmp"));
-        static GuiBitmap bmpDefcon2 = Gui::bitmap(SysPathName("gui/commands/defco2.bmp"));
-        static GuiBitmap bmpDefcon3 = Gui::bitmap(SysPathName("gui/commands/defco3.bmp"));
-        static GuiBitmap bmpDefcon12 = Gui::bitmap(SysPathName("gui/commands/defco12.bmp"));
-        static GuiBitmap bmpDefcon23 = Gui::bitmap(SysPathName("gui/commands/defco23.bmp"));
-        static GuiBitmap bmpDefcon123 = Gui::bitmap(SysPathName("gui/commands/defco123.bmp"));
-        static GuiBitmap bmpDefcon13 = Gui::bitmap(SysPathName("gui/commands/defco13.bmp"));
+        static GuiBitmap bmpDefcon1 = MachGui::getScaledImage("gui/commands/defco1.bmp");
+        static GuiBitmap bmpDefcon2 = MachGui::getScaledImage("gui/commands/defco2.bmp");
+        static GuiBitmap bmpDefcon3 = MachGui::getScaledImage("gui/commands/defco3.bmp");
+        static GuiBitmap bmpDefcon12 = MachGui::getScaledImage("gui/commands/defco12.bmp");
+        static GuiBitmap bmpDefcon23 = MachGui::getScaledImage("gui/commands/defco23.bmp");
+        static GuiBitmap bmpDefcon123 = MachGui::getScaledImage("gui/commands/defco123.bmp");
+        static GuiBitmap bmpDefcon13 = MachGui::getScaledImage("gui/commands/defco13.bmp");
 
         if (MachGuiDefconCommand::defconLow() and MachGuiDefconCommand::defconNormal()
             and MachGuiDefconCommand::defconHigh())
@@ -225,7 +225,7 @@ size_t MachCommandIcons::reqHeight()
 
 size_t MachCommandIcons::horizontalSpacing()
 {
-    return 5;
+    return 5 * MachGui::uiScaleFactor();
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -326,7 +326,7 @@ MachCommandIcon::MachCommandIcon(
         rel,
         GuiBorderMetrics(1, 1, 1),
         GuiFilledBorderColours(Gui::BLACK(), Gui::DARKGREY(), Gui::DARKGREY(), Gui::RED(), Gui::BLACK()),
-        Gui::bitmap(bitmapPaths(command).first),
+        MachGui::getScaledImage(bitmapPaths(command).first),
         Gui::Coord(1, 1))
     , pInGameScreen_(pInGameScreen)
     , pCommand_(&command)
@@ -397,13 +397,13 @@ void MachCommandIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 
 size_t MachCommandIcon::reqWidth()
 {
-    return 77; // TODO : remove hardcoding
+    return 77 * MachGui::uiScaleFactor(); // TODO : remove hardcoding
 }
 
 // static
 size_t MachCommandIcon::reqHeight()
 {
-    return 13; // TODO : remove hardcoding
+    return 13 * MachGui::uiScaleFactor(); // TODO : remove hardcoding
 }
 
 const MachGuiCommand* MachCommandIcon::pCommand() const
