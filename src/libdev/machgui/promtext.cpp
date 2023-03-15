@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "base/prepost.hpp"
 #include "ctl/list.hpp"
 #include "ctl/pvector.hpp"
 #include "machgui/gui.hpp"
@@ -560,16 +561,19 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                         switch (chatMessageIntendedForRace_)
                         {
                             case MachPhys::RED:
-                                chatMessageIntendedForStr_ += GuiBmpFont::redCharIndex();
+                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::redCharIndex());
                                 break;
                             case MachPhys::GREEN:
-                                chatMessageIntendedForStr_ += GuiBmpFont::greenCharIndex();
+                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::greenCharIndex());
                                 break;
                             case MachPhys::BLUE:
-                                chatMessageIntendedForStr_ += GuiBmpFont::blueCharIndex();
+                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::blueCharIndex());
                                 break;
                             case MachPhys::YELLOW:
-                                chatMessageIntendedForStr_ += GuiBmpFont::yellowCharIndex();
+                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::yellowCharIndex());
+                                break;
+                            default:
+                                ASSERT_FAIL("Invalid race for a chat message");
                                 break;
                         }
                         GuiResourceString sendToStr(IDS_SENDTO);
