@@ -7,6 +7,7 @@
 
 #include "machgui/chatmsgd.hpp"
 #include "machgui/chatmsgs.hpp"
+#include "machgui/gui.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
@@ -29,8 +30,8 @@ struct MachGuiInGameChatMessagesDisplayImpl
 };
 
 MachGuiInGameChatMessagesDisplayImpl::MachGuiInGameChatMessagesDisplayImpl()
-    : font_(GuiBmpFont::getFont("gui/menu/promtfnt.bmp"))
-    , shadowFont_(GuiBmpFont::getFont("gui/menu/promdfnt.bmp"))
+    : font_(GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp")))
+    , shadowFont_(GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promdfnt.bmp")))
     , forceUpdate_(true)
     , pPassEventsTo_(nullptr)
 {

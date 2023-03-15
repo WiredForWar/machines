@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/chatmsgs.hpp"
+
+#include "machgui/gui.hpp"
 #include "phys/phys.hpp"
 #include "stdlib/string.hpp"
 #include "ctl/list.hpp"
@@ -126,7 +128,8 @@ void MachGuiInGameChatMessages::addMessage(const string& message)
 
     // Chop up text if it is too long to fit on one line
     strings choppedUpText;
-    MachGuiMenuText::chopUpText(message, reqWidth(), GuiBmpFont::getFont("gui/menu/promtfnt.bmp"), &choppedUpText);
+    GuiBmpFont font = GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp"));
+    MachGuiMenuText::chopUpText(message, reqWidth(), font, &choppedUpText);
 
     // Add text to list of chat messages
     for (strings::iterator iter = choppedUpText.begin(); iter != choppedUpText.end(); ++iter)
@@ -277,15 +280,15 @@ MachPhys::Race MachGuiInGameChatMessages::opponentRace(int index) const
 // static
 int MachGuiInGameChatMessages::reqWidth()
 {
-    return 430;
+    return 430 * MachGui::uiScaleFactor();
 }
 
 // static
 int MachGuiInGameChatMessages::reqHeight()
 {
-    GuiBmpFont font = GuiBmpFont::getFont("gui/menu/promtfnt.bmp");
+    GuiBmpFont font = GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp"));
 
-    return (font.charHeight() + 1) * 5;
+    return (font.charHeight() + 1 * MachGui::uiScaleFactor()) * 5;
 }
 
 const ctl_vector<string>& MachGuiInGameChatMessages::standardMessages() const
