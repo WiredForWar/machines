@@ -31,7 +31,7 @@ MachHWResearchIcon::MachHWResearchIcon(
     : GuiIcon(
         pParent,
         Gui::Coord(0, 0), // Will be relocated by icon sequence parent
-        SysPathName(MachActorBitmaps::name(
+        MachGui::getScaledImage(MachActorBitmaps::name(
             pResearchItem->objectType(),
             pResearchItem->subType(),
             pResearchItem->hwLevel(),
@@ -99,7 +99,7 @@ void MachHWResearchIcon::doBeReleased(const GuiMouseEvent&)
 // static
 size_t MachHWResearchIcon::reqWidth()
 {
-    return 42; // Todo : remove hardcoding
+    return 42 * MachGui::uiScaleFactor(); // Todo : remove hardcoding
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ size_t MachHWResearchIcon::reqWidth()
 // static
 size_t MachHWResearchIcon::reqHeight()
 {
-    return 42; // todo : remove hardcoding
+    return 42 * MachGui::uiScaleFactor(); // todo : remove hardcoding
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

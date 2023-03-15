@@ -82,12 +82,12 @@ MachHWResearchBankIcon::MachHWResearchBankIcon(
     : MachGuiNewResearchIcon(
         pParent,
         Gui::Coord(0, 0), // Will be relocated by icon sequence parent
-        Gui::bitmap(SysPathName(MachActorBitmaps::name(
+        MachGui::getScaledImage(MachActorBitmaps::name(
             pResearchItem->objectType(),
             pResearchItem->subType(),
             pResearchItem->hwLevel(),
             pResearchItem->weaponCombo(),
-            race))))
+            race)))
     , pInGameScreen_(pInGameScreen)
     , pResearchItem_(pResearchItem)
     , needsPromptUpdate_(false)
@@ -161,7 +161,7 @@ void MachHWResearchBankIcon::doBeReleased(const GuiMouseEvent&)
 size_t MachHWResearchBankIcon::reqHeight()
 {
     // TODO : Remove hard coded values
-    return MachGuiBuildProgressBar::height() + 38 /* Bitmap height */ + 4 /* Border */;
+    return MachGuiBuildProgressBar::height() + (38 /* Bitmap height */ + 4 /* Border */) * MachGui::uiScaleFactor();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ size_t MachHWResearchBankIcon::reqHeight()
 // static
 size_t MachHWResearchBankIcon::reqWidth()
 {
-    return 42; // TODO : Remove hard coded value
+    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
