@@ -19,7 +19,7 @@
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-static constexpr int MaxCommandsNumber = 22;
+static constexpr int MaxCommandsNumber = 14;
 static constexpr int CommandsPerRow = 2;
 static constexpr int CommandsMaxRows = MaxCommandsNumber / CommandsPerRow;
 
