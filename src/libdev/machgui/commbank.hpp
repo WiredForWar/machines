@@ -29,6 +29,8 @@ public:
     static size_t reqWidth();
     static size_t reqHeight();
 
+    static size_t horizontalSpacing();
+
 protected:
     virtual const Coords& coords() const;
     void doDisplay() override;
@@ -119,7 +121,7 @@ private:
     bool operator==(const MachCommandIcon&) const;
 
     // Helper function used in initialisation list
-    std::pair<SysPathName, SysPathName> bitmapPaths(const MachGuiCommand& command) const;
+    std::pair<std::string, std::string> bitmapPaths(const MachGuiCommand& command) const;
 
     MachInGameScreen* pInGameScreen_;
     const MachGuiCommand* pCommand_; // The command instance to be activated on clicking the icon

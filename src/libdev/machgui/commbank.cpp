@@ -19,6 +19,10 @@
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
+static constexpr int MaxCommandsNumber = 22;
+static constexpr int CommandsPerRow = 2;
+static constexpr int CommandsMaxRows = MaxCommandsNumber / CommandsPerRow;
+
 ///////////////////////////////////////////////////////////////////////////////////////
 
 class MachGuiNukeAttackCommandIcon : public MachCommandIcon
@@ -136,13 +140,18 @@ public:
 MachCommandIcons::MachCommandIcons(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
     : GuiScrollableIconSequence(
         pParent,
-        translateBox(arrayDimensions((MachCommandIcon::reqWidth() * 2) + 5, MachCommandIcon::reqHeight(), 11, 1), rel),
+        translateBox(
+            arrayDimensions(
+                MachCommandIcon::reqWidth() * 2 + MachCommandIcons::horizontalSpacing(),
+                MachCommandIcon::reqHeight(),
+                CommandsMaxRows,
+                1),
+            rel),
         staticCoords(),
         1)
     , pInGameScreen_(pInGameScreen)
 {
     // Construct an icon for every command available in the inGameScreen
-    int i = 0;
     const MachInGameScreen::Commands& commands = pInGameScreen->allCommands();
 
     for (int i = 0; i != commands.size(); ++i)
@@ -183,7 +192,11 @@ const GuiIconSequence::Coords& MachCommandIcons::coords() const
 // static
 const GuiIconSequence::Coords& MachCommandIcons::staticCoords()
 {
-    static Coords coords_ = arrayCoords(MachCommandIcon::reqWidth() + 5, MachCommandIcon::reqHeight() + 1, 12, 2);
+    static Coords coords_ = arrayCoords(
+        MachCommandIcon::reqWidth() + MachCommandIcons::horizontalSpacing(),
+        MachCommandIcon::reqHeight() + 1,
+        CommandsMaxRows,
+        CommandsPerRow);
     return coords_;
 }
 
@@ -201,13 +214,18 @@ void MachCommandIcons::change()
 // static
 size_t MachCommandIcons::reqWidth()
 {
-    return (2 * MachCommandIcon::reqWidth()) + 5 /* spacer*/;
+    return (2 * MachCommandIcon::reqWidth()) + horizontalSpacing();
 }
 
 // static
 size_t MachCommandIcons::reqHeight()
 {
     return (9 * MachCommandIcon::reqHeight());
+}
+
+size_t MachCommandIcons::horizontalSpacing()
+{
+    return 5;
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -265,7 +283,11 @@ const GuiIconSequence::Coords& MachSmallCommandIcons::coords() const
 // static
 const GuiIconSequence::Coords& MachSmallCommandIcons::staticCoords()
 {
-    static Coords coords_ = arrayCoords(MachCommandIcon::reqWidth() + 5, MachCommandIcon::reqHeight() + 1, 12, 2);
+    static Coords coords_ = arrayCoords(
+        MachCommandIcon::reqWidth() + MachCommandIcons::horizontalSpacing(),
+        MachCommandIcon::reqHeight() + 1,
+        CommandsMaxRows,
+        CommandsPerRow);
     return coords_;
 }
 
@@ -283,7 +305,7 @@ void MachSmallCommandIcons::change()
 // static
 size_t MachSmallCommandIcons::reqWidth()
 {
-    return (2 * MachCommandIcon::reqWidth()) + 5 /* spacer*/;
+    return (2 * MachCommandIcon::reqWidth()) + MachCommandIcons::horizontalSpacing();
 }
 
 // static
@@ -327,10 +349,10 @@ const MachInGameScreen& MachCommandIcon::inGameScreen() const
     return *pInGameScreen_;
 }
 
-std::pair<SysPathName, SysPathName> MachCommandIcon::bitmapPaths(const MachGuiCommand& command) const
+std::pair<std::string, std::string> MachCommandIcon::bitmapPaths(const MachGuiCommand& command) const
 {
     const std::pair<string, string> strings = command.iconNames();
-    return std::pair<SysPathName, SysPathName>(SysPathName(strings.first), SysPathName(strings.first));
+    return { strings.first, strings.first };
 }
 
 // virtual
