@@ -544,7 +544,7 @@ const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(UpdateType update
         else
         {
             NetNetwork::ProtocolMap* pAvailableProtocols = &availableProtocols;
-            availableProtocols.insert("UDP connection for IP v4", 0);
+            pAvailableProtocols->insert("UDP connection for IP v4", 0);
 
             if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             {

@@ -21,7 +21,8 @@ class NetNetwork
 public:
     ///////////////////////////////
 
-    using ProtocolMap = ctl_map<string, unsigned int, std::less<string>>;
+    using ProtocolSpec = std::pair<const std::string, unsigned int>;
+    using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<string>>;
     using Sessions = ctl_pvector<NetAppSessionUid>;
     using Modems = ctl_vector<string>;
 

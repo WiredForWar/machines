@@ -123,17 +123,13 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     // Get available protocols
     const NetNetwork::ProtocolMap& availableProtocols = NetNetwork::availableProtocols();
 
-    NetNetwork::ProtocolMap::const_iterator i = availableProtocols.begin();
-    NetNetwork::ProtocolMap::const_iterator j = availableProtocols.end();
-    int k = 0;
     MachGuiProtocolListBoxItem* pSelectedItem = nullptr;
-    while (i != j)
+    for (const NetNetwork::ProtocolSpec& protocol : availableProtocols)
     {
         MachGuiProtocolListBoxItem* pItem
-            = _NEW(MachGuiProtocolListBoxItem(pStartupScreens, pListBox, 413, (*i).first));
+            = _NEW(MachGuiProtocolListBoxItem(pStartupScreens, pListBox, 413, protocol.first));
         if (pItem->isSelectedProtocol())
             pSelectedItem = pItem;
-        ++i;
     }
 
     if (pSelectedItem)
