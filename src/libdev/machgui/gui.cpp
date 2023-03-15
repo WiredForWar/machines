@@ -760,6 +760,31 @@ int MachGui::mapAreaHeight()
     return 129 * uiScaleFactor();
 }
 
+int MachGui::barBorderThickness()
+{
+    return 1;
+}
+
+int MachGui::barShadowThickness()
+{
+    return 1;
+}
+
+int MachGui::barDividerThickness()
+{
+    return 1;
+}
+
+int MachGui::barValueLineOffset()
+{
+    return 1;
+}
+
+int MachGui::barValueLineThickness()
+{
+    return 2;
+}
+
 // static
 double MachGui::doubleClickInterval()
 {

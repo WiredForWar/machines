@@ -83,6 +83,12 @@ public:
     static int promptTextYOffset();
     static int mapAreaHeight();
 
+    static int barBorderThickness();
+    static int barShadowThickness();
+    static int barDividerThickness();
+    static int barValueLineOffset();
+    static int barValueLineThickness();
+
     static double doubleClickInterval();
 
     // Context enumerations
