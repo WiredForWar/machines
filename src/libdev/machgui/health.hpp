@@ -52,27 +52,6 @@ private:
     static Gui::Colour hpColour(unsigned currentValue, unsigned maxValue);
     static Gui::Colour armourColour(unsigned currentValue, unsigned maxValue);
 
-    enum
-    {
-        BORDER_THICKNESS = 1
-    };
-    enum
-    {
-        HP_THICKNESS = 2
-    };
-    enum
-    {
-        DIVIDER_THICKNESS = 1
-    };
-    enum
-    {
-        AP_THICKNESS = 2
-    };
-    enum
-    {
-        SHADOW_THICKNESS = 1
-    };
-
     MachPhys::HitPointUnits maxHits_;
     MachPhys::ArmourUnits maxArmour_;
 
