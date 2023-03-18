@@ -70,9 +70,6 @@ struct Gui
 
     CTL_PAIR(WidthAndHeight, unsigned, width, unsigned, height);
 
-    static unsigned width(const Gui::Box& b);
-    static unsigned height(const Gui::Box& b);
-
     static RenSurface& backBuffer();
     // PRE( Gui::initialised(); )
 

@@ -169,8 +169,8 @@ GuiButtonWithBorder::GuiButtonWithBorder(
     , borderDimensions_(GuiButtonWithBorder::interiorDimensions(rel, m))
     , depressedInteriorOffset_(depressedOffset)
 {
-    POST(borderDimensions().exteriorWidth() == Gui::width(rel));
-    POST(borderDimensions().exteriorHeight() == Gui::height(rel));
+    POST(borderDimensions().exteriorWidth() == rel.width());
+    POST(borderDimensions().exteriorHeight() == rel.height());
 }
 
 GuiButtonWithBorder::~GuiButtonWithBorder()
@@ -232,7 +232,7 @@ void GuiButtonWithBorder::doDisplayReleasedEnabled()
 // static
 GuiBorderDimensions GuiButtonWithBorder::interiorDimensions(const Gui::Box& rel, const GuiBorderMetrics& m)
 {
-    return GuiBorderDimensions::interiorBorder(Gui::WidthAndHeight(Gui::width(rel), Gui::height(rel)), m);
+    return GuiBorderDimensions::interiorBorder(Gui::WidthAndHeight(rel.width(), rel.height()), m);
 }
 
 //////////////////////////////////////////////////////////////////////

@@ -134,7 +134,7 @@ void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
     if (not isRoot())
         absCoord += parent().absoluteCoord();
 
-    absoluteBox_ = Gui::Box(absCoord, Gui::width(relativeBox_), Gui::height(relativeBox_));
+    absoluteBox_ = Gui::Box(absCoord, relativeBox_.size());
 
     for (Children::iterator i = allChildren_.begin(); i != allChildren_.end(); ++i)
     {
@@ -168,7 +168,7 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
     Gui::Coord relCoord = absCoord;
     if (not isRoot())
         relCoord -= parent().absoluteCoord();
-    relativeBox_ = Gui::Box(relCoord, Gui::width(absoluteBox_), Gui::height(absoluteBox_));
+    relativeBox_ = Gui::Box(relCoord, absoluteBox_.size());
 
     for (Children::iterator i = allChildren_.begin(); i != allChildren_.end(); ++i)
     {

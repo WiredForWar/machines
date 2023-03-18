@@ -37,18 +37,6 @@ void Gui::backBuffer(const RenSurface& pNewBuffer)
 
 /* //////////////////////////////////////////////////////////////// */
 
-unsigned Gui::width(const Gui::Box& b)
-{
-    return b.maxCorner().x() - b.minCorner().x();
-}
-
-unsigned Gui::height(const Gui::Box& b)
-{
-    return b.maxCorner().y() - b.minCorner().y();
-}
-
-/* //////////////////////////////////////////////////////////////// */
-
 bool operator==(const GuiColour& a, const GuiColour& b)
 {
     return a.r() == b.r() and a.g() == b.g() and a.b() == b.b();

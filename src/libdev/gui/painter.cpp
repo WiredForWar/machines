@@ -33,7 +33,7 @@ GuiPainter::GuiPainter()
 
 RenSurface::Rect map_GuiBox_to_RenSurfaceRect(const Gui::Box& b)
 {
-    return RenSurface::Rect(b.minCorner().x(), b.minCorner().y(), Gui::width(b), Gui::height(b));
+    return RenSurface::Rect(b.minCorner().x(), b.minCorner().y(), b.width(), b.height());
 }
 
 void GuiPainter::filledRectangle(const Gui::Box& b, const Gui::Colour& col) const
@@ -45,7 +45,7 @@ void GuiPainter::filledRectangle(const Gui::Box& b, const Gui::Colour& col) cons
 
 void GuiPainter::hollowRectangle(const Gui::Box& b, const Gui::Colour& col, unsigned thickness) const
 {
-    Ren::Rect area(b.minCorner().x(), b.minCorner().y(), Gui::width(b) - 1, Gui::height(b) - 1);
+    Ren::Rect area(b.minCorner().x(), b.minCorner().y(), b.width() - 1, b.height() - 1);
 
     Gui::backBuffer().hollowRectangle(area, col, thickness);
 }
@@ -85,8 +85,8 @@ void GuiPainter::bevel(const Gui::Box& b, unsigned thickness, const Gui::Colour&
     const Gui::Coord& c = b.minCorner();
     Gui::XCoord x1 = c.x();
     Gui::YCoord y1 = c.y();
-    Gui::XCoord x2 = x1 + Gui::width(b);
-    Gui::YCoord y2 = y1 + Gui::height(b);
+    Gui::XCoord x2 = x1 + b.width();
+    Gui::YCoord y2 = y1 + b.height();
 
     for (unsigned i = 0; i < thickness; ++i, ++x1, ++y1, --x2, --y2)
     {

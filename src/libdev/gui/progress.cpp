@@ -31,7 +31,7 @@ void GuiProgressBar::percentageComplete(Percentage p)
 {
     PRE(p >= 0.0 and p <= 100.0);
 
-    unsigned width = Gui::width(absoluteBoundary());
+    unsigned width = absoluteBoundary().width();
     unsigned oldWidth = progressWidthInPixels(percentageComplete_, width);
     unsigned newWidth = progressWidthInPixels(p, width);
 
@@ -71,8 +71,8 @@ void GuiFilledProgressBar::doDisplay()
 {
     GuiPainter::instance().filledRectangle(absoluteBoundary(), backgroundCol_);
 
-    unsigned width = progressWidthInPixels(percentageComplete(), Gui::width(absoluteBoundary()));
-    Gui::Box progressBox(absoluteBoundary().minCorner(), width, Gui::height(absoluteBoundary()));
+    unsigned width = progressWidthInPixels(percentageComplete(), absoluteBoundary().width());
+    Gui::Box progressBox(absoluteBoundary().minCorner(), width, absoluteBoundary().height());
     GuiPainter::instance().filledRectangle(progressBox, progressCol_);
 }
 

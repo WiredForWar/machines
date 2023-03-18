@@ -57,8 +57,10 @@ void GuiVerticalScrollBar::listUpdated()
             Gui::XCoord boxLeft = area.minCorner().x() + 1;
             Gui::YCoord boxTop = area.minCorner().y();
 
-            boxAbsPosition_ = Gui::Box(boxLeft, boxTop, boxLeft + Gui::width(area) - 2, boxTop + Gui::height(area));
-            boxRelPosition_ = Gui::Box(1, 0, 1 + Gui::width(area) - 2, Gui::height(area));
+            MexSize2d size(area.width() - 2, area.height());
+
+            boxAbsPosition_ = Gui::Box(Gui::Coord(boxLeft, boxTop), size);
+            boxRelPosition_ = Gui::Box(Gui::Coord(1, 0), size);
         }
         else
         {
@@ -86,9 +88,10 @@ void GuiVerticalScrollBar::listUpdated()
             Gui::XCoord boxLeft = area.minCorner().x() + 1;
             Gui::YCoord boxTop = area.minCorner().y() + pixTopOffset;
 
-            boxAbsPosition_ = Gui::Box(boxLeft, boxTop, boxLeft + Gui::width(area) - 2, boxTop + pixBoxHeight);
+            MexSize2d size(area.width() - 2, pixBoxHeight);
 
-            boxRelPosition_ = Gui::Box(1, pixTopOffset, 1 + Gui::width(area) - 2, pixTopOffset + pixBoxHeight);
+            boxAbsPosition_ = Gui::Box(Gui::Coord(boxLeft, boxTop), size);
+            boxRelPosition_ = Gui::Box(Gui::Coord(1, pixTopOffset), size);
         }
     }
 
@@ -229,7 +232,7 @@ Gui::Box GuiVerticalScrollBar::boxRelPosition() const
 
 void GuiVerticalScrollBar::scrollToMousePos(const GuiMouseEvent& rel)
 {
-    double boxHeight = Gui::height(boxAbsPosition_);
+    double boxHeight = boxAbsPosition_.height();
     double barHeight = height();
 
     double activeSpace = barHeight - boxHeight;
