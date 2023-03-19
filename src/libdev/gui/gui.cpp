@@ -14,13 +14,13 @@ RenSurface& Gui::staticBackBuffer()
     return backBuffer_;
 }
 
-bool Gui::initialised_ = false;
+static bool s_GuiInitialised = false;
 
 /* //////////////////////////////////////////////////////////////// */
 
 bool Gui::initialised()
 {
-    return initialised_;
+    return s_GuiInitialised;
 }
 
 RenSurface& Gui::backBuffer()
@@ -31,7 +31,7 @@ RenSurface& Gui::backBuffer()
 
 void Gui::backBuffer(const RenSurface& pNewBuffer)
 {
-    initialised_ = true;
+    s_GuiInitialised = true;
     staticBackBuffer() = pNewBuffer;
 }
 
