@@ -6,8 +6,6 @@
 #ifndef _GUI_GUI_HPP
 #define _GUI_GUI_HPP
 
-#include "ctl/utility.hpp"
-
 #include "device/mouse.hpp"
 
 #include "mathex/abox2d.hpp"
@@ -68,7 +66,8 @@ struct Gui
     using Box = MexAlignedBox2d;
     using Size = MexSize2d;
 
-    CTL_PAIR(WidthAndHeight, unsigned, width, unsigned, height);
+    // Deprecated
+    using WidthAndHeight = Size;
 
     static RenSurface& backBuffer();
     // PRE( Gui::initialised(); )
