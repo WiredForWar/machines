@@ -1,5 +1,7 @@
 
 set(RENDER_SOURCES
+    Font.cpp
+    Font.hpp
     alphagrp.cpp
     animcurs.cpp
     animcurs.hpp
@@ -48,6 +50,7 @@ set(RENDER_SOURCES
     illumine.cpp
     inlight.cpp
     inpoints.cpp
+    internal/FontImpl.hpp
     internal/alphagrp.hpp
     internal/capablei.hpp
     internal/capablei.ipp

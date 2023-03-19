@@ -8,12 +8,14 @@
 #include "base/diag.hpp"
 
 #include "system/pathname.hpp"
+#include "render/Font.hpp"
 #include "render/texture.hpp"
 #include "render/surfmgr.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfbody.hpp"
+#include "render/internal/FontImpl.hpp"
 #include "device/timer.hpp"
 #include <algorithm>
 #include <stdlib.h>
@@ -22,144 +24,6 @@
 #include <SDL2/SDL_image.h>
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"
-
-// static
-std::vector<RenISurfBody::Font> RenISurfBody::fonts_;
-
-// Maximum font texture width
-#define MAXWIDTH 1024
-/**
- * Code taken from modern opengl tutorials.
- * The struct holds a texture atlas that contains the visible US-ASCII characters
- * of a certain font rendered with a certain character height.
- * It also contains an array that contains all the information necessary to
- * generate the appropriate vertex and texture coordinates for each character.
- *
- * After the constructor is run, you don't need to use any FreeType functions anymore.
- */
-RenISurfBody::Font::Font(FT_Face face, int height)
-    : renFont_(nullptr)
-    , actualHeight_(0)
-    , requestedHeight(height)
-{
-    FT_Set_Pixel_Sizes(face, 0, height);
-    FT_GlyphSlot g = face->glyph;
-
-    unsigned int roww = 0;
-    unsigned int rowh = 0;
-    w = 0;
-    h = 0;
-
-    memset(c, 0, sizeof c);
-
-    /* Find minimum size for a texture holding all visible ASCII characters */
-    for (int i = 32; i < 128; i++)
-    {
-        if (FT_Load_Char(face, i, FT_LOAD_RENDER))
-        {
-            std::cerr << "Loading font character " << i << " failed!" << std::endl;
-            continue;
-        }
-        if (roww + g->bitmap.width + 1 >= MAXWIDTH)
-        {
-            w = std::max(w, roww);
-            h += rowh;
-            roww = 0;
-            rowh = 0;
-        }
-        roww += g->bitmap.width + 1;
-        rowh = std::max(rowh, g->bitmap.rows);
-    }
-
-    w = std::max(w, roww);
-    h += rowh;
-
-    /* Create a texture that will be used to hold all ASCII glyphs */
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-    /* We require 1 byte alignment when uploading texture data */
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    /* Clamping to edges is important to prevent artifacts when scaling */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    /* Linear filtering usually looks best for text */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    /* Paste all glyph bitmaps into the texture, remembering the offset */
-    int ox = 0;
-    int oy = 0;
-    GLuint* rgbaBitmap = _NEW_ARRAY(GLuint, height * height);
-    rowh = 0;
-
-    for (int i = 32; i < 128; i++)
-    {
-        if (FT_Load_Char(face, i, FT_LOAD_RENDER))
-        {
-            std::cerr << "Loading font character " << i << " failed!" << std::endl;
-            continue;
-        }
-
-        if (ox + g->bitmap.width + 1 >= MAXWIDTH)
-        {
-            oy += rowh;
-            rowh = 0;
-            ox = 0;
-        }
-        for (int j = 0; j < g->bitmap.width * g->bitmap.rows; ++j)
-        {
-            rgbaBitmap[j] = (g->bitmap.buffer[j] << 24) | 0x00FFFFFF;
-        }
-        glTexSubImage2D(
-            GL_TEXTURE_2D,
-            0,
-            ox,
-            oy,
-            g->bitmap.width,
-            g->bitmap.rows,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            rgbaBitmap);
-        c[i].ax = g->advance.x >> 6;
-        c[i].ay = g->advance.y >> 6;
-
-        c[i].bw = g->bitmap.width;
-        c[i].bh = g->bitmap.rows;
-
-        c[i].bl = g->bitmap_left;
-        c[i].bt = g->bitmap_top;
-
-        c[i].tx = ox / (float)w;
-        c[i].ty = oy / (float)h;
-        c[i].tx2 = c[i].tx + c[i].bw / (float)w;
-        c[i].ty2 = c[i].ty + c[i].bh / (float)h;
-
-        rowh = std::max(rowh, g->bitmap.rows);
-        ox += g->bitmap.width + 1;
-    }
-    _DELETE_ARRAY(rgbaBitmap);
-}
-
-RenISurfBody::Font::~Font()
-{
-    // There may be other entries in the fonts_ array which share the same
-    // implementation as this font.  Set any other entries to zero so they
-    // are not deleted twice.
-    for (int i = 0; i != RenISurfBody::fonts_.size(); ++i)
-    {
-
-        if (fonts_[i].renFont_ == renFont_)
-            fonts_[i].renFont_ = nullptr;
-    }
-
-    _DELETE(renFont_);
-    // glDeleteTextures(1, &tex);
-}
 
 RenISurfBody::RenISurfBody()
     : displayType_(RenI::NOT_DISPLAY)
@@ -451,23 +315,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 // static
 const std::string& RenISurfBody::fontName()
 {
-    static bool first = true;
-    static std::string fn = "Arial";
-
-    if (first)
-    {
-        first = false;
-
-        const char* envVar = getenv("CB_RENDER_FONT");
-        if (envVar)
-        {
-            char* copy = strdup(envVar);
-            fn = strtok(copy, ":");
-            free(copy);
-        }
-    }
-
-    return fn;
+    return Render::Font::getDefaultFontName();
 }
 
 // static
@@ -487,49 +335,17 @@ size_t RenISurfBody::useFontHeight(size_t pixelHeight)
     // Set this whatever results are
     currentHeight_ = pixelHeight;
 
-    const auto it = std::find_if(fonts_.cbegin(), fonts_.cend(), [pixelHeight](const RenISurfBody::Font& font) {
-        if (font.requestedHeight == pixelHeight)
-            return true;
-        return false;
-    });
-
-    if (it == fonts_.cend())
-    {
-        FT_Library ft;
-        FT_Face face;
-        /* Initialize the FreeType2 library */
-        if (FT_Init_FreeType(&ft))
-        {
-            std::cerr << "Could not init freetype library!" << std::endl;
-            return 0;
-        }
-
-        /* Load a font */
-        SysPathName fontFile("gui/" + (fontName() + ".ttf"));
-        if (FT_New_Face(ft, fontFile.pathname().c_str(), 0, &face))
-        {
-            std::cerr << "Could not open font " << fontFile << std::endl;
-            return 0;
-        }
-        /* Create texture atlasses for font sizes */
-        fonts_.push_back(Font(face, pixelHeight));
-
-        pCurrentFont_ = &fonts_.back();
-    }
-    else
-    {
-        pCurrentFont_ = it.base();
-    }
+    pCurrentFont_ = Render::Font::getFont(fontName(), pixelHeight);
 
     return pixelHeight;
 }
 
 size_t RenISurfBody::currentFontHeight() const
 {
-    if (currentHeight_ == 0)
-        return _CONST_CAST(RenISurfBody*, this)->useFontHeight(defaultHeight());
+    if (pCurrentFont_)
+        return pCurrentFont_->pixelSize();
     else
-        return fonts_[currentHeight_].actualHeight_;
+        return _CONST_CAST(RenISurfBody*, this)->useFontHeight(defaultHeight());
 }
 
 void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColour& col)
@@ -544,7 +360,9 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColo
         vertices.reserve(text.size() * 6);
         uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
         y += currentHeight_;
-        const Font& font = *pCurrentFont_;
+        const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
+        const Render::FontImpl::CharData* charData = nullptr;
+
         for (int i = 0; i < text.size(); ++i)
         {
             uint character = text[i];
@@ -554,18 +372,20 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColo
                 y += currentHeight_ + 2;
                 continue;
             }
-            // Ignore non ascii at present
-            if (character >= 128)
+
+            charData = font.getChar(character);
+            // Ignore missing characters
+            if (!charData)
                 continue;
 
-            float x2 = x + font.c[character].bl;
-            float y2 = y - font.c[character].bt;
-            float w = font.c[character].bw;
-            float h = font.c[character].bh;
+            float x2 = x + charData->bl;
+            float y2 = y - charData->bt;
+            float w = charData->bw;
+            float h = charData->bh;
 
             /* Advance the cursor to the start of the next character */
-            x += font.c[character].ax;
-            y += font.c[character].ay;
+            x += charData->ax;
+            y += charData->ay;
 
             /* Skip glyphs that have no pixels */
             if (w <= 0 || h <= 0)
@@ -576,8 +396,8 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColo
             vx.z = 0;
             // Calculate some common coordinate values
             float x1 = x2 + w, y1 = y2 + h;
-            float tu1 = font.c[character].tx, tv1 = font.c[character].ty;
-            float tu2 = font.c[character].tx2, tv2 = font.c[character].ty2;
+            float tu1 = charData->tx, tv1 = charData->ty;
+            float tu2 = charData->tx2, tv2 = charData->ty2;
             vx.x = x2;
             vx.y = y2;
             vx.tu = tu1;
@@ -611,7 +431,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColo
         }
         glDisable(GL_CULL_FACE);
         RenDevice::current()
-            ->renderScreenspace(&vertices.front(), vertices.size(), GL_TRIANGLES, width_, height_, font.tex);
+            ->renderScreenspace(&vertices.front(), vertices.size(), GL_TRIANGLES, width_, height_, font.textureId);
         glEnable(GL_CULL_FACE);
     }
 }
@@ -623,8 +443,10 @@ void RenISurfBody::textDimensions(const std::string& text, Ren::Rect* dimensions
     if (currentHeight_ == 0)
         _CONST_CAST(RenISurfBody*, this)->useFontHeight(defaultHeight());
 
-    ASSERT(currentHeight_ > 0, "Failed to create default Windows font.");
-    ASSERT(fonts_[currentHeight_].isDefined(), "Failed to get valid font.");
+    ASSERT(currentHeight_ > 0, "Failed to create default font.");
+    const Render::Font* pFont = pCurrentFont_;
+
+    ASSERT(pFont && pFont->isValid(), "Failed to get valid font.");
 
     std::cerr << "RenISurfBody::textDimensions(): NOT IMPLEMENTED" << std::endl;
 }

@@ -14,9 +14,6 @@
 #include "render/internal/internal.hpp"
 #include "render/internal/pixelfmt.hpp"
 #include <GL/glew.h>
-// FONTS
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 struct SDL_Surface;
 
@@ -25,6 +22,13 @@ class SysPathname;
 class RenITexBody;
 class RenIFont;
 class RenDevice;
+
+namespace Render
+{
+
+class Font;
+
+} // Render namespace
 
 // The internal data representation for RenSurface.
 class RenISurfBody
@@ -204,47 +208,7 @@ private:
     static size_t defaultHeight();
     static const std::string& fontName();
 
-    struct Font
-    {
-        Font()
-            : renFont_(nullptr)
-            , actualHeight_(0)
-        {
-        }
-        Font(FT_Face face, int height);
-        ~Font();
-
-        bool isDefined() const { return renFont_; }
-
-        RenIFont* renFont_;
-        size_t actualHeight_;
-        int requestedHeight = 0;
-
-        GLuint tex; // texture atlas object
-
-        unsigned int w; // width of texture in pixels
-        unsigned int h; // height of texture in pixels
-
-        struct
-        {
-            float ax; // advance.x
-            float ay; // advance.y
-
-            float bw; // bitmap.width;
-            float bh; // bitmap.height;
-
-            float bl; // bitmap_left;
-            float bt; // bitmap_top;
-
-            float tx; // x offset of glyph in texture coordinates
-            float ty; // y offset of glyph in texture coordinates
-            float tx2, ty2;
-        } c[128]; // character information
-    };
-
-    const struct Font* pCurrentFont_ = nullptr;
-    static std::vector<Font> fonts_;
-    friend Font::~Font();
+    const Render::Font* pCurrentFont_ = nullptr;
 
     RenISurfBody(const RenISurfBody&);
     RenISurfBody& operator=(const RenISurfBody&);
