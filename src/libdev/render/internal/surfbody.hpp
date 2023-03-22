@@ -27,6 +27,7 @@ namespace Render
 {
 
 class Font;
+class TextOptions;
 
 } // Render namespace
 
@@ -67,7 +68,7 @@ public:
     void filledRectangle(const Ren::Rect& area, uint colour);
     size_t useFontHeight(size_t pixelHieght);
     size_t currentFontHeight() const; // defaults to 20.
-    void drawText(int x, int y, const std::string& text, const RenColour& col);
+    void drawText(int x, int y, const std::string& text, const Render::TextOptions& options);
     void textDimensions(const std::string& text, Ren::Rect* dimensions) const;
 
     // When Alt-Tab is pressed, textures can get unloaded from a hardware
@@ -206,7 +207,6 @@ private:
     bool loaded_, readOnly_, sharable_;
     size_t currentHeight_;
     static size_t defaultHeight();
-    static const std::string& fontName();
 
     const Render::Font* pCurrentFont_ = nullptr;
 

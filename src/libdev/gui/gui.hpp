@@ -52,6 +52,13 @@ using GuiBitmap = RenSurface;
 
 bool operator<(const GuiBitmap&, const GuiBitmap&);
 
+namespace Render
+{
+
+class TextOptions;
+
+} // Render namespace
+
 namespace Gui
 {
 
@@ -65,6 +72,7 @@ using Vec = MexVec2;
 using Boundary = MexAlignedBox2d;
 using Box = MexAlignedBox2d;
 using Size = MexSize2d;
+using TextOptions = Render::TextOptions;
 
 // Deprecated
 using WidthAndHeight = Size;

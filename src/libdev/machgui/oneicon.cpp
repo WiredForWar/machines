@@ -43,6 +43,8 @@
 #include "system/pathname.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
+#include "render/TextOptions.hpp"
+
 using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 class MachGuiSelectInsideBuildingIcon : public GuiIcon

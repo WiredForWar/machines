@@ -9,6 +9,8 @@
 #include "stdlib/string.hpp"
 #include "gui/manager.hpp"
 
+#include "render/TextOptions.hpp"
+
 MachGuiResourceDial::MachGuiResourceDial(
     const SysPathName& bitmapName,
     GuiDisplayable* pParent,

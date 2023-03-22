@@ -191,6 +191,11 @@ int Font::pixelSize() const
     return pImpl_ ? pImpl_->pixelSize : 0;
 }
 
+const Font* Font::getFont(int pixelSize)
+{
+    return getFont(getDefaultFontName(), pixelSize);
+}
+
 const Render::Font* Font::getFont(const std::string& fontName, int pixelSize)
 {
     const auto it = std::find_if(s_fonts.cbegin(), s_fonts.cend(), [&](const Font& fontImpl) {

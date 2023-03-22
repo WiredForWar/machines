@@ -2,6 +2,7 @@
 set(RENDER_SOURCES
     Font.cpp
     Font.hpp
+    TextOptions.hpp
     alphagrp.cpp
     animcurs.cpp
     animcurs.hpp

@@ -262,11 +262,8 @@ protected:
     void bevel(const Gui::Box& rel, unsigned thickness, const Gui::Colour& hiCol, const Gui::Colour& loCol);
     // PRE( boundary().contains( translate( rel ) ) );
 
-    void text(const Gui::Coord& c, const string& text, const Gui::Colour&);
+    void text(const Gui::Coord& c, const string& text, const Gui::TextOptions& options);
     // PRE( boundary().contains( translate( GuiText::extent( text ) ) ) );
-
-    // c.x() is right hand side of text. i.e. text will draw to the left of c.x()
-    void rightAlignText(const Gui::Coord& c, const string& text, const Gui::Colour&);
 
     void removeChild(GuiDisplayable* pChild);
     // PRE( hasChild( pChild ) );

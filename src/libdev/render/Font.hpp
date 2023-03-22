@@ -18,6 +18,7 @@ public:
     bool isValid() const;
     int pixelSize() const;
 
+    static const Font* getFont(int pixelSize);
     static const Font* getFont(const std::string& fontName, int pixelSize);
 
     static const std::string& getDefaultFontName();

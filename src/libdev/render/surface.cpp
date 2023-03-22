@@ -965,9 +965,9 @@ size_t RenSurface::getDefaultFontHeight()
     return size;
 }
 
-void RenSurface::drawText(int x, int y, const std::string& text, const RenColour& col)
+void RenSurface::drawText(int x, int y, const std::string& text, const Render::TextOptions& options)
 {
-    internals()->drawText(x, y, text, col);
+    internals()->drawText(x, y, text, options);
 }
 
 void RenSurface::textDimensions(const std::string& text, Ren::Rect* dimensions) const

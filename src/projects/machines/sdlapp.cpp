@@ -16,6 +16,7 @@
 #include "network/node.hpp"
 #include "profiler/profiler.hpp"
 #include "phys/phys.hpp"
+#include "render/TextOptions.hpp"
 #include "render/display.hpp"
 #include "render/device.hpp"
 #include "render/capable.hpp"

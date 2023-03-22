@@ -56,10 +56,9 @@ public:
 
     ///////////////////////////////
 
-    virtual void drawText(const Gui::Coord& c, const string& text, const Gui::Colour& col, int pixelSize = -1) const
+    virtual void
+    drawText(const Gui::Coord& c, const string& text, const Gui::TextOptions& options, int pixelSize = -1) const
         = 0;
-
-    virtual void rightAlignText(const Gui::Coord& c, const string& theText, const Gui::Colour& col) const = 0;
 
     ///////////////////////////////
 
@@ -112,9 +111,8 @@ public:
 
     ///////////////////////////////
 
-    void drawText(const Gui::Coord& c, const string& text, const Gui::Colour& col, int pixelSize = -1) const override;
-
-    void rightAlignText(const Gui::Coord& c, const string& theText, const Gui::Colour& col) const override;
+    void drawText(const Gui::Coord& c, const string& text, const Gui::TextOptions& options, int pixelSize = -1)
+        const override;
 
     ///////////////////////////////
 

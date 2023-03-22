@@ -9,6 +9,7 @@
 
 #include "system/pathname.hpp"
 #include "render/Font.hpp"
+#include "render/TextOptions.hpp"
 #include "render/texture.hpp"
 #include "render/surfmgr.hpp"
 #include "render/device.hpp"
@@ -313,12 +314,6 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 }
 
 // static
-const std::string& RenISurfBody::fontName()
-{
-    return Render::Font::getDefaultFontName();
-}
-
-// static
 size_t RenISurfBody::defaultHeight()
 {
     return RenSurface::getDefaultFontHeight();
@@ -335,7 +330,7 @@ size_t RenISurfBody::useFontHeight(size_t pixelHeight)
     // Set this whatever results are
     currentHeight_ = pixelHeight;
 
-    pCurrentFont_ = Render::Font::getFont(fontName(), pixelHeight);
+    pCurrentFont_ = Render::Font::getFont(pixelHeight);
 
     return pixelHeight;
 }
@@ -348,21 +343,58 @@ size_t RenISurfBody::currentFontHeight() const
         return _CONST_CAST(RenISurfBody*, this)->useFontHeight(defaultHeight());
 }
 
-void RenISurfBody::drawText(int x, int y, const std::string& text, const RenColour& col)
+void RenISurfBody::drawText(int x, int y, const std::string& text, const Render::TextOptions& options)
 {
     if (currentHeight_ == 0)
         useFontHeight(defaultHeight());
 
     if (pCurrentFont_)
     {
-        int originX = x;
         std::vector<RenIVertex> vertices;
         vertices.reserve(text.size() * 6);
+        RenColour col = options.color();
+
         uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
         y += currentHeight_;
         const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
         const Render::FontImpl::CharData* charData = nullptr;
 
+        if (options.alignment() == Render::Alignment::Right)
+        {
+            int textWidth = 0;
+            int lineTextWidth = 0;
+            // Precalc the width
+            for (int i = 0; i < text.size(); ++i)
+            {
+                uint character = text[i];
+                if (character == '\n')
+                {
+                    textWidth = std::max<int>(textWidth, lineTextWidth);
+                    lineTextWidth = 0;
+                    continue;
+                }
+
+                charData = font.getChar(character);
+                // Ignore missing characters
+                if (!charData)
+                    continue;
+
+                /* Advance the cursor to the start of the next character */
+                lineTextWidth += charData->ax;
+            }
+            textWidth = std::max<int>(textWidth, lineTextWidth);
+
+            x -= textWidth;
+
+            if (x < 0)
+            {
+                x = 0;
+            }
+        }
+
+        const int originX = x;
+
+        x = originX;
         for (int i = 0; i < text.size(); ++i)
         {
             uint character = text[i];
