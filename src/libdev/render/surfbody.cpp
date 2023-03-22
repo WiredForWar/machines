@@ -351,10 +351,26 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
     if (pCurrentFont_)
     {
         std::vector<RenIVertex> vertices;
-        vertices.reserve(text.size() * 6);
-        RenColour col = options.color();
+        {
+            int expectedVerticesNumber = text.size() * 6;
+            if (options.hasShadow())
+            {
+                expectedVerticesNumber *= 2;
+            }
+            vertices.reserve(expectedVerticesNumber);
+        }
 
+        RenColour col = options.color();
         uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
+
+        uint secondColor = 0;
+
+        if (options.hasShadow())
+        {
+            RenColour unpacked = options.shadowColor();
+            secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
+        }
+
         y += currentHeight_;
         const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
         const Render::FontImpl::CharData* charData = nullptr;
@@ -383,6 +399,10 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
                 lineTextWidth += charData->ax;
             }
             textWidth = std::max<int>(textWidth, lineTextWidth);
+            if (options.hasShadow())
+            {
+                textWidth += options.shadowX();
+            }
 
             x -= textWidth;
 
@@ -468,6 +488,19 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
                 vertices.push_back(vx);
             };
 
+            if (options.hasShadow())
+            {
+                addVertices(
+                    secondColor,
+                    x1 + options.shadowX(),
+                    x2 + options.shadowX(),
+                    y1 + options.shadowY(),
+                    y2 + options.shadowY(),
+                    tu1,
+                    tu2,
+                    tv1,
+                    tv2);
+            }
             addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
         }
         glDisable(GL_CULL_FACE);
