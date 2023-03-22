@@ -475,11 +475,12 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
         // Render the text
         Gui::Coord textPos(absoluteBoundary().minCorner());
-        Gui::Vec shadowOffset(1, 1);
-        Gui::Coord shadowTextPos(textPos + shadowOffset);
+        Render::TextOptions options;
+        options.setColor(MachGui::OFFWHITE());
+        options.setShadow(1, 1, Gui::BLACK());
+
         const int fontPixelSize = MachGui::corralInfoTextSize();
-        GuiPainter::instance().drawText(shadowTextPos, concat.c_str(), Gui::BLACK(), fontPixelSize);
-        GuiPainter::instance().drawText(textPos, concat.c_str(), MachGui::OFFWHITE(), fontPixelSize);
+        GuiPainter::instance().drawText(textPos, concat.c_str(), options, fontPixelSize);
     }
 }
 
