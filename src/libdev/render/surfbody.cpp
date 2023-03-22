@@ -14,7 +14,6 @@
 #include "render/display.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfbody.hpp"
-#include "render/internal/font.hpp"
 #include "device/timer.hpp"
 #include <algorithm>
 #include <stdlib.h>
@@ -627,15 +626,7 @@ void RenISurfBody::textDimensions(const std::string& text, Ren::Rect* dimensions
     ASSERT(currentHeight_ > 0, "Failed to create default Windows font.");
     ASSERT(fonts_[currentHeight_].isDefined(), "Failed to get valid font.");
 
-    // Prefer our own faster implementation of bitmap fonts.
-    if (fonts_[currentHeight_].renFont_)
-    {
-        fonts_[currentHeight_].renFont_->textDimensions(text, dimensions);
-    }
-    else
-    {
-        // A RenIFont is unavailable -- use the Windows GDI instead.
-    }
+    std::cerr << "RenISurfBody::textDimensions(): NOT IMPLEMENTED" << std::endl;
 }
 
 void RenISurfBody::releaseDC()

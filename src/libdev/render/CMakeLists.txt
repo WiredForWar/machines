@@ -36,7 +36,6 @@ set(RENDER_SOURCES
     fixdcurs.hpp
     fixpt.cpp
     fixptvec.cpp
-    font.cpp
     fwmatmap.hpp
     glmath.cpp
     gxmeshload.cpp
@@ -66,7 +65,6 @@ set(RENDER_SOURCES
     internal/fixpt.hpp
     internal/fixptvec.hpp
     internal/fn_stars.hpp
-    internal/font.hpp
     internal/glmath.hpp
     internal/gxmeshload.hpp
     internal/illumine.hpp
