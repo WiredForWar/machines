@@ -19,7 +19,6 @@ set(BASE_SOURCES
     error.hpp
     filtbuff.cpp
     filter.cpp
-    hungaria.hpp
     indent.cpp
     infsbuff.cpp
     istr.cpp
