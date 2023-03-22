@@ -410,10 +410,10 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
             if (!charData)
                 continue;
 
-            float x2 = x + charData->bl;
-            float y2 = y - charData->bt;
-            float w = charData->bw;
-            float h = charData->bh;
+            int x2 = x + charData->bl;
+            int y2 = y - charData->bt;
+            int w = charData->bw;
+            int h = charData->bh;
 
             /* Advance the cursor to the start of the next character */
             x += charData->ax;
@@ -423,43 +423,52 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
             if (w <= 0 || h <= 0)
                 continue;
 
-            RenIVertex vx;
-            vx.color = fontColor;
-            vx.z = 0;
             // Calculate some common coordinate values
-            float x1 = x2 + w, y1 = y2 + h;
-            float tu1 = charData->tx, tv1 = charData->ty;
-            float tu2 = charData->tx2, tv2 = charData->ty2;
-            vx.x = x2;
-            vx.y = y2;
-            vx.tu = tu1;
-            vx.tv = tv1;
-            vertices.push_back(vx);
-            vx.x = x1;
-            vx.y = y2;
-            vx.tu = tu2;
-            vx.tv = tv1;
-            vertices.push_back(vx);
-            vx.x = x2;
-            vx.y = y1;
-            vx.tu = tu1;
-            vx.tv = tv2;
-            vertices.push_back(vx);
-            vx.x = x1;
-            vx.y = y2;
-            vx.tu = tu2;
-            vx.tv = tv1;
-            vertices.push_back(vx);
-            vx.x = x2;
-            vx.y = y1;
-            vx.tu = tu1;
-            vx.tv = tv2;
-            vertices.push_back(vx);
-            vx.x = x1;
-            vx.y = y1;
-            vx.tu = tu2;
-            vx.tv = tv2;
-            vertices.push_back(vx);
+            int x1 = x2 + w;
+            int y1 = y2 + h;
+            float tu1 = charData->tx;
+            float tv1 = charData->ty;
+            float tu2 = charData->tx2;
+            float tv2 = charData->ty2;
+
+            const auto addVertices
+                = [&vertices](uint color, int x1, int x2, int y1, int y2, float tu1, float tu2, float tv1, float tv2) {
+                RenIVertex vx;
+                vx.color = color;
+                vx.z = 0;
+                vx.x = x2;
+                vx.y = y2;
+                vx.tu = tu1;
+                vx.tv = tv1;
+                vertices.push_back(vx);
+                vx.x = x1;
+                vx.y = y2;
+                vx.tu = tu2;
+                vx.tv = tv1;
+                vertices.push_back(vx);
+                vx.x = x2;
+                vx.y = y1;
+                vx.tu = tu1;
+                vx.tv = tv2;
+                vertices.push_back(vx);
+                vx.x = x1;
+                vx.y = y2;
+                vx.tu = tu2;
+                vx.tv = tv1;
+                vertices.push_back(vx);
+                vx.x = x2;
+                vx.y = y1;
+                vx.tu = tu1;
+                vx.tv = tv2;
+                vertices.push_back(vx);
+                vx.x = x1;
+                vx.y = y1;
+                vx.tu = tu2;
+                vx.tv = tv2;
+                vertices.push_back(vx);
+            };
+
+            addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
         }
         glDisable(GL_CULL_FACE);
         RenDevice::current()
