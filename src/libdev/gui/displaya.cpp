@@ -609,11 +609,6 @@ void GuiDisplayable::bevel(const Gui::Box& rel, unsigned thickness, const Gui::C
     GuiPainter::instance().bevel(translate(rel), thickness, hiCol, loCol);
 }
 
-void GuiDisplayable::text(const Gui::Coord& c, const string& theText, const Gui::TextOptions& options)
-{
-    GuiPainter::instance().drawText(translate(c), theText, options);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 GuiDisplayable& GuiDisplayable::parent()

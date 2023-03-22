@@ -301,8 +301,6 @@ set(MACHGUI_SOURCES
     promtext.hpp
     radar.cpp
     radar.hpp
-    resodial.cpp
-    resodial.hpp
     restorer.cpp
     restorer.hpp
     root.hpp

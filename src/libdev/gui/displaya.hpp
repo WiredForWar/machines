@@ -262,9 +262,6 @@ protected:
     void bevel(const Gui::Box& rel, unsigned thickness, const Gui::Colour& hiCol, const Gui::Colour& loCol);
     // PRE( boundary().contains( translate( rel ) ) );
 
-    void text(const Gui::Coord& c, const string& text, const Gui::TextOptions& options);
-    // PRE( boundary().contains( translate( GuiText::extent( text ) ) ) );
-
     void removeChild(GuiDisplayable* pChild);
     // PRE( hasChild( pChild ) );
 
