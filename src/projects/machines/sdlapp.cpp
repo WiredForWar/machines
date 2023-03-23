@@ -309,7 +309,10 @@ bool SDLApp::clientStartup()
     int modeH = 480;
     int modeR = 0;
 
-    if (SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"))
+    if (SysRegistry::instance().queryIntegerValue(
+            "Screen Resolution",
+            "Lock Resolution",
+            MachGuiStartupScreens::getDefaultLockScreenResolutionValue()))
     {
         modeW = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
         modeH = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");

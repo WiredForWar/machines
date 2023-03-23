@@ -1453,7 +1453,8 @@ void MachGuiStartupScreens::doBecomeRoot()
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
     // Use 640x480 menu resolution
-    if (not SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"))
+    if (not SysRegistry::instance()
+                .queryIntegerValue("Screen Resolution", "Lock Resolution", getDefaultLockScreenResolutionValue()))
     {
         //      pSceneManager_->pDevice()->display()->useMode(640, 480, 0);
 
@@ -1478,7 +1479,9 @@ void MachGuiStartupScreens::doBecomeNotRoot()
     int oldWidth = inGameResolutionWidth_;
     int oldHeight = inGameResolutionHeight_;
 
-    if (SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution") == 0)
+    if (SysRegistry::instance()
+            .queryIntegerValue("Screen Resolution", "Lock Resolution", getDefaultLockScreenResolutionValue())
+        == 0)
     {
 
         inGameResolutionWidth_ = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
@@ -4614,6 +4617,11 @@ void MachGuiStartupScreens::ignoreHostLostSystemMessage(bool value)
 {
     CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
     ignoreHostLostSystemMessage_ = value;
+}
+
+int MachGuiStartupScreens::getDefaultLockScreenResolutionValue()
+{
+    return 1;
 }
 
 void MachGuiStartupScreens::changeLogoImage(const char* image)

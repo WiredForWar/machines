@@ -706,7 +706,10 @@ void MachGuiCtxOptions::setOptions()
     if (SysRegistry::instance().onlyOpenKey("Screen Resolution\\Lock Resolution", &resolutionHandle)
         != SysRegistry::SUCCESS)
     {
-        SysRegistry::instance().setIntegerValue("Screen Resolution", "Lock Resolution", 1);
+        SysRegistry::instance().setIntegerValue(
+            "Screen Resolution",
+            "Lock Resolution",
+            MachGuiStartupScreens::getDefaultLockScreenResolutionValue());
     }
 
     pScreenResolutionLock_->check(SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"));
