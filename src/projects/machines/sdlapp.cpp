@@ -345,7 +345,14 @@ bool SDLApp::clientStartup()
         int scaleFactorPercents = SysRegistry::instance().queryIntegerValue("Options\\Scale Factor", "Value");
         if (scaleFactorPercents == 0)
         {
-            scaleFactorPercents = 100;
+            if (modeW > 1024 && modeH > 768)
+            {
+                scaleFactorPercents = 200;
+            }
+            else
+            {
+                scaleFactorPercents = 100;
+            }
         }
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
