@@ -48,7 +48,7 @@ public:
     uint stringId() const;
 
     // Inherited from MachGuiFocusCapableControl...
-    bool isEnabled() const override;
+    bool isFocusEnabled() const override;
 
     bool executeControl() override;
     // PRE( hasFocus() );

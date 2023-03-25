@@ -176,9 +176,9 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
 }
 
 // virtual
-bool MachGuiSingleSelectionListBox::isEnabled() const
+bool MachGuiSingleSelectionListBox::isFocusEnabled() const
 {
-    return MachGuiFocusCapableControl::isEnabled() && !listItems_.empty();
+    return MachGuiFocusCapableControl::isFocusEnabled() && !listItems_.empty();
 }
 
 ctl_pvector<MachGuiSingleSelectionListBoxItem>& MachGuiSingleSelectionListBox::listItems()

@@ -255,9 +255,9 @@ uint MachGuiMenuButton::stringId() const
 }
 
 // virtual
-bool MachGuiMenuButton::isEnabled() const
+bool MachGuiMenuButton::isFocusEnabled() const
 {
-    return !disabled_ && MachGuiFocusCapableControl::isEnabled();
+    return !disabled_ && MachGuiFocusCapableControl::isFocusEnabled();
 }
 
 // virtual

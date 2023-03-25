@@ -85,7 +85,7 @@ ostream& operator<<(ostream& o, const MachGuiFocusCapableControl& t)
 }
 
 // virtual
-bool MachGuiFocusCapableControl::isEnabled() const
+bool MachGuiFocusCapableControl::isFocusEnabled() const
 {
     CB_DEPIMPL(bool, msgBoxIsDisplayed_);
 
@@ -96,7 +96,7 @@ bool MachGuiFocusCapableControl::isEnabled() const
 bool MachGuiFocusCapableControl::executeControl()
 {
     PRE(isFocusControl());
-    PRE(isEnabled());
+    PRE(isFocusEnabled());
 
     return false;
 }
@@ -152,7 +152,7 @@ bool MachGuiFocusCapableControl::doHandleNavigationKey(
             break;
     }
 
-    return ((*ppNavFocusControl != nullptr) and (*ppNavFocusControl)->isEnabled());
+    return ((*ppNavFocusControl != nullptr) and (*ppNavFocusControl)->isFocusEnabled());
 }
 
 void MachGuiFocusCapableControl::setLeftNavControl(MachGuiFocusCapableControl* pNewValue)

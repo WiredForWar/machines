@@ -46,7 +46,7 @@ public:
     bool doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl** ppNavFocusControl) override;
     void hasFocus(bool newValue) override;
 
-    bool isEnabled() const override;
+    bool isFocusEnabled() const override;
 
     ctl_pvector<MachGuiSingleSelectionListBoxItem>& listItems();
 

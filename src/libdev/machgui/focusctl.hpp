@@ -34,7 +34,7 @@ public:
         RIGHT_ARROW
     };
 
-    virtual bool isEnabled() const;
+    virtual bool isFocusEnabled() const;
 
     // If true is returned then the control has used the NavKey and StartupScreens should do
     // no more processing unless the MachGuiFocusCapableControl** is none NULL in which case

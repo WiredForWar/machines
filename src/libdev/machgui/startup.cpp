@@ -4360,11 +4360,11 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
              escDefIter != focusCapableControls_.end();
              ++escDefIter)
         {
-            if ((*escDefIter)->isEscapeControl() and (*escDefIter)->isEnabled())
+            if ((*escDefIter)->isEscapeControl() and (*escDefIter)->isFocusEnabled())
             {
                 pEscapeFocusControl = (*escDefIter);
             }
-            if ((*escDefIter)->isDefaultControl() and (*escDefIter)->isEnabled())
+            if ((*escDefIter)->isDefaultControl() and (*escDefIter)->isFocusEnabled())
             {
                 pDefaultFocusControl = (*escDefIter);
             }
@@ -4376,7 +4376,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
              ++i)
         {
             // Store previous focus control for navigation purposes
-            if (pCurrentFocusControl and pCurrentFocusControl->isEnabled())
+            if (pCurrentFocusControl and pCurrentFocusControl->isFocusEnabled())
             {
                 pPreviousFocusControl = pCurrentFocusControl;
             }
@@ -4392,7 +4392,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 ++i;
                 while (i != focusCapableControls_.end() and not pNextFocusControl)
                 {
-                    if ((*i)->isEnabled())
+                    if ((*i)->isFocusEnabled())
                     {
                         pNextFocusControl = (*i);
                     }
@@ -4409,7 +4409,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                          nextIter != focusCapableControls_.end() and not pNextFocusControl;
                          ++nextIter)
                     {
-                        if ((*nextIter)->isEnabled())
+                        if ((*nextIter)->isFocusEnabled())
                         {
                             pNextFocusControl = (*nextIter);
                         }
@@ -4425,7 +4425,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                          prevIter != focusCapableControls_.end();
                          ++prevIter)
                     {
-                        if ((*prevIter)->isEnabled())
+                        if ((*prevIter)->isFocusEnabled())
                         {
                             pPreviousFocusControl = (*prevIter);
                         }
@@ -4438,7 +4438,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         if (e.key() == DevKey::ESCAPE)
         {
             // Do we have a control with escape focus?
-            if (pEscapeFocusControl and pEscapeFocusControl->isEnabled())
+            if (pEscapeFocusControl and pEscapeFocusControl->isFocusEnabled())
             {
                 processed = pEscapeFocusControl->executeControl();
             }
@@ -4451,13 +4451,13 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
             if (e.key() == DevKey::ENTER)
             {
                 // Enter key executes focus control
-                if (pFocusControl->isEnabled())
+                if (pFocusControl->isFocusEnabled())
                 {
                     processed = pFocusControl->executeControl();
                 }
 
                 // If the control with focus didn't use the Enter key then give the default key a chance
-                if (not processed and pDefaultFocusControl and pDefaultFocusControl->isEnabled())
+                if (not processed and pDefaultFocusControl and pDefaultFocusControl->isFocusEnabled())
                 {
                     processed = pDefaultFocusControl->executeControl();
                 }
