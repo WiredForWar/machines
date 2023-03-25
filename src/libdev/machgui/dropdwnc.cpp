@@ -21,7 +21,6 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     const GuiStrings& availText)
     : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
     , MachGuiFocusCapableControl(pStartupScreens)
-    , highlighted_(false)
     , strings_(availText)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(false)
@@ -41,7 +40,6 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     bool whiteFont)
     : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
     , MachGuiFocusCapableControl(pStartupScreens)
-    , highlighted_(false)
     , strings_(availText)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
@@ -63,7 +61,6 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     bool border)
     : GuiDisplayable(pParent, Gui::Box(relCoord, width, reqHeight(border)))
     , MachGuiFocusCapableControl(pStartupScreens)
-    , highlighted_(false)
     , strings_(availText)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
@@ -161,14 +158,14 @@ size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
-    highlighted_ = true;
+    hovered_ = true;
     changed();
 }
 
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
-    highlighted_ = false;
+    hovered_ = false;
     changed();
 }
 
@@ -229,7 +226,7 @@ void MachGuiDropDownListBoxCreator::doDisplay()
         absoluteBoundary().minCorner().x() + 1 + offset,
         absoluteBoundary().minCorner().y() + 1 + offset);
 
-    if (highlighted_)
+    if (hovered_)
     {
         if (isFocusControl())
         {

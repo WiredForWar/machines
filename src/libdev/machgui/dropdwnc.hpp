@@ -120,7 +120,7 @@ private:
     MachGuiDropDownListBoxCreator& operator=(const MachGuiDropDownListBoxCreator&);
 
     // Data members...
-    bool highlighted_;
+    bool hovered_ = false;
     GuiStrings strings_;
     GuiString text_;
     DropDownListBoxItems items_;
