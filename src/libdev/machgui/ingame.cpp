@@ -187,7 +187,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
 
     // Create the world view window
     pWorldViewWindow_
-        = _NEW(MachWorldViewWindow(this, Gui::Boundary(MachGui::controlPanelOutXPos(), 0, w, h), pCameras_));
+        = _NEW(MachWorldViewWindow(this, Gui::Boundary(MachGui::controlPanelOutXPos(), 0, (w + MachGui::controlPanelOutXPos() - MachGui::controlPanelInXPos()), h), pCameras_));
     pReporter->report(30, 100); // 30% done
 
     // Construct add-on piece of control panel ( top-right )
