@@ -86,6 +86,8 @@ public:
     // Set item data associated with list box item text
     void items(const DropDownListBoxItems& items);
 
+    void clear();
+
     // Get minimum height required for the gui item.
     static size_t reqHeight(bool border = false);
 

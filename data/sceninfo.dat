@@ -277,8 +277,8 @@ MULTI_PLAYER
 			SCENARIO micey PLANET miceydn IDS 8369 TEXT ice3.txt 	MUSIC 7
 		ENDTERRAIN
 		TERRAIN fortress IDS 8203 TEXT fortress.txt
-			SCENARIO fortmult PLANET fortmult IDS 8318 TEXT skfort.txt 	MUSIC 9
-			SCENARIO fortmult PLANET fortmdn IDS 8370 TEXT fortmdn.txt 	MUSIC 9
+			SCENARIO fortmult PLANET fortmult IDS 8318 TEXT skfort.txt FIXED_POSITIONS	MUSIC 9
+			SCENARIO fortmult PLANET fortmdn IDS 8370 TEXT fortmdn.txt FIXED_POSITIONS	MUSIC 9
 			SCENARIO fortseig PLANET fortseig IDS 8319 TEXT fortseig.txt MAXPLAYERS 2  MUSIC 5
 			SCENARIO fortseig PLANET fortsdn IDS 8371 TEXT fortsdn.txt MAXPLAYERS 2  MUSIC 5
 		ENDTERRAIN

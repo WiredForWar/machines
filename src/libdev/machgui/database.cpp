@@ -469,6 +469,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
     bool campaignContext = context == CAMPAIGNS;
     uint maxPlayers = 4;
     uint musicTrack = MachGuiStartupScreens::DEFAULT_INGAME_MUSIC;
+    bool fixedPosition = false;
 
     while (! hadAfter && index + 1 < nTokens)
     {
@@ -490,6 +491,11 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
             ASSERT(! campaignContext, "Max players cannot  be specified for campaign");
             maxPlayers = atol(parser.tokens()[index++].c_str());
         }
+        else if (token == "FIXED_POSITIONS")
+        {
+            ASSERT(not campaignContext, "'Fixed positions' cannot  be specified for a campaign");
+            fixedPosition = true;
+        }
         else
         {
             ASSERT_INFO(token);
@@ -510,6 +516,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
     pScenario->textDataFileName(textFile);
     pScenario->musicTrack(musicTrack);
     pScenario->menuString(planetName);
+    pScenario->setFixedPositionRequired(fixedPosition);
 
     pPlanet->addScenario(pScenario);
 

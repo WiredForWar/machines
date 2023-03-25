@@ -73,6 +73,9 @@ public:
     void loseFlic(const string& filename);
     const string& loseFlic() const;
 
+    void setFixedPositionRequired(bool fixedPositionRequired);
+    bool fixedPositionsRequired() const;
+
     // get the maximum number of players that play a scenario
     uint maxPlayers() const;
     void CLASS_INVARIANT;

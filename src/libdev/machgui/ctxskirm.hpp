@@ -50,6 +50,7 @@ public:
 protected:
     MachGuiText* addSetting(bool numPlayers, MachGuiDropDownListBoxCreator*&, uint labelStrId, int numStrs, ...);
 
+    void updateAvailablePositions(const MachGuiDbScenario& scenario);
     void updateMaxPlayersList(MachGuiDbScenario&);
 
 private:

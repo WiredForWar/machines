@@ -50,6 +50,7 @@ private:
     string entryFlic_; // Fullscreen flic displayed before strating the scenario
     string winFlic_; // Fullscreen flic displayed upon winning the scenario
     string loseFlic_; // Fullscreen flic displayed upon losing the scenario
+    bool fixedPositionRequired_ = false; // Whether random players position can be used or not
     uint maxPlayers_; // Maximun number of players
     uint musicTrack_; // CD music Track to be played
     ctl_nb_vector<MachPhys::Race> saveMachineRaces_; // List of races needing surviving machines to be saved

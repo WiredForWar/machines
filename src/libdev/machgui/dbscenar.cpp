@@ -116,6 +116,16 @@ const string& MachGuiDbScenario::loseFlic() const
     return pData_->loseFlic_;
 }
 
+void MachGuiDbScenario::setFixedPositionRequired(bool fixedPositionRequired)
+{
+    pData_->fixedPositionRequired_ = fixedPositionRequired;
+}
+
+bool MachGuiDbScenario::fixedPositionsRequired() const
+{
+    return pData_->fixedPositionRequired_;
+}
+
 void MachGuiDbScenario::planet(MachGuiDbPlanet* pPlanet)
 {
     pData_->pPlanet_ = pPlanet;

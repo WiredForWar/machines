@@ -158,6 +158,9 @@ size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
+    if (!isEnabled())
+        return;
+
     hovered_ = true;
     changed();
 }
@@ -165,6 +168,9 @@ void MachGuiDropDownListBoxCreator::doHandleMouseEnterEvent(const GuiMouseEvent&
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
+    if (!isEnabled())
+        return;
+
     hovered_ = false;
     changed();
 }
@@ -172,6 +178,9 @@ void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& 
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
+    if (!isEnabled())
+        return;
+
     if (!strings_.empty())
     {
         if (rel.leftButton() == Gui::RELEASED)
@@ -388,6 +397,12 @@ const MachGuiDropDownListBoxCreator::DropDownListBoxItems& MachGuiDropDownListBo
 void MachGuiDropDownListBoxCreator::items(const DropDownListBoxItems& items)
 {
     items_ = items;
+}
+
+void MachGuiDropDownListBoxCreator::clear()
+{
+    items_.clear();
+    strings_.clear();
 }
 
 // virtual

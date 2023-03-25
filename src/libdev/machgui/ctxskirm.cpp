@@ -512,6 +512,7 @@ void MachGuiCtxSkirmish::updateSelectedScenario(MachGuiDbScenario& scenario)
 {
     pStartupScreens_->startupData()->scenario(&scenario);
     pScenarioDesc_->setText(scenario.textData().campaignText());
+    updateAvailablePositions(scenario);
     updateMaxPlayersList(scenario);
 }
 
@@ -667,6 +668,20 @@ MachGuiText* MachGuiCtxSkirmish::addSetting(
     va_end(marker); // Reset variable arguments.
 
     return pText;
+}
+
+void MachGuiCtxSkirmish::updateAvailablePositions(const MachGuiDbScenario& scenario)
+{
+    if (scenario.fixedPositionsRequired())
+    {
+        const GuiResourceString resStr(IDS_MENU_STARTFIXED);
+        pStartingPosSelector_->text(resStr.asString());
+        pStartingPosSelector_->setEnabled(false);
+    }
+    else
+    {
+        pStartingPosSelector_->setEnabled(true);
+    }
 }
 
 void MachGuiCtxSkirmish::updateMaxPlayersList(MachGuiDbScenario& scenario)
