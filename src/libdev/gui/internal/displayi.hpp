@@ -9,6 +9,7 @@ private:
     GuiDisplayable* pParent_;
     Gui::Box relativeBox_;
     Gui::Box absoluteBox_;
+    bool enabled_ = false;
     bool isVisible_;
     int changed_;
     bool redrawEveryFrame_;

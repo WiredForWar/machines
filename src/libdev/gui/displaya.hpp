@@ -94,6 +94,9 @@ public:
     const GuiDisplayable& parent() const;
     // PRE( not isRoot() );
 
+    bool isEnabled() const;
+    void setEnabled(bool enabled);
+
     // true iff the component has not been marked invisible
     // by some entity _and_ it deems itself eligible for
     // visualisation and user interaction

@@ -32,6 +32,7 @@ GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, Layer layer)
     : pImpl_(_NEW(GuiDisplayableImpl))
 {
     pImpl_->pParent_ = pParent;
+    pImpl_->enabled_ = true;
     pImpl_->isVisible_ = true;
     pImpl_->redrawEveryFrame_ = false;
     pImpl_->useFastSecondDisplay_ = true;
@@ -625,6 +626,16 @@ const GuiDisplayable& GuiDisplayable::parent() const
 
     PRE(not isRoot());
     return *pParent_;
+}
+
+bool GuiDisplayable::isEnabled() const
+{
+    return pImpl_->enabled_;
+}
+
+void GuiDisplayable::setEnabled(bool enabled)
+{
+    pImpl_->enabled_ = enabled;
 }
 
 //////////////////////////////////////////////////////////////////////
