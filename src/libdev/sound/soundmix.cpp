@@ -298,7 +298,11 @@ SndSampleHandle SndMixer::playSample(const SndSampleParameters& p)
     CB_DEPIMPL(SndMixerParameters::SoundSystem, soundSystem_);
     CB_DEPIMPL(bool, sortRequired_);
 
-    PRE(noOfFreeLogicalChannelsNoRecord() > 0);
+    if (noOfFreeLogicalChannelsNoRecord() <= 0)
+    {
+        return 0;
+    }
+
     // Create a new sample
     Sample* pSample = nullptr;
     // If we are using DirectSound then ...
