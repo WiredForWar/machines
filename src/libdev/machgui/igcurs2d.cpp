@@ -132,9 +132,9 @@ void MachInGameCursors2d::loadCursors()
     pLocateToCursor_ = loadCursor(MachCursorSpec("large/locat", 5, { 8, 14 }));
     pPatrolCursor_ = loadCursor(MachCursorSpec("large/patrol", 6));
     pDeployCursor_ = loadCursor(MachCursorSpec("large/deploy", 2));
-    pPickUpCursor_ = loadCursor(MachCursorSpec("large/pickup", 2));
+    pPickUpCursor_ = loadCursor(MachCursorSpec("large/pickup", 2, { 8, 8 }, 5));
     pScavengeCursor_ = loadCursor(MachCursorSpec("large/scav", 10, { 8, 15 }));
-    pTransportCursor_ = loadCursor(MachCursorSpec("large/putdn", 2));
+    pTransportCursor_ = loadCursor(MachCursorSpec("large/putdn", 2, { 8, 8 }, 5));
     pEnterAPCCursor_ = loadCursor(MachCursorSpec("large/entapc", 6));
     pFollowCursor_ = loadCursor(MachCursorSpec("large/follow", 4));
     pDropLandMineCursor_ = loadCursor(MachCursorSpec("large/landmin", 2));
@@ -168,10 +168,17 @@ void MachInGameCursors2d::loadCursors()
 RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
 {
     int nFrames = cursorSpec.getFramesNumber();
+    double fps = cursorSpec.getFps();
     std::string baseName = cursorSpec.getName();
     MexPoint2d origin = cursorSpec.origin();
 
     ASSERT(nFrames < 100, "No more than 99 frames allowed for animated cursors - this is the current arbitrary limit.");
+
+    if (fps == 0)
+    {
+        constexpr double defaultFps = 10;
+        fps = defaultFps;
+    }
 
     // Get the back buffer
     const GuiBitmap& backBuffer = Gui::backBuffer();
@@ -181,7 +188,6 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
 
     // Create and add the surface for each frame
     char buffer[3];
-    bool twiceManyFrames = false;
     std::string cursorDir = "gui/cursor/";
     std::string extention;
 
@@ -206,7 +212,8 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
             sprintf(buffer, "%d", nFrames * 2);
             if (SysPathName::existsAsFile(basePath + buffer + extention))
             {
-                twiceManyFrames = true;
+                // Twice many frames
+                fps *= 2;
                 nFrames *= 2;
             }
         }
@@ -248,7 +255,7 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
     pCursor->origin(origin.x(), origin.y());
 
     // set the frame rate
-    pCursor->targetFrequency(twiceManyFrames ? 20 : 10);
+    pCursor->targetFrequency(fps);
 
     return pCursor;
 }

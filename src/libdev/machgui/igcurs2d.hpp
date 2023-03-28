@@ -30,16 +30,19 @@ public:
     {
     }
 
-    MachCursorSpec(const std::string& name, int nFrames, const MexPoint2d& origin)
+    MachCursorSpec(const std::string& name, int nFrames, const MexPoint2d& origin, double fps = 0)
         : MachCursorSpec(name, nFrames)
     {
         customOrigin_ = true;
         origin_ = origin;
+        fps_ = fps;
     }
 
     std::string getName() const { return name_; }
 
     int getFramesNumber() const { return nFrames_; }
+
+    double getFps() const { return fps_; }
 
     bool hasCustomOrigin() const { return customOrigin_; }
 
@@ -48,6 +51,7 @@ public:
 private:
     std::string name_;
     int nFrames_ = 0;
+    double fps_ = 0;
     MexPoint2d origin_;
     bool customOrigin_ = false;
 };
