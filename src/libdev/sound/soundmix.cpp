@@ -287,49 +287,47 @@ bool SndMixer::isAudible(const SndSampleHandle& handle) const
 
 SndSampleHandle SndMixer::playSample(const SndSampleParameters& p)
 {
-    if (soundOn())
-    {
-        CB_DEPIMPL(UtlBoundedIdGenerator*, pSoundIDGenerator_);
-        CB_DEPIMPL(SampleIdVector, idVector_);
-        CB_DEPIMPL(SampleList, activeSamples_);
-        CB_DEPIMPL(SndMixerParameters::SoundSystem, soundSystem_);
-        CB_DEPIMPL(bool, sortRequired_);
-
-        PRE(noOfFreeLogicalChannelsNoRecord() > 0);
-        // Create a new sample
-        Sample* pSample = nullptr;
-        // If we are using DirectSound then ...
-        if (soundSystem_ == SndMixerParameters::DIRECTSOUND)
-        {
-            // create a new DXSample passing in the sample parameters
-            pSample = _NEW(ALSample(p));
-        }
-        else
-        {
-            // no other sound system has been implemented
-            ASSERT(false, "No sound system definition for this type");
-        }
-
-        SndSampleHandle handle = pSoundIDGenerator_->nextId();
-        ASSERT(pSoundIDGenerator_->isAllocated(handle), "Invalid SoundId");
-        ASSERT(pSample, "Sample incorrectly NEWED");
-        if (!pSample)
-            SOUND_STREAM(pSample << "Invalid Sample" << std::endl);
-
-        // Put the new sample into the list of current samples
-        activeSamples_[handle] = pSample;
-        idVector_.push_back(handle);
-
-        sampleVolume(0);
-
-        POST(isAllocated(handle));
-
-        return handle;
-    }
-    else
+    if (!soundOn())
     {
         return 0;
     }
+
+    CB_DEPIMPL(UtlBoundedIdGenerator*, pSoundIDGenerator_);
+    CB_DEPIMPL(SampleIdVector, idVector_);
+    CB_DEPIMPL(SampleList, activeSamples_);
+    CB_DEPIMPL(SndMixerParameters::SoundSystem, soundSystem_);
+    CB_DEPIMPL(bool, sortRequired_);
+
+    PRE(noOfFreeLogicalChannelsNoRecord() > 0);
+    // Create a new sample
+    Sample* pSample = nullptr;
+    // If we are using DirectSound then ...
+    if (soundSystem_ == SndMixerParameters::DIRECTSOUND)
+    {
+        // create a new DXSample passing in the sample parameters
+        pSample = _NEW(ALSample(p));
+    }
+    else
+    {
+        // no other sound system has been implemented
+        ASSERT(false, "No sound system definition for this type");
+    }
+
+    SndSampleHandle handle = pSoundIDGenerator_->nextId();
+    ASSERT(pSoundIDGenerator_->isAllocated(handle), "Invalid SoundId");
+    ASSERT(pSample, "Sample incorrectly NEWED");
+    if (!pSample)
+        SOUND_STREAM(pSample << "Invalid Sample" << std::endl);
+
+    // Put the new sample into the list of current samples
+    activeSamples_[handle] = pSample;
+    idVector_.push_back(handle);
+
+    sampleVolume(0);
+
+    POST(isAllocated(handle));
+
+    return handle;
 }
 
 bool SndMixer::isClientResponsible(const SndSampleHandle& handle) const
