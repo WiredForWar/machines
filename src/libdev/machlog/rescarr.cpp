@@ -417,8 +417,6 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    bool found = false;
-
     bool alreadyHadSmeltingBuilding = hasSmeltingBuilding();
     MachLogConstruction* pOldSmeltingBuilding = pDestinationSmeltingBuilding_;
 
@@ -428,90 +426,57 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
     // okay, here's the rub. You'll like this. Choose the smelter or pod with the lowest total distance to all
     // suppliers. also, do not consider for selection any smelter/pod which is over 10000m away from ALL suppliers.
     // (i.e. effectively, no maximum distance checks at the moment)
+    constexpr MATHEX_SCALAR maxAllowedDistance = 10000;
     MATHEX_SCALAR lowestDistanceFound = 100000000;
 
+    MachLogConstruction* bestSmeltingBuilding = nullptr;
+
+    auto checkSmeltingBuilding
+        = [&bestSmeltingBuilding, &lowestDistanceFound, &suppliers_](MachLogConstruction* candidateBuilding) {
+        // don't consider smelters that are incomplete or dead
+        if (!candidateBuilding->isComplete() || candidateBuilding->isDead())
+            return;
+
+        MATHEX_SCALAR totalDistance = 0;
+
+        bool tooFarFromAllSuppliers = true;
+
+        for (MachLogConstruction* supplierConstruction : suppliers_)
+        {
+            // don't bother taking this supplier into account if it's a currently-dormant mine
+            if (supplierConstruction->objectType() != MachLog::MINE || supplierConstruction->asMine().worthVisiting())
+            {
+                MATHEX_SCALAR smelterDistanceFromThisSupplier
+                    = supplierConstruction->position().euclidianDistance(candidateBuilding->position());
+
+                totalDistance += smelterDistanceFromThisSupplier;
+                if (smelterDistanceFromThisSupplier < maxAllowedDistance)
+                {
+                    tooFarFromAllSuppliers = false;
+                }
+            }
+        }
+
+        if (!tooFarFromAllSuppliers && totalDistance < lowestDistanceFound)
+        {
+            lowestDistanceFound = totalDistance;
+            bestSmeltingBuilding = candidateBuilding;
+        }
+    };
+
     // first, do the smelters
-    if (not smelters.empty())
+    for (MachLogSmelter* candidateSmelter : smelters)
     {
-        for (MachLogRaces::Smelters::iterator iSmelt = smelters.begin(); iSmelt != smelters.end(); ++iSmelt)
-        {
-            MachLogSmelter& candidateSmelter = (**iSmelt);
-
-            // don't consider smelters that are incomplete or dead
-            if (candidateSmelter.isComplete() and not candidateSmelter.isDead())
-            {
-                MATHEX_SCALAR totalDistance = 0;
-
-                bool tooFarFromAllSuppliers = true;
-
-                for (Suppliers::iterator iSup = suppliers_.begin(); iSup != suppliers_.end(); ++iSup)
-                {
-                    ASSERT((*iSup)->objectIsConstruction(), "Supplier was not a construction!");
-                    MachLogConstruction& supplierConstruction = (**iSup);
-
-                    // don't bother taking this supplier into account if it's a currently-dormant mine
-                    if (supplierConstruction.objectType() != MachLog::MINE
-                        or supplierConstruction.asMine().worthVisiting())
-                    {
-                        MATHEX_SCALAR smelterDistanceFromThisSupplier
-                            = supplierConstruction.position().euclidianDistance(candidateSmelter.position());
-
-                        totalDistance += smelterDistanceFromThisSupplier;
-                        if (smelterDistanceFromThisSupplier < 10000)
-                            tooFarFromAllSuppliers = false;
-                    }
-                }
-
-                if ((not tooFarFromAllSuppliers) and totalDistance < lowestDistanceFound)
-                {
-                    lowestDistanceFound = totalDistance;
-                    found = true;
-                    internalSetSmeltingBuilding(&candidateSmelter);
-                }
-            }
-        }
+        checkSmeltingBuilding(candidateSmelter);
     }
+
     // next, the pods
-    if (not pods.empty())
+    for (MachLogPod* candidatePod : pods)
     {
-        for (MachLogRaces::Pods::iterator iPod = pods.begin(); iPod != pods.end(); ++iPod)
-        {
-            MachLogPod& candidatePod = (**iPod);
-
-            // don't consider pods that are incomplete or dead
-            if (candidatePod.isComplete() and not candidatePod.isDead())
-            {
-                MATHEX_SCALAR totalDistance = 0;
-
-                bool tooFarFromAllSuppliers = true;
-
-                for (Suppliers::iterator iSup = suppliers_.begin(); iSup != suppliers_.end(); ++iSup)
-                {
-                    ASSERT((*iSup)->objectIsConstruction(), "Supplier was not a construction!");
-                    MachLogConstruction& supplierConstruction = (**iSup);
-
-                    // don't bother taking this supplier into account if it's a currently-dormant mine
-                    if (supplierConstruction.objectType() != MachLog::MINE
-                        or supplierConstruction.asMine().worthVisiting())
-                    {
-                        MATHEX_SCALAR podDistanceFromThisSupplier
-                            = supplierConstruction.position().euclidianDistance(candidatePod.position());
-
-                        totalDistance += podDistanceFromThisSupplier;
-                        if (podDistanceFromThisSupplier < 10000)
-                            tooFarFromAllSuppliers = false;
-                    }
-                }
-
-                if ((not tooFarFromAllSuppliers) and totalDistance < lowestDistanceFound)
-                {
-                    lowestDistanceFound = totalDistance;
-                    found = true;
-                    internalSetSmeltingBuilding(&candidatePod);
-                }
-            }
-        }
+        checkSmeltingBuilding(candidatePod);
     }
+
+    internalSetSmeltingBuilding(bestSmeltingBuilding);
 
     // give voicemail if we used to have a smelter, and we also have one now, but it's now a different one.
     if (alreadyHadSmeltingBuilding and hasSmeltingBuilding() and pOldSmeltingBuilding != pDestinationSmeltingBuilding_)
@@ -521,7 +486,7 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
 
     smeltingBuildingExplicitlyAssigned_ = false;
 
-    return found;
+    return bestSmeltingBuilding;
 }
 
 void MachLogResourceCarrier::reorderTransportRoute()
