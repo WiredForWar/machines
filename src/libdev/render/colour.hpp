@@ -12,9 +12,8 @@
 class RenColour
 {
 public:
-    // All values must be greater than 0.
-    RenColour(float grey = 0);
-    RenColour(float r, float g, float b, float a = 1); // PRE(0 <= a <= 1);
+    constexpr RenColour(float grey = 0);
+    constexpr RenColour(float r, float g, float b, float a = 1); // PRE(0 <= a <= 1);
 
     float r() const;
     float g() const;
@@ -65,13 +64,15 @@ private:
 
     struct IColour
     {
-        IColour(float r, float g, float b, float a);
+        constexpr IColour(float r, float g, float b, float a);
 
-        void packAlpha(float a);
+        constexpr void packAlpha(float a);
         float unpackAlpha() const;
 
-        float r_, g_, b_;
-        uint32 a_;
+        float r_ = 0;
+        float g_ = 0;
+        float b_ = 0;
+        uint32 a_ = 0;
     };
 
     IColour rep_;
@@ -88,6 +89,34 @@ public:
     virtual void transform(const RenColour& in, RenColour* out) const = 0;
     virtual ~RenColourTransform();
 };
+
+inline constexpr RenColour::RenColour(float grey)
+    : rep_(grey, grey, grey, 1)
+{
+}
+
+inline constexpr RenColour::RenColour(float r, float g, float b, float a)
+    : rep_(r, g, b, a)
+{
+}
+
+inline constexpr RenColour::IColour::IColour(float r, float g, float b, float a)
+    : r_(r)
+    , g_(g)
+    , b_(b)
+{
+    packAlpha(a);
+}
+
+inline constexpr void RenColour::IColour::packAlpha(float a)
+{
+    if (a >= 1.0)
+        a_ = 0xff000000L;
+    else if (a <= 0.0)
+        a_ = 0;
+    else
+        a_ = static_cast<uint32_t>(255 * a) << 24;
+}
 
 #ifdef _INLINE
 #include "render/colour.ipp"

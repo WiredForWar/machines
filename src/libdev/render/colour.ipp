@@ -18,29 +18,9 @@ bool RenColour::lessThanOrEq(float d1, float d2) const
 }
 
 _CODE_INLINE
-void RenColour::IColour::packAlpha(float a)
-{
-    if (a >= 1.0)
-        a_ = 0xff000000L;
-    else if (a <= 0.0)
-        a_ = 0;
-    else
-        a_ = _STATIC_CAST(uint32_t, 255 * a) << 24;
-}
-
-_CODE_INLINE
 float RenColour::IColour::unpackAlpha() const
 {
     return _STATIC_CAST(float, (a_ >> 24)) * (1.0 / 255);
-}
-
-_CODE_INLINE
-RenColour::IColour::IColour(float r, float g, float b, float a)
-    : r_(r)
-    , g_(g)
-    , b_(b)
-{
-    packAlpha(a);
 }
 
 _CODE_INLINE

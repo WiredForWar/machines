@@ -12,34 +12,6 @@
 
 PER_DEFINE_PERSISTENT(RenColour);
 
-// Lights can have colours whose components are outside the range [0,1].
-// Should RenColour allow this, or should lights be a special case?
-RenColour::RenColour(float grey)
-    : rep_(grey, grey, grey, 1)
-{
-    // Removed for negative light support.
-    // TBD: ideally the lights should use a different unbounded colour.
-    // TBD: remove the pre-conditions in the ipp file to match.
-    // PRE(lessThanOrEq(0, grey));
-    TEST_INVARIANT;
-}
-
-RenColour::RenColour(float r, float g, float b, float a)
-    : rep_(r, g, b, a)
-{
-    PRE_INFO(r);
-    PRE_INFO(g);
-    PRE_INFO(b);
-    PRE_INFO(a);
-    PRE(lessThanOrEq(0, a) && lessThanOrEq(a, 1));
-
-    // Removed for negative light support.  TBD: see other ctor.
-    // PRE(lessThanOrEq(0, r));
-    // PRE(lessThanOrEq(0, g));
-    // PRE(lessThanOrEq(0, b));
-    TEST_INVARIANT;
-}
-
 RenColour& RenColour::linearInterpolate(float i, const RenColour& c1, float i1, const RenColour& c2, float i2)
 {
     TEST_INVARIANT;
