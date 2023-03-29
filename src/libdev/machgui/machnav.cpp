@@ -97,27 +97,27 @@ public:
             GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::GREEN()),
             MachGui::getScaledImage(bitmapFilename.pathname()),
             Gui::Coord(1, 1))
-        , numThisType_(0)
         , stringId_(stringId)
-        , isSwitchedOn_(false)
     {
     }
 
-    ~MachGuiNavButtonWithCounter() override { }
+    ~MachGuiNavButtonWithCounter() override = default;
 
     void buttonNumber(size_t num)
     {
-        if (numThisType_ != num)
+        if (numThisType_ == num)
         {
-            numThisType_ = num;
-
-            if (numThisType_ == 0 and isNavButton() and not isDisabled())
-                disable();
-            else if (isDisabled())
-                enable();
-
-            changed();
+            return;
         }
+
+        numThisType_ = num;
+
+        if (numThisType_ == 0 and isNavButton() and not isDisabled())
+            disable();
+        else if (isDisabled())
+            enable();
+
+        changed();
     }
 
     size_t buttonNumber() const { return numThisType_; }
@@ -177,9 +177,8 @@ private:
     friend ostream& operator<<(ostream& o, const MachGuiNavButtonWithCounter& t);
 
     // Data members...
-    size_t numThisType_;
-
-    bool isSwitchedOn_;
+    size_t numThisType_ = 0;
+    bool isSwitchedOn_ = false;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
