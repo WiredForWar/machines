@@ -1,0 +1,23 @@
+Current dev build (to be released):
+- Implemented initial 2X UI scaling (no scale for the first person camera UI, no scale for the menu, a lot of HD textures wanted)
+- Implemented recent events manager (to cycle through the positions of the last important events with SpaceBar key)
+- Implement a following camera (click on the Actor in corral or double click the squadron key (<0-9>).
+- Added Shift+<0-9> to add units to the squadron
+- Added the same type selection by Ctrl-click or double click
+- Shift+click now toggles selection
+- Added grave (tilde) hotkey to toggle the 1st person camera
+- Removed selection clear on fast RMB click on mini-map (actually felt like a bug: "sometimes selection is lost on mini-map clicked")
+- Production and research items can be canceled by a click
+- Screenshots are now saved as PNG rather than BMP format
+- Navigation button with counter now uses TTF instead of BMP font
+- Actor name in the panel description now respectes the HW level (e.g. now it names 'Scout' as 'Scout' rather than 'Grunt')
+- Increased the number of drawn tiles (fixes missing terrain textures)
+- Fixed interaction with the world on 4k screens
+- Fixed Alt+A and Alt+S hotkeys
+- Fixed prompt message on a lab hovered
+- Fixed incorrect game resolution until the player opens the options menu for the first time
+- Fixed illumination on Desert map
+- Fixed the updating of the game load progress bar
+- Fixed Performance Options not loaded correctly
+- Fixed a few crashes
+- A few more small fixes
