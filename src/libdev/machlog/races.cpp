@@ -2273,11 +2273,10 @@ bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const string& plan
 
     // Setup default camera location/type for each race. This can be overridden by
     // specifying a camera position in the scenario file.
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachLogRaces::CameraInfo& cameraInfo : pDataImpl_->cameraInfo_)
     {
-        pDataImpl_->cameraInfo_[ridx].position_
-            = MexTransform3d(MexEulerAngles(MexDegrees(111), 0.0, 0.0), MexPoint3d(150.0, 150.0, 1.5));
-        pDataImpl_->cameraInfo_[ridx].type_ = MachLogCamera::GROUND;
+        cameraInfo.position_ = MexTransform3d(MexEulerAngles(MexDegrees(111), 0.0, 0.0), MexPoint3d(150.0, 150.0, 1.5));
+        cameraInfo.type_ = MachLogCamera::GROUND;
     }
 
     // Construct the pathname for the planet surface file
@@ -2302,16 +2301,18 @@ void MachLogRaces::unloadGame()
 
     // Clear down all actor operations here before destruction of the actor lists.
     // Otherwise actor destruction can lead to order dependancy problems.
-    Objects& objects = pDataImpl_->objects_;
-    for (Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-        (*i)->strategy().beInterrupted();
+    for (MachActor* object : pDataImpl_->objects_)
+    {
+        object->strategy().beInterrupted();
+    }
 
     // Clear out all squadrons to prevent problems in machgui
-    for (size_t i = 0; i != MachPhys::N_RACES; ++i)
+    for (Squadrons& squads : pDataImpl_->squadrons_)
     {
-        Squadrons& squads = pDataImpl_->squadrons_[i];
-        for (Squadrons::iterator it = squads.begin(); it != squads.end(); ++it)
-            (*it)->releaseAllMachines();
+        for (MachLogSquadron* pSquadron : squads)
+        {
+            pSquadron->releaseAllMachines();
+        }
     }
 
     // Destruct all processes. This will result in the destruction of all the actors and races.
