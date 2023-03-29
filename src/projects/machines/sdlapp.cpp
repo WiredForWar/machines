@@ -106,17 +106,17 @@ static void newHandler()
 class ProgressIndicator : public BaseProgressReporter
 {
 public:
-    ProgressIndicator(bool lobbyStart, int xOffset, int yOffset)
-        : lobbyStart_(lobbyStart)
+    ProgressIndicator(int xOffset, int yOffset)
+        : upperLimit_(1.0)
         , xOffset_(xOffset)
         , yOffset_(yOffset)
-        , lowerLimit_(0.0)
-        , upperLimit_(1.0)
     {
     }
 
     size_t report(size_t done, size_t maxDone) override
     {
+        if (done == lastDone_)
+            return 0;
         const double minx = 98 + xOffset_;
         const double maxx = 538 + xOffset_;
         const double miny = 362 + yOffset_;
@@ -139,22 +139,20 @@ public:
         RenDevice::current()->frontSurface().filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
             RenColour(red, green, blue));
-        if (lobbyStart_)
+        // If the game session has come out prematurely then the network connection may have been reset.
+        if (MachLogNetwork::instance().isNetworkGame())
         {
-            // If the game session has come out prematurely then the network connection may have been reset.
-            if (MachLogNetwork::instance().isNetworkGame())
+            MachLogNetwork::instance().update();
+            SysWindowsAPI::sleep(0);
+            SysWindowsAPI::peekMessage();
+            // network game _may_ have come out on update above.
+            /*              if( MachLogNetwork::instance().isNetworkGame() and
+            MachLogNetwork::instance().node().lastPingAllTime() > 1 )
             {
-                MachLogNetwork::instance().update();
-                SysWindowsAPI::sleep(0);
-                SysWindowsAPI::peekMessage();
-                // network game _may_ have come out on update above.
-                /*              if( MachLogNetwork::instance().isNetworkGame() and
-                MachLogNetwork::instance().node().lastPingAllTime() > 1 )
-                {
-                    MachLogNetwork::instance().node().pingAll();
-                }*/
-            }
+                MachLogNetwork::instance().node().pingAll();
+            }*/
         }
+        lastDone_ = done;
         return (double)maxDone / 50.0;
     }
 
@@ -165,11 +163,11 @@ public:
     }
 
 private:
-    double lowerLimit_;
-    double upperLimit_;
-    bool lobbyStart_;
-    int xOffset_;
-    int yOffset_;
+    double lowerLimit_ = 0;
+    double upperLimit_ = 0;
+    size_t lastDone_;
+    int xOffset_ = 0;
+    int yOffset_ = 0;
 };
 
 bool SDLApp::clientStartup()
@@ -453,7 +451,7 @@ bool SDLApp::clientStartup()
         frontBuffer.drawText(xOffset + 6, yOffset + 6, note, RenColour::yellow());
     }
 
-    ProgressIndicator progressIndicator(lobbyFlag, xOffset, yOffset);
+    ProgressIndicator progressIndicator(xOffset, yOffset);
     progressIndicator.setLimits(0.00, 0.18);
 
     // moved higher due to call sequence problems in lobbying when very slow machines host with very fast machines

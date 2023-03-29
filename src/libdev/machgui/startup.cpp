@@ -111,11 +111,10 @@
 class LoadGameProgressIndicator : public BaseProgressReporter
 {
 public:
-    LoadGameProgressIndicator(MachGuiStartupScreens* pStartupScreens)
-        : lowerLimit_(0.0)
-        , upperLimit_(1.0)
-        , lastDone_(0)
-        , pStartupScreens_(pStartupScreens)
+    LoadGameProgressIndicator(int xOffset, int yOffset)
+        : upperLimit_(1.0)
+        , xOffset_(xOffset)
+        , yOffset_(yOffset)
     {
     }
 
@@ -123,10 +122,10 @@ public:
     {
         if (done == lastDone_)
             return 0;
-        const double minx = 275 + pStartupScreens_->xMenuOffset();
-        const double maxx = 361 + pStartupScreens_->xMenuOffset();
-        const double miny = 250 + pStartupScreens_->yMenuOffset();
-        const double maxy = 254 + pStartupScreens_->yMenuOffset();
+        const double minx = 275 + xOffset_;
+        const double maxx = 361 + xOffset_;
+        const double miny = 250 + yOffset_;
+        const double maxy = 254 + yOffset_;
         const double width = maxx - minx + 1;
         const double height = maxy - miny + 1;
         const double limitRange = upperLimit_ - lowerLimit_;
@@ -157,7 +156,7 @@ public:
             }*/
         }
         lastDone_ = done;
-        return 0;
+        return (double)maxDone / 50.0;
     }
 
     void setLimits(double lower, double upper)
@@ -167,10 +166,11 @@ public:
     }
 
 private:
-    double lowerLimit_;
-    double upperLimit_;
+    double lowerLimit_ = 0;
+    double upperLimit_ = 0;
     size_t lastDone_;
-    MachGuiStartupScreens* pStartupScreens_;
+    int xOffset_ = 0;
+    int yOffset_ = 0;
 };
 
 #define CB_MachGuiStartupScreens_DEPIMPL()                                                                             \
@@ -501,7 +501,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());
 
-    LoadGameProgressIndicator progressIndicator(this);
+    LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
     // Free up any cached memory used by menus.
     releaseCachedMemory();
@@ -586,7 +586,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     if (getenv("CB_PROFILE_PLANET_LOADING"))
         ProProfiler::instance().enableProfiling();
 
-    LoadGameProgressIndicator progressIndicator(this);
+    LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
     // Free up any cached memory used by menus.
     releaseCachedMemory();
@@ -737,7 +737,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());
 
-    LoadGameProgressIndicator progressIndicator(this);
+    LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
     // Free up any cached memory used by menus.
     releaseCachedMemory();
@@ -2881,7 +2881,7 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());
 
-    LoadGameProgressIndicator progressIndicator(this);
+    LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
     // Store the current scenario
     startupData()->scenario(&pSavedGame->scenario());
