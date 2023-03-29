@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
-#include <stdio.h>
-#include "system/registry.hpp"
-#include "ctl/vector.hpp"
 #include "machphys/compitem.hpp"
 
-static void idToString(const ItemId& id, string* stringId)
+#include "system/registry.hpp"
+
+#include <stdio.h>
+
+static void idToString(const ItemId& id, std::string* stringId)
 {
     PRE(stringId);
     char buffer[20];
@@ -31,30 +31,13 @@ MachPhysComplexityItem::~MachPhysComplexityItem()
 
 MachPhysComplexityBooleanItem::MachPhysComplexityBooleanItem(const ItemId& setId, bool enabled)
     : MachPhysComplexityItem(setId)
-    , enabled_(enabled)
 {
-    bool buf;
-    int sizeOfBool = sizeof(bool);
-    bool readSucceeded;
-
-    string strId;
+    std::string strId;
     idToString(id(), &strId);
 
-    SysRegistry::KeyHandle handle;
-    SysRegistry::instance().openKey("Options\\Graphics Complexity", &handle);
-    readSucceeded
-        = (SysRegistry::instance().queryValue(handle, strId, SysRegistry::INTEGER, &buf, &sizeOfBool)
-           == SysRegistry::SUCCESS);
-    SysRegistry::instance().closeKey(handle);
-
-    if (readSucceeded)
-    {
-        enabled_ = buf;
-    }
-    else
-    {
-        SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, enabled_);
-    }
+    int value = enabled ? 1 : 0;
+    value = SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity", strId, value);
+    enabled_ = value;
 }
 
 MachPhysComplexityBooleanItem::~MachPhysComplexityBooleanItem()
@@ -69,7 +52,7 @@ void MachPhysComplexityBooleanItem::changeState(bool enabled)
         changed_ = true;
 
         // persist new setting
-        string strId;
+        std::string strId;
         idToString(id(), &strId);
         SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, enabled_);
     }
@@ -80,32 +63,13 @@ MachPhysComplexityChoiceItem::MachPhysComplexityChoiceItem(const ItemId& setId, 
     , nChoices_(nChoices)
     , choice_(0)
 {
-    PRE(choice < nChoices);
-    choice_ = choice;
-
-    // override choice from the value set in the registries if any
-    uint buf = 0;
-    int sizeOfInt = sizeof(uint);
-    bool readSucceeded;
-
-    string strId;
+    std::string strId;
     idToString(id(), &strId);
 
-    SysRegistry::KeyHandle handle;
-    SysRegistry::instance().openKey("Options\\Graphics Complexity", &handle);
-    readSucceeded
-        = (SysRegistry::instance().queryValue(handle, strId, SysRegistry::INTEGER, &buf, &sizeOfInt)
-           == SysRegistry::SUCCESS);
-    SysRegistry::instance().closeKey(handle);
+    choice = SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity", strId, choice);
 
-    if (readSucceeded and buf < nChoices_)
-    {
-        choice_ = buf;
-    }
-    else
-    {
-        SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, choice_);
-    }
+    PRE(choice < nChoices);
+    choice_ = choice;
 }
 
 MachPhysComplexityChoiceItem::~MachPhysComplexityChoiceItem()
@@ -131,7 +95,7 @@ void MachPhysComplexityChoiceItem::changeState(uint choice)
         changed_ = true;
 
         // persist new setting
-        string strId;
+        std::string strId;
         idToString(id(), &strId);
         SysRegistry::instance().setIntegerValue("Options\\Graphics Complexity", strId, choice_);
     }
