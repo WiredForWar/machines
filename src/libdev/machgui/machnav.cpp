@@ -14,6 +14,7 @@
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
 #include "gui/restring.hpp"
+#include "render/TextOptions.hpp"
 #include "system/pathname.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/races.hpp"
@@ -141,23 +142,26 @@ public:
 protected:
     void doDisplayInteriorEnabled(const Gui::Coord& abs) override
     {
-        static GuiBitmap numbers[10] = {
-            MachGui::getScaledImage("gui/navigate/navi0.bmp"), MachGui::getScaledImage("gui/navigate/navi1.bmp"),
-            MachGui::getScaledImage("gui/navigate/navi2.bmp"), MachGui::getScaledImage("gui/navigate/navi3.bmp"),
-            MachGui::getScaledImage("gui/navigate/navi4.bmp"), MachGui::getScaledImage("gui/navigate/navi5.bmp"),
-            MachGui::getScaledImage("gui/navigate/navi6.bmp"), MachGui::getScaledImage("gui/navigate/navi7.bmp"),
-            MachGui::getScaledImage("gui/navigate/navi8.bmp"), MachGui::getScaledImage("gui/navigate/navi9.bmp"),
-        };
-
         GuiBitmapButtonWithFilledBorder::doDisplayInteriorEnabled(abs);
 
         if (numThisType_ != 0)
         {
             Gui::Coord absCopy(abs);
-            absCopy.y(absCopy.y() + 23 * MachGui::uiScaleFactor()); // TODO : remove hard coded values
-            absCopy.x(absCopy.x() + width() - 4);
+            absCopy.y(absCopy.y() + 19 * MachGui::uiScaleFactor());
+            absCopy.x(absCopy.x() + width() - 2 * MachGui::uiScaleFactor());
 
-            MachGui::drawNumber(numbers, numThisType_, &absCopy);
+            char buffer[8];
+            snprintf(buffer, sizeof(buffer), "%zu", numThisType_);
+
+            // Render the text
+            Render::TextOptions options;
+            options.setAlignment(Render::Alignment::Right);
+            constexpr Gui::Colour shadowColor(74.0 / 256.0, 74.0 / 256.0, 82.0 / 256.0);
+
+            options.setColor(Gui::WHITE());
+            options.setShadow(1, 1, shadowColor);
+
+            GuiPainter::instance().drawText(absCopy, buffer, options, MachGui::navigationButtonNumberSize());
         }
     }
 

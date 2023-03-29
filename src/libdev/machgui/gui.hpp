@@ -92,6 +92,7 @@ public:
     static int iconIndexYOffset();
 
     static int corralInfoTextSize();
+    static int navigationButtonNumberSize();
 
     static double doubleClickInterval();
 

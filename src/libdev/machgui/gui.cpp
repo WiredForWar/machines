@@ -798,6 +798,11 @@ int MachGui::corralInfoTextSize()
     return MachGui::uiScaleFactor() == 1 ? 12 : 20;
 }
 
+int MachGui::navigationButtonNumberSize()
+{
+    return MachGui::uiScaleFactor() == 1 ? 12 : 20;
+}
+
 // static
 double MachGui::doubleClickInterval()
 {
