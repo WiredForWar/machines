@@ -1172,19 +1172,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
     }
     else
     {
-        stringId = MachLogActorStringIdRestorer::stringId(pActor->objectType(), pActor->subType());
-
-        // Add hwLevel onto stringId
-        if (pActor->objectIsMachine())
-        {
-            MachLogMachine& machine = pActor->asMachine();
-            stringId += machine.hwLevel();
-        }
-        else if (pActor->objectIsConstruction())
-        {
-            MachLogConstruction& construction = pActor->asConstruction();
-            stringId += construction.level();
-        }
+        stringId = MachLogActorStringIdRestorer::stringId(pActor);
 
         // Get weapon name, if any ( must belong to player to see weapon info ).
         if (pActor->objectIsCanAttack() and pActor->race() == playerRace)

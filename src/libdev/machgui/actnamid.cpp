@@ -24,7 +24,20 @@ MachLogActorStringIdRestorer::~MachLogActorStringIdRestorer()
 // static
 uint MachLogActorStringIdRestorer::stringId(MachActor* pActor)
 {
-    return stringId(pActor->objectType(), pActor->subType());
+    // Extract hw level from actor
+    int level = 0;
+    if (pActor->objectIsMachine())
+    {
+        MachLogMachine& machine = pActor->asMachine();
+        level = machine.hwLevel();
+    }
+    else if (pActor->objectIsConstruction())
+    {
+        MachLogConstruction& construction = pActor->asConstruction();
+        level = construction.level();
+    }
+
+    return stringId(pActor->objectType(), pActor->subType(), level);
 }
 
 // static
@@ -233,6 +246,11 @@ uint MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t 
     ASSERT_INFO(subType);
     ASSERT(false, "Failed to get string ID");
     return 0;
+}
+
+uint MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t subType, int level)
+{
+    return stringId(objType, subType) + level;
 }
 
 // static
@@ -451,9 +469,7 @@ string MachLogActorStringIdRestorer::getActorPromptText(
     }
     else
     {
-        stringId = MachLogActorStringIdRestorer::stringId(objType, subType);
-
-        stringId += level;
+        stringId = MachLogActorStringIdRestorer::stringId(objType, subType, level);
 
         // Load the resource string
         GuiResourceString resWeaponName(MachLogActorStringIdRestorer::weaponStringId(wc));

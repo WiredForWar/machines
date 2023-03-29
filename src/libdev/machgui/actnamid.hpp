@@ -18,7 +18,7 @@ public:
     // Returns string id used to display actors sub-type ( e.g. Lab-Tech, Commanded, Grunt ). Add hardware
     // level to get stringId that describes specific machine type ( e.g. Judas Warlord, Shark )
     static uint stringId(MachActor*);
-    static uint stringId(MachLog::ObjectType objType, size_t subType);
+    static uint stringId(MachLog::ObjectType objType, size_t subType, int level);
 
     // Returns string id used to display name of weapon.
     static uint weaponStringId(MachPhys::WeaponCombo wc);
@@ -46,6 +46,8 @@ public:
         uint actorWithWeaponStrId);
 
 private:
+    static uint stringId(MachLog::ObjectType objType, size_t subType);
+
     MachLogActorStringIdRestorer(const MachLogActorStringIdRestorer&);
     MachLogActorStringIdRestorer& operator=(const MachLogActorStringIdRestorer&);
     bool operator==(const MachLogActorStringIdRestorer&);
