@@ -372,6 +372,14 @@ bool SDLApp::clientStartup()
     manager_->useLevelOfDetail(
         !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));
 
+    {
+        int maxDomainDepth = 96; // The original game had 36
+        const char maxDomainDepthKey[] = "Options\\Graphics Complexity\\Max Domain Depth";
+        maxDomainDepth = SysRegistry::instance().queryIntegerValue(maxDomainDepthKey, "Value", maxDomainDepth);
+        manager_->setMaxDomainDepth(maxDomainDepth);
+        SysRegistry::instance().setIntegerValue(maxDomainDepthKey, "Value", maxDomainDepth);
+    }
+
     // set this after the device has been created: we need the capability class
     // to find out how much memory is available for display
     //  bool highestModeSet = manager_->pDevice()->setHighestAllowedDisplayMode();

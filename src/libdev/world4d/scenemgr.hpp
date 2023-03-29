@@ -55,6 +55,7 @@ public:
 
     // Disable LOD for highest detail rendering
     void useLevelOfDetail(bool enableLod);
+    void setMaxDomainDepth(int maxDepth);
 
     void ambient(const RenColour&);
     const RenColour& ambient() const;

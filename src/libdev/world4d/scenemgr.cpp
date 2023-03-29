@@ -78,6 +78,7 @@ private:
     bool stackClearBg_;
     W4dRoot* pStackBgRoot_;
     RenColour stackBackgroundColour_;
+    int maxDomainRenderDepth_ = 0;
 
     // Rendering statistics stuff.
     uint totalEntities_, totalDomains_;
@@ -156,6 +157,8 @@ W4dSceneManagerImpl::W4dSceneManagerImpl(RenDisplay* pDisplay, W4dRoot* root)
 {
     complexity_.enabled(false);
     lights_.reserve(512);
+
+    maxDomainRenderDepth_ = 36;
 }
 
 W4dSceneManagerImpl::~W4dSceneManagerImpl()
@@ -294,7 +297,7 @@ void W4dSceneManager::render()
     device_->start3D(clearBg_);
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.
-    currentCamera_->domainRender(36);
+    currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
 
     totalEntities_ += currentCamera_->entitiesRendered();
     totalDomains_ += currentCamera_->domainsRendered();
@@ -565,6 +568,11 @@ void W4dSceneManager::useCamera(W4dCamera* cam)
 void W4dSceneManager::useLevelOfDetail(bool enableLod)
 {
     complexity().enabledLOD(enableLod);
+}
+
+void W4dSceneManager::setMaxDomainDepth(int maxDepth)
+{
+    pImpl_->maxDomainRenderDepth_ = maxDepth;
 }
 
 void W4dSceneManager::ambient(const RenColour& amb)
