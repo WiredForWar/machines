@@ -41,6 +41,7 @@ PerIstream::~PerIstream()
 void PerIstream::read(char* pOutput, size_t length)
 {
     istr_.read(pOutput, length);
+    pImpl_->logDataRead(length);
 }
 
 //  Read a single character
