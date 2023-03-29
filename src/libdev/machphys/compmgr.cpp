@@ -7,22 +7,25 @@
 
 #include <algorithm>
 
+#include "envirnmt/planet.hpp"
 #include "machphys/compmgr.hpp"
-#include "machphys/codynlig.hpp"
-#include "machphys/cosky.hpp"
-#include "machphys/covaptra.hpp"
+#include "machphys/compitem.hpp"
+#include "machphys/plansurf.hpp"
+
+#include "world4d/manager.hpp"
+#include "world4d/scenemgr.hpp"
 
 //
-// Ids associtaed with Complexity items are hard coded
+// Ids associated with Complexity items are hard coded
 // ids from 10000 to 10199 are reserved for this class
 // 10000-10019 boolean items
 // 10020-10039 choice items
 //
 // Correspondance table:
 //
-//  10000   dynamic lights      (MachPhysDynamicLightsComplexity)
-//  10001   vapour trails       (MachPhysVapourTrailsComplexity)
-//  10020   sky                 (MachPhysSkyComplexity)
+//  10000   dynamic lights
+//  10001   vapour trails
+//  10020   sky
 //
 
 // static
@@ -32,30 +35,60 @@ MachPhysComplexityManager& MachPhysComplexityManager::instance()
     return instance_;
 }
 
-static ItemId dynamicLightsId()
-{
-    return 10000;
-}
-
-static ItemId vapourTrailsId()
-{
-    return 10001;
-}
-
-static ItemId skyId()
-{
-    return 10020;
-}
-
 MachPhysComplexityManager::MachPhysComplexityManager()
     : vapourTrailsEnabled_(true)
 {
-    booleanItems_.reserve(1);
-    booleanItems_.push_back(_NEW(MachPhysDynamicLightsComplexity(dynamicLightsId(), true)));
-    booleanItems_.push_back(_NEW(MachPhysVapourTrailsComplexity(vapourTrailsId(), vapourTrailsEnabled_)));
+    static constexpr ItemId dynamicLightsId = 10000;
+    static constexpr ItemId vapourTrailsId = 10001;
+    static constexpr ItemId skyId = 10020;
 
-    choiceItems_.reserve(1);
-    choiceItems_.push_back(_NEW(MachPhysSkyComplexity(skyId())));
+    auto* dynamicLight = new MachPhysComplexityBooleanItem(dynamicLightsId, true);
+    dynamicLight->setCallback([dynamicLight](MachPhysComplexityItem*) {
+        if (W4dManager::instance().hasSceneManager())
+        {
+            W4dSceneManager* manager = W4dManager::instance().sceneManager();
+            manager->dynamicLightsEnabled(dynamicLight->enabled());
+        }
+    });
+
+    auto* vapourTrails = new MachPhysComplexityBooleanItem(vapourTrailsId, vapourTrailsEnabled_);
+    vapourTrails->setCallback([vapourTrails](MachPhysComplexityItem*) {
+        MachPhysComplexityManager::instance().vapourTrailsEnabled(vapourTrails->enabled());
+    });
+
+    booleanItems_ = {
+        dynamicLight,
+        vapourTrails,
+    };
+
+    auto* skyComplexityItem = new MachPhysComplexityChoiceItem(skyId, 3, 2);
+    skyComplexityItem->setCallback([skyComplexityItem](MachPhysComplexityItem*) {
+        MachPhysPlanetSurface* pSurface = MachPhysComplexityManager::instance().planetSurface();
+        if (pSurface && pSurface->hasEnvironment())
+        {
+            uint choice = skyComplexityItem->choice();
+            EnvPlanetEnvironment::VisibilityLevel vLevel = EnvPlanetEnvironment::NO_SKY;
+            switch (choice)
+            {
+                case 0:
+                    vLevel = EnvPlanetEnvironment::NO_SKY;
+                    break;
+                case 1:
+                    vLevel = EnvPlanetEnvironment::SKY_WO_SATELLITES;
+                    break;
+                case 2:
+                    vLevel = EnvPlanetEnvironment::FULL_SKY;
+                    break;
+                default:
+                    ASSERT_BAD_CASE_INFO(choice);
+            }
+            pSurface->environment().setVisibilityLevel(vLevel);
+        }
+    });
+
+    choiceItems_ = {
+        skyComplexityItem,
+    };
 
     TEST_INVARIANT;
 }

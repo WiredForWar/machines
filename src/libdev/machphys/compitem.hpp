@@ -14,19 +14,29 @@
 
 #include "base/base.hpp"
 
+#include <functional>
+
 using ItemId = uint;
 
 class MachPhysComplexityItem
 // Canonical form revoked
 {
 public:
+    using Callback = std::function<void(MachPhysComplexityItem*)>;
+
     MachPhysComplexityItem(const ItemId& id);
-    virtual ~MachPhysComplexityItem();
 
     const ItemId& id() const { return id_; }
-    bool changed() const { return changed_; }
 
-    virtual void update() = 0;
+    void setCallback(Callback callback) { callback_ = callback; }
+
+    void update()
+    {
+        if (!callback_)
+            return;
+
+        callback_(this);
+    }
 
 private:
     friend ostream& operator<<(ostream& o, const MachPhysComplexityItem& t);
@@ -37,27 +47,25 @@ private:
 
 protected:
     ItemId id_;
-    bool changed_;
+    Callback callback_;
 };
 
 class MachPhysComplexityBooleanItem : public MachPhysComplexityItem
 {
 public:
     MachPhysComplexityBooleanItem(const ItemId& id, bool enabled);
-    ~MachPhysComplexityBooleanItem() override;
 
     bool enabled() const { return enabled_; }
     void changeState(bool enabled);
 
 protected:
-    bool enabled_;
+    bool enabled_ = false;
 };
 
 class MachPhysComplexityChoiceItem : public MachPhysComplexityItem
 {
 public:
     MachPhysComplexityChoiceItem(const ItemId& id, uint nChoices, uint choice = 0);
-    ~MachPhysComplexityChoiceItem() override;
 
     uint nChoices() const;
     uint choice() const;

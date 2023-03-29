@@ -21,11 +21,6 @@ static void idToString(const ItemId& id, std::string* stringId)
 
 MachPhysComplexityItem::MachPhysComplexityItem(const ItemId& id)
     : id_(id)
-    , changed_(true)
-{
-}
-
-MachPhysComplexityItem::~MachPhysComplexityItem()
 {
 }
 
@@ -40,16 +35,11 @@ MachPhysComplexityBooleanItem::MachPhysComplexityBooleanItem(const ItemId& setId
     enabled_ = value;
 }
 
-MachPhysComplexityBooleanItem::~MachPhysComplexityBooleanItem()
-{
-}
-
 void MachPhysComplexityBooleanItem::changeState(bool enabled)
 {
     if (enabled_ != enabled)
     {
         enabled_ = enabled;
-        changed_ = true;
 
         // persist new setting
         std::string strId;
@@ -72,10 +62,6 @@ MachPhysComplexityChoiceItem::MachPhysComplexityChoiceItem(const ItemId& setId, 
     choice_ = choice;
 }
 
-MachPhysComplexityChoiceItem::~MachPhysComplexityChoiceItem()
-{
-}
-
 uint MachPhysComplexityChoiceItem::nChoices() const
 {
     return nChoices_;
@@ -92,7 +78,6 @@ void MachPhysComplexityChoiceItem::changeState(uint choice)
     if (choice_ != choice)
     {
         choice_ = choice;
-        changed_ = true;
 
         // persist new setting
         std::string strId;

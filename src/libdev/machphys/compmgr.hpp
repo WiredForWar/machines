@@ -13,11 +13,12 @@
 #define _COMPMGR_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+
+#include <vector>
 
 using ItemId = uint;
 
-template <class T> class ctl_vector;
+class MachPhysComplexityItem;
 class MachPhysComplexityBooleanItem;
 class MachPhysComplexityChoiceItem;
 class MachPhysPlanetSurface;
@@ -32,8 +33,8 @@ public:
 
     void CLASS_INVARIANT;
 
-    using BooleanItems = ctl_vector<MachPhysComplexityBooleanItem*>;
-    using ChoiceItems = ctl_vector<MachPhysComplexityChoiceItem*>;
+    using BooleanItems = std::vector<MachPhysComplexityBooleanItem*>;
+    using ChoiceItems = std::vector<MachPhysComplexityChoiceItem*>;
 
     const BooleanItems& booleanItems() const;
     const ChoiceItems& choiceItems() const;

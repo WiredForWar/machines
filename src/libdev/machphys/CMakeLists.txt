@@ -47,8 +47,6 @@ set(MACHPHYS_SOURCES
     cexpdata.hpp
     charger.cpp
     charger.hpp
-    codynlig.cpp
-    codynlig.hpp
     compitem.cpp
     compitem.hpp
     compmgr.cpp
@@ -62,10 +60,6 @@ set(MACHPHYS_SOURCES
     constron.hpp
     construc.cpp
     construc.hpp
-    cosky.cpp
-    cosky.hpp
-    covaptra.cpp
-    covaptra.hpp
     crakfire.cpp
     crakfire.hpp
     crakfiri.cpp
