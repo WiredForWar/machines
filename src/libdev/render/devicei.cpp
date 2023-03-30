@@ -33,7 +33,6 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , debugX_(0)
     , debugY_(0)
     , frameTimer_()
-    , deviceType_(RenIDeviceIdentifier::UNKNOWN)
     , videoMemoryShared_(false)
     , videoMemorySharedInitialized_(false)
 

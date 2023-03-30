@@ -13,7 +13,6 @@
 
 #include "render/internal/modeobsv.hpp"
 #include "render/internal/internal.hpp"
-#include "render/internal/devidi.hpp"
 #include "render/colour.hpp"
 #include "device/timer.hpp"
 #include <glm/gtc/matrix_transform.hpp>
@@ -68,8 +67,6 @@ public:
     bool idleRendering() const;
 
     const RenCapabilities& capabilities() const;
-
-    RenIDeviceIdentifier::DeviceType getDeviceType() const;
 
     bool hasSharedVideoMemory() const;
     void hasSharedVideoMemory(bool);
@@ -148,7 +145,6 @@ private:
     bool antiAliasingOn_;
 
     DevTimer frameTimer_;
-    RenIDeviceIdentifier::DeviceType deviceType_;
 
     bool videoMemoryShared_;
     bool videoMemorySharedInitialized_;

@@ -12,7 +12,6 @@
 #include "render/cursor2d.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/devicei.hpp"
-#include "render/internal/devidi.hpp"
 #include "render/device.hpp"
 #include "render/internal/modeobsv.hpp"
 #include "device/mouse.hpp"
@@ -318,17 +317,6 @@ bool RenIDisplay::blitTest()
     ASSERT(currentMode_.height() >= 200, "Modes smaller than 200 pixels not supported.");
 
     return true;
-}
-
-static bool isVoodoo(RenIDeviceIdentifier::DeviceType devType)
-{
-    bool result;
-    result
-        = (devType == RenIDeviceIdentifier::VOODOO_GRAPHICS or devType == RenIDeviceIdentifier::VOODOO2
-           or devType == RenIDeviceIdentifier::VOODOO_BANSHEE
-           or devType == RenIDeviceIdentifier::VOODOO_RUSH_ALLIANCE_AT25_AT3D_CHIP
-           or devType == RenIDeviceIdentifier::VOODOO_RUSH_MACRONIX_CHIP);
-    return result;
 }
 
 bool RenIDisplay::isPrimaryDriver() const

@@ -116,12 +116,6 @@ const RenCapabilities& RenIDeviceImpl::capabilities() const
 }
 
 _CODE_INLINE
-RenIDeviceIdentifier::DeviceType RenIDeviceImpl::getDeviceType() const
-{
-    return deviceType_;
-}
-
-_CODE_INLINE
 bool RenIDeviceImpl::fogMultiplierIsNeutral() const
 {
     return materialFogMultiplier_ == 1.0;
