@@ -132,9 +132,9 @@ void MachInGameCursors2d::loadCursors()
     pLocateToCursor_ = loadCursor(MachCursorSpec("large/locat", 5, { 8, 14 }));
     pPatrolCursor_ = loadCursor(MachCursorSpec("large/patrol", 6));
     pDeployCursor_ = loadCursor(MachCursorSpec("large/deploy", 2));
-    pPickUpCursor_ = loadCursor(MachCursorSpec("large/pickup", 2, { 8, 8 }, 5));
+    pPickUpCursor_ = loadCursor(MachCursorSpec("large/pickup", 2, { 8, 8 }, 7.5));
     pScavengeCursor_ = loadCursor(MachCursorSpec("large/scav", 10, { 8, 15 }));
-    pTransportCursor_ = loadCursor(MachCursorSpec("large/putdn", 2, { 8, 8 }, 5));
+    pTransportCursor_ = loadCursor(MachCursorSpec("large/putdn", 2, { 8, 8 }, 7.5));
     pEnterAPCCursor_ = loadCursor(MachCursorSpec("large/entapc", 6));
     pFollowCursor_ = loadCursor(MachCursorSpec("large/follow", 4));
     pDropLandMineCursor_ = loadCursor(MachCursorSpec("large/landmin", 2));
