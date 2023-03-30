@@ -33,6 +33,38 @@ set(PHYS_SOURCES
     cspace2.hpp
     eulertx.cpp
     eulertx.hpp
+    internal/accetumi.hpp
+    internal/asclplai.hpp
+    internal/cs2dmarc.hpp
+    internal/cs2dmarc.ipp
+    internal/cs2dmcac.hpp
+    internal/cs2dmfnd.hpp
+    internal/cs2dmfnd.ipp
+    internal/cs2dmgra.hpp
+    internal/cs2dmvtx.hpp
+    internal/cs2dmvtx.ipp
+    internal/cs2domai.hpp
+    internal/cs2domai.ipp
+    internal/cs2expsp.hpp
+    internal/cs2expsp.ipp
+    internal/cs2findp.hpp
+    internal/cs2findp.ipp
+    internal/cs2impl.hpp
+    internal/cs2impl.ipp
+    internal/cs2mochu.hpp
+    internal/cs2mochu.ipp
+    internal/cs2polyg.hpp
+    internal/cs2polyg.ipp
+    internal/cs2porta.hpp
+    internal/cs2porta.ipp
+    internal/cs2vigra.hpp
+    internal/cs2vigra.ipp
+    internal/linemtii.hpp
+    internal/linetrai.hpp
+    internal/lsclplai.hpp
+    internal/movespii.hpp
+    internal/timeangi.hpp
+    internal/timespni.hpp
     jonvec.hpp
     linemoti.cpp
     linemoti.hpp
