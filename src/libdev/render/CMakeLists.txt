@@ -35,8 +35,6 @@ set(RENDER_SOURCES
     drivsel.hpp
     envirnmt.cpp
     envirnmt.hpp
-    fixdcurs.cpp
-    fixdcurs.hpp
     fixpt.cpp
     fixptvec.cpp
     fwmatmap.hpp
