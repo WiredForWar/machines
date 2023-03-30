@@ -9,24 +9,89 @@
 # GLOB is sometimes considered anti pattern but watever
 
 set(MACHINES_SOURCES
-    projects/machines/sdlapp.cpp
-    projects/machines/loadplan.cpp
-    projects/machines/sndstuff.cpp
-    projects/machines/guistuff.cpp
-    projects/machines/motion.cpp
-    projects/machines/leaktrak.cpp
     projects/machines/errorhnd.cpp
+    projects/machines/errorhnd.hpp
+    projects/machines/guistuff.cpp
+    projects/machines/leaktrak.cpp
+    projects/machines/leaktrak.hpp
+    projects/machines/loadplan.cpp
+    projects/machines/motion.cpp
     projects/machines/scrndump.cpp
+    projects/machines/scrndump.hpp
+    projects/machines/sdlapp.cpp
+    projects/machines/sdlapp.hpp
     projects/machines/simstuff.cpp
-    #projects/machines/ti.cpp
-    #projects/machines/tiobjdpo.cpp
+    projects/machines/sndstuff.cpp
 )
 
-file(GLOB PLANETED_SOURCES projects/planeted/*.cpp)
-list(REMOVE_ITEM PLANETED_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/projects/planeted/madata.cpp)
-list(REMOVE_ITEM PLANETED_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/projects/planeted/parmdata.cpp)
-list(REMOVE_ITEM PLANETED_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/projects/planeted/tiobjdpo.cpp)
-list(REMOVE_ITEM PLANETED_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/projects/planeted/ti.cpp)
+set(PLANETED_SOURCES
+    projects/planeted/availods.cpp
+    projects/planeted/availods.hpp
+    projects/planeted/cameras.cpp
+    projects/planeted/cameras.hpp
+    projects/planeted/camrmrkr.cpp
+    projects/planeted/camrmrkr.hpp
+    projects/planeted/datas.hpp
+    projects/planeted/domain.cpp
+    projects/planeted/domain.hpp
+    projects/planeted/editactor.cpp
+    projects/planeted/editactor.hpp
+    projects/planeted/editart.cpp
+    projects/planeted/editart.hpp
+    projects/planeted/editcamr.cpp
+    projects/planeted/editcamr.hpp
+    projects/planeted/editconstr.cpp
+    projects/planeted/editconstr.hpp
+    projects/planeted/editdoma.cpp
+    projects/planeted/editdoma.hpp
+    projects/planeted/editmach.cpp
+    projects/planeted/editmach.hpp
+    projects/planeted/editmode.cpp
+    projects/planeted/editmode.hpp
+    projects/planeted/editobst.cpp
+    projects/planeted/editobst.hpp
+    projects/planeted/editpoly.cpp
+    projects/planeted/editpoly.hpp
+    projects/planeted/editport.cpp
+    projects/planeted/editport.hpp
+    projects/planeted/edittile.cpp
+    projects/planeted/edittile.hpp
+    projects/planeted/errorhnd.cpp
+    projects/planeted/errorhnd.hpp
+    projects/planeted/keyboard.cpp
+    projects/planeted/leaktrak.cpp
+    projects/planeted/leaktrak.hpp
+    projects/planeted/mapbmp.cpp
+    projects/planeted/mapbmp.hpp
+    projects/planeted/motion.cpp
+    projects/planeted/mpreload.cpp
+    projects/planeted/mpreload.hpp
+    projects/planeted/obstacle.cpp
+    projects/planeted/obstacle.hpp
+    projects/planeted/planeted.cpp
+    projects/planeted/planeted.hpp
+    projects/planeted/polygon.cpp
+    projects/planeted/polygon.hpp
+    projects/planeted/portal.cpp
+    projects/planeted/portal.hpp
+    projects/planeted/race.cpp
+    projects/planeted/race.hpp
+    projects/planeted/scenfile.cpp
+    projects/planeted/scenfile.hpp
+    projects/planeted/sdlapp.cpp
+    projects/planeted/sdlapp.hpp
+    projects/planeted/strings.hpp
+    projects/planeted/testtibo.cpp
+    projects/planeted/testtibo.hpp
+    projects/planeted/tilemrkr.cpp
+    projects/planeted/tilemrkr.hpp
+    projects/planeted/vetxmrkr.cpp
+    projects/planeted/vetxmrkr.hpp
+    projects/planeted/vpolymark.cpp
+    projects/planeted/vpolymark.hpp
+    projects/planeted/wdebug.cpp
+    projects/planeted/wdebug.hpp
+)
 
 if(PLATFORM_WINDOWS)
   set(MACHINES_SOURCES
