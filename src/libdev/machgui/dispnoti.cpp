@@ -6,6 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "gui/restring.hpp"
+#include "gui/font.hpp"
 #include "machgui/dispnoti.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
@@ -99,16 +100,20 @@ string MachGuiDispositionChangeNotifiable::getDisplayName(MachPhys::Race race)
     switch (race)
     {
         case MachPhys::RED:
-            name = "©";
+            name.assign(1, GuiBmpFont::redCharIndex());
             break;
         case MachPhys::GREEN:
-            name = "ª";
+            name.assign(1, GuiBmpFont::greenCharIndex());
             break;
         case MachPhys::BLUE:
-            name = "«";
+            name.assign(1, GuiBmpFont::blueCharIndex());
             break;
         case MachPhys::YELLOW:
-            name = "¬";
+            name.assign(1, GuiBmpFont::yellowCharIndex());
+            break;
+
+        case MachPhys::N_RACES:
+        case MachPhys::NORACE:
             break;
     }
 
