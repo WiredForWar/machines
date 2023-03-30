@@ -515,7 +515,7 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
     if (glew_status != GLEW_OK)
     {
         std::string msg("Fatal in glewInit: ");
-        msg += (char*)glewGetErrorString(glew_status);
+        msg += reinterpret_cast<const char*>(glewGetErrorString(glew_status));
         SysWindowsAPI::messageBox(msg.c_str(), "Error");
         return EXIT_FAILURE;
     }
