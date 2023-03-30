@@ -73,7 +73,7 @@
 #include "world4d/camera.hpp"
 #include "world4d/soundman.hpp"
 #include "system/pathname.hpp"
-#include "render/animcurs.hpp"
+#include "render/cursor2d.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "render/surface.hpp"
@@ -174,7 +174,7 @@ private:
 };
 
 #define CB_MachGuiStartupScreens_DEPIMPL()                                                                             \
-    CB_DEPIMPL(RenAnimCursor2d*, pMenuCursor_);                                                                        \
+    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);                                                                            \
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);                                                                      \
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);                                                              \
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);                                                     \
@@ -487,7 +487,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(RenAnimCursor2d*, pMenuCursor_);
+    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
     CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
 
     PRE(gameType_ == NOGAME);
@@ -569,7 +569,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(RenAnimCursor2d*, pMenuCursor_);
+    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
     CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
 
     PRE(gameType_ == NOGAME);
@@ -722,7 +722,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(RenAnimCursor2d*, pMenuCursor_);
+    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
     CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
 
     PRE(gameType_ == NOGAME);
@@ -2217,7 +2217,7 @@ void MachGuiStartupScreens::updateCdAudio()
 
 void MachGuiStartupScreens::cursorOn(bool on)
 {
-    CB_DEPIMPL(RenAnimCursor2d*, pMenuCursor_);
+    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
     if (on)

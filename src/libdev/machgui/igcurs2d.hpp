@@ -18,7 +18,7 @@
 #include "machgui/gui.hpp"
 
 // Forward refs
-class RenAnimCursor2d;
+class RenCursor2d;
 class MachInGameScreen;
 
 class MachCursorSpec
@@ -66,7 +66,7 @@ public:
     // dtor
     ~MachInGameCursors2d();
 
-    static RenAnimCursor2d* loadCursor(const MachCursorSpec& cursorSpec);
+    static RenCursor2d* loadCursor(const MachCursorSpec& cursorSpec);
 
     // Get/Select the appropriate current cursor
     void cursor(MachGui::Cursor2dType type);
@@ -100,41 +100,41 @@ private:
     void loadCursors();
 
     // Data members
-    RenAnimCursor2d* pMenuCursor_; // The one over the menus etc
-    RenAnimCursor2d* pMoveCursor_[2]; // Move to terrain location
-    RenAnimCursor2d* pEnterBuildingCursor_; // Enter a building
-    RenAnimCursor2d* pNoEntryCursor_[2]; // Invalid pick
-    RenAnimCursor2d* pAttackCursor_; // Attack something with non-ion and non-nuke weapons
-    RenAnimCursor2d* pIonAttackCursor_; // Attack something with an ion beam
-    RenAnimCursor2d* pNukeAttackCursor_; // Attack something with a nuclear strike
-    RenAnimCursor2d* pConstructCursor_; // Construct a building
-    RenAnimCursor2d* pLocateToCursor_; // Locate along path
-    RenAnimCursor2d* pPatrolCursor_; // Patrol up and down path
-    RenAnimCursor2d* pDeployCursor_; // APC deploy contents
-    RenAnimCursor2d* pPickUpCursor_; // Collect ore/BMUs
-    RenAnimCursor2d* pScavengeCursor_; // Scavenge debris
-    RenAnimCursor2d* pTransportCursor_; // Deliver ore/debris to smelter
-    RenAnimCursor2d* pEnterAPCCursor_; // Enter an APC
-    RenAnimCursor2d* pFollowCursor_; // Enter an APC
-    RenAnimCursor2d* pSelectCursor_[2]; // Select the entity
-    RenAnimCursor2d* pDropLandMineCursor_; // drop a land mine
-    RenAnimCursor2d* pHealCursor_; // Heal a machine cursor
-    RenAnimCursor2d* pDeconstructCursor_; // Deconstruct a building cursor
-    RenAnimCursor2d* pRecycleCursor_; // Recycle a machine cursor
-    RenAnimCursor2d* pRepairCursor_; // Repair cursor
-    RenAnimCursor2d* pCaptureCursor_; // Capture a building cursor
-    RenAnimCursor2d* pJoinConstructCursor_; // Join in on a construction cursor
-    RenAnimCursor2d* pAssemblePointCursor_; // Assemble point cursor
-    RenAnimCursor2d* pScrollWestCursor_; // When camera is scrolling left
-    RenAnimCursor2d* pScrollEastCursor_; // When camera is scrolling right
-    RenAnimCursor2d* pScrollNorthCursor_; // When camera is scrolling up
-    RenAnimCursor2d* pScrollSouthCursor_; // When camera is scrolling down
-    RenAnimCursor2d* pScrollNorthWestCursor_; // When camera is scrolling up and left
-    RenAnimCursor2d* pScrollNorthEastCursor_; // When camera is scrolling up and right
-    RenAnimCursor2d* pScrollSouthWestCursor_; // When camera is scrolling down and left
-    RenAnimCursor2d* pScrollSouthEastCursor_; // When camera is scrolling down and right
-    RenAnimCursor2d* pChooseConstructionCursor_; // When construct has been selected but no construction
-    RenAnimCursor2d* pTreacheryCursor_; // Target an enemy machine to be treacheried
+    RenCursor2d* pMenuCursor_; // The one over the menus etc
+    RenCursor2d* pMoveCursor_[2]; // Move to terrain location
+    RenCursor2d* pEnterBuildingCursor_; // Enter a building
+    RenCursor2d* pNoEntryCursor_[2]; // Invalid pick
+    RenCursor2d* pAttackCursor_; // Attack something with non-ion and non-nuke weapons
+    RenCursor2d* pIonAttackCursor_; // Attack something with an ion beam
+    RenCursor2d* pNukeAttackCursor_; // Attack something with a nuclear strike
+    RenCursor2d* pConstructCursor_; // Construct a building
+    RenCursor2d* pLocateToCursor_; // Locate along path
+    RenCursor2d* pPatrolCursor_; // Patrol up and down path
+    RenCursor2d* pDeployCursor_; // APC deploy contents
+    RenCursor2d* pPickUpCursor_; // Collect ore/BMUs
+    RenCursor2d* pScavengeCursor_; // Scavenge debris
+    RenCursor2d* pTransportCursor_; // Deliver ore/debris to smelter
+    RenCursor2d* pEnterAPCCursor_; // Enter an APC
+    RenCursor2d* pFollowCursor_; // Enter an APC
+    RenCursor2d* pSelectCursor_[2]; // Select the entity
+    RenCursor2d* pDropLandMineCursor_; // drop a land mine
+    RenCursor2d* pHealCursor_; // Heal a machine cursor
+    RenCursor2d* pDeconstructCursor_; // Deconstruct a building cursor
+    RenCursor2d* pRecycleCursor_; // Recycle a machine cursor
+    RenCursor2d* pRepairCursor_; // Repair cursor
+    RenCursor2d* pCaptureCursor_; // Capture a building cursor
+    RenCursor2d* pJoinConstructCursor_; // Join in on a construction cursor
+    RenCursor2d* pAssemblePointCursor_; // Assemble point cursor
+    RenCursor2d* pScrollWestCursor_; // When camera is scrolling left
+    RenCursor2d* pScrollEastCursor_; // When camera is scrolling right
+    RenCursor2d* pScrollNorthCursor_; // When camera is scrolling up
+    RenCursor2d* pScrollSouthCursor_; // When camera is scrolling down
+    RenCursor2d* pScrollNorthWestCursor_; // When camera is scrolling up and left
+    RenCursor2d* pScrollNorthEastCursor_; // When camera is scrolling up and right
+    RenCursor2d* pScrollSouthWestCursor_; // When camera is scrolling down and left
+    RenCursor2d* pScrollSouthEastCursor_; // When camera is scrolling down and right
+    RenCursor2d* pChooseConstructionCursor_; // When construct has been selected but no construction
+    RenCursor2d* pTreacheryCursor_; // Target an enemy machine to be treacheried
     MachGui::Cursor2dType currentType_; // The current cursor
     MachInGameScreen* pInGameScreen_; // The gui root
     CursorSize cursorSize_; // Cursor size used ( some cursors come in two sizes )

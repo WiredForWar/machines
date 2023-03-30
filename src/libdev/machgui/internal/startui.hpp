@@ -13,7 +13,7 @@
 #include "ctl/pvector.hpp"
 
 class W4dSceneManager;
-class RenAnimCursor2d;
+class RenCursor2d;
 class MachInGameScreen;
 class W4dRoot;
 class GuiKeyEvent;
@@ -36,7 +36,7 @@ private:
     using FocusCapableControls = ctl_pvector<MachGuiFocusCapableControl>;
 
     // Data members...
-    RenAnimCursor2d* pMenuCursor_;
+    RenCursor2d* pMenuCursor_;
     W4dSceneManager* pSceneManager_;
     MachGuiStartupScreens::Context context_;
     MachGuiStartupScreens::Context contextAfterFlic_;

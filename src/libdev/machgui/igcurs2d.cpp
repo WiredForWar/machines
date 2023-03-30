@@ -165,7 +165,7 @@ void MachInGameCursors2d::loadCursors()
     pMoveCursor_[SMALLCURSORS] = loadCursor(MachCursorSpec("small/move", 4));
 }
 
-RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
+RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
 {
     int nFrames = cursorSpec.getFramesNumber();
     double fps = cursorSpec.getFps();
@@ -263,7 +263,7 @@ RenAnimCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpe
 void MachInGameCursors2d::forceCursor(MachGui::Cursor2dType type)
 {
     // decide which cursor to use
-    RenAnimCursor2d* pNewCursor = nullptr;
+    RenCursor2d* pNewCursor = nullptr;
 
     switch (type)
     {
