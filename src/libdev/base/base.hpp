@@ -115,53 +115,6 @@ using uint = unsigned int;
 
 //////////////////////////////////////////////////////////////////////
 
-#ifndef NO_MUTABLE_KEYWORD
-
-#define mutable mutable
-#define _MUTABLE_CAST(t, o) (o)
-
-#else
-
-#define mutable
-#define _MUTABLE_CAST(t, o) _CONST_CAST(t, o)
-
-#endif /*  #ifndef NO_MUTABLE_KEYWORD  */
-
-//////////////////////////////////////////////////////////////////////
-
-#ifndef NO_EXPLICIT_KEYWORD
-
-#define explicit explicit
-
-#else
-
-#define explicit
-
-#endif /*  #ifndef NO_EXPLICIT_KEYWORD */
-
-//////////////////////////////////////////////////////////////////////
-
-// #define namespace struct
-
-//////////////////////////////////////////////////////////////////////
-
-#ifdef NO_NEW_FOR_SCOPE
-
-#ifdef __WATCOMC__
-
-//  Disable "conditional expression in if statement is always false" warning
-
-#pragma warning 368 9;
-
-#endif
-
-#define for                                                                                                            \
-    if (0)                                                                                                             \
-        ;                                                                                                              \
-    else for
-
-#endif
-
 // Macros make switching between pImpl_ and no pImpl_ very easy.
 #define CB_DEPIMPL(vartype, varname)                                                                                   \
     PRE(pImpl_)                                                                                                        \
