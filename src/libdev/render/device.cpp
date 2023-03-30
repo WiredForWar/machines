@@ -337,7 +337,9 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
         // Read the Vertex Shader code from the file
         std::string shadersDir("data/shaders/");
         // Check if GLSL is too old
-        if (glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
+        // Unconditionally use GLSL 120 for now because the 310 ES version causes glitches
+        // (at least for some Windows users
+        if (true) // glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
             shadersDir.append("120/");
         std::ifstream vertexShaderStream(shadersDir + vertexShaderPath, std::ios::in);
         if (vertexShaderStream.is_open())
