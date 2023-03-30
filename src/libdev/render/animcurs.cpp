@@ -8,8 +8,9 @@
 #include "device/timer.hpp"
 #include "render/surface.hpp"
 
-struct RenIAnimCursor2d
+class RenIAnimCursor2d
 {
+public:
     RenIAnimCursor2d();
     const RenSurface& currentBitmap();
 
@@ -18,13 +19,12 @@ struct RenIAnimCursor2d
     Vec::const_iterator it_;
     double freq_, lambda_;
     DevTimer frameTimer_;
-    bool started_;
+    bool started_ = false;
 };
 
 RenIAnimCursor2d::RenIAnimCursor2d()
     : freq_(10)
     , lambda_(0.1)
-    , started_(false)
 {
     surfaces_.reserve(15);
     frameTimer_.pause();
