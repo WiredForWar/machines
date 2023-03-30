@@ -8,7 +8,6 @@
 
 #include "base/base.hpp"
 
-// class ostream;
 class RenMesh;
 class RenMaterialVec;
 class RenUVTransform;
@@ -19,21 +18,21 @@ template <class T> class CtlConstCountedPtr;
 // scopes, e.g. RenTexManager::TexId.  However, putting them here helps
 // reduce dependencies.
 // Hence, this file is supposed to be **small & simple**.
-struct Ren
+namespace Ren
 {
     static const uint NullTexId = 0;
     // This returns RenDevice::current()->out for classes which don't need the
     // full definition of RenDevice.
     // PRE(RenDevice::current());
-    static ostream& out();
+    std::ostream& out();
 
     // This invokes the various render library Singletons in an order which
     // will guarantee correct destruction order.  This must be called before
     // any other render library Singletons are invoked.
     // Chose a co-ordinate system before starting the render lib.
     // PRE(MexCoordSystem::instance().isSet());
-    static void initialise();
-    static bool initialised(); // a pre-condition for many things
+    void initialise();
+    bool initialised(); // a pre-condition for many things
 
     using VertexIdx = ushort;
     using TriangleIdx = ushort;
@@ -77,9 +76,9 @@ struct Ren
         POINT,
         UNIFORM
     };
-};
+    };
 
-ostream& operator<<(ostream&, const Ren::Rect&);
+    std::ostream& operator<<(std::ostream&, const Ren::Rect&);
 
 #endif
 
