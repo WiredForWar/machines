@@ -152,7 +152,7 @@ void MachPhysDataImplementation::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysDataImplementation& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysDataImplementation& t)
 {
 
     o << "MachPhysDataImplementation " << (void*)&t << " start" << std::endl;

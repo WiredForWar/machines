@@ -44,7 +44,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysAcceleratedScalarPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysAcceleratedScalarPlan& t);
 
 private:
     PhysAcceleratedScalarPlan& operator=(const PhysAcceleratedScalarPlan&);

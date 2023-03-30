@@ -216,7 +216,7 @@ void W4dSubjectImpl::setObjectPtr(W4dEntity* pNewEntity, const MexTransform3d& n
     W4dDomain::addNewSubject(pSubject_);
 }
 
-ostream& W4dSubjectImpl::write(ostream& o) const
+std::ostream& W4dSubjectImpl::write(std::ostream& o) const
 {
     o << "W4dSubject " << (void*)pSubject_ << std::endl;
     o << "  W4dEntity " << (void*)(&(*physObjectPtr_)) << std::endl << "  Observers" << std::endl;

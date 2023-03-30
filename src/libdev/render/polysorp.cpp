@@ -29,7 +29,7 @@ MATHEX_SCALAR RenIPrioritySortedItem::depth() const
     return depth_;
 }
 
-ostream& operator<<(ostream& o, const RenIPrioritySortedItem& i)
+std::ostream& operator<<(std::ostream& o, const RenIPrioritySortedItem& i)
 {
     i.print(o);
     return o;

@@ -52,7 +52,7 @@ void MachBuildMachineIcon::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachBuildMachineIcon& t)
+std::ostream& operator<<(std::ostream& o, const MachBuildMachineIcon& t)
 {
 
     o << "MachBuildMachineIcon " << (void*)&t << " start" << std::endl;

@@ -37,7 +37,7 @@ private:
     unsigned hardwareLevel_;
     bool isSubtype_;
 
-    friend ostream& operator<<(ostream&, const MachLogType&);
+    friend std::ostream& operator<<(std::ostream&, const MachLogType&);
 };
 
 //////////////////////////////////////////////////////////////////////

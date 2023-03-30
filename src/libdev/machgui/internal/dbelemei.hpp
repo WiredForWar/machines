@@ -33,7 +33,7 @@ public:
 private:
     friend class MachGuiDbElement;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbIElement& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbIElement& t);
 
     MachGuiDbIElement();
     ~MachGuiDbIElement();

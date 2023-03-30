@@ -13,7 +13,7 @@
 
 #include <cstring>
 
-ostream& operator<<(ostream& o, ctl_bit_vector& b)
+std::ostream& operator<<(std::ostream& o, ctl_bit_vector& b)
 {
     for (size_t i = 0; i < b.nBlocks_; i++)
     {

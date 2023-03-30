@@ -195,7 +195,7 @@ const MexAlignedBox3d& MexAlignedBox3d::zeroBox()
     return zero_;
 }
 
-ostream& operator<<(ostream& o, const MexAlignedBox3d& rhs)
+std::ostream& operator<<(std::ostream& o, const MexAlignedBox3d& rhs)
 {
     return o << rhs.minCorner_ << "  ----  " << rhs.maxCorner_;
 }

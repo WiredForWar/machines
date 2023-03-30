@@ -111,7 +111,7 @@ size_t SysFileTime::seconds() const
     return seconds_;
 }
 
-ostream& operator<<(ostream& ostr, const SysFileTime& time)
+std::ostream& operator<<(std::ostream& ostr, const SysFileTime& time)
 {
     if (time.hoursSet())
     {

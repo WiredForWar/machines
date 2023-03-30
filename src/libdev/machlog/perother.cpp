@@ -60,7 +60,7 @@ void MachLogOtherPersistence::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogOtherPersistence& t)
+std::ostream& operator<<(std::ostream& o, const MachLogOtherPersistence& t)
 {
 
     o << "MachLogOtherPersistence " << (void*)&t << " start" << std::endl;

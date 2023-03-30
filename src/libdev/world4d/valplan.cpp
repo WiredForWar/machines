@@ -39,7 +39,7 @@ void W4dFloatValuePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dFloatValuePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dFloatValuePlan& t)
 {
 
     o << "W4dFloatValuePlan " << (void*)&t << " start" << std::endl;

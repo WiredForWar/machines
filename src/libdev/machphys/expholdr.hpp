@@ -25,7 +25,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysGenericExplosionData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGenericExplosionData& t);
 
 private:
     MachPhysGenericExplosionData();

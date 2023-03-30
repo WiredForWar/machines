@@ -26,7 +26,7 @@ void MachGuiLoadSaveGameExtras::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiLoadSaveGameExtras& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiLoadSaveGameExtras& t)
 {
 
     o << "MachGuiLoadSaveGameExtras " << (void*)&t << " start" << std::endl;

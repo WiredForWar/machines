@@ -26,7 +26,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiControlPanelImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiControlPanelImpl& t);
 
     MachGuiControlPanelImpl(const MachGuiControlPanelImpl&);
     MachGuiControlPanelImpl& operator=(const MachGuiControlPanelImpl&);

@@ -288,7 +288,7 @@ void MachGuiControlPanelAddOn::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiControlPanelAddOn& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiControlPanelAddOn& t)
 {
 
     o << "MachGuiControlPanelAddOn " << (void*)&t << " start" << std::endl;

@@ -39,7 +39,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPulseSplat& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPulseSplat& t);
 
     PER_MEMBER_PERSISTENT(MachPhysPulseSplat);
 

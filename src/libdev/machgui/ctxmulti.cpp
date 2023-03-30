@@ -237,7 +237,7 @@ void MachGuiCtxMultiplayer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxMultiplayer& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxMultiplayer& t)
 {
 
     o << "MachGuiCtxMultiplayer " << (void*)&t << " start" << std::endl;

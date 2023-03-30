@@ -23,7 +23,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenMaterialVec& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenMaterialVec& t);
 
     using Base = ctl_min_memory_vector<RenMaterial>;
 

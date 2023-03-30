@@ -35,7 +35,7 @@ void MachLogLightSting::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogLightSting& t)
+std::ostream& operator<<(std::ostream& o, const MachLogLightSting& t)
 {
 
     o << "MachLogLightSting " << (void*)&t << " start" << std::endl;

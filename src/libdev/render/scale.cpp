@@ -20,7 +20,7 @@ PER_DEFINE_PERSISTENT(RenUniformScale);
 PER_DEFINE_PERSISTENT(RenNonUniformScale);
 
 //////////////////////////////////////////////////////////////////////////
-ostream& operator<<(ostream& o, const RenScale& t)
+std::ostream& operator<<(std::ostream& o, const RenScale& t)
 {
     t.print(o);
     return o;
@@ -71,7 +71,7 @@ void RenUnityScale::xyAverage(MATHEX_SCALAR* inPlane, MATHEX_SCALAR* z) const
 }
 
 // virtual
-void RenUnityScale::print(ostream& o) const
+void RenUnityScale::print(std::ostream& o) const
 {
     o << "unity scale";
 }
@@ -145,7 +145,7 @@ void RenUniformScale::xyAverage(MATHEX_SCALAR* inPlane, MATHEX_SCALAR* z) const
 }
 
 // virtual
-void RenUniformScale::print(ostream& o) const
+void RenUniformScale::print(std::ostream& o) const
 {
     o << "uniform scale of " << factor_;
 }
@@ -228,7 +228,7 @@ void RenNonUniformScale::xyAverage(MATHEX_SCALAR* inPlane, MATHEX_SCALAR* z) con
 }
 
 // virtual
-void RenNonUniformScale::print(ostream& o) const
+void RenNonUniformScale::print(std::ostream& o) const
 {
     o << "non-uniform scale of " << x_ << "," << y_ << "," << z_;
 }

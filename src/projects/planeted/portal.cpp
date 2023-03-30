@@ -29,7 +29,7 @@ void PedPortal::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedPortal& t)
+std::ostream& operator<<(std::ostream& o, const PedPortal& t)
 {
     o << "PORTAL " << t.domainOne_ << " " << t.domainTwo_ << " " << t.verticies()[0].x() << " " << t.verticies()[0].y()
       << " " << t.verticies()[1].x() << " " << t.verticies()[1].y() << std::endl;

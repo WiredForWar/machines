@@ -85,7 +85,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysTurnerTracker& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTurnerTracker& t);
 
     // revoked
     MachPhysTurnerTracker(const MachPhysTurnerTracker&);

@@ -43,7 +43,7 @@ protected:
 
     bool doIsFinished() const override;
 
-    void doOutputOperator(ostream&) const override = 0;
+    void doOutputOperator(std::ostream&) const override = 0;
 
 private:
     MachLogAnimation(const MachLogAnimation&);
@@ -75,7 +75,7 @@ public:
 
 protected:
     PhysRelativeTime doStartAnimation() override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogTurnAnimation(const MachLogTurnAnimation&);
@@ -156,7 +156,7 @@ protected:
     PhysRelativeTime doStartAnimation() override;
     void doFinish() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogBeDestroyedAnimation(const MachLogBeDestroyedAnimation&);

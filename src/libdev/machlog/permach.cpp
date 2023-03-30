@@ -43,7 +43,7 @@ void MachLogMachinePersistence::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMachinePersistence& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachinePersistence& t)
 {
 
     o << "MachLogMachinePersistence " << (void*)&t << " start" << std::endl;

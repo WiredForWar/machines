@@ -73,7 +73,7 @@ void MachPhysConstructorData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysConstructorData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysConstructorData& t)
 {
 
     // o << (MachPhysObjectData)t;

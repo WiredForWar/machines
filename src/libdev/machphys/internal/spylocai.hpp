@@ -31,7 +31,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysSpyLocatorImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysSpyLocatorImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSpyLocatorImpl& t);
     friend class MachPhysSpyLocator;
 
     MachPhysSpyLocatorImpl(const MachPhysSpyLocatorImpl&);

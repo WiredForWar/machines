@@ -64,7 +64,7 @@ private:
     MachGuiBufferScrollButton& operator=(const MachGuiBufferScrollButton&);
     bool operator==(const MachGuiBufferScrollButton&) const;
 
-    friend ostream& operator<<(ostream& o, const MachGuiBufferScrollButton& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiBufferScrollButton& t);
 
     // Data members...
     ScrollDir scrollDir_;

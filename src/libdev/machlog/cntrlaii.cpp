@@ -29,7 +29,7 @@ void MachLogAIControllerImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogAIControllerImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogAIControllerImpl& t)
 {
 
     o << "MachLogAIControllerImpl " << (void*)&t << " start" << std::endl;

@@ -1046,7 +1046,7 @@ void MachLogMessageBroker::processUseSpaceDomainMessage(NetMessage* pNetMessage)
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogCreateActorMessage& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCreateActorMessage& t)
 {
     o << "Race: " << t.race_ << std::endl;
     o << "Object: " << t.objectType_ << std::endl;
@@ -1058,7 +1058,7 @@ ostream& operator<<(ostream& o, const MachLogCreateActorMessage& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogCreateSpecialActorMessage& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCreateSpecialActorMessage& t)
 {
     o << "Race: " << t.race_ << std::endl;
     o << "Object: " << t.objectType_ << std::endl;
@@ -1069,7 +1069,7 @@ ostream& operator<<(ostream& o, const MachLogCreateSpecialActorMessage& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineMoveMessage& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMoveMessage& t)
 {
     o << "Header: " << t.header_ << std::endl;
     o << "whichId " << t.whichId_ << std::endl;
@@ -1078,7 +1078,7 @@ ostream& operator<<(ostream& o, const MachLogMachineMoveMessage& t)
     return o;
 };
 
-ostream& operator<<(ostream& o, const MachLogBeHitMessage& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBeHitMessage& t)
 {
     o << "whichId_ " << t.whichId_ << std::endl;
     o << "damage_ " << t.damage_ << std::endl;
@@ -1217,14 +1217,14 @@ void MachLogMessageBroker::processEnteredBuildingMessage(NetMessage* pNetMessage
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogMessageHeader& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMessageHeader& t)
 {
     o << " systemCode_ " << (int)t.systemCode_ << " messageCode_ " << t.messageCode_ << " "
       << (MachLogMessageBroker::MachLogMessageCode)t.messageCode_ << " totalLength_ " << t.totalLength_ << std::endl;
     return o;
 };
 
-ostream& operator<<(ostream& o, const MachLogSingleMoveInfo& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSingleMoveInfo& t)
 {
     o << "startTransform_ " << std::endl
       << t.startTransform_ << std::endl

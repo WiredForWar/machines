@@ -31,7 +31,7 @@ void MachLogDeployAPCOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogDeployAPCOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDeployAPCOperationImpl& t)
 {
 
     o << "MachLogDeployAPCOperationImpl " << (void*)&t << " start" << std::endl;

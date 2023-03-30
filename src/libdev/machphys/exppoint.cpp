@@ -98,7 +98,7 @@ void MachPhysConstructionExplosionData::ExplosionPoint::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysConstructionExplosionData::ExplosionPoint& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysConstructionExplosionData::ExplosionPoint& t)
 {
 
     o << "ExplosionPoint " << (void*)&t << " start" << std::endl;

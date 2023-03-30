@@ -30,7 +30,7 @@ public:
     GXMesh();
     ~GXMesh();
 
-    friend ostream& operator<<(ostream& o, const GXMesh& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXMesh& t);
 
     void CLASS_INVARIANT;
 

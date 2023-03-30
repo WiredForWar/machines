@@ -39,7 +39,7 @@ SysFileFinder::ResultType SysFileEnumerator::processFile(const SysFileData& file
     return SysFileFinder::CONTINUE;
 }
 
-ostream& operator<<(ostream& o, const SysFileEnumerator& t)
+std::ostream& operator<<(std::ostream& o, const SysFileEnumerator& t)
 {
 
     o << "SysFileEnumerator " << (void*)&t << " start" << std::endl;

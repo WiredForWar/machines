@@ -30,7 +30,7 @@ public:
         MachPhys::Race colour_;
     };
 
-    friend ostream& operator<<(ostream&, const PlayerCreationData&);
+    friend std::ostream& operator<<(std::ostream&, const PlayerCreationData&);
 
     using PlayersCreationData = ctl_vector<PlayerCreationData>;
 
@@ -74,7 +74,7 @@ public:
     void timerTickAt(const PhysAbsoluteTime&);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogGameCreationData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogGameCreationData& t);
 
     MachLogGameCreationData& operator=(const MachLogGameCreationData&);
 

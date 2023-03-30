@@ -42,7 +42,7 @@ const Ren::UVTransformPtr& W4dUVTranslation::transform(const PhysRelativeTime& t
 }
 
 // virtual
-void W4dUVTranslation::print(ostream& o) const
+void W4dUVTranslation::print(std::ostream& o) const
 {
     o << "translation of " << velocity_ << " m/s, dur=" << duration() << " offset=" << offset_;
 }

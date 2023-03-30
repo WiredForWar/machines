@@ -221,7 +221,7 @@ protected:
         W4dCompositePlan* pCompositePlan,
         MATHEX_SCALAR framesPerSecond) const;
 
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
     // Write out the details of 'this' for debugging purposes.
 
 private:

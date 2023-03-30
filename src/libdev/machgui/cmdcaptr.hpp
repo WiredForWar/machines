@@ -103,7 +103,7 @@ public:
 
     void domainDeleted(W4dDomain* pDomain) override;
 
-    friend ostream& operator<<(ostream& o, const MachGuiCaptureCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCaptureCommand& t);
 
 private:
     // Operation deliberately revoked

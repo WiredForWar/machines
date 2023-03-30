@@ -39,7 +39,7 @@ void RenIVec3FixPtS0_7::convertToMex(MexVec3* v)
     v->z(vec_[2] / 127.0);
 }
 
-ostream& operator<<(ostream& o, const RenIVec3FixPtS0_7& v)
+std::ostream& operator<<(std::ostream& o, const RenIVec3FixPtS0_7& v)
 {
     o << "fixed-pt S0.7 vector (" << (int)v.x() << "," << (int)v.y() << "," << (int)v.z() << ")";
     return o;

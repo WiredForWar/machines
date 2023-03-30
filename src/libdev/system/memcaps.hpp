@@ -40,7 +40,7 @@ public:
     static unsigned int availVirtual();
 
     // write the information to an ostream.
-    static void outputInfo(ostream&);
+    static void outputInfo(std::ostream&);
 
     void CLASS_INVARIANT;
 
@@ -48,7 +48,7 @@ private:
     SysMemoryCaps();
     ~SysMemoryCaps();
 
-    friend ostream& operator<<(ostream& o, const SysMemoryCaps& t);
+    friend std::ostream& operator<<(std::ostream& o, const SysMemoryCaps& t);
 
     SysMemoryCaps(const SysMemoryCaps&);
     SysMemoryCaps& operator=(const SysMemoryCaps&);

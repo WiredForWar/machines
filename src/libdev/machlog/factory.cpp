@@ -132,7 +132,7 @@ void MachLogFactory::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogFactory::doOutputOperator(ostream& o) const
+void MachLogFactory::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogFactory_DEPIMPL();
     o << "(" << id() << ") " << objectType() << " " << (void*)this << std::endl;
@@ -182,7 +182,7 @@ void MachLogFactory::doOutputOperator(ostream& o) const
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogFactory& t)
+std::ostream& operator<<(std::ostream& o, const MachLogFactory& t)
 {
     t.doOutputOperator(o);
     return o;

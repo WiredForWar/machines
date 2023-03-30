@@ -39,7 +39,7 @@ public:
 
 private:
     friend class MachPhysCanAttack;
-    friend ostream& operator<<(ostream& o, const MachPhysCanAttackImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysCanAttackImpl& t);
 
     MachPhysCanAttackImpl(const MachPhysCanAttackImpl&);
     MachPhysCanAttackImpl& operator=(const MachPhysCanAttackImpl&);

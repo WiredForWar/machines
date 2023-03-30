@@ -158,14 +158,14 @@ void Persistence::registerDerivedClass(const char* className, PerWriteFnPtr writ
     pImplementationWrite_->registerDerivedClass(className, writePtr);
 }
 
-ostream& Persistence::debugWriteStream()
+std::ostream& Persistence::debugWriteStream()
 {
     PRE(pImplementationWrite_ != nullptr);
 
     return pImplementationWrite_->debugStream();
 }
 
-ostream& Persistence::debugReadStream()
+std::ostream& Persistence::debugReadStream()
 {
     PRE(pImplementationRead_ != nullptr);
 

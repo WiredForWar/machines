@@ -36,7 +36,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const DevSdlTimeInternal& t);
+    friend std::ostream& operator<<(std::ostream& o, const DevSdlTimeInternal& t);
 
     DevSdlTimeInternal(const DevSdlTimeInternal&);
     DevSdlTimeInternal& operator=(const DevSdlTimeInternal&);

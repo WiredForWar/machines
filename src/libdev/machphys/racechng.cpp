@@ -39,7 +39,7 @@ void MachPhysRaceChanger::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysRaceChanger& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysRaceChanger& t)
 {
 
     o << "MachPhysRaceChanger " << (void*)&t << " start" << std::endl;

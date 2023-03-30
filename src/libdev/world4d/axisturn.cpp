@@ -40,7 +40,7 @@ void W4dAxisTurnerPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dAxisTurnerPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dAxisTurnerPlan& t)
 {
 
     o << "PhysAxisTurner " << (void*)&t << " start" << std::endl;

@@ -62,7 +62,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogCollisionInfo& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogCollisionInfo& t);
 
     // MachLogCollisionInfo( const MachLogCollisionInfo& );
     // MachLogCollisionInfo& operator =( const MachLogCollisionInfo& );

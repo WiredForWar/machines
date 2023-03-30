@@ -98,7 +98,7 @@ void RenHierarchyBuilder::Node::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenHierarchyBuilder::Node& t)
+std::ostream& operator<<(std::ostream& o, const RenHierarchyBuilder::Node& t)
 {
     o << "Node " << t.pathName_ << " " << t.meshName_ << std::endl;
     o << t.transform_;

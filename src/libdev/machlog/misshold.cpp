@@ -48,7 +48,7 @@ void MachLogMissileHolder::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMissileHolder& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMissileHolder& t)
 {
 
     o << "MachLogMissileHolder " << (void*)&t << " start" << std::endl;

@@ -427,7 +427,7 @@ void RenIIlluminator::CLASS_INVARIANT
         implies(RenIDeviceImpl::currentPimpl()->rendering(), lightingBuffer_->capacity() >= RenMesh::maxVertices()));
 }
 
-ostream& operator<<(ostream& o, const RenIIlluminator& t)
+std::ostream& operator<<(std::ostream& o, const RenIIlluminator& t)
 {
     // TBD: if/when you can print a RenILight, make this a bit more verbose.
     o << "Scene illuminator with " << t.lights_.size() << " lights\n";

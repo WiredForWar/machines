@@ -24,7 +24,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenHierarchyLoader& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenHierarchyLoader& t);
 
 private:
     // Operation deliberately revoked

@@ -117,7 +117,7 @@ void Brake::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const Brake& t)
+std::ostream& operator<<(std::ostream& o, const Brake& t)
 {
 
     o << "Brake " << (void*)&t << " start" << std::endl;

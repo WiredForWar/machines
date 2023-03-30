@@ -35,7 +35,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiSystemMessageHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSystemMessageHandler& t);
 
     MachGuiSystemMessageHandler(const MachGuiSystemMessageHandler&);
     MachGuiSystemMessageHandler& operator=(const MachGuiSystemMessageHandler&);

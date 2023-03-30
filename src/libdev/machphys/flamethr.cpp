@@ -91,7 +91,7 @@ void MachPhysFlameThrower::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysFlameThrower& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysFlameThrower& t)
 {
 
     o << "MachPhysFlameThrower " << (void*)&t << " start" << std::endl;

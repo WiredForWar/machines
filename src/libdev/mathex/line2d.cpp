@@ -57,7 +57,7 @@ const MexPoint2d& MexLine2d::end2() const
     return end2_;
 }
 
-ostream& operator<<(ostream& os, const MexLine2d& line)
+std::ostream& operator<<(std::ostream& os, const MexLine2d& line)
 {
     os << "2D line: " << line.end1() << " to " << line.end2();
     return os;

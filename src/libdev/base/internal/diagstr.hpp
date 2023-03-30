@@ -40,7 +40,7 @@ public:
     ~DiagStream();
 
     //  Return the ostream associated with this DiagStream
-    ostream& ostr();
+    std::ostream& ostr();
 
     //  True iff this stream is going to a file
     bool hasDestination() const;
@@ -72,7 +72,7 @@ private:
 
     static DiagStream*& pFirstStream();
 
-    ostream& nonPrependOstr();
+    std::ostream& nonPrependOstr();
 
     std::ofstream ostr_;
     BaseAppendOstream appendOstr_;

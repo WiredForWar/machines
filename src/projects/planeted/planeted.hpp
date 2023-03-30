@@ -54,7 +54,7 @@ private:
     PedPlanetEditor& operator=(const PedPlanetEditor&);
     bool operator==(const PedPlanetEditor&);
 
-    friend ostream& operator<<(ostream& o, const PedPlanetEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedPlanetEditor& t);
 
     void initDeviceEvents();
     void processSave();

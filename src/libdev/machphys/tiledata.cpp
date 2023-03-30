@@ -519,7 +519,7 @@ bool MachPhysTileData::lineIntersectsCell(MachPhysTileData& tileData, int xCell,
     return not foundIntersection_;
 }
 
-ostream& operator<<(ostream& o, const MachPhysTileData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysTileData& t)
 {
 
     o << "MachPhysTileData " << (void*)&t << " start" << std::endl;

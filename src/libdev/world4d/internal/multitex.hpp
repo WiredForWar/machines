@@ -45,7 +45,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dCycleMultiTextureData);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dCycleMultiTextureData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCycleMultiTextureData& t);
 
     W4dCycleMultiTextureData(const W4dCycleMultiTextureData&);
     W4dCycleMultiTextureData& operator=(const W4dCycleMultiTextureData&);

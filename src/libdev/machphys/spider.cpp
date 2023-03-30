@@ -532,7 +532,7 @@ void MachPhysSpiderLegs::stopDead()
     pMachine()->plan(*stopWalkingPlanPtr_, SimManager::instance().currentTime(), 0, MachPhys::MACHINE_LOCOMOTION);
 }
 
-ostream& operator<<(ostream& o, const MachPhysSpiderLegs& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSpiderLegs& t)
 {
 
     o << "MachPhysSpiderLegs " << (void*)&t << " start" << std::endl;

@@ -55,7 +55,7 @@ void MachGuiDefaultCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDefaultCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDefaultCommand& t)
 {
 
     o << "MachGuiDefaultCommand " << (void*)&t << " start" << std::endl;

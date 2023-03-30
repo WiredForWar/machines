@@ -39,7 +39,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogExpandingBlastImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogExpandingBlastImpl& t);
 
     MachLogExpandingBlastImpl(const MachLogExpandingBlastImpl&);
     MachLogExpandingBlastImpl& operator=(const MachLogExpandingBlastImpl&);

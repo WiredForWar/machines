@@ -158,7 +158,7 @@ void MachLogGroupMoverUtility::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogGroupMoverUtility& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGroupMoverUtility& t)
 {
 
     o << "MachLogGroupMoverUtility " << (void*)&t << " start" << std::endl;

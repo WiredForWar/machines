@@ -23,7 +23,7 @@ void MachLogLoadSaveGameExtras::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogLoadSaveGameExtras& t)
+std::ostream& operator<<(std::ostream& o, const MachLogLoadSaveGameExtras& t)
 {
 
     o << "MachLogLoadSaveGameExtras " << (void*)&t << " start" << std::endl;

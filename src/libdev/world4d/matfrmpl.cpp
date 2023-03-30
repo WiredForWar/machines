@@ -54,7 +54,7 @@ void W4dMaterialFramePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dMaterialFramePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dMaterialFramePlan& t)
 {
 
     o << "W4dMaterialFramePlan " << (void*)&t << " start" << std::endl;

@@ -47,7 +47,7 @@ public:
 
 protected:
     const PhysRelativeTime& recommendedCallBackTimeGap() const override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogReachedLocationCondition(
@@ -57,7 +57,7 @@ private:
         const MexPoint2d& point,
         const MATHEX_SCALAR& range);
 
-    friend ostream& operator<<(ostream& o, const MachLogReachedLocationCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogReachedLocationCondition& t);
 
     MachLogReachedLocationCondition(const MachLogReachedLocationCondition&);
     MachLogReachedLocationCondition& operator=(const MachLogReachedLocationCondition&);

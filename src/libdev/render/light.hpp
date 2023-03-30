@@ -46,7 +46,7 @@ public:
 
     RenILight* pILight();
 
-    void print(ostream&) const;
+    void print(std::ostream&) const;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(RenLight);
     PER_FRIEND_READ_WRITE(RenLight);
@@ -59,8 +59,8 @@ private:
     RenILight* pILight_;
 };
 
-ostream& operator<<(ostream&, const RenLight*);
-ostream& operator<<(ostream&, const RenLight&);
+std::ostream& operator<<(std::ostream&, const RenLight*);
+std::ostream& operator<<(std::ostream&, const RenLight&);
 
 PER_DECLARE_PERSISTENT(RenLight);
 
@@ -84,7 +84,7 @@ private:
     RenIDirectionalLight* pDir_;
 };
 
-ostream& operator<<(ostream&, const RenDirectionalLight&);
+std::ostream& operator<<(std::ostream&, const RenDirectionalLight&);
 
 PER_DECLARE_PERSISTENT(RenDirectionalLight);
 
@@ -121,7 +121,7 @@ private:
     RenIAttenuatedLight* atLight_;
 };
 
-ostream& operator<<(ostream&, const RenAttenuatedLight&);
+std::ostream& operator<<(std::ostream&, const RenAttenuatedLight&);
 
 PER_DECLARE_PERSISTENT(RenAttenuatedLight);
 

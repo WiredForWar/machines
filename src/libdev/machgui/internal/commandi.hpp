@@ -32,7 +32,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCommandImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCommandImpl& t);
     friend class MachGuiCommand;
 
     MachGuiCommandImpl(const MachGuiCommandImpl&);

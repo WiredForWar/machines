@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MexCompressedLine3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexCompressedLine3d& t);
     friend class MexLine3d;
 
     MexCompressedPoint3d end1_;

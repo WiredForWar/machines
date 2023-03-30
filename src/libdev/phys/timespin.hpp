@@ -84,7 +84,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysTimedSpinPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysTimedSpinPlan& t);
 
     PER_MEMBER_PERSISTENT(PhysTimedSpinPlan);
     PER_FRIEND_READ_WRITE(PhysTimedSpinPlan);

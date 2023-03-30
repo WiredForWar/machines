@@ -39,7 +39,7 @@ public:
 
 private:
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const W4dCycleTextureData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCycleTextureData& t);
     friend class W4dCycleMultiTextureData;
 
     W4dCycleTextureData(const W4dCycleTextureData&);

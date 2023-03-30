@@ -151,7 +151,7 @@ void MachPhysSmokeCloud::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysSmokeCloud& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSmokeCloud& t)
 {
 
     o << "MachPhysSmokeCloud " << (void*)&t << " start" << std::endl;

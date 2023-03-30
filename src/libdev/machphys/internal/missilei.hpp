@@ -36,7 +36,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMissileImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMissileImpl& t);
     friend class MachPhysMissile;
 
     // data members

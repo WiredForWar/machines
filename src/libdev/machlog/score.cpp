@@ -255,7 +255,7 @@ void MachLogScore::adjustStatsForDestruction(KillerOrVictim killVictFlag, const 
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogScore& t)
+std::ostream& operator<<(std::ostream& o, const MachLogScore& t)
 {
 
     o << "MachLogScore " << (void*)&t << " start" << std::endl;

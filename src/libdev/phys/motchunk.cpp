@@ -74,7 +74,7 @@ void PhysMotionChunk::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysMotionChunk& t)
+std::ostream& operator<<(std::ostream& o, const PhysMotionChunk& t)
 {
 
     o << "PhysMotionChunk " << (void*)&t << " start" << std::endl;

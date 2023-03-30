@@ -31,7 +31,7 @@ void PedObstacle::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedObstacle& t)
+std::ostream& operator<<(std::ostream& o, const PedObstacle& t)
 {
 
     o << "PedObstacle " << (void*)&t << " start" << std::endl;
@@ -71,7 +71,7 @@ void PedObstacle::save(std::ofstream& out)
     out << std::endl;
 }
 
-ostream& operator<<(ostream& o, PedObstacle::CspType cspType)
+std::ostream& operator<<(std::ostream& o, PedObstacle::CspType cspType)
 {
     switch (cspType)
     {

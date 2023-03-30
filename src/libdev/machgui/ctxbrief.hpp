@@ -45,7 +45,7 @@ protected:
     void displayHints();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxBriefing& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxBriefing& t);
 
     MachGuiCtxBriefing(const MachGuiCtxBriefing&);
     MachGuiCtxBriefing& operator=(const MachGuiCtxBriefing&);

@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysHealAura& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysHealAura& t);
 
     PER_MEMBER_PERSISTENT(MachPhysHealAura);
 

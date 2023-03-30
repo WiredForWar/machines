@@ -259,7 +259,7 @@ const MexVec3& PhysMotion::pitchAxis() const
     return pitchAxis_;
 }
 
-ostream& operator<<(ostream& ostr, const PhysMotion& m)
+std::ostream& operator<<(std::ostream& ostr, const PhysMotion& m)
 {
     ostr << "s=" << m.speed() << " c=" << m.climb() << " d=" << m.drift();
     ostr << " h=" << m.heading() << " p=" << m.pitch() << " r=" << m.roll();

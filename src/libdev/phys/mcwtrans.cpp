@@ -173,7 +173,7 @@ void PhysMotionControlWithTrans::snapTo(const MexTransform3d& trans)
     frameTimer_.time(0);
 }
 
-ostream& operator<<(ostream& o, const PhysMotionControlWithTrans& t)
+std::ostream& operator<<(std::ostream& o, const PhysMotionControlWithTrans& t)
 {
 
     o << "PhysMotionControlWithTrans " << (void*)&t << " start" << std::endl;

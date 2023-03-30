@@ -23,7 +23,7 @@ void MachLogDispositionChangeNotifiable::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogDispositionChangeNotifiable& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDispositionChangeNotifiable& t)
 {
 
     o << "MachLogDispositionChangeNotifiable " << (void*)&t << " start" << std::endl;

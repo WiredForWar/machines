@@ -30,7 +30,7 @@ void MachLogPunchBlastImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPunchBlastImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPunchBlastImpl& t)
 {
 
     o << "MachLogPunchBlastImpl " << (void*)&t << " start" << std::endl;

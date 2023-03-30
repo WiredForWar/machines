@@ -32,7 +32,7 @@ public:
     void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxInGameOptions& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxInGameOptions& t);
 
     MachGuiCtxInGameOptions(const MachGuiCtxInGameOptions&);
     MachGuiCtxInGameOptions& operator=(const MachGuiCtxInGameOptions&);

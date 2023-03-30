@@ -107,7 +107,7 @@ void W4dEntityMaterialVecChanger::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dEntityMaterialVecChanger& t)
+std::ostream& operator<<(std::ostream& o, const W4dEntityMaterialVecChanger& t)
 {
 
     o << "W4dEntityMaterialVecChanger " << (void*)&t << " start" << std::endl;

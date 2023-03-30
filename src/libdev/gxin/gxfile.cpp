@@ -183,7 +183,7 @@ void GXFile::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXFile& t)
+std::ostream& operator<<(std::ostream& o, const GXFile& t)
 {
 
     o << "GXIFile " << (void*)&t << " start" << std::endl;

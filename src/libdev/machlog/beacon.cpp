@@ -77,7 +77,7 @@ void MachLogBeacon::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogBeacon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBeacon& t)
 {
 
     o << "MachLogBeacon " << (void*)&t << " start" << std::endl;

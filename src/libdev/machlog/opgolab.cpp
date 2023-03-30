@@ -37,7 +37,7 @@ MachLogGotoLabOperation::MachLogGotoLabOperation(MachLogTechnician* pActor)
     ASSERT(pActor_->objectType() == MachLog::TECHNICIAN, " Wrong object type in machLogGotoLabOperation\n");
 }
 
-void MachLogGotoLabOperation::doOutputOperator(ostream& o) const
+void MachLogGotoLabOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogGotoLabOperation " << std::endl;
 }
@@ -137,7 +137,7 @@ bool MachLogGotoLabOperation::doBeInterrupted()
 
 /* //////////////////////////////////////////////////////////////// */
 
-ostream& operator<<(ostream& o, const MachLogGotoLabOperation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGotoLabOperation& t)
 {
 
     o << "MachLogGotoLabOperation " << (void*)&t << " start" << std::endl;

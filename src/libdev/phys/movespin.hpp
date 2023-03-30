@@ -40,7 +40,7 @@ public:
     PER_FRIEND_READ_WRITE(PhysMoveSpinPlan);
 
 private:
-    friend ostream& operator<<(ostream& o, const PhysMoveSpinPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysMoveSpinPlan& t);
 
     PhysMoveSpinPlan();
     PhysMoveSpinPlan(const PhysMoveSpinPlan&);

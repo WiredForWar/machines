@@ -39,7 +39,7 @@ protected:
     void readNetworkDetails() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiInternetNetworkMode& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiInternetNetworkMode& t);
 
     MachGuiInternetNetworkMode(const MachGuiInternetNetworkMode&);
     MachGuiInternetNetworkMode& operator=(const MachGuiInternetNetworkMode&);

@@ -71,7 +71,7 @@ void MachPhysEntityDamage::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysEntityDamage& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysEntityDamage& t)
 {
 
     o << "MachPhysEntityDamage " << (void*)&t << " start" << std::endl;

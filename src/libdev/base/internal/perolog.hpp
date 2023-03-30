@@ -31,7 +31,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PersistenceObjectLog& t);
+    friend std::ostream& operator<<(std::ostream& o, const PersistenceObjectLog& t);
 
 private:
     std::string classname_;

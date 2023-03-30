@@ -64,7 +64,7 @@ const MexPoint3d& MexQuad3d::vertex(uint i) const
     return vertices_[i];
 }
 
-ostream& operator<<(ostream& o, const MexQuad3d& t)
+std::ostream& operator<<(std::ostream& o, const MexQuad3d& t)
 {
     o << "MexQuad3d: " << t.vertices_[0] << ", " << t.vertices_[1] << ", " << t.vertices_[2] << ", " << t.vertices_[3];
 

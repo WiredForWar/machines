@@ -515,7 +515,7 @@ void MachPhysGlider::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysGlider& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysGlider& t)
 {
 
     o << "MachPhysGlider " << (void*)&t << " start" << std::endl;

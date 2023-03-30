@@ -33,7 +33,7 @@ void MachPhysTechnicianData::researchRate(const MachPhys::ResearchUnits& newRese
     researchRate_ = newResearchRate;
 }
 
-ostream& operator<<(ostream& o, const MachPhysTechnicianData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysTechnicianData& t)
 {
 
     // o << (MachPhysObjectData)t;

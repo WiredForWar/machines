@@ -88,7 +88,7 @@ void PedCameraMarker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedCameraMarker& t)
+std::ostream& operator<<(std::ostream& o, const PedCameraMarker& t)
 {
 
     o << "PedCameraMarker " << (void*)&t << " start" << std::endl;

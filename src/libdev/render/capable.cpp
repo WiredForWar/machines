@@ -308,7 +308,7 @@ RenICapabilities* RenCapabilities::internal()
     return pImpl_;
 }
 
-ostream& operator<<(ostream& o, const RenCapabilities& t)
+std::ostream& operator<<(std::ostream& o, const RenCapabilities& t)
 {
     PRE(t.pImpl_);
     t.pImpl_->write(o);

@@ -99,7 +99,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysMotionChunk& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysMotionChunk& t);
 
 private:
     friend class PhysCompressedMotionChunk;

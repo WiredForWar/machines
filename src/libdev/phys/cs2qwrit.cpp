@@ -30,7 +30,7 @@ void PhysPathFindingQueueWriter::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysPathFindingQueueWriter& t)
+std::ostream& operator<<(std::ostream& o, const PhysPathFindingQueueWriter& t)
 {
     const PhysCS2dImpl::DomainFindPaths& domainFindPathQueue = t.configSpace_.impl().domainFindPathQueue_;
 

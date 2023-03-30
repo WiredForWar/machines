@@ -58,7 +58,7 @@ MachLogAdminRepairOperation::~MachLogAdminRepairOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogAdminRepairOperation::doOutputOperator(ostream& o) const
+void MachLogAdminRepairOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminRepairOperation\n";
 }

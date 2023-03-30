@@ -29,7 +29,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXPoint3& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXPoint3& t);
 
 private:
     float x_;

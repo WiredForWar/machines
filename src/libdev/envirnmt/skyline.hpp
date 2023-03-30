@@ -31,7 +31,7 @@ public:
     void colourTable(EnvElevationColourTable* clut, const EnvSatellite* controller);
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const EnvSkyline& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvSkyline& t);
 
 private:
     EnvElevationColourTable* matTable_;

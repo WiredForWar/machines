@@ -20,7 +20,7 @@ class W4dUVPlan
 {
 public:
     virtual const Ren::UVTransformPtr& transform(const PhysRelativeTime& t) = 0;
-    virtual void print(ostream&) const = 0;
+    virtual void print(std::ostream&) const = 0;
     virtual ~W4dUVPlan();
 
     const PhysRelativeTime& duration() const;
@@ -45,7 +45,7 @@ private:
 
 PER_DECLARE_PERSISTENT(W4dUVPlan);
 
-ostream& operator<<(ostream&, const W4dUVPlan&);
+std::ostream& operator<<(std::ostream&, const W4dUVPlan&);
 
 template <class T> class CtlCountedPtr;
 using W4dUVPlanPtr = CtlCountedPtr<W4dUVPlan>;

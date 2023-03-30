@@ -27,7 +27,7 @@ void GXLabel::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXLabel& t)
+std::ostream& operator<<(std::ostream& o, const GXLabel& t)
 {
     o << "{" << std::endl;
     o << " name_ " << t.name_ << std::endl;

@@ -128,7 +128,7 @@ void MexQuaternion::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MexQuaternion& t)
+std::ostream& operator<<(std::ostream& o, const MexQuaternion& t)
 {
 
     o << "MexQuaternion " << (void*)&t << " start" << std::endl;

@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXIdPos& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXIdPos& t);
 
     const short& pos() const { return pos_; }
 

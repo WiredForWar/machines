@@ -54,7 +54,7 @@ public:
     bool vapourTrailsEnabled() const;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysComplexityManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysComplexityManager& t);
 
     MachPhysComplexityManager(const MachPhysComplexityManager&);
     MachPhysComplexityManager& operator=(const MachPhysComplexityManager&);

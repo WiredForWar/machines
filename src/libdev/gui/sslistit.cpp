@@ -31,7 +31,7 @@ void GuiSingleSelectionListBoxItem::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiSingleSelectionListBoxItem& t)
+std::ostream& operator<<(std::ostream& o, const GuiSingleSelectionListBoxItem& t)
 {
 
     o << "GuiSingleSelectionListBoxItem " << (void*)&t << " start" << std::endl;

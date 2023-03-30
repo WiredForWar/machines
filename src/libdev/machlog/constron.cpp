@@ -472,7 +472,7 @@ bool MachLogConstruction::pickupPointUsedRecently(size_t whichPoint)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogConstruction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogConstruction& t)
 {
 
     o << "MachLogConstruction " << (void*)&t << " start" << std::endl;
@@ -491,7 +491,7 @@ PhysRelativeTime MachLogConstruction::activePadInterval()
 }
 
 // virtual
-void MachLogConstruction::doOutputOperator(ostream& o) const
+void MachLogConstruction::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogConstruction_DEPIMPL();
     o << *this;

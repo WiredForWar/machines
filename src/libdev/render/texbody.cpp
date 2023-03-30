@@ -440,7 +440,7 @@ const RenITexBody* RenITexBody::castToTexBody() const
 }
 
 // virtual
-void RenITexBody::print(ostream& o) const
+void RenITexBody::print(std::ostream& o) const
 {
     o << "texture " << name() << " (" << width() << "x" << height() << "x" << bitDepth() << ")";
 }

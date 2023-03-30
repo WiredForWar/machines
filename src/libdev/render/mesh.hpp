@@ -202,7 +202,7 @@ public:
     PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenMesh);
     PER_FRIEND_READ_WRITE(RenMesh);
 
-    friend ostream& operator<<(ostream& o, const Ren::ConstMeshPtr& t);
+    friend std::ostream& operator<<(std::ostream& o, const Ren::ConstMeshPtr& t);
 
     using Textures = ctl_vector<RenTexture>;
 

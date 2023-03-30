@@ -72,7 +72,7 @@ void SimAction::nextCallBackTime(const PhysRelativeTime& timeOffset)
 }
 
 // friend
-ostream& operator<<(ostream& o, const SimAction& t)
+std::ostream& operator<<(std::ostream& o, const SimAction& t)
 {
     t.doOutputOperator(o);
     return o;
@@ -84,7 +84,7 @@ const string& SimAction::conditionKeyName() const
 }
 
 // virtual
-void SimAction::doOutputOperator(ostream& o) const
+void SimAction::doOutputOperator(std::ostream& o) const
 {
     o << "SimAction " << (void*)this << std::endl;
     o << "Enabled " << enabled_ << std::endl;

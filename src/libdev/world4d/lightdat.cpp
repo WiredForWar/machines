@@ -48,7 +48,7 @@ void W4dLightData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dLightData& t)
+std::ostream& operator<<(std::ostream& o, const W4dLightData& t)
 {
 
     o << "W4dLightData " << (void*)&t << " start" << std::endl;

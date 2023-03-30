@@ -47,7 +47,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPulseBlob& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPulseBlob& t);
 
     PER_MEMBER_PERSISTENT(MachPhysPulseBlob);
     PER_FRIEND_READ_WRITE(MachPhysPulseBlob);

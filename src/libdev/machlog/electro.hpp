@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogElectro& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogElectro& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogElectro);
     PER_FRIEND_READ_WRITE(MachLogElectro);

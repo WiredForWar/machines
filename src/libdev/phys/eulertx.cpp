@@ -76,7 +76,7 @@ void PhysEulerTransform3d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysEulerTransform3d& t)
+std::ostream& operator<<(std::ostream& o, const PhysEulerTransform3d& t)
 {
 
     o << t.angles_ << "  " << t.position_;

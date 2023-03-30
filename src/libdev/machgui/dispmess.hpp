@@ -27,9 +27,9 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiMessageDisplay& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMessageDisplay& t);
     void addMessage(const char* displayText, PhysRelativeTime timeToDisplay);
-    void doOutput(ostream&);
+    void doOutput(std::ostream&);
 
 private:
     MachGuiMessageDisplay(const MachGuiMessageDisplay&);

@@ -56,7 +56,7 @@ protected:
     // PRE( pStartupScreens_->startupData() );
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxImReady& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxImReady& t);
 
     MachGuiCtxImReady(const MachGuiCtxImReady&);
     MachGuiCtxImReady& operator=(const MachGuiCtxImReady&);

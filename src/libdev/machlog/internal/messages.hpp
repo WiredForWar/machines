@@ -416,11 +416,11 @@ struct MachLogIsEntranceOpenMessage
 };
 #pragma pack(pop)
 
-ostream& operator<<(ostream& o, const MachLogCreateActorMessage& t);
-ostream& operator<<(ostream& o, const MachLogCreateSpecialActorMessage& t);
-ostream& operator<<(ostream& o, const MachLogMachineMoveMessage& t);
-ostream& operator<<(ostream& o, const MachLogBeHitMessage& t);
-ostream& operator<<(ostream& o, const MachLogMessageHeader& t);
-ostream& operator<<(ostream& o, const MachLogSingleMoveInfo& t);
+std::ostream& operator<<(std::ostream& o, const MachLogCreateActorMessage& t);
+std::ostream& operator<<(std::ostream& o, const MachLogCreateSpecialActorMessage& t);
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMoveMessage& t);
+std::ostream& operator<<(std::ostream& o, const MachLogBeHitMessage& t);
+std::ostream& operator<<(std::ostream& o, const MachLogMessageHeader& t);
+std::ostream& operator<<(std::ostream& o, const MachLogSingleMoveInfo& t);
 
 #endif

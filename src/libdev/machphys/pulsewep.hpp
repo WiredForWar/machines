@@ -37,7 +37,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPulseWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPulseWeapon& t);
 
     /////////////////////////////////////////////
     // Inherited from MachPhysWeapon
@@ -148,7 +148,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPulseRifle& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPulseRifle& t);
 
     PER_MEMBER_PERSISTENT(MachPhysPulseRifle);
 
@@ -184,7 +184,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPulseCannon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPulseCannon& t);
 
     PER_MEMBER_PERSISTENT(MachPhysPulseCannon);
 

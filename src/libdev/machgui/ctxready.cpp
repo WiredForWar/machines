@@ -259,7 +259,7 @@ void MachGuiCtxImReady::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxImReady& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxImReady& t)
 {
 
     o << "MachGuiCtxImReady " << (void*)&t << " start" << std::endl;

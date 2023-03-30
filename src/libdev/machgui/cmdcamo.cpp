@@ -34,7 +34,7 @@ void MachGuiCamouflageCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCamouflageCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCamouflageCommand& t)
 {
 
     o << "MachGuiCamouflageCommand " << (void*)&t << " start" << std::endl;

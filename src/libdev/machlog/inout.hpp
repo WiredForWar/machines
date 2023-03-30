@@ -43,7 +43,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
     bool doBeInterrupted() override;
     bool isInterruptable() override;
 
@@ -64,7 +64,7 @@ private:
         TERMINATE_EARLY
     };
 
-    friend ostream& operator<<(ostream& o, Status);
+    friend std::ostream& operator<<(std::ostream& o, Status);
 
     // true if the machine's clearance circle intersects the entrance interior polygon
     bool onInternalEntrancePolygon() const;
@@ -102,7 +102,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
     bool doBeInterrupted() override;
     bool isInterruptable() override;
 

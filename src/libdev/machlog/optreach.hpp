@@ -49,7 +49,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     MachActor& directObject();
     const MachActor& directObject() const;

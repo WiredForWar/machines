@@ -38,7 +38,7 @@ void MachLogMissileEmplacementAttackOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMissileEmplacementAttackOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMissileEmplacementAttackOperationImpl& t)
 {
 
     o << "MachLogMissileEmplacementAttackOperationImpl " << (void*)&t << " start" << std::endl;

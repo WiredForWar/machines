@@ -71,7 +71,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiFormSquadronCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiFormSquadronCommand& t);
 
 private:
     // Operation deliberately revoked

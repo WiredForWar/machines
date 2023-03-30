@@ -386,7 +386,7 @@ inline MexDouble sqrt(const MexDouble& d)
     return result;
 }
 
-inline ostream& operator<<(ostream& o, const MexDouble& d)
+inline std::ostream& operator<<(std::ostream& o, const MexDouble& d)
 {
     if (d.isPlusInfinity())
         o << "+infinity";

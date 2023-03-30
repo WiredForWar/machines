@@ -49,7 +49,7 @@ public:
     const RenMaterial& material() const; // PRE(hasMaterial());
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const RenVertex& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenVertex& t);
 
 private:
     // Only meshes can create vertices.

@@ -94,7 +94,7 @@ bool RenIPixelFormat::operator==(const RenIPixelFormat& pf) const
     return false;
 }
 
-ostream& operator<<(ostream& os, const RenIPixelFormat& fmt)
+std::ostream& operator<<(std::ostream& os, const RenIPixelFormat& fmt)
 {
     /*if (fmt.hasAlpha())
     {

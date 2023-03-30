@@ -56,7 +56,7 @@ void MachPhysArtefact::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysArtefact& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysArtefact& t)
 {
 
     o << "MachPhysArtefact " << (void*)&t << " start" << std::endl;

@@ -32,7 +32,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const PhysCompressedMotionChunk& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCompressedMotionChunk& t);
     friend class PhysMotionChunk;
 
     MexCompressedPoint2d startPoint_; // start location

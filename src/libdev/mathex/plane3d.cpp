@@ -387,7 +387,7 @@ MexPoint3d MexPlane3d::createRandomPlanePoint() const
 }
 */
 
-ostream& operator<<(ostream& o, const MexPlane3d& p)
+std::ostream& operator<<(std::ostream& o, const MexPlane3d& p)
 {
 
     return o << p.a() << " " << p.b() << " " << p.c() << " " << p.d()

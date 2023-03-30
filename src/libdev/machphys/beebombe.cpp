@@ -63,7 +63,7 @@ void MachPhysBeeBombExplosion::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBeeBombExplosion& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBeeBombExplosion& t)
 {
 
     o << "MachPhysBeeBombExplosion " << (void*)&t << " start" << std::endl;

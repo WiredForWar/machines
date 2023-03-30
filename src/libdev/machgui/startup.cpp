@@ -1515,7 +1515,7 @@ void MachGuiStartupScreens::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiStartupScreens& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreens& t)
 {
 
     o << "MachGuiStartupScreens " << (void*)&t << " start" << std::endl;

@@ -66,7 +66,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysRaceChanger& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysRaceChanger& t);
 
 private:
     MachPhysRaceChanger(const MachPhysRaceChanger&);

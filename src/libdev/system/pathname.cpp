@@ -615,7 +615,7 @@ SysPathName& SysPathName::operator=(const char* rhs)
     return *this;
 }
 
-ostream& operator<<(ostream& o, const SysPathName& p)
+std::ostream& operator<<(std::ostream& o, const SysPathName& p)
 {
     o << p.pathname();
 

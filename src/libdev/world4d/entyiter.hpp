@@ -43,7 +43,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dEntityIter& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dEntityIter& t);
 
 private:
     W4dEntityIter(const W4dEntityIter&);

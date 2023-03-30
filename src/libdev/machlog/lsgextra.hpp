@@ -30,7 +30,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogLoadSaveGameExtras& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogLoadSaveGameExtras& t);
 
     MachLogLoadSaveGameExtras(const MachLogLoadSaveGameExtras&);
     MachLogLoadSaveGameExtras& operator=(const MachLogLoadSaveGameExtras&);

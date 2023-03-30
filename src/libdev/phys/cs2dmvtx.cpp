@@ -19,7 +19,7 @@ void PhysCS2dDomainVertex::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dDomainVertex& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainVertex& t)
 {
     o << "portal id " << t.portalId_.asScalar();
     o << " point " << t.point_;

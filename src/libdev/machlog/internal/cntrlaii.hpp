@@ -32,7 +32,7 @@ public:
 
 private:
     friend class MachLogAIController;
-    friend ostream& operator<<(ostream& o, const MachLogAIControllerImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogAIControllerImpl& t);
 
     MachLogAIControllerImpl(const MachLogAIControllerImpl&);
     MachLogAIControllerImpl& operator=(const MachLogAIControllerImpl&);

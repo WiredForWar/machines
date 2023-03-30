@@ -63,7 +63,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dCustom& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCustom& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dCustom);
     PER_FRIEND_READ_WRITE(W4dCustom);

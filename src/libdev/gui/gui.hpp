@@ -33,7 +33,7 @@ public:
     double b() const { return b_; }
 
     friend bool operator ==( const GuiColour&, const GuiColour& );
-    friend ostream& operator <<( ostream&, const GuiColour& );
+    friend std::ostream& operator <<( ostream&, const GuiColour& );
 
 private:
 

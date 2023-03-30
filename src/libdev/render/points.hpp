@@ -29,7 +29,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenPoints& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenPoints& t);
 
 private:
     RenIPoints* points_;

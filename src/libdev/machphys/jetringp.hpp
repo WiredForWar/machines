@@ -39,7 +39,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysJetRingPlan);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysJetRingPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysJetRingPlan& t);
 
     MachPhysJetRingPlan(const MachPhysJetRingPlan&);
     MachPhysJetRingPlan& operator=(const MachPhysJetRingPlan&);

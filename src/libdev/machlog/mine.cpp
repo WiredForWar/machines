@@ -140,7 +140,7 @@ void MachLogMine::CLASS_INVARIANT
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogMine& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMine& t)
 {
 
     t.doOutputOperator(o);
@@ -462,7 +462,7 @@ MachLogMine::MachLogMine(PerConstructor con)
 }
 
 // virtual
-void MachLogMine::doOutputOperator(ostream& o) const
+void MachLogMine::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogMine " << (void*)this << " start" << std::endl;
     o << " Capacity " << data().capacity() << std::endl;

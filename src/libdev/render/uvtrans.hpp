@@ -18,7 +18,7 @@ public:
 
     // PRE(uOut && vOut);
     void transform(float uIn, float vIn, float* uOut, float* vOut) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     // A virtual copy operation.  _NEW is used to allocate the return value.
     // The caller is responsible for calling _DELETE.

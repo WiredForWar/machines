@@ -56,7 +56,7 @@ public:
 
     MachPhys::Race discoveredByRace() const;
 
-    friend ostream& operator<<(ostream& o, const MachLogMineralSite& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMineralSite& t);
 
     MachPhys::BuildingMaterialUnits amountOfOre() const;
 

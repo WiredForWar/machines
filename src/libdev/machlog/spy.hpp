@@ -59,7 +59,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogSpyLocator);
 
 protected:
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogSpyLocator(const MachLogSpyLocator&);

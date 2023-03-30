@@ -33,7 +33,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysLinearScalarPlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysLinearScalarPlanImpl& t);
     friend class PhysLinearScalarPlan;
 
     PhysLinearScalarPlan::ScalarVec times_;

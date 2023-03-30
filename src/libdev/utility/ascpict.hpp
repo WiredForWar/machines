@@ -93,7 +93,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const UtlAsciiPicture& t);
+    friend std::ostream& operator<<(std::ostream& o, const UtlAsciiPicture& t);
 
     UtlAsciiPicture(const UtlAsciiPicture&);
     UtlAsciiPicture& operator=(const UtlAsciiPicture&);

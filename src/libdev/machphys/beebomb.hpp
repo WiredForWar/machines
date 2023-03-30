@@ -40,7 +40,7 @@ public:
     PER_MEMBER_PERSISTENT(MachPhysBeeBomb);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysBeeBomb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysBeeBomb& t);
 
     MachPhysBeeBomb(const MachPhysBeeBomb&);
     MachPhysBeeBomb& operator=(const MachPhysBeeBomb&);

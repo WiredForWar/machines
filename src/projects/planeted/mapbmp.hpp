@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PedMapCreator& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedMapCreator& t);
 
 private:
     PedMapCreator(const PedMapCreator&);

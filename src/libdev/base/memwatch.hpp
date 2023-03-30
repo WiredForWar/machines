@@ -34,7 +34,7 @@ public:
     void removeBlock(void* pBlock);
 
     // Write profiler call stack lines to ostream for all the current outstanding blocks
-    void traceOustandingAllocations(ostream& outStream);
+    void traceOustandingAllocations(std::ostream& outStream);
 
     // Clear out all existing data
     void clear();
@@ -42,7 +42,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const BaseMemWatcher& t);
+    friend std::ostream& operator<<(std::ostream& o, const BaseMemWatcher& t);
 
     // revoked
     BaseMemWatcher(const BaseMemWatcher&);

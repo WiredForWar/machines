@@ -55,7 +55,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysBeeBomber);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysBeeBomber& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysBeeBomber& t);
 
     MachPhysBeeBomber(const MachPhysBeeBomber&);
     MachPhysBeeBomber& operator=(const MachPhysBeeBomber&);

@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogPunchBlastImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPunchBlastImpl& t);
 
     MachLogPunchBlastImpl(const MachLogPunchBlastImpl&);
     MachLogPunchBlastImpl& operator=(const MachLogPunchBlastImpl&);

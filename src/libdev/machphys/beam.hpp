@@ -44,7 +44,7 @@ public:
     void CLASS_INVARIANT;
 
     friend class MachPhysOtherPersistence;
-    friend ostream& operator<<(ostream& o, const MachPhysBeam& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysBeam& t);
 
     PER_MEMBER_PERSISTENT(MachPhysBeam);
     PER_FRIEND_READ_WRITE(MachPhysBeam);

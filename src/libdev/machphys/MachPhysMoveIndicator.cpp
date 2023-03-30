@@ -33,7 +33,7 @@ void MachPhysMoveIndicator::startFadeOut(const PhysAbsoluteTime& startTime)
     entityPlan.visibilityPlan(getFadeAwayPlan(), startTime);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMoveIndicator& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMoveIndicator& t)
 {
 
     o << "MachPhysMoveIndicator " << (void*)&t << " start" << std::endl;

@@ -63,7 +63,7 @@ void MachPhysMissileEmplacementData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMissileEmplacementData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMissileEmplacementData& t)
 {
 
     // o << (MachPhysObjectData)t;

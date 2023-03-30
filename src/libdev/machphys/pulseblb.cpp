@@ -89,7 +89,7 @@ void MachPhysPulseBlob::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPulseBlob& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPulseBlob& t)
 {
 
     o << "MachPhysPulseBlob " << (void*)&t << " start" << std::endl;

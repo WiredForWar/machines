@@ -106,7 +106,7 @@ private:
     PhysRelativeTime minExplosionTime_; // min Time for link explosion
     PhysRelativeTime maxExplosionTime_; // max time for link explosion
 
-    friend ostream& operator<<(ostream& o, const LinkData& t);
+    friend std::ostream& operator<<(std::ostream& o, const LinkData& t);
 };
 
 #endif

@@ -31,7 +31,7 @@ bool MexCoordSystem::isSet() const
 }
 
 _CODE_INLINE
-ostream& operator<<(ostream& o, const MexCoordSystem& t)
+std::ostream& operator<<(std::ostream& o, const MexCoordSystem& t)
 {
     MexCoordSystem::Type x = t;
     switch (x)

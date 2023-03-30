@@ -129,7 +129,7 @@ void MachLogHardwareLab::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-void MachLogHardwareLab::doOutputOperator(ostream& o) const
+void MachLogHardwareLab::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogHardwareLab_DEPIMPL();
     MachLogConstruction::doOutputOperator(o);
@@ -157,7 +157,7 @@ void MachLogHardwareLab::doOutputOperator(ostream& o) const
         o << " Not researching.\n";
 }
 
-ostream& operator<<(ostream& o, const MachLogHardwareLab& t)
+std::ostream& operator<<(std::ostream& o, const MachLogHardwareLab& t)
 {
     t.doOutputOperator(o);
     return o;

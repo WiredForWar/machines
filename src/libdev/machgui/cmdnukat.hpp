@@ -89,7 +89,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiNukeAttackCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiNukeAttackCommand& t);
 
 private:
     // Operation deliberately revoked

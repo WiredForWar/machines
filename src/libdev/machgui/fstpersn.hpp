@@ -130,7 +130,7 @@ protected:
     };
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiFirstPerson& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiFirstPerson& t);
 
     void embodyActor();
     void exitActor();

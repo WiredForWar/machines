@@ -352,7 +352,7 @@ bool MachLogSquadron::checkIfMachineMissing(MachLogProductionUnit* pProd) const
 }
 
 // virtual
-void MachLogSquadron::doOutputOperator(ostream& o) const
+void MachLogSquadron::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogSquadron_DEPIMPL();
     o << "MachLogSquadron (" << id() << ") squadron id " << squadronId() << std::endl;
@@ -377,7 +377,7 @@ void MachLogSquadron::doOutputOperator(ostream& o) const
     o << "Strategy::" << strategy();
 }
 
-ostream& operator<<(ostream& o, const MachLogSquadron& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSquadron& t)
 {
     t.doOutputOperator(o);
     return o;

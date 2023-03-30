@@ -32,7 +32,7 @@ int RenCursor2d::originY() const
     return oy_;
 }
 
-ostream& operator<<(ostream& o, const RenCursor2d& t)
+std::ostream& operator<<(std::ostream& o, const RenCursor2d& t)
 {
     t.print(o);
     return o;

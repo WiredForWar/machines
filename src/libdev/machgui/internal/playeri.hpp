@@ -40,7 +40,7 @@ private:
     // Truncate player's name if it will not fit in bounding box.
     static string truncate(const string& name, uint maxWidth);
 
-    friend ostream& operator<<(ostream& o, const MachGuiPlayerNameList& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerNameList& t);
 
     MachGuiPlayerNameList(const MachGuiPlayerNameList&);
     MachGuiPlayerNameList& operator=(const MachGuiPlayerNameList&);

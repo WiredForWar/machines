@@ -31,7 +31,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimStats& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimStats& t);
 
 private:
     void readInitialisationFile();

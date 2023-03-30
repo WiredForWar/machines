@@ -48,7 +48,7 @@ protected:
     bool saveGame(const string& saveDisplayName);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxSave& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSave& t);
 
     MachGuiCtxSave(const MachGuiCtxSave&);
     MachGuiCtxSave& operator=(const MachGuiCtxSave&);

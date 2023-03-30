@@ -1,2 +1,2 @@
-ostream& operator<<(ostream& ostr, const MSG& msg);
-void printMsgName(ostream& ostr, const UINT msg);
+ostream& operator<<(std::ostream& ostr, const MSG& msg);
+void printMsgName(std::ostream& ostr, const UINT msg);

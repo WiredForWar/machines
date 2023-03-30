@@ -88,7 +88,7 @@ bool operator<(const NetNodeUid& lhs, const NetNodeUid& rhs)
     return false;
 }
 
-ostream& operator<<(ostream& o, const NetNodeUid& uid)
+std::ostream& operator<<(std::ostream& o, const NetNodeUid& uid)
 {
     o << "ProcessorUid " << uid.processUid_.processorUid() << " ThreadUid " << uid.processUid_.threadUid()
       << " InterProcessUid " << uid.interProcessUid_ << " NodeName " << uid.nodeName_ << std::endl;

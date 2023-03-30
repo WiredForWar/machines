@@ -660,7 +660,7 @@ MexPoint3d MexLine3d::pointAtDistance(MATHEX_SCALAR distance) const
     return MexPoint3d(end1_.x() + distance * d.x(), end1_.y() + distance * d.y(), end1_.z() + distance * d.z());
 }
 
-ostream& operator<<(ostream& os, const MexLine3d& line)
+std::ostream& operator<<(std::ostream& os, const MexLine3d& line)
 {
     os << "3D line: " << line.end1() << " to " << line.end2();
     return os;

@@ -27,7 +27,7 @@ public:
     uint hitsPerFrame() const;
     void incHits();
 
-    void print(ostream& o) const;
+    void print(std::ostream& o) const;
     void CLASS_INVARIANT;
 
     PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenTexture);
@@ -41,7 +41,7 @@ private:
 PER_READ_WRITE(RenTexture);
 PER_DECLARE_PERSISTENT(RenTexture);
 
-ostream& operator<<(ostream& o, const RenTexture& t);
+std::ostream& operator<<(std::ostream& o, const RenTexture& t);
 
 #endif
 

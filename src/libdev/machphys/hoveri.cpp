@@ -51,7 +51,7 @@ void MachPhysHoverBootsImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHoverBootsImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHoverBootsImpl& t)
 {
 
     o << "MachPhysHoverBootsImpl " << (void*)&t << " start" << std::endl;

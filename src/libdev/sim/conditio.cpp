@@ -92,14 +92,14 @@ const SimCondition::Conditions& SimCondition::conditions() const
 }
 
 // friend
-ostream& operator<<(ostream& o, const SimCondition& t)
+std::ostream& operator<<(std::ostream& o, const SimCondition& t)
 {
     t.doOutputOperator(o);
     return o;
 }
 
 // virtual
-void SimCondition::doOutputOperator(ostream& o) const
+void SimCondition::doOutputOperator(std::ostream& o) const
 {
     o << "SimCondition " << (void*)this << std::endl;
 }

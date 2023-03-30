@@ -82,11 +82,11 @@ private:
     void render(const glm::mat4&, MATHEX_SCALAR scale, const RenUVTransform*) const;
     void render(const glm::mat4&, const RenMaterial&, MATHEX_SCALAR scale, const RenUVTransform*) const;
 
-    friend ostream& operator<<(ostream&, const RenTTFPolygon&);
+    friend std::ostream& operator<<(std::ostream&, const RenTTFPolygon&);
 
     RenITTFImpl* pImpl_;
 
-    virtual void write(ostream&) const;
+    virtual void write(std::ostream&) const;
 
     // Revoked.
     RenTTFPolygon();
@@ -128,8 +128,8 @@ private:
 
     MATHEX_SCALAR width_, height_;
 
-    friend ostream& operator<<(ostream&, const RenTTFRectangle&);
-    void write(ostream&) const override;
+    friend std::ostream& operator<<(std::ostream&, const RenTTFRectangle&);
+    void write(std::ostream&) const override;
 
     // Revoked.
     RenTTFRectangle& operator=(const RenTTFRectangle&);

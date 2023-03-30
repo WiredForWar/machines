@@ -187,7 +187,7 @@ void MachPhysHealAura::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHealAura& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHealAura& t)
 {
 
     o << "MachPhysHealAura " << (void*)&t << " start" << std::endl;

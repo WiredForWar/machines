@@ -24,7 +24,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dPersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dPersistence& t);
 
 private:
     W4dPersistence(const W4dPersistence&);

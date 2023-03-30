@@ -157,7 +157,7 @@ void MachGuiCtxInGameOptions::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxInGameOptions& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxInGameOptions& t)
 {
 
     o << "MachGuiCtxInGameOptions " << (void*)&t << " start" << std::endl;

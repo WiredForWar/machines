@@ -56,14 +56,14 @@ public:
     short minZBias() const;
     short maxZBias() const;
 
-    ostream& write(ostream& o);
+    std::ostream& write(std::ostream& o);
 
 private:
     friend class RenCapabilities;
     RenICapabilities(const RenDevice* dev, bool hardwareDriver); // PRE(dev);
     ~RenICapabilities();
 
-    friend ostream& operator<<(ostream& o, const RenICapabilities& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenICapabilities& t);
 
     RenICapabilities(const RenICapabilities&);
     RenICapabilities& operator=(const RenICapabilities&);

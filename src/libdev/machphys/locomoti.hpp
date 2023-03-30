@@ -117,7 +117,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLocomotionMethod& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLocomotionMethod& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(MachPhysLocomotionMethod);
     PER_FRIEND_READ_WRITE(MachPhysLocomotionMethod);

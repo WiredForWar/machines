@@ -35,7 +35,7 @@ void MachPhysCanAttackImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysCanAttackImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysCanAttackImpl& t)
 {
 
     o << "MachPhysCanAttackImpl " << (void*)&t << " start" << std::endl;

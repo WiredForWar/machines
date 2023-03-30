@@ -30,7 +30,7 @@ protected:
     RenIDelayedCoplanarGroup& operator=(const RenIDelayedCoplanarGroup&);
     bool operator==(const RenIDelayedCoplanarGroup&);
 
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     const RenIMaterialGroup* group_;
     RenI::LitVtxAPtr vertices_;

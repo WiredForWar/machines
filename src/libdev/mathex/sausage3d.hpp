@@ -45,7 +45,7 @@ public:
     //  virtual void embed( const ctl_vector<MexPoint3d>& points);
 
 private:
-    friend ostream& operator<<(ostream& o, const MexSausage3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexSausage3d& t);
 
     MexSausage3d(const MexSausage3d&);
     MexSausage3d& operator=(const MexSausage3d&);

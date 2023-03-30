@@ -276,10 +276,10 @@ protected:
     MachPhys::Race getNextAvailableRace() const;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiStartupData& t);
-    friend ostream& operator<<(ostream& o, const MachGuiStartupData::PlayerInfo& t);
-    friend ostream& operator<<(ostream& o, const MachGuiStartupData::PlayerInfo::Status& t);
-    friend ostream& operator<<(ostream& o, const MachGuiStartupData::GameSettings& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::PlayerInfo& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::PlayerInfo::Status& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::GameSettings& t);
 
     MachGuiStartupData(const MachGuiStartupData&);
     MachGuiStartupData& operator=(const MachGuiStartupData&);

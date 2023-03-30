@@ -42,7 +42,7 @@ void W4dRoot::CLASS_INVARIANT
 }
 
 // virtual
-void W4dRoot::doDebugOutput(ostream& ostr)
+void W4dRoot::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     TEST_INVARIANT;
@@ -50,7 +50,7 @@ void W4dRoot::doDebugOutput(ostream& ostr)
     ostr << "End   W4dRoot " << (void*)this << std::endl;
 }
 
-ostream& operator<<(ostream& o, const W4dRoot& t)
+std::ostream& operator<<(std::ostream& o, const W4dRoot& t)
 {
 
     o << "W4dRoot " << (void*)&t << " start" << std::endl;

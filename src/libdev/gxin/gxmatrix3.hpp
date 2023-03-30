@@ -55,7 +55,7 @@ public:
     void y(const GXVect3& y) { b_ = y; }
     void z(const GXVect3& z) { c_ = z; }
 
-    friend ostream& operator<<(ostream& o, const GXMatrix3& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXMatrix3& t);
 
 private:
     // a_ : first line

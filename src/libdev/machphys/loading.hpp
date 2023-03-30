@@ -37,7 +37,7 @@ public:
     PER_MEMBER_PERSISTENT(MachPhysResourceLoading);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysResourceLoading& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysResourceLoading& t);
 
     MachPhysResourceLoading(const MachPhysResourceLoading&);
     MachPhysResourceLoading& operator=(const MachPhysResourceLoading&);

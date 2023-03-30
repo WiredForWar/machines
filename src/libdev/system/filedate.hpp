@@ -62,7 +62,7 @@ private:
     bool dateSet_;
 };
 
-ostream& operator<<(ostream&, const SysFileDate&);
+std::ostream& operator<<(std::ostream&, const SysFileDate&);
 
 #endif
 

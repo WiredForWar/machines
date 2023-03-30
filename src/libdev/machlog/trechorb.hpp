@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogTreacheryOrb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogTreacheryOrb& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogTreacheryOrb);
     PER_FRIEND_READ_WRITE(MachLogTreacheryOrb);

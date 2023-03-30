@@ -113,8 +113,8 @@ protected:
 private:
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiMessageBroker& t);
-    friend ostream& operator<<(ostream& o, const MessageType& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker& t);
+    friend std::ostream& operator<<(std::ostream& o, const MessageType& t);
 
     MachGuiMessageBroker(const MachGuiMessageBroker&);
     MachGuiMessageBroker& operator=(const MachGuiMessageBroker&);

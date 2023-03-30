@@ -62,7 +62,7 @@ MachLogLinearProjectile* MachLogMultiLauncher::createLinearProjectile(
     HAL_STREAM("MLMultiLauncher::createLinearProjectile exit\n");
 }
 
-ostream& operator<<(ostream& o, const MachLogMultiLauncher& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMultiLauncher& t)
 {
 
     o << "MachLogMultiLauncher " << (void*)&t << " start" << std::endl;

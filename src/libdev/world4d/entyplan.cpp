@@ -72,7 +72,7 @@ struct W4dEntityPlanImpl
     bool hasTransformPlan_; // True iff there is a motion plan
     bool hasVisibilityPlan_; // True iff there is a visibility plan
 
-    ostream& writeToStream(ostream&) const;
+    std::ostream& writeToStream(std::ostream&) const;
 
     PER_MEMBER_PERSISTENT_DEFAULT(W4dEntityPlanImpl);
     PER_FRIEND_READ_WRITE(W4dEntityPlanImpl);
@@ -919,13 +919,13 @@ uint W4dEntityPlan::nMaterialPlans() const
     return (pImpl_->pMaterialPlans_ ? pImpl_->pMaterialPlans_->size() : 0);
 }
 
-ostream& operator<<(ostream& o, const W4dEntityPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dEntityPlan& t)
 {
     PRE(t.pImpl_);
     return t.pImpl_->writeToStream(o);
 }
 
-ostream& W4dEntityPlanImpl::writeToStream(ostream& o) const
+std::ostream& W4dEntityPlanImpl::writeToStream(std::ostream& o) const
 {
     if (pAbsoluteMotionPlans_)
     {

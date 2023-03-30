@@ -54,7 +54,7 @@ void PedPolygonEditor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedPolygonEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedPolygonEditor& t)
 {
 
     o << "PedPolygonEditor " << (void*)&t << " start" << std::endl;

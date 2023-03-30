@@ -31,7 +31,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxMultiplayer& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxMultiplayer& t);
 
     MachGuiCtxMultiplayer(const MachGuiCtxMultiplayer&);
     MachGuiCtxMultiplayer& operator=(const MachGuiCtxMultiplayer&);

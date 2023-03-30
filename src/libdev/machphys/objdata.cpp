@@ -60,7 +60,7 @@ void MachPhysObjectData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysObjectData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysObjectData& t)
 {
 
     o << "armour " << t.armour() << std::endl;

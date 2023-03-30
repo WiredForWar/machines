@@ -59,7 +59,7 @@ protected:
     void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCheckBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCheckBox& t);
 
     MachGuiCheckBox(const MachGuiCheckBox&);
     MachGuiCheckBox& operator=(const MachGuiCheckBox&);

@@ -26,7 +26,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiMapAreaImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMapAreaImpl& t);
 
     MachGuiMapAreaImpl(const MachGuiMapAreaImpl&);
     MachGuiMapAreaImpl& operator=(const MachGuiMapAreaImpl&);

@@ -40,7 +40,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysMetalSting);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysMetalSting& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMetalSting& t);
 
     MachPhysMetalSting(const MachPhysMetalSting&);
     MachPhysMetalSting& operator=(const MachPhysMetalSting&);

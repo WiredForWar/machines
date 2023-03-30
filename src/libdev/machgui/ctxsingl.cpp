@@ -60,7 +60,7 @@ void MachGuiCtxSinglePlayer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxSinglePlayer& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxSinglePlayer& t)
 {
 
     o << "MachGuiCtxSinglePlayer " << (void*)&t << " start" << std::endl;

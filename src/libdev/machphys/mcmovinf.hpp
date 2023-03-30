@@ -91,7 +91,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMachineMoveInfo& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachineMoveInfo& t);
 
 private:
     // Data members

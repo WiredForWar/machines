@@ -125,7 +125,7 @@ protected:
 
 private:
     friend class MachGuiPlayerColour;
-    friend ostream& operator<<(ostream& o, const MachGuiPlayerListItem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerListItem& t);
 
     MachGuiPlayerListItem(const MachGuiPlayerListItem&);
     MachGuiPlayerListItem& operator=(const MachGuiPlayerListItem&);

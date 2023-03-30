@@ -47,7 +47,7 @@ template <class GRA_GRAPH> void GraAStarVertex<GRA_GRAPH>::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-template <class GRA_GRAPH> ostream& operator<<(ostream& o, const GraAStarVertex<GRA_GRAPH>& t)
+template <class GRA_GRAPH> std::ostream& operator<<(std::ostream& o, const GraAStarVertex<GRA_GRAPH>& t)
 {
 
     o << "GraAStarVertex " << (void*)&t << " cost " << t.costFromStart_ << " estimate " << t.estimatedCostToEnd_

@@ -711,13 +711,13 @@ void RenDisplay::CLASS_INVARIANT
     INVARIANT(implies(modeList_.size() > 0, currentMode_.width() > 0));
 }
 
-ostream& operator<<(ostream& o, const RenDisplay::Mode& m)
+std::ostream& operator<<(std::ostream& o, const RenDisplay::Mode& m)
 {
     o << "display mode (" << m.width() << "x" << m.height() << "x" << m.bitDepth() << ")";
     return o;
 }
 
-ostream& operator<<(ostream& o, const RenDisplay& t)
+std::ostream& operator<<(std::ostream& o, const RenDisplay& t)
 {
     o << "Modes available for display:\n";
 

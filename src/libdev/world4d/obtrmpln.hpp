@@ -37,7 +37,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dObjectTrackerMotionPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dObjectTrackerMotionPlan& t);
 
 private:
     W4dObjectTrackerMotionPlan(const W4dObjectTrackerMotionPlan&);

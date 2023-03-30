@@ -95,7 +95,7 @@ void MachPhysHemiSphere::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHemiSphere& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHemiSphere& t)
 {
 
     o << "MachPhysHemiSphere " << (void*)&t << " start" << std::endl;

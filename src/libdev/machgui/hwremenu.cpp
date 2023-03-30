@@ -45,7 +45,7 @@ MachHWResearchMenu::createList(GuiDisplayable* pParent, const Gui::Coord& rel, M
     return _NEW(MachHWResearchIcons(pParent, rel, pHWResearchBank_, pHardwareLab_, pInGameScreen));
 }
 
-ostream& operator<<(ostream& o, const MachHWResearchMenu& t)
+std::ostream& operator<<(std::ostream& o, const MachHWResearchMenu& t)
 {
 
     o << "MachHWResearchMenu " << (void*)&t << " start" << std::endl;

@@ -475,7 +475,7 @@ void PedActorEditor::processHide(bool hidden)
     hidden_ = not hidden;
 }
 
-ostream& operator<<(ostream& o, const PedActorEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedActorEditor& t)
 {
 
     o << "PedActorEditor " << (void*)&t << " start" << std::endl;

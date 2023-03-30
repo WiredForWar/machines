@@ -44,7 +44,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLightningHaloMaterialPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLightningHaloMaterialPlan& t);
 
 private:
     MachPhysLightningHaloMaterialPlan(const MachPhysLightningHaloMaterialPlan&);

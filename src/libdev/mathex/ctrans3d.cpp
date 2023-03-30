@@ -33,7 +33,7 @@ void MexCompressedTransform3d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCompressedTransform3d& t)
+std::ostream& operator<<(std::ostream& o, const MexCompressedTransform3d& t)
 {
 
     o << "MexCompressedTransform3d " << (void*)&t << " start" << std::endl;

@@ -788,7 +788,7 @@ const RenITexBody* RenISurfBody::castToTexBody() const
 }
 
 // virtual
-void RenISurfBody::print(ostream& o) const
+void RenISurfBody::print(std::ostream& o) const
 {
     o << "surface ";
 
@@ -813,7 +813,7 @@ bool RenISurfBody::matches(const std::string& name) const
     return strcasecmp(sharedName().c_str(), name.c_str()) == 0;
 }
 
-ostream& operator<<(ostream& o, const RenISurfBody& t)
+std::ostream& operator<<(std::ostream& o, const RenISurfBody& t)
 {
     t.print(o);
     return o;

@@ -80,7 +80,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysTreacheryWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTreacheryWeapon& t);
 
     PER_MEMBER_PERSISTENT(MachPhysTreacheryWeapon);
 

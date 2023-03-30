@@ -50,14 +50,14 @@ public:
     PER_MEMBER_PERSISTENT_ABSTRACT(RenIMaterialGroup);
     PER_FRIEND_READ_WRITE(RenIMaterialGroup);
 
-    virtual void write(ostream&) const = 0;
+    virtual void write(std::ostream&) const = 0;
 
 private:
     RenMaterial material_;
 };
 
 PER_DECLARE_PERSISTENT(RenIMaterialGroup);
-ostream& operator<<(ostream&, const RenIMaterialGroup&);
+std::ostream& operator<<(std::ostream&, const RenIMaterialGroup&);
 
 //////////////////////////////////////////////////////////////////////////
 // A list of triangles which share the same RenMaterial.
@@ -77,7 +77,7 @@ public:
     bool backFace() const { return backFace_; }
     void backFace(bool b) { backFace_ = b; }
 
-    void write(ostream&) const override;
+    void write(std::ostream&) const override;
 
     PER_MEMBER_PERSISTENT_ABSTRACT(RenITriangleGroup);
     PER_FRIEND_READ_WRITE(RenITriangleGroup);
@@ -87,7 +87,7 @@ private:
 };
 
 PER_DECLARE_PERSISTENT(RenITriangleGroup);
-ostream& operator<<(ostream&, const RenITriangleGroup&);
+std::ostream& operator<<(std::ostream&, const RenITriangleGroup&);
 
 //////////////////////////////////////////////////////////////////////////
 // A RenITriangleGroup in which every triangle specifies three separate vertices.
@@ -111,7 +111,7 @@ public:
 
     using IndexVec = ctl_min_memory_vector<Ren::VertexIdx>;
 
-    void write(ostream&) const override;
+    void write(std::ostream&) const override;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(RenIDistinctGroup);
     PER_FRIEND_READ_WRITE(RenIDistinctGroup);
@@ -122,7 +122,7 @@ private:
 };
 
 PER_DECLARE_PERSISTENT(RenIDistinctGroup);
-ostream& operator<<(ostream&, const RenIDistinctGroup&);
+std::ostream& operator<<(std::ostream&, const RenIDistinctGroup&);
 
 //////////////////////////////////////////////////////////////////////////
 // A list of lines which share the same RenMaterial.
@@ -146,7 +146,7 @@ public:
 
     using IndexVec = ctl_min_memory_vector<Ren::VertexIdx>;
 
-    void write(ostream&) const override;
+    void write(std::ostream&) const override;
     PER_MEMBER_PERSISTENT_VIRTUAL(RenILineGroup);
     PER_FRIEND_READ_WRITE(RenILineGroup);
 
@@ -156,7 +156,7 @@ private:
 };
 
 PER_DECLARE_PERSISTENT(RenILineGroup);
-ostream& operator<<(ostream&, const RenILineGroup&);
+std::ostream& operator<<(std::ostream&, const RenILineGroup&);
 
 //////////////////////////////////////////////////////////////////////////
 /* These classes might be useful optimisations.

@@ -31,7 +31,7 @@ void RenUVFlip::transform(float uIn, float vIn, float* uOut, float* vOut) const
 }
 
 // virtual
-void RenUVFlip::print(ostream& o) const
+void RenUVFlip::print(std::ostream& o) const
 {
     switch (flipped())
     {

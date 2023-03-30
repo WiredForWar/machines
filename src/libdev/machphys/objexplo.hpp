@@ -35,7 +35,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysObjectExplosion& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysObjectExplosion& t);
 
     MachPhysObjectExplosion(const MachPhysObjectExplosion&);
     MachPhysObjectExplosion& operator=(const MachPhysObjectExplosion&);

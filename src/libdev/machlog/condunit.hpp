@@ -48,13 +48,13 @@ public:
 
 protected:
     const PhysRelativeTime& recommendedCallBackTimeGap() const override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     // MachLogLowUnitCountCondition( const string& keyName, MachPhys::Race, MachLog::ObjectType, size_t number, int
     // subType );
 
-    friend ostream& operator<<(ostream& o, const MachLogLowUnitCountCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogLowUnitCountCondition& t);
 
     MachLogLowUnitCountCondition(const MachLogLowUnitCountCondition&);
     MachLogLowUnitCountCondition& operator=(const MachLogLowUnitCountCondition&);

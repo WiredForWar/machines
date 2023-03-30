@@ -23,7 +23,7 @@ void GXMatrix3::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXMatrix3& t)
+std::ostream& operator<<(std::ostream& o, const GXMatrix3& t)
 {
 
     o << std::endl;

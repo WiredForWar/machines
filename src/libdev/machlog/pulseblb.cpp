@@ -36,7 +36,7 @@ void MachLogPulseBlob::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPulseBlob& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPulseBlob& t)
 {
 
     o << "MachLogPulseBlob " << (void*)&t << " start" << std::endl;

@@ -46,7 +46,7 @@ void MachLogMachineConvoy::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineConvoy& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineConvoy& t)
 {
 
     o << "MachLogMachineConvoy " << (void*)&t << " start" << std::endl;

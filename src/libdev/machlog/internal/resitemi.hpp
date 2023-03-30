@@ -28,7 +28,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogResearchItemImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogResearchItemImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogResearchItemImpl& t);
 
     MachLogResearchItemImpl(const MachLogResearchItemImpl&);
     MachLogResearchItemImpl& operator=(const MachLogResearchItemImpl&);

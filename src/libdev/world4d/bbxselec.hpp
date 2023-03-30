@@ -58,7 +58,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dBoundingBoxSelector& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dBoundingBoxSelector& t);
 
 private:
     W4dBoundingBoxSelector(const W4dBoundingBoxSelector&);

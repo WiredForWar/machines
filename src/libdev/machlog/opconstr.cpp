@@ -37,7 +37,7 @@ MachLogConstructOperation::MachLogConstructOperation(MachLogConstructor* pActor,
     // deliberately left blank
 }
 
-void MachLogConstructOperation::doOutputOperator(ostream& o) const
+void MachLogConstructOperation::doOutputOperator(std::ostream& o) const
 {
     MachLogLabourOperation::doOutputOperator(o);
 

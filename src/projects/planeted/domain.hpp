@@ -43,7 +43,7 @@ private:
     PedDomain& operator=(const PedDomain&);
     bool operator==(const PedDomain&);
 
-    friend ostream& operator<<(ostream& o, const PedDomain& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedDomain& t);
 };
 
 #endif

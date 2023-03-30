@@ -72,7 +72,7 @@ public:
     bool isSet() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const EnvOrbit& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvOrbit& t);
 
 private:
     const MATHEX_SCALAR radius_;

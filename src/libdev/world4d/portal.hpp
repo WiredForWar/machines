@@ -64,7 +64,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dPortal);
 
 protected:
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
 
 private:
     friend class W4dDomain;

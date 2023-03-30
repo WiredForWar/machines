@@ -68,7 +68,7 @@ void MachPhysStation::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const MachPhysStation& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysStation& t)
 {
     o << "Type : ";
     switch (t.type_)

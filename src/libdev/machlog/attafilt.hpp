@@ -39,7 +39,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogAttackFilter& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogAttackFilter& t);
 
     MachLogAttackFilter(const MachLogAttackFilter&);
     MachLogAttackFilter& operator=(const MachLogAttackFilter&);

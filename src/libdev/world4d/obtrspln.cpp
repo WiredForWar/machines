@@ -34,7 +34,7 @@ void W4dObjectTrackerScalePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dObjectTrackerScalePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dObjectTrackerScalePlan& t)
 {
 
     o << "W4dObjectTrackerScalePlan " << (void*)&t << " start" << std::endl;

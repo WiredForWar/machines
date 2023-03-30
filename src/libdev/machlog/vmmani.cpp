@@ -23,7 +23,7 @@ void MachLogVoiceMailManagerImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogVoiceMailManagerImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManagerImpl& t)
 {
 
     o << "MachLogVoiceMailManagerImpl " << (void*)&t << " start" << std::endl;

@@ -93,7 +93,7 @@ MachLogSpyLocator::~MachLogSpyLocator()
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogSpyLocator::doOutputOperator(ostream& o) const
+void MachLogSpyLocator::doOutputOperator(std::ostream& o) const
 {
     MachLogMachine::doOutputOperator(o);
     o << " Number mines left " << nMines_ << std::endl;

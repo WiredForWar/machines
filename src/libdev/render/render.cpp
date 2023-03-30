@@ -18,7 +18,7 @@
 static bool renInitialised = false;
 
 // static
-ostream& Ren::out()
+std::ostream& Ren::out()
 {
     PRE(RenDevice::current());
     return RenDevice::current()->out();
@@ -60,7 +60,7 @@ bool Ren::initialised()
     return renInitialised;
 }
 
-ostream& operator<<(ostream& o, const Ren::Rect& r)
+std::ostream& operator<<(std::ostream& o, const Ren::Rect& r)
 {
     o << "rect: (" << r.originX << "," << r.originY << ") " << r.width << "x" << r.height;
     return o;

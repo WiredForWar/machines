@@ -132,7 +132,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const RecRecorderPrivate& t);
+    friend std::ostream& operator<<(std::ostream& o, const RecRecorderPrivate& t);
 
     RecRecorderPrivate(const RecRecorderPrivate&);
     RecRecorderPrivate& operator=(const RecRecorderPrivate&);

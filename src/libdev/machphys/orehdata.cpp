@@ -22,7 +22,7 @@ void MachPhysOreHolographData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysOreHolographData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysOreHolographData& t)
 {
 
     o << "OreHolograph is empty " << std::endl;

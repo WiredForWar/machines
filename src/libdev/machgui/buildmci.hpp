@@ -63,7 +63,7 @@ private:
     MachBuildMachineIcon& operator=(const MachBuildMachineIcon&);
     bool operator==(const MachBuildMachineIcon&);
 
-    friend ostream& operator<<(ostream& o, const MachBuildMachineIcon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachBuildMachineIcon& t);
 
     // Data members
     MachInGameScreen* pInGameScreen_; // The ingame screen

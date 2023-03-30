@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXColor& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXColor& t);
 
     UCHAR red() const { return red_; }
     void red(UCHAR newRed) { red_ = newRed; }

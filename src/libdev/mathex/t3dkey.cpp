@@ -23,7 +23,7 @@ void MexTransform3dKey::CLASS_INVARIANT
 }
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-ostream& operator<<(ostream& o, const MexTransform3dKey& t)
+std::ostream& operator<<(std::ostream& o, const MexTransform3dKey& t)
 {
 
     o << "MexTransform3dKey " << t.key_ << std::endl;

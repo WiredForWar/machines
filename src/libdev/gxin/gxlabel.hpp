@@ -91,7 +91,7 @@ public:
     // affects it to type_, returns it
     LabelAGT findLabelType();
 
-    friend ostream& operator<<(ostream& o, const GXLabel& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXLabel& t);
 
 private:
     GXLabel(const GXLabel&);

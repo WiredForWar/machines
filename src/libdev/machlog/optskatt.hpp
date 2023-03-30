@@ -61,7 +61,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
     bool doBeInterrupted() override;
 
 private:
@@ -70,7 +70,7 @@ private:
     MachLogTaskAttackOperation& operator=(const MachLogTaskAttackOperation&);
     bool operator==(const MachLogTaskAttackOperation&);
 
-    friend ostream& operator<<(ostream&, const MachLogTaskAttackOperation::State&);
+    friend std::ostream& operator<<(std::ostream&, const MachLogTaskAttackOperation::State&);
 
     PhysRelativeTime doUpdateWithCommander();
     PhysRelativeTime doUpdateWithoutCommander();

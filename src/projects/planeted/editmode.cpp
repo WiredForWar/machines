@@ -30,7 +30,7 @@ void PedEditorMode::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedEditorMode& t)
+std::ostream& operator<<(std::ostream& o, const PedEditorMode& t)
 {
 
     o << "PedEditorMode " << (void*)&t << " start" << std::endl;

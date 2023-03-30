@@ -25,7 +25,7 @@ MachGuiAnimations::MachGuiAnimations(GuiDisplayable* pParent, const SysPathName&
 
     while (numAnimations--)
     {
-        istream& tmpIn = in;
+        std::istream& tmpIn = in;
         tmpIn >> animPath;
         animations_.push_back(MachGuiAnimation::createAnimation(pParent, animPath));
     }
@@ -187,7 +187,7 @@ void MachGuiAnimation::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiAnimation& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t)
 {
 
     o << "MachGuiAnimation " << (void*)&t << " start" << std::endl;

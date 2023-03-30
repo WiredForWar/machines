@@ -35,7 +35,7 @@ bool OutCode::is_directly_opposite(const OutCode& oc) const
         || (code_ == above && oc.code_ == below) || (code_ == below && oc.code_ == above);
 }
 
-ostream& operator<<(ostream& os, const OutCode& oc)
+std::ostream& operator<<(std::ostream& os, const OutCode& oc)
 {
     if (oc.is_inside())
         os << "inside";

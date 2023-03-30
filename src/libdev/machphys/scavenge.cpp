@@ -60,7 +60,7 @@ void MachPhysScavenger::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysScavenger& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysScavenger& t)
 {
 
     o << "MachPhysScavenger " << (void*)&t << " start" << std::endl;

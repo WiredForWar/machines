@@ -28,7 +28,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MexCompressedPoint3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexCompressedPoint3d& t);
     friend class MexPoint3d;
 
     enum : uint8

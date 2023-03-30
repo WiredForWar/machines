@@ -102,7 +102,7 @@ void W4dGarbageCollector::CLASS_INVARIANT
     INVARIANT(times_.size() == entities_.size());
 }
 
-ostream& operator<<(ostream& o, const W4dGarbageCollector& t)
+std::ostream& operator<<(std::ostream& o, const W4dGarbageCollector& t)
 {
 
     o << "W4dGarbageCollector " << (void*)&t << " start" << std::endl;

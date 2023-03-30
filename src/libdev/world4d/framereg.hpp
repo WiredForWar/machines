@@ -56,7 +56,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dFrameRegulator& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dFrameRegulator& t);
 
     PER_MEMBER_PERSISTENT(W4dFrameRegulator);
     PER_FRIEND_READ_WRITE(W4dFrameRegulator);

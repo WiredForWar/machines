@@ -50,7 +50,7 @@ void MachPhysIMachineExplosionData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysIMachineExplosionData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysIMachineExplosionData& t)
 {
 
     o << "MachPhysIMachineExplosionData " << (void*)&t << " start" << std::endl;

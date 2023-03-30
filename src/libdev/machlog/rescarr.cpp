@@ -577,7 +577,7 @@ void MachLogResourceCarrier::informOfNewSmeltingBuildingCompletion()
 /* //////////////////////////////////////////////////////////////// */
 
 // virtual
-void MachLogResourceCarrier::doOutputOperator(ostream& o) const
+void MachLogResourceCarrier::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 

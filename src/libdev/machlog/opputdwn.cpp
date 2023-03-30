@@ -63,7 +63,7 @@ MachLogPutDownOperation::~MachLogPutDownOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogPutDownOperation::doOutputOperator(ostream& o) const
+void MachLogPutDownOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogPutDownOperation_DEPIMPL();
 

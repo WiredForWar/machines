@@ -1077,7 +1077,7 @@ void RenSurface::CLASS_INVARIANT
     INVARIANT(internals()->refCount() > 0);
 }
 
-ostream& operator<<(ostream& o, const RenSurface& t)
+std::ostream& operator<<(std::ostream& o, const RenSurface& t)
 {
     if (t.isNull())
         o << "(no surface)";

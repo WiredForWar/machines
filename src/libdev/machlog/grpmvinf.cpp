@@ -18,7 +18,7 @@ void MachLogGroupMoveInfo::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogGroupMoveInfo& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGroupMoveInfo& t)
 {
     if (t.valid())
     {

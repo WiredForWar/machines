@@ -42,7 +42,7 @@ MachLogDeconstructOperation::~MachLogDeconstructOperation()
         pConstruction()->removeThreat(pConstructor()->id());
 }
 
-void MachLogDeconstructOperation::doOutputOperator(ostream& o) const
+void MachLogDeconstructOperation::doOutputOperator(std::ostream& o) const
 {
 
     o << "CAPTURE OPERATION " << std::endl;

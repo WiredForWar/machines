@@ -196,7 +196,7 @@ const MexPoint3d& MachLogMineralSite::position() const
     return position_;
 }
 
-ostream& operator<<(ostream& o, const MachLogMineralSite& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMineralSite& t)
 {
     o << "Mineral site:" << std::endl;
     o << " Position " << t.position() << std::endl;

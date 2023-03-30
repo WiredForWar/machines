@@ -98,7 +98,7 @@ void MachGuiDatabase::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDatabase& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDatabase& t)
 {
 
     o << "MachGuiDatabase " << (void*)&t << " start" << std::endl;

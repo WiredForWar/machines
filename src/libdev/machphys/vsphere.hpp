@@ -34,7 +34,7 @@ public:
     bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysVortexSphere& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysVortexSphere& t);
 
     PER_MEMBER_PERSISTENT(MachPhysVortexSphere);
 

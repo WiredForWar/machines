@@ -47,10 +47,10 @@ private:
     VoiceMailID
     getGlobalFromMachineEvent(MachLog::ObjectType ot, int subType, MachineVoiceMailEventID id, UtlId actorId = 0);
 
-    friend ostream& operator<<(ostream& o, const MachLogMachineVoiceMailManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachineVoiceMailManager& t);
 };
 
-ostream& operator<<(ostream& o, MachineVoiceMailEventID);
+std::ostream& operator<<(std::ostream& o, MachineVoiceMailEventID);
 
 #endif
 

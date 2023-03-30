@@ -32,7 +32,7 @@ public:
     static void peekMessage();
 
 private:
-    friend ostream& operator<<(ostream& o, const SysWindowsAPI& t);
+    friend std::ostream& operator<<(std::ostream& o, const SysWindowsAPI& t);
 
     SysWindowsAPI();
     SysWindowsAPI(const SysWindowsAPI&);

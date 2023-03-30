@@ -50,7 +50,7 @@ private:
     MachLogGroundCameraMotionConstraint& operator=(const MachLogGroundCameraMotionConstraint&);
     bool operator==(const MachLogGroundCameraMotionConstraint&);
 
-    friend ostream& operator<<(ostream& o, const MachLogGroundCameraMotionConstraint& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogGroundCameraMotionConstraint& t);
 
     MachLogCamera* pCamera_;
     MATHEX_SCALAR zTerrainDelta_;
@@ -85,7 +85,7 @@ private:
     MachLogZenithCameraMotionConstraint& operator=(const MachLogZenithCameraMotionConstraint&);
     bool operator==(const MachLogZenithCameraMotionConstraint&);
 
-    friend ostream& operator<<(ostream& o, const MachLogZenithCameraMotionConstraint& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogZenithCameraMotionConstraint& t);
 
     void footprint(MATHEX_SCALAR z, MexRadians headingAngle);
 
@@ -146,7 +146,7 @@ private:
     MachLogPlanetCameraConstraint& operator=(const MachLogPlanetCameraConstraint&);
     bool operator==(const MachLogPlanetCameraConstraint&);
 
-    friend ostream& operator<<(ostream& o, const MachLogPlanetCameraConstraint& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPlanetCameraConstraint& t);
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ private:
     MachLogMachineThirdPerson& operator=(const MachLogMachineThirdPerson&);
     bool operator==(const MachLogMachineThirdPerson&);
 
-    friend ostream& operator<<(ostream& o, const MachLogMachineThirdPerson& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachineThirdPerson& t);
 
     enum Command
     {
@@ -213,7 +213,7 @@ private:
     MachLogThirdPersonCameraConstraint& operator=(const MachLogThirdPersonCameraConstraint&);
     bool operator==(const MachLogThirdPersonCameraConstraint&);
 
-    friend ostream& operator<<(ostream& o, const MachLogThirdPersonCameraConstraint& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogThirdPersonCameraConstraint& t);
 
     MachLogCamera* pCamera_;
 };

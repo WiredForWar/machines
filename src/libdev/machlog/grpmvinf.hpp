@@ -37,7 +37,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogGroupMoveInfo);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogGroupMoveInfo& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogGroupMoveInfo& t);
 
     bool valid_;
     MexVec2 offset_;

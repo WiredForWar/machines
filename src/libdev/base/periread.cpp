@@ -466,7 +466,7 @@ void PersistenceImplementationRead::readRawData(PerIstream& istr, char* ptr, siz
     FINISH_TIMING_OBJECT("rawData");
 }
 
-ostream& PersistenceImplementationRead::debugStream()
+std::ostream& PersistenceImplementationRead::debugStream()
 {
     return indentStream_;
 }
@@ -488,7 +488,7 @@ void PersistenceImplementationRead::writeAddress(const void* ptr) const
         PER_READ_INDENT_STREAM(" (" << _CONST_CAST(void*, ptr) << ") ");
 }
 
-ostream& operator<<(ostream& o, const PersistenceImplementationRead& t)
+std::ostream& operator<<(std::ostream& o, const PersistenceImplementationRead& t)
 {
 
     o << "PersistenceImplementationRead " << (void*)&t << " start" << std::endl;
@@ -577,7 +577,7 @@ static bool dataLess(const Data& a, const Data& b)
     return a.time() < b.time();
 }
 
-void persistenceImplementationReadWriteTimingData(ostream& ostr)
+void persistenceImplementationReadWriteTimingData(std::ostream& ostr)
 {
     typedef ctl_vector<Data> DataVec;
 

@@ -102,7 +102,7 @@ void MachGuiScrollableText::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiScrollableText& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiScrollableText& t)
 {
 
     o << "MachGuiScrollableText " << (void*)&t << " start" << std::endl;

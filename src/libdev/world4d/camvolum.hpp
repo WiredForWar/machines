@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dCameraVolume& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCameraVolume& t);
 
 private:
     W4dCameraVolume(const W4dCameraVolume&);

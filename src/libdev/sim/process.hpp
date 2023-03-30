@@ -65,8 +65,8 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimProcess& t);
-    friend ostream& operator<<(ostream& o, const SimProcess::ToBeUpdated& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimProcess& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimProcess::ToBeUpdated& t);
 
 protected:
     // Register pActor to be owned by this process

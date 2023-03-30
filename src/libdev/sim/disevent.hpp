@@ -51,9 +51,9 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimDiscreteEvent& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimDiscreteEvent& t);
 
-    virtual void doOutputOperator(ostream&) const;
+    virtual void doOutputOperator(std::ostream&) const;
 
     PER_MEMBER_PERSISTENT_ABSTRACT(SimDiscreteEvent);
     PER_FRIEND_READ_WRITE(SimDiscreteEvent);

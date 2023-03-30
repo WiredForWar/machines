@@ -58,7 +58,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMachineSpec& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachineSpec& t);
 
 private:
     // data members
@@ -109,7 +109,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysConstructionSpec& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysConstructionSpec& t);
 
 private:
     // data members
@@ -155,7 +155,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysWeaponSpec& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysWeaponSpec& t);
 
 private:
     // data members

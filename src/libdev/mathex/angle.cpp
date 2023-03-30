@@ -28,7 +28,7 @@ void MexAngle::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& str, const MexAngle& t)
+std::ostream& operator<<(std::ostream& str, const MexAngle& t)
 {
     str << t.angleInRadians_;
     return str << std::endl;

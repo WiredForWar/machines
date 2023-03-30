@@ -34,7 +34,7 @@ void MexCircle2d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCircle2d& t)
+std::ostream& operator<<(std::ostream& o, const MexCircle2d& t)
 {
 
     o << "MexCircle2d " << (void*)&t << t.centre_ << " " << t.radius_;

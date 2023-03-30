@@ -34,7 +34,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const ProStackTracer& t);
+    friend std::ostream& operator<<(std::ostream& o, const ProStackTracer& t);
 
     ProStackTracer(const ProStackTracer&);
     ProStackTracer& operator=(const ProStackTracer&);

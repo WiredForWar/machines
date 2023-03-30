@@ -57,7 +57,7 @@ public:
     // POST( fabs( (*pX)*(*pX) + (*pY)*(*pY) + (*pZ)*(*pZ) + (*pS)*(*pS) - 1.0 )  < MexEpsilon::instance() );
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const MexQuaternion& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexQuaternion& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexQuaternion);

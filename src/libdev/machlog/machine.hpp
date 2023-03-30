@@ -330,7 +330,7 @@ protected:
         UtlId withId);
     ///////////////////////////////
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     // inherited from MachActor
     void checkAndDoOnDefCon(const Actors& strongThreats) override;
@@ -423,8 +423,8 @@ private:
 
     MachLogMachineImpl* pImpl_;
 
-    friend ostream& operator<<(ostream&, const MachPhys::MachineType&);
-    friend ostream& operator<<(ostream&, const State&);
+    friend std::ostream& operator<<(std::ostream&, const MachPhys::MachineType&);
+    friend std::ostream& operator<<(std::ostream&, const State&);
 };
 
 PER_DECLARE_PERSISTENT(MachLogMachine);

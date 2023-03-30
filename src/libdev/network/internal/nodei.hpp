@@ -40,7 +40,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const NetNodeImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetNodeImpl& t);
     friend class NetNode;
 
     NetNodeImpl();

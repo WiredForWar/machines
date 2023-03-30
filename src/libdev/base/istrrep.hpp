@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const PerIstreamReporter& t);
+    friend std::ostream& operator<<(std::ostream& o, const PerIstreamReporter& t);
 
     PerIstreamReporter(const PerIstreamReporter&);
     PerIstreamReporter& operator=(const PerIstreamReporter&);

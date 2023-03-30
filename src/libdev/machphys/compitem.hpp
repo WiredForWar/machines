@@ -39,7 +39,7 @@ public:
     }
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysComplexityItem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysComplexityItem& t);
 
     MachPhysComplexityItem();
     MachPhysComplexityItem(const MachPhysComplexityItem&);

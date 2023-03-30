@@ -51,7 +51,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dCameraShake& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCameraShake& t);
 
     W4dCameraShake(const W4dCameraShake&);
     W4dCameraShake& operator=(const W4dCameraShake&);

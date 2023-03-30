@@ -70,7 +70,7 @@ public:
         MachActor* pByActor = nullptr,
         EchoBeHit = MachActor::ECHO) override;
 
-    friend ostream& operator<<(ostream& o, const MachLogSmelter& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSmelter& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogSmelter);
     PER_FRIEND_READ_WRITE(MachLogSmelter);

@@ -36,7 +36,7 @@ public:
     const GXIdPos& id() const { return id_; }
     void id(const GXIdPos& newId) { id_ = newId; }
 
-    friend ostream& operator<<(ostream& o, const GXTexture& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXTexture& t);
 
 private:
     GXIdPos id_;

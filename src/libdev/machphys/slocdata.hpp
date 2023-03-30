@@ -26,7 +26,7 @@ public:
     int mineCapacity() const;
     MachPhys::ResearchUnits downloadRate() const;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSpyLocatorData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSpyLocatorData& t);
 
 private:
     friend class MachPhysDataParser;

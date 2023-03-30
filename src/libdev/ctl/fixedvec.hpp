@@ -69,7 +69,7 @@ template <class T> bool operator<(const ctl_fixed_vector<T>&, const ctl_fixed_ve
 // POST( iff( result,
 //  lexicographical_compare( a.begin(), a.end(), b.begin(), b.end() ) );
 
-template <class T> ostream& operator<<(ostream&, const ctl_fixed_vector<T>&);
+template <class T> std::ostream& operator<<(std::ostream&, const ctl_fixed_vector<T>&);
 
 //////////////////////////////////////////////////////////////////////
 

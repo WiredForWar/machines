@@ -56,7 +56,7 @@ protected:
     virtual void doNavSelectNewItem(MachGuiSingleSelectionListBoxItem*);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiSingleSelectionListBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSingleSelectionListBox& t);
 
     MachGuiSingleSelectionListBox(const MachGuiSingleSelectionListBox&);
     MachGuiSingleSelectionListBox& operator=(const MachGuiSingleSelectionListBox&);

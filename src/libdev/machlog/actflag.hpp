@@ -35,11 +35,11 @@ public:
 
 protected:
     void doAction() override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogSetFlagAction(SimCondition*, bool enabled);
-    friend ostream& operator<<(ostream& o, const MachLogSetFlagAction& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSetFlagAction& t);
 
     MachLogSetFlagAction(const MachLogSetFlagAction&);
     MachLogSetFlagAction& operator=(const MachLogSetFlagAction&);

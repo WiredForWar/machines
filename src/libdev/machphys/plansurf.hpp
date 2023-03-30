@@ -150,7 +150,7 @@ public:
     void CLASS_INVARIANT;
 
     friend class MachPhysMachineExplosion;
-    friend ostream& operator<<(ostream& o, const MachPhysPlanetSurface& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurface& t);
 
     PER_MEMBER_PERSISTENT(MachPhysPlanetSurface);
     PER_FRIEND_READ_WRITE(MachPhysPlanetSurface);

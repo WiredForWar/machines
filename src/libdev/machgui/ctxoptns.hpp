@@ -52,7 +52,7 @@ public:
     static void load3dSoundFiles(bool enabled);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxOptions& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxOptions& t);
 
     void getOptions();
     void setOptions();

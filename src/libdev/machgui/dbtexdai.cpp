@@ -29,7 +29,7 @@ void MachGuiDbITextData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbITextData& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbITextData& t)
 {
 
     o << "MachGuiDbITextData " << (void*)&t << " start" << std::endl;

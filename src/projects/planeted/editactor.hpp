@@ -123,7 +123,7 @@ private:
     bool domainAtMousePoint(W4dEntity** ppEntity);
     W4dEntity* domain(const MexPoint3d& point);
     bool mouseVertexPoint(MexPoint3d* intersectPoint);
-    friend ostream& operator<<(ostream& o, const PedActorEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedActorEditor& t);
 
     PedActorEditor(const PedActorEditor&);
     PedActorEditor& operator=(const PedActorEditor&);

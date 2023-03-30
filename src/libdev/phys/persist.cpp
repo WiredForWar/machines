@@ -42,7 +42,7 @@ void PhysPersistence::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysPersistence& t)
+std::ostream& operator<<(std::ostream& o, const PhysPersistence& t)
 {
 
     o << "PhysPersistence " << (void*)&t << " start" << std::endl;

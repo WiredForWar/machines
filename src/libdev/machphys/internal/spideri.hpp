@@ -61,7 +61,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSpiderLegsImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSpiderLegsImpl& t);
 
     MachPhysSpiderLegsImpl(const MachPhysSpiderLegsImpl&);
     MachPhysSpiderLegsImpl& operator=(const MachPhysSpiderLegsImpl&);

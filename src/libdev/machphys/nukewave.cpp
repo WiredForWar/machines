@@ -73,7 +73,7 @@ void MachPhysNukeWave::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysNukeWave& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysNukeWave& t)
 {
 
     o << "MachPhysNukeWave " << (void*)&t << " start" << std::endl;

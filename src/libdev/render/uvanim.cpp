@@ -18,7 +18,7 @@ RenUVTransform::~RenUVTransform()
 {
 }
 
-ostream& operator<<(ostream& o, const RenUVTransform& t)
+std::ostream& operator<<(std::ostream& o, const RenUVTransform& t)
 {
     t.print(o);
     return o;
@@ -44,7 +44,7 @@ void RenUVUnityTransform::transform(float uIn, float vIn, float* uOut, float* vO
     *vOut = vIn;
 }
 
-void RenUVUnityTransform::print(ostream& o) const
+void RenUVUnityTransform::print(std::ostream& o) const
 {
     o << "unity UV transform";
 }

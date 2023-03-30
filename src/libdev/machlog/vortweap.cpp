@@ -92,7 +92,7 @@ void MachLogVortexWeapon::doFire(MachActor* pTarget, const MachLogFireData&)
     MachLogVortexWeapon::doFire(vortexPoint);
 }
 
-ostream& operator<<(ostream& o, const MachLogVortexWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogVortexWeapon& t)
 {
 
     o << "MachLogVortexWeapon " << (void*)&t << " start" << std::endl;

@@ -509,7 +509,7 @@ public:
     // PRE( findPathExists( id ) )
 
     // Debugging output for current state
-    void traceFindPath(const FindPathId& id, ostream& o);
+    void traceFindPath(const FindPathId& id, std::ostream& o);
     // PRE( findPathExists( id ) )
 
     /////////////////////////////////////////////////////////
@@ -548,7 +548,7 @@ public:
     // PRE( domainFindPathExists( id ) )
 
     // Debugging output for current state
-    void traceDomainFindPath(const DomainFindPathId& id, ostream& o);
+    void traceDomainFindPath(const DomainFindPathId& id, std::ostream& o);
     // PRE( domainFindPathExists( id ) )
     /////////////////////////////////////////////////////////
 
@@ -580,10 +580,10 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysConfigSpace2d& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysConfigSpace2d& t);
 
-    ostream& traceObstacles(
-        ostream& o,
+    std::ostream& traceObstacles(
+        std::ostream& o,
         UsePolygons whichPolygons,
         MATHEX_SCALAR xStart,
         MATHEX_SCALAR xEnd,
@@ -593,16 +593,16 @@ public:
         MATHEX_SCALAR yIncr);
 
     //  Trace the entire config space
-    ostream& traceObstacles(ostream& o);
+    std::ostream& traceObstacles(std::ostream& o);
 
     //  Write out any points which are not in an obstacle and not in a domain
-    void traceIllegalPoints(ostream& o) const;
+    void traceIllegalPoints(std::ostream& o) const;
 
 private:
     friend class PhysCS2dFindPath;
     friend class PhysCS2dDomainFindPath;
     friend class PhysCS2dVisibilityGraph;
-    friend ostream& operator<<(ostream& o, const PhysPathFindingQueueWriter& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysPathFindingQueueWriter& t);
 
     // Operations deliberately revoked
     PhysConfigSpace2d(const PhysConfigSpace2d&);

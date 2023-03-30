@@ -77,7 +77,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLargeMissile& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLargeMissile& t);
 
     PER_MEMBER_PERSISTENT(MachPhysLargeMissile);
 

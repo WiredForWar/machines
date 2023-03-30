@@ -66,7 +66,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXFile& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXFile& t);
 
     // Open a file for reading
     GXError open(const std::string&);

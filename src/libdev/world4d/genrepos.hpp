@@ -112,7 +112,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dGenericRepository);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dGenericRepository& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dGenericRepository& t);
 
     W4dGenericRepository(const W4dGenericRepository&);
     W4dGenericRepository& operator=(const W4dGenericRepository&);

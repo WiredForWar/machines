@@ -51,7 +51,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysTracksImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTracksImpl& t);
 
     MachPhysTracksImpl(const MachPhysTracksImpl&);
     MachPhysTracksImpl& operator=(const MachPhysTracksImpl&);

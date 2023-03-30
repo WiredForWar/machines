@@ -67,7 +67,7 @@ public:
         = 0;
 
     virtual void accumulateGeneric(RenColour*) const = 0;
-    virtual void print(ostream&) const = 0;
+    virtual void print(std::ostream&) const = 0;
 
     // Called for every light at the start of each rendered frame.
     virtual void startFrame();
@@ -92,8 +92,8 @@ private:
 
 PER_DECLARE_PERSISTENT(RenILight);
 
-ostream& operator<<(ostream&, const RenILight*);
-ostream& operator<<(ostream&, const RenILight&);
+std::ostream& operator<<(std::ostream&, const RenILight*);
+std::ostream& operator<<(std::ostream&, const RenILight&);
 
 class RenIDirectionalLight : public RenILight
 {
@@ -116,7 +116,7 @@ public:
         const MexAlignedBox3d* pVolume) const override;
 
     void accumulateGeneric(RenColour*) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     UtlProperty<MexVec3> direction;
 
@@ -183,7 +183,7 @@ public:
         OutputAction,
         bool,
         const MexAlignedBox3d* pVolume) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(RenIPointLight);
     PER_FRIEND_READ_WRITE(RenIPointLight);
@@ -216,7 +216,7 @@ public:
         OutputAction,
         bool,
         const MexAlignedBox3d* pVolume) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(RenIUniformLight);
     PER_FRIEND_READ_WRITE(RenIUniformLight);
@@ -253,7 +253,7 @@ public:
         bool,
         const MexAlignedBox3d* pVolume) const override;
     void accumulateGeneric(RenColour*) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenIZeroLight);
     PER_FRIEND_READ_WRITE(RenIZeroLight);

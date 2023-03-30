@@ -89,7 +89,7 @@ void W4dPersistence::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dPersistence& t)
+std::ostream& operator<<(std::ostream& o, const W4dPersistence& t)
 {
 
     o << "W4dPersistence " << (void*)&t << " start" << std::endl;

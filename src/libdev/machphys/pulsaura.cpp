@@ -64,7 +64,7 @@ void MachPhysPulseAura::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPulseAura& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPulseAura& t)
 {
 
     o << "MachPhysPulseAura " << (void*)&t << " start" << std::endl;

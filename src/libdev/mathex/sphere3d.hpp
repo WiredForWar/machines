@@ -43,7 +43,7 @@ public:
     //  virtual void embed( const ctl_vector<MexPoint3d>& );
 
 private:
-    friend ostream& operator<<(ostream& o, const MexSphere3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexSphere3d& t);
 
     MexSphere3d(const MexSphere3d&);
     MexSphere3d& operator=(const MexSphere3d&);

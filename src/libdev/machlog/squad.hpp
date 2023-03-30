@@ -71,9 +71,9 @@ public:
 
     PhysRelativeTime beDestroyed() override;
 
-    friend ostream& operator<<(ostream& o, const MachLogSquadron& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSquadron& t);
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogSquadron);
     PER_FRIEND_READ_WRITE(MachLogSquadron);

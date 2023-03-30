@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachHWResearchBankIcons& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachHWResearchBankIcons& t);
 
 protected:
     void doDisplay() override;

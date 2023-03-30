@@ -144,7 +144,7 @@ W4dDomain* W4dPortal::otherDomain(const W4dDomain* d) const
 }
 
 // virtual
-void W4dPortal::doDebugOutput(ostream& ostr)
+void W4dPortal::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     ostr << "Start W4dPortal " << (void*)this << std::endl;

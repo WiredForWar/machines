@@ -200,7 +200,7 @@ void MachPhysComplexityManager::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysComplexityManager& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysComplexityManager& t)
 {
 
     o << "MachPhysComplexityManager " << (void*)&t << " start" << std::endl;

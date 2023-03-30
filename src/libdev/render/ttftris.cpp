@@ -199,7 +199,7 @@ void perRead(PerIstream& istr, RenTTFTriangles& rect)
 }
 
 // virtual
-void RenTTFTriangles::write(ostream& ostr) const
+void RenTTFTriangles::write(std::ostream& ostr) const
 {
     ostr << "TTF corner triangles: ";
     ostr << centre() << " w=" << width() << " h=" << height();

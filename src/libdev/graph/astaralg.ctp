@@ -34,7 +34,7 @@ template <class GRA_GRAPH, class VERTEX_MAP> void GraAStarAlg__::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-template <class GRA_GRAPH, class VERTEX_MAP> ostream& operator<<(ostream& o, const GraAStarAlg__& t)
+template <class GRA_GRAPH, class VERTEX_MAP> std::ostream& operator<<(std::ostream& o, const GraAStarAlg__& t)
 {
 
     o << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;

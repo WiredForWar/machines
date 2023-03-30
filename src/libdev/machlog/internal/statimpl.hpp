@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogStatsImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogStatsImpl& t);
 
 private:
     void readStatsInitialisationFile();

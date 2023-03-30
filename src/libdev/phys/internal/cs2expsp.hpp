@@ -77,7 +77,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysCS2dExpansionSpace& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dExpansionSpace& t);
 
 private:
     // Operations deliberately revoked

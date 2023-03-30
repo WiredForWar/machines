@@ -41,7 +41,7 @@ void W4dLogger::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dLogger& t)
+std::ostream& operator<<(std::ostream& o, const W4dLogger& t)
 {
 
     o << "W4dLogger " << (void*)&t << " start" << std::endl;

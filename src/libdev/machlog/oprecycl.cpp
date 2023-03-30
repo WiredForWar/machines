@@ -56,7 +56,7 @@ MachLogRecycleOperation::~MachLogRecycleOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogRecycleOperation::doOutputOperator(ostream& o) const
+void MachLogRecycleOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogRecycleOperation " << std::endl;
 
@@ -186,7 +186,7 @@ bool MachLogRecycleOperation::beNotified(W4dSubject* pSubject, W4dSubject::Notif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogRecycleOperation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogRecycleOperation& t)
 {
 
     o << "MachLogRecycleOperation " << (void*)&t << " start" << std::endl;

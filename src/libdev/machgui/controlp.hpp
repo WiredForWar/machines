@@ -66,7 +66,7 @@ public:
     void repositionNavigators(GuiDisplayable* pMachineNav, GuiDisplayable* pConstructionNav, GuiDisplayable* pSquadNav);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiControlPanel& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiControlPanel& t);
 
     MachGuiControlPanel(const MachGuiControlPanel&);
     MachGuiControlPanel& operator=(const MachGuiControlPanel&);

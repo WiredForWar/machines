@@ -39,7 +39,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLegalWeaponCombos& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLegalWeaponCombos& t);
 
 private:
     MachPhysLegalWeaponCombos(const MachPhysLegalWeaponCombos&);

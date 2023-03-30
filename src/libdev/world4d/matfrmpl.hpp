@@ -85,7 +85,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dMaterialFramePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dMaterialFramePlan& t);
 
 private:
     // Operations deliberately revoked

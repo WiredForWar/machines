@@ -61,7 +61,7 @@ void RenHierarchyBuilder::addNode(Node* pNode)
         pCurrentNode_ = pCurrentNode_->pParent();
 }
 
-ostream& operator<<(ostream& o, const RenHierarchyBuilder& t)
+std::ostream& operator<<(std::ostream& o, const RenHierarchyBuilder& t)
 {
 
     o << "RenHierarchyBuilder " << (void*)&t << " start" << std::endl;

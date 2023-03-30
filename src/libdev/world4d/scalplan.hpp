@@ -49,7 +49,7 @@ public:
     // PRE( isNonUniform() )
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const W4dScalePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dScalePlan& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(W4dScalePlan);
     PER_FRIEND_READ_WRITE(W4dScalePlan);

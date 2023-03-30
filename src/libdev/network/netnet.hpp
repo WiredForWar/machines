@@ -119,8 +119,8 @@ public:
     void deterministicPingDropoutAllowed(bool);
 
     void disableNewPlayers();
-    void outputStuffedInfo(ostream&);
-    void outputCurrentStatistics(ostream&);
+    void outputStuffedInfo(std::ostream&);
+    void outputCurrentStatistics(std::ostream&);
 
     void messageThrottlingActive(bool);
     bool messageThrottlingActive() const;
@@ -134,7 +134,7 @@ public:
     void sendMessage(const NetPriority& priority, const NetMessageBody& body);
 
 private:
-    friend ostream& operator<<(ostream&, NetworkProtocol);
+    friend std::ostream& operator<<(std::ostream&, NetworkProtocol);
     ///////////////////////////////
 
     NetNetwork();

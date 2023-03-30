@@ -34,7 +34,7 @@ void GuiVerticalScrollBar::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiVerticalScrollBar& t)
+std::ostream& operator<<(std::ostream& o, const GuiVerticalScrollBar& t)
 {
 
     o << "GuiVerticalScrollBar " << (void*)&t << " start" << std::endl;

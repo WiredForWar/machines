@@ -61,7 +61,7 @@ void PedObstacleEditor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedObstacleEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedObstacleEditor& t)
 {
 
     o << "PedObstacleEditor " << (void*)&t << " start" << std::endl;

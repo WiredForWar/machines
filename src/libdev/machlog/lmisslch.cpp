@@ -65,7 +65,7 @@ MachLogLinearProjectile* MachLogLargeMissileLauncher::createLinearProjectile(
         physWeapon().weaponData()));
 }
 
-ostream& operator<<(ostream& o, const MachLogLargeMissileLauncher& t)
+std::ostream& operator<<(std::ostream& o, const MachLogLargeMissileLauncher& t)
 {
 
     o << "MachLogLargeMissileLauncher " << (void*)&t << " start" << std::endl;

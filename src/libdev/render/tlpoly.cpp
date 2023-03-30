@@ -37,7 +37,7 @@ void RenITLPolygon::render()
     pImpl_->renderGL(vertices_, material_, geomType_);
 }
 
-void RenITLPolygon::print(ostream& o) const
+void RenITLPolygon::print(std::ostream& o) const
 {
     o << "TL polygon, depth=" << depth() << ", " << material_;
 }

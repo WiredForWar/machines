@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogLargeMissile& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogLargeMissile& t);
 
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 

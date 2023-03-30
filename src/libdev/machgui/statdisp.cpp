@@ -160,7 +160,7 @@ void MachGuiStatisticsDisplay::setTime(double newTime)
     ratioComplete_ = interval / rampDuration_;
 }
 
-ostream& operator<<(ostream& o, const MachGuiStatisticsDisplay& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsDisplay& t)
 {
 
     o << "MachGuiStatisticsDisplay " << (void*)&t << " start" << std::endl;

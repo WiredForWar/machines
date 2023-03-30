@@ -27,7 +27,7 @@ template <class T> void perRead(PerIstream& istr, ctl_nb_vector<T>& vec)
         PER_READ_RAW_DATA(istr, &vec[0], nEntries * sizeof(T));
 }
 
-template <class T> ostream& operator<<(ostream& ostr, const ctl_nb_vector<T>& vec)
+template <class T> std::ostream& operator<<(std::ostream& ostr, const ctl_nb_vector<T>& vec)
 {
     for (typename ctl_nb_vector<T>::const_iterator i = vec.begin(); i != vec.end(); ++i)
     {

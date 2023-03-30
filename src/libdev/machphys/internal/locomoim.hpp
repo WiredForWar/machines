@@ -72,7 +72,7 @@ protected:
 private:
     friend class MachPhysLocomotionMethod;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLocomotionMethodImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLocomotionMethodImpl& t);
 
     // Update the previous state. Done by MachPhysLocomotionMethod.
     void lastState(MachPhysLocomotionMethod::FirstPersonMotionState newState);

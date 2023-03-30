@@ -150,7 +150,7 @@ void PhysCS2dImpl::add(PhysCS2dDomain* pDomain)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dImpl& t)
 {
     UtlIndentOstream indentOstr(o, "  ");
 
@@ -242,7 +242,7 @@ ostream& operator<<(ostream& o, const PhysCS2dImpl& t)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void PhysCS2dImpl::trace(ostream& o, const PhysCS2dDomainGraph& domainGraph) const
+void PhysCS2dImpl::trace(std::ostream& o, const PhysCS2dDomainGraph& domainGraph) const
 {
     o << "PhysCS2dDomainGraph start" << std::endl;
 
@@ -1162,7 +1162,7 @@ void PhysCS2dImpl::activeDomainFindPath(PhysCS2dDomainFindPath* pDomainFindPath)
     pActiveDomainFindPath_ = pDomainFindPath;
 }
 
-void PhysCS2dImpl::listArcs(ostream& ostr) const
+void PhysCS2dImpl::listArcs(std::ostream& ostr) const
 {
     for (PhysConfigSpace2d::DomainArcId arcId = _CONST_CAST(PhysCS2dImpl*, this)->domainArcIdGenerator().begin();
          arcId != _CONST_CAST(PhysCS2dImpl*, this)->domainArcIdGenerator().end();

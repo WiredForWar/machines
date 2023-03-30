@@ -51,7 +51,7 @@ public:
     int priority() const;
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dSoundData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dSoundData& t);
 
     W4dSoundData(const W4dSoundData&);
     W4dSoundData& operator=(const W4dSoundData&);

@@ -48,7 +48,7 @@ private:
     PhysAccelerateTumblePlanImpl(const PhysAccelerateTumblePlanImpl&);
     PhysAccelerateTumblePlanImpl& operator=(const PhysAccelerateTumblePlanImpl&);
 
-    friend ostream& operator<<(ostream& o, const PhysAccelerateTumblePlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysAccelerateTumblePlanImpl& t);
 
     PhysAccelerateTumblePlan::EulerTransformsPtr transformsPtr_;
     PhysMotionPlan::TimesPtr segmentTimesPtr_;

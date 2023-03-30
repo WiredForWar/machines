@@ -57,7 +57,7 @@ MachLogNukeAttackOperation::~MachLogNukeAttackOperation()
     // deliberately left blank
 }
 
-void MachLogNukeAttackOperation::doOutputOperator(ostream& o) const
+void MachLogNukeAttackOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogNukeAttackOperation\n";
 }

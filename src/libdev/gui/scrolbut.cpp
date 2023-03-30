@@ -104,7 +104,7 @@ void GuiScrollButton::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiScrollButton& t)
+std::ostream& operator<<(std::ostream& o, const GuiScrollButton& t)
 {
 
     o << "GuiScrollButton " << (void*)&t << " start" << std::endl;

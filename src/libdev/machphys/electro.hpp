@@ -36,7 +36,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysElectro& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysElectro& t);
 
     // nonUniformScale (scale, 2 ,2) after applying Xform and spin a duration time.
     void scaleAndSpin(

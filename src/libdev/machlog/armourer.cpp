@@ -318,7 +318,7 @@ void MachLogArmourer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogArmourer& t)
+std::ostream& operator<<(std::ostream& o, const MachLogArmourer& t)
 {
 
     o << "MachLogArmourer " << (void*)&t << " start" << std::endl;

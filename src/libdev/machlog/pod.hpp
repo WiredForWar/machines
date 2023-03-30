@@ -70,7 +70,7 @@ public:
     ///////////////////////////////
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogPod& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPod& t);
 
     const MachPhysPod* pPhysPod() const;
 

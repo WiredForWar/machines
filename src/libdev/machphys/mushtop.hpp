@@ -36,7 +36,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMushroomTop& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMushroomTop& t);
 
     PER_MEMBER_PERSISTENT(MachPhysMushroomTop);
 

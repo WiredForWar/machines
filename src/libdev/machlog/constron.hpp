@@ -165,7 +165,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogConstruction& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogConstruction& t);
 
     // inherited from MachActor
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR) override;
@@ -233,7 +233,7 @@ public:
         MachActor* pByActor = nullptr,
         EchoBeHit = ECHO) override;
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
 
     bool hasInterior() const;
 

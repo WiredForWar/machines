@@ -415,7 +415,7 @@ void MachLogResearchTree::CLASS_INVARIANT
 
 //////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogResearchTree& t)
+std::ostream& operator<<(std::ostream& o, const MachLogResearchTree& t)
 {
 
     o << "MachLogResearchTree " << (void*)&t << " start" << std::endl;

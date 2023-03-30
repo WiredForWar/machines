@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXPolyVert3& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXPolyVert3& t);
 
     USHORT pointIndex() const { return pointIndex_; }
     void pointIndex(USHORT newPointIndex) { pointIndex_ = newPointIndex; }

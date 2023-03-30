@@ -90,7 +90,7 @@ void MachPhysElectro::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysElectro& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysElectro& t)
 {
 
     o << "MachPhysElectro " << (void*)&t << " start" << std::endl;

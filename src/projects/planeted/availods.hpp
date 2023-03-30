@@ -41,7 +41,7 @@ private:
 
     ~PedAvailableTileLods() override;
 
-    friend ostream& operator<<(ostream& o, const PedAvailableTileLods& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedAvailableTileLods& t);
 
     // Data...
     size_t lodIndex_;

@@ -45,7 +45,7 @@ public:
     PER_MEMBER_PERSISTENT(MachLogConstructionItem);
     PER_FRIEND_READ_WRITE(MachLogConstructionItem);
 
-    friend ostream& operator<<(ostream& o, const MachLogConstructionItem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogConstructionItem& t);
 
 private:
     friend class MachLogConstructionTree;

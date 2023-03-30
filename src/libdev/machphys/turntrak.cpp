@@ -92,7 +92,7 @@ void MachPhysTurnerTracker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysTurnerTracker& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysTurnerTracker& t)
 {
 
     o << "MachPhysTurnerTracker " << (void*)&t << " start" << std::endl;

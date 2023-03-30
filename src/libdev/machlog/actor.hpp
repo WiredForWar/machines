@@ -305,7 +305,7 @@ protected:
 
     friend class MachLogOperation;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     void objectType(const MachLog::ObjectType&);
     // set methods are protected

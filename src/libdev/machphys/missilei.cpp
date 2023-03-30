@@ -33,7 +33,7 @@ void MachPhysMissileImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMissileImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMissileImpl& t)
 {
 
     o << "MachPhysMissileImpl " << (void*)&t << " start" << std::endl;

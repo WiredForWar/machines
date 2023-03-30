@@ -52,7 +52,7 @@ MachLogLinearProjectile* MachLogPulseWeapon::createLinearProjectile(
     // HAL_STREAM("MLPulseWeapon::createLinearProjectile exit\n" );
 }
 
-ostream& operator<<(ostream& o, const MachLogPulseWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPulseWeapon& t)
 {
 
     o << "MachLogPulseWeapon " << (void*)&t << " start" << std::endl;

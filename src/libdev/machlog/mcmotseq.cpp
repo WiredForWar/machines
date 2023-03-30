@@ -189,7 +189,7 @@ void MachLogMachineMotionSequencer::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::InternalState& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencer::InternalState& t)
 {
     switch (t)
     {
@@ -224,7 +224,7 @@ ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::InternalSta
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::State& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencer::State& t)
 {
     switch (t)
     {
@@ -250,7 +250,7 @@ ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::State& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::FailureReason& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencer::FailureReason& t)
 {
     switch (t)
     {
@@ -264,7 +264,7 @@ ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::FailureReas
     return o;
 }
 
-ostream& MachLogMachineMotionSequencer::streamOut(ostream& o) const
+std::ostream& MachLogMachineMotionSequencer::streamOut(std::ostream& o) const
 {
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
@@ -325,7 +325,7 @@ ostream& MachLogMachineMotionSequencer::streamOut(ostream& o) const
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencer& t)
 {
     return t.streamOut(o);
 }
@@ -4091,7 +4091,7 @@ void MachLogMachineMotionSequencer::toggleLogging()
     pImpl_->toggleLogging();
 }
 
-ostream& MachLogMachineMotionSequencer::traceConvoyData(ostream& o) const
+std::ostream& MachLogMachineMotionSequencer::traceConvoyData(std::ostream& o) const
 {
     CB_DEPIMPL(MachLogMobile*, pLogMobile_);
     CB_DEPIMPL(MachLogMachineConvoy*, pConvoy_);

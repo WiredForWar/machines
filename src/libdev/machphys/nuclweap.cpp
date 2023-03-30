@@ -82,7 +82,7 @@ void MachPhysNuclearWeapon::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysNuclearWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysNuclearWeapon& t)
 {
 
     o << "MachPhysNuclearWeapon " << (void*)&t << " start" << std::endl;

@@ -47,7 +47,7 @@ void MachPhysResourceLoading::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysResourceLoading& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysResourceLoading& t)
 {
 
     o << "MachPhysResourceLoading " << (void*)&t << " start" << std::endl;

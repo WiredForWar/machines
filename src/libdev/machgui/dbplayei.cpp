@@ -32,7 +32,7 @@ void MachGuiDbIPlayer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbIPlayer& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbIPlayer& t)
 {
 
     o << "MachGuiDbIPlayer " << (void*)&t << " start" << std::endl;

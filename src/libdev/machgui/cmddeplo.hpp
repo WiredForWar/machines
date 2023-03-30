@@ -77,7 +77,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDeployCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDeployCommand& t);
 
 private:
     // Operation deliberately revoked

@@ -83,7 +83,7 @@ private:
 
     GuiString insertionString_;
 
-    friend ostream& operator<<(ostream& o, const GuiResourceString& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiResourceString& t);
 };
 
 //////////////////////////////////////////////////////////////////////

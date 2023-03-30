@@ -15,7 +15,7 @@ public:
 
 private:
     friend class MachLogGameCreationData;
-    friend ostream& operator<<(ostream&, const MachLogGameCreationDataImpl&);
+    friend std::ostream& operator<<(std::ostream&, const MachLogGameCreationDataImpl&);
 
     MachLogGameCreationDataImpl() {};
     MachLog::RandomStarts randomStarts_;
@@ -27,7 +27,7 @@ private:
     PhysAbsoluteTime timerTickAt_;
 };
 
-ostream& operator<<(ostream& o, const MachLogGameCreationDataImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGameCreationDataImpl& t)
 {
     o << " RandomStarts " << t.randomStarts_ << std::endl;
     o << " PlayersCreationData " << t.playersCreationData_ << std::endl;
@@ -94,7 +94,7 @@ void MachLogGameCreationData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogGameCreationData& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGameCreationData& t)
 {
 
     o << "MachLogGameCreationData " << (void*)&t << " start" << std::endl;
@@ -174,7 +174,7 @@ void MachLogGameCreationData::timerTickAt(const PhysAbsoluteTime& timer)
     pImpl_->timerTickAt_ = timer;
 }
 
-ostream& operator<<(ostream& o, const MachLogGameCreationData::PlayerCreationData& data)
+std::ostream& operator<<(std::ostream& o, const MachLogGameCreationData::PlayerCreationData& data)
 {
     o << "MachLogGameCreationData::PlayerCreationData " << (void*)&data << std::endl;
     o << " type_ " << data.type_ << " colour " << data.colour_ << std::endl;

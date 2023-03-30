@@ -51,7 +51,7 @@ void MachPhysLoadingUnder::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLoadingUnder& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLoadingUnder& t)
 {
 
     o << "MachPhysLoadingUnder " << (void*)&t << " start" << std::endl;

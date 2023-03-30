@@ -35,7 +35,7 @@ protected:
     void readNetworkDetails() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiSerialNetworkMode& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSerialNetworkMode& t);
 
     MachGuiSerialNetworkMode(const MachGuiSerialNetworkMode&);
     MachGuiSerialNetworkMode& operator=(const MachGuiSerialNetworkMode&);

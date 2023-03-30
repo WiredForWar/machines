@@ -256,7 +256,7 @@ void RenIMatManager::CLASS_INVARIANT
     INVARIANT(bodies_);
 }
 
-ostream& operator<<(ostream& o, const RenIMatManager& t)
+std::ostream& operator<<(std::ostream& o, const RenIMatManager& t)
 {
     o << "----------------------------------------------------\n";
     o << "Material manager contains " << t.bodies_->size() << " materials:" << std::endl;

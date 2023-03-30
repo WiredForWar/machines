@@ -25,7 +25,7 @@ public:
     void CLASS_INVARIANT;
     //  ostream& ostr();
     //  void sendCBMessage();
-    friend ostream& operator<<(ostream& o, const BaseWindowStream& t);
+    friend std::ostream& operator<<(std::ostream& o, const BaseWindowStream& t);
 
 private:
     BaseWindowStream(const BaseWindowStream&);

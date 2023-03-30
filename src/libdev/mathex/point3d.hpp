@@ -83,7 +83,7 @@ public:
 
     bool isZeroPoint() const;
 
-    friend ostream& operator<<(ostream&, const MexPoint3d&);
+    friend std::ostream& operator<<(std::ostream&, const MexPoint3d&);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexPoint3d);

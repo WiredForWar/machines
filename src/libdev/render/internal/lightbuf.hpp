@@ -55,7 +55,7 @@ public:
     // POST(nValid() == in.size());
     void copyCoords(const RenIVertexData& in);
 
-    virtual void printDebug(ostream&) const;
+    virtual void printDebug(std::ostream&) const;
     void CLASS_INVARIANT;
 
 protected:
@@ -64,7 +64,7 @@ protected:
 private:
     // Template methods filled by derived classes.
     virtual void doCheckCapacity() = 0;
-    virtual void printVertex(ostream&, const int index) const;
+    virtual void printVertex(std::ostream&, const int index) const;
 
     RenILightingFlags flags_;
     RenIVertex* vertices_;
@@ -78,7 +78,7 @@ private:
     bool operator==(const RenILightingBuffer&);
 };
 
-ostream& operator<<(ostream&, const RenILightingBuffer&);
+std::ostream& operator<<(std::ostream&, const RenILightingBuffer&);
 
 class RenIFloatLightingBuffer : public RenILightingBuffer
 {

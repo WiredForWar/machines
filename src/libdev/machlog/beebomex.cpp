@@ -111,7 +111,7 @@ void MachLogBeeBombExplosion::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogBeeBombExplosion& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBeeBombExplosion& t)
 {
 
     o << "MachLogBeeBombExplosion " << (void*)&t << " start" << std::endl;

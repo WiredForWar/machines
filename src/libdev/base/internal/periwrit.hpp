@@ -82,7 +82,7 @@ public:
 
     void writeRawData(PerOstream& ostr, const char* ptr, size_t nBytes);
 
-    ostream& debugStream();
+    std::ostream& debugStream();
 
     void logAddresses(bool);
 
@@ -91,7 +91,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PersistenceImplementationWrite& t);
+    friend std::ostream& operator<<(std::ostream& o, const PersistenceImplementationWrite& t);
 
 private:
     // Operation deliberately revoked

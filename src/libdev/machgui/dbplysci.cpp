@@ -44,7 +44,7 @@ void MachGuiDbIPlayerScenario::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbIPlayerScenario& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbIPlayerScenario& t)
 {
 
     o << "MachGuiDbIPlayerScenario " << (void*)&t << " start" << std::endl;

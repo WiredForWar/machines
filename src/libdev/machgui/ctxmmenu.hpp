@@ -32,7 +32,7 @@ public:
     void quit();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxMainMenu& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxMainMenu& t);
 
     MachGuiCtxMainMenu(const MachGuiCtxMainMenu&);
     MachGuiCtxMainMenu& operator=(const MachGuiCtxMainMenu&);

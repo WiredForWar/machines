@@ -44,7 +44,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDatabaseHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDatabaseHandler& t);
 
     MachGuiDatabaseHandler(const MachGuiDatabaseHandler&);
     MachGuiDatabaseHandler& operator=(const MachGuiDatabaseHandler&);

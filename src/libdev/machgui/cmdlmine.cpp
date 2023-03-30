@@ -42,7 +42,7 @@ void MachGuiDropLandMineCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDropLandMineCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDropLandMineCommand& t)
 {
 
     o << "MachGuiDropLandMineCommand " << (void*)&t << " start" << std::endl;

@@ -10,14 +10,14 @@
 #include "base/private/filter.hpp"
 #include "base/internal/filtbuff.hpp"
 
-BaseFilterOstream::BaseFilterOstream(ostream& ostr)
-    : ostream(pFilterBuffer())
+BaseFilterOstream::BaseFilterOstream(std::ostream& ostr)
+    : std::ostream(pFilterBuffer())
     , pOstr_(&ostr)
 {
 }
 
 BaseFilterOstream::BaseFilterOstream()
-    : ostream(pFilterBuffer())
+    : std::ostream(pFilterBuffer())
     , pOstr_(nullptr)
 {
 }
@@ -28,7 +28,7 @@ BaseFilterOstream::~BaseFilterOstream()
     _DELETE(pBuffer_);
 }
 
-void BaseFilterOstream::stream(ostream& ostr)
+void BaseFilterOstream::stream(std::ostream& ostr)
 {
     pOstr_ = &ostr;
 }

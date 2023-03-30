@@ -32,7 +32,7 @@ enum AllocTraceOptions
     CB_ALLOC_DETAIL_BLOCKS,
     CB_ALLOC_DETAIL_NOBLOCKS
 };
-void cbAllocTrace(ostream& o, const std::string& title, AllocTraceOptions option);
+void cbAllocTrace(std::ostream& o, const std::string& title, AllocTraceOptions option);
 
 #endif
 

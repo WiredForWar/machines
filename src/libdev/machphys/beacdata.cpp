@@ -28,7 +28,7 @@ void MachPhysBeaconData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBeaconData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBeaconData& t)
 {
 
     // o << (MachPhysObjectData)t;

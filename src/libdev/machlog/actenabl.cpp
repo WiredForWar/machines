@@ -30,7 +30,7 @@ void MachLogEnableActionAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogEnableActionAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogEnableActionAction& t)
 {
 
     o << "MachLogEnableActionAction " << (void*)&t << " start" << std::endl;
@@ -56,7 +56,7 @@ MachLogEnableActionAction::newFromParser(SimCondition* pCondition, bool enabled,
 }
 
 // virtual
-void MachLogEnableActionAction::doOutputOperator(ostream& o) const
+void MachLogEnableActionAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "actionConditionKeyName_ " << actionConditionKeyName_ << std::endl;

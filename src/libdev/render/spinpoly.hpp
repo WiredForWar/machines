@@ -107,7 +107,7 @@ public:
 
     RenSpinTFPolygon& operator=(const RenSpinTFPolygon& copyMe);
 
-    friend ostream& operator<<(ostream& o, const RenSpinTFPolygon& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenSpinTFPolygon& t);
 
     void CLASS_INVARIANT;
 

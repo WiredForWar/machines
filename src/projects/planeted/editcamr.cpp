@@ -163,7 +163,7 @@ void PedCameraEditor::activateMode()
     setCameraToMarker(*pCurrentMarker_);
 }
 
-ostream& operator<<(ostream& o, const PedCameraEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedCameraEditor& t)
 {
 
     o << "PedCameraEditor " << (void*)&t << " start" << std::endl;

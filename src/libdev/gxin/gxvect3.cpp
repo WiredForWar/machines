@@ -26,7 +26,7 @@ void GXVect3::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXVect3& t)
+std::ostream& operator<<(std::ostream& o, const GXVect3& t)
 {
 
     o << t.x_ << " " << t.y_ << " " << t.z_;

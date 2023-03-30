@@ -98,7 +98,7 @@ protected:
     MachLogDatabaseHandler();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogDatabaseHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogDatabaseHandler& t);
 
     // revoked
     MachLogDatabaseHandler(const MachLogDatabaseHandler&);

@@ -26,7 +26,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogConstructionTreeImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogConstructionTreeImpl& t);
 
     MachLogConstructionTreeImpl(const MachLogConstructionTreeImpl&);
     MachLogConstructionTreeImpl& operator=(const MachLogConstructionTreeImpl&);

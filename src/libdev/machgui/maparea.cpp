@@ -82,7 +82,7 @@ void MachGuiMapArea::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiMapArea& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMapArea& t)
 {
 
     o << "MachGuiMapArea " << (void*)&t << " start" << std::endl;

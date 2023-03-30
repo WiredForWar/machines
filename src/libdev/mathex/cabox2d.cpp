@@ -30,7 +30,7 @@ void MexCompressedAlignedBox2d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCompressedAlignedBox2d& t)
+std::ostream& operator<<(std::ostream& o, const MexCompressedAlignedBox2d& t)
 {
 
     o << " MexCAlignedBox2d: ( " << t.vmin_ << ", " << t.vmax_ << ": " << t.isEmpty_ << " )\n";

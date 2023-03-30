@@ -258,14 +258,14 @@ void perRead(PerIstream& istr, RenTTFPolygon& polygon)
     }
 }
 
-ostream& operator<<(ostream& ostr, const RenTTFPolygon& polygon)
+std::ostream& operator<<(std::ostream& ostr, const RenTTFPolygon& polygon)
 {
     polygon.write(ostr);
     return ostr;
 }
 
 // virtual
-void RenTTFPolygon::write(ostream&) const
+void RenTTFPolygon::write(std::ostream&) const
 {
 }
 
@@ -419,7 +419,7 @@ void perRead(PerIstream& istr, RenTTFRectangle& rect)
 }
 
 // virtual
-void RenTTFRectangle::write(ostream& ostr) const
+void RenTTFRectangle::write(std::ostream& ostr) const
 {
     ostr << "TTF rectangle: ";
     ostr << centre() << " w=" << width() << " h=" << height();

@@ -25,7 +25,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimProjectile& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimProjectile& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(SimProjectile);
 

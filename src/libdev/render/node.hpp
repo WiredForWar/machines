@@ -26,7 +26,7 @@ public:
 
     const std::string& instanceName() const;
 
-    friend ostream& operator<<(ostream& o, const Node& t);
+    friend std::ostream& operator<<(std::ostream& o, const Node& t);
 
 private:
     // Operation deliberately revoked

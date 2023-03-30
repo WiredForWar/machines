@@ -53,8 +53,8 @@ private:
     // MATHEX_SCALAR is a non-floating-point type???
     double vx, vy, c;
 
-    friend ostream& operator<<(ostream&, const MexHalfPlane2d&);
-    friend istream& operator>>(istream&, MexHalfPlane2d&);
+    friend std::ostream& operator<<(std::ostream&, const MexHalfPlane2d&);
+    friend std::istream& operator>>(std::istream&, MexHalfPlane2d&);
 };
 
 PER_DECLARE_PERSISTENT(MexHalfPlane2d);

@@ -30,7 +30,7 @@ public:
     int zBufferBitDepth() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const RenIDriverInfo& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIDriverInfo& t);
 
 private:
     const std::string name_, description_;

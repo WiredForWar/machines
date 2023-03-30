@@ -34,7 +34,7 @@ void GuiListObserver::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiListObserver& t)
+std::ostream& operator<<(std::ostream& o, const GuiListObserver& t)
 {
 
     o << "GuiListObserver " << (void*)&t << " start" << std::endl;

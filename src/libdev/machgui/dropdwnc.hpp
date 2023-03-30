@@ -114,7 +114,7 @@ protected:
         MachGuiDropDownListBoxCreator*);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDropDownListBoxCreator& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBoxCreator& t);
 
     MachGuiDropDownListBoxCreator(const MachGuiDropDownListBoxCreator&);
     MachGuiDropDownListBoxCreator& operator=(const MachGuiDropDownListBoxCreator&);

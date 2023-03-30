@@ -261,7 +261,7 @@ void MachLogReachedLocationCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogReachedLocationCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogReachedLocationCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -276,7 +276,7 @@ const PhysRelativeTime& MachLogReachedLocationCondition::recommendedCallBackTime
 }
 
 // virtual
-void MachLogReachedLocationCondition::doOutputOperator(ostream& o) const
+void MachLogReachedLocationCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogReachedLocationCondition " << (void*)this << " start" << std::endl;

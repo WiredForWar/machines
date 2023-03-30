@@ -112,7 +112,7 @@ void MachGuiInternetNetworkMode::readNetworkDetails()
     charFocus();
 }
 
-ostream& operator<<(ostream& o, const MachGuiInternetNetworkMode& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiInternetNetworkMode& t)
 {
 
     o << "MachGuiInternetNetworkMode " << (void*)&t << " start" << std::endl;

@@ -23,7 +23,7 @@ void RenNormalMap::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenNormalMap& t)
+std::ostream& operator<<(std::ostream& o, const RenNormalMap& t)
 {
 
     o << "RenNormalMap " << (void*)&t << " start" << std::endl;

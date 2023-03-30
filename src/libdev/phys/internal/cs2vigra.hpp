@@ -99,7 +99,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysCS2dVisibilityGraph& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dVisibilityGraph& t);
 
 private:
     // Operations deliberately revoked
@@ -122,10 +122,10 @@ private:
         bool startArcChecked_; // true if the arc to findpath start has been checked and added if ok
         bool endArcChecked_; // true if the arc to findpath end has been checked and added if ok
 
-        friend ostream& operator<<(ostream&, const VertexData&);
+        friend std::ostream& operator<<(std::ostream&, const VertexData&);
     };
 
-    friend ostream& operator<<(ostream&, const VertexData&);
+    friend std::ostream& operator<<(std::ostream&, const VertexData&);
     friend bool operator==(const VertexData& lhs, const VertexData& rhs);
     friend bool operator<(const VertexData& lhs, const VertexData& rhs);
 

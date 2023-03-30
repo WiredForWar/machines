@@ -37,7 +37,7 @@ void MachGuiStopCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiStopCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStopCommand& t)
 {
 
     o << "MachGuiStopCommand " << (void*)&t << " start" << std::endl;

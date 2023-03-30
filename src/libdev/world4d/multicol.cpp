@@ -40,7 +40,7 @@ void W4dMultiColourPulseData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dMultiColourPulseData& t)
+std::ostream& operator<<(std::ostream& o, const W4dMultiColourPulseData& t)
 {
 
     o << "W4dMultiColourPulseData " << (void*)&t << " start" << std::endl;

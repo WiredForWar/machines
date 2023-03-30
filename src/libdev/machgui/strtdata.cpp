@@ -295,7 +295,7 @@ void MachGuiStartupData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiStartupData& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStartupData& t)
 {
 
     o << "MachGuiStartupData " << (void*)&t << " start" << std::endl;
@@ -1667,7 +1667,7 @@ void MachGuiStartupData::receivedHasMachinesCDMessage(const string& playerName, 
     }
 }
 
-ostream& operator<<(ostream& o, const MachGuiStartupData::PlayerInfo& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::PlayerInfo& t)
 {
     o << "getDisplayName " << t.getDisplayName() << std::endl;
     o << "Race           " << t.race_ << std::endl;
@@ -1676,7 +1676,7 @@ ostream& operator<<(ostream& o, const MachGuiStartupData::PlayerInfo& t)
     o << "host_          " << t.host_ << std::endl;
     return o;
 }
-ostream& operator<<(ostream& o, const MachGuiStartupData::GameSettings& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::GameSettings& t)
 {
     o << "mapSizeId_ " << t.mapSizeId_ << std::endl;
     o << "terrainTypeId_ " << t.terrainTypeId_ << std::endl;
@@ -1695,7 +1695,7 @@ ostream& operator<<(ostream& o, const MachGuiStartupData::GameSettings& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachGuiStartupData::PlayerInfo::Status& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::PlayerInfo::Status& t)
 {
     switch (t)
     {

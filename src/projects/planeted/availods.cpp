@@ -77,7 +77,7 @@ const SysPathName& PedAvailableTileLods::current()
     return files()[lodIndex_].pathName();
 }
 
-ostream& operator<<(ostream& o, const PedAvailableTileLods& t)
+std::ostream& operator<<(std::ostream& o, const PedAvailableTileLods& t)
 {
 
     o << "PedAvailableTileLods " << (void*)&t << " start" << std::endl;

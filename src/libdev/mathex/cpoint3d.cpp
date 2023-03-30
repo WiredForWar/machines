@@ -33,7 +33,7 @@ void MexCompressedPoint3d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCompressedPoint3d& t)
+std::ostream& operator<<(std::ostream& o, const MexCompressedPoint3d& t)
 {
 
     o << " MexCPoint3d: ( " << t.point_[0] << ", " << t.point_[1] << ", " << t.point_[2] << " )\n";

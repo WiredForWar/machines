@@ -189,7 +189,7 @@ bool MachLogPatrolOperation::doIsFinished() const
     return finished_;
 }
 
-void MachLogPatrolOperation::doOutputOperator(ostream& o) const
+void MachLogPatrolOperation::doOutputOperator(std::ostream& o) const
 {
     // HAL_STREAM("MLPatrolOp::doOutputOperator\n");
     o << "MachPatrolOperation " << std::endl;

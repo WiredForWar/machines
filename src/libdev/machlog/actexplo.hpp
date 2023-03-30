@@ -33,11 +33,11 @@ public:
 
 protected:
     void doAction() override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogExplosionAction(SimCondition*, bool enabled);
-    friend ostream& operator<<(ostream& o, const MachLogExplosionAction& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogExplosionAction& t);
 
     MachLogExplosionAction(const MachLogExplosionAction&);
     MachLogExplosionAction& operator=(const MachLogExplosionAction&);

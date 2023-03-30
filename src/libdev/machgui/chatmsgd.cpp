@@ -89,7 +89,7 @@ void MachGuiInGameChatMessagesDisplay::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiInGameChatMessagesDisplay& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessagesDisplay& t)
 {
 
     o << "MachGuiInGameChatMessagesDisplay " << (void*)&t << " start" << std::endl;

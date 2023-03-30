@@ -169,7 +169,7 @@ bool MachLogSpacialManipulation::getNextInCircularPattern(
 
 /////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogSpacialManipulation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSpacialManipulation& t)
 {
 
     o << "MachLogSpacialManipulation " << (void*)&t << " start" << std::endl;

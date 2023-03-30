@@ -139,7 +139,7 @@ void MachGuiSoundManager::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiSoundManager& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t)
 {
 
     o << "MachGuiSoundManager " << (void*)&t << " start" << std::endl;

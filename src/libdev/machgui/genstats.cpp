@@ -125,7 +125,7 @@ string MachGuiGeneralStatistics::truncate(const string& name)
     return truncatedName;
 }
 
-ostream& operator<<(ostream& o, const MachGuiGeneralStatistics& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiGeneralStatistics& t)
 {
 
     o << "MachGuiGeneralStatistics " << (void*)&t << " start" << std::endl;

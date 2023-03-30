@@ -46,7 +46,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysTimedAnglePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysTimedAnglePlan& t);
 
     // Override defines pResult as a function of timeOffset.
     // If time is greater than duration, the transform at time duration is returned.

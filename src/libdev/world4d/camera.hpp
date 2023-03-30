@@ -70,7 +70,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dCamera);
 
 protected:
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
 
 private:
     //  Allow the scene manager render method to call the camera render methods.

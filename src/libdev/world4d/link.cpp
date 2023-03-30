@@ -52,7 +52,7 @@ W4dLink::~W4dLink()
 }
 
 // virtual
-void W4dLink::doDebugOutput(ostream& ostr)
+void W4dLink::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     ostr << "Start W4dLink " << (void*)this << std::endl;

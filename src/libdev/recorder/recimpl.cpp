@@ -284,7 +284,7 @@ bool RecRecorderImplementation::recordingAllowed() const
     return allowedCount_ == 0;
 }
 
-void RecRecorderImplementation::writeDriveInfo(ostream& o) const
+void RecRecorderImplementation::writeDriveInfo(std::ostream& o) const
 {
     if (time() > updateDiskSpaceTime_)
     {
@@ -324,7 +324,7 @@ void RecRecorderImplementation::writeDriveInfo(ostream& o) const
     }
 }
 
-void RecRecorderImplementation::writeTime(ostream& o, double timeSeconds) const
+void RecRecorderImplementation::writeTime(std::ostream& o, double timeSeconds) const
 {
     size_t hours = timeSeconds / 3600.0;
     timeSeconds -= hours * 3600.0;
@@ -348,7 +348,7 @@ void RecRecorderImplementation::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RecRecorderImplementation& t)
+std::ostream& operator<<(std::ostream& o, const RecRecorderImplementation& t)
 {
     if (t.state() == RecRecorder::RECORDING)
     {
@@ -369,7 +369,7 @@ ostream& operator<<(ostream& o, const RecRecorderImplementation& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, RecRecorderImplementation::RecordType type)
+std::ostream& operator<<(std::ostream& o, RecRecorderImplementation::RecordType type)
 {
     switch (type)
     {

@@ -64,7 +64,7 @@ void RenIDelayedCoplanarGroup::render()
     // TBD: post-conditions etc. would be nice.
 }
 
-void RenIDelayedCoplanarGroup::print(ostream& o) const
+void RenIDelayedCoplanarGroup::print(std::ostream& o) const
 {
     o << "Delayed co-planar, depth=" << depth() << ", " << material_;
 }

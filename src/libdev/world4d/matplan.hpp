@@ -51,7 +51,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dMaterialPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dMaterialPlan& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(W4dMaterialPlan);
     PER_FRIEND_READ_WRITE(W4dMaterialPlan);

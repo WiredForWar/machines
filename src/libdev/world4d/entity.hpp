@@ -328,11 +328,11 @@ public:
 
     ////////////////////////////////////////////////
 
-    void debugOutput(ostream& ostr);
+    void debugOutput(std::ostream& ostr);
     // Write out the details of 'this' and all its children for debugging
     // purposes.
 
-    void debugOutputChildList(ostream& ostr) const;
+    void debugOutputChildList(std::ostream& ostr) const;
     // Write out the childlist for debugging purposes
 
     void CLASS_INVARIANT;
@@ -382,7 +382,7 @@ protected:
     W4dEntity(const W4dEntity& copyMe, W4dEntity* pParent, const W4dTransform3d& localTransform);
 
     // Write out the details of 'this' for debugging purposes.
-    virtual void doDebugOutput(ostream&) {};
+    virtual void doDebugOutput(std::ostream&) {};
 
     // Read in a level of detail file and add all of the
     // referenced meshes to this.
@@ -633,7 +633,7 @@ private:
 };
 
 // Prints debugging info.
-ostream& operator<<(ostream& s, const W4dEntity* entity);
+std::ostream& operator<<(std::ostream& s, const W4dEntity* entity);
 
 PER_DECLARE_PERSISTENT(W4dEntity);
 

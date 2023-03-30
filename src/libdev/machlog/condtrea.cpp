@@ -56,7 +56,7 @@ void MachLogTechniciansTreacheriedCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogTechniciansTreacheriedCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogTechniciansTreacheriedCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -71,7 +71,7 @@ const PhysRelativeTime& MachLogTechniciansTreacheriedCondition::recommendedCallB
 }
 
 // virtual
-void MachLogTechniciansTreacheriedCondition::doOutputOperator(ostream& o) const
+void MachLogTechniciansTreacheriedCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogTechniciansTreacheriedCondition " << (void*)this << " start" << std::endl;

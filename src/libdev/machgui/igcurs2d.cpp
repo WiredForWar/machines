@@ -110,7 +110,7 @@ void MachInGameCursors2d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachInGameCursors2d& t)
+std::ostream& operator<<(std::ostream& o, const MachInGameCursors2d& t)
 {
 
     o << "MachInGameCursors2d " << (void*)&t << " start" << std::endl;

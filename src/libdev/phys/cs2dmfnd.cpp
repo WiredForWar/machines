@@ -484,7 +484,7 @@ bool PhysCS2dDomainFindPath::DomainAStarAlg::vertexAvailable(const PhysCS2dDomai
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dDomainFindPath& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainFindPath& t)
 {
     o << "PhysCS2dDomainFindPath " << (void*)&t << " ";
 

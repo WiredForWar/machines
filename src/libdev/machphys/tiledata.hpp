@@ -64,7 +64,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysTileData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTileData& t);
 
     PER_MEMBER_PERSISTENT(MachPhysTileData);
     PER_FRIEND_READ_WRITE(MachPhysTileData);

@@ -22,7 +22,7 @@
 class mexPoint2d;
 // forward declarations
 template <class P_ITEM> class PhysAlignedBSPTree2d;
-template <class P_ITEM> ostream& operator<<(ostream& o, const PhysAlignedBSPTree2d<P_ITEM>& t);
+template <class P_ITEM> std::ostream& operator<<(std::ostream& o, const PhysAlignedBSPTree2d<P_ITEM>& t);
 
 // The tree stores pointers to objects of class 'ITEM'
 template <class P_ITEM> class PhysAlignedBSPTree2d
@@ -74,7 +74,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<< <>(ostream& o, const PhysAlignedBSPTree2d<P_ITEM>& t);
+    friend std::ostream& operator<< <>(std::ostream& o, const PhysAlignedBSPTree2d<P_ITEM>& t);
 
 private:
     // Operations deliberately revoked
@@ -144,7 +144,7 @@ private:
     bool split(const MexAlignedBox2d boundary, MexAlignedBox2d* pLeftBoundary, MexAlignedBox2d* pRightBoundary) const;
 
     // writes partition data
-    void trace(const Partition& partition, const MexAlignedBox2d& partitionBoundary, ostream& o) const;
+    void trace(const Partition& partition, const MexAlignedBox2d& partitionBoundary, std::ostream& o) const;
 
     // Data members
     MexAlignedBox2d boundary_; // The outer boundary of the space

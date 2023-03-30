@@ -24,7 +24,7 @@ void SysWindowsAPI::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const SysWindowsAPI& t)
+std::ostream& operator<<(std::ostream& o, const SysWindowsAPI& t)
 {
 
     o << "SysWindowsAPI " << (void*)&t << " start" << std::endl;

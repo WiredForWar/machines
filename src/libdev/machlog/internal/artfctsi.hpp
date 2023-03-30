@@ -32,7 +32,7 @@ public:
 
 private:
     friend class MachLogArtefacts;
-    friend ostream& operator<<(ostream& o, const MachLogArtefactsImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogArtefactsImpl& t);
 
     MachLogArtefactsImpl(const MachLogArtefactsImpl&);
     MachLogArtefactsImpl& operator=(const MachLogArtefactsImpl&);

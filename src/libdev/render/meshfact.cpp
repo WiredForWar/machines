@@ -62,7 +62,7 @@ void RenIMeshFactory::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenIMeshFactory&)
+std::ostream& operator<<(std::ostream& o, const RenIMeshFactory&)
 {
     return o;
 }

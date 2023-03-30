@@ -37,7 +37,7 @@ public:
 
     void startLight(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
 
-    friend ostream& operator<<(ostream& o, const MachPhysLight& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLight& t);
 
     PER_MEMBER_PERSISTENT(MachPhysLight);
     PER_FRIEND_READ_WRITE(MachPhysLight);

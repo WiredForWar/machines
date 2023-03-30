@@ -36,7 +36,7 @@ void W4dMaterialPlan::CLASS_INVARIANT
     INVARIANT(maxLOD_ >= 0);
 }
 
-ostream& operator<<(ostream& o, const W4dMaterialPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dMaterialPlan& t)
 {
 
     o << "W4dMaterialPlan " << (void*)&t << " start" << std::endl;

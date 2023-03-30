@@ -106,7 +106,7 @@ void MexTriangle2d::geometric_invariant() const
     ASSERT(edge3_.bisect(vertices_[2]) == Mathex::VANILLA, logic_error());
 }
 
-ostream& operator<<(ostream& ostr, const MexTriangle2d& t)
+std::ostream& operator<<(std::ostream& ostr, const MexTriangle2d& t)
 {
     // ostr << _STATIC_CAST( MexPolygon2d, t );
 

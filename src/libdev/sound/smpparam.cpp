@@ -325,7 +325,7 @@ bool SndSampleParameters::isPreloading() const
     return preloaded_;
 }
 
-ostream& operator<<(ostream& o, const SndSampleParameters& t)
+std::ostream& operator<<(std::ostream& o, const SndSampleParameters& t)
 {
     o << "pImpl_->initialPosition_    " << t.pImpl_->initialPosition_ << std::endl;
     o << "pImpl_->maxAudibleDistance_ " << t.pImpl_->maxAudibleDistance_ << std::endl;

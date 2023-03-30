@@ -44,7 +44,7 @@ void RecRecorder::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RecRecorder&)
+std::ostream& operator<<(std::ostream& o, const RecRecorder&)
 {
     o << RecRecorderImplementation::instance();
 

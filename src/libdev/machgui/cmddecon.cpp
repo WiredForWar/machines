@@ -53,7 +53,7 @@ void MachGuiDeconstructCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDeconstructCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDeconstructCommand& t)
 {
 
     o << "MachGuiDeconstructCommand " << (void*)&t << " start" << std::endl;

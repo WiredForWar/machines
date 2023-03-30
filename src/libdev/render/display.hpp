@@ -210,8 +210,8 @@ private:
     bool operator==(const RenDisplay&);
 };
 
-ostream& operator<<(ostream& o, const RenDisplay& t);
-ostream& operator<<(ostream& o, const RenDisplay::Mode& t);
+std::ostream& operator<<(std::ostream& o, const RenDisplay& t);
+std::ostream& operator<<(std::ostream& o, const RenDisplay::Mode& t);
 
 bool operator<(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);
 bool operator>(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);

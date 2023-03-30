@@ -63,7 +63,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dSimpleAlphaPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dSimpleAlphaPlan& t);
 
 private:
     W4dSimpleAlphaPlan(const W4dSimpleAlphaPlan&);

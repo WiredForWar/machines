@@ -70,7 +70,7 @@ public:
     virtual void stopDead() = 0;
 };
 
-ostream& operator<<(ostream&, MachPhysCanMove::OrientationInfo);
+std::ostream& operator<<(std::ostream&, MachPhysCanMove::OrientationInfo);
 
 /* //////////////////////////////////////////////////////////////// */
 

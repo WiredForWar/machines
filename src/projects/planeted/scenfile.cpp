@@ -70,7 +70,7 @@ void PedScenarioFile::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedScenarioFile& t)
+std::ostream& operator<<(std::ostream& o, const PedScenarioFile& t)
 {
 
     o << "PedScenarioFile " << (void*)&t << " start" << std::endl;

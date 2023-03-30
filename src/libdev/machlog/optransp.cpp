@@ -61,7 +61,7 @@ MachLogTransportOperation::MachLogTransportOperation(
     donePickUp_ = (startType == MachLogResourceCarrier::START_WITH_PUTDOWN);
 }
 
-void MachLogTransportOperation::doOutputOperator(ostream& o) const
+void MachLogTransportOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogTransportOperation_DEPIMPL();
 
@@ -161,7 +161,7 @@ bool MachLogTransportOperation::doBeInterrupted()
 
 /* //////////////////////////////////////////////////////////////// */
 
-ostream& operator<<(ostream& o, const MachLogTransportOperation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogTransportOperation& t)
 {
     o << "MachLogTransportOperation " << (void*)&t << " start" << std::endl;
     o << "MachLogTransportOperation " << (void*)&t << " end" << std::endl;

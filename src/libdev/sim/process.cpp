@@ -339,7 +339,7 @@ void SimProcess::add(SimActor* pActor)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const SimProcess& t)
+std::ostream& operator<<(std::ostream& o, const SimProcess& t)
 {
 
     o << "SimProcess " << (void*)&t << " start" << std::endl;
@@ -353,7 +353,7 @@ ostream& operator<<(ostream& o, const SimProcess& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const SimProcess::ToBeUpdated& t)
+std::ostream& operator<<(std::ostream& o, const SimProcess::ToBeUpdated& t)
 {
     switch (t)
     {

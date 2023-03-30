@@ -27,7 +27,7 @@ void MachLogAttackFilter::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogAttackFilter& t)
+std::ostream& operator<<(std::ostream& o, const MachLogAttackFilter& t)
 {
 
     o << "MachLogAttackFilter " << (void*)&t << " start" << std::endl;

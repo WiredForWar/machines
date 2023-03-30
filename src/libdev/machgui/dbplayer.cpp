@@ -40,7 +40,7 @@ void MachGuiDbPlayer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbPlayer& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbPlayer& t)
 {
 
     o << "MachGuiDbPlayer " << (void*)&t << " start" << std::endl;

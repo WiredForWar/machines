@@ -33,7 +33,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogSquareSpiral& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSquareSpiral& t);
 
     MachLogSquareSpiral(const MachLogSquareSpiral&);
     MachLogSquareSpiral& operator=(const MachLogSquareSpiral&);

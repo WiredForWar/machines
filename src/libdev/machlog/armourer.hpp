@@ -46,7 +46,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogArmourer& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogArmourer& t);
 
 private:
     static MachLogWeapon* createWeapon(MachLogRace*, MachPhysWeapon*, MachActor*);

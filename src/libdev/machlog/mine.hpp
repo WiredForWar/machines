@@ -56,7 +56,7 @@ public:
     // Inherited from SimActor
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
 
     const MachPhysConstructionData& constructionData() const override;
     const MachPhysMineData& data() const;
@@ -69,7 +69,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogMine& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMine& t);
 
     MachPhys::BuildingMaterialUnits ore() const;
 

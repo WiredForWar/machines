@@ -93,7 +93,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiRecycleCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiRecycleCommand& t);
 
 private:
     // Operation deliberately revoked

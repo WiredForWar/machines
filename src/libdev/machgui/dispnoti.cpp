@@ -32,7 +32,7 @@ void MachGuiDispositionChangeNotifiable::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDispositionChangeNotifiable& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDispositionChangeNotifiable& t)
 {
 
     o << "MachGuiDispositionChangeNotifiable " << (void*)&t << " start" << std::endl;

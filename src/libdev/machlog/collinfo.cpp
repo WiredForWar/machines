@@ -89,7 +89,7 @@ void MachLogCollisionInfo::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogCollisionInfo& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCollisionInfo& t)
 {
     if (t.valid_)
     {

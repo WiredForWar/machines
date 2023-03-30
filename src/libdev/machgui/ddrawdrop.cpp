@@ -85,7 +85,7 @@ MachGuiDropDownList* MachGuiDDrawDropDownListBoxCreator::createDropDownList(
         callbackHandler_));
 }
 
-ostream& operator<<(ostream& o, const MachGuiDDrawDropDownListBoxCreator& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDDrawDropDownListBoxCreator& t)
 {
 
     o << "MachGuiDDrawDropDownListBoxCreator " << (void*)&t << " start" << std::endl;

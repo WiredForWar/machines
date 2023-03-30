@@ -104,7 +104,7 @@ void MachLogBolterWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogBolterWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBolterWeapon& t)
 {
 
     o << "MachLogBolterWeapon " << (void*)&t << " start" << std::endl;

@@ -39,7 +39,7 @@ private:
     // pointers to actors.
     void setUpViewsFromLocalVector();
 
-    friend ostream& operator<<(ostream& o, const MachLogMachinePersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachinePersistence& t);
 
     MachLogMachinePersistence(const MachLogMachinePersistence&);
     MachLogMachinePersistence& operator=(const MachLogMachinePersistence&);

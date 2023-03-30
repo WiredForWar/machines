@@ -50,7 +50,7 @@ void MachGuiCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCommand& t)
 {
 
     o << "MachGuiCommand " << (void*)&t << " start" << std::endl;

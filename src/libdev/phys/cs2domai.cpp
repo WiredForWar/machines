@@ -56,7 +56,7 @@ void PhysCS2dDomain::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dDomain& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dDomain& t)
 {
     o << "Boundary " << t.boundary_ << std::endl;
     if (t.pPolygon_ != nullptr)

@@ -34,7 +34,7 @@ void MachGuiDbTextData::CLASS_INVARIANT
     INVARIANT(pData_->tasks_.size() == pData_->tasksStartAvailable_.size());
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbTextData& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbTextData& t)
 {
 
     o << "MachGuiDbTextData " << (void*)&t << " start" << std::endl;

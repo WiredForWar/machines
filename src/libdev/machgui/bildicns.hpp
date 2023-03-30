@@ -57,7 +57,7 @@ private:
     MachBuildMenuIcons& operator=(const MachBuildMenuIcons&);
     bool operator==(const MachBuildMenuIcons&);
 
-    friend ostream& operator<<(ostream& o, const MachBuildMenuIcons& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachBuildMenuIcons& t);
 
     // Set up the list of icons
     void addIcons();

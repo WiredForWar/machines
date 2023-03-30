@@ -200,7 +200,7 @@ public:
     // PRE( secondAccelerationTime >= 0.0 );
     // PRE( totalTime >= (accelerationTime + decelerationTime) );
 
-    friend ostream& operator<<(ostream& o, const PhysRampAcceleration& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysRampAcceleration& t);
     PhysRampAcceleration& operator=(const PhysRampAcceleration& copyMe);
     ///////////////////////////////////////////////////////////
 

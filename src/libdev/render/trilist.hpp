@@ -29,7 +29,7 @@ public:
     const RenTriangle& triangle(Ren::TriangleIdx index) const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const RenTriangleList& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenTriangleList& t);
 
 private:
     RenTriangleList();

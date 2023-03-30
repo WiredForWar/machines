@@ -14,14 +14,11 @@
 #ifndef _BASE_DIAGINT_HPP
 #define _BASE_DIAGINT_HPP
 
-#include <stddef.h>
-#include <iostream>
+#include <ostream>
 
 #include "base/DiagStreamType.hpp"
 
 class DiagPointerTracker;
-
-using std::ostream;
 
 class DiagInternal
 {
@@ -33,7 +30,7 @@ public:
     static size_t nStreams();
     static const char* streamText(size_t index);
 
-    static ostream& stream(DiagStreamType type);
+    static std::ostream& stream(DiagStreamType type);
 
     static DiagPointerTracker& countedPointerTracker();
 

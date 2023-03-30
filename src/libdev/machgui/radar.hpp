@@ -58,7 +58,7 @@ protected:
     static GuiBitmap* arrowImage();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiRadar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiRadar& t);
 
     MachGuiRadar(const MachGuiRadar&);
     MachGuiRadar& operator=(const MachGuiRadar&);

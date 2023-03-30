@@ -106,7 +106,7 @@ MachLogAPC::~MachLogAPC()
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogAPC::doOutputOperator(ostream& o) const
+void MachLogAPC::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogAPC_DEPIMPL();
     o << " amountCarried " << amountCarried_ << std::endl;

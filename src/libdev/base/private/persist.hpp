@@ -95,8 +95,8 @@ public:
 
     // ----------------------------------------------------------------------------
 
-    ostream& debugWriteStream();
-    ostream& debugReadStream();
+    std::ostream& debugWriteStream();
+    std::ostream& debugReadStream();
 
     void logAddresses(bool);
 

@@ -55,7 +55,7 @@ public:
     // POST( iff( result, nodes().empty() ) );
 
 private:
-    friend ostream& operator<<(ostream&, NetSessionStatus);
+    friend std::ostream& operator<<(std::ostream&, NetSessionStatus);
 
     // new game session
     NetAppSession(const NetAppSessionName&);

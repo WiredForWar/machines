@@ -63,7 +63,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogRemoteFirstPersonManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogRemoteFirstPersonManager& t);
 
     // revoked
     MachLogRemoteFirstPersonManager(const MachLogRemoteFirstPersonManager&);

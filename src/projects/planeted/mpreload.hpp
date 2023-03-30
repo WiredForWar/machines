@@ -26,7 +26,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPreload& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPreload& t);
 
 private:
     // Operation deliberately revoked

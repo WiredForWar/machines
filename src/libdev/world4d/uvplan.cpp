@@ -31,7 +31,7 @@ bool W4dUVPlan::isDone(const PhysRelativeTime& timeOffset) const
     return duration_ <= timeOffset;
 }
 
-ostream& operator<<(ostream& o, const W4dUVPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dUVPlan& t)
 {
     t.print(o);
     return o;

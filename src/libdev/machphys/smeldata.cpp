@@ -50,7 +50,7 @@ void MachPhysSmelterData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysSmelterData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSmelterData& t)
 {
 
     // o << (MachPhysObjectData)t;

@@ -47,7 +47,7 @@ void MachPhysMushroomEdge::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMushroomEdge& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMushroomEdge& t)
 {
 
     o << "MachPhysMushroomEdge " << (void*)&t << " start" << std::endl;

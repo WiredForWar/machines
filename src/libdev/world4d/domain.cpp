@@ -205,7 +205,7 @@ const W4dDomainImpl& W4dDomain::domainImpl() const
 }
 
 // virtual
-void W4dDomain::doDebugOutput(ostream& ostr)
+void W4dDomain::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     ostr << "Start W4dDomain " << (void*)this << std::endl;
@@ -224,7 +224,7 @@ void W4dDomain::CLASS_INVARIANT
     }
 }
 
-ostream& operator<<(ostream& o, const W4dDomain& t)
+std::ostream& operator<<(std::ostream& o, const W4dDomain& t)
 {
 
     o << "W4dDomain " << (void*)&t << " start" << std::endl;

@@ -80,7 +80,7 @@ MachGuiDropDownList* MachGuiNumPlayersDropDownListBoxCreator::createDropDownList
         listBoxCreator));
 }
 
-ostream& operator<<(ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t)
 {
 
     o << "MachGuiNumPlayersDropDownListBoxCreator " << (void*)&t << " start" << std::endl;

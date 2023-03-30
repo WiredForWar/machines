@@ -80,7 +80,7 @@ void GXIdPos::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXIdPos& t)
+std::ostream& operator<<(std::ostream& o, const GXIdPos& t)
 {
 
     o << "gxid_ " << t.gxid_ << " pos_ " << t.pos_;

@@ -46,7 +46,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachProductionIcons& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachProductionIcons& t);
 
 protected:
     void doDisplay() override;

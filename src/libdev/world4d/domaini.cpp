@@ -28,7 +28,7 @@ void W4dDomainImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dDomainImpl& t)
+std::ostream& operator<<(std::ostream& o, const W4dDomainImpl& t)
 {
 
     o << "W4dDomainImpl " << (void*)&t << " start" << std::endl;

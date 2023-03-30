@@ -52,7 +52,7 @@ protected:
     // PRE( pListBox_);
 
 private:
-    friend ostream& operator<<(ostream& o, const GuiSingleSelectionListBoxItem& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiSingleSelectionListBoxItem& t);
 
     GuiSingleSelectionListBoxItem(const GuiSingleSelectionListBoxItem&);
     GuiSingleSelectionListBoxItem& operator=(const GuiSingleSelectionListBoxItem&);

@@ -91,7 +91,7 @@ void PedVertexMarker::addSmallBox(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALA
     renMesh.addLine(MexPoint3d(x - 1, y + 1, z), MexPoint3d(x - 1, y + 1, z + 2), mat);
 }
 
-ostream& operator<<(ostream& o, const PedVertexMarker& t)
+std::ostream& operator<<(std::ostream& o, const PedVertexMarker& t)
 {
 
     o << "PedVertexMarker " << (void*)&t << " start" << std::endl;

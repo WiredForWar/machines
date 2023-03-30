@@ -44,7 +44,7 @@ MachLogTaskLocateOperation::~MachLogTaskLocateOperation()
 {
 }
 
-void MachLogTaskLocateOperation::doOutputOperator(ostream& o) const
+void MachLogTaskLocateOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTaskLocateOperation" << std::endl;
     o << "complete_ " << complete_ << " max range from pod " << maxRangeFromPod_ << std::endl;

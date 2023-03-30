@@ -704,7 +704,7 @@ void EnvPlanetEnvironment::CLASS_INVARIANT
     INVARIANT(manager_);
 }
 
-ostream& operator<<(ostream& o, const EnvPlanetEnvironment& t)
+std::ostream& operator<<(std::ostream& o, const EnvPlanetEnvironment& t)
 {
     if (t.satellites_.size() > 0)
         o << *(t.satellites_[0]);

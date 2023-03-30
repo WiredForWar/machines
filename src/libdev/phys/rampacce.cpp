@@ -1015,7 +1015,7 @@ MATHEX_SCALAR PhysRampAcceleration::constantVelocityTime() const
     return totalTime_ - firstAccelerationTime_ - secondAccelerationTime_;
 }
 
-ostream& operator<<(ostream& stream, const PhysRampAcceleration& t)
+std::ostream& operator<<(std::ostream& stream, const PhysRampAcceleration& t)
 {
     stream << "start speed              " << t.startSpeed_ << std::endl;
     stream << "constant speed           " << t.constantSpeed() << std::endl;

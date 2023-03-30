@@ -29,7 +29,7 @@ void MachPhysPlanetSurfaceImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPlanetSurfaceImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurfaceImpl& t)
 {
 
     o << "MachPhysPlanetSurfaceImpl " << (void*)&t << " start" << std::endl;

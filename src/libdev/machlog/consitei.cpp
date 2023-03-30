@@ -25,7 +25,7 @@ void MachLogConstructionItemImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogConstructionItemImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogConstructionItemImpl& t)
 {
 
     o << "MachLogConstructionItemImpl " << (void*)&t << " start" << std::endl;

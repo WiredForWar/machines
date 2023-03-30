@@ -77,7 +77,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MexConvexPolygon2d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexConvexPolygon2d& t);
 
     bool operator==(const MexConvexPolygon2d&);
 

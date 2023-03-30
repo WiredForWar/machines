@@ -156,7 +156,7 @@ void MachGuiCtxDeBriefing::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxDeBriefing& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxDeBriefing& t)
 {
 
     o << "MachGuiCtxDeBriefing " << (void*)&t << " start" << std::endl;

@@ -54,7 +54,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysEntityDamage);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysEntityDamage& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysEntityDamage& t);
 
     MachPhysEntityDamage(const MachPhysEntityDamage&);
     MachPhysEntityDamage& operator=(const MachPhysEntityDamage&);

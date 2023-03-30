@@ -43,7 +43,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMachineBurning& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachineBurning& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT(MachPhysMachineBurning);

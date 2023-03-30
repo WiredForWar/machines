@@ -452,7 +452,7 @@ void MachGuiCtxScenario::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxScenario& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxScenario& t)
 {
 
     o << "MachGuiCtxScenario " << (void*)&t << " start" << std::endl;

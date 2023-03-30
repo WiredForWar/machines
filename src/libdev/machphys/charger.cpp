@@ -68,7 +68,7 @@ void MachPhysSuperCharger::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysSuperCharger& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSuperCharger& t)
 {
 
     o << "MachPhysSuperCharger " << (void*)&t << " start" << std::endl;

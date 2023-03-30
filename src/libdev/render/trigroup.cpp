@@ -259,14 +259,14 @@ Ren::VertexIdx RenILineGroup::maxUsedIndices() const
     return nIndicesUsed_;
 }
 
-ostream& operator<<(ostream& ostr, const RenIMaterialGroup& group)
+std::ostream& operator<<(std::ostream& ostr, const RenIMaterialGroup& group)
 {
     group.write(ostr);
     return ostr;
 }
 
 // virtual
-void RenIMaterialGroup::write(ostream& ostr) const
+void RenIMaterialGroup::write(std::ostream& ostr) const
 {
     ostr << material_;
 }
@@ -281,14 +281,14 @@ void perRead(PerIstream& istr, RenIMaterialGroup& group)
     istr >> group.material_;
 }
 
-ostream& operator<<(ostream& ostr, const RenITriangleGroup& group)
+std::ostream& operator<<(std::ostream& ostr, const RenITriangleGroup& group)
 {
     group.write(ostr);
     return ostr;
 }
 
 // virtual
-void RenITriangleGroup::write(ostream& ostr) const
+void RenITriangleGroup::write(std::ostream& ostr) const
 {
     RenIMaterialGroup::write(ostr);
 }
@@ -305,14 +305,14 @@ void perRead(PerIstream& istr, RenITriangleGroup& group)
     istr >> base >> group.backFace_;
 }
 
-ostream& operator<<(ostream& ostr, const RenIDistinctGroup& group)
+std::ostream& operator<<(std::ostream& ostr, const RenIDistinctGroup& group)
 {
     group.write(ostr);
     return ostr;
 }
 
 // virtual
-void RenIDistinctGroup::write(ostream& ostr) const
+void RenIDistinctGroup::write(std::ostream& ostr) const
 {
     RenITriangleGroup::write(ostr);
 }
@@ -335,14 +335,14 @@ void perRead(PerIstream& istr, RenIDistinctGroup& group)
     istr >> group.nIndicesUsed_;
 }
 
-ostream& operator<<(ostream& ostr, const RenILineGroup& group)
+std::ostream& operator<<(std::ostream& ostr, const RenILineGroup& group)
 {
     group.write(ostr);
     return ostr;
 }
 
 // virtual
-void RenILineGroup::write(ostream&) const
+void RenILineGroup::write(std::ostream&) const
 {
 }
 

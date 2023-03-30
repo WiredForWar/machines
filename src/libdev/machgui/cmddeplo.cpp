@@ -33,7 +33,7 @@ void MachGuiDeployCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDeployCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDeployCommand& t)
 {
 
     o << "MachGuiDeployCommand " << (void*)&t << " start" << std::endl;

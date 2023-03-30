@@ -55,7 +55,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dSolidFadedAlphaPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dSolidFadedAlphaPlan& t);
 
     W4dSolidFadedAlphaPlan(const W4dSolidFadedAlphaPlan&);
     W4dSolidFadedAlphaPlan& operator=(const W4dSolidFadedAlphaPlan&);

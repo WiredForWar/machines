@@ -76,7 +76,7 @@ void PhysCS2dPolygon::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dPolygon& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dPolygon& t)
 {
 
     UtlIndentOstream indentOstr(o, "  ");

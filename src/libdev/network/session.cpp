@@ -82,7 +82,7 @@ bool NetAppSession::isEmpty() const
     return pIAppSession_->isEmpty();
 }
 
-ostream& operator<<(ostream& o, NetAppSession::NetSessionStatus status)
+std::ostream& operator<<(std::ostream& o, NetAppSession::NetSessionStatus status)
 {
     switch (status)
     {

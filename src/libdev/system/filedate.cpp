@@ -107,7 +107,7 @@ size_t SysFileDate::dayOfMonth() const
     return result;
 }
 
-ostream& operator<<(ostream& ostr, const SysFileDate& date)
+std::ostream& operator<<(std::ostream& ostr, const SysFileDate& date)
 {
     if (date.dayOfMonthSet())
     {

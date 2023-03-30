@@ -39,7 +39,7 @@ void MachGuiDefconCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDefconCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDefconCommand& t)
 {
 
     o << "MachGuiDefconCommand " << (void*)&t << " start" << std::endl;

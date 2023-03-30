@@ -30,7 +30,7 @@ public:
 
     MATHEX_SCALAR asScalar() const;
 
-    friend ostream& operator<<(ostream& o, const MexRadians& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexRadians& t);
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexRadians);
     PER_FRIEND_READ_WRITE(MexRadians);

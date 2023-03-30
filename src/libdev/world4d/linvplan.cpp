@@ -75,7 +75,7 @@ void W4dLinearFloatValuePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dLinearFloatValuePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dLinearFloatValuePlan& t)
 {
 
     o << "W4dLinearFloatValuePlan " << (void*)&t << " start" << std::endl;

@@ -36,7 +36,7 @@ void PhysTimedAnglePlanImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysTimedAnglePlanImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysTimedAnglePlanImpl& t)
 {
 
     o << "PhysTimedAnglePlanImpl " << (void*)&t << " start" << std::endl;

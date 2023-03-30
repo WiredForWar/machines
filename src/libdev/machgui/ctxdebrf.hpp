@@ -39,7 +39,7 @@ protected:
     void stopPlayingDeBriefingVoicemail();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxDeBriefing& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxDeBriefing& t);
 
     MachGuiCtxDeBriefing(const MachGuiCtxDeBriefing&);
     MachGuiCtxDeBriefing& operator=(const MachGuiCtxDeBriefing&);

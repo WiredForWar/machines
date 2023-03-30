@@ -31,7 +31,7 @@ public:
 
     const MexPoint2d& position() const;
 
-    friend ostream& operator<<(ostream& o, const PedVertexMarker& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedVertexMarker& t);
 
 private:
     // Operations deliberately revoked

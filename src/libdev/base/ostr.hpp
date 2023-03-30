@@ -21,7 +21,7 @@ class PerOstream
 {
 public:
     //  Note that ostr must be capable of accepting binary data
-    PerOstream(ostream& ostr);
+    PerOstream(std::ostream& ostr);
 
     //  Not yet implemented
     // PerOstream( const char* fileName );
@@ -54,7 +54,7 @@ private:
     PerOstreamBuffer* pFilterBuffer();
 
     PerOstreamBuffer* pBuffer_;
-    ostream& ostr_;
+    std::ostream& ostr_;
 };
 
 #endif

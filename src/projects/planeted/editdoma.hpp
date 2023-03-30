@@ -60,7 +60,7 @@ private:
     PedDomainEditor& operator=(const PedDomainEditor&);
     bool operator==(const PedDomainEditor&);
 
-    friend ostream& operator<<(ostream& o, const PedDomainEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedDomainEditor& t);
 
     void changeX(size_t fromX, size_t toX);
     void changeY(size_t fromY, size_t toY);

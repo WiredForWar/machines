@@ -30,7 +30,7 @@ public:
     void update() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxStatistics& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxStatistics& t);
 
     MachGuiCtxStatistics(const MachGuiCtxStatistics&);
     MachGuiCtxStatistics& operator=(const MachGuiCtxStatistics&);

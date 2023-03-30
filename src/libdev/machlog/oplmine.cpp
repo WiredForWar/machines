@@ -66,7 +66,7 @@ MachLogDropLandMineOperation::~MachLogDropLandMineOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogDropLandMineOperation::doOutputOperator(ostream& o) const
+void MachLogDropLandMineOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogDropLandMineOperation_DEPIMPL();
 

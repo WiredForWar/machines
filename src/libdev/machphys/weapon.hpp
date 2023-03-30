@@ -98,7 +98,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysWeapon& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysWeapon);
     PER_FRIEND_READ_WRITE(MachPhysWeapon);

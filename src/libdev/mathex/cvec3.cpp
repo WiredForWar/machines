@@ -33,7 +33,7 @@ void MexCompressedVec3::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCompressedVec3& t)
+std::ostream& operator<<(std::ostream& o, const MexCompressedVec3& t)
 {
 
     o << " MexCVec3: ( " << t.vec_[0] << ", " << t.vec_[1] << ", " << t.vec_[2] << " )" << std::endl;

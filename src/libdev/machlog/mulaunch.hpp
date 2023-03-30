@@ -27,7 +27,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogMultiLauncher& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMultiLauncher& t);
 
     // the persistence mechanism has to reset which weapons go where
     // so we have to allow it to remount the weapons.

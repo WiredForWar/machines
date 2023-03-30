@@ -109,7 +109,7 @@ void MachLogLowUnitCountCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogLowUnitCountCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogLowUnitCountCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -124,7 +124,7 @@ const PhysRelativeTime& MachLogLowUnitCountCondition::recommendedCallBackTimeGap
 }
 
 // virtual
-void MachLogLowUnitCountCondition::doOutputOperator(ostream& o) const
+void MachLogLowUnitCountCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogLowUnitCountCondition " << (void*)this << " start" << std::endl;

@@ -39,7 +39,7 @@ public:
     friend class MachLogMineralSite;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogMineralSiteImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMineralSiteImpl& t);
 
     // Operations deliberately revoked
     MachLogMineralSiteImpl(const MachLogMineralSiteImpl&);

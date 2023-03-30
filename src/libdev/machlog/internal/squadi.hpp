@@ -29,7 +29,7 @@ public:
 
 private:
     friend class MachLogSquadron;
-    friend ostream& operator<<(ostream& o, const MachLogSquadronImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSquadronImpl& t);
 
     MachLogSquadronImpl(const MachLogSquadronImpl&);
     MachLogSquadronImpl& operator=(const MachLogSquadronImpl&);

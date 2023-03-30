@@ -227,7 +227,7 @@ void MachGuiScrollArea::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiScrollArea& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiScrollArea& t)
 {
 
     o << "MachGuiScrollArea " << (void*)&t << " start" << std::endl;

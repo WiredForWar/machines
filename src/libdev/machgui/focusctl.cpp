@@ -75,7 +75,7 @@ void MachGuiFocusCapableControl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiFocusCapableControl& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiFocusCapableControl& t)
 {
 
     o << "MachGuiFocusCapableControl " << (void*)&t << " start" << std::endl;

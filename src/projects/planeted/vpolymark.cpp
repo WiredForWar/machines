@@ -63,7 +63,7 @@ void PedVerticalPolygonMarker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedVerticalPolygonMarker& t)
+std::ostream& operator<<(std::ostream& o, const PedVerticalPolygonMarker& t)
 {
     o << t.position_;
 

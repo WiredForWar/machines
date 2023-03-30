@@ -29,7 +29,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogFactoryImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogFactoryImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogFactoryImpl& t);
     friend class MachLogFactory;
 
     MachLogFactoryImpl(const MachLogFactoryImpl&);

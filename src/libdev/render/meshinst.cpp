@@ -294,7 +294,7 @@ RenMeshInstance::RenMeshInstance(PerConstructor)
 {
 }
 
-ostream& operator<<(ostream& o, const RenMeshInstance& t)
+std::ostream& operator<<(std::ostream& o, const RenMeshInstance& t)
 {
     if (t.pMesh_.isDefined())
         o << t.pMesh_;

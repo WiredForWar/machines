@@ -37,7 +37,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const NetMessage& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetMessage& t);
 
 private:
     NetMessageHeader header_;

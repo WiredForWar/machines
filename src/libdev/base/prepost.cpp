@@ -225,7 +225,7 @@ std::ostringstream& BaseAssertion::str(size_t index)
     return info_[index].str();
 }
 
-void BaseAssertion::writeLoggedInfo(ostream& o)
+void BaseAssertion::writeLoggedInfo(std::ostream& o)
 {
     for (size_t i = 0; i < N_SAVED_ENTRIES; ++i)
     {
@@ -287,7 +287,7 @@ bool BaseAssertion::InfoEntry::containsData() const
 
 //////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const BaseAssertion::InfoEntry& i)
+std::ostream& operator<<(std::ostream& o, const BaseAssertion::InfoEntry& i)
 {
     /*char buffer[ BaseAssertion::InfoEntry::MAX_DATA_LENGTH + 1 ];
 

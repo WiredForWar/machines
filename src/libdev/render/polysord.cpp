@@ -49,7 +49,7 @@ MATHEX_SCALAR RenIDepthSortedItem::depth() const
     return depth_;
 }
 
-ostream& operator<<(ostream& o, const RenIDepthSortedItem& i)
+std::ostream& operator<<(std::ostream& o, const RenIDepthSortedItem& i)
 {
     i.print(o);
     return o;
@@ -120,7 +120,7 @@ static void checkTransitivity(const ctl_vector<RenIDepthSortedItem*>& vec)
 }
 #endif
 
-ostream& operator<<(ostream& o, const ctl_vector<RenIDepthSortedItem*>& vec)
+std::ostream& operator<<(std::ostream& o, const ctl_vector<RenIDepthSortedItem*>& vec)
 {
     typedef ctl_vector<RenIDepthSortedItem*>::const_iterator It;
 

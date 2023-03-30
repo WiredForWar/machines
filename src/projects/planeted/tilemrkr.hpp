@@ -36,7 +36,7 @@ private:
     PedTileMarker& operator=(const PedTileMarker&);
     bool operator==(const PedTileMarker&);
 
-    friend ostream& operator<<(ostream& o, const PedTileMarker& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedTileMarker& t);
 };
 
 #endif

@@ -52,7 +52,7 @@ void MachLogReinforcementsAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogReinforcementsAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogReinforcementsAction& t)
 {
 
     o << "MachLogReinforcementsAction " << (void*)&t << " start" << std::endl;
@@ -212,7 +212,7 @@ MachPhys::Race MachLogReinforcementsAction::race() const
 }
 
 // virtual
-void MachLogReinforcementsAction::doOutputOperator(ostream& o) const
+void MachLogReinforcementsAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Production list size " << productionList_.size() << std::endl;

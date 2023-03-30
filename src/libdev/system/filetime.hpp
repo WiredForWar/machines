@@ -67,7 +67,7 @@ private:
     bool secondsSet_;
 };
 
-ostream& operator<<(ostream&, const SysFileTime&);
+std::ostream& operator<<(std::ostream&, const SysFileTime&);
 
 #endif
 

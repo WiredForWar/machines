@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogPulseBlob& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPulseBlob& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPulseBlob);
     PER_FRIEND_READ_WRITE(MachLogPulseBlob);

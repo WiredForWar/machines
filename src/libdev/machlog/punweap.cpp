@@ -58,7 +58,7 @@ void MachLogPunchWeapon::doFire(MachActor* pTarget, const MachLogFireData&)
     MachLogPunchWeapon::doFire(pTarget->position());
 }
 
-ostream& operator<<(ostream& o, const MachLogPunchWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPunchWeapon& t)
 {
 
     o << "MachLogPunchWeapon " << (void*)&t << " start" << std::endl;

@@ -62,7 +62,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogExpandingBlast& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogExpandingBlast& t);
 
 protected:
     MachLogRace* pRace();

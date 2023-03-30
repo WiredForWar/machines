@@ -197,7 +197,7 @@ MachActor& MachLogWeapon::owner()
     return *pOwner_;
 }
 
-ostream& operator<<(ostream& o, const MachLogWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogWeapon& t)
 {
 
     o << "MachLogWeapon " << (void*)&t << " start" << std::endl;

@@ -199,7 +199,7 @@ const string& W4dGenericRepository::key(uint index) const
         return compositeEntries_[index - nSimples].first;
 }
 
-ostream& operator<<(ostream& o, const W4dGenericRepository& t)
+std::ostream& operator<<(std::ostream& o, const W4dGenericRepository& t)
 {
 
     o << "W4dGenericRepository " << (void*)&t << " start" << std::endl;

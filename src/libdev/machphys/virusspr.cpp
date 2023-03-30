@@ -89,7 +89,7 @@ void MachPhysVirusSpreader::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysVirusSpreader& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysVirusSpreader& t)
 {
 
     o << "MachPhysVirusSpreader " << (void*)&t << " start" << std::endl;

@@ -47,7 +47,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogMachineConvoy& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachineConvoy& t);
 
 private:
     // Operation deliberately revoked

@@ -108,7 +108,7 @@ void PhysLinearScalarPlan::CLASS_INVARIANT
     INVARIANT(scales_.size() - times_.size() == 1);
 }
 
-ostream& operator<<(ostream& o, const PhysLinearScalarPlan& t)
+std::ostream& operator<<(std::ostream& o, const PhysLinearScalarPlan& t)
 {
 
     o << "PhysLinearScalarPlan " << (void*)&t << " start" << std::endl;

@@ -53,7 +53,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PuffData& t);
+    friend std::ostream& operator<<(std::ostream& o, const PuffData& t);
 
     PER_MEMBER_PERSISTENT_INLINE(PuffData);
     PER_FRIEND_READ_WRITE(PuffData);

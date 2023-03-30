@@ -902,18 +902,18 @@ void MachPhysDataParser::readParameterisedDataFile(const SysPathName& pathname)
 {
     SysMetaFile metaFile("mach1.met");
 
-    std::unique_ptr<istream> pIstream;
+    std::unique_ptr<std::istream> pIstream;
 
     if (SysMetaFile::useMetaFile())
     {
         // pIstream = _NEW( SysMetaFileIstream( metaFile, pathname, ios::text ) );
-        pIstream = std::unique_ptr<istream>(_NEW(SysMetaFileIstream(metaFile, pathname, std::ios::in)));
+        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, pathname, std::ios::in)));
     }
     else
     {
         ASSERT_FILE_EXISTS(pathname.c_str());
         // pIstream = _NEW( ifstream( pathname.c_str(), std::ios::in | ios::in ) );
-        pIstream = std::unique_ptr<istream>(_NEW(std::ifstream(pathname.c_str(), std::ios::in | std::ios::in)));
+        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(pathname.c_str(), std::ios::in | std::ios::in)));
     }
 
     UtlLineTokeniser parser(*pIstream, pathname);
@@ -2327,7 +2327,7 @@ void MachPhysDataParser::parseInteriorStation(
     store[hwIndex]->pImpl_->stations_.addStation(position, type);
 }
 
-ostream& operator<<(ostream& o, const MachPhysDataParser& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysDataParser& t)
 {
 
     o << "MachPhysDataParser " << (void*)&t << " start" << std::endl;

@@ -23,7 +23,7 @@ public:
 
     MachPhys::MineralGrade mineralGrade() const;
 
-    friend ostream& operator<<(ostream& o, const MachPhysGeoLocatorData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGeoLocatorData& t);
 
 private:
     friend class MachPhysDataParser;

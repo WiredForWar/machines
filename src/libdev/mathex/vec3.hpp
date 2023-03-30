@@ -104,7 +104,7 @@ public:
     //  within asin( MexEpsilon::instance() )
     bool parallel(const MexVec3&) const;
 
-    friend ostream& operator<<(ostream&, const MexVec3&);
+    friend std::ostream& operator<<(std::ostream&, const MexVec3&);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexVec3);

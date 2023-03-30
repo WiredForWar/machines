@@ -52,7 +52,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimEventDiary& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimEventDiary& t);
 
     //  PER_MEMBER_PERSISTANT_DEFAULT( SimEventDiary );
     PER_MEMBER_PERSISTENT_DEFAULT(SimEventDiary);

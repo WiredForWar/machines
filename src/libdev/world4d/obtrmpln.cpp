@@ -26,7 +26,7 @@ void W4dObjectTrackerMotionPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dObjectTrackerMotionPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dObjectTrackerMotionPlan& t)
 {
 
     o << "W4dObjectTrackerMotionPlan " << (void*)&t << " start" << std::endl;

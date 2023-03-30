@@ -422,7 +422,7 @@ void MachPhysSmokePuff::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysSmokePuff& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSmokePuff& t)
 {
 
     o << "MachPhysSmokePuff " << (void*)&t << " start" << std::endl;

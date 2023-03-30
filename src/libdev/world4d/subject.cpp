@@ -38,7 +38,7 @@ void W4dSubject::CLASS_INVARIANT
     //    pImpl_->physObjectPtr_.isDefined();
 }
 
-ostream& operator<<(ostream& o, const W4dSubject& t)
+std::ostream& operator<<(std::ostream& o, const W4dSubject& t)
 {
     return t.impl().write(o);
 }
@@ -77,7 +77,7 @@ void W4dSubject::notifyObservers(NotificationEvent event, int clientData)
 }
 
 // virtual
-void W4dSubject::doOutputOperator(ostream&) const
+void W4dSubject::doOutputOperator(std::ostream&) const
 {
     // Default implementation does nothing
 }

@@ -43,7 +43,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dColourPulseData);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dColourPulseData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dColourPulseData& t);
 
     W4dColourPulseData(const W4dColourPulseData&);
     W4dColourPulseData& operator=(const W4dColourPulseData&);

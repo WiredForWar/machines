@@ -67,7 +67,7 @@ void MachPhysLandMine::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLandMine& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLandMine& t)
 {
 
     o << "MachPhysLandMine " << (void*)&t << " start" << std::endl;

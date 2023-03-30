@@ -54,7 +54,7 @@ public:
     MexRadians elevation() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const EnvSatellite& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvSatellite& t);
 
 private:
     EnvOrbit* const orbit_;

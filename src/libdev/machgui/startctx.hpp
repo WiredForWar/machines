@@ -48,7 +48,7 @@ protected:
     void changeBackdrop(const char* newBackdrop);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiStartupScreenContext& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreenContext& t);
 
     MachGuiStartupScreenContext(const MachGuiStartupScreenContext&);
     MachGuiStartupScreenContext& operator=(const MachGuiStartupScreenContext&);

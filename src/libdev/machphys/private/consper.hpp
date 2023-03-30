@@ -25,7 +25,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysConstructionPersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysConstructionPersistence& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT(MachPhysConstructionPersistence);
 

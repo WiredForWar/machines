@@ -36,7 +36,7 @@ void MachGuiCameraScrollArea::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCameraScrollArea& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCameraScrollArea& t)
 {
 
     o << "MachGuiCameraScrollArea " << (void*)&t << " start" << std::endl;

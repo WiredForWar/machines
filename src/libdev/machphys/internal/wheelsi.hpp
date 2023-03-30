@@ -62,7 +62,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysWheelsImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysWheelsImpl& t);
 
     MachPhysWheelsImpl(const MachPhysWheelsImpl&);
     MachPhysWheelsImpl& operator=(const MachPhysWheelsImpl&);

@@ -51,7 +51,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSuperCharger& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSuperCharger& t);
 
     PER_MEMBER_PERSISTENT(MachPhysSuperCharger);
     PER_FRIEND_READ_WRITE(MachPhysSuperCharger);

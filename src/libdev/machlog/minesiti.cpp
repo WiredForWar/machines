@@ -37,7 +37,7 @@ void MachLogMineralSiteImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMineralSiteImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMineralSiteImpl& t)
 {
 
     o << "MachLogMineralSiteImpl " << (void*)&t << " start" << std::endl;

@@ -73,7 +73,7 @@ void MachPhysBlast::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBlast& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBlast& t)
 {
 
     o << "MachPhysBlast " << (void*)&t << " start" << std::endl;

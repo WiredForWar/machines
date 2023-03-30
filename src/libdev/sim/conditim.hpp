@@ -27,7 +27,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimConditionsManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimConditionsManager& t);
 
 private:
     SimConditionsManager();

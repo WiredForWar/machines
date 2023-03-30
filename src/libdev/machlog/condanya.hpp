@@ -39,7 +39,7 @@ public:
 
 protected:
     const PhysRelativeTime& recommendedCallBackTimeGap() const override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogAnyAllCondition(
@@ -47,7 +47,7 @@ private:
         const ctl_pvector<SimCondition>&,
         SimCondition::BooleanOperator booleanOperator);
 
-    friend ostream& operator<<(ostream& o, const MachLogAnyAllCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogAnyAllCondition& t);
 
     MachLogAnyAllCondition(const MachLogAnyAllCondition&);
     MachLogAnyAllCondition& operator=(const MachLogAnyAllCondition&);

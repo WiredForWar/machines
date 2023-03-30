@@ -168,7 +168,7 @@ void MachLogConstructionItem::activate(MachPhys::Race race)
 
 //////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogConstructionItem& t)
+std::ostream& operator<<(std::ostream& o, const MachLogConstructionItem& t)
 {
 
     o << "MachLogConstructionItem " << (void*)&t << " start" << std::endl;

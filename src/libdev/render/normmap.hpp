@@ -22,7 +22,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenNormalMap& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenNormalMap& t);
 
 private:
     // Operation deliberately revoked

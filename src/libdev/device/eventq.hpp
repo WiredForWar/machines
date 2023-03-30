@@ -102,8 +102,8 @@ private:
     bool operator==(const DevEventQueueT&);
 
 public:
-    friend inline ostream&
-    operator<<(ostream& o, const DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>& t)
+    friend inline std::ostream&
+    operator<<(std::ostream& o, const DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>& t)
     {
         o << "Event queue:" << std::endl;
 

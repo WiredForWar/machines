@@ -73,7 +73,7 @@ void MachLogPickUpOperation::CLASS_INVARIANT
     INVARIANT(pActor_->amountCarried() <= pActor_->data().capacity());
 }
 
-void MachLogPickUpOperation::doOutputOperator(ostream& o) const
+void MachLogPickUpOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogPickUpOperation_DEPIMPL();
 

@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXHier& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXHier& t);
 
     void createChildren(long);
     // PRE(nChildrenSupplied==0);

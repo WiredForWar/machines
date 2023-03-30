@@ -43,7 +43,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogBeacon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogBeacon& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogBeacon);
     PER_FRIEND_READ_WRITE(MachLogBeacon);

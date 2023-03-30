@@ -26,7 +26,7 @@ public:
     //  Close all open diagnostic streams
     void close();
 
-    friend ostream& operator<<(ostream& o, const DiagStreams& t);
+    friend std::ostream& operator<<(std::ostream& o, const DiagStreams& t);
 
 private:
     // Operation deliberately revoked

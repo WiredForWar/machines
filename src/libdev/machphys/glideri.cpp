@@ -48,7 +48,7 @@ void MachPhysGliderImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysGliderImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysGliderImpl& t)
 {
 
     o << "MachPhysGliderImpl " << (void*)&t << " start" << std::endl;

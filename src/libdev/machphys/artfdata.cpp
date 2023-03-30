@@ -42,7 +42,7 @@ void MachPhysArtefactData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysArtefactData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysArtefactData& t)
 {
 
     o << "MachPhysArtefactData " << (void*)&t << " start" << std::endl;

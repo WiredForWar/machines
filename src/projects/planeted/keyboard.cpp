@@ -41,7 +41,7 @@
     if (c != expected)                                                                                                 \
         return i;
 
-istream& operator>>(istream& i, MexPoint3d& p)
+std::istream& operator>>(std::istream& i, MexPoint3d& p)
 {
     char c;
 
@@ -56,7 +56,7 @@ istream& operator>>(istream& i, MexPoint3d& p)
     return i;
 }
 
-istream& operator>>(istream& i, MexEulerAngles& p)
+std::istream& operator>>(std::istream& i, MexEulerAngles& p)
 {
     char c;
     MATHEX_SCALAR a, e, r;

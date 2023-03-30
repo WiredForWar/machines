@@ -44,7 +44,7 @@ protected:
     bool processesMouseEvents() const override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiInGameChatMessagesDisplay& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessagesDisplay& t);
 
     MachGuiInGameChatMessagesDisplay(const MachGuiInGameChatMessagesDisplay&);
     MachGuiInGameChatMessagesDisplay& operator=(const MachGuiInGameChatMessagesDisplay&);

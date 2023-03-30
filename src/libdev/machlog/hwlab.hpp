@@ -56,7 +56,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogHardwareLab& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogHardwareLab& t);
     //  const MachLogResearchTree::ResearchItems& researchItems();
     MachLogResearchTree::ResearchItems& availableResearchItems();
     MachLogResearchTree::ResearchItems& currentResearchQueue();
@@ -89,7 +89,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogHardwareLab);
 
 protected:
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     // Operations deliberately revoked

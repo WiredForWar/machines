@@ -49,7 +49,7 @@ void MachConstructionSelectIcon::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachConstructionSelectIcon& t)
+std::ostream& operator<<(std::ostream& o, const MachConstructionSelectIcon& t)
 {
 
     o << "MachConstructionSelectIcon " << (void*)&t << " start" << std::endl;

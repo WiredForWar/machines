@@ -41,7 +41,7 @@ void RenHierarchyLoader::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenHierarchyLoader& t)
+std::ostream& operator<<(std::ostream& o, const RenHierarchyLoader& t)
 {
 
     o << "RenHierarchyLoader " << (void*)&t << " start" << std::endl;

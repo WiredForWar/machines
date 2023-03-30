@@ -70,7 +70,7 @@ void MachGuiMenuButton::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiMenuButton& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMenuButton& t)
 {
 
     o << "MachGuiMenuButton " << (void*)&t << " start" << std::endl;

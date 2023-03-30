@@ -45,7 +45,7 @@ protected:
     void updateSaveGameList();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxLoad& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxLoad& t);
 
     MachGuiCtxLoad(const MachGuiCtxLoad&);
     MachGuiCtxLoad& operator=(const MachGuiCtxLoad&);

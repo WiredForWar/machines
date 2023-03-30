@@ -134,14 +134,14 @@ void MachLogPCController::handleIdleSpyLocator(MachLogCommsId)
 {
 }
 
-ostream& operator<<(ostream& o, const MachLogPCController& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPCController& t)
 {
     t.doOutputOperator(o);
     return o;
 }
 
 // virtual
-void MachLogPCController::doOutputOperator(ostream& o) const
+void MachLogPCController::doOutputOperator(std::ostream& o) const
 {
     o << "Controller [PC] for race " << race() << std::endl;
 }

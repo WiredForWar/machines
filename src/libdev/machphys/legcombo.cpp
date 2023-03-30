@@ -437,7 +437,7 @@ MachPhysLegalWeaponCombos::legalWeaponCombos(MachPhys::MissileEmplacementSubType
     return legalWeaponCombos;
 }
 
-ostream& operator<<(ostream& o, const MachPhysLegalWeaponCombos& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLegalWeaponCombos& t)
 {
 
     o << "MachPhysLegalWeaponCombos " << (void*)&t << " start" << std::endl;

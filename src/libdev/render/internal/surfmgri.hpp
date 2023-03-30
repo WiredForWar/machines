@@ -32,7 +32,7 @@ public:
 
     void stateChange() { ++stateChanges_; }
 
-    ostream& write(ostream& o);
+    std::ostream& write(std::ostream& o);
 
 private:
     using PathNames = ctl_vector<SysPathName>;

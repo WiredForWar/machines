@@ -54,7 +54,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysShockWave& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysShockWave& t);
     using Materials = MachPhysFlame::Materials;
     static void addMaterial(MachPhysShockWave::Materials*, const RenTexture&);
 

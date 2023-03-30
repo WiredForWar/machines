@@ -33,7 +33,7 @@ public:
     void setStatistics(int, int, int, int) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiPlayerScore& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerScore& t);
 
     MachGuiPlayerScore(const MachGuiPlayerScore&);
     MachGuiPlayerScore& operator=(const MachGuiPlayerScore&);

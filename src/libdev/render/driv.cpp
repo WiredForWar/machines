@@ -65,7 +65,7 @@ void RenDriver::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenDriver& t)
+std::ostream& operator<<(std::ostream& o, const RenDriver& t)
 {
     o << t.name() << ", " << t.description();
     return o;

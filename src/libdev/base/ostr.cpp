@@ -12,7 +12,7 @@
 #include "base/persist.hpp"
 // #include "internal/ostrbuff.hpp"
 
-PerOstream::PerOstream(ostream& ostr)
+PerOstream::PerOstream(std::ostream& ostr)
     : ostr_(ostr)
 {
     Persistence::instance().registerOpenOstream();

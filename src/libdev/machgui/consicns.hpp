@@ -53,7 +53,7 @@ private:
     MachConstructMenuIcons& operator=(const MachConstructMenuIcons&);
     bool operator==(const MachConstructMenuIcons&);
 
-    friend ostream& operator<<(ostream& o, const MachConstructMenuIcons& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachConstructMenuIcons& t);
 
     // Data members...
     MachInGameScreen* pInGameScreen_;

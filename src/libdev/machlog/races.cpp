@@ -1881,7 +1881,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogRaces::outputRace(ostream& o, MachPhys::Race t)
+void MachLogRaces::outputRace(std::ostream& o, MachPhys::Race t)
 {
     o << "Race " << t << std::endl;
 
@@ -2896,7 +2896,7 @@ const size_t MachLogRaces::AINoCommandID() const
     return 0;
 }
 
-ostream& operator<<(ostream& o, const MachLogRaces::SafeActorType& actorType)
+std::ostream& operator<<(std::ostream& o, const MachLogRaces::SafeActorType& actorType)
 {
     switch (actorType)
     {
@@ -3669,7 +3669,7 @@ void MachLogRaces::unregisterDispositionChangeNotifiable(MachLogDispositionChang
         notifiables.erase(i);
 }
 
-ostream& operator<<(ostream& o, MachLogRaces::DispositionToRace d)
+std::ostream& operator<<(std::ostream& o, MachLogRaces::DispositionToRace d)
 {
     switch (d)
     {

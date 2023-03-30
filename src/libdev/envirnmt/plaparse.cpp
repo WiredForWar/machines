@@ -58,7 +58,7 @@ void EnvIPlanetParser::parse(const SysPathName& envFile, EnvPlanetEnvironment* p
     extern int yylineno; /* line # of current line, defined in lex.l */
     extern int error_count; /* count of errors, defined in err_skel.c */
     extern int yyparse(); /* defined in err_skel.c */
-    extern istream* pGlobalLexIstream;
+    extern std::istream* pGlobalLexIstream;
 
     ASSERT(pGlobalLexIstream == nullptr, "This should be nulled.");
 
@@ -246,7 +246,7 @@ void EnvIPlanetParser::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const EnvIPlanetParser& t)
+std::ostream& operator<<(std::ostream& o, const EnvIPlanetParser& t)
 {
     o << "EnvIPlanetParser " << (void*)&t << " start" << std::endl;
     o << "EnvIPlanetParser " << (void*)&t << " end" << std::endl;

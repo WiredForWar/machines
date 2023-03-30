@@ -187,7 +187,7 @@ void MachGuiCtxLoad::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxLoad& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxLoad& t)
 {
 
     o << "MachGuiCtxLoad " << (void*)&t << " start" << std::endl;

@@ -66,7 +66,7 @@ private:
     Gui::WidthAndHeight interiorDimensions_;
     Gui::WidthAndHeight exteriorDimensions_;
 
-    friend ostream& operator<<(ostream& o, const GuiBorderDimensions&);
+    friend std::ostream& operator<<(std::ostream& o, const GuiBorderDimensions&);
 };
 
 //////////////////////////////////////////////////////////////////////

@@ -111,7 +111,7 @@ template <class PLAN_TYPE> W4dPendingPlan<PLAN_TYPE>::W4dPendingPlan(PerConstruc
 {
 }
 
-template <class PLAN_TYPE> ostream& operator<<(ostream&, const W4dPendingPlan<PLAN_TYPE>&);
+template <class PLAN_TYPE> std::ostream& operator<<(std::ostream&, const W4dPendingPlan<PLAN_TYPE>&);
 
 // #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
 #include "world4d/internal/pendplan.ctf"

@@ -32,7 +32,7 @@ void MachGuiRefillLandMineCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiRefillLandMineCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiRefillLandMineCommand& t)
 {
 
     o << "MachGuiRefillLandMineCommand " << (void*)&t << " start" << std::endl;

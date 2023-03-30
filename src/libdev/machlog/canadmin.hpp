@@ -35,7 +35,7 @@ public:
     virtual void moveOutOfTheWay(MachLogMachine*);
     void moveOutOfTheWay(MachLogMachine*, int assemblyPoint);
 
-    friend ostream& operator<<(ostream& o, const MachLogCanAdminister& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogCanAdminister& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(MachLogCanAdminister);
     PER_FRIEND_READ_WRITE(MachLogCanAdminister);

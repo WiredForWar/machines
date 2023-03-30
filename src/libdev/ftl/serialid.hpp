@@ -60,7 +60,7 @@ public:
     // An invalid id.
     static FtlSerialId invalidId() { return FtlSerialId(0xFFFFFFFF); };
 
-    friend ostream& operator<<(ostream& o, const FtlSerialId& t) { return o << t.asScalar(); };
+    friend std::ostream& operator<<(std::ostream& o, const FtlSerialId& t) { return o << t.asScalar(); };
 
     // Comparators
     bool operator<(const FtlSerialId& rhs) const { return id_ < rhs.id_; };

@@ -24,7 +24,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogNetworkDataImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogNetworkDataImpl& t);
     friend class MachLogNetwork;
 
     MachLogNetworkDataImpl();

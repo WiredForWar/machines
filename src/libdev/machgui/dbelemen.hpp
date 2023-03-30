@@ -77,7 +77,7 @@ public:
     PER_FRIEND_READ_WRITE(MachGuiDbElement);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDbElement& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbElement& t);
 
     MachGuiDbElement(const MachGuiDbElement&);
     MachGuiDbElement& operator=(const MachGuiDbElement&);

@@ -344,7 +344,7 @@ void MachPhysTileBoundary::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachPhysTileBoundary& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysTileBoundary& t)
 {
 
     o << "MachPhysTileBoundary " << (void*)&t << " start" << std::endl;

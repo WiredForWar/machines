@@ -57,7 +57,7 @@ MachLogLinearProjectile* MachLogElectroCharger::createLinearProjectile(
         physWeapon().weaponData()));
 }
 
-ostream& operator<<(ostream& o, const MachLogElectroCharger& t)
+std::ostream& operator<<(std::ostream& o, const MachLogElectroCharger& t)
 {
 
     o << "MachLogElectroCharger " << (void*)&t << " start" << std::endl;

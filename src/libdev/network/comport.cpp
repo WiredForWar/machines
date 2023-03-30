@@ -33,7 +33,7 @@ void NetComPortAddress::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const NetComPortAddress& t)
+std::ostream& operator<<(std::ostream& o, const NetComPortAddress& t)
 {
 
     o << "NetComPortAddress " << (void*)&t << " start" << std::endl;

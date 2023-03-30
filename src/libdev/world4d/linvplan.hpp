@@ -33,7 +33,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dLinearFloatValuePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dLinearFloatValuePlan& t);
 
 private:
     // Operation deliberately revoked

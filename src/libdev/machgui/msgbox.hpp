@@ -55,7 +55,7 @@ protected:
     void doDisplay() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiMessageBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMessageBox& t);
 
     MachGuiMessageBox(const MachGuiMessageBox&);
     MachGuiMessageBox& operator=(const MachGuiMessageBox&);

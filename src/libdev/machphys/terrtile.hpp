@@ -100,7 +100,7 @@ private:
     // Will be destroyed at Armageddon.
     W4dRoot& exemplarRoot() const;
 
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
     // Write out the details of 'this' for debugging purposes.
 
     // data members

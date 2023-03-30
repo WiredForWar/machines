@@ -91,7 +91,7 @@ PhysRelativeTime MachLogTechnician::research()
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogTechnician::doOutputOperator(ostream& o) const
+void MachLogTechnician::doOutputOperator(std::ostream& o) const
 {
     MachLogMachine::doOutputOperator(o);
 }

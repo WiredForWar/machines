@@ -69,7 +69,7 @@ void MachPhysMetalSting::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMetalSting& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMetalSting& t)
 {
 
     o << "MachPhysMetalSting " << (void*)&t << " start" << std::endl;

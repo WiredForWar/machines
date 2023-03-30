@@ -45,7 +45,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysDoublesidedFlame);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysDoublesidedFlame& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysDoublesidedFlame& t);
 
     MachPhysDoublesidedFlame(const MachPhysDoublesidedFlame&);
     MachPhysDoublesidedFlame& operator=(const MachPhysDoublesidedFlame&);

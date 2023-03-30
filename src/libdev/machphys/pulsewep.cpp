@@ -84,7 +84,7 @@ void MachPhysPulseRifle::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPulseRifle& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPulseRifle& t)
 {
 
     o << "MachPhysPulseRifle " << (void*)&t << " start" << std::endl;
@@ -145,7 +145,7 @@ void MachPhysPulseCannon::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPulseCannon& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPulseCannon& t)
 {
 
     o << "MachPhysPulseCannon " << (void*)&t << " start" << std::endl;
@@ -207,7 +207,7 @@ void MachPhysPulseWeapon::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPulseWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPulseWeapon& t)
 {
 
     o << "MachPhysPulseWeapon " << (void*)&t << " start" << std::endl;

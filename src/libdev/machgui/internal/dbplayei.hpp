@@ -33,7 +33,7 @@ public:
 private:
     friend class MachGuiDbPlayer;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbIPlayer& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbIPlayer& t);
 
     MachGuiDbIPlayer();
     ~MachGuiDbIPlayer();

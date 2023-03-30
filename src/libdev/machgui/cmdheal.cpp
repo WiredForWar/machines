@@ -36,7 +36,7 @@ void MachGuiHealCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiHealCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiHealCommand& t)
 {
 
     o << "MachGuiHealCommand " << (void*)&t << " start" << std::endl;

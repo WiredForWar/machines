@@ -52,7 +52,7 @@ private:
     MachBuildMenu& operator=(const MachBuildMenu&);
     bool operator==(const MachBuildMenu&);
 
-    friend ostream& operator<<(ostream& o, const MachBuildMenu& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachBuildMenu& t);
 
     // The selected factory
     MachLogFactory& selectedFactory(MachInGameScreen* pInGameScreen) const;

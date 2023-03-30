@@ -51,7 +51,7 @@ void SimDiscreteEvent::CLASS_INVARIANT
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const SimDiscreteEvent& t)
+std::ostream& operator<<(std::ostream& o, const SimDiscreteEvent& t)
 {
 
     o << "SimDiscreteEvent " << (void*)&t << " start" << std::endl;
@@ -63,7 +63,7 @@ ostream& operator<<(ostream& o, const SimDiscreteEvent& t)
 /////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void SimDiscreteEvent::doOutputOperator(ostream&) const
+void SimDiscreteEvent::doOutputOperator(std::ostream&) const
 {
     // Default implementation does nothing
 }

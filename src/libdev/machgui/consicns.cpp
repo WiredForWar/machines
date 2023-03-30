@@ -54,7 +54,7 @@ void MachConstructMenuIcons::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachConstructMenuIcons& t)
+std::ostream& operator<<(std::ostream& o, const MachConstructMenuIcons& t)
 {
 
     o << "MachConstructMenuIcons " << (void*)&t << " start" << std::endl;

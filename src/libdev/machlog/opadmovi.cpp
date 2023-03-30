@@ -51,7 +51,7 @@ void MachLogAdminMoveToOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogAdminMoveToOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogAdminMoveToOperationImpl& t)
 {
 
     o << "MachLogAdminMoveToOperationImpl " << (void*)&t << " start" << std::endl;

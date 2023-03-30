@@ -107,7 +107,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const NetIRecorder& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetIRecorder& t);
 
     NetIRecorder(const NetIRecorder&);
     NetIRecorder& operator=(const NetIRecorder&);

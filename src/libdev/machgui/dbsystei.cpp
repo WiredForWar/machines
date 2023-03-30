@@ -27,7 +27,7 @@ void MachGuiDbISystem::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbISystem& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbISystem& t)
 {
 
     o << "MachGuiDbISystem " << (void*)&t << " start" << std::endl;

@@ -72,7 +72,7 @@ public:
     bool sharable() const;
     void makeNonSharable();
 
-    friend ostream& operator<<(ostream& o, const RenIMatBody& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIMatBody& t);
     void CLASS_INVARIANT;
 
     PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenIMatBody);
@@ -81,7 +81,7 @@ public:
 private:
     // Methods which the material manager can call.
     friend class RenIMatManager;
-    friend ostream& operator<<(ostream& o, const RenIMatManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIMatManager& t);
     RenIMatBody();
     RenIMatBody(const RenIMatBody&);
     RenIMatBody(const RenColour& diffuse); // also sets ambient

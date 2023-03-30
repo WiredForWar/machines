@@ -42,7 +42,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysLightSting);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysLightSting& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLightSting& t);
 
     MachPhysLightSting(const MachPhysLightSting&);
     MachPhysLightSting& operator=(const MachPhysLightSting&);

@@ -64,7 +64,7 @@ void W4dMaterialSequencePlan::CLASS_INVARIANT
     INVARIANT(materialVecPtrsVec_.size() != 0);
 }
 
-ostream& operator<<(ostream& o, const W4dMaterialSequencePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dMaterialSequencePlan& t)
 {
 
     o << "W4dMaterialSequencePlan " << (void*)&t << " start" << std::endl;

@@ -34,7 +34,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenHierarchyBuilder& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenHierarchyBuilder& t);
 
 protected:
     //  Add a frame to the hierarchy. It is the responsibility of the

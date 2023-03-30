@@ -52,7 +52,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const PhysCS2dDomainFindPathCache& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainFindPathCache& t);
 
     PhysCS2dDomainFindPathCache(const PhysCS2dDomainFindPathCache&);
     PhysCS2dDomainFindPathCache& operator=(const PhysCS2dDomainFindPathCache&);

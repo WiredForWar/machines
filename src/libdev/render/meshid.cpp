@@ -136,7 +136,7 @@ char RenIMeshID::separator()
     return 'X';
 }
 
-ostream& operator<<(ostream& o, const RenIMeshID& id)
+std::ostream& operator<<(std::ostream& o, const RenIMeshID& id)
 {
     o << id.pathName() << " " << id.combinedName() << " " << id.scale();
 

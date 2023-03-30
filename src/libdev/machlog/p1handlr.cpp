@@ -143,7 +143,7 @@ void MachLog1stPersonHandler::CLASS_INVARIANT
     INVARIANT(pData_ != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLog1stPersonHandler& t)
+std::ostream& operator<<(std::ostream& o, const MachLog1stPersonHandler& t)
 {
 
     o << "MachLog1stPersonHandler " << (void*)&t << " start" << std::endl;

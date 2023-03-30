@@ -65,8 +65,8 @@ private:
 
     MATHEX_SCALAR width_, height_, cornerWidth_, cornerHeight_;
 
-    friend ostream& operator<<(ostream&, const RenTTFTriangles&);
-    void write(ostream&) const override;
+    friend std::ostream& operator<<(std::ostream&, const RenTTFTriangles&);
+    void write(std::ostream&) const override;
 
     // Revoked.
     RenTTFTriangles& operator=(const RenTTFTriangles&);

@@ -186,7 +186,7 @@ void MachPhysLocomotionMethod::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLocomotionMethod& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLocomotionMethod& t)
 {
 
     o << "MachPhysLocomotionMethod " << (void*)&t << " start" << std::endl;

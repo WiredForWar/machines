@@ -367,7 +367,7 @@ void MachPhysWheels::firstPersonMotionAnimations(bool leftForwards, bool rightFo
     }
 }
 
-ostream& operator<<(ostream& o, const MachPhysWheels& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysWheels& t)
 {
 
     o << "MachPhysWheels " << (void*)&t << " start" << std::endl;

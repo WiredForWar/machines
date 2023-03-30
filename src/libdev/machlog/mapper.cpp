@@ -121,7 +121,7 @@ void MachLogMapper::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMapper& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMapper& t)
 {
 
     o << "MachLogMapper " << (void*)&t << " start" << std::endl;

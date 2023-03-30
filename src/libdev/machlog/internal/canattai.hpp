@@ -30,7 +30,7 @@ public:
 
 private:
     friend class MachLogCanAttack;
-    friend ostream& operator<<(ostream& o, const MachLogCanAttackImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogCanAttackImpl& t);
 
     MachLogCanAttackImpl(const MachLogCanAttackImpl&);
     MachLogCanAttackImpl& operator=(const MachLogCanAttackImpl&);

@@ -42,7 +42,7 @@ void PhysLinearTravelPlanImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysLinearTravelPlanImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysLinearTravelPlanImpl& t)
 {
 
     o << "PhysLinearTravelPlanImpl " << (void*)&t << " start" << std::endl;

@@ -71,7 +71,7 @@ std::string BaseLogBuffer::dataAsString() const
     return this->str();
 }
 
-ostream& operator<<(ostream& o, const BaseLogBuffer& t)
+std::ostream& operator<<(std::ostream& o, const BaseLogBuffer& t)
 {
     o << t.rdbuf();
 

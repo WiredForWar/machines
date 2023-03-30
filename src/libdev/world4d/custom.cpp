@@ -114,7 +114,7 @@ void W4dCustom::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dCustom& t)
+std::ostream& operator<<(std::ostream& o, const W4dCustom& t)
 {
     o << "W4dCustom " << (void*)&t << " start" << std::endl;
     o << "W4dCustom " << (void*)&t << " end" << std::endl;

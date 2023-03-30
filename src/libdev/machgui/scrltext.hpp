@@ -34,7 +34,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiScrollableText& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiScrollableText& t);
 
     MachGuiScrollableText(const MachGuiScrollableText&);
     MachGuiScrollableText& operator=(const MachGuiScrollableText&);

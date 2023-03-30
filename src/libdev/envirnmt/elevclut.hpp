@@ -44,7 +44,7 @@ public:
     int nEntries() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const EnvElevationColourTable& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvElevationColourTable& t);
 
     struct Entry
     {

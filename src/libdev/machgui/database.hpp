@@ -133,7 +133,7 @@ public:
     ///////////////////////////////////////////
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDatabase& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDatabase& t);
 
     MachGuiDatabase();
     ~MachGuiDatabase();

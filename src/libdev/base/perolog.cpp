@@ -31,7 +31,7 @@ void PersistenceObjectLog::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PersistenceObjectLog& t)
+std::ostream& operator<<(std::ostream& o, const PersistenceObjectLog& t)
 {
 
     o << "PersistenceObjectLog " << (void*)&t << " " << t.classname_ << " " << (void*)t.ptr_;

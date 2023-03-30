@@ -147,7 +147,7 @@ void RenTextureSetImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenTextureSetImpl& t)
+std::ostream& operator<<(std::ostream& o, const RenTextureSetImpl& t)
 {
 
     o << "RenTextureSetImpl " << (void*)&t << " start" << std::endl;

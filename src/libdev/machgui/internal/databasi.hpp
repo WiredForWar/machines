@@ -38,7 +38,7 @@ public:
 
 private:
     friend class MachGuiDatabase;
-    friend ostream& operator<<(ostream& o, const MachGuiIDatabase& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiIDatabase& t);
 
     MachGuiIDatabase();
     ~MachGuiIDatabase();

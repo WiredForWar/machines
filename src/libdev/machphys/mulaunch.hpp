@@ -81,7 +81,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMultiLauncher& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMultiLauncher& t);
 
     PER_MEMBER_PERSISTENT(MachPhysMultiLauncher);
 

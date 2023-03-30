@@ -46,7 +46,7 @@ protected:
     void updatePlayersList();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxCampaign& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxCampaign& t);
 
     MachGuiCtxCampaign(const MachGuiCtxCampaign&);
     MachGuiCtxCampaign& operator=(const MachGuiCtxCampaign&);

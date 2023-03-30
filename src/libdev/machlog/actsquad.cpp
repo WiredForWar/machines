@@ -37,7 +37,7 @@ void MachLogActivateSquadronsAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogActivateSquadronsAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogActivateSquadronsAction& t)
 {
 
     o << "MachLogActivateSquadronsAction " << (void*)&t << " start" << std::endl;
@@ -90,7 +90,7 @@ MachLogActivateSquadronsAction::newFromParser(SimCondition* pCondition, bool ena
 }
 
 // virtual
-void MachLogActivateSquadronsAction::doOutputOperator(ostream& o) const
+void MachLogActivateSquadronsAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Race " << race_ << std::endl;

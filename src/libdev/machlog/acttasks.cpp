@@ -36,7 +36,7 @@ void MachLogTaskStateAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogTaskStateAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogTaskStateAction& t)
 {
 
     o << "MachLogTaskStateAction " << (void*)&t << " start" << std::endl;
@@ -91,7 +91,7 @@ MachLogTaskStateAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 }
 
 // virtual
-void MachLogTaskStateAction::doOutputOperator(ostream& o) const
+void MachLogTaskStateAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Index " << taskIndex_ << " available " << isAvailable_ << " complete " << isComplete_ << std::endl;

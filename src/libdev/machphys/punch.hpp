@@ -62,7 +62,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPunchBlast& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPunchBlast& t);
     using Points = ctl_vector<MexPoint3d>; // MexPoint3d( x, y, startFrame)
 
     PER_MEMBER_PERSISTENT(MachPhysPunchBlast);

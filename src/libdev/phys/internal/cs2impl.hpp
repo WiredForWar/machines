@@ -156,7 +156,7 @@ private:
     friend class PhysCS2dDomainFindPath;
     friend class PhysCS2dVisibilityGraph;
     friend void PhysDummyFunction2();
-    friend ostream& operator<<(ostream& o, const PhysPathFindingQueueWriter& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysPathFindingQueueWriter& t);
 
     // ctor.
     PhysCS2dImpl(
@@ -342,7 +342,7 @@ private:
         MATHEX_SCALAR clearance,
         ObstacleFlags flags);
 
-    void listArcs(ostream& ostr) const;
+    void listArcs(std::ostream& ostr) const;
 
     // Data access methods
     const PhysConfigSpace2d::Mode& mode() const;
@@ -378,8 +378,8 @@ private:
     MotionChunkMap& motionChunks();
 
     // Debug tracing
-    friend ostream& operator<<(ostream& o, const PhysCS2dImpl& t);
-    void trace(ostream& o, const PhysCS2dDomainGraph& domainGraph) const;
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dImpl& t);
+    void trace(std::ostream& o, const PhysCS2dDomainGraph& domainGraph) const;
 
     // Data members
     PhysConfigSpace2d& configSpace_; // The owning space

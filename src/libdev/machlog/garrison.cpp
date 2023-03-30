@@ -100,7 +100,7 @@ void MachLogGarrison::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogGarrison& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGarrison& t)
 {
 
     o << "MachLogGarrison " << (void*)&t << " start" << std::endl;
@@ -112,7 +112,7 @@ ostream& operator<<(ostream& o, const MachLogGarrison& t)
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void MachLogGarrison::doOutputOperator(ostream& o) const
+void MachLogGarrison::doOutputOperator(std::ostream& o) const
 {
     o << *this;
     o << "Repair rate: " << data().repairRate() << std::endl;

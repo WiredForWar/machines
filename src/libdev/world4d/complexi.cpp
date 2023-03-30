@@ -244,7 +244,7 @@ void W4dComplexity::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dComplexity& t)
+std::ostream& operator<<(std::ostream& o, const W4dComplexity& t)
 {
 
     o << "W4dComplexity " << (void*)&t << " start" << std::endl;

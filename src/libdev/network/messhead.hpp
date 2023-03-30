@@ -22,7 +22,7 @@ public:
     size_t length() const;
 
 private:
-    friend ostream& operator<<(ostream&, const NetMessageHeader&);
+    friend std::ostream& operator<<(std::ostream&, const NetMessageHeader&);
     ENetPeer* sender_;
     NetPriority priority_;
     size_t length_;

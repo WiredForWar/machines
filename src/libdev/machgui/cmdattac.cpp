@@ -44,7 +44,7 @@ void MachGuiAttackCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiAttackCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiAttackCommand& t)
 {
 
     o << "MachGuiAttackCommand " << (void*)&t << " start" << std::endl;

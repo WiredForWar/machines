@@ -27,7 +27,7 @@ void MachLogResearchItemImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogResearchItemImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogResearchItemImpl& t)
 {
 
     o << "MachLogResearchItemImpl " << (void*)&t << " start" << std::endl;

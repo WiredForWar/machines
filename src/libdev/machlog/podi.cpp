@@ -29,7 +29,7 @@ void MachLogPodImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPodImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPodImpl& t)
 {
 
     o << "MachLogPodImpl " << (void*)&t << " start" << std::endl;

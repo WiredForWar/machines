@@ -48,7 +48,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GraAStarVertex<GRA_GRAPH>& t);
+    friend std::ostream& operator<<(std::ostream& o, const GraAStarVertex<GRA_GRAPH>& t);
 
 private:
     // Indicates whether a vertex is open or closed

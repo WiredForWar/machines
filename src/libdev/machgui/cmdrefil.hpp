@@ -78,7 +78,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiRefillLandMineCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiRefillLandMineCommand& t);
 
 private:
     // Operation deliberately revoked

@@ -65,7 +65,7 @@ public:
 
     void readRules(const SysPathName&);
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     void addConstructionProductionUnit(MachLogProductionUnit*);
     // go through each of the existing construction production units.
@@ -81,7 +81,7 @@ public:
     void machineCreated(const MachLogMachine&);
     void machineDestroyed(const MachLogMachine&);
 
-    friend ostream& operator<<(ostream&, const MachLogAIController&);
+    friend std::ostream& operator<<(std::ostream&, const MachLogAIController&);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogAIController);
     PER_FRIEND_READ_WRITE(MachLogAIController);

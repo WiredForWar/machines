@@ -47,7 +47,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysGeoLocator& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGeoLocator& t);
 
     PER_MEMBER_PERSISTENT(MachPhysGeoLocator);
     PER_FRIEND_READ_WRITE(MachPhysGeoLocator);

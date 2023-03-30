@@ -43,7 +43,7 @@ void NetCompoundMessage::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const NetCompoundMessage& t)
+std::ostream& operator<<(std::ostream& o, const NetCompoundMessage& t)
 {
 
     o << "NetCompoundMessage " << (void*)&t << " start" << std::endl;

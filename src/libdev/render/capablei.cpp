@@ -71,12 +71,12 @@ void RenICapabilities::setTotalTextureAndVideoMemory(const RenDevice* dev)
     totalTextureMemory_ = 256000000;
 }
 
-inline void supportMessage(ostream& o, bool supported, const char* feature)
+inline void supportMessage(std::ostream& o, bool supported, const char* feature)
 {
     o << "  " << ((supported) ? "Yes: " : "No:  ") << feature << std::endl;
 }
 
-ostream& RenICapabilities::write(ostream& o)
+std::ostream& RenICapabilities::write(std::ostream& o)
 {
     o << ((hardware_) ? "hardware" : "software") << " driver supporting:" << std::endl;
     supportMessage(o, supportsFlatAlpha_, "flat alpha");

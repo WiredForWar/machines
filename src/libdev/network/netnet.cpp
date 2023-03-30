@@ -262,7 +262,7 @@ void NetNetwork::imStuffed(bool newImStuffed)
     pNetINetwork_->imStuffed_ = newImStuffed;
 }
 
-ostream& operator<<(ostream& o, NetNetwork::NetworkProtocol protocol)
+std::ostream& operator<<(std::ostream& o, NetNetwork::NetworkProtocol protocol)
 {
     switch (protocol)
     {
@@ -315,7 +315,7 @@ void NetNetwork::disableNewPlayers()
     pNetINetwork_->disableNewPlayers();
 }
 
-void NetNetwork::outputStuffedInfo(ostream& o)
+void NetNetwork::outputStuffedInfo(std::ostream& o)
 {
     o << "******************************************\n";
     o << "*      N E T W O R K  S T U F F E D      *\n";
@@ -327,7 +327,7 @@ void NetNetwork::outputStuffedInfo(ostream& o)
     }
 }
 
-void NetNetwork::outputCurrentStatistics(ostream& o)
+void NetNetwork::outputCurrentStatistics(std::ostream& o)
 {
     o << "Network Current Statistics:\n";
     o << " sentMessages " << pNetINetwork_->sentMessages_.size() << std::endl;

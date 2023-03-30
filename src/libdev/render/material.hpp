@@ -114,8 +114,8 @@ public:
     static const RenMaterialTransform* globalTransform();
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const RenMaterial& t);
-    static void printAll(ostream&);
+    friend std::ostream& operator<<(std::ostream& o, const RenMaterial& t);
+    static void printAll(std::ostream&);
 
     // NB: 1) Equality has value semantics.  If you create two separate,
     //        but identical materials, they will compare equal.

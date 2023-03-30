@@ -28,7 +28,7 @@ void DevSdlTimeInternal::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const DevSdlTimeInternal& t)
+std::ostream& operator<<(std::ostream& o, const DevSdlTimeInternal& t)
 {
 
     o << "DevSdlTimeInternal " << (void*)&t << " start" << std::endl;

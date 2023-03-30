@@ -27,7 +27,7 @@ void MachPhysIMachineData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysIMachineData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysIMachineData& t)
 {
 
     o << "MachPhysIMachineData " << (void*)&t << " start" << std::endl;

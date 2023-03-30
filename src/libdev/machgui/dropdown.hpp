@@ -63,7 +63,7 @@ protected:
     friend class MachGuiDropDownListBoxItem;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDropDownListBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBox& t);
     void CLASS_INVARIANT;
 
     // Data members...

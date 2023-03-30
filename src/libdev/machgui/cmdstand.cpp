@@ -36,7 +36,7 @@ void MachGuiStandGroundCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiStandGroundCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStandGroundCommand& t)
 {
 
     o << "MachGuiStandGroundCommand " << (void*)&t << " start" << std::endl;

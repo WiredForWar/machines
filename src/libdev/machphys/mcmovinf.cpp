@@ -141,7 +141,7 @@ PhysRampAcceleration MachPhysMachineMoveInfo::averageProfile() const
     return acceleration;
 }
 
-ostream& operator<<(ostream& o, const MachPhysMachineMoveInfo& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMachineMoveInfo& t)
 {
     o << "MachPhysMachineMoveInfo " << (void*)&t << " start" << std::endl;
 

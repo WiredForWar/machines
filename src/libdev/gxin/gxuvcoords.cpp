@@ -78,7 +78,7 @@ void GXUVCoords::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXUVCoords& t)
+std::ostream& operator<<(std::ostream& o, const GXUVCoords& t)
 {
 
     o << "u_ " << t.u_ << "\tv_" << t.v_ << std::endl;

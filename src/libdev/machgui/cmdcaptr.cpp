@@ -49,7 +49,7 @@ void MachGuiCaptureCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCaptureCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCaptureCommand& t)
 {
 
     o << "MachGuiCaptureCommand " << (void*)&t << " start" << std::endl;

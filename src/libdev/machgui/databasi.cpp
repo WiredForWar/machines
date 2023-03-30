@@ -43,7 +43,7 @@ void MachGuiIDatabase::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiIDatabase& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiIDatabase& t)
 {
 
     o << "MachGuiIDatabase " << (void*)&t << " start" << std::endl;

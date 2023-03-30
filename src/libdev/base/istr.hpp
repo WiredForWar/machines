@@ -11,23 +11,21 @@
 #ifndef _PER_ISTR_HPP
 #define _PER_ISTR_HPP
 
-#include <iostream>
-
 #include "base/base.hpp"
+
+#include <istream>
 
 class PerIstreamBuffer;
 class PerIstreamImpl;
 class PerIstreamReporter;
 
-using std::istream;
-
 class PerIstream
 {
 public:
     //  Note that istr must be capable of accepting binary data
-    PerIstream(istream& istr);
+    PerIstream(std::istream& istr);
 
-    PerIstream(istream& istr, PerIstreamReporter*);
+    PerIstream(std::istream& istr, PerIstreamReporter*);
     // PRE( pReporter != NULL );
 
     virtual ~PerIstream();
@@ -45,7 +43,7 @@ private:
     friend class PerIstreamBuffer;
 
     PerIstreamImpl* pImpl_;
-    istream& istr_;
+    std::istream& istr_;
 };
 
 #endif

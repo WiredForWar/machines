@@ -48,7 +48,7 @@ protected:
     void doFinish() override;
     bool doBeInterrupted() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
     PhysRelativeTime doUpdate() override;
 
     MachLogConstruction* pConstruction();

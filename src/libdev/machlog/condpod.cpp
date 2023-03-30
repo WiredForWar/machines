@@ -49,7 +49,7 @@ void MachLogPodCapturedCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPodCapturedCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPodCapturedCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -64,7 +64,7 @@ const PhysRelativeTime& MachLogPodCapturedCondition::recommendedCallBackTimeGap(
 }
 
 // virtual
-void MachLogPodCapturedCondition::doOutputOperator(ostream& o) const
+void MachLogPodCapturedCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogPodCapturedCondition " << (void*)this << " start" << std::endl;

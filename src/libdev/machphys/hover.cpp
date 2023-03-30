@@ -331,7 +331,7 @@ void MachPhysHoverBoots::reviseProfile(TransformsPtr transformsPtr)
     forceUpright(transformsPtr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHoverBoots& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHoverBoots& t)
 {
 
     o << "MachPhysHoverBoots " << (void*)&t << " start" << std::endl;

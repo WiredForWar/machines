@@ -40,10 +40,10 @@ public:
 
 protected:
     const PhysRelativeTime& recommendedCallBackTimeGap() const override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogAllUnitsDeadCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogAllUnitsDeadCondition& t);
 
     MachLogAllUnitsDeadCondition(const MachLogAllUnitsDeadCondition&);
     MachLogAllUnitsDeadCondition& operator=(const MachLogAllUnitsDeadCondition&);

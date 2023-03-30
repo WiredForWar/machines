@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogBeeBomb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogBeeBomb& t);
 
     // PER_MEMBER_PERSISTENT_VIRTUAL( MachLogBeeBomb );
     // PER_FRIEND_READ_WRITE( MachLogBeeBomb );

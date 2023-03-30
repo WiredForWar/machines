@@ -88,7 +88,7 @@ public:
             return lhs.lastTimePingAsked_ < rhs.lastTimePingAsked_ and lhs.lastTimePingSet_ < rhs.lastTimePingSet_
                 and lhs.lastPingTime_ < rhs.lastPingTime_ and lhs.lastProperPingTime_ < rhs.lastProperPingTime_;
         }
-        friend ostream& operator<<(ostream& o, const NetPingInformation& pi);
+        friend std::ostream& operator<<(std::ostream& o, const NetPingInformation& pi);
     };
 
     using Ping = ctl_map<NetNodeUid, NetPingInformation, std::less<NetNodeUid>>;
@@ -114,7 +114,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream&, const NetNodeStatus&);
+    friend std::ostream& operator<<(std::ostream&, const NetNodeStatus&);
 
     NetNode(const NetNode&);
     NetNode& operator=(const NetNode&);

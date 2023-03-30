@@ -134,7 +134,7 @@ void MachLogDyingEntityEvent::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const MachLogDyingEntityEvent& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDyingEntityEvent& t)
 {
 
     o << "MachLogDyingEntityEvent " << (void*)&t << " start" << std::endl;
@@ -145,7 +145,7 @@ ostream& operator<<(ostream& o, const MachLogDyingEntityEvent& t)
 }
 
 // virtual
-void MachLogDyingEntityEvent::doOutputOperator(ostream& o) const
+void MachLogDyingEntityEvent::doOutputOperator(std::ostream& o) const
 {
     CB_DEPIMPL(const Polygons, polygons_);
     o << " Polygons.size() " << polygons_.size() << std::endl;

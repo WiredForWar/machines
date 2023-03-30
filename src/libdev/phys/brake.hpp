@@ -41,7 +41,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const Brake& t);
+    friend std::ostream& operator<<(std::ostream& o, const Brake& t);
 
 private:
     // Operation deliberately revoked

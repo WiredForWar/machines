@@ -1189,7 +1189,7 @@ void MachPhysMachine::createGliderLocomotion(MATHEX_SCALAR height)
     pLocomotionMethod_ = _NEW(MachPhysGlider(this, height));
 }
 
-ostream& operator<<(ostream& o, const MachPhysMachine& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMachine& t)
 {
 
     o << "MachPhysMachine " << t.bodyLevel() << " " << t.brainLevel() << std::endl;
@@ -1787,7 +1787,7 @@ MachPhysLocomotionMethod& MachPhysMachine::locomotionMethod()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, MachPhysCanMove::OrientationInfo info)
+std::ostream& operator<<(std::ostream& o, MachPhysCanMove::OrientationInfo info)
 {
     switch (info)
     {

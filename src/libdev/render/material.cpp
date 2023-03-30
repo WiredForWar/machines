@@ -142,14 +142,14 @@ RenMaterialTransform::~RenMaterialTransform()
     // do nothing
 }
 
-ostream& operator<<(ostream& o, const RenMaterial& t)
+std::ostream& operator<<(std::ostream& o, const RenMaterial& t)
 {
     o << *t.body_;
     return o;
 }
 
 // static
-void RenMaterial::printAll(ostream& os)
+void RenMaterial::printAll(std::ostream& os)
 {
     os << RenIMatManager::instance();
 }

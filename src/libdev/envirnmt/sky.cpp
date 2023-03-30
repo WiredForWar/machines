@@ -84,7 +84,7 @@ void EnvSky::uniformlyColourMesh(const RenColour& col, RenMesh* mesh)
     }
 }
 
-ostream& operator<<(ostream& o, const EnvSky& t)
+std::ostream& operator<<(std::ostream& o, const EnvSky& t)
 {
     t.write(o);
     return o;
@@ -149,7 +149,7 @@ void EnvUniformSky::update(W4dSceneManager* pSceneManager)
 }
 
 // VIRTUAL //
-void EnvUniformSky::write(ostream& o) const
+void EnvUniformSky::write(std::ostream& o) const
 {
     PRE(pColourTable_);
 
@@ -338,7 +338,7 @@ EnvDynamicSky::ClutComplexity EnvDynamicSky::testComplexity() const
 }
 
 // VIRTUAL //
-void EnvDynamicSky::write(ostream& o) const
+void EnvDynamicSky::write(std::ostream& o) const
 {
     TEST_INVARIANT;
 
@@ -503,7 +503,7 @@ void EnvStaticSky::update(W4dSceneManager* pSceneManager)
 }
 
 // VIRTUAL //
-void EnvStaticSky::write(ostream& o) const
+void EnvStaticSky::write(std::ostream& o) const
 {
     o << "EnvStaticSky.backgroundColour() == " << backgroundColour() << std::endl;
 }

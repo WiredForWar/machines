@@ -86,7 +86,7 @@ void GuiSimpleScrollableList::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiSimpleScrollableList& t)
+std::ostream& operator<<(std::ostream& o, const GuiSimpleScrollableList& t)
 {
 
     o << "GuiSimpleScrollableList " << (void*)&t << " start" << std::endl;

@@ -66,7 +66,7 @@ bool MachLogDeployAPCOperation::beNotified(W4dSubject*, W4dSubject::Notification
 
 /////////////////////////////////////////////////////////////////////////
 
-void MachLogDeployAPCOperation::doOutputOperator(ostream& o) const
+void MachLogDeployAPCOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogDeployAPCOperation_DEPIMPL();
 
@@ -242,7 +242,7 @@ void MachLogDeployAPCOperation::pushFurtherOut(MachLogMachine* pMachine, MATHEX_
 
 /////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogDeployAPCOperation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDeployAPCOperation& t)
 {
 
     o << "MachLogDeployAPCOperation " << (void*)&t << " start" << std::endl;

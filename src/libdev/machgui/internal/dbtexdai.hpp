@@ -29,7 +29,7 @@ public:
 private:
     friend class MachGuiDbTextData;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbITextData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbITextData& t);
 
     MachGuiDbITextData();
     ~MachGuiDbITextData();

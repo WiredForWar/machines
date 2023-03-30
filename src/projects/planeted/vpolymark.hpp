@@ -36,7 +36,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const PedVerticalPolygonMarker& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedVerticalPolygonMarker& t);
 
     PedVerticalPolygonMarker(const PedVerticalPolygonMarker&);
     PedVerticalPolygonMarker& operator=(const PedVerticalPolygonMarker&);

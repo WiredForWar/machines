@@ -100,7 +100,7 @@ void W4dLocalLightList::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dLocalLightList& t)
+std::ostream& operator<<(std::ostream& o, const W4dLocalLightList& t)
 {
 
     o << "W4dLocalLightList " << (void*)&t << " start" << std::endl;

@@ -45,7 +45,7 @@ void W4dFrameRegulator::CLASS_INVARIANT
     // INVARIANT( maxDuration_ >= idealDuration_ );
 }
 
-ostream& operator<<(ostream& o, const W4dFrameRegulator& t)
+std::ostream& operator<<(std::ostream& o, const W4dFrameRegulator& t)
 {
 
     o << "W4dFrameRegulator " << (void*)&t << " start" << std::endl;

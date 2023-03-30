@@ -23,16 +23,16 @@
 
 class BaseFilterBuffer;
 
-class BaseFilterOstream : public ostream
+class BaseFilterOstream : public std::ostream
 {
 public:
     BaseFilterOstream();
-    BaseFilterOstream(ostream& ostr);
+    BaseFilterOstream(std::ostream& ostr);
 
     ~BaseFilterOstream() override;
 
     //  Set a new output stream
-    void stream(ostream& ostr);
+    void stream(std::ostream& ostr);
 
 protected:
     void outputCharacters(const char* pBuf, size_t nChars);
@@ -57,7 +57,7 @@ private:
     BaseFilterBuffer* pFilterBuffer();
 
     BaseFilterBuffer* pBuffer_;
-    ostream* pOstr_;
+    std::ostream* pOstr_;
 };
 
 #endif

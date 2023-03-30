@@ -765,7 +765,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
 }
 
 // virtual
-void MachLogAIController::doOutputOperator(ostream& o) const
+void MachLogAIController::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogAIController_DEPIMPL();
     o << "MachLogAIController for race " << race() << std::endl;
@@ -792,7 +792,7 @@ void MachLogAIController::doOutputOperator(ostream& o) const
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogAIController& t)
+std::ostream& operator<<(std::ostream& o, const MachLogAIController& t)
 {
     t.doOutputOperator(o);
     return o;

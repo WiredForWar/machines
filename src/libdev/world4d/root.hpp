@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dRoot& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dRoot& t);
 
     int descendantCount() const;
     void adjustDescendantCount(int);
@@ -53,7 +53,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dRoot);
 
 private:
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
     // Write out the details of 'this' for debugging purposes.
 
     int descendantCount_, domainCount_;

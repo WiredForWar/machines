@@ -289,9 +289,9 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogMessageBroker& t);
-    friend ostream& operator<<(ostream& o, const MachLogMessageCode& t);
-    friend ostream& operator<<(ostream& o, const ActorNowDead& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMessageCode& t);
+    friend std::ostream& operator<<(std::ostream& o, const ActorNowDead& t);
 
 protected:
     void doSend(MachLogNetMessage*& pMessage);

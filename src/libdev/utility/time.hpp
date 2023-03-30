@@ -117,8 +117,8 @@ private:
     UtlUint64 offset_;
 };
 
-ostream& operator<<(ostream&, const UtlDebugTimer&);
-ostream& operator<<(ostream&, const UtlDebugTimer::Time&);
+std::ostream& operator<<(std::ostream&, const UtlDebugTimer&);
+std::ostream& operator<<(std::ostream&, const UtlDebugTimer::Time&);
 
 // Use for computing the time spent in any code block.  Useful for timing
 // functions. Resumes the given timer on construction, pauses it on

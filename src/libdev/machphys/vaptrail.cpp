@@ -78,7 +78,7 @@ void MachPhysVapourTrail::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysVapourTrail& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysVapourTrail& t)
 {
 
     o << "MachPhysVapourTrail " << (void*)&t << " start" << std::endl;

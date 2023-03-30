@@ -26,7 +26,7 @@ void MachLogGarrisonImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogGarrisonImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGarrisonImpl& t)
 {
 
     o << "MachLogGarrisonImpl " << (void*)&t << " start" << std::endl;

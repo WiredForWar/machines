@@ -135,7 +135,7 @@ private:
     MachCameras& operator=(const MachCameras&);
     bool operator==(const MachCameras&);
 
-    friend ostream& operator<<(ostream& o, const MachCameras& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachCameras& t);
 
     // Keeps currentCamera_ consistent with the W4dSceneManager's version.
     void useCamera(MachLogCamera*);

@@ -28,7 +28,7 @@ public:
     virtual void setStatistics(int, int, int, int) = 0;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiStatistics& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStatistics& t);
 
     MachGuiStatistics(const MachGuiStatistics&);
     MachGuiStatistics& operator=(const MachGuiStatistics&);

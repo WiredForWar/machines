@@ -86,7 +86,7 @@ private:
     PedEditorMode& operator=(const PedEditorMode&);
     bool operator==(const PedEditorMode&);
 
-    friend ostream& operator<<(ostream& o, const PedEditorMode& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedEditorMode& t);
 };
 
 #endif

@@ -47,7 +47,7 @@ void PedDomainEditor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedDomainEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedDomainEditor& t)
 {
 
     o << "PedDomainEditor " << (void*)&t << " start" << std::endl;

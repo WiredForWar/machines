@@ -105,7 +105,7 @@ private:
     MachCameras& operator=(const MachCameras&);
     bool operator==(const MachCameras&);
 
-    friend ostream& operator<<(ostream& o, const MachCameras& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachCameras& t);
 
     // Change camera to look at the pNewMachine.
     void switchThirdPerson(MachLogMachine* pNewMachine);

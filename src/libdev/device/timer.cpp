@@ -104,7 +104,7 @@ void DevTimer::direction(DevTimer::Direction newDirection)
     }
 }
 
-ostream& operator<<(ostream& o, const DevTimer& t)
+std::ostream& operator<<(std::ostream& o, const DevTimer& t)
 {
     o << t.time();
 

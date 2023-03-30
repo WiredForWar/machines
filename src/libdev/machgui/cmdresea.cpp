@@ -28,7 +28,7 @@ void MachGuiResearchCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiResearchCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiResearchCommand& t)
 {
 
     o << "MachGuiResearchCommand " << (void*)&t << " start" << std::endl;

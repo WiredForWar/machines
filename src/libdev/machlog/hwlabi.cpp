@@ -29,7 +29,7 @@ void MachLogHardwareLabImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogHardwareLabImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogHardwareLabImpl& t)
 {
 
     o << "MachLogHardwareLabImpl " << (void*)&t << " start" << std::endl;

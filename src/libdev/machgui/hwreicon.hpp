@@ -60,7 +60,7 @@ private:
     MachHWResearchIcon& operator=(const MachHWResearchIcon&);
     bool operator==(const MachHWResearchIcon&);
 
-    friend ostream& operator<<(ostream& o, const MachHWResearchIcon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachHWResearchIcon& t);
 
     // Data members
     MachInGameScreen* pInGameScreen_; // The ingame screen

@@ -81,7 +81,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dAxisTurnerPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dAxisTurnerPlan& t);
 
     W4dAxisTurnerPlan(const W4dAxisTurnerPlan&);
     W4dAxisTurnerPlan& operator=(const W4dAxisTurnerPlan&);

@@ -101,7 +101,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const RecRecorderImplementation& t);
+    friend std::ostream& operator<<(std::ostream& o, const RecRecorderImplementation& t);
 
     RecRecorderImplementation(const RecRecorderImplementation&);
     RecRecorderImplementation& operator=(const RecRecorderImplementation&);
@@ -113,11 +113,11 @@ private:
 
     bool recordingAllowed() const;
 
-    void writeDriveInfo(ostream& o) const;
+    void writeDriveInfo(std::ostream& o) const;
 
     //  This is a crude, 1/18 sec. resolution timer
     double time() const;
-    void writeTime(ostream& o, double timeSeconds) const;
+    void writeTime(std::ostream& o, double timeSeconds) const;
 
     RecRecorder::State state_;
 
@@ -142,7 +142,7 @@ private:
     double diskSpaceFreeSeconds_;
 };
 
-ostream& operator<<(ostream&, RecRecorderImplementation::RecordType);
+std::ostream& operator<<(std::ostream&, RecRecorderImplementation::RecordType);
 
 #endif
 

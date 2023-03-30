@@ -59,7 +59,7 @@ private:
     PedCameraEditor& operator=(const PedCameraEditor&);
     bool operator==(const PedCameraEditor&);
 
-    friend ostream& operator<<(ostream& o, const PedCameraEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedCameraEditor& t);
 
     void processDrop();
 

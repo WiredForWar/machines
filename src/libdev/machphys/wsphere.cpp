@@ -63,7 +63,7 @@ void MachPhysWhiteSphere::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysWhiteSphere& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysWhiteSphere& t)
 {
 
     o << "MachPhysWhiteSphere " << (void*)&t << " start" << std::endl;

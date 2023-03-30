@@ -59,7 +59,7 @@ void MachLogMachineVoiceMailManager::postNewMail(const MachActor& fromActor, Mac
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineVoiceMailManager& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineVoiceMailManager& t)
 {
 
     o << "MachLogMachineVoiceMailManager " << (void*)&t << " start" << std::endl;
@@ -68,7 +68,7 @@ ostream& operator<<(ostream& o, const MachLogMachineVoiceMailManager& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachineVoiceMailEventID id)
+std::ostream& operator<<(std::ostream& o, MachineVoiceMailEventID id)
 {
 
     switch (id)

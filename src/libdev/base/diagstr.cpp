@@ -162,7 +162,7 @@ void DiagStream::close()
 //     return exists_;
 // }
 
-ostream& DiagStream::ostr()
+std::ostream& DiagStream::ostr()
 {
     //     if( pDependantStream_ )
     //     {
@@ -180,7 +180,7 @@ ostream& DiagStream::ostr()
     //     return ostr_;
 }
 
-ostream& DiagStream::nonPrependOstr()
+std::ostream& DiagStream::nonPrependOstr()
 {
     if (pDependantStream_)
     {

@@ -104,7 +104,7 @@ void MachLogMachineMotionSequencerData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineMotionSequencerData& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencerData& t)
 {
 #ifndef PRODUCTION
     o << "  Reason for last state change: " << t.reasonForStateChange_ << std::endl;

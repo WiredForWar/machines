@@ -72,7 +72,7 @@ MachLogHealOperation::~MachLogHealOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogHealOperation::doOutputOperator(ostream& o) const
+void MachLogHealOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogHealOperation\n";
     if (pDirectObject_)

@@ -73,9 +73,9 @@ public:
     virtual void xzAverage(MATHEX_SCALAR* xzAverage, MATHEX_SCALAR* y) const = 0;
     virtual void xyAverage(MATHEX_SCALAR* xyAverage, MATHEX_SCALAR* z) const = 0;
 
-    virtual void print(ostream&) const = 0;
+    virtual void print(std::ostream&) const = 0;
     virtual RenScale* clone() const = 0;
-    friend ostream& operator<<(ostream& o, const RenScale& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenScale& t);
     virtual ~RenScale() {};
 
     PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT(RenScale);
@@ -94,7 +94,7 @@ public:
     void yzAverage(MATHEX_SCALAR* yzAverage, MATHEX_SCALAR* x) const override;
     void xzAverage(MATHEX_SCALAR* xzAverage, MATHEX_SCALAR* y) const override;
     void xyAverage(MATHEX_SCALAR* xyAverage, MATHEX_SCALAR* z) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
     RenScale* clone() const override;
     bool isUnity() const override;
     bool isUniform() const override;
@@ -121,7 +121,7 @@ public:
     void yzAverage(MATHEX_SCALAR* yzAverage, MATHEX_SCALAR* x) const override;
     void xzAverage(MATHEX_SCALAR* xzAverage, MATHEX_SCALAR* y) const override;
     void xyAverage(MATHEX_SCALAR* xyAverage, MATHEX_SCALAR* z) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
     RenScale* clone() const override;
     bool isUnity() const override;
     bool isUniform() const override;
@@ -158,7 +158,7 @@ public:
     void yzAverage(MATHEX_SCALAR* yzAverage, MATHEX_SCALAR* x) const override;
     void xzAverage(MATHEX_SCALAR* xzAverage, MATHEX_SCALAR* y) const override;
     void xyAverage(MATHEX_SCALAR* xyAverage, MATHEX_SCALAR* z) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
     RenScale* clone() const override;
     bool isUnity() const override;
     bool isUniform() const override;

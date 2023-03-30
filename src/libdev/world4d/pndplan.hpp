@@ -22,7 +22,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PLAN_TYPE<X>& t);
+    friend std::ostream& operator<<(std::ostream& o, const PLAN_TYPE<X>& t);
 
 private:
     // Operation deliberately revoked

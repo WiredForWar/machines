@@ -35,7 +35,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysCrackFireImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysCrackFireImpl& t);
     friend void perRead(PerIstream& istr, MachPhysCrackFire& crackFire);
 
     MachPhysCrackFireImpl(const MachPhysCrackFireImpl&);

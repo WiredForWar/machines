@@ -63,7 +63,7 @@ void PerIstreamImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PerIstreamImpl& t)
+std::ostream& operator<<(std::ostream& o, const PerIstreamImpl& t)
 {
 
     o << "PerIstreamImpl " << (void*)&t << " start" << std::endl;

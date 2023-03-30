@@ -23,7 +23,7 @@ public:
 
     // PRE(uOut && vOut);
     virtual void transform(float uIn, float vIn, float* uOut, float* vOut) const = 0;
-    virtual void print(ostream&) const = 0;
+    virtual void print(std::ostream&) const = 0;
 
     // A virtual copy operation.  _NEW is used to allocate the return value.
     // The caller is responsible for calling _DELETE.
@@ -58,7 +58,7 @@ public:
 
     // PRE(uOut && vOut);
     void transform(float uIn, float vIn, float* uOut, float* vOut) const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
     RenUVTransform* clone() const override;
 
     // Returns true for this class.
@@ -70,7 +70,7 @@ PER_READ_WRITE(RenUVUnityTransform);
 PER_DECLARE_PERSISTENT(RenUVUnityTransform);
 
 // A "virtual" insertion operator -- calls t.print(o).
-ostream& operator<<(ostream& o, const RenUVTransform& t);
+std::ostream& operator<<(std::ostream& o, const RenUVTransform& t);
 
 #endif
 

@@ -45,7 +45,7 @@ const NetPriority& NetMessageHeader::priority() const
     return priority_;
 }
 
-ostream& operator<<(ostream& o, const NetMessageHeader& t)
+std::ostream& operator<<(std::ostream& o, const NetMessageHeader& t)
 {
     o << "sender_   " << t.sender_ << std::endl;
     o << "priority_ " << t.priority_.urgency() << std::endl;

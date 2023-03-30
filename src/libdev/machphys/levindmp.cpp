@@ -71,7 +71,7 @@ void MachPhysLevelIndexMap::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLevelIndexMap& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLevelIndexMap& t)
 {
 
     o << "MachPhysLevelIndexMap " << (void*)&t << " start" << std::endl;

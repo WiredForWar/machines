@@ -59,7 +59,7 @@ public:
     const MexVec3& pitchAxis() const;
 
 private:
-    friend ostream& operator<<(ostream&, const PhysMotion&);
+    friend std::ostream& operator<<(std::ostream&, const PhysMotion&);
 
     const MexVec3 forwards_, left_, headingAxis_, pitchAxis_;
 };

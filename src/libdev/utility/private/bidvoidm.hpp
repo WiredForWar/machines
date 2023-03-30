@@ -59,7 +59,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const UtlBoundedIdVoidPMap& t);
+    friend std::ostream& operator<<(std::ostream& o, const UtlBoundedIdVoidPMap& t);
 
     // Operations deliberately revoked
     UtlBoundedIdVoidPMap(const UtlBoundedIdVoidPMap&);

@@ -35,7 +35,7 @@ void W4dUVTranslateData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dUVTranslateData& t)
+std::ostream& operator<<(std::ostream& o, const W4dUVTranslateData& t)
 {
 
     o << "W4dUVTranslateData " << (void*)&t << " start" << std::endl;

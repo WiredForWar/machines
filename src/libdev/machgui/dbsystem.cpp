@@ -40,7 +40,7 @@ void MachGuiDbSystem::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbSystem& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbSystem& t)
 {
 
     o << "MachGuiDbSystem " << (void*)&t << " start" << std::endl;

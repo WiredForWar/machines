@@ -54,7 +54,7 @@ void MachLogIonWeapon::doFire(const MexPoint3d& position)
     _NEW(MachLogIonBeam(&logRace(), position, physWeapon().weaponData(), &owner()));
 }
 
-ostream& operator<<(ostream& o, const MachLogIonWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogIonWeapon& t)
 {
 
     o << "MachLogIonWeapon " << (void*)&t << " start" << std::endl;

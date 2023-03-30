@@ -65,7 +65,7 @@ private:
 
 PER_DECLARE_PERSISTENT(RenIVec3FixPtS0_7);
 
-ostream& operator<<(ostream& o, const RenIVec3FixPtS0_7& v);
+std::ostream& operator<<(std::ostream& o, const RenIVec3FixPtS0_7& v);
 
 #endif
 

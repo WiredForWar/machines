@@ -58,7 +58,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogStretchy& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogStretchy& t);
 
     const MexPoint3d& globalDestructionPosition() const;
 

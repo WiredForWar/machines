@@ -104,7 +104,7 @@ public:
     PER_FRIEND_READ_WRITE(MachGuiDbScenario);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDbScenario& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbScenario& t);
 
     MachGuiDbScenario(const MachGuiDbScenario&);
     MachGuiDbScenario& operator=(const MachGuiDbScenario&);

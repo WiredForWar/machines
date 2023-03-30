@@ -37,7 +37,7 @@ protected:
     // PRE( pStartupScreens_ );
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiAutoDeleteDisplayable& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiAutoDeleteDisplayable& t);
 
     MachGuiAutoDeleteDisplayable(const MachGuiAutoDeleteDisplayable&);
     MachGuiAutoDeleteDisplayable& operator=(const MachGuiAutoDeleteDisplayable&);

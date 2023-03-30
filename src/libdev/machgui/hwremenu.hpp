@@ -48,7 +48,7 @@ private:
     MachHWResearchMenu& operator=(const MachHWResearchMenu&);
     bool operator==(const MachHWResearchMenu&);
 
-    friend ostream& operator<<(ostream& o, const MachHWResearchMenu& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachHWResearchMenu& t);
 
     // The selected hardware lab
     MachLogHardwareLab& selectedLab(MachInGameScreen* pInGameScreen) const;

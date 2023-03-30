@@ -727,7 +727,7 @@ void W4dEntity::globalTransform(const W4dTransform3d& newGlobalTransform)
     markGlobalTransformsDirty();
 }
 
-void W4dEntity::debugOutput(ostream& ostr)
+void W4dEntity::debugOutput(std::ostream& ostr)
 // Write out the details of 'this' and all its children for debugging
 // purposes.
 {
@@ -778,7 +778,7 @@ void W4dEntity::debugOutput(ostream& ostr)
     ostr << "End   W4dEntity " << (void*)this << std::endl;
 }
 
-void W4dEntity::debugOutputChildList(ostream& ostr) const
+void W4dEntity::debugOutputChildList(std::ostream& ostr) const
 {
     TEST_INVARIANT;
 
@@ -2736,7 +2736,7 @@ bool W4dEntity::doNotLight() const
 // Entity names aren't always usefully set so they don't work too well for
 // identifying entities.  In addition to the name, try to print some useful
 // info about an entity.
-ostream& operator<<(ostream& s, const W4dEntity* entity)
+std::ostream& operator<<(std::ostream& s, const W4dEntity* entity)
 {
     if (!entity)
     {

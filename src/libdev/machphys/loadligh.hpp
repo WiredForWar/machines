@@ -35,7 +35,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLoadingLight& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLoadingLight& t);
 
     PER_MEMBER_PERSISTENT(MachPhysLoadingLight);
 

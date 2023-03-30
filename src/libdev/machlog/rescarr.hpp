@@ -181,7 +181,7 @@ private:
 
     MachPhysResourceCarrier& physResourceCarrier();
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
 
     MachLogResourceCarrierImpl* pImpl_;
 };

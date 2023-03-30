@@ -239,7 +239,7 @@ void MachGuiCorralSingleIconInfo::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCorralSingleIconInfo& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCorralSingleIconInfo& t)
 {
 
     o << "MachGuiCorralSingleIconInfo " << (void*)&t << " start" << std::endl;

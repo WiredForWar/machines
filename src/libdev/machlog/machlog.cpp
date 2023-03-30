@@ -6,7 +6,7 @@
 #include <fstream>
 #include "machlog/machlog.hpp"
 
-ostream& operator<<(ostream& o, const MachLog::ObjectType& t)
+std::ostream& operator<<(std::ostream& o, const MachLog::ObjectType& t)
 {
     switch (t)
     {
@@ -83,7 +83,7 @@ ostream& operator<<(ostream& o, const MachLog::ObjectType& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::DefCon& t)
+std::ostream& operator<<(std::ostream& o, const MachLog::DefCon& t)
 {
     switch (t)
     {
@@ -103,7 +103,7 @@ ostream& operator<<(ostream& o, const MachLog::DefCon& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::TargetSystemType& t)
+std::ostream& operator<<(std::ostream& o, const MachLog::TargetSystemType& t)
 {
     switch (t)
     {
@@ -126,7 +126,7 @@ ostream& operator<<(ostream& o, const MachLog::TargetSystemType& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::BeaconType& t)
+std::ostream& operator<<(std::ostream& o, const MachLog::BeaconType& t)
 {
     switch (t)
     {
@@ -145,7 +145,7 @@ ostream& operator<<(ostream& o, const MachLog::BeaconType& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::RandomStarts& randomStarts)
+std::ostream& operator<<(std::ostream& o, const MachLog::RandomStarts& randomStarts)
 {
     switch (randomStarts)
     {
@@ -159,7 +159,7 @@ ostream& operator<<(ostream& o, const MachLog::RandomStarts& randomStarts)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::PlayerType& playerType)
+std::ostream& operator<<(std::ostream& o, const MachLog::PlayerType& playerType)
 {
     switch (playerType)
     {
@@ -182,7 +182,7 @@ ostream& operator<<(ostream& o, const MachLog::PlayerType& playerType)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::ResourcesAvailable& resources)
+std::ostream& operator<<(std::ostream& o, const MachLog::ResourcesAvailable& resources)
 {
     switch (resources)
     {
@@ -202,7 +202,7 @@ ostream& operator<<(ostream& o, const MachLog::ResourcesAvailable& resources)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::StartingResources& resources)
+std::ostream& operator<<(std::ostream& o, const MachLog::StartingResources& resources)
 {
     switch (resources)
     {
@@ -228,7 +228,7 @@ ostream& operator<<(ostream& o, const MachLog::StartingResources& resources)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::TechnologyLevel& techLevel)
+std::ostream& operator<<(std::ostream& o, const MachLog::TechnologyLevel& techLevel)
 {
     switch (techLevel)
     {
@@ -248,7 +248,7 @@ ostream& operator<<(ostream& o, const MachLog::TechnologyLevel& techLevel)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::VictoryCondition& victory)
+std::ostream& operator<<(std::ostream& o, const MachLog::VictoryCondition& victory)
 {
     switch (victory)
     {
@@ -268,7 +268,7 @@ ostream& operator<<(ostream& o, const MachLog::VictoryCondition& victory)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLog::GameType& t)
+std::ostream& operator<<(std::ostream& o, const MachLog::GameType& t)
 {
     switch (t)
     {

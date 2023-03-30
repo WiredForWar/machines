@@ -27,7 +27,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXUVCoords& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXUVCoords& t);
 
     float u() const { return u_; }
     void u(float newU) { u_ = newU; }

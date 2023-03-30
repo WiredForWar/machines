@@ -32,7 +32,7 @@ MachLogController::~MachLogController()
 /* //////////////////////////////////////////////////////////////// */
 
 // virtual
-void MachLogController::doOutputOperator(ostream& o) const
+void MachLogController::doOutputOperator(std::ostream& o) const
 {
     o << (*this);
 }
@@ -42,7 +42,7 @@ const MachLogController::ControllerType& MachLogController::type() const
     return type_;
 }
 
-ostream& operator<<(ostream& o, const MachLogController::ControllerType& t)
+std::ostream& operator<<(std::ostream& o, const MachLogController::ControllerType& t)
 {
     switch (t)
     {
@@ -62,7 +62,7 @@ ostream& operator<<(ostream& o, const MachLogController::ControllerType& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogController& t)
+std::ostream& operator<<(std::ostream& o, const MachLogController& t)
 {
     o << "MachLogController for race " << t.race_ << std::endl;
     o << "Type: " << t.type() << std::endl;

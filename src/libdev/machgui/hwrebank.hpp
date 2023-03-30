@@ -77,7 +77,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachHWResearchBank& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachHWResearchBank& t);
 
 private:
     // Operation deliberately revoked

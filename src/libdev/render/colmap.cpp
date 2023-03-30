@@ -22,7 +22,7 @@ void RenColourMap::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const RenColourMap& t)
+std::ostream& operator<<(std::ostream& o, const RenColourMap& t)
 {
 
     o << "RenColourMap " << (void*)&t << " start" << std::endl;

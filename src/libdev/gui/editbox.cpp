@@ -39,7 +39,7 @@ void GuiSingleLineEditBox::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiSingleLineEditBox& t)
+std::ostream& operator<<(std::ostream& o, const GuiSingleLineEditBox& t)
 {
 
     o << "GuiSingleLineEditBox " << (void*)&t << " start" << std::endl;

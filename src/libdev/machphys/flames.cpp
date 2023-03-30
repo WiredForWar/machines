@@ -242,7 +242,7 @@ void perRead(PerIstream& istr, MachPhysFlame& flame)
     istr >> flame.flameType_;
 }
 
-ostream& operator<<(ostream& ostr, MachPhysFlameType type)
+std::ostream& operator<<(std::ostream& ostr, MachPhysFlameType type)
 {
     switch (type)
     {

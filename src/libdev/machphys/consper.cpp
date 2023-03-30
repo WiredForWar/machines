@@ -42,7 +42,7 @@ void MachPhysConstructionPersistence::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysConstructionPersistence& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysConstructionPersistence& t)
 {
 
     o << "MachPhysConstructionPersistence " << (void*)&t << " start" << std::endl;

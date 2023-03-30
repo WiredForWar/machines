@@ -65,7 +65,7 @@ protected:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiIntelligentCursorOnActor& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiIntelligentCursorOnActor& t);
 
 private:
     // Operations deliberately revoked

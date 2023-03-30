@@ -41,7 +41,7 @@ void PhysCompressedRampAcceleration::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysCompressedRampAcceleration& t)
+std::ostream& operator<<(std::ostream& o, const PhysCompressedRampAcceleration& t)
 {
 
     o << "PhysCompressedRampAcceleration " << (void*)&t << " start" << std::endl;

@@ -478,7 +478,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(PerConstructor)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MexConvexPolygon2d& t)
+std::ostream& operator<<(std::ostream& o, const MexConvexPolygon2d& t)
 {
 
     //    o << "MexConvexPolygon2d " << (void*)&t << " start" << endl;

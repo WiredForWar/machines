@@ -54,7 +54,7 @@ protected:
     void doDisplay() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiMenuText& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t);
 
     MachGuiMenuText(const MachGuiMenuText&);
     MachGuiMenuText& operator=(const MachGuiMenuText&);

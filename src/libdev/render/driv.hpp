@@ -41,7 +41,7 @@ private:
     RenDriver(RenIDriverImpl*);
     RenDriver(const RenDriver& driver);
 
-    friend ostream& operator<<(ostream& o, const RenDriver& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenDriver& t);
 
     RenDriver& operator=(const RenDriver&);
 

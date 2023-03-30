@@ -43,7 +43,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dLink);
 
 protected:
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
     // Write out the details of 'this' for debugging purposes.
 
 private:

@@ -68,7 +68,7 @@ void perRead(PerIstream& istr, RenTexture& texture)
         texture = RenTexManager::instance().createTexture(name);
 }
 
-void RenTexture::print(ostream& o) const
+void RenTexture::print(std::ostream& o) const
 {
     if (isNull())
         o << "no texture";
@@ -76,7 +76,7 @@ void RenTexture::print(ostream& o) const
         o << *(RenTexManager::instance().impl().getTexBody(myId()));
 }
 
-ostream& operator<<(ostream& o, const RenTexture& t)
+std::ostream& operator<<(std::ostream& o, const RenTexture& t)
 {
     t.print(o);
     return o;

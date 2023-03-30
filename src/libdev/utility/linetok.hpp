@@ -27,9 +27,9 @@ public:
     //  The current line number defaults to 1. The stream must have an
     //  associated name for the line tokeniser to pass back using the
     //  filename function.
-    UtlLineTokeniser(istream&, const SysPathName&);
+    UtlLineTokeniser(std::istream&, const SysPathName&);
     // This ctor ensures that the first line is parsed with the passed delimiters.
-    UtlLineTokeniser(istream&, const SysPathName&, const std::string& delimiters);
+    UtlLineTokeniser(std::istream&, const SysPathName&, const std::string& delimiters);
 
     UtlLineTokeniser(const SysPathName& fileName);
     // This ctor ensures that the first line is parsed with the passed delimiters.
@@ -148,7 +148,7 @@ private:
     struct FileData
     {
         SysPathName fileName_;
-        istream* pIstream_;
+        std::istream* pIstream_;
         size_t lineNumber_;
     };
 

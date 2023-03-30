@@ -527,7 +527,7 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dFindPath& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dFindPath& t)
 {
     o << "PhysCS2dFindPath " << (void*)&t << "  ";
 

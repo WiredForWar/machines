@@ -34,7 +34,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiMusicVolumeSlideBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMusicVolumeSlideBar& t);
 
     MachGuiMusicVolumeSlideBar(const MachGuiMusicVolumeSlideBar&);
     MachGuiMusicVolumeSlideBar& operator=(const MachGuiMusicVolumeSlideBar&);

@@ -545,7 +545,7 @@ const MexTransform3dKey& W4dCamera::lastRenderTransformKey() const
 }
 
 // virtual
-void W4dCamera::doDebugOutput(ostream& ostr)
+void W4dCamera::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     ostr << "Start W4dCamera " << (void*)this << std::endl;

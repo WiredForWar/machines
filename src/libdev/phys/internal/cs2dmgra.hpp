@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysCS2dDomainGraph& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainGraph& t);
 
 protected:
     // Callbacks when vertex/arc deleted. Used to free the id

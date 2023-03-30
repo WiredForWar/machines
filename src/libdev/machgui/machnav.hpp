@@ -134,7 +134,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiMachineNavigator& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMachineNavigator& t);
 
     // Data members...
     MachGuiNavRow* pRow1_;
@@ -228,7 +228,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiConstructionNavigator& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiConstructionNavigator& t);
 
     // Data members...
     MachGuiNavRow* pRow1_;

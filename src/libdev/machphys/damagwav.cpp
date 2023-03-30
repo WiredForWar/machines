@@ -81,7 +81,7 @@ void MachPhysBurstWave::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBurstWave& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBurstWave& t)
 {
 
     o << "MachPhysBurstWave " << (void*)&t << " start" << std::endl;

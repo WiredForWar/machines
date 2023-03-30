@@ -43,7 +43,7 @@ void MachLogDropLandMineOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogDropLandMineOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDropLandMineOperationImpl& t)
 {
 
     o << "MachLogDropLandMineOperationImpl " << (void*)&t << " start" << std::endl;

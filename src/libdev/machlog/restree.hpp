@@ -53,7 +53,7 @@ public:
     void addMe(MachLogNotifiable* pNewRTreeNot);
     void removeMe(MachLogNotifiable* pCurrentRTreeNot);
 
-    friend ostream& operator<<(ostream& o, const MachLogResearchTree& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogResearchTree& t);
 
 private:
     void readAllItems(const SysPathName&);

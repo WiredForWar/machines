@@ -38,7 +38,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const NetPingHelper& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetPingHelper& t);
 
     NetPingHelper(const NetPingHelper&);
     NetPingHelper& operator=(const NetPingHelper&);

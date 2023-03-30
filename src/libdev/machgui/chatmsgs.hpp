@@ -63,7 +63,7 @@ public:
     const std::vector<std::string>& standardMessages() const;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiInGameChatMessages& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessages& t);
 
     MachGuiInGameChatMessages(const MachGuiInGameChatMessages&);
     MachGuiInGameChatMessages& operator=(const MachGuiInGameChatMessages&);

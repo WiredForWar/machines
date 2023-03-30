@@ -33,7 +33,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const DiagPointerTracker& t);
+    friend std::ostream& operator<<(std::ostream& o, const DiagPointerTracker& t);
 
 private:
     // Operation deliberately revoked

@@ -41,7 +41,7 @@ private:
     friend bool operator==(const NetNodeUid&, const NetNodeUid&);
     friend bool operator!=(const NetNodeUid&, const NetNodeUid&);
     friend bool operator<(const NetNodeUid&, const NetNodeUid&);
-    friend ostream& operator<<(ostream& o, const NetNodeUid&);
+    friend std::ostream& operator<<(std::ostream& o, const NetNodeUid&);
     friend class NetNode;
     friend class NetIAppSession;
 };

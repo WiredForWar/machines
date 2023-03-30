@@ -71,12 +71,12 @@ RenILight* RenLight::pILight()
     return pILight_;
 }
 
-void RenLight::print(ostream& o) const
+void RenLight::print(std::ostream& o) const
 {
     pILight_->print(o);
 }
 
-ostream& operator<<(ostream& o, const RenLight* l)
+std::ostream& operator<<(std::ostream& o, const RenLight* l)
 {
     if (!l)
         o << "Null light pointer";
@@ -86,7 +86,7 @@ ostream& operator<<(ostream& o, const RenLight* l)
     return o;
 }
 
-ostream& operator<<(ostream& o, const RenLight& l)
+std::ostream& operator<<(std::ostream& o, const RenLight& l)
 {
     l.print(o);
     return o;
@@ -148,7 +148,7 @@ void perRead(PerIstream& istr, RenDirectionalLight& light)
     istr >> light.pDir_;
 }
 
-ostream& operator<<(ostream& o, const RenDirectionalLight&)
+std::ostream& operator<<(std::ostream& o, const RenDirectionalLight&)
 {
     o << "Directional light" << std::endl;
 
@@ -261,7 +261,7 @@ void perRead(PerIstream& istr, RenAttenuatedLight& light)
     istr >> light.atLight_;
 }
 
-ostream& operator<<(ostream& o, const RenAttenuatedLight&)
+std::ostream& operator<<(std::ostream& o, const RenAttenuatedLight&)
 {
     o << "Attenuated light" << std::endl;
 

@@ -60,7 +60,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSmokePlume& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSmokePlume& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysSmokePlume);
     PER_FRIEND_READ_WRITE(MachPhysSmokePlume);

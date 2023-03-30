@@ -26,7 +26,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogLargeMissileLauncher& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogLargeMissileLauncher& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogLargeMissileLauncher);
     PER_FRIEND_READ_WRITE(MachLogLargeMissileLauncher);

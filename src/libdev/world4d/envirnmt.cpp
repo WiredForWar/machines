@@ -85,7 +85,7 @@ void W4dEnvironment::CLASS_INVARIANT
     INVARIANT(lowerTransitionBound_ <= upperTransitionBound_);
 }
 
-ostream& operator<<(ostream& o, const W4dEnvironment& t)
+std::ostream& operator<<(std::ostream& o, const W4dEnvironment& t)
 {
 
     o << "W4dEnvironment " << (void*)&t << " start" << std::endl;

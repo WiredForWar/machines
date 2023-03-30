@@ -47,7 +47,7 @@ private:
     MexCoordSystem() { }
 };
 
-ostream& operator<<(ostream& o, const MexCoordSystem& t);
+std::ostream& operator<<(std::ostream& o, const MexCoordSystem& t);
 
 #ifdef _INLINE
 #include "mathex/coordsys.ipp"

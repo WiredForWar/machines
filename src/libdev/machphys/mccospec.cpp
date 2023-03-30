@@ -42,7 +42,7 @@ void MachPhysMachineSpec::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMachineSpec& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMachineSpec& t)
 {
 
     o << "MachPhysMachineSpec " << (void*)&t << " start" << std::endl;
@@ -146,7 +146,7 @@ void MachPhysConstructionSpec::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysConstructionSpec& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysConstructionSpec& t)
 {
 
     o << "MachPhysConstructionSpec " << (void*)&t << " start" << std::endl;
@@ -250,7 +250,7 @@ void MachPhysWeaponSpec::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysWeaponSpec& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysWeaponSpec& t)
 {
 
     o << "MachPhysWeaponSpec " << (void*)&t << " start" << std::endl;

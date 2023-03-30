@@ -32,7 +32,7 @@ public:
 private:
     wdebug();
 
-    friend ostream& operator<<(ostream& o, const wdebug& t);
+    friend std::ostream& operator<<(std::ostream& o, const wdebug& t);
 
     wdebug(const wdebug&);
     wdebug& operator=(const wdebug&);

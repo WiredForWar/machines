@@ -41,14 +41,14 @@ public:
 
     ~MachLogController() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     MachPhys::Race race() const { return race_; };
 
     const ControllerType& type() const;
 
-    friend ostream& operator<<(ostream&, const MachLogController&);
-    friend ostream& operator<<(ostream& o, const ControllerType& t);
+    friend std::ostream& operator<<(std::ostream&, const MachLogController&);
+    friend std::ostream& operator<<(std::ostream& o, const ControllerType& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(MachLogController);
     PER_FRIEND_READ_WRITE(MachLogController);

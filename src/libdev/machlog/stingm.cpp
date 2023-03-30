@@ -35,7 +35,7 @@ void MachLogMetalSting::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMetalSting& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMetalSting& t)
 {
 
     o << "MachLogMetalSting " << (void*)&t << " start" << std::endl;

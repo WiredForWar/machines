@@ -207,7 +207,7 @@ void W4dSceneManager::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-static void countLights(const ctl_pvector<W4dLight>& lights, uint nGlobal, uint nLocal, uint nDynamic, ostream& o)
+static void countLights(const ctl_pvector<W4dLight>& lights, uint nGlobal, uint nLocal, uint nDynamic, std::ostream& o)
 {
     uint globalUsed = 0, localUsed = 0, dynamicUsed = 0;
 
@@ -708,7 +708,7 @@ void W4dSceneManager::updateDisplay()
 {
 }
 
-ostream& W4dSceneManager::out()
+std::ostream& W4dSceneManager::out()
 {
     return pImpl_->device_->out();
 }

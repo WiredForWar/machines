@@ -20,13 +20,13 @@
 
 class UtlFilterBuffer;
 
-class DiagOstreamPrepend : public ostream
+class DiagOstreamPrepend : public std::ostream
 {
 public:
-    DiagOstreamPrepend(ostream* pOstr);
+    DiagOstreamPrepend(std::ostream* pOstr);
     DiagOstreamPrepend();
 
-    void stream(ostream* pOstr);
+    void stream(std::ostream* pOstr);
 
     bool hasStream() const;
 
@@ -61,7 +61,7 @@ private:
     void doPrepend();
 
     DiagPrependBuffer buffer_;
-    ostream* pOstr_;
+    std::ostream* pOstr_;
 
     bool date_;
     bool clock_;

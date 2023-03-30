@@ -64,7 +64,7 @@ void MachLogAllOtherRacesUnitsDeadCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogAllOtherRacesUnitsDeadCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogAllOtherRacesUnitsDeadCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -79,7 +79,7 @@ const PhysRelativeTime& MachLogAllOtherRacesUnitsDeadCondition::recommendedCallB
 }
 
 // virtual
-void MachLogAllOtherRacesUnitsDeadCondition::doOutputOperator(ostream& o) const
+void MachLogAllOtherRacesUnitsDeadCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogAllOtherRacesUnitsDeadCondition " << (void*)this << " start" << std::endl;

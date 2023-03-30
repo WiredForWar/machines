@@ -203,7 +203,7 @@ void MachPhysLightningHaloMaterialPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLightningHaloMaterialPlan& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLightningHaloMaterialPlan& t)
 {
 
     o << "MachPhysLightningHaloMaterialPlan " << (void*)&t << " start" << std::endl;

@@ -93,7 +93,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dObjectTracker& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dObjectTracker& t);
 
     PER_MEMBER_PERSISTENT(W4dObjectTracker);
     PER_FRIEND_READ_WRITE(W4dObjectTracker);

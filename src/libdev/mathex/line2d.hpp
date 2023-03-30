@@ -112,7 +112,7 @@ private:
     MexPoint2d end2_;
 };
 
-ostream& operator<<(ostream& o, const MexLine2d& t);
+std::ostream& operator<<(std::ostream& o, const MexLine2d& t);
 
 PER_DECLARE_PERSISTENT(MexLine2d);
 

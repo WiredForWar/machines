@@ -25,7 +25,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXGen& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXGen& t);
 
 private:
     GXGen(const GXGen&);

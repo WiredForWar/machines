@@ -466,7 +466,7 @@ public:
         const MachPhys::Race targetRace,
         DispositionToRace newDisposition);
 
-    void outputRace(ostream&, MachPhys::Race);
+    void outputRace(std::ostream&, MachPhys::Race);
 
     // note use of non-const version as well.
     MachLogStats& stats();
@@ -589,7 +589,7 @@ public:
 private:
     // the data impl needs access to private typedefs etc.
     friend class MachLogRacesDataImpl;
-    friend ostream& operator<<(ostream&, DispositionToRace);
+    friend std::ostream& operator<<(std::ostream&, DispositionToRace);
 
     MachLogRaces();
     MachLogRaces(const MachLogRaces&);

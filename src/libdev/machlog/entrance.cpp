@@ -74,7 +74,7 @@ void MachLogEntrance::CLASS_INVARIANT
     INVARIANT(this);
 }
 
-ostream& operator<<(ostream& o, const MachLogEntrance& t)
+std::ostream& operator<<(std::ostream& o, const MachLogEntrance& t)
 {
 
     o << "MachLogEntrance " << (void*)&t << " start" << std::endl;

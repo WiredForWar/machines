@@ -630,7 +630,7 @@ MachPhys::StrikeType MachLogLinearProjectile::strikeType() const
     return strikeType_;
 }
 
-ostream& operator<<(ostream& o, const MachLogLinearProjectile& t)
+std::ostream& operator<<(std::ostream& o, const MachLogLinearProjectile& t)
 {
 
     o << "MachLogLinearProjectile " << (void*)&t << " start" << std::endl;

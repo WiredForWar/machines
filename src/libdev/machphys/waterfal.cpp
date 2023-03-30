@@ -80,7 +80,7 @@ void MachPhysWaterfall::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysWaterfall& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysWaterfall& t)
 {
 
     o << "MachPhysWaterfall " << (void*)&t << " start" << std::endl;

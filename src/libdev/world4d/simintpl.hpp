@@ -55,7 +55,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dSimpleIntensityPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dSimpleIntensityPlan& t);
 
 private:
     W4dSimpleIntensityPlan(const W4dSimpleIntensityPlan&);

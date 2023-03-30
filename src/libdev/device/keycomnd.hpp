@@ -77,7 +77,7 @@ private:
     // Revoked
     bool operator==(const DevKeyToCommand&);
 
-    friend ostream& operator<<(ostream& o, const DevKeyToCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const DevKeyToCommand& t);
 
     // data members
     CommandId commandId_;

@@ -124,7 +124,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiScrollArea& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiScrollArea& t);
 
     GuiSimpleScrollableList* pList_;
     MachGuiScrollBar* pLHSScrollBar_;

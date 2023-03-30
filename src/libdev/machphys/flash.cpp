@@ -116,7 +116,7 @@ void MachPhysFlashDisc::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysFlashDisc& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysFlashDisc& t)
 {
 
     o << "MachPhysFlashDisc " << (void*)&t << " start" << std::endl;

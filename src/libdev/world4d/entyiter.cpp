@@ -32,7 +32,7 @@ void W4dEntityIter::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dEntityIter& t)
+std::ostream& operator<<(std::ostream& o, const W4dEntityIter& t)
 {
 
     o << "W4dEntityIter " << (void*)&t << " start" << std::endl;

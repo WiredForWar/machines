@@ -66,7 +66,7 @@ private:
     static MachPhysGeoLocator*
     pNewPhysGeoLocator(Level hwLevel, Level swLevel, MachLogRace* pRace, const MexPoint3d& location);
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
 };
 
 PER_DECLARE_PERSISTENT(MachLogGeoLocator);

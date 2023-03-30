@@ -43,7 +43,7 @@ private:
 
     Gui::Colour barColour() const;
 
-    friend ostream& operator<<(ostream& o, const MachGuiBuildProgressBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiBuildProgressBar& t);
 
     float percentageComplete_;
 };

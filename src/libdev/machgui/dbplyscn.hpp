@@ -68,7 +68,7 @@ public:
 private:
     friend class MachGuiDbPlayer;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbPlayerScenario& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlayerScenario& t);
 
     MachGuiDbPlayerScenario(const MachGuiDbPlayerScenario&);
     MachGuiDbPlayerScenario& operator=(const MachGuiDbPlayerScenario&);

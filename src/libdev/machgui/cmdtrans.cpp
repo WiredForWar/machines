@@ -47,7 +47,7 @@ void MachGuiTransportCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiTransportCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiTransportCommand& t)
 {
 
     o << "MachGuiTransportCommand " << (void*)&t << " start" << std::endl;

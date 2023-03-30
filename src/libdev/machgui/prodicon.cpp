@@ -272,7 +272,7 @@ const MachLogProductionUnit* MachProductionIcon::productionUnit() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachProductionIcon& t)
+std::ostream& operator<<(std::ostream& o, const MachProductionIcon& t)
 {
 
     o << "MachProductionIcon " << (void*)&t << " start" << std::endl;
@@ -384,7 +384,7 @@ size_t MachIncSWLevelIcon::buttonWidth()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachIncSWLevelIcon& t)
+std::ostream& operator<<(std::ostream& o, const MachIncSWLevelIcon& t)
 {
 
     o << "MachIncSWLevelIcon " << (void*)&t << " start" << std::endl;

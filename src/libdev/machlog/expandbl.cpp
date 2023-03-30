@@ -250,7 +250,7 @@ void MachLogExpandingBlast::CLASS_INVARIANT
     INVARIANT(nVictims_ >= 0);
 }
 
-ostream& operator<<(ostream& o, const MachLogExpandingBlast& t)
+std::ostream& operator<<(std::ostream& o, const MachLogExpandingBlast& t)
 {
 
     o << "MachLogExpandingBlast " << (void*)&t << " start" << std::endl;

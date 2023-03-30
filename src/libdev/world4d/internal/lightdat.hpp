@@ -69,7 +69,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dLightData);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dLightData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dLightData& t);
 
     W4dLightData(const W4dLightData&);
     W4dLightData& operator=(const W4dLightData&);

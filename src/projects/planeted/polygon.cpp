@@ -89,7 +89,7 @@ void PedPolygon::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedPolygon& t)
+std::ostream& operator<<(std::ostream& o, const PedPolygon& t)
 {
 
     o << "PedPolygon " << (void*)&t << " start" << std::endl;

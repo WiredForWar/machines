@@ -38,12 +38,12 @@ public:
 
 protected:
     const PhysRelativeTime& recommendedCallBackTimeGap() const override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogVortexHasBeenFiredCondition(const string& keyName, MachPhys::Race);
 
-    friend ostream& operator<<(ostream& o, const MachLogVortexHasBeenFiredCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogVortexHasBeenFiredCondition& t);
 
     MachLogVortexHasBeenFiredCondition(const MachLogVortexHasBeenFiredCondition&);
     MachLogVortexHasBeenFiredCondition& operator=(const MachLogVortexHasBeenFiredCondition&);

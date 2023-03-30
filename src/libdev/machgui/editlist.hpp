@@ -50,7 +50,7 @@ protected:
     GuiSingleLineEditBox* singleLineEditBox();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiEditBoxListBoxItem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiEditBoxListBoxItem& t);
 
     MachGuiEditBoxListBoxItem(const MachGuiEditBoxListBoxItem&);
     MachGuiEditBoxListBoxItem& operator=(const MachGuiEditBoxListBoxItem&);

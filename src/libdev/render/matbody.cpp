@@ -131,7 +131,7 @@ void RenIMatBody::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenIMatBody& t)
+std::ostream& operator<<(std::ostream& o, const RenIMatBody& t)
 {
     o << "material: " << t.texture() << ", " << t.diffuse() << ", count=" << t.refCount_;
     o << ", trans=" << ((t.transparent_) ? "t" : "f");

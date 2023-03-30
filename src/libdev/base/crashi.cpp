@@ -61,7 +61,7 @@ void BaseCrashInternal::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const BaseCrashInternal& t)
+std::ostream& operator<<(std::ostream& o, const BaseCrashInternal& t)
 {
 
     o << "BaseCrashInternal " << (void*)&t << " start" << std::endl;

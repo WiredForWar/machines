@@ -32,7 +32,7 @@ void MachLogVoiceMailAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogVoiceMailAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailAction& t)
 {
 
     o << "MachLogVoiceMailAction " << (void*)&t << " start" << std::endl;
@@ -68,7 +68,7 @@ MachLogVoiceMailAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 }
 
 // virtual
-void MachLogVoiceMailAction::doOutputOperator(ostream& o) const
+void MachLogVoiceMailAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Race " << race_;

@@ -28,7 +28,7 @@ public:
     // Checks for co-planarity.
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MexQuad3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexQuad3d& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT(MexQuad3d);

@@ -479,7 +479,7 @@ void RenSpinTFPolygon::vertices(const Vertices& verts)
     TEST_INVARIANT;
 }
 
-ostream& operator<<(ostream& o, const RenSpinTFPolygon& p)
+std::ostream& operator<<(std::ostream& o, const RenSpinTFPolygon& p)
 {
     RenIVertexData::const_iterator i = p.vertices_->begin();
     RenSpinTFPolygon::Vertices::const_iterator j = p.uv_.begin();

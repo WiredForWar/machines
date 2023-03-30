@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const PhysCompressedRampAcceleration& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCompressedRampAcceleration& t);
     friend class PhysRampAcceleration;
 
     // data members

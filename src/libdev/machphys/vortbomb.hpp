@@ -44,7 +44,7 @@ public:
     static bool radiusTime(const MATHEX_SCALAR& distance, PhysRelativeTime* pTime);
     static MATHEX_SCALAR radius(const PhysRelativeTime& timeOffset);
 
-    friend ostream& operator<<(ostream& o, const MachPhysVortexBomb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysVortexBomb& t);
 
     PER_MEMBER_PERSISTENT(MachPhysVortexBomb);
     PER_FRIEND_READ_WRITE(MachPhysVortexBomb);

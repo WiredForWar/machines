@@ -83,7 +83,7 @@ bool operator==(const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs)
     return lhs.position_ == rhs.position_;
 }
 
-ostream& operator<<(ostream& o, const MachLogBuildPoint& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBuildPoint& t)
 {
 
     o << "MachLogBuildPoint " << (void*)&t << " start" << std::endl;

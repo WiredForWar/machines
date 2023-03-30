@@ -33,7 +33,7 @@ void MachLogSetFlagAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogSetFlagAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSetFlagAction& t)
 {
 
     o << "MachLogSetFlagAction " << (void*)&t << " start" << std::endl;
@@ -64,7 +64,7 @@ MachLogSetFlagAction::newFromParser(SimCondition* pCondition, bool enabled, UtlL
 }
 
 // virtual
-void MachLogSetFlagAction::doOutputOperator(ostream& o) const
+void MachLogSetFlagAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Flag " << flagName_ << std::endl;

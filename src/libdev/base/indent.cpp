@@ -7,7 +7,7 @@
 
 #include "base/private/indent.hpp"
 
-BaseIndentOstream::BaseIndentOstream(ostream& ostr, const std::string& indentString)
+BaseIndentOstream::BaseIndentOstream(std::ostream& ostr, const std::string& indentString)
     : BaseFilterOstream(ostr)
     , indentString_(indentString)
     , indent_(true)
@@ -21,7 +21,7 @@ BaseIndentOstream::~BaseIndentOstream()
     TEST_INVARIANT;
 }
 
-void BaseIndentOstream::stream(ostream& ostr)
+void BaseIndentOstream::stream(std::ostream& ostr)
 {
     BaseFilterOstream::stream(ostr);
 }

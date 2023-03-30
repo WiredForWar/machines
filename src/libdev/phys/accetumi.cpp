@@ -36,7 +36,7 @@ void PhysAccelerateTumblePlanImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysAccelerateTumblePlanImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysAccelerateTumblePlanImpl& t)
 {
 
     o << "PhysAccelerateTumblePlanImpl " << (void*)&t << " start" << std::endl;

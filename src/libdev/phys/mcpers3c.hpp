@@ -57,7 +57,7 @@ private:
     PhysThirdPersonCameraConstraint& operator=(const PhysThirdPersonCameraConstraint&);
     bool operator==(const PhysThirdPersonCameraConstraint&);
 
-    friend ostream& operator<<(ostream& o, const PhysThirdPersonCameraConstraint& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysThirdPersonCameraConstraint& t);
 
     // Data members
     PhysThirdPerson* pThirdPerson_; // The thing being followed

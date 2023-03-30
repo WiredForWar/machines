@@ -66,7 +66,7 @@ void MachPhysBeeBombWave::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBeeBombWave& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBeeBombWave& t)
 {
 
     o << "MachPhysBeeBombWave " << (void*)&t << " start" << std::endl;

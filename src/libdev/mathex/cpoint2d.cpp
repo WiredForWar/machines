@@ -31,7 +31,7 @@ void MexCompressedPoint2d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCompressedPoint2d& t)
+std::ostream& operator<<(std::ostream& o, const MexCompressedPoint2d& t)
 {
 
     o << " MexCPoint2d: ( " << t.point_[0] << ", " << t.point_[1] << " )\n";

@@ -87,7 +87,7 @@ public:
 
     const Sites& sites() const;
     const DebrisSites& debrisSites() const;
-    friend ostream& operator<<(ostream& o, const MachLogPlanet& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPlanet& t);
 
     void newSite(MachLogMineralSite* pSite);
     void newDebrisSite(MachLogDebris* pDebris);
@@ -108,7 +108,7 @@ public:
     //  Check for errors such as vertical polygons not in obstacles
     //  and points on the planet surface not being in obstacles or
     //  domains.
-    void checkPlanet(ostream&) const;
+    void checkPlanet(std::ostream&) const;
 #endif
 
 private:
@@ -136,7 +136,7 @@ private:
     void readObstacleFlags(UtlLineTokeniser* pParser, ObstacleFlags* pObstacleFlags);
 
 #ifndef PRODUCTION
-    bool planetSurfaceOK(ostream&) const;
+    bool planetSurfaceOK(std::ostream&) const;
 #endif
 
     // Data members

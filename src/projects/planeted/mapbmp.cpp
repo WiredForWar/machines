@@ -45,7 +45,7 @@ void PedMapCreator::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedMapCreator& t)
+std::ostream& operator<<(std::ostream& o, const PedMapCreator& t)
 {
 
     o << "PedMapCreator " << (void*)&t << " start" << std::endl;

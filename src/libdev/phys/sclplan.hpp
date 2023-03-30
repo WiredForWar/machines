@@ -31,7 +31,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysScalarPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysScalarPlan& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT(PhysScalarPlan);
     PER_FRIEND_READ_WRITE(PhysScalarPlan);

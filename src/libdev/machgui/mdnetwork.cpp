@@ -100,7 +100,7 @@ MachGuiStartupScreens& MachGuiNetworkProtocolMode::startupScreens()
     return *pStartupScreens_;
 }
 
-ostream& operator<<(ostream& o, const MachGuiNetworkProtocolMode& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiNetworkProtocolMode& t)
 {
 
     o << "MachGuiNetworkProtocolMode " << (void*)&t << " start" << std::endl;

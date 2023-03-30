@@ -41,7 +41,7 @@ public:
     friend bool operator<(const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs);
     friend bool operator==(const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs);
 
-    friend ostream& operator<<(ostream& o, const MachLogBuildPoint& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogBuildPoint& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT(MachLogBuildPoint);
     PER_FRIEND_READ_WRITE(MachLogBuildPoint);

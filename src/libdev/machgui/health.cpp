@@ -180,7 +180,7 @@ void MachGuiHealthBar::depress(bool doDepress)
     }
 }
 
-ostream& operator<<(ostream& o, const MachGuiHealthBar& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiHealthBar& t)
 {
     o << "MachGuiHealthBar " << (void*)&t << " start" << std::endl;
     o << "MachGuiHealthBar " << (void*)&t << " end" << std::endl;

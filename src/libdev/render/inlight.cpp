@@ -71,7 +71,7 @@ void RenILight::on(bool b)
     }
 }
 
-ostream& operator<<(ostream& o, const RenILight* l)
+std::ostream& operator<<(std::ostream& o, const RenILight* l)
 {
     if (!l)
         o << "Null internal light pointer";
@@ -81,7 +81,7 @@ ostream& operator<<(ostream& o, const RenILight* l)
     return o;
 }
 
-ostream& operator<<(ostream& o, const RenILight& l)
+std::ostream& operator<<(std::ostream& o, const RenILight& l)
 {
     l.print(o);
     return o;
@@ -490,7 +490,7 @@ RenIDirectionalLight::RenIDirectionalLight()
 }
 
 // virtual
-void RenIDirectionalLight::print(ostream& o) const
+void RenIDirectionalLight::print(std::ostream& o) const
 {
     o << "Directional light, " << colour() << " dir=" << direction();
 }
@@ -833,7 +833,7 @@ void RenIPointLight::lightVerticesMMX(
 }
 
 // virtual
-void RenIPointLight::print(ostream& o) const
+void RenIPointLight::print(std::ostream& o) const
 {
     o << "Point light, " << colour() << " pos=" << position();
     o << " atten: (c=" << constantAttenuation();
@@ -1022,7 +1022,7 @@ void RenIUniformLight::lightVerticesMMX(
 };
 
 // virtual
-void RenIUniformLight::print(ostream& o) const
+void RenIUniformLight::print(std::ostream& o) const
 {
     o << "Uniform light, " << colour() << " pos=" << position();
     o << " atten: (c=" << constantAttenuation();
@@ -1127,7 +1127,7 @@ void RenIZeroLight::accumulateGeneric(RenColour*) const
 }
 
 // virtual
-void RenIZeroLight::print(ostream& o) const
+void RenIZeroLight::print(std::ostream& o) const
 {
     o << "Zero light";
 }

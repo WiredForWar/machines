@@ -320,7 +320,7 @@ void EnvOrbit::CLASS_INVARIANT
     INVARIANT(satellite3_);
 }
 
-ostream& operator<<(ostream& o, const EnvOrbit& t)
+std::ostream& operator<<(std::ostream& o, const EnvOrbit& t)
 {
     MexDegrees min = t.minElevation_, max = t.maxElevation_;
     o << "Orbit " << t.name_ << ", min=" << min.asScalar() << ", max=" << max.asScalar();

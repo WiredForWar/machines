@@ -155,7 +155,7 @@ bool MexPoint3d::isZeroPoint() const
         and (Mathex::abs(z()) < MexEpsilon::instance());
 }
 
-ostream& operator<<(ostream& o, const MexPoint3d& rhs)
+std::ostream& operator<<(std::ostream& o, const MexPoint3d& rhs)
 {
     return o << "( " << rhs.x() << ", " << rhs.y() << ", " << rhs.z() << " ) ";
 }

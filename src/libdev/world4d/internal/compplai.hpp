@@ -39,7 +39,7 @@ private:
 
     ~W4dCompositePlanImpl();
 
-    friend ostream& operator<<(ostream& o, const W4dCompositePlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCompositePlanImpl& t);
     friend void perRead(PerIstream& istr, W4dCompositePlan& plan);
 
     W4dCompositePlanImpl(const W4dCompositePlanImpl&);

@@ -98,7 +98,7 @@ void MachLogStatsImpl::readStatsInitialisationFile()
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogStatsImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogStatsImpl& t)
 {
 
     o << "MachLogStatsImpl " << (void*)&t << " start" << std::endl;

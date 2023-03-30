@@ -268,7 +268,7 @@ bool SndWaveManager::isLoaded(const SndWaveformId& id)
     return (loadedWaveForms_.find(id) != loadedWaveForms_.end());
 }
 
-ostream& operator<<(ostream& o, const SndWaveManager& t)
+std::ostream& operator<<(std::ostream& o, const SndWaveManager& t)
 {
 
     o << "SndWaveManager " << (void*)&t << " start" << std::endl;

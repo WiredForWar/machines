@@ -408,7 +408,7 @@ void PedArtefactEditor::processHeightChange(int deltaz)
     }
 }
 
-ostream& operator<<(ostream& o, const PedArtefactEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedArtefactEditor& t)
 {
 
     o << "PedArtefactEditor " << (void*)&t << " start" << std::endl;

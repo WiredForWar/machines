@@ -38,7 +38,7 @@ void W4dCycleTextureData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dCycleTextureData& t)
+std::ostream& operator<<(std::ostream& o, const W4dCycleTextureData& t)
 {
 
     o << "W4dCycleTextureData " << (void*)&t << " start" << std::endl;

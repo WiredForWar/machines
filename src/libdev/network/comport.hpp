@@ -84,7 +84,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const NetComPortAddress& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetComPortAddress& t);
 
     size_t portNumber_;
     BaudRate baudRate_;

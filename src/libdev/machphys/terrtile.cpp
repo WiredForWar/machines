@@ -108,7 +108,7 @@ MachPhysTerrainTile::~MachPhysTerrainTile()
 }
 
 // virtual
-void MachPhysTerrainTile::doDebugOutput(ostream& ostr)
+void MachPhysTerrainTile::doDebugOutput(std::ostream& ostr)
 {
     ostr << "Start MachPhysTerrainTile " << (void*)this << std::endl;
     ostr << "End   MachPhysTerrainTile " << (void*)this << std::endl;

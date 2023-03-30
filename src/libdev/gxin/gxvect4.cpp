@@ -27,7 +27,7 @@ void GXVect4::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXVect4& t)
+std::ostream& operator<<(std::ostream& o, const GXVect4& t)
 {
 
     o << t.x_ << "\t" << t.y_ << "\t" << t.z_ << "\t" << t.h_;

@@ -43,7 +43,7 @@ private:
     MachConstructMenu& operator=(const MachConstructMenu&);
     bool operator==(const MachConstructMenu&);
 
-    friend ostream& operator<<(ostream& o, const MachConstructMenu& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachConstructMenu& t);
 };
 
 #endif

@@ -341,7 +341,7 @@ void PersistenceImplementationWrite::writeAddress(const void* ptr) const
         PER_WRITE_INDENT_STREAM(" (" << _CONST_CAST(void*, ptr) << ") ");
 }
 
-ostream& PersistenceImplementationWrite::debugStream()
+std::ostream& PersistenceImplementationWrite::debugStream()
 {
     return indentStream_;
 }
@@ -361,7 +361,7 @@ void PersistenceImplementationWrite::registerCloseOstream()
     --nOpenOstreams_;
 }
 
-ostream& operator<<(ostream& o, const PersistenceImplementationWrite& t)
+std::ostream& operator<<(std::ostream& o, const PersistenceImplementationWrite& t)
 {
 
     o << "PersistenceImplementationWrite " << (void*)&t << " start" << std::endl;

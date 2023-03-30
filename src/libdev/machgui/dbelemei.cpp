@@ -30,7 +30,7 @@ void MachGuiDbIElement::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbIElement& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbIElement& t)
 {
 
     o << "MachGuiDbIElement " << (void*)&t << " start" << std::endl;

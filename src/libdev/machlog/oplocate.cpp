@@ -64,7 +64,7 @@ MachLogLocateOperation::~MachLogLocateOperation()
         path_.erase(path_.begin());
 }
 
-void MachLogLocateOperation::doOutputOperator(ostream& o) const
+void MachLogLocateOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogLocateOperation Dest " << dest_ << " position " << pActor_->position() << std::endl;
     o << " isLocating " << pActor_->isLocating() << std::endl;

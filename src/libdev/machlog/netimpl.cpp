@@ -25,7 +25,7 @@ void MachLogNetworkDataImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogNetworkDataImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogNetworkDataImpl& t)
 {
 
     o << "MachLogNetworkDataImpl " << (void*)&t << " start" << std::endl;

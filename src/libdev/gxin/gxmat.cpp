@@ -89,7 +89,7 @@ void GXMat::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXMat& t)
+std::ostream& operator<<(std::ostream& o, const GXMat& t)
 {
     o << std::endl;
     o << "transparancy " << t.transparancy_ << std::endl;

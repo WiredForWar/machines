@@ -40,7 +40,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysVapourPuff& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysVapourPuff& t);
 
     PER_MEMBER_PERSISTENT(MachPhysVapourPuff);
     PER_FRIEND_READ_WRITE(MachPhysVapourPuff);

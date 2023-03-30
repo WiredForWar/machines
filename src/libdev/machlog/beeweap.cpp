@@ -49,7 +49,7 @@ MachLogLinearProjectile* MachLogBeeBomber::createLinearProjectile(
         physWeapon().weaponData()));
 }
 
-ostream& operator<<(ostream& o, const MachLogBeeBomber& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBeeBomber& t)
 {
 
     o << "MachLogBeeBomber " << (void*)&t << " start" << std::endl;

@@ -29,7 +29,7 @@ void MachGuiSelfDestructCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiSelfDestructCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiSelfDestructCommand& t)
 {
 
     o << "MachGuiSelfDestructCommand " << (void*)&t << " start" << std::endl;

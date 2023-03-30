@@ -44,7 +44,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogGroupSimpleMove& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogGroupSimpleMove& t);
 
     MachLogGroupSimpleMove(const MachLogGroupSimpleMove&);
     MachLogGroupSimpleMove& operator=(const MachLogGroupSimpleMove&);

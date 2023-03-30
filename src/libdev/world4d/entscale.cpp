@@ -124,7 +124,7 @@ void W4dEntityScale::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dEntityScale& t)
+std::ostream& operator<<(std::ostream& o, const W4dEntityScale& t)
 {
 
     o << "W4dEntityScale " << (void*)&t << " start" << std::endl;

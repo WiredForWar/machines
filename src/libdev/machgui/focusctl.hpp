@@ -75,7 +75,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiFocusCapableControl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiFocusCapableControl& t);
 
     MachGuiFocusCapableControl(const MachGuiFocusCapableControl&);
     MachGuiFocusCapableControl& operator=(const MachGuiFocusCapableControl&);

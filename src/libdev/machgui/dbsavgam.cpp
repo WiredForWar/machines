@@ -37,7 +37,7 @@ void MachGuiDbSavedGame::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbSavedGame& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbSavedGame& t)
 {
 
     o << "MachGuiDbSavedGame " << (void*)&t << " start" << std::endl;

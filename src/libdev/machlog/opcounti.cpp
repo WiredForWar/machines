@@ -46,7 +46,7 @@ void MachLogCounterattackOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogCounterattackOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCounterattackOperationImpl& t)
 {
 
     o << "MachLogCounterattackOperationImpl " << (void*)&t << " start" << std::endl;

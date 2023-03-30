@@ -33,7 +33,7 @@ public:
     const Ren::MaterialVecPtr& materialVec(const PhysRelativeTime&, W4dLOD) const override;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const EnvElevationMaterialPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvElevationMaterialPlan& t);
 
 private:
     Ren::MaterialVecPtr materials_;

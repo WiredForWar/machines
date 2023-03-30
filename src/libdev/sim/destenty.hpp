@@ -38,7 +38,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     // Operation deliberately revoked

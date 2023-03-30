@@ -99,7 +99,7 @@ public:
     void addMe(MachLogNotifiable* pNewCTreeNot);
     void removeMe(MachLogNotifiable* pCurrentCTreeNot);
 
-    friend ostream& operator<<(ostream& o, const MachLogConstructionTree& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogConstructionTree& t);
 
 private:
     void readAllItems(const SysPathName&);

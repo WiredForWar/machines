@@ -167,7 +167,7 @@ void MachPhysMachineData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMachineData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMachineData& t)
 {
 
     o << "hwResearchCost " << t.hwResearchCost() << std::endl;

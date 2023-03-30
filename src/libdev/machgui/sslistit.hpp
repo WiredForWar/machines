@@ -68,7 +68,7 @@ protected:
     void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiSingleSelectionListBoxItem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSingleSelectionListBoxItem& t);
 
     MachGuiSingleSelectionListBoxItem(const MachGuiSingleSelectionListBoxItem&);
     MachGuiSingleSelectionListBoxItem& operator=(const MachGuiSingleSelectionListBoxItem&);

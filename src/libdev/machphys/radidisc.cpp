@@ -58,7 +58,7 @@ void MachPhysRadialDisc::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysRadialDisc& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysRadialDisc& t)
 {
 
     o << "MachPhysRadialDisc " << (void*)&t << " start" << std::endl;

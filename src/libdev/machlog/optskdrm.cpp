@@ -71,7 +71,7 @@ MachLogTaskDropLandMineOperation::~MachLogTaskDropLandMineOperation()
 {
 }
 
-void MachLogTaskDropLandMineOperation::doOutputOperator(ostream& o) const
+void MachLogTaskDropLandMineOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTaskDropLandMineOperation" << std::endl;
 }

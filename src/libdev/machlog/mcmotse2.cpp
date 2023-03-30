@@ -869,7 +869,7 @@ bool MachLogMachineMotionSequencer::doReserveChunk(
     return motionPossible;
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer::MoveResult& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencer::MoveResult& t)
 {
     switch (t)
     {

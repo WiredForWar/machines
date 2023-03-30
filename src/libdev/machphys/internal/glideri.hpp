@@ -52,7 +52,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysGliderImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGliderImpl& t);
 
     MachPhysGliderImpl(const MachPhysGliderImpl&);
     MachPhysGliderImpl& operator=(const MachPhysGliderImpl&);

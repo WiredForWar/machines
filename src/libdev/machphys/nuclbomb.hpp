@@ -49,7 +49,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysNuclearBomb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysNuclearBomb& t);
 
     PER_MEMBER_PERSISTENT(MachPhysNuclearBomb);
     PER_FRIEND_READ_WRITE(MachPhysNuclearBomb);

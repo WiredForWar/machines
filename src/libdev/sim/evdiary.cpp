@@ -127,7 +127,7 @@ void SimEventDiary::CLASS_INVARIANT
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const SimEventDiary& t)
+std::ostream& operator<<(std::ostream& o, const SimEventDiary& t)
 {
 
     o << "SimEventDiary " << (void*)&t << " start" << std::endl;

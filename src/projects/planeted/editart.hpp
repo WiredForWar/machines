@@ -119,7 +119,7 @@ private:
     // ( if there is one ) - else returns ""
     string tileToKey(const MachPhysTerrainTile& terrainTile);
 
-    friend ostream& operator<<(ostream& o, const PedArtefactEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedArtefactEditor& t);
 
     // Artefact artefactData_;
 

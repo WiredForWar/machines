@@ -50,7 +50,7 @@ MachLogLinearProjectile* MachLogFlameThrower::createLinearProjectile(
         physWeapon().weaponData()));
 }
 
-ostream& operator<<(ostream& o, const MachLogFlameThrower& t)
+std::ostream& operator<<(std::ostream& o, const MachLogFlameThrower& t)
 {
 
     o << "MachLogFlameThrower " << (void*)&t << " start" << std::endl;

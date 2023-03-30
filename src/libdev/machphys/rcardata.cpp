@@ -33,7 +33,7 @@ void MachPhysResourceCarrierData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysResourceCarrierData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysResourceCarrierData& t)
 {
     // o << (MachPhysObjectData)t;
     // o << (MachPhysMachineData)t;

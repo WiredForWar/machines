@@ -45,7 +45,7 @@ public:
     MATHEX_SCALAR currentSpeed() const;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLog1stPersonMachineHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLog1stPersonMachineHandler& t);
 
     ///////////////////////////////////////////////////
     // Inherited from MachLog1stPersonHandler

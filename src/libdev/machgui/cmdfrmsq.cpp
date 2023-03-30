@@ -28,7 +28,7 @@ void MachGuiFormSquadronCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiFormSquadronCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiFormSquadronCommand& t)
 {
 
     o << "MachGuiFormSquadronCommand " << (void*)&t << " start" << std::endl;

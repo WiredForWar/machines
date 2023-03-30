@@ -35,7 +35,7 @@ public:
     bool operator==(const MexTriangle2d&) const;
     bool operator!=(const MexTriangle2d&) const;
 
-    friend ostream& operator<<(ostream& ostr, const MexTriangle2d& t);
+    friend std::ostream& operator<<(std::ostream& ostr, const MexTriangle2d& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT_VIRTUAL(MexTriangle2d);

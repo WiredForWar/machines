@@ -150,7 +150,7 @@ private:
                            // can be used
 };
 
-ostream& operator<<(ostream& o, const MexLine3d& t);
+std::ostream& operator<<(std::ostream& o, const MexLine3d& t);
 
 PER_DECLARE_PERSISTENT(MexLine3d);
 

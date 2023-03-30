@@ -14,7 +14,7 @@ public:
     const uint8* body() const;
 
 private:
-    friend ostream& operator<<(ostream&, const NetMessageBody&);
+    friend std::ostream& operator<<(std::ostream&, const NetMessageBody&);
     UtlBuffer<uint8> body_;
 };
 

@@ -84,7 +84,7 @@ void RenPoints::CLASS_INVARIANT
     INVARIANT(points_);
 }
 
-ostream& operator<<(ostream& o, const RenPoints& t)
+std::ostream& operator<<(std::ostream& o, const RenPoints& t)
 {
     o << "RenPoints, size=" << t.nPoints() << ":" << std::endl;
 

@@ -50,10 +50,10 @@ public:
     virtual void stuff(const PointList& points) = 0;
 
 protected:
-    virtual void streamout(ostream& o) const;
+    virtual void streamout(std::ostream& o) const;
 
 private:
-    friend ostream& operator<<(ostream& o, const MexHierShape3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexHierShape3d& t);
 
     MexHierShape3d(const MexHierShape3d&);
     MexHierShape3d& operator=(const MexHierShape3d&);

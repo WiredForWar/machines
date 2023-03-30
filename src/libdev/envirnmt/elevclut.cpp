@@ -152,7 +152,7 @@ void EnvElevationColourTable::CLASS_INVARIANT
     INVARIANT(implies(colours_.size() == 1, minElevation() == maxElevation()));
 }
 
-ostream& operator<<(ostream& o, const EnvElevationColourTable& t)
+std::ostream& operator<<(std::ostream& o, const EnvElevationColourTable& t)
 {
     o << "EnvElevationColourTable ";
 

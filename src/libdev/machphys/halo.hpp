@@ -48,7 +48,7 @@ public:
         const HaloType type);
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLightningHalo& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLightningHalo& t);
 
     PER_MEMBER_PERSISTENT(MachPhysLightningHalo);
 

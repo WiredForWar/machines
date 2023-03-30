@@ -47,7 +47,7 @@ void MachGuiAutoDeleteDisplayable::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiAutoDeleteDisplayable& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiAutoDeleteDisplayable& t)
 {
 
     o << "MachGuiAutoDeleteDisplayable " << (void*)&t << " start" << std::endl;

@@ -31,7 +31,7 @@ void RenColour::CLASS_INVARIANT
     INVARIANT((rep_.a_ & 0xffffff) == 0);
 }
 
-ostream& operator<<(ostream& o, const RenColour& t)
+std::ostream& operator<<(std::ostream& o, const RenColour& t)
 {
     // Don't print alpha if it's set to the default, opaque value.
     const std::ios::fmtflags oldFlags = o.flags();
@@ -56,7 +56,7 @@ ostream& operator<<(ostream& o, const RenColour& t)
     if (c != expected)                                                                                                 \
         return i;
 
-istream& operator>>(istream& i, RenColour& t)
+std::istream& operator>>(std::istream& i, RenColour& t)
 {
     char c;
 

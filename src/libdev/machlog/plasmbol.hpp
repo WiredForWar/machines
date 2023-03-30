@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogPlasmaBolt& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPlasmaBolt& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPlasmaBolt);
     PER_FRIEND_READ_WRITE(MachLogPlasmaBolt);

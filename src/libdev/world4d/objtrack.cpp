@@ -60,7 +60,7 @@ void W4dObjectTracker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dObjectTracker& t)
+std::ostream& operator<<(std::ostream& o, const W4dObjectTracker& t)
 {
 
     o << "W4dObjectTracker " << (void*)&t << " start" << std::endl;

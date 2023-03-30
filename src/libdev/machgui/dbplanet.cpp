@@ -39,7 +39,7 @@ void MachGuiDbPlanet::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbPlanet& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbPlanet& t)
 {
 
     o << "MachGuiDbPlanet " << (void*)&t << " start" << std::endl;

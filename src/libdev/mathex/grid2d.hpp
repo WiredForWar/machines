@@ -54,7 +54,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MexGrid2d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexGrid2d& t);
 
     MexGrid2d(const MexGrid2d&);
     MexGrid2d& operator=(const MexGrid2d&);

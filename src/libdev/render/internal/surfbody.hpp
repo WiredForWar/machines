@@ -47,7 +47,7 @@ public:
     virtual bool read(const std::string& name);
     virtual RenITexBody* castToTexBody();
     virtual const RenITexBody* castToTexBody() const;
-    virtual void print(ostream&) const;
+    virtual void print(std::ostream&) const;
 
     UtlProperty<RenColour> keyColour; // default is purple
     UtlProperty<bool> keyingOn; // default is false
@@ -214,7 +214,7 @@ private:
     RenISurfBody& operator=(const RenISurfBody&);
 };
 
-ostream& operator<<(ostream& o, const RenISurfBody& t);
+std::ostream& operator<<(std::ostream& o, const RenISurfBody& t);
 
 #endif
 

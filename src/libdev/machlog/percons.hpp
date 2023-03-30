@@ -38,7 +38,7 @@ private:
     // takes local vecotr that has been populated from perRead and sets up other thingies with
     // pointers to actors.
     void setUpViewsFromLocalVector();
-    friend ostream& operator<<(ostream& o, const MachLogConstructionPersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogConstructionPersistence& t);
 
     MachLogConstructionPersistence(const MachLogConstructionPersistence&);
     MachLogConstructionPersistence& operator=(const MachLogConstructionPersistence&);

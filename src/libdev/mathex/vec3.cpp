@@ -300,7 +300,7 @@ void MexVec3::setVector(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z)
     vec_[Z] = z;
 }
 
-ostream& operator<<(ostream& o, const MexVec3& rhs)
+std::ostream& operator<<(std::ostream& o, const MexVec3& rhs)
 {
     return o << "( " << rhs.x() << ", " << rhs.y() << ", " << rhs.z() << " ) ";
 }

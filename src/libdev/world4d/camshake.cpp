@@ -97,7 +97,7 @@ bool W4dCameraShake::shakeIsOver() const
     return timeOffset > duration_;
 }
 
-ostream& operator<<(ostream& o, const W4dCameraShake& t)
+std::ostream& operator<<(std::ostream& o, const W4dCameraShake& t)
 {
 
     o << "W4dCameraShake " << (void*)&t << " start" << std::endl;

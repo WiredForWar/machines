@@ -22,7 +22,7 @@ PhysRelativeTime MachLogResearchAnimation::doUpdate()
     return 1.0;
 }
 
-void MachLogResearchAnimation::doOutputOperator(ostream& o) const
+void MachLogResearchAnimation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogResearchAnimation ";
 }

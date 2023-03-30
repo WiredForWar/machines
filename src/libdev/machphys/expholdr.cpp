@@ -98,7 +98,7 @@ void MachPhysGenericExplosionData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysGenericExplosionData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysGenericExplosionData& t)
 {
 
     o << "MachPhysGenericExplosionData " << (void*)&t << " start" << std::endl;

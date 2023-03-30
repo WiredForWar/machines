@@ -38,12 +38,12 @@ public:
 
 protected:
     const PhysRelativeTime& recommendedCallBackTimeGap() const override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogCameraViewCondition(const string& keyName, const MexPoint3d&, const MexRadians&);
 
-    friend ostream& operator<<(ostream& o, const MachLogCameraViewCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogCameraViewCondition& t);
 
     MachLogCameraViewCondition(const MachLogCameraViewCondition&);
     MachLogCameraViewCondition& operator=(const MachLogCameraViewCondition&);

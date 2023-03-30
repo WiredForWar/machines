@@ -29,7 +29,7 @@ void RenUVTranslation::transform(float uIn, float vIn, float* uOut, float* vOut)
 }
 
 // virtual
-void RenUVTranslation::print(ostream& o) const
+void RenUVTranslation::print(std::ostream& o) const
 {
     o << "UV translation of " << translation_;
 }

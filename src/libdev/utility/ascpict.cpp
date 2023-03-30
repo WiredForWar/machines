@@ -139,7 +139,7 @@ void UtlAsciiPicture::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const UtlAsciiPicture& t)
+std::ostream& operator<<(std::ostream& o, const UtlAsciiPicture& t)
 {
     o << *t.pImpl_;
 

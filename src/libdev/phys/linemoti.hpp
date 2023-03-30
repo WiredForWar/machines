@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysLinearMotionPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysLinearMotionPlan& t);
 
     PER_MEMBER_PERSISTENT(PhysLinearMotionPlan);
     PER_FRIEND_READ_WRITE(PhysLinearMotionPlan);

@@ -41,7 +41,7 @@ void W4dGeneralUniformScalePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dGeneralUniformScalePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dGeneralUniformScalePlan& t)
 {
 
     o << "W4dGeneralUniformScalePlan " << (void*)&t << " start" << std::endl;

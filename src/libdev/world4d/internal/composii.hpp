@@ -60,7 +60,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dCompositeImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCompositeImpl& t);
     W4dCompositeImpl& operator=(const W4dCompositeImpl&);
 
     bool readAnimation(

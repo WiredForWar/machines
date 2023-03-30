@@ -39,7 +39,7 @@ void W4dBoundingBoxSelector::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dBoundingBoxSelector& t)
+std::ostream& operator<<(std::ostream& o, const W4dBoundingBoxSelector& t)
 {
 
     o << "W4dBoundingBoxSelector " << (void*)&t << " start" << std::endl;

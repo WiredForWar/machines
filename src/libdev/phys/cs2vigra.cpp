@@ -93,7 +93,7 @@ void PhysCS2dVisibilityGraph::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dVisibilityGraph& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dVisibilityGraph& t)
 {
 
     o << "..................................................." << std::endl;
@@ -1015,7 +1015,7 @@ void PhysCS2dVisibilityGraph::updateStartEndArcFlags(bool resetStartArcFlag, boo
     }
 }
 
-ostream& operator<<(ostream& o, const PhysCS2dVisibilityGraph::VertexData& data)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dVisibilityGraph::VertexData& data)
 {
     o << "VertexData start " << (void*)&data << std::endl;
 

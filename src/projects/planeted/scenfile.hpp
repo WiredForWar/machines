@@ -245,7 +245,7 @@ private:
 
     static const string squadToken_;
 
-    friend ostream& operator<<(ostream& o, const PedScenarioFile& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedScenarioFile& t);
 
     PedScenarioFile(const PedScenarioFile&);
     PedScenarioFile& operator=(const PedScenarioFile&);

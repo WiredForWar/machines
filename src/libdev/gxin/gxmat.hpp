@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXMat& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXMat& t);
 
     GXIdPos textureId() const { return textureId_; }
     void textureId(GXIdPos newTextureId) { textureId_ = newTextureId; }

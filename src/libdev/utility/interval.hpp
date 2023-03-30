@@ -74,7 +74,7 @@ private:
     NUMERIC lower_;
     NUMERIC upper_;
 
-    friend ostream& operator<<(ostream& o, const UtlOpenInterval<NUMERIC>& i);
+    friend std::ostream& operator<<(std::ostream& o, const UtlOpenInterval<NUMERIC>& i);
 
     friend bool operator<(const UtlOpenInterval& a, const UtlOpenInterval& b);
     // POST( iff( result, a.isBefore( b ) ) );

@@ -477,7 +477,7 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogMachine::doOutputOperator(ostream& o) const
+void MachLogMachine::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogMachine* " << (void*)this << " HW " << hwLevel() << " SW " << swLevel() << " RR "
       << machineData().repairRate() << std::endl;
@@ -588,7 +588,7 @@ template <class CONTAINER, class T> void ctl_erase(CONTAINER* cPtr, const T& t)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachPhys::MachineType& t)
+std::ostream& operator<<(std::ostream& o, const MachPhys::MachineType& t)
 {
     string s;
     switch (t)
@@ -627,7 +627,7 @@ ostream& operator<<(ostream& o, const MachPhys::MachineType& t)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogMachine::State& s)
+std::ostream& operator<<(std::ostream& o, const MachLogMachine::State& s)
 {
     string state;
     switch (s)

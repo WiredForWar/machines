@@ -32,7 +32,7 @@ public:
 private:
     friend class MachGuiDbSystem;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbISystem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbISystem& t);
 
     MachGuiDbISystem();
     ~MachGuiDbISystem();

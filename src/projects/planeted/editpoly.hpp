@@ -99,7 +99,7 @@ private:
     PedPolygonEditor& operator=(const PedPolygonEditor&);
     bool operator==(const PedPolygonEditor&);
 
-    friend ostream& operator<<(ostream& o, const PedPolygonEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedPolygonEditor& t);
 };
 
 #endif

@@ -127,7 +127,7 @@ MachLogEnterBuildingOperation::~MachLogEnterBuildingOperation()
         pConstruction_->detach(this);
 }
 
-void MachLogEnterBuildingOperation::doOutputOperator(ostream& o) const
+void MachLogEnterBuildingOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogEnterBuildingOperation " << pConstruction_->id() << "[" << pConstruction_->objectType() << "]"
       << std::endl;
@@ -807,7 +807,7 @@ MachLogLeaveBuildingOperation::~MachLogLeaveBuildingOperation()
         pConstruction_->detach(this);
 }
 
-void MachLogLeaveBuildingOperation::doOutputOperator(ostream& o) const
+void MachLogLeaveBuildingOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogLeaveBuildingOperation\n";
     o << " (void*)pSubOperation_ " << (void*)pSubOperation() << std::endl;
@@ -1259,7 +1259,7 @@ bool MachLogLeaveBuildingOperation::onExternalEntrancePolygon() const
     return testCircle.intersects(exteriorPolygon);
 }
 
-ostream& operator<<(ostream& o, MachLogEnterBuildingOperation::Status s)
+std::ostream& operator<<(std::ostream& o, MachLogEnterBuildingOperation::Status s)
 {
     switch (s)
     {

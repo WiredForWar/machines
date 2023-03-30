@@ -28,7 +28,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogGarrisonImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogGarrisonImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogGarrisonImpl& t);
     friend class MachLogGarrison;
 
     MachLogGarrisonImpl(const MachLogGarrisonImpl&);

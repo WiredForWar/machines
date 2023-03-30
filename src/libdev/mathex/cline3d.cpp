@@ -30,7 +30,7 @@ void MexCompressedLine3d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexCompressedLine3d& t)
+std::ostream& operator<<(std::ostream& o, const MexCompressedLine3d& t)
 {
 
     o << "MexCompressedLine3d " << t.end1_ << " - " << t.end2_ << std::endl;

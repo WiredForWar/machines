@@ -44,7 +44,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dAnimationData);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dAnimationData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dAnimationData& t);
 
     W4dAnimationData(const W4dAnimationData&);
     W4dAnimationData& operator=(const W4dAnimationData&);

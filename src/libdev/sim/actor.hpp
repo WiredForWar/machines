@@ -75,7 +75,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimActor& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimActor& t);
 
     // Get the isDead flag
     bool isDead() const;

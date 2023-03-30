@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenIMatManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIMatManager& t);
 
     using Bodies = ctl_vector<RenIMatBody*>;
 

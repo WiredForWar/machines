@@ -55,7 +55,7 @@ void MachGuiMenuText::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiMenuText& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t)
 {
 
     o << "MachGuiMenuText " << (void*)&t << " start" << std::endl;

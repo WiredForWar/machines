@@ -47,7 +47,7 @@ protected:
     void showGames();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxJoin& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t);
 
     MachGuiCtxJoin(const MachGuiCtxJoin&);
     MachGuiCtxJoin& operator=(const MachGuiCtxJoin&);

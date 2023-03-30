@@ -79,7 +79,7 @@ void SimActor::CLASS_INVARIANT
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const SimActor& t)
+std::ostream& operator<<(std::ostream& o, const SimActor& t)
 {
 
     o << "SimActor " << (void*)&t << " start" << std::endl;

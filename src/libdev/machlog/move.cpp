@@ -152,7 +152,7 @@ MachLogMoveToOperation::~MachLogMoveToOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogMoveToOperation::doOutputOperator(ostream& o) const
+void MachLogMoveToOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogMoveToOperation_DEPIMPL();
 
@@ -368,7 +368,7 @@ MachLogMoveAndTurnOperation::~MachLogMoveAndTurnOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogMoveAndTurnOperation::doOutputOperator(ostream& o) const
+void MachLogMoveAndTurnOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogMoveAndTurnOperation_DEPIMPL();
 

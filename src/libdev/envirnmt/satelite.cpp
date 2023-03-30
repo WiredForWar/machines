@@ -127,7 +127,7 @@ void EnvSatellite::CLASS_INVARIANT
     INVARIANT(implies(light_, lightTable_));
 }
 
-ostream& operator<<(ostream& o, const EnvSatellite& t)
+std::ostream& operator<<(std::ostream& o, const EnvSatellite& t)
 {
     const MexTransform3d& xform = t.orbit_->movingEntity()->globalTransform();
     const MexPoint3d pos = xform.position();

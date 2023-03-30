@@ -53,7 +53,7 @@ void MachGuiRepairCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiRepairCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiRepairCommand& t)
 {
 
     o << "MachGuiRepairCommand " << (void*)&t << " start" << std::endl;

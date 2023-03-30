@@ -37,7 +37,7 @@ protected:
     // PRE( hasList() );
 
 private:
-    friend ostream& operator<<(ostream& o, const GuiListObserver& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiListObserver& t);
 
     void CLASS_INVARIANT;
 

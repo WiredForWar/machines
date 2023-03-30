@@ -149,7 +149,7 @@ void ProProfiler::setupTraceInterval() const
     //     time_increment_ls = ticks - time_increment_ms * TWO_POWER_32;
 }
 
-ostream& ProProfiler::outputStream()
+std::ostream& ProProfiler::outputStream()
 {
     return outputStream_;
 }
@@ -213,7 +213,7 @@ void ProProfiler::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const ProProfiler& t)
+std::ostream& operator<<(std::ostream& o, const ProProfiler& t)
 {
 
     o << "ProProfiler " << (void*)&t << " start" << std::endl;
@@ -311,14 +311,15 @@ bool ProProfiler::isMemoryProfilingEnabled() const
 }
 
 void traceStack(
-    ostream& outStream,
+    std::ostream& outStream,
     bool doTraceAnchor,
     size_t nStackFrames,
     const size_t* pCallStack,
     uint32_t lineNumber,
     const char* extraString);
+
 void ProProfiler::traceStack(
-    ostream& mystr,
+    std::ostream& mystr,
     bool doTraceAnchor,
     size_t nStackFrames,
     const size_t* pCallStack,
@@ -326,10 +327,10 @@ void ProProfiler::traceStack(
     const char* extraString)
 {
     // This is necessary because of compiler rubbish
-    ostream* pOstr = &mystr;
+    std::ostream* pOstr = &mystr;
     if (isBufferingOutput_)
         pOstr = pMemoryBuffer_;
-    ostream& ostr = *pOstr;
+    std::ostream& ostr = *pOstr;
 
     // Do the left marker
     ostr << "[[[";
@@ -387,7 +388,7 @@ void ProProfiler::clearBuffer()
     pMemoryBuffer_->clear();
 }
 
-void ProProfiler::writeBuffer(ostream& outStream)
+void ProProfiler::writeBuffer(std::ostream& outStream)
 {
     PRE(isBufferingOutput());
     outStream << *pMemoryBuffer_;
@@ -442,7 +443,7 @@ size_t ProProfiler::nCallStackEntries() const
     return count;
 }
 
-void ProProfiler::traceStack(ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString)
+void ProProfiler::traceStack(std::ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString)
 {
     traceStack(outStream, doTraceAnchor, count, &call_stack, lineNumber, extraString);
 }

@@ -61,7 +61,7 @@ void MachPhysMineData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMineData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMineData& t)
 {
 
     // o << (MachPhysObjectData)t;

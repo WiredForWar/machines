@@ -47,7 +47,7 @@ unsigned MachLogType::hardwareLevel() const
     return hardwareLevel_;
 }
 
-ostream& operator<<(ostream& o, const MachLogType& t)
+std::ostream& operator<<(std::ostream& o, const MachLogType& t)
 {
     o << t.type();
     if (t.isSubtype())

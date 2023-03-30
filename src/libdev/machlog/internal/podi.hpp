@@ -28,7 +28,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogPodImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogPodImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPodImpl& t);
     friend class MachLogPod;
 
     // operations deliberately revoked

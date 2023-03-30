@@ -44,7 +44,7 @@ private:
     // PRE( endTime >= duration )
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const PhysLinearMotionPlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysLinearMotionPlanImpl& t);
     friend class PhysLinearMotionPlan;
 
     struct Entry

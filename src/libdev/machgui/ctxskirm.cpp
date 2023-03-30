@@ -377,7 +377,7 @@ void MachGuiCtxSkirmish::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxSkirmish& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxSkirmish& t)
 {
 
     o << "MachGuiCtxSkirmish " << (void*)&t << " start" << std::endl;

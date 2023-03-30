@@ -50,7 +50,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysTimedSpinPlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysTimedSpinPlanImpl& t);
     friend class PhysTimedSpinPlan;
 
     // data members

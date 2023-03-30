@@ -45,7 +45,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachConstructionSelectIcon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachConstructionSelectIcon& t);
 
     static size_t reqWidth();
     static size_t reqHeight();

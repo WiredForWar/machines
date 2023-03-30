@@ -43,7 +43,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysEulerTransform3d& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysEulerTransform3d& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT(PhysEulerTransform3d);
     PER_FRIEND_READ_WRITE(PhysEulerTransform3d);

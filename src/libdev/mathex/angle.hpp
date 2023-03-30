@@ -37,7 +37,7 @@ public:
     void operator*=(MATHEX_SCALAR);
     void operator/=(MATHEX_SCALAR);
 
-    friend ostream& operator<<(ostream& str, const MexAngle& t);
+    friend std::ostream& operator<<(std::ostream& str, const MexAngle& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexAngle);

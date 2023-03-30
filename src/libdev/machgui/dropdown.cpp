@@ -212,7 +212,7 @@ void MachGuiDropDownListBox::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDropDownListBox& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBox& t)
 {
 
     o << "MachGuiDropDownListBox " << (void*)&t << " start" << std::endl;

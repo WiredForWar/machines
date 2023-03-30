@@ -38,7 +38,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
     bool doBeInterrupted() override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogMachine* pActor_;

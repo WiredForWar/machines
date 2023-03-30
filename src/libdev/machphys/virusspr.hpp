@@ -73,7 +73,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysVirusSpreader& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysVirusSpreader& t);
 
     PER_MEMBER_PERSISTENT(MachPhysVirusSpreader);
 

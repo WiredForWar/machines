@@ -143,7 +143,7 @@ void MachPhysResourceCarrier::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysResourceCarrier& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysResourceCarrier& t)
 {
 
     o << "MachPhysResourceCarrier " << (void*)&t << " start" << std::endl;

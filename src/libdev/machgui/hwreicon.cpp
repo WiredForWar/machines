@@ -64,7 +64,7 @@ void MachHWResearchIcon::CLASS_INVARIANT
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachHWResearchIcon& t)
+std::ostream& operator<<(std::ostream& o, const MachHWResearchIcon& t)
 {
 
     o << "MachHWResearchIcon " << (void*)&t << " start" << std::endl;

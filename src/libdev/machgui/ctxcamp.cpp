@@ -215,7 +215,7 @@ void MachGuiCtxCampaign::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxCampaign& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxCampaign& t)
 {
 
     o << "MachGuiCtxCampaign " << (void*)&t << " start" << std::endl;

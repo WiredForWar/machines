@@ -40,7 +40,7 @@ void MachGuiLocateToCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiLocateToCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiLocateToCommand& t)
 {
 
     o << "MachGuiLocateToCommand " << (void*)&t << " start" << std::endl;

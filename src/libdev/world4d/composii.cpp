@@ -69,7 +69,7 @@ void W4dCompositeImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dCompositeImpl& t)
+std::ostream& operator<<(std::ostream& o, const W4dCompositeImpl& t)
 {
 
     o << "W4dCompositeImpl " << (void*)&t << " start" << std::endl;

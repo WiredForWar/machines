@@ -41,7 +41,7 @@ public:
 
 protected:
     void doAction() override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     // method for defining the desired machine types.
@@ -51,7 +51,7 @@ private:
     void parseFromScenario(MachPhys::Race race, UtlLineTokeniser* pParser);
 
     MachLogReinforcementsAction(SimCondition*, bool enabled);
-    friend ostream& operator<<(ostream& o, const MachLogReinforcementsAction& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogReinforcementsAction& t);
 
     MachLogReinforcementsAction(const MachLogReinforcementsAction&);
     MachLogReinforcementsAction& operator=(const MachLogReinforcementsAction&);

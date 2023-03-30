@@ -277,7 +277,7 @@ void MachGuiCtxJoin::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxJoin& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t)
 {
 
     o << "MachGuiCtxJoin " << (void*)&t << " start" << std::endl;

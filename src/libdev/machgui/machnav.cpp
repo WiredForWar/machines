@@ -174,7 +174,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiNavButtonWithCounter& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiNavButtonWithCounter& t);
 
     // Data members...
     size_t numThisType_ = 0;
@@ -588,7 +588,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiNavButton& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiNavButton& t);
 
     // Data members...
     MachLog::ObjectType objType_;
@@ -728,7 +728,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiSelectAllNavButton& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSelectAllNavButton& t);
 
     // Data members...
     MachLog::ObjectType objectType_;
@@ -817,7 +817,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiNavRow& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiNavRow& t);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1306,7 +1306,7 @@ void MachGuiConstructionNavigator::CLASS_INVARIANT
 
 /////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachGuiConstructionNavigator& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiConstructionNavigator& t)
 {
 
     o << "MachGuiConstructionNavigator " << (void*)&t << " start" << std::endl;
@@ -1756,7 +1756,7 @@ void MachGuiMachineNavigator::CLASS_INVARIANT
 
 /////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachGuiMachineNavigator& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMachineNavigator& t)
 {
 
     o << "MachGuiMachineNavigator " << (void*)&t << " start" << std::endl;

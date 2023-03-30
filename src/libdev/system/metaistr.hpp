@@ -39,7 +39,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const SysMetaFileIstream& t);
+    friend std::ostream& operator<<(std::ostream& o, const SysMetaFileIstream& t);
 
     SysMetaFileIstream(const SysMetaFileIstream&);
     SysMetaFileIstream& operator=(const SysMetaFileIstream&);

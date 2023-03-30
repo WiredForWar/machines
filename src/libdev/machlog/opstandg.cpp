@@ -33,7 +33,7 @@ MachLogStandGroundOperation::~MachLogStandGroundOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogStandGroundOperation::doOutputOperator(ostream& o) const
+void MachLogStandGroundOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogStandGroundOperation " << std::endl;
 }

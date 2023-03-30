@@ -10,6 +10,8 @@ set(SYSTEM_SOURCES
     filefind.hpp
     filetime.cpp
     filetime.hpp
+    internal/metafili.hpp
+    internal/pathnami.hpp
     memcaps.cpp
     memcaps.hpp
     metafile.cpp

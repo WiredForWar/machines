@@ -325,7 +325,7 @@ void cbClose()
     cbInitialised = false;
 }
 
-void cbAllocTrace(ostream& o, const std::string& title, AllocTraceOptions option)
+void cbAllocTrace(std::ostream& o, const std::string& title, AllocTraceOptions option)
 {
     // Print the header including overall memory allocation info
     o << "=======================================================" << std::endl;

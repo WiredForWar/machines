@@ -107,7 +107,7 @@ void GXColor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXColor& t)
+std::ostream& operator<<(std::ostream& o, const GXColor& t)
 {
 
     o << "red " << (USHORT)t.red_ << " green " << (USHORT)t.green_ << " blue " << (USHORT)t.blue_;

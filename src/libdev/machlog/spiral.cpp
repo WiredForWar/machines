@@ -94,7 +94,7 @@ void MachLogSquareSpiral::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogSquareSpiral& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSquareSpiral& t)
 {
 
     o << "MachLogSquareSpiral " << (void*)&t << " start" << std::endl;

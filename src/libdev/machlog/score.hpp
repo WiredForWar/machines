@@ -107,7 +107,7 @@ private:
 
     void adjustStatsForDestruction(KillerOrVictim killVictFlag, const MachActor& victimActor);
 
-    friend ostream& operator<<(ostream& o, const MachLogScore& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogScore& t);
     friend class MachLogMessageBroker;
 
     MachLogScore(const MachLogScore&);

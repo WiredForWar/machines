@@ -35,7 +35,7 @@ public:
     void valueChanged(float value) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiGammaCorrectionSlideBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiGammaCorrectionSlideBar& t);
 
     MachGuiGammaCorrectionSlideBar(const MachGuiGammaCorrectionSlideBar&);
     MachGuiGammaCorrectionSlideBar& operator=(const MachGuiGammaCorrectionSlideBar&);

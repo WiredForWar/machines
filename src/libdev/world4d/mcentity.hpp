@@ -39,7 +39,7 @@ private:
     W4dMotionControlledEntity& operator=(const W4dMotionControlledEntity&);
     bool operator==(const W4dMotionControlledEntity&);
 
-    friend ostream& operator<<(ostream& o, const W4dMotionControlledEntity& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dMotionControlledEntity& t);
 
     // data members
     W4dEntity* pMotionControlledEntity_;

@@ -28,7 +28,7 @@ void MachLogRacesDataImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogRacesDataImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogRacesDataImpl& t)
 {
 
     o << "MachLogRacesDataImpl " << (void*)&t << " start" << std::endl;

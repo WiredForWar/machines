@@ -76,7 +76,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GraAStarAlg<GRA_GRAPH, VERTEX_MAP>& t);
+    friend std::ostream& operator<<(std::ostream& o, const GraAStarAlg<GRA_GRAPH, VERTEX_MAP>& t);
 
 private:
     // Operations deliberately revoked

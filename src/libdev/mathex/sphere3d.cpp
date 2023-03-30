@@ -69,7 +69,7 @@ bool MexSphere3d::intersects(const MexSphere3d& otherShape) const
     return result;
 }
 
-ostream& operator<<(ostream& o, const MexSphere3d& t)
+std::ostream& operator<<(std::ostream& o, const MexSphere3d& t)
 {
 
     o << std::endl;

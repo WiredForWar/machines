@@ -110,7 +110,7 @@ void RenILightingBuffer::copyCoords(const RenIVertexData& in)
 }
 
 // virtual
-void RenILightingBuffer::printDebug(ostream& o) const
+void RenILightingBuffer::printDebug(std::ostream& o) const
 {
     o << "Internal " << typeDescription_ << " lighting buffer\n";
     o << "  capacity=" << capacity_ << ", no. valid=" << nValid_ << "\n";
@@ -127,12 +127,12 @@ void RenILightingBuffer::printDebug(ostream& o) const
 }
 
 // virtual
-void RenILightingBuffer::printVertex(ostream& o, const int index) const
+void RenILightingBuffer::printVertex(std::ostream& o, const int index) const
 {
     o << vertices_[index];
 }
 
-ostream& operator<<(ostream& o, const RenILightingBuffer& b)
+std::ostream& operator<<(std::ostream& o, const RenILightingBuffer& b)
 {
     b.printDebug(o);
     return o;

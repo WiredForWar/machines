@@ -7,7 +7,7 @@
 #include "mathex/mathex.itf"
 #endif
 
-template <class SCALAR> ostream& operator<<(ostream& ostr, const MexXCoord<SCALAR>& t)
+template <class SCALAR> std::ostream& operator<<(std::ostream& ostr, const MexXCoord<SCALAR>& t)
 {
     ostr << t.data_;
     return ostr;
@@ -23,7 +23,7 @@ template <class SCALAR> void perRead(PerIstream& str, MexXCoord<SCALAR>& t)
     str >> t.data_;
 }
 
-template <class SCALAR> ostream& operator<<(ostream& ostr, const MexYCoord<SCALAR>& t)
+template <class SCALAR> std::ostream& operator<<(std::ostream& ostr, const MexYCoord<SCALAR>& t)
 {
     ostr << t.data_;
     return ostr;

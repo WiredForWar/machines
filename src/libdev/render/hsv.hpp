@@ -42,7 +42,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenColourHSV& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenColourHSV& t);
 
 private:
     // Operation deliberately revoked

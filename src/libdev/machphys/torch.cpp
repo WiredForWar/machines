@@ -60,7 +60,7 @@ void MachPhysTorch::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysTorch& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysTorch& t)
 {
 
     o << "MachPhysTorch " << (void*)&t << " start" << std::endl;

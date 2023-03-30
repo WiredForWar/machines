@@ -24,7 +24,7 @@ public:
     void startFadeOut(const PhysAbsoluteTime& startTime);
 
     /////////////////////////////////////////////////////////////////////////////
-    friend ostream& operator<<(ostream& o, const MachPhysMoveIndicator& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMoveIndicator& t);
 
     PER_MEMBER_PERSISTENT(MachPhysMoveIndicator);
     PER_FRIEND_READ_WRITE(MachPhysMoveIndicator);

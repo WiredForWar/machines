@@ -84,7 +84,7 @@ private:
     MachHWResearchBankIcon& operator=(const MachHWResearchBankIcon&);
     bool operator==(const MachHWResearchBankIcon&);
 
-    friend ostream& operator<<(ostream& o, const MachHWResearchBankIcon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachHWResearchBankIcon& t);
 
     // Data members
     MachGuiBuildProgressBar* pProgressBar_;

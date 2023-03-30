@@ -75,7 +75,7 @@ protected:
     virtual int maxWidth() const;
 
 protected:
-    friend ostream& operator<<(ostream& o, const GuiSingleLineEditBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiSingleLineEditBox& t);
 
     GuiSingleLineEditBox(const GuiSingleLineEditBox&);
     GuiSingleLineEditBox& operator=(const GuiSingleLineEditBox&);

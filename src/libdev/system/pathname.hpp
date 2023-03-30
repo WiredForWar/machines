@@ -148,7 +148,7 @@ public:
     void removePrefix(const SysPathName& prefix);
     //  PRE( hasPrefix( prefix );
 
-    friend ostream& operator<<(ostream& o, const SysPathName& p);
+    friend std::ostream& operator<<(std::ostream& o, const SysPathName& p);
 
     PER_MEMBER_PERSISTENT_DEFAULT(SysPathName);
 

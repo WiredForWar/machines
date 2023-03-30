@@ -19,11 +19,11 @@
 class BaseIndentOstream : public BaseFilterOstream
 {
 public:
-    BaseIndentOstream(ostream& ostr, const std::string& indentString);
+    BaseIndentOstream(std::ostream& ostr, const std::string& indentString);
     ~BaseIndentOstream() override;
 
     //  Set a new output stream
-    void stream(ostream& ostr);
+    void stream(std::ostream& ostr);
 
     //  Set the indent string
     void indentString(const std::string&, size_t repeatCount = 1);

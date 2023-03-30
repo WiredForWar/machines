@@ -47,7 +47,7 @@ void MachPhysBlackSphere::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBlackSphere& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBlackSphere& t)
 {
 
     o << "MachPhysBlackSphere " << (void*)&t << " start" << std::endl;

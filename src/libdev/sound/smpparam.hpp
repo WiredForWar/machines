@@ -107,7 +107,7 @@ public:
 
     SndSampleParameters& operator=(const SndSampleParameters&);
 
-    friend ostream& operator<<(ostream& o, const SndSampleParameters& t);
+    friend std::ostream& operator<<(std::ostream& o, const SndSampleParameters& t);
 
     ///////////////////////////////
 

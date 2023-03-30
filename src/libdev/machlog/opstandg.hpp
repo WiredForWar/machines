@@ -38,7 +38,7 @@ protected:
 
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     bool doBeInterrupted() override;
     ///////////////////////////////

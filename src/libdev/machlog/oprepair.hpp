@@ -31,7 +31,7 @@ public:
 protected:
     bool doIsFinished() const override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     // inherited from MLLabourOperation
     bool clientSpecificNotification(int clientData) override;

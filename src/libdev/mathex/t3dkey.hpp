@@ -41,7 +41,7 @@ public:
 
     // Debugging
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const MexTransform3dKey& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexTransform3dKey& t);
 
     /*    //Persistence
     PER_MEMBER_PERSISTENT;

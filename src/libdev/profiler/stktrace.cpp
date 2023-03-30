@@ -24,7 +24,7 @@ void ProStackTracer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const ProStackTracer&)
+std::ostream& operator<<(std::ostream& o, const ProStackTracer&)
 {
     ProProfiler::instance().traceStack(o, true, 0, "");
 

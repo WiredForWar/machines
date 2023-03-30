@@ -363,7 +363,7 @@ void MachLogMessageBroker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMessageBroker& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker& t)
 {
 
     o << "MachLogMessageBroker " << (void*)&t << " start" << std::endl;
@@ -381,7 +381,7 @@ ostream& operator<<(ostream& o, const MachLogMessageBroker& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogMessageBroker::MachLogMessageCode& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker::MachLogMessageCode& t)
 {
     switch (t)
     {
@@ -554,7 +554,7 @@ ostream& operator<<(ostream& o, const MachLogMessageBroker::MachLogMessageCode& 
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachLogMessageBroker::ActorNowDead& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker::ActorNowDead& t)
 {
     switch (t)
     {

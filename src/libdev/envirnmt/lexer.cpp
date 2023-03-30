@@ -787,8 +787,7 @@ void yydoinit()
     yy_init = 1;
 }
 
-#include <iostream>
-istream* pGlobalLexIstream = nullptr;
+std::istream* pGlobalLexIstream = nullptr;
 
 // This function reads characters from an istream into the buffer passed.
 int globalLexIstreamBufferInput(unsigned char* pBuffer, int bufferSize)

@@ -108,7 +108,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiRepairCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiRepairCommand& t);
 
 private:
     // Operation deliberately revoked

@@ -82,7 +82,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenMeshInstance& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenMeshInstance& t);
 
     PER_MEMBER_PERSISTENT(RenMeshInstance);
     PER_FRIEND_READ_WRITE(RenMeshInstance);

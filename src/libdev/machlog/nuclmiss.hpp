@@ -36,7 +36,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogNuclearMissile& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogNuclearMissile& t);
 
 private:
     void doBeDestroyed() override;

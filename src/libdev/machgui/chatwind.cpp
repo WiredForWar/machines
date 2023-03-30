@@ -68,7 +68,7 @@ void MachGuiChatWindow::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiChatWindow& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiChatWindow& t)
 {
 
     o << "MachGuiChatWindow " << (void*)&t << " start" << std::endl;

@@ -44,7 +44,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysWheels& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysWheels& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysWheels);
     PER_FRIEND_READ_WRITE(MachPhysWheels);

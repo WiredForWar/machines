@@ -33,7 +33,7 @@ void MachPhysGeoLocatorData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysGeoLocatorData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysGeoLocatorData& t)
 {
 
     // o << (MachPhysObjectData)t;

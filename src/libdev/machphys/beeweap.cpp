@@ -147,7 +147,7 @@ MachPhysBeeBomb* MachPhysBeeBomber::createBeeBomb(
     return pBeeBomb;
 }
 
-ostream& operator<<(ostream& o, const MachPhysBeeBomber& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBeeBomber& t)
 {
 
     o << "MachPhysBeeBomber " << (void*)&t << " start" << std::endl;

@@ -79,7 +79,7 @@ public:
     MachPhysMachine::ControlType getLauncherControl() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const MachPhysLinearProjectile& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLinearProjectile& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysLinearProjectile);
     PER_FRIEND_READ_WRITE(MachPhysLinearProjectile);

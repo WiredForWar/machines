@@ -61,7 +61,7 @@ MachLogAdminAttackOperation::~MachLogAdminAttackOperation()
         pDirectObject_->detach(this);
 }
 
-void MachLogAdminAttackOperation::doOutputOperator(ostream& o) const
+void MachLogAdminAttackOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminAttackOperation" << std::endl;
 

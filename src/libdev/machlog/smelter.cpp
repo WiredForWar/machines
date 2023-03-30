@@ -87,7 +87,7 @@ void MachLogSmelter::CLASS_INVARIANT
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogSmelter& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSmelter& t)
 {
 
     o << "MachLogSmelter " << (void*)&t << " start" << std::endl;

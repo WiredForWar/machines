@@ -173,7 +173,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysOtherPersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysOtherPersistence& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT(MachPhysOtherPersistence);
     PER_FRIEND_READ_WRITE(MachPhysOtherPersistence);

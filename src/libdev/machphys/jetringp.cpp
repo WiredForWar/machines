@@ -34,7 +34,7 @@ void MachPhysJetRingPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysJetRingPlan& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysJetRingPlan& t)
 {
 
     o << "MachPhysJetRingPlan " << (void*)&t << " start" << std::endl;

@@ -94,7 +94,7 @@ public:
 
     size_type size() const;
 
-    friend ostream& operator<<(ostream& o, ctl_bit_vector& b);
+    friend std::ostream& operator<<(std::ostream& o, ctl_bit_vector& b);
     friend bool operator==(const ctl_bit_vector& a, const ctl_bit_vector& b);
 
     void CLASS_INVARIANT;

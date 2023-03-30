@@ -56,7 +56,7 @@ private:
     // it wont, else returns score
     static string testForOverflow(const string& score);
 
-    friend ostream& operator<<(ostream& o, const MachGuiStatisticsBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsBar& t);
 
     MachGuiStatisticsBar(const MachGuiStatisticsBar&);
     MachGuiStatisticsBar& operator=(const MachGuiStatisticsBar&);

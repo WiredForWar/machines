@@ -89,7 +89,7 @@ const MachPhysBeeBomb& MachPhysBeeBomb::exemplar()
     return MachPhysOtherPersistence::instance().beeBombExemplar();
 }
 
-ostream& operator<<(ostream& o, const MachPhysBeeBomb& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBeeBomb& t)
 {
 
     o << "MachPhysBeeBomb " << (void*)&t << " start" << std::endl;

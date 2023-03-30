@@ -49,7 +49,7 @@ void MachGuiScavengeCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiScavengeCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiScavengeCommand& t)
 {
 
     o << "MachGuiScavengeCommand " << (void*)&t << " start" << std::endl;

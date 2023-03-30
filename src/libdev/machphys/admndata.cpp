@@ -53,7 +53,7 @@ void MachPhysAdministratorData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysAdministratorData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysAdministratorData& t)
 {
 
     // o << (MachPhysObjectData)t;

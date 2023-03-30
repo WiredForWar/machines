@@ -76,7 +76,7 @@ public:
     bool altPressed() const;
     bool ctrlPressed() const;
 
-    friend ostream& operator<<(ostream&, const DevKey&);
+    friend std::ostream& operator<<(std::ostream&, const DevKey&);
 
     bool getKey(void);
     bool getKey(double waitTime);

@@ -32,7 +32,7 @@ void MachLogAPCImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogAPCImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogAPCImpl& t)
 {
 
     o << "MachLogAPCImpl " << (void*)&t << " start" << std::endl;

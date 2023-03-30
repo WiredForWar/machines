@@ -73,7 +73,7 @@ void AfxResourceLib::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const AfxResourceLib& t)
+std::ostream& operator<<(std::ostream& o, const AfxResourceLib& t)
 {
 
     o << "AfxResourceLib " << (void*)&t << " start" << std::endl;

@@ -135,7 +135,7 @@ bool MachLogSuperCharger::healing() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogSuperCharger& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSuperCharger& t)
 {
 
     o << "MachLogSuperCharger " << (void*)&t << " start" << std::endl;

@@ -37,7 +37,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenIMeshFactory& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIMeshFactory& t);
 
 private:
     Ren::ConstMeshPtr doCreatePart(const RenIMeshID& id) override;

@@ -107,7 +107,7 @@ public:
     EnvSkyline* createSkyline(const SysPathName& meshFile);
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const EnvPlanetEnvironment& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvPlanetEnvironment& t);
 
 private:
     void updateSky();

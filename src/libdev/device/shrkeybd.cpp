@@ -380,7 +380,7 @@ void DevKeyboard::keys_invariant(const char*, const char*) const
 }
 
 // static
-void DevKey::printScanCode(ostream& o, ScanCode code)
+void DevKey::printScanCode(std::ostream& o, ScanCode code)
 {
     switch (code)
     {

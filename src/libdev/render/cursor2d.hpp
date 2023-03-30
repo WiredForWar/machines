@@ -24,7 +24,7 @@ public:
     // shouldn't be able to change a cursor's bitmaps, however, they do need
     // to advance the cursor to the next animated image (or whatever).
     virtual const RenSurface& currentBitmap() const = 0;
-    virtual void print(ostream& o) const = 0;
+    virtual void print(std::ostream& o) const = 0;
 
     // The cursor will be at these coordinates in the bitmap.
     void origin(int x, int y);
@@ -38,7 +38,7 @@ private:
     int ox_, oy_;
 };
 
-ostream& operator<<(ostream& o, const RenCursor2d& t);
+std::ostream& operator<<(std::ostream& o, const RenCursor2d& t);
 
 #endif
 

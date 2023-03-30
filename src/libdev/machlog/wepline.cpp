@@ -397,7 +397,7 @@ MachPhysLinearProjectile* MachLogLinearWeapon::createPhysLinearProjectile(
     return result;
 }
 
-ostream& operator<<(ostream& o, const MachLogLinearWeapon& t)
+std::ostream& operator<<(std::ostream& o, const MachLogLinearWeapon& t)
 {
 
     o << "MachLogLinearWeapon " << (void*)&t << " start" << std::endl;

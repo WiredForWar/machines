@@ -292,7 +292,7 @@ void UtlAsciiPictureImpl::CLASS_INVARIANT
     //    INVARIANT( picture_[ 0 ].length() + 2 * yLabels_[ 0 ].length() == xLabels_[ 0 ].length() );
 }
 
-ostream& operator<<(ostream& o, const UtlAsciiPictureImpl& t)
+std::ostream& operator<<(std::ostream& o, const UtlAsciiPictureImpl& t)
 {
     if (t.title_.length() != 0)
         o << t.title_ << std::endl << std::endl;

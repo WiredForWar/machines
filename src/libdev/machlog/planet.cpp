@@ -520,7 +520,7 @@ PhysConfigSpace2d& MachLogPlanet::hiddenConfigSpace() const
     return *pHiddenConfigSpace_;
 }
 
-ostream& operator<<(ostream& o, const MachLogPlanet& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPlanet& t)
 {
     o << "MLPlanet:: Mineral Sites number " << t.sites().size() << "\n";
     for (MachLogPlanet::Sites::const_iterator i = t.sites().begin(); i != t.sites().end(); ++i)
@@ -637,7 +637,7 @@ MexPoint3d MachLogPlanet::safeWorldCoordinate(const MexPoint3d& potentiallyUnsaf
 
 #ifndef PRODUCTION
 
-bool MachLogPlanet::planetSurfaceOK(ostream& os) const
+bool MachLogPlanet::planetSurfaceOK(std::ostream& os) const
 {
     CB_MachLogPlanet_DEPIMPL();
 
@@ -662,7 +662,7 @@ bool MachLogPlanet::planetSurfaceOK(ostream& os) const
     return true;
 }
 
-void MachLogPlanet::checkPlanet(ostream& os) const
+void MachLogPlanet::checkPlanet(std::ostream& os) const
 {
     CB_MachLogPlanet_DEPIMPL();
 

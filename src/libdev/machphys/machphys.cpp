@@ -7,7 +7,7 @@
 
 #include "machphys/machphys.hpp"
 
-ostream& operator<<(ostream& o, MachPhys::MachineType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::MachineType type)
 {
     switch (type)
     {
@@ -39,7 +39,7 @@ ostream& operator<<(ostream& o, MachPhys::MachineType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::AggressorSubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::AggressorSubType type)
 {
     switch (type)
     {
@@ -62,7 +62,7 @@ ostream& operator<<(ostream& o, MachPhys::AggressorSubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::AdministratorSubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::AdministratorSubType type)
 {
     switch (type)
     {
@@ -79,7 +79,7 @@ ostream& operator<<(ostream& o, MachPhys::AdministratorSubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::TechnicianSubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::TechnicianSubType type)
 {
     switch (type)
     {
@@ -96,7 +96,7 @@ ostream& operator<<(ostream& o, MachPhys::TechnicianSubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::ConstructorSubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::ConstructorSubType type)
 {
     switch (type)
     {
@@ -113,7 +113,7 @@ ostream& operator<<(ostream& o, MachPhys::ConstructorSubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::ConstructionType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::ConstructionType type)
 {
     switch (type)
     {
@@ -148,7 +148,7 @@ ostream& operator<<(ostream& o, MachPhys::ConstructionType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::FactorySubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::FactorySubType type)
 {
     switch (type)
     {
@@ -162,7 +162,7 @@ ostream& operator<<(ostream& o, MachPhys::FactorySubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::HardwareLabSubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::HardwareLabSubType type)
 {
     switch (type)
     {
@@ -176,7 +176,7 @@ ostream& operator<<(ostream& o, MachPhys::HardwareLabSubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::MissileEmplacementSubType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::MissileEmplacementSubType type)
 {
     switch (type)
     {
@@ -196,7 +196,7 @@ ostream& operator<<(ostream& o, MachPhys::MissileEmplacementSubType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::WeaponType type)
+std::ostream& operator<<(std::ostream& o, MachPhys::WeaponType type)
 {
     switch (type)
     {
@@ -302,12 +302,12 @@ ostream& operator<<(ostream& o, MachPhys::WeaponType type)
     }
     return o;
 }
-ostream& operator<<(ostream& o, MachPhys::Mounting type)
+std::ostream& operator<<(std::ostream& o, MachPhys::Mounting type)
 {
     o << "Mountings are not streamed " << (int)type;
     return o;
 }
-ostream& operator<<(ostream& o, MachPhys::WeaponCombo type)
+std::ostream& operator<<(std::ostream& o, MachPhys::WeaponCombo type)
 {
     switch (type)
     {
@@ -431,7 +431,7 @@ ostream& operator<<(ostream& o, MachPhys::WeaponCombo type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhysFireballType type)
+std::ostream& operator<<(std::ostream& o, MachPhysFireballType type)
 {
     switch (type)
     {
@@ -452,7 +452,7 @@ ostream& operator<<(ostream& o, MachPhysFireballType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::Race type)
+std::ostream& operator<<(std::ostream& o, MachPhys::Race type)
 {
     switch (type)
     {
@@ -476,7 +476,7 @@ ostream& operator<<(ostream& o, MachPhys::Race type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhysPuffType type)
+std::ostream& operator<<(std::ostream& o, MachPhysPuffType type)
 {
     switch (type)
     {
@@ -497,7 +497,7 @@ ostream& operator<<(ostream& o, MachPhysPuffType type)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::AnimationIds animId)
+std::ostream& operator<<(std::ostream& o, MachPhys::AnimationIds animId)
 {
     switch (animId)
     {
@@ -515,7 +515,7 @@ ostream& operator<<(ostream& o, MachPhys::AnimationIds animId)
     return o;
 }
 
-ostream& operator<<(ostream& o, MachPhys::FinalState finalState)
+std::ostream& operator<<(std::ostream& o, MachPhys::FinalState finalState)
 {
     switch (finalState)
     {

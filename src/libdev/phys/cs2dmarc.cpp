@@ -19,7 +19,7 @@ void PhysCS2dDomainArc::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysCS2dDomainArc& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainArc& t)
 {
 
     o << "PhysCS2dDomainArc " << (void*)&t << " domain id = " << t.domainId_.asScalar() << std::endl;

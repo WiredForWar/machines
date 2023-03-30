@@ -127,7 +127,7 @@ void MachGuiCtxMainMenu::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxMainMenu& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxMainMenu& t)
 {
 
     o << "MachGuiCtxMainMenu " << (void*)&t << " start" << std::endl;

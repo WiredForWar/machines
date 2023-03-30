@@ -83,7 +83,7 @@ private:
     DevKeyToCommandTranslator& operator=(const DevKeyToCommandTranslator&);
     bool operator==(const DevKeyToCommandTranslator&);
 
-    friend ostream& operator<<(ostream& o, const DevKeyToCommandTranslator& t);
+    friend std::ostream& operator<<(std::ostream& o, const DevKeyToCommandTranslator& t);
 
     bool needsReleasedState(Command&, DevKeyToCommand::Modifier modifier);
     bool needsPressedState(Command&, DevKeyToCommand::Modifier modifier);

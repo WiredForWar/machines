@@ -36,7 +36,7 @@ void MachLogArtefactsImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogArtefactsImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogArtefactsImpl& t)
 {
 
     o << "MachLogArtefactsImpl " << (void*)&t << " start" << std::endl;

@@ -37,7 +37,7 @@ void MachBuildMenu::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachBuildMenu& t)
+std::ostream& operator<<(std::ostream& o, const MachBuildMenu& t)
 {
 
     o << "MachBuildMenu " << (void*)&t << " start" << std::endl;

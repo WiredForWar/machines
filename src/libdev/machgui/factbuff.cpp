@@ -58,7 +58,7 @@ void MachGuiFactoryBuffer::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiFactoryBuffer& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiFactoryBuffer& t)
 {
 
     o << "MachGuiFactoryBuffer " << (void*)&t << " start" << std::endl;

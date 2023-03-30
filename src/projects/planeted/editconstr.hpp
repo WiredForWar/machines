@@ -101,7 +101,7 @@ private:
     using Constructions = ctl_pvector<Construction>;
     using ConstructionMappings = ctl_vector<ConstructionMapping>;
 
-    friend ostream& operator<<(ostream& o, const PedConstructionEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedConstructionEditor& t);
 
     PedConstructionEditor(const PedConstructionEditor&);
     PedConstructionEditor& operator=(const PedConstructionEditor&);

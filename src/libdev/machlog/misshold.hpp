@@ -32,7 +32,7 @@ public:
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR clearanceFromDisplayedVolume) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogMissileHolder& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMissileHolder& t);
 
     MachLogMissileHolder(const MachLogMissileHolder&);
     MachLogMissileHolder& operator=(const MachLogMissileHolder&);

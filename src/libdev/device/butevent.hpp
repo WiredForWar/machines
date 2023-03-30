@@ -128,14 +128,14 @@ private:
     bool ctrl_ = false;
     bool alt_ = false;
 };
-template <typename DevTimeDep> ostream& operator<<(ostream& o, const DevButtonEventT<DevTimeDep>&);
+template <typename DevTimeDep> std::ostream& operator<<(std::ostream& o, const DevButtonEventT<DevTimeDep>&);
 
 // !!!!!!!! CONCRETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using DevButtonEvent = DevButtonEventT<DevTime>;
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // Avoid ODR hell
-template <> inline ostream& operator<<(ostream& o, const DevButtonEvent& t)
+template <> inline std::ostream& operator<<(std::ostream& o, const DevButtonEvent& t)
 {
     o << "Button event: " << std::setprecision(4) << " age=" << t.age() << " s=" << t.wasShiftPressed()
       << " c=" << t.wasCtrlPressed() << " a=" << t.wasAltPressed() << " rpt=" << t.repeatCount() << " ";

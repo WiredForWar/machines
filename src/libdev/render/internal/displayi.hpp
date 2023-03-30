@@ -59,7 +59,7 @@ private:
     void restoreUnderCursor();
     bool blitTest();
 
-    friend ostream& operator<<(ostream& o, const RenIDisplay& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIDisplay& t);
 
     RenIDisplay(const RenIDisplay&);
     RenIDisplay& operator=(const RenIDisplay&);

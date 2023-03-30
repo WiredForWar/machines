@@ -87,7 +87,7 @@ void MachPhysObjectExplosion::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysObjectExplosion& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysObjectExplosion& t)
 {
 
     o << "MachPhysObjectExplosion " << (void*)&t << " start" << std::endl;

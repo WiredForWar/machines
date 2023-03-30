@@ -53,13 +53,13 @@ private:
     PedObstacle& operator=(const PedObstacle&);
     bool operator==(const PedObstacle&);
 
-    friend ostream& operator<<(ostream& o, const PedObstacle& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedObstacle& t);
 
     CspType cspType_;
     static CspType highlightedType_;
 };
 
-ostream& operator<<(ostream& o, PedObstacle::CspType cspType);
+std::ostream& operator<<(std::ostream& o, PedObstacle::CspType cspType);
 
 #endif
 

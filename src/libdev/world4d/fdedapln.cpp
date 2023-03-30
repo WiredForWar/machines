@@ -52,7 +52,7 @@ void W4dSolidFadedAlphaPlan::CLASS_INVARIANT
     INVARIANT(nFrames_ != 0);
 }
 
-ostream& operator<<(ostream& o, const W4dSolidFadedAlphaPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dSolidFadedAlphaPlan& t)
 {
 
     o << "W4dSolidFadedAlphaPlan " << (void*)&t << " start" << std::endl;

@@ -46,7 +46,7 @@ public:
     static const MexDouble& plusInfinity();
     static const MexDouble& minusInfinity();
 
-    friend ostream& operator<<(ostream&, const MexDouble&);
+    friend std::ostream& operator<<(std::ostream&, const MexDouble&);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexDouble);

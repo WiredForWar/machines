@@ -100,7 +100,7 @@ private:
         const MexPoint3d& location,
         MachPhys::WeaponCombo);
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
     MachPhys::AdministratorSubType subType_;
 };
 

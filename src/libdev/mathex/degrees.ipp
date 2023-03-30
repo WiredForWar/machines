@@ -84,7 +84,7 @@ const MexDegrees operator-(const MexDegrees& a)
 }
 
 _CODE_INLINE
-ostream& operator<<(ostream& o, const MexDegrees& t)
+std::ostream& operator<<(std::ostream& o, const MexDegrees& t)
 {
     o << t.angleInRadians() * 180.0 / Mathex::PI;
 

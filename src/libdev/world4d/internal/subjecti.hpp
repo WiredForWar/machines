@@ -50,7 +50,7 @@ public:
 
     void setObjectPtr(W4dEntity* pNewEntity, const MexTransform3d& newGlobalTransform);
 
-    ostream& write(ostream& o) const;
+    std::ostream& write(std::ostream& o) const;
 
     void CLASS_INVARIANT;
 

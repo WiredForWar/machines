@@ -37,7 +37,7 @@ void W4dCompositePlanEntry::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dCompositePlanEntry& t)
+std::ostream& operator<<(std::ostream& o, const W4dCompositePlanEntry& t)
 {
 
     o << "W4dCompositePlanEntry " << (void*)&t << " start" << std::endl;

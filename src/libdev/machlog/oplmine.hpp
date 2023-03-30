@@ -43,7 +43,7 @@ protected:
     bool doIsFinished() const override;
     bool doBeInterrupted() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     // redefinition required, invocation revoked
     PhysRelativeTime doUpdate() override;

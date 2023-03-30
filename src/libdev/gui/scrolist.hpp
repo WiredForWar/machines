@@ -102,7 +102,7 @@ private:
     GuiSimpleScrollableList& operator=(const GuiSimpleScrollableList&);
     bool operator==(const GuiSimpleScrollableList&);
 
-    friend ostream& operator<<(ostream& o, const GuiSimpleScrollableList& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiSimpleScrollableList& t);
 
     void updateInfo();
 

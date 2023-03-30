@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SysMetaFileImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const SysMetaFileImpl& t);
 
 private:
     SysMetaFileImpl(const SysMetaFileImpl&);

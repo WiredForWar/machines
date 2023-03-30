@@ -19,7 +19,7 @@ public:
 
     ~RenITLPolygon() override;
     void render() override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
 private:
     const RenITTFImpl* const pImpl_;

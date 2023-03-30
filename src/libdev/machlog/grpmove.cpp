@@ -39,7 +39,7 @@ void MachLogGroupSimpleMove::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogGroupSimpleMove& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGroupSimpleMove& t)
 {
 
     o << "MachLogGroupSimpleMove " << (void*)&t << " start" << std::endl;

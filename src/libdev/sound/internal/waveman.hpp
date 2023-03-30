@@ -51,7 +51,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SndWaveManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const SndWaveManager& t);
 
     SndWaveform* getWaveForm(const SndWaveformId& id);
     ALuint getSoundBuffer(const SndWaveformId& id, bool& isFound);

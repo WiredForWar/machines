@@ -20,8 +20,6 @@
 
 #include "ctl/vector.hpp"
 
-class ofstream;
-
 using PolyVerticies = ctl_vector<MexPoint2d>;
 
 class PedPolygon : public W4dCustom
@@ -74,7 +72,7 @@ private:
     PedPolygon& operator=(const PedPolygon&);
     bool operator==(const PedPolygon&);
 
-    friend ostream& operator<<(ostream& o, const PedPolygon& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedPolygon& t);
 };
 
 #endif

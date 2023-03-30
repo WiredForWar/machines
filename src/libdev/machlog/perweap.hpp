@@ -26,7 +26,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogWeaponPersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogWeaponPersistence& t);
 
     MachLogWeaponPersistence();
     MachLogWeaponPersistence(const MachLogWeaponPersistence&);

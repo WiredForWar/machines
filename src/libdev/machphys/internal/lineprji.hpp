@@ -38,7 +38,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLinearProjectileImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLinearProjectileImpl& t);
     friend class MachPhysLinearProjectile;
 
     PhysAbsoluteTime flightStartTime_; // Time starts flying

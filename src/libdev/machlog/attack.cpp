@@ -136,7 +136,7 @@ MachLogAttackOperation::~MachLogAttackOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogAttackOperation::doOutputOperator(ostream& o) const
+void MachLogAttackOperation::doOutputOperator(std::ostream& o) const
 {
     CB_DEPIMPL(MachLogMachine*, pActor_);
     CB_DEPIMPL(MachActor*, pDirectObject_);
@@ -850,7 +850,7 @@ MachLogAttackOperation::MachLogAttackOperation(PerConstructor con)
     : MachLogOperation(con)
 {
 }
-ostream& operator<<(ostream& o, MachLogAttackOperation::Action action)
+std::ostream& operator<<(std::ostream& o, MachLogAttackOperation::Action action)
 {
 
     switch (action)

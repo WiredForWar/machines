@@ -102,7 +102,7 @@ public:
 
 protected:
     // Override to implement output for the derived class
-    virtual void doOutputOperator(ostream&) const;
+    virtual void doOutputOperator(std::ostream&) const;
 
 private:
     // Operations deliberately revoked
@@ -113,7 +113,7 @@ private:
     W4dSubjectImpl* pImpl_;
 };
 
-ostream& operator<<(ostream& o, const W4dSubject& t);
+std::ostream& operator<<(std::ostream& o, const W4dSubject& t);
 PER_DECLARE_PERSISTENT(W4dSubject);
 
 #endif

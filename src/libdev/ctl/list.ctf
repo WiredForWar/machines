@@ -33,7 +33,7 @@ template <class T> void perRead(PerIstream& istr, ctl_list<T>& l)
     }
 }
 
-template <class T> ostream& operator<<(ostream& ostr, const ctl_list<T>& l)
+template <class T> std::ostream& operator<<(std::ostream& ostr, const ctl_list<T>& l)
 {
     for (typename ctl_list<T>::const_iterator i = l.begin(); i != l.end(); ++i)
     {

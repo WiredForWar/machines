@@ -39,7 +39,7 @@ protected:
 private:
     // void previousTransition();
 
-    friend ostream& operator<<(ostream& o, const MachGuiModemNetworkMode& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiModemNetworkMode& t);
 
     MachGuiModemNetworkMode(const MachGuiModemNetworkMode&);
     MachGuiModemNetworkMode& operator=(const MachGuiModemNetworkMode&);

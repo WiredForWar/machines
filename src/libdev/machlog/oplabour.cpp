@@ -81,7 +81,7 @@ MachLogLabourOperation::~MachLogLabourOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogLabourOperation::doOutputOperator(ostream& o) const
+void MachLogLabourOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogLabourOperation_DEPIMPL();
 

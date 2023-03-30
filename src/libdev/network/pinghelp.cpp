@@ -23,7 +23,7 @@ void NetPingHelper::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const NetPingHelper& t)
+std::ostream& operator<<(std::ostream& o, const NetPingHelper& t)
 {
 
     o << "NetPingHelper " << (void*)&t << " start" << std::endl;

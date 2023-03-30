@@ -43,7 +43,7 @@ private:
     MachGuiCorralSingleIconInfo& operator=(const MachGuiCorralSingleIconInfo&);
     bool operator==(const MachGuiCorralSingleIconInfo&);
 
-    friend ostream& operator<<(ostream& o, const MachGuiCorralSingleIconInfo& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCorralSingleIconInfo& t);
 
     MachActor* pActor_;
     MachInGameScreen* pInGameScreen_;

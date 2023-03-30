@@ -54,7 +54,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysLightStingWeapon);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysLightStingWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLightStingWeapon& t);
 
     MachPhysLightStingWeapon(const MachPhysLightStingWeapon&);
     MachPhysLightStingWeapon& operator=(const MachPhysLightStingWeapon&);

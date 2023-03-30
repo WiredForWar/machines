@@ -39,7 +39,7 @@ void MachLogFollowOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogFollowOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogFollowOperationImpl& t)
 {
 
     o << "MachLogFollowOperationImpl " << (void*)&t << " start" << std::endl;

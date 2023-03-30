@@ -26,7 +26,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogNuclearWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogNuclearWeapon& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogNuclearWeapon);
     PER_FRIEND_READ_WRITE(MachLogNuclearWeapon);

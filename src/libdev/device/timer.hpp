@@ -36,7 +36,7 @@ public:
     Direction direction() const;
     void direction(Direction newDirection);
 
-    friend ostream& operator<<(ostream& o, const DevTimer& t);
+    friend std::ostream& operator<<(std::ostream& o, const DevTimer& t);
 
 private:
     // Operation deliberately revoked

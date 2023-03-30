@@ -120,13 +120,13 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dDomain& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dDomain& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dDomain);
     PER_FRIEND_READ_WRITE(W4dDomain);
 
 protected:
-    void doDebugOutput(ostream& ostr) override;
+    void doDebugOutput(std::ostream& ostr) override;
     // Write out the details of 'this' for debugging purposes.
 
 private:

@@ -36,7 +36,7 @@ public:
     void startScavenge(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration);
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysScavenger& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysScavenger& t);
 
     PER_MEMBER_PERSISTENT(MachPhysScavenger);
 

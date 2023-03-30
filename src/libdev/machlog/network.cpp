@@ -223,7 +223,7 @@ void MachLogNetwork::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogNetwork& t)
+std::ostream& operator<<(std::ostream& o, const MachLogNetwork& t)
 {
 
     o << "MachLogNetwork " << (void*)&t << " start" << std::endl;

@@ -39,7 +39,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysHelix& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysHelix& t);
 
     PER_MEMBER_PERSISTENT(MachPhysHelix);
 

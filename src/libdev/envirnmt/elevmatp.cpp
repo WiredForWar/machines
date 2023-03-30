@@ -68,7 +68,7 @@ void EnvElevationMaterialPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const EnvElevationMaterialPlan& t)
+std::ostream& operator<<(std::ostream& o, const EnvElevationMaterialPlan& t)
 {
     o << "EnvElevationMaterialPlan " << (void*)&t << " start" << std::endl;
     o << "EnvElevationMaterialPlan " << (void*)&t << " end" << std::endl;

@@ -177,7 +177,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhys1stPersonDriver& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhys1stPersonDriver& t);
 
     // Initialise the weapon tracking
     void setupTrackEntity();
@@ -214,7 +214,7 @@ private:
     MachPhys1stPersonDriverImpl* pImpl_; // More data stored in here
 };
 
-ostream& operator<<(ostream& o, const MachPhysFirstPersonStateVector& t);
+std::ostream& operator<<(std::ostream& o, const MachPhysFirstPersonStateVector& t);
 
 #endif
 

@@ -162,7 +162,7 @@ void MachPhysFlameBall::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysFlameBall& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysFlameBall& t)
 {
 
     o << "MachPhysFlameBall " << (void*)&t << " start" << std::endl;

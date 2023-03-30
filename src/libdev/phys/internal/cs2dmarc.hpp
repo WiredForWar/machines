@@ -37,7 +37,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysCS2dDomainArc& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainArc& t);
 
 private:
     // Data members

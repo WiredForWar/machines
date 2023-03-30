@@ -40,7 +40,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysJetRing& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysJetRing& t);
 
     PER_MEMBER_PERSISTENT(MachPhysJetRing);
     PER_FRIEND_READ_WRITE(MachPhysJetRing);

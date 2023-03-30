@@ -224,7 +224,7 @@ void RenColourHSV::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenColourHSV& t)
+std::ostream& operator<<(std::ostream& o, const RenColourHSV& t)
 {
     o << "H(";
     if (t.hueDefined())

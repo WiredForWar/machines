@@ -50,7 +50,7 @@ void MachPhysPodData::extractionRate(const MachPhys::BuildingMaterialUnits& newE
     extractionRate_ = newExtractionRate;
 }
 
-ostream& operator<<(ostream& o, const MachPhysPodData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPodData& t)
 {
 
     // o << (MachPhysObjectData)t;

@@ -43,7 +43,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysPlanetSurfaceChecker& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurfaceChecker& t);
 
     MachPhysPlanetSurfaceChecker(const MachPhysPlanetSurfaceChecker&);
     MachPhysPlanetSurfaceChecker& operator=(const MachPhysPlanetSurfaceChecker&);

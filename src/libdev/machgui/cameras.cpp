@@ -913,7 +913,7 @@ bool MachCameras::motionFrozen() const
     return frozen;
 }
 
-ostream& operator<<(ostream& o, const MachCameras& t)
+std::ostream& operator<<(std::ostream& o, const MachCameras& t)
 {
 
     o << "MachCameras " << (void*)&t << " start" << std::endl;

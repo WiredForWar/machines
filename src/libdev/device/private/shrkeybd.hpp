@@ -139,7 +139,7 @@ public:
         MAX_CODE = 259
     };
 
-    static void printScanCode(ostream&, ScanCode);
+    static void printScanCode(std::ostream&, ScanCode);
 
 private:
     // Alt key support is not part of the public interface.

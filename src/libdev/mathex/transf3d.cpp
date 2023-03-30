@@ -1179,7 +1179,7 @@ void MexTransform3d::CLASS_INVARIANT
     //     INVARIANT( Mathex::abs( MexVec3( currentZ ).modulus() - 1.0 ) < MexEpsilon::instance() );
 }
 
-ostream& operator<<(ostream& stream, const MexTransform3d& t)
+std::ostream& operator<<(std::ostream& stream, const MexTransform3d& t)
 {
     stream << std::setprecision(4) << std::setw(14) << t.forward_[0][0] << " " << t.forward_[0][1] << " "
            << t.forward_[0][2] << std::endl;

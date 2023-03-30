@@ -336,7 +336,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj, int assemblyPoi
         moveOutOfTheWay(pObj);
 }
 
-ostream& operator<<(ostream& o, const MachLogCanAdminister& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCanAdminister& t)
 {
 
     o << "MachLogCanAdminister " << (void*)&t << " start" << std::endl;

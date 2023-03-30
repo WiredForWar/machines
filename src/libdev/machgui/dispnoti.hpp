@@ -37,7 +37,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDispositionChangeNotifiable& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDispositionChangeNotifiable& t);
 
     void doDisplay(GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2);
     string getDisplayName(MachPhys::Race race);

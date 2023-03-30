@@ -44,7 +44,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const BaseCrashInternal& t);
+    friend std::ostream& operator<<(std::ostream& o, const BaseCrashInternal& t);
 
     BaseCrashInternal(const BaseCrashInternal&);
     BaseCrashInternal& operator=(const BaseCrashInternal&);

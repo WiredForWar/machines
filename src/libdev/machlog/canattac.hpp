@@ -79,7 +79,7 @@ public:
     const MATHEX_SCALAR getMaximumPunchWeaponRange() const;
     const MATHEX_SCALAR getMaximumTreacheryWeaponRange() const;
 
-    void doOutputOperator(ostream& o) const;
+    void doOutputOperator(std::ostream& o) const;
     MachPhys::WeaponCombo weaponCombo() const;
 
     bool canAttack(const MachActor& other) const;
@@ -277,7 +277,7 @@ private:
     static MATHEX_SCALAR sqrMaximumEngagementDistance();
 };
 
-ostream& operator<<(ostream& o, MachLogCanAttack::WeaponDisposition disp);
+std::ostream& operator<<(std::ostream& o, MachLogCanAttack::WeaponDisposition disp);
 
 PER_DECLARE_PERSISTENT(MachLogCanAttack);
 #endif

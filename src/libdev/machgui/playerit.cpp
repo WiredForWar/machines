@@ -535,7 +535,7 @@ void MachGuiPlayerListItem::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiPlayerListItem& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiPlayerListItem& t)
 {
 
     o << "MachGuiPlayerListItem " << reinterpret_cast<void*>(const_cast<MachGuiPlayerListItem*>(&t)) << " start"

@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogVoiceMailManagerImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManagerImpl& t);
 
     MachLogVoiceMailManagerImpl(const MachLogVoiceMailManagerImpl&);
     MachLogVoiceMailManagerImpl& operator=(const MachLogVoiceMailManagerImpl&);

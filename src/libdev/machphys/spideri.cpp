@@ -51,7 +51,7 @@ void MachPhysSpiderLegsImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysSpiderLegsImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSpiderLegsImpl& t)
 {
 
     o << "MachPhysSpiderLegsImpl " << (void*)&t << " start" << std::endl;

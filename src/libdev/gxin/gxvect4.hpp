@@ -38,7 +38,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXVect4& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXVect4& t);
 
 private:
     float x_;

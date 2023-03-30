@@ -33,7 +33,7 @@ void MachPhysOrientationAndPositionPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysOrientationAndPositionPlan& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysOrientationAndPositionPlan& t)
 {
 
     o << "MachPhysOrientationAndPositionPlan " << (void*)&t << " start" << std::endl;

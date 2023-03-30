@@ -99,7 +99,7 @@ void RenIDelayedAlphaGroup::render()
     }
 }
 
-void RenIDelayedAlphaGroup::print(ostream& o) const
+void RenIDelayedAlphaGroup::print(std::ostream& o) const
 {
     o << "Delayed, depth=" << depth() << ", meshId=" << meshId() << ", " << material_;
 }

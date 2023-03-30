@@ -37,7 +37,7 @@ protected:
 private:
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiSingleLineEditBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSingleLineEditBox& t);
 
     MachGuiSingleLineEditBox(const MachGuiSingleLineEditBox&);
     MachGuiSingleLineEditBox& operator=(const MachGuiSingleLineEditBox&);

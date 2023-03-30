@@ -47,7 +47,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     bool doBeInterrupted() override;
 
@@ -85,7 +85,7 @@ public:
 protected:
     PhysRelativeTime doStartAnimation() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     MachLogPodAttackAnimation(const MachLogPodAttackAnimation&);

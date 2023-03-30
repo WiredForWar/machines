@@ -80,7 +80,7 @@ void MachPhysHelix::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHelix& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHelix& t)
 {
 
     o << "MachPhysHelix " << (void*)&t << " start" << std::endl;

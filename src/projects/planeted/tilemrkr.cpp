@@ -71,7 +71,7 @@ void PedTileMarker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedTileMarker& t)
+std::ostream& operator<<(std::ostream& o, const PedTileMarker& t)
 {
 
     o << "PedTileMarker " << (void*)&t << " start" << std::endl;

@@ -45,7 +45,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysObjDemolish);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysObjDemolish& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysObjDemolish& t);
     // One-time constructor used to create the exemplar
     MachPhysObjDemolish(MachPhys::DemolitionType type);
     MachPhysObjDemolish(const MachPhysObjDemolish& copyMe, W4dEntity* pParent, const MexTransform3d& localTransform);

@@ -90,7 +90,7 @@ void MachLogEvadeOperation::storeOldFirstOperation(MachLogOperation* pOldOp)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogEvadeOperation::doOutputOperator(ostream& o) const
+void MachLogEvadeOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogEvadeOperation_DEPIMPL();
 

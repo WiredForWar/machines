@@ -440,7 +440,7 @@ void MachPreload::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPreload& t)
+std::ostream& operator<<(std::ostream& o, const MachPreload& t)
 {
 
     o << "MachPreload " << (void*)&t << " start" << std::endl;

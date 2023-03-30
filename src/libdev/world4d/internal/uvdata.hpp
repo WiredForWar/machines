@@ -37,7 +37,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dUVTranslateData);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dUVTranslateData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dUVTranslateData& t);
 
     W4dUVTranslateData(const W4dUVTranslateData&);
     W4dUVTranslateData& operator=(const W4dUVTranslateData&);

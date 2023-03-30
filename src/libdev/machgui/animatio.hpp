@@ -82,7 +82,7 @@ protected:
     void playSound(const string& wavFile);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiAnimation& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t);
 
     MachGuiAnimation(const MachGuiAnimation&);
     MachGuiAnimation& operator=(const MachGuiAnimation&);

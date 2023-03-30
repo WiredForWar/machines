@@ -116,7 +116,7 @@ void MachPhys1stPersonDriver::CLASS_INVARIANT
     INVARIANT(not(turningLeft_ and turningRight_));
 }
 
-ostream& operator<<(ostream& o, const MachPhys1stPersonDriver& t)
+std::ostream& operator<<(std::ostream& o, const MachPhys1stPersonDriver& t)
 {
 
     o << "MachPhys1stPersonDriver " << (void*)&t << " start" << std::endl;
@@ -522,7 +522,7 @@ void MachPhys1stPersonDriver::computeState(MachPhysFirstPersonStateVector* pStat
     pState->cameraTargetAngle_ = cameraPlan.startAngle().asScalar() + cameraPlan.turnAngle().asScalar();
 }
 
-ostream& operator<<(ostream& o, const MachPhysFirstPersonStateVector& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysFirstPersonStateVector& t)
 {
     o << "-------------------------" << std::endl;
     o << "transform" << std::endl;

@@ -73,7 +73,7 @@ private:
     uint useSequenceId() const;
     void useSequenceId(uint id);
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbPlayer& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlayer& t);
 
     MachGuiDbPlayer(const MachGuiDbPlayer&);
     MachGuiDbPlayer& operator=(const MachGuiDbPlayer&);

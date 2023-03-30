@@ -45,7 +45,7 @@ public:
     //  Return the time that will be taken for the animation
     PhysRelativeTime beDestroyed() override;
 
-    friend ostream& operator<<(ostream& o, const MachPhysLandMine& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysLandMine& t);
 
     PER_MEMBER_PERSISTENT(MachPhysLandMine);
     PER_FRIEND_READ_WRITE(MachPhysLandMine);

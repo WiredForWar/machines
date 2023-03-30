@@ -49,7 +49,7 @@ void MachLogNotCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogNotCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogNotCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -64,7 +64,7 @@ const PhysRelativeTime& MachLogNotCondition::recommendedCallBackTimeGap() const
 }
 
 // virtual
-void MachLogNotCondition::doOutputOperator(ostream& o) const
+void MachLogNotCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogNotCondition " << (void*)this << " start" << std::endl;

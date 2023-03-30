@@ -47,7 +47,7 @@ protected:
     MachGuiStartupScreens& startupScreens();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiNetworkProtocolMode& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiNetworkProtocolMode& t);
 
     MachGuiNetworkProtocolMode(const MachGuiNetworkProtocolMode&);
     MachGuiNetworkProtocolMode& operator=(const MachGuiNetworkProtocolMode&);

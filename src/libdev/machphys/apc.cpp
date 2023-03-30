@@ -126,7 +126,7 @@ void MachPhysAPC::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysAPC& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysAPC& t)
 {
 
     o << "MachPhysAPC " << (void*)&t << " start" << std::endl;

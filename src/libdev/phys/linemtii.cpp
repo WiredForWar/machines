@@ -53,7 +53,7 @@ void PhysLinearMotionPlanImpl::add(const MexTransform3d& endPosition, const Phys
     entries_.push_back(_NEW(Entry(endPosition, endTime)));
 }
 
-ostream& operator<<(ostream& o, const PhysLinearMotionPlanImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysLinearMotionPlanImpl& t)
 {
 
     o << "PhysLinearMotionPlanImpl " << (void*)&t << " start" << std::endl;

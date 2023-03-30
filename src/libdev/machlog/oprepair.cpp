@@ -34,7 +34,7 @@ MachLogRepairOperation::MachLogRepairOperation(MachLogConstructor* pActor, MachL
     // deliberately left blank
 }
 
-void MachLogRepairOperation::doOutputOperator(ostream& o) const
+void MachLogRepairOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogRepairOperation\n";
     MachLogLabourOperation::doOutputOperator(o);

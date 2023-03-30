@@ -36,7 +36,7 @@ void MachGuiAssemblyPointCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiAssemblyPointCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiAssemblyPointCommand& t)
 {
 
     o << "MachGuiAssemblyPointCommand " << (void*)&t << " start" << std::endl;

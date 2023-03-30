@@ -30,7 +30,7 @@ public:
     void playerHasBeenLost(const string&);
 
 private:
-    friend ostream& operator<<(ostream& o, const NetSystemMessageHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetSystemMessageHandler& t);
 
     NetSystemMessageHandler(const NetSystemMessageHandler&);
     NetSystemMessageHandler& operator=(const NetSystemMessageHandler&);

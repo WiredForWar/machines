@@ -31,7 +31,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysPlanetSurfaceImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysPlanetSurfaceImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurfaceImpl& t);
 
     MachPhysPlanetSurfaceImpl(const MachPhysPlanetSurfaceImpl&);
     MachPhysPlanetSurfaceImpl& operator=(const MachPhysPlanetSurfaceImpl&);

@@ -56,7 +56,7 @@ void UtlBoundedIdVoidPMap::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const UtlBoundedIdVoidPMap& t)
+std::ostream& operator<<(std::ostream& o, const UtlBoundedIdVoidPMap& t)
 {
 
     o << "UtlBoundedIdVoidPMap " << (void*)&t << " start" << std::endl;

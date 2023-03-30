@@ -48,7 +48,7 @@ void MachGuiIntelligentCursorOnActor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiIntelligentCursorOnActor& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiIntelligentCursorOnActor& t)
 {
 
     o << "MachGuiIntelligentCursorOnActor " << (void*)&t << " start" << std::endl;

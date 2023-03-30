@@ -84,7 +84,7 @@ public:
     void startFrame(); // reset hit counts before render
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const RenSurfaceManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenSurfaceManager& t);
 
     RenISurfaceManagerImpl& impl();
     const RenISurfaceManagerImpl& impl() const;

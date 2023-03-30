@@ -34,7 +34,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogIonBeam& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogIonBeam& t);
 
     static MachPhysIonBeam* pNewPhysIonBeam(const MexPoint3d& startPosition, MachPhysIonBeam** ppPhysIonBeam);
 

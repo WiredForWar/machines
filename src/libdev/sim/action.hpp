@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimAction& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimAction& t);
 
     // Non virtual mechanism which will call both into the condition::doBecomeEnabled and the virtual doBecomeEnabled
     void becomeEnabled();
@@ -39,7 +39,7 @@ public:
     PER_FRIEND_READ_WRITE(SimAction);
 
 protected:
-    virtual void doOutputOperator(ostream&) const = 0;
+    virtual void doOutputOperator(std::ostream&) const = 0;
 
     virtual void doAction() = 0;
     void nextCallBackTime(const PhysRelativeTime&);

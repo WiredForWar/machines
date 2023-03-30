@@ -233,7 +233,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMachine& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachine& t);
 
     enum
     {

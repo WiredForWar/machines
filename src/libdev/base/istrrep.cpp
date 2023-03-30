@@ -23,7 +23,7 @@ void PerIstreamReporter::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PerIstreamReporter& t)
+std::ostream& operator<<(std::ostream& o, const PerIstreamReporter& t)
 {
 
     o << "PerIstreamReporter " << (void*)&t << " start" << std::endl;

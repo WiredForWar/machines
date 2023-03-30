@@ -48,7 +48,7 @@ void MachLogPlayAnimationAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPlayAnimationAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPlayAnimationAction& t)
 {
 
     o << "MachLogPlayAnimationAction " << (void*)&t << " start" << std::endl;
@@ -188,7 +188,7 @@ MachLogPlayAnimationAction::newFromParser(SimCondition* pCondition, bool enabled
 }
 
 // virtual
-void MachLogPlayAnimationAction::doOutputOperator(ostream& o) const
+void MachLogPlayAnimationAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Race " << race_ << std::endl;

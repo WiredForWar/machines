@@ -34,7 +34,7 @@ public:
 
 private:
     friend class MachPhysGeoLocator;
-    friend ostream& operator<<(ostream& o, const MachPhysGeoLocatorImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGeoLocatorImpl& t);
 
     MachPhysGeoLocatorImpl(const MachPhysGeoLocatorImpl&);
     MachPhysGeoLocatorImpl& operator=(const MachPhysGeoLocatorImpl&);

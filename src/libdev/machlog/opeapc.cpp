@@ -102,7 +102,7 @@ bool MachLogEnterAPCOperation::beNotified(W4dSubject* pSubject, W4dSubject::Noti
 
 /////////////////////////////////////////////////////////////////////////
 
-void MachLogEnterAPCOperation::doOutputOperator(ostream& o) const
+void MachLogEnterAPCOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogEnterAPCOperation " << std::endl;
     if (pAPC_)
@@ -243,7 +243,7 @@ bool MachLogEnterAPCOperation::doBeInterrupted()
 
 /* //////////////////////////////////////////////////////////////// */
 
-ostream& operator<<(ostream& o, const MachLogEnterAPCOperation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogEnterAPCOperation& t)
 {
 
     o << "MachLogEnterAPCOperation " << (void*)&t << " start" << std::endl;

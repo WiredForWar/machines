@@ -72,7 +72,7 @@ public:
     //  Stop the move dead. Apply appropriate animations.
     void stopDead() override;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSpiderLegs& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSpiderLegs& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysSpiderLegs);
     PER_FRIEND_READ_WRITE(MachPhysSpiderLegs);

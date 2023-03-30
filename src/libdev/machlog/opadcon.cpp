@@ -73,7 +73,7 @@ MachLogAdminConstructOperation::~MachLogAdminConstructOperation()
         }
     }
 }
-void MachLogAdminConstructOperation::doOutputOperator(ostream& o) const
+void MachLogAdminConstructOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminConstructOperation\n";
 }

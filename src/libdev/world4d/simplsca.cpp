@@ -79,7 +79,7 @@ void W4dSimpleUniformScalePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dSimpleUniformScalePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dSimpleUniformScalePlan& t)
 {
 
     o << "W4dSimpleUniformScalePlan " << (void*)&t << " start" << std::endl;
@@ -184,7 +184,7 @@ void W4dSimpleNonUniformScalePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dSimpleNonUniformScalePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dSimpleNonUniformScalePlan& t)
 {
 
     o << "W4dSimpleNonUniformScalePlan " << (void*)&t << " start" << std::endl;

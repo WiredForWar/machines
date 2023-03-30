@@ -79,7 +79,7 @@ void MachPhysDoublesidedFlame::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysDoublesidedFlame& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysDoublesidedFlame& t)
 {
 
     o << "MachPhysDoublesidedFlame " << (void*)&t << " start" << std::endl;

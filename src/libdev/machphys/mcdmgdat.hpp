@@ -46,7 +46,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysMachineDamageData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachineDamageData& t);
     MachPhysMachineDamageData& operator=(const MachPhysMachineDamageData&);
 
     friend class MachPhysMachine;

@@ -36,7 +36,7 @@ void MachGuiPatrolCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiPatrolCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiPatrolCommand& t)
 {
 
     o << "MachGuiPatrolCommand " << (void*)&t << " start" << std::endl;

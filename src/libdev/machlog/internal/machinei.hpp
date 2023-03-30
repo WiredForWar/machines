@@ -47,7 +47,7 @@ public:
 
 private:
     friend class MachLogMachine;
-    friend ostream& operator<<(ostream& o, const MachLogMachineImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachineImpl& t);
 
     MachLogMachineImpl(const MachLogMachineImpl&);
     MachLogMachineImpl& operator=(const MachLogMachineImpl&);

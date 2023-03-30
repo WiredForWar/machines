@@ -29,7 +29,7 @@ public:
 
     const Ren::UVTransformPtr& transform(const PhysRelativeTime& t) override;
     const MexVec2& position() const;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     const MexVec2& velocity() const;
     void setFilterTexture(const RenTexture& texture);

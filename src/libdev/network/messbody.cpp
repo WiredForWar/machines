@@ -15,7 +15,7 @@ const uint8* NetMessageBody::body() const
     return body_.data();
 }
 
-ostream& operator<<(ostream& o, const NetMessageBody& t)
+std::ostream& operator<<(std::ostream& o, const NetMessageBody& t)
 {
     o << "size " << t.body_.size() << std::endl;
     o << "data as char: " << std::endl;

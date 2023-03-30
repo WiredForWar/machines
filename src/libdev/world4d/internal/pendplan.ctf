@@ -67,7 +67,7 @@ template <class PLAN_TYPE> void perRead(PerIstream& istr, W4dPendingPlan<PLAN_TY
     istr >> w4dPendingPlanAnimId(plan);
 }
 
-template <class PLAN_TYPE> ostream& operator<<(ostream& o, const W4dPendingPlan<PLAN_TYPE>& t)
+template <class PLAN_TYPE> std::ostream& operator<<(std::ostream& o, const W4dPendingPlan<PLAN_TYPE>& t)
 {
     o << "plan " << (void*)&(*t.planPtr()) << "  ";
     o << "start time " << t.startTime() << "  ";

@@ -48,7 +48,7 @@ MachLogTaskConstructOperation::~MachLogTaskConstructOperation()
 {
 }
 
-void MachLogTaskConstructOperation::doOutputOperator(ostream& o) const
+void MachLogTaskConstructOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTaskConstructOperation" << std::endl;
     o << "AIController:\n";

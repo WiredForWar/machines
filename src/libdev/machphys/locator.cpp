@@ -68,7 +68,7 @@ void MachPhysLocator::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLocator& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLocator& t)
 {
 
     o << "MachPhysLocator " << (void*)&t << " start" << std::endl;

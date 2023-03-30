@@ -65,7 +65,7 @@ MachLogConvoyOffsets::convoyOffset(const ConvoyType& type, const size_t& index, 
     return result;
 }
 
-ostream& operator<<(ostream& o, const MachLogConvoyOffsets& t)
+std::ostream& operator<<(std::ostream& o, const MachLogConvoyOffsets& t)
 {
 
     o << "MachLogConvoyOffsets " << (void*)&t << " start" << std::endl;

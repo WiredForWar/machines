@@ -87,7 +87,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysCrackFire& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysCrackFire& t);
 
     PER_MEMBER_PERSISTENT(MachPhysCrackFire);
     PER_FRIEND_READ_WRITE(MachPhysCrackFire);

@@ -91,7 +91,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysBolter& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysBolter& t);
 
     PER_MEMBER_PERSISTENT(MachPhysBolter);
     PER_FRIEND_READ_WRITE(MachPhysBolter);

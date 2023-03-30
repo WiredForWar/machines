@@ -37,7 +37,7 @@ void MachLogFlameBall::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogFlameBall& t)
+std::ostream& operator<<(std::ostream& o, const MachLogFlameBall& t)
 {
 
     o << "MachLogFlameBall " << (void*)&t << " start" << std::endl;

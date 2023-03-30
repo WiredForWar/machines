@@ -51,7 +51,7 @@ public:
     PER_FRIEND_READ_WRITE(MachGuiDbSystem);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDbSystem& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbSystem& t);
 
     MachGuiDbSystem(const MachGuiDbSystem&);
     MachGuiDbSystem& operator=(const MachGuiDbSystem&);

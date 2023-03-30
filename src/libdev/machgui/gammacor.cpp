@@ -38,7 +38,7 @@ void MachGuiGammaCorrectionSlideBar::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiGammaCorrectionSlideBar& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiGammaCorrectionSlideBar& t)
 {
 
     o << "MachGuiGammaCorrectionSlideBar " << (void*)&t << " start" << std::endl;

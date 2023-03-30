@@ -68,7 +68,7 @@ void MachPhys1stPersonMachineDriver::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhys1stPersonMachineDriver& t)
+std::ostream& operator<<(std::ostream& o, const MachPhys1stPersonMachineDriver& t)
 {
 
     o << "MachPhys1stPersonMachineDriver " << (void*)&t << " start" << std::endl;

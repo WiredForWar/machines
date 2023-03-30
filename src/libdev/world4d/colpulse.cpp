@@ -85,7 +85,7 @@ void W4dColourPulsePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dColourPulsePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dColourPulsePlan& t)
 {
 
     o << "W4dColourPulsePlan " << (void*)&t << " start" << std::endl;

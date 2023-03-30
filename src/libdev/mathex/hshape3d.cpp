@@ -23,14 +23,14 @@ void MexHierShape3d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexHierShape3d& t)
+std::ostream& operator<<(std::ostream& o, const MexHierShape3d& t)
 {
     t.streamout(o);
 
     return o;
 }
 
-void MexHierShape3d::streamout(ostream& o) const
+void MexHierShape3d::streamout(std::ostream& o) const
 {
     o << "MexHierShape3d " << (void*)this << " start" << std::endl;
     o << "MexHierShape3d " << (void*)this << " end" << std::endl;

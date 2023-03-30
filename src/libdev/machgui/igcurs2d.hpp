@@ -88,7 +88,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachInGameCursors2d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachInGameCursors2d& t);
 
 private:
     // Operations deliberately revoked

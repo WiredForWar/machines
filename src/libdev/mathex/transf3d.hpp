@@ -200,7 +200,7 @@ public:
 
     //////////////////////////////////////////////////////////////////////
 
-    friend ostream& operator<<(ostream&, const MexTransform3d&);
+    friend std::ostream& operator<<(std::ostream&, const MexTransform3d&);
 
     void CLASS_INVARIANT;
 

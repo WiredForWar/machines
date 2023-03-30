@@ -14,7 +14,7 @@ public:
     MOCK_METHOD(double, time, (), (const));
 };
 //Needed for the devbuttonevent .-_-;
-ostream& operator<<(ostream& o, const DevButtonEventT<MockDevTime>&)
+std::ostream& operator<<(std::ostream& o, const DevButtonEventT<MockDevTime>&)
 {
     return o;
 }

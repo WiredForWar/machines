@@ -45,7 +45,7 @@ void MachLogCanAttackImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogCanAttackImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCanAttackImpl& t)
 {
 
     o << "MachLogCanAttackImpl " << (void*)&t << " start" << std::endl;

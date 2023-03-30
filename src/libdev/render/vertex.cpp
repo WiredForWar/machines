@@ -131,7 +131,7 @@ void RenVertex::CLASS_INVARIANT
     INVARIANT(mesh_->vertices()->size() > index_);
 }
 
-ostream& operator<<(ostream& o, const RenVertex& t)
+std::ostream& operator<<(std::ostream& o, const RenVertex& t)
 {
     o << "RenVertex #" << t.index_ << " in " << t.mesh_->meshName() << " @ " << t.position();
     return o;

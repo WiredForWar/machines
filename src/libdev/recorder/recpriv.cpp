@@ -659,7 +659,7 @@ void RecRecorderPrivate::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RecRecorderPrivate& t)
+std::ostream& operator<<(std::ostream& o, const RecRecorderPrivate& t)
 {
 
     o << "RecRecorderPrivate " << (void*)&t << " start" << std::endl;

@@ -305,7 +305,7 @@ void MachGuiCtxSettings::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxSettings& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxSettings& t)
 {
 
     o << "MachGuiCtxSettings " << (void*)&t << " start" << std::endl;

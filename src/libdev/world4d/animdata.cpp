@@ -29,7 +29,7 @@ void W4dAnimationData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dAnimationData& t)
+std::ostream& operator<<(std::ostream& o, const W4dAnimationData& t)
 {
 
     o << "W4dAnimationData " << (void*)&t << " start" << std::endl;

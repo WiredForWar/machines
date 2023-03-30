@@ -28,7 +28,7 @@ public:
     void update() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxSinglePlayer& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSinglePlayer& t);
 
     MachGuiCtxSinglePlayer(const MachGuiCtxSinglePlayer&);
     MachGuiCtxSinglePlayer& operator=(const MachGuiCtxSinglePlayer&);

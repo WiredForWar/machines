@@ -61,7 +61,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDbTextData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbTextData& t);
 
     MachGuiDbTextData(const MachGuiDbTextData&);
     MachGuiDbTextData& operator=(const MachGuiDbTextData&);

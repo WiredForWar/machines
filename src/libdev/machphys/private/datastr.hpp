@@ -30,7 +30,7 @@ public:
 
 private:
     MachPhysDataStream();
-    friend ostream& operator<<(ostream& o, const MachPhysDataStream& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysDataStream& t);
 
     MachPhysDataStream(const MachPhysDataStream&);
     MachPhysDataStream& operator=(const MachPhysDataStream&);

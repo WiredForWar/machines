@@ -78,7 +78,7 @@ protected:
     bool doIsFinished() const override;
     // virtual PhysRelativeTime doUpdate( );
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     bool doBeInterrupted() override;
 
@@ -119,7 +119,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
     bool doBeInterrupted() override;
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     enum State

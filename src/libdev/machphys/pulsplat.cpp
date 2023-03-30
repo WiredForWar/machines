@@ -69,7 +69,7 @@ void MachPhysPulseSplat::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPulseSplat& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPulseSplat& t)
 {
 
     o << "MachPhysPulseSplat " << (void*)&t << " start" << std::endl;

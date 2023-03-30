@@ -104,7 +104,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDefconCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDefconCommand& t);
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

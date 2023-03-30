@@ -92,7 +92,7 @@ MachLogTurnAnimation::MachLogTurnAnimation(MachLogCanTurn* pActor, MexRadians ra
     /* Intentionally Empty  */
 }
 
-void MachLogTurnAnimation::doOutputOperator(ostream& o) const
+void MachLogTurnAnimation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTurnAnimation " << turnBy_;
 }
@@ -226,7 +226,7 @@ MachLogBeDestroyedAnimation::MachLogBeDestroyedAnimation(MachActor* pActor)
     /* Intentionally Empty  */
 }
 
-void MachLogBeDestroyedAnimation::doOutputOperator(ostream& o) const
+void MachLogBeDestroyedAnimation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogBeDestroyedAnimation ";
 }

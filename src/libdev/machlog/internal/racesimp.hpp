@@ -33,7 +33,7 @@ public:
 
 private:
     friend class MachLogRaces;
-    friend ostream& operator<<(ostream& o, const MachLogRacesDataImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogRacesDataImpl& t);
 
     MachLogRacesDataImpl(const MachLogRacesDataImpl&);
     MachLogRacesDataImpl& operator=(const MachLogRacesDataImpl&);

@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiLoadSaveGameExtras& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiLoadSaveGameExtras& t);
 
     MachGuiLoadSaveGameExtras(const MachGuiLoadSaveGameExtras&);
     MachGuiLoadSaveGameExtras& operator=(const MachGuiLoadSaveGameExtras&);

@@ -44,7 +44,7 @@ protected:
     static MachGuiChatWindow*& chatWindow();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiChatWindow& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiChatWindow& t);
 
     MachGuiChatWindow(const MachGuiChatWindow&);
     MachGuiChatWindow& operator=(const MachGuiChatWindow&);

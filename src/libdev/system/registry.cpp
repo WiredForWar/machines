@@ -120,7 +120,7 @@ void SysRegistry::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const SysRegistry& t)
+std::ostream& operator<<(std::ostream& o, const SysRegistry& t)
 {
 
     o << "SysRegistry " << (void*)&t << " start" << std::endl;

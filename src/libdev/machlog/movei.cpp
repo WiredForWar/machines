@@ -79,7 +79,7 @@ void MachLogMoveToOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMoveToOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMoveToOperationImpl& t)
 {
 
     o << "MachLogMoveToOperationImpl " << (void*)&t << " start" << std::endl;
@@ -143,7 +143,7 @@ void MachLogMoveAndTurnOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogMoveAndTurnOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMoveAndTurnOperationImpl& t)
 {
 
     o << "MachLogMoveAndTurnOperationImpl " << (void*)&t << " start" << std::endl;

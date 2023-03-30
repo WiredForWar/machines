@@ -98,7 +98,7 @@ RenSurface RenAnimCursor2d::frame(size_t no) const
 }
 
 // virtual
-void RenAnimCursor2d::print(ostream& o) const
+void RenAnimCursor2d::print(std::ostream& o) const
 {
     o << "animated cursor (" << internals_->freq_ << "Hz) using frames:\n";
 

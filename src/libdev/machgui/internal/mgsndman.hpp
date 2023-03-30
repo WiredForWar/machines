@@ -56,7 +56,7 @@ public:
 private:
     MachGuiSoundManagerImpl* pImpl_;
 
-    friend ostream& operator<<(ostream& o, const MachGuiSoundManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t);
 
     MachGuiSoundManager(const MachGuiSoundManager&);
     MachGuiSoundManager& operator=(const MachGuiSoundManager&);

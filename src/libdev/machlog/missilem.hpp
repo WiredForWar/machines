@@ -65,7 +65,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogMissileEmplacement& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMissileEmplacement& t);
 
     const MachPhys::MissileEmplacementSubType& subType() const;
 

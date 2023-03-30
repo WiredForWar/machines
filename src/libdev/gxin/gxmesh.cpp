@@ -26,7 +26,7 @@ void GXMesh::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXMesh& t)
+std::ostream& operator<<(std::ostream& o, const GXMesh& t)
 {
     o << std::endl;
     o << "id_ { " << t.id_ << " }" << std::endl;

@@ -29,7 +29,7 @@ void MachGuiDamageCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDamageCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDamageCommand& t)
 {
 
     o << "MachGuiDamageCommand " << (void*)&t << " start" << std::endl;

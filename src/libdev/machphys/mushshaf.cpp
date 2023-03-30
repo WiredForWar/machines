@@ -55,7 +55,7 @@ void MachPhysMushroomShaft::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMushroomShaft& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMushroomShaft& t)
 {
 
     o << "MachPhysMushroomShaft " << (void*)&t << " start" << std::endl;

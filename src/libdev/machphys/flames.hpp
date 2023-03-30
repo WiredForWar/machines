@@ -107,7 +107,7 @@ PER_DECLARE_PERSISTENT(MachPhysFlame);
 
 PER_ENUM_PERSISTENT(MachPhysFlameType);
 
-ostream& operator<<(ostream&, MachPhysFlameType);
+std::ostream& operator<<(std::ostream&, MachPhysFlameType);
 
 #endif
 

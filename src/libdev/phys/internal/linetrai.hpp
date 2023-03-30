@@ -49,7 +49,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysLinearTravelPlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysLinearTravelPlanImpl& t);
     friend class PhysLinearTravelPlan;
 
     PhysMotionPlan::TransformsPtr transformsPtr_;

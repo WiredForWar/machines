@@ -55,7 +55,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const UtlBoundedIdGenerator& t);
+    friend std::ostream& operator<<(std::ostream& o, const UtlBoundedIdGenerator& t);
 
 private:
     // Operations deliberately revoked

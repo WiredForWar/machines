@@ -36,7 +36,7 @@ void RenINonMMXIlluminator::doStartFrame()
     static const char* const showOverFlow = getenv("CB_SHOW_OVERFLOW");
     if (showOverFlow && applications_ > 0)
     {
-        ostream& o = Ren::out();
+        std::ostream& o = Ren::out();
         const std::ios::fmtflags oldFlags = o.flags();
         const int oldPrecision = o.precision();
 

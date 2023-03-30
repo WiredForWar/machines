@@ -41,7 +41,7 @@ void MachGuiPlayerScore::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiPlayerScore& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiPlayerScore& t)
 {
 
     o << "MachGuiPlayerScore " << (void*)&t << " start" << std::endl;

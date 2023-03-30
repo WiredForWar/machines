@@ -108,7 +108,7 @@ void DevKeyToCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const DevKeyToCommand& t)
+std::ostream& operator<<(std::ostream& o, const DevKeyToCommand& t)
 {
 
     o << "DevKeyToCommand " << (void*)&t << " start" << std::endl;

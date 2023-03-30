@@ -103,7 +103,7 @@ void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
     checkBoxes_.push_back(_NEW(CheckBoxInfo(topLeft, stringId)));
 }
 
-ostream& operator<<(ostream& o, const MachGuiOptionsLayout& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)
 {
 
     o << "MachGuiOptionsLayout " << (void*)&t << " start" << std::endl;

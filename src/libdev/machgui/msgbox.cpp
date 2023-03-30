@@ -142,7 +142,7 @@ void MachGuiMessageBox::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiMessageBox& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMessageBox& t)
 {
 
     o << "MachGuiMessageBox " << (void*)&t << " start" << std::endl;

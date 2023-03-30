@@ -80,7 +80,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dColourPulsePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dColourPulsePlan& t);
 
 private:
     W4dColourPulsePlan(const W4dColourPulsePlan&);

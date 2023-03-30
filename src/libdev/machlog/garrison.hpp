@@ -50,7 +50,7 @@ public:
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogGarrison& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogGarrison& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogGarrison);
     PER_FRIEND_READ_WRITE(MachLogGarrison);
@@ -65,7 +65,7 @@ private:
     static MachPhysGarrison*
     pNewPhysGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
 
     void startHealing(MachLogMachine* pMachine);
     // PRE( not currentlyHealing( pMachine ) );

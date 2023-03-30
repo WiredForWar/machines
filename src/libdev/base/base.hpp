@@ -23,8 +23,6 @@ using uint = unsigned int;
 
 #include <ostream>
 
-using std::ostream;
-
 // #defines //////////////////////////////////////////////////////////
 
 #define INSPECT_ON(ostream, var) (ostream << #var " :\t" << (var) << std::endl)

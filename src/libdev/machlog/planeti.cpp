@@ -34,7 +34,7 @@ void MachLogPlanetImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPlanetImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPlanetImpl& t)
 {
 
     o << "MachLogPlanetImpl " << (void*)&t << " start" << std::endl;

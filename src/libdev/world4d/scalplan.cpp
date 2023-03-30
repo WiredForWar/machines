@@ -53,7 +53,7 @@ void W4dScalePlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dScalePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dScalePlan& t)
 {
 
     o << "W4dScalePlan " << (void*)&t << " start" << std::endl;

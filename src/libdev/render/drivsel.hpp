@@ -61,12 +61,12 @@ public:
     const RenDisplay& display() const;
 
 private:
-    friend ostream& operator<<(ostream& o, const RenDriverSelector& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenDriverSelector& t);
 
     RenDriverSelector(const RenDriverSelector&);
     RenDriverSelector& operator=(const RenDriverSelector&);
 
-    void streamOut(ostream& o) const;
+    void streamOut(std::ostream& o) const;
 
     // build the list of drivers (including the dummy automatic driver)
     // set the current and automatic Drivers

@@ -49,7 +49,7 @@ void SysMetaFile::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const SysMetaFile& t)
+std::ostream& operator<<(std::ostream& o, const SysMetaFile& t)
 {
 
     o << "SysMetaFile " << (void*)&t << " start" << std::endl;

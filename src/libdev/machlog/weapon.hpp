@@ -53,7 +53,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogWeapon& t);
 
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData = 0) override;
 

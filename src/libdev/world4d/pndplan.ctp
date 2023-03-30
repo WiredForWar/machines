@@ -20,7 +20,7 @@ template <class X> void PLAN_TYPE<X>::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const PLAN_TYPE<X>& t)
+std::ostream& operator<<(std::ostream& o, const PLAN_TYPE<X>& t)
 {
 
     o << "PLAN_TYPE< X > " << (void*)&t << " start" << endl;

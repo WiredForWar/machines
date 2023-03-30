@@ -33,7 +33,7 @@ void NetSystemMessageHandler::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const NetSystemMessageHandler& t)
+std::ostream& operator<<(std::ostream& o, const NetSystemMessageHandler& t)
 {
 
     o << "NetSystemMessageHandler " << (void*)&t << " start" << std::endl;

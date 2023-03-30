@@ -72,7 +72,7 @@ protected:
     const GuiBitmap& getBitmap() const override;
 
 private:
-    friend ostream& operator<<(ostream& o, const GuiScrollButton& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiScrollButton& t);
 
     GuiScrollButton(const GuiScrollButton&);
     GuiScrollButton& operator=(const GuiScrollButton&);

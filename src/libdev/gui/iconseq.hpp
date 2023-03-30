@@ -96,7 +96,7 @@ protected:
     void doRemoveChild(GuiDisplayable* pChild) override;
     // PRE( hasChild( pChild ) );
 
-    virtual void doOutputOperator(ostream&) const;
+    virtual void doOutputOperator(std::ostream&) const;
 
     // determines if changed() should be called after update
     bool isDoingDisplay() const;
@@ -116,7 +116,7 @@ private:
     GuiIconSequenceImpl* pImpl_;
 
     friend class GuiIconSequenceImpl;
-    friend ostream& operator<<(ostream&, const GuiIconSequence&);
+    friend std::ostream& operator<<(std::ostream&, const GuiIconSequence&);
 };
 
 /* //////////////////////////////////////////////////////////////// */
@@ -211,7 +211,7 @@ protected:
     void doRemoveChild(GuiDisplayable* pChild) override;
     // PRE( hasChild( pChild ) );
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     GuiScrollableIconSequence(const GuiScrollableIconSequence&);

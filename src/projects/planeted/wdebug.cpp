@@ -46,7 +46,7 @@ void wdebug::CLASS_INVARIANT
     INVARIANT(pSceneManager_ != nullptr);
 }
 
-ostream& operator<<(ostream& o, const wdebug& t)
+std::ostream& operator<<(std::ostream& o, const wdebug& t)
 {
 
     o << "wdebug " << (void*)&t << " start" << std::endl;

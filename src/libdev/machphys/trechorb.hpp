@@ -44,7 +44,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysTreacheryOrb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTreacheryOrb& t);
 
     PER_MEMBER_PERSISTENT(MachPhysTreacheryOrb);
     PER_FRIEND_READ_WRITE(MachPhysTreacheryOrb);

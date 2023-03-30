@@ -51,7 +51,7 @@ void MachGuiSingleLineEditBox::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiSingleLineEditBox& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiSingleLineEditBox& t)
 {
 
     o << "MachGuiSingleLineEditBox " << reinterpret_cast<void*>(const_cast<MachGuiSingleLineEditBox*>(&t)) << " start"

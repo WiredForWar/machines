@@ -119,7 +119,7 @@ void MachLogMissileEmplacement::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MachLogMissileEmplacement& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMissileEmplacement& t)
 {
 
     o << "MachLogMissileEmplacement " << (void*)&t << " start" << std::endl;

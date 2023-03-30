@@ -171,7 +171,7 @@ protected:
     /////////////////////////////////////////////////
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogArtefact& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogArtefact& t);
 
     MachLogArtefact(const MachLogArtefact&);
     MachLogArtefact& operator=(const MachLogArtefact&);

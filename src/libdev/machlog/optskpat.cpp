@@ -43,7 +43,7 @@ MachLogTaskPatrolOperation::~MachLogTaskPatrolOperation()
 {
 }
 
-void MachLogTaskPatrolOperation::doOutputOperator(ostream& o) const
+void MachLogTaskPatrolOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTaskPatrolOperation" << std::endl;
     o << " path " << path_ << std::endl;

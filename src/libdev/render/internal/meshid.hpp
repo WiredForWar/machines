@@ -38,6 +38,6 @@ private:
     static char separator();
 };
 
-ostream& operator<<(ostream& o, const RenIMeshID& id);
+std::ostream& operator<<(std::ostream& o, const RenIMeshID& id);
 
 #endif

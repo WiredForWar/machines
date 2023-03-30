@@ -51,7 +51,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenStats& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenStats& t);
 
     // Internal methods for use by other parts of the render library.
     void startFrame();

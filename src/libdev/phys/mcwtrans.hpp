@@ -91,7 +91,7 @@ private:
     PhysMotionControlWithTrans& operator=(const PhysMotionControlWithTrans&);
     bool operator==(const PhysMotionControlWithTrans&);
 
-    friend ostream& operator<<(ostream& o, const PhysMotionControlWithTrans& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysMotionControlWithTrans& t);
 };
 
 #endif

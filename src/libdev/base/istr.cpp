@@ -13,7 +13,7 @@
 #include "base/internal/istrbuff.hpp"
 #include "base/internal/istrimpl.hpp"
 
-PerIstream::PerIstream(istream& istr)
+PerIstream::PerIstream(std::istream& istr)
     : pImpl_(_NEW(PerIstreamImpl(this)))
     , istr_(istr)
 // istream( istr )
@@ -22,7 +22,7 @@ PerIstream::PerIstream(istream& istr)
     Persistence::instance().registerOpenIstream();
 }
 
-PerIstream::PerIstream(istream& istr, PerIstreamReporter* pReporter)
+PerIstream::PerIstream(std::istream& istr, PerIstreamReporter* pReporter)
     : pImpl_(_NEW(PerIstreamImpl(this, istr, pReporter)))
     , istr_(istr)
 {

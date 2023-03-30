@@ -35,7 +35,7 @@ public:
     MachLogCamera::Type cameraType() const { return cameraType_; }
 
 private:
-    friend ostream& operator<<(ostream& o, const PedCameraMarker& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedCameraMarker& t);
 
     PedCameraMarker(const PedCameraMarker&);
     PedCameraMarker& operator=(const PedCameraMarker&);

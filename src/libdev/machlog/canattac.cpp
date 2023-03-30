@@ -666,7 +666,7 @@ PhysRelativeTime MachLogCanAttack::attackWithTreachery(MachActor* pTarget)
     return rt;
 }
 
-void MachLogCanAttack::doOutputOperator(ostream& o) const
+void MachLogCanAttack::doOutputOperator(std::ostream& o) const
 {
     //  CB_MachLogCanAttack_DEPIMPL();
     CB_DEPIMPL(const Weapons, weapons_);
@@ -1697,7 +1697,7 @@ MachLogCanAttack::MachLogCanAttack(PerConstructor)
 {
 }
 
-ostream& operator<<(ostream& o, MachLogCanAttack::WeaponDisposition disp)
+std::ostream& operator<<(std::ostream& o, MachLogCanAttack::WeaponDisposition disp)
 {
     switch (disp)
     {

@@ -52,7 +52,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogEntrance& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogEntrance& t);
 
     PER_MEMBER_PERSISTENT(MachLogEntrance);
     PER_FRIEND_READ_WRITE(MachLogEntrance);

@@ -68,7 +68,7 @@ protected:
     bool doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl** pFocusCapableControl) override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDDrawDropDownListBoxCreator& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDDrawDropDownListBoxCreator& t);
 
     MachGuiDDrawDropDownListBoxCreator(const MachGuiDDrawDropDownListBoxCreator&);
     MachGuiDDrawDropDownListBoxCreator& operator=(const MachGuiDDrawDropDownListBoxCreator&);

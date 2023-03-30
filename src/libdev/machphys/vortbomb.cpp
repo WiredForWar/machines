@@ -86,7 +86,7 @@ void MachPhysVortexBomb::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysVortexBomb& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysVortexBomb& t)
 {
 
     o << "MachPhysVortexBomb " << (void*)&t << " start" << std::endl;

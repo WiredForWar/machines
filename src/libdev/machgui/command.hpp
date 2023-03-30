@@ -131,7 +131,7 @@ public:
     static bool cursorInFogOfWar();
     static void cursorInFogOfWar(bool);
 
-    friend ostream& operator<<(ostream& o, const MachGuiCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCommand& t);
 
 protected:
     enum ObstacleModifier

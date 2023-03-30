@@ -35,7 +35,7 @@ void PhysMoveSpinPlanImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysMoveSpinPlanImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysMoveSpinPlanImpl& t)
 {
 
     o << " PhysMoveSpinPlanImpl " << (void*)&t << " start" << std::endl;

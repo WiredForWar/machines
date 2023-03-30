@@ -41,7 +41,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysCS2dDomainVertex& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainVertex& t);
     friend bool operator==(const PhysCS2dDomainVertex& lhs, const PhysCS2dDomainVertex& rhs);
     friend bool operator<(const PhysCS2dDomainVertex& lhs, const PhysCS2dDomainVertex& rhs);
 

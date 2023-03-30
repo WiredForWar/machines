@@ -28,7 +28,7 @@ void SimProjectile::CLASS_INVARIANT
     INVARIANT(this);
 }
 
-ostream& operator<<(ostream& o, const SimProjectile& t)
+std::ostream& operator<<(std::ostream& o, const SimProjectile& t)
 {
 
     o << "SimProjectile " << (void*)&t << " start" << std::endl;

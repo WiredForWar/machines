@@ -100,7 +100,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiSelfDestructCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSelfDestructCommand& t);
 
 private:
     // Operation deliberately revoked

@@ -63,7 +63,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dEntityMaterialVecChanger& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dEntityMaterialVecChanger& t);
 
 private:
     W4dEntityMaterialVecChanger(const W4dEntityMaterialVecChanger&);

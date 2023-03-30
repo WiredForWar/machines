@@ -53,9 +53,9 @@ public:
 
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime, MATHEX_SCALAR) override;
 
-    void doOutputOperator(ostream& o) const override;
+    void doOutputOperator(std::ostream& o) const override;
 
-    friend ostream& operator<<(ostream&, const MachLogPCController&);
+    friend std::ostream& operator<<(std::ostream&, const MachLogPCController&);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogPCController);
     PER_FRIEND_READ_WRITE(MachLogPCController);

@@ -46,7 +46,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const PhysTimedAnglePlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysTimedAnglePlanImpl& t);
     friend class PhysTimedAnglePlan;
 
     // data members

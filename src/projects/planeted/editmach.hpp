@@ -116,7 +116,7 @@ private:
     MachPhys::MachineType machineType(const string& type);
     int subType(const string& type);
 
-    friend ostream& operator<<(ostream& o, const PedMachineEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedMachineEditor& t);
 
     MachPhysMachine* createMachine(W4dEntity&, const MexTransform3d&, const Machine&);
     void createMapping(MachPhysMachine*, Machine*, PedScenarioFile::Machine);

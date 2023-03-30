@@ -172,7 +172,7 @@ protected:
     void clearRemoteHandlers();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLog1stPersonHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLog1stPersonHandler& t);
 
     // Clear all the setup flags
     void clearSetupFlags();

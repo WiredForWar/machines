@@ -48,7 +48,7 @@ private:
 };
 
 // class ostream;
-ostream& operator<<(ostream& os, const RenIPixelFormat& fmt);
+std::ostream& operator<<(std::ostream& os, const RenIPixelFormat& fmt);
 
 #endif
 

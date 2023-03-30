@@ -25,7 +25,7 @@ void SysMetaFileIstream::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const SysMetaFileIstream& t)
+std::ostream& operator<<(std::ostream& o, const SysMetaFileIstream& t)
 {
 
     o << "SysMetaFileIstream " << (void*)&t << " start" << std::endl;

@@ -34,7 +34,7 @@ void MachLogScavengeOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogScavengeOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogScavengeOperationImpl& t)
 {
 
     o << "MachLogScavengeOperationImpl " << (void*)&t << " start" << std::endl;

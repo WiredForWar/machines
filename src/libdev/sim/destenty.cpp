@@ -37,7 +37,7 @@ void SimDestructW4dEntityEvent::CLASS_INVARIANT
 }
 
 // virtual
-void SimDestructW4dEntityEvent::doOutputOperator(ostream& o) const
+void SimDestructW4dEntityEvent::doOutputOperator(std::ostream& o) const
 {
     o << "SimDestructW4dEntityEvent: entity = " << (void*)&(*entityPtr_) << std::endl;
 }

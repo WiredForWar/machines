@@ -67,7 +67,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysWeaponData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysWeaponData& t);
 
 private:
     // Allows parser to create

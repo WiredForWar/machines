@@ -22,7 +22,7 @@ void MachGuiStatistics::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiStatistics& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStatistics& t)
 {
 
     o << "MachGuiStatistics " << (void*)&t << " start" << std::endl;

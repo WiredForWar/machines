@@ -481,7 +481,7 @@ MachPhys::BuildingMaterialUnits MachLogResearchItem::swAmountBuilt(MachPhys::Rac
     return swAmountBuilt_[race][level - 1];
 }
 
-ostream& operator<<(ostream& o, const MachLogResearchItem& t)
+std::ostream& operator<<(std::ostream& o, const MachLogResearchItem& t)
 {
 
     o << "MachLogResearchItem " << (void*)&t << " start" << std::endl;

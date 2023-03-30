@@ -27,7 +27,7 @@ void MachLogNuclearBombImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogNuclearBombImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogNuclearBombImpl& t)
 {
 
     o << "MachLogNuclearBombImpl " << (void*)&t << " start" << std::endl;

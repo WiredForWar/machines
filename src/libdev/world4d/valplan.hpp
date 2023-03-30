@@ -36,7 +36,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dFloatValuePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dFloatValuePlan& t);
 
 protected:
     // set the duration of the plan to newDuration

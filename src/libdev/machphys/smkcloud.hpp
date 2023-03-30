@@ -76,7 +76,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSmokeCloud& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSmokeCloud& t);
 
     PER_MEMBER_PERSISTENT(MachPhysSmokeCloud);
 

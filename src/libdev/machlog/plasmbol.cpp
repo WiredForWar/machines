@@ -35,7 +35,7 @@ void MachLogPlasmaBolt::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPlasmaBolt& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPlasmaBolt& t)
 {
 
     o << "MachLogPlasmaBolt " << (void*)&t << " start" << std::endl;

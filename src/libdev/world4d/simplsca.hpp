@@ -36,7 +36,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dSimpleUniformScalePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dSimpleUniformScalePlan& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dSimpleUniformScalePlan);
     PER_FRIEND_READ_WRITE(W4dSimpleUniformScalePlan);
@@ -82,7 +82,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dSimpleUniformScalePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dSimpleUniformScalePlan& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dSimpleNonUniformScalePlan);
     PER_FRIEND_READ_WRITE(W4dSimpleNonUniformScalePlan);

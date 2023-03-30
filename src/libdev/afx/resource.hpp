@@ -29,7 +29,7 @@ public:
     const SysPathName& fileName() const;
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const AfxResourceLib& t);
+    friend std::ostream& operator<<(std::ostream& o, const AfxResourceLib& t);
 
 private:
     std::map<uint, std::string> resourceStrings_;

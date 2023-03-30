@@ -100,7 +100,7 @@ public:
     // the centre point
     MexPoint3d centroid() const;
 
-    friend ostream& operator<<(ostream&, const MexAlignedBox3d&);
+    friend std::ostream& operator<<(std::ostream&, const MexAlignedBox3d&);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexAlignedBox3d);

@@ -28,7 +28,7 @@ public:
     void update() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxHotKeys& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxHotKeys& t);
 
     MachGuiCtxHotKeys(const MachGuiCtxHotKeys&);
     MachGuiCtxHotKeys& operator=(const MachGuiCtxHotKeys&);

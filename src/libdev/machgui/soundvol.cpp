@@ -42,7 +42,7 @@ void MachGuiSoundVolumeSlideBar::valueChanged(float value)
     SndMixer::instance().masterSampleVolume(value + 0.5 /*stop rounding errors from slowly reducing volume*/);
 }
 
-ostream& operator<<(ostream& o, const MachGuiSoundVolumeSlideBar& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiSoundVolumeSlideBar& t)
 {
 
     o << "MachGuiSoundVolumeSlideBar " << (void*)&t << " start" << std::endl;

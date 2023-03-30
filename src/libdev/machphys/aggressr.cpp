@@ -209,7 +209,7 @@ void MachPhysAggressor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysAggressor& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysAggressor& t)
 {
 
     o << "MachPhysAggressor " << (void*)&t << " start" << std::endl;

@@ -63,7 +63,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MexSausage2d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexSausage2d& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT(MexSausage2d);

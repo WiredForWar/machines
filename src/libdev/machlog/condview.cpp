@@ -63,7 +63,7 @@ void MachLogCameraViewCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogCameraViewCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCameraViewCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -78,7 +78,7 @@ const PhysRelativeTime& MachLogCameraViewCondition::recommendedCallBackTimeGap()
 }
 
 // virtual
-void MachLogCameraViewCondition::doOutputOperator(ostream& o) const
+void MachLogCameraViewCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogCameraViewCondition " << (void*)this << " start" << std::endl;

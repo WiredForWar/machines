@@ -370,7 +370,7 @@ bool MexAlignedBox2d::intersects(const MexLine2d& line) const
     return CohenSutherlandClip(*this, line.end1(), line.end2(), c1, c2);
 }
 
-ostream& operator<<(ostream& os, const MexAlignedBox2d& box)
+std::ostream& operator<<(std::ostream& os, const MexAlignedBox2d& box)
 {
     os << "2D box: " << box.minCorner() << " to " << box.maxCorner();
     return os;

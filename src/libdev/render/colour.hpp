@@ -53,8 +53,8 @@ public:
     static const RenColour& cyan();
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const RenColour& t);
-    friend istream& operator>>(istream& i, RenColour& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenColour& t);
+    friend std::istream& operator>>(std::istream& i, RenColour& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT(RenColour);
     PER_FRIEND_READ_WRITE(RenColour);

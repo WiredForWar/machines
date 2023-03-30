@@ -49,7 +49,7 @@ void W4dSimpleAlphaPlan::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dSimpleAlphaPlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dSimpleAlphaPlan& t)
 {
 
     o << "W4dSimpleAlphaPlan " << (void*)&t << " start" << std::endl;

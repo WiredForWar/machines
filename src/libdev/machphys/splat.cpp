@@ -68,7 +68,7 @@ void MachPhysGroundSplat::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysGroundSplat& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysGroundSplat& t)
 {
 
     o << "MachPhysGroundSplat " << (void*)&t << " start" << std::endl;

@@ -23,7 +23,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysAggressorData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysAggressorData& t);
 
 private:
     friend class MachPhysDataParser;

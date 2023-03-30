@@ -248,7 +248,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dEntityPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dEntityPlan& t);
 
     PER_MEMBER_PERSISTENT_DEFAULT(W4dEntityPlan);
     PER_FRIEND_READ_WRITE(W4dEntityPlan);

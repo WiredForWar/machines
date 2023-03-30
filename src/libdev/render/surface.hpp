@@ -190,7 +190,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenSurface& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenSurface& t);
 
     friend bool operator==(const RenSurface&, const RenSurface&);
     friend bool operator!=(const RenSurface&, const RenSurface&);

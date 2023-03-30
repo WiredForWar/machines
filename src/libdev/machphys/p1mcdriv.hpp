@@ -91,7 +91,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhys1stPersonMachineDriver& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhys1stPersonMachineDriver& t);
 
     // revoked
     MachPhys1stPersonMachineDriver(const MachPhys1stPersonMachineDriver&);

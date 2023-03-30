@@ -59,7 +59,7 @@ void MachLogNuclearMissile::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogNuclearMissile& t)
+std::ostream& operator<<(std::ostream& o, const MachLogNuclearMissile& t)
 {
 
     o << "MachLogNuclearMissile " << (void*)&t << " start" << std::endl;

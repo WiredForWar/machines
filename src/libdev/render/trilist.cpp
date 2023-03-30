@@ -22,7 +22,7 @@ void RenTriangleList::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const RenTriangleList& t)
+std::ostream& operator<<(std::ostream& o, const RenTriangleList& t)
 {
 
     o << "RenTriangleList " << (void*)&t << " start" << std::endl;

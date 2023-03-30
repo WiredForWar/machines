@@ -44,7 +44,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MexBasicRandom& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexBasicRandom& t);
     friend class SeedRecorder;
 
     //  Used because of the poor resolution of the clock - ensures every call

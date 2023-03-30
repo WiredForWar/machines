@@ -23,7 +23,7 @@ void MachLogResearchTreeImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogResearchTreeImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogResearchTreeImpl& t)
 {
 
     o << "MachLogResearchTreeImpl " << (void*)&t << " start" << std::endl;

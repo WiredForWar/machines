@@ -27,7 +27,7 @@ public:
 
 private:
     friend class MachLogDyingEntityEvent;
-    friend ostream& operator<<(ostream& o, const MachLogDyingEntityEventImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogDyingEntityEventImpl& t);
 
     MachLogDyingEntityEventImpl(const MachLogDyingEntityEventImpl&);
     MachLogDyingEntityEventImpl& operator=(const MachLogDyingEntityEventImpl&);

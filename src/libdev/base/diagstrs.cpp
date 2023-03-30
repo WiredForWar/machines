@@ -39,7 +39,7 @@ void DiagStreams::close()
     }
 }
 
-ostream& operator<<(ostream& o, const DiagStreams& t)
+std::ostream& operator<<(std::ostream& o, const DiagStreams& t)
 {
 
     o << "DiagStreams " << (void*)&t << " start" << std::endl;

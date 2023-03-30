@@ -88,7 +88,7 @@ void PedPlanetEditor::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PedPlanetEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedPlanetEditor& t)
 {
 
     o << "PedPlanetEditor " << (void*)&t << " start" << std::endl;

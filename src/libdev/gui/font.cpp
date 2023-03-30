@@ -243,7 +243,7 @@ void GuiBmpFont::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GuiBmpFont& t)
+std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t)
 {
 
     o << "GuiBmpFont " << (void*)&t << " start" << std::endl;

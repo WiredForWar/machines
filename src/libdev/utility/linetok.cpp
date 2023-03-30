@@ -12,7 +12,7 @@
 #include <ctype.h>
 #include <algorithm>
 
-UtlLineTokeniser::UtlLineTokeniser(istream& istr, const SysPathName& fileName)
+UtlLineTokeniser::UtlLineTokeniser(std::istream& istr, const SysPathName& fileName)
     : istr_(istr)
     , pCurrentStream_(&istr_)
     , streamExhausted_(false)
@@ -30,7 +30,7 @@ UtlLineTokeniser::UtlLineTokeniser(istream& istr, const SysPathName& fileName)
     TEST_INVARIANT;
 }
 
-UtlLineTokeniser::UtlLineTokeniser(istream& istr, const SysPathName& fileName, const std::string& delimiters)
+UtlLineTokeniser::UtlLineTokeniser(std::istream& istr, const SysPathName& fileName, const std::string& delimiters)
     : istr_(istr)
     , pCurrentStream_(&istr_)
     , streamExhausted_(false)

@@ -51,7 +51,7 @@ void MachGuiMessageDisplay::addMessage(const char* displayText, PhysRelativeTime
     messages_.push_back(dm);
 }
 
-void MachGuiMessageDisplay::doOutput(ostream& o)
+void MachGuiMessageDisplay::doOutput(std::ostream& o)
 {
     if (messages_.size() == 0)
         return;
@@ -72,7 +72,7 @@ void MachGuiMessageDisplay::doOutput(ostream& o)
     }
 }
 
-ostream& operator<<(ostream& o, const MachGuiMessageDisplay& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMessageDisplay& t)
 {
 
     o << "MachGuiMessageDisplay " << (void*)&t << " start" << std::endl;

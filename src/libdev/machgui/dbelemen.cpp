@@ -35,7 +35,7 @@ void MachGuiDbElement::CLASS_INVARIANT
     INVARIANT(pData_ != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbElement& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbElement& t)
 {
 
     o << "MachGuiDbElement " << (void*)&t << " start" << std::endl;

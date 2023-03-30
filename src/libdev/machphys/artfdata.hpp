@@ -48,7 +48,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysArtefactData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysArtefactData& t);
 
     MachPhysArtefactData(const MachPhysArtefactData&);
     MachPhysArtefactData& operator=(const MachPhysArtefactData&);

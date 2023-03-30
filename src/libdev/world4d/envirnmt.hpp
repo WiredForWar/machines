@@ -110,7 +110,7 @@ public:
     virtual ~W4dEnvironment();
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const W4dEnvironment& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dEnvironment& t);
 
 protected:
     W4dEnvironment();

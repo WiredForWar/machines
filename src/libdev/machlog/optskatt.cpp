@@ -127,7 +127,7 @@ void MachLogTaskAttackOperation::initialDelay(const PhysRelativeTime& newInitial
         initialDelayProcessed_ = true;
 }
 
-void MachLogTaskAttackOperation::doOutputOperator(ostream& o) const
+void MachLogTaskAttackOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTaskAttackOperation" << std::endl;
     o << " initialDelay_ " << initialDelay_ << " processed " << initialDelayProcessed_ << " use: Ion C "
@@ -735,7 +735,7 @@ bool MachLogTaskAttackOperation::noRampagingMachines() const
     return result;
 }
 
-ostream& operator<<(ostream& o, const MachLogTaskAttackOperation::State& state)
+std::ostream& operator<<(std::ostream& o, const MachLogTaskAttackOperation::State& state)
 {
     switch (state)
     {

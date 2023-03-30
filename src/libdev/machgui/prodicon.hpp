@@ -87,7 +87,7 @@ private:
     MachProductionIcon& operator=(const MachProductionIcon&);
     bool operator==(const MachProductionIcon&);
 
-    friend ostream& operator<<(ostream& o, const MachProductionIcon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachProductionIcon& t);
 
     // Data members
     MachGuiBuildProgressBar* pProgressBar_;
@@ -137,7 +137,7 @@ private:
     MachIncSWLevelIcon& operator=(const MachIncSWLevelIcon&);
     bool operator==(const MachIncSWLevelIcon&);
 
-    friend ostream& operator<<(ostream& o, const MachIncSWLevelIcon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachIncSWLevelIcon& t);
 
     MachInGameScreen* pInGameScreen_;
     MachLog::ObjectType machineType_;

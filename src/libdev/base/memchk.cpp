@@ -27,7 +27,7 @@ void MemChkWatchDeleteBlock(void* address);
 // TODO: some depricated dos stuff?
 #define MAX_PATH 0x00000104
 
-static void writeMemoryAllocationData(ostream& ostr);
+static void writeMemoryAllocationData(std::ostream& ostr);
 
 #ifdef NDEBUG
 
@@ -48,7 +48,7 @@ void DbgMemChkRegisterFileData(const char*, unsigned long)
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static ostream& logStream()
+static std::ostream& logStream()
 {
     return Diag::instance().memoryStream();
 }
@@ -193,7 +193,7 @@ static void recordDelete(size_t nBytes);
 static void recordDeleteArray(size_t nBytes);
 static void recordDeallocation(size_t nBytes);
 
-static void writeMemoryAllocationData(ostream& ostr);
+static void writeMemoryAllocationData(std::ostream& ostr);
 
 #define BLOCK_WHERE(dPtr) (dPtr)->fname << "  " << (dPtr)->lnumber
 
@@ -1078,7 +1078,7 @@ static void recordDeallocation(size_t nBytes)
 /*--------------------------------------------------------------------------
 --------------------------------------------------------------------------*/
 
-static void writeMemoryAllocationData(ostream& ostr)
+static void writeMemoryAllocationData(std::ostream& ostr)
 {
     ostr << "...................................................................." << std::endl;
 

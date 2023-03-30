@@ -69,7 +69,7 @@ private:
     PedObstacleEditor& operator=(const PedObstacleEditor&);
     bool operator==(const PedObstacleEditor&);
 
-    friend ostream& operator<<(ostream& o, const PedObstacleEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedObstacleEditor& t);
 
     using VerticalPolygons = ctl_pvector<PedVerticalPolygonMarker>;
 

@@ -57,7 +57,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysNukeWave& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysNukeWave& t);
 
     PER_MEMBER_PERSISTENT(MachPhysNukeWave);
 

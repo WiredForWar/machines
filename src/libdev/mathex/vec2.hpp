@@ -100,8 +100,8 @@ PER_DECLARE_PERSISTENT(MexVec2);
 
 // class ostream;
 // class istream;
-ostream& operator<<(ostream& os, const MexVec2& vec);
-istream& operator>>(istream& is, MexVec2& vec);
+std::ostream& operator<<(std::ostream& os, const MexVec2& vec);
+std::istream& operator>>(std::istream& is, MexVec2& vec);
 
 //////////////////////////////////////////////////////////////////////
 

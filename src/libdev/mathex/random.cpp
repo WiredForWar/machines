@@ -95,7 +95,7 @@ void MexBasicRandom::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexBasicRandom& t)
+std::ostream& operator<<(std::ostream& o, const MexBasicRandom& t)
 {
 
     o << "MexBasicRandom " << (void*)&t << " start" << std::endl;

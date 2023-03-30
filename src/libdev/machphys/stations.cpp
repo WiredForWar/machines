@@ -76,7 +76,7 @@ void MachPhysStations::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const MachPhysStations& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysStations& t)
 {
 
     o << "MachPhysStations " << (void*)&t << " start" << std::endl;

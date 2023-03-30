@@ -34,7 +34,7 @@ void MachLogChangeRaceAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogChangeRaceAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogChangeRaceAction& t)
 {
 
     o << "MachLogChangeRaceAction " << (void*)&t << " start" << std::endl;
@@ -88,7 +88,7 @@ MachLogChangeRaceAction::newFromParser(SimCondition* pCondition, bool enabled, U
 }
 
 // virtual
-void MachLogChangeRaceAction::doOutputOperator(ostream& o) const
+void MachLogChangeRaceAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << " Original Race " << originalRace_;

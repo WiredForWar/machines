@@ -37,7 +37,7 @@ void MachGuiTreacheryCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiTreacheryCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiTreacheryCommand& t)
 {
 
     o << "MachGuiTreacheryCommand " << (void*)&t << " start" << std::endl;

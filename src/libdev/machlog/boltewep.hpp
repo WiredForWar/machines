@@ -29,7 +29,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogBolterWeapon& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogBolterWeapon& t);
 
 protected:
     virtual void doFire(MachActor*, const MachLogFireData&);

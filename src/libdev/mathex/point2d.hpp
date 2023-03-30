@@ -76,7 +76,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MexPoint2d& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexPoint2d& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexPoint2d);

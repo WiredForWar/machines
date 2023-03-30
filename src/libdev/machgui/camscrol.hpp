@@ -47,7 +47,7 @@ protected:
     void doDisplay() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCameraScrollArea& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCameraScrollArea& t);
 
     MachGuiCameraScrollArea(const MachGuiCameraScrollArea&);
     MachGuiCameraScrollArea& operator=(const MachGuiCameraScrollArea&);

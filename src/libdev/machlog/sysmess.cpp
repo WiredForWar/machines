@@ -27,7 +27,7 @@ void MachLogSystemMessageHandler::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogSystemMessageHandler& t)
+std::ostream& operator<<(std::ostream& o, const MachLogSystemMessageHandler& t)
 {
 
     o << "MachLogSystemMessageHandler " << (void*)&t << " start" << std::endl;

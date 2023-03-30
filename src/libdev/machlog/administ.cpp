@@ -118,7 +118,7 @@ PhysRelativeTime MachLogAdministrator::update(const PhysRelativeTime& maxCPUTime
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogAdministrator::doOutputOperator(ostream& o) const
+void MachLogAdministrator::doOutputOperator(std::ostream& o) const
 {
     MachLogMachine::doOutputOperator(o);
 }

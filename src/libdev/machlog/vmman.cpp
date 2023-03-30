@@ -788,7 +788,7 @@ MachLogVoiceMailManager::MailInfoVector* MachLogVoiceMailManager::pAvailableVEMa
     return pAvailableVEMails_;
 }
 
-ostream& operator<<(ostream& o, const MachLogVoiceMailManager& t)
+std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManager& t)
 {
 
     o << "MachLogVoiceMailManager " << (void*)&t << " start" << std::endl;

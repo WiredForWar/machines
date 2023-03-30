@@ -47,7 +47,7 @@ private:
     SysFileEnumerator& operator=(const SysFileEnumerator&);
     bool operator==(const SysFileEnumerator&);
 
-    friend ostream& operator<<(ostream& o, const SysFileEnumerator& t);
+    friend std::ostream& operator<<(std::ostream& o, const SysFileEnumerator& t);
 
     // Data...
     FileDatas files_;

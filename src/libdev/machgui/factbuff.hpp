@@ -78,7 +78,7 @@ private:
     MachGuiFactoryBuffer& operator=(const MachGuiFactoryBuffer&);
     bool operator==(const MachGuiFactoryBuffer&);
 
-    friend ostream& operator<<(ostream& o, const MachGuiFactoryBuffer& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiFactoryBuffer& t);
 
     // Data members
     MachLogFactory* pFactory_; // The factory being edited

@@ -83,7 +83,7 @@ void MachLogPodAttackOperation::dealWithVoiceMails()
             pActor_->race());
 }
 
-void MachLogPodAttackOperation::doOutputOperator(ostream& o) const
+void MachLogPodAttackOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogPodAttackOperation\n";
 }
@@ -148,7 +148,7 @@ MachLogPodAttackAnimation::MachLogPodAttackAnimation(MachLogPod* pActor, const M
     // deliberately left blank
 }
 
-void MachLogPodAttackAnimation::doOutputOperator(ostream& o) const
+void MachLogPodAttackAnimation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogPodAttackAnimation ";
 }

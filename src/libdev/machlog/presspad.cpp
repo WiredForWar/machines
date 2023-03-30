@@ -96,7 +96,7 @@ void MachLogPressurePads::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPressurePads& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPressurePads& t)
 {
 
     o << "MachLogPressurePads " << (void*)&t << " start" << std::endl;

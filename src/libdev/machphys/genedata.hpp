@@ -68,7 +68,7 @@ private:
 
     MachPhysGeneralData();
 
-    friend ostream& operator<<(ostream& o, const MachPhysGeneralData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGeneralData& t);
 
     // Set methods private so data parser only can do it
     void firstPersonLookUpDownRate(MexRadians rate);

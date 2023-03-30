@@ -56,7 +56,7 @@ MachLogAdminDeconstructOperation::~MachLogAdminDeconstructOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogAdminDeconstructOperation::doOutputOperator(ostream& o) const
+void MachLogAdminDeconstructOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminDeconstructOperation\n";
 }

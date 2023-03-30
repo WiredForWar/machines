@@ -74,7 +74,7 @@ protected:
     void barMoved(Gui::XCoord newBarPos);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiSlideBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiSlideBar& t);
 
     MachGuiSlideBar(const MachGuiSlideBar&);
     MachGuiSlideBar& operator=(const MachGuiSlideBar&);

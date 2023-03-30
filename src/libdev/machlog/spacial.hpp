@@ -112,7 +112,7 @@ public:
     static bool intersectsWithMotionChunks(const MexAlignedBox2d& box);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogSpacialManipulation& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSpacialManipulation& t);
     // Operation deliberately revoked
     MachLogSpacialManipulation();
     MachLogSpacialManipulation(const MachLogSpacialManipulation&);

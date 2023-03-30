@@ -41,7 +41,7 @@ void BaseMemWatcher::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const BaseMemWatcher& t)
+std::ostream& operator<<(std::ostream& o, const BaseMemWatcher& t)
 {
 
     o << "BaseMemWatcher " << (void*)&t << " start" << std::endl;
@@ -237,7 +237,7 @@ size_t BaseMemWatcher::hashValue(void* address)
     return (_REINTERPRET_CAST(size_t, address) >> 2) & (BaseMemWatcher::POINTER_HASH_BOUND - 1);
 }
 
-void BaseMemWatcher::traceOustandingAllocations(ostream& outStream)
+void BaseMemWatcher::traceOustandingAllocations(std::ostream& outStream)
 {
     bool traceAnchor = true;
     ProProfiler& profiler = ProProfiler::instance();

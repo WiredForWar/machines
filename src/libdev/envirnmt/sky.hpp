@@ -68,7 +68,7 @@ public:
     virtual ~EnvSky();
 
     virtual void update(W4dSceneManager*) = 0;
-    virtual void write(ostream&) const = 0;
+    virtual void write(std::ostream&) const = 0;
     virtual bool visible() const = 0;
     virtual void visible(bool yesNo) = 0;
 
@@ -116,7 +116,7 @@ private:
     bool colourChanged_;
 };
 
-ostream& operator<<(ostream& o, const EnvSky& sky);
+std::ostream& operator<<(std::ostream& o, const EnvSky& sky);
 
 ////////////////////////////////////////////////////////////
 
@@ -149,7 +149,7 @@ public:
 
     void update(W4dSceneManager* pSceneManager) override;
     // PRE(pSceneManager);
-    void write(ostream&) const override;
+    void write(std::ostream&) const override;
     // PRE(colourTable());
     bool visible() const override;
     void visible(bool yesNo) override;
@@ -177,7 +177,7 @@ public:
 
     void update(W4dSceneManager* pSceneManager) override;
     // PRE(pSceneManager);
-    void write(ostream&) const override;
+    void write(std::ostream&) const override;
     bool visible() const override;
     void visible(bool) override;
 
@@ -235,7 +235,7 @@ public:
 
     void update(W4dSceneManager*) override;
     // PRE(pSceneManager);
-    void write(ostream&) const override;
+    void write(std::ostream&) const override;
     bool visible() const override;
     void visible(bool yesNo) override;
 

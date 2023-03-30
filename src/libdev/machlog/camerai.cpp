@@ -23,7 +23,7 @@ void MachLogCameraImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogCameraImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogCameraImpl& t)
 {
 
     o << "MachLogCameraImpl " << (void*)&t << " start" << std::endl;

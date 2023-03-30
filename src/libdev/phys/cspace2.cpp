@@ -83,7 +83,7 @@ void PhysConfigSpace2d::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysConfigSpace2d& t)
+std::ostream& operator<<(std::ostream& o, const PhysConfigSpace2d& t)
 {
 
     o << "PhysConfigSpace2d " << (void*)&t << " start" << std::endl;
@@ -781,14 +781,14 @@ size_t PhysConfigSpace2d::nPolygons() const
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void PhysConfigSpace2d::traceFindPath(const FindPathId& id, ostream& o)
+void PhysConfigSpace2d::traceFindPath(const FindPathId& id, std::ostream& o)
 {
     PRE(findPathExists(id));
     o << *(impl_.findPaths()[id]);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& PhysConfigSpace2d::traceObstacles(ostream& o)
+std::ostream& PhysConfigSpace2d::traceObstacles(std::ostream& o)
 {
     const MATHEX_SCALAR xStart = impl_.boundary().minCorner().x();
     const MATHEX_SCALAR xEnd = impl_.boundary().maxCorner().x();
@@ -800,8 +800,8 @@ ostream& PhysConfigSpace2d::traceObstacles(ostream& o)
     return traceObstacles(o, USE_ALL, xStart, xEnd, xIncr, yStart, yEnd, yIncr);
 }
 
-ostream& PhysConfigSpace2d::traceObstacles(
-    ostream& o,
+std::ostream& PhysConfigSpace2d::traceObstacles(
+    std::ostream& o,
     UsePolygons /* whichPolygons */,
     MATHEX_SCALAR xStart,
     MATHEX_SCALAR xEnd,
@@ -1087,7 +1087,7 @@ bool PhysConfigSpace2d::domainFindPath(const DomainFindPathId& id, PortalPoints*
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void PhysConfigSpace2d::traceDomainFindPath(const DomainFindPathId& id, ostream& o)
+void PhysConfigSpace2d::traceDomainFindPath(const DomainFindPathId& id, std::ostream& o)
 {
     PRE(domainFindPathExists(id));
     o << *(impl_.domainFindPaths()[id]);
@@ -1742,7 +1742,7 @@ void PhysConfigSpace2d::findIntersections(
     }
 }
 
-void PhysConfigSpace2d::traceIllegalPoints(ostream& o) const
+void PhysConfigSpace2d::traceIllegalPoints(std::ostream& o) const
 {
     o << "Start tracing illegal points" << std::endl;
 

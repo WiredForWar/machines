@@ -447,7 +447,7 @@ void RenISurfaceManagerImpl::CLASS_INVARIANT
     }
 }
 
-ostream& RenISurfaceManagerImpl::write(ostream& o)
+std::ostream& RenISurfaceManagerImpl::write(std::ostream& o)
 {
     uint total = 0;
     for (Ren::TexId id = firstValidId_; id != entries_.size(); ++id)

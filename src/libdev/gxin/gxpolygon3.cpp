@@ -99,7 +99,7 @@ bool GXPolygon3::noVertexColored() const
     return result;
 }
 
-ostream& operator<<(ostream& o, const GXPolygon3& t)
+std::ostream& operator<<(std::ostream& o, const GXPolygon3& t)
 {
     o << std::endl;
     o << "vertices_ { " << std::endl;

@@ -42,7 +42,7 @@ void MachGuiIPXNetworkMode::readNetworkDetails()
 {
 }
 
-ostream& operator<<(ostream& o, const MachGuiIPXNetworkMode& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiIPXNetworkMode& t)
 {
 
     o << "MachGuiIPXNetworkMode " << (void*)&t << " start" << std::endl;

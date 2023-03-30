@@ -154,7 +154,7 @@ void MachPhysHealHelix::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHealHelix& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHealHelix& t)
 {
 
     o << "MachPhysHealHelix " << (void*)&t << " start" << std::endl;

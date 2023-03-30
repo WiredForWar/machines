@@ -51,7 +51,7 @@ void MachGuiPickUpCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiPickUpCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiPickUpCommand& t)
 {
 
     o << "MachGuiPickUpCommand " << (void*)&t << " start" << std::endl;

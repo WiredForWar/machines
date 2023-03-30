@@ -37,7 +37,7 @@ MachLogRefillLandMinesOperation::~MachLogRefillLandMinesOperation()
 {
 }
 
-void MachLogRefillLandMinesOperation::doOutputOperator(ostream& o) const
+void MachLogRefillLandMinesOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogRefillLandMinesOperation Dest " << dest_ << " position " << pActor_->position() << std::endl;
     o << " Actor mines " << pActor_->nMines() << std::endl;

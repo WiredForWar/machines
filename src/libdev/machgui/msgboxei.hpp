@@ -36,7 +36,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiExitToInternetMessageBoxResponder& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiExitToInternetMessageBoxResponder& t);
 
     MachGuiExitToInternetMessageBoxResponder(const MachGuiExitToInternetMessageBoxResponder&);
     MachGuiExitToInternetMessageBoxResponder& operator=(const MachGuiExitToInternetMessageBoxResponder&);

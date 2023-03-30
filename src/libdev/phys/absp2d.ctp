@@ -323,7 +323,7 @@ bool PhysAlignedBSPTree2d<P_ITEM>::split(
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-template <class P_ITEM> ostream& operator<<(ostream& o, const PhysAlignedBSPTree2d<P_ITEM>& t)
+template <class P_ITEM> std::ostream& operator<<(std::ostream& o, const PhysAlignedBSPTree2d<P_ITEM>& t)
 {
     o << "AlignedBSPTree2d " << (void*)&t << std::endl;
     o << "Boundary " << t.boundary_ << std::endl;
@@ -340,7 +340,7 @@ template <class P_ITEM>
 void PhysAlignedBSPTree2d<P_ITEM>::trace(
     const Partition& partition,
     const MexAlignedBox2d& partitionBoundary,
-    ostream& o) const
+    std::ostream& o) const
 {
     o << "  Partition( " << partition.items_.size() << " items )" << partitionBoundary << std::endl;
 

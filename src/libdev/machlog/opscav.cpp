@@ -131,7 +131,7 @@ bool MachLogScavengeOperation::beNotified(W4dSubject* pSubject, W4dSubject::Noti
     return stayAttached;
 }
 
-void MachLogScavengeOperation::doOutputOperator(ostream& o) const
+void MachLogScavengeOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogScavengeOperation_DEPIMPL();
 

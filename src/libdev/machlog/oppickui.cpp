@@ -31,7 +31,7 @@ void MachLogPickUpOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPickUpOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPickUpOperationImpl& t)
 {
 
     o << "MachLogPickUpOperationImpl " << (void*)&t << " start" << std::endl;

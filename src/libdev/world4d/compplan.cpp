@@ -129,7 +129,7 @@ void W4dCompositePlan::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const W4dCompositePlan& t)
+std::ostream& operator<<(std::ostream& o, const W4dCompositePlan& t)
 {
 
     o << "W4dCompositePlan " << (void*)&t << " start" << std::endl;

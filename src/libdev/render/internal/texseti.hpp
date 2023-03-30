@@ -26,7 +26,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const RenTextureSetImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenTextureSetImpl& t);
     friend class RenTextureSet;
 
     RenTextureSetImpl();

@@ -26,7 +26,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenTriangle& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenTriangle& t);
 
 private:
     RenTriangle();

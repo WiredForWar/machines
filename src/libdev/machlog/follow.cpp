@@ -179,7 +179,7 @@ bool MachLogFollowOperation::doIsFinished() const
 }
 
 // virtual
-void MachLogFollowOperation::doOutputOperator(ostream& o) const
+void MachLogFollowOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogFollowOperation_DEPIMPL();
 

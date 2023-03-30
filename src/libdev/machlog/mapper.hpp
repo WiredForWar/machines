@@ -32,7 +32,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogMapper& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMapper& t);
 
     MachLogMapper();
     ~MachLogMapper();

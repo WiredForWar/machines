@@ -178,7 +178,7 @@ void MachPromptText::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPromptText& t)
+std::ostream& operator<<(std::ostream& o, const MachPromptText& t)
 {
 
     o << "MachPromptText " << (void*)&t << " start" << std::endl;

@@ -76,7 +76,7 @@ MATHEX_SCALAR& MexVec2::operator[](size_t i)
 
 /////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& os, const MexVec2& vec)
+std::ostream& operator<<(std::ostream& os, const MexVec2& vec)
 {
     os << "(" << vec.x() << "," << vec.y() << ")";
     return os;
@@ -87,7 +87,7 @@ ostream& operator<<(ostream& os, const MexVec2& vec)
 //      x,y
 //      (x,y)       i.e., result of output operator
 // Where x and y are floating point numbers.
-istream& operator>>(istream& is, MexVec2& vec)
+std::istream& operator>>(std::istream& is, MexVec2& vec)
 {
     MATHEX_SCALAR x, y;
     char c = 0;

@@ -643,7 +643,7 @@ void PedMachineEditor::createMapping(MachPhysMachine* machine, Machine* legalDat
     TEST_INVARIANT;
 }
 
-ostream& operator<<(ostream& o, const PedMachineEditor& t)
+std::ostream& operator<<(std::ostream& o, const PedMachineEditor& t)
 {
 
     o << "PedMachineEditor " << (void*)&t << " start" << std::endl;

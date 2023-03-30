@@ -38,7 +38,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysOrientationAndPositionPlan);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysOrientationAndPositionPlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysOrientationAndPositionPlan& t);
 
     MachPhysOrientationAndPositionPlan(const MachPhysOrientationAndPositionPlan&);
     MachPhysOrientationAndPositionPlan& operator=(const MachPhysOrientationAndPositionPlan&);

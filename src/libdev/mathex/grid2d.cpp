@@ -247,7 +247,7 @@ void MexGrid2d::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MexGrid2d& t)
+std::ostream& operator<<(std::ostream& o, const MexGrid2d& t)
 {
 
     o << "Grid " << t.nXCells_ << "x" << t.nYCells_ << "  ";

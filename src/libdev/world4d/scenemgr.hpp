@@ -116,7 +116,7 @@ public:
     // Clients can print any debugging text here.  Any text will be overlayed
     // on the 3D graphics.  The 3D is drawn first, then any internal text such
     // as frame rate, then the client's text below that.
-    ostream& out();
+    std::ostream& out();
 
     void CLASS_INVARIANT;
 

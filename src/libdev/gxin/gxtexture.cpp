@@ -75,7 +75,7 @@ bool operator<(const GXTexture& tex1, const GXTexture& tex2)
     return result;
 }
 
-ostream& operator<<(ostream& o, const GXTexture& t)
+std::ostream& operator<<(std::ostream& o, const GXTexture& t)
 {
 
     o << "name_ " << t.name_;

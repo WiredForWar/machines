@@ -57,7 +57,7 @@ public:
     std::unique_ptr<NetMessageBody> operator[](size_t) const;
 
 private:
-    friend ostream& operator<<(ostream& o, const NetCompoundMessage& t);
+    friend std::ostream& operator<<(std::ostream& o, const NetCompoundMessage& t);
 
     NetCompoundMessage(const NetCompoundMessage&);
     NetCompoundMessage& operator=(const NetCompoundMessage&);

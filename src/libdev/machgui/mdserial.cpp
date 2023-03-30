@@ -264,7 +264,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
     pimpl_->pFlowSelecter_->items(flowSettings);
 }
 
-ostream& operator<<(ostream& o, const MachGuiSerialNetworkMode& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiSerialNetworkMode& t)
 {
 
     o << "MachGuiSerialNetworkMode " << (void*)&t << " start" << std::endl;

@@ -63,7 +63,7 @@ public:
     //  from the current time
     void nextTraceTime(double offsetSeconds);
 
-    ostream& outputStream();
+    std::ostream& outputStream();
     void closeOutputStream();
 
     // void    writeStack( ostream& ) const;
@@ -72,7 +72,7 @@ public:
     // If doTraceAnchor is true, the name of the anchor function and its address is prepended.
     // The line number is added. (Zero implies not known).
     // If extraString is non empty, it is added.
-    void traceStack(ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString);
+    void traceStack(std::ostream& outStream, bool doTraceAnchor, uint32_t lineNumber, const char* extraString);
 
     // Export the address of the call stack
     const size_t* pCallStack() const;
@@ -82,7 +82,7 @@ public:
 
     // Trace the supplied call stack pCallStack with nStackFrames frames to outStream
     void traceStack(
-        ostream& outStream,
+        std::ostream& outStream,
         bool doTraceAnchor,
         size_t nStackFrames,
         const size_t* pCallStack,
@@ -99,7 +99,7 @@ public:
     // PRE( isBufferingOutput() );
 
     // Flush the internal buffer to outStream
-    void writeBuffer(ostream& outStream);
+    void writeBuffer(std::ostream& outStream);
     // PRE( isBufferingOutput() );
 
     // Set to induce acrash on a call to print the stack when profiling.
@@ -109,7 +109,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const ProProfiler& t);
+    friend std::ostream& operator<<(std::ostream& o, const ProProfiler& t);
 
 private:
     ProProfiler(const ProProfiler&);

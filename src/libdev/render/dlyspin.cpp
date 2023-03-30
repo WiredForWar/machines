@@ -54,7 +54,7 @@ void RenIDelayedSpinPolygon::render()
     RenDevice::current()->renderPrimitive(vtx, nVertices_, material_);
 }
 
-void RenIDelayedSpinPolygon::print(ostream& o) const
+void RenIDelayedSpinPolygon::print(std::ostream& o) const
 {
     o << "Delayed STF, depth=" << depth() << ", " << material_;
 }

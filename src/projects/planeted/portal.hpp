@@ -45,7 +45,7 @@ private:
     PedPortal& operator=(const PedPortal&);
     bool operator==(const PedPortal&);
 
-    friend ostream& operator<<(ostream& o, const PedPortal& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedPortal& t);
 
     // Data...
     size_t domainOne_;

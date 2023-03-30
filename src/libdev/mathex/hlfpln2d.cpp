@@ -61,13 +61,13 @@ bool MexHalfPlane2d::operator==(const MexHalfPlane2d& rhs) const
     return vx == rhs.vx && vy == rhs.vy && c == rhs.c;
 }
 
-ostream& operator<<(ostream& os, const MexHalfPlane2d& plane)
+std::ostream& operator<<(std::ostream& os, const MexHalfPlane2d& plane)
 {
     os << plane.vx << " " << plane.vy << " " << plane.c;
     return os;
 }
 
-istream& operator>>(istream& is, MexHalfPlane2d& plane)
+std::istream& operator>>(std::istream& is, MexHalfPlane2d& plane)
 {
     is >> plane.vx >> plane.vy >> plane.c;
     return is;

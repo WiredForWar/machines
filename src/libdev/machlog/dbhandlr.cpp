@@ -45,7 +45,7 @@ void MachLogDatabaseHandler::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogDatabaseHandler& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDatabaseHandler& t)
 {
 
     o << "MachLogDatabaseHandler " << (void*)&t << " start" << std::endl;

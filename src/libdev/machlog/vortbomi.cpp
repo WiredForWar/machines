@@ -30,7 +30,7 @@ void MachLogVortexBombImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogVortexBombImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogVortexBombImpl& t)
 {
 
     o << "MachLogVortexBombImpl " << (void*)&t << " start" << std::endl;

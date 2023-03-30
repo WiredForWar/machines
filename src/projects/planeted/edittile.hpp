@@ -107,7 +107,7 @@ private:
     bool isSelected(MachPhysTerrainTile*);
     void clearAllSelectedTiles();
 
-    friend ostream& operator<<(ostream& o, const PedTileEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedTileEditor& t);
 
     // Data...
     PedTileMarker* pHighlightTile_;

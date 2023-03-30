@@ -58,7 +58,7 @@ private:
     MachPhys::HitPointUnits currentHits_;
     MachPhys::ArmourUnits currentArmour_;
 
-    friend ostream& operator<<(ostream& o, const MachGuiHealthBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiHealthBar& t);
 };
 
 //////////////////////////////////////////////////////////////////////

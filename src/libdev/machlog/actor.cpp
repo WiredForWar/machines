@@ -525,7 +525,7 @@ void MachActor::endExplodingAnimation()
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachActor::doOutputOperator(ostream& o) const
+void MachActor::doOutputOperator(std::ostream& o) const
 {
     o << "(" << id() << ") [" << objectType() << "]   position" << position() << std::endl;
     o << " hp " << hp() << " armour " << armour() << std::endl;
@@ -555,7 +555,7 @@ void MachActor::isIn1stPersonView(bool isIn1st)
     isIn1stPersonView_ = isIn1st;
 }
 
-ostream& operator<<(ostream& o, const MachActor& t)
+std::ostream& operator<<(std::ostream& o, const MachActor& t)
 {
     t.doOutputOperator(o);
     return o;

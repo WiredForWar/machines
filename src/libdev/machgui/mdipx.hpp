@@ -35,7 +35,7 @@ protected:
     void readNetworkDetails() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiIPXNetworkMode& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiIPXNetworkMode& t);
 
     MachGuiIPXNetworkMode(const MachGuiIPXNetworkMode&);
     MachGuiIPXNetworkMode& operator=(const MachGuiIPXNetworkMode&);

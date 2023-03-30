@@ -53,7 +53,7 @@ protected:
     void updateMaxPlayersList(MachGuiDbScenario&);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxSkirmish& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSkirmish& t);
 
     MachGuiCtxSkirmish(const MachGuiCtxSkirmish&);
     MachGuiCtxSkirmish& operator=(const MachGuiCtxSkirmish&);

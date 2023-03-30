@@ -140,7 +140,7 @@ void MachGuiCheckBox::doHandleMouseClickEvent(const GuiMouseEvent& rel)
     }
 }
 
-ostream& operator<<(ostream& o, const MachGuiCheckBox& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCheckBox& t)
 {
 
     o << "MachGuiCheckBox " << (void*)&t << " start" << std::endl;

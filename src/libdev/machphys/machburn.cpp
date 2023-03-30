@@ -125,7 +125,7 @@ void MachPhysMachineBurning::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMachineBurning& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMachineBurning& t)
 {
 
     o << "MachPhysMachineBurning " << (void*)&t << " start" << std::endl;

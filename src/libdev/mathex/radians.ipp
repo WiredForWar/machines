@@ -36,7 +36,7 @@ MATHEX_SCALAR MexRadians::asScalar() const
 }
 
 _CODE_INLINE
-ostream& operator<<(ostream& o, const MexRadians& t)
+std::ostream& operator<<(std::ostream& o, const MexRadians& t)
 {
     o << t.angleInRadians();
 

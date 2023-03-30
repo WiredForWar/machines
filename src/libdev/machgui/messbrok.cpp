@@ -463,7 +463,7 @@ void MachGuiMessageBroker::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiMessageBroker& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker& t)
 {
 
     o << "MachGuiMessageBroker " << (void*)&t << " start" << std::endl;
@@ -472,7 +472,7 @@ ostream& operator<<(ostream& o, const MachGuiMessageBroker& t)
     return o;
 }
 
-ostream& operator<<(ostream& o, const MachGuiMessageBroker::MessageType& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker::MessageType& t)
 {
     switch (t)
     {

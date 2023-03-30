@@ -380,8 +380,6 @@
 // class DiagStreamData;
 class DiagStream;
 
-using std::ostream;
-
 class Diag
 {
 public:
@@ -391,60 +389,60 @@ public:
 
     static Diag& instance();
 
-    ostream& stream(DiagStreamType);
+    std::ostream& stream(DiagStreamType);
 
     void indent(DiagStreamType, int nSpaces);
 
     //  People's own streams
-    ostream& bobStream();
-    ostream& halStream();
-    ostream& iainStream();
-    ostream& jerryStream();
-    ostream& jonStream();
-    ostream& richardStream();
-    ostream& yueaiStream();
-    ostream& lionelStream();
-    ostream& ceriStream();
-    ostream& neilStream();
-    ostream& wayneStream();
-    ostream& danielStream();
+    std::ostream& bobStream();
+    std::ostream& halStream();
+    std::ostream& iainStream();
+    std::ostream& jerryStream();
+    std::ostream& jonStream();
+    std::ostream& richardStream();
+    std::ostream& yueaiStream();
+    std::ostream& lionelStream();
+    std::ostream& ceriStream();
+    std::ostream& neilStream();
+    std::ostream& wayneStream();
+    std::ostream& danielStream();
 
-    ostream& miscStream();
+    std::ostream& miscStream();
 
-    ostream& whereStream();
-    ostream& traceStream();
-    ostream& memoryStream();
+    std::ostream& whereStream();
+    std::ostream& traceStream();
+    std::ostream& memoryStream();
 
     //  Library streams
-    ostream& renderStream();
-    ostream& networkStream();
+    std::ostream& renderStream();
+    std::ostream& networkStream();
 
-    ostream& motseqStream();
-    ostream& cs2pathStream();
-    ostream& cs2vgraStream();
-    ostream& observerStream();
+    std::ostream& motseqStream();
+    std::ostream& cs2pathStream();
+    std::ostream& cs2vgraStream();
+    std::ostream& observerStream();
 
-    ostream& perReadStream();
-    ostream& perWriteStream();
+    std::ostream& perReadStream();
+    std::ostream& perWriteStream();
 
-    ostream& pathProfileStream();
+    std::ostream& pathProfileStream();
 
-    ostream& soundStream();
+    std::ostream& soundStream();
 
-    ostream& recRecordStream();
-    ostream& recPlaybackStream();
+    std::ostream& recRecordStream();
+    std::ostream& recPlaybackStream();
 
-    ostream& netAnalysisStream();
-    ostream& aStarStream();
-    ostream& linearTravelStream();
+    std::ostream& netAnalysisStream();
+    std::ostream& aStarStream();
+    std::ostream& linearTravelStream();
 
-    ostream& planetSurfaceStream();
-    ostream& physMotionStream();
+    std::ostream& planetSurfaceStream();
+    std::ostream& physMotionStream();
 
-    ostream& networkErrorsStream();
+    std::ostream& networkErrorsStream();
 
-    ostream& mexGrid2dStream();
-    ostream& configSpaceStream();
+    std::ostream& mexGrid2dStream();
+    std::ostream& configSpaceStream();
 
     const char* getenv(const char* name);
 

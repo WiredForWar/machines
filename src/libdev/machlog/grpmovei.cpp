@@ -53,7 +53,7 @@ MachLogGroupSimpleMoveImplementation::~MachLogGroupSimpleMoveImplementation()
     TEST_INVARIANT;
 }
 
-ostream& operator<<(ostream& ostr, const MachLogGroupSimpleMoveImplementation::Actors& actors)
+std::ostream& operator<<(std::ostream& ostr, const MachLogGroupSimpleMoveImplementation::Actors& actors)
 {
     for (MachLogGroupSimpleMoveImplementation::Actors::const_iterator i = actors.begin(); i != actors.end(); ++i)
     {
@@ -301,7 +301,7 @@ void MachLogGroupSimpleMoveImplementation::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogGroupSimpleMoveImplementation& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGroupSimpleMoveImplementation& t)
 {
 
     o << "MachLogGroupSimpleMoveImplementation " << (void*)&t << " start" << std::endl;

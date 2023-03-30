@@ -36,7 +36,7 @@ void MachLogEvadeOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogEvadeOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogEvadeOperationImpl& t)
 {
 
     o << "MachLogEvadeOperationImpl " << (void*)&t << " start" << std::endl;

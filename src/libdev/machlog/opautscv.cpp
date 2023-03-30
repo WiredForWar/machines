@@ -100,7 +100,7 @@ void MachLogAutoScavengeOperation::storeOldFirstOperation(MachLogOperation* pOld
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogAutoScavengeOperation::doOutputOperator(ostream& o) const
+void MachLogAutoScavengeOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogAutoScavengeOperation_DEPIMPL();
 

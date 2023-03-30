@@ -99,7 +99,7 @@ void SysMemoryCaps::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const SysMemoryCaps& t)
+std::ostream& operator<<(std::ostream& o, const SysMemoryCaps& t)
 {
 
     o << "SysMemoryCaps " << (void*)&t << " start" << std::endl;
@@ -109,7 +109,7 @@ ostream& operator<<(ostream& o, const SysMemoryCaps& t)
 }
 
 // static
-void SysMemoryCaps::outputInfo(ostream& o)
+void SysMemoryCaps::outputInfo(std::ostream& o)
 {
     /*MEMORYSTATUS status;
     status.dwLength = sizeof( MEMORYSTATUS );

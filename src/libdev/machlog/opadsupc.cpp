@@ -98,7 +98,7 @@ MachLogAdminSuperConstructOperation::~MachLogAdminSuperConstructOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogAdminSuperConstructOperation::doOutputOperator(ostream& o) const
+void MachLogAdminSuperConstructOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminSuperConstructOperation\n";
     switch (opType_)

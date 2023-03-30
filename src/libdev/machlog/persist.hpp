@@ -55,7 +55,7 @@ private:
     void setDataForWrite() const;
     void registerDerivedClasses();
 
-    friend ostream& operator<<(ostream& o, const MachLogPersistence& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPersistence& t);
 
     MachLogPersistence(const MachLogPersistence&);
     MachLogPersistence& operator=(const MachLogPersistence&);

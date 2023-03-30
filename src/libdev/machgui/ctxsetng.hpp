@@ -45,7 +45,7 @@ protected:
     void addSetting(MachGuiDropDownListBoxCreator*& pCreator, uint labelStrId, int numStrs, ...);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxSettings& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSettings& t);
 
     MachGuiCtxSettings(const MachGuiCtxSettings&);
     MachGuiCtxSettings& operator=(const MachGuiCtxSettings&);

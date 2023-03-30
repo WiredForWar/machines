@@ -88,7 +88,7 @@ MachLogMissileEmplacementAttackOperation::~MachLogMissileEmplacementAttackOperat
     _DELETE(pImpl_);
 }
 
-void MachLogMissileEmplacementAttackOperation::doOutputOperator(ostream& o) const
+void MachLogMissileEmplacementAttackOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogMissileEmplacementAttackOperation_DEPIMPL();
 

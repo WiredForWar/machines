@@ -28,7 +28,7 @@ void MachPhysHardwareLabData::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysHardwareLabData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysHardwareLabData& t)
 {
 
     // o << (MachPhysObjectData)t;

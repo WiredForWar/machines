@@ -112,7 +112,7 @@ private:
     bool canPostMailForRace(MachPhys::Race targetRace) const;
     void queueMail(MachLogVoiceMail* pNewMail);
 
-    friend ostream& operator<<(ostream& o, const MachLogVoiceMailManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManager& t);
 
     MachLogVoiceMailManager(const MachLogVoiceMailManager&);
     MachLogVoiceMailManager& operator=(const MachLogVoiceMailManager&);

@@ -470,7 +470,7 @@ void MachPhysObjDemolish::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysObjDemolish& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysObjDemolish& t)
 {
 
     o << "MachPhysObjDemolish " << (void*)&t << " start" << std::endl;

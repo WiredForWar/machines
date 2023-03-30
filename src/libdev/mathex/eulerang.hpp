@@ -45,7 +45,7 @@ public:
     void roll(const MexRadians&);
 
     static const MexEulerAngles& zeroAngles();
-    friend ostream& operator<<(ostream& o, const MexEulerAngles& t);
+    friend std::ostream& operator<<(std::ostream& o, const MexEulerAngles& t);
 
     // Persistence
     PER_MEMBER_PERSISTENT_DEFAULT(MexEulerAngles);

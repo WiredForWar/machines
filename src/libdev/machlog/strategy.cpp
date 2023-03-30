@@ -49,7 +49,7 @@ private:
     PhysRelativeTime nextUpdateTime_;
 
     friend class MachLogStrategy;
-    friend ostream& operator<<(ostream& o, const MachLogStrategy& s);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogStrategy& s);
 
     MachLogStrategyImpl()
         : pPendingOperation_(nullptr)
@@ -526,7 +526,7 @@ void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
     newOperation(pCounterattackOp, false);
 }
 
-ostream& operator<<(ostream& o, const MachLogStrategy& s)
+std::ostream& operator<<(std::ostream& o, const MachLogStrategy& s)
 {
     if (s.queue().size() == 0)
     {

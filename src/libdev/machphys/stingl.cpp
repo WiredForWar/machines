@@ -63,7 +63,7 @@ void MachPhysLightSting::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysLightSting& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysLightSting& t)
 {
 
     o << "MachPhysLightSting " << (void*)&t << " start" << std::endl;

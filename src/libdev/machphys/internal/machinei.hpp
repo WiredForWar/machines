@@ -45,7 +45,7 @@ public:
     PER_FRIEND_READ_WRITE(MachPhysMachineImpl);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachPhysMachineImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachineImpl& t);
 
     friend class MachPhysMachine;
 

@@ -80,7 +80,7 @@ PhysRelativeTime MachLogGeoLocator::locate()
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogGeoLocator::doOutputOperator(ostream& o) const
+void MachLogGeoLocator::doOutputOperator(std::ostream& o) const
 {
     MachLogMachine::doOutputOperator(o);
 }

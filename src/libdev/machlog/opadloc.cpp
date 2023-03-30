@@ -100,7 +100,7 @@ MachLogAdminLocateOperation::~MachLogAdminLocateOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogAdminLocateOperation::doOutputOperator(ostream& o) const
+void MachLogAdminLocateOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminLocateOperation" << std::endl;
 }

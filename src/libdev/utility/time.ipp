@@ -238,7 +238,7 @@ inline bool& UtlDebugTimer::calibrated()
     return calibrated_;
 }
 
-inline ostream& operator<<(ostream& o, const UtlDebugTimer& t)
+inline std::ostream& operator<<(std::ostream& o, const UtlDebugTimer& t)
 {
     o << t.time().asDouble();
 
@@ -255,7 +255,7 @@ inline double UtlDebugTimer::Time::asDouble() const
     return u64.asDouble() / UtlDebugTimer::pentiumTicksPerSecond();
 }
 
-inline ostream& operator<<(ostream& o, const UtlDebugTimer::Time& t)
+inline std::ostream& operator<<(std::ostream& o, const UtlDebugTimer::Time& t)
 {
     o << t.asDouble();
 

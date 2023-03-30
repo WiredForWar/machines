@@ -47,7 +47,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dGarbageCollector& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dGarbageCollector& t);
 
 private:
     W4dGarbageCollector(const W4dGarbageCollector&);

@@ -312,7 +312,7 @@ void SimManager::CLASS_INVARIANT
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const SimManager& t)
+std::ostream& operator<<(std::ostream& o, const SimManager& t)
 {
 
     o << "SimManager " << (void*)&t << " start" << std::endl;

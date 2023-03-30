@@ -31,7 +31,7 @@ public:
 
 private:
     friend class PhysMoveSpinPlan;
-    friend ostream& operator<<(ostream& o, const PhysMoveSpinPlanImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysMoveSpinPlanImpl& t);
 
     PhysMoveSpinPlanImpl(
         const MexTransform3d& startLocation,

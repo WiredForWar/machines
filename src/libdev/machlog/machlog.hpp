@@ -175,19 +175,19 @@ struct MachLog
     };
 };
 
-ostream& operator<<(ostream&, const MachLog::ObjectType&);
-ostream& operator<<(ostream&, const MachLog::TargetSystemType&);
-ostream& operator<<(ostream&, const MachLog::DefCon&);
-ostream& operator<<(ostream&, const MachLog::SelectableType&);
-ostream& operator<<(ostream&, const MachLog::BeaconType&);
-ostream& operator<<(ostream&, const MachLog::RandomStarts&);
-ostream& operator<<(ostream&, const MachLog::PlayerType&);
-ostream& operator<<(ostream&, const MachLog::ResourcesAvailable&);
-ostream& operator<<(ostream&, const MachLog::StartingResources&);
-ostream& operator<<(ostream&, const MachLog::TechnologyLevel&);
-ostream& operator<<(ostream&, const MachLog::VictoryCondition&);
-ostream& operator<<(ostream&, const MachLog::ForceRemove&);
-ostream& operator<<(ostream&, const MachLog::GameType&);
+std::ostream& operator<<(std::ostream&, const MachLog::ObjectType&);
+std::ostream& operator<<(std::ostream&, const MachLog::TargetSystemType&);
+std::ostream& operator<<(std::ostream&, const MachLog::DefCon&);
+std::ostream& operator<<(std::ostream&, const MachLog::SelectableType&);
+std::ostream& operator<<(std::ostream&, const MachLog::BeaconType&);
+std::ostream& operator<<(std::ostream&, const MachLog::RandomStarts&);
+std::ostream& operator<<(std::ostream&, const MachLog::PlayerType&);
+std::ostream& operator<<(std::ostream&, const MachLog::ResourcesAvailable&);
+std::ostream& operator<<(std::ostream&, const MachLog::StartingResources&);
+std::ostream& operator<<(std::ostream&, const MachLog::TechnologyLevel&);
+std::ostream& operator<<(std::ostream&, const MachLog::VictoryCondition&);
+std::ostream& operator<<(std::ostream&, const MachLog::ForceRemove&);
+std::ostream& operator<<(std::ostream&, const MachLog::GameType&);
 
 PER_ENUM_PERSISTENT(MachLog::ObjectType);
 PER_ENUM_PERSISTENT(MachLog::Message);

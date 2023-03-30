@@ -35,7 +35,7 @@ protected:
     RenIDelayedAlphaGroup& operator=(const RenIDelayedAlphaGroup&);
     bool operator==(const RenIDelayedAlphaGroup&);
 
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 };
 
 #endif

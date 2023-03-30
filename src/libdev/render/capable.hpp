@@ -54,7 +54,7 @@ public:
     const RenICapabilities* internal() const;
     RenICapabilities* internal();
 
-    friend ostream& operator<<(ostream& o, const RenCapabilities& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenCapabilities& t);
 
 private:
     friend class RenDevice;

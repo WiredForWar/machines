@@ -47,7 +47,7 @@ private:
 
     MachPhysMachineDamage& operator=(const MachPhysMachineDamage&);
 
-    friend ostream& operator<<(ostream& o, const MachPhysMachineDamage& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysMachineDamage& t);
     friend class MachPhysMachineDamageData;
 
     MachPhysMachine* pTarget_;

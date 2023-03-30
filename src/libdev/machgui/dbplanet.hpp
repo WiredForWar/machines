@@ -58,7 +58,7 @@ public:
     PER_FRIEND_READ_WRITE(MachGuiDbPlanet);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDbPlanet& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlanet& t);
 
     MachGuiDbPlanet(const MachGuiDbPlanet&);
     MachGuiDbPlanet& operator=(const MachGuiDbPlanet&);

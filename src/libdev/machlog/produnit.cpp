@@ -194,7 +194,7 @@ bool MachLogProductionUnit::operator==(const MachLogProductionUnit& t)
     return result;
 }
 
-ostream& operator<<(ostream& o, const MachLogProductionUnit& t)
+std::ostream& operator<<(std::ostream& o, const MachLogProductionUnit& t)
 {
 
     o << "MachLogProductionUnit " << (void*)&t << " start" << std::endl;

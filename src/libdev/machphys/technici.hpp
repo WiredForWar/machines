@@ -44,7 +44,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysTechnician& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTechnician& t);
 
     PhysRelativeTime research();
 

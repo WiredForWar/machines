@@ -40,7 +40,7 @@ void MachLogExplosionAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogExplosionAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogExplosionAction& t)
 {
 
     o << "MachLogExplosionAction " << (void*)&t << " start" << std::endl;
@@ -91,7 +91,7 @@ MachLogExplosionAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 }
 
 // virtual
-void MachLogExplosionAction::doOutputOperator(ostream& o) const
+void MachLogExplosionAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
 }

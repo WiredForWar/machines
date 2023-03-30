@@ -97,7 +97,7 @@ protected:
 private:
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GuiBmpFont& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t);
 
     GuiBmpFontCore* pFontCore_ = nullptr;
     FontType fontType_ = PROPORTIONAL;

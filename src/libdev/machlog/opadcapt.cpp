@@ -56,7 +56,7 @@ MachLogAdminCaptureOperation::~MachLogAdminCaptureOperation()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogAdminCaptureOperation::doOutputOperator(ostream& o) const
+void MachLogAdminCaptureOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminCaptureOperation\n";
 }

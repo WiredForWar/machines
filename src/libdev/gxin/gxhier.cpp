@@ -36,7 +36,7 @@ void GXHier::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXHier& t)
+std::ostream& operator<<(std::ostream& o, const GXHier& t)
 {
 
     o << std::endl;

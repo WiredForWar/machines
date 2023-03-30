@@ -46,7 +46,7 @@ private:
     MachGuiBmuText& operator=(const MachGuiBmuText&);
     bool operator==(const MachGuiBmuText&);
 
-    friend ostream& operator<<(ostream& o, const MachGuiBmuText& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiBmuText& t);
 
     size_t curValue_;
     size_t maxValue_;

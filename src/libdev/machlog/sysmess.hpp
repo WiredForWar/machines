@@ -33,7 +33,7 @@ protected:
     bool logicalHandleDestroyPlayerMessage(MachPhys::Race);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogSystemMessageHandler& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogSystemMessageHandler& t);
 
     MachLogSystemMessageHandler(const MachLogSystemMessageHandler&);
     MachLogSystemMessageHandler& operator=(const MachLogSystemMessageHandler&);

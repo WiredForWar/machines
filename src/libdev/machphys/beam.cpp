@@ -117,7 +117,7 @@ void MachPhysBeam::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysBeam& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysBeam& t)
 {
 
     o << "MachPhysBeam " << (void*)&t << " start" << std::endl;

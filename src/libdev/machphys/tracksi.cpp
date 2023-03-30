@@ -36,7 +36,7 @@ void MachPhysTracksImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysTracksImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysTracksImpl& t)
 {
 
     o << "MachPhysTracksImpl " << (void*)&t << " start" << std::endl;

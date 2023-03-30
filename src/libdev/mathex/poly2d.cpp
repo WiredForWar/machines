@@ -49,7 +49,7 @@ void MexPolygon2d::nVertices(size_t n)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& os, const MexPolygon2d& poly)
+std::ostream& operator<<(std::ostream& os, const MexPolygon2d& poly)
 {
     os << "2D poly: " << (void*)&poly;
 

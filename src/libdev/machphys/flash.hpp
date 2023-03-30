@@ -43,7 +43,7 @@ public:
     bool intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const override;
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysFlashDisc& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysFlashDisc& t);
 
     PER_MEMBER_PERSISTENT(MachPhysFlashDisc);
 

@@ -23,7 +23,7 @@ void MachLogDyingEntityEventImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogDyingEntityEventImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogDyingEntityEventImpl& t)
 {
 
     o << "MachLogDyingEntityEventImpl " << (void*)&t << " start" << std::endl;

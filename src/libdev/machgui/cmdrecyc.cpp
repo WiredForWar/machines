@@ -35,7 +35,7 @@ void MachGuiRecycleCommand::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiRecycleCommand& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiRecycleCommand& t)
 {
 
     o << "MachGuiRecycleCommand " << (void*)&t << " start" << std::endl;

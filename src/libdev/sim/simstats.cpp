@@ -39,7 +39,7 @@ void SimStats::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const SimStats& t)
+std::ostream& operator<<(std::ostream& o, const SimStats& t)
 {
 
     o << "SimStats " << (void*)&t << " start" << std::endl;
@@ -71,18 +71,18 @@ void SimStats::readInitialisationFile()
 
     SysMetaFile metaFile("mach1.met");
 
-    std::unique_ptr<istream> pIstream;
+    std::unique_ptr<std::istream> pIstream;
 
     if (SysMetaFile::useMetaFile())
     {
         // pIstream = _NEW( SysMetaFileIstream( metaFile, pathName, ios::text ) );
-        pIstream = std::unique_ptr<istream>(_NEW(SysMetaFileIstream(metaFile, pathName, std::ios::in)));
+        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, pathName, std::ios::in)));
     }
     else
     {
         ASSERT_FILE_EXISTS(pathName.c_str());
         // pIstream = _NEW( ifstream( pathName.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<istream>(_NEW(std::ifstream(pathName.c_str(), std::ios::in)));
+        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(pathName.c_str(), std::ios::in)));
     }
 
     UtlLineTokeniser parser(*pIstream, pathName);

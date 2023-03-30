@@ -43,7 +43,7 @@ protected:
 
     bool doIsFinished() const override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     PhysRelativeTime doUpdate() override;
 

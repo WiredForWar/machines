@@ -141,7 +141,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogOperation);
 
 protected:
-    friend ostream& operator<<(ostream&, const Progress&);
+    friend std::ostream& operator<<(std::ostream&, const Progress&);
     PER_FRIEND_ENUM_PERSISTENT(Progress);
     Progress progress() const;
 
@@ -155,7 +155,7 @@ protected:
 
     virtual bool doIsFinished() const = 0;
 
-    virtual void doOutputOperator(ostream&) const = 0;
+    virtual void doOutputOperator(std::ostream&) const = 0;
 
     // if the machine is currently in a building
     // then this will determine if it needs to issue a leave building first
@@ -184,7 +184,7 @@ private:
     MachLogOperation& operator=(const MachLogOperation&);
     bool operator==(const MachLogOperation&) const;
 
-    friend ostream& operator<<(ostream&, const MachLogOperation&);
+    friend std::ostream& operator<<(std::ostream&, const MachLogOperation&);
 
     MachLogOperationImpl* pImpl_;
 

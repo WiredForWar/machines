@@ -59,7 +59,7 @@ void MachPhysVortexSphere::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysVortexSphere& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysVortexSphere& t)
 {
 
     o << "MachPhysVortexSphere " << (void*)&t << " start" << std::endl;

@@ -47,7 +47,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysPlasmaBolt& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysPlasmaBolt& t);
 
     PER_MEMBER_PERSISTENT(MachPhysPlasmaBolt);
     PER_FRIEND_READ_WRITE(MachPhysPlasmaBolt);

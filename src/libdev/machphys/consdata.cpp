@@ -303,7 +303,7 @@ void MachPhysConstructionData::addInteriorObstacle(const ctl_vector<MexPoint2d> 
     interiorObstacles_.push_back(_NEW(MexConvexPolygon2d(points)));
 }
 
-ostream& operator<<(ostream& o, const MachPhysConstructionData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysConstructionData& t)
 {
 
     o << "hwResearch cost " << t.hwResearchCost() << std::endl;

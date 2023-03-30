@@ -148,7 +148,7 @@ bool MachLogSeekAndDestroyOperation::doIsFinished() const
     ;
 }
 
-void MachLogSeekAndDestroyOperation::doOutputOperator(ostream& o) const
+void MachLogSeekAndDestroyOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogSeekAndDestroyOperation" << std::endl;
     if (pCurrentTarget_)

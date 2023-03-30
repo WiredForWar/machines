@@ -49,7 +49,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiStatisticsDisplay& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsDisplay& t);
 
     MachGuiStatisticsDisplay(const MachGuiStatisticsDisplay&);
     MachGuiStatisticsDisplay& operator=(const MachGuiStatisticsDisplay&);

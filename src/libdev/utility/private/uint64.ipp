@@ -73,7 +73,7 @@ inline bool operator==(const UtlUint64& a, const UtlUint64& b)
     return a.data_[UtlUint64::MS] == b.data_[UtlUint64::MS] and a.data_[UtlUint64::LS] == b.data_[UtlUint64::LS];
 }
 
-inline ostream& operator<<(ostream& o, const UtlUint64& t)
+inline std::ostream& operator<<(std::ostream& o, const UtlUint64& t)
 {
     hex(o);
 

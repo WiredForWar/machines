@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogIonBeamImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogIonBeamImpl& t);
 
     MachLogIonBeamImpl(const MachLogIonBeamImpl&);
     MachLogIonBeamImpl& operator=(const MachLogIonBeamImpl&);

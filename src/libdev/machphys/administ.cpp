@@ -170,7 +170,7 @@ void MachPhysAdministrator::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysAdministrator& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysAdministrator& t)
 {
 
     o << "MachPhysAdministrator " << (void*)&t << " start" << std::endl;

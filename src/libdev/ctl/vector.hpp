@@ -40,7 +40,7 @@ template <class T> bool operator==(const ctl_vector<T>&, const ctl_vector<T>&);
 
 template <class T> bool operator<(const ctl_vector<T>&, const ctl_vector<T>&);
 
-template <class T> ostream& operator<<(ostream&, const ctl_vector<T>&);
+template <class T> std::ostream& operator<<(std::ostream&, const ctl_vector<T>&);
 
 //////////////////////////////////////////////////////////////////////
 

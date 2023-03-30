@@ -35,7 +35,7 @@ void PhysLinearScalarPlanImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysLinearScalarPlanImpl& t)
+std::ostream& operator<<(std::ostream& o, const PhysLinearScalarPlanImpl& t)
 {
 
     o << "PhysLinearScalarPlanImpl " << (void*)&t << " start" << std::endl;

@@ -37,7 +37,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysSmokePuff& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysSmokePuff& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachPhysSmokePuff);
 

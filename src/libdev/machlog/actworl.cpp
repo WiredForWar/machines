@@ -34,7 +34,7 @@ void MachLogWinOrLoseAction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogWinOrLoseAction& t)
+std::ostream& operator<<(std::ostream& o, const MachLogWinOrLoseAction& t)
 {
 
     o << "MachLogWinOrLoseAction " << (void*)&t << " start" << std::endl;
@@ -81,7 +81,7 @@ MachLogWinOrLoseAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 }
 
 // virtual
-void MachLogWinOrLoseAction::doOutputOperator(ostream& o) const
+void MachLogWinOrLoseAction::doOutputOperator(std::ostream& o) const
 {
     SimAction::doOutputOperator(o);
     o << "Race " << race_ << std::endl;

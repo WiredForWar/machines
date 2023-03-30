@@ -86,7 +86,7 @@ private:
 
     using W4dRangeModifiers = ctl_vector<W4dRangeModifier>;
 
-    friend ostream& operator<<(ostream& o, const W4dComplexity& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dComplexity& t);
 
     W4dComplexity(const W4dComplexity&);
     W4dComplexity& operator=(const W4dComplexity&);

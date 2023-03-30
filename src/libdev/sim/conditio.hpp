@@ -49,14 +49,14 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimCondition& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimCondition& t);
 
     PER_MEMBER_PERSISTENT_ABSTRACT(SimCondition);
     PER_FRIEND_READ_WRITE(SimCondition);
 
 protected:
     // if the user streams a SimConditon then we need a virtual mechanism to output the most derived class.
-    virtual void doOutputOperator(ostream&) const = 0;
+    virtual void doOutputOperator(std::ostream&) const = 0;
 
     virtual bool doHasConditionBeenMet() const = 0;
     // derived classes need to be able to see the sub conditions if they are there - potentially in a non-const version

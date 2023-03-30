@@ -123,7 +123,7 @@ void UtlBoundedIdGenerator::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const UtlBoundedIdGenerator& t)
+std::ostream& operator<<(std::ostream& o, const UtlBoundedIdGenerator& t)
 {
 
     o << "UtlBoundedIdGenerator " << (void*)&t << " start" << std::endl;

@@ -77,7 +77,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const EnvIPlanetParser& t);
+    friend std::ostream& operator<<(std::ostream& o, const EnvIPlanetParser& t);
 
 private:
     EnvPlanetEnvironment* planet_;

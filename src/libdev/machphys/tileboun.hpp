@@ -73,7 +73,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysTileBoundary& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysTileBoundary& t);
 
 private:
     // Operations deliberately revoked

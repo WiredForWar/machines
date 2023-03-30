@@ -50,7 +50,7 @@ void MachLogRemoteFirstPersonManager::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogRemoteFirstPersonManager& t)
+std::ostream& operator<<(std::ostream& o, const MachLogRemoteFirstPersonManager& t)
 {
 
     o << "MachLogRemoteFirstPersonManager " << (void*)&t << " start" << std::endl;

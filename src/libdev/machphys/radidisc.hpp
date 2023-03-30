@@ -41,7 +41,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysRadialDisc& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysRadialDisc& t);
 
     PER_MEMBER_PERSISTENT(MachPhysRadialDisc);
 

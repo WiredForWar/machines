@@ -105,7 +105,7 @@ PhysAbsoluteTime MachLogOperation::update()
     return nextCallBackTime_;
 }
 
-ostream& operator<<(ostream& o, const MachLogOperation& op)
+std::ostream& operator<<(std::ostream& o, const MachLogOperation& op)
 {
     op.doOutputOperator(o);
     if (op.pSubOperation() != nullptr)
@@ -247,7 +247,7 @@ void perRead(PerIstream& istr, MachLogOperation& op)
     istr >> op.pImpl_;
 }
 
-ostream& operator<<(ostream& o, const MachLogOperation::Progress& progress)
+std::ostream& operator<<(std::ostream& o, const MachLogOperation::Progress& progress)
 {
     switch (progress)
     {

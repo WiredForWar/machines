@@ -187,7 +187,7 @@ bool operator<(const MachPhysMachineExplosionData::LinkData&, const MachPhysMach
     return false;
 }
 
-ostream& operator<<(ostream& o, const MachPhysMachineExplosionData::LinkData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMachineExplosionData::LinkData& t)
 {
     INSPECT_ON(o, t.linkId_);
     INSPECT_ON(o, t.size_);

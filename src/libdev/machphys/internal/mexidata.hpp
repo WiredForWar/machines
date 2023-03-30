@@ -52,7 +52,7 @@ public:
 
 private:
     friend class MachPhysMachineExplosionData;
-    friend ostream& operator<<(ostream& o, const MachPhysIMachineExplosionData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysIMachineExplosionData& t);
 
     MachPhysIMachineExplosionData& operator=(const MachPhysIMachineExplosionData&);
 

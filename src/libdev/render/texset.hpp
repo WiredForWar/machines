@@ -49,7 +49,7 @@ public:
     using RenTextures = ctl_vector<RenTexture>;
 
 private:
-    friend ostream& operator<<(ostream& o, const RenTextureSet& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenTextureSet& t);
 
     RenTextureSet(const RenTextureSet&);
     RenTextureSet& operator=(const RenTextureSet&);

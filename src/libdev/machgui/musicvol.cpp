@@ -46,7 +46,7 @@ void MachGuiMusicVolumeSlideBar::valueChanged(float value)
         DevCD::instance().volume(value + 0.5 /*stop rounding errors from slowly reducing volume*/);
 }
 
-ostream& operator<<(ostream& o, const MachGuiMusicVolumeSlideBar& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiMusicVolumeSlideBar& t)
 {
 
     o << "MachGuiMusicVolumeSlideBar " << (void*)&t << " start" << std::endl;

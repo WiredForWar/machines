@@ -267,7 +267,7 @@ RenSurfaceManager& RenSurfaceManager::instance()
     return instance_;
 }
 
-ostream& operator<<(ostream& o, const RenSurfaceManager& t)
+std::ostream& operator<<(std::ostream& o, const RenSurfaceManager& t)
 {
     o << "RenSurfaceManager." << std::endl;
     t.pImpl_->write(o);

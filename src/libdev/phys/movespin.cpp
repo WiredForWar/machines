@@ -63,7 +63,7 @@ void PhysMoveSpinPlan::transform(const PhysRelativeTime& timeOffset, MexTransfor
     pResult->rotate(MexQuaternion(rotationAxis_, MexRadians(rotationAngle)));
 }
 
-ostream& operator<<(ostream& o, const PhysMoveSpinPlan& t)
+std::ostream& operator<<(std::ostream& o, const PhysMoveSpinPlan& t)
 {
 
     o << "PhysMoveSpinPlan " << (void*)&t << " start" << std::endl;

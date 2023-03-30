@@ -30,7 +30,7 @@ void MachLogPutDownOperationImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPutDownOperationImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPutDownOperationImpl& t)
 {
 
     o << "MachLogPutDownOperationImpl " << (void*)&t << " start" << std::endl;

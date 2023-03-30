@@ -213,7 +213,7 @@ void RenStats::CLASS_INVARIANT
     INVARIANT(frameTimes_->size() <= maxQueueLength_);
 }
 
-ostream& operator<<(ostream& o, const RenStats& t)
+std::ostream& operator<<(std::ostream& o, const RenStats& t)
 {
     o << t.text_;
     return o;

@@ -66,7 +66,7 @@ void MachLogArtefacts::CLASS_INVARIANT
     INVARIANT(pData_ != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogArtefacts& t)
+std::ostream& operator<<(std::ostream& o, const MachLogArtefacts& t)
 {
 
     o << "MachLogArtefacts " << (void*)&t << " start" << std::endl;

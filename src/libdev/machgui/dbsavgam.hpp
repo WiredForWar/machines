@@ -61,7 +61,7 @@ public:
     PER_FRIEND_READ_WRITE(MachGuiDbSavedGame);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiDbSavedGame& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbSavedGame& t);
 
     MachGuiDbSavedGame(const MachGuiDbSavedGame&);
     MachGuiDbSavedGame& operator=(const MachGuiDbSavedGame&);

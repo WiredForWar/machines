@@ -232,7 +232,7 @@ void MachPhysCrackFire::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysCrackFire& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysCrackFire& t)
 {
 
     o << "MachPhysCrackFire " << (void*)&t << " start" << std::endl;

@@ -589,7 +589,7 @@ MachPhysTerrainTile* MachPhysPlanetSurface::pTile(const MexPoint3d& position) co
     return pTile;
 }
 
-ostream& operator<<(ostream& o, const MachPhysPlanetSurface& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurface& t)
 {
 
     o << "MachPhysPlanetSurface " << (void*)&t << " start" << std::endl;

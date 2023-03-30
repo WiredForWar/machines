@@ -27,7 +27,7 @@ void MachPhysSoftwareLabData::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const MachPhysSoftwareLabData& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysSoftwareLabData& t)
 {
 
     // o << (MachPhysObjectData)t;

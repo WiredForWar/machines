@@ -31,7 +31,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const GXPolygon3& t);
+    friend std::ostream& operator<<(std::ostream& o, const GXPolygon3& t);
 
     // Get the size of the vertices array
     int numVertices() const;

@@ -47,7 +47,7 @@ protected:
     void notifyListItemSelection(GuiSingleSelectionListBoxItem* pNewSelection);
 
 private:
-    friend ostream& operator<<(ostream& o, const GuiSingleSelectionListBox& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiSingleSelectionListBox& t);
 
     GuiSingleSelectionListBox(const GuiSingleSelectionListBox&);
     GuiSingleSelectionListBox& operator=(const GuiSingleSelectionListBox&);

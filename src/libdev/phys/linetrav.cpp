@@ -523,7 +523,7 @@ const PhysMotionPlan::RampAccelerationsPtr& PhysLinearTravelPlan::rampAccelerati
     return pImpl_->rampAccelerationsPtr_;
 }
 
-ostream& operator<<(ostream& o, const PhysLinearTravelPlan& t)
+std::ostream& operator<<(std::ostream& o, const PhysLinearTravelPlan& t)
 {
 
     o << "PhysLinearTravelPlan " << (void*)&t << " start" << std::endl;

@@ -49,7 +49,7 @@ public:
     PER_FRIEND_READ_WRITE(W4dColourPlanData);
 
 private:
-    friend ostream& operator<<(ostream& o, const W4dColourPlanData& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dColourPlanData& t);
 
     // W4dColourPlanData( const W4dColourPlanData& );
     W4dColourPlanData& operator=(const W4dColourPlanData&);

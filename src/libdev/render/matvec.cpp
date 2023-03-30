@@ -25,7 +25,7 @@ void RenMaterialVec::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenMaterialVec& t)
+std::ostream& operator<<(std::ostream& o, const RenMaterialVec& t)
 {
     o << "RenMaterialVec of " << t.size() << " materials";
     o << ((t.size() > 0) ? ":" : ".") << "\n";

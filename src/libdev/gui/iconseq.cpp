@@ -318,7 +318,7 @@ void GuiIconSequence::fixScroller(GuiDisplayable* pChild, Coords::size_type coor
     positionChildRelative(pChild, coords()[coordIndex]);
 }
 
-void GuiIconSequence::doOutputOperator(ostream& o) const
+void GuiIconSequence::doOutputOperator(std::ostream& o) const
 {
     CB_GUIICONSEQUENCE_DEPIMPL();
 
@@ -381,7 +381,7 @@ void GuiIconSequence::doOutputOperator(ostream& o) const
       << " end" << std::endl;
 }
 
-ostream& operator<<(ostream& o, const GuiIconSequence& s)
+std::ostream& operator<<(std::ostream& o, const GuiIconSequence& s)
 {
     o << "GuiIconSequence " << (void*)&s << " start" << std::endl;
     s.doOutputOperator(o);
@@ -738,7 +738,7 @@ void GuiScrollableIconSequence::positionScrollers()
     }
 }
 
-void GuiScrollableIconSequence::doOutputOperator(ostream& o) const
+void GuiScrollableIconSequence::doOutputOperator(std::ostream& o) const
 {
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 

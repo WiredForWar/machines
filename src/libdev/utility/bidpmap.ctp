@@ -28,7 +28,7 @@ template <class X> void UtlBoundedIdPMap<X>::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-template <class X> ostream& operator<<(ostream& o, const UtlBoundedIdPMap<X>& t)
+template <class X> std::ostream& operator<<(std::ostream& o, const UtlBoundedIdPMap<X>& t)
 {
 
     o << "UtlBoundedIdPMap< X > " << (void*)&t << " start" << std::endl;

@@ -227,8 +227,8 @@ public:
     void keepEntranceLocked(bool keep);
 
     void CLASS_INVARIANT;
-    friend ostream& operator<<(ostream& o, const MachLogMachineMotionSequencer& t);
-    ostream& traceConvoyData(ostream& o) const;
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencer& t);
+    std::ostream& traceConvoyData(std::ostream& o) const;
 
     using ObstacleFlags = PhysConfigSpace2d::ObstacleFlags;
 
@@ -346,7 +346,7 @@ private:
                                               // host to respond to our request.
         INTERNAL_1ST_PERSON // Under 1st person control
     };
-    friend ostream& operator<<(ostream& o, const InternalState& t);
+    friend std::ostream& operator<<(std::ostream& o, const InternalState& t);
 
     // Timing constant values
     enum
@@ -545,7 +545,7 @@ private:
         SUCCESS
     };
 
-    friend ostream& operator<<(ostream& o, const MoveResult& t);
+    friend std::ostream& operator<<(std::ostream& o, const MoveResult& t);
 
     //  Try and reserve a single motion chunk. If the reserve is successful the config space,
     //  movingChunkIds and moveInfos will all be updated. If the reserve is unsuccessful details
@@ -629,7 +629,7 @@ private:
     MachLogMachineConvoy*& pConvoy() const;
     int& nFollowers();
     MachLogMachineMotionSequencer* pFollowSequencer() const;
-    ostream& streamOut(ostream& o) const;
+    std::ostream& streamOut(std::ostream& o) const;
 
     MATHEX_SCALAR minHeight() const;
     MATHEX_SCALAR maxHeight() const;

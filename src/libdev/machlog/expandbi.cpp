@@ -51,7 +51,7 @@ void MachLogExpandingBlastImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogExpandingBlastImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogExpandingBlastImpl& t)
 {
 
     o << "MachLogExpandingBlastImpl " << (void*)&t << " start" << std::endl;

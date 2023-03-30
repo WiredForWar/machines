@@ -65,7 +65,7 @@ void NetMessage::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const NetMessage& t)
+std::ostream& operator<<(std::ostream& o, const NetMessage& t)
 {
 
     o << "NetMessage " << (void*)&t << " start" << std::endl;

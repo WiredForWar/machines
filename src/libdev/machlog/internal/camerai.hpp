@@ -29,7 +29,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogCameraImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogCameraImpl& t);
 
     MachLogCameraImpl(const MachLogCameraImpl&);
     MachLogCameraImpl& operator=(const MachLogCameraImpl&);

@@ -200,7 +200,7 @@ void MachPhysMarker::CLASS_INVARIANT
     INVARIANT(this);
 }
 
-ostream& operator<<(ostream& o, const MachPhysMarker& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysMarker& t)
 {
 
     o << "MachPhysMarker " << (void*)&t << " start" << std::endl;

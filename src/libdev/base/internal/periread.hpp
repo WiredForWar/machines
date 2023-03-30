@@ -78,9 +78,9 @@ public:
 
     void CLASS_INVARIANT;
 
-    ostream& debugStream();
+    std::ostream& debugStream();
 
-    friend ostream& operator<<(ostream& o, const PersistenceImplementationRead& t);
+    friend std::ostream& operator<<(std::ostream& o, const PersistenceImplementationRead& t);
 
     void readRawPointer(PerIstream& ostr, void** ptr, const char* className);
     void logAddresses(bool);

@@ -74,7 +74,7 @@ public:
     PER_MEMBER_PERSISTENT(MachPhysElectroCharger);
     PER_FRIEND_READ_WRITE(MachPhysElectroCharger);
 
-    friend ostream& operator<<(ostream& o, const MachPhysElectroCharger& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysElectroCharger& t);
 
 private:
     MachPhysElectroCharger(const MachPhysElectroCharger&);

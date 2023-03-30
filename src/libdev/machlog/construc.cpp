@@ -145,7 +145,7 @@ PhysRelativeTime MachLogConstructor::pickUp()
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogConstructor::doOutputOperator(ostream& o) const
+void MachLogConstructor::doOutputOperator(std::ostream& o) const
 {
     MachLogMachine::doOutputOperator(o);
     o << " Construction Rate " << data().constructionRate() << std::endl;

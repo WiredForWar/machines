@@ -46,7 +46,7 @@ void MachLogTreacheryOrb::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogTreacheryOrb& t)
+std::ostream& operator<<(std::ostream& o, const MachLogTreacheryOrb& t)
 {
 
     o << "MachLogTreacheryOrb " << (void*)&t << " start" << std::endl;

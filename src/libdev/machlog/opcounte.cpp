@@ -138,7 +138,7 @@ void MachLogCounterattackOperation::storeOldFirstOperation(MachLogOperation* pOl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogCounterattackOperation::doOutputOperator(ostream& o) const
+void MachLogCounterattackOperation::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogCounterattackOperation_DEPIMPL();
 

@@ -47,7 +47,7 @@ void MachGuiDbScenario::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiDbScenario& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiDbScenario& t)
 {
 
     o << "MachGuiDbScenario " << (void*)&t << " start" << std::endl;

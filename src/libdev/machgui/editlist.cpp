@@ -75,7 +75,7 @@ void MachGuiEditBoxListBoxItem::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiEditBoxListBoxItem& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiEditBoxListBoxItem& t)
 {
 
     o << "MachGuiEditBoxListBoxItem " << (void*)&t << " start" << std::endl;

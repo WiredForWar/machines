@@ -24,7 +24,7 @@ void MexPoint2d::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const MexPoint2d& t)
+std::ostream& operator<<(std::ostream& o, const MexPoint2d& t)
 {
 
     o << "  (" << t.x_ << "," << t.y_ << ")";

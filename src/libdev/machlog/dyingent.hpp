@@ -57,8 +57,8 @@ public:
     // called when the time goes out of range by SimManager.
     void execute() override;
 
-    friend ostream& operator<<(ostream& o, const MachLogDyingEntityEvent& t);
-    void doOutputOperator(ostream&) const override;
+    friend std::ostream& operator<<(std::ostream& o, const MachLogDyingEntityEvent& t);
+    void doOutputOperator(std::ostream&) const override;
 
 private:
     // Operation deliberately revoked

@@ -60,7 +60,7 @@ void RenIDriverInfo::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const RenIDriverInfo& t)
+std::ostream& operator<<(std::ostream& o, const RenIDriverInfo& t)
 {
     o << "D3D driver " << t.name() << ((t.hardware()) ? " (hw)" : " (sw)");
     return o;

@@ -18,8 +18,8 @@
 //  memory management system (which would happen if it used new or delete).
 //  This avoids problems with startup ordering.
 
-DiagOstreamPrepend::DiagOstreamPrepend(ostream* pOstr)
-    : ostream(&dummyStreamBuf(this))
+DiagOstreamPrepend::DiagOstreamPrepend(std::ostream* pOstr)
+    : std::ostream(&dummyStreamBuf(this))
     , pOstr_(pOstr)
     , prependNow_(true)
     , date_(false)
@@ -35,7 +35,7 @@ DiagOstreamPrepend::DiagOstreamPrepend(ostream* pOstr)
 }
 
 DiagOstreamPrepend::DiagOstreamPrepend()
-    : ostream(&dummyStreamBuf(this))
+    : std::ostream(&dummyStreamBuf(this))
     , pOstr_(nullptr)
     , prependNow_(true)
     , date_(false)
@@ -55,7 +55,7 @@ DiagOstreamPrepend::~DiagOstreamPrepend()
         free(prependString_);
 }
 
-void DiagOstreamPrepend::stream(ostream* pOstr)
+void DiagOstreamPrepend::stream(std::ostream* pOstr)
 {
     pOstr_ = pOstr;
 }

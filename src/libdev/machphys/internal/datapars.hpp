@@ -34,7 +34,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysDataParser& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysDataParser& t);
 
 private:
     // Operation deliberately revoked

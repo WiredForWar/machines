@@ -42,7 +42,7 @@ private:
     //    friend W4dPortal::~W4dPortal();
     friend class W4dDomain;
 
-    friend ostream& operator<<(ostream& o, const W4dDomainImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dDomainImpl& t);
 
     W4dDomainImpl(const W4dDomainImpl&);
     W4dDomainImpl& operator=(const W4dDomainImpl&);

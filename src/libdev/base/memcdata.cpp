@@ -99,7 +99,7 @@ int32 DbgMemChkData::currentMemoryNewed() const
     return (int32)totalMemoryNewed_ - (int32)totalMemoryDeleted_;
 }
 
-ostream& operator<<(ostream& o, const DbgMemChkData& t)
+std::ostream& operator<<(std::ostream& o, const DbgMemChkData& t)
 {
     o << "...................................................................." << std::endl;
     o << t.nNewCalls() << " NEWs, " << t.nDeleteCalls() << " DELETEs ( "

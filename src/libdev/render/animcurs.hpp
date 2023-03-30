@@ -18,7 +18,7 @@ public:
     ~RenAnimCursor2d() override;
 
     const RenSurface& currentBitmap() const override;
-    void print(ostream& o) const override;
+    void print(std::ostream& o) const override;
 
     // Build up an animation by calling this method multiple times.
     void addFrame(const RenSurface&);

@@ -75,7 +75,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const SimManager& t);
+    friend std::ostream& operator<<(std::ostream& o, const SimManager& t);
 
     void deleteAllProcesses();
 

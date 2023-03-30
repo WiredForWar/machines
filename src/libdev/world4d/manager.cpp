@@ -87,7 +87,7 @@ void W4dManager::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const W4dManager& t)
+std::ostream& operator<<(std::ostream& o, const W4dManager& t)
 {
 
     o << "W4dManager " << (void*)&t << " start" << std::endl;

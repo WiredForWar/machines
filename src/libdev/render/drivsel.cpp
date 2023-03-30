@@ -400,7 +400,7 @@ void RenDriverSelector::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-void RenDriverSelector::streamOut(ostream& o) const
+void RenDriverSelector::streamOut(std::ostream& o) const
 {
     CB_RenDriverSelector_DEPIMPL();
     RenDrivers::const_iterator it;
@@ -430,7 +430,7 @@ void RenDriverSelector::streamOut(ostream& o) const
     }
 }
 
-ostream& operator<<(ostream& o, const RenDriverSelector& t)
+std::ostream& operator<<(std::ostream& o, const RenDriverSelector& t)
 {
     t.streamOut(o);
     return o;

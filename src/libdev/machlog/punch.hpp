@@ -38,7 +38,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogPunchBlast& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogPunchBlast& t);
 
 protected:
     PhysAbsoluteTime firstWaveStartTime() const override;

@@ -86,7 +86,7 @@ MachLogAdminMoveToOperation::~MachLogAdminMoveToOperation()
     _DELETE(pImpl_);
 }
 
-void MachLogAdminMoveToOperation::doOutputOperator(ostream& o) const
+void MachLogAdminMoveToOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminMoveToOperation" << std::endl;
 }

@@ -31,7 +31,7 @@ public:
     void controlPanelSliding(bool);
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiMapArea& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiMapArea& t);
 
     MachGuiMapArea(const MachGuiMapArea&);
     MachGuiMapArea& operator=(const MachGuiMapArea&);

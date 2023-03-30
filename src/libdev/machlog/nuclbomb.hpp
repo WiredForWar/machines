@@ -38,7 +38,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogNuclearBomb& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogNuclearBomb& t);
 
     static MachPhysNuclearBomb*
     pNewPhysNuclearBomb(const MexPoint3d& startPosition, MachPhysNuclearBomb** ppPhysNuclearBomb);

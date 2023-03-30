@@ -104,7 +104,7 @@ void PhysAcceleratedScalarPlan::CLASS_INVARIANT
     INVARIANT(distances_.size() == rampAccelerations_.size());
 }
 
-ostream& operator<<(ostream& o, const PhysAcceleratedScalarPlan& t)
+std::ostream& operator<<(std::ostream& o, const PhysAcceleratedScalarPlan& t)
 {
 
     o << "PhysAcceleratedScalarPlan " << (void*)&t << " start" << std::endl;

@@ -139,7 +139,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
     GuiManager::instance().charFocus(pimpl_->pTelNoEntryBox_);
 }
 
-ostream& operator<<(ostream& o, const MachGuiModemNetworkMode& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiModemNetworkMode& t)
 {
 
     o << "MachGuiModemNetworkMode " << (void*)&t << " start" << std::endl;

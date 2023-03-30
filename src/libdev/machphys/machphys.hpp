@@ -258,21 +258,21 @@ struct MachPhys
     };
 };
 
-ostream& operator<<(ostream& o, MachPhys::Race race);
-ostream& operator<<(ostream& o, MachPhys::MachineType type);
-ostream& operator<<(ostream& o, MachPhys::AggressorSubType type);
-ostream& operator<<(ostream& o, MachPhys::AdministratorSubType type);
-ostream& operator<<(ostream& o, MachPhys::TechnicianSubType type);
-ostream& operator<<(ostream& o, MachPhys::ConstructorSubType type);
-ostream& operator<<(ostream& o, MachPhys::ConstructionType type);
-ostream& operator<<(ostream& o, MachPhys::FactorySubType type);
-ostream& operator<<(ostream& o, MachPhys::HardwareLabSubType type);
-ostream& operator<<(ostream& o, MachPhys::MissileEmplacementSubType type);
-ostream& operator<<(ostream& o, MachPhys::WeaponType type);
-ostream& operator<<(ostream& o, MachPhys::Mounting type);
-ostream& operator<<(ostream& o, MachPhys::WeaponCombo type);
-ostream& operator<<(ostream& o, MachPhys::AnimationIds animId);
-ostream& operator<<(ostream& o, MachPhys::FinalState finalState);
+std::ostream& operator<<(std::ostream& o, MachPhys::Race race);
+std::ostream& operator<<(std::ostream& o, MachPhys::MachineType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::AggressorSubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::AdministratorSubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::TechnicianSubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::ConstructorSubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::ConstructionType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::FactorySubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::HardwareLabSubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::MissileEmplacementSubType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::WeaponType type);
+std::ostream& operator<<(std::ostream& o, MachPhys::Mounting type);
+std::ostream& operator<<(std::ostream& o, MachPhys::WeaponCombo type);
+std::ostream& operator<<(std::ostream& o, MachPhys::AnimationIds animId);
+std::ostream& operator<<(std::ostream& o, MachPhys::FinalState finalState);
 
 enum MachPhysPuffType : unsigned char
 {
@@ -315,8 +315,8 @@ enum MachPhysFireballType : unsigned char
     N_FIREBALLS
 };
 
-ostream& operator<<(ostream& o, MachPhysPuffType type);
-ostream& operator<<(ostream& o, MachPhysFireballType type);
+std::ostream& operator<<(std::ostream& o, MachPhysPuffType type);
+std::ostream& operator<<(std::ostream& o, MachPhysFireballType type);
 
 PER_ENUM_PERSISTENT(MachPhys::Race);
 PER_ENUM_PERSISTENT(MachPhys::MachineType);

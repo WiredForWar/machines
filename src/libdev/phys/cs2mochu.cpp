@@ -33,7 +33,7 @@ void PhysCS2dMotionChunk::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const PhysCS2dMotionChunk& t)
+std::ostream& operator<<(std::ostream& o, const PhysCS2dMotionChunk& t)
 {
 
     o << "PhysCS2dMotionChunk " << (void*)&t << " start" << std::endl;

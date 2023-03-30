@@ -116,7 +116,7 @@ GuiBorderDimensions GuiBorderDimensions::interiorBorder(const Gui::WidthAndHeigh
 
 //////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const GuiBorderDimensions& d)
+std::ostream& operator<<(std::ostream& o, const GuiBorderDimensions& d)
 {
     o << "GuiBorderDimensions start" << std::endl;
     o << "\texteriorWidth " << d.exteriorDimensions().width() << std::endl;

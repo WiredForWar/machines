@@ -343,7 +343,7 @@ void MachGuiRadar::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiRadar& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiRadar& t)
 {
 
     o << "MachGuiRadar " << (void*)&t << " start" << std::endl;

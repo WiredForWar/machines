@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogFlameBall& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogFlameBall& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogFlameBall);
     PER_FRIEND_READ_WRITE(MachLogFlameBall);

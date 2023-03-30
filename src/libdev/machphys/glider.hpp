@@ -46,7 +46,7 @@ public:
 private:
     friend class MachPhysGliderImpl;
 
-    friend ostream& operator<<(ostream& o, const MachPhysGlider& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysGlider& t);
 
     MachPhysGlider(const MachPhysGlider&);
     MachPhysGlider& operator=(const MachPhysGlider&);

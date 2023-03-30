@@ -110,7 +110,7 @@ void W4dCompositeMaterialVecChanger::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const W4dCompositeMaterialVecChanger& t)
+std::ostream& operator<<(std::ostream& o, const W4dCompositeMaterialVecChanger& t)
 {
 
     o << "W4dCompositeMaterialVecChanger " << (void*)&t << " start" << std::endl;

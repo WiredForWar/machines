@@ -80,7 +80,7 @@ double MachLogStats::scannerRangeToWeaponRangeRatio() const
     return pStatsImpl_->scannerRangeToWeaponRangeRatio_;
 }
 
-ostream& operator<<(ostream& o, const MachLogStats& t)
+std::ostream& operator<<(std::ostream& o, const MachLogStats& t)
 {
 
     o << "MachLogStats " << (void*)&t << " start" << std::endl;

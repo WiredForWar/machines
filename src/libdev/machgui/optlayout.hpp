@@ -76,7 +76,7 @@ private:
     void parseMenuText(const UtlLineTokeniser::Tokens& tokens);
     void parseCheckBox(const UtlLineTokeniser::Tokens& tokens);
 
-    friend ostream& operator<<(ostream& o, const MachGuiOptionsLayout& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t);
 
     MachGuiOptionsLayout(const MachGuiOptionsLayout&);
     MachGuiOptionsLayout& operator=(const MachGuiOptionsLayout&);

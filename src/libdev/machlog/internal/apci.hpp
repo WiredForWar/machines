@@ -31,7 +31,7 @@ public:
 
 private:
     friend class MachLogAPC;
-    friend ostream& operator<<(ostream& o, const MachLogAPCImpl& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogAPCImpl& t);
 
     MachLogAPCImpl(const MachLogAPCImpl&);
     MachLogAPCImpl& operator=(const MachLogAPCImpl&);

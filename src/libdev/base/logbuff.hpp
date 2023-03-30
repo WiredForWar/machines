@@ -42,7 +42,7 @@ public:
     std::string dataAsString() const;
 
     //  Note that writing the buffer out does not clear it
-    friend ostream& operator<<(ostream& o, const BaseLogBuffer& t);
+    friend std::ostream& operator<<(std::ostream& o, const BaseLogBuffer& t);
 
 private:
     // Operation deliberately revoked

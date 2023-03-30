@@ -73,7 +73,7 @@ void MachLogBMUCountCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogBMUCountCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogBMUCountCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -88,7 +88,7 @@ const PhysRelativeTime& MachLogBMUCountCondition::recommendedCallBackTimeGap() c
 }
 
 // virtual
-void MachLogBMUCountCondition::doOutputOperator(ostream& o) const
+void MachLogBMUCountCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogBMUCountCondition " << (void*)this << " start" << std::endl;

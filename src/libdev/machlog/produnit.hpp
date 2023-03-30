@@ -68,7 +68,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogProductionUnit& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogProductionUnit& t);
     bool operator==(const MachLogProductionUnit&);
     friend bool operator<(const MachLogProductionUnit& lhs, const MachLogProductionUnit& rhs);
     friend bool operator>(const MachLogProductionUnit& lhs, const MachLogProductionUnit& rhs);

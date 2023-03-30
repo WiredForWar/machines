@@ -32,7 +32,7 @@ public:
 private:
     friend class MachGuiDbSavedGame;
 
-    friend ostream& operator<<(ostream& o, const MachGuiDbISavedGame& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiDbISavedGame& t);
 
     MachGuiDbISavedGame();
     ~MachGuiDbISavedGame();

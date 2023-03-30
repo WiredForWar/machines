@@ -108,7 +108,7 @@ private:
     // Responsibility for deletion becomes the client's.
     bool extractTopOperation(MachLogOperation** ppOldTopOp);
 
-    friend ostream& operator<<(ostream& o, const MachLogStrategy& s);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogStrategy& s);
 
     MachLogStrategyImpl* pImpl_;
 };

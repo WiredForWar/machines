@@ -30,7 +30,7 @@ MexSausage2d::~MexSausage2d()
     TEST_INVARIANT;
 }
 
-ostream& operator<<(ostream& o, const MexSausage2d& t)
+std::ostream& operator<<(std::ostream& o, const MexSausage2d& t)
 {
 
     o << "MexSausage2d " << (void*)&t << t.startPoint_ << " " << t.endPoint_ << "  radius " << t.radius_ << "  length "

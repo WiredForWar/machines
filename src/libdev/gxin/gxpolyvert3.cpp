@@ -133,7 +133,7 @@ void GXPolyVert3::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXPolyVert3& t)
+std::ostream& operator<<(std::ostream& o, const GXPolyVert3& t)
 {
 
     o << "pointIndex_ " << t.pointIndex_ << " normalIndex_ " << t.normalIndex_;

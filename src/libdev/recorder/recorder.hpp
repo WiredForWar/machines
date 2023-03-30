@@ -33,7 +33,7 @@ public:
     State state() const;
 
     //  Write out details of what the recorder is currently doing
-    void writeDetails(ostream&) const;
+    void writeDetails(std::ostream&) const;
 
     //  Set this to false around parts of the program where no recording should
     //  be taking place - e.g. the Windows message loop. If any recording is
@@ -48,7 +48,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const RecRecorder& t);
+    friend std::ostream& operator<<(std::ostream& o, const RecRecorder& t);
 
     RecRecorder(const RecRecorder&);
     RecRecorder& operator=(const RecRecorder&);

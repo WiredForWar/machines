@@ -30,7 +30,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysConstructorData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysConstructorData& t);
 
 private:
     // Friend classes allowed to use private set functions

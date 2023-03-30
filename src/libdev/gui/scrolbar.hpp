@@ -60,7 +60,7 @@ protected:
     void scrollToMousePos(const GuiMouseEvent& rel);
 
 private:
-    friend ostream& operator<<(ostream& o, const GuiVerticalScrollBar& t);
+    friend std::ostream& operator<<(std::ostream& o, const GuiVerticalScrollBar& t);
 
     GuiVerticalScrollBar(const GuiVerticalScrollBar&);
     GuiVerticalScrollBar& operator=(const GuiVerticalScrollBar&);

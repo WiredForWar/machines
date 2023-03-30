@@ -250,7 +250,7 @@ bool MachLogGroundCameraMotionConstraint::snapTo(MexTransform3d* pTrans)
     return not finished;
 }
 
-ostream& operator<<(ostream& o, const MachLogGroundCameraMotionConstraint& t)
+std::ostream& operator<<(std::ostream& o, const MachLogGroundCameraMotionConstraint& t)
 {
 
     o << "MachLogGroundCameraMotionConstraint " << (void*)&t << " start" << std::endl;
@@ -654,7 +654,7 @@ bool MachLogZenithCameraMotionConstraint::snapTo(MexTransform3d* pTrans)
     return true;
 }
 
-ostream& operator<<(ostream& o, const MachLogZenithCameraMotionConstraint& t)
+std::ostream& operator<<(std::ostream& o, const MachLogZenithCameraMotionConstraint& t)
 {
 
     o << "MachLogZenithCameraMotionConstraint " << (void*)&t << " start" << std::endl;
@@ -777,7 +777,7 @@ void MachLogPlanetCameraConstraint::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogPlanetCameraConstraint& t)
+std::ostream& operator<<(std::ostream& o, const MachLogPlanetCameraConstraint& t)
 {
 
     o << "MachLogPlanetCameraConstraint " << (void*)&t << " start" << std::endl;
@@ -927,7 +927,7 @@ const MachLogMachine* MachLogMachineThirdPerson::machine() const
     return pMachine_;
 }
 
-ostream& operator<<(ostream& o, const MachLogMachineThirdPerson& t)
+std::ostream& operator<<(std::ostream& o, const MachLogMachineThirdPerson& t)
 {
 
     o << "MachLogMachineThirdPerson " << (void*)&t << " start" << std::endl;
@@ -967,7 +967,7 @@ void MachLogThirdPersonCameraConstraint::move(MexTransform3d& transform, PhysMot
     }
 }
 
-ostream& operator<<(ostream& o, const MachLogThirdPersonCameraConstraint& t)
+std::ostream& operator<<(std::ostream& o, const MachLogThirdPersonCameraConstraint& t)
 {
 
     o << "MachLogThirdPersonCameraConstraint " << (void*)&t << " start" << std::endl;

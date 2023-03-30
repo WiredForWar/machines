@@ -78,7 +78,7 @@ protected:
     bool doIsFinished() const override;
     PhysRelativeTime doUpdate() override;
 
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     MachActor& directObject();
     const MachActor& directObject() const;
@@ -122,7 +122,7 @@ private:
     MachLogAttackOperationImpl* pImpl_;
 };
 
-ostream& operator<<(ostream& o, MachLogAttackOperation::Action);
+std::ostream& operator<<(std::ostream& o, MachLogAttackOperation::Action);
 
 PER_ENUM_PERSISTENT(MachLogAttackOperation::Action);
 PER_ENUM_PERSISTENT(MachLogAttackOperation::RaceChangeTerminate);

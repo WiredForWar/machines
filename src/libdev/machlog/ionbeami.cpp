@@ -27,7 +27,7 @@ void MachLogIonBeamImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogIonBeamImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogIonBeamImpl& t)
 {
 
     o << "MachLogIonBeamImpl " << (void*)&t << " start" << std::endl;

@@ -26,7 +26,7 @@ void GXPoint3::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const GXPoint3& t)
+std::ostream& operator<<(std::ostream& o, const GXPoint3& t)
 {
 
     o << t.x_ << "\t" << t.y_ << "\t" << t.z_;

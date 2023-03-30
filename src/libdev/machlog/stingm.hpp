@@ -28,7 +28,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogMetalSting& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMetalSting& t);
 
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogMetalSting);
     PER_FRIEND_READ_WRITE(MachLogMetalSting);

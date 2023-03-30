@@ -118,7 +118,7 @@ void MachPhysPlasmaBolt::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPlasmaBolt& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPlasmaBolt& t)
 {
 
     o << "MachPhysPlasmaBolt " << (void*)&t << " start" << std::endl;

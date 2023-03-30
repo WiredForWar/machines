@@ -151,7 +151,7 @@ inline MexAlignedBox2d operator*(MexAlignedBox2d rhs, MATHEX_SCALAR c)
 PER_DECLARE_PERSISTENT(MexAlignedBox2d);
 
 // class ostream;
-ostream& operator<<(ostream&, const MexAlignedBox2d&);
+std::ostream& operator<<(std::ostream&, const MexAlignedBox2d&);
 
 //////////////////////////////////////////////////////////////////////
 

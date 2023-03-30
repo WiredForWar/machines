@@ -10,6 +10,8 @@
 #include "network/internal/recorder.hpp"
 #include "recorder/recorder.hpp"
 
+#include "base/diag.hpp"
+
 const int MAXPLAYERS = 10;
 
 // static

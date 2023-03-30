@@ -124,7 +124,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachLogFactory& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogFactory& t);
 
     const MachPhys::FactorySubType& subType() const;
 
@@ -140,7 +140,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogFactory);
 
 protected:
-    void doOutputOperator(ostream&) const override;
+    void doOutputOperator(std::ostream&) const override;
 
     typedef MachLogResearchTree::ResearchItems ResearchItemsArray[5][5];
 

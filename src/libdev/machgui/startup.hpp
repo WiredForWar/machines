@@ -345,7 +345,7 @@ private:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachGuiStartupScreens& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreens& t);
 
     struct ContextSwitchInfo
     {

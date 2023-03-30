@@ -70,7 +70,7 @@ bool operator <( const ctl_nb_vector< T >& a, const ctl_nb_vector< T >& b )
     return a.repVector_ < b.repVector_;
 }
 */
-template <class T> ostream& operator<<(ostream&, const ctl_nb_vector<T>&);
+template <class T> std::ostream& operator<<(std::ostream&, const ctl_nb_vector<T>&);
 
 //////////////////////////////////////////////////////////////////////
 

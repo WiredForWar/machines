@@ -65,7 +65,7 @@ public:
     void toggleLogging();
 
 private:
-    friend ostream& operator<<(ostream& o, const MachLogMachineMotionSequencerData& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachLogMachineMotionSequencerData& t);
 
     friend class MachLogMachineMotionSequencer;
     friend class MachLogMotionSequencerEntryExit;

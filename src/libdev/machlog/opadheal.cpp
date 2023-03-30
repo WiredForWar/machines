@@ -38,7 +38,7 @@ MachLogAdminHealOperation::~MachLogAdminHealOperation()
         pDirectObject_->detach(this);
 }
 
-void MachLogAdminHealOperation::doOutputOperator(ostream& o) const
+void MachLogAdminHealOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogAdminHealOperation" << std::endl;
     o << " pDirectObject_.objecttype() (" << pDirectObject_->id() << ") " << pDirectObject_->objectType() << std::endl;

@@ -81,7 +81,7 @@ MachLogTreacheryOperation::~MachLogTreacheryOperation()
     }
 }
 
-void MachLogTreacheryOperation::doOutputOperator(ostream& o) const
+void MachLogTreacheryOperation::doOutputOperator(std::ostream& o) const
 {
     o << "MachLogTreacheryOperation\n";
     if (pDirectObject_)

@@ -268,7 +268,7 @@ void MachGuiCtxHotKeys::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiCtxHotKeys& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiCtxHotKeys& t)
 {
 
     o << "MachGuiCtxHotKeys " << (void*)&t << " start" << std::endl;

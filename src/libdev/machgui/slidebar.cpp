@@ -66,7 +66,7 @@ void MachGuiSlideBar::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiSlideBar& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiSlideBar& t)
 {
 
     o << "MachGuiSlideBar " << (void*)&t << " start" << std::endl;

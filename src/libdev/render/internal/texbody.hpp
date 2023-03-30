@@ -27,7 +27,7 @@ public:
     bool read(const std::string& name) override;
     RenITexBody* castToTexBody() override;
     const RenITexBody* castToTexBody() const override;
-    void print(ostream&) const override;
+    void print(std::ostream&) const override;
 
     bool hasAlphaTransparency() const;
     bool usesBilinear() const;

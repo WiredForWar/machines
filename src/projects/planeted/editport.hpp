@@ -63,7 +63,7 @@ private:
     PedPortalEditor& operator=(const PedPortalEditor&);
     bool operator==(const PedPortalEditor&);
 
-    friend ostream& operator<<(ostream& o, const PedPortalEditor& t);
+    friend std::ostream& operator<<(std::ostream& o, const PedPortalEditor& t);
 
     // Data...
     PedDomainEditor* pDomainEditor_;

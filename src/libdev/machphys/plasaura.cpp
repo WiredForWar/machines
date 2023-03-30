@@ -65,7 +65,7 @@ void MachPhysPlasmaAura::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachPhysPlasmaAura& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysPlasmaAura& t)
 {
 
     o << "MachPhysPlasmaAura " << (void*)&t << " start" << std::endl;

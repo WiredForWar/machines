@@ -39,7 +39,7 @@ void DiagPointerTrackerImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const DiagPointerTrackerImpl& t)
+std::ostream& operator<<(std::ostream& o, const DiagPointerTrackerImpl& t)
 {
     for (ctl_set<void*, less_ptr<void>>::const_iterator i = t.pointers_.begin(); i != t.pointers_.end(); ++i)
     {

@@ -12,7 +12,7 @@
 #include "base/internal/memchk.hpp"
 
 BaseAppendOstream::BaseAppendOstream(const char* fileName)
-    : ostream(&dummyStreamBuf())
+    : std::ostream(&dummyStreamBuf())
     , appendBuffer_(fileName)
 {
     // ostream& thisAsOStream = *this;
@@ -22,7 +22,7 @@ BaseAppendOstream::BaseAppendOstream(const char* fileName)
 }
 
 BaseAppendOstream::BaseAppendOstream()
-    : ostream(&dummyStreamBuf())
+    : std::ostream(&dummyStreamBuf())
 {
     // ostream& thisAsOStream = *this;
 

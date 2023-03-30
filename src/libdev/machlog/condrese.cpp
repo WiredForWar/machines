@@ -113,7 +113,7 @@ void MachLogResearchCompleteCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogResearchCompleteCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogResearchCompleteCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -127,7 +127,7 @@ const PhysRelativeTime& MachLogResearchCompleteCondition::recommendedCallBackTim
 }
 
 // virtual
-void MachLogResearchCompleteCondition::doOutputOperator(ostream& o) const
+void MachLogResearchCompleteCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogResearchCompleteCondition " << (void*)this << " start" << std::endl;

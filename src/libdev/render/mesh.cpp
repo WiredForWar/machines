@@ -2714,7 +2714,7 @@ void RenMesh::CLASS_INVARIANT
     INVARIANT(this);
 }
 
-ostream& operator<<(ostream& o, const Ren::ConstMeshPtr& p)
+std::ostream& operator<<(std::ostream& o, const Ren::ConstMeshPtr& p)
 {
     o << "Start RenMesh " << p->meshName_ << std::endl;
 

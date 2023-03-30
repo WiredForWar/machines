@@ -50,7 +50,7 @@ void MachGuiStartupScreenContext::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiStartupScreenContext& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreenContext& t)
 {
 
     o << "MachGuiStartupScreenContext " << reinterpret_cast<void*>(const_cast<MachGuiStartupScreenContext*>(&t))

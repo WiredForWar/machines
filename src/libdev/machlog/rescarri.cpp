@@ -39,7 +39,7 @@ void MachLogResourceCarrierImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogResourceCarrierImpl& t)
+std::ostream& operator<<(std::ostream& o, const MachLogResourceCarrierImpl& t)
 {
 
     o << "MachLogResourceCarrierImpl " << (void*)&t << " start" << std::endl;

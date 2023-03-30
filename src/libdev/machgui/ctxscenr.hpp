@@ -43,7 +43,7 @@ public:
     bool okayToSwitchContext() override;
 
 private:
-    friend ostream& operator<<(ostream& o, const MachGuiCtxScenario& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxScenario& t);
 
     MachGuiCtxScenario(const MachGuiCtxScenario&);
     MachGuiCtxScenario& operator=(const MachGuiCtxScenario&);

@@ -101,7 +101,7 @@ void GuiResourceString::CLASS_INVARIANT
 {
 }
 
-ostream& operator<<(ostream& o, const GuiResourceString& t)
+std::ostream& operator<<(std::ostream& o, const GuiResourceString& t)
 {
     o << "GuiResourceString " << (void*)&t << " start" << std::endl;
     o << "GuiResourceString " << (void*)&t << " end" << std::endl;

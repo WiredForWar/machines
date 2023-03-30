@@ -27,7 +27,7 @@ public:
     // The default implementation orders the items in decreasing depth.
     virtual bool operator<(const RenIDepthSortedItem&) const;
 
-    virtual void print(ostream&) const = 0;
+    virtual void print(std::ostream&) const = 0;
 
 protected:
     const RenMaterial material_;
@@ -35,7 +35,7 @@ protected:
     ushort meshId_;
 };
 
-ostream& operator<<(ostream&, const RenIDepthSortedItem&);
+std::ostream& operator<<(std::ostream&, const RenIDepthSortedItem&);
 
 // Certain polygons cannot be correctly prioritised by z-buffering.  These
 // are dumped into lists of this type during rendering, then when the scene

@@ -56,7 +56,7 @@ private:
     MachHWResearchIcons& operator=(const MachHWResearchIcons&);
     bool operator==(const MachHWResearchIcons&);
 
-    friend ostream& operator<<(ostream& o, const MachHWResearchIcons& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachHWResearchIcons& t);
 
     // Set up the list of icons
     void

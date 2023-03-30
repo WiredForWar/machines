@@ -42,4 +42,4 @@ W4dSoundData::~W4dSoundData()
 //   SOUND_STREAM("Ok" << endl);
 // }
 
-ostream& operator<<(ostream& o, const W4dSoundData& t);
+std::ostream& operator<<(std::ostream& o, const W4dSoundData& t);

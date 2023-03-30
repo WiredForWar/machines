@@ -41,7 +41,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const MachPhysBeeBombWave& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachPhysBeeBombWave& t);
 
     PER_MEMBER_PERSISTENT(MachPhysBeeBombWave);
 

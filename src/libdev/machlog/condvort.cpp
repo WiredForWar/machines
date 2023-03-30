@@ -50,7 +50,7 @@ void MachLogVortexHasBeenFiredCondition::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachLogVortexHasBeenFiredCondition& t)
+std::ostream& operator<<(std::ostream& o, const MachLogVortexHasBeenFiredCondition& t)
 {
 
     t.doOutputOperator(o);
@@ -65,7 +65,7 @@ const PhysRelativeTime& MachLogVortexHasBeenFiredCondition::recommendedCallBackT
 }
 
 // virtual
-void MachLogVortexHasBeenFiredCondition::doOutputOperator(ostream& o) const
+void MachLogVortexHasBeenFiredCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
     o << "MachLogVortexHasBeenFiredCondition " << (void*)this << " start" << std::endl;

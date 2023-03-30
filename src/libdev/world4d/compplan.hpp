@@ -63,7 +63,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const W4dCompositePlan& t);
+    friend std::ostream& operator<<(std::ostream& o, const W4dCompositePlan& t);
 
     PER_MEMBER_PERSISTENT(W4dCompositePlan);
     PER_FRIEND_READ_WRITE(W4dCompositePlan);

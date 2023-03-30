@@ -300,7 +300,7 @@ void W4dComposite::hold(W4dEntity* pObject, W4dLink* pParent, const W4dTransform
 }
 
 // virtual
-void W4dComposite::doDebugOutput(ostream& ostr)
+void W4dComposite::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     CB_W4dComposite_DEPIMPL();

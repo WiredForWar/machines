@@ -27,7 +27,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    friend ostream& operator<<(ostream& o, const PhysPathFindingQueueWriter& t);
+    friend std::ostream& operator<<(std::ostream& o, const PhysPathFindingQueueWriter& t);
 
     PhysPathFindingQueueWriter(const PhysPathFindingQueueWriter&);
     PhysPathFindingQueueWriter& operator=(const PhysPathFindingQueueWriter&);

@@ -125,7 +125,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    friend ostream& operator<<(ostream& o, const RenIIlluminator& t);
+    friend std::ostream& operator<<(std::ostream& o, const RenIIlluminator& t);
 
 protected:
     RenIIlluminator(RenIDeviceImpl*);

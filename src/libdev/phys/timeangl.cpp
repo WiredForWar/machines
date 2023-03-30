@@ -122,7 +122,7 @@ void PhysTimedAnglePlan::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ostream& operator<<(ostream& o, const PhysTimedAnglePlan& t)
+std::ostream& operator<<(std::ostream& o, const PhysTimedAnglePlan& t)
 {
 
     o << "PhysTimedAnglePlan " << (void*)&t << " start" << std::endl;

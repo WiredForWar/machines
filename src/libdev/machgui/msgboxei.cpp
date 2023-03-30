@@ -31,7 +31,7 @@ void MachGuiExitToInternetMessageBoxResponder::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-ostream& operator<<(ostream& o, const MachGuiExitToInternetMessageBoxResponder& t)
+std::ostream& operator<<(std::ostream& o, const MachGuiExitToInternetMessageBoxResponder& t)
 {
 
     o << "MachGuiExitToInternetMessageBoxResponder " << (void*)&t << " start" << std::endl;

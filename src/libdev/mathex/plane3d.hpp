@@ -77,7 +77,7 @@ public:
     MATHEX_SCALAR z(MATHEX_SCALAR x, MATHEX_SCALAR y) const;
     // PRE( c() != 0.0 );
 
-    friend ostream& operator<<(ostream&, const MexPlane3d&);
+    friend std::ostream& operator<<(std::ostream&, const MexPlane3d&);
 
     void CLASS_INVARIANT
     {
