@@ -61,8 +61,6 @@ set(LIBS
 
 # Includes
 set(LOCAL_INCLUDES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../external/libsmack
-    ${CMAKE_CURRENT_SOURCE_DIR}/../external
     ${CMAKE_CURRENT_SOURCE_DIR}/libdev
     ${CMAKE_CURRENT_SOURCE_DIR}/projects
 )
@@ -159,16 +157,7 @@ target_sources(libs
 target_link_libraries(libs INTERFACE
     LibDev::network
     LibDev::render
-)
-
-add_library(libs_mach_gui INTERFACE)
-target_sources(libs_mach_gui 
-
-    INTERFACE 
-    $<TARGET_OBJECTS:ani>
-    $<TARGET_OBJECTS:machgui>
-    $<TARGET_OBJECTS:libsmacker>
-
+    LibDev::machgui
 )
 
 add_executable(machines ${MACHINES_SOURCES})
@@ -178,7 +167,7 @@ set_target_properties(machines planeted PROPERTIES
     COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
 )
 
-target_link_libraries(machines libs libs_mach_gui libaudio ${LIBS} )
+target_link_libraries(machines libs libaudio ${LIBS} )
 target_link_libraries(planeted libs libaudio ${LIBS} )
 
 if(TOOLCHAIN_EXTRA_FLAGS)

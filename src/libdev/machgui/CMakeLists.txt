@@ -341,9 +341,12 @@ set(MACHGUI_SOURCES
     worldvie.cpp
     worldvie.hpp
     menus_helper.hpp
-    menus_helper.cpp)
+    menus_helper.cpp
+)
 
-add_library(machgui OBJECT ${MACHGUI_SOURCES})
+add_library(machgui STATIC ${MACHGUI_SOURCES})
+add_library(LibDev::machgui ALIAS machgui)
+
 target_link_libraries(machgui PUBLIC
-    ani
+    LibDev::ani
 )

@@ -14,11 +14,15 @@ if(USE_SWSCALE)
     )
 endif()
 
-add_library(ani OBJECT ${ANI_SOURCES})
+add_library(ani STATIC ${ANI_SOURCES})
 add_library(LibDev::ani ALIAS ani)
 
 target_link_libraries(ani PUBLIC
     LibDev::render
+)
+
+target_link_libraries(ani PRIVATE
+    External::LibSmacker
 )
 
 if(USE_SWSCALE)

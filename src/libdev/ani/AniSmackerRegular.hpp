@@ -1,10 +1,11 @@
 #pragma once
 
-#include "smacker.h"
 #include "ani/AniSmacker.hpp"
 #include "system/pathname.hpp"
 #include "render/surface.hpp"
 #include "sound/internal/alsound.hpp"
+
+using smk = struct smk_t*;
 
 class AniSmackerRegular : public AniSmacker
 {

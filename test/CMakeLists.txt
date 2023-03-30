@@ -36,7 +36,7 @@ set(TESTING_THESE_GUYS
     envirnmt
     machphys
     machlog
-    libs_mach_gui
+    machgui
 )
 
 #### Test Cases

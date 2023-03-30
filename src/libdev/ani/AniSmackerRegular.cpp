@@ -4,6 +4,8 @@
 #include "recorder/private/recpriv.hpp"
 #include "device/time.hpp"
 
+#include "smacker.h"
+
 //////////////////////////////////////////////////////////////////////
 #define BUFFERS_NUM 6
 
