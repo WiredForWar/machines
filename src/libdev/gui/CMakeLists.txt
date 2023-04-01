@@ -1,5 +1,7 @@
 
 set(GUI_SOURCES
+    Action.cpp
+    Action.hpp
     border.cpp
     border.hpp
     button.cpp
