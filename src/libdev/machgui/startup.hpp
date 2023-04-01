@@ -369,7 +369,7 @@ private:
     struct ContextKeypressInfo
     {
         Context curContext_;
-        DevKey::ScanCode scanCode_;
+        DevKey::Code scanCode_;
         Context newContext_;
         bool playTransition_;
         ButtonEvent simButtonEvent_;

@@ -25,7 +25,7 @@ class DevKeyToCommand
 // Canonical form
 {
 public:
-    using ScanCode = DevKey::ScanCode;
+    using ScanCode = DevKey::Code;
     using CommandId = size_t;
 
     enum Modifier

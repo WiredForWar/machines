@@ -29,7 +29,7 @@ class DevKeyboard
 public:
     static DevKeyboard& instance();
 
-    using ScanCode = DevKey::ScanCode;
+    using ScanCode = DevKey::Code;
 
     // Is the key corresponding to a given character or key code pressed?
     bool key(unsigned char) const;

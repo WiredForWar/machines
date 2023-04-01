@@ -68,9 +68,9 @@ void DevSdlKeyboard::wm_char(const DevButtonEvent& ev)
     DevEventQueue::instance().queueEvent(ev);
 }
 
-DevKey::ScanCode DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
+DevKey::Code DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
 {
-    static const std::unordered_map<SDL_Scancode, DevKey::ScanCode> map = {
+    static const std::unordered_map<SDL_Scancode, DevKey::Code> map = {
         /* clang-format off */
         // Trick clang-format to keep one pair per line
         {SDL_SCANCODE_UNKNOWN, ScanCode::UNKNOWN},
@@ -181,7 +181,7 @@ DevKey::ScanCode DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
     if (it != map.cend())
         return it->second;
 
-    return DevKey::ScanCode::UNKNOWN;
+    return DevKey::Code::UNKNOWN;
 }
 
 ///////////////////////////////////

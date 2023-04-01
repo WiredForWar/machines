@@ -21,7 +21,7 @@
 template <typename DevTimeDep = DevTime> class DevButtonEventT
 {
 public:
-    using ScanCode = DevKey::ScanCode;
+    using ScanCode = DevKey::Code;
     enum Action
     {
         PRESS,

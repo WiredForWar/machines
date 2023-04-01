@@ -11,7 +11,7 @@
 class DevKey
 {
 public:
-    enum ScanCode
+    enum Code
     {
         UNKNOWN = 0,
 
@@ -134,7 +134,7 @@ public:
         MAX_CODE = 259
     };
 
-    static void printScanCode(std::ostream&, ScanCode);
+    static void printScanCode(std::ostream&, Code);
 };
 
 #endif
