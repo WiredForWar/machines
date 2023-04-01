@@ -81,6 +81,7 @@ public:
         F10,
         F11,
         F12,
+
         KEY_A,
         KEY_B,
         KEY_C,
@@ -107,6 +108,7 @@ public:
         KEY_X,
         KEY_Y,
         KEY_Z,
+
         KEY_0,
         KEY_1,
         KEY_2,
@@ -134,6 +136,7 @@ public:
         MAX_CODE
     };
 
+    static std::string getKeyName(Code keyCode);
     static void printScanCode(std::ostream&, Code);
 };
 

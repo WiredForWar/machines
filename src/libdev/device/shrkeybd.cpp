@@ -380,6 +380,136 @@ void DevKeyboard::keys_invariant(const char*, const char*) const
 }
 
 // static
+std::string DevKey::getKeyName(Code keyCode)
+{
+    switch (keyCode)
+    {
+        case UNKNOWN:
+            break;
+
+        case UP_ARROW_PAD:
+        case DOWN_ARROW_PAD:
+        case LEFT_ARROW_PAD:
+        case RIGHT_ARROW_PAD:
+        case ENTER_PAD:
+        case INSERT_PAD:
+        case DELETE_PAD:
+        case HOME_PAD:
+        case END_PAD:
+        case PAGE_UP_PAD:
+        case PAGE_DOWN_PAD:
+        case FIVE_PAD:
+        case ASTERISK_PAD:
+        case FORWARD_SLASH_PAD:
+        case PLUS_PAD:
+        case MINUS_PAD:
+        case PAD_0:
+        case PAD_1:
+        case PAD_2:
+        case PAD_3:
+        case PAD_4:
+        case PAD_5:
+        case PAD_6:
+        case PAD_7:
+        case PAD_8:
+        case PAD_9:
+        case FORWARD_SLASH:
+        case RIGHT_CONTROL:
+        case LEFT_CONTROL:
+        case UP_ARROW:
+            return "Up";
+        case DOWN_ARROW:
+            return "Down";
+        case LEFT_ARROW:
+            return "Left";
+        case RIGHT_ARROW:
+            return "Right";
+        case INSERT:
+        case KEY_DELETE:
+        case HOME:
+        case END:
+        case PAGE_UP:
+            return "PgUp";
+        case PAGE_DOWN:
+            return "PgDown";
+        case BREAK:
+        case ESCAPE:
+        case ENTER:
+        case SPACE:
+            return "Space";
+        case BACK_SPACE:
+            return "Backspace";
+        case TAB:
+            return "Tab";
+        case GRAVE:
+        case LEFT_SHIFT:
+        case RIGHT_SHIFT:
+        case CAPS_LOCK:
+            return "CapsLock";
+        case NUM_LOCK:
+            return "NumLock";
+        case SCROLL_LOCK:
+            return "ScrollLock";
+        case F1:
+        case F2:
+        case F3:
+        case F4:
+        case F5:
+        case F6:
+        case F7:
+        case F8:
+        case F9:
+        case F10:
+        case F11:
+        case F12:
+        case KEY_A:
+        case KEY_B:
+        case KEY_C:
+        case KEY_D:
+        case KEY_E:
+        case KEY_F:
+        case KEY_G:
+        case KEY_H:
+        case KEY_I:
+        case KEY_J:
+        case KEY_K:
+        case KEY_L:
+        case KEY_M:
+        case KEY_N:
+        case KEY_O:
+        case KEY_P:
+        case KEY_Q:
+        case KEY_R:
+        case KEY_S:
+        case KEY_T:
+        case KEY_U:
+        case KEY_V:
+        case KEY_W:
+        case KEY_X:
+        case KEY_Y:
+        case KEY_Z:
+        case KEY_0:
+        case KEY_1:
+        case KEY_2:
+        case KEY_3:
+        case KEY_4:
+        case KEY_5:
+        case KEY_6:
+        case KEY_7:
+        case KEY_8:
+        case KEY_9:
+        case LEFT_ALT:
+        case RIGHT_ALT:
+        case LEFT_MOUSE:
+        case RIGHT_MOUSE:
+        case MIDDLE_MOUSE:
+        case MAX_CODE:
+            break;
+    }
+
+    return std::string();
+}
+
 void DevKey::printScanCode(std::ostream& o, Code code)
 {
     switch (code)
