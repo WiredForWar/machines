@@ -19,6 +19,8 @@
 #include "render/internal/displayi.hpp"
 #include <SDL.h>
 
+#include "spdlog/spdlog.h"
+
 #include "device/timer.hpp"
 
 #define CB_RenDisplay_DEPIMPL()                                                                                        \
@@ -190,6 +192,14 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
 
     if (m == currentMode_)
         return true;
+
+    spdlog::info(
+        "Set display mode to: {}x{}@{}bpp ({} Hz; fullscreen: {})",
+        m.width(),
+        m.height(),
+        m.bitDepth(),
+        m.refreshRate(),
+        fullscreen_);
 
     pImpl_->prepareForModeChange(m);
 
