@@ -56,5 +56,9 @@ set(BASE_SOURCES
     trackeri.cpp
 )
 
-add_library(base OBJECT ${BASE_SOURCES})
+add_library(base ${GAME_COMPONENT_LIB_TYPE} ${BASE_SOURCES})
 add_library(LibDev::base ALIAS base)
+
+target_link_libraries(base PUBLIC
+    LibDev::stdlib
+)

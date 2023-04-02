@@ -3,7 +3,7 @@
 #add_subdirectory(libdev)
 #add_subdirectory(projects)
 
-
+set(GAME_COMPONENT_LIB_TYPE STATIC)
 
 # Source files
 # GLOB is sometimes considered anti pattern but watever
@@ -105,28 +105,10 @@ if(PLATFORM_WINDOWS)
   )
 endif()
 
-# Libraries
-set(LIBS
-    ${LIBS}
-    #pthread
-    SDL2::SDL2
-    #GLEW
-    #openal
-    ${OPENAL_LIBRARY}
-    #audio
-    #dl
-    #static-libstdc++
-)
-
 # Includes
 set(LOCAL_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/libdev
     ${CMAKE_CURRENT_SOURCE_DIR}/projects
-)
-
-set(SYSTEM_INCLUDES
-    ${LIBSNDFILE_INCLUDE_DIR}
-    ${OPENAL_INCLUDE_DIR}
 )
 
 if(TARGET ffmpeg::swscale)
@@ -135,7 +117,6 @@ endif()
 set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
 
 include_directories(${LOCAL_INCLUDES})
-include_directories(SYSTEM ${SYSTEM_INCLUDES})
 
 
 # Link directories
@@ -176,18 +157,13 @@ add_library(libs INTERFACE)
 target_sources(libs
 
     INTERFACE 
-    $<TARGET_OBJECTS:base>
-    $<TARGET_OBJECTS:mathex>
     $<TARGET_OBJECTS:afx>
     $<TARGET_OBJECTS:utility>
     $<TARGET_OBJECTS:profiler>
-    $<TARGET_OBJECTS:system>
     $<TARGET_OBJECTS:device>
     $<TARGET_OBJECTS:gxin>
     $<TARGET_OBJECTS:xin>
     $<TARGET_OBJECTS:stdlib>
-    $<TARGET_OBJECTS:sound>
-    $<TARGET_OBJECTS:ctl>
     $<TARGET_OBJECTS:phys>
     $<TARGET_OBJECTS:recorder>
     $<TARGET_OBJECTS:envirnmt>
@@ -196,9 +172,12 @@ target_sources(libs
 target_link_libraries(libs INTERFACE
     LibDev::network
     LibDev::render
+    LibDev::mathex
     LibDev::machgui
     LibDev::machlog
     LibDev::machphys
+    LibDev::sound
+    LibDev::system
     LibDev::world4d
 )
 
@@ -209,8 +188,8 @@ set_target_properties(machines planeted PROPERTIES
     COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
 )
 
-target_link_libraries(machines libs libaudio ${LIBS} )
-target_link_libraries(planeted libs libaudio ${LIBS} )
+target_link_libraries(machines libs)
+target_link_libraries(planeted libs)
 
 if(TOOLCHAIN_EXTRA_FLAGS)
     target_link_libraries (machines ${TOOLCHAIN_EXTRA_FLAGS})

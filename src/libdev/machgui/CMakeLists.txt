@@ -344,7 +344,7 @@ set(MACHGUI_SOURCES
     menus_helper.cpp
 )
 
-add_library(machgui STATIC ${MACHGUI_SOURCES})
+add_library(machgui ${GAME_COMPONENT_LIB_TYPE} ${MACHGUI_SOURCES})
 add_library(LibDev::machgui ALIAS machgui)
 
 target_link_libraries(machgui PUBLIC

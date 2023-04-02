@@ -87,9 +87,10 @@ set(MATHEX_SOURCES
     vec3.hpp
 )
 
-add_library(mathex OBJECT ${MATHEX_SOURCES})
+add_library(mathex ${GAME_COMPONENT_LIB_TYPE} ${MATHEX_SOURCES})
 add_library(LibDev::mathex ALIAS mathex)
 
 target_link_libraries(mathex PUBLIC
+    LibDev::base
     LibDev::recorder
 )

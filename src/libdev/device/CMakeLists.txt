@@ -43,15 +43,16 @@ set(DEVICE_SOURCES
     timer.hpp
 )
 
-add_library(device OBJECT ${DEVICE_SOURCES})
+add_library(device ${GAME_COMPONENT_LIB_TYPE} ${DEVICE_SOURCES})
 add_library(LibDev::device ALIAS device)
 
 target_link_libraries(device PUBLIC
     SDL2::SDL2
 )
 
-if(USE_ALURE)
+if(TARGET Alure::Alure)
     target_link_libraries(device PUBLIC Alure::Alure)
+    target_compile_definitions(device PUBLIC USE_ALURE=1)
+else()
+    target_compile_definitions(device PUBLIC USE_ALURE=0)
 endif()
-
-target_compile_definitions(device PUBLIC USE_ALURE=$<BOOL:${USE_ALURE}>)

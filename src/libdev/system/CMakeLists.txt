@@ -26,7 +26,7 @@ set(SYSTEM_SOURCES
     winapi.hpp
 )
 
-add_library(system OBJECT ${SYSTEM_SOURCES})
+add_library(system ${GAME_COMPONENT_LIB_TYPE} ${SYSTEM_SOURCES})
 add_library(LibDev::system ALIAS system)
 
 target_link_libraries(system PUBLIC

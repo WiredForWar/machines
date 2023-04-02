@@ -32,3 +32,8 @@ set(UTILITY_SOURCES
 )
 
 add_library(utility OBJECT ${UTILITY_SOURCES})
+add_library(LibDev::utility ALIAS utility)
+
+target_link_libraries(utility PUBLIC
+    LibDev::base
+)

@@ -199,5 +199,7 @@ add_library(world4d STATIC ${WORLD4D_SOURCES})
 add_library(LibDev::world4d ALIAS world4d)
 
 target_link_libraries(world4d PUBLIC
+    LibDev::base
     LibDev::render
+    LibDev::sound
 )

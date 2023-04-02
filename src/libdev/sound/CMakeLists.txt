@@ -30,4 +30,9 @@ set(SOUND_SOURCES
     waveman.cpp
 )
 
-add_library(sound OBJECT ${SOUND_SOURCES})
+add_library(sound ${GAME_COMPONENT_LIB_TYPE} ${SOUND_SOURCES})
+add_library(LibDev::sound ALIAS sound)
+
+target_link_libraries(sound PUBLIC
+    External::libaudio
+)

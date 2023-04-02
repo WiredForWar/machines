@@ -194,7 +194,7 @@ set(RENDER_SOURCES
     vtxmat.cpp
 )
 
-add_library(render STATIC ${RENDER_SOURCES})
+add_library(render ${GAME_COMPONENT_LIB_TYPE} ${RENDER_SOURCES})
 add_library(LibDev::render ALIAS render)
 
 if(TARGET OpenGL::OpenGL)
@@ -204,6 +204,9 @@ else()
 endif()
 
 target_link_libraries(render PUBLIC
+    LibDev::system
+    LibDev::mathex
+
     SDL2::SDL2
     GLEW::GLEW
     glm::glm

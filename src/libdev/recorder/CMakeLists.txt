@@ -10,7 +10,7 @@ set(RECORDER_SOURCES
     recpriv.cpp
 )
 
-add_library(recorder OBJECT ${RECORDER_SOURCES})
+add_library(recorder ${GAME_COMPONENT_LIB_TYPE} ${RECORDER_SOURCES})
 add_library(LibDev::recorder ALIAS recorder)
 
 target_link_libraries(recorder PUBLIC

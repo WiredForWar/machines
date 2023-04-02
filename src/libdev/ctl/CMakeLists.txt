@@ -20,5 +20,5 @@ file(GLOB CTL_SOURCES
     vector.hpp
 )
 
-add_library(ctl OBJECT ${CTL_SOURCES})
+add_library(ctl ${GAME_COMPONENT_LIB_TYPE} ${CTL_SOURCES})
 add_library(LibDev::ctl ALIAS ctl)
