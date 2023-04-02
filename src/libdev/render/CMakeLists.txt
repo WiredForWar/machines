@@ -194,13 +194,20 @@ set(RENDER_SOURCES
     vtxmat.cpp
 )
 
-add_library(render OBJECT ${RENDER_SOURCES})
+add_library(render STATIC ${RENDER_SOURCES})
 add_library(LibDev::render ALIAS render)
+
+if(TARGET OpenGL::OpenGL)
+    target_link_libraries(render PUBLIC OpenGL::OpenGL)
+else()
+    target_link_libraries(render PUBLIC OpenGL::GL)
+endif()
 
 target_link_libraries(render PUBLIC
     SDL2::SDL2
     GLEW::GLEW
     glm::glm
+    Freetype::Freetype
 )
 
 target_link_libraries(render PRIVATE

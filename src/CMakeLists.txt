@@ -110,18 +110,12 @@ set(LIBS
     ${LIBS}
     #pthread
     SDL2::SDL2
-    #GL
-    ${OPENGL_LIBRARY}
     #GLEW
-    ${GLEW_LIBRARY}
-    SDL2_image::SDL2_image
     #openal
     ${OPENAL_LIBRARY}
     #audio
     #dl
     #static-libstdc++
-    #freetype
-    ${FREETYPE_LIBRARY}
 )
 
 # Includes
@@ -131,8 +125,6 @@ set(LOCAL_INCLUDES
 )
 
 set(SYSTEM_INCLUDES
-    ${Freetype_INCLUDE_DIRS}
-    ${GLEW_INCLUDE_PATH}
     ${LIBSNDFILE_INCLUDE_DIR}
     ${OPENAL_INCLUDE_DIR}
 )
@@ -205,7 +197,6 @@ target_sources(libs
     $<TARGET_OBJECTS:gxin>
     $<TARGET_OBJECTS:xin>
     $<TARGET_OBJECTS:stdlib>
-    $<TARGET_OBJECTS:render>
     $<TARGET_OBJECTS:sound>
     $<TARGET_OBJECTS:ctl>
     $<TARGET_OBJECTS:phys>
