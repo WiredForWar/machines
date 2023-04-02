@@ -14,7 +14,7 @@
 #include "device/DevCDImpl.hpp"
 
 #if !USE_ALURE
-#include <AL/al.h>
+#include "al.h"
 #endif
 
 #define STREAM_NUM_BUFFERS 3

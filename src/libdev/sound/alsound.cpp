@@ -22,6 +22,8 @@
 #include "mathex/eulerang.hpp"
 #include "profiler/profiler.hpp"
 
+#include "al.h"
+
 bool alTestError(const char* msg)
 {
     ALCenum error = alGetError();

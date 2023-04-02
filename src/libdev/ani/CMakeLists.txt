@@ -19,6 +19,7 @@ add_library(LibDev::ani ALIAS ani)
 
 target_link_libraries(ani PUBLIC
     LibDev::render
+    OpenAL::OpenAL
 )
 
 target_link_libraries(ani PRIVATE

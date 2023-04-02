@@ -1,6 +1,7 @@
 #pragma once
 
 #if USE_ALURE
+#include "al.h"
 #include "alure.h"
 #else
 typedef struct alureStream alureStream;

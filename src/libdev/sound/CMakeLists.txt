@@ -35,4 +35,5 @@ add_library(LibDev::sound ALIAS sound)
 
 target_link_libraries(sound PUBLIC
     External::libaudio
+    OpenAL::OpenAL
 )

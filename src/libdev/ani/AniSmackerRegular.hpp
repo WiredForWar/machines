@@ -3,7 +3,8 @@
 #include "ani/AniSmacker.hpp"
 #include "system/pathname.hpp"
 #include "render/surface.hpp"
-#include "sound/internal/alsound.hpp"
+
+#include "al.h"
 
 using smk = struct smk_t*;
 

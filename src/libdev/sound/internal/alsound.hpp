@@ -19,8 +19,8 @@
 #include "sound/snd.hpp"
 #include "sound/sndparam.hpp"
 #include "sound/soundmix.hpp"
-#include <AL/alc.h>
-#include <AL/al.h>
+
+#include "alc.h"
 
 bool alTestError(const char* msg);
 

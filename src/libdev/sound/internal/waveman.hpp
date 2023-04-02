@@ -18,7 +18,8 @@
 #include "sound/internal/waveform.hpp"
 
 #include "ctl/map.hpp"
-#include <AL/al.h>
+
+#include "al.h"
 
 class SndCountedSoundBuffer
 {

@@ -30,7 +30,8 @@
 #include "sound/internal/wavefmt.hpp"
 #include "sound/sndwavid.hpp"
 #include <audio/wave.h>
-#include <AL/al.h>
+
+#include <al.h>
 
 ////////////////////////////////////////////////////////////
 

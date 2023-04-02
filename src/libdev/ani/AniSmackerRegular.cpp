@@ -4,6 +4,8 @@
 #include "recorder/private/recpriv.hpp"
 #include "device/time.hpp"
 
+#include "sound/internal/alsound.hpp"
+
 #include "smacker.h"
 
 //////////////////////////////////////////////////////////////////////
