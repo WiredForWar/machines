@@ -5,13 +5,13 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-project(machines
+project(Machines
     VERSION 1.6.0
     LANGUAGES C CXX
 )
 include(CMakeDependentOption)
 
-message(STATUS "Building Machines ${machines_VERSION}")
+message(STATUS "Building Machines ${Machines_VERSION}")
 
 set(BUILD_NUMBER 0)
 if(NOT "$ENV{BUILD_NUMBER}" STREQUAL "")
@@ -66,7 +66,7 @@ endif()
 # Build options
 ##
 # Include cmake directory with some additional scripts
-set(CMAKE_MODULE_PATH "${machines_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${Machines_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 # Build targets should be placed in the root build directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
