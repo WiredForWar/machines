@@ -207,7 +207,6 @@ target_sources(libs
     $<TARGET_OBJECTS:stdlib>
     $<TARGET_OBJECTS:render>
     $<TARGET_OBJECTS:sound>
-    $<TARGET_OBJECTS:network>
     $<TARGET_OBJECTS:ctl>
     $<TARGET_OBJECTS:phys>
     $<TARGET_OBJECTS:sim>
