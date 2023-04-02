@@ -182,16 +182,23 @@ if(PLATFORM_WINDOWS)
     # Windows 64-bit libraries
     set(LIBS
         ${MSVCRT_LIBRARY}
-        ${FREETYPE_LIBRARY}
-        ${HARFBUZZ_LIBRARY}
-        ${BZ2_LIBRARY}
         ${PNG16_LIBRARY}
-        ${GRAPHITE2_LIBRARY}
         ${Z_LIBRARY}
         ${RPCRT4_LIBRARY}
         ${USP10_LIBRARY}
     )
   endif()
+
+  target_link_libraries(Freetype::Freetype INTERFACE
+      ${PNG16_LIBRARY}
+      ${HARFBUZZ_LIBRARY}
+      ${GRAPHITE2_LIBRARY}
+      ${FREETYPE_LIBRARY}
+      ${BZ2_LIBRARY}
+      ${Z_LIBRARY}
+      ${RPCRT4_LIBRARY}
+      ${USP10_LIBRARY}
+  )
 endif()
 
 # Compile flags as defined in global CMakeLists
