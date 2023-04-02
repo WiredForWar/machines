@@ -10,12 +10,8 @@
 #include "device/time.hpp"
 
 #include "recorder/recorder.hpp"
-#include <SDL2/SDL.h>
 
-#include "machgui/ctxoptns.hpp"
-#include "machgui/gui.hpp"
-#include "sound/soundmix.hpp"
-#include "world4d/soundman.hpp"
+#include <SDL2/SDL.h>
 
 int main(int argc, char* argv[])
 {
