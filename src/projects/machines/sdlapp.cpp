@@ -377,6 +377,7 @@ bool SDLApp::clientStartup()
     const RenDisplay::Mode& mode = pDisplay_->currentMode();
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
 
+    spdlog::info("Initializing SceneManager...");
     manager_ = _NEW(W4dSceneManager(pDisplay_, root));
     manager_->pDevice()->debugTextCoords(204, 0);
     manager_->useLevelOfDetail(
@@ -474,10 +475,10 @@ bool SDLApp::clientStartup()
 
     // moved higher due to call sequence problems in lobbying when very slow machines host with very fast machines
     // in the game.
-    HAL_STREAM("D3dApp::clientStartup initialiseGui\n");
     StartedFromLobby startedType = NORMAL_START;
     if (lobbyFlag)
         startedType = LOBBY_START;
+    spdlog::info("Initializing GUI...");
     initialiseGui(startedType, &progressIndicator);
 
     progressIndicator.report(100, 100);
@@ -536,7 +537,7 @@ bool SDLApp::clientStartup()
     }
     else // do texture preload
     {
-        LIONEL_STREAM("preloading model and weapons texture bitmaps " << std::endl);
+        spdlog::info("Preloading model and weapons texture bitmaps...");
         if (doLoad2MBytesTexture)
         {
             pTextureSet_ = _NEW(RenTextureSet("models/texture2", &progressIndicator));
@@ -563,6 +564,7 @@ bool SDLApp::clientStartup()
     // Preload the models if required
     if (not noPreload)
     {
+        spdlog::info("Loading models...");
         if (MachPhysPreload::persistentFileName().existsAsFile())
         {
             /*if( not lobbyFlag )*/
@@ -623,7 +625,8 @@ bool SDLApp::clientStartup()
 
     HAL_STREAM("D3dApp::clientStartup simResetTimer\n");
     simResetTime();
-    HAL_STREAM("D3dApp::clientStartup done\n");
+
+    spdlog::info("The client startup is done.");
 
     return true;
 }

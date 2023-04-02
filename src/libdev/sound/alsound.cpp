@@ -24,6 +24,8 @@
 
 #include "al.h"
 
+#include "spdlog/spdlog.h"
+
 bool alTestError(const char* msg)
 {
     ALCenum error = alGetError();
@@ -93,6 +95,8 @@ ALCdevice* ALSound::alDevice_ = nullptr;
 /** STATIC **/
 void ALSound::initialise(const SndMixerParameters& params, PriorityLevel p)
 {
+    spdlog::info("Initializing OpenAL...");
+
     // Check ALSound is not already initialised
     PRE(not ALSound::isInitialised());
 
@@ -121,7 +125,7 @@ void ALSound::initialise(const SndMixerParameters& params, PriorityLevel p)
         return;
     }
 
-    SOUND_STREAM("Device: " << alcGetString(alDevice_, ALC_DEVICE_SPECIFIER) << std::endl);
+    spdlog::debug("Audio device: {}", alcGetString(alDevice_, ALC_DEVICE_SPECIFIER));
 
     alGetError();
 

@@ -10,10 +10,14 @@
 #include "device/cd.hpp"
 #include "system/registry.hpp"
 
+#include "spdlog/spdlog.h"
+
 void debugTiming(const char*, bool);
 
 void SDLApp::initSound()
 {
+    spdlog::info("Initializing sound...");
+
     int nMaxSamples = 20;
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
         nMaxSamples = 30;
@@ -43,6 +47,8 @@ void SDLApp::initSound()
 
 void SDLApp::loadSounds()
 {
+    spdlog::info("Loading sounds...");
+
     SysRegistry::KeyHandle handle;
     if (SysRegistry::instance().onlyOpenKey("Options\\3DSound", &handle) == SysRegistry::SUCCESS)
     {

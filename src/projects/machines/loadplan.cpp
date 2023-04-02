@@ -14,6 +14,8 @@
 #include "machlog/races.hpp"
 #include "machlog/artfacts.hpp"
 
+#include "spdlog/spdlog.h"
+
 class PlanetLoadDummyProgressIndicator : public BaseProgressReporter
 {
 public:
@@ -47,6 +49,8 @@ static void loading(MachGuiDbSystem& system, W4dSceneManager* pSceneManager)
 
 void SDLApp::loadPlanets()
 {
+    spdlog::info("Loading planets...");
+
     using FileDatas = SysFileEnumerator::FileDatas;
 
     // Construct a file enumerator for all the models\planet\...\*.arf files

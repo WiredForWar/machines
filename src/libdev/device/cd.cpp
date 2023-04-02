@@ -13,6 +13,8 @@
 
 #include "device/DevCDImpl.hpp"
 
+#include "spdlog/spdlog.h"
+
 #if !USE_ALURE
 #include "al.h"
 #endif
@@ -62,6 +64,8 @@ DevCD::DevCD()
 
     if (musicEnabled_)
     {
+        spdlog::info("Enabling the music (using alure)...");
+
         alGenSources(1, &source_);
         if (alGetError() != AL_NO_ERROR)
         {
@@ -79,6 +83,8 @@ DevCD::DevCD()
     pPlayList_ = new DevCDPlayList(numberOfTracks());
 
     randomGenerator_.seedFromTime();
+#else
+    spdlog::info("The music is not available in this build configuration (using alure)");
 #endif
 }
 

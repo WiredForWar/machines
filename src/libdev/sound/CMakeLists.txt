@@ -34,6 +34,8 @@ add_library(sound ${GAME_COMPONENT_LIB_TYPE} ${SOUND_SOURCES})
 add_library(LibDev::sound ALIAS sound)
 
 target_link_libraries(sound PUBLIC
+    LibDev::base
+
     External::libaudio
     OpenAL::OpenAL
 )

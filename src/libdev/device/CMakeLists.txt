@@ -52,6 +52,8 @@ target_link_libraries(device PUBLIC
 
 target_link_libraries(device PRIVATE
     OpenAL::OpenAL
+
+    spdlog::spdlog
 )
 
 if(TARGET Alure::Alure)
