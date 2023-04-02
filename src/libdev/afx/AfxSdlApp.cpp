@@ -11,6 +11,9 @@
 
 #include "recorder/recorder.hpp"
 
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/spdlog.h"
+
 #include <SDL.h>
 
 int main(int argc, char* argv[])
@@ -81,7 +84,16 @@ void AfxSdlApp::initialise(int argc, char* argv[])
 
 bool AfxSdlApp::OSStartup()
 {
+    initLogger();
+
+    {
+        SDL_version v;
+        SDL_GetVersion(&v);
+        spdlog::info("SDL version: {}.{}.{}", v.major, v.minor, v.patch);
+    }
+
     // Create window
+    spdlog::info("Initializing SDL...");
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -111,6 +123,26 @@ void AfxSdlApp::OSShutdown()
 {
     SDL_DestroyWindow(pWindow_);
     SDL_Quit();
+}
+
+void AfxSdlApp::setAppName(const std::string& name)
+{
+    appName_ = name;
+}
+
+void AfxSdlApp::setAppVersion(const std::string& version)
+{
+    version_ = version;
+}
+
+void AfxSdlApp::setAppBuildVersion(const std::string& buildVersion)
+{
+    buildVersion_ = buildVersion;
+}
+
+void AfxSdlApp::setLoggingEnabled(bool enabled)
+{
+    loggingEnabled_ = enabled;
 }
 
 void AfxSdlApp::coreLoop()
@@ -174,6 +206,31 @@ void AfxSdlApp::coreLoop()
 
     NEIL_STREAM("Finished app" << std::endl);
     POST(isFinished());
+}
+
+void AfxSdlApp::initLogger()
+{
+    std::shared_ptr<spdlog::logger> logger;
+    try
+    {
+        constexpr int MaxSize = 1024 * 1024 * 5;
+        constexpr int MaxFiles = 2;
+        constexpr bool RotateOnOpen = true;
+
+        spdlog::filename_t fileName = appName_;
+        std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
+        fileName = "logs/" + fileName + ".txt";
+        logger = spdlog::rotating_logger_mt("", fileName, MaxSize, MaxFiles, RotateOnOpen);
+    }
+    catch (const spdlog::spdlog_ex& ex)
+    {
+        std::cout << "Log init failed: " << ex.what() << std::endl;
+    }
+
+    spdlog::set_default_logger(logger);
+    spdlog::flush_on(spdlog::level::info);
+    spdlog::set_level(spdlog::level::debug);
+    spdlog::info("Starting {} {} ({})", appName_, version_, buildVersion_);
 }
 
 void AfxSdlApp::dispatchEvent(SDL_Event* event)

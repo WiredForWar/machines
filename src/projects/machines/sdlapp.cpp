@@ -1,6 +1,7 @@
 // #include <env>
 
 #include "machines/sdlapp.hpp"
+#include "SDL_version.h"
 #include "afx/castfns.hpp"
 #include "base/diag.hpp"
 #include "system/pathname.hpp"
@@ -40,6 +41,10 @@
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
 
+#include "MachinesVersion.hpp"
+
+#include "spdlog/spdlog.h"
+
 void debugTiming(const char* text, bool startTiming)
 {
     static PhysAbsoluteTime startTime;
@@ -70,6 +75,11 @@ SDLApp::SDLApp()
 {
     for (int i = 0; i < 4; ++i)
         aShowRace_[i] = false;
+
+    setAppName("Machines");
+    setLoggingEnabled(true);
+    setAppVersion(machinesVersion());
+    setAppBuildVersion(machinesBuildVersion());
 }
 
 SDLApp::~SDLApp()

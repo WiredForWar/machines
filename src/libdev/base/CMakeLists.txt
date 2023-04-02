@@ -61,4 +61,6 @@ add_library(LibDev::base ALIAS base)
 
 target_link_libraries(base PUBLIC
     LibDev::stdlib
+
+    spdlog::spdlog
 )
