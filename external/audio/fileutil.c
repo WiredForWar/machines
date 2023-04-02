@@ -29,6 +29,7 @@
 //#include "config.h"
 
 #include	<stdio.h>
+#include <stdlib.h>
 #include	<audio/Aos.h>
 #include	<audio/fileutil.h>
 
