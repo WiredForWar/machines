@@ -67,8 +67,6 @@ foreach( val RANGE ${len2} )
         gmock
         gtest_main
         ${TESTING_THESE_GUYS}
-        libaudio
-        ${MACHINES_LIBS}
     )
     add_test(NAME ${test_name} COMMAND ${test_name})
 endforeach()

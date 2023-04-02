@@ -179,14 +179,6 @@ if(PLATFORM_WINDOWS)
     find_library(Z_LIBRARY z HINTS ${WINDOWS_DEPENDENCIES_DIR})
     find_library(RPCRT4_LIBRARY rpcrt4 HINTS ${WINDOWS_DEPENDENCIES_DIR})
     find_library(USP10_LIBRARY usp10 HINTS ${WINDOWS_DEPENDENCIES_DIR})
-    # Windows 64-bit libraries
-    set(LIBS
-        ${MSVCRT_LIBRARY}
-        ${PNG16_LIBRARY}
-        ${Z_LIBRARY}
-        ${RPCRT4_LIBRARY}
-        ${USP10_LIBRARY}
-    )
   endif()
 
   target_link_libraries(Freetype::Freetype INTERFACE

@@ -120,19 +120,10 @@ set(LOCAL_INCLUDES
 if(TARGET ffmpeg::swscale)
     list(APPEND LIBS ffmpeg::swscale)
 endif()
-set(MACHINES_LIBS ${LIBS} PARENT_SCOPE)
 
 include_directories(${LOCAL_INCLUDES})
 
-
-# Link directories
-link_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/.
-)
-
-
 # Targets
-
 add_subdirectory(libdev/afx)
 add_subdirectory(libdev/base)
 add_subdirectory(libdev/ctl)
@@ -196,8 +187,3 @@ set_target_properties(machines planeted PROPERTIES
 
 target_link_libraries(machines libs)
 target_link_libraries(planeted libs)
-
-if(TOOLCHAIN_EXTRA_FLAGS)
-    target_link_libraries (machines ${TOOLCHAIN_EXTRA_FLAGS})
-    target_link_libraries (planeted ${TOOLCHAIN_EXTRA_FLAGS})
-endif()
