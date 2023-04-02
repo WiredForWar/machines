@@ -17,7 +17,7 @@
 #include "render/drivsel.hpp"
 #include "render/surface.hpp"
 #include "render/internal/displayi.hpp"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "device/timer.hpp"
 

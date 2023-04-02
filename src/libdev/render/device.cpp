@@ -63,7 +63,7 @@
 #include "system/metaistr.hpp"
 #include "system/winapi.hpp"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <GL/glew.h>
 
 RenDevice::RenDevice(RenDisplay* display)

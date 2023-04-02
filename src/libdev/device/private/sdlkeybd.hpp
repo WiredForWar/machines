@@ -2,7 +2,7 @@
 #define DEVICE_SDL_KEYBOARD_HPP
 
 #include "device/butevent.hpp"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 // class DevButtonEvent;
 

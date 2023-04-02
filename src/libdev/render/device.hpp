@@ -2,7 +2,7 @@
 
 #include "base/base.hpp"
 #include <GL/glew.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "render/internal/trigroup.hpp"
 #include "render/texture.hpp"

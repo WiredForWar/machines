@@ -7,7 +7,7 @@
 #define _REN_DISPLAY_HPP
 
 #include "base/base.hpp"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "render/render.hpp"
 
 template <class T> class ctl_list;
