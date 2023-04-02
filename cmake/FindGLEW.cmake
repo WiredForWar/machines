@@ -53,7 +53,11 @@ MARK_AS_ADVANCED( GLEW_FOUND )
 if(GLEW_FOUND)
     if(NOT TARGET GLEW::GLEW)
         add_library(GLEW::GLEW INTERFACE IMPORTED)
-        set_target_properties(GLEW::GLEW PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
-            "${GLEW_GLEW_INCLUDE_DIRS}")
+        set_target_properties(GLEW::GLEW PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES
+                "${GLEW_GLEW_INCLUDE_DIRS}"
+            INTERFACE_LINK_LIBRARIES
+                "${GLEW_LIBRARY}"
+        )
     endif()
 endif()
