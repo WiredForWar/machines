@@ -12,6 +12,7 @@ project(Machines
 include(CMakeDependentOption)
 
 message(STATUS "Building Machines ${Machines_VERSION}")
+message(STATUS "CMake version: ${CMAKE_VERSION}")
 
 if (NOT BUILD_VERSION)
     find_package(Git QUIET)
