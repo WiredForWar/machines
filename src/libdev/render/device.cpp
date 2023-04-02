@@ -466,6 +466,7 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
     pImpl_->caps_ = new RenCapabilities(this, true);
     RENDER_STREAM(*pImpl_->caps_);
 
+    spdlog::info("Initializing OpenGL context...");
     // we have to copy the gamma correction into display in order to implement
     // asserts in gammaCorrection() methods, it's ugly.
     pImpl_->display_->supportsGammaCorrection(pImpl_->caps_->supportsGammaCorrection());
@@ -476,9 +477,18 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         pImpl_->caps_->supportsColourKey() || pImpl_->caps_->supportsTextureAlpha(),
         runtime_error("No transparency supported by D3D."));
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    constexpr int contextMajorVersion = 2;
+    constexpr int contextMinorVersion = 1;
+    constexpr int contextProfile = 0; // Also consider SDL_GL_CONTEXT_PROFILE_CORE (1)
+
+    spdlog::info("Context version: {}.{} (SDL profile: {})", contextMajorVersion, contextMinorVersion, contextProfile);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, contextMajorVersion);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, contextMinorVersion);
+    if (contextProfile)
+    {
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, contextProfile);
+    }
 
     SDLGlContext_ = SDL_GL_CreateContext(pImpl_->display_->window());
 
@@ -490,19 +500,30 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         return EXIT_FAILURE;
     }
 
+    const auto getGlStringAsConstChar = [](GLenum name) { return reinterpret_cast<const char*>(glGetString(name)); };
+    {
+        spdlog::info("GL_RENDERER: {}", getGlStringAsConstChar(GL_RENDERER));
+        spdlog::info("GL_VERSION: {}", getGlStringAsConstChar(GL_VERSION));
+        spdlog::info("GL_VENDOR: {}", getGlStringAsConstChar(GL_VENDOR));
+        spdlog::info("GL_SHADING_LANGUAGE_VERSION: {}", getGlStringAsConstChar(GL_SHADING_LANGUAGE_VERSION));
+    }
+
     // Disable vertical sync
     SDL_GL_SetSwapInterval(0);
 
+    spdlog::info("Initializing GLEW...");
     GLenum glew_status = glewInit();
     if (glew_status != GLEW_OK)
     {
         std::string msg("Fatal in glewInit: ");
         msg += reinterpret_cast<const char*>(glewGetErrorString(glew_status));
+        spdlog::error(msg);
         SysWindowsAPI::messageBox(msg.c_str(), "Error");
         return EXIT_FAILURE;
     }
     if (!GLEW_VERSION_2_1)
     {
+        spdlog::error("GLEW reports that OpengGL 2.1 is not available");
         SysWindowsAPI::messageBox(
             "Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.",
             "Error");
