@@ -10,7 +10,6 @@
 #include "base/cballoc.hpp"
 #include "base/diag.hpp"
 #include "base/poolallo.hpp"
-#include "system/memcaps.hpp"
 #include "profiler/profiler.hpp"
 
 /////////////////////////////////////////////
@@ -325,13 +324,8 @@ void cbClose()
     cbInitialised = false;
 }
 
-void cbAllocTrace(std::ostream& o, const std::string& title, AllocTraceOptions option)
+void cbAllocTrace(std::ostream& o, AllocTraceOptions option)
 {
-    // Print the header including overall memory allocation info
-    o << "=======================================================" << std::endl;
-    o << title << std::endl;
-    SysMemoryCaps::outputInfo(o);
-
     o << std::endl
       << "System blocks allocated " << systemMemoryBlocksAllocated << "  Total memory "
       << (systemMemoryBlocksAllocated * SYSTEM_BLOCK_SIZE) << std::endl;

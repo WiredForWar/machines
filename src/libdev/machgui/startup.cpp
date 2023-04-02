@@ -72,6 +72,7 @@
 #include "world4d/manager.hpp"
 #include "world4d/camera.hpp"
 #include "world4d/soundman.hpp"
+#include "system/memcaps.hpp"
 #include "system/pathname.hpp"
 #include "render/cursor2d.hpp"
 #include "render/device.hpp"
@@ -329,7 +330,12 @@ void MachGuiStartupScreens::loopCycle()
         static PhysAbsoluteTime lastTraceTime = Phys::time();
         if (Phys::time() - lastTraceTime > 60.0)
         {
-            cbAllocTrace(Diag::instance().danielStream(), "Loop cycle at 1 minute interval", CB_ALLOC_DETAIL_BLOCKS);
+            // Print the header including overall memory allocation info
+            Diag::instance().danielStream() << "=======================================================" << std::endl;
+            Diag::instance().danielStream() << "Loop cycle at 1 minute interval" << std::endl;
+            SysMemoryCaps::outputInfo(Diag::instance().danielStream());
+
+            cbAllocTrace(Diag::instance().danielStream(), CB_ALLOC_DETAIL_BLOCKS);
             lastTraceTime = Phys::time();
         }
     }
