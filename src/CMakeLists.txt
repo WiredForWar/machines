@@ -5,6 +5,8 @@
 
 set(GAME_COMPONENT_LIB_TYPE STATIC)
 
+configure_file("projects/MachinesVersion.cpp.in" "projects/MachinesVersion.cpp")
+
 # Source files
 # GLOB is sometimes considered anti pattern but watever
 
@@ -22,6 +24,8 @@ set(MACHINES_SOURCES
     projects/machines/sdlapp.hpp
     projects/machines/simstuff.cpp
     projects/machines/sndstuff.cpp
+
+    ${CMAKE_CURRENT_BINARY_DIR}/projects/MachinesVersion.cpp
 )
 
 set(PLANETED_SOURCES
@@ -91,6 +95,8 @@ set(PLANETED_SOURCES
     projects/planeted/vpolymark.hpp
     projects/planeted/wdebug.cpp
     projects/planeted/wdebug.hpp
+
+    ${CMAKE_CURRENT_BINARY_DIR}/projects/MachinesVersion.cpp
 )
 
 if(PLATFORM_WINDOWS)

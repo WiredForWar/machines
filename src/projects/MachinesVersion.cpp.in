@@ -1,0 +1,11 @@
+#include "MachinesVersion.hpp"
+
+std::string machinesVersion()
+{
+    return "@Machines_VERSION@";
+}
+
+std::string machinesBuildVersion()
+{
+    return "@BUILD_VERSION@";
+}

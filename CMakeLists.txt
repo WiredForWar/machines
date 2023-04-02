@@ -13,10 +13,18 @@ include(CMakeDependentOption)
 
 message(STATUS "Building Machines ${Machines_VERSION}")
 
-set(BUILD_NUMBER 0)
-if(NOT "$ENV{BUILD_NUMBER}" STREQUAL "")
-    set(BUILD_NUMBER "$ENV{BUILD_NUMBER}")
-    message(STATUS "CI build #${BUILD_NUMBER}")
+if (NOT BUILD_VERSION)
+    find_package(Git QUIET)
+    if(GIT_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+        execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            OUTPUT_VARIABLE BUILD_VERSION
+            ERROR_QUIET
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    else()
+        set(BUILD_VERSION "unknown")
+    endif()
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
