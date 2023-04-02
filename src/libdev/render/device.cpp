@@ -309,71 +309,47 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
+    // Read the Vertex Shader code from the file
+    std::string shadersDir("data/shaders/");
+    // Check if GLSL is too old
+    // Unconditionally use GLSL 120 for now because the 310 ES version causes glitches
+    // (at least for some Windows users
+    if (true) // glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
+        shadersDir.append("120/");
     std::string vertexShaderCode;
-    std::string fragmentShaderCode;
-
-    SysMetaFile metaFile("shaders.met");
-
-    if (SysMetaFile::useMetaFile())
+    std::ifstream vertexShaderStream(shadersDir + vertexShaderPath, std::ios::in);
+    if (vertexShaderStream.is_open())
     {
-        SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_2);
-        SysMetaFileIstream vertexShaderStream(metaFile, vertexShaderPath, std::ios::in);
         std::string line = "";
         while (getline(vertexShaderStream, line))
         {
             vertexShaderCode += "\n" + line;
         }
+        vertexShaderStream.close();
+    }
+    else
+    {
+        std::cerr << "Impossible to open vertex shader file vertexShaderPath = '" << vertexShaderPath
+                  << "', fragmentShaderPath = '" << fragmentShaderPath << "'" << std::endl;
+        return 0;
+    }
 
-        SysMetaFileIstream fragmentShaderStream(metaFile, fragmentShaderPath, std::ios::in);
-        line = "";
+    // Read the Fragment Shader code from the file
+    std::string fragmentShaderCode;
+    std::ifstream fragmentShaderStream(shadersDir + fragmentShaderPath, std::ios::in);
+    if (fragmentShaderStream.is_open())
+    {
+        std::string line = "";
         while (getline(fragmentShaderStream, line))
         {
             fragmentShaderCode += "\n" + line;
         }
-        SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_1);
+        fragmentShaderStream.close();
     }
     else
     {
-        // Read the Vertex Shader code from the file
-        std::string shadersDir("data/shaders/");
-        // Check if GLSL is too old
-        // Unconditionally use GLSL 120 for now because the 310 ES version causes glitches
-        // (at least for some Windows users
-        if (true) // glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
-            shadersDir.append("120/");
-        std::ifstream vertexShaderStream(shadersDir + vertexShaderPath, std::ios::in);
-        if (vertexShaderStream.is_open())
-        {
-            std::string line = "";
-            while (getline(vertexShaderStream, line))
-            {
-                vertexShaderCode += "\n" + line;
-            }
-            vertexShaderStream.close();
-        }
-        else
-        {
-            std::cerr << "Impossible to open vertex shader file vertexShaderPath = '" << vertexShaderPath
-                      << "', fragmentShaderPath = '" << fragmentShaderPath << "'" << std::endl;
-            return 0;
-        }
-
-        // Read the Fragment Shader code from the file
-        std::ifstream fragmentShaderStream(shadersDir + fragmentShaderPath, std::ios::in);
-        if (fragmentShaderStream.is_open())
-        {
-            std::string line = "";
-            while (getline(fragmentShaderStream, line))
-            {
-                fragmentShaderCode += "\n" + line;
-            }
-            fragmentShaderStream.close();
-        }
-        else
-        {
-            std::cerr << "Impossible to open fragment shader file " << std::endl;
-            return 0;
-        }
+        std::cerr << "Impossible to open fragment shader file " << std::endl;
+        return 0;
     }
 
     GLint result = GL_FALSE;
