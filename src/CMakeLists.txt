@@ -129,16 +129,6 @@ set(SYSTEM_INCLUDES
     ${OPENAL_INCLUDE_DIR}
 )
 
-if(USE_ALURE)
-    list(APPEND SYSTEM_INCLUDES
-        ${ALURE_INCLUDE_DIRS}
-    )
-    list(APPEND LIBS
-        #alure-static
-        ${ALURE_LIBRARIES}
-    )
-endif()
-
 if(TARGET ffmpeg::swscale)
     list(APPEND LIBS ffmpeg::swscale)
 endif()

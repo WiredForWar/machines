@@ -50,4 +50,8 @@ target_link_libraries(device PUBLIC
     SDL2::SDL2
 )
 
+if(USE_ALURE)
+    target_link_libraries(device PUBLIC Alure::Alure)
+endif()
+
 target_compile_definitions(device PUBLIC USE_ALURE=$<BOOL:${USE_ALURE}>)

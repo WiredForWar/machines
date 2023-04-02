@@ -74,4 +74,13 @@ endif()
 
 if(Alure_FOUND)
     set(ALURE_LIBRARIES ${ALURE_LIBRARIES} OpenAL::OpenAL)
+    if(NOT TARGET Alure::Alure)
+        add_library(Alure::Alure INTERFACE IMPORTED)
+        set_target_properties(Alure::Alure PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES
+                "${ALURE_INCLUDE_DIRS}"
+            INTERFACE_LINK_LIBRARIES
+                "${ALURE_LIBRARIES}"
+        )
+    endif()
 endif()
