@@ -558,10 +558,11 @@ set(MACHLOG_SOURCES
     wepline.hpp
 )
 
-add_library(machlog OBJECT ${MACHLOG_SOURCES})
+add_library(machlog STATIC ${MACHLOG_SOURCES})
 add_library(LibDev::machlog ALIAS machlog)
 
 target_link_libraries(machlog PUBLIC
     LibDev::gui
     LibDev::network
+    LibDev::machphys
 )

@@ -27,9 +27,10 @@ set(ENVIRNMT_SOURCES
     skyline.hpp
 )
 
-add_library(envirnmt OBJECT ${ENVIRNMT_SOURCES})
+add_library(envirnmt STATIC ${ENVIRNMT_SOURCES})
 add_library(LibDev::environment ALIAS envirnmt)
 
 target_link_libraries(envirnmt PUBLIC
     LibDev::render
+    LibDev::world4d
 )

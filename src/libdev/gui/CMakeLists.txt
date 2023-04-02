@@ -52,7 +52,7 @@ set(GUI_SOURCES
     RootSharedBitmaps.hpp
     RootSharedBitmaps.cpp)
 
-add_library(gui OBJECT ${GUI_SOURCES})
+add_library(gui STATIC ${GUI_SOURCES})
 add_library(LibDev::gui ALIAS gui)
 
 target_link_libraries(gui PUBLIC

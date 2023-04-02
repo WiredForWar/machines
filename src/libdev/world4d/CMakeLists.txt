@@ -195,7 +195,7 @@ set(WORLD4D_SOURCES
     world4d.hpp
 )
 
-add_library(world4d OBJECT ${WORLD4D_SOURCES})
+add_library(world4d STATIC ${WORLD4D_SOURCES})
 add_library(LibDev::world4d ALIAS world4d)
 
 target_link_libraries(world4d PUBLIC

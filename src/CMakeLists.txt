@@ -193,26 +193,23 @@ target_sources(libs
     $<TARGET_OBJECTS:profiler>
     $<TARGET_OBJECTS:system>
     $<TARGET_OBJECTS:device>
-    $<TARGET_OBJECTS:world4d>
     $<TARGET_OBJECTS:gxin>
     $<TARGET_OBJECTS:xin>
     $<TARGET_OBJECTS:stdlib>
     $<TARGET_OBJECTS:sound>
     $<TARGET_OBJECTS:ctl>
     $<TARGET_OBJECTS:phys>
-    $<TARGET_OBJECTS:sim>
-    $<TARGET_OBJECTS:gui>
     $<TARGET_OBJECTS:recorder>
     $<TARGET_OBJECTS:envirnmt>
-    $<TARGET_OBJECTS:machphys>
-    $<TARGET_OBJECTS:machlog>
-
 )
 
 target_link_libraries(libs INTERFACE
     LibDev::network
     LibDev::render
     LibDev::machgui
+    LibDev::machlog
+    LibDev::machphys
+    LibDev::world4d
 )
 
 add_executable(machines ${MACHINES_SOURCES})

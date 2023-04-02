@@ -30,9 +30,10 @@ set(SIM_SOURCES
     simstats.hpp
 )
 
-add_library(sim OBJECT ${SIM_SOURCES})
+add_library(sim STATIC ${SIM_SOURCES})
 add_library(LibDev::sim ALIAS sim)
 
 target_link_libraries(sim PUBLIC
     LibDev::network
+    LibDev::world4d
 )
