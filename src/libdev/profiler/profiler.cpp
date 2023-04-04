@@ -9,6 +9,7 @@
 //  prolog hook routine) and -ee (call epilog hook routine)
 //  options *disabled*
 
+#include "base/IProgressReporter.hpp"
 #include "base/diag.hpp"
 
 #include <csignal>
@@ -57,22 +58,26 @@ unsigned int RDTSC(uint32[2]);
     " mov [esi+4],edx " parm[esi] modify[eax edx] value[eax];
 
 // static
-ProProfiler& ProProfiler::instance()
+ProProfiler& ProProfiler::instance(IProgressReporter* pReporter)
 {
     static ProProfiler instance_;
+    if (!instance_.isInitialized())
+    {
+        instance_.init(pReporter);
+    }
+
     return instance_;
 }
 
 ProProfiler::ProProfiler()
     : traceIntervalSeconds_(50.0 / 1000.0)
-    , traceIntervalFixed_(false)
     , outputStream_("profiler.dat")
-    , memoryProfilingOn_(false)
-    , isBufferingOutput_(false)
-    , pMemoryBuffer_(nullptr)
-    , crashOnPrint_(false)
 {
-    calibrate();
+}
+
+void ProProfiler::init(IProgressReporter* pReporter)
+{
+    calibrate(pReporter);
 
     // ProProfilerAnchor();
     registerAnchor("ProProfilerAnchor");
@@ -91,6 +96,11 @@ ProProfiler::ProProfiler()
 #endif // _MSC_VER
 
         TEST_INVARIANT;
+}
+
+bool ProProfiler::isInitialized() const
+{
+    return ticksPerSecond_;
 }
 
 ProProfiler::~ProProfiler()
@@ -159,7 +169,7 @@ void ProProfiler::closeOutputStream()
     outputStream_.close();
 }
 
-void ProProfiler::calibrate()
+void ProProfiler::calibrate(IProgressReporter* pReporter)
 {
     uint32 startTicks[2];
     uint32 endTicks[2];
@@ -169,7 +179,7 @@ void ProProfiler::calibrate()
 
     //  First wait for the clock to change to get a reasonably
     //  accurate base point.
-    size_t startClockValue = clock();
+    clock_t startClockValue = clock();
 
     while (clock() == startClockValue)
     {
@@ -179,10 +189,21 @@ void ProProfiler::calibrate()
     startClockValue = clock();
     // RDTSC( startTicks );
 
-    while (clock() <= startClockValue + minClocksToWait)
+    clock_t currentClock = 0;
+    double nextReport = 0;
+    do
     {
-        //  Do nothing
-    }
+        currentClock = clock();
+
+        if (pReporter && currentClock >= startClockValue + minClocksToWait * nextReport)
+        {
+            int done = 100 * nextReport;
+            int total = 100;
+
+            int nextCallAmount = pReporter->report(done, total);
+            nextReport += static_cast<double>(nextCallAmount) / total;
+        }
+    } while (currentClock <= startClockValue + minClocksToWait);
 
     size_t endClockValue = clock();
     // RDTSC( endTicks );

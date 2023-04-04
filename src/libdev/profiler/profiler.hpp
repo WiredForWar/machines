@@ -17,6 +17,7 @@
 #include <fstream>
 
 class BaseLogBuffer;
+class IProgressReporter;
 
 // TODO: handle timer
 static size_t count;
@@ -34,7 +35,7 @@ class ProProfiler
 {
 public:
     //  Singleton class
-    static ProProfiler& instance();
+    static ProProfiler& instance(IProgressReporter* pReporter = nullptr);
     ~ProProfiler();
 
     //  The default trace interval is 50ms
@@ -118,8 +119,11 @@ private:
 
     ProProfiler();
 
+    void init(IProgressReporter* pReporter = nullptr);
+    bool isInitialized() const;
+
     void setupTraceInterval() const;
-    void calibrate();
+    void calibrate(IProgressReporter* pReporter);
 
     friend void ProProfilerAnchor();
     void registerAnchor(const char* anchorFunctionName);
@@ -127,19 +131,19 @@ private:
     //  Convert a double value into a 64 bit integer value
     void doubleToUint64(double value, uint32* pLs, uint32* pMs) const;
 
-    double traceIntervalSeconds_;
-    double ticksPerSecond_;
-    bool traceIntervalFixed_;
+    double traceIntervalSeconds_ = 0;
+    double ticksPerSecond_ = 0;
+    bool traceIntervalFixed_ = false;
     std::ofstream outputStream_;
-    bool memoryProfilingOn_;
+    bool memoryProfilingOn_ = false;
 
     //  Stored as a char* so I don't have to pull in the string class
     char* anchorFunctionName_;
     void* anchorFunctionAddress_;
 
-    bool isBufferingOutput_;
-    BaseLogBuffer* pMemoryBuffer_;
-    bool crashOnPrint_; // true if a crash should be induced on call from EPI/PRO to print the stack
+    bool isBufferingOutput_ = false;
+    BaseLogBuffer* pMemoryBuffer_ = nullptr;
+    bool crashOnPrint_ = false; // true if a crash should be induced on call from EPI/PRO to print the stack
     long unsigned int threadId;
 };
 
