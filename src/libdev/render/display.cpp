@@ -35,32 +35,6 @@
     CB_DEPIMPL(bool, isPrimaryDriver_);
 
 //////////////////////////////////////////////////////////////////////////
-// This class only exists so that some of the Direct3D dependencies are
-// removed from display.hpp.  Regard it as part of RenDisplay.
-class RenDDEnumerator
-{
-public:
-    RenDDEnumerator(RenDisplay* d)
-        : display_(d)
-    {
-        PRE(d);
-    }
-
-private:
-    void addDisplayMode(SDL_DisplayMode pddsd);
-
-    RenDisplay* display_;
-};
-
-void RenDDEnumerator::addDisplayMode(SDL_DisplayMode dmode)
-{
-    PRE(display_);
-
-    RenDisplay::Mode m(dmode);
-    display_->pImpl_->modeList_.push_back(m);
-}
-
-//////////////////////////////////////////////////////////////////////////
 RenDisplay::RenDisplay(SDL_Window* wnd)
     : pImpl_(_NEW(RenIDisplay(wnd)))
 {
@@ -144,8 +118,6 @@ bool RenDisplay::useFullScreen()
     CB_RenDisplay_DEPIMPL();
     if (fullscreen_)
         return true;
-
-    RenDDEnumerator enumerator(this);
 
     fullscreen_ = true;
 
