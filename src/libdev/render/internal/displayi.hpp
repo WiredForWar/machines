@@ -65,7 +65,7 @@ private:
     RenIDisplay& operator=(const RenIDisplay&);
 
     SDL_Window* pWnd_;
-    ctl_list<RenDisplay::Mode> modeList_;
+    std::vector<RenDisplay::Mode> modeList_;
     RenDisplay::Mode currentMode_;
     bool fullscreen_;
     const RenCursor2d* cursor_;

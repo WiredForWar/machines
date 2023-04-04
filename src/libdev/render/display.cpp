@@ -24,7 +24,7 @@
 #include "device/timer.hpp"
 
 #define CB_RenDisplay_DEPIMPL()                                                                                        \
-    CB_DEPIMPL(ctl_list<RenDisplay::Mode>, modeList_);                                                                 \
+    CB_DEPIMPL(std::vector<RenDisplay::Mode>, modeList_);                                                              \
     CB_DEPIMPL(RenDisplay::Mode, currentMode_);                                                                        \
     CB_DEPIMPL(bool, fullscreen_);                                                                                     \
     CB_DEPIMPL(uint32_t, frameNo_);                                                                                    \
@@ -76,8 +76,10 @@ void RenDisplay::buildDisplayModesList()
         desktopMode.w = desktopMode.h = 0;
     }
 
-    modeList_.clear();
     int displayCount = SDL_GetNumVideoDisplays();
+    modeList_.clear();
+    modeList_.reserve(displayCount);
+
     RENDER_STREAM("Number of displays: " << displayCount << std::endl);
     for (int displayIndex = 0; displayIndex <= displayCount; displayIndex++)
     {
@@ -97,7 +99,9 @@ void RenDisplay::buildDisplayModesList()
             }
         }
     }
-    modeList_.sort();
+
+    std::sort(modeList_.begin(), modeList_.end());
+
     lowestAllowedMode_ = modeList_.front();
     highestAllowedMode_ = modeList_.back();
 }
@@ -125,7 +129,8 @@ bool RenDisplay::useFullScreen()
     // available in fullscreen.
     if (fullscreen_)
     {
-        modeList_.sort();
+        std::sort(modeList_.begin(), modeList_.end());
+
         lowestAllowedMode_ = modeList_.front();
         highestAllowedMode_ = modeList_.back();
     }
@@ -149,7 +154,7 @@ bool RenDisplay::fullScreen() const
     return fullscreen_;
 }
 
-const ctl_list<RenDisplay::Mode>& RenDisplay::modeList() const
+const std::vector<RenDisplay::Mode>& RenDisplay::modeList() const
 {
     CB_RenDisplay_DEPIMPL();
     return modeList_;
@@ -232,7 +237,7 @@ bool RenDisplay::useMode(int width, int height, int refresh)
     // PRE(depth  > 0);
 
     const Mode newMode(width, height, refresh);
-    ctl_list<Mode>::const_iterator it = find(modeList_.begin(), modeList_.end(), newMode);
+    Modes::const_iterator it = find(modeList_.begin(), modeList_.end(), newMode);
 
     // Can't use it if it's not in the list.
     if (it == modeList_.end())
@@ -248,8 +253,8 @@ bool RenDisplay::useLowerMode()
     PRE(modeList().size() > 0);
 
     // Locate the current mode in the list.
-    ctl_list<Mode>::iterator lowestIt = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
-    ctl_list<Mode>::const_iterator it = find(lowestIt, modeList_.end(), currentMode_);
+    Modes::iterator lowestIt = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
+    Modes::const_iterator it = find(lowestIt, modeList_.end(), currentMode_);
     ASSERT(it != modeList_.end(), logic_error());
 
     // Search backwards for a lower resolution at the same bit depth.
@@ -273,7 +278,7 @@ bool RenDisplay::useNearestMode(int pixels, int bitDepth)
     PRE(modeList().size() > 0);
 
     // Traverse the list in order of increasing resolution.
-    ctl_list<Mode>::const_iterator it = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
+    Modes::const_iterator it = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
 
     const Mode* bestFit = nullptr;
     while (it != modeList_.end())
@@ -297,7 +302,7 @@ bool RenDisplay::useLowestMode(int bitDepth)
     PRE(modeList().size() > 0);
 
     // Traverse the list in order of increasing resolution.
-    ctl_list<Mode>::const_iterator it = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
+    Modes::const_iterator it = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
 
     while (it != modeList_.end())
     {
@@ -332,7 +337,7 @@ bool RenDisplay::lowestAllowedMode(int width, int height, int depth)
     PRE(depth > 0);
 
     const Mode newMode(width, height, 0);
-    ctl_list<Mode>::const_iterator it = find(modeList_.begin(), modeList_.end(), newMode);
+    Modes::const_iterator it = find(modeList_.begin(), modeList_.end(), newMode);
 
     // Can't use it if it's not in the list.
     if (it == modeList_.end())
@@ -349,8 +354,8 @@ bool RenDisplay::lowestAllowedMode(const RenDisplay::Mode& lowest)
         return true;
 
     bool found = false;
-    ctl_list<Mode>::const_iterator highestIt = find(modeList_.begin(), modeList_.end(), highestAllowedMode_);
-    ctl_list<Mode>::const_iterator it = modeList_.begin();
+    Modes::const_iterator highestIt = find(modeList_.begin(), modeList_.end(), highestAllowedMode_);
+    Modes::const_iterator it = modeList_.begin();
     ASSERT(highestIt != modeList_.end(), "Invalid highestAllowedMode_ ");
     ++highestIt;
 
@@ -401,8 +406,8 @@ bool RenDisplay::setHighestAllowedMode(uint32_t maxMemory)
     bool found = false;
     uint32_t memoryRequiredByMode;
 
-    ctl_list<Mode>::const_iterator lowestIt = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
-    ctl_list<Mode>::const_iterator it = modeList_.end();
+    Modes::const_iterator lowestIt = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
+    Modes::const_iterator it = modeList_.end();
 
     while (it != lowestIt and not found)
     {
@@ -704,9 +709,12 @@ std::ostream& operator<<(std::ostream& o, const RenDisplay& t)
     o << "Modes available for display:\n";
 
     int i = 0;
-    const ctl_list<RenDisplay::Mode>& modes = t.modeList();
-    for (ctl_list<RenDisplay::Mode>::const_iterator it = modes.begin(); it != modes.end(); ++it, ++i)
-        o << i << "\t" << *it << "\n";
+    const auto& modes = t.modeList();
+    for (const RenDisplay::Mode& mode : modes)
+    {
+        o << i << "\t" << mode << "\n";
+        i++;
+    }
 
     return o;
 }

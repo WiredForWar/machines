@@ -245,12 +245,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     modeList.reserve(4);
 
     // Iterate through screen modes selecting compatible ones ( i.e. conform to minimum size and colour bit depth ).
-    const ctl_list<RenDisplay::Mode>& modes = pDisplay_->modeList();
+    const RenDisplay::Modes& modes = pDisplay_->modeList();
     const RenDisplay::Mode& lowestMode = pDisplay_->lowestAllowedMode();
     const RenDisplay::Mode& highestMode = pDisplay_->highestAllowedMode();
-    for (ctl_list<RenDisplay::Mode>::const_iterator iter = modes.begin(); iter != modes.end(); ++iter)
+    for (const RenDisplay::Mode& mode : modes)
     {
-        const RenDisplay::Mode& mode = *iter;
         // I'd like to use the highest allowed mode to decide whether a mode is accepted or
         // not (instead of testing the memory required versus the available video memory)
         // unfortunately I can't since the modes are sorted by number of pixels and not by memory

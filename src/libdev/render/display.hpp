@@ -10,6 +10,8 @@
 #include <SDL.h>
 #include "render/render.hpp"
 
+#include <vector>
+
 template <class T> class ctl_list;
 class SysPathName;
 class RenSurface;
@@ -105,7 +107,7 @@ public:
 
     // Clients cannot create modes, they must use modeList to get
     // a list of modes, choose one and pass a reference to useMode.
-    using Modes = ctl_list<Mode>;
+    using Modes = std::vector<Mode>;
     const Modes& modeList() const;
     bool useMode(const Mode&);
     const Mode& currentMode() const;
