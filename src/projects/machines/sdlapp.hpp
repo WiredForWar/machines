@@ -54,6 +54,8 @@ private:
 
     void outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor);
 
+    void initProfiling();
+
     // Sim
     void checkSuspendSimManager();
     void performSimCycle();

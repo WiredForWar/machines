@@ -227,32 +227,7 @@ bool SDLApp::clientStartup()
     SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_1);
 #endif
 
-    // Initialise profiling
-    double profileInterval = 50.0;
-    char* pMs = getenv("PROFILE_RATE");
-    if (pMs)
-        profileInterval = atof(pMs);
-    ProProfiler::instance().traceInterval(profileInterval / 1000.0);
-
-    HAL_STREAM("SDLApp::clientStartup\n");
-    char* pRate = getenv("MACH_RATE");
-
-    if (pRate)
-    {
-        MATHEX_SCALAR rate = atof(pRate);
-        DevTime::instance().rate(rate);
-
-        std::cout << "Rate is " << rate << std::endl;
-    }
-
-    char* pRunTime = getenv("MACH_RUN_TIME");
-
-    if (pRunTime)
-    {
-        runTime_ = atof(pRunTime);
-
-        std::cout << "Run time is " << runTime_ << std::endl;
-    }
+    initProfiling();
 
     std::set_new_handler(newHandler);
 
@@ -689,6 +664,35 @@ void SDLApp::outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform,
     // Update leak tracking
     LeakTracker::update(LeakTracker::INLOOP, LeakTracker::NONE);
 #endif
+}
+
+void SDLApp::initProfiling()
+{
+    double profileInterval = 50.0;
+    char* pMs = getenv("PROFILE_RATE");
+    if (pMs)
+        profileInterval = atof(pMs);
+    ProProfiler::instance().traceInterval(profileInterval / 1000.0);
+
+    HAL_STREAM("SDLApp::clientStartup\n");
+    char* pRate = getenv("MACH_RATE");
+
+    if (pRate)
+    {
+        MATHEX_SCALAR rate = atof(pRate);
+        DevTime::instance().rate(rate);
+
+        std::cout << "Rate is " << rate << std::endl;
+    }
+
+    char* pRunTime = getenv("MACH_RUN_TIME");
+
+    if (pRunTime)
+    {
+        runTime_ = atof(pRunTime);
+
+        std::cout << "Run time is " << runTime_ << std::endl;
+    }
 }
 
 // virtual
