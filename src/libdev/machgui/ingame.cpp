@@ -110,7 +110,7 @@
 #include <stdio.h>
 
 // MachInGameScreen GuiRoot is made very big (10000x10000) to cope with all possible screen resolutions.
-MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, BaseProgressReporter* pReporter)
+MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter* pReporter)
     : GuiRoot(Gui::Box(
         0,
         0,

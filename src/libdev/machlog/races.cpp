@@ -2210,7 +2210,7 @@ bool MachLogRaces::loadGame(
     W4dSceneManager* pSceneManager,
     const string& planetName,
     const string& scenarioName,
-    BaseProgressReporter* pReporter)
+    IProgressReporter* pReporter)
 {
     MachLogGameCreationData gameData;
     return loadGame(pSceneManager, planetName, scenarioName, gameData, pReporter);
@@ -2221,7 +2221,7 @@ bool MachLogRaces::loadGame(
     const string& planetName,
     const string& scenarioName,
     const MachLogGameCreationData& gameData,
-    BaseProgressReporter* pReporter)
+    IProgressReporter* pReporter)
 {
 
     MachLogVoiceMailManager::instance().acceptMailPostings(false);
@@ -2265,7 +2265,7 @@ bool MachLogRaces::loadGame(
     return true;
 }
 
-bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const string& planetName, BaseProgressReporter* pReporter)
+bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const string& planetName, IProgressReporter* pReporter)
 {
     // Reset the simulation time before we start, since current time is used during setup
     SimManager::instance().resetTime();
@@ -2347,7 +2347,7 @@ bool MachLogRaces::loadSavedGame(
     const string& scenarioFileName,
     const SysPathName& pathname,
     MachLogLoadSaveGameExtras* pExtras,
-    BaseProgressReporter* pReporter)
+    IProgressReporter* pReporter)
 {
     MachLogVoiceMailManager::instance().acceptMailPostings(false);
 

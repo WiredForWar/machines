@@ -1,7 +1,7 @@
 #include "machines/sdlapp.hpp"
 
 #include "base/diag.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "system/filedata.hpp"
 #include "system/fileenum.hpp"
 #include "mathex/point2d.hpp"
@@ -16,7 +16,7 @@
 
 #include "spdlog/spdlog.h"
 
-class PlanetLoadDummyProgressIndicator : public BaseProgressReporter
+class PlanetLoadDummyProgressIndicator : public IProgressReporter
 {
 public:
     PlanetLoadDummyProgressIndicator() {};

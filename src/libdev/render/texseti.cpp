@@ -8,7 +8,7 @@
 #include "render/internal/texseti.hpp"
 #include <string>
 #include "base/diag.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "system/pathname.hpp"
 #include "system/fileenum.hpp"
 #include "system/filedata.hpp"
@@ -31,7 +31,7 @@ RenTextureSetImpl::RenTextureSetImpl(const SysPathName& directory)
     TEST_INVARIANT;
 }
 
-RenTextureSetImpl::RenTextureSetImpl(const SysPathName& directory, BaseProgressReporter* pReporter)
+RenTextureSetImpl::RenTextureSetImpl(const SysPathName& directory, IProgressReporter* pReporter)
     : isLoaded_(false)
 {
     PRE(pReporter);
@@ -82,7 +82,7 @@ bool isColourMap(const SysPathName& pathname)
     return result;
 }
 
-void RenTextureSetImpl::load(const SysPathName& directory, BaseProgressReporter* pReporter)
+void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pReporter)
 {
     PRE(not isLoaded_);
 

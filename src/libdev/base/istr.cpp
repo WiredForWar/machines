@@ -22,7 +22,7 @@ PerIstream::PerIstream(std::istream& istr)
     Persistence::instance().registerOpenIstream();
 }
 
-PerIstream::PerIstream(std::istream& istr, PerIstreamReporter* pReporter)
+PerIstream::PerIstream(std::istream& istr, IProgressReporter* pReporter)
     : pImpl_(_NEW(PerIstreamImpl(this, istr, pReporter)))
     , istr_(istr)
 {

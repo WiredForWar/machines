@@ -125,7 +125,7 @@
 #include "machphys/locator.hpp"
 
 #include "device/timer.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "profiler/profiler.hpp"
 
 void MachPhysPreload::swPreload(MachPhysPreload::DoLoadingProgressUpdate doUpdate)
@@ -1265,7 +1265,7 @@ void MachPhysPreload::persistentSave(MachPhysPreload::DoLoadingProgressUpdate /*
 
 void MachPhysPreload::persistentPreload(
     MachPhysPreload::DoLoadingProgressUpdate doUpdate,
-    PerIstreamReporter* pReporter)
+    IProgressReporter* pReporter)
 {
     PRE(persistentFileName().existsAsFile());
 

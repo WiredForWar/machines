@@ -13,7 +13,7 @@
 #define _MACHGUI_INGAME_HPP
 
 #include "base/base.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "world4d/observer.hpp"
 #include "gui/root.hpp"
 #include "machgui/gui.hpp"
@@ -43,7 +43,7 @@ class MachInGameScreen
 {
 public:
     // The scene manager for the 3d window is pSceneManager
-    MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, BaseProgressReporter* pReporter);
+    MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter* pReporter);
 
     ~MachInGameScreen() override;
 

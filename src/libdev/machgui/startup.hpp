@@ -13,7 +13,7 @@
 #define _MACHINES_STARTUP_HPP
 
 #include "base/base.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "gui/root.hpp"
 #include "device/keyboard.hpp"
 #include "gui/restring.hpp"
@@ -38,7 +38,7 @@ class MachGuiStartupScreens : public GuiRoot
 // Canonical form revoked
 {
 public:
-    MachGuiStartupScreens(W4dSceneManager* pSceneManager, W4dRoot* pRoot, BaseProgressReporter*);
+    MachGuiStartupScreens(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter*);
     ~MachGuiStartupScreens() override;
 
     void setGuiViewport();

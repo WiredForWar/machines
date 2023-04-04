@@ -153,7 +153,7 @@ MachLogPlanet& MachLogPlanet::instance()
 void MachLogPlanet::surface(
     W4dSceneManager* pSceneManager,
     const SysPathName& surfaceFilePath,
-    BaseProgressReporter* pReporter)
+    IProgressReporter* pReporter)
 {
     CB_MachLogPlanet_DEPIMPL();
     PRE(pSceneManager != nullptr);
@@ -206,7 +206,7 @@ void MachLogPlanet::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogPlanet::initConfigSpace(const SysPathName& spaceFilePath, BaseProgressReporter* pReporter)
+void MachLogPlanet::initConfigSpace(const SysPathName& spaceFilePath, IProgressReporter* pReporter)
 {
     CB_MachLogPlanet_DEPIMPL();
     PRE(hasSurface());
@@ -248,7 +248,7 @@ void MachLogPlanet::initConfigSpace(const SysPathName& spaceFilePath, BaseProgre
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, BaseProgressReporter* pReporter)
+void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, IProgressReporter* pReporter)
 {
     CB_MachLogPlanet_DEPIMPL();
 

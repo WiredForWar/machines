@@ -22,7 +22,7 @@ RenTextureSet::RenTextureSet(const SysPathName& pathName)
     POST(isLoaded());
 }
 
-RenTextureSet::RenTextureSet(const SysPathName& pathName, BaseProgressReporter* pReporter)
+RenTextureSet::RenTextureSet(const SysPathName& pathName, IProgressReporter* pReporter)
     : pImpl_(_NEW(RenTextureSetImpl(pathName, pReporter)))
 {
     TEST_INVARIANT;
@@ -41,7 +41,7 @@ void RenTextureSet::load(const SysPathName& pathName)
     pImpl_->load(pathName);
 }
 
-void RenTextureSet::load(const SysPathName& pathName, BaseProgressReporter* pReporter)
+void RenTextureSet::load(const SysPathName& pathName, IProgressReporter* pReporter)
 {
     PRE(not isLoaded());
     PRE(pReporter);

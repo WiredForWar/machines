@@ -16,7 +16,7 @@
 #include "base/base.hpp"
 #include "system/pathname.hpp"
 
-class PerIstreamReporter;
+class IProgressReporter;
 
 // static methods only - cannot be instantiated
 class MachPhysPreload
@@ -47,7 +47,7 @@ public:
     static void persistentSave(DoLoadingProgressUpdate);
 
     // Load all the preloaded models from the persistent file
-    static void persistentPreload(DoLoadingProgressUpdate, PerIstreamReporter*);
+    static void persistentPreload(DoLoadingProgressUpdate, IProgressReporter*);
     //  PRE( persistentFileName().existsAsFile() );
 
     // Register soundIds

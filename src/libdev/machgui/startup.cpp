@@ -109,7 +109,7 @@
 #include "device/mouse.hpp"
 #include "base/cballoc.hpp"
 
-class LoadGameProgressIndicator : public BaseProgressReporter
+class LoadGameProgressIndicator : public IProgressReporter
 {
 public:
     LoadGameProgressIndicator(int xOffset, int yOffset)
@@ -207,7 +207,7 @@ private:
 MachGuiStartupScreens::MachGuiStartupScreens(
     W4dSceneManager* pSceneManager,
     W4dRoot* pRoot,
-    BaseProgressReporter* pReporter)
+    IProgressReporter* pReporter)
     : GuiRoot(Gui::Box(0, 0, pSceneManager->pDevice()->windowWidth(), pSceneManager->pDevice()->windowHeight()))
     , pImpl_(nullptr)
 {

@@ -1,5 +1,6 @@
 
 set(BASE_SOURCES
+    IProgressReporter.hpp
     appbuff.cpp
     append.cpp
     base.cpp
@@ -25,8 +26,6 @@ set(BASE_SOURCES
     istr.hpp
     istrbuff.cpp
     istrimpl.cpp
-    istrrep.cpp
-    istrrep.hpp
     lessptr.hpp
     logbuff.cpp
     logbuff.hpp

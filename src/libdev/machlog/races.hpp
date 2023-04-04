@@ -12,7 +12,7 @@
 #define _MACHLOG_RACES_HPP
 
 #include "base/base.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "utility/id.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
@@ -104,7 +104,7 @@ public:
         W4dSceneManager* pSceneManager,
         const string& planetName,
         const string& scenarioName,
-        BaseProgressReporter*);
+        IProgressReporter*);
 
     // different flavour of load game designed for skirmish and multi-player
     bool loadGame(
@@ -112,10 +112,10 @@ public:
         const string& planetName,
         const string& scenarioName,
         const MachLogGameCreationData&,
-        BaseProgressReporter*);
+        IProgressReporter*);
 
     // loads the planet surface file and config spaces - independantly of any scenario file loading
-    bool loadPlanet(W4dSceneManager* pSceneManager, const string& planetName, BaseProgressReporter*);
+    bool loadPlanet(W4dSceneManager* pSceneManager, const string& planetName, IProgressReporter*);
 
     // Loads up saved game using data found in file savedGameName
     // The scene manager for the 3d view is pSceneManager.
@@ -130,7 +130,7 @@ public:
         const string& scenarioFileName,
         const SysPathName& savedGameName,
         MachLogLoadSaveGameExtras*,
-        BaseProgressReporter*);
+        IProgressReporter*);
 
     // Saves game using saveGameName as file name - the perWrite method of the pointer is also
     // called

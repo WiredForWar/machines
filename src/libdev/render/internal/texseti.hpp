@@ -31,12 +31,12 @@ private:
 
     RenTextureSetImpl();
     RenTextureSetImpl(const SysPathName& directory);
-    RenTextureSetImpl(const SysPathName& directory, BaseProgressReporter* pReporter);
+    RenTextureSetImpl(const SysPathName& directory, IProgressReporter* pReporter);
 
     RenTextureSetImpl(const RenTextureSetImpl&);
     RenTextureSetImpl& operator=(const RenTextureSetImpl&);
 
-    void load(const SysPathName&, BaseProgressReporter* pReporter = nullptr);
+    void load(const SysPathName&, IProgressReporter* pReporter = nullptr);
 
     RenTextureSet::RenTextures textures_;
     bool isLoaded_;

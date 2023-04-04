@@ -16,14 +16,14 @@
 
 class PerIstream;
 class PerIstreamBuffer;
-class PerIstreamReporter;
+class IProgressReporter;
 
 class PerIstreamImpl
 // Canonical form revoked
 {
 public:
     PerIstreamImpl(PerIstream* pStream);
-    PerIstreamImpl(PerIstream* pStream, std::istream& istr, PerIstreamReporter* pReporter);
+    PerIstreamImpl(PerIstream* pStream, std::istream& istr, IProgressReporter* pReporter);
 
     ~PerIstreamImpl();
 
@@ -40,7 +40,7 @@ private:
     friend class PerIstream;
 
     PerIstreamBuffer* pBuffer_;
-    PerIstreamReporter* pReporter_;
+    IProgressReporter* pReporter_;
 
     size_t fileSize_;
     size_t bytesRead_;

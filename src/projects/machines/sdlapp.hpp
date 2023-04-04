@@ -3,7 +3,7 @@
 
 #define MOST_DERIVED_APP SDLApp
 
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "device/timer.hpp"
 #include "afx/osapp.hpp"
 
@@ -63,7 +63,7 @@ private:
 
     // Gui
     void cleanUpGui();
-    void initialiseGui(StartedFromLobby, BaseProgressReporter*);
+    void initialiseGui(StartedFromLobby, IProgressReporter*);
     void updateGui();
     void displayGui();
     void checkSwitchGuiRoot();

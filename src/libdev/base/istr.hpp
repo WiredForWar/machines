@@ -17,7 +17,7 @@
 
 class PerIstreamBuffer;
 class PerIstreamImpl;
-class PerIstreamReporter;
+class IProgressReporter;
 
 class PerIstream
 {
@@ -25,7 +25,7 @@ public:
     //  Note that istr must be capable of accepting binary data
     PerIstream(std::istream& istr);
 
-    PerIstream(std::istream& istr, PerIstreamReporter*);
+    PerIstream(std::istream& istr, IProgressReporter*);
     // PRE( pReporter != NULL );
 
     virtual ~PerIstream();

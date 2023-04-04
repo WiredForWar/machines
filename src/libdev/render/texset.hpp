@@ -13,7 +13,7 @@
 #define _TEXSET_HPP
 
 #include "base/base.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 
 template <class T> class ctl_vector;
 class RenTexture;
@@ -28,7 +28,7 @@ public:
     // POST( not isLoaded() );
     RenTextureSet(const SysPathName& sysPathName);
     // POST( isLoaded() );
-    RenTextureSet(const SysPathName& sysPathName, BaseProgressReporter* pReporter);
+    RenTextureSet(const SysPathName& sysPathName, IProgressReporter* pReporter);
     // PRE( pReporter );
     // POST( isLoaded() );
     ~RenTextureSet();
@@ -40,7 +40,7 @@ public:
     // constructor)
     void load(const SysPathName&);
     // PRE(not isLoaded() );
-    void load(const SysPathName&, BaseProgressReporter* pReporter);
+    void load(const SysPathName&, IProgressReporter* pReporter);
     // PRE(not isLoaded() );
     // PRE( pReporter );
 

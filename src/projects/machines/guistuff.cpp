@@ -27,7 +27,7 @@ void SDLApp::cleanUpGui()
     pStartupScreens_ = nullptr;
 }
 
-void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, BaseProgressReporter* pReporter)
+void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter* pReporter)
 {
     HAL_STREAM("SDLApp::initialiseGui\n");
     RenSurface backBuf = manager_->pDevice()->backSurface();

@@ -2,7 +2,7 @@
 
 #include "base/base.hpp"
 #include "base/diag.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "base/error.hpp"
 #include "sound/snd.hpp"
 #include "sound/soundmix.hpp"
@@ -49,7 +49,7 @@
 #include "machphys/levels.hpp"
 #include "machphys/persist.hpp"
 
-class ProgressIndicator : public BaseProgressReporter
+class ProgressIndicator : public IProgressReporter
 {
 public:
     ProgressIndicator()

@@ -113,7 +113,7 @@ static void newHandler()
     ASSERT_FAIL("Aborting in new handler");
 }
 
-class ProgressIndicator : public BaseProgressReporter
+class ProgressIndicator : public IProgressReporter
 {
 public:
     ProgressIndicator(int xOffset, int yOffset)

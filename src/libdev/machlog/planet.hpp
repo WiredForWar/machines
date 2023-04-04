@@ -13,7 +13,7 @@
 #define _PLANET_HPP
 
 #include "base/base.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 #include "machlog/machlog.hpp"
 
 // Forward declarations
@@ -46,7 +46,7 @@ public:
 
     // construct the planet surface using the psf file specified.
     // To be displayed in window represented by pSceneManager.
-    void surface(W4dSceneManager* pSceneManager, const SysPathName& surfaceFilePath, BaseProgressReporter*);
+    void surface(W4dSceneManager* pSceneManager, const SysPathName& surfaceFilePath, IProgressReporter*);
     // PRE( not hasSurface() )
 
     // True if a surface is defined
@@ -131,8 +131,8 @@ private:
 
     // Create and initialise the config space
     using ObstacleFlags = uint32;
-    void initConfigSpace(const SysPathName& spaceFilePath, BaseProgressReporter*);
-    void readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, BaseProgressReporter*);
+    void initConfigSpace(const SysPathName& spaceFilePath, IProgressReporter*);
+    void readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, IProgressReporter*);
     void readObstacleFlags(UtlLineTokeniser* pParser, ObstacleFlags* pObstacleFlags);
 
 #ifndef PRODUCTION

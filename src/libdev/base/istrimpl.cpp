@@ -9,7 +9,7 @@
 
 #include "base/internal/istrimpl.hpp"
 #include "base/internal/istrbuff.hpp"
-#include "base/istrrep.hpp"
+#include "base/IProgressReporter.hpp"
 
 PerIstreamImpl::PerIstreamImpl(PerIstream* pStream)
     : pBuffer_(_NEW(PerIstreamBuffer(pStream)))
@@ -22,7 +22,7 @@ PerIstreamImpl::PerIstreamImpl(PerIstream* pStream)
     TEST_INVARIANT;
 }
 
-PerIstreamImpl::PerIstreamImpl(PerIstream* pStream, std::istream& istr, PerIstreamReporter* pReporter)
+PerIstreamImpl::PerIstreamImpl(PerIstream* pStream, std::istream& istr, IProgressReporter* pReporter)
     : pBuffer_(_NEW(PerIstreamBuffer(pStream)))
     , pReporter_(pReporter)
     , fileSize_(0)
