@@ -74,6 +74,7 @@ private:
 
     // Sound
     void initSound();
+    void initMusic();
     // Load sounds loads either the 3D or 2D sounds according to
     // the registry setting
     void loadSounds();

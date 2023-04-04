@@ -180,25 +180,8 @@ private:
     int yOffset_ = 0;
 };
 
-bool SDLApp::clientStartup()
+void SDLApp::initMusic()
 {
-    double time = DevTime::instance().time();
-    double loadPos = 0;
-
-    // Hide the cursor
-    DevMouse::instance().hide();
-
-// must be called before the display is created
-// and the CD volume registry is used
-#ifndef DEMO
-    SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines");
-#else
-    SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines Demo");
-#endif
-
-    initSound();
-    // Start to play a CD to give the poor user something to listen to whilst
-    // the models load...
     if (DevCD::instance().isAudioCDPresent())
     {
         // This is not a particularly nice place to do this initialisation
@@ -220,6 +203,29 @@ bool SDLApp::clientStartup()
             DevCD::instance().play(4); // Data 0, Menu Music 1, Victory Music 2, Defeat Music 3, Loading Music 4
         }
     }
+}
+
+bool SDLApp::clientStartup()
+{
+    double time = DevTime::instance().time();
+    double loadPos = 0;
+
+    // Hide the cursor
+    DevMouse::instance().hide();
+
+// must be called before the display is created
+// and the CD volume registry is used
+#ifndef DEMO
+    SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines");
+#else
+    SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines Demo");
+#endif
+
+    initSound();
+
+    // Start to play a CD to give the poor user something to listen to whilst
+    // the models load...
+    initMusic();
 
 #ifdef DEMO
     SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_2);
