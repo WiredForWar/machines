@@ -36,12 +36,6 @@ public:
 
     ~DevTime();
 
-// Windows 95 only: like Win32 GetMessageTime but the resulting value will
-// be on the same time scale as the results of the time() method.
-#if defined _WIN95APP
-    double getMessageTime() const;
-#endif
-
 private:
     //  Singleton class
     DevTime();
@@ -58,14 +52,10 @@ private:
     double pausedValue_;
 
 // This include defines a private, nested class called OSTime.
-#if defined _DOSAPP
-#include "device/private/dostime.hpp"
-#elif defined _WIN95APP
-#include "device/private/w95time.hpp"
-#elif defined _SDLAPP
+#if defined _SDLAPP
 #include "device/private/sdltime.hpp"
 #else
-#error Use of the device lib: one of _DOSAPP, _WIN95APP, etc. must be defined.
+#error The platform specific app type must be defined.
 #endif
 
     // This member provides the wall-clock time maintained by the OS.

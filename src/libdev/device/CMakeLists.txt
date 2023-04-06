@@ -26,9 +26,6 @@ set(DEVICE_SOURCES
     private/sdltime.hpp
     private/shrkeybd.hpp
     private/shrmouse.hpp
-    private/w95keybd.hpp
-    private/w95mouse.hpp
-    private/w95time.hpp
     rate.cpp
     rate.hpp
     sdlkeybd.cpp
