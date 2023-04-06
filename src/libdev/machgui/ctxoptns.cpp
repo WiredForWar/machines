@@ -12,6 +12,9 @@
 #include "system/registry.hpp"
 #include "system/memcaps.hpp"
 #include "sound/soundmix.hpp"
+
+#include "device/cd.hpp"
+
 #include "world4d/soundman.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
@@ -31,12 +34,9 @@
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
 #include "machgui/slidebar.hpp"
-#include "machgui/musicvol.hpp"
-#include "machgui/soundvol.hpp"
 #include "machgui/optlayout.hpp"
 #include "machgui/dropdwnc.hpp"
 #include "machgui/chckbox.hpp"
-#include "machgui/gammacor.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/races.hpp"
@@ -211,10 +211,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         = _NEW(MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseMouse.topLeft, reverseMouse.stringId));
 
     // Create volume sliders
-    pMusicVolume_
-        = _NEW(MachGuiMusicVolumeSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range));
-    pSoundVolume_
-        = _NEW(MachGuiSoundVolumeSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.range));
+    pMusicVolume_ = _NEW(MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range));
+    pMusicVolume_->setValueChangedHandler([](float newValue) {
+        DevCD::instance().volume(newValue + 0.5 /*stop rounding errors from slowly reducing volume*/);
+    });
+
+    pSoundVolume_ = _NEW(MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.range));
+    pSoundVolume_->setValueChangedHandler([](float newValue) {
+        SndMixer::instance().masterSampleVolume(newValue + 0.5 /*stop rounding errors from slowly reducing volume*/);
+    });
 
     const RenCapabilities& caps = W4dManager::instance().sceneManager()->pDevice()->capabilities();
 
@@ -325,7 +330,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             gammaCorrectionTxt.font,
             MachGuiMenuText::RIGHT_JUSTIFY));
 
-        pGammaCorrection_ = _NEW(MachGuiGammaCorrectionSlideBar(
+        pGammaCorrection_ = _NEW(MachGuiSlideBar(
             pStartupScreens,
             pStartupScreens,
             gammaCorrectionSl.topLeft,
@@ -333,7 +338,13 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             GAMMA_LOWER_LIMIT,
             GAMMA_UPPER_LIMIT));
         // Store initial value
-        gammaCorrection_ = pGammaCorrection_->value();
+
+        pGammaCorrection_->setValueChangedHandler([](float newValue) {
+            W4dManager::instance().sceneManager()->pDevice()->display()->gammaCorrection(newValue);
+        });
+
+        gammaCorrection_ = W4dManager::instance().sceneManager()->pDevice()->display()->gammaCorrection();
+        pGammaCorrection_->setValue(gammaCorrection_);
 
         // Show gamma correction image (helps get gamma setting correct)
         _NEW(GuiImage(pStartupScreens, Gui::Coord(353, 198), Gui::bitmap("gui/menu/gammacal.bmp")));
@@ -536,13 +547,13 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
     }
     else if (buttonEvent == MachGuiStartupScreens::BE_DUMMY_EXIT)
     {
-        pMusicVolume_->value(musicVolume_);
-        pSoundVolume_->value(soundVolume_);
+        pMusicVolume_->setValue(musicVolume_);
+        pSoundVolume_->setValue(soundVolume_);
         pDriverSelector_->useDDrawDriver(initialDDrawDriver_);
         // Only restore gamma correction if gamma correction is supported
         if (pGammaCorrection_)
         {
-            pGammaCorrection_->value(gammaCorrection_);
+            pGammaCorrection_->setValue(gammaCorrection_);
         }
         pStartupScreens_->buttonAction(MachGuiStartupScreens::EXIT);
     }

@@ -16,6 +16,8 @@
 #include "gui/displaya.hpp"
 #include "machgui/focusctl.hpp"
 
+#include <functional>
+
 class MachGuiStartupScreens;
 
 class MachGuiSlideBar
@@ -24,6 +26,8 @@ class MachGuiSlideBar
 // Canonical form revoked
 {
 public:
+    using FloatValueChangedCallback = std::function<void(float newValue)>;
+
     MachGuiSlideBar(
         MachGuiStartupScreens*,
         GuiDisplayable* pParent,
@@ -49,11 +53,13 @@ public:
     float value() const;
 
     // Change the value, this will cause the slide bar to be redrawn.
-    void value(float);
+    void setValue(float);
     // PRE( newVal >= minValue_ and newVal <= maxValue_ );
 
     // Called when the slide button is moved into a new position.
     virtual void valueChanged(float value);
+
+    void setValueChangedHandler(FloatValueChangedCallback callback);
 
     static size_t reqHeight();
 
@@ -78,6 +84,8 @@ private:
 
     MachGuiSlideBar(const MachGuiSlideBar&);
     MachGuiSlideBar& operator=(const MachGuiSlideBar&);
+
+    FloatValueChangedCallback valueChangedCallback_;
 
     float barPos_;
     float minValue_;

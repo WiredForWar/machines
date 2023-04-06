@@ -110,7 +110,7 @@ float MachGuiSlideBar::value() const
     return value;
 }
 
-void MachGuiSlideBar::value(float newVal)
+void MachGuiSlideBar::setValue(float newVal)
 {
     PRE(newVal >= minValue_ and newVal <= maxValue_);
 
@@ -140,9 +140,17 @@ void MachGuiSlideBar::value(float newVal)
 }
 
 // virtual
-void MachGuiSlideBar::valueChanged(float /*value*/)
+void MachGuiSlideBar::valueChanged(float value)
 {
-    // Intentionally empty
+    if (valueChangedCallback_)
+    {
+        valueChangedCallback_(value);
+    }
+}
+
+void MachGuiSlideBar::setValueChangedHandler(FloatValueChangedCallback callback)
+{
+    valueChangedCallback_ = callback;
 }
 
 // static
@@ -247,7 +255,7 @@ bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableCo
             newValue = maxValue_;
         }
 
-        value(newValue);
+        setValue(newValue);
 
         retValue = true;
     }
@@ -261,7 +269,7 @@ bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableCo
             newValue = minValue_;
         }
 
-        value(newValue);
+        setValue(newValue);
 
         retValue = true;
     }

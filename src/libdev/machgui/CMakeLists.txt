@@ -198,8 +198,6 @@ set(MACHGUI_SOURCES
     focusctl.hpp
     fstpersn.cpp
     fstpersn.hpp
-    gammacor.cpp
-    gammacor.hpp
     genstats.cpp
     genstats.hpp
     gui.cpp
@@ -279,8 +277,6 @@ set(MACHGUI_SOURCES
     msgbox.hpp
     msgboxei.cpp
     msgboxei.hpp
-    musicvol.cpp
-    musicvol.hpp
     numpdrop.cpp
     numpdrop.hpp
     oneicon.cpp
@@ -312,8 +308,6 @@ set(MACHGUI_SOURCES
     scrolbar.hpp
     slidebar.cpp
     slidebar.hpp
-    soundvol.cpp
-    soundvol.hpp
     squadron.cpp
     squadron.hpp
     sslistbx.cpp
