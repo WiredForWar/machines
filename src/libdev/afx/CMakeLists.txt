@@ -8,7 +8,6 @@ set(AFX_SOURCES
     app.cpp
     app.hpp
     castfns.hpp
-    dosapp.hpp
     invkargs.cpp
     invkargs.hpp
     osapp.hpp
@@ -16,8 +15,6 @@ set(AFX_SOURCES
     resource.cpp
     resource.hpp
     singapp.hpp
-    slimwin.hpp
-    win95app.hpp
 )
 
 # afx_lite is used with test suite
