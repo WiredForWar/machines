@@ -273,8 +273,6 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     MachGuiInGameChatMessages::instance().initialise(pMessageBroker_, this);
     MachLogRecentEventsManager::instance().setCameras(pInGameScreen_->cameras());
 
-    initialiseVolumes();
-
     pReporter->report(100, 100); // 100% of gui stuff done
     if (getenv("CB_DISABLE_NETWORK_TO"))
     {

@@ -221,8 +221,6 @@ bool SDLApp::clientStartup()
     SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines Demo");
 #endif
 
-    initSound();
-
     // Start to play a CD to give the poor user something to listen to whilst
     // the models load...
     initMusic();
@@ -233,14 +231,10 @@ bool SDLApp::clientStartup()
     SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_1);
 #endif
 
-    initProfiling();
-
     std::set_new_handler(newHandler);
 
     // Set the diretory to look for all files
     SysPathName::rootEnvironmentVariable("MACH_ROOT");
-
-    MachPhysData::instance();
 
     bool lobbyFlag = false;
 
@@ -463,13 +457,24 @@ bool SDLApp::clientStartup()
     initialiseGui(startedType, &progressIndicator);
 
     progressIndicator.report(100, 100);
-    progressIndicator.setLimits(0.18, 0.26);
+    progressIndicator.setLimits(0.18, 0.20);
+
+    initSound();
+
+    progressIndicator.setLimits(0.20, 0.35);
+    initProfiling(&progressIndicator);
+
+    progressIndicator.report(100, 100);
+    progressIndicator.setLimits(0.35, 0.37);
+    pStartupScreens_->initialiseVolumes();
+
+    MachPhysData::instance();
 
     MachPhysPreload::registerSounds();
     loadSounds();
 
     progressIndicator.report(100, 100);
-    progressIndicator.setLimits(0.26, 0.28);
+    progressIndicator.setLimits(0.37, 0.40);
 
     // Set up the texture search path.
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
@@ -490,7 +495,7 @@ bool SDLApp::clientStartup()
     }
 
     progressIndicator.report(100, 100);
-    progressIndicator.setLimits(0.28, 0.71);
+    progressIndicator.setLimits(0.40, 0.71);
 
     if (noTexturePreload /*or lobbyFlag*/)
     {
@@ -672,12 +677,16 @@ void SDLApp::outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform,
 #endif
 }
 
-void SDLApp::initProfiling()
+void SDLApp::initProfiling(IProgressReporter* pReporter)
 {
+    spdlog::info("Initializing profiler...");
+
     double profileInterval = 50.0;
     char* pMs = getenv("PROFILE_RATE");
     if (pMs)
         profileInterval = atof(pMs);
+
+    ProProfiler::instance(pReporter);
     ProProfiler::instance().traceInterval(profileInterval / 1000.0);
 
     HAL_STREAM("SDLApp::clientStartup\n");
