@@ -9,8 +9,8 @@
 #include <iomanip>
 #include "base/base.hpp"
 #include "mathex/point2d.hpp"
-#include "device/private/shrkeybd.hpp"
 
+#include "device/key.hpp"
 #include "device/time.hpp"
 #include "utility/DependencyProvider.hpp"
 

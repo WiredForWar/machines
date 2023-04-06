@@ -16,9 +16,9 @@
 #include "base/base.hpp"
 #include "device/keycomnd.hpp"
 
-#include <vector>
+#include "device/butevent.hpp"
 
-// class DevButtonEvent;
+#include <vector>
 
 class DevKeyToCommandTranslator
 // Canonical form revoked

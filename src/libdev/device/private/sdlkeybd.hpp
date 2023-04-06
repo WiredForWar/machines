@@ -2,9 +2,10 @@
 #define DEVICE_SDL_KEYBOARD_HPP
 
 #include "device/butevent.hpp"
-#include <SDL.h>
 
-// class DevButtonEvent;
+#include "device/private/shrkeybd.hpp"
+
+#include <SDL.h>
 
 //////////////////////////////////////////////////////////////////////
 // Implements the mechanism for determining key-presses under SDL2.0

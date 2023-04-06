@@ -17,9 +17,8 @@
 #define _DEV_KEYCOMND_HPP
 
 #include "base/base.hpp"
-#include "utility/property.hpp"
-#include "device/butevent.hpp"
-#include "device/keyboard.hpp"
+
+#include "device/key.hpp"
 
 class DevKeyToCommand
 // Canonical form
