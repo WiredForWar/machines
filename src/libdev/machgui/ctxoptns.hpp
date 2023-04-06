@@ -26,13 +26,10 @@
 
 class RenDriverSelector;
 class MachGuiSlideBar;
-class MachGuiMusicVolumeSlideBar;
-class MachGuiSoundVolumeSlideBar;
 class MachGuiDropDownListBoxCreator;
 class MachGuiDDrawDropDownListBoxCreator;
 class MachGuiCheckBox;
 class RenDisplay;
-class MachGuiGammaCorrectionSlideBar;
 
 class MachGuiCtxOptions : public MachGuiStartupScreenContext
 // Canonical form revoked
@@ -70,26 +67,26 @@ private:
     MachGuiStartupScreens::Context exitContext_;
     MachGuiAnimations animations_;
 
-    MachGuiMusicVolumeSlideBar* pMusicVolume_;
-    MachGuiSoundVolumeSlideBar* pSoundVolume_;
-    MachGuiCheckBox* pSound3d_;
-    MachGuiCheckBox* pTransitions_;
-    MachGuiCheckBox* pScreenResolutionLock_;
-    MachGuiCheckBox* pCursorType_;
-    MachGuiCheckBox* pReverseKeys_;
-    MachGuiCheckBox* pReverseMouse_;
-    MachGuiDropDownListBoxCreator* pScreenSize_;
+    MachGuiSlideBar* pMusicVolume_ = nullptr;
+    MachGuiSlideBar* pSoundVolume_ = nullptr;
+    MachGuiCheckBox* pSound3d_ = nullptr;
+    MachGuiCheckBox* pTransitions_ = nullptr;
+    MachGuiCheckBox* pScreenResolutionLock_ = nullptr;
+    MachGuiCheckBox* pCursorType_ = nullptr;
+    MachGuiCheckBox* pReverseKeys_ = nullptr;
+    MachGuiCheckBox* pReverseMouse_ = nullptr;
+    MachGuiDropDownListBoxCreator* pScreenSize_ = nullptr;
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_, gammaCorrection_;
     RenDriverSelector* pDriverSelector_;
-    MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_;
-    MachGuiDropDownListBoxCreator* pDirect3DDrivers_;
+    MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_ = nullptr;
+    MachGuiDropDownListBoxCreator* pDirect3DDrivers_ = nullptr;
     MachGuiDropDownListBoxCreator* pScaleFactorSelector_ = nullptr;
-    bool exitFromOptions_;
+    bool exitFromOptions_ = false;
     RenDriverPtr initialDDrawDriver_;
     bool cursorType2d_;
-    MachGuiGammaCorrectionSlideBar* pGammaCorrection_;
+    MachGuiSlideBar* pGammaCorrection_ = nullptr;
 };
 
 #endif

@@ -85,15 +85,6 @@ private:
 MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     : MachGuiStartupScreenContext(pStartupScreens)
     , animations_(pStartupScreens, SysPathName("gui/menu/sf_anims.anm"))
-    , pMusicVolume_(nullptr)
-    , pSoundVolume_(nullptr)
-    , pSound3d_(nullptr)
-    , pTransitions_(nullptr)
-    , pScreenSize_(nullptr)
-    , pDirectDrawDrivers_(nullptr)
-    , pDirect3DDrivers_(nullptr)
-    , exitFromOptions_(false)
-    , pGammaCorrection_(nullptr)
 {
     // Bitmap background
     changeBackdrop("gui/menu/sf.bmp");
