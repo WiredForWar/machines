@@ -185,13 +185,10 @@ set(MACHGUI_SOURCES
     dropdown.hpp
     dropdwnc.cpp
     dropdwnc.hpp
-    dummy.cpp
     editbox.cpp
     editbox.hpp
     editlist.cpp
     editlist.hpp
-    email.cpp
-    email.hpp
     factbuff.cpp
     factbuff.hpp
     focusctl.cpp
