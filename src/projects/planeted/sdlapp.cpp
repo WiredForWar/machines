@@ -49,6 +49,8 @@
 #include "machphys/levels.hpp"
 #include "machphys/persist.hpp"
 
+#include "MachinesVersion.hpp"
+
 class ProgressIndicator : public IProgressReporter
 {
 public:
@@ -133,6 +135,10 @@ SDLApp::SDLApp()
 {
     for (int i = 0; i < 4; ++i)
         aShowRace_[i] = false;
+
+    setAppName("Machines Planet Editor");
+    setAppVersion("v0.00.01");
+    setAppBuildVersion(machinesBuildVersion());
 }
 
 SDLApp::~SDLApp()
@@ -648,12 +654,6 @@ void SDLApp::readEnvironment(const string& planetLeafName)
 }
 
 // virtual
-const string& SDLApp::name() const
-{
-    static string n = "Machines Planet Editor v0.00.01";
-    return n;
-}
-
 void SDLApp::checkForQuit(const DevButtonEvent& devButtonEvent)
 {
     if (devButtonEvent.scanCode() == DevKey::KEY_Q

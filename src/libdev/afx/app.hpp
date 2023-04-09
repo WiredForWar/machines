@@ -45,7 +45,9 @@ public:
     virtual bool isFinished() const = 0;
 
     // AfxApplications can provide a name.  This is useful for window titles.
-    virtual const string& name() const;
+    const std::string& name() const;
+    const std::string& version() const;
+    const std::string& buildVersion() const;
 
     // Get the arguments that were supplied at program invocation.
     // This does *not* include the program name as the first element
@@ -76,6 +78,10 @@ protected:
     // just for the sake of consistency.
     virtual void updateDisplay() = 0;
 
+    void setAppName(const std::string& name);
+    void setAppVersion(const std::string& version);
+    void setAppBuildVersion(const std::string& buildVersion);
+
     ExitStatus exitStatus() const;
     void exitStatus(ExitStatus);
 
@@ -94,6 +100,10 @@ private:
 
     ExitStatus exitStatus_;
     AfxInvokeArgs args_;
+
+    std::string appName_;
+    std::string version_;
+    std::string buildVersion_;
 };
 
 #endif //_FRAMEWORK_BASE_APP_INCLUDED

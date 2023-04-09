@@ -43,7 +43,6 @@ private:
     //  virtual bool activate(WORD wParam);
     virtual bool activate(/*WORD wParam*/);
     bool clientStartup() override;
-    const string& name() const override;
 
     void processInput();
     void checkForCameraChange(const DevButtonEvent&);

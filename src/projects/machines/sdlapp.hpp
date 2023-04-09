@@ -44,7 +44,6 @@ private:
     void updateDisplay() override;
     virtual bool activate();
     bool clientStartup() override;
-    const string& name() const override;
 
     void moveObject(W4dEntity* pObject);
 

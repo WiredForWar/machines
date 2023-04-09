@@ -25,10 +25,6 @@ protected:
     bool OSStartup() override;
     void OSShutdown() override;
 
-    void setAppName(const std::string& name);
-    void setAppVersion(const std::string& version);
-    void setAppBuildVersion(const std::string& buildVersion);
-
     void setLoggingEnabled(bool enabled);
 
 private:
@@ -53,9 +49,6 @@ private:
     bool finished_ { false };
     SDL_Window* pWindow_;
 
-    std::string appName_;
-    std::string version_;
-    std::string buildVersion_;
     bool loggingEnabled_ = false;
 
     // Config values needed at startup

@@ -125,21 +125,6 @@ void AfxSdlApp::OSShutdown()
     SDL_Quit();
 }
 
-void AfxSdlApp::setAppName(const std::string& name)
-{
-    appName_ = name;
-}
-
-void AfxSdlApp::setAppVersion(const std::string& version)
-{
-    version_ = version;
-}
-
-void AfxSdlApp::setAppBuildVersion(const std::string& buildVersion)
-{
-    buildVersion_ = buildVersion;
-}
-
 void AfxSdlApp::setLoggingEnabled(bool enabled)
 {
     loggingEnabled_ = enabled;
@@ -217,7 +202,7 @@ void AfxSdlApp::initLogger()
         constexpr int MaxFiles = 2;
         constexpr bool RotateOnOpen = true;
 
-        spdlog::filename_t fileName = appName_;
+        spdlog::filename_t fileName = name();
         std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
         fileName = "logs/" + fileName + ".txt";
         logger = spdlog::rotating_logger_mt("", fileName, MaxSize, MaxFiles, RotateOnOpen);
@@ -230,7 +215,7 @@ void AfxSdlApp::initLogger()
     spdlog::set_default_logger(logger);
     spdlog::flush_on(spdlog::level::info);
     spdlog::set_level(spdlog::level::debug);
-    spdlog::info("Starting {} {} ({})", appName_, version_, buildVersion_);
+    spdlog::info("Starting {} {} ({})", name(), version(), buildVersion());
 }
 
 void AfxSdlApp::dispatchEvent(SDL_Event* event)

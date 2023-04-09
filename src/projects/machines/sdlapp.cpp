@@ -748,11 +748,4 @@ void SDLApp::getWindowSize(int&, int&, int& w, int& h)
     h = winHeight_;
 }
 
-// virtual
-const string& SDLApp::name() const
-{
-    static string n = "Machines";
-    return n;
-}
-
 /* End D3DAPP.CPP ***************************************************/
