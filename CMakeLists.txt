@@ -95,6 +95,8 @@ include(CompilerSettings)
 # Asserts can be enabled/disabled regardless of build type
 option(DEV_BUILD "Enable assert()s and other debug checks" ON)
 
+option(BUILD_PLANETED "Build the PlanetEditor" OFF)
+
 # Warn about development build
 if(DEV_BUILD)
     message(STATUS "Building with development extensions")
@@ -237,7 +239,10 @@ install(DIRECTORY "sounds" DESTINATION ".")
 install(DIRECTORY "gui" DESTINATION ".")
 install(DIRECTORY "models" DESTINATION ".")
 install(FILES "machstrg.xml" DESTINATION ".")
-install(TARGETS machines planeted DESTINATION ".")
+install(TARGETS machines DESTINATION ".")
+if(TARGET planeted)
+    install(TARGETS planeted DESTINATION ".")
+endif()
 
 set(CPACK_GENERATOR ZIP)
 include(CPack)

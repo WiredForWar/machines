@@ -179,11 +179,18 @@ target_link_libraries(libs INTERFACE
 )
 
 add_executable(machines ${MACHINES_SOURCES})
-add_executable(planeted ${PLANETED_SOURCES})
-set_target_properties(machines planeted PROPERTIES LINK_FLAGS_RELEASE -s)
-set_target_properties(machines planeted PROPERTIES 
+
+set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE -s)
+set_target_properties(machines PROPERTIES
     COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
 )
-
 target_link_libraries(machines libs)
-target_link_libraries(planeted libs)
+
+if(BUILD_PLANETED)
+    add_executable(planeted ${PLANETED_SOURCES})
+    set_target_properties(planeted PROPERTIES LINK_FLAGS_RELEASE -s)
+    set_target_properties(planeted PROPERTIES
+        COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
+    )
+    target_link_libraries(planeted libs)
+endif()
