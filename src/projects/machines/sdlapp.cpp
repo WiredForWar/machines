@@ -327,11 +327,19 @@ bool SDLApp::clientStartup()
     // tell the display what is the lowest resolution mode it is allowed to use
     pDisplay_->lowestAllowedMode(640, 480, 16);
 
+    // if current mode uses too much memory, switch to a mode fitting in video memory
+    //  bool modeSet = pDisplay_->setHighestAllowedMode();
+    //  ASSERT(modeSet, "Could not find a mode fitting in video memory");
+
+    // Ask the mouse to give us coordinates scale to the current Direct3D
+    // resolution (which doesn't necessarilly match the Windows resolution).
+    const RenDisplay::Mode& mode = pDisplay_->currentMode();
+
     {
         int scaleFactorPercents = SysRegistry::instance().queryIntegerValue("Options\\Scale Factor", "Value");
         if (scaleFactorPercents == 0)
         {
-            if (modeW > 1024 && modeH > 768)
+            if (mode.width() > 1024 && mode.height() > 768)
             {
                 scaleFactorPercents = 200;
             }
@@ -340,16 +348,19 @@ bool SDLApp::clientStartup()
                 scaleFactorPercents = 100;
             }
         }
+        else if (scaleFactorPercents > 100)
+        {
+            if (mode.width() < 1024 || mode.height() < 768)
+            {
+                spdlog::info("The scale factor from preferences does not fit in the window resolution");
+                scaleFactorPercents = 100;
+            }
+        }
+
+        spdlog::info("Using scale factor {}%", scaleFactorPercents);
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
-    // if current mode uses too much memory, switch to a mode fitting in video memory
-    //  bool modeSet = pDisplay_->setHighestAllowedMode();
-    //  ASSERT(modeSet, "Could not find a mode fitting in video memory");
-
-    // Ask the mouse to give us coordinates scale to the current Direct3D
-    // resolution (which doesn't necessarilly match the Windows resolution).
-    const RenDisplay::Mode& mode = pDisplay_->currentMode();
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
 
     spdlog::info("Initializing SceneManager...");
