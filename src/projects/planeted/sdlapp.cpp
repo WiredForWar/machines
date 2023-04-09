@@ -311,13 +311,19 @@ bool SDLApp::clientStartup()
     ErrorHandler::instance().pDisplay(pDisplay_);
     pDisplay_->buildDisplayModesList();
 
-    if (!windowMode)
+    if (windowMode)
+    {
+        const RenDisplay::Mode selectedMode = pDisplay_->getWindowedMode(modeW, modeH);
+        pDisplay_->useMode(selectedMode);
+    }
+    else
     {
         // Initially, pick the lowest-res 16-bit mode.
         pDisplay_->useFullScreen();
 
         std::cout << "Trying to select display mode " << modeW << "x" << modeH << "x" << 16 << std::endl;
-        if (!pDisplay_->useMode(modeW, modeH, 0))
+        const RenDisplay::Mode selectedMode = pDisplay_->findMode(modeW, modeH, 0);
+        if (!selectedMode.isValid() || !pDisplay_->useMode(selectedMode))
         {
             std::cout << "Failed to select that mode -- the nearest alternative will be chosen." << std::endl;
             pDisplay_->useNearestMode(modeW * modeH, 16);
@@ -332,8 +338,6 @@ bool SDLApp::clientStartup()
         const RenDisplay::Mode& mode = pDisplay_->currentMode();
         DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     }
-    else
-        pDisplay_->useMode(modeW, modeH, 0);
 
     manager_ = _NEW(W4dSceneManager(pDisplay_, root));
     W4dManager::instance().sceneManager(manager_);

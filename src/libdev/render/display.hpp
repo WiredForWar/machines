@@ -63,6 +63,8 @@ public:
             return width_ == m.width_ && height_ == m.height_ && (rate_ == m.rate_ || rate_ == 0 || m.rate_ == 0);
         }
 
+        bool isValid() const { return width_; }
+
         int width() const { return width_; }
         int height() const { return height_; }
         int bitDepth() const { return depth_; }
@@ -113,8 +115,10 @@ public:
     const Mode& currentMode() const;
     void buildDisplayModesList();
     const Mode getDesktopDisplayMode() const;
+    const Mode getFailSafeDisplayMode() const;
 
-    bool useMode(int width, int height, int refresh);
+    const Mode findMode(int width, int height, int refreshRate);
+    const Mode getWindowedMode(int width, int height) const;
 
     const Mode& lowestAllowedMode() const;
     bool lowestAllowedMode(const Mode& lowMode);

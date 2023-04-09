@@ -44,6 +44,7 @@
 #include "MachinesVersion.hpp"
 
 #include "spdlog/spdlog.h"
+#include <cstdio>
 
 void debugTiming(const char* text, bool startTiming)
 {
@@ -278,52 +279,64 @@ bool SDLApp::clientStartup()
     if (!SysRegistry::instance().queryIntegerValue("Screen Resolution", "Windowed"))
         pDisplay_->useFullScreen();
 
-    // Check for first time run - set config to desktop resolution then
-    if (!SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width"))
-    {
-        const RenDisplay::Mode desktopMode = pDisplay_->getDesktopDisplayMode();
-        SysRegistry::instance().setIntegerValue("Screen Resolution", "Width", desktopMode.width());
-        SysRegistry::instance().setIntegerValue("Screen Resolution", "Height", desktopMode.height());
-        SysRegistry::instance().setIntegerValue("Screen Resolution", "Refresh Rate", desktopMode.refreshRate());
-    }
-
-    // Set default resolution.
-    int modeW = 640;
-    int modeH = 480;
-    int modeR = 0;
-
+    bool displayModeInitialized = false;
     if (SysRegistry::instance().queryIntegerValue(
             "Screen Resolution",
             "Lock Resolution",
             MachGuiStartupScreens::getDefaultLockScreenResolutionValue()))
     {
-        modeW = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
-        modeH = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
+        int modeW = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
+        int modeH = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
+        int modeR = 0;
 
         if (pDisplay_->fullScreen())
             modeR = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
+
+        const RenDisplay::Mode loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
+        if (loadedMode.isValid())
+        {
+            displayModeInitialized = pDisplay_->useMode(loadedMode);
+        }
+
+        if (!displayModeInitialized)
+        {
+            char aBuffer[128];
+            snprintf(
+                &aBuffer[0],
+                sizeof(aBuffer),
+                "Failed to initialize the preferred screen mode (%dx%d; %d Hz)",
+                modeW,
+                modeH,
+                modeR);
+            SysWindowsAPI::messageBox(aBuffer, name().c_str());
+        }
     }
 
-    std::cout << "Trying to select display mode " << modeW << "x" << modeH << " at " << modeR << " Hz" << std::endl;
-    if (not pDisplay_->useMode(modeW, modeH, modeR))
+    if (!displayModeInitialized)
     {
-        if (modeW != 640 or modeH != 480)
-        {
-            modeW = 640;
-            modeH = 480;
+        const RenDisplay::Mode desktopMode = pDisplay_->getDesktopDisplayMode();
+        displayModeInitialized = pDisplay_->useMode(desktopMode);
+    }
 
-            if (not pDisplay_->useMode(modeW, modeH, modeR))
-            {
-                SysWindowsAPI::messageBox("Failed to select minimum resolution (640x480x32bit colour)", "Machines");
-                return false;
-            }
-        }
-        else
+    if (!displayModeInitialized)
+    {
+        const RenDisplay::Mode failSafeMode = pDisplay_->getFailSafeDisplayMode();
+        displayModeInitialized = pDisplay_->useMode(failSafeMode);
+        if (!displayModeInitialized)
         {
-            SysWindowsAPI::messageBox("Failed to select minimum resolution (640x480x32bit colour)", "Machines");
+            char aBuffer[128];
+            snprintf(
+                &aBuffer[0],
+                sizeof(aBuffer),
+                "Failed to initialize the failsafe screen mode (%dx%d; %d Hz). Giving up.",
+                failSafeMode.width(),
+                failSafeMode.height(),
+                failSafeMode.refreshRate());
+            SysWindowsAPI::messageBox(aBuffer, name().c_str());
             return false;
         }
     }
+
     // tell the display what is the lowest resolution mode it is allowed to use
     pDisplay_->lowestAllowedMode(640, 480, 16);
 

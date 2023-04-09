@@ -117,6 +117,11 @@ const RenDisplay::Mode RenDisplay::getDesktopDisplayMode() const
     return Mode(desktopMode);
 }
 
+const RenDisplay::Mode RenDisplay::getFailSafeDisplayMode() const
+{
+    return Mode(640, 480, 0);
+}
+
 bool RenDisplay::useFullScreen()
 {
     CB_RenDisplay_DEPIMPL();
@@ -171,7 +176,7 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
         return true;
 
     spdlog::info(
-        "Set display mode to: {}x{}@{}bpp ({} Hz; fullscreen: {})",
+        "Setting display mode to: {}x{}@{}bpp ({} Hz; fullscreen: {})",
         m.width(),
         m.height(),
         m.bitDepth(),
@@ -229,22 +234,29 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
     return true;
 }
 
-bool RenDisplay::useMode(int width, int height, int refresh)
+const RenDisplay::Mode RenDisplay::findMode(int width, int height, int refreshRate)
 {
     CB_RenDisplay_DEPIMPL();
     PRE(width > 0);
     PRE(height > 0);
     // PRE(depth  > 0);
 
-    const Mode newMode(width, height, refresh);
+    const Mode newMode(width, height, refreshRate);
     Modes::const_iterator it = find(modeList_.begin(), modeList_.end(), newMode);
 
     // Can't use it if it's not in the list.
     if (it == modeList_.end())
-        return false;
+    {
+        spdlog::info("Unable to find display mode {}x{} ({} Hz)", width, height, refreshRate);
+        return Mode();
+    }
 
-    // return useMode(newMode);
-    return useMode(*it);
+    return newMode;
+}
+
+const RenDisplay::Mode RenDisplay::getWindowedMode(int width, int height) const
+{
+    return Mode(width, height, 0);
 }
 
 bool RenDisplay::useLowerMode()
