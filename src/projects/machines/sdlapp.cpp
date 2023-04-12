@@ -222,10 +222,6 @@ bool SDLApp::clientStartup()
     SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines Demo");
 #endif
 
-    // Start to play a CD to give the poor user something to listen to whilst
-    // the models load...
-    initMusic();
-
 #ifdef DEMO
     SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_2);
 #else
@@ -484,6 +480,10 @@ bool SDLApp::clientStartup()
     progressIndicator.setLimits(0.18, 0.20);
 
     initSound();
+
+    // Start to play a CD to give the poor user something to listen to whilst
+    // the models load...
+    initMusic();
 
     progressIndicator.setLimits(0.20, 0.35);
     initProfiling(&progressIndicator);
