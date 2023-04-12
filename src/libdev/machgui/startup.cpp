@@ -2138,11 +2138,11 @@ void MachGuiStartupScreens::updateCdAudio()
         {
             if (pInGameScreen_->actualGameState() == MachInGameScreen::WON)
             {
-                desiredCdTrack_ = VICTORY_MUSIC;
+                desiredCdTrack(VICTORY_MUSIC);
             }
             else if (pInGameScreen_->actualGameState() == MachInGameScreen::LOST)
             {
-                desiredCdTrack_ = DEFEAT_MUSIC;
+                desiredCdTrack(DEFEAT_MUSIC);
             }
         }
     }
@@ -2312,7 +2312,7 @@ void MachGuiStartupScreens::contextAnimation()
 
         if (flicExists)
         {
-            desiredCdTrack_ = DONT_PLAY_CD;
+            desiredCdTrack(DONT_PLAY_CD);
 
             // Clear the entire screen to stop previous screen from showing through black borders.
             RenDevice::current()->clearAllSurfaces(RenColour::black());
@@ -2343,7 +2343,7 @@ void MachGuiStartupScreens::contextAnimation()
             {
                 SysPathName sysCDFlicName(cdRomDrive + "flics/postload.smk");
                 startPlayingAnimation(sysCDFlicName, false, true, Gui::Coord(32, 129));
-                desiredCdTrack_ = DONT_PLAY_CD; // Don't play music if we're streaming video off CD
+                desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
                 flicExists = true;
             }
         }
@@ -2403,7 +2403,7 @@ void MachGuiStartupScreens::contextAnimation()
 
         if (flicExists)
         {
-            desiredCdTrack_ = DONT_PLAY_CD; // Don't play music
+            desiredCdTrack(DONT_PLAY_CD); // Don't play music
 
             // Clear the entire screen to stop previous screen from showing through black borders.
             RenDevice::current()->clearAllSurfaces(RenColour::black());
@@ -2434,24 +2434,20 @@ void MachGuiStartupScreens::contextGame()
 {
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
     CB_DEPIMPL(bool, switchGuiRoot_);
-    CB_DEPIMPL(MachGuiStartupScreens::Music, desiredCdTrack_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
 
     switchGuiRoot_ = true;
     cursorOn(false);
-    // desiredCdTrack_ = MachGuiDatabase::instance().currentScenario().musicTrack();
-    desiredCdTrack_
-        = _STATIC_CAST(MachGuiStartupScreens::Music, MachGuiDatabase::instance().currentScenario().musicTrack());
+    Music scenarioTrack = static_cast<Music>(MachGuiDatabase::instance().currentScenario().musicTrack());
+    desiredCdTrack(scenarioTrack);
     pInGameScreen_->resetSwitchToMenus();
 }
 
 void MachGuiStartupScreens::contextVictory()
 {
-    //  CB_DEPIMPL( MachGuiStartupScreens::Music, desiredCdTrack_ );
-    //
     //  changeBackdrop( "gui/menu/victory.bmp" );
     //  cursorOn( false );
-    //  desiredCdTrack_ = VICTORY_MUSIC;
+    //  desiredCdTrack(VICTORY_MUSIC);
 
     // Update player database...
     if (gameType() == CAMPAIGNGAME)
@@ -2499,11 +2495,9 @@ void MachGuiStartupScreens::contextVictory()
 
 void MachGuiStartupScreens::contextDefeat()
 {
-    //  CB_DEPIMPL( MachGuiStartupScreens::Music, desiredCdTrack_ );
-    //
     //  changeBackdrop( "gui/menu/defeat.bmp" );
     //  cursorOn( false );
-    //  desiredCdTrack_ = DEFEAT_MUSIC;
+    //  desiredCdTrack(DEFEAT_MUSIC);
 
     // Update player database...
     if (gameType() == CAMPAIGNGAME)
@@ -2545,7 +2539,7 @@ void MachGuiStartupScreens::contextLogo()
 
     cursorOn(false);
     if (desiredCdTrack_ != LOADING_MUSIC)
-        desiredCdTrack_ = MENU_MUSIC;
+        desiredCdTrack(MENU_MUSIC);
 }
 
 MachGuiStartupScreens::ButtonEvent MachGuiStartupScreens::lastButtonEvent() const
