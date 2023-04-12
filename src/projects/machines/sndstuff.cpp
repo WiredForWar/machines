@@ -49,15 +49,9 @@ void SDLApp::loadSounds()
 {
     spdlog::info("Loading sounds...");
 
-    SysRegistry::KeyHandle handle;
-    if (SysRegistry::instance().onlyOpenKey("Options\\3DSound", &handle) == SysRegistry::SUCCESS)
-    {
-        MachGuiCtxOptions::load3dSoundFiles(SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"));
-    }
-    else
-    {
-        MachGuiCtxOptions::load3dSoundFiles(SndMixer::instance().is3dMixer());
-    }
+    const bool enable3d
+        = SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on", SndMixer::instance().is3dMixer());
+    MachGuiCtxOptions::load3dSoundFiles(enable3d);
 }
 
 void SDLApp::cleanUpSound()
