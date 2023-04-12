@@ -9,8 +9,6 @@
 #include "sound/internal/waveman.hpp"
 #include "sound/internal/alsound.hpp"
 
-#include <time.h>
-#include "profiler/profiler.hpp"
 // diag.hpp used for file existence checking in debug and release
 #ifdef PRODUCTION
 #include "base/diag.hpp"
@@ -18,7 +16,6 @@
 
 // TBD: We need much better error handling for the sound
 
-static bool bobFirstSoundError = true;
 static int numberOfRefCreations = 0;
 static int numberOfRefReleases = 0;
 
@@ -33,52 +30,6 @@ static int numberOfRefReleases = 0;
     return theRefCount;
 }*/
 
-int bobSoundError(
-    char* lpText, // address of text in message box
-    char* lpCaption, // address of title of message box
-    uint // style of message box
-)
-{
-// We don't want spurious diagnostic files appearing in production
-// versions
-#ifndef PRODUCTION
-    if (bobFirstSoundError)
-    {
-        bobFirstSoundError = false;
-
-        //  Clear the file
-        std::ofstream ostr("snderr.log");
-    }
-
-    std::ofstream ostr("snderr.log", std::ios::app);
-
-    time_t t = time(nullptr);
-    ostr << ctime(&t);
-
-    ostr << std::endl;
-
-    ostr << "Error : " << lpText << " " << lpCaption << std::endl;
-
-    //    ostr << "GetLastError " << GetLastError() << "  ";
-
-    bool writeStackAnchor = true;
-    uint32_t lineNumber = 0;
-    const char* extraString = nullptr;
-
-    ostr << std::endl;
-    ostr << "------ Stack trace start ------------------------------" << std::endl;
-    ProProfiler::instance().traceStack(ostr, writeStackAnchor, lineNumber, extraString);
-    ostr << "------ Stack trace finish -----------------------------" << std::endl << std::endl;
-
-    ostr << ctime(&t);
-
-    ostr << std::endl << std::endl << std::endl << std::endl;
-
-    ostr.close();
-#endif
-    return 0;
-}
-
 extern void debugTiming(const char*, bool);
 
 // static
@@ -90,7 +41,6 @@ SndWaveManager& SndWaveManager::instance()
 
 SndWaveManager::SndWaveManager()
 {
-
     TEST_INVARIANT;
 }
 
@@ -253,24 +203,11 @@ void SndWaveManager::freeAll()
 
 bool SndWaveManager::isLoaded(const SndWaveformId& id)
 {
-    //  WaveFormMap::iterator i = loadedWaveForms_.begin();
-    //  WaveFormMap::iterator j = loadedWaveForms_.end();
-    //
-    //  bool found = false;
-    //  while(not found && i!=j)
-    //  {
-    //      if((*i).first.pathname() == id)
-    //      {
-    //          found = true;
-    //      }
-    //      ++i;
-    //  }
     return (loadedWaveForms_.find(id) != loadedWaveForms_.end());
 }
 
 std::ostream& operator<<(std::ostream& o, const SndWaveManager& t)
 {
-
     o << "SndWaveManager " << (void*)&t << " start" << std::endl;
     o << "SndWaveManager " << (void*)&t << " end" << std::endl;
 

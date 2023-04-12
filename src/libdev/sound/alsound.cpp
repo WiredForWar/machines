@@ -31,7 +31,7 @@ bool alTestError(const char* msg)
     ALCenum error = alGetError();
     if (error != AL_NO_ERROR)
     {
-        std::cerr << "ALerr: " << msg << std::endl;
+        spdlog::warn("Sound error! Description: {}, AL code: {}", msg, error);
         return false;
     }
     return true;

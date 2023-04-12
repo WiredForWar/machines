@@ -24,12 +24,6 @@
 #include "sound/internal/alsample.ipp"
 #endif
 
-int bobSoundError(
-    char* lpText, // address of text in message box
-    char* lpCaption, // address of title of message box
-    uint uType // style of message box
-);
-
 // unsigned long getRefCount(IUnknown* pThisInterface);
 
 // Maximum sound buffer size == 800K
@@ -307,11 +301,8 @@ void ALSample::play()
         alTestError("source looping");
         alSourcePlay(alSource_);
     }
-    if (!alTestError("source play"))
-    {
-        bobSoundError("Can't play", "Error", 0);
-    }
-    else
+
+    if (alTestError("source play"))
         state_ = PLAYING;
 
     // Set the volume to the requested level
