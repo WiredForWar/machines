@@ -66,18 +66,27 @@ DevCD::DevCD()
     {
         spdlog::info("Enabling the music (using alure)...");
 
-        alGenSources(1, &source_);
-        if (alGetError() != AL_NO_ERROR)
+        ALenum errorCode = alGetError();
+        if (errorCode == AL_NO_ERROR)
         {
-            std::cerr << "Failed to create OpenAL source for music mixer!" << std::endl;
-            alureShutdownDevice();
-            noErrors = false;
+            alGenSources(1, &source_);
+            if (errorCode == AL_NO_ERROR)
+            {
+                alureStreamSizeIsMicroSec(AL_TRUE);
+                alureUpdateInterval(STREAM_UPDATE_INTERVAL);
+            }
+            else
+            {
+                spdlog::warn("Failed to create OpenAL source for music mixer! Code: {}", errorCode);
+                alureShutdownDevice();
+            }
         }
         else
         {
-            alureStreamSizeIsMicroSec(AL_TRUE);
-            alureUpdateInterval(STREAM_UPDATE_INTERVAL);
+            spdlog::warn("OpenAL reports an error before we do anything. Code: {}", errorCode);
         }
+
+        noErrors = errorCode == AL_NO_ERROR;
     }
     haveMixer_ = noErrors;
     pPlayList_ = new DevCDPlayList(numberOfTracks());

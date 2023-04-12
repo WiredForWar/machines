@@ -39,8 +39,8 @@ void SDLApp::initSound()
     savedSampleVolume_ = SndMixer::instance().masterSampleVolume();
     savedCDVolume_ = DevCD::instance().volume();
 
-    SOUND_STREAM("savedSampleVolume_ " << savedSampleVolume_ << std::endl);
-    SOUND_STREAM("savedCDVolume_ " << savedCDVolume_ << std::endl);
+    spdlog::info("Sample volume: {}", savedSampleVolume_);
+    spdlog::info("Music volume: {}", savedCDVolume_);
 
     W4dSoundManager::instance();
 }
