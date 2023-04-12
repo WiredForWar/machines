@@ -23,16 +23,17 @@ PerOstream::~PerOstream()
     Persistence::instance().registerCloseOstream();
 }
 
-void PerOstream::write(const char* data, size_t length)
+void PerOstream::write(const void* data, size_t length)
 {
-    ostr_.write(data, length);
+    const char* pData = static_cast<const char*>(data);
+    ostr_.write(pData, length);
 
     if (logWrite())
     {
         PER_WRITE_INDENT_STREAM("$");
         for (size_t i = 0; i < length; ++i)
         {
-            PER_WRITE_INDENT_STREAM(std::hex << (int)data[i] << " " << std::dec);
+            PER_WRITE_INDENT_STREAM(std::hex << static_cast<int>(pData[i]) << " " << std::dec);
         }
         PER_WRITE_INDENT_STREAM("$" << std::endl);
     }

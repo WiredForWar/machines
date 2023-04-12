@@ -30,7 +30,7 @@ public:
 
     virtual ~PerIstream();
 
-    void read(char* pOutput, size_t length);
+    void read(void* pOutput, size_t length);
 
     //  Read a single character
     int get();

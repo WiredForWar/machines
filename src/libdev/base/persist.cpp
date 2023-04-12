@@ -211,23 +211,20 @@ void Persistence::CLASS_INVARIANT
     PerOstream& operator<<(PerOstream& ostr, const TYPE& ob)                                                           \
     {                                                                                                                  \
         STORED_TYPE obj = _STATIC_CAST(STORED_TYPE, ob);                                                               \
-        Persistence::instance().writeObjectPre(ostr, _STATIC_CAST(const void*, &ob), #TYPE);                           \
-        ostr.write(_CONST_CAST(char*, _REINTERPRET_CAST(const char*, &obj)), sizeof(obj));                             \
-        Persistence::instance().writeObjectPost(_STATIC_CAST(const void*, &ob), #TYPE);                                \
+        Persistence::instance().writeObjectPre(ostr, &ob, #TYPE);                                                      \
+        ostr.write(&obj, sizeof(obj));                                                                                 \
+        Persistence::instance().writeObjectPost(&ob, #TYPE);                                                           \
         return ostr;                                                                                                   \
     }
 
 #define PER_WRITE_BUILTIN_POINTER(TYPE)                                                                                \
     PerOstream& operator<<(PerOstream& ostr, const TYPE* pOb)                                                          \
     {                                                                                                                  \
-        if (Persistence::instance()                                                                                    \
-                .writePointerPre(ostr, _STATIC_CAST(const void*, pOb), #TYPE, _STATIC_CAST(const void*, pOb), #TYPE)   \
-            == Persistence::WRITE_OBJECT)                                                                              \
+        if (Persistence::instance().writePointerPre(ostr, pOb, #TYPE, pOb, #TYPE) == Persistence::WRITE_OBJECT)        \
         {                                                                                                              \
             ostr << *pOb;                                                                                              \
         }                                                                                                              \
-        Persistence::instance()                                                                                        \
-            .writePointerPost(ostr, _STATIC_CAST(const void*, pOb), #TYPE, _STATIC_CAST(const void*, pOb));            \
+        Persistence::instance().writePointerPost(ostr, pOb, #TYPE, pOb);                                               \
         return ostr;                                                                                                   \
     }
 
@@ -235,10 +232,10 @@ void Persistence::CLASS_INVARIANT
     PerIstream& operator>>(PerIstream& istr, TYPE& ob)                                                                 \
     {                                                                                                                  \
         STORED_TYPE obj;                                                                                               \
-        Persistence::instance().readObjectPre(istr, _STATIC_CAST(const void*, &ob), #TYPE);                            \
-        istr.read(_REINTERPRET_CAST(char*, &obj), sizeof(obj));                                                        \
+        Persistence::instance().readObjectPre(istr, &ob, #TYPE);                                                       \
+        istr.read(&obj, sizeof(obj));                                                                                  \
         ob = _STATIC_CAST(TYPE, obj);                                                                                  \
-        Persistence::instance().readObjectPost(_STATIC_CAST(const void*, &ob), #TYPE);                                 \
+        Persistence::instance().readObjectPost(&ob, #TYPE);                                                            \
         return istr;                                                                                                   \
     }
 
@@ -258,12 +255,12 @@ void Persistence::CLASS_INVARIANT
     void perWrite(PerOstream& ostr, const TYPE& ob)                                                                    \
     {                                                                                                                  \
         STORED_TYPE obj = _STATIC_CAST(STORED_TYPE, ob);                                                               \
-        ostr.write(_CONST_CAST(char*, _REINTERPRET_CAST(const char*, &obj)), sizeof(obj));                             \
+        ostr.write(&obj, sizeof(obj));                                                                                 \
     }                                                                                                                  \
     void perRead(PerIstream& istr, TYPE& ob)                                                                           \
     {                                                                                                                  \
         STORED_TYPE obj;                                                                                               \
-        istr.read(_REINTERPRET_CAST(char*, &obj), sizeof(obj));                                                        \
+        istr.read(&obj, sizeof(obj));                                                                                  \
         ob = _STATIC_CAST(TYPE, obj);                                                                                  \
     }
 

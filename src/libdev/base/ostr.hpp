@@ -28,7 +28,7 @@ public:
 
     virtual ~PerOstream();
 
-    void write(const char*, size_t length);
+    void write(const void*, size_t length);
 
     static bool& logWrite();
 

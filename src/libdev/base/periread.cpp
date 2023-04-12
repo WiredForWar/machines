@@ -417,7 +417,7 @@ PerDataType PersistenceImplementationRead::readDataType(PerIstream& istr)
     char c;
     istr.read(&c, 1);
 
-    PerDataType type = _STATIC_CAST(PerDataType, c);
+    PerDataType type = static_cast<PerDataType>(c);
 
     return type;
 }
@@ -428,8 +428,7 @@ PerDataType PersistenceImplementationRead::readDataType(PerIstream& istr)
 PerIdentifier PersistenceImplementationRead::readId(PerIstream& istr)
 {
     PerIdentifier id;
-    // istr.read( (char*)&id, sizeof( PerIdentifier ) );
-    istr.read((char*)&id, 4);
+    istr.read(&id, sizeof(PerIdentifier));
 
     return id;
 }

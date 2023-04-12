@@ -38,9 +38,9 @@ PerIstream::~PerIstream()
     Persistence::instance().registerCloseIstream();
 }
 
-void PerIstream::read(char* pOutput, size_t length)
+void PerIstream::read(void* pOutput, size_t length)
 {
-    istr_.read(pOutput, length);
+    istr_.read(static_cast<char*>(pOutput), length);
     pImpl_->logDataRead(length);
 }
 
