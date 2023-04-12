@@ -2350,8 +2350,6 @@ void MachGuiStartupScreens::contextAnimation()
 
         if (flicExists)
         {
-            desiredCdTrack_ = DONT_PLAY_CD;
-
             // Clear the entire screen to stop previous screen from showing through black borders.
             RenDevice::current()->clearAllSurfaces(RenColour::black());
         }
