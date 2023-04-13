@@ -159,7 +159,10 @@ void perWrite(PerOstream& ostr, const MachLogPersistence& per)
         "MachLogPersistence::perWrite pcController.race " << MachLogRaces::instance().pcController().race()
                                                           << std::endl);
     MachPhys::Race pcControllerRace = MachLogRaces::instance().pcController().race();
-    PER_WRITE_RAW_OBJECT(ostr, pcControllerRace);
+    // Use uint32_t for the sake of serialization compatibility
+    uint32_t pc = pcControllerRace;
+    PER_WRITE_RAW_OBJECT(ostr, pc);
+
     for (MachPhys::Race race : MachPhys::AllRaces)
     {
         if (MachLogRaces::instance().raceInGame(race))
@@ -190,7 +193,6 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
 
     // stack data to read holding data into.
     string planetName(MachLogRaces::instance().currentPlanet());
-    MachPhys::Race pcControllerRace;
 
     bool raceExists[MachPhys::N_RACES];
 
@@ -204,7 +206,10 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
     // this could be done by controller.type() but this will kill lmultiplayer if it every gets extended in
     // so for the sake of the few extra bytes we write it out with the save game info.
     HAL_STREAM("read pcControllerRace \n");
-    PER_READ_RAW_OBJECT(istr, (int&)pcControllerRace);
+    uint32_t playerRaceInt = 0;
+    PER_READ_RAW_OBJECT(istr, playerRaceInt);
+    // MachPhys::Race pcControllerRace = static_cast<MachPhys::Race>(playerRaceInt);
+
     HAL_STREAM("read in raceExist flags\n");
     PER_READ_RAW_DATA(istr, raceExists, MachPhys::N_RACES * sizeof(bool));
     for (MachPhys::Race race : MachPhys::AllRaces)

@@ -288,7 +288,9 @@ void perWrite(PerOstream& ostr, const MachLogWeapon& weapon)
     ostr << base1;
     ostr << weapon.lastFireTime_;
     MachPhys::Race race = weapon.pLogRace_->race();
-    PER_WRITE_RAW_OBJECT(ostr, race);
+    uint32_t typedRace = race;
+    // Use uint32_t for the sake of serialization compatibility
+    PER_WRITE_RAW_OBJECT(ostr, typedRace);
     ostr << weapon.pOwner_;
     ostr << weapon.currentlyAttached_;
     ostr << weapon.pTarget_;
@@ -300,10 +302,10 @@ void perRead(PerIstream& istr, MachLogWeapon& weapon)
 
     istr >> base1;
     istr >> weapon.lastFireTime_;
-    MachPhys::Race race;
-    uint raceInt; // TODO: mismatch? is it stored as uchar and read as uint32?
-    PER_READ_RAW_OBJECT(istr, (uint&)raceInt);
-    race = _STATIC_CAST(MachPhys::Race, raceInt);
+    uint32_t raceInt = 0;
+    // Use uint32_t for the sake of serialization compatibility
+    PER_READ_RAW_OBJECT(istr, raceInt);
+    const MachPhys::Race race = static_cast<MachPhys::Race>(raceInt);
     istr >> weapon.pOwner_;
     istr >> weapon.currentlyAttached_;
     istr >> weapon.pTarget_;
