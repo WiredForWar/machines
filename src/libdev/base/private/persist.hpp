@@ -156,7 +156,7 @@ enum PerConstructor
 public:                                                                                                                \
     static const char* perClassName();                                                                                 \
     VIRTUAL const char* perMostDerivedClassName() const;                                                               \
-    VIRTUAL char* perPDerivedClass() const;                                                                            \
+    VIRTUAL const void* perPDerivedClass() const;                                                                      \
                                                                                                                        \
 public:
 
@@ -359,9 +359,9 @@ public:                                                                         
     void perWrite##className(PerOstream&, const void* pVoid);
 
 #define PER_PRIVATE_DEFINE_PERSISTENT(className)                                                                       \
-    char* className::perPDerivedClass() const                                                                          \
+    const void* className::perPDerivedClass() const                                                                    \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return this;                                                                                                   \
     }                                                                                                                  \
     const char* className::perClassName()                                                                              \
     {                                                                                                                  \
@@ -387,9 +387,9 @@ public:                                                                         
     operator>>(PerIstream& istr, className*& pOb) PER_POINTER_READ(className, className::perCreate())
 
 #define PER_PRIVATE_DEFINE_PERSISTENT_ABSTRACT(className)                                                              \
-    char* className::perPDerivedClass() const                                                                          \
+    const void* className::perPDerivedClass() const                                                                    \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return this;                                                                                                   \
     }                                                                                                                  \
     const char* className::perClassName()                                                                              \
     {                                                                                                                  \
@@ -473,9 +473,9 @@ public:                                                                         
 
 //{ return #className ## #STRING_T; }
 #define PER_PRIVATE_DEFINE_PERSISTENT_T(className, LIST_T, STRING_T)                                                   \
-    template <> char* className<LIST_T>::perPDerivedClass() const                                                      \
+    template <> const void* className<LIST_T>::perPDerivedClass() const                                                \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return this;                                                                                                   \
     }                                                                                                                  \
     template <> const char* className<LIST_T>::perClassName()                                                          \
     {                                                                                                                  \
@@ -517,10 +517,10 @@ public:                                                                         
     PerOstream& operator<<(PerOstream& ostr, const className<LIST_T>& ob) PER_OBJECT_WRITE(className) PerIstream&      \
     operator>>(PerIstream& istr, className<LIST_T>& ob) PER_OBJECT_READ(className) PerOstream&                         \
     operator<<(PerOstream& ostr, const className<LIST_T>* pOb) PER_POINTER_WRITE(className##STRING_T) PerIstream&      \
-    operator>>(PerIstream& istr, className<LIST_T>*& pOb) PER_POINTER_READ_ABSTRACT(className<LIST_T>) char*           \
+    operator>>(PerIstream& istr, className<LIST_T>*& pOb) PER_POINTER_READ_ABSTRACT(className<LIST_T>) const void*     \
     className<LIST_T>::perPDerivedClass() const                                                                        \
     {                                                                                                                  \
-        return _STATIC_CAST(char*, this);                                                                              \
+        return this;                                                                                                   \
     }                                                                                                                  \
     const char* className<LIST_T>::perClassName() const                                                                \
     {                                                                                                                  \
@@ -541,10 +541,9 @@ public:                                                                         
                 PER_POINTER_WRITE(className) template <CLASS_LIST_T>                                                   \
                 PerIstream& operator>>(PerIstream& istr, className<LIST_T>*& pOb)                                      \
                     PER_POINTER_READ(className, (className<LIST_T>::perCreate())) template <CLASS_LIST_T>              \
-                    inline char* className<LIST_T>::perPDerivedClass() const                                           \
-    /*        { return _STATIC_CAST( char*, this ); }*/                                                                \
+                    inline const void* className<LIST_T>::perPDerivedClass() const                                     \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return this;                                                                                                   \
     }                                                                                                                  \
     template <CLASS_LIST_T> inline const char* className<LIST_T>::perMostDerivedClassName() const                      \
     {                                                                                                                  \

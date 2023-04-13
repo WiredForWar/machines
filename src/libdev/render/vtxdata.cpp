@@ -14,9 +14,9 @@
 #include "render/internal/colpack.hpp"
 #include <iomanip>
 
-char* RenIVertexData::perPDerivedClass() const
+const void* RenIVertexData::perPDerivedClass() const
 {
-    return const_cast<char*>(reinterpret_cast<const char*>(this));
+    return this;
 }
 
 const char* RenIVertexData::perClassName()
@@ -62,22 +62,18 @@ PerIstream& operator>>(PerIstream& istr, RenIVertexData& ob)
 
 PerOstream& operator<<(PerOstream& ostr, const RenIVertexData* pOb)
 {
-    void* pMostDerivedOb = pOb ? pOb->perPDerivedClass() : (void*)pOb;
+    const void* pMostDerivedOb = pOb ? pOb->perPDerivedClass() : pOb;
     const char* mostDerivedClassName = pOb ? pOb->perMostDerivedClassName() : nullptr;
 
-    auto const result = Persistence::instance().writePointerPre(
-        ostr,
-        static_cast<const void*>(pOb),
-        "RenIVertexData",
-        pMostDerivedOb,
-        mostDerivedClassName);
+    auto const result
+        = Persistence::instance().writePointerPre(ostr, pOb, "RenIVertexData", pMostDerivedOb, mostDerivedClassName);
 
     if (result == Persistence::WRITE_OBJECT)
     {
         ostr << *pOb;
     }
 
-    Persistence::instance().writePointerPost(ostr, static_cast<const void*>(pOb), "RenIVertexData", pMostDerivedOb);
+    Persistence::instance().writePointerPost(ostr, pOb, "RenIVertexData", pMostDerivedOb);
 
     return ostr;
 }

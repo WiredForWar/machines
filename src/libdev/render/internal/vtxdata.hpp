@@ -130,7 +130,7 @@ public:
     RenIVertexData(PerConstructor);
     static const char* perClassName();
     const char* perMostDerivedClassName() const override;
-    char* perPDerivedClass() const override;
+    const void* perPDerivedClass() const override;
     friend void perWrite(PerOstream&, const RenIVertexData&);
     friend void perRead(PerIstream&, RenIVertexData&);
 
