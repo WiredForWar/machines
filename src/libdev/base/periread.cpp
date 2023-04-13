@@ -367,7 +367,7 @@ PersistenceImplementationRead::readPointerPre(PerIstream& istr, void** /* ptr */
     }
     else
     {
-        std::cout << std::endl << "POS:" << istr.tellg() << std::endl;
+        std::cout << std::endl << "POS:" << istr.pos() << std::endl;
         ASSERT_FAIL("Expecting a pointer, found an object");
     }
 

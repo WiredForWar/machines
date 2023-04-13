@@ -39,6 +39,11 @@ void PerOstream::write(const void* data, size_t length)
     }
 }
 
+size_t PerOstream::pos() const
+{
+    return ostr_.tellp();
+}
+
 // static
 bool& PerOstream::logWrite()
 {

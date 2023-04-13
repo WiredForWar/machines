@@ -57,7 +57,7 @@ int PerIstream::get()
     return ch;
 }
 
-size_t PerIstream::tellg() const
+size_t PerIstream::pos() const
 {
     return istr_.tellg();
 }

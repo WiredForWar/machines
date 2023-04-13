@@ -35,7 +35,7 @@ public:
     //  Read a single character
     int get();
 
-    size_t tellg() const;
+    size_t pos() const;
 
     static bool& logRead();
 

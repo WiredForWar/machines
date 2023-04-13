@@ -30,6 +30,8 @@ public:
 
     void write(const void*, size_t length);
 
+    size_t pos() const;
+
     static bool& logWrite();
 
 protected:
