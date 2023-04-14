@@ -18,8 +18,8 @@
 class MachPhysIHealthMaterials
 {
 public:
-    MachPhysIHealthMaterials(int nMats, double alpha = 1);
-    MachPhysIHealthMaterials(int nMats, const RenTexture&, double alpha = 1);
+    MachPhysIHealthMaterials(int nMats, float lineWidth, double alpha = 1);
+    MachPhysIHealthMaterials(int nMats, float lineWidth, const RenTexture&, double alpha = 1);
     ~MachPhysIHealthMaterials();
 
     // These post-conditions apply to both of these functions.
@@ -38,7 +38,7 @@ public:
 
 private:
     RenColour computeColour(double percentageHp) const;
-    void sharedCtor();
+    void sharedCtor(float lineWidth);
 
     RenMaterial* const materials_;
     const int nMats_;

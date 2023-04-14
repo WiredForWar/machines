@@ -44,6 +44,7 @@ public:
     };
 
     static void setMarkerType(MarkerType type);
+    static void setMarkerLineWidth(float width);
 
     // Inherited from W4dEntity
     bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;

@@ -718,6 +718,22 @@ GuiBitmap MachGui::getScaledImage(std::string path)
     return result;
 }
 
+float MachGui::getPhysMarkerLineWidth()
+{
+    const float scale = uiScaleFactor();
+
+    if (scale >= 3.0f)
+    {
+        return 2.0f;
+    }
+    else if (scale > 1.0f)
+    {
+        return 1.5f;
+    }
+
+    return 1.0f;
+}
+
 // static
 int MachGui::controlPanelInXPos()
 {

@@ -215,7 +215,10 @@ void RenILineGroup::render(const RenIVertexData& vtx, const RenMaterial& mat) co
     // D3D will save time by processing less vertices.
     ASSERT(nIndicesUsed_ <= vtx.size(), "Indices used by group don't match mesh's vertices.");
 
+    const float lineWidth = mat.lineWidth();
+    glLineWidth(lineWidth ? lineWidth : 1.0f);
     RenDevice::current()->renderIndexed(lit, nIndicesUsed_, &(indices_.front()), indices_.size(), mat, GL_LINES);
+    glLineWidth(1.0f);
 }
 
 // virtual

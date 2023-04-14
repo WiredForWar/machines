@@ -23,6 +23,7 @@
 PER_DEFINE_PERSISTENT(MachPhysMarker);
 
 static MachPhysMarker::MarkerType sMarkerType = MachPhysMarker::MarkerType::Invalid;
+static float sMarkerWidth = 1.0f;
 
 static void setMarkerDimensions(
     RenTTFTriangles& ttf,
@@ -99,7 +100,7 @@ MachPhysMarker::MachPhysMarker(
     {
         // Change the alpha to be partly transparent.  Set a hardcoded texture.
         static const RenTexture tex1 = RenTexManager::instance().createTexture("mark3_t.bmp");
-        static const MachPhysIHealthMaterials mats(20, tex1, 0.7);
+        static const MachPhysIHealthMaterials mats(20, sMarkerWidth, tex1, 0.7);
         const RenMaterial& mat = (permanent) ? mats.material(percentageHp) : mats.blueMaterial();
 
         // For objects that are build buried in the ground, we don't want the
@@ -164,7 +165,7 @@ MachPhysMarker::MachPhysMarker(
     }
     else // use 3D wireframe
     {
-        static const MachPhysIHealthMaterials mats(20);
+        static const MachPhysIHealthMaterials mats(20, sMarkerWidth);
         const RenMaterial& mat = (permanent) ? mats.material(percentageHp) : mats.blueMaterial();
 
         const MATHEX_SCALAR xMin = minCorner.x() - 1.0;
@@ -206,6 +207,11 @@ MachPhysMarker::~MachPhysMarker()
 void MachPhysMarker::setMarkerType(MarkerType type)
 {
     sMarkerType = type;
+}
+
+void MachPhysMarker::setMarkerLineWidth(float width)
+{
+    sMarkerWidth = width;
 }
 
 void MachPhysMarker::CLASS_INVARIANT

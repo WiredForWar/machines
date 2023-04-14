@@ -4302,6 +4302,9 @@ void MachGuiStartupScreens::initializeCursorOptions()
 {
     bool use2DCursor = SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D");
     MachPhysMarker::setMarkerType(use2DCursor ? MachPhysMarker::MarkerType::TwoD : MachPhysMarker::MarkerType::ThreeD);
+
+    float lineWidth = MachGui::getPhysMarkerLineWidth();
+    MachPhysMarker::setMarkerLineWidth(lineWidth);
 }
 
 void MachGuiStartupScreens::addFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)

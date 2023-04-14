@@ -6,7 +6,7 @@
 #include "machphys/internal/healthma.hpp"
 #include "render/colour.hpp"
 
-MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, const RenTexture& t, double alpha)
+MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, float lineWidth, const RenTexture& t, double alpha)
     : nMats_(nMats)
     , materials_(_NEW_ARRAY(RenMaterial, nMats))
     , texture_(t)
@@ -15,10 +15,10 @@ MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, const RenTexture& 
     PRE(nMats > 1);
     PRE(alpha >= 0);
     PRE(alpha <= 1);
-    sharedCtor();
+    sharedCtor(lineWidth);
 }
 
-MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, double alpha)
+MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, float lineWidth, double alpha)
     : nMats_(nMats)
     , materials_(_NEW_ARRAY(RenMaterial, nMats))
     , texture_()
@@ -27,10 +27,10 @@ MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, double alpha)
     PRE(nMats > 1);
     PRE(alpha >= 0);
     PRE(alpha <= 1);
-    sharedCtor();
+    sharedCtor(lineWidth);
 }
 
-void MachPhysIHealthMaterials::sharedCtor()
+void MachPhysIHealthMaterials::sharedCtor(float lineWidth)
 {
     const RenColour markerBlue(0.0, 122.0 / 255.0, 179.0 / 255.0);
     const RenColour diffuse(0, 0, 0, alpha_);
@@ -38,6 +38,7 @@ void MachPhysIHealthMaterials::sharedCtor()
     blue_.emissive(markerBlue);
     blue_.diffuse(diffuse);
     blue_.texture(texture_);
+    blue_.lineWidth(lineWidth);
 
     for (int i = 0; i != nMats_; ++i)
     {
@@ -46,6 +47,7 @@ void MachPhysIHealthMaterials::sharedCtor()
         materials_[i].diffuse(diffuse);
         materials_[i].emissive(computeColour(percent));
         materials_[i].texture(texture_);
+        materials_[i].lineWidth(lineWidth);
 
         // Give the markers a high absolute priority.  Otherwise they can be
         // incorrectly sorted against alpha'd terrain etc.  The choice of value

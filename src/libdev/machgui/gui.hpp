@@ -74,6 +74,8 @@ public:
     static std::string getScaledImagePath(std::string path);
     static GuiBitmap getScaledImage(std::string path);
 
+    static float getPhysMarkerLineWidth();
+
     // Various gui layout values
     static int controlPanelInXPos();
     static int controlPanelOutXPos();
