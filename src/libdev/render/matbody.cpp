@@ -60,6 +60,7 @@ RenIMatBody::RenIMatBody(const RenIMatBody& copyMe)
     , depth_(copyMe.depth_)
     , alphaPriority_(copyMe.alphaPriority_)
     , fogMultiplier_(copyMe.fogMultiplier_)
+    , lineWidth_(copyMe.lineWidth_)
     , dirty_(true)
     , alphaTransparent_(copyMe.alphaTransparent_)
     , transparent_(copyMe.transparent_)
@@ -114,7 +115,7 @@ bool RenIMatBody::operator==(const RenIMatBody& rhs)
         && alphaPriority_ == rhs.alphaPriority_ && interMeshCoplanar_ == rhs.interMeshCoplanar_
         && absolutePriority_ == rhs.absolutePriority_ && intraMeshPriority_ == rhs.intraMeshPriority_
         && emissive_ == rhs.emissive_ && hasFogMultiplier_ == rhs.hasFogMultiplier_
-        && fogMultiplier_ == rhs.fogMultiplier_;
+        && fogMultiplier_ == rhs.fogMultiplier_ && lineWidth_ == rhs.lineWidth_;
 }
 
 void RenIMatBody::CLASS_INVARIANT

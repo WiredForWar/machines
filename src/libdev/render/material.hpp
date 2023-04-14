@@ -67,6 +67,9 @@ public:
     ushort meshId() const;
     float fogMultiplier() const;
 
+    float lineWidth() const;
+    void lineWidth(float newLineWidth);
+
     // Is this material transparent or translucent?  This will only return
     // true if the RenDevice supports alpha; it returns false on devices with
     // only stippling.  This also accounts for any alpha in the texture.

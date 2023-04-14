@@ -68,6 +68,10 @@ public:
     bool hasFogMultiplier() const;
     float fogMultiplier() const;
 
+    // Note: lineWidth is not serialized (saved/loaded)
+    float lineWidth() const;
+    void lineWidth(float newLineWidth);
+
     // Material management.
     bool sharable() const;
     void makeNonSharable();
@@ -104,6 +108,7 @@ private:
     ushort refCount_ = 0;
     ushort meshId_ = 0;
     float fogMultiplier_;
+    float lineWidth_ = 0;
     bool dirty_ : 1, alphaTransparent_ : 1, transparent_ : 1;
     bool interMeshCoplanar_ : 1, sharable_ : 1;
     bool absolutePriority_ : 1, intraMeshPriority_ : 1;
@@ -116,6 +121,16 @@ private:
     // Operations deliberately revoked
     RenIMatBody& operator=(const RenIMatBody&);
 };
+
+inline float RenIMatBody::lineWidth() const
+{
+    return lineWidth_;
+}
+
+inline void RenIMatBody::lineWidth(float newLineWidth)
+{
+    lineWidth_ = newLineWidth;
+}
 
 PER_DECLARE_PERSISTENT(RenIMatBody);
 
