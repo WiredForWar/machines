@@ -64,19 +64,19 @@ private:
     RenIDisplay(const RenIDisplay&);
     RenIDisplay& operator=(const RenIDisplay&);
 
-    SDL_Window* pWnd_;
+    SDL_Window* pWnd_ = nullptr;
     std::vector<RenDisplay::Mode> modeList_;
     RenDisplay::Mode currentMode_;
-    bool fullscreen_;
-    const RenCursor2d* cursor_;
-    RenISavedArea* backBufferCursorSave_;
-    RenISavedArea* frontBufferCursorSave_;
-    uint32_t frameNo_;
+    bool fullscreen_ = false;
+    const RenCursor2d* cursor_ = nullptr;
+    RenISavedArea* backBufferCursorSave_ = nullptr;
+    RenISavedArea* frontBufferCursorSave_ = nullptr;
+    uint32_t frameNo_ = 0;
     RenDisplay::Mode lowestAllowedMode_;
     RenDisplay::Mode highestAllowedMode_;
-    bool supportsGammaCorrection_;
-    double gammaCorrection_;
-    bool isPrimaryDriver_;
+    bool supportsGammaCorrection_ = false;
+    double gammaCorrection_ = 0.0;
+    bool isPrimaryDriver_ = false;
 
     ctl_pvector<RenIDisplayModeObserver> observers_;
 };

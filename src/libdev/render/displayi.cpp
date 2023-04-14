@@ -151,14 +151,7 @@ void RenISavedArea::restoreTo(RenSurface* dest, const RenSurface& front, Ren::Re
 //////////////////////////////////////////////////////////////////////////
 RenIDisplay::RenIDisplay(SDL_Window* wnd)
     : pWnd_(wnd)
-    , frameNo_(0)
-    , cursor_(nullptr)
-    , backBufferCursorSave_(nullptr)
-    , frontBufferCursorSave_(nullptr)
-    , fullscreen_(false)
-    , supportsGammaCorrection_(false)
     , gammaCorrection_(1.0)
-    , isPrimaryDriver_(false)
 {
     observers_.reserve(4);
     TEST_INVARIANT;
