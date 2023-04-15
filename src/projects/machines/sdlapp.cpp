@@ -488,7 +488,7 @@ bool SDLApp::clientStartup()
 
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.35, 0.37);
-    pStartupScreens_->initialiseVolumes();
+    pStartupScreens_->initializeVolumes();
 
     MachPhysData::instance();
 

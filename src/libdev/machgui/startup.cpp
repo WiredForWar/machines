@@ -4263,7 +4263,7 @@ bool MachGuiStartupScreens::msgBoxIsBeingDisplayed() const
     return (bool)pMsgBox_;
 }
 
-void MachGuiStartupScreens::initialiseVolumes()
+void MachGuiStartupScreens::initializeVolumes()
 {
     SysRegistry::KeyHandle handle;
 
