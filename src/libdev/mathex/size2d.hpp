@@ -11,11 +11,12 @@ public:
 
     ~MexSize2d() = default;
 
-    MexSize2d& operator=(const MexSize2d& rhs);
+    constexpr MexSize2d& operator=(const MexSize2d& rhs) = default;
     constexpr bool operator==(const MexSize2d&) const;
     constexpr bool operator!=(const MexSize2d&) const;
 
     constexpr MexSize2d& operator*=(MATHEX_SCALAR multiplier);
+    constexpr MexSize2d& operator/=(MATHEX_SCALAR divider);
 
     constexpr MATHEX_SCALAR width() const;
     constexpr MATHEX_SCALAR height() const;
@@ -30,16 +31,6 @@ private:
     MATHEX_SCALAR height_ = 0;
 };
 
-inline MexSize2d& MexSize2d::operator=(const MexSize2d& rhs)
-{
-    width_ = rhs.width_;
-    height_ = rhs.height_;
-
-    POST(*this == rhs);
-
-    return *this;
-}
-
 constexpr inline bool MexSize2d::operator==(const MexSize2d& rhs) const
 {
     return (width_ == rhs.width_) && (height_ == rhs.height_);
@@ -52,9 +43,21 @@ constexpr inline MexSize2d& MexSize2d::operator*=(MATHEX_SCALAR multiplier)
     return *this;
 }
 
+constexpr inline MexSize2d& MexSize2d::operator/=(MATHEX_SCALAR divider)
+{
+    width_ /= divider;
+    height_ /= divider;
+    return *this;
+}
+
 constexpr inline MexSize2d operator*(MexSize2d rhs, MATHEX_SCALAR c)
 {
     return rhs *= c;
+}
+
+constexpr inline MexSize2d operator/(MexSize2d rhs, MATHEX_SCALAR c)
+{
+    return rhs /= c;
 }
 
 constexpr inline MexSize2d::MexSize2d(MATHEX_SCALAR w, MATHEX_SCALAR h)
