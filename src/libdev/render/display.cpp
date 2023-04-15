@@ -17,7 +17,9 @@
 #include "render/drivsel.hpp"
 #include "render/surface.hpp"
 #include "render/internal/displayi.hpp"
+
 #include <SDL.h>
+#include <GL/glew.h>
 
 #include "spdlog/spdlog.h"
 

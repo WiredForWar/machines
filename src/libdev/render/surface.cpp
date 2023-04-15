@@ -1041,7 +1041,7 @@ bool RenSurface::isNull() const
     return myId_ == Ren::NullTexId;
 }
 
-const GLint RenSurface::handle() const
+const int RenSurface::handle() const
 {
     return internals()->handle();
 }

@@ -9,7 +9,6 @@
 #include "base/base.hpp"
 #include "mathex/point2d.hpp"
 #include "render/render.hpp"
-#include <GL/glew.h>
 
 class SysPathName;
 class RenColour;
@@ -153,7 +152,7 @@ public:
     // PRE(name().length() == 0);
     void name(const std::string&);
     const std::string& name() const;
-    const GLint handle() const;
+    const int handle() const;
 
     // Sharing and read/write control.
     bool sharable() const; // Is this English?
