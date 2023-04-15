@@ -597,19 +597,6 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
     PRE(not artifactImage().empty());
     PRE(not mapFrameOne_.empty());
 
-    static size_t podImageWidth = podImage(MachPhys::RED).width();
-    static size_t podImageHeight = podImage(MachPhys::RED).height();
-    static size_t machineImageWidth = machineImage(MachPhys::RED).width();
-    static size_t machineImageHeight = machineImage(MachPhys::RED).height();
-    static size_t constructionImageWidth = constructionImage(MachPhys::RED).width();
-    static size_t constructionImageHeight = constructionImage(MachPhys::RED).height();
-    static size_t oreImageWidth = oreImage().width();
-    static size_t oreImageHeight = oreImage().height();
-    static size_t debrisImageWidth = debrisImage().width();
-    static size_t debrisImageHeight = debrisImage().height();
-    static size_t artifactImageWidth = artifactImage().width();
-    static size_t artifactImageHeight = artifactImage().height();
-
     // Prepare actor for drawing on second frame
     if (actorPositions_[loop].actorState_ & ATTACKED)
         secondFrameActorPositions_.push_back(actorPositions_[loop]);
