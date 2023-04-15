@@ -99,9 +99,10 @@ private:
 
     RenTexture texture_;
     RenColour diffuse_, emissive_;
-    short depth_, alphaPriority_;
-    ushort refCount_;
-    ushort meshId_;
+    short depth_ = 0;
+    short alphaPriority_ = 0;
+    ushort refCount_ = 0;
+    ushort meshId_ = 0;
     float fogMultiplier_;
     bool dirty_ : 1, alphaTransparent_ : 1, transparent_ : 1;
     bool interMeshCoplanar_ : 1, sharable_ : 1;
