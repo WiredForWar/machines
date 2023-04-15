@@ -249,11 +249,9 @@ bool SDLApp::clientStartup()
     }
 
     // Check other debugging environment variables
-    bool noPreload = getenv("CB_NOPRELOAD") != nullptr;
-
-    bool noTexturePreload = getenv("TEX_NOPRELOAD") != nullptr;
-
-    bool planetsPreload = getenv("CB_PLANETS_PRELOAD") != nullptr;
+    bool preloadModels = getenv("CB_NOPRELOAD") == nullptr;
+    bool preloadTextures = getenv("TEX_NOPRELOAD") == nullptr;
+    bool preloadPlanets = getenv("CB_PLANETS_PRELOAD") != nullptr;
 
     // We must pick a co-orindate system: left-handed for Machines.
     MexCoordSystem::instance().set(MexCoordSystem::LEFT_HANDED);
@@ -521,31 +519,7 @@ bool SDLApp::clientStartup()
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.40, 0.71);
 
-    if (noTexturePreload /*or lobbyFlag*/)
-    {
-
-        // set path search list for run-time loading of the textures
-        LIONEL_STREAM("setting up search path for run-time models texture loading  " << std::endl);
-        if (doLoad2MBytesTexture)
-        {
-            searchList.push_back(SysPathName("models/texture2"));
-            searchList.push_back(SysPathName("models/texture2/exp"));
-            searchList.push_back(SysPathName("models/texture2/fire"));
-            searchList.push_back(SysPathName("models/texture2/smoke"));
-            RenTexManager::instance().searchList(searchList);
-        }
-        else
-        {
-            searchList.push_back(SysPathName("models/texture4"));
-            searchList.push_back(SysPathName("models/texture4/exp"));
-            searchList.push_back(SysPathName("models/texture4/fire"));
-            searchList.push_back(SysPathName("models/texture4/smoke"));
-            RenTexManager::instance().searchList(searchList);
-        }
-        LIONEL_STREAM("searchList  " << searchList);
-        LIONEL_STREAM("done setting up search path for run-time models texture loading  " << std::endl);
-    }
-    else // do texture preload
+    if (preloadTextures)
     {
         spdlog::info("Preloading model and weapons texture bitmaps...");
         if (doLoad2MBytesTexture)
@@ -568,11 +542,34 @@ bool SDLApp::clientStartup()
         }
         LIONEL_STREAM("done preloading model and weapons texture bitmaps " << std::endl);
     }
+    else
+    {
+        // set path search list for run-time loading of the textures
+        LIONEL_STREAM("setting up search path for run-time models texture loading  " << std::endl);
+        if (doLoad2MBytesTexture)
+        {
+            searchList.push_back(SysPathName("models/texture2"));
+            searchList.push_back(SysPathName("models/texture2/exp"));
+            searchList.push_back(SysPathName("models/texture2/fire"));
+            searchList.push_back(SysPathName("models/texture2/smoke"));
+            RenTexManager::instance().searchList(searchList);
+        }
+        else
+        {
+            searchList.push_back(SysPathName("models/texture4"));
+            searchList.push_back(SysPathName("models/texture4/exp"));
+            searchList.push_back(SysPathName("models/texture4/fire"));
+            searchList.push_back(SysPathName("models/texture4/smoke"));
+            RenTexManager::instance().searchList(searchList);
+        }
+        LIONEL_STREAM("searchList  " << searchList);
+        LIONEL_STREAM("done setting up search path for run-time models texture loading  " << std::endl);
+    }
 
     progressIndicator.setLimits(0.71, 0.96);
 
     // Preload the models if required
-    if (not noPreload)
+    if (preloadModels)
     {
         spdlog::info("Loading models...");
         if (MachPhysPreload::persistentFileName().existsAsFile())
@@ -612,7 +609,7 @@ bool SDLApp::clientStartup()
         MachPhysPersistence::instance();
     }
 
-    if (planetsPreload)
+    if (preloadPlanets)
         loadPlanets();
 
     // After loading, dump out the list of all the textures.
