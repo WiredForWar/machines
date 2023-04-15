@@ -100,6 +100,9 @@ RenDevice::RenDevice(RenDisplay* display)
     pImpl_->shouldBeginScene_ = true;
     pImpl_->antiAliasingOn_ = true;
 
+    pImpl_->smoothFilterMin_ = GL_LINEAR;
+    pImpl_->smoothFilterMag_ = GL_LINEAR;
+
     PRE(Ren::initialised());
     PRE(MexCoordSystem::instance().isSet());
 
@@ -897,6 +900,25 @@ void RenDevice::commonEndFrame()
 
     const double now2 = DEBUG_FRAME_TIME;
     RENDER_STREAM("  RenDevice::endFrame() text done at " << now2 << "(ms)\n");
+}
+
+void RenDevice::syncSmoothFilters()
+{
+    if (pImpl_->smoothScaleEnabled_)
+    {
+        if (!pImpl_->smoothFilterApplied_)
+        {
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, pImpl_->smoothFilterMin_);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, pImpl_->smoothFilterMag_);
+            pImpl_->smoothFilterApplied_ = true;
+        }
+    }
+    else if (pImpl_->smoothFilterApplied_)
+    {
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        pImpl_->smoothFilterApplied_ = false;
+    }
 }
 
 void RenDevice::endFrame()
@@ -1891,6 +1913,11 @@ bool RenDevice::antiAliasingOn() const
     return true;
 }
 
+void RenDevice::setSmoothScaleEnabled(bool enabled)
+{
+    pImpl_->smoothScaleEnabled_ = enabled;
+}
+
 void RenDevice::setMaterialHandles(const RenMaterial& mat)
 {
     pImpl_->setMaterialHandles(mat);
@@ -2093,6 +2120,9 @@ void RenDevice::renderSurface(
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
     else
         glBindTexture(GL_TEXTURE_2D, surf->handle());
+
+    syncSmoothFilters();
+
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(gl2DUniformID_, 0);
 

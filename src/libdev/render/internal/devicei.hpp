@@ -144,6 +144,11 @@ private:
     int debugX_, debugY_;
     bool antiAliasingOn_;
 
+    bool smoothScaleEnabled_ = false;
+    bool smoothFilterApplied_ = false;
+    int smoothFilterMin_ = 0;
+    int smoothFilterMag_ = 0;
+
     DevTimer frameTimer_;
 
     bool videoMemoryShared_;

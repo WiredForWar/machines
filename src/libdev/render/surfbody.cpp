@@ -270,7 +270,10 @@ void RenISurfBody::unclippedStretchBlit(const RenISurfBody* source, const Ren::R
     if (displayType_ == RenI::NOT_DISPLAY)
     {
         dev->renderToTextureMode(textureID_, width_, height_);
+
+        dev->setSmoothScaleEnabled(false);
         dev->renderSurface(source, srcArea, dstArea, width_, height_);
+        dev->setSmoothScaleEnabled(true);
         dev->renderToTextureMode(0, 0, 0);
     }
     else

@@ -228,6 +228,8 @@ public:
     void antiAliasingOn(bool);
     bool antiAliasingOn() const;
 
+    void setSmoothScaleEnabled(bool enabled);
+
     // Clients can print any debugging text here.  Any text will be overlayed
     // on the 3D graphics.  The 3D is drawn first, then any internal text such
     // as frame rate, then the client's text below that.
@@ -346,6 +348,8 @@ private:
     void addStatic();
     void addInterference();
     void commonEndFrame();
+
+    void syncSmoothFilters();
 
     friend class Filter;
     void setFilter(const RenColour&);
