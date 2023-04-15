@@ -18,9 +18,11 @@
 #include "mathex/point3d.hpp"
 #include "mathex/vec2.hpp"
 #include "mathex/double.hpp"
-#include "system/registry.hpp"
+#include "spdlog/spdlog.h"
 
 PER_DEFINE_PERSISTENT(MachPhysMarker);
+
+static MachPhysMarker::MarkerType sMarkerType = MachPhysMarker::MarkerType::Invalid;
 
 static void setMarkerDimensions(
     RenTTFTriangles& ttf,
@@ -85,8 +87,14 @@ MachPhysMarker::MachPhysMarker(
     const MexPoint3d& maxCorner = boundary.maxCorner();
 
     // There are two flavours of marker: 2D on a TTF or 3D wireframe boxes.
+    if (sMarkerType == MarkerType::Invalid)
+    {
+        spdlog::warn("MachPhysMarker type is not set!");
+        sMarkerType = MarkerType::ThreeD;
+    }
+
     // The choice is determined by a registry setting.
-    const bool use2D = SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D");
+    const bool use2D = sMarkerType == MarkerType::TwoD;
     if (use2D)
     {
         // Change the alpha to be partly transparent.  Set a hardcoded texture.
@@ -193,6 +201,11 @@ MachPhysMarker::MachPhysMarker(
 MachPhysMarker::~MachPhysMarker()
 {
     TEST_INVARIANT;
+}
+
+void MachPhysMarker::setMarkerType(MarkerType type)
+{
+    sMarkerType = type;
 }
 
 void MachPhysMarker::CLASS_INVARIANT

@@ -36,6 +36,15 @@ public:
     // dtor
     ~MachPhysMarker() override;
 
+    enum class MarkerType
+    {
+        Invalid,
+        TwoD,
+        ThreeD,
+    };
+
+    static void setMarkerType(MarkerType type);
+
     // Inherited from W4dEntity
     bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 

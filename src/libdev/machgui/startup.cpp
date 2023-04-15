@@ -83,6 +83,7 @@
 #include "sound/smpparam.hpp"
 #include "mathex/transf3d.hpp"
 #include "sim/manager.hpp"
+#include "machphys/marker.hpp"
 #include "machphys/plansurf.hpp"
 #include "machlog/races.hpp"
 #include "machlog/planet.hpp"
@@ -4295,6 +4296,12 @@ void MachGuiStartupScreens::initializeVolumes()
     {
         SOUND_STREAM("No CD key" << std::endl);
     }
+}
+
+void MachGuiStartupScreens::initializeCursorOptions()
+{
+    bool use2DCursor = SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D");
+    MachPhysMarker::setMarkerType(use2DCursor ? MachPhysMarker::MarkerType::TwoD : MachPhysMarker::MarkerType::ThreeD);
 }
 
 void MachGuiStartupScreens::addFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)
