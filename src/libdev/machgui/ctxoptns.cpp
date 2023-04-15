@@ -612,7 +612,7 @@ void MachGuiCtxOptions::getOptions()
         SysRegistry::instance().setIntegerValue(
             "Options\\Gamma Correction",
             "Value",
-            pGammaCorrection_->value() * GAMMA_REG_MULTIPLIER);
+            static_cast<double>(pGammaCorrection_->value()) * GAMMA_REG_MULTIPLIER);
     }
 
     // Store option to maintain screen res of in-game menus in menus
