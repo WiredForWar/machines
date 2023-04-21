@@ -801,12 +801,6 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
     GuiBitmap& selectedPodAttackedImage = selectedAttackedPodImage();
     static GuiBitmap constructionAttackedImage = MachGui::getScaledImage("gui/map/aconspix.bmp");
     static GuiBitmap selectedConstructionAttackedImage = MachGui::getScaledImage("gui/map/aconspxs.bmp");
-    static size_t podImageWidth = podImage(MachPhys::RED).width();
-    static size_t podImageHeight = podImage(MachPhys::RED).height();
-    static size_t machineImageWidth = machineImage(MachPhys::RED).width();
-    static size_t machineImageHeight = machineImage(MachPhys::RED).height();
-    static size_t constructionImageWidth = constructionImage(MachPhys::RED).width();
-    static size_t constructionImageHeight = constructionImage(MachPhys::RED).height();
 
     const Gui::Coord& pos = secondFrameActorPositions_[loop].drawPos_;
     MachPhys::Race race = secondFrameActorPositions_[loop].displayAsRace_;
