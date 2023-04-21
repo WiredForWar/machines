@@ -26,7 +26,7 @@ AfxConfigurationData* AfxConfigurationLoader::load()
 
     // defaults for when not present in config
     int buffers = 1;
-    int samples = 8;
+    int samples = 2;
 
     if (SysRegistry::SUCCESS == SysRegistry::instance().queryValueNoRecord(dummy, msaaBuffers, configValue))
     {
