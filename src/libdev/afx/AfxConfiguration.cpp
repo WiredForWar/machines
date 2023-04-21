@@ -41,32 +41,27 @@ const AfxConfigurationData& AfxConfiguration::getConfig()
 
 void AfxConfiguration::validateAntiAliasingSettings(AfxConfigurationData& config)
 {
-    // Validate buffer count
-    config.multisampleBuffers = (config.multisampleBuffers <= 0) ? 1 : config.multisampleBuffers;
+    if (config.multisampleSamples <= 0)
+    {
+        config.multisampleBuffers = 0;
+        config.multisampleSamples = 0;
+        return;
+    }
 
-    // Validate samples, correcting if necessary
-    // Must be 2, 4, 8, or 16
-    const int sampleRate = config.multisampleSamples;
-    if (sampleRate <= 0)
+    config.multisampleBuffers = config.multisampleBuffers > 0 ? 1 : 0;
+    if (config.multisampleSamples == 1)
     {
         config.multisampleSamples = 2;
+        return;
     }
-    else if (sampleRate > 16)
-    {
-        config.multisampleSamples = 16;
-    }
-    else
-    {
-        // Put a number like 3, 15, etc.? NO PROBLEM!!
-        const auto y = static_cast<double>(sampleRate);
-        auto powerOf2 = std::floor(std::log2(y));
 
-        // 2^1 minimum value
-        if (powerOf2 < 1.0)
+    constexpr int ValidValues[] = { 16, 8, 4, 2 };
+    for (int Value : ValidValues)
+    {
+        if (config.multisampleSamples >= Value)
         {
-            powerOf2 = 1.0;
+            config.multisampleSamples = Value;
+            break;
         }
-
-        config.multisampleSamples = static_cast<int>(std::pow(2.0, powerOf2));
     }
 }
