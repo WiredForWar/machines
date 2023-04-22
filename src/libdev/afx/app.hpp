@@ -46,8 +46,13 @@ public:
 
     // AfxApplications can provide a name.  This is useful for window titles.
     const std::string& name() const;
+    void setAppName(const std::string& name);
+
     const std::string& version() const;
+    void setVersion(const std::string& version);
+
     const std::string& buildVersion() const;
+    void setBuildVersion(const std::string& buildVersion);
 
     // Get the arguments that were supplied at program invocation.
     // This does *not* include the program name as the first element
@@ -77,10 +82,6 @@ protected:
     // windowed (DOS) sub-classes are required to provide this functionality
     // just for the sake of consistency.
     virtual void updateDisplay() = 0;
-
-    void setAppName(const std::string& name);
-    void setAppVersion(const std::string& version);
-    void setAppBuildVersion(const std::string& buildVersion);
 
     ExitStatus exitStatus() const;
     void exitStatus(ExitStatus);

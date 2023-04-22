@@ -80,12 +80,12 @@ void AfxApp::setAppName(const std::string& name)
     appName_ = name;
 }
 
-void AfxApp::setAppVersion(const std::string& version)
+void AfxApp::setVersion(const std::string& version)
 {
     version_ = version;
 }
 
-void AfxApp::setAppBuildVersion(const std::string& buildVersion)
+void AfxApp::setBuildVersion(const std::string& buildVersion)
 {
     buildVersion_ = buildVersion;
 }

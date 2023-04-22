@@ -8,7 +8,7 @@
 class AfxSdlApp : public AfxApp
 {
 public:
-    AfxSdlApp() = default;
+    AfxSdlApp(int argc, char* argv[]);
 
     ~AfxSdlApp() override = default;
 
@@ -19,11 +19,11 @@ public:
 
     void testPrint(const char*) const override;
 
+    void setLoggingEnabled(bool enabled);
+
 protected:
     bool OSStartup() override;
     void OSShutdown() override;
-
-    void setLoggingEnabled(bool enabled);
 
 private:
     // These are called only by this class from the run method.
@@ -39,9 +39,6 @@ private:
     void dispatchKeybrdEvent(SDL_Event*, bool);
     void dispatchCharEvent(SDL_Event*);
     void dispatchTouchEvent(SDL_Event*, bool);
-    void initialise(int argc, char* argv[]);
-
-    friend int main(int, char*[]);
 
     bool finishing_ { false };
     bool finished_ { false };

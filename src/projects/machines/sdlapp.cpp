@@ -58,8 +58,9 @@ void debugTiming(const char* text, bool startTiming)
     }
 }
 
-SDLApp::SDLApp()
-    : winWidth_(400)
+SDLApp::SDLApp(int argc, char* argv[])
+    : AfxSdlApp(argc, argv)
+    , winWidth_(400)
     , winHeight_(300)
     , pDisplay_(nullptr)
     , pRoot_(nullptr)

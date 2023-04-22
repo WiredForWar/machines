@@ -16,6 +16,18 @@
 
 #include <SDL.h>
 
+AfxSdlApp::AfxSdlApp(int argc, char* argv[])
+{
+    AfxInvokeArgs args;
+    // start from second arg
+    for (int i = 1; i < argc; ++i)
+    {
+        args.push_back(argv[i]);
+    }
+
+    setArgs(args);
+}
+
 void AfxSdlApp::finish()
 {
     // Make multiple finish calls benign.
@@ -34,18 +46,6 @@ bool AfxSdlApp::isFinished() const
 
 void AfxSdlApp::testPrint(const char*) const
 {
-}
-
-void AfxSdlApp::initialise(int argc, char* argv[])
-{
-    AfxInvokeArgs args;
-    // start from second arg
-    for (int i = 1; i < argc; ++i)
-    {
-        args.push_back(argv[i]);
-    }
-
-    setArgs(args);
 }
 
 bool AfxSdlApp::OSStartup()

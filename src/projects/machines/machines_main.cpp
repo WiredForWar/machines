@@ -6,16 +6,14 @@
 
 int main(int argc, char* argv[])
 {
-    SDLApp app;
+    SDLApp app(argc, argv);
     app.setAppName("Machines");
-    app.setAppVersion(machinesVersion());
-    app.setAppBuildVersion(machinesBuildVersion());
+    app.setVersion(machinesVersion());
+    app.setBuildVersion(machinesBuildVersion());
     app.setLoggingEnabled(true);
 
     try
     {
-        app.initialise(argc, argv);
-
         auto const runResult = app.run();
 
         return runResult;

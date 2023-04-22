@@ -6,15 +6,13 @@
 
 int main(int argc, char* argv[])
 {
-    SDLApp app;
+    SDLApp app(argc, argv);
     app.setAppName("Machines Planet Editor");
-    app.setAppVersion("v0.00.01");
-    app.setAppBuildVersion(machinesBuildVersion());
+    app.setVersion("v0.00.01");
+    app.setBuildVersion(machinesBuildVersion());
 
     try
     {
-        app.initialise(argc, argv);
-
         auto const runResult = app.run();
 
         return runResult;

@@ -25,7 +25,7 @@ class MachGuiStartupScreens;
 class SDLApp : public AfxSdlApp
 {
 public:
-    SDLApp();
+    SDLApp(int argc, char* argv[]);
     ~SDLApp() override;
 
     enum StartedFromLobby
