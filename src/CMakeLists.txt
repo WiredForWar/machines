@@ -11,6 +11,8 @@ configure_file("projects/MachinesVersion.cpp.in" "projects/MachinesVersion.cpp")
 # GLOB is sometimes considered anti pattern but watever
 
 set(MACHINES_SOURCES
+    projects/machines/machines_main.cpp
+
     projects/machines/errorhnd.cpp
     projects/machines/errorhnd.hpp
     projects/machines/guistuff.cpp
@@ -29,6 +31,8 @@ set(MACHINES_SOURCES
 )
 
 set(PLANETED_SOURCES
+    projects/planeted/planeted_main.cpp
+
     projects/planeted/availods.cpp
     projects/planeted/availods.hpp
     projects/planeted/cameras.cpp
