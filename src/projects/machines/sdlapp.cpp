@@ -370,8 +370,11 @@ bool SDLApp::clientStartup()
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
 
+    spdlog::info("Initializing the rendering device...");
+    std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
+
     spdlog::info("Initializing SceneManager...");
-    manager_ = _NEW(W4dSceneManager(pDisplay_, root));
+    manager_ = _NEW(W4dSceneManager(std::move(pDevice), root));
     manager_->pDevice()->debugTextCoords(204, 0);
     manager_->useLevelOfDetail(
         !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));

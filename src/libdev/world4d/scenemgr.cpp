@@ -50,7 +50,7 @@ class W4dSceneManagerImpl
 {
 
 public:
-    W4dSceneManagerImpl(RenDisplay* pDisplay, W4dRoot* root);
+    W4dSceneManagerImpl(std::unique_ptr<RenDevice> pDevice, W4dRoot* root);
     ~W4dSceneManagerImpl();
 
 private:
@@ -91,7 +91,7 @@ private:
     LightPimpls dynamicLights_;
     uint nGlobalLights_, nLocalLights_, nDynamicLights_;
 
-    RenDevice* const device_;
+    std::unique_ptr<RenDevice> const device_;
     W4dCameraShake* pCameraShake_;
 
     // set this to true if we want the complexity of the scene
@@ -124,7 +124,7 @@ private:
     CB_DEPIMPL(uint, totalDomains_);                                                                                   \
     typedef W4dSceneManagerImpl::Lights Lights;                                                                        \
     CB_DEPIMPL(Lights, lights_);                                                                                       \
-    CB_DEPIMPL(RenDevice* const, device_);                                                                             \
+    CB_DEPIMPL(std::unique_ptr<RenDevice> const, device_);                                                             \
     CB_DEPIMPL(W4dCameraShake*, pCameraShake_);                                                                        \
     CB_DEPIMPL(W4dComplexity, complexity_);                                                                            \
     CB_DEPIMPL(DevTimer, autoAdjustUpdateTimer_);                                                                      \
@@ -139,7 +139,7 @@ MATHEX_SCALAR W4dSceneManagerImpl::requestedMinFrameRateInit_ = 20;
 MATHEX_SCALAR W4dSceneManagerImpl::highEnoughFrameRateInit_ = 30;
 
 //////////////////////////////////////////////////////////////////////////////
-W4dSceneManagerImpl::W4dSceneManagerImpl(RenDisplay* pDisplay, W4dRoot* root)
+W4dSceneManagerImpl::W4dSceneManagerImpl(std::unique_ptr<RenDevice> pDevice, W4dRoot* root)
     : root_(root)
     , currentCamera_(nullptr)
     , bgRoot_(nullptr)
@@ -147,7 +147,7 @@ W4dSceneManagerImpl::W4dSceneManagerImpl(RenDisplay* pDisplay, W4dRoot* root)
     , environment_(nullptr)
     , totalEntities_(0)
     , totalDomains_(0)
-    , device_(_NEW(RenDevice(pDisplay)))
+    , device_(std::move(pDevice))
     , itemsStacked_(false)
     , domainAssignor_(nullptr)
     , pCameraShake_(nullptr)
@@ -163,7 +163,6 @@ W4dSceneManagerImpl::W4dSceneManagerImpl(RenDisplay* pDisplay, W4dRoot* root)
 
 W4dSceneManagerImpl::~W4dSceneManagerImpl()
 {
-    _DELETE(device_);
     _DELETE(pCameraShake_);
 }
 
@@ -187,8 +186,8 @@ double W4dSceneManagerImpl::frameRate()
 }
 
 //////////////////////////////////////////////////////////////////////////////
-W4dSceneManager::W4dSceneManager(RenDisplay* pDisplay, W4dRoot* root)
-    : pImpl_(_NEW(W4dSceneManagerImpl(pDisplay, root)))
+W4dSceneManager::W4dSceneManager(std::unique_ptr<RenDevice> pDevice, W4dRoot* root)
+    : pImpl_(_NEW(W4dSceneManagerImpl(std::move(pDevice), root)))
 {
     CB_SCENEMANAGER_DEPIMPL;
     PRE(root);
@@ -715,7 +714,7 @@ std::ostream& W4dSceneManager::out()
 
 RenDevice* W4dSceneManager::pDevice()
 {
-    return pImpl_->device_;
+    return pImpl_->device_.get();
 }
 
 // TBD: this is total hack for Milestone IX.  It ought to be a member

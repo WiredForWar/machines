@@ -9,10 +9,11 @@
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
 
+#include <memory>
+
 class BaseLogBuffer;
 class RenColour;
 class RenDevice;
-class RenDisplay;
 class W4dEntity;
 class W4dRoot;
 class W4dCamera;
@@ -36,7 +37,7 @@ public:
     // into full-screen exclusive mode.
     // PRE(root);
     // PRE(!root->hasParent());
-    W4dSceneManager(RenDisplay* pDisplay, W4dRoot* pRoot);
+    W4dSceneManager(std::unique_ptr<RenDevice> pDevice, W4dRoot* pRoot);
     ~W4dSceneManager();
 
     // Render the tree using the current camera.

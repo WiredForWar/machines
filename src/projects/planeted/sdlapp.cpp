@@ -339,7 +339,8 @@ bool SDLApp::clientStartup()
         DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     }
 
-    manager_ = _NEW(W4dSceneManager(pDisplay_, root));
+    std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
+    manager_ = _NEW(W4dSceneManager(std::move(pDevice), root));
     W4dManager::instance().sceneManager(manager_);
 
     // Set the viewport boundary to the entire screen.
