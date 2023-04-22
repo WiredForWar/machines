@@ -41,8 +41,6 @@
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
 
-#include "MachinesVersion.hpp"
-
 #include "spdlog/spdlog.h"
 #include <cstdio>
 
@@ -76,11 +74,6 @@ SDLApp::SDLApp()
 {
     for (int i = 0; i < 4; ++i)
         aShowRace_[i] = false;
-
-    setAppName("Machines");
-    setLoggingEnabled(true);
-    setAppVersion(machinesVersion());
-    setAppBuildVersion(machinesBuildVersion());
 }
 
 SDLApp::~SDLApp()

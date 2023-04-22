@@ -27,7 +27,9 @@ class MachGuiStartupScreens;
 class SDLApp : public AfxOSSpecificApp<SDLApp>
 {
 public:
+    SDLApp();
     ~SDLApp() override;
+
     enum StartedFromLobby
     {
         LOBBY_START,
@@ -36,7 +38,6 @@ public:
 
 private:
     friend class AfxSingletonApp;
-    SDLApp();
 
     // Provide virtual fns required by base classes.
     void clientShutdown() override;

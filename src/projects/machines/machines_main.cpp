@@ -1,12 +1,20 @@
-#include "afx/AfxSdlApp.hpp"
+#include "sdlapp.hpp"
+
+#include "MachinesVersion.hpp"
 
 #include <SDL.h>
 
 int main(int argc, char* argv[])
 {
+    SDLApp app;
+    app.setAppName("Machines");
+    app.setAppVersion(machinesVersion());
+    app.setAppBuildVersion(machinesBuildVersion());
+    app.setLoggingEnabled(true);
+
     try
     {
-        AfxSdlApp::sdlInstance().initialise(argc, argv);
+        app.initialise(argc, argv);
 
         auto const runResult = AfxApp::abstractInstance().run();
 

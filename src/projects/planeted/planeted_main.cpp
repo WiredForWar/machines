@@ -1,12 +1,19 @@
-#include "afx/AfxSdlApp.hpp"
+#include "sdlapp.hpp"
+
+#include "MachinesVersion.hpp"
 
 #include <SDL.h>
 
 int main(int argc, char* argv[])
 {
+    SDLApp app;
+    app.setAppName("Machines Planet Editor");
+    app.setAppVersion("v0.00.01");
+    app.setAppBuildVersion(machinesBuildVersion());
+
     try
     {
-        AfxSdlApp::sdlInstance().initialise(argc, argv);
+        app.initialise(argc, argv);
 
         auto const runResult = AfxApp::abstractInstance().run();
 
