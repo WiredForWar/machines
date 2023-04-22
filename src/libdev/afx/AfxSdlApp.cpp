@@ -62,6 +62,14 @@ bool AfxSdlApp::OSStartup()
     spdlog::info("Initializing SDL...");
     SDL_Init(SDL_INIT_VIDEO);
 
+    return recreateWindow();
+}
+
+bool AfxSdlApp::recreateWindow()
+{
+    if (pWindow_)
+        SDL_DestroyWindow(pWindow_);
+
     {
         bool doubleBuffer = true;
         int buffers = configuration_.getConfig().multisampleBuffers;

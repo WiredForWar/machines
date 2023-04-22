@@ -12,6 +12,7 @@ public:
 
     ~AfxSdlApp() override = default;
 
+    bool recreateWindow();
     SDL_Window* window() { return pWindow_; }
 
     void finish() override;
