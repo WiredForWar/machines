@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     {
         app.initialise(argc, argv);
 
-        auto const runResult = AfxApp::abstractInstance().run();
+        auto const runResult = app.run();
 
         return runResult;
     }

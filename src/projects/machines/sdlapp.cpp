@@ -2,7 +2,6 @@
 
 #include "machines/sdlapp.hpp"
 #include "SDL_version.h"
-#include "afx/castfns.hpp"
 #include "base/diag.hpp"
 #include "system/pathname.hpp"
 #include "system/winapi.hpp"

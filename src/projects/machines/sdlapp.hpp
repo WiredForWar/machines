@@ -1,11 +1,9 @@
 #ifndef _D3DAPP_HPP
 #define _D3DAPP_HPP
 
-#define MOST_DERIVED_APP SDLApp
-
 #include "base/IProgressReporter.hpp"
 #include "device/timer.hpp"
-#include "afx/osapp.hpp"
+#include "afx/AfxSdlApp.hpp"
 
 class RenDisplay;
 class RenTextureSet;
@@ -24,7 +22,7 @@ class MachGuiStartupScreens;
 // what's common to all D3D apps, this probably ought to become an abstract
 // base class.  It's based on the application framework, so there's no main,
 // just this class.
-class SDLApp : public AfxOSSpecificApp<SDLApp>
+class SDLApp : public AfxSdlApp
 {
 public:
     SDLApp();
@@ -37,8 +35,6 @@ public:
     };
 
 private:
-    friend class AfxSingletonApp;
-
     // Provide virtual fns required by base classes.
     void clientShutdown() override;
     void loopCycle() override;

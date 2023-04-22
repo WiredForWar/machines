@@ -8,8 +8,6 @@
 class AfxSdlApp : public AfxApp
 {
 public:
-    static AfxSdlApp& sdlInstance();
-
     AfxSdlApp() = default;
 
     ~AfxSdlApp() override = default;

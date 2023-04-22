@@ -9,7 +9,6 @@
 #include "sound/sndparam.hpp"
 #include "device/butevent.hpp"
 #include "profiler/profiler.hpp"
-#include "afx/castfns.hpp"
 #include "mathex/point2d.hpp"
 #include "phys/phys.hpp"
 #include "phys/cspace2.hpp"

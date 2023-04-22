@@ -7,14 +7,11 @@ set(AFX_SOURCES
     AfxSdlApp.hpp
     app.cpp
     app.hpp
-    castfns.hpp
     invkargs.cpp
     invkargs.hpp
-    osapp.hpp
     printmsg.hpp
     resource.cpp
     resource.hpp
-    singapp.hpp
 )
 
 # afx_lite is used with test suite

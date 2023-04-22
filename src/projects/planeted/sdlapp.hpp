@@ -1,13 +1,11 @@
 #ifndef _SDLAPP_HPP
 #define _SDLAPP_HPP
 
-#define MOST_DERIVED_APP SDLApp
-
 #include "system/pathname.hpp"
 #include "device/timer.hpp"
 #include "device/butevent.hpp"
 #include "render/texmgr.hpp"
-#include "afx/osapp.hpp"
+#include "afx/AfxSdlApp.hpp"
 
 // class DevButtonEvent;
 class RenDisplay;
@@ -27,7 +25,7 @@ class EnvPlanetEnvironment;
 // what's common to all D3D apps, this probably ought to become an abstract
 // base class.  It's based on the application framework, so there's no main,
 // just this class.
-class SDLApp : public AfxOSSpecificApp<SDLApp>
+class SDLApp : public AfxSdlApp
 {
 public:
     SDLApp();
