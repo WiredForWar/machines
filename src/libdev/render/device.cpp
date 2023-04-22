@@ -503,7 +503,11 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         return false;
     }
 
-    const auto getGlStringAsConstChar = [](GLenum name) { return reinterpret_cast<const char*>(glGetString(name)); };
+    const auto getGlStringAsConstChar = [](GLenum name) {
+        auto pString = glGetString(name);
+        return pString ? reinterpret_cast<const char*>(pString) : "<null>";
+    };
+
     {
         spdlog::info("GL_RENDERER: {}", getGlStringAsConstChar(GL_RENDERER));
         spdlog::info("GL_VERSION: {}", getGlStringAsConstChar(GL_VERSION));
