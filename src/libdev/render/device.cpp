@@ -102,7 +102,10 @@ RenDevice::RenDevice(RenDisplay* display)
 
     pImpl_->smoothFilterMin_ = GL_LINEAR;
     pImpl_->smoothFilterMag_ = GL_LINEAR;
+}
 
+bool RenDevice::initialize()
+{
     PRE(Ren::initialised());
     PRE(MexCoordSystem::instance().isSet());
 
@@ -112,11 +115,14 @@ RenDevice::RenDevice(RenDisplay* display)
 
     fogColour(RenColour::white());
 
-    if (not reinitializeDisplayAndCreateGlContext())
+    if (!initializeContext())
     {
         // TBD: What shall i do then ?
         ASSERT(false, "could not create surfaces ");
+        return false;
     }
+
+    initializeDisplay();
 
     // Create and compile our GLSL programs from the shaders
     glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
@@ -219,11 +225,9 @@ RenDevice::RenDevice(RenDisplay* display)
     {
         pStats->show();
     }
-}
 
-// Question: do all the COM interfaces need to be released in a certain
-// order?  Some of Micro$oft's samples release them in reverse order of
-// creation.
+    return true;
+}
 
 RenDevice::~RenDevice()
 {
@@ -456,7 +460,7 @@ void RenDevice::clearAllSurfaces()
     pImpl_->display_->displayImpl().discardCursorSaves();
 }
 
-bool RenDevice::reinitializeDisplayAndCreateGlContext()
+void RenDevice::initializeDisplay()
 {
     PRE(pImpl_->display_);
 
@@ -480,6 +484,18 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         pImpl_->caps_->supportsColourKey() || pImpl_->caps_->supportsTextureAlpha(),
         runtime_error("No transparency supported by D3D."));
 
+    createViewport();
+    RenDisplay::Mode mode = pImpl_->display_->currentMode();
+    setViewport(0, 0, mode.width(), mode.height());
+    pImpl_->useDevice(this, RenI::FORCE_UPDATE);
+    pImpl_->surfacesMayBeLost_ = 10;
+
+    // Clear the both front and back surfaces just in case they are uninitialised.
+    clearAllSurfaces(RenColour::black());
+}
+
+bool RenDevice::initializeContext()
+{
     constexpr int contextMajorVersion = 2;
     constexpr int contextMinorVersion = 1;
     constexpr int contextProfile = 0; // Also consider SDL_GL_CONTEXT_PROFILE_CORE (1)
@@ -542,22 +558,17 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
     glEnable(GL_MULTISAMPLE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    createViewport();
-    RenDisplay::Mode mode = pImpl_->display_->currentMode();
-    setViewport(0, 0, mode.width(), mode.height());
-    pImpl_->useDevice(this, RenI::FORCE_UPDATE);
-    pImpl_->surfacesMayBeLost_ = 10;
-
-    // Clear the both front and back surfaces just in case they are uninitialised.
-    clearAllSurfaces(RenColour::black());
-
     return true;
 }
 
 bool RenDevice::fitToDisplay(RenDisplay* pDisplay)
 {
     PRE(pDisplay);
-    return reinitializeDisplayAndCreateGlContext();
+    if (!initializeContext())
+        return false;
+
+    initializeDisplay();
+    return true;
 }
 
 void RenDevice::createViewport()

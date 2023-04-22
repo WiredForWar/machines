@@ -365,6 +365,8 @@ bool SDLApp::clientStartup()
 
     spdlog::info("Initializing the rendering device...");
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
+    if (!pDevice->initialize())
+        return false;
 
     spdlog::info("Initializing SceneManager...");
     manager_ = _NEW(W4dSceneManager(std::move(pDevice), root));

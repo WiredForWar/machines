@@ -334,6 +334,9 @@ bool SDLApp::clientStartup()
     }
 
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
+    if (!pDevice->initialize())
+        return false;
+
     manager_ = _NEW(W4dSceneManager(std::move(pDevice), root));
     W4dManager::instance().sceneManager(manager_);
 

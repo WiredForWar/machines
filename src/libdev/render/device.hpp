@@ -41,6 +41,8 @@ public:
     RenDevice(RenDisplay*);
     ~RenDevice();
 
+    bool initialize();
+
     // We can fail to start the rendering in which case false is returned.  If
     // clearBack is false, then the back buffer isn't cleared (but z is).
     // Calls useDevice(this).
@@ -92,10 +94,9 @@ public:
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);
 
-    // If the display mode changes, the device must be re-initialised.  This is
-    // initially called by the ctor.  The client is responsible for calling
-    // setViewport so that the viewport fits on the new display.
-    bool reinitializeDisplayAndCreateGlContext();
+    bool initializeContext();
+    void initializeDisplay();
+
     DECL_DEPRECATED bool fitToDisplay(RenDisplay* pDisplay);
 
     // This sets the sub-area of the screen which is used for 3D rendering.  The
