@@ -500,7 +500,7 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         std::string msg("Fatal in SDL_GL_CreateContext: ");
         msg += SDL_GetError();
         SysWindowsAPI::messageBox(msg.c_str(), "Error");
-        return EXIT_FAILURE;
+        return false;
     }
 
     const auto getGlStringAsConstChar = [](GLenum name) { return reinterpret_cast<const char*>(glGetString(name)); };
@@ -522,7 +522,7 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         msg += reinterpret_cast<const char*>(glewGetErrorString(glew_status));
         spdlog::error(msg);
         SysWindowsAPI::messageBox(msg.c_str(), "Error");
-        return EXIT_FAILURE;
+        return false;
     }
     if (!GLEW_VERSION_2_1)
     {
@@ -530,7 +530,7 @@ bool RenDevice::reinitializeDisplayAndCreateGlContext()
         SysWindowsAPI::messageBox(
             "Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.",
             "Error");
-        return EXIT_FAILURE;
+        return false;
     }
 
     // glEnable(GL_BLEND);
