@@ -544,8 +544,12 @@ bool RenDevice::initializeContext()
         SysWindowsAPI::messageBox(msg.c_str(), "Error");
         return false;
     }
+
     if (!GLEW_VERSION_2_1)
     {
+        SDL_GL_DeleteContext(SDLGlContext_);
+        SDLGlContext_ = nullptr;
+
         spdlog::error("GLEW reports that OpengGL 2.1 is not available");
         SysWindowsAPI::messageBox(
             "Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.",
