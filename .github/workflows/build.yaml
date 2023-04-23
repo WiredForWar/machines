@@ -74,4 +74,4 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        path: ${{github.workspace}}/build/machines-*.zip
+        path: ${{github.workspace}}/build/Machines-*.zip
