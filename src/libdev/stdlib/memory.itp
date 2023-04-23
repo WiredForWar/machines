@@ -200,7 +200,7 @@ template <class X> _CODE_INLINE unique_ptr_array<X>::~unique_ptr_array()
 
 template <class X> _CODE_INLINE unique_ptr_array<X>& unique_ptr_array<X>::operator=(const unique_ptr_array& rhs)
 {
-    if ((void*)&rhs != (void*)this)
+    if (reinterpret_cast<const void*>(&rhs) != reinterpret_cast<const void*>(this))
     {
         if (owner_)
             _DELETE_ARRAY(pData_);
