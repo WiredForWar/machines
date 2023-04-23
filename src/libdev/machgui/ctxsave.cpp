@@ -31,6 +31,8 @@
 #include "render/display.hpp"
 #include <stdio.h>
 
+#include "spdlog/spdlog.h"
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 class MachGuiSaveGameListBoxItem : public MachGuiSingleSelectionListBoxItem
@@ -436,6 +438,7 @@ bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
     // Save game...
     MachGuiLoadSaveGameExtras lsgExtras(&pStartupScreens_->inGameScreen());
 
+    spdlog::info("Saving the game state to file {}", savePathName.c_str());
     bool saveSuccess = MachLogRaces::instance().saveGame(savePathName, &lsgExtras);
 
     if (saveSuccess)
