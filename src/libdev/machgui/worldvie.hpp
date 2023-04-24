@@ -65,7 +65,7 @@ protected:
     void doHandleMouseClickEvent(const GuiMouseEvent&) override;
     void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
     void doHandleMouseExitEvent(const GuiMouseEvent&) override;
-    void doHandleMouseScrollEvent(const GuiMouseEvent&) override;
+    void doHandleMouseScrollEvent(GuiMouseEvent* event) override;
     void doHandleContainsMouseEvent(const GuiMouseEvent&) override;
 
     void doMouseRightClickCameraMotion(const GuiMouseEvent&);

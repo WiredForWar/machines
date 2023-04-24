@@ -751,7 +751,7 @@ void GuiDisplayable::doHandleMouseExitEvent(const GuiMouseEvent&)
     // Intentionally Empty
 }
 
-void GuiDisplayable::doHandleMouseScrollEvent(const GuiMouseEvent&)
+void GuiDisplayable::doHandleMouseScrollEvent(GuiMouseEvent* event)
 {
     // Intentionally Empty
 }

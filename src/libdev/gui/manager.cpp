@@ -404,7 +404,7 @@ void GuiManager::processMouseEvent(const GuiMouseEvent& me)
         {
             mrel = me;
             mrel.translate(unaryMinus(pMouseFocus_->absoluteCoord()));
-            pMouseFocus_->doHandleMouseScrollEvent(mrel);
+            pMouseFocus_->doHandleMouseScrollEvent(&mrel);
         }
         else if (not handledRightClick)
         {
