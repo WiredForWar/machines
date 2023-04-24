@@ -91,8 +91,7 @@ public:
     bool isRoot() const;
 
     // Get the immediate parent gui displayable
-    const GuiDisplayable& parent() const;
-    // PRE( not isRoot() );
+    const GuiDisplayable* parent() const;
 
     bool isEnabled() const;
     void setEnabled(bool enabled);
@@ -159,8 +158,7 @@ public:
 
     using Children = ctl_vector<GuiDisplayable*>;
 
-    GuiDisplayable& parent();
-    // PRE( not isRoot() );
+    GuiDisplayable* parent();
 
     GuiDisplayable* findRoot(GuiDisplayable* current);
 

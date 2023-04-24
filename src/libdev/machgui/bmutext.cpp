@@ -75,25 +75,25 @@ void MachGuiBmuText::doDisplay()
 // virtual
 void MachGuiBmuText::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    parent().doHandleMouseClickEvent(rel);
+    parent()->doHandleMouseClickEvent(rel);
 }
 
 // virtual
 void MachGuiBmuText::doHandleMouseEnterEvent(const GuiMouseEvent& rel)
 {
-    parent().doHandleMouseEnterEvent(rel);
+    parent()->doHandleMouseEnterEvent(rel);
 }
 
 // virtual
 void MachGuiBmuText::doHandleMouseExitEvent(const GuiMouseEvent& rel)
 {
-    parent().doHandleMouseExitEvent(rel);
+    parent()->doHandleMouseExitEvent(rel);
 }
 
 // virtual
 void MachGuiBmuText::doHandleContainsMouseEvent(const GuiMouseEvent& rel)
 {
-    parent().doHandleContainsMouseEvent(rel);
+    parent()->doHandleContainsMouseEvent(rel);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiBmuText& t)

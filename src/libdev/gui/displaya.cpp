@@ -118,7 +118,7 @@ void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
     POST_DATA(Gui::Box oldBoundary = absoluteBoundary());
 
     PRE_DATA(Gui::Coord c(diff.x(), diff.y()));
-    PRE_DATA(Gui::Box parentBoundary = isRoot() ? absoluteBoundary() : parent().absoluteBoundary());
+    PRE_DATA(Gui::Box parentBoundary = isRoot() ? absoluteBoundary() : parent()->absoluteBoundary());
     PRE_DATA(Gui::Box newBoundary = translateBox(absoluteBoundary(), c));
     PRE_INFO(c);
     PRE_INFO(absoluteBoundary());
@@ -133,7 +133,7 @@ void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
 
     Gui::Coord absCoord = relativeCoord();
     if (not isRoot())
-        absCoord += parent().absoluteCoord();
+        absCoord += parent()->absoluteCoord();
 
     absoluteBox_ = Gui::Box(absCoord, relativeBox_.size());
 
@@ -150,7 +150,7 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
     CB_GUIDISPLAYABLE_DEPIMPL();
 
     PRE_DATA(Gui::Box newBoundary(absCoord, width(), height()));
-    PRE_DATA(Gui::Box parentBoundary = isRoot() ? absoluteBoundary() : parent().absoluteBoundary());
+    PRE_DATA(Gui::Box parentBoundary = isRoot() ? absoluteBoundary() : parent()->absoluteBoundary());
     PRE_INFO(absCoord);
     PRE_INFO(newBoundary);
     PRE_INFO(parentBoundary);
@@ -168,7 +168,7 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
 
     Gui::Coord relCoord = absCoord;
     if (not isRoot())
-        relCoord -= parent().absoluteCoord();
+        relCoord -= parent()->absoluteCoord();
     relativeBox_ = Gui::Box(relCoord, absoluteBox_.size());
 
     for (Children::iterator i = allChildren_.begin(); i != allChildren_.end(); ++i)
@@ -612,20 +612,14 @@ void GuiDisplayable::bevel(const Gui::Box& rel, unsigned thickness, const Gui::C
 
 //////////////////////////////////////////////////////////////////////
 
-GuiDisplayable& GuiDisplayable::parent()
+GuiDisplayable* GuiDisplayable::parent()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
-    PRE(not isRoot());
-    return *pParent_;
+    return pImpl_->pParent_;
 }
 
-const GuiDisplayable& GuiDisplayable::parent() const
+const GuiDisplayable* GuiDisplayable::parent() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
-    PRE(not isRoot());
-    return *pParent_;
+    return pImpl_->pParent_;
 }
 
 bool GuiDisplayable::isEnabled() const
@@ -684,9 +678,9 @@ Gui::Coord GuiDisplayable::relativeCoord(const GuiDisplayable& ancestor) const
 
     Gui::Coord coord = relativeCoord();
 
-    if (&parent() != &ancestor)
+    if (parent() != &ancestor)
     {
-        Gui::Coord parentCoord = parent().relativeCoord(ancestor);
+        Gui::Coord parentCoord = parent()->relativeCoord(ancestor);
         coord.x(coord.x() + parentCoord.x());
         coord.y(coord.y() + parentCoord.y());
     }
@@ -820,8 +814,8 @@ void GuiDisplayable::setLayer(Layer layer)
 {
     PRE(not isRoot());
 
-    parent().removeChild(this);
-    parent().addChild(this, layer);
+    parent()->removeChild(this);
+    parent()->addChild(this, layer);
 }
 
 bool GuiDisplayable::redrawEveryFrame() const
@@ -912,7 +906,7 @@ GuiDisplayable* GuiDisplayable::findRoot(GuiDisplayable* current)
         return current;
     }
 
-    return findRoot(&(current->parent()));
+    return findRoot(current->parent());
 }
 
 //////////////////////////////////////////////////////////////////////
