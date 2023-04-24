@@ -292,20 +292,21 @@ void AfxSdlApp::dispatchMouseEvent(SDL_Event* event, bool pressed)
 
 void AfxSdlApp::dispatchMouseScrollEvent(SDL_Event* event)
 {
-    PRE(event->wheel.y != 0);
-
-    if (event->wheel.which == SDL_TOUCH_MOUSEID)
-    {
-        std::cerr << "Wheel scrolling for touch events not yet implemented." << std::endl;
-        // TODO: Call dispatchTouchScrollEvent() perhaps??
-        return;
-    }
+    PRE(event->wheel.x || event->wheel.y);
 
     // If direction is SDL_MOUSEWHEEL_FLIPPED the values in x and y will be opposite.
     //  Multiply by -1 to change them back.
-    const int multiplier = (event->wheel.direction == SDL_MOUSEWHEEL_NORMAL) ? 1 : -1;
-    const DevButtonEvent::Action act
-        = (event->wheel.y * multiplier > 0) ? DevButtonEvent::SCROLL_UP : DevButtonEvent::SCROLL_DOWN;
+    const DevButtonEvent::Action act = [](SDL_Event* event) {
+        const int multiplier = (event->wheel.direction == SDL_MOUSEWHEEL_NORMAL) ? 1 : -1;
+        if (event->wheel.x)
+        {
+            return (event->wheel.x * multiplier > 0) ? DevButtonEvent::SCROLL_RIGHT : DevButtonEvent::SCROLL_LEFT;
+        }
+        else
+        {
+            return (event->wheel.y * multiplier > 0) ? DevButtonEvent::SCROLL_UP : DevButtonEvent::SCROLL_DOWN;
+        }
+    }(event);
 
     // Get the position of the cursor at the time of the event.
     const DevMouse::Position pos = DevMouse::instance().getMessagePos();

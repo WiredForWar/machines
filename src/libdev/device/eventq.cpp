@@ -28,8 +28,6 @@ DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevEventQueueT()
 
     // The middle mouse wheel is the only button that would receive these.
     // Explicity ask for these using queueEvents w/ middle mouse wheel scan code.
-    scrollUpFilter_ = false;
-    scrollDownFilter_ = false;
 
     TEST_INVARIANT;
 }
@@ -118,9 +116,13 @@ bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::filterEvent
         case ButtonEvent::PRESS:
             return pressFilter_[event.scanCode()];
         case ButtonEvent::SCROLL_UP:
-            return (event.scanCode() == DevKey::MIDDLE_MOUSE and scrollUpFilter_);
+            return (event.scanCode() == DevKey::MIDDLE_MOUSE && scrollUpFilter_);
         case ButtonEvent::SCROLL_DOWN:
-            return (event.scanCode() == DevKey::MIDDLE_MOUSE and scrollDownFilter_);
+            return (event.scanCode() == DevKey::MIDDLE_MOUSE && scrollDownFilter_);
+        case ButtonEvent::SCROLL_LEFT:
+            return (event.scanCode() == DevKey::MIDDLE_MOUSE && scrollLeftFilter_);
+        case ButtonEvent::SCROLL_RIGHT:
+            return (event.scanCode() == DevKey::MIDDLE_MOUSE && scrollRightFilter_);
         default:
             ASSERT_BAD_CASE;
             break;
@@ -165,6 +167,14 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents
             // only set for middle mouse
             scrollDownFilter_ = code == DevKey::MIDDLE_MOUSE;
             break;
+        case ButtonEvent::SCROLL_LEFT:
+            // only set for middle mouse
+            scrollLeftFilter_ = code == DevKey::MIDDLE_MOUSE;
+            break;
+        case ButtonEvent::SCROLL_RIGHT:
+            // only set for middle mouse
+            scrollRightFilter_ = code == DevKey::MIDDLE_MOUSE;
+            break;
         default:
             ASSERT_BAD_CASE;
             break;
@@ -192,6 +202,14 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEv
         case ButtonEvent::SCROLL_DOWN:
             // only set for middle mouse
             scrollDownFilter_ = (code == DevKey::MIDDLE_MOUSE) ? false : scrollDownFilter_;
+            break;
+        case ButtonEvent::SCROLL_LEFT:
+            // only set for middle mouse
+            scrollLeftFilter_ = (code == DevKey::MIDDLE_MOUSE) ? false : scrollLeftFilter_;
+            break;
+        case ButtonEvent::SCROLL_RIGHT:
+            // only set for middle mouse
+            scrollRightFilter_ = (code == DevKey::MIDDLE_MOUSE) ? false : scrollRightFilter_;
             break;
         default:
             ASSERT_BAD_CASE;

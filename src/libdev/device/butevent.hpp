@@ -27,7 +27,9 @@ public:
         PRESS,
         RELEASE,
         SCROLL_UP,
-        SCROLL_DOWN
+        SCROLL_DOWN,
+        SCROLL_LEFT,
+        SCROLL_RIGHT,
     };
 
     // There's no useful reason for creating default events, but ctl_list

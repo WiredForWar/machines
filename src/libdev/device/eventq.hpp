@@ -93,8 +93,10 @@ private:
     uchar releaseFilter_[DevKey::MAX_CODE];
     uchar pressFilter_[DevKey::MAX_CODE];
 
-    bool scrollUpFilter_;
-    bool scrollDownFilter_;
+    bool scrollUpFilter_ = false;
+    bool scrollDownFilter_ = false;
+    bool scrollLeftFilter_ = false;
+    bool scrollRightFilter_ = false;
 
     // Operation deliberately revoked
     DevEventQueueT(const DevEventQueueT&);
