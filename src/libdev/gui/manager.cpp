@@ -405,6 +405,15 @@ void GuiManager::processMouseEvent(const GuiMouseEvent& me)
             mrel = me;
             mrel.translate(unaryMinus(pMouseFocus_->absoluteCoord()));
             pMouseFocus_->doHandleMouseScrollEvent(&mrel);
+            if (!mrel.isAccepted())
+            {
+                GuiDisplayable* pParent = pMouseFocus_->parent();
+                if (pParent)
+                {
+                    mrel.translate(unaryMinus(pParent->absoluteCoord()));
+                    pParent->doHandleMouseScrollEvent(&mrel);
+                }
+            }
         }
         else if (not handledRightClick)
         {
