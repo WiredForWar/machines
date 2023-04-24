@@ -13,13 +13,13 @@
 #define _MACHGUI_INGAME_HPP
 
 #include "base/base.hpp"
-#include "base/IProgressReporter.hpp"
 #include "world4d/observer.hpp"
 #include "gui/root.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/igcurs2d.hpp"
 
 // Forward refs
+class IProgressReporter;
 class MachInGameScreenImpl;
 class MachGuiCommand;
 class MachWorldViewWindow;

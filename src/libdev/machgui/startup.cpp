@@ -109,6 +109,7 @@
 #include "system/registry.hpp"
 #include "device/mouse.hpp"
 #include "base/cballoc.hpp"
+#include "base/IProgressReporter.hpp"
 
 class LoadGameProgressIndicator : public IProgressReporter
 {
@@ -209,7 +210,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     W4dSceneManager* pSceneManager,
     W4dRoot* pRoot,
     IProgressReporter* pReporter)
-    : GuiRoot(Gui::Box(0, 0, pSceneManager->pDevice()->windowWidth(), pSceneManager->pDevice()->windowHeight()))
+    : GuiRoot(Gui::Size(pSceneManager->pDevice()->windowWidth(), pSceneManager->pDevice()->windowHeight()))
     , pImpl_(nullptr)
 {
     pImpl_ = _NEW(MachGuiStartupScreensImpl);

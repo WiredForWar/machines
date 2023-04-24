@@ -1,10 +1,10 @@
 #ifndef _D3DAPP_HPP
 #define _D3DAPP_HPP
 
-#include "base/IProgressReporter.hpp"
 #include "device/timer.hpp"
 #include "afx/AfxSdlApp.hpp"
 
+class IProgressReporter;
 class RenDisplay;
 class RenTextureSet;
 class W4dEntity;

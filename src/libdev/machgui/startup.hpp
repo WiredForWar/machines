@@ -13,7 +13,6 @@
 #define _MACHINES_STARTUP_HPP
 
 #include "base/base.hpp"
-#include "base/IProgressReporter.hpp"
 #include "gui/root.hpp"
 #include "device/keyboard.hpp"
 #include "gui/restring.hpp"

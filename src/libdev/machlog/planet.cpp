@@ -15,6 +15,8 @@
 #include "machlog/planet.hpp"
 #include "machlog/internal/planeti.hpp"
 
+#include "base/IProgressReporter.hpp"
+
 #include "system/pathname.hpp"
 #include "utility/linetok.hpp"
 

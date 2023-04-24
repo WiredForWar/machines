@@ -13,9 +13,9 @@
 #define _TEXSET_HPP
 
 #include "base/base.hpp"
-#include "base/IProgressReporter.hpp"
 
 template <class T> class ctl_vector;
+class IProgressReporter;
 class RenTexture;
 class RenTextureSetImpl;
 class SysPathName;

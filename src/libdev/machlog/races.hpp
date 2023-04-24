@@ -12,7 +12,6 @@
 #define _MACHLOG_RACES_HPP
 
 #include "base/base.hpp"
-#include "base/IProgressReporter.hpp"
 #include "utility/id.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
@@ -22,6 +21,7 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
+class IProgressReporter;
 class SysPathName;
 class MexPoint2d;
 class W4dSceneManager;

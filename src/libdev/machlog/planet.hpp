@@ -13,10 +13,10 @@
 #define _PLANET_HPP
 
 #include "base/base.hpp"
-#include "base/IProgressReporter.hpp"
 #include "machlog/machlog.hpp"
 
 // Forward declarations
+class IProgressReporter;
 class MexTransform3d;
 class MexPoint3d;
 class MexRadians;

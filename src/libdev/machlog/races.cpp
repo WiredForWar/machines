@@ -69,8 +69,11 @@
 #include "machlog/cntrl_ai.hpp"
 #include "machlog/RecentEventsManager.hpp"
 
+#include "base/IProgressReporter.hpp"
+
 #include "system/metafile.hpp"
 #include "system/metaistr.hpp"
+
 #include <memory>
 #include <cstdio>
 

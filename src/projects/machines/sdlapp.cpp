@@ -1,7 +1,8 @@
 // #include <env>
 
 #include "machines/sdlapp.hpp"
-#include "SDL_version.h"
+
+#include "base/IProgressReporter.hpp"
 #include "base/diag.hpp"
 #include "system/pathname.hpp"
 #include "system/winapi.hpp"
@@ -39,6 +40,8 @@
 #include "system/metafile.hpp"
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
+
+#include "SDL_version.h"
 
 #include "spdlog/spdlog.h"
 #include <cstdio>

@@ -101,11 +101,13 @@
 #include "render/display.hpp"
 #include "render/capable.hpp"
 #include "afx/resource.hpp"
+#include "base/IProgressReporter.hpp"
 #include "machgui/internal/strings.hpp"
 #include "sim/manager.hpp"
 #include "network/node.hpp"
 #include "device/time.hpp"
 #include "system/registry.hpp"
+
 #include <algorithm>
 #include <stdio.h>
 
