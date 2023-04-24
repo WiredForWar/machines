@@ -1918,8 +1918,15 @@ void MachContinentMap::saveGame(PerOstream& outStream)
             mapVisibleArea_.width() / MachGui::uiScaleFactor(),
             mapVisibleArea_.height() / MachGui::uiScaleFactor(),
             mapVisibleArea_);
+        visibleArea.filledRectangle(RenSurface::Rect(0, 0, visibleArea.width(), visibleArea.height()), Gui::BLACK());
+
+        GLint blendSrc, blendDst;
+        glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);
+        glGetIntegerv(GL_BLEND_DST_ALPHA, &blendDst);
+        glBlendFunc(GL_ONE, GL_ZERO);
 
         visibleArea.stretchBlit(mapVisibleArea_);
+        glBlendFunc(blendSrc, blendDst);
         visibleArea.write(outStream);
     }
 }
