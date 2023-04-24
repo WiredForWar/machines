@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "gui/event.hpp"
 #include "gui/internal/scrolisi.hpp"
 #include "gui/listobvr.hpp"
 #include "stdlib/function.hpp"
@@ -305,6 +306,30 @@ void GuiSimpleScrollableList::notifyObservers()
     CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
 
     std::for_each(observers_.begin(), observers_.end(), mem_fun_void(&GuiListObserver::listUpdated));
+}
+
+void GuiSimpleScrollableList::doHandleMouseScrollEvent(GuiMouseEvent* event)
+{
+    switch (event->scrollDirection())
+    {
+        case Gui::ScrollState::NO_SCROLL:
+            break;
+
+        case Gui::ScrollState::SCROLL_UP:
+            if (canScrollBackward())
+            {
+                scrollBackward();
+                event->accept();
+            }
+            break;
+        case Gui::ScrollState::SCROLL_DOWN:
+            if (canScrollFoward())
+            {
+                scrollFoward();
+                event->accept();
+            }
+            break;
+    }
 }
 
 // Scroll to the end of the list

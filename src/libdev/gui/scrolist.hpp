@@ -97,6 +97,8 @@ public:
 protected:
     void notifyObservers();
 
+    void doHandleMouseScrollEvent(GuiMouseEvent* event) override;
+
 private:
     GuiSimpleScrollableList(const GuiSimpleScrollableList&);
     GuiSimpleScrollableList& operator=(const GuiSimpleScrollableList&);
