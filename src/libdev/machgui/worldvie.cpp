@@ -377,6 +377,7 @@ void MachWorldViewWindow::doHandleMouseExitEvent(const GuiMouseEvent&)
 void MachWorldViewWindow::doHandleMouseScrollEvent(GuiMouseEvent* event)
 {
     pCameras_->scrollWithWheel(event->scrollDirection(), 15.0);
+    event->accept();
 }
 
 // virtual

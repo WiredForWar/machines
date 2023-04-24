@@ -47,6 +47,10 @@ public:
     bool isCtrlPressed() const;
     bool isShiftPressed() const;
 
+    bool isAccepted() const;
+    void accept();
+    void ignore();
+
     ///////////////////////////////
 
 protected:
@@ -54,11 +58,27 @@ protected:
 
 private:
     ModifierKeys modifierKeys_;
+    bool accepted_ = false;
 };
+
+inline bool GuiEventBase::isAccepted() const
+{
+    return accepted_;
+}
+
+inline void GuiEventBase::accept()
+{
+    accepted_ = true;
+}
+
+inline void GuiEventBase::ignore()
+{
+    accepted_ = false;
+}
 
 /* //////////////////////////////////////////////////////////////// */
 
-class GuiMouseEvent : private GuiEventBase
+class GuiMouseEvent : public GuiEventBase
 // memberwise cannonical
 {
 public:
@@ -84,12 +104,6 @@ public:
 
     void translate(const Gui::Vec&);
     // POST( coord() == old( coord() ) + rel );
-
-    ///////////////////////////////
-
-    using GuiEventBase::isAltPressed;
-    using GuiEventBase::isCtrlPressed;
-    using GuiEventBase::isShiftPressed;
 
     ///////////////////////////////
 
