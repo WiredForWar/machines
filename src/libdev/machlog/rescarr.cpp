@@ -476,7 +476,10 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
         checkSmeltingBuilding(candidatePod);
     }
 
-    internalSetSmeltingBuilding(bestSmeltingBuilding);
+    if(bestSmeltingBuilding)
+    {
+        internalSetSmeltingBuilding(bestSmeltingBuilding);
+    }
 
     // give voicemail if we used to have a smelter, and we also have one now, but it's now a different one.
     if (alreadyHadSmeltingBuilding and hasSmeltingBuilding() and pOldSmeltingBuilding != pDestinationSmeltingBuilding_)
