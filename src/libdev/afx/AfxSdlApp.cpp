@@ -11,6 +11,8 @@
 
 #include "recorder/recorder.hpp"
 
+#include "system/SysInfo.hpp"
+
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/spdlog.h"
 
@@ -56,6 +58,10 @@ bool AfxSdlApp::OSStartup()
         SDL_version v;
         SDL_GetVersion(&v);
         spdlog::info("SDL version: {}.{}.{}", v.major, v.minor, v.patch);
+    }
+
+    {
+        spdlog::info("OS: {}", getOsVersion());
     }
 
     // Create window

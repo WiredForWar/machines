@@ -1,5 +1,7 @@
 
 set(SYSTEM_SOURCES
+    SysInfo.cpp
+    SysInfo.hpp
     filedata.cpp
     filedata.hpp
     filedate.cpp
@@ -32,3 +34,9 @@ add_library(LibDev::system ALIAS system)
 target_link_libraries(system PUBLIC
     LibDev::recorder
 )
+
+if(PLATFORM_WINDOWS)
+    target_link_libraries(system PUBLIC
+        version
+    )
+endif()
