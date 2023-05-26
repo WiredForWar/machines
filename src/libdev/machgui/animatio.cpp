@@ -50,19 +50,6 @@ void MachGuiAnimations::update()
 }
 
 // static
-MachGuiAnimation* MachGuiAnimation::createAnimation(GuiDisplayable* pParent, const SysPathName& animPath)
-{
-    return createAnimation(pParent, animPath, false);
-}
-
-// static
-MachGuiAnimation*
-MachGuiAnimation::createAnimation(GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey)
-{
-    return createAnimation(pParent, animPath, colourKey, 0, 0);
-}
-
-// static
 MachGuiAnimation* MachGuiAnimation::createAnimation(
     GuiDisplayable* pParent,
     const SysPathName& animPath,

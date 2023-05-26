@@ -45,17 +45,15 @@ public:
 
     using Cells = ctl_pvector<Cell>;
 
-    // Create animation from file describing animation
-    static MachGuiAnimation* createAnimation(GuiDisplayable* pParent, const SysPathName& animPath);
-
-    // Create animation from file describing animation. colourKey bool is used to switch colourKeying on for
-    // each frame of the animation.
-    static MachGuiAnimation* createAnimation(GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey);
-
-    // Create animation from file describing animation. colourKey bool is used to switch colourKeying on for
-    // each frame of the animation. xOffset and yOffset will change the x/y values specified in the .anm file.
-    static MachGuiAnimation*
-    createAnimation(GuiDisplayable* pParent, const SysPathName& animPath, bool colourKey, int xOffset, int yOffset);
+    // Create animation from file describing animation.
+    // - optional colourKey argument is used to switch colourKeying on for each frame of the animation.
+    // - xOffset and yOffset arguments will change the x/y values specified in the .anm file.
+    static MachGuiAnimation* createAnimation(
+        GuiDisplayable* pParent,
+        const SysPathName& animPath,
+        bool colourKey = false,
+        int xOffset = 0,
+        int yOffset = 0);
 
     // MachGuiAnimationCells* must be newed and will be deleted by this class.
     MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box&, Cells*);
