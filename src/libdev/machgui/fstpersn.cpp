@@ -143,28 +143,28 @@ class MachGuiFirstPersonImpl
 public:
     MachGuiFirstPersonImpl();
 
-    bool switchToMenus_;
-    bool switchToInGame_;
-    MachActor* pActor_;
-    MachInGameScreen* pInGameScreen_;
-    bool inFirstPerson_;
-    W4dSceneManager* pSceneManager_;
+    bool switchToMenus_ = false;
+    bool switchToInGame_ = false;
+    MachActor* pActor_ = nullptr;
+    MachInGameScreen* pInGameScreen_ = nullptr;
+    bool inFirstPerson_ = false;
+    W4dSceneManager* pSceneManager_ = nullptr;
     int borderHeight_;
     int lastBorderHeight_;
     DevKeyToCommandTranslator* pKeyTranslator_;
     DevKeyToCommandTranslator::CommandList commandList_;
-    MachLog1stPersonHandler* pLogHandler_; // Handles 1st person commands - makes things happen in game
+    MachLog1stPersonHandler* pLogHandler_ = nullptr; // Handles 1st person commands - makes things happen in game
     MexPoint3d targetPoint_; // The point currently to be aimed at (global coords)
-    MachGuiAnimation* pAttackCursor_; // Attack cross-hair
-    MachGuiAnimation* pNormalCursor_; // Nothing to target cursor
-    MachGuiAnimation* pMissCursor_; // Targeted on actor but weapons cannot tilt
-    MachGuiAnimation* pStartCursor_; // When machine is first embodied, cursor expands.
+    MachGuiAnimation* pAttackCursor_ = nullptr; // Attack cross-hair
+    MachGuiAnimation* pNormalCursor_ = nullptr; // Nothing to target cursor
+    MachGuiAnimation* pMissCursor_ = nullptr; // Targeted on actor but weapons cannot tilt
+    MachGuiAnimation* pStartCursor_ = nullptr; // When machine is first embodied, cursor expands.
     bool switchBackToGroundCamera_; // Camera to switch back to when leaving 1st person
-    MachActor* pTargetActor_;
+    MachActor* pTargetActor_ = nullptr;
     GuiBitmap compassBmp_;
     GuiBitmap healthBmp_;
     GuiBitmap armourBmp_;
-    MachGuiRadar* pRadar_;
+    MachGuiRadar* pRadar_ = nullptr;
     int borderDrawCount_;
     GuiBitmap leftWeaponBmp_;
     GuiBitmap rightWeaponBmp_;
@@ -183,59 +183,39 @@ public:
     bool resolutionChanged_;
     bool isDead_;
     PhysAbsoluteTime timeOfDeath_;
-    MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_;
-    bool rightMouseButtonHeadTurningUsed_;
-    double lastRightClickTime_; // Used for checking for right mouse button double click
+    MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_ = nullptr;
+    bool rightMouseButtonHeadTurningUsed_ = false;
+    double lastRightClickTime_ = 0.0; // Used for checking for right mouse button double click
     double timeWeaponsFired_;
-    MachGuiPausedImage* pPausedImage_;
+    MachGuiPausedImage* pPausedImage_ = nullptr;
     bool reverseUpDownKeys_;
     bool reverseUpDownMouse_;
     MexBasicRandom hitInterferenceRandom_;
-    bool machineNVGOn_;
+    bool machineNVGOn_= false;
     double startupTimer_;
-    bool finishedStartupSequence_;
+    bool finishedStartupSequence_ = false;
     bool isHitInterferenceOn_;
     double hitInterferenceEndTime_;
     int frameNumber_;
 
     // FP Command
-    MachGuiFPCommand* pCommandWidget_;
+    MachGuiFPCommand* pCommandWidget_ = nullptr;
     int64_t commandSquadIndex_;
-    double timeSquadIndexChanged_;
+    double timeSquadIndexChanged_ = 0.0;
 };
 
 MachGuiFirstPersonImpl::MachGuiFirstPersonImpl()
-    : switchToMenus_(false)
-    , switchToInGame_(false)
-    , pActor_(nullptr)
-    , inFirstPerson_(false)
-    , pInGameScreen_(nullptr)
-    , pSceneManager_(nullptr)
-    , pLogHandler_(nullptr)
-    , switchBackToGroundCamera_(true)
+    : switchBackToGroundCamera_(true)
     , compassBmp_(Gui::bitmap("gui/fstpersn/cursor/compass.bmp"))
     , healthBmp_(Gui::bitmap("gui/fstpersn/cursor/health.bmp"))
     , armourBmp_(Gui::bitmap("gui/fstpersn/cursor/armour.bmp"))
     , weaponChargeBmp_(Gui::bitmap("gui/fstpersn/weapon/chrgey.bmp"))
     , weaponBackgroundBmp_(Gui::bitmap("gui/fstpersn/weapon/weapon.bmp"))
-    , pAttackCursor_(nullptr)
-    , pNormalCursor_(nullptr)
-    , pMissCursor_(nullptr)
-    , pStartCursor_(nullptr)
-    , pRadar_(nullptr)
     , resolutionChanged_(true)
-    , pChatMessageDisplay_(nullptr)
-    , rightMouseButtonHeadTurningUsed_(false)
-    , lastRightClickTime_(0)
-    , pPausedImage_(nullptr)
     , reverseUpDownKeys_(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"))
     , reverseUpDownMouse_(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"))
     , hitInterferenceRandom_(MexBasicRandom::constructSeededFromTime())
-    , machineNVGOn_(false)
-    , finishedStartupSequence_(false)
-    , pCommandWidget_(nullptr)
     , commandSquadIndex_(-1L)
-    , timeSquadIndexChanged_(0.0)
 {
     compassBmp_.enableColourKeying();
     weaponChargeBmp_.enableColourKeying();
