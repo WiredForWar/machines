@@ -2266,96 +2266,96 @@ void MachGuiFirstPerson::loadWeaponBmps()
 
 GuiBitmap MachGuiFirstPerson::getWeaponBmp(MachPhys::WeaponType wt)
 {
-    GuiBitmap retVal;
+    std::string bitmapName;
 
     switch (wt)
     {
         case MachPhys::ELECTRIC_CHARGE:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/echarge.bmp");
+            bitmapName = "gui/fstpersn/weapon/echarge.bmp";
             break;
         case MachPhys::BOLTER:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/bolter.bmp");
+            bitmapName = "gui/fstpersn/weapon/bolter.bmp";
             break;
         case MachPhys::HEAVY_BOLTER1:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/hbolter.bmp");
+            bitmapName = "gui/fstpersn/weapon/hbolter.bmp";
             break;
         case MachPhys::HEAVY_BOLTER2:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/hbolter2.bmp");
+            bitmapName = "gui/fstpersn/weapon/hbolter2.bmp";
             break;
         case MachPhys::FLAME_THROWER1:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/flame1.bmp");
+            bitmapName = "gui/fstpersn/weapon/flame1.bmp";
             break;
         case MachPhys::FLAME_THROWER2:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/flame2.bmp");
+            bitmapName = "gui/fstpersn/weapon/flame2.bmp";
             break;
         case MachPhys::AUTO_CANNON:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/autoc.bmp");
+            bitmapName = "gui/fstpersn/weapon/autoc.bmp";
             break;
         case MachPhys::SUPERCHARGE_ADVANCED:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/heala.bmp");
+            bitmapName = "gui/fstpersn/weapon/heala.bmp";
             break;
         case MachPhys::SUPERCHARGE_SUPER:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/heals.bmp");
+            bitmapName = "gui/fstpersn/weapon/heals.bmp";
             break;
         case MachPhys::PLASMA_CANNON1:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/plscan1.bmp");
+            bitmapName = "gui/fstpersn/weapon/plscan1.bmp";
             break;
         case MachPhys::PLASMA_CANNON2:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/plscan2.bmp");
+            bitmapName = "gui/fstpersn/weapon/plscan2.bmp";
             break;
         case MachPhys::PLASMA_RIFLE:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/plsrif.bmp");
+            bitmapName = "gui/fstpersn/weapon/plsrif.bmp";
             break;
         case MachPhys::PULSE_CANNON:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/pulscan.bmp");
+            bitmapName = "gui/fstpersn/weapon/pulscan.bmp";
             break;
         case MachPhys::PULSE_RIFLE:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/pulsrif.bmp");
+            bitmapName = "gui/fstpersn/weapon/pulsrif.bmp";
             break;
         case MachPhys::LARGE_MISSILE:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/misslrg.bmp");
+            bitmapName = "gui/fstpersn/weapon/misslrg.bmp";
             break;
         case MachPhys::MULTI_LAUNCHER1:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss6.bmp"); // Multi launcher 1 releases missiles of type 6
+            bitmapName = "gui/fstpersn/weapon/miss6.bmp"; // Multi launcher 1 releases missiles of type 6
             break;
         case MachPhys::MULTI_LAUNCHER2:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss5.bmp"); // Multi launcher 2 releases missiles of type 5
+            bitmapName = "gui/fstpersn/weapon/miss5.bmp"; // Multi launcher 2 releases missiles of type 5
             break;
         case MachPhys::MULTI_LAUNCHER3:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss1.bmp"); // Multi launcher 3 releases missiles of type 1
+            bitmapName = "gui/fstpersn/weapon/miss1.bmp"; // Multi launcher 3 releases missiles of type 1
             break;
         case MachPhys::MULTI_LAUNCHER4:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss4.bmp"); // Multi launcher 4 releases missiles of type 4
+            bitmapName = "gui/fstpersn/weapon/miss4.bmp"; // Multi launcher 4 releases missiles of type 4
             break;
         case MachPhys::MULTI_LAUNCHER5:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss2.bmp"); // Multi launcher 5 releases missiles of type 2
+            bitmapName = "gui/fstpersn/weapon/miss2.bmp"; // Multi launcher 5 releases missiles of type 2
             break;
         case MachPhys::MULTI_LAUNCHER6:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss3.bmp"); // Multi launcher 6 releases missiles of type 3
+            bitmapName = "gui/fstpersn/weapon/miss3.bmp"; // Multi launcher 6 releases missiles of type 3
             break;
         case MachPhys::MULTI_LAUNCHER7:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/miss7.bmp"); // Multi launcher 7 releases missiles of type 7
+            bitmapName = "gui/fstpersn/weapon/miss7.bmp"; // Multi launcher 7 releases missiles of type 7
             break;
         case MachPhys::VORTEX:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/vortex.bmp");
+            bitmapName = "gui/fstpersn/weapon/vortex.bmp";
             break;
         case MachPhys::ORB_OF_TREACHERY:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/treach.bmp");
+            bitmapName = "gui/fstpersn/weapon/treach.bmp";
             break;
         case MachPhys::GORILLA_PUNCH:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/punch.bmp");
+            bitmapName = "gui/fstpersn/weapon/punch.bmp";
             break;
         case MachPhys::VIRUS:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/virus.bmp");
+            bitmapName = "gui/fstpersn/weapon/virus.bmp";
             break;
         case MachPhys::BEE_BOMB:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/beebomb.bmp");
+            bitmapName = "gui/fstpersn/weapon/beebomb.bmp";
             break;
         case MachPhys::WASP_LIGHT_STING:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/wasplite.bmp");
+            bitmapName = "gui/fstpersn/weapon/wasplite.bmp";
             break;
         case MachPhys::WASP_METAL_STING:
-            retVal = Gui::bitmap("gui/fstpersn/weapon/waspmis.bmp");
+            bitmapName = "gui/fstpersn/weapon/waspmis.bmp";
             break;
         case MachPhys::NUCLEAR_MISSILE:
         case MachPhys::ION_ORBITAL_CANNON:
@@ -2365,7 +2365,7 @@ GuiBitmap MachGuiFirstPerson::getWeaponBmp(MachPhys::WeaponType wt)
             DEFAULT_ASSERT_BAD_CASE(wt);
     }
 
-    return retVal;
+    return Gui::bitmap(bitmapName);
 }
 
 void MachGuiFirstPerson::doWeaponSelect()
