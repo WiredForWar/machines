@@ -64,10 +64,6 @@ private:
 
 PER_DECLARE_PERSISTENT(MachLogResearchItemImpl);
 
-#define CB_DEPIMPL_2D_ARRAY(vartype, varname, secondDimension)                                                         \
-    PRE(pImpl_);                                                                                                       \
-    vartype(*varname)[secondDimension] = pImpl_->varname;
-
 #define CB_MachLogResearchItem_DEPIMPL()                                                                               \
     CB_DEPIMPL(MachLog::ObjectType, objectType_);                                                                      \
     CB_DEPIMPL(int, subType_);                                                                                         \
