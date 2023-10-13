@@ -43,7 +43,7 @@ private:
 
     bool finishing_ { false };
     bool finished_ { false };
-    SDL_Window* pWindow_;
+    SDL_Window* pWindow_ = nullptr;
 
     bool loggingEnabled_ = false;
 

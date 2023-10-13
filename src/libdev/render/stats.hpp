@@ -70,7 +70,7 @@ private:
     uint32_t frameCount_;
 
     DevTimer updateTimer_;
-    uint32_t framesSinceUpdate_;
+    uint32_t framesSinceUpdate_{};
     double updateInterval_;
 
     DevTimer frameTimer_;

@@ -171,8 +171,8 @@ void ProProfiler::closeOutputStream()
 
 void ProProfiler::calibrate(IProgressReporter* pReporter)
 {
-    uint32 startTicks[2];
-    uint32 endTicks[2];
+    uint32 startTicks[2]{};
+    uint32 endTicks[2]{};
 
     const double calibrationTimeSeconds = 1.0;
     const size_t minClocksToWait = calibrationTimeSeconds * CLOCKS_PER_SEC;
