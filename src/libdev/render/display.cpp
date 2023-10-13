@@ -662,17 +662,6 @@ const double& RenDisplay::gammaCorrection() const
     return gammaCorrection_;
 }
 
-bool RenDisplay::Mode::operator>=(const Mode& mode)
-{
-    // Sort of number of pixels first, then on depth.
-    if (this->pixels() >= mode.pixels())
-        return true;
-    else if (this->pixels() <= mode.pixels())
-        return false;
-    else
-        return true;
-}
-
 bool operator<(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2)
 {
     // Sort of number of pixels first, then on depth.
@@ -683,20 +672,16 @@ bool operator<(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2)
     else
         return true;
 }
+
 bool operator>(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2)
 {
     return mode2 < mode1;
 }
 
-bool RenDisplay::Mode::operator<(const RenDisplay::Mode& mode)
+bool operator>=(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2)
 {
-    // Sort of number of pixels first, then on depth.
-    if (pixels() < mode.pixels())
-        return true;
-    else if (pixels() > mode.pixels())
-        return false;
-    else
-        return true;
+    // TODO: compare depth?
+    return mode1.pixels() >= mode2.pixels();
 }
 
 void RenDisplay::CLASS_INVARIANT

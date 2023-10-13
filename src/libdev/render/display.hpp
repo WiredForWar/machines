@@ -34,22 +34,10 @@ public:
     class Mode
     {
     public:
-        Mode()
-            : width_(0)
-            , height_(0)
-            , depth_(0)
-            , rate_(0)
-        {
-        }
-        Mode(const Mode& m)
-            : width_(m.width_)
-            , height_(m.height_)
-            , depth_(m.depth_)
-            , rate_(m.rate_)
-            , mode_(m.mode_)
-        {
-        }
-        const Mode& operator=(const Mode& m)
+        Mode() = default;
+        Mode(const Mode& m) = default;
+
+        Mode& operator=(const Mode& m)
         {
             width_ = m.width_;
             height_ = m.height_;
@@ -73,12 +61,6 @@ public:
         int memoryRequired() const { return (pixels() * depth_) / 8; }
         const SDL_DisplayMode& mode() const { return mode_; }
 
-        // bool operator< (const Mode& mode) const;
-        //  For STL sorting.
-        bool operator<(const Mode& mode);
-        bool operator<=(const Mode& mode);
-        bool operator>=(const Mode& mode);
-
     private:
         // Only RenDisplay can create modes.  Thus, clients are prevented from
         // requesting modes that aren't actually possible.
@@ -89,10 +71,9 @@ public:
             , height_(h)
             , depth_(32)
             , rate_(r)
-            , mode_()
         {
         }
-        Mode(SDL_DisplayMode& m)
+        Mode(const SDL_DisplayMode& m)
             : width_(m.w)
             , height_(m.h)
             , depth_(SDL_BITSPERPIXEL(m.format))
@@ -100,11 +81,11 @@ public:
             , mode_(m)
         {
         }
-        int width_, height_, depth_, rate_;
-        SDL_DisplayMode mode_;
-
-        friend bool operator<(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);
-        friend bool operator>(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);
+        int width_{};
+        int height_{};
+        int depth_{};
+        int rate_{};
+        SDL_DisplayMode mode_{};
     };
 
     // Clients cannot create modes, they must use modeList to get
@@ -221,6 +202,7 @@ std::ostream& operator<<(std::ostream& o, const RenDisplay::Mode& t);
 
 bool operator<(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);
 bool operator>(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);
+bool operator>=(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2);
 
 #endif
 

@@ -251,7 +251,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         // unfortunately I can't since the modes are sorted by number of pixels and not by memory
         // requirement.
         // if ( mode >= lowestMode and mode.bitDepth() == 16 and
-        if (_CONST_CAST(RenDisplay::Mode&, mode) >= lowestMode
+        if (mode >= lowestMode
             and caps.maxAvailableDisplayMemoryAfterTextures() >= 3 * mode.memoryRequired())
         {
             // Construct a string to go in the drop down list box ( e.g. "640x480" )
