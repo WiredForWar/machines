@@ -95,7 +95,7 @@ public:
         Mode(SDL_DisplayMode& m)
             : width_(m.w)
             , height_(m.h)
-            , depth_(32)
+            , depth_(SDL_BITSPERPIXEL(m.format))
             , rate_(m.refresh_rate)
             , mode_(m)
         {
