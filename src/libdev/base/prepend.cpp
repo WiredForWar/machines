@@ -12,7 +12,6 @@
 
 #include "base/internal/prepend.hpp"
 #include "base/internal/prepbuff.hpp"
-#include "base/internal/memchk.hpp"
 
 //  This class uses malloc, realloc and free to avoid calling the
 //  memory management system (which would happen if it used new or delete).

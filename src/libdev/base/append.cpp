@@ -9,7 +9,6 @@
 
 #include "base/internal/append.hpp"
 #include "base/internal/appbuff.hpp"
-#include "base/internal/memchk.hpp"
 
 BaseAppendOstream::BaseAppendOstream(const char* fileName)
     : std::ostream(&dummyStreamBuf())
@@ -38,16 +37,6 @@ void BaseAppendOstream::name(const char* fileName)
 {
     appendBuffer_.name(fileName);
 }
-
-// BaseAppendBuffer* BaseAppendOstream::pBuffer( const char* fileName )
-// {
-//     if( fileName )
-//         pAppendBuffer_ = _NEW_WITHOUT_LOG( BaseAppendBuffer( fileName ) );
-//     else
-//         pAppendBuffer_ = _NEW_WITHOUT_LOG( BaseAppendBuffer() );
-//
-//     return pAppendBuffer_;
-// }
 
 // static
 std::streambuf& BaseAppendOstream::dummyStreamBuf()

@@ -33,7 +33,6 @@ set(BASE_SOURCES
     internal/istrbuff.hpp
     internal/istrimpl.hpp
     internal/lstrbuff.hpp
-    internal/memchk.hpp
     internal/ostrbuff.hpp
     internal/periread.hpp
     internal/periwrit.hpp
