@@ -18,6 +18,7 @@
 #include "phys/linemoti.hpp"
 
 #include "render/hierload.hpp"
+#include "render/node.hpp"
 
 #include "world4d/compplan.hpp"
 #include "world4d/entyplan.hpp"

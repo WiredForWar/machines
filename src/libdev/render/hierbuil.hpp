@@ -14,12 +14,8 @@
 
 #include "base/base.hpp"
 
-#include "ctl/vector.hpp"
-#include "system/pathname.hpp"
-
 #include "mathex/transf3d.hpp"
 
-class RenMeshInstance;
 class RenIMeshID;
 
 class RenHierarchyBuilder
@@ -28,7 +24,7 @@ public:
     RenHierarchyBuilder();
     ~RenHierarchyBuilder();
 
-#include "render/node.hpp"
+    class Node;
 
     const Node* pRoot() const;
 

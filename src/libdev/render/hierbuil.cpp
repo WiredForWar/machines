@@ -5,6 +5,7 @@
 
 #include <string>
 #include "render/hierbuil.hpp"
+#include "render/node.hpp"
 
 RenHierarchyBuilder::RenHierarchyBuilder()
     : pRoot_(new Node(nullptr, MexTransform3d()))

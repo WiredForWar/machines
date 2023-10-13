@@ -12,9 +12,14 @@
 #ifndef _RENDER_NODE_HPP
 #define _RENDER_NODE_HPP
 
-class Node;
+#include "ctl/vector.hpp"
+#include "system/pathname.hpp"
 
-class Node : public ctl_vector<Node*>
+#include "hierbuil.hpp"
+
+class RenMeshInstance;
+
+class RenHierarchyBuilder::Node : public ctl_vector<RenHierarchyBuilder::Node*>
 {
 public:
     ~Node() override;

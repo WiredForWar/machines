@@ -6,9 +6,10 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include <string>
-#include "render/hierbuil.hpp"
-#include "render/meshinst.hpp"
+
 #include "render/internal/meshid.hpp"
+#include "render/meshinst.hpp"
+#include "render/node.hpp"
 #include "utility/indent.hpp"
 
 RenHierarchyBuilder::Node::Node(Node* pParent, const MexTransform3d& transform)
