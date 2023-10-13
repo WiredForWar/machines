@@ -670,7 +670,7 @@ bool operator<(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2)
     else if (mode1.pixels() > mode2.pixels())
         return false;
     else
-        return true;
+        return false;
 }
 
 bool operator>(const RenDisplay::Mode& mode1, const RenDisplay::Mode& mode2)
