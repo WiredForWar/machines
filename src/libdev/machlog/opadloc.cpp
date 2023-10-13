@@ -47,7 +47,7 @@ PER_DEFINE_PERSISTENT(MachLogAdminLocateOperation);
 
 MachLogAdminLocateOperation::MachLogAdminLocateOperation(MachLogAdministrator* pActor, const MexPoint3d& dest)
     : MachLogOperation("ADMIN_LOCATE_OPERATION", MachLogOperation::ADMIN_LOCATE_OPERATION)
-    , pImpl_(_NEW(MachLogAdminLocateOperationImpl(pActor, dest)))
+    , pImpl_(new MachLogAdminLocateOperationImpl(pActor, dest))
 {
     CB_MachLogAdminLocateOperation_DEPIMPL();
 
@@ -58,7 +58,7 @@ MachLogAdminLocateOperation::MachLogAdminLocateOperation(MachLogAdministrator* p
 
 MachLogAdminLocateOperation::MachLogAdminLocateOperation(MachLogAdministrator* pActor)
     : MachLogOperation("ADMIN_LOCATE_OPERATION", MachLogOperation::ADMIN_LOCATE_OPERATION)
-    , pImpl_(_NEW(MachLogAdminLocateOperationImpl(pActor)))
+    , pImpl_(new MachLogAdminLocateOperationImpl(pActor))
 {
     CB_MachLogAdminLocateOperation_DEPIMPL();
 
@@ -68,7 +68,7 @@ MachLogAdminLocateOperation::MachLogAdminLocateOperation(MachLogAdministrator* p
 
 MachLogAdminLocateOperation::MachLogAdminLocateOperation(MachLogAdministrator* pActor, const Path& externalPath)
     : MachLogOperation("ADMIN_LOCATE_OPERATION", MachLogOperation::ADMIN_LOCATE_OPERATION)
-    , pImpl_(_NEW(MachLogAdminLocateOperationImpl(pActor, externalPath)))
+    , pImpl_(new MachLogAdminLocateOperationImpl(pActor, externalPath))
 {
     CB_MachLogAdminLocateOperation_DEPIMPL();
 
@@ -97,7 +97,7 @@ MachLogAdminLocateOperation::~MachLogAdminLocateOperation()
     while (path_.size() > 0)
         path_.erase(path_.begin());
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogAdminLocateOperation::doOutputOperator(std::ostream& o) const
@@ -167,15 +167,15 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
                 if (MachLogRaces::instance().controller(pActor_->race()).type() == MachLogController::AI_CONTROLLER)
                     assignLocatorTask(&(*i)->asGeoLocator());
                 else
-                    (*i)->newOperation(_NEW(MachLogLocateOperation(&(*i)->asGeoLocator(), path_)));
+                    (*i)->newOperation(new MachLogLocateOperation(&(*i)->asGeoLocator(), path_));
             }
             else
             {
                 // HAL_STREAM(" issuing follow for a " << (*i)->objectType() << std::endl );
-                (*i)->newOperation(_NEW(MachLogFollowOperation(
+                (*i)->newOperation(new MachLogFollowOperation(
                     (MachLogMachine*)*i,
                     pLoc,
-                    MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::LOCATOR_CONVOY, index++, 15))));
+                    MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::LOCATOR_CONVOY, index++, 15)));
             }
         }
 
@@ -187,10 +187,10 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
     if (not pActor_->motionSeq().isFollowing() and not pSubOperation())
         subOperation(
             pActor_,
-            _NEW(MachLogFollowOperation(
+            new MachLogFollowOperation(
                 pActor_,
                 pLoc,
-                MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::LOCATOR_CONVOY, 0, 15))));
+                MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::LOCATOR_CONVOY, 0, 15)));
     interval = 15.0;
     //  }
     if (pActor_->motionSeq().isFollowing())
@@ -261,7 +261,7 @@ void MachLogAdminLocateOperation::assignLocatorTask(MachLogGeoLocator* obj)
             dest.x(dest.x() + MachPhysRandom::randomDouble(-30, 30));
             dest.y(dest.y() + MachPhysRandom::randomDouble(-30, 30));
         }
-        obj->newOperation(_NEW(MachLogLocateOperation(obj, dest)));
+        obj->newOperation(new MachLogLocateOperation(obj, dest));
     }
 }
 

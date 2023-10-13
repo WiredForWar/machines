@@ -94,7 +94,7 @@ void MachGuiResearchCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiResearchCommand::clone() const
 {
-    return _NEW(MachGuiResearchCommand(&inGameScreen()));
+    return new MachGuiResearchCommand(&inGameScreen());
 }
 
 // virtual

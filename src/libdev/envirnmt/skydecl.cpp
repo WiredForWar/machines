@@ -169,7 +169,7 @@ void EnvISkyDeclaration::createUniformSkyDeclaration(EnvUniformSky* const pSky)
 {
     PRE(isClear());
 
-    pUniformSky_ = _NEW(UniformSky(pSky));
+    pUniformSky_ = new UniformSky(pSky);
 
     POST(isUniformSkyDeclaration());
 }
@@ -178,7 +178,7 @@ void EnvISkyDeclaration::createStaticSkyDeclaration(EnvStaticSky* const pSky)
 {
     PRE(isClear());
 
-    pStaticSky_ = _NEW(StaticSky(pSky));
+    pStaticSky_ = new StaticSky(pSky);
 
     POST(isStaticSkyDeclaration());
 }
@@ -187,7 +187,7 @@ void EnvISkyDeclaration::createDynamicSkyDeclaration(EnvDynamicSky* const pSky)
 {
     PRE(isClear());
 
-    pDynamicSky_ = _NEW(DynamicSky(pSky));
+    pDynamicSky_ = new DynamicSky(pSky);
 
     POST(isDynamicSkyDeclaration());
 }
@@ -200,19 +200,19 @@ void EnvISkyDeclaration::clear()
 
     if (pUniformSky_)
     {
-        _DELETE(pUniformSky_);
+        delete pUniformSky_;
         pUniformSky_ = nullptr;
     }
 
     if (pStaticSky_)
     {
-        _DELETE(pStaticSky_);
+        delete pStaticSky_;
         pStaticSky_ = nullptr;
     }
 
     if (pDynamicSky_)
     {
-        _DELETE(pDynamicSky_);
+        delete pDynamicSky_;
         pDynamicSky_ = nullptr;
     }
 }

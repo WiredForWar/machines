@@ -169,7 +169,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // ballista3
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE6, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE6, createLights);
                 pMissileResult = pMissile;
                 launchSound = SID_MLAUNCH1;
                 SOUND_STREAM("Playing SID_MLAUNCH1" << std::endl);
@@ -179,7 +179,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // ballista4
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE5, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE5, createLights);
                 pMissileResult = pMissile;
                 launchSound = SID_MLAUNCH2;
                 SOUND_STREAM("Playing SID_MLAUNCH2" << std::endl);
@@ -189,7 +189,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // knight4
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE1, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE1, createLights);
                 pMissileResult = pMissile;
                 launchSound = SID_MLAUNCH3;
                 SOUND_STREAM("Playing SID_MLAUNCH3" << std::endl);
@@ -199,7 +199,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // knight5
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE4, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE4, createLights);
                 pMissileResult = pMissile;
                 launchSound = SID_MLAUNCH4;
                 SOUND_STREAM("Playing SID_MLAUNCH4" << std::endl);
@@ -209,7 +209,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // sentry3
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE2, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE2, createLights);
                 pMissileResult = pMissile;
                 // If the machine is an administrator then assign it its own
                 // launch sound
@@ -229,7 +229,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // sentry4
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE3, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE3, createLights);
                 pMissileResult = pMissile;
                 launchSound = SID_MLAUNCH6;
                 SOUND_STREAM("Playing SID_MLAUNCH6" << std::endl);
@@ -239,7 +239,7 @@ MachPhysMissile* MachPhysMultiLauncher::createMissile(
             {
                 // ninja5
                 MachPhysMissile* pMissile
-                    = _NEW(MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE7, createLights));
+                    = new MachPhysMissile(pParent, startTransform, MachPhysMissile::MISSILE7, createLights);
                 pMissileResult = pMissile;
                 launchSound = SID_MLAUNCH7;
                 SOUND_STREAM("Playing SID_MLAUNCH7" << std::endl);

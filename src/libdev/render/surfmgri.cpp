@@ -35,7 +35,7 @@ RenISurfaceManagerImpl::RenISurfaceManagerImpl()
     directorySearchList_.push_back(SysPathName("."));
 
     // Create a default entry corresponding to Ren::NullTexId.
-    RenISurfBody* defaultEntry = _NEW(RenITexBody);
+    RenISurfBody* defaultEntry = new RenITexBody;
 
     ASSERT(entries_.size() == 0, logic_error());
     entries_.reserve(1024);
@@ -160,7 +160,7 @@ RenSurface RenISurfaceManagerImpl::createDisplaySurface(const RenDevice* dev, Re
 {
     TEST_INVARIANT;
 
-    RenISurfBody* newSurf = _NEW(RenISurfBody(dev, type));
+    RenISurfBody* newSurf = new RenISurfBody(dev, type);
 
     Ren::TexId newId = addAnonymousEntry(newSurf);
 
@@ -423,7 +423,7 @@ void RenISurfaceManagerImpl::deleteEntry(Ren::TexId id)
         }
     }
 
-    _DELETE(entries_[id]);
+    delete entries_[id];
     entries_[id] = nullptr;
 
     TEST_INVARIANT;
@@ -479,16 +479,16 @@ RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool crea
 
     RenISurfBody* body = nullptr;
     if (createTex)
-        body = _NEW(RenITexBody);
+        body = new RenITexBody;
     else
-        body = _NEW(RenISurfBody(surf->pixelFormat()));
+        body = new RenISurfBody(surf->pixelFormat());
 
     ASSERT(body, runtime_error("Out of memory."));
 
     // Attempt to read the texture from file.
     if (!body->read(pathName))
     {
-        _DELETE(body);
+        delete body;
         body = nullptr;
     }
 

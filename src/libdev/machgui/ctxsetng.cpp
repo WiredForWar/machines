@@ -171,18 +171,18 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
-    MachGuiMenuButton* pOKBtn = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pOKBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(302, 420, 444, 451),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_OK);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(472, 420, 607, 451),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOKBtn->defaultControl(true);
@@ -196,13 +196,13 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     }
 
     // Scenario description
-    pScenarioDesc_ = _NEW(MachGuiScrollableText(pStartupScreens, Gui::Box(353, 288, 576, 384)));
+    pScenarioDesc_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(353, 288, 576, 384));
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(576, 288), 96, pScenarioDesc_);
 
     // Display mapsize list box heading
     GuiResourceString mapsizeHeading(IDS_MENULB_MAPSIZE);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pMapSizeText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pMapSizeText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -210,11 +210,11 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(mapsizeHeading.asString()),
             MAPSIZE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_MAPSIZE,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display planet list box heading
     GuiResourceString terrainHeading(IDS_MENULB_TERRAINTYPE);
-    MachGuiMenuText* pTerrainText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pTerrainText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -222,11 +222,11 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(terrainHeading.asString()),
             TERRAINTYPE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_TERRAINTYPE,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display scenario list box heading
     GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
-    MachGuiMenuText* pScenarioText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pScenarioText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -234,11 +234,11 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(scenarioHeading.asString()),
             SCENARIO_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SCENARIO,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display settings list box heading
     GuiResourceString settingsHeading(IDS_MENULB_SETTINGS);
-    MachGuiMenuText* pSettingsText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pSettingsText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             SETTINGS_LB_MINX,
@@ -246,18 +246,18 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
             SETTINGS_LB_MINX + font.textWidth(settingsHeading.asString()),
             SETTINGS_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SETTINGS,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create system list box
-    pMapSizeList_ = _NEW(MachGuiSingleSelectionListBox(
+    pMapSizeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(LB_MINX, pMapSizeText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, MAPSIZE_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     // Create planet list box
-    pTerrainTypeList_ = _NEW(MachGuiSingleSelectionListBox(
+    pTerrainTypeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
@@ -267,18 +267,18 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
             TERRAINTYPE_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     // Create scenario list box
-    pScenarioList_ = _NEW(MachGuiSingleSelectionListBox(
+    pScenarioList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SCENARIO_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
     // Create settings list box
-    pSettingsList_ = _NEW(GuiSimpleScrollableList(
+    pSettingsList_ = new GuiSimpleScrollableList(
         pStartupScreens,
         Gui::Box(
             SETTINGS_LB_MINX,
@@ -287,7 +287,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
             SETTINGS_LB_MAXY),
         (SETTINGS_LB_MAXX - SETTINGS_LB_MINX) / 2,
         MachGuiDropDownListBoxCreator::reqHeight() + 1,
-        1));
+        1);
 
     updateMapSizeList();
     initSettings();
@@ -333,7 +333,7 @@ void MachGuiCtxSettings::updateMapSizeList()
         MachGuiDbSystem& system = MachGuiDatabase::instance().multiPlayerSystem(loop);
 
         MachGuiMPMapSizeListBoxItem* pItem
-            = _NEW(MachGuiMPMapSizeListBoxItem(pStartupScreens_, pMapSizeList_, LB_MAXX - LB_MINX, system, this));
+            = new MachGuiMPMapSizeListBoxItem(pStartupScreens_, pMapSizeList_, LB_MAXX - LB_MINX, system, this);
         // Select first item in list or previously selected item
         if (firstItem)
         {
@@ -380,8 +380,8 @@ void MachGuiCtxSettings::updateTerrainTypeList(MachGuiDbSystem& system)
     {
         MachGuiDbPlanet& planet = system.planet(loop);
 
-        MachGuiMPTerrainTypeListBoxItem* pItem = _NEW(
-            MachGuiMPTerrainTypeListBoxItem(pStartupScreens_, pTerrainTypeList_, LB_MAXX - LB_MINX, planet, this));
+        MachGuiMPTerrainTypeListBoxItem* pItem = new 
+            MachGuiMPTerrainTypeListBoxItem(pStartupScreens_, pTerrainTypeList_, LB_MAXX - LB_MINX, planet, this);
         // Select first item in list or previously selected item
         if (firstItem)
         {
@@ -429,7 +429,7 @@ void MachGuiCtxSettings::updateScenarioList(MachGuiDbPlanet& planet)
         MachGuiDbScenario& scenario = planet.scenario(loop);
 
         MachGuiMPScenarioListBoxItem* pItem
-            = _NEW(MachGuiMPScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this));
+            = new MachGuiMPScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this);
         // Select first item in list or previously selected item
         if (firstItem)
         {
@@ -593,7 +593,7 @@ void MachGuiCtxSettings::addSetting(MachGuiDropDownListBoxCreator*& pCreator, ui
 
     GuiResourceString labelStr(labelStrId);
     GuiStrings strings;
-    MachGuiText* pText = _NEW(MachGuiText(pSettingsList_, width, labelStr.asString()));
+    MachGuiText* pText = new MachGuiText(pSettingsList_, width, labelStr.asString());
     pText->textOffset(1, 1);
 
     while (numStrs)
@@ -606,7 +606,7 @@ void MachGuiCtxSettings::addSetting(MachGuiDropDownListBoxCreator*& pCreator, ui
         strings.push_back(listBoxStr.asString());
     }
 
-    pCreator = _NEW(MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true));
+    pCreator = new MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true);
 
     va_end(marker); // Reset variable arguments.
 }

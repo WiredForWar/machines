@@ -300,7 +300,7 @@ MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(
     const ctl_vector<string>& itemText,
     MachGuiDropDownListBoxCreator* listBoxCreator)
 {
-    return _NEW(MachGuiDropDownList(
+    return new MachGuiDropDownList(
         pParent,
         box,
         horizontalSpacing,
@@ -309,7 +309,7 @@ MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(
         itemWidth,
         itemText,
         listBoxCreator,
-        whiteFont_));
+        whiteFont_);
 }
 
 // static

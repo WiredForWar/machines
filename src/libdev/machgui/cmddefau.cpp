@@ -38,16 +38,15 @@
 
 MachGuiDefaultCommand::MachGuiDefaultCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen)
-    , pIntelligentCursorOnActor_(_NEW(MachGuiIntelligentCursorOnActor))
+    , pIntelligentCursorOnActor_(new MachGuiIntelligentCursorOnActor)
 {
-
     TEST_INVARIANT;
 }
 
 MachGuiDefaultCommand::~MachGuiDefaultCommand()
 {
     TEST_INVARIANT;
-    _DELETE(pIntelligentCursorOnActor_);
+    delete pIntelligentCursorOnActor_;
 }
 
 void MachGuiDefaultCommand::CLASS_INVARIANT
@@ -79,27 +78,27 @@ void MachGuiDefaultCommand::pickOnTerrain(
     if (cursor == MachGui::MOVETO_CURSOR)
     {
         // Do intelligent move
-        pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+        pCommand = new MachGuiMoveCommand(&inGameScreen());
     }
     else if (cursor == MachGui::LOCATETO_CURSOR)
     {
         // Do intelligent locate
-        pCommand = _NEW(MachGuiLocateToCommand(&inGameScreen()));
+        pCommand = new MachGuiLocateToCommand(&inGameScreen());
     }
     else if (cursor == MachGui::ION_ATTACK_CURSOR)
     {
         // Do ion attack
-        pCommand = _NEW(MachGuiIonAttackCommand(&inGameScreen()));
+        pCommand = new MachGuiIonAttackCommand(&inGameScreen());
     }
     else if (cursor == MachGui::DEPLOY_CURSOR)
     {
         // APC deploy
-        pCommand = _NEW(MachGuiDeployCommand(&inGameScreen()));
+        pCommand = new MachGuiDeployCommand(&inGameScreen());
     }
     else if (cursor == MachGui::ASSEMBLEPOINT_CURSOR)
     {
         // Assemble At for factories
-        pCommand = _NEW(MachGuiAssemblyPointCommand(&inGameScreen()));
+        pCommand = new MachGuiAssemblyPointCommand(&inGameScreen());
     }
 
     if (pCommand != nullptr)
@@ -112,7 +111,7 @@ void MachGuiDefaultCommand::pickOnTerrain(
             pCommand->apply();
 
         // Tidy up
-        _DELETE(pCommand);
+        delete pCommand;
     }
 }
 
@@ -128,98 +127,98 @@ void MachGuiDefaultCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, boo
         case MachGui::MOVETO_CURSOR:
         case MachGui::FOLLOW_CURSOR:
             {
-                pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+                pCommand = new MachGuiMoveCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::ATTACK_CURSOR:
             {
-                pCommand = _NEW(MachGuiAttackCommand(&inGameScreen()));
+                pCommand = new MachGuiAttackCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::ION_ATTACK_CURSOR:
             {
-                pCommand = _NEW(MachGuiIonAttackCommand(&inGameScreen()));
+                pCommand = new MachGuiIonAttackCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::CONSTRUCT_CURSOR:
         case MachGui::JOINCONSTRUCT_CURSOR:
             {
-                pCommand = _NEW(MachGuiConstructCommand(&inGameScreen()));
+                pCommand = new MachGuiConstructCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::LOCATETO_CURSOR:
             {
-                pCommand = _NEW(MachGuiLocateToCommand(&inGameScreen()));
+                pCommand = new MachGuiLocateToCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::PICKUP_CURSOR:
             {
-                pCommand = _NEW(MachGuiPickUpCommand(&inGameScreen()));
+                pCommand = new MachGuiPickUpCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::SCAVENGE_CURSOR:
             {
-                pCommand = _NEW(MachGuiScavengeCommand(&inGameScreen()));
+                pCommand = new MachGuiScavengeCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::TRANSPORT_CURSOR:
             {
-                pCommand = _NEW(MachGuiTransportCommand(&inGameScreen(), false));
+                pCommand = new MachGuiTransportCommand(&inGameScreen(), false);
                 break;
             }
 
         case MachGui::ENTER_BUILDING_CURSOR:
             {
-                pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+                pCommand = new MachGuiMoveCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::ENTER_APC_CURSOR:
             {
-                pCommand = _NEW(MachGuiMoveCommand(&inGameScreen()));
+                pCommand = new MachGuiMoveCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::HEAL_CURSOR:
             {
-                pCommand = _NEW(MachGuiHealCommand(&inGameScreen()));
+                pCommand = new MachGuiHealCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::TREACHERY_CURSOR:
             {
-                pCommand = _NEW(MachGuiTreacheryCommand(&inGameScreen()));
+                pCommand = new MachGuiTreacheryCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::REPAIR_CURSOR:
             {
-                pCommand = _NEW(MachGuiRepairCommand(&inGameScreen()));
+                pCommand = new MachGuiRepairCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::CAPTURE_CURSOR:
             {
-                pCommand = _NEW(MachGuiCaptureCommand(&inGameScreen()));
+                pCommand = new MachGuiCaptureCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::DECONSTRUCT_CURSOR:
             {
-                pCommand = _NEW(MachGuiDeconstructCommand(&inGameScreen()));
+                pCommand = new MachGuiDeconstructCommand(&inGameScreen());
                 break;
             }
 
         case MachGui::RECYCLE_CURSOR:
             {
-                pCommand = _NEW(MachGuiRecycleCommand(&inGameScreen()));
+                pCommand = new MachGuiRecycleCommand(&inGameScreen());
                 break;
             }
 
@@ -241,7 +240,7 @@ void MachGuiDefaultCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, boo
             pCommand->apply();
 
         // Tidy up
-        _DELETE(pCommand);
+        delete pCommand;
     }
 }
 
@@ -485,7 +484,7 @@ void MachGuiDefaultCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiDefaultCommand::clone() const
 {
-    return _NEW(MachGuiDefaultCommand(&inGameScreen()));
+    return new MachGuiDefaultCommand(&inGameScreen());
 }
 
 // virtual

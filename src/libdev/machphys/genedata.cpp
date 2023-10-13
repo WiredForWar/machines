@@ -32,7 +32,7 @@ public:
 MachPhysGeneralData::MachPhysGeneralData()
     : pImpl_(nullptr)
 {
-    pImpl_ = _NEW(MachPhysGeneralDataImpl);
+    pImpl_ = new MachPhysGeneralDataImpl;
     pImpl_->firstPersonLookUpDownRate_ = MexDegrees(0.1);
     pImpl_->firstPersonLookUpDownMinAngle_ = MexDegrees(-85.0);
     pImpl_->firstPersonLookUpDownMaxAngle_ = MexDegrees(85.0);
@@ -58,7 +58,7 @@ MachPhysGeneralData::~MachPhysGeneralData()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysGeneralData::CLASS_INVARIANT

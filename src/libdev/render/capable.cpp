@@ -23,14 +23,14 @@
     CB_DEPIMPL(uint32_t, totalTextureMemory_);
 
 RenCapabilities::RenCapabilities(const RenDevice* dev, bool h)
-    : pImpl_(_NEW(RenICapabilities(dev, h)))
+    : pImpl_(new RenICapabilities(dev, h))
 {
     ASSERT(pImpl_, "No pImpl for RenCapabilities");
 }
 
 RenCapabilities::~RenCapabilities()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 bool RenCapabilities::supportsMMX() const

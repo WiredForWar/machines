@@ -36,7 +36,7 @@ MachGuiSoundManager& MachGuiSoundManager::instance()
 }
 
 MachGuiSoundManager::MachGuiSoundManager()
-    : pImpl_(_NEW(MachGuiSoundManagerImpl()))
+    : pImpl_(new MachGuiSoundManagerImpl())
 {
     CB_DEPIMPL(int, delaySoundsFrameCount_);
 

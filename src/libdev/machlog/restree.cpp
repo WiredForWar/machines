@@ -25,7 +25,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 MachLogResearchTree::MachLogResearchTree()
-    : pImpl_(_NEW(MachLogResearchTreeImpl))
+    : pImpl_(new MachLogResearchTreeImpl)
 {
     CB_MachLogResearchTree_DEPIMPL();
 
@@ -46,11 +46,11 @@ MachLogResearchTree::~MachLogResearchTree()
     HAL_STREAM("MLResearchTree::DTOR removing items\n");
     while (researchItems_.size() > 0)
     {
-        _DELETE(researchItems_.front());
+        delete researchItems_.front();
         researchItems_.erase(researchItems_.begin());
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -127,14 +127,14 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, treePath, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, treePath, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, treePath, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, treePath, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(treePath.c_str());
-        // pIstream = _NEW( ifstream( treePath.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(treePath.c_str(), std::ios::in)));
+        // pIstream = new ifstream( treePath.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(treePath.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, treePath);
@@ -245,7 +245,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
                 HAL_STREAM(
                     "MLResearchTree gonna create a new MLresearchItem with " << obType << "," << subType << ","
                                                                              << hwLevel << "," << swLevel << std::endl);
-                MachLogResearchItem* pRI = _NEW(MachLogResearchItem(
+                MachLogResearchItem* pRI = new MachLogResearchItem(
                     obType,
                     subType,
                     hwLevel,
@@ -255,7 +255,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
                     buildingCost,
                     pParentRI,
                     hardwareLabSubType,
-                    weaponCombo));
+                    weaponCombo);
                 if (newFactoryCost > 0)
                 {
                     if (factoryCostAdjustmentRelative)
@@ -274,7 +274,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
 
                 if (obType == MachLog::AGGRESSOR and hwLevel == 4)
                 {
-                    MachLogResearchItem* pRI2 = _NEW(MachLogResearchItem(
+                    MachLogResearchItem* pRI2 = new MachLogResearchItem(
                         obType,
                         subType,
                         hwLevel,
@@ -284,7 +284,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
                         buildingCost,
                         nullptr,
                         hardwareLabSubType,
-                        MachPhys::LR_LARGE_MISSILE_X2));
+                        MachPhys::LR_LARGE_MISSILE_X2);
                     pRI2->factoryInstanceCost(100);
                     for (int i = 1; i < 6; ++i)
                     {

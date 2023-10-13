@@ -14,7 +14,7 @@
 PER_DEFINE_PERSISTENT(MachLogScore);
 
 MachLogScore::MachLogScore(MachPhys::Race race)
-    : pImpl_(_NEW(MachLogScoreImpl))
+    : pImpl_(new MachLogScoreImpl)
 {
     HAL_STREAM("MachLogScore::MachLogScore for race " << race << " " << (void*)this << std::endl);
     pImpl_->race_ = race;
@@ -28,7 +28,7 @@ MachLogScore::~MachLogScore()
 {
     HAL_STREAM("MachLogScore::~MachLogScore " << (void*)this << std::endl);
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogScore::CLASS_INVARIANT

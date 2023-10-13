@@ -56,10 +56,10 @@ void RenIGXMeshLoader::deleteAll()
                 GXMesh* mesh = (*meshes)[meshCount];
                 if (mesh != nullptr)
                 {
-                    _DELETE(mesh);
+                    delete mesh;
                 }
             }
-            _DELETE(meshes);
+            delete meshes;
         }
     }
 
@@ -69,7 +69,7 @@ void RenIGXMeshLoader::deleteAll()
         // if (hierIt!=NULL)
         if (hierIt != hierarchyMap_.end())
         {
-            _DELETE(hier);
+            delete hier;
         }
     }
 }
@@ -212,13 +212,13 @@ void RenIGXMeshLoader::load(const SysPathName& pathname)
     GXError gxerror;
     //  GXUserData gxud;
     GXTextures gxtextures;
-    GXHier* gxhierarchy = _NEW(GXHier);
+    GXHier* gxhierarchy = new GXHier;
 
     PRE(not meshesBeingLoaded_);
 
     // Create a new set of meshes in which the meshes
     // read from the current file will be loaded
-    meshesBeingLoaded_ = _NEW(GXMeshes);
+    meshesBeingLoaded_ = new GXMeshes;
     meshesBeingLoaded_->reserve(32);
 
     gxerror = gxfile.open(pathname.pathname());
@@ -333,7 +333,7 @@ GXError RenIGXMeshLoader::loadObjects(GXFile& gxfile)
                     // Switch does handle meshes only
                     {
                         case TRIMESH:
-                            gxmesh = _NEW(GXMesh);
+                            gxmesh = new GXMesh;
                             gxerror = gxfile.readMesh(*gxmesh, gxmeshtype);
                             if (gxerror == NO_ERROR_AGT)
                             {
@@ -341,7 +341,7 @@ GXError RenIGXMeshLoader::loadObjects(GXFile& gxfile)
                             }
                             break;
                         case QUADMESH:
-                            gxmesh = _NEW(GXMesh);
+                            gxmesh = new GXMesh;
                             gxerror = gxfile.readMesh(*gxmesh, gxmeshtype);
                             if (gxerror == NO_ERROR_AGT)
                             {

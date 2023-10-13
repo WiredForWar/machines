@@ -81,7 +81,7 @@ void MachBuildMenuIcons::addIcons()
         const MachLogResearchItem& item = *(*it);
         if (item.researched(pFactory_->race()))
         {
-            _NEW(MachBuildMachineIcon(this, pInGameScreen_, pProductionBank_, pFactory_, item));
+            new MachBuildMachineIcon(this, pInGameScreen_, pProductionBank_, pFactory_, item);
         }
     }
 

@@ -41,7 +41,7 @@ MachLogMessageBroker::~MachLogMessageBroker()
     while (cachedOutgoingMessages_.size())
     {
         MachLogNetMessage* pMessage = cachedOutgoingMessages_.back();
-        _DELETE(pMessage);
+        delete pMessage;
         cachedOutgoingMessages_.erase(cachedOutgoingMessages_.begin() + cachedOutgoingMessages_.size() - 1);
     }
     TEST_INVARIANT;
@@ -230,7 +230,7 @@ void MachLogMessageBroker::processMessage(NetMessage* pMessage)
             ASSERT_INFO(code);
             ASSERT_BAD_CASE;
     }
-    _DELETE(pMessage);
+    delete pMessage;
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::processMessage DONE " << code << std::endl);
 }
 
@@ -285,7 +285,7 @@ void MachLogMessageBroker::doSend(MachLogNetMessage*& pMessage)
             }
             break;
         }*/
-        _DELETE(pMessage);
+        delete pMessage;
     }
 }
 
@@ -343,7 +343,7 @@ void MachLogMessageBroker::sendCachedOutgoingMessages()
         NET_ANALYSIS_STREAM(
             "out," << systemCode << "," << code << "," << SimManager::instance().currentTime() << ","
                    << pMessage->header_.totalLength_ << std::endl);
-        _DELETE(pMessage);
+        delete pMessage;
         cachedOutgoingMessages_.erase(cachedOutgoingMessages_.begin());
         DEBUG_STREAM(DIAG_NETWORK, " sent a cached message size() " << cachedOutgoingMessages_.size() << std::endl);
     }

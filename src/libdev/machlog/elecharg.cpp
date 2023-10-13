@@ -50,11 +50,11 @@ MachLogLinearProjectile* MachLogElectroCharger::createLinearProjectile(
     const W4dEntity& target,
     const MexPoint3d& targetOffset)
 {
-    return _NEW(MachLogElectro(
+    return new MachLogElectro(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogElectroCharger& t)

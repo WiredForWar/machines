@@ -97,12 +97,12 @@ MachLogMobile::MachLogMobile(
     MATHEX_SCALAR highClearence,
     MATHEX_SCALAR lowClearence)
     : MachActor(pRace, pPhysMobile, ot)
-    , pMotionSeq_(_NEW(MachLogMachineMotionSequencer(
+    , pMotionSeq_(new MachLogMachineMotionSequencer(
           this,
           pPhysMobile,
           MexPoint2d(position().x(), position().y()),
           highClearence,
-          lowClearence)))
+          lowClearence))
 {
     PRE(pRace != nullptr);
 }
@@ -115,12 +115,12 @@ MachLogMobile::MachLogMobile(
     MATHEX_SCALAR highClearence,
     MATHEX_SCALAR lowClearence)
     : MachActor(pRace, pPhysMobile, ot, withId)
-    , pMotionSeq_(_NEW(MachLogMachineMotionSequencer(
+    , pMotionSeq_(new MachLogMachineMotionSequencer(
           this,
           pPhysMobile,
           MexPoint2d(position().x(), position().y()),
           highClearence,
-          lowClearence)))
+          lowClearence))
 {
     PRE(pRace != nullptr);
 }
@@ -131,7 +131,7 @@ MachLogMobile::~MachLogMobile()
 {
     TEST_INVARIANT;
 
-    _DELETE(pMotionSeq_);
+    delete pMotionSeq_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -237,7 +237,7 @@ void MachLogMobile::preservePhysicalModel(const PhysRelativeTime& forTime)
     }
 
     MachLogDyingEntityEvent* pEvent
-        = _NEW(MachLogDyingEntityEvent(physObjectPtr(), nullptr, forTime, insideBuilding, pConstruction));
+        = new MachLogDyingEntityEvent(physObjectPtr(), nullptr, forTime, insideBuilding, pConstruction);
     SimManager::instance().add(pEvent);
 }
 
@@ -310,12 +310,12 @@ void MachLogMobile::createNewMachineMotionSequencer(MachPhysMobile* pPhysMobile)
     PRE(not pMotionSeq_);
     HAL_STREAM(
         "(" << id() << ") MachLogMobile::createNewMachMotSeq at " << pPhysMobile->globalTransform() << std::endl);
-    pMotionSeq_ = _NEW(MachLogMachineMotionSequencer(
+    pMotionSeq_ = new MachLogMachineMotionSequencer(
         this,
         pPhysMobile,
         MexPoint2d(pPhysMobile->globalTransform().position().x(), pPhysMobile->globalTransform().position().y()),
         asMachine().highClearence(),
-        asMachine().lowClearence()));
+        asMachine().lowClearence());
 }
 
 bool MachLogMobile::machineMotionSequencerDefined() const

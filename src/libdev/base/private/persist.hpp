@@ -165,7 +165,7 @@ public:
 public:                                                                                                                \
     static className& perCreate()                                                                                      \
     {                                                                                                                  \
-        return *(_NEW(className(PERSISTENCE_CONSTRUCTOR)));                                                            \
+        return *(new className(PERSISTENCE_CONSTRUCTOR));                                                            \
     }                                                                                                                  \
     className(PerConstructor);                                                                                         \
     PER_PRIVATE_MEMBER_PERSISTENT_STANDARD(className, VIRTUAL)
@@ -175,7 +175,7 @@ public:                                                                         
 public:                                                                                                                \
     static className& perCreate()                                                                                      \
     {                                                                                                                  \
-        return *(_NEW(className()));                                                                                   \
+        return *(new className());                                                                                   \
     }                                                                                                                  \
                                                                                                                        \
 protected:                                                                                                             \
@@ -227,7 +227,7 @@ public:                                                                         
 public:                                                                                                                \
     static className& perCreate()                                                                                      \
     {                                                                                                                  \
-        return *(_NEW(className(PERSISTENCE_CONSTRUCTOR)));                                                            \
+        return *(new className(PERSISTENCE_CONSTRUCTOR));                                                            \
     }                                                                                                                  \
                                                                                                                        \
 protected:                                                                                                             \
@@ -239,7 +239,7 @@ protected:                                                                      
 public:                                                                                                                \
     static className& perCreate()                                                                                      \
     {                                                                                                                  \
-        return *(_NEW(className()));                                                                                   \
+        return *(new className());                                                                                   \
     }                                                                                                                  \
     PER_PRIVATE_MEMBER_PERSISTENT_STANDARD_INLINE(className, VIRTUAL)
 

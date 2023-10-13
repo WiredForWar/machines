@@ -43,7 +43,7 @@ PER_DECLARE_PERSISTENT(MachLogArtefacts);
     CB_DEPIMPL(bool, artefactsParsed_);
 
 MachLogArtefacts::MachLogArtefacts()
-    : pImpl_(_NEW(MachLogArtefactsImpl))
+    : pImpl_(new MachLogArtefactsImpl)
 {
     TEST_INVARIANT;
 }
@@ -53,9 +53,9 @@ MachLogArtefacts::~MachLogArtefacts()
     TEST_INVARIANT;
 
     CB_MachLogArtefacts_DEPIMPL();
-    //    _DELETE( pExemplars_ ); // don't be a MERGE MORON - don't put this line back in
-    //    _DELETE( pData_ );      // don't be a MERGE MORON - don't put this line back in
-    _DELETE(pImpl_);
+    //    delete pExemplars_; // don't be a MERGE MORON - don't put this line back in
+    //    delete pData_;      // don't be a MERGE MORON - don't put this line back in
+    delete pImpl_;
 }
 
 void MachLogArtefacts::CLASS_INVARIANT
@@ -91,7 +91,7 @@ void MachLogArtefacts::load(const SysPathName& pathname)
     persistentPathname.extension("arb");
 
     // Use a temporary repository to read the data into
-    W4dGenericRepository* pTemporaryRepository = _NEW(W4dGenericRepository);
+    W4dGenericRepository* pTemporaryRepository = new W4dGenericRepository;
 
     if (persistentPathname.existsAsFile())
     {
@@ -114,7 +114,7 @@ void MachLogArtefacts::load(const SysPathName& pathname)
 
     // Move the models over to the exemplars, and delete the temporary one
     pExemplars_->takeAllFrom(pTemporaryRepository);
-    _DELETE(pTemporaryRepository);
+    delete pTemporaryRepository;
 }
 
 void MachLogArtefacts::finish()
@@ -124,7 +124,7 @@ void MachLogArtefacts::finish()
     pExemplars_->clear();
 
     // Delete the subtypes implementation
-    _DELETE(pData_->pSubTypes_);
+    delete pData_->pSubTypes_;
     pData_->pSubTypes_ = nullptr;
 }
 
@@ -151,11 +151,11 @@ void MachLogArtefacts::addSubType(
     PRE(pExemplars_->type(name) != W4dGenericRepository::UNKNOWN);
 
     // Construct a polygon for the boundary
-    MexConvexPolygon2d* pBoundaryPolygon = _NEW(MexConvexPolygon2d(localBoundary));
+    MexConvexPolygon2d* pBoundaryPolygon = new MexConvexPolygon2d(localBoundary);
 
     // Construct an artefact data object for this subType
     MachPhysArtefactData* pArtefactData
-        = _NEW(MachPhysArtefactData(height, pBoundaryPolygon, armour, hitPoints, cost, subType, stringId));
+        = new MachPhysArtefactData(height, pBoundaryPolygon, armour, hitPoints, cost, subType, stringId);
 
     // Find the generic exemplar in the repository
     const W4dEntity* pExemplar = &pExemplars_->entity(name);
@@ -163,7 +163,7 @@ void MachLogArtefacts::addSubType(
     // Ensure the vector of sub types exists
     if (pData_->pSubTypes_ == nullptr)
     {
-        pData_->pSubTypes_ = _NEW(ctl_vector<MachLogArtefactSubType>);
+        pData_->pSubTypes_ = new ctl_vector<MachLogArtefactSubType>;
         pData_->pSubTypes_->reserve(64);
     }
 
@@ -189,7 +189,7 @@ void MachLogArtefacts::addSubType(int subType, const string& name)
     // Ensure the vector of sub types exists
     if (pData_->pSubTypes_ == nullptr)
     {
-        pData_->pSubTypes_ = _NEW(ctl_vector<MachLogArtefactSubType>);
+        pData_->pSubTypes_ = new ctl_vector<MachLogArtefactSubType>;
         pData_->pSubTypes_->reserve(64);
     }
 
@@ -221,9 +221,9 @@ W4dEntity* MachLogArtefacts::newPhysArtefact(int subType, const MexPoint3d& loca
     // Construct a simple or composite generic copy as appropriate
     W4dEntity* pResult;
     if (exemplar.isComposite())
-        pResult = _NEW(W4dGenericComposite(exemplar.asComposite(), pDomain, localTransform));
+        pResult = new W4dGenericComposite(exemplar.asComposite(), pDomain, localTransform);
     else
-        pResult = _NEW(W4dGeneric(exemplar, pDomain, localTransform));
+        pResult = new W4dGeneric(exemplar, pDomain, localTransform);
 
     // Add any domain intersect relations
     MachLogPlanetDomains::addIntersectRelations(pResult);
@@ -268,8 +268,8 @@ void MachLogArtefacts::parseArtefactsSection(
 {
     CB_MachLogArtefacts_DEPIMPL();
     // store the file that the artefacts are parsed from.
-    _DELETE(pArtefactPathName_);
-    pArtefactPathName_ = _NEW(SysPathName(pParser->fileName()));
+    delete pArtefactPathName_;
+    pArtefactPathName_ = new SysPathName(pParser->fileName());
     artefactsParsed_ = true;
 
     bool done = false;
@@ -477,7 +477,7 @@ void MachLogArtefacts::unload()
     // Delete all the artefact data objects
     MachLogArtefactsData::ArtefactDatas& artefactDatas = pData_->artefactDatas_;
     for (MachLogArtefactsData::ArtefactDatas::iterator it = artefactDatas.begin(); it != artefactDatas.end(); ++it)
-        _DELETE((*it));
+        delete (*it);
 
     artefactDatas.erase(artefactDatas.begin(), artefactDatas.end());
     artefactsParsed_ = false;

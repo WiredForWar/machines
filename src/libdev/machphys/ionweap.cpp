@@ -103,9 +103,9 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
     W4dEntity* pCopyTarget;
 
     if (pVictim->isComposite())
-        pCopyTarget = _NEW(W4dGenericComposite(pVictim->asComposite(), pVictim->pParent(), pVictim->localTransform()));
+        pCopyTarget = new W4dGenericComposite(pVictim->asComposite(), pVictim->pParent(), pVictim->localTransform());
     else
-        pCopyTarget = _NEW(W4dGeneric(*pVictim, pVictim->pParent(), pVictim->localTransform()));
+        pCopyTarget = new W4dGeneric(*pVictim, pVictim->pParent(), pVictim->localTransform());
 
     PhysRelativeTime duration = 1.5;
 
@@ -121,15 +121,15 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
     intensities.push_back(1);
     intensities.push_back(3);
 
-    PhysLinearScalarPlan* pScalePlan = _NEW(PhysLinearScalarPlan(intTimes, intensities));
-    W4dScalePlanPtr planPtr(_NEW(W4dGeneralUniformScalePlan(pScalePlan)));
+    PhysLinearScalarPlan* pScalePlan = new PhysLinearScalarPlan(intTimes, intensities);
+    W4dScalePlanPtr planPtr(new W4dGeneralUniformScalePlan(pScalePlan));
 
     // Propogate thru the current model
     pVictim->propogateScalePlan(planPtr, startTime, 1);
 
     // make a visibility plan
 
-    W4dVisibilityPlanPtr wVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr wVisibilityPlanPtr(new W4dVisibilityPlan(true));
     wVisibilityPlanPtr->add(false, duration);
 
     pVictim->entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
@@ -146,7 +146,7 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
     }
 
     const int reasonableSize = 100;
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(reasonableSize));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(reasonableSize);
     for (int i = reasonableSize; i--;)
         pMaterialVec->push_back(glowingWhite);
 
@@ -159,10 +159,10 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
     scales.push_back(1);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pAlphaPlan = _NEW(PhysLinearScalarPlan(linearTimes, scales));
+    PhysLinearScalarPlan* pAlphaPlan = new PhysLinearScalarPlan(linearTimes, scales);
     PhysScalarPlanPtr alphaPlanPtr(pAlphaPlan);
 
-    W4dSimpleAlphaPlan* pPlan = _NEW(W4dSimpleAlphaPlan(glowingWhite, reasonableSize, alphaPlanPtr, 5));
+    W4dSimpleAlphaPlan* pPlan = new W4dSimpleAlphaPlan(glowingWhite, reasonableSize, alphaPlanPtr, 5);
 
     W4dMaterialPlanPtr pMaterialPlanPtr(pPlan);
 
@@ -188,8 +188,8 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
     copyScales.push_back(1);
     copyScales.push_back(0.001);
 
-    PhysLinearScalarPlan* pCopyScalePlan = _NEW(PhysLinearScalarPlan(intTimes, copyScales));
-    W4dScalePlanPtr copyPlanPtr(_NEW(W4dGeneralUniformScalePlan(pCopyScalePlan)));
+    PhysLinearScalarPlan* pCopyScalePlan = new PhysLinearScalarPlan(intTimes, copyScales);
+    W4dScalePlanPtr copyPlanPtr(new W4dGeneralUniformScalePlan(pCopyScalePlan));
 
     // Propogate thru the current model
     pCopyTarget->propogateScalePlan(copyPlanPtr, startTime, 1);

@@ -37,7 +37,7 @@ MachPhysMissileEmplacement::MachPhysMissileEmplacement(
     MachPhys::WeaponCombo combo)
     : MachPhysConstruction(part(subType, level), pParent, localTransform, level, race)
     , MachPhysCanAttack(part(subType, level), this)
-    , pData_(_NEW(MachPhysMissileEmplacementData(part(subType, level).data(), globalTransform())))
+    , pData_(new MachPhysMissileEmplacementData(part(subType, level).data(), globalTransform()))
     , subType_(subType)
 {
     // Get the exemplar
@@ -68,7 +68,7 @@ MachPhysMissileEmplacement::MachPhysMissileEmplacement(
         }
     }
 
-    pTurnerTracker_ = _NEW(MachPhysTurnerTracker(pTurnLink_, W4d::Z_AXIS, W4d::X_AXIS, exemplar.data().maxRotation()));
+    pTurnerTracker_ = new MachPhysTurnerTracker(pTurnLink_, W4d::Z_AXIS, W4d::X_AXIS, exemplar.data().maxRotation());
 
     // Mount the appropriate weapons
     MachPhysArmourer::fitWeapons(this, this, combo);
@@ -88,16 +88,16 @@ MachPhysMissileEmplacement::MachPhysMissileEmplacement(W4dEntity* pParent, Id id
         50.0,
         id.level_,
         MachPhysData::instance().missileEmplacementData(id.subType_, id.level_))
-    , pData_(_NEW(MachPhysMissileEmplacementData(
+    , pData_(new MachPhysMissileEmplacementData(
           MachPhysData::instance().missileEmplacementData(id.subType_, id.level_),
-          W4dTransform3d())))
+          W4dTransform3d()))
     , subType_(id.subType_)
     , pTurnerTracker_(nullptr)
 {
     // Find the turn link
     if (findLink("body", &pTurnLink_))
         ;
-    // else if ( findLink("gun", &pTurnLink_) );
+    // else if ( findLink("gun", &pTurnLink_) ;
     else
     {
         ASSERT(false, "No ME Turn Link");
@@ -120,8 +120,8 @@ MachPhysMissileEmplacement::~MachPhysMissileEmplacement()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
-    _DELETE(pTurnerTracker_);
+    delete pData_;
+    delete pTurnerTracker_;
 }
 
 MachPhys::MissileEmplacementSubType MachPhysMissileEmplacement::subType() const
@@ -376,9 +376,9 @@ const W4dComposite& MachPhysMissileEmplacement::asComposite() const
 
 void MachPhysMissileEmplacement::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysMissileEmplacementData(
+    pData_ = new MachPhysMissileEmplacementData(
         MachPhysData::instance().missileEmplacementData(subType(), level()),
-        W4dTransform3d()));
+        W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }

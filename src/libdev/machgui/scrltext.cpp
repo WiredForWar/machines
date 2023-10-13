@@ -81,11 +81,11 @@ void MachGuiScrollableText::setText(const string& text)
 
         if (strncasecmp(&lineOfText.c_str()[0], "<w>", 3) == 0)
         {
-            _NEW(MachGuiText(this, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp"));
+            new MachGuiText(this, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp");
         }
         else
         {
-            _NEW(MachGuiText(this, width(), lineOfText));
+            new MachGuiText(this, width(), lineOfText);
         }
     }
 

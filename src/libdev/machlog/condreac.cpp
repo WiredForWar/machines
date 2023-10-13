@@ -165,12 +165,12 @@ MachLogReachedLocationCondition* MachLogReachedLocationCondition::newFromParser(
     //<keyName> RACE <race> <number greater than = done> AT <point> RANGE <range> <objectType> [<hwLevel>] [<subType>]
     //[<weaponCombo>]
 
-    MachLogReachedLocationCondition* pResult = _NEW(MachLogReachedLocationCondition(
+    MachLogReachedLocationCondition* pResult = new MachLogReachedLocationCondition(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
         atol(pParser->tokens()[4].c_str()),
         MexPoint2d(atof(pParser->tokens()[6].c_str()), atof(pParser->tokens()[7].c_str())),
-        atof(pParser->tokens()[9].c_str())));
+        atof(pParser->tokens()[9].c_str()));
     if (pParser->tokens()[10] == "ANY")
         pResult->anyTypeWillDo_ = true;
     else if (pParser->tokens()[10] == "MACHINE")
@@ -209,12 +209,12 @@ MachLogReachedLocationCondition* MachLogReachedLocationCondition::newFromParser(
     // format of a LOW_UNIT_COUNT/HIGH_UNIT_COUNT condition line is:
     //<keyName> RACE <race> <number> <objectType> [<hwLevel>] [<subType>] [<weaponCombo>]
 
-    MachLogReachedLocationCondition* pResult = _NEW(MachLogReachedLocationCondition(
+    MachLogReachedLocationCondition* pResult = new MachLogReachedLocationCondition(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
         atol(pParser->tokens()[4].c_str()),
         MexPoint2d(),
-        0));
+        0);
 
     pResult->booleanType_ = booleanType;
     pResult->doRangeCheck_ = false;

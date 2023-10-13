@@ -67,7 +67,7 @@ MachCameras::MachCameras(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
     , pZenithConstraint_(nullptr)
     , groundCameraMoved_(true)
 {
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         DevKey::PAD_2,
         ZENITHVIEW,
@@ -152,15 +152,15 @@ MachCameras::~MachCameras()
 
     DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() enter" << std::endl);
 
-    _DELETE(pKeyTranslator_);
-    _DELETE(pGroundControl_);
-    _DELETE(pFreeControl_);
-    _DELETE(pZenithControl_);
-    _DELETE(pFirstPersonControl_);
-    _DELETE(pGroundCamera_);
-    _DELETE(pFreeCamera_);
-    _DELETE(pZenithCamera_);
-    _DELETE(pFirstPersonCamera_);
+    delete pKeyTranslator_;
+    delete pGroundControl_;
+    delete pFreeControl_;
+    delete pZenithControl_;
+    delete pFirstPersonControl_;
+    delete pGroundCamera_;
+    delete pFreeCamera_;
+    delete pZenithCamera_;
+    delete pFirstPersonCamera_;
 
     DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() leave" << std::endl);
 }
@@ -207,26 +207,26 @@ void MachCameras::loadGame()
             DEFAULT_ASSERT_BAD_CASE((int)races.cameraInfo(playerRace).type_);
     }
 
-    pFirstPersonCamera_ = _NEW(MachLogCamera(pSceneManager_, pRoot_, eyeTransform, MachLogCamera::FIRST_PERSON));
-    pGroundCamera_ = _NEW(MachLogCamera(pSceneManager_, pRoot_, groundTransform, MachLogCamera::GROUND));
-    pZenithCamera_ = _NEW(MachLogCamera(pSceneManager_, pRoot_, zenithTransform, MachLogCamera::ZENITH));
-    pFreeCamera_ = _NEW(MachLogCamera(pSceneManager_, pRoot_, groundTransform, MachLogCamera::FREE_MOVING));
+    pFirstPersonCamera_ = new MachLogCamera(pSceneManager_, pRoot_, eyeTransform, MachLogCamera::FIRST_PERSON);
+    pGroundCamera_ = new MachLogCamera(pSceneManager_, pRoot_, groundTransform, MachLogCamera::GROUND);
+    pZenithCamera_ = new MachLogCamera(pSceneManager_, pRoot_, zenithTransform, MachLogCamera::ZENITH);
+    pFreeCamera_ = new MachLogCamera(pSceneManager_, pRoot_, groundTransform, MachLogCamera::FREE_MOVING);
 
-    pGroundConstraint_ = _NEW(MachLogGroundCameraMotionConstraint(pGroundCamera_));
-    pZenithConstraint_ = _NEW(MachLogZenithCameraMotionConstraint(pZenithCamera_));
+    pGroundConstraint_ = new MachLogGroundCameraMotionConstraint(pGroundCamera_);
+    pZenithConstraint_ = new MachLogZenithCameraMotionConstraint(pZenithCamera_);
 
-    pGroundControl_ = _NEW(PhysGroundFlyControl(_NEW(W4dMotionControlledEntity(pGroundCamera_)), pGroundConstraint_));
-    pFirstPersonControl_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(pFirstPersonCamera_))));
+    pGroundControl_ = new PhysGroundFlyControl(new W4dMotionControlledEntity(pGroundCamera_), pGroundConstraint_);
+    pFirstPersonControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFirstPersonCamera_));
     pFreeControl_
-        = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(pFreeCamera_)), _NEW(MachLogPlanetCameraConstraint())));
+        = new PhysFlyControl(new W4dMotionControlledEntity(pFreeCamera_), new MachLogPlanetCameraConstraint());
 
     pZenithConstraint_->minHeight(zenithMinHeight);
     pZenithConstraint_->maxHeight(zenithMaxHeight);
 
-    pZenithControl_ = _NEW(PhysZenithFlyControl(_NEW(W4dMotionControlledEntity(pZenithCamera_)), pZenithConstraint_));
+    pZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pZenithCamera_), pZenithConstraint_);
 
     // override standard key translator for now because currently keys do not control machine.
-    pFirstPersonControl_->setKeyTranslator(_NEW(DevKeyToCommandTranslator()));
+    pFirstPersonControl_->setKeyTranslator(new DevKeyToCommandTranslator());
 
     if (races.cameraInfo(playerRace).type_ == MachLogCamera::ZENITH)
     {
@@ -368,14 +368,14 @@ void MachCameras::loadSavedGame(PerIstream& inStream)
 
 void MachCameras::unloadGame()
 {
-    _DELETE(pGroundControl_);
-    _DELETE(pFreeControl_);
-    _DELETE(pZenithControl_);
-    _DELETE(pFirstPersonControl_);
-    _DELETE(pGroundCamera_);
-    _DELETE(pFreeCamera_);
-    _DELETE(pZenithCamera_);
-    _DELETE(pFirstPersonCamera_);
+    delete pGroundControl_;
+    delete pFreeControl_;
+    delete pZenithControl_;
+    delete pFirstPersonControl_;
+    delete pGroundCamera_;
+    delete pFreeCamera_;
+    delete pZenithCamera_;
+    delete pFirstPersonCamera_;
     pGroundControl_ = nullptr;
     pFreeControl_ = nullptr;
     pZenithControl_ = nullptr;
@@ -941,14 +941,14 @@ void readZenithDataFile(
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, fileName, std::ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, fileName, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, fileName, std::ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, fileName, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(fileName.c_str());
-        // pIstream = _NEW( std::ifstream( fileName.c_str(), std::ios::text | std::ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(fileName.c_str(), std::ios::in | std::ios::in)));
+        // pIstream = new std::ifstream( fileName.c_str(), std::ios::text | std::ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(fileName.c_str(), std::ios::in | std::ios::in));
     }
 
     UtlLineTokeniser tokeniser(*pIstream, fileName);

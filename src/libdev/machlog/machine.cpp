@@ -108,9 +108,8 @@ MachLogMachine::MachLogMachine(
         ot,
         pPhysMachine->machineData().highClearance(),
         pPhysMachine->machineData().lowClearance())
-    , pImpl_(_NEW(MachLogMachineImpl(t, hwLevel, swLevel, pRace->race())))
+    , pImpl_(new MachLogMachineImpl(t, hwLevel, swLevel, pRace->race()))
 {
-
     machineCreated();
 
     TEST_INVARIANT;
@@ -133,7 +132,7 @@ MachLogMachine::MachLogMachine(
         withId,
         pPhysMachine->machineData().highClearance(),
         pPhysMachine->machineData().lowClearance())
-    , pImpl_(_NEW(MachLogMachineImpl(t, hwLevel, swLevel, pRace->race())))
+    , pImpl_(new MachLogMachineImpl(t, hwLevel, swLevel, pRace->race()))
 {
     machineCreated();
 
@@ -151,7 +150,7 @@ MachLogMachine::~MachLogMachine()
     CB_DEPIMPL(MachLogEntrance*, pLockedEntrance_);
     CB_DEPIMPL(MachLogSquadron*, pSquadron_);
 
-    _DELETE(pHealAura_);
+    delete pHealAura_;
     pHealAura_ = nullptr;
 
     if (pLockedStation_ != nullptr)
@@ -196,7 +195,7 @@ MachLogMachine::~MachLogMachine()
     // to be tested========================
 
     // Don't do this. The entity will be deleted because it is a child
-    //_DELETE( pMarker_ );
+    //delete pMarker_;
 
     CB_DEPIMPL(MachLogMissileEmplacement*, pSafestMissileEmplacement_);
 
@@ -214,7 +213,7 @@ MachLogMachine::~MachLogMachine()
 
     // MachLogRaces::instance().nMachines( race() )--;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //* ///////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -964,7 +963,7 @@ void MachLogMachine::doVisualiseSelectionState()
     // Delete any existing marker
     if (pMarker_)
     {
-        _DELETE(pMarker_);
+        delete pMarker_;
         pMarker_ = nullptr;
     }
     // If highlighted or selected add a marker entity
@@ -973,12 +972,12 @@ void MachLogMachine::doVisualiseSelectionState()
     {
         MachPhysMachine& physObject = physMachine();
         bool permanent = state == MachLog::SELECTED;
-        pMarker_ = _NEW(MachPhysMarker(
+        pMarker_ = new MachPhysMarker(
             &physObject,
             MexTransform3d(),
             physObject.compositeBoundingVolume(),
             permanent,
-            (100 * hp()) / machineData().hitPoints()));
+            (100 * hp()) / machineData().hitPoints());
     }
 }
 
@@ -1256,7 +1255,7 @@ void MachLogMachine::addHealingAuraReference()
     CB_DEPIMPL(MachPhysHealAura*, pHealAura_);
     CB_DEPIMPL(int, healAuraReferences_);
     if (pHealAura_ == nullptr)
-        pHealAura_ = _NEW(MachPhysHealAura(&physMachine(), SimManager::instance().currentTime()));
+        pHealAura_ = new MachPhysHealAura(&physMachine(), SimManager::instance().currentTime());
     ++healAuraReferences_;
     HAL_STREAM("(" << id() << ") MLMachine::addHealingAuraReference at exit " << healAuraReferences_ << "references\n");
 }
@@ -1273,7 +1272,7 @@ void MachLogMachine::releaseHealingAuraReference()
     if (healAuraReferences_ <= 0 and pHealAura_ != nullptr)
     {
         HAL_STREAM(" got no references left and heal aura is not null so delete\n");
-        _DELETE(pHealAura_);
+        delete pHealAura_;
         pHealAura_ = nullptr;
     }
     HAL_STREAM(
@@ -1287,8 +1286,8 @@ void MachLogMachine::smeltMe()
     PhysRelativeTime result = 0.25 + MachPhysVortexWeapon::destroy( &physObject() ,
                 SimManager::instance().currentTime() );
 
-    SimManager::instance().add( _NEW( MachLogDyingEntityEvent( physObjectPtr(), NULL, result,
-                MachLogDyingEntityEvent::NOT_INSIDE_BUILDING, NULL ) ) );
+    SimManager::instance().add( new MachLogDyingEntityEvent( physObjectPtr(), NULL, result,
+                MachLogDyingEntityEvent::NOT_INSIDE_BUILDING, NULL ) );
 
     isDead( true );
     MachLogNetwork& network = MachLogNetwork::instance();
@@ -1305,12 +1304,12 @@ void MachLogMachine::smeltMe()
     W4dEntity& physObj = physObject();
     W4dSoundManager::instance().play(&physObj, SID_RECYCLE, PhysAbsoluteTime(0), 1);
 
-    SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+    SimManager::instance().add(new MachLogDyingEntityEvent(
         physObjectPtr(),
         nullptr,
         result,
         MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-        nullptr)));
+        nullptr));
 
     isDead(true);
     MachLogNetwork& network = MachLogNetwork::instance();
@@ -1880,12 +1879,12 @@ void MachLogMachine::dispatchSOS(Actors& strongThreats)
                 // even if this actor doesn't respond to the SOS call, bump its alertness up to full
                 pFollowingMachine->asCanAttack().setMinimumAlertness(125);
 
-                MachLogOperation* pOp = _NEW(MachLogAttackOperation(
+                MachLogOperation* pOp = new MachLogAttackOperation(
                     pFollowingMachine,
                     &threatActor,
-                    MachLogAttackOperation::TERMINATE_ON_CHANGE));
+                    MachLogAttackOperation::TERMINATE_ON_CHANGE);
                 if (not(pFollowingMachine->strategy().addOperationAsSubOperationToFollowOperation(pOp)))
-                    _DELETE(pOp);
+                    delete pOp;
             }
             ++iFollowers;
         }
@@ -2141,13 +2140,13 @@ void MachLogMachine::doFadeInAnimation()
     uint nMaterialsInVector = 100; // a reasonablely large number. Why does this matter? not sure.
     uint nSolidFrames=0, nFadedFrames=15;
     MATHEX_SCALAR minAlpha=0.0, maxAlpha=1.0;
-    W4dSolidFadedAlphaPlan* pPlan = _NEW( W4dSolidFadedAlphaPlan(nFadedFrames, nSolidFrames,
+    W4dSolidFadedAlphaPlan* pPlan = new W4dSolidFadedAlphaPlan(nFadedFrames, nSolidFrames,
                                                     nMaterialsInVector,
                                                     solidGreen,
                                                     10,
                                                     2,
                                                     minAlpha,
-                                                    maxAlpha) );
+                                                    maxAlpha);
 
 
     W4dMaterialPlanPtr materialPlanPtr( pPlan );
@@ -2171,13 +2170,13 @@ void MachLogMachine::doFadeOutAnimation()
     uint nMaterialsInVector = 100; // a reasonablely large number. Why does this matter? not sure.
     uint nSolidFrames=0, nFadedFrames=35;
     MATHEX_SCALAR minAlpha=0.0, maxAlpha=1.0;
-    W4dSolidFadedAlphaPlan* pPlan = _NEW( W4dSolidFadedAlphaPlan(nFadedFrames, nSolidFrames,
+    W4dSolidFadedAlphaPlan* pPlan = new W4dSolidFadedAlphaPlan(nFadedFrames, nSolidFrames,
                                                     nMaterialsInVector,
                                                     solidGreen,
                                                     10,
                                                     2,
                                                     minAlpha,
-                                                    maxAlpha) );
+                                                    maxAlpha);
 
 
     W4dMaterialPlanPtr materialPlanPtr( pPlan );
@@ -2565,7 +2564,7 @@ void MachLogMachine::checkAndDoClearEntrance(MachLogConstruction& constron)
             if (MachLogSpacialManipulation::pointInsideConfigSpaceIsFree(clearPoint, myClearance, interiorConfigSpace))
             {
                 succeeded = true;
-                strategy().newOperation(_NEW(MachLogMoveToOperation(this, clearPoint, false)));
+                strategy().newOperation(new MachLogMoveToOperation(this, clearPoint, false));
             }
         }
     }

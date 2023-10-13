@@ -28,7 +28,7 @@ MachPhysTreacheryOrb::MachPhysTreacheryOrb(W4dEntity* pParent, const MexTransfor
     , pDisc_(nullptr)
 {
     // Create a radial disc child
-    pDisc_ = _NEW(MachPhysRadialDisc(this, MexTransform3d()));
+    pDisc_ = new MachPhysRadialDisc(this, MexTransform3d());
 
     TEST_INVARIANT;
 }
@@ -70,11 +70,11 @@ MachPhysTreacheryOrb::beLaunched(const PhysAbsoluteTime& startTime, const MachPh
     W4dEntityPlan& discEntityPlan = pDisc_->entityPlanForEdit();
 
     // Add a visibility plan so it becomes visible at launch time
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
     // Set a scale plan for the expansion phase
-    static W4dScalePlanPtr scalePlanPtr = _NEW(W4dSimpleUniformScalePlan(0.01, 2.0, expandTime));
+    static W4dScalePlanPtr scalePlanPtr = new W4dSimpleUniformScalePlan(0.01, 2.0, expandTime);
 
     discEntityPlan.scalePlan(scalePlanPtr, startTime);
 
@@ -99,13 +99,13 @@ MachPhysTreacheryOrb::beLaunched(const PhysAbsoluteTime& startTime, const MachPh
         values.push_back(0.5);
         values.push_back(0.5);
 
-        alphaValuePlanPtr = _NEW(PhysLinearScalarPlan(times, values));
+        alphaValuePlanPtr = new PhysLinearScalarPlan(times, values);
     }
 
     uint nMaterialsInVector = 1;
     W4dLOD maxLOD = 3;
     W4dMaterialPlanPtr materialPlanPtr
-        = _NEW(W4dSimpleAlphaPlan(orbMaterial(race), nMaterialsInVector, alphaValuePlanPtr, maxLOD));
+        = new W4dSimpleAlphaPlan(orbMaterial(race), nMaterialsInVector, alphaValuePlanPtr, maxLOD);
 
     discEntityPlan.materialPlan(materialPlanPtr, startTime);
 
@@ -180,18 +180,18 @@ PhysRelativeTime MachPhysTreacheryOrb::suckRaceAt(const PhysAbsoluteTime& destro
     }
 
     // Set up a motion plan that doesn't move at the stop time at the stop position
-    PhysMotionPlanPtr motionPlanPtr = _NEW(PhysLinearMotionPlan(stopPosition, stopPosition, 1.0));
+    PhysMotionPlanPtr motionPlanPtr = new PhysLinearMotionPlan(stopPosition, stopPosition, 1.0);
 
     entityPlan.absoluteMotion(motionPlanPtr, destroyTime);
 
     // Set a visibility plan
     const PhysRelativeTime expandTime = 0.5;
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, expandTime);
     entityPlan.visibilityPlan(visibilityPlanPtr, destroyTime);
 
     // Set up a scale plan for the disc
-    static W4dScalePlanPtr scalePlanPtr = _NEW(W4dSimpleUniformScalePlan(2.0, 5.0, expandTime));
+    static W4dScalePlanPtr scalePlanPtr = new W4dSimpleUniformScalePlan(2.0, 5.0, expandTime);
 
     discEntityPlan.scalePlan(scalePlanPtr, destroyTime);
 
@@ -211,13 +211,13 @@ PhysRelativeTime MachPhysTreacheryOrb::suckRaceAt(const PhysAbsoluteTime& destro
         values.push_back(1.0);
         values.push_back(0.0);
 
-        alphaValuePlanPtr = _NEW(PhysLinearScalarPlan(times, values));
+        alphaValuePlanPtr = new PhysLinearScalarPlan(times, values);
     }
 
     uint nMaterialsInVector = 1;
     W4dLOD maxLOD = 3;
     W4dMaterialPlanPtr materialPlanPtr
-        = _NEW(W4dSimpleAlphaPlan(orbMaterial(oldRace), nMaterialsInVector, alphaValuePlanPtr, maxLOD));
+        = new W4dSimpleAlphaPlan(orbMaterial(oldRace), nMaterialsInVector, alphaValuePlanPtr, maxLOD);
 
     discEntityPlan.materialPlan(materialPlanPtr, destroyTime);
 

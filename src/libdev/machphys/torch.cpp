@@ -51,7 +51,7 @@ MachPhysTorch::~MachPhysTorch()
 const MachPhysTorch& MachPhysTorch::exemplar()
 {
     // Use the one time constructor
-    static MachPhysTorch& torch = *_NEW(MachPhysTorch);
+    static MachPhysTorch& torch = *new MachPhysTorch;
     return torch;
 }
 

@@ -141,7 +141,7 @@ PhysRelativeTime MachPhysBolter::fire(const PhysAbsoluteTime& startTime, int num
 
     // Attach a flash object to the gun
     MexTransform3d flashPosition(flashOffset);
-    W4dGeneric* pFlash = _NEW(W4dGeneric(exemplarFlash(type()), this, flashPosition));
+    W4dGeneric* pFlash = new W4dGeneric(exemplarFlash(type()), this, flashPosition);
     pFlash->visible(false);
 
     if (type() == MachPhys::BOLTER)
@@ -151,7 +151,7 @@ PhysRelativeTime MachPhysBolter::fire(const PhysAbsoluteTime& startTime, int num
         pFlash->temporaryScale(RenNonUniformScale(1.5, 1, 1), W4dEntity::NOT_PROPOGATE);
 
     // Set up a visibility plan for the flash
-    W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
     pVisibilityPlan->add(false, 0.1);
     pVisibilityPlan->add(false, roundTime);
 
@@ -173,12 +173,12 @@ PhysRelativeTime MachPhysBolter::fire(const PhysAbsoluteTime& startTime, int num
                 MexRadians angularSpeed = MexDegrees(60.0 * nRounds) / burstDuration;
                 size_t likelySegmentCount = 1;
 
-                PhysTimedSpinPlan* pSpinPlan = _NEW(PhysTimedSpinPlan(
+                PhysTimedSpinPlan* pSpinPlan = new PhysTimedSpinPlan(
                     MexVec3(1.0, 0.0, 0.0),
                     pTurnLink_->localTransform(),
                     MexRadians(0.0),
                     angularSpeed,
-                    likelySegmentCount));
+                    likelySegmentCount);
 
                 pSpinPlan->addSegment(burstDuration, MexRadians(0.0));
 
@@ -194,7 +194,7 @@ PhysRelativeTime MachPhysBolter::fire(const PhysAbsoluteTime& startTime, int num
     }
 
     // Add the exhaust smoke cloud
-    MachPhysSmokeCloud* pSmokeCloud = _NEW(MachPhysSmokeCloud(this, flashOffset));
+    MachPhysSmokeCloud* pSmokeCloud = new MachPhysSmokeCloud(this, flashOffset);
     uint nWisps = 3;
     MexPoint3d endPosition(0.0, 0.0, 1.1);
     MexVec3 randomOffset(0.1, 0.1, 0.0);
@@ -284,7 +284,7 @@ void MachPhysBolter::impactSparks(
     // aUV[3] = MexVec2(0.74, 0.64);
 
     // Define a visibility plan
-    W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
     pVisibilityPlan->add(false, duration);
 
     W4dVisibilityPlanPtr visibilityPlanPtr(pVisibilityPlan);
@@ -303,7 +303,7 @@ void MachPhysBolter::impactSparks(
     for (uint i = 1; i--;)
     {
         // Create the sprite
-        W4dSprite3d* pSpark = _NEW(W4dSprite3d(pEntity, startPosition, sparkSize, sparkSize, RenMaterial()));
+        W4dSprite3d* pSpark = new W4dSprite3d(pEntity, startPosition, sparkSize, sparkSize, RenMaterial());
         pSpark->depthOffset(-sparkSize);
 
         W4dSoundManager::instance().play(pEntity, SID_BOLTER_HIT, PhysAbsoluteTime(0), 1);
@@ -515,7 +515,7 @@ PhysRelativeTime MachPhysBolter::applyVictimAnimation(
 W4dGeneric* MachPhysBolter::newFlash(MachPhys::WeaponType type)
 {
     W4dGeneric* pFlash
-        = _NEW(W4dGeneric(MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID));
+        = new W4dGeneric(MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID);
 
     // The current model is all emissive.  Hence, it should not need
     // lighting.  This could change if the model changes.

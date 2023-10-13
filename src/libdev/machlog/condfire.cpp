@@ -45,10 +45,10 @@ MachLogFiredAtCondition* MachLogFiredAtCondition::newFromParser(UtlLineTokeniser
     // format of a VORTEX_FIRED condition line is:
     //<keyName> RACE <race> FIRED AT <race>
 
-    return _NEW(MachLogFiredAtCondition(
+    return new MachLogFiredAtCondition(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
-        MachLogScenario::machPhysRace(pParser->tokens()[6])));
+        MachLogScenario::machPhysRace(pParser->tokens()[6]));
 }
 
 void MachLogFiredAtCondition::CLASS_INVARIANT

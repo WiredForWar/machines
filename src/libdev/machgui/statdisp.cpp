@@ -55,11 +55,11 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
     }
     uint x = 33;
     uint y = 3; // relative to top left of stats display background
-    statBars_.push_back(_NEW(MachGuiStatisticsBar(this, Gui::Coord(x, y), bar1)));
+    statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y), bar1));
     uint height = (*statBars_.begin())->height() + 2;
-    statBars_.push_back(_NEW(MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar2)));
-    statBars_.push_back(_NEW(MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar3)));
-    statBars_.push_back(_NEW(MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar4)));
+    statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar2));
+    statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar3));
+    statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar4));
 
     stats_.push_back(0);
     stats_.push_back(0);
@@ -72,7 +72,7 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
 MachGuiStatisticsDisplay::~MachGuiStatisticsDisplay()
 {
     for (StatBars::iterator i = statBars_.begin(); i != statBars_.end(); i++)
-        _DELETE(*i);
+        delete *i;
 
     TEST_INVARIANT;
 }

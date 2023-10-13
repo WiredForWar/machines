@@ -105,7 +105,7 @@ void perRead(PerIstream& istr, MachPhysJetRing& jetRing)
 void MachPhysJetRing::startGlow(const PhysAbsoluteTime& startTime, const MexPoint3d& targetOffsetGlobal)
 {
 
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, 360000);
 
     entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime, 0, MachPhys::CONSTRUCTION_CONSTRUCTING);
@@ -118,7 +118,7 @@ void MachPhysJetRing::startGlow(const PhysAbsoluteTime& startTime, const MexPoin
 
     pTorch_->temporaryScale(RenNonUniformScale(scale, 1, 1), W4dEntity::NOT_PROPOGATE);
 
-    PhysMotionPlanPtr torchPlanPtr(_NEW(MachPhysJetRingPlan(this, targetOffsetGlobal, 200.0)));
+    PhysMotionPlanPtr torchPlanPtr(new MachPhysJetRingPlan(this, targetOffsetGlobal, 200.0));
     pTorch_->entityPlanForEdit().absoluteMotion(torchPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
 }
 /* End JETRINGM.CPP *************************************************/

@@ -186,7 +186,7 @@ void perRead(PerIstream& istr, MachLogOtherPersistence& per)
     MachLogResearchTree& resTree = MachLogRaces::instance().researchTree();
     while (resTree.researchItems().size())
     {
-        _DELETE(resTree.researchItems().front());
+        delete resTree.researchItems().front();
         resTree.researchItems().erase(resTree.researchItems().begin());
     }
 

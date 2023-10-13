@@ -147,8 +147,8 @@ bool MachGuiRepairCommand::doApply(MachActor* pActor, string*)
     PRE(hadFinalPick_);
 
     // Create a superconstruct(repair) operation for the constructor
-    MachLogSuperConstructOperation* pOp = _NEW(
-        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::REPAIR_OPERATION));
+    MachLogSuperConstructOperation* pOp = new 
+        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::REPAIR_OPERATION);
     pActor->newOperation(pOp);
 
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
@@ -166,7 +166,7 @@ bool MachGuiRepairCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiRepairCommand::clone() const
 {
-    return _NEW(MachGuiRepairCommand(&inGameScreen()));
+    return new MachGuiRepairCommand(&inGameScreen());
 }
 
 // virtual
@@ -211,7 +211,7 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
 
     // Create an admin superconstruct(repair) operation for the administrator
     MachLogAdminSuperConstructOperation* pOp
-        = _NEW(MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::REPAIR_OPERATION));
+        = new MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::REPAIR_OPERATION);
 
     pAdministrator->newOperation(pOp);
     ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");

@@ -45,12 +45,12 @@ MachLogEntrance::MachLogEntrance(
 
     const MATHEX_SCALAR height = 20.0;
 
-    std::unique_ptr<MexPolygon2d> interiorPolyAPtr(_NEW(MexConvexPolygon2d(entranceData.interiorPolygon())));
+    std::unique_ptr<MexPolygon2d> interiorPolyAPtr(new MexConvexPolygon2d(entranceData.interiorPolygon()));
 
     interiorPolygonId_
         = pInteriorConfigSpace->add(interiorPolyAPtr, height, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::PERMANENT);
 
-    std::unique_ptr<MexPolygon2d> exteriorPolyAPtr(_NEW(MexConvexPolygon2d(entranceData.exteriorPolygon())));
+    std::unique_ptr<MexPolygon2d> exteriorPolyAPtr(new MexConvexPolygon2d(entranceData.exteriorPolygon()));
 
     exteriorPolygonId_ = MachLogPlanet::instance().configSpace().add(
         exteriorPolyAPtr,

@@ -136,7 +136,7 @@ PhysRelativeTime MachPhysPunchBlast::startPunchBlast(
         blastBeginTime_ = startTime;
         blastEndTime_ = startTime + duration;
 
-        MachPhysBlast* pBlast = _NEW(MachPhysBlast(this, MexTransform3d()));
+        MachPhysBlast* pBlast = new MachPhysBlast(this, MexTransform3d());
         pBlast->startBlast(blastBeginTime_);
 
         W4dGarbageCollector::instance().add(pBlast, blastEndTime_);
@@ -478,7 +478,7 @@ static MachPhysCrackFire& crackFire(
 
     MexTransform3d localTransform(xAxis, yAxis, zAxis, end1);
 
-    return *_NEW(MachPhysCrackFire(pParent, localTransform, length, MachPhysCrackFire::GARILLA_PUNCH_CHASM));
+    return *new MachPhysCrackFire(pParent, localTransform, length, MachPhysCrackFire::GARILLA_PUNCH_CHASM);
 }
 
 // static

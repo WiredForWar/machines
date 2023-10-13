@@ -77,7 +77,7 @@ MachPhysBeeBombExplosion::startExplosion(const PhysAbsoluteTime& startTime, cons
 {
     const PhysRelativeTime fireDuration = createFireRings(this, MexTransform3d(), startTime + 0.25, surface);
 
-    MachPhysBeeBombWave* pWave = _NEW(MachPhysBeeBombWave(this, MexTransform3d()));
+    MachPhysBeeBombWave* pWave = new MachPhysBeeBombWave(this, MexTransform3d());
 
     const PhysRelativeTime waveDuration = pWave->startBeeWave(startTime);
 
@@ -205,7 +205,7 @@ const PhysRelativeTime MachPhysBeeBombExplosion::createFireRings(
         duration = ringDuration;
 
     // create a blue light which becomes visible when each ring shows up
-    W4dUniformLight* pLight1 = _NEW(W4dUniformLight(pParent, MexVec3(0, 0, 1), 100.0));
+    W4dUniformLight* pLight1 = new W4dUniformLight(pParent, MexVec3(0, 0, 1), 100.0);
     pLight1->constantAttenuation(0);
     pLight1->linearAttenuation(0.177);
     pLight1->quadraticAttenuation(0.823);
@@ -215,7 +215,7 @@ const PhysRelativeTime MachPhysBeeBombExplosion::createFireRings(
 
     pLight1->colour(RenColour(beeWeaponData().extras()[0], beeWeaponData().extras()[1], beeWeaponData().extras()[2]));
 
-    W4dVisibilityPlanPtr light1VisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr light1VisibilityPlanPtr(new W4dVisibilityPlan(true));
     light1VisibilityPlanPtr->add(false, 0.12);
     light1VisibilityPlanPtr->add(true, beeWeaponData().extras()[16]);
     light1VisibilityPlanPtr->add(false, 0.12);
@@ -238,7 +238,7 @@ const PhysRelativeTime MachPhysBeeBombExplosion::createFireRings(
     if (lightDuration > duration)
         duration = lightDuration;
 
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pParent, MexVec3(0, 0, 1), 100.0));
+    W4dUniformLight* pLight = new W4dUniformLight(pParent, MexVec3(0, 0, 1), 100.0);
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.177);
     pLight->quadraticAttenuation(0.823);
@@ -247,7 +247,7 @@ const PhysRelativeTime MachPhysBeeBombExplosion::createFireRings(
     pLight->localTransform(position);
     pLight->colour(RenColour::white());
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(false));
     lightVisibilityPlanPtr->add(true, 1);
     lightVisibilityPlanPtr->add(false, lightDuration);
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
@@ -267,7 +267,7 @@ const PhysRelativeTime MachPhysBeeBombExplosion::createFireRings(
     ints.push_back(4);
     ints.push_back(0);
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, ints));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, ints);
     PhysScalarPlanPtr intensityPlanPtr = pPlan;
     pLight->intensityPlan(intensityPlanPtr, startTime);
 
@@ -368,7 +368,7 @@ static const MachPhysCrackFire::Points& ringPath6()
 
 static void createLight(W4dEntity* pParent, const MexTransform3d& position, const PhysAbsoluteTime& startTime)
 {
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pParent, MexVec3(0, 0, 1), 100.0));
+    W4dUniformLight* pLight = new W4dUniformLight(pParent, MexVec3(0, 0, 1), 100.0);
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.177);
     pLight->quadraticAttenuation(0.823);
@@ -379,7 +379,7 @@ static void createLight(W4dEntity* pParent, const MexTransform3d& position, cons
     pLight->colour(RenColour(beeWeaponData().extras()[0], beeWeaponData().extras()[1], beeWeaponData().extras()[2]));
 
     const PhysRelativeTime lightDuration = 0.12;
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, lightDuration);
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
 

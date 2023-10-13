@@ -110,7 +110,7 @@ void MachPhysElectro::scaleAndSpin(
 
     // Set up visibility plan
     visible(false);
-    W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
     pVisibilityPlan->add(false, duration);
 
     W4dVisibilityPlanPtr visibilityPlanPtr(pVisibilityPlan);
@@ -118,7 +118,7 @@ void MachPhysElectro::scaleAndSpin(
 
     // motion plan
     PhysTimedSpinPlan* pSpinPlan
-        = _NEW(PhysTimedSpinPlan(MexVec3(1, 0, 0), xForm, MexDegrees(90), MexDegrees(2400), 1));
+        = new PhysTimedSpinPlan(MexVec3(1, 0, 0), xForm, MexDegrees(90), MexDegrees(2400), 1);
     pSpinPlan->addSegment(PhysRelativeTime(duration), MexDegrees(0));
 
     PhysMotionPlanPtr electroMotionPlanPtr = pSpinPlan;

@@ -29,11 +29,11 @@ MachLogVoiceMail::~MachLogVoiceMail()
     if (sampleHandleValid_)
         invalidateSample();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id)
-    : pImpl_(_NEW(MachLogVoiceMailImpl()))
+    : pImpl_(new MachLogVoiceMailImpl())
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
@@ -44,7 +44,7 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id)
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId)
-    : pImpl_(_NEW(MachLogVoiceMailImpl()))
+    : pImpl_(new MachLogVoiceMailImpl())
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
@@ -55,7 +55,7 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId)
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId, MexPoint3d& position)
-    : pImpl_(_NEW(MachLogVoiceMailImpl()))
+    : pImpl_(new MachLogVoiceMailImpl())
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
@@ -67,7 +67,7 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId, MexPoint3d& po
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, MexPoint3d& position)
-    : pImpl_(_NEW(MachLogVoiceMailImpl()))
+    : pImpl_(new MachLogVoiceMailImpl())
 {
     CB_MachLogVoiceMail_DEPIMPL();
 

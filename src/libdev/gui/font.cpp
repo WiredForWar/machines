@@ -181,7 +181,7 @@ GuiBmpFont::GuiBmpFont()
 
 GuiBmpFont::GuiBmpFont(const SysPathName& fontPath)
 {
-    pFontCore_ = _NEW(GuiBmpFontCore(fontPath));
+    pFontCore_ = new GuiBmpFontCore(fontPath);
 
     underlineColour_ = Gui::BLACK();
     underline_ = false;
@@ -199,7 +199,7 @@ GuiBmpFont::~GuiBmpFont()
     --pFontCore_->coreCount_;
     if (pFontCore_->coreCount_ == 0)
     {
-        _DELETE(pFontCore_);
+        delete pFontCore_;
     }
 }
 

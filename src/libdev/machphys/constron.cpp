@@ -56,7 +56,7 @@ MachPhysConstruction::MachPhysConstruction(
     const MachPhysConstructionData& data)
 
     : W4dComposite(pParent, localTransform, SOLID)
-    , pImpl_(_NEW(MachPhysConstructionImpl(height, level, MachPhys::RED, data, globalTransform())))
+    , pImpl_(new MachPhysConstructionImpl(height, level, MachPhys::RED, data, globalTransform()))
 {
     CB_DEPIMPL(double, height_);
 
@@ -82,7 +82,7 @@ MachPhysConstruction::MachPhysConstruction(
     size_t level,
     const MachPhysConstructionData& data)
     : W4dComposite(pParent, localTransform, SOLID)
-    , pImpl_(_NEW(MachPhysConstructionImpl(height, level, MachPhys::RED, data, globalTransform())))
+    , pImpl_(new MachPhysConstructionImpl(height, level, MachPhys::RED, data, globalTransform()))
 {
     CB_DEPIMPL(W4dDomain*, pInteriorDomain_);
     CB_DEPIMPL(W4dGenericComposite*, pInteriorComposite_);
@@ -94,9 +94,9 @@ MachPhysConstruction::MachPhysConstruction(
 
     MexTransform3d identityTransform;
 
-    pInteriorDomain_ = _NEW(W4dDomain(this, identityTransform));
+    pInteriorDomain_ = new W4dDomain(this, identityTransform);
 
-    pInteriorComposite_ = _NEW(W4dGenericComposite(pInteriorDomain_, identityTransform, interiorCompositeFileName));
+    pInteriorComposite_ = new W4dGenericComposite(pInteriorDomain_, identityTransform, interiorCompositeFileName);
 
     setupEntrances();
 
@@ -111,12 +111,12 @@ MachPhysConstruction::MachPhysConstruction(
     MachPhys::Race race)
 
     : W4dComposite(copyMe, pParent, localTransform)
-    , pImpl_(_NEW(MachPhysConstructionImpl(
+    , pImpl_(new MachPhysConstructionImpl(
           copyMe.pImpl_->height_,
           level,
           race,
           copyMe.pImpl_->constructionData_,
-          globalTransform())))
+          globalTransform()))
 {
     CB_DEPIMPL(double, percentageComplete_);
     CB_DEPIMPL(W4dLinks, adornments_);
@@ -138,10 +138,10 @@ MachPhysConstruction::MachPhysConstruction(
     {
         MexTransform3d identityTransform;
 
-        pInteriorDomain_ = _NEW(W4dDomain(this, identityTransform));
+        pInteriorDomain_ = new W4dDomain(this, identityTransform);
 
         pInteriorComposite_
-            = _NEW(W4dGenericComposite(*copyMe.pImpl_->pInteriorComposite_, pInteriorDomain_, identityTransform));
+            = new W4dGenericComposite(*copyMe.pImpl_->pInteriorComposite_, pInteriorDomain_, identityTransform);
     }
 
     setupEntrances();
@@ -167,14 +167,14 @@ MachPhysConstruction::~MachPhysConstruction()
     W4dSoundManager::instance().stop(this);
 
     for (Entrances::iterator i = entrances_.begin(); i != entrances_.end(); ++i)
-        _DELETE(*i);
+        delete *i;
 
     if (pDamage_)
-        _DELETE(pDamage_);
+        delete pDamage_;
 
     deleteSavedPadsTransforms();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysConstruction::persistenceConstructionData(const MachPhysConstructionData& data)
@@ -261,7 +261,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
     {
         case MachPhysConstructionImpl::BAND1:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     0, // nSolidFrames
                     nMaterialsInVector,
@@ -269,7 +269,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0, // minAlpha
-                    0.25)); // maxAlpha
+                    0.25); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
@@ -277,7 +277,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
 
         case MachPhysConstructionImpl::BAND2:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     0, // nSolidFrames
                     nMaterialsInVector,
@@ -285,7 +285,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0, // minAlpha
-                    0.4)); // maxAlpha
+                    0.4); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
@@ -293,7 +293,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
 
         case MachPhysConstructionImpl::BAND3:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     0, // nSolidFrames
                     nMaterialsInVector,
@@ -301,7 +301,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0, // minAlpha
-                    0.55)); // maxAlpha
+                    0.55); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
@@ -309,7 +309,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
 
         case MachPhysConstructionImpl::BAND4:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     0, // nSolidFrames
                     nMaterialsInVector,
@@ -317,14 +317,14 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0, // minAlpha
-                    0.85)); // maxAlpha
+                    0.85); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
             }
         case MachPhysConstructionImpl::BAND5:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     3, // nSolidFrames
                     nMaterialsInVector,
@@ -332,14 +332,14 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0, // minAlpha
-                    0.55)); // maxAlpha
+                    0.55); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
             }
         case MachPhysConstructionImpl::BAND6:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     5, // nSolidFrames
                     nMaterialsInVector,
@@ -347,14 +347,14 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0.1, // minAlpha
-                    1.0)); // maxAlpha
+                    1.0); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
             }
         case MachPhysConstructionImpl::BAND7:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     10, // nSolidFrames
                     nMaterialsInVector,
@@ -362,14 +362,14 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0.2, // minAlpha
-                    1.0)); // maxAlpha
+                    1.0); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
             }
         case MachPhysConstructionImpl::BAND8:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     40, // nFadedFrames
                     20, // nSolidFrames
                     nMaterialsInVector,
@@ -377,14 +377,14 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0.3, // minAlpha
-                    1.0)); // maxAlpha
+                    1.0); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
             }
         case MachPhysConstructionImpl::BAND9:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     30, // nFadedFrames
                     30, // nSolidFrames
                     nMaterialsInVector,
@@ -392,14 +392,14 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0.4, // minAlpha
-                    1.0)); // maxAlpha
+                    1.0); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
             }
         case MachPhysConstructionImpl::BAND10:
             {
-                static W4dSolidFadedAlphaPlan* pThePlan = _NEW(W4dSolidFadedAlphaPlan(
+                static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
                     2, // nFadedFrames
                     2, // nSolidFrames
                     nMaterialsInVector,
@@ -407,7 +407,7 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
                     10,
                     1000000,
                     0.5, // minAlpha
-                    1.0)); // maxAlpha
+                    1.0); // maxAlpha
                 static W4dMaterialPlanPtr planPtr(pThePlan);
                 pPlanPtr = &planPtr;
                 break;
@@ -754,7 +754,7 @@ void MachPhysConstruction::setupEntrances()
         MATHEX_SCALAR doorOpenDistance = doorOpenVector.modulus();
         doorOpenVector.makeUnitVector();
 
-        entrances_.push_back(_NEW(MachPhysEntrance));
+        entrances_.push_back(new MachPhysEntrance);
 
         MexVec3 leftOpen(doorOpenVector);
         leftOpen *= doorOpenDistance / nDoors;
@@ -837,7 +837,7 @@ void MachPhysConstruction::damageLevel(const double& percent)
     CB_DEPIMPL(MachPhysEntityDamage*, pDamage_);
 
     if (pDamage_ == nullptr)
-        pDamage_ = _NEW(MachPhysEntityDamage(this));
+        pDamage_ = new MachPhysEntityDamage(this);
 
     pDamage_->damageLevel(percent);
 }
@@ -935,7 +935,7 @@ void MachPhysConstruction::deleteSavedPadsTransforms()
     CB_DEPIMPL(LinkTransforms*, pSavedPadsTransforms_);
     if (pSavedPadsTransforms_)
     {
-        _DELETE(pSavedPadsTransforms_);
+        delete pSavedPadsTransforms_;
         pSavedPadsTransforms_ = nullptr;
     }
 }

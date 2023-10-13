@@ -203,7 +203,7 @@ PhysRelativeTime MachPhysWeapon::recoil(const PhysAbsoluteTime& startTime, int n
         MexTransform3d backPos;
         startPos.transform(shift, &backPos);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPos, backPos, backTime));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPos, backPos, backTime);
         pPlan->add(startPos, backTime + foreTime);
         pPlan->add(startPos, roundTime);
 
@@ -264,8 +264,8 @@ void MachPhysWeapon::lighting(
     PhysRelativeTime burstDuration = data.burstDuration();
     MexPoint3d offSet = data.launchOffsets()[0];
 
-    // W4dUniformLight* pLight = _NEW(W4dUniformLight(this, MexVec3(1, 0, 0), distance));
-    W4dPointLight* pLight = _NEW(W4dPointLight(this, MexVec3(1, 0, 0), distance));
+    // W4dUniformLight* pLight = new W4dUniformLight(this, MexVec3(1, 0, 0), distance);
+    W4dPointLight* pLight = new W4dPointLight(this, MexVec3(1, 0, 0), distance);
 
     pLight->localTransform(MexTransform3d(offSet));
     pLight->colour(col);
@@ -277,7 +277,7 @@ void MachPhysWeapon::lighting(
     pLight->visible(true);
 
     // visibility plan
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     PhysRelativeTime roundTime = burstDuration / nRounds;
     PhysRelativeTime roundOffTime = 0.75 * roundTime;
     PhysRelativeTime roundOnTime = 0.25 * roundTime;
@@ -321,7 +321,7 @@ void MachPhysWeapon::lighting(
 
         (pParent->globalTransform()).transformInverse(&shadowPositon);
 
-        MachPhysLight* pGroundLight = _NEW(MachPhysLight(pParent, MexTransform3d(shadowPositon)));
+        MachPhysLight* pGroundLight = new MachPhysLight(pParent, MexTransform3d(shadowPositon));
         pGroundLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
 
         W4dGarbageCollector::instance().add(pGroundLight, startTime + burstDuration);

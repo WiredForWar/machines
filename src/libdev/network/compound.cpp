@@ -127,7 +127,7 @@ std::unique_ptr<NetMessageBody> NetCompoundMessage::operator[](size_t index) con
         if (upCounter == index)
         {
             // Whatch out for that dosgy length -1 crap on the end of the next line.
-            pResult = std::unique_ptr<NetMessageBody>(_NEW(NetMessageBody(&pBuffer_[startPos], lengthOfSub - 1)));
+            pResult = std::unique_ptr<NetMessageBody>(new NetMessageBody(&pBuffer_[startPos], lengthOfSub - 1));
         }
 
         startPos += lengthOfSub;

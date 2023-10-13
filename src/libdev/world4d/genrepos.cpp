@@ -20,7 +20,7 @@
 PER_DEFINE_PERSISTENT(W4dGenericRepository);
 
 W4dGenericRepository::W4dGenericRepository()
-    : pRoot_(_NEW(W4dRoot(W4dRoot::W4dRootId())))
+    : pRoot_(new W4dRoot(W4dRoot::W4dRootId()))
 {
     simpleEntries_.reserve(16);
     compositeEntries_.reserve(16);
@@ -31,7 +31,7 @@ W4dGenericRepository::W4dGenericRepository()
 W4dGenericRepository::~W4dGenericRepository()
 {
     clear();
-    _DELETE(pRoot_);
+    delete pRoot_;
 
     TEST_INVARIANT;
 }
@@ -119,14 +119,14 @@ void W4dGenericRepository::add(const string& key, const SysPathName& fileName, S
 
     if (extension == "lod")
     {
-        W4dGeneric* pGeneric = _NEW(W4dGeneric(pRoot_, W4dTransform3d(), solid));
+        W4dGeneric* pGeneric = new W4dGeneric(pRoot_, W4dTransform3d(), solid);
         pGeneric->loadLODFile(fileName);
 
         add(key, pGeneric);
     }
     else if (extension == "cdf")
     {
-        W4dGenericComposite* pGeneric = _NEW(W4dGenericComposite(pRoot_, W4dTransform3d(), fileName, solid));
+        W4dGenericComposite* pGeneric = new W4dGenericComposite(pRoot_, W4dTransform3d(), fileName, solid);
         add(key, pGeneric);
     }
 }
@@ -161,13 +161,13 @@ void W4dGenericRepository::clear()
 {
     while (simpleEntries_.size() != 0)
     {
-        _DELETE(simpleEntries_.back().second);
+        delete simpleEntries_.back().second;
         simpleEntries_.pop_back();
     }
 
     while (compositeEntries_.size() != 0)
     {
-        _DELETE(compositeEntries_.back().second);
+        delete compositeEntries_.back().second;
         compositeEntries_.pop_back();
     }
 }
@@ -215,9 +215,9 @@ W4dGenericRepository::cloneEntity(const string& key, W4dEntity* pParent, const M
     W4dEntity* pResult = nullptr;
 
     if (findSimple(key, &index))
-        pResult = _NEW(W4dGeneric(*(simpleEntries_[index].second), pParent, localTransform));
+        pResult = new W4dGeneric(*(simpleEntries_[index].second), pParent, localTransform);
     else if (findComposite(key, &index))
-        pResult = _NEW(W4dGenericComposite(*(compositeEntries_[index].second), pParent, localTransform));
+        pResult = new W4dGenericComposite(*(compositeEntries_[index].second), pParent, localTransform);
 
     ASSERT(pResult != nullptr, "No such entity");
 
@@ -270,7 +270,7 @@ void perWrite(PerOstream& ostr, const W4dGenericRepository& t)
 
 void perRead(PerIstream& istr, W4dGenericRepository& t)
 {
-    _DELETE(t.pRoot_);
+    delete t.pRoot_;
     istr >> t.pRoot_;
     istr >> t.simpleEntries_;
     istr >> t.compositeEntries_;

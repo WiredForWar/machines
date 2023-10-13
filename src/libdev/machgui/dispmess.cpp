@@ -25,7 +25,7 @@ MachGuiMessageDisplay::~MachGuiMessageDisplay()
 {
     while (messages_.size())
     {
-        _DELETE(messages_.front());
+        delete messages_.front();
         messages_.erase(messages_.begin());
     }
 
@@ -39,13 +39,13 @@ void MachGuiMessageDisplay::CLASS_INVARIANT
 
 void MachGuiMessageDisplay::addMessage(const char* displayText, PhysRelativeTime timeToDisplay)
 {
-    DisplayMessage* dm = _NEW(DisplayMessage);
+    DisplayMessage* dm = new DisplayMessage;
     dm->messageText_ = displayText;
     dm->duration_ = timeToDisplay;
     dm->startTime_ = SimManager::instance().currentTime();
     if (messages_.size() > 10)
     {
-        _DELETE(messages_.front());
+        delete messages_.front();
         messages_.erase(messages_.begin());
     }
     messages_.push_back(dm);
@@ -59,7 +59,7 @@ void MachGuiMessageDisplay::doOutput(std::ostream& o)
     {
         if ((messages_[i]->startTime_ + messages_[i]->duration_) < SimManager::instance().currentTime())
         {
-            _DELETE(messages_[i]);
+            delete messages_[i];
             messages_.erase(messages_.begin() + i);
             if (i == 0 or i == messages_.size())
                 i = -1;

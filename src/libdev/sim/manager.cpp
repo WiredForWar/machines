@@ -36,13 +36,13 @@ SimManager& SimManager::instance()
 
 SimManager::SimManager()
 {
-    pImpl_ = _NEW(SimManagerImpl());
+    pImpl_ = new SimManagerImpl();
     CB_DEPIMPL(PhysAbsoluteTime, currentTime_);
     CB_DEPIMPL(PhysAbsoluteTime, devStartTime_);
     CB_DEPIMPL(SimConditionsManager*, pConditionsManager_);
     CB_DEPIMPL(SimManagerImpl::SimProcesses, processes_);
 
-    pConditionsManager_ = _NEW(SimConditionsManager());
+    pConditionsManager_ = new SimConditionsManager();
 
     // Initialise the current time. The device library clock may not start at zero
     devStartTime_ = 0;
@@ -65,11 +65,11 @@ SimManager::~SimManager()
     TEST_INVARIANT;
     ASSERT(processesAllDeleted_, "SimManager::DTOR is being called but processes still there!");
 
-    _DELETE(&timer_);
+    delete &timer_;
 
-    _DELETE(pConditionsManager_);
+    delete pConditionsManager_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void SimManager::deleteAllProcesses()
@@ -86,7 +86,7 @@ void SimManager::deleteAllProcesses()
     while (processes_.size() > 0)
     {
         // process calls back into manager to get removed from list of processes
-        _DELETE(*processes_.begin());
+        delete *processes_.begin();
     }
 
     processesAllDeleted_ = true;
@@ -434,7 +434,7 @@ void SimManager::deleteDeadActors()
         pActor->notifyObservers(W4dSubject::DELETED);
 
         // delete it
-        _DELETE(pActor);
+        delete pActor;
     }
 }
 

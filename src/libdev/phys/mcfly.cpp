@@ -63,7 +63,7 @@ PhysFlyControl::~PhysFlyControl()
 
 void PhysFlyControl::useDefaultKeyboardMapping()
 {
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         DevKey::ENTER_PAD,
         PhysMotionControlWithTrans::FOWARD,
@@ -164,7 +164,7 @@ void PhysFlyControl::useDefaultKeyboardMapping()
 
 void PhysFlyControl::useKeypadMapping()
 {
-    DevKeyToCommandTranslator* pKeyTranslator = _NEW(DevKeyToCommandTranslator());
+    DevKeyToCommandTranslator* pKeyTranslator = new DevKeyToCommandTranslator();
     pKeyTranslator->addTranslation(DevKeyToCommand(
         DevKey::ENTER_PAD,
         PhysMotionControlWithTrans::FOWARD,

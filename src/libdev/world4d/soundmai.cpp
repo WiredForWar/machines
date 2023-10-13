@@ -35,9 +35,9 @@ W4dSoundManagerImpl::~W4dSoundManagerImpl()
         for (SoundDataVector::iterator i = pAvailableSounds_->begin(); i != pAvailableSounds_->end(); ++i)
         {
             if (*i)
-                _DELETE(*i);
+                delete *i;
         }
-        _DELETE(pAvailableSounds_);
+        delete pAvailableSounds_;
     }
 }
 
@@ -158,21 +158,21 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
     {
         if (!pThisSound->is3D_)
         {
-            pTempParams = _NEW(SndSampleParameters(
+            pTempParams = new SndSampleParameters(
                 newId,
                 _STATIC_CAST(double, pThisSound->duration_),
-                _STATIC_CAST(Snd::Volume, pThisSound->currentPercentageVolume_)));
+                _STATIC_CAST(Snd::Volume, pThisSound->currentPercentageVolume_));
             SOUND_STREAM("Playing 2DDurational sound " << std::endl);
         }
         else
         {
-            pTempParams = _NEW(SndSampleParameters(
+            pTempParams = new SndSampleParameters(
                 newId,
                 pThisSound->lastPosition_,
                 pThisSound->duration_,
                 pThisSound->farDistance_,
                 pThisSound->nearDistance_,
-                pThisSound->currentPercentageVolume_));
+                pThisSound->currentPercentageVolume_);
             SOUND_STREAM("Playing 3DDurational sound " << std::endl);
         }
     }
@@ -182,21 +182,21 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
         // if this sound is 2D
         if (!pThisSound->is3D_)
         {
-            pTempParams = _NEW(SndSampleParameters(
+            pTempParams = new SndSampleParameters(
                 newId,
                 _STATIC_CAST(Snd::LoopCount, pThisSound->repetitions_),
-                _STATIC_CAST(Snd::Volume, pThisSound->currentPercentageVolume_)));
+                _STATIC_CAST(Snd::Volume, pThisSound->currentPercentageVolume_));
             SOUND_STREAM("Playing 2DRepetitional sound " << std::endl);
         }
         else
         {
-            pTempParams = _NEW(SndSampleParameters(
+            pTempParams = new SndSampleParameters(
                 newId,
                 pThisSound->lastPosition_,
                 _STATIC_CAST(Snd::LoopCount, pThisSound->repetitions_),
                 pThisSound->farDistance_,
                 pThisSound->nearDistance_,
-                pThisSound->currentPercentageVolume_));
+                pThisSound->currentPercentageVolume_);
             SOUND_STREAM("Playing 3DRepetitional sound " << std::endl);
         }
     }
@@ -215,6 +215,6 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
     {
         SOUND_STREAM("Entity sound out of range" << std::endl);
     }
-    _DELETE(pTempParams);
+    delete pTempParams;
 }
 /* End SOUNDMAI.CPP *************************************************/

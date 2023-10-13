@@ -2285,8 +2285,8 @@ bool BoundaryTest::testMexBoundary3dPtr(ostream& out)
     bool okay = true;
 
     // Construct two intersecting aligned box boundaries on the heap
-    MexAlignedBox3d* pBox1 = _NEW(MexAlignedBox3d(100, 100, 100, 200, 200, 200));
-    MexAlignedBox3d* pBox2 = _NEW(MexAlignedBox3d(150, 150, 150, 300, 300, 300));
+    MexAlignedBox3d* pBox1 = new MexAlignedBox3d(100, 100, 100, 200, 200, 200);
+    MexAlignedBox3d* pBox2 = new MexAlignedBox3d(150, 150, 150, 300, 300, 300);
 
     // Create reference counted pointers to them.
     // The boxes will be deleted when these pointers go out of scope
@@ -2384,7 +2384,7 @@ bool BoundaryTest::testPolygonIntersect(ostream& out)
     bool okay = true;
 
     // Create a 2d polygon
-    MexConvexPolygon2d::Points* pPolygonPoints = _NEW(MexConvexPolygon2d::Points);
+    MexConvexPolygon2d::Points* pPolygonPoints = new MexConvexPolygon2d::Points;
     pPolygonPoints->reserve(5);
     pPolygonPoints->push_back(MexPoint2d(0, 1700));
     pPolygonPoints->push_back(MexPoint2d(-300, 800));
@@ -2465,7 +2465,7 @@ bool BoundaryTest::testSausageIntersect(ostream&)
     bool okay = true;
 
     // Create a 2d triangle polygon
-    MexConvexPolygon2d::Points* pPolygonPoints = _NEW(MexConvexPolygon2d::Points);
+    MexConvexPolygon2d::Points* pPolygonPoints = new MexConvexPolygon2d::Points;
     pPolygonPoints->reserve(3);
     pPolygonPoints->push_back(MexPoint2d(100, 100));
     pPolygonPoints->push_back(MexPoint2d(200, 100));

@@ -31,7 +31,7 @@ PhysThirdPersonCameraConstraint::~PhysThirdPersonCameraConstraint()
 {
     TEST_INVARIANT;
 
-    _DELETE(pThirdPerson_);
+    delete pThirdPerson_;
 }
 
 void PhysThirdPersonCameraConstraint::CLASS_INVARIANT

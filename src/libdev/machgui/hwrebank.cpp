@@ -46,7 +46,7 @@ MachHWResearchBank::MachHWResearchBank(
         MachHWResearchBankIcons::reqWidth() + MachGuiBufferScrollButton::width(),
         MachHWResearchBankIcons::reqHeight());
 
-    pIcons_ = _NEW(MachHWResearchBankIcons(this, iconsArea, pHardwareLab_, pInGameScreen));
+    pIcons_ = new MachHWResearchBankIcons(this, iconsArea, pHardwareLab_, pInGameScreen);
 
     // Become an observer of the lab
     pHardwareLab_->attach(this);
@@ -55,18 +55,18 @@ MachHWResearchBank::MachHWResearchBank(
     // Create and display a build progress indicator if required
     updateProgress();
 
-    pScrollLeft_ = _NEW(MachGuiBufferScrollButton(
+    pScrollLeft_ = new MachGuiBufferScrollButton(
         this,
         Gui::Coord(0, 0),
         pIcons_,
         MachGuiBufferScrollButton::LEFT,
-        pInGameScreen));
-    pScrollRight_ = _NEW(MachGuiBufferScrollButton(
+        pInGameScreen);
+    pScrollRight_ = new MachGuiBufferScrollButton(
         this,
         Gui::Coord(MachGuiBufferScrollButton::width() + MachHWResearchBankIcons::reqWidth(), 0),
         pIcons_,
         MachGuiBufferScrollButton::RIGHT,
-        pInGameScreen));
+        pInGameScreen);
 
     updateQueueIcons();
 

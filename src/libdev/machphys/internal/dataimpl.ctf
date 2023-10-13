@@ -8,7 +8,7 @@
 template <class T> class DeleteValue
 {
 public:
-    void operator()(T ptr) { _DELETE(ptr); }
+    void operator()(T ptr) { delete ptr; }
 };
 
 template <class T> class DeleteContainerOfValues

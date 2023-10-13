@@ -92,14 +92,14 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
     if (SysMetaFile::useMetaFile() && metaFile.hasFile(fullPath))
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, fullPath, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, fullPath, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, fullPath, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, fullPath, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(fullPath.c_str());
-        // pIstream = _NEW( ifstream( fullPath.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(fullPath.c_str(), std::ios::in)));
+        // pIstream = new ifstream( fullPath.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(fullPath.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, fullPath);
@@ -110,7 +110,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     string researchItemsPath[MachLog::TECH_LEVEL_HIGH + 1];
     NETWORK_STREAM("MLScenario::load\nGame creation data\n" << gameData << std::endl);
     // Construct a non-race for the artefacts etc
-    races.race(MachPhys::NORACE, _NEW(MachLogRace(MachPhys::NORACE)), MachLogRaces::CREATE_SQUADRONS);
+    races.race(MachPhys::NORACE, new MachLogRace(MachPhys::NORACE), MachLogRaces::CREATE_SQUADRONS);
 
     MachPhys::Race loadingRemappedRace[MachPhys::N_RACES]
         = { MachPhys::RED, MachPhys::BLUE, MachPhys::GREEN, MachPhys::YELLOW };
@@ -327,13 +327,13 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             {
                 ASSERT(not doneRace[race], runtime_error());
                 doneRace[race] = true;
-                pRace = _NEW(MachLogRace(race));
+                pRace = new MachLogRace(race);
                 ASSERT(pRace != nullptr, runtime_error());
 
                 races.race(race, pRace, MachLogRaces::CREATE_SQUADRONS);
 
                 pAnyDomain = MachLogPlanetDomains::pDomainPosition(MexPoint3d(0, 0, 0), 0, &localTransform);
-                pPhysObject = _NEW(W4dGeneric(pAnyDomain, localTransform));
+                pPhysObject = new W4dGeneric(pAnyDomain, localTransform);
             }
             // create PC controller if No AI is indicated
             if (useData[parsedRace].type_ == MachLog::NOT_DEFINED)
@@ -343,7 +343,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             else if (useData[parsedRace].type_ == MachLog::PC_LOCAL)
             {
                 MachLogPCController* pPCController;
-                pCtl = pPCController = _NEW(MachLogPCController(pRace, pPhysObject));
+                pCtl = pPCController = new MachLogPCController(pRace, pPhysObject);
                 if (not network.isNetworkGame() or network.localRace() == race)
                 {
                     races.setPcController(pPCController);
@@ -360,7 +360,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
                 // register the controller abstract class.
                 MachLogPCController* pPCController;
-                pCtl = pPCController = _NEW(MachLogPCController(pRace, pPhysObject));
+                pCtl = pPCController = new MachLogPCController(pRace, pPhysObject);
                 races.setController(race, pCtl);
                 pRace->toBeUpdated(SimProcess::MANAGER_NOT_UPDATE);
                 stopProcessingRace = true;
@@ -372,7 +372,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             }
             else if (useData[parsedRace].type_ == MachLog::AI_LOCAL or useData[parsedRace].type_ == MachLog::AI_REMOTE)
             {
-                pCtl = _NEW(MachLogAIController(pRace, pPhysObject, parser.tokens()[2]));
+                pCtl = new MachLogAIController(pRace, pPhysObject, parser.tokens()[2]);
                 pAICtl = (MachLogAIController*)pCtl;
                 pAICtl->checkForDynamicAllies(false);
                 // if use creation data is true then we came from skirmish/multiplayer
@@ -741,7 +741,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
                         // copy details from last construction production unit encountered - this includes its
                         // construction ID.
-                        MachLogProductionUnit* prod = _NEW(MachLogProductionUnit(*pLastProd));
+                        MachLogProductionUnit* prod = new MachLogProductionUnit(*pLastProd);
 
                         // Adjust the height for the terrain
                         const MexPoint3d location
@@ -768,7 +768,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                         // don't actually build a new construction - store it as a production unit plan instead.
 
                         MachLogProductionUnit* prod
-                            = _NEW(MachLogProductionUnit(ot, constructionSubType, buildingLevel, 0, 0));
+                            = new MachLogProductionUnit(ot, constructionSubType, buildingLevel, 0, 0);
 
                         // Adjust the height for the terrain
                         const MexPoint3d location
@@ -872,7 +872,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     processSite = false;
 
                 if (processSite)
-                    _NEW(MachLogMineralSite(grade, amount, MexPoint3d(xPos, yPos, zPos)));
+                    new MachLogMineralSite(grade, amount, MexPoint3d(xPos, yPos, zPos));
             }
             else if (lineSize == 8)
             {
@@ -954,14 +954,14 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
     if (SysMetaFile::useMetaFile() && metaFile.hasFile(RSI))
     {
-        // pIstream2 = _NEW( SysMetaFileIstream( metaFile, RSI, ios::text ) );
-        pIstream2 = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, RSI, std::ios::in)));
+        // pIstream2 = new SysMetaFileIstream( metaFile, RSI, ios::text );
+        pIstream2 = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, RSI, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(RSI.c_str());
-        // pIstream2 = _NEW( ifstream( RSI.c_str(), ios::text | ios::in ) );
-        pIstream2 = std::unique_ptr<std::istream>(_NEW(std::ifstream(RSI.c_str(), std::ios::in)));
+        // pIstream2 = new ifstream( RSI.c_str(), ios::text | ios::in );
+        pIstream2 = std::unique_ptr<std::istream>(new std::ifstream(RSI.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser riParser(*pIstream2, RSI);

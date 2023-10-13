@@ -167,19 +167,19 @@ PhysRelativeTime MachLogAdminSuperConstructOperation::doUpdate()
     switch (opType_)
     {
         case MachLogOperation::CONSTRUCT_OPERATION:
-            subOperation(pActor_, _NEW(MachLogAdminConstructOperation(pActor_, pTargetConstruction)));
+            subOperation(pActor_, new MachLogAdminConstructOperation(pActor_, pTargetConstruction));
             break;
 
         case MachLogOperation::DECONSTRUCT_OPERATION:
-            subOperation(pActor_, _NEW(MachLogAdminDeconstructOperation(pActor_, pTargetConstruction)));
+            subOperation(pActor_, new MachLogAdminDeconstructOperation(pActor_, pTargetConstruction));
             break;
 
         case MachLogOperation::CAPTURE_OPERATION:
-            subOperation(pActor_, _NEW(MachLogAdminCaptureOperation(pActor_, pTargetConstruction)));
+            subOperation(pActor_, new MachLogAdminCaptureOperation(pActor_, pTargetConstruction));
             break;
 
         case MachLogOperation::REPAIR_OPERATION:
-            subOperation(pActor_, _NEW(MachLogAdminRepairOperation(pActor_, pTargetConstruction)));
+            subOperation(pActor_, new MachLogAdminRepairOperation(pActor_, pTargetConstruction));
             break;
 
         default:

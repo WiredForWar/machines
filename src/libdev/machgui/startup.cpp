@@ -213,7 +213,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     : GuiRoot(Gui::Size(pSceneManager->pDevice()->windowWidth(), pSceneManager->pDevice()->windowHeight()))
     , pImpl_(nullptr)
 {
-    pImpl_ = _NEW(MachGuiStartupScreensImpl);
+    pImpl_ = new MachGuiStartupScreensImpl;
 
     CB_MachGuiStartupScreens_DEPIMPL();
 
@@ -232,7 +232,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     pMsgBoxResponder_ = nullptr;
     gameType_ = NOGAME;
     pCharFocus_ = nullptr;
-    pDispositionNotifiable_ = _NEW(MachGuiDispositionChangeNotifiable(this));
+    pDispositionNotifiable_ = new MachGuiDispositionChangeNotifiable(this);
     ignoreHostLostSystemMessage_ = false;
     cdCheckTime_ = 0.0;
 
@@ -245,7 +245,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     // count (:
     mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp");
 
-    pInGameScreen_ = _NEW(MachInGameScreen(pSceneManager, pW4dRoot_, pReporter));
+    pInGameScreen_ = new MachInGameScreen(pSceneManager, pW4dRoot_, pReporter);
 
     pReporter->report(70, 100); // 70% of gui stuff done
 
@@ -257,7 +257,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
 
     pReporter->report(75, 100); // 75% of gui stuff done
 
-    pStartupData_ = _NEW(MachGuiStartupData(this));
+    pStartupData_ = new MachGuiStartupData(this);
 
     // Assign the database interface handler into machlog
     MachLogRaces::instance().databaseHandler(&MachGuiDatabase::instance().handler());
@@ -266,9 +266,9 @@ MachGuiStartupScreens::MachGuiStartupScreens(
 
     // even if the game is not a network game we can still give it systemmessagehandler. The Network library OWNS the
     // pointer wrt to _DELETEs. Other handlers may be reassigned safely.
-    NetNetwork::instance().systemMessageHandler(_NEW(MachGuiSystemMessageHandler(this)));
+    NetNetwork::instance().systemMessageHandler(new MachGuiSystemMessageHandler(this));
     // Set up network message broker ( routes network messages to the appropriate code ).
-    pMessageBroker_ = _NEW(MachGuiMessageBroker(pStartupData_));
+    pMessageBroker_ = new MachGuiMessageBroker(pStartupData_);
     MachLogNetwork::instance().setBroker(pMessageBroker_);
     SysRegistry::instance().setStringValue("", "version", "1.0");
 
@@ -300,21 +300,21 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
 
     // Bullet proof function - doesn't matter if notifiable has already been unregistered.
     MachLogRaces::instance().unregisterDispositionChangeNotifiable(pDispositionNotifiable_);
-    _DELETE(pDispositionNotifiable_);
+    delete pDispositionNotifiable_;
 
-    _DELETE(pInGameScreen_);
-    _DELETE(pPlayingSmacker_);
-    _DELETE(pStartupData_);
+    delete pInGameScreen_;
+    delete pPlayingSmacker_;
+    delete pStartupData_;
 
     clearAllSmackerAnimations();
 
     releaseCachedMemory();
-    _DELETE(pImpl_->pMenuCursor_);
+    delete pImpl_->pMenuCursor_;
     MachGui::releaseInGameBmpMemory();
 
-    _DELETE(pImpl_->pMessageBroker_);
+    delete pImpl_->pMessageBroker_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiStartupScreens::loopCycle()
@@ -1124,14 +1124,14 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
 
             if (deleteMsgBox)
             {
-                _DELETE(pMsgBoxResponder_);
+                delete pMsgBoxResponder_;
                 pMsgBoxResponder_ = nullptr;
             }
         }
 
         if (deleteMsgBox)
         {
-            _DELETE(pMsgBox_);
+            delete pMsgBox_;
             pMsgBox_ = nullptr;
             // Redraw whole screen ( we can't be sure what GuiDisplayables the message box
             // displayed over ).
@@ -1260,7 +1260,7 @@ void MachGuiStartupScreens::switchContext(Context newContext)
 
     // Clean up controls from last context
     deleteAllChildren();
-    _DELETE(pCurrContext_);
+    delete pCurrContext_;
     pCurrContext_ = nullptr;
 
     // Stop playing any animation
@@ -1274,58 +1274,58 @@ void MachGuiStartupScreens::switchContext(Context newContext)
     switch (context_)
     {
         case CTX_MAINMENU:
-            pCurrContext_ = _NEW(MachGuiCtxMainMenu(this));
+            pCurrContext_ = new MachGuiCtxMainMenu(this);
             break;
         case CTX_SINGLEPLAYER:
-            pCurrContext_ = _NEW(MachGuiCtxSinglePlayer(this));
+            pCurrContext_ = new MachGuiCtxSinglePlayer(this);
             break;
         case CTX_JOIN:
-            pCurrContext_ = _NEW(MachGuiCtxJoin(this));
+            pCurrContext_ = new MachGuiCtxJoin(this);
             break;
         case CTX_IMREADY:
-            pCurrContext_ = _NEW(MachGuiCtxImReady(this));
+            pCurrContext_ = new MachGuiCtxImReady(this);
             break;
         case CTX_CAMPAIGN:
-            pCurrContext_ = _NEW(MachGuiCtxCampaign(this));
+            pCurrContext_ = new MachGuiCtxCampaign(this);
             break;
         case CTX_MULTIPLAYER:
-            pCurrContext_ = _NEW(MachGuiCtxMultiplayer(this));
+            pCurrContext_ = new MachGuiCtxMultiplayer(this);
             break;
         case CTX_HOTKEYS:
-            pCurrContext_ = _NEW(MachGuiCtxHotKeys(this));
+            pCurrContext_ = new MachGuiCtxHotKeys(this);
             break;
         case CTX_SAVE:
-            pCurrContext_ = _NEW(MachGuiCtxSave(this));
+            pCurrContext_ = new MachGuiCtxSave(this);
             break;
         case CTX_LOAD:
         case CTX_IGLOAD:
-            pCurrContext_ = _NEW(MachGuiCtxLoad(this));
+            pCurrContext_ = new MachGuiCtxLoad(this);
             break;
         case CTX_BRIEFING:
         case CTX_IGBRIEFING:
-            pCurrContext_ = _NEW(MachGuiCtxBriefing(this));
+            pCurrContext_ = new MachGuiCtxBriefing(this);
             break;
         case CTX_CADEBRIEFING:
         case CTX_MPDEBRIEFING:
         case CTX_SKDEBRIEFING:
-            pCurrContext_ = _NEW(MachGuiCtxDeBriefing(this));
+            pCurrContext_ = new MachGuiCtxDeBriefing(this);
             break;
         case CTX_CASTATISTICS:
         case CTX_MPSTATISTICS:
         case CTX_SKSTATISTICS:
-            pCurrContext_ = _NEW(MachGuiCtxStatistics(this));
+            pCurrContext_ = new MachGuiCtxStatistics(this);
             break;
         case CTX_SCENARIO:
-            pCurrContext_ = _NEW(MachGuiCtxScenario(this));
+            pCurrContext_ = new MachGuiCtxScenario(this);
             break;
         case CTX_SKIRMISH:
-            pCurrContext_ = _NEW(MachGuiCtxSkirmish(this));
+            pCurrContext_ = new MachGuiCtxSkirmish(this);
             break;
         case CTX_SETTINGS:
-            pCurrContext_ = _NEW(MachGuiCtxSettings(this));
+            pCurrContext_ = new MachGuiCtxSettings(this);
             break;
         case CTX_INGAMEOP:
-            pCurrContext_ = _NEW(MachGuiCtxInGameOptions(this));
+            pCurrContext_ = new MachGuiCtxInGameOptions(this);
             switch (gameType_)
             {
                 case MULTIGAME:
@@ -1342,7 +1342,7 @@ void MachGuiStartupScreens::switchContext(Context newContext)
             break;
         case CTX_OPTIONS:
         case CTX_IGOPTIONS:
-            pCurrContext_ = _NEW(MachGuiCtxOptions(this));
+            pCurrContext_ = new MachGuiCtxOptions(this);
             break;
         case CTX_GAME:
         case CTX_MULTI_GAME:
@@ -1417,7 +1417,7 @@ void MachGuiStartupScreens::update()
     {
         if (not pMustContainMouse_->containsMousePointer())
         {
-            _DELETE(pMustContainMouse_);
+            delete pMustContainMouse_;
             pMustContainMouse_ = nullptr;
         }
         else
@@ -1848,14 +1848,14 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
 
                     if (deleteMsgBox)
                     {
-                        _DELETE(pMsgBoxResponder_);
+                        delete pMsgBoxResponder_;
                         pMsgBoxResponder_ = nullptr;
                     }
                 }
 
                 if (deleteMsgBox)
                 {
-                    _DELETE(pMsgBox_);
+                    delete pMsgBox_;
                     pMsgBox_ = nullptr;
                     // Redraw whole screen ( we can't be sure what GuiDisplayables the message box
                     // displayed over ).
@@ -2019,8 +2019,8 @@ void MachGuiStartupScreens::startPlayingAnimation(const SysPathName& filename, b
 
     // Construct a smacker player
     //     HWND targetWindow = RenDevice::current()->display()->window();
-    //     pPlayingSmacker_ = _NEW( AniSmacker( filename, targetWindow, xMenuOffset(), yMenuOffset(), fast ) );
-    // pPlayingSmacker_ = _NEW( AniSmacker( filename, xMenuOffset(), yMenuOffset(), fast ) );
+    //     pPlayingSmacker_ = new AniSmacker( filename, targetWindow, xMenuOffset(), yMenuOffset(), fast );
+    // pPlayingSmacker_ = new AniSmacker( filename, xMenuOffset(), yMenuOffset(), fast );
     pPlayingSmacker_ = new AniSmackerRegular(filename, xMenuOffset(), yMenuOffset(), fast);
 
     // Remove mouse pointer
@@ -2042,9 +2042,9 @@ void MachGuiStartupScreens::startPlayingAnimation(
 
         // Construct a smacker player
         //     HWND targetWindow = RenDevice::current()->display()->window();
-        //     pPlayingSmacker_ = _NEW( AniSmacker( filename, targetWindow, pos.x() + xMenuOffset(), pos.y() +
-        //     yMenuOffset(), fast ) );
-        // pPlayingSmacker_ = _NEW( AniSmacker( filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast ) );
+        //     pPlayingSmacker_ = new AniSmacker( filename, targetWindow, pos.x() + xMenuOffset(), pos.y() +
+        //     yMenuOffset(), fast );
+        // pPlayingSmacker_ = new AniSmacker( filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast );
 
 #if not USE_SWSCALE
     isCutscene = false;
@@ -2077,7 +2077,7 @@ void MachGuiStartupScreens::stopPlayingAnimation()
     // Stop any currently playing animation
     if (pPlayingSmacker_)
     {
-        _DELETE(pPlayingSmacker_);
+        delete pPlayingSmacker_;
         pPlayingSmacker_ = nullptr;
     }
 }
@@ -2604,7 +2604,7 @@ void MachGuiStartupScreens::clearAllSmackerAnimations()
 
     for (MachGuiStartupScreensImpl::SmackerAnims::iterator i = smackerAnims_.begin(); i != smackerAnims_.end(); ++i)
     {
-        _DELETE(*i);
+        delete *i;
     }
 
     smackerAnims_.erase(smackerAnims_.begin(), smackerAnims_.end());
@@ -2651,7 +2651,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId)
     }
     GuiManager::instance().removeCharFocus();
 
-    pMsgBox_ = _NEW(MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK));
+    pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK);
 
     mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
 }
@@ -2672,7 +2672,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, const GuiStrings& st
     }
     GuiManager::instance().removeCharFocus();
 
-    pMsgBox_ = _NEW(MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK, strs));
+    pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK, strs);
 
     mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
 }
@@ -2702,11 +2702,11 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxRes
 
     if (yesNo)
     {
-        pMsgBox_ = _NEW(MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBYESNO));
+        pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBYESNO);
     }
     else
     {
-        pMsgBox_ = _NEW(MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOKCANCEL));
+        pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOKCANCEL);
     }
 
     // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
@@ -2736,7 +2736,7 @@ void MachGuiStartupScreens::displayMsgBox(
     }
     GuiManager::instance().removeCharFocus();
 
-    pMsgBox_ = _NEW(MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOKCANCEL, strs));
+    pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOKCANCEL, strs);
 
     // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
     mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp");
@@ -2762,7 +2762,7 @@ void MachGuiStartupScreens::displayOKMsgBox(uint stringResId, MachGuiMessageBoxR
     }
     GuiManager::instance().removeCharFocus();
 
-    pMsgBox_ = _NEW(MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK));
+    pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK);
 
     // This overload of displayMsgBox is the single-button one. Set msgbox to the single-button one
     mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
@@ -4249,11 +4249,11 @@ bool MachGuiStartupScreens::handleSessionLostMessage()
     CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
     if (pMsgBoxResponder_)
     {
-        _DELETE(pMsgBoxResponder_);
+        delete pMsgBoxResponder_;
         pMsgBoxResponder_ = nullptr;
     }
     // Display message box. Must choose game to join.
-    pMsgBoxResponder_ = _NEW(MachGuiSessionLostMessageBoxResponder(this));
+    pMsgBoxResponder_ = new MachGuiSessionLostMessageBoxResponder(this);
     displayMsgBox(IDS_MULTI_ERROR_SESSION_LOST_MENUS);
     return true;
 }
@@ -4539,7 +4539,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
     // If a drop down list was displayed and keyboard navigation was used then delete the drop down list
     if (processed)
     {
-        _DELETE(pMustContainMouse_);
+        delete pMustContainMouse_;
         pMustContainMouse_ = nullptr;
     }
 

@@ -54,7 +54,7 @@ MachLogExpandingBlast::MachLogExpandingBlast(
     MATHEX_SCALAR blastRadius,
     CanHitAirUnits canHitAirUnits)
     : SimProjectile(pRace, pPhysObject)
-    , pImpl_(_NEW(MachLogExpandingBlastImpl(pOwnerActor, pRace, startPosition, blastRadius, canHitAirUnits)))
+    , pImpl_(new MachLogExpandingBlastImpl(pOwnerActor, pRace, startPosition, blastRadius, canHitAirUnits))
 {
     CB_MachLogExpandingBlast_DEPIMPL();
 
@@ -103,7 +103,7 @@ MachLogExpandingBlast::~MachLogExpandingBlast()
         pConstruction_->detach(this);
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogExpandingBlast::detachFromFirstWave()

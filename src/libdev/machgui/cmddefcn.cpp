@@ -116,7 +116,7 @@ bool MachGuiDefconCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiDefconCommand::clone() const
 {
-    return _NEW(MachGuiDefconCommand(&inGameScreen()));
+    return new MachGuiDefconCommand(&inGameScreen());
 }
 
 // virtual

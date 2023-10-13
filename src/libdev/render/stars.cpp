@@ -17,8 +17,7 @@
 #include "utility/percent.hpp"
 
 RenStars::RenStars(Configuration config, MATHEX_SCALAR radius, uint nStars)
-
-    : pImpl_(_NEW(RenIStarsImpl(config, radius, nStars)))
+    : pImpl_(new RenIStarsImpl(config, radius, nStars))
 {
     TEST_INVARIANT;
 }
@@ -28,7 +27,7 @@ RenStars::~RenStars()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void RenStars::render(

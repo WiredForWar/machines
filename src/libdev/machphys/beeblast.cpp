@@ -81,7 +81,7 @@ void MachPhysBeeBlast::startBeeBlast(
     const MATHEX_SCALAR& startScale)
 {
     // visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
 
     entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
@@ -89,7 +89,7 @@ void MachPhysBeeBlast::startBeeBlast(
     // scale plan
     RenNonUniformScale a(startScale, startScale, startScale);
     RenNonUniformScale b(10 * startScale, 10 * startScale, 4 * startScale);
-    W4dScalePlanPtr scalePlanPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr scalePlanPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     propogateScalePlan(scalePlanPtr, startTime);
 
@@ -113,11 +113,11 @@ void MachPhysBeeBlast::startBeeBlast(
             scales.push_back(1.0);
             scales.push_back(0);
 
-        PhysLinearScalarPlan* pPlan = _NEW( PhysLinearScalarPlan(times, scales) );
+        PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
 
         PhysScalarPlanPtr alphaPlanPtr = pPlan;
 
-        W4dMaterialPlanPtr materialAlphaPlanPtr = _NEW( W4dSimpleAlphaPlan( mat, nMaterials, alphaPlanPtr, 1 ) );
+        W4dMaterialPlanPtr materialAlphaPlanPtr = new W4dSimpleAlphaPlan( mat, nMaterials, alphaPlanPtr, 1 );
         entityPlanForEdit().materialPlan( materialAlphaPlanPtr, startTime );
     }
 */

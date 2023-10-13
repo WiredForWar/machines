@@ -105,7 +105,7 @@ MachLogSmelter::pNewPhysSmelter(MachLogRace* pRace, uint level, const MexPoint3d
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysSmelter(pDomain, localTransform, level, pRace->race()));
+    return new MachPhysSmelter(pDomain, localTransform, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

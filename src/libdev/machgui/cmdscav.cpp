@@ -132,7 +132,7 @@ bool MachGuiScavengeCommand::applyScavengeObject(MachActor* pActor, string*)
     ASSERT(pActor->objectType() == MachLog::RESOURCE_CARRIER, "Unexpected actor type");
     ASSERT(pActor->asResourceCarrier().isScavenger(), "Resource carrier is not a scavenger!");
 
-    pOp = _NEW(MachLogScavengeOperation(&pActor->asResourceCarrier(), suppliers_));
+    pOp = new MachLogScavengeOperation(&pActor->asResourceCarrier(), suppliers_);
 
     // Give it to the actor
     pActor->newOperation(pOp);
@@ -181,7 +181,7 @@ void MachGuiScavengeCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiScavengeCommand::clone() const
 {
-    return _NEW(MachGuiScavengeCommand(&inGameScreen()));
+    return new MachGuiScavengeCommand(&inGameScreen());
 }
 
 // virtual

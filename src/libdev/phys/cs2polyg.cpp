@@ -47,7 +47,7 @@ PhysCS2dPolygon::~PhysCS2dPolygon()
     // Delete the polygon
     MexPolygon2d* pPolygon = &polygon_;
     if (pPolygon != nullptr)
-        _DELETE(pPolygon);
+        delete pPolygon;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

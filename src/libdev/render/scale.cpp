@@ -79,7 +79,7 @@ void RenUnityScale::print(std::ostream& o) const
 // virtual
 RenScale* RenUnityScale::clone() const
 {
-    return _NEW(RenUnityScale);
+    return new RenUnityScale;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ void RenUniformScale::print(std::ostream& o) const
 // virtual
 RenScale* RenUniformScale::clone() const
 {
-    return _NEW(RenUniformScale(*this));
+    return new RenUniformScale(*this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -236,7 +236,7 @@ void RenNonUniformScale::print(std::ostream& o) const
 // virtual
 RenScale* RenNonUniformScale::clone() const
 {
-    return _NEW(RenNonUniformScale(*this));
+    return new RenNonUniformScale(*this);
 }
 
 RenUnityScale& RenScale::asUnity()

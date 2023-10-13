@@ -121,7 +121,7 @@ bool MachGuiHealCommand::applyMove(MachActor* pActor, string*)
     if (valid)
     {
         // Construct a move operation
-        MachLogMoveToOperation* pOp = _NEW(MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId()));
+        MachLogMoveToOperation* pOp = new MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId());
 
         // Give it to the actor
         pActor->newOperation(pOp);
@@ -149,7 +149,7 @@ bool MachGuiHealCommand::applyHealObject(MachActor* pActor, string*)
             pActor->objectType() == MachLog::ADMINISTRATOR and pActor->asAdministrator().hasHealingWeapon(),
             "Non-administrator or non-heal-capable administrator about to be issued heal op!");
 
-        pOp = _NEW(MachLogHealOperation(&pActor->asAdministrator(), pDirectObject_));
+        pOp = new MachLogHealOperation(&pActor->asAdministrator(), pDirectObject_);
 
         // Give it to the actor
         pActor->newOperation(pOp);
@@ -201,7 +201,7 @@ void MachGuiHealCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiHealCommand::clone() const
 {
-    return _NEW(MachGuiHealCommand(&inGameScreen()));
+    return new MachGuiHealCommand(&inGameScreen());
 }
 
 // virtual
@@ -239,7 +239,7 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
     if (canDo)
     {
         // Create an admin Heal operation for the administrator
-        MachLogAdminHealOperation* pOp = _NEW(MachLogAdminHealOperation(pAdministrator, pDirectObject_));
+        MachLogAdminHealOperation* pOp = new MachLogAdminHealOperation(pAdministrator, pDirectObject_);
         pAdministrator->newOperation(pOp);
 
         MachActor* pFirstHealingMachine = nullptr;

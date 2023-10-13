@@ -32,7 +32,7 @@ void MachReductionStrategy::newOperation(MachOperation* pNewOperation)
         if (not pO->isFinished())
             pO->doBeInterrupted();
 
-        _DELETE(pO);
+        delete pO;
         stack_.pop();
     }
 
@@ -57,7 +57,7 @@ PhysRelativeTime MachReductionStrategy::update(const PhysRelativeTime& maxCPUTim
     }
     else
     {
-        _DELETE(pO);
+        delete pO;
         stack_.pop();
     }
 

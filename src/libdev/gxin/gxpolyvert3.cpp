@@ -117,12 +117,12 @@ void GXPolyVert3::hasColor(bool newHasColor)
 {
     if ((newHasColor == false) && (hasColor() == true))
     {
-        _DELETE(color_);
+        delete color_;
         color_ = nullptr;
     }
     else if ((newHasColor == true) && (hasColor() == false))
     {
-        color_ = _NEW(GXColor);
+        color_ = new GXColor;
     }
 
     POST(hasColor() == newHasColor);

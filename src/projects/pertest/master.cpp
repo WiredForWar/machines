@@ -17,9 +17,9 @@ PER_DEFINE_PERSISTENT(Master);
 
 Master::Master()
 {
-    pC1_ = _NEW(Class1());
+    pC1_ = new Class1();
 
-    pTc1_ = _NEW(TC1a);
+    pTc1_ = new TC1a;
 
     TEST_INVARIANT;
 }
@@ -28,7 +28,7 @@ Master::~Master()
 {
     TEST_INVARIANT;
 
-    _DELETE(pC1_);
+    delete pC1_;
 }
 
 void Master::CLASS_INVARIANT

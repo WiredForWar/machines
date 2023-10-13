@@ -274,7 +274,7 @@ void MachLogSeekAndDestroyOperation::aggressorUpdateWithTarget(MachActor* pTarge
                 if (aggressor.canEnterConstructionNow(targetMachine.insideWhichBuilding()))
                 {
                     pActor_->motionSeq().stop();
-                    subOperation(&aggressor, _NEW(MachLogEnterBuildingOperation(&aggressor, &construction, nullptr)));
+                    subOperation(&aggressor, new MachLogEnterBuildingOperation(&aggressor, &construction, nullptr));
                 }
                 else
                 {
@@ -282,15 +282,15 @@ void MachLogSeekAndDestroyOperation::aggressorUpdateWithTarget(MachActor* pTarge
                     if (construction.race() != aggressor.race())
                     {
                         pActor_->motionSeq().stop();
-                        subOperation(&aggressor, _NEW(MachLogAttackOperation(&aggressor, &construction, commandId_)));
+                        subOperation(&aggressor, new MachLogAttackOperation(&aggressor, &construction, commandId_));
                     }
                 }
             }
             else
-                subOperation(&aggressor, _NEW(MachLogAttackOperation(&aggressor, pTarget, commandId_)));
+                subOperation(&aggressor, new MachLogAttackOperation(&aggressor, pTarget, commandId_));
         }
         else
-            subOperation(&aggressor, _NEW(MachLogAttackOperation(&aggressor, pTarget, commandId_)));
+            subOperation(&aggressor, new MachLogAttackOperation(&aggressor, pTarget, commandId_));
     }
 }
 
@@ -327,7 +327,7 @@ void MachLogSeekAndDestroyOperation::administratorUpdateWithTarget(MachActor* pT
 
     // administrator who leads the gang should be given a standard attack op
     if (not pSubOperation())
-        subOperation(&administrator, _NEW(MachLogAttackOperation(pActor_, pTarget, commandId_)));
+        subOperation(&administrator, new MachLogAttackOperation(pActor_, pTarget, commandId_));
 }
 
 int MachLogSeekAndDestroyOperation::issueOrderToSquadronMachine(
@@ -341,14 +341,14 @@ int MachLogSeekAndDestroyOperation::issueOrderToSquadronMachine(
         if (issueAttack)
         {
             pSquadronMachine->motionSeq().stop();
-            pSquadronMachine->newOperation(_NEW(MachLogAttackOperation(pSquadronMachine, pTarget, commandId_)));
+            pSquadronMachine->newOperation(new MachLogAttackOperation(pSquadronMachine, pTarget, commandId_));
         }
         else if (not pSquadronMachine->motionSeq().isFollowing())
         {
-            pSquadronMachine->newOperation(_NEW(MachLogFollowOperation(
+            pSquadronMachine->newOperation(new MachLogFollowOperation(
                 pSquadronMachine,
                 pActor_,
-                MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::KILLER_CONVOY, convoyIndex, 20))));
+                MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::KILLER_CONVOY, convoyIndex, 20)));
             ++convoyIndex;
         }
     }

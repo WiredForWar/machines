@@ -134,7 +134,7 @@ W4dMaterialFramePlan* W4dMaterialFramePlan::createPlan(
 
         if (materialVecPtr.isDefined())
         {
-            pAnimMaterialVec = _NEW(RenMaterialVec(*materialVecPtr));
+            pAnimMaterialVec = new RenMaterialVec(*materialVecPtr);
         }
         else
         {
@@ -168,12 +168,12 @@ W4dMaterialFramePlan* W4dMaterialFramePlan::createPlan(
                 offsets.push_back(9999);
         }
 
-        MaterialVecPtrs* pMaterials = _NEW(MaterialVecPtrs);
+        MaterialVecPtrs* pMaterials = new MaterialVecPtrs;
         pMaterials->reserve(nTextures);
 
         for (size_t i = 0; i != nTextures; ++i)
         {
-            RenMaterialVec* pMaterialsVec = _NEW(RenMaterialVec(nMaterials));
+            RenMaterialVec* pMaterialsVec = new RenMaterialVec(nMaterials);
 
             for (size_t j = 0; j < nMaterials; ++j)
             {
@@ -196,11 +196,11 @@ W4dMaterialFramePlan* W4dMaterialFramePlan::createPlan(
         MaterialVecPtrsPtr materialsPtr = pMaterials;
 
         if (pMaterialFramePlan == nullptr)
-            pMaterialFramePlan = _NEW(W4dMaterialFramePlan(materialsPtr, 0, duration, frameReps, maxLOD));
+            pMaterialFramePlan = new W4dMaterialFramePlan(materialsPtr, 0, duration, frameReps, maxLOD);
         else
             pMaterialFramePlan->lodPlan(materialsPtr, lodId);
 
-        _DELETE(pAnimMaterialVec);
+        delete pAnimMaterialVec;
     }
 
     return pMaterialFramePlan;

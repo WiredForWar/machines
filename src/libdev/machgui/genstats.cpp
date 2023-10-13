@@ -25,12 +25,12 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     , statDisplay_(pParent, Gui::Coord(topLeft.x() + 1, topLeft.y() + 35), race)
 {
     // Create title text
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pParent,
         Gui::Box(topLeft, 77, 35),
         titleString,
         "gui/menu/smallfnt.bmp",
-        MachGuiMenuText::CENTRE_JUSTIFY));
+        MachGuiMenuText::CENTRE_JUSTIFY);
 
     TEST_INVARIANT;
 }
@@ -47,21 +47,21 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
 
     // Create title text
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pParent,
         Gui::Box(topLeft, 77, 33 - font.charHeight() - 2),
         titleString,
         "gui/menu/smallfnt.bmp",
-        MachGuiMenuText::CENTRE_JUSTIFY));
+        MachGuiMenuText::CENTRE_JUSTIFY);
 
     string newPlayer = truncate(player);
     // Create player name text
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pParent,
         Gui::Box(Gui::Coord(topLeft.x(), topLeft.y() + 33 - font.charHeight() - 2), 77, font.charHeight() + 2),
         newPlayer,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::CENTRE_JUSTIFY));
+        MachGuiMenuText::CENTRE_JUSTIFY);
 
     TEST_INVARIANT;
 }

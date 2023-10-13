@@ -73,7 +73,7 @@ PhysRelativeTime MachPhysSmokeCloud::startSmoking(
     // Define a common visibility plan
     PhysRelativeTime planDuration = materialPlanPtr->duration();
     PhysRelativeTime visibilityPlanDuration = planDuration * (nBlankPeriods + 1);
-    W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
 
     pVisibilityPlan->add(false, planDuration);
 
@@ -83,7 +83,7 @@ PhysRelativeTime MachPhysSmokeCloud::startSmoking(
     W4dVisibilityPlanPtr visibilityPlanPtr(pVisibilityPlan);
 
     // Define a common scale plan to scale by a factor of 2
-    W4dScalePlanPtr scalePlanPtr(_NEW(W4dSimpleUniformScalePlan(1.0, 2.0, planDuration)));
+    W4dScalePlanPtr scalePlanPtr(new W4dSimpleUniformScalePlan(1.0, 2.0, planDuration));
 
     // Compute the total duration of the animation
     PhysRelativeTime animationDuration = visibilityPlanDuration * (nRepetations + 1) + (nWisps - 1) * wispInterval;
@@ -106,8 +106,8 @@ PhysRelativeTime MachPhysSmokeCloud::startSmoking(
 
         // Construct a sprite at the required position
         MexTransform3d startTransform(MexPoint3d(x, y, z));
-        W4dSprite3d* pWisp = _NEW(
-            W4dSprite3d(this, startTransform, wispSize, wispSize, materialPlanPtr->materialVec(0.0, 0)->front()));
+        W4dSprite3d* pWisp = new 
+            W4dSprite3d(this, startTransform, wispSize, wispSize, materialPlanPtr->materialVec(0.0, 0)->front());
 
         // Set LOD distance
         pWisp->visibleRange(350.0);
@@ -125,7 +125,7 @@ PhysRelativeTime MachPhysSmokeCloud::startSmoking(
         // Define a linear motion plan from start to end, offset by the random amount
         MexTransform3d endTransform(MexPoint3d(endPosition.x() + x, endPosition.y() + y, endPosition.z() + z));
 
-        PhysMotionPlanPtr motionPlanPtr(_NEW(PhysLinearMotionPlan(startTransform, endTransform, planDuration)));
+        PhysMotionPlanPtr motionPlanPtr(new PhysLinearMotionPlan(startTransform, endTransform, planDuration));
 
         wispEntityPlan.absoluteMotion(motionPlanPtr, wispStartTime, nPeriods);
 

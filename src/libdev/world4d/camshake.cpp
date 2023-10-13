@@ -165,7 +165,7 @@ shakePlanPtr(const uint& nPositions, const MATHEX_SCALAR& angle, const PhysRelat
     }
 
     MexTransform3d unityTransform = MexTransform3d();
-    PhysLinearMotionPlan* pShakePlan = _NEW(PhysLinearMotionPlan(unityTransform, rotationTransform[0], interval));
+    PhysLinearMotionPlan* pShakePlan = new PhysLinearMotionPlan(unityTransform, rotationTransform[0], interval);
     for (size_t j = 1; j < nPositions; ++j)
     {
         pShakePlan->add(rotationTransform[j], interval * j);

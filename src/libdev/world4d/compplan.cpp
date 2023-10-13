@@ -23,10 +23,10 @@ PER_DEFINE_PERSISTENT(W4dCompositePlan);
 //////////////////////////////////////////////////////////////////////////////////////////
 
 W4dCompositePlan::W4dCompositePlan(const string& name)
-    : pImpl_(_NEW(W4dCompositePlanImpl()))
+    : pImpl_(new W4dCompositePlanImpl())
 {
     CB_W4dCompositePlan_DEPIMPL();
-    //    pImpl_ = _NEW( W4dCompositePlanImpl ); // don't be a MERGE MORON - don't put this line back in
+    //    pImpl_ = new W4dCompositePlanImpl; // don't be a MERGE MORON - don't put this line back in
     pImpl_->name_ = name;
 
     TEST_INVARIANT;
@@ -37,7 +37,7 @@ W4dCompositePlan::~W4dCompositePlan()
 {
     CB_W4dCompositePlan_DEPIMPL();
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ void W4dCompositePlan::compositePlan(const W4dEntityPlan& plan)
     PRE(pCompositePlan_ == nullptr);
 
     // Construct and store the plan
-    pCompositePlan_ = _NEW(W4dEntityPlan(plan));
+    pCompositePlan_ = new W4dEntityPlan(plan);
     pImpl_->cachedFinishTime_ = -1.0; // indicates needs re-evaluation
 
     TEST_INVARIANT;
@@ -58,7 +58,7 @@ void W4dCompositePlan::linkPlan(W4dLinkId id, const W4dEntityPlan& plan)
 {
     CB_W4dCompositePlan_DEPIMPL();
     // Construct a new entry
-    W4dCompositePlanEntry* pEntry = _NEW(W4dCompositePlanEntry(id, plan));
+    W4dCompositePlanEntry* pEntry = new W4dCompositePlanEntry(id, plan);
 
     // Add to the list
     entries_.push_back(pEntry);
@@ -150,7 +150,7 @@ void perWrite(PerOstream& ostr, const W4dCompositePlan& plan)
 
 void perRead(PerIstream& istr, W4dCompositePlan& plan)
 {
-    _DELETE(plan.pImpl_);
+    delete plan.pImpl_;
     istr >> plan.pImpl_;
 }
 

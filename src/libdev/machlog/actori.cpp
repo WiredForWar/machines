@@ -18,7 +18,7 @@
 PER_DEFINE_PERSISTENT(MachActorImpl);
 
 MachActorImpl::MachActorImpl(MachActor* pActor, MachLogRace* pLogRace, MachLog::ObjectType ot)
-    : pStrategy_(_NEW(MachLogStrategy(pActor)))
+    : pStrategy_(new MachLogStrategy(pActor))
     , isInSpecialUpdateActorsList_(false)
     , selfDestructActive_(false)
     , pRace_(pLogRace)

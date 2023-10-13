@@ -67,7 +67,7 @@ void TestUVAnim::transform(float uIn, float vIn, float* uOut, float* vOut) const
 // virtual
 RenUVTransform* TestUVAnim::clone() const
 {
-    return _NEW(TestUVAnim(*this));
+    return new TestUVAnim(*this);
 }
 
 // virtual
@@ -78,9 +78,9 @@ void TestUVAnim::print(ostream&) const
 void overrideDefaultKeyboardMapping(PhysFlyControl*);
 
 ControlTarget::ControlTarget(const MexTransform3d& tx)
-    : control_(_NEW(PhysFlyControl(_NEW(PhysMotionControlledTransform(&xform_)))))
+    : control_(new PhysFlyControl(_NEW(PhysMotionControlledTransform(&xform_)))))
 {
-    control_->degreesPerSecond(8);
+    control_->degreesPerSecond(8;
     control_->metresPerSecond(0.6);
     control_->setDefaultPosition(tx);
     control_->resetPosition();
@@ -89,7 +89,7 @@ ControlTarget::ControlTarget(const MexTransform3d& tx)
 
 ControlTarget::~ControlTarget()
 {
-    _DELETE(control_);
+    delete control_;
 }
 
 ControlledModel::ControlledModel(const Ren::MeshPtr& m, const MexTransform3d& tx)
@@ -105,18 +105,18 @@ ControlledModel::ControlledModel(const Ren::MeshPtr& m, const MexTransform3d& tx
 // virtual
 ControlledModel::~ControlledModel()
 {
-    _DELETE(uvAnim_);
+    delete uvAnim_;
 }
 
 void ControlledModel::toggleWarpAnim(const DevTimer& timer)
 {
     if (!uvAnim_)
     {
-        uvAnim_ = _NEW(TestUVAnim(mesh_->nVertices(), 0.1, timer));
+        uvAnim_ = new TestUVAnim(mesh_->nVertices(), 0.1, timer);
     }
     else
     {
-        _DELETE(uvAnim_);
+        delete uvAnim_;
         uvAnim_ = NULL;
     }
 }
@@ -139,7 +139,7 @@ ControlledLight::ControlledLight(RenLight* l, const MexTransform3d& tx)
 // virtual
 ControlledLight::~ControlledLight()
 {
-    _DELETE(light_);
+    delete light_;
 }
 
 // Create a transform which represents the direction of a given light.

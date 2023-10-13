@@ -42,7 +42,7 @@ void MachHWResearchMenu::CLASS_INVARIANT
 GuiSimpleScrollableList*
 MachHWResearchMenu::createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
 {
-    return _NEW(MachHWResearchIcons(pParent, rel, pHWResearchBank_, pHardwareLab_, pInGameScreen));
+    return new MachHWResearchIcons(pParent, rel, pHWResearchBank_, pHardwareLab_, pInGameScreen);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachHWResearchMenu& t)

@@ -45,10 +45,10 @@ MachLogTechniciansTreacheriedCondition* MachLogTechniciansTreacheriedCondition::
     // format of a TECHNICIANS_TREACHERIED condition line is:
     //<keyName> RACE <race> <number>
 
-    return _NEW(MachLogTechniciansTreacheriedCondition(
+    return new MachLogTechniciansTreacheriedCondition(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
-        atol(pParser->tokens()[4].c_str())));
+        atol(pParser->tokens()[4].c_str()));
 }
 
 void MachLogTechniciansTreacheriedCondition::CLASS_INVARIANT

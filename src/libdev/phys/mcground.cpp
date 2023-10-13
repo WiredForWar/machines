@@ -79,7 +79,7 @@ void PhysGroundFlyControl::CLASS_INVARIANT
 
 void PhysGroundFlyControl::setupDefaultKeyboardMapping()
 {
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         DevKey::UP_ARROW,
         PhysMotionControlWithTrans::FOWARD,

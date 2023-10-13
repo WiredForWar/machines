@@ -53,7 +53,7 @@ static PhysScalarPlanPtr scalarPlanPtr(const PhysRelativeTime& time, const doubl
     scales.push_back(alpha);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
     return PhysScalarPlanPtr(pPlan);
 }
 
@@ -91,7 +91,7 @@ MachPhysMachineExplosion::MachPhysMachineExplosion(
         const W4dComposite::HeldEntities& heldEntities = pMachine->heldEntities();
         for (W4dComposite::HeldEntities::const_iterator i = heldEntities.begin(); i != heldEntities.end(); ++i)
         {
-            W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(false));
+            W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(false);
 
             (*i)->entityPlanForEdit().visibilityPlan(W4dVisibilityPlanPtr(pVisibilityPlan), now + mainExplosionOffset);
         }
@@ -156,7 +156,7 @@ MachPhysMachineExplosion::MachPhysMachineExplosion(
         {
             //  Make sure that the link has vanished by the end of the explosion
 
-            W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(false));
+            W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(false);
             //            pVisibilityPlan->add( false, now );
 
             W4dLink* pLink = pMachine->links()[(*i).linkId()];
@@ -167,7 +167,7 @@ MachPhysMachineExplosion::MachPhysMachineExplosion(
     }
 
     // create a shockwave
-    MachPhysShockWave* pShockWave = _NEW(MachPhysShockWave(pMachine, MexTransform3d()));
+    MachPhysShockWave* pShockWave = new MachPhysShockWave(pMachine, MexTransform3d());
 
     MATHEX_SCALAR sizeX = pMachine->compositeBoundingVolume().xLength();
     MATHEX_SCALAR sizeY = pMachine->compositeBoundingVolume().yLength();
@@ -197,14 +197,14 @@ MachPhysMachineExplosion::MachPhysMachineExplosion(
 
     // Add a brief light for the duration of the shockwave.
     const MATHEX_SCALAR lightRange = 0.5 * (fromRadius + toRadius);
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pMachine, MexVec3(0, 0, 1), lightRange));
+    W4dUniformLight* pLight = new W4dUniformLight(pMachine, MexVec3(0, 0, 1), lightRange);
     pLight->colour(RenColour(2.3, 1.5, 0.4));
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.2);
     pLight->quadraticAttenuation(0.79);
     pLight->scope(W4dLight::DYNAMIC);
 
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(false));
     visibilityPlanPtr->add(true, mainExplosionOffset);
     visibilityPlanPtr->add(false, duration + mainExplosionOffset);
     pLight->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, now);
@@ -255,7 +255,7 @@ void MachPhysMachineExplosion::shootOffLink(
     setupMotionPlans(pMachine, linkData, startTimeOffset, maxExplosionTime, pseudoWeight, explosionCenter);
 
     //  Make the link vanish when it comes to rest
-    W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(false));
+    W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(false);
 
     pLink->entityPlanForEdit().visibilityPlan(
         W4dVisibilityPlanPtr(pVisibilityPlan),
@@ -317,7 +317,7 @@ void MachPhysMachineExplosion::setupMotionPlans(
 
     // create and register the motion plan
     PhysMoveSpinPlan* pPlan
-        = _NEW(PhysMoveSpinPlan(initialTransform, speedVector, rotationAxis, tumbleRateRadiansPerSecond, duration));
+        = new PhysMoveSpinPlan(initialTransform, speedVector, rotationAxis, tumbleRateRadiansPerSecond, duration);
     PhysMotionPlanPtr planPtr(pPlan);
     pLink->entityPlanForEdit().absoluteMotion(planPtr, SimManager::instance().currentTime() + startTimeOffset, 0);
 }
@@ -353,19 +353,19 @@ void MachPhysMachineExplosion::createMainFireball(
             (machineBoundingVol.maxCorner().z() + machineBoundingVol.minCorner().z()) / 2
             + machineBoundingVol.zLength() * randomDouble(-0.2, 0.2));
 
-        MachPhysFireball* pFireball = _NEW(MachPhysFireball(
+        MachPhysFireball* pFireball = new MachPhysFireball(
             pMachine,
             fireballPosition,
             MachPhysFireball::randomFireball(),
             fireballSize,
             fireballDepthOffset,
             SimManager::instance().currentTime() + fireballStartTime,
-            duration));
+            duration);
 
-        // W4dGeneric* pExplosionSite = _NEW(W4dGeneric(_STATIC_CAST(W4dEntity*, pMachine->containingDomain()),
-        // pMachine->localTransform()));
+        // W4dGeneric* pExplosionSite = new W4dGeneric(_STATIC_CAST(W4dEntity*, pMachine->containingDomain()),
+        // pMachine->localTransform());
         W4dGeneric* pExplosionSite
-            = _NEW(W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pMachine->containingDomain()), pMachine->localTransform()));
+            = new W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pMachine->containingDomain()), pMachine->localTransform());
 
         SOUND_STREAM("Real fireball size " << fireballSize << std::endl);
         SoundId thisFireballSound = SID_XPLODE1_MACHINE;
@@ -450,14 +450,14 @@ void MachPhysMachineExplosion::createSecondaryFireball(
         //        MATHEX_SCALAR fireballDepthOffset = maxSize - fireballSize / 2;
         MATHEX_SCALAR fireballDepthOffset = -maxSize;
 
-        MachPhysFireball* pFireball = _NEW(MachPhysFireball(
+        MachPhysFireball* pFireball = new MachPhysFireball(
             pLink,
             MexPoint3d(0.0, 0.0, 0.0),
             MachPhysFireball::randomFireball(),
             fireballSize,
             fireballDepthOffset,
             SimManager::instance().currentTime() + fireballStartTime,
-            duration));
+            duration);
 
         pMachine->attachFireball(pFireball, pLink, MexPoint3d(0.0, 0.0, 0.0));
         MATHEX_SCALAR rotationAngle = randomDouble(0, 2 * (Mathex::PI));
@@ -508,14 +508,14 @@ void MachPhysMachineExplosion::createSecondaryFireball(
 //
 //     MATHEX_SCALAR fireballDepthOffset = maxSize - fireballSize / 2;
 //
-//     _NEW( MachPhysFireball(
+//     new MachPhysFireball(
 //         pMachine,
 //         fireballPosition,
 //         randomInt( 2 ) ? MachPhysFireball::FIREBALL_1 : MachPhysFireball::FIREBALL_2,
 //         fireballSize,
 //         fireballDepthOffset,
 //         startTimeOffset,
-//         duration ) );
+//         duration );
 //
 //     //  Create the various plans that will take the link from its
 //     //  initial position to its final demise.
@@ -534,7 +534,7 @@ void MachPhysMachineExplosion::createSecondaryFireball(
 //         nBounces = randomInt( 0, linkData.maxBounces() + 1 );
 //
 //     //  Set up the times at which the link will bounce
-//     PhysMotionPlan::Times*  pTimes = _NEW( PhysMotionPlan::Times );
+//     PhysMotionPlan::Times*  pTimes = new PhysMotionPlan::Times;
 //
 //     generateDecreasingTimeIntervals( nBounces + 1, 0.0, duration, pTimes );
 //
@@ -606,14 +606,14 @@ void MachPhysMachineExplosion::createSecondaryFireball(
 //
 //         fireballDepthOffset = maxSize - fireballSize / 2;
 //
-//         MachPhysFireball* pFireball = _NEW( MachPhysFireball(
+//         MachPhysFireball* pFireball = new MachPhysFireball(
 //             pLink,
 //             MexPoint3d( 0.0, 0.0, 0.0 ),
 //             randomInt( 2 ) ? MachPhysFireball::FIREBALL_1 : MachPhysFireball::FIREBALL_2,
 //             fireballSize,
 //             fireballDepthOffset,
 //             startTimeOffset + pTimes->back(),
-//             maxSeparationTime - ( startTimeOffset + pTimes->back() ) ) );
+//             maxSeparationTime - ( startTimeOffset + pTimes->back() ) );
 //
 //         pMachine->attachFireball( pFireball, pLink, MexPoint3d( 0.0, 0.0, 0.0 ) );
 //     }
@@ -621,7 +621,7 @@ void MachPhysMachineExplosion::createSecondaryFireball(
 //     //  Set up the initial transform, then the transforms of where the link
 //     //  is going to bounce and end up.
 //
-//     PhysAccelerateTumblePlan::EulerTransforms*  pTransforms = _NEW( PhysAccelerateTumblePlan::EulerTransforms );
+//     PhysAccelerateTumblePlan::EulerTransforms*  pTransforms = new PhysAccelerateTumblePlan::EulerTransforms;
 //
 //     pTransforms->push_back( pLink->localTransform() );
 //
@@ -632,17 +632,17 @@ void MachPhysMachineExplosion::createSecondaryFireball(
 //     PhysAccelerateTumblePlan::EulerTransformsPtr   transformsPtr( pTransforms );
 //     PhysMotionPlan::TimesPtr        timesPtr( pTimes );
 //
-//     PhysAccelerateTumblePlan* pPlan = _NEW( PhysAccelerateTumblePlan(
+//     PhysAccelerateTumblePlan* pPlan = new PhysAccelerateTumblePlan(
 //         transformsPtr,
 //         timesPtr,
-//         acceleration ) );
+//         acceleration );
 //
 //     PhysMotionPlanPtr planPtr( pPlan );
 //
 //     pLink->absoluteMotion( planPtr, SimManager::instance().currentTime() + startTimeOffset, 0 );
 //
 //     //  Make the link vanish when it comes to rest
-//     W4dVisibilityPlan* pVisibilityPlan = _NEW( W4dVisibilityPlan( true ) );
+//     W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan( true );
 //
 //     pVisibilityPlan->add( false, pTimes->back() );
 //

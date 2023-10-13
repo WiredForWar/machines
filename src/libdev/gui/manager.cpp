@@ -150,7 +150,7 @@ static ScanCodes& scanCodes()
 //////////////////////////////////////////////////////////////////////
 
 GuiManager::GuiManager()
-    : pImpl_(_NEW(GuiManagerImpl(GuiColourScheme::defaultScheme())))
+    : pImpl_(new GuiManagerImpl(GuiColourScheme::defaultScheme()))
 {
     CB_GUIMANAGER_DEPIMPL();
 
@@ -171,7 +171,7 @@ GuiManager::GuiManager()
 
 GuiManager::~GuiManager()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //////////////////////////////////////////////////////////////////////

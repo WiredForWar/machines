@@ -116,7 +116,7 @@ MachPhysFlameBall::MachPhysFlameBall(FlameBallType type)
 
     meshPtr->addTTFPolygon(ttf);
     // Add a mesh instance for it, with the fog distance as the visibility range
-    RenMeshInstance* pMeshInstance = _NEW(RenMeshInstance(meshPtr));
+    RenMeshInstance* pMeshInstance = new RenMeshInstance(meshPtr);
     // add( pMeshInstance, _STATIC_CAST( double, RenDevice::current()->fogEnd() ), W4dLOD( 0 ) );
     // add( pMeshInstance, MexDouble( _STATIC_CAST( double, RenDevice::current()->fogEnd() ) ), W4dLOD( 0 ) );
     add(pMeshInstance, _STATIC_CAST(MexDouble, RenDevice::current()->fogEnd()), W4dLOD(0));
@@ -152,7 +152,7 @@ MachPhysFlameBall::~MachPhysFlameBall()
 const MachPhysFlameBall& MachPhysFlameBall::exemplar(FlameBallType type)
 {
     // Use the one time constructor
-    // static MachPhysFlameBall& bomb = *_NEW( MachPhysFlameBall( type ) );
+    // static MachPhysFlameBall& bomb = *new MachPhysFlameBall( type );
 
     return MachPhysOtherPersistence::instance().flameBallExemplar(type);
 }
@@ -203,7 +203,7 @@ PhysRelativeTime MachPhysFlameBall::move
     entityPlan.materialPlan( flameBallMaterialPlanPtr, burstTime+t1);
 
     //visibility plan
-    W4dVisibilityPlanPtr flameBallVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
+    W4dVisibilityPlanPtr flameBallVisibilityPlanPtr( new W4dVisibilityPlan( true ) );
     flameBallVisibilityPlanPtr->add(false, t2);
 
     entityPlan.visibilityPlan( flameBallVisibilityPlanPtr, burstTime );
@@ -228,8 +228,8 @@ PhysRelativeTime MachPhysFlameBall::move
     POST((dipTime >= t1)&&(dipTime<=t2));
 
     //travel plan
-    PhysLinearMotionPlan  *pMotionPlan = _NEW( PhysLinearMotionPlan( MexTransform3d( startPosition ),
-                                                                     MexTransform3d( startPosition ), t1 ) );
+    PhysLinearMotionPlan  *pMotionPlan = new PhysLinearMotionPlan( MexTransform3d( startPosition ),
+                                                                     MexTransform3d( startPosition ), t1 );
 
     pMotionPlan->add( MexTransform3d( middlePosition ), dipTime );
     pMotionPlan->add( MexTransform3d( endPosition ), t2 );
@@ -252,9 +252,9 @@ PhysRelativeTime MachPhysFlameBall::move
         scales.push_back(maxScale);
         scales.push_back(1);
 
-    PhysScalarPlanPtr flamePlanPtr( _NEW( PhysLinearScalarPlan(linearTimes, scales) ) );
+    PhysScalarPlanPtr flamePlanPtr( new PhysLinearScalarPlan(linearTimes, scales) );
 
-    W4dScalePlanPtr flameScalePlanPtr( _NEW( W4dGeneralUniformScalePlan(flamePlanPtr) ) );
+    W4dScalePlanPtr flameScalePlanPtr( new W4dGeneralUniformScalePlan(flamePlanPtr) );
     entityPlan.scalePlan( flameScalePlanPtr, burstTime );
 
     //Store default flight path data
@@ -291,19 +291,19 @@ PhysRelativeTime MachPhysFlameBall::move(
     // travel plan
     PhysRelativeTime flightTime = materialPlanDuration - materialPlanCycleStartDelay;
     PhysAbsoluteTime flightBeginTime = launchTime + materialPlanCycleStartDelay;
-    PhysLinearMotionPlan* pMotionPlan = _NEW(PhysLinearMotionPlan(startTransform, endTransform, flightTime));
+    PhysLinearMotionPlan* pMotionPlan = new PhysLinearMotionPlan(startTransform, endTransform, flightTime);
 
     PhysMotionPlanPtr flameMotionPlanPtr = pMotionPlan;
     entityPlan.absoluteMotion(flameMotionPlanPtr, flightBeginTime);
 
     // scale plan
-    W4dSimpleUniformScalePlan* pScalePlan = _NEW(W4dSimpleUniformScalePlan(1.0, endScale, flightTime));
+    W4dSimpleUniformScalePlan* pScalePlan = new W4dSimpleUniformScalePlan(1.0, endScale, flightTime);
 
     W4dScalePlanPtr flameScalePlanPtr(pScalePlan);
     entityPlan.scalePlan(flameScalePlanPtr, flightBeginTime);
 
     // visibility plan
-    W4dVisibilityPlanPtr flameBallVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr flameBallVisibilityPlanPtr(new W4dVisibilityPlan(true));
     flameBallVisibilityPlanPtr->add(false, materialPlanDuration);
 
     entityPlan.visibilityPlan(flameBallVisibilityPlanPtr, launchTime);

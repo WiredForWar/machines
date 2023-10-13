@@ -72,22 +72,22 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     : MachGuiStartupScreenContext(pStartupScreens)
     , animations_(pStartupScreens, SysPathName("gui/menu/sb_anims.anm"))
 {
-    _NEW(MachGuiMenuButton(
+    new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(56, 407, 246, 449),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::JOIN));
-    MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::JOIN);
+    MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(311, 407, 502, 449),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
     pExitBtn->escapeControl(true);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
     pSingleLineEditBox_
-        = _NEW(MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(106, 34, 444, 34 + font.charHeight()), font));
+        = new MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(106, 34, 444, 34 + font.charHeight()), font);
     pSingleLineEditBox_->maxChars(MAX_PLAYERNAME_LEN);
 
     if (pStartupScreens_->startupData()->playerName() == "")
@@ -106,19 +106,19 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     GuiResourceString connectionType(IDS_MENULB_CONNECTIONTYPE);
 
     size_t startY = 123;
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(61, startY, 61 + font.textWidth(connectionType.asString()), startY + font.charHeight() + 2),
         IDS_MENULB_CONNECTIONTYPE,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
     startY += font.charHeight() + 3;
-    MachGuiSingleSelectionListBox* pListBox = _NEW(MachGuiSingleSelectionListBox(
+    MachGuiSingleSelectionListBox* pListBox = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(61, startY, 474, 287),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
     // Get available protocols
     const NetNetwork::ProtocolMap& availableProtocols = NetNetwork::availableProtocols();
@@ -127,7 +127,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     for (const NetNetwork::ProtocolSpec& protocol : availableProtocols)
     {
         MachGuiProtocolListBoxItem* pItem
-            = _NEW(MachGuiProtocolListBoxItem(pStartupScreens, pListBox, 413, protocol.first));
+            = new MachGuiProtocolListBoxItem(pStartupScreens, pListBox, 413, protocol.first);
         if (pItem->isSelectedProtocol())
             pSelectedItem = pItem;
     }

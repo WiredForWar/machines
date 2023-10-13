@@ -353,14 +353,14 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
         {
             // lJetRing
             if (pLJetRing_ == nullptr)
-                pLJetRing_ = _NEW(MachPhysJetRing(pLJet_, MexTransform3d()));
+                pLJetRing_ = new MachPhysJetRing(pLJet_, MexTransform3d());
 
             hold(pLJetRing_, pLJet_, MexTransform3d());
             pLJetRing_->startGlow(startTime, targetOffsetGlobal);
 
             // lSparks
             if (pLSparks_ == nullptr)
-                pLSparks_ = _NEW(MachPhysSparks(pLJet_, MexTransform3d()));
+                pLSparks_ = new MachPhysSparks(pLJet_, MexTransform3d());
 
             hold(pLSparks_, pLJet_, MexTransform3d());
 
@@ -371,7 +371,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
                 pLSparks_->plan(*sparksPlanPtr, startTime, 1000000, MachPhys::CONSTRUCTION_CONSTRUCTING);
             }
 
-            W4dVisibilityPlanPtr sparksVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+            W4dVisibilityPlanPtr sparksVisibilityPlanPtr(new W4dVisibilityPlan(true));
             sparksVisibilityPlanPtr->add(false, 360000);
 
             pLSparks_->entityPlanForEdit()
@@ -380,7 +380,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             // lLight
             if (pLLight_ == nullptr)
             {
-                pLLight_ = _NEW(W4dPointLight(this, MexVec3(1, 0, 0), 10.0));
+                pLLight_ = new W4dPointLight(this, MexVec3(1, 0, 0), 10.0);
                 pLLight_->colour(RenColour(3.0, 4.0, 5.0));
                 pLLight_->constantAttenuation(0);
                 pLLight_->linearAttenuation(0.7);
@@ -397,7 +397,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             if (first)
             {
                 first = false;
-                lLightVisibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+                lLightVisibilityPlanPtr = new W4dVisibilityPlan(true);
                 lLightVisibilityPlanPtr->add(false, 0.3);
                 lLightVisibilityPlanPtr->add(true, 0.5);
                 lLightVisibilityPlanPtr->add(false, 0.6);
@@ -412,7 +412,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             // lLightShadow
             if (pLLightShadow_ == nullptr)
             {
-                pLLightShadow_ = _NEW(MachPhysLight(pLJet_, MexTransform3d()));
+                pLLightShadow_ = new MachPhysLight(pLJet_, MexTransform3d());
 
                 MexTransform3d lLightShadowXform = pLJet_->globalTransform();
                 MexPoint3d lLightShadowPosition = lLightShadowXform.position();
@@ -430,7 +430,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             pLLightShadow_->entityPlanForEdit()
                 .visibilityPlan(lLightVisibilityPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
 
-            PhysMotionPlanPtr lShadowPlanPtr(_NEW(MachPhysOrientationAndPositionPlan(pLLightShadow_, 200.0)));
+            PhysMotionPlanPtr lShadowPlanPtr(new MachPhysOrientationAndPositionPlan(pLLightShadow_, 200.0));
             pLLightShadow_->entityPlanForEdit()
                 .absoluteMotion(lShadowPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
         }
@@ -438,14 +438,14 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
         if (pRJet_ != nullptr)
         {
             if (pRJetRing_ == nullptr)
-                pRJetRing_ = _NEW(MachPhysJetRing(pRJet_, MexTransform3d()));
+                pRJetRing_ = new MachPhysJetRing(pRJet_, MexTransform3d());
 
             hold(pRJetRing_, pRJet_, MexTransform3d());
             pRJetRing_->startGlow(startTime, targetOffsetGlobal);
 
             // rSparks
             if (pRSparks_ == nullptr)
-                pRSparks_ = _NEW(MachPhysSparks(pRJet_, MexTransform3d()));
+                pRSparks_ = new MachPhysSparks(pRJet_, MexTransform3d());
 
             hold(pRSparks_, pRJet_, MexTransform3d());
 
@@ -456,7 +456,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
                 pRSparks_->plan(*sparksPlanPtr, startTime, 1000000, MachPhys::CONSTRUCTION_CONSTRUCTING);
             }
 
-            W4dVisibilityPlanPtr sparksVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+            W4dVisibilityPlanPtr sparksVisibilityPlanPtr(new W4dVisibilityPlan(true));
             sparksVisibilityPlanPtr->add(false, 360000);
 
             pRSparks_->entityPlanForEdit()
@@ -465,7 +465,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             // rLight
             if (pRLight_ == nullptr)
             {
-                pRLight_ = _NEW(W4dPointLight(this, MexVec3(1, 0, 0), 10.0));
+                pRLight_ = new W4dPointLight(this, MexVec3(1, 0, 0), 10.0);
                 pRLight_->colour(RenColour(3.0, 4.0, 5.0));
                 pRLight_->constantAttenuation(0);
                 pRLight_->linearAttenuation(0.7);
@@ -482,7 +482,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             if (once)
             {
                 once = false;
-                rLightVisibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+                rLightVisibilityPlanPtr = new W4dVisibilityPlan(true);
                 rLightVisibilityPlanPtr->add(false, 0.1);
                 rLightVisibilityPlanPtr->add(true, 0.2);
                 rLightVisibilityPlanPtr->add(false, 0.5);
@@ -497,7 +497,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             // rLightShadow
             if (pRLightShadow_ == nullptr)
             {
-                pRLightShadow_ = _NEW(MachPhysLight(pRJet_, MexTransform3d()));
+                pRLightShadow_ = new MachPhysLight(pRJet_, MexTransform3d());
 
                 MexTransform3d rLightShadowXform = pRJet_->globalTransform();
                 MexPoint3d rLightShadowPosition = rLightShadowXform.position();
@@ -515,7 +515,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
             pRLightShadow_->entityPlanForEdit()
                 .visibilityPlan(rLightVisibilityPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
 
-            PhysMotionPlanPtr rShadowPlanPtr(_NEW(MachPhysOrientationAndPositionPlan(pRLightShadow_, 200.0)));
+            PhysMotionPlanPtr rShadowPlanPtr(new MachPhysOrientationAndPositionPlan(pRLightShadow_, 200.0));
             pRLightShadow_->entityPlanForEdit()
                 .absoluteMotion(rShadowPlanPtr, startTime, 10000, MachPhys::CONSTRUCTION_CONSTRUCTING);
         }
@@ -543,10 +543,10 @@ void MachPhysConstructor::stopConstructing()
             // pLLightShadow_->entityPlanForEdit().clearAnimation( MachPhys::CONSTRUCTION_CONSTRUCTING );
             // pLLightShadow_->visible( false );
 
-            _DELETE(pLSparks_);
-            _DELETE(pLJetRing_);
-            _DELETE(pLLight_);
-            _DELETE(pLLightShadow_);
+            delete pLSparks_;
+            delete pLJetRing_;
+            delete pLLight_;
+            delete pLLightShadow_;
 
             pLSparks_ = nullptr;
             pLJetRing_ = nullptr;
@@ -568,10 +568,10 @@ void MachPhysConstructor::stopConstructing()
             // pRLightShadow_->entityPlanForEdit().clearAnimation( MachPhys::CONSTRUCTION_CONSTRUCTING );
             // pRLightShadow_->visible( false );
 
-            _DELETE(pRSparks_);
-            _DELETE(pRJetRing_);
-            _DELETE(pRLight_);
-            _DELETE(pRLightShadow_);
+            delete pRSparks_;
+            delete pRJetRing_;
+            delete pRLight_;
+            delete pRLightShadow_;
 
             pRSparks_ = nullptr;
             pRJetRing_ = nullptr;

@@ -14,7 +14,7 @@ UtlAsciiPicture::UtlAsciiPicture(
     MATHEX_SCALAR maxX,
     MATHEX_SCALAR maxY,
     uint nColumns)
-    : pImpl_(_NEW(UtlAsciiPictureImpl(minX, minY, maxX, maxY, nColumns)))
+    : pImpl_(new UtlAsciiPictureImpl(minX, minY, maxX, maxY, nColumns))
 {
     PRE(nColumns > 0);
 
@@ -25,7 +25,7 @@ UtlAsciiPicture::~UtlAsciiPicture()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 uint UtlAsciiPicture::nColumns() const

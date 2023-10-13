@@ -27,8 +27,8 @@ W4dEntityScale::~W4dEntityScale()
 {
     TEST_INVARIANT;
 
-    _DELETE(pUnscaledTransformPosition_);
-    _DELETE(pScale_);
+    delete pUnscaledTransformPosition_;
+    delete pScale_;
 }
 
 void W4dEntityScale::meshScale(const RenScale& scale)
@@ -46,7 +46,7 @@ void W4dEntityScale::meshScale(const RenScale& scale)
             pScale_->asNonUniform() = scale.asNonUniform();
         else
         {
-            _DELETE(pScale_);
+            delete pScale_;
             pScale_ = nullptr;
         }
     }
@@ -66,7 +66,7 @@ void W4dEntityScale::meshScale(const RenUniformScale& scale)
             pScale_->asUniform() = scale;
         else
         {
-            _DELETE(pScale_);
+            delete pScale_;
             pScale_ = nullptr;
         }
     }
@@ -86,7 +86,7 @@ void W4dEntityScale::meshScale(const RenNonUniformScale& scale)
             pScale_->asNonUniform() = scale;
         else
         {
-            _DELETE(pScale_);
+            delete pScale_;
             pScale_ = nullptr;
         }
     }
@@ -102,12 +102,12 @@ void W4dEntityScale::scaleTransformFromParent(bool doScale)
     {
         // Ensure we have the 3d point allocated to store the unscaled position
         if (pUnscaledTransformPosition_ == nullptr)
-            pUnscaledTransformPosition_ = _NEW(MexPoint3d);
+            pUnscaledTransformPosition_ = new MexPoint3d;
     }
     else
     {
         // Clear the 3d point
-        _DELETE(pUnscaledTransformPosition_);
+        delete pUnscaledTransformPosition_;
         pUnscaledTransformPosition_ = nullptr;
     }
 }

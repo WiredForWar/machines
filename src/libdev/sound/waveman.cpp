@@ -146,7 +146,7 @@ SndWaveform* SndWaveManager::getWaveForm(const SndWaveformId& id)
 
     if (i == loadedWaveForms_.end())
     {
-        SndWaveform* newWave = _NEW(SndWaveform(id));
+        SndWaveform* newWave = new SndWaveform(id);
         loadedWaveForms_.insert(id, newWave);
         returnForm = newWave;
     }
@@ -169,7 +169,7 @@ void SndWaveManager::freeWaveForm(const SndWaveformId& id)
         (*i).second->removeReference();
         if ((*i).second->ref() == 0)
         {
-            _DELETE((*i).second);
+            delete (*i).second;
             loadedWaveForms_.erase(i);
         }
     }
@@ -186,7 +186,7 @@ void SndWaveManager::freeAll()
     SOUND_STREAM("Clearing preloads out" << std::endl);
     for (WaveFormMap::iterator i = loadedWaveForms_.begin(); i != loadedWaveForms_.end(); ++i)
     {
-        _DELETE((*i).second);
+        delete (*i).second;
     }
 
     loadedWaveForms_.erase(loadedWaveForms_.begin(), loadedWaveForms_.end());

@@ -79,7 +79,7 @@ PhysRelativeTime MachLogPatrolOperation::doUpdate()
             doNextMove = false;
             subOperation(
                 pActor_,
-                _NEW(MachLogAttackOperation(pActor_, pTarget, MachLogAttackOperation::TERMINATE_ON_CHANGE)));
+                new MachLogAttackOperation(pActor_, pTarget, MachLogAttackOperation::TERMINATE_ON_CHANGE));
             // TBD:: add this falg to line above MachLogAttackOperation::TERMINATE_ON_CHANGE
             HAL_STREAM("MLPatrolOperation::doUpdate check for subordinates " << (void*)pTarget << "\n");
             if (pActor_->objectType() == MachLog::ADMINISTRATOR)
@@ -95,10 +95,10 @@ PhysRelativeTime MachLogPatrolOperation::doUpdate()
                         if ((*i)->id() != pActor_->id() and (*i)->objectIsCanAttack())
                         {
                             if ((*i)->isIdle())
-                                (*i)->newOperation(_NEW(MachLogAttackOperation(
+                                (*i)->newOperation(new MachLogAttackOperation(
                                     (MachLogMachine*)*i,
                                     pTarget,
-                                    MachLogAttackOperation::TERMINATE_ON_CHANGE)));
+                                    MachLogAttackOperation::TERMINATE_ON_CHANGE));
                         }
                 }
             }
@@ -122,7 +122,7 @@ PhysRelativeTime MachLogPatrolOperation::doUpdate()
                 &dest);
             // HAL_STREAM( "MLPatrolOp::Update Issuing subOperation MachMoveToOp " << p << std::endl );
             if (doActualMove)
-                subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, dest, true, 15.0))); // 15m tolerance
+                subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest, true, 15.0)); // 15m tolerance
             // HAL_STREAM(" if I am admin then give subordinates relevant commands\n" );
             // HAL_STREAM(" checking objectType " << pActor_->objectType() << std::endl );
             if (pActor_->objectType() == MachLog::ADMINISTRATOR)
@@ -141,21 +141,21 @@ PhysRelativeTime MachLogPatrolOperation::doUpdate()
                             {
                                 // This will get replaced with motionsequencer - follow command.
                                 //                           if( (*i)->isIdle() )
-                                //                               (*i)->newOperation( _NEW( MachMoveToOperation(
-                                //                               (MachLogMobile*)*i, p ) ) );
+                                //                               (*i)->newOperation( new MachMoveToOperation(
+                                //                               (MachLogMobile*)*i, p ) );
                                 //                           if( (*i)->motionSeq().isWaiting() )
                                 //                               (*i)->motionSeq().stop();
                                 if ((*i)->isIdle())
                                 {
                                     // HAL_STREAM( " Patrol is adding 'follow' for machine " << (*i)->id() << " type="
                                     // << (*i)->objectType() << std::endl );
-                                    (*i)->newOperation(_NEW(MachLogFollowOperation(
+                                    (*i)->newOperation(new MachLogFollowOperation(
                                         (MachLogMachine*)*i,
                                         pActor_,
                                         MachLogConvoyOffsets::convoyOffset(
                                             MachLogConvoyOffsets::PATROL_CONVOY,
                                             index,
-                                            10))));
+                                            10)));
                                 }
                                 ++index;
                             }

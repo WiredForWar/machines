@@ -98,7 +98,7 @@ void MachPhysNukeWave::addMaterial(MachPhysNukeWave::Materials* pMaterials, cons
     material.texture(texture);
 
     // Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
     pMaterialVec->push_back(material);
 
     // Add a counted pointer to the material vector to the argument
@@ -116,7 +116,7 @@ const MachPhysNukeWave::MaterialsPtr& MachPhysNukeWave::materialsPtr()
         once = false;
 
         // Construct a vector of materials
-        MachPhysNukeWave::Materials* pMaterials = _NEW(MachPhysNukeWave::Materials);
+        MachPhysNukeWave::Materials* pMaterials = new MachPhysNukeWave::Materials;
         pMaterials->reserve(6);
 
         RenTexture tex = RenTexManager::instance().createTexture("wall0_bt.BMP");
@@ -158,7 +158,7 @@ void MachPhysNukeWave::startNukeWave(
     uint frameNumber = 0;
     //Construct a frame based material plan with a random frame offset
     W4dMaterialFramePlan* pMaterialPlan =
-        _NEW( W4dMaterialFramePlan( materialsPtr(), frameNumber,  duration ) );
+        new W4dMaterialFramePlan( materialsPtr(), frameNumber,  duration );
 
     //++frameNumber;
     //frameNumber %= 6;
@@ -168,7 +168,7 @@ void MachPhysNukeWave::startNukeWave(
 
 */
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration);
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
@@ -178,7 +178,7 @@ void MachPhysNukeWave::startNukeWave(
 
     RenNonUniformScale a(iniScale, iniScale, zScale);
     RenNonUniformScale b(endScale, endScale, zScale);
-    W4dScalePlanPtr planPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr planPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     // Propogate thru the current model
     propogateScalePlan(planPtr, startTime, 1);

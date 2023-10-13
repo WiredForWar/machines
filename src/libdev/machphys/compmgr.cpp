@@ -98,10 +98,10 @@ MachPhysComplexityManager::~MachPhysComplexityManager()
     TEST_INVARIANT;
 
     for (BooleanItems::iterator it = booleanItems_.begin(); it != booleanItems_.end(); ++it)
-        _DELETE((*it));
+        delete (*it);
 
     for (ChoiceItems::iterator it = choiceItems_.begin(); it != choiceItems_.end(); ++it)
-        _DELETE((*it));
+        delete (*it);
 }
 
 #ifndef NDEBUG

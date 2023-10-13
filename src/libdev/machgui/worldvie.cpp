@@ -53,7 +53,7 @@ MachWorldViewWindow::MachWorldViewWindow(
     , rubberBandCamera_(INVALID)
     , rubberBanding_(false)
 {
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         DevKey::KEY_Z,
         SELECT_ONSCREEN_MACHINES,
@@ -89,7 +89,7 @@ MachWorldViewWindow::MachWorldViewWindow(
 
 MachWorldViewWindow::~MachWorldViewWindow()
 {
-    _DELETE(pKeyTranslator_);
+    delete pKeyTranslator_;
 }
 
 // virtual

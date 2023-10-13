@@ -159,17 +159,17 @@ PhysRelativeTime MachLogAdminConstructOperation::doUpdate()
             if ((*i)->objectType() == MachLog::RESOURCE_CARRIER)
                 MachLogResourceCarrier::assignResourceCarrierTask(&(*i)->asResourceCarrier());
             if ((*i)->objectType() == MachLog::AGGRESSOR or (*i)->objectType() == MachLog::ADMINISTRATOR)
-                (*i)->newOperation(_NEW(MachLogFollowOperation(
+                (*i)->newOperation(new MachLogFollowOperation(
                     (*i),
                     constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],
-                    MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20)))));
+                    MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20))));
             if ((*i)->objectType() == MachLog::CONSTRUCTOR /* and  allConstructorsIdle*/)
             {
                 MachLogConstructor* pConstructor = &(*i)->asConstructor();
                 if (haveIncompleteConstruction)
                 {
                     ////HAL_STREAM("  Assigning construct operation to " << (*i)->id() << std::endl;)
-                    pConstructor->newOperation(_NEW(MachLogConstructOperation(pConstructor, pConstruction)));
+                    pConstructor->newOperation(new MachLogConstructOperation(pConstructor, pConstruction));
                     taskedConstructor = true;
                 }
                 else
@@ -184,10 +184,10 @@ PhysRelativeTime MachLogAdminConstructOperation::doUpdate()
     if (!pSubOperation())
         subOperation(
             pActor_,
-            _NEW(MachLogFollowOperation(
+            new MachLogFollowOperation(
                 pActor_,
                 constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],
-                MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20)))));
+                MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20))));
     while (constructors.size())
         constructors.erase(constructors.begin());
 
@@ -212,7 +212,7 @@ PhysRelativeTime MachLogAdminConstructOperation::doUpdate()
                 if( not pActor_->motionSeq().hasDestination() and configSpace.findSpace( administratorLocation,
 mineLocation, pActor_->highClearence(), scannerRange * 0.75, &targetPoint ) )
                 {
-                    subOperation( pActor_, _NEW( MachLogMoveToOperation( pActor_, MexPoint3d( targetPoint ) ) ) );
+                    subOperation( pActor_, new MachLogMoveToOperation( pActor_, MexPoint3d( targetPoint ) ) );
                     ////HAL_STREAM( "  moving administrator to mine at " << targetPoint << std::endl );
                 }
             }

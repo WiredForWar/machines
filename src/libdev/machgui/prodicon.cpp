@@ -128,7 +128,7 @@ MachProductionIcon::MachProductionIcon(
 
     TEST_INVARIANT;
 
-    pProgressBar_ = _NEW(MachGuiBuildProgressBar(this, Gui::Coord(2, 2), width() - 4));
+    pProgressBar_ = new MachGuiBuildProgressBar(this, Gui::Coord(2, 2), width() - 4);
 
     popupButton(false);
 }

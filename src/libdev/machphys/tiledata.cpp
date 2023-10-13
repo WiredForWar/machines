@@ -112,7 +112,7 @@ void MachPhysTileData::makeCellLists()
     size_t nYCells = nYVertices_ - 1;
 
     // Construct the temporary working structure
-    pWorkingData_ = _NEW(WorkingData);
+    pWorkingData_ = new WorkingData;
     ctl_nb_vector<int>& xMinCell = pWorkingData_->xMinCell_;
     ctl_nb_vector<int>& xMaxCell = pWorkingData_->xMaxCell_;
     ctl_nb_vector<int>& nCellsCovered = pWorkingData_->nCellsCovered_;
@@ -201,7 +201,7 @@ void MachPhysTileData::makeCellLists()
     }
 
     // Delete the working data structure
-    _DELETE(pWorkingData_);
+    delete pWorkingData_;
     pWorkingData_ = nullptr;
 }
 

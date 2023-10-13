@@ -56,7 +56,7 @@ W4dVisibilityPlanPtr MachPhysHemiSphere::startGlow(
     const PhysRelativeTime& duration,
     const uint& frameOffset)
 {
-    W4dVisibilityPlanPtr hVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr hVisibilityPlanPtr(new W4dVisibilityPlan(true));
 
     // each frame lasts 1/15 second
     uint frames = duration * 15.0;

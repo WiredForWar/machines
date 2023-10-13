@@ -199,7 +199,7 @@ void perRead(PerIstream& istr, MachPhysResourceCarrier& machine)
 
 const PhysRelativeTime MachPhysResourceCarrier::doLoading(const PhysAbsoluteTime& startTime)
 {
-    MachPhysResourceLoading* pLoading = _NEW(MachPhysResourceLoading(this, MexTransform3d()));
+    MachPhysResourceLoading* pLoading = new MachPhysResourceLoading(this, MexTransform3d());
     MATHEX_SCALAR size = 1.05 * std::max(compositeBoundingVolume().xLength(), compositeBoundingVolume().yLength());
     const PhysRelativeTime loadingTime = pLoading->startLoading(startTime, size);
 
@@ -223,7 +223,7 @@ const PhysRelativeTime MachPhysResourceCarrier::doScavenge(const PhysAbsoluteTim
 
     const PhysRelativeTime duration = 1.0;
 
-    MachPhysScavenger* pScavenger = _NEW(MachPhysScavenger(this, MexTransform3d()));
+    MachPhysScavenger* pScavenger = new MachPhysScavenger(this, MexTransform3d());
     pScavenger->startScavenge(startTime, duration);
 
     W4dGarbageCollector::instance().add(pScavenger, startTime + duration);

@@ -46,7 +46,7 @@ DevKeyToCommandTranslator::~DevKeyToCommandTranslator()
 
     for (size_t i = 0; i < commandTranslations_.size(); ++i)
     {
-        _DELETE(commandTranslations_[i]);
+        delete commandTranslations_[i];
     }
 }
 
@@ -57,7 +57,7 @@ void DevKeyToCommandTranslator::CLASS_INVARIANT
 
 void DevKeyToCommandTranslator::addTranslation(const DevKeyToCommand& newTrans)
 {
-    commandTranslations_.push_back(_NEW(DevKeyToCommand(newTrans)));
+    commandTranslations_.push_back(new DevKeyToCommand(newTrans));
 }
 
 bool DevKeyToCommandTranslator::needsReleasedState(

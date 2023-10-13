@@ -9,7 +9,7 @@
 #include "base/internal/trackeri.hpp"
 
 DiagPointerTracker::DiagPointerTracker()
-    : pImplementation_(_NEW(DiagPointerTrackerImpl))
+    : pImplementation_(new DiagPointerTrackerImpl)
 {
     TEST_INVARIANT;
 }
@@ -18,7 +18,7 @@ DiagPointerTracker::~DiagPointerTracker()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImplementation_);
+    delete pImplementation_;
 }
 
 void DiagPointerTracker::addPointer(void* ptr)

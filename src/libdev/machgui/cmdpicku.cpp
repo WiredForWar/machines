@@ -152,7 +152,7 @@ bool MachGuiPickUpCommand::applyPickUpObject(MachActor* pActor, string*)
         pActor->asResourceCarrier().addSuppliers(suppliers_);
     else
         pActor->asResourceCarrier().setSuppliers(suppliers_);
-    // pOp = _NEW( MachLogPickUpOperation( &pActor->asResourceCarrier(), suppliers_ ) );
+    // pOp = new MachLogPickUpOperation( &pActor->asResourceCarrier(), suppliers_ );
 
     return true;
 }
@@ -196,7 +196,7 @@ void MachGuiPickUpCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiPickUpCommand::clone() const
 {
-    return _NEW(MachGuiPickUpCommand(&inGameScreen()));
+    return new MachGuiPickUpCommand(&inGameScreen());
 }
 
 // virtual

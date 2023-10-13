@@ -109,7 +109,7 @@ MachGuiCorralResource::MachGuiCorralResource(
     if (maxHp == 0)
         ++maxHp;
 
-    pHealthBar_ = _NEW(MachGuiHealthBar(this, Gui::Coord(2, 2), width() - 4, maxHp, maxAp));
+    pHealthBar_ = new MachGuiHealthBar(this, Gui::Coord(2, 2), width() - 4, maxHp, maxAp);
 
     updateHealthBar();
 }
@@ -313,14 +313,14 @@ void MachCorralIcons::change()
     deleteAllChildren();
     MachGuiCorral::Actors::iterator i = pCorral_->actors_.begin();
     for (size_t j = 0; i != pCorral_->actors_.end(); ++i, ++j)
-        _NEW(MachGuiCorralResource(this, Gui::Coord(0, 0), *i, pInGameScreen_));
+        new MachGuiCorralResource(this, Gui::Coord(0, 0), *i, pInGameScreen_);
 
     childrenUpdated();
 }
 
 void MachCorralIcons::add(MachActor* pActor)
 {
-    _NEW(MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_));
+    new MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_);
 
     // note that "selected" voicemail is only given in the case of the first actor put into the corral
     if (pActor->objectIsMachine() and pActor->race() == MachLogRaces::instance().pcController().race()
@@ -494,7 +494,7 @@ size_t MachCorralIcons::columns()
 GuiSimpleScrollableList*
 MachGuiCorral::createList(GuiDisplayable*, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
 {
-    pIcons_ = _NEW(MachCorralIcons(this, rel, pInGameScreen));
+    pIcons_ = new MachCorralIcons(this, rel, pInGameScreen);
     return pIcons_;
 }
 

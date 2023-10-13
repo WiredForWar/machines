@@ -50,7 +50,7 @@ std::ostream& operator<<(std::ostream& o, const MachBuildMenu& t)
 GuiSimpleScrollableList*
 MachBuildMenu::createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
 {
-    return _NEW(MachBuildMenuIcons(pParent, rel, pProductionBank_, pFactory_, pInGameScreen));
+    return new MachBuildMenuIcons(pParent, rel, pProductionBank_, pFactory_, pInGameScreen);
 }
 
 MachLogFactory& MachBuildMenu::selectedFactory(MachInGameScreen* pInGameScreen) const

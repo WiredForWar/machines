@@ -84,7 +84,7 @@ void perRead(PerIstream& istr, MachPhysLight& light)
 
 void MachPhysLight::startLight(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration)
 {
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, duration);
 
     entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);

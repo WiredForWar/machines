@@ -144,7 +144,7 @@ MachPhysDataImplementation::~MachPhysDataImplementation()
     delete1D(missileEmplacementLauncherData_);
     delete1D(missileEmplacementICBMData_);
     delete1D(weaponData_);
-    _DELETE(pGeneralData_);
+    delete pGeneralData_;
 }
 
 void MachPhysDataImplementation::CLASS_INVARIANT

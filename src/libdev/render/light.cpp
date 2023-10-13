@@ -22,7 +22,7 @@ RenLight::RenLight(RenILight* l)
 // virtual
 RenLight::~RenLight()
 {
-    _DELETE(pILight_);
+    delete pILight_;
 }
 
 void RenLight::colour(const RenColour& col)
@@ -109,7 +109,7 @@ void perRead(PerIstream& istr, RenLight& light)
 
 /////////////////////////////////////////////////////////////////////////////
 RenDirectionalLight::RenDirectionalLight()
-    : RenLight(_NEW(RenIDirectionalLight))
+    : RenLight(new RenIDirectionalLight)
     , pDir_(_STATIC_CAST(RenIDirectionalLight*, pILight()))
 {
 }
@@ -270,7 +270,7 @@ std::ostream& operator<<(std::ostream& o, const RenAttenuatedLight&)
 
 /////////////////////////////////////////////////////////////////////////////
 RenPointLight::RenPointLight(MATHEX_SCALAR range)
-    : RenAttenuatedLight(_NEW(RenIPointLight(range)))
+    : RenAttenuatedLight(new RenIPointLight(range))
 {
 }
 
@@ -295,7 +295,7 @@ void perRead(PerIstream& istr, RenPointLight& light)
 
 /////////////////////////////////////////////////////////////////////////////
 RenUniformLight::RenUniformLight(MATHEX_SCALAR range)
-    : RenAttenuatedLight(_NEW(RenIUniformLight(range)))
+    : RenAttenuatedLight(new RenIUniformLight(range))
 {
 }
 

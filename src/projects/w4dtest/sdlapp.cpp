@@ -127,39 +127,39 @@ bool SDLApp::readModels(const SysPathName& pathname, MexTransform3d* cameraXform
                 scale = atof(tokens[positionIndex + 3].c_str());
 
                 MexTransform3d xform(MexPoint3d(x, y, z));
-                ModelData* model = _NEW(ModelData);
+                ModelData* model = new ModelData;
 
                 if (!meshFile.hasExtension() || meshFile.extension() == "x" || meshFile.extension() == "agt")
                 {
                     string modelName = tokens[1];
 
                     ASSERT(modelName.length() != 0, "No model name specified");
-                    W4dGeneric* gen = _NEW(W4dGeneric(root_, xform));
+                    W4dGeneric* gen = new W4dGeneric(root_, xform);
                     gen->loadSingleMesh(meshFile, modelName, scale);
                     model->entity_ = gen;
                     model->composite_ = NULL;
                 }
                 else if (meshFile.extension() == "lod")
                 {
-                    W4dGeneric* gen = _NEW(W4dGeneric(root_, xform));
+                    W4dGeneric* gen = new W4dGeneric(root_, xform);
                     gen->loadLODFile(meshFile);
                     model->entity_ = gen;
                     model->composite_ = NULL;
                 }
                 else if (meshFile.extension() == "cdf")
                 {
-                    model->composite_ = _NEW(W4dGenericComposite(root_, xform, meshFile));
+                    model->composite_ = new W4dGenericComposite(root_, xform, meshFile);
                     model->entity_ = model->composite_;
                     model->entity_->name(meshFile.filename());
                 }
                 else if (meshFile.extension() == "odf")
                 {
-                    model->composite_ = _NEW(W4dGenericComposite(root_, xform, meshFile));
+                    model->composite_ = new W4dGenericComposite(root_, xform, meshFile);
                     model->entity_ = model->composite_;
                     model->entity_->name(meshFile.filename());
                 }
 
-                model->control_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(model->entity_)), MexVec2(0, -1)));
+                model->control_ = new PhysFlyControl(_NEW(W4dMotionControlledEntity(model->entity_)), MexVec2(0, -1));
                 model->control_->initEventQueue();
                 model->control_->degreesPerSecond(8);
                 model->control_->metresPerSecond(0.6);
@@ -276,7 +276,7 @@ static void usage()
 
 void SDLApp::pickDisplayMode(bool windowMode, int width, int height)
 {
-    display_ = _NEW(RenDisplay(window()));
+    display_ = new RenDisplay(window());
     display_->buildDisplayModesList();
 
     if (!windowMode)
@@ -375,12 +375,12 @@ bool SDLApp::readBackground(
                 if (!meshFile.hasExtension() || meshFile.extension() == "x")
                 {
                     ASSERT(modelName.length() != 0, "No model name specified");
-                    gen = _NEW(W4dGeneric(addTo, xform));
+                    gen = new W4dGeneric(addTo, xform);
                     gen->loadSingleMesh(meshFile, modelName, scale);
                 }
                 else if (meshFile.extension() == "lod")
                 {
-                    gen = _NEW(W4dGeneric(addTo, xform));
+                    gen = new W4dGeneric(addTo, xform);
                     gen->loadLODFile(meshFile);
                 }
                 else
@@ -414,17 +414,17 @@ bool SDLApp::readBackground(
 bool SDLApp::createBackground()
 {
     // Create a separate W4d tree for the background sky items.
-    W4dRoot* bgRoot = _NEW(W4dRoot(W4dRoot::W4dRootId()));
-    W4dGeneric* domeRoot = _NEW(W4dGeneric(bgRoot, MexTransform3d()));
-    W4dGeneric* celestialRoot = _NEW(W4dGeneric(bgRoot, MexTransform3d()));
-    W4dGeneric* cloudRoot = _NEW(W4dGeneric(bgRoot, MexTransform3d()));
+    W4dRoot* bgRoot = new W4dRoot(W4dRoot::W4dRootId());
+    W4dGeneric* domeRoot = new W4dGeneric(bgRoot, MexTransform3d());
+    W4dGeneric* celestialRoot = new W4dGeneric(bgRoot, MexTransform3d());
+    W4dGeneric* cloudRoot = new W4dGeneric(bgRoot, MexTransform3d());
     sun_ = NULL;
 
     MATHEX_SCALAR cloudSpeed;
     MexDegrees rotSpeed;
     if (!::W4dReadBackground("dales.bg", domeRoot, &sun_, cloudRoot, celestialRoot, &cloudSpeed, &rotSpeed))
     {
-        _DELETE(bgRoot);
+        delete bgRoot;
         return false;
     }
 
@@ -432,24 +432,24 @@ bool SDLApp::createBackground()
 
     // Set up motion plans for the clouds and celestial bodies.  The celestials
     // rotate around a slightly off-vertical axis.
-    PhysMotionPlan::AnglesPtr angles = _NEW(PhysMotionPlan::Angles);
+    PhysMotionPlan::AnglesPtr angles = new PhysMotionPlan::Angles;
     angles->push_back(MexDegrees(0));
     angles->push_back(MexDegrees(120));
     angles->push_back(MexDegrees(240));
     angles->push_back(MexDegrees(360));
 
-    PhysMotionPlan::TimesPtr times = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::TimesPtr times = new PhysMotionPlan::Times;
     times->push_back(120.0 / rotSpeed.asScalar());
     times->push_back(240.0 / rotSpeed.asScalar());
     times->push_back(360.0 / rotSpeed.asScalar());
 
     MexVec3 axis(0, 0.2, 0.98);
-    PhysMotionPlanPtr sunPlan = _NEW(PhysTimedAnglePlan(angles, times, axis, MexPoint3d()));
+    PhysMotionPlanPtr sunPlan = new PhysTimedAnglePlan(angles, times, axis, MexPoint3d());
 
     celestialRoot->entityPlanForEdit().absoluteMotion(sunPlan, 0, 1000000);
 
     // These positions define an octagonal path for the clouds.
-    PhysMotionPlan::TransformsPtr xforms = _NEW(PhysMotionPlan::Transforms);
+    PhysMotionPlan::TransformsPtr xforms = new PhysMotionPlan::Transforms;
     xforms->push_back(MexPoint3d(-100, -100, 0));
     xforms->push_back(MexPoint3d(-141, 0, 0));
     xforms->push_back(MexPoint3d(-100, 100, 0));
@@ -465,7 +465,7 @@ bool SDLApp::createBackground()
     // the path.  (Each path segment is 108 meters long.)
     MATHEX_SCALAR cloudAcel = cloudSpeed / 7;
     PhysMotionPlanPtr cldPlan
-        = _NEW(PhysLinearTravelPlan(xforms, 0, cloudSpeed, cloudAcel, cloudAcel, 1, 1, 1, 1, true));
+        = new PhysLinearTravelPlan(xforms, 0, cloudSpeed, cloudAcel, cloudAcel, 1, 1, 1, 1, true);
     cloudRoot->entityPlanForEdit().absoluteMotion(cldPlan, 0, 1000000);
 
     return true;
@@ -521,7 +521,7 @@ bool SDLApp::clientStartup()
     //  in code. We need a root before we start the persistence,
     //  however the persistence will also set up its own root.
 
-    W4dRoot* pRoot = _NEW(W4dRoot(W4dRoot::W4dRootId()));
+    W4dRoot* pRoot = new W4dRoot(W4dRoot::W4dRootId());
     root_ = pRoot;
 
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
@@ -544,7 +544,7 @@ bool SDLApp::clientStartup()
     RenTexManager::instance().searchList(searchList);
 
     pickDisplayMode(windowMode, modeW, modeH);
-    manager_ = _NEW(W4dSceneManager(display_, root_));
+    manager_ = new W4dSceneManager(display_, root_);
     device_ = manager_->pDevice();
     device_->displayImage("wait.bmp");
 
@@ -577,7 +577,7 @@ bool SDLApp::clientStartup()
 
         //  Delete our dummy root as the proper root will have been
         //  set up from the persistence mechanism
-        _DELETE(pRoot);
+        delete pRoot;
 
         for (size_t i = 0; i < models_.size(); ++i)
         {
@@ -585,7 +585,7 @@ bool SDLApp::clientStartup()
 
             MexTransform3d xform;
 
-            pModel->control_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(pModel->entity_)), MexVec2(0, -1)));
+            pModel->control_ = new PhysFlyControl(_NEW(W4dMotionControlledEntity(pModel->entity_)), MexVec2(0, -1));
             pModel->control_->initEventQueue();
             pModel->control_->degreesPerSecond(8);
             pModel->control_->metresPerSecond(0.6);
@@ -610,23 +610,23 @@ bool SDLApp::clientStartup()
 
     persistenceImplementationReadWriteTimingData(std::cout);
 
-    light_ = _NEW(W4dDirectionalLight(root_, MexVec3(1, 0, 0)));
+    light_ = new W4dDirectionalLight(root_, MexVec3(1, 0, 0));
 
     readEnvironment(meshListFile);
 
     // The light control actually moves this object and we copy it's orientation
     // into the true light's position.
-    dummyLight_ = _NEW(W4dGeneric(root_, light_->localTransform()));
+    dummyLight_ = new W4dGeneric(root_, light_->localTransform());
 
     if (!createBackground())
         std::cout << "Couldn't read background meshes." << std::endl;
 
     MexRadians a1 = MexDegrees(40);
-    camera_ = _NEW(W4dCamera(manager_, root_, eyeXform));
+    camera_ = new W4dCamera(manager_, root_, eyeXform);
     camera_->verticalFOVAngle(a1.asScalar());
     camera_->yonClipDistance(2000);
 
-    pGroundCamera_ = _NEW(W4dCamera(manager_, root_, eyeXform));
+    pGroundCamera_ = new W4dCamera(manager_, root_, eyeXform);
     pGroundCamera_->verticalFOVAngle(a1.asScalar());
     pGroundCamera_->yonClipDistance(2000);
 
@@ -634,21 +634,21 @@ bool SDLApp::clientStartup()
 
     // Use a motion constraint which allows you to ascend to effectively
     // infinity (the default max height is 10).
-    PhysGroundMotionConstraint* constraint = _NEW(PhysGroundMotionConstraint());
+    PhysGroundMotionConstraint* constraint = new PhysGroundMotionConstraint();
     constraint->maxHeight(100000);
 
-    pGroundControl_ = _NEW(PhysGroundFlyControl(_NEW(W4dMotionControlledEntity(pGroundCamera_)), constraint));
+    pGroundControl_ = new PhysGroundFlyControl(_NEW(W4dMotionControlledEntity(pGroundCamera_)), constraint);
     pGroundControl_->enableInput();
     pGroundControl_->initEventQueue();
 
     // Set-up a flight sim like flying eyepoint.
-    eyeControl_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(camera_))));
+    eyeControl_ = new PhysFlyControl(_NEW(W4dMotionControlledEntity(camera_)));
     eyeControl_->metresPerSecond(2);
     eyeControl_->degreesPerSecond(10);
     eyeControl_->initEventQueue();
     eyeControl_->useKeypadMapping();
 
-    lightControl_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(dummyLight_))));
+    lightControl_ = new PhysFlyControl(_NEW(W4dMotionControlledEntity(dummyLight_)));
     lightControl_->degreesPerSecond(10);
     lightControl_->initEventQueue();
     lightControl_->useKeypadMapping();
@@ -673,9 +673,9 @@ bool SDLApp::clientStartup()
 
 void SDLApp::clientShutdown()
 {
-    _DELETE(eyeControl_);
-    _DELETE(pGroundControl_);
-    _DELETE(lightControl_);
+    delete eyeControl_;
+    delete pGroundControl_;
+    delete lightControl_;
 
     for (int i = 0; i != models_.size(); ++i)
     {
@@ -683,14 +683,14 @@ void SDLApp::clientShutdown()
 
         if (model)
         {
-            _DELETE(model->control_);
-            _DELETE(model);
+            delete model->control_;
+            delete model;
         }
     }
 
-    _DELETE(root_);
-    _DELETE(manager_);
-    _DELETE(display_);
+    delete root_;
+    delete manager_;
+    delete display_;
 }
 
 static void accumulateSpeed(UtlAverager<double>& average, const MexPoint3d position)

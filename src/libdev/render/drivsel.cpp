@@ -77,7 +77,7 @@ RenDriverPtr RenDriverSelectorImpl::createAutomaticDriver(const RenDriverSelecto
     ASSERT(bestDriverInList.isDefined(), " Could not find a acceptable driver in list ");
 
     // create a new dummy entry for the list
-    RenDriver* automaticDriver = _NEW(RenDriver(*bestDriverInList));
+    RenDriver* automaticDriver = new RenDriver(*bestDriverInList);
     automaticDriver->driverImpl().name("Automatic");
     automaticDriver->driverImpl().isAutomatic(true);
     RenDriverPtr automaticDriverPtr(automaticDriver);
@@ -147,7 +147,7 @@ void RenDriverSelectorImpl::addD3dDriver(const RenDriverPtr& driverPtr, PushWher
     CB_DEPIMPL(RenDriverPtr, automaticD3dDriver_);
 
 RenDriverSelector::RenDriverSelector(const RenDisplay* const display)
-    : pImpl_(_NEW(RenDriverSelectorImpl(display)))
+    : pImpl_(new RenDriverSelectorImpl(display))
 {
     CB_RenDriverSelector_DEPIMPL();
     RENDER_STREAM(std::endl);
@@ -161,7 +161,7 @@ RenDriverSelector::RenDriverSelector(const RenDisplay* const display)
 }
 
 RenDriverSelector::RenDriverSelector()
-    : pImpl_(_NEW(RenDriverSelectorImpl(nullptr)))
+    : pImpl_(new RenDriverSelectorImpl(nullptr))
 {
     CB_RenDriverSelector_DEPIMPL();
     RENDER_STREAM(std::endl);
@@ -392,7 +392,7 @@ RenDriverSelector::ReturnValue RenDriverSelector::updateDriverRegistries()
 RenDriverSelector::~RenDriverSelector()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void RenDriverSelector::CLASS_INVARIANT

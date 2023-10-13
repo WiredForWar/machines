@@ -14,7 +14,7 @@ PER_DEFINE_PERSISTENT(MachGuiDbPlayerScenario);
 
 MachGuiDbPlayerScenario::MachGuiDbPlayerScenario(MachGuiDbPlayer* pDbPlayer, MachGuiDbScenario* pDbScenario)
 {
-    pData_ = _NEW(MachGuiDbIPlayerScenario);
+    pData_ = new MachGuiDbIPlayerScenario;
     pData_->pDbPlayer_ = pDbPlayer;
     pData_->pDbScenario_ = pDbScenario;
 
@@ -25,7 +25,7 @@ MachGuiDbPlayerScenario::~MachGuiDbPlayerScenario()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbPlayerScenario::CLASS_INVARIANT

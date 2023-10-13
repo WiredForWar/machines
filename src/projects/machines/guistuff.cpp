@@ -23,7 +23,7 @@ void debugTiming(const char*, bool);
 
 void SDLApp::cleanUpGui()
 {
-    _DELETE(pStartupScreens_);
+    delete pStartupScreens_;
     pStartupScreens_ = nullptr;
 }
 
@@ -36,7 +36,7 @@ void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter*
     Gui::backBuffer(backBuf);
 
     HAL_STREAM("SDLApp::initialiseGui new MachGuiStartupScreens\n");
-    pStartupScreens_ = _NEW(MachGuiStartupScreens(manager_, pRoot_, pReporter));
+    pStartupScreens_ = new MachGuiStartupScreens(manager_, pRoot_, pReporter);
     if (startedFromLobby == LOBBY_START)
     {
         // have to verify that the system really is in a lobbied state and doesn't just think it is.

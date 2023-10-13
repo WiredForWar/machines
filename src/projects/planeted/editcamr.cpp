@@ -124,7 +124,7 @@ void PedCameraEditor::readScnFile(PedScenarioFile& scenarioFile)
         {
             W4dDomain* pDomain = MachLogPlanetDomains::pDomainAt(scnCamera.transform.position());
 
-            _DELETE(pCurrentMarker_);
+            delete pCurrentMarker_;
 
             // Calculate local transform from global transform and parent global transform
             MexTransform3d localResultTransform;
@@ -133,7 +133,7 @@ void PedCameraEditor::readScnFile(PedScenarioFile& scenarioFile)
 
             RenColour markerColour = PedRace::colour(race);
             // Create new marker at local transform calculated above
-            pCurrentMarker_ = _NEW(PedCameraMarker(pDomain, localResultTransform, scnCamera.type, markerColour));
+            pCurrentMarker_ = new PedCameraMarker(pDomain, localResultTransform, scnCamera.type, markerColour);
             pCurrentMarker_->draw();
             race = PedRace::next(race);
         }
@@ -255,8 +255,8 @@ void PedCameraEditor::setMarkerToCamera(PedCameraMarker** ppCameraMarker, MachPh
 
         // Use the transform and parent to attach a camera marker in the correct position
         RenColour markerColour = PedRace::colour(race);
-        _DELETE(*ppCameraMarker);
-        *ppCameraMarker = _NEW(PedCameraMarker(pParent, cameraLocalTransform, cameraType, markerColour));
+        delete *ppCameraMarker;
+        *ppCameraMarker = new PedCameraMarker(pParent, cameraLocalTransform, cameraType, markerColour);
         (*ppCameraMarker)->draw();
     }
     else

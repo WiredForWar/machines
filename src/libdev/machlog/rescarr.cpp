@@ -75,7 +75,7 @@ MachLogResourceCarrier::MachLogResourceCarrier(
         pRace,
         pNewPhysResourceCarrier(hwLevel, swLevel, pRace, location),
         MachLog::RESOURCE_CARRIER)
-    , pImpl_(_NEW(MachLogResourceCarrierImpl()))
+    , pImpl_(new MachLogResourceCarrierImpl())
 {
     hp(data().hitPoints());
     armour(data().armour());
@@ -96,7 +96,7 @@ MachLogResourceCarrier::MachLogResourceCarrier(
         pNewPhysResourceCarrier(hwLevel, swLevel, pRace, location),
         MachLog::RESOURCE_CARRIER,
         withId)
-    , pImpl_(_NEW(MachLogResourceCarrierImpl()))
+    , pImpl_(new MachLogResourceCarrierImpl())
 {
     hp(data().hitPoints());
     armour(data().armour());
@@ -110,7 +110,7 @@ MachLogResourceCarrier::~MachLogResourceCarrier()
     clearSmeltingBuilding();
     clearSuppliers();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 PhysRelativeTime MachLogResourceCarrier::pickUp()
@@ -409,7 +409,7 @@ void MachLogResourceCarrier::mayNeedNewOp(StartWithPickUpOrPutDown startType)
     {
         // okay, should we now initiate a transport op?
         if (hasSuppliers() or hasSmeltingBuilding())
-            newOperation(_NEW(MachLogTransportOperation(this, startType)));
+            newOperation(new MachLogTransportOperation(this, startType));
     }
 }
 
@@ -637,7 +637,7 @@ MachPhysResourceCarrier* MachLogResourceCarrier::pNewPhysResourceCarrier(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysResourceCarrier(pDomain, localTransform, hwLevel, swLevel, pRace->race()));
+    return new MachPhysResourceCarrier(pDomain, localTransform, hwLevel, swLevel, pRace->race());
 }
 // virtual
 const MachPhysMachineData& MachLogResourceCarrier::machineData() const
@@ -922,7 +922,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                     {
                         poolOfWorthwhileMines.push_back(pNearestMine);
                         obj->setSuppliers(poolOfWorthwhileMines);
-                        obj->newOperation(_NEW(MachLogPickUpOperation(obj)));
+                        obj->newOperation(new MachLogPickUpOperation(obj));
                         failedToAssign = false;
                     }
                 }

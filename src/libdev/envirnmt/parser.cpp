@@ -454,7 +454,7 @@ defaultact:
                 ASSERT(pPlanet, "There is no valid planet.");
 
                 pPlanet->nvgFilterColour(*yypvt[-0].pColour);
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 34:
@@ -482,7 +482,7 @@ defaultact:
                 ASSERT(pPlanet, "There is no valid planet.");
 
                 pPlanet->nvgSkyColour(*yypvt[-0].pColour);
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 37:
@@ -492,7 +492,7 @@ defaultact:
                 ASSERT(pPlanet, "There is no valid planet.");
 
                 pPlanet->nvgFogColour(*yypvt[-0].pColour);
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 38:
@@ -502,14 +502,14 @@ defaultact:
                 ASSERT(pPlanet, "There is no valid planet.");
 
                 pPlanet->nvgSkylineColour(*yypvt[-0].pColour);
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 39:
             // # line 204 "d:\libdev\envirnmt\source\parser.y"
             {
                 yypvt[-1].pClut->name(*yypvt[-3].pString);
-                _DELETE(yypvt[-3].pString);
+                delete yypvt[-3].pString;
                 yyval.pClut = yypvt[-1].pClut;
 
                 // We can't add the colour table to the planet parser until it has a name.
@@ -521,26 +521,26 @@ defaultact:
         case 40:
             // # line 217 "d:\libdev\envirnmt\source\parser.y"
             {
-                yyval.pClut = _NEW(EnvElevationColourTable());
+                yyval.pClut = new EnvElevationColourTable();
                 yyval.pClut->addEntry(yypvt[-0].pClutEntry->elevation, yypvt[-0].pClutEntry->colour);
-                _DELETE(yypvt[-0].pClutEntry);
+                delete yypvt[-0].pClutEntry;
             }
             break;
         case 41:
             // # line 223 "d:\libdev\envirnmt\source\parser.y"
             {
                 yypvt[-1].pClut->addEntry(yypvt[-0].pClutEntry->elevation, yypvt[-0].pClutEntry->colour);
-                _DELETE(yypvt[-0].pClutEntry);
+                delete yypvt[-0].pClutEntry;
                 yyval.pClut = yypvt[-1].pClut;
             }
             break;
         case 42:
             // # line 231 "d:\libdev\envirnmt\source\parser.y"
             {
-                yyval.pClutEntry = _NEW(EnvElevationColourTable::Entry);
+                yyval.pClutEntry = new EnvElevationColourTable::Entry;
                 yyval.pClutEntry->elevation = elevationRangeCheck(yypvt[-1].floatVal);
                 yyval.pClutEntry->colour = *yypvt[-0].pColour;
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 43:
@@ -554,7 +554,7 @@ defaultact:
             // # line 246 "d:\libdev\envirnmt\source\parser.y"
             {
                 EnvIPlanetParser::instance().startOrbit(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 47:
@@ -616,7 +616,7 @@ defaultact:
             // # line 301 "d:\libdev\envirnmt\source\parser.y"
             {
                 EnvIPlanetParser::instance().startSatellite(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 57:
@@ -625,7 +625,7 @@ defaultact:
                 EnvISatelliteParams* s = EnvIPlanetParser::instance().satelliteInConstruction();
                 ASSERT(s, "Parsing logic error.  Satellite params are not set.");
                 s->mesh(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 58:
@@ -634,7 +634,7 @@ defaultact:
                 EnvISatelliteParams* s = EnvIPlanetParser::instance().satelliteInConstruction();
                 ASSERT(s, "Parsing logic error.  Satellite params are not set.");
                 s->meshColourClut(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 59:
@@ -643,7 +643,7 @@ defaultact:
                 EnvISatelliteParams* s = EnvIPlanetParser::instance().satelliteInConstruction();
                 ASSERT(s, "Parsing logic error.  Satellite params are not set.");
                 s->dirLightClut(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 60:
@@ -652,7 +652,7 @@ defaultact:
                 EnvISatelliteParams* s = EnvIPlanetParser::instance().satelliteInConstruction();
                 ASSERT(s, "Parsing logic error.  Satellite params are not set.");
                 s->ambLightClut(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 61:
@@ -661,7 +661,7 @@ defaultact:
                 EnvISatelliteParams* s = EnvIPlanetParser::instance().satelliteInConstruction();
                 ASSERT(s, "Parsing logic error.  Satellite params are not set.");
                 s->orbit(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 65:
@@ -678,7 +678,7 @@ defaultact:
                 EnvPlanetEnvironment* p = EnvIPlanetParser::instance().planet();
                 ASSERT(p, "Parsing logic error.  Planet is not set.");
                 p->fogColourFixed(*yypvt[-0].pColour);
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 69:
@@ -689,7 +689,7 @@ defaultact:
 
                 EnvSatellite* sat = EnvIPlanetParser::instance().lookUpSatellite(yypvt[-0].pString);
                 p->fogColourController(sat);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 70:
@@ -700,7 +700,7 @@ defaultact:
 
                 EnvElevationColourTable* clut = EnvIPlanetParser::instance().lookUpClut(yypvt[-0].pString);
                 p->fogColourTable(clut);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 74:
@@ -727,21 +727,21 @@ defaultact:
             // # line 430 "d:\libdev\envirnmt\source\parser.y"
             {
                 EnvIPlanetParser::instance().skylineMeshFile(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 83:
             // # line 436 "d:\libdev\envirnmt\source\parser.y"
             {
                 EnvIPlanetParser::instance().skylineController(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 84:
             // # line 442 "d:\libdev\envirnmt\source\parser.y"
             {
                 EnvIPlanetParser::instance().skylineColourTable(yypvt[-0].pString);
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 88:
@@ -762,7 +762,7 @@ defaultact:
             {
                 EnvIPlanetParser::instance().skyDeclaration().uniformSky().controller(*yypvt[-0].pString);
 
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 93:
@@ -770,7 +770,7 @@ defaultact:
             {
                 EnvIPlanetParser::instance().skyDeclaration().uniformSky().colourTable(*yypvt[-0].pString);
 
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 94:
@@ -791,7 +791,7 @@ defaultact:
             {
                 EnvIPlanetParser::instance().skyDeclaration().staticSky().meshFile(*yypvt[-0].pString);
 
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 99:
@@ -799,7 +799,7 @@ defaultact:
             {
                 EnvIPlanetParser::instance().skyDeclaration().staticSky().backgroundColour(*yypvt[-0].pColour);
 
-                _DELETE(yypvt[-0].pColour);
+                delete yypvt[-0].pColour;
             }
             break;
         case 100:
@@ -820,7 +820,7 @@ defaultact:
             {
                 EnvIPlanetParser::instance().skyDeclaration().dynamicSky().meshFile(*yypvt[-0].pString);
 
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 109:
@@ -828,7 +828,7 @@ defaultact:
             {
                 EnvIPlanetParser::instance().skyDeclaration().dynamicSky().controller(*yypvt[-0].pString);
 
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 112:
@@ -838,7 +838,7 @@ defaultact:
                     yypvt[-2].floatVal,
                     *yypvt[-0].pString);
 
-                _DELETE(yypvt[-0].pString);
+                delete yypvt[-0].pString;
             }
             break;
         case 113:
@@ -854,13 +854,13 @@ defaultact:
                         yypvt[-4].floatVal,
                         yypvt[-1].intVal);
 
-                _DELETE(yypvt[-7].pString);
+                delete yypvt[-7].pString;
             }
             break;
         case 114:
             // # line 566 "d:\libdev\envirnmt\source\parser.y"
             {
-                yyval.pColour = _NEW(RenColour(yypvt[-5].floatVal, yypvt[-3].floatVal, yypvt[-1].floatVal));
+                yyval.pColour = new RenColour(yypvt[-5].floatVal, yypvt[-3].floatVal, yypvt[-1].floatVal);
                 IAIN_STREAM(*yyval.pColour << std::endl);
             }
             break;
@@ -868,7 +868,7 @@ defaultact:
             // # line 571 "d:\libdev\envirnmt\source\parser.y"
             {
                 yyval.pColour
-                    = _NEW(RenColour(yypvt[-7].floatVal, yypvt[-5].floatVal, yypvt[-3].floatVal, yypvt[-1].floatVal));
+                    = new RenColour(yypvt[-7].floatVal, yypvt[-5].floatVal, yypvt[-3].floatVal, yypvt[-1].floatVal);
                 IAIN_STREAM(*yyval.pColour << std::endl);
             }
             break;

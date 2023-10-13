@@ -30,7 +30,7 @@ PART& MachPhysSubTypedObjectFactory<SUB_TYPE, PART>::part(SUB_TYPE subType, size
     size_t index = MachPhysLevels::instance().uniqueHardwareIndex(subType, hardwareIndex);
 
     if (entries_[index] == NULL)
-        entries_[index] = _NEW(PART(&root_, subType, hardwareLevel));
+        entries_[index] = new(PART(&root_, subType, hardwareLevel));
 
     return *entries_[index];
 }

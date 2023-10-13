@@ -32,7 +32,7 @@ MachGuiFactoryBuffer::MachGuiFactoryBuffer(
         8,
         MachProductionIcon::buttonWidth() * 3 + 29 * MachGui::uiScaleFactor(),
         MachProductionIcon::buttonHeight() + 12 * MachGui::uiScaleFactor());
-    pIcons_ = _NEW(MachProductionIcons(this, iconsArea, pFactory, pInGameScreen));
+    pIcons_ = new MachProductionIcons(this, iconsArea, pFactory, pInGameScreen);
 
     // Become an observer of the factory
     pFactory_->attach(this);
@@ -96,7 +96,7 @@ void MachGuiFactoryBuffer::updateProgress()
         if( pProgressBar_ == NULL )
         {
             Gui::Box area( 22, 2, MachGui::actorIconWidth() + 22, 5 + 2 );
-            pProgressBar_ = _NEW( GuiFilledProgressBar( this, area, Gui::BLACK(), Gui::GREEN() ) );
+            pProgressBar_ = new GuiFilledProgressBar( this, area, Gui::BLACK(), Gui::GREEN() );
         }
 
         //Sets its current level
@@ -108,7 +108,7 @@ void MachGuiFactoryBuffer::updateProgress()
     else if( pProgressBar_ != NULL )
     {
         //No progress bar required
-        _DELETE( pProgressBar_ );
+        delete pProgressBar_;
         pProgressBar_ = NULL;
         changed();
     }    */

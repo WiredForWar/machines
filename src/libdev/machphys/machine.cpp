@@ -71,7 +71,7 @@ MachPhysMachine::MachPhysMachine(
     const MachPhysMachineData& data)
 
     : W4dComposite(pParent, localTransform, SOLID)
-    , pImpl_(_NEW(MachPhysMachineImpl))
+    , pImpl_(new MachPhysMachineImpl)
 {
     CB_DEPIMPL(W4dLink*, pFaceplate_);
     CB_DEPIMPL(W4dLink*, pUpperBodyTurnLink_);
@@ -121,7 +121,7 @@ MachPhysMachine::MachPhysMachine(
     const MachPhysMachineData& data)
 
     : W4dComposite(copyMe, pParent, localTransform)
-    , pImpl_(_NEW(MachPhysMachineImpl(*copyMe.pImpl_, data, race, bodyLevel, brainLevel)))
+    , pImpl_(new MachPhysMachineImpl(*copyMe.pImpl_, data, race, bodyLevel, brainLevel))
 {
     CB_DEPIMPL(MachPhysLocomotionMethod*, pLocomotionMethod_);
     CB_DEPIMPL(W4dLink*, pFaceplate_);
@@ -154,7 +154,7 @@ MachPhysMachine::MachPhysMachine(
     {
         pUpperBodyTurnLink_ = links()[copyMe.pImpl_->pUpperBodyTurnLink_->id()];
         pTurnerTracker_
-            = _NEW(MachPhysTurnerTracker(pUpperBodyTurnLink_, W4d::Z_AXIS, W4d::X_AXIS, data.upperBodyTurnRate()));
+            = new MachPhysTurnerTracker(pUpperBodyTurnLink_, W4d::Z_AXIS, W4d::X_AXIS, data.upperBodyTurnRate());
     }
 
     TEST_INVARIANT;
@@ -179,12 +179,12 @@ MachPhysMachine::~MachPhysMachine()
         damageData().finishBurning();
     }
 
-    _DELETE(pLocomotionMethod_);
-    _DELETE(pExplosion_);
-    _DELETE(pDamageData_);
-    _DELETE(pTurnerTracker_);
+    delete pLocomotionMethod_;
+    delete pExplosion_;
+    delete pDamageData_;
+    delete pTurnerTracker_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // virtual
@@ -199,7 +199,7 @@ std::unique_ptr<MachPhysMachineMoveInfo> MachPhysMachine::moveInfo(
     //Check for finished burning
     if( pBurning_  and  pBurning_->isBurningFinished() )
     {
-        _DELETE( pBurning_ );
+        delete pBurning_;
         pBurning_ = NULL;
     }
 */
@@ -237,12 +237,12 @@ std::unique_ptr<MachPhysMachineMoveInfo> MachPhysMachine::doMoveInfo(
     CB_DEPIMPL(MachPhysPlanetSurface::Floors, floors_);
 
     CtlCountedPtr<MachPhysLocomotionMethod::RampAccelerations> rampAccelerationsPtr(
-        _NEW(MachPhysLocomotionMethod::RampAccelerations));
+        new MachPhysLocomotionMethod::RampAccelerations);
     rampAccelerationsPtr->reserve(8);
 
     pLocomotionMethod_->calculateAccelerations(profilePtr, startSpeed, capSpeed, finalState, rampAccelerationsPtr);
 
-    MachPhysMachineMoveInfo* pInfo = _NEW(MachPhysMachineMoveInfo(profilePtr, rampAccelerationsPtr, startTime));
+    MachPhysMachineMoveInfo* pInfo = new MachPhysMachineMoveInfo(profilePtr, rampAccelerationsPtr, startTime);
 
     return std::unique_ptr<MachPhysMachineMoveInfo>(pInfo);
 }
@@ -482,13 +482,13 @@ void MachPhysMachine::doMove(const MachPhysMachineMoveInfo& info)
     PHYS_MOTION_STREAM("Move info:\n" << info);
 
     // Compute the linear motion plan
-    PhysMotionPlan::Transforms* pTransforms = _NEW(PhysMotionPlan::Transforms(info.transforms()));
+    PhysMotionPlan::Transforms* pTransforms = new PhysMotionPlan::Transforms(info.transforms());
     PhysMotionPlan::TransformsPtr transformsPtr(pTransforms);
 
     PhysMotionPlan::RampAccelerationsPtr rampAccelerationsPtr(
-        _NEW(PhysMotionPlan::RampAccelerations(info.moveProfiles())));
+        new PhysMotionPlan::RampAccelerations(info.moveProfiles()));
 
-    PhysLinearTravelPlan* pPlan = _NEW(PhysLinearTravelPlan(transformsPtr, rampAccelerationsPtr));
+    PhysLinearTravelPlan* pPlan = new PhysLinearTravelPlan(transformsPtr, rampAccelerationsPtr);
 
     const MachPhysGeneralData& genData = MachPhysData::instance().generalData();
     pPlan->startRotationDistance(genData.startRotationDistance());
@@ -867,7 +867,7 @@ PhysRelativeTime MachPhysMachine::explodeLinks()
     CB_DEPIMPL(MachPhysMachineExplosionDataPtr, explosionDataPtr_);
     CB_DEPIMPL(MachPhysMachineExplosion*, pExplosion_);
 
-    pExplosion_ = _NEW(MachPhysMachineExplosion(this, explosionData(), 2.0));
+    pExplosion_ = new MachPhysMachineExplosion(this, explosionData(), 2.0);
 
     return 2.0;
 }
@@ -891,7 +891,7 @@ void MachPhysMachine::fireballEffect(PhysAbsoluteTime time)
         const size_t nModels = elementsof(fireballModels);
         const size_t nSegments = (time / 0.25) + 1;
 
-        W4dMeshPlan* pFireballPlan = _NEW(W4dMeshPlan);
+        W4dMeshPlan* pFireballPlan = new W4dMeshPlan;
         PhysRelativeTime modelTime = 0.0;
 
         for (size_t i = 0; i < nSegments; ++i)
@@ -986,7 +986,7 @@ void MachPhysMachine::createHoverBootLocomotion(MATHEX_SCALAR bobHeight)
     if (!hipLinkFound)
         pBobbingLink = nullptr;
 
-    pLocomotionMethod_ = _NEW(MachPhysHoverBoots(this, pLHoverBoot, pRHoverBoot, pBobbingLink, bobHeight));
+    pLocomotionMethod_ = new MachPhysHoverBoots(this, pLHoverBoot, pRHoverBoot, pBobbingLink, bobHeight);
 }
 
 void MachPhysMachine::createWheelLocomotion(MATHEX_SCALAR wheelRadius)
@@ -1129,7 +1129,7 @@ void MachPhysMachine::createWheelLocomotion(MATHEX_SCALAR wheelRadius)
     if (linkFound)
         rWheels.push_back(pLink);
 
-    pLocomotionMethod_ = _NEW(MachPhysWheels(this, wheelRadius, lWheels, rWheels));
+    pLocomotionMethod_ = new MachPhysWheels(this, wheelRadius, lWheels, rWheels);
 }
 
 void MachPhysMachine::createSpiderLocomotion()
@@ -1152,14 +1152,14 @@ void MachPhysMachine::createSpiderLocomotion()
     planFound = findCompositePlan("Start", &startWalkingPlanPtr);
     planFound = findCompositePlan("Stop", &stopWalkingPlanPtr);
 
-    pLocomotionMethod_ = _NEW(MachPhysSpiderLegs(
+    pLocomotionMethod_ = new MachPhysSpiderLegs(
         this,
         restingPlanPtr,
         walkingPlanPtr,
         turningLeftPlanPtr,
         turningRightPlanPtr,
         startWalkingPlanPtr,
-        stopWalkingPlanPtr));
+        stopWalkingPlanPtr);
 }
 
 void MachPhysMachine::createTracksLocomotion(MATHEX_SCALAR repeatsPerMeter)
@@ -1179,14 +1179,14 @@ void MachPhysMachine::createTracksLocomotion(MATHEX_SCALAR repeatsPerMeter)
 
     ASSERT(lFound && rFound, "Couldn't find machine tracks.");
 
-    pLocomotionMethod_ = _NEW(MachPhysTracks(this, lTrackLink, rTrackLink, repeatsPerMeter));
+    pLocomotionMethod_ = new MachPhysTracks(this, lTrackLink, rTrackLink, repeatsPerMeter);
 }
 
 void MachPhysMachine::createGliderLocomotion(MATHEX_SCALAR height)
 {
     CB_DEPIMPL(MachPhysLocomotionMethod*, pLocomotionMethod_);
 
-    pLocomotionMethod_ = _NEW(MachPhysGlider(this, height));
+    pLocomotionMethod_ = new MachPhysGlider(this, height);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachPhysMachine& t)
@@ -1219,7 +1219,7 @@ PhysRelativeTime MachPhysMachine::doTurn(MATHEX_SCALAR angle)
     startTransform.transform(turnRelativeTransform, &turnTransform);
 
     // Make a collection of the start and turn transforms
-    PhysMotionPlan::TransformsPtr transformsPtr(_NEW(PhysMotionPlan::Transforms));
+    PhysMotionPlan::TransformsPtr transformsPtr(new PhysMotionPlan::Transforms);
     transformsPtr->reserve(2);
 
     transformsPtr->push_back(startTransform);
@@ -1238,7 +1238,7 @@ PhysRelativeTime MachPhysMachine::doTurn(MATHEX_SCALAR angle)
 
     ASSERT(pLocomotionMethod_ != nullptr, "");
 
-    PhysMotionPlan::RampAccelerationsPtr rampAccelerationsPtr(_NEW(PhysMotionPlan::RampAccelerations));
+    PhysMotionPlan::RampAccelerationsPtr rampAccelerationsPtr(new PhysMotionPlan::RampAccelerations);
     rampAccelerationsPtr->reserve(3);
 
     MATHEX_SCALAR dummyCapSpeed = 0.0;
@@ -1249,7 +1249,7 @@ PhysRelativeTime MachPhysMachine::doTurn(MATHEX_SCALAR angle)
     pLocomotionMethod_
         ->calculateAccelerations(transformsPtr, startSpeed, dummyCapSpeed, MachPhys::AT_REST, rampAccelerationsPtr);
 
-    PhysLinearTravelPlan* pPlan = _NEW(PhysLinearTravelPlan(transformsPtr, rampAccelerationsPtr));
+    PhysLinearTravelPlan* pPlan = new PhysLinearTravelPlan(transformsPtr, rampAccelerationsPtr);
 
     const MachPhysGeneralData& genData = MachPhysData::instance().generalData();
     pPlan->startRotationDistance(genData.startRotationDistance());
@@ -1432,7 +1432,7 @@ PhysRelativeTime MachPhysMachine::shake(const PhysAbsoluteTime startTime)
                 // Add this to the plan, creating first time
                 if (j == 0)
                 {
-                    pShakePlan = _NEW(PhysLinearMotionPlan(unshakenTransform, intermediateTransform, interval));
+                    pShakePlan = new PhysLinearMotionPlan(unshakenTransform, intermediateTransform, interval);
                 }
                 else
                 {
@@ -1661,7 +1661,7 @@ MachPhysMachineDamageData& MachPhysMachine::damageData()
     CB_DEPIMPL(MachPhysMachineDamageData*, pDamageData_);
 
     if (not hasDamageData())
-        pDamageData_ = _NEW(MachPhysMachineDamageData(this));
+        pDamageData_ = new MachPhysMachineDamageData(this);
 
     return *pDamageData_;
 }
@@ -1866,7 +1866,7 @@ MachPhysMachine::ProfilePtr MachPhysMachine::profile(
 
     planetSurface.pathProfile(moveProfile.back().position(), postMoveDestination, floors_, &postMoveProfile);
 
-    CtlCountedPtr<MachPhysPlanetSurface::Profile> smoothedProfilePtr(_NEW(MachPhysPlanetSurface::Profile));
+    CtlCountedPtr<MachPhysPlanetSurface::Profile> smoothedProfilePtr(new MachPhysPlanetSurface::Profile);
     //  The multiplication factor of 2 has been experimentally determined
     //  to give the fullest possible vectors
     smoothedProfilePtr->reserve(moveProfile.size() * 2);
@@ -1973,16 +1973,16 @@ void MachPhysMachine::doFadeInAnimation()
         whites.push_back(1.0);
         whites.push_back(1.0);
 
-        PhysLinearScalarPlan* pBlueAlphaPlan = _NEW(PhysLinearScalarPlan(bTimes, blues));
-        PhysLinearScalarPlan* pWhiteAlphaPlan = _NEW(PhysLinearScalarPlan(wTimes, whites));
+        PhysLinearScalarPlan* pBlueAlphaPlan = new PhysLinearScalarPlan(bTimes, blues);
+        PhysLinearScalarPlan* pWhiteAlphaPlan = new PhysLinearScalarPlan(wTimes, whites);
 
         PhysScalarPlanPtr blueAlphaPlanPtr(pBlueAlphaPlan);
         PhysScalarPlanPtr whiteAlphaPlanPtr(pWhiteAlphaPlan);
 
         W4dSimpleAlphaPlan* pBluePlan
-            = _NEW(W4dSimpleAlphaPlan(pulsingBlue(), nMaterialsInVector, blueAlphaPlanPtr, 10));
+            = new W4dSimpleAlphaPlan(pulsingBlue(), nMaterialsInVector, blueAlphaPlanPtr, 10);
         W4dSimpleAlphaPlan* pWhitePlan
-            = _NEW(W4dSimpleAlphaPlan(pulsingWhite(), nMaterialsInVector, whiteAlphaPlanPtr, 10));
+            = new W4dSimpleAlphaPlan(pulsingWhite(), nMaterialsInVector, whiteAlphaPlanPtr, 10);
 
         blueMaterialPlanPtr = pBluePlan;
         whiteMaterialPlanPtr = pWhitePlan;
@@ -2031,16 +2031,16 @@ void MachPhysMachine::doFadeOutAnimation()
         whites.push_back(0.0);
         whites.push_back(1.0);
 
-        PhysLinearScalarPlan* pBlueAlphaPlan = _NEW(PhysLinearScalarPlan(bTimes, blues));
-        PhysLinearScalarPlan* pWhiteAlphaPlan = _NEW(PhysLinearScalarPlan(wTimes, whites));
+        PhysLinearScalarPlan* pBlueAlphaPlan = new PhysLinearScalarPlan(bTimes, blues);
+        PhysLinearScalarPlan* pWhiteAlphaPlan = new PhysLinearScalarPlan(wTimes, whites);
 
         PhysScalarPlanPtr blueAlphaPlanPtr(pBlueAlphaPlan);
         PhysScalarPlanPtr whiteAlphaPlanPtr(pWhiteAlphaPlan);
 
         W4dSimpleAlphaPlan* pBluePlan
-            = _NEW(W4dSimpleAlphaPlan(pulsingBlue(), nMaterialsInVector, blueAlphaPlanPtr, 10));
+            = new W4dSimpleAlphaPlan(pulsingBlue(), nMaterialsInVector, blueAlphaPlanPtr, 10);
         W4dSimpleAlphaPlan* pWhitePlan
-            = _NEW(W4dSimpleAlphaPlan(pulsingWhite(), nMaterialsInVector, whiteAlphaPlanPtr, 10));
+            = new W4dSimpleAlphaPlan(pulsingWhite(), nMaterialsInVector, whiteAlphaPlanPtr, 10);
 
         blueMaterialPlanPtr = pBluePlan;
         whiteMaterialPlanPtr = pWhitePlan;

@@ -39,9 +39,8 @@ MachPhysBeacon::MachPhysBeacon(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(part(level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysBeaconData(part(level).data(), globalTransform())))
+    , pData_(new MachPhysBeaconData(part(level).data(), globalTransform()))
 {
-
     pTurner_ = links()[part(level).pTurner_->id()];
     pTurner_->visible(true);
 
@@ -60,7 +59,7 @@ MachPhysBeacon::MachPhysBeacon(W4dEntity* pParent, size_t level)
         10.0,
         level,
         MachPhysData::instance().beaconData(level))
-    , pData_(_NEW(MachPhysBeaconData(MachPhysData::instance().beaconData(level), W4dTransform3d())))
+    , pData_(new MachPhysBeaconData(MachPhysData::instance().beaconData(level), W4dTransform3d()))
 {
     if (!findLink("Turner", &pTurner_))
         pTurner_ = nullptr;
@@ -80,7 +79,7 @@ MachPhysBeacon::~MachPhysBeacon()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 // static
@@ -169,7 +168,7 @@ void MachPhysBeacon::CLASS_INVARIANT
 
 void MachPhysBeacon::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysBeaconData(MachPhysData::instance().beaconData(level()), W4dTransform3d()));
+    pData_ = new MachPhysBeaconData(MachPhysData::instance().beaconData(level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }
@@ -194,12 +193,12 @@ void MachPhysBeacon::doWorking(bool setWorking)
 {
     if (setWorking and not isWorking())
     {
-        PhysMotionPlan::Times* pTimesList = _NEW(PhysMotionPlan::Times);
+        PhysMotionPlan::Times* pTimesList = new PhysMotionPlan::Times;
         pTimesList->push_back(1.2);
         pTimesList->push_back(2.4);
         pTimesList->push_back(3.6);
 
-        PhysMotionPlan::AnglesPtr anglesListPtr = PhysMotionPlan::AnglesPtr(_NEW(PhysMotionPlan::Angles));
+        PhysMotionPlan::AnglesPtr anglesListPtr = PhysMotionPlan::AnglesPtr(new PhysMotionPlan::Angles);
         anglesListPtr->push_back(MexDegrees(0));
         anglesListPtr->push_back(MexDegrees(120));
         anglesListPtr->push_back(MexDegrees(240));
@@ -210,7 +209,7 @@ void MachPhysBeacon::doWorking(bool setWorking)
 
         position = pTurner_->localTransform().position();
         PhysTimedAnglePlan* pAnglePlan
-            = _NEW(PhysTimedAnglePlan(anglesListPtr, PhysMotionPlan::TimesPtr(pTimesList), newvec, position));
+            = new PhysTimedAnglePlan(anglesListPtr, PhysMotionPlan::TimesPtr(pTimesList), newvec, position);
 
         PhysMotionPlanPtr anglePlanPtr(pAnglePlan);
 

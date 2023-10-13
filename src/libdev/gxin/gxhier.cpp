@@ -26,7 +26,7 @@ GXHier::~GXHier()
 
     for (int i = 0; i < children_.size(); ++i)
     {
-        _DELETE(children_[i]);
+        delete children_[i];
     }
 }
 
@@ -77,7 +77,7 @@ void GXHier::createChildren(long nbChildren)
 
     for (int i = 0; i < nbChildren; ++i)
     {
-        addChild(_NEW(GXHier));
+        addChild(new GXHier);
     }
 
     POST(nChildrenSupplied() == nbChildren);

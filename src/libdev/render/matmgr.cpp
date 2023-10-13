@@ -21,9 +21,9 @@ RenIMatManager& RenIMatManager::instance()
 }
 
 RenIMatManager::RenIMatManager()
-    : bodies_(_NEW(Bodies))
-    , unusedBodies_(_NEW(Bodies))
-    , defaultBody_(_NEW(RenIMatBody))
+    : bodies_(new Bodies)
+    , unusedBodies_(new Bodies)
+    , defaultBody_(new RenIMatBody)
     , nullSlots_(0)
     , minPriority_(SHRT_MAX)
     , maxPriority_(SHRT_MIN)
@@ -67,11 +67,11 @@ RenIMatManager::~RenIMatManager()
             ++it;
         }
 
-        _DELETE(bodies_);
+        delete bodies_;
         bodies_ = nullptr;
     }
 
-    _DELETE(unusedBodies_);
+    delete unusedBodies_;
 }
 
 RenIMatBody* RenIMatManager::defaultBody()
@@ -104,7 +104,7 @@ RenIMatManager::Bodies::iterator findSharableBody(RenIMatManager::Bodies* vec, R
 
 RenIMatBody* RenIMatManager::createBody(const RenColour& dif)
 {
-    RenIMatBody* newBody = _NEW(RenIMatBody(dif));
+    RenIMatBody* newBody = new RenIMatBody(dif);
 
     DBG_MAT_SHARE(
         Diag::instance().renderStream() << " created new material body with " << newBody->texture() << std::endl);
@@ -114,7 +114,7 @@ RenIMatBody* RenIMatManager::createBody(const RenColour& dif)
     if (it != bodies_->end())
     {
         DBG_MAT_SHARE(Diag::instance().renderStream() << "Found existing copy of " << *newBody << std::endl);
-        _DELETE(newBody);
+        delete newBody;
 
         return *it;
     }
@@ -213,7 +213,7 @@ void RenIMatManager::killMe(RenIMatBody* body)
             ++nullSlots_;
         }
 
-        _DELETE(body);
+        delete body;
     }
 }
 
@@ -305,7 +305,7 @@ void RenIMatManager::clearUnusedMatBodyList()
     while (unusedBodies_->size() != 0)
     {
         RenIMatBody* pBody = unusedBodies_->back();
-        _DELETE(pBody);
+        delete pBody;
         unusedBodies_->pop_back();
     }
 }

@@ -39,9 +39,9 @@ PER_DEFINE_PERSISTENT(W4dCamera);
 
 W4dCamera::W4dCamera(W4dSceneManager* mgr, W4dEntity* pParent, const W4dTransform3d& localXform)
     : W4dEntity(pParent, localXform, NOT_SOLID)
-    , camera_(_NEW(RenCamera))
+    , camera_(new RenCamera)
     , manager_(mgr)
-    , pVolume_(_NEW(W4dCameraVolume(*this)))
+    , pVolume_(new W4dCameraVolume(*this))
     , lastPassId_(0)
     , passId_(0)
     , savedYonClipDistance_(500)
@@ -53,8 +53,8 @@ W4dCamera::W4dCamera(W4dSceneManager* mgr, W4dEntity* pParent, const W4dTransfor
 
 W4dCamera::~W4dCamera()
 {
-    _DELETE(camera_);
-    _DELETE(pVolume_);
+    delete camera_;
+    delete pVolume_;
 }
 
 // Render the tree of W4dEntities that this camera is attached to,
@@ -574,7 +574,7 @@ void perRead(PerIstream& istr, W4dCamera& camera)
 
 W4dCamera::W4dCamera(PerConstructor con)
     : W4dEntity(con)
-    , pVolume_(_NEW(W4dCameraVolume(*this)))
+    , pVolume_(new W4dCameraVolume(*this))
     , lastPassId_(0)
 {
 }

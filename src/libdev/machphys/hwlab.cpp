@@ -55,13 +55,13 @@ MachPhysHardwareLab::MachPhysHardwareLab(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(part(subType, level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysHardwareLabData(part(subType, level).data(), globalTransform())))
+    , pData_(new MachPhysHardwareLabData(part(subType, level).data(), globalTransform()))
     , subType_(subType)
     , level_(level)
 {
     //    W4dSoundManager::instance().play( this, SysPathName( "sounds/hlab.wav" ),
     //                                      PhysAbsoluteTime( 0 ), 100.0, 15.0,
-    //                                      W4dSoundManager::LOOP_CONTINUOUSLY );
+    //                                      W4dSoundManager::LOOP_CONTINUOUSLY ;
 
     size_t nNeons = part(subType, level).neons_.size();
     neons_.reserve(nNeons);
@@ -85,12 +85,11 @@ MachPhysHardwareLab::MachPhysHardwareLab(W4dEntity* pParent, Id id)
         10.0,
         id.level_,
         MachPhysData::instance().hardwareLabData(id.subType_, id.level_))
-    , pData_(_NEW(
-          MachPhysHardwareLabData(MachPhysData::instance().hardwareLabData(id.subType_, id.level_), W4dTransform3d())))
+    , pData_(new 
+          MachPhysHardwareLabData(MachPhysData::instance().hardwareLabData(id.subType_, id.level_), W4dTransform3d()))
     , subType_(id.subType_)
     , level_(id.level_)
 {
-
     neons_.reserve(4);
     for (int i = 1; i <= 4; ++i)
     {
@@ -118,7 +117,7 @@ MachPhysHardwareLab::~MachPhysHardwareLab()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 /*
 // static
@@ -319,7 +318,7 @@ void MachPhysHardwareLab::CLASS_INVARIANT
 void MachPhysHardwareLab::persistenceInitialiseData()
 {
     pData_
-        = _NEW(MachPhysHardwareLabData(MachPhysData::instance().hardwareLabData(subType(), level()), W4dTransform3d()));
+        = new MachPhysHardwareLabData(MachPhysData::instance().hardwareLabData(subType(), level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }
@@ -366,12 +365,12 @@ void MachPhysHardwareLab::doWorking(bool setWorking)
         {
             first = false;
 
-            W4dUVTranslation* pUVIsWorkingTranslate = _NEW(W4dUVTranslation(100000, 0, MexVec2(0.1, 0), MexVec2(0, 0)));
+            W4dUVTranslation* pUVIsWorkingTranslate = new W4dUVTranslation(100000, 0, MexVec2(0.1, 0), MexVec2(0, 0));
             pUVIsWorkingTranslate->setFilterTexture(keyTexture1);
             uvPlanIsWorkingPtr = pUVIsWorkingTranslate;
 
             W4dUVTranslation* pUVNotWorkingTranslate
-                = _NEW(W4dUVTranslation(100000, 0, MexVec2(0.87, 0.37), MexVec2(0, 0)));
+                = new W4dUVTranslation(100000, 0, MexVec2(0.87, 0.37), MexVec2(0, 0));
             pUVNotWorkingTranslate->setFilterTexture(keyTexture1);
             uvPlanNotWorkingPtr = pUVNotWorkingTranslate;
         }

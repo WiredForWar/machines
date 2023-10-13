@@ -33,7 +33,7 @@ PER_DEFINE_PERSISTENT(MachPhysMine);
 
 MachPhysMine::MachPhysMine(W4dEntity* pParent, const W4dTransform3d& localTransform, size_t level, MachPhys::Race race)
     : MachPhysConstruction(part(level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysMineData(part(level).data(), globalTransform())))
+    , pData_(new MachPhysMineData(part(level).data(), globalTransform()))
 {
     size_t nFans = part(level).fans_.size();
     fans_.reserve(nFans);
@@ -56,7 +56,7 @@ MachPhysMine::MachPhysMine(W4dEntity* pParent, size_t level)
         21.0,
         level,
         MachPhysData::instance().mineData(level))
-    , pData_(_NEW(MachPhysMineData(MachPhysData::instance().mineData(level), W4dTransform3d())))
+    , pData_(new MachPhysMineData(MachPhysData::instance().mineData(level), W4dTransform3d()))
 {
     // This function altered by SJA 21/11 to handle cases 1 and 3
     W4dLinks mineAdornments;
@@ -107,7 +107,7 @@ MachPhysMine::~MachPhysMine()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 // static
@@ -201,12 +201,12 @@ W4dCompositePlanPtr MachPhysMine::workingAnimationLevel4()
     ASSERT(linkFound, "No arm link in mine level 1");
 
     // Construct a timed angle plan for the arm
-    PhysTimedSpinPlan* pSpinPlan = _NEW(PhysTimedSpinPlan(
+    PhysTimedSpinPlan* pSpinPlan = new PhysTimedSpinPlan(
         MexVec3(1, 0, 0),
         MexVec3(pArmLink->localTransform().position()),
         MexRadians(0),
         MexRadians(0),
-        5));
+        5);
 
     const MATHEX_SCALAR turnAngle = 40;
     const MATHEX_SCALAR maxTurnRate = 10;
@@ -225,7 +225,7 @@ W4dCompositePlanPtr MachPhysMine::workingAnimationLevel4()
     PhysMotionPlanPtr spinPlanPtr(pSpinPlan);
     W4dEntityPlan linkPlan;
     linkPlan.absoluteMotion(spinPlanPtr, 0);
-    W4dCompositePlan* pMinePlan = _NEW(W4dCompositePlan("mine"));
+    W4dCompositePlan* pMinePlan = new W4dCompositePlan("mine");
     pMinePlan->linkPlan(pArmLink->id(), linkPlan);
 
     return W4dCompositePlanPtr(pMinePlan);
@@ -279,7 +279,7 @@ void MachPhysMine::doWorking(bool setWorking)
                     MexTransform3d endPosition(startPosition);
                     endPosition.transform(spinTransform);
 
-                    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+                    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
                     // Add a further rotation of 120 degrees
                     endPosition.transform(spinTransform);
@@ -320,7 +320,7 @@ void MachPhysMine::doWorking(bool setWorking)
 
 void MachPhysMine::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysMineData(MachPhysData::instance().mineData(level()), W4dTransform3d()));
+    pData_ = new MachPhysMineData(MachPhysData::instance().mineData(level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }

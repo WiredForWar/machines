@@ -39,10 +39,10 @@ PER_DEFINE_PERSISTENT(MachLogSquadron);
 
 MachLogSquadron::MachLogSquadron(MachLogRace* pRace, W4dEntity* pPhysObject, int squadronId)
     : MachActor(pRace, pPhysObject, MachLog::SQUADRON, UtlId(0))
-    , pImpl_(_NEW(MachLogSquadronImpl(squadronId)))
+    , pImpl_(new MachLogSquadronImpl(squadronId))
 {
     // this assertion is no longer valid for the AI races.
-    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" );
+    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" ;
     CB_DEPIMPL(MachLogSquadron::DesiredMachineList, desiredMachineList_);
     desiredMachineList_.reserve(10);
 
@@ -51,10 +51,10 @@ MachLogSquadron::MachLogSquadron(MachLogRace* pRace, W4dEntity* pPhysObject, int
 
 MachLogSquadron::MachLogSquadron(MachLogRace* pRace, W4dEntity* pPhysObject, int squadronId, UtlId withId)
     : MachActor(pRace, pPhysObject, MachLog::SQUADRON, withId)
-    , pImpl_(_NEW(MachLogSquadronImpl(squadronId)))
+    , pImpl_(new MachLogSquadronImpl(squadronId))
 {
     // this assertion is no longer valid for the AI races.
-    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" );
+    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" ;
     CB_DEPIMPL(MachLogSquadron::DesiredMachineList, desiredMachineList_);
     desiredMachineList_.reserve(10);
 
@@ -67,7 +67,7 @@ MachLogSquadron::~MachLogSquadron()
     removeAllDesiredMachines();
 
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogSquadron::removeAllDesiredMachines()
@@ -77,8 +77,8 @@ void MachLogSquadron::removeAllDesiredMachines()
     while (desiredMachineList_.size())
     {
         DesiredMachineData* dmd = desiredMachineList_.front();
-        _DELETE(dmd->pProdUnit_);
-        _DELETE(dmd);
+        delete dmd->pProdUnit_;
+        delete dmd;
         desiredMachineList_.erase(desiredMachineList_.begin());
     }
     totalDesiredMachines_ = 0;
@@ -287,7 +287,7 @@ PhysRelativeTime MachLogSquadron::update(const PhysRelativeTime& maxCPUTime, MAT
 void MachLogSquadron::addDesiredMachine(MachLogProductionUnit* pProd, int desiredNumber)
 {
     CB_MachLogSquadron_DEPIMPL();
-    DesiredMachineData* dmd = _NEW(DesiredMachineData);
+    DesiredMachineData* dmd = new DesiredMachineData;
     dmd->pProdUnit_ = pProd;
     dmd->desiredNumber_ = desiredNumber;
     dmd->actualNumber_ = 0;
@@ -399,7 +399,7 @@ void perRead(PerIstream& istr, MachLogSquadron& actor)
     istr >> base1;
     istr >> actor.pImpl_;
 
-    W4dGeneric* pPhysObject = _NEW(W4dGeneric(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d()));
+    W4dGeneric* pPhysObject = new W4dGeneric(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d());
     actor.setObjectPtr(pPhysObject, MexTransform3d());
     actor.id(0);
     actor.persistenceReadStrategy(istr);

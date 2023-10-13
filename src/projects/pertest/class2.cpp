@@ -7,11 +7,11 @@ Class2::Class2()
     , d2_(randomDouble())
     , pC1_(NULL)
 {
-    p1_ = _NEW(int);
+    p1_ = new int;
     *p1_ = randomInt();
     p2_ = p1_;
 
-    cPtr1_ = _NEW(int(randomInt()));
+    cPtr1_ = new int(randomInt());
     cPtr2_ = p1_;
 
     rawString1_ = "raw string 1";
@@ -24,7 +24,7 @@ Class2::Class2(PerIstream& istr)
 
 Class2::~Class2()
 {
-    _DELETE(pC1_);
+    delete pC1_;
 }
 
 ostream& operator<<(ostream& ostr, const Class2& t)
@@ -81,7 +81,7 @@ void perWrite(PerOstream& str, const Class2& ob)
 
 void perRead(PerIstream& str, Class2& ob)
 {
-    _DELETE(ob.pC1_);
+    delete ob.pC1_;
 
     str >> ob.i2_;
     str >> ob.d2_;

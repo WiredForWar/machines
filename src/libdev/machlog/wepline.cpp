@@ -110,7 +110,7 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
         if (isNetworkGame)
         {
             MachLogMessageBroker::SingleProjectileDestroyData* pDestroyData
-                = _NEW(MachLogMessageBroker::SingleProjectileDestroyData);
+                = new MachLogMessageBroker::SingleProjectileDestroyData;
             pDestroyData->destroyAtTime_ = pLogProj->destructionTime();
             pDestroyData->strikeType_ = pLogProj->strikeType();
             extraData.push_back(pDestroyData);
@@ -131,7 +131,7 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
             position);
         while (extraData.size())
         {
-            _DELETE(extraData.back());
+            delete extraData.back();
             // unfortunatley ctl_pvectors do not have rend hence this slightly convuluted looking erase.
             extraData.erase(extraData.begin() + extraData.size() - 1);
         }
@@ -261,7 +261,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
         if (isNetworkGame)
         {
             MachLogMessageBroker::SingleProjectileDestroyData* pDestroyData
-                = _NEW(MachLogMessageBroker::SingleProjectileDestroyData);
+                = new MachLogMessageBroker::SingleProjectileDestroyData;
             pDestroyData->destroyAtTime_ = pLogProj->destructionTime();
             pDestroyData->strikeType_ = pLogProj->strikeType();
             extraData.push_back(pDestroyData);
@@ -282,7 +282,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
             finalOffsetPoint);
         while (extraData.size())
         {
-            _DELETE(extraData.back());
+            delete extraData.back();
             // unfortunatley ctl_pvectors do not have rend hence this slightly convuluted looking erase.
             extraData.erase(extraData.begin() + extraData.size() - 1);
         }
@@ -319,10 +319,10 @@ void MachLogLinearWeapon::doEchoFire(
         PhysRelativeTime relTime = pPhysLinearProjectile->beDestroyedAt(destructTime, extraData[i]->strikeType_);
         if (createHolder == MachLogLinearWeapon::CREATE_HOLDER)
         {
-            _NEW(MachLogMissileHolder(
+            new MachLogMissileHolder(
                 &MachLogRaces::instance().race(owner().race()),
                 pPhysLinearProjectile,
-                destructTime));
+                destructTime);
         }
         else
             W4dGarbageCollector::instance().add(pPhysLinearProjectile, relTime + destructTime);
@@ -364,10 +364,10 @@ void MachLogLinearWeapon::doEchoFireForTerrain(
         PhysRelativeTime relTime = pPhysLinearProjectile->beDestroyedAt(destructTime, extraData[i]->strikeType_);
         if (createHolder == MachLogLinearWeapon::CREATE_HOLDER)
         {
-            _NEW(MachLogMissileHolder(
+            new MachLogMissileHolder(
                 &MachLogRaces::instance().race(owner().race()),
                 pPhysLinearProjectile,
-                destructTime));
+                destructTime);
         }
         else
             W4dGarbageCollector::instance().add(pPhysLinearProjectile, relTime + destructTime);

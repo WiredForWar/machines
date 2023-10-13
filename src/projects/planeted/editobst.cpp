@@ -39,7 +39,7 @@ PedObstacleEditor::~PedObstacleEditor()
     // Remove all verticalPolygons marker that were dynamically created
     for (VerticalPolygons::iterator i = verticalPolygons_.begin(); i < verticalPolygons_.end(); ++i)
     {
-        _DELETE(*i);
+        delete *i;
     }
 
     TEST_INVARIANT;
@@ -237,7 +237,7 @@ PedPolygon* PedObstacleEditor::createPolygon(const PolyVerticies& verticies, MAT
 {
     TEST_INVARIANT;
 
-    PedPolygon* pNew = _NEW(PedObstacle(verticies, height, selected, PedObstacle::highlightedType()));
+    PedPolygon* pNew = new PedObstacle(verticies, height, selected, PedObstacle::highlightedType());
     pNew->flatten(flattenPolygons_);
     pNew->refreshMesh();
 
@@ -370,8 +370,8 @@ void PedObstacleEditor::processVertexRight()
         {
             *pSelectedPoint_ += MexVec2(vertexSpacingX(), 0);
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -386,8 +386,8 @@ void PedObstacleEditor::processVertexLeft()
         {
             *pSelectedPoint_ -= MexVec2(vertexSpacingX(), 0);
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -402,8 +402,8 @@ void PedObstacleEditor::processVertexUp()
         {
             *pSelectedPoint_ -= MexVec2(0, vertexSpacingY());
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -418,8 +418,8 @@ void PedObstacleEditor::processVertexDown()
         {
             *pSelectedPoint_ += MexVec2(0, vertexSpacingY());
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -449,8 +449,8 @@ void PedObstacleEditor::updatePolygon()
         *pSelectedPoint_ = pHighlightVertex_->position();
         pSelectedPolygon_->refreshMesh();
 
-        _DELETE(pSelectedVertex_);
-        pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+        delete pSelectedVertex_;
+        pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
     }
 }
 
@@ -491,7 +491,7 @@ void PedObstacleEditor::processComputeVerticalPolygons()
     // Remove all verticalPolygons marker that were dynamically created
     for (VerticalPolygons::iterator i = verticalPolygons_.begin(); i < verticalPolygons_.end(); ++i)
     {
-        _DELETE(*i);
+        delete *i;
     }
     verticalPolygons_.erase(verticalPolygons_.begin(), verticalPolygons_.end());
 
@@ -501,12 +501,12 @@ void PedObstacleEditor::processComputeVerticalPolygons()
     verticalPolygonChecker.checkGradients(pPlanet_->configSpace(), &triangleList);
     for (MachPhysPlanetSurfaceChecker::Triangles::iterator i = triangleList.begin(); i < triangleList.end(); ++i)
     {
-        verticalPolygons_.push_back(_NEW(PedVerticalPolygonMarker(
+        verticalPolygons_.push_back(new PedVerticalPolygonMarker(
             MachLogPlanet::instance().pWorld(),
             MexTransform3d(),
             (*i).point1(),
             (*i).point2(),
-            (*i).point3())));
+            (*i).point3()));
     }
 }
 

@@ -32,14 +32,14 @@ static void
 createOrbitSpin(W4dEntityPlan& ePlan, MexDegrees rotSpeed, PhysAbsoluteTime startTime, MexRadians setHeading)
 {
     // Set up a motion plan which spins about the z-axis at a constant speed.
-    PhysMotionPlan::AnglesPtr angles = _NEW(PhysMotionPlan::Angles);
+    PhysMotionPlan::AnglesPtr angles = new PhysMotionPlan::Angles;
     angles->reserve(4);
     angles->push_back(setHeading + MexDegrees(0));
     angles->push_back(setHeading + MexDegrees(120));
     angles->push_back(setHeading + MexDegrees(240));
     angles->push_back(setHeading + MexDegrees(360));
 
-    PhysMotionPlan::TimesPtr times = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::TimesPtr times = new PhysMotionPlan::Times;
     times->reserve(3);
     times->push_back(120.0 / fabs(rotSpeed.asScalar()));
     times->push_back(240.0 / fabs(rotSpeed.asScalar()));
@@ -47,7 +47,7 @@ createOrbitSpin(W4dEntityPlan& ePlan, MexDegrees rotSpeed, PhysAbsoluteTime star
 
     // If the velocity is -ve, stick with +ve angles and reverse the axis.
     MexVec3 zAxis(0, 0, (rotSpeed < MexRadians(0)) ? -1 : 1);
-    PhysMotionPlanPtr plan = _NEW(PhysTimedAnglePlan(angles, times, zAxis, MexPoint3d()));
+    PhysMotionPlanPtr plan = new PhysTimedAnglePlan(angles, times, zAxis, MexPoint3d());
 
     ePlan.absoluteMotion(plan, startTime, FOREVER);
 }
@@ -56,7 +56,7 @@ static PhysTimedAnglePlan* createRiseSetOrbit(MexRadians minEl, MexRadians maxEl
 {
     // Set up a motion plan which repeatedly oscillates between two
     // elevations (about the y-axis).
-    PhysMotionPlan::AnglesPtr angles = _NEW(PhysMotionPlan::Angles);
+    PhysMotionPlan::AnglesPtr angles = new PhysMotionPlan::Angles;
     angles->reserve(3);
     angles->push_back(minEl);
     angles->push_back(maxEl);
@@ -64,13 +64,13 @@ static PhysTimedAnglePlan* createRiseSetOrbit(MexRadians minEl, MexRadians maxEl
 
     // Set the times so that the angle is min at time=0 and at time=period.
     // The angle will be max at time=period/2.
-    PhysMotionPlan::TimesPtr times = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::TimesPtr times = new PhysMotionPlan::Times;
     times->reserve(2);
     times->push_back(period / 2);
     times->push_back(period);
 
     MexVec3 yAxis(0, 1, 0);
-    return _NEW(PhysTimedAnglePlan(angles, times, yAxis, MexPoint3d()));
+    return new PhysTimedAnglePlan(angles, times, yAxis, MexPoint3d());
 }
 
 static PhysTimedAnglePlan*
@@ -83,11 +83,11 @@ createPartialOrbit(MexRadians minEl, MexRadians maxEl, PhysRelativeTime startTim
     // elevation at startTime.
     PhysTimedAnglePlan* complete = createRiseSetOrbit(minEl, maxEl, period);
     const MexRadians startEl = complete->angle(startTime);
-    _DELETE(complete);
+    delete complete;
 
-    PhysMotionPlan::AnglesPtr angles = _NEW(PhysMotionPlan::Angles);
+    PhysMotionPlan::AnglesPtr angles = new PhysMotionPlan::Angles;
     angles->reserve(3);
-    PhysMotionPlan::TimesPtr times = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::TimesPtr times = new PhysMotionPlan::Times;
     times->reserve(2);
     PhysRelativeTime duration = period - startTime;
 
@@ -107,26 +107,26 @@ createPartialOrbit(MexRadians minEl, MexRadians maxEl, PhysRelativeTime startTim
     times->push_back(duration);
 
     MexVec3 yAxis(0, 1, 0);
-    return _NEW(PhysTimedAnglePlan(angles, times, yAxis, MexPoint3d()));
+    return new PhysTimedAnglePlan(angles, times, yAxis, MexPoint3d());
 }
 
 static PhysTimedAnglePlan* createOrbitTransition(MexRadians startEl, MexRadians endEl, PhysRelativeTime within)
 {
     // Set up a motion plan which repeatedly oscillates between two
     // elevations (about the y-axis).
-    PhysMotionPlan::AnglesPtr angles = _NEW(PhysMotionPlan::Angles);
+    PhysMotionPlan::AnglesPtr angles = new PhysMotionPlan::Angles;
     angles->reserve(2);
     angles->push_back(startEl);
     angles->push_back(endEl);
 
     // Set the times so that the angle is max at time=0 and at time=period.
     // The angle will be min at time=period/2.
-    PhysMotionPlan::TimesPtr times = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::TimesPtr times = new PhysMotionPlan::Times;
     times->reserve(1);
     times->push_back(within);
 
     MexVec3 yAxis(0, 1, 0);
-    return _NEW(PhysTimedAnglePlan(angles, times, yAxis, MexPoint3d()));
+    return new PhysTimedAnglePlan(angles, times, yAxis, MexPoint3d());
 }
 
 EnvOrbit::EnvOrbit(
@@ -143,9 +143,9 @@ EnvOrbit::EnvOrbit(
     , minElevation_(minEl)
     , maxElevation_(maxEl)
     , period_(fabs(period))
-    , satellite1_(_NEW(W4dGeneric(parent, MexTransform3d())))
-    , satellite2_(_NEW(W4dGeneric(satellite1_, MexTransform3d())))
-    , satellite3_(_NEW(W4dGeneric(satellite2_, MexTransform3d())))
+    , satellite1_(new W4dGeneric(parent, MexTransform3d()))
+    , satellite2_(new W4dGeneric(satellite1_, MexTransform3d()))
+    , satellite3_(new W4dGeneric(satellite2_, MexTransform3d()))
     , radius_(radius)
     , firstMinTime_((startTime == 0) ? 0 : period - startTime)
 {
@@ -192,9 +192,9 @@ EnvOrbit::EnvOrbit(
 EnvOrbit::~EnvOrbit()
 {
     TEST_INVARIANT;
-    _DELETE(satellite1_);
-    _DELETE(satellite2_);
-    _DELETE(satellite3_);
+    delete satellite1_;
+    delete satellite2_;
+    delete satellite3_;
 }
 
 // Immediately move from the current orbit to an new orbit.  The new orbit

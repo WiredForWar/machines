@@ -136,7 +136,7 @@ bool MachGuiIonAttackCommand::applyAttackLocation(MachActor* pActor, string*)
     if (valid)
     {
         // Construct appropriate type of operation
-        MachLogOperation* pOp = _NEW(MachLogPodAttackOperation(&pActor->asPod(), validPoint));
+        MachLogOperation* pOp = new MachLogPodAttackOperation(&pActor->asPod(), validPoint);
 
         // Give it to the actor
         pActor->newOperation(pOp);
@@ -162,7 +162,7 @@ bool MachGuiIonAttackCommand::applyAttackObject(MachActor* pActor, string*)
             "A non-pod actor has somehow been allowed to initiate an ion-attack op.");
 
         // Construct appropriate type of operation
-        MachLogOperation* pOp = _NEW(MachLogPodAttackOperation(&pActor->asPod(), pDirectObject_));
+        MachLogOperation* pOp = new MachLogPodAttackOperation(&pActor->asPod(), pDirectObject_);
 
         // Give it to the actor
         pActor->newOperation(pOp);
@@ -216,7 +216,7 @@ void MachGuiIonAttackCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiIonAttackCommand::clone() const
 {
-    return _NEW(MachGuiIonAttackCommand(&inGameScreen()));
+    return new MachGuiIonAttackCommand(&inGameScreen());
 }
 
 // virtual

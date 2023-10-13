@@ -113,7 +113,7 @@ void MachPhysPulseAura::startPulseAura(const PhysAbsoluteTime& startTime, const 
         firstTime = false;
 
         // Create the visibility plan
-        W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+        W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
         pVisibilityPlan->add(false, duration);
         visibilityPlanPtr = pVisibilityPlan;
 
@@ -132,7 +132,7 @@ void MachPhysPulseAura::startPulseAura(const PhysAbsoluteTime& startTime, const 
         scales.push_back(1);
         scales.push_back(0.5);
 
-        scalePlanPtr = _NEW(W4dGeneralUniformScalePlan(_NEW(PhysLinearScalarPlan(times, scales))));
+        scalePlanPtr = new W4dGeneralUniformScalePlan(new PhysLinearScalarPlan(times, scales));
     }
 
     // Set its visibility plan

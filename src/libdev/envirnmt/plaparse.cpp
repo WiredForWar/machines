@@ -44,7 +44,7 @@ EnvIPlanetParser::EnvIPlanetParser()
 EnvIPlanetParser::~EnvIPlanetParser()
 {
     TEST_INVARIANT;
-    _DELETE(orbParams_);
+    delete orbParams_;
 }
 
 void EnvIPlanetParser::parse(const SysPathName& envFile, EnvPlanetEnvironment* p)
@@ -74,26 +74,26 @@ void EnvIPlanetParser::parse(const SysPathName& envFile, EnvPlanetEnvironment* p
 
     if (SysMetaFile::useMetaFile())
     {
-        // pGlobalLexIstream = _NEW(SysMetaFileIstream(metaFile, envFile, ios::text));
-        pGlobalLexIstream = _NEW(SysMetaFileIstream(metaFile, envFile, std::ios::in));
+        // pGlobalLexIstream = new SysMetaFileIstream(metaFile, envFile, ios::text);
+        pGlobalLexIstream = new SysMetaFileIstream(metaFile, envFile, std::ios::in);
     }
     else
     {
         ASSERT_FILE_EXISTS(envFile.c_str());
-        pGlobalLexIstream = _NEW(std::ifstream(envFile.c_str(), std::ios::in));
+        pGlobalLexIstream = new std::ifstream(envFile.c_str(), std::ios::in);
     }
 
     yylineno = 1;
     yyparse();
 
-    _DELETE(pGlobalLexIstream);
+    delete pGlobalLexIstream;
     pGlobalLexIstream = nullptr;
     planet_ = nullptr;
 }
 
 void EnvIPlanetParser::startOrbit(const string* name)
 {
-    orbParams_ = _NEW(EnvIOrbitParams(name));
+    orbParams_ = new EnvIOrbitParams(name);
     POST(orbitInConstruction());
 }
 
@@ -111,7 +111,7 @@ void EnvIPlanetParser::orbitComplete()
     std::pair<const string, EnvOrbit*> value(orbParams_->name(), orbit);
     orbits_.insert(value);
 
-    _DELETE(orbParams_);
+    delete orbParams_;
     orbParams_ = nullptr;
 
     POST(!orbitInConstruction());
@@ -130,7 +130,7 @@ EnvOrbit* EnvIPlanetParser::lookUpOrbit(const string* name)
 
 void EnvIPlanetParser::startSatellite(const string* name)
 {
-    satParams_ = _NEW(EnvISatelliteParams(name));
+    satParams_ = new EnvISatelliteParams(name);
     POST(satelliteInConstruction());
 }
 
@@ -148,7 +148,7 @@ void EnvIPlanetParser::satelliteComplete()
     std::pair<const string, EnvSatellite*> value(satParams_->name(), satellite);
     satellites_.insert(value);
 
-    _DELETE(satParams_);
+    delete satParams_;
     satParams_ = nullptr;
 
     IAIN_STREAM("Created new " << *satellite << std::endl);

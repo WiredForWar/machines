@@ -147,7 +147,7 @@ MachPhysFlameBall* MachPhysFlameThrower::createFlameBall(const PhysAbsoluteTime&
     }
 
     MATHEX_SCALAR flameBallSize = weaponData().extras()[5*nFlames];
-    MachPhysFlameBall* pFlameBall = _NEW(MachPhysFlameBall(pParent, MexTransform3d(), flameBallSize ) );
+    MachPhysFlameBall* pFlameBall = new MachPhysFlameBall(pParent, MexTransform3d(), flameBallSize ) ;
 
     pFlameBall->move(startTransform, endTransform,
                      launchTime, waitingTime[flameIndex], truncateTime[flameIndex],
@@ -190,7 +190,7 @@ PhysRelativeTime MachPhysFlameThrower::fire(const PhysAbsoluteTime& startTime, i
     PhysRelativeTime endTime = startTime + burstDuration;
 
     // Add the exhaust smoke cloud
-    MachPhysSmokeCloud* pSmokeCloud = _NEW(MachPhysSmokeCloud(this, smokeOffset));
+    MachPhysSmokeCloud* pSmokeCloud = new MachPhysSmokeCloud(this, smokeOffset);
     uint nWisps = 3;
     PhysRelativeTime wispInterval = 0.08;
     MATHEX_SCALAR zDepthOffset = 0.0;
@@ -279,7 +279,7 @@ MachPhysFlameBall* MachPhysFlameThrower::createFlameBall(
     }
 */
     MachPhysFlameBall* pFlameBall
-        = _NEW(MachPhysFlameBall(pParent, startTransform, MachPhysFlameBall::GRUNT_FLAME_BALL));
+        = new MachPhysFlameBall(pParent, startTransform, MachPhysFlameBall::GRUNT_FLAME_BALL);
 
     // Make it fly
     pFlameBall->move(launchTime, startTransform, endTransform, materialPlanCycleStartDelay, endScale);

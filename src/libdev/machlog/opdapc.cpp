@@ -41,14 +41,14 @@ MachLogDeployAPCOperation::~MachLogDeployAPCOperation()
 
     pAPC_->removedDeployOp();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 MachLogDeployAPCOperation::MachLogDeployAPCOperation(MachLogAPC* pAPC, const MexPoint3d& dest)
     : MachLogOperation("DEPLOY_APC_OPERATION", MachLogOperation::DEPLOY_APC_OPERATION)
-    , pImpl_(_NEW(MachLogDeployAPCOperationImpl(pAPC)))
+    , pImpl_(new MachLogDeployAPCOperationImpl(pAPC))
 {
     CB_MachLogDeployAPCOperation_DEPIMPL();
 
@@ -143,7 +143,7 @@ PhysRelativeTime MachLogDeployAPCOperation::doUpdate()
         MexPoint2d dropPosition2d = dest;
         if (apcPosition2d.sqrEuclidianDistance(dropPosition2d) > 100)
         {
-            subOperation(pAPC_, _NEW(MachLogMoveToOperation(pAPC_, dest)));
+            subOperation(pAPC_, new MachLogMoveToOperation(pAPC_, dest));
         }
         else
         {
@@ -233,10 +233,10 @@ void MachLogDeployAPCOperation::pushFurtherOut(MachLogMachine* pMachine, MATHEX_
 
     if (cs.findSpace(pMachine->position(), dest2d, pMachine->highClearence(), 2, pMachine->obstacleFlags(), &dest2d))
     {
-        pMachine->strategy().newOperation(_NEW(MachLogMoveToOperation(
+        pMachine->strategy().newOperation(new MachLogMoveToOperation(
             pMachine,
             dest2d,
-            false))); // Last param == false as no possibility of leaving a building during move
+            false)); // Last param == false as no possibility of leaving a building during move
     }
 }
 

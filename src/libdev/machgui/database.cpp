@@ -26,7 +26,7 @@
 MachGuiDatabase::MachGuiDatabase()
     : pData_(nullptr)
 {
-    pData_ = _NEW(MachGuiIDatabase);
+    pData_ = new MachGuiIDatabase;
 
     // Initialise the database
     readDatabase();
@@ -71,26 +71,26 @@ MachGuiDatabase::~MachGuiDatabase()
     // Delete all the systems
     for (size_t i = pData_->campaignSystems_.size(); i--;)
     {
-        _DELETE(pData_->campaignSystems_[i]);
+        delete pData_->campaignSystems_[i];
     }
 
     for (size_t i = pData_->skirmishSystems_.size(); i--;)
     {
-        _DELETE(pData_->skirmishSystems_[i]);
+        delete pData_->skirmishSystems_[i];
     }
 
     for (size_t i = pData_->multiPlayerSystems_.size(); i--;)
     {
-        _DELETE(pData_->multiPlayerSystems_[i]);
+        delete pData_->multiPlayerSystems_[i];
     }
 
     // And all the players
     for (size_t i = pData_->players_.size(); i--;)
     {
-        _DELETE(pData_->players_[i]);
+        delete pData_->players_[i];
     }
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDatabase::CLASS_INVARIANT
@@ -182,12 +182,12 @@ void MachGuiDatabase::parseCampaignFile()
 {
     // Construct the basic data object. Create empty small, medium and large systems
     // for skirmishes and multi-player games.
-    pData_->skirmishSystems_.push_back(_NEW(MachGuiDbSystem("SMALL", IDS_SMALL)));
-    pData_->skirmishSystems_.push_back(_NEW(MachGuiDbSystem("MEDIUM", IDS_MEDIUM)));
-    pData_->skirmishSystems_.push_back(_NEW(MachGuiDbSystem("LARGE", IDS_LARGE)));
-    pData_->multiPlayerSystems_.push_back(_NEW(MachGuiDbSystem("SMALL", IDS_SMALL)));
-    pData_->multiPlayerSystems_.push_back(_NEW(MachGuiDbSystem("MEDIUM", IDS_MEDIUM)));
-    pData_->multiPlayerSystems_.push_back(_NEW(MachGuiDbSystem("LARGE", IDS_LARGE)));
+    pData_->skirmishSystems_.push_back(new MachGuiDbSystem("SMALL", IDS_SMALL));
+    pData_->skirmishSystems_.push_back(new MachGuiDbSystem("MEDIUM", IDS_MEDIUM));
+    pData_->skirmishSystems_.push_back(new MachGuiDbSystem("LARGE", IDS_LARGE));
+    pData_->multiPlayerSystems_.push_back(new MachGuiDbSystem("SMALL", IDS_SMALL));
+    pData_->multiPlayerSystems_.push_back(new MachGuiDbSystem("MEDIUM", IDS_MEDIUM));
+    pData_->multiPlayerSystems_.push_back(new MachGuiDbSystem("LARGE", IDS_LARGE));
 
     // Open the data file constructing a parser
     UtlLineTokeniser parser(virginDatabaseSourcePath());
@@ -223,7 +223,7 @@ void MachGuiDatabase::parseCategory(UtlLineTokeniser& parser, Context context, b
 
     // Construct a temporary element map for setting up dependencies if doing the campaign section
     if (context == CAMPAIGNS)
-        pData_->pElementMap_ = _NEW(MachGuiIDatabase::ElementMap);
+        pData_->pElementMap_ = new MachGuiIDatabase::ElementMap;
 
     // Loop finding systems
     while (parser.tokens()[0] != "END")
@@ -278,7 +278,7 @@ void MachGuiDatabase::parseCategory(UtlLineTokeniser& parser, Context context, b
     }
 
     // Delete any temporary element map
-    _DELETE(pData_->pElementMap_);
+    delete pData_->pElementMap_;
     pData_->pElementMap_ = nullptr;
 }
 
@@ -321,7 +321,7 @@ void MachGuiDatabase::parseCampaignSystem(UtlLineTokeniser& parser)
     ASSERT(systemPicture.length() != 0, "No FLIC clause");
 
     // Construct and add a new campaign system
-    MachGuiDbSystem* pSystem = _NEW(MachGuiDbSystem(parser.tokens()[1], menuStringId));
+    MachGuiDbSystem* pSystem = new MachGuiDbSystem(parser.tokens()[1], menuStringId);
     pSystem->campaignPicture(systemPicture);
     pSystem->textDataFileName(textFile);
 
@@ -417,7 +417,7 @@ void MachGuiDatabase::parsePlanet(UtlLineTokeniser& parser, MachGuiDbSystem* pSy
     }
 
     // Construct and add a new planet
-    MachGuiDbPlanet* pPlanet = _NEW(MachGuiDbPlanet(planetName, menuStringId));
+    MachGuiDbPlanet* pPlanet = new MachGuiDbPlanet(planetName, menuStringId);
     pPlanet->campaignPicture(planetPicture);
     pPlanet->textDataFileName(textFile);
     pPlanet->menuString(planetNameMenu);
@@ -506,7 +506,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
     ALWAYS_ASSERT(planetFile.length() != 0, "No PLANET clause");
 
     // Construct and add a new scenario
-    MachGuiDbScenario* pScenario = _NEW(MachGuiDbScenario(scenarioName, planetFile, menuStringId, maxPlayers));
+    MachGuiDbScenario* pScenario = new MachGuiDbScenario(scenarioName, planetFile, menuStringId, maxPlayers);
     pScenario->textDataFileName(textFile);
     pScenario->musicTrack(musicTrack);
     pScenario->menuString(planetName);
@@ -595,7 +595,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
 
 void MachGuiDatabase::parseUserCampaignFile()
 {
-    pData_->skirmishSystems_.push_back(_NEW(MachGuiDbSystem("CUSTOM", IDS_CUSTOM)));
+    pData_->skirmishSystems_.push_back(new MachGuiDbSystem("CUSTOM", IDS_CUSTOM));
 
     // Open the data file constructing a parser
     UtlLineTokeniser parser(customDatabaseSourcePath());
@@ -664,7 +664,7 @@ void MachGuiDatabase::sortPlayersByTime()
 MachGuiDbPlayer& MachGuiDatabase::addPlayer(const string& name)
 {
     // Create a new player and add to collection
-    MachGuiDbPlayer* pDbPlayer = _NEW(MachGuiDbPlayer(pData_->nextPlayerId_++, name));
+    MachGuiDbPlayer* pDbPlayer = new MachGuiDbPlayer(pData_->nextPlayerId_++, name);
     pData_->players_.push_back(pDbPlayer);
 
     return *pDbPlayer;
@@ -879,7 +879,7 @@ void MachGuiDatabase::removePlayer(MachGuiDbPlayer* pDbPlayer)
     }
 
     // Delete the player
-    _DELETE(pDbPlayer);
+    delete pDbPlayer;
 }
 
 bool MachGuiDatabase::campaignScenario(const string& name, MachGuiDbScenario** pDbScenario)

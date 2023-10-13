@@ -35,7 +35,7 @@ W4dCycleMultiTextureData::~W4dCycleMultiTextureData()
 
     for (ctl_pvector<W4dCycleTextureData>::iterator i = cycleTextureDataVec_.begin(); i != cycleTextureDataVec_.end();
          ++i)
-        _DELETE(*i);
+        delete *i;
 }
 
 void W4dCycleMultiTextureData::CLASS_INVARIANT
@@ -135,12 +135,12 @@ void W4dCycleMultiTextureData::apply(W4dEntity* pEntity, const PhysAbsoluteTime&
             nFrames *= iFrames;
     }
 
-    MaterialVecPtrs* pMaterials = _NEW(MaterialVecPtrs);
+    MaterialVecPtrs* pMaterials = new MaterialVecPtrs;
     pMaterials->reserve(nFrames);
 
     for (size_t i = 0; i != nFrames; ++i)
     {
-        RenMaterialVec* pMaterialsVec = _NEW(RenMaterialVec(nMaterials));
+        RenMaterialVec* pMaterialsVec = new RenMaterialVec(nMaterials);
 
         for (size_t j = 0; j < nMaterials; ++j)
         {
@@ -166,12 +166,12 @@ void W4dCycleMultiTextureData::apply(W4dEntity* pEntity, const PhysAbsoluteTime&
     MaterialVecPtrsPtr materialsPtr = pMaterials;
 
     static const PhysRelativeTime oneYear = 31536000;
-    W4dMaterialFramePlan* pMaterialFramePlan = _NEW(W4dMaterialFramePlan(materialsPtr, 0, oneYear, 1, 0));
+    W4dMaterialFramePlan* pMaterialFramePlan = new W4dMaterialFramePlan(materialsPtr, 0, oneYear, 1, 0);
 
     W4dMaterialPlanPtr materialPlanPtr(pMaterialFramePlan);
     pEntity->entityPlanForEdit().materialPlan(materialPlanPtr, startTime);
 
-    _DELETE(pAnimMaterialVec);
+    delete pAnimMaterialVec;
 }
 
 ctl_vector<ctl_vector<RenTexture>> W4dCycleMultiTextureData::keyTextures2d() const
@@ -210,7 +210,7 @@ void perRead(PerIstream& str, W4dCycleMultiTextureData& t)
     for (ctl_pvector<W4dCycleTextureData>::iterator i = t.cycleTextureDataVec_.begin();
          i != t.cycleTextureDataVec_.end();
          ++i)
-        _DELETE(*i);
+        delete *i;
 
     str >> t.cycleTextureDataVec_;
 }

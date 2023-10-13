@@ -55,7 +55,7 @@ MachLogOreHolograph::pNewOreHolograph(MachLogRace* pRace, uint concentration, ui
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the holograph
-    return _NEW(MachPhysOreHolograph(pDomain, localTransform, pRace->race(), concentration, quantity));
+    return new MachPhysOreHolograph(pDomain, localTransform, pRace->race(), concentration, quantity);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

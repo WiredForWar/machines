@@ -61,7 +61,7 @@ ALSample::ALSample(const SndSampleParameters& params)
     // to be played for a specified time
     if (params.duration() > 0.0)
     {
-        internalTimer_ = _NEW(DevTimer());
+        internalTimer_ = new DevTimer();
         internalTimer_->time(0);
     }
 
@@ -94,7 +94,7 @@ ALSample::ALSample(const SndSampleParameters& params)
     //  //Set the format as the format of the supplied waveform
     //    WaveFormat* pTempWaveFormat = &(waveform_->format());
     //  format_ = *pTempWaveFormat;
-    //    _DELETE( pTempWaveFormat );
+    //    delete pTempWaveFormat;
     // Create the DirectSound buffer
     bool preloaded = true;
 
@@ -180,7 +180,7 @@ ALSample::~ALSample()
     //  format_.format( 0, 0.0f, 0 );
     if (internalTimer_)
     {
-        _DELETE(internalTimer_);
+        delete internalTimer_;
     }
 
     // Free or at least decrement the ref count of this waveform by one.
@@ -259,7 +259,7 @@ Sample::SampleState ALSample::update()
                     if (internalTimer_->timeNoRecord() > sampleParameters_.duration())
                     {
                         stop();
-                        _DELETE(internalTimer_);
+                        delete internalTimer_;
                         internalTimer_ = nullptr;
                     }
                 }

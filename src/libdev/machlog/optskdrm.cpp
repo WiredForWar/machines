@@ -107,7 +107,7 @@ PhysRelativeTime MachLogTaskDropLandMineOperation::doUpdate()
             if (pSpyLocator->isIdle())
             {
                 if (pSpyLocator->nMines() == 0)
-                    pSpyLocator->newOperation(_NEW(MachLogRefillLandMinesOperation(pSpyLocator)));
+                    pSpyLocator->newOperation(new MachLogRefillLandMinesOperation(pSpyLocator));
                 else
                 {
                     MachLogDropLandMineOperation::Path path;
@@ -147,7 +147,7 @@ PhysRelativeTime MachLogTaskDropLandMineOperation::doUpdate()
                             radius += 5;
                         path.push_back(newPoint);
                     }
-                    pSpyLocator->newOperation(_NEW(MachLogDropLandMineOperation(pSpyLocator, path)));
+                    pSpyLocator->newOperation(new MachLogDropLandMineOperation(pSpyLocator, path));
                 }
             }
         }

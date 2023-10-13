@@ -97,7 +97,7 @@ void MachGuiVerticalScrollBar::createWholeBar(
         MachGui::MENUDARKGREEN());
 
     GuiScrollButton* pButton
-        = _NEW(GuiScrollButton(pParent, topLeft, pList, GuiScrollButton::BACKWARD, gfbc, MachGui::menuScrollUpBmp()));
+        = new GuiScrollButton(pParent, topLeft, pList, GuiScrollButton::BACKWARD, gfbc, MachGui::menuScrollUpBmp());
 
     const size_t buttonWidth = pButton->width();
     const size_t buttonHeight = pButton->height();
@@ -109,8 +109,8 @@ void MachGuiVerticalScrollBar::createWholeBar(
         topLeft.x() + buttonWidth,
         topLeft.y() + height - buttonHeight);
 
-    _NEW(GuiScrollButton(pParent, but2Pos, pList, GuiScrollButton::FOWARD, gfbc, MachGui::menuScrollDownBmp()));
-    _NEW(MachGuiVerticalScrollBar(pParent, scrollBarPos, pList));
+    new GuiScrollButton(pParent, but2Pos, pList, GuiScrollButton::FOWARD, gfbc, MachGui::menuScrollDownBmp());
+    new MachGuiVerticalScrollBar(pParent, scrollBarPos, pList);
 }
 
 /* End SCROLBAR.CPP *************************************************/

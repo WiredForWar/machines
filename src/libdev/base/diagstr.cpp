@@ -246,7 +246,7 @@ void DiagStream::interpretEnvironmentVariable(const char* environmentVariable, c
                 if( strlen( token ) > 7 )
                     windowName = token + 7;
 
-                pWindowStream_ = _NEW( BaseWindowStream( windowName ) );
+                pWindowStream_ = new BaseWindowStream( windowName );
             }*/
             else
             {

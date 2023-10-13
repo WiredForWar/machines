@@ -22,9 +22,9 @@ MachPhysSoftwareLab::MachPhysSoftwareLab(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(factory(level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysSoftwareLabData(factory(level).data(), globalTransform())))
+    , pData_(new MachPhysSoftwareLabData(factory(level).data(), globalTransform())))
 {
-    W4dSoundManager::instance().play(this, SID_LABS, PhysAbsoluteTime(0), 0);
+    W4dSoundManager::instance().play(this, SID_LABS, PhysAbsoluteTime(0), 0;
     //    W4dSoundManager::instance().play( this, SysPathName( "sounds/labs.wav" ),
     //                                      PhysAbsoluteTime( 0 ), 100.0, 8.0,
     //                                      W4dSoundManager::LOOP_CONTINUOUSLY );
@@ -45,14 +45,14 @@ MachPhysSoftwareLab::MachPhysSoftwareLab(W4dEntity* pParent, size_t level)
         10.0,
         level,
         MachPhysData::instance().softwareLabData(level))
-    , pData_(_NEW(MachPhysSoftwareLabData(MachPhysData::instance().softwareLabData(level), W4dTransform3d())))
+    , pData_(new MachPhysSoftwareLabData(MachPhysData::instance().softwareLabData(level), W4dTransform3d())))
 {
     TEST_INVARIANT;
 }
 
 MachPhysSoftwareLab::~MachPhysSoftwareLab()
 {
-    _DELETE(pData_);
+    delete pData_;
 
     TEST_INVARIANT;
 }
@@ -60,7 +60,7 @@ MachPhysSoftwareLab::~MachPhysSoftwareLab()
 // static
 MachPhysSoftwareLab& MachPhysSoftwareLab::factory(size_t level)
 {
-    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::SOFTWARE_LAB));
+    static Factory factory_(MachPhysLevels::instance().nHardwareIndices(MachPhys::SOFTWARE_LAB);
 
     return factory_.part(level, MachPhysLevels::instance().uniqueHardwareIndex(MachPhys::SOFTWARE_LAB, level));
 }

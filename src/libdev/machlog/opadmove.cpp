@@ -50,7 +50,7 @@ MachLogAdminMoveToOperation::MachLogAdminMoveToOperation(
     bool checkForLeave,
     MachLogFollowOperation::CamouflagedOp camoStatus)
     : MachLogOperation("MOVE_TO_OPERATION", MachLogOperation::MOVE_TO_OPERATION)
-    , pImpl_(_NEW(MachLogAdminMoveToOperationImpl(pActor, dest, checkForLeave, camoStatus)))
+    , pImpl_(new MachLogAdminMoveToOperationImpl(pActor, dest, checkForLeave, camoStatus))
 {
     CB_MachLogAdminMoveToOperation_DEPIMPL();
 
@@ -65,7 +65,7 @@ MachLogAdminMoveToOperation::MachLogAdminMoveToOperation(
     MachLogFollowOperation::CamouflagedOp camoStatus)
 
     : MachLogOperation("MOVE_TO_OPERATION", MachLogOperation::MOVE_TO_OPERATION, priority)
-    , pImpl_(_NEW(MachLogAdminMoveToOperationImpl(pActor, path, checkForLeave, camoStatus)))
+    , pImpl_(new MachLogAdminMoveToOperationImpl(pActor, path, checkForLeave, camoStatus))
 {
     CB_MachLogAdminMoveToOperation_DEPIMPL();
 
@@ -83,7 +83,7 @@ MachLogAdminMoveToOperation::~MachLogAdminMoveToOperation()
     while (path_.size() > 0)
         path_.erase(path_.begin());
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogAdminMoveToOperation::doOutputOperator(std::ostream& o) const

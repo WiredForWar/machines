@@ -30,7 +30,7 @@ MachPhysEvasionPriorityPlans::~MachPhysEvasionPriorityPlans()
 {
     for (EPPs::iterator i = EPPs_.begin(); i != EPPs_.end(); ++i)
     {
-        _DELETE(*i);
+        delete *i;
     }
 }
 
@@ -40,7 +40,7 @@ void MachPhysEvasionPriorityPlans::addNewEPP(const string& EPPName)
 {
     PRE(not EPPExists(EPPName));
 
-    MachPhysEvasionPriorityPlan* pEPP = _NEW(MachPhysEvasionPriorityPlan(EPPName));
+    MachPhysEvasionPriorityPlan* pEPP = new MachPhysEvasionPriorityPlan(EPPName);
     EPPs_.push_back(pEPP);
     ++nEPPs_;
 

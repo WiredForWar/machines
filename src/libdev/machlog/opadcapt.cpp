@@ -127,14 +127,14 @@ PhysRelativeTime MachLogAdminCaptureOperation::doUpdate()
             if ((*i)->objectType() == MachLog::RESOURCE_CARRIER)
                 MachLogResourceCarrier::assignResourceCarrierTask(&(*i)->asResourceCarrier());
             if ((*i)->objectType() == MachLog::AGGRESSOR or (*i)->objectType() == MachLog::ADMINISTRATOR)
-                (*i)->newOperation(_NEW(MachLogFollowOperation(
+                (*i)->newOperation(new MachLogFollowOperation(
                     (*i),
                     constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],
-                    MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20)))));
+                    MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20))));
             if ((*i)->objectType() == MachLog::CONSTRUCTOR /* and  allConstructorsIdle*/)
             {
                 MachLogConstructor* pConstructor = &(*i)->asConstructor();
-                pConstructor->newOperation(_NEW(MachLogCaptureOperation(pConstructor, pConstruction_)));
+                pConstructor->newOperation(new MachLogCaptureOperation(pConstructor, pConstruction_));
                 taskedConstructor = true;
             }
         }
@@ -147,10 +147,10 @@ PhysRelativeTime MachLogAdminCaptureOperation::doUpdate()
     if (!pSubOperation())
         subOperation(
             pActor_,
-            _NEW(MachLogFollowOperation(
+            new MachLogFollowOperation(
                 pActor_,
                 constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],
-                MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20)))));
+                MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20))));
     while (constructors.size())
         constructors.erase(constructors.begin());
 

@@ -157,7 +157,7 @@ MachLogMine::pNewPhysMine(MachLogRace* pRace, uint level, const MexPoint3d& loca
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysMine(pDomain, localTransform, level, pRace->race()));
+    return new MachPhysMine(pDomain, localTransform, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

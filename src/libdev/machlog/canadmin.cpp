@@ -92,7 +92,7 @@ void MachLogCanAdminister::handleIdleGeoLocator(MachLogCommsId obj)
     {
         found = not (*j).hasBeenDiscoveredBy( race() );
         if( found )
-            obj->newOperation( _NEW( MachLocateOperation( _STATIC_CAST( MachLogLocator *, obj ) , (*j).position() ) ) );
+            obj->newOperation( new MachLocateOperation( _STATIC_CAST( MachLogLocator *, obj ) , (*j).position() ) );
     }
 
     if( not found )
@@ -118,7 +118,7 @@ void MachLogCanAdminister::handleIdleConstructor(MachLogCommsId pObj)
         found = not(*i)->isComplete();
         MexPoint2d p((*i)->position().x(), (*i)->position().y());
         if (found)
-            obj->newOperation(_NEW(MachLogConstructOperation(&obj->asConstructor(), *i)));
+            obj->newOperation(new MachLogConstructOperation(&obj->asConstructor(), *i));
     }
 
     if (not found)
@@ -138,11 +138,11 @@ void MachLogCanAdminister::handleIdleAggressor(MachLogCommsId pObj)
         if (obj->squadron()->strategy().currentOperationType() == MachLogOperation::TASK_ATTACK_OPERATION)
             return;
     }
-    //  obj->newOperation( _NEW( MachSeekAndDestroyOperation( _STATIC_CAST( MachLogAggressor *, obj ) ) ) );
+    //  obj->newOperation( new MachSeekAndDestroyOperation( _STATIC_CAST( MachLogAggressor *, obj ) ) );
     //  if( MachLogRaces::instance().aggressors( obj->race() ).size() < 5 )
     moveOutOfTheWay(obj);
     //  else
-    //      obj->newOperation( _NEW( MachLogSeekAndDestroyOperation( obj ) ) );
+    //      obj->newOperation( new MachLogSeekAndDestroyOperation( obj ) );
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -177,7 +177,7 @@ void MachLogCanAdminister::handleIdleAdministrator(MachLogCommsId pObj)
         ctl_append( &path, MexPoint2d( 350, 900 ) );
     }
 
-    obj->newOperation( _NEW( MachPatrolOperation( _STATIC_CAST( MachLogAdministrator *, obj ), path ) ) );
+    obj->newOperation( new MachPatrolOperation( _STATIC_CAST( MachLogAdministrator *, obj ), path ) );
     */
 }
 
@@ -240,7 +240,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
             if (MachLogSpacialManipulation::getNearestFreeSpacePoint(trans, 1, pObj->highClearence(), &dest))
             {
                 // less than 30m from an assembly point is good enough.
-                pObj->newOperation(_NEW(MachLogMoveToOperation(pObj, dest, true, 30.0)));
+                pObj->newOperation(new MachLogMoveToOperation(pObj, dest, true, 30.0));
             }
         }
         return;
@@ -263,7 +263,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
             if (MachLogSpacialManipulation::getNearestFreeSpacePoint(trans, 1, pObj->highClearence(), &dest))
             {
                 // less than 30m from an assembly point is good enough.
-                pObj->newOperation(_NEW(MachLogMoveToOperation(pObj, dest, true, 30.0)));
+                pObj->newOperation(new MachLogMoveToOperation(pObj, dest, true, 30.0));
             }
         }
         return;
@@ -288,7 +288,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
                 if (MachLogSpacialManipulation::getNearestFreeSpacePoint(trans, 30, pObj->highClearence(), &dest, 30))
                 {
                     // less than 50m from an assembly point is good enough.
-                    pObj->newOperation(_NEW(MachLogMoveToOperation(pObj, dest, true, 60.0)));
+                    pObj->newOperation(new MachLogMoveToOperation(pObj, dest, true, 60.0));
                 }
             }
         }
@@ -301,7 +301,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
             if (MachLogSpacialManipulation::getNearestFreeSpacePoint(trans, 1, pObj->highClearence(), &dest))
             {
                 // less than 30m from an assembly point is good enough.
-                pObj->newOperation(_NEW(MachLogMoveToOperation(pObj, dest, true, 30.0)));
+                pObj->newOperation(new MachLogMoveToOperation(pObj, dest, true, 30.0));
             }
         }
 
@@ -310,7 +310,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
 
     // otherwise, let's go to that garrison we found earlier.
 
-    pObj->newOperation(_NEW(MachLogEnterBuildingOperation(pObj, pGarrison, pStation)));
+    pObj->newOperation(new MachLogEnterBuildingOperation(pObj, pGarrison, pStation));
 }
 
 void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj, int assemblyPoint)
@@ -329,7 +329,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj, int assemblyPoi
                 radius += 20;
 
             // less than 30m from an assembly point is good enough.
-            pObj->newOperation(_NEW(MachLogMoveToOperation(pObj, dest, true, 30.0)));
+            pObj->newOperation(new MachLogMoveToOperation(pObj, dest, true, 30.0));
         }
     }
     else

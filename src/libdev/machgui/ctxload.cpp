@@ -117,24 +117,24 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Standard buttons...
-    pOkBtn_ = _NEW(MachGuiMenuButton(
+    pOkBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(364, 127, 555, 170),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK));
-    pDeleteBtn_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_DUMMY_OK);
+    pDeleteBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(364, 230, 555, 274),
         IDS_MENUBTN_DELETE,
-        MachGuiStartupScreens::BE_DELETE));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_DELETE);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(364, 328, 555, 371),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn_->defaultControl(true);
@@ -142,7 +142,7 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
     // Display save list box heading
     GuiResourceString loadHeading(IDS_MENULB_LOADGAME);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pLoadText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pLoadText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LOAD_LB_MINX,
@@ -150,10 +150,10 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
             LOAD_LB_MINX + font.textWidth(loadHeading.asString()),
             LOAD_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_LOADGAME,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create save game list box
-    pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(
+    pSaveGameList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
@@ -163,7 +163,7 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
             LOAD_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
@@ -228,12 +228,12 @@ void MachGuiCtxLoad::updateSaveGameList()
     for (uint loop = 0; loop < numSavedGames; ++loop)
     {
         MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
-        _NEW(MachGuiLoadGameListBoxItem(
+        new MachGuiLoadGameListBoxItem(
             pStartupScreens_,
             pSaveGameList_,
             LOAD_LB_MAXX - LOAD_LB_MINX - SCROLLBAR_WIDTH,
             savedGame,
-            this));
+            this);
     }
 
     // Get list to redraw.
@@ -300,7 +300,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
             {
                 pStartupScreens_->displayMsgBox(
                     IDS_MENUMSG_DELETESAVEDGAME,
-                    _NEW(MachGuiLoadGameDeleteMessageBoxResponder(this)));
+                    new MachGuiLoadGameDeleteMessageBoxResponder(this));
             }
         }
     }
@@ -323,7 +323,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
         }
 // else
 //{
-// pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, _NEW( MachGuiLoadMessageBoxResponder(this) ) );
+// pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiLoadMessageBoxResponder(this) );
 // }
 #else // DEMO defined
         if (not pSelectedSaveGame_)

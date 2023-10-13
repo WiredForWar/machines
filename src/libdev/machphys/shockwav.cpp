@@ -107,7 +107,7 @@ void MachPhysShockWave::addMaterial(MachPhysShockWave::Materials* pMaterials, co
     material.texture(texture);
 
     // Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
     pMaterialVec->push_back(material);
 
     // Add a counted pointer to the material vector to the argument
@@ -125,7 +125,7 @@ const MachPhysShockWave::MaterialsPtr& MachPhysShockWave::materialsPtr()
         once = false;
 
         // Construct a vector of materials
-        MachPhysShockWave::Materials* pMaterials = _NEW(MachPhysShockWave::Materials);
+        MachPhysShockWave::Materials* pMaterials = new MachPhysShockWave::Materials;
         pMaterials->reserve(6);
 
         RenTexture tex = RenTexManager::instance().createTexture("wall0_bt.BMP");
@@ -167,7 +167,7 @@ void MachPhysShockWave::startShockWave(
     uint frameNumber = 0;
     //Construct a frame based material plan with a random frame offset
     W4dMaterialFramePlan* pMaterialPlan =
-        _NEW( W4dMaterialFramePlan( materialsPtr(), frameNumber,  duration ) );
+        new W4dMaterialFramePlan( materialsPtr(), frameNumber,  duration );
 
     //++frameNumber;
     //frameNumber %= 6;
@@ -176,7 +176,7 @@ void MachPhysShockWave::startShockWave(
     entityPlan.materialPlan( materialPlanPtr, startTime );
 */
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration);
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
@@ -186,7 +186,7 @@ void MachPhysShockWave::startShockWave(
 
     RenNonUniformScale a(iniScale, iniScale, zScale);
     RenNonUniformScale b(endScale, endScale, zScale);
-    W4dScalePlanPtr planPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr planPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     // Propogate thru the current model
     propogateScalePlan(planPtr, startTime, 1);
@@ -214,14 +214,14 @@ void MachPhysShockWave::startShockWave(
     scales.push_back(0.0625);
     scales.push_back(0.0); // 1 - 2x + x^2
 
-    PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysScalarPlanPtr lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
 
     W4dMaterialPlanPtr alphaPlanPtr
-        = _NEW(W4dSimpleAlphaPlan(matFlash, pFlashMaterialVec->size(), lineScalarPlanPtr, 1));
+        = new W4dSimpleAlphaPlan(matFlash, pFlashMaterialVec->size(), lineScalarPlanPtr, 1);
     entityPlanForEdit().materialPlan(alphaPlanPtr, startTime);
 
     // Delete the temporary material vector obtained from the mesh
-    _DELETE(pFlashMaterialVec);
+    delete pFlashMaterialVec;
 }
 
 // static

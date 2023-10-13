@@ -147,7 +147,7 @@ void RenID3DMeshLoader::load(const SysPathName& pathName, RenHierarchyBuilder* p
         //  deleting it. Sometimes the pointer gets put into files_, sometimes it
         //  doesn't in which case we need to delete it separately as is happening here.
         MeshMap* pMeshMap = load(pathName);
-        _DELETE(pMeshMap);
+        delete pMeshMap;
     }
     pHierarchyBuilder_ = nullptr;
 
@@ -160,7 +160,7 @@ void RenID3DMeshLoader::load(const SysPathName& pathName, RenHierarchyBuilder* p
 RenID3DMeshLoader::MeshMap* RenID3DMeshLoader::load(const SysPathName& pathName)
 {
     // Create a new set of meshes to be populated when this file loads.
-    meshesBeingLoaded_ = _NEW(MeshMap);
+    meshesBeingLoaded_ = new MeshMap;
     fileBeingLoaded_ = pathName;
 
     //  Use XParser to load the file.
@@ -218,9 +218,9 @@ void RenID3DMeshLoader::deleteAll()
         // The contents of the MeshMap are COMPTR objects.  These don't
         // need to be explicitly deleted -- deleting the map should do.
         MeshMap* meshes = (*it).second;
-        _DELETE(meshes->begin()->second.scene);
+        delete meshes->begin()->second.scene;
         meshes->erase(meshes->begin(), meshes->end()); // ???
-        _DELETE(meshes);
+        delete meshes;
 
         RenID3DMeshLoader::FileMap::iterator tmpIt = it;
         ++it;
@@ -233,7 +233,7 @@ void RenID3DMeshLoader::deleteAll()
     //  but somehow the callback isn't being called.  Maybe there's a leak of an
     //  RM object which references the texture.  Maybe there's a bug in RM.
     for (Textures::iterator i = textures_.begin(); i != textures_.end(); ++i)
-        _DELETE(*i);
+        delete *i;
     textures_.erase(textures_.begin(), textures_.end());
 }
 

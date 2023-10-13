@@ -56,12 +56,12 @@ void MachLogExplosionAction::doAction()
     MexTransform3d localTransform;
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
-    W4dEntity* pOwner = _NEW(W4dGeneric(pDomain, localTransform, W4dEntity::NOT_SOLID));
+    W4dEntity* pOwner = new W4dGeneric(pDomain, localTransform, W4dEntity::NOT_SOLID);
     pOwner->boundingVolume(MexAlignedBox3d(location, size_, size_, size_));
     // Construct and use an explosion
     MachPhysObjectExplosion exploder(pOwner);
     exploder.explode(SimManager::instance().currentTime());
-    _DELETE(pOwner);
+    delete pOwner;
     MachLogLinearProjectile::genericCheckForDamage(location, range_, MachLogLinearProjectile::LINEAR_DAMAGE, damage_);
 }
 
@@ -70,7 +70,7 @@ MachLogExplosionAction*
 MachLogExplosionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogExplosionAction* pResult = nullptr;
-    pResult = _NEW(MachLogExplosionAction(pCondition, enabled));
+    pResult = new MachLogExplosionAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

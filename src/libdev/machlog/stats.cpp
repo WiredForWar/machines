@@ -9,14 +9,14 @@
 #include "machlog/internal/statimpl.hpp"
 
 MachLogStats::MachLogStats()
-    : pStatsImpl_(_NEW(MachLogStatsImpl))
+    : pStatsImpl_(new MachLogStatsImpl)
 {
     TEST_INVARIANT;
 }
 
 MachLogStats::~MachLogStats()
 {
-    _DELETE(pStatsImpl_);
+    delete pStatsImpl_;
     TEST_INVARIANT;
 }
 

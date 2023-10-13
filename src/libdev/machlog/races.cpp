@@ -92,19 +92,19 @@ MachLogRaces& MachLogRaces::instance()
 };
 
 MachLogRaces::MachLogRaces()
-    : pDataImpl_(_NEW(MachLogRacesDataImpl))
+    : pDataImpl_(new MachLogRacesDataImpl)
 {
     // Ensure actor id 0 gets allocated. Then it will not be used inadvertently when wrapping round.
     idGenerator().allocateId(0);
 
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
-    pDataImpl_->pActorIdMap_ = _NEW(ActorIdMap(maxActors()));
+    pDataImpl_->pActorIdMap_ = new ActorIdMap(maxActors());
     pDataImpl_->thePCController_ = nullptr;
     pDataImpl_->pResearchTree_ = nullptr;
     pDataImpl_->pConstructionTree_ = nullptr;
     pDataImpl_->pStats_ = nullptr;
-    pDataImpl_->pArtefacts_ = _NEW(MachLogArtefacts);
+    pDataImpl_->pArtefacts_ = new MachLogArtefacts;
     pDataImpl_->pGameCreationData_ = nullptr;
     pDataImpl_->scores_.reserve(MachPhys::N_RACES);
     MachLogScore* pScore = nullptr;
@@ -126,7 +126,7 @@ MachLogRaces::MachLogRaces()
         }
     }
 
-    pDataImpl_->pRemoteFirstPersonManager_ = _NEW(MachLogRemoteFirstPersonManager);
+    pDataImpl_->pRemoteFirstPersonManager_ = new MachLogRemoteFirstPersonManager;
     pDataImpl_->pDatabaseHandler_ = nullptr;
 
     pDataImpl_->lastFullSmeltersUpdateTime_ = timeNow;
@@ -141,20 +141,20 @@ MachLogRaces::~MachLogRaces()
     HAL_STREAM("MLRaces::DTOR...\n");
     // squadrons are now deleted by owning processes
     //   for( Squadrons::iterator i = squadrons_[ MachPhys::RED ].begin(); i != squadrons_[ MachPhys::RED ].end(); ++i )
-    //       _DELETE( (*i) );
+    //       delete (*i);
     //   for( Squadrons::iterator i = squadrons_[ MachPhys::BLUE ].begin(); i != squadrons_[ MachPhys::BLUE ].end(); ++i
     //   )
-    //       _DELETE( (*i) );
-    _DELETE(pDataImpl_->pGameCreationData_);
-    _DELETE(pDataImpl_->pActorIdMap_);
-    _DELETE(pDataImpl_->pRemoteFirstPersonManager_);
+    //       delete (*i);
+    delete pDataImpl_->pGameCreationData_;
+    delete pDataImpl_->pActorIdMap_;
+    delete pDataImpl_->pRemoteFirstPersonManager_;
 
     for (Scores::size_type i = 0; i < pDataImpl_->scores_.size(); ++i)
-        _DELETE(pDataImpl_->scores_[i]);
+        delete pDataImpl_->scores_[i];
 
-    _DELETE(pDataImpl_->pArtefacts_);
+    delete pDataImpl_->pArtefacts_;
 
-    _DELETE(pDataImpl_);
+    delete pDataImpl_;
     HAL_STREAM(" done\n");
 }
 
@@ -762,9 +762,9 @@ void MachLogRaces::race(MachPhys::Race r, MachLogRace* pRace, MachLogRaces::Crea
         {
             for (int i = 0; i < 10; ++i)
             {
-                W4dGeneric* pPhysObject = _NEW(W4dGeneric(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d()));
+                W4dGeneric* pPhysObject = new W4dGeneric(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d());
                 pDataImpl_->squadrons_[map_MachPhysRace_to_size_t(r)].push_back(
-                    _NEW(MachLogSquadron(pRace, pPhysObject, i + 1)));
+                    new MachLogSquadron(pRace, pPhysObject, i + 1));
             }
         }
     }
@@ -782,10 +782,10 @@ const MachLogRace& MachLogRaces::race(MachPhys::Race r) const
 
 void MachLogRaces::addExtraSquadron(MachPhys::Race r)
 {
-    W4dGeneric* pPhysObject = _NEW(W4dGeneric(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d()));
+    W4dGeneric* pPhysObject = new W4dGeneric(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d());
     int id = pDataImpl_->squadrons_[map_MachPhysRace_to_size_t(r)].size() + 1;
     pDataImpl_->squadrons_[map_MachPhysRace_to_size_t(r)].push_back(
-        _NEW(MachLogSquadron(pDataImpl_->race_[map_MachPhysRace_to_size_t(r)], pPhysObject, id)));
+        new MachLogSquadron(pDataImpl_->race_[map_MachPhysRace_to_size_t(r)], pPhysObject, id));
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -2023,94 +2023,94 @@ MachActor& MachLogRaces::actor(UtlId id)
 
 // void MachLogRaces::constructRedRace()
 //{
-//   MachLogRace * pRace = _NEW( MachLogRace( MachPhys::RED ) );
+//   MachLogRace * pRace = new MachLogRace( MachPhys::RED );
 //   race( MachPhys::RED, pRace );
 //
-////    MachLogMine * pPreloadHack = _NEW( MachLogMine( pRace, 4, MexPoint3d( 525, 525, -1000 ), MexDegrees( 90 ) ) );
+////    MachLogMine * pPreloadHack = new MachLogMine( pRace, 4, MexPoint3d( 525, 525, -1000 ), MexDegrees( 90 ) );
 ////    ctl_append( &mines( MachPhys::RED ), pPreloadHack );
-////    _DELETE( pPreloadHack );
+////    delete pPreloadHack;
 //
 //    MexTransform3d localTransform;
 //    W4dEntity* pAnyDomain =
 //        MachLogPlanetDomains::pDomainPosition( MexPoint3d(0,0,0), 0, &localTransform );
-//    W4dEntity* pPhysObject = _NEW( W4dGeneric( pAnyDomain, localTransform ) );
+//    W4dEntity* pPhysObject = new W4dGeneric( pAnyDomain, localTransform );
 //
-//  MachLogController * pCtl = _NEW( MachLogController( MachPhys::RED, pPhysObject, pRace ) );
+//  MachLogController * pCtl = new MachLogController( MachPhys::RED, pPhysObject, pRace );
 //  controller( MachPhys::RED, pCtl );
 //
-//  _NEW( MachLogAdministrator( 3, pRace, MexPoint3d( 920, 160, 0 ) ) );
-//  _NEW( MachLogLocator( 7, pRace, MexPoint3d( 910,160, 0 ) ) );
-//  _NEW( MachLogAggressor( 8, pRace, MexPoint3d( 900,160, 0 ) ) );
-//  _NEW( MachLogConstructor( 1, pRace, MexPoint3d( 472,175, 0 ) ) );
-//  _NEW( MachLogTechnician( 3, pRace, MexPoint3d( 501, 248, 0 ) ) );
-//  _NEW( MachLogResourceCarrier( 3, pRace, MexPoint3d( 846, 204, 0 ) ) );
+//  new MachLogAdministrator( 3, pRace, MexPoint3d( 920, 160, 0 ) );
+//  new MachLogLocator( 7, pRace, MexPoint3d( 910,160, 0 ) );
+//  new MachLogAggressor( 8, pRace, MexPoint3d( 900,160, 0 ) );
+//  new MachLogConstructor( 1, pRace, MexPoint3d( 472,175, 0 ) );
+//  new MachLogTechnician( 3, pRace, MexPoint3d( 501, 248, 0 ) );
+//  new MachLogResourceCarrier( 3, pRace, MexPoint3d( 846, 204, 0 ) );
 //
-//  ctl_append( &smelters( MachPhys::RED ), _NEW( MachLogSmelter( pRace, 9, MexPoint3d(686, 158, 0), MexDegrees( 90 ) )
-//  ) ); ctl_append( &garrisons( MachPhys::RED ), _NEW( MachLogGarrison( pRace, 8, MexPoint3d(875, 291, 0), MexDegrees(
-//  -90 ) ) ) ); ctl_append( &garrisons( MachPhys::RED ), _NEW( MachLogGarrison( pRace, 8, MexPoint3d(525, 350, 0),
-//  MexDegrees( 180 ) ) ) ); ctl_append( &pods( MachPhys::RED ), _NEW( MachLogPod( pRace, 1, MexPoint3d(788, 175, 0),
-//  MexDegrees( 90 ) ) ) );
+//  ctl_append( &smelters( MachPhys::RED ), new MachLogSmelter( pRace, 9, MexPoint3d(686, 158, 0), MexDegrees( 90 ) )
+//  ); ctl_append( &garrisons( MachPhys::RED ), new  MachLogGarrison( pRace, 8, MexPoint3d(875, 291, 0), MexDegrees(
+//  -90 ) ) ) ; ctl_append( &garrisons( MachPhys::RED ), new MachLogGarrison( pRace, 8, MexPoint3d(525, 350, 0),
+//  MexDegrees( 180 ) ) ); ctl_append( &pods( MachPhys::RED ), new  MachLogPod( pRace, 1, MexPoint3d(788, 175, 0),
+//  MexDegrees( 90 ) ) ) ;
 //
-////    ctl_append( &factories( MachPhys::RED ), _NEW( MachLogFactory( pRace, 10, MexPoint3d( 598, 161, 0), MexDegrees(
-/// 90 ) ) ) );
-//  ctl_append( &factories( MachPhys::RED ), _NEW( MachLogFactory( pRace, 10, MexPoint3d( 616, 158, 0), MexDegrees( 90 )
-//  ) ) ); ctl_append( &hardwareLabs( MachPhys::RED ), _NEW( MachLogHardwareLab( pRace, 4, MexPoint3d(482, 256, 0),
-//  MexDegrees( 0 ) ) ) ); ctl_append( &softwareLabs( MachPhys::RED ), _NEW( MachLogSoftwareLab( pRace, 1, MexPoint3d(
-//  569, 276, 0), MexDegrees( 180 ) ) ) );
-////    ctl_append( &softwareLabs( MachPhys::RED ), _NEW( MachLogSoftwareLab( pRace, 1, MexPoint3d( 520, 300, 0),
-/// MexDegrees( 180 ) ) ) );
+////    ctl_append( &factories( MachPhys::RED ), new MachLogFactory( pRace, 10, MexPoint3d( 598, 161, 0), MexDegrees(
+/// 90 ) ) );
+//  ctl_append( &factories( MachPhys::RED ), new MachLogFactory( pRace, 10, MexPoint3d( 616, 158, 0), MexDegrees( 90 )
+//  ) ); ctl_append( &hardwareLabs( MachPhys::RED ), new  MachLogHardwareLab( pRace, 4, MexPoint3d(482, 256, 0),
+//  MexDegrees( 0 ) ) ) ; ctl_append( &softwareLabs( MachPhys::RED ), new MachLogSoftwareLab( pRace, 1, MexPoint3d(
+//  569, 276, 0), MexDegrees( 180 ) ) );
+////    ctl_append( &softwareLabs( MachPhys::RED ), new MachLogSoftwareLab( pRace, 1, MexPoint3d( 520, 300, 0),
+/// MexDegrees( 180 ) ) );
 //
-//    _NEW( MachLogMissileEmplacement( pRace, 7, MexPoint3d(452, 365, 0), MexDegrees( 180 ) ) );
+//    new MachLogMissileEmplacement( pRace, 7, MexPoint3d(452, 365, 0), MexDegrees( 180 ) );
 //
-//  _NEW( MachLogBeacon( pRace, 3, MexPoint3d(218, 305, 0), MexDegrees( 0 ) ) );
-//  _NEW( MachLogBeacon( pRace, 3, MexPoint3d(394, 394, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(539, 219, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(860, 220, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(778, 458, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(798, 661, 0), MexDegrees( 0 ) ) );
+//  new MachLogBeacon( pRace, 3, MexPoint3d(218, 305, 0), MexDegrees( 0 ) );
+//  new MachLogBeacon( pRace, 3, MexPoint3d(394, 394, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(539, 219, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(860, 220, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(778, 458, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(798, 661, 0), MexDegrees( 0 ) );
 //}
 //
 ///* //////////////////////////////////////////////////////////////// */
 //
 // void MachLogRaces::constructBlueRace()
 //{
-//  MachLogRace * pRace = _NEW( MachLogRace( MachPhys::BLUE ) );
+//  MachLogRace * pRace = new MachLogRace( MachPhys::BLUE );
 //  race( MachPhys::BLUE, pRace );
 //
 //    MexTransform3d localTransform;
 //    W4dEntity* pAnyDomain =
 //        MachLogPlanetDomains::pDomainPosition( MexPoint3d(0,0,0), 0, &localTransform );
-//    W4dEntity* pPhysObject = _NEW( W4dGeneric( pAnyDomain, localTransform ) );
+//    W4dEntity* pPhysObject = new W4dGeneric( pAnyDomain, localTransform );
 //
-//  MachLogController * pCtl = _NEW( MachLogController( MachPhys::BLUE, pPhysObject, pRace ) );
+//  MachLogController * pCtl = new MachLogController( MachPhys::BLUE, pPhysObject, pRace );
 //  controller( MachPhys::BLUE, pCtl );
 //
-//  _NEW( MachLogAdministrator( 3, pRace, MexPoint3d( 920, 780, 0 ) ) );
-//  _NEW( MachLogLocator( 7, pRace, MexPoint3d( 920,770, 0 ) ) );
-//  _NEW( MachLogAggressor( 8, pRace, MexPoint3d( 920,760, 0 ) ) );
+//  new MachLogAdministrator( 3, pRace, MexPoint3d( 920, 780, 0 ) );
+//  new MachLogLocator( 7, pRace, MexPoint3d( 920,770, 0 ) );
+//  new MachLogAggressor( 8, pRace, MexPoint3d( 920,760, 0 ) );
 //
-//  ctl_append( &smelters( MachPhys::BLUE ), _NEW( MachLogSmelter( pRace, 9, MexPoint3d( 830, 890, 0), MexDegrees( -90 )
-//  ) ) ); ctl_append( &garrisons( MachPhys::BLUE ), _NEW( MachLogGarrison( pRace, 8, MexPoint3d( 175, 700, 0),
-//  MexDegrees( 90 ) ) ) ); ctl_append( &garrisons( MachPhys::BLUE ), _NEW( MachLogGarrison( pRace, 8, MexPoint3d( 739,
-//  885, 0), MexDegrees( -90 ) ) ) ); ctl_append( &pods( MachPhys::BLUE ), _NEW( MachLogPod( pRace, 1, MexPoint3d(175,
-//  875, 0 ), MexDegrees( 0 ) ) ) ); ctl_append( &factories( MachPhys::BLUE ), _NEW( MachLogFactory( pRace, 10,
-//  MexPoint3d( 900,890, 0), MexDegrees( -90 ) ) ) );
+//  ctl_append( &smelters( MachPhys::BLUE ), new MachLogSmelter( pRace, 9, MexPoint3d( 830, 890, 0), MexDegrees( -90 )
+//  ) ); ctl_append( &garrisons( MachPhys::BLUE ), new  MachLogGarrison( pRace, 8, MexPoint3d( 175, 700, 0),
+//  MexDegrees( 90 ) ) ) ; ctl_append( &garrisons( MachPhys::BLUE ), new MachLogGarrison( pRace, 8, MexPoint3d( 739,
+//  885, 0), MexDegrees( -90 ) ) ); ctl_append( &pods( MachPhys::BLUE ), new  MachLogPod( pRace, 1, MexPoint3d(175,
+//  875, 0 ), MexDegrees( 0 ) ) ) ; ctl_append( &factories( MachPhys::BLUE ), new MachLogFactory( pRace, 10,
+//  MexPoint3d( 900,890, 0), MexDegrees( -90 ) ) );
 //
-//  ctl_append( &hardwareLabs( MachPhys::BLUE ), _NEW( MachLogHardwareLab( pRace, 4, MexPoint3d(394,919, 0), MexDegrees(
-//  180 ) ) ) ); ctl_append( &softwareLabs( MachPhys::BLUE ), _NEW( MachLogSoftwareLab( pRace, 1, MexPoint3d(306,852,
-//  0), MexDegrees( 90 ) ) ) );
+//  ctl_append( &hardwareLabs( MachPhys::BLUE ), new MachLogHardwareLab( pRace, 4, MexPoint3d(394,919, 0), MexDegrees(
+//  180 ) ) ); ctl_append( &softwareLabs( MachPhys::BLUE ), new  MachLogSoftwareLab( pRace, 1, MexPoint3d(306,852,
+//  0), MexDegrees( 90 ) ) ) ;
 //
-//    _NEW( MachLogMissileEmplacement( pRace, 7, MexPoint3d(248,628, 0), MexDegrees( -90 ) ) );
+//    new MachLogMissileEmplacement( pRace, 7, MexPoint3d(248,628, 0), MexDegrees( -90 ) );
 //
 ////Note this new bit down here!!!
-//  _NEW( MachLogTechnician( 3, pRace, MexPoint3d( 321, 919, 0 ) ) );
+//  new MachLogTechnician( 3, pRace, MexPoint3d( 321, 919, 0 ) );
 //
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(336,452, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(190,657, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(832,657, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(452,744, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(646,832, 0), MexDegrees( 0 ) ) );
-//    _NEW( MachLogBeacon( pRace, 3, MexPoint3d(321,904, 0), MexDegrees( 0 ) ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(336,452, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(190,657, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(832,657, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(452,744, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(646,832, 0), MexDegrees( 0 ) );
+//    new MachLogBeacon( pRace, 3, MexPoint3d(321,904, 0), MexDegrees( 0 ) );
 //}
 //
 ///* //////////////////////////////////////////////////////////////// */
@@ -2231,8 +2231,8 @@ bool MachLogRaces::loadGame(
 
     // Cache GameCreationData
     if (pDataImpl_->pGameCreationData_)
-        _DELETE(pDataImpl_->pGameCreationData_);
-    pDataImpl_->pGameCreationData_ = _NEW(MachLogGameCreationData(gameData));
+        delete pDataImpl_->pGameCreationData_;
+    pDataImpl_->pGameCreationData_ = new MachLogGameCreationData(gameData);
     // Ensure previous game cleared out
     unloadGame();
 
@@ -2382,15 +2382,15 @@ bool MachLogRaces::loadSavedGame(
 
         if (SysMetaFile::useMetaFile() && metaFile.hasFile(scenarioPath))
         {
-            // pIstream = _NEW( SysMetaFileIstream( metaFile, scenarioPathName, ios::text ) );
+            // pIstream = new SysMetaFileIstream( metaFile, scenarioPathName, ios::text );
             pIstream
-                = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, scenarioPathName, std::ios::in)));
+                = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, scenarioPathName, std::ios::in));
         }
         else
         {
             ASSERT_FILE_EXISTS(scenarioPathName.c_str());
-            // pIstream = _NEW( ifstream( scenarioPathName.c_str(), ios::text | ios::in ) );
-            pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(scenarioPathName.c_str(), std::ios::in)));
+            // pIstream = new ifstream( scenarioPathName.c_str(), ios::text | ios::in );
+            pIstream = std::unique_ptr<std::istream>(new std::ifstream(scenarioPathName.c_str(), std::ios::in));
         }
 
         UtlLineTokeniser parser(*pIstream, scenarioPathName);
@@ -2537,9 +2537,9 @@ void MachLogRaces::initialise()
     PRE(pDataImpl_->pStats_ == nullptr);
 
     // Construct the dependent objects
-    pDataImpl_->pResearchTree_ = _NEW(MachLogResearchTree());
-    pDataImpl_->pConstructionTree_ = _NEW(MachLogConstructionTree());
-    pDataImpl_->pStats_ = _NEW(MachLogStats);
+    pDataImpl_->pResearchTree_ = new MachLogResearchTree();
+    pDataImpl_->pConstructionTree_ = new MachLogConstructionTree();
+    pDataImpl_->pStats_ = new MachLogStats;
     pDataImpl_->endingFlic_ = "";
     pDataImpl_->AICommandId_ = 100000;
     pDataImpl_->inSpecialActorUpdate_ = false;
@@ -2564,10 +2564,10 @@ void MachLogRaces::initialise()
         pDataImpl_->raceInGame_[i] = false;
         if (pDataImpl_->scores_[i])
         {
-            _DELETE(pDataImpl_->scores_[i]);
+            delete pDataImpl_->scores_[i];
             pDataImpl_->scores_[i] = nullptr;
         }
-        pDataImpl_->scores_[i] = _NEW(MachLogScore(i));
+        pDataImpl_->scores_[i] = new MachLogScore(i);
     }
 
     for (int i = MachPhys::RED; i < MachPhys::N_RACES; ++i)
@@ -2586,16 +2586,16 @@ void MachLogRaces::initialise()
 
 void MachLogRaces::clear()
 {
-    _DELETE(pDataImpl_->pStats_);
+    delete pDataImpl_->pStats_;
     pDataImpl_->pStats_ = nullptr;
 
-    _DELETE(pDataImpl_->pResearchTree_);
+    delete pDataImpl_->pResearchTree_;
     pDataImpl_->pResearchTree_ = nullptr;
 
-    _DELETE(pDataImpl_->pConstructionTree_);
+    delete pDataImpl_->pConstructionTree_;
     pDataImpl_->pConstructionTree_ = nullptr;
 
-    _DELETE(pDataImpl_->pGameCreationData_);
+    delete pDataImpl_->pGameCreationData_;
     pDataImpl_->pGameCreationData_ = nullptr;
 
     // Clear out per race data

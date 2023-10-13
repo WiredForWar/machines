@@ -23,7 +23,7 @@ PhysTimedAnglePlan::PhysTimedAnglePlan(
     const MexVec3& axis,
     const MexVec3& position)
     : PhysMotionPlan(0)
-    , pImpl_(_NEW(PhysTimedAnglePlanImpl(anglesPtr, timesPtr, axis, position)))
+    , pImpl_(new PhysTimedAnglePlanImpl(anglesPtr, timesPtr, axis, position))
 {
     PRE(axis.modulus() > 0.0)
 
@@ -46,7 +46,7 @@ PhysTimedAnglePlan::PhysTimedAnglePlan(
 PhysTimedAnglePlan::~PhysTimedAnglePlan()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 MexRadians PhysTimedAnglePlan::angle(const PhysRelativeTime& timeOffset) const

@@ -91,7 +91,7 @@ bool MachGuiDeployCommand::doApply(MachActor* pActor, string* pReason)
         if (valid)
         {
             // Construct the operation
-            MachLogDeployAPCOperation* pOp = _NEW(MachLogDeployAPCOperation(&apc, validPoint));
+            MachLogDeployAPCOperation* pOp = new MachLogDeployAPCOperation(&apc, validPoint);
 
             // Give to apc
             pActor->newOperation(pOp);
@@ -140,7 +140,7 @@ void MachGuiDeployCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiDeployCommand::clone() const
 {
-    return _NEW(MachGuiDeployCommand(&inGameScreen()));
+    return new MachGuiDeployCommand(&inGameScreen());
 }
 
 // virtual

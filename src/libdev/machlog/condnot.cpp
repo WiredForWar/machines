@@ -26,7 +26,7 @@ MachLogNotCondition::~MachLogNotCondition()
     TEST_INVARIANT;
     pNotCondition_->decrementLinkedActionCount();
     if (pNotCondition_->nLinkedActions() == 0)
-        _DELETE(pNotCondition_);
+        delete pNotCondition_;
 }
 
 // virtual
@@ -41,7 +41,7 @@ MachLogNotCondition* MachLogNotCondition::newFromParser(UtlLineTokeniser* pParse
     SimCondition* pNotCondition = nullptr;
     ASSERT_INFO(pParser->tokens()[2])
     pNotCondition = pMap->operator[](pParser->tokens()[2]);
-    return _NEW(MachLogNotCondition(pParser->tokens()[1], pNotCondition));
+    return new MachLogNotCondition(pParser->tokens()[1], pNotCondition);
 }
 
 void MachLogNotCondition::CLASS_INVARIANT

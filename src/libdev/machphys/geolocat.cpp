@@ -56,7 +56,7 @@ MachPhysGeoLocator::MachPhysGeoLocator(
         brainLevel,
         race,
         MachPhysData::instance().geoLocatorData(bodyLevel, brainLevel))
-    , pImpl_(_NEW(MachPhysGeoLocatorImpl))
+    , pImpl_(new MachPhysGeoLocatorImpl)
 {
     CB_DEPIMPL(W4dCompositePlanPtr, locatingPlanPtr_);
 
@@ -75,7 +75,7 @@ MachPhysGeoLocator::MachPhysGeoLocator(W4dEntity* pParent, size_t bodyLevel)
         W4dTransform3d(),
         compositeFileName(bodyLevel),
         MachPhysData::instance().geoLocatorData(bodyLevel, 1))
-    , pImpl_(_NEW(MachPhysGeoLocatorImpl))
+    , pImpl_(new MachPhysGeoLocatorImpl)
 {
     createExplosionData();
 
@@ -91,7 +91,7 @@ MachPhysGeoLocator::MachPhysGeoLocator(PerConstructor con)
 MachPhysGeoLocator::~MachPhysGeoLocator()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 SysPathName MachPhysGeoLocator::compositeFileName(size_t bodyLevel) const
@@ -192,7 +192,7 @@ void MachPhysGeoLocator::isLocating(bool doLocate)
                     // transform to the machine system
                     globalTransform().transformInverse(&position);
 
-                    pLocator_ = _NEW(MachPhysLocator(this, position));
+                    pLocator_ = new MachPhysLocator(this, position);
                 }
                 else
                 {
@@ -217,7 +217,7 @@ void MachPhysGeoLocator::isLocating(bool doLocate)
             {
                 // pLocator_->entityPlanForEdit().clearAnimation( LOCATOR_LOCATING );
                 // pLocator_->visible( false );
-                _DELETE(pLocator_);
+                delete pLocator_;
                 pLocator_ = nullptr;
             }
 

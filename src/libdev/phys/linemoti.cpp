@@ -21,7 +21,7 @@ PhysLinearMotionPlan::PhysLinearMotionPlan(
     const MexTransform3d& endPosition,
     const PhysRelativeTime& endTime)
     : PhysMotionPlan(endTime)
-    , pImpl_(_NEW(PhysLinearMotionPlanImpl(startPosition, endPosition, endTime)))
+    , pImpl_(new PhysLinearMotionPlanImpl(startPosition, endPosition, endTime))
 {
     TEST_INVARIANT;
 }
@@ -30,7 +30,7 @@ PhysLinearMotionPlan::PhysLinearMotionPlan(
 PhysLinearMotionPlan::~PhysLinearMotionPlan()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

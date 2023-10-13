@@ -25,7 +25,7 @@ PER_DEFINE_PERSISTENT(W4dLocalLightList);
 #endif
 
 W4dLocalLightList::W4dLocalLightList()
-    : pLights_(_NEW(Lights))
+    : pLights_(new Lights)
 {
     pLights_->reserve(4);
     TEST_INVARIANT;
@@ -34,7 +34,7 @@ W4dLocalLightList::W4dLocalLightList()
 W4dLocalLightList::~W4dLocalLightList()
 {
     TEST_INVARIANT;
-    _DELETE(pLights_);
+    delete pLights_;
 }
 
 /*bool W4dLocalLightList::isInSceneMgrsList(W4dLight* pLightItem) const

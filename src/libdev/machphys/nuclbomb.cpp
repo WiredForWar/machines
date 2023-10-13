@@ -71,18 +71,18 @@ MachPhysNuclearBomb::MachPhysNuclearBomb(W4dEntity* pParent, const MexTransform3
     // lighting.  This could change if the model changes.
     doNotLight(true);
 
-    pNukeWave_ = _NEW(MachPhysNukeWave(this, MexTransform3d()));
-    pMushroomTop_ = _NEW(MachPhysMushroomTop(this, MexPoint3d(0, 0, 6)));
-    pMushroomShaft_ = _NEW(MachPhysMushroomShaft(this, MexTransform3d()));
-    pMushroomEdge_ = nullptr; //_NEW( MachPhysMushroomEdge(this, MexTransform3d() ) );
+    pNukeWave_ = new MachPhysNukeWave(this, MexTransform3d());
+    pMushroomTop_ = new MachPhysMushroomTop(this, MexPoint3d(0, 0, 6));
+    pMushroomShaft_ = new MachPhysMushroomShaft(this, MexTransform3d());
+    pMushroomEdge_ = nullptr; //new MachPhysMushroomEdge(this, MexTransform3d() );
     // splat no longer needed
-    // pSplat_ = NULL; //_NEW( MachPhysGroundSplat(this, MexTransform3d() ) );
-    pFlash_ = _NEW(MachPhysFlashDisc(
+    // pSplat_ = NULL; //new MachPhysGroundSplat(this, MexTransform3d() );
+    pFlash_ = new MachPhysFlashDisc(
         W4dManager::instance().sceneManager()->currentCamera(),
         MexPoint3d(4, 0, 0),
         10.0,
-        MachPhysFlashDisc::WHITE));
-    pLight_ = _NEW(W4dUniformLight(this, MexVec3(0, 0, 1), 1000.0));
+        MachPhysFlashDisc::WHITE);
+    pLight_ = new W4dUniformLight(this, MexVec3(0, 0, 1), 1000.0);
 
     pLight_->localTransform(MexPoint3d(0, 0, 60)); // highest position of the mashroom
     pLight_->colour(RenColour(6, 2.24, 0.56));
@@ -157,7 +157,7 @@ PhysRelativeTime MachPhysNuclearBomb::startExplosion(const PhysAbsoluteTime& sta
     pNukeWave_->startNukeWave(startTime + weapData.extras()[6], waveDuration, fromRadius, toRadius, zScale);
 
     // visibility plan
-    W4dVisibilityPlanPtr mushroomVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr mushroomVisibilityPlanPtr(new W4dVisibilityPlan(true));
     mushroomVisibilityPlanPtr->add(false, duration);
 
     // nuke light
@@ -167,7 +167,7 @@ PhysRelativeTime MachPhysNuclearBomb::startExplosion(const PhysAbsoluteTime& sta
     pLight_->maxRange(range);
 
     PhysRelativeTime lightDuration = duration * durationPar;
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, lightDuration);
 
     pLight_->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
@@ -183,7 +183,7 @@ PhysRelativeTime MachPhysNuclearBomb::startExplosion(const PhysAbsoluteTime& sta
 
     RenNonUniformScale a(1, 1, 1);
     RenNonUniformScale b(1, 1, 7);
-    W4dScalePlanPtr scalePlanPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr scalePlanPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     MATHEX_SCALAR speed = weapData.extras()[8]; // 0.0287;
 
@@ -194,12 +194,12 @@ PhysRelativeTime MachPhysNuclearBomb::startExplosion(const PhysAbsoluteTime& sta
     // pMushroomEdge_->entityPlanForEdit().visibilityPlan( mushroomVisibilityPlanPtr, startTime );
 
     b = RenNonUniformScale(2.67, 2.67, 2.67);
-    W4dScalePlanPtr topScalePlanPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr topScalePlanPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     pMushroomTop_->propogateScalePlan(topScalePlanPtr, startTime);
     pMushroomTop_->entityPlanForEdit().visibilityPlan(mushroomVisibilityPlanPtr, startTime);
 
-    PhysMotionPlanPtr motionPlanPtr = _NEW(PhysLinearMotionPlan(MexPoint3d(0, 0, 6), MexPoint3d(0, 0, 60), duration));
+    PhysMotionPlanPtr motionPlanPtr = new PhysLinearMotionPlan(MexPoint3d(0, 0, 6), MexPoint3d(0, 0, 60), duration);
 
     pMushroomTop_->entityPlanForEdit().absoluteMotion(motionPlanPtr, startTime);
 
@@ -223,13 +223,13 @@ PhysRelativeTime MachPhysNuclearBomb::startExplosion(const PhysAbsoluteTime& sta
         scales.push_back(weapData.extras()[7]);
         scales.push_back(0.0);
 
-        lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+        lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
     }
 
     W4dSimpleAlphaPlan::makePlan(pFlash_, startTime, lineScalarPlanPtr, 1);
 
     // flash visibility
-    W4dVisibilityPlanPtr flashVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr flashVisibilityPlanPtr(new W4dVisibilityPlan(true));
     flashVisibilityPlanPtr->add(false, flashDuration);
     pFlash_->entityPlanForEdit().visibilityPlan(flashVisibilityPlanPtr, startTime);
 
@@ -263,7 +263,7 @@ PhysRelativeTime MachPhysNuclearBomb::startExplosion(const PhysAbsoluteTime& sta
         crackXform[iCrack] = MexTransform3d();
         MATHEX_SCALAR angleOffset = MachPhysRandom::randomDouble(-10, 10);
         crackXform[iCrack].rotation(MexEulerAngles(MexDegrees(iCrack * angleSeperation + angleOffset), 0, 0));
-        pCrack[iCrack] = _NEW(MachPhysPunchBlast(this, crackXform[iCrack]));
+        pCrack[iCrack] = new MachPhysPunchBlast(this, crackXform[iCrack]);
         crackStartTime[iCrack] = startTime + MachPhysRandom::randomDouble(crackLifeTimeStart, crackLifeTimeEnd);
         PhysRelativeTime crackDuration
             = pCrack[iCrack]->startPunchBlast(crackStartTime[iCrack], *pSurface, MachPhysPunchBlast::NUKE);
@@ -295,7 +295,7 @@ static PhysScalarPlanPtr scalarPlanPtr(const PhysRelativeTime& time, const doubl
     scales.push_back(alpha);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
     return PhysScalarPlanPtr(pPlan);
 }
 

@@ -72,9 +72,9 @@ void EnvNVGLightTransform::transform(const RenColour& in, Ren::LightType t, RenC
 // The background is drawn without the z-buffer, in order.  The sky root must
 // be created *before* the roots for any "closer" objects.
 EnvPlanetEnvironment::EnvPlanetEnvironment(const SysPathName& envFile, W4dSceneManager* m)
-    : bgRoot_(_NEW(W4dRoot(W4dRoot::W4dRootId())))
-    , skyRoot_(_NEW(W4dGeneric(bgRoot_, MexTransform3d())))
-    , satelliteRoot_(_NEW(W4dGeneric(bgRoot_, MexTransform3d())))
+    : bgRoot_(new W4dRoot(W4dRoot::W4dRootId()))
+    , skyRoot_(new W4dGeneric(bgRoot_, MexTransform3d()))
+    , satelliteRoot_(new W4dGeneric(bgRoot_, MexTransform3d()))
     , pStars_(nullptr)
     , manager_(m)
     , enabled_(true)
@@ -128,10 +128,10 @@ EnvPlanetEnvironment::~EnvPlanetEnvironment()
 {
     TEST_INVARIANT;
 
-    _DELETE(sky_);
-    _DELETE(satelliteRoot_);
-    _DELETE(skyRoot_);
-    _DELETE(bgRoot_);
+    delete sky_;
+    delete satelliteRoot_;
+    delete skyRoot_;
+    delete bgRoot_;
 }
 
 // virtual
@@ -369,12 +369,12 @@ void EnvPlanetEnvironment::nvgOn(bool on)
         RenCamera* pCamera = pDevice->currentCamera();
         ASSERT(pCamera, "There is no current camera.");
 
-        _DELETE(lightXform_);
+        delete lightXform_;
         lightXform_ = nullptr;
 
         if (isNvgOn_)
         {
-            lightXform_ = _NEW(EnvNVGLightTransform(nvgFilterColour_));
+            lightXform_ = new EnvNVGLightTransform(nvgFilterColour_);
             sky_->overrideColour(nvgSkyColour_);
             pDevice->staticOn();
 
@@ -427,22 +427,22 @@ EnvSatellite* EnvPlanetEnvironment::createSatellite(EnvISatelliteParams* p)
 
 EnvUniformSky* EnvPlanetEnvironment::createUniformSky()
 {
-    return _NEW(EnvUniformSky());
+    return new EnvUniformSky();
 }
 
 EnvStaticSky* EnvPlanetEnvironment::createStaticSky()
 {
-    return _NEW(EnvStaticSky(skyRoot_));
+    return new EnvStaticSky(skyRoot_);
 }
 
 EnvDynamicSky* EnvPlanetEnvironment::createDynamicSky()
 {
-    return _NEW(EnvDynamicSky(skyRoot_));
+    return new EnvDynamicSky(skyRoot_);
 }
 
 W4dStars* EnvPlanetEnvironment::createStars(RenStars::Configuration config, MATHEX_SCALAR radius, int nStars)
 {
-    pStars_ = _NEW(W4dStars(skyRoot_, config, radius, nStars));
+    pStars_ = new W4dStars(skyRoot_, config, radius, nStars);
 
     return pStars_;
 }
@@ -452,7 +452,7 @@ EnvSkyline* EnvPlanetEnvironment::createSkyline(const SysPathName& meshFile)
     // Visual ordering is important (and defined by the relative ordering of
     // bgRoot's children).  This mesh must appear visually in front of
     // everything else (stars, satellites, sky).
-    skyline_ = _NEW(EnvSkyline(bgRoot_, meshFile));
+    skyline_ = new EnvSkyline(bgRoot_, meshFile);
     return skyline_;
 }
 

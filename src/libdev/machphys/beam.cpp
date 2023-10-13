@@ -193,7 +193,7 @@ static const PhysScalarPlanPtr& beamScalarPlanPtr()
         bScales.push_back(0.01);
         bScales.push_back(MachPhysIonBeam::radius());
 
-        scalarPlanPtr = _NEW(PhysLinearScalarPlan(bTimes, bScales));
+        scalarPlanPtr = new PhysLinearScalarPlan(bTimes, bScales);
     }
     return scalarPlanPtr;
 }
@@ -226,7 +226,7 @@ static const PhysScalarPlanPtr& waveScalarPlanPtr()
         wScales.push_back(MachPhysIonBeam::radius());
         wScales.push_back(MachPhysIonBeam::radius());
 
-        scalarPlanPtr = _NEW(PhysLinearScalarPlan(wTimes, wScales));
+        scalarPlanPtr = new PhysLinearScalarPlan(wTimes, wScales);
     }
     return scalarPlanPtr;
 }
@@ -234,7 +234,7 @@ static const PhysScalarPlanPtr& waveScalarPlanPtr()
 PhysRelativeTime MachPhysBeam::startBeam(const PhysAbsoluteTime& startTime)
 {
     // visibility plans
-    W4dVisibilityPlanPtr bVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr bVisibilityPlanPtr(new W4dVisibilityPlan(true));
     bVisibilityPlanPtr->add(false, expansionTime());
 
     pBeam_->entityPlanForEdit().visibilityPlan(bVisibilityPlanPtr, startTime);
@@ -243,20 +243,20 @@ PhysRelativeTime MachPhysBeam::startBeam(const PhysAbsoluteTime& startTime)
     const PhysRelativeTime shrinkTime = 0.25;
     PhysRelativeTime outerDuration = expansionTime() + shrinkTime;
 
-    W4dVisibilityPlanPtr oVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr oVisibilityPlanPtr(new W4dVisibilityPlan(true));
     oVisibilityPlanPtr->add(false, outerDuration);
 
     pOuter_->entityPlanForEdit().visibilityPlan(oVisibilityPlanPtr, startTime);
 
     const PhysRelativeTime waveShrinkTime = shrinkTime * 3.0;
     PhysRelativeTime waveDuration = expansionTime() + waveShrinkTime;
-    W4dVisibilityPlanPtr wVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr wVisibilityPlanPtr(new W4dVisibilityPlan(true));
     wVisibilityPlanPtr->add(false, waveDuration);
 
     pWave_->entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
 
     // scale plan
-    static const W4dScalePlanPtr beamScalePlanPtr(_NEW(W4dGeneralUniformScalePlan(beamScalarPlanPtr())));
+    static const W4dScalePlanPtr beamScalePlanPtr(new W4dGeneralUniformScalePlan(beamScalarPlanPtr()));
     pBeam_->propogateScalePlan(beamScalePlanPtr, startTime);
     pFlare_->propogateScalePlan(beamScalePlanPtr, startTime);
     pOuter_->propogateScalePlan(beamScalePlanPtr, startTime);
@@ -267,21 +267,21 @@ PhysRelativeTime MachPhysBeam::startBeam(const PhysAbsoluteTime& startTime)
     // outer shrink to a vertical line in 0.25 second
     RenNonUniformScale a(scalar, scalar, scalar);
     RenNonUniformScale b(0.01, 0.01, 100);
-    W4dScalePlanPtr oPlanPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, shrinkTime)));
+    W4dScalePlanPtr oPlanPtr(new W4dSimpleNonUniformScalePlan(a, b, shrinkTime));
 
     pOuter_->propogateScalePlan(oPlanPtr, endTime);
 
     // wave expand to radius in outerDuration then shrink to a vertical line in 0.5 second
-    static const W4dScalePlanPtr wScalePlanPtr(_NEW(W4dGeneralUniformScalePlan(waveScalarPlanPtr())));
+    static const W4dScalePlanPtr wScalePlanPtr(new W4dGeneralUniformScalePlan(waveScalarPlanPtr()));
     pWave_->propogateScalePlan(wScalePlanPtr, startTime);
 
     PhysAbsoluteTime waveExpEndTime = startTime + outerDuration;
     b = RenNonUniformScale(0.2, 0.2, 0.5);
-    W4dScalePlanPtr wPlanPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, shrinkTime)));
+    W4dScalePlanPtr wPlanPtr(new W4dSimpleNonUniformScalePlan(a, b, shrinkTime));
     pWave_->propogateScalePlan(wPlanPtr, waveExpEndTime);
 
     RenNonUniformScale c(0.005, 0.005, 2000);
-    W4dScalePlanPtr wPlanPtr2(_NEW(W4dSimpleNonUniformScalePlan(b, c, shrinkTime)));
+    W4dScalePlanPtr wPlanPtr2(new W4dSimpleNonUniformScalePlan(b, c, shrinkTime));
     pWave_->propogateScalePlan(wPlanPtr2, waveExpEndTime + shrinkTime);
 
     // let the beam coil

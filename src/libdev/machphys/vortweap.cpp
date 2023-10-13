@@ -101,21 +101,21 @@ PhysRelativeTime MachPhysVortexWeapon::destroy(W4dEntity* pVictim, const PhysAbs
     // Make a simple scale plan
     RenNonUniformScale a(1, 1, 1);
     RenNonUniformScale b(0.125, 0.125, 20);
-    W4dScalePlanPtr planPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr planPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     // Propogate thru the current model
     pVictim->propogateScalePlan(planPtr, startTime, 1);
 
     // make a visibility plan
 
-    W4dVisibilityPlanPtr wVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr wVisibilityPlanPtr(new W4dVisibilityPlan(true));
     wVisibilityPlanPtr->add(false, duration);
 
     pVictim->entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
 
     // Add a brief light so that he victim is lit up
     const MATHEX_SCALAR lightRange = 20.0;
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pVictim, MexVec3(0, 0, 1), lightRange));
+    W4dUniformLight* pLight = new W4dUniformLight(pVictim, MexVec3(0, 0, 1), lightRange);
     pLight->colour(RenColour(2, 2, 2.3));
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.177);
@@ -125,7 +125,7 @@ PhysRelativeTime MachPhysVortexWeapon::destroy(W4dEntity* pVictim, const PhysAbs
 
     PhysAbsoluteTime lightStartTime = startTime - 0.5;
     PhysRelativeTime lightDuration = duration + 0.5;
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
     pLight->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, lightStartTime);
 
@@ -140,7 +140,7 @@ PhysRelativeTime MachPhysVortexWeapon::destroy(W4dEntity* pVictim, const PhysAbs
     intensities.push_back(1);
     intensities.push_back(0);
 
-    PhysLinearScalarPlan* plightIntensityPlan = _NEW(PhysLinearScalarPlan(lightTimes, intensities));
+    PhysLinearScalarPlan* plightIntensityPlan = new PhysLinearScalarPlan(lightTimes, intensities);
 
     PhysScalarPlanPtr intensityPlanPtr = plightIntensityPlan;
     pLight->intensityPlan(intensityPlanPtr, lightStartTime);

@@ -82,7 +82,7 @@ MachLogArtefact::~MachLogArtefact()
         for (LinkDatas::iterator it = pLinkDatas_->begin(); it != pLinkDatas_->end(); ++it)
             (*it).pLinkedArtefact_->detach(this);
 
-        _DELETE(pLinkDatas_);
+        delete pLinkDatas_;
     }
 
     // Remove obstacle polygon
@@ -280,7 +280,7 @@ W4dEntity* MachLogArtefact::newPhysArtefact(int subType, const MexPoint3d& locat
     W4dEntity* pModel = artefacts.newPhysArtefact(subType, location, zAngle);
 
     // Construct a new artefact object as side effect, and store the pointer
-    pPhysArtefact_ = _NEW(MachPhysArtefact(pModel, artefacts.artefactData(subType)));
+    pPhysArtefact_ = new MachPhysArtefact(pModel, artefacts.artefactData(subType));
 
     // Return the physical model
     return pModel;
@@ -326,7 +326,7 @@ void MachLogArtefact::damageOnDestroy(
 {
     // Check the collection exists
     if (pLinkDatas_ == nullptr)
-        pLinkDatas_ = _NEW(LinkDatas);
+        pLinkDatas_ = new LinkDatas;
 
     // Add the new entry to the collection
     pLinkDatas_->push_back(MachLogArtefactLinkData(
@@ -414,12 +414,12 @@ void MachLogArtefact::initialise()
 
 void MachLogArtefact::preservePhysicalModel(const PhysRelativeTime& forTime)
 {
-    SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+    SimManager::instance().add(new MachLogDyingEntityEvent(
         physObjectPtr(),
         nullptr,
         forTime,
         MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-        nullptr)));
+        nullptr));
 }
 
 void MachLogArtefact::dropDebris(const PhysAbsoluteTime&)

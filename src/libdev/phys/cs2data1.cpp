@@ -22,7 +22,7 @@ void myFn()
     // for( ; id != domainIdGenerator_.end(); ++id )
     {
         //  if( domains_.contains( id ) )
-        //      _DELETE( domains_[ id ] );
+        //      delete domains_[ id ];
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@ W4dSprite3d::W4dSprite3d(
     doNotLight(true);
 
     pMesh_ = RenMesh::createEmpty();
-    pMeshInstance_ = _NEW(RenMeshInstance(pMesh_));
+    pMeshInstance_ = new RenMeshInstance(pMesh_);
 
     //  Set up a turn to face polygon in the mesh
     RenTTFRectangle polygon;
@@ -60,7 +60,7 @@ W4dSprite3d::W4dSprite3d(
     doNotLight(true);
 
     pMesh_ = RenMesh::createEmpty();
-    pMeshInstance_ = _NEW(RenMeshInstance(pMesh_));
+    pMeshInstance_ = new RenMeshInstance(pMesh_);
 
     //  Set up a turn to face polygon in the mesh
     RenTTFRectangle polygon;
@@ -83,7 +83,7 @@ W4dSprite3d::~W4dSprite3d()
     TEST_INVARIANT;
 
     //  The mesh instance will be deleted in the entity's destructor
-    //    _DELETE( pMeshInstance_ );
+    //    delete pMeshInstance_;
 }
 
 void W4dSprite3d::depthOffset(MATHEX_SCALAR offset)

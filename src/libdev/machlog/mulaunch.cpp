@@ -51,14 +51,14 @@ MachLogLinearProjectile* MachLogMultiLauncher::createLinearProjectile(
     const MexPoint3d& targetOffset)
 {
     HAL_STREAM("MLMultiLauncher::createLinearProjectile\n");
-    return _NEW(MachLogMissile(
+    return new MachLogMissile(
         &logRace(),
         // pPhysMultiLauncher_->createMissile( burstStartTime, index, pParent, target, targetOffset ),
         pPhysMultiLauncher_
             ->createMissile(burstStartTime, index, pParent, _CONST_CAST(W4dEntity&, target), targetOffset),
         //          createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
     HAL_STREAM("MLMultiLauncher::createLinearProjectile exit\n");
 }
 

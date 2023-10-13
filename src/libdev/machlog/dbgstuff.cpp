@@ -12,7 +12,7 @@ MachLogDebugStream::MachLogDebugStream()
     : active_(NULL != FindWindow(NULL, "recdbg"))
 {
     sBuffer_[0] = 0;
-    pStream_ = _NEW(ostrstream(sBuffer_, 1023, ios::out));
+    pStream_ = new ostrstream(sBuffer_, 1023, ios::out);
     TEST_INVARIANT;
 }
 
@@ -25,7 +25,7 @@ MachLogDebugStream& MachLogDebugStream::instance()
 
 MachLogDebugStream::~MachLogDebugStream()
 {
-    _DELETE(pStream_);
+    delete pStream_;
     TEST_INVARIANT;
 }
 

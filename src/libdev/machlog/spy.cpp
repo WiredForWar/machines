@@ -116,7 +116,7 @@ MachLogSpyLocator::pNewPhysSpyLocator(Level hwLevel, Level swLevel, MachLogRace*
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysSpyLocator(pDomain, localTransform, hwLevel, swLevel, pRace->race()));
+    return new MachPhysSpyLocator(pDomain, localTransform, hwLevel, swLevel, pRace->race());
 }
 /* //////////////////////////////////////////////////////////////// */
 
@@ -173,7 +173,7 @@ int MachLogSpyLocator::nMines() const
 void MachLogSpyLocator::placeMine()
 {
     ASSERT(nMines_ > 0, "MLSpyLocator:: Run out of mines but still tried to place one\n");
-    _NEW(MachLogLandMine(&logRace(), position()));
+    new MachLogLandMine(&logRace(), position());
 
     W4dEntity& physObj = physObject();
     W4dSoundManager::instance().play(&physObj, SID_MINE_DROP, PhysAbsoluteTime(0), 1);

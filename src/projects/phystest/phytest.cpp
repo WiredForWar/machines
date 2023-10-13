@@ -210,7 +210,7 @@ bool PhysTest::testPhysLinearTravelPlan(ostream& out) const
     MexTransform3d txf3(rot3, pos3);
 
     // Construct a vector of transforms with a syscounted pointer to it
-    PhysMotionPlan::Transforms* pTransforms = _NEW(PhysMotionPlan::Transforms);
+    PhysMotionPlan::Transforms* pTransforms = new PhysMotionPlan::Transforms;
     PhysMotionPlan::TransformsPtr transformsPtr(pTransforms);
     pTransforms->push_back(txf1);
     pTransforms->push_back(txf2);
@@ -348,13 +348,13 @@ bool PhysTest::testPhysAccelerationTumblePlan(ostream& out) const
     MexTransform3d tx2(MexPoint3d(11.4, 0.0, 0.0));
     MexTransform3d tx3(MexPoint3d(12.4, 19.6, 0.0));
 
-    PhysAccelerateTumblePlan::EulerTransformsPtr transformsPtr(_NEW(PhysAccelerateTumblePlan::EulerTransforms));
+    PhysAccelerateTumblePlan::EulerTransformsPtr transformsPtr(new PhysAccelerateTumblePlan::EulerTransforms);
 
     transformsPtr->push_back(tx1);
     transformsPtr->push_back(tx2);
     transformsPtr->push_back(tx3);
 
-    PhysMotionPlan::Times* pTimes = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::Times* pTimes = new PhysMotionPlan::Times;
     pTimes->push_back(5.0);
     pTimes->push_back(7.0);
 
@@ -477,7 +477,7 @@ void bobTest()
 {
     MATHEX_SCALAR height = 10.0;
 
-    PhysMotionPlan::Transforms* pTransforms = _NEW(PhysMotionPlan::Transforms);
+    PhysMotionPlan::Transforms* pTransforms = new PhysMotionPlan::Transforms;
 
     pTransforms->push_back(MexPoint3d(0.0, 0.0, 0.0));
     pTransforms->push_back(MexPoint3d(0.0, 0.0, height));
@@ -493,7 +493,7 @@ void bobTest()
     MATHEX_SCALAR rotationDeceleration = 0.1;
     bool comeToRest = true;
 
-    PhysLinearTravelPlan* pPlan = _NEW(PhysLinearTravelPlan(
+    PhysLinearTravelPlan* pPlan = new PhysLinearTravelPlan(
         PhysMotionPlan::TransformsPtr(pTransforms),
         startTranslationSpeed,
         translationSpeed,
@@ -503,7 +503,7 @@ void bobTest()
         rotationSpeed,
         rotationAcceleration,
         rotationDeceleration,
-        comeToRest));
+        comeToRest);
 
     PhysRelativeTime duration = 20.0;
 

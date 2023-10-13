@@ -24,7 +24,7 @@ BaseLogBuffer::BaseLogBuffer(size_t bufferSize)
 BaseLogBuffer::~BaseLogBuffer()
 {
 
-    //    _DELETE( pStreamBuffer_ );
+    //    delete pStreamBuffer_;
 }
 
 void BaseLogBuffer::clear()
@@ -36,13 +36,13 @@ void BaseLogBuffer::clear()
 
 BaseLogStreamBuffer* BaseLogBuffer::pInfiniteStreamBuffer()
 {
-    pStreamBuffer_ = _NEW(BaseInfiniteStreamBuffer());
+    pStreamBuffer_ = new BaseInfiniteStreamBuffer();
     return pStreamBuffer_;
 }
 
 BaseLogStreamBuffer* BaseLogBuffer::pCircularStreamBuffer(size_t bufferSize)
 {
-    pStreamBuffer_ = _NEW(BaseCircularStreamBuffer(bufferSize));
+    pStreamBuffer_ = new BaseCircularStreamBuffer(bufferSize);
 
     return pStreamBuffer_;
 }

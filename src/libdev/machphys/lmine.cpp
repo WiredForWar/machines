@@ -80,7 +80,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysLandMine& t)
 const MachPhysLandMine& MachPhysLandMine::exemplar()
 {
     // Use the one time constructor
-    // static MachPhysLandMine& mine = *_NEW( MachPhysLandMine );
+    // static MachPhysLandMine& mine = *new MachPhysLandMine;
     return MachPhysOtherPersistence::instance().landMineExemplar();
 }
 
@@ -109,8 +109,8 @@ PhysRelativeTime MachPhysLandMine::beDestroyed()
     fireballTransform.position( location );
 
     MachPhysFireball* pFireball =
-        _NEW( MachPhysFireball( pParent(), fireballTransform, FIREBALL_1,
-                                size, depthOffset, now, duration ) );
+        new MachPhysFireball( pParent(), fireballTransform, FIREBALL_1,
+                                size, depthOffset, now, duration );
 
     //Garbage collect it soon
     W4dGarbageCollector::instance().add( pFireball, now + duration );

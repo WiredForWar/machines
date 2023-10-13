@@ -192,21 +192,21 @@ void MachGui::releaseMenuBmpMemory()
     GuiBitmap*& pBmp14 = privateSlideBtnBmp();
     GuiBitmap*& pBmp15 = privateLongYellowGlowBmp();
 
-    _DELETE(pBmp1);
-    _DELETE(pBmp2);
-    _DELETE(pBmp3);
-    _DELETE(pBmp4);
-    _DELETE(pBmp5);
-    _DELETE(pBmp6);
-    _DELETE(pBmp7);
-    _DELETE(pBmp8);
-    _DELETE(pBmp9);
-    _DELETE(pBmp10);
-    _DELETE(pBmp11);
-    _DELETE(pBmp12);
-    _DELETE(pBmp13);
-    _DELETE(pBmp14);
-    _DELETE(pBmp15);
+    delete pBmp1;
+    delete pBmp2;
+    delete pBmp3;
+    delete pBmp4;
+    delete pBmp5;
+    delete pBmp6;
+    delete pBmp7;
+    delete pBmp8;
+    delete pBmp9;
+    delete pBmp10;
+    delete pBmp11;
+    delete pBmp12;
+    delete pBmp13;
+    delete pBmp14;
+    delete pBmp15;
 
     pBmp1 = nullptr;
     pBmp2 = nullptr;
@@ -232,7 +232,7 @@ GuiBitmap& MachGui::longGlowBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/longglow.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/longglow.bmp"));
     }
 
     return *pBmp;
@@ -245,7 +245,7 @@ GuiBitmap& MachGui::buttonGlowBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/glow.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/glow.bmp"));
     }
 
     return *pBmp;
@@ -258,7 +258,7 @@ GuiBitmap& MachGui::buttonDisableBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/disable.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/disable.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -272,7 +272,7 @@ GuiBitmap& MachGui::menuScrollUpBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/scrollup.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/scrollup.bmp"));
     }
 
     return *pBmp;
@@ -285,7 +285,7 @@ GuiBitmap& MachGui::menuScrollDownBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/scrolldn.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/scrolldn.bmp"));
     }
 
     return *pBmp;
@@ -300,7 +300,7 @@ GuiBitmap& MachGui::okMsgBoxBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/msgbox.bmp");
 
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/msgbox.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/msgbox.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -316,7 +316,7 @@ GuiBitmap& MachGui::okCancelMsgBoxBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/msgbox2.bmp");
 
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/msgbox2.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/msgbox2.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -330,7 +330,7 @@ GuiBitmap& MachGui::tickBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/tick.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/tick.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -344,7 +344,7 @@ GuiBitmap& MachGui::darkTickBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/tickd.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/tickd.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -358,7 +358,7 @@ GuiBitmap& MachGui::largeDarkTickBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/tickld.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/tickld.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -372,7 +372,7 @@ GuiBitmap& MachGui::largeTickBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/tickl.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/tickl.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -386,7 +386,7 @@ GuiBitmap& MachGui::dropDownBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/dropdown.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/dropdown.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -402,7 +402,7 @@ GuiBitmap& MachGui::hostBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/host.bmp");
 
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/host.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/host.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -418,7 +418,7 @@ GuiBitmap& MachGui::slideBtnBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/slidebtn.bmp");
 
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/slidebtn.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/slidebtn.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -434,7 +434,7 @@ GuiBitmap& MachGui::controlPanelBmp()
     {
         ASSERT_FILE_EXISTS("gui/misc/backtile.bmp");
 
-        pBmp = _NEW(GuiBitmap(MachGui::getScaledImage("gui/misc/backtile")));
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/misc/backtile"));
     }
 
     return *pBmp;
@@ -449,7 +449,7 @@ GuiBitmap& MachGui::inTransitBmp()
     {
         ASSERT_FILE_EXISTS("gui/misc/transit.bmp");
 
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/misc/transit.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/misc/transit.bmp"));
         pBmp->enableColourKeying();
     }
 
@@ -858,8 +858,8 @@ void MachGui::releaseInGameBmpMemory()
     GuiBitmap*& pBmp1 = privateInTransitBmp();
     GuiBitmap*& pBmp2 = privateControlPanelBmp();
 
-    _DELETE(pBmp1);
-    _DELETE(pBmp2);
+    delete pBmp1;
+    delete pBmp2;
 
     pBmp1 = nullptr;
     pBmp2 = nullptr;
@@ -952,7 +952,7 @@ GuiBitmap& MachGui::longYellowGlowBmp()
 
     if (pBmp == nullptr)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/lonyglow.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/lonyglow.bmp"));
     }
 
     return *pBmp;

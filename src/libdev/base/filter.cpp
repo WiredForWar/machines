@@ -25,7 +25,7 @@ BaseFilterOstream::BaseFilterOstream()
 BaseFilterOstream::~BaseFilterOstream()
 {
 
-    _DELETE(pBuffer_);
+    delete pBuffer_;
 }
 
 void BaseFilterOstream::stream(std::ostream& ostr)
@@ -35,7 +35,7 @@ void BaseFilterOstream::stream(std::ostream& ostr)
 
 BaseFilterBuffer* BaseFilterOstream::pFilterBuffer()
 {
-    pBuffer_ = _NEW(BaseFilterBuffer(this));
+    pBuffer_ = new BaseFilterBuffer(this);
     return pBuffer_;
 }
 

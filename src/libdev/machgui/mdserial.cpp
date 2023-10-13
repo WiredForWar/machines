@@ -36,14 +36,14 @@ struct MachGuiSerialNetworkModeImpl
 MachGuiSerialNetworkMode::MachGuiSerialNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-    pimpl_ = _NEW(MachGuiSerialNetworkModeImpl());
+    pimpl_ = new MachGuiSerialNetworkModeImpl();
     readNetworkDetails();
     TEST_INVARIANT;
 }
 
 MachGuiSerialNetworkMode::~MachGuiSerialNetworkMode()
 {
-    _DELETE(pimpl_);
+    delete pimpl_;
 
     TEST_INVARIANT;
 }
@@ -119,20 +119,20 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
     const int textHeight = font.charHeight() + 2;
 
-    MachGuiMenuText* pComPortText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pComPortText = new MachGuiMenuText(
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY), font.textWidth(comPortHeading.asString()), textHeight),
         IDS_MENU_COMPORT,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pComPortSelecter_ = _NEW(MachGuiDropDownListBoxCreator(
+    pimpl_->pComPortSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY + textHeight),
         SNM_WIDTH,
         comStrings,
         true,
-        true));
+        true);
     pimpl_->pComPortSelecter_->items(comSettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems baudSettings;
@@ -157,20 +157,20 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     GuiResourceString baudHeading(IDS_MENU_BAUD);
 
-    MachGuiMenuText* pBaudText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pBaudText = new MachGuiMenuText(
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY2), font.textWidth(baudHeading.asString()), textHeight),
         IDS_MENU_BAUD,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pBaudRateSelecter_ = _NEW(MachGuiDropDownListBoxCreator(
+    pimpl_->pBaudRateSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY2 + textHeight),
         SNM_WIDTH,
         baudStrings,
         true,
-        true));
+        true);
     pimpl_->pBaudRateSelecter_->items(baudSettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems paritySettings;
@@ -187,20 +187,20 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     GuiResourceString parityHeading(IDS_MENU_PARITY);
 
-    MachGuiMenuText* pParityText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pParityText = new MachGuiMenuText(
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY2), font.textWidth(parityHeading.asString()), textHeight),
         IDS_MENU_PARITY,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pParitySelecter_ = _NEW(MachGuiDropDownListBoxCreator(
+    pimpl_->pParitySelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX2, SNM_MINY2 + textHeight),
         SNM_WIDTH,
         parityStrings,
         true,
-        true));
+        true);
     pimpl_->pParitySelecter_->items(paritySettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems bitSettings;
@@ -215,20 +215,20 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     GuiResourceString stopBitsHeading(IDS_MENU_STOPBITS);
 
-    MachGuiMenuText* pStopBitsText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pStopBitsText = new MachGuiMenuText(
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY3), font.textWidth(stopBitsHeading.asString()), textHeight),
         IDS_MENU_STOPBITS,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pStopBitsSelecter_ = _NEW(MachGuiDropDownListBoxCreator(
+    pimpl_->pStopBitsSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY3 + textHeight),
         SNM_WIDTH,
         bitStrings,
         true,
-        true));
+        true);
     pimpl_->pStopBitsSelecter_->items(bitSettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems flowSettings;
@@ -247,20 +247,20 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     GuiResourceString flowHeading(IDS_MENU_FLOW);
 
-    MachGuiMenuText* pFlowText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pFlowText = new MachGuiMenuText(
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY3), font.textWidth(flowHeading.asString()), textHeight),
         IDS_MENU_FLOW,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pFlowSelecter_ = _NEW(MachGuiDropDownListBoxCreator(
+    pimpl_->pFlowSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX2, SNM_MINY3 + textHeight),
         SNM_WIDTH,
         flowStrings,
         true,
-        true));
+        true);
     pimpl_->pFlowSelecter_->items(flowSettings);
 }
 

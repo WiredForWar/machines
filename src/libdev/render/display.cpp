@@ -38,7 +38,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 RenDisplay::RenDisplay(SDL_Window* wnd)
-    : pImpl_(_NEW(RenIDisplay(wnd)))
+    : pImpl_(new RenIDisplay(wnd))
 {
     CB_RenDisplay_DEPIMPL();
     PRE(Ren::initialised());
@@ -64,7 +64,7 @@ RenDisplay::~RenDisplay()
     {
         resetToNormalScreen();
     }
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void RenDisplay::buildDisplayModesList()

@@ -43,9 +43,8 @@ MachLogPunchBlast::MachLogPunchBlast(
         pOwner,
         MachPhysPunchBlast::range(),
         CANT_HIT_AIR_UNITS)
-    , pImpl_(_NEW(MachLogPunchBlastImpl(&weaponData)))
+    , pImpl_(new MachLogPunchBlastImpl(&weaponData))
 {
-
     CB_MachLogPunchBlast_DEPIMPL();
 
     pPhysPunchBlast_ = pPhysPunchBlast;
@@ -89,13 +88,13 @@ MachLogPunchBlast::~MachLogPunchBlast()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /*
 MachLogPunchBlastImpl* MachLogPunchBlast::pImpl()
 {
-    pImpl_ = _NEW( MachLogPunchBlastImpl( &weaponData ) );
+    pImpl_ = new MachLogPunchBlastImpl( &weaponData );
     return pImpl_;
 }
 */

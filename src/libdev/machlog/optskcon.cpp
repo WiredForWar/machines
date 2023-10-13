@@ -123,7 +123,7 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
         // if it is currently constructing then leave it alone.
         //       if( pConstructor->strategy().currentOperationType() == MachLogOperation::CONSTRUCT_OPERATION )
         //       {
-        //           MachLogProductionUnit* newProd = _NEW( MachLogProductionUnit( prod ) );
+        //           MachLogProductionUnit* newProd = new MachLogProductionUnit( prod );
         //           newProd->globalTransform( prod.globalTransform() );
         //           MachLogRaces::instance().AIController( pActor_->race() ).addConstructionProductionUnit( newProd );
         //           return 15.0;
@@ -151,7 +151,7 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
         }
         else
         {
-            MachLogProductionUnit* newProd = _NEW(MachLogProductionUnit(prod));
+            MachLogProductionUnit* newProd = new MachLogProductionUnit(prod);
             newProd->globalTransform(prod.globalTransform());
             MachLogRaces::instance().AIController(pActor_->race()).addConstructionProductionUnit(newProd);
         }
@@ -182,7 +182,7 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
     else
     {
         HAL_STREAM(" placeConstruction failed so re-issue production unit\n");
-        MachLogProductionUnit* newProd = _NEW(MachLogProductionUnit(prod));
+        MachLogProductionUnit* newProd = new MachLogProductionUnit(prod);
         newProd->globalTransform(prod.globalTransform());
 
         MachLogRaces::instance().AIController(pActor_->race()).addConstructionProductionUnit(newProd);
@@ -245,8 +245,8 @@ bool MachLogTaskConstructOperation::placeConstruction(
 
     HAL_STREAM("MLTaskConstructOperation::placeConstruction exit\n");
     return isValid;
-    //                  MachLogMine * pConstruction_ = _NEW( MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )
-    //                  );
+    //                  MachLogMine * pConstruction_ = new MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )
+    //                 ;
 }
 
 // static
@@ -276,7 +276,7 @@ bool MachLogTaskConstructOperation::couldPlaceConstruction(const MachLogProducti
     HAL_STREAM(
         " isValid " << isValid << std::endl
                     << "calling delete for pointer " << (void*)pPhysConstruction << std::endl);
-    _DELETE(pPhysConstruction);
+    delete pPhysConstruction;
     HAL_STREAM(" delete worked\n");
 
 #ifndef PRODUCTION
@@ -295,8 +295,8 @@ bool MachLogTaskConstructOperation::couldPlaceConstruction(const MachLogProducti
         isValid = not MachLogSpacialManipulation::intersectsWithMotionChunks(globalBorder);
 
     return isValid;
-    //                  MachLogMine * pConstruction_ = _NEW( MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )
-    //                  );
+    //                  MachLogMine * pConstruction_ = new MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )
+    //                 ;
 }
 
 void MachLogTaskConstructOperation::issueConstructOperation(MachLogConstruction* pConstruction)
@@ -307,14 +307,14 @@ void MachLogTaskConstructOperation::issueConstructOperation(MachLogConstruction*
             MachLogConstructor* pConstructor = &(*i)->asConstructor();
             if (pConstructor->strategy().currentOperationType() != MachLogOperation::CONSTRUCT_OPERATION)
             {
-                pConstructor->newOperation(_NEW(MachLogConstructOperation(pConstructor, pConstruction)));
+                pConstructor->newOperation(new MachLogConstructOperation(pConstructor, pConstruction));
             }
         }
 }
 
 void MachLogTaskConstructOperation::issueAdminConstructOperation(MachLogConstruction* pConstruction)
 {
-    pActor_->commander().newOperation(_NEW(MachLogAdminConstructOperation(&pActor_->commander(), pConstruction)));
+    pActor_->commander().newOperation(new MachLogAdminConstructOperation(&pActor_->commander(), pConstruction));
 }
 
 void perWrite(PerOstream& ostr, const MachLogTaskConstructOperation& op)

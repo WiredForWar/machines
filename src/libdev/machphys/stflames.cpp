@@ -61,10 +61,10 @@ void MachPhysSTFFlame::startFlame(const PhysRelativeTime& startTime)
 
     static uint frameNumber = 0;
     // Construct a frame based material plan with a random frame offset
-    W4dMaterialFramePlan* pMaterialPlan = _NEW(W4dMaterialFramePlan(
+    W4dMaterialFramePlan* pMaterialPlan = new W4dMaterialFramePlan(
         MachPhysFlame::materialsPtr(flameType_),
         frameNumber, // MachPhysRandom::randomInt(0, 15),
-        duration_));
+        duration_);
     frameNumber += 5;
     frameNumber %= 16;
 
@@ -72,7 +72,7 @@ void MachPhysSTFFlame::startFlame(const PhysRelativeTime& startTime)
     entityPlan.materialPlan(materialPlanPtr, startTime);
 
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration_);
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
@@ -95,8 +95,8 @@ void MachPhysSTFFlame::startBurning(const PhysAbsoluteTime& startTime)
     W4dEntityPlan& entityPlan = entityPlanForEdit();
 
     // Construct a frame based material plan with a random frame offset
-    W4dMaterialFramePlan* pMaterialPlan = _NEW(
-        W4dMaterialFramePlan(MachPhysFlame::materialsPtr(flameType_), MachPhysRandom::randomInt(0, 15), duration_));
+    W4dMaterialFramePlan* pMaterialPlan = new 
+        W4dMaterialFramePlan(MachPhysFlame::materialsPtr(flameType_), MachPhysRandom::randomInt(0, 15), duration_);
 
     W4dMaterialPlanPtr materialPlanPtr(pMaterialPlan);
     entityPlan.materialPlan(materialPlanPtr, startTime);

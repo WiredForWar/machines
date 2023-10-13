@@ -66,7 +66,7 @@ MachLogAPC::MachLogAPC(
         pRace,
         pNewPhysAPC(hwLevel, swLevel, pRace, location),
         MachLog::APC)
-    , pImpl_(_NEW(MachLogAPCImpl))
+    , pImpl_(new MachLogAPCImpl)
 {
     hp(data().hitPoints());
     armour(data().armour());
@@ -87,7 +87,7 @@ MachLogAPC::MachLogAPC(
         pNewPhysAPC(hwLevel, swLevel, pRace, location),
         MachLog::APC,
         withId)
-    , pImpl_(_NEW(MachLogAPCImpl))
+    , pImpl_(new MachLogAPCImpl)
 {
     hp(data().hitPoints());
     armour(data().armour());
@@ -101,7 +101,7 @@ MachLogAPC::~MachLogAPC()
     CB_MachLogAPC_DEPIMPL();
     HAL_STREAM("(" << id() << ") MachLogAPC::DTOR carriedMachines_.size() " << carriedMachines_.size() << std::endl);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -127,7 +127,7 @@ MachPhysAPC* MachLogAPC::pNewPhysAPC(Level hwLevel, Level swLevel, MachLogRace* 
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysAPC(pDomain, localTransform, hwLevel, swLevel, pRace->race()));
+    return new MachPhysAPC(pDomain, localTransform, hwLevel, swLevel, pRace->race());
 }
 
 // virtual
@@ -183,7 +183,7 @@ void MachLogAPC::specialAPCHitStuff()
         // damage critical - evacuate craft! But only trigger new op if we're not already doing
         // a deploy in this area.
         if (not isDeploying() or not nearDropzone())
-            newOperation(_NEW(MachLogDeployAPCOperation(this, position())));
+            newOperation(new MachLogDeployAPCOperation(this, position()));
     }
 }
 
@@ -467,7 +467,7 @@ void MachLogAPC::turnRearToFaceNearestIncoming()
            + MexRadians(Mathex::PI));
     //  (Add 180 degrees as you want to point your arse towards it).
 
-    newOperation(_NEW(MachLogTurnAnimation(this, newAngle)));
+    newOperation(new MachLogTurnAnimation(this, newAngle));
 }
 
 //////////////////////////////////////////////////////////////////////////////////

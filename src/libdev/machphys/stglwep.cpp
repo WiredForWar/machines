@@ -135,7 +135,7 @@ MachPhysLightSting* MachPhysLightStingWeapon::createLightSting(
     PhysAbsoluteTime launchTime
         = launchData(burstStartTime, index, pParent, target, targetOffset, &startTransform, &distance);
 
-    MachPhysLightSting* pSting = _NEW(MachPhysLightSting(pParent, startTransform));
+    MachPhysLightSting* pSting = new MachPhysLightSting(pParent, startTransform);
 
     // let it spin if can
     W4dCompositePlanPtr spinPlanPtr;

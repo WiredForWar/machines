@@ -43,11 +43,11 @@ MachLogLinearProjectile* MachLogFlameThrower::createLinearProjectile(
     const W4dEntity& target,
     const MexPoint3d& targetOffset)
 {
-    return _NEW(MachLogFlameBall(
+    return new MachLogFlameBall(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogFlameThrower& t)

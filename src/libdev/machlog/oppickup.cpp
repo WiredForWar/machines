@@ -47,14 +47,14 @@ MachLogPickUpOperation::~MachLogPickUpOperation()
     // ensure motion sequencer is not locked
     pActor_->motionSeq().allowMoveOutOfWay(true);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 MachLogPickUpOperation::MachLogPickUpOperation(MachLogResourceCarrier* pActor)
     : MachLogOperation("PICKUP_OPERATION", MachLogOperation::PICKUP_OPERATION)
-    , pImpl_(_NEW(MachLogPickUpOperationImpl(pActor)))
+    , pImpl_(new MachLogPickUpOperationImpl(pActor))
 {
     CB_MachLogPickUpOperation_DEPIMPL();
 
@@ -279,7 +279,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 // horrible big transporters)
                 attemptToGuaranteeClearPickupPoint(actorPos, carrierClearance, &clearPickupPoint);
 
-                subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, clearPickupPoint)));
+                subOperation(pActor_, new MachLogMoveToOperation(pActor_, clearPickupPoint));
                 interval = 0.0;
             }
         }
@@ -369,7 +369,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 // ensure motion sequencer is not locked
                 pActor_->motionSeq().allowMoveOutOfWay(true);
 
-                subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, clearPickupPoint)));
+                subOperation(pActor_, new MachLogMoveToOperation(pActor_, clearPickupPoint));
                 interval = 0.0;
             }
         }

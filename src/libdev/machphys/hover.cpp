@@ -32,7 +32,7 @@ MachPhysHoverBoots::MachPhysHoverBoots(
     MATHEX_SCALAR bobHeight)
 
     : MachPhysLocomotionMethod(
-        pImpl_ = _NEW(MachPhysHoverBootsImpl(pMachine, this, pLHoverBoot, pRHoverBoot, pBobbingLink, bobHeight)))
+        pImpl_ = new MachPhysHoverBootsImpl(pMachine, this, pLHoverBoot, pRHoverBoot, pBobbingLink, bobHeight))
 {
     startBobbing();
 
@@ -50,7 +50,7 @@ MachPhysHoverBoots::~MachPhysHoverBoots()
     TEST_INVARIANT;
 
     // pImpl_ will be removed by MachPhysLocomotionMethod destructor
-    //_DELETE( pImpl_ );
+    //delete pImpl_;
 }
 
 // virtual
@@ -74,7 +74,7 @@ MachPhysLocomotionMethod* MachPhysHoverBoots::clone(MachPhysMachine* pNewMachine
     if (pBobbingLink_ != nullptr)
         pBobbingLink = links[pBobbingLink_->id()];
 
-    return _NEW(MachPhysHoverBoots(pNewMachine, pLHoverBoot, pRHoverBoot, pBobbingLink, bobHeight_));
+    return new MachPhysHoverBoots(pNewMachine, pLHoverBoot, pRHoverBoot, pBobbingLink, bobHeight_);
 }
 
 // virtual
@@ -97,9 +97,9 @@ void MachPhysHoverBoots::moveAnimations(
     const PhysMotionPlan::RampAccelerations& rampAccelerations = (*linearTravelPlan.rampAccelerations());
 
     // Set up collections for the angles and times
-    PhysMotionPlan::Angles* pLAngles = _NEW(PhysMotionPlan::Angles);
-    PhysMotionPlan::Angles* pRAngles = _NEW(PhysMotionPlan::Angles);
-    PhysMotionPlan::Times* pTimes = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::Angles* pLAngles = new PhysMotionPlan::Angles;
+    PhysMotionPlan::Angles* pRAngles = new PhysMotionPlan::Angles;
+    PhysMotionPlan::Times* pTimes = new PhysMotionPlan::Times;
 
     size_t nSegments = linearTravelPlan.nSegments();
     pLAngles->reserve(1 + nSegments * 5);
@@ -239,9 +239,9 @@ void MachPhysHoverBoots::moveAnimations(
     if (pLHoverBoot_ != nullptr and pRHoverBoot_ != nullptr)
     {
         PhysTimedAnglePlan* pLPlan
-            = _NEW(PhysTimedAnglePlan(lAnglesPtr, timesPtr, axis, pLHoverBoot_->localTransform().position()));
+            = new PhysTimedAnglePlan(lAnglesPtr, timesPtr, axis, pLHoverBoot_->localTransform().position());
         PhysTimedAnglePlan* pRPlan
-            = _NEW(PhysTimedAnglePlan(rAnglesPtr, timesPtr, axis, pRHoverBoot_->localTransform().position()));
+            = new PhysTimedAnglePlan(rAnglesPtr, timesPtr, axis, pRHoverBoot_->localTransform().position());
 
         PhysMotionPlanPtr lPlanPtr(pLPlan);
         PhysMotionPlanPtr rPlanPtr(pRPlan);
@@ -272,7 +272,7 @@ void MachPhysHoverBoots::startBobbing()
 
         uint repeatForever = 1000000;
 
-        PhysMotionPlan::Transforms* pTransforms = _NEW(PhysMotionPlan::Transforms);
+        PhysMotionPlan::Transforms* pTransforms = new PhysMotionPlan::Transforms;
         pTransforms->reserve(3);
 
         pTransforms->push_back(downTransform);
@@ -289,7 +289,7 @@ void MachPhysHoverBoots::startBobbing()
         MATHEX_SCALAR rotationDeceleration = 0.1;
         bool comeToRest = true;
 
-        PhysLinearTravelPlan* pPlan = _NEW(PhysLinearTravelPlan(
+        PhysLinearTravelPlan* pPlan = new PhysLinearTravelPlan(
             PhysMotionPlan::TransformsPtr(pTransforms),
             startTranslationSpeed,
             translationSpeed,
@@ -299,7 +299,7 @@ void MachPhysHoverBoots::startBobbing()
             rotationSpeed,
             rotationAcceleration,
             rotationDeceleration,
-            comeToRest));
+            comeToRest);
 
         PhysAbsoluteTime now = SimManager::instance().currentTime();
 

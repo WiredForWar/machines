@@ -32,7 +32,7 @@ GuiIconSequence::GuiIconSequence(GuiDisplayable* pParent, const Gui::Box& rel, c
     : GuiDisplayable(pParent, rel)
     , pImpl_(nullptr)
 {
-    pImpl_ = _NEW(GuiIconSequenceImpl(c));
+    pImpl_ = new GuiIconSequenceImpl(c);
 
     CB_GUIICONSEQUENCE_DEPIMPL();
 
@@ -46,7 +46,7 @@ GuiIconSequence::GuiIconSequence(GuiDisplayable* pParent, const Gui::Box& rel, c
 
 GuiIconSequence::~GuiIconSequence()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void GuiIconSequence::doRemoveChild(GuiDisplayable* pChild)
@@ -464,7 +464,7 @@ GuiScrollableIconSequence::GuiScrollableIconSequence(
     : GuiIconSequence(pParent, rel, coords)
     , pImpl_(nullptr)
 {
-    pImpl_ = _NEW(GuiScrollableIconSequenceImpl);
+    pImpl_ = new GuiScrollableIconSequenceImpl;
 
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
@@ -484,7 +484,7 @@ GuiScrollableIconSequence::GuiScrollableIconSequence(
 
 GuiScrollableIconSequence::~GuiScrollableIconSequence()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void GuiScrollableIconSequence::doRemoveChild(GuiDisplayable* pChild)

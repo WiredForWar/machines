@@ -105,7 +105,7 @@ bool MachGuiDropLandMineCommand::doApply(MachActor* pActor, string* /*pReason*/)
 
         if (convertPointsToValidPoints(USE_ALL_OBSTACLES, &pActor->asMachine(), path_, &path))
         {
-            MachLogDropLandMineOperation* pOp = _NEW(MachLogDropLandMineOperation(&pActor->asSpyLocator(), path));
+            MachLogDropLandMineOperation* pOp = new MachLogDropLandMineOperation(&pActor->asSpyLocator(), path);
 
             // Give to actor
             pActor->newOperation(pOp);
@@ -150,7 +150,7 @@ void MachGuiDropLandMineCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiDropLandMineCommand::clone() const
 {
-    return _NEW(MachGuiDropLandMineCommand(&inGameScreen()));
+    return new MachGuiDropLandMineCommand(&inGameScreen());
 }
 
 // virtual
@@ -192,7 +192,7 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
     if (convertPointsToValidPoints(USE_ALL_OBSTACLES, pAdministrator, path_, &path))
     {
         // Create an admin Move operation for the administrator
-        MachLogAdminLocateOperation* pOp = _NEW(MachLogAdminLocateOperation(pAdministrator, path));
+        MachLogAdminLocateOperation* pOp = new MachLogAdminLocateOperation(pAdministrator, path);
 
         pAdministrator->newOperation(pOp);
 

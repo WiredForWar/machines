@@ -43,7 +43,7 @@ PER_DEFINE_PERSISTENT(MachPhysCrackFire);
 // One-time ctor
 MachPhysCrackFire::MachPhysCrackFire(const ChasmType& type)
     : W4dComposite(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID)
-    , pImpl_(_NEW(MachPhysCrackFireImpl(0)))
+    , pImpl_(new MachPhysCrackFireImpl(0))
 {
     // The current model is all black with emissive flames and things.  Hence,
     // it should not need lighting.  This could change if the model changes.
@@ -109,7 +109,7 @@ MachPhysCrackFire::MachPhysCrackFire(
     const MATHEX_SCALAR& length,
     const ChasmType& type)
     : W4dComposite(exemplar(type), pParent, localTransform)
-    , pImpl_(_NEW(MachPhysCrackFireImpl(length)))
+    , pImpl_(new MachPhysCrackFireImpl(length))
 {
     // The current model is all black with emissive flames and things.  Hence,
     // it should not need lighting.  This could change if the model changes.
@@ -154,7 +154,7 @@ MachPhysCrackFire::MachPhysCrackFire(
     const MexPoint3d& endPoint,
     const ChasmType& type)
     : W4dComposite(exemplar(type), pParent, MexTransform3d())
-    , pImpl_(_NEW(MachPhysCrackFireImpl()))
+    , pImpl_(new MachPhysCrackFireImpl())
 {
     CB_DEPIMPL(MATHEX_SCALAR, length_);
 
@@ -218,7 +218,7 @@ MachPhysCrackFire::MachPhysCrackFire(
 MachPhysCrackFire::~MachPhysCrackFire()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // static
@@ -266,7 +266,7 @@ void perRead(PerIstream& istr, MachPhysCrackFire& crackFire)
     W4dComposite& base = crackFire;
 
     istr >> base;
-    _DELETE(crackFire.pImpl_);
+    delete crackFire.pImpl_;
     istr >> crackFire.pImpl_;
 }
 
@@ -307,7 +307,7 @@ void MachPhysCrackFire::startCrackAndFire(
         fireAlphaDelay = crackAlphaDelay;
     }
 
-    W4dVisibilityPlanPtr crackVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr crackVisibilityPlanPtr(new W4dVisibilityPlan(true));
     crackVisibilityPlanPtr->add(false, crackDuration);
 
     pCrack_->entityPlanForEdit().visibilityPlan(crackVisibilityPlanPtr, startTime);
@@ -319,12 +319,12 @@ void MachPhysCrackFire::startCrackAndFire(
 
     if (type == BEE_BOMB_CHASM)
     {
-        planPtr = _NEW(W4dSimpleNonUniformScalePlan(a, a, crackDuration));
+        planPtr = new W4dSimpleNonUniformScalePlan(a, a, crackDuration);
     }
     else
     {
         a = RenNonUniformScale(xScale, 0.01, 1);
-        planPtr = _NEW(W4dSimpleNonUniformScalePlan(a, b, crackDuration));
+        planPtr = new W4dSimpleNonUniformScalePlan(a, b, crackDuration);
     }
 
     pCrack_->propogateScalePlan(planPtr, startTime, 1);
@@ -354,14 +354,14 @@ void MachPhysCrackFire::startCrackAndFire(
         scales.push_back(1.0);
         scales.push_back(0.0);
 
-        PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+        PhysScalarPlanPtr lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
 
         W4dMaterialPlanPtr crackMaterialAlphaPlanPtr
-            = _NEW(W4dSimpleAlphaPlan(matCrack, nMatCrack, lineScalarPlanPtr, 0));
+            = new W4dSimpleAlphaPlan(matCrack, nMatCrack, lineScalarPlanPtr, 0);
         pCrack_->entityPlanForEdit().materialPlan(crackMaterialAlphaPlanPtr, startTime);
     }
     // fire visibility plan
-    W4dVisibilityPlanPtr fireVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr fireVisibilityPlanPtr(new W4dVisibilityPlan(true));
     fireVisibilityPlanPtr->add(false, fireDuration);
 
     pFire_->entityPlanForEdit().visibilityPlan(fireVisibilityPlanPtr, startTime);
@@ -373,16 +373,16 @@ void MachPhysCrackFire::startCrackAndFire(
     {
 
         b = RenNonUniformScale(xScale, 1.0, fScale); // 9.0);
-        W4dScalePlanPtr fireScalePlanPtr1(_NEW(W4dSimpleNonUniformScalePlan(a, b, fireDuration)));
+        W4dScalePlanPtr fireScalePlanPtr1(new W4dSimpleNonUniformScalePlan(a, b, fireDuration));
         pFire_->propogateScalePlan(fireScalePlanPtr1, startTime, 0);
     }
     else
     {
         b = RenNonUniformScale(xScale, 1.0, fScale); // 9.0);
-        W4dScalePlanPtr fireScalePlanPtr1(_NEW(W4dSimpleNonUniformScalePlan(a, b, fireAlphaDelay)));
+        W4dScalePlanPtr fireScalePlanPtr1(new W4dSimpleNonUniformScalePlan(a, b, fireAlphaDelay));
         pFire_->propogateScalePlan(fireScalePlanPtr1, startTime, 0);
 
-        W4dScalePlanPtr fireScalePlanPtr2(_NEW(W4dSimpleNonUniformScalePlan(b, a, fireDuration - fireAlphaDelay)));
+        W4dScalePlanPtr fireScalePlanPtr2(new W4dSimpleNonUniformScalePlan(b, a, fireDuration - fireAlphaDelay));
         pFire_->propogateScalePlan(fireScalePlanPtr2, startTime + fireAlphaDelay, 0);
     }
     // fire alpha plan
@@ -408,7 +408,7 @@ void MachPhysCrackFire::startCrackAndFire(
     if (nMatFire > 0)
     {
         W4dMaterialPlanPtr fireMaterialAlphaPlanPtr
-            = _NEW(W4dSimpleAlphaPlan(matFire, nMatFire, _NEW(PhysLinearScalarPlan(fTimes, aScales)), 0));
+            = new W4dSimpleAlphaPlan(matFire, nMatFire, new PhysLinearScalarPlan(fTimes, aScales), 0);
         pFire_->entityPlanForEdit().materialPlan(fireMaterialAlphaPlanPtr, startTime);
     }
 
@@ -434,7 +434,7 @@ void MachPhysCrackFire::startCrackAndFire(
             if (nMat > 0)
             {
                 W4dMaterialPlanPtr debrisMaterialAlphaPlanPtr
-                    = _NEW(W4dSimpleAlphaPlan(matDebris, nMat, _NEW(PhysLinearScalarPlan(fTimes, aScales)), 0));
+                    = new W4dSimpleAlphaPlan(matDebris, nMat, new PhysLinearScalarPlan(fTimes, aScales), 0);
                 debris_[i]->entityPlanForEdit().materialPlan(debrisMaterialAlphaPlanPtr, startTime);
 
                 debris_[i]->entityPlanForEdit().visibilityPlan(fireVisibilityPlanPtr, startTime);
@@ -492,7 +492,7 @@ void MachPhysCrackFire::createCrackFires(
         position.transform(&startPoint);
         position.transform(&endPoint);
 
-        MachPhysCrackFire* pCrackFire = _NEW(MachPhysCrackFire(pParent, startPoint, endPoint, type));
+        MachPhysCrackFire* pCrackFire = new MachPhysCrackFire(pParent, startPoint, endPoint, type);
         pCrackFire->startCrackAndFire(startTime, duration, crackScale, fireScale, type, debris);
         W4dGarbageCollector::instance().add(pCrackFire, startTime + duration);
     }

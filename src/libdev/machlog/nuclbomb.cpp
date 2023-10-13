@@ -145,7 +145,7 @@ MachLogNuclearBomb::~MachLogNuclearBomb()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogNuclearBomb::CLASS_INVARIANT
@@ -174,7 +174,7 @@ void MachLogNuclearBomb::doBeDestroyed()
 MachPhysNuclearBomb*
 MachLogNuclearBomb::pNewPhysNuclearBomb(const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData)
 {
-    pImpl_ = _NEW(MachLogNuclearBombImpl(&weaponData));
+    pImpl_ = new MachLogNuclearBombImpl(&weaponData);
 
     CB_MachLogNuclearBomb_DEPIMPL();
 
@@ -199,7 +199,7 @@ MachLogNuclearBomb::pNewPhysNuclearBomb(const MexPoint3d& startPosition, MachPhy
 
     // Construct the physical missile
 
-    MachPhysNuclearBomb* pPhysNuclearBomb = _NEW(MachPhysNuclearBomb(pDomain, localTransform));
+    MachPhysNuclearBomb* pPhysNuclearBomb = new MachPhysNuclearBomb(pDomain, localTransform);
     *ppPhysNuclearBomb = pPhysNuclearBomb;
 
     return pPhysNuclearBomb;

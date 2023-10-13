@@ -74,7 +74,7 @@ PER_DEFINE_PERSISTENT(MachLogStrategyImpl);
 
 /* //////////////////////////////////////////////////////////////// */
 MachLogStrategy::MachLogStrategy(MachActor* pActor)
-    : pImpl_(_NEW(MachLogStrategyImpl))
+    : pImpl_(new MachLogStrategyImpl)
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
@@ -91,14 +91,14 @@ MachLogStrategy::~MachLogStrategy()
     while (queue_.size() > 0)
     {
         // HAL_STREAM( *queue_.begin() );
-        _DELETE(*queue_.begin());
+        delete *queue_.begin();
         queue_.erase(queue_.begin());
         // HAL_STREAM("  MLStrategy:: after delete queue_.size() " << queue_.size() << std::endl );
     }
     if (pPendingOperation_)
-        _DELETE(pPendingOperation_);
+        delete pPendingOperation_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 bool MachLogStrategy::isFinished() const
@@ -115,7 +115,7 @@ void MachLogStrategy::newOperation(MachLogOperation* pNewOperation, bool subOper
     if (pActor_->isDead())
     {
         // Don't accept the op. In fact, delete it, instead.
-        _DELETE(pNewOperation);
+        delete pNewOperation;
     }
     else
     {
@@ -132,7 +132,7 @@ void MachLogStrategy::newOperation(MachLogOperation* pNewOperation, bool subOper
         {
             if (pPendingOperation_)
             {
-                _DELETE(pPendingOperation_);
+                delete pPendingOperation_;
                 pPendingOperation_ = nullptr;
             }
             HAL_STREAM(" semaphoreInUpdate_ " << semaphoreInUpdate_ << std::endl);
@@ -246,7 +246,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                 if (pPendingOperation_ and pPendingOperation_->pSubOperation() == pOp)
                     pPendingOperation_->pSubOperation(nullptr);
 
-                _DELETE(pOp);
+                delete pOp;
                 queue_.erase(queue_.begin() + i);
                 increment = false;
                 finished = true;
@@ -271,7 +271,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                             // pendingOperation. Erase operation from stack.
                             if (pPendingOperation_)
                             {
-                                _DELETE(pPendingOperation_);
+                                delete pPendingOperation_;
                             }
                             pPendingOperation_ = pOp;
                             queue_.erase(queue_.begin() + i);
@@ -304,7 +304,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                                         (*j)->pSubOperation(nullptr);
                                 if (pPendingOperation_ and pPendingOperation_->pSubOperation() == pOp)
                                     pPendingOperation_->pSubOperation(nullptr);
-                                _DELETE(pOp);
+                                delete pOp;
                                 queue_.erase(queue_.begin() + i);
                                 increment = false;
                                 finished = true;
@@ -370,7 +370,7 @@ void MachLogStrategy::tryToRemoveAllOperations()
                         (*j)->pSubOperation(nullptr);
                 if (pPendingOperation_ and pPendingOperation_->pSubOperation() == pOp)
                     pPendingOperation_->pSubOperation(nullptr);
-                _DELETE(pOp);
+                delete pOp;
                 queue_.erase(queue_.begin() + i);
             }
             else
@@ -404,7 +404,7 @@ void MachLogStrategy::removeAllOperations()
             ASSERT(queue_.size() > 0, "Referencing element not there in strategy removeAllOperations");
             MachLogOperation* pOp = queue_[0];
             pOp->doBeInterrupted();
-            _DELETE(pOp);
+            delete pOp;
             queue_.erase(queue_.begin());
 
             if (queue_.size() == 0)
@@ -414,7 +414,7 @@ void MachLogStrategy::removeAllOperations()
         }
         if (pPendingOperation_)
         {
-            _DELETE(pPendingOperation_);
+            delete pPendingOperation_;
             pPendingOperation_ = nullptr;
         }
     }
@@ -462,7 +462,7 @@ void MachLogStrategy::changeToEvadeMode()
 
     MachLogMachine* pMachine = &(pActor_->asMachine());
 
-    MachLogEvadeOperation* pEvadeOp = _NEW(MachLogEvadeOperation(pMachine));
+    MachLogEvadeOperation* pEvadeOp = new MachLogEvadeOperation(pMachine);
 
     MachLogOperation* pOldTopOp = nullptr;
 
@@ -470,7 +470,7 @@ void MachLogStrategy::changeToEvadeMode()
         removeAllOperations();
     else
     {
-        pOldTopOp = _NEW(MachLogMoveToOperation(pMachine, pMachine->position(), true, 10.0)); // 10m tolerance
+        pOldTopOp = new MachLogMoveToOperation(pMachine, pMachine->position(), true, 10.0); // 10m tolerance
         // removeAllOperations();
     }
 
@@ -493,7 +493,7 @@ void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
 
     MachLogMachine* pMachine = &(pActor_->asMachine());
 
-    MachLogCounterattackOperation* pCounterattackOp = _NEW(MachLogCounterattackOperation(pMachine, pTarget));
+    MachLogCounterattackOperation* pCounterattackOp = new MachLogCounterattackOperation(pMachine, pTarget);
 
     MachLogOperation* pOldTopOp = nullptr;
 
@@ -512,8 +512,8 @@ void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
         MATHEX_SCALAR postKillPause = (2.0 * pActor_->hpRatio()) + MachPhysRandom::randomDouble(0, 2.0);
 
         // now turns towards point first sighted enemy at after returning to initial position
-        pOldTopOp = _NEW(
-            MachLogMoveAndTurnOperation(pMachine, pMachine->position(), pTarget->position(), true, postKillPause));
+        pOldTopOp = new 
+            MachLogMoveAndTurnOperation(pMachine, pMachine->position(), pTarget->position(), true, postKillPause);
         // removeAllOperations();
     }
 
@@ -569,13 +569,13 @@ void MachLogStrategy::beInterrupted()
 
     while (queue_.size() > 0 and not semaphoreInUpdate_)
     {
-        _DELETE(*queue_.begin());
+        delete *queue_.begin();
         queue_.erase(queue_.begin());
     }
     // if mustRemoveAllOperations is true then the pPending is still needed.
     if (pPendingOperation_ and not mustRemoveAllOperations_)
     {
-        _DELETE(pPendingOperation_);
+        delete pPendingOperation_;
         pPendingOperation_ = nullptr;
     }
 
@@ -717,7 +717,7 @@ void MachLogStrategy::changeToScavengeMode(MachLogDebris* pDebris)
 
     MachLogResourceCarrier* pScavenger = &(pActor_->asResourceCarrier());
 
-    MachLogAutoScavengeOperation* pAutoScavengeOp = _NEW(MachLogAutoScavengeOperation(pScavenger, pDebris));
+    MachLogAutoScavengeOperation* pAutoScavengeOp = new MachLogAutoScavengeOperation(pScavenger, pDebris);
 
     MachLogOperation* pOldTopOp = nullptr;
 
@@ -725,7 +725,7 @@ void MachLogStrategy::changeToScavengeMode(MachLogDebris* pDebris)
         removeAllOperations();
     else
     {
-        pOldTopOp = _NEW(MachLogMoveToOperation(pScavenger, pScavenger->position(), true, 10.0)); // 10m tolerance
+        pOldTopOp = new MachLogMoveToOperation(pScavenger, pScavenger->position(), true, 10.0); // 10m tolerance
     }
 
     ASSERT(pOldTopOp, "Unexpected NULL for pOldTopOp!");

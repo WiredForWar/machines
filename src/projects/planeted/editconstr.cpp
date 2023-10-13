@@ -49,11 +49,11 @@ PedConstructionEditor::~PedConstructionEditor()
 
     for (Constructions::iterator i = constructionData_.begin(); i != constructionData_.end(); ++i)
     {
-        _DELETE(*i);
+        delete *i;
     }
     for (mapIterator_ = constructionMap_.begin(); mapIterator_ != constructionMap_.end(); ++mapIterator_)
     {
-        _DELETE((*mapIterator_).construction_);
+        delete (*mapIterator_).construction_;
     }
 }
 
@@ -249,7 +249,7 @@ void PedConstructionEditor::processSelection()
         else
         {
             // mouse pointer not pointing at object - so deselect selected object(s)
-            _DELETE(pMarker_);
+            delete pMarker_;
             pMarker_ = nullptr;
             pSelectedConstruction_ = nullptr;
             alreadySelected_ = false;
@@ -268,9 +268,9 @@ void PedConstructionEditor::processDelete()
         const ConstructionMapping& map = *mapIterator_;
 
         ASSERT(pSelectedConstruction_ == map.construction_, "");
-        _DELETE(pMarker_);
+        delete pMarker_;
         pMarker_ = nullptr;
-        _DELETE(map.construction_);
+        delete map.construction_;
         pSelectedConstruction_ = nullptr; // Since was pointing to map.construction_
         constructionMap_.erase(mapIterator_);
         mapIterator_ = constructionMap_.begin(); // To prevent dangling iterator
@@ -341,130 +341,130 @@ void PedConstructionEditor::initialiseActors()
     string resource;
 
     resource = resourceLib.getString(IDS_POD1);
-    pConstruction = _NEW(Construction(MachPhys::POD, 0, 1, resource, MachPhys::T_ION_ORBITAL_CANNON));
+    pConstruction = new Construction(MachPhys::POD, 0, 1, resource, MachPhys::T_ION_ORBITAL_CANNON);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MINE1);
-    pConstruction = _NEW(Construction(MachPhys::MINE, 0, 1, resource));
+    pConstruction = new Construction(MachPhys::MINE, 0, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MINE3);
-    pConstruction = _NEW(Construction(MachPhys::MINE, 0, 3, resource));
+    pConstruction = new Construction(MachPhys::MINE, 0, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MINE5);
-    pConstruction = _NEW(Construction(MachPhys::MINE, 0, 5, resource));
+    pConstruction = new Construction(MachPhys::MINE, 0, 5, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_SMELTER1);
-    pConstruction = _NEW(Construction(MachPhys::SMELTER, 0, 1, resource));
+    pConstruction = new Construction(MachPhys::SMELTER, 0, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_SMELTER3);
-    pConstruction = _NEW(Construction(MachPhys::SMELTER, 0, 3, resource));
+    pConstruction = new Construction(MachPhys::SMELTER, 0, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_HARDWARE_LAB_CIVILIAN1);
-    pConstruction = _NEW(Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_CIVILIAN, 1, resource));
+    pConstruction = new Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_CIVILIAN, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_HARDWARE_LAB_CIVILIAN3);
-    pConstruction = _NEW(Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_CIVILIAN, 3, resource));
+    pConstruction = new Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_CIVILIAN, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_HARDWARE_LAB_MILITARY1);
-    pConstruction = _NEW(Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_MILITARY, 1, resource));
+    pConstruction = new Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_MILITARY, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_HARDWARE_LAB_MILITARY3);
-    pConstruction = _NEW(Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_MILITARY, 3, resource));
+    pConstruction = new Construction(MachPhys::HARDWARE_LAB, (int)MachPhys::LAB_MILITARY, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_GARRISON1);
-    pConstruction = _NEW(Construction(MachPhys::GARRISON, 0, 1, resource));
+    pConstruction = new Construction(MachPhys::GARRISON, 0, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_CIVILIAN1);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::CIVILIAN, 1, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::CIVILIAN, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_CIVILIAN3);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::CIVILIAN, 3, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::CIVILIAN, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_CIVILIAN5);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::CIVILIAN, 5, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::CIVILIAN, 5, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_MILITARY1);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 1, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_MILITARY3);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 3, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_MILITARY4);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 4, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 4, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_FACTORY_MILITARY5);
-    pConstruction = _NEW(Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 5, resource));
+    pConstruction = new Construction(MachPhys::FACTORY, (int)MachPhys::MILITARY, 5, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_BEACON1);
-    pConstruction = _NEW(Construction(MachPhys::BEACON, 0, 1, resource));
+    pConstruction = new Construction(MachPhys::BEACON, 0, 1, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_BEACON3);
-    pConstruction = _NEW(Construction(MachPhys::BEACON, 0, 3, resource));
+    pConstruction = new Construction(MachPhys::BEACON, 0, 3, resource);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_TURRET1);
-    pConstruction = _NEW(
-        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::TURRET, 1, resource, MachPhys::T_FLAME_THROWER1));
+    pConstruction = new 
+        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::TURRET, 1, resource, MachPhys::T_FLAME_THROWER1);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_TURRET2);
-    pConstruction = _NEW(
-        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::TURRET, 2, resource, MachPhys::LR_AUTO_CANNON_X2));
+    pConstruction = new 
+        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::TURRET, 2, resource, MachPhys::LR_AUTO_CANNON_X2);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_TURRET3);
-    pConstruction = _NEW(
-        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::TURRET, 3, resource, MachPhys::LR_PULSE_RIFLE_X2));
+    pConstruction = new 
+        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::TURRET, 3, resource, MachPhys::LR_PULSE_RIFLE_X2);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_SENTRY3);
-    pConstruction = _NEW(Construction(
+    pConstruction = new Construction(
         MachPhys::MISSILE_EMPLACEMENT,
         (int)MachPhys::SENTRY,
         3,
         resource,
-        MachPhys::LR_MULTI_LAUNCHER5_X2));
+        MachPhys::LR_MULTI_LAUNCHER5_X2);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_SENTRY4);
-    pConstruction = _NEW(Construction(
+    pConstruction = new Construction(
         MachPhys::MISSILE_EMPLACEMENT,
         (int)MachPhys::SENTRY,
         4,
         resource,
-        MachPhys::LR_MULTI_LAUNCHER6_X2));
+        MachPhys::LR_MULTI_LAUNCHER6_X2);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_LAUNCHER4);
-    pConstruction = _NEW(Construction(
+    pConstruction = new Construction(
         MachPhys::MISSILE_EMPLACEMENT,
         (int)MachPhys::LAUNCHER,
         4,
         resource,
-        MachPhys::LR_LARGE_MISSILE_X2));
+        MachPhys::LR_LARGE_MISSILE_X2);
     constructionData_.push_back(pConstruction);
 
     resource = resourceLib.getString(IDS_MISSILE_EMPLACEMENT_ICBM5);
-    pConstruction = _NEW(
-        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::ICBM, 5, resource, MachPhys::T_NUCLEAR_MISSILE));
+    pConstruction = new 
+        Construction(MachPhys::MISSILE_EMPLACEMENT, (int)MachPhys::ICBM, 5, resource, MachPhys::T_NUCLEAR_MISSILE);
     constructionData_.push_back(pConstruction);
 
     conDataIter_ = constructionData_.begin();
@@ -482,44 +482,44 @@ MachPhysConstruction* PedConstructionEditor::createConstruction(
     switch (con.constructionType_)
     {
         case MachPhys::POD:
-            pCurrentConstruction = _NEW(MachPhysPod(&pEntity, locTransform, con.hardwareLevel_, race_));
+            pCurrentConstruction = new MachPhysPod(&pEntity, locTransform, con.hardwareLevel_, race_);
             break;
         case MachPhys::MINE:
-            pCurrentConstruction = _NEW(MachPhysMine(&pEntity, locTransform, con.hardwareLevel_, race_));
+            pCurrentConstruction = new MachPhysMine(&pEntity, locTransform, con.hardwareLevel_, race_);
             break;
         case MachPhys::SMELTER:
-            pCurrentConstruction = _NEW(MachPhysSmelter(&pEntity, locTransform, con.hardwareLevel_, race_));
+            pCurrentConstruction = new MachPhysSmelter(&pEntity, locTransform, con.hardwareLevel_, race_);
             break;
         case MachPhys::HARDWARE_LAB:
-            pCurrentConstruction = _NEW(MachPhysHardwareLab(
+            pCurrentConstruction = new MachPhysHardwareLab(
                 &pEntity,
                 locTransform,
                 (MachPhys::HardwareLabSubType)con.subType_,
                 con.hardwareLevel_,
-                race_));
+                race_);
             break;
         case MachPhys::GARRISON:
-            pCurrentConstruction = _NEW(MachPhysGarrison(&pEntity, locTransform, con.hardwareLevel_, race_));
+            pCurrentConstruction = new MachPhysGarrison(&pEntity, locTransform, con.hardwareLevel_, race_);
             break;
         case MachPhys::FACTORY:
-            pCurrentConstruction = _NEW(MachPhysFactory(
+            pCurrentConstruction = new MachPhysFactory(
                 &pEntity,
                 locTransform,
                 (MachPhys::FactorySubType)con.subType_,
                 con.hardwareLevel_,
-                race_));
+                race_);
             break;
         case MachPhys::BEACON:
-            pCurrentConstruction = _NEW(MachPhysBeacon(&pEntity, locTransform, con.hardwareLevel_, race_));
+            pCurrentConstruction = new MachPhysBeacon(&pEntity, locTransform, con.hardwareLevel_, race_);
             break;
         case MachPhys::MISSILE_EMPLACEMENT:
-            pCurrentConstruction = _NEW(MachPhysMissileEmplacement(
+            pCurrentConstruction = new MachPhysMissileEmplacement(
                 &pEntity,
                 locTransform,
                 (MachPhys::MissileEmplacementSubType)con.subType_,
                 con.hardwareLevel_,
                 race_,
-                con.weaponCombo_));
+                con.weaponCombo_);
             break;
     }
     pCurrentConstruction->percentageComplete(100.0);

@@ -101,7 +101,7 @@ MachLogBeeBombExplosion::~MachLogBeeBombExplosion()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogBeeBombExplosion::CLASS_INVARIANT
@@ -130,7 +130,7 @@ void MachLogBeeBombExplosion::doBeDestroyed()
 MachPhysBeeBombExplosion*
 MachLogBeeBombExplosion::pNewPhysBeeBombExplosion(const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData)
 {
-    pImpl_ = _NEW(MachLogBeeBombExplosionImpl(&weaponData));
+    pImpl_ = new MachLogBeeBombExplosionImpl(&weaponData);
 
     CB_MachLogBeeBombExplosion_DEPIMPL();
 
@@ -157,7 +157,7 @@ MachPhysBeeBombExplosion* MachLogBeeBombExplosion::pNewPhysBeeBombExplosion(
 
     // Construct the physical missile
 
-    MachPhysBeeBombExplosion* pPhysBeeBombExplosion = _NEW(MachPhysBeeBombExplosion(pDomain, localTransform));
+    MachPhysBeeBombExplosion* pPhysBeeBombExplosion = new MachPhysBeeBombExplosion(pDomain, localTransform);
     *ppPhysBeeBombExplosion = pPhysBeeBombExplosion;
     return pPhysBeeBombExplosion;
 

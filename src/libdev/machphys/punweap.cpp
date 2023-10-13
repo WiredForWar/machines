@@ -142,10 +142,10 @@ MachPhysPunchWeapon::createPunchBlast(const PhysAbsoluteTime& startTime, const M
     MexTransform3d blastXform = machine().localTransform();
     blastXform.translate(MexPoint3d(2.9, 0.2, 0.0));
 
-    MachPhysPunchBlast* pPunchBlast = _NEW(MachPhysPunchBlast(machine().pParent(), blastXform));
+    MachPhysPunchBlast* pPunchBlast = new MachPhysPunchBlast(machine().pParent(), blastXform);
     PhysRelativeTime blastDuration = pPunchBlast->startPunchBlast(animEndTime, surface);
 
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pPunchBlast, MexVec3(1, 0, 0), 20.0));
+    W4dUniformLight* pLight = new W4dUniformLight(pPunchBlast, MexVec3(1, 0, 0), 20.0);
     pLight->localTransform(MexTransform3d());
     pLight->colour(RenColour(3, 3, 3)); //::white());
     pLight->constantAttenuation(0);
@@ -162,7 +162,7 @@ MachPhysPunchWeapon::createPunchBlast(const PhysAbsoluteTime& startTime, const M
         pLight->illuminate(&machine());
 
     // visibility plan
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, 0.8);
 
     // apply the visibility plan

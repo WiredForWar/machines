@@ -105,7 +105,7 @@ void MachPhysDoublesidedFlame::startFlame(
 
     static uint frameNumber = 0;
     // Construct a frame based material plan with a random frame offset
-    W4dMaterialFramePlan* pMaterialPlan = _NEW(W4dMaterialFramePlan(materialsPtr(), frameNumber, duration));
+    W4dMaterialFramePlan* pMaterialPlan = new W4dMaterialFramePlan(materialsPtr(), frameNumber, duration);
     frameNumber += 5;
     frameNumber %= 16;
 
@@ -117,7 +117,7 @@ void MachPhysDoublesidedFlame::startFlame(
     temporaryScale(RenNonUniformScale(1.0, width, height), NOT_PROPOGATE);
 
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration);
 
     // Play burning sound
@@ -150,7 +150,7 @@ const MachPhysDoublesidedFlame::MaterialsPtr& MachPhysDoublesidedFlame::material
         uint nTextures = textures.size();
 
         // Construct a vector of materials
-        Materials* pMaterials = _NEW(Materials);
+        Materials* pMaterials = new Materials;
         pMaterials->reserve(nTextures);
 
         for (size_t i = 0; i != nTextures; ++i)
@@ -172,7 +172,7 @@ void MachPhysDoublesidedFlame::addMaterial(Materials* pMaterials, const RenTextu
     material.texture(texture);
 
     // Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
     pMaterialVec->push_back(material);
 
     // Add a counted pointer to the material vector to the argument

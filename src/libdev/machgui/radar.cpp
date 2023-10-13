@@ -66,7 +66,7 @@ MachGuiRadarImpl::MachGuiRadarImpl()
 MachGuiRadar::MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos)
     : GuiDisplayable(pParent, Gui::Box(relPos, 1, 1))
 {
-    pImpl_ = _NEW(MachGuiRadarImpl);
+    pImpl_ = new MachGuiRadarImpl;
 
     // Switch on colour keying for radar images
     for (MachPhys::Race race : MachPhys::AllRaces)
@@ -90,7 +90,7 @@ MachGuiRadar::MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos)
 MachGuiRadar::~MachGuiRadar()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // virtual

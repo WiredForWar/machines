@@ -103,7 +103,7 @@ bool MachGuiLocateToCommand::doApply(MachActor* pActor, string*)
 
         if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, &pActor->asMachine(), path_, &path))
         {
-            MachLogLocateOperation* pOp = _NEW(MachLogLocateOperation(&pActor->asGeoLocator(), path));
+            MachLogLocateOperation* pOp = new MachLogLocateOperation(&pActor->asGeoLocator(), path);
 
             // Give to actor
             pActor->newOperation(pOp);
@@ -148,7 +148,7 @@ void MachGuiLocateToCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiLocateToCommand::clone() const
 {
-    return _NEW(MachGuiLocateToCommand(&inGameScreen()));
+    return new MachGuiLocateToCommand(&inGameScreen());
 }
 
 // virtual
@@ -189,7 +189,7 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
     if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, pAdministrator, path_, &path))
     {
         // Create an admin Move operation for the administrator
-        MachLogAdminLocateOperation* pOp = _NEW(MachLogAdminLocateOperation(pAdministrator, path));
+        MachLogAdminLocateOperation* pOp = new MachLogAdminLocateOperation(pAdministrator, path);
 
         pAdministrator->newOperation(pOp);
 

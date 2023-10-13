@@ -87,7 +87,7 @@ void MachGuiDamageCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiDamageCommand::clone() const
 {
-    return _NEW(MachGuiDamageCommand(&inGameScreen()));
+    return new MachGuiDamageCommand(&inGameScreen());
 }
 
 // virtual

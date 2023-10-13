@@ -17,7 +17,7 @@
 PER_DEFINE_PERSISTENT(W4dSubject);
 
 W4dSubject::W4dSubject(W4dEntity* pPhysObject)
-    : pImpl_(_NEW(W4dSubjectImpl(this, pPhysObject)))
+    : pImpl_(new W4dSubjectImpl(this, pPhysObject))
 {
     PRE(pPhysObject != nullptr);
 
@@ -27,7 +27,7 @@ W4dSubject::W4dSubject(W4dEntity* pPhysObject)
 W4dSubject::~W4dSubject()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void W4dSubject::CLASS_INVARIANT
@@ -110,7 +110,7 @@ void perRead(PerIstream&, W4dSubject&)
 }
 
 W4dSubject::W4dSubject(PerConstructor)
-    : pImpl_(_NEW(W4dSubjectImpl(this, nullptr)))
+    : pImpl_(new W4dSubjectImpl(this, nullptr))
 {
 }
 

@@ -987,81 +987,81 @@ void MachGuiConstructionNavigator::unloadGame()
 
 void MachGuiConstructionNavigator::buildConstructIcons()
 {
-    pRow1_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, 0), 2));
+    pRow1_ = new MachGuiNavRow(this, Gui::Coord(0, 0), 2);
 
     pPodSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow1_, MachLog::POD, pInGameScreen_, this, pRow1_, IDS_PODSBEACONS));
-    pPodButton_ = _NEW(MachGuiNavButton(pRow1_, MachLog::POD, 0, pInGameScreen_, this, IDS_PODS));
-    pBeaconButton_ = _NEW(MachGuiNavButton(pRow1_, MachLog::BEACON, 0, pInGameScreen_, this, IDS_BEACONS));
+        = new MachGuiSelectAllNavButton(pRow1_, MachLog::POD, pInGameScreen_, this, pRow1_, IDS_PODSBEACONS);
+    pPodButton_ = new MachGuiNavButton(pRow1_, MachLog::POD, 0, pInGameScreen_, this, IDS_PODS);
+    pBeaconButton_ = new MachGuiNavButton(pRow1_, MachLog::BEACON, 0, pInGameScreen_, this, IDS_BEACONS);
 
-    pRow2_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight()), 4));
+    pRow2_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight()), 4);
 
-    pMissileSelectAll_ = _NEW(MachGuiSelectAllNavButton(
+    pMissileSelectAll_ = new MachGuiSelectAllNavButton(
         pRow2_,
         MachLog::MISSILE_EMPLACEMENT,
         pInGameScreen_,
         this,
         pRow2_,
-        IDS_MISSILE_EMPLACEMENTS));
-    pTurretButton_ = _NEW(
-        MachGuiNavButton(pRow2_, MachLog::MISSILE_EMPLACEMENT, MachPhys::TURRET, pInGameScreen_, this, IDS_TURRETS));
-    pSentryButton_ = _NEW(
-        MachGuiNavButton(pRow2_, MachLog::MISSILE_EMPLACEMENT, MachPhys::SENTRY, pInGameScreen_, this, IDS_SENTRIES));
-    pLauncherButton_ = _NEW(MachGuiNavButton(
+        IDS_MISSILE_EMPLACEMENTS);
+    pTurretButton_ = new 
+        MachGuiNavButton(pRow2_, MachLog::MISSILE_EMPLACEMENT, MachPhys::TURRET, pInGameScreen_, this, IDS_TURRETS);
+    pSentryButton_ = new 
+        MachGuiNavButton(pRow2_, MachLog::MISSILE_EMPLACEMENT, MachPhys::SENTRY, pInGameScreen_, this, IDS_SENTRIES);
+    pLauncherButton_ = new MachGuiNavButton(
         pRow2_,
         MachLog::MISSILE_EMPLACEMENT,
         MachPhys::LAUNCHER,
         pInGameScreen_,
         this,
-        IDS_LAUNCHERS));
+        IDS_LAUNCHERS);
     pICBMButton_
-        = _NEW(MachGuiNavButton(pRow2_, MachLog::MISSILE_EMPLACEMENT, MachPhys::ICBM, pInGameScreen_, this, IDS_ICBMS));
+        = new MachGuiNavButton(pRow2_, MachLog::MISSILE_EMPLACEMENT, MachPhys::ICBM, pInGameScreen_, this, IDS_ICBMS);
 
-    pRow3_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 2), 2));
+    pRow3_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 2), 2);
 
     pFactorySelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow3_, MachLog::FACTORY, pInGameScreen_, this, pRow3_, IDS_FACTORIES));
+        = new MachGuiSelectAllNavButton(pRow3_, MachLog::FACTORY, pInGameScreen_, this, pRow3_, IDS_FACTORIES);
     pCivFacButton_
-        = _NEW(MachGuiNavButton(pRow3_, MachLog::FACTORY, MachPhys::CIVILIAN, pInGameScreen_, this, IDS_FACS_CIVILIAN));
+        = new MachGuiNavButton(pRow3_, MachLog::FACTORY, MachPhys::CIVILIAN, pInGameScreen_, this, IDS_FACS_CIVILIAN);
     pMilFacButton_
-        = _NEW(MachGuiNavButton(pRow3_, MachLog::FACTORY, MachPhys::MILITARY, pInGameScreen_, this, IDS_FACS_MILITARY));
+        = new MachGuiNavButton(pRow3_, MachLog::FACTORY, MachPhys::MILITARY, pInGameScreen_, this, IDS_FACS_MILITARY);
 
-    pRow4_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 3), 2));
+    pRow4_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 3), 2);
 
     pLabSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow4_, MachLog::HARDWARE_LAB, pInGameScreen_, this, pRow4_, IDS_LABS));
-    pCivLabButton_ = _NEW(MachGuiNavButton(
+        = new MachGuiSelectAllNavButton(pRow4_, MachLog::HARDWARE_LAB, pInGameScreen_, this, pRow4_, IDS_LABS);
+    pCivLabButton_ = new MachGuiNavButton(
         pRow4_,
         MachLog::HARDWARE_LAB,
         MachPhys::LAB_CIVILIAN,
         pInGameScreen_,
         this,
-        IDS_LABS_CIVILIAN));
-    pMilLabButton_ = _NEW(MachGuiNavButton(
+        IDS_LABS_CIVILIAN);
+    pMilLabButton_ = new MachGuiNavButton(
         pRow4_,
         MachLog::HARDWARE_LAB,
         MachPhys::LAB_MILITARY,
         pInGameScreen_,
         this,
-        IDS_LABS_MILITARY));
+        IDS_LABS_MILITARY);
 
-    pRow5_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 4), 2));
+    pRow5_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 4), 2);
 
     pSmelterSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow5_, MachLog::SMELTER, pInGameScreen_, this, pRow5_, IDS_SMELTERSMINES));
-    pSmelterButton_ = _NEW(MachGuiNavButton(pRow5_, MachLog::SMELTER, 0, pInGameScreen_, this, IDS_SMELTERS));
-    pMineButton_ = _NEW(MachGuiNavButton(pRow5_, MachLog::MINE, 0, pInGameScreen_, this, IDS_MINES));
+        = new MachGuiSelectAllNavButton(pRow5_, MachLog::SMELTER, pInGameScreen_, this, pRow5_, IDS_SMELTERSMINES);
+    pSmelterButton_ = new MachGuiNavButton(pRow5_, MachLog::SMELTER, 0, pInGameScreen_, this, IDS_SMELTERS);
+    pMineButton_ = new MachGuiNavButton(pRow5_, MachLog::MINE, 0, pInGameScreen_, this, IDS_MINES);
 
-    pRow6_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 5), 1));
+    pRow6_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 5), 1);
 
     pGarrisonSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow6_, MachLog::GARRISON, pInGameScreen_, this, pRow6_, IDS_GARRISONS));
-    pGarrisonButton_ = _NEW(MachGuiNavButton(pRow6_, MachLog::GARRISON, 0, pInGameScreen_, this, IDS_GARRISONS));
+        = new MachGuiSelectAllNavButton(pRow6_, MachLog::GARRISON, pInGameScreen_, this, pRow6_, IDS_GARRISONS);
+    pGarrisonButton_ = new MachGuiNavButton(pRow6_, MachLog::GARRISON, 0, pInGameScreen_, this, IDS_GARRISONS);
 
-    _NEW(MachGuiDismissNavIcon(
+    new MachGuiDismissNavIcon(
         this,
         Gui::Coord(MachGuiNavButton::reqWidth() * 5, MachGuiNavButton::reqHeight() * 5),
-        pInGameScreen_));
+        pInGameScreen_);
 
     TEST_INVARIANT;
 }
@@ -1393,75 +1393,75 @@ void MachGuiMachineNavigator::unloadGame()
 void MachGuiMachineNavigator::buildMachineIcons()
 {
 
-    pRow1_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, 0), 5));
+    pRow1_ = new MachGuiNavRow(this, Gui::Coord(0, 0), 5);
 
     pAggressorSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow1_, MachLog::AGGRESSOR, pInGameScreen_, this, pRow1_, IDS_AGGRESSORS));
+        = new MachGuiSelectAllNavButton(pRow1_, MachLog::AGGRESSOR, pInGameScreen_, this, pRow1_, IDS_AGGRESSORS);
     pGruntButton_
-        = _NEW(MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::GRUNT, pInGameScreen_, this, IDS_GRUNTS));
+        = new MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::GRUNT, pInGameScreen_, this, IDS_GRUNTS);
     pAssassinButton_
-        = _NEW(MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::ASSASSIN, pInGameScreen_, this, IDS_ASSASSINS));
+        = new MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::ASSASSIN, pInGameScreen_, this, IDS_ASSASSINS);
     pBallistaButton_
-        = _NEW(MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::BALLISTA, pInGameScreen_, this, IDS_BALLISTAS));
+        = new MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::BALLISTA, pInGameScreen_, this, IDS_BALLISTAS);
     pKnightButton_
-        = _NEW(MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::KNIGHT, pInGameScreen_, this, IDS_KNIGHTS));
+        = new MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::KNIGHT, pInGameScreen_, this, IDS_KNIGHTS);
     pNinjaButton_
-        = _NEW(MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::NINJA, pInGameScreen_, this, IDS_NINJAS));
+        = new MachGuiNavButton(pRow1_, MachLog::AGGRESSOR, MachPhys::NINJA, pInGameScreen_, this, IDS_NINJAS);
 
-    pRow2_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight()), 3));
+    pRow2_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight()), 3);
 
-    pAdministratorSelectAll_ = _NEW(
-        MachGuiSelectAllNavButton(pRow2_, MachLog::ADMINISTRATOR, pInGameScreen_, this, pRow2_, IDS_ADMINISTRATORS));
+    pAdministratorSelectAll_ = new 
+        MachGuiSelectAllNavButton(pRow2_, MachLog::ADMINISTRATOR, pInGameScreen_, this, pRow2_, IDS_ADMINISTRATORS);
     pBossButton_
-        = _NEW(MachGuiNavButton(pRow2_, MachLog::ADMINISTRATOR, MachPhys::BOSS, pInGameScreen_, this, IDS_BOSSES));
-    pOverseerButton_ = _NEW(
-        MachGuiNavButton(pRow2_, MachLog::ADMINISTRATOR, MachPhys::OVERSEER, pInGameScreen_, this, IDS_OVERSEERS));
-    pCommanderButton_ = _NEW(
-        MachGuiNavButton(pRow2_, MachLog::ADMINISTRATOR, MachPhys::COMMANDER, pInGameScreen_, this, IDS_COMMANDERS));
+        = new MachGuiNavButton(pRow2_, MachLog::ADMINISTRATOR, MachPhys::BOSS, pInGameScreen_, this, IDS_BOSSES);
+    pOverseerButton_ = new 
+        MachGuiNavButton(pRow2_, MachLog::ADMINISTRATOR, MachPhys::OVERSEER, pInGameScreen_, this, IDS_OVERSEERS);
+    pCommanderButton_ = new 
+        MachGuiNavButton(pRow2_, MachLog::ADMINISTRATOR, MachPhys::COMMANDER, pInGameScreen_, this, IDS_COMMANDERS);
 
-    pRow3_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 2), 3));
+    pRow3_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 2), 3);
 
     pTechSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow3_, MachLog::TECHNICIAN, pInGameScreen_, this, pRow3_, IDS_TECHNICIANS));
+        = new MachGuiSelectAllNavButton(pRow3_, MachLog::TECHNICIAN, pInGameScreen_, this, pRow3_, IDS_TECHNICIANS);
     pLabTechButton_
-        = _NEW(MachGuiNavButton(pRow3_, MachLog::TECHNICIAN, MachPhys::LAB_TECH, pInGameScreen_, this, IDS_LAB_TECHS));
+        = new MachGuiNavButton(pRow3_, MachLog::TECHNICIAN, MachPhys::LAB_TECH, pInGameScreen_, this, IDS_LAB_TECHS);
     pTechBoyButton_
-        = _NEW(MachGuiNavButton(pRow3_, MachLog::TECHNICIAN, MachPhys::TECH_BOY, pInGameScreen_, this, IDS_TECH_BOYS));
-    pBrainBoxButton_ = _NEW(
-        MachGuiNavButton(pRow3_, MachLog::TECHNICIAN, MachPhys::BRAIN_BOX, pInGameScreen_, this, IDS_BRAIN_BOXES));
+        = new MachGuiNavButton(pRow3_, MachLog::TECHNICIAN, MachPhys::TECH_BOY, pInGameScreen_, this, IDS_TECH_BOYS);
+    pBrainBoxButton_ = new 
+        MachGuiNavButton(pRow3_, MachLog::TECHNICIAN, MachPhys::BRAIN_BOX, pInGameScreen_, this, IDS_BRAIN_BOXES);
 
-    pRow4_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 3), 3));
+    pRow4_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 3), 3);
 
     pConstructorSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow4_, MachLog::CONSTRUCTOR, pInGameScreen_, this, pRow4_, IDS_CONSTRUCTORS));
+        = new MachGuiSelectAllNavButton(pRow4_, MachLog::CONSTRUCTOR, pInGameScreen_, this, pRow4_, IDS_CONSTRUCTORS);
     pDozerButton_
-        = _NEW(MachGuiNavButton(pRow4_, MachLog::CONSTRUCTOR, MachPhys::DOZER, pInGameScreen_, this, IDS_DOZERS));
+        = new MachGuiNavButton(pRow4_, MachLog::CONSTRUCTOR, MachPhys::DOZER, pInGameScreen_, this, IDS_DOZERS);
     pBuilderButton_
-        = _NEW(MachGuiNavButton(pRow4_, MachLog::CONSTRUCTOR, MachPhys::BUILDER, pInGameScreen_, this, IDS_BUILDERS));
+        = new MachGuiNavButton(pRow4_, MachLog::CONSTRUCTOR, MachPhys::BUILDER, pInGameScreen_, this, IDS_BUILDERS);
     pBehemothButton_
-        = _NEW(MachGuiNavButton(pRow4_, MachLog::CONSTRUCTOR, MachPhys::BEHEMOTH, pInGameScreen_, this, IDS_BEHEMOTHS));
+        = new MachGuiNavButton(pRow4_, MachLog::CONSTRUCTOR, MachPhys::BEHEMOTH, pInGameScreen_, this, IDS_BEHEMOTHS);
 
-    pRow5_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 4), 2));
+    pRow5_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 4), 2);
 
     pLocatorSelectAll_
-        = _NEW(MachGuiSelectAllNavButton(pRow5_, MachLog::GEO_LOCATOR, pInGameScreen_, this, pRow5_, IDS_LOCATORS));
+        = new MachGuiSelectAllNavButton(pRow5_, MachLog::GEO_LOCATOR, pInGameScreen_, this, pRow5_, IDS_LOCATORS);
     pGeoLocatorButton_
-        = _NEW(MachGuiNavButton(pRow5_, MachLog::GEO_LOCATOR, 0, pInGameScreen_, this, IDS_GEO_LOCATORS));
+        = new MachGuiNavButton(pRow5_, MachLog::GEO_LOCATOR, 0, pInGameScreen_, this, IDS_GEO_LOCATORS);
     pSpyLocatorButton_
-        = _NEW(MachGuiNavButton(pRow5_, MachLog::SPY_LOCATOR, 0, pInGameScreen_, this, IDS_SPY_LOCATORS));
+        = new MachGuiNavButton(pRow5_, MachLog::SPY_LOCATOR, 0, pInGameScreen_, this, IDS_SPY_LOCATORS);
 
-    pRow6_ = _NEW(MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 5), 2));
+    pRow6_ = new MachGuiNavRow(this, Gui::Coord(0, MachGuiNavButton::reqHeight() * 5), 2);
 
-    pTransportSelectAll_ = _NEW(
-        MachGuiSelectAllNavButton(pRow6_, MachLog::RESOURCE_CARRIER, pInGameScreen_, this, pRow6_, IDS_CARRIERS));
+    pTransportSelectAll_ = new 
+        MachGuiSelectAllNavButton(pRow6_, MachLog::RESOURCE_CARRIER, pInGameScreen_, this, pRow6_, IDS_CARRIERS);
     pResourceCarrierButton_
-        = _NEW(MachGuiNavButton(pRow6_, MachLog::RESOURCE_CARRIER, 0, pInGameScreen_, this, IDS_RESOURCE_CARRIERS));
-    pAPCButton_ = _NEW(MachGuiNavButton(pRow6_, MachLog::APC, 0, pInGameScreen_, this, IDS_APCS));
+        = new MachGuiNavButton(pRow6_, MachLog::RESOURCE_CARRIER, 0, pInGameScreen_, this, IDS_RESOURCE_CARRIERS);
+    pAPCButton_ = new MachGuiNavButton(pRow6_, MachLog::APC, 0, pInGameScreen_, this, IDS_APCS);
 
-    _NEW(MachGuiDismissNavIcon(
+    new MachGuiDismissNavIcon(
         this,
         Gui::Coord(MachGuiNavButton::reqWidth() * 5, MachGuiNavButton::reqHeight() * 5),
-        pInGameScreen_));
+        pInGameScreen_);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1778,14 +1778,14 @@ MachGuiNavigatorBase::MachGuiNavigatorBase(
     , cycleIndex_(0)
     , pInGameScreen_(pInGameScreen)
 {
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 
 MachGuiNavigatorBase::~MachGuiNavigatorBase()
 {
-    _DELETE(pKeyTranslator_);
+    delete pKeyTranslator_;
 }
 
 /////////////////////////////////////////////////////////////////////////////

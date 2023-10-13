@@ -106,7 +106,7 @@ bool ProProfiler::isInitialized() const
 ProProfiler::~ProProfiler()
 {
     TEST_INVARIANT;
-    _DELETE(pMemoryBuffer_);
+    delete pMemoryBuffer_;
 }
 
 void ProProfiler::traceInterval(double timeSeconds)
@@ -387,13 +387,13 @@ void ProProfiler::isBufferingOutput(bool is)
     {
         // starting buffering
         isBufferingOutput_ = true;
-        pMemoryBuffer_ = _NEW(BaseLogBuffer(256000));
+        pMemoryBuffer_ = new BaseLogBuffer(256000);
     }
     else if (not is and isBufferingOutput_)
     {
         // starting buffering
         isBufferingOutput_ = false;
-        _DELETE(pMemoryBuffer_);
+        delete pMemoryBuffer_;
         pMemoryBuffer_ = nullptr;
     }
 }

@@ -49,7 +49,7 @@ MachPhysLightningHaloMaterialPlan::MachPhysLightningHaloMaterialPlan(
                 scalesV.push_back(1);
                 scalesV.push_back(1);
 
-                PhysLinearScalarPlan* pAlphaPlanV = _NEW(PhysLinearScalarPlan(times, scalesV));
+                PhysLinearScalarPlan* pAlphaPlanV = new PhysLinearScalarPlan(times, scalesV);
 
                 alphaPlanPtr_ = pAlphaPlanV;
 
@@ -83,7 +83,7 @@ MachPhysLightningHaloMaterialPlan::MachPhysLightningHaloMaterialPlan(
                 scalesE.push_back(1);
                 scalesE.push_back(0);
 
-                PhysLinearScalarPlan* pAlphaPlanE = _NEW(PhysLinearScalarPlan(times, scalesE));
+                PhysLinearScalarPlan* pAlphaPlanE = new PhysLinearScalarPlan(times, scalesE);
 
                 alphaPlanPtr_ = pAlphaPlanE;
 
@@ -111,25 +111,25 @@ MachPhysLightningHaloMaterialPlan::MachPhysLightningHaloMaterialPlan(
             }
     }
 
-    RenMaterialVec* pMaterialVec1 = _NEW(RenMaterialVec(4));
+    RenMaterialVec* pMaterialVec1 = new RenMaterialVec(4);
     pMaterialVec1->push_back(mat1_);
     pMaterialVec1->push_back(mat2_);
     pMaterialVec1->push_back(mat3_);
     pMaterialVec1->push_back(mat4_);
 
-    RenMaterialVec* pMaterialVec2 = _NEW(RenMaterialVec(4));
+    RenMaterialVec* pMaterialVec2 = new RenMaterialVec(4);
     pMaterialVec2->push_back(mat4_);
     pMaterialVec2->push_back(mat1_);
     pMaterialVec2->push_back(mat2_);
     pMaterialVec2->push_back(mat3_);
 
-    RenMaterialVec* pMaterialVec3 = _NEW(RenMaterialVec(4));
+    RenMaterialVec* pMaterialVec3 = new RenMaterialVec(4);
     pMaterialVec3->push_back(mat3_);
     pMaterialVec3->push_back(mat4_);
     pMaterialVec3->push_back(mat1_);
     pMaterialVec3->push_back(mat2_);
 
-    RenMaterialVec* pMaterialVec4 = _NEW(RenMaterialVec(4));
+    RenMaterialVec* pMaterialVec4 = new RenMaterialVec(4);
     pMaterialVec4->push_back(mat2_);
     pMaterialVec4->push_back(mat3_);
     pMaterialVec4->push_back(mat4_);

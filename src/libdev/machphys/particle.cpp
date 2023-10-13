@@ -46,7 +46,7 @@ MachPhysParticles::MachPhysParticles()
     createSTFParticle(particleMeshPtr);
 
     // Add a mesh instance for it, with the fog distance as the visibility range
-    RenMeshInstance* pMeshInstance = _NEW(RenMeshInstance(particleMeshPtr));
+    RenMeshInstance* pMeshInstance = new RenMeshInstance(particleMeshPtr);
     add(pMeshInstance, _STATIC_CAST(MexDouble, RenDevice::current()->fogEnd()), W4dLOD(0));
 
     TEST_INVARIANT;

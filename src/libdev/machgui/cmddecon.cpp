@@ -146,10 +146,10 @@ void MachGuiDeconstructCommand::typeData(MachLog::ObjectType /*objectType*/, int
 bool MachGuiDeconstructCommand::doApply(MachActor* pActor, string*)
 {
     // Create a superconstruct operation for the constructor
-    MachLogSuperConstructOperation* pOp = _NEW(MachLogSuperConstructOperation(
+    MachLogSuperConstructOperation* pOp = new MachLogSuperConstructOperation(
         &pActor->asConstructor(),
         constructions_,
-        MachLogOperation::DECONSTRUCT_OPERATION));
+        MachLogOperation::DECONSTRUCT_OPERATION);
 
     pActor->newOperation(pOp);
 
@@ -168,7 +168,7 @@ bool MachGuiDeconstructCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiDeconstructCommand::clone() const
 {
-    return _NEW(MachGuiDeconstructCommand(&inGameScreen()));
+    return new MachGuiDeconstructCommand(&inGameScreen());
 }
 
 // virtual
@@ -213,8 +213,8 @@ bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrato
     ;
 
     // Create an admin superconstruct operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp = _NEW(
-        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::DECONSTRUCT_OPERATION));
+    MachLogAdminSuperConstructOperation* pOp = new 
+        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::DECONSTRUCT_OPERATION);
 
     pAdministrator->newOperation(pOp);
     ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");

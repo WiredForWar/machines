@@ -161,7 +161,7 @@ void MachGuiDropDownListBox::itemSelected(const string& /*itemText*/)
 {
     // You are forced to derive from this class and supply an implementation for this function.
     // This base class function should be called from the derived class!
-    _DELETE(this);
+    delete this;
 }
 
 // virtual
@@ -184,7 +184,7 @@ void MachGuiDropDownListBox::update()
     {
         if (nextItem_ < itemText_.size())
         {
-            //_NEW( MachGuiDropDownListBoxItem( &startupScreens(), this, itemWidth_, itemText_[nextItem_], whiteFont_ )
+            //new MachGuiDropDownListBoxItem( &startupScreens(), this, itemWidth_, itemText_[nextItem_], whiteFont_ )
             //);
             createListBoxItem(&startupScreens(), this, itemWidth_, itemText_[nextItem_], whiteFont_);
 
@@ -204,7 +204,7 @@ MachGuiDropDownListBoxItem* MachGuiDropDownListBox::createListBoxItem(
     const string& text,
     bool whiteFont)
 {
-    return _NEW(MachGuiDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont));
+    return new MachGuiDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont);
 }
 
 void MachGuiDropDownListBox::CLASS_INVARIANT

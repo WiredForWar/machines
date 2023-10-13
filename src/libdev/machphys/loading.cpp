@@ -89,7 +89,7 @@ static PhysScalarPlanPtr scalarPlanPtr(const PhysRelativeTime& time1, const Phys
     scales.push_back(1.0);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
 
     return PhysScalarPlanPtr(pPlan);
 }
@@ -97,12 +97,12 @@ static PhysScalarPlanPtr scalarPlanPtr(const PhysRelativeTime& time1, const Phys
 const PhysRelativeTime
 MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const MATHEX_SCALAR& size)
 {
-    MachPhysLoadingUnder* pUnder = _NEW(MachPhysLoadingUnder(this, MexTransform3d()));
+    MachPhysLoadingUnder* pUnder = new MachPhysLoadingUnder(this, MexTransform3d());
 
     const PhysRelativeTime duration = 22.0 / frameRate();
 
     // visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
 
     pUnder->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
@@ -110,7 +110,7 @@ MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const M
     // scale plan
     const MATHEX_SCALAR a = size / defaultSize();
     const MATHEX_SCALAR c = 2.0 * a;
-    W4dScalePlanPtr scalePlanPtr(_NEW(W4dSimpleUniformScalePlan(1, c, duration)));
+    W4dScalePlanPtr scalePlanPtr(new W4dSimpleUniformScalePlan(1, c, duration));
 
     pUnder->propogateScalePlan(scalePlanPtr, startTime);
 
@@ -119,23 +119,23 @@ MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const M
 
     W4dSimpleAlphaPlan::makePlan(pUnder, startTime, alphaPlanPtr, 1);
 
-    MachPhysLoadingOver* pOver = _NEW(MachPhysLoadingOver(this, MexTransform3d()));
+    MachPhysLoadingOver* pOver = new MachPhysLoadingOver(this, MexTransform3d());
     pOver->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
     pOver->propogateScalePlan(scalePlanPtr, startTime);
     W4dSimpleAlphaPlan::makePlan(pOver, startTime, alphaPlanPtr, 1);
 
-    MachPhysLoadingLight* pLightLoading = _NEW(MachPhysLoadingLight(this, MexTransform3d()));
+    MachPhysLoadingLight* pLightLoading = new MachPhysLoadingLight(this, MexTransform3d());
     const PhysRelativeTime lightDuration = 12.0 / frameRate();
 
     // visibility plan
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, lightDuration);
 
     pLightLoading->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
 
     // scale plan
     const MATHEX_SCALAR b = 0.5;
-    W4dScalePlanPtr lightScalePlanPtr(_NEW(W4dSimpleUniformScalePlan(a, b, lightDuration)));
+    W4dScalePlanPtr lightScalePlanPtr(new W4dSimpleUniformScalePlan(a, b, lightDuration));
 
     pLightLoading->propogateScalePlan(lightScalePlanPtr, startTime);
 
@@ -145,7 +145,7 @@ MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const M
 
     // create a light
 
-    W4dPointLight* pLight = _NEW(W4dPointLight(this, MexVec3(0, 0, 1), 20.0));
+    W4dPointLight* pLight = new W4dPointLight(this, MexVec3(0, 0, 1), 20.0);
 
     pLight->colour(RenColour(2.0, 2.24, 2.0));
     pLight->constantAttenuation(0);
@@ -157,7 +157,7 @@ MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const M
     // visibility plan
     const PhysRelativeTime pointLightDuration = 10.0 / frameRate();
 
-    W4dVisibilityPlanPtr visPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visPlanPtr(new W4dVisibilityPlan(true));
     visPlanPtr->add(false, pointLightDuration);
 
     pLight->entityPlanForEdit().visibilityPlan(visPlanPtr, startTime);
@@ -179,7 +179,7 @@ MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const M
         scales.push_back(4.0);
         scales.push_back(0);
 
-        PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+        PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
 
         intensityPlanPtr = pPlan;
     }

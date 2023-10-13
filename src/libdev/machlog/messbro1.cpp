@@ -61,7 +61,7 @@ void MachLogMessageBroker::sendMachineMoveMessage(
     }
     else
     {
-        MachLogNetMessage* pMessage = _NEW(MachLogNetMessage());
+        MachLogNetMessage* pMessage = new MachLogNetMessage();
         MachLogMachineMoveMessage* pMoveMessage = _REINTERPRET_CAST(MachLogMachineMoveMessage*, pMessage);
         pMoveMessage->whichId_ = whichId;
         pMoveMessage->header_.systemCode_ = 0;
@@ -139,9 +139,9 @@ void MachLogMessageBroker::processMachineMoveMessage(NetMessage* pMessage)
             }
             //  Combine the multiple move infos into one.
 
-            MachPhysMachineMoveInfo::TransformsPtr transformsPtr(_NEW(MachPhysMachineMoveInfo::Transforms()));
+            MachPhysMachineMoveInfo::TransformsPtr transformsPtr(new MachPhysMachineMoveInfo::Transforms());
             MachPhysMachineMoveInfo::RampAccelerationsPtr rampAccelerationsPtr(
-                _NEW(MachPhysMachineMoveInfo::RampAccelerations()));
+                new MachPhysMachineMoveInfo::RampAccelerations());
 
             for (size_t i = 0; i < infos.size(); ++i)
             {
@@ -192,7 +192,7 @@ void MachLogMessageBroker::processMachineMoveMessage(NetMessage* pMessage)
 void MachLogMessageBroker::sendMachineSetDomainMessage(UtlId whichId, const MexTransform3d& transform)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMachineSetDomainMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMachineSetDomainMessage* pMessage = _REINTERPRET_CAST(MachLogMachineSetDomainMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = MACHINE_SET_DOMAIN_CODE;
@@ -224,7 +224,7 @@ void MachLogMessageBroker::processMachineSetDomainMessage(NetMessage* pNetMessag
 void MachLogMessageBroker::sendMachineTurnMessage(UtlId whichId, const MexRadians& turnAmount)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMachineTurnMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMachineTurnMessage* pMessage = _REINTERPRET_CAST(MachLogMachineTurnMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = MACHINE_TURN_CODE;
@@ -258,7 +258,7 @@ void MachLogMessageBroker::processMachineTurnMessage(NetMessage* pNetMessage)
 void MachLogMessageBroker::sendAddRestingObstacleMessage(UtlId whichId, const MexTransform3d& transform, int /*status*/)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAddRestingObstacleMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogRestingObstacleMessage* pMessage = _REINTERPRET_CAST(MachLogRestingObstacleMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADD_RESTING_OBSTACLE_CODE;
@@ -295,7 +295,7 @@ void MachLogMessageBroker::processAddRestingObstacleMessage(NetMessage* pNetMess
 void MachLogMessageBroker::sendAddRestingObstacleShortMessage(UtlId whichId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAddRestingObstacleShortMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogRestingObstacleShortMessage* pMessage
         = _REINTERPRET_CAST(MachLogRestingObstacleShortMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
@@ -331,7 +331,7 @@ void MachLogMessageBroker::sendRequestAddRestingObstacleMessage(
     DEBUG_STREAM(
         DIAG_NETWORK,
         "MLMessageBroker::sendRequestAddRestingObstacleMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogRestingObstacleMessage* pMessage = _REINTERPRET_CAST(MachLogRestingObstacleMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = REQUEST_ADD_RESTING_OBSTACLE_CODE;
@@ -368,7 +368,7 @@ void MachLogMessageBroker::processRequestAddRestingObstacleMessage(NetMessage* p
 
 // oldvoid MachLogMessageBroker::sendAddMovingObstacleMessage( UtlId whichId, const MexPoint3d& start, const MexPoint3d&
 // end, int status ) old{ old   DEBUG_STREAM( DIAG_NETWORK, "MLMessageBroker::sendAddMovingObstacleMessage (" << whichId
-// << ")" << std::endl ); old   MachLogNetMessage* pLogNetMessage = _NEW( MachLogNetMessage() ); old
+// << ")" << std::endl ); old   MachLogNetMessage* pLogNetMessage = new MachLogNetMessage(); old
 // MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST( MachLogMovingObstacleMessage*, pLogNetMessage ); old
 // pMessage->header_.systemCode_ = 0; old   pMessage->header_.messageCode_ = ADD_MOVING_OBSTACLE_CODE; old
 // pMessage->header_.totalLength_ = sizeof( MachLogMovingObstacleMessage ); old   pMessage->whichId_ = whichId; old
@@ -393,7 +393,7 @@ void MachLogMessageBroker::processRequestAddRestingObstacleMessage(NetMessage* p
 // oldvoid MachLogMessageBroker::sendRequestAddMovingObstacleMessage( UtlId whichId, const MexPoint3d& start, const
 // MexPoint3d& end, int status ) old{ old   DEBUG_STREAM( DIAG_NETWORK,
 // "MLMessageBroker::sendRequestAddMovingObstacleMessage (" << whichId << ")" << std::endl ); old   MachLogNetMessage*
-// pLogNetMessage = _NEW( MachLogNetMessage() ); old   MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST(
+// pLogNetMessage = new MachLogNetMessage(); old   MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST(
 // MachLogMovingObstacleMessage*, pLogNetMessage ); old   pMessage->header_.systemCode_ = 0; old
 // pMessage->header_.messageCode_ = REQUEST_ADD_MOVING_OBSTACLE_CODE; old   pMessage->header_.totalLength_ = sizeof(
 // MachLogMovingObstacleMessage ); old   pMessage->whichId_ = whichId; old   pMessage->start_ = start; old
@@ -419,7 +419,7 @@ void MachLogMessageBroker::sendAddMotionChunksMessage(
     int status)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAddMotionChunksMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMotionChunksMessage* pMessage = _REINTERPRET_CAST(MachLogMotionChunksMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADD_MOTION_CHUNKS_CODE;
@@ -476,7 +476,7 @@ void MachLogMessageBroker::sendRequestAddMotionChunksMessage(
     int status)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendRequestAddMotionChunksMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMotionChunksMessage* pMessage = _REINTERPRET_CAST(MachLogMotionChunksMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = REQUEST_ADD_MOTION_CHUNKS_CODE;
@@ -546,7 +546,7 @@ void MachLogMessageBroker::processRequestAddMotionChunksMessage(NetMessage* pNet
 void MachLogMessageBroker::sendMotionChunksAddFailedMessage(UtlId whichId, int status, const MexTransform3d& transform)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMotionChunksAddFailedMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMotionChunksAddFailedMessage* pMessage
         = _REINTERPRET_CAST(MachLogMotionChunksAddFailedMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
@@ -588,7 +588,7 @@ void MachLogMessageBroker::processMotionChunksAddFailedMessage(NetMessage* pNetM
 void MachLogMessageBroker::sendClearRestingObstacleMessage(UtlId whichId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendClearRestingObstacleMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogClearRestingObstacleMessage* pMessage
         = _REINTERPRET_CAST(MachLogClearRestingObstacleMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
@@ -621,7 +621,7 @@ void MachLogMessageBroker::processClearRestingObstacleMessage(NetMessage* pNetMe
 void MachLogMessageBroker::sendClearMovingChunksMessage(UtlId whichId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendClearMovingObstacleMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST(MachLogMovingObstacleMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = CLEAR_MOVING_CHUNKS_CODE;
@@ -653,7 +653,7 @@ void MachLogMessageBroker::processClearMovingChunksMessage(NetMessage* pNetMessa
 void MachLogMessageBroker::sendStopDeadMessage(UtlId whichId, const MexTransform3d& transform)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendStopDeadMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogStopDeadMessage* pMessage = _REINTERPRET_CAST(MachLogStopDeadMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = STOP_DEAD_CODE;
@@ -702,7 +702,7 @@ void MachLogMessageBroker::processStopDeadMessage(NetMessage* pNetMessage)
 void MachLogMessageBroker::sendAdjustHPAndArmourMessage(UtlId whichId, int hp, int armour)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAdjustHPAndArmourMessage (" << whichId << ")" << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogAdjustHPAndArmourMessage* pMessage = _REINTERPRET_CAST(MachLogAdjustHPAndArmourMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADJUST_HP_AND_ARMOUR_CODE;
@@ -741,7 +741,7 @@ void MachLogMessageBroker::sendCreateActorMessage(
     UtlId whichId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendCreateActorMessage " << ot << std::endl);
-    MachLogNetMessage* pMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pMessage = new MachLogNetMessage();
     MachLogCreateActorMessage* createMessage = _REINTERPRET_CAST(MachLogCreateActorMessage*, pMessage);
     createMessage->race_ = race;
     createMessage->objectType_ = ot;
@@ -862,7 +862,7 @@ void MachLogMessageBroker::sendCreateSpecialActorMessage(
     UtlId whichId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendCreateSpecialActorMessage " << ot << std::endl);
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachLogCreateSpecialActorMessage* pMessage = _REINTERPRET_CAST(MachLogCreateSpecialActorMessage*, pLogMessage);
     pMessage->race_ = race;
     pMessage->objectType_ = ot;
@@ -919,7 +919,7 @@ void MachLogMessageBroker::processCreateSpecialActorMessage(NetMessage* pLogMess
 void MachLogMessageBroker::sendReadyMessage()
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendReadyMessage " << std::endl);
-    MachLogNetMessage* pMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pMessage = new MachLogNetMessage();
     MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST(MachLogReadyMessage*, pMessage);
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = READY_CODE;
@@ -941,7 +941,7 @@ void MachLogMessageBroker::processReadyMessage(NetMessage* pMessage)
 void MachLogMessageBroker::sendResyncTimeMessage()
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendResyncTimeMessage " << std::endl);
-    MachLogNetMessage* pMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pMessage = new MachLogNetMessage();
     MachLogResyncTimeMessage* pResyncMessage = _REINTERPRET_CAST(MachLogResyncTimeMessage*, pMessage);
     pResyncMessage->header_.systemCode_ = 0;
     pResyncMessage->header_.messageCode_ = RESYNC_TIME_CODE;
@@ -996,7 +996,7 @@ void MachLogMessageBroker::sendUseSpaceDomainMessage(UtlId whichId, UtlId constr
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendUseSpaceDomainMessage\n");
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendUseSpaceDomainMessage " << std::endl);
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogUseSpaceDomainMessage* pMessage = _REINTERPRET_CAST(MachLogUseSpaceDomainMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = USE_SPACE_DOMAIN_CODE;
@@ -1106,7 +1106,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogBeHitMessage& t)
 void MachLogMessageBroker::sendFirstPersonEndMessage(UtlId whichId, MachPhys::Race race, bool open)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendFirstPersonEndMessage\n");
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogFirstPersonEndMessage* pMessage = _REINTERPRET_CAST(MachLogFirstPersonEndMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = FIRST_PERSON_END_CODE;
@@ -1142,7 +1142,7 @@ void MachLogMessageBroker::sendFirstPersonUpdateMessage(
     const MachPhysFirstPersonStateVector& state)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendFirstPersonUpdateMessage\n");
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogFirstPersonUpdateMessage* pMessage = _REINTERPRET_CAST(MachLogFirstPersonUpdateMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = FIRST_PERSON_UPDATE_CODE;
@@ -1172,7 +1172,7 @@ void MachLogMessageBroker::processFirstPersonUpdateMessage(NetMessage* pNetMessa
 void MachLogMessageBroker::sendEnteredBuildingMessage(UtlId whichId, UtlId constructionId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendEnteredBuildingMessage\n");
-    MachLogNetMessage* pLogNetMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogEnteredBuildingMessage* pMessage = _REINTERPRET_CAST(MachLogEnteredBuildingMessage*, pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ENTERED_BUILDING_CODE;
@@ -1237,7 +1237,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogSingleMoveInfo& t)
 void MachLogMessageBroker::sendStartGameMessage()
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendStartGameMessage " << std::endl);
-    MachLogNetMessage* pMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pMessage = new MachLogNetMessage();
     MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST(MachLogReadyMessage*, pMessage);
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = START_GAME_CODE;
@@ -1259,7 +1259,7 @@ void MachLogMessageBroker::processStartGameMessage(NetMessage* pMessage)
 void MachLogMessageBroker::sendLostFlagSetMessage(MachPhys::Race race)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sstd::endlostFlagSetMessage " << std::endl);
-    MachLogNetMessage* pMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pMessage = new MachLogNetMessage();
     MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST(MachLogReadyMessage*, pMessage);
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = LOST_FLAG_SET_CODE;

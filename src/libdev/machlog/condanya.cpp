@@ -45,7 +45,7 @@ MachLogAnyAllCondition* MachLogAnyAllCondition::newFromParser(
     {
         subOps.push_back(pMap->operator[](pParser->tokens()[i]));
     }
-    return _NEW(MachLogAnyAllCondition(pParser->tokens()[1], subOps, booleanOperator));
+    return new MachLogAnyAllCondition(pParser->tokens()[1], subOps, booleanOperator);
 }
 
 void MachLogAnyAllCondition::CLASS_INVARIANT

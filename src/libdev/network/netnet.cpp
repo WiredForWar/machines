@@ -23,14 +23,14 @@ NetNetwork::NetNetwork()
     : pNetINetwork_(nullptr)
 {
     PRE(isValidNoRecord());
-    pNetINetwork_ = _NEW(NetINetwork());
+    pNetINetwork_ = new NetINetwork();
     NETWORK_STREAM("pNetINetwork_ is " << (void*)pNetINetwork_ << std::endl);
     POST(isValidNoRecord());
 }
 
 NetNetwork::~NetNetwork()
 {
-    _DELETE(pNetINetwork_);
+    delete pNetINetwork_;
 }
 
 //////////////////////////////////////////////////////////////

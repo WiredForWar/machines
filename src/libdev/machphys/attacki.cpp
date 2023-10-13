@@ -27,7 +27,7 @@ MachPhysCanAttackImpl::~MachPhysCanAttackImpl()
     TEST_INVARIANT;
 
     for (TurnerTrackers::iterator i = turnerTrackers_.begin(); i != turnerTrackers_.end(); ++i)
-        _DELETE(*i);
+        delete *i;
 }
 
 void MachPhysCanAttackImpl::CLASS_INVARIANT

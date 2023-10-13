@@ -38,7 +38,7 @@ PER_DEFINE_PERSISTENT(MachLogDropLandMineOperation);
 
 MachLogDropLandMineOperation::MachLogDropLandMineOperation(MachLogSpyLocator* pActor, const MexPoint3d& dest)
     : MachLogOperation("DROPLANDMINE_OPERATION", MachLogOperation::DROPLANDMINE_OPERATION)
-    , pImpl_(_NEW(MachLogDropLandMineOperationImpl(pActor, dest)))
+    , pImpl_(new MachLogDropLandMineOperationImpl(pActor, dest))
 {
     CB_MachLogDropLandMineOperation_DEPIMPL();
 
@@ -49,7 +49,7 @@ MachLogDropLandMineOperation::MachLogDropLandMineOperation(MachLogSpyLocator* pA
 
 MachLogDropLandMineOperation::MachLogDropLandMineOperation(MachLogSpyLocator* pActor, const Path& externalPath)
     : MachLogOperation("DROPLANDMINE_OPERATION", MachLogOperation::DROPLANDMINE_OPERATION)
-    , pImpl_(_NEW(MachLogDropLandMineOperationImpl(pActor, externalPath)))
+    , pImpl_(new MachLogDropLandMineOperationImpl(pActor, externalPath))
 {
     CB_MachLogDropLandMineOperation_DEPIMPL();
 
@@ -63,7 +63,7 @@ MachLogDropLandMineOperation::~MachLogDropLandMineOperation()
     while (path_.size() > 0)
         path_.erase(path_.begin());
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogDropLandMineOperation::doOutputOperator(std::ostream& o) const
@@ -176,7 +176,7 @@ PhysRelativeTime MachLogDropLandMineOperation::doUpdate()
         // now, any more places to go to?
         if (pActor_->nMines() > 0 and not path_.empty())
         {
-            subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, MexPoint3d(path_.front()))));
+            subOperation(pActor_, new MachLogMoveToOperation(pActor_, MexPoint3d(path_.front())));
             interval = 2.0;
         }
     }
@@ -188,7 +188,7 @@ PhysRelativeTime MachLogDropLandMineOperation::doUpdate()
         {
             // no apparent problems reaching that point....let's go.
 
-            subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, MexPoint3d(path_.front()))));
+            subOperation(pActor_, new MachLogMoveToOperation(pActor_, MexPoint3d(path_.front())));
             interval = 2.0;
         }
         else

@@ -88,13 +88,13 @@ const MachPhysLightningHalo& MachPhysLightningHalo::exemplar(HaloType type)
     {
         case ELECTRIC:
         {
-            static MachPhysLightningHalo* electric = _NEW( MachPhysLightningHalo( ELECTRIC ) );
+            static MachPhysLightningHalo* electric = new MachPhysLightningHalo( ELECTRIC );
             halo = electric;
             break;
         }
         case VIRUS:
         {
-            static MachPhysLightningHalo* virus = _NEW( MachPhysLightningHalo( VIRUS ) );
+            static MachPhysLightningHalo* virus = new MachPhysLightningHalo( VIRUS );
             halo = virus;
             break;
         }
@@ -173,13 +173,13 @@ void MachPhysLightningHalo::startLightning(
     {
         case VIRUS:
             {
-                pMotionPlan = _NEW(PhysLinearMotionPlan(localXform, MexTransform3d(endPosition), cycleTime));
+                pMotionPlan = new PhysLinearMotionPlan(localXform, MexTransform3d(endPosition), cycleTime);
                 pMotionPlan->add(localXform, cycleTime * 2);
                 break;
             }
         case ELECTRIC:
             {
-                pMotionPlan = _NEW(PhysLinearMotionPlan(localXform, MexTransform3d(endPosition), duration));
+                pMotionPlan = new PhysLinearMotionPlan(localXform, MexTransform3d(endPosition), duration);
                 break;
             }
     }
@@ -189,12 +189,12 @@ void MachPhysLightningHalo::startLightning(
 
     // material plan
     MachPhysLightningHaloMaterialPlan* pHaloMatPlan
-        = _NEW(MachPhysLightningHaloMaterialPlan(duration, W4dLOD(1), type));
+        = new MachPhysLightningHaloMaterialPlan(duration, W4dLOD(1), type);
     W4dMaterialPlanPtr matPlanPtr = pHaloMatPlan;
     entityPlanForEdit().materialPlan(matPlanPtr, startTime);
 
     // visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
     entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
 }

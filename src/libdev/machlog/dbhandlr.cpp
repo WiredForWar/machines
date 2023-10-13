@@ -27,7 +27,7 @@ struct MachLogDatabaseHandlerImpl
 
 MachLogDatabaseHandler::MachLogDatabaseHandler()
 {
-    pImpl_ = _NEW(MachLogDatabaseHandlerImpl);
+    pImpl_ = new MachLogDatabaseHandlerImpl;
     pImpl_->setFlags_.reserve(8);
 
     TEST_INVARIANT;
@@ -37,7 +37,7 @@ MachLogDatabaseHandler::~MachLogDatabaseHandler()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogDatabaseHandler::CLASS_INVARIANT

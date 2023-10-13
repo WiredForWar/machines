@@ -7,7 +7,7 @@
 
 void testPtr2(int* pInt)
 {
-    int* pI = _NEW(int);
+    int* pI = new int;
 
     *pI = 10;
 
@@ -22,7 +22,7 @@ void testPtr2(int* pInt)
 
     //    iPtr3 = pI;
 
-    double* pD = _NEW(double);
+    double* pD = new double;
 
     *pD = 30.0;
 

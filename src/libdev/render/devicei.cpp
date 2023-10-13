@@ -41,12 +41,12 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     PRE(parent);
     frameTimer_.pause();
     frameTimer_.time(0);
-    driverSelector_ = _NEW(RenDriverSelector(dis));
+    driverSelector_ = new RenDriverSelector(dis);
 }
 
 RenIDeviceImpl::~RenIDeviceImpl()
 {
-    _DELETE(driverSelector_);
+    delete driverSelector_;
 }
 
 // virtual
@@ -56,9 +56,9 @@ void RenIDeviceImpl::prepareForModeChange(const RenDisplay::Mode&, const RenDisp
     const RenIDisplay& dis = display_->displayImpl();
 
     RENDER_STREAM("Releasing D3D stuff owned by RenDevice.\n");
-    _DELETE(surfBackBuf_);
+    delete surfBackBuf_;
     surfBackBuf_ = nullptr;
-    _DELETE(surfFrontBuf_);
+    delete surfFrontBuf_;
     surfFrontBuf_ = nullptr;
 
     RENDER_STREAM("...done.\n\n");

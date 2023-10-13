@@ -41,30 +41,30 @@ MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
     , playedMail_(false)
     , autoLoadGame_(false)
 {
-    pOkBtn_ = _NEW(MachGuiMenuButton(
+    pOkBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(131, 363, 301, 401),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_DUMMY_OK);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(132, 416, 301, 453),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
-    pHintsBtn_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::EXIT);
+    pHintsBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(357, 363, 526, 401),
         IDS_MENUBTN_HINTS,
-        MachGuiStartupScreens::HINTS));
-    pObjectiveBtn_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::HINTS);
+    pObjectiveBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(356, 416, 526, 453),
         IDS_MENUBTN_OBJECTIVES,
-        MachGuiStartupScreens::OBJECTIVES));
+        MachGuiStartupScreens::OBJECTIVES);
 
     pCancelBtn->escapeControl(true);
 
@@ -73,7 +73,7 @@ MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->cursorOn(true);
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
-    pTextInfo_ = _NEW(MachGuiScrollableText(pStartupScreens, Gui::Box(23, 21, 305, 336)));
+    pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(23, 21, 305, 336));
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(306, 21), 315, pTextInfo_);
 
     displayObjectives();
@@ -279,7 +279,7 @@ void MachGuiCtxBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 //  Stop playing briefing animation
 //   pStartupScreens_->clearAllSmackerAnimations();
 
-//  pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, _NEW( MachGuiStartBriefingMessageBoxResponder(this) ) );
+//  pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiStartBriefingMessageBoxResponder(this) );
 //}
 #else // DEMO
         {
@@ -306,7 +306,7 @@ void MachGuiCtxBriefing::displayBriefingImage()
 {
     if (pBriefImage_)
     {
-        _DELETE(pBriefImage_);
+        delete pBriefImage_;
         pBriefImage_ = nullptr;
     }
     pStartupScreens_->clearAllSmackerAnimations();
@@ -349,10 +349,10 @@ void MachGuiCtxBriefing::displayBriefingImage()
             // Construct a smacker player
             //          HWND targetWindow = RenDevice::current()->display()->window();
 
-            //         AniSmacker* pSmackerAnimation = _NEW( AniSmacker( briefPicture, targetWindow, 355 +
-            //         pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() ) );
-            // AniSmacker* pSmackerAnimation = _NEW( AniSmacker( briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56
-            // + pStartupScreens_->yMenuOffset() ) );
+            //         AniSmacker* pSmackerAnimation = new AniSmacker( briefPicture, targetWindow, 355 +
+            //         pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() );
+            // AniSmacker* pSmackerAnimation = new AniSmacker( briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56
+            // + pStartupScreens_->yMenuOffset() );
             const auto& topLeft = getBackdropTopLeft();
             AniSmacker* pSmackerAnimation
                 = new AniSmackerRegular(briefPicture, 355 + topLeft.second, 56 + topLeft.first);
@@ -361,7 +361,7 @@ void MachGuiCtxBriefing::displayBriefingImage()
         else if (briefPicture.extension() == "bmp")
         {
             // File is a bitmap
-            pBriefImage_ = _NEW(GuiImage(pStartupScreens_, Gui::Coord(355, 56), Gui::bitmap(briefPicture)));
+            pBriefImage_ = new GuiImage(pStartupScreens_, Gui::Coord(355, 56), Gui::bitmap(briefPicture));
         }
     }
 }

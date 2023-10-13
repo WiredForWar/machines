@@ -50,7 +50,7 @@ MachPhysLocomotionMethod::~MachPhysLocomotionMethod()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // virtual
@@ -282,7 +282,7 @@ void MachPhysLocomotionMethod::pitchOrRollAnimation(
     transforms.push_back(transform(angle, axis, position));
     transforms.push_back(transform(0, axis, position));
 
-    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(transforms[0], transforms[1], times[0]));
+    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(transforms[0], transforms[1], times[0]);
 
     for (uint i = 1; i < nTimes; ++i)
     {

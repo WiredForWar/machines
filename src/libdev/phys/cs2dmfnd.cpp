@@ -103,7 +103,7 @@ PhysCS2dDomainFindPath::~PhysCS2dDomainFindPath()
     }
 
     // Delete owned entities
-    _DELETE(pDomainAlg_);
+    delete pDomainAlg_;
 
     CS2PATH_EXIT("~PhysCS2dDomainFindPath");
 }
@@ -208,7 +208,7 @@ void PhysCS2dDomainFindPath::startMacroSearch()
             domainGraphVersion_ = impl.domainGraph().version();
 
             // Construct an A* algorithm for the search
-            pDomainAlg_ = _NEW(DomainAStarAlg(clearance(), flags()));
+            pDomainAlg_ = new DomainAStarAlg(clearance(), flags());
             pDomainAlg_->start(impl.domainGraph(), startDomainVertexId_, endDomainVertexId_);
         }
     }
@@ -310,7 +310,7 @@ void PhysCS2dDomainFindPath::endMacroSearch()
     }
 
     // Delete the algorithm
-    _DELETE(pDomainAlg_);
+    delete pDomainAlg_;
     pDomainAlg_ = nullptr;
 
     // Remove the extra domain vertices from the domain graph that we added for our

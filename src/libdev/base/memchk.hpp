@@ -35,8 +35,6 @@ void DbgMemChkRecordStackData(bool);
 const DbgMemChkData& DbgMemChkAllocationData();
 
 // TODO: charybdis heap operators overload
-#define _NEW(t) (DbgMemChkRegisterFileData2(__FILE__, __LINE__, #t), new t)
-
 #define _NEW_ALLOCATOR(t, ALLOCATOR)                                                                                   \
     (DbgMemChkRegisterFileData2(__FILE__, __LINE__, #t), (ALLOCATOR::pointer) new (ALLOCATOR().allocate(1)) t)
 
@@ -46,8 +44,6 @@ const DbgMemChkData& DbgMemChkAllocationData();
 
 #define _NEW_ARRAY(t, n) (DbgMemChkRegisterFileData2(__FILE__, __LINE__, #t), new t[n])
 
-#define _DELETE(t) (t ? DbgMemChkRegisterFileData(__FILE__, __LINE__), delete t : delete t)
-
 #define _DELETE_ALLOCATOR(t, ALLOCATOR)                                                                                \
     (t ? DbgMemChkRegisterFileData(__FILE__, __LINE__), ALLOCATOR().deallocate(t) : ALLOCATOR().deallocate(t))
 
@@ -55,11 +51,7 @@ const DbgMemChkData& DbgMemChkAllocationData();
 
 #else
 
-#define _NEW(t) new t
-
 #define _NEW_ARRAY(t, n) new t[n]
-
-#define _DELETE(t) delete t
 
 #define _DELETE_ARRAY(t) delete[] t
 

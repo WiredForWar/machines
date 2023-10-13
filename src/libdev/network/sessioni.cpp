@@ -124,7 +124,7 @@ void NetIAppSession::join(NetNode* pNode)
         PRE(pNode);
         PRE(not hasMember(pNode->nodeUid()));
 
-        nodeIds_.push_back(_NEW(NetNodeUid(pNode->nodeUid())));
+        nodeIds_.push_back(new NetNodeUid(pNode->nodeUid()));
 
         POST(hasMember(pNode->nodeUid()));
         POST(isValidNoRecord());
@@ -148,7 +148,7 @@ void NetIAppSession::updateNodes()
 
         for (; i != j; ++i)
         {
-            _DELETE((*i));
+            delete (*i);
         }
 
         nodeIds_.erase(nodeIds_.begin(), nodeIds_.end());
@@ -207,7 +207,7 @@ NetIAppSession::~NetIAppSession()
     for (; i != j; ++i)
     {
         if (*i)
-            _DELETE((*i));
+            delete (*i);
     }
 
     i = nodeIds_.begin();

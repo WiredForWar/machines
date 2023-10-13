@@ -14,7 +14,7 @@
 #include "base/internal/istrimpl.hpp"
 
 PerIstream::PerIstream(std::istream& istr)
-    : pImpl_(_NEW(PerIstreamImpl(this)))
+    : pImpl_(new PerIstreamImpl(this))
     , istr_(istr)
 // istream( istr )
 // istream( pImpl_->pBuffer_ )
@@ -23,7 +23,7 @@ PerIstream::PerIstream(std::istream& istr)
 }
 
 PerIstream::PerIstream(std::istream& istr, IProgressReporter* pReporter)
-    : pImpl_(_NEW(PerIstreamImpl(this, istr, pReporter)))
+    : pImpl_(new PerIstreamImpl(this, istr, pReporter))
     , istr_(istr)
 {
     PRE(pReporter != nullptr);
@@ -33,7 +33,7 @@ PerIstream::PerIstream(std::istream& istr, IProgressReporter* pReporter)
 
 PerIstream::~PerIstream()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 
     Persistence::instance().registerCloseIstream();
 }

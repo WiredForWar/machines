@@ -115,10 +115,10 @@ void MachGuiStatisticsBar::showStatistic()
     int yOffset = (statsBarBmp_.height() - font.charHeight()) / 2;
 
     string newStatistic = testForOverflow(string(statistic));
-    _DELETE(statsText_);
+    delete statsText_;
     statsText_ = nullptr;
 
-    statsText_ = _NEW(MachGuiMenuText(
+    statsText_ = new MachGuiMenuText(
         pParent_,
         Gui::Box(
             topLeft_.x() - font.textWidth(newStatistic) - 2,
@@ -127,7 +127,7 @@ void MachGuiStatisticsBar::showStatistic()
             topLeft_.y() + font.charHeight()),
         newStatistic,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::RIGHT_JUSTIFY));
+        MachGuiMenuText::RIGHT_JUSTIFY);
 }
 
 // static

@@ -42,7 +42,7 @@ PER_DEFINE_PERSISTENT(SysPathName);
 
 SysPathName::SysPathName()
 
-    : pImpl_(_NEW(SysPathNameImpl()))
+    : pImpl_(new SysPathNameImpl())
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
@@ -59,7 +59,7 @@ SysPathName::SysPathName()
 
 SysPathName::SysPathName(const char* path)
 
-    : pImpl_(_NEW(SysPathNameImpl()))
+    : pImpl_(new SysPathNameImpl())
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
@@ -85,7 +85,7 @@ SysPathName::SysPathName(const std::string& path)
 
 SysPathName::SysPathName(const string& path)
 
-    : pImpl_(_NEW(SysPathNameImpl()))
+    : pImpl_(new SysPathNameImpl())
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
@@ -105,7 +105,7 @@ SysPathName::SysPathName(const string& path)
 
 SysPathName::SysPathName(const SysPathName& path)
 
-    : pImpl_(_NEW(SysPathNameImpl(*path.pImpl_)))
+    : pImpl_(new SysPathNameImpl(*path.pImpl_))
 {
     LOG_CONSTRUCTION;
 
@@ -116,7 +116,7 @@ extern bool traceStack;
 
 SysPathName::~SysPathName()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 
     LOG_DESTRUCTION;
 }
@@ -575,8 +575,8 @@ SysPathName& SysPathName::operator=(const SysPathName& rhs)
 {
     if (this != &rhs)
     {
-        SysPathNameImpl* pNewImpl = _NEW(SysPathNameImpl(*rhs.pImpl_));
-        _DELETE(pImpl_);
+        SysPathNameImpl* pNewImpl = new SysPathNameImpl(*rhs.pImpl_);
+        delete pImpl_;
         pImpl_ = pNewImpl;
     }
 

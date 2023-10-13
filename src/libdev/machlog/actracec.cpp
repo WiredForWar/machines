@@ -71,7 +71,7 @@ MachLogChangeRaceAction*
 MachLogChangeRaceAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogChangeRaceAction* pResult = nullptr;
-    pResult = _NEW(MachLogChangeRaceAction(pCondition, enabled));
+    pResult = new MachLogChangeRaceAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

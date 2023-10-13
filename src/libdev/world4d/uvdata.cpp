@@ -60,7 +60,7 @@ void W4dUVTranslateData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& start
 
     const RenTexture keyTexture = RenTexManager::instance().createTexture(textureName);
 
-    W4dUVTranslation* pUVTranslate = _NEW(W4dUVTranslation(forever(), maxLod(), speedVec_, MexVec2(0, 0)));
+    W4dUVTranslation* pUVTranslate = new W4dUVTranslation(forever(), maxLod(), speedVec_, MexVec2(0, 0));
     pUVTranslate->setFilterTexture(keyTexture);
     W4dUVPlanPtr uvPlanPtr = pUVTranslate;
 

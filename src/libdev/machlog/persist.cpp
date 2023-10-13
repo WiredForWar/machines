@@ -217,7 +217,7 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
         if (raceExists[race])
         {
             HAL_STREAM("Creating a new race for " << race << std::endl);
-            MachLogRace* pRace = _NEW(MachLogRace(race));
+            MachLogRace* pRace = new MachLogRace(race);
             MachLogRaces::instance().race(race, pRace, MachLogRaces::DO_NOT_CREATE_SQUADRONS);
         }
     }
@@ -225,7 +225,7 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
     // recreate the artefacts race.
     MachLogRaces::instance().race(
         MachPhys::NORACE,
-        _NEW(MachLogRace(MachPhys::NORACE)),
+        new MachLogRace(MachPhys::NORACE),
         MachLogRaces::DO_NOT_CREATE_SQUADRONS);
 
     // recreate all the MLRace(s) and controllers and assign them to MLRaces.
@@ -241,7 +241,7 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
         HAL_STREAM("Dereference:: " << *(per.controllers_[i]) << std::endl);
         MexTransform3d localTransform;
         W4dEntity* pAnyDomain = MachLogPlanetDomains::pDomainPosition(MexPoint3d(0, 0, 0), 0, &localTransform);
-        W4dEntity* pPhysObject = _NEW(W4dGeneric(pAnyDomain, localTransform));
+        W4dEntity* pPhysObject = new W4dGeneric(pAnyDomain, localTransform);
         HAL_STREAM("setting object ptr of controller...lets see if this works!\n");
         per.controllers_[i]->setObjectPtr(pPhysObject, localTransform);
         HAL_STREAM("derefercing element " << i << " to get race\n");

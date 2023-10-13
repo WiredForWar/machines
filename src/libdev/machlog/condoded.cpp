@@ -54,9 +54,9 @@ MachLogAllOtherRacesUnitsDeadCondition* MachLogAllOtherRacesUnitsDeadCondition::
     // format of a ALL_OTHER_UNITS_DEAD condition line is:
     //<keyName> RACE <race>
 
-    return _NEW(MachLogAllOtherRacesUnitsDeadCondition(
+    return new MachLogAllOtherRacesUnitsDeadCondition(
         pParser->tokens()[1],
-        MachLogScenario::machPhysRace(pParser->tokens()[3])));
+        MachLogScenario::machPhysRace(pParser->tokens()[3]));
 }
 
 void MachLogAllOtherRacesUnitsDeadCondition::CLASS_INVARIANT

@@ -55,7 +55,7 @@ void MachPhysDoor::CLASS_INVARIANT
 PhysRelativeTime MachPhysDoor::changeState(bool doOpen)
 {
     // Create a motion plan for the move. First create a collection of the 2 transforms.
-    PhysMotionPlan::Transforms* pTransforms = _NEW(PhysMotionPlan::Transforms);
+    PhysMotionPlan::Transforms* pTransforms = new PhysMotionPlan::Transforms;
     pTransforms->reserve(2);
 
     MexTransform3d doorTransform(pDoor_->localTransform());
@@ -67,7 +67,7 @@ PhysRelativeTime MachPhysDoor::changeState(bool doOpen)
     pTransforms->push_back(doorTransform);
 
     // Now create the plan
-    PhysLinearTravelPlan* pPlan = _NEW(PhysLinearTravelPlan(
+    PhysLinearTravelPlan* pPlan = new PhysLinearTravelPlan(
         PhysMotionPlan::TransformsPtr(pTransforms),
         0,
         speed_,
@@ -77,7 +77,7 @@ PhysRelativeTime MachPhysDoor::changeState(bool doOpen)
         1,
         1,
         1,
-        true));
+        true);
 
     // Apply it to the entity
     pDoor_->entityPlanForEdit().absoluteMotion(PhysMotionPlanPtr(pPlan), SimManager::instance().currentTime());

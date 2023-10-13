@@ -49,12 +49,12 @@ MachPhysTrailedProjectile::MachPhysTrailedProjectile(
     size_t level)
     : MachPhysLinearProjectile(pParent, localTransform)
     ,
-    // pImpl_( _NEW( MachPhysTrailedProjectileImpl( level ) ) )
+    // pImpl_( new MachPhysTrailedProjectileImpl( level ) ) )
     pVapourTrail_(nullptr)
     , pFlame_(nullptr)
     , level_(level)
 {
-    // PRE( level > 0 and level < 10 );
+    // PRE( level > 0 and level < 10;
 
     TEST_INVARIANT;
 }
@@ -65,7 +65,7 @@ MachPhysTrailedProjectile::MachPhysTrailedProjectile(
     const W4dTransform3d& localTransform)
     : MachPhysLinearProjectile(copyMe, pParent, localTransform)
     ,
-    // pImpl_( _NEW( MachPhysTrailedProjectileImpl( level ) ) )
+    // pImpl_( new MachPhysTrailedProjectileImpl( level ) ) )
     pVapourTrail_(nullptr)
     , pFlame_(nullptr)
     , level_(copyMe.level_)
@@ -80,7 +80,7 @@ MachPhysTrailedProjectile::MachPhysTrailedProjectile(
     CopyLights copyLights)
     : MachPhysLinearProjectile(copyMe, pParent, localTransform, copyLights)
     ,
-    // pImpl_( _NEW( MachPhysTrailedProjectileImpl( level ) ) )
+    // pImpl_( new  MachPhysTrailedProjectileImpl( level ) ) )
     pVapourTrail_(nullptr)
     , pFlame_(nullptr)
     , level_(copyMe.level_)
@@ -103,12 +103,12 @@ MachPhysTrailedProjectile::~MachPhysTrailedProjectile()
 {
     TEST_INVARIANT;
 
-    _DELETE(pVapourTrail_);
+    delete pVapourTrail_;
 }
 
 void MachPhysTrailedProjectile::update()
 {
-    // CB_DEPIMPL(MachPhysVapourTrail*, pVapourTrail_ );
+    // CB_DEPIMPL(MachPhysVapourTrail*, pVapourTrail_;
     // CB_DEPIMPL(MexVec3, vapourTrailOffset_ );
     // CB_DEPIMPL(PhysAbsoluteTime, destructionTime_ );
 
@@ -147,11 +147,11 @@ void MachPhysTrailedProjectile::startFlame(const PhysAbsoluteTime& startTime, co
             radians.push_back(MachPhysRandom::randomDouble(-3.14, 3.14));
         }
 
-        PhysMotionPlan::AnglesPtr anglesPtr = _NEW(PhysMotionPlan::Angles(radians));
-        PhysMotionPlan::TimesPtr timesPtr = _NEW(PhysMotionPlan::Times(times));
+        PhysMotionPlan::AnglesPtr anglesPtr = new PhysMotionPlan::Angles(radians);
+        PhysMotionPlan::TimesPtr timesPtr = new PhysMotionPlan::Times(times);
 
         PhysMotionPlanPtr flameMotionPlanPtr(
-            _NEW(PhysTimedAnglePlan(anglesPtr, timesPtr, MexVec3(1, 0, 0), MexVec3(0, 0, 0))));
+            new PhysTimedAnglePlan(anglesPtr, timesPtr, MexVec3(1, 0, 0), MexVec3(0, 0, 0)));
         pFlame_->entityPlanForEdit().absoluteMotion(flameMotionPlanPtr, startTime, 1000);
     }
 
@@ -175,8 +175,8 @@ void MachPhysTrailedProjectile::startFlame(const PhysAbsoluteTime& startTime, co
             scales.push_back(MachPhysRandom::randomDouble(scaleFrom, scaleTo));
         }
 
-        PhysScalarPlanPtr flamePlanPtr(_NEW(PhysLinearScalarPlan(scaleTimes, scales)));
-        W4dScalePlanPtr flameScalePlanPtr(_NEW(W4dGeneralUniformScalePlan(flamePlanPtr)));
+        PhysScalarPlanPtr flamePlanPtr(new PhysLinearScalarPlan(scaleTimes, scales));
+        W4dScalePlanPtr flameScalePlanPtr(new W4dGeneralUniformScalePlan(flamePlanPtr));
         pFlame_->entityPlanForEdit().scalePlan(flameScalePlanPtr, startTime, 1000);
     }
 }
@@ -241,7 +241,7 @@ void MachPhysTrailedProjectile::explosion(
     const MATHEX_SCALAR lightRange = (8 + mslStrength) * 2.5;
     const PhysRelativeTime lightDuration = 0.6;
 
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pParent, MexVec3(0, 0, 1), lightRange));
+    W4dUniformLight* pLight = new W4dUniformLight(pParent, MexVec3(0, 0, 1), lightRange);
     pLight->colour(lightCol);
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.177);
@@ -250,7 +250,7 @@ void MachPhysTrailedProjectile::explosion(
     pLight->localTransform(explosionXform);
     pLight->visible(false);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(false));
     lightVisibilityPlanPtr->add(true, 0);
     lightVisibilityPlanPtr->add(false, lightDuration);
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, destructTime);
@@ -264,7 +264,7 @@ void MachPhysTrailedProjectile::explosion(
     scales.push_back(1.0);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
     PhysScalarPlanPtr intensityPlanPtr = pPlan;
     pLight->intensityPlan(intensityPlanPtr, destructTime);
 
@@ -304,14 +304,14 @@ void MachPhysTrailedProjectile::explosionWithoutLights(
             explosionXform.position().z() + (((double)rand() / RAND_MAX) - 0.5) * maxOffset);
 
         PhysAbsoluteTime beginTime = destructTime + i * 0.2 * (double)rand() / RAND_MAX;
-        MachPhysFireball* pFireball = _NEW(MachPhysFireball(
+        MachPhysFireball* pFireball = new MachPhysFireball(
             pParent,
             explosionPosition,
             fireballType,
             fireballSize,
             fireballDepthOffset,
             beginTime,
-            duration));
+            duration);
 
         MATHEX_SCALAR rotationAngle = MachPhysRandom::randomDouble(0, 2 * (Mathex::PI));
         pFireball->rotate(MexRadians(rotationAngle));
@@ -341,7 +341,7 @@ PhysRelativeTime MachPhysTrailedProjectile::beLaunched(
 
     if (data.trailOn() and MachPhysComplexityManager::instance().vapourTrailsEnabled())
     {
-        pVapourTrail_ = _NEW(MachPhysVapourTrail(pParent(), 16, 1.5, level_));
+        pVapourTrail_ = new MachPhysVapourTrail(pParent(), 16, 1.5, level_);
     }
 
     // Initiate the motion using standard superclass function

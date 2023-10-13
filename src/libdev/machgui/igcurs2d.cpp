@@ -62,45 +62,45 @@ MachInGameCursors2d::MachInGameCursors2d(MachInGameScreen* pInGameScreen)
 
 MachInGameCursors2d::~MachInGameCursors2d()
 {
-    _DELETE(pMenuCursor_);
-    _DELETE(pMoveCursor_[LARGECURSORS]);
-    _DELETE(pMoveCursor_[SMALLCURSORS]);
-    _DELETE(pEnterBuildingCursor_);
-    _DELETE(pNoEntryCursor_[LARGECURSORS]);
-    _DELETE(pNoEntryCursor_[SMALLCURSORS]);
-    _DELETE(pAttackCursor_);
-    _DELETE(pConstructCursor_);
-    _DELETE(pLocateToCursor_);
-    _DELETE(pPatrolCursor_);
-    _DELETE(pDeployCursor_);
-    _DELETE(pPickUpCursor_);
-    _DELETE(pScavengeCursor_);
-    _DELETE(pTransportCursor_);
-    _DELETE(pEnterAPCCursor_);
-    _DELETE(pFollowCursor_);
-    _DELETE(pSelectCursor_[LARGECURSORS]);
-    _DELETE(pSelectCursor_[SMALLCURSORS]);
-    _DELETE(pDropLandMineCursor_);
-    _DELETE(pHealCursor_);
-    _DELETE(pDeconstructCursor_);
-    _DELETE(pRecycleCursor_);
-    _DELETE(pRepairCursor_);
-    _DELETE(pCaptureCursor_);
-    _DELETE(pJoinConstructCursor_);
-    _DELETE(pAssemblePointCursor_);
-    _DELETE(pScrollSouthCursor_);
-    _DELETE(pScrollNorthCursor_);
-    _DELETE(pScrollEastCursor_);
-    _DELETE(pScrollWestCursor_);
-    _DELETE(pScrollNorthWestCursor_);
-    _DELETE(pScrollNorthEastCursor_);
-    _DELETE(pScrollSouthWestCursor_);
-    _DELETE(pScrollSouthEastCursor_);
-    _DELETE(pChooseConstructionCursor_);
-    _DELETE(pTreacheryCursor_);
+    delete pMenuCursor_;
+    delete pMoveCursor_[LARGECURSORS];
+    delete pMoveCursor_[SMALLCURSORS];
+    delete pEnterBuildingCursor_;
+    delete pNoEntryCursor_[LARGECURSORS];
+    delete pNoEntryCursor_[SMALLCURSORS];
+    delete pAttackCursor_;
+    delete pConstructCursor_;
+    delete pLocateToCursor_;
+    delete pPatrolCursor_;
+    delete pDeployCursor_;
+    delete pPickUpCursor_;
+    delete pScavengeCursor_;
+    delete pTransportCursor_;
+    delete pEnterAPCCursor_;
+    delete pFollowCursor_;
+    delete pSelectCursor_[LARGECURSORS];
+    delete pSelectCursor_[SMALLCURSORS];
+    delete pDropLandMineCursor_;
+    delete pHealCursor_;
+    delete pDeconstructCursor_;
+    delete pRecycleCursor_;
+    delete pRepairCursor_;
+    delete pCaptureCursor_;
+    delete pJoinConstructCursor_;
+    delete pAssemblePointCursor_;
+    delete pScrollSouthCursor_;
+    delete pScrollNorthCursor_;
+    delete pScrollEastCursor_;
+    delete pScrollWestCursor_;
+    delete pScrollNorthWestCursor_;
+    delete pScrollNorthEastCursor_;
+    delete pScrollSouthWestCursor_;
+    delete pScrollSouthEastCursor_;
+    delete pChooseConstructionCursor_;
+    delete pTreacheryCursor_;
 
-    _DELETE(pIonAttackCursor_);
-    _DELETE(pNukeAttackCursor_);
+    delete pIonAttackCursor_;
+    delete pNukeAttackCursor_;
 
     TEST_INVARIANT;
 }
@@ -184,7 +184,7 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
     const GuiBitmap& backBuffer = Gui::backBuffer();
 
     // Create the main cursor
-    RenAnimCursor2d* pCursor = _NEW(RenAnimCursor2d);
+    RenAnimCursor2d* pCursor = new RenAnimCursor2d;
 
     // Create and add the surface for each frame
     char buffer[3];

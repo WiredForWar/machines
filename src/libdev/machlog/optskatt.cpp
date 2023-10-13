@@ -268,12 +268,12 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdateWithCommander()
         or commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION)
         return 30.0;
     // The commander is not doing an aggressive operation...so we can reassign as necessary.
-    pActor_->commander().newOperation(_NEW(MachLogSeekAndDestroyOperation(
+    pActor_->commander().newOperation(new MachLogSeekAndDestroyOperation(
         &pActor_->commander(),
         MachLogRaces::instance().AICommandId(),
         targetSystemType_,
         objectType_,
-        pActor_->commander().position())));
+        pActor_->commander().position()));
     return 30;
 }
 
@@ -460,7 +460,7 @@ void MachLogTaskAttackOperation::tryIonAttack()
             if (races.findMostValuableTarget(pod, &pTarget, targetSystemType_, objectType_, pod.position(), 50))
             {
                 // let's toast it!
-                pod.newOperation(_NEW(MachLogPodAttackOperation(&pod, pTarget)));
+                pod.newOperation(new MachLogPodAttackOperation(&pod, pTarget));
             }
         }
     }
@@ -496,7 +496,7 @@ void MachLogTaskAttackOperation::tryNukeAttack()
                         100)) // 100 = minimum distance required
                 {
                     // I'm pressin' the button, Charlie.......
-                    emplacement.newOperation(_NEW(MachLogNukeAttackOperation(&emplacement, pTarget)));
+                    emplacement.newOperation(new MachLogNukeAttackOperation(&emplacement, pTarget));
                 }
             }
         }
@@ -550,12 +550,12 @@ void MachLogTaskAttackOperation::issueSeekAndDestroysToAllMachinesWithoutTargets
         MachLogMachine& squadronMachine = (**i);
         if (squadronMachine.objectIsCanAttack() and not squadronMachine.asCanAttack().hasCurrentTarget())
         {
-            squadronMachine.newOperation(_NEW(MachLogSeekAndDestroyOperation(
+            squadronMachine.newOperation(new MachLogSeekAndDestroyOperation(
                 &squadronMachine,
                 MachLogRaces::instance().AICommandId(),
                 targetSystemType_,
                 objectType_,
-                squadronMachine.position())));
+                squadronMachine.position()));
         }
     }
 }
@@ -630,12 +630,12 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
                 }
                 else
                 {
-                    squadronMachine.newOperation(_NEW(MachLogSeekAndDestroyOperation(
+                    squadronMachine.newOperation(new MachLogSeekAndDestroyOperation(
                         &squadronMachine,
                         MachLogRaces::instance().AICommandId(),
                         targetSystemType_,
                         objectType_,
-                        squadronMachine.position())));
+                        squadronMachine.position()));
                 }
             }
         }

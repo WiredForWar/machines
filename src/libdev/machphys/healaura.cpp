@@ -66,7 +66,7 @@ MachPhysHealAura::MachPhysHealAura(MachPhysMachine* pMachine, const PhysAbsolute
     // Set up a scale plan for the radial crosses
     MATHEX_SCALAR startScale = size;
     MATHEX_SCALAR endScale = size * 1.3;
-    W4dSimpleUniformScalePlan* pScalePlan = _NEW(W4dSimpleUniformScalePlan(startScale, endScale, cycleTime));
+    W4dSimpleUniformScalePlan* pScalePlan = new W4dSimpleUniformScalePlan(startScale, endScale, cycleTime);
 
     W4dScalePlanPtr scalePlanPtr(pScalePlan);
 
@@ -98,8 +98,8 @@ MachPhysHealAura::MachPhysHealAura(MachPhysMachine* pMachine, const PhysAbsolute
         radialValues.push_back(0.0);
         radialValues.push_back(0.0);
 
-        centralAlphaValuePlanPtr = _NEW(PhysLinearScalarPlan(times, centralValues));
-        radialAlphaValuePlanPtr = _NEW(PhysLinearScalarPlan(times, radialValues));
+        centralAlphaValuePlanPtr = new PhysLinearScalarPlan(times, centralValues);
+        radialAlphaValuePlanPtr = new PhysLinearScalarPlan(times, radialValues);
     }
 
     // Construct the two alpha plans for the 2 cross types
@@ -108,10 +108,10 @@ MachPhysHealAura::MachPhysHealAura(MachPhysMachine* pMachine, const PhysAbsolute
     const W4dLOD maxLOD = 0;
 
     W4dMaterialPlanPtr centralMaterialPlanPtr
-        = _NEW(W4dSimpleAlphaPlan(centralMaterial, nMaterialsInVector, centralAlphaValuePlanPtr, maxLOD));
+        = new W4dSimpleAlphaPlan(centralMaterial, nMaterialsInVector, centralAlphaValuePlanPtr, maxLOD);
 
     W4dMaterialPlanPtr radialMaterialPlanPtr
-        = _NEW(W4dSimpleAlphaPlan(radialCrossMaterial(), nMaterialsInVector, radialAlphaValuePlanPtr, maxLOD));
+        = new W4dSimpleAlphaPlan(radialCrossMaterial(), nMaterialsInVector, radialAlphaValuePlanPtr, maxLOD);
 
     // Construct each of the four pairs of crosses
     MATHEX_SCALAR aXAngle[] = { 0.0, -90.0, 0.0, 90.0 };
@@ -146,16 +146,16 @@ MachPhysHealAura::MachPhysHealAura(MachPhysMachine* pMachine, const PhysAbsolute
         MexTransform3d outerTransform(orientation, outerPos);
 
         // Construct the central and radial crosses
-        W4dGeneric* pCentralCross = _NEW(W4dGeneric(centralCrossExemplar(), this, innerTransform));
+        W4dGeneric* pCentralCross = new W4dGeneric(centralCrossExemplar(), this, innerTransform);
 
-        W4dGeneric* pRadialCross = _NEW(W4dGeneric(radialCrossExemplar(), this, innerTransform));
+        W4dGeneric* pRadialCross = new W4dGeneric(radialCrossExemplar(), this, innerTransform);
 
         // get the entity plan objects for the crosses
         W4dEntityPlan& centralEntityPlan = pCentralCross->entityPlanForEdit();
         W4dEntityPlan& radialEntityPlan = pRadialCross->entityPlanForEdit();
 
         // Set up a transform plan for the radial cross
-        PhysLinearMotionPlan* pTransformPlan = _NEW(PhysLinearMotionPlan(innerTransform, outerTransform, cycleTime));
+        PhysLinearMotionPlan* pTransformPlan = new PhysLinearMotionPlan(innerTransform, outerTransform, cycleTime);
 
         PhysMotionPlanPtr transformPlanPtr(pTransformPlan);
         radialEntityPlan.absoluteMotion(transformPlanPtr, startTime, nRepetitions);
@@ -212,7 +212,7 @@ const W4dGeneric& MachPhysHealAura::radialCrossExemplar()
 W4dGeneric& MachPhysHealAura::newRadialCross()
 {
     W4dGeneric* pRadialCross
-        = _NEW(W4dGeneric(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID));
+        = new W4dGeneric(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID);
 
     // Read the file
     pRadialCross->loadLODFile(SysPathName("models/weapons/heal/healcros.lod"));
@@ -229,7 +229,7 @@ W4dGeneric& MachPhysHealAura::newRadialCross()
 W4dGeneric& MachPhysHealAura::newCentralCross()
 {
     W4dGeneric* pCentralCross
-        = _NEW(W4dGeneric(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID));
+        = new W4dGeneric(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID);
 
     // Read the file
     pCentralCross->loadLODFile(SysPathName("models/weapons/heal/healaura.lod"));

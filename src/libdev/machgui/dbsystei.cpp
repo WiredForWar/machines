@@ -41,12 +41,12 @@ void perWrite(PerOstream& ostr, const MachGuiDbISystem& ob)
     ostr << ob.campaignPicture_;
     // ostr << ob.planets_;
     //  Write a copy without user scenarios
-    ctl_vector<MachGuiDbPlanet*>* planets = _NEW(ctl_vector<MachGuiDbPlanet*>);
+    ctl_vector<MachGuiDbPlanet*>* planets = new ctl_vector<MachGuiDbPlanet*>;
     for (MachGuiDbPlanet* planet : ob.planets_)
         if (!planet->isCustom())
             planets->push_back(planet);
     ostr << *planets;
-    _DELETE(planets);
+    delete planets;
 }
 
 void perRead(PerIstream& istr, MachGuiDbISystem& ob)

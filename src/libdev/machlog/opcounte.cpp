@@ -40,7 +40,7 @@ PER_DEFINE_PERSISTENT(MachLogCounterattackOperation);
 
 MachLogCounterattackOperation::MachLogCounterattackOperation(MachLogMachine* pActor, MachActor* pTarget)
     : MachLogOperation("COUNTERATTACK_OPERATION", MachLogOperation::COUNTERATTACK_OPERATION)
-    , pImpl_(_NEW(MachLogCounterattackOperationImpl(pActor, pTarget)))
+    , pImpl_(new MachLogCounterattackOperationImpl(pActor, pTarget))
 {
     CB_MachLogCounterattackOperation_DEPIMPL();
 
@@ -59,12 +59,12 @@ MachLogCounterattackOperation::~MachLogCounterattackOperation()
     // if we still have a pointer to the cached op, we must be terminating through circumstances where that
     // that op has NOT been restored to the strategy. We must delete it ourselves to prevent a memory leak.
     if (pCachedOperation_)
-        _DELETE(pCachedOperation_);
+        delete pCachedOperation_;
 
     if (pTarget_)
         pTarget_->detach(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // virtual
@@ -189,7 +189,7 @@ PhysRelativeTime MachLogCounterattackOperation::doUpdate()
     PhysRelativeTime interval = 0.0;
 
     MachLogOperation* pNewSubOp
-        = _NEW(MachLogAttackOperation(pActor_, pTarget_, MachLogAttackOperation::TERMINATE_ON_CHANGE));
+        = new MachLogAttackOperation(pActor_, pTarget_, MachLogAttackOperation::TERMINATE_ON_CHANGE);
 
     subOperation(pActor_, pNewSubOp);
 

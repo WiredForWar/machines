@@ -46,7 +46,7 @@ PhysCS2dDomain::~PhysCS2dDomain()
     TEST_INVARIANT;
 
     if (pPolygon_ != nullptr)
-        _DELETE(pPolygon_);
+        delete pPolygon_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

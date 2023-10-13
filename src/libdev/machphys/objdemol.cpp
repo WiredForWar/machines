@@ -386,7 +386,7 @@ void MachPhysObjDemolish::startDemolition(
 
     // create a scaling plan  only if we are playing a generic (not object dedicated) demolition
     W4dSimpleUniformScalePlan* pScalePlan
-        = _NEW(W4dSimpleUniformScalePlan(demolitionScaling, demolitionScaling, demolitionDuration));
+        = new W4dSimpleUniformScalePlan(demolitionScaling, demolitionScaling, demolitionDuration);
     propogateScalePlan(W4dScalePlanPtr(pScalePlan), startTime);
 
     // create a white fading material plan
@@ -420,11 +420,11 @@ void MachPhysObjDemolish::startDemolition(
     whiteToBlackColours.push_back(RenColour::white());
     whiteToBlackColours.push_back(RenColour::black());
 
-    W4dColourPlanData* pWhiteToBlackData = _NEW(W4dColourPlanData(whiteToBlackLinearTimes, whiteToBlackColours));
+    W4dColourPlanData* pWhiteToBlackData = new W4dColourPlanData(whiteToBlackLinearTimes, whiteToBlackColours);
     W4dColourPlanDataPtr whiteToBlackDataPtr(pWhiteToBlackData);
 
     W4dMaterialPlan* pWhiteToBlackPlan
-        = _NEW(W4dSimpleEmColPlan(whiteToBlackMaterial, reasonableSize, whiteToBlackDataPtr, whiteToBlackDuration));
+        = new W4dSimpleEmColPlan(whiteToBlackMaterial, reasonableSize, whiteToBlackDataPtr, whiteToBlackDuration);
 
     W4dMaterialPlanPtr pWhiteToBlackMaterialPlanPtr(pWhiteToBlackPlan);
 
@@ -444,11 +444,11 @@ void MachPhysObjDemolish::startDemolition(
     blackScales.push_back(1);
     blackScales.push_back(0);
 
-    PhysLinearScalarPlan* pBlackAlphaPlan = _NEW(PhysLinearScalarPlan(blackLinearTimes, blackScales));
+    PhysLinearScalarPlan* pBlackAlphaPlan = new PhysLinearScalarPlan(blackLinearTimes, blackScales);
     PhysScalarPlanPtr blackAlphaPlanPtr(pBlackAlphaPlan);
 
     W4dSimpleAlphaPlan* pBlackPlan
-        = _NEW(W4dSimpleAlphaPlan(blackMaterial, reasonableSize, blackAlphaPlanPtr, blackFadingDuration));
+        = new W4dSimpleAlphaPlan(blackMaterial, reasonableSize, blackAlphaPlanPtr, blackFadingDuration);
 
     W4dMaterialPlanPtr pBlackMaterialPlanPtr(pBlackPlan);
 

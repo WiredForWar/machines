@@ -15,7 +15,7 @@
 
 MachGuiDbTextData::MachGuiDbTextData()
 {
-    pData_ = _NEW(MachGuiDbITextData);
+    pData_ = new MachGuiDbITextData;
 
     TEST_INVARIANT;
 }
@@ -24,7 +24,7 @@ MachGuiDbTextData::~MachGuiDbTextData()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbTextData::CLASS_INVARIANT
@@ -48,7 +48,7 @@ MachGuiDbTextData* MachGuiDbTextData::pNewTextData(const string& filename)
 {
 
     // Construct an empty object
-    MachGuiDbTextData* pTextData = _NEW(MachGuiDbTextData);
+    MachGuiDbTextData* pTextData = new MachGuiDbTextData;
 
     // Construct the persistent file name
     string work = "pdata/" + filename;

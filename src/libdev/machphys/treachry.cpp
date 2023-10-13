@@ -119,7 +119,7 @@ PhysRelativeTime MachPhysTreacheryWeapon::traitorAnimation(
             materialVecPtrs.push_back(newEntityChanger.override(lodId));
 
             if (lodId == 0)
-                pPlan = _NEW(W4dMaterialSequencePlan(materialVecPtrs, flickerTime, nCompositeLODs - 1));
+                pPlan = new W4dMaterialSequencePlan(materialVecPtrs, flickerTime, nCompositeLODs - 1);
             else
                 pPlan->lodPlan(materialVecPtrs, lodId);
         }
@@ -162,7 +162,7 @@ PhysRelativeTime MachPhysTreacheryWeapon::traitorAnimation(
                 materialVecPtrs.push_back(newEntityChanger.override(lodId));
 
                 if (lodId == 0)
-                    pPlan = _NEW(W4dMaterialSequencePlan(materialVecPtrs, flickerTime, nLinkLODs - 1));
+                    pPlan = new W4dMaterialSequencePlan(materialVecPtrs, flickerTime, nLinkLODs - 1);
                 else
                     pPlan->lodPlan(materialVecPtrs, lodId);
             }
@@ -205,7 +205,7 @@ MachPhysTreacheryOrb* MachPhysTreacheryWeapon::createTreacheryOrb(
         = launchData(burstStartTime, index, pParent, target, targetOffset, &startTransform, &distance);
 
     // Create the orb
-    MachPhysTreacheryOrb* pOrb = _NEW(MachPhysTreacheryOrb(pParent, startTransform));
+    MachPhysTreacheryOrb* pOrb = new MachPhysTreacheryOrb(pParent, startTransform);
 
     // get the race of the launcher
     MachPhys::Race race = (hasMachine() ? machine().race() : MachPhys::RED);

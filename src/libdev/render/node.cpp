@@ -63,7 +63,7 @@ RenHierarchyBuilder::Node::~Node()
     TEST_INVARIANT;
 
     for (iterator i = begin(); i != end(); ++i)
-        _DELETE(*i);
+        delete *i;
 }
 
 const MexTransform3d& RenHierarchyBuilder::Node::transform() const

@@ -178,7 +178,7 @@ bool MachGuiSystemMessageHandler::handleSessionLostMessage()
         GuiResourceString errorString(IDS_MULTI_ERROR_SESSION_LOST_INGAME);
         MachGuiInGameChatMessages::instance().addMessage(errorString.asString());
         MachGuiSessionLostGameTerminatorEvent* pEvent
-            = _NEW(MachGuiSessionLostGameTerminatorEvent(pStartupScreens_, SimManager::instance().currentTime() + 5));
+            = new MachGuiSessionLostGameTerminatorEvent(pStartupScreens_, SimManager::instance().currentTime() + 5);
         SimManager::instance().add(pEvent);
         return true;
     }

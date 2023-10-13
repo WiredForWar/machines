@@ -256,9 +256,9 @@ bool SDLApp::clientStartup()
     // ensures a correct destruction order for render library Singletons.)
     Ren::initialise();
 
-    W4dRoot* root = pRoot_ = _NEW(W4dRoot(W4dRoot::W4dRootId()));
+    W4dRoot* root = pRoot_ = new W4dRoot(W4dRoot::W4dRootId());
 
-    pDisplay_ = _NEW(RenDisplay(window()));
+    pDisplay_ = new RenDisplay(window());
 
     ErrorHandler::instance().pDisplay(pDisplay_);
 
@@ -372,7 +372,7 @@ bool SDLApp::clientStartup()
         return false;
 
     spdlog::info("Initializing SceneManager...");
-    manager_ = _NEW(W4dSceneManager(std::move(pDevice), root));
+    manager_ = new W4dSceneManager(std::move(pDevice), root);
     manager_->pDevice()->debugTextCoords(204, 0);
     manager_->useLevelOfDetail(
         !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));
@@ -526,7 +526,7 @@ bool SDLApp::clientStartup()
         spdlog::info("Preloading model and weapons texture bitmaps...");
         if (doLoad2MBytesTexture)
         {
-            pTextureSet_ = _NEW(RenTextureSet("models/texture2", &progressIndicator));
+            pTextureSet_ = new RenTextureSet("models/texture2", &progressIndicator);
             // planet surface is going to use the search list as a set of flags
             // to decide 1) whether it should preload or not 2) whether it should
             // use texture2 or texture4... Isn't that pretty ?
@@ -535,7 +535,7 @@ bool SDLApp::clientStartup()
         }
         else
         {
-            pTextureSet_ = _NEW(RenTextureSet("models/texture4", &progressIndicator));
+            pTextureSet_ = new RenTextureSet("models/texture4", &progressIndicator);
             // planet surface is going to use the search list as a set of flags
             // to decide 1) whether it should preload or not 2) whether it should
             // use texture2 or texture4... Isn't that pretty ?
@@ -652,12 +652,12 @@ void SDLApp::clientShutdown()
     cleanUpGui();
 
     DevMouse::instance().unhide();
-    _DELETE(pRoot_);
-    _DELETE(manager_);
+    delete pRoot_;
+    delete manager_;
     // Tell W4dManager about destruction of sceneManager
     W4dManager::instance().clearSceneManager();
-    _DELETE(pDisplay_);
-    _DELETE(pTextureSet_);
+    delete pDisplay_;
+    delete pTextureSet_;
     cleanUpSound();
 }
 

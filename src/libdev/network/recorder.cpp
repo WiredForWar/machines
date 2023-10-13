@@ -62,7 +62,7 @@ void NetIRecorder::playbackSessions(NetNetwork::Sessions* pSessions) const
     //  Delete all existing sessions
     for (NetNetwork::Sessions::iterator i = pSessions->begin(); i != pSessions->end(); ++i)
     {
-        _DELETE(*i);
+        delete *i;
     }
 
     pSessions->erase(pSessions->begin(), pSessions->end());
@@ -73,7 +73,7 @@ void NetIRecorder::playbackSessions(NetNetwork::Sessions* pSessions) const
 
     for (size_t i = 0; i < nSessions; ++i)
     {
-        pSessions->push_back(_NEW(NetAppSessionUid(playbackAppSessionUid())));
+        pSessions->push_back(new NetAppSessionUid(playbackAppSessionUid()));
     }
 }
 
@@ -329,14 +329,14 @@ void NetIRecorder::playbackNodeIds(NetAppSession::NodeIds* pNodeIds) const
     else
     {
         for (size_t i = 0; i < pNodeIds->size(); ++i)
-            _DELETE((*pNodeIds)[i]);
+            delete (*pNodeIds)[i];
 
         pNodeIds->erase(pNodeIds->begin(), pNodeIds->end());
 
         const uint size = RecRecorderPrivate::instance().playbackNetworkUint();
 
         for (size_t i = 0; i < size; ++i)
-            pNodeIds->push_back(_NEW(NetNodeUid(playbackNodeUid())));
+            pNodeIds->push_back(new NetNodeUid(playbackNodeUid()));
     }
 }
 
@@ -454,7 +454,7 @@ void NetIRecorder::playbackMessageBuffer(NetNode::NetMessageBuffer* pMessageBuff
 {
     while (not reachedEndOfMessageBufferUpdate())
     {
-        pMessageBuffer->push_back(_NEW(NetMessage(playbackMessage())));
+        pMessageBuffer->push_back(new NetMessage(playbackMessage()));
     }
 
     size_t messageBufferSize = RecRecorderPrivate::instance().playbackNetworkUint();

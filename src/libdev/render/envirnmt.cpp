@@ -129,7 +129,7 @@ static RenDirectionalLight* createDirLight(
     RenDevice* device,
     ctl_pvector<RenDirectionalLight>* dirs)
 {
-    RenDirectionalLight* light = _NEW(RenDirectionalLight);
+    RenDirectionalLight* light = new RenDirectionalLight;
     device->addLight(light);
 
     if (dirs)
@@ -150,7 +150,7 @@ static RenDirectionalLight* createDirLight(
 
 static RenPointLight* createPointLight(MATHEX_SCALAR range, RenDevice* device, ctl_pvector<RenPointLight>* points)
 {
-    RenPointLight* light = _NEW(RenPointLight(range));
+    RenPointLight* light = new RenPointLight(range);
     device->addLight(light);
 
     if (points)
@@ -162,7 +162,7 @@ static RenPointLight* createPointLight(MATHEX_SCALAR range, RenDevice* device, c
 static RenUniformLight*
 createUniformLight(MATHEX_SCALAR range, RenDevice* device, ctl_pvector<RenUniformLight>* uniforms)
 {
-    RenUniformLight* light = _NEW(RenUniformLight(range));
+    RenUniformLight* light = new RenUniformLight(range);
     device->addLight(light);
 
     if (uniforms)

@@ -56,11 +56,11 @@ W4dCompositeImpl::~W4dCompositeImpl()
         W4dLink* pLink = links_.back();
 
         links_.pop_back();
-        _DELETE(pLink);
+        delete pLink;
     }
 
     // Delete other items
-    _DELETE(pHeldEntities_);
+    delete pHeldEntities_;
 }
 
 void W4dCompositeImpl::CLASS_INVARIANT
@@ -166,13 +166,13 @@ void W4dCompositeImpl::parseShadow(const SysPathName& directoryName, UtlLineToke
 
     if (pParser->tokens()[0] == "SHADOW_PROJ")
     {
-        W4dShadowProjected2d* shd = _NEW(W4dShadowProjected2d(pComposite_, MexPoint3d(0, 0, z)));
+        W4dShadowProjected2d* shd = new W4dShadowProjected2d(pComposite_, MexPoint3d(0, 0, z));
         shd->loadLODFile(pathname);
         shd->name(pParser->tokens()[0]);
     }
     else if (pParser->tokens()[0] == "SHADOW_FIXED")
     {
-        W4dShadowFixed* shd = _NEW(W4dShadowFixed(pComposite_, MexPoint3d(0, 0, z)));
+        W4dShadowFixed* shd = new W4dShadowFixed(pComposite_, MexPoint3d(0, 0, z));
         shd->loadLODFile(pathname);
         shd->name(pParser->tokens()[0]);
     }
@@ -196,7 +196,7 @@ void W4dCompositeImpl::parseAnimation(const SysPathName& directoryName, UtlLineT
 
     MATHEX_SCALAR framesPerSecond = atof(pParser->tokens()[4].c_str());
 
-    W4dCompositePlan* pCompositePlan = _NEW(W4dCompositePlan(planName));
+    W4dCompositePlan* pCompositePlan = new W4dCompositePlan(planName);
 
     bool animationRead = readAnimation(fileName, animationName, pCompositePlan, framesPerSecond);
 
@@ -670,7 +670,7 @@ PhysMotionPlanPtr W4dCompositeImpl::makeAnimationPlan(
     }
 
     // Construct a linear motion plan
-    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startTransform, currentTransform, time));
+    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startTransform, currentTransform, time);
 
     // Add any further transforms
     while (i < orientations.size() and j < locations.size())
@@ -875,7 +875,7 @@ void perRead(PerIstream& istr, W4dCompositeImpl& t)
     {
         if (t.pHeldEntities_ == nullptr)
         {
-            t.pHeldEntities_ = _NEW(W4dComposite::HeldEntities());
+            t.pHeldEntities_ = new W4dComposite::HeldEntities();
         }
         istr >> *t.pHeldEntities_;
     }

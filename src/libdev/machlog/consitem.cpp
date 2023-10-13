@@ -31,7 +31,7 @@ MachLogConstructionItem::MachLogConstructionItem(
     int subType,
     size_t hwLevel,
     MachPhys::WeaponCombo wc)
-    : pImpl_(_NEW(MachLogConstructionItemImpl()))
+    : pImpl_(new MachLogConstructionItemImpl())
 {
     CB_MachLogConstructionItem_DEPIMPL();
 
@@ -90,7 +90,7 @@ MachLogConstructionItem::~MachLogConstructionItem()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////////////////// */

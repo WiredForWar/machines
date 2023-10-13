@@ -142,7 +142,7 @@ MachPhysMissileEmplacement* MachLogMissileEmplacement::pNewPhysMissileEmplacemen
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter and return pointer
-    return _NEW(MachPhysMissileEmplacement(pDomain, localTransform, subType, level, pRace->race(), wc));
+    return new MachPhysMissileEmplacement(pDomain, localTransform, subType, level, pRace->race(), wc);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

@@ -87,7 +87,7 @@ bool MachGuiStandGroundCommand::doApply(MachActor* pActor, string*)
     if (not machine.isStandingGround())
     {
         // Create a stand ground operation for the machine
-        MachLogStandGroundOperation* pOp = _NEW(MachLogStandGroundOperation(&machine));
+        MachLogStandGroundOperation* pOp = new MachLogStandGroundOperation(&machine);
 
         machine.newOperation(pOp);
 
@@ -106,7 +106,7 @@ bool MachGuiStandGroundCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiStandGroundCommand::clone() const
 {
-    return _NEW(MachGuiStandGroundCommand(&inGameScreen()));
+    return new MachGuiStandGroundCommand(&inGameScreen());
 }
 
 // virtual

@@ -55,7 +55,7 @@ MachLogCameraViewCondition* MachLogCameraViewCondition::newFromParser(UtlLineTok
         {
             angle = MexRadians(MexDegrees(atof(pParser->tokens()[i + 1].c_str())));
         }
-    return _NEW(MachLogCameraViewCondition(pParser->tokens()[1], location, angle));
+    return new MachLogCameraViewCondition(pParser->tokens()[1], location, angle);
 }
 
 void MachLogCameraViewCondition::CLASS_INVARIANT

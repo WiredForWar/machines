@@ -119,7 +119,7 @@ private:
 
 MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box& box, MachInGameScreen* pInGameScreen)
     : GuiDisplayable(pParent, box, GuiDisplayable::LAYER3)
-    , pImpl_(_NEW(MachGuiControlPanelImpl()))
+    , pImpl_(new MachGuiControlPanelImpl())
 {
     CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
     CB_DEPIMPL(MachGuiControlPanelImpl::RedrawAreas, redrawAreas_);
@@ -129,12 +129,12 @@ MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box
     setupDecalBitmaps();
     setupDecalCoords();
 
-    _NEW(MachGuiControlPanelOnOffBtn(
+    new MachGuiControlPanelOnOffBtn(
         this,
         Gui::Coord(
             MachGui::controlPanelOutXPos() - MachGuiControlPanelOnOffBtn::reqWidth(),
             8 * MachGui::uiScaleFactor()),
-        pInGameScreen));
+        pInGameScreen);
 
     useFastSecondDisplay(false);
 
@@ -145,7 +145,7 @@ MachGuiControlPanel::~MachGuiControlPanel()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiControlPanel::CLASS_INVARIANT
@@ -179,7 +179,7 @@ void MachGuiControlPanel::redrawArea(const Gui::Box& area)
 
     CB_DEPIMPL(MachGuiControlPanelImpl::RedrawAreas, redrawAreas_);
 
-    MachGuiControlPanelImpl::RedrawArea* pNewRedrawArea = _NEW(MachGuiControlPanelImpl::RedrawArea());
+    MachGuiControlPanelImpl::RedrawArea* pNewRedrawArea = new MachGuiControlPanelImpl::RedrawArea();
     pNewRedrawArea->area_ = area;
 
     if (GuiDisplayable::useFourTimesRender())
@@ -300,7 +300,7 @@ void MachGuiControlPanel::redrawAllAreas()
         // Clean up any redraw areas that have been used twice
         if (pRedrawArea->count_ == 0)
         {
-            _DELETE(pRedrawArea);
+            delete pRedrawArea;
             redrawAreas_.erase(redrawAreas_.begin() + i);
         }
     }

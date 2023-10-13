@@ -37,7 +37,7 @@ MachPhysSmelter::MachPhysSmelter(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(part(level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysSmelterData(part(level).data(), globalTransform())))
+    , pData_(new MachPhysSmelterData(part(level).data(), globalTransform()))
     , pSmoke_(nullptr)
     , lastSmokePlumeTime_(0.0)
     , level_(level)
@@ -65,7 +65,7 @@ MachPhysSmelter::MachPhysSmelter(W4dEntity* pParent, size_t level)
         50.0,
         level,
         MachPhysData::instance().smelterData(level))
-    , pData_(_NEW(MachPhysSmelterData(MachPhysData::instance().smelterData(level), W4dTransform3d())))
+    , pData_(new MachPhysSmelterData(MachPhysData::instance().smelterData(level), W4dTransform3d()))
     , lastSmokePlumeTime_(0.0)
     , level_(level)
 {
@@ -93,7 +93,7 @@ MachPhysSmelter::~MachPhysSmelter()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 // static
@@ -244,7 +244,7 @@ void MachPhysSmelter::doWorking(bool setWorking)
 
             if (!pSmoke_)
             {
-                pSmoke_ = _NEW(MachPhysSmokePlume(this, offset, 40, 0, 5, 12.5, PUFF_2, 45));
+                pSmoke_ = new MachPhysSmokePlume(this, offset, 40, 0, 5, 12.5, PUFF_2, 45);
 
                 pSmoke_->startSmokePlume(timeNow);
             }
@@ -278,7 +278,7 @@ void MachPhysSmelter::turnFansOn()
         MexTransform3d endPosition(startPosition);
         endPosition.transform(spinTransform);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
         // Add a further rotation of 120 degrees
         endPosition.transform(spinTransform);
@@ -299,7 +299,7 @@ void MachPhysSmelter::turnFansOn()
         MexTransform3d endPosition(startPosition);
         endPosition.transform(spinTransform);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
         // Add a further rotation of 120 degrees
         endPosition.transform(spinTransform);
@@ -316,7 +316,7 @@ void MachPhysSmelter::turnFansOn()
 
 void MachPhysSmelter::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysSmelterData(MachPhysData::instance().smelterData(level()), W4dTransform3d()));
+    pData_ = new MachPhysSmelterData(MachPhysData::instance().smelterData(level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }

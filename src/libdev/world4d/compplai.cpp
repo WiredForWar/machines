@@ -25,12 +25,12 @@ W4dCompositePlanImpl::~W4dCompositePlanImpl()
 
     // Delete the composite's plan
     if (pCompositePlan_)
-        _DELETE(pCompositePlan_);
+        delete pCompositePlan_;
 
     // Delete all the link entries
     while (entries_.size() != 0)
     {
-        _DELETE(entries_.front());
+        delete entries_.front();
         entries_.pop_front();
     }
 }

@@ -105,7 +105,7 @@ PhysRelativeTime MachLogTaskPatrolOperation::doUpdateWithCommander()
         or commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION or commanderOp == MachLogOperation::PATROL_OPERATION)
         return 22.0;
     // The commander is not doing an aggressive operation...so we can reassign as necessary.
-    pActor_->commander().newOperation(_NEW(MachLogPatrolOperation(&pActor_->commander(), path_, true)));
+    pActor_->commander().newOperation(new MachLogPatrolOperation(&pActor_->commander(), path_, true));
     return 30;
 }
 
@@ -116,7 +116,7 @@ PhysRelativeTime MachLogTaskPatrolOperation::doUpdateWithoutCommander()
         MachLogOperation::OperationType op = (*i)->strategy().currentOperationType();
         if (op != MachLogOperation::ATTACK_OPERATION and op != MachLogOperation::PATROL_OPERATION
             and op != MachLogOperation::SEEK_AND_DESTROY_OPERATION)
-            (*i)->newOperation(_NEW(MachLogPatrolOperation((*i), path_, true)));
+            (*i)->newOperation(new MachLogPatrolOperation((*i), path_, true));
     }
 
     return 30;

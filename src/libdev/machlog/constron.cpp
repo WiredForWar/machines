@@ -95,7 +95,7 @@ MachLogConstruction::MachLogConstruction(
     const MachPhysConstructionData& /* data */
     )
     : MachActor(pRace, pConstruction, ot)
-    , pImpl_(_NEW(MachLogConstructionImpl))
+    , pImpl_(new MachLogConstructionImpl)
 {
     CB_MachLogConstruction_DEPIMPL();
     PRE(pRace != nullptr);
@@ -118,7 +118,7 @@ MachLogConstruction::MachLogConstruction(
     const MachPhysConstructionData& /* data */
     )
     : MachActor(pRace, pConstruction, ot, withId)
-    , pImpl_(_NEW(MachLogConstructionImpl))
+    , pImpl_(new MachLogConstructionImpl)
 {
     CB_MachLogConstruction_DEPIMPL();
     PRE(pRace != nullptr);
@@ -148,7 +148,7 @@ MachLogConstruction::~MachLogConstruction()
 
     while (buildPoints_.size() > 0)
     {
-        _DELETE(buildPoints_.back());
+        delete buildPoints_.back();
         buildPoints_.pop_back();
     }
 
@@ -157,14 +157,14 @@ MachLogConstruction::~MachLogConstruction()
     // HAL_STREAM(" removing entrances and pconfigspace\n" );
     while (entrances_.size() > 0)
     {
-        _DELETE(entrances_.front());
+        delete entrances_.front();
         entrances_.erase(entrances_.begin());
     }
     if (physConstruction().hasInterior())
-        _DELETE(pConfigSpace_);
+        delete pConfigSpace_;
 
     MachLogRaces::instance().nConstructions(race())--;
-    _DELETE(pImpl_);
+    delete pImpl_;
     TEST_INVARIANT;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ void MachLogConstruction::initialiseFromConstructionData(MachPhysConstruction* p
         setupInterior(pConstruction->constructionData());
 
     // Don't do this. The entity will be deleted because it is a child
-    //_DELETE( pMarker_ );
+    //delete pMarker_;
 
     constructors_.erase(constructors_.begin(), constructors_.end());
 
@@ -240,7 +240,7 @@ void MachLogConstruction::initialiseFromConstructionData(MachPhysConstruction* p
                     = MexPoint2d(gMinC.x() + (xIndex * xIntervalLength), gMinC.y() + (yIndex * yIntervalLength));
 
                 // this is a valid construction point position. Let's build it.
-                MachLogBuildPoint* buildPoint = _NEW(MachLogBuildPoint(candidatePoint));
+                MachLogBuildPoint* buildPoint = new MachLogBuildPoint(candidatePoint);
                 buildPoints_.push_back(buildPoint);
             }
 }
@@ -302,7 +302,7 @@ void MachLogConstruction::removeDoorPoint()
             ASSERT(iClosest != buildPoints_.end(), "Couldn't find pClosestPoint in buildPoints_ collection!");
             buildPoints_.erase(iClosest);
 
-            _DELETE(pClosestPoint);
+            delete pClosestPoint;
         }
     }
 
@@ -529,7 +529,7 @@ PhysRelativeTime MachLogConstruction::beDestroyed()
 
     if (needRebuild())
     {
-        MachLogProductionUnit* prod = _NEW(MachLogProductionUnit(objectType(), subType(), level(), 0, 0));
+        MachLogProductionUnit* prod = new MachLogProductionUnit(objectType(), subType(), level(), 0, 0);
         prod->globalTransform(globalTransform());
         prod->constructionId(constructionId());
         // ensure that the construction would be rebuilt once again if destroyed after this rebuild
@@ -602,7 +602,7 @@ void MachLogConstruction::addObstaclePolygon(const MexAlignedBox2d& boundary)
 {
     CB_MachLogConstruction_DEPIMPL();
     // Construct a polygon from the boundary
-    MexConvexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(boundary));
+    MexConvexPolygon2d* pPolygon = new MexConvexPolygon2d(boundary);
     std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
     // Get the boundary of the construction, so we know how high to make the obstacle polygon
@@ -824,7 +824,7 @@ void MachLogConstruction::setupInterior(const MachPhysConstructionData& data)
     for (MachPhysConstructionData::Entrances::const_iterator i = entrances.begin(); i != entrances.end();
          ++i, ++entranceNum)
     {
-        entrances_.push_back(_NEW(MachLogEntrance(*i, entranceNum, this, pConfigSpace_)));
+        entrances_.push_back(new MachLogEntrance(*i, entranceNum, this, pConfigSpace_));
     }
 }
 
@@ -864,14 +864,14 @@ void MachLogConstruction::setupInteriorConfigSpace()
     MexPoint2d actualMinBound(std::min(minBound.x(), maxBound.x()), std::min(minBound.y(), maxBound.y()));
     MexPoint2d actualMaxBound(std::max(minBound.x(), maxBound.x()), std::max(minBound.y(), maxBound.y()));
 
-    pConfigSpace_ = _NEW(PhysConfigSpace2d(
+    pConfigSpace_ = new PhysConfigSpace2d(
         actualMinBound,
         actualMaxBound,
         PhysConfigSpace2d::SUBTRACTIVE,
         domainClearance,
         MachLogMachine::minLowClearance(),
         MachLogMachine::maxLowClearance(),
-        MachLog::OBSTACLE_ALL));
+        MachLog::OBSTACLE_ALL);
 
     pConfigSpace_->addDomain(MexAlignedBox2d(actualMinBound, actualMaxBound));
 
@@ -882,7 +882,7 @@ void MachLogConstruction::setupInteriorConfigSpace()
          ++i)
     {
 
-        MexConvexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(*(*i)));
+        MexConvexPolygon2d* pPolygon = new MexConvexPolygon2d(*(*i));
         std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
         const MATHEX_SCALAR height = 50.0;
@@ -926,7 +926,7 @@ void MachLogConstruction::doVisualiseSelectionState()
     // Delete any existing marker
     if (pMarker_)
     {
-        _DELETE(pMarker_);
+        delete pMarker_;
         pMarker_ = nullptr;
     }
     // If highlighted or selected add a marker entity
@@ -935,12 +935,12 @@ void MachLogConstruction::doVisualiseSelectionState()
     {
         MachPhysConstruction& physObject = physConstruction();
         bool permanent = state == MachLog::SELECTED;
-        pMarker_ = _NEW(MachPhysMarker(
+        pMarker_ = new MachPhysMarker(
             &physObject,
             MexTransform3d(),
             physObject.compositeBoundingVolume(),
             permanent,
-            (100 * hp()) / constructionData().hitPoints()));
+            (100 * hp()) / constructionData().hitPoints());
     }
 }
 
@@ -993,12 +993,12 @@ void MachLogConstruction::removeConstructor(MachLogConstructor* pConstructor)
     {
         HAL_STREAM(" no constructors, no reservations and constructedUnits == 0 so killing\n");
         isDead(true);
-        SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+        SimManager::instance().add(new MachLogDyingEntityEvent(
             physObjectPtr(),
             obstaclePolygonId(),
             0.1,
             MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-            nullptr)));
+            nullptr));
         if (MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendRemoveConstructionMessage(id());
     }
@@ -1011,12 +1011,12 @@ void MachLogConstruction::networkRemove()
     if (not isDead())
     {
         isDead(true);
-        SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+        SimManager::instance().add(new MachLogDyingEntityEvent(
             physObjectPtr(),
             obstaclePolygonId(),
             0.1,
             MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-            nullptr)));
+            nullptr));
     }
 }
 
@@ -1090,12 +1090,12 @@ void MachLogConstruction::cancelReservation()
     if (constructors_.size() == 0 and constructedUnits() == 0 and nReservations_ == 0 and not isDead())
     {
         isDead(true);
-        SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+        SimManager::instance().add(new MachLogDyingEntityEvent(
             physObjectPtr(),
             obstaclePolygonId(),
             0.1,
             MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-            nullptr)));
+            nullptr));
         if (MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendRemoveConstructionMessage(id());
     }
@@ -1448,12 +1448,12 @@ void MachLogConstruction::makeComplete(CompleteWithFullHPs setHPsFullStrength)
 
 void MachLogConstruction::preservePhysicalModel(const PhysRelativeTime& forTime)
 {
-    SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+    SimManager::instance().add(new MachLogDyingEntityEvent(
         physObjectPtr(),
         obstaclePolygonId(),
         forTime,
         MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-        nullptr)));
+        nullptr));
 }
 
 void MachLogConstruction::dropDebris(const PhysAbsoluteTime&)

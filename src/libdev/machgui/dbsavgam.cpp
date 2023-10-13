@@ -17,7 +17,7 @@ MachGuiDbSavedGame::MachGuiDbSavedGame(
     const string& fileName,
     MachGuiDbScenario* pDbScenario)
 {
-    pData_ = _NEW(MachGuiDbISavedGame);
+    pData_ = new MachGuiDbISavedGame;
     pData_->userFileName_ = userFileName;
     pData_->fileName_ = fileName;
     pData_->pDbScenario_ = pDbScenario;
@@ -29,7 +29,7 @@ MachGuiDbSavedGame::~MachGuiDbSavedGame()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbSavedGame::CLASS_INVARIANT

@@ -26,7 +26,7 @@ EnvIOrbitParams::~EnvIOrbitParams()
 
 EnvOrbit* EnvIOrbitParams::createOrbit(W4dEntity* parent)
 {
-    return _NEW(EnvOrbit(name_, min_, max_, radius_, heading_, period_, start_, parent));
+    return new EnvOrbit(name_, min_, max_, radius_, heading_, period_, start_, parent);
 }
 
 void EnvIOrbitParams::radius(MATHEX_SCALAR s)

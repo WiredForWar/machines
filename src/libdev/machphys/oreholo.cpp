@@ -113,34 +113,34 @@ W4dCompositePlanPtr MachPhysOreHolograph::newSpinPlan(const MachPhysOreHolograph
     // No satellites    MexPoint3d satellitesPos( pSatellitesLink->localTransform().position() );
 
     // Construct a timed angle plan for the bits
-    PhysMotionPlan::Angles* pMineralAngles = _NEW(PhysMotionPlan::Angles);
+    PhysMotionPlan::Angles* pMineralAngles = new PhysMotionPlan::Angles;
     pMineralAngles->reserve(4);
-    // No satellites        PhysMotionPlan::Angles* pSatellitesAngles = _NEW( PhysMotionPlan::Angles );
+    // No satellites        PhysMotionPlan::Angles* pSatellitesAngles = new PhysMotionPlan::Angles;
     for (MATHEX_SCALAR angle = 0; angle <= 360; angle += 120)
     {
         pMineralAngles->push_back(MexDegrees(angle));
         // No satellites            pSatellitesAngles->push_back( MexDegrees( -angle ) );
     }
 
-    PhysMotionPlan::Times* pMineralTimes = _NEW(PhysMotionPlan::Times);
+    PhysMotionPlan::Times* pMineralTimes = new PhysMotionPlan::Times;
     pMineralTimes->reserve(3);
-    // No satellites        PhysMotionPlan::Times* pSatellitesTimes = _NEW( PhysMotionPlan::Times );
+    // No satellites        PhysMotionPlan::Times* pSatellitesTimes = new PhysMotionPlan::Times;
     for (PhysRelativeTime time = 1; time < 4; time += 1)
     {
         pMineralTimes->push_back(time * 2);
         // No satellites            pSatellitesTimes->push_back( time );
     }
 
-    PhysTimedAnglePlan* pMineralPlan = _NEW(PhysTimedAnglePlan(
+    PhysTimedAnglePlan* pMineralPlan = new PhysTimedAnglePlan(
         PhysMotionPlan::AnglesPtr(pMineralAngles),
         PhysMotionPlan::TimesPtr(pMineralTimes),
         MexVec3(0, 0, 1),
-        mineralPos));
+        mineralPos);
 
     // No satellites        PhysTimedAnglePlan* pSatellitesPlan =
-    // No satellites            _NEW( PhysTimedAnglePlan( PhysMotionPlan::AnglesPtr( pSatellitesAngles ),
+    // No satellites            new PhysTimedAnglePlan( PhysMotionPlan::AnglesPtr( pSatellitesAngles ),
     // No satellites                            PhysMotionPlan::TimesPtr( pSatellitesTimes ),
-    // No satellites                            MexVec3(0,0,1), satellitesPos ) );
+    // No satellites                            MexVec3(0,0,1), satellitesPos );
 
     // Hence make a composite plan
     PhysMotionPlanPtr mineralPlanPtr(pMineralPlan);
@@ -152,7 +152,7 @@ W4dCompositePlanPtr MachPhysOreHolograph::newSpinPlan(const MachPhysOreHolograph
     mineralLinkPlan.absoluteMotion(mineralPlanPtr, 0);
     // No satellites        satellitesLinkPlan.absoluteMotion( satellitesPlanPtr, 0 );
 
-    W4dCompositePlan* pHoloPlan = _NEW(W4dCompositePlan("holo"));
+    W4dCompositePlan* pHoloPlan = new W4dCompositePlan("holo");
     pHoloPlan->linkPlan(pMineralLink->id(), mineralLinkPlan);
     // No satellites        pHoloPlan->linkPlan( pSatellitesLink->id(), satellitesLinkPlan );
 

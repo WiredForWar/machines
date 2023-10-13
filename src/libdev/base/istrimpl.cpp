@@ -12,7 +12,7 @@
 #include "base/IProgressReporter.hpp"
 
 PerIstreamImpl::PerIstreamImpl(PerIstream* pStream)
-    : pBuffer_(_NEW(PerIstreamBuffer(pStream)))
+    : pBuffer_(new PerIstreamBuffer(pStream))
     , pReporter_(nullptr)
     , fileSize_(0)
     , bytesRead_(0)
@@ -23,7 +23,7 @@ PerIstreamImpl::PerIstreamImpl(PerIstream* pStream)
 }
 
 PerIstreamImpl::PerIstreamImpl(PerIstream* pStream, std::istream& istr, IProgressReporter* pReporter)
-    : pBuffer_(_NEW(PerIstreamBuffer(pStream)))
+    : pBuffer_(new PerIstreamBuffer(pStream))
     , pReporter_(pReporter)
     , fileSize_(0)
     , bytesRead_(0)
@@ -44,7 +44,7 @@ PerIstreamImpl::~PerIstreamImpl()
 {
     TEST_INVARIANT;
 
-    _DELETE(pBuffer_);
+    delete pBuffer_;
 }
 
 void PerIstreamImpl::logDataRead(size_t bytesRead)

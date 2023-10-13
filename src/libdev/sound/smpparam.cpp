@@ -60,7 +60,7 @@ SndSampleParameters::SndSampleParameters(
     Snd::SamplePriority priority,
     Snd::RelativeTime startOffset)
 {
-    pImpl_ = _NEW(SndSampleParametersImpl(id));
+    pImpl_ = new SndSampleParametersImpl(id);
     CB_DEPIMPL(SndWaveformId, id_);
     CB_DEPIMPL(Snd::LoopCount, loopCount_);
     CB_DEPIMPL(Snd::Volume, sampleVolume_);
@@ -89,7 +89,7 @@ SndSampleParameters::SndSampleParameters(
     Snd::SamplePriority priority,
     Snd::RelativeTime startOffset)
 {
-    pImpl_ = _NEW(SndSampleParametersImpl(id));
+    pImpl_ = new SndSampleParametersImpl(id);
     CB_DEPIMPL(SndWaveformId, id_);
     CB_DEPIMPL(Snd::LoopCount, loopCount_);
     CB_DEPIMPL(Snd::Volume, sampleVolume_);
@@ -122,7 +122,7 @@ SndSampleParameters::SndSampleParameters(
     Snd::SamplePriority priority,
     Snd::RelativeTime startOffset)
 {
-    pImpl_ = _NEW(SndSampleParametersImpl(id));
+    pImpl_ = new SndSampleParametersImpl(id);
     CB_DEPIMPL(MexPoint3d, initialPosition_);
     CB_DEPIMPL(SndWaveformId, id_);
     CB_DEPIMPL(Snd::LoopCount, loopCount_);
@@ -161,7 +161,7 @@ SndSampleParameters::SndSampleParameters(
     Snd::SamplePriority priority,
     Snd::RelativeTime startOffset)
 {
-    pImpl_ = _NEW(SndSampleParametersImpl(id));
+    pImpl_ = new SndSampleParametersImpl(id);
     CB_DEPIMPL(MexPoint3d, initialPosition_);
     CB_DEPIMPL(Snd::Volume, sampleVolume_);
     CB_DEPIMPL(Snd::SamplePriority, samplePriority_);
@@ -191,7 +191,7 @@ SndSampleParameters::SndSampleParameters(
 
 SndSampleParameters::SndSampleParameters(const SndSampleParameters& copyMe)
 {
-    pImpl_ = _NEW(SndSampleParametersImpl(copyMe.pImpl_->id_));
+    pImpl_ = new SndSampleParametersImpl(copyMe.pImpl_->id_);
 
     CB_DEPIMPL(Snd::Distance, maxAudibleDistance_);
     CB_DEPIMPL(Snd::Distance, minAudibleDistance_);
@@ -220,7 +220,7 @@ SndSampleParameters::SndSampleParameters(const SndSampleParameters& copyMe)
 
 SndSampleParameters::~SndSampleParameters()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 ///////////////////////////////
 

@@ -62,11 +62,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 MachLogPlanet::MachLogPlanet()
-    : pImpl_(_NEW(MachLogPlanetImpl))
+    : pImpl_(new MachLogPlanetImpl)
 {
     CB_MachLogPlanet_DEPIMPL();
     W4dTransform3d localTransform;
-    pHiddenRootDomain_ = _NEW(W4dDomain(pHiddenRoot_, localTransform));
+    pHiddenRootDomain_ = new W4dDomain(pHiddenRoot_, localTransform);
     oreSites_.reserve(20);
     debrisSites_.reserve(100);
 
@@ -78,16 +78,16 @@ MachLogPlanet::~MachLogPlanet()
 {
     CB_MachLogPlanet_DEPIMPL();
     TEST_INVARIANT;
-    _DELETE(pHiddenConfigSpace_);
-    _DELETE(pHiddenRootDomain_);
-    _DELETE(pHiddenRoot_);
-    _DELETE(pConfigSpace_);
-    _DELETE(pPressurePads_);
-    _DELETE(pSurface_);
+    delete pHiddenConfigSpace_;
+    delete pHiddenRootDomain_;
+    delete pHiddenRoot_;
+    delete pConfigSpace_;
+    delete pPressurePads_;
+    delete pSurface_;
 
     while (oreSites_.size() > 0)
     {
-        _DELETE(oreSites_.front());
+        delete oreSites_.front();
         oreSites_.erase(oreSites_.begin());
     }
 
@@ -99,7 +99,7 @@ MachLogPlanet::~MachLogPlanet()
         siteMap_.erase(siteMap_.begin());
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /*
@@ -118,7 +118,7 @@ void MachLogPlanet::removeSite( int id )
     Sites::iterator i = find( oreSites_.begin(), oreSites_.end(), pSite );
     ASSERT( i != oreSites_.end(), "Site not found in pvector - map and pvector must be in disagreement!" );
 
-    _DELETE( *i );
+    delete *i;
     oreSites_.erase( i );
     bool mapErasedOK = siteMap_.erase( id );
     ASSERT( mapErasedOK, "Nothing erased from map!" );
@@ -165,7 +165,7 @@ void MachLogPlanet::surface(
     pWorld_ = &(pSceneManager->root());
 
     // Construct the planet surface
-    pSurface_ = _NEW(MachPhysPlanetSurface(pSceneManager, surfaceFilePath));
+    pSurface_ = new MachPhysPlanetSurface(pSceneManager, surfaceFilePath);
 
     // Generate the config space. Use file same as planet surface file pathname,
     // but with extension '.csp'
@@ -219,23 +219,23 @@ void MachLogPlanet::initConfigSpace(const SysPathName& spaceFilePath, IProgressR
     // Construct the space itself
     MexPoint2d minBound(pSurface->xMin() - 1, pSurface->yMin() - 1);
     MexPoint2d maxBound(pSurface->xMax() + 1, pSurface->yMax() + 1);
-    pConfigSpace_ = _NEW(PhysConfigSpace2d(
+    pConfigSpace_ = new PhysConfigSpace2d(
         minBound,
         maxBound,
         PhysConfigSpace2d::SUBTRACTIVE,
         DOMAIN_CLEARANCE,
         MachLogMachine::minHighClearance(),
         MachLogMachine::maxHighClearance(),
-        MachLog::OBSTACLE_ALL));
+        MachLog::OBSTACLE_ALL);
     // HAL_STREAM(" creating pHiddenConfigSpace_ \n" );
-    pHiddenConfigSpace_ = _NEW(PhysConfigSpace2d(
+    pHiddenConfigSpace_ = new PhysConfigSpace2d(
         minBound,
         maxBound,
         PhysConfigSpace2d::SUBTRACTIVE,
         DOMAIN_CLEARANCE,
         MachLogMachine::minHighClearance(),
         MachLogMachine::maxHighClearance(),
-        MachLog::OBSTACLE_ALL));
+        MachLog::OBSTACLE_ALL);
 
     pHiddenConfigSpace_->addDomain(MexAlignedBox2d(minBound, maxBound));
 
@@ -245,7 +245,7 @@ void MachLogPlanet::initConfigSpace(const SysPathName& spaceFilePath, IProgressR
     readPlanetConfigSpaceFile(spaceFilePath, pReporter);
     pConfigSpace_->bufferPolygonPortalUpdates(false);
 
-    pPressurePads_ = _NEW(MachLogPressurePads(minBound, maxBound));
+    pPressurePads_ = new MachLogPressurePads(minBound, maxBound);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -260,14 +260,14 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, spaceFilePath, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, spaceFilePath, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, spaceFilePath, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, spaceFilePath, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(spaceFilePath.c_str());
-        // pIstream = _NEW( ifstream( spaceFilePath.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(spaceFilePath.c_str(), std::ios::in)));
+        // pIstream = new ifstream( spaceFilePath.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(spaceFilePath.c_str(), std::ios::in));
     }
 
     pIstream->seekg(0, std::ios::end);
@@ -307,7 +307,7 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
             readObstacleFlags(&parser, &obstacleFlags);
 
             // Read each point, pushing a MexPoint2d onto a vector
-            MexConvexPolygon2d::Points* pPoints = _NEW(MexConvexPolygon2d::Points);
+            MexConvexPolygon2d::Points* pPoints = new MexConvexPolygon2d::Points;
             pPoints->reserve(nPoints);
             while (nPoints-- != 0)
             {
@@ -320,7 +320,7 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
 
             // Construct a new polygon from the points, and add to the config space
             std::unique_ptr<MexConvexPolygon2d::Points> pointsAPtr(pPoints);
-            MexConvexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(pointsAPtr));
+            MexConvexPolygon2d* pPolygon = new MexConvexPolygon2d(pointsAPtr);
             std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
             pConfigSpace_->add(polygonUPtr, height, obstacleFlags, PhysConfigSpace2d::PERMANENT);
         }
@@ -342,7 +342,7 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
             parser.parseNextLine();
 
             // Read each point, pushing a MexPoint2d onto a vector
-            MexConvexPolygon2d::Points* pPoints = _NEW(MexConvexPolygon2d::Points);
+            MexConvexPolygon2d::Points* pPoints = new MexConvexPolygon2d::Points;
             pPoints->reserve(nPoints);
             while (nPoints-- != 0)
             {
@@ -355,7 +355,7 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
 
             // Construct a new polygon from the points, and add to the config space
             std::unique_ptr<MexConvexPolygon2d::Points> pointsAPtr(pPoints);
-            MexConvexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(pointsAPtr));
+            MexConvexPolygon2d* pPolygon = new MexConvexPolygon2d(pointsAPtr);
             std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
             // Add the domain
@@ -534,19 +534,19 @@ void MachLogPlanet::clear()
 {
     // Delete the physical surface model
     CB_MachLogPlanet_DEPIMPL();
-    _DELETE(pSurface_);
+    delete pSurface_;
     pSurface_ = nullptr;
     pWorld_ = nullptr;
 
     // Delete the planet exterior config space, and the hidden one
-    _DELETE(pConfigSpace_);
+    delete pConfigSpace_;
     pConfigSpace_ = nullptr;
 
-    _DELETE(pHiddenConfigSpace_);
+    delete pHiddenConfigSpace_;
     pHiddenConfigSpace_ = nullptr;
 
     // Delete the pressure pads object
-    _DELETE(pPressurePads_);
+    delete pPressurePads_;
     pPressurePads_ = nullptr;
 
     // Remove any mineral sites
@@ -554,7 +554,7 @@ void MachLogPlanet::clear()
     {
         MachLogMineralSite* pSite = oreSites_.back();
         oreSites_.pop_back();
-        _DELETE(pSite);
+        delete pSite;
     }
 
     // have to erase the contents of the map too. Note that we don't delete what's pointed to here,

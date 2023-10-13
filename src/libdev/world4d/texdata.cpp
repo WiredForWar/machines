@@ -18,7 +18,7 @@ W4dCycleTextureData::W4dCycleTextureData(
     const size_t& startTexture,
     const size_t& endTexture,
     const size_t& nRepetations)
-    : textureName_(_NEW(string(textureName)))
+    : textureName_(new string(textureName))
     , startTexture_(startTexture)
     , endTexture_(endTexture)
     , nRepetations_(nRepetations)
@@ -29,7 +29,7 @@ W4dCycleTextureData::W4dCycleTextureData(
 
 W4dCycleTextureData::~W4dCycleTextureData()
 {
-    _DELETE(textureName_);
+    delete textureName_;
     TEST_INVARIANT;
 }
 
@@ -114,7 +114,7 @@ void perWrite(PerOstream& str, const W4dCycleTextureData& t)
 
 void perRead(PerIstream& str, W4dCycleTextureData& t)
 {
-    _DELETE(t.textureName_);
+    delete t.textureName_;
     str >> t.textureName_;
     str >> t.startTexture_;
     str >> t.endTexture_;

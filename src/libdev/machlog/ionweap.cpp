@@ -51,7 +51,7 @@ void MachLogIonWeapon::doFire(const MexPoint3d& position)
     // create pulse blobs (the logical entites here).
     PhysRelativeTime timeOffset = 0;
     int launchOffset = 0;
-    _NEW(MachLogIonBeam(&logRace(), position, physWeapon().weaponData(), &owner()));
+    new MachLogIonBeam(&logRace(), position, physWeapon().weaponData(), &owner());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogIonWeapon& t)

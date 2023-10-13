@@ -30,7 +30,7 @@ W4dSimpleAlphaPlan::W4dSimpleAlphaPlan(
     material_.makeNonSharable();
 
     // Construct a material vec referencing this single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(nMaterialsInVector));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(nMaterialsInVector);
     while (nMaterialsInVector--)
         pMaterialVec->push_back(material_);
 
@@ -94,7 +94,7 @@ void W4dSimpleAlphaPlan::makePlan(
 
     if (materialVecPtr.isDefined())
     {
-        pMaterialVec = _NEW(RenMaterialVec(*materialVecPtr));
+        pMaterialVec = new RenMaterialVec(*materialVecPtr);
     }
     else
     {
@@ -109,10 +109,10 @@ void W4dSimpleAlphaPlan::makePlan(
     if (nMat > 0)
     {
         RenMaterial mat = (*pMaterialVec)[0];
-        W4dMaterialPlanPtr matPlanPtr = _NEW(W4dSimpleAlphaPlan(mat, nMat, alphaPlanPtr, maxLOD));
+        W4dMaterialPlanPtr matPlanPtr = new W4dSimpleAlphaPlan(mat, nMat, alphaPlanPtr, maxLOD);
         pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime);
     }
 
-    _DELETE(pMaterialVec);
+    delete pMaterialVec;
 }
 /* End ALPHSIMP.CPP *************************************************/

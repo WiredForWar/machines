@@ -103,7 +103,7 @@ PhysRelativeTime MachPhysNuclearWeapon::destroy(W4dComposite* pComposit, const P
     PhysRelativeTime duration = 10;
 
     // the victim becomes invisible once hit
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(false));
     visibilityPlanPtr->add(false, duration);
 
     pComposit->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
@@ -141,7 +141,7 @@ MachPhysMissile* MachPhysNuclearWeapon::createMissile(
     // this = inV(this) * t
     missileXform.transformInverse(xform);
 
-    MachPhysMissile* pMissile = _NEW(MachPhysMissile(pParent, missileXform, MachPhysMissile::NUCLEAR_MISSILE));
+    MachPhysMissile* pMissile = new MachPhysMissile(pParent, missileXform, MachPhysMissile::NUCLEAR_MISSILE);
 
     // Make it fly
     MexPoint3d targetOffsetGlobal = targetOffset;

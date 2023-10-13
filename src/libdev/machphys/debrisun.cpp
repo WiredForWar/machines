@@ -146,14 +146,14 @@ void MachPhysDebrisUnit::startBurning()
     tx = W4dEntity::localTransform();
     tx.translate(position);
     pFlame1_
-        = _NEW(MachPhysFlame(this, tx, FLAME_1, bigFlameSize, bigFlameSize, 0, currentTime + 0.1, overallDuration_));
+        = new MachPhysFlame(this, tx, FLAME_1, bigFlameSize, bigFlameSize, 0, currentTime + 0.1, overallDuration_);
 
     position.x(xVal);
     position.y(yVal);
     position.z(0);
     tx = W4dEntity::localTransform();
     tx.translate(position);
-    pPlume1_ = _NEW(MachPhysSmokePlume(this, tx, 8, 0, 3, 1.5, PUFF_1, currentTime, 30));
+    pPlume1_ = new MachPhysSmokePlume(this, tx, 8, 0, 3, 1.5, PUFF_1, currentTime, 30);
     /*
     xVal = MachPhysRandom::randomDouble(boundXMin, boundXMax);
     yVal = MachPhysRandom::randomDouble(boundYMin, boundYMax);
@@ -164,21 +164,21 @@ void MachPhysDebrisUnit::startBurning()
     position.z(bigFlameSize/2);
     tx = W4dEntity::localTransform();
     tx.translate(position);
-    pFlame2_ = _NEW(MachPhysFlame(
+    pFlame2_ = new MachPhysFlame(
         this,
         tx,
         FLAME_1,
         bigFlameSize,
         0,
         currentTime,
-        overallDuration_ ));
+        overallDuration_ );
 
     position.x(xVal);
     position.y(yVal);
     position.z(0);
     tx = W4dEntity::localTransform();
     tx.translate(position);
-    pPlume2_ =  _NEW(MachPhysSmokePlume(
+    pPlume2_ =  new MachPhysSmokePlume(
         this,
         tx,
         12,
@@ -187,7 +187,7 @@ void MachPhysDebrisUnit::startBurning()
         0.5,
         MachPhysSmokePuff::randomPuff(),
         currentTime,
-        30 ));*/
+        30 );*/
 }
 
 bool MachPhysDebrisUnit::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const

@@ -13,7 +13,7 @@ W4dUVTranslation::W4dUVTranslation(const PhysRelativeTime& duration, W4dLOD maxL
     : W4dUVPlan(duration, maxLOD)
     , offset_(o)
     , velocity_(v)
-    , positionPtr_(_NEW(RenUVTranslation))
+    , positionPtr_(new RenUVTranslation)
 {
     uvTranslation().translation(offset_);
 }

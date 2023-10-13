@@ -107,22 +107,22 @@ void MachPhysBlast::startBlast(const PhysAbsoluteTime& startTime)
     MATHEX_SCALAR frameRate = MachPhysPunchBlast::punchFrameRate();
     PhysRelativeTime blastDuration = 13.0 / frameRate;
     PhysRelativeTime blastAlphaDelay = 9.0 / frameRate;
-    W4dVisibilityPlanPtr blastVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr blastVisibilityPlanPtr(new W4dVisibilityPlan(true));
     blastVisibilityPlanPtr->add(false, blastDuration);
 
     entityPlanForEdit().visibilityPlan(blastVisibilityPlanPtr, startTime);
 
     // blast scale plan
-    W4dScalePlanPtr planPtr(_NEW(W4dSimpleUniformScalePlan(1, 5, blastDuration)));
+    W4dScalePlanPtr planPtr(new W4dSimpleUniformScalePlan(1, 5, blastDuration));
 
     propogateScalePlan(planPtr, startTime, 1);
 
     /*  redefined in the .x file
     //blast motion plan
-    PhysMotionPlan::Times* pTimesList = _NEW( PhysMotionPlan::Times );
+    PhysMotionPlan::Times* pTimesList = new PhysMotionPlan::Times;
     pTimesList->push_back(blastDuration);
 
-    PhysMotionPlan::AnglesPtr anglesListPtr = PhysMotionPlan::AnglesPtr( _NEW( PhysMotionPlan::Angles ) );
+    PhysMotionPlan::AnglesPtr anglesListPtr = PhysMotionPlan::AnglesPtr( new PhysMotionPlan::Angles );
     anglesListPtr->push_back(MexDegrees(0));
     anglesListPtr->push_back(MexDegrees(90));
 
@@ -130,10 +130,10 @@ void MachPhysBlast::startBlast(const PhysAbsoluteTime& startTime)
     MexVec3 position( 0,0,0 );
 
     position = localTransform().position();
-    PhysTimedAnglePlan* pAnglePlan = _NEW(PhysTimedAnglePlan(anglesListPtr,
+    PhysTimedAnglePlan* pAnglePlan = new PhysTimedAnglePlan(anglesListPtr,
                                              PhysMotionPlan::TimesPtr( pTimesList ),
                                          newvec,
-                                         position));
+                                         position);
 
     PhysMotionPlanPtr anglePlanPtr( pAnglePlan );
 
@@ -156,9 +156,9 @@ void MachPhysBlast::startBlast(const PhysAbsoluteTime& startTime)
     scales.push_back(1.0);
     scales.push_back(0.0);
 
-    PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysScalarPlanPtr lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
 
-    W4dMaterialPlanPtr blastMaterialAlphaPlanPtr = _NEW(W4dSimpleAlphaPlan(matBlast, nMaterials, lineScalarPlanPtr, 1));
+    W4dMaterialPlanPtr blastMaterialAlphaPlanPtr = new W4dSimpleAlphaPlan(matBlast, nMaterials, lineScalarPlanPtr, 1);
     entityPlanForEdit().materialPlan(blastMaterialAlphaPlanPtr, startTime);
 }
 

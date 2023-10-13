@@ -64,7 +64,7 @@ void MachLogBeeBomb::doBeDestroyed()
 
     // and create the physical entity on my own node.
 
-    _NEW(MachLogBeeBombExplosion(pLogRace_, globalDestructionPosition(), weaponData_, pOwner()));
+    new MachLogBeeBombExplosion(pLogRace_, globalDestructionPosition(), weaponData_, pOwner());
 }
 
 /*

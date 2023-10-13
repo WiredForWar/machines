@@ -154,7 +154,7 @@ void MachPhysBeeBomb::createBombExplosion(const PhysAbsoluteTime& time)
         W4dDomain* pParent = surface.domainAt(explodePosition);
         pParent->globalTransform().transformInverse(&explodePosition);
 
-        MachPhysBeeBombExplosion* pExplosion = _NEW(MachPhysBeeBombExplosion(pParent, MexTransform3d(explodePosition)));
+        MachPhysBeeBombExplosion* pExplosion = new MachPhysBeeBombExplosion(pParent, MexTransform3d(explodePosition));
 
         PhysRelativeTime explosionDuration = pExplosion->startExplosion(time, surface);
 

@@ -187,13 +187,13 @@ void W4dShadow::CLASS_INVARIANT
 ///////////////////////////////////////////////////////////////////////////////
 W4dShadowProjected2d::W4dShadowProjected2d(W4dEntity* pParent, const W4dTransform3d& localXform)
     : W4dShadow(pParent, localXform)
-    , shadowEntity_(_NEW(W4dGeneric(this, MexTransform3d(), NOT_SOLID)))
+    , shadowEntity_(new W4dGeneric(this, MexTransform3d(), NOT_SOLID))
 {
 }
 
 W4dShadowProjected2d::W4dShadowProjected2d(const W4dShadowProjected2d& copyMe, W4dEntity* pParent)
     : W4dShadow(copyMe, pParent)
-    , shadowEntity_(_NEW(W4dGeneric(*(copyMe.shadowEntity_), this, copyMe.shadowEntity_->localTransform())))
+    , shadowEntity_(new W4dGeneric(*(copyMe.shadowEntity_), this, copyMe.shadowEntity_->localTransform()))
 {
 }
 
@@ -204,7 +204,7 @@ W4dShadowProjected2d::~W4dShadowProjected2d()
 // virtual
 void W4dShadowProjected2d::copy(W4dEntity* parent)
 {
-    _NEW(W4dShadowProjected2d(*this, parent));
+    new W4dShadowProjected2d(*this, parent);
 }
 
 // virtual
@@ -308,7 +308,7 @@ W4dShadowFixed::~W4dShadowFixed()
 // virtual
 void W4dShadowFixed::copy(W4dEntity* parent)
 {
-    _NEW(W4dShadowFixed(*this, parent));
+    new W4dShadowFixed(*this, parent);
 }
 
 // virtual

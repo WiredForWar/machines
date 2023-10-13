@@ -41,8 +41,8 @@ MachLogVortexHasBeenFiredCondition* MachLogVortexHasBeenFiredCondition::newFromP
     // format of a VORTEX_FIRED condition line is:
     //<keyName> RACE <race>
 
-    return _NEW(
-        MachLogVortexHasBeenFiredCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3])));
+    return new 
+        MachLogVortexHasBeenFiredCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3]));
 }
 
 void MachLogVortexHasBeenFiredCondition::CLASS_INVARIANT

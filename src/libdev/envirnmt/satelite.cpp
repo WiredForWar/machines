@@ -32,10 +32,10 @@ EnvSatellite::EnvSatellite(const string& n, EnvOrbit* orb)
 EnvSatellite::~EnvSatellite()
 {
     TEST_INVARIANT;
-    _DELETE(orbit_);
-    _DELETE(lightTable_);
-    _DELETE(ambTable_);
-    _DELETE(matTable_);
+    delete orbit_;
+    delete lightTable_;
+    delete ambTable_;
+    delete matTable_;
 }
 
 void EnvSatellite::loadMesh(const SysPathName& envFile, EnvElevationColourTable* colours)
@@ -50,7 +50,7 @@ void EnvSatellite::loadMesh(const SysPathName& envFile, EnvElevationColourTable*
         const W4dGeneric* constEntity = orbit_->movingEntity();
         matTable_ = colours;
         std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
-        EnvElevationMaterialPlan* plan = _NEW(EnvElevationMaterialPlan(*(mats.get()), *this, *matTable_));
+        EnvElevationMaterialPlan* plan = new EnvElevationMaterialPlan(*(mats.get()), *this, *matTable_);
         entity->entityPlanForEdit().materialPlan(plan, W4dManager::instance().time());
     }
 }
@@ -62,7 +62,7 @@ void EnvSatellite::setDirectionalLight(EnvElevationColourTable* clut)
 
     // Create a light to represent the sun attached to whatever entity the
     // orbit is moving.
-    light_ = _NEW(W4dDirectionalLight(orbit_->movingEntity(), MexVec3(1, 0, 0)));
+    light_ = new W4dDirectionalLight(orbit_->movingEntity(), MexVec3(1, 0, 0));
 }
 
 void EnvSatellite::setAmbientLight(EnvElevationColourTable* clut)

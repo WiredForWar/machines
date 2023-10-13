@@ -23,7 +23,7 @@ using Weapons = MachPhysCanAttackImpl::Weapons;
 using TurnerTrackers = MachPhysCanAttackImpl::TurnerTrackers;
 
 MachPhysCanAttack::MachPhysCanAttack()
-    : pImpl_(_NEW(MachPhysCanAttackImpl))
+    : pImpl_(new MachPhysCanAttackImpl)
 {
     CB_DEPIMPL(Weapons, weapons_);
     CB_DEPIMPL(TurnerTrackers, turnerTrackers_);
@@ -35,7 +35,7 @@ MachPhysCanAttack::MachPhysCanAttack()
 
 MachPhysCanAttack::~MachPhysCanAttack()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysCanAttack::initialiseMountingLinks()
@@ -62,7 +62,7 @@ void MachPhysCanAttack::initialiseMountingLinks()
 }
 
 MachPhysCanAttack::MachPhysCanAttack(const MachPhysCanAttack& rhs, W4dComposite* pAttacker)
-    : pImpl_(_NEW(MachPhysCanAttackImpl))
+    : pImpl_(new MachPhysCanAttackImpl)
 {
     CB_DEPIMPL(ctl_fixed_vector<W4dLink*>, mountingLinks_);
     CB_DEPIMPL(Weapons, weapons_);
@@ -113,7 +113,7 @@ void MachPhysCanAttack::mount(MachPhysWeapon* pWeapon, MachPhys::Mounting mounti
 
         if (pOldWeapon->pParent() == pParent)
         {
-            _DELETE(pOldWeapon);
+            delete pOldWeapon;
             weapons_[i] = pWeapon;
             alreadyLoaded = true;
             index = i;
@@ -133,7 +133,7 @@ void MachPhysCanAttack::mount(MachPhysWeapon* pWeapon, MachPhys::Mounting mounti
     {
         // Use hardcoded tilt rate
         MexRadians tiltRate = MexDegrees(180);
-        pTurnerTracker = _NEW(MachPhysTurnerTracker(pParent, W4d::Y_AXIS, W4d::X_AXIS, tiltRate));
+        pTurnerTracker = new MachPhysTurnerTracker(pParent, W4d::Y_AXIS, W4d::X_AXIS, tiltRate);
         pTurnerTracker->limits(weaponData.minTiltAngle(), weaponData.maxTiltAngle());
     }
 
@@ -141,7 +141,7 @@ void MachPhysCanAttack::mount(MachPhysWeapon* pWeapon, MachPhys::Mounting mounti
     if (index < turnerTrackers_.size())
     {
         // Delete the old tracker and insert the new one
-        _DELETE(turnerTrackers_[index]);
+        delete turnerTrackers_[index];
         turnerTrackers_[index] = pTurnerTracker;
     }
     else
@@ -187,7 +187,7 @@ void perWrite(PerOstream& ostr, const MachPhysCanAttack& attack)
 
 void perRead(PerIstream& istr, MachPhysCanAttack& attack)
 {
-    _DELETE(attack.pImpl_);
+    delete attack.pImpl_;
 
     istr >> attack.pImpl_;
     //    istr >> attack.weapons_;

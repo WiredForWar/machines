@@ -33,7 +33,7 @@ struct MachGuiModemNetworkModeImpl
 MachGuiModemNetworkMode::MachGuiModemNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-    pimpl_ = _NEW(MachGuiModemNetworkModeImpl());
+    pimpl_ = new MachGuiModemNetworkModeImpl();
 
     readNetworkDetails();
 
@@ -44,7 +44,7 @@ MachGuiModemNetworkMode::~MachGuiModemNetworkMode()
 {
     TEST_INVARIANT;
 
-    _DELETE(pimpl_);
+    delete pimpl_;
 }
 
 void MachGuiModemNetworkMode::CLASS_INVARIANT
@@ -105,33 +105,33 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 
     //  WAYNE_STREAM( "Modems" << std::endl << availableModems << std::endl );
 
-    MachGuiMenuText* pModemText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pModemText = new MachGuiMenuText(
         &parent(),
         Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), font.textWidth(modemHeading.asString()), textHeight),
         IDS_MENU_MODEMTYPE,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pModemSelector_ = _NEW(MachGuiDropDownListBoxCreator(
+    pimpl_->pModemSelector_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(MNM_MINX, MNM_MINY + textHeight),
         MNM_WIDTH,
         availableModems,
         true,
-        true));
+        true);
 
     GuiResourceString telephoneNoHeading(IDS_MENU_TELNO);
 
-    MachGuiMenuText* pTelephoneNoText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pTelephoneNoText = new MachGuiMenuText(
         &parent(),
         Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), font.textWidth(telephoneNoHeading.asString()), textHeight),
         IDS_MENU_TELNO,
-        "gui/menu/smallfnt.bmp"));
+        "gui/menu/smallfnt.bmp");
 
-    pimpl_->pTelNoEntryBox_ = _NEW(MachGuiSingleLineEditBox(
+    pimpl_->pTelNoEntryBox_ = new MachGuiSingleLineEditBox(
         &startupScreens(),
         Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2 + textHeight), MNM_WIDTH, textHeight + 4),
-        font));
+        font);
     pimpl_->pTelNoEntryBox_->ignoreSpaceAtBeginning(true);
     pimpl_->pTelNoEntryBox_->border(true);
     pimpl_->pTelNoEntryBox_->borderColour(MachGui::DARKSANDY());

@@ -45,12 +45,12 @@ MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uin
     // Disable focus on all non-message box controls
     pStartupScreens->messageBoxHasFocus(true);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(203, 157, 484, 293),
         stringResId,
         "gui/menu/largefnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     displayButtons(pStartupScreens);
 
@@ -77,12 +77,12 @@ MachGuiMessageBox::MachGuiMessageBox(
     GuiResourceString str(stringResId, strs);
     string wholeStr = str.asString();
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(203, 157, 484, 293),
         wholeStr,
         "gui/menu/largefnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     displayButtons(pStartupScreens);
 
@@ -97,7 +97,7 @@ MachGuiMessageBox::~MachGuiMessageBox()
 {
     TEST_INVARIANT;
 
-    //_DELETE( pAnimations_ );
+    //delete pAnimations_;
 
     // Re-enable focus on all non-message box controls
     pStartupScreens_->messageBoxHasFocus(false);
@@ -160,18 +160,18 @@ void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
 {
     if (mbType_ == MBOKCANCEL)
     {
-        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             Gui::Box(348, 324, 491, 355),
             IDS_MENUBTN_CANCEL,
             MachGuiStartupScreens::BE_CANCEL,
-            this));
-        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+            this);
+        MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
             Gui::Box(175, 324, 319, 355),
             IDS_MENUBTN_OK,
             MachGuiStartupScreens::BE_OK,
-            this));
+            this);
         pOkBtn->hasFocus(true);
         pCancelBtn->escapeControl(true);
         pCancelBtn->setMsgBoxButton(true);
@@ -179,29 +179,29 @@ void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
     }
     else if (mbType_ == MBOK)
     {
-        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+        MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
             Gui::Box(348, 324, 491, 355),
             IDS_MENUBTN_OK,
             MachGuiStartupScreens::BE_OK,
-            this));
+            this);
         pOkBtn->hasFocus(true);
         pOkBtn->setMsgBoxButton(true);
     }
     else if (mbType_ == MBYESNO)
     {
-        MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             Gui::Box(348, 324, 491, 355),
             IDS_MENUBTN_NO,
             MachGuiStartupScreens::BE_CANCEL,
-            this));
-        MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+            this);
+        MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
             Gui::Box(175, 324, 319, 355),
             IDS_MENUBTN_YES,
             MachGuiStartupScreens::BE_OK,
-            this));
+            this);
         pOkBtn->hasFocus(true);
         pCancelBtn->escapeControl(true);
         pCancelBtn->setMsgBoxButton(true);

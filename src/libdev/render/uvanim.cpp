@@ -51,7 +51,7 @@ void RenUVUnityTransform::print(std::ostream& o) const
 
 RenUVTransform* RenUVUnityTransform::clone() const
 {
-    return _NEW(RenUVUnityTransform(*this));
+    return new RenUVUnityTransform(*this);
 }
 
 void perWrite(PerOstream& str, const RenUVTransform& t)

@@ -21,7 +21,7 @@ PhysAccelerateTumblePlan::PhysAccelerateTumblePlan(
     const TimesPtr& segmentTimesPtr,
     const MexVec3& acceleration)
     : PhysMotionPlan(segmentTimesPtr->back())
-    , pImpl_(_NEW(PhysAccelerateTumblePlanImpl(transformsPtr, segmentTimesPtr, acceleration)))
+    , pImpl_(new PhysAccelerateTumblePlanImpl(transformsPtr, segmentTimesPtr, acceleration))
 {
     PRE(transformsPtr->size() == segmentTimesPtr->size() + 1);
     PRE(inAscendingOrder(*segmentTimesPtr));
@@ -39,7 +39,7 @@ PhysAccelerateTumblePlan::PhysAccelerateTumblePlan(PerConstructor con)
 PhysAccelerateTumblePlan::~PhysAccelerateTumblePlan()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //  virtual

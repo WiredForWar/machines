@@ -22,8 +22,8 @@ PhysLinearMotionPlanImpl::PhysLinearMotionPlanImpl(
 
     // Construct Entry structures for the start and end positions
     entries_.reserve(2);
-    entries_.push_back(_NEW(Entry(startPosition, (PhysRelativeTime)0)));
-    entries_.push_back(_NEW(Entry(endPosition, endTime)));
+    entries_.push_back(new Entry(startPosition, (PhysRelativeTime)0));
+    entries_.push_back(new Entry(endPosition, endTime));
 
     TEST_INVARIANT;
 }
@@ -35,7 +35,7 @@ PhysLinearMotionPlanImpl::~PhysLinearMotionPlanImpl()
     // Delete every entry
     for (size_t i = entries_.size(); i--;)
     {
-        _DELETE(entries_[i]);
+        delete entries_[i];
     }
 }
 
@@ -50,7 +50,7 @@ void PhysLinearMotionPlanImpl::add(const MexTransform3d& endPosition, const Phys
     PRE(entries_.back()->time <= endTime);
 
     // Add the entry
-    entries_.push_back(_NEW(Entry(endPosition, endTime)));
+    entries_.push_back(new Entry(endPosition, endTime));
 }
 
 std::ostream& operator<<(std::ostream& o, const PhysLinearMotionPlanImpl& t)

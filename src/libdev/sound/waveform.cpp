@@ -65,10 +65,10 @@ WaveFormat* SndWaveform::format()
     if (!pFormat_)
     {
 
-        pFormat_ = _NEW(WaveFormat(
+        pFormat_ = new WaveFormat(
             (Channels)waveInfo_->channels,
             (SampleRateHz)waveInfo_->sampleRate,
-            (BitsPerSample)waveInfo_->bitsPerSample));
+            (BitsPerSample)waveInfo_->bitsPerSample);
     }
 
     return pFormat_;

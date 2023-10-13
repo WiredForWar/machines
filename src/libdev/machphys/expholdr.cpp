@@ -30,7 +30,7 @@ MachPhysGenericExplosionData::genericExplosion(size_t level)
 
     if (not defined[level - 1])
     {
-        MachPhysConstructionExplosionData* pData = _NEW(MachPhysConstructionExplosionData(15.0));
+        MachPhysConstructionExplosionData* pData = new MachPhysConstructionExplosionData(15.0);
 
         MATHEX_SCALAR maxFireballOffset = 2.0;
         MATHEX_SCALAR depthOffset = -7;

@@ -19,7 +19,7 @@
 PER_DEFINE_PERSISTENT(MachPhysMachineExplosionData);
 
 MachPhysMachineExplosionData::MachPhysMachineExplosionData()
-    : pImpl_(_NEW(MachPhysIMachineExplosionData()))
+    : pImpl_(new MachPhysIMachineExplosionData())
 {
 
     TEST_INVARIANT;
@@ -27,7 +27,7 @@ MachPhysMachineExplosionData::MachPhysMachineExplosionData()
 
 //  Copy the data "as is"
 MachPhysMachineExplosionData::MachPhysMachineExplosionData(const MachPhysMachineExplosionData& copyMe)
-    : pImpl_(_NEW(MachPhysIMachineExplosionData(*copyMe.pImpl_)))
+    : pImpl_(new MachPhysIMachineExplosionData(*copyMe.pImpl_))
 {
 
     TEST_INVARIANT;
@@ -37,7 +37,7 @@ MachPhysMachineExplosionData& MachPhysMachineExplosionData::operator=(const Mach
 {
     CB_MacPhysMachineExplosionData_DEPIMPL()
 
-        PRE(pImpl_ and copyMe.pImpl_);
+    PRE(pImpl_ and copyMe.pImpl_);
     links_ = copyMe.pImpl_->links_;
 
     maxSize_ = copyMe.pImpl_->maxSize_;
@@ -51,7 +51,7 @@ MachPhysMachineExplosionData& MachPhysMachineExplosionData::operator=(const Mach
 MachPhysMachineExplosionData::~MachPhysMachineExplosionData()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysMachineExplosionData::addData(const LinkData& data)
@@ -127,7 +127,7 @@ void perWrite(PerOstream& ostr, const MachPhysMachineExplosionData& data)
 
 void perRead(PerIstream& istr, MachPhysMachineExplosionData& data)
 {
-    _DELETE(data.pImpl_);
+    delete data.pImpl_;
     istr >> data.pImpl_;
 }
 

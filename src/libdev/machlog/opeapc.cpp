@@ -207,7 +207,7 @@ PhysRelativeTime MachLogEnterAPCOperation::doUpdate()
             if (not foundSpace)
                 finished_ = true;
             else
-                subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, loadPoint, true, 5.0))); // 5m tolerance
+                subOperation(pActor_, new MachLogMoveToOperation(pActor_, loadPoint, true, 5.0)); // 5m tolerance
         }
         else
         {

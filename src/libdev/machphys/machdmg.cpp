@@ -47,10 +47,10 @@ MachPhysMachineDamage::MachPhysMachineDamage(PerConstructor)
 MachPhysMachineDamage::~MachPhysMachineDamage()
 {
 
-    _DELETE(pFlame1_);
-    _DELETE(pFlame2_);
-    _DELETE(pSmoke1_);
-    _DELETE(pSmoke2_);
+    delete pFlame1_;
+    delete pFlame2_;
+    delete pSmoke1_;
+    delete pSmoke2_;
 
     TEST_INVARIANT;
 }
@@ -78,24 +78,24 @@ void MachPhysMachineDamage::update()
 
     if ((damageLevel_ < 65 or damageLevel_ >= 90) && pSmoke1_)
     {
-        _DELETE(pSmoke1_);
+        delete pSmoke1_;
         pSmoke1_ = nullptr;
     }
 
     if ((damageLevel_ < 90 or damaged()) && pSmoke2_)
     {
-        _DELETE(pSmoke2_);
+        delete pSmoke2_;
         pSmoke2_ = nullptr;
     }
     if (damageLevel_ < 90 && pFlame1_)
     {
-        _DELETE(pFlame1_);
+        delete pFlame1_;
         pFlame1_ = nullptr;
     }
 
     if (damageLevel_ < 90 && pFlame2_)
     {
-        _DELETE(pFlame2_);
+        delete pFlame2_;
         pFlame2_ = nullptr;
     }
     MATHEX_SCALAR sizeX, sizeY, sizeZ;
@@ -110,7 +110,7 @@ void MachPhysMachineDamage::update()
         {
             MATHEX_SCALAR wispSize = std::max(sizeX, sizeY);
 
-            pSmoke1_ = _NEW(MachPhysSmokeCloud(pTarget_, MexPoint3d(0, 0, sizeZ * 0.9)));
+            pSmoke1_ = new MachPhysSmokeCloud(pTarget_, MexPoint3d(0, 0, sizeZ * 0.9));
 
             pSmoke1_->startSmoking(
                 1, // nWisps
@@ -133,7 +133,7 @@ void MachPhysMachineDamage::update()
         {
             MATHEX_SCALAR wispSize = std::max(sizeX, sizeY);
 
-            pSmoke2_ = _NEW(MachPhysSmokeCloud(pTarget_, MexPoint3d(0, 0, sizeZ * 0.9)));
+            pSmoke2_ = new MachPhysSmokeCloud(pTarget_, MexPoint3d(0, 0, sizeZ * 0.9));
 
             pSmoke2_->startSmoking(
                 3, // nWisps
@@ -152,9 +152,9 @@ void MachPhysMachineDamage::update()
 
         if (pFlame1_ == nullptr or pFlame2_ == nullptr)
         {
-            _DELETE(pFlame1_);
+            delete pFlame1_;
             pFlame1_ = nullptr;
-            _DELETE(pFlame2_);
+            delete pFlame2_;
             pFlame2_ = nullptr;
 
             // Traverse the links of the machine
@@ -193,14 +193,14 @@ void MachPhysMachineDamage::update()
             flameTransform.translate(MexPoint3d(0, 0, flameHeight * 0.48));
 
             MexTransform3d flame1Transform(MexPoint3d(0, 0, flameHeight * 0.48));
-            pFlame1_ = _NEW(MachPhysDoublesidedFlame(pTopLink, flame1Transform));
+            pFlame1_ = new MachPhysDoublesidedFlame(pTopLink, flame1Transform);
 
             flameTransform.rotate(MexEulerAngles(MexDegrees(90), 0, 0));
 
             MexTransform3d flame2Transform(MexPoint3d(0, 0, flameHeight * 0.48));
             flame2Transform.rotate(MexEulerAngles(MexDegrees(90), 0, 0));
 
-            pFlame2_ = _NEW(MachPhysDoublesidedFlame(pTopLink, flame2Transform));
+            pFlame2_ = new MachPhysDoublesidedFlame(pTopLink, flame2Transform);
 
             pTarget_->hold(pFlame1_, pTopLink, flame1Transform);
             pTarget_->hold(pFlame2_, pTopLink, flame2Transform);

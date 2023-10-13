@@ -43,7 +43,7 @@ void MachPhysFireballImpl::addMaterial(Materials* pMaterials, const string& text
     material.texture(texture);
 
     // Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
     pMaterialVec->push_back(material);
 
     // Add a counted pointer to the material vector to the argument
@@ -237,8 +237,8 @@ const MachPhysFireballImpl::Materials& MachPhysFireballImpl::materials4()
 // static
 W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr1()
 {
-    static W4dMaterialPlanPtr materialPlanPtr = _NEW(
-        W4dMaterialSequencePlan(materials1(), PhysRelativeTime(materials1().size() * timePerFrame()), W4dLOD(0)));
+    static W4dMaterialPlanPtr materialPlanPtr = new 
+        W4dMaterialSequencePlan(materials1(), PhysRelativeTime(materials1().size() * timePerFrame()), W4dLOD(0));
 
     return materialPlanPtr;
 }
@@ -246,8 +246,8 @@ W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr1()
 // static
 W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr2()
 {
-    static W4dMaterialPlanPtr materialPlanPtr = _NEW(
-        W4dMaterialSequencePlan(materials2(), PhysRelativeTime(materials2().size() * timePerFrame()), W4dLOD(0)));
+    static W4dMaterialPlanPtr materialPlanPtr = new 
+        W4dMaterialSequencePlan(materials2(), PhysRelativeTime(materials2().size() * timePerFrame()), W4dLOD(0));
 
     return materialPlanPtr;
 }
@@ -255,8 +255,8 @@ W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr2()
 // static
 W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr3()
 {
-    static W4dMaterialPlanPtr materialPlanPtr = _NEW(
-        W4dMaterialSequencePlan(materials3(), PhysRelativeTime(materials3().size() * timePerFrame()), W4dLOD(0)));
+    static W4dMaterialPlanPtr materialPlanPtr = new 
+        W4dMaterialSequencePlan(materials3(), PhysRelativeTime(materials3().size() * timePerFrame()), W4dLOD(0));
 
     return materialPlanPtr;
 }
@@ -264,8 +264,8 @@ W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr3()
 // static
 W4dMaterialPlanPtr MachPhysFireballImpl::materialPlanPtr4()
 {
-    static W4dMaterialPlanPtr materialPlanPtr = _NEW(
-        W4dMaterialSequencePlan(materials4(), PhysRelativeTime(materials4().size() * timePerFrame()), W4dLOD(0)));
+    static W4dMaterialPlanPtr materialPlanPtr = new 
+        W4dMaterialSequencePlan(materials4(), PhysRelativeTime(materials4().size() * timePerFrame()), W4dLOD(0));
 
     return materialPlanPtr;
 }
@@ -280,7 +280,7 @@ const PhysRelativeTime MachPhysFireballImpl::timePerFrame()
 // static
 const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr1()
 {
-    static W4dVisibilityPlanPtr planPtr = _NEW(W4dVisibilityPlan(true));
+    static W4dVisibilityPlanPtr planPtr = new W4dVisibilityPlan(true);
 
     static bool once = true;
     if (once)
@@ -295,7 +295,7 @@ const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr1()
 // static
 const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr2()
 {
-    static W4dVisibilityPlanPtr planPtr = _NEW(W4dVisibilityPlan(true));
+    static W4dVisibilityPlanPtr planPtr = new W4dVisibilityPlan(true);
 
     static bool once = true;
     if (once)
@@ -310,7 +310,7 @@ const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr2()
 // static
 const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr3()
 {
-    static W4dVisibilityPlanPtr planPtr = _NEW(W4dVisibilityPlan(true));
+    static W4dVisibilityPlanPtr planPtr = new W4dVisibilityPlan(true);
 
     static bool once = true;
     if (once)
@@ -325,7 +325,7 @@ const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr3()
 // static
 const W4dVisibilityPlanPtr& MachPhysFireballImpl::visibilityPlanPtr4()
 {
-    static W4dVisibilityPlanPtr planPtr = _NEW(W4dVisibilityPlan(true));
+    static W4dVisibilityPlanPtr planPtr = new W4dVisibilityPlan(true);
 
     static bool once = true;
     if (once)

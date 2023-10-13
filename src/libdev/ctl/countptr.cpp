@@ -39,7 +39,7 @@ void CtlCountedObject::addReference()
 void CtlCountedObject::removeReference()
 {
     if (--refs_ == 0)
-        _DELETE(this);
+        delete this;
 }
 
 // void CtlCountedObject::markUnshareable()

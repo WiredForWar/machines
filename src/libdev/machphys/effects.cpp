@@ -33,7 +33,7 @@ void MachPhysEffects::flashObject(
 {
     // Create a material vector using mat with enough entries to cover any reasonable mesh
     const int reasonableSize = 64;
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(reasonableSize));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(reasonableSize);
     for (int i = reasonableSize; i--;)
         pMaterialVec->push_back(mat);
 
@@ -45,7 +45,7 @@ void MachPhysEffects::flashObject(
     materialVecPtrs.push_back(materialVecPtr);
 
     // Create a material plan to use
-    W4dMaterialSequencePlan* pPlan = _NEW(W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD));
+    W4dMaterialSequencePlan* pPlan = new W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD);
 
     for (W4dLOD lodId = 1; lodId <= maxLOD; ++lodId)
         pPlan->lodPlan(materialVecPtrs, lodId);
@@ -181,7 +181,7 @@ W4dMaterialPlan* MachPhysEffects::createSmokeMaterialPlan(const RenColour& colou
         RenMaterial mat(myColour);
         mat.texture(*it);
 
-        RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+        RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
         pMaterialVec->push_back(mat);
 
         Ren::MaterialVecPtr materialVecPtr(pMaterialVec);
@@ -191,7 +191,7 @@ W4dMaterialPlan* MachPhysEffects::createSmokeMaterialPlan(const RenColour& colou
     // Construct a new material sequence plan
     PhysRelativeTime duration = 1.0;
     W4dLOD maxLOD = 2;
-    W4dMaterialSequencePlan* pPlan = _NEW(W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD));
+    W4dMaterialSequencePlan* pPlan = new W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD);
 
     return pPlan;
 }
@@ -220,7 +220,7 @@ W4dMaterialPlan* MachPhysEffects::createSparksMaterialPlan()
         RenMaterial mat;
         mat.texture(RenTexManager::instance().createTexture(names[i]));
 
-        RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+        RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
         pMaterialVec->push_back(mat);
 
         Ren::MaterialVecPtr materialVecPtr(pMaterialVec);
@@ -230,7 +230,7 @@ W4dMaterialPlan* MachPhysEffects::createSparksMaterialPlan()
     // Construct a new material sequence plan
     PhysRelativeTime duration = 0.3;
     W4dLOD maxLOD = 2;
-    W4dMaterialSequencePlan* pPlan = _NEW(W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD));
+    W4dMaterialSequencePlan* pPlan = new W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD);
 
     return pPlan;
 }
@@ -307,7 +307,7 @@ W4dMaterialPlan* MachPhysEffects::createFlameBallMaterialPlan()
         // Make a single counted pointer to a RenMaterialVec, consisting of a single element
         mat.texture(textures[i]);
 
-        RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+        RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
         pMaterialVec->push_back(mat);
 
         Ren::MaterialVecPtr materialVecPtr(pMaterialVec);
@@ -317,7 +317,7 @@ W4dMaterialPlan* MachPhysEffects::createFlameBallMaterialPlan()
     // Construct a new material sequence plan
     PhysRelativeTime duration = 1.4;
     W4dLOD maxLOD = 2;
-    W4dMaterialSequencePlan* pPlan = _NEW(W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD));
+    W4dMaterialSequencePlan* pPlan = new W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD);
 
     return pPlan;
 }
@@ -368,7 +368,7 @@ W4dMaterialSequencePlan* MachPhysEffects::createMaterialSequencePlan(
     {
         workingMaterial.texture(textures[i]);
 
-        RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(nMaterialsPerVector));
+        RenMaterialVec* pMaterialVec = new RenMaterialVec(nMaterialsPerVector);
         for (uint j = 0; j != nMaterialsPerVector; ++j)
             pMaterialVec->push_back(workingMaterial);
 
@@ -377,7 +377,7 @@ W4dMaterialSequencePlan* MachPhysEffects::createMaterialSequencePlan(
     }
 
     // Hence construct the plan
-    return _NEW(W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD));
+    return new W4dMaterialSequencePlan(materialVecPtrs, duration, maxLOD);
 }
 
 /* End EFFECTS.CPP **************************************************/

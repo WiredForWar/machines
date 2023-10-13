@@ -207,8 +207,8 @@ void PedScenarioFile::readAI()
     bool done = false;
 
     // Reset parser
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     while (not pParser_->finished() and not done)
     {
@@ -235,8 +235,8 @@ void PedScenarioFile::readMineralSite()
     bool done = false;
 
     // Reset parser
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     while (not pParser_->finished() and not done)
     {
@@ -263,8 +263,8 @@ void PedScenarioFile::readConditions()
     bool done = false;
 
     // Reset parser
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     while (not pParser_->finished() and not done)
     {
@@ -291,8 +291,8 @@ void PedScenarioFile::readActions()
     bool done = false;
 
     // Reset parser
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     while (not pParser_->finished() and not done)
     {
@@ -323,8 +323,8 @@ void PedScenarioFile::readRace(RaceInfo& raceInfo, MachPhys::Race race)
     raceInfo.race = race;
 
     // Reset parser
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     while (not pParser_->finished() and not done)
     {
@@ -396,8 +396,8 @@ void PedScenarioFile::readRace(RaceInfo& raceInfo, MachPhys::Race race)
 void PedScenarioFile::readMiscellani()
 {
     uint raceNumber = nRaces();
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     // Skip to end of races
     for (uint i = 0; i < raceNumber; ++i)
@@ -427,8 +427,8 @@ void PedScenarioFile::readArtefacts()
     string key;
 
     artefacts_.erase(artefacts_.begin(), artefacts_.end());
-    _DELETE(pParser_);
-    pParser_ = _NEW(UtlLineTokeniser(fileName_));
+    delete pParser_;
+    pParser_ = new UtlLineTokeniser(fileName_);
 
     while (not pParser_->finished())
     {
@@ -1058,7 +1058,7 @@ uint PedScenarioFile::nRaces()
     // Returns the number of races in scenario file
     uint nRaces = 0;
 
-    UtlLineTokeniser* pParser = _NEW(UtlLineTokeniser(fileName_));
+    UtlLineTokeniser* pParser = new UtlLineTokeniser(fileName_);
 
     while (not pParser->finished())
     {

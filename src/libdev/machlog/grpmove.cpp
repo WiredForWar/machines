@@ -14,9 +14,8 @@ MachLogGroupSimpleMove::MachLogGroupSimpleMove(
     size_t commandId,
     string* pReason,
     PhysPathFindingPriority pathFindingPriority)
-    : pImpl_(_NEW(MachLogGroupSimpleMoveImplementation(actors, points, commandId, pReason, pathFindingPriority)))
+    : pImpl_(new MachLogGroupSimpleMoveImplementation(actors, points, commandId, pReason, pathFindingPriority))
 {
-
     TEST_INVARIANT;
 }
 
@@ -24,7 +23,7 @@ MachLogGroupSimpleMove::~MachLogGroupSimpleMove()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 bool MachLogGroupSimpleMove::moveOK() const

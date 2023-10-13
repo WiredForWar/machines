@@ -164,7 +164,7 @@ std::ostream& operator<<(std::ostream& o, const ctl_vector<RenIDepthSortedItem*>
             item->render(d3dDev);
 
             // As soon as the item is drawn, we can delete it.
-            _DELETE(item);
+            delete item;
             (*it) = NULL;
         }
 
@@ -201,7 +201,7 @@ void RenIDepthPostSorter::render()
             item->render();
 
             // As soon as the item is drawn, we can delete it.
-            _DELETE(item);
+            delete item;
             (*it) = NULL;
         }
 

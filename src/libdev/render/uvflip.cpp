@@ -55,7 +55,7 @@ void RenUVFlip::print(std::ostream& o) const
 // virtual
 RenUVTransform* RenUVFlip::clone() const
 {
-    return _NEW(RenUVFlip(*this));
+    return new RenUVFlip(*this);
 }
 
 void RenUVFlip::flipped(RenUVFlip::Flip f)

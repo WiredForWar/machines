@@ -30,7 +30,7 @@ W4dEntityMaterialVecChanger::W4dEntityMaterialVecChanger(
     if (nMeshes != 0)
     {
         // Construct a vector with enough space for the required overrides
-        pMaterialVecPtrs_ = _NEW(W4dMaterialVecPtrs());
+        pMaterialVecPtrs_ = new W4dMaterialVecPtrs();
         pMaterialVecPtrs_->reserve(nMeshes);
 
         // Deal with each lod
@@ -89,7 +89,7 @@ W4dEntityMaterialVecChanger::W4dEntityMaterialVecChanger(
     // If no overrides were defined, delete the vector
     if (not anyOverrides)
     {
-        _DELETE(pMaterialVecPtrs_);
+        delete pMaterialVecPtrs_;
         pMaterialVecPtrs_ = nullptr;
     }
 
@@ -99,7 +99,7 @@ W4dEntityMaterialVecChanger::W4dEntityMaterialVecChanger(
 W4dEntityMaterialVecChanger::~W4dEntityMaterialVecChanger()
 {
     TEST_INVARIANT;
-    _DELETE(pMaterialVecPtrs_);
+    delete pMaterialVecPtrs_;
 }
 
 void W4dEntityMaterialVecChanger::CLASS_INVARIANT

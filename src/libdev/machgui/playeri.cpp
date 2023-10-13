@@ -24,12 +24,12 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
     , isWhite_(false)
 {
     // Create title text
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(0, 0), PNL_BOX_WIDTH, 35),
         title,
         fontName,
-        MachGuiMenuText::CENTRE_JUSTIFY));
+        MachGuiMenuText::CENTRE_JUSTIFY);
 
     TEST_INVARIANT;
 }
@@ -44,12 +44,12 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
     , isWhite_(isWhite)
 {
     // Create title text
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pParent,
         Gui::Box(boundary.minCorner(), boundary.maxCorner().x() - boundary.minCorner().x(), 35),
         title,
         fontName,
-        MachGuiMenuText::CENTRE_JUSTIFY));
+        MachGuiMenuText::CENTRE_JUSTIFY);
 
     TEST_INVARIANT;
 }
@@ -76,33 +76,33 @@ void MachGuiPlayerNameList::names(
     string newPlayer3 = truncate(player3, maxWidth);
     string newPlayer4 = truncate(player4, maxWidth);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38), font.textWidth(newPlayer1), spacing),
         newPlayer1,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + spacing), font.textWidth(newPlayer2), spacing),
         newPlayer2,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 2)), font.textWidth(newPlayer3), spacing),
         newPlayer3,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 3)), font.textWidth(newPlayer4), spacing),
         newPlayer4,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 }
 
 // virtual

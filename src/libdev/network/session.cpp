@@ -8,22 +8,22 @@ const int MAXPLAYERS = 10;
 
 NetAppSession::NetAppSession(const NetAppSessionName& sessionName)
 {
-    pIAppSession_ = _NEW(NetIAppSession(sessionName));
+    pIAppSession_ = new NetIAppSession(sessionName);
 }
 
 NetAppSession::NetAppSession(const NetAppSessionUid& sessionUid)
 {
-    pIAppSession_ = _NEW(NetIAppSession(sessionUid));
+    pIAppSession_ = new NetIAppSession(sessionUid);
 }
 
 NetAppSession::NetAppSession()
 {
-    pIAppSession_ = _NEW(NetIAppSession());
+    pIAppSession_ = new NetIAppSession();
 }
 
 NetAppSession::~NetAppSession()
 {
-    _DELETE(pIAppSession_);
+    delete pIAppSession_;
 }
 
 NetAppSession::NetSessionStatus NetAppSession::currentStatus() const

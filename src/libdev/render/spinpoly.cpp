@@ -88,7 +88,7 @@ void RenSpinTFPolygon::SpinAxis::CLASS_INVARIANT
 }
 
 RenSpinTFPolygon::RenSpinTFPolygon(NormalType n)
-    : vertices_(_NEW(RenIVertexData()))
+    : vertices_(new RenIVertexData())
     , uv_()
     , normalType_(n)
     , verticesOrdered_(false)
@@ -109,7 +109,7 @@ RenSpinTFPolygon::RenSpinTFPolygon(NormalType n)
 }
 
 RenSpinTFPolygon::RenSpinTFPolygon(const RenSpinTFPolygon& copyMe)
-    : vertices_(_NEW(RenIVertexData(*copyMe.vertices_)))
+    : vertices_(new RenIVertexData(*copyMe.vertices_))
     , uv_(copyMe.uv_)
     , material_(copyMe.material_)
     , spinAxis_(copyMe.spinAxis_)
@@ -126,7 +126,7 @@ RenSpinTFPolygon::RenSpinTFPolygon(
     const RenMaterial& material,
     const RenSpinTFPolygon::SpinAxis& spinAxis,
     NormalType normal)
-    : vertices_(_NEW(RenIVertexData()))
+    : vertices_(new RenIVertexData())
     , uv_(uv)
     , material_(material)
     , spinAxis_(spinAxis)
@@ -149,7 +149,7 @@ RenSpinTFPolygon::RenSpinTFPolygon(
 RenSpinTFPolygon::~RenSpinTFPolygon()
 {
     TEST_INVARIANT;
-    _DELETE(vertices_);
+    delete vertices_;
 }
 
 void RenSpinTFPolygon::CLASS_INVARIANT
@@ -292,7 +292,7 @@ void RenSpinTFPolygon::render(
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = ill->applyMaterialAndCopy(mat, *vertices_, vertices_->size());
-            RenIDelayedSpinPolygon* spoly = _NEW(RenIDelayedSpinPolygon(lit, vertices_->size(), mat, glWorld));
+            RenIDelayedSpinPolygon* spoly = new RenIDelayedSpinPolygon(lit, vertices_->size(), mat, glWorld);
             std::unique_ptr<RenIDepthSortedItem> item(spoly);
             devImpl->alphaSorter().addItem(item);
         }

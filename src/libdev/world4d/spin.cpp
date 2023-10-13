@@ -31,7 +31,7 @@ W4dSpinSprite::W4dSpinSprite(
     doNotLight(true);
 
     pMesh_ = RenMesh::createEmpty();
-    pMeshInstance_ = _NEW(RenMeshInstance(pMesh_));
+    pMeshInstance_ = new RenMeshInstance(pMesh_);
 
     //  Set up a turn to face polygon in the mesh
 
@@ -64,7 +64,7 @@ W4dSpinSprite::~W4dSpinSprite()
     TEST_INVARIANT;
 
     //  The mesh instance will be deleted in the entity's destructor
-    //    _DELETE( pMeshInstance_ );
+    //    delete pMeshInstance_;
 }
 
 void W4dSpinSprite::CLASS_INVARIANT

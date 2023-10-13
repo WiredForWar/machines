@@ -31,7 +31,7 @@ MachPhysLargeMissile::MachPhysLargeMissile(
     MachPhys::Mounting mounting)
     : MachPhysLinearWeapon(exemplar(), mounting, pParent, localTransform)
 {
-    pMissile_ = _NEW(MachPhysMissile(this, MexPoint3d(0, 0, 1.28), MachPhysMissile::MISSILE_LARGE));
+    pMissile_ = new MachPhysMissile(this, MexPoint3d(0, 0, 1.28), MachPhysMissile::MISSILE_LARGE);
     pMissile_->visible(true);
     TEST_INVARIANT;
 }
@@ -57,7 +57,7 @@ MachPhysLargeMissile::MachPhysLargeMissile(PerConstructor con)
 
 MachPhysLargeMissile::~MachPhysLargeMissile()
 {
-    _DELETE(pMissile_);
+    delete pMissile_;
     TEST_INVARIANT;
 }
 
@@ -141,10 +141,10 @@ MachPhysMissile* MachPhysLargeMissile::createMissile(
     //   W4dSoundManager::instance().play( pMissile, SID_MFLY, launchTime, 1 );
 
     // Create another missile
-    pMissile_ = _NEW(MachPhysMissile(this, MexPoint3d(0, 0, 1.28), MachPhysMissile::MISSILE_LARGE));
+    pMissile_ = new MachPhysMissile(this, MexPoint3d(0, 0, 1.28), MachPhysMissile::MISSILE_LARGE);
 
     PhysRelativeTime reloadTime = MachPhysData::instance().weaponData(MachPhys::LARGE_MISSILE).reloadTime();
-    W4dVisibilityPlanPtr missileVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr missileVisibilityPlanPtr(new W4dVisibilityPlan(false));
 
     missileVisibilityPlanPtr->add(true, reloadTime);
     pMissile_->entityPlanForEdit().visibilityPlan(missileVisibilityPlanPtr, burstStartTime);

@@ -47,7 +47,7 @@ W4dEntityImpl::W4dEntityImpl(W4dEntity* pParent, const W4dTransform3d& newLocalT
     : localTransform_(newLocalTransform)
     , pParent_(pParent)
     , childList_(nullptr)
-    , meshes_(_NEW(Meshes))
+    , meshes_(new Meshes)
     , intersectingDomains_(nullptr)
     , pHolder_(nullptr)
     , pEntityScale_(nullptr)
@@ -90,7 +90,7 @@ W4dEntityImpl::W4dEntityImpl(const W4dEntityImpl& copyMe, W4dEntity* pParent, co
     : localTransform_(newLocalTransform)
     , pParent_(pParent)
     , childList_(nullptr)
-    , meshes_(_NEW(Meshes))
+    , meshes_(new Meshes)
     , intersectingDomains_(nullptr)
     , pHolder_(nullptr)
     , pEntityScale_(nullptr)
@@ -122,16 +122,16 @@ W4dEntityImpl::W4dEntityImpl(const W4dEntityImpl& copyMe, W4dEntity* pParent, co
     , clientData_(copyMe.clientData_)
 {
     if (copyMe.pFilterColour_ != nullptr)
-        pFilterColour_ = _NEW(RenColour(*copyMe.pFilterColour_));
+        pFilterColour_ = new RenColour(*copyMe.pFilterColour_);
 
     if (copyMe.pAnimationDataPtrs_ != nullptr)
-        pAnimationDataPtrs_ = _NEW(AnimationDataPtrs(*copyMe.pAnimationDataPtrs_));
+        pAnimationDataPtrs_ = new AnimationDataPtrs(*copyMe.pAnimationDataPtrs_);
 
     if (copyMe.pAnimationLightDataPtrs_ != nullptr)
-        pAnimationLightDataPtrs_ = _NEW(AnimationDataPtrs(*copyMe.pAnimationLightDataPtrs_));
+        pAnimationLightDataPtrs_ = new AnimationDataPtrs(*copyMe.pAnimationLightDataPtrs_);
 
     if (copyMe.name_ != nullptr)
-        name_ = _NEW(string(*copyMe.name_));
+        name_ = new string(*copyMe.name_);
 
     TEST_INVARIANT;
 }
@@ -139,7 +139,7 @@ W4dEntityImpl::W4dEntityImpl(const W4dEntityImpl& copyMe, W4dEntity* pParent, co
 W4dEntityImpl::W4dEntityImpl()
     : pParent_(nullptr)
     , childList_(nullptr)
-    , meshes_(_NEW(Meshes))
+    , meshes_(new Meshes)
     , intersectingDomains_(nullptr)
     , isDomain_(false)
     , isComposite_(false)
@@ -180,7 +180,7 @@ W4dEntityImpl::W4dEntityImpl(
     W4dEntity::NotAChild)
     : pParent_(pParent)
     , childList_(nullptr)
-    , meshes_(_NEW(Meshes))
+    , meshes_(new Meshes)
     , intersectingDomains_(nullptr)
     , isDomain_(false)
     , isComposite_(false)
@@ -221,25 +221,25 @@ W4dEntityImpl::~W4dEntityImpl()
     ASSERT_INFO(nLinkedSounds_);
     ASSERT(nLinkedSounds_ == 0, "W4dEntityImpl dtor still has non-zero sound count");
 
-    _DELETE(pEntityScale_);
-    _DELETE(pPlan_);
-    _DELETE(pPlanUpdateTimes_);
+    delete pEntityScale_;
+    delete pPlan_;
+    delete pPlanUpdateTimes_;
 
-    _DELETE(childList_);
-    _DELETE(intersectingDomains_);
-    _DELETE(boundingVolume_);
+    delete childList_;
+    delete intersectingDomains_;
+    delete boundingVolume_;
 
-    _DELETE(pLocalLightList_);
-    _DELETE(name_);
-    _DELETE(pFilterColour_);
-    _DELETE(pAnimationDataPtrs_);
-    _DELETE(pAnimationLightDataPtrs_);
+    delete pLocalLightList_;
+    delete name_;
+    delete pFilterColour_;
+    delete pAnimationDataPtrs_;
+    delete pAnimationLightDataPtrs_;
 
     for (Meshes::iterator i = meshes_->begin(); i != meshes_->end(); ++i)
     {
-        _DELETE((*i).mesh);
+        delete (*i).mesh;
     }
-    _DELETE(meshes_);
+    delete meshes_;
 }
 
 void W4dEntityImpl::CLASS_INVARIANT
@@ -250,7 +250,7 @@ void W4dEntityImpl::CLASS_INVARIANT
 void W4dEntityImpl::name(const string& name)
 {
     if (name_ == nullptr)
-        name_ = _NEW(string(name));
+        name_ = new string(name);
     else
         *name_ = name;
 }
@@ -277,7 +277,7 @@ void W4dEntityImpl::addAnimationData(W4dAnimationData* pAnimData)
 {
     if (pAnimationDataPtrs_ == nullptr)
     {
-        pAnimationDataPtrs_ = _NEW(AnimationDataPtrs);
+        pAnimationDataPtrs_ = new AnimationDataPtrs;
         pAnimationDataPtrs_->reserve(2);
     }
 
@@ -288,7 +288,7 @@ void W4dEntityImpl::addLightAnimationData(W4dLightData* pAnimData)
 {
     if (pAnimationLightDataPtrs_ == nullptr)
     {
-        pAnimationLightDataPtrs_ = _NEW(AnimationDataPtrs);
+        pAnimationLightDataPtrs_ = new AnimationDataPtrs;
         pAnimationLightDataPtrs_->reserve(2);
     }
 
@@ -471,7 +471,7 @@ void perRead(PerIstream& istr, W4dEntityImpl::PlanUpdateTimes& times)
 void W4dEntityImpl::filterColour(const RenColour& colour)
 {
     if (not filterColourIsSet())
-        pFilterColour_ = _NEW(RenColour(colour));
+        pFilterColour_ = new RenColour(colour);
     else
         *pFilterColour_ = colour;
 
@@ -499,7 +499,7 @@ const string& W4dEntityImpl::dummyName()
 W4dLocalLightList& W4dEntityImpl::lightListForEdit()
 {
     if (pLocalLightList_ == nullptr)
-        pLocalLightList_ = _NEW(W4dLocalLightList());
+        pLocalLightList_ = new W4dLocalLightList();
 
     return *pLocalLightList_;
 }

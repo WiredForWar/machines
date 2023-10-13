@@ -103,13 +103,13 @@ void MachPhysSmokePlume::constructEntityPlan(
     PhysMotionPlanPtr planPtr(pMotionPlan);
 
     // Create the scale plans. TBD: Invent and use a segmented scale plan to replace 2 simple ones
-    W4dScalePlan* pScalePlan1 = _NEW(W4dSimpleUniformScalePlan(0.01, 1.0, riseTime / 2.0));
-    W4dScalePlan* pScalePlan2 = _NEW(W4dSimpleUniformScalePlan(1.0, 0.01, riseTime / 2.0));
+    W4dScalePlan* pScalePlan1 = new W4dSimpleUniformScalePlan(0.01, 1.0, riseTime / 2.0);
+    W4dScalePlan* pScalePlan2 = new W4dSimpleUniformScalePlan(1.0, 0.01, riseTime / 2.0);
 
     W4dScalePlanPtr scalePlan1Ptr(pScalePlan1);
     W4dScalePlanPtr scalePlan2Ptr(pScalePlan2);
 
-    W4dVisibilityPlan* pVisibilityPlan2 = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pVisibilityPlan2 = new W4dVisibilityPlan(true);
     pVisibilityPlan2->add(false, riseTime);
 
     W4dVisibilityPlanPtr visibilityPlanPtr2(pVisibilityPlan2);
@@ -126,9 +126,9 @@ void MachPhysSmokePlume::constructEntityPlan(
         MexTransform3d puffTransform;
         planPtr->transform(PhysRelativeTime(0.0), &puffTransform);
 
-        MachPhysSmokePuff* pPuff = _NEW(MachPhysSmokePuff(this, puffTransform, puffType, puffSize, depthOffset));
+        MachPhysSmokePuff* pPuff = new MachPhysSmokePuff(this, puffTransform, puffType, puffSize, depthOffset);
 
-        W4dEntityPlan* pEntityPlan = _NEW(W4dEntityPlan());
+        W4dEntityPlan* pEntityPlan = new W4dEntityPlan();
 
         pEntityPlan->absoluteMotion(planPtr, 0.0);
         pEntityPlan->scalePlan(scalePlan1Ptr, 0.0);
@@ -152,7 +152,7 @@ MachPhysSmokePlume::~MachPhysSmokePlume()
 
     for (PuffDatas::iterator i = puffs_.begin(); i != puffs_.end(); ++i)
     {
-        _DELETE((*i).pPlan());
+        delete (*i).pPlan();
     }
 }
 
@@ -189,7 +189,7 @@ PhysLinearMotionPlan* MachPhysSmokePlume::generateMotionPlan(const PhysRelativeT
         transforms.push_back(MexTransform3d(orientation, MexPoint3d(x, y, height)));
     }
 
-    PhysLinearMotionPlan* pMotionPlan = _NEW(PhysLinearMotionPlan(MexTransform3d(), transforms.front(), times.front()));
+    PhysLinearMotionPlan* pMotionPlan = new PhysLinearMotionPlan(MexTransform3d(), transforms.front(), times.front());
 
     ctl_vector<MexTransform3d>::const_iterator transformIterator = transforms.begin();
     ctl_vector<PhysRelativeTime>::const_iterator timeIterator = times.begin();

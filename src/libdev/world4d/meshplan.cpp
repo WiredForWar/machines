@@ -19,7 +19,7 @@ W4dMeshPlan::W4dMeshPlan()
     intervals_.reserve(6);
 
     // Construct a root entity to store the W4dGenerics we add for each set of meshes
-    pRoot_ = _NEW(W4dRoot(W4dRoot::W4dRootId(2)));
+    pRoot_ = new W4dRoot(W4dRoot::W4dRootId(2));
     POST(pRoot_ != nullptr);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ W4dMeshPlan::~W4dMeshPlan()
 
     // Delete the root along with all the W4dGenerics
     if (pRoot_)
-        _DELETE(pRoot_);
+        delete pRoot_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,7 +40,7 @@ void W4dMeshPlan::add(const SysPathName& pathName, const PhysRelativeTime& endTi
     PRE(intervals_.size() == 0 or intervals_.back().second < endTime);
 
     // Construct a W4dGeneric from the lod file
-    W4dGeneric* pGeneric = _NEW(W4dGeneric(pRoot_, transform));
+    W4dGeneric* pGeneric = new W4dGeneric(pRoot_, transform);
     pGeneric->loadLODFile(pathName);
 
     // Add the entity and the time as a pair to the collection

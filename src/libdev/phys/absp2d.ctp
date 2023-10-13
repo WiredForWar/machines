@@ -40,7 +40,7 @@ PhysAlignedBSPTree2d<P_ITEM>::PhysAlignedBSPTree2d(
         minResolution_ = lipSize * 2;
 
     // Allocate the top partition and set storage size for its contents
-    pTopPartition_ = _NEW(Partition(nMaxItems_));
+    pTopPartition_ = new Partition(nMaxItems_);
 
     TEST_INVARIANT;
 }
@@ -53,7 +53,7 @@ template <class P_ITEM> PhysAlignedBSPTree2d<P_ITEM>::~PhysAlignedBSPTree2d()
 
     // Delete the tree of partitions recursively
     if (pTopPartition_)
-        _DELETE(pTopPartition_);
+        delete (pTopPartition_);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,8 +134,8 @@ bool PhysAlignedBSPTree2d<P_ITEM>::split(Partition* pPartition, const MexAligned
     if (wasSplit)
     {
         // Add the 2 new partitions
-        pPartition->pLeft_ = _NEW(Partition(nMaxItems_));
-        pPartition->pRight_ = _NEW(Partition(nMaxItems_));
+        pPartition->pLeft_ = new Partition(nMaxItems_);
+        pPartition->pRight_ = new Partition(nMaxItems_);
 
         // Extract the item pointers from the current list and clear it
         PItems& theItems = pPartition->items_;

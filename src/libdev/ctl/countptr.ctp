@@ -11,7 +11,7 @@
 
 template <class T>
 CtlCountedPtr<T>::CtlCountedPtr(T* pT)
-    : pCount_(pT ? _NEW(CtlCountHolder<T>) : nullptr)
+    : pCount_(pT ? new(CtlCountHolder<T>) : nullptr)
 {
     PRE_INFO(_STATIC_CAST(void*, pT));
     ASSERT(
@@ -85,7 +85,7 @@ template <class T> CtlCountHolder<T>::~CtlCountHolder()
         implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerDestructionValid(pT_)),
         "Raw pointer has already been deleted by another counted pointer");
 
-    _DELETE(pT_);
+    delete pT_;
 }
 
 template <class T> bool CtlCountedPtr<T>::isShared() const
@@ -110,7 +110,7 @@ template <class T> void CtlCountedPtr<T>::clear()
 
 template <class T>
 CtlConstCountedPtr<T>::CtlConstCountedPtr(T* pT)
-    : pCount_(pT ? _NEW(CtlCountHolder<T>) : nullptr)
+    : pCount_(pT ? new(CtlCountHolder<T>) : nullptr)
 {
     PRE_INFO(_STATIC_CAST(void*, pT));
     ASSERT(

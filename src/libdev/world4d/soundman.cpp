@@ -40,7 +40,7 @@ W4dSoundManager& W4dSoundManager::instance()
 
 W4dSoundManager::W4dSoundManager()
 {
-    pImpl_ = _NEW(W4dSoundManagerImpl);
+    pImpl_ = new W4dSoundManagerImpl;
     TEST_INVARIANT;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -63,13 +63,13 @@ W4dSoundManager::~W4dSoundManager()
     //      for( ; i!=pAvailableSounds_->end() ; ++i )
     //      {
     //          if(*i)
-    //              _DELETE(*i);
+    //              delete *i;
     //          (*i) = NULL;
     //      }
-    //      _DELETE(pAvailableSounds_);
+    //      delete pAvailableSounds_;
     //  }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -659,14 +659,14 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
     CB_DEPIMPL(W4dSoundManagerImpl::SoundDataVector*, pAvailableSounds_);
 
     if (!pAvailableSounds_)
-        pAvailableSounds_ = _NEW(W4dSoundManagerImpl::SoundDataVector(registeredSounds_.size()));
+        pAvailableSounds_ = new W4dSoundManagerImpl::SoundDataVector(registeredSounds_.size());
 
     W4dSoundManagerImpl::SoundDataVector::iterator i = pAvailableSounds_->begin();
 
     for (; i != pAvailableSounds_->end(); ++i)
     {
         if (*i)
-            _DELETE(*i);
+            delete *i;
         (*i) = NULL;
     }
 
@@ -678,13 +678,13 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
 
     if (SysMetaFile::useMetaFile())
     {
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, definitionFileName, std::ios::in)));
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, definitionFileName, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(definitionFileName.c_str());
-        // pIstream = _NEW( std::ifstream( definitionFileName.c_str(), std::ios::text | std::ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(definitionFileName.c_str(), std::ios::in)));
+        // pIstream = new std::ifstream( definitionFileName.c_str(), std::ios::text | std::ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(definitionFileName.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, definitionFileName);
@@ -738,7 +738,7 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
         }
         else
         {
-            availableSounds[registeredSounds_[tokens[0]]] = _NEW(W4dSoundData(
+            availableSounds[registeredSounds_[tokens[0]]] = new W4dSoundData(
                 tokens[1],
                 atoi(tokens[0].c_str()),
                 atoi(tokens[2].c_str()),
@@ -746,7 +746,7 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
                 atof(tokens[4].c_str()),
                 is3D,
                 isHWMixed,
-                atoi(tokens[5].c_str())));
+                atoi(tokens[5].c_str()));
         }
         parser.parseNextLine();
     }

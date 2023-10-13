@@ -117,7 +117,7 @@ void MachHWResearchIcons::addIcons(
         MachLogResearchItem* pResearchItem = (*it);
         if (not pResearchItem->researched(pHardwareLab->race()))
         {
-            _NEW(MachHWResearchIcon(this, pInGameScreen, pHWResearchBank, pHardwareLab, pResearchItem));
+            new MachHWResearchIcon(this, pInGameScreen, pHWResearchBank, pHardwareLab, pResearchItem);
         }
     }
     // JERRY_STREAM( WHERE_STR << std::endl );

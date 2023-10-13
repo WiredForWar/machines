@@ -30,7 +30,7 @@ private:
         bool create = false;
         try
         {
-            xmlFile_ = _NEW(rapidxml::file<>(regFile_.c_str()));
+            xmlFile_ = new rapidxml::file<>(regFile_.c_str());
             doc_.parse<0>(xmlFile_->data());
         }
         catch (const rapidxml::parse_error& e)
@@ -54,7 +54,7 @@ private:
     ~SysRegistryImpl()
     {
         doc_.clear();
-        _DELETE(xmlFile_);
+        delete xmlFile_;
     };
     void store()
     {
@@ -91,7 +91,7 @@ SysRegistry& SysRegistry::instance()
 }
 
 SysRegistry::SysRegistry()
-    : pImpl_(_NEW(SysRegistryImpl))
+    : pImpl_(new SysRegistryImpl)
 {
 
     TEST_INVARIANT;
@@ -103,7 +103,7 @@ SysRegistry::~SysRegistry()
     TEST_INVARIANT;
     while (openKeys_.size())
         closeKey(openKeys_.front());
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void SysRegistry::reload()

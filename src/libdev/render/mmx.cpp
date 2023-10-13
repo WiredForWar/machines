@@ -16,7 +16,7 @@
 
 RenIMMXIlluminator::RenIMMXIlluminator(RenIDeviceImpl* dev)
     : RenIIlluminator(dev)
-    , lightingBuffer_(_NEW(RenIFixPtLightingBuffer))
+    , lightingBuffer_(new RenIFixPtLightingBuffer)
 {
     useLightingBuffer(lightingBuffer_);
 }
@@ -24,7 +24,7 @@ RenIMMXIlluminator::RenIMMXIlluminator(RenIDeviceImpl* dev)
 // virtual
 RenIMMXIlluminator::~RenIMMXIlluminator()
 {
-    _DELETE(lightingBuffer_);
+    delete lightingBuffer_;
 }
 
 // virtual

@@ -25,7 +25,7 @@
 /* //////////////////////////////////////////////////////////////////////////// */
 
 MachLogConstructionTree::MachLogConstructionTree()
-    : pImpl_(_NEW(MachLogConstructionTreeImpl()))
+    : pImpl_(new MachLogConstructionTreeImpl())
 {
     CB_MachLogConstructionTree_DEPIMPL();
 
@@ -46,11 +46,11 @@ MachLogConstructionTree::~MachLogConstructionTree()
     TEST_INVARIANT;
     while (constructionItems_.size() > 0)
     {
-        _DELETE(constructionItems_.front());
+        delete constructionItems_.front();
         constructionItems_.erase(constructionItems_.begin());
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////////////////// */
@@ -308,14 +308,14 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, treePath, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, treePath, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, treePath, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, treePath, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(treePath.c_str());
-        // pIstream = _NEW( ifstream( treePath.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(treePath.c_str(), std::ios::in)));
+        // pIstream = new ifstream( treePath.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(treePath.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, treePath);
@@ -355,7 +355,7 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
                 hwLevel = atoi(parser.tokens()[1].c_str());
             }
 
-            MachLogConstructionItem* pRI = _NEW(MachLogConstructionItem(consType, subType, hwLevel, weaponCombo));
+            MachLogConstructionItem* pRI = new MachLogConstructionItem(consType, subType, hwLevel, weaponCombo);
             //          ASSERT_INFO( *pRI );
             constructionItems_.push_back(pRI);
         }

@@ -113,13 +113,13 @@ MachLogVortexBomb::~MachLogVortexBomb()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /*
 MachLogVortexBombImpl* MachLogVortexBomb::pImpl()
 {
-    pImpl_ = _NEW( MachLogVortexBombImpl( &weaponData ) );
+    pImpl_ = new MachLogVortexBombImpl( &weaponData );
     return pImpl_;
 }
 */
@@ -151,7 +151,7 @@ MachPhysVortexBomb* MachLogVortexBomb::pNewPhysVortexBomb(
     const MachPhysWeaponData& weaponData,
     MachActor* pOwnerActor)
 {
-    pImpl_ = _NEW(MachLogVortexBombImpl(&weaponData));
+    pImpl_ = new MachLogVortexBombImpl(&weaponData);
 
     CB_MachLogVortexBomb_DEPIMPL();
 
@@ -212,7 +212,7 @@ MachPhysVortexBomb* MachLogVortexBomb::pNewPhysVortexBomb(
 
     // Construct the physical missile
 
-    MachPhysVortexBomb* pPhysVortexBomb = _NEW(MachPhysVortexBomb(pDomain, localTransform));
+    MachPhysVortexBomb* pPhysVortexBomb = new MachPhysVortexBomb(pDomain, localTransform);
     *ppPhysVortexBomb = pPhysVortexBomb;
 
     // Now make sure overlapping domains have an intersect relationship with this physical vortex bomb object. Thing.

@@ -81,7 +81,7 @@ MachPhysPulseBlob::~MachPhysPulseBlob()
 {
     TEST_INVARIANT;
 
-    _DELETE(pFireball_);
+    delete pFireball_;
 }
 
 void MachPhysPulseBlob::CLASS_INVARIANT
@@ -108,13 +108,13 @@ const MachPhysPulseBlob& MachPhysPulseBlob::exemplar(MachPhys::WeaponType type)
     {
         case MachPhys::PULSE_RIFLE:
         {
-            static MachPhysPulseBlob* blob = _NEW( MachPhysPulseBlob( type ) );
+            static MachPhysPulseBlob* blob = new MachPhysPulseBlob( type );
             result = blob;
             break;
         }
         case MachPhys::PULSE_CANNON:
         {
-            static MachPhysPulseBlob* blob = _NEW( MachPhysPulseBlob(type) );
+            static MachPhysPulseBlob* blob = new MachPhysPulseBlob(type);
             result = blob;
             break;
         }
@@ -151,10 +151,10 @@ PhysRelativeTime MachPhysPulseBlob::doBeDestroyedAt(const PhysAbsoluteTime& time
                 //  MachPhysPulseWeapon::createPulseDisc( pParent(), destructPosition, time );
                 // create splat and aura
 
-                MachPhysPulseAura* pAura = _NEW(MachPhysPulseAura(pParent(), destructPosition));
+                MachPhysPulseAura* pAura = new MachPhysPulseAura(pParent(), destructPosition);
                 pAura->startPulseAura(time, duration);
 
-                MachPhysPulseSplat* pSplat = _NEW(MachPhysPulseSplat(pParent(), destructPosition));
+                MachPhysPulseSplat* pSplat = new MachPhysPulseSplat(pParent(), destructPosition);
                 pSplat->startPulseSplat(time, duration);
 
                 // Add to the garbage collection list. Let it survive, so the sound

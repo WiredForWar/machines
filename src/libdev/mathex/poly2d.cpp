@@ -32,7 +32,7 @@ MexPolygon2d::MexPolygon2d(const MexPolygon2d& p)
 MexPolygon2d::~MexPolygon2d()
 {
     if (pEdgeLengths_ != nullptr)
-        _DELETE(pEdgeLengths_);
+        delete pEdgeLengths_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -91,7 +91,7 @@ void MexPolygon2d::computeEdgeLengths() const
     {
         // No, so create one
         MexPolygon2d* nonConstThis = (MexPolygon2d*)this;
-        nonConstThis->pEdgeLengths_ = _NEW(Lengths);
+        nonConstThis->pEdgeLengths_ = new Lengths;
         pEdgeLengths_->reserve(nVertices_);
     }
     else
@@ -121,7 +121,7 @@ void MexPolygon2d::clearCachedData() const
     // Clear edge lengths vector if stored
     if (pEdgeLengths_)
     {
-        _DELETE(nonConstThis->pEdgeLengths_);
+        delete nonConstThis->pEdgeLengths_;
         nonConstThis->pEdgeLengths_ = nullptr;
     }
 }

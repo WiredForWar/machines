@@ -58,7 +58,7 @@ static PhysScalarPlanPtr scalarPlanPtr(const PhysRelativeTime& time, const doubl
     scales.push_back(alpha);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
     return PhysScalarPlanPtr(pPlan);
 }
 
@@ -134,7 +134,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     const PhysRelativeTime burstWaveDuration = demolitionDuration + demolitionOffset - expansionOffset;
 
     // Allocate an object to own all the explosion animation entities in the same position as the object
-    W4dEntity* pOwner = _NEW(W4dGeneric(pObject_->pParent(), pObject_->localTransform(), W4dEntity::NOT_SOLID));
+    W4dEntity* pOwner = new W4dGeneric(pObject_->pParent(), pObject_->localTransform(), W4dEntity::NOT_SOLID);
 
     // The current model is all emissive or black.  Hence, it should not need
     // lighting.  This could change if the model changes.
@@ -185,9 +185,9 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
         burstWaveToRadius = burstWaveFromRadius * radiusRatio;
     }
 
-    MachPhysBurstWave* pBurstWave = _NEW(MachPhysBurstWave(pOwner, MexTransform3d()));
+    MachPhysBurstWave* pBurstWave = new MachPhysBurstWave(pOwner, MexTransform3d());
     pBurstWave->startBurstWave(startTime + expansionOffset, burstTime, burstWaveFromRadius, burstWaveToRadius, 1.0);
-    //  MachPhysNukeWave* pBurstWave = _NEW( MachPhysNukeWave( pObject_, MexTransform3d() ) );
+    //  MachPhysNukeWave* pBurstWave = new MachPhysNukeWave( pObject_, MexTransform3d() );
     //  pBurstWave->startNukeWave( startTime+expansionOffset, burstTime, burstWaveFromRadius, burstWaveToRadius, 1.0);
     //  W4dGarbageCollector::instance().add( pBurstWave, startTime + duration );
 
@@ -197,20 +197,20 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     MATHEX_SCALAR buildingSize = vector.modulus();
     MATHEX_SCALAR mainFireballSize = MachPhysRandom::randomDouble(buildingSize * 4, buildingSize * 6);
     MATHEX_SCALAR mainFireBallAngle = MachPhysRandom::randomDouble(0, (Mathex::PI));
-    MachPhysFireball* pMainFireball = _NEW(MachPhysFireball(
+    MachPhysFireball* pMainFireball = new MachPhysFireball(
         pOwner,
         MexPoint3d(boxCentre.x(), boxCentre.y(), 0),
         MachPhysFireball::randomFireball(),
         mainFireballSize, // size
         -buildingSize / 2.0, // depthOffset
         startTime + mainFireballOffset,
-        mainFireballDuration));
+        mainFireballDuration);
     pMainFireball->rotate(MexRadians(MexRadians(mainFireBallAngle)));
 
-    // W4dGeneric* pExplosionSite = _NEW(W4dGeneric(_STATIC_CAST(W4dEntity*, pObject_->containingDomain()),
-    // pObject_->localTransform()));
+    // W4dGeneric* pExplosionSite = new W4dGeneric(_STATIC_CAST(W4dEntity*, pObject_->containingDomain()),
+    // pObject_->localTransform());
     W4dGeneric* pExplosionSite
-        = _NEW(W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pObject_->containingDomain()), pObject_->localTransform()));
+        = new W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pObject_->containingDomain()), pObject_->localTransform());
 
     //  SOUND_STREAM("Object buildingSize " << buildingSize << endl);
     if (buildingSize > 40)
@@ -225,14 +225,14 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
 
     // Add a brief light for the duration of the main fireball.
     const MATHEX_SCALAR lightRange = 1.8 * dimension;
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pOwner, MexVec3(0, 0, 1), lightRange));
+    W4dUniformLight* pLight = new W4dUniformLight(pOwner, MexVec3(0, 0, 1), lightRange);
     pLight->colour(RenColour(3, 2, 0.5));
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.2);
     pLight->quadraticAttenuation(0.79);
     pLight->scope(W4dLight::DYNAMIC);
 
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(false));
     visibilityPlanPtr->add(true, mainFireballOffset);
     visibilityPlanPtr->add(false, mainFireballOffset + mainFireballDuration);
     pLight->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
@@ -256,14 +256,14 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
         PhysRelativeTime fireballStartTime = startTime + MachPhysRandom::randomDouble(0.3, 0.6);
         MATHEX_SCALAR depthOffset = -MachPhysRandom::randomDouble(0, std::min(xOffset, yOffset));
 
-        MachPhysFireball* pFireball = _NEW(MachPhysFireball(
+        MachPhysFireball* pFireball = new MachPhysFireball(
             pOwner,
             fireballPosition,
             MachPhysFireball::randomFireball(),
             fireballSize,
             depthOffset,
             fireballStartTime,
-            duration));
+            duration);
 
         MATHEX_SCALAR fireballAngle = MachPhysRandom::randomDouble(0, (Mathex::PI));
         pFireball->rotate(MexRadians(fireballAngle));
@@ -275,7 +275,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     PhysRelativeTime plumeOffset = -10.0;
 
     //  Start the smoke plume at the very end of the fireballs
-    MachPhysSmokePlume* pSmokePlume = _NEW(MachPhysSmokePlume(
+    MachPhysSmokePlume* pSmokePlume = new MachPhysSmokePlume(
         pOwner,
         plumPosition, // position
         dimension, // height
@@ -284,7 +284,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
         puffSize, // avePuuSize
         MachPhysSmokePuff::randomPuff(),
         startTime + plumeOffset,
-        plumeDuration));
+        plumeDuration);
 
     // Clear all current plans for the object
     if (pObject_->isComposite())
@@ -298,7 +298,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     scaleObject(startTime + expansionOffset, expansionDuration, maxShrinkage, maxExpansion);
 
     // create a visibility plan which hides the building at duration
-    W4dVisibilityPlanPtr objVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr objVisibilityPlanPtr(new W4dVisibilityPlan(true));
     objVisibilityPlanPtr->add(false, visibilityDuration);
 
     // set material plan for white glowing object
@@ -322,11 +322,11 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     //          scales.push_back(0);
     //          scales.push_back(0);
     //
-    //      PhysLinearScalarPlan* pAlphaPlan = _NEW( PhysLinearScalarPlan(linearTimes, scales) );
+    //      PhysLinearScalarPlan* pAlphaPlan = new PhysLinearScalarPlan(linearTimes, scales);
     //      PhysScalarPlanPtr alphaPlanPtr( pAlphaPlan );
     //
     //      W4dSimpleAlphaPlan* pPlan =
-    //                      _NEW( W4dSimpleAlphaPlan( glowingWhite, reasonableSize, alphaPlanPtr, glowingDuration ) );
+    //                      new W4dSimpleAlphaPlan( glowingWhite, reasonableSize, alphaPlanPtr, glowingDuration );
     //
     //      W4dMaterialPlanPtr pMaterialPlanPtr( pPlan );
     //
@@ -339,10 +339,10 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     }
 
     // create the demolition sequence hide it until the end of the shrinking-expansion phase
-    MachPhysObjDemolish* pDemolish = _NEW(MachPhysObjDemolish(pOwner, MexTransform3d(), type));
+    MachPhysObjDemolish* pDemolish = new MachPhysObjDemolish(pOwner, MexTransform3d(), type);
 
     // create a visibility plan which hides the demolistion sequence at startTime
-    W4dVisibilityPlanPtr demolishVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr demolishVisibilityPlanPtr(new W4dVisibilityPlan(false));
     demolishVisibilityPlanPtr->add(true, demolitionOffset);
     demolishVisibilityPlanPtr->add(false, demolitionOffset + demolitionDuration);
 
@@ -397,7 +397,7 @@ void MachPhysObjectExplosion::scaleObject(
     MATHEX_SCALAR endScale)
 {
 
-    W4dSimpleUniformScalePlan* pScalePlan = _NEW(W4dSimpleUniformScalePlan(startScale, endScale, duration));
+    W4dSimpleUniformScalePlan* pScalePlan = new W4dSimpleUniformScalePlan(startScale, endScale, duration);
     pObject_->propogateScalePlan(W4dScalePlanPtr(pScalePlan), startTime);
 }
 
@@ -420,7 +420,7 @@ void MachPhysObjectExplosion::sinkObject(
     downTransform.position(downPosition);
 
     // Set up motion plan accordingly
-    PhysLinearMotionPlan* pMotionPlan = _NEW(PhysLinearMotionPlan(upTransform, downTransform, duration));
+    PhysLinearMotionPlan* pMotionPlan = new PhysLinearMotionPlan(upTransform, downTransform, duration);
 
     pObject_->entityPlanForEdit().absoluteMotion(PhysMotionPlanPtr(pMotionPlan), startTime);
 }

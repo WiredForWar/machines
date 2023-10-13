@@ -42,7 +42,7 @@ MachLogReinforcementsAction::~MachLogReinforcementsAction()
     TEST_INVARIANT;
     while (productionList_.size())
     {
-        _DELETE(productionList_.front());
+        delete productionList_.front();
         productionList_.erase(productionList_.begin());
     }
 }
@@ -130,7 +130,7 @@ MachLogReinforcementsAction::newFromParser(SimCondition* pCondition, bool enable
     HAL_STREAM("MachLogReinforcementsAction::newFromParser\n");
     HAL_INDENT(2);
     MachLogReinforcementsAction* pResult = nullptr;
-    pResult = _NEW(MachLogReinforcementsAction(pCondition, enabled));
+    pResult = new MachLogReinforcementsAction(pCondition, enabled);
     bool finished = false;
     // read initial line for race.
     for (int i = 0; i < pParser->tokens().size(); ++i)
@@ -158,7 +158,7 @@ MachLogReinforcementsAction::newFromParser(SimCondition* pCondition, bool enable
                 wc = MachLogScenario::weaponCombo(pParser->tokens()[4]);
             // TBD: go and get swLevel from research item.
             int swLevel = 1;
-            MachLogProductionUnit* pProd = _NEW(MachLogProductionUnit(ot, subType, hwLevel, swLevel, 0 /*priority*/));
+            MachLogProductionUnit* pProd = new MachLogProductionUnit(ot, subType, hwLevel, swLevel, 0 /*priority*/);
             pProd->weaponCombo(wc);
             HAL_STREAM(" adding a desired machine to reinforcements list:\n" << *pProd << std::endl);
             pResult->addDesiredMachine(pProd);
@@ -290,7 +290,7 @@ void MachLogReinforcementsAction::parseFromScenario(MachPhys::Race race, UtlLine
                 MachLogProductionUnit& unit = (*it);
                 if (unit.type() == type)
                 {
-                    addDesiredMachine(_NEW(MachLogProductionUnit(unit)));
+                    addDesiredMachine(new MachLogProductionUnit(unit));
                     --nToLoad;
                 }
             }

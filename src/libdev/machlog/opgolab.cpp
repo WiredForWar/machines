@@ -122,7 +122,7 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
     // No software labs??            pCon = *j;
     // No software labs??    }
 
-    subOperation(pActor_, _NEW(MachLogEnterBuildingOperation(pActor_, pCon, pActualStation)));
+    subOperation(pActor_, new MachLogEnterBuildingOperation(pActor_, pCon, pActualStation));
 
     finished_ = true;
 

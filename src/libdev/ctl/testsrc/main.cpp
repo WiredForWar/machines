@@ -74,7 +74,7 @@ int main(int, char**)
 
 void testPtr()
 {
-    int* pI = _NEW(int);
+    int* pI = new int;
 
     *pI = 10;
 
@@ -89,9 +89,9 @@ void testPtr()
     //    iPtr3 = pI;
 
     //    testPtr2( pI );
-    testPtr2(_NEW(int));
+    testPtr2(new int);
 
-    double* pD = _NEW(double);
+    double* pD = new double;
 
     *pD = 30.0;
 
@@ -107,7 +107,7 @@ void testPtr3()
 {
     CtlCountedPtr<double> dPtr1(NULL);
 
-    double* pD = _NEW(double);
+    double* pD = new double;
 
     *pD = 30.0;
 
@@ -120,7 +120,7 @@ void testPtr4()
 {
     CtlCountedPtr<double> dPtr1[10];
 
-    double* pD = _NEW(double);
+    double* pD = new double;
 
     *pD = 30.0;
 

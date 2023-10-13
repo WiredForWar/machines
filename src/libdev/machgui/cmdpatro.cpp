@@ -120,7 +120,7 @@ bool MachGuiPatrolCommand::doApply(MachActor* pActor, string*)
             path.push_back(pActor->position());
 
             // Construct the patrol op
-            MachLogPatrolOperation* pOp = _NEW(MachLogPatrolOperation(&pActor->asMachine(), path, true));
+            MachLogPatrolOperation* pOp = new MachLogPatrolOperation(&pActor->asMachine(), path, true);
 
             // Give to actor
             pActor->newOperation(pOp);
@@ -167,7 +167,7 @@ void MachGuiPatrolCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiPatrolCommand::clone() const
 {
-    return _NEW(MachGuiPatrolCommand(&inGameScreen()));
+    return new MachGuiPatrolCommand(&inGameScreen());
 }
 
 // virtual

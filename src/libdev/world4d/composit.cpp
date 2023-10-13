@@ -60,7 +60,7 @@ PER_DEFINE_PERSISTENT_ABSTRACT(W4dComposite);
 
 W4dComposite::W4dComposite(W4dEntity* pParent, const W4dTransform3d& localTransform, Solidity solid)
     : W4dEntity(pParent, localTransform, solid)
-    , pImpl_(_NEW(W4dCompositeImpl(this)))
+    , pImpl_(new W4dCompositeImpl(this))
 {
     CB_W4dComposite_DEPIMPL();
     // Set the allocation size for the W4dLink vector
@@ -73,7 +73,7 @@ W4dComposite::W4dComposite(W4dEntity* pParent, const W4dTransform3d& localTransf
 
 W4dComposite::W4dComposite(const W4dComposite& copyMe, W4dEntity* pParent, const W4dTransform3d& localTransform)
     : W4dEntity(copyMe, pParent, localTransform)
-    , pImpl_(_NEW(W4dCompositeImpl(copyMe.compositeImpl(), this)))
+    , pImpl_(new W4dCompositeImpl(copyMe.compositeImpl(), this))
 {
     sharedCopyCtor(copyMe, COPY_LIGHTS);
 }
@@ -84,7 +84,7 @@ W4dComposite::W4dComposite(
     const W4dTransform3d& localTransform,
     CopyLights copyLights)
     : W4dEntity(copyMe, pParent, localTransform)
-    , pImpl_(_NEW(W4dCompositeImpl(copyMe.compositeImpl(), this)))
+    , pImpl_(new W4dCompositeImpl(copyMe.compositeImpl(), this))
 {
     sharedCopyCtor(copyMe, copyLights);
 }
@@ -128,7 +128,7 @@ void W4dComposite::sharedCopyCtor(const W4dComposite& copyMe, CopyLights copyLig
         }
 
         //  The id is the index into the links_ vector
-        pLink = _NEW(W4dLink(copyMeLink, this, pNewOwner, copyMeLink.localTransform(), maxLinkId_++));
+        pLink = new W4dLink(copyMeLink, this, pNewOwner, copyMeLink.localTransform(), maxLinkId_++);
 
         links_.push_back(pLink);
 
@@ -165,7 +165,7 @@ W4dComposite::~W4dComposite()
     if (nChildren != 0)
         findRoot()->adjustDescendantCount(-nChildren);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 W4dCompositeImpl& W4dComposite::compositeImpl()
@@ -188,7 +188,7 @@ W4dLink* W4dComposite::addLink(const W4dTransform3d& localTransform, Solidity so
     CB_W4dComposite_DEPIMPL();
     W4dLink* pLink;
 
-    pLink = _NEW(W4dLink(this, localTransform, solid, maxLinkId_++));
+    pLink = new W4dLink(this, localTransform, solid, maxLinkId_++);
 
     links_.push_back(pLink);
 
@@ -207,7 +207,7 @@ W4dLink* W4dComposite::addLink(W4dLink* pParent, const W4dTransform3d& localTran
     CB_W4dComposite_DEPIMPL();
     W4dLink* pLink;
 
-    pLink = _NEW(W4dLink(pParent, localTransform, solid, maxLinkId_++));
+    pLink = new W4dLink(pParent, localTransform, solid, maxLinkId_++);
 
     links_.push_back(pLink);
 
@@ -291,7 +291,7 @@ void W4dComposite::hold(W4dEntity* pObject, W4dLink* pParent, const W4dTransform
     // Ensure we have a holding vector
     if (pHeldEntities_ == nullptr)
     {
-        pHeldEntities_ = _NEW(HeldEntities);
+        pHeldEntities_ = new HeldEntities;
         pHeldEntities_->reserve(2);
     }
 
@@ -506,10 +506,10 @@ void W4dComposite::storeLinkTransforms() const
     W4dComposite* nonConstThis = (W4dComposite*)this;
 
     // Clear any existing data
-    _DELETE(pStoredLinkPositions_);
+    delete pStoredLinkPositions_;
 
     // Add the data for each link
-    nonConstThis->compositeImpl().pStoredLinkPositions_ = _NEW(W4dCompositeImpl::StoredLinkPositions);
+    nonConstThis->compositeImpl().pStoredLinkPositions_ = new W4dCompositeImpl::StoredLinkPositions;
     nonConstThis->compositeImpl().pStoredLinkPositions_->reserve(links_.size());
 
     for (W4dLinks::const_iterator it = links_.begin(); it != links_.end(); ++it)
@@ -1084,7 +1084,7 @@ void perRead(PerIstream& istr, W4dComposite& composite)
     istr >> base;
     ASSERT(composite.isComposite(), "Did a persistent read and didn't get a composite.");
 
-    _DELETE(composite.pImpl_);
+    delete composite.pImpl_;
     istr >> composite.pImpl_;
 
     // It is not necessary to attach the lights in exemplars, and for some reason this code

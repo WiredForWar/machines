@@ -29,7 +29,7 @@ PER_DEFINE_PERSISTENT(MachPhysBeeBomber);
 // public constructor
 MachPhysBeeBomber::MachPhysBeeBomber(W4dEntity* pParent, const MexTransform3d& localXform)
     : MachPhysLinearWeapon(exemplar(), MachPhys::TOP, pParent, localXform)
-    , pBeeBomb_(_NEW(MachPhysBeeBomb(this, MexTransform3d())))
+    , pBeeBomb_(new MachPhysBeeBomb(this, MexTransform3d()))
 {
     pBeeBomb_->visible(true);
 
@@ -70,7 +70,7 @@ MachPhysBeeBomber::MachPhysBeeBomber(PerConstructor con)
 
 MachPhysBeeBomber::~MachPhysBeeBomber()
 {
-    _DELETE(pBeeBomb_);
+    delete pBeeBomb_;
 
     TEST_INVARIANT;
 }
@@ -135,11 +135,11 @@ MachPhysBeeBomb* MachPhysBeeBomber::createBeeBomb(
     W4dSoundManager::instance().play(pBeeBomb, SID_BEE_BOMB, burstStartTime, 1);
 
     // hold another one
-    pBeeBomb_ = _NEW(MachPhysBeeBomb(this, MexTransform3d()));
+    pBeeBomb_ = new MachPhysBeeBomb(this, MexTransform3d());
 
     PhysRelativeTime reloadTime = weaponData().reloadTime();
 
-    W4dVisibilityPlanPtr beeBombVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr beeBombVisibilityPlanPtr(new W4dVisibilityPlan(false));
 
     beeBombVisibilityPlanPtr->add(true, reloadTime);
     pBeeBomb_->entityPlanForEdit().visibilityPlan(beeBombVisibilityPlanPtr, launchTime);

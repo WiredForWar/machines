@@ -9,7 +9,7 @@ SimManagerImpl::SimManagerImpl()
     : suspended_(false)
     , nextUpdateProcess_(0)
     , lastRenderStartTime_(0)
-    , timer_(*_NEW(DevTimer))
+    , timer_(*new DevTimer)
     , processesAllDeleted_(true)
     , totalAmountOfPriority_(0)
 {

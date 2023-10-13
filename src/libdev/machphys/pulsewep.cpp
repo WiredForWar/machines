@@ -251,9 +251,9 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
         pMachine, MachPhysEffects::solidWhiteMaterial(), startTime, duration, W4dLOD( 2 )
     );
 
-    W4dUniformLight* pLight = _NEW( W4dUniformLight(pMachine, MexVec3(1, 0, 0), 30));
+    W4dUniformLight* pLight = new W4dUniformLight(pMachine, MexVec3(1, 0, 0), 30));
 
-    pLight->colour( RenColour( 3, 3, 3) );
+    pLight->colour( RenColour( 3, 3, 3);
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.7);
     pLight->quadraticAttenuation(0.3);
@@ -261,7 +261,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
     pLight->visible(false);
     pLight->illuminate(pMachine);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr( new W4dVisibilityPlan( true ) );
     lightVisibilityPlanPtr->add(false, duration);
 
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime );
@@ -293,9 +293,9 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
     );
 
     //a strong unuiform light generated at he point of impact
-    W4dUniformLight* pLight = _NEW( W4dUniformLight(pConstruction, MexVec3(1, 0, 0), 30));
+    W4dUniformLight* pLight = new W4dUniformLight(pConstruction, MexVec3(1, 0, 0), 30));
 
-    pLight->colour( RenColour( 3, 3, 3) );
+    pLight->colour( RenColour( 3, 3, 3);
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.7);
     pLight->quadraticAttenuation(0.3);
@@ -303,7 +303,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
     pLight->visible(false);
     pLight->illuminate(pConstruction);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr( new W4dVisibilityPlan( true ) );
     lightVisibilityPlanPtr->add(false, duration);
 
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime );
@@ -382,12 +382,12 @@ PhysRelativeTime MachPhysPulseWeapon::createPulseDisc(
         firstTime = false;
 
         // Create the visibility plan
-        W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+        W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
         pVisibilityPlan->add(false, duration);
         visibilityPlanPtr = pVisibilityPlan;
 
         // Create the scale plan
-        W4dSimpleUniformScalePlan* pScalePlan = _NEW(W4dSimpleUniformScalePlan(1.0, 5.0, duration));
+        W4dSimpleUniformScalePlan* pScalePlan = new W4dSimpleUniformScalePlan(1.0, 5.0, duration);
         scalePlanPtr = pScalePlan;
 
         // Set the disc material
@@ -400,12 +400,12 @@ PhysRelativeTime MachPhysPulseWeapon::createPulseDisc(
         PhysAcceleratedScalarPlan::RampAccelerations accs;
         accs.reserve(1);
         accs.push_back(ramp);
-        PhysAcceleratedScalarPlan* pAlphaValuePlan = _NEW(PhysAcceleratedScalarPlan(accs, 0.5));
+        PhysAcceleratedScalarPlan* pAlphaValuePlan = new PhysAcceleratedScalarPlan(accs, 0.5);
         alphaValuePlanPtr = pAlphaValuePlan;
     }
 
     // Construct a radial disc at the specified location
-    MachPhysRadialDisc* pDisc = _NEW(MachPhysRadialDisc(pParent, localPosition));
+    MachPhysRadialDisc* pDisc = new MachPhysRadialDisc(pParent, localPosition);
 
     // Make invisible till needed
     pDisc->visible(false);
@@ -419,7 +419,7 @@ PhysRelativeTime MachPhysPulseWeapon::createPulseDisc(
 
     // Set up the alpha plan. We need a fresh copy for each disc because it
     // uses a cached material.
-    W4dSimpleAlphaPlan* pAlphaPlan = _NEW(W4dSimpleAlphaPlan(discMaterial, 1, alphaValuePlanPtr, 2));
+    W4dSimpleAlphaPlan* pAlphaPlan = new W4dSimpleAlphaPlan(discMaterial, 1, alphaValuePlanPtr, 2);
     W4dMaterialPlanPtr alphaPlanPtr(pAlphaPlan);
     entityPlan.materialPlan(alphaPlanPtr, startTime);
 
@@ -479,7 +479,7 @@ MachPhysPulseBlob* MachPhysPulseWeapon::createPulseBlob(
     }
 
     // Create the blob
-    MachPhysPulseBlob* pBlob = _NEW(MachPhysPulseBlob(pParent, startTransform, type(), createLights));
+    MachPhysPulseBlob* pBlob = new MachPhysPulseBlob(pParent, startTransform, type(), createLights);
 
     // let it spin if can
     W4dCompositePlanPtr spinPlanPtr;
@@ -526,7 +526,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
         pVictim, MachPhysEffects::solidWhiteMaterial(), startTime, duration, W4dLOD( 2 )
     );
 
-    W4dUniformLight* pLight = _NEW( W4dUniformLight(pVictim, MexVec3(1, 0, 0), 30) );
+    W4dUniformLight* pLight = new W4dUniformLight(pVictim, MexVec3(1, 0, 0), 30);
 
     pLight->colour( RenColour( 3, 3, 3) );
     pLight->constantAttenuation(0);
@@ -536,7 +536,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
     pLight->visible(false);
     pLight->illuminate(pVictim);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr( _NEW( W4dVisibilityPlan( true ) ) );
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr( new W4dVisibilityPlan( true ) );
     lightVisibilityPlanPtr->add(false, duration);
 
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime );
@@ -554,7 +554,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
 // local function
 static void lightingUpVictim(W4dEntity* pVictim, const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration)
 {
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(pVictim, MexVec3(1, 0, 0), 30));
+    W4dUniformLight* pLight = new W4dUniformLight(pVictim, MexVec3(1, 0, 0), 30);
 
     pLight->colour(RenColour(3, 3, 3));
     pLight->constantAttenuation(0);
@@ -564,7 +564,7 @@ static void lightingUpVictim(W4dEntity* pVictim, const PhysAbsoluteTime& startTi
     pLight->visible(false);
     pLight->illuminate(pVictim);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, duration);
 
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);

@@ -47,7 +47,7 @@ SndMixerParameters::SndMixerParameters(
     Snd::AudioType audioType,
     size_t noOfChannels)
 {
-    pImpl_ = _NEW(SndMixerParametersImpl());
+    pImpl_ = new SndMixerParametersImpl();
 
     CB_DEPIMPL(Snd::Polyphony, polyphony_);
     CB_DEPIMPL(SoundSystem, soundSystem_);
@@ -68,7 +68,7 @@ SndMixerParameters::SndMixerParameters(
 
 SndMixerParameters::~SndMixerParameters()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 Snd::Polyphony SndMixerParameters::polyphony() const

@@ -54,7 +54,7 @@ MachGuiInGameChatMessages& MachGuiInGameChatMessages::instance()
 }
 
 MachGuiInGameChatMessages::MachGuiInGameChatMessages()
-    : pImpl_(_NEW(MachGuiInGameChatMessagesImpl()))
+    : pImpl_(new MachGuiInGameChatMessagesImpl())
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
     standardMessages_.reserve(32);
@@ -79,7 +79,7 @@ MachGuiInGameChatMessages::~MachGuiInGameChatMessages()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiInGameChatMessages::CLASS_INVARIANT

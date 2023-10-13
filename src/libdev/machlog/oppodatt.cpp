@@ -118,7 +118,7 @@ PhysRelativeTime MachLogPodAttackOperation::doUpdate()
     }
     */
 
-    subOperation(pActor_, _NEW(MachLogPodAttackAnimation(pActor_, targetPosition_)));
+    subOperation(pActor_, new MachLogPodAttackAnimation(pActor_, targetPosition_));
 
     return interval;
 }

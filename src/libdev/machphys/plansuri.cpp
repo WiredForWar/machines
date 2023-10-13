@@ -12,7 +12,7 @@ PER_DEFINE_PERSISTENT(MachPhysPlanetSurfaceImpl);
 
 MachPhysPlanetSurfaceImpl::MachPhysPlanetSurfaceImpl()
     : minMachineHeight_(-10000.0)
-    , pPersistenceRoot_(_NEW(W4dRoot(133)))
+    , pPersistenceRoot_(new W4dRoot(133))
 {
 
     TEST_INVARIANT;
@@ -21,7 +21,7 @@ MachPhysPlanetSurfaceImpl::MachPhysPlanetSurfaceImpl()
 MachPhysPlanetSurfaceImpl::~MachPhysPlanetSurfaceImpl()
 {
     TEST_INVARIANT;
-    _DELETE(pPersistenceRoot_);
+    delete pPersistenceRoot_;
 }
 
 void MachPhysPlanetSurfaceImpl::CLASS_INVARIANT

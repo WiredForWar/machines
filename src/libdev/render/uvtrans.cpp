@@ -37,7 +37,7 @@ void RenUVTranslation::print(std::ostream& o) const
 // virtual
 RenUVTransform* RenUVTranslation::clone() const
 {
-    return _NEW(RenUVTranslation(*this));
+    return new RenUVTranslation(*this);
 }
 
 const MexVec2& RenUVTranslation::translation() const

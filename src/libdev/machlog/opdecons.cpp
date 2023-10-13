@@ -100,8 +100,8 @@ PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
     // Only weld away happily if we actually removed something.
     if (hpsRemoved > 0)
     {
-        // subOperation( pConstructorMachine, _NEW( MachLogConstructAnimation( pConstructorMachine, pConstron, units ) )
-        // );
+        // subOperation( pConstructorMachine, new MachLogConstructAnimation( pConstructorMachine, pConstron, units ) )
+        //;
         pConstructorMachine->constructing(true, pConstron->id());
         HAL_STREAM("hpsRemoved is > 0 so set constructing animation going\n");
         // REMEMBER - this call could delete the object pointed to by pConstruction_

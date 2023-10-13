@@ -85,7 +85,7 @@ void RenIPriorityPostSorter::render()
             item->render();
 
             // As soon as the item is drawn, we can delete it.
-            _DELETE(item);
+            delete item;
             (*it) = NULL;
         }
 

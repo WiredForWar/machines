@@ -25,7 +25,7 @@ MachPhysMissileImpl::~MachPhysMissileImpl()
 {
     TEST_INVARIANT;
 
-    _DELETE(pVapourTrail_);
+    delete pVapourTrail_;
 }
 
 void MachPhysMissileImpl::CLASS_INVARIANT

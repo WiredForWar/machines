@@ -54,7 +54,7 @@ MachLogMoveToOperation::MachLogMoveToOperation(
     bool checkForLeave,
     MATHEX_SCALAR tolerance)
     : MachLogOperation("MOVE_TO_OPERATION", MachLogOperation::MOVE_TO_OPERATION)
-    , pImpl_(_NEW(MachLogMoveToOperationImpl(pActor, dest, checkForLeave)))
+    , pImpl_(new MachLogMoveToOperationImpl(pActor, dest, checkForLeave))
 //  state_( PLANNING ),
 //  pathSearch_( MachLogPlanet::instance().surface()->pSpace()->xCells() *
 //  MachLogPlanet::instance().surface()->pSpace()->yCells() )
@@ -75,7 +75,7 @@ MachLogMoveToOperation::MachLogMoveToOperation(
     bool checkForLeave,
     MATHEX_SCALAR tolerance)
     : MachLogOperation("MOVE_TO_OPERATION", MachLogOperation::MOVE_TO_OPERATION)
-    , pImpl_(_NEW(MachLogMoveToOperationImpl(pActor, path, checkForLeave)))
+    , pImpl_(new MachLogMoveToOperationImpl(pActor, path, checkForLeave))
 
 //  state_( PLANNING ),
 //  pathSearch_( MachLogPlanet::instance().surface()->pSpace()->xCells() *
@@ -98,7 +98,7 @@ MachLogMoveToOperation::MachLogMoveToOperation(
     bool checkForLeave,
     MATHEX_SCALAR tolerance)
     : MachLogOperation("MOVE_TO_OPERATION", MachLogOperation::MOVE_TO_OPERATION)
-    , pImpl_(_NEW(MachLogMoveToOperationImpl(pActor, dest, commandId, checkForLeave)))
+    , pImpl_(new MachLogMoveToOperationImpl(pActor, dest, commandId, checkForLeave))
 
 //  state_( PLANNING ),
 //  pathSearch_( MachLogPlanet::instance().surface()->pSpace()->xCells() *
@@ -123,7 +123,7 @@ MachLogMoveToOperation::MachLogMoveToOperation(
     PhysPathFindingPriority pathFindingPriority,
     bool checkForLeave)
     : MachLogOperation("MOVE_TO_OPERATION", MachLogOperation::MOVE_TO_OPERATION, pathFindingPriority)
-    , pImpl_(_NEW(MachLogMoveToOperationImpl(pActor, path, commandId, checkForLeave)))
+    , pImpl_(new MachLogMoveToOperationImpl(pActor, path, commandId, checkForLeave))
 
 //  state_( PLANNING ),
 //  pathSearch_( MachLogPlanet::instance().surface()->pSpace()->xCells() *
@@ -149,7 +149,7 @@ MachLogMoveToOperation::~MachLogMoveToOperation()
     while (path_.size() > 0)
         path_.erase(path_.begin());
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogMoveToOperation::doOutputOperator(std::ostream& o) const
@@ -358,14 +358,14 @@ MachLogMoveAndTurnOperation::MachLogMoveAndTurnOperation(
     bool checkForLeave,
     PhysRelativeTime initialDelay)
     : MachLogOperation("MOVE_AND_TURN_OPERATION", MachLogOperation::MOVE_AND_TURN_OPERATION)
-    , pImpl_(_NEW(MachLogMoveAndTurnOperationImpl(pActor, dest, endFacing, checkForLeave, initialDelay)))
+    , pImpl_(new MachLogMoveAndTurnOperationImpl(pActor, dest, endFacing, checkForLeave, initialDelay))
 {
     // Intentionally Empty
 }
 
 MachLogMoveAndTurnOperation::~MachLogMoveAndTurnOperation()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogMoveAndTurnOperation::doOutputOperator(std::ostream& o) const
@@ -457,7 +457,7 @@ PhysRelativeTime MachLogMoveAndTurnOperation::doUpdate()
     {
         MexRadians turnBy = angleToTurnToFace(*pActor_, endFacing_);
         if (not withinEpsilonOf(angleToTurnToFace(*pActor_, endFacing_).asScalar(), 0.0))
-            subOperation(pActor_, _NEW(MachLogTurnAnimation(pActor_, turnBy)));
+            subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
     }
     return interval;
 }

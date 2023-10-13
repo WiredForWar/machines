@@ -36,7 +36,7 @@ MachGuiAnimations::~MachGuiAnimations()
     // No need to delete animations. This is done automatically by the GuiDisplayable hierarchy.
     // for ( ctl_pvector<MachGuiAnimation>::iterator iter = animations_.begin(); iter != animations_.end(); ++iter )
     //{
-    //  _DELETE( (*iter) );
+    //  delete (*iter);
     //}
 }
 
@@ -74,7 +74,7 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     // set to 0, 1, or 2 NOT 3 ).
     ASSERT(loopBack < numCells, "Loop back set incorrectly, must be less than numCells");
 
-    MachGuiAnimation::Cells* pCells = _NEW(MachGuiAnimation::Cells);
+    MachGuiAnimation::Cells* pCells = new MachGuiAnimation::Cells;
     pCells->reserve(numCells);
 
     while (numCells--)
@@ -83,7 +83,7 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
         if (hasSound)
             tmpIn >> wavFile;
 
-        MachGuiAnimation::Cell* pCell = _NEW(MachGuiAnimation::Cell);
+        MachGuiAnimation::Cell* pCell = new MachGuiAnimation::Cell;
         pCell->cell_ = Gui::bitmap(path);
         pCell->duration_ = duration;
         pCell->randomDurationMinTime_ = minT;
@@ -100,7 +100,7 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     }
 
     MachGuiAnimation* pAnim
-        = _NEW(MachGuiAnimation(pParent, Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset), pCells));
+        = new MachGuiAnimation(pParent, Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset), pCells);
     pAnim->loopBack_ = loopBack;
 
     return pAnim;
@@ -133,9 +133,9 @@ MachGuiAnimation::~MachGuiAnimation()
 
     for (MachGuiAnimation::Cells::iterator iter = pCells_->begin(); iter != pCells_->end(); ++iter)
     {
-        _DELETE((*iter));
+        delete (*iter);
     }
-    _DELETE(pCells_);
+    delete pCells_;
 }
 
 void MachGuiAnimation::update()

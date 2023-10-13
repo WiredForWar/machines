@@ -70,9 +70,8 @@ MachLogHardwareLab::MachLogHardwareLab(
         pNewPhysHardwareLab(subType, pRace, level, location, angle),
         MachLog::HARDWARE_LAB,
         MachPhysData::instance().hardwareLabData(subType, level))
-    , pImpl_(_NEW(MachLogHardwareLabImpl(subType)))
+    , pImpl_(new MachLogHardwareLabImpl(subType))
 {
-
     TEST_INVARIANT;
     CB_MachLogHardwareLab_DEPIMPL();
     availableResearchItems_.reserve(10);
@@ -96,9 +95,8 @@ MachLogHardwareLab::MachLogHardwareLab(
         MachLog::HARDWARE_LAB,
         withId,
         MachPhysData::instance().hardwareLabData(subType, level))
-    , pImpl_(_NEW(MachLogHardwareLabImpl(subType)))
+    , pImpl_(new MachLogHardwareLabImpl(subType))
 {
-
     CB_MachLogHardwareLab_DEPIMPL();
     availableResearchItems_.reserve(10);
 
@@ -176,7 +174,7 @@ MachPhysHardwareLab* MachLogHardwareLab::pNewPhysHardwareLab(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysHardwareLab(pDomain, localTransform, subType, level, pRace->race()));
+    return new MachPhysHardwareLab(pDomain, localTransform, subType, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -324,7 +322,7 @@ float MachLogHardwareLab::totalResearchRate() const
             and &(*i)->motionSeq().currentConfigSpace() == &interiorConfigSpace())
         {
             if ((*i)->isIdle())
-                (*i)->newOperation(_NEW(MachLogResearchAnimation(*i)));
+                (*i)->newOperation(new MachLogResearchAnimation(*i));
 
             float researchContributed = 0;
 
@@ -538,7 +536,7 @@ void MachLogHardwareLab::moveResearchItem(const MachLogResearchItem& mlri, MachL
          ++i)
         if ((*i) == &mlri)
         {
-            //          _DELETE( (*i) );
+            //          delete (*i);
             if (direction == TOWARDS_FRONT and i == currentResearchQueue_.begin())
                 return;
             if (direction == TOWARDS_BACK and i == tempIterator)

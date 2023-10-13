@@ -103,7 +103,7 @@ bool MachGuiRecycleCommand::doApply(MachActor* pActor, string*)
         pSmeltingBuilding_ != nullptr,
         "pSmeltingBuilding_ should not have a NULL assignment if MachGuiRecycleCommand::doApply is called");
 
-    MachLogRecycleOperation* pOp = _NEW(MachLogRecycleOperation(&pActor->asMachine(), pSmeltingBuilding_));
+    MachLogRecycleOperation* pOp = new MachLogRecycleOperation(&pActor->asMachine(), pSmeltingBuilding_);
 
     pActor->newOperation(pOp);
 
@@ -119,7 +119,7 @@ bool MachGuiRecycleCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiRecycleCommand::clone() const
 {
-    return _NEW(MachGuiRecycleCommand(&inGameScreen()));
+    return new MachGuiRecycleCommand(&inGameScreen());
 }
 
 // virtual

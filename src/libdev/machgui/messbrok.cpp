@@ -288,7 +288,7 @@ void MachGuiMessageBroker::processMessage(NetMessage* pMessage)
             break;
         case SYSTEM_MACHGUI_MESSAGE:
             processMachGuiMessage(pMessage);
-            _DELETE(pMessage);
+            delete pMessage;
             break;
         default:
             NETWORK_STREAM("Invalid message code detected in MGMessageBroker::processMessage\n");
@@ -310,7 +310,7 @@ MachGuiMessageBroker::MessageType MachGuiMessageBroker::getMessageType(NetMessag
 
 void MachGuiMessageBroker::sendChatMessage(const string& chat)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiChatMessage* pMessage = _REINTERPRET_CAST(MachGuiChatMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_CHATMESSAGE;
@@ -327,7 +327,7 @@ void MachGuiMessageBroker::sendJoinMessage(const string& playerName, int uniqueM
 {
     NETWORK_STREAM("MachGuiMessageBroker::sendJoinMessage\n");
     NETWORK_INDENT(2);
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiJoinMessage* pMessage = _REINTERPRET_CAST(MachGuiJoinMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_JOINMESSAGE;
@@ -346,7 +346,7 @@ void MachGuiMessageBroker::sendJoinMessage(const string& playerName, int uniqueM
 
 void MachGuiMessageBroker::sendUpdatePlayersMessage()
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiUpdatePlayersMessage* pMessage = _REINTERPRET_CAST(MachGuiUpdatePlayersMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_UPDATEPLAYERSMESSAGE;
@@ -359,7 +359,7 @@ void MachGuiMessageBroker::sendUpdatePlayersMessage()
 
 void MachGuiMessageBroker::sendUpdateGameSettingsMessage()
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiUpdateGameSettingsMessage* pMessage = _REINTERPRET_CAST(MachGuiUpdateGameSettingsMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MY_UPDATEGAMESETTINGSMESSAGE;
@@ -372,7 +372,7 @@ void MachGuiMessageBroker::sendUpdateGameSettingsMessage()
 
 void MachGuiMessageBroker::sendRaceChangeRequest(const string& playerName, size_t playerIndex, MachPhys::Race newRace)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiRaceChangeRequestMessage* pMessage = _REINTERPRET_CAST(MachGuiRaceChangeRequestMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_RACECHANGEREQUESTMESSAGE;
@@ -390,7 +390,7 @@ void MachGuiMessageBroker::sendRaceChangeRequest(const string& playerName, size_
 
 void MachGuiMessageBroker::sendImReadyMessage(const string& playerName, bool ready)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiImReadyMessage* pMessage = _REINTERPRET_CAST(MachGuiImReadyMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_IMREADYMESSAGE;
@@ -407,7 +407,7 @@ void MachGuiMessageBroker::sendImReadyMessage(const string& playerName, bool rea
 
 void MachGuiMessageBroker::sendStartMessage()
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiStartMessage* pMessage = _REINTERPRET_CAST(MachGuiStartMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_STARTMESSAGE;
@@ -418,7 +418,7 @@ void MachGuiMessageBroker::sendStartMessage()
 
 void MachGuiMessageBroker::sendHostCancelMessage()
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiHostCancelMessage* pMessage = _REINTERPRET_CAST(MachGuiHostCancelMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_HOSTCANCELMESSAGE;
@@ -429,7 +429,7 @@ void MachGuiMessageBroker::sendHostCancelMessage()
 
 void MachGuiMessageBroker::sendClientCancelMessage(const string& playerName)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiClientCancelMessage* pMessage = _REINTERPRET_CAST(MachGuiClientCancelMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_CLIENTCANCELMESSAGE;
@@ -444,7 +444,7 @@ void MachGuiMessageBroker::sendClientCancelMessage(const string& playerName)
 
 void MachGuiMessageBroker::sendInGameChatMessage(const string& message, MachPhys::Race intendedForRace)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiInGameChatMessage* pMessage = _REINTERPRET_CAST(MachGuiInGameChatMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_INGAMECHATMESSAGE;
@@ -520,7 +520,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker::MessageTyp
 
 void MachGuiMessageBroker::sendHasMachinesCDMessage(const string& playerName, bool hasMachinesCD)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiHasMachinesCDMessage* pMessage = _REINTERPRET_CAST(MachGuiHasMachinesCDMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_HASMACHINESCDMESSAGE;
@@ -544,7 +544,7 @@ void MachGuiMessageBroker::processHasMachinesCDMessage(MachGuiHasMachinesCDMessa
 
 void MachGuiMessageBroker::sendIveLostMessage(const string& playerName)
 {
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiIveLostMessage* pMessage = _REINTERPRET_CAST(MachGuiIveLostMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_IVELOSTMESSAGE;
@@ -559,7 +559,7 @@ void MachGuiMessageBroker::sendNameChangeMessage(const string& newPlayerName, in
 {
     NETWORK_STREAM("MachGuiMessageBroker::sendJoinMessage\n");
     NETWORK_INDENT(2);
-    MachLogNetMessage* pLogMessage = _NEW(MachLogNetMessage());
+    MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiNameChangeMessage* pMessage = _REINTERPRET_CAST(MachGuiNameChangeMessage*, pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_NAMECHANGEMESSAGE;

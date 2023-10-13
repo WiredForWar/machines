@@ -16,7 +16,7 @@ PER_DEFINE_PERSISTENT(MachGuiDbElement);
 MachGuiDbElement::MachGuiDbElement(uint menuStringId)
 {
     // Store data in the implementation object
-    pData_ = _NEW(MachGuiDbIElement);
+    pData_ = new MachGuiDbIElement;
     pData_->menuStringId_ = menuStringId;
 
     TEST_INVARIANT;
@@ -26,7 +26,7 @@ MachGuiDbElement::~MachGuiDbElement()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbElement::CLASS_INVARIANT
@@ -115,7 +115,7 @@ void MachGuiDbElement::clearTextData()
 {
     if (pData_->pTextData_ != nullptr)
     {
-        _DELETE(pData_->pTextData_);
+        delete pData_->pTextData_;
         pData_->pTextData_ = nullptr;
     }
 }

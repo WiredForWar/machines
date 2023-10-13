@@ -87,7 +87,7 @@ PhysRelativeTime MachLogNukeAttackOperation::doUpdate()
     else
     {
         MexRadians turnBy = pActor_->angleToTurnToFace(targetPosition_);
-        subOperation(pActor_, _NEW(MachLogTurnAnimation(pActor_, turnBy)));
+        subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
     }
 
     return interval;

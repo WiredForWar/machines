@@ -28,10 +28,10 @@ W4dCompositeMaterialVecChanger::W4dCompositeMaterialVecChanger(
 {
     // Attempt to create a changer for the composite itself.
     // If no overrides, delete it.
-    pCompositeChanger_ = _NEW(W4dEntityMaterialVecChanger(patternComposite, map, pMaterialVecPtrSet));
+    pCompositeChanger_ = new W4dEntityMaterialVecChanger(patternComposite, map, pMaterialVecPtrSet);
     if (not pCompositeChanger_->hasAnyOverrides())
     {
-        _DELETE(pCompositeChanger_);
+        delete pCompositeChanger_;
         pCompositeChanger_ = nullptr;
     }
 
@@ -51,7 +51,7 @@ W4dCompositeMaterialVecChanger::W4dCompositeMaterialVecChanger(
         W4dLink* pLink = *it;
 
         // Create a changer for this link
-        W4dEntityMaterialVecChanger* pChanger = _NEW(W4dEntityMaterialVecChanger(*pLink, map, pMaterialVecPtrSet));
+        W4dEntityMaterialVecChanger* pChanger = new W4dEntityMaterialVecChanger(*pLink, map, pMaterialVecPtrSet);
 
         if (pChanger->hasAnyOverrides())
         {
@@ -61,7 +61,7 @@ W4dCompositeMaterialVecChanger::W4dCompositeMaterialVecChanger(
         }
         else
         {
-            _DELETE(pChanger);
+            delete pChanger;
         }
     }
 
@@ -70,10 +70,10 @@ W4dCompositeMaterialVecChanger::W4dCompositeMaterialVecChanger(
     if (nLinkChangers != 0)
     {
         // Allocate the vectors and reserve exact space
-        pLinkIds_ = _NEW(ctl_vector<W4dLinkId>());
+        pLinkIds_ = new ctl_vector<W4dLinkId>();
         pLinkIds_->reserve(nLinkChangers);
 
-        pLinkChangers_ = _NEW(ctl_pvector<W4dEntityMaterialVecChanger>());
+        pLinkChangers_ = new ctl_pvector<W4dEntityMaterialVecChanger>();
         pLinkChangers_->reserve(nLinkChangers);
 
         // Copy the data element by element to ensure keep exact allocation size
@@ -91,18 +91,18 @@ W4dCompositeMaterialVecChanger::~W4dCompositeMaterialVecChanger()
 {
     TEST_INVARIANT;
 
-    _DELETE(pCompositeChanger_);
-    _DELETE(pLinkIds_);
+    delete pCompositeChanger_;
+    delete pLinkIds_;
 
     if (pLinkChangers_)
     {
         for (size_t i = 0; i < pLinkChangers_->size(); ++i)
         {
-            _DELETE((*pLinkChangers_)[i]);
+            delete (*pLinkChangers_)[i];
         }
     }
 
-    _DELETE(pLinkChangers_);
+    delete pLinkChangers_;
 }
 
 void W4dCompositeMaterialVecChanger::CLASS_INVARIANT

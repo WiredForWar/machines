@@ -82,7 +82,7 @@ MachGuiConstructCommand::~MachGuiConstructCommand()
 {
     TEST_INVARIANT;
 
-    _DELETE(pPhysConstruction_);
+    delete pPhysConstruction_;
     inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
     // note that as newConstructions_ is a subset of allConstructions_, we only have to call the detach for
@@ -354,7 +354,7 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
     MachPhys::Race playerRace = controller.race();
 
     // Delete any existing model
-    _DELETE(pPhysConstruction_);
+    delete pPhysConstruction_;
 
     // Create a physical model to use for dragging.
     pPhysConstruction_ = MachLogActorMaker::newPhysConstruction(
@@ -539,10 +539,10 @@ void MachGuiConstructCommand::placeConstruction()
 bool MachGuiConstructCommand::doApply(MachActor* pActor, string*)
 {
     // Create a superconstruct operation for the constructor
-    MachLogSuperConstructOperation* pOp = _NEW(MachLogSuperConstructOperation(
+    MachLogSuperConstructOperation* pOp = new MachLogSuperConstructOperation(
         &pActor->asConstructor(),
         allConstructions_,
-        MachLogOperation::CONSTRUCT_OPERATION));
+        MachLogOperation::CONSTRUCT_OPERATION);
 
     pActor->newOperation(pOp);
 
@@ -572,7 +572,7 @@ MachGuiCommand* MachGuiConstructCommand::clone() const
 {
     orientation() = 0;
 
-    return _NEW(MachGuiConstructCommand(&inGameScreen()));
+    return new MachGuiConstructCommand(&inGameScreen());
 }
 
 // virtual
@@ -631,8 +631,8 @@ bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator,
     PRE(canAdminApply());
 
     // Create an admin superconstruct operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp = _NEW(
-        MachLogAdminSuperConstructOperation(pAdministrator, allConstructions_, MachLogOperation::CONSTRUCT_OPERATION));
+    MachLogAdminSuperConstructOperation* pOp = new 
+        MachLogAdminSuperConstructOperation(pAdministrator, allConstructions_, MachLogOperation::CONSTRUCT_OPERATION);
 
     pAdministrator->newOperation(pOp);
 

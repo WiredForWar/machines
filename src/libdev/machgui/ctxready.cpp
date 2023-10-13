@@ -143,9 +143,8 @@ private:
 MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     : MachGuiStartupScreenContext(pStartupScreens)
     , animations_(pStartupScreens, SysPathName("gui/menu/sd_anims.anm"))
-    , pCreationTimer_(_NEW(DevTimer()))
-    , pHasCDTransmissionTimer_(_NEW(DevTimer()))
-
+    , pCreationTimer_(new DevTimer())
+    , pHasCDTransmissionTimer_(new DevTimer())
 {
     NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady this " << (void*)this << "\n");
     NETWORK_INDENT(2);
@@ -156,73 +155,73 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
-    _NEW(MachGuiChatButton(pStartupScreens, Gui::Box(336, 345, 346, 373)));
+    new MachGuiChatButton(pStartupScreens, Gui::Box(336, 345, 346, 373));
 
     MachGuiMenuButton* pCancelBtn;
     if (not NetNetwork::instance().isLobbiedGame())
-        pCancelBtn = _NEW(MachGuiMenuButton(
+        pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(379, 416, 574, 458),
             IDS_MENUBTN_CANCEL,
-            MachGuiStartupScreens::EXIT));
+            MachGuiStartupScreens::EXIT);
     else
-        pCancelBtn = _NEW(MachGuiMenuButton(
+        pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(379, 416, 574, 458),
             IDS_MENUBTN_EXIT_TO_ZONE,
-            MachGuiStartupScreens::EXIT));
+            MachGuiStartupScreens::EXIT);
 
-    pSettingsButton_ = _NEW(MachGuiMenuButton(
+    pSettingsButton_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(395, 40, 591, 82),
         IDS_MENUBTN_SETTINGS,
-        MachGuiStartupScreens::SETTINGS));
-    pImReadyButton_ = _NEW(MachGuiImReadyButton(
+        MachGuiStartupScreens::SETTINGS);
+    pImReadyButton_ = new MachGuiImReadyButton(
         pStartupScreens,
         Gui::Box(47, 399, 243, 442),
         IDS_MENUBTN_IMREADY,
-        MachGuiStartupScreens::IMREADY));
-    pStartButton_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::IMREADY);
+    pStartButton_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(380, 348, 576, 392),
         IDS_MENUBTN_START,
-        MachGuiStartupScreens::START));
+        MachGuiStartupScreens::START);
     pCancelBtn->escapeControl(true);
 
     // Chat window...
-    pChatWindow_ = _NEW(MachGuiChatWindow(pStartupScreens, pStartupScreens, Gui::Box(30, 113, 345, 322)));
+    pChatWindow_ = new MachGuiChatWindow(pStartupScreens, pStartupScreens, Gui::Box(30, 113, 345, 322));
 
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
 
     pSingleLineEditBox_
-        = _NEW(MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(37, 353, 330, 353 + font.charHeight()), font));
+        = new MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(37, 353, 330, 353 + font.charHeight()), font);
     pSingleLineEditBox_->maxChars(MAX_CHATMESSAGE_LEN - MAX_PLAYERNAME_LEN - 5);
     GuiResourceString chatMessage(IDS_MENU_CHATMESSAGE);
     pSingleLineEditBox_->text(chatMessage.asString());
     pSingleLineEditBox_->clearTextOnNextChar(true);
     GuiManager::instance().charFocus(pSingleLineEditBox_);
 
-    pPlayerList_ = _NEW(GuiSimpleScrollableList(
+    pPlayerList_ = new GuiSimpleScrollableList(
         pStartupScreens,
         Gui::Box(76, 35, 316, 99),
         1000,
         MachGuiPlayerListItem::reqHeight(),
-        1));
+        1);
 
     createPlayerList();
 
     startupData().setCtxImReady(this);
 
-    pReadOnlySettings_ = _NEW(GuiSimpleScrollableList(
+    pReadOnlySettings_ = new GuiSimpleScrollableList(
         pStartupScreens,
         Gui::Box(SETTINGS_MINX, SETTINGS_MINY, SETTINGS_MAXX, SETTINGS_MAXY),
         (SETTINGS_MAXX - SETTINGS_MINX) * 0.66,
         MachGuiText::reqHeight() + 3,
-        1));
+        1);
 
     updateGameSettings();
     NetNetwork::instance().deterministicPingDropoutAllowed(true);
@@ -242,8 +241,8 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
 
 MachGuiCtxImReady::~MachGuiCtxImReady()
 {
-    _DELETE(pCreationTimer_);
-    _DELETE(pHasCDTransmissionTimer_);
+    delete pCreationTimer_;
+    delete pHasCDTransmissionTimer_;
     NETWORK_STREAM("MachGuiCtxImReady:: ~MachGuiCtxImReady this " << (void*)this << "\n");
     NETWORK_INDENT(2);
     TEST_INVARIANT;
@@ -373,7 +372,7 @@ void MachGuiCtxImReady::createPlayerList()
                 pingValue = (*i).second.lastProperPingTime_;
         }*/
 
-        pPlayerListItem_[loop] = _NEW(MachGuiPlayerListItem(
+        pPlayerListItem_[loop] = new MachGuiPlayerListItem(
             pStartupScreens_,
             pPlayerList_,
             240,
@@ -383,7 +382,7 @@ void MachGuiCtxImReady::createPlayerList()
             pPlayers[loop].ready_,
             pPlayers[loop].host_,
             pingValue,
-            pPlayers[loop].hasMachinesCD_));
+            pPlayers[loop].hasMachinesCD_);
     }
 
     pPlayerList_->childrenUpdated();
@@ -589,10 +588,10 @@ bool MachGuiCtxImReady::okayToSwitchContext()
             {
                 pStartupScreens_->displayMsgBox(
                     IDS_MENUMSG_QUIT,
-                    _NEW(MachGuiExitToInternetMessageBoxResponder(
+                    new MachGuiExitToInternetMessageBoxResponder(
                         pStartupScreens_,
                         MachGuiExitToInternetMessageBoxResponder::DO_NOT_UNLOAD_GAME)),
-                    true);
+                    true;
 
                 NETWORK_STREAM("lobbied game so returning false\n");
                 NETWORK_INDENT(-2);
@@ -685,44 +684,44 @@ void MachGuiCtxImReady::updateGameSettings()
     string whiteFont("gui/menu/smalwfnt.bmp");
 
     // Show read only game settings...
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, fogOfWarStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().fogOfWarStr(), whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, resourcesStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().resourcesStr(), whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, startingResourcesStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingResourcesStr(), whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, startingPositionStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingPositionStr(), whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, techLevelStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().techLevelStr(), whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, mapSizeStr.asString()));
-    _NEW(MachGuiText(
+    new MachGuiText(pReadOnlySettings_, textWidth, fogOfWarStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().fogOfWarStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, resourcesStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().resourcesStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, startingResourcesStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingResourcesStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, startingPositionStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingPositionStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, techLevelStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().techLevelStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, mapSizeStr.asString());
+    new MachGuiText(
         pReadOnlySettings_,
         valueWidth,
         startupData().scenario()->planet().system().menuString(),
-        whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, broadcastAlliancesStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().broadcastAlliancesStr(), whiteFont));
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, disableFirstPersonStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, startupData().disableFirstPersonStr(), whiteFont));
+        whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, broadcastAlliancesStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().broadcastAlliancesStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, disableFirstPersonStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().disableFirstPersonStr(), whiteFont);
 
     // Following settings are split across two lines
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, victoryConditionStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
-    _NEW(MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX, " " + startupData().victoryConditionStr()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
+    new MachGuiText(pReadOnlySettings_, textWidth, victoryConditionStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, "");
+    new MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX, " " + startupData().victoryConditionStr());
+    new MachGuiText(pReadOnlySettings_, valueWidth, "");
 
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, terrainTypeStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
-    _NEW(MachGuiText(
+    new MachGuiText(pReadOnlySettings_, textWidth, terrainTypeStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, "");
+    new MachGuiText(
         pReadOnlySettings_,
         SETTINGS_MAXX - SETTINGS_MINX,
-        " " + startupData().scenario()->planet().menuString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
+        " " + startupData().scenario()->planet().menuString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, "");
 
-    _NEW(MachGuiText(pReadOnlySettings_, textWidth, scenarioStr.asString()));
-    _NEW(MachGuiText(pReadOnlySettings_, valueWidth, ""));
-    _NEW(MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX, " " + startupData().scenario()->menuString()));
+    new MachGuiText(pReadOnlySettings_, textWidth, scenarioStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, "");
+    new MachGuiText(pReadOnlySettings_, SETTINGS_MAXX - SETTINGS_MINX, " " + startupData().scenario()->menuString());
 
     pReadOnlySettings_->childrenUpdated();
 };

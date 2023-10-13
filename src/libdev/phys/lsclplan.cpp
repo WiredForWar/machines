@@ -10,7 +10,7 @@
 
 PhysLinearScalarPlan::PhysLinearScalarPlan(const ScalarVec& times, const ScalarVec& scales)
     : PhysScalarPlan(times.back())
-    , pImpl_(_NEW(PhysLinearScalarPlanImpl(times, scales)))
+    , pImpl_(new PhysLinearScalarPlanImpl(times, scales))
 {
     PRE(times.size() + 1 == scales.size());
     TEST_INVARIANT;
@@ -18,7 +18,7 @@ PhysLinearScalarPlan::PhysLinearScalarPlan(const ScalarVec& times, const ScalarV
 
 PhysLinearScalarPlan::PhysLinearScalarPlan(const PhysLinearScalarPlan& copyMe)
     : PhysScalarPlan(copyMe.duration())
-    , pImpl_(_NEW(PhysLinearScalarPlanImpl(*copyMe.pImpl_)))
+    , pImpl_(new PhysLinearScalarPlanImpl(*copyMe.pImpl_))
 {
     TEST_INVARIANT;
 }
@@ -27,7 +27,7 @@ PhysLinearScalarPlan::~PhysLinearScalarPlan()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 const PhysLinearScalarPlan::ScalarVec& PhysLinearScalarPlan::times() const

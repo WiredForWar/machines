@@ -32,7 +32,7 @@ W4dMultiColourPulseData::~W4dMultiColourPulseData()
     TEST_INVARIANT;
 
     for (ctl_pvector<W4dColourPulseData>::iterator i = colourPulseDataVec_.begin(); i != colourPulseDataVec_.end(); ++i)
-        _DELETE(*i);
+        delete *i;
 }
 
 void W4dMultiColourPulseData::CLASS_INVARIANT
@@ -63,7 +63,7 @@ void W4dMultiColourPulseData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& 
     Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, pEntity)->mesh().mesh();
     std::unique_ptr<RenMaterialVec> pAnimMaterialVec = animMeshPtr->materialVec();
 
-    W4dMaterialPlanPtr matPlanPtr = _NEW(W4dColourPulsePlan(colourPulseDataVec_, *pAnimMaterialVec));
+    W4dMaterialPlanPtr matPlanPtr = new W4dColourPulsePlan(colourPulseDataVec_, *pAnimMaterialVec);
 
     pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime);
 }
@@ -88,7 +88,7 @@ void perRead(PerIstream& str, W4dMultiColourPulseData& t)
 
     for (ctl_pvector<W4dColourPulseData>::iterator i = t.colourPulseDataVec_.begin(); i != t.colourPulseDataVec_.end();
          ++i)
-        _DELETE(*i);
+        delete *i;
 
     str >> t.colourPulseDataVec_;
 }

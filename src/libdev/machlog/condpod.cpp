@@ -41,7 +41,7 @@ MachLogPodCapturedCondition* MachLogPodCapturedCondition::newFromParser(UtlLineT
     // format of a VORTEX_FIRED condition line is:
     //<keyName> RACE <race>
 
-    return _NEW(MachLogPodCapturedCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3])));
+    return new MachLogPodCapturedCondition(pParser->tokens()[1], MachLogScenario::machPhysRace(pParser->tokens()[3]));
 }
 
 void MachLogPodCapturedCondition::CLASS_INVARIANT

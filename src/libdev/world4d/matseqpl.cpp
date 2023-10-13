@@ -118,7 +118,7 @@ bool W4dMaterialSequencePlan::makePlan(
 
     if (materialVecPtr.isDefined())
     {
-        pAnimMaterialVec = _NEW(RenMaterialVec(*materialVecPtr));
+        pAnimMaterialVec = new RenMaterialVec(*materialVecPtr);
     }
     else
     {
@@ -150,12 +150,12 @@ bool W4dMaterialSequencePlan::makePlan(
             offsets.push_back(9999);
     }
 
-    MaterialVecPtrs* pMaterials = _NEW(MaterialVecPtrs);
+    MaterialVecPtrs* pMaterials = new MaterialVecPtrs;
     pMaterials->reserve(nTextures);
 
     for (size_t i = 0; i != nTextures; ++i)
     {
-        RenMaterialVec* pMaterialsVec = _NEW(RenMaterialVec(nMaterials));
+        RenMaterialVec* pMaterialsVec = new RenMaterialVec(nMaterials);
 
         for (size_t j = 0; j < nMaterials; ++j)
         {
@@ -176,13 +176,13 @@ bool W4dMaterialSequencePlan::makePlan(
 
     // Store in counted pointer
 
-    W4dMaterialSequencePlan* pMaterialSeqPlan = _NEW(W4dMaterialSequencePlan(*pMaterials, duration, 0));
+    W4dMaterialSequencePlan* pMaterialSeqPlan = new W4dMaterialSequencePlan(*pMaterials, duration, 0);
 
     W4dMaterialPlanPtr materialPlanPtr(pMaterialSeqPlan);
     pEntity->entityPlanForEdit().materialPlan(materialPlanPtr, startTime, 0, animId);
 
-    _DELETE(pAnimMaterialVec);
-    _DELETE(pMaterials);
+    delete pAnimMaterialVec;
+    delete pMaterials;
 
     return Found;
 }
@@ -201,7 +201,7 @@ bool W4dMaterialSequencePlan::changeTexture(
 
     if (meshInstMaterialVecPtr.isDefined())
     {
-        pAnimMaterialVec = _NEW(RenMaterialVec(*meshInstMaterialVecPtr));
+        pAnimMaterialVec = new RenMaterialVec(*meshInstMaterialVecPtr);
     }
     else
     {
@@ -210,7 +210,7 @@ bool W4dMaterialSequencePlan::changeTexture(
 
     size_t nMat = pAnimMaterialVec->size();
 
-    Ren::MaterialVecPtr materialVecPtr = _NEW(RenMaterialVec(nMat));
+    Ren::MaterialVecPtr materialVecPtr = new RenMaterialVec(nMat);
 
     for (size_t i = 0; i < nMat; ++i)
     {
@@ -230,7 +230,7 @@ bool W4dMaterialSequencePlan::changeTexture(
     _CONST_CAST(RenMeshInstance&, meshInst).materialVec(materialVecPtr);
 
     // delete the old to avoid mem leak
-    _DELETE(pAnimMaterialVec);
+    delete pAnimMaterialVec;
 
     return found;
 }

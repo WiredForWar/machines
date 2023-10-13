@@ -38,8 +38,8 @@ MachPhysHealHelix::MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& l
 
     // Add a pair of left and right helixes
     const MexTransform3d identityTransform;
-    MachPhysHelix* pLeftHelix = _NEW(MachPhysHelix(this, identityTransform, MachPhysHelix::LEFT_TWIST));
-    MachPhysHelix* pRightHelix = _NEW(MachPhysHelix(this, identityTransform, MachPhysHelix::RIGHT_TWIST));
+    MachPhysHelix* pLeftHelix = new MachPhysHelix(this, identityTransform, MachPhysHelix::LEFT_TWIST);
+    MachPhysHelix* pRightHelix = new MachPhysHelix(this, identityTransform, MachPhysHelix::RIGHT_TWIST);
 
     // First time construct various plans and things
     static bool firstTime = true;
@@ -63,16 +63,16 @@ MachPhysHealHelix::MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& l
         values.push_back(0.2);
         values.push_back(0.8);
 
-        PhysLinearScalarPlan* pAlphaValuePlan = _NEW(PhysLinearScalarPlan(times, values));
+        PhysLinearScalarPlan* pAlphaValuePlan = new PhysLinearScalarPlan(times, values);
         alphaValuePlanPtr = pAlphaValuePlan;
 
         // Set up an alpha plan for them
-        W4dSimpleAlphaPlan* pAlphaPlan = _NEW(W4dSimpleAlphaPlan(helixMaterial(), 1, alphaValuePlanPtr, 2));
+        W4dSimpleAlphaPlan* pAlphaPlan = new W4dSimpleAlphaPlan(helixMaterial(), 1, alphaValuePlanPtr, 2);
         alphaPlanPtr = pAlphaPlan;
 
         // Set up the motion plans
         // Create left spin angles
-        PhysMotionPlan::Angles* pLeftAngles = _NEW(PhysMotionPlan::Angles);
+        PhysMotionPlan::Angles* pLeftAngles = new PhysMotionPlan::Angles;
         pLeftAngles->reserve(4);
         pLeftAngles->push_back(MexDegrees(0.0));
         pLeftAngles->push_back(MexDegrees(120.0));
@@ -81,7 +81,7 @@ MachPhysHealHelix::MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& l
         PhysMotionPlan::AnglesPtr leftAnglesPtr(pLeftAngles);
 
         // Create right spin angles
-        PhysMotionPlan::Angles* pRightAngles = _NEW(PhysMotionPlan::Angles);
+        PhysMotionPlan::Angles* pRightAngles = new PhysMotionPlan::Angles;
         pRightAngles->reserve(4);
         pRightAngles->push_back(MexDegrees(360.0));
         pRightAngles->push_back(MexDegrees(240.0));
@@ -90,7 +90,7 @@ MachPhysHealHelix::MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& l
         PhysMotionPlan::AnglesPtr rightAnglesPtr(pRightAngles);
 
         // Set up the times
-        PhysMotionPlan::Times* pTimes = _NEW(PhysMotionPlan::Times);
+        PhysMotionPlan::Times* pTimes = new PhysMotionPlan::Times;
         pTimes->reserve(3);
         pTimes->push_back(1.0);
         pTimes->push_back(2.0);
@@ -99,11 +99,11 @@ MachPhysHealHelix::MachPhysHealHelix(W4dEntity* pParent, const MexTransform3d& l
 
         // Now the motion plans
         PhysTimedAnglePlan* pLeftSpinPlan
-            = _NEW(PhysTimedAnglePlan(leftAnglesPtr, timesPtr, MexVec3(1.0, 0.0, 0.0), origin));
+            = new PhysTimedAnglePlan(leftAnglesPtr, timesPtr, MexVec3(1.0, 0.0, 0.0), origin);
         leftSpinPlanPtr = pLeftSpinPlan;
 
         PhysTimedAnglePlan* pRightSpinPlan
-            = _NEW(PhysTimedAnglePlan(rightAnglesPtr, timesPtr, MexVec3(1.0, 0.0, 0.0), origin));
+            = new PhysTimedAnglePlan(rightAnglesPtr, timesPtr, MexVec3(1.0, 0.0, 0.0), origin);
         rightSpinPlanPtr = pRightSpinPlan;
     }
 
@@ -214,7 +214,7 @@ const W4dMaterialPlanPtr& MachPhysHealHelix::healCyclingTexturePlan()
             mat.texture( textures[i] );
 
             //Create a single-element material vector from this material
-            RenMaterialVec* pMaterialVec = _NEW( RenMaterialVec( 1 ) );
+            RenMaterialVec* pMaterialVec = new RenMaterialVec( 1 );
             pMaterialVec->push_back( mat );
 
             //Add this vector to the vector of material vectors
@@ -224,7 +224,7 @@ const W4dMaterialPlanPtr& MachPhysHealHelix::healCyclingTexturePlan()
 
         //Create the plan itself
         W4dMaterialSequencePlan* pPlan =
-            _NEW( W4dMaterialSequencePlan( materialVecPtrs, PhysRelativeTime( 1.0 ), W4dLOD( 3 ) ) );
+            new W4dMaterialSequencePlan( materialVecPtrs, PhysRelativeTime( 1.0 ), W4dLOD( 3 ) );
 
         thePlan = pPlan;
     }

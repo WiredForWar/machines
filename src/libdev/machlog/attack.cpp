@@ -54,7 +54,7 @@ MachLogAttackOperation::MachLogAttackOperation(
     MachActor* pDirectObject,
     MachLogAttackOperation::RaceChangeTerminate rct)
     : MachLogOperation("ATTACK_OPERATION", MachLogOperation::ATTACK_OPERATION)
-    , pImpl_(_NEW(MachLogAttackOperationImpl(pActor, pDirectObject, rct)))
+    , pImpl_(new MachLogAttackOperationImpl(pActor, pDirectObject, rct))
 {
     CB_DEPIMPL(MachLogMachine*, pActor_);
     CB_DEPIMPL(MachActor*, pDirectObject_);
@@ -89,7 +89,7 @@ MachLogAttackOperation::MachLogAttackOperation(
     size_t commandId,
     MachLogAttackOperation::RaceChangeTerminate rct)
     : MachLogOperation("ATTACK_OPERATION", MachLogOperation::ATTACK_OPERATION)
-    , pImpl_(_NEW(MachLogAttackOperationImpl(pActor, pDirectObject, commandId, rct)))
+    , pImpl_(new MachLogAttackOperationImpl(pActor, pDirectObject, commandId, rct))
 {
     CB_DEPIMPL(MachLogMachine*, pActor_);
     CB_DEPIMPL(MachActor*, pDirectObject_);
@@ -133,7 +133,7 @@ MachLogAttackOperation::~MachLogAttackOperation()
     }
     MachLogRaces::instance().removeSpecialUpdateActor(pActor_, MachLog::DO_NOT_FORCE_REMOVE);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogAttackOperation::doOutputOperator(std::ostream& o) const
@@ -356,7 +356,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
                 if (pActor_->canEnterConstructionNow(*pTargetBuilding) and not pActor_->isStandingGround()
                     and not targetMachine.isLeavingBuilding()) // don't bother chasing inside if the target is already
                                                                // coming out.
-                    subOperation(pActor_, _NEW(MachLogEnterBuildingOperation(pActor_, pTargetBuilding, nullptr)));
+                    subOperation(pActor_, new MachLogEnterBuildingOperation(pActor_, pTargetBuilding, nullptr));
                 else
                     targetBehindCover_ = true;
             }
@@ -371,7 +371,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
                     turnToFaceTarget();
                 }
                 else
-                    subOperation(pActor_, _NEW(MachLogLeaveBuildingOperation(pActor_, pAttackerBuilding, nullptr)));
+                    subOperation(pActor_, new MachLogLeaveBuildingOperation(pActor_, pAttackerBuilding, nullptr));
             }
             return 1.0;
         }
@@ -771,7 +771,7 @@ PhysRelativeTime MachLogAttackOperation::turnToFaceTarget()
     if (canTurn)
     {
         MexRadians turnBy = angleToTurnToFace(*pActor_, directObject().position());
-        subOperation(pActor_, _NEW(MachLogTurnAnimation(pActor_, turnBy)));
+        subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
     }
 
     HAL_STREAM("MachLogAttackOperation::turnToFaceTarget DONE\n");

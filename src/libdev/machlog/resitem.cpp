@@ -36,7 +36,7 @@ MachLogResearchItem::MachLogResearchItem(
     MachLogResearchItem* pParentDependancy,
     MachPhys::HardwareLabSubType hardwareLabSubType,
     MachPhys::WeaponCombo wc)
-    : pImpl_(_NEW(MachLogResearchItemImpl()))
+    : pImpl_(new MachLogResearchItemImpl())
 {
     CB_MachLogResearchItem_DEPIMPL();
 
@@ -134,7 +134,7 @@ MachLogResearchItem::MachLogResearchItem(
 
 MachLogResearchItem::~MachLogResearchItem()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 const MachLog::ObjectType& MachLogResearchItem::objectType() const

@@ -30,7 +30,7 @@ MachPhysWheels::MachPhysWheels(
     MATHEX_SCALAR wheelRadius,
     const W4dLinks& leftWheels,
     const W4dLinks& rightWheels)
-    : MachPhysLocomotionMethod(pImpl_ = _NEW(MachPhysWheelsImpl(pMachine, this, wheelRadius, leftWheels, rightWheels)))
+    : MachPhysLocomotionMethod(pImpl_ = new MachPhysWheelsImpl(pMachine, this, wheelRadius, leftWheels, rightWheels))
 {
 
     TEST_INVARIANT;
@@ -47,7 +47,7 @@ MachPhysWheels::~MachPhysWheels()
     TEST_INVARIANT;
 
     // pImpl_ will be removed by MachPhysLocomotionMethod destructor
-    //_DELETE( pImpl_ );
+    //delete pImpl_;
 }
 
 // virtual
@@ -75,7 +75,7 @@ MachPhysLocomotionMethod* MachPhysWheels::clone(MachPhysMachine* pNewMachine, co
         rightWheels.push_back(pLink);
     }
 
-    return _NEW(MachPhysWheels(pNewMachine, wheelRadius_, leftWheels, rightWheels));
+    return new MachPhysWheels(pNewMachine, wheelRadius_, leftWheels, rightWheels);
 }
 
 void MachPhysWheels::CLASS_INVARIANT
@@ -140,10 +140,10 @@ void MachPhysWheels::moveAnimations(
         MexPoint3d rightOrigin = pRightWheel->localTransform().position();
 
         PhysTimedSpinPlan* pLPlan
-            = _NEW(PhysTimedSpinPlan(axis, leftOrigin, leftLastAngle_, leftLastAngleSpeed_, nSpinSegments));
+            = new PhysTimedSpinPlan(axis, leftOrigin, leftLastAngle_, leftLastAngleSpeed_, nSpinSegments);
 
         PhysTimedSpinPlan* pRPlan
-            = _NEW(PhysTimedSpinPlan(axis, rightOrigin, rightLastAngle_, rightLastAngleSpeed_, nSpinSegments));
+            = new PhysTimedSpinPlan(axis, rightOrigin, rightLastAngle_, rightLastAngleSpeed_, nSpinSegments);
 
         // Extend the plans for each linear plan segment
         PhysRelativeTime lastTime = 0;
@@ -260,10 +260,10 @@ void MachPhysWheels::stopDead()
         const size_t nSpinSegments = 1;
 
         PhysTimedSpinPlan* pLPlan
-            = _NEW(PhysTimedSpinPlan(axis, leftOrigin, leftLastAngle_, leftLastAngleSpeed_, nSpinSegments));
+            = new PhysTimedSpinPlan(axis, leftOrigin, leftLastAngle_, leftLastAngleSpeed_, nSpinSegments);
 
         PhysTimedSpinPlan* pRPlan
-            = _NEW(PhysTimedSpinPlan(axis, rightOrigin, rightLastAngle_, rightLastAngleSpeed_, nSpinSegments));
+            = new PhysTimedSpinPlan(axis, rightOrigin, rightLastAngle_, rightLastAngleSpeed_, nSpinSegments);
 
         //  Spin the wheels backwards very quickly
         const MATHEX_SCALAR acceleration = 1000;
@@ -342,10 +342,10 @@ void MachPhysWheels::firstPersonMotionAnimations(bool leftForwards, bool rightFo
         MexTransform3d rightEndPosition(rightStartPosition);
         rightEndPosition.transform(rightSpinTransform);
 
-        PhysLinearMotionPlan* pLeftPlan = _NEW(PhysLinearMotionPlan(leftStartPosition, leftEndPosition, sectionTime));
+        PhysLinearMotionPlan* pLeftPlan = new PhysLinearMotionPlan(leftStartPosition, leftEndPosition, sectionTime);
 
         PhysLinearMotionPlan* pRightPlan
-            = _NEW(PhysLinearMotionPlan(rightStartPosition, rightEndPosition, sectionTime));
+            = new PhysLinearMotionPlan(rightStartPosition, rightEndPosition, sectionTime);
 
         // Add a further rotation of 120 degrees
         leftEndPosition.transform(leftSpinTransform);

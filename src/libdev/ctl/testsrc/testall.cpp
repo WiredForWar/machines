@@ -198,7 +198,7 @@ int main()
 //
 void testVector()
 {
-    ctl_vector<int>* v1 = _NEW(ctl_vector<int>());
+    ctl_vector<int>* v1 = new ctl_vector<int>();
 
     cout << v1->size() << endl;
     cout << v1->end() - v1->begin() << endl;

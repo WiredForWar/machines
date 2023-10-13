@@ -22,7 +22,7 @@ MachPhysGeoLocatorImpl::MachPhysGeoLocatorImpl()
 
 MachPhysGeoLocatorImpl::~MachPhysGeoLocatorImpl()
 {
-    _DELETE(pLocator_);
+    delete pLocator_;
     TEST_INVARIANT;
 }
 

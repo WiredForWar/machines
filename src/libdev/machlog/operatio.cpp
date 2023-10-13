@@ -22,7 +22,7 @@
 PER_DEFINE_PERSISTENT_ABSTRACT(MachLogOperation);
 
 MachLogOperation::MachLogOperation(const char* typeOp, OperationType typeOpEnum)
-    : pImpl_(_NEW(MachLogOperationImpl(typeOp, typeOpEnum, Phys::defaultPathFindingPriority())))
+    : pImpl_(new MachLogOperationImpl(typeOp, typeOpEnum, Phys::defaultPathFindingPriority()))
 {
     LOG_CONSTRUCTION;
 
@@ -34,7 +34,7 @@ MachLogOperation::MachLogOperation(
     OperationType typeOpEnum,
     PhysPathFindingPriority pathFindingPriority)
 
-    : pImpl_(_NEW(MachLogOperationImpl(typeOp, typeOpEnum, pathFindingPriority)))
+    : pImpl_(new MachLogOperationImpl(typeOp, typeOpEnum, pathFindingPriority))
 {
     LOG_CONSTRUCTION;
 
@@ -44,8 +44,8 @@ MachLogOperation::MachLogOperation(
 MachLogOperation::~MachLogOperation()
 {
     LOG_DESTRUCTION;
-    // HAL_STREAM("MLOperation::DTOR\n" );
-    _DELETE(pImpl_);
+    // HAL_STREAM("MLOperation::DTOR\n" ;
+    delete pImpl_;
 }
 
 bool MachLogOperation::isFinished() const
@@ -91,7 +91,7 @@ bool MachLogOperation::checkNeedAndDoLeaveOperation(MachActor* pActor)
 
         // If the machine has a station locked, need to pass it in
         MachPhysStation* pStation = (mlm.hasStationLocked() ? &mlm.stationLocked() : nullptr);
-        subOperation(&mlm, _NEW(MachLogLeaveBuildingOperation(&mlm, pConstruction, pStation)));
+        subOperation(&mlm, new MachLogLeaveBuildingOperation(&mlm, pConstruction, pStation));
     }
 
     return found;

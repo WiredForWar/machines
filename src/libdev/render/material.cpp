@@ -34,7 +34,7 @@ RenMaterial::RenMaterial()
 
 // A default non-sharable material.  Make a unique copy of a default body.
 RenMaterial::RenMaterial(NonSharable)
-    : body_(_NEW(RenIMatBody))
+    : body_(new RenIMatBody)
 {
     PRE(Ren::initialised());
     body_->makeNonSharable();
@@ -89,7 +89,7 @@ void RenMaterial::makeNonSharable()
         // This material has a shared body.  Give this handle a unique body
         // and detach it from the original so that the other handles are not
         // affected by the change.
-        RenIMatBody* modifiedBody = _NEW(RenIMatBody(*body_));
+        RenIMatBody* modifiedBody = new RenIMatBody(*body_);
         body_->decRefCount();
         ASSERT(body_->refCount() >= 1, logic_error());
 
@@ -232,7 +232,7 @@ void perRead(PerIstream& istr, RenMaterial& mat)
         }                                                                                                              \
         else                                                                                                           \
         {                                                                                                              \
-            RenIMatBody* modifiedBody = _NEW(RenIMatBody(*body_));                                                     \
+            RenIMatBody* modifiedBody = new RenIMatBody(*body_);                                                     \
             body_->decRefCount();                                                                                      \
             ASSERT(body_->refCount() >= 1, "Material reference counting error");                                       \
             ASSERT(modifiedBody->sharable(), "Material sharing error.");                                               \
@@ -243,7 +243,7 @@ void perRead(PerIstream& istr, RenMaterial& mat)
             ASSERT(body_->sharable(), "Material sharing error.");                                                      \
                                                                                                                        \
             if (body_ != modifiedBody)                                                                                 \
-                _DELETE(modifiedBody);                                                                                 \
+                delete modifiedBody;                                                                                 \
         }                                                                                                              \
     }
 

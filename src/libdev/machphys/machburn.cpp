@@ -92,10 +92,10 @@ MachPhysMachineBurning::MachPhysMachineBurning(MachPhysMachine* pMachine)
         MexTransform3d flameTransform(MexPoint3d(0, 0, flamePosition * boundary.zLength()));
 
         // Attach a flame which will burn for several hours
-        //         MachPhysFlame* pFlame = _NEW( MachPhysFlame( pLink, flameTransform, FLAME_1,
-        //                                                      size, size*2.0, depthOffset, ages ) );
+        //         MachPhysFlame* pFlame = new MachPhysFlame( pLink, flameTransform, FLAME_1,
+        //                                                      size, size*2.0, depthOffset, ages );
 
-        MachPhysFlame* pFlame = _NEW(MachPhysFlame(pMachine, flameTransform, FLAME_1, size, depthOffset, ages));
+        MachPhysFlame* pFlame = new MachPhysFlame(pMachine, flameTransform, FLAME_1, size, depthOffset, ages);
         pMachine->hold(pFlame, pLink, flameTransform);
 
         // Start the material plan, but make it invisible until required
@@ -116,7 +116,7 @@ MachPhysMachineBurning::~MachPhysMachineBurning()
     // Delete all the flames
     for (Flames::iterator it = flames_.begin(); it != flames_.end(); ++it)
     {
-        _DELETE(*it);
+        delete *it;
     }
 }
 
@@ -209,7 +209,7 @@ void MachPhysMachineBurning::burn(
         nToBurn = nFlames;
 
     // Add visibility plans for these links
-    W4dVisibilityPlan* pPlan = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pPlan = new W4dVisibilityPlan(true);
     pPlan->add(false, duration);
     W4dVisibilityPlanPtr planPtr(pPlan);
 

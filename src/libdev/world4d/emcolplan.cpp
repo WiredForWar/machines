@@ -23,7 +23,7 @@ W4dSimpleEmColPlan::W4dSimpleEmColPlan(
     material_.makeNonSharable();
 
     // Construct a material vec referencing this single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(nMaterialsInVector));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(nMaterialsInVector);
     while (nMaterialsInVector--)
         pMaterialVec->push_back(material_);
 

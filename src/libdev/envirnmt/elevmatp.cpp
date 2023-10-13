@@ -14,7 +14,7 @@ EnvElevationMaterialPlan::EnvElevationMaterialPlan(
     const EnvElevationColourTable& clut)
     : W4dMaterialPlan(HUGE_VAL, 100000)
     , // duration & max LOD: both effectively infinite
-    materials_(_NEW(RenMaterialVec(vec)))
+    materials_(new RenMaterialVec(vec))
     , satellite_(sat)
     , clut_(clut)
 {

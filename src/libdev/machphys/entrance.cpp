@@ -29,8 +29,8 @@ MachPhysEntrance::~MachPhysEntrance()
 {
     TEST_INVARIANT;
 
-    _DELETE(pDoor1_);
-    _DELETE(pDoor2_);
+    delete pDoor1_;
+    delete pDoor2_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +49,7 @@ void MachPhysEntrance::addDoor(
     PRE(nDoors() < 2);
 
     // Create a new door
-    MachPhysDoor* pDoor = _NEW(MachPhysDoor(pPhysDoor, displacement, speed, acceleration));
+    MachPhysDoor* pDoor = new MachPhysDoor(pPhysDoor, displacement, speed, acceleration);
     if (pDoor1_ == nullptr)
         pDoor1_ = pDoor;
     else

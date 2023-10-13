@@ -34,7 +34,7 @@ public:
     RenMeshInstance(const Ren::ConstMeshPtr& mesh);
     RenMeshInstance(const RenMeshInstance& copyMe);
 
-    // As a convenience, this is simply _NEW(RenMeshInstance(RenMesh::createShared(...)))
+    // As a convenience, this is simply new RenMeshInstance(RenMesh::createShared(...)))
     // It helps to reduce dependencies for clients (W4dEntity) who only read
     // and render instances.  The caller must delete the returned object.
     static RenMeshInstance* createShared(const SysPathName& path, const std::string& mesh, double scale = 1.0);

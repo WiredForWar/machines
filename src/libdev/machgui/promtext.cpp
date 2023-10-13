@@ -141,7 +141,7 @@ MachPromptText::MachPromptText(
     size_t spacing = 1 * MachGui::uiScaleFactor();
 
     font_ = GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing);
-    pImpl_ = _NEW(MachPromptTextImpl(normalFont, shadowFont, fontType, spaceCharWidth, spacing));
+    pImpl_ = new MachPromptTextImpl(normalFont, shadowFont, fontType, spaceCharWidth, spacing);
 
     CB_DEPIMPL(GuiBitmap, promptBmp_);
     CB_DEPIMPL(MachCameras*, pCameras_);
@@ -170,7 +170,7 @@ MachPromptText::MachPromptText(
 MachPromptText::~MachPromptText()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPromptText::CLASS_INVARIANT

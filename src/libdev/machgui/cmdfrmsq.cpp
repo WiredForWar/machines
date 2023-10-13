@@ -66,7 +66,7 @@ void MachGuiFormSquadronCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiFormSquadronCommand::clone() const
 {
-    return _NEW(MachGuiFormSquadronCommand(&inGameScreen()));
+    return new MachGuiFormSquadronCommand(&inGameScreen());
 }
 
 // virtual

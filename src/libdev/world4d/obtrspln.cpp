@@ -73,7 +73,7 @@ void W4dObjectTrackerScalePlan::doScale(const PhysRelativeTime&, RenNonUniformSc
 W4dScalePlan* W4dObjectTrackerScalePlan::doTransformClone(const MexTransform3d&) const
 {
     // Just clone this plan. NB only works if x axis not moved
-    return _NEW(W4dObjectTrackerScalePlan(objectTrackerPtr_, duration()));
+    return new W4dObjectTrackerScalePlan(objectTrackerPtr_, duration());
 }
 
 void perWrite(PerOstream& ostr, const W4dObjectTrackerScalePlan& plan)

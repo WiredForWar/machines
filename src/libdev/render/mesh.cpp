@@ -131,13 +131,13 @@ Ren::MeshPtr RenMesh::createUnique(const SysPathName& path, const string& meshNa
     PRE_INFO(path);
     PRE_INFO(meshName);
 
-    RenMesh* mesh = _NEW(RenMesh);
+    RenMesh* mesh = new RenMesh;
 
     if (mesh->read(path, meshName, scale))
         return mesh;
     else
     {
-        _DELETE(mesh);
+        delete mesh;
         return nullptr;
     }
 }
@@ -146,7 +146,7 @@ Ren::MeshPtr RenMesh::createUnique(const SysPathName& path, const string& meshNa
 Ren::MeshPtr RenMesh::createEmpty()
 {
     // Pre-conditions are in RenMesh::RenMesh().
-    return _NEW(RenMesh);
+    return new RenMesh;
 }
 
 RenMesh::RenMesh()
@@ -168,7 +168,7 @@ RenMesh::~RenMesh()
     ctl_min_memory_vector<RenITriangleGroup*>::iterator dIt = triangles_.begin();
     while (dIt != triangles_.end())
     {
-        _DELETE(*dIt);
+        delete *dIt;
         *dIt = NULL;
         ++dIt;
     }
@@ -176,7 +176,7 @@ RenMesh::~RenMesh()
     ctl_min_memory_vector<RenTTFPolygon*>::iterator tIt = ttfs_.begin();
     while (tIt != ttfs_.end())
     {
-        _DELETE(*tIt);
+        delete *tIt;
         *tIt = NULL;
         ++tIt;
     }
@@ -184,7 +184,7 @@ RenMesh::~RenMesh()
     ctl_min_memory_vector<RenSpinTFPolygon*>::iterator sIt = stfps_.begin();
     while (sIt != stfps_.end())
     {
-        _DELETE(*sIt);
+        delete *sIt;
         *sIt = NULL;
         ++sIt;
     }
@@ -192,15 +192,15 @@ RenMesh::~RenMesh()
     ctl_min_memory_vector<RenILineGroup*>::iterator lIt = lines_.begin();
     while (lIt != lines_.end())
     {
-        _DELETE(*lIt);
+        delete *lIt;
         *lIt = NULL;
         ++lIt;
     }
 
-    _DELETE(vertices_);
-    _DELETE(uvAnimated_);
+    delete vertices_;
+    delete uvAnimated_;
 
-    _DELETE(pVertexTexture_);
+    delete pVertexTexture_;
 
     --meshCount_;
 }
@@ -235,7 +235,7 @@ inline void animateVertices(
     if (in)
     {
         if (!out)
-            out = _NEW(RenIVertexData(*in));
+            out = new RenIVertexData(*in);
 
         RenIVertexData::const_iterator from = in->begin();
         RenIVertexData::iterator to = out->begin();
@@ -284,7 +284,7 @@ template <class T> void GroupRenderFunctor<T>::operator()(const T* group) const
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-            RenIDelayedAlphaGroup* delayed = _NEW(RenIDelayedAlphaGroup(group, lit, mat, world_));
+            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, lit, mat, world_);
 
             if (mat.intraMeshAlphaPriority())
                 delayed->meshId(RenMesh::meshId());
@@ -303,7 +303,7 @@ template <class T> void GroupRenderFunctor<T>::operator()(const T* group) const
     else if (mat.interMeshCoplanar())
     {
         RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-        RenIDelayedCoplanarGroup* delayed = _NEW(RenIDelayedCoplanarGroup(group, lit, mat, world_));
+        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, lit, mat, world_);
         std::unique_ptr<RenIPrioritySortedItem> item(delayed);
         devImpl->coplanarSorter().addItem(item);
     }
@@ -351,7 +351,7 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-            RenIDelayedAlphaGroup* delayed = _NEW(RenIDelayedAlphaGroup(group, lit, mat, world_));
+            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, lit, mat, world_);
 
             if (mat.intraMeshAlphaPriority())
                 delayed->meshId(RenMesh::meshId());
@@ -370,7 +370,7 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
     else if (mat.interMeshCoplanar())
     {
         RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-        RenIDelayedCoplanarGroup* delayed = _NEW(RenIDelayedCoplanarGroup(group, lit, mat, world_));
+        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, lit, mat, world_);
         std::unique_ptr<RenIPrioritySortedItem> item(delayed);
         devImpl->coplanarSorter().addItem(item);
     }
@@ -707,7 +707,7 @@ void RenMesh::addLine(const MexPoint3d& p1, const MexPoint3d& p2, const RenMater
     // If there isn't an existing group, create a new one.
     if (!group)
     {
-        group = _NEW(RenILineGroup(mat));
+        group = new RenILineGroup(mat);
         lines_.push_back(group);
     }
 
@@ -731,7 +731,7 @@ Ren::VertexIdx RenMesh::addOrFindVertex(const MexPoint3d& pt, double epsilon)
     PRE(!RenIDeviceImpl::currentPimpl()->rendering3D());
 
     if (!vertices_)
-        vertices_ = _NEW(RenIVertexData(20));
+        vertices_ = new RenIVertexData(20);
 
     const double epSqr = epsilon * epsilon;
 
@@ -800,7 +800,7 @@ void RenMesh::materialVec(const RenMaterialVec* mats)
 
 std::unique_ptr<RenMaterialVec> RenMesh::materialVec() const
 {
-    RenMaterialVec* matSet = _NEW(RenMaterialVec(nMaterials()));
+    RenMaterialVec* matSet = new RenMaterialVec(nMaterials());
     MaterialEnumerator enumerator(matSet);
     std::for_each(triangles_.begin(), triangles_.end(), enumerator);
     std::for_each(lines_.begin(), lines_.end(), enumerator);
@@ -862,7 +862,7 @@ void RenMesh::removeTTFPolygon(Ren::TriangleIdx idx)
 {
     PRE(!RenIDeviceImpl::currentPimpl()->rendering3D());
 
-    _DELETE(ttfs_[idx]);
+    delete ttfs_[idx];
     ttfs_.erase(ttfs_.begin() + idx);
     isDirty_ = true;
 }
@@ -896,14 +896,14 @@ void RenMesh::addSpinTFPolygon(const RenSpinTFPolygon& addMe)
     if (stfps_.size() == 0)
         stfps_.reserve(40);
 
-    stfps_.push_back(_NEW(RenSpinTFPolygon(addMe)));
+    stfps_.push_back(new RenSpinTFPolygon(addMe));
     isDirty_ = true;
 }
 
 void RenMesh::removeSpinTFPolygon(Ren::TriangleIdx idx)
 {
     PRE(!RenIDeviceImpl::currentPimpl()->rendering3D());
-    _DELETE(stfps_[idx]);
+    delete stfps_[idx];
     stfps_.erase(stfps_.begin() + idx);
     isDirty_ = true;
 }
@@ -1636,7 +1636,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
     }
 
     // Create an array of vertices with exactly the required amount of space.
-    vertices_ = _NEW(RenIVertexData(totalVertices));
+    vertices_ = new RenIVertexData(totalVertices);
 
     // Visit each group and create a list of triangles for each one.
     size_t nVertices = 0;
@@ -1984,8 +1984,8 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
         {
             // Create a tri group.  It won't be used unless we actually find some
             // lines.  Ditto for lines.
-            RenIDistinctGroup* group = _NEW(RenIDistinctGroup(newMat, fCount));
-            RenILineGroup* lineGroup = _NEW(RenILineGroup(newMat));
+            RenIDistinctGroup* group = new RenIDistinctGroup(newMat, fCount);
+            RenILineGroup* lineGroup = new RenILineGroup(newMat);
 
             //Add each face
             size_t i = 0;
@@ -2031,12 +2031,12 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
                     group->backFace(false);
             }
             else
-                _DELETE( group );
+                delete group;
 
             if (lineGroup->nLines() > 0)
                 lines_.push_back(lineGroup);
             else
-                _DELETE( lineGroup );
+                delete lineGroup;
 
             }
 
@@ -2076,7 +2076,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
     PRE(mesh->mPosFaces.size() == mesh->mFaceMaterials.size());
 
     Ren::VertexIdx renVertexIndex;
-    vertices_ = _NEW(RenIVertexData(mesh->mPositions.size()));
+    vertices_ = new RenIVertexData(mesh->mPositions.size());
 
     for (uint i = 0; i < mesh->mPositions.size(); ++i)
     {
@@ -2184,7 +2184,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
             DBG_LOAD0("Set emissive for " << renMat << "\n");
         }
 
-        RenIDistinctGroup* triangleGroup = _NEW(RenIDistinctGroup(renMat));
+        RenIDistinctGroup* triangleGroup = new RenIDistinctGroup(renMat);
 
         // Use the material's specular red component to indicate that
         // a triangle group should not be backface culled.
@@ -2382,7 +2382,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
     // to the information gathered
 
     DBG_LOAD0("--Creation of the vertices_ structure--" << std::endl);
-    vertices_ = _NEW(RenIVertexData(renNumVertices));
+    vertices_ = new RenIVertexData(renNumVertices);
     // perform a sweep of the renIndexesMap and record the vertices coordinates in vertices_
     // update the correspondance table between the points indexes in gxmesh and vertices_
     DBG_LOAD3(std::endl << "Indexes correspondance table" << std::endl);
@@ -2466,7 +2466,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
             RenTexture renTex = RenSurfaceManager::instance().createTexture(txName);
             renMat.texture(renTex);
         }
-        RenIDistinctGroup* triangleGroup = _NEW(RenIDistinctGroup(renMat, gxPolygonSet.size()));
+        RenIDistinctGroup* triangleGroup = new RenIDistinctGroup(renMat, gxPolygonSet.size());
         for (int gxPSetIndex = 0; gxPSetIndex < gxPolygonSet.size(); ++gxPSetIndex)
         {
             // sweep polygons of the group
@@ -2789,7 +2789,7 @@ std::ostream& operator<<(std::ostream& o, const Ren::ConstMeshPtr& p)
 
 void RenMesh::createTextures()
 {
-    pVertexTexture_ = _NEW(Textures);
+    pVertexTexture_ = new Textures;
     const size_t nVertces = nVertices();
     pVertexTexture_->reserve(nVertces);
 

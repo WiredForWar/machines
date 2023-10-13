@@ -100,7 +100,7 @@ RenIDDrawDriverImpl::~RenIDDrawDriverImpl()
 
 RenIDriverImpl* RenIDDrawDriverImpl::clone() const
 {
-    return _NEW(RenIDDrawDriverImpl(*this));
+    return new RenIDDrawDriverImpl(*this);
 }
 
 bool RenIDDrawDriverImpl::isBetterChoiceThan(const RenIDriverImpl& than) const
@@ -139,7 +139,7 @@ RenID3dDeviceImpl::~RenID3dDeviceImpl()
 
 RenIDriverImpl* RenID3dDeviceImpl::clone() const
 {
-    return _NEW(RenID3dDeviceImpl(*this));
+    return new RenID3dDeviceImpl(*this);
 }
 
 bool RenID3dDeviceImpl::isBetterChoiceThan(const RenIDriverImpl& than) const

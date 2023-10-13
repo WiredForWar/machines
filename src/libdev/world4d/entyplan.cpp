@@ -136,33 +136,33 @@ W4dEntityPlanImpl::W4dEntityPlanImpl(const W4dEntityPlanImpl& rhs)
     , endTime_(rhs.endTime_)
 {
     if (rhs.pAbsoluteMotionPlans_)
-        pAbsoluteMotionPlans_ = _NEW(PendingMotionPlans(*rhs.pAbsoluteMotionPlans_));
+        pAbsoluteMotionPlans_ = new PendingMotionPlans(*rhs.pAbsoluteMotionPlans_);
 
     if (rhs.pMeshPlans_)
-        pMeshPlans_ = _NEW(PendingMeshPlans(*rhs.pMeshPlans_));
+        pMeshPlans_ = new PendingMeshPlans(*rhs.pMeshPlans_);
 
     if (rhs.pVisibilityPlans_)
-        pVisibilityPlans_ = _NEW(PendingVisibilityPlans(*rhs.pVisibilityPlans_));
+        pVisibilityPlans_ = new PendingVisibilityPlans(*rhs.pVisibilityPlans_);
 
     if (rhs.pScalePlans_)
-        pScalePlans_ = _NEW(PendingScalePlans(*rhs.pScalePlans_));
+        pScalePlans_ = new PendingScalePlans(*rhs.pScalePlans_);
 
     if (rhs.pUVPlans_)
-        pUVPlans_ = _NEW(PendingUVPlans(*rhs.pUVPlans_));
+        pUVPlans_ = new PendingUVPlans(*rhs.pUVPlans_);
 
     if (rhs.pMaterialPlans_)
-        pMaterialPlans_ = _NEW(PendingMaterialPlans(*rhs.pMaterialPlans_));
+        pMaterialPlans_ = new PendingMaterialPlans(*rhs.pMaterialPlans_);
 }
 
 W4dEntityPlanImpl::~W4dEntityPlanImpl()
 {
-    _DELETE(pFrameRegulator_);
-    _DELETE(pAbsoluteMotionPlans_);
-    _DELETE(pMeshPlans_);
-    _DELETE(pVisibilityPlans_);
-    _DELETE(pScalePlans_);
-    _DELETE(pUVPlans_);
-    _DELETE(pMaterialPlans_);
+    delete pFrameRegulator_;
+    delete pAbsoluteMotionPlans_;
+    delete pMeshPlans_;
+    delete pVisibilityPlans_;
+    delete pScalePlans_;
+    delete pUVPlans_;
+    delete pMaterialPlans_;
 }
 
 void perWrite(PerOstream& ostr, const W4dEntityPlanImpl& pImpl)
@@ -184,19 +184,19 @@ void perRead(PerIstream& istr, W4dEntityPlanImpl& pImpl)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 W4dEntityPlan::W4dEntityPlan()
-    : pImpl_(_NEW(W4dEntityPlanImpl))
+    : pImpl_(new W4dEntityPlanImpl)
 {
 }
 
 W4dEntityPlan::W4dEntityPlan(const W4dEntityPlan& rhs)
-    : pImpl_(_NEW(W4dEntityPlanImpl(*(rhs.pImpl_))))
+    : pImpl_(new W4dEntityPlanImpl(*(rhs.pImpl_)))
 {
     PRE(rhs.pImpl_);
 }
 
 W4dEntityPlan::~W4dEntityPlan()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@ void W4dEntityPlan::absoluteMotion(
 
     // Construct the motion plans collection if needed
     if (pAbsoluteMotionPlans_ == nullptr)
-        pAbsoluteMotionPlans_ = _NEW(PendingMotionPlans);
+        pAbsoluteMotionPlans_ = new PendingMotionPlans;
 
     // Add the new plan to the list
     pAbsoluteMotionPlans_->push_back(PendingMotionPlan(motionPlan, startTime, repetitions, animId));
@@ -420,13 +420,13 @@ void W4dEntityPlan::plan(const W4dEntityPlan& rhs, const PhysAbsoluteTime& start
     // Copy in any frame regulator
     if (pFrameRegulator_ != nullptr)
     {
-        _DELETE(pFrameRegulator_);
+        delete pFrameRegulator_;
         pFrameRegulator_ = nullptr;
     }
 
     if (rhs.pImpl_->pFrameRegulator_ != nullptr)
     {
-        pFrameRegulator_ = _NEW(W4dFrameRegulator(*rhs.pImpl_->pFrameRegulator_));
+        pFrameRegulator_ = new W4dFrameRegulator(*rhs.pImpl_->pFrameRegulator_);
         pFrameRegulator_->startTime(pFrameRegulator_->startTime() + startTime);
     }
 }
@@ -449,7 +449,7 @@ void W4dEntityPlan::meshPlan(
 
     // Create the collection if necessary
     if (pMeshPlans_ == nullptr)
-        pMeshPlans_ = _NEW(PendingMeshPlans);
+        pMeshPlans_ = new PendingMeshPlans;
 
     // Add the new plan to the list
     pMeshPlans_->push_back(PendingMeshPlan(meshPlanPtr, startTime, nRepetitions, animId));
@@ -498,7 +498,7 @@ void W4dEntityPlan::materialPlan(
     CB_ENTITYPLAN_DEPIMPL;
 
     if (pMaterialPlans_ == nullptr)
-        pMaterialPlans_ = _NEW(PendingMaterialPlans);
+        pMaterialPlans_ = new PendingMaterialPlans;
 
     // Add the new plan to the list
     pMaterialPlans_->push_back(PendingMaterialPlan(planPtr, startTime, nRepetitions, animId));
@@ -528,7 +528,7 @@ void W4dEntityPlan::visibilityPlan(
     CB_ENTITYPLAN_DEPIMPL;
 
     if (pVisibilityPlans_ == nullptr)
-        pVisibilityPlans_ = _NEW(PendingVisibilityPlans);
+        pVisibilityPlans_ = new PendingVisibilityPlans;
 
     pVisibilityPlans_->push_back(PendingVisibilityPlan(planPtr, startTime, repetitions, animId));
 
@@ -574,7 +574,7 @@ void W4dEntityPlan::scalePlan(
     CB_ENTITYPLAN_DEPIMPL;
 
     if (pScalePlans_ == nullptr)
-        pScalePlans_ = _NEW(PendingScalePlans);
+        pScalePlans_ = new PendingScalePlans;
 
     pScalePlans_->push_back(PendingScalePlan(planPtr, startTime, repetitions, animId));
 
@@ -634,7 +634,7 @@ void W4dEntityPlan::uvPlan(
     CB_ENTITYPLAN_DEPIMPL;
 
     if (pUVPlans_ == nullptr)
-        pUVPlans_ = _NEW(PendingUVPlans);
+        pUVPlans_ = new PendingUVPlans;
 
     pUVPlans_->push_back(PendingUVPlan(planPtr, startTime, repetitions, animId));
     endTime_ = std::max(endTime_, startTime + planPtr->duration() * (repetitions + 1));
@@ -800,8 +800,8 @@ void W4dEntityPlan::clearMeshPlansAtTime(const PhysAbsoluteTime& actualTime)
 void W4dEntityPlan::frameRegulator(const W4dFrameRegulator& frameRegulator)
 {
     CB_ENTITYPLAN_DEPIMPL;
-    _DELETE(pFrameRegulator_);
-    pFrameRegulator_ = _NEW(W4dFrameRegulator(frameRegulator));
+    delete pFrameRegulator_;
+    pFrameRegulator_ = new W4dFrameRegulator(frameRegulator);
 }
 
 PhysAbsoluteTime W4dEntityPlan::finishAnimation(uint animId)
@@ -992,7 +992,7 @@ void perWrite(PerOstream& ostr, const W4dEntityPlan& plan)
 
 void perRead(PerIstream& istr, W4dEntityPlan& plan)
 {
-    _DELETE(plan.pImpl_);
+    delete plan.pImpl_;
     istr >> plan.pImpl_;
 }
 

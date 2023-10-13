@@ -163,7 +163,7 @@ MachPhysPlasmaBolt* MachPhysPlasmaWeapon::createPlasmaBolt(
     }
 
     // Create the bolt
-    MachPhysPlasmaBolt* pBolt = _NEW(MachPhysPlasmaBolt(pParent, startTransform, type(), createLights));
+    MachPhysPlasmaBolt* pBolt = new MachPhysPlasmaBolt(pParent, startTransform, type(), createLights);
 
     // let it spin if can
     W4dCompositePlanPtr spinPlanPtr;

@@ -123,7 +123,7 @@ bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, string*)
 
         if (valid)
         {
-            MachLogMoveToOperation* pOp = _NEW(MachLogMoveToOperation(&pActor->asMachine(), validPoint));
+            MachLogMoveToOperation* pOp = new MachLogMoveToOperation(&pActor->asMachine(), validPoint);
 
             // Give it to the actor
             pActor->newOperation(pOp);
@@ -154,7 +154,7 @@ bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, string*)
                 and pActor->asCanAttack().hasTreacheryWeapon(),
             "Unexpected non-treachery-capable actor about to be issued a treachery op.");
 
-        pOp = _NEW(MachLogTreacheryOperation(&pActor->asMachine(), pDirectObject_));
+        pOp = new MachLogTreacheryOperation(&pActor->asMachine(), pDirectObject_);
 
         // Give it to the actor
         pActor->newOperation(pOp);
@@ -209,7 +209,7 @@ void MachGuiTreacheryCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiTreacheryCommand::clone() const
 {
-    return _NEW(MachGuiTreacheryCommand(&inGameScreen()));
+    return new MachGuiTreacheryCommand(&inGameScreen());
 }
 
 // virtual

@@ -18,7 +18,7 @@ MachGuiIDatabase::MachGuiIDatabase()
     , nextPlayerId_(0)
     , pDbCurrentPlayer_(nullptr)
     , nextUseSequenceId_(0)
-    , pDbHandler_(_NEW(MachGuiDatabaseHandler))
+    , pDbHandler_(new MachGuiDatabaseHandler)
     , pCurrentDbScenario_(nullptr)
 {
     campaignSystems_.reserve(20);
@@ -34,8 +34,8 @@ MachGuiIDatabase::~MachGuiIDatabase()
 {
     TEST_INVARIANT;
 
-    _DELETE(pElementMap_);
-    _DELETE(pDbHandler_);
+    delete pElementMap_;
+    delete pDbHandler_;
 }
 
 void MachGuiIDatabase::CLASS_INVARIANT

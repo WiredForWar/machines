@@ -231,7 +231,7 @@ void D3DApp::processInput()
     // TODO check no longer used?
     /*if (renDumpMeshStream)
     {
-        _DELETE(renDumpMeshStream);
+        delete renDumpMeshStream;
         renDumpMeshStream = NULL;
     }*/
 
@@ -331,12 +331,12 @@ void D3DApp::processInput()
             case DevKey::KEY_X:
                 if (matXform_)
                 {
-                    _DELETE(matXform_);
+                    delete matXform_;
                     matXform_ = NULL;
                 }
                 else
                 {
-                    matXform_ = _NEW(EnvNVGMatTransform(1, 1.3));
+                    matXform_ = new EnvNVGMatTransform(1, 1.3);
                 }
 
                 RenMaterial::globalTransform(matXform_);
@@ -456,7 +456,7 @@ void randomiseMaterial(RenMaterial* mat)
 
 RenMaterialVec* createRandomSet(size_t nMats)
 {
-    RenMaterialVec* newSet = _NEW(RenMaterialVec(nMats));
+    RenMaterialVec* newSet = new RenMaterialVec(nMats);
 
     for (size_t i = 0; i != nMats; ++i)
     {
@@ -801,7 +801,7 @@ static void perVertexTest(const Ren::MeshPtr& mesh)
 // //     {
 // //       ModelData* pModel = models_[ i ];
 // //
-// //       pModel->control_ = _NEW(FlyControl(pModel->xform_));
+// //       pModel->control_ = new FlyControl(pModel->xform_);
 // //       pModel->control_->degreesPerSecond(8);
 // //       pModel->control_->metersPerSecond(0.6);
 // //       pModel->control_->setDefaultPosition(pModel->xform_);
@@ -903,7 +903,7 @@ bool D3DApp::readModels(const SysPathName& pathname)
             }
 
             MexTransform3d tx(MexEulerAngles(MexDegrees(a), MexDegrees(e), MexDegrees(r)), MexPoint3d(x, y, z));
-            ControlledModel* model = _NEW(ControlledModel(newMesh, tx));
+            ControlledModel* model = new ControlledModel(newMesh, tx);
             models_.push_back(model);
         }
     }
@@ -935,21 +935,21 @@ void D3DApp::readEnvironment(const SysPathName& planetName)
     for (int i = 0; i != dirLights.size(); ++i)
     {
         RenDirectionalLight* light = dirLights[i];
-        ControlledLight* data = _NEW(ControlledDirLight(light));
+        ControlledLight* data = new ControlledDirLight(light);
         lights_.push_back(data);
     }
 
     for (int i = 0; i != ptLights.size(); ++i)
     {
         RenPointLight* light = ptLights[i];
-        ControlledLight* data = _NEW(ControlledPointLight(light));
+        ControlledLight* data = new ControlledPointLight(light);
         lights_.push_back(data);
     }
 
     for (int i = 0; i != uniformLights.size(); ++i)
     {
         RenUniformLight* light = uniformLights[i];
-        ControlledLight* data = _NEW(ControlledUniformLight(light));
+        ControlledLight* data = new ControlledUniformLight(light);
         lights_.push_back(data);
     }
 }
@@ -981,7 +981,7 @@ void D3DApp::testCursor()
     surf3.enableColourKeying();
     surf4.enableColourKeying();
 
-    RenAnimCursor2d* animCursor = _NEW(RenAnimCursor2d);
+    RenAnimCursor2d* animCursor = new RenAnimCursor2d;
     animCursor->addFrame(surf1);
     animCursor->addFrame(surf2);
     animCursor->addFrame(surf3);
@@ -1517,7 +1517,7 @@ inline float rand0To1()
 
 void overrideDefaultKeyboardMapping(PhysFlyControl* pControl)
 {
-    DevKeyToCommandTranslator* pKeyTranslator = _NEW(DevKeyToCommandTranslator());
+    DevKeyToCommandTranslator* pKeyTranslator = new DevKeyToCommandTranslator();
     pKeyTranslator->addTranslation(DevKeyToCommand(
         DevKey::ENTER_PAD,
         PhysMotionControlWithTrans::FOWARD,
@@ -1725,7 +1725,7 @@ bool D3DApp::clientStartup()
     {
         SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines");
         RenDriverSelector* driverSelector;
-        driverSelector = _NEW(RenDriverSelector());
+        driverSelector = new RenDriverSelector();
 
         bool driverFound = false;
         for (RenDriverSelector::RenDrivers::const_iterator dDrawIt = driverSelector->dDrawDrivers().begin();
@@ -1739,10 +1739,10 @@ bool D3DApp::clientStartup()
                 driverSelector->updateDriverRegistries();
             }
         }
-        _DELETE(driverSelector);
+        delete driverSelector;
     }
 
-    display_ = _NEW(RenDisplay(window()));
+    display_ = new RenDisplay(window());
 
     if (!windowMode)
     {
@@ -1770,7 +1770,7 @@ bool D3DApp::clientStartup()
     }
 
     std::cout << *display_ << std::endl;
-    device_ = _NEW(RenDevice(display_));
+    device_ = new RenDevice(display_);
 
     // set this after the device has been created: we need the capability class
     // to find out how much memory is available for display
@@ -1781,7 +1781,7 @@ bool D3DApp::clientStartup()
         testCursor();
 
     // Daniel: Some lovely stars for you.
-    // pStars_ = _NEW(RenStars(100.0, 0.8, 1000));
+    // pStars_ = new RenStars(100.0, 0.8, 1000);
 
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
     searchList.push_back(SysPathName("textures"));
@@ -1806,13 +1806,13 @@ bool D3DApp::clientStartup()
     RENDER_STREAM(device_->capabilities());
 
     MexRadians a1 = MexDegrees(40);
-    camera_ = _NEW(RenCamera());
+    camera_ = new RenCamera();
     camera_->verticalFOVAngle(a1.asScalar());
     camera_->yonClipDistance(500);
     camera_->transform(eyeXform_);
 
     // Set-up a flight sim like flying eyepoint.
-    eyeControl_ = _NEW(PhysFlyControl(_NEW(PhysMotionControlledTransform(&eyeXform_))));
+    eyeControl_ = new PhysFlyControl(_NEW(PhysMotionControlledTransform(&eyeXform_)));
     eyeControl_->enableInput();
     overrideDefaultKeyboardMapping(eyeControl_);
     eyeControl_->initEventQueue();
@@ -1848,14 +1848,14 @@ bool D3DApp::clientStartup()
 
 void D3DApp::clientShutdown()
 {
-    _DELETE(testSurf_);
-    _DELETE(eyeControl_);
-    _DELETE(camera_);
-    _DELETE(uvAnim_);
-    _DELETE(matVec_);
-    _DELETE(device_);
-    _DELETE(display_);
-    _DELETE(pStars_);
+    delete testSurf_;
+    delete eyeControl_;
+    delete camera_;
+    delete uvAnim_;
+    delete matVec_;
+    delete device_;
+    delete display_;
+    delete pStars_;
 }
 
 // Update the display.

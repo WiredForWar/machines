@@ -75,20 +75,20 @@ PhysRelativeTime MachLogAdminHealOperation::doUpdate()
             {
                 HAL_STREAM(" issuing heal operation to " << pSquadronMachine->id() << std::endl);
                 pSquadronMachine->newOperation(
-                    _NEW(MachLogHealOperation(&pSquadronMachine->asAdministrator(), pDirectObject_)));
+                    new MachLogHealOperation(&pSquadronMachine->asAdministrator(), pDirectObject_));
             }
             else
             {
                 HAL_STREAM(" issuing follow operation to " << pSquadronMachine->id() << std::endl);
-                pSquadronMachine->newOperation(_NEW(MachLogFollowOperation(
+                pSquadronMachine->newOperation(new MachLogFollowOperation(
                     (MachLogMachine*)*i,
                     pActor_,
-                    MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::KILLER_CONVOY, index++, 15))));
+                    MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::KILLER_CONVOY, index++, 15)));
             }
         }
     }
     HAL_STREAM(" issuing heal operation for myself and setting complete to true\n");
-    pActor_->newOperation(_NEW(MachLogHealOperation(pActor_, pDirectObject_)));
+    pActor_->newOperation(new MachLogHealOperation(pActor_, pDirectObject_));
     complete_ = true;
 
     HAL_STREAM(" exit.\n");

@@ -56,9 +56,9 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
 
     RenIStarsImplD3DLVERTEXGen* pVertexGen = nullptr;
     if (configuration() == RenStars::SPHERICAL)
-        pVertexGen = _NEW(RenIStarsImplSphericalD3DLVERTEXGen(radius_, STAR_COLOUR));
+        pVertexGen = new RenIStarsImplSphericalD3DLVERTEXGen(radius_, STAR_COLOUR);
     else if (configuration() == RenStars::HEMISPHERICAL)
-        pVertexGen = _NEW(RenIStarsImplHemisphericalD3DLVERTEXGen(radius_, STAR_COLOUR));
+        pVertexGen = new RenIStarsImplHemisphericalD3DLVERTEXGen(radius_, STAR_COLOUR);
     else
         ASSERT_FAIL("An invalid stars configuration was found in RenIStarsImpl ctor.");
 

@@ -35,11 +35,11 @@
 #include <memory>
 
 MachPhysRaceChangerBody::MachPhysRaceChangerBody()
-    : pMachineChangerMap_(_NEW(MachineChangerMap()))
-    , pConstructionChangerMap_(_NEW(ConstructionChangerMap()))
-    , pWeaponChangerMap_(_NEW(WeaponChangerMap()))
-    , pChangerRaces_(_NEW(Races()))
-    , pMaterialVecPtrSet_(_NEW(W4dMaterialVecPtrSet))
+    : pMachineChangerMap_(new MachineChangerMap())
+    , pConstructionChangerMap_(new ConstructionChangerMap)
+    , pWeaponChangerMap_(new WeaponChangerMap)
+    , pChangerRaces_(new Races)
+    , pMaterialVecPtrSet_(new W4dMaterialVecPtrSet)
 {
     // Set up the list of races in use. red is needed for traitor animations
     pChangerRaces_->reserve(4);
@@ -58,25 +58,25 @@ MachPhysRaceChangerBody::~MachPhysRaceChangerBody()
     // Iterate through the maps deleting entries
     for (MachineChangerMap::iterator it = pMachineChangerMap_->begin(); it != pMachineChangerMap_->end(); ++it)
     {
-        _DELETE((*it).second);
+        delete (*it).second;
     }
 
     for (ConstructionChangerMap::iterator it = pConstructionChangerMap_->begin(); it != pConstructionChangerMap_->end();
          ++it)
     {
-        _DELETE((*it).second);
+        delete (*it).second;
     }
 
     for (WeaponChangerMap::iterator it = pWeaponChangerMap_->begin(); it != pWeaponChangerMap_->end(); ++it)
     {
-        _DELETE((*it).second);
+        delete (*it).second;
     }
 
-    _DELETE(pMachineChangerMap_);
-    _DELETE(pConstructionChangerMap_);
-    _DELETE(pWeaponChangerMap_);
-    _DELETE(pChangerRaces_);
-    _DELETE(pMaterialVecPtrSet_);
+    delete pMachineChangerMap_;
+    delete pConstructionChangerMap_;
+    delete pWeaponChangerMap_;
+    delete pChangerRaces_;
+    delete pMaterialVecPtrSet_;
 }
 
 void MachPhysRaceChangerBody::CLASS_INVARIANT
@@ -109,7 +109,7 @@ void MachPhysRaceChangerBody::add(const MachPhysMachine& machine, const MachPhys
 
     for (size_t i = 0; i != nRaces; ++i)
     {
-        materialMaps.push_back(_NEW(RenMaterialMap));
+        materialMaps.push_back(new RenMaterialMap);
         changerHues.push_back(hue(changerRaces[i]));
     }
 
@@ -131,14 +131,14 @@ void MachPhysRaceChangerBody::add(const MachPhysMachine& machine, const MachPhys
         // Create the composite changer
         RenMaterialMap* pRaceMaterialMap = materialMaps[i];
         W4dCompositeMaterialVecChanger* pChanger
-            = _NEW(W4dCompositeMaterialVecChanger(machine, *pRaceMaterialMap, pMaterialVecPtrSet_));
+            = new W4dCompositeMaterialVecChanger(machine, *pRaceMaterialMap, pMaterialVecPtrSet_);
 
         // Insert into map
         spec.race(changerRaces[i]);
         pMachineChangerMap_->insert(spec, pChanger);
 
         // Delete the material map
-        _DELETE(pRaceMaterialMap);
+        delete pRaceMaterialMap;
     }
 }
 
@@ -158,7 +158,7 @@ void MachPhysRaceChangerBody::add(const MachPhysConstruction& construction, cons
 
     for (size_t i = 0; i != nRaces; ++i)
     {
-        materialMaps.push_back(_NEW(RenMaterialMap));
+        materialMaps.push_back(new RenMaterialMap);
         changerHues.push_back(hue(changerRaces[i]));
     }
 
@@ -180,14 +180,14 @@ void MachPhysRaceChangerBody::add(const MachPhysConstruction& construction, cons
         // Create the composite changer
         RenMaterialMap* pRaceMaterialMap = materialMaps[i];
         W4dCompositeMaterialVecChanger* pChanger
-            = _NEW(W4dCompositeMaterialVecChanger(construction, *pRaceMaterialMap, pMaterialVecPtrSet_));
+            = new W4dCompositeMaterialVecChanger(construction, *pRaceMaterialMap, pMaterialVecPtrSet_);
 
         // Insert into map
         spec.race(changerRaces[i]);
         pConstructionChangerMap_->insert(spec, pChanger);
 
         // Delete the material map
-        _DELETE(pRaceMaterialMap);
+        delete pRaceMaterialMap;
     }
 }
 
@@ -295,7 +295,7 @@ void MachPhysRaceChangerBody::add(const MachPhysWeapon& weapon)
 
     for (size_t i = 0; i != nRaces; ++i)
     {
-        materialMaps.push_back(_NEW(RenMaterialMap));
+        materialMaps.push_back(new RenMaterialMap);
         changerHues.push_back(hue(changerRaces[i]));
     }
 
@@ -317,14 +317,14 @@ void MachPhysRaceChangerBody::add(const MachPhysWeapon& weapon)
         // Create the composite changer
         RenMaterialMap* pRaceMaterialMap = materialMaps[i];
         W4dCompositeMaterialVecChanger* pChanger
-            = _NEW(W4dCompositeMaterialVecChanger(weapon, *pRaceMaterialMap, pMaterialVecPtrSet_));
+            = new W4dCompositeMaterialVecChanger(weapon, *pRaceMaterialMap, pMaterialVecPtrSet_);
 
         // Insert into map
         spec.race(changerRaces[i]);
         pWeaponChangerMap_->insert(spec, pChanger);
 
         // Delete the material map
-        _DELETE(pRaceMaterialMap);
+        delete pRaceMaterialMap;
     }
 }
 
@@ -375,14 +375,14 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
 
         if (SysMetaFile::useMetaFile())
         {
-            // pIstream = _NEW( SysMetaFileIstream( metaFile, logoFilename, std::ios::text ) );
-            pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, logoFilename, std::ios::in)));
+            // pIstream = new SysMetaFileIstream( metaFile, logoFilename, std::ios::text );
+            pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, logoFilename, std::ios::in));
         }
         else
         {
             ASSERT_FILE_EXISTS(logoFilename.c_str());
-            // pIstream = _NEW( ifstream( logoFilename.c_str(), ios::text | ios::in ) );
-            pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(logoFilename.c_str(), std::ios::in)));
+            // pIstream = new ifstream( logoFilename.c_str(), ios::text | ios::in );
+            pIstream = std::unique_ptr<std::istream>(new std::ifstream(logoFilename.c_str(), std::ios::in));
         }
 
         UtlLineTokeniser parser(*pIstream, logoFilename);

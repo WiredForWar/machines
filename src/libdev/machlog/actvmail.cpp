@@ -52,7 +52,7 @@ MachLogVoiceMailAction*
 MachLogVoiceMailAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogVoiceMailAction* pResult = nullptr;
-    pResult = _NEW(MachLogVoiceMailAction(pCondition, enabled));
+    pResult = new MachLogVoiceMailAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

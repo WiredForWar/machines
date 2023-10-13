@@ -84,7 +84,7 @@ MachLogFactory::MachLogFactory(
         pNewPhysFactory(subType, pRace, level, location, angle),
         MachLog::FACTORY,
         MachPhysData::instance().factoryData(subType, level))
-    , pImpl_(_NEW(MachLogFactoryImpl(subType)))
+    , pImpl_(new MachLogFactoryImpl(subType))
 {
 
     TEST_INVARIANT;
@@ -105,7 +105,7 @@ MachLogFactory::MachLogFactory(
         MachLog::FACTORY,
         withId,
         MachPhysData::instance().factoryData(subType, level))
-    , pImpl_(_NEW(MachLogFactoryImpl(subType)))
+    , pImpl_(new MachLogFactoryImpl(subType))
 {
 
     TEST_INVARIANT;
@@ -120,7 +120,7 @@ MachLogFactory::~MachLogFactory()
     CB_MachLogFactory_DEPIMPL();
     if (not productionLine_.empty())
         clearProductionLine();
-    _DELETE(pImpl_);
+    delete pImpl_;
 
     TEST_INVARIANT;
 }
@@ -201,7 +201,7 @@ MachPhysFactory* MachLogFactory::pNewPhysFactory(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysFactory(pDomain, localTransform, subType, level, pRace->race()));
+    return new MachPhysFactory(pDomain, localTransform, subType, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -367,7 +367,7 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
                             entranceInternalPoint(i),
                             entranceExternalPoint(i),
                             &logRace());
-                        _DELETE(*productionLine_.begin());
+                        delete *productionLine_.begin();
                         productionLine_.erase(productionLine_.begin());
                         amountBuilt(0);
 
@@ -459,7 +459,7 @@ bool MachLogFactory::buildMachine(
                                             << " swLevel" << swLevel << "\n\twc" << wc << std::endl);
     if (isAllowedToBuild(type, subType, hwLevel, wc))
     {
-        MachLogProductionUnit* newUnit = _NEW(MachLogProductionUnit(type, subType, hwLevel, swLevel, priority));
+        MachLogProductionUnit* newUnit = new MachLogProductionUnit(type, subType, hwLevel, swLevel, priority);
         newUnit->amountBuilt(0);
         newUnit->weaponCombo(wc);
         insertIntoProductionLine(newUnit);
@@ -485,7 +485,7 @@ bool MachLogFactory::buildMachineUnique(
     CB_MachLogFactory_DEPIMPL();
     if (isAllowedToBuild(type, subType, hwLevel, wc))
     {
-        MachLogProductionUnit* newUnit = _NEW(MachLogProductionUnit(type, subType, hwLevel, swLevel, priority));
+        MachLogProductionUnit* newUnit = new MachLogProductionUnit(type, subType, hwLevel, swLevel, priority);
         newUnit->weaponCombo(wc);
         newUnit->amountBuilt(0);
         bool found = false;
@@ -499,7 +499,7 @@ bool MachLogFactory::buildMachineUnique(
         }
         else
         {
-            _DELETE(newUnit);
+            delete newUnit;
         }
         return true;
     }
@@ -512,7 +512,7 @@ void MachLogFactory::clearProductionLine()
     CB_MachLogFactory_DEPIMPL();
     while (not productionLine_.empty())
     {
-        _DELETE(*productionLine_.begin());
+        delete *productionLine_.begin();
         productionLine_.pop_front();
     }
 }
@@ -561,7 +561,7 @@ void MachLogFactory::cancelProductionUnit(const MachLogProductionUnit* pUnit)
             MachLogRaces::instance().smartAddBMUs(race(), refundedBMUs);
         }
 
-        _DELETE(*i);
+        delete *i;
         productionLine_.erase(i);
     }
 }
@@ -574,7 +574,7 @@ void MachLogFactory::moveProductionUnit(MachLogProductionUnit* pUnit, MachLogFac
     for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end(); ++i)
         if ((*i) == pUnit)
         {
-            //          _DELETE( (*i) );
+            //          delete (*i);
             if (direction == TOWARDS_FRONT and i == productionLine_.begin())
                 return;
             if (direction == TOWARDS_BACK and i == tempIterator)
@@ -745,14 +745,14 @@ void MachLogFactory::loadGame()
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, factoryItemsPath, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, factoryItemsPath, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, factoryItemsPath, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, factoryItemsPath, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(factoryItemsPath.c_str());
-        // pIstream = _NEW( ifstream( factoryItemsPath.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(factoryItemsPath.c_str(), std::ios::in)));
+        // pIstream = new ifstream( factoryItemsPath.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(factoryItemsPath.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, factoryItemsPath);
@@ -985,7 +985,7 @@ void MachLogFactory::moveToDeployPoint(
     MATHEX_SCALAR tolerance = 10;
     if (deployPointIsSet_)
         tolerance = 25;
-    pMach->newOperation(_NEW(MachLogMoveToOperation(pMach, dest, false, tolerance)));
+    pMach->newOperation(new MachLogMoveToOperation(pMach, dest, false, tolerance));
 }
 
 bool MachLogFactory::buildMachineUniqueWithSquadIndex(
@@ -1000,7 +1000,7 @@ bool MachLogFactory::buildMachineUniqueWithSquadIndex(
     CB_MachLogFactory_DEPIMPL();
     if (isAllowedToBuild(type, subType, hwLevel, wc))
     {
-        MachLogProductionUnit* newUnit = _NEW(MachLogProductionUnit(type, subType, hwLevel, swLevel, priority));
+        MachLogProductionUnit* newUnit = new MachLogProductionUnit(type, subType, hwLevel, swLevel, priority);
         newUnit->weaponCombo(wc);
         newUnit->amountBuilt(0);
         newUnit->constructionId(squadIndex);
@@ -1015,7 +1015,7 @@ bool MachLogFactory::buildMachineUniqueWithSquadIndex(
         }
         else
         {
-            _DELETE(newUnit);
+            delete newUnit;
         }
         return true;
     }

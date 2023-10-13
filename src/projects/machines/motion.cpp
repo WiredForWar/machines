@@ -23,7 +23,7 @@ void SDLApp::moveObject(W4dEntity* pObject)
     endPosition.rotation(rot);
     PhysRelativeTime endTime(5);
 
-    PhysMotionPlanPtr motionPlanPtr(_NEW(PhysLinearMotionPlan(startPosition, endPosition, endTime)));
+    PhysMotionPlanPtr motionPlanPtr(new PhysLinearMotionPlan(startPosition, endPosition, endTime));
 
     pObject->entityPlanForEdit().absoluteMotion(motionPlanPtr, 10);
 }

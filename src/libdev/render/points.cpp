@@ -14,7 +14,7 @@
 #include "render/material.hpp"
 
 RenPoints::RenPoints(size_t initial)
-    : points_(_NEW(RenIPoints(initial)))
+    : points_(new RenIPoints(initial))
 {
     TEST_INVARIANT;
 }
@@ -22,7 +22,7 @@ RenPoints::RenPoints(size_t initial)
 RenPoints::~RenPoints()
 {
     TEST_INVARIANT;
-    _DELETE(points_);
+    delete points_;
 }
 
 size_t RenPoints::nPoints() const

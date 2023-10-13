@@ -140,8 +140,8 @@ void MachGuiCaptureCommand::typeData(MachLog::ObjectType /*objectType*/, int /*s
 // virtual
 bool MachGuiCaptureCommand::doApply(MachActor* pActor, string*)
 {
-    MachLogSuperConstructOperation* pOp = _NEW(
-        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::CAPTURE_OPERATION));
+    MachLogSuperConstructOperation* pOp = new 
+        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::CAPTURE_OPERATION);
     pActor->newOperation(pOp);
 
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
@@ -159,7 +159,7 @@ bool MachGuiCaptureCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiCaptureCommand::clone() const
 {
-    return _NEW(MachGuiCaptureCommand(&inGameScreen()));
+    return new MachGuiCaptureCommand(&inGameScreen());
 }
 
 // virtual
@@ -203,8 +203,8 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
     PRE(canAdminApply());
 
     // Create an admin superconstruct(capture) operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp = _NEW(
-        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::CAPTURE_OPERATION));
+    MachLogAdminSuperConstructOperation* pOp = new 
+        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::CAPTURE_OPERATION);
 
     pAdministrator->newOperation(pOp);
     ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");

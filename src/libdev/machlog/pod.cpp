@@ -69,9 +69,8 @@ MachLogPod::MachLogPod(
         MachLog::POD,
         MachPhysData::instance().podData(level))
     , MachLogCanAttack(this, pPhysPod(), wc)
-    , pImpl_(_NEW(MachLogPodImpl()))
+    , pImpl_(new MachLogPodImpl())
 {
-
     TEST_INVARIANT;
     armour(data().armour());
     MachLogRaces::instance().pods(pRace->race()).push_back(this);
@@ -93,7 +92,7 @@ MachLogPod::MachLogPod(
         withId,
         MachPhysData::instance().podData(level))
     , MachLogCanAttack(this, pPhysPod(), wc)
-    , pImpl_(_NEW(MachLogPodImpl()))
+    , pImpl_(new MachLogPodImpl)
 {
     TEST_INVARIANT;
     armour(data().armour());
@@ -106,7 +105,7 @@ MachLogPod::~MachLogPod()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
@@ -138,7 +137,7 @@ MachLogPod::pNewPhysPod(MachLogRace* pRace, uint level, const MexPoint3d& locati
     MexTransform3d localTransform;
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
-    return _NEW(MachPhysPod(pDomain, localTransform, level, pRace->race()));
+    return new MachPhysPod(pDomain, localTransform, level, pRace->race());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

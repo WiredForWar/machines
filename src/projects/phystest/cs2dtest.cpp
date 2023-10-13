@@ -107,7 +107,7 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     aDomainIds[1] = pSpace->addDomain(box1);
 
     MexAlignedBox2d box2(MexPoint2d(1300, 800), MexPoint2d(2000, 1600));
-    Points* pPoints2 = _NEW(ctl_vector<MexPoint2d>);
+    Points* pPoints2 = new ctl_vector<MexPoint2d>;
     pPoints2->reserve(6);
     pPoints2->push_back(MexPoint2d(1400, 800));
     pPoints2->push_back(MexPoint2d(2000, 800));
@@ -115,7 +115,7 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     pPoints2->push_back(MexPoint2d(1300, 1600));
     pPoints2->push_back(MexPoint2d(1300, 900));
     std::unique_ptr<Points> points2APtr(pPoints2);
-    MexConvexPolygon2d* pPolygon2 = _NEW(MexConvexPolygon2d(points2APtr));
+    MexConvexPolygon2d* pPolygon2 = new MexConvexPolygon2d(points2APtr);
     std::unique_ptr<MexPolygon2d> polygon2APtr(pPolygon2);
     aDomainIds[2] = pSpace->addDomain(box2, polygon2APtr);
 
@@ -132,7 +132,7 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     aDomainIds[6] = pSpace->addDomain(box6);
 
     MexAlignedBox2d box7(MexPoint2d(1500, 800), MexPoint2d(2800, 2800));
-    Points* pPoints7 = _NEW(ctl_vector<MexPoint2d>);
+    Points* pPoints7 = new ctl_vector<MexPoint2d>;
     pPoints7->reserve(5);
     pPoints7->push_back(MexPoint2d(2000, 800));
     pPoints7->push_back(MexPoint2d(2800, 800));
@@ -140,7 +140,7 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     pPoints7->push_back(MexPoint2d(1500, 2800));
     pPoints7->push_back(MexPoint2d(1500, 1600));
     std::unique_ptr<Points> points7APtr(pPoints7);
-    MexConvexPolygon2d* pPolygon7 = _NEW(MexConvexPolygon2d(points7APtr));
+    MexConvexPolygon2d* pPolygon7 = new MexConvexPolygon2d(points7APtr);
     std::unique_ptr<MexPolygon2d> polygon7APtr(pPolygon7);
     aDomainIds[7] = pSpace->addDomain(box7, polygon7APtr);
 
@@ -151,7 +151,7 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     aDomainIds[9] = pSpace->addDomain(box9);
 
     MexAlignedBox2d box10(MexPoint2d(700, 0), MexPoint2d(1400, 900));
-    Points* pPoints10 = _NEW(ctl_vector<MexPoint2d>);
+    Points* pPoints10 = new ctl_vector<MexPoint2d>;
     pPoints10->reserve(6);
     pPoints10->push_back(MexPoint2d(700, 0));
     pPoints10->push_back(MexPoint2d(1400, 0));
@@ -160,12 +160,12 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     pPoints10->push_back(MexPoint2d(800, 800));
     pPoints10->push_back(MexPoint2d(700, 700));
     std::unique_ptr<Points> points10APtr(pPoints10);
-    MexConvexPolygon2d* pPolygon10 = _NEW(MexConvexPolygon2d(points10APtr));
+    MexConvexPolygon2d* pPolygon10 = new MexConvexPolygon2d(points10APtr);
     std::unique_ptr<MexPolygon2d> polygon10APtr(pPolygon10);
     aDomainIds[10] = pSpace->addDomain(box10, polygon10APtr);
 
     MexAlignedBox2d box11(MexPoint2d(700, 800), MexPoint2d(1300, 1700));
-    Points* pPoints11 = _NEW(ctl_vector<MexPoint2d>);
+    Points* pPoints11 = new ctl_vector<MexPoint2d>;
     pPoints11->reserve(5);
     pPoints11->push_back(MexPoint2d(700, 800));
     pPoints11->push_back(MexPoint2d(800, 800));
@@ -173,7 +173,7 @@ bool PhysTestConfigSpace2d::addDomains(PhysConfigSpace2d* pSpace)
     pPoints11->push_back(MexPoint2d(1300, 1700));
     pPoints11->push_back(MexPoint2d(700, 1700));
     std::unique_ptr<Points> points11APtr(pPoints11);
-    MexConvexPolygon2d* pPolygon11 = _NEW(MexConvexPolygon2d(points11APtr));
+    MexConvexPolygon2d* pPolygon11 = new MexConvexPolygon2d(points11APtr);
     std::unique_ptr<MexPolygon2d> polygon11APtr(pPolygon11);
     aDomainIds[11] = pSpace->addDomain(box11, polygon11APtr);
 
@@ -304,7 +304,7 @@ bool PhysTestConfigSpace2d::addPermanentPolygons(PhysConfigSpace2d* pSpace)
         }
         ++i;
 
-        MexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(points));
+        MexPolygon2d* pPolygon = new MexConvexPolygon2d(points);
         points.erase(points.begin(), points.end());
 
         std::unique_ptr<MexPolygon2d> polygonAPtr(pPolygon);
@@ -354,7 +354,7 @@ bool PhysTestConfigSpace2d::addTemporaryPolygons(PhysConfigSpace2d* pSpace)
         }
         ++i;
 
-        MexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(points));
+        MexPolygon2d* pPolygon = new MexConvexPolygon2d(points);
         points.erase(points.begin(), points.end());
 
         std::unique_ptr<MexPolygon2d> polygonAPtr(pPolygon);
@@ -481,7 +481,7 @@ bool PhysTestConfigSpace2d::testContainsPolygon(PhysConfigSpace2d* pSpace)
         }
         ++i;
 
-        polygons.push_back(_NEW(MexConvexPolygon2d(points)));
+        polygons.push_back(new MexConvexPolygon2d(points));
         points.erase(points.begin(), points.end());
     }
 
@@ -509,7 +509,7 @@ bool PhysTestConfigSpace2d::testContainsPolygon(PhysConfigSpace2d* pSpace)
     // Delete the polygons
     size_t nPolygons = polygons.size();
     for (size_t j = 0; j != nPolygons; ++j)
-        _DELETE(polygons[j]);
+        delete polygons[j];
 
     return okay;
 }
@@ -822,7 +822,7 @@ bool PhysTestConfigSpace2d::oneTest(ostream& out)
     points.push_back(&p3);
     points.push_back(&p4);
 
-    MexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(points));
+    MexPolygon2d* pPolygon = new MexConvexPolygon2d(points);
     std::unique_ptr<MexPolygon2d> polygonAPtr(pPolygon);
     const PhysConfigSpace2d::ObstacleFlags flags = 0;
     space.add(polygonAPtr, 444, flags, PhysConfigSpace2d::PERMANENT);

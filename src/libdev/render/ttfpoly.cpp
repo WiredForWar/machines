@@ -30,14 +30,14 @@ PER_DEFINE_PERSISTENT(RenTTFRectangle);
 
 //--------------------------------Public base class-----------------------------
 RenTTFPolygon::RenTTFPolygon(size_t nVertices, const Ren::VertexIdx* idx, size_t nIndices)
-    : pImpl_(_NEW(RenITTFImpl(nVertices, idx, nIndices)))
+    : pImpl_(new RenITTFImpl(nVertices, idx, nIndices))
 {
     PRE(Ren::initialised());
     depthOffset(0);
 }
 
 RenTTFPolygon::RenTTFPolygon(const RenTTFPolygon& rhs)
-    : pImpl_(_NEW(RenITTFImpl(*rhs.pImpl_)))
+    : pImpl_(new RenITTFImpl(*rhs.pImpl_))
 {
     centre(rhs.centre());
     depthOffset(rhs.depthOffset());
@@ -50,7 +50,7 @@ RenTTFPolygon::~RenTTFPolygon()
     // Thus the post-sorted polygons can refernce this polygon's attributes
     // without need for reference counting or copying the data.
     PRE(!RenIDeviceImpl::currentPimpl()->rendering3D());
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 const RenMaterial& RenTTFPolygon::material() const
@@ -175,7 +175,7 @@ void RenTTFPolygon::render(
         if (devImpl->isAlphaSortingEnabled())
         {
             // Shove it into the post-sorter.
-            RenITLPolygon* poly = _NEW(RenITLPolygon(pImpl_, mat, cen.z() * w2, tmpType));
+            RenITLPolygon* poly = new RenITLPolygon(pImpl_, mat, cen.z() * w2, tmpType);
             std::unique_ptr<RenIDepthSortedItem> item(poly);
             devImpl->alphaSorter().addItem(item);
         }
@@ -299,7 +299,7 @@ RenTTFRectangle::~RenTTFRectangle()
 // virtual
 RenTTFPolygon* RenTTFRectangle::clone() const
 {
-    return _NEW(RenTTFRectangle(*this));
+    return new RenTTFRectangle(*this);
 }
 
 // virtual

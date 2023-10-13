@@ -128,7 +128,7 @@ PhysRelativeTime MachPhysVirusSpreader::fire(const PhysAbsoluteTime& startTime, 
 
     MATHEX_SCALAR flashSize = data.extras()[2];
 
-    MachPhysFlashDisc* pFlashDisc = _NEW(MachPhysFlashDisc(this, offSet, flashSize, MachPhysFlashDisc::YELLOW));
+    MachPhysFlashDisc* pFlashDisc = new MachPhysFlashDisc(this, offSet, flashSize, MachPhysFlashDisc::YELLOW);
     PhysRelativeTime flashDuration = pFlashDisc->flash(startTime, MachPhysFlashDisc::YELLOW);
 
     // lighting up the machine and the weapon
@@ -157,7 +157,7 @@ MachPhysVirusSpreader::MachPhysVirus* MachPhysVirusSpreader::createVirus(
     PhysAbsoluteTime launchTime = launchData(burstTime, 0, pParent, target, targetOffset, &startTransform, &distance);
 
     MachPhysVirusSpreader::MachPhysVirus* pVirus
-        = _NEW(MachPhysElectro(pParent, startTransform, MachPhysElectro::VIRUS));
+        = new MachPhysElectro(pParent, startTransform, MachPhysElectro::VIRUS);
 
     //@100%, the electro size = 5
     MATHEX_SCALAR topScale = distance / 5;
@@ -227,8 +227,8 @@ void MachPhysVirusSpreader::virusHaloInfection(
     MexTransform3d localXform = MexTransform3d(centre);
 
     // lightning effect on the victim
-    MachPhysLightningHalo* pHalo1 = _NEW(MachPhysLightningHalo(pComposit, localXform, MachPhysLightningHalo::VIRUS));
-    MachPhysLightningHalo* pHalo2 = _NEW(MachPhysLightningHalo(pComposit, localXform, MachPhysLightningHalo::VIRUS));
+    MachPhysLightningHalo* pHalo1 = new MachPhysLightningHalo(pComposit, localXform, MachPhysLightningHalo::VIRUS);
+    MachPhysLightningHalo* pHalo2 = new MachPhysLightningHalo(pComposit, localXform, MachPhysLightningHalo::VIRUS);
 
     pHalo1->startLightning(pComposit, startTime, duration, -1, MachPhysLightningHalo::VIRUS);
     pHalo2->startLightning(pComposit, startTime, duration, 1, MachPhysLightningHalo::VIRUS);
@@ -266,7 +266,7 @@ void MachPhysVirusSpreader::virusFromSourceToTarget(
     MATHEX_SCALAR distance = tracker.track(&startTransform);
 
     MachPhysVirusSpreader::MachPhysVirus* pVirus
-        = _NEW(MachPhysElectro(pSourceEntity, startTransform, MachPhysElectro::VIRUS));
+        = new MachPhysElectro(pSourceEntity, startTransform, MachPhysElectro::VIRUS);
 
     //@100%, the electro size = 5
     MATHEX_SCALAR topScale = distance / 5;

@@ -13,7 +13,7 @@ PER_DEFINE_PERSISTENT(MachGuiDbPlayer);
 
 MachGuiDbPlayer::MachGuiDbPlayer(uint id, const string& name)
 {
-    pData_ = _NEW(MachGuiDbIPlayer);
+    pData_ = new MachGuiDbIPlayer;
 
     pData_->id_ = id;
     pData_->name_ = name;
@@ -29,10 +29,10 @@ MachGuiDbPlayer::~MachGuiDbPlayer()
     uint nPlayerScenarios = pData_->playerScenarios_.size();
     for (uint i = nPlayerScenarios; i--;)
     {
-        _DELETE(pData_->playerScenarios_[i]);
+        delete pData_->playerScenarios_[i];
     }
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbPlayer::CLASS_INVARIANT
@@ -109,7 +109,7 @@ MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario(MachGuiDbScenario* pDbS
     if (not hasPlayed(*pDbScenario, &pPlayerScenario))
     {
         // This is a new one, so create it
-        pPlayerScenario = _NEW(MachGuiDbPlayerScenario(this, pDbScenario));
+        pPlayerScenario = new MachGuiDbPlayerScenario(this, pDbScenario);
         pData_->playerScenarios_.push_back(pPlayerScenario);
     }
 

@@ -22,7 +22,7 @@ PhysMoveSpinPlan::PhysMoveSpinPlan(
     MATHEX_SCALAR rotationSpeed,
     const PhysRelativeTime& endTime)
     : PhysMotionPlan(endTime)
-    , pImpl_(_NEW(PhysMoveSpinPlanImpl(startPosition, speedVector, rotationAxis, rotationSpeed, endTime)))
+    , pImpl_(new PhysMoveSpinPlanImpl(startPosition, speedVector, rotationAxis, rotationSpeed, endTime))
 {
 
     TEST_INVARIANT;
@@ -31,7 +31,7 @@ PhysMoveSpinPlan::PhysMoveSpinPlan(
 PhysMoveSpinPlan::~PhysMoveSpinPlan()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void PhysMoveSpinPlan::CLASS_INVARIANT

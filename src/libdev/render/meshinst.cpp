@@ -44,7 +44,7 @@ RenMeshInstance::~RenMeshInstance()
 
     // Do not delete the default scale because it's not allocated with new.
     if (scale_ != unityScale())
-        _DELETE(scale_);
+        delete scale_;
 }
 
 // static
@@ -56,7 +56,7 @@ RenMeshInstance* RenMeshInstance::createShared(const SysPathName& path, const st
 
     if (ptr.isDefined())
     {
-        pInstance = _NEW(RenMeshInstance(ptr));
+        pInstance = new RenMeshInstance(ptr);
 
         // Use the unity scale if scale is 1
         if (Mathex::abs(scale - 1.0) < MexEpsilon::instance())
@@ -164,7 +164,7 @@ void RenMeshInstance::scale(const RenScale& newScale)
     // Do not delete the default scale because it's not allocated with new.
     RenScale* pUnityScale = unityScale();
     if (scale_ != pUnityScale)
-        _DELETE(scale_);
+        delete scale_;
 
     scale_ = (&newScale == pUnityScale ? pUnityScale : newScale.clone());
 }
@@ -173,9 +173,9 @@ void RenMeshInstance::scale(MATHEX_SCALAR uniform)
 {
     // Do not delete the default scale because it's not allocated with new.
     if (scale_ != unityScale())
-        _DELETE(scale_);
+        delete scale_;
 
-    scale_ = _NEW(RenUniformScale(uniform));
+    scale_ = new RenUniformScale(uniform);
 }
 
 // This is the default value for scale_, if a client doesn't set it.

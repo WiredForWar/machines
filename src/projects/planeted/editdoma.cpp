@@ -210,8 +210,8 @@ void PedDomainEditor::processVertexRight()
             // changeX( pSelectedPoint_->x(), pSelectedPoint_->x() + vertexSpacingX() );
             *pSelectedPoint_ += MexVec2(vertexSpacingX(), 0);
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -227,8 +227,8 @@ void PedDomainEditor::processVertexLeft()
             // changeX( pSelectedPoint_->x(), pSelectedPoint_->x() - vertexSpacingX() );
             *pSelectedPoint_ -= MexVec2(vertexSpacingX(), 0);
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -244,8 +244,8 @@ void PedDomainEditor::processVertexUp()
             // changeY( pSelectedPoint_->y(), pSelectedPoint_->y() - vertexSpacingY() );
             *pSelectedPoint_ -= MexVec2(0, vertexSpacingY());
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -261,8 +261,8 @@ void PedDomainEditor::processVertexDown()
             // changeY( pSelectedPoint_->y(), pSelectedPoint_->y() + vertexSpacingY() );
             *pSelectedPoint_ += MexVec2(0, vertexSpacingY());
             pSelectedPolygon_->refreshMesh();
-            _DELETE(pSelectedVertex_);
-            pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+            delete pSelectedVertex_;
+            pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
         }
     }
 }
@@ -272,7 +272,7 @@ PedPolygon* PedDomainEditor::createPolygon(const PolyVerticies& verticies, MATHE
 {
     TEST_INVARIANT;
 
-    PedPolygon* pNew = _NEW(PedDomain(verticies, height, selected));
+    PedPolygon* pNew = new PedDomain(verticies, height, selected);
     pNew->flatten(flattenPolygons_);
     pNew->refreshMesh();
 
@@ -325,8 +325,8 @@ void PedDomainEditor::updatePolygon()
 
         pSelectedPolygon_->refreshMesh();
 
-        _DELETE(pSelectedVertex_);
-        pSelectedVertex_ = _NEW(PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false));
+        delete pSelectedVertex_;
+        pSelectedVertex_ = new PedVertexMarker(pSelectedPoint_->x(), pSelectedPoint_->y(), false);
     }
 }
 

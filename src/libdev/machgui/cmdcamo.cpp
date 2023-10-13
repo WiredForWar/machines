@@ -98,7 +98,7 @@ bool MachGuiCamouflageCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiCamouflageCommand::clone() const
 {
-    return _NEW(MachGuiCamouflageCommand(&inGameScreen()));
+    return new MachGuiCamouflageCommand(&inGameScreen());
 }
 
 // virtual

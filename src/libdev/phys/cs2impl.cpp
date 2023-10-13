@@ -101,21 +101,21 @@ PhysCS2dImpl::~PhysCS2dImpl()
     for (PhysConfigSpace2d::DomainId id = domainIdGenerator_.begin(); id != domainIdGenerator_.end(); ++id)
     {
         if (domains_.contains(id))
-            _DELETE(domains_[id]);
+            delete domains_[id];
     }
 
     // Delete all the portals
     for (PhysConfigSpace2d::PortalId id = portalIdGenerator_.begin(); id != portalIdGenerator_.end(); ++id)
     {
         if (portals_.contains(id))
-            _DELETE(portals_[id]);
+            delete portals_[id];
     }
 
     // Delete all the polygons
     for (PhysConfigSpace2d::PolygonId id = polygonIdGenerator_.begin(); id != polygonIdGenerator_.end(); ++id)
     {
         if (polygons_.contains(id))
-            _DELETE(polygons_[id]);
+            delete polygons_[id];
     }
 
     // Delete all the motion chunks
@@ -123,14 +123,14 @@ PhysCS2dImpl::~PhysCS2dImpl()
          ++id)
     {
         if (motionChunks_.contains(id))
-            _DELETE(motionChunks_[id]);
+            delete motionChunks_[id];
     }
 
     // Delete other items
     if (pVisibilityGraph_ != nullptr)
-        _DELETE(pVisibilityGraph_);
+        delete pVisibilityGraph_;
     if (pExpansionSpace_ != nullptr)
-        _DELETE(pExpansionSpace_);
+        delete pExpansionSpace_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -869,7 +869,7 @@ void PhysCS2dImpl::createVisibilityGraph(
     PRE(pVisibilityGraph_ == nullptr)
 
     // Construct the graph
-    pVisibilityGraph_ = _NEW(PhysCS2dVisibilityGraph(&configSpace_, pOriginalSpace, pExpansionSpace, clearance));
+    pVisibilityGraph_ = new PhysCS2dVisibilityGraph(&configSpace_, pOriginalSpace, pExpansionSpace, clearance);
 
     // Register all permanent polygons currently defined
     for (PolygonId id = polygonIdGenerator_.begin(); id != polygonIdGenerator_.end(); ++id)
@@ -885,7 +885,7 @@ void PhysCS2dImpl::deleteVisibilityGraph()
     PRE(pVisibilityGraph_ != nullptr)
 
     // Delete the graph
-    _DELETE(pVisibilityGraph_);
+    delete pVisibilityGraph_;
     pVisibilityGraph_ = nullptr;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -906,7 +906,7 @@ void PhysCS2dImpl::expansionSpaceOpen(MATHEX_SCALAR expansionDistance)
                 and pExpansionSpace_->nClients() == 0))
         {
             PRE(pExpansionSpace_->nClients() == 0);
-            _DELETE(pExpansionSpace_);
+            delete pExpansionSpace_;
             pExpansionSpace_ = nullptr;
         }
     }
@@ -914,7 +914,7 @@ void PhysCS2dImpl::expansionSpaceOpen(MATHEX_SCALAR expansionDistance)
     // If we don't have one, create one
     if (pExpansionSpace_ == nullptr)
     {
-        pExpansionSpace_ = _NEW(PhysCS2dExpansionSpace(boundary(), expansionDistance));
+        pExpansionSpace_ = new PhysCS2dExpansionSpace(boundary(), expansionDistance);
     }
 
     // Increment the client count
@@ -937,7 +937,7 @@ void PhysCS2dImpl::expansionSpaceClose(MATHEX_SCALAR expansionDistance)
     POST(pExpansionSpace_->nClients() == 0);
 
     // Delete it. This is in case any polygons have been expanded which we won't want
-    _DELETE(pExpansionSpace_);
+    delete pExpansionSpace_;
     pExpansionSpace_ = nullptr;
 
     CS2VGRA_INDENT(-2);

@@ -44,11 +44,11 @@ MachLogLinearProjectile* MachLogTreacheryWeapon::createLinearProjectile(
     const MexPoint3d& targetOffset)
 {
     HAL_STREAM("MLTreacheryWeapon::createLinearProjectile\n");
-    return _NEW(MachLogTreacheryOrb(
+    return new MachLogTreacheryOrb(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogTreacheryWeapon& t)

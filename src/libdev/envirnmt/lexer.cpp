@@ -511,7 +511,7 @@ do_action:
                 // # line 71 "d:\libdev\envirnmt\source\lexer.l"
                 {
                     // The regex string is quoted.  Drop the first and last chars.
-                    yylval.pString = _NEW(string(yytextChar() + 1, strlen(yytextChar()) - 2));
+                    yylval.pString = new string(yytextChar() + 1, strlen(yytextChar()) - 2);
                     const string& str = *(yylval.pString);
                     IAIN_STREAM("Lexed string \"" << str << "\"" << std::endl);
                     return STRING;

@@ -20,8 +20,8 @@ MachPhysMachineDamageData::MachPhysMachineDamageData(MachPhysMachine* pTarget)
 
 MachPhysMachineDamageData::~MachPhysMachineDamageData()
 {
-    _DELETE(pMachineBurning_);
-    _DELETE(pMachineDamage_);
+    delete pMachineBurning_;
+    delete pMachineDamage_;
 
     TEST_INVARIANT;
 }
@@ -69,7 +69,7 @@ void MachPhysMachineDamageData::damageLevel(const double& percent)
     if (percent > 0)
     {
         if (not isDamaged())
-            pMachineDamage_ = _NEW(MachPhysMachineDamage(pTargetMachine_));
+            pMachineDamage_ = new MachPhysMachineDamage(pTargetMachine_);
 
         pMachineDamage_->damageLevel(percent);
     }
@@ -94,7 +94,7 @@ void MachPhysMachineDamageData::updateDamageLevel()
 MachPhysMachineBurning& MachPhysMachineDamageData::machineBurning()
 {
     if (not isBurning())
-        pMachineBurning_ = _NEW(MachPhysMachineBurning(pTargetMachine_));
+        pMachineBurning_ = new MachPhysMachineBurning(pTargetMachine_);
 
     return *pMachineBurning_;
 }
@@ -104,7 +104,7 @@ void MachPhysMachineDamageData::finishBurning()
     // Check for finished burning
     if (isBurningFinished())
     {
-        _DELETE(pMachineBurning_);
+        delete pMachineBurning_;
         pMachineBurning_ = nullptr;
     }
 }

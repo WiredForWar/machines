@@ -24,14 +24,14 @@ MachPhysRaceChanger& MachPhysRaceChanger::instance()
 MachPhysRaceChanger::MachPhysRaceChanger()
 {
     // Construct the body
-    pBody_ = _NEW(MachPhysRaceChangerBody);
+    pBody_ = new MachPhysRaceChangerBody;
     TEST_INVARIANT;
 }
 
 MachPhysRaceChanger::~MachPhysRaceChanger()
 {
     TEST_INVARIANT;
-    _DELETE(pBody_);
+    delete pBody_;
 }
 
 void MachPhysRaceChanger::CLASS_INVARIANT

@@ -108,7 +108,7 @@ void MachConstructMenuIcons::refreshConstructIcons()
     while (i != consItems.end() /*and (*i)->activated( race() )*/)
     {
         if ((*i)->activated(race()))
-            _NEW(MachConstructionSelectIcon(this, pInGameScreen_, *(*i)));
+            new MachConstructionSelectIcon(this, pInGameScreen_, *(*i));
         ++i;
     }
 

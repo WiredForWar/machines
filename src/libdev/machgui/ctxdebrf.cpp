@@ -38,35 +38,35 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
     , playedMail_(false)
 {
     // Create menu buttons. Order of creation denotes TAB order.
-    MachGuiMenuButton* pStatisticsButton = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pStatisticsButton = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(87, 206, 279, 248),
         IDS_MENUBTN_STATS,
-        MachGuiStartupScreens::BE_STATISTICS));
+        MachGuiStartupScreens::BE_STATISTICS);
     MachGuiMenuButton* pContinueButton;
     // display back to lobby on button for zone games.
     if (not NetNetwork::instance().isLobbiedGame())
-        pContinueButton = _NEW(MachGuiMenuButton(
+        pContinueButton = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(87, 310, 279, 353),
             IDS_MENUBTN_CONTINUE,
-            MachGuiStartupScreens::CONTINUE));
+            MachGuiStartupScreens::CONTINUE);
     else
-        pContinueButton = _NEW(MachGuiMenuButton(
+        pContinueButton = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(87, 310, 279, 353),
             IDS_MENUBTN_BACK_TO_ZONE,
-            MachGuiStartupScreens::CONTINUE));
+            MachGuiStartupScreens::CONTINUE);
 
-    MachGuiMenuButton* pRestartButton = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pRestartButton = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(87, 100, 279, 142),
         IDS_MENUBTN_RESTART,
-        MachGuiStartupScreens::RESTART));
+        MachGuiStartupScreens::RESTART);
 
 #ifdef DEMO
     pStatisticsButton->disabled(true);
@@ -84,7 +84,7 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
 
     displayDeBriefImage();
 
-    MachGuiScrollableText* pTextInfo = _NEW(MachGuiScrollableText(pStartupScreens, Gui::Box(359, 265, 558, 426)));
+    MachGuiScrollableText* pTextInfo = new MachGuiScrollableText(pStartupScreens, Gui::Box(359, 265, 558, 426));
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(559, 265), 160, pTextInfo);
 
     string winLoseText;
@@ -207,7 +207,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
 {
     if (pDebriefImage_)
     {
-        _DELETE(pDebriefImage_);
+        delete pDebriefImage_;
         pDebriefImage_ = nullptr;
     }
     pStartupScreens_->clearAllSmackerAnimations();
@@ -301,10 +301,10 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
             // Construct a smacker player
             //          HWND targetWindow = RenDevice::current()->display()->window();
 
-            //          AniSmacker* pSmackerAnimation = _NEW( AniSmacker( debriefPicture, targetWindow, 359 +
-            //          pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() ) );
-            // AniSmacker* pSmackerAnimation = _NEW( AniSmacker( debriefPicture, 359 + pStartupScreens_->xMenuOffset(),
-            // 51 + pStartupScreens_->yMenuOffset() ) );
+            //          AniSmacker* pSmackerAnimation = new AniSmacker( debriefPicture, targetWindow, 359 +
+            //          pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() );
+            // AniSmacker* pSmackerAnimation = new AniSmacker( debriefPicture, 359 + pStartupScreens_->xMenuOffset(),
+            // 51 + pStartupScreens_->yMenuOffset() );
             const auto& topLeft = getBackdropTopLeft();
             AniSmacker* pSmackerAnimation
                 = new AniSmackerRegular(debriefPicture, 359 + topLeft.second, 51 + topLeft.first);
@@ -313,7 +313,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
         else if (debriefPicture.extension() == "bmp")
         {
             // File is a bitmap
-            pDebriefImage_ = _NEW(GuiImage(pStartupScreens_, Gui::Coord(359, 51), Gui::bitmap(debriefPicture)));
+            pDebriefImage_ = new GuiImage(pStartupScreens_, Gui::Coord(359, 51), Gui::bitmap(debriefPicture));
         }
     }
 }

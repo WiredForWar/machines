@@ -13,11 +13,11 @@ PER_DEFINE_PERSISTENT(Containers2);
 Containers2::Containers2()
 {
     for (size_t i = 0; i < randomInt(20); ++i)
-        pvi1_.push_back(_NEW(int(randomInt())));
-    pPVi1_ = _NEW(PVectorInt(randomInt(20)));
+        pvi1_.push_back(new int(randomInt()));
+    pPVi1_ = new PVectorInt(randomInt(20));
     pPVi2_ = pPVi1_;
     for (size_t i = 0; i < randomInt(20); ++i)
-        pPVi1_->push_back(_NEW(int(randomInt())));
+        pPVi1_->push_back(new int(randomInt()));
 
     TEST_INVARIANT;
 }

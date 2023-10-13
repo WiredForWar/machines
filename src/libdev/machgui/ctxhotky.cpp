@@ -50,12 +50,12 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
     GuiResourceString optionsHeading(IDS_MENU_FIRSTPERSONCONTROL);
     uint headingMaxY = HOTKEY_MIN_Y + largeFontHeight;
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_MIN_X, HOTKEY_MIN_Y, HOTKEY_MIN_X + font.textWidth(optionsHeading.asString()), headingMaxY),
         IDS_MENU_FIRSTPERSONCONTROL,
         "gui/menu/largefnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     // Create First Person Actions text below First Person Control heading
     //
@@ -65,23 +65,23 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     uint fstPersonWindowMaxY = headingMaxY + (noLines * smallFontHeight);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_MIN_X, headingMaxY, HOTKEY_KEY_X, fstPersonWindowMaxY),
         hotKey1stPersonActions,
         "gui/menu/smallfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     // Create First Person Keys text next to First Person Action text
     //
     string hotKey1stPersonKeys;
     readHotkeyData("gui/menu/hk1pKeys.dat", hotKey1stPersonKeys, noLines);
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_KEY_X, headingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, fstPersonWindowMaxY),
         hotKey1stPersonKeys,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     // Display General Controls heading underneath First Person Controls hot keys
     //
@@ -89,7 +89,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     GuiResourceString optionsGeneralHeading(IDS_MENU_GENERALCONTROL);
     uint genHeadingMaxY = fstPersonWindowMaxY + largeFontHeight;
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             HOTKEY_MIN_X,
@@ -98,7 +98,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             genHeadingMaxY),
         IDS_MENU_GENERALCONTROL,
         "gui/menu/largefnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     // Calculate the number of lines of General hotkeys that can be displayed under
     // the First Person hotkeys
@@ -146,12 +146,12 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         "Head box dimensions: " << HOTKEY_MIN_X << "," << genHeadingMaxY << "," << HOTKEY_MIN_X << ","
                                 << generalWindowMaxY << std::endl);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_MIN_X, genHeadingMaxY, HOTKEY_KEY_X, generalWindowMaxY),
         headString,
         "gui/menu/smallfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     uint generalRemainderMaxY = HOTKEY_MIN_Y + (noRemainingLines * smallFontHeight);
 
@@ -161,12 +161,12 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         " Remainder box dimensions: " << HOTKEY_2NDCOLUMN_X << "," << HOTKEY_MIN_Y << "," << HOTKEY_2NDCOLUMN_X << ","
                                       << generalRemainderMaxY << std::endl);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_2NDCOLUMN_X, HOTKEY_MIN_Y, HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH, generalRemainderMaxY),
         remainderString,
         "gui/menu/smallfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     string hotKeyGeneralKeys;
     readHotkeyData("gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines);
@@ -187,14 +187,14 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         remainderString += choppedupText[i];
         remainderString += "\n";
     }
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_KEY_X, genHeadingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, generalWindowMaxY),
         headString,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH,
@@ -203,7 +203,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             generalRemainderMaxY),
         remainderString,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     // Add flick to bottom left of window
     SysPathName hotkeySmackerFile("flics/gui/hotkeys.smk");
@@ -235,23 +235,23 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     if (hotkeySmackerFile.existsAsFile())
     {
         //      HWND targetWindow = RenDevice::current()->display()->window();
-        //      AniSmacker* pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, targetWindow, 430 +
-        //      pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ) ); AniSmacker*
-        //      pSmackerAnimation = _NEW( AniSmacker( hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 +
-        //      pStartupScreens_->yMenuOffset() ) );
+        //      AniSmacker* pSmackerAnimation = new AniSmacker( hotkeySmackerFile, targetWindow, 430 +
+        //      pStartupScreens_->xMenuOffset(), 199 + pStartupScreens_->yMenuOffset() ); AniSmacker*
+        //      pSmackerAnimation = new AniSmacker( hotkeySmackerFile, 430 + pStartupScreens_->xMenuOffset(), 199 +
+        //      pStartupScreens_->yMenuOffset() );
         const auto& topLeft = getBackdropTopLeft();
         AniSmacker* pSmackerAnimation
             = new AniSmackerRegular(hotkeySmackerFile, 430 + topLeft.second, 199 + topLeft.first);
         pStartupScreens_->addSmackerAnimation(pSmackerAnimation);
     }
 
-    MachGuiMenuButton* pContinueBtn = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pContinueBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(351, 420, 553, 464),
         IDS_MENUBTN_CONTINUE,
-        MachGuiStartupScreens::EXIT));
-    _NEW(MachGuiMenuText(pStartupScreens, Gui::Box(42, 353, 224, 464), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp"));
+        MachGuiStartupScreens::EXIT);
+    new MachGuiMenuText(pStartupScreens, Gui::Box(42, 353, 224, 464), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp");
 
     pContinueBtn->escapeControl(true);
 

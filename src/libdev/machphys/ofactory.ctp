@@ -33,7 +33,7 @@ template <class ID, class PART> MachPhysObjectFactory<ID, PART>::~MachPhysObject
 template <class ID, class PART> PART& MachPhysObjectFactory<ID, PART>::part(const ID& id, size_t index)
 {
     if (entries_[index] == nullptr)
-        entries_[index] = _NEW(PART(&root_, id));
+        entries_[index] = new PART(&root_, id);
 
     return *entries_[index];
 }

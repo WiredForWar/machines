@@ -80,7 +80,7 @@ PER_DEFINE_PERSISTENT(DesiredMachineData);
 
 MachLogAIController::MachLogAIController(MachLogRace* logRace, W4dEntity* pPhysObject, const string& AIStrategicRules)
     : MachLogController(logRace, pPhysObject, MachLogController::AI_CONTROLLER)
-    , pImpl_(_NEW(MachLogAIControllerImpl(AIStrategicRules)))
+    , pImpl_(new MachLogAIControllerImpl(AIStrategicRules))
 {
     // the rules length CAN legitimately be zero length from the persistence mechanism.
     CB_MachLogAIController_DEPIMPL();
@@ -96,22 +96,22 @@ MachLogAIController::~MachLogAIController()
     while (desiredMachineList_.size() > 0)
     {
         DesiredMachineData* dmd = desiredMachineList_.front();
-        _DELETE(dmd->pProdUnit_);
-        _DELETE(dmd);
+        delete dmd->pProdUnit_;
+        delete dmd;
         desiredMachineList_.erase(desiredMachineList_.begin());
     }
     while (constructionProductionList_.size() > 0)
     {
-        _DELETE(constructionProductionList_.front());
+        delete constructionProductionList_.front();
         constructionProductionList_.erase(constructionProductionList_.begin());
     }
 
     while (strategicProductionList_.size() > 0)
     {
-        _DELETE(strategicProductionList_.back());
+        delete strategicProductionList_.back();
         strategicProductionList_.erase(strategicProductionList_.end() - 1);
     }
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -166,7 +166,7 @@ void MachLogAIController::deleteHolographAtPosition(const MexPoint3d& pos)
         if ((*i)->position() == pos)
         {
             //          MachLogRaces::instance().remove( *i );
-            //          _DELETE( *i );
+            //          delete *i;
             //(*i)->isDead( true );
             holographs.erase(i);
             break;
@@ -311,7 +311,7 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
                         highestHWLevel = 5;
                     }
 
-                    MachLogProductionUnit* pProd = _NEW(MachLogProductionUnit(MachLog::MINE, 0, highestHWLevel, 0, 1));
+                    MachLogProductionUnit* pProd = new MachLogProductionUnit(MachLog::MINE, 0, highestHWLevel, 0, 1);
                     MexTransform3d trans(pSite->position());
                     pProd->globalTransform(trans);
 
@@ -379,11 +379,11 @@ void MachLogAIController::handleEnemyContact(const MachLogMessage& msg)
                         &targetPosition))
                 {
                     MexPoint3d targetPosition3d(targetPosition);
-                    pIdleAggressiveMachine->newOperation(_NEW(MachLogMoveToOperation(
+                    pIdleAggressiveMachine->newOperation(new MachLogMoveToOperation(
                         pIdleAggressiveMachine,
                         targetPosition3d,
                         true,
-                        15.0))); // 15m tolerance
+                        15.0)); // 15m tolerance
                 }
             }
         }
@@ -556,7 +556,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                         if (researchInterest_ == HARDWARE)
                         {
                             if (not(obj->insideBuilding() and obj->insideWhichBuilding().id() == pChosenLab->id()))
-                                obj->newOperation(_NEW(MachLogEnterBuildingOperation(obj, pChosenLab, pStation)));
+                                obj->newOperation(new MachLogEnterBuildingOperation(obj, pChosenLab, pStation));
                         }
                     }
                 }
@@ -625,14 +625,14 @@ void MachLogAIController::readRules(const SysPathName& pathName)
 
     if (SysMetaFile::useMetaFile() && metaFile.hasFile(pathName))
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, pathName, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, pathName, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, pathName, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(pathName.c_str());
-        // pIstream = _NEW( ifstream( pathName.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(pathName.c_str(), std::ios::in)));
+        // pIstream = new ifstream( pathName.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, pathName);
@@ -662,7 +662,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
                     wc = MachLogScenario::weaponCombo(parser.tokens()[6]);
                 MachLogResearchItem& ri = races.researchTree().researchItem(ot, subType, hwLevel, wc);
                 int swLevel = ri.swLevel(myRace);
-                MachLogProductionUnit* pProd = _NEW(MachLogProductionUnit(ot, subType, hwLevel, swLevel, priority));
+                MachLogProductionUnit* pProd = new MachLogProductionUnit(ot, subType, hwLevel, swLevel, priority);
                 //                  if( wc != MachPhys::N_WEAPON_COMBOS )
                 pProd->weaponCombo(wc);
                 HAL_STREAM(" adding desired machine:\n" << *pProd << std::endl);
@@ -671,8 +671,8 @@ void MachLogAIController::readRules(const SysPathName& pathName)
                 /*                  {
                         //HAL_STREAM(" priority not zero creating production unit\n" );
                         strategicProductionList_.push_back(
-                            _NEW( MachLogAIStrategicProductionUnit( parser.tokens()[0], number, priority ) )
-                        );
+                            new MachLogAIStrategicProductionUnit( parser.tokens()[0], number, priority ) )
+                       ;
                         //HAL_STREAM(" priority not zero creating production unit DONE!\n" );
                     }*/
 
@@ -736,7 +736,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
                             MachLogResearchItem& ri = races.researchTree().researchItem(ot, subType, hwLevel, wc);
                             int swLevel = ri.swLevel(myRace);
                             MachLogProductionUnit* pProd
-                                = _NEW(MachLogProductionUnit(ot, subType, hwLevel, swLevel, priority));
+                                = new MachLogProductionUnit(ot, subType, hwLevel, swLevel, priority);
                             //                          if( wc != MachPhys::N_WEAPON_COMBOS )
                             pProd->weaponCombo(wc);
                             pProd->constructionId(pSquad->squadronId() - 1);
@@ -801,7 +801,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogAIController& t)
 void MachLogAIController::addDesiredMachine(MachLogProductionUnit* pProd, int desiredNumber)
 {
     CB_MachLogAIController_DEPIMPL();
-    DesiredMachineData* dmd = _NEW(DesiredMachineData);
+    DesiredMachineData* dmd = new DesiredMachineData;
     dmd->pProdUnit_ = pProd;
     dmd->desiredNumber_ = desiredNumber;
     dmd->actualNumber_ = 0;
@@ -868,7 +868,7 @@ void MachLogAIController::addUniqueConstructionProductionUnit(MachLogProductionU
     }
     HAL_STREAM(" found a match with existing = " << foundMatch << std::endl);
     if (foundMatch)
-        _DELETE(pProd);
+        delete pProd;
     else
         constructionProductionList_.push_back(pProd);
 }
@@ -958,7 +958,7 @@ bool MachLogAIController::getHighestPriorityConstruction(MachLogProductionUnit* 
             pProd->weaponCombo((*iCurrentBest)->weaponCombo());
             pProd->needRebuild((*iCurrentBest)->needRebuild());
             pProd->constructionId((*iCurrentBest)->constructionId());
-            _DELETE(*iCurrentBest);
+            delete *iCurrentBest;
             constructionProductionList_.erase(iCurrentBest);
             constructionFound = true;
         }
@@ -989,12 +989,12 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
             if (parser.tokens()[i] == "RANGE_POD")
                 maxRangeFromPod = atof(parser.tokens()[i + 1].c_str());
         }
-        pSquad->newOperation(_NEW(MachLogTaskLocateOperation(pSquad, nDesiredSites, maxRangeFromPod)));
+        pSquad->newOperation(new MachLogTaskLocateOperation(pSquad, nDesiredSites, maxRangeFromPod));
     }
     else if (parser.tokens()[1] == "CONSTRUCT")
     {
         HAL_STREAM(" Found Token for: TaskConstructOperation\n");
-        pSquad->newOperation(_NEW(MachLogTaskConstructOperation(pSquad)));
+        pSquad->newOperation(new MachLogTaskConstructOperation(pSquad));
     }
     else if (parser.tokens()[1] == "ATTACK")
     {
@@ -1005,7 +1005,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         // AttackIn parameter is expressed in minutes so convert to seconds
         PhysRelativeTime attackIn = atof(parser.tokens()[3].c_str());
         attackIn *= 60.0;
-        MachLogTaskAttackOperation* pAttackOp = _NEW(MachLogTaskAttackOperation(pSquad, attackIn));
+        MachLogTaskAttackOperation* pAttackOp = new MachLogTaskAttackOperation(pSquad, attackIn);
         for (int i = 3; i < parser.tokens().size(); ++i)
         {
             HAL_STREAM(" processing token " << parser.tokens()[i] << std::endl);
@@ -1078,7 +1078,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         if (parser.tokens()[4] == "POD")
         {
             MachLogTaskDropLandMineOperation* pDropMinesOp
-                = _NEW(MachLogTaskDropLandMineOperation(pSquad, minRange, maxRange));
+                = new MachLogTaskDropLandMineOperation(pSquad, minRange, maxRange);
             pSquad->newOperation(pDropMinesOp);
         }
         else
@@ -1087,7 +1087,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
             MATHEX_SCALAR startX = atof(parser.tokens()[5].c_str());
             MATHEX_SCALAR startY = atof(parser.tokens()[6].c_str());
             MachLogTaskDropLandMineOperation* pDropMinesOp
-                = _NEW(MachLogTaskDropLandMineOperation(pSquad, minRange, maxRange, MexPoint2d(startX, startY)));
+                = new MachLogTaskDropLandMineOperation(pSquad, minRange, maxRange, MexPoint2d(startX, startY));
             pSquad->newOperation(pDropMinesOp);
         }
     }
@@ -1114,7 +1114,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
             point.y(atof(parser.tokens()[i + 1].c_str()));
             path.push_back(point);
         }
-        pSquad->newOperation(_NEW(MachLogTaskPatrolOperation(pSquad, path, attackIn)));
+        pSquad->newOperation(new MachLogTaskPatrolOperation(pSquad, path, attackIn));
     }
 }
 

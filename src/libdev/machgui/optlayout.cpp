@@ -24,13 +24,13 @@ MachGuiOptionsLayout::~MachGuiOptionsLayout()
 
     // Empty slidebar info list
     for (Slidebars::iterator i = slidebars_.begin(); i != slidebars_.end(); i++)
-        _DELETE(*i);
+        delete *i;
     // Empty menutext info list
     for (MenuTexts::iterator i = menuTexts_.begin(); i != menuTexts_.end(); i++)
-        _DELETE(*i);
+        delete *i;
     // Empty checkBox info list
     for (CheckBoxes::iterator i = checkBoxes_.begin(); i != checkBoxes_.end(); i++)
-        _DELETE(*i);
+        delete *i;
 }
 
 void MachGuiOptionsLayout::CLASS_INVARIANT
@@ -79,7 +79,7 @@ void MachGuiOptionsLayout::parseSlidebar(const UtlLineTokeniser::Tokens& tokens)
 
     MexPoint2d topLeft(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
     uint range = atoi(tokens[3].c_str());
-    slidebars_.push_back(_NEW(SlidebarInfo(topLeft, range)));
+    slidebars_.push_back(new SlidebarInfo(topLeft, range));
 }
 
 void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
@@ -91,7 +91,7 @@ void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
     MexPoint2d bottomRight(atoi(tokens[4].c_str()), atoi(tokens[5].c_str()));
     string fontPath(tokens[6]);
     ASSERT(SysPathName(fontPath).existsAsFile(), " ");
-    menuTexts_.push_back(_NEW(MenuTextInfo(idsString, topLeft, bottomRight, fontPath)));
+    menuTexts_.push_back(new MenuTextInfo(idsString, topLeft, bottomRight, fontPath));
 }
 
 void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
@@ -100,7 +100,7 @@ void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
 
     int stringId(atoi(tokens[1].c_str()));
     MexPoint2d topLeft(atoi(tokens[2].c_str()), atoi(tokens[3].c_str()));
-    checkBoxes_.push_back(_NEW(CheckBoxInfo(topLeft, stringId)));
+    checkBoxes_.push_back(new CheckBoxInfo(topLeft, stringId));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)

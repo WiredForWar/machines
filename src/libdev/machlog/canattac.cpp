@@ -72,7 +72,7 @@ PER_DEFINE_PERSISTENT(MachLogCanAttack);
     CB_DEPIMPL(MATHEX_SCALAR, maxWeaponRange_);
 
 MachLogCanAttack::MachLogCanAttack(MachActor* pMe, MachPhysCanAttack* pPhysCanAttack, MachPhys::WeaponCombo wc)
-    : pImpl_(_NEW(MachLogCanAttackImpl(pMe, pPhysCanAttack, wc)))
+    : pImpl_(new MachLogCanAttackImpl(pMe, pPhysCanAttack, wc))
 {
     CB_MachLogCanAttack_DEPIMPL();
     weapons_.reserve(3);
@@ -87,7 +87,7 @@ MachLogCanAttack::~MachLogCanAttack()
         pMe_->asMachine().setSquadron(nullptr);
     while (weapons_.size() > 0)
     {
-        _DELETE(weapons_.front());
+        delete weapons_.front();
         weapons_.erase(weapons_.begin());
     }
     if (currentlyAttached_ and pCurrentTarget_)
@@ -96,7 +96,7 @@ MachLogCanAttack::~MachLogCanAttack()
         pCurrentTarget_->detach(this);
         pPhysCanAttack_->stopTrackingTarget();
     }
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogCanAttack::currentTarget(MachActor* p)
@@ -351,8 +351,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
                     else
                     {
                         pActor->strategy().newOperation(
-                            _NEW(MachLogAttackOperation(pActor, pMach, MachLogAttackOperation::TERMINATE_ON_CHANGE)),
-                            true);
+                            new MachLogAttackOperation(pActor, pMach, MachLogAttackOperation::TERMINATE_ON_CHANGE)),
+                            true;
                     }
 
                     // don't check again for another target in the next three seconds (this will be cancelled if the
@@ -420,13 +420,13 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor*
                     if (pMach->id() != currentTarget().id())
                     {
                         currentTarget(pMach);
-                        pActor->strategy().newOperation(_NEW(MachLogPodAttackOperation(pActor, pMach)), true);
+                        pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach)), true;
                     }
                 }
                 else
                 {
                     currentTarget(pMach);
-                    pActor->strategy().newOperation(_NEW(MachLogPodAttackOperation(pActor, pMach)), true);
+                    pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach)), true;
                 }
             }
         }
@@ -568,11 +568,11 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
             HAL_STREAM(" retargetting\n");
             currentTarget(pMach);
             pActor->strategy().newOperation(
-                _NEW(MachLogMissileEmplacementAttackOperation(
+                new MachLogMissileEmplacementAttackOperation(
                     pActor,
                     pMach,
                     MachLogAttackOperation::TERMINATE_ON_CHANGE)),
-                false);
+                false;
         }
     }
 }

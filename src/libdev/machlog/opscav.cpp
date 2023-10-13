@@ -54,14 +54,14 @@ MachLogScavengeOperation::~MachLogScavengeOperation()
         suppliers_.erase(suppliers_.begin());
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 MachLogScavengeOperation::MachLogScavengeOperation(MachLogResourceCarrier* pActor, MachLogDebris* targetDebris)
     : MachLogOperation("SCAVENGE_OPERATION", MachLogOperation::SCAVENGE_OPERATION)
-    , pImpl_(_NEW(MachLogScavengeOperationImpl(pActor)))
+    , pImpl_(new MachLogScavengeOperationImpl(pActor))
 {
     CB_MachLogScavengeOperation_DEPIMPL();
 
@@ -77,7 +77,7 @@ MachLogScavengeOperation::MachLogScavengeOperation(MachLogResourceCarrier* pActo
 
 MachLogScavengeOperation::MachLogScavengeOperation(MachLogResourceCarrier* pActor, const Suppliers& listOfSuppliers)
     : MachLogOperation("SCAVENGE_OPERATION", MachLogOperation::SCAVENGE_OPERATION)
-    , pImpl_(_NEW(MachLogScavengeOperationImpl(pActor)))
+    , pImpl_(new MachLogScavengeOperationImpl(pActor))
 {
     CB_MachLogScavengeOperation_DEPIMPL();
 
@@ -208,7 +208,7 @@ PhysRelativeTime MachLogScavengeOperation::doUpdate()
             interval = 2.0;
         else
         {
-            subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, dest_)));
+            subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest_));
             TEST_INVARIANT;
             interval = 2.0;
         }

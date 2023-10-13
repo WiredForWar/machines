@@ -66,7 +66,7 @@ MachGuiEditBoxListBoxItem::~MachGuiEditBoxListBoxItem()
 {
     TEST_INVARIANT;
 
-    _DELETE(pSingleLineEditBox_);
+    delete pSingleLineEditBox_;
     GuiManager::instance().removeCharFocus();
 }
 
@@ -99,7 +99,7 @@ void MachGuiEditBoxListBoxItem::select()
     MachGuiSoundManager::instance().playSound("gui/sounds/listclik.wav");
 
     pSingleLineEditBox_
-        = _NEW(MachGuiEditBoxItem(this, Gui::Box(1, 1, width() - 1, height() - 1), getUnderlineFont(), myListBox()));
+        = new MachGuiEditBoxItem(this, Gui::Box(1, 1, width() - 1, height() - 1), getUnderlineFont(), myListBox());
     pSingleLineEditBox_->caretColour(Gui::BLACK());
     pSingleLineEditBox_->maxChars(maxChars_);
     pSingleLineEditBox_->text(text_);
@@ -112,7 +112,7 @@ void MachGuiEditBoxListBoxItem::unselect()
     // Update text_ data member
     text();
 
-    _DELETE(pSingleLineEditBox_);
+    delete pSingleLineEditBox_;
     pSingleLineEditBox_ = nullptr;
     GuiManager::instance().removeCharFocus();
     changed();

@@ -32,7 +32,7 @@ MachPhysVapourTrail::MachPhysVapourTrail(
 
     for (size_t i = 0; i < nPuffs; ++i)
     {
-        vapourPuffs_.push_back(_NEW(MachPhysVapourPuff(pParent, W4dTransform3d(), averagePuffSize, missile_level)));
+        vapourPuffs_.push_back(new MachPhysVapourPuff(pParent, W4dTransform3d(), averagePuffSize, missile_level));
     }
 
     updateRate_ = vapourPuffs_[currentPuff_]->nFrames(missile_level) / nPuffs;

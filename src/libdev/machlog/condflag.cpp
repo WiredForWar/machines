@@ -39,7 +39,7 @@ MachLogScenarioFlagCondition* MachLogScenarioFlagCondition::newFromParser(UtlLin
 {
     // Get the flag setting via the database interface handler
     bool isSet = MachLogRaces::instance().databaseHandler().isFlagSet(pParser->tokens()[1], pParser->tokens()[3]);
-    return _NEW(MachLogScenarioFlagCondition(pParser->tokens()[1], isSet));
+    return new MachLogScenarioFlagCondition(pParser->tokens()[1], isSet);
 }
 
 void MachLogScenarioFlagCondition::CLASS_INVARIANT

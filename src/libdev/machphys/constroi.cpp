@@ -48,7 +48,7 @@ void MachPhysConstructionImpl::createSavedPadsTransforms()
 {
     PRE(pSavedPadsTransforms_ == nullptr);
 
-    pSavedPadsTransforms_ = _NEW(LinkTransforms);
+    pSavedPadsTransforms_ = new LinkTransforms;
     pSavedPadsTransforms_->reserve(15);
 }
 

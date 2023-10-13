@@ -33,7 +33,7 @@ W4dSolidFadedAlphaPlan::W4dSolidFadedAlphaPlan(
 
     material_.makeNonSharable();
 
-    materialVecPtr_ = _NEW(RenMaterialVec(nMaterialsInVector));
+    materialVecPtr_ = new RenMaterialVec(nMaterialsInVector);
     for (uint j = 0; j < nMaterialsInVector; ++j)
     {
         materialVecPtr_->push_back(material_);

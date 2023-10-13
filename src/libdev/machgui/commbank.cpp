@@ -158,23 +158,23 @@ MachCommandIcons::MachCommandIcons(GuiDisplayable* pParent, const Gui::Coord& re
     {
         if (commands[i] == pInGameScreen->defconCommand())
         {
-            _NEW(MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else if (commands[i] == pInGameScreen->selfDestructCommand())
         {
-            _NEW(MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else if (commands[i] == pInGameScreen->ionAttackCommand())
         {
-            _NEW(MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else if (commands[i] == pInGameScreen->nukeAttackCommand())
         {
-            _NEW(MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else
         {
-            _NEW(MachCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
     }
 }
@@ -249,23 +249,23 @@ MachSmallCommandIcons::MachSmallCommandIcons(
     {
         if (commands[i] == pInGameScreen->defconCommand())
         {
-            _NEW(MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else if (commands[i] == pInGameScreen->selfDestructCommand())
         {
-            _NEW(MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else if (commands[i] == pInGameScreen->ionAttackCommand())
         {
-            _NEW(MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else if (commands[i] == pInGameScreen->nukeAttackCommand())
         {
-            _NEW(MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
         else
         {
-            _NEW(MachCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen));
+            new MachCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
     }
 }

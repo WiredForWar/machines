@@ -46,11 +46,11 @@ PedMachineEditor::~PedMachineEditor()
 
     for (Machines::iterator i = machineData_.begin(); i != machineData_.end(); i++)
     {
-        _DELETE(*i);
+        delete *i;
     }
     for (mapIterator_ = machineMap_.begin(); mapIterator_ != machineMap_.end(); ++mapIterator_)
     {
-        _DELETE((*mapIterator_).machine_);
+        delete (*mapIterator_).machine_;
     }
 }
 
@@ -215,7 +215,7 @@ void PedMachineEditor::processSelection()
         else
         {
             // mouse pointer not pointing at object - so deselect selected object(s)
-            _DELETE(pMarker_);
+            delete pMarker_;
             pMarker_ = nullptr;
             pSelectedMachine_ = nullptr;
             alreadySelected_ = false;
@@ -232,9 +232,9 @@ void PedMachineEditor::processDelete()
         const MachineMapping& map = *mapIterator_;
 
         ASSERT(pSelectedMachine_ == map.machine_, "");
-        _DELETE(pMarker_);
+        delete pMarker_;
         pMarker_ = nullptr;
-        _DELETE(map.machine_);
+        delete map.machine_;
         pSelectedMachine_ = nullptr; // Since was pointing to map.machine_
         machineMap_.erase(mapIterator_);
         mapIterator_ = machineMap_.begin(); // To prevent dangling iterator
@@ -286,244 +286,244 @@ void PedMachineEditor::initialiseActors()
     MachPhysLegalWeaponCombos& weaponCombos = MachPhysLegalWeaponCombos::instance();
 
     resource = resourceLib.getString(IDS_AGGRESSOR_GRUNT1);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 1, 1, resource, MachPhys::R_BOLTER));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 1, 1, resource, MachPhys::R_BOLTER);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_GRUNT1);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 1, 1, resource, MachPhys::R_ELECTRIC_CHARGE));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 1, 1, resource, MachPhys::R_ELECTRIC_CHARGE);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_GRUNT2);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 2, 1, resource, MachPhys::L_BOLTER));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 2, 1, resource, MachPhys::L_BOLTER);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_GRUNT2);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 2, 1, resource, MachPhys::L_ELECTRIC_CHARGE));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 2, 1, resource, MachPhys::L_ELECTRIC_CHARGE);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_GRUNT2);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 2, 1, resource, MachPhys::L_FLAME_THROWER2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 2, 1, resource, MachPhys::L_FLAME_THROWER2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_GRUNT3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 3, 1, resource, MachPhys::LR_HEAVY_BOLTER1_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::GRUNT, 3, 1, resource, MachPhys::LR_HEAVY_BOLTER1_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_ASSASSIN2);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 2, 1, resource, MachPhys::L_AUTO_CANNON));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 2, 1, resource, MachPhys::L_AUTO_CANNON);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_ASSASSIN2);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 2, 1, resource, MachPhys::L_PLASMA_RIFLE));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 2, 1, resource, MachPhys::L_PLASMA_RIFLE);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_ASSASSIN3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 3, 1, resource, MachPhys::LR_PLASMA_RIFLE_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 3, 1, resource, MachPhys::LR_PLASMA_RIFLE_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_ASSASSIN3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 3, 1, resource, MachPhys::LR_AUTO_CANNON_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::ASSASSIN, 3, 1, resource, MachPhys::LR_AUTO_CANNON_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_KNIGHT3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 3, 1, resource, MachPhys::LR_HEAVY_BOLTER2_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 3, 1, resource, MachPhys::LR_HEAVY_BOLTER2_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_KNIGHT3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 3, 1, resource, MachPhys::LR_PLASMA_CANNON1_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 3, 1, resource, MachPhys::LR_PLASMA_CANNON1_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_BALLISTA3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::BALLISTA, 3, 1, resource, MachPhys::T_MULTI_LAUNCHER1));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::BALLISTA, 3, 1, resource, MachPhys::T_MULTI_LAUNCHER1);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_BALLISTA4);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::BALLISTA, 4, 1, resource, MachPhys::LR_MULTI_LAUNCHER2_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::BALLISTA, 4, 1, resource, MachPhys::LR_MULTI_LAUNCHER2_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_KNIGHT4);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 4, 1, resource, MachPhys::LR_PLASMA_CANNON2_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 4, 1, resource, MachPhys::LR_PLASMA_CANNON2_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_KNIGHT4);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 4, 1, resource, MachPhys::LR_MULTI_LAUNCHER3_X2));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 4, 1, resource, MachPhys::LR_MULTI_LAUNCHER3_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_KNIGHT5);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 5, 1, resource, MachPhys::LRT_MULTI_LAUNCHER4_X3));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 5, 1, resource, MachPhys::LRT_MULTI_LAUNCHER4_X3);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_KNIGHT5);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 5, 1, resource, MachPhys::LRT_PLASMA_CANNON2_X3));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::KNIGHT, 5, 1, resource, MachPhys::LRT_PLASMA_CANNON2_X3);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_BALLISTA3);
-    pMachine = _NEW(Machine(MachPhys::AGGRESSOR, MachPhys::BALLISTA, 3, 1, resource, MachPhys::T_VORTEX));
+    pMachine = new Machine(MachPhys::AGGRESSOR, MachPhys::BALLISTA, 3, 1, resource, MachPhys::T_VORTEX);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_AGGRESSOR_NINJA5);
-    pMachine = _NEW(Machine(
+    pMachine = new Machine(
         MachPhys::AGGRESSOR,
         MachPhys::NINJA,
         5,
         1,
         resource,
-        MachPhys::L_MULTI_LAUNCHER7_T_GORILLA_PUNCH_R_MULTI_LAUNCHER7));
+        MachPhys::L_MULTI_LAUNCHER7_T_GORILLA_PUNCH_R_MULTI_LAUNCHER7);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_TECHNICIAN_LAB_TECH2);
-    pMachine = _NEW(Machine(MachPhys::TECHNICIAN, MachPhys::LAB_TECH, 2, 1, resource));
+    pMachine = new Machine(MachPhys::TECHNICIAN, MachPhys::LAB_TECH, 2, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_TECHNICIAN_TECH_BOY3);
-    pMachine = _NEW(Machine(MachPhys::TECHNICIAN, MachPhys::TECH_BOY, 3, 3, resource));
+    pMachine = new Machine(MachPhys::TECHNICIAN, MachPhys::TECH_BOY, 3, 3, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_TECHNICIAN_BRAIN_BOX5);
-    pMachine = _NEW(Machine(MachPhys::TECHNICIAN, MachPhys::BRAIN_BOX, 5, 5, resource));
+    pMachine = new Machine(MachPhys::TECHNICIAN, MachPhys::BRAIN_BOX, 5, 5, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_CONSTRUCTOR_DOZER1);
-    pMachine = _NEW(Machine(MachPhys::CONSTRUCTOR, MachPhys::DOZER, 1, 1, resource));
+    pMachine = new Machine(MachPhys::CONSTRUCTOR, MachPhys::DOZER, 1, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_CONSTRUCTOR_BUILDER3);
-    pMachine = _NEW(Machine(MachPhys::CONSTRUCTOR, MachPhys::BUILDER, 3, 1, resource));
+    pMachine = new Machine(MachPhys::CONSTRUCTOR, MachPhys::BUILDER, 3, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_CONSTRUCTOR_BEHEMOTH4);
-    pMachine = _NEW(Machine(MachPhys::CONSTRUCTOR, MachPhys::BEHEMOTH, 4, 1, resource));
+    pMachine = new Machine(MachPhys::CONSTRUCTOR, MachPhys::BEHEMOTH, 4, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_CONSTRUCTOR_BEHEMOTH5);
-    pMachine = _NEW(Machine(MachPhys::CONSTRUCTOR, MachPhys::BEHEMOTH, 5, 1, resource));
+    pMachine = new Machine(MachPhys::CONSTRUCTOR, MachPhys::BEHEMOTH, 5, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_RESOURCE_CARRIER1);
-    pMachine = _NEW(Machine(MachPhys::RESOURCE_CARRIER, 0, 1, 1, resource));
+    pMachine = new Machine(MachPhys::RESOURCE_CARRIER, 0, 1, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_RESOURCE_CARRIER2);
-    pMachine = _NEW(Machine(MachPhys::RESOURCE_CARRIER, 0, 2, 1, resource));
+    pMachine = new Machine(MachPhys::RESOURCE_CARRIER, 0, 2, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_RESOURCE_CARRIER3);
-    pMachine = _NEW(Machine(MachPhys::RESOURCE_CARRIER, 0, 3, 1, resource));
+    pMachine = new Machine(MachPhys::RESOURCE_CARRIER, 0, 3, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_RESOURCE_CARRIER4);
-    pMachine = _NEW(Machine(MachPhys::RESOURCE_CARRIER, 0, 4, 1, resource));
+    pMachine = new Machine(MachPhys::RESOURCE_CARRIER, 0, 4, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_RESOURCE_CARRIER5);
-    pMachine = _NEW(Machine(MachPhys::RESOURCE_CARRIER, 0, 5, 1, resource));
+    pMachine = new Machine(MachPhys::RESOURCE_CARRIER, 0, 5, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_GEO_LOCATOR1);
-    pMachine = _NEW(Machine(MachPhys::GEO_LOCATOR, 0, 1, 1, resource));
+    pMachine = new Machine(MachPhys::GEO_LOCATOR, 0, 1, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_GEO_LOCATOR2);
-    pMachine = _NEW(Machine(MachPhys::GEO_LOCATOR, 0, 2, 1, resource));
+    pMachine = new Machine(MachPhys::GEO_LOCATOR, 0, 2, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_GEO_LOCATOR3);
-    pMachine = _NEW(Machine(MachPhys::GEO_LOCATOR, 0, 3, 1, resource));
+    pMachine = new Machine(MachPhys::GEO_LOCATOR, 0, 3, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_BOSS1);
-    pMachine = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::BOSS, 1, 1, resource, MachPhys::T_WASP_LIGHT_STING));
+    pMachine = new Machine(MachPhys::ADMINISTRATOR, MachPhys::BOSS, 1, 1, resource, MachPhys::T_WASP_LIGHT_STING);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_BOSS1);
-    pMachine = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::BOSS, 1, 1, resource, MachPhys::T_WASP_METAL_STING));
+    pMachine = new Machine(MachPhys::ADMINISTRATOR, MachPhys::BOSS, 1, 1, resource, MachPhys::T_WASP_METAL_STING);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_BOSS2);
-    pMachine = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::BOSS, 2, 1, resource, MachPhys::T_BEE_BOMB));
+    pMachine = new Machine(MachPhys::ADMINISTRATOR, MachPhys::BOSS, 2, 1, resource, MachPhys::T_BEE_BOMB);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_OVERSEER2);
-    pMachine = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::OVERSEER, 2, 1, resource, MachPhys::LR_PULSE_RIFLE_X2));
+    pMachine = new Machine(MachPhys::ADMINISTRATOR, MachPhys::OVERSEER, 2, 1, resource, MachPhys::LR_PULSE_RIFLE_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_OVERSEER2);
-    pMachine = _NEW(Machine(
+    pMachine = new Machine(
         MachPhys::ADMINISTRATOR,
         MachPhys::OVERSEER,
         2,
         1,
         resource,
-        MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED));
+        MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_OVERSEER3);
-    pMachine = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::OVERSEER, 3, 1, resource, MachPhys::LR_PULSE_RIFLE_X2));
+    pMachine = new Machine(MachPhys::ADMINISTRATOR, MachPhys::OVERSEER, 3, 1, resource, MachPhys::LR_PULSE_RIFLE_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_OVERSEER3);
-    pMachine = _NEW(Machine(
+    pMachine = new Machine(
         MachPhys::ADMINISTRATOR,
         MachPhys::OVERSEER,
         3,
         1,
         resource,
-        MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED));
+        MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_COMMANDER4);
-    pMachine = _NEW(
-        Machine(MachPhys::ADMINISTRATOR, MachPhys::COMMANDER, 4, 1, resource, MachPhys::L_MULTI_LAUNCHER5_R_TREACHERY));
+    pMachine = new 
+        Machine(MachPhys::ADMINISTRATOR, MachPhys::COMMANDER, 4, 1, resource, MachPhys::L_MULTI_LAUNCHER5_R_TREACHERY);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_COMMANDER4);
     pMachine
-        = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::COMMANDER, 4, 1, resource, MachPhys::LR_MULTI_LAUNCHER5_X2));
+        = new Machine(MachPhys::ADMINISTRATOR, MachPhys::COMMANDER, 4, 1, resource, MachPhys::LR_MULTI_LAUNCHER5_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_COMMANDER4);
-    pMachine = _NEW(Machine(
+    pMachine = new Machine(
         MachPhys::ADMINISTRATOR,
         MachPhys::COMMANDER,
         4,
         1,
         resource,
-        MachPhys::L_MULTI_LAUNCHER5_R_SUPERCHARGE_SUPER));
+        MachPhys::L_MULTI_LAUNCHER5_R_SUPERCHARGE_SUPER);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_COMMANDER5);
     pMachine
-        = _NEW(Machine(MachPhys::ADMINISTRATOR, MachPhys::COMMANDER, 5, 1, resource, MachPhys::LR_PULSE_CANNON_X2));
+        = new Machine(MachPhys::ADMINISTRATOR, MachPhys::COMMANDER, 5, 1, resource, MachPhys::LR_PULSE_CANNON_X2);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_ADMINISTRATOR_COMMANDER5);
-    pMachine = _NEW(Machine(
+    pMachine = new Machine(
         MachPhys::ADMINISTRATOR,
         MachPhys::COMMANDER,
         5,
         1,
         resource,
-        MachPhys::L_PULSE_CANNON_R_SUPERCHARGE_SUPER));
+        MachPhys::L_PULSE_CANNON_R_SUPERCHARGE_SUPER);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_SPY_LOCATORS);
-    pMachine = _NEW(Machine(MachPhys::SPY_LOCATOR, 0, 3, 1, resource));
+    pMachine = new Machine(MachPhys::SPY_LOCATOR, 0, 3, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_SPY_LOCATORS);
-    pMachine = _NEW(Machine(MachPhys::SPY_LOCATOR, 0, 5, 1, resource));
+    pMachine = new Machine(MachPhys::SPY_LOCATOR, 0, 5, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_APC2);
-    pMachine = _NEW(Machine(MachPhys::APC, 0, 2, 1, resource));
+    pMachine = new Machine(MachPhys::APC, 0, 2, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_APC4);
-    pMachine = _NEW(Machine(MachPhys::APC, 0, 4, 1, resource));
+    pMachine = new Machine(MachPhys::APC, 0, 4, 1, resource);
     machineData_.push_back(pMachine);
 
     resource = resourceLib.getString(IDS_APC5);
-    pMachine = _NEW(Machine(MachPhys::APC, 0, 5, 1, resource));
+    pMachine = new Machine(MachPhys::APC, 0, 5, 1, resource);
     machineData_.push_back(pMachine);
 
     machDataIter_ = machineData_.begin();
@@ -539,61 +539,61 @@ PedMachineEditor::createMachine(W4dEntity& pEntity, const MexTransform3d& locTra
     switch (mach.machineType_)
     {
         case MachPhys::AGGRESSOR:
-            pCurrentMachine = _NEW(MachPhysAggressor(
+            pCurrentMachine = new MachPhysAggressor(
                 &pEntity,
                 locTransform,
                 (MachPhys::AggressorSubType)mach.subType_,
                 mach.bodyLevel_,
                 mach.brainboxLevel_,
                 race_,
-                mach.weaponCombo_));
+                mach.weaponCombo_);
             break;
         case MachPhys::GEO_LOCATOR:
             pCurrentMachine
-                = _NEW(MachPhysGeoLocator(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_));
+                = new MachPhysGeoLocator(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_);
             break;
         case MachPhys::SPY_LOCATOR:
             pCurrentMachine
-                = _NEW(MachPhysSpyLocator(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_));
+                = new MachPhysSpyLocator(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_);
 
             break;
         case MachPhys::CONSTRUCTOR:
-            pCurrentMachine = _NEW(MachPhysConstructor(
+            pCurrentMachine = new MachPhysConstructor(
                 &pEntity,
                 locTransform,
                 (MachPhys::ConstructorSubType)mach.subType_,
                 mach.bodyLevel_,
                 mach.brainboxLevel_,
-                race_));
+                race_);
             break;
         case MachPhys::ADMINISTRATOR:
-            pCurrentMachine = _NEW(MachPhysAdministrator(
+            pCurrentMachine = new MachPhysAdministrator(
                 &pEntity,
                 locTransform,
                 (MachPhys::AdministratorSubType)mach.subType_,
                 mach.bodyLevel_,
                 mach.brainboxLevel_,
                 race_,
-                mach.weaponCombo_));
+                mach.weaponCombo_);
 
             break;
         case MachPhys::RESOURCE_CARRIER:
             pCurrentMachine
-                = _NEW(MachPhysResourceCarrier(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_));
+                = new MachPhysResourceCarrier(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_);
 
             break;
         case MachPhys::APC:
-            pCurrentMachine = _NEW(MachPhysAPC(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_));
+            pCurrentMachine = new MachPhysAPC(&pEntity, locTransform, mach.bodyLevel_, mach.brainboxLevel_, race_);
 
             break;
         case MachPhys::TECHNICIAN:
-            pCurrentMachine = _NEW(MachPhysTechnician(
+            pCurrentMachine = new MachPhysTechnician(
                 &pEntity,
                 locTransform,
                 (MachPhys::TechnicianSubType)mach.subType_,
                 mach.bodyLevel_,
                 mach.brainboxLevel_,
-                race_));
+                race_);
 
             break;
         default:

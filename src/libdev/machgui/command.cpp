@@ -31,7 +31,7 @@ MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen)
     , isVisible_(false)
     , isSquadronContext_(pInGameScreen->applyCommandToSquadron())
     , hasPlayedVoiceMail_(false)
-    , pImpl_(_NEW(MachGuiCommandImpl(pInGameScreen)))
+    , pImpl_(new MachGuiCommandImpl(pInGameScreen))
 {
     PRE(pInGameScreen != nullptr);
 
@@ -42,7 +42,7 @@ MachGuiCommand::~MachGuiCommand()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiCommand::CLASS_INVARIANT

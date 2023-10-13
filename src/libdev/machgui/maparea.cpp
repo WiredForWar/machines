@@ -54,11 +54,11 @@ private:
 
 MachGuiMapArea::MachGuiMapArea(GuiDisplayable* pParent, const Gui::Box& box)
     : GuiDisplayable(pParent, box, GuiDisplayable::LAYER2)
-    , pImpl_(_NEW(MachGuiMapAreaImpl()))
+    , pImpl_(new MachGuiMapAreaImpl())
 {
     CB_DEPIMPL(MachGuiMapAreaMagic*, pMapAreaMagic_);
 
-    pMapAreaMagic_ = _NEW(MachGuiMapAreaMagic(this, box, this));
+    pMapAreaMagic_ = new MachGuiMapAreaMagic(this, box, this);
 
     TEST_INVARIANT;
 }
@@ -67,7 +67,7 @@ MachGuiMapArea::~MachGuiMapArea()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiMapArea::controlPanelSliding(bool sliding)

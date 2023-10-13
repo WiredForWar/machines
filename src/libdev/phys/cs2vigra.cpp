@@ -848,7 +848,7 @@ bool PhysCS2dVisibilityGraph::updateFindPath(const PhysRelativeTime& maxTime, Ob
         // Ensure we have a search algorithm instantiated
         if (pFindPathAlg_ == nullptr)
         {
-            pFindPathAlg_ = _NEW(FindPathAlg);
+            pFindPathAlg_ = new FindPathAlg;
             pFindPathAlg_->start(graph_, startVertexId_, endVertexId_);
         }
 
@@ -864,7 +864,7 @@ bool PhysCS2dVisibilityGraph::updateFindPath(const PhysRelativeTime& maxTime, Ob
         if (findPathCompleted_)
         {
             findPathOutput_ = pFindPathAlg_->output();
-            _DELETE(pFindPathAlg_);
+            delete pFindPathAlg_;
             pFindPathAlg_ = nullptr;
         }
     }
@@ -881,7 +881,7 @@ void PhysCS2dVisibilityGraph::invalidateFindPath()
     // Delete the algorithm if it exists
     if (pFindPathAlg_ != nullptr)
     {
-        _DELETE(pFindPathAlg_);
+        delete pFindPathAlg_;
         pFindPathAlg_ = nullptr;
     }
 

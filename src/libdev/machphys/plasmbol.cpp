@@ -61,7 +61,7 @@ MachPhysPlasmaBolt::MachPhysPlasmaBolt(
     //Add a TTF for the centre. Set up a material for this
     MATHEX_SCALAR size = MachPhysData::instance().weaponData( type ).extras()[0];
     W4dSprite3d* pTTF =
-        _NEW( W4dSprite3d( this, MexTransform3d(), size, size, centreMaterial() ) );
+        new W4dSprite3d( this, MexTransform3d(), size, size, centreMaterial() );
     pTTF->depthOffset( -size );
 */
 
@@ -139,21 +139,21 @@ const MachPhysPlasmaBolt& MachPhysPlasmaBolt::exemplar(MachPhys::WeaponType type
     {
         case MachPhys::PLASMA_RIFLE:
         {
-            static MachPhysPlasmaBolt* pBolt = _NEW( MachPhysPlasmaBolt( type ) );
+            static MachPhysPlasmaBolt* pBolt = new MachPhysPlasmaBolt( type );
             pResult = pBolt;
             break;
         }
 
         case MachPhys::PLASMA_CANNON1:
         {
-            static MachPhysPlasmaBolt* pBolt = _NEW( MachPhysPlasmaBolt( type ) );
+            static MachPhysPlasmaBolt* pBolt = new MachPhysPlasmaBolt( type );
             pResult = pBolt;
             break;
         }
 
         case MachPhys::PLASMA_CANNON2:
         {
-            static MachPhysPlasmaBolt* pBolt = _NEW( MachPhysPlasmaBolt( type ) );
+            static MachPhysPlasmaBolt* pBolt = new MachPhysPlasmaBolt( type );
             pResult = pBolt;
             break;
         }
@@ -274,13 +274,13 @@ PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash
         firstTime = false;
 
         //Create the visibility plan
-        W4dVisibilityPlan* pVisibilityPlan = _NEW( W4dVisibilityPlan( true ) );
+        W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan( true );
         pVisibilityPlan->add( false, duration );
         visibilityPlanPtr = pVisibilityPlan;
 
         //Create the scale plan
         W4dSimpleUniformScalePlan* pScalePlan =
-            _NEW( W4dSimpleUniformScalePlan( 1.0, 5.0, duration ) );
+            new W4dSimpleUniformScalePlan( 1.0, 5.0, duration );
         scalePlanPtr = pScalePlan;
 
         //Set the flash material
@@ -298,13 +298,13 @@ PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash
         alphaValues.push_back( 0.0 );
 
         PhysLinearScalarPlan* pAlphaValuePlan =
-            _NEW( PhysLinearScalarPlan( times, alphaValues ) );
+            new PhysLinearScalarPlan( times, alphaValues );
         alphaValuePlanPtr = pAlphaValuePlan;
     }
 
     //Construct a TTF at the specified location
     MATHEX_SCALAR size = 1.0;
-    W4dSprite3d* pTTF = _NEW( W4dSprite3d( pParent, localPosition, size, size, flashMaterial ) );
+    W4dSprite3d* pTTF = new W4dSprite3d( pParent, localPosition, size, size, flashMaterial );
 
     //Make invisible till needed
     pTTF->visible( false );
@@ -319,7 +319,7 @@ PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash
     //Set up the alpha plan. We need a fresh copy for each TTF because it
     //uses a cached material.
     W4dSimpleAlphaPlan* pAlphaPlan =
-        _NEW( W4dSimpleAlphaPlan( flashMaterial, 1, alphaValuePlanPtr, 2 ) );
+        new W4dSimpleAlphaPlan( flashMaterial, 1, alphaValuePlanPtr, 2 );
     W4dMaterialPlanPtr alphaPlanPtr( pAlphaPlan );
     entityPlan.materialPlan( alphaPlanPtr, startTime );
 
@@ -365,10 +365,10 @@ PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash(
 {
     PhysRelativeTime duration = 0.33;
 
-    MachPhysPlasmaAura* pAura = _NEW(MachPhysPlasmaAura(pParent, localPosition));
+    MachPhysPlasmaAura* pAura = new MachPhysPlasmaAura(pParent, localPosition);
     pAura->startPlasmaAura(startTime, duration);
 
-    MachPhysPlasmaSplat* pSplat = _NEW(MachPhysPlasmaSplat(pParent, localPosition));
+    MachPhysPlasmaSplat* pSplat = new MachPhysPlasmaSplat(pParent, localPosition);
     pSplat->startPlasmaSplat(startTime, duration);
 
     SoundId sndData = (boltType_ == MachPhys::PLASMA_RIFLE ? SID_PLRHIT : SID_PLCHIT);
@@ -383,7 +383,7 @@ PhysRelativeTime MachPhysPlasmaBolt::createImpactFlash(
     // previous play
     if (startTime > lastTimePlayed + acceptableTime)
     {
-        pSplatSite = _NEW(W4dGeneric(pParent, localPosition, W4dEntity::NOT_SOLID));
+        pSplatSite = new W4dGeneric(pParent, localPosition, W4dEntity::NOT_SOLID);
         W4dSoundManager::instance().play(pSplatSite, sndData, startTime, 1);
         lastTimePlayed = startTime;
     }

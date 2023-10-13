@@ -14,7 +14,7 @@ PER_DEFINE_PERSISTENT(MachGuiDbPlanet);
 MachGuiDbPlanet::MachGuiDbPlanet(const string& planetName, uint menuStringId)
     : MachGuiDbElement(menuStringId)
 {
-    pData_ = _NEW(MachGuiDbIPlanet);
+    pData_ = new MachGuiDbIPlanet;
     name(planetName);
     isCustom(false);
 
@@ -28,10 +28,10 @@ MachGuiDbPlanet::~MachGuiDbPlanet()
     // Delete all the dependent scenarios
     for (size_t i = pData_->scenarios_.size(); i--;)
     {
-        _DELETE(pData_->scenarios_[i]);
+        delete pData_->scenarios_[i];
     }
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbPlanet::CLASS_INVARIANT

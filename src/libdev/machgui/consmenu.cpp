@@ -54,7 +54,7 @@ size_t MachConstructMenu::reqHeight(MachInGameScreen* pInGameScreen)
 GuiSimpleScrollableList*
 MachConstructMenu::createList(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
 {
-    return _NEW(MachConstructMenuIcons(pParent, rel, pInGameScreen));
+    return new MachConstructMenuIcons(pParent, rel, pInGameScreen);
 }
 
 /* End CONSMENU.CPP *************************************************/

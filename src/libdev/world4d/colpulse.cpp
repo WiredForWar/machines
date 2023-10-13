@@ -24,7 +24,7 @@
 W4dColourPulsePlan::W4dColourPulsePlan(const ColourPulseDataVec& colourPulseDataVec, const RenMaterialVec& matVec)
     : W4dMaterialPlan(1000000, 0)
     , colourPulseDataVec_(colourPulseDataVec)
-    , materialVecPtr_(_NEW(RenMaterialVec(matVec.size())))
+    , materialVecPtr_(new RenMaterialVec(matVec.size()))
 {
     size_t nMaterials = matVec.size();
 
@@ -57,7 +57,7 @@ W4dColourPulsePlan::W4dColourPulsePlan(
     const RenColour& toColour,
     const PhysRelativeTime& duration)
     : W4dMaterialPlan(duration, 0)
-    , materialVecPtr_(_NEW(RenMaterialVec(matVec.size())))
+    , materialVecPtr_(new RenMaterialVec(matVec.size()))
 {
     size_t nMaterials = matVec.size();
 
@@ -170,13 +170,13 @@ void W4dColourPulsePlan::makePlan(
 
     if (materialVecPtr.isDefined())
     {
-        matPlanPtr = _NEW(W4dColourPulsePlan(dataVec, *materialVecPtr));
+        matPlanPtr = new W4dColourPulsePlan(dataVec, *materialVecPtr);
     }
     else
     {
         RenMaterialVec* pAnimMaterialVec = meshInst.mesh()->materialVec().release();
-        matPlanPtr = _NEW(W4dColourPulsePlan(dataVec, *pAnimMaterialVec));
-        _DELETE(pAnimMaterialVec);
+        matPlanPtr = new W4dColourPulsePlan(dataVec, *pAnimMaterialVec);
+        delete pAnimMaterialVec;
     }
 
     pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime, nRepetations, animId);
@@ -193,7 +193,7 @@ bool W4dColourPulsePlan::changeColour(W4dEntity* pEntity, const RenTexture& text
 
     if (materialVecPtr.isDefined())
     {
-        pAnimMaterialVec = _NEW(RenMaterialVec(*materialVecPtr));
+        pAnimMaterialVec = new RenMaterialVec(*materialVecPtr);
     }
     else
     {
@@ -206,7 +206,7 @@ bool W4dColourPulsePlan::changeColour(W4dEntity* pEntity, const RenTexture& text
 
     if (nMat > 0)
     {
-        Ren::MaterialVecPtr materialVecPtr = _NEW(RenMaterialVec(nMat));
+        Ren::MaterialVecPtr materialVecPtr = new RenMaterialVec(nMat);
 
         for (size_t i = 0; i < nMat; ++i)
         {
@@ -239,7 +239,7 @@ bool W4dColourPulsePlan::changeColour(W4dEntity* pEntity, const RenTexture& text
         _CONST_CAST(RenMeshInstance&, meshInst).materialVec(materialVecPtr);
     }
     // delete the old to avoid mem leak
-    _DELETE(pAnimMaterialVec);
+    delete pAnimMaterialVec;
 
     return found;
 }
@@ -261,7 +261,7 @@ void W4dColourPulsePlan::changeAllColour(
 
     if (materialVecPtr.isDefined())
     {
-        pAnimMaterialVec = _NEW(RenMaterialVec(*materialVecPtr));
+        pAnimMaterialVec = new RenMaterialVec(*materialVecPtr);
     }
     else
     {
@@ -282,16 +282,16 @@ void W4dColourPulsePlan::changeAllColour(
             const string& texturePathName = (*pAnimMaterialVec)[i].texture().name();
             SysPathName pathName(texturePathName);
             const string& textureName = pathName.filename();
-            W4dColourPulseData* pPulseData = _NEW(W4dColourPulseData(textureName, fromColour, toColour, period));
+            W4dColourPulseData* pPulseData = new W4dColourPulseData(textureName, fromColour, toColour, period);
             dataVec.push_back(pPulseData);
         }
 
-        W4dMaterialPlanPtr matPlanPtr = _NEW(W4dColourPulsePlan(dataVec, *pAnimMaterialVec));
+        W4dMaterialPlanPtr matPlanPtr = new W4dColourPulsePlan(dataVec, *pAnimMaterialVec);
         pEntity->entityPlanForEdit().materialPlan(matPlanPtr, startTime, nPeriods, animId);
     }
 
     // delete the old to avoid mem leak
-    _DELETE(pAnimMaterialVec);
+    delete pAnimMaterialVec;
 }
 
 /* End COLPULSE.CPP *************************************************/

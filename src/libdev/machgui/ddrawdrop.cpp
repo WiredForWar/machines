@@ -54,7 +54,7 @@ MachGuiDDrawDropDownListBoxCreator::~MachGuiDDrawDropDownListBoxCreator()
 {
     TEST_INVARIANT;
     // newed by client but deleted here
-    _DELETE(callbackHandler_);
+    delete callbackHandler_;
 }
 
 void MachGuiDDrawDropDownListBoxCreator::CLASS_INVARIANT
@@ -73,7 +73,7 @@ MachGuiDropDownList* MachGuiDDrawDropDownListBoxCreator::createDropDownList(
     const ctl_vector<string>& itemText,
     MachGuiDropDownListBoxCreator* listBoxCreator)
 {
-    return _NEW(MachGuiDDrawDropDownList(
+    return new MachGuiDDrawDropDownList(
         pParent,
         box,
         horizontalSpacing,
@@ -82,7 +82,7 @@ MachGuiDropDownList* MachGuiDDrawDropDownListBoxCreator::createDropDownList(
         itemWidth,
         itemText,
         listBoxCreator,
-        callbackHandler_));
+        callbackHandler_);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiDDrawDropDownListBoxCreator& t)
@@ -168,7 +168,7 @@ MachGuiDropDownListBoxItem* MachGuiDDrawDropDownList::createListBoxItem(
     const string& text,
     bool whiteFont)
 {
-    return _NEW(MachGuiDDrawDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont, callbackHandler_));
+    return new MachGuiDDrawDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont, callbackHandler_);
 }
 
 MachGuiDDrawDropDownListBoxItem::MachGuiDDrawDropDownListBoxItem(

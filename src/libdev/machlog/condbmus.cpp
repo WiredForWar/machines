@@ -61,11 +61,11 @@ MachLogBMUCountCondition* MachLogBMUCountCondition::newFromParser(UtlLineTokenis
     //<keyName> RACE <race> <comparitor> <number>
     CheckType comparitor = pParser->tokens()[4] == "GREATER_THAN_EQUAL" ? GREATER_THAN_EQUAL : LESS_THAN_EQUAL;
 
-    return _NEW(MachLogBMUCountCondition(
+    return new MachLogBMUCountCondition(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
         atol(pParser->tokens()[5].c_str()),
-        comparitor));
+        comparitor);
 }
 
 void MachLogBMUCountCondition::CLASS_INVARIANT

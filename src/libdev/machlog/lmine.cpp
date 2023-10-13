@@ -53,7 +53,7 @@ MachPhysLandMine* MachLogLandMine::pNewLandMine(MachLogRace* pRace, const MexPoi
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the holograph
-    return _NEW(MachPhysLandMine(pDomain, localTransform, pRace->race()));
+    return new MachPhysLandMine(pDomain, localTransform, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -74,12 +74,12 @@ void MachLogLandMine::CLASS_INVARIANT
 PhysRelativeTime MachLogLandMine::beDestroyed()
 {
     PhysRelativeTime result = pPhysLandMine_->beDestroyed() * 1.05;
-    SimManager::instance().add(_NEW(MachLogDyingEntityEvent(
+    SimManager::instance().add(new MachLogDyingEntityEvent(
         physObjectPtr(),
         nullptr,
         result,
         MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-        nullptr)));
+        nullptr));
     return result;
 }
 //////////////////////////////////////////////////////////////////////////////////////////

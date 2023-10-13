@@ -69,7 +69,7 @@ MachGuiDropDownList* MachGuiNumPlayersDropDownListBoxCreator::createDropDownList
     const ctl_vector<string>& itemText,
     MachGuiDropDownListBoxCreator* listBoxCreator)
 {
-    return _NEW(MachGuiNumPlayersDropDownList(
+    return new MachGuiNumPlayersDropDownList(
         pParent,
         box,
         horizontalSpacing,
@@ -77,7 +77,7 @@ MachGuiDropDownList* MachGuiNumPlayersDropDownListBoxCreator::createDropDownList
         scrollInc,
         itemWidth,
         itemText,
-        listBoxCreator));
+        listBoxCreator);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t)
@@ -186,7 +186,7 @@ MachGuiDropDownListBoxItem* MachGuiNumPlayersDropDownList::createListBoxItem(
     const string& text,
     bool whiteFont)
 {
-    return _NEW(MachGuiNumPlayersDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont));
+    return new MachGuiNumPlayersDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont);
 }
 
 MachGuiNumPlayersDropDownListBoxItem::MachGuiNumPlayersDropDownListBoxItem(

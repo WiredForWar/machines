@@ -194,14 +194,14 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
         {
             // TBD: Deal with attacker can't legally enter the building
             if (pActor_->canEnterConstruction(*pTargetBuilding))
-                subOperation(pActor_, _NEW(MachLogEnterBuildingOperation(pActor_, pTargetBuilding, nullptr)));
+                subOperation(pActor_, new MachLogEnterBuildingOperation(pActor_, pTargetBuilding, nullptr));
             else
                 targetBehindCover_ = true;
         }
         else
         {
             // Target is outside, and attacker is inside, so leave it
-            subOperation(pActor_, _NEW(MachLogLeaveBuildingOperation(pActor_, pAttackerBuilding, nullptr)));
+            subOperation(pActor_, new MachLogLeaveBuildingOperation(pActor_, pAttackerBuilding, nullptr));
         }
 
         attacker.stopAllHealing(*pActor_);
@@ -516,7 +516,7 @@ PhysRelativeTime MachLogHealOperation::turnToFaceTarget()
     if (canTurn)
     {
         MexRadians turnBy = angleToTurnToFace(*pActor_, directObject().position());
-        subOperation(pActor_, _NEW(MachLogTurnAnimation(pActor_, turnBy)));
+        subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
     }
 
     return interval;

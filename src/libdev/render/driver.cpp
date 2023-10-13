@@ -68,7 +68,7 @@ std::ostream& operator<<(std::ostream& o, const RenIDriverInfo& t)
 
 static void destroyInfo(RenIDriverInfo* info)
 {
-    _DELETE(info);
+    delete info;
 }
 
 // virtual

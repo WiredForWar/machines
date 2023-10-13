@@ -61,8 +61,8 @@ const MachPhysHelix& MachPhysHelix::exemplar(Twist twist)
 {
     /*
     //Use the one time constructor
-    static MachPhysHelix& leftHelix = *_NEW( MachPhysHelix( LEFT_TWIST ) );
-    static MachPhysHelix& rightHelix = *_NEW( MachPhysHelix( RIGHT_TWIST ) );
+    static MachPhysHelix& leftHelix = *new MachPhysHelix( LEFT_TWIST );
+    static MachPhysHelix& rightHelix = *new MachPhysHelix( RIGHT_TWIST );
 
     return (twist == LEFT_TWIST ? leftHelix : rightHelix);
     */

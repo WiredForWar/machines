@@ -58,8 +58,8 @@ MachPhysTerrainTile::MachPhysTerrainTile(
     , tileLodFile_(lodFileName)
 {
     // Copy the ref-counted pointer to the tile data
-    pTileDataPtr_ = _NEW(
-        MachPhysTileDataPtr(*(exemplar(lodFileName, nXVertices, nYVertices, xMin, xMax, yMin, yMax).pTileDataPtr_)));
+    pTileDataPtr_ = new 
+        MachPhysTileDataPtr(*(exemplar(lodFileName, nXVertices, nYVertices, xMin, xMax, yMin, yMax).pTileDataPtr_));
     /*
 //E3 hack. Should be able to delete this soon
     if( hasMesh() )
@@ -80,7 +80,7 @@ MachPhysTerrainTile::MachPhysTerrainTile(
 
         if( name.substr(0, 5) == "animW" )
         {
-            _NEW( MachPhysWaterfall( this, MexTransform3d() ) );
+            new MachPhysWaterfall( this, MexTransform3d() );
         }
     }
 */
@@ -95,7 +95,7 @@ MachPhysTerrainTile::MachPhysTerrainTile(PerConstructor con)
 // To be used only with examplar methods
 MachPhysTerrainTile::MachPhysTerrainTile(const MachPhysTerrainTile& copyMe)
     : W4dEntity(copyMe, &exemplarRoot(), MexTransform3d())
-    , pTileDataPtr_(_NEW(MachPhysTileDataPtr(*copyMe.pTileDataPtr_)))
+    , pTileDataPtr_(new MachPhysTileDataPtr(*copyMe.pTileDataPtr_))
     , tileLodFile_(copyMe.tileLodFile_)
 {
 }
@@ -104,7 +104,7 @@ MachPhysTerrainTile::~MachPhysTerrainTile()
 {
     TEST_INVARIANT;
 
-    _DELETE(pTileDataPtr_);
+    delete pTileDataPtr_;
 }
 
 // virtual
@@ -218,7 +218,7 @@ const MachPhysTerrainTile& MachPhysTerrainTile::exemplar(
     else
     {
         // This is the first time. Create a new entity.
-        pExemplar = _NEW(MachPhysTerrainTile(lodFileName, nXVertices, nYVertices, xMin, xMax, yMin, yMax));
+        pExemplar = new MachPhysTerrainTile(lodFileName, nXVertices, nYVertices, xMin, xMax, yMin, yMax);
 
         // Enter into map
         theMap.insert(TerrainExemplarMap::value_type(lodFileName.pathname(), pExemplar));
@@ -243,15 +243,15 @@ MachPhysTerrainTile::MachPhysTerrainTile(
     ASSERT(hasMesh(W4dLOD(0)), "");
 
     // Construct the tile data
-    MachPhysTileData* pData = _NEW(MachPhysTileData(
+    MachPhysTileData* pData = new MachPhysTileData(
         nXVertices,
         nYVertices,
         MexAlignedBox2d(xMin, yMin, xMax, yMax),
-        *(_CONST_CAST(const W4dEntity&, _STATIC_CAST(W4dEntity&, *this)).mesh(W4dLOD(0)).mesh())));
+        *(_CONST_CAST(const W4dEntity&, _STATIC_CAST(W4dEntity&, *this)).mesh(W4dLOD(0)).mesh()));
     //*(_CONST_CAST( const W4dEntity&, *this).mesh( W4dLOD( 0 ) ).mesh() )) );
 
     //...and hence the ref-counted pointer to it
-    pTileDataPtr_ = _NEW(MachPhysTileDataPtr(pData));
+    pTileDataPtr_ = new MachPhysTileDataPtr(pData);
 }
 
 /*
@@ -302,7 +302,7 @@ void MachPhysTerrainTile::registerExemplar() const
     if (it == theMap.end())
     {
         // This is the first time. Copy a new entity.
-        MachPhysTerrainTile* pExemplar = _NEW(MachPhysTerrainTile(*this));
+        MachPhysTerrainTile* pExemplar = new MachPhysTerrainTile(*this);
 
         // Enter into map
         theMap.insert(TerrainExemplarMap::value_type(lodFileName().pathname(), pExemplar));
@@ -325,7 +325,7 @@ void MachPhysTerrainTile::clearAll()
     while (theMap.size() != 0)
     {
         TerrainExemplarMap::iterator it = theMap.begin();
-        _DELETE((*it).second);
+        delete (*it).second;
         theMap.erase(it);
     }
 }

@@ -43,11 +43,11 @@ MachLogLinearProjectile* MachLogPlasmaWeapon::createLinearProjectile(
     const W4dEntity& target,
     const MexPoint3d& targetOffset)
 {
-    return _NEW(MachLogPlasmaBolt(
+    return new MachLogPlasmaBolt(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogPlasmaWeapon& t)

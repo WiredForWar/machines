@@ -137,12 +137,12 @@ void MachPhysPulseSplat::startPulseSplat(const PhysAbsoluteTime& startTime, cons
         firstTime = false;
 
         // Create the visibility plan
-        W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+        W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
         pVisibilityPlan->add(false, duration);
         visibilityPlanPtr = pVisibilityPlan;
 
         // Create the scale plan
-        W4dSimpleUniformScalePlan* pScalePlan = _NEW(W4dSimpleUniformScalePlan(1.0, 2.0, duration));
+        W4dSimpleUniformScalePlan* pScalePlan = new W4dSimpleUniformScalePlan(1.0, 2.0, duration);
         scalePlanPtr = pScalePlan;
     }
 

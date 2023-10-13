@@ -10,7 +10,7 @@
 
 PhysAcceleratedScalarPlan::PhysAcceleratedScalarPlan(const RampAccelerations& rampAccelerations, MATHEX_SCALAR scale)
     : PhysScalarPlan(0)
-    , pImpl_(_NEW(PhysAcceleratedScalarPlanImpl(rampAccelerations, scale)))
+    , pImpl_(new PhysAcceleratedScalarPlanImpl(rampAccelerations, scale))
 {
     CB_DEPIMPL(Distances, distances_);
 
@@ -30,7 +30,7 @@ PhysAcceleratedScalarPlan::PhysAcceleratedScalarPlan(const RampAccelerations& ra
 
 PhysAcceleratedScalarPlan::PhysAcceleratedScalarPlan(const PhysAcceleratedScalarPlan& copyMe)
     : PhysScalarPlan(copyMe.duration())
-    , pImpl_(_NEW(PhysAcceleratedScalarPlanImpl(*copyMe.pImpl_)))
+    , pImpl_(new PhysAcceleratedScalarPlanImpl(*copyMe.pImpl_))
 {
     TEST_INVARIANT;
 }
@@ -38,7 +38,7 @@ PhysAcceleratedScalarPlan::PhysAcceleratedScalarPlan(const PhysAcceleratedScalar
 PhysAcceleratedScalarPlan::~PhysAcceleratedScalarPlan()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 const PhysAcceleratedScalarPlan::RampAccelerations& PhysAcceleratedScalarPlan::rampAccelerations() const

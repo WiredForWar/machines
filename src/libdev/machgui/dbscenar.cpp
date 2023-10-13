@@ -28,7 +28,7 @@ MachGuiDbScenario::MachGuiDbScenario(
 
 void MachGuiDbScenario::initialise(const string& scenarioName, const string& planetName)
 {
-    pData_ = _NEW(MachGuiDbIScenario);
+    pData_ = new MachGuiDbIScenario;
     name(scenarioName);
     planetFile(planetName);
 
@@ -39,7 +39,7 @@ MachGuiDbScenario::~MachGuiDbScenario()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 void MachGuiDbScenario::CLASS_INVARIANT

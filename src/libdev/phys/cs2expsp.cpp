@@ -58,7 +58,7 @@ PhysCS2dExpansionSpace::addPolygon(const MexPolygon2d& oldPolygon, const Polygon
     CS2VGRA_STREAM("Unexpanded polygon " << oldPolygon << std::endl);
 
     // Construct a new expanded polygon
-    MexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(oldPolygon, expansionDistance_));
+    MexPolygon2d* pPolygon = new MexConvexPolygon2d(oldPolygon, expansionDistance_);
     std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
     CS2VGRA_STREAM("Expanded polygon   " << *pPolygon << std::endl);

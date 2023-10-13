@@ -31,7 +31,7 @@ EnvSky::~EnvSky()
     TEST_INVARIANT;
 
     if (pStars_)
-        _DELETE(pStars_);
+        delete pStars_;
 }
 
 void EnvSky::CLASS_INVARIANT
@@ -126,7 +126,7 @@ EnvUniformSky::~EnvUniformSky()
     TEST_INVARIANT;
 
     if (pColourTable_)
-        _DELETE(pColourTable_);
+        delete pColourTable_;
 }
 
 // VIRTUAL //
@@ -173,7 +173,7 @@ void EnvUniformSky::CLASS_INVARIANT
 // EnvDynamicSky //
 
 EnvDynamicSky::EnvDynamicSky(W4dEntity* pParent)
-    : pDome_(_NEW(W4dCustom(pParent, MexTransform3d(), W4dEntity::NOT_SOLID, MexDouble::plusInfinity())))
+    : pDome_(new W4dCustom(pParent, MexTransform3d(), W4dEntity::NOT_SOLID, MexDouble::plusInfinity()))
     , index_(0)
     , maxElevation_(0)
     , complexity_(UNTESTED)
@@ -195,7 +195,7 @@ EnvDynamicSky::~EnvDynamicSky()
 {
     TEST_INVARIANT;
 
-    _DELETE(pDome_);
+    delete pDome_;
 }
 
 // HELPER //
@@ -378,7 +378,7 @@ void EnvDynamicSky::colourTable(MexDegrees elevation, EnvElevationColourTable* p
 
         if (existingClut != pElevationClut)
         {
-            _DELETE(existingClut);
+            delete existingClut;
             (*it).second = pElevationClut;
         }
     }
@@ -460,7 +460,7 @@ void EnvDynamicSky::CLASS_INVARIANT
 
 EnvStaticSky::EnvStaticSky(W4dEntity* pParent)
 
-    : pSkyMesh_(_NEW(W4dCustom(pParent, MexTransform3d(), W4dEntity::NOT_SOLID, MexDouble::plusInfinity())))
+    : pSkyMesh_(new W4dCustom(pParent, MexTransform3d(), W4dEntity::NOT_SOLID, MexDouble::plusInfinity()))
     , backgroundColour_(RenColour::blue())
 {
     TEST_INVARIANT;
@@ -471,7 +471,7 @@ EnvStaticSky::~EnvStaticSky()
 {
     TEST_INVARIANT;
 
-    _DELETE(pSkyMesh_);
+    delete pSkyMesh_;
 }
 
 // VIRTUAL //

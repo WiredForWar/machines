@@ -38,7 +38,7 @@ MachProductionBank::MachProductionBank(
         MachProductionIcons::width() + MachGuiBufferScrollButton::width(),
         MachProductionIcons::height());
 
-    pIcons_ = _NEW(MachProductionIcons(this, iconsArea, pFactory, pInGameScreen));
+    pIcons_ = new MachProductionIcons(this, iconsArea, pFactory, pInGameScreen);
 
     // Become an observer of the factory
     pFactory_->attach(this);
@@ -47,18 +47,18 @@ MachProductionBank::MachProductionBank(
     // Create and display a build progress indicator if required
     updateProgress();
 
-    pScrollLeft_ = _NEW(MachGuiBufferScrollButton(
+    pScrollLeft_ = new MachGuiBufferScrollButton(
         this,
         Gui::Coord(0, 0),
         pIcons_,
         MachGuiBufferScrollButton::LEFT,
-        pInGameScreen));
-    pScrollRight_ = _NEW(MachGuiBufferScrollButton(
+        pInGameScreen);
+    pScrollRight_ = new MachGuiBufferScrollButton(
         this,
         Gui::Coord(MachGuiBufferScrollButton::width() + MachProductionIcons::width(), 0),
         pIcons_,
         MachGuiBufferScrollButton::RIGHT,
-        pInGameScreen));
+        pInGameScreen);
 
     updateQueueIcons();
 

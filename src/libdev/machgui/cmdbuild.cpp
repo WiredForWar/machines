@@ -103,7 +103,7 @@ void MachGuiBuildCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiBuildCommand::clone() const
 {
-    return _NEW(MachGuiBuildCommand(&inGameScreen()));
+    return new MachGuiBuildCommand(&inGameScreen());
 }
 
 // virtual

@@ -52,17 +52,17 @@ SndWaveformId::SndWaveformId()
 }
 
 SndWaveformId::SndWaveformId(const SndWaveformId& newId)
-    : pImpl_(_NEW(SndWaveformIdImpl(*newId.pImpl_)))
+    : pImpl_(new SndWaveformIdImpl(*newId.pImpl_))
 {
 }
 
 SndWaveformId::~SndWaveformId()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 SndWaveformId::SndWaveformId(const SysPathName& pathname)
-    : pImpl_(_NEW(SndWaveformIdImpl(pathname)))
+    : pImpl_(new SndWaveformIdImpl(pathname))
 {
     // Empty
 }

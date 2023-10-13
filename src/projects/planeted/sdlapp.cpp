@@ -298,9 +298,9 @@ bool SDLApp::clientStartup()
 
     W4dSoundManager::instance().readSoundDefinitionFile("sounds/snddef64.dat");
 
-    W4dRoot* root = pRoot_ = _NEW(W4dRoot(W4dRoot::W4dRootId()));
+    W4dRoot* root = pRoot_ = new W4dRoot(W4dRoot::W4dRootId());
 
-    pDisplay_ = _NEW(RenDisplay(window()));
+    pDisplay_ = new RenDisplay(window());
 
     ErrorHandler::instance().pDisplay(pDisplay_);
     pDisplay_->buildDisplayModesList();
@@ -337,7 +337,7 @@ bool SDLApp::clientStartup()
     if (!pDevice->initialize())
         return false;
 
-    manager_ = _NEW(W4dSceneManager(std::move(pDevice), root));
+    manager_ = new W4dSceneManager(std::move(pDevice), root);
     W4dManager::instance().sceneManager(manager_);
 
     // Set the viewport boundary to the entire screen.
@@ -494,12 +494,12 @@ bool SDLApp::clientStartup()
 
 void SDLApp::clientShutdown()
 {
-    _DELETE(pEnvironment_);
+    delete pEnvironment_;
 
     DevMouse::instance().unhide();
-    _DELETE(pRoot_);
-    _DELETE(manager_);
-    _DELETE(pDisplay_);
+    delete pRoot_;
+    delete manager_;
+    delete pDisplay_;
 }
 
 // Update the display.
@@ -651,7 +651,7 @@ void SDLApp::readEnvironment(const string& planetLeafName)
     ALWAYS_ASSERT(withExt.existsAsFile(), ("Environment file doesn't exist." + withExt.filename()).c_str());
 
     // Create an environment for the sky etc
-    // pEnvironment_ = _NEW(EnvPlanetEnvironment(withExt, manager_));
+    // pEnvironment_ = new EnvPlanetEnvironment(withExt, manager_);
     // manager_->environment(pEnvironment_);
 }
 

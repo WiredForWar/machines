@@ -57,7 +57,7 @@ void ALSound::shutdown()
     {
         if ((*m))
         {
-            _DELETE((*m));
+            delete (*m);
         }
     }
     preLoadedSamples_.erase(preLoadedSamples_.begin(), preLoadedSamples_.end());

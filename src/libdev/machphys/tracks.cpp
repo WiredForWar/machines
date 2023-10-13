@@ -17,9 +17,9 @@
 PER_DEFINE_PERSISTENT(MachPhysTracks);
 
 MachPhysTracks::MachPhysTracks(MachPhysMachine* pMachine, W4dLink* pLLeg, W4dLink* pRLeg, MATHEX_SCALAR repeatsPerMeter)
-    : MachPhysLocomotionMethod(pImpl_ = _NEW(MachPhysTracksImpl(pMachine, this)))
-    , lTrack_(_NEW(MachPhysITrack(pLLeg, repeatsPerMeter)))
-    , rTrack_(_NEW(MachPhysITrack(pRLeg, repeatsPerMeter)))
+    : MachPhysLocomotionMethod(pImpl_ = new MachPhysTracksImpl(pMachine, this))
+    , lTrack_(new MachPhysITrack(pLLeg, repeatsPerMeter))
+    , rTrack_(new MachPhysITrack(pRLeg, repeatsPerMeter))
 {
     PRE(pLLeg && pRLeg);
     ASSERT(lTrack_ && rTrack_, "Out of memory?");
@@ -33,10 +33,10 @@ MachPhysTracks::MachPhysTracks(PerConstructor con)
 
 MachPhysTracks::~MachPhysTracks()
 {
-    _DELETE(lTrack_);
-    _DELETE(rTrack_);
+    delete lTrack_;
+    delete rTrack_;
     // MachPhysLocomotionMethod destructor will free it
-    //_DELETE( pImpl_ );
+    //delete pImpl_;
 }
 
 // virtual
@@ -45,7 +45,7 @@ MachPhysLocomotionMethod* MachPhysTracks::clone(MachPhysMachine* pNewMachine, co
     W4dLink* pLLeg = links[lTrack_->leg()->id()];
     W4dLink* pRLeg = links[rTrack_->leg()->id()];
 
-    return _NEW(MachPhysTracks(pNewMachine, pLLeg, pRLeg, lTrack_->repeatsPerMeter()));
+    return new MachPhysTracks(pNewMachine, pLLeg, pRLeg, lTrack_->repeatsPerMeter());
 }
 
 // virtual

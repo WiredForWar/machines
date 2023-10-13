@@ -343,18 +343,18 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
-    MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(362, 305, 532, 343),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_OK);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(362, 400, 532, 438),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn->defaultControl(true);
@@ -362,7 +362,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
     // Display system list box heading
     GuiResourceString systemHeading(IDS_MENULB_SYSTEM);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pSystemText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pSystemText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -370,11 +370,11 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(systemHeading.asString()),
             SYSTEM_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SYSTEM,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display planet list box heading
     GuiResourceString planetHeading(IDS_MENULB_PLANET);
-    MachGuiMenuText* pPlanetText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pPlanetText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -382,11 +382,11 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(planetHeading.asString()),
             PLANET_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_PLANET,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display scenario list box heading
     GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
-    MachGuiMenuText* pScenarioText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pScenarioText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -394,31 +394,31 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(scenarioHeading.asString()),
             SCENARIO_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SCENARIO,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create system list box
-    pSystemList_ = _NEW(MachGuiSystemPlanetScenarioListBox(
+    pSystemList_ = new MachGuiSystemPlanetScenarioListBox(
         pStartupScreens,
         Gui::Box(LB_MINX, pSystemText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SYSTEM_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     // Create planet list box
-    pPlanetList_ = _NEW(MachGuiSystemPlanetScenarioListBox(
+    pPlanetList_ = new MachGuiSystemPlanetScenarioListBox(
         pStartupScreens,
         Gui::Box(LB_MINX, pPlanetText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, PLANET_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     // Create scenario list box
-    pScenarioList_ = _NEW(MachGuiSystemPlanetScenarioListBox(
+    pScenarioList_ = new MachGuiSystemPlanetScenarioListBox(
         pStartupScreens,
         Gui::Box(LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SCENARIO_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
-    pTextInfo_ = _NEW(MachGuiScrollableText(pStartupScreens, Gui::Box(338, 155, 556, 260)));
+    pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(338, 155, 556, 260));
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(557, 155), 104, pTextInfo_);
 
 #ifdef DEMO
@@ -488,7 +488,7 @@ void MachGuiCtxScenario::updateSystemList()
         )
         {
             MachGuiSystemListBoxItem* pItem
-                = _NEW(MachGuiSystemListBoxItem(pStartupScreens_, pSystemList_, LB_MAXX - LB_MINX, system, this));
+                = new MachGuiSystemListBoxItem(pStartupScreens_, pSystemList_, LB_MAXX - LB_MINX, system, this);
             // Store first item in list
             if (not pFirstItem)
             {
@@ -580,7 +580,7 @@ void MachGuiCtxScenario::updatePlanetList(MachGuiDbSystem& system)
         )
         {
             MachGuiPlanetListBoxItem* pItem
-                = _NEW(MachGuiPlanetListBoxItem(pStartupScreens_, pPlanetList_, LB_MAXX - LB_MINX, planet, this));
+                = new MachGuiPlanetListBoxItem(pStartupScreens_, pPlanetList_, LB_MAXX - LB_MINX, planet, this);
 
             // Store first item in list
             if (not pFirstItem)
@@ -646,7 +646,7 @@ void MachGuiCtxScenario::updateScenarioList(MachGuiDbPlanet& planet)
         )
         {
             MachGuiScenarioListBoxItem* pItem
-                = _NEW(MachGuiScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this));
+                = new MachGuiScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this);
 
             // Store first item in list
             if (not pFirstItem)
@@ -686,7 +686,7 @@ void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName ani
 {
     if (pImage_)
     {
-        _DELETE(pImage_);
+        delete pImage_;
         pImage_ = nullptr;
     }
     pStartupScreens_->clearAllSmackerAnimations();
@@ -727,10 +727,10 @@ void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName ani
             // Construct a smacker player
             //          HWND targetWindow = RenDevice::current()->display()->window();
 
-            //          AniSmacker* pSmackerAnimation = _NEW( AniSmacker( animation, targetWindow, 342 +
-            //          pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() ) );
-            // AniSmacker* pSmackerAnimation = _NEW( AniSmacker( animation, 342 + pStartupScreens_->xMenuOffset(), 32 +
-            // pStartupScreens_->yMenuOffset() ) );
+            //          AniSmacker* pSmackerAnimation = new AniSmacker( animation, targetWindow, 342 +
+            //          pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() );
+            // AniSmacker* pSmackerAnimation = new AniSmacker( animation, 342 + pStartupScreens_->xMenuOffset(), 32 +
+            // pStartupScreens_->yMenuOffset() );
             const auto& topLeft = getBackdropTopLeft();
             AniSmacker* pSmackerAnimation = new AniSmackerRegular(animation, 342 + topLeft.second, 32 + topLeft.first);
             pStartupScreens_->addSmackerAnimation(pSmackerAnimation);
@@ -738,7 +738,7 @@ void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName ani
         else if (animation.extension() == "bmp")
         {
             // File is a bitmap
-            pImage_ = _NEW(GuiImage(pStartupScreens_, Gui::Coord(342, 32), Gui::bitmap(animation)));
+            pImage_ = new GuiImage(pStartupScreens_, Gui::Coord(342, 32), Gui::bitmap(animation));
         }
     }
     pStartupScreens_->playSmackerAnimations();

@@ -66,7 +66,7 @@ MachLogMachineMotionSequencer::MachLogMachineMotionSequencer(
     const MexPoint2d& /*initialPosition*/,
     MATHEX_SCALAR highClearance,
     MATHEX_SCALAR lowClearance)
-    : pImpl_(_NEW(MachLogMachineMotionSequencerData(pLogMobile->id())))
+    : pImpl_(new MachLogMachineMotionSequencerData(pLogMobile->id()))
 {
     pImpl_->pLogMobile_ = pLogMobile;
 
@@ -122,7 +122,7 @@ MachLogMachineMotionSequencer::~MachLogMachineMotionSequencer()
         //  The reason for this apparantly unnecessary set of braces
         //  is to ensure that the MachLogMotionSequencerEntryExit
         //  object (created by the LOG_ENTER macro) is destroyed
-        //  before the _DELETE( pImpl_ ) call.
+        //  before the delete pImpl_ ) call.
         //  If it isn't destroyed, it will try and write to the stream
         //  that has just been destroyed because the pimpl has been
         //  destroyed.
@@ -157,7 +157,7 @@ MachLogMachineMotionSequencer::~MachLogMachineMotionSequencer()
         ASSERT(pConvoy_ == nullptr, "");
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -854,7 +854,7 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
     MexPoint2d nearPoint(location2d.x() + 0.01, location2d.y());
 
     // Construct a new polygon surrounding this position
-    MexConvexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(location2d, nearPoint, useClearance_));
+    MexConvexPolygon2d* pPolygon = new MexConvexPolygon2d(location2d, nearPoint, useClearance_);
     std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
@@ -902,7 +902,7 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
     LOG_INSPECT(pImpl_->restingChunkExists_);
 
     POST(pImpl_->restingChunkExists_);
-    // POST( machineHasMotionChunk() ); //TODO this seems to be incorrect, actors are added to the map id->ptr
+    // POST( machineHasMotionChunk(); //TODO this seems to be incorrect, actors are added to the map id->ptr
     // collection later
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -931,7 +931,7 @@ void MachLogMachineMotionSequencer::addRestingObstacleWithoutEcho(const MexTrans
     MexPoint2d nearPoint(location2d.x() + 0.01, location2d.y());
 
     // Construct a new polygon surrounding this position
-    MexConvexPolygon2d* pPolygon = _NEW(MexConvexPolygon2d(location2d, nearPoint, useClearance_));
+    MexConvexPolygon2d* pPolygon = new MexConvexPolygon2d(location2d, nearPoint, useClearance_);
     std::unique_ptr<MexPolygon2d> polygonUPtr(pPolygon);
 
     // Add this to the config space
@@ -2350,7 +2350,7 @@ void MachLogMachineMotionSequencer::removeFromConvoy()
 
         // Delete the convoy if it no longer has any members
         if (pConvoy_->sequencers().size() == 0)
-            _DELETE(pConvoy_);
+            delete pConvoy_;
 
         pConvoy_ = nullptr;
     }
@@ -2378,7 +2378,7 @@ void MachLogMachineMotionSequencer::follow(MachLogMobile* pLeadMobile, const Mex
     {
         // Ensure the lead machine has a convoy
         if (pLeadConvoy == nullptr)
-            leadSequencer.pConvoy() = pLeadConvoy = _NEW(MachLogMachineConvoy(&leadSequencer));
+            leadSequencer.pConvoy() = pLeadConvoy = new MachLogMachineConvoy(&leadSequencer);
 
         // Add this machine to the convoy
         addToConvoy(pLeadConvoy);
@@ -4131,7 +4131,7 @@ void MachLogMachineMotionSequencer::mergeConvoys(MachLogMachineConvoy* pConvoy)
         }
 
         // Delete the old convoy
-        _DELETE(pConvoy);
+        delete pConvoy;
     }
 }
 
@@ -4176,7 +4176,7 @@ void MachLogMachineMotionSequencer::updateConvoy(MachLogMachineConvoy* pOldConvo
             }
             else
             {
-                pNewConvoy = _NEW(MachLogMachineConvoy(pStartSequencer));
+                pNewConvoy = new MachLogMachineConvoy(pStartSequencer);
             }
 
             // Ensure start machine has convoy set
@@ -4195,7 +4195,7 @@ void MachLogMachineMotionSequencer::updateConvoy(MachLogMachineConvoy* pOldConvo
     }
 
     // Finally delete the old convoy. None of the machines will be a member of it any longer.
-    _DELETE(pOldConvoy);
+    delete pOldConvoy;
 }
 
 MATHEX_SCALAR MachLogMachineMotionSequencer::scalarSpeedNow() const

@@ -25,34 +25,34 @@ class SimConditionsManagerImpl
     {
         while (actions_.size() > 0)
         {
-            _DELETE(actions_.front());
+            delete actions_.front();
             actions_.erase(actions_.begin());
         }
     }
 };
 
 SimConditionsManager::SimConditionsManager()
-    : pImpl_(_NEW(SimConditionsManagerImpl))
+    : pImpl_(new SimConditionsManagerImpl)
 {
 }
 
 SimConditionsManager::~SimConditionsManager()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void SimConditionsManager::loadGame()
 {
     if (pImpl_)
-        _DELETE(pImpl_);
-    pImpl_ = _NEW(SimConditionsManagerImpl);
+        delete pImpl_;
+    pImpl_ = new SimConditionsManagerImpl;
 }
 
 void SimConditionsManager::unloadGame()
 {
     if (pImpl_)
-        _DELETE(pImpl_);
-    pImpl_ = _NEW(SimConditionsManagerImpl);
+        delete pImpl_;
+    pImpl_ = new SimConditionsManagerImpl;
 }
 
 void SimConditionsManager::update()
@@ -79,7 +79,7 @@ void SimConditionsManager::update()
             {
                 if (pAction->nextCallBackTime() < now and pAction->checkConditionAndDoAction())
                 {
-                    _DELETE(pAction);
+                    delete pAction;
                     actions.erase(actions.begin() + i);
                     actionDeleted = true;
                 }

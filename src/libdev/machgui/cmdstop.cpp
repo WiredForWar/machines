@@ -101,7 +101,7 @@ bool MachGuiStopCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiStopCommand::clone() const
 {
-    return _NEW(MachGuiStopCommand(&inGameScreen()));
+    return new MachGuiStopCommand(&inGameScreen());
 }
 
 // virtual

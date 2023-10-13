@@ -44,7 +44,7 @@ MachPhysWeapon* MachPhysArmourer::newWeapon(
         case MachPhys::PLASMA_RIFLE:
         case MachPhys::PLASMA_CANNON1:
         case MachPhys::PLASMA_CANNON2:
-            pWeapon = _NEW(MachPhysPlasmaWeapon(pParent, localTransform, type, mounting));
+            pWeapon = new MachPhysPlasmaWeapon(pParent, localTransform, type, mounting);
             break;
 
         case MachPhys::MULTI_LAUNCHER1:
@@ -54,76 +54,76 @@ MachPhysWeapon* MachPhysArmourer::newWeapon(
         case MachPhys::MULTI_LAUNCHER5:
         case MachPhys::MULTI_LAUNCHER6:
         case MachPhys::MULTI_LAUNCHER7:
-            pWeapon = _NEW(MachPhysMultiLauncher(pParent, localTransform, type, mounting));
+            pWeapon = new MachPhysMultiLauncher(pParent, localTransform, type, mounting);
             break;
 
         case MachPhys::ELECTRIC_CHARGE:
-            pWeapon = _NEW(MachPhysElectroCharger(pParent, localTransform, mounting));
+            pWeapon = new MachPhysElectroCharger(pParent, localTransform, mounting);
             break;
 
         case MachPhys::FLAME_THROWER1:
         case MachPhys::FLAME_THROWER2:
-            pWeapon = _NEW(MachPhysFlameThrower(pParent, localTransform, type, mounting));
+            pWeapon = new MachPhysFlameThrower(pParent, localTransform, type, mounting);
             break;
 
         case MachPhys::BOLTER:
         case MachPhys::AUTO_CANNON:
         case MachPhys::HEAVY_BOLTER1:
         case MachPhys::HEAVY_BOLTER2:
-            pWeapon = _NEW(MachPhysBolter(pParent, localTransform, type, mounting));
+            pWeapon = new MachPhysBolter(pParent, localTransform, type, mounting);
             break;
 
         case MachPhys::PULSE_RIFLE:
-            pWeapon = _NEW(MachPhysPulseRifle(pParent, localTransform, mounting));
+            pWeapon = new MachPhysPulseRifle(pParent, localTransform, mounting);
             break;
 
         case MachPhys::PULSE_CANNON:
-            pWeapon = _NEW(MachPhysPulseCannon(pParent, localTransform, mounting));
+            pWeapon = new MachPhysPulseCannon(pParent, localTransform, mounting);
             break;
 
         case MachPhys::SUPERCHARGE_ADVANCED:
         case MachPhys::SUPERCHARGE_SUPER:
-            pWeapon = _NEW(MachPhysSuperCharger(pParent, localTransform, type, mounting));
+            pWeapon = new MachPhysSuperCharger(pParent, localTransform, type, mounting);
             break;
 
         case MachPhys::ION_ORBITAL_CANNON:
-            pWeapon = _NEW(MachPhysIonWeapon(pParent, localTransform, type, mounting));
+            pWeapon = new MachPhysIonWeapon(pParent, localTransform, type, mounting);
             break;
 
         case MachPhys::VORTEX:
-            pWeapon = _NEW(MachPhysVortexWeapon(pParent, localTransform, mounting));
+            pWeapon = new MachPhysVortexWeapon(pParent, localTransform, mounting);
             break;
 
         case MachPhys::ORB_OF_TREACHERY:
-            pWeapon = _NEW(MachPhysTreacheryWeapon(pParent, localTransform, mounting));
+            pWeapon = new MachPhysTreacheryWeapon(pParent, localTransform, mounting);
             break;
 
         case MachPhys::VIRUS:
-            pWeapon = _NEW(MachPhysVirusSpreader(pParent, localTransform, mounting));
+            pWeapon = new MachPhysVirusSpreader(pParent, localTransform, mounting);
             break;
 
         case MachPhys::LARGE_MISSILE:
-            pWeapon = _NEW(MachPhysLargeMissile(pParent, localTransform, mounting));
+            pWeapon = new MachPhysLargeMissile(pParent, localTransform, mounting);
             break;
 
         case MachPhys::NUCLEAR_MISSILE:
-            pWeapon = _NEW(MachPhysNuclearWeapon(pParent, localTransform, mounting));
+            pWeapon = new MachPhysNuclearWeapon(pParent, localTransform, mounting);
             break;
 
         case MachPhys::GORILLA_PUNCH:
-            pWeapon = _NEW(MachPhysPunchWeapon(pParent, localTransform));
+            pWeapon = new MachPhysPunchWeapon(pParent, localTransform);
             break;
 
         case MachPhys::BEE_BOMB:
-            pWeapon = _NEW(MachPhysBeeBomber(pParent, localTransform));
+            pWeapon = new MachPhysBeeBomber(pParent, localTransform);
             break;
 
         case MachPhys::WASP_LIGHT_STING:
-            pWeapon = _NEW(MachPhysLightStingWeapon(pParent, localTransform));
+            pWeapon = new MachPhysLightStingWeapon(pParent, localTransform);
             break;
 
         case MachPhys::WASP_METAL_STING:
-            pWeapon = _NEW(MachPhysMetalStingWeapon(pParent, localTransform));
+            pWeapon = new MachPhysMetalStingWeapon(pParent, localTransform);
             break;
 
             DEFAULT_ASSERT_BAD_CASE(type);

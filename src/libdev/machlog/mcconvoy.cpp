@@ -18,7 +18,7 @@
 #endif
 
 MachLogMachineConvoy::MachLogMachineConvoy(MachLogMachineMotionSequencer* pSequencer)
-    : pImpl_(_NEW(MachLogMachineConvoyImpl()))
+    : pImpl_(new MachLogMachineConvoyImpl())
 {
     CB_MachLogMachineConvoy_DEPIMPL();
 
@@ -39,7 +39,7 @@ MachLogMachineConvoy::~MachLogMachineConvoy()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogMachineConvoy::CLASS_INVARIANT

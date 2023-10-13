@@ -47,7 +47,7 @@ MachPhysWaterfall::MachPhysWaterfall(W4dEntity* pParent, const MexTransform3d& l
     const PhysAbsoluteTime now = SimManager::instance().currentTime();
     const PhysRelativeTime oneYear = 31536000;
 
-    W4dUVTranslation* pUVTranslation = _NEW(W4dUVTranslation(oneYear, W4dLOD(1), MexVec2(0, 1.6), MexVec2(0, 0)));
+    W4dUVTranslation* pUVTranslation = new W4dUVTranslation(oneYear, W4dLOD(1), MexVec2(0, 1.6), MexVec2(0, 0));
 
     // static const RenTexture watFallTex = RenTexManager::instance().createTexture( "SEMITR_B.BMP" );
     // pUVTranslation->setFilterTexture(watFallTex);

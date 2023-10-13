@@ -71,8 +71,8 @@ PhysRelativeTime MachLogRepairOperation::interactWithBuilding()
 
     if (hpsAdded > 0)
     {
-        // subOperation( pConstructorGuy, _NEW( MachLogConstructAnimation( pConstructorGuy, pDamagedConstruction,
-        // constructRate ) ) );
+        // subOperation( pConstructorGuy, new MachLogConstructAnimation( pConstructorGuy, pDamagedConstruction,
+        // constructRate ) );
         pConstructorGuy->constructing(true, pDamagedConstruction->id());
 
         const MachPhysObjectData& objData = pDamagedConstruction->objectData();

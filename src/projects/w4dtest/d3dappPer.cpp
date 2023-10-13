@@ -96,7 +96,7 @@ static void usage()
 
 void D3DApp::pickDisplayMode(bool windowMode, int width, int height)
 {
-    display_ = _NEW(RenDisplay(window()));
+    display_ = new RenDisplay(window());
 
     if (!windowMode)
     {
@@ -157,7 +157,7 @@ bool D3DApp::clientStartup()
     //  in code. We need a root before we start the persistence,
     //  however the persistence will also set up its own root.
 
-    // W4dRoot*    pRoot = _NEW(W4dRoot( W4dRoot::W4dRootId() ));
+    // W4dRoot*    pRoot = new W4dRoot( W4dRoot::W4dRootId() );
     // root_  = pRoot;
 
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
@@ -169,11 +169,11 @@ bool D3DApp::clientStartup()
 
     RenTexManager::instance().searchList(searchList);
 
-    W4dRoot* pRoot = _NEW(W4dRoot(W4dRoot::W4dRootId()));
+    W4dRoot* pRoot = new W4dRoot(W4dRoot::W4dRootId());
     root_ = pRoot;
 
     pickDisplayMode(windowMode, modeW, modeH);
-    manager_ = _NEW(W4dSceneManager(display_, root_));
+    manager_ = new W4dSceneManager(display_, root_);
     device_ = manager_->pDevice();
     W4dManager::instance().sceneManager(manager_);
 

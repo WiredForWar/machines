@@ -312,7 +312,7 @@ void PersistenceImplementationRead::startRead()
         clear();
         PER_READ_INDENT_STREAM(
             "------- Start read ------------------------------------------------------" << std::endl);
-        pIdMapAllocator_ = _NEW(BasePoolAllocator(1000000, 1000000));
+        pIdMapAllocator_ = new BasePoolAllocator(1000000, 1000000);
     }
 
     ++inputCount_;
@@ -335,7 +335,7 @@ void PersistenceImplementationRead::finishRead()
         fixupOutstandingPointers();
         clear();
 
-        _DELETE(pIdMapAllocator_);
+        delete pIdMapAllocator_;
         pIdMapAllocator_ = nullptr;
 
         PER_READ_INDENT_STREAM(

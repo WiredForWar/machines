@@ -107,7 +107,7 @@ MachPhysDebris::MachPhysDebris(
         W4dTransform3d tx;
         tx.translate(unitPosition);
         tx.rotate(rotationAngle);
-        debrisUnits_.push_back(_NEW(MachPhysDebrisUnit(this, tx, localDebrisBoundary, burningDuration)));
+        debrisUnits_.push_back(new MachPhysDebrisUnit(this, tx, localDebrisBoundary, burningDuration));
     }
 
     TEST_INVARIANT;

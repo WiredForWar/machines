@@ -74,11 +74,11 @@ MachPhysMissile::MachPhysMissile(
 //  only constructor that actually builds a missile from scratch
 MachPhysMissile::MachPhysMissile(W4dEntity* pParent, size_t level)
     : MachPhysTrailedProjectile(pParent, W4dTransform3d(), level)
-//  pImpl_( _NEW( MachPhysMissileImpl( level ) ) )
+//  pImpl_( new MachPhysMissileImpl( level ) ) )
 {
     readCompositeFile(compositeFileName(level));
 
-    // CB_DEPIMPL(W4dLink*, pFlame_ );
+    // CB_DEPIMPL(W4dLink*, pFlame_;
 
     if (!findLink("flame", &pFlame_))
         pFlame_ = nullptr;
@@ -176,7 +176,7 @@ PhysRelativeTime MachPhysMissile::doBeDestroyedAt(const PhysAbsoluteTime& time, 
     PhysRelativeTime duration = 2.0;
 
     //  Make the missile disappear
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(false));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(false);
     W4dEntityPlan& entityPlan = entityPlanForEdit();
     entityPlan.visibilityPlan(visibilityPlanPtr, time);
 
@@ -290,7 +290,7 @@ PhysRelativeTime MachPhysMissile::doBeDestroyedAt(const PhysAbsoluteTime& time, 
         else
             explosion(pParent(), explosionXform, time, duration, liteCol, missileStrength);
 
-        W4dGeneric* pExplosionSite = _NEW(W4dGeneric(pParent(), explosionXform));
+        W4dGeneric* pExplosionSite = new W4dGeneric(pParent(), explosionXform);
 
         PhysAbsoluteTime flightDuration = destructionTime_ - SimManager::instance().currentTime();
         W4dSoundManager::instance().play(pExplosionSite, explosionId, destructionTime_, 1);
@@ -346,7 +346,7 @@ PhysRelativeTime MachPhysMissile::beLaunched(
     if (data.trailOn() and MachPhysComplexityManager::instance().vapourTrailsEnabled())
     {
 
-        pVapourTrail_ = _NEW(MachPhysVapourTrail(pParent(), 16, 1.5, level_));
+        pVapourTrail_ = new MachPhysVapourTrail(pParent(), 16, 1.5, level_);
     }
 
     // Initiate the motion using standard superclass function
@@ -410,7 +410,7 @@ PhysRelativeTime MachPhysMissile::beLaunched(
         PhysRelativeTime duration = flyDuration + dropPath.length() / speed;
 
         // Construct and apply the transform plan
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startTransform, topTransform, climbDuration));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startTransform, topTransform, climbDuration);
 
         pPlan->add(dropTransform, flyDuration);
         pPlan->add(endTransform, duration);
@@ -431,7 +431,7 @@ PhysRelativeTime MachPhysMissile::beLaunched(
 
         // Construct and apply a visibility plan to switch it on at startTime
         // and off at end time
-        W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+        W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
         //      visibilityPlanPtr->add( false, climbDuration );
         //      visibilityPlanPtr->add( true, flyDuration );
         visibilityPlanPtr->add(false, duration);

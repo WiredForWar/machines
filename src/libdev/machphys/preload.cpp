@@ -147,161 +147,161 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     doLoadingProgressUpdate(doUpdate);
     W4dGenericComposite* pSharedWheels
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/wheel/xwhl.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/wheel/xwhl.cdf"));
 
     W4dGenericComposite* pSharedTracksA
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeA/xtra.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeA/xtra.cdf"));
 
     W4dGenericComposite* pSharedTracksB
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeB/xtrb.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeB/xtrb.cdf"));
 
     W4dGenericComposite* pSharedTracksF
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeF/xtrf.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeF/xtrf.cdf"));
 
     W4dGenericComposite* pSharedTracksG
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeG/xtrg.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeG/xtrg.cdf"));
 
     W4dGenericComposite* pSharedTracksH
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeH/xtrh.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeH/xtrh.cdf"));
 
     W4dGenericComposite* pSharedTracksI
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeI/xtri.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeI/xtri.cdf"));
 
     W4dGenericComposite* pSharedTracksJ
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeJ/xtrj.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeJ/xtrj.cdf"));
 
     W4dGenericComposite* pSharedTracksK
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeK/xtrk.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeK/xtrk.cdf"));
 
     W4dGenericComposite* pSharedFace
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/faceplat/fplat.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/faceplat/fplat.cdf"));
 
     W4dGenericComposite* pSharedHoverG
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/hover/typeG/xhvg.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/hover/typeG/xhvg.cdf"));
 
     W4dGenericComposite* pSharedHoverJ
-        = _NEW(W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/hover/typeJ/xhvj.cdf")));
+        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/hover/typeJ/xhvj.cdf"));
 
     HAL_STREAM("MachPreload::ADMINISTRATORS\n");
     doLoadingProgressUpdate(doUpdate);
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysAdministrator(
+        pM = new MachPhysAdministrator(
             &tempRoot,
             MexTransform3d(),
             MachPhys::BOSS,
             1,
             1,
             MachPhys::RED,
-            MachPhys::T_WASP_LIGHT_STING));
-        _DELETE(pM);
+            MachPhys::T_WASP_LIGHT_STING);
+        delete pM;
 
-        pM = _NEW(MachPhysAdministrator(
+        pM = new MachPhysAdministrator(
             &tempRoot,
             MexTransform3d(),
             MachPhys::BOSS,
             2,
             1,
             MachPhys::RED,
-            MachPhys::T_BEE_BOMB));
-        _DELETE(pM);
+            MachPhys::T_BEE_BOMB);
+        delete pM;
 
         doLoadingProgressUpdate(doUpdate);
 
         HAL_STREAM("MachPreload::ADMINISTRATORS::OVERSEER\n");
-        pM = _NEW(MachPhysAdministrator(
+        pM = new MachPhysAdministrator(
             &tempRoot,
             MexTransform3d(),
             MachPhys::OVERSEER,
             2,
             1,
             MachPhys::RED,
-            MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED));
-        _DELETE(pM);
+            MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED);
+        delete pM;
     }
-    pM = _NEW(MachPhysAdministrator(
+    pM = new MachPhysAdministrator(
         &tempRoot,
         MexTransform3d(),
         MachPhys::OVERSEER,
         3,
         1,
         MachPhys::RED,
-        MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED));
-    _DELETE(pM);
+        MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
     if (not getenv("cb_builddemo"))
     {
         HAL_STREAM("MachPreload::ADMINISTRATORS::COMMANDER\n");
-        pM = _NEW(MachPhysAdministrator(
+        pM = new MachPhysAdministrator(
             &tempRoot,
             MexTransform3d(),
             MachPhys::COMMANDER,
             4,
             1,
             MachPhys::RED,
-            MachPhys::LR_PULSE_CANNON_X2));
-        _DELETE(pM);
+            MachPhys::LR_PULSE_CANNON_X2);
+        delete pM;
 
-        pM = _NEW(MachPhysAdministrator(
+        pM = new MachPhysAdministrator(
             &tempRoot,
             MexTransform3d(),
             MachPhys::COMMANDER,
             5,
             1,
             MachPhys::RED,
-            MachPhys::LR_PULSE_CANNON_X2));
-        _DELETE(pM);
+            MachPhys::LR_PULSE_CANNON_X2);
+        delete pM;
         doLoadingProgressUpdate(doUpdate);
     }
     HAL_STREAM("MachPreload::AGGRESSORS::GRUNT\n");
 
-    pM = _NEW(MachPhysAggressor(&tempRoot, MexTransform3d(), MachPhys::GRUNT, 1, 1, MachPhys::RED, MachPhys::R_BOLTER));
-    _DELETE(pM);
+    pM = new MachPhysAggressor(&tempRoot, MexTransform3d(), MachPhys::GRUNT, 1, 1, MachPhys::RED, MachPhys::R_BOLTER);
+    delete pM;
 
-    pM = _NEW(MachPhysAggressor(
+    pM = new MachPhysAggressor(
         &tempRoot,
         MexTransform3d(),
         MachPhys::GRUNT,
         2,
         1,
         MachPhys::RED,
-        MachPhys::L_ELECTRIC_CHARGE));
-    _DELETE(pM);
+        MachPhys::L_ELECTRIC_CHARGE);
+    delete pM;
 
-    pM = _NEW(MachPhysAggressor(
+    pM = new MachPhysAggressor(
         &tempRoot,
         MexTransform3d(),
         MachPhys::GRUNT,
         3,
         1,
         MachPhys::RED,
-        MachPhys::LR_HEAVY_BOLTER1_X2));
-    _DELETE(pM);
+        MachPhys::LR_HEAVY_BOLTER1_X2);
+    delete pM;
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::AGGRESSORS::ASSASSIN\n");
-    pM = _NEW(MachPhysAggressor(
+    pM = new MachPhysAggressor(
         &tempRoot,
         MexTransform3d(),
         MachPhys::ASSASSIN,
         2,
         1,
         MachPhys::RED,
-        MachPhys::L_AUTO_CANNON));
-    _DELETE(pM);
+        MachPhys::L_AUTO_CANNON);
+    delete pM;
 
-    pM = _NEW(MachPhysAggressor(
+    pM = new MachPhysAggressor(
         &tempRoot,
         MexTransform3d(),
         MachPhys::ASSASSIN,
         3,
         1,
         MachPhys::RED,
-        MachPhys::LR_PLASMA_RIFLE_X2));
-    _DELETE(pM);
+        MachPhys::LR_PLASMA_RIFLE_X2);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
@@ -309,206 +309,206 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysAggressor(
+        pM = new MachPhysAggressor(
             &tempRoot,
             MexTransform3d(),
             MachPhys::BALLISTA,
             3,
             1,
             MachPhys::RED,
-            MachPhys::T_MULTI_LAUNCHER1));
-        _DELETE(pM);
+            MachPhys::T_MULTI_LAUNCHER1);
+        delete pM;
 
-        pM = _NEW(MachPhysAggressor(
+        pM = new MachPhysAggressor(
             &tempRoot,
             MexTransform3d(),
             MachPhys::BALLISTA,
             3,
             1,
             MachPhys::RED,
-            MachPhys::T_VORTEX));
-        _DELETE(pM);
+            MachPhys::T_VORTEX);
+        delete pM;
 
         doLoadingProgressUpdate(doUpdate);
 
-        pM = _NEW(MachPhysAggressor(
+        pM = new MachPhysAggressor(
             &tempRoot,
             MexTransform3d(),
             MachPhys::BALLISTA,
             4,
             1,
             MachPhys::RED,
-            MachPhys::LR_MULTI_LAUNCHER2_X2));
-        _DELETE(pM);
+            MachPhys::LR_MULTI_LAUNCHER2_X2);
+        delete pM;
     }
     HAL_STREAM("MachPreload::AGGRESSORS::ASSASSIN::KNIGHT\n");
-    pM = _NEW(MachPhysAggressor(
+    pM = new MachPhysAggressor(
         &tempRoot,
         MexTransform3d(),
         MachPhys::KNIGHT,
         3,
         1,
         MachPhys::RED,
-        MachPhys::LR_PLASMA_CANNON1_X2));
-    _DELETE(pM);
+        MachPhys::LR_PLASMA_CANNON1_X2);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysAggressor(
+        pM = new MachPhysAggressor(
             &tempRoot,
             MexTransform3d(),
             MachPhys::KNIGHT,
             4,
             1,
             MachPhys::RED,
-            MachPhys::LR_PLASMA_CANNON2_X2));
-        _DELETE(pM);
+            MachPhys::LR_PLASMA_CANNON2_X2);
+        delete pM;
 
-        pM = _NEW(MachPhysAggressor(
+        pM = new MachPhysAggressor(
             &tempRoot,
             MexTransform3d(),
             MachPhys::KNIGHT,
             5,
             1,
             MachPhys::RED,
-            MachPhys::LRT_PLASMA_CANNON2_X3));
-        _DELETE(pM);
+            MachPhys::LRT_PLASMA_CANNON2_X3);
+        delete pM;
     }
 
     doLoadingProgressUpdate(doUpdate);
 
-    pM = _NEW(MachPhysAggressor(
+    pM = new MachPhysAggressor(
         &tempRoot,
         MexTransform3d(),
         MachPhys::NINJA,
         5,
         1,
         MachPhys::RED,
-        MachPhys::LR_MULTI_LAUNCHER7_X2));
-    _DELETE(pM);
+        MachPhys::LR_MULTI_LAUNCHER7_X2);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::GEO_LOCATORS\n");
 
-    pM = _NEW(MachPhysGeoLocator(&tempRoot, MexTransform3d(), 1, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysGeoLocator(&tempRoot, MexTransform3d(), 1, 1, MachPhys::RED);
+    delete pM;
 
-    pM = _NEW(MachPhysGeoLocator(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysGeoLocator(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED);
+    delete pM;
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysGeoLocator(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysGeoLocator(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED);
+        delete pM;
     }
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::SPY_LOCATORS\n");
 
-    pM = _NEW(MachPhysSpyLocator(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysSpyLocator(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED);
+    delete pM;
 
-    pM = _NEW(MachPhysSpyLocator(&tempRoot, MexTransform3d(), 5, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysSpyLocator(&tempRoot, MexTransform3d(), 5, 1, MachPhys::RED);
+    delete pM;
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::RESOURCE_CARRIERS\n");
 
-    pM = _NEW(MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 1, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 1, 1, MachPhys::RED);
+    delete pM;
 
-    pM = _NEW(MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED);
+    delete pM;
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED);
+        delete pM;
 
-        pM = _NEW(MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 4, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 4, 1, MachPhys::RED);
+        delete pM;
 
-        pM = _NEW(MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 5, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 5, 1, MachPhys::RED);
+        delete pM;
     }
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::APC\n");
 
-    pM = _NEW(MachPhysAPC(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysAPC(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED);
+    delete pM;
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysAPC(&tempRoot, MexTransform3d(), 4, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysAPC(&tempRoot, MexTransform3d(), 4, 1, MachPhys::RED);
+        delete pM;
 
-        pM = _NEW(MachPhysAPC(&tempRoot, MexTransform3d(), 5, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysAPC(&tempRoot, MexTransform3d(), 5, 1, MachPhys::RED);
+        delete pM;
     }
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::TECHNICIANS\n");
 
-    pM = _NEW(MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::LAB_TECH, 2, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::LAB_TECH, 2, 1, MachPhys::RED);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
-    pM = _NEW(MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::TECH_BOY, 3, 3, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::TECH_BOY, 3, 3, MachPhys::RED);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::BRAIN_BOX, 5, 5, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::BRAIN_BOX, 5, 5, MachPhys::RED);
+        delete pM;
     }
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::CONSTRUCTORS\n");
 
-    pM = _NEW(MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::DOZER, 1, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::DOZER, 1, 1, MachPhys::RED);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
-    pM = _NEW(MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BUILDER, 3, 1, MachPhys::RED));
-    _DELETE(pM);
+    pM = new MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BUILDER, 3, 1, MachPhys::RED);
+    delete pM;
 
     doLoadingProgressUpdate(doUpdate);
 
     if (not getenv("cb_builddemo"))
     {
-        pM = _NEW(MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BEHEMOTH, 4, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BEHEMOTH, 4, 1, MachPhys::RED);
+        delete pM;
 
-        pM = _NEW(MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BEHEMOTH, 5, 1, MachPhys::RED));
-        _DELETE(pM);
+        pM = new MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BEHEMOTH, 5, 1, MachPhys::RED);
+        delete pM;
     }
 
     doLoadingProgressUpdate(doUpdate);
 
-    _DELETE(pSharedWheels);
-    _DELETE(pSharedTracksA);
-    _DELETE(pSharedTracksB);
-    _DELETE(pSharedTracksF);
-    _DELETE(pSharedTracksG);
-    _DELETE(pSharedTracksH);
-    _DELETE(pSharedTracksI);
-    _DELETE(pSharedTracksJ);
-    _DELETE(pSharedTracksK);
-    _DELETE(pSharedFace);
-    _DELETE(pSharedHoverG);
-    _DELETE(pSharedHoverJ);
+    delete pSharedWheels;
+    delete pSharedTracksA;
+    delete pSharedTracksB;
+    delete pSharedTracksF;
+    delete pSharedTracksG;
+    delete pSharedTracksH;
+    delete pSharedTracksI;
+    delete pSharedTracksJ;
+    delete pSharedTracksK;
+    delete pSharedFace;
+    delete pSharedHoverG;
+    delete pSharedHoverJ;
 
     doLoadingProgressUpdate(doUpdate);
 
@@ -525,204 +525,204 @@ void MachPhysPreload::preloadConstructions(MachPhysPreload::DoLoadingProgressUpd
 
     HAL_STREAM("MachPreload::POD\n");
 
-    pC = _NEW(MachPhysPod(&tempRoot, MexTransform3d(), 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysPod(&tempRoot, MexTransform3d(), 1, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::HARDWARE_LAB\n");
 
-    pC = _NEW(MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_CIVILIAN, 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_CIVILIAN, 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_CIVILIAN, 3, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_CIVILIAN, 3, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
-    pC = _NEW(MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_MILITARY, 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_MILITARY, 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_MILITARY, 3, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysHardwareLab(&tempRoot, MexTransform3d(), MachPhys::LAB_MILITARY, 3, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::SMELTER\n");
 
-    pC = _NEW(MachPhysSmelter(&tempRoot, MexTransform3d(), 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysSmelter(&tempRoot, MexTransform3d(), 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysSmelter(&tempRoot, MexTransform3d(), 3, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysSmelter(&tempRoot, MexTransform3d(), 3, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::FACTORY\n");
 
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::CIVILIAN, 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::CIVILIAN, 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::CIVILIAN, 3, MachPhys::RED));
-    _DELETE(pC);
-
-    doLoadingProgressUpdate(doUpdate);
-
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::CIVILIAN, 5, MachPhys::RED));
-    _DELETE(pC);
-
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::CIVILIAN, 3, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 3, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::CIVILIAN, 5, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 4, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 5, MachPhys::RED));
-    _DELETE(pC);
+    doLoadingProgressUpdate(doUpdate);
+
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 3, MachPhys::RED);
+    delete pC;
+
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 4, MachPhys::RED);
+    delete pC;
+
+    pC = new MachPhysFactory(&tempRoot, MexTransform3d(), MachPhys::MILITARY, 5, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::MISSILE_EMPLACEMENTS\n");
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::TURRET,
         1,
         MachPhys::RED,
-        MachPhys::T_FLAME_THROWER1));
-    _DELETE(pC);
+        MachPhys::T_FLAME_THROWER1);
+    delete pC;
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::TURRET,
         2,
         MachPhys::RED,
-        MachPhys::LR_AUTO_CANNON_X2));
-    _DELETE(pC);
+        MachPhys::LR_AUTO_CANNON_X2);
+    delete pC;
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::TURRET,
         3,
         MachPhys::RED,
-        MachPhys::LR_PULSE_RIFLE_X2));
-    _DELETE(pC);
+        MachPhys::LR_PULSE_RIFLE_X2);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::SENTRY,
         3,
         MachPhys::RED,
-        MachPhys::LR_MULTI_LAUNCHER5_X2));
-    _DELETE(pC);
+        MachPhys::LR_MULTI_LAUNCHER5_X2);
+    delete pC;
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::SENTRY,
         4,
         MachPhys::RED,
-        MachPhys::LR_MULTI_LAUNCHER6_X2));
-    _DELETE(pC);
+        MachPhys::LR_MULTI_LAUNCHER6_X2);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::LAUNCHER,
         4,
         MachPhys::RED,
-        MachPhys::LR_LARGE_MISSILE_X2));
-    _DELETE(pC);
+        MachPhys::LR_LARGE_MISSILE_X2);
+    delete pC;
 
-    pC = _NEW(MachPhysMissileEmplacement(
+    pC = new MachPhysMissileEmplacement(
         &tempRoot,
         MexTransform3d(),
         MachPhys::ICBM,
         5,
         MachPhys::RED,
-        MachPhys::T_NUCLEAR_MISSILE));
-    _DELETE(pC);
+        MachPhys::T_NUCLEAR_MISSILE);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::GARRISON\n");
 
-    pC = _NEW(MachPhysGarrison(&tempRoot, MexTransform3d(), 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysGarrison(&tempRoot, MexTransform3d(), 1, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::MINE\n");
 
-    pC = _NEW(MachPhysMine(&tempRoot, MexTransform3d(), 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysMine(&tempRoot, MexTransform3d(), 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysMine(&tempRoot, MexTransform3d(), 3, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysMine(&tempRoot, MexTransform3d(), 3, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysMine(&tempRoot, MexTransform3d(), 5, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysMine(&tempRoot, MexTransform3d(), 5, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     HAL_STREAM("MachPreload::BEACON\n");
 
-    pC = _NEW(MachPhysBeacon(&tempRoot, MexTransform3d(), 1, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysBeacon(&tempRoot, MexTransform3d(), 1, MachPhys::RED);
+    delete pC;
 
-    pC = _NEW(MachPhysBeacon(&tempRoot, MexTransform3d(), 3, MachPhys::RED));
-    _DELETE(pC);
+    pC = new MachPhysBeacon(&tempRoot, MexTransform3d(), 3, MachPhys::RED);
+    delete pC;
 
     doLoadingProgressUpdate(doUpdate);
 
     // Preload missile
 
     HAL_STREAM("MachPreload::Missile\n");
-    MachPhysMissile* pMissile1 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE1));
-    _DELETE(pMissile1);
+    MachPhysMissile* pMissile1 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE1);
+    delete pMissile1;
 
-    MachPhysMissile* pMissile2 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE2));
-    _DELETE(pMissile2);
+    MachPhysMissile* pMissile2 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE2);
+    delete pMissile2;
 
-    MachPhysMissile* pMissile3 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE3));
-    _DELETE(pMissile3);
+    MachPhysMissile* pMissile3 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE3);
+    delete pMissile3;
 
     doLoadingProgressUpdate(doUpdate);
     HAL_STREAM("MachPreload::Missile\n");
-    MachPhysMissile* pMissile4 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE4));
-    _DELETE(pMissile4);
+    MachPhysMissile* pMissile4 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE4);
+    delete pMissile4;
 
-    MachPhysMissile* pMissile5 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE5));
-    _DELETE(pMissile5);
+    MachPhysMissile* pMissile5 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE5);
+    delete pMissile5;
 
-    MachPhysMissile* pMissile6 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE6));
-    _DELETE(pMissile6);
+    MachPhysMissile* pMissile6 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE6);
+    delete pMissile6;
 
     doLoadingProgressUpdate(doUpdate);
     HAL_STREAM("MachPreload::Missile7\n");
-    MachPhysMissile* pMissile7 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE7));
-    _DELETE(pMissile7);
+    MachPhysMissile* pMissile7 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE7);
+    delete pMissile7;
 
     HAL_STREAM("MachPreload::Missile8\n");
-    MachPhysMissile* pMissile8 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE_LARGE));
-    _DELETE(pMissile8);
+    MachPhysMissile* pMissile8 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::MISSILE_LARGE);
+    delete pMissile8;
 
     HAL_STREAM("MachPreload::Missile9\n");
-    MachPhysMissile* pMissile9 = _NEW(MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::NUCLEAR_MISSILE));
-    _DELETE(pMissile9);
+    MachPhysMissile* pMissile9 = new MachPhysMissile(&tempRoot, MexTransform3d(), MachPhysMissile::NUCLEAR_MISSILE);
+    delete pMissile9;
 
     doLoadingProgressUpdate(doUpdate);
 
@@ -741,8 +741,8 @@ void MachPhysPreload::preloadWeaponsAndEffects(MachPhysPreload::DoLoadingProgres
 
     // Ore holograph
     HAL_STREAM("MachPreload::holo\n");
-    MachPhysOreHolograph* pHolo = _NEW(MachPhysOreHolograph(&tempRoot, MexTransform3d(), MachPhys::RED, 1, 2));
-    _DELETE(pHolo);
+    MachPhysOreHolograph* pHolo = new MachPhysOreHolograph(&tempRoot, MexTransform3d(), MachPhys::RED, 1, 2);
+    delete pHolo;
 
     HAL_STREAM("construction stuff\n");
     // construction constructing stuff

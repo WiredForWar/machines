@@ -131,7 +131,7 @@ PhysRelativeTime MachPhysElectroCharger::fire(const PhysAbsoluteTime& startTime,
     PhysRelativeTime burstDuration = data.burstDuration();
 
     // Add the exhaust WHITE smoke cloud
-    MachPhysSmokeCloud* pSmokeCloud = _NEW(MachPhysSmokeCloud(this, smokeOffset));
+    MachPhysSmokeCloud* pSmokeCloud = new MachPhysSmokeCloud(this, smokeOffset);
     PhysAbsoluteTime endTime = startTime + burstDuration;
     uint nWisps = 3;
     MexPoint3d endPosition(0.0, 0.0, 2.0);
@@ -150,7 +150,7 @@ PhysRelativeTime MachPhysElectroCharger::fire(const PhysAbsoluteTime& startTime,
         MachPhysEffects::smokeMaterialPlan(MachPhysEffects::WHITE));
 
     MATHEX_SCALAR flashSize = data.extras()[2];
-    MachPhysFlashDisc* pFlashDisc = _NEW(MachPhysFlashDisc(this, smokeOffset, flashSize, MachPhysFlashDisc::WHITE));
+    MachPhysFlashDisc* pFlashDisc = new MachPhysFlashDisc(this, smokeOffset, flashSize, MachPhysFlashDisc::WHITE);
     PhysRelativeTime flashDuration = pFlashDisc->flash(startTime, MachPhysFlashDisc::WHITE);
 
     // lighting up the machine and the weapon
@@ -179,7 +179,7 @@ MachPhysElectro* MachPhysElectroCharger::createElectro(
     MATHEX_SCALAR distance;
     PhysAbsoluteTime launchTime = launchData(burstTime, 0, pParent, target, targetOffset, &startTransform, &distance);
 
-    MachPhysElectro* pElectro = _NEW(MachPhysElectro(pParent, startTransform, MachPhysElectro::ELECTRIC));
+    MachPhysElectro* pElectro = new MachPhysElectro(pParent, startTransform, MachPhysElectro::ELECTRIC);
 
     //@100%, the electro size = 5
     MATHEX_SCALAR topScale = distance / 5;
@@ -199,16 +199,16 @@ MachPhysElectro* MachPhysElectroCharger::createElectro(
 
     MATHEX_SCALAR seg = distance / 3.0;
 
-    MachPhysSmokeCloud* pPurpleCloud1 = _NEW(MachPhysSmokeCloud(pElectro, smokeOffset));
+    MachPhysSmokeCloud* pPurpleCloud1 = new MachPhysSmokeCloud(pElectro, smokeOffset);
 
     smokeOffset = MexPoint3d(smokeOffset.x() + seg, smokeOffset.y(), smokeOffset.z());
-    MachPhysSmokeCloud* pPurpleCloud2 = _NEW(MachPhysSmokeCloud(pElectro, smokeOffset));
+    MachPhysSmokeCloud* pPurpleCloud2 = new MachPhysSmokeCloud(pElectro, smokeOffset);
 
     smokeOffset = MexPoint3d(smokeOffset.x() + seg, smokeOffset.y(), smokeOffset.z());
-    MachPhysSmokeCloud* pPurpleCloud3 = _NEW(MachPhysSmokeCloud(pElectro, smokeOffset));
+    MachPhysSmokeCloud* pPurpleCloud3 = new MachPhysSmokeCloud(pElectro, smokeOffset);
 
     smokeOffset = MexPoint3d(smokeOffset.x() + seg, smokeOffset.y(), smokeOffset.z());
-    MachPhysSmokeCloud* pPurpleCloud4 = _NEW(MachPhysSmokeCloud(pElectro, smokeOffset));
+    MachPhysSmokeCloud* pPurpleCloud4 = new MachPhysSmokeCloud(pElectro, smokeOffset);
 
     PhysRelativeTime purpleDuration = pPurpleCloud1->startSmoking(
         nWisps,
@@ -327,7 +327,7 @@ PhysRelativeTime MachPhysElectroCharger::applyVictimAnimation(
 
         // Attach the smoke cloud to the face plate. SInce this is a link, we need to establish a holding
         // relationship to get it drawn.
-        MachPhysSmokeCloud* pSmokeCloud = _NEW(MachPhysSmokeCloud(pFacePlate, smokeOffset));
+        MachPhysSmokeCloud* pSmokeCloud = new MachPhysSmokeCloud(pFacePlate, smokeOffset);
         pMachine->hold(pSmokeCloud, pFacePlate, pFacePlate->localTransform());
 
         uint nWisps = 3;
@@ -373,8 +373,8 @@ PhysRelativeTime MachPhysElectroCharger::startLightning(
     MexTransform3d localXform = MexTransform3d(centre);
 
     // lightning effect on the victim
-    MachPhysLightningHalo* pHalo1 = _NEW(MachPhysLightningHalo(pVictim, localXform, MachPhysLightningHalo::ELECTRIC));
-    MachPhysLightningHalo* pHalo2 = _NEW(MachPhysLightningHalo(pVictim, localXform, MachPhysLightningHalo::ELECTRIC));
+    MachPhysLightningHalo* pHalo1 = new MachPhysLightningHalo(pVictim, localXform, MachPhysLightningHalo::ELECTRIC);
+    MachPhysLightningHalo* pHalo2 = new MachPhysLightningHalo(pVictim, localXform, MachPhysLightningHalo::ELECTRIC);
 
     pHalo1->startLightning(pVictim, startTime, duration, -1, MachPhysLightningHalo::ELECTRIC);
     pHalo2->startLightning(pVictim, startTime, duration, 1, MachPhysLightningHalo::ELECTRIC);

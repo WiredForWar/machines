@@ -110,7 +110,7 @@ MachGuiCommand* MachGuiSelfDestructCommand::clone() const
         MachGuiSelfDestructCommandIcon::refreshAllIcons();
     }
 
-    return _NEW(MachGuiSelfDestructCommand(&inGameScreen()));
+    return new MachGuiSelfDestructCommand(&inGameScreen());
 }
 
 // virtual

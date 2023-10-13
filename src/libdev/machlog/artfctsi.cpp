@@ -15,8 +15,8 @@
 PER_DEFINE_PERSISTENT(MachLogArtefactsImpl);
 
 MachLogArtefactsImpl::MachLogArtefactsImpl()
-    : pExemplars_(_NEW(W4dGenericRepository))
-    , pData_(_NEW(MachLogArtefactsData))
+    : pExemplars_(new W4dGenericRepository)
+    , pData_(new(MachLogArtefactsData))
     , artefactsParsed_(false)
     , pArtefactPathName_(nullptr)
 {
@@ -27,8 +27,8 @@ MachLogArtefactsImpl::MachLogArtefactsImpl()
 MachLogArtefactsImpl::~MachLogArtefactsImpl()
 {
     TEST_INVARIANT;
-    _DELETE(pExemplars_);
-    _DELETE(pData_);
+    delete pExemplars_;
+    delete pData_;
 }
 
 void MachLogArtefactsImpl::CLASS_INVARIANT

@@ -68,7 +68,7 @@ PER_DEFINE_PERSISTENT_ABSTRACT(MachActor);
 
 MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::ObjectType ot)
     : SimActor(pRace, pPhysEntity)
-    , pImpl_(_NEW(MachActorImpl(this, pRace, ot)))
+    , pImpl_(new MachActorImpl(this, pRace, ot))
 {
     CB_DEPIMPL(Actors, actorsThreateningMe_);
     CB_DEPIMPL(MachPhys::Race, displayMapAndIconRace_);
@@ -125,7 +125,7 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
 
 MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::ObjectType ot, UtlId withId)
     : SimActor(pRace, pPhysEntity)
-    , pImpl_(_NEW(MachActorImpl(this, pRace, ot)))
+    , pImpl_(new MachActorImpl(this, pRace, ot))
 {
     CB_DEPIMPL(Actors, actorsThreateningMe_);
     CB_DEPIMPL(MachPhys::Race, displayMapAndIconRace_);
@@ -188,7 +188,7 @@ MachActor::~MachActor()
         races.removeSpecialUpdateActor(this, MachLog::FORCE_REMOVE);
 
     CB_DEPIMPL(MachLogStrategy*, pStrategy_);
-    _DELETE(pStrategy_);
+    delete pStrategy_;
     // Holos and debris etc are removed from the collections at startup
     /*  if( objectType_ != MachLog::ORE_HOLOGRAPH and
         objectType_ != MachLog::DEBRIS and
@@ -207,7 +207,7 @@ MachActor::~MachActor()
         MachLogRaces::idGenerator().freeId(id());
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 MachPhys::Race MachActor::race() const
@@ -325,7 +325,7 @@ void MachActor::beHit(
         if (hp() <= 0)
         {
             strategy().beInterrupted();
-            strategy().newOperation(_NEW(MachLogBeDestroyedAnimation(this)));
+            strategy().newOperation(new MachLogBeDestroyedAnimation(this));
             isDead(true);
 
             if (selfDestructActive_)

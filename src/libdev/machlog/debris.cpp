@@ -37,7 +37,7 @@ MachLogDebris::MachLogDebris(
     : MachActor(pRace, pNewDebris(pRace, quantity, location, boundary), MachLog::DEBRIS)
     , quantity_(quantity)
     , lastUpdateTime_(SimManager::instance().currentTime())
-    , pBoundary_(_NEW(MexAlignedBox2d(boundary)))
+    , pBoundary_(new MexAlignedBox2d(boundary))
 {
     setLifeTime(quantity);
 
@@ -62,7 +62,7 @@ MachLogDebris::MachLogDebris(
     : MachActor(pRace, pNewDebris(pRace, quantity, location, boundary), MachLog::DEBRIS, withId)
     , quantity_(quantity)
     , lastUpdateTime_(SimManager::instance().currentTime())
-    , pBoundary_(_NEW(MexAlignedBox2d(boundary)))
+    , pBoundary_(new MexAlignedBox2d(boundary))
 {
     setLifeTime(quantity);
 
@@ -124,14 +124,14 @@ MachPhysDebris* MachLogDebris::pNewDebris(
     // Not needed    HAL_STREAM(" Local Transform is\n" << localTransform << std::endl << " Boundary is\n" << boundary
     // << std::endl << " local Boundary is " << localBoundary << std::endl );
 
-    return _NEW(MachPhysDebris(pDomain, localTransform, boundary, BURN_TIME, whichType));
+    return new MachPhysDebris(pDomain, localTransform, boundary, BURN_TIME, whichType);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 MachLogDebris::~MachLogDebris()
 {
     // HAL_STREAM("(" << id() << ") MLDebris::DTOR\n" );
-    _DELETE(pBoundary_);
+    delete pBoundary_;
 
     MachLogPlanet::instance().removeDebrisSite(this);
 
@@ -209,8 +209,8 @@ const MachPhysDebris* MachLogDebris::pPhysDebris() const
 
 void MachLogDebris::hasBeenPickedUp()
 {
-    MachLogDyingEntityEvent* pEvent = _NEW(
-        MachLogDyingEntityEvent(physObjectPtr(), nullptr, 0, MachLogDyingEntityEvent::NOT_INSIDE_BUILDING, nullptr));
+    MachLogDyingEntityEvent* pEvent = new 
+        MachLogDyingEntityEvent(physObjectPtr(), nullptr, 0, MachLogDyingEntityEvent::NOT_INSIDE_BUILDING, nullptr);
     SimManager::instance().add(pEvent);
     isDead(true);
 }
@@ -238,12 +238,12 @@ PhysRelativeTime MachLogDebris::update(const PhysRelativeTime& maxCPUTime, MATHE
 
     if (lifetimeRemaining_ <= 0)
     {
-        MachLogDyingEntityEvent* pEvent = _NEW(MachLogDyingEntityEvent(
+        MachLogDyingEntityEvent* pEvent = new MachLogDyingEntityEvent(
             physObjectPtr(),
             nullptr,
             0,
             MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
-            nullptr));
+            nullptr);
         SimManager::instance().add(pEvent);
         isDead(true);
         if (MachLogNetwork::instance().isNetworkGame())

@@ -183,7 +183,7 @@ bool MachGuiMoveCommand::applySimpleMove(MachActor* pActor, string*)
     {
         // Construct a move operation
         MachLogMoveToOperation* pOp
-            = _NEW(MachLogMoveToOperation(&pActor->asMachine(), path, commandId(), pathFindingPriority()));
+            = new MachLogMoveToOperation(&pActor->asMachine(), path, commandId(), pathFindingPriority());
 
         // Give it to the actor
         //  The operation is now given to the actor by the group move code
@@ -240,7 +240,7 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, string* pReason)
     {
         // Yes, we can enter the building
         MachLogEnterBuildingOperation* pEnterOp
-            = _NEW(MachLogEnterBuildingOperation(&machine, pConstruction_, pStation, pathFindingPriority()));
+            = new MachLogEnterBuildingOperation(&machine, pConstruction_, pStation, pathFindingPriority());
 
         // Give it to the actor
         pActor->newOperation(pEnterOp);
@@ -292,7 +292,7 @@ bool MachGuiMoveCommand::applyEnterAPC(MachActor* pActor, string*)
     if (couldEnterAPC(*pActor, *pAPC_))
     {
         // Construct an enter APC operation
-        MachLogEnterAPCOperation* pOp = _NEW(MachLogEnterAPCOperation(&machine, pAPC_, pathFindingPriority()));
+        MachLogEnterAPCOperation* pOp = new MachLogEnterAPCOperation(&machine, pAPC_, pathFindingPriority());
 
         // Give it to the actor
         pActor->newOperation(pOp);
@@ -322,7 +322,7 @@ bool MachGuiMoveCommand::applyFollowMachine(MachActor* pActor, string*)
     {
         // Construct a follow operation
         MachLogFollowOperation* pOp
-            = _NEW(MachLogFollowOperation(&pActor->asMachine(), pMachine_, MexPoint2d(0, 0), pathFindingPriority()));
+            = new MachLogFollowOperation(&pActor->asMachine(), pMachine_, MexPoint2d(0, 0), pathFindingPriority());
 
         // Give it to the actor
 
@@ -446,7 +446,7 @@ void MachGuiMoveCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiMoveCommand::clone() const
 {
-    return _NEW(MachGuiMoveCommand(&inGameScreen()));
+    return new MachGuiMoveCommand(&inGameScreen());
 }
 
 // virtual
@@ -522,7 +522,7 @@ bool MachGuiMoveCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
     {
         // Create an admin Move operation for the administrator
         MachLogAdminMoveToOperation* pOp
-            = _NEW(MachLogAdminMoveToOperation(pAdministrator, path, pathFindingPriority()));
+            = new MachLogAdminMoveToOperation(pAdministrator, path, pathFindingPriority());
 
         // give voicemail
         MachLogMachineVoiceMailManager::instance().postNewMail(*pAdministrator, MachineVoiceMailEventID::MOVING);

@@ -46,11 +46,11 @@ MachLogLinearProjectile* MachLogLightStingWeapon::createLinearProjectile(
     const W4dEntity& target,
     const MexPoint3d& targetOffset)
 {
-    return _NEW(MachLogLightSting(
+    return new MachLogLightSting(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogLightStingWeapon& t)

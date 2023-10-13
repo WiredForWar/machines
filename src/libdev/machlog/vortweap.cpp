@@ -46,7 +46,7 @@ void MachLogVortexWeapon::doFire(const MexPoint3d& position)
     // create pulse blobs (the logical entites here).
     PhysRelativeTime timeOffset = 0;
     int launchOffset = 0;
-    _NEW(MachLogVortexBomb(&logRace(), position, physWeapon().weaponData(), &owner()));
+    new MachLogVortexBomb(&logRace(), position, physWeapon().weaponData(), &owner());
     MachLogRaces::instance().vortexHasBeenFired(owner().race(), true);
 
     owner().setBusyPeriod(9.0);

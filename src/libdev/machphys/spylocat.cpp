@@ -37,7 +37,7 @@ MachPhysSpyLocator::MachPhysSpyLocator(
         brainLevel,
         race,
         MachPhysData::instance().spyLocatorData(bodyLevel, brainLevel))
-    , pImpl_(_NEW(MachPhysSpyLocatorImpl))
+    , pImpl_(new MachPhysSpyLocatorImpl)
 {
     CB_DEPIMPL(W4dCompositePlanPtr, locatingPlanPtr_);
     cycleAnims(&locatingPlanPtr_);
@@ -54,7 +54,7 @@ MachPhysSpyLocator::MachPhysSpyLocator(W4dEntity* pParent, size_t bodyLevel)
         W4dTransform3d(),
         compositeFileName(bodyLevel),
         MachPhysData::instance().spyLocatorData(bodyLevel, 1))
-    , pImpl_(_NEW(MachPhysSpyLocatorImpl))
+    , pImpl_(new MachPhysSpyLocatorImpl)
 {
     createExplosionData();
 
@@ -70,7 +70,7 @@ MachPhysSpyLocator::MachPhysSpyLocator(PerConstructor con)
 MachPhysSpyLocator::~MachPhysSpyLocator()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 SysPathName MachPhysSpyLocator::compositeFileName(size_t bodyLevel) const

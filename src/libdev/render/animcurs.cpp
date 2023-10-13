@@ -32,7 +32,7 @@ RenIAnimCursor2d::RenIAnimCursor2d()
 }
 
 RenAnimCursor2d::RenAnimCursor2d()
-    : internals_(_NEW(RenIAnimCursor2d))
+    : internals_(new RenIAnimCursor2d)
 {
     ASSERT(internals_, "Out of memory");
     TEST_INVARIANT;
@@ -42,7 +42,7 @@ RenAnimCursor2d::RenAnimCursor2d()
 RenAnimCursor2d::~RenAnimCursor2d()
 {
     TEST_INVARIANT;
-    _DELETE(internals_);
+    delete internals_;
 }
 
 // This is written so that the animation will attempt to run at the target

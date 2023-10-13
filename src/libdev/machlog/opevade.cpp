@@ -54,7 +54,7 @@ PER_DEFINE_PERSISTENT(MachLogEvadeOperation);
 
 MachLogEvadeOperation::MachLogEvadeOperation(MachLogMachine* pActor)
     : MachLogOperation("EVADE_OPERATION", MachLogOperation::EVADE_OPERATION)
-    , pImpl_(_NEW(MachLogEvadeOperationImpl(pActor)))
+    , pImpl_(new MachLogEvadeOperationImpl(pActor))
 {
     CB_MachLogEvadeOperation_DEPIMPL();
 
@@ -73,9 +73,9 @@ MachLogEvadeOperation::~MachLogEvadeOperation()
     // if we still have a pointer to the cached op, we must be terminating through circumstances where that
     // that op has NOT been restored to the strategy. We must delete it ourselves to prevent a memory leak.
     if (pCachedOperation_)
-        _DELETE(pCachedOperation_);
+        delete pCachedOperation_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -293,7 +293,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                     "MachLogEvadeOperation::doUpdate : We have an unexpected NULL pointer for pGarrison and/or "
                     "pStation.");
 
-                pNewSubOp = _NEW(MachLogEnterBuildingOperation(pActor_, pGarrison, pStation));
+                pNewSubOp = new MachLogEnterBuildingOperation(pActor_, pGarrison, pStation);
                 break;
             }
         case SEEK_AGGRESSIVE:
@@ -307,12 +307,12 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 // set up a special follow op which will terminate when the machine is sufficiently close.
 
-                pNewSubOp = _NEW(MachLogFollowOperation(
+                pNewSubOp = new MachLogFollowOperation(
                     pActor_,
                     &(pEvadeDestinationActor->asMachine()),
                     MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20)),
                     MachLogFollowOperation::NOT_CAMOUFLAGED,
-                    MachLogFollowOperation::TERMINATE_WHEN_CLOSE));
+                    MachLogFollowOperation::TERMINATE_WHEN_CLOSE);
                 break;
             }
         case SEEK_TURRET:
@@ -385,7 +385,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                         finished = true;
                 }
 
-                pNewSubOp = _NEW(MachLogMoveToOperation(pActor_, dest));
+                pNewSubOp = new MachLogMoveToOperation(pActor_, dest);
 
                 break;
             }
@@ -418,7 +418,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                         finished = true;
                 }
 
-                pNewSubOp = _NEW(MachLogMoveToOperation(pActor_, dest, true, 10.0)); // 10m tolerance
+                pNewSubOp = new MachLogMoveToOperation(pActor_, dest, true, 10.0); // 10m tolerance
 
                 break;
             }
@@ -476,7 +476,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                         finished = true;
                 }
 
-                pNewSubOp = _NEW(MachLogMoveToOperation(pActor_, dest, true, 10.0)); // 10m tolerance
+                pNewSubOp = new MachLogMoveToOperation(pActor_, dest, true, 10.0); // 10m tolerance
             }
     }
 

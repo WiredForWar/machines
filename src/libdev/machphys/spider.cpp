@@ -39,7 +39,7 @@ MachPhysSpiderLegs::MachPhysSpiderLegs(
     const W4dCompositePlanPtr& startWalkingPlanPtr,
     const W4dCompositePlanPtr& stopWalkingPlanPtr)
     : MachPhysLocomotionMethod(
-        pImpl_ = _NEW(MachPhysSpiderLegsImpl(
+        pImpl_ = new MachPhysSpiderLegsImpl(
             pMachine,
             this,
             restingPlanPtr,
@@ -47,7 +47,7 @@ MachPhysSpiderLegs::MachPhysSpiderLegs(
             turningLeftPlanPtr,
             turningRightPlanPtr,
             startWalkingPlanPtr,
-            stopWalkingPlanPtr)))
+            stopWalkingPlanPtr))
 {
 
     TEST_INVARIANT;
@@ -66,7 +66,7 @@ MachPhysSpiderLegs::~MachPhysSpiderLegs()
     TEST_INVARIANT;
 
     // pImpl_ will be removed by MachPhysLocomotionMethod destructor
-    //_DELETE( pImpl_ );
+    //delete pImpl_;
 }
 
 // virtual
@@ -79,14 +79,14 @@ MachPhysLocomotionMethod* MachPhysSpiderLegs::clone(MachPhysMachine* pMachine, c
     CB_DEPIMPL(W4dCompositePlanPtr, startWalkingPlanPtr_);
     CB_DEPIMPL(W4dCompositePlanPtr, stopWalkingPlanPtr_);
 
-    return _NEW(MachPhysSpiderLegs(
+    return new MachPhysSpiderLegs(
         pMachine,
         restingPlanPtr_,
         walkingPlanPtr_,
         turningLeftPlanPtr_,
         turningRightPlanPtr_,
         startWalkingPlanPtr_,
-        stopWalkingPlanPtr_));
+        stopWalkingPlanPtr_);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

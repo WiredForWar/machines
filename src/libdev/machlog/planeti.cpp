@@ -17,7 +17,7 @@ MachLogPlanetImpl::MachLogPlanetImpl()
     , pPressurePads_(nullptr)
     , pHiddenRootDomain_(nullptr)
     , pHiddenConfigSpace_(nullptr)
-    , pHiddenRoot_(_NEW(W4dRoot(100243)))
+    , pHiddenRoot_(new W4dRoot(100243))
     , idsGenerated_(0)
 {
 

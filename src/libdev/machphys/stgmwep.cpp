@@ -109,7 +109,7 @@ MachPhysMetalSting* MachPhysMetalStingWeapon::createMetalSting(
     PhysAbsoluteTime launchTime
         = launchData(burstStartTime, index, pParent, target, targetOffset, &startTransform, &distance);
 
-    MachPhysMetalSting* pSting = _NEW(MachPhysMetalSting(pParent, startTransform));
+    MachPhysMetalSting* pSting = new MachPhysMetalSting(pParent, startTransform);
 
     // let it fly
     pSting->beLaunched(launchTime, weaponData(), targetOffset);

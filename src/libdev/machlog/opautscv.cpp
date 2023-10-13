@@ -36,7 +36,7 @@ PER_DEFINE_PERSISTENT(MachLogAutoScavengeOperation);
 
 MachLogAutoScavengeOperation::MachLogAutoScavengeOperation(MachLogResourceCarrier* pScavenger, MachLogDebris* pDebris)
     : MachLogOperation("AUTOSCAVENGE_OPERATION", MachLogOperation::AUTOSCAVENGE_OPERATION)
-    , pImpl_(_NEW(MachLogAutoScavengeOperationImpl(pScavenger, pDebris)))
+    , pImpl_(new MachLogAutoScavengeOperationImpl(pScavenger, pDebris))
 {
     CB_MachLogAutoScavengeOperation_DEPIMPL();
 
@@ -53,12 +53,12 @@ MachLogAutoScavengeOperation::~MachLogAutoScavengeOperation()
     // if we still have a pointer to the cached op, we must be terminating through circumstances where that
     // that op has NOT been restored to the strategy. We must delete it ourselves to prevent a memory leak.
     if (pCachedOperation_)
-        _DELETE(pCachedOperation_);
+        delete pCachedOperation_;
 
     if (pDebris_)
         pDebris_->detach(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // virtual
@@ -150,7 +150,7 @@ PhysRelativeTime MachLogAutoScavengeOperation::doUpdate()
 
     PhysRelativeTime interval = 0.0;
 
-    MachLogOperation* pNewSubOp = _NEW(MachLogScavengeOperation(pScavenger_, pDebris_));
+    MachLogOperation* pNewSubOp = new MachLogScavengeOperation(pScavenger_, pDebris_);
 
     subOperation(pScavenger_, pNewSubOp);
 

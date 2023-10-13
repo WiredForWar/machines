@@ -1017,7 +1017,7 @@ MachLogMachineMotionSequencer::MoveInfoUPtr MachLogMachineMotionSequencer::getSh
 
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
-    MachPhysMachine::ProfilePtr profilePtr(_NEW(MachPhysPlanetSurface::Profile));
+    MachPhysMachine::ProfilePtr profilePtr(new MachPhysPlanetSurface::Profile);
 
     profilePtr->push_back(sourceTransform);
     profilePtr->push_back(targetTransform);
@@ -1058,10 +1058,10 @@ PhysRelativeTime MachLogMachineMotionSequencer::sendMotionToPhysicalMachine()
     //  Combine the multiple move infos into one.
 
     const uint nToReserve = 64;
-    MachPhysMachineMoveInfo::TransformsPtr transformsPtr(_NEW(MachPhysMachineMoveInfo::Transforms()));
+    MachPhysMachineMoveInfo::TransformsPtr transformsPtr(new MachPhysMachineMoveInfo::Transforms());
     transformsPtr->reserve(nToReserve);
     MachPhysMachineMoveInfo::RampAccelerationsPtr rampAccelerationsPtr(
-        _NEW(MachPhysMachineMoveInfo::RampAccelerations()));
+        new MachPhysMachineMoveInfo::RampAccelerations());
     rampAccelerationsPtr->reserve(nToReserve);
 
     LOG_STREAM("Combining " << moveInfos_.size() << " move infos into one" << std::endl);

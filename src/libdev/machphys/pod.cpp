@@ -33,12 +33,12 @@ PER_DEFINE_PERSISTENT(MachPhysPod);
 MachPhysPod::MachPhysPod(W4dEntity* pParent, const W4dTransform3d& localTransform, size_t level, MachPhys::Race race)
     : MachPhysConstruction(part(level), pParent, localTransform, level, race)
     , MachPhysCanAttack(part(level), this)
-    , pData_(_NEW(MachPhysPodData(part(level).data(), globalTransform())))
+    , pData_(new MachPhysPodData(part(level).data(), globalTransform()))
 {
     // Register its sound
     //     W4dSoundManager::instance().play( this, SysPathName( "sounds/pod.wav" ),
     //                                       PhysAbsoluteTime( 0 ), 100.0, 35.0,
-    //                                       W4dSoundManager::LOOP_CONTINUOUSLY );
+    //                                       W4dSoundManager::LOOP_CONTINUOUSLY ;
     W4dSoundManager::instance().play(this, SID_POD, PhysAbsoluteTime(0), (size_t)0);
 
     pTurner_ = links()[part(level).pTurner_->id()];
@@ -68,7 +68,7 @@ MachPhysPod::MachPhysPod(W4dEntity* pParent, size_t level)
         50.0,
         level,
         MachPhysData::instance().podData(level))
-    , pData_(_NEW(MachPhysPodData(MachPhysData::instance().podData(level), W4dTransform3d())))
+    , pData_(new MachPhysPodData(MachPhysData::instance().podData(level), W4dTransform3d()))
 {
     PRE(level == 1);
 
@@ -107,7 +107,7 @@ MachPhysPod::MachPhysPod(PerConstructor con)
 MachPhysPod::~MachPhysPod()
 {
     TEST_INVARIANT;
-    _DELETE(pData_);
+    delete pData_;
 }
 
 // static
@@ -189,13 +189,13 @@ void MachPhysPod::doWorking(bool setWorking)
     {
         if (not isWorking()) // setWorking must == true
         {
-            PhysMotionPlan::Times* pTimesList = _NEW(PhysMotionPlan::Times);
+            PhysMotionPlan::Times* pTimesList = new PhysMotionPlan::Times;
             pTimesList->reserve(3);
             pTimesList->push_back(1.2);
             pTimesList->push_back(2.4);
             pTimesList->push_back(3.6);
 
-            PhysMotionPlan::AnglesPtr anglesListPtr = PhysMotionPlan::AnglesPtr(_NEW(PhysMotionPlan::Angles));
+            PhysMotionPlan::AnglesPtr anglesListPtr = PhysMotionPlan::AnglesPtr(new PhysMotionPlan::Angles);
             anglesListPtr->reserve(4);
             anglesListPtr->push_back(MexDegrees(0));
             anglesListPtr->push_back(MexDegrees(120));
@@ -211,7 +211,7 @@ void MachPhysPod::doWorking(bool setWorking)
 
             position = pTurner_->localTransform().position();
             PhysTimedAnglePlan* pAnglePlan
-                = _NEW(PhysTimedAnglePlan(anglesListPtr, PhysMotionPlan::TimesPtr(pTimesList), newvec, position));
+                = new PhysTimedAnglePlan(anglesListPtr, PhysMotionPlan::TimesPtr(pTimesList), newvec, position);
 
             PhysMotionPlanPtr anglePlanPtr(pAnglePlan);
 
@@ -243,7 +243,7 @@ const W4dComposite& MachPhysPod::asComposite() const
 
 void MachPhysPod::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysPodData(MachPhysData::instance().podData(level()), W4dTransform3d()));
+    pData_ = new MachPhysPodData(MachPhysData::instance().podData(level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }

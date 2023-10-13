@@ -115,7 +115,7 @@ MachPhysConstruction* MachLogSoftwareLab::pNewPhysSoftwareLab(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysSoftwareLab(pDomain, localTransform, level, pRace->race()));
+    return new MachPhysSoftwareLab(pDomain, localTransform, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,7 +182,7 @@ PhysRelativeTime MachLogSoftwareLab::update(const PhysRelativeTime& alteredMaxCP
                     if ((*i)->insideBuilding() and (*i)->insideWhichBuilding().id() == id())
                     {
                         if ((*i)->isIdle())
-                            (*i)->newOperation(_NEW(MachLogResearchAnimation(*i)));
+                            (*i)->newOperation(new MachLogResearchAnimation(*i));
                         availableResearchUnits += (*i)->data().researchRate();
                     }
                 //          HAL_STREAM(" found a total of " << availableResearchUnits << " research units to use\n" );
@@ -203,7 +203,7 @@ PhysRelativeTime MachLogSoftwareLab::update(const PhysRelativeTime& alteredMaxCP
                 // if so then posts a MachLogResearchAnimation to the strategy
                 // loop through all technicians and animate them
 
-                // obj->newOperation( _NEW( MachLogResearchAnimation( obj ) ) );
+                // obj->newOperation( new MachLogResearchAnimation( obj ) );
 
                 // HAL_STREAM(" after advanceResearch for " << (*pRi) << std::endl );
             }

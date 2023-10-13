@@ -40,7 +40,7 @@ PER_DEFINE_PERSISTENT(MachPhysGlider);
 static W4dVisibilityPlanPtr
 thrustAndBrake(W4dEntity* entity, const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration)
 {
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
 
     entity->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
@@ -49,7 +49,7 @@ thrustAndBrake(W4dEntity* entity, const PhysAbsoluteTime& startTime, const PhysR
 }
 
 MachPhysGlider::MachPhysGlider(MachPhysMachine* pMachine, MATHEX_SCALAR height)
-    : MachPhysLocomotionMethod(pImpl_ = _NEW(MachPhysGliderImpl(pMachine, this, height)))
+    : MachPhysLocomotionMethod(pImpl_ = new MachPhysGliderImpl(pMachine, this, height))
 {
     CB_DEPIMPL(W4dLink*, pBody_);
     CB_DEPIMPL(W4dLink*, pHip_);
@@ -93,7 +93,7 @@ MachPhysGlider::MachPhysGlider(MachPhysMachine* pMachine, MATHEX_SCALAR height)
         MexTransform3d endPosition(startPosition);
         endPosition.transform(spinTransform);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
         // Add a further rotation of 120 degrees
         endPosition.transform(spinTransform);
@@ -116,7 +116,7 @@ MachPhysGlider::MachPhysGlider(MachPhysMachine* pMachine, MATHEX_SCALAR height)
         MexTransform3d endPosition(startPosition);
         endPosition.transform(spinTransform);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
         // Add a further rotation of 120 degrees
         endPosition.transform(spinTransform);
@@ -139,7 +139,7 @@ MachPhysGlider::MachPhysGlider(MachPhysMachine* pMachine, MATHEX_SCALAR height)
         MexTransform3d endPosition(startPosition);
         endPosition.transform(spinTransform);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
         // Add a further rotation of 120 degrees
         endPosition.transform(spinTransform);
@@ -162,7 +162,7 @@ MachPhysGlider::MachPhysGlider(MachPhysMachine* pMachine, MATHEX_SCALAR height)
         MexTransform3d endPosition(startPosition);
         endPosition.transform(spinTransform);
 
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
         // Add a further rotation of 120 degrees
         endPosition.transform(spinTransform);
@@ -184,13 +184,13 @@ MachPhysGlider::~MachPhysGlider()
     TEST_INVARIANT;
 
     // pImpl_ will be removed by MachPhysLocomotionMethod destructor
-    //_DELETE( pImpl_ );
+    //delete pImpl_;
 }
 
 // virtual
 MachPhysLocomotionMethod* MachPhysGlider::clone(MachPhysMachine* pMachine, const W4dLinks&)
 {
-    return _NEW(MachPhysGlider(pMachine, pImpl_->height_));
+    return new MachPhysGlider(pMachine, pImpl_->height_);
 }
 
 // virtual
@@ -221,7 +221,7 @@ void MachPhysGlider::moveAnimations(
     MexRadians maxPitchAngle = MexDegrees(20.0);
 
     // create a thrust/brake light
-    W4dPointLight* pBrakeLight = _NEW(W4dPointLight(pBrake_, MexVec3(1, 0, 0), 30));
+    W4dPointLight* pBrakeLight = new W4dPointLight(pBrake_, MexVec3(1, 0, 0), 30);
 
     pMachine()->hold(pBrakeLight, pBrake_, MexTransform3d(MexPoint3d(0, 0, -10)));
     pBrakeLight->colour(RenColour(3, 2.4, 0));
@@ -232,7 +232,7 @@ void MachPhysGlider::moveAnimations(
     pBrakeLight->visible(false);
     pBrakeLight->illuminate(pMachine());
 
-    W4dPointLight* pThrustLight = _NEW(W4dPointLight(pThrust_, MexVec3(1, 0, 0), 30));
+    W4dPointLight* pThrustLight = new W4dPointLight(pThrust_, MexVec3(1, 0, 0), 30);
 
     pMachine()->hold(pThrustLight, pThrust_, MexTransform3d(MexPoint3d(-10, 0, -5)));
     pThrustLight->colour(RenColour(3, 0, 0));
@@ -456,7 +456,7 @@ void MachPhysGlider::moveAnimations(
     if (nTimes != 0)
     {
         ASSERT(nTransforms - nTimes == 1, "transform and time numbers do not match");
-        PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(transforms[0], transforms[1], times[0]));
+        PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(transforms[0], transforms[1], times[0]);
 
         for (uint i = 1; i < nTimes; ++i)
         {
@@ -561,12 +561,12 @@ void MachPhysGlider::startBobbing(const PhysAbsoluteTime& startTime)
         const MATHEX_SCALAR refSpeed = 0.2;
         const PhysRelativeTime duration = height_ / refSpeed;
 
-        ctl_vector<MexTransform3d>* pPrepTransforms = _NEW(ctl_vector<MexTransform3d>);
+        ctl_vector<MexTransform3d>* pPrepTransforms = new ctl_vector<MexTransform3d>;
         pPrepTransforms->reserve(2);
         pPrepTransforms->push_back(startXform);
         pPrepTransforms->push_back(downXform);
 
-        ctl_vector<PhysRampAcceleration>* pPrepRampAccelerations = _NEW(ctl_vector<PhysRampAcceleration>);
+        ctl_vector<PhysRampAcceleration>* pPrepRampAccelerations = new ctl_vector<PhysRampAcceleration>;
         ;
         pPrepRampAccelerations->reserve(1);
 
@@ -596,18 +596,18 @@ void MachPhysGlider::startBobbing(const PhysAbsoluteTime& startTime)
             PhysMotionPlan::RampAccelerationsPtr prepRampAccelerationsPtr = pPrepRampAccelerations;
 
             PhysLinearTravelPlan* pTransitPlan
-                = _NEW(PhysLinearTravelPlan(prepTransformsPtr, prepRampAccelerationsPtr));
+                = new PhysLinearTravelPlan(prepTransformsPtr, prepRampAccelerationsPtr);
 
             pHip_->entityPlanForEdit().absoluteMotion(PhysMotionPlanPtr(pTransitPlan), startTime, 0, BOBBING);
         }
         else
         {
-            _DELETE(pPrepTransforms);
-            _DELETE(pPrepRampAccelerations);
+            delete pPrepTransforms;
+            delete pPrepRampAccelerations;
         }
 
         // the true bobbing animation
-        ctl_vector<MexTransform3d>* pBobTransforms = _NEW(ctl_vector<MexTransform3d>);
+        ctl_vector<MexTransform3d>* pBobTransforms = new ctl_vector<MexTransform3d>;
         pBobTransforms->reserve(3);
         pBobTransforms->push_back(downXform);
         pBobTransforms->push_back(upXform);
@@ -615,7 +615,7 @@ void MachPhysGlider::startBobbing(const PhysAbsoluteTime& startTime)
 
         const PhysRampAcceleration acce(height_, 0, 3.0, 0, duration, 0.2, 0.2, PhysRampAcceleration::BY_DISTANCE_TIME);
 
-        ctl_vector<PhysRampAcceleration>* pBobRampAccelerations = _NEW(ctl_vector<PhysRampAcceleration>);
+        ctl_vector<PhysRampAcceleration>* pBobRampAccelerations = new ctl_vector<PhysRampAcceleration>;
         pBobRampAccelerations->reserve(2);
         pBobRampAccelerations->push_back(acce);
         pBobRampAccelerations->push_back(acce);
@@ -623,7 +623,7 @@ void MachPhysGlider::startBobbing(const PhysAbsoluteTime& startTime)
         PhysMotionPlan::TransformsPtr bobTransformsPtr = pBobTransforms;
         PhysMotionPlan::RampAccelerationsPtr bobRampAccelerationsPtr = pBobRampAccelerations;
 
-        PhysLinearTravelPlan* pBobPlan = _NEW(PhysLinearTravelPlan(bobTransformsPtr, bobRampAccelerationsPtr));
+        PhysLinearTravelPlan* pBobPlan = new PhysLinearTravelPlan(bobTransformsPtr, bobRampAccelerationsPtr);
 
         static const uint repeatForever = 1000000;
         pHip_->entityPlanForEdit()
@@ -708,7 +708,7 @@ void MachPhysGlider::doFirstPersonMotionAnimations(MachPhysLocomotionMethod::Fir
                     MexTransform3d normalTransform = transform(MexDegrees(0), MexVec3(0, 1, 0), bodyPosition);
                     MexTransform3d forwardsTransform = transform(MexDegrees(-5), MexVec3(0, 1, 0), bodyPosition);
 
-                    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(currentTransform, normalTransform, 0.3));
+                    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(currentTransform, normalTransform, 0.3);
                     pPlan->add(forwardsTransform, 0.6);
 
                     PhysMotionPlanPtr planPtr(pPlan);
@@ -724,7 +724,7 @@ void MachPhysGlider::doFirstPersonMotionAnimations(MachPhysLocomotionMethod::Fir
                     MexTransform3d normalTransform = transform(MexDegrees(0), MexVec3(0, 1, 0), bodyPosition);
                     MexTransform3d forwardsTransform = transform(MexDegrees(5), MexVec3(0, 1, 0), bodyPosition);
 
-                    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(currentTransform, normalTransform, 0.3));
+                    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(currentTransform, normalTransform, 0.3);
                     pPlan->add(forwardsTransform, 0.6);
 
                     PhysMotionPlanPtr planPtr(pPlan);
@@ -741,7 +741,7 @@ void MachPhysGlider::doFirstPersonMotionAnimations(MachPhysLocomotionMethod::Fir
                     MexTransform3d normalTransform = transform(MexDegrees(0), MexVec3(1, 0, 0), bodyPosition);
                     MexTransform3d leftTransform = transform(MexDegrees(15), MexVec3(1, 0, 0), bodyPosition);
 
-                    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(currentTransform, normalTransform, 0.25));
+                    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(currentTransform, normalTransform, 0.25);
                     pPlan->add(leftTransform, 0.5);
 
                     PhysMotionPlanPtr planPtr(pPlan);
@@ -761,7 +761,7 @@ void MachPhysGlider::doFirstPersonMotionAnimations(MachPhysLocomotionMethod::Fir
                     MexTransform3d normalTransform = transform(MexDegrees(0), MexVec3(1, 0, 0), bodyPosition);
                     MexTransform3d rightTransform = transform(MexDegrees(-15), MexVec3(1, 0, 0), bodyPosition);
 
-                    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(currentTransform, normalTransform, 0.25));
+                    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(currentTransform, normalTransform, 0.25);
                     pPlan->add(rightTransform, 0.5);
 
                     PhysMotionPlanPtr planPtr(pPlan);

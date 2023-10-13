@@ -138,7 +138,7 @@ MachPhysAdministrator* MachLogAdministrator::pNewPhysAdministrator(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysAdministrator(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race(), wc));
+    return new MachPhysAdministrator(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race(), wc);
 }
 
 // virtual

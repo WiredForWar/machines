@@ -173,10 +173,10 @@ void W4dSimpleNonUniformScalePlan::doScale(const PhysRelativeTime&, RenUniformSc
 // virtual
 W4dScalePlan* W4dSimpleNonUniformScalePlan::doTransformClone(const MexTransform3d& offsetTransform) const
 {
-    return _NEW(W4dSimpleNonUniformScalePlan(
+    return new W4dSimpleNonUniformScalePlan(
         RenNonUniformScale(startScale_, offsetTransform),
         RenNonUniformScale(endScale_, offsetTransform),
-        duration()));
+        duration());
 }
 
 void W4dSimpleNonUniformScalePlan::CLASS_INVARIANT

@@ -83,7 +83,7 @@ W4dScalePlanPtr MachPhysVapourPuff::scalePlanPtr(size_t missile_level)
     const MATHEX_SCALAR finalScale = 5.5;
     const MATHEX_SCALAR duration = nFrames(missile_level) * timePerFrame() * 0.5;
 
-    static W4dScalePlanPtr scalePlanPtr_(_NEW(W4dSimpleUniformScalePlan(initialScale, finalScale, duration)));
+    static W4dScalePlanPtr scalePlanPtr_(new W4dSimpleUniformScalePlan(initialScale, finalScale, duration));
 
     return scalePlanPtr_;
 }
@@ -91,60 +91,60 @@ W4dScalePlanPtr MachPhysVapourPuff::scalePlanPtr(size_t missile_level)
 // static
 W4dMaterialPlanPtr MachPhysVapourPuff::materialPlanPtr(size_t missile_level)
 {
-    static W4dMaterialPlanPtr materialPlanPtr1 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr1 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE1),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE1).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr2 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr2 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE2),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE2).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr3 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr3 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE3),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE3).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr4 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr4 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE4),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE4).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr5 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr5 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE5),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE5).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr6 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr6 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE6),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE6).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr7 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr7 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE7),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE7).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr8 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr8 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::MISSILE_LARGE),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::MISSILE_LARGE).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr9 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr9 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::NUCLEAR_MISSILE),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::NUCLEAR_MISSILE).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr10 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr10 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::BEE_BOMB),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::BEE_BOMB).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
-    static W4dMaterialPlanPtr materialPlanPtr11 = _NEW(W4dMaterialSequencePlan(
+    static W4dMaterialPlanPtr materialPlanPtr11 = new W4dMaterialSequencePlan(
         materials(MachPhysTrailedProjectile::METAL_STING),
         PhysRelativeTime(materials(MachPhysTrailedProjectile::METAL_STING).size() * timePerFrame()),
-        W4dLOD(0)));
+        W4dLOD(0));
 
     W4dMaterialPlanPtr materialPlanPtr;
 
@@ -428,7 +428,7 @@ void MachPhysVapourPuff::addMaterial(
     }
 
     // Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
     pMaterialVec->push_back(material);
 
     // Add a counted pointer to the material vector to the argument
@@ -465,7 +465,7 @@ const PhysRelativeTime MachPhysVapourPuff::timePerFrame()
 W4dVisibilityPlanPtr MachPhysVapourPuff::visibilityPlanPtr(size_t missile_level)
 {
     // set up the visibility plan to hav ethe same duration as the material plan
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
 
     visibilityPlanPtr->add(false, materialPlanPtr(missile_level)->duration());
 

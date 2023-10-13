@@ -181,9 +181,9 @@ MachPhysEntityDamageImpl::~MachPhysEntityDamageImpl()
     if (pSmoke2_ != nullptr)
         W4dGarbageCollector::instance().add(pSmoke2_, lastSmoke2Time_ + smokeDuration_);
 
-    _DELETE(pFlame1_);
-    _DELETE(pFlame2_);
-    _DELETE(pFlame3_);
+    delete pFlame1_;
+    delete pFlame2_;
+    delete pFlame3_;
 
     TEST_INVARIANT;
 }

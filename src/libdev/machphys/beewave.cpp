@@ -144,19 +144,19 @@ const PhysRelativeTime MachPhysBeeBombWave::startBeeWave(const PhysAbsoluteTime&
     W4dEntityPlan& entityPlan = entityPlanForEdit();
 
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration);
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
     // Make a simple scale plan
     // RenNonUniformScale a(0.2, 0.2, 1);
     // RenNonUniformScale b(2.2, 2.2, 1);
-    // W4dScalePlanPtr planPtr( _NEW( W4dSimpleNonUniformScalePlan( a, b, 2.5 ) ) );
+    // W4dScalePlanPtr planPtr( new W4dSimpleNonUniformScalePlan( a, b, 2.5 ) );
 
     // Propogate thru the current model
     // propogateScalePlan( planPtr, startTime + 1.5);
     static const W4dScalePlanPtr planPtr(
-        _NEW(W4dSimpleNonUniformScalePlan(waveStartScale(), waveEndScale(), waveDuration())));
+        new W4dSimpleNonUniformScalePlan(waveStartScale(), waveEndScale(), waveDuration()));
     propogateScalePlan(planPtr, startTime + waveExpansionTimeOffset());
 
     // alpha plan
@@ -185,9 +185,9 @@ const PhysRelativeTime MachPhysBeeBombWave::startBeeWave(const PhysAbsoluteTime&
         scales.push_back(1);
         scales.push_back(0.0);
 
-        PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+        PhysScalarPlanPtr lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
 
-        W4dMaterialPlanPtr materialAlphaPlanPtr = _NEW(W4dSimpleAlphaPlan(mat, nMaterials, lineScalarPlanPtr, 1));
+        W4dMaterialPlanPtr materialAlphaPlanPtr = new W4dSimpleAlphaPlan(mat, nMaterials, lineScalarPlanPtr, 1);
         entityPlan.materialPlan(materialAlphaPlanPtr, startTime);
     }
 

@@ -69,23 +69,23 @@ MachPhysConstruction* MachLogActorMaker::newPhysConstruction(
     switch (type)
     {
         case MachLog::BEACON:
-            return _NEW(MachPhysBeacon(pParent, localTransform, hwLevel, race));
+            return new MachPhysBeacon(pParent, localTransform, hwLevel, race);
 
         case MachLog::FACTORY:
-            return _NEW(MachPhysFactory(pParent, localTransform, (MachPhys::FactorySubType)subType, hwLevel, race));
+            return new MachPhysFactory(pParent, localTransform, (MachPhys::FactorySubType)subType, hwLevel, race);
 
         case MachLog::GARRISON:
-            return _NEW(MachPhysGarrison(pParent, localTransform, hwLevel, race));
+            return new MachPhysGarrison(pParent, localTransform, hwLevel, race);
 
         case MachLog::HARDWARE_LAB:
-            return _NEW(
-                MachPhysHardwareLab(pParent, localTransform, (MachPhys::HardwareLabSubType)subType, hwLevel, race));
+            return new 
+                MachPhysHardwareLab(pParent, localTransform, (MachPhys::HardwareLabSubType)subType, hwLevel, race);
 
         case MachLog::POD:
-            return _NEW(MachPhysPod(pParent, localTransform, hwLevel, race));
+            return new MachPhysPod(pParent, localTransform, hwLevel, race);
 
         case MachLog::MINE:
-            return _NEW(MachPhysMine(pParent, localTransform, hwLevel, race));
+            return new MachPhysMine(pParent, localTransform, hwLevel, race);
 
         case MachLog::MISSILE_EMPLACEMENT:
             {
@@ -143,17 +143,17 @@ MachPhysConstruction* MachLogActorMaker::newPhysConstruction(
                         break;
                         DEFAULT_ASSERT_BAD_CASE(subType);
                 }
-                return _NEW(MachPhysMissileEmplacement(
+                return new MachPhysMissileEmplacement(
                     pParent,
                     localTransform,
                     (MachPhys::MissileEmplacementSubType)subType,
                     hwLevel,
                     race,
-                    wc));
+                    wc);
             }
 
         case MachLog::SMELTER:
-            return _NEW(MachPhysSmelter(pParent, localTransform, hwLevel, race));
+            return new MachPhysSmelter(pParent, localTransform, hwLevel, race);
 
             DEFAULT_ASSERT_BAD_CASE(type);
     }
@@ -185,28 +185,28 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
     switch (type)
     {
         case MachLog::BEACON:
-            result = _NEW(MachLogBeacon(pLogRace, hwLevel, location, angle));
+            result = new MachLogBeacon(pLogRace, hwLevel, location, angle);
             break;
 
         case MachLog::FACTORY:
-            result = _NEW(MachLogFactory((MachPhys::FactorySubType)subType, pLogRace, hwLevel, location, angle));
+            result = new MachLogFactory((MachPhys::FactorySubType)subType, pLogRace, hwLevel, location, angle);
             break;
 
         case MachLog::GARRISON:
-            result = _NEW(MachLogGarrison(pLogRace, hwLevel, location, angle));
+            result = new MachLogGarrison(pLogRace, hwLevel, location, angle);
             break;
 
         case MachLog::HARDWARE_LAB:
             result
-                = _NEW(MachLogHardwareLab((MachPhys::HardwareLabSubType)subType, pLogRace, hwLevel, location, angle));
+                = new MachLogHardwareLab((MachPhys::HardwareLabSubType)subType, pLogRace, hwLevel, location, angle);
             break;
 
         case MachLog::POD:
-            result = _NEW(MachLogPod(pLogRace, hwLevel, location, angle, MachPhys::T_ION_ORBITAL_CANNON));
+            result = new MachLogPod(pLogRace, hwLevel, location, angle, MachPhys::T_ION_ORBITAL_CANNON);
             break;
 
         case MachLog::MINE:
-            result = _NEW(MachLogMine(pLogRace, hwLevel, location, angle, MachLogMine::IGNORE_DISCOVERED_FLAG));
+            result = new MachLogMine(pLogRace, hwLevel, location, angle, MachLogMine::IGNORE_DISCOVERED_FLAG);
             break;
 
         case MachLog::MISSILE_EMPLACEMENT:
@@ -265,18 +265,18 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
                         break;
                         DEFAULT_ASSERT_BAD_CASE(subType);
                 }
-                result = _NEW(MachLogMissileEmplacement(
+                result = new MachLogMissileEmplacement(
                     (MachPhys::MissileEmplacementSubType)subType,
                     pLogRace,
                     hwLevel,
                     location,
                     angle,
-                    wc));
+                    wc);
                 break;
             }
 
         case MachLog::SMELTER:
-            result = _NEW(MachLogSmelter(pLogRace, hwLevel, location, angle));
+            result = new MachLogSmelter(pLogRace, hwLevel, location, angle);
             break;
 
             DEFAULT_ASSERT_BAD_CASE(type);
@@ -326,29 +326,29 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
     switch (type)
     {
         case MachLog::BEACON:
-            result = _NEW(MachLogBeacon(pLogRace, hwLevel, location, angle, withId));
+            result = new MachLogBeacon(pLogRace, hwLevel, location, angle, withId);
             break;
 
         case MachLog::FACTORY:
             result
-                = _NEW(MachLogFactory((MachPhys::FactorySubType)subType, pLogRace, hwLevel, location, angle, withId));
+                = new MachLogFactory((MachPhys::FactorySubType)subType, pLogRace, hwLevel, location, angle, withId);
             break;
 
         case MachLog::GARRISON:
-            result = _NEW(MachLogGarrison(pLogRace, hwLevel, location, angle, withId));
+            result = new MachLogGarrison(pLogRace, hwLevel, location, angle, withId);
             break;
 
         case MachLog::HARDWARE_LAB:
-            result = _NEW(
-                MachLogHardwareLab((MachPhys::HardwareLabSubType)subType, pLogRace, hwLevel, location, angle, withId));
+            result = new 
+                MachLogHardwareLab((MachPhys::HardwareLabSubType)subType, pLogRace, hwLevel, location, angle, withId);
             break;
 
         case MachLog::POD:
-            result = _NEW(MachLogPod(pLogRace, hwLevel, location, angle, MachPhys::T_ION_ORBITAL_CANNON, withId));
+            result = new MachLogPod(pLogRace, hwLevel, location, angle, MachPhys::T_ION_ORBITAL_CANNON, withId);
             break;
 
         case MachLog::MINE:
-            result = _NEW(MachLogMine(pLogRace, hwLevel, location, angle, MachLogMine::IGNORE_DISCOVERED_FLAG, withId));
+            result = new MachLogMine(pLogRace, hwLevel, location, angle, MachLogMine::IGNORE_DISCOVERED_FLAG, withId);
             break;
 
         case MachLog::MISSILE_EMPLACEMENT:
@@ -407,19 +407,19 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
                         break;
                         DEFAULT_ASSERT_BAD_CASE(subType);
                 }
-                result = _NEW(MachLogMissileEmplacement(
+                result = new MachLogMissileEmplacement(
                     (MachPhys::MissileEmplacementSubType)subType,
                     pLogRace,
                     hwLevel,
                     location,
                     angle,
                     wc,
-                    withId));
+                    withId);
                 break;
             }
 
         case MachLog::SMELTER:
-            result = _NEW(MachLogSmelter(pLogRace, hwLevel, location, angle, withId));
+            result = new MachLogSmelter(pLogRace, hwLevel, location, angle, withId);
             break;
 
             DEFAULT_ASSERT_BAD_CASE(type);
@@ -459,43 +459,43 @@ MachLogMachine* MachLogActorMaker::newLogMachine(
     {
         case MachLog::AGGRESSOR:
             result
-                = _NEW(MachLogAggressor((MachPhys::AggressorSubType)subType, hwLevel, swLevel, pLogRace, location, wc));
+                = new MachLogAggressor((MachPhys::AggressorSubType)subType, hwLevel, swLevel, pLogRace, location, wc);
             break;
 
         case MachLog::ADMINISTRATOR:
-            result = _NEW(MachLogAdministrator(
+            result = new MachLogAdministrator(
                 (MachPhys::AdministratorSubType)subType,
                 hwLevel,
                 swLevel,
                 pLogRace,
                 location,
-                wc));
+                wc);
             break;
 
         case MachLog::APC:
-            result = _NEW(MachLogAPC(hwLevel, swLevel, pLogRace, location));
+            result = new MachLogAPC(hwLevel, swLevel, pLogRace, location);
             break;
 
         case MachLog::CONSTRUCTOR:
             result
-                = _NEW(MachLogConstructor((MachPhys::ConstructorSubType)subType, hwLevel, swLevel, pLogRace, location));
+                = new MachLogConstructor((MachPhys::ConstructorSubType)subType, hwLevel, swLevel, pLogRace, location);
             break;
 
         case MachLog::GEO_LOCATOR:
-            result = _NEW(MachLogGeoLocator(hwLevel, swLevel, pLogRace, location));
+            result = new MachLogGeoLocator(hwLevel, swLevel, pLogRace, location);
             break;
 
         case MachLog::RESOURCE_CARRIER:
-            result = _NEW(MachLogResourceCarrier(hwLevel, swLevel, pLogRace, location));
+            result = new MachLogResourceCarrier(hwLevel, swLevel, pLogRace, location);
             break;
 
         case MachLog::SPY_LOCATOR:
-            result = _NEW(MachLogSpyLocator(hwLevel, swLevel, pLogRace, location));
+            result = new MachLogSpyLocator(hwLevel, swLevel, pLogRace, location);
             break;
 
         case MachLog::TECHNICIAN:
             result
-                = _NEW(MachLogTechnician((MachPhys::TechnicianSubType)subType, hwLevel, swLevel, pLogRace, location));
+                = new MachLogTechnician((MachPhys::TechnicianSubType)subType, hwLevel, swLevel, pLogRace, location);
             break;
 
             DEFAULT_ASSERT_BAD_CASE(type);
@@ -547,56 +547,56 @@ MachLogMachine* MachLogActorMaker::newLogMachine(
     switch (type)
     {
         case MachLog::AGGRESSOR:
-            result = _NEW(MachLogAggressor(
+            result = new MachLogAggressor(
                 (MachPhys::AggressorSubType)subType,
                 hwLevel,
                 swLevel,
                 pLogRace,
                 location,
                 wc,
-                withId));
+                withId);
             break;
 
         case MachLog::ADMINISTRATOR:
-            result = _NEW(MachLogAdministrator(
+            result = new MachLogAdministrator(
                 (MachPhys::AdministratorSubType)subType,
                 hwLevel,
                 swLevel,
                 pLogRace,
                 location,
                 wc,
-                withId));
+                withId);
             break;
 
         case MachLog::APC:
-            result = _NEW(MachLogAPC(hwLevel, swLevel, pLogRace, location, withId));
+            result = new MachLogAPC(hwLevel, swLevel, pLogRace, location, withId);
             break;
 
         case MachLog::CONSTRUCTOR:
-            result = _NEW(MachLogConstructor(
+            result = new MachLogConstructor(
                 (MachPhys::ConstructorSubType)subType,
                 hwLevel,
                 swLevel,
                 pLogRace,
                 location,
-                withId));
+                withId);
             break;
 
         case MachLog::GEO_LOCATOR:
-            result = _NEW(MachLogGeoLocator(hwLevel, swLevel, pLogRace, location, withId));
+            result = new MachLogGeoLocator(hwLevel, swLevel, pLogRace, location, withId);
             break;
 
         case MachLog::RESOURCE_CARRIER:
-            result = _NEW(MachLogResourceCarrier(hwLevel, swLevel, pLogRace, location, withId));
+            result = new MachLogResourceCarrier(hwLevel, swLevel, pLogRace, location, withId);
             break;
 
         case MachLog::SPY_LOCATOR:
-            result = _NEW(MachLogSpyLocator(hwLevel, swLevel, pLogRace, location, withId));
+            result = new MachLogSpyLocator(hwLevel, swLevel, pLogRace, location, withId);
             break;
 
         case MachLog::TECHNICIAN:
-            result = _NEW(
-                MachLogTechnician((MachPhys::TechnicianSubType)subType, hwLevel, swLevel, pLogRace, location, withId));
+            result = new 
+                MachLogTechnician((MachPhys::TechnicianSubType)subType, hwLevel, swLevel, pLogRace, location, withId);
             break;
 
             DEFAULT_ASSERT_BAD_CASE(type);
@@ -631,7 +631,7 @@ MachLogOreHolograph* MachLogActorMaker::newLogOreHolograph(
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(inLocation);
 
     MachLogOreHolograph* result = nullptr;
-    result = _NEW(MachLogOreHolograph(pLogRace, concentration, quantity, location));
+    result = new MachLogOreHolograph(pLogRace, concentration, quantity, location);
 
     /*
     if( MachLogNetwork::instance().isNetworkGame() )
@@ -670,7 +670,7 @@ MachLogOreHolograph* MachLogActorMaker::newLogOreHolograph(
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(inLocation);
 
     MachLogOreHolograph* result = nullptr;
-    result = _NEW(MachLogOreHolograph(pLogRace, concentration, quantity, location, withId));
+    result = new MachLogOreHolograph(pLogRace, concentration, quantity, location, withId);
     DEBUG_STREAM(DIAG_NETWORK, " done\n");
     return result;
 }
@@ -691,7 +691,7 @@ MachLogDebris* MachLogActorMaker::newLogDebris(
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(inLocation);
 
     MachLogDebris* result = nullptr;
-    result = _NEW(MachLogDebris(pLogRace, quantity, location, boundary));
+    result = new MachLogDebris(pLogRace, quantity, location, boundary);
     if (MachLogNetwork::instance().isNetworkGame())
     {
         MachLogNetwork::instance()
@@ -719,7 +719,7 @@ MachLogDebris* MachLogActorMaker::newLogDebris(
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(inLocation);
 
     MachLogDebris* result = nullptr;
-    result = _NEW(MachLogDebris(pLogRace, quantity, location, boundary, withId));
+    result = new MachLogDebris(pLogRace, quantity, location, boundary, withId);
     DEBUG_STREAM(DIAG_NETWORK, " done\n");
     return result;
 }
@@ -744,7 +744,7 @@ MachLogArtefact* MachLogActorMaker::newLogArtefact(int subType, const MexPoint3d
     // Adjust the height for the terrain
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(inLocation);
 
-    MachLogArtefact* result = _NEW(MachLogArtefact(subType, location, angle));
+    MachLogArtefact* result = new MachLogArtefact(subType, location, angle);
 
     if (MachLogNetwork::instance().isNetworkGame())
     {
@@ -770,7 +770,7 @@ MachLogActorMaker::newLogArtefact(int subType, const MexPoint3d& inLocation, con
     // Adjust the height for the terrain
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(inLocation);
 
-    MachLogArtefact* pResult = _NEW(MachLogArtefact(subType, location, angle, withId));
+    MachLogArtefact* pResult = new MachLogArtefact(subType, location, angle, withId);
 
     return pResult;
 }

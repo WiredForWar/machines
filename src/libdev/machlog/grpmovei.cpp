@@ -127,7 +127,7 @@ void MachLogGroupSimpleMoveImplementation::complexMove(
 
         // Construct a move operation
         MachLogMoveToOperation* pOp
-            = _NEW(MachLogMoveToOperation(pMachine, path, commandId, pathFindingPriority_ + priorityModifier));
+            = new MachLogMoveToOperation(pMachine, path, commandId, pathFindingPriority_ + priorityModifier);
 
         --priorityModifier;
 

@@ -95,12 +95,12 @@ MachLogHighUnitCountCondition* MachLogHighUnitCountCondition::newFromParser(UtlL
     int subType = 0;
     if (ot == MachLog::ARTEFACT)
         subType = atol(pParser->tokens()[6].c_str());
-    return _NEW(MachLogHighUnitCountCondition(
+    return new MachLogHighUnitCountCondition(
         pParser->tokens()[1],
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
         ot,
         atol(pParser->tokens()[5].c_str()),
-        subType));
+        subType);
 }
 
 void MachLogHighUnitCountCondition::CLASS_INVARIANT

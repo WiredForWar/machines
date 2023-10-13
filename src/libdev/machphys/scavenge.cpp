@@ -92,7 +92,7 @@ void perRead(PerIstream& istr, MachPhysScavenger& scavenger)
 void MachPhysScavenger::startScavenge(const PhysAbsoluteTime& startTime, const PhysRelativeTime& duration)
 {
     // visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
 
     entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
@@ -117,9 +117,9 @@ void MachPhysScavenger::startScavenge(const PhysAbsoluteTime& startTime, const P
 
     scales.push_back(MachPhysRandom::randomDouble(0.8, 1.2));
 
-    PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
 
-    W4dScalePlanPtr scalePlanPtr = _NEW(W4dGeneralUniformScalePlan(PhysScalarPlanPtr(pPlan)));
+    W4dScalePlanPtr scalePlanPtr = new W4dGeneralUniformScalePlan(PhysScalarPlanPtr(pPlan));
 
     entityPlanForEdit().scalePlan(scalePlanPtr, startTime);
 }

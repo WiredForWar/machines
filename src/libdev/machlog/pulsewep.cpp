@@ -44,11 +44,11 @@ MachLogLinearProjectile* MachLogPulseWeapon::createLinearProjectile(
     const MexPoint3d& targetOffset)
 {
     // HAL_STREAM("MLPulseWeapon::createLinearProjectile\n" );
-    return _NEW(MachLogPulseBlob(
+    return new MachLogPulseBlob(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
     // HAL_STREAM("MLPulseWeapon::createLinearProjectile exit\n" );
 }
 

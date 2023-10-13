@@ -173,24 +173,24 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Standard buttons...
-    pOkBtn_ = _NEW(MachGuiMenuButton(
+    pOkBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(387, 111, 578, 154),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK));
-    pDeleteBtn_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_OK);
+    pDeleteBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(387, 215, 578, 258),
         IDS_MENUBTN_DELETE,
-        MachGuiStartupScreens::BE_DELETE));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_DELETE);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(387, 312, 578, 356),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn_->defaultControl(true);
@@ -198,7 +198,7 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
     // Display save list box heading
     GuiResourceString saveHeading(IDS_MENULB_SAVEGAME);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pSaveText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pSaveText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             SAVE_LB_MINX,
@@ -206,10 +206,10 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
             SAVE_LB_MINX + font.textWidth(saveHeading.asString()),
             SAVE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SAVEGAME,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create save game list box
-    pSaveGameList_ = _NEW(MachGuiSingleSelectionListBox(
+    pSaveGameList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
@@ -219,7 +219,7 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
             SAVE_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
@@ -266,11 +266,11 @@ void MachGuiCtxSave::updateSaveGameList()
 
     // Create special [new save game] entry in list box.
     GuiResourceString newSaveGameStr(IDS_MENU_NEWSAVEGAME);
-    pNewSaveGameName_ = _NEW(MachGuiEditBoxListBoxItem(
+    pNewSaveGameName_ = new MachGuiEditBoxListBoxItem(
         pStartupScreens_,
         pSaveGameList_,
         SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH,
-        newSaveGameStr.asString()));
+        newSaveGameStr.asString());
     pNewSaveGameName_->maxChars(MAX_SAVEGAMENAME_LEN);
 
     // Add previously saved games into list box.
@@ -279,12 +279,12 @@ void MachGuiCtxSave::updateSaveGameList()
     for (uint loop = 0; loop < numSavedGames; ++loop)
     {
         MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
-        _NEW(MachGuiSaveGameListBoxItem(
+        new MachGuiSaveGameListBoxItem(
             pStartupScreens_,
             pSaveGameList_,
             SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH,
             savedGame,
-            this));
+            this);
     }
 
     // Get list to redraw.
@@ -371,7 +371,7 @@ void MachGuiCtxSave::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
         {
             pStartupScreens_->displayMsgBox(
                 IDS_MENUMSG_DELETESAVEDGAME,
-                _NEW(MachGuiSaveGameDeleteMessageBoxResponder(this)));
+                new MachGuiSaveGameDeleteMessageBoxResponder(this));
         }
     }
 }
@@ -444,8 +444,8 @@ bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
     if (saveSuccess)
     {
         // Store reference to save file in database file...
-        MachGuiDbSavedGame* pNewSaveGame = _NEW(
-            MachGuiDbSavedGame(saveDisplayName, savePathName.c_str(), pStartupScreens_->startupData()->scenario()));
+        MachGuiDbSavedGame* pNewSaveGame = new 
+            MachGuiDbSavedGame(saveDisplayName, savePathName.c_str(), pStartupScreens_->startupData()->scenario());
 
         if (MachGuiDatabase::instance().hasCurrentPlayer())
         {

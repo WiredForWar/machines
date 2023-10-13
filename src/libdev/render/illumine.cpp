@@ -56,7 +56,7 @@ RenIIlluminator::~RenIIlluminator()
     // No invariant test.  See note in ctor.
     // All the RenILights are owned by their corresponding RenLight and should
     // *not* be deleted.  The lighting buffer is owned by the derived class.
-    _DELETE(expansion_);
+    delete expansion_;
 }
 
 void RenIIlluminator::useLightingBuffer(RenILightingBuffer* l)
@@ -79,7 +79,7 @@ void RenIIlluminator::startFrame()
 
     // Per-vertex intensities are disabled because they're not required in Machines.
     // if (!expansion_)
-    //  expansion_ = _NEW(RenIExpandedIntensityMap(RenMesh::maxVertices()));
+    //  expansion_ = new RenIExpandedIntensityMap(RenMesh::maxVertices());
     // ASSERT(expansion_, "No expanded intensity map in illuminator.");
 
     // expansion_->checkSize(RenMesh::maxVertices());

@@ -195,7 +195,7 @@ void MachLogAggressor::doActOnClassification()
         MachClassification c = *min_element( subjects().begin(), subjects().end() );
         MachLogMachine * pTarget = MachLogMachines::instance()[ c.subjectId() ];
 
-        strategy().newOperation( _NEW( MachAttackOperation( this, pTarget ) ) );
+        strategy().newOperation( new MachAttackOperation( this, pTarget ) );
     }
 }
 */
@@ -228,7 +228,7 @@ MachPhysAggressor* MachLogAggressor::pNewPhysAggressor(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysAggressor(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race(), wc));
+    return new MachPhysAggressor(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race(), wc);
 }
 // virtual
 const MachPhysMachineData& MachLogAggressor::machineData() const

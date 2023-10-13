@@ -46,7 +46,7 @@ MachPhysArtefact::MachPhysArtefact(W4dEntity* pModel, const MachPhysArtefactData
 MachPhysArtefact::~MachPhysArtefact()
 {
     HAL_STREAM("MachPhysArtefact::DTOR " << (void*)this << std::endl);
-    _DELETE(pDamage_);
+    delete pDamage_;
     TEST_INVARIANT;
     HAL_STREAM("MachPhysArtefact::DTOR DONE " << (void*)this << std::endl);
 }
@@ -67,7 +67,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysArtefact& t)
 
 MexConvexPolygon2d* MachPhysArtefact::newGlobalBoundary() const
 {
-    MexConvexPolygon2d* pNewPoly = _NEW(MexConvexPolygon2d(artefactData().obstaclePolygon()));
+    MexConvexPolygon2d* pNewPoly = new MexConvexPolygon2d(artefactData().obstaclePolygon());
     pNewPoly->transform(pModel_->globalTransform());
 
     return pNewPoly;
@@ -78,7 +78,7 @@ void MachPhysArtefact::damageLevel(const double& percent)
     HAL_STREAM("MachPhysArtefact::damageLevel " << percent << " " << (void*)this << std::endl);
     if (percent > 0 && pDamage_ == nullptr)
     {
-        pDamage_ = _NEW(MachPhysEntityDamage(pModel_));
+        pDamage_ = new MachPhysEntityDamage(pModel_);
     }
 
     if (pDamage_ != nullptr)
@@ -88,14 +88,14 @@ void MachPhysArtefact::damageLevel(const double& percent)
         if (percent == 0.0)
         {
             HAL_STREAM(" damage level is zero so deleting pDamage " << std::endl);
-            _DELETE(pDamage_);
+            delete pDamage_;
             pDamage_ = nullptr;
         }
         if (percent <= MexEpsilon::instance())
         {
             HAL_STREAM(" damage level is <= MexEpsilon so Assert_fail " << std::endl);
             ASSERT_FAIL("zero check was not sufficient in damageLevel\n");
-            _DELETE(pDamage_);
+            delete pDamage_;
             pDamage_ = nullptr;
         }
     }

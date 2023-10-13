@@ -59,7 +59,7 @@ MachLogResearchCompleteCondition::MachLogResearchCompleteCondition(
         callBackTimeGap_ = 0;
     else
     {
-        pNotifiable_ = _NEW(MachLogResearchCompleteConditionNotifiable(race, this));
+        pNotifiable_ = new MachLogResearchCompleteConditionNotifiable(race, this);
         MachLogRaces::instance().researchTree().addMe(pNotifiable_);
     }
     TEST_INVARIANT;
@@ -71,7 +71,7 @@ MachLogResearchCompleteCondition::~MachLogResearchCompleteCondition()
     if (pNotifiable_)
     {
         MachLogRaces::instance().researchTree().removeMe(pNotifiable_);
-        _DELETE(pNotifiable_);
+        delete pNotifiable_;
     }
 }
 
@@ -99,13 +99,13 @@ MachLogResearchCompleteCondition* MachLogResearchCompleteCondition::newFromParse
     if (nTokens >= 8)
         wc = MachLogScenario::weaponCombo(pParser->tokens()[7]);
 
-    return _NEW(MachLogResearchCompleteCondition(
+    return new MachLogResearchCompleteCondition(
         pParser->tokens()[1], // keyName
         MachLogScenario::machPhysRace(pParser->tokens()[3]),
         ot,
         atol(pParser->tokens()[5].c_str()),
         subType,
-        wc));
+        wc);
 }
 
 void MachLogResearchCompleteCondition::CLASS_INVARIANT
@@ -176,7 +176,7 @@ void perRead(PerIstream& istr, MachLogResearchCompleteCondition& researchComplet
     if (hasNotifiable)
     {
         researchComplete.pNotifiable_
-            = _NEW(MachLogResearchCompleteConditionNotifiable(researchComplete.race_, &researchComplete));
+            = new MachLogResearchCompleteConditionNotifiable(researchComplete.race_, &researchComplete);
         MachLogRaces::instance().researchTree().addMe(researchComplete.pNotifiable_);
     }
     else

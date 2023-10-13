@@ -118,7 +118,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
         0,
         10000 /*pSceneManager->pDevice()->windowWidth()*/,
         10000 /*pSceneManager->pDevice()->windowHeight()*/))
-    , pImpl_(_NEW(MachInGameScreenImpl()))
+    , pImpl_(new MachInGameScreenImpl())
 {
     CB_DEPIMPL(bool, inFirstPerson_);
     CB_DEPIMPL(MachContinentMap*, pContinentMap_);
@@ -161,7 +161,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
 
     // Set up area to hold map and other buttons at top of control panel
     pMapArea_
-        = _NEW(MachGuiMapArea(this, Gui::Boundary(0, 0, MachGui::controlPanelOutXPos(), MachGui::mapAreaHeight())));
+        = new MachGuiMapArea(this, Gui::Boundary(0, 0, MachGui::controlPanelOutXPos(), MachGui::mapAreaHeight()));
     pReporter->report(10, 100); // 10% done
 
     // Set the viewport boundary for the world view window
@@ -170,16 +170,16 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     const int h = device.windowHeight();
 
     // Set up sliding control panel section
-    pControlPanel_ = _NEW(
-        MachGuiControlPanel(this, Gui::Boundary(0, MachGui::mapAreaHeight(), MachGui::controlPanelOutXPos(), h), this));
+    pControlPanel_ = new 
+        MachGuiControlPanel(this, Gui::Boundary(0, MachGui::mapAreaHeight(), MachGui::controlPanelOutXPos(), h), this);
     pReporter->report(15, 100); // 15% done
 
     // Create cameras
-    pCameras_ = _NEW(MachCameras(pSceneManager, pRoot));
+    pCameras_ = new MachCameras(pSceneManager, pRoot);
     pReporter->report(20, 100); // 20% done
 
     // Load the string table resource file
-    pStringResourceLib_ = _NEW(AfxResourceLib(SysPathName("machstrg.xml")));
+    pStringResourceLib_ = new AfxResourceLib(SysPathName("machstrg.xml"));
     GuiResourceString::resource(pStringResourceLib_);
     pReporter->report(25, 100); // 25% done
 
@@ -189,33 +189,33 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
 
     // Create the world view window
     pWorldViewWindow_
-        = _NEW(MachWorldViewWindow(this, Gui::Boundary(MachGui::controlPanelOutXPos(), 0, (w + MachGui::controlPanelOutXPos() - MachGui::controlPanelInXPos()), h), pCameras_));
+        = new MachWorldViewWindow(this, Gui::Boundary(MachGui::controlPanelOutXPos(), 0, (w + MachGui::controlPanelOutXPos() - MachGui::controlPanelInXPos()), h), pCameras_);
     pReporter->report(30, 100); // 30% done
 
     // Construct add-on piece of control panel ( top-right )
-    pControlPanelAddOn_ = _NEW(MachGuiControlPanelAddOn(this, Gui::Coord(MachGui::controlPanelOutXPos(), 0), this));
+    pControlPanelAddOn_ = new MachGuiControlPanelAddOn(this, Gui::Coord(MachGui::controlPanelOutXPos(), 0), this);
     pReporter->report(35, 100); // 35% done
 
     // Construct continent map
-    pContinentMap_ = _NEW(MachContinentMap(pMapArea_, Gui::Coord(2, 1), pCameras_, this));
+    pContinentMap_ = new MachContinentMap(pMapArea_, Gui::Coord(2, 1), pCameras_, this);
     pReporter->report(40, 100); // 40% done
 
     // Construct buttons down side of continent map
     Gui::XCoord x = pContinentMap_->absoluteBoundary().maxCorner().x();
 
-    pBmuButton_ = _NEW(MachGuiBmuButton(
+    pBmuButton_ = new MachGuiBmuButton(
         pMapArea_,
         Gui::Coord(x, 0),
         MachGui::getScaledImagePath("gui/navigate/bmus.bmp"),
         pContinentMap_->bmuText(),
         pContinentMap_,
-        this));
+        this);
     pMachinesIcon_
-        = _NEW(MachMachinesIcon(pMapArea_, Gui::Coord(x, pBmuButton_->absoluteBoundary().maxCorner().y() - 1), this));
-    pConstructionsIcon_ = _NEW(
-        MachConstructionsIcon(pMapArea_, Gui::Coord(x, pMachinesIcon_->absoluteBoundary().maxCorner().y() - 1), this));
-    pSquadronIcon_ = _NEW(
-        MachSquadronIcon(pMapArea_, Gui::Coord(x, pConstructionsIcon_->absoluteBoundary().maxCorner().y() - 1), this));
+        = new MachMachinesIcon(pMapArea_, Gui::Coord(x, pBmuButton_->absoluteBoundary().maxCorner().y() - 1), this);
+    pConstructionsIcon_ = new 
+        MachConstructionsIcon(pMapArea_, Gui::Coord(x, pMachinesIcon_->absoluteBoundary().maxCorner().y() - 1), this);
+    pSquadronIcon_ = new 
+        MachSquadronIcon(pMapArea_, Gui::Coord(x, pConstructionsIcon_->absoluteBoundary().maxCorner().y() - 1), this);
     pBmuButton_->setLayer(GuiDisplayable::LAYER2);
     pMachinesIcon_->setLayer(GuiDisplayable::LAYER2);
     pConstructionsIcon_->setLayer(GuiDisplayable::LAYER2);
@@ -223,11 +223,11 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     pReporter->report(50, 100); // 50% done
 
     // Construct single icon corral
-    pCorralSingleIcon_ = _NEW(MachGuiCorralSingleIcon(pControlPanel_, Gui::Coord(1, 0), this));
+    pCorralSingleIcon_ = new MachGuiCorralSingleIcon(pControlPanel_, Gui::Coord(1, 0), this);
 
     // Construct small command icons
     Gui::Coord smallCommandCoord(2, pCorralSingleIcon_->height() + 2);
-    pSmallCommandIcons_ = _NEW(MachSmallCommandIcons(pControlPanel_, smallCommandCoord, this));
+    pSmallCommandIcons_ = new MachSmallCommandIcons(pControlPanel_, smallCommandCoord, this);
     pReporter->report(55, 100); // 55% done
 
     // Create navigators
@@ -238,11 +238,11 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     resetContext();
 
     // Load up the 2d cursors
-    pCursors2d_ = _NEW(MachInGameCursors2d(this));
+    pCursors2d_ = new MachInGameCursors2d(this);
     pReporter->report(65, 100); // 65% done
 
     // Create first person interface
-    pFirstPerson_ = _NEW(MachGuiFirstPerson(pSceneManager, pRoot, this));
+    pFirstPerson_ = new MachGuiFirstPerson(pSceneManager, pRoot, this);
     pReporter->report(70, 100); // 70% done
 
     useFastSecondDisplay(false);
@@ -270,21 +270,21 @@ MachInGameScreen::~MachInGameScreen()
 
     // Delete the commands
     for (Commands::iterator it = allCommands_.begin(); it != allCommands_.end(); ++it)
-        _DELETE(*it);
+        delete *it;
 
     // Delete various bits and pieces
-    _DELETE(pActiveCommand_);
-    _DELETE(pDefaultCommand_);
-    _DELETE(pCursors2d_);
-    _DELETE(pCameras_);
-    _DELETE(pFirstPerson_);
+    delete pActiveCommand_;
+    delete pDefaultCommand_;
+    delete pCursors2d_;
+    delete pCameras_;
+    delete pFirstPerson_;
 
     // Unload the string table resource file
     GuiResourceString::clearResource();
-    _DELETE(pStringResourceLib_);
+    delete pStringResourceLib_;
 
     // Delete implementation class
-    _DELETE(pImpl_);
+    delete pImpl_;
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::DTOR leave" << std::endl);
 }
@@ -318,9 +318,9 @@ void MachInGameScreen::doBecomeRoot()
         setupCorralAndCommandIcons();
         // Clean up production and hw-research banks before resetting context, this
         // will ensure that they are recreated.
-        _DELETE(pProductionBank_);
+        delete pProductionBank_;
         pProductionBank_ = nullptr;
-        _DELETE(pHWResearchBank_);
+        delete pHWResearchBank_;
         pHWResearchBank_ = nullptr;
         // Change context to same context but get code to recreate the
         // gui controls relevant to that context.
@@ -739,40 +739,40 @@ void MachInGameScreen::initialiseAllCommands()
     CB_DEPIMPL(Commands, allCommands_);
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::initialiseAllCommands" << std::endl << std::flush);
-    pDefaultCommand_ = _NEW(MachGuiDefaultCommand(this));
+    pDefaultCommand_ = new MachGuiDefaultCommand(this);
 
     // Commands with special icon processing
-    pSelfDestructCommand_ = _NEW(MachGuiSelfDestructCommand(this));
-    pIonAttackCommand_ = _NEW(MachGuiIonAttackCommand(this));
-    pNukeAttackCommand_ = _NEW(MachGuiNukeAttackCommand(this));
-    pDefconCommand_ = _NEW(MachGuiDefconCommand(this));
+    pSelfDestructCommand_ = new MachGuiSelfDestructCommand(this);
+    pIonAttackCommand_ = new MachGuiIonAttackCommand(this);
+    pNukeAttackCommand_ = new MachGuiNukeAttackCommand(this);
+    pDefconCommand_ = new MachGuiDefconCommand(this);
 
     allCommands_.push_back(pSelfDestructCommand_);
-    allCommands_.push_back(_NEW(MachGuiMoveCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiStopCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiAttackCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiConstructCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiRepairCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiCaptureCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiDeconstructCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiRecycleCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiLocateToCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiDropLandMineCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiRefillLandMineCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiDeployCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiPatrolCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiTransportCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiPickUpCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiScavengeCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiTreacheryCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiFormSquadronCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiHealCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiStandGroundCommand(this)));
-    allCommands_.push_back(_NEW(MachGuiAssemblyPointCommand(this)));
+    allCommands_.push_back(new MachGuiMoveCommand(this));
+    allCommands_.push_back(new MachGuiStopCommand(this));
+    allCommands_.push_back(new MachGuiAttackCommand(this));
+    allCommands_.push_back(new MachGuiConstructCommand(this));
+    allCommands_.push_back(new MachGuiRepairCommand(this));
+    allCommands_.push_back(new MachGuiCaptureCommand(this));
+    allCommands_.push_back(new MachGuiDeconstructCommand(this));
+    allCommands_.push_back(new MachGuiRecycleCommand(this));
+    allCommands_.push_back(new MachGuiLocateToCommand(this));
+    allCommands_.push_back(new MachGuiDropLandMineCommand(this));
+    allCommands_.push_back(new MachGuiRefillLandMineCommand(this));
+    allCommands_.push_back(new MachGuiDeployCommand(this));
+    allCommands_.push_back(new MachGuiPatrolCommand(this));
+    allCommands_.push_back(new MachGuiTransportCommand(this));
+    allCommands_.push_back(new MachGuiPickUpCommand(this));
+    allCommands_.push_back(new MachGuiScavengeCommand(this));
+    allCommands_.push_back(new MachGuiTreacheryCommand(this));
+    allCommands_.push_back(new MachGuiFormSquadronCommand(this));
+    allCommands_.push_back(new MachGuiHealCommand(this));
+    allCommands_.push_back(new MachGuiStandGroundCommand(this));
+    allCommands_.push_back(new MachGuiAssemblyPointCommand(this));
     allCommands_.push_back(pIonAttackCommand_);
     allCommands_.push_back(pNukeAttackCommand_);
     allCommands_.push_back(pDefconCommand_);
-    allCommands_.push_back(_NEW(MachGuiCamouflageCommand(this)));
+    allCommands_.push_back(new MachGuiCamouflageCommand(this));
 
     DEBUG_STREAM(DIAG_NEIL, "allcommands.size " << allCommands_.size() << std::endl << std::flush);
 }
@@ -802,7 +802,7 @@ void MachInGameScreen::activateDefaultCommand()
     if (pActiveCommand_ != nullptr)
     {
         pActiveCommand_->finish();
-        _DELETE(pActiveCommand_);
+        delete pActiveCommand_;
         pActiveCommand_ = nullptr;
     }
 
@@ -833,7 +833,7 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
         if (pActiveCommand_ != nullptr)
         {
             pActiveCommand_->finish();
-            _DELETE(pActiveCommand_);
+            delete pActiveCommand_;
             pActiveCommand_ = nullptr;
         }
 
@@ -1810,7 +1810,7 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
             case MachGui::CONSTRUCT_COMMAND:
                 {
                     // Construct the construction selection menu
-                    pConstructMenu_ = _NEW(MachConstructMenu(pControlPanel_, Gui::Coord(1, 0), this));
+                    pConstructMenu_ = new MachConstructMenu(pControlPanel_, Gui::Coord(1, 0), this);
                     pConstructMenu_->initialise();
                     break;
                 }
@@ -1822,7 +1822,7 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
 
                     size_t yPos = sciCoord.y() + 2;
 
-                    pBuildMenu_ = _NEW(MachBuildMenu(pControlPanel_, pProductionBank_, Gui::Coord(1, yPos), this));
+                    pBuildMenu_ = new MachBuildMenu(pControlPanel_, pProductionBank_, Gui::Coord(1, yPos), this);
                     pBuildMenu_->initialise();
 
                     GuiResourceString promptString(IDS_BUILD_START);
@@ -1840,7 +1840,7 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
                     size_t yPos = sciCoord.y() + 2;
 
                     pHWResearchMenu_
-                        = _NEW(MachHWResearchMenu(pControlPanel_, pHWResearchBank_, Gui::Coord(1, yPos), this));
+                        = new MachHWResearchMenu(pControlPanel_, pHWResearchBank_, Gui::Coord(1, yPos), this);
                     pHWResearchMenu_->initialise();
 
                     GuiResourceString promptString(IDS_RESEARCHLEVEL_START);
@@ -1866,21 +1866,21 @@ void MachInGameScreen::resetContext()
     if (pConstructMenu_ != nullptr)
     {
         pControlPanel_->redrawArea(*pConstructMenu_);
-        _DELETE(pConstructMenu_);
+        delete pConstructMenu_;
         pConstructMenu_ = nullptr;
     }
 
     if (pBuildMenu_ != nullptr)
     {
         pControlPanel_->redrawArea(*pBuildMenu_);
-        _DELETE(pBuildMenu_);
+        delete pBuildMenu_;
         pBuildMenu_ = nullptr;
     }
 
     if (pHWResearchMenu_ != nullptr)
     {
         pControlPanel_->redrawArea(*pHWResearchMenu_);
-        _DELETE(pHWResearchMenu_);
+        delete pHWResearchMenu_;
         pHWResearchMenu_ = nullptr;
     }
 }
@@ -2183,7 +2183,7 @@ void MachInGameScreen::setupActorBank()
     if (pProductionBank_ != nullptr and ((not showProductionBank) or (pFactory != &pProductionBank_->factory())))
     {
         pControlPanel_->redrawArea(*pProductionBank_);
-        _DELETE(pProductionBank_);
+        delete pProductionBank_;
         pProductionBank_ = nullptr;
 
         DEBUG_STREAM(DIAG_NEIL, "Deleting production bank" << std::endl << std::flush);
@@ -2193,7 +2193,7 @@ void MachInGameScreen::setupActorBank()
         and ((not showHWResearchBank) or (pHardwareLab != &pHWResearchBank_->hardwareLab())))
     {
         pControlPanel_->redrawArea(*pHWResearchBank_);
-        _DELETE(pHWResearchBank_);
+        delete pHWResearchBank_;
         pHWResearchBank_ = nullptr;
 
         DEBUG_STREAM(DIAG_NEIL, "Deleting research bank" << std::endl << std::flush);
@@ -2207,7 +2207,7 @@ void MachInGameScreen::setupActorBank()
             pControlPanel_->getVisibleHeight() - MachProductionBank::height(),
             pControlPanel_->width(),
             pControlPanel_->getVisibleHeight());
-        pProductionBank_ = _NEW(MachProductionBank(pControlPanel_, bankArea, pFactory, this));
+        pProductionBank_ = new MachProductionBank(pControlPanel_, bankArea, pFactory, this);
 
         DEBUG_STREAM(DIAG_NEIL, "Creating production bank" << std::endl << std::flush);
     }
@@ -2218,7 +2218,7 @@ void MachInGameScreen::setupActorBank()
             pControlPanel_->getVisibleHeight() - MachHWResearchBank::reqHeight(),
             pControlPanel_->width(),
             pControlPanel_->getVisibleHeight());
-        pHWResearchBank_ = _NEW(MachHWResearchBank(pControlPanel_, bankArea, pHardwareLab, this));
+        pHWResearchBank_ = new MachHWResearchBank(pControlPanel_, bankArea, pHardwareLab, this);
 
         DEBUG_STREAM(DIAG_NEIL, "Creating research bank" << std::endl << std::flush);
     }
@@ -2460,13 +2460,13 @@ void MachInGameScreen::loadGame(const string& planet)
         const int chatMessagesX = 202 * MachGui::uiScaleFactor();
         const int chatMessagesY = 0 * MachGui::uiScaleFactor();
 
-        pChatMessageDisplay_ = _NEW(MachGuiInGameChatMessagesDisplay(
+        pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(
             this,
             Gui::Box(
                 Gui::Coord(chatMessagesX, chatMessagesY),
                 MachGuiInGameChatMessages::reqWidth(),
                 MachGuiInGameChatMessages::reqHeight()),
-            &worldViewWindow()));
+            &worldViewWindow());
     }
 
     gameState_ = PLAYING;
@@ -2500,7 +2500,7 @@ void MachInGameScreen::unloadGame()
     inFirstPerson_ = false;
 
     // Clean up chat message area
-    _DELETE(pChatMessageDisplay_);
+    delete pChatMessageDisplay_;
     pChatMessageDisplay_ = nullptr;
 }
 
@@ -2819,7 +2819,7 @@ void MachInGameScreen::loadSavedGame(const string& planet, PerIstream& inStream)
 
     if (MachLogNetwork::instance().isNetworkGame())
     {
-        pChatMessageDisplay_ = _NEW(MachGuiInGameChatMessagesDisplay(this, Gui::Box(202, 0, 640, 37)));
+        pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(this, Gui::Box(202, 0, 640, 37));
     }
 
     gameState_ = PLAYING;
@@ -2866,23 +2866,23 @@ void MachInGameScreen::setupCameraScrollAreas()
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(MachCameras*, pCameras_);
 
-    _DELETE(pTopCameraScrollArea_);
-    _DELETE(pBottomCameraScrollArea_);
-    _DELETE(pLeftCameraScrollArea_);
-    _DELETE(pRightCameraScrollArea_);
+    delete pTopCameraScrollArea_;
+    delete pBottomCameraScrollArea_;
+    delete pLeftCameraScrollArea_;
+    delete pRightCameraScrollArea_;
 
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();
     const int h = device.windowHeight();
 
     pTopCameraScrollArea_
-        = _NEW(MachGuiCameraScrollArea(this, Gui::Box(0, 0, w, 1), MachGuiCameraScrollArea::Top, pCameras_, this));
-    pBottomCameraScrollArea_ = _NEW(
-        MachGuiCameraScrollArea(this, Gui::Box(0, h - 1, w, h), MachGuiCameraScrollArea::Bottom, pCameras_, this));
+        = new MachGuiCameraScrollArea(this, Gui::Box(0, 0, w, 1), MachGuiCameraScrollArea::Top, pCameras_, this);
+    pBottomCameraScrollArea_ = new 
+        MachGuiCameraScrollArea(this, Gui::Box(0, h - 1, w, h), MachGuiCameraScrollArea::Bottom, pCameras_, this);
     pLeftCameraScrollArea_
-        = _NEW(MachGuiCameraScrollArea(this, Gui::Box(0, 0, 1, h), MachGuiCameraScrollArea::Left, pCameras_, this));
-    pRightCameraScrollArea_ = _NEW(
-        MachGuiCameraScrollArea(this, Gui::Box(w - 1, 0, w, h), MachGuiCameraScrollArea::Right, pCameras_, this));
+        = new MachGuiCameraScrollArea(this, Gui::Box(0, 0, 1, h), MachGuiCameraScrollArea::Left, pCameras_, this);
+    pRightCameraScrollArea_ = new 
+        MachGuiCameraScrollArea(this, Gui::Box(w - 1, 0, w, h), MachGuiCameraScrollArea::Right, pCameras_, this);
 }
 
 void MachInGameScreen::setupPromptText()
@@ -2899,11 +2899,11 @@ void MachInGameScreen::setupPromptText()
     // Construct the prompt text displayable
     if (pPromptText_ == nullptr)
     {
-        pPromptText_ = _NEW(MachPromptText(
+        pPromptText_ = new MachPromptText(
             this,
             Gui::Boundary(controlPanelXPos_, h + MachGui::promptTextYOffset(), w, h),
             pCameras_,
-            &worldViewWindow()));
+            &worldViewWindow());
     }
 
     // Move prompt text
@@ -2926,13 +2926,13 @@ void MachInGameScreen::setupNavigators()
         Gui::Coord navTopLeft(1, pControlPanel_->getVisibleHeight() - MachGuiNavigatorBase::reqHeight());
 
         // Construct machine navigator
-        pMachineNavigation_ = _NEW(MachGuiMachineNavigator(pControlPanel_, navTopLeft, this));
+        pMachineNavigation_ = new MachGuiMachineNavigator(pControlPanel_, navTopLeft, this);
 
         // Construct construction navigator
-        pConstructionNavigation_ = _NEW(MachGuiConstructionNavigator(pControlPanel_, navTopLeft, this));
+        pConstructionNavigation_ = new MachGuiConstructionNavigator(pControlPanel_, navTopLeft, this);
 
         // Construct squadron bank
-        pSquadronBank_ = _NEW(MachGuiSquadronBank(pControlPanel_, navTopLeft, pSquadronIcon_, this));
+        pSquadronBank_ = new MachGuiSquadronBank(pControlPanel_, navTopLeft, pSquadronIcon_, this);
     }
     else
     {
@@ -2947,17 +2947,17 @@ void MachInGameScreen::setupCorralAndCommandIcons()
     CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
     CB_DEPIMPL(Actors, selectedActors_);
 
-    _DELETE(pCorral_);
-    _DELETE(pCommandIcons_);
+    delete pCorral_;
+    delete pCommandIcons_;
 
     // Construct corral
-    pCorral_ = _NEW(MachGuiCorral(pControlPanel_, Gui::Coord(1, 0), this));
+    pCorral_ = new MachGuiCorral(pControlPanel_, Gui::Coord(1, 0), this);
     pCorral_->initialise();
     pCorral_->add(selectedActors_);
 
     // Construct command icons
     Gui::Coord commandCoord(2, pCorral_->height() + 2);
-    pCommandIcons_ = _NEW(MachCommandIcons(pControlPanel_, commandCoord, this));
+    pCommandIcons_ = new MachCommandIcons(pControlPanel_, commandCoord, this);
 }
 
 void MachInGameScreen::resolutionChange()

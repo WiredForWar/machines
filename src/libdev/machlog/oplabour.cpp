@@ -48,7 +48,7 @@ MachLogLabourOperation::MachLogLabourOperation(
     const char* opName,
     MachLogOperation::OperationType opType)
     : MachLogOperation(opName, opType)
-    , pImpl_(_NEW(MachLogLabourOperationImpl(pActor, pConstr)))
+    , pImpl_(new MachLogLabourOperationImpl(pActor, pConstr))
 {
     CB_MachLogLabourOperation_DEPIMPL();
 
@@ -78,7 +78,7 @@ MachLogLabourOperation::~MachLogLabourOperation()
 
     pActor_->motionSeq().allowMoveOutOfWay(true);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogLabourOperation::doOutputOperator(std::ostream& o) const
@@ -203,7 +203,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
             }
 
             pActor_->motionSeq().stop();
-            subOperation(pActor_, _NEW(MachLogMoveAndTurnOperation(pActor_, approachPosition, constructionPosition)));
+            subOperation(pActor_, new MachLogMoveAndTurnOperation(pActor_, approachPosition, constructionPosition));
 
             return 0.0;
         }
@@ -253,7 +253,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
                         MexRadians turnAngle
                             = MachLogSpacialManipulation::angleToTurnToFace(*pActor_, constructionCentre).asScalar();
 
-                        subOperation(pActor_, _NEW(MachLogTurnAnimation(pActor_, turnAngle)));
+                        subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnAngle));
                         interval = 0.5;
                     }
                 }
@@ -290,7 +290,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
                         pActor_->motionSeq().stop();
                         subOperation(
                             pActor_,
-                            _NEW(MachLogMoveAndTurnOperation(pActor_, actualBuildPosition, constructionPosition)));
+                            new MachLogMoveAndTurnOperation(pActor_, actualBuildPosition, constructionPosition));
                     }
                 }
             }

@@ -511,21 +511,21 @@ MachGuiCorralSingleIcon::MachGuiCorralSingleIcon(
     , isObservingActor_(false)
 {
     pIconInfo_
-        = _NEW(MachGuiCorralSingleIconInfo(this, Gui::Coord(MachGuiCorralResource::buttonWidth(), 0), pInGameScreen_));
-    pSelectInsideBuildingIcon_ = _NEW(MachGuiSelectInsideBuildingIcon(
+        = new MachGuiCorralSingleIconInfo(this, Gui::Coord(MachGuiCorralResource::buttonWidth(), 0), pInGameScreen_);
+    pSelectInsideBuildingIcon_ = new MachGuiSelectInsideBuildingIcon(
         this,
         Gui::Coord(MachGuiCorralResource::buttonWidth() + MachGuiCorralSingleIconInfo::reqWidth(), 0),
         SysPathNames(
             MachGui::getScaledImagePath("gui/misc/contents.bmp"),
             MachGui::getScaledImagePath("gui/misc/contents.bmp")),
-        pInGameScreen_));
-    pInHeadIcon_ = _NEW(MachGuiInHeadIcon(
+        pInGameScreen_);
+    pInHeadIcon_ = new MachGuiInHeadIcon(
         this,
         Gui::Coord(MachGuiCorralResource::buttonWidth() + MachGuiCorralSingleIconInfo::reqWidth(), 0),
         SysPathNames(
             MachGui::getScaledImagePath("gui/misc/red/inhead.bmp"),
             MachGui::getScaledImagePath("gui/misc/red/inhead.bmp")),
-        pInGameScreen_));
+        pInGameScreen_);
 }
 
 // virtual
@@ -574,8 +574,8 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
             isObservingActor_ = true;
 
             // Actor has changes so we need a new icon
-            _DELETE(pIcon_);
-            pIcon_ = _NEW(MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_));
+            delete pIcon_;
+            pIcon_ = new MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_);
         }
 
         pActor_ = pActor;

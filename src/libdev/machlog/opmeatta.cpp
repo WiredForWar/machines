@@ -49,7 +49,7 @@ MachLogMissileEmplacementAttackOperation::MachLogMissileEmplacementAttackOperati
     MachActor* pDirectObject,
     MachLogAttackOperation::RaceChangeTerminate rct)
     : MachLogOperation("MISSILE_EMPLACEMENT_ATTACK_OPERATION", MachLogOperation::MISSILE_EMPLACEMENT_ATTACK_OPERATION)
-    , pImpl_(_NEW(MachLogMissileEmplacementAttackOperationImpl(pActor, pDirectObject, rct)))
+    , pImpl_(new MachLogMissileEmplacementAttackOperationImpl(pActor, pDirectObject, rct))
 {
     CB_MachLogMissileEmplacementAttackOperation_DEPIMPL();
 
@@ -85,7 +85,7 @@ MachLogMissileEmplacementAttackOperation::~MachLogMissileEmplacementAttackOperat
         stopTargetting();
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogMissileEmplacementAttackOperation::doOutputOperator(std::ostream& o) const

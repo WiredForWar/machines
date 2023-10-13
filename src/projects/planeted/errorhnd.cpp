@@ -41,7 +41,7 @@ BaseAssertion::AssertionAction ErrorHandler::handleAssertionError(const BaseAsse
 {
     //  Get rid of the display so that we get the screen back
     if (ErrorHandler::instance().pDisplay_)
-        _DELETE(ErrorHandler::instance().pDisplay_);
+        delete ErrorHandler::instance().pDisplay_;
 
     ErrorHandler::instance().pDisplay_ = nullptr;
 

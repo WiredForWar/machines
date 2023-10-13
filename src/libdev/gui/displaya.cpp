@@ -29,7 +29,7 @@
 //////////////////////////////////////////////////////////////////////
 
 GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, Layer layer)
-    : pImpl_(_NEW(GuiDisplayableImpl))
+    : pImpl_(new GuiDisplayableImpl)
 {
     pImpl_->pParent_ = pParent;
     pImpl_->enabled_ = true;
@@ -87,7 +87,7 @@ GuiDisplayable::~GuiDisplayable()
 
     GuiManager::instance().isBeingDeleted(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -337,7 +337,7 @@ void GuiDisplayable::deleteChild(GuiDisplayable* pChild)
 
     if (i != allChildren_.end())
     {
-        _DELETE(*i); // Child automatically removes itself from allChildren_ collection on deletion
+        delete *i; // Child automatically removes itself from allChildren_ collection on deletion
     }
 
     POST(not hasChild(pChild));
@@ -349,7 +349,7 @@ void GuiDisplayable::deleteAllChildren()
 
     // This works because on deletion the child will remove itself from the parents child collection.
     while (allChildren_.size() != 0)
-        _DELETE(*allChildren_.begin());
+        delete *allChildren_.begin();
 }
 
 //////////////////////////////////////////////////////////////////////

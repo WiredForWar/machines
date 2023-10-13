@@ -6,7 +6,7 @@ PER_DEFINE_PERSISTENT(Class4);
 // PER_DEFINE_ENUM_PERSISTENT( Class4::Test );
 
 Class4::Class4()
-    : pC3_(_NEW(Class3()))
+    : pC3_(new Class3()))
 {
     pC1_ = pC3_;
     pC2_ = &c3_;
@@ -14,7 +14,7 @@ Class4::Class4()
 
 Class4::~Class4()
 {
-    _DELETE(pC3_);
+    delete pC3_;
 }
 
 ostream& operator<<(ostream& ostr, const Class4& t)
@@ -39,7 +39,7 @@ ostream& operator<<(ostream& ostr, const Class4& t)
 void perWrite(PerOstream& str, const Class4& ob)
 {
     str << ob.pC1_;
-    PER_WRITE_RAW_POINTER(str, ob.pC2_);
+    PER_WRITE_RAW_POINTER(str, ob.pC2_;
     str << ob.pC3_;
     str << ob.c3_;
     str << ob.val_;
@@ -47,7 +47,7 @@ void perWrite(PerOstream& str, const Class4& ob)
 
 void perRead(PerIstream& str, Class4& ob)
 {
-    _DELETE(ob.pC3_);
+    delete ob.pC3_;
 
     str >> ob.pC1_;
     PER_READ_RAW_POINTER(str, ob.pC2_);

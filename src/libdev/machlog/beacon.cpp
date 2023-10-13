@@ -95,7 +95,7 @@ MachLogBeacon::pNewPhysBeacon(MachLogRace* pRace, uint level, const MexPoint3d& 
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysBeacon(pDomain, localTransform, level, pRace->race()));
+    return new MachPhysBeacon(pDomain, localTransform, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

@@ -79,7 +79,7 @@ EXISTS(W4dEntity);
 PER_DEFINE_PERSISTENT_ABSTRACT(W4dEntity);
 
 W4dEntity::W4dEntity(W4dEntity* pParent, const W4dTransform3d& newLocalTransform, Solidity solid)
-    : pImpl_(_NEW(W4dEntityImpl(pParent, newLocalTransform, solid)))
+    : pImpl_(new W4dEntityImpl(pParent, newLocalTransform, solid))
 {
     PRE(pParent != nullptr);
     LOG_CONSTRUCTION;
@@ -95,7 +95,7 @@ W4dEntity::W4dEntity(W4dEntity* pParent, const W4dTransform3d& newLocalTransform
 }
 
 W4dEntity::W4dEntity(const W4dEntity& copyMe, W4dEntity* pParent, const W4dTransform3d& newLocalTransform)
-    : pImpl_(_NEW(W4dEntityImpl(copyMe.entityImpl(), pParent, newLocalTransform)))
+    : pImpl_(new W4dEntityImpl(copyMe.entityImpl(), pParent, newLocalTransform))
 {
     CB_W4dEntity_DEPIMPL();
 
@@ -122,7 +122,7 @@ W4dEntity::W4dEntity(const W4dEntity& copyMe, W4dEntity* pParent, const W4dTrans
         W4dEntityImpl::MeshData& meshData = (*copyMe.entityImpl().meshes_)[id];
 
         if (meshData.mesh)
-            add(_NEW(RenMeshInstance(*meshData.mesh)), sqrt(meshData.distance), id);
+            add(new RenMeshInstance(*meshData.mesh), sqrt(meshData.distance), id);
         else
             add(nullptr, sqrt(meshData.distance), id);
     }
@@ -153,7 +153,7 @@ W4dEntity::W4dEntity(const W4dEntity& copyMe, W4dEntity* pParent, const W4dTrans
 // This constructor only used for constructing W4dRoots
 
 W4dEntity::W4dEntity()
-    : pImpl_(_NEW(W4dEntityImpl()))
+    : pImpl_(new W4dEntityImpl())
 {
     CB_W4dEntity_DEPIMPL();
 
@@ -167,7 +167,7 @@ W4dEntity::W4dEntity()
 }
 
 W4dEntity::W4dEntity(W4dEntity* pParent, const W4dTransform3d& newLocalTransform, Solidity solid, NotAChild notAChild)
-    : pImpl_(_NEW(W4dEntityImpl(pParent, newLocalTransform, solid, notAChild)))
+    : pImpl_(new W4dEntityImpl(pParent, newLocalTransform, solid, notAChild))
 {
     CB_W4dEntity_DEPIMPL();
     LOG_CONSTRUCTION;
@@ -206,7 +206,7 @@ W4dEntity::~W4dEntity()
         }
         else
         {
-            _DELETE(pChild);
+            delete pChild;
         }
     }
 
@@ -229,7 +229,7 @@ W4dEntity::~W4dEntity()
     while (intersectingDomains_ != nullptr and intersectingDomains_->size() != 0)
         intersects(intersectingDomains_->back(), false);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 
     LOG_DESTRUCTION;
 }
@@ -405,7 +405,7 @@ void W4dEntity::intersects(W4dDomain* pDomain, bool intersects)
 
     // If adding an intersection, ensure we have an intersecting domains collection
     if (intersectingDomains_ == nullptr)
-        intersectingDomains_ = _NEW(W4dDomains);
+        intersectingDomains_ = new W4dDomains;
 
     W4dDomains::iterator domainPosition;
 
@@ -467,7 +467,7 @@ void W4dEntity::intersectingDomains(const W4dDomains& newDoms)
     if (!intersectingDomains_)
     {
         if (needNonZeroDomains)
-            intersectingDomains_ = _NEW(W4dDomains);
+            intersectingDomains_ = new W4dDomains;
     }
     else
     {
@@ -496,7 +496,7 @@ void W4dEntity::intersectingDomains(const W4dDomains& newDoms)
     }
     else
     {
-        _DELETE(intersectingDomains_);
+        delete intersectingDomains_;
         intersectingDomains_ = nullptr;
     }
 }
@@ -511,7 +511,7 @@ void W4dEntity::createIntersectingDomains()
 {
     CB_W4dEntity_DEPIMPL();
     PRE(not hasIntersectingDomains());
-    intersectingDomains_ = _NEW(W4dDomains);
+    intersectingDomains_ = new W4dDomains;
 }
 
 void W4dEntity::addIntersectingDomain(W4dDomain* domain)
@@ -548,7 +548,7 @@ void W4dEntity::deleteIntersectingDomains()
         (*it)->intersects(this, false);
         ++it;
     }
-    _DELETE(intersectingDomains_);
+    delete intersectingDomains_;
     intersectingDomains_ = nullptr;
 
     POST(not hasIntersectingDomains());
@@ -802,7 +802,7 @@ void W4dEntity::add(RenMeshInstance* pMesh, const W4dDistance& distance, W4dLOD 
 
     // If there's an existing mesh for this id, remove it.
     if (meshes_->size() > id)
-        _DELETE((*meshes_)[id].mesh);
+        delete (*meshes_)[id].mesh;
 
     // Ensure that the vector has at least id+1 elements.
     int newElements = id + 1 - meshes_->size();
@@ -1169,13 +1169,13 @@ W4dEntityPlan& W4dEntity::plan()
 
     // Construct the entity plan
     if (!pPlan_)
-        pPlan_ = _NEW(W4dEntityPlan);
+        pPlan_ = new W4dEntityPlan;
 
     // Construct the structure used to cache last update times for the plans
     if (pPlanUpdateTimes_ == nullptr)
     {
         PhysAbsoluteTime initTime = 0;
-        pPlanUpdateTimes_ = _NEW(W4dEntityImpl::PlanUpdateTimes);
+        pPlanUpdateTimes_ = new W4dEntityImpl::PlanUpdateTimes;
         pPlanUpdateTimes_->transformTime = initTime;
         pPlanUpdateTimes_->visibilityTime = initTime;
         pPlanUpdateTimes_->scaleTime = initTime;
@@ -1223,12 +1223,12 @@ bool W4dEntity::clearPlanIfDone()
         // Check for complete
         if (pPlan_->isDone(time) and not W4dManager::instance().hasArtificialTime())
         {
-            _DELETE(pPlan_);
+            delete pPlan_;
             pPlan_ = nullptr;
             deleted = true;
 
             // Also delete the structure used to cache last update times
-            _DELETE(pPlanUpdateTimes_);
+            delete pPlanUpdateTimes_;
             pPlanUpdateTimes_ = nullptr;
         }
     }
@@ -1451,9 +1451,9 @@ void W4dEntity::clearPlan()
     // Delete any plan
     if (pPlan_)
     {
-        _DELETE(pPlan_);
+        delete pPlan_;
         pPlan_ = nullptr;
-        _DELETE(pPlanUpdateTimes_);
+        delete pPlanUpdateTimes_;
         pPlanUpdateTimes_ = nullptr;
     }
 }
@@ -1476,7 +1476,7 @@ void W4dEntity::replaceMeshes(const W4dEntity& entity)
         const W4dEntityImpl::MeshData& meshData = *i;
 
         if (meshData.mesh)
-            add(_NEW(RenMeshInstance(*(meshData.mesh))), sqrt(meshData.distance), id);
+            add(new RenMeshInstance(*(meshData.mesh))), sqrt(meshData.distance), id;
         else
             add(nullptr, sqrt(meshData.distance), id);
 
@@ -1552,7 +1552,7 @@ void W4dEntity::boundingVolume(const MexAlignedBox3d& newBoundingVolume)
 {
     CB_W4dEntity_DEPIMPL();
     PRE(boundingVolume_ == nullptr);
-    boundingVolume_ = _NEW(MexAlignedBox3d(newBoundingVolume));
+    boundingVolume_ = new MexAlignedBox3d(newBoundingVolume);
 }
 
 const MexAlignedBox3d& W4dEntity::boundingVolume() const
@@ -1920,7 +1920,7 @@ W4dEntityScale& W4dEntity::entityScale()
     CB_W4dEntity_DEPIMPL();
     // Ensure constructed
     if (pEntityScale_ == nullptr)
-        pEntityScale_ = _NEW(W4dEntityScale());
+        pEntityScale_ = new W4dEntityScale();
 
     return *pEntityScale_;
 }
@@ -1940,7 +1940,7 @@ void W4dEntity::clearTemporaryScale(PropogateScaleFlag propogate)
         markGlobalTransformsDirty();
 
         // Delete the scale data
-        _DELETE(pEntityScale_);
+        delete pEntityScale_;
         pEntityScale_ = nullptr;
 
         // Update the not scaled flag
@@ -2128,7 +2128,7 @@ void W4dEntity::updateBoundingVolume()
             // Ensure no local copy since no scaling
             if (boundingVolume_ != nullptr)
             {
-                _DELETE(boundingVolume_);
+                delete boundingVolume_;
                 boundingVolume_ = nullptr;
             }
         }
@@ -2156,7 +2156,7 @@ void W4dEntity::updateBoundingVolume()
 
             // Use the scaled corners to set the boundary
             if (boundingVolume_ == nullptr)
-                boundingVolume_ = _NEW(MexAlignedBox3d(minCorner, maxCorner));
+                boundingVolume_ = new MexAlignedBox3d(minCorner, maxCorner);
             else
                 boundingVolume_->corners(minCorner, maxCorner);
         }
@@ -2165,7 +2165,7 @@ void W4dEntity::updateBoundingVolume()
     {
         // Ensure we have a dummy bounding volume
         if (boundingVolume_ == nullptr)
-            boundingVolume_ = _NEW(MexAlignedBox3d(MexPoint3d(0, 0, 0), MexPoint3d(0, 0, 0)));
+            boundingVolume_ = new MexAlignedBox3d(MexPoint3d(0, 0, 0), MexPoint3d(0, 0, 0));
         else
             boundingVolume_->corners(MexPoint3d(0, 0, 0), MexPoint3d(0, 0, 0));
     }
@@ -2176,7 +2176,7 @@ void W4dEntity::clearMeshes()
     CB_W4dEntity_DEPIMPL();
     while (meshes_->size() != 0)
     {
-        _DELETE(meshes_->back().mesh);
+        delete meshes_->back().mesh;
         meshes_->pop_back();
     }
     pImpl_->updateHasMeshFlag();
@@ -2261,7 +2261,7 @@ void perWrite(PerOstream& ostr, const W4dEntity& entity)
 
 void perRead(PerIstream& istr, W4dEntity& entity)
 {
-    //_DELETE( entity.pImpl_ ); //> no idea why this deleted area is referenced on models load
+    //delete entity.pImpl_; //> no idea why this deleted area is referenced on models load
     istr >> entity.pImpl_;
 
     //  This call must be made here to make sure that the entity plan
@@ -2334,7 +2334,7 @@ W4dEntity::W4dEntities* W4dEntity::childListForEdit()
 {
     CB_W4dEntity_DEPIMPL();
     if (childList_ == nullptr)
-        childList_ = _NEW(W4dEntities);
+        childList_ = new W4dEntities;
 
     return childList_;
 }
@@ -2355,7 +2355,7 @@ void W4dEntity::parseCycleTexture(UtlLineTokeniser* pParser)
 
     size_t nAnimTexture = atoi(pParser->tokens()[1].c_str());
 
-    W4dCycleMultiTextureData* pMultiTextureData = _NEW(W4dCycleMultiTextureData(nAnimTexture));
+    W4dCycleMultiTextureData* pMultiTextureData = new W4dCycleMultiTextureData(nAnimTexture);
 
     pParser->parseNextLine();
 
@@ -2372,7 +2372,7 @@ void W4dEntity::parseCycleTexture(UtlLineTokeniser* pParser)
         W4dLOD maxLod = atoi(pParser->tokens()[6].c_str());
 
         W4dCycleTextureData* pCycleTextureData
-            = _NEW(W4dCycleTextureData(textureName, startTexture, endTexture, nrepetations));
+            = new W4dCycleTextureData(textureName, startTexture, endTexture, nrepetations);
 
         pMultiTextureData->add(pCycleTextureData);
         pParser->parseNextLine();
@@ -2397,7 +2397,7 @@ void W4dEntity::parseUVTranslate(UtlLineTokeniser* pParser)
 
     MexVec2 speed(xSpeed, ySpeed);
 
-    W4dUVTranslateData* pUVTranslateData = _NEW(W4dUVTranslateData(textureName, speed, maxLod));
+    W4dUVTranslateData* pUVTranslateData = new W4dUVTranslateData(textureName, speed, maxLod);
 
     pImpl_->addAnimationData(pUVTranslateData);
 
@@ -2413,7 +2413,7 @@ void W4dEntity::parseColourPulse(UtlLineTokeniser* pParser)
 
     size_t nAnimTexture = atoi(pParser->tokens()[1].c_str());
 
-    W4dMultiColourPulseData* pMultiColourPulseData = _NEW(W4dMultiColourPulseData(nAnimTexture));
+    W4dMultiColourPulseData* pMultiColourPulseData = new W4dMultiColourPulseData(nAnimTexture);
 
     pParser->parseNextLine();
 
@@ -2441,7 +2441,7 @@ void W4dEntity::parseColourPulse(UtlLineTokeniser* pParser)
         RenColour from(rFrom / 255.0, gFrom / 255.0, bFrom / 255.0);
         RenColour to(rTo / 255.0, gTo / 255.0, bTo / 255.0);
 
-        W4dColourPulseData* pColourPulseData = _NEW(W4dColourPulseData(textureName, from, to, duration));
+        W4dColourPulseData* pColourPulseData = new W4dColourPulseData(textureName, from, to, duration);
 
         pMultiColourPulseData->add(pColourPulseData);
         pParser->parseNextLine();
@@ -2541,7 +2541,7 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
     ASSERT(pParser->tokens()[0] == "GENERIC_LIGHT", "");
     pParser->parseNextLine();
 
-    W4dLightData* pLightData = _NEW(W4dLightData("", 0));
+    W4dLightData* pLightData = new W4dLightData("", 0);
 
     bool type, scope, dummyMesh, position, colour, range, attenuations, direction, uniform, point;
 

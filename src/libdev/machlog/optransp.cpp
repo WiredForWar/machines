@@ -37,7 +37,7 @@ MachLogTransportOperation::~MachLogTransportOperation()
 
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogTransportOperation::CLASS_INVARIANT
@@ -50,7 +50,7 @@ MachLogTransportOperation::MachLogTransportOperation(
     MachLogResourceCarrier* pActor,
     MachLogResourceCarrier::StartWithPickUpOrPutDown startType)
     : MachLogOperation("TRANSPORT_OPERATION", MachLogOperation::TRANSPORT_OPERATION)
-    , pImpl_(_NEW(MachLogTransportOperationImpl(pActor)))
+    , pImpl_(new MachLogTransportOperationImpl(pActor))
 {
     CB_MachLogTransportOperation_DEPIMPL();
 
@@ -109,7 +109,7 @@ PhysRelativeTime MachLogTransportOperation::doUpdate()
         else
         {
             // HAL_STREAM("(" << pActor_->id() << ") MLTransportOp...issuing PickUpOperation\n" );
-            subOperation(pActor_, _NEW(MachLogPickUpOperation(pActor_)));
+            subOperation(pActor_, new MachLogPickUpOperation(pActor_));
             donePickUp_ = true;
             return 10.0;
         }
@@ -126,7 +126,7 @@ PhysRelativeTime MachLogTransportOperation::doUpdate()
         else
         {
             // HAL_STREAM(" using point " << whichPoint << std::endl );
-            subOperation(pActor_, _NEW(MachLogPutDownOperation(pActor_)));
+            subOperation(pActor_, new MachLogPutDownOperation(pActor_));
 
             int iterations = pActor_->iterations();
 

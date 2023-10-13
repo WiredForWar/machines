@@ -50,7 +50,7 @@ SimProcessImpl::~SimProcessImpl()
 
 SimProcess::SimProcess()
 {
-    pImpl_ = _NEW(SimProcessImpl());
+    pImpl_ = new SimProcessImpl();
 
     CB_DEPIMPL(SimActors, actors_);
     CB_DEPIMPL(SimActors, updateEveryCycleActors_);
@@ -86,7 +86,7 @@ SimProcess::~SimProcess()
         SimActor* pActor = actors_.back();
         pActor->markAsDead();
         pActor->notifyObservers(W4dSubject::DELETED);
-        _DELETE(pActor);
+        delete pActor;
     }
 
     while (updateEveryCycleActors_.size() > 0)
@@ -96,12 +96,12 @@ SimProcess::~SimProcess()
         SimActor* pActor = updateEveryCycleActors_.back();
         pActor->markAsDead();
         pActor->notifyObservers(W4dSubject::DELETED);
-        _DELETE(pActor);
+        delete pActor;
     }
     // Unregister with SimManager
     SimManager::instance().remove(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 

@@ -132,7 +132,7 @@ static PhysScalarPlanPtr createIonInensityPlan(PhysRelativeTime duration, const 
     IAIN_STREAM("  basic times:\n" << bTimes << "\n");
 
     // Should die at the end of this function.
-    PhysScalarPlanPtr basicPlan = _NEW(PhysLinearScalarPlan(bTimes, bScales));
+    PhysScalarPlanPtr basicPlan = new PhysLinearScalarPlan(bTimes, bScales);
 
     const MATHEX_SCALAR flickerFrequency = data.extras()[7];
     const MATHEX_SCALAR flickerAmplitude = data.extras()[8] / 2;
@@ -177,14 +177,14 @@ static PhysScalarPlanPtr createIonInensityPlan(PhysRelativeTime duration, const 
     IAIN_STREAM("  flicker scales:\n" << fScales << "\n");
     IAIN_STREAM("  flicker times:\n" << fTimes << "\n");
 
-    return _NEW(PhysLinearScalarPlan(fTimes, fScales));
+    return new PhysLinearScalarPlan(fTimes, fScales);
 }
 
 PhysRelativeTime
 MachPhysIonBeam::startExplosion(const PhysAbsoluteTime& startTime, const MachPhysPlanetSurface& surface)
 {
     IAIN_STREAM("Creating Ion Cannon effect.\n");
-    MachPhysBeam* pBeam = _NEW(MachPhysBeam(this, MexTransform3d()));
+    MachPhysBeam* pBeam = new MachPhysBeam(this, MexTransform3d());
     PhysRelativeTime beamDuration = pBeam->startBeam(startTime);
     IAIN_STREAM("  beamDuration=" << beamDuration << "\n");
     IAIN_STREAM("  duration()=" << duration() << "\n");
@@ -193,7 +193,7 @@ MachPhysIonBeam::startExplosion(const PhysAbsoluteTime& startTime, const MachPhy
     ASSERT(data.extras().size() == 11, "Not enough Ion Cannon weapon data extra parameters.");
 
     // create a danamic light
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(this, MexVec3(0, 0, -1), data.extras()[4]));
+    W4dUniformLight* pLight = new W4dUniformLight(this, MexVec3(0, 0, -1), data.extras()[4]);
 
     pLight->localTransform(MexPoint3d(0, 0, data.extras()[9])); // high above ground
     pLight->colour(RenColour(data.extras()[1], data.extras()[2], data.extras()[3]));
@@ -203,7 +203,7 @@ MachPhysIonBeam::startExplosion(const PhysAbsoluteTime& startTime, const MachPhy
     pLight->scope(W4dLight::DYNAMIC);
     pLight->visible(false);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
     lightVisibilityPlanPtr->add(false, beamDuration);
 
     pLight->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
@@ -212,7 +212,7 @@ MachPhysIonBeam::startExplosion(const PhysAbsoluteTime& startTime, const MachPhy
     pLight->intensityPlan(flickerPlan, startTime);
 
     // Create another light giving a very brief flash at the end.
-    W4dUniformLight* pLight2 = _NEW(W4dUniformLight(this, MexVec3(0, 0, -1), data.extras()[4]));
+    W4dUniformLight* pLight2 = new W4dUniformLight(this, MexVec3(0, 0, -1), data.extras()[4]);
 
     pLight2->localTransform(MexPoint3d(0, 0, data.extras()[9])); // high above ground
     pLight2->colour(RenColour(1.5, 0.78, 0)); // orange
@@ -222,7 +222,7 @@ MachPhysIonBeam::startExplosion(const PhysAbsoluteTime& startTime, const MachPhy
     pLight2->scope(W4dLight::DYNAMIC);
     pLight2->visible(false);
 
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr2(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr2(new W4dVisibilityPlan(false));
     lightVisibilityPlanPtr2->add(true, beamDuration - 0.2);
     lightVisibilityPlanPtr2->add(false, beamDuration - 0.1);
 

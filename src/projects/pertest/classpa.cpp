@@ -14,7 +14,7 @@ PER_DEFINE_PERSISTENT(ClassPair);
 ClassPair::ClassPair()
     : p1_(randomInt(), randomDouble())
 {
-    pP1_ = _NEW(Pair(randomInt(), randomDouble()));
+    pP1_ = new Pair(randomInt(), randomDouble());
 
     TEST_INVARIANT;
 }
@@ -23,7 +23,7 @@ ClassPair::~ClassPair()
 {
     TEST_INVARIANT;
 
-    _DELETE(pP1_);
+    delete pP1_;
 }
 
 void ClassPair::CLASS_INVARIANT

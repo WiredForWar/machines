@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogGameCreationDataImpl& t)
 }
 
 MachLogGameCreationData::MachLogGameCreationData()
-    : pImpl_(_NEW(MachLogGameCreationDataImpl))
+    : pImpl_(new MachLogGameCreationDataImpl)
 {
     pImpl_->randomStarts_ = MachLog::FIXED_START_LOCATIONS;
     pImpl_->resourcesAvailable_ = MachLog::RES_DEFAULT;
@@ -60,7 +60,7 @@ MachLogGameCreationData::MachLogGameCreationData(
     MachLog::VictoryCondition victoryCondition,
     MachLog::TechnologyLevel technologyLevel,
     const PhysAbsoluteTime& timerTickAt)
-    : pImpl_(_NEW(MachLogGameCreationDataImpl))
+    : pImpl_(new MachLogGameCreationDataImpl)
 {
     pImpl_->randomStarts_ = randomStarts;
     pImpl_->resourcesAvailable_ = resourcesAvailable;
@@ -72,7 +72,7 @@ MachLogGameCreationData::MachLogGameCreationData(
 }
 
 MachLogGameCreationData::MachLogGameCreationData(const MachLogGameCreationData& rhs)
-    : pImpl_(_NEW(MachLogGameCreationDataImpl))
+    : pImpl_(new MachLogGameCreationDataImpl)
 {
     pImpl_->randomStarts_ = rhs.randomStarts();
     pImpl_->resourcesAvailable_ = rhs.resourcesAvailable();
@@ -86,7 +86,7 @@ MachLogGameCreationData::MachLogGameCreationData(const MachLogGameCreationData& 
 MachLogGameCreationData::~MachLogGameCreationData()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogGameCreationData::CLASS_INVARIANT

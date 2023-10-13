@@ -125,7 +125,7 @@ SndMixer::SndMixer()
     SndWaveManager::instance();
     ALSound::instance();
 
-    pImpl_ = _NEW(SndMixerImpl());
+    pImpl_ = new SndMixerImpl();
 }
 
 // STATIC
@@ -153,7 +153,7 @@ void SndMixer::initialise(const SndMixerParameters& params)
     // Set the polyphony of the mixer to the desired parameter
     instance().pImpl_->polyphony_ = params.polyphony();
     instance().pImpl_->soundSystem_ = params.soundSystem();
-    instance().pImpl_->pSoundIDGenerator_ = _NEW(UtlBoundedIdGenerator(params.noOfChannels()));
+    instance().pImpl_->pSoundIDGenerator_ = new UtlBoundedIdGenerator(params.noOfChannels());
 
     instance().pImpl_->originalMasterSampleVolume_ = instance().pImpl_->hardwareMasterSampleVolume();
 
@@ -203,10 +203,10 @@ SndMixer::~SndMixer()
 
     if (pSoundIDGenerator_)
     {
-        _DELETE(pSoundIDGenerator_);
+        delete pSoundIDGenerator_;
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 //////////////////////////////////////////////////
@@ -309,7 +309,7 @@ SndSampleHandle SndMixer::playSample(const SndSampleParameters& p)
     if (soundSystem_ == SndMixerParameters::DIRECTSOUND)
     {
         // create a new DXSample passing in the sample parameters
-        pSample = _NEW(ALSample(p));
+        pSample = new ALSample(p);
     }
     else
     {
@@ -428,7 +428,7 @@ void SndMixer::freeSampleResources(const SndSampleHandle& handle)
     }
 
     // Delete the sample itself
-    _DELETE(activeSamples_[handle]);
+    delete activeSamples_[handle];
     activeSamples_[handle] = nullptr;
 
     // Free its index
@@ -450,7 +450,7 @@ void SndMixerImpl::freeAllResources()
         if (isAllocated(j))
         {
             activeSamples_[j]->stop();
-            _DELETE(activeSamples_[j]);
+            delete activeSamples_[j];
             pSoundIDGenerator_->freeId(j);
         }
         activeSamples_[j] = nullptr;
@@ -472,10 +472,10 @@ const SndWaveform& SndMixer::loadWaveform(const SndWaveformId& id, bool threeD)
     if (threeD)
     {
         MexPoint3d pos;
-        pNewParams = _NEW(SndSampleParameters(id, pos));
+        pNewParams = new SndSampleParameters(id, pos);
     }
     else
-        pNewParams = _NEW(SndSampleParameters(id));
+        pNewParams = new SndSampleParameters(id);
 
     pNewParams->setPreload(true);
 
@@ -483,10 +483,10 @@ const SndWaveform& SndMixer::loadWaveform(const SndWaveformId& id, bool threeD)
     // create it and insert it into the list of preloaded samples
     if (!hasLoadedWaveform(id))
     {
-        ALSample* pNewSample = _NEW(ALSample(*pNewParams));
+        ALSample* pNewSample = new ALSample(*pNewParams);
         ALSound::instance().preLoadedSamples_.push_back(pNewSample);
         SndWaveManager::instance().loadedSoundBuffers_.insert(id, pNewSample->alBuffer_);
-        _DELETE(pNewParams);
+        delete pNewParams;
     }
 
     SndWaveform* pWave = SndWaveManager::instance().getWaveForm(id);

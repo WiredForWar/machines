@@ -30,7 +30,7 @@ W4dStars::W4dStars(W4dEntity* pParent, RenStars::Configuration config, MATHEX_SC
 
     : W4dEntity(pParent, W4dTransform3d(), NOT_SOLID)
     , opacity_(100.0)
-    , pStars_(_NEW(RenStars(config, radius, nStars)))
+    , pStars_(new RenStars(config, radius, nStars))
 {
     // Fitting name I think.
     name("stars");
@@ -60,7 +60,7 @@ W4dStars::W4dStars(W4dEntity* pParent, RenStars::Configuration config, MATHEX_SC
     // Doesn't matter what the material is as the mesh isn't rendered.
     pMesh->addLine(minCorner, maxCorner, RenMaterial());
 
-    RenMeshInstance* pMeshInstance = _NEW(RenMeshInstance(pMesh));
+    RenMeshInstance* pMeshInstance = new RenMeshInstance(pMesh);
     // W4dEntity deletes the pointer for you.
     add(pMeshInstance, MexDouble::plusInfinity(), W4dLOD(0));
 
@@ -71,7 +71,7 @@ W4dStars::W4dStars(const W4dStars& copyMe, W4dEntity* pParent)
 
     : W4dEntity(copyMe, pParent, W4dTransform3d())
     , opacity_(copyMe.opacity())
-    , pStars_(_NEW(RenStars(copyMe.configuration(), copyMe.radius(), copyMe.nStars())))
+    , pStars_(new RenStars(copyMe.configuration(), copyMe.radius(), copyMe.nStars()))
 {
     TEST_INVARIANT;
 }
@@ -81,7 +81,7 @@ W4dStars::~W4dStars()
 {
     TEST_INVARIANT;
 
-    _DELETE(pStars_);
+    delete pStars_;
 }
 
 // VIRTUAL //

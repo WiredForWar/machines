@@ -68,7 +68,7 @@ void EnvISatelliteParams::mesh(const string* name)
 
 EnvSatellite* EnvISatelliteParams::createSatellite(W4dSceneManager*)
 {
-    EnvSatellite* result = _NEW(EnvSatellite(name_, orbit_));
+    EnvSatellite* result = new EnvSatellite(name_, orbit_);
 
     if (meshName_.length() > 0)
         result->loadMesh(meshName_, meshClut_);

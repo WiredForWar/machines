@@ -52,7 +52,7 @@ void MachPhysITrack::runAtSpeed(
     }
 
     const MexVec2 velocity(0, metersPerSecond * repeatsPerMeter_);
-    uvPlan_ = _NEW(W4dUVTranslation(duration, W4dLOD(1), velocity, initialOffset));
+    uvPlan_ = new W4dUVTranslation(duration, W4dLOD(1), velocity, initialOffset);
     W4dEntityPlan& ePlan = leg_->entityPlanForEdit();
     ePlan.uvPlan(uvPlan_, start, 0, MachPhys::MACHINE_LOCOMOTION);
 }

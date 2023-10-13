@@ -11,7 +11,7 @@
 PER_DEFINE_PERSISTENT_ABSTRACT(W4dAnimationData);
 
 W4dAnimationData::W4dAnimationData(const string& name, W4dLOD maxLod)
-    : textureName_(_NEW(string(name)))
+    : textureName_(new string(name))
     , maxLod_(maxLod)
 {
 
@@ -20,7 +20,7 @@ W4dAnimationData::W4dAnimationData(const string& name, W4dLOD maxLod)
 
 W4dAnimationData::~W4dAnimationData()
 {
-    _DELETE(textureName_);
+    delete textureName_;
     TEST_INVARIANT;
 }
 

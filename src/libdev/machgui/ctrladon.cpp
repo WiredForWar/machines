@@ -255,14 +255,14 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
             Gui::Size(MachGuiControlPanelAddOnWidth, MachGuiControlPanelAddOnHeight) * MachGui::uiScaleFactor()),
         GuiDisplayable::LAYER3)
 {
-    pImpl_ = _NEW(MachGuiControlPanelAddOnImpl());
+    pImpl_ = new MachGuiControlPanelAddOnImpl();
 
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
 
     pInGameScreen_ = pInGameScreen;
 
-    _NEW(MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0) * MachGui::uiScaleFactor(), pInGameScreen));
-    _NEW(MachGuiCameraToggleBtn(this, Gui::Coord(4, 22) * MachGui::uiScaleFactor(), pInGameScreen));
+    new MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0) * MachGui::uiScaleFactor(), pInGameScreen);
+    new MachGuiCameraToggleBtn(this, Gui::Coord(4, 22) * MachGui::uiScaleFactor(), pInGameScreen);
 
     redrawEveryFrame(true);
 
@@ -272,7 +272,7 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
 MachGuiControlPanelAddOn::~MachGuiControlPanelAddOn()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // virtual

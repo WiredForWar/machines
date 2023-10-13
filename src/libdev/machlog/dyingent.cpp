@@ -29,7 +29,7 @@ MachLogDyingEntityEvent::MachLogDyingEntityEvent(
     MachLogConstruction* pConstruction)
 
     : SimDiscreteEvent(goDeadTime + SimManager::instance().currentTime())
-    , pImpl_(_NEW(MachLogDyingEntityEventImpl))
+    , pImpl_(new MachLogDyingEntityEventImpl)
 {
     CB_MachLogDyingEntityEvent_DEPIMPL();
     // HAL_STREAM(" going dead time gap " << goDeadTime << std::endl );
@@ -69,7 +69,7 @@ MachLogDyingEntityEvent::MachLogDyingEntityEvent(
     InsideBuilding insideBuilding,
     MachLogConstruction* pConstruction)
     : SimDiscreteEvent(goDeadTime + SimManager::instance().currentTime())
-    , pImpl_(_NEW(MachLogDyingEntityEventImpl))
+    , pImpl_(new MachLogDyingEntityEventImpl)
 
 {
     CB_MachLogDyingEntityEvent_DEPIMPL();
@@ -80,7 +80,7 @@ MachLogDyingEntityEvent::MachLogDyingEntityEvent(
     // HAL_STREAM(" going dead time gap " << goDeadTime << std::endl );
     HAL_STREAM(" single Polygon Id " << singlePolygonOnly << std::endl);
     PRE((insideBuilding_ and pConstruction_) or not insideBuilding_);
-    //  PolygonId* pPolygonId = _NEW( PolygonId( singlePolygonOnly ) );
+    //  PolygonId* pPolygonId = new PolygonId( singlePolygonOnly );
     //  HAL_STREAM(" created new PolygonId address (void*) " << (void*)pPolygonId << std::endl );
     polygons_.push_back(singlePolygonOnly);
     // HAL_STREAM(" **polygons.begin() " << (**polygons_.begin() ) << std::endl );
@@ -119,7 +119,7 @@ MachLogDyingEntityEvent::~MachLogDyingEntityEvent()
     }
 
     HAL_STREAM(" done..physObject will now go out of scope\n");
-    _DELETE(pImpl_);
+    delete pImpl_;
     TEST_INVARIANT;
 }
 
@@ -127,7 +127,7 @@ MachLogDyingEntityEvent::~MachLogDyingEntityEvent()
 void MachLogDyingEntityEvent::execute()
 {
     // HAL_STREAM("MLDyingEntity::execute\n" );
-    //   _DELETE( this );
+    //   delete this;
 }
 
 void MachLogDyingEntityEvent::CLASS_INVARIANT

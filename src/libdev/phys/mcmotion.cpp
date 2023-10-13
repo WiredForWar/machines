@@ -50,7 +50,7 @@ PhysMotionControl::~PhysMotionControl()
 {
     ASSERT(find(allControls_.begin(), allControls_.end(), this) != allControls_.end(), logic_error());
     allControls_.remove(this);
-    _DELETE(pMotionControlled_);
+    delete pMotionControlled_;
 }
 
 static void update_ctrl(PhysMotionControl* ctrl)

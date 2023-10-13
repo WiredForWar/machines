@@ -116,7 +116,7 @@ bool MachGuiAssemblyPointCommand::doApply(MachActor* pActor, string*)
 // virtual
 MachGuiCommand* MachGuiAssemblyPointCommand::clone() const
 {
-    return _NEW(MachGuiAssemblyPointCommand(&inGameScreen()));
+    return new MachGuiAssemblyPointCommand(&inGameScreen());
 }
 
 // virtual

@@ -71,7 +71,7 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
     {
         case POINT:
             W4dPointLight* pPointLight;
-            pPointLight = _NEW(W4dPointLight(pEntity, position_, maxRange_));
+            pPointLight = new W4dPointLight(pEntity, position_, maxRange_);
             pPointLight->constantAttenuation(attenuations_[0]);
             pPointLight->linearAttenuation(attenuations_[1]);
             pPointLight->quadraticAttenuation(attenuations_[2]);
@@ -80,7 +80,7 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
 
         case UNIFORM:
             W4dUniformLight* pUniformLight;
-            pUniformLight = _NEW(W4dUniformLight(pEntity, position_, maxRange_));
+            pUniformLight = new W4dUniformLight(pEntity, position_, maxRange_);
             pUniformLight->constantAttenuation(attenuations_[0]);
             pUniformLight->linearAttenuation(attenuations_[1]);
             pUniformLight->quadraticAttenuation(attenuations_[2]);
@@ -89,7 +89,7 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
 
         case DIRECTIONAL:
             W4dDirectionalLight* pDirectionalLight;
-            pDirectionalLight = _NEW(W4dDirectionalLight(pEntity, direction_));
+            pDirectionalLight = new W4dDirectionalLight(pEntity, direction_);
             pLight = pDirectionalLight;
             break;
     }
@@ -187,7 +187,7 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
     {
         ASSERT(intensities_.size() - nTimes == 1, "");
 
-        PhysLinearScalarPlan* pPlan = _NEW(PhysLinearScalarPlan(times_, intensities_));
+        PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times_, intensities_);
         PhysScalarPlanPtr intensityPlanPtr = pPlan;
         pLight->intensityPlan(intensityPlanPtr, startTime, 1000000);
     }

@@ -22,8 +22,8 @@ Persistence& Persistence::instance()
 }
 
 Persistence::Persistence()
-    : pImplementationWrite_(_NEW(PersistenceImplementationWrite))
-    , pImplementationRead_(_NEW(PersistenceImplementationRead))
+    : pImplementationWrite_(new PersistenceImplementationWrite)
+    , pImplementationRead_(new PersistenceImplementationRead)
 {
     TEST_INVARIANT;
 }
@@ -32,8 +32,8 @@ Persistence::~Persistence()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImplementationWrite_);
-    _DELETE(pImplementationRead_);
+    delete pImplementationWrite_;
+    delete pImplementationRead_;
 
     pImplementationRead_ = nullptr;
     pImplementationWrite_ = nullptr;
@@ -245,7 +245,7 @@ void Persistence::CLASS_INVARIANT
         if (Persistence::instance().readPointerPre(istr, _REINTERPRET_CAST(void**, &pOb), #TYPE)                       \
             == Persistence::READ_OBJECT)                                                                               \
         {                                                                                                              \
-            istr >> *_NEW(TYPE);                                                                                       \
+            istr >> *new TYPE;                                                                                       \
         }                                                                                                              \
         Persistence::instance().readPointerPost(istr, _REINTERPRET_CAST(void**, &pOb), #TYPE);                         \
         return istr;                                                                                                   \

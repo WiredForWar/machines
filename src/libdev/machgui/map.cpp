@@ -265,21 +265,21 @@ MachContinentMap::MachContinentMap(
     selectedAttackedMachineImage().enableColourKeying();
     selectedAttackedPodImage().enableColourKeying();
 
-    pBmuText_ = _NEW(MachGuiBmuText(this, Gui::Coord(1, 1) * MachGui::uiScaleFactor()));
+    pBmuText_ = new MachGuiBmuText(this, Gui::Coord(1, 1) * MachGui::uiScaleFactor());
 
-    pTerrainOnOffButton_ = _NEW(MachGuiTerrainOnOffButton(
+    pTerrainOnOffButton_ = new MachGuiTerrainOnOffButton(
         this,
         Gui::Coord(width() - MachGuiTerrainOnOffButton::reqWidth(), height() - MachGuiTerrainOnOffButton::reqHeight()),
         this,
-        pInGameScreen_));
-    pMapModeButton_ = _NEW(MachGuiMapModeButton(
+        pInGameScreen_);
+    pMapModeButton_ = new MachGuiMapModeButton(
         this,
         Gui::Coord(
             width() - MachGuiTerrainOnOffButton::reqWidth() - MachGuiMapModeButton::reqWidth()
                 + 1 /* 1 pixel overlap */,
             height() - MachGuiMapModeButton::reqHeight()),
         this,
-        pInGameScreen_));
+        pInGameScreen_);
 
     useFastSecondDisplay(false);
 }

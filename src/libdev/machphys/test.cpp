@@ -1,4 +1,4 @@
-MachPhysTransporter* pTransporter = _NEW(MachPhysTransporter(pParent, transform, bodyLevel, brainLevel));
+MachPhysTransporter* pTransporter = new MachPhysTransporter(pParent, transform, bodyLevel, brainLevel);
 
 MachPhysTransporter::MachPhysTransporter(pParent, transform, bodyLevel, brainLevel)
 

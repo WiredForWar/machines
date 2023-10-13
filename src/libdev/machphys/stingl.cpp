@@ -106,7 +106,7 @@ PhysRelativeTime MachPhysLightSting::doBeDestroyedAt(const PhysAbsoluteTime& tim
                     explosionId = SID_XPLODE2_MISSILE;
                 }
                 SOUND_STREAM("Playing sting explosion at " << time << std::endl);
-                W4dGeneric* pExplosionSite = _NEW(W4dGeneric(pParent(), destructPosition));
+                W4dGeneric* pExplosionSite = new W4dGeneric(pParent(), destructPosition);
                 W4dGarbageCollector::instance().add(pExplosionSite, time + 10);
                 W4dSoundManager::instance().play(pExplosionSite, explosionId, time, 1);
 
@@ -125,10 +125,10 @@ PhysRelativeTime MachPhysLightSting::createImpactSplat(
     PhysRelativeTime duration = 0.33;
 
     // splat and aura
-    MachPhysLightStingAura* pAura = _NEW(MachPhysLightStingAura(pParent, localPosition));
+    MachPhysLightStingAura* pAura = new MachPhysLightStingAura(pParent, localPosition);
     pAura->startLightStingAura(startTime, duration);
 
-    MachPhysLightStingSplat* pSplat = _NEW(MachPhysLightStingSplat(pParent, localPosition));
+    MachPhysLightStingSplat* pSplat = new MachPhysLightStingSplat(pParent, localPosition);
     pSplat->startLightStingSplat(startTime, duration);
 
     W4dGarbageCollector::instance().add(pSplat, startTime + duration);

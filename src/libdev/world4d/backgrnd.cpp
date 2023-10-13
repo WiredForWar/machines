@@ -102,12 +102,12 @@ bool W4dReadBackground(
                     if (!meshFile.hasExtension() || meshFile.extension() == "x")
                     {
                         ASSERT(modelName.length() != 0, "No model name specified");
-                        gen = _NEW(W4dGeneric(addTo, xform));
+                        gen = new W4dGeneric(addTo, xform);
                         gen->loadSingleMesh(meshFile, modelName, scale);
                     }
                     else if (meshFile.extension() == "lod")
                     {
-                        gen = _NEW(W4dGeneric(addTo, xform));
+                        gen = new W4dGeneric(addTo, xform);
                         gen->loadLODFile(meshFile);
                     }
                     else

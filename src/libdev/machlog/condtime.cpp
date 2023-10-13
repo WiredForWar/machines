@@ -41,7 +41,7 @@ bool MachLogTimerCondition::doHasConditionBeenMet() const
 MachLogTimerCondition* MachLogTimerCondition::newFromParser(UtlLineTokeniser* pParser)
 {
     const PhysAbsoluteTime& now = SimManager::instance().currentTime();
-    return _NEW(MachLogTimerCondition(pParser->tokens()[1], atof(pParser->tokens()[2].c_str()) + now));
+    return new MachLogTimerCondition(pParser->tokens()[1], atof(pParser->tokens()[2].c_str()) + now);
 }
 
 void MachLogTimerCondition::CLASS_INVARIANT

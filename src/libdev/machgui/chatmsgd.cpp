@@ -39,7 +39,7 @@ MachGuiInGameChatMessagesDisplayImpl::MachGuiInGameChatMessagesDisplayImpl()
 
 MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(GuiDisplayable* pParent, const Gui::Box& relBox)
     : GuiDisplayable(pParent, relBox, GuiDisplayable::LAYER4)
-    , pImpl_(_NEW(MachGuiInGameChatMessagesDisplayImpl()))
+    , pImpl_(new MachGuiInGameChatMessagesDisplayImpl())
 {
     CB_DEPIMPL(GuiBitmap, textBmp_);
 
@@ -59,7 +59,7 @@ MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(
     const Gui::Box& relBox,
     GuiDisplayable* pPassEventsTo)
     : GuiDisplayable(pParent, relBox, GuiDisplayable::LAYER4)
-    , pImpl_(_NEW(MachGuiInGameChatMessagesDisplayImpl()))
+    , pImpl_(new MachGuiInGameChatMessagesDisplayImpl())
 {
     CB_DEPIMPL(GuiBitmap, textBmp_);
     CB_DEPIMPL(GuiDisplayable*, pPassEventsTo_);
@@ -81,7 +81,7 @@ MachGuiInGameChatMessagesDisplay::~MachGuiInGameChatMessagesDisplay()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiInGameChatMessagesDisplay::CLASS_INVARIANT

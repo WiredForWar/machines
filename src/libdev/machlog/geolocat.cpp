@@ -95,7 +95,7 @@ MachLogGeoLocator::pNewPhysGeoLocator(Level hwLevel, Level swLevel, MachLogRace*
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysGeoLocator(pDomain, localTransform, hwLevel, swLevel, pRace->race()));
+    return new MachPhysGeoLocator(pDomain, localTransform, hwLevel, swLevel, pRace->race());
 }
 /* //////////////////////////////////////////////////////////////// */
 

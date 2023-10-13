@@ -53,7 +53,7 @@ MachPhysFactory::MachPhysFactory(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(part(subType, level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysFactoryData(part(subType, level).data(), globalTransform())))
+    , pData_(new MachPhysFactoryData(part(subType, level).data(), globalTransform()))
     , subType_(subType)
     , level_(level)
     , pSmoke1_(nullptr)
@@ -92,7 +92,7 @@ MachPhysFactory::MachPhysFactory(W4dEntity* pParent, Id id)
         10.0,
         id.level_,
         MachPhysData::instance().factoryData(id.subType_, id.level_))
-    , pData_(_NEW(MachPhysFactoryData(MachPhysData::instance().factoryData(id.subType_, id.level_), W4dTransform3d())))
+    , pData_(new MachPhysFactoryData(MachPhysData::instance().factoryData(id.subType_, id.level_), W4dTransform3d()))
     , subType_(id.subType_)
     , level_(id.level_)
     , pSmoke1_(nullptr)
@@ -137,7 +137,7 @@ MachPhysFactory::~MachPhysFactory()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 // static
@@ -299,7 +299,7 @@ void MachPhysFactory::doWorking(bool setWorking)
                 MexTransform3d endPosition(startPosition);
                 endPosition.transform(spinTransform);
 
-                PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+                PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
                 // Add a further rotation of 120 degrees
                 endPosition.transform(spinTransform);
@@ -320,7 +320,7 @@ void MachPhysFactory::doWorking(bool setWorking)
                 MexTransform3d endPosition(startPosition);
                 endPosition.transform(spinTransform);
 
-                PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+                PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
                 // Add a further rotation of 120 degrees
                 endPosition.transform(spinTransform);
@@ -341,7 +341,7 @@ void MachPhysFactory::doWorking(bool setWorking)
                 MexTransform3d endPosition(startPosition);
                 endPosition.transform(spinTransform);
 
-                PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+                PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
                 // Add a further rotation of 120 degrees
                 endPosition.transform(spinTransform);
@@ -362,7 +362,7 @@ void MachPhysFactory::doWorking(bool setWorking)
                 MexTransform3d endPosition(startPosition);
                 endPosition.transform(spinTransform);
 
-                PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.25));
+                PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.25);
 
                 // Add a further rotation of 120 degrees
                 endPosition.transform(spinTransform);
@@ -427,7 +427,7 @@ void MachPhysFactory::dealWithSmoke()
 
                                 if (pSmoke1_ == nullptr)
                                 {
-                                    pSmoke1_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke1_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(2.2, -6.4, 12), // start Point
                                         40, // MaxHeight
@@ -435,12 +435,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_6, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke2_ == nullptr)
                                 {
-                                    pSmoke2_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke2_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(2.2, 6.4, 12), // start Point
                                         40, // MaxHeight
@@ -448,7 +448,7 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_6, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 pSmoke1_->startSmokePlume(timeNow);
@@ -463,7 +463,7 @@ void MachPhysFactory::dealWithSmoke()
 
                                 if (pSmoke1_ == nullptr)
                                 {
-                                    pSmoke1_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke1_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-5.3, 0, 24.1), // start Point
                                         40, // MaxHeight
@@ -471,7 +471,7 @@ void MachPhysFactory::dealWithSmoke()
                                         3, // nWisps
                                         12.5, // wispSize
                                         PUFF_6, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 pSmoke1_->startSmokePlume(timeNow);
@@ -490,7 +490,7 @@ void MachPhysFactory::dealWithSmoke()
 
                                 if (pSmoke1_ == nullptr)
                                 {
-                                    pSmoke1_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke1_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(0.7, -19.7, 38.3), // start Point
                                         40, // MaxHeight
@@ -498,12 +498,12 @@ void MachPhysFactory::dealWithSmoke()
                                         3, // nWisps
                                         12.5, // wispSize
                                         PUFF_6, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke2_ == nullptr)
                                 {
-                                    pSmoke2_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke2_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(0.7, 20.5, 38.3), // start Point
                                         40, // MaxHeight
@@ -511,7 +511,7 @@ void MachPhysFactory::dealWithSmoke()
                                         3, // nWisps
                                         12.5, // wispSize
                                         PUFF_6, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 pSmoke1_->startSmokePlume(timeNow);
@@ -536,7 +536,7 @@ void MachPhysFactory::dealWithSmoke()
 
                                 if (pSmoke1_ == nullptr)
                                 {
-                                    pSmoke1_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke1_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-6.2, -5.6, 22.8), // start Point
                                         40, // MaxHeight
@@ -544,12 +544,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke2_ == nullptr)
                                 {
-                                    pSmoke2_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke2_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-1.0, -5.6, 22.8), // start Point
                                         40, // MaxHeight
@@ -557,12 +557,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke3_ == nullptr)
                                 {
-                                    pSmoke3_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke3_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-1.8, 13.6, 24.1), // start Point
                                         40, // MaxHeight
@@ -570,7 +570,7 @@ void MachPhysFactory::dealWithSmoke()
                                         3, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 pSmoke1_->startSmokePlume(timeNow);
@@ -585,7 +585,7 @@ void MachPhysFactory::dealWithSmoke()
 
                                 if (pSmoke1_ == nullptr)
                                 {
-                                    pSmoke1_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke1_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-2.5, 7, 27.5), // start Point
                                         40, // MaxHeight
@@ -593,12 +593,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke2_ == nullptr)
                                 {
-                                    pSmoke2_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke2_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-10, -11.6, 29), // start Point
                                         40, // MaxHeight
@@ -606,12 +606,12 @@ void MachPhysFactory::dealWithSmoke()
                                         3, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke3_ == nullptr)
                                 {
-                                    pSmoke3_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke3_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(11.8, 14.8, 29), // start Point
                                         40, // MaxHeight
@@ -619,7 +619,7 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 pSmoke1_->startSmokePlume(timeNow);
@@ -633,7 +633,7 @@ void MachPhysFactory::dealWithSmoke()
 
                                 if (pSmoke1_ == nullptr)
                                 {
-                                    pSmoke1_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke1_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-2.8, 7.7, 34.6), // start Point
                                         40, // MaxHeight
@@ -641,12 +641,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke2_ == nullptr)
                                 {
-                                    pSmoke2_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke2_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(-4.5, -14.5, 28.1), // start Point
                                         40, // MaxHeight
@@ -654,12 +654,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke3_ == nullptr)
                                 {
-                                    pSmoke3_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke3_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(4.3, -14.5, 28.1), // start Point
                                         40, // MaxHeight
@@ -667,12 +667,12 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 if (pSmoke4_ == nullptr)
                                 {
-                                    pSmoke4_ = _NEW(MachPhysSmokePlume(
+                                    pSmoke4_ = new MachPhysSmokePlume(
                                         this, // parent
                                         MexPoint3d(13.2, -14.5, 28.1), // start Point
                                         40, // MaxHeight
@@ -680,7 +680,7 @@ void MachPhysFactory::dealWithSmoke()
                                         2, // nWisps
                                         12.5, // wispSize
                                         PUFF_5, // white puff
-                                        smokeDuration));
+                                        smokeDuration);
                                 }
 
                                 pSmoke1_->startSmokePlume(timeNow);
@@ -708,7 +708,7 @@ void MachPhysFactory::dealWithSmoke()
 
 void MachPhysFactory::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysFactoryData(MachPhysData::instance().factoryData(subType(), level()), W4dTransform3d()));
+    pData_ = new MachPhysFactoryData(MachPhysData::instance().factoryData(subType(), level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }

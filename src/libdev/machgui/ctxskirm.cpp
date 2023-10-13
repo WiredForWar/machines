@@ -251,30 +251,30 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
-    MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(302, 420, 444, 451),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_DUMMY_OK);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(472, 420, 607, 451),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn->defaultControl(true);
 
     // Scenario description
-    pScenarioDesc_ = _NEW(MachGuiScrollableText(pStartupScreens, Gui::Box(353, 288, 576, 385)));
+    pScenarioDesc_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(353, 288, 576, 385));
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(576, 288), 96, pScenarioDesc_);
 
     // Display mapsize list box heading
     GuiResourceString mapsizeHeading(IDS_MENULB_MAPSIZE);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pMapSizeText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pMapSizeText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -282,11 +282,11 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(mapsizeHeading.asString()),
             MAPSIZE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_MAPSIZE,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display planet list box heading
     GuiResourceString terrainHeading(IDS_MENULB_TERRAINTYPE);
-    MachGuiMenuText* pTerrainText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pTerrainText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -294,11 +294,11 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(terrainHeading.asString()),
             TERRAINTYPE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_TERRAINTYPE,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display scenario list box heading
     GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
-    MachGuiMenuText* pScenarioText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pScenarioText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
@@ -306,11 +306,11 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(scenarioHeading.asString()),
             SCENARIO_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SCENARIO,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display settings list box heading
     GuiResourceString settingsHeading(IDS_MENULB_SETTINGS);
-    MachGuiMenuText* pSettingsText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pSettingsText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             SETTINGS_LB_MINX,
@@ -318,18 +318,18 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             SETTINGS_LB_MINX + font.textWidth(settingsHeading.asString()),
             SETTINGS_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SETTINGS,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create system list box
-    pMapSizeList_ = _NEW(MachGuiSingleSelectionListBox(
+    pMapSizeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(LB_MINX, pMapSizeText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, MAPSIZE_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     // Create planet list box
-    pTerrainTypeList_ = _NEW(MachGuiSingleSelectionListBox(
+    pTerrainTypeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
@@ -339,18 +339,18 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             TERRAINTYPE_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     // Create scenario list box
-    pScenarioList_ = _NEW(MachGuiSingleSelectionListBox(
+    pScenarioList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SCENARIO_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
     // Create settings list box
-    pSettingsList_ = _NEW(GuiSimpleScrollableList(
+    pSettingsList_ = new GuiSimpleScrollableList(
         pStartupScreens,
         Gui::Box(
             SETTINGS_LB_MINX,
@@ -359,7 +359,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             SETTINGS_LB_MAXY),
         (SETTINGS_LB_MAXX - SETTINGS_LB_MINX) / 2,
         MachGuiDropDownListBoxCreator::reqHeight() + 1,
-        1));
+        1);
 
     initSettings();
     updateMapSizeList();
@@ -414,7 +414,7 @@ void MachGuiCtxSkirmish::updateMapSizeList()
         if (not system.nPlanets()) // skip user custom scenarios if empty
             continue;
         MachGuiMapSizeListBoxItem* pItem
-            = _NEW(MachGuiMapSizeListBoxItem(pStartupScreens_, pMapSizeList_, LB_MAXX - LB_MINX, system, this));
+            = new MachGuiMapSizeListBoxItem(pStartupScreens_, pMapSizeList_, LB_MAXX - LB_MINX, system, this);
         // Select first item in list
         if (firstItem)
         {
@@ -455,7 +455,7 @@ void MachGuiCtxSkirmish::updateTerrainTypeList(MachGuiDbSystem& system)
         MachGuiDbPlanet& planet = system.planet(loop);
 
         MachGuiTerrainTypeListBoxItem* pItem
-            = _NEW(MachGuiTerrainTypeListBoxItem(pStartupScreens_, pTerrainTypeList_, LB_MAXX - LB_MINX, planet, this));
+            = new MachGuiTerrainTypeListBoxItem(pStartupScreens_, pTerrainTypeList_, LB_MAXX - LB_MINX, planet, this);
         // Select first item in list
         if (firstItem)
         {
@@ -495,8 +495,8 @@ void MachGuiCtxSkirmish::updateScenarioList(MachGuiDbPlanet& planet)
     {
         MachGuiDbScenario& scenario = planet.scenario(loop);
 
-        MachGuiSkirmScenarioListBoxItem* pItem = _NEW(
-            MachGuiSkirmScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this));
+        MachGuiSkirmScenarioListBoxItem* pItem = new 
+            MachGuiSkirmScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this);
         // Select first item in list
         if (firstItem)
         {
@@ -641,7 +641,7 @@ MachGuiText* MachGuiCtxSkirmish::addSetting(
     GuiResourceString labelStr(labelStrId);
     GuiStrings strings;
     strings.reserve(numStrs + 1);
-    MachGuiText* pText = _NEW(MachGuiText(pSettingsList_, width, labelStr.asString()));
+    MachGuiText* pText = new MachGuiText(pSettingsList_, width, labelStr.asString());
     pText->textOffset(1, 1);
 
     while (numStrs)
@@ -657,11 +657,11 @@ MachGuiText* MachGuiCtxSkirmish::addSetting(
     if (numPlayersDropDown)
     {
         pCreator
-            = _NEW(MachGuiNumPlayersDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true));
+            = new MachGuiNumPlayersDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true);
     }
     else
     {
-        pCreator = _NEW(MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true));
+        pCreator = new MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true);
     }
 
     va_end(marker); // Reset variable arguments.
@@ -684,8 +684,8 @@ void MachGuiCtxSkirmish::updateMaxPlayersList(MachGuiDbScenario& scenario)
             hasKeyboardFocus = true;
         }
 
-        _DELETE(pNumPlayersSelector_);
-        _DELETE(pNumPlayersText_);
+        delete pNumPlayersSelector_;
+        delete pNumPlayersText_;
     }
 
     GuiResourceString str4(IDS_MENU_NUMPLAYERS4);
@@ -800,7 +800,7 @@ void MachGuiCtxSkirmish::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEv
         }
 // else
 //{
-//   pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, _NEW( MachGuiStartSkirmishMessageBoxResponder(this) ) );
+//   pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiStartSkirmishMessageBoxResponder(this) );
 // }
 #else // DEMO defined.
         pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);

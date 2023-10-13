@@ -144,7 +144,7 @@ MachPhysWeaponPersistence& MachPhysWeaponPersistence::instance()
 
 MachPhysWeaponPersistence::MachPhysWeaponPersistence()
     : root_(50000)
-    , pImpl_(_NEW(MachPhysWeaponPersistenceImpl()))
+    , pImpl_(new MachPhysWeaponPersistenceImpl())
 {
     pImpl_->pPlasmaRifle_ = nullptr;
     pImpl_->pPlasmaCannon1_ = nullptr;
@@ -223,7 +223,7 @@ MachPhysWeaponPersistence::MachPhysWeaponPersistence()
 
 MachPhysWeaponPersistence::~MachPhysWeaponPersistence()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
     TEST_INVARIANT;
 }
 
@@ -248,7 +248,7 @@ const MachPhysPlasmaWeapon& MachPhysWeaponPersistence::plasmaWeaponExemplar(Mach
     if (*ppWeapon == nullptr)
     {
         std::cout << "Make new plasma weapon" << std::endl;
-        *ppWeapon = _NEW(MachPhysPlasmaWeapon(type));
+        *ppWeapon = new MachPhysPlasmaWeapon(type);
     }
 
     return **ppWeapon;
@@ -271,7 +271,7 @@ const MachPhysFlameThrower& MachPhysWeaponPersistence::flameThrowerExemplar(Mach
 
     if (*ppWeapon == nullptr)
     {
-        *ppWeapon = _NEW(MachPhysFlameThrower(type));
+        *ppWeapon = new MachPhysFlameThrower(type);
     }
 
     return **ppWeapon;
@@ -299,7 +299,7 @@ const MachPhysBolter& MachPhysWeaponPersistence::bolterExemplar(MachPhys::Weapon
     }
 
     if (*ppWeapon == nullptr)
-        *ppWeapon = _NEW(MachPhysBolter(type));
+        *ppWeapon = new MachPhysBolter(type);
 
     return **ppWeapon;
 }
@@ -338,7 +338,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::objDemolishExemplar(MachPh
     ppObjectDemolish = &pImpl_->pObjectDemolish_;
     if (*ppObjectDemolish == nullptr)
     {
-        *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+        *ppObjectDemolish = new MachPhysObjDemolish(type);
     }
 
     return **ppObjectDemolish;
@@ -387,11 +387,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::hardwareLabDemolishExempla
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -422,11 +422,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::smelterDemolishExemplar(Ma
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -484,11 +484,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::factoryDemolishExemplar(Ma
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -558,11 +558,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::missileEmplacementDemolish
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -589,11 +589,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::garrisonDemolishExemplar(M
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -626,11 +626,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::mineDemolishExemplar(MachP
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -663,11 +663,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::beaconDemolishExemplar(Mac
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -694,11 +694,11 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::podDemolishExemplar(MachPh
         {
             MachPhys::DemolitionType notConstructionType;
             notConstructionType.objectType = MachPhys::NOT_CONSTRUCTION;
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType));
+            *ppObjectDemolish = new MachPhysObjDemolish(instance().pRoot(), MexTransform3d(), notConstructionType);
         }
         else
         {
-            *ppObjectDemolish = _NEW(MachPhysObjDemolish(type));
+            *ppObjectDemolish = new MachPhysObjDemolish(type);
         }
     }
 
@@ -724,7 +724,7 @@ const MachPhysVirusSpreader& MachPhysWeaponPersistence::virusSpreaderExemplar(Ma
     }
 
     if (*ppWeapon == nullptr)
-        *ppWeapon = _NEW(MachPhysVirusSpreader(mounting));
+        *ppWeapon = new MachPhysVirusSpreader(mounting);
 
     return **ppWeapon;
 }
@@ -748,7 +748,7 @@ const MachPhysElectroCharger& MachPhysWeaponPersistence::electroChargerExemplar(
     }
 
     if (*ppWeapon == nullptr)
-        *ppWeapon = _NEW(MachPhysElectroCharger(mounting));
+        *ppWeapon = new MachPhysElectroCharger(mounting);
 
     return **ppWeapon;
 }
@@ -785,7 +785,7 @@ const MachPhysMultiLauncher& MachPhysWeaponPersistence::multiLauncherExemplar(Ma
     }
 
     if (*ppWeapon == nullptr)
-        *ppWeapon = _NEW(MachPhysMultiLauncher(type));
+        *ppWeapon = new MachPhysMultiLauncher(type);
 
     return **ppWeapon;
 }
@@ -793,7 +793,7 @@ const MachPhysMultiLauncher& MachPhysWeaponPersistence::multiLauncherExemplar(Ma
 const MachPhysPulseRifle& MachPhysWeaponPersistence::pulseRifleExemplar()
 {
     if (pImpl_->pPulseRifle_ == nullptr)
-        pImpl_->pPulseRifle_ = _NEW(MachPhysPulseRifle());
+        pImpl_->pPulseRifle_ = new MachPhysPulseRifle();
 
     return *pImpl_->pPulseRifle_;
 }
@@ -801,7 +801,7 @@ const MachPhysPulseRifle& MachPhysWeaponPersistence::pulseRifleExemplar()
 const MachPhysPulseCannon& MachPhysWeaponPersistence::pulseCannonExemplar()
 {
     if (pImpl_->pPulseCannon_ == nullptr)
-        pImpl_->pPulseCannon_ = _NEW(MachPhysPulseCannon());
+        pImpl_->pPulseCannon_ = new MachPhysPulseCannon();
 
     return *pImpl_->pPulseCannon_;
 }
@@ -822,7 +822,7 @@ const MachPhysPulseBlob& MachPhysWeaponPersistence::pulseBlobExemplar(MachPhys::
     }
 
     if (*ppWeapon == nullptr)
-        *ppWeapon = _NEW(MachPhysPulseBlob(type));
+        *ppWeapon = new MachPhysPulseBlob(type);
 
     return **ppWeapon;
 }
@@ -830,7 +830,7 @@ const MachPhysPulseBlob& MachPhysWeaponPersistence::pulseBlobExemplar(MachPhys::
 const MachPhysTreacheryWeapon& MachPhysWeaponPersistence::treacheryWeaponExemplar()
 {
     if (pImpl_->pTreacheryWeapon_ == nullptr)
-        pImpl_->pTreacheryWeapon_ = _NEW(MachPhysTreacheryWeapon());
+        pImpl_->pTreacheryWeapon_ = new MachPhysTreacheryWeapon();
 
     return *pImpl_->pTreacheryWeapon_;
 }
@@ -838,7 +838,7 @@ const MachPhysTreacheryWeapon& MachPhysWeaponPersistence::treacheryWeaponExempla
 const MachPhysLargeMissile& MachPhysWeaponPersistence::largeMissileExemplar()
 {
     if (pImpl_->pLargeMissile_ == nullptr)
-        pImpl_->pLargeMissile_ = _NEW(MachPhysLargeMissile());
+        pImpl_->pLargeMissile_ = new MachPhysLargeMissile();
 
     return *pImpl_->pLargeMissile_;
 }
@@ -846,7 +846,7 @@ const MachPhysLargeMissile& MachPhysWeaponPersistence::largeMissileExemplar()
 const MachPhysVortexWeapon& MachPhysWeaponPersistence::vortexExemplar()
 {
     if (pImpl_->pVortex_ == nullptr)
-        pImpl_->pVortex_ = _NEW(MachPhysVortexWeapon());
+        pImpl_->pVortex_ = new MachPhysVortexWeapon();
 
     return *pImpl_->pVortex_;
 }
@@ -854,7 +854,7 @@ const MachPhysVortexWeapon& MachPhysWeaponPersistence::vortexExemplar()
 const MachPhysNuclearWeapon& MachPhysWeaponPersistence::nuclearExemplar()
 {
     if (pImpl_->pNuke_ == nullptr)
-        pImpl_->pNuke_ = _NEW(MachPhysNuclearWeapon());
+        pImpl_->pNuke_ = new MachPhysNuclearWeapon();
 
     return *pImpl_->pNuke_;
 }
@@ -862,7 +862,7 @@ const MachPhysNuclearWeapon& MachPhysWeaponPersistence::nuclearExemplar()
 const MachPhysIonWeapon& MachPhysWeaponPersistence::ionExemplar(MachPhys::WeaponType type)
 {
     if (pImpl_->pIon_ == nullptr)
-        pImpl_->pIon_ = _NEW(MachPhysIonWeapon(type));
+        pImpl_->pIon_ = new MachPhysIonWeapon(type);
 
     return *pImpl_->pIon_;
 }
@@ -883,7 +883,7 @@ const MachPhysSuperCharger& MachPhysWeaponPersistence::superChargerExemplar(Mach
     }
 
     if (*ppWeapon == nullptr)
-        *ppWeapon = _NEW(MachPhysSuperCharger(type));
+        *ppWeapon = new MachPhysSuperCharger(type);
 
     return **ppWeapon;
 }
@@ -892,7 +892,7 @@ const MachPhysPunchWeapon& MachPhysWeaponPersistence::punchExemplar()
 {
 
     if (pImpl_->pPunch_ == nullptr)
-        pImpl_->pPunch_ = _NEW(MachPhysPunchWeapon());
+        pImpl_->pPunch_ = new MachPhysPunchWeapon();
 
     return *pImpl_->pPunch_;
 }
@@ -901,7 +901,7 @@ const MachPhysBeeBomber& MachPhysWeaponPersistence::beeExemplar()
 {
 
     if (pImpl_->pBee_ == nullptr)
-        pImpl_->pBee_ = _NEW(MachPhysBeeBomber());
+        pImpl_->pBee_ = new MachPhysBeeBomber();
 
     return *pImpl_->pBee_;
 }
@@ -910,7 +910,7 @@ const MachPhysLightStingWeapon& MachPhysWeaponPersistence::lightStingExemplar()
 {
 
     if (pImpl_->pLightSting_ == nullptr)
-        pImpl_->pLightSting_ = _NEW(MachPhysLightStingWeapon());
+        pImpl_->pLightSting_ = new MachPhysLightStingWeapon();
 
     return *pImpl_->pLightSting_;
 }
@@ -919,7 +919,7 @@ const MachPhysMetalStingWeapon& MachPhysWeaponPersistence::metalStingExemplar()
 {
 
     if (pImpl_->pMetalSting_ == nullptr)
-        pImpl_->pMetalSting_ = _NEW(MachPhysMetalStingWeapon());
+        pImpl_->pMetalSting_ = new MachPhysMetalStingWeapon();
 
     return *pImpl_->pMetalSting_;
 }

@@ -75,7 +75,7 @@ MachLog1stPersonHandler::MachLog1stPersonHandler(
     MachActor* pActor,
     MachPhys1stPersonDriver* pPhysDriver,
     NetworkType networkType)
-    : pData_(_NEW(MachLog1stPersonHandlerData))
+    : pData_(new MachLog1stPersonHandlerData)
 {
     PRE(pActor != nullptr);
     PRE(pPhysDriver != nullptr);
@@ -86,7 +86,7 @@ MachLog1stPersonHandler::MachLog1stPersonHandler(
     pData_->pCamera_ = nullptr;
     pData_->hasHealWeapon_ = false;
     pData_->healWeaponIndex_ = 0;
-    pData_->pAimDataFiler_ = _NEW(MachLogAimDataFilter);
+    pData_->pAimDataFiler_ = new MachLogAimDataFilter;
 
     pPhysDriver->aimDataFilter(pData_->pAimDataFiler_);
 
@@ -133,8 +133,8 @@ MachLog1stPersonHandler::~MachLog1stPersonHandler()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_->pAimDataFiler_);
-    _DELETE(pData_);
+    delete pData_->pAimDataFiler_;
+    delete pData_;
 }
 
 void MachLog1stPersonHandler::CLASS_INVARIANT

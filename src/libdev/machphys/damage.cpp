@@ -40,7 +40,7 @@
 PER_DEFINE_PERSISTENT(MachPhysEntityDamage);
 
 MachPhysEntityDamage::MachPhysEntityDamage(W4dEntity* pTarget)
-    : pImpl_(_NEW(MachPhysEntityDamageImpl(pTarget)))
+    : pImpl_(new MachPhysEntityDamageImpl(pTarget))
 {
     update();
 
@@ -48,7 +48,7 @@ MachPhysEntityDamage::MachPhysEntityDamage(W4dEntity* pTarget)
 }
 
 MachPhysEntityDamage::MachPhysEntityDamage(MachPhysConstruction* pTarget)
-    : pImpl_(_NEW(MachPhysEntityDamageImpl(pTarget)))
+    : pImpl_(new MachPhysEntityDamageImpl(pTarget))
 {
     update();
 
@@ -61,7 +61,7 @@ MachPhysEntityDamage::MachPhysEntityDamage(PerConstructor)
 
 MachPhysEntityDamage::~MachPhysEntityDamage()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
     TEST_INVARIANT;
 }
 
@@ -109,32 +109,32 @@ void MachPhysEntityDamage::update()
 
     if ((damageLevel_ < 40 or damaged()) && pSmoke1_ && now > (lastSmoke1Time_ + smokeDuration_))
     {
-        _DELETE(pSmoke1_);
+        delete pSmoke1_;
         pSmoke1_ = nullptr;
     }
     if (damageLevel_ < 50 && pFlame1_)
     {
-        _DELETE(pFlame1_);
+        delete pFlame1_;
         pFlame1_ = nullptr;
     }
     if ((damageLevel_ < 60 or damaged()) && pSplat_)
     {
-        _DELETE(pSplat_);
+        delete pSplat_;
         pSplat_ = nullptr;
     }
     if (damageLevel_ < 65 && pFlame3_)
     {
-        _DELETE(pFlame3_);
+        delete pFlame3_;
         pFlame3_ = nullptr;
     }
     if ((damageLevel_ < 75 or damaged()) && pSmoke2_ && now > (lastSmoke2Time_ + smokeDuration_))
     {
-        _DELETE(pSmoke2_);
+        delete pSmoke2_;
         pSmoke2_ = nullptr;
     }
     if (damageLevel_ < 85 && pFlame2_)
     {
-        _DELETE(pFlame2_);
+        delete pFlame2_;
         pFlame2_ = nullptr;
     }
 
@@ -167,7 +167,7 @@ void MachPhysEntityDamage::update()
             MATHEX_SCALAR zDepthOffset = 0.0;
             MexTransform3d smokeXform = transform_;
             smokeXform.translate(MexPoint3d(centroid.x(), centroid.y(), sizeZ * 0.4));
-            pSmoke1_ = _NEW(MachPhysSmokePlume(
+            pSmoke1_ = new MachPhysSmokePlume(
                 pTarget_->pParent(),
                 smokeXform.position(),
                 maxHeight,
@@ -175,7 +175,7 @@ void MachPhysEntityDamage::update()
                 nWisps,
                 wispSize,
                 smoke1Type_,
-                smokeDuration_));
+                smokeDuration_);
 
             lastSmoke1Time_ = SimManager::instance().currentTime();
             pSmoke1_->startSmokePlume(lastSmoke1Time_);
@@ -193,14 +193,14 @@ void MachPhysEntityDamage::update()
         // flame1 start
         PhysRelativeTime duration = 60;
         if (pFlame1_ == nullptr and flameWidths_[0] * flameHeights_[0] != 0)
-            pFlame1_ = _NEW(MachPhysSTFFlame(
+            pFlame1_ = new MachPhysSTFFlame(
                 pTarget_,
                 flameTransforms_[0],
                 FLAME_1,
                 flameWidths_[0],
                 flameHeights_[0],
                 MexVec3(0, 0, 1),
-                duration));
+                duration);
 
         if (pFlame1_ != nullptr)
             pFlame1_->startFlame(now);
@@ -216,7 +216,7 @@ void MachPhysEntityDamage::update()
             splatPosition.z(splatPosition.z() + 0.1);
             splatXform.position(splatPosition);
 
-            pSplat_ = _NEW(MachPhysGroundSplat(pTarget_->pParent(), splatXform));
+            pSplat_ = new MachPhysGroundSplat(pTarget_->pParent(), splatXform);
             pSplat_->visible(true);
             const double scale = 1.3 / 10.0;
             pSplat_->temporaryScale(
@@ -231,14 +231,14 @@ void MachPhysEntityDamage::update()
         PhysRelativeTime duration = 60;
 
         if (pFlame3_ == nullptr and flameWidths_[2] * flameHeights_[2] != 0)
-            pFlame3_ = _NEW(MachPhysSTFFlame(
+            pFlame3_ = new MachPhysSTFFlame(
                 pTarget_,
                 flameTransforms_[2],
                 FLAME_1,
                 flameWidths_[2],
                 flameHeights_[2],
                 MexVec3(0, 0, 1),
-                duration));
+                duration);
 
         if (pFlame3_ != nullptr)
             pFlame3_->startFlame(now);
@@ -259,7 +259,7 @@ void MachPhysEntityDamage::update()
             MATHEX_SCALAR zDepthOffset = 0.0;
             MexTransform3d smokeXform = transform_;
             smokeXform.translate(MexPoint3d(centroid.x(), centroid.y(), sizeZ * 0.65));
-            pSmoke2_ = _NEW(MachPhysSmokePlume(
+            pSmoke2_ = new MachPhysSmokePlume(
                 pTarget_->pParent(),
                 smokeXform.position(),
                 maxHeight,
@@ -267,7 +267,7 @@ void MachPhysEntityDamage::update()
                 nWisps,
                 wispSize,
                 smoke2Type_,
-                smokeDuration_));
+                smokeDuration_);
 
             lastSmoke2Time_ = SimManager::instance().currentTime();
             pSmoke2_->startSmokePlume(lastSmoke2Time_ - 5.0);
@@ -286,14 +286,14 @@ void MachPhysEntityDamage::update()
 
         PhysRelativeTime duration = 60;
         if (pFlame2_ == nullptr and flameWidths_[1] * flameHeights_[1] != 0)
-            pFlame2_ = _NEW(MachPhysSTFFlame(
+            pFlame2_ = new MachPhysSTFFlame(
                 pTarget_,
                 flameTransforms_[1],
                 FLAME_1,
                 flameWidths_[1],
                 flameHeights_[1],
                 MexVec3(0, 0, 1),
-                duration));
+                duration);
 
         if (pFlame2_ != nullptr)
             pFlame2_->startFlame(now);

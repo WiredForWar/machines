@@ -24,7 +24,7 @@ public:
 MachLogRemoteFirstPersonManager::MachLogRemoteFirstPersonManager()
 {
     // Create and initialise the pimple
-    pImpl_ = _NEW(MachLogRemoteFirstPersonManagerImpl);
+    pImpl_ = new MachLogRemoteFirstPersonManagerImpl;
 
     Handlers& handlers_ = pImpl_->handlers_;
 
@@ -42,7 +42,7 @@ MachLogRemoteFirstPersonManager::~MachLogRemoteFirstPersonManager()
     // Delete the handlers
     closeAll();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogRemoteFirstPersonManager::CLASS_INVARIANT
@@ -88,7 +88,7 @@ void MachLogRemoteFirstPersonManager::actorOpen(UtlId actorId, MachPhys::Race ra
     if (actor.objectIsMachine())
     {
         // Create the handler
-        pHandler = _NEW(MachLog1stPersonMachineHandler(&actor.asMachine(), MachLog1stPersonHandler::REMOTE));
+        pHandler = new MachLog1stPersonMachineHandler(&actor.asMachine(), MachLog1stPersonHandler::REMOTE);
         handlers_[race] = pHandler;
 
         // Setup the camera and tracking entity
@@ -110,7 +110,7 @@ void MachLogRemoteFirstPersonManager::actorClose(UtlId actorId, MachPhys::Race r
 
     // Delete the handler
     Handlers& handlers_ = pImpl_->handlers_;
-    _DELETE(handlers_[race]);
+    delete handlers_[race];
     handlers_[race] = nullptr;
 
     // Stop observing the actor
@@ -130,7 +130,7 @@ void MachLogRemoteFirstPersonManager::closeAll()
             handler->actor().detach(this);
 
             // delete the handler
-            _DELETE(handlers_[i]);
+            delete handlers_[i];
             handlers_[i] = nullptr;
         }
     }
@@ -175,7 +175,7 @@ bool MachLogRemoteFirstPersonManager::beNotified(W4dSubject* pSubject, W4dSubjec
                     MachLog1stPersonHandler* handler = handlers_[race];
                     if (handler)
                     {
-                        _DELETE(handler);
+                        delete handler;
                         handlers_[race] = nullptr;
                     }
                 }

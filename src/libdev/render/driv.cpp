@@ -30,7 +30,7 @@ RenDriver::RenDriver(RenIDriverImpl* pImpl)
 
 RenDriver::~RenDriver()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 RenIDriverImpl& RenDriver::driverImpl()

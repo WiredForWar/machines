@@ -39,7 +39,7 @@ PedArtefactEditor::~PedArtefactEditor()
 
     /*for (     Artefacts::iterator i = artefactData_.begin();
             i != artefactData_.end(); i++ )
-        _DELETE( *i );    */
+        delete *i;    */
 
     deleteArtefacts();
 }
@@ -250,7 +250,7 @@ void PedArtefactEditor::processSelection()
             else
             {
                 // mouse pointer not pointing at object - so deselect selected object(s)
-                _DELETE(pMarker_);
+                delete pMarker_;
                 pMarker_ = nullptr;
                 pSelectedArtefact_ = nullptr;
                 alreadySelected_ = false;
@@ -287,12 +287,12 @@ void PedArtefactEditor::processDelete()
     {
         if (pSelectedArtefact_ != nullptr)
         {
-            _DELETE(pMarker_);
+            delete pMarker_;
             pMarker_ = nullptr;
 
             // Retrieve ptr to artefact and delete artefact
             artefactIndex index = storeIndex(pSelectedArtefact_);
-            _DELETE(pSelectedArtefact_);
+            delete pSelectedArtefact_;
 
             // remove ptr from current artefact list
             (*(index.col_)).erase(index.row_);
@@ -427,7 +427,7 @@ void PedArtefactEditor::deleteArtefacts()
         {
             uint nArtefacts = artefacts_[col].size();
             for (uint row = 0; row < nArtefacts; row++)
-                _DELETE(artefacts_[col][row].artefact_);
+                delete artefacts_[col][row].artefact_;
             artefacts_[col].empty();
         }
     }
@@ -507,7 +507,7 @@ void PedArtefactEditor::deleteCeilingArtefact(const MachPhysTerrainTile& terrain
         if (artefactFound)
         {
             // delete instance of artefact, and then remove mapping info from artefact list
-            _DELETE((*j).artefact_);
+            delete (*j).artefact_;
             artefacts_[artefactGroup].erase(j);
         }
     }

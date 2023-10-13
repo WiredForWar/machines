@@ -52,8 +52,8 @@ PedTileEditor::~PedTileEditor()
     for (SelectedTiles::iterator iter = selectedTiles_.begin(); iter != selectedTiles_.end(); ++iter)
     {
         SelectedTile* pSelTile = *iter;
-        //_DELETE( pSelTile->pSelIndicator_ );
-        _DELETE(pSelTile);
+        //delete pSelTile->pSelIndicator_;
+        delete pSelTile;
     }
 }
 
@@ -132,7 +132,7 @@ void PedTileEditor::highlightTile()
     PRE(pSceneManager_ != nullptr);
 
     // Clear last highlighted tile
-    _DELETE(pHighlightTile_);
+    delete pHighlightTile_;
     pHighlightTile_ = nullptr;
 
     // Highlight tile that mouse pointer is over
@@ -154,7 +154,7 @@ void PedTileEditor::highlightTile()
     if (result and not isSelected(_REINTERPRET_CAST(MachPhysTerrainTile*, pEntity)))
     {
         // Display a box around the selected tile
-        pHighlightTile_ = _NEW(PedTileMarker(pEntity, MexTransform3d(), pEntity->boundingVolume(), false));
+        pHighlightTile_ = new PedTileMarker(pEntity, MexTransform3d(), pEntity->boundingVolume(), false);
     }
 }
 
@@ -176,8 +176,8 @@ void PedTileEditor::clearAllSelectedTiles()
     for (SelectedTiles::iterator iter = selectedTiles_.begin(); iter != selectedTiles_.end(); ++iter)
     {
         SelectedTile* pSelTile = *iter;
-        _DELETE(pSelTile->pSelIndicator_);
-        _DELETE(pSelTile);
+        delete pSelTile->pSelIndicator_;
+        delete pSelTile;
     }
 
     selectedTiles_.erase(selectedTiles_.begin(), selectedTiles_.end());
@@ -219,13 +219,13 @@ void PedTileEditor::processSelection(const DevButtonEvent& devButtonEvent)
 
                 if (not isSelected(pTile))
                 {
-                    SelectedTile* pNewSelTile = _NEW(SelectedTile());
+                    SelectedTile* pNewSelTile = new SelectedTile();
                     pNewSelTile->xPos_ = xPos;
                     pNewSelTile->yPos_ = yPos;
                     pNewSelTile->pSelectedTile_ = pTile;
                     // Display a box around the selected tile
                     pNewSelTile->pSelIndicator_
-                        = _NEW(PedTileMarker(pTile, MexTransform3d(), pTile->boundingVolume(), true));
+                        = new PedTileMarker(pTile, MexTransform3d(), pTile->boundingVolume(), true);
 
                     selectedTiles_.push_back(pNewSelTile);
                 }
@@ -236,8 +236,8 @@ void PedTileEditor::processSelection(const DevButtonEvent& devButtonEvent)
                         SelectedTile* pSelTile = *iter;
                         if (pSelTile->pSelectedTile_ == pTile)
                         {
-                            _DELETE(pSelTile->pSelIndicator_);
-                            _DELETE(pSelTile);
+                            delete pSelTile->pSelIndicator_;
+                            delete pSelTile;
                             selectedTiles_.erase(iter);
                             break;
                         }
@@ -339,20 +339,20 @@ void PedTileEditor::processCycleTile(CycleDir dir)
         {
             SelectedTile*& pSelTile = *iter;
 
-            SelectedTile* pTileReplacement = _NEW(SelectedTile());
+            SelectedTile* pTileReplacement = new SelectedTile();
 
-            _DELETE(pSelTile->pSelIndicator_);
+            delete pSelTile->pSelIndicator_;
             pSelTile->pSelIndicator_ = nullptr;
 
             MachPhysPlanetSurface* pSurface = pPlanet_->surface();
 
             pTileReplacement->pSelectedTile_ = pSurface->replaceTile(pSelTile->xPos_, pSelTile->yPos_, newLod);
 
-            pTileReplacement->pSelIndicator_ = _NEW(PedTileMarker(
+            pTileReplacement->pSelIndicator_ = new PedTileMarker(
                 pTileReplacement->pSelectedTile_,
                 MexTransform3d(),
                 pTileReplacement->pSelectedTile_->boundingVolume(),
-                true));
+                true);
             pTileReplacement->xPos_ = pSelTile->xPos_;
             pTileReplacement->yPos_ = pSelTile->yPos_;
 
@@ -459,7 +459,7 @@ void PedTileEditor::changingMode()
     clearAllSelectedTiles();
 
     // Clear last highlighted tile
-    _DELETE(pHighlightTile_);
+    delete pHighlightTile_;
     pHighlightTile_ = nullptr;
 }
 
@@ -473,7 +473,7 @@ void PedTileEditor::processAttatchCeilingArtefact(bool attatch)
     clearAllSelectedTiles();
 
     // Clear last highlighted tile
-    _DELETE(pHighlightTile_);
+    delete pHighlightTile_;
     pHighlightTile_ = nullptr;
 
     MachPhysPlanetSurface* pSurface = pPlanet_->surface();

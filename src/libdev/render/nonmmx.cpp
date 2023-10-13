@@ -16,7 +16,7 @@
 
 RenINonMMXIlluminator::RenINonMMXIlluminator(RenIDeviceImpl* dev)
     : RenIIlluminator(dev)
-    , lightingBuffer_(_NEW(RenIFloatLightingBuffer))
+    , lightingBuffer_(new RenIFloatLightingBuffer)
     , overflows_(0)
     , applications_(0)
 {
@@ -26,7 +26,7 @@ RenINonMMXIlluminator::RenINonMMXIlluminator(RenIDeviceImpl* dev)
 // virtual
 RenINonMMXIlluminator::~RenINonMMXIlluminator()
 {
-    _DELETE(lightingBuffer_);
+    delete lightingBuffer_;
 }
 
 // Template method: the default does nothing.

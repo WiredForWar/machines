@@ -9,21 +9,21 @@
 #include "render/texset.hpp"
 
 RenTextureSet::RenTextureSet()
-    : pImpl_(_NEW(RenTextureSetImpl()))
+    : pImpl_(new RenTextureSetImpl())
 {
     TEST_INVARIANT;
     POST(not isLoaded());
 }
 
 RenTextureSet::RenTextureSet(const SysPathName& pathName)
-    : pImpl_(_NEW(RenTextureSetImpl(pathName)))
+    : pImpl_(new RenTextureSetImpl(pathName))
 {
     TEST_INVARIANT;
     POST(isLoaded());
 }
 
 RenTextureSet::RenTextureSet(const SysPathName& pathName, IProgressReporter* pReporter)
-    : pImpl_(_NEW(RenTextureSetImpl(pathName, pReporter)))
+    : pImpl_(new RenTextureSetImpl(pathName, pReporter))
 {
     TEST_INVARIANT;
     POST(isLoaded());
@@ -32,7 +32,7 @@ RenTextureSet::RenTextureSet(const SysPathName& pathName, IProgressReporter* pRe
 RenTextureSet::~RenTextureSet()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void RenTextureSet::load(const SysPathName& pathName)

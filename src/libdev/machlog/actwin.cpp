@@ -51,7 +51,7 @@ void MachLogWinAction::doAction()
 MachLogWinAction* MachLogWinAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogWinAction* pResult = nullptr;
-    pResult = _NEW(MachLogWinAction(pCondition, enabled));
+    pResult = new MachLogWinAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
@@ -93,7 +93,7 @@ MachLogWinAction::MachLogWinAction(PerConstructor con)
 MachLogWinAction* MachLogWinAction::newDynamic(SimCondition* pCondition, bool enabled, MachPhys::Race race)
 {
     MachLogWinAction* pResult = nullptr;
-    pResult = _NEW(MachLogWinAction(pCondition, enabled));
+    pResult = new MachLogWinAction(pCondition, enabled);
     pResult->race_ = race;
     return pResult;
 }

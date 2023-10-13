@@ -25,7 +25,7 @@ PER_DEFINE_PERSISTENT(W4dDomain);
 
 W4dDomain::W4dDomain(W4dEntity* parent, const W4dTransform3d& localTransform)
     : W4dEntity(parent, localTransform, NOT_SOLID)
-    , pImpl_(_NEW(W4dDomainImpl()))
+    , pImpl_(new W4dDomainImpl())
 {
     CB_W4dDomain_DEPIMPL();
     isDomain(true);
@@ -63,12 +63,12 @@ W4dDomain::~W4dDomain()
     }
 
     while (portals_.size() != 0)
-        _DELETE(portals_.front());
+        delete portals_.front();
 
     // Update the root's tally of domains.
     findRoot()->adjustDomainCount(-1);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 const W4dDomain::W4dPortals& W4dDomain::portals() const
@@ -128,7 +128,7 @@ W4dPortal* W4dDomain::addPortal(W4dDomain* pPartner, const MexQuad3d& aperture, 
     CB_W4dDomain_DEPIMPL();
     PRE(pPartner != nullptr);
 
-    W4dPortal* result = _NEW(W4dPortal(this, pPartner, aperture, newLocalTransform));
+    W4dPortal* result = new W4dPortal(this, pPartner, aperture, newLocalTransform);
 
     TEST_INVARIANT;
 
@@ -140,7 +140,7 @@ void W4dDomain::removePortal(W4dPortal* pPortal)
     TEST_INVARIANT;
     CB_W4dDomain_DEPIMPL();
 
-    _DELETE(pPortal);
+    delete pPortal;
 
     TEST_INVARIANT;
 }
@@ -507,7 +507,7 @@ void perWrite(PerOstream& ostr, const W4dDomain& domain)
 
 void perRead(PerIstream& istr, W4dDomain& domain)
 {
-    _DELETE(domain.pImpl_);
+    delete domain.pImpl_;
 
     W4dEntity& base = domain;
 

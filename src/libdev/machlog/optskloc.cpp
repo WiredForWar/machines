@@ -145,7 +145,7 @@ PhysRelativeTime MachLogTaskLocateOperation::doUpdate()
         MexPoint3d dest((*i)->position());
 
         if (pActor_->hasCommander())
-            pActor_->commander().newOperation(_NEW(MachLogAdminLocateOperation(&pActor_->commander(), dest)));
+            pActor_->commander().newOperation(new MachLogAdminLocateOperation(&pActor_->commander(), dest));
         else
         {
             // Check we have a locator
@@ -155,7 +155,7 @@ PhysRelativeTime MachLogTaskLocateOperation::doUpdate()
                 if ((*i)->objectType() == MachLog::GEO_LOCATOR)
                 {
                     pLoc = &(*i)->asGeoLocator();
-                    pLoc->newOperation(_NEW(MachLogLocateOperation(pLoc, dest)));
+                    pLoc->newOperation(new MachLogLocateOperation(pLoc, dest));
                 }
         }
     }

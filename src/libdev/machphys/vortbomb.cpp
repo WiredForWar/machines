@@ -52,9 +52,9 @@ MachPhysVortexBomb::MachPhysVortexBomb(W4dEntity* pParent, const MexTransform3d&
     // lighting.  This could change if the model changes.
     doNotLight(true);
 
-    pBlackSphere_ = _NEW(MachPhysBlackSphere(this, MexTransform3d()));
-    pWhiteSphere_ = _NEW(MachPhysWhiteSphere(this, MexTransform3d()));
-    pVortexSphere_ = _NEW(MachPhysVortexSphere(this, MexTransform3d()));
+    pBlackSphere_ = new MachPhysBlackSphere(this, MexTransform3d());
+    pWhiteSphere_ = new MachPhysWhiteSphere(this, MexTransform3d());
+    pVortexSphere_ = new MachPhysVortexSphere(this, MexTransform3d());
 
     // Ensure the bounding volumes of the spheres are set to the maximum, so they don't
     // get clipped out by the camera.
@@ -208,14 +208,14 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     bRampAccelerations.push_back(rampAcc);
 
     // an initial scale of 0.0 is applied.
-    PhysScalarPlanPtr bPlanPtr(_NEW(PhysAcceleratedScalarPlan(bRampAccelerations, 0.0001)));
+    PhysScalarPlanPtr bPlanPtr(new PhysAcceleratedScalarPlan(bRampAccelerations, 0.0001));
 
-    W4dScalePlanPtr bScalePlanPtr(_NEW(W4dGeneralUniformScalePlan(bPlanPtr)));
+    W4dScalePlanPtr bScalePlanPtr(new W4dGeneralUniformScalePlan(bPlanPtr));
     pVortexSphere_->entityPlanForEdit().scalePlan(bScalePlanPtr, startTime);
 
     const PhysRelativeTime splitTime = 8.0;
     // visibility plan
-    W4dVisibilityPlanPtr bVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr bVisibilityPlanPtr(new W4dVisibilityPlan(false));
 
     bVisibilityPlanPtr->add(true, 2);
     bVisibilityPlanPtr->add(false, splitTime); // in the last two seconds it is replaced by a pure black sphere
@@ -230,7 +230,7 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     radians.push_back( MexRadians( MexDegrees( 240 ) ) );
     radians.push_back( MexRadians( MexDegrees( 360 ) ) );
 
-    PhysMotionPlan::AnglesPtr anglesPtr = _NEW( PhysMotionPlan::Angles(radians) );
+    PhysMotionPlan::AnglesPtr anglesPtr = new PhysMotionPlan::Angles(radians);
 
     PhysMotionPlan::Times times;
 
@@ -238,15 +238,15 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     times.push_back(0.4);
     times.push_back(0.6);
 
-    PhysMotionPlan::TimesPtr timesPtr = _NEW( PhysMotionPlan::Times(times) );
+    PhysMotionPlan::TimesPtr timesPtr = new PhysMotionPlan::Times(times);
 
-    PhysMotionPlanPtr bMotionPlanPtr( _NEW( PhysTimedAnglePlan( anglesPtr, timesPtr, MexVec3(0, 0, 1), MexVec3(0, 0, 0)
-    ) ) ); pVortexSphere_->entityPlanForEdit().absoluteMotion( bMotionPlanPtr,  startTime, 100);
+    PhysMotionPlanPtr bMotionPlanPtr( new PhysTimedAnglePlan( anglesPtr, timesPtr, MexVec3(0, 0, 1), MexVec3(0, 0, 0)
+    ) ); pVortexSphere_->entityPlanForEdit().absoluteMotion( bMotionPlanPtr,  startTime, 100);
 */
 
     //  the pure black spher eonly shrinks from the size of the vortex sphere at the 8th second  to nothing in the last
     //  2 seconds
-    W4dVisibilityPlanPtr pureVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr pureVisibilityPlanPtr(new W4dVisibilityPlan(false));
 
     pureVisibilityPlanPtr->add(true, splitTime);
     pureVisibilityPlanPtr->add(false, 10); // only be visible in the last two seconds
@@ -276,13 +276,13 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     rampAcc = PhysRampAcceleration(0, 1, 1, 30, 0, 30, PhysRampAcceleration::BY_DISTANCE);
     wRampAccelerations.push_back(rampAcc);
 
-    PhysScalarPlanPtr wPlanPtr(_NEW(PhysAcceleratedScalarPlan(wRampAccelerations, 15.0)));
+    PhysScalarPlanPtr wPlanPtr(new PhysAcceleratedScalarPlan(wRampAccelerations, 15.0));
 
-    W4dScalePlanPtr wScalePlanPtr(_NEW(W4dGeneralUniformScalePlan(wPlanPtr)));
+    W4dScalePlanPtr wScalePlanPtr(new W4dGeneralUniformScalePlan(wPlanPtr));
     whiteEntityPlan.scalePlan(wScalePlanPtr, startTime);
 
     // visibility plan
-    W4dVisibilityPlanPtr wVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr wVisibilityPlanPtr(new W4dVisibilityPlan(true));
 
     wVisibilityPlanPtr->add(false, 2);
     wVisibilityPlanPtr->add(true, 8);
@@ -305,14 +305,14 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     scales.push_back(0.5);
     scales.push_back(0);
 
-    PhysLinearScalarPlan* pAlphaPlan = _NEW(PhysLinearScalarPlan(linearTimes, scales));
+    PhysLinearScalarPlan* pAlphaPlan = new PhysLinearScalarPlan(linearTimes, scales);
     PhysScalarPlanPtr alphaPlanPtr(pAlphaPlan);
 
     RenMaterial glowingWhite;
     glowingWhite.diffuse(RenColour::black());
     glowingWhite.emissive(RenColour::white());
 
-    W4dSimpleAlphaPlan* pPlan = _NEW(W4dSimpleAlphaPlan(glowingWhite, 1, alphaPlanPtr, 1));
+    W4dSimpleAlphaPlan* pPlan = new W4dSimpleAlphaPlan(glowingWhite, 1, alphaPlanPtr, 1);
 
     W4dMaterialPlanPtr planPtr(pPlan);
 
@@ -320,7 +320,7 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
 
     // a white light which totally saturates an area just larger than the initial white sphere. it fades out before the
     // main vortex starts
-    W4dUniformLight* pLight = _NEW(W4dUniformLight(this, MexVec3(0, 0, 1), data.extras()[5]));
+    W4dUniformLight* pLight = new W4dUniformLight(this, MexVec3(0, 0, 1), data.extras()[5]);
     pLight->colour(RenColour(6.0, 6.0, 6.0));
     pLight->constantAttenuation(0.1);
     pLight->linearAttenuation(0.8);
@@ -328,7 +328,7 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     pLight->scope(W4dLight::DYNAMIC);
     pLight->localTransform(MexPoint3d(0, 0, data.extras()[6]));
 
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, 2);
     pLight->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
 
@@ -341,7 +341,7 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     intensities.push_back(data.extras()[4]);
     intensities.push_back(0.1);
 
-    PhysLinearScalarPlan* plightIntensityPlan = _NEW(PhysLinearScalarPlan(lightTimes, intensities));
+    PhysLinearScalarPlan* plightIntensityPlan = new PhysLinearScalarPlan(lightTimes, intensities);
 
     PhysScalarPlanPtr intensityPlanPtr = plightIntensityPlan;
     pLight->intensityPlan(intensityPlanPtr, startTime);
@@ -350,7 +350,7 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
 
     // main light like the nuke light
     const MATHEX_SCALAR lightRange = vortRadius;
-    W4dUniformLight* pLight2 = _NEW(W4dUniformLight(this, MexVec3(0, 0, 1), lightRange));
+    W4dUniformLight* pLight2 = new W4dUniformLight(this, MexVec3(0, 0, 1), lightRange);
     pLight2->colour(RenColour(data.extras()[1], data.extras()[2], data.extras()[3]));
     pLight2->constantAttenuation(0.2);
     pLight2->linearAttenuation(0.8);
@@ -358,15 +358,15 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     pLight2->scope(W4dLight::DYNAMIC);
 
     PhysRelativeTime ligh2Duration = duration;
-    W4dVisibilityPlanPtr light2VisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr light2VisibilityPlanPtr(new W4dVisibilityPlan(false));
     light2VisibilityPlanPtr->add(true, 2.0);
     light2VisibilityPlanPtr->add(false, ligh2Duration);
     pLight2->entityPlanForEdit().visibilityPlan(light2VisibilityPlanPtr, startTime);
 
-    PhysLinearMotionPlan* pLinePlan = _NEW(PhysLinearMotionPlan(
+    PhysLinearMotionPlan* pLinePlan = new PhysLinearMotionPlan(
         MexTransform3d(MexPoint3d(0, 0, lightRange)),
         MexTransform3d(MexPoint3d(0, 0, 0.5 * lightRange)),
-        8));
+        8);
     pLinePlan->add(MexTransform3d(MexPoint3d(0, 0, 0)), splitTime);
 
     PhysMotionPlanPtr motionPlanPtr = pLinePlan;
@@ -388,7 +388,7 @@ PhysRelativeTime MachPhysVortexBomb::startExplosion(const PhysAbsoluteTime& star
     intensities2.push_back(data.extras()[8]);
     intensities2.push_back(0.001);
 
-    PhysLinearScalarPlan* pLight2IntensityPlan = _NEW(PhysLinearScalarPlan(light2Times, intensities2));
+    PhysLinearScalarPlan* pLight2IntensityPlan = new PhysLinearScalarPlan(light2Times, intensities2);
 
     PhysScalarPlanPtr intensity2PlanPtr = pLight2IntensityPlan;
     pLight2->intensityPlan(intensity2PlanPtr, startTime);

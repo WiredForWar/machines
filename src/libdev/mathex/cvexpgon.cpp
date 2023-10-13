@@ -29,7 +29,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const Points& points)
 
     // Construct a vector and push copies of all the points onto it
     size_t n = nVertices();
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(n);
 
     for (size_t i = 0; i != n; ++i)
@@ -52,7 +52,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const ctl_vector<MexPoint2d*>& points)
 
     // Construct a vector and push copies of all the points onto it
     size_t n = nVertices();
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(n);
 
     for (size_t i = 0; i != n; ++i)
@@ -150,7 +150,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexPolygon2d& rhs, MATHEX_SCALAR ex
     }
 
     // Generate the vertices
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(totalNewVertices);
     nVertices(totalNewVertices);
 
@@ -200,7 +200,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexConvexPolygon2d& copyMe)
 {
     // Construct a vector and push copies of all the points onto it
     size_t n = nVertices();
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(n);
 
     for (size_t i = 0; i != n; ++i)
@@ -228,7 +228,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexPoint2d& p1, const MexPoint2d& p
     MexVec2 n = d.normal();
 
     // Create the points in the right order
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(4);
     pPoints_->push_back(MexPoint2d(p1.x() - d.x() + n.x(), p1.y() - d.y() + n.y()));
     pPoints_->push_back(MexPoint2d(p2.x() + d.x() + n.x(), p2.y() + d.y() + n.y()));
@@ -245,7 +245,7 @@ MexConvexPolygon2d::~MexConvexPolygon2d()
     TEST_INVARIANT;
 
     if (pPoints_ != nullptr)
-        _DELETE(pPoints_);
+        delete pPoints_;
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////// */
@@ -390,7 +390,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexAlignedBox2d& boundary)
     MATHEX_SCALAR yMax = boundary.maxCorner().y();
 
     // Create the points in the right order
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(4);
     pPoints_->push_back(MexPoint2d(xMin, yMin));
     pPoints_->push_back(MexPoint2d(xMax, yMin));
@@ -448,7 +448,7 @@ void perRead(PerIstream& stream, MexConvexPolygon2d& t)
 
     stream >> _STATIC_CAST(MexPolygon2d&, t);
 
-    ctl_vector<MexPoint2d>* pPoints = _NEW(ctl_vector<MexPoint2d>); // The vertices
+    ctl_vector<MexPoint2d>* pPoints = new ctl_vector<MexPoint2d>; // The vertices
     int size;
     stream >> size;
 
@@ -466,7 +466,7 @@ void perRead(PerIstream& stream, MexConvexPolygon2d& t)
 
     t = MexConvexPolygon2d(*pPoints);
 
-    _DELETE(pPoints);
+    delete pPoints;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -497,7 +497,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexPoint2d& p, MATHEX_SCALAR expans
     PRE(expansionDistance > 0.0);
 
     // Create the points in the right order
-    pPoints_ = _NEW(Points);
+    pPoints_ = new Points;
     pPoints_->reserve(4);
     pPoints_->push_back(MexPoint2d(p.x() - expansionDistance, p.y() - expansionDistance));
     pPoints_->push_back(MexPoint2d(p.x() + expansionDistance, p.y() - expansionDistance));

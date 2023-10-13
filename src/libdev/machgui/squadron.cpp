@@ -144,8 +144,8 @@ public:
         : GuiDisplayable(pParent, Gui::Box(0, 0, MachGuiSquadron::reqWidth(), MachGuiSquadron::reqHeight()))
     {
         pAdminIcon_
-            = _NEW(MachGuiSquadronAdminIcon(this, Gui::Coord(MachGuiSquadronBankIcon::reqWidth(), 0), squadNum));
-        pIcon_ = _NEW(MachGuiSquadronBankIcon(this, Gui::Coord(0, 0), squadNum, pInGameScreen, pParent));
+            = new MachGuiSquadronAdminIcon(this, Gui::Coord(MachGuiSquadronBankIcon::reqWidth(), 0), squadNum);
+        pIcon_ = new MachGuiSquadronBankIcon(this, Gui::Coord(0, 0), squadNum, pInGameScreen, pParent);
     }
     ~MachGuiSquadron() override { }
 
@@ -189,14 +189,14 @@ MachGuiSquadronBank::MachGuiSquadronBank(
 {
     for (size_t i = 1; i < N_SQUADRON_ICONS; ++i)
     {
-        _NEW(MachGuiSquadron(this, i, pInGameScreen));
+        new MachGuiSquadron(this, i, pInGameScreen);
     }
     // Squad zero comes last ( makes more sense because of keyboard layout ).
-    _NEW(MachGuiSquadron(this, 0, pInGameScreen));
+    new MachGuiSquadron(this, 0, pInGameScreen);
 
     childrenUpdated();
 
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         DevKey::KEY_1,
         CREATE_SQUAD1,
@@ -542,7 +542,7 @@ void MachGuiSquadronBank::selectSquad(size_t squadIndex)
 
 MachGuiSquadronBank::~MachGuiSquadronBank()
 {
-    _DELETE(pKeyTranslator_);
+    delete pKeyTranslator_;
 }
 
 void MachGuiSquadronBank::loadGame()

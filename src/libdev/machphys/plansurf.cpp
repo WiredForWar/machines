@@ -74,9 +74,9 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
     : pSceneManager_(pSceneManager)
     , psfFile_(pathname)
     , pEnvironment_(nullptr)
-    , pDomainAssign_(_NEW(MachPhysDomainAssignor(this)))
+    , pDomainAssign_(new MachPhysDomainAssignor(this))
     , pTextureSet_(nullptr)
-    , pImpl_(_NEW(MachPhysPlanetSurfaceImpl()))
+    , pImpl_(new MachPhysPlanetSurfaceImpl)
 {
     PRE(pSceneManager != nullptr);
 
@@ -143,7 +143,7 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
     {
         LIONEL_STREAM("preloading planet texture bitmaps " << std::endl);
         // preload the textures, this overrrides the run time loading based on the search path
-        pTextureSet_ = _NEW(RenTextureSet(textureDirectory));
+        pTextureSet_ = new RenTextureSet(textureDirectory);
         LIONEL_STREAM("done preloading planet texture bitmaps " << std::endl);
     }
 
@@ -155,7 +155,7 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
     environmentPath.extension("env");
 
     // Create an environment for the sky etc
-    pEnvironment_ = _NEW(EnvPlanetEnvironment(environmentPath, pSceneManager));
+    pEnvironment_ = new EnvPlanetEnvironment(environmentPath, pSceneManager);
 
     // Make the scene manager use it
     pSceneManager->environment(pEnvironment_);
@@ -180,7 +180,7 @@ MachPhysPlanetSurface::~MachPhysPlanetSurface()
         {
             // Get the domain for this tile
             W4dDomain* pDomain = tileDomainArray_[yTile][xTile];
-            _DELETE(pDomain);
+            delete pDomain;
         }
     }
 
@@ -190,21 +190,21 @@ MachPhysPlanetSurface::~MachPhysPlanetSurface()
     if (pDomainAssign_ == pSceneManager_->domainAssignor())
         pSceneManager_->domainAssignor(nullptr);
 
-    _DELETE(pDomainAssign_);
+    delete pDomainAssign_;
 
-    _DELETE(pTextureSet_);
+    delete pTextureSet_;
 
     // Clear the background
     pSceneManager_->clearAllLights();
     pSceneManager_->useBackground(nullptr);
     pSceneManager_->environment(nullptr);
-    _DELETE(pEnvironment_);
+    delete pEnvironment_;
 
     // Clear the unused meshes
     RenMesh::emptyCache();
     RenMesh::removeAllFromFactory();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysPlanetSurface::CLASS_INVARIANT
@@ -255,7 +255,7 @@ void MachPhysPlanetSurface::readPlanetSurfaceFile(const SysPathName& pathname)
             MexTransform3d domainTransform(location);
 
             // Construct the domain
-            W4dDomain* pDomain = _NEW(W4dDomain(pParent, domainTransform));
+            W4dDomain* pDomain = new W4dDomain(pParent, domainTransform);
             tileDomainArray_.back().push_back(pDomain);
             parseTile(SysPathName(pathname.directory()), &parser, pDomain);
 
@@ -386,7 +386,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
         ASSERT(not finder.isEmpty(), tilePath.pathname().c_str());
 
         // Construct the tile and add to the collection
-        MachPhysTerrainTile* pTile = _NEW(MachPhysTerrainTile(
+        MachPhysTerrainTile* pTile = new MachPhysTerrainTile(
             pParent,
             finder.files()[0].pathName(),
             transform,
@@ -395,7 +395,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
             tileXMin_,
             tileXMax_,
             tileYMin_,
-            tileYMax_));
+            tileYMax_);
         tileArray_.back().push_back(pTile);
         const MexAlignedBox3d& boundary = pTile->boundingVolume();
         if ((boundary.maxCorner().x() - boundary.minCorner().x() > edgeLength_)
@@ -443,7 +443,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
         tilePathname.combine(SysPathName(pParser->tokens()[1]));
 
         // Construct the tile and add to the collection
-        MachPhysTerrainTile* pTile = _NEW(MachPhysTerrainTile(
+        MachPhysTerrainTile* pTile = new MachPhysTerrainTile(
             pParent,
             tilePathname,
             transform,
@@ -452,7 +452,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
             tileXMin_,
             tileXMax_,
             tileYMin_,
-            tileYMax_));
+            tileYMax_);
         tileArray_.back().push_back(pTile);
         const MexAlignedBox3d& boundary = pTile->boundingVolume();
         if ((boundary.maxCorner().x() - boundary.minCorner().x() > edgeLength_)
@@ -768,7 +768,7 @@ MachPhysTerrainTile* MachPhysPlanetSurface::replaceTile(size_t xPos, size_t yPos
 
     MachPhysTerrainTile* pTileToReplace = tileArray_[yPos][xPos];
 
-    MachPhysTerrainTile* pNewTile = _NEW(MachPhysTerrainTile(
+    MachPhysTerrainTile* pNewTile = new MachPhysTerrainTile(
         pTileToReplace->pParent(),
         lodPath,
         pTileToReplace->localTransform(),
@@ -777,11 +777,11 @@ MachPhysTerrainTile* MachPhysPlanetSurface::replaceTile(size_t xPos, size_t yPos
         tileXMin_,
         tileXMax_,
         tileYMin_,
-        tileYMax_));
+        tileYMax_);
 
     tileArray_[yPos][xPos] = pNewTile;
 
-    _DELETE(pTileToReplace);
+    delete pTileToReplace;
 
     return pNewTile;
 }
@@ -1257,7 +1257,7 @@ void perWrite(PerOstream& ostr, const MachPhysPlanetSurface& t)
 
 void perRead(PerIstream& istr, MachPhysPlanetSurface& t)
 {
-    _DELETE(t.pImpl_);
+    delete t.pImpl_;
 
     istr >> t.nTilesX_;
     istr >> t.nTilesY_;

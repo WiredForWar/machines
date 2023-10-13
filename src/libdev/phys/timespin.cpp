@@ -26,7 +26,7 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(
     const MexRadians& startSpeed,
     size_t likelySegmentCount)
     : PhysMotionPlan(0)
-    , pImpl_(_NEW(PhysTimedSpinPlanImpl(axis, position, startAngle, startSpeed)))
+    , pImpl_(new PhysTimedSpinPlanImpl(axis, position, startAngle, startSpeed))
 {
     MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
     MISC_INDENT(2);
@@ -62,7 +62,7 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(
     const MexRadians& startSpeed,
     size_t likelySegmentCount)
     : PhysMotionPlan(0)
-    , pImpl_(_NEW(PhysTimedSpinPlanImpl(axis, baseTransform, startAngle, startSpeed)))
+    , pImpl_(new PhysTimedSpinPlanImpl(axis, baseTransform, startAngle, startSpeed))
 {
     MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
     MISC_INDENT(2);
@@ -107,7 +107,7 @@ PhysTimedSpinPlan::~PhysTimedSpinPlan()
 
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 
     MISC_STREAM("Exit  PhysTimedSpinPlan::~PhysTimedSpinPlan " << (void*)this << std::endl);
 }

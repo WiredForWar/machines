@@ -135,7 +135,7 @@ MachLogIonBeam::~MachLogIonBeam()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogIonBeam::CLASS_INVARIANT
@@ -163,7 +163,7 @@ void MachLogIonBeam::doBeDestroyed()
 
 MachPhysIonBeam* MachLogIonBeam::pNewPhysIonBeam(const MexPoint3d& startPosition, const MachPhysWeaponData& weaponData)
 {
-    pImpl_ = _NEW(MachLogIonBeamImpl(&weaponData));
+    pImpl_ = new MachLogIonBeamImpl(&weaponData);
 
     CB_MachLogIonBeam_DEPIMPL();
 
@@ -188,7 +188,7 @@ MachPhysIonBeam* MachLogIonBeam::pNewPhysIonBeam(const MexPoint3d& startPosition
 
     // Construct the physical missile
 
-    MachPhysIonBeam* pPhysIonBeam = _NEW(MachPhysIonBeam(pDomain, localTransform));
+    MachPhysIonBeam* pPhysIonBeam = new MachPhysIonBeam(pDomain, localTransform);
     *ppPhysIonBeam = pPhysIonBeam;
     return pPhysIonBeam;
 }

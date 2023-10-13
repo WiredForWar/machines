@@ -40,12 +40,12 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     : MachGuiStartupScreenContext(pStartupScreens)
     , delayBarsGrowth_(2)
 {
-    MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(425, 406, 576, 439),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
     pOkBtn->escapeControl(true);
 
     changeBackdrop("gui/menu/sq.bmp");
@@ -83,10 +83,10 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         // Construct a smacker player
         //       HWND targetWindow = RenDevice::current()->display()->window();
 
-        //      AniSmacker* pSmackerAnimation = _NEW( AniSmacker( statAnim, targetWindow, 55 +
-        //      pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() ) );
-        // AniSmacker* pSmackerAnimation = _NEW( AniSmacker( statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 +
-        // pStartupScreens_->yMenuOffset() ) );
+        //      AniSmacker* pSmackerAnimation = new AniSmacker( statAnim, targetWindow, 55 +
+        //      pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() );
+        // AniSmacker* pSmackerAnimation = new AniSmacker( statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 +
+        // pStartupScreens_->yMenuOffset() );
         const auto& topLeft = getBackdropTopLeft();
         AniSmacker* pSmackerAnimation = new AniSmackerRegular(statAnim, 55 + topLeft.second, 142 + topLeft.first);
         pStartupScreens->addSmackerAnimation(pSmackerAnimation);
@@ -96,41 +96,41 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/smalwfnt.bmp"));
     GuiResourceString generalHeading(IDS_MENU_STSGENERAL);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(Gui::Coord(196, 41), font.textWidth(generalHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSGENERAL,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     GuiResourceString BARHeading(IDS_MENU_STSBAR);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(Gui::Coord(196, 132), font.textWidth(BARHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSBAR,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     GuiResourceString killsHeading(IDS_MENU_STSKILLS);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(Gui::Coord(196, 232), font.textWidth(killsHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSKILLS,
         "gui/menu/smalwfnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     GuiBmpFont largeFont = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
 
     GuiResourceString statsHeading(IDS_MENU_STATISTICS);
 
-    _NEW(MachGuiMenuText(
+    new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(Gui::Coord(53, 31), largeFont.textWidth(statsHeading.asString()), largeFont.charHeight()),
         IDS_MENU_STATISTICS,
         "gui/menu/largefnt.bmp",
-        MachGuiMenuText::LEFT_JUSTIFY));
+        MachGuiMenuText::LEFT_JUSTIFY);
 
     // Get handle to score object for each race
     MachLogRaces::instance().removeNotDisplayedScores();
@@ -245,8 +245,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // General statistics
     //
     // Machine kills
-    MachGuiGeneralStatistics* machineKills = _NEW(
-        MachGuiGeneralStatistics(pStartupScreens, Gui::Coord(196, 50), IDS_MENU_MACHINEKILLS, MachPhys::N_RACES));
+    MachGuiGeneralStatistics* machineKills = new 
+        MachGuiGeneralStatistics(pStartupScreens, Gui::Coord(196, 50), IDS_MENU_MACHINEKILLS, MachPhys::N_RACES);
     uint width1 = machineKills->width() - 1;
     statistics_.push_back(machineKills);
     statistics_[0]->setStatistics(
@@ -255,33 +255,33 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         greenScore.otherMachinesDestroyed(),
         yellowScore.otherMachinesDestroyed());
     // Construction Kills
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + width1, 50),
         IDS_MENU_CONSTRUCTKILLS,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[1]->setStatistics(
         redScore.otherConstructionsDestroyed(),
         blueScore.otherConstructionsDestroyed(),
         greenScore.otherConstructionsDestroyed(),
         yellowScore.otherConstructionsDestroyed());
     // Machine Losses
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 2), 50),
         IDS_MENU_MACHINELOSSES,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[2]->setStatistics(
         redScore.myMachinesDestroyed(),
         blueScore.myMachinesDestroyed(),
         greenScore.myMachinesDestroyed(),
         yellowScore.myMachinesDestroyed());
     // Construction Losses
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 3), 50),
         IDS_MENU_CONSTRUCTLOSSES,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[3]->setStatistics(
         redScore.myConstructionsDestroyed(),
         blueScore.myConstructionsDestroyed(),
@@ -291,60 +291,60 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Building and Research
     //
     // BMU's Mined
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 4), 50),
         IDS_MENU_BMUSMINED,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[4]
         ->setStatistics(redScore.BMUsMined(), blueScore.BMUsMined(), greenScore.BMUsMined(), yellowScore.BMUsMined());
     // Machines Built
-    statistics_.push_back(_NEW(
-        MachGuiGeneralStatistics(pStartupScreens, Gui::Coord(196, 141), IDS_MENU_MACHINESBUILT, MachPhys::N_RACES)));
+    statistics_.push_back(new 
+        MachGuiGeneralStatistics(pStartupScreens, Gui::Coord(196, 141), IDS_MENU_MACHINESBUILT, MachPhys::N_RACES));
     statistics_[5]->setStatistics(
         redScore.machinesBuilt(),
         blueScore.machinesBuilt(),
         greenScore.machinesBuilt(),
         yellowScore.machinesBuilt());
     // Military Machines Built
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + width1, 141),
         IDS_MENU_MLTMACHINESBUILT,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[6]->setStatistics(
         redScore.militaryMachinesBuilt(),
         blueScore.militaryMachinesBuilt(),
         greenScore.militaryMachinesBuilt(),
         yellowScore.militaryMachinesBuilt());
     // Constructions Built
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 2), 141),
         IDS_MENU_CONSTRUCTSBUILT,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[7]->setStatistics(
         redScore.constructionsBuilt(),
         blueScore.constructionsBuilt(),
         greenScore.constructionsBuilt(),
         yellowScore.constructionsBuilt());
     // Items Researched
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 3), 141),
         IDS_MENU_ITEMSRESEARCHED,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[8]->setStatistics(
         redScore.itemsResearched(),
         blueScore.itemsResearched(),
         greenScore.itemsResearched(),
         yellowScore.itemsResearched());
     // Researce points
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 4), 141),
         IDS_MENU_RESEARCHPOINTS,
-        MachPhys::N_RACES)));
+        MachPhys::N_RACES));
     statistics_[9]->setStatistics(
         redScore.totalResearchCost(),
         blueScore.totalResearchCost(),
@@ -354,104 +354,104 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Kills
     //
     // Player name list
-    MachGuiPlayerNameList* names1 = _NEW(
-        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 241), "gui/menu/smallfnt.bmp", IDS_MENU_STSTPLAYER));
+    MachGuiPlayerNameList* names1 = new 
+        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 241), "gui/menu/smallfnt.bmp", IDS_MENU_STSTPLAYER);
     names1->names(redName, blueName, greenName, yellowName);
     // Destroyed Machines belonging to player 1
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + width1, 241),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::RED,
-        redName)));
+        redName));
     statistics_[10]->setStatistics(
         redScore.raceMachinesDestroyed(MachPhys::RED),
         blueScore.raceMachinesDestroyed(MachPhys::RED),
         greenScore.raceMachinesDestroyed(MachPhys::RED),
         yellowScore.raceMachinesDestroyed(MachPhys::RED));
     // Destroyed Machines belonging to player 2
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 2), 241),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::BLUE,
-        blueName)));
+        blueName));
     statistics_[11]->setStatistics(
         redScore.raceMachinesDestroyed(MachPhys::BLUE),
         blueScore.raceMachinesDestroyed(MachPhys::BLUE),
         greenScore.raceMachinesDestroyed(MachPhys::BLUE),
         yellowScore.raceMachinesDestroyed(MachPhys::BLUE));
     // Destroyed Machines belonging to player 3
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 3), 241),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::GREEN,
-        greenName)));
+        greenName));
     statistics_[12]->setStatistics(
         redScore.raceMachinesDestroyed(MachPhys::GREEN),
         blueScore.raceMachinesDestroyed(MachPhys::GREEN),
         greenScore.raceMachinesDestroyed(MachPhys::GREEN),
         yellowScore.raceMachinesDestroyed(MachPhys::GREEN));
     // Destroyed Machines belonging to player 4
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 4), 241),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::YELLOW,
-        yellowName)));
+        yellowName));
     statistics_[13]->setStatistics(
         redScore.raceMachinesDestroyed(MachPhys::YELLOW),
         blueScore.raceMachinesDestroyed(MachPhys::YELLOW),
         greenScore.raceMachinesDestroyed(MachPhys::YELLOW),
         yellowScore.raceMachinesDestroyed(MachPhys::YELLOW));
     // Player name list
-    MachGuiPlayerNameList* names2 = _NEW(
-        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 322), "gui/menu/smallfnt.bmp", IDS_MENU_STSTPLAYER));
+    MachGuiPlayerNameList* names2 = new 
+        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 322), "gui/menu/smallfnt.bmp", IDS_MENU_STSTPLAYER);
     names2->names(redName, blueName, greenName, yellowName);
     // Destroyed constructions belonging to player 1
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + width1, 322),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::RED,
-        redName)));
+        redName));
     statistics_[14]->setStatistics(
         redScore.raceConstructionsDestroyed(MachPhys::RED),
         blueScore.raceConstructionsDestroyed(MachPhys::RED),
         greenScore.raceConstructionsDestroyed(MachPhys::RED),
         yellowScore.raceConstructionsDestroyed(MachPhys::RED));
     // Destroyed constructions belonging to player 2
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 2), 322),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::BLUE,
-        blueName)));
+        blueName));
     statistics_[15]->setStatistics(
         redScore.raceConstructionsDestroyed(MachPhys::BLUE),
         blueScore.raceConstructionsDestroyed(MachPhys::BLUE),
         greenScore.raceConstructionsDestroyed(MachPhys::BLUE),
         yellowScore.raceConstructionsDestroyed(MachPhys::BLUE));
     // Destroyed constructions belonging to player 3
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 3), 322),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::GREEN,
-        greenName)));
+        greenName));
     statistics_[16]->setStatistics(
         redScore.raceConstructionsDestroyed(MachPhys::GREEN),
         blueScore.raceConstructionsDestroyed(MachPhys::GREEN),
         greenScore.raceConstructionsDestroyed(MachPhys::GREEN),
         yellowScore.raceConstructionsDestroyed(MachPhys::GREEN));
     // Destroyed constructions belonging to player 4
-    statistics_.push_back(_NEW(MachGuiGeneralStatistics(
+    statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
         Gui::Coord(196 + (width1 * 4), 322),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::YELLOW,
-        yellowName)));
+        yellowName));
     statistics_[17]->setStatistics(
         redScore.raceConstructionsDestroyed(MachPhys::YELLOW),
         blueScore.raceConstructionsDestroyed(MachPhys::YELLOW),
@@ -460,7 +460,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     //
     // Overall Scores
     //
-    MachGuiPlayerScore* names3 = _NEW(MachGuiPlayerScore(pStartupScreens, Gui::Coord(53, 50)));
+    MachGuiPlayerScore* names3 = new MachGuiPlayerScore(pStartupScreens, Gui::Coord(53, 50));
     names3->names(redName, blueName, greenName, yellowName);
     statistics_.push_back(names3);
     statistics_[18]->setStatistics(

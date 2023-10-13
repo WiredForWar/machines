@@ -112,7 +112,7 @@ PhysRelativeTime MachPhysMetalSting::doBeDestroyedAt(const PhysAbsoluteTime& tim
         explosionId = SID_XPLODE2_MISSILE;
     }
     SOUND_STREAM("Playing sting explosion at " << destructionTime_ << std::endl);
-    W4dGeneric* pExplosionSite = _NEW(W4dGeneric(pParent(), explosionTransform));
+    W4dGeneric* pExplosionSite = new W4dGeneric(pParent(), explosionTransform);
     W4dGarbageCollector::instance().add(pExplosionSite, destructionTime_ + 10);
     W4dSoundManager::instance().play(pExplosionSite, explosionId, destructionTime_, 1);
 

@@ -161,8 +161,8 @@ RenIDisplay::~RenIDisplay()
 {
     TEST_INVARIANT;
 
-    _DELETE(backBufferCursorSave_);
-    _DELETE(frontBufferCursorSave_);
+    delete backBufferCursorSave_;
+    delete frontBufferCursorSave_;
 }
 
 void RenIDisplay::CLASS_INVARIANT
@@ -196,8 +196,8 @@ void RenIDisplay::prepareForModeChange(const RenDisplay::Mode& newMode)
     // change because the original surface it refers to will simply have been
     // destroyed.  Thus, destroy the save area.
     RENDER_STREAM("Destroying cursor save area.\n");
-    _DELETE(backBufferCursorSave_);
-    _DELETE(frontBufferCursorSave_);
+    delete backBufferCursorSave_;
+    delete frontBufferCursorSave_;
     backBufferCursorSave_ = nullptr;
     frontBufferCursorSave_ = nullptr;
 
@@ -274,9 +274,9 @@ void RenIDisplay::restoreUnderCursor()
         // Only restore the back once if the cursor isn't on.
         if (not cursor_)
         {
-            _DELETE(backBufferCursorSave_);
+            delete backBufferCursorSave_;
             backBufferCursorSave_ = nullptr;
-            _DELETE(frontBufferCursorSave_);
+            delete frontBufferCursorSave_;
             frontBufferCursorSave_ = nullptr;
         }
     }
@@ -297,9 +297,9 @@ void RenIDisplay::restoreUnderCursor(RenSurface* dest, const RenSurface& front, 
 
 void RenIDisplay::discardCursorSaves()
 {
-    _DELETE(backBufferCursorSave_);
+    delete backBufferCursorSave_;
     backBufferCursorSave_ = nullptr;
-    _DELETE(frontBufferCursorSave_);
+    delete frontBufferCursorSave_;
     frontBufferCursorSave_ = nullptr;
 }
 

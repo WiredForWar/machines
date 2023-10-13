@@ -50,7 +50,7 @@ MachLogEnableActionAction*
 MachLogEnableActionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogEnableActionAction* pResult = nullptr;
-    pResult = _NEW(MachLogEnableActionAction(pCondition, enabled));
+    pResult = new MachLogEnableActionAction(pCondition, enabled);
     pResult->actionConditionKeyName_ = pParser->tokens()[3];
     return pResult;
 }
@@ -88,7 +88,7 @@ MachLogEnableActionAction*
 MachLogEnableActionAction::newDynamic(SimCondition* pCondition, bool enabled, const string& enableToken)
 {
     MachLogEnableActionAction* pResult = nullptr;
-    pResult = _NEW(MachLogEnableActionAction(pCondition, enabled));
+    pResult = new MachLogEnableActionAction(pCondition, enabled);
     pResult->actionConditionKeyName_ = enableToken;
     return pResult;
 }

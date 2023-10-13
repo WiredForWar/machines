@@ -30,8 +30,8 @@ public:
     ~ITurnerTracker()
     {
         // those are deleted by countptr, no idea why it was here and making troubles
-        //_DELETE( pAxisTrackerPlan_ );
-        //_DELETE( pAxisTurnerPlan_ );
+        //delete pAxisTrackerPlan_;
+        //delete pAxisTurnerPlan_;
     }
 
     W4dEntity* pTurningObject_; // The object to turn
@@ -47,7 +47,7 @@ MachPhysTurnerTracker::MachPhysTurnerTracker(
     W4d::Axis turningAxis,
     W4d::Axis pointingAxis,
     MexRadians turnRate)
-    : pImpl_(_NEW(ITurnerTracker))
+    : pImpl_(new ITurnerTracker)
 {
     // Set up the data object.
     // Construct a tracker plan for use when tracking, and to store basic data.
@@ -55,14 +55,14 @@ MachPhysTurnerTracker::MachPhysTurnerTracker(
     // sensible when tracking is actually invoked.
     ITurnerTracker& impl = *pImpl_;
     PhysRelativeTime duration = 31536000.0; // One year
-    impl.pAxisTrackerPlan_ = _NEW(W4dAxisTrackerPlan(
+    impl.pAxisTrackerPlan_ = new W4dAxisTrackerPlan(
         *pTurningObject,
         *pTurningObject,
         pTurningObject->localTransform(),
         turningAxis,
         pointingAxis,
         turnRate,
-        duration));
+        duration);
 
     // Store the pointer using a counted ptr. This ensures the plan object doesn't get deleted
     // after use by a W4dEntityPlan.
@@ -70,7 +70,7 @@ MachPhysTurnerTracker::MachPhysTurnerTracker(
 
     // Now do likewise for the turner plan
     impl.pAxisTurnerPlan_
-        = _NEW(W4dAxisTurnerPlan(pTurningObject->localTransform(), turningAxis, 0.0, 0.0, 0.0, turnRate, duration));
+        = new W4dAxisTurnerPlan(pTurningObject->localTransform(), turningAxis, 0.0, 0.0, 0.0, turnRate, duration);
 
     impl.axisTurnerPlanPtr_ = impl.pAxisTurnerPlan_;
 
@@ -84,7 +84,7 @@ MachPhysTurnerTracker::~MachPhysTurnerTracker()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysTurnerTracker::CLASS_INVARIANT

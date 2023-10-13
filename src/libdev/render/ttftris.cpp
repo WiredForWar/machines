@@ -55,7 +55,7 @@ RenTTFTriangles::~RenTTFTriangles()
 // virtual
 RenTTFPolygon* RenTTFTriangles::clone() const
 {
-    return _NEW(RenTTFTriangles(*this));
+    return new RenTTFTriangles(*this);
 }
 
 // virtual

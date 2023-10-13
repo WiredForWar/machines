@@ -49,7 +49,7 @@ void W4dCustom::addMesh(W4dDistance distance, W4dLOD LODid)
     meshes_.push_back(&(*meshPtr));
 
     // Construct a mesh instance and add to the entity
-    add(_NEW(RenMeshInstance(meshPtr)), distance, LODid);
+    add(new RenMeshInstance(meshPtr)), distance, LODid;
 }
 
 void W4dCustom::emptyMesh(W4dDistance distance, W4dLOD LODid)
@@ -60,7 +60,7 @@ void W4dCustom::emptyMesh(W4dDistance distance, W4dLOD LODid)
     meshes_[LODid] = &(*meshPtr);
 
     // Construct a mesh instance and add to the entity
-    add(_NEW(RenMeshInstance(meshPtr)), distance, LODid);
+    add(new RenMeshInstance(meshPtr)), distance, LODid;
 }
 
 bool W4dCustom::loadUniqueMesh(const SysPathName& fileName, const string& meshName, W4dDistance distance, W4dLOD LODid)
@@ -73,7 +73,7 @@ bool W4dCustom::loadUniqueMesh(const SysPathName& fileName, const string& meshNa
     meshes_[LODid] = &(*meshPtr);
 
     // Construct a mesh instance and add to the entity
-    add(_NEW(RenMeshInstance(meshPtr)), distance, LODid);
+    add(new RenMeshInstance(meshPtr)), distance, LODid;
 
     return true;
 }

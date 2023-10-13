@@ -53,7 +53,7 @@ MachLogSetFlagAction*
 MachLogSetFlagAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogSetFlagAction* pResult = nullptr;
-    pResult = _NEW(MachLogSetFlagAction(pCondition, enabled));
+    pResult = new MachLogSetFlagAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
@@ -95,7 +95,7 @@ MachLogSetFlagAction::MachLogSetFlagAction(PerConstructor con)
 MachLogSetFlagAction* MachLogSetFlagAction::newDynamic(SimCondition* pCondition, bool enabled, const string& flagName)
 {
     MachLogSetFlagAction* pResult = nullptr;
-    pResult = _NEW(MachLogSetFlagAction(pCondition, enabled));
+    pResult = new MachLogSetFlagAction(pCondition, enabled);
     pResult->flagName_ = flagName;
     return pResult;
 }

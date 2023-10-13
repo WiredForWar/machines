@@ -66,11 +66,11 @@ void MachGuiPlayerColour::releaseBmpMemory()
     GuiBitmap*& pBmp4 = pYellowBmp();
     GuiBitmap*& pBmp5 = pBlackBmp();
 
-    _DELETE(pBmp1);
-    _DELETE(pBmp2);
-    _DELETE(pBmp3);
-    _DELETE(pBmp4);
-    _DELETE(pBmp5);
+    delete pBmp1;
+    delete pBmp2;
+    delete pBmp3;
+    delete pBmp4;
+    delete pBmp5;
 
     pBmp1 = nullptr;
     pBmp2 = nullptr;
@@ -85,7 +85,7 @@ GuiBitmap*& MachGuiPlayerColour::pRedBmp()
     static GuiBitmap* pBmp = nullptr;
     if (not pBmp)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/gred.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gred.bmp"));
     }
     return pBmp;
 }
@@ -96,7 +96,7 @@ GuiBitmap*& MachGuiPlayerColour::pGreenBmp()
     static GuiBitmap* pBmp = nullptr;
     if (not pBmp)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/ggreen.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/ggreen.bmp"));
     }
     return pBmp;
 }
@@ -107,7 +107,7 @@ GuiBitmap*& MachGuiPlayerColour::pBlueBmp()
     static GuiBitmap* pBmp = nullptr;
     if (not pBmp)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/gblue.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gblue.bmp"));
     }
     return pBmp;
 }
@@ -118,7 +118,7 @@ GuiBitmap*& MachGuiPlayerColour::pYellowBmp()
     static GuiBitmap* pBmp = nullptr;
     if (not pBmp)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/gyellow.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gyellow.bmp"));
     }
     return pBmp;
 }
@@ -129,7 +129,7 @@ GuiBitmap*& MachGuiPlayerColour::pBlackBmp()
     static GuiBitmap* pBmp = nullptr;
     if (not pBmp)
     {
-        pBmp = _NEW(GuiBitmap(Gui::bitmap("gui/menu/gblack.bmp")));
+        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gblack.bmp"));
     }
     return pBmp;
 }
@@ -211,7 +211,7 @@ void MachGuiColourSelector::doHandleMouseClickEvent(const GuiMouseEvent& rel)
         }
 
         // Next line will cause this to be deleted also.
-        _DELETE(pColourList_);
+        delete pColourList_;
     }
 }
 
@@ -223,11 +223,11 @@ MachGuiColourList::MachGuiColourList(
     : MachGuiAutoDeleteDisplayable(pStartupScreens)
     , GuiDisplayable(pParent, box)
 {
-    _NEW(MachGuiColourSelector(pStartupScreens, this, Gui::Box(0, 0, 13, 13), MachPhys::NORACE, pPlayerInfo));
-    _NEW(MachGuiColourSelector(pStartupScreens, this, Gui::Box(12, 0, 25, 13), MachPhys::RED, pPlayerInfo));
-    _NEW(MachGuiColourSelector(pStartupScreens, this, Gui::Box(24, 0, 37, 13), MachPhys::GREEN, pPlayerInfo));
-    _NEW(MachGuiColourSelector(pStartupScreens, this, Gui::Box(36, 0, 49, 13), MachPhys::BLUE, pPlayerInfo));
-    _NEW(MachGuiColourSelector(pStartupScreens, this, Gui::Box(48, 0, 61, 13), MachPhys::YELLOW, pPlayerInfo));
+    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(0, 0, 13, 13), MachPhys::NORACE, pPlayerInfo);
+    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(12, 0, 25, 13), MachPhys::RED, pPlayerInfo);
+    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(24, 0, 37, 13), MachPhys::GREEN, pPlayerInfo);
+    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(36, 0, 49, 13), MachPhys::BLUE, pPlayerInfo);
+    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(48, 0, 61, 13), MachPhys::YELLOW, pPlayerInfo);
 }
 
 MachGuiColourList::~MachGuiColourList()
@@ -266,7 +266,7 @@ MachGuiPlayerListItem::MachGuiPlayerListItem(
     playerInfo_.ping_ = ping;
     playerInfo_.hasMachinesCD_ = playerHasMachinesCD;
 
-    pPlayerColour_ = _NEW(MachGuiPlayerColour(pStartupScreens, this, &playerInfo_));
+    pPlayerColour_ = new MachGuiPlayerColour(pStartupScreens, this, &playerInfo_);
 }
 
 MachGuiPlayerListItem::~MachGuiPlayerListItem()
@@ -660,7 +660,7 @@ void MachGuiPlayerColour::doHandleMouseClickEvent(const GuiMouseEvent& rel)
     if (pParent_->canInteract() and rel.leftButton() == Gui::RELEASED and canInteract())
     {
         // Only allow colour selection for human and computer
-        _NEW(MachGuiColourList(pStartupScreens_, this, Gui::Box(0, 0, width(), height()), pPlayerInfo_));
+        new MachGuiColourList(pStartupScreens_, this, Gui::Box(0, 0, width(), height()), pPlayerInfo_);
     }
 }
 
@@ -866,7 +866,7 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 
         size_t dropDownHeight = strings.size() * MachGuiSingleSelectionListBoxItem::reqHeight();
 
-        MachGuiDropDownListBox* pDropDownList = _NEW(MachGuiPlayerSelectionListBox(
+        MachGuiDropDownListBox* pDropDownList = new MachGuiPlayerSelectionListBox(
             pStartupScreens_,
             Gui::Box(
                 dropDownPos.x(),
@@ -879,7 +879,7 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
             dropDownWidth,
             strings,
             this,
-            playerInfo_.index_));
+            playerInfo_.index_);
 
         dropDownListDisplayed(pDropDownList);
     }

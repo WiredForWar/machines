@@ -50,7 +50,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
     MATHEX_SCALAR rotationDeceleration,
     bool comeToRest)
     : PhysMotionPlan(0)
-    , pImpl_(_NEW(PhysLinearTravelPlanImpl(transformsPtr)))
+    , pImpl_(new PhysLinearTravelPlanImpl(transformsPtr))
 {
     PRE_INFO(*transformsPtr);
     PRE_INFO(startTranslationSpeed);
@@ -193,7 +193,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
     const PhysMotionPlan::TransformsPtr& transformsPtr,
     const PhysMotionPlan::RampAccelerationsPtr& rampAccelerationsPtr)
     : PhysMotionPlan(0)
-    , pImpl_(_NEW(PhysLinearTravelPlanImpl(transformsPtr, rampAccelerationsPtr)))
+    , pImpl_(new PhysLinearTravelPlanImpl(transformsPtr, rampAccelerationsPtr))
 {
     CB_DEPIMPL(TransformsPtr, transformsPtr_);
     CB_DEPIMPL(RampAccelerationsPtr, rampAccelerationsPtr_);
@@ -253,7 +253,7 @@ PhysLinearTravelPlan::~PhysLinearTravelPlan()
 {
     TEST_INVARIANT;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

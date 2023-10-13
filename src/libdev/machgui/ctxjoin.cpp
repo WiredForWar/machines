@@ -159,30 +159,30 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
 {
 
     WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl);
-    pJoinBtn_ = _NEW(MachGuiMenuButton(
+    pJoinBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 51, 605, 93),
         IDS_MENUBTN_JOIN,
-        MachGuiStartupScreens::JOIN));
-    pCreateBtn_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::JOIN);
+    pCreateBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 157, 605, 200),
         IDS_MENUBTN_CREATE,
-        MachGuiStartupScreens::CREATE));
-    pShowGamesBtn_ = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::CREATE);
+    pShowGamesBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 251, 605, 293),
         IDS_MENUBTN_SHOWGAMES,
-        MachGuiStartupScreens::SHOWGAMES));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::SHOWGAMES);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 348, 605, 390),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
+        MachGuiStartupScreens::EXIT);
 
     pCancelBtn->escapeControl(true);
     pShowGamesBtn_->defaultControl(true);
@@ -190,7 +190,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     // Display list box heading
     GuiResourceString currentGames(IDS_MENULB_GAMES);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pCurrentGamesText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pCurrentGamesText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             JOINGAME_LB_MINX,
@@ -198,10 +198,10 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
             JOINGAME_LB_MINX + font.textWidth(currentGames.asString()),
             55 + font.charHeight() + 2),
         IDS_MENULB_GAMES,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create games list box
-    pGamesList_ = _NEW(MachGuiSingleSelectionListBox(
+    pGamesList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
@@ -211,7 +211,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
             JOINGAME_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
 
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
@@ -224,12 +224,12 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
 
     // Setup edit box for new game name to be entered into...
     GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
-    pNewGameName_ = _NEW(MachGuiNewGameName(
+    pNewGameName_ = new MachGuiNewGameName(
         pStartupScreens_,
         pGamesList_,
         JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH,
         enterName.asString(),
-        *this));
+        *this);
     pGamesList_->childrenUpdated();
 
     // Standard context setting stuff...
@@ -244,19 +244,19 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     switch (protocol)
     {
         case NetNetwork::UDP:
-            pNetworkProtocol_ = _NEW(MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens));
+            pNetworkProtocol_ = new MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens);
             break;
         case NetNetwork::IPX:
-            pNetworkProtocol_ = _NEW(MachGuiIPXNetworkMode(pStartupScreens, pStartupScreens));
+            pNetworkProtocol_ = new MachGuiIPXNetworkMode(pStartupScreens, pStartupScreens);
             break;
         case NetNetwork::TCPIP:
-            pNetworkProtocol_ = _NEW(MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens));
+            pNetworkProtocol_ = new MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens);
             break;
         case NetNetwork::MODEM:
-            pNetworkProtocol_ = _NEW(MachGuiModemNetworkMode(pStartupScreens, pStartupScreens));
+            pNetworkProtocol_ = new MachGuiModemNetworkMode(pStartupScreens, pStartupScreens);
             break;
         case NetNetwork::SERIAL:
-            pNetworkProtocol_ = _NEW(MachGuiSerialNetworkMode(pStartupScreens, pStartupScreens));
+            pNetworkProtocol_ = new MachGuiSerialNetworkMode(pStartupScreens, pStartupScreens);
             break;
         default:
             ASSERT(false, "Network protocol not currently supported by GUI");
@@ -317,12 +317,12 @@ void MachGuiCtxJoin::showGames()
 
         // Set up special enter-name edit box
         GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
-        pNewGameName_ = _NEW(MachGuiNewGameName(
+        pNewGameName_ = new MachGuiNewGameName(
             pStartupScreens_,
             pGamesList_,
             JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH,
             enterName.asString(),
-            *this));
+            *this);
 
         // Call children updated here to clean network status before polling for new sessions.
         pGamesList_->childrenUpdated();
@@ -337,12 +337,12 @@ void MachGuiCtxJoin::showGames()
 
         for (NetNetwork::Sessions::const_iterator iter = sessions.begin(); iter != sessions.end(); ++iter)
         {
-            _NEW(MachGuiCurGamesListBoxItem(
+            new MachGuiCurGamesListBoxItem(
                 pStartupScreens_,
                 pGamesList_,
                 JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH,
                 (*iter)->appSessionName(),
-                *this));
+                *this);
             NETWORK_STREAM("  item added.\n");
         }
         NETWORK_STREAM(" items added to the list box.\n");

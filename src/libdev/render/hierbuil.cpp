@@ -7,7 +7,7 @@
 #include "render/hierbuil.hpp"
 
 RenHierarchyBuilder::RenHierarchyBuilder()
-    : pRoot_(_NEW(Node(nullptr, MexTransform3d())))
+    : pRoot_(new Node(nullptr, MexTransform3d()))
 {
     pCurrentNode_ = pRoot_;
 
@@ -18,7 +18,7 @@ RenHierarchyBuilder::~RenHierarchyBuilder()
 {
     TEST_INVARIANT;
 
-    _DELETE(pRoot_);
+    delete pRoot_;
 }
 
 const RenHierarchyBuilder::Node* RenHierarchyBuilder::pRoot() const
@@ -33,12 +33,12 @@ void RenHierarchyBuilder::CLASS_INVARIANT
 
 void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChildren)
 {
-    addNode(_NEW(Node(pCurrentNode_, transform, nChildren)));
+    addNode(new Node(pCurrentNode_, transform, nChildren));
 }
 
 void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChildren, const RenIMeshID& meshId)
 {
-    addNode(_NEW(Node(pCurrentNode_, transform, nChildren, meshId)));
+    addNode(new Node(pCurrentNode_, transform, nChildren, meshId));
 }
 
 void RenHierarchyBuilder::addNode(Node* pNode)

@@ -110,7 +110,7 @@ MachPhysTechnician* MachLogTechnician::pNewPhysTechnician(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysTechnician(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race()));
+    return new MachPhysTechnician(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race());
 }
 // virtual
 const MachPhysMachineData& MachLogTechnician::machineData() const

@@ -161,7 +161,7 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
         if (canDo)
         {
             // Construct appropriate type of operation
-            MachLogOperation* pOp = _NEW(MachLogNukeAttackOperation(&pActor->asMissileEmplacement(), validPoint));
+            MachLogOperation* pOp = new MachLogNukeAttackOperation(&pActor->asMissileEmplacement(), validPoint);
 
             // Give it to the actor
             pActor->newOperation(pOp);
@@ -200,7 +200,7 @@ bool MachGuiNukeAttackCommand::applyAttackObject(MachActor* pActor, string*)
                 "A non-ICBM has somehow been allowed to initiate a nuclear attack.");
 
             // Construct appropriate type of operation
-            MachLogOperation* pOp = _NEW(MachLogNukeAttackOperation(&pActor->asMissileEmplacement(), pDirectObject_));
+            MachLogOperation* pOp = new MachLogNukeAttackOperation(&pActor->asMissileEmplacement(), pDirectObject_);
 
             // Give it to the actor
             pActor->newOperation(pOp);
@@ -262,7 +262,7 @@ void MachGuiNukeAttackCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiNukeAttackCommand::clone() const
 {
-    return _NEW(MachGuiNukeAttackCommand(&inGameScreen()));
+    return new MachGuiNukeAttackCommand(&inGameScreen());
 }
 
 // virtual

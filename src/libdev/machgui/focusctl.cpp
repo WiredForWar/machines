@@ -44,7 +44,7 @@ private:
 
 MachGuiFocusCapableControl::MachGuiFocusCapableControl(MachGuiStartupScreens* pStartupScreens)
 {
-    pImpl_ = _NEW(MachGuiFocusCapableControlImpl());
+    pImpl_ = new MachGuiFocusCapableControlImpl();
 
     CB_DEPIMPL(bool, hasFocus_);
     CB_DEPIMPL(MachGuiStartupScreens*, pStartupScreens_);
@@ -67,7 +67,7 @@ MachGuiFocusCapableControl::~MachGuiFocusCapableControl()
     // Remove this to StartupScreens collection of focus capable controls
     pStartupScreens_->removeFocusCapableControl(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachGuiFocusCapableControl::CLASS_INVARIANT

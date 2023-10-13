@@ -168,51 +168,51 @@ MachLogWeapon* MachLogArmourer::createWeapon(MachLogRace* pLogRace, MachPhysWeap
     {
         case MachPhys::PULSE_RIFLE:
         case MachPhys::PULSE_CANNON:
-            pWeapon = _NEW(MachLogPulseWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogPulseWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::FLAME_THROWER1:
         case MachPhys::FLAME_THROWER2:
-            pWeapon = _NEW(MachLogFlameThrower(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogFlameThrower(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::ELECTRIC_CHARGE:
-            pWeapon = _NEW(MachLogElectroCharger(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogElectroCharger(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::PLASMA_RIFLE:
         case MachPhys::PLASMA_CANNON1:
         case MachPhys::PLASMA_CANNON2:
-            pWeapon = _NEW(MachLogPlasmaWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogPlasmaWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::BOLTER:
         case MachPhys::AUTO_CANNON:
         case MachPhys::HEAVY_BOLTER1:
         case MachPhys::HEAVY_BOLTER2:
-            pWeapon = _NEW(MachLogBolterWeapon(pLogRace, pPhysWeapon, pActor));
+            pWeapon = new MachLogBolterWeapon(pLogRace, pPhysWeapon, pActor);
             break;
 
         // case MachPhys::SUPERCHARGE_BASIC:  do not exist any more 3/6/98 Yueai
         case MachPhys::SUPERCHARGE_ADVANCED:
         case MachPhys::SUPERCHARGE_SUPER:
-            pWeapon = _NEW(MachLogSuperCharger(pLogRace, _STATIC_CAST(MachPhysSuperCharger*, pPhysWeapon), pActor));
+            pWeapon = new MachLogSuperCharger(pLogRace, _STATIC_CAST(MachPhysSuperCharger*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::GORILLA_PUNCH:
-            pWeapon = _NEW(MachLogPunchWeapon(pLogRace, _STATIC_CAST(MachPhysPunchWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogPunchWeapon(pLogRace, _STATIC_CAST(MachPhysPunchWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::VORTEX:
-            pWeapon = _NEW(MachLogVortexWeapon(pLogRace, pPhysWeapon, pActor));
+            pWeapon = new MachLogVortexWeapon(pLogRace, pPhysWeapon, pActor);
             break;
 
         case MachPhys::ION_ORBITAL_CANNON:
-            pWeapon = _NEW(MachLogIonWeapon(pLogRace, pPhysWeapon, pActor));
+            pWeapon = new MachLogIonWeapon(pLogRace, pPhysWeapon, pActor);
             break;
 
         case MachPhys::ORB_OF_TREACHERY:
-            pWeapon = _NEW(MachLogTreacheryWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogTreacheryWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::HOMING_MISSILE:
@@ -223,28 +223,28 @@ MachLogWeapon* MachLogArmourer::createWeapon(MachLogRace* pLogRace, MachPhysWeap
         case MachPhys::MULTI_LAUNCHER5:
         case MachPhys::MULTI_LAUNCHER6:
         case MachPhys::MULTI_LAUNCHER7:
-            pWeapon = _NEW(MachLogMultiLauncher(pLogRace, _STATIC_CAST(MachPhysMultiLauncher*, pPhysWeapon), pActor));
+            pWeapon = new MachLogMultiLauncher(pLogRace, _STATIC_CAST(MachPhysMultiLauncher*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::LARGE_MISSILE:
             pWeapon
-                = _NEW(MachLogLargeMissileLauncher(pLogRace, _STATIC_CAST(MachPhysLargeMissile*, pPhysWeapon), pActor));
+                = new MachLogLargeMissileLauncher(pLogRace, _STATIC_CAST(MachPhysLargeMissile*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::NUCLEAR_MISSILE:
-            pWeapon = _NEW(MachLogNuclearWeapon(pLogRace, _STATIC_CAST(MachPhysNuclearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogNuclearWeapon(pLogRace, _STATIC_CAST(MachPhysNuclearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::BEE_BOMB:
-            pWeapon = _NEW(MachLogBeeBomber(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogBeeBomber(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::WASP_LIGHT_STING:
-            pWeapon = _NEW(MachLogLightStingWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogLightStingWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
         case MachPhys::WASP_METAL_STING:
-            pWeapon = _NEW(MachLogMetalStingWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor));
+            pWeapon = new MachLogMetalStingWeapon(pLogRace, _STATIC_CAST(MachPhysLinearWeapon*, pPhysWeapon), pActor);
             break;
 
             DEFAULT_ASSERT_BAD_CASE(pPhysWeapon->type());

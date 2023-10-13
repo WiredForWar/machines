@@ -24,7 +24,7 @@ template <class GRA_GRAPH, class VERTEX_MAP> GraAStarAlg__::~GraAStarAlg()
     TEST_INVARIANT;
 
     if (pAStarVertices_ != nullptr)
-        _DELETE(pAStarVertices_);
+        delete pAStarVertices_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -92,14 +92,14 @@ void GraAStarAlg__::start(const Graph& graph, const VertexId& startVertex, const
 
     // Clear away any old search data
     if (pAStarVertices_ != nullptr)
-        _DELETE(pAStarVertices_);
+        delete pAStarVertices_;
     if (openVertices_.size() != 0)
         openVertices_.erase(openVertices_.begin(), openVertices_.end());
     POST_DATA(closedVertices_.erase(closedVertices_.begin(), closedVertices_.end());)
 
     // Store the data
     pGraph_ = &graph;
-    pAStarVertices_ = _NEW(AStarVertices);
+    pAStarVertices_ = new AStarVertices;
     startVertexId_ = startVertex;
     endVertexId_ = endVertex;
 

@@ -74,7 +74,7 @@ MachLogActivateSquadronsAction*
 MachLogActivateSquadronsAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     MachLogActivateSquadronsAction* pResult = nullptr;
-    pResult = _NEW(MachLogActivateSquadronsAction(pCondition, enabled));
+    pResult = new MachLogActivateSquadronsAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

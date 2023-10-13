@@ -90,7 +90,7 @@ PhysRelativeTime MachLogRefillLandMinesOperation::doUpdate()
     if (pActor_->nMines() == pActor_->data().mineCapacity())
     {
         HAL_STREAM(" spy is full issue to move to origin\n");
-        subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, dest_)));
+        subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest_));
         doneMove_ = true;
         return 5.0;
     }
@@ -108,7 +108,7 @@ PhysRelativeTime MachLogRefillLandMinesOperation::doUpdate()
     ASSERT(foundGarrison, "A spy should always be able to enter any garrison. Check your parmdata settings.");
 
     HAL_STREAM(" issue MLEnterBuildingOp\n");
-    subOperation(pActor_, _NEW(MachLogEnterBuildingOperation(pActor_, pGarrison, nullptr)));
+    subOperation(pActor_, new MachLogEnterBuildingOperation(pActor_, pGarrison, nullptr));
     return 10.0;
 }
 

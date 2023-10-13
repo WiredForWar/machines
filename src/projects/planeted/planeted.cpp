@@ -47,21 +47,21 @@ PedPlanetEditor::PedPlanetEditor()
     , pPlanet_(nullptr)
     , pSceneManager_(nullptr)
 {
-    PedDomainEditor* pDomainMode = _NEW(PedDomainEditor());
-    PedPortalEditor* pPortalMode = _NEW(PedPortalEditor());
+    PedDomainEditor* pDomainMode = new PedDomainEditor();
+    PedPortalEditor* pPortalMode = new PedPortalEditor();
     pPortalMode->domainEditor(pDomainMode);
 
-    pObstacleMode_ = _NEW(PedObstacleEditor());
+    pObstacleMode_ = new PedObstacleEditor();
     pDomainMode_ = pDomainMode;
     pPortalMode_ = pPortalMode;
 
-    pConstructionMode_ = _NEW(PedConstructionEditor());
-    pMachineMode_ = _NEW(PedMachineEditor());
-    PedArtefactEditor* tmpArtefactMode_ = _NEW(PedArtefactEditor());
+    pConstructionMode_ = new PedConstructionEditor();
+    pMachineMode_ = new PedMachineEditor();
+    PedArtefactEditor* tmpArtefactMode_ = new PedArtefactEditor();
     pArtefactMode_ = tmpArtefactMode_;
-    pTileMode_ = _NEW(PedTileEditor(*tmpArtefactMode_));
+    pTileMode_ = new PedTileEditor(*tmpArtefactMode_);
 
-    pCameraMode_ = _NEW(PedCameraEditor());
+    pCameraMode_ = new PedCameraEditor();
 
     pCurrentMode_ = pTileMode_;
     pCurrentMode_->activateMode();
@@ -73,14 +73,14 @@ PedPlanetEditor::~PedPlanetEditor()
 {
 
     TEST_INVARIANT;
-    _DELETE(pObstacleMode_);
-    _DELETE(pDomainMode_);
-    _DELETE(pPortalMode_);
-    _DELETE(pConstructionMode_);
-    _DELETE(pMachineMode_);
-    _DELETE(pArtefactMode_);
-    _DELETE(pTileMode_);
-    _DELETE(pCameraMode_);
+    delete pObstacleMode_;
+    delete pDomainMode_;
+    delete pPortalMode_;
+    delete pConstructionMode_;
+    delete pMachineMode_;
+    delete pArtefactMode_;
+    delete pTileMode_;
+    delete pCameraMode_;
 }
 
 void PedPlanetEditor::CLASS_INVARIANT

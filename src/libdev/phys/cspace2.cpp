@@ -48,7 +48,7 @@ PhysConfigSpace2d::PhysConfigSpace2d(
     MATHEX_SCALAR minPortalClearance,
     MATHEX_SCALAR maxPortalClearance,
     ObstacleFlags allObstacleFlags)
-    : impl_(*_NEW(PhysCS2dImpl(
+    : impl_(*new PhysCS2dImpl(
         this,
         MexAlignedBox2d(minPoint, maxPoint),
         newMode,
@@ -61,7 +61,7 @@ PhysConfigSpace2d::PhysConfigSpace2d(
         domainClearance,
         minPortalClearance,
         maxPortalClearance,
-        allObstacleFlags)))
+        allObstacleFlags))
 {
 
     TEST_INVARIANT;
@@ -73,7 +73,7 @@ PhysConfigSpace2d::~PhysConfigSpace2d()
     TEST_INVARIANT;
 
     // Free the data object
-    _DELETE(&impl_);
+    delete &impl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -103,7 +103,7 @@ PhysConfigSpace2d::DomainId PhysConfigSpace2d::addDomain(const MexAlignedBox2d& 
     DomainId id = impl_.domainIdGenerator().next();
 
     // Construct the new domain
-    PhysCS2dDomain* pDomain = _NEW(PhysCS2dDomain(id, box));
+    PhysCS2dDomain* pDomain = new PhysCS2dDomain(id, box);
 
     // Add it
     impl_.add(pDomain);
@@ -121,7 +121,7 @@ PhysConfigSpace2d::addDomain(const MexAlignedBox2d& box, std::unique_ptr<MexPoly
     DomainId id = impl_.domainIdGenerator().next();
 
     // Construct the new domain
-    PhysCS2dDomain* pDomain = _NEW(PhysCS2dDomain(id, box, boundaryAPtr));
+    PhysCS2dDomain* pDomain = new PhysCS2dDomain(id, box, boundaryAPtr);
 
     // Add it to the serial map
     impl_.add(pDomain);
@@ -164,7 +164,7 @@ void PhysConfigSpace2d::removeDomain(const DomainId& id)
     impl_.domainTree().remove(pDomain);
 
     // Delete the domain
-    _DELETE(pDomain);
+    delete pDomain;
 
     POST(not domainExists(id));
 }
@@ -187,7 +187,7 @@ PhysConfigSpace2d::PortalId PhysConfigSpace2d::addPortal(
     PRE(domainExists(id2));
 
     // Construct a portal object
-    PhysCS2dPortal* pPortal = _NEW(PhysCS2dPortal(id1, id2, point1, point2));
+    PhysCS2dPortal* pPortal = new PhysCS2dPortal(id1, id2, point1, point2);
 
     // Allocate an id
     PhysConfigSpace2d::PortalId id = impl_.portalIdGenerator().next();
@@ -231,7 +231,7 @@ void PhysConfigSpace2d::removePortal(const PortalId& id)
     domains[pPortal->domainId2()]->removePortal(id);
 
     // Delete the portal
-    _DELETE(pPortal);
+    delete pPortal;
 
     POST(not portalExists(id));
 }
@@ -255,7 +255,7 @@ PhysConfigSpace2d::PolygonId PhysConfigSpace2d::add(
     PolygonId id = impl_.polygonIdGenerator().next();
 
     // Construct a new holder for the polygon
-    PhysCS2dPolygon* pPolygonHolder = _NEW(PhysCS2dPolygon(id, polygonUPtr, height, flags, type));
+    PhysCS2dPolygon* pPolygonHolder = new PhysCS2dPolygon(id, polygonUPtr, height, flags, type);
     POST(pPolygonHolder != nullptr);
 
     // Store in the polygon map
@@ -376,7 +376,7 @@ void PhysConfigSpace2d::remove(PolygonId id)
         impl_.pVisibilityGraph()->removePolygon(id);
 
     // Delete it
-    _DELETE(pPolygonHolder);
+    delete pPolygonHolder;
 
     // Unless buffering polygon updates, update the portals as required
     if (not impl_.bufferPolygonPortalUpdates_)
@@ -580,7 +580,7 @@ PhysConfigSpace2d::FindPathId PhysConfigSpace2d::addFindPath(
     FindPathId id = impl_.findPathIdGenerator().next();
 
     // Construct a new findPath object
-    PhysCS2dFindPath* pFindPath = _NEW(PhysCS2dFindPath(this, startPoint, endPoint, clearance, flags, priority));
+    PhysCS2dFindPath* pFindPath = new PhysCS2dFindPath(this, startPoint, endPoint, clearance, flags, priority);
 
     // Add it to the map
     impl_.findPaths().add(id, pFindPath);
@@ -668,7 +668,7 @@ void PhysConfigSpace2d::removeFindPath(const FindPathId& id)
         findPathQueue.erase(it);
     }
 
-    _DELETE(pFindPath);
+    delete pFindPath;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -984,7 +984,7 @@ PhysConfigSpace2d::DomainFindPathId PhysConfigSpace2d::addDomainFindPath(
 
     // Construct a new domainFindPath object
     PhysCS2dDomainFindPath* pDomainFindPath
-        = _NEW(PhysCS2dDomainFindPath(this, startPoint, endPoint, clearance, flags, priority));
+        = new PhysCS2dDomainFindPath(this, startPoint, endPoint, clearance, flags, priority);
 
     // Add it to the map
     impl_.domainFindPaths().add(id, pDomainFindPath);
@@ -1065,7 +1065,7 @@ void PhysConfigSpace2d::removeDomainFindPath(const DomainFindPathId& id)
         domainFindPathQueue.erase(it);
     }
 
-    _DELETE(pDomainFindPath);
+    delete pDomainFindPath;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1170,7 +1170,7 @@ void PhysConfigSpace2d::removeMotionChunk(const MotionChunkId& id)
     impl_.motionChunkIdGenerator().free(id);
 
     // Delete it
-    _DELETE(pHolder);
+    delete pHolder;
 }
 
 const PhysMotionChunk& PhysConfigSpace2d::motionChunk(const MotionChunkId& id) const
@@ -1427,7 +1427,7 @@ PhysConfigSpace2d::MotionChunkId PhysConfigSpace2d::add(const PhysMotionChunk& m
     MotionChunkId id = impl_.motionChunkIdGenerator().next();
 
     // Construct a new holder for the chunk
-    PhysCS2dMotionChunk* pHolder = _NEW(PhysCS2dMotionChunk(id, objectId, motionChunk));
+    PhysCS2dMotionChunk* pHolder = new PhysCS2dMotionChunk(id, objectId, motionChunk);
 
     CONFIG_SPACE_INSPECT(*pHolder);
 

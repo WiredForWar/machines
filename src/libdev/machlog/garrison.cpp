@@ -50,9 +50,8 @@ MachLogGarrison::MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3
         pNewPhysGarrison(pRace, level, location, angle),
         MachLog::GARRISON,
         MachPhysData::instance().garrisonData(level))
-    , pImpl_(_NEW(MachLogGarrisonImpl))
+    , pImpl_(new MachLogGarrisonImpl)
 {
-
     CB_MachLogGarrison_DEPIMPL();
     TEST_INVARIANT;
 
@@ -74,9 +73,8 @@ MachLogGarrison::MachLogGarrison(
         MachLog::GARRISON,
         withId,
         MachPhysData::instance().garrisonData(level))
-    , pImpl_(_NEW(MachLogGarrisonImpl))
+    , pImpl_(new MachLogGarrisonImpl)
 {
-
     CB_MachLogGarrison_DEPIMPL();
     TEST_INVARIANT;
 
@@ -90,7 +88,7 @@ MachLogGarrison::MachLogGarrison(
 MachLogGarrison::~MachLogGarrison()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +127,7 @@ MachLogGarrison::pNewPhysGarrison(MachLogRace* pRace, uint level, const MexPoint
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, zAngle, &localTransform);
 
     // Construct the smelter
-    return _NEW(MachPhysGarrison(pDomain, localTransform, level, pRace->race()));
+    return new MachPhysGarrison(pDomain, localTransform, level, pRace->race());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

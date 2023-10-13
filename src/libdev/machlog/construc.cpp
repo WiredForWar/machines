@@ -169,7 +169,7 @@ MachPhysConstructor* MachLogConstructor::pNewPhysConstructor(
     W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(location, 0, &localTransform);
 
     // Construct the physical machine
-    return _NEW(MachPhysConstructor(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race()));
+    return new MachPhysConstructor(pDomain, localTransform, subType, hwLevel, swLevel, pRace->race());
 }
 /* //////////////////////////////////////////////////////////////// */
 

@@ -57,7 +57,7 @@ void PedActorEditor::initialise(W4dSceneManager* pSceneManager, MachLogPlanet* p
     PRE(pPlanet != nullptr);
 
     PedEditorMode::initialise(pSceneManager, pPlanet);
-    errors = _NEW(wdebug(pSceneManager));
+    errors = new wdebug(pSceneManager);
 
     POST(errors != nullptr);
 }
@@ -170,9 +170,9 @@ void PedActorEditor::displayModeInfo()
 void PedActorEditor::changingMode()
 {
     PedEditorMode::changingMode();
-    _DELETE(pVertexMarker_);
+    delete pVertexMarker_;
     pVertexMarker_ = nullptr;
-    _DELETE(pMarker_);
+    delete pMarker_;
     pMarker_ = nullptr;
 
     changeAllSolidities(W4dEntity::NOT_SOLID);
@@ -279,11 +279,11 @@ void PedActorEditor::highlightSelected()
 
     MexTransform3d identity;
 
-    _DELETE(pMarker_);
+    delete pMarker_;
     const MexAlignedBox3d& boundary
         = (pEntity->isComposite() ? pEntity->asComposite().compositeBoundingVolume() : pEntity->boundingVolume());
 
-    pMarker_ = _NEW(MachPhysMarker(pEntity, identity, boundary));
+    pMarker_ = new MachPhysMarker(pEntity, identity, boundary);
     alreadySelected_ = true;
 }
 
@@ -395,7 +395,7 @@ void PedActorEditor::highlightVertex()
     PRE(pSceneManager_ != nullptr);
 
     // Clear last highlighted vertex
-    _DELETE(pVertexMarker_);
+    delete pVertexMarker_;
     pVertexMarker_ = nullptr;
 
     MexPoint3d intersectPoint;
@@ -407,8 +407,8 @@ void PedActorEditor::highlightVertex()
         // vx -= vx % vertexSpacingX();
         // vy -= vy % vertexSpacingY();
 
-        pVertexMarker_ = _NEW(PedVertexMarker(vx, vy, true /*, globalPos.z()*/));
-        // pVertexMarker_ = _NEW( PedVertexMarker( intersectPoint, true ) );
+        pVertexMarker_ = new PedVertexMarker(vx, vy, true /*, globalPos.z()*/);
+        // pVertexMarker_ = new PedVertexMarker( intersectPoint, true );
     }
 }
 

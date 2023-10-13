@@ -35,7 +35,7 @@ SimCondition::~SimCondition()
         SimCondition* pCondition = conditions_.front();
         pCondition->decrementLinkedActionCount();
         if (pCondition->nLinkedActions() == 0)
-            _DELETE(pCondition);
+            delete pCondition;
 
         conditions_.erase(conditions_.begin());
     }

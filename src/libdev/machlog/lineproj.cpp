@@ -409,7 +409,7 @@ void MachLogLinearProjectile::destroyAt(const PhysAbsoluteTime& time)
     }
 
     MachLogDyingEntityEvent* pEvent
-        = _NEW(MachLogDyingEntityEvent(physObjectPtr(), nullptr, destructionTime, inside, pConstruction));
+        = new MachLogDyingEntityEvent(physObjectPtr(), nullptr, destructionTime, inside, pConstruction);
 
     SimManager::instance().add(pEvent);
     // WHERE;

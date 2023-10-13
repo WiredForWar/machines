@@ -41,7 +41,7 @@ MachLogNetwork& MachLogNetwork::instance()
 }
 
 MachLogNetwork::MachLogNetwork()
-    : pImpl_(_NEW(MachLogNetworkDataImpl))
+    : pImpl_(new MachLogNetworkDataImpl)
 {
     CB_MachLogNetwork_DEPIMPL();
 
@@ -65,7 +65,7 @@ MachLogNetwork::~MachLogNetwork()
     DEBUG_STREAM(DIAG_NETWORK, "MachLogNetwork::DTOR\n");
     terminateAndReset();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogNetwork::terminateAndReset()
@@ -76,11 +76,11 @@ void MachLogNetwork::terminateAndReset()
     NETWORK_STREAM(ProStackTracer());
 
     if (pNode_)
-        _DELETE(pNode_);
+        delete pNode_;
     pNode_ = nullptr;
     // do not delete the broker!
     //   if( pBroker_ )
-    //       _DELETE( pBroker_ );
+    //       delete pBroker_;
     //   pBroker_ = NULL;
     isNetworkGame_ = false;
     isNodeLogicalHost_ = false;
@@ -104,14 +104,14 @@ void MachLogNetwork::processNetworkIniSettings(const string& fileName)
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, fileName, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, fileName, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, fileName, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, fileName, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(fileName.c_str());
-        // pIstream = _NEW( ifstream( fileName.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(fileName.c_str(), std::ios::in)));
+        // pIstream = new ifstream( fileName.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(fileName.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, fileName);
@@ -390,7 +390,7 @@ bool MachLogNetwork::hostWithSessionId(const string& gameName, const string& pla
     //  GetComputerName(szSessionName, &dwNameSize);
     NetNodeName name(playerName.c_str());
     NetNetwork::instance().localPlayerName(name);
-    //  pNode_ = _NEW(NetNode(name));
+    //  pNode_ = new NetNode(name);
     //  pNode_->useCompoundMessaging( true );
     return true;
 }
@@ -440,7 +440,7 @@ bool MachLogNetwork::joinWithSessionId(const string& gameName, const string& pla
 
         NetNodeName name(playerName.c_str());
         NetNetwork::instance().localPlayerName(name);
-        //      pNode_ = _NEW(NetNode(name));
+        //      pNode_ = new NetNode(name);
         //      pNode_->useCompoundMessaging( true );
         isNetworkGame_ = true;
         return true;
@@ -473,7 +473,7 @@ bool MachLogNetwork::launchFromLobbyInfo()
 
     NetNodeName name(NetNetwork::instance().localPlayerName());
     NetNetwork::instance().localPlayerName(name);
-    //  pImpl_->pNode_ = _NEW(NetNode(name));
+    //  pImpl_->pNode_ = new NetNode(name);
     //  pImpl_->pNode_->useCompoundMessaging( true );
     NETWORK_INDENT(-2);
     NETWORK_STREAM("MachLogNetwork::launchFromLobbyInfo() DONE\n");

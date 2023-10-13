@@ -98,7 +98,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAdministratorData* pItem = _NEW(MachPhysAdministratorData);
+            MachPhysAdministratorData* pItem = new MachPhysAdministratorData;
             pItem->machineType(MachPhys::ADMINISTRATOR);
             pItem->subType(MachPhys::BOSS);
             pItem->hwLevel(hwLevel);
@@ -114,7 +114,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAdministratorData* pItem = _NEW(MachPhysAdministratorData);
+            MachPhysAdministratorData* pItem = new MachPhysAdministratorData;
             pItem->machineType(MachPhys::ADMINISTRATOR);
             pItem->subType(MachPhys::OVERSEER);
             pItem->hwLevel(hwLevel);
@@ -130,7 +130,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAdministratorData* pItem = _NEW(MachPhysAdministratorData);
+            MachPhysAdministratorData* pItem = new MachPhysAdministratorData;
             pItem->machineType(MachPhys::ADMINISTRATOR);
             pItem->subType(MachPhys::COMMANDER);
             pItem->hwLevel(hwLevel);
@@ -146,7 +146,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAggressorData* pItem = _NEW(MachPhysAggressorData);
+            MachPhysAggressorData* pItem = new MachPhysAggressorData;
             pItem->machineType(MachPhys::AGGRESSOR);
             pItem->subType(MachPhys::GRUNT);
             pItem->hwLevel(hwLevel);
@@ -162,7 +162,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAggressorData* pItem = _NEW(MachPhysAggressorData);
+            MachPhysAggressorData* pItem = new MachPhysAggressorData;
             pItem->machineType(MachPhys::AGGRESSOR);
             pItem->subType(MachPhys::ASSASSIN);
             pItem->hwLevel(hwLevel);
@@ -178,7 +178,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAggressorData* pItem = _NEW(MachPhysAggressorData);
+            MachPhysAggressorData* pItem = new MachPhysAggressorData;
             pItem->machineType(MachPhys::AGGRESSOR);
             pItem->subType(MachPhys::KNIGHT);
             pItem->hwLevel(hwLevel);
@@ -194,7 +194,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAggressorData* pItem = _NEW(MachPhysAggressorData);
+            MachPhysAggressorData* pItem = new MachPhysAggressorData;
             pItem->machineType(MachPhys::AGGRESSOR);
             pItem->subType(MachPhys::BALLISTA);
             pItem->hwLevel(hwLevel);
@@ -210,7 +210,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAggressorData* pItem = _NEW(MachPhysAggressorData);
+            MachPhysAggressorData* pItem = new MachPhysAggressorData;
             pItem->machineType(MachPhys::AGGRESSOR);
             pItem->subType(MachPhys::NINJA);
             pItem->hwLevel(hwLevel);
@@ -226,7 +226,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysConstructorData* pItem = _NEW(MachPhysConstructorData);
+            MachPhysConstructorData* pItem = new MachPhysConstructorData;
             pItem->machineType(MachPhys::CONSTRUCTOR);
             pItem->subType(MachPhys::DOZER);
             pItem->hwLevel(hwLevel);
@@ -242,7 +242,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysConstructorData* pItem = _NEW(MachPhysConstructorData);
+            MachPhysConstructorData* pItem = new MachPhysConstructorData;
             pItem->machineType(MachPhys::CONSTRUCTOR);
             pItem->subType(MachPhys::BUILDER);
             pItem->hwLevel(hwLevel);
@@ -258,7 +258,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysConstructorData* pItem = _NEW(MachPhysConstructorData);
+            MachPhysConstructorData* pItem = new MachPhysConstructorData;
             pItem->machineType(MachPhys::CONSTRUCTOR);
             pItem->subType(MachPhys::BEHEMOTH);
             pItem->hwLevel(hwLevel);
@@ -274,7 +274,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysGeoLocatorData* pItem = _NEW(MachPhysGeoLocatorData);
+            MachPhysGeoLocatorData* pItem = new MachPhysGeoLocatorData;
             pItem->machineType(MachPhys::GEO_LOCATOR);
             pItem->subType(0);
             pItem->hwLevel(hwLevel);
@@ -290,7 +290,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysSpyLocatorData* pItem = _NEW(MachPhysSpyLocatorData);
+            MachPhysSpyLocatorData* pItem = new MachPhysSpyLocatorData;
             pItem->machineType(MachPhys::SPY_LOCATOR);
             pItem->subType(0);
             pItem->hwLevel(hwLevel);
@@ -306,7 +306,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysAPCData* pItem = _NEW(MachPhysAPCData);
+            MachPhysAPCData* pItem = new MachPhysAPCData;
             pItem->machineType(MachPhys::APC);
             pItem->subType(0);
             pItem->hwLevel(hwLevel);
@@ -322,7 +322,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysResourceCarrierData* pItem = _NEW(MachPhysResourceCarrierData);
+            MachPhysResourceCarrierData* pItem = new MachPhysResourceCarrierData;
             pItem->machineType(MachPhys::RESOURCE_CARRIER);
             pItem->subType(0);
             pItem->hwLevel(hwLevel);
@@ -338,7 +338,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysTechnicianData* pItem = _NEW(MachPhysTechnicianData);
+            MachPhysTechnicianData* pItem = new MachPhysTechnicianData;
             pItem->machineType(MachPhys::TECHNICIAN);
             pItem->subType(MachPhys::LAB_TECH);
             pItem->hwLevel(hwLevel);
@@ -354,7 +354,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysTechnicianData* pItem = _NEW(MachPhysTechnicianData);
+            MachPhysTechnicianData* pItem = new MachPhysTechnicianData;
             pItem->machineType(MachPhys::TECHNICIAN);
             pItem->subType(MachPhys::TECH_BOY);
             pItem->hwLevel(hwLevel);
@@ -370,7 +370,7 @@ void MachPhysDataParser::initialiseDataStores()
         {
             size_t hwLevel = hardwareMap.level(hwIndex);
             size_t swLevel = softwareMap.level(swIndex);
-            MachPhysTechnicianData* pItem = _NEW(MachPhysTechnicianData);
+            MachPhysTechnicianData* pItem = new MachPhysTechnicianData;
             pItem->machineType(MachPhys::TECHNICIAN);
             pItem->subType(MachPhys::BRAIN_BOX);
             pItem->hwLevel(hwLevel);
@@ -383,7 +383,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysHardwareLabData* pItem = _NEW(MachPhysHardwareLabData);
+        MachPhysHardwareLabData* pItem = new MachPhysHardwareLabData;
         pItem->constructionType(MachPhys::HARDWARE_LAB);
         pItem->subType(MachPhys::LAB_CIVILIAN);
         pItem->hwLevel(hwLevel);
@@ -395,7 +395,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysHardwareLabData* pItem = _NEW(MachPhysHardwareLabData);
+        MachPhysHardwareLabData* pItem = new MachPhysHardwareLabData;
         pItem->constructionType(MachPhys::HARDWARE_LAB);
         pItem->subType(MachPhys::LAB_MILITARY);
         pItem->hwLevel(hwLevel);
@@ -407,7 +407,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysSmelterData* pItem = _NEW(MachPhysSmelterData);
+        MachPhysSmelterData* pItem = new MachPhysSmelterData;
         pItem->constructionType(MachPhys::SMELTER);
         pItem->subType(0);
         pItem->hwLevel(hwLevel);
@@ -419,7 +419,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysMineData* pItem = _NEW(MachPhysMineData);
+        MachPhysMineData* pItem = new MachPhysMineData;
         pItem->constructionType(MachPhys::MINE);
         pItem->subType(0);
         pItem->hwLevel(hwLevel);
@@ -431,7 +431,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysGarrisonData* pItem = _NEW(MachPhysGarrisonData);
+        MachPhysGarrisonData* pItem = new MachPhysGarrisonData;
         pItem->constructionType(MachPhys::GARRISON);
         pItem->subType(0);
         pItem->hwLevel(hwLevel);
@@ -443,7 +443,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysBeaconData* pItem = _NEW(MachPhysBeaconData);
+        MachPhysBeaconData* pItem = new MachPhysBeaconData;
         pItem->constructionType(MachPhys::BEACON);
         pItem->subType(0);
         pItem->hwLevel(hwLevel);
@@ -455,7 +455,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysPodData* pItem = _NEW(MachPhysPodData);
+        MachPhysPodData* pItem = new MachPhysPodData;
         pItem->constructionType(MachPhys::POD);
         pItem->subType(0);
         pItem->hwLevel(hwLevel);
@@ -467,7 +467,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysFactoryData* pItem = _NEW(MachPhysFactoryData);
+        MachPhysFactoryData* pItem = new MachPhysFactoryData;
         pItem->constructionType(MachPhys::FACTORY);
         pItem->subType(MachPhys::CIVILIAN);
         pItem->hwLevel(hwLevel);
@@ -479,7 +479,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysFactoryData* pItem = _NEW(MachPhysFactoryData);
+        MachPhysFactoryData* pItem = new MachPhysFactoryData;
         pItem->constructionType(MachPhys::FACTORY);
         pItem->subType(MachPhys::MILITARY);
         pItem->hwLevel(hwLevel);
@@ -491,7 +491,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysMissileEmplacementData* pItem = _NEW(MachPhysMissileEmplacementData);
+        MachPhysMissileEmplacementData* pItem = new MachPhysMissileEmplacementData;
         pItem->constructionType(MachPhys::MISSILE_EMPLACEMENT);
         pItem->subType(MachPhys::TURRET);
         pItem->hwLevel(hwLevel);
@@ -503,7 +503,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysMissileEmplacementData* pItem = _NEW(MachPhysMissileEmplacementData);
+        MachPhysMissileEmplacementData* pItem = new MachPhysMissileEmplacementData;
         pItem->constructionType(MachPhys::MISSILE_EMPLACEMENT);
         pItem->subType(MachPhys::SENTRY);
         pItem->hwLevel(hwLevel);
@@ -515,7 +515,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysMissileEmplacementData* pItem = _NEW(MachPhysMissileEmplacementData);
+        MachPhysMissileEmplacementData* pItem = new MachPhysMissileEmplacementData;
         pItem->constructionType(MachPhys::MISSILE_EMPLACEMENT);
         pItem->subType(MachPhys::LAUNCHER);
         pItem->hwLevel(hwLevel);
@@ -527,7 +527,7 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t hwIndex = 0; hwIndex < hardwareMap.nLevels(); ++hwIndex)
     {
         size_t hwLevel = hardwareMap.level(hwIndex);
-        MachPhysMissileEmplacementData* pItem = _NEW(MachPhysMissileEmplacementData);
+        MachPhysMissileEmplacementData* pItem = new MachPhysMissileEmplacementData;
         pItem->constructionType(MachPhys::MISSILE_EMPLACEMENT);
         pItem->subType(MachPhys::ICBM);
         pItem->hwLevel(hwLevel);
@@ -537,11 +537,11 @@ void MachPhysDataParser::initialiseDataStores()
     for (size_t i = 0; i != MachPhys::N_WEAPON_TYPES; ++i)
     {
         //(*MachPhysDataImplementation::instance().pWeaponDataStore())[i] =
-        (*pData_->pWeaponDataStore())[i] = _NEW(MachPhysWeaponData);
+        (*pData_->pWeaponDataStore())[i] = new MachPhysWeaponData;
     }
 
-    //*(MachPhysDataImplementation::instance().pGeneralDataStore()) = _NEW( MachPhysGeneralData );
-    *(pData_->pGeneralDataStore()) = _NEW(MachPhysGeneralData);
+    //*(MachPhysDataImplementation::instance().pGeneralDataStore()) = new MachPhysGeneralData;
+    *(pData_->pGeneralDataStore()) = new MachPhysGeneralData;
 }
 
 // **************************************************************************
@@ -906,14 +906,14 @@ void MachPhysDataParser::readParameterisedDataFile(const SysPathName& pathname)
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, pathname, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, pathname, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, pathname, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathname, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(pathname.c_str());
-        // pIstream = _NEW( ifstream( pathname.c_str(), std::ios::in | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(pathname.c_str(), std::ios::in | std::ios::in)));
+        // pIstream = new ifstream( pathname.c_str(), std::ios::in | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(pathname.c_str(), std::ios::in | std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, pathname);

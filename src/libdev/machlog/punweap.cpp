@@ -49,7 +49,7 @@ void MachLogPunchWeapon::doFire(const MexPoint3d& /*position*/)
     MachActor* pOwner = &owner();
     pOwner->setBusyPeriod(2.5); // temporary guess....should really get exact length of animation from machphys object
 
-    _NEW(MachLogPunchBlast(&logRace(), pPhysPunchBlast, physWeapon().weaponData(), pOwner));
+    new MachLogPunchBlast(&logRace(), pPhysPunchBlast, physWeapon().weaponData(), pOwner);
 }
 
 // virtual

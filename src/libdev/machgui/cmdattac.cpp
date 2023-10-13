@@ -136,7 +136,7 @@ bool MachGuiAttackCommand::applyMove(MachActor* pActor, string*)
         if (valid)
         {
             MachLogMoveToOperation* pOp
-                = _NEW(MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId(), pathFindingPriority()));
+                = new MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId(), pathFindingPriority());
 
             // Give it to the actor
 
@@ -171,11 +171,11 @@ bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, string*)
             case MachLog::AGGRESSOR:
             case MachLog::ADMINISTRATOR:
                 {
-                    pOp = _NEW(MachLogAttackOperation(
+                    pOp = new MachLogAttackOperation(
                         &pActor->asMachine(),
                         pDirectObject_,
                         commandId(),
-                        MachLogAttackOperation::TERMINATE_ON_CHANGE));
+                        MachLogAttackOperation::TERMINATE_ON_CHANGE);
 
                     if (not hasPlayedVoiceMail())
                     {
@@ -203,7 +203,7 @@ bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, string*)
                     // CAACT could wipe it off before it even has a chance to get to doStart
                     missileEmp.suppressAttackingUrges(3.0);
 
-                    pOp = _NEW(MachLogMissileEmplacementAttackOperation(&missileEmp, pDirectObject_));
+                    pOp = new MachLogMissileEmplacementAttackOperation(&missileEmp, pDirectObject_);
 
                     missileEmp.newOperation(pOp);
 
@@ -270,7 +270,7 @@ void MachGuiAttackCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiAttackCommand::clone() const
 {
-    return _NEW(MachGuiAttackCommand(&inGameScreen()));
+    return new MachGuiAttackCommand(&inGameScreen());
 }
 
 // virtual
@@ -330,7 +330,7 @@ bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdminis
     {
         // Create an admin Attack operation for the administrator
         MachLogAdminAttackOperation* pOp
-            = _NEW(MachLogAdminAttackOperation(pAdministrator, pDirectObject_, pathFindingPriority()));
+            = new MachLogAdminAttackOperation(pAdministrator, pDirectObject_, pathFindingPriority());
 
         // The operation is now given to the actor by the group move code
         add(pAdministrator, pOp);
@@ -393,7 +393,7 @@ bool MachGuiAttackCommand::applyAdminMove(MachLogAdministrator* pAdministrator, 
     {
         // Create an admin Move operation for the administrator
         MachLogAdminMoveToOperation* pOp
-            = _NEW(MachLogAdminMoveToOperation(pAdministrator, validPoint, pathFindingPriority()));
+            = new MachLogAdminMoveToOperation(pAdministrator, validPoint, pathFindingPriority());
 
         // give voicemail
         MachLogMachineVoiceMailManager::instance().postNewMail(*pAdministrator, MachineVoiceMailEventID::MOVING);

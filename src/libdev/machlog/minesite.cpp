@@ -41,7 +41,7 @@ MachLogMineralSite::MachLogMineralSite(
     const MachPhys::MineralGrade& grade,
     const MachPhys::BuildingMaterialUnits& amount,
     const MexPoint3d& p)
-    : pImpl_(_NEW(MachLogMineralSiteImpl(grade, amount, p)))
+    : pImpl_(new MachLogMineralSiteImpl(grade, amount, p))
 {
     CB_MachLogMineralSite_DEPIMPL();
 
@@ -52,7 +52,7 @@ MachLogMineralSite::MachLogMineralSite(
 
 MachLogMineralSite::~MachLogMineralSite()
 {
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogMineralSite::beDiscoveredBy(MachPhys::Race race)
@@ -78,7 +78,7 @@ void MachLogMineralSite::beDiscoveredBy(MachPhys::Race race)
         if (MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendSetSiteDiscoveredByMessage(position_, race);
     }
-    //  _NEW( MachLogOreHolograph( pRace, 0, 0, position() ) );
+    //  new MachLogOreHolograph( pRace, 0, 0, position() );
 
     // call race method to notify all fristd::endly mines of this site's newly-discovered state
     // as they may now wish to make use of it if currently without a site.

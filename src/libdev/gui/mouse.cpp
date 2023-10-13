@@ -39,16 +39,16 @@ GuiMouse::GuiMouse()
 void GuiMouse::cursor(const GuiBitmap& /* curs */)
 {
     // pCursor_ = &curs;
-    //  _DELETE( pBackground_[ 0 ] );
-    //  _DELETE( pBackground_[ 1 ] );
-    //  pBackground_[ 0 ] = _NEW( GuiBitmap( curs.width(), curs.height(), Gui::backBuffer() ) );
-    //  pBackground_[ 1 ] = _NEW( GuiBitmap( curs.width(), curs.height(), Gui::backBuffer() ) );
+    //  delete pBackground_[ 0 ];
+    //  delete pBackground_[ 1 ];
+    //  pBackground_[ 0 ] = new GuiBitmap( curs.width(), curs.height(), Gui::backBuffer() );
+    //  pBackground_[ 1 ] = new GuiBitmap( curs.width(), curs.height(), Gui::backBuffer() );
 }
 
 GuiMouse::~GuiMouse()
 {
-    //  _DELETE( pBackground_[ 0 ] );
-    //  _DELETE( pBackground_[ 1 ] );
+    //  delete pBackground_[ 0 ];
+    //  delete pBackground_[ 1 ];
 }
 
 /* //////////////////////////////////////////////////////////////// */

@@ -70,7 +70,7 @@ void MachCameras::initialise(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
     pSceneManager_ = pSceneManager;
     pRoot_ = pRoot;
 
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         DevKey::F2,
         ZENITHVIEW,
@@ -132,22 +132,22 @@ void MachCameras::initialise(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
         MexEulerAngles(MexDegrees(-90), MexDegrees(superHighZenithElevation), 0.0),
         MexPoint3d(150.0, 150.0, 100.0));
 
-    pEyeCamera_ = _NEW(MachLogCamera(pSceneManager, pRoot, eyeTransform, MachLogCamera::THIRD_PERSON));
-    pGroundCamera_ = _NEW(MachLogCamera(pSceneManager, pRoot, groundTransform, MachLogCamera::GROUND));
-    pZenithCamera_ = _NEW(MachLogCamera(pSceneManager, pRoot, zenithTransform, MachLogCamera::ZENITH));
+    pEyeCamera_ = new MachLogCamera(pSceneManager, pRoot, eyeTransform, MachLogCamera::THIRD_PERSON);
+    pGroundCamera_ = new MachLogCamera(pSceneManager, pRoot, groundTransform, MachLogCamera::GROUND);
+    pZenithCamera_ = new MachLogCamera(pSceneManager, pRoot, zenithTransform, MachLogCamera::ZENITH);
     pSuperHighZenithCamera_
-        = _NEW(MachLogCamera(pSceneManager, pRoot, superHighZenithTransform, MachLogCamera::ZENITH));
+        = new MachLogCamera(pSceneManager, pRoot, superHighZenithTransform, MachLogCamera::ZENITH);
     pSuperHighZenithCamera_->yonClipDistance(50000);
-    pFreeCamera_ = _NEW(MachLogCamera(pSceneManager, pRoot, groundTransform, MachLogCamera::FREE_MOVING));
+    pFreeCamera_ = new MachLogCamera(pSceneManager, pRoot, groundTransform, MachLogCamera::FREE_MOVING);
 
-    pGroundControl_ = _NEW(PhysGroundFlyControl(_NEW(W4dMotionControlledEntity(pGroundCamera_))));
-    pEyeControl_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(pEyeCamera_))));
-    pFreeControl_ = _NEW(PhysFlyControl(_NEW(W4dMotionControlledEntity(pFreeCamera_))));
-    pZenithControl_ = _NEW(PhysZenithFlyControl(_NEW(W4dMotionControlledEntity(pZenithCamera_))));
-    pSuperHighZenithControl_ = _NEW(PhysZenithFlyControl(_NEW(W4dMotionControlledEntity(pSuperHighZenithCamera_))));
+    pGroundControl_ = new PhysGroundFlyControl(new W4dMotionControlledEntity(pGroundCamera_));
+    pEyeControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pEyeCamera_));
+    pFreeControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFreeCamera_));
+    pZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pZenithCamera_));
+    pSuperHighZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pSuperHighZenithCamera_));
 
     // override standard key translator for now because currently keys do not control machine.
-    pEyeControl_->setKeyTranslator(_NEW(DevKeyToCommandTranslator()));
+    pEyeControl_->setKeyTranslator(new DevKeyToCommandTranslator());
 
     // Initially use the ground camera.
     pGroundControl_->enableInput();
@@ -183,17 +183,17 @@ MachCameras::~MachCameras()
 
     DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() enter" << std::endl);
 
-    _DELETE(pKeyTranslator_);
-    _DELETE(pGroundControl_);
-    _DELETE(pFreeControl_);
-    _DELETE(pZenithControl_);
-    _DELETE(pSuperHighZenithControl_);
-    _DELETE(pEyeControl_);
-    _DELETE(pGroundCamera_);
-    _DELETE(pFreeCamera_);
-    _DELETE(pZenithCamera_);
-    _DELETE(pSuperHighZenithCamera_);
-    _DELETE(pEyeCamera_);
+    delete pKeyTranslator_;
+    delete pGroundControl_;
+    delete pFreeControl_;
+    delete pZenithControl_;
+    delete pSuperHighZenithControl_;
+    delete pEyeControl_;
+    delete pGroundCamera_;
+    delete pFreeCamera_;
+    delete pZenithCamera_;
+    delete pSuperHighZenithCamera_;
+    delete pEyeCamera_;
 
     DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() leave" << std::endl);
 }
@@ -388,9 +388,9 @@ void MachCameras::switchThirdPerson(MachLogMachine* pNewMachine)
 
     // Set up a motion constraint for the camera to sit in 3rd person over the
     // next machine in the race
-    pThirdPerson_ = _NEW(MachLogMachineThirdPerson(pNewMachine)); // Last pThirdPerson_ will be deleted by constraint
+    pThirdPerson_ = new MachLogMachineThirdPerson(pNewMachine); // Last pThirdPerson_ will be deleted by constraint
     PhysThirdPersonCameraConstraint* p3rdConstraint
-        = _NEW(MachLogThirdPersonCameraConstraint(pThirdPerson_, pEyeCamera_));
+        = new MachLogThirdPersonCameraConstraint(pThirdPerson_, pEyeCamera_);
     // pNewMachine->isIn3rdPersonView( true );
     pEyeControl_->imposeConstraint(p3rdConstraint);
     pEyeControl_->enableInput();

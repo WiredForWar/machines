@@ -163,7 +163,7 @@ W4dSceneManagerImpl::W4dSceneManagerImpl(std::unique_ptr<RenDevice> pDevice, W4d
 
 W4dSceneManagerImpl::~W4dSceneManagerImpl()
 {
-    _DELETE(pCameraShake_);
+    delete pCameraShake_;
 }
 
 void W4dSceneManagerImpl::updateComplexityLevel()
@@ -187,7 +187,7 @@ double W4dSceneManagerImpl::frameRate()
 
 //////////////////////////////////////////////////////////////////////////////
 W4dSceneManager::W4dSceneManager(std::unique_ptr<RenDevice> pDevice, W4dRoot* root)
-    : pImpl_(_NEW(W4dSceneManagerImpl(std::move(pDevice), root)))
+    : pImpl_(new W4dSceneManagerImpl(std::move(pDevice), root))
 {
     CB_SCENEMANAGER_DEPIMPL;
     PRE(root);
@@ -198,7 +198,7 @@ W4dSceneManager::W4dSceneManager(std::unique_ptr<RenDevice> pDevice, W4dRoot* ro
 W4dSceneManager::~W4dSceneManager()
 {
     TEST_INVARIANT;
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void W4dSceneManager::CLASS_INVARIANT
@@ -783,7 +783,7 @@ W4dCameraShake& W4dSceneManager::cameraShakeForEdit()
     CB_SCENEMANAGER_DEPIMPL;
 
     if (pCameraShake_ == nullptr)
-        pCameraShake_ = _NEW(W4dCameraShake());
+        pCameraShake_ = new W4dCameraShake();
 
     return *pCameraShake_;
 }
@@ -826,7 +826,7 @@ void W4dSceneManager::cancelCameraShake()
 {
     CB_SCENEMANAGER_DEPIMPL;
 
-    _DELETE(pCameraShake_);
+    delete pCameraShake_;
     pCameraShake_ = nullptr;
 
     POST(!shakeCamera());

@@ -226,7 +226,7 @@ MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*,
     : GuiRoot(Gui::Box(0, 0, 10000, 10000))
 {
     // Create implementation
-    pImpl_ = _NEW(MachGuiFirstPersonImpl());
+    pImpl_ = new MachGuiFirstPersonImpl();
 
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
@@ -241,7 +241,7 @@ MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*,
     pSceneManager_ = pSceneManager;
 
     // Setup keyboard translator
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     // Keyboard shoot handler
     pKeyTranslator_->addTranslation(DevKeyToCommand(DevKey::SPACE, FIRE));
     // Keboard centre head handlers
@@ -404,7 +404,7 @@ MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*,
         commandList_.push_back(DevKeyToCommandTranslator::Command());
     }
 
-    pPausedImage_ = _NEW(MachGuiPausedImage(this, pInGameScreen_));
+    pPausedImage_ = new MachGuiPausedImage(this, pInGameScreen_);
 
     TEST_INVARIANT;
 }
@@ -424,10 +424,10 @@ MachGuiFirstPerson::~MachGuiFirstPerson()
         delete pCommandWidget_;
     }
 
-    _DELETE(pKeyTranslator_);
-    _DELETE(pLogHandler_);
-    _DELETE(pPausedImage_);
-    _DELETE(pImpl_);
+    delete pKeyTranslator_;
+    delete pLogHandler_;
+    delete pPausedImage_;
+    delete pImpl_;
 }
 
 void MachGuiFirstPerson::CLASS_INVARIANT
@@ -1243,10 +1243,10 @@ void MachGuiFirstPerson::doBecomeRoot()
         borderHeight_ = h * 0.05;
 
         // Clear up old cursors
-        _DELETE(pStartCursor_);
-        _DELETE(pNormalCursor_);
-        _DELETE(pAttackCursor_);
-        _DELETE(pMissCursor_);
+        delete pStartCursor_;
+        delete pNormalCursor_;
+        delete pAttackCursor_;
+        delete pMissCursor_;
 
         // Load cursors...
         GuiBitmap attachCursorBmp = Gui::bitmap("gui/fstpersn/cursor/targv1.bmp");
@@ -1286,7 +1286,7 @@ void MachGuiFirstPerson::doBecomeRoot()
             delete pRadar_;
         }
 
-        pRadar_ = _NEW(MachGuiRadar(this, Gui::Coord(w - rcmMapBmp.width(), h - borderHeight_ - rcmMapBmp.height())));
+        pRadar_ = new MachGuiRadar(this, Gui::Coord(w - rcmMapBmp.width(), h - borderHeight_ - rcmMapBmp.height()));
         pRadar_->actor(pActor_);
 
         // Reset resolution changed flag
@@ -1338,12 +1338,12 @@ void MachGuiFirstPerson::doBecomeRoot()
             chatMessagesY = borderHeight_ + weaponBackgroundBmp_.height() + 4;
         }
 
-        pChatMessageDisplay_ = _NEW(MachGuiInGameChatMessagesDisplay(
+        pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(
             this,
             Gui::Box(
                 Gui::Coord(chatMessagesX, chatMessagesY),
                 MachGuiInGameChatMessages::reqWidth(),
-                MachGuiInGameChatMessages::reqHeight())));
+                MachGuiInGameChatMessages::reqHeight()));
     }
 
     // Initialise black border drawing count ( black borders only get drawn for first two frames )
@@ -1411,7 +1411,7 @@ void MachGuiFirstPerson::doBecomeNotRoot()
     pStartCursor_->isVisible(true);
 
     // Clean up chat message display
-    _DELETE(pChatMessageDisplay_);
+    delete pChatMessageDisplay_;
     pChatMessageDisplay_ = nullptr;
 
     // Stop all playing sounds if we are going into menus
@@ -1822,7 +1822,7 @@ void MachGuiFirstPerson::embodyActor()
 
     if (actor.objectIsMachine())
     {
-        pLogHandler_ = _NEW(MachLog1stPersonMachineHandler(&actor.asMachine(), MachLog1stPersonHandler::LOCAL));
+        pLogHandler_ = new MachLog1stPersonMachineHandler(&actor.asMachine(), MachLog1stPersonHandler::LOCAL);
         pRadar_->logHandler(pLogHandler_);
         pCommandWidget_->logHandler(pLogHandler_);
 
@@ -1859,7 +1859,7 @@ void MachGuiFirstPerson::exitActor()
     CB_DEPIMPL(int64_t, commandSquadIndex_);
 
     // Delete the handler
-    _DELETE(pLogHandler_);
+    delete pLogHandler_;
     pLogHandler_ = nullptr;
 
     // RESET RADAR (sorta...)

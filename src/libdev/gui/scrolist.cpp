@@ -31,7 +31,7 @@ GuiSimpleScrollableList::GuiSimpleScrollableList(
     : GuiDisplayable(pParent, box)
     , pImpl_(nullptr)
 {
-    pImpl_ = _NEW(GuiSimpleScrollableListImpl);
+    pImpl_ = new GuiSimpleScrollableListImpl;
 
     CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
 
@@ -79,7 +79,7 @@ GuiSimpleScrollableList::~GuiSimpleScrollableList()
     // If there are any observers still attached then tell them I am being deleted. It
     // is their responsibility to make sure they don't call an invalid list.
     std::for_each(observers_.begin(), observers_.end(), mem_fun_void(&GuiListObserver::listDeleted));
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void GuiSimpleScrollableList::CLASS_INVARIANT

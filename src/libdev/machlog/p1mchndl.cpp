@@ -59,7 +59,7 @@ MachLog1stPersonMachineHandler::MachLog1stPersonMachineHandler(
 {
     NETWORK_STREAM("MachLog1stPersonMachineHandler::MachLog1stPersonMachineHandler\n");
     NETWORK_INDENT(2);
-    pData_ = _NEW(MachLog1stPersonMachineHandlerData);
+    pData_ = new MachLog1stPersonMachineHandlerData;
     pData_->isFirstUpdate_ = true;
 
     pData_->pMachine_ = pMachine;
@@ -121,8 +121,8 @@ MachLog1stPersonMachineHandler::~MachLog1stPersonMachineHandler()
         pData_->pOriginalSquadron_ = nullptr;
     }
 
-    _DELETE(pDriver_);
-    _DELETE(pData_);
+    delete pDriver_;
+    delete pData_;
     NETWORK_INDENT(-2);
     NETWORK_STREAM("MachLog1stPersonMachineHandler::~MachLog1stPersonMachineHandler DONE\n");
 }
@@ -417,11 +417,11 @@ MachPhys1stPersonDriver* MachLog1stPersonMachineHandler::pNewPhysDriver(
     MachPhysCanAttack* pPhysCanAttack
         = (pMachine->objectIsCanAttack() ? &pMachine->asCanAttack().physCanAttack() : nullptr);
 
-    pDriver_ = _NEW(MachPhys1stPersonMachineDriver(
+    pDriver_ = new MachPhys1stPersonMachineDriver(
         &pMachine->physMachine(),
         pPhysCanAttack,
         *MachLogPlanet::instance().surface(),
-        networkType == REMOTE));
+        networkType == REMOTE);
 
     return pDriver_;
 }

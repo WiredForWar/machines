@@ -11,12 +11,11 @@ PER_DEFINE_PERSISTENT(PhysLinearTravelPlanImpl);
 
 PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(const PhysMotionPlan::TransformsPtr& transformsPtr)
     : transformsPtr_(transformsPtr)
-    , rampAccelerationsPtr_(_NEW(PhysMotionPlan::RampAccelerations()))
+    , rampAccelerationsPtr_(new PhysMotionPlan::RampAccelerations())
     , cacheValid_(false)
-    , segmentTimesPtr_(_NEW(PhysMotionPlan::Times))
+    , segmentTimesPtr_(new(PhysMotionPlan::Times))
     , startRotationDistance_(2.0)
 {
-
     TEST_INVARIANT;
 }
 
@@ -26,7 +25,7 @@ PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(
     : transformsPtr_(transformsPtr)
     , rampAccelerationsPtr_(rampAccelerationsPtr)
     , cacheValid_(false)
-    , segmentTimesPtr_(_NEW(PhysMotionPlan::Times))
+    , segmentTimesPtr_(new PhysMotionPlan::Times)
     , startRotationDistance_(2.0)
 {
     TEST_INVARIANT;
@@ -44,7 +43,6 @@ void PhysLinearTravelPlanImpl::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const PhysLinearTravelPlanImpl& t)
 {
-
     o << "PhysLinearTravelPlanImpl " << (void*)&t << " start" << std::endl;
     o << (*t.transformsPtr_) << std::endl;
     o << (*t.rampAccelerationsPtr_) << std::endl;

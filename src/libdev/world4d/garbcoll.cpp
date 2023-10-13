@@ -79,7 +79,7 @@ void W4dGarbageCollector::collect()
                 {
                     ASSERT(pEntity->isGarbage(), "");
                     pEntity->isGarbage(false);
-                    _DELETE(pEntity);
+                    delete pEntity;
                 }
 
                 // Remove these 2 entries

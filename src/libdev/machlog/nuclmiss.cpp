@@ -82,7 +82,7 @@ void MachLogNuclearMissile::doBeDestroyed()
 
     // and create the physical entity on my own node.
 
-    _NEW(MachLogNuclearBomb(pLogRace_, globalDestructionPosition(), weaponData_, pOwner()));
+    new MachLogNuclearBomb(pLogRace_, globalDestructionPosition(), weaponData_, pOwner());
 
     /*
     MachLogNuclearBomb* pPhysNuclearBomb = NULL;

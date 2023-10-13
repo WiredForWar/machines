@@ -105,7 +105,7 @@ void MachPhysLocator::startLocate(
     uint animId)
 {
     // visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
 
     entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime, nRepetations, animId);
@@ -120,8 +120,8 @@ void MachPhysLocator::startLocate(
     scales.push_back(maxSize * 0.5);
     scales.push_back(maxSize);
 
-    PhysLinearScalarPlan* pScalarPlan = _NEW(PhysLinearScalarPlan(times, scales));
-    W4dScalePlanPtr scalePlanPtr = _NEW(W4dGeneralUniformScalePlan(PhysScalarPlanPtr(pScalarPlan)));
+    PhysLinearScalarPlan* pScalarPlan = new PhysLinearScalarPlan(times, scales);
+    W4dScalePlanPtr scalePlanPtr = new W4dGeneralUniformScalePlan(PhysScalarPlanPtr(pScalarPlan));
 
     const size_t nReps = duration / 0.5 + 1;
     entityPlanForEdit().scalePlan(scalePlanPtr, startTime, nReps * nRepetations, animId);
@@ -134,7 +134,7 @@ void MachPhysLocator::startLocate(
     MexTransform3d endPosition(startPosition);
     endPosition.transform(spinTransform);
 
-    PhysLinearMotionPlan* pSpinPlan = _NEW(PhysLinearMotionPlan(startPosition, endPosition, 0.5));
+    PhysLinearMotionPlan* pSpinPlan = new PhysLinearMotionPlan(startPosition, endPosition, 0.5);
 
     // move back to start position
     pSpinPlan->add(startPosition, 1.0);

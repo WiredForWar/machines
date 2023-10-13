@@ -31,7 +31,7 @@ MachPhysFireball::MachPhysFireball(
     // lighting.  This could change if the model changes.
     doNotLight(true);
 
-    pImpl_ = _NEW(MachPhysFireballImpl(fireballType, size, duration));
+    pImpl_ = new MachPhysFireballImpl(fireballType, size, duration);
 
     //  Move the fireball forward so that it is in front of the object that is exploding
     depthOffset(dOffset);
@@ -55,7 +55,7 @@ MachPhysFireball::MachPhysFireball(
     // lighting.  This could change if the model changes.
     doNotLight(true);
 
-    pImpl_ = _NEW(MachPhysFireballImpl(fireballType, size, duration));
+    pImpl_ = new MachPhysFireballImpl(fireballType, size, duration);
 
     //  Move the fireball forward so that it is in front of the object that is exploding
     depthOffset(dOffset);
@@ -67,7 +67,7 @@ MachPhysFireball::MachPhysFireball(
 MachPhysFireball::MachPhysFireball(PerConstructor con)
     : W4dSprite3d(con)
 {
-    pImpl_ = _NEW(MachPhysFireballImpl());
+    pImpl_ = new MachPhysFireballImpl();
 }
 
 MachPhysFireball::~MachPhysFireball()
@@ -77,7 +77,7 @@ MachPhysFireball::~MachPhysFireball()
     //  Stop any explosion sound associated with this fireball
     W4dSoundManager::instance().stop(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysFireball::startFireball(const PhysRelativeTime& startTime)

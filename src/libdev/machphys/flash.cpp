@@ -88,7 +88,7 @@ MachPhysFlashDisc::MachPhysFlashDisc(const MATHEX_SCALAR& size, ColourType colou
 
     meshPtr->addTTFPolygon(ttf);
     // Add a mesh instance for it, with the fog distance as the visibility range
-    RenMeshInstance* pMeshInstance = _NEW(RenMeshInstance(meshPtr));
+    RenMeshInstance* pMeshInstance = new RenMeshInstance(meshPtr);
     add(pMeshInstance, MexDouble(_STATIC_CAST(double, RenDevice::current()->fogEnd())), W4dLOD(0));
 
     TEST_INVARIANT;
@@ -159,13 +159,13 @@ PhysRelativeTime MachPhysFlashDisc::flash(const PhysAbsoluteTime& startTime, Col
         duration *= 4.0;
     }
 
-    PhysScalarPlanPtr flashPlanPtr(_NEW(PhysLinearScalarPlan(times, scales)));
+    PhysScalarPlanPtr flashPlanPtr(new PhysLinearScalarPlan(times, scales));
 
-    W4dScalePlanPtr flashScalePlanPtr(_NEW(W4dGeneralUniformScalePlan(flashPlanPtr)));
+    W4dScalePlanPtr flashScalePlanPtr(new W4dGeneralUniformScalePlan(flashPlanPtr));
     entityPlan.scalePlan(flashScalePlanPtr, startTime);
 
     // visibility plan
-    W4dVisibilityPlanPtr flashVisibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr flashVisibilityPlanPtr(new W4dVisibilityPlan(true));
     flashVisibilityPlanPtr->add(false, duration);
 
     entityPlan.visibilityPlan(flashVisibilityPlanPtr, startTime);

@@ -16,34 +16,34 @@ Containers::Containers()
 {
     for (size_t i = 0; i < randomInt(20); ++i)
         vi1_.push_back(randomInt());
-    pVi1_ = _NEW(VectorInt(randomInt(20)));
+    pVi1_ = new VectorInt(randomInt(20));
     pVi2_ = pVi1_;
     for (size_t i = 0; i < randomInt(20); ++i)
         pVi1_->push_back(randomInt());
 
     for (size_t i = 0; i < randomInt(20); ++i)
         mmvi1_.push_back(randomInt());
-    pMmvi1_ = _NEW(MinMemVectorInt(randomInt(20)));
+    pMmvi1_ = new MinMemVectorInt(randomInt(20));
     pMmvi2_ = pMmvi1_;
     for (size_t i = 0; i < randomInt(20); ++i)
         pMmvi1_->push_back(randomInt());
 
     for (size_t i = 0; i < fvi1_.size(); ++i)
         fvi1_[i] = randomInt();
-    pFvi1_ = _NEW(FixedVectorInt(randomInt(20)));
+    pFvi1_ = new FixedVectorInt(randomInt(20));
     pFvi2_ = pFvi1_;
     for (size_t i = 0; i < pFvi1_->size(); ++i)
         (*pFvi1_)[i] = randomInt();
 
     for (size_t i = 0; i < randomInt(20); ++i)
         li1_.push_back(randomInt());
-    pLi1_ = _NEW(ListInt(randomInt(20)));
+    pLi1_ = new ListInt(randomInt(20));
     pLi2_ = pLi1_;
     for (size_t i = 0; i < randomInt(20); ++i)
         pLi1_->push_back(randomInt());
 
     //    for( size_t i = 0; i < randomInt( 20 ); ++i )
-    //        pvi1_.push_back( _NEW( int ) );
+    //        pvi1_.push_back( new int );
 
     TEST_INVARIANT;
 }

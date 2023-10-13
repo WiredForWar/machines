@@ -50,64 +50,64 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     GuiBmpFont::getFont("gui/menu/largdfnt.bmp");
 
 #ifdef DEMO
-    _NEW(MachGuiMenuButton(
+    new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 40, 527, 75),
         IDS_MENUBTN_CAMPAIGN,
-        MachGuiStartupScreens::CAMPAIGN));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::CAMPAIGN);
+    new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 130, 527, 165),
         IDS_MENUBTN_MULTIPLAYER,
-        MachGuiStartupScreens::MULTIPLAYER));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::MULTIPLAYER);
+    new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 217, 527, 252),
         IDS_MENUBTN_SKIRMISH,
-        MachGuiStartupScreens::SKIRMISH));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::SKIRMISH);
+    new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 297, 527, 332),
         IDS_MENUBTN_OPTIONS,
-        MachGuiStartupScreens::OPTIONS));
-    MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::OPTIONS);
+    MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(117, 410, 275, 445),
         IDS_MENUBTN_EXIT,
-        MachGuiStartupScreens::BE_DUMMY_OK));
+        MachGuiStartupScreens::BE_DUMMY_OK);
 
 #else
-    _NEW(MachGuiMenuButton(
+    new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 40, 527, 75),
         IDS_MENUBTN_SINGLEPLAYER,
-        MachGuiStartupScreens::SINGLEPLAYER));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::SINGLEPLAYER);
+    new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 130, 527, 165),
         IDS_MENUBTN_MULTIPLAYER,
-        MachGuiStartupScreens::MULTIPLAYER));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::MULTIPLAYER);
+    new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 217, 527, 252),
         IDS_MENUBTN_OPTIONS,
-        MachGuiStartupScreens::OPTIONS));
-    MachGuiMenuButton* pExitBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::OPTIONS);
+    MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 297, 527, 332),
         IDS_MENUBTN_EXIT,
-        MachGuiStartupScreens::BE_DUMMY_OK));
+        MachGuiStartupScreens::BE_DUMMY_OK);
 
 #endif
 
     // Create exit button, responds to escape...
     pExitBtn->escapeControl(true);
 
-    _NEW(MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp"));
+    new MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp");
 
     changeBackdrop("gui/menu/sa.bmp");
 
@@ -153,7 +153,7 @@ bool MachGuiCtxMainMenu::okayToSwitchContext()
 {
     if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_DUMMY_OK)
     {
-        pStartupScreens_->displayMsgBox(IDS_MENUMSG_QUIT, _NEW(MachGuiMainMenuMessageBoxResponder(this)), true);
+        pStartupScreens_->displayMsgBox(IDS_MENUMSG_QUIT, new MachGuiMainMenuMessageBoxResponder(this)), true;
         return false;
     }
 

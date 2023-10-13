@@ -37,7 +37,7 @@ MachLogFollowOperation::MachLogFollowOperation(
     CamouflagedOp camoStatus,
     TerminateFlag terminateFlag)
     : MachLogOperation("FOLLOW_OPERATION", MachLogOperation::FOLLOW_OPERATION)
-    , pImpl_(_NEW(MachLogFollowOperationImpl(pActor, pTarget, offset, camoStatus, terminateFlag)))
+    , pImpl_(new MachLogFollowOperationImpl(pActor, pTarget, offset, camoStatus, terminateFlag))
 {
     CB_MachLogFollowOperation_DEPIMPL();
 
@@ -56,7 +56,7 @@ MachLogFollowOperation::MachLogFollowOperation(
     CamouflagedOp camoStatus,
     TerminateFlag terminateFlag)
     : MachLogOperation("FOLLOW_OPERATION", MachLogOperation::FOLLOW_OPERATION, pathFindingPriority)
-    , pImpl_(_NEW(MachLogFollowOperationImpl(pActor, pTarget, offset, camoStatus, terminateFlag)))
+    , pImpl_(new MachLogFollowOperationImpl(pActor, pTarget, offset, camoStatus, terminateFlag))
 {
     CB_MachLogFollowOperation_DEPIMPL();
 
@@ -77,7 +77,7 @@ MachLogFollowOperation::~MachLogFollowOperation()
     if (pTarget_)
         pTarget_->detach(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogFollowOperation::CLASS_INVARIANT

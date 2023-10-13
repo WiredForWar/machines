@@ -15,7 +15,7 @@ RenStats::RenStats()
     : show_(true)
     , frameCount_(0)
     , updateInterval_(0.333)
-    , frameTimes_(_NEW(ctl_list<double>))
+    , frameTimes_(new ctl_list<double>)
     , averageTime_(0)
     , polygonsDrawn_(0)
     , linesDrawn_(0)
@@ -31,7 +31,7 @@ static uint32_t totalFrames = 0;
 
 RenStats::~RenStats()
 {
-    _DELETE(frameTimes_);
+    delete frameTimes_;
     TEST_INVARIANT;
 
     FILE* file = fopen("timing.log", "a+");

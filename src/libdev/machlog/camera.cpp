@@ -39,7 +39,7 @@ MachLogCamera::MachLogCamera(
     const W4dTransform3d& localTransform,
     Type cameraType)
     : W4dCamera(pMgr, pParent, localTransform)
-    , pImpl_(_NEW(MachLogCameraImpl()))
+    , pImpl_(new MachLogCameraImpl())
 {
     CB_MachLogCamera_DEPIMPL();
 
@@ -90,7 +90,7 @@ MachLogCamera::~MachLogCamera()
     if (observingConstruction_)
         stopObservingConstruction();
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 // Activating a camera may produce a change in the inside building state.
@@ -660,7 +660,7 @@ void MachLogCamera::findObstacleCollisionPoints(
                 if (collisionDistance < (*insertIter)->collisionDistance_)
                 {
                     inserted = true;
-                    ObstacleCollisionInfo* pNewCollisionInfo = _NEW(ObstacleCollisionInfo);
+                    ObstacleCollisionInfo* pNewCollisionInfo = new ObstacleCollisionInfo;
 
                     pNewCollisionInfo->intersectionPoint_ = intersectPoint;
                     pNewCollisionInfo->obstacleEdge_ = obstacleEdge;
@@ -674,7 +674,7 @@ void MachLogCamera::findObstacleCollisionPoints(
 
             if (not inserted)
             {
-                ObstacleCollisionInfo* pNewCollisionInfo = _NEW(ObstacleCollisionInfo);
+                ObstacleCollisionInfo* pNewCollisionInfo = new ObstacleCollisionInfo;
 
                 pNewCollisionInfo->intersectionPoint_ = intersectPoint;
                 pNewCollisionInfo->obstacleEdge_ = obstacleEdge;
@@ -756,7 +756,7 @@ bool MachLogCamera::alternativeNewPosition(MexTransform3d* pPosition) const
             // Clean up list of collision info
             while (not collisionInfo.empty())
             {
-                _DELETE(collisionInfo.back());
+                delete collisionInfo.back();
                 collisionInfo.pop_back();
             }
         }

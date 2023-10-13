@@ -64,7 +64,7 @@ bool MachGuiRefillLandMineCommand::doApply(MachActor* pActor, string* /*pReason*
     bool canDo = false;
     if (pActor->objectType() == MachLog::SPY_LOCATOR)
     {
-        MachLogRefillLandMinesOperation* pOp = _NEW(MachLogRefillLandMinesOperation(&pActor->asSpyLocator()));
+        MachLogRefillLandMinesOperation* pOp = new MachLogRefillLandMinesOperation(&pActor->asSpyLocator());
 
         // Give to actor
         pActor->newOperation(pOp);
@@ -105,7 +105,7 @@ void MachGuiRefillLandMineCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiRefillLandMineCommand::clone() const
 {
-    return _NEW(MachGuiRefillLandMineCommand(&inGameScreen()));
+    return new MachGuiRefillLandMineCommand(&inGameScreen());
 }
 
 // virtual

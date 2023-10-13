@@ -186,7 +186,7 @@ void MachGuiTransportCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiTransportCommand::clone() const
 {
-    return _NEW(MachGuiTransportCommand(&inGameScreen()));
+    return new MachGuiTransportCommand(&inGameScreen());
 }
 
 // virtual

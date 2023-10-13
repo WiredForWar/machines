@@ -107,7 +107,7 @@ void MachPhysBurstWave::startBurstWave(
     W4dEntityPlan& entityPlan = entityPlanForEdit();
 
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration);
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
@@ -117,7 +117,7 @@ void MachPhysBurstWave::startBurstWave(
 
     RenNonUniformScale a(iniScale, iniScale, zScale);
     RenNonUniformScale b(endScale, endScale, zScale);
-    W4dScalePlanPtr planPtr(_NEW(W4dSimpleNonUniformScalePlan(a, b, duration)));
+    W4dScalePlanPtr planPtr(new W4dSimpleNonUniformScalePlan(a, b, duration));
 
     propogateScalePlan(planPtr, startTime, 1);
 
@@ -144,10 +144,10 @@ void MachPhysBurstWave::startBurstWave(
     scales.push_back(0.0625);
     scales.push_back(0.0); // 1 - 2x + x^2
 
-    PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysScalarPlanPtr lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
 
     W4dMaterialPlanPtr alphaPlanPtr
-        = _NEW(W4dSimpleAlphaPlan(matFlash, pFlashMaterialVec->size(), lineScalarPlanPtr, 1));
+        = new W4dSimpleAlphaPlan(matFlash, pFlashMaterialVec->size(), lineScalarPlanPtr, 1);
     entityPlanForEdit().materialPlan(alphaPlanPtr, startTime);
 }
 

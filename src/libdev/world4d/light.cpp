@@ -76,12 +76,12 @@ const MexSphere3d& W4dLightImpl::boundingSphere(const W4dCamera* camera) const
 
 W4dLight::W4dLight(W4dEntity* pParent, const W4dTransform3d& localXform, RenLight* l, bool hasBoundingSphere)
     : W4dEntity(pParent, localXform, NOT_SOLID)
-    , pImpl_(_NEW(W4dLightImpl(this)))
+    , pImpl_(new W4dLightImpl(this))
 {
     PRE(l);
     PRE(W4dManager::instance().sceneManager());
 
-    pImpl_->pEntities_ = (_NEW(W4dLightImpl::Entities));
+    pImpl_->pEntities_ = new W4dLightImpl::Entities;
     pImpl_->pEntities_->reserve(4);
     pImpl_->pLight_ = l;
     pImpl_->enabled_ = true;
@@ -116,19 +116,19 @@ W4dLight::~W4dLight()
 
     if (pImpl_ != nullptr)
     {
-        _DELETE(pImpl_->pLight_);
-        _DELETE(pImpl_->sphere_);
+        delete pImpl_->pLight_;
+        delete pImpl_->sphere_;
 
         while (pImpl_->pEntities_->size() != 0)
             dontIlluminate(pImpl_->pEntities_->back());
 
-        _DELETE(pImpl_->pEntities_);
+        delete pImpl_->pEntities_;
 
         if (unintensifiedColourSaved())
-            _DELETE(pImpl_->pUnintensifiedColour_);
+            delete pImpl_->pUnintensifiedColour_;
     }
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 const W4dLightImpl& W4dLight::impl() const
@@ -318,7 +318,7 @@ void W4dLight::intensityPlan(const PhysScalarPlanPtr& planPtr, const PhysAbsolut
 void W4dLight::saveUnintensifiedColour()
 {
     if (pImpl_->pUnintensifiedColour_ == nullptr)
-        pImpl_->pUnintensifiedColour_ = _NEW(RenColour(colour()));
+        pImpl_->pUnintensifiedColour_ = new RenColour(colour());
 }
 
 bool W4dLight::unintensifiedColourSaved() const
@@ -346,7 +346,7 @@ void W4dLight::boundingSphere(const MexPoint3d& centre, MATHEX_SCALAR radius)
     PRE(hasBoundingSphere());
 
     if (!pImpl_->sphere_)
-        pImpl_->sphere_ = _NEW(MexSphere3d(centre, radius));
+        pImpl_->sphere_ = new MexSphere3d(centre, radius);
     else
     {
         pImpl_->sphere_->center(centre);
@@ -463,7 +463,7 @@ W4dLight::W4dLight(PerConstructor con)
 
 W4dLightImpl::W4dLightImpl(PerConstructor)
 {
-    pEntities_ = (_NEW(W4dLightImpl::Entities));
+    pEntities_ = (new W4dLightImpl::Entities);
     pEntities_->reserve(4);
 }
 
@@ -514,7 +514,7 @@ static MexTransform3d lightTransform(const MexVec3& direction)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 W4dDirectionalLight::W4dDirectionalLight(W4dEntity* pParent, const MexVec3& direction)
-    : W4dLight(pParent, lightTransform(direction), _NEW(RenDirectionalLight()), false)
+    : W4dLight(pParent, lightTransform(direction), new RenDirectionalLight(), false)
     , pDirLight_(_STATIC_CAST(RenDirectionalLight*, pRenLight()))
 {
 }
@@ -566,7 +566,7 @@ W4dDirectionalLight::W4dDirectionalLight(PerConstructor con)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 W4dPointLight::W4dPointLight(W4dEntity* pParent, const MexVec3& position, MATHEX_SCALAR range)
-    : W4dLight(pParent, W4dTransform3d(position), _NEW(RenPointLight(range)), true)
+    : W4dLight(pParent, W4dTransform3d(position), new RenPointLight(range), true)
     , pPtLight_(_STATIC_CAST(RenPointLight*, pRenLight()))
 {
 }
@@ -614,7 +614,7 @@ W4dPointLight::W4dPointLight(PerConstructor con)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 W4dUniformLight::W4dUniformLight(W4dEntity* pParent, const MexVec3& position, MATHEX_SCALAR range)
-    : W4dLight(pParent, W4dTransform3d(position), _NEW(RenUniformLight(range)), true)
+    : W4dLight(pParent, W4dTransform3d(position), new RenUniformLight(range), true)
     , pUniLight_(_STATIC_CAST(RenUniformLight*, pRenLight()))
 {
 }

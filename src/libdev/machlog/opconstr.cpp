@@ -75,8 +75,8 @@ PhysRelativeTime MachLogConstructOperation::interactWithBuilding()
 
         // if we added nothing, it's cos we're out of money, so don't animate. The workers are on strike.
         if (amountToAdd > 0)
-            // subOperation( pConstructorGuy, _NEW( MachLogConstructAnimation( pConstructorGuy, pUnfinishedConstruction,
-            // units ) ) );
+            // subOperation( pConstructorGuy, new MachLogConstructAnimation( pConstructorGuy, pUnfinishedConstruction,
+            // units ) );
             pConstructorGuy->constructing(true, pUnfinishedConstruction->id());
         else
             pConstructorGuy->constructing(false);

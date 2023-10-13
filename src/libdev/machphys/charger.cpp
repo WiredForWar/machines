@@ -106,7 +106,7 @@ void MachPhysSuperCharger::startHealing(
     stopHealing();
 
     // Construct a heal helix attached to the weapon
-    pHealHelix_ = _NEW(MachPhysHealHelix(this, MexTransform3d()));
+    pHealHelix_ = new MachPhysHealHelix(this, MexTransform3d());
 
     // Get useful data
     const MachPhysWeaponData& data = weaponData();
@@ -132,14 +132,14 @@ void MachPhysSuperCharger::startHealing(
     W4dEntityPlan& healHealixEntityPlan = pHealHelix_->entityPlanForEdit();
     pHealHelix_->visible(false);
 
-    W4dVisibilityPlan* pVisibilityPlan = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlan* pVisibilityPlan = new W4dVisibilityPlan(true);
     pVisibilityPlan->add(false, duration);
 
     W4dVisibilityPlanPtr visibilityPlanPtr(pVisibilityPlan);
     healHealixEntityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 
     // Set up an object tracker to make the heal helix try and reach the target machine
-    W4dObjectTracker* pTracker = _NEW(W4dObjectTracker(
+    W4dObjectTracker* pTracker = new W4dObjectTracker(
         *this,
         localOrigin,
         machine,
@@ -148,18 +148,18 @@ void MachPhysSuperCharger::startHealing(
         maxAbsPitchSine,
         minLength,
         helixMaxLength,
-        defaultLength));
+        defaultLength);
 
     W4dObjectTrackerPtr trackerPtr(pTracker);
 
     // Apply a transform plan to the helix using the tracker
-    W4dObjectTrackerMotionPlan* pMotionPlan = _NEW(W4dObjectTrackerMotionPlan(trackerPtr, duration));
+    W4dObjectTrackerMotionPlan* pMotionPlan = new W4dObjectTrackerMotionPlan(trackerPtr, duration);
 
     PhysMotionPlanPtr motionPlanPtr(pMotionPlan);
     healHealixEntityPlan.absoluteMotion(motionPlanPtr, startTime);
 
     // Apply a scale plan also using the tracker
-    W4dObjectTrackerScalePlan* pScalePlan = _NEW(W4dObjectTrackerScalePlan(trackerPtr, duration));
+    W4dObjectTrackerScalePlan* pScalePlan = new W4dObjectTrackerScalePlan(trackerPtr, duration);
     W4dScalePlanPtr scalePlanPtr(pScalePlan);
 
     pHealHelix_->propogateScalePlan(scalePlanPtr, startTime);
@@ -185,14 +185,14 @@ void MachPhysSuperCharger::stopHealing()
     if (pHealHelix_)
     {
         if (SimManager::instance().currentTime() < helixDestructTime_)
-            _DELETE(pHealHelix_);
+            delete pHealHelix_;
         pHealHelix_ = nullptr;
     }
     // delete existing light, unless past garbage collect time
     if (pLight_)
     {
         if (SimManager::instance().currentTime() < helixDestructTime_)
-            _DELETE(pLight_);
+            delete pLight_;
         pLight_ = nullptr;
     }
 
@@ -206,7 +206,7 @@ void MachPhysSuperCharger::lighting(const PhysAbsoluteTime& startTime, const Phy
     MexPoint3d offSet = data.launchOffsets()[0];
     MATHEX_SCALAR range = 3;
 
-    pLight_ = _NEW(W4dPointLight(this, MexVec3(1, 0, 0), range));
+    pLight_ = new W4dPointLight(this, MexVec3(1, 0, 0), range);
     pLight_->localTransform(MexTransform3d(offSet));
     pLight_->colour(RenColour::green());
     pLight_->maxRange(range);
@@ -216,7 +216,7 @@ void MachPhysSuperCharger::lighting(const PhysAbsoluteTime& startTime, const Phy
     pLight_->scope(W4dLight::LOCAL);
 
     // visibility plan
-    W4dVisibilityPlanPtr lightVisibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(false));
     PhysRelativeTime roundOnTime = 0.7;
     uint nRounds = duration;
 

@@ -42,11 +42,11 @@ MachLogLinearProjectile* MachLogNuclearWeapon::createLinearProjectile(
     const W4dEntity& target,
     const MexPoint3d& targetOffset)
 {
-    return _NEW(MachLogNuclearMissile(
+    return new MachLogNuclearMissile(
         &logRace(),
         createPhysLinearProjectile(burstStartTime, index, pParent, target, targetOffset),
         &owner(),
-        physWeapon().weaponData()));
+        physWeapon().weaponData());
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogNuclearWeapon& t)

@@ -97,9 +97,9 @@ private:
         ~Partition()
         {
             if (pLeft_)
-                _DELETE(pLeft_);
+                delete pLeft_;
             if (pRight_)
-                _DELETE(pRight_);
+                delete pRight_;
         };
 
         // Data members

@@ -48,7 +48,7 @@ NetINetwork::~NetINetwork()
 
         for (; i != j; ++i)
         {
-            _DELETE(*i);
+            delete *i;
         }
         i = sessions_.begin();
         if (i != j)
@@ -65,12 +65,12 @@ NetINetwork::~NetINetwork()
         {
             Nodes::iterator p = m;
             ++m;
-            _DELETE(*p);
+            delete *p;
         }
 
         NETWORK_STREAM(" delete message handler" << std::endl);
         if (pSystemMessageHandler_)
-            _DELETE(pSystemMessageHandler_);
+            delete pSystemMessageHandler_;
 
         enet_deinitialize();
 
@@ -351,7 +351,7 @@ void NetINetwork::pollMessages()
                         NetMessageBody messageBody((uint8*)event.packet->data, event.packet->dataLength);
                         NetPriority priority(1);
                         NetMessageHeader thisMessageHeader(event.peer, priority);
-                        NetMessage* pThisMessage = _NEW(NetMessage(thisMessageHeader, messageBody));
+                        NetMessage* pThisMessage = new NetMessage(thisMessageHeader, messageBody);
                         messageBuffer_.push_back(pThisMessage);
                     }
                     enet_packet_destroy(event.packet);
@@ -508,12 +508,12 @@ void NetINetwork::updateSessions()
 
         for (; i != j; ++i)
         {
-            _DELETE((*i));
+            delete (*i);
         }
 
         sessions_.erase(sessions_.begin(), sessions_.end());
 
-        sessions_.push_back(_NEW(NetAppSessionUid(0, 0, "game")));
+        sessions_.push_back(new NetAppSessionUid(0, 0, "game"));
         RecRecorder::instance().recordingAllowed(true);
     }
 
@@ -785,12 +785,12 @@ void NetINetwork::setAppUid()
 
         if (SysMetaFile::useMetaFile())
         {
-            pGuidStream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, pathName, std::ios::in)));
+            pGuidStream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
         }
         else
         {
             ASSERT_FILE_EXISTS(pathName.c_str());
-            pGuidStream = std::unique_ptr<std::istream>(_NEW(std::ifstream(pathName.c_str(), std::ios::in)));
+            pGuidStream = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
         }
 
         NETWORK_STREAM(" close appguid.ini\n");
@@ -799,12 +799,12 @@ void NetINetwork::setAppUid()
 
         if (SysMetaFile::useMetaFile())
         {
-            pGuidStream2 = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, pathName, std::ios::in)));
+            pGuidStream2 = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
         }
         else
         {
             ASSERT_FILE_EXISTS(pathName.c_str());
-            pGuidStream2 = std::unique_ptr<std::istream>(_NEW(std::ifstream(pathName.c_str(), std::ios::in)));
+            pGuidStream2 = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
         }
 
         NETWORK_STREAM(" open line tokeniser with appguid.ini\n");
@@ -931,7 +931,7 @@ NetAppUid NetINetwork::appUid_ = 0;
 void NetINetwork::systemMessageHandler(NetSystemMessageHandler* pMessageHandler)
 {
     if (pSystemMessageHandler_)
-        _DELETE(pSystemMessageHandler_);
+        delete pSystemMessageHandler_;
     pSystemMessageHandler_ = pMessageHandler;
 }
 
@@ -1111,7 +1111,7 @@ bool operator==(const NetMessageShortInfo& a, const NetMessageShortInfo& b)
 void NetINetwork::addSentMessage(int length)
 {
     double time = timer_.time();
-    NetMessageShortInfo* pInfo = _NEW(NetMessageShortInfo);
+    NetMessageShortInfo* pInfo = new NetMessageShortInfo;
     pInfo->time_ = time;
     pInfo->length_ = length;
     sentMessages_.push_back(pInfo);
@@ -1132,7 +1132,7 @@ void NetINetwork::computeSentMessageStuffedNess()
         for (SentMessages::iterator i = messagesForDeletion.begin(); i != messagesForDeletion.end(); ++i)
         {
             sentMessages_.erase(find(sentMessages_.begin(), sentMessages_.end(), *i));
-            _DELETE(*i);
+            delete *i;
         }
         // Now iterator through the current collection and add up all the lengths - thats the current bandwidth usage
         // if it goes above maxBytesPerSecond_ bytes sec -1 then set stuffed to true.

@@ -70,7 +70,7 @@ MachPhys1stPersonDriver::MachPhys1stPersonDriver(
     , lastUpdateTime_(W4dManager::instance().time())
     , pImpl_(nullptr)
 {
-    pImpl_ = _NEW(MachPhys1stPersonDriverImpl);
+    pImpl_ = new MachPhys1stPersonDriverImpl;
     pImpl_->pAxisTurnerPlan_ = nullptr;
     pImpl_->turnAtFastRate_ = true;
     pImpl_->pAntiRollEntity_ = nullptr;
@@ -90,11 +90,11 @@ MachPhys1stPersonDriver::~MachPhys1stPersonDriver()
     if (pCameraEntity_)
         pCameraEntity_->entityPlanForEdit().clearMotionPlans();
 
-    _DELETE(pTrackEntity_);
+    delete pTrackEntity_;
 
     if (remoteNode_)
     {
-        _DELETE(pCameraEntity_);
+        delete pCameraEntity_;
     }
     else
     {
@@ -104,9 +104,9 @@ MachPhys1stPersonDriver::~MachPhys1stPersonDriver()
             pCameraEntity_->attachTo(pImpl_->pAntiRollEntity_->pParent());
     }
 
-    _DELETE(pImpl_->pAntiRollEntity_);
+    delete pImpl_->pAntiRollEntity_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhys1stPersonDriver::CLASS_INVARIANT
@@ -218,13 +218,13 @@ void MachPhys1stPersonDriver::setupTrackEntity()
     // Create an entity whose transform will be adjusted every time the machine is moved to maintain
     // a level view. This entity will own the camera entity.
     W4dEntity* pAntiRollEntity = pImpl_->pAntiRollEntity_
-        = _NEW(W4dGeneric(&cameraParent, offsetTransform, W4dEntity::NOT_SOLID));
+        = new W4dGeneric(&cameraParent, offsetTransform, W4dEntity::NOT_SOLID);
 
     // If a remote node we need a dummy camera entity. Otherwise use current camera
     if (remoteNode_)
     {
         // Create dummy entity
-        pCameraEntity_ = _NEW(W4dGeneric(pAntiRollEntity, MexTransform3d(), W4dEntity::NOT_SOLID));
+        pCameraEntity_ = new W4dGeneric(pAntiRollEntity, MexTransform3d(), W4dEntity::NOT_SOLID);
     }
     else
     {
@@ -238,14 +238,14 @@ void MachPhys1stPersonDriver::setupTrackEntity()
     // Set up a turner plan for the camera
     PhysRelativeTime duration = 31536000.0; // One year
     PhysAbsoluteTime now = W4dManager::instance().time();
-    pImpl_->pAxisTurnerPlan_ = _NEW(W4dAxisTurnerPlan(
+    pImpl_->pAxisTurnerPlan_ = new W4dAxisTurnerPlan(
         pCameraEntity_->localTransform(),
         W4d::Y_AXIS,
         now,
         0.0,
         0.0,
         MachPhysData::instance().generalData().firstPersonLookUpDownRate(),
-        duration));
+        duration);
     pImpl_->axisTurnerPlanPtr_ = pImpl_->pAxisTurnerPlan_;
 
     pCameraEntity_->entityPlanForEdit().absoluteMotion(pImpl_->axisTurnerPlanPtr_, now);
@@ -254,8 +254,8 @@ void MachPhys1stPersonDriver::setupTrackEntity()
     if (pCanAttack_)
     {
         // Construct an entity for the weapons to track at the target position
-        pTrackEntity_ = _NEW(
-            W4dGeneric(pCameraEntity_, MexTransform3d(MexPoint3d(maxWeaponRange_, 0.0, 0.0)), W4dEntity::NOT_SOLID));
+        pTrackEntity_ = new 
+            W4dGeneric(pCameraEntity_, MexTransform3d(MexPoint3d(maxWeaponRange_, 0.0, 0.0)), W4dEntity::NOT_SOLID);
 
         // Set up the target tracking
         pCanAttack_->trackTargetWithWeapons(*pTrackEntity_);

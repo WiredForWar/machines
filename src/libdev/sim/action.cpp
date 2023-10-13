@@ -24,7 +24,7 @@ SimAction::~SimAction()
     {
         pCondition_->decrementLinkedActionCount();
         if (pCondition_->nLinkedActions() == 0)
-            _DELETE(pCondition_);
+            delete pCondition_;
     }
 }
 

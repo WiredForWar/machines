@@ -129,30 +129,30 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
     const int CURRENTSTATUS_MAXX = 532;
     const int CURRENTSTATUS_MAXY = 376;
 
-    MachGuiMenuButton* pOkBtn = _NEW(MachGuiMenuButton(
+    MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(83, 408, 255, 445),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK));
-    MachGuiMenuButton* pCancelBtn = _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_OK);
+    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(327, 408, 497, 445),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::EXIT);
+    new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(376, 40, 546, 77),
         IDS_MENUBTN_NEW,
-        MachGuiStartupScreens::BE_NEW));
-    _NEW(MachGuiMenuButton(
+        MachGuiStartupScreens::BE_NEW);
+    new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(376, 134, 546, 172),
         IDS_MENUBTN_DELETE,
-        MachGuiStartupScreens::BE_DELETE));
+        MachGuiStartupScreens::BE_DELETE);
 
     pCancelBtn->escapeControl(true);
     pOkBtn->defaultControl(true);
@@ -160,7 +160,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
     // Display list box heading
     GuiResourceString players(IDS_MENULB_PLAYERS);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    MachGuiMenuText* pPlayersText = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pPlayersText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             PLAYERS_LB_MINX,
@@ -168,11 +168,11 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             PLAYERS_LB_MINX + font.textWidth(players.asString()),
             PLAYERS_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_PLAYERS,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Display current status heading
     GuiResourceString status(IDS_MENU_PLAYERSTATUS);
-    MachGuiMenuText* pCurrentStatusHeading = _NEW(MachGuiMenuText(
+    MachGuiMenuText* pCurrentStatusHeading = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             CURRENTSTATUS_MINX,
@@ -180,10 +180,10 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             CURRENTSTATUS_MINX + font.textWidth(status.asString()),
             CURRENTSTATUS_MINY + font.charHeight() + 2),
         IDS_MENU_PLAYERSTATUS,
-        "gui/menu/largefnt.bmp"));
+        "gui/menu/largefnt.bmp");
 
     // Create players list box
-    pPlayersList_ = _NEW(MachGuiSingleSelectionListBox(
+    pPlayersList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
@@ -193,7 +193,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             PLAYERS_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
-        1));
+        1);
     updatePlayersList();
 
     // Display backdrop, play correct music, switch cursor on.
@@ -243,11 +243,11 @@ void MachGuiCtxCampaign::updatePlayersList()
 
     // Create special [new player name] entry in list box.
     GuiResourceString newPlayerNameStr(IDS_MENU_NEWPLAYERNAME);
-    pNewPlayerName_ = _NEW(MachGuiEditBoxListBoxItem(
+    pNewPlayerName_ = new MachGuiEditBoxListBoxItem(
         pStartupScreens_,
         pPlayersList_,
         PLAYERS_LB_MAXX - PLAYERS_LB_MINX,
-        newPlayerNameStr.asString()));
+        newPlayerNameStr.asString());
     pNewPlayerName_->maxChars(MAX_PLAYERNAME_LEN);
 
     // Add previously created players into list box.
@@ -256,8 +256,8 @@ void MachGuiCtxCampaign::updatePlayersList()
     for (uint loop = 0; loop < numPlayers; ++loop)
     {
         MachGuiDbPlayer& player = MachGuiDatabase::instance().player(loop);
-        _NEW(
-            MachGuiPlayerListBoxItem(pStartupScreens_, pPlayersList_, PLAYERS_LB_MAXX - PLAYERS_LB_MINX, player, this));
+        new 
+            MachGuiPlayerListBoxItem(pStartupScreens_, pPlayersList_, PLAYERS_LB_MAXX - PLAYERS_LB_MINX, player, this);
     }
 
     // Get list to redraw.
@@ -337,8 +337,8 @@ void MachGuiCtxCampaign::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
             strings.push_back(pSelectedPlayer_->name());
             pStartupScreens_->displayMsgBox(
                 IDS_MENUMSG_DELETEPLAYER,
-                _NEW(MachGuiPlayerDeleteMessageBoxResponder(this)),
-                strings);
+                new MachGuiPlayerDeleteMessageBoxResponder(this)),
+                strings;
         }
         else
         {
@@ -396,14 +396,14 @@ void MachGuiCtxCampaign::displayCurrentStatus()
     const int CURRENTSTATUS_WIDTH = CURRENTSTATUS_MAXX - CURRENTSTATUS_MINX;
 
     // Clean up old text
-    _DELETE(pScenarioText_);
-    _DELETE(pLastScenarioText_);
-    _DELETE(pScoreText_);
-    _DELETE(pLastScoreText_);
-    _DELETE(pNumScenariosPlayedText_);
-    _DELETE(pNumScenariosText_);
-    _DELETE(pTotalScoreHeadingText_);
-    _DELETE(pTotalScoreText_);
+    delete pScenarioText_;
+    delete pLastScenarioText_;
+    delete pScoreText_;
+    delete pLastScoreText_;
+    delete pNumScenariosPlayedText_;
+    delete pNumScenariosText_;
+    delete pTotalScoreHeadingText_;
+    delete pTotalScoreText_;
     pScenarioText_ = nullptr;
     pLastScenarioText_ = nullptr;
     pScoreText_ = nullptr;
@@ -469,12 +469,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pScenarioText_ " << scenarioTextBox << std::endl);
 
-        pScenarioText_ = _NEW(MachGuiMenuText(
+        pScenarioText_ = new MachGuiMenuText(
             pStartupScreens_,
             scenarioTextBox,
             scenarioStr.asString(),
             "gui/menu/smallfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box lastScenarioTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pScenarioText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
@@ -483,12 +483,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pLastScenarioText_ " << lastScenarioTextBox << std::endl);
 
-        pLastScenarioText_ = _NEW(MachGuiMenuText(
+        pLastScenarioText_ = new MachGuiMenuText(
             pStartupScreens_,
             lastScenarioTextBox,
             lastScenarioStr,
             "gui/menu/smalwfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box scoreTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 - topLeft.first),
@@ -497,12 +497,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pScoreText_ " << scoreTextBox << std::endl);
 
-        pScoreText_ = _NEW(MachGuiMenuText(
+        pScoreText_ = new MachGuiMenuText(
             pStartupScreens_,
             scoreTextBox,
             scoreStr.asString(),
             "gui/menu/smallfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box lastScoreTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pScoreText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
@@ -511,12 +511,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pLastScoreText_ " << lastScoreTextBox << std::endl);
 
-        pLastScoreText_ = _NEW(MachGuiMenuText(
+        pLastScoreText_ = new MachGuiMenuText(
             pStartupScreens_,
             lastScoreTextBox,
             lastScoreStr,
             "gui/menu/smalwfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box numScenariosPlayedStrBox(
             Gui::Coord(CURRENTSTATUS_MINX, pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
@@ -525,12 +525,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pNumScenariosPlayedText_ " << numScenariosPlayedStrBox << std::endl);
 
-        pNumScenariosPlayedText_ = _NEW(MachGuiMenuText(
+        pNumScenariosPlayedText_ = new MachGuiMenuText(
             pStartupScreens_,
             numScenariosPlayedStrBox,
             numScenariosPlayedStr.asString(),
             "gui/menu/smallfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box numScenariosPlayedBox(
             Gui::Coord(
@@ -541,12 +541,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pNumScenariosText_ " << numScenariosPlayedBox << std::endl);
 
-        pNumScenariosText_ = _NEW(MachGuiMenuText(
+        pNumScenariosText_ = new MachGuiMenuText(
             pStartupScreens_,
             numScenariosPlayedBox,
             numScenariosPlayed,
             "gui/menu/smalwfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box totalScoreStrBox(
             Gui::Coord(CURRENTSTATUS_MINX, pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
@@ -555,12 +555,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pTotalScoreHeadingText_ " << totalScoreStrBox << std::endl);
 
-        pTotalScoreHeadingText_ = _NEW(MachGuiMenuText(
+        pTotalScoreHeadingText_ = new MachGuiMenuText(
             pStartupScreens_,
             totalScoreStrBox,
             totalScoreStr.asString(),
             "gui/menu/smallfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box totalScoreBox(
             Gui::Coord(
@@ -571,12 +571,12 @@ void MachGuiCtxCampaign::displayCurrentStatus()
 
         DEBUG_STREAM(DIAG_NEIL, "pTotalScoreText_ " << totalScoreBox << std::endl);
 
-        pTotalScoreText_ = _NEW(MachGuiMenuText(
+        pTotalScoreText_ = new MachGuiMenuText(
             pStartupScreens_,
             totalScoreBox,
             totalScore,
             "gui/menu/smalwfnt.bmp",
-            MachGuiMenuText::LEFT_JUSTIFY));
+            MachGuiMenuText::LEFT_JUSTIFY);
     }
 }
 

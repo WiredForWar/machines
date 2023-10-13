@@ -264,7 +264,7 @@ PhysRelativeTime MachLogLocateOperation::doUpdate()
                         path_.erase(path_.begin());
                     }
                 }
-                subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, MexPoint3d(path_.front()))));
+                subOperation(pActor_, new MachLogMoveToOperation(pActor_, MexPoint3d(path_.front())));
                 return 4.0;
             }
         }

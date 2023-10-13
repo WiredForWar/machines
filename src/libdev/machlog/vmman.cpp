@@ -38,7 +38,7 @@ MachLogVoiceMailManager& MachLogVoiceMailManager::instance()
 }
 
 MachLogVoiceMailManager::MachLogVoiceMailManager()
-    : pImpl_(_NEW(MachLogVoiceMailManagerImpl()))
+    : pImpl_(new MachLogVoiceMailManagerImpl())
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
@@ -71,11 +71,11 @@ MachLogVoiceMailManager::~MachLogVoiceMailManager()
     clearMailQueue();
 
     for (MailInfoVector::iterator i = pAvailableVEMails_->begin(); i != pAvailableVEMails_->end(); ++i)
-        _DELETE(*i);
+        delete *i;
 
-    _DELETE(pAvailableVEMails_);
+    delete pAvailableVEMails_;
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogVoiceMailManager::update()
@@ -138,7 +138,7 @@ void MachLogVoiceMailManager::update()
                     else
                     */
                     {
-                        _DELETE(pMail);
+                        delete pMail;
                     }
 
                     incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
@@ -174,7 +174,7 @@ void MachLogVoiceMailManager::update()
                     // It's tough luck. We're too busy.
                     if (not(mailType == VM_FULL_FUNCTION or mailType == VM_WAIT_UNTIL_NOTHING_PLAYING))
                     {
-                        _DELETE(pMail);
+                        delete pMail;
                         incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
 
                         --queueSize;
@@ -246,7 +246,7 @@ void MachLogVoiceMailManager::update()
             {
                 if(pSavedMail->isPlaying())
                     pSavedMail->stop();
-                _DELETE(pSavedMail);
+                delete pSavedMail;
                 savedMail_.erase(savedMail_.begin() + indexPos);
             }
         }
@@ -354,7 +354,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetR
     if (podMailPlaying_ && (((*pAvailableVEMails_)[id])->mailType_ != VM_SELECTION_AFFIRMATION))
         return false;
 
-    MachLogVoiceMail* pNewMail = _NEW(MachLogVoiceMail(id));
+    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(id);
     queueMail(pNewMail);
 
     return true;
@@ -410,7 +410,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
         return false;
     }
 
-    MachLogVoiceMail* pNewMail = _NEW(MachLogVoiceMail(id, actorId));
+    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(id, actorId);
     queueMail(pNewMail);
     update();
 
@@ -422,7 +422,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, M
     if (!canPostMailForRace(targetRace))
         return false;
 
-    MachLogVoiceMail* pNewMail = _NEW(MachLogVoiceMail(id, position));
+    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(id, position);
     queueMail(pNewMail);
 
     return true;
@@ -497,7 +497,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                         else
                         */
                         {
-                            _DELETE(pMail);
+                            delete pMail;
                         }
 
                         incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
@@ -539,7 +539,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                                 staticId = VID_INTERFERENCE_5;
                         }
 
-                        pStaticMail = _NEW(MachLogVoiceMail(staticId, actorId));
+                        pStaticMail = new MachLogVoiceMail(staticId, actorId);
                         pStaticMail->play();
                         pStaticMail->hasStarted(true);
 
@@ -565,7 +565,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                         else
                         */
                         {
-                            _DELETE(pMail);
+                            delete pMail;
                         }
 
                         // now replace the queue pointer of the interrupted mail to that of the newly-created static
@@ -599,7 +599,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
             if (pMail->hasActorId() and pMail->actorId() == actorId and pMail != pStaticMail)
             {
                 // that's one of ours - just boot it off the queue
-                _DELETE(pMail);
+                delete pMail;
                 incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
 
                 --queueSize;
@@ -697,7 +697,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
     registeredTypes_.insert("VM_SELECTION_AFFIRMATION", VM_SELECTION_AFFIRMATION);
     registeredTypes_.insert("VM_WAIT_UNTIL_NOTHING_PLAYING", VM_WAIT_UNTIL_NOTHING_PLAYING);
 
-    pAvailableVEMails_ = _NEW(MailInfoVector(VID_N_MAIL_IDS, nullptr));
+    pAvailableVEMails_ = new MailInfoVector(VID_N_MAIL_IDS, nullptr);
     MailInfoVector& availableVEMails_ = *pAvailableVEMails_;
 
     for (MailInfoVector::iterator i = availableVEMails_.begin(); i != availableVEMails_.end(); ++i)
@@ -713,14 +713,14 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 
     if (SysMetaFile::useMetaFile())
     {
-        // pIstream = _NEW( SysMetaFileIstream( metaFile, definitionFileName, ios::text ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(SysMetaFileIstream(metaFile, definitionFileName, std::ios::in)));
+        // pIstream = new SysMetaFileIstream( metaFile, definitionFileName, ios::text );
+        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, definitionFileName, std::ios::in));
     }
     else
     {
         ASSERT_FILE_EXISTS(definitionFileName.c_str());
-        // pIstream = _NEW( ifstream( definitionFileName.c_str(), ios::text | ios::in ) );
-        pIstream = std::unique_ptr<std::istream>(_NEW(std::ifstream(definitionFileName.c_str(), std::ios::in)));
+        // pIstream = new ifstream( definitionFileName.c_str(), ios::text | ios::in );
+        pIstream = std::unique_ptr<std::istream>(new std::ifstream(definitionFileName.c_str(), std::ios::in));
     }
 
     UtlLineTokeniser parser(*pIstream, definitionFileName);
@@ -748,9 +748,9 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
         ASSERT_INFO(vemailFileName);
         ASSERT(vemailFileName.existsAsFile(), "Cannot locate vemail file.");
 
-        availableVEMails_[id] = _NEW(MachLogVoiceMailInfo
-                                     //          ( id, tokens[1], type, atoi(tokens[3].c_str())));
-                                     (id, fileName, type, atoi(tokens[3].c_str())));
+        availableVEMails_[id] = new MachLogVoiceMailInfo
+                                     //(id, tokens[1], type, atoi(tokens[3].c_str()));
+                                     (id, fileName, type, atoi(tokens[3].c_str()));
 
         ASSERT_INFO(tokens[4]);
         ASSERT(
@@ -834,7 +834,7 @@ void MachLogVoiceMailManager::clearMailQueue()
             }
         }
 
-        _DELETE(pMail);
+        delete pMail;
         incomingMailQueue_.erase(i);
     }
 

@@ -17,7 +17,7 @@
 #include "ctl/vector.hpp"
 
 EnvSkyline::EnvSkyline(W4dEntity* parent, const SysPathName& meshFile)
-    : entity_(_NEW(W4dGeneric(parent, MexTransform3d())))
+    : entity_(new W4dGeneric(parent, MexTransform3d()))
     , matTable_(nullptr)
 {
     PRE(parent);
@@ -30,7 +30,7 @@ EnvSkyline::EnvSkyline(W4dEntity* parent, const SysPathName& meshFile)
 EnvSkyline::~EnvSkyline()
 {
     TEST_INVARIANT;
-    _DELETE(matTable_);
+    delete matTable_;
 }
 
 void EnvSkyline::colourTable(EnvElevationColourTable* clut, const EnvSatellite* controller)
@@ -42,7 +42,7 @@ void EnvSkyline::colourTable(EnvElevationColourTable* clut, const EnvSatellite* 
     const W4dGeneric* constEntity = entity_;
     matTable_ = clut;
     std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
-    plan_ = _NEW(EnvElevationMaterialPlan(*(mats.get()), *controller, *matTable_));
+    plan_ = new EnvElevationMaterialPlan(*(mats.get()), *controller, *matTable_);
     entity_->entityPlanForEdit().materialPlan(plan_, W4dManager::instance().time());
 }
 
@@ -66,7 +66,7 @@ void EnvSkyline::overrideColour(const RenColour& col)
     scales.push_back(1);
     scales.push_back(1);
 
-    PhysScalarPlanPtr lineScalarPlanPtr = _NEW(PhysLinearScalarPlan(times, scales));
+    PhysScalarPlanPtr lineScalarPlanPtr = new PhysLinearScalarPlan(times, scales);
 
     const W4dGeneric* constEntity = entity_;
     std::unique_ptr<RenMaterialVec> mats = constEntity->mesh().mesh()->materialVec();
@@ -81,7 +81,7 @@ void EnvSkyline::overrideColour(const RenColour& col)
     IAIN_STREAM("Skyline " << mat << "\n");
     IAIN_STREAM("Skyline material emissive=" << mat.emissive() << "\n");
 
-    W4dMaterialPlanPtr matPlan = _NEW(W4dSimpleAlphaPlan(mat, 1, lineScalarPlanPtr, 1));
+    W4dMaterialPlanPtr matPlan = new W4dSimpleAlphaPlan(mat, 1, lineScalarPlanPtr, 1);
     ePlan.materialPlan(matPlan, W4dManager::instance().time());
 }
 

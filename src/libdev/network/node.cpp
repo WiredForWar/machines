@@ -48,9 +48,9 @@ NetNode::NetNodeStatus& NetNode::currentStatusNoRecord()
     CB_DEPIMPL(ctl_pvector<NetCompoundMessage>, cachedCompoundMessages_);
 
 NetNode::NetNode(const NetNodeName& name)
-    : pImpl_(_NEW(NetNodeImpl))
+    : pImpl_(new NetNodeImpl))
 {
-    CB_NetNode_DEPIMPL();
+    CB_NetNode_DEPIMPL(;
 
     PRE(isValidNoRecord());
     pNodeUid_ = NULL;
@@ -63,7 +63,7 @@ NetNode::NetNode(const NetNodeName& name)
     // Create our default AppSession
     NetAppSession& thisAppSession = NetNetwork::instance().session();
     NetNetwork::instance().netINetwork().localPlayerName(name);
-    pAppSessionUid_ = _NEW(NetAppSessionUid(thisAppSession.appSessionUid()));
+    pAppSessionUid_ = new NetAppSessionUid(thisAppSession.appSessionUid());
 
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
@@ -71,7 +71,7 @@ NetNode::NetNode(const NetNodeName& name)
 
         unsigned uId = 0xf;
 
-        pNodeUid_ = _NEW(NetNodeUid(NetNetwork::instance().processUidNoRecord(), uId, name));
+        pNodeUid_ = new NetNodeUid(NetNetwork::instance().processUidNoRecord(), uId, name);
 
         const NetProcessUid& temp = NetNetwork::instance().processUidNoRecord();
 
@@ -92,7 +92,7 @@ NetNode::NetNode(const NetNodeName& name)
 
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        pNodeUid_ = _NEW(NetNodeUid(NetIRecorder::instance().playbackNodeUid()));
+        pNodeUid_ = new NetNodeUid(NetIRecorder::instance().playbackNodeUid());
     }
     else
     {
@@ -128,8 +128,8 @@ NetNode::~NetNode()
         RecRecorder::instance().recordingAllowed(true);
     }
 
-    _DELETE(pNodeUid_);
-    _DELETE(pAppSessionUid_);
+    delete pNodeUid_;
+    delete pAppSessionUid_;
 
     NETWORK_STREAM("NetNode::~NetNode() DONE\n");
     //  PRE( isValidNoRecord() );
@@ -316,7 +316,7 @@ void NetNode::receiveMessage(NetMessage* message)
     }
     else
     {
-        _DELETE(message);
+        delete message;
     }
 
     PRE(isValidNoRecord());
@@ -683,7 +683,7 @@ void NetNode::useCompoundMessaging(bool value)
             //          size_t bufferSize = NetNetwork::instance().netINetwork().currentProtocolDPCAPS_.dwMaxBufferSize;
             //          if( bufferSize > 1024 )
             //              bufferSize = 1024;
-            //          pCompoundMessage_ = _NEW( NetCompoundMessage( bufferSize ) );
+            //          pCompoundMessage_ = new NetCompoundMessage( bufferSize );
         }
     }
     else
@@ -693,7 +693,7 @@ void NetNode::useCompoundMessaging(bool value)
         if (pCompoundMessage_)
         {
             transmitCompoundMessage();
-            _DELETE(pCompoundMessage_);
+            delete pCompoundMessage_;
             pCompoundMessage_ = NULL;
         }
     }
@@ -703,7 +703,7 @@ void NetNode::addCachedCompoundMessage(NetCompoundMessage* pCompoundMessage)
 {
     CB_NetNode_DEPIMPL();
     // Copy message...
-    NetCompoundMessage* pNewCompound = _NEW(NetCompoundMessage(pCompoundMessage->buffer()));
+    NetCompoundMessage* pNewCompound = new NetCompoundMessage(pCompoundMessage->buffer());
     // Clear old message
     pCompoundMessage->clearAll();
     cachedCompoundMessages_.push_back(pNewCompound);
@@ -737,7 +737,7 @@ void NetNode::transmitCompoundMessage()
                 NetCompoundMessage* pCompoundMessage = cachedCompoundMessages_.front();
                 actuallyTransmitCompoundMessage(pCompoundMessage);
                 // Remove the memory associated with this object
-                _DELETE(pCompoundMessage);
+                delete pCompoundMessage;
                 cachedCompoundMessages_.erase(cachedCompoundMessages_.begin());
             }
             // Update time if we do some work
@@ -760,7 +760,7 @@ void NetNode::transmitCompoundMessage()
     //      NetCompoundMessage* pCompoundMessage = cachedCompoundMessages_.front();
     //      actuallyTransmitCompoundMessage( pCompoundMessage );
     //      //Remove the memory associated with this object
-    //      _DELETE( pCompoundMessage );
+    //      delete pCompoundMessage;
     //      cachedCompoundMessages_.erase( cachedCompoundMessages_.begin() );
     //  }
 }

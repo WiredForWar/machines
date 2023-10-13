@@ -15,7 +15,7 @@
 PhysMotionControlWithTrans::PhysMotionControlWithTrans(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
     : PhysMotionControl(pMotionControlled)
     , pKeyTranslator_(nullptr)
-    , pMotionConstraint_(_NEW(PhysUnconstrainedMotion()))
+    , pMotionConstraint_(new PhysUnconstrainedMotion)
     , motion_(forwards)
 {
     PRE(pMotionControlled);
@@ -56,8 +56,8 @@ PhysMotionControlWithTrans::~PhysMotionControlWithTrans()
 {
     TEST_INVARIANT;
 
-    _DELETE(pMotionConstraint_);
-    _DELETE(pKeyTranslator_);
+    delete pMotionConstraint_;
+    delete pKeyTranslator_;
 }
 
 void PhysMotionControlWithTrans::CLASS_INVARIANT
@@ -108,7 +108,7 @@ void PhysMotionControlWithTrans::setKeyTranslator(DevKeyToCommandTranslator* pTr
 {
     PRE(pTranslator);
 
-    _DELETE(pKeyTranslator_);
+    delete pKeyTranslator_;
     pKeyTranslator_ = pTranslator;
 }
 
@@ -116,7 +116,7 @@ void PhysMotionControlWithTrans::imposeConstraint(PhysMotionConstraint* pMotionC
 {
     PRE(pMotionConstraint);
 
-    _DELETE(pMotionConstraint_);
+    delete pMotionConstraint_;
 
     pMotionConstraint_ = pMotionConstraint;
 }

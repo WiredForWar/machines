@@ -15,7 +15,7 @@
 MachPhysConstructionData::MachPhysConstructionData()
     : accessSizeIndex_(-1)
 {
-    pImpl_ = _NEW(MachPhysConstructionDataImpl());
+    pImpl_ = new MachPhysConstructionDataImpl();
 
     entrances_.reserve(2);
     pickUpPoints_.reserve(2);
@@ -40,7 +40,7 @@ MachPhysConstructionData::MachPhysConstructionData(
     , hwLevel_(copyMe.hwLevel_)
     , accessSizeIndex_(copyMe.accessSizeIndex_)
 {
-    pImpl_ = _NEW(MachPhysConstructionDataImpl());
+    pImpl_ = new MachPhysConstructionDataImpl();
 
     pImpl_->stations_ = MachPhysStations(copyMe.pImpl_->stations_, newTransform);
     pImpl_->localEntrances_ = copyMe.pImpl_->localEntrances_;
@@ -60,7 +60,7 @@ MachPhysConstructionData::MachPhysConstructionData(
 
     for (Polygons::const_iterator i = copyMe.interiorObstacles_.begin(); i != copyMe.interiorObstacles_.end(); ++i)
     {
-        interiorObstacles_.push_back(_NEW(MexConvexPolygon2d(*(*i))));
+        interiorObstacles_.push_back(new MexConvexPolygon2d(*(*i)));
         interiorObstacles_.back()->transform(newTransform);
     }
 }
@@ -80,7 +80,7 @@ MachPhysConstructionData& MachPhysConstructionData::operator=(const MachPhysCons
 
         for (Polygons::const_iterator i = copyMe.interiorObstacles_.begin(); i != copyMe.interiorObstacles_.end(); ++i)
         {
-            interiorObstacles_.push_back(_NEW(MexConvexPolygon2d(*(*i))));
+            interiorObstacles_.push_back(new MexConvexPolygon2d(*(*i)));
         }
 
         pImpl_->localEntrances_ = copyMe.pImpl_->localEntrances_;
@@ -99,10 +99,10 @@ MachPhysConstructionData::~MachPhysConstructionData()
     TEST_INVARIANT;
 
     for (Polygons::iterator i = interiorObstacles_.begin(); i != interiorObstacles_.end(); ++i)
-        _DELETE((*i));
+        delete (*i);
 
     ASSERT(pImpl_ != nullptr, "");
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 MachPhys::ResearchUnits MachPhysConstructionData::hwResearchCost() const
@@ -300,7 +300,7 @@ void MachPhysConstructionData::interiorBoundary(const MexAlignedBox2d& boundary)
 
 void MachPhysConstructionData::addInteriorObstacle(const ctl_vector<MexPoint2d> points)
 {
-    interiorObstacles_.push_back(_NEW(MexConvexPolygon2d(points)));
+    interiorObstacles_.push_back(new MexConvexPolygon2d(points));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachPhysConstructionData& t)

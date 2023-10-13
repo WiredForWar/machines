@@ -20,14 +20,14 @@
 
 MachLogPressurePads::MachLogPressurePads(const MexPoint2d& minBound, const MexPoint2d& maxBound)
 {
-    pEntranceConfigSpace_ = _NEW(PhysConfigSpace2d(
+    pEntranceConfigSpace_ = new PhysConfigSpace2d(
         minBound,
         maxBound,
         PhysConfigSpace2d::SUBTRACTIVE,
         0.0,
         MachLogMachine::minLowClearance(),
         MachLogMachine::maxLowClearance(),
-        MachLog::OBSTACLE_ALL));
+        MachLog::OBSTACLE_ALL);
 
     TEST_INVARIANT;
 }
@@ -36,7 +36,7 @@ MachLogPressurePads::~MachLogPressurePads()
 {
     TEST_INVARIANT;
 
-    _DELETE(pEntranceConfigSpace_);
+    delete pEntranceConfigSpace_;
 }
 
 void MachLogPressurePads::add(
@@ -54,7 +54,7 @@ void MachLogPressurePads::add(
     points.push_back(p3);
     points.push_back(p4);
 
-    MexConvexPolygon2d* pPad = _NEW(MexConvexPolygon2d(points));
+    MexConvexPolygon2d* pPad = new MexConvexPolygon2d(points);
 
     std::unique_ptr<MexPolygon2d> padAPtr(pPad);
 

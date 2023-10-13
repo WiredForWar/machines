@@ -108,10 +108,10 @@ void MachPhysFlame::startFlame(const PhysRelativeTime& startTime)
 
     // static uint frameNumber = 0;
     // Construct a frame based material plan with a random frame offset
-    W4dMaterialFramePlan* pMaterialPlan = _NEW(W4dMaterialFramePlan(
+    W4dMaterialFramePlan* pMaterialPlan = new W4dMaterialFramePlan(
         materialsPtr(flameType_),
         /*frameNumber, */ MachPhysRandom::randomInt(0, 15),
-        duration_));
+        duration_);
     // frameNumber+= 5;
     // frameNumber %= 16;
 
@@ -119,7 +119,7 @@ void MachPhysFlame::startFlame(const PhysRelativeTime& startTime)
     entityPlan.materialPlan(materialPlanPtr, startTime);
 
     // Add the visibility plan
-    W4dVisibilityPlanPtr visibilityPlanPtr = _NEW(W4dVisibilityPlan(true));
+    W4dVisibilityPlanPtr visibilityPlanPtr = new W4dVisibilityPlan(true);
     visibilityPlanPtr->add(false, duration_);
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
 }
@@ -152,7 +152,7 @@ const MachPhysFlame::MaterialsPtr& MachPhysFlame::materials1Ptr()
         uint nTextures = textures.size();
 
         // Construct a vector of materials
-        Materials* pMaterials = _NEW(Materials);
+        Materials* pMaterials = new Materials;
         pMaterials->reserve(nTextures);
 
         for (size_t i = 0; i != nTextures; ++i)
@@ -173,7 +173,7 @@ void MachPhysFlame::addMaterial(Materials* pMaterials, const RenTexture& texture
     material.texture(texture);
 
     // Create a material vector consisting of the single material
-    RenMaterialVec* pMaterialVec = _NEW(RenMaterialVec(1));
+    RenMaterialVec* pMaterialVec = new RenMaterialVec(1);
     pMaterialVec->push_back(material);
 
     // Add a counted pointer to the material vector to the argument
@@ -213,7 +213,7 @@ void MachPhysFlame::startBurning(const PhysAbsoluteTime& startTime)
 
     // Construct a frame based material plan with a random frame offset
     W4dMaterialFramePlan* pMaterialPlan
-        = _NEW(W4dMaterialFramePlan(materialsPtr(flameType_), MachPhysRandom::randomInt(0, 15), duration_));
+        = new W4dMaterialFramePlan(materialsPtr(flameType_), MachPhysRandom::randomInt(0, 15), duration_);
 
     W4dMaterialPlanPtr materialPlanPtr(pMaterialPlan);
     entityPlan.materialPlan(materialPlanPtr, startTime);

@@ -55,31 +55,31 @@ MachPreload::MachPreload(W4dSceneManager* pManager)
     HAL_STREAM("MachPreload\n");
     doLoadingProgressUpdate(pManager);
 
-    W4dGenericComposite* pFaceAngry = _NEW(W4dGenericComposite(
+    W4dGenericComposite* pFaceAngry = new W4dGenericComposite(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
-        SysPathName("models/shared/faceplat/angry/faceangr.cdf")));
+        SysPathName("models/shared/faceplat/angry/faceangr.cdf"));
 
     doLoadingProgressUpdate(pManager);
 
-    W4dGenericComposite* pFaceNormal = _NEW(W4dGenericComposite(
+    W4dGenericComposite* pFaceNormal = new W4dGenericComposite(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
-        SysPathName("models/shared/faceplat/normal/facenorm.cdf")));
+        SysPathName("models/shared/faceplat/normal/facenorm.cdf"));
 
     doLoadingProgressUpdate(pManager);
 
-    W4dGenericComposite* pFaceSad = _NEW(W4dGenericComposite(
+    W4dGenericComposite* pFaceSad = new W4dGenericComposite(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
-        SysPathName("models/shared/faceplat/sad/facesad.cdf")));
+        SysPathName("models/shared/faceplat/sad/facesad.cdf"));
 
     doLoadingProgressUpdate(pManager);
 
-    W4dGenericComposite* pSharedWheels = _NEW(W4dGenericComposite(
+    W4dGenericComposite* pSharedWheels = new W4dGenericComposite(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
-        SysPathName("models/shared/wheel/xwhl.cdf")));
+        SysPathName("models/shared/wheel/xwhl.cdf"));
 
     doLoadingProgressUpdate(pManager);
 
@@ -87,160 +87,160 @@ MachPreload::MachPreload(W4dSceneManager* pManager)
     // Aggressors
     // TBD::update aggressor loading stuff
     HAL_STREAM("MachPreload::KNIGHTS\n");
-    MachPhysAggressor* pAgK3 = _NEW(MachPhysAggressor(
+    MachPhysAggressor* pAgK3 = new MachPhysAggressor(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::KNIGHT,
         3,
         1,
         MachPhys::RED,
-        MachPhys::LR_PULSE_RIFLE_X2));
+        MachPhys::LR_PULSE_RIFLE_X2);
 
-    MachPhysAggressor* pAgK4 = _NEW(MachPhysAggressor(
+    MachPhysAggressor* pAgK4 = new MachPhysAggressor(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::KNIGHT,
         4,
         1,
         MachPhys::RED,
-        MachPhys::LR_PULSE_RIFLE_X2));
-    // TBD:: MachPhysAggressor* pAgG1 = _NEW(MachPhysAggressor(&MachLogPlanet::instance().hiddenRoot(),
+        MachPhys::LR_PULSE_RIFLE_X2);
+    // TBD:: MachPhysAggressor* pAgG1 = new MachPhysAggressor(&MachLogPlanet::instance().hiddenRoot(),
     // TBD::                                                 MexTransform3d(),
     // TBD::                                                 MachPhys::GRUNT,
     // TBD::                                                 1,
     // TBD::                                                 1,
-    // TBD::                                                 MachPhys::RED));
+    // TBD::                                                 MachPhys::RED);
     // TBD::
     // TBD:: doLoadingProgressUpdate( pManager );
     // TBD::
-    // TBD:: MachPhysAggressor* pAgG2 = _NEW(MachPhysAggressor(&MachLogPlanet::instance().hiddenRoot(),
+    // TBD:: MachPhysAggressor* pAgG2 = new MachPhysAggressor(&MachLogPlanet::instance().hiddenRoot(),
     // TBD::                                                 MexTransform3d(),
     // TBD::                                                 MachPhys::GRUNT,
     // TBD::                                                 2,
     // TBD::                                                 1,
-    // TBD::                                                 MachPhys::RED));
+    // TBD::                                                 MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Locators
     HAL_STREAM("MachPreload::GEO_LOCATORS\n");
     MachPhysGeoLocator* pLoG1
-        = _NEW(MachPhysGeoLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, 1, MachPhys::RED));
+        = new MachPhysGeoLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     MachPhysGeoLocator* pLoG2
-        = _NEW(MachPhysGeoLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, 1, MachPhys::RED));
+        = new MachPhysGeoLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     HAL_STREAM("MachPreload::SPY_LOCATORS\n");
     MachPhysSpyLocator* pLoS3
-        = _NEW(MachPhysSpyLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 3, 1, MachPhys::RED));
+        = new MachPhysSpyLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 3, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     MachPhysSpyLocator* pLoS5
-        = _NEW(MachPhysSpyLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 5, 1, MachPhys::RED));
+        = new MachPhysSpyLocator(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 5, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Transporters
     HAL_STREAM("MachPreload::RESOURCE_CARRIERS\n");
     MachPhysResourceCarrier* pTrR1
-        = _NEW(MachPhysResourceCarrier(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, 1, MachPhys::RED));
+        = new MachPhysResourceCarrier(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     MachPhysResourceCarrier* pTrR2
-        = _NEW(MachPhysResourceCarrier(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, 1, MachPhys::RED));
+        = new MachPhysResourceCarrier(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     HAL_STREAM("MachPreload::APC\n");
     MachPhysAPC* pTrP2
-        = _NEW(MachPhysAPC(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, 1, MachPhys::RED));
+        = new MachPhysAPC(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Technicians
     HAL_STREAM("MachPreload::TECHNICIANS\n");
-    MachPhysTechnician* pTeR1 = _NEW(MachPhysTechnician(
+    MachPhysTechnician* pTeR1 = new MachPhysTechnician(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::LAB_TECH,
         1,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
-    MachPhysTechnician* pTeR2 = _NEW(MachPhysTechnician(
+    MachPhysTechnician* pTeR2 = new MachPhysTechnician(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::LAB_TECH,
         2,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Constructor
     HAL_STREAM("MachPreload::CONSTRUCTORS\n");
-    MachPhysConstructor* pCoD1 = _NEW(MachPhysConstructor(
+    MachPhysConstructor* pCoD1 = new MachPhysConstructor(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::DOZER,
         1,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
     doLoadingProgressUpdate(pManager);
 
-    MachPhysConstructor* pCoD2 = _NEW(MachPhysConstructor(
+    MachPhysConstructor* pCoD2 = new MachPhysConstructor(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::DOZER,
         2,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Administrators
     // TBD:: update with weaponcombo stuff
-    // TBD:: MachPhysAdministrator* pAdB1 = _NEW(MachPhysAdministrator(&MachLogPlanet::instance().hiddenRoot(),
+    // TBD:: MachPhysAdministrator* pAdB1 = new MachPhysAdministrator(&MachLogPlanet::instance().hiddenRoot(),
     // TBD::                                                 MexTransform3d(),
     // TBD::                                                 MachPhys::BOSS,
     // TBD::                                                 1,
     // TBD::                                                 1,
-    // TBD::                                                 MachPhys::RED));
+    // TBD::                                                 MachPhys::RED);
     // TBD::
     // TBD:: doLoadingProgressUpdate( pManager );
     // TBD::
-    // TBD:: MachPhysAdministrator* pAdB2 = _NEW(MachPhysAdministrator(&MachLogPlanet::instance().hiddenRoot(),
+    // TBD:: MachPhysAdministrator* pAdB2 = new MachPhysAdministrator(&MachLogPlanet::instance().hiddenRoot(),
     // TBD::                                                 MexTransform3d(),
     // TBD::                                                 MachPhys::BOSS,
     // TBD::                                                 2,
     // TBD::                                                 1,
-    // TBD::                                                 MachPhys::RED));
+    // TBD::                                                 MachPhys::RED);
     HAL_STREAM("MachPreload::ADMINISTRATORS\n");
-    MachPhysAdministrator* pAdC4 = _NEW(MachPhysAdministrator(
+    MachPhysAdministrator* pAdC4 = new MachPhysAdministrator(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::COMMANDER,
         4,
         1,
         MachPhys::RED,
-        MachPhys::LR_PULSE_RIFLE_X2));
+        MachPhys::LR_PULSE_RIFLE_X2);
 
-    MachPhysAdministrator* pAdC5 = _NEW(MachPhysAdministrator(
+    MachPhysAdministrator* pAdC5 = new MachPhysAdministrator(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::COMMANDER,
         5,
         1,
         MachPhys::RED,
-        MachPhys::LR_PULSE_RIFLE_X2));
+        MachPhys::LR_PULSE_RIFLE_X2);
 
     doLoadingProgressUpdate(pManager);
 
@@ -249,124 +249,124 @@ MachPreload::MachPreload(W4dSceneManager* pManager)
 
     // Preload Pods
     HAL_STREAM("MachPreload::POD\n");
-    MachPhysPod* pP1 = _NEW(MachPhysPod(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED));
+    MachPhysPod* pP1 = new MachPhysPod(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Hardware Labs
     HAL_STREAM("MachPreload::HARDWARE_LAB\n");
-    MachPhysHardwareLab* pHLC1 = _NEW(MachPhysHardwareLab(
+    MachPhysHardwareLab* pHLC1 = new MachPhysHardwareLab(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::LAB_CIVILIAN,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
-    MachPhysHardwareLab* pHLM1 = _NEW(MachPhysHardwareLab(
+    MachPhysHardwareLab* pHLM1 = new MachPhysHardwareLab(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::LAB_MILITARY,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Smelter
     HAL_STREAM("MachPreload::SMELTER\n");
     MachPhysSmelter* pSm1
-        = _NEW(MachPhysSmelter(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED));
+        = new MachPhysSmelter(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Factories
     HAL_STREAM("MachPreload::FACTORY\n");
-    MachPhysFactory* pFaC1 = _NEW(MachPhysFactory(
+    MachPhysFactory* pFaC1 = new MachPhysFactory(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::CIVILIAN,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
-    /*  MachPhysFactory* pFaC2 = _NEW(MachPhysFactory(&MachLogPlanet::instance().hiddenRoot(),
+    /*  MachPhysFactory* pFaC2 = new MachPhysFactory(&MachLogPlanet::instance().hiddenRoot(),
                                                     MexTransform3d(),
                                                     MachPhys::CIVILIAN,
                                                     2,
-                                                    MachPhys::RED));
+                                                    MachPhys::RED);
   */
 
-    MachPhysFactory* pFaM1 = _NEW(MachPhysFactory(
+    MachPhysFactory* pFaM1 = new MachPhysFactory(
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
         MachPhys::MILITARY,
         1,
-        MachPhys::RED));
+        MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     /*
-    MachPhysFactory* pFaM2 = _NEW(MachPhysFactory(&MachLogPlanet::instance().hiddenRoot(),
+    MachPhysFactory* pFaM2 = new MachPhysFactory(&MachLogPlanet::instance().hiddenRoot(),
                                                     MexTransform3d(),
                                                     MachPhys::MILITARY,
                                                     2,
-                                                    MachPhys::RED));
+                                                    MachPhys::RED);
   */
     // Missile Emplacements
     HAL_STREAM("MachPreload::MISSILE_EMPLACEMENTS\n");
     // TBD: not working  MachPhysMissileEmplacement* pMeT1 =
-    // _NEW(MachPhysMissileEmplacement(&MachLogPlanet::instance().hiddenRoot(), TBD: not working MexTransform3d(), TBD:
+    // new MachPhysMissileEmplacement(&MachLogPlanet::instance().hiddenRoot(), TBD: not working MexTransform3d(), TBD:
     // not working                                                  MachPhys::TURRET, TBD: not working 1, TBD: not
     // working                                                  MachPhys::RED, TBD: not working
-    // MachPhys::LR_PULSE_CANNON_X2 )); TBD: not working TBD: not working  doLoadingProgressUpdate( pManager ); TBD: not
+    // MachPhys::LR_PULSE_CANNON_X2 ); TBD: not working TBD: not working  doLoadingProgressUpdate( pManager ); TBD: not
     // working TBD: not working  MachPhysMissileEmplacement* pMeT2 =
-    // _NEW(MachPhysMissileEmplacement(&MachLogPlanet::instance().hiddenRoot(), TBD: not working MexTransform3d(), TBD:
+    // new MachPhysMissileEmplacement(&MachLogPlanet::instance().hiddenRoot(), TBD: not working MexTransform3d(), TBD:
     // not working                                                  MachPhys::TURRET, TBD: not working 2, TBD: not
     // working                                                  MachPhys::RED, TBD: not working
-    // MachPhys::LR_PULSE_CANNON_X2 )); TBD: not working TBD: not working  doLoadingProgressUpdate( pManager ); TBD: not
+    // MachPhys::LR_PULSE_CANNON_X2 ); TBD: not working TBD: not working  doLoadingProgressUpdate( pManager ); TBD: not
     // working TBD: not working  MachPhysMissileEmplacement* pMeS3 =
-    // _NEW(MachPhysMissileEmplacement(&MachLogPlanet::instance().hiddenRoot(), TBD: not working MexTransform3d(), TBD:
+    // new MachPhysMissileEmplacement(&MachLogPlanet::instance().hiddenRoot(), TBD: not working MexTransform3d(), TBD:
     // not working                                                  MachPhys::SENTRY, TBD: not working 3, TBD: not
     // working                                                  MachPhys::RED, TBD: not working
-    // MachPhys::LR_PULSE_CANNON_X2 ));
+    // MachPhys::LR_PULSE_CANNON_X2 );
 
     doLoadingProgressUpdate(pManager);
 
     // Garrisons
     HAL_STREAM("MachPreload::GARRISON\n");
     MachPhysGarrison* pGa1
-        = _NEW(MachPhysGarrison(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED));
+        = new MachPhysGarrison(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Mines
     HAL_STREAM("MachPreload::MINE\n");
     MachPhysMine* pMn1
-        = _NEW(MachPhysMine(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED));
+        = new MachPhysMine(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     MachPhysMine* pMn3
-        = _NEW(MachPhysMine(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 3, MachPhys::RED));
+        = new MachPhysMine(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 3, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     // Beacons
     HAL_STREAM("MachPreload::BEACON\n");
     MachPhysBeacon* pBe1
-        = _NEW(MachPhysBeacon(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED));
+        = new MachPhysBeacon(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 1, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     MachPhysBeacon* pBe2
-        = _NEW(MachPhysBeacon(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, MachPhys::RED));
+        = new MachPhysBeacon(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 2, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
     MachPhysBeacon* pBe3
-        = _NEW(MachPhysBeacon(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 3, MachPhys::RED));
+        = new MachPhysBeacon(&MachLogPlanet::instance().hiddenRoot(), MexTransform3d(), 3, MachPhys::RED);
 
     doLoadingProgressUpdate(pManager);
 
@@ -384,46 +384,46 @@ MachPreload::MachPreload(W4dSceneManager* pManager)
     doLoadingProgressUpdate(pManager);
 
     // Delete our temporary models
-    _DELETE(pFaceAngry);
-    _DELETE(pFaceNormal);
-    _DELETE(pFaceSad);
-    _DELETE(pSharedWheels);
-    _DELETE(pAgK3);
-    _DELETE(pAgK4);
-    _DELETE(pLoG1);
-    _DELETE(pLoG2);
-    _DELETE(pLoS3);
-    _DELETE(pLoS5);
-    _DELETE(pTrR1);
-    _DELETE(pTrR2);
-    _DELETE(pTrP2);
-    _DELETE(pTeR1);
-    _DELETE(pTeR2);
-    _DELETE(pCoD1);
-    _DELETE(pCoD2);
-    _DELETE(pAdC4);
-    _DELETE(pAdC5);
+    delete pFaceAngry;
+    delete pFaceNormal;
+    delete pFaceSad;
+    delete pSharedWheels;
+    delete pAgK3;
+    delete pAgK4;
+    delete pLoG1;
+    delete pLoG2;
+    delete pLoS3;
+    delete pLoS5;
+    delete pTrR1;
+    delete pTrR2;
+    delete pTrP2;
+    delete pTeR1;
+    delete pTeR2;
+    delete pCoD1;
+    delete pCoD2;
+    delete pAdC4;
+    delete pAdC5;
 
     doLoadingProgressUpdate(pManager);
 
     // Remove all constructions
-    _DELETE(pP1);
-    _DELETE(pHLC1);
-    _DELETE(pHLM1);
-    _DELETE(pSm1);
-    _DELETE(pFaC1);
-    //_DELETE(pFaC2);
-    _DELETE(pFaM1);
-    //_DELETE(pFaM2);
-    //  _DELETE(pMeT1);
-    //  _DELETE(pMeT2);
-    //  _DELETE(pMeS3);
-    _DELETE(pGa1);
-    _DELETE(pMn1);
-    _DELETE(pMn3);
-    _DELETE(pBe1);
-    _DELETE(pBe2);
-    _DELETE(pBe3);
+    delete pP1;
+    delete pHLC1;
+    delete pHLM1;
+    delete pSm1;
+    delete pFaC1;
+    //delete pFaC2;
+    delete pFaM1;
+    //delete pFaM2;
+    //  delete pMeT1;
+    //  delete pMeT2;
+    //  delete pMeS3;
+    delete pGa1;
+    delete pMn1;
+    delete pMn3;
+    delete pBe1;
+    delete pBe2;
+    delete pBe3;
 
     doLoadingProgressUpdate(pManager);
 

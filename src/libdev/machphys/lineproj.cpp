@@ -26,7 +26,7 @@ PER_DEFINE_PERSISTENT(MachPhysLinearProjectile);
 
 MachPhysLinearProjectile::MachPhysLinearProjectile(W4dEntity* pParent, const MexTransform3d& localTransform)
     : W4dComposite(pParent, localTransform, W4dEntity::NOT_SOLID)
-    , pImpl_(_NEW(MachPhysLinearProjectileImpl()))
+    , pImpl_(new MachPhysLinearProjectileImpl())
 {
     // Set invisible so it doesn't appear until required
     visible(false);
@@ -43,7 +43,7 @@ MachPhysLinearProjectile::MachPhysLinearProjectile(
     W4dEntity* pParent,
     const W4dTransform3d& localTransform)
     : W4dComposite(copyMe, pParent, localTransform)
-    , pImpl_(_NEW(MachPhysLinearProjectileImpl(*copyMe.pImpl_)))
+    , pImpl_(new MachPhysLinearProjectileImpl(*copyMe.pImpl_))
 {
     sharedCopyCtor();
 }
@@ -54,7 +54,7 @@ MachPhysLinearProjectile::MachPhysLinearProjectile(
     const W4dTransform3d& localTransform,
     CopyLights copyLights)
     : W4dComposite(copyMe, pParent, localTransform, copyLights)
-    , pImpl_(_NEW(MachPhysLinearProjectileImpl(*copyMe.pImpl_)))
+    , pImpl_(new MachPhysLinearProjectileImpl(*copyMe.pImpl_))
 {
     sharedCopyCtor();
 
@@ -85,7 +85,7 @@ MachPhysLinearProjectile::~MachPhysLinearProjectile()
     // Stop any playing sound
     W4dSoundManager::instance().stop(this);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachPhysLinearProjectile::CLASS_INVARIANT
@@ -118,7 +118,7 @@ PhysRelativeTime MachPhysLinearProjectile::move(const PhysAbsoluteTime& startTim
     PhysRelativeTime duration = distance / speed;
 
     // Construct and apply the transform plan
-    PhysLinearMotionPlan* pPlan = _NEW(PhysLinearMotionPlan(startTransform, endTransform, duration));
+    PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startTransform, endTransform, duration);
 
     PhysMotionPlanPtr planPtr(pPlan);
 
@@ -127,7 +127,7 @@ PhysRelativeTime MachPhysLinearProjectile::move(const PhysAbsoluteTime& startTim
 
     // Construct and apply a visibility plan to switch it on at startTime
     // and off at end time
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(true)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
     visibilityPlanPtr->add(false, duration);
 
     entityPlan.visibilityPlan(visibilityPlanPtr, startTime);
@@ -155,7 +155,7 @@ PhysRelativeTime MachPhysLinearProjectile::move(const PhysAbsoluteTime& startTim
 PhysRelativeTime MachPhysLinearProjectile::beDestroyedAt(const PhysAbsoluteTime& time, MachPhys::StrikeType strikeType)
 {
     // Construct and apply the visibility plan switching the projectile off
-    W4dVisibilityPlanPtr visibilityPlanPtr(_NEW(W4dVisibilityPlan(false)));
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(false));
     entityPlanForEdit().visibilityPlan(visibilityPlanPtr, time);
 
     return doBeDestroyedAt(time, strikeType);

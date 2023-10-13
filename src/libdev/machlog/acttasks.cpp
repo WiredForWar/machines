@@ -60,7 +60,7 @@ MachLogTaskStateAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
     ASSERT_INFO(pParser->line());
 
     MachLogTaskStateAction* pResult = nullptr;
-    pResult = _NEW(MachLogTaskStateAction(pCondition, enabled));
+    pResult = new MachLogTaskStateAction(pCondition, enabled);
     for (int i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
@@ -131,7 +131,7 @@ MachLogTaskStateAction* MachLogTaskStateAction::newDynamic(
     bool isComplete)
 {
     MachLogTaskStateAction* pResult = nullptr;
-    pResult = _NEW(MachLogTaskStateAction(pCondition, enabled));
+    pResult = new MachLogTaskStateAction(pCondition, enabled);
     pResult->taskIndex_ = taskIndex;
     pResult->isAvailable_ = isAvailable;
     pResult->isComplete_ = isComplete;

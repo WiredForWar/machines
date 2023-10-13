@@ -29,7 +29,7 @@ MachPhysGarrison::MachPhysGarrison(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(part(level), pParent, localTransform, level, race)
-    , pData_(_NEW(MachPhysGarrisonData(part(level).data(), globalTransform())))
+    , pData_(new MachPhysGarrisonData(part(level).data(), globalTransform()))
 {
     TEST_INVARIANT;
 }
@@ -47,7 +47,7 @@ MachPhysGarrison::MachPhysGarrison(W4dEntity* pParent, size_t level)
         10.0,
         level,
         MachPhysData::instance().garrisonData(level))
-    , pData_(_NEW(MachPhysGarrisonData(MachPhysData::instance().garrisonData(level), W4dTransform3d())))
+    , pData_(new MachPhysGarrisonData(MachPhysData::instance().garrisonData(level), W4dTransform3d()))
 {
     TEST_INVARIANT;
 }
@@ -62,7 +62,7 @@ MachPhysGarrison::~MachPhysGarrison()
 {
     TEST_INVARIANT;
 
-    _DELETE(pData_);
+    delete pData_;
 }
 
 // static
@@ -155,7 +155,7 @@ void MachPhysGarrison::CLASS_INVARIANT
 
 void MachPhysGarrison::persistenceInitialiseData()
 {
-    pData_ = _NEW(MachPhysGarrisonData(MachPhysData::instance().garrisonData(level()), W4dTransform3d()));
+    pData_ = new MachPhysGarrisonData(MachPhysData::instance().garrisonData(level()), W4dTransform3d());
 
     persistenceConstructionData(*pData_);
 }

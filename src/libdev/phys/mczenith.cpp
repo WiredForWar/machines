@@ -123,7 +123,7 @@ void PhysZenithFlyControl::update()
 
 void PhysZenithFlyControl::setupDefaultKeyboardMapping()
 {
-    pKeyTranslator_ = _NEW(DevKeyToCommandTranslator());
+    pKeyTranslator_ = new DevKeyToCommandTranslator();
     // pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_R, PhysMotionControlWithTrans::RESET_POS,
     // DevKeyToCommand::EITHER, DevKeyToCommand::PRESSED,  DevKeyToCommand::RELEASED  ) );
     // pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_R, PhysMotionControlWithTrans::RESET_ORIENTATION,

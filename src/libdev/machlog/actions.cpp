@@ -323,7 +323,7 @@ void MachLogActions::parseActionsSection(UtlLineTokeniser* pParser)
     for (std::vector<SimCondition*>::iterator it = unusedConditions.begin(); it != unusedConditions.end(); ++it)
     {
         SimCondition* pCondition = (*it);
-        _DELETE(pCondition);
+        delete pCondition;
     }
 }
 
@@ -372,7 +372,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
     // create disabled in network games as we have to allow for the connection time before we start checking for
     // win/lost
     MachLogAllOtherRacesUnitsDeadCondition* pAllOthersDead
-        = _NEW(MachLogAllOtherRacesUnitsDeadCondition("dynamic_all_other_races_dead", races.pcController().race()));
+        = new MachLogAllOtherRacesUnitsDeadCondition("dynamic_all_other_races_dead", races.pcController().race());
     MachLogWinAction* pWin
         = MachLogWinAction::newDynamic(pAllOthersDead, not createEnableActions, races.pcController().race());
     SimManager::instance().addAction(pWin);
@@ -381,7 +381,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
     // create disabled in network games as we have to allow for the connection time before we start checking for
     // win/lost
     MachLogAllUnitsDeadCondition* pAllDead
-        = _NEW(MachLogAllUnitsDeadCondition("dynamic_all_dead", races.pcController().race()));
+        = new MachLogAllUnitsDeadCondition("dynamic_all_dead", races.pcController().race());
     MachLogLostAction* pLost
         = MachLogLostAction::newDynamic(pAllDead, not createEnableActions, races.pcController().race());
     SimManager::instance().addAction(pLost);
@@ -389,8 +389,8 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
 
     if (createEnableActions)
     {
-        MachLogTimerCondition* pTimerForLost = _NEW(MachLogTimerCondition("dynamic_timer_for_lost", 10));
-        MachLogTimerCondition* pTimerForWin = _NEW(MachLogTimerCondition("dynamic_timer_for_win", 10));
+        MachLogTimerCondition* pTimerForLost = new MachLogTimerCondition("dynamic_timer_for_lost", 10);
+        MachLogTimerCondition* pTimerForWin = new MachLogTimerCondition("dynamic_timer_for_win", 10);
         MachLogEnableActionAction* pEnableLost
             = MachLogEnableActionAction::newDynamic(pTimerForLost, true, "dynamic_all_dead");
         MachLogEnableActionAction* pEnableWin
@@ -406,12 +406,12 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
         case MachLog::VICTORY_POD:
             {
                 // create a LOW_UNIT_COUNT on the POD and a LOST action to go with it.
-                MachLogLowUnitCountCondition* pLUC = _NEW(MachLogLowUnitCountCondition(
+                MachLogLowUnitCountCondition* pLUC = new MachLogLowUnitCountCondition(
                     "dynamic_low_unit_count",
                     races.pcController().race(),
                     MachLog::POD,
                     1,
-                    0));
+                    0);
                 MachLogLostAction* pPodLost
                     = MachLogLostAction::newDynamic(pLUC, not createEnableActions, races.pcController().race());
                 SimManager::instance().addAction(pPodLost);
@@ -419,7 +419,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                 if (createEnableActions)
                 {
                     MachLogTimerCondition* pTimerForPodLost
-                        = _NEW(MachLogTimerCondition("dynamic_timer_for_pod_lost", 10));
+                        = new MachLogTimerCondition("dynamic_timer_for_pod_lost", 10);
                     MachLogEnableActionAction* pEnablePodLost
                         = MachLogEnableActionAction::newDynamic(pTimerForPodLost, true, "dynamic_low_unit_count");
                     SimManager::instance().addAction(pEnablePodLost);
@@ -452,7 +452,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                         string nameLow = "dynamic_low_unit_count";
                         nameLow += raceExtensions[i];
                         MachLogLowUnitCountCondition* pLUCr
-                            = _NEW(MachLogLowUnitCountCondition(nameLow, i, MachLog::POD, 1, 0));
+                            = new MachLogLowUnitCountCondition(nameLow, i, MachLog::POD, 1, 0);
                         MachLogLostAction* pPodLostr = MachLogLostAction::newDynamic(pLUCr, not createEnableActions, i);
                         SimManager::instance().addAction(pPodLostr);
                         pPodLostr->enabled(not createEnableActions);
@@ -460,7 +460,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                         {
                             string nameTimer = "dynamic_timer_for_pod_lost";
                             nameTimer += raceExtensions[i];
-                            MachLogTimerCondition* pTimerForPodLostr = _NEW(MachLogTimerCondition(nameTimer, 10));
+                            MachLogTimerCondition* pTimerForPodLostr = new MachLogTimerCondition(nameTimer, 10);
                             MachLogEnableActionAction* pEnablePodLostr
                                 = MachLogEnableActionAction::newDynamic(pTimerForPodLostr, true, nameLow);
                             SimManager::instance().addAction(pEnablePodLostr);
@@ -473,7 +473,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
             {
                 // create a WinOrLose action which will get fired by a timer with the delay set (indirectly) from the
                 // gameData
-                MachLogTimerCondition* pTimer = _NEW(MachLogTimerCondition("dynamic_timer", timerFireDelay));
+                MachLogTimerCondition* pTimer = new MachLogTimerCondition("dynamic_timer", timerFireDelay);
                 MachLogWinOrLoseAction* pWinOrLose
                     = MachLogWinOrLoseAction::newDynamic(pTimer, not createEnableActions, races.pcController().race());
                 SimManager::instance().addAction(pWinOrLose);
@@ -481,7 +481,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                 if (createEnableActions)
                 {
                     MachLogTimerCondition* pTimerForTimerWinOrLose
-                        = _NEW(MachLogTimerCondition("dynamic_timer_for_timer_win_or_lose", 10));
+                        = new MachLogTimerCondition("dynamic_timer_for_timer_win_or_lose", 10);
                     MachLogEnableActionAction* pEnableTimer
                         = MachLogEnableActionAction::newDynamic(pTimerForTimerWinOrLose, true, "dynamic_timer");
                     SimManager::instance().addAction(pEnableTimer);

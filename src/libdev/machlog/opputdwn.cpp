@@ -38,7 +38,7 @@ PER_DEFINE_PERSISTENT(MachLogPutDownOperation);
 
 MachLogPutDownOperation::MachLogPutDownOperation(MachLogResourceCarrier* pActor)
     : MachLogOperation("PUTDOWN_OPERATION", MachLogOperation::PUTDOWN_OPERATION)
-    , pImpl_(_NEW(MachLogPutDownOperationImpl(pActor)))
+    , pImpl_(new MachLogPutDownOperationImpl(pActor))
 {
     CB_MachLogPutDownOperation_DEPIMPL();
 
@@ -60,7 +60,7 @@ MachLogPutDownOperation::~MachLogPutDownOperation()
     // ensure motion sequencer is not locked
     pActor_->motionSeq().allowMoveOutOfWay(true);
 
-    _DELETE(pImpl_);
+    delete pImpl_;
 }
 
 void MachLogPutDownOperation::doOutputOperator(std::ostream& o) const
@@ -145,7 +145,7 @@ PhysRelativeTime MachLogPutDownOperation::doUpdate()
             // horrible big transporters)
             attemptToGuaranteeClearPutDownPoint(actorPos, carrierClearance, &clearPickupPoint);
 
-            subOperation(pActor_, _NEW(MachLogMoveToOperation(pActor_, clearPickupPoint)));
+            subOperation(pActor_, new MachLogMoveToOperation(pActor_, clearPickupPoint));
             interval = 0.0;
         }
     }
