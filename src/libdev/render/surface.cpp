@@ -693,15 +693,13 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
         // There *is* a Direct3D device associated with this surface, so we
         // can use DrawPrimitive and avoid the overheads of getting a DC.
         static size_t nVertices = 30;
-        static unique_ptr_array<RenIVertex> vtx = _NEW_ARRAY(RenIVertex, nVertices);
+        static std::vector<RenIVertex> vtx = std::vector<RenIVertex>(nVertices);
         static bool initialised = false;
 
         if (nVertices < pts.size() + (pts.size() - 2))
         {
             nVertices = pts.size() + 10;
-            RenIVertex* pD = vtx.release();
-            _DELETE_ARRAY(pD);
-            vtx = _NEW_ARRAY(RenIVertex, nVertices);
+            vtx = std::vector<RenIVertex>(nVertices);
             initialised = false;
         }
 
@@ -714,10 +712,10 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             // There's no texture, so rhw and uv are left uninitialised.
             for (int i = 0; i != nVertices; ++i)
             {
-                vtx.get()[i].z = 0.0;
-                vtx.get()[i].specular = 0;
-                vtx.get()[i].w = 0.1;
-                vtx.get()[i].tu = vtx.get()[i].tv = 0.1;
+                vtx[i].z = 0.0;
+                vtx[i].specular = 0;
+                vtx[i].w = 0.1;
+                vtx[i].tu = vtx[i].tv = 0.1;
             }
         }
 
@@ -871,12 +869,12 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
                         break;
                 }
 
-                vtx.get()[vtxIndex].x = x1;
-                vtx.get()[vtxIndex].y = y1;
-                vtx.get()[vtxIndex++].color = packedColour;
-                vtx.get()[vtxIndex].x = x2;
-                vtx.get()[vtxIndex].y = y2;
-                vtx.get()[vtxIndex++].color = packedColour;
+                vtx[vtxIndex].x = x1;
+                vtx[vtxIndex].y = y1;
+                vtx[vtxIndex++].color = packedColour;
+                vtx[vtxIndex].x = x2;
+                vtx[vtxIndex].y = y2;
+                vtx[vtxIndex++].color = packedColour;
 
                 ++index;
             } // while(index < pts.size() - 1)
@@ -888,11 +886,11 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             if (internals() && internals()->isOffscreen())
             {
                 dev->renderToTextureMode(handle(), width(), height());
-                dev->renderScreenspace(vtx.get(), pts.size() + (pts.size() - 2), GL_LINES, width(), -height());
+                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), GL_LINES, width(), -height());
                 dev->renderToTextureMode(0, 0, 0);
             }
             else
-                dev->renderScreenspace(vtx.get(), pts.size() + (pts.size() - 2), GL_LINES, width(), height());
+                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), GL_LINES, width(), height());
             glLineWidth(1.0);
         }
         else
@@ -904,11 +902,11 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
 
             while (it != pts.end())
             {
-                vtx.get()[j].x = _STATIC_CAST(int, (*it).x());
-                vtx.get()[j].y = _STATIC_CAST(int, (*it).y());
-                vtx.get()[j].color = packedColour;
+                vtx[j].x = _STATIC_CAST(int, (*it).x());
+                vtx[j].y = _STATIC_CAST(int, (*it).y());
+                vtx[j].color = packedColour;
 
-                RENDER_STREAM("  " << vtx.get()[j] << "\n");
+                RENDER_STREAM("  " << vtx[j] << "\n");
 
                 ++it;
                 ++j;
@@ -919,11 +917,11 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             if (internals() && internals()->isOffscreen())
             {
                 dev->renderToTextureMode(handle(), width(), height());
-                dev->renderScreenspace(vtx.get(), pts.size(), GL_LINE_STRIP, width(), -height());
+                dev->renderScreenspace(vtx.data(), pts.size(), GL_LINE_STRIP, width(), -height());
                 dev->renderToTextureMode(0, 0, 0);
             }
             else
-                dev->renderScreenspace(vtx.get(), pts.size(), GL_LINE_STRIP, width(), height());
+                dev->renderScreenspace(vtx.data(), pts.size(), GL_LINE_STRIP, width(), height());
             glLineWidth(1.0);
         }
     }
