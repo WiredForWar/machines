@@ -22,6 +22,27 @@ set(BASE_SOURCES
     filter.cpp
     indent.cpp
     infsbuff.cpp
+    internal/appbuff.hpp
+    internal/append.hpp
+    internal/crashi.hpp
+    internal/cstrbuff.hpp
+    internal/diagstr.hpp
+    internal/diagstrs.hpp
+    internal/filtbuff.hpp
+    internal/infsbuff.hpp
+    internal/istrbuff.hpp
+    internal/istrimpl.hpp
+    internal/lstrbuff.hpp
+    internal/memchk.hpp
+    internal/ostrbuff.hpp
+    internal/periread.hpp
+    internal/periwrit.hpp
+    internal/perolog.hpp
+    internal/persist.hpp
+    internal/prepbuff.hpp
+    internal/prepend.hpp
+    internal/trackeri.hpp
+    internal/windstr.hpp
     istr.cpp
     istr.hpp
     istrbuff.cpp
@@ -49,6 +70,14 @@ set(BASE_SOURCES
     prepend.cpp
     prepost.cpp
     prepost.hpp
+    private/diagint.hpp
+    private/dualstr.hpp
+    private/filter.hpp
+    private/indent.hpp
+    private/persist.hpp
+    private/pertypes.hpp
+    private/trace.hpp
+    private/tracker.hpp
     trace.cpp
     tracker.cpp
     tracker.hpp
