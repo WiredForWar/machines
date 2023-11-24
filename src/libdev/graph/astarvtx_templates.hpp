@@ -6,7 +6,7 @@
 //  Definitions of non-inline template methods
 
 #ifndef _INLINE
-#include "graph/astarvtx.itp"
+#include "graph/astarvtx_inline_templates.hpp"
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////

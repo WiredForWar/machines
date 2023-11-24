@@ -111,7 +111,7 @@ private:
 };
 
 // #ifdef _INSTANTIATE_TEMPLATE_CLASSES
-#include "graph/astaralg.ctp"
+#include "graph/astaralg_templates.hpp"
 // #endif
 
 #endif

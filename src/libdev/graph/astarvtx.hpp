@@ -66,11 +66,11 @@ private:
 };
 
 // #ifdef _INSTANTIATE_TEMPLATE_CLASSES
-#include "graph/astarvtx.ctp"
+#include "graph/astarvtx_templates.hpp"
 // #endif
 
 #ifdef _INLINE
-#include "graph/astarvtx.itp"
+#include "graph/astarvtx_inline_templates.hpp"
 #endif
 
 #endif
