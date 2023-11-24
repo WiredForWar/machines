@@ -40,8 +40,8 @@ void MachLogMineralSiteImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogMineralSiteImpl& t)
 {
 
-    o << "MachLogMineralSiteImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogMineralSiteImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogMineralSiteImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMineralSiteImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

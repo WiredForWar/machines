@@ -56,8 +56,8 @@ void PhysLinearMotionPlanImpl::add(const MexTransform3d& endPosition, const Phys
 std::ostream& operator<<(std::ostream& o, const PhysLinearMotionPlanImpl& t)
 {
 
-    o << "PhysLinearMotionPlanImpl " << (void*)&t << " start" << std::endl;
-    o << "PhysLinearMotionPlanImpl " << (void*)&t << " end" << std::endl;
+    o << "PhysLinearMotionPlanImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysLinearMotionPlanImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

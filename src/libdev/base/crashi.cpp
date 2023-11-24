@@ -64,8 +64,8 @@ void BaseCrashInternal::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const BaseCrashInternal& t)
 {
 
-    o << "BaseCrashInternal " << (void*)&t << " start" << std::endl;
-    o << "BaseCrashInternal " << (void*)&t << " end" << std::endl;
+    o << "BaseCrashInternal " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "BaseCrashInternal " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

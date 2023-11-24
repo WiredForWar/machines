@@ -53,8 +53,8 @@ void MachPhysIMachineExplosionData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysIMachineExplosionData& t)
 {
 
-    o << "MachPhysIMachineExplosionData " << (void*)&t << " start" << std::endl;
-    o << "MachPhysIMachineExplosionData " << (void*)&t << " end" << std::endl;
+    o << "MachPhysIMachineExplosionData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysIMachineExplosionData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

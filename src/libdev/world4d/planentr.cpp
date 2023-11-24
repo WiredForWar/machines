@@ -40,8 +40,8 @@ void W4dCompositePlanEntry::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dCompositePlanEntry& t)
 {
 
-    o << "W4dCompositePlanEntry " << (void*)&t << " start" << std::endl;
-    o << "W4dCompositePlanEntry " << (void*)&t << " end" << std::endl;
+    o << "W4dCompositePlanEntry " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCompositePlanEntry " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

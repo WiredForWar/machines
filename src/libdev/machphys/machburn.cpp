@@ -128,8 +128,8 @@ void MachPhysMachineBurning::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMachineBurning& t)
 {
 
-    o << "MachPhysMachineBurning " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMachineBurning " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMachineBurning " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMachineBurning " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

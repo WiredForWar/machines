@@ -683,8 +683,8 @@ void MachCameras::scroll(ScrollDir scrollDir, const GuiMouseEvent& event)
 std::ostream& operator<<(std::ostream& o, const MachCameras& t)
 {
 
-    o << "MachCameras " << (void*)&t << " start" << std::endl;
-    o << "MachCameras " << (void*)&t << " end" << std::endl;
+    o << "MachCameras " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachCameras " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

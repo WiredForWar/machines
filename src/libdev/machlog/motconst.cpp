@@ -253,8 +253,8 @@ bool MachLogGroundCameraMotionConstraint::snapTo(MexTransform3d* pTrans)
 std::ostream& operator<<(std::ostream& o, const MachLogGroundCameraMotionConstraint& t)
 {
 
-    o << "MachLogGroundCameraMotionConstraint " << (void*)&t << " start" << std::endl;
-    o << "MachLogGroundCameraMotionConstraint " << (void*)&t << " end" << std::endl;
+    o << "MachLogGroundCameraMotionConstraint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogGroundCameraMotionConstraint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -657,8 +657,8 @@ bool MachLogZenithCameraMotionConstraint::snapTo(MexTransform3d* pTrans)
 std::ostream& operator<<(std::ostream& o, const MachLogZenithCameraMotionConstraint& t)
 {
 
-    o << "MachLogZenithCameraMotionConstraint " << (void*)&t << " start" << std::endl;
-    o << "MachLogZenithCameraMotionConstraint " << (void*)&t << " end" << std::endl;
+    o << "MachLogZenithCameraMotionConstraint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogZenithCameraMotionConstraint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -780,8 +780,8 @@ void MachLogPlanetCameraConstraint::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPlanetCameraConstraint& t)
 {
 
-    o << "MachLogPlanetCameraConstraint " << (void*)&t << " start" << std::endl;
-    o << "MachLogPlanetCameraConstraint " << (void*)&t << " end" << std::endl;
+    o << "MachLogPlanetCameraConstraint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPlanetCameraConstraint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -930,8 +930,8 @@ const MachLogMachine* MachLogMachineThirdPerson::machine() const
 std::ostream& operator<<(std::ostream& o, const MachLogMachineThirdPerson& t)
 {
 
-    o << "MachLogMachineThirdPerson " << (void*)&t << " start" << std::endl;
-    o << "MachLogMachineThirdPerson " << (void*)&t << " end" << std::endl;
+    o << "MachLogMachineThirdPerson " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMachineThirdPerson " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -970,8 +970,8 @@ void MachLogThirdPersonCameraConstraint::move(MexTransform3d& transform, PhysMot
 std::ostream& operator<<(std::ostream& o, const MachLogThirdPersonCameraConstraint& t)
 {
 
-    o << "MachLogThirdPersonCameraConstraint " << (void*)&t << " start" << std::endl;
-    o << "MachLogThirdPersonCameraConstraint " << (void*)&t << " end" << std::endl;
+    o << "MachLogThirdPersonCameraConstraint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogThirdPersonCameraConstraint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -126,7 +126,7 @@ const PhysRelativeTime& MachLogHighUnitCountCondition::recommendedCallBackTimeGa
 void MachLogHighUnitCountCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogHighUnitCountCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogHighUnitCountCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << "objectType_ " << objectType_ << race_ << " number " << number_ << std::endl;
 }
 

@@ -35,8 +35,8 @@ void MachLogAPCImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogAPCImpl& t)
 {
 
-    o << "MachLogAPCImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogAPCImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogAPCImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogAPCImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

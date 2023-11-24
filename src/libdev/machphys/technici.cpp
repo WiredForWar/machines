@@ -167,8 +167,8 @@ void MachPhysTechnician::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysTechnician& t)
 {
 
-    o << "MachPhysTechnician " << (void*)&t << " start" << std::endl;
-    o << "MachPhysTechnician " << (void*)&t << " end" << std::endl;
+    o << "MachPhysTechnician " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysTechnician " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

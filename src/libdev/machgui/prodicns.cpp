@@ -122,8 +122,8 @@ void MachProductionIcons::updateProgress(float percentageComplete)
 
 std::ostream& operator<<(std::ostream& o, const MachProductionIcons& t)
 {
-    o << "MachProductionIcons " << (void*)&t << " start" << std::endl;
-    o << "MachProductionIcons " << (void*)&t << " end" << std::endl;
+    o << "MachProductionIcons " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachProductionIcons " << static_cast<const void*>(&t) << " end" << std::endl;
     return o;
 }
 

@@ -50,7 +50,7 @@ template <class GRA_GRAPH> void GraAStarVertex<GRA_GRAPH>::CLASS_INVARIANT
 template <class GRA_GRAPH> std::ostream& operator<<(std::ostream& o, const GraAStarVertex<GRA_GRAPH>& t)
 {
 
-    o << "GraAStarVertex " << (void*)&t << " cost " << t.costFromStart_ << " estimate " << t.estimatedCostToEnd_
+    o << "GraAStarVertex " << static_cast<const void*>(&t) << " cost " << t.costFromStart_ << " estimate " << t.estimatedCostToEnd_
       << " arc " << t.previousArcId_ << (t.closed() ? " CLOSED" : " OPEN ") << std::endl;
 
     return o;

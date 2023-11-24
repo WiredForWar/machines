@@ -63,8 +63,8 @@ void MachPhysMetalStingWeapon::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMetalStingWeapon& t)
 {
 
-    o << "MachPhysMetalStingWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMetalStingWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMetalStingWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMetalStingWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

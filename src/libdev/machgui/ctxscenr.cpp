@@ -455,8 +455,8 @@ void MachGuiCtxScenario::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxScenario& t)
 {
 
-    o << "MachGuiCtxScenario " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxScenario " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxScenario " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxScenario " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

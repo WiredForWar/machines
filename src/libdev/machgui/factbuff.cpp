@@ -61,8 +61,8 @@ void MachGuiFactoryBuffer::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiFactoryBuffer& t)
 {
 
-    o << "MachGuiFactoryBuffer " << (void*)&t << " start" << std::endl;
-    o << "MachGuiFactoryBuffer " << (void*)&t << " end" << std::endl;
+    o << "MachGuiFactoryBuffer " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiFactoryBuffer " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

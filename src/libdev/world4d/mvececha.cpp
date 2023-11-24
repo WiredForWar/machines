@@ -110,8 +110,8 @@ void W4dEntityMaterialVecChanger::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dEntityMaterialVecChanger& t)
 {
 
-    o << "W4dEntityMaterialVecChanger " << (void*)&t << " start" << std::endl;
-    o << "W4dEntityMaterialVecChanger " << (void*)&t << " end" << std::endl;
+    o << "W4dEntityMaterialVecChanger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dEntityMaterialVecChanger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

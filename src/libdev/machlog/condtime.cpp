@@ -70,7 +70,7 @@ const PhysRelativeTime& MachLogTimerCondition::recommendedCallBackTimeGap() cons
 void MachLogTimerCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogTimerCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogTimerCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << " fireAtTime_ " << fireAtTime_ << " originalFireAtTime_ " << originalFireAtTime_ << std::endl;
 }
 

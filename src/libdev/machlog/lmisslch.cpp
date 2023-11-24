@@ -68,8 +68,8 @@ MachLogLinearProjectile* MachLogLargeMissileLauncher::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogLargeMissileLauncher& t)
 {
 
-    o << "MachLogLargeMissileLauncher " << (void*)&t << " start" << std::endl;
-    o << "MachLogLargeMissileLauncher " << (void*)&t << " end" << std::endl;
+    o << "MachLogLargeMissileLauncher " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogLargeMissileLauncher " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

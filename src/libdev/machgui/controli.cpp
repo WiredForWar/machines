@@ -26,8 +26,8 @@ void MachGuiControlPanelImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiControlPanelImpl& t)
 {
 
-    o << "MachGuiControlPanelImpl " << (void*)&t << " start" << std::endl;
-    o << "MachGuiControlPanelImpl " << (void*)&t << " end" << std::endl;
+    o << "MachGuiControlPanelImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiControlPanelImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

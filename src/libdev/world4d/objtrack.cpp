@@ -63,8 +63,8 @@ void W4dObjectTracker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dObjectTracker& t)
 {
 
-    o << "W4dObjectTracker " << (void*)&t << " start" << std::endl;
-    o << "W4dObjectTracker " << (void*)&t << " end" << std::endl;
+    o << "W4dObjectTracker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dObjectTracker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

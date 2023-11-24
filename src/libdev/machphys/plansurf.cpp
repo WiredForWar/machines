@@ -592,8 +592,8 @@ MachPhysTerrainTile* MachPhysPlanetSurface::pTile(const MexPoint3d& position) co
 std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurface& t)
 {
 
-    o << "MachPhysPlanetSurface " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPlanetSurface " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPlanetSurface " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPlanetSurface " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

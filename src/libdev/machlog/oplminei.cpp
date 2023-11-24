@@ -46,8 +46,8 @@ void MachLogDropLandMineOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogDropLandMineOperationImpl& t)
 {
 
-    o << "MachLogDropLandMineOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogDropLandMineOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogDropLandMineOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogDropLandMineOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

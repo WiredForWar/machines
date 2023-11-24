@@ -54,8 +54,8 @@ void MachPhysHoverBootsImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysHoverBootsImpl& t)
 {
 
-    o << "MachPhysHoverBootsImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysHoverBootsImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysHoverBootsImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysHoverBootsImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

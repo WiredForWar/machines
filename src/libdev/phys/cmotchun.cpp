@@ -49,7 +49,7 @@ void PhysCompressedMotionChunk::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCompressedMotionChunk& t)
 {
 
-    o << "PhysCompressedMotionChunk " << (void*)&t << " start" << std::endl;
+    o << "PhysCompressedMotionChunk " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "startPoint_ " << t.startPoint_ << std::endl;
     o << "endPoint_ " << t.endPoint_ << std::endl;
     o << "motionProfile_ " << t.motionProfile_ << std::endl;
@@ -60,7 +60,7 @@ std::ostream& operator<<(std::ostream& o, const PhysCompressedMotionChunk& t)
     o << "hasExpiryTime_ " << t.hasExpiryTime_ << std::endl;
     o << "minHeight_ " << t.minHeight_ << std::endl;
     o << "maxHeight_ " << t.maxHeight_ << std::endl;
-    o << "PhysCompressedMotionChunk " << (void*)&t << " end" << std::endl;
+    o << "PhysCompressedMotionChunk " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

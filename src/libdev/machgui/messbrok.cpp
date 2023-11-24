@@ -466,8 +466,8 @@ void MachGuiMessageBroker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker& t)
 {
 
-    o << "MachGuiMessageBroker " << (void*)&t << " start" << std::endl;
-    o << "MachGuiMessageBroker " << (void*)&t << " end" << std::endl;
+    o << "MachGuiMessageBroker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiMessageBroker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

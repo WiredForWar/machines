@@ -38,7 +38,7 @@ template <class GRA_GRAPH, class VERTEX_MAP> std::ostream& operator<<(std::ostre
 {
 
     o << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
-    o << "GraAStarAlg " << (void*)&t << " start" << std::endl;
+    o << "GraAStarAlg " << static_cast<const void*>(&t) << " start" << std::endl;
     if (t.state_ == GraAStarAlg__::UNDEFINED)
         o << "UNDEFINED" << std::endl;
     else
@@ -73,7 +73,7 @@ template <class GRA_GRAPH, class VERTEX_MAP> std::ostream& operator<<(std::ostre
         }
 #endif
     }
-    o << "GraAStarAlg " << (void*)&t << " end" << std::endl;
+    o << "GraAStarAlg " << static_cast<const void*>(&t) << " end" << std::endl;
     o << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
 
     return o;

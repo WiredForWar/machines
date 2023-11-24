@@ -124,8 +124,8 @@ void MachLogMapper::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogMapper& t)
 {
 
-    o << "MachLogMapper " << (void*)&t << " start" << std::endl;
-    o << "MachLogMapper " << (void*)&t << " end" << std::endl;
+    o << "MachLogMapper " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMapper " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -248,8 +248,8 @@ void EnvIPlanetParser::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const EnvIPlanetParser& t)
 {
-    o << "EnvIPlanetParser " << (void*)&t << " start" << std::endl;
-    o << "EnvIPlanetParser " << (void*)&t << " end" << std::endl;
+    o << "EnvIPlanetParser " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "EnvIPlanetParser " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

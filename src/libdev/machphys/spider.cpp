@@ -104,7 +104,7 @@ void MachPhysSpiderLegs::moveAnimations(
     const MachPhysMachineMoveInfo& info)
 
 {
-    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::moveAnimations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::moveAnimations " << static_cast<const void*>(this) << std::endl);
     PHYS_MOTION_INDENT(2);
 
     CB_DEPIMPL(W4dCompositePlanPtr, restingPlanPtr_);
@@ -177,12 +177,12 @@ void MachPhysSpiderLegs::moveAnimations(
         pMachine()->plan(*restingPlanPtr_, moveStartTime + lastSegmentEndTime, 0, MachPhys::MACHINE_LOCOMOTION);
 
     PHYS_MOTION_INDENT(-2);
-    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::moveAnimations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::moveAnimations " << static_cast<const void*>(this) << std::endl);
 }
 
 void MachPhysSpiderLegs::translationAnimations(PhysAbsoluteTime startTime, PhysRelativeTime duration)
 {
-    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::translationAnimations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::translationAnimations " << static_cast<const void*>(this) << std::endl);
     PHYS_MOTION_INDENT(2);
 
     CB_DEPIMPL(W4dCompositePlanPtr, restingPlanPtr_);
@@ -253,12 +253,12 @@ void MachPhysSpiderLegs::translationAnimations(PhysAbsoluteTime startTime, PhysR
     PHYS_MOTION_INSPECT(startTime + timeOffset + stopWalkingTime);
 
     PHYS_MOTION_INDENT(-2);
-    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::translationAnimations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::translationAnimations " << static_cast<const void*>(this) << std::endl);
 }
 
 void MachPhysSpiderLegs::rotationAnimations(MexRadians angle, PhysAbsoluteTime startTime, PhysRelativeTime duration)
 {
-    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::rotationAnimations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::rotationAnimations " << static_cast<const void*>(this) << std::endl);
     PHYS_MOTION_INDENT(2);
 
     PHYS_MOTION_INSPECT(angle);
@@ -287,7 +287,7 @@ void MachPhysSpiderLegs::rotationAnimations(MexRadians angle, PhysAbsoluteTime s
     }
 
     PHYS_MOTION_INDENT(-2);
-    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::rotationAnimations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::rotationAnimations " << static_cast<const void*>(this) << std::endl);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +300,7 @@ void MachPhysSpiderLegs::calculateAccelerations(
     MachPhys::FinalState finalState,
     RampAccelerationsPtr rampAccelerationsPtr) const
 {
-    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::calculateAccelerations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::calculateAccelerations " << static_cast<const void*>(this) << std::endl);
     PHYS_MOTION_INDENT(2);
 
     PRE(transformsPtr.isDefined());
@@ -360,7 +360,7 @@ void MachPhysSpiderLegs::calculateAccelerations(
     POST(rampAccelerationsPtr->size() == transformsPtr->size() - 1);
 
     PHYS_MOTION_INDENT(-2);
-    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::calculateAccelerations " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::calculateAccelerations " << static_cast<const void*>(this) << std::endl);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -368,7 +368,7 @@ void MachPhysSpiderLegs::calculateAccelerations(
 void MachPhysSpiderLegs::reviseTranslationProfile(RampAccelerations::iterator begin, RampAccelerations::iterator end)
     const
 {
-    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::reviseTranslationProfile " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Enter MachPhysSpiderLegs::reviseTranslationProfile " << static_cast<const void*>(this) << std::endl);
     PHYS_MOTION_INDENT(2);
 
     CB_DEPIMPL(W4dCompositePlanPtr, restingPlanPtr_);
@@ -473,7 +473,7 @@ void MachPhysSpiderLegs::reviseTranslationProfile(RampAccelerations::iterator be
     }
 
     PHYS_MOTION_INDENT(-2);
-    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::reviseTranslationProfile " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Exit MachPhysSpiderLegs::reviseTranslationProfile " << static_cast<const void*>(this) << std::endl);
 }
 
 void MachPhysSpiderLegs::reviseRotationProfile(RampAccelerations::iterator iAcc) const
@@ -535,8 +535,8 @@ void MachPhysSpiderLegs::stopDead()
 std::ostream& operator<<(std::ostream& o, const MachPhysSpiderLegs& t)
 {
 
-    o << "MachPhysSpiderLegs " << (void*)&t << " start" << std::endl;
-    o << "MachPhysSpiderLegs " << (void*)&t << " end" << std::endl;
+    o << "MachPhysSpiderLegs " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysSpiderLegs " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

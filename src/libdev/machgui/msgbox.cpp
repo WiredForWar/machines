@@ -145,8 +145,8 @@ void MachGuiMessageBox::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiMessageBox& t)
 {
 
-    o << "MachGuiMessageBox " << (void*)&t << " start" << std::endl;
-    o << "MachGuiMessageBox " << (void*)&t << " end" << std::endl;
+    o << "MachGuiMessageBox " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiMessageBox " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

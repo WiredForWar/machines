@@ -37,8 +37,8 @@ void MachGuiDbTextData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbTextData& t)
 {
 
-    o << "MachGuiDbTextData " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbTextData " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbTextData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbTextData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

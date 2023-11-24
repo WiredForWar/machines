@@ -315,8 +315,8 @@ void MachPhysPlanetSurfaceChecker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurfaceChecker& t)
 {
 
-    o << "MachPhysPlanetSurfaceChecker " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPlanetSurfaceChecker " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPlanetSurfaceChecker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPlanetSurfaceChecker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

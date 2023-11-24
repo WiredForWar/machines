@@ -106,7 +106,7 @@ void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
 std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)
 {
 
-    o << "MachGuiOptionsLayout " << (void*)&t << " start" << std::endl;
+    o << "MachGuiOptionsLayout " << static_cast<const void*>(&t) << " start" << std::endl;
     for (uint i = 0; i < t.slidebars_.size(); i++)
     {
         const MachGuiOptionsLayout::SlidebarInfo* info = t.slidebars_[i];
@@ -121,7 +121,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)
         o << "font: " << info->font << std::endl;
     }
 
-    o << "MachGuiOptionsLayout " << (void*)&t << " end" << std::endl;
+    o << "MachGuiOptionsLayout " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -103,8 +103,8 @@ MachGuiStartupScreens& MachGuiNetworkProtocolMode::startupScreens()
 std::ostream& operator<<(std::ostream& o, const MachGuiNetworkProtocolMode& t)
 {
 
-    o << "MachGuiNetworkProtocolMode " << (void*)&t << " start" << std::endl;
-    o << "MachGuiNetworkProtocolMode " << (void*)&t << " end" << std::endl;
+    o << "MachGuiNetworkProtocolMode " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiNetworkProtocolMode " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

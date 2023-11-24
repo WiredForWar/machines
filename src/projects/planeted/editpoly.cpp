@@ -57,8 +57,8 @@ void PedPolygonEditor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedPolygonEditor& t)
 {
 
-    o << "PedPolygonEditor " << (void*)&t << " start" << std::endl;
-    o << "PedPolygonEditor " << (void*)&t << " end" << std::endl;
+    o << "PedPolygonEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedPolygonEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

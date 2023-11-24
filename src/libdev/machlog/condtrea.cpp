@@ -74,7 +74,7 @@ const PhysRelativeTime& MachLogTechniciansTreacheriedCondition::recommendedCallB
 void MachLogTechniciansTreacheriedCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogTechniciansTreacheriedCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogTechniciansTreacheriedCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << race_ << " number " << number_ << std::endl;
 }
 

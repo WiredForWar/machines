@@ -197,7 +197,7 @@ bool MachLogProductionUnit::operator==(const MachLogProductionUnit& t)
 std::ostream& operator<<(std::ostream& o, const MachLogProductionUnit& t)
 {
 
-    o << "MachLogProductionUnit " << (void*)&t << " start" << std::endl;
+    o << "MachLogProductionUnit " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " Type: " << t.type_ << std::endl;
     o << " subType: " << t.subType_ << std::endl;
     o << " hwLevel: " << t.hwLevel_ << std::endl;
@@ -206,7 +206,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogProductionUnit& t)
     o << " priority: " << t.priority_ << std::endl;
     o << " Transform: " << t.globalTransform_ << std::endl;
     o << " Weapon Combo " << t.weaponCombo_ << std::endl;
-    o << "MachLogProductionUnit " << (void*)&t << " end" << std::endl;
+    o << "MachLogProductionUnit " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

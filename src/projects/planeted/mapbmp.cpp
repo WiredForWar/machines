@@ -48,8 +48,8 @@ void PedMapCreator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedMapCreator& t)
 {
 
-    o << "PedMapCreator " << (void*)&t << " start" << std::endl;
-    o << "PedMapCreator " << (void*)&t << " end" << std::endl;
+    o << "PedMapCreator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedMapCreator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

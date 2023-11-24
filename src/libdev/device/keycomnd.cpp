@@ -111,8 +111,8 @@ void DevKeyToCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const DevKeyToCommand& t)
 {
 
-    o << "DevKeyToCommand " << (void*)&t << " start" << std::endl;
-    o << "DevKeyToCommand " << (void*)&t << " end" << std::endl;
+    o << "DevKeyToCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "DevKeyToCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

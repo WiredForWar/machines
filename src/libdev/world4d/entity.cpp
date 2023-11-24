@@ -735,7 +735,7 @@ void W4dEntity::debugOutput(std::ostream& ostr)
 
     CB_W4dEntity_DEPIMPL();
 
-    ostr << "Start W4dEntity " << (void*)this << std::endl;
+    ostr << "Start W4dEntity " << static_cast<const void*>(this) << std::endl;
     doDebugOutput(ostr);
 
     ostr << "Entity has " << (childList_ ? childList_->size() : 0) << " children" << std::endl;
@@ -775,7 +775,7 @@ void W4dEntity::debugOutput(std::ostream& ostr)
         }
     }
 
-    ostr << "End   W4dEntity " << (void*)this << std::endl;
+    ostr << "End   W4dEntity " << static_cast<const void*>(this) << std::endl;
 }
 
 void W4dEntity::debugOutputChildList(std::ostream& ostr) const

@@ -42,8 +42,8 @@ void MachGuiDbPlanet::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbPlanet& t)
 {
 
-    o << "MachGuiDbPlanet " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbPlanet " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbPlanet " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbPlanet " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

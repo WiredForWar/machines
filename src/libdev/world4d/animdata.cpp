@@ -32,8 +32,8 @@ void W4dAnimationData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dAnimationData& t)
 {
 
-    o << "W4dAnimationData " << (void*)&t << " start" << std::endl;
-    o << "W4dAnimationData " << (void*)&t << " end" << std::endl;
+    o << "W4dAnimationData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dAnimationData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

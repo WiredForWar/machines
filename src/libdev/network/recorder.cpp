@@ -581,8 +581,8 @@ NetMessageBody NetIRecorder::playbackBody() const
 std::ostream& operator<<(std::ostream& o, const NetIRecorder& t)
 {
 
-    o << "NetIRecorder " << (void*)&t << " start" << std::endl;
-    o << "NetIRecorder " << (void*)&t << " end" << std::endl;
+    o << "NetIRecorder " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "NetIRecorder " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

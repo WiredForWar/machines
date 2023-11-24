@@ -308,8 +308,8 @@ void MachGuiCtxSettings::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxSettings& t)
 {
 
-    o << "MachGuiCtxSettings " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxSettings " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxSettings " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxSettings " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

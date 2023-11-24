@@ -354,8 +354,8 @@ void MachPhysPersistence::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPersistence& t)
 {
 
-    o << "MachPhysPersistence " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPersistence " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPersistence " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPersistence " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -177,8 +177,8 @@ void MachGuiAnimation::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t)
 {
 
-    o << "MachGuiAnimation " << (void*)&t << " start" << std::endl;
-    o << "MachGuiAnimation " << (void*)&t << " end" << std::endl;
+    o << "MachGuiAnimation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiAnimation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -54,8 +54,8 @@ MachLogLinearProjectile* MachLogTreacheryWeapon::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogTreacheryWeapon& t)
 {
 
-    o << "MachLogTreacheryWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogTreacheryWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogTreacheryWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogTreacheryWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

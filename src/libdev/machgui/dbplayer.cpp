@@ -43,8 +43,8 @@ void MachGuiDbPlayer::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbPlayer& t)
 {
 
-    o << "MachGuiDbPlayer " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbPlayer " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbPlayer " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbPlayer " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

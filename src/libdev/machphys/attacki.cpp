@@ -38,8 +38,8 @@ void MachPhysCanAttackImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysCanAttackImpl& t)
 {
 
-    o << "MachPhysCanAttackImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysCanAttackImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysCanAttackImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysCanAttackImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

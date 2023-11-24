@@ -40,8 +40,8 @@ void MachGuiTreacheryCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiTreacheryCommand& t)
 {
 
-    o << "MachGuiTreacheryCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiTreacheryCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiTreacheryCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiTreacheryCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

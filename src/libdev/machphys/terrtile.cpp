@@ -110,8 +110,8 @@ MachPhysTerrainTile::~MachPhysTerrainTile()
 // virtual
 void MachPhysTerrainTile::doDebugOutput(std::ostream& ostr)
 {
-    ostr << "Start MachPhysTerrainTile " << (void*)this << std::endl;
-    ostr << "End   MachPhysTerrainTile " << (void*)this << std::endl;
+    ostr << "Start MachPhysTerrainTile " << static_cast<const void*>(this) << std::endl;
+    ostr << "End   MachPhysTerrainTile " << static_cast<const void*>(this) << std::endl;
 }
 
 void MachPhysTerrainTile::CLASS_INVARIANT

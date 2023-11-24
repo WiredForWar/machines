@@ -66,8 +66,8 @@ void PhysMoveSpinPlan::transform(const PhysRelativeTime& timeOffset, MexTransfor
 std::ostream& operator<<(std::ostream& o, const PhysMoveSpinPlan& t)
 {
 
-    o << "PhysMoveSpinPlan " << (void*)&t << " start" << std::endl;
-    o << "PhysMoveSpinPlan " << (void*)&t << " end" << std::endl;
+    o << "PhysMoveSpinPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysMoveSpinPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

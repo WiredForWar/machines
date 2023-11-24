@@ -50,8 +50,8 @@ void MachPhysBlackSphere::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysBlackSphere& t)
 {
 
-    o << "MachPhysBlackSphere " << (void*)&t << " start" << std::endl;
-    o << "MachPhysBlackSphere " << (void*)&t << " end" << std::endl;
+    o << "MachPhysBlackSphere " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysBlackSphere " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

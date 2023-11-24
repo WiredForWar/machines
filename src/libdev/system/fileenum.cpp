@@ -42,8 +42,8 @@ SysFileFinder::ResultType SysFileEnumerator::processFile(const SysFileData& file
 std::ostream& operator<<(std::ostream& o, const SysFileEnumerator& t)
 {
 
-    o << "SysFileEnumerator " << (void*)&t << " start" << std::endl;
-    o << "SysFileEnumerator " << (void*)&t << " end" << std::endl;
+    o << "SysFileEnumerator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SysFileEnumerator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

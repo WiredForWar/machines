@@ -78,8 +78,8 @@ void MachGuiFocusCapableControl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiFocusCapableControl& t)
 {
 
-    o << "MachGuiFocusCapableControl " << (void*)&t << " start" << std::endl;
-    o << "MachGuiFocusCapableControl " << (void*)&t << " end" << std::endl;
+    o << "MachGuiFocusCapableControl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiFocusCapableControl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

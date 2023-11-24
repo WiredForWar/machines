@@ -128,8 +128,8 @@ string MachGuiGeneralStatistics::truncate(const string& name)
 std::ostream& operator<<(std::ostream& o, const MachGuiGeneralStatistics& t)
 {
 
-    o << "MachGuiGeneralStatistics " << (void*)&t << " start" << std::endl;
-    o << "MachGuiGeneralStatistics " << (void*)&t << " end" << std::endl;
+    o << "MachGuiGeneralStatistics " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiGeneralStatistics " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

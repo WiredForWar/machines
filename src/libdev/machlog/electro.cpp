@@ -41,8 +41,8 @@ void MachLogElectro::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogElectro& t)
 {
 
-    o << "MachLogElectro " << (void*)&t << " start" << std::endl;
-    o << "MachLogElectro " << (void*)&t << " end" << std::endl;
+    o << "MachLogElectro " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogElectro " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

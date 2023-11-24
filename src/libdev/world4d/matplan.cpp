@@ -39,10 +39,10 @@ void W4dMaterialPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dMaterialPlan& t)
 {
 
-    o << "W4dMaterialPlan " << (void*)&t << " start" << std::endl;
+    o << "W4dMaterialPlan " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "  duration " << t.duration_ << std::endl;
     o << "  maxLod " << t.maxLOD_ << std::endl;
-    o << "W4dMaterialPlan " << (void*)&t << " end" << std::endl;
+    o << "W4dMaterialPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

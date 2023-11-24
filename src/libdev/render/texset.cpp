@@ -62,8 +62,8 @@ void RenTextureSet::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const RenTextureSet& t)
 {
 
-    o << "RenTextureSet " << (void*)&t << " start" << std::endl;
-    o << "RenTextureSet " << (void*)&t << " end" << std::endl;
+    o << "RenTextureSet " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RenTextureSet " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

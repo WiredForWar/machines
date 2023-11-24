@@ -245,8 +245,8 @@ void MachLogDeployAPCOperation::pushFurtherOut(MachLogMachine* pMachine, MATHEX_
 std::ostream& operator<<(std::ostream& o, const MachLogDeployAPCOperation& t)
 {
 
-    o << "MachLogDeployAPCOperation " << (void*)&t << " start" << std::endl;
-    o << "MachLogDeployAPCOperation " << (void*)&t << " end" << std::endl;
+    o << "MachLogDeployAPCOperation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogDeployAPCOperation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

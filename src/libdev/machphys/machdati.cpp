@@ -30,8 +30,8 @@ void MachPhysIMachineData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysIMachineData& t)
 {
 
-    o << "MachPhysIMachineData " << (void*)&t << " start" << std::endl;
-    o << "MachPhysIMachineData " << (void*)&t << " end" << std::endl;
+    o << "MachPhysIMachineData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysIMachineData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

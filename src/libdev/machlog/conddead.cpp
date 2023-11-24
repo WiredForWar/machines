@@ -71,7 +71,7 @@ const PhysRelativeTime& MachLogAllUnitsDeadCondition::recommendedCallBackTimeGap
 void MachLogAllUnitsDeadCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogAllUnitsDeadCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogAllUnitsDeadCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << race_ << std::endl;
 }
 

@@ -57,8 +57,8 @@ void PedPortalEditor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedPortalEditor& t)
 {
 
-    o << "PedPortalEditor " << (void*)&t << " start" << std::endl;
-    o << "PedPortalEditor " << (void*)&t << " end" << std::endl;
+    o << "PedPortalEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedPortalEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

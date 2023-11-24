@@ -115,8 +115,8 @@ void MachGuiInternetNetworkMode::readNetworkDetails()
 std::ostream& operator<<(std::ostream& o, const MachGuiInternetNetworkMode& t)
 {
 
-    o << "MachGuiInternetNetworkMode " << (void*)&t << " start" << std::endl;
-    o << "MachGuiInternetNetworkMode " << (void*)&t << " end" << std::endl;
+    o << "MachGuiInternetNetworkMode " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiInternetNetworkMode " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

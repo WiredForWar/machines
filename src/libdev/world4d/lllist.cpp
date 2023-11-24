@@ -61,7 +61,7 @@ void W4dLocalLightList::addLight(W4dLight* pLightItem)
 
 void W4dLocalLightList::turnOnAll()
 {
-    LIGHT_CULL_STREAM("Enabling light list " << (void*)this << " containing " << pLights_->size() << " lights\n");
+    LIGHT_CULL_STREAM("Enabling light list " << static_cast<const void*>(this) << " containing " << pLights_->size() << " lights\n");
 
     for (Lights::iterator i = pLights_->begin(); i != pLights_->end(); ++i)
     {
@@ -81,7 +81,7 @@ void W4dLocalLightList::turnOnAll()
 
 void W4dLocalLightList::turnOffAll()
 {
-    LIGHT_CULL_STREAM("Disabling light list " << (void*)this << " containing " << pLights_->size() << " lights\n");
+    LIGHT_CULL_STREAM("Disabling light list " << static_cast<const void*>(this) << " containing " << pLights_->size() << " lights\n");
 
     // These are turned off in reverse order.  Thus the RenDevice's vector of
     // enabled lights should behave like a stack which is more efficient.
@@ -103,8 +103,8 @@ void W4dLocalLightList::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dLocalLightList& t)
 {
 
-    o << "W4dLocalLightList " << (void*)&t << " start" << std::endl;
-    o << "W4dLocalLightList " << (void*)&t << " end" << std::endl;
+    o << "W4dLocalLightList " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dLocalLightList " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

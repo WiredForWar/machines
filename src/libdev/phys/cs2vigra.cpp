@@ -97,7 +97,7 @@ std::ostream& operator<<(std::ostream& o, const PhysCS2dVisibilityGraph& t)
 {
 
     o << "..................................................." << std::endl;
-    o << "PhysCS2dVisibilityGraph " << (void*)&t << " start" << std::endl;
+    o << "PhysCS2dVisibilityGraph " << static_cast<const void*>(&t) << " start" << std::endl;
 
     // Write the vertices
     o << "Vertices" << std::endl;
@@ -122,7 +122,7 @@ std::ostream& operator<<(std::ostream& o, const PhysCS2dVisibilityGraph& t)
         }
     }
 
-    o << "PhysCS2dVisibilityGraph " << (void*)&t << " end" << std::endl;
+    o << "PhysCS2dVisibilityGraph " << static_cast<const void*>(&t) << " end" << std::endl;
     o << "..................................................." << std::endl;
 
     return o;

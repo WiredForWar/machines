@@ -370,9 +370,9 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
 std::ostream& operator<<(std::ostream& o, const MachLogConstructionTree& t)
 {
 
-    o << "MachLogConstructionTree " << (void*)&t << " start" << std::endl;
+    o << "MachLogConstructionTree " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " ConstructionItems.size() " << t.constructionItems().size() << std::endl;
-    o << "MachLogConstructionTree " << (void*)&t << " end" << std::endl;
+    o << "MachLogConstructionTree " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

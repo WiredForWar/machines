@@ -105,8 +105,8 @@ void MachGuiScrollableText::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiScrollableText& t)
 {
 
-    o << "MachGuiScrollableText " << (void*)&t << " start" << std::endl;
-    o << "MachGuiScrollableText " << (void*)&t << " end" << std::endl;
+    o << "MachGuiScrollableText " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiScrollableText " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -47,8 +47,8 @@ void MachLogBeeBomb::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogBeeBomb& t)
 {
 
-    o << "MachLogBeeBomb " << (void*)&t << " start" << std::endl;
-    o << "MachLogBeeBomb " << (void*)&t << " end" << std::endl;
+    o << "MachLogBeeBomb " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogBeeBomb " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

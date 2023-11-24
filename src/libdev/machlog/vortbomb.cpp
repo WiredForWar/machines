@@ -133,8 +133,8 @@ void MachLogVortexBomb::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogVortexBomb& t)
 {
 
-    o << "MachLogVortexBomb " << (void*)&t << " start" << std::endl;
-    o << "MachLogVortexBomb " << (void*)&t << " end" << std::endl;
+    o << "MachLogVortexBomb " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogVortexBomb " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

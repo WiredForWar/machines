@@ -36,8 +36,8 @@ void PhysCS2dMotionChunk::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCS2dMotionChunk& t)
 {
 
-    o << "PhysCS2dMotionChunk " << (void*)&t << " start" << std::endl;
-    o << "PhysCS2dMotionChunk " << (void*)&t << " end" << std::endl;
+    o << "PhysCS2dMotionChunk " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysCS2dMotionChunk " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

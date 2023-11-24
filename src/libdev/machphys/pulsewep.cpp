@@ -87,8 +87,8 @@ void MachPhysPulseRifle::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPulseRifle& t)
 {
 
-    o << "MachPhysPulseRifle " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPulseRifle " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPulseRifle " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPulseRifle " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -148,8 +148,8 @@ void MachPhysPulseCannon::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPulseCannon& t)
 {
 
-    o << "MachPhysPulseCannon " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPulseCannon " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPulseCannon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPulseCannon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -210,8 +210,8 @@ void MachPhysPulseWeapon::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPulseWeapon& t)
 {
 
-    o << "MachPhysPulseWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPulseWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPulseWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPulseWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

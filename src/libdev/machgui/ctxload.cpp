@@ -190,8 +190,8 @@ void MachGuiCtxLoad::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxLoad& t)
 {
 
-    o << "MachGuiCtxLoad " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxLoad " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxLoad " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxLoad " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

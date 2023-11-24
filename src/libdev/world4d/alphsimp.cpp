@@ -52,8 +52,8 @@ void W4dSimpleAlphaPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dSimpleAlphaPlan& t)
 {
 
-    o << "W4dSimpleAlphaPlan " << (void*)&t << " start" << std::endl;
-    o << "W4dSimpleAlphaPlan " << (void*)&t << " end" << std::endl;
+    o << "W4dSimpleAlphaPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dSimpleAlphaPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

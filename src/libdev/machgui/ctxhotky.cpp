@@ -271,8 +271,8 @@ void MachGuiCtxHotKeys::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxHotKeys& t)
 {
 
-    o << "MachGuiCtxHotKeys " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxHotKeys " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxHotKeys " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxHotKeys " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

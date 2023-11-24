@@ -36,8 +36,8 @@ void MachPhysOrientationAndPositionPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysOrientationAndPositionPlan& t)
 {
 
-    o << "MachPhysOrientationAndPositionPlan " << (void*)&t << " start" << std::endl;
-    o << "MachPhysOrientationAndPositionPlan " << (void*)&t << " end" << std::endl;
+    o << "MachPhysOrientationAndPositionPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysOrientationAndPositionPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

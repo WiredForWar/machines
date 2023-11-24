@@ -26,8 +26,8 @@ void RenNormalMap::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const RenNormalMap& t)
 {
 
-    o << "RenNormalMap " << (void*)&t << " start" << std::endl;
-    o << "RenNormalMap " << (void*)&t << " end" << std::endl;
+    o << "RenNormalMap " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RenNormalMap " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

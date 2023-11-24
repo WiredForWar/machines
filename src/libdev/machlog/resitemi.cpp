@@ -30,8 +30,8 @@ void MachLogResearchItemImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogResearchItemImpl& t)
 {
 
-    o << "MachLogResearchItemImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogResearchItemImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogResearchItemImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogResearchItemImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

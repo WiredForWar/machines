@@ -126,8 +126,8 @@ void UtlBoundedIdGenerator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const UtlBoundedIdGenerator& t)
 {
 
-    o << "UtlBoundedIdGenerator " << (void*)&t << " start" << std::endl;
-    o << "UtlBoundedIdGenerator " << (void*)&t << " end" << std::endl;
+    o << "UtlBoundedIdGenerator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "UtlBoundedIdGenerator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

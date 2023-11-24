@@ -29,8 +29,8 @@ void MachGuiLoadSaveGameExtras::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiLoadSaveGameExtras& t)
 {
 
-    o << "MachGuiLoadSaveGameExtras " << (void*)&t << " start" << std::endl;
-    o << "MachGuiLoadSaveGameExtras " << (void*)&t << " end" << std::endl;
+    o << "MachGuiLoadSaveGameExtras " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiLoadSaveGameExtras " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

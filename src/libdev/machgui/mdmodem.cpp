@@ -142,8 +142,8 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 std::ostream& operator<<(std::ostream& o, const MachGuiModemNetworkMode& t)
 {
 
-    o << "MachGuiModemNetworkMode " << (void*)&t << " start" << std::endl;
-    o << "MachGuiModemNetworkMode " << (void*)&t << " end" << std::endl;
+    o << "MachGuiModemNetworkMode " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiModemNetworkMode " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

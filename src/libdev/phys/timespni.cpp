@@ -51,8 +51,8 @@ void PhysTimedSpinPlanImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysTimedSpinPlanImpl& t)
 {
 
-    o << "PhysTimedSpinPlanImpl " << (void*)&t << " start" << std::endl;
-    o << "PhysTimedSpinPlanImpl " << (void*)&t << " end" << std::endl;
+    o << "PhysTimedSpinPlanImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysTimedSpinPlanImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

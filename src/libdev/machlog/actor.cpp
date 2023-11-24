@@ -103,7 +103,7 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
         id(MachLogRaces::idGenerator().nextId());
     }
     HAL_STREAM(
-        " id " << id() << " " << ot << " race " << (int)pRace->race() << " (void*)this " << (void*)this << std::endl);
+        " id " << id() << " " << ot << " race " << (int)pRace->race() << " static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl);
     NETWORK_ERRORS_STREAM(
         "MachActor::MachActor (" << id() << ") local race, " << pRace->race() << " " << ot << std::endl);
 
@@ -150,7 +150,7 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
 
     id(withId);
     HAL_STREAM(
-        " id " << id() << " " << ot << " race " << (int)pRace->race() << " (void*)this " << (void*)this << std::endl);
+        " id " << id() << " " << ot << " race " << (int)pRace->race() << " static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl);
     NETWORK_ERRORS_STREAM(
         "MachActor::MachActor (" << id() << ") probably remote race, " << pRace->race() << " " << ot << std::endl);
 
@@ -901,7 +901,7 @@ const MachLogGarrison& MachActor::asGarrison() const
 
 bool MachActor::objectIsMachine() const
 {
-    //  //HAL_STREAM("MActor::object is machine...(void*)this " << (void*)this << std::endl );
+    //  //HAL_STREAM("MActor::object is machine...(void*)this " << static_cast<const void*>(this) << std::endl );
     //  //HAL_STREAM("(" << id() << ") MActor::objectIsMachine " << objectType() << "\n" );
     MachLog::ObjectType type = objectType();
     if (type == MachLog::ADMINISTRATOR or type == MachLog::AGGRESSOR or type == MachLog::APC
@@ -931,7 +931,7 @@ bool MachActor::objectIsILF() const
 
 bool MachActor::objectIsCanAttack() const
 {
-    //  //HAL_STREAM("MActor::object is Can Attack...(void*)this " << (void*)this << std::endl );
+    //  //HAL_STREAM("MActor::object is Can Attack...(void*)this " << static_cast<const void*>(this) << std::endl );
     //  //HAL_STREAM("(" << id() << ") MActor::objectIsCanAttack " << objectType() << "\n" );
     MachLog::ObjectType type = objectType();
     if (type == MachLog::ADMINISTRATOR or type == MachLog::AGGRESSOR or type == MachLog::MISSILE_EMPLACEMENT

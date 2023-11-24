@@ -99,8 +99,8 @@ void PhysCS2dDomainFindPathCache::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainFindPathCache& t)
 {
 
-    o << "PhysCS2dDomainFindPathCache " << (void*)&t << " start" << std::endl;
-    o << "PhysCS2dDomainFindPathCache " << (void*)&t << " end" << std::endl;
+    o << "PhysCS2dDomainFindPathCache " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysCS2dDomainFindPathCache " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

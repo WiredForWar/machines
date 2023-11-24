@@ -33,7 +33,7 @@ MexSausage2d::~MexSausage2d()
 std::ostream& operator<<(std::ostream& o, const MexSausage2d& t)
 {
 
-    o << "MexSausage2d " << (void*)&t << t.startPoint_ << " " << t.endPoint_ << "  radius " << t.radius_ << "  length "
+    o << "MexSausage2d " << static_cast<const void*>(&t) << t.startPoint_ << " " << t.endPoint_ << "  radius " << t.radius_ << "  length "
       << t.length_ << std::endl;
 
     return o;

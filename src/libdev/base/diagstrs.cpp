@@ -42,8 +42,8 @@ void DiagStreams::close()
 std::ostream& operator<<(std::ostream& o, const DiagStreams& t)
 {
 
-    o << "DiagStreams " << (void*)&t << " start" << std::endl;
-    o << "DiagStreams " << (void*)&t << " end" << std::endl;
+    o << "DiagStreams " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "DiagStreams " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

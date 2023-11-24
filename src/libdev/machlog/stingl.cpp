@@ -38,8 +38,8 @@ void MachLogLightSting::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogLightSting& t)
 {
 
-    o << "MachLogLightSting " << (void*)&t << " start" << std::endl;
-    o << "MachLogLightSting " << (void*)&t << " end" << std::endl;
+    o << "MachLogLightSting " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogLightSting " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

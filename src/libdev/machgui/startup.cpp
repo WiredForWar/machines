@@ -1524,8 +1524,8 @@ void MachGuiStartupScreens::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreens& t)
 {
 
-    o << "MachGuiStartupScreens " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStartupScreens " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStartupScreens " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStartupScreens " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -2553,7 +2553,7 @@ MachGuiStartupScreens::ButtonEvent MachGuiStartupScreens::lastButtonEvent() cons
 
 MachGuiStartupData* MachGuiStartupScreens::startupData()
 {
-    NETWORK_STREAM("MachGuiStartupScreens::startupData " << (void*)this << std::endl);
+    NETWORK_STREAM("MachGuiStartupScreens::startupData " << static_cast<const void*>(this) << std::endl);
     CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
 
     NETWORK_STREAM(" returning " << (void*)pStartupData_ << std::endl);

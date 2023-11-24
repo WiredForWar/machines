@@ -246,8 +246,8 @@ void MachGuiCtxSave::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxSave& t)
 {
 
-    o << "MachGuiCtxSave " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxSave " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxSave " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxSave " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -58,12 +58,12 @@ void W4dColourPulseData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dColourPulseData& t)
 {
 
-    o << "W4dColourPulseData " << (void*)&t << " start" << std::endl;
+    o << "W4dColourPulseData " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " keyTexture_: " << t.keyTexture_ << std::endl;
     o << " fromColour_ = " << t.fromColour_ << std::endl;
     o << " toColour_ = " << t.toColour_ << std::endl;
     o << " duration = " << t.duration_ << std::endl;
-    o << "W4dColourPulseData " << (void*)&t << " end" << std::endl;
+    o << "W4dColourPulseData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

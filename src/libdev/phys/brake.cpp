@@ -120,8 +120,8 @@ void Brake::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const Brake& t)
 {
 
-    o << "Brake " << (void*)&t << " start" << std::endl;
-    o << "Brake " << (void*)&t << " end" << std::endl;
+    o << "Brake " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "Brake " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

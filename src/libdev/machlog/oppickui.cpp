@@ -34,8 +34,8 @@ void MachLogPickUpOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPickUpOperationImpl& t)
 {
 
-    o << "MachLogPickUpOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogPickUpOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogPickUpOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPickUpOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

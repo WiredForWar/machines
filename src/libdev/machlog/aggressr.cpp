@@ -48,7 +48,7 @@ MachLogAggressor::MachLogAggressor(
     , MachLogCanAttack(this, &physAggressor(), wc)
     , subType_(subType)
 {
-    // HAL_STREAM("MLAggressor::CTOR (void*)this " << (void*)this << std::endl );
+    // HAL_STREAM("MLAggressor::CTOR static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl );
     currentTarget(nullptr);
     //  objectType( MachLog::AGGRESSOR );
     hp(data().hitPoints());
@@ -76,7 +76,7 @@ MachLogAggressor::MachLogAggressor(
     , MachLogCanAttack(this, &physAggressor(), wc)
     , subType_(subType)
 {
-    // HAL_STREAM("MLAggressor::CTOR (void*)this " << (void*)this << std::endl );
+    // HAL_STREAM("MLAggressor::CTOR static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl );
     currentTarget(nullptr);
     //  objectType( MachLog::AGGRESSOR );
     hp(data().hitPoints());

@@ -1664,8 +1664,8 @@ string MachPhysLevels::name(MachPhys::MissileEmplacementSubType subType) const
 std::ostream& operator<<(std::ostream& o, const MachPhysLevels& t)
 {
 
-    o << "MachPhysLevels " << (void*)&t << " start" << std::endl;
-    o << "MachPhysLevels " << (void*)&t << " end" << std::endl;
+    o << "MachPhysLevels " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysLevels " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

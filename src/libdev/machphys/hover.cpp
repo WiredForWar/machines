@@ -334,8 +334,8 @@ void MachPhysHoverBoots::reviseProfile(TransformsPtr transformsPtr)
 std::ostream& operator<<(std::ostream& o, const MachPhysHoverBoots& t)
 {
 
-    o << "MachPhysHoverBoots " << (void*)&t << " start" << std::endl;
-    o << "MachPhysHoverBoots " << (void*)&t << " end" << std::endl;
+    o << "MachPhysHoverBoots " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysHoverBoots " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

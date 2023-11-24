@@ -52,8 +52,8 @@ void MachConstructionSelectIcon::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachConstructionSelectIcon& t)
 {
 
-    o << "MachConstructionSelectIcon " << (void*)&t << " start" << std::endl;
-    o << "MachConstructionSelectIcon " << (void*)&t << " end" << std::endl;
+    o << "MachConstructionSelectIcon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachConstructionSelectIcon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

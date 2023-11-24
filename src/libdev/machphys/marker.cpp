@@ -222,8 +222,8 @@ void MachPhysMarker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMarker& t)
 {
 
-    o << "MachPhysMarker " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMarker " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMarker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMarker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

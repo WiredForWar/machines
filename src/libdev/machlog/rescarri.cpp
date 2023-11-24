@@ -42,8 +42,8 @@ void MachLogResourceCarrierImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogResourceCarrierImpl& t)
 {
 
-    o << "MachLogResourceCarrierImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogResourceCarrierImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogResourceCarrierImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogResourceCarrierImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -280,8 +280,8 @@ void MachGuiCtxJoin::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t)
 {
 
-    o << "MachGuiCtxJoin " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxJoin " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxJoin " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxJoin " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -74,7 +74,7 @@ const PhysRelativeTime& MachLogFiredAtCondition::recommendedCallBackTimeGap() co
 void MachLogFiredAtCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogFiredAtCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogFiredAtCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << "Firing " << firingRace_ << " At " << firedAtRace_ << std::endl;
 }
 

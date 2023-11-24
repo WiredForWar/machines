@@ -42,10 +42,10 @@ void SimStats::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SimStats& t)
 {
 
-    o << "SimStats " << (void*)&t << " start" << std::endl;
+    o << "SimStats " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " minComputationTime " << t.minComputationTime_ << std::endl;
     o << " TargetRenderInterval " << t.targetRenderInterval_ << std::endl;
-    o << "SimStats " << (void*)&t << " end" << std::endl;
+    o << "SimStats " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

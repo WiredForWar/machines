@@ -82,8 +82,8 @@ void MachPhysDoublesidedFlame::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysDoublesidedFlame& t)
 {
 
-    o << "MachPhysDoublesidedFlame " << (void*)&t << " start" << std::endl;
-    o << "MachPhysDoublesidedFlame " << (void*)&t << " end" << std::endl;
+    o << "MachPhysDoublesidedFlame " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysDoublesidedFlame " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -163,8 +163,8 @@ void MachGuiStatisticsDisplay::setTime(double newTime)
 std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsDisplay& t)
 {
 
-    o << "MachGuiStatisticsDisplay " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStatisticsDisplay " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStatisticsDisplay " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStatisticsDisplay " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

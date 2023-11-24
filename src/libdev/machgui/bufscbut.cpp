@@ -137,8 +137,8 @@ void MachGuiBufferScrollButton::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiBufferScrollButton& t)
 {
 
-    o << "MachGuiBufferScrollButton " << (void*)&t << " start" << std::endl;
-    o << "MachGuiBufferScrollButton " << (void*)&t << " end" << std::endl;
+    o << "MachGuiBufferScrollButton " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiBufferScrollButton " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

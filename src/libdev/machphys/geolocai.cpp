@@ -34,8 +34,8 @@ void MachPhysGeoLocatorImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysGeoLocatorImpl& t)
 {
 
-    o << "MachPhysGeoLocatorImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysGeoLocatorImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysGeoLocatorImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysGeoLocatorImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

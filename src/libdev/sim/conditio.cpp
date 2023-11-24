@@ -101,7 +101,7 @@ std::ostream& operator<<(std::ostream& o, const SimCondition& t)
 // virtual
 void SimCondition::doOutputOperator(std::ostream& o) const
 {
-    o << "SimCondition " << (void*)this << std::endl;
+    o << "SimCondition " << static_cast<const void*>(this) << std::endl;
 }
 
 void perWrite(PerOstream& ostr, const SimCondition& condition)

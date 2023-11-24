@@ -33,8 +33,8 @@ void MachGuiDbIElement::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbIElement& t)
 {
 
-    o << "MachGuiDbIElement " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbIElement " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbIElement " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbIElement " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

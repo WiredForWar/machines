@@ -43,8 +43,8 @@ void MachGuiDbSystem::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbSystem& t)
 {
 
-    o << "MachGuiDbSystem " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbSystem " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbSystem " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbSystem " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

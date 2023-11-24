@@ -143,7 +143,7 @@ PhysRampAcceleration MachPhysMachineMoveInfo::averageProfile() const
 
 std::ostream& operator<<(std::ostream& o, const MachPhysMachineMoveInfo& t)
 {
-    o << "MachPhysMachineMoveInfo " << (void*)&t << " start" << std::endl;
+    o << "MachPhysMachineMoveInfo " << static_cast<const void*>(&t) << " start" << std::endl;
 
     UtlIndentOstream ostr2(o, "  ");
     UtlIndentOstream ostr4(o, "    ");
@@ -164,7 +164,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysMachineMoveInfo& t)
     ostr2 << "total time: " << t.totalTime_ << std::endl;
     ostr2 << "finish time: " << t.startTime_ + t.totalTime_ << std::endl;
 
-    o << "MachPhysMachineMoveInfo " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMachineMoveInfo " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

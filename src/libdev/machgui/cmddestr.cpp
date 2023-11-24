@@ -32,8 +32,8 @@ void MachGuiSelfDestructCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiSelfDestructCommand& t)
 {
 
-    o << "MachGuiSelfDestructCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiSelfDestructCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiSelfDestructCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiSelfDestructCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -30,8 +30,8 @@ void MachLogIonBeamImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogIonBeamImpl& t)
 {
 
-    o << "MachLogIonBeamImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogIonBeamImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogIonBeamImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogIonBeamImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

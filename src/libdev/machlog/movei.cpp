@@ -82,8 +82,8 @@ void MachLogMoveToOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogMoveToOperationImpl& t)
 {
 
-    o << "MachLogMoveToOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogMoveToOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogMoveToOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMoveToOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -146,8 +146,8 @@ void MachLogMoveAndTurnOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogMoveAndTurnOperationImpl& t)
 {
 
-    o << "MachLogMoveAndTurnOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogMoveAndTurnOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogMoveAndTurnOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMoveAndTurnOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -66,8 +66,8 @@ void PerIstreamImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PerIstreamImpl& t)
 {
 
-    o << "PerIstreamImpl " << (void*)&t << " start" << std::endl;
-    o << "PerIstreamImpl " << (void*)&t << " end" << std::endl;
+    o << "PerIstreamImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PerIstreamImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

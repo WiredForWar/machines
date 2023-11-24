@@ -71,8 +71,8 @@ void MachGuiChatWindow::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiChatWindow& t)
 {
 
-    o << "MachGuiChatWindow " << (void*)&t << " start" << std::endl;
-    o << "MachGuiChatWindow " << (void*)&t << " end" << std::endl;
+    o << "MachGuiChatWindow " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiChatWindow " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

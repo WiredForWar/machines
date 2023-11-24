@@ -39,8 +39,8 @@ void MachGuiStandGroundCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiStandGroundCommand& t)
 {
 
-    o << "MachGuiStandGroundCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStandGroundCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStandGroundCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStandGroundCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

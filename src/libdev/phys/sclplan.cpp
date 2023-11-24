@@ -44,8 +44,8 @@ void PhysScalarPlan::duration(const PhysRelativeTime& time)
 std::ostream& operator<<(std::ostream& o, const PhysScalarPlan& t)
 {
 
-    o << "PhysScalarPlan " << (void*)&t << " start" << std::endl;
-    o << "PhysScalarPlan " << (void*)&t << " end" << std::endl;
+    o << "PhysScalarPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysScalarPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

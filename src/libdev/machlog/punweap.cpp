@@ -61,8 +61,8 @@ void MachLogPunchWeapon::doFire(MachActor* pTarget, const MachLogFireData&)
 std::ostream& operator<<(std::ostream& o, const MachLogPunchWeapon& t)
 {
 
-    o << "MachLogPunchWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogPunchWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogPunchWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPunchWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

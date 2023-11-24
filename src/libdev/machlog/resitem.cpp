@@ -57,7 +57,7 @@ MachLogResearchItem::MachLogResearchItem(
         hardwareLabSubType_ == MachPhys::LAB_CIVILIAN or hardwareLabSubType_ == MachPhys::LAB_MILITARY,
         "Invalid lab type\n");
     HAL_STREAM(
-        "MachLogResearchItem  " << (void*)this << " CTOR [" << objectType << "," << subType << "," << hwLevel << ","
+        "MachLogResearchItem  " << static_cast<const void*>(this) << " CTOR [" << objectType << "," << subType << "," << hwLevel << ","
                                 << swLevel << "]" << std::endl);
     for (int i = 0; i < N_RESEARCH_RACES; ++i)
     {
@@ -177,7 +177,7 @@ const MachLogMachine::Level& MachLogResearchItem::swLevel(MachPhys::Race race) c
     CB_MachLogResearchItem_DEPIMPL();
 
     HAL_STREAM(
-        "MachLogResearchItem " << (void*)this << " [" << objectType_ << "," << subType_ << "," << hwLevel_
+        "MachLogResearchItem " << static_cast<const void*>(this) << " [" << objectType_ << "," << subType_ << "," << hwLevel_
                                << "] swLevel for " << race << " is " << swLevel_[race] << std::endl);
 
     return swLevel_[race];
@@ -484,7 +484,7 @@ MachPhys::BuildingMaterialUnits MachLogResearchItem::swAmountBuilt(MachPhys::Rac
 std::ostream& operator<<(std::ostream& o, const MachLogResearchItem& t)
 {
 
-    o << "MachLogResearchItem " << (void*)&t << " start" << std::endl;
+    o << "MachLogResearchItem " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " ObjectType " << t.objectType() << std::endl;
     o << " subType " << t.subType() << std::endl;
     o << " hwLevel " << t.hwLevel() << std::endl;
@@ -520,7 +520,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogResearchItem& t)
             o << " swAmount built[" << i << "," << j << "] " << t.swAmountBuilt((MachPhys::Race)i, j) << std::endl;
         }
     }
-    o << "MachLogResearchItem " << (void*)&t << " end" << std::endl;
+    o << "MachLogResearchItem " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

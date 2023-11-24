@@ -92,8 +92,8 @@ void MachGuiInGameChatMessagesDisplay::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessagesDisplay& t)
 {
 
-    o << "MachGuiInGameChatMessagesDisplay " << (void*)&t << " start" << std::endl;
-    o << "MachGuiInGameChatMessagesDisplay " << (void*)&t << " end" << std::endl;
+    o << "MachGuiInGameChatMessagesDisplay " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiInGameChatMessagesDisplay " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

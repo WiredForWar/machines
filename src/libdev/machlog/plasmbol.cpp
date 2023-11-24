@@ -38,8 +38,8 @@ void MachLogPlasmaBolt::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPlasmaBolt& t)
 {
 
-    o << "MachLogPlasmaBolt " << (void*)&t << " start" << std::endl;
-    o << "MachLogPlasmaBolt " << (void*)&t << " end" << std::endl;
+    o << "MachLogPlasmaBolt " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPlasmaBolt " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

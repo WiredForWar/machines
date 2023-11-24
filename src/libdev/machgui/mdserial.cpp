@@ -267,8 +267,8 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 std::ostream& operator<<(std::ostream& o, const MachGuiSerialNetworkMode& t)
 {
 
-    o << "MachGuiSerialNetworkMode " << (void*)&t << " start" << std::endl;
-    o << "MachGuiSerialNetworkMode " << (void*)&t << " end" << std::endl;
+    o << "MachGuiSerialNetworkMode " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiSerialNetworkMode " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -63,8 +63,8 @@ void MachGuiCtxSinglePlayer::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxSinglePlayer& t)
 {
 
-    o << "MachGuiCtxSinglePlayer " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxSinglePlayer " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxSinglePlayer " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxSinglePlayer " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

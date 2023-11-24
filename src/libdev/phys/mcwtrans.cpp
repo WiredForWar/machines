@@ -176,8 +176,8 @@ void PhysMotionControlWithTrans::snapTo(const MexTransform3d& trans)
 std::ostream& operator<<(std::ostream& o, const PhysMotionControlWithTrans& t)
 {
 
-    o << "PhysMotionControlWithTrans " << (void*)&t << " start" << std::endl;
-    o << "PhysMotionControlWithTrans " << (void*)&t << " end" << std::endl;
+    o << "PhysMotionControlWithTrans " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysMotionControlWithTrans " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

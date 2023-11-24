@@ -28,7 +28,7 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(
     : PhysMotionPlan(0)
     , pImpl_(new PhysTimedSpinPlanImpl(axis, position, startAngle, startSpeed))
 {
-    MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(axis);
@@ -52,7 +52,7 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(
     TEST_INVARIANT;
 
     MISC_INDENT(-2);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
 }
 
 PhysTimedSpinPlan::PhysTimedSpinPlan(
@@ -64,7 +64,7 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(
     : PhysMotionPlan(0)
     , pImpl_(new PhysTimedSpinPlanImpl(axis, baseTransform, startAngle, startSpeed))
 {
-    MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(axis);
@@ -88,14 +88,14 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(
     TEST_INVARIANT;
 
     MISC_INDENT(-2);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
 }
 
 PhysTimedSpinPlan::PhysTimedSpinPlan(PerConstructor con)
     : PhysMotionPlan(con)
 {
-    MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -103,13 +103,13 @@ PhysTimedSpinPlan::PhysTimedSpinPlan(PerConstructor con)
 PhysTimedSpinPlan::~PhysTimedSpinPlan()
 {
 
-    MISC_STREAM("Enter PhysTimedSpinPlan::~PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::~PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
 
     TEST_INVARIANT;
 
     delete pImpl_;
 
-    MISC_STREAM("Exit  PhysTimedSpinPlan::~PhysTimedSpinPlan " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::~PhysTimedSpinPlan " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -125,7 +125,7 @@ void PhysTimedSpinPlan::addSegment(const PhysRelativeTime& segmentDuration, cons
     PRE(segmentDuration < 1000000.0);
     PRE(acceleration.asScalar() < 1000000.0);
 
-    MISC_STREAM("Enter PhysTimedSpinPlan::addSegment " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::addSegment " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(segmentDuration);
@@ -172,7 +172,7 @@ void PhysTimedSpinPlan::addSegment(const PhysRelativeTime& segmentDuration, cons
     duration(newDuration);
 
     MISC_INDENT(-2);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::addSegment " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::addSegment " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -186,7 +186,7 @@ MexRadians PhysTimedSpinPlan::angle(const PhysRelativeTime& timeOffset) const
     CB_DEPIMPL(size_t, cacheIndex_);
     CB_DEPIMPL(Times, times_);
 
-    MISC_STREAM("Enter PhysTimedSpinPlan::angle " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::angle " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(timeOffset);
@@ -232,7 +232,7 @@ MexRadians PhysTimedSpinPlan::angle(const PhysRelativeTime& timeOffset) const
 
     MISC_INSPECT(timeAngle);
     MISC_INDENT(-2);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::angle " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::angle " << static_cast<const void*>(this) << std::endl);
 
     return timeAngle;
 }
@@ -240,7 +240,7 @@ MexRadians PhysTimedSpinPlan::angle(const PhysRelativeTime& timeOffset) const
 
 MexRadians PhysTimedSpinPlan::speed(const PhysRelativeTime& timeOffset) const
 {
-    MISC_STREAM("Enter PhysTimedSpinPlan::speed " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::speed " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(timeOffset);
@@ -288,7 +288,7 @@ MexRadians PhysTimedSpinPlan::speed(const PhysRelativeTime& timeOffset) const
     }
 
     MISC_INDENT(-2);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::speed " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::speed " << static_cast<const void*>(this) << std::endl);
 
     return timeSpeed;
 }
@@ -296,7 +296,7 @@ MexRadians PhysTimedSpinPlan::speed(const PhysRelativeTime& timeOffset) const
 
 void PhysTimedSpinPlan::transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const
 {
-    MISC_STREAM("Enter PhysTimedSpinPlan::transform " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::transform " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(timeOffset);
@@ -318,7 +318,7 @@ void PhysTimedSpinPlan::transform(const PhysRelativeTime& timeOffset, MexTransfo
 
     MISC_INSPECT(*pResult);
     MISC_INDENT(-2);
-    MISC_STREAM("Enter PhysTimedSpinPlan::transform " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::transform " << static_cast<const void*>(this) << std::endl);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -332,8 +332,8 @@ void PhysTimedSpinPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysTimedSpinPlan& t)
 {
 
-    o << "PhysTimedSpinPlan " << (void*)&t << " start" << std::endl;
-    o << "PhysTimedSpinPlan " << (void*)&t << " end" << std::endl;
+    o << "PhysTimedSpinPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysTimedSpinPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -344,7 +344,7 @@ void PhysTimedSpinPlan::setCacheSegment(const PhysRelativeTime& timeOffset)
     CB_DEPIMPL(Times, times_);
     CB_DEPIMPL(size_t, cacheIndex_);
 
-    MISC_STREAM("Enter PhysTimedSpinPlan::setCacheSegment " << (void*)this << std::endl);
+    MISC_STREAM("Enter PhysTimedSpinPlan::setCacheSegment " << static_cast<const void*>(this) << std::endl);
     MISC_INDENT(2);
 
     MISC_INSPECT(timeOffset);
@@ -380,7 +380,7 @@ void PhysTimedSpinPlan::setCacheSegment(const PhysRelativeTime& timeOffset)
     }
 
     MISC_INDENT(-2);
-    MISC_STREAM("Exit  PhysTimedSpinPlan::setCacheSegment " << (void*)this << std::endl);
+    MISC_STREAM("Exit  PhysTimedSpinPlan::setCacheSegment " << static_cast<const void*>(this) << std::endl);
 }
 
 void perWrite(PerOstream& ostr, const PhysTimedSpinPlan& plan)

@@ -69,8 +69,8 @@ void MachPhysJetRing::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysJetRing& t)
 {
 
-    o << "MachPhysJetRing " << (void*)&t << " start" << std::endl;
-    o << "MachPhysJetRing " << (void*)&t << " end" << std::endl;
+    o << "MachPhysJetRing " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysJetRing " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -44,8 +44,8 @@ void MachGuiPlayerScore::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiPlayerScore& t)
 {
 
-    o << "MachGuiPlayerScore " << (void*)&t << " start" << std::endl;
-    o << "MachGuiPlayerScore " << (void*)&t << " end" << std::endl;
+    o << "MachGuiPlayerScore " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiPlayerScore " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

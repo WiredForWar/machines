@@ -70,8 +70,8 @@ void MachPhysLandMine::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysLandMine& t)
 {
 
-    o << "MachPhysLandMine " << (void*)&t << " start" << std::endl;
-    o << "MachPhysLandMine " << (void*)&t << " end" << std::endl;
+    o << "MachPhysLandMine " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysLandMine " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

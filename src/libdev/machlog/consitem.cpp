@@ -171,7 +171,7 @@ void MachLogConstructionItem::activate(MachPhys::Race race)
 std::ostream& operator<<(std::ostream& o, const MachLogConstructionItem& t)
 {
 
-    o << "MachLogConstructionItem " << (void*)&t << " start" << std::endl;
+    o << "MachLogConstructionItem " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " ConstructionType " << t.constructionType() << std::endl;
     o << " subType " << t.subType() << std::endl;
     o << " hwLevel " << t.hwLevel() << std::endl;
@@ -182,7 +182,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogConstructionItem& t)
         o << " activated[" << i << "] " << t.activated(i) << " activation locked " << t.activationLocked(i)
           << std::endl;
     }
-    o << "MachLogConstructionItem " << (void*)&t << " end" << std::endl;
+    o << "MachLogConstructionItem " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

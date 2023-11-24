@@ -65,8 +65,8 @@ void MachPhysPlasmaSplat::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPlasmaSplat& t)
 {
 
-    o << "MachPhysPlasmaSplat " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPlasmaSplat " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPlasmaSplat " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPlasmaSplat " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

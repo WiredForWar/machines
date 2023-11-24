@@ -39,7 +39,7 @@ void PhysAccelerateTumblePlanImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysAccelerateTumblePlanImpl& t)
 {
 
-    o << "PhysAccelerateTumblePlanImpl " << (void*)&t << " start" << std::endl;
+    o << "PhysAccelerateTumblePlanImpl " << static_cast<const void*>(&t) << " start" << std::endl;
 
     o << "Time = 0" << std::endl;
 
@@ -60,7 +60,7 @@ std::ostream& operator<<(std::ostream& o, const PhysAccelerateTumblePlanImpl& t)
 
     o << "Acceleration " << t.acceleration_ << std::endl;
 
-    o << "PhysAccelerateTumblePlanImpl " << (void*)&t << " end" << std::endl;
+    o << "PhysAccelerateTumblePlanImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

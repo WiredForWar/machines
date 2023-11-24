@@ -247,8 +247,8 @@ void W4dComplexity::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dComplexity& t)
 {
 
-    o << "W4dComplexity " << (void*)&t << " start" << std::endl;
-    o << "W4dComplexity " << (void*)&t << " end" << std::endl;
+    o << "W4dComplexity " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dComplexity " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

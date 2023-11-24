@@ -304,8 +304,8 @@ void MachLogGroupSimpleMoveImplementation::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogGroupSimpleMoveImplementation& t)
 {
 
-    o << "MachLogGroupSimpleMoveImplementation " << (void*)&t << " start" << std::endl;
-    o << "MachLogGroupSimpleMoveImplementation " << (void*)&t << " end" << std::endl;
+    o << "MachLogGroupSimpleMoveImplementation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogGroupSimpleMoveImplementation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

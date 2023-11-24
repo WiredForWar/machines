@@ -97,7 +97,7 @@ void MachPhysWheels::moveAnimations(
     CB_DEPIMPL(W4dLinks, leftWheels_);
     CB_DEPIMPL(W4dLinks, rightWheels_);
 
-    MISC_STREAM("MachPhysWheels::moveAnimations entry " << (void*)this << std::endl);
+    MISC_STREAM("MachPhysWheels::moveAnimations entry " << static_cast<const void*>(this) << std::endl);
     MISC_STREAM("  linearTravelPlan.nSegments() " << linearTravelPlan.nSegments() << std::endl);
     MISC_STREAM("  turnAngles.size() " << turnAngles.size() << std::endl);
     MISC_INSPECT(leftLastAngle_);
@@ -237,7 +237,7 @@ void MachPhysWheels::stopDead()
     CB_DEPIMPL(W4dLinks, leftWheels_);
     CB_DEPIMPL(W4dLinks, rightWheels_);
 
-    MISC_STREAM("MachPhysWheels::stopDead() entry " << (void*)this << std::endl);
+    MISC_STREAM("MachPhysWheels::stopDead() entry " << static_cast<const void*>(this) << std::endl);
     // Iterate through each pair of wheels
     W4dLinks::iterator il = leftWheels_.begin();
     W4dLinks::iterator ir = rightWheels_.begin();
@@ -296,7 +296,7 @@ void MachPhysWheels::stopDead()
     MISC_INSPECT(leftLastAngleSpeed_);
     MISC_INSPECT(rightLastAngle_);
     MISC_INSPECT(rightLastAngleSpeed_);
-    MISC_STREAM("MachPhysWheels::stopDead() exit " << (void*)this << std::endl);
+    MISC_STREAM("MachPhysWheels::stopDead() exit " << static_cast<const void*>(this) << std::endl);
 }
 
 void MachPhysWheels::firstPersonMotionAnimations(bool leftForwards, bool rightForwards)
@@ -370,8 +370,8 @@ void MachPhysWheels::firstPersonMotionAnimations(bool leftForwards, bool rightFo
 std::ostream& operator<<(std::ostream& o, const MachPhysWheels& t)
 {
 
-    o << "MachPhysWheels " << (void*)&t << " start" << std::endl;
-    o << "MachPhysWheels " << (void*)&t << " end" << std::endl;
+    o << "MachPhysWheels " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysWheels " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

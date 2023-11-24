@@ -54,8 +54,8 @@ void MachPhysSpiderLegsImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysSpiderLegsImpl& t)
 {
 
-    o << "MachPhysSpiderLegsImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysSpiderLegsImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysSpiderLegsImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysSpiderLegsImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

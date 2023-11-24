@@ -97,8 +97,8 @@ void MachLogSquareSpiral::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogSquareSpiral& t)
 {
 
-    o << "MachLogSquareSpiral " << (void*)&t << " start" << std::endl;
-    o << "MachLogSquareSpiral " << (void*)&t << " end" << std::endl;
+    o << "MachLogSquareSpiral " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogSquareSpiral " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -473,8 +473,8 @@ void MachPhysObjDemolish::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysObjDemolish& t)
 {
 
-    o << "MachPhysObjDemolish " << (void*)&t << " start" << std::endl;
-    o << "MachPhysObjDemolish " << (void*)&t << " end" << std::endl;
+    o << "MachPhysObjDemolish " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysObjDemolish " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

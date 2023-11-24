@@ -380,8 +380,8 @@ void MachGuiCtxSkirmish::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxSkirmish& t)
 {
 
-    o << "MachGuiCtxSkirmish " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxSkirmish " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxSkirmish " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxSkirmish " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

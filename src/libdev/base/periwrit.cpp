@@ -364,8 +364,8 @@ void PersistenceImplementationWrite::registerCloseOstream()
 std::ostream& operator<<(std::ostream& o, const PersistenceImplementationWrite& t)
 {
 
-    o << "PersistenceImplementationWrite " << (void*)&t << " start" << std::endl;
-    o << "PersistenceImplementationWrite " << (void*)&t << " end" << std::endl;
+    o << "PersistenceImplementationWrite " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PersistenceImplementationWrite " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

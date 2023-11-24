@@ -101,7 +101,7 @@ void MachLogStatsImpl::readStatsInitialisationFile()
 std::ostream& operator<<(std::ostream& o, const MachLogStatsImpl& t)
 {
 
-    o << "MachLogStatsImpl " << (void*)&t << " start" << std::endl;
+    o << "MachLogStatsImpl " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " aiPriority " << t.aiPriority_ << std::endl;
     o << " pcPriority " << t.pcPriority_ << std::endl;
     o << " maxMoveTime " << t.maxMoveTime_ << std::endl;
@@ -113,7 +113,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogStatsImpl& t)
     o << " enemyCaptureMultiplier_ " << t.enemyCaptureMultiplier_ << std::endl;
     o << " connectionTime_ " << t.connectionTime_ << std::endl;
     o << " scannerRangeToWeaponRangeRatio_ " << t.scannerRangeToWeaponRangeRatio_ << std::endl;
-    o << "MachLogStatsImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogStatsImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

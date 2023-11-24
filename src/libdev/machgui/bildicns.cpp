@@ -63,8 +63,8 @@ void MachBuildMenuIcons::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachBuildMenuIcons& t)
 {
 
-    o << "MachBuildMenuIcons " << (void*)&t << " start" << std::endl;
-    o << "MachBuildMenuIcons " << (void*)&t << " end" << std::endl;
+    o << "MachBuildMenuIcons " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachBuildMenuIcons " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

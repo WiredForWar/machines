@@ -48,13 +48,13 @@ void W4dFrameRegulator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dFrameRegulator& t)
 {
 
-    o << "W4dFrameRegulator " << (void*)&t << " start" << std::endl;
+    o << "W4dFrameRegulator " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "  startTime " << t.startTime_ << std::endl;
     o << "  idealDuration " << t.idealDuration_ << std::endl;
     o << "  maxDuration " << t.maxDuration_ << std::endl;
     o << "  startFrame " << t.startFrame_ << std::endl;
     o << "  nFrames " << t.nFrames_ << std::endl;
-    o << "W4dFrameRegulator " << (void*)&t << " end" << std::endl;
+    o << "W4dFrameRegulator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

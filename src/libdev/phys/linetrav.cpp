@@ -75,7 +75,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
     PRE(rotationDeceleration > 0.0);
     PRE(transformsPtr->size() > 1);
 
-    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::PhysLinearTravelPlan " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::PhysLinearTravelPlan " << static_cast<const void*>(this) << std::endl);
     LINEAR_TRAVEL_INDENT(2);
     LINEAR_TRAVEL_WHERE;
 
@@ -184,7 +184,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
     TEST_INVARIANT;
 
     LINEAR_TRAVEL_INDENT(-2);
-    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::PhysLinearTravelPlan " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::PhysLinearTravelPlan " << static_cast<const void*>(this) << std::endl);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
     PRE(rampAccelerationsPtr.isDefined());
     PRE(transformsPtr->size() == rampAccelerationsPtr->size() + 1);
 
-    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::PhysLinearTravelPlan " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::PhysLinearTravelPlan " << static_cast<const void*>(this) << std::endl);
     LINEAR_TRAVEL_INDENT(2);
     LINEAR_TRAVEL_WHERE;
 
@@ -246,7 +246,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
     duration(totalDuration);
 
     LINEAR_TRAVEL_INDENT(-2);
-    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::PhysLinearTravelPlan " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::PhysLinearTravelPlan " << static_cast<const void*>(this) << std::endl);
 }
 
 PhysLinearTravelPlan::~PhysLinearTravelPlan()
@@ -268,7 +268,7 @@ void PhysLinearTravelPlan::transform(const PhysRelativeTime& timeOffset, MexTran
     PRE(pResult != nullptr);
     PRE(timeOffset >= 0.0);
 
-    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::transform " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::transform " << static_cast<const void*>(this) << std::endl);
     LINEAR_TRAVEL_INDENT(2);
     LINEAR_TRAVEL_INSPECT(timeOffset);
 
@@ -321,7 +321,7 @@ void PhysLinearTravelPlan::transform(const PhysRelativeTime& timeOffset, MexTran
 
     LINEAR_TRAVEL_INSPECT(*pResult);
     LINEAR_TRAVEL_INDENT(-2);
-    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::transform " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::transform " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -346,7 +346,7 @@ void PhysLinearTravelPlan::computeCacheData()
 
     PRE(cacheSegment_ < (*segmentTimesPtr_).size());
 
-    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::computeCacheData " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::computeCacheData " << static_cast<const void*>(this) << std::endl);
     LINEAR_TRAVEL_INDENT(2);
 
     // Get the difference transform
@@ -403,7 +403,7 @@ void PhysLinearTravelPlan::computeCacheData()
     cacheValid_ = true;
 
     LINEAR_TRAVEL_INDENT(-2);
-    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::computeCacheData " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::computeCacheData " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -430,7 +430,7 @@ void PhysLinearTravelPlan::computeInterpolatedTransform(const PhysRelativeTime& 
 
     PRE(cacheValid_);
 
-    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::computeInterpolatedTransform " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Enter PhysLinearTravelPlan::computeInterpolatedTransform " << static_cast<const void*>(this) << std::endl);
     LINEAR_TRAVEL_INDENT(2);
     LINEAR_TRAVEL_INSPECT(timeOffset);
 
@@ -492,7 +492,7 @@ void PhysLinearTravelPlan::computeInterpolatedTransform(const PhysRelativeTime& 
 
     LINEAR_TRAVEL_INSPECT(*pResult);
     LINEAR_TRAVEL_INDENT(-2);
-    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::computeInterpolatedTransform " << (void*)this << std::endl);
+    LINEAR_TRAVEL_STREAM("Exit PhysLinearTravelPlan::computeInterpolatedTransform " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -526,9 +526,9 @@ const PhysMotionPlan::RampAccelerationsPtr& PhysLinearTravelPlan::rampAccelerati
 std::ostream& operator<<(std::ostream& o, const PhysLinearTravelPlan& t)
 {
 
-    o << "PhysLinearTravelPlan " << (void*)&t << " start" << std::endl;
+    o << "PhysLinearTravelPlan " << static_cast<const void*>(&t) << " start" << std::endl;
     o << (*t.pImpl_) << std::endl;
-    o << "PhysLinearTravelPlan " << (void*)&t << " end" << std::endl;
+    o << "PhysLinearTravelPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

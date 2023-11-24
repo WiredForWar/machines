@@ -85,8 +85,8 @@ void MachPhysShockWave::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysShockWave& t)
 {
 
-    o << "MachPhysShockWave " << (void*)&t << " start" << std::endl;
-    o << "MachPhysShockWave " << (void*)&t << " end" << std::endl;
+    o << "MachPhysShockWave " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysShockWave " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

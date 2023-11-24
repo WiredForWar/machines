@@ -34,8 +34,8 @@ void PedObstacle::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedObstacle& t)
 {
 
-    o << "PedObstacle " << (void*)&t << " start" << std::endl;
-    o << "PedObstacle " << (void*)&t << " end" << std::endl;
+    o << "PedObstacle " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedObstacle " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

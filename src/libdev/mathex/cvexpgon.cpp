@@ -355,7 +355,7 @@ bool MexConvexPolygon2d::allVerticesDiscrete() const
     PRE(pPoints_->size() > 2);
 
     // cout << "MexConvexPolygon2d::allVerticesDiscrete for " << pPoints_->size() << " vertices\n";
-    // cout << " Address of this " << (void*)this << endl;
+    // cout << " Address of this " << static_cast<const void*>(this) << endl;
     // for(int i = 0; i < pPoints_->size(); ++i)
     // {
     //  cout << " " << vertex( i ) << endl;
@@ -481,10 +481,10 @@ MexConvexPolygon2d::MexConvexPolygon2d(PerConstructor)
 std::ostream& operator<<(std::ostream& o, const MexConvexPolygon2d& t)
 {
 
-    //    o << "MexConvexPolygon2d " << (void*)&t << " start" << endl;
+    //    o << "MexConvexPolygon2d " << static_cast<const void*>(&t) << " start" << endl;
     const MexPolygon2d& base = t;
     o << base;
-    //    o << "MexConvexPolygon2d " << (void*)&t << " end" << endl;
+    //    o << "MexConvexPolygon2d " << static_cast<const void*>(&t) << " end" << endl;
 
     return o;
 }

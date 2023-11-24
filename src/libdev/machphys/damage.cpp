@@ -74,8 +74,8 @@ void MachPhysEntityDamage::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysEntityDamage& t)
 {
 
-    o << "MachPhysEntityDamage " << (void*)&t << " start" << std::endl;
-    o << "MachPhysEntityDamage " << (void*)&t << " end" << std::endl;
+    o << "MachPhysEntityDamage " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysEntityDamage " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -39,8 +39,8 @@ void MachLogEvadeOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogEvadeOperationImpl& t)
 {
 
-    o << "MachLogEvadeOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogEvadeOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogEvadeOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogEvadeOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

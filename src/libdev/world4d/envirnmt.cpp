@@ -88,8 +88,8 @@ void W4dEnvironment::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dEnvironment& t)
 {
 
-    o << "W4dEnvironment " << (void*)&t << " start" << std::endl;
-    o << "W4dEnvironment " << (void*)&t << " end" << std::endl;
+    o << "W4dEnvironment " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dEnvironment " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

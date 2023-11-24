@@ -62,8 +62,8 @@ void MachPhysVortexSphere::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysVortexSphere& t)
 {
 
-    o << "MachPhysVortexSphere " << (void*)&t << " start" << std::endl;
-    o << "MachPhysVortexSphere " << (void*)&t << " end" << std::endl;
+    o << "MachPhysVortexSphere " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysVortexSphere " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

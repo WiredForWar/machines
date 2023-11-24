@@ -2330,8 +2330,8 @@ void MachPhysDataParser::parseInteriorStation(
 std::ostream& operator<<(std::ostream& o, const MachPhysDataParser& t)
 {
 
-    o << "MachPhysDataParser " << (void*)&t << " start" << std::endl;
-    o << "MachPhysDataParser " << (void*)&t << " end" << std::endl;
+    o << "MachPhysDataParser " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysDataParser " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

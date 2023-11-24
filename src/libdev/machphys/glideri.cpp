@@ -51,8 +51,8 @@ void MachPhysGliderImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysGliderImpl& t)
 {
 
-    o << "MachPhysGliderImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysGliderImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysGliderImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysGliderImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

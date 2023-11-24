@@ -77,7 +77,7 @@ void PhysMotionChunk::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysMotionChunk& t)
 {
 
-    o << "PhysMotionChunk " << (void*)&t << " start" << std::endl;
+    o << "PhysMotionChunk " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "  from " << t.startPoint_ << " to " << t.endPoint_ << " at " << t.createTime_ << std::endl;
     o << "  motion time offset " << t.motionTimeOffset_ << "  clearance " << t.clearance_ << std::endl;
     if (t.hasExpiryTime_)
@@ -88,7 +88,7 @@ std::ostream& operator<<(std::ostream& o, const PhysMotionChunk& t)
       << t.motionProfile_.secondAccelerationTime() << std::endl;
     o << t.motionProfile_;
     o << "  clearance " << t.clearance_ << std::endl;
-    o << "PhysMotionChunk " << (void*)&t << " end" << std::endl;
+    o << "PhysMotionChunk " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

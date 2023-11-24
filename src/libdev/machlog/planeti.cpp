@@ -37,8 +37,8 @@ void MachLogPlanetImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPlanetImpl& t)
 {
 
-    o << "MachLogPlanetImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogPlanetImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogPlanetImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPlanetImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

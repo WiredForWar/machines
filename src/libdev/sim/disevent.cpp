@@ -54,9 +54,9 @@ void SimDiscreteEvent::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SimDiscreteEvent& t)
 {
 
-    o << "SimDiscreteEvent " << (void*)&t << " start" << std::endl;
+    o << "SimDiscreteEvent " << static_cast<const void*>(&t) << " start" << std::endl;
     t.doOutputOperator(o);
-    o << "SimDiscreteEvent " << (void*)&t << " end" << std::endl;
+    o << "SimDiscreteEvent " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

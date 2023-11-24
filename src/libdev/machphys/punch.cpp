@@ -97,8 +97,8 @@ void MachPhysPunchBlast::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPunchBlast& t)
 {
 
-    o << "MachPhysPunchBlast " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPunchBlast " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPunchBlast " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPunchBlast " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

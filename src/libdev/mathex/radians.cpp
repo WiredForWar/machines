@@ -30,8 +30,8 @@
 // ostream& operator <<( ostream& o, const MexRadians& t )
 // {
 //
-//     o << "MexRadians " << (void*)&t << " start" << endl;
-//     o << "MexRadians " << (void*)&t << " end" << endl;
+//     o << "MexRadians " << static_cast<const void*>(&t) << " start" << endl;
+//     o << "MexRadians " << static_cast<const void*>(&t) << " end" << endl;
 //
 //     return o;
 // }

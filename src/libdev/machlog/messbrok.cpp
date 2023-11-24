@@ -366,7 +366,7 @@ void MachLogMessageBroker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker& t)
 {
 
-    o << "MachLogMessageBroker " << (void*)&t << " start" << std::endl;
+    o << "MachLogMessageBroker " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " nOutgoing " << nOutgoingMessages << std::endl;
     o << " outgoing total Length " << outgoingTotalLength << std::endl;
     o << " nIncoming " << nIncomingMessages << std::endl;
@@ -376,7 +376,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker& t)
     if (SimManager::instance().currentTime() > 0)
         o << " average load per second " << outgoingTotalLength / SimManager::instance().currentTime() << std::endl;
     o << " cachedOutgoingMessages_.size " << t.cachedOutgoingMessages_.size() << std::endl;
-    o << "MachLogMessageBroker " << (void*)&t << " end" << std::endl;
+    o << "MachLogMessageBroker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

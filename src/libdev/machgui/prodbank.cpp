@@ -194,8 +194,8 @@ bool MachProductionBank::beNotified(W4dSubject*, W4dSubject::NotificationEvent e
 std::ostream& operator<<(std::ostream& o, const MachProductionBank& t)
 {
 
-    o << "MachProductionBank " << (void*)&t << " start" << std::endl;
-    o << "MachProductionBank " << (void*)&t << " end" << std::endl;
+    o << "MachProductionBank " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachProductionBank " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

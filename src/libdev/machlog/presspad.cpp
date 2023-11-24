@@ -99,8 +99,8 @@ void MachLogPressurePads::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPressurePads& t)
 {
 
-    o << "MachLogPressurePads " << (void*)&t << " start" << std::endl;
-    o << "MachLogPressurePads " << (void*)&t << " end" << std::endl;
+    o << "MachLogPressurePads " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPressurePads " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

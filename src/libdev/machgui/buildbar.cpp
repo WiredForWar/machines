@@ -103,8 +103,8 @@ void MachGuiBuildProgressBar::percentageComplete(float complete)
 std::ostream& operator<<(std::ostream& o, const MachGuiBuildProgressBar& t)
 {
 
-    o << "MachGuiBuildProgressBar " << (void*)&t << " start" << std::endl;
-    o << "MachGuiBuildProgressBar " << (void*)&t << " end" << std::endl;
+    o << "MachGuiBuildProgressBar " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiBuildProgressBar " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

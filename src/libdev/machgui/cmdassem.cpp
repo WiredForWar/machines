@@ -39,8 +39,8 @@ void MachGuiAssemblyPointCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiAssemblyPointCommand& t)
 {
 
-    o << "MachGuiAssemblyPointCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiAssemblyPointCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiAssemblyPointCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiAssemblyPointCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

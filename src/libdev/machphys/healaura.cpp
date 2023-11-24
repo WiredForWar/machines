@@ -190,8 +190,8 @@ void MachPhysHealAura::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysHealAura& t)
 {
 
-    o << "MachPhysHealAura " << (void*)&t << " start" << std::endl;
-    o << "MachPhysHealAura " << (void*)&t << " end" << std::endl;
+    o << "MachPhysHealAura " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysHealAura " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

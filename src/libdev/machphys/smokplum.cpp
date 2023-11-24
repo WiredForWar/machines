@@ -213,8 +213,8 @@ void MachPhysSmokePlume::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysSmokePlume& t)
 {
 
-    o << "MachPhysSmokePlume " << (void*)&t << " start" << std::endl;
-    o << "MachPhysSmokePlume " << (void*)&t << " end" << std::endl;
+    o << "MachPhysSmokePlume " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysSmokePlume " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

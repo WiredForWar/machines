@@ -49,8 +49,8 @@ void MachLogTreacheryOrb::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogTreacheryOrb& t)
 {
 
-    o << "MachLogTreacheryOrb " << (void*)&t << " start" << std::endl;
-    o << "MachLogTreacheryOrb " << (void*)&t << " end" << std::endl;
+    o << "MachLogTreacheryOrb " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogTreacheryOrb " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

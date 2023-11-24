@@ -54,8 +54,8 @@ void MachLogExpandingBlastImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogExpandingBlastImpl& t)
 {
 
-    o << "MachLogExpandingBlastImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogExpandingBlastImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogExpandingBlastImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogExpandingBlastImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -74,8 +74,8 @@ void PedTileMarker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedTileMarker& t)
 {
 
-    o << "PedTileMarker " << (void*)&t << " start" << std::endl;
-    o << "PedTileMarker " << (void*)&t << " end" << std::endl;
+    o << "PedTileMarker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedTileMarker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

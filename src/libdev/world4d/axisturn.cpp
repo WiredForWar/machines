@@ -43,8 +43,8 @@ void W4dAxisTurnerPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dAxisTurnerPlan& t)
 {
 
-    o << "PhysAxisTurner " << (void*)&t << " start" << std::endl;
-    o << "PhysAxisTurner " << (void*)&t << " end" << std::endl;
+    o << "PhysAxisTurner " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysAxisTurner " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -55,8 +55,8 @@ MachLogLinearProjectile* MachLogPulseWeapon::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogPulseWeapon& t)
 {
 
-    o << "MachLogPulseWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogPulseWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogPulseWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPulseWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

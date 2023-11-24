@@ -36,8 +36,8 @@ void W4dCameraVolume::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dCameraVolume& t)
 {
 
-    o << "W4dCameraVolume " << (void*)&t << " start" << std::endl;
-    o << "W4dCameraVolume " << (void*)&t << " end" << std::endl;
+    o << "W4dCameraVolume " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCameraVolume " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -45,8 +45,8 @@ void MachPhysLocomotionMethodImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysLocomotionMethodImpl& t)
 {
 
-    o << "MachPhysLocomotionMethodImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysLocomotionMethodImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysLocomotionMethodImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysLocomotionMethodImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

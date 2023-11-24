@@ -35,8 +35,8 @@ void GuiSingleSelectionListBox::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const GuiSingleSelectionListBox& t)
 {
 
-    o << "GuiSingleSelectionListBox " << (void*)&t << " start" << std::endl;
-    o << "GuiSingleSelectionListBox " << (void*)&t << " end" << std::endl;
+    o << "GuiSingleSelectionListBox " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GuiSingleSelectionListBox " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

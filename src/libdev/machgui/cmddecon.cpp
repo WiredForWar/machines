@@ -56,8 +56,8 @@ void MachGuiDeconstructCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDeconstructCommand& t)
 {
 
-    o << "MachGuiDeconstructCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDeconstructCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDeconstructCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDeconstructCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

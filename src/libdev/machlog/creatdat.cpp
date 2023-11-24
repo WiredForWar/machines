@@ -97,9 +97,9 @@ void MachLogGameCreationData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogGameCreationData& t)
 {
 
-    o << "MachLogGameCreationData " << (void*)&t << " start" << std::endl;
+    o << "MachLogGameCreationData " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " Impl. " << *(t.pImpl_);
-    o << "MachLogGameCreationData " << (void*)&t << " end" << std::endl;
+    o << "MachLogGameCreationData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

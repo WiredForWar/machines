@@ -230,8 +230,8 @@ void MachGuiScrollArea::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiScrollArea& t)
 {
 
-    o << "MachGuiScrollArea " << (void*)&t << " start" << std::endl;
-    o << "MachGuiScrollArea " << (void*)&t << " end" << std::endl;
+    o << "MachGuiScrollArea " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiScrollArea " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

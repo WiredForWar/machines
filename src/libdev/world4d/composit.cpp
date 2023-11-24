@@ -304,14 +304,14 @@ void W4dComposite::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     CB_W4dComposite_DEPIMPL();
-    ostr << "Start W4dComposite " << (void*)this << "  " << name() << std::endl;
+    ostr << "Start W4dComposite " << static_cast<const void*>(this) << "  " << name() << std::endl;
 
     for (W4dLinks::const_iterator i = links_.begin(); i != links_.end(); ++i)
     {
         (*i)->debugOutput(ostr);
     }
 
-    ostr << "End   W4dComposite " << (void*)this << std::endl;
+    ostr << "End   W4dComposite " << static_cast<const void*>(this) << std::endl;
 }
 
 void W4dComposite::CLASS_INVARIANT

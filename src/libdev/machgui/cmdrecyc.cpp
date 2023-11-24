@@ -38,8 +38,8 @@ void MachGuiRecycleCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiRecycleCommand& t)
 {
 
-    o << "MachGuiRecycleCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiRecycleCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiRecycleCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiRecycleCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

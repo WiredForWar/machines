@@ -100,8 +100,8 @@ bool W4dCameraShake::shakeIsOver() const
 std::ostream& operator<<(std::ostream& o, const W4dCameraShake& t)
 {
 
-    o << "W4dCameraShake " << (void*)&t << " start" << std::endl;
-    o << "W4dCameraShake " << (void*)&t << " end" << std::endl;
+    o << "W4dCameraShake " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCameraShake " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

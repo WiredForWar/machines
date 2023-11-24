@@ -92,8 +92,8 @@ void W4dPersistence::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dPersistence& t)
 {
 
-    o << "W4dPersistence " << (void*)&t << " start" << std::endl;
-    o << "W4dPersistence " << (void*)&t << " end" << std::endl;
+    o << "W4dPersistence " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dPersistence " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

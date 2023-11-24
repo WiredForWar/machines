@@ -56,7 +56,7 @@ PhysCS2dFindPath::PhysCS2dFindPath(
     PRE(startPoint.euclidianDistance(endPoint) > MexEpsilon::instance());
 
     CS2VGRA_STREAM(
-        "PhysCS2dFindPath::PhysCS2dFindPath " << (void*)this << std::endl
+        "PhysCS2dFindPath::PhysCS2dFindPath " << static_cast<const void*>(this) << std::endl
                                               << "  from " << startPoint << " to " << endPoint << " clearance "
                                               << clearance << std::endl);
     CS2VGRA_INSPECT(startPoint_);
@@ -78,7 +78,7 @@ PhysCS2dFindPath::PhysCS2dFindPath(
 
 PhysCS2dFindPath::~PhysCS2dFindPath()
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::~PhysCS2dFindPath " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::~PhysCS2dFindPath " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -95,7 +95,7 @@ PhysCS2dFindPath::~PhysCS2dFindPath()
     }
 
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::~PhysCS2dFindPath " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::~PhysCS2dFindPath " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -128,7 +128,7 @@ bool PhysCS2dFindPath::spaceIntersections(
 
 void PhysCS2dFindPath::start()
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::start entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::start entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -159,13 +159,13 @@ void PhysCS2dFindPath::start()
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::start exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::start exit " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool PhysCS2dFindPath::output(Path* pPath) const
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::output entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::output entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -182,7 +182,7 @@ bool PhysCS2dFindPath::output(Path* pPath) const
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::output exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::output exit " << static_cast<const void*>(this) << std::endl);
 
     return havePath;
 }
@@ -190,7 +190,7 @@ bool PhysCS2dFindPath::output(Path* pPath) const
 
 void PhysCS2dFindPath::update(const PhysRelativeTime& maxTime)
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::update entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::update entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
 
     CS2VGRA_STREAM(*this << std::endl);
@@ -271,13 +271,13 @@ void PhysCS2dFindPath::update(const PhysRelativeTime& maxTime)
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::update exit " << (void*)this << " state " << (int)state_ << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::update exit " << static_cast<const void*>(this) << " state " << (int)state_ << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void PhysCS2dFindPath::startPathSearch()
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::startPathSearch enter " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::startPathSearch enter " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -320,13 +320,13 @@ void PhysCS2dFindPath::startPathSearch()
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::startPathSearch exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::startPathSearch exit " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool PhysCS2dFindPath::checkPath(size_t* nExtraPolygons)
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::checkPath entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::checkPath entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -394,7 +394,7 @@ bool PhysCS2dFindPath::checkPath(size_t* nExtraPolygons)
 
 bool PhysCS2dFindPath::isPathSearchFinished() const
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::isPathSearchFinished enter " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::isPathSearchFinished enter " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -407,7 +407,7 @@ bool PhysCS2dFindPath::isPathSearchFinished() const
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::isPathSearchFinished exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::isPathSearchFinished exit " << static_cast<const void*>(this) << std::endl);
 
     return pVisibilityGraph->isFindPathFinished();
 }
@@ -415,7 +415,7 @@ bool PhysCS2dFindPath::isPathSearchFinished() const
 
 void PhysCS2dFindPath::updatePathSearch(const PhysRelativeTime& maxTime)
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::updatePathSearch enter " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::updatePathSearch enter " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -431,13 +431,13 @@ void PhysCS2dFindPath::updatePathSearch(const PhysRelativeTime& maxTime)
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::updatePathSearch exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::updatePathSearch exit " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
 {
-    CS2VGRA_STREAM("PhysCS2dFindPath::endPathSearch entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::endPathSearch entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
     CS2VGRA_STREAM(*this << std::endl);
 
@@ -523,13 +523,13 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysCS2dFindPath::endPathSearch exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysCS2dFindPath::endPathSearch exit " << static_cast<const void*>(this) << std::endl);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 std::ostream& operator<<(std::ostream& o, const PhysCS2dFindPath& t)
 {
-    o << "PhysCS2dFindPath " << (void*)&t << "  ";
+    o << "PhysCS2dFindPath " << static_cast<const void*>(&t) << "  ";
 
     switch (t.state_)
     {

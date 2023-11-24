@@ -108,8 +108,8 @@ void MachLogPunchBlast::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPunchBlast& t)
 {
 
-    o << "MachLogPunchBlast " << (void*)&t << " start" << std::endl;
-    o << "MachLogPunchBlast " << (void*)&t << " end" << std::endl;
+    o << "MachLogPunchBlast " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPunchBlast " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

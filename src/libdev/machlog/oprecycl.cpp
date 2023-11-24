@@ -189,8 +189,8 @@ bool MachLogRecycleOperation::beNotified(W4dSubject* pSubject, W4dSubject::Notif
 std::ostream& operator<<(std::ostream& o, const MachLogRecycleOperation& t)
 {
 
-    o << "MachLogRecycleOperation " << (void*)&t << " start" << std::endl;
-    o << "MachLogRecycleOperation " << (void*)&t << " end" << std::endl;
+    o << "MachLogRecycleOperation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogRecycleOperation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -95,8 +95,8 @@ void MachLogVortexWeapon::doFire(MachActor* pTarget, const MachLogFireData&)
 std::ostream& operator<<(std::ostream& o, const MachLogVortexWeapon& t)
 {
 
-    o << "MachLogVortexWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogVortexWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogVortexWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogVortexWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

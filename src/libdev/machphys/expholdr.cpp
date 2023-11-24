@@ -101,8 +101,8 @@ void MachPhysGenericExplosionData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysGenericExplosionData& t)
 {
 
-    o << "MachPhysGenericExplosionData " << (void*)&t << " start" << std::endl;
-    o << "MachPhysGenericExplosionData " << (void*)&t << " end" << std::endl;
+    o << "MachPhysGenericExplosionData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysGenericExplosionData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

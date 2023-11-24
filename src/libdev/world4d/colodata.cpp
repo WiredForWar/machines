@@ -101,8 +101,8 @@ RenColour W4dColourPlanData::colour(const PhysRelativeTime& timeOffset) const
 std::ostream& operator<<(std::ostream& o, const W4dColourPlanData& t)
 {
 
-    o << "W4dColourPlanData " << (void*)&t << " start" << std::endl;
-    o << "W4dColourPlanData " << (void*)&t << " end" << std::endl;
+    o << "W4dColourPlanData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dColourPlanData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

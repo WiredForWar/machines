@@ -69,8 +69,8 @@ void MachGuiSlideBar::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiSlideBar& t)
 {
 
-    o << "MachGuiSlideBar " << (void*)&t << " start" << std::endl;
-    o << "MachGuiSlideBar " << (void*)&t << " end" << std::endl;
+    o << "MachGuiSlideBar " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiSlideBar " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

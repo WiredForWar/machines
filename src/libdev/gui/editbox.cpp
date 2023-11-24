@@ -42,8 +42,8 @@ void GuiSingleLineEditBox::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const GuiSingleLineEditBox& t)
 {
 
-    o << "GuiSingleLineEditBox " << (void*)&t << " start" << std::endl;
-    o << "GuiSingleLineEditBox " << (void*)&t << " end" << std::endl;
+    o << "GuiSingleLineEditBox " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GuiSingleLineEditBox " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

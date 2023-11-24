@@ -235,8 +235,8 @@ bool RenIDisplay::modeChanged()
 std::ostream& operator<<(std::ostream& o, const RenIDisplay& t)
 {
 
-    o << "RenIDisplay " << (void*)&t << " start" << std::endl;
-    o << "RenIDisplay " << (void*)&t << " end" << std::endl;
+    o << "RenIDisplay " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RenIDisplay " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -478,7 +478,7 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
 
 void MachLogMachine::doOutputOperator(std::ostream& o) const
 {
-    o << "MachLogMachine* " << (void*)this << " HW " << hwLevel() << " SW " << swLevel() << " RR "
+    o << "MachLogMachine* " << static_cast<const void*>(this) << " HW " << hwLevel() << " SW " << swLevel() << " RR "
       << machineData().repairRate() << std::endl;
     o << "Squadron ";
     CB_DEPIMPL(MachLogSquadron*, pSquadron_);

@@ -478,8 +478,8 @@ void PedActorEditor::processHide(bool hidden)
 std::ostream& operator<<(std::ostream& o, const PedActorEditor& t)
 {
 
-    o << "PedActorEditor " << (void*)&t << " start" << std::endl;
-    o << "PedActorEditor " << (void*)&t << " end" << std::endl;
+    o << "PedActorEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedActorEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

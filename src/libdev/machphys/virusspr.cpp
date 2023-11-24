@@ -92,8 +92,8 @@ void MachPhysVirusSpreader::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysVirusSpreader& t)
 {
 
-    o << "MachPhysVirusSpreader " << (void*)&t << " start" << std::endl;
-    o << "MachPhysVirusSpreader " << (void*)&t << " end" << std::endl;
+    o << "MachPhysVirusSpreader " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysVirusSpreader " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

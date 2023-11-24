@@ -81,7 +81,7 @@ std::ostream& operator<<(std::ostream& o, const PhysCS2dPolygon& t)
 
     UtlIndentOstream indentOstr(o, "  ");
 
-    o << "PhysCS2dPolygon " << (void*)&t << " start" << std::endl;
+    o << "PhysCS2dPolygon " << static_cast<const void*>(&t) << " start" << std::endl;
 
     indentOstr << "  id " << t.id_.asScalar() << "  height " << t.height_;
     if (t.longevity_ == PhysConfigSpace2d::PERMANENT)
@@ -93,7 +93,7 @@ std::ostream& operator<<(std::ostream& o, const PhysCS2dPolygon& t)
     indentOstr << "Flags " << t.flags_ << std::endl;
     indentOstr << t.polygon_;
 
-    o << "PhysCS2dPolygon " << (void*)&t << " end" << std::endl;
+    o << "PhysCS2dPolygon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

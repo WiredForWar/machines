@@ -38,8 +38,8 @@ void PhysAcceleratedScalarPlanImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysAcceleratedScalarPlanImpl& t)
 {
 
-    o << "PhysAcceleratedScalarPlanImpl " << (void*)&t << " start" << std::endl;
-    o << "PhysAcceleratedScalarPlanImpl " << (void*)&t << " end" << std::endl;
+    o << "PhysAcceleratedScalarPlanImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysAcceleratedScalarPlanImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

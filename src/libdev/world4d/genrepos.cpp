@@ -202,8 +202,8 @@ const string& W4dGenericRepository::key(uint index) const
 std::ostream& operator<<(std::ostream& o, const W4dGenericRepository& t)
 {
 
-    o << "W4dGenericRepository " << (void*)&t << " start" << std::endl;
-    o << "W4dGenericRepository " << (void*)&t << " end" << std::endl;
+    o << "W4dGenericRepository " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dGenericRepository " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

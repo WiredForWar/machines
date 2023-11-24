@@ -57,8 +57,8 @@ void W4dMaterialFramePlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dMaterialFramePlan& t)
 {
 
-    o << "W4dMaterialFramePlan " << (void*)&t << " start" << std::endl;
-    o << "W4dMaterialFramePlan " << (void*)&t << " end" << std::endl;
+    o << "W4dMaterialFramePlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dMaterialFramePlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

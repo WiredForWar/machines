@@ -226,9 +226,9 @@ void MachLogNetwork::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogNetwork& t)
 {
 
-    o << "MachLogNetwork " << (void*)&t << " start" << std::endl;
+    o << "MachLogNetwork " << static_cast<const void*>(&t) << " start" << std::endl;
     //  o << " local Race " << t.localRace_ << std::endl;
-    o << "MachLogNetwork " << (void*)&t << " end" << std::endl;
+    o << "MachLogNetwork " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

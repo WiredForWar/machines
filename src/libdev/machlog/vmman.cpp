@@ -791,8 +791,8 @@ MachLogVoiceMailManager::MailInfoVector* MachLogVoiceMailManager::pAvailableVEMa
 std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManager& t)
 {
 
-    o << "MachLogVoiceMailManager " << (void*)&t << " start" << std::endl;
-    o << "MachLogVoiceMailManager " << (void*)&t << " end" << std::endl;
+    o << "MachLogVoiceMailManager " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogVoiceMailManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

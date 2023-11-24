@@ -50,8 +50,8 @@ void MachGuiAutoDeleteDisplayable::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiAutoDeleteDisplayable& t)
 {
 
-    o << "MachGuiAutoDeleteDisplayable " << (void*)&t << " start" << std::endl;
-    o << "MachGuiAutoDeleteDisplayable " << (void*)&t << " end" << std::endl;
+    o << "MachGuiAutoDeleteDisplayable " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiAutoDeleteDisplayable " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

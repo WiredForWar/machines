@@ -98,8 +98,8 @@ void MexBasicRandom::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MexBasicRandom& t)
 {
 
-    o << "MexBasicRandom " << (void*)&t << " start" << std::endl;
-    o << "MexBasicRandom " << (void*)&t << " end" << std::endl;
+    o << "MexBasicRandom " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MexBasicRandom " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

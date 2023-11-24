@@ -27,8 +27,8 @@ void SysWindowsAPI::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SysWindowsAPI& t)
 {
 
-    o << "SysWindowsAPI " << (void*)&t << " start" << std::endl;
-    o << "SysWindowsAPI " << (void*)&t << " end" << std::endl;
+    o << "SysWindowsAPI " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SysWindowsAPI " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

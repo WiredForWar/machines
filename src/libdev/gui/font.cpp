@@ -246,8 +246,8 @@ void GuiBmpFont::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t)
 {
 
-    o << "GuiBmpFont " << (void*)&t << " start" << std::endl;
-    o << "GuiBmpFont " << (void*)&t << " end" << std::endl;
+    o << "GuiBmpFont " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GuiBmpFont " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

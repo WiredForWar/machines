@@ -68,7 +68,7 @@ const PhysRelativeTime& MachLogVortexHasBeenFiredCondition::recommendedCallBackT
 void MachLogVortexHasBeenFiredCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogVortexHasBeenFiredCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogVortexHasBeenFiredCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << race_ << std::endl;
 }
 

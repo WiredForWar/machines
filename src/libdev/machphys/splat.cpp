@@ -71,8 +71,8 @@ void MachPhysGroundSplat::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysGroundSplat& t)
 {
 
-    o << "MachPhysGroundSplat " << (void*)&t << " start" << std::endl;
-    o << "MachPhysGroundSplat " << (void*)&t << " end" << std::endl;
+    o << "MachPhysGroundSplat " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysGroundSplat " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

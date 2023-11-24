@@ -464,7 +464,7 @@ MachLogMine::MachLogMine(PerConstructor con)
 // virtual
 void MachLogMine::doOutputOperator(std::ostream& o) const
 {
-    o << "MachLogMine " << (void*)this << " start" << std::endl;
+    o << "MachLogMine " << static_cast<const void*>(this) << " start" << std::endl;
     o << " Capacity " << data().capacity() << std::endl;
     o << " Ore " << ore_ << std::endl;
     o << " Extraction rate sec-1 " << data().extractionRate() / 60 << " min-1 " << data().extractionRate() << std::endl;
@@ -472,7 +472,7 @@ void MachLogMine::doOutputOperator(std::ostream& o) const
         o << " Mineral Site " << mineralSite() << std::endl;
     else
         o << " Mineral Site::NULL\n";
-    o << "MachLogMine " << (void*)this << " end" << std::endl;
+    o << "MachLogMine " << static_cast<const void*>(this) << " end" << std::endl;
 
     MachLogConstruction::doOutputOperator(o);
 }

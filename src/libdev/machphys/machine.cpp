@@ -474,7 +474,7 @@ MATHEX_SCALAR MachPhysMachine::angleWithHorizontal(const MexVec3& vec) const
 
 void MachPhysMachine::doMove(const MachPhysMachineMoveInfo& info)
 {
-    PHYS_MOTION_STREAM("Enter MachPhysMachine::doMove " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Enter MachPhysMachine::doMove " << static_cast<const void*>(this) << std::endl);
     PHYS_MOTION_INDENT(2);
 
     CB_DEPIMPL(MachPhysLocomotionMethod*, pLocomotionMethod_);
@@ -531,7 +531,7 @@ void MachPhysMachine::doMove(const MachPhysMachineMoveInfo& info)
     }
 
     PHYS_MOTION_INDENT(-2);
-    PHYS_MOTION_STREAM("Exit MachPhysMachine::doMove " << (void*)this << std::endl);
+    PHYS_MOTION_STREAM("Exit MachPhysMachine::doMove " << static_cast<const void*>(this) << std::endl);
 }
 
 bool MachPhysMachine::hasCanAttack() const
@@ -1194,7 +1194,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysMachine& t)
 
     o << "MachPhysMachine " << t.bodyLevel() << " " << t.brainLevel() << std::endl;
     o << " race " << t.race() << std::endl;
-    o << "MachPhysMachine " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMachine " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

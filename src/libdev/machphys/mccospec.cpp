@@ -45,8 +45,8 @@ void MachPhysMachineSpec::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMachineSpec& t)
 {
 
-    o << "MachPhysMachineSpec " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMachineSpec " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMachineSpec " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMachineSpec " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -149,14 +149,14 @@ void MachPhysConstructionSpec::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysConstructionSpec& t)
 {
 
-    o << "MachPhysConstructionSpec " << (void*)&t << " start" << std::endl;
+    o << "MachPhysConstructionSpec " << static_cast<const void*>(&t) << " start" << std::endl;
 
     o << "Type " << t.type_ << std::endl;
     o << "Subtype " << t.subType_ << std::endl;
     o << "HW level " << t.hwLevel_ << std::endl;
     o << "Race " << t.race_ << std::endl;
 
-    o << "MachPhysConstructionSpec " << (void*)&t << " end" << std::endl;
+    o << "MachPhysConstructionSpec " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -253,8 +253,8 @@ void MachPhysWeaponSpec::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysWeaponSpec& t)
 {
 
-    o << "MachPhysWeaponSpec " << (void*)&t << " start" << std::endl;
-    o << "MachPhysWeaponSpec " << (void*)&t << " end" << std::endl;
+    o << "MachPhysWeaponSpec " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysWeaponSpec " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

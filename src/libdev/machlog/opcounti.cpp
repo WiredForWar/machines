@@ -49,8 +49,8 @@ void MachLogCounterattackOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogCounterattackOperationImpl& t)
 {
 
-    o << "MachLogCounterattackOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogCounterattackOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogCounterattackOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogCounterattackOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

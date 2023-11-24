@@ -35,10 +35,10 @@ void W4dEntityIter::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dEntityIter& t)
 {
 
-    o << "W4dEntityIter " << (void*)&t << " start" << std::endl;
+    o << "W4dEntityIter " << static_cast<const void*>(&t) << " start" << std::endl;
     for (int i = 0; i != t.stack_.size(); ++i)
         o << "  " << (void*)t.stack_[i] << std::endl;
-    o << "W4dEntityIter " << (void*)&t << " end" << std::endl;
+    o << "W4dEntityIter " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

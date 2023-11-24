@@ -86,7 +86,7 @@ const string& SimAction::conditionKeyName() const
 // virtual
 void SimAction::doOutputOperator(std::ostream& o) const
 {
-    o << "SimAction " << (void*)this << std::endl;
+    o << "SimAction " << static_cast<const void*>(this) << std::endl;
     o << "Enabled " << enabled_ << std::endl;
     o << "NextCallBackTime " << nextCallBackTime_ << std::endl;
     o << "Condition " << *pCondition_ << std::endl;

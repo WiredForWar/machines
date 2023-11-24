@@ -38,8 +38,8 @@ void MachGuiDbElement::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbElement& t)
 {
 
-    o << "MachGuiDbElement " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbElement " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbElement " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbElement " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

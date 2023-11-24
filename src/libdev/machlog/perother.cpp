@@ -63,8 +63,8 @@ void MachLogOtherPersistence::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogOtherPersistence& t)
 {
 
-    o << "MachLogOtherPersistence " << (void*)&t << " start" << std::endl;
-    o << "MachLogOtherPersistence " << (void*)&t << " end" << std::endl;
+    o << "MachLogOtherPersistence " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogOtherPersistence " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -66,8 +66,8 @@ void MachPhysBeeBombExplosion::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysBeeBombExplosion& t)
 {
 
-    o << "MachPhysBeeBombExplosion " << (void*)&t << " start" << std::endl;
-    o << "MachPhysBeeBombExplosion " << (void*)&t << " end" << std::endl;
+    o << "MachPhysBeeBombExplosion " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysBeeBombExplosion " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

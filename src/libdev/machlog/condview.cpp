@@ -81,7 +81,7 @@ const PhysRelativeTime& MachLogCameraViewCondition::recommendedCallBackTimeGap()
 void MachLogCameraViewCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogCameraViewCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogCameraViewCondition " << static_cast<const void*>(this) << " start" << std::endl;
 }
 
 void perWrite(PerOstream& ostr, const MachLogCameraViewCondition& condition)

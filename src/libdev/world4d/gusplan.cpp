@@ -44,8 +44,8 @@ void W4dGeneralUniformScalePlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dGeneralUniformScalePlan& t)
 {
 
-    o << "W4dGeneralUniformScalePlan " << (void*)&t << " start" << std::endl;
-    o << "W4dGeneralUniformScalePlan " << (void*)&t << " end" << std::endl;
+    o << "W4dGeneralUniformScalePlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dGeneralUniformScalePlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

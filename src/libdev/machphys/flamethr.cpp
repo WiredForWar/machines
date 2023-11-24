@@ -94,8 +94,8 @@ void MachPhysFlameThrower::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysFlameThrower& t)
 {
 
-    o << "MachPhysFlameThrower " << (void*)&t << " start" << std::endl;
-    o << "MachPhysFlameThrower " << (void*)&t << " end" << std::endl;
+    o << "MachPhysFlameThrower " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysFlameThrower " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

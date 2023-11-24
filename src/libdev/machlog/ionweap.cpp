@@ -57,8 +57,8 @@ void MachLogIonWeapon::doFire(const MexPoint3d& position)
 std::ostream& operator<<(std::ostream& o, const MachLogIonWeapon& t)
 {
 
-    o << "MachLogIonWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogIonWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogIonWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogIonWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

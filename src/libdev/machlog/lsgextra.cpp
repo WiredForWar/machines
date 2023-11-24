@@ -26,8 +26,8 @@ void MachLogLoadSaveGameExtras::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogLoadSaveGameExtras& t)
 {
 
-    o << "MachLogLoadSaveGameExtras " << (void*)&t << " start" << std::endl;
-    o << "MachLogLoadSaveGameExtras " << (void*)&t << " end" << std::endl;
+    o << "MachLogLoadSaveGameExtras " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogLoadSaveGameExtras " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

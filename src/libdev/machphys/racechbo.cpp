@@ -87,8 +87,8 @@ void MachPhysRaceChangerBody::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysRaceChangerBody& t)
 {
 
-    o << "MachPhysRaceChangerBody " << (void*)&t << " start" << std::endl;
-    o << "MachPhysRaceChangerBody " << (void*)&t << " end" << std::endl;
+    o << "MachPhysRaceChangerBody " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysRaceChangerBody " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

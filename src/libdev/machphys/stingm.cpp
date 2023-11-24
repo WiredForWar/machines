@@ -72,8 +72,8 @@ void MachPhysMetalSting::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMetalSting& t)
 {
 
-    o << "MachPhysMetalSting " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMetalSting " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMetalSting " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMetalSting " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

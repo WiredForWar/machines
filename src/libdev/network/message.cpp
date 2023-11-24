@@ -68,10 +68,10 @@ void NetMessage::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const NetMessage& t)
 {
 
-    o << "NetMessage " << (void*)&t << " start" << std::endl;
+    o << "NetMessage " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " header:\n" << t.header_ << std::endl;
     o << " body:\n" << t.body_ << std::endl;
-    o << "NetMessage " << (void*)&t << " end" << std::endl;
+    o << "NetMessage " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

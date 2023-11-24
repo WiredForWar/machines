@@ -111,8 +111,8 @@ void PhysLinearScalarPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysLinearScalarPlan& t)
 {
 
-    o << "PhysLinearScalarPlan " << (void*)&t << " start" << std::endl;
-    o << "PhysLinearScalarPlan " << (void*)&t << " end" << std::endl;
+    o << "PhysLinearScalarPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysLinearScalarPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

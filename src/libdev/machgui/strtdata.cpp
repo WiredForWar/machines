@@ -256,7 +256,7 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
     , terminalMultiPlayerGameProblem_(false)
     , includedInGame_(false)
 {
-    NETWORK_STREAM("MachGuiStartupData::MachGuiStartupData " << (void*)this << std::endl);
+    NETWORK_STREAM("MachGuiStartupData::MachGuiStartupData " << static_cast<const void*>(this) << std::endl);
     SysRegistry::KeyHandle handle;
     // Get default for menu transitions (on/off)
     if (SysRegistry::instance().onlyOpenKey("Options\\transitions", &handle) == SysRegistry::SUCCESS)
@@ -287,7 +287,7 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
 MachGuiStartupData::~MachGuiStartupData()
 {
     TEST_INVARIANT;
-    NETWORK_STREAM("MachGuiStartupData::~MachGuiStartupData " << (void*)this << std::endl);
+    NETWORK_STREAM("MachGuiStartupData::~MachGuiStartupData " << static_cast<const void*>(this) << std::endl);
 }
 
 void MachGuiStartupData::CLASS_INVARIANT
@@ -298,8 +298,8 @@ void MachGuiStartupData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiStartupData& t)
 {
 
-    o << "MachGuiStartupData " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStartupData " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStartupData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStartupData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

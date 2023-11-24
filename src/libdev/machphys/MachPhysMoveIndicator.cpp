@@ -36,8 +36,8 @@ void MachPhysMoveIndicator::startFadeOut(const PhysAbsoluteTime& startTime)
 std::ostream& operator<<(std::ostream& o, const MachPhysMoveIndicator& t)
 {
 
-    o << "MachPhysMoveIndicator " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMoveIndicator " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMoveIndicator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMoveIndicator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

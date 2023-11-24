@@ -66,7 +66,7 @@ const PhysRelativeTime& MachLogScenarioFlagCondition::recommendedCallBackTimeGap
 void MachLogScenarioFlagCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogScenarioFlagCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogScenarioFlagCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << " flagSet_ " << flagSet_ << std::endl;
 }
 

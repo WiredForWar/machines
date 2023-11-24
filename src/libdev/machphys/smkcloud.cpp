@@ -154,8 +154,8 @@ void MachPhysSmokeCloud::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysSmokeCloud& t)
 {
 
-    o << "MachPhysSmokeCloud " << (void*)&t << " start" << std::endl;
-    o << "MachPhysSmokeCloud " << (void*)&t << " end" << std::endl;
+    o << "MachPhysSmokeCloud " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysSmokeCloud " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

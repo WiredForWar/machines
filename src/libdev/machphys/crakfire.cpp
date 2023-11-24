@@ -235,8 +235,8 @@ void MachPhysCrackFire::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysCrackFire& t)
 {
 
-    o << "MachPhysCrackFire " << (void*)&t << " start" << std::endl;
-    o << "MachPhysCrackFire " << (void*)&t << " end" << std::endl;
+    o << "MachPhysCrackFire " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysCrackFire " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

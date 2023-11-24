@@ -475,8 +475,8 @@ bool MachLogConstruction::pickupPointUsedRecently(size_t whichPoint)
 std::ostream& operator<<(std::ostream& o, const MachLogConstruction& t)
 {
 
-    o << "MachLogConstruction " << (void*)&t << " start" << std::endl;
-    o << "MachLogConstruction " << (void*)&t << " end" << std::endl;
+    o << "MachLogConstruction " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogConstruction " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -60,8 +60,8 @@ MachLogLinearProjectile* MachLogElectroCharger::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogElectroCharger& t)
 {
 
-    o << "MachLogElectroCharger " << (void*)&t << " start" << std::endl;
-    o << "MachLogElectroCharger " << (void*)&t << " end" << std::endl;
+    o << "MachLogElectroCharger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogElectroCharger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

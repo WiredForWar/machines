@@ -155,8 +155,8 @@ void MachPhysGeoLocator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysGeoLocator& t)
 {
 
-    o << "MachPhysGeoLocator " << (void*)&t << " start" << std::endl;
-    o << "MachPhysGeoLocator " << (void*)&t << " end" << std::endl;
+    o << "MachPhysGeoLocator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysGeoLocator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

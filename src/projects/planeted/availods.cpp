@@ -80,8 +80,8 @@ const SysPathName& PedAvailableTileLods::current()
 std::ostream& operator<<(std::ostream& o, const PedAvailableTileLods& t)
 {
 
-    o << "PedAvailableTileLods " << (void*)&t << " start" << std::endl;
-    o << "PedAvailableTileLods " << (void*)&t << " end" << std::endl;
+    o << "PedAvailableTileLods " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedAvailableTileLods " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

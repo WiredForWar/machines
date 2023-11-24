@@ -271,7 +271,7 @@ std::ostream& MachLogMachineMotionSequencer::streamOut(std::ostream& o) const
     PhysConfigSpace2d::ObjectIds intersectingIds;
     getIntersectingIds(&intersectingIds);
 
-    o << "MachLogMachineMotionSequencer " << (void*)this << " start" << std::endl;
+    o << "MachLogMachineMotionSequencer " << static_cast<const void*>(this) << " start" << std::endl;
     o << "  pPhysMachine " << (void*)pPhysMachine_;
     o << "  pLogMachine " << (void*)(MachLogMachine*)pLogMobile_;
     o << "  object id " << pLogMobile_->id() << std::endl;
@@ -320,7 +320,7 @@ std::ostream& MachLogMachineMotionSequencer::streamOut(std::ostream& o) const
 
     o << *(pImpl_);
 
-    o << "MachLogMachineMotionSequencer " << (void*)this << " end" << std::endl;
+    o << "MachLogMachineMotionSequencer " << static_cast<const void*>(this) << " end" << std::endl;
 
     return o;
 }
@@ -1563,7 +1563,7 @@ W4dDomain* MachLogMachineMotionSequencer::setDomain(const MexTransform3d& newGlo
         // If not attached to the right domain, attach it now
         if (pDomain != pCorrectDomain)
         {
-            // LOG_STREAM( "  Changing domain seq = " << (void*)this << std::endl);
+            // LOG_STREAM( "  Changing domain seq = " << static_cast<const void*>(this) << std::endl);
             // LOG_STREAM( " pCorrectDomain " << (void*)pCorrectDomain << std::endl );
             pPhysMachine_->attachTo(pCorrectDomain);
             pDomain = pCorrectDomain;
@@ -2170,7 +2170,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             interval = 2;
     }
 
-    LOG_STREAM("Finish initiate move " << (void*)this << std::endl);
+    LOG_STREAM("Finish initiate move " << static_cast<const void*>(this) << std::endl);
 
     LOG_STREAM("MachLogMachineMotionSequencer::initiateMove exit" << std::endl);
 
@@ -2606,7 +2606,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::moveOutOfWay(
         << " asked to move out of the way askerStartPoint " << askerStartPoint << " askerEndPoint " << askerEndPoint
         << " askerClearance " << askerClearance << std::endl);
 
-    LOG_STREAM(" Asked to move out of way " << (void*)this << std::endl);
+    LOG_STREAM(" Asked to move out of way " << static_cast<const void*>(this) << std::endl);
 
     if (allowMoveOutOfWay())
     {
@@ -4098,7 +4098,7 @@ std::ostream& MachLogMachineMotionSequencer::traceConvoyData(std::ostream& o) co
     CB_DEPIMPL(MachLogMachineMotionSequencer*, pFollowSequencer_);
     CB_DEPIMPL(int, nFollowers_);
 
-    o << "--------Convoy data for " << (void*)this << std::endl;
+    o << "--------Convoy data for " << static_cast<const void*>(this) << std::endl;
     ProProfiler::instance().traceStack(o, true, 0, "");
     o << "  id " << pLogMobile_->id() << "  pConvoy_ " << (void*)pConvoy_ << "  pFollowSequencer_ "
       << (void*)pFollowSequencer_ << std::endl;

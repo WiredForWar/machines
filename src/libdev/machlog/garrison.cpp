@@ -101,8 +101,8 @@ void MachLogGarrison::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogGarrison& t)
 {
 
-    o << "MachLogGarrison " << (void*)&t << " start" << std::endl;
-    o << "MachLogGarrison " << (void*)&t << " end" << std::endl;
+    o << "MachLogGarrison " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogGarrison " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

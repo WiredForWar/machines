@@ -35,8 +35,8 @@ void MachLogVoiceMailAction::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailAction& t)
 {
 
-    o << "MachLogVoiceMailAction " << (void*)&t << " start" << std::endl;
-    o << "MachLogVoiceMailAction " << (void*)&t << " end" << std::endl;
+    o << "MachLogVoiceMailAction " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogVoiceMailAction " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

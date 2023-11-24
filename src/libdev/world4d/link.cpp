@@ -55,10 +55,10 @@ W4dLink::~W4dLink()
 void W4dLink::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
-    ostr << "Start W4dLink " << (void*)this << std::endl;
+    ostr << "Start W4dLink " << static_cast<const void*>(this) << std::endl;
     ostr << "Name " << name() << std::endl;
     ostr << "Id " << id() << std::endl;
-    ostr << "End   W4dLink " << (void*)this << std::endl;
+    ostr << "End   W4dLink " << static_cast<const void*>(this) << std::endl;
 }
 
 void W4dLink::CLASS_INVARIANT

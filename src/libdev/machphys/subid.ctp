@@ -23,8 +23,8 @@ template <class X> void MachPhysSubTypeId<X>::CLASS_INVARIANT
 template <class X> std::ostream& operator<<(std::ostream& o, const MachPhysSubTypeId<X>& t)
 {
 
-    o << "MachPhysSubTypeId< X > " << (void*)&t << " start" << endl;
-    o << "MachPhysSubTypeId< X > " << (void*)&t << " end" << endl;
+    o << "MachPhysSubTypeId< X > " << static_cast<const void*>(&t) << " start" << endl;
+    o << "MachPhysSubTypeId< X > " << static_cast<const void*>(&t) << " end" << endl;
 
     return o;
 }

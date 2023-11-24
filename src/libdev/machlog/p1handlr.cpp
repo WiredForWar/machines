@@ -146,8 +146,8 @@ void MachLog1stPersonHandler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLog1stPersonHandler& t)
 {
 
-    o << "MachLog1stPersonHandler " << (void*)&t << " start" << std::endl;
-    o << "MachLog1stPersonHandler " << (void*)&t << " end" << std::endl;
+    o << "MachLog1stPersonHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLog1stPersonHandler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

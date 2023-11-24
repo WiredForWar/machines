@@ -76,8 +76,8 @@ void MachPhysNukeWave::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysNukeWave& t)
 {
 
-    o << "MachPhysNukeWave " << (void*)&t << " start" << std::endl;
-    o << "MachPhysNukeWave " << (void*)&t << " end" << std::endl;
+    o << "MachPhysNukeWave " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysNukeWave " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

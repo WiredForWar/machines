@@ -97,8 +97,8 @@ void MachGuiCtxBriefing::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxBriefing& t)
 {
 
-    o << "MachGuiCtxBriefing " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxBriefing " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxBriefing " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxBriefing " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

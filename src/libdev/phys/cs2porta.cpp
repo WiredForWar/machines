@@ -48,7 +48,7 @@ void PhysCS2dPortal::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCS2dPortal& t)
 {
 
-    o << "PhysCS2dPortal " << (void*)&t << "  Domains " << t.domainId1_.asScalar() << " " << t.domainId2_.asScalar()
+    o << "PhysCS2dPortal " << static_cast<const void*>(&t) << "  Domains " << t.domainId1_.asScalar() << " " << t.domainId2_.asScalar()
       << "  points " << t.endPoint1_ << " to " << t.endPoint2_ << std::endl;
 
     return o;

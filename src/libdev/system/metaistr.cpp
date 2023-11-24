@@ -28,8 +28,8 @@ void SysMetaFileIstream::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SysMetaFileIstream& t)
 {
 
-    o << "SysMetaFileIstream " << (void*)&t << " start" << std::endl;
-    o << "SysMetaFileIstream " << (void*)&t << " end" << std::endl;
+    o << "SysMetaFileIstream " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SysMetaFileIstream " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -111,8 +111,8 @@ void MachPhysLightningHalo::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysLightningHalo& t)
 {
 
-    o << "MachPhysLightningHalo " << (void*)&t << " start" << std::endl;
-    o << "MachPhysLightningHalo " << (void*)&t << " end" << std::endl;
+    o << "MachPhysLightningHalo " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysLightningHalo " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

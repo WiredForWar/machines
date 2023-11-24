@@ -44,14 +44,14 @@ void PhysCompressedRampAcceleration::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCompressedRampAcceleration& t)
 {
 
-    o << "PhysCompressedRampAcceleration " << (void*)&t << " start" << std::endl;
+    o << "PhysCompressedRampAcceleration " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "startSpeed_ " << t.startSpeed_;
     o << "firstAcceleration_ " << t.firstAcceleration_;
     o << "secondAcceleration_ " << t.secondAcceleration_;
     o << "totalTime_ " << t.totalTime_;
     o << "firstAccelerationTime_ " << t.firstAccelerationTime_;
     o << "secondAccelerationTime_ " << t.secondAccelerationTime_;
-    o << "PhysCompressedRampAcceleration " << (void*)&t << " end" << std::endl;
+    o << "PhysCompressedRampAcceleration " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

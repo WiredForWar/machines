@@ -51,8 +51,8 @@ void W4dLightData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dLightData& t)
 {
 
-    o << "W4dLightData " << (void*)&t << " start" << std::endl;
-    o << "W4dLightData " << (void*)&t << " end" << std::endl;
+    o << "W4dLightData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dLightData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -6,11 +6,11 @@ PER_DEFINE_PERSISTENT(MachLogScoreImpl);
 
 MachLogScoreImpl::MachLogScoreImpl()
 {
-    HAL_STREAM("MachLogScoreImpl::MachLogScoreImpl " << (void*)this << std::endl);
+    HAL_STREAM("MachLogScoreImpl::MachLogScoreImpl " << static_cast<const void*>(this) << std::endl);
 }
 MachLogScoreImpl::~MachLogScoreImpl()
 {
-    HAL_STREAM("MachLogScoreImpl::~MachLogScoreImpl " << (void*)this << std::endl);
+    HAL_STREAM("MachLogScoreImpl::~MachLogScoreImpl " << static_cast<const void*>(this) << std::endl);
 }
 
 void perWrite(PerOstream& ostr, const MachLogScoreImpl& impl)

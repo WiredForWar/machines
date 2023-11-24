@@ -79,13 +79,13 @@ void MachPhysStations::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysStations& t)
 {
 
-    o << "MachPhysStations " << (void*)&t << " start" << std::endl;
+    o << "MachPhysStations " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " Number of Stations " << t.nStations() << std::endl;
     for (MachPhysStations::Stations::const_iterator i = t.stations_.begin(); i != t.stations_.end(); ++i)
     {
         o << (*i);
     }
-    o << "MachPhysStations " << (void*)&t << " end" << std::endl;
+    o << "MachPhysStations " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

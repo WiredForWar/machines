@@ -31,8 +31,8 @@ void MachGuiResearchCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiResearchCommand& t)
 {
 
-    o << "MachGuiResearchCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiResearchCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiResearchCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiResearchCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

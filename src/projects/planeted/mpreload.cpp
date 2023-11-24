@@ -443,8 +443,8 @@ void MachPreload::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPreload& t)
 {
 
-    o << "MachPreload " << (void*)&t << " start" << std::endl;
-    o << "MachPreload " << (void*)&t << " end" << std::endl;
+    o << "MachPreload " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPreload " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

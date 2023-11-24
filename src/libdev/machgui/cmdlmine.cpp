@@ -45,8 +45,8 @@ void MachGuiDropLandMineCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDropLandMineCommand& t)
 {
 
-    o << "MachGuiDropLandMineCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDropLandMineCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDropLandMineCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDropLandMineCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -130,7 +130,7 @@ const PhysRelativeTime& MachLogResearchCompleteCondition::recommendedCallBackTim
 void MachLogResearchCompleteCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogResearchCompleteCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogResearchCompleteCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << objectType_ << " sub " << subType_ << " hw " << hwLevel_ << " wc " << weaponCombo_ << " " << race_
       << std::endl;
     o << "callBackTimeGap_ " << callBackTimeGap_ << std::endl;

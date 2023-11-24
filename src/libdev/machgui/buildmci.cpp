@@ -55,8 +55,8 @@ void MachBuildMachineIcon::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachBuildMachineIcon& t)
 {
 
-    o << "MachBuildMachineIcon " << (void*)&t << " start" << std::endl;
-    o << "MachBuildMachineIcon " << (void*)&t << " end" << std::endl;
+    o << "MachBuildMachineIcon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachBuildMachineIcon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -101,8 +101,8 @@ void MachPhysConstructionExplosionData::ExplosionPoint::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysConstructionExplosionData::ExplosionPoint& t)
 {
 
-    o << "ExplosionPoint " << (void*)&t << " start" << std::endl;
-    o << "ExplosionPoint " << (void*)&t << " end" << std::endl;
+    o << "ExplosionPoint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "ExplosionPoint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

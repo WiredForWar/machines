@@ -58,8 +58,8 @@ void MachPhysMushroomShaft::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMushroomShaft& t)
 {
 
-    o << "MachPhysMushroomShaft " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMushroomShaft " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMushroomShaft " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMushroomShaft " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

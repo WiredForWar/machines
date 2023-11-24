@@ -195,8 +195,8 @@ size_t MachHWResearchBank::reqHeight()
 std::ostream& operator<<(std::ostream& o, const MachHWResearchBank& t)
 {
 
-    o << "MachHWResearchBank " << (void*)&t << " start" << std::endl;
-    o << "MachHWResearchBank " << (void*)&t << " end" << std::endl;
+    o << "MachHWResearchBank " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachHWResearchBank " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

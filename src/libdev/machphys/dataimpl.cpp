@@ -155,8 +155,8 @@ void MachPhysDataImplementation::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysDataImplementation& t)
 {
 
-    o << "MachPhysDataImplementation " << (void*)&t << " start" << std::endl;
-    o << "MachPhysDataImplementation " << (void*)&t << " end" << std::endl;
+    o << "MachPhysDataImplementation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysDataImplementation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

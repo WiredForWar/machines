@@ -38,8 +38,8 @@ void MachLogMetalSting::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogMetalSting& t)
 {
 
-    o << "MachLogMetalSting " << (void*)&t << " start" << std::endl;
-    o << "MachLogMetalSting " << (void*)&t << " end" << std::endl;
+    o << "MachLogMetalSting " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMetalSting " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

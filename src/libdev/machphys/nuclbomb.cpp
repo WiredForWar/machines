@@ -121,8 +121,8 @@ void MachPhysNuclearBomb::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysNuclearBomb& t)
 {
 
-    o << "MachPhysNuclearBomb " << (void*)&t << " start" << std::endl;
-    o << "MachPhysNuclearBomb " << (void*)&t << " end" << std::endl;
+    o << "MachPhysNuclearBomb " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysNuclearBomb " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

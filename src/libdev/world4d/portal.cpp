@@ -147,8 +147,8 @@ W4dDomain* W4dPortal::otherDomain(const W4dDomain* d) const
 void W4dPortal::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
-    ostr << "Start W4dPortal " << (void*)this << std::endl;
-    ostr << "End   W4dPortal " << (void*)this << std::endl;
+    ostr << "Start W4dPortal " << static_cast<const void*>(this) << std::endl;
+    ostr << "End   W4dPortal " << static_cast<const void*>(this) << std::endl;
 }
 
 void W4dPortal::CLASS_INVARIANT

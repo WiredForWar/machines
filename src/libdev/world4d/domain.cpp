@@ -208,8 +208,8 @@ const W4dDomainImpl& W4dDomain::domainImpl() const
 void W4dDomain::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
-    ostr << "Start W4dDomain " << (void*)this << std::endl;
-    ostr << "End   W4dDomain " << (void*)this << std::endl;
+    ostr << "Start W4dDomain " << static_cast<const void*>(this) << std::endl;
+    ostr << "End   W4dDomain " << static_cast<const void*>(this) << std::endl;
 }
 
 void W4dDomain::CLASS_INVARIANT
@@ -227,8 +227,8 @@ void W4dDomain::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dDomain& t)
 {
 
-    o << "W4dDomain " << (void*)&t << " start" << std::endl;
-    o << "W4dDomain " << (void*)&t << " end" << std::endl;
+    o << "W4dDomain " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dDomain " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

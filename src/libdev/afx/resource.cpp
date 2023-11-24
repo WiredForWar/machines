@@ -76,8 +76,8 @@ void AfxResourceLib::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const AfxResourceLib& t)
 {
 
-    o << "AfxResourceLib " << (void*)&t << " start" << std::endl;
-    o << "AfxResourceLib " << (void*)&t << " end" << std::endl;
+    o << "AfxResourceLib " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "AfxResourceLib " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

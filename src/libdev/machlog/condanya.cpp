@@ -71,7 +71,7 @@ const PhysRelativeTime& MachLogAnyAllCondition::recommendedCallBackTimeGap() con
 void MachLogAnyAllCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogAnyAllCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogAnyAllCondition " << static_cast<const void*>(this) << " start" << std::endl;
 }
 
 void perWrite(PerOstream& ostr, const MachLogAnyAllCondition& condition)

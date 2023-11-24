@@ -273,8 +273,8 @@ void DevKeyToCommandTranslator::resetCommands(CommandList* pCommandList, bool fo
 std::ostream& operator<<(std::ostream& o, const DevKeyToCommandTranslator& t)
 {
 
-    o << "DevKeyToCommandTranslator " << (void*)&t << " start" << std::endl;
-    o << "DevKeyToCommandTranslator " << (void*)&t << " end" << std::endl;
+    o << "DevKeyToCommandTranslator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "DevKeyToCommandTranslator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -66,8 +66,8 @@ void MachPhysWhiteSphere::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysWhiteSphere& t)
 {
 
-    o << "MachPhysWhiteSphere " << (void*)&t << " start" << std::endl;
-    o << "MachPhysWhiteSphere " << (void*)&t << " end" << std::endl;
+    o << "MachPhysWhiteSphere " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysWhiteSphere " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

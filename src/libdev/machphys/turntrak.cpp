@@ -95,8 +95,8 @@ void MachPhysTurnerTracker::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysTurnerTracker& t)
 {
 
-    o << "MachPhysTurnerTracker " << (void*)&t << " start" << std::endl;
-    o << "MachPhysTurnerTracker " << (void*)&t << " end" << std::endl;
+    o << "MachPhysTurnerTracker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysTurnerTracker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

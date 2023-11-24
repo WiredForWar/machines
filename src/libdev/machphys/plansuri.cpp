@@ -32,8 +32,8 @@ void MachPhysPlanetSurfaceImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurfaceImpl& t)
 {
 
-    o << "MachPhysPlanetSurfaceImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPlanetSurfaceImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPlanetSurfaceImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPlanetSurfaceImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

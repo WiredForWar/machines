@@ -32,8 +32,8 @@ void MachConstructMenu::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachConstructMenu& t)
 {
 
-    o << "MachConstructMenu " << (void*)&t << " start" << std::endl;
-    o << "MachConstructMenu " << (void*)&t << " end" << std::endl;
+    o << "MachConstructMenu " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachConstructMenu " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

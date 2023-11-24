@@ -52,8 +52,8 @@ void MachGuiScavengeCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiScavengeCommand& t)
 {
 
-    o << "MachGuiScavengeCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiScavengeCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiScavengeCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiScavengeCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

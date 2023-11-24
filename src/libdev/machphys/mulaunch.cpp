@@ -69,8 +69,8 @@ void MachPhysMultiLauncher::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysMultiLauncher& t)
 {
 
-    o << "MachPhysMultiLauncher " << (void*)&t << " start" << std::endl;
-    o << "MachPhysMultiLauncher " << (void*)&t << " end" << std::endl;
+    o << "MachPhysMultiLauncher " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysMultiLauncher " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

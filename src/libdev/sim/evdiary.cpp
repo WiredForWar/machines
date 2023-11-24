@@ -130,8 +130,8 @@ void SimEventDiary::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SimEventDiary& t)
 {
 
-    o << "SimEventDiary " << (void*)&t << " start" << std::endl;
-    o << "SimEventDiary " << (void*)&t << " end" << std::endl;
+    o << "SimEventDiary " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SimEventDiary " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

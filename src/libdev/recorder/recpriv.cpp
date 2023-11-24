@@ -662,8 +662,8 @@ void RecRecorderPrivate::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const RecRecorderPrivate& t)
 {
 
-    o << "RecRecorderPrivate " << (void*)&t << " start" << std::endl;
-    o << "RecRecorderPrivate " << (void*)&t << " end" << std::endl;
+    o << "RecRecorderPrivate " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RecRecorderPrivate " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

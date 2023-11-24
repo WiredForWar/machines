@@ -52,8 +52,8 @@ MachLogLinearProjectile* MachLogBeeBomber::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogBeeBomber& t)
 {
 
-    o << "MachLogBeeBomber " << (void*)&t << " start" << std::endl;
-    o << "MachLogBeeBomber " << (void*)&t << " end" << std::endl;
+    o << "MachLogBeeBomber " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogBeeBomber " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

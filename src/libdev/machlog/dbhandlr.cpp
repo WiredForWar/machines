@@ -48,8 +48,8 @@ void MachLogDatabaseHandler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogDatabaseHandler& t)
 {
 
-    o << "MachLogDatabaseHandler " << (void*)&t << " start" << std::endl;
-    o << "MachLogDatabaseHandler " << (void*)&t << " end" << std::endl;
+    o << "MachLogDatabaseHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogDatabaseHandler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

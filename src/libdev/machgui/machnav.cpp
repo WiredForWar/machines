@@ -1309,8 +1309,8 @@ void MachGuiConstructionNavigator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiConstructionNavigator& t)
 {
 
-    o << "MachGuiConstructionNavigator " << (void*)&t << " start" << std::endl;
-    o << "MachGuiConstructionNavigator " << (void*)&t << " end" << std::endl;
+    o << "MachGuiConstructionNavigator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiConstructionNavigator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -1759,8 +1759,8 @@ void MachGuiMachineNavigator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiMachineNavigator& t)
 {
 
-    o << "MachGuiMachineNavigator " << (void*)&t << " start" << std::endl;
-    o << "MachGuiMachineNavigator " << (void*)&t << " end" << std::endl;
+    o << "MachGuiMachineNavigator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiMachineNavigator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

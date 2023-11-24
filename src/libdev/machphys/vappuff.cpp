@@ -449,8 +449,8 @@ void MachPhysVapourPuff::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysVapourPuff& t)
 {
 
-    o << "MachPhysVapourPuff " << (void*)&t << " start" << std::endl;
-    o << "MachPhysVapourPuff " << (void*)&t << " end" << std::endl;
+    o << "MachPhysVapourPuff " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysVapourPuff " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

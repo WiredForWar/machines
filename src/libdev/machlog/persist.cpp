@@ -72,8 +72,8 @@ void MachLogPersistence::sceneManager(W4dSceneManager* pNewSceneManager)
 std::ostream& operator<<(std::ostream& o, const MachLogPersistence& t)
 {
 
-    o << "MachLogPersistence " << (void*)&t << " start" << std::endl;
-    o << "MachLogPersistence " << (void*)&t << " end" << std::endl;
+    o << "MachLogPersistence " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPersistence " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

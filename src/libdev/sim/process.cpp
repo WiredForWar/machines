@@ -342,13 +342,13 @@ void SimProcess::add(SimActor* pActor)
 std::ostream& operator<<(std::ostream& o, const SimProcess& t)
 {
 
-    o << "SimProcess " << (void*)&t << " start" << std::endl;
+    o << "SimProcess " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " ToBeUpdated " << t.pImpl_->toBeUpdated_ << std::endl;
     o << " Actors " << t.pImpl_->actors_.size() << std::endl;
     if (t.pImpl_->actors_.size() > 0)
         for (SimActors::const_iterator i = t.pImpl_->actors_.begin(); i != t.pImpl_->actors_.end(); ++i)
             o << *(*i) << std::endl;
-    o << "SimProcess " << (void*)&t << " end" << std::endl;
+    o << "SimProcess " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

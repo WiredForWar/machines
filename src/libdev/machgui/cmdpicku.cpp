@@ -54,8 +54,8 @@ void MachGuiPickUpCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiPickUpCommand& t)
 {
 
-    o << "MachGuiPickUpCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiPickUpCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiPickUpCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiPickUpCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

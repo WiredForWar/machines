@@ -121,8 +121,8 @@ void MachLogPod::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPod& t)
 {
 
-    o << "MachLogPod " << (void*)&t << " start" << std::endl;
-    o << "MachLogPod " << (void*)&t << " end" << std::endl;
+    o << "MachLogPod " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPod " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

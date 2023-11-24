@@ -130,8 +130,8 @@ void MachGuiCtxMainMenu::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxMainMenu& t)
 {
 
-    o << "MachGuiCtxMainMenu " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxMainMenu " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxMainMenu " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxMainMenu " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

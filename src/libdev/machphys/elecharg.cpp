@@ -94,8 +94,8 @@ void MachPhysElectroCharger::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysElectroCharger& t)
 {
 
-    o << "MachPhysElectroCharger " << (void*)&t << " start" << std::endl;
-    o << "MachPhysElectroCharger " << (void*)&t << " end" << std::endl;
+    o << "MachPhysElectroCharger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysElectroCharger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

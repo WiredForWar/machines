@@ -27,9 +27,9 @@
 #define CS2PATH_EXIT(fn)
 #else
 #define CS2PATH_ENTER(fn)                                                                                              \
-    CS2PATH_STREAM("Enter PhysCS2dDomainFindPath::" << fn << " " << (void*)this << std::endl), CS2PATH_INDENT(2)
+    CS2PATH_STREAM("Enter PhysCS2dDomainFindPath::" << fn << " " << static_cast<const void*>(this) << std::endl), CS2PATH_INDENT(2)
 #define CS2PATH_EXIT(fn)                                                                                               \
-    CS2PATH_INDENT(-2), CS2PATH_STREAM("Exit PhysCS2dDomainFindPath::" << fn << " " << (void*)this << std::endl)
+    CS2PATH_INDENT(-2), CS2PATH_STREAM("Exit PhysCS2dDomainFindPath::" << fn << " " << static_cast<const void*>(this) << std::endl)
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -486,7 +486,7 @@ bool PhysCS2dDomainFindPath::DomainAStarAlg::vertexAvailable(const PhysCS2dDomai
 
 std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainFindPath& t)
 {
-    o << "PhysCS2dDomainFindPath " << (void*)&t << " ";
+    o << "PhysCS2dDomainFindPath " << static_cast<const void*>(&t) << " ";
 
     switch (t.state_)
     {

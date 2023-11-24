@@ -31,8 +31,8 @@ void SimProjectile::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SimProjectile& t)
 {
 
-    o << "SimProjectile " << (void*)&t << " start" << std::endl;
-    o << "SimProjectile " << (void*)&t << " end" << std::endl;
+    o << "SimProjectile " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SimProjectile " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

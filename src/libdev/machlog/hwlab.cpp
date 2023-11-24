@@ -131,7 +131,7 @@ void MachLogHardwareLab::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogHardwareLab_DEPIMPL();
     MachLogConstruction::doOutputOperator(o);
-    o << "MachLogHardwareLab " << (void*)this << std::endl;
+    o << "MachLogHardwareLab " << static_cast<const void*>(this) << std::endl;
     o << " MLRT.size() " << MachLogRaces::instance().researchTree().researchItems().size() << std::endl;
     o << " availableResearchItems_.size " << availableResearchItems_.size() << std::endl;
     if (availableResearchItems_.size())

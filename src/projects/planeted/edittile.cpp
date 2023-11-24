@@ -64,8 +64,8 @@ void PedTileEditor::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const PedTileEditor& t)
 {
-    o << "PedTileEditor " << (void*)&t << " start" << std::endl;
-    o << "PedTileEditor " << (void*)&t << " end" << std::endl;
+    o << "PedTileEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedTileEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

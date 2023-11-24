@@ -140,8 +140,8 @@ bool MachLogGotoLabOperation::doBeInterrupted()
 std::ostream& operator<<(std::ostream& o, const MachLogGotoLabOperation& t)
 {
 
-    o << "MachLogGotoLabOperation " << (void*)&t << " start" << std::endl;
-    o << "MachLogGotoLabOperation " << (void*)&t << " end" << std::endl;
+    o << "MachLogGotoLabOperation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogGotoLabOperation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

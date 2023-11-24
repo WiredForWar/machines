@@ -279,7 +279,7 @@ const PhysRelativeTime& MachLogReachedLocationCondition::recommendedCallBackTime
 void MachLogReachedLocationCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogReachedLocationCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogReachedLocationCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << "objectType_ " << objectType_ << race_ << " number " << number_ << std::endl;
 }
 

@@ -39,8 +39,8 @@ void MachGuiHealCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiHealCommand& t)
 {
 
-    o << "MachGuiHealCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiHealCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiHealCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiHealCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

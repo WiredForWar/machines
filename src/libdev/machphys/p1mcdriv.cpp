@@ -71,8 +71,8 @@ void MachPhys1stPersonMachineDriver::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhys1stPersonMachineDriver& t)
 {
 
-    o << "MachPhys1stPersonMachineDriver " << (void*)&t << " start" << std::endl;
-    o << "MachPhys1stPersonMachineDriver " << (void*)&t << " end" << std::endl;
+    o << "MachPhys1stPersonMachineDriver " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhys1stPersonMachineDriver " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

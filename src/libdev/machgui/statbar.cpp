@@ -146,8 +146,8 @@ string MachGuiStatisticsBar::testForOverflow(const string& score)
 std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsBar& t)
 {
 
-    o << "MachGuiStatisticsBar " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStatisticsBar " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStatisticsBar " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStatisticsBar " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

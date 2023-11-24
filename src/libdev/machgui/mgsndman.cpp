@@ -142,8 +142,8 @@ void MachGuiSoundManager::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t)
 {
 
-    o << "MachGuiSoundManager " << (void*)&t << " start" << std::endl;
-    o << "MachGuiSoundManager " << (void*)&t << " end" << std::endl;
+    o << "MachGuiSoundManager " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiSoundManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

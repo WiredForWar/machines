@@ -242,8 +242,8 @@ void MachGuiCorralSingleIconInfo::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCorralSingleIconInfo& t)
 {
 
-    o << "MachGuiCorralSingleIconInfo " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCorralSingleIconInfo " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCorralSingleIconInfo " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCorralSingleIconInfo " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

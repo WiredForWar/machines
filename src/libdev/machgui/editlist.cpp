@@ -78,8 +78,8 @@ void MachGuiEditBoxListBoxItem::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiEditBoxListBoxItem& t)
 {
 
-    o << "MachGuiEditBoxListBoxItem " << (void*)&t << " start" << std::endl;
-    o << "MachGuiEditBoxListBoxItem " << (void*)&t << " end" << std::endl;
+    o << "MachGuiEditBoxListBoxItem " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiEditBoxListBoxItem " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

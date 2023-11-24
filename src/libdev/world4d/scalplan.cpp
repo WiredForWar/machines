@@ -56,8 +56,8 @@ void W4dScalePlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dScalePlan& t)
 {
 
-    o << "W4dScalePlan " << (void*)&t << " start" << std::endl;
-    o << "W4dScalePlan " << (void*)&t << " end" << std::endl;
+    o << "W4dScalePlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dScalePlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

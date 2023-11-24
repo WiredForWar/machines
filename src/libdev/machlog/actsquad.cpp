@@ -40,8 +40,8 @@ void MachLogActivateSquadronsAction::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogActivateSquadronsAction& t)
 {
 
-    o << "MachLogActivateSquadronsAction " << (void*)&t << " start" << std::endl;
-    o << "MachLogActivateSquadronsAction " << (void*)&t << " end" << std::endl;
+    o << "MachLogActivateSquadronsAction " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogActivateSquadronsAction " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -532,8 +532,8 @@ MachPhysConstruction* PedConstructionEditor::createConstruction(
 std::ostream& operator<<(std::ostream& o, const PedConstructionEditor& t)
 {
 
-    o << "PedConstructionEditor " << (void*)&t << " start" << std::endl;
-    o << "PedConstructionEditor " << (void*)&t << " end" << std::endl;
+    o << "PedConstructionEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedConstructionEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

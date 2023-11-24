@@ -18,7 +18,7 @@ void PhysCS2dDomainGraph::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainGraph& t)
 {
 
-    o << "PhysCS2dDomainGraph " << (void*)&t << " start" << std::endl;
+    o << "PhysCS2dDomainGraph " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "PhysCS2dDomain graph end" << std::endl;
 
     return o;

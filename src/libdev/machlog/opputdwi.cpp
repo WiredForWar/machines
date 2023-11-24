@@ -33,8 +33,8 @@ void MachLogPutDownOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPutDownOperationImpl& t)
 {
 
-    o << "MachLogPutDownOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogPutDownOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogPutDownOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPutDownOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

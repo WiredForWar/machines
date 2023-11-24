@@ -40,8 +40,8 @@ void MachPhysCrackFireImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysCrackFireImpl& t)
 {
 
-    o << "MachPhysCrackFireImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysCrackFireImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysCrackFireImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysCrackFireImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

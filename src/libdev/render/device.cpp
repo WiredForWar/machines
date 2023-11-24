@@ -1675,8 +1675,8 @@ bool RenDevice::canSee(const MexQuad3d& quad) const
 std::ostream& operator<<(std::ostream& o, const RenDevice& t)
 {
 
-    o << "RenDevice " << (void*)&t << " start" << std::endl;
-    o << "RenDevice " << (void*)&t << " end" << std::endl;
+    o << "RenDevice " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RenDevice " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

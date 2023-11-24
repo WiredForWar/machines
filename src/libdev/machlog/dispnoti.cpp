@@ -26,8 +26,8 @@ void MachLogDispositionChangeNotifiable::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogDispositionChangeNotifiable& t)
 {
 
-    o << "MachLogDispositionChangeNotifiable " << (void*)&t << " start" << std::endl;
-    o << "MachLogDispositionChangeNotifiable " << (void*)&t << " end" << std::endl;
+    o << "MachLogDispositionChangeNotifiable " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogDispositionChangeNotifiable " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

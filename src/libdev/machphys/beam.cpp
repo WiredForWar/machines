@@ -120,8 +120,8 @@ void MachPhysBeam::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysBeam& t)
 {
 
-    o << "MachPhysBeam " << (void*)&t << " start" << std::endl;
-    o << "MachPhysBeam " << (void*)&t << " end" << std::endl;
+    o << "MachPhysBeam " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysBeam " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

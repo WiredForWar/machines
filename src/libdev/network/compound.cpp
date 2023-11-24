@@ -46,8 +46,8 @@ void NetCompoundMessage::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const NetCompoundMessage& t)
 {
 
-    o << "NetCompoundMessage " << (void*)&t << " start" << std::endl;
-    o << "NetCompoundMessage " << (void*)&t << " end" << std::endl;
+    o << "NetCompoundMessage " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "NetCompoundMessage " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

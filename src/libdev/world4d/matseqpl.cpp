@@ -67,8 +67,8 @@ void W4dMaterialSequencePlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dMaterialSequencePlan& t)
 {
 
-    o << "W4dMaterialSequencePlan " << (void*)&t << " start" << std::endl;
-    o << "W4dMaterialSequencePlan " << (void*)&t << " end" << std::endl;
+    o << "W4dMaterialSequencePlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dMaterialSequencePlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

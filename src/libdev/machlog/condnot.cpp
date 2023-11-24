@@ -67,7 +67,7 @@ const PhysRelativeTime& MachLogNotCondition::recommendedCallBackTimeGap() const
 void MachLogNotCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogNotCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogNotCondition " << static_cast<const void*>(this) << " start" << std::endl;
 }
 
 void perWrite(PerOstream& ostr, const MachLogNotCondition& condition)

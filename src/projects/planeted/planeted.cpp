@@ -91,8 +91,8 @@ void PedPlanetEditor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedPlanetEditor& t)
 {
 
-    o << "PedPlanetEditor " << (void*)&t << " start" << std::endl;
-    o << "PedPlanetEditor " << (void*)&t << " end" << std::endl;
+    o << "PedPlanetEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedPlanetEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

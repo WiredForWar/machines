@@ -82,8 +82,8 @@ void SimActor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SimActor& t)
 {
 
-    o << "SimActor " << (void*)&t << " start" << std::endl;
-    o << "SimActor " << (void*)&t << " end" << std::endl;
+    o << "SimActor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SimActor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

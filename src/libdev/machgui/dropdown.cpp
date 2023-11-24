@@ -215,8 +215,8 @@ void MachGuiDropDownListBox::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBox& t)
 {
 
-    o << "MachGuiDropDownListBox " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDropDownListBox " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDropDownListBox " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDropDownListBox " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

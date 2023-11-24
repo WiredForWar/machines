@@ -144,7 +144,7 @@ MachLogMoveToOperation::~MachLogMoveToOperation()
 {
     CB_MachLogMoveToOperation_DEPIMPL();
     NETWORK_STREAM(
-        "(" << pActor_->id() << ") MachLogMoveToOperation::~MachLogMoveToOperation " << (void*)this << std::endl);
+        "(" << pActor_->id() << ") MachLogMoveToOperation::~MachLogMoveToOperation " << static_cast<const void*>(this) << std::endl);
 
     while (path_.size() > 0)
         path_.erase(path_.begin());

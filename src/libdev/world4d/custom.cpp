@@ -116,8 +116,8 @@ void W4dCustom::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const W4dCustom& t)
 {
-    o << "W4dCustom " << (void*)&t << " start" << std::endl;
-    o << "W4dCustom " << (void*)&t << " end" << std::endl;
+    o << "W4dCustom " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCustom " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

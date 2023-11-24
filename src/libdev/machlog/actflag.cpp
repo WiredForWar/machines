@@ -36,8 +36,8 @@ void MachLogSetFlagAction::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogSetFlagAction& t)
 {
 
-    o << "MachLogSetFlagAction " << (void*)&t << " start" << std::endl;
-    o << "MachLogSetFlagAction " << (void*)&t << " end" << std::endl;
+    o << "MachLogSetFlagAction " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogSetFlagAction " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

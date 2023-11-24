@@ -65,8 +65,8 @@ void RenHierarchyBuilder::addNode(Node* pNode)
 std::ostream& operator<<(std::ostream& o, const RenHierarchyBuilder& t)
 {
 
-    o << "RenHierarchyBuilder " << (void*)&t << " start" << std::endl;
-    o << "RenHierarchyBuilder " << (void*)&t << " end" << std::endl;
+    o << "RenHierarchyBuilder " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RenHierarchyBuilder " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

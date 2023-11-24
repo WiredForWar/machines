@@ -200,8 +200,8 @@ MachActor& MachLogWeapon::owner()
 std::ostream& operator<<(std::ostream& o, const MachLogWeapon& t)
 {
 
-    o << "MachLogWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

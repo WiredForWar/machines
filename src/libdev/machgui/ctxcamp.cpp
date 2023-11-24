@@ -218,8 +218,8 @@ void MachGuiCtxCampaign::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxCampaign& t)
 {
 
-    o << "MachGuiCtxCampaign " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxCampaign " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxCampaign " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxCampaign " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

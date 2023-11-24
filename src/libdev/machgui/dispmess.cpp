@@ -75,8 +75,8 @@ void MachGuiMessageDisplay::doOutput(std::ostream& o)
 std::ostream& operator<<(std::ostream& o, const MachGuiMessageDisplay& t)
 {
 
-    o << "MachGuiMessageDisplay " << (void*)&t << " start" << std::endl;
-    o << "MachGuiMessageDisplay " << (void*)&t << " end" << std::endl;
+    o << "MachGuiMessageDisplay " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiMessageDisplay " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

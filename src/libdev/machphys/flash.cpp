@@ -119,8 +119,8 @@ void MachPhysFlashDisc::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysFlashDisc& t)
 {
 
-    o << "MachPhysFlashDisc " << (void*)&t << " start" << std::endl;
-    o << "MachPhysFlashDisc " << (void*)&t << " end" << std::endl;
+    o << "MachPhysFlashDisc " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysFlashDisc " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

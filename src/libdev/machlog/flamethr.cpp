@@ -53,8 +53,8 @@ MachLogLinearProjectile* MachLogFlameThrower::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogFlameThrower& t)
 {
 
-    o << "MachLogFlameThrower " << (void*)&t << " start" << std::endl;
-    o << "MachLogFlameThrower " << (void*)&t << " end" << std::endl;
+    o << "MachLogFlameThrower " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogFlameThrower " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

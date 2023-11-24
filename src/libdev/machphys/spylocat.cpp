@@ -130,8 +130,8 @@ void MachPhysSpyLocator::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysSpyLocator& t)
 {
 
-    o << "MachPhysSpyLocator " << (void*)&t << " start" << std::endl;
-    o << "MachPhysSpyLocator " << (void*)&t << " end" << std::endl;
+    o << "MachPhysSpyLocator " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysSpyLocator " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

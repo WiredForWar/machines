@@ -75,8 +75,8 @@ void MachGuiSystemMessageHandler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiSystemMessageHandler& t)
 {
 
-    o << "MachGuiSystemMessageHandler " << (void*)&t << " start" << std::endl;
-    o << "MachGuiSystemMessageHandler " << (void*)&t << " end" << std::endl;
+    o << "MachGuiSystemMessageHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiSystemMessageHandler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

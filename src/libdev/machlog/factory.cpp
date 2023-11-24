@@ -135,7 +135,7 @@ void MachLogFactory::CLASS_INVARIANT
 void MachLogFactory::doOutputOperator(std::ostream& o) const
 {
     CB_MachLogFactory_DEPIMPL();
-    o << "(" << id() << ") " << objectType() << " " << (void*)this << std::endl;
+    o << "(" << id() << ") " << objectType() << " " << static_cast<const void*>(this) << std::endl;
     o << " sub Type " << subType() << std::endl;
     MachLog::ObjectType type;
     int subType;

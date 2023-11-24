@@ -51,8 +51,8 @@ void MachPhysDataStream::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysDataStream& t)
 {
 
-    o << "MachPhysDataStream " << (void*)&t << " start" << std::endl;
-    o << "MachPhysDataStream " << (void*)&t << " end" << std::endl;
+    o << "MachPhysDataStream " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysDataStream " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

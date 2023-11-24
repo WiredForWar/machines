@@ -65,8 +65,8 @@ void MachActorImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachActorImpl& t)
 {
 
-    o << "MachActorImpl " << (void*)&t << " start" << std::endl;
-    o << "MachActorImpl " << (void*)&t << " end" << std::endl;
+    o << "MachActorImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachActorImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

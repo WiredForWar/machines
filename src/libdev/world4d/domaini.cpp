@@ -31,8 +31,8 @@ void W4dDomainImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dDomainImpl& t)
 {
 
-    o << "W4dDomainImpl " << (void*)&t << " start" << std::endl;
-    o << "W4dDomainImpl " << (void*)&t << " end" << std::endl;
+    o << "W4dDomainImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dDomainImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

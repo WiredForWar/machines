@@ -32,7 +32,7 @@
 
 NetINetwork::~NetINetwork()
 {
-    NETWORK_STREAM("NetINetwork::~NetINetwork " << (void*)this << std::endl);
+    NETWORK_STREAM("NetINetwork::~NetINetwork " << static_cast<const void*>(this) << std::endl);
     NETWORK_INDENT(2);
     NETWORK_STREAM("ask record what state it is in...\n");
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
@@ -77,7 +77,7 @@ NetINetwork::~NetINetwork()
         RecRecorder::instance().recordingAllowed(true);
     }
     NETWORK_INDENT(-2);
-    NETWORK_STREAM("NetINetwork::~NetINetwork DONE " << (void*)this << std::endl);
+    NETWORK_STREAM("NetINetwork::~NetINetwork DONE " << static_cast<const void*>(this) << std::endl);
 }
 
 NetProcessUid& NetINetwork::processUidMaster() const

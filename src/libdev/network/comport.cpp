@@ -36,8 +36,8 @@ void NetComPortAddress::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const NetComPortAddress& t)
 {
 
-    o << "NetComPortAddress " << (void*)&t << " start" << std::endl;
-    o << "NetComPortAddress " << (void*)&t << " end" << std::endl;
+    o << "NetComPortAddress " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "NetComPortAddress " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

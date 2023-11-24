@@ -35,8 +35,8 @@ void MachGuiDispositionChangeNotifiable::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDispositionChangeNotifiable& t)
 {
 
-    o << "MachGuiDispositionChangeNotifiable " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDispositionChangeNotifiable " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDispositionChangeNotifiable " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDispositionChangeNotifiable " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -125,8 +125,8 @@ void PhysTimedAnglePlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysTimedAnglePlan& t)
 {
 
-    o << "PhysTimedAnglePlan " << (void*)&t << " start" << std::endl;
-    o << "PhysTimedAnglePlan " << (void*)&t << " end" << std::endl;
+    o << "PhysTimedAnglePlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysTimedAnglePlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

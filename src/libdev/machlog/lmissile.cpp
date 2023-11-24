@@ -38,8 +38,8 @@ void MachLogLargeMissile::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogLargeMissile& t)
 {
 
-    o << "MachLogLargeMissile " << (void*)&t << " start" << std::endl;
-    o << "MachLogLargeMissile " << (void*)&t << " end" << std::endl;
+    o << "MachLogLargeMissile " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogLargeMissile " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

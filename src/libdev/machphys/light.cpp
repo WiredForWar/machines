@@ -56,8 +56,8 @@ void MachPhysLight::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysLight& t)
 {
 
-    o << "MachPhysLight " << (void*)&t << " start" << std::endl;
-    o << "MachPhysLight " << (void*)&t << " end" << std::endl;
+    o << "MachPhysLight " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysLight " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -90,8 +90,8 @@ void GuiSimpleScrollableList::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const GuiSimpleScrollableList& t)
 {
 
-    o << "GuiSimpleScrollableList " << (void*)&t << " start" << std::endl;
-    o << "GuiSimpleScrollableList " << (void*)&t << " end" << std::endl;
+    o << "GuiSimpleScrollableList " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GuiSimpleScrollableList " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

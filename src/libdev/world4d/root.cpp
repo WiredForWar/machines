@@ -46,15 +46,15 @@ void W4dRoot::doDebugOutput(std::ostream& ostr)
 // Write out the details of 'this' for debugging purposes.
 {
     TEST_INVARIANT;
-    ostr << "Start W4dRoot " << (void*)this << std::endl;
-    ostr << "End   W4dRoot " << (void*)this << std::endl;
+    ostr << "Start W4dRoot " << static_cast<const void*>(this) << std::endl;
+    ostr << "End   W4dRoot " << static_cast<const void*>(this) << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& o, const W4dRoot& t)
 {
 
-    o << "W4dRoot " << (void*)&t << " start" << std::endl;
-    o << "W4dRoot " << (void*)&t << " end" << std::endl;
+    o << "W4dRoot " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dRoot " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -315,14 +315,14 @@ void SimManager::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SimManager& t)
 {
 
-    o << "SimManager " << (void*)&t << " start" << std::endl;
+    o << "SimManager " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " Processes " << t.pImpl_->processes_.size() << std::endl;
     if (t.pImpl_->processes_.size() > 0)
         for (SimManagerImpl::SimProcesses::const_iterator i = t.pImpl_->processes_.begin();
              i != t.pImpl_->processes_.end();
              ++i)
             o << *i << std::endl;
-    o << "SimManager " << (void*)&t << " end" << std::endl;
+    o << "SimManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

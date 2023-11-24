@@ -27,8 +27,8 @@ void NetNodeImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const NetNodeImpl& t)
 {
 
-    o << "NetNodeImpl " << (void*)&t << " start" << std::endl;
-    o << "NetNodeImpl " << (void*)&t << " end" << std::endl;
+    o << "NetNodeImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "NetNodeImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

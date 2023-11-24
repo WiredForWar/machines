@@ -80,8 +80,8 @@ void MachLogBeacon::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogBeacon& t)
 {
 
-    o << "MachLogBeacon " << (void*)&t << " start" << std::endl;
-    o << "MachLogBeacon " << (void*)&t << " end" << std::endl;
+    o << "MachLogBeacon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogBeacon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

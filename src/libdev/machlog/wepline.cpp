@@ -400,8 +400,8 @@ MachPhysLinearProjectile* MachLogLinearWeapon::createPhysLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogLinearWeapon& t)
 {
 
-    o << "MachLogLinearWeapon " << (void*)&t << " start" << std::endl;
-    o << "MachLogLinearWeapon " << (void*)&t << " end" << std::endl;
+    o << "MachLogLinearWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogLinearWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -42,8 +42,8 @@ void MachLogAutoScavengeOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogAutoScavengeOperationImpl& t)
 {
 
-    o << "MachLogAutoScavengeOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogAutoScavengeOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogAutoScavengeOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogAutoScavengeOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

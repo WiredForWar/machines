@@ -53,8 +53,8 @@ void MachLogRemoteFirstPersonManager::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogRemoteFirstPersonManager& t)
 {
 
-    o << "MachLogRemoteFirstPersonManager " << (void*)&t << " start" << std::endl;
-    o << "MachLogRemoteFirstPersonManager " << (void*)&t << " end" << std::endl;
+    o << "MachLogRemoteFirstPersonManager " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogRemoteFirstPersonManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

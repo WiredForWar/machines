@@ -246,8 +246,8 @@ bool MachLogEnterAPCOperation::doBeInterrupted()
 std::ostream& operator<<(std::ostream& o, const MachLogEnterAPCOperation& t)
 {
 
-    o << "MachLogEnterAPCOperation " << (void*)&t << " start" << std::endl;
-    o << "MachLogEnterAPCOperation " << (void*)&t << " end" << std::endl;
+    o << "MachLogEnterAPCOperation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogEnterAPCOperation " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

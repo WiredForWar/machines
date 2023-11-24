@@ -42,8 +42,8 @@ void MachGuiIonAttackCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiIonAttackCommand& t)
 {
 
-    o << "MachGuiIonAttackCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiIonAttackCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiIonAttackCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiIonAttackCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

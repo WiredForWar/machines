@@ -40,8 +40,8 @@ void MachGuiStopCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiStopCommand& t)
 {
 
-    o << "MachGuiStopCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStopCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStopCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStopCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

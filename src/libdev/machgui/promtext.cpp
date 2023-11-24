@@ -181,8 +181,8 @@ void MachPromptText::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPromptText& t)
 {
 
-    o << "MachPromptText " << (void*)&t << " start" << std::endl;
-    o << "MachPromptText " << (void*)&t << " end" << std::endl;
+    o << "MachPromptText " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPromptText " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

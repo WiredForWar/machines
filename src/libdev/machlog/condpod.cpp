@@ -67,7 +67,7 @@ const PhysRelativeTime& MachLogPodCapturedCondition::recommendedCallBackTimeGap(
 void MachLogPodCapturedCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogPodCapturedCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogPodCapturedCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << race_ << std::endl;
 }
 

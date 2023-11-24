@@ -146,8 +146,8 @@ void MachPhysResourceCarrier::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysResourceCarrier& t)
 {
 
-    o << "MachPhysResourceCarrier " << (void*)&t << " start" << std::endl;
-    o << "MachPhysResourceCarrier " << (void*)&t << " end" << std::endl;
+    o << "MachPhysResourceCarrier " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysResourceCarrier " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

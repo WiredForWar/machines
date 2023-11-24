@@ -39,8 +39,8 @@ void MachLogPulseBlob::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPulseBlob& t)
 {
 
-    o << "MachLogPulseBlob " << (void*)&t << " start" << std::endl;
-    o << "MachLogPulseBlob " << (void*)&t << " end" << std::endl;
+    o << "MachLogPulseBlob " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPulseBlob " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

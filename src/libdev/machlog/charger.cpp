@@ -30,7 +30,7 @@ MachLogSuperCharger::MachLogSuperCharger(MachLogRace* pRace, MachPhysSuperCharge
 {
     HAL_STREAM(
         "MLSuperCharger::CTOR currentlyAttached " << currentlyAttached() << " healing " << healing_ << std::endl);
-    HAL_STREAM("(void*)this " << (void*)this << std::endl);
+    HAL_STREAM("(void*)this " << static_cast<const void*>(this) << std::endl);
     TEST_INVARIANT;
 }
 
@@ -138,8 +138,8 @@ bool MachLogSuperCharger::healing() const
 std::ostream& operator<<(std::ostream& o, const MachLogSuperCharger& t)
 {
 
-    o << "MachLogSuperCharger " << (void*)&t << " start" << std::endl;
-    o << "MachLogSuperCharger " << (void*)&t << " end" << std::endl;
+    o << "MachLogSuperCharger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogSuperCharger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

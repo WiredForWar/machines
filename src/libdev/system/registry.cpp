@@ -123,8 +123,8 @@ void SysRegistry::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SysRegistry& t)
 {
 
-    o << "SysRegistry " << (void*)&t << " start" << std::endl;
-    o << "SysRegistry " << (void*)&t << " end" << std::endl;
+    o << "SysRegistry " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SysRegistry " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

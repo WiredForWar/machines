@@ -63,8 +63,8 @@ void MachPhysScavenger::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysScavenger& t)
 {
 
-    o << "MachPhysScavenger " << (void*)&t << " start" << std::endl;
-    o << "MachPhysScavenger " << (void*)&t << " end" << std::endl;
+    o << "MachPhysScavenger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysScavenger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

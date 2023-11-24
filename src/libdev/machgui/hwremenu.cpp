@@ -48,8 +48,8 @@ MachHWResearchMenu::createList(GuiDisplayable* pParent, const Gui::Coord& rel, M
 std::ostream& operator<<(std::ostream& o, const MachHWResearchMenu& t)
 {
 
-    o << "MachHWResearchMenu " << (void*)&t << " start" << std::endl;
-    o << "MachHWResearchMenu " << (void*)&t << " end" << std::endl;
+    o << "MachHWResearchMenu " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachHWResearchMenu " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

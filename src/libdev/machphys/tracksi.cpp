@@ -39,8 +39,8 @@ void MachPhysTracksImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysTracksImpl& t)
 {
 
-    o << "MachPhysTracksImpl " << (void*)&t << " start" << std::endl;
-    o << "MachPhysTracksImpl " << (void*)&t << " end" << std::endl;
+    o << "MachPhysTracksImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysTracksImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -50,8 +50,8 @@ void PedDomainEditor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PedDomainEditor& t)
 {
 
-    o << "PedDomainEditor " << (void*)&t << " start" << std::endl;
-    o << "PedDomainEditor " << (void*)&t << " end" << std::endl;
+    o << "PedDomainEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedDomainEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

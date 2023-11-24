@@ -127,7 +127,7 @@ const PhysRelativeTime& MachLogLowUnitCountCondition::recommendedCallBackTimeGap
 void MachLogLowUnitCountCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogLowUnitCountCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogLowUnitCountCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << "objectType_ " << objectType_ << race_ << " number " << number_ << std::endl;
 }
 

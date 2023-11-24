@@ -30,8 +30,8 @@ void MachLogSystemMessageHandler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogSystemMessageHandler& t)
 {
 
-    o << "MachLogSystemMessageHandler " << (void*)&t << " start" << std::endl;
-    o << "MachLogSystemMessageHandler " << (void*)&t << " end" << std::endl;
+    o << "MachLogSystemMessageHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogSystemMessageHandler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

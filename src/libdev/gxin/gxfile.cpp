@@ -186,8 +186,8 @@ void GXFile::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const GXFile& t)
 {
 
-    o << "GXIFile " << (void*)&t << " start" << std::endl;
-    o << "GXIFile " << (void*)&t << " end" << std::endl;
+    o << "GXIFile " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GXIFile " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

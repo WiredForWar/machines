@@ -42,8 +42,8 @@ void PhysCS2dExpansionSpace::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysCS2dExpansionSpace& t)
 {
 
-    o << "PhysCS2dExpansionSpace " << (void*)&t << " start" << std::endl;
-    o << "PhysCS2dExpansionSpace " << (void*)&t << " end" << std::endl;
+    o << "PhysCS2dExpansionSpace " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysCS2dExpansionSpace " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

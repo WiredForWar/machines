@@ -157,8 +157,8 @@ void MachPhysHealHelix::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysHealHelix& t)
 {
 
-    o << "MachPhysHealHelix " << (void*)&t << " start" << std::endl;
-    o << "MachPhysHealHelix " << (void*)&t << " end" << std::endl;
+    o << "MachPhysHealHelix " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysHealHelix " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -42,8 +42,8 @@ void MachGuiDefconCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDefconCommand& t)
 {
 
-    o << "MachGuiDefconCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDefconCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDefconCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDefconCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

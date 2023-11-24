@@ -160,8 +160,8 @@ void MachGuiCtxInGameOptions::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxInGameOptions& t)
 {
 
-    o << "MachGuiCtxInGameOptions " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxInGameOptions " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxInGameOptions " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxInGameOptions " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

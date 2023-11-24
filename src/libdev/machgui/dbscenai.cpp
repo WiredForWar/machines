@@ -34,8 +34,8 @@ void MachGuiDbIScenario::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbIScenario& t)
 {
 
-    o << "MachGuiDbIScenario " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbIScenario " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbIScenario " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbIScenario " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

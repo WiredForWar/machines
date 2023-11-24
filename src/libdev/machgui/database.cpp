@@ -101,8 +101,8 @@ void MachGuiDatabase::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDatabase& t)
 {
 
-    o << "MachGuiDatabase " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDatabase " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDatabase " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDatabase " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

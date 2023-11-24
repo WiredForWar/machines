@@ -99,8 +99,8 @@ void MachGuiBmuText::doHandleContainsMouseEvent(const GuiMouseEvent& rel)
 std::ostream& operator<<(std::ostream& o, const MachGuiBmuText& t)
 {
 
-    o << "MachGuiBmuText " << (void*)&t << " start" << std::endl;
-    o << "MachGuiBmuText " << (void*)&t << " end" << std::endl;
+    o << "MachGuiBmuText " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiBmuText " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

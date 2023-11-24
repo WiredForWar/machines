@@ -490,8 +490,8 @@ void PersistenceImplementationRead::writeAddress(const void* ptr) const
 std::ostream& operator<<(std::ostream& o, const PersistenceImplementationRead& t)
 {
 
-    o << "PersistenceImplementationRead " << (void*)&t << " start" << std::endl;
-    o << "PersistenceImplementationRead " << (void*)&t << " end" << std::endl;
+    o << "PersistenceImplementationRead " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PersistenceImplementationRead " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

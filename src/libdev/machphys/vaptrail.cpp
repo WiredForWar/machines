@@ -81,8 +81,8 @@ void MachPhysVapourTrail::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysVapourTrail& t)
 {
 
-    o << "MachPhysVapourTrail " << (void*)&t << " start" << std::endl;
-    o << "MachPhysVapourTrail " << (void*)&t << " end" << std::endl;
+    o << "MachPhysVapourTrail " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysVapourTrail " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

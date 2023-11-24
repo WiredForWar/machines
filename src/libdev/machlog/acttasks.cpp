@@ -39,8 +39,8 @@ void MachLogTaskStateAction::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogTaskStateAction& t)
 {
 
-    o << "MachLogTaskStateAction " << (void*)&t << " start" << std::endl;
-    o << "MachLogTaskStateAction " << (void*)&t << " end" << std::endl;
+    o << "MachLogTaskStateAction " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogTaskStateAction " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

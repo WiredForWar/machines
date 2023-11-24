@@ -72,8 +72,8 @@ void MachPhysPulseSplat::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysPulseSplat& t)
 {
 
-    o << "MachPhysPulseSplat " << (void*)&t << " start" << std::endl;
-    o << "MachPhysPulseSplat " << (void*)&t << " end" << std::endl;
+    o << "MachPhysPulseSplat " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysPulseSplat " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

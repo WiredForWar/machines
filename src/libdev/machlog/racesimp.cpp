@@ -31,8 +31,8 @@ void MachLogRacesDataImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogRacesDataImpl& t)
 {
 
-    o << "MachLogRacesDataImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogRacesDataImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogRacesDataImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogRacesDataImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

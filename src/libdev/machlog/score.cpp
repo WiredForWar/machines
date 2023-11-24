@@ -16,7 +16,7 @@ PER_DEFINE_PERSISTENT(MachLogScore);
 MachLogScore::MachLogScore(MachPhys::Race race)
     : pImpl_(new MachLogScoreImpl)
 {
-    HAL_STREAM("MachLogScore::MachLogScore for race " << race << " " << (void*)this << std::endl);
+    HAL_STREAM("MachLogScore::MachLogScore for race " << race << " " << static_cast<const void*>(this) << std::endl);
     pImpl_->race_ = race;
     resetNumbers();
     pImpl_->scoreShouldBeDisplayed_ = true;
@@ -26,7 +26,7 @@ MachLogScore::MachLogScore(MachPhys::Race race)
 
 MachLogScore::~MachLogScore()
 {
-    HAL_STREAM("MachLogScore::~MachLogScore " << (void*)this << std::endl);
+    HAL_STREAM("MachLogScore::~MachLogScore " << static_cast<const void*>(this) << std::endl);
     TEST_INVARIANT;
     delete pImpl_;
 }
@@ -258,7 +258,7 @@ void MachLogScore::adjustStatsForDestruction(KillerOrVictim killVictFlag, const 
 std::ostream& operator<<(std::ostream& o, const MachLogScore& t)
 {
 
-    o << "MachLogScore " << (void*)&t << " start" << std::endl;
+    o << "MachLogScore " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " score " << t.grossScore() << std::endl;
     o << " machinesBuilt_ " << t.machinesBuilt() << std::endl;
     o << " militaryMachinesBuilt_ " << t.militaryMachinesBuilt() << std::endl;
@@ -279,7 +279,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogScore& t)
     o << " itemsResearched_ " << t.itemsResearched() << std::endl;
     o << " totalResearchCost_ " << t.totalResearchCost() << std::endl;
     o << " BMUsMined_ " << t.BMUsMined() << std::endl;
-    o << "MachLogScore " << (void*)&t << " end" << std::endl;
+    o << "MachLogScore " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

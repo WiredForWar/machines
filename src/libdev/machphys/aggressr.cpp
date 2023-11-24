@@ -212,8 +212,8 @@ void MachPhysAggressor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysAggressor& t)
 {
 
-    o << "MachPhysAggressor " << (void*)&t << " start" << std::endl;
-    o << "MachPhysAggressor " << (void*)&t << " end" << std::endl;
+    o << "MachPhysAggressor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysAggressor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

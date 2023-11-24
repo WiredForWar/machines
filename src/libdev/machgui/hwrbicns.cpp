@@ -60,8 +60,8 @@ void MachHWResearchBankIcons::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachHWResearchBankIcons& t)
 {
 
-    o << "MachHWResearchBankIcons " << (void*)&t << " start" << std::endl;
-    o << "MachHWResearchBankIcons " << (void*)&t << " end" << std::endl;
+    o << "MachHWResearchBankIcons " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachHWResearchBankIcons " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

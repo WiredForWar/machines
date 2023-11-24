@@ -51,8 +51,8 @@ void MachGuiIntelligentCursorOnActor::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiIntelligentCursorOnActor& t)
 {
 
-    o << "MachGuiIntelligentCursorOnActor " << (void*)&t << " start" << std::endl;
-    o << "MachGuiIntelligentCursorOnActor " << (void*)&t << " end" << std::endl;
+    o << "MachGuiIntelligentCursorOnActor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiIntelligentCursorOnActor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

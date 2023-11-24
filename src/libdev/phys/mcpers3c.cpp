@@ -131,8 +131,8 @@ bool PhysThirdPersonCameraConstraint::snapTo(MexTransform3d*)
 std::ostream& operator<<(std::ostream& o, const PhysThirdPersonCameraConstraint& t)
 {
 
-    o << "PhysThirdPersonCameraConstraint " << (void*)&t << " start" << std::endl;
-    o << "PhysThirdPersonCameraConstraint " << (void*)&t << " end" << std::endl;
+    o << "PhysThirdPersonCameraConstraint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysThirdPersonCameraConstraint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

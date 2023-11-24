@@ -206,8 +206,8 @@ void MachPhysLightningHaloMaterialPlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysLightningHaloMaterialPlan& t)
 {
 
-    o << "MachPhysLightningHaloMaterialPlan " << (void*)&t << " start" << std::endl;
-    o << "MachPhysLightningHaloMaterialPlan " << (void*)&t << " end" << std::endl;
+    o << "MachPhysLightningHaloMaterialPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysLightningHaloMaterialPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

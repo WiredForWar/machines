@@ -158,8 +158,8 @@ string MachGuiPlayerNameList::truncate(const string& name, uint maxWidth)
 std::ostream& operator<<(std::ostream& o, const MachGuiPlayerNameList& t)
 {
 
-    o << "MachGuiPlayerNameList " << (void*)&t << " start" << std::endl;
-    o << "MachGuiPlayerNameList " << (void*)&t << " end" << std::endl;
+    o << "MachGuiPlayerNameList " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiPlayerNameList " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

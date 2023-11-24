@@ -36,8 +36,8 @@ void MachGuiDeployCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDeployCommand& t)
 {
 
-    o << "MachGuiDeployCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDeployCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDeployCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDeployCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

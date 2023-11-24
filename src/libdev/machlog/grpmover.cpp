@@ -121,8 +121,8 @@ void MachLogGroupMover::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogGroupMover& t)
 {
 
-    o << "MachLogGroupMover " << (void*)&t << " start" << std::endl;
-    o << "MachLogGroupMover " << (void*)&t << " end" << std::endl;
+    o << "MachLogGroupMover " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogGroupMover " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

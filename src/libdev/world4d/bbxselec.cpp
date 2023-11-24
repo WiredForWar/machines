@@ -42,8 +42,8 @@ void W4dBoundingBoxSelector::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dBoundingBoxSelector& t)
 {
 
-    o << "W4dBoundingBoxSelector " << (void*)&t << " start" << std::endl;
-    o << "W4dBoundingBoxSelector " << (void*)&t << " end" << std::endl;
+    o << "W4dBoundingBoxSelector " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dBoundingBoxSelector " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

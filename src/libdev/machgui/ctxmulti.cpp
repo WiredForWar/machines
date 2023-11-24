@@ -240,8 +240,8 @@ void MachGuiCtxMultiplayer::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxMultiplayer& t)
 {
 
-    o << "MachGuiCtxMultiplayer " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxMultiplayer " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxMultiplayer " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxMultiplayer " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

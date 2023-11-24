@@ -98,8 +98,8 @@ void MachPhysHemiSphere::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysHemiSphere& t)
 {
 
-    o << "MachPhysHemiSphere " << (void*)&t << " start" << std::endl;
-    o << "MachPhysHemiSphere " << (void*)&t << " end" << std::endl;
+    o << "MachPhysHemiSphere " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysHemiSphere " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

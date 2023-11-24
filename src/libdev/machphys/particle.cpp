@@ -81,8 +81,8 @@ void MachPhysParticles::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysParticles& t)
 {
 
-    o << "MachPhysParticles " << (void*)&t << " start" << std::endl;
-    o << "MachPhysParticles " << (void*)&t << " end" << std::endl;
+    o << "MachPhysParticles " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysParticles " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

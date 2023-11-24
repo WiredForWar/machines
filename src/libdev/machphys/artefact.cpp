@@ -30,7 +30,7 @@ MachPhysArtefact::MachPhysArtefact(W4dEntity* pModel, const MachPhysArtefactData
     , pData_(&data)
     , pDamage_(nullptr)
 {
-    HAL_STREAM("MachPhysArtefact::CTOR " << (void*)this << std::endl);
+    HAL_STREAM("MachPhysArtefact::CTOR " << static_cast<const void*>(this) << std::endl);
     // If the model is a composite and has an animation, play it
     if (pModel->isComposite())
     {
@@ -45,10 +45,10 @@ MachPhysArtefact::MachPhysArtefact(W4dEntity* pModel, const MachPhysArtefactData
 
 MachPhysArtefact::~MachPhysArtefact()
 {
-    HAL_STREAM("MachPhysArtefact::DTOR " << (void*)this << std::endl);
+    HAL_STREAM("MachPhysArtefact::DTOR " << static_cast<const void*>(this) << std::endl);
     delete pDamage_;
     TEST_INVARIANT;
-    HAL_STREAM("MachPhysArtefact::DTOR DONE " << (void*)this << std::endl);
+    HAL_STREAM("MachPhysArtefact::DTOR DONE " << static_cast<const void*>(this) << std::endl);
 }
 
 void MachPhysArtefact::CLASS_INVARIANT
@@ -59,8 +59,8 @@ void MachPhysArtefact::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysArtefact& t)
 {
 
-    o << "MachPhysArtefact " << (void*)&t << " start" << std::endl;
-    o << "MachPhysArtefact " << (void*)&t << " end" << std::endl;
+    o << "MachPhysArtefact " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysArtefact " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -75,7 +75,7 @@ MexConvexPolygon2d* MachPhysArtefact::newGlobalBoundary() const
 
 void MachPhysArtefact::damageLevel(const double& percent)
 {
-    HAL_STREAM("MachPhysArtefact::damageLevel " << percent << " " << (void*)this << std::endl);
+    HAL_STREAM("MachPhysArtefact::damageLevel " << percent << " " << static_cast<const void*>(this) << std::endl);
     if (percent > 0 && pDamage_ == nullptr)
     {
         pDamage_ = new MachPhysEntityDamage(pModel_);

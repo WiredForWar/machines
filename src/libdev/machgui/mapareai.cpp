@@ -27,8 +27,8 @@ void MachGuiMapAreaImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiMapAreaImpl& t)
 {
 
-    o << "MachGuiMapAreaImpl " << (void*)&t << " start" << std::endl;
-    o << "MachGuiMapAreaImpl " << (void*)&t << " end" << std::endl;
+    o << "MachGuiMapAreaImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiMapAreaImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -34,7 +34,7 @@ void PersistenceObjectLog::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PersistenceObjectLog& t)
 {
 
-    o << "PersistenceObjectLog " << (void*)&t << " " << t.classname_ << " " << (void*)t.ptr_;
+    o << "PersistenceObjectLog " << static_cast<const void*>(&t) << " " << t.classname_ << " " << (void*)t.ptr_;
 
     return o;
 }

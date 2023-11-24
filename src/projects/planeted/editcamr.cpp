@@ -166,8 +166,8 @@ void PedCameraEditor::activateMode()
 std::ostream& operator<<(std::ostream& o, const PedCameraEditor& t)
 {
 
-    o << "PedCameraEditor " << (void*)&t << " start" << std::endl;
-    o << "PedCameraEditor " << (void*)&t << " end" << std::endl;
+    o << "PedCameraEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedCameraEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

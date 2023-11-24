@@ -61,8 +61,8 @@ void MachPhysRadialDisc::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysRadialDisc& t)
 {
 
-    o << "MachPhysRadialDisc " << (void*)&t << " start" << std::endl;
-    o << "MachPhysRadialDisc " << (void*)&t << " end" << std::endl;
+    o << "MachPhysRadialDisc " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysRadialDisc " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

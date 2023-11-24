@@ -61,11 +61,11 @@ void MachPhysWeaponData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysWeaponData& t)
 {
 
-    o << "MachPhysWeaponData " << (void*)&t << " start" << std::endl;
+    o << "MachPhysWeaponData " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "  Damage " << t.damagePoints_ << "  range " << t.range_ << "  speed " << t.projectileSpeed_ << std::endl;
     o << "  Rounds per burst " << t.nRoundsPerBurst_ << " duration " << t.burstDuration_ << "  reload time "
       << t.reloadTime_ << std::endl;
-    o << "MachPhysWeaponData " << (void*)&t << " end" << std::endl;
+    o << "MachPhysWeaponData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

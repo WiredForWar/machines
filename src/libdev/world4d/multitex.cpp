@@ -46,8 +46,8 @@ void W4dCycleMultiTextureData::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dCycleMultiTextureData& t)
 {
 
-    o << "W4dCycleMultiTextureData " << (void*)&t << " start" << std::endl;
-    o << "W4dCycleMultiTextureData " << (void*)&t << " end" << std::endl;
+    o << "W4dCycleMultiTextureData " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCycleMultiTextureData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

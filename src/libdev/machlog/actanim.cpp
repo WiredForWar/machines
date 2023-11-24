@@ -51,8 +51,8 @@ void MachLogPlayAnimationAction::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogPlayAnimationAction& t)
 {
 
-    o << "MachLogPlayAnimationAction " << (void*)&t << " start" << std::endl;
-    o << "MachLogPlayAnimationAction " << (void*)&t << " end" << std::endl;
+    o << "MachLogPlayAnimationAction " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogPlayAnimationAction " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

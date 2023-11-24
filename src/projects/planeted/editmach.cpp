@@ -646,8 +646,8 @@ void PedMachineEditor::createMapping(MachPhysMachine* machine, Machine* legalDat
 std::ostream& operator<<(std::ostream& o, const PedMachineEditor& t)
 {
 
-    o << "PedMachineEditor " << (void*)&t << " start" << std::endl;
-    o << "PedMachineEditor " << (void*)&t << " end" << std::endl;
+    o << "PedMachineEditor " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedMachineEditor " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

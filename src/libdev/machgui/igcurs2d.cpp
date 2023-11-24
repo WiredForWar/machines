@@ -113,8 +113,8 @@ void MachInGameCursors2d::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachInGameCursors2d& t)
 {
 
-    o << "MachInGameCursors2d " << (void*)&t << " start" << std::endl;
-    o << "MachInGameCursors2d " << (void*)&t << " end" << std::endl;
+    o << "MachInGameCursors2d " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachInGameCursors2d " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

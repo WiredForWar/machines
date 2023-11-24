@@ -44,8 +44,8 @@ void RenHierarchyLoader::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const RenHierarchyLoader& t)
 {
 
-    o << "RenHierarchyLoader " << (void*)&t << " start" << std::endl;
-    o << "RenHierarchyLoader " << (void*)&t << " end" << std::endl;
+    o << "RenHierarchyLoader " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "RenHierarchyLoader " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

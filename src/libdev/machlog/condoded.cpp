@@ -82,7 +82,7 @@ const PhysRelativeTime& MachLogAllOtherRacesUnitsDeadCondition::recommendedCallB
 void MachLogAllOtherRacesUnitsDeadCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogAllOtherRacesUnitsDeadCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogAllOtherRacesUnitsDeadCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << race_ << std::endl;
 }
 

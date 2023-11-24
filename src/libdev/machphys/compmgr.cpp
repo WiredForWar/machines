@@ -203,8 +203,8 @@ void MachPhysComplexityManager::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysComplexityManager& t)
 {
 
-    o << "MachPhysComplexityManager " << (void*)&t << " start" << std::endl;
-    o << "MachPhysComplexityManager " << (void*)&t << " end" << std::endl;
+    o << "MachPhysComplexityManager " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysComplexityManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

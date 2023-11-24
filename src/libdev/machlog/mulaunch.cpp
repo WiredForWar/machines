@@ -65,8 +65,8 @@ MachLogLinearProjectile* MachLogMultiLauncher::createLinearProjectile(
 std::ostream& operator<<(std::ostream& o, const MachLogMultiLauncher& t)
 {
 
-    o << "MachLogMultiLauncher " << (void*)&t << " start" << std::endl;
-    o << "MachLogMultiLauncher " << (void*)&t << " end" << std::endl;
+    o << "MachLogMultiLauncher " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogMultiLauncher " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

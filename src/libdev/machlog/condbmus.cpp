@@ -91,7 +91,7 @@ const PhysRelativeTime& MachLogBMUCountCondition::recommendedCallBackTimeGap() c
 void MachLogBMUCountCondition::doOutputOperator(std::ostream& o) const
 {
     SimCondition::doOutputOperator(o);
-    o << "MachLogBMUCountCondition " << (void*)this << " start" << std::endl;
+    o << "MachLogBMUCountCondition " << static_cast<const void*>(this) << " start" << std::endl;
     o << race_ << " number " << number_;
     if (checkType_ == GREATER_THAN_EQUAL)
         o << " GREATER_THAN_EQUAL\n";

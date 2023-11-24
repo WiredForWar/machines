@@ -48,8 +48,8 @@ void MachLogCanAttackImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogCanAttackImpl& t)
 {
 
-    o << "MachLogCanAttackImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogCanAttackImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogCanAttackImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogCanAttackImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

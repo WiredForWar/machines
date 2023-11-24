@@ -101,8 +101,8 @@ void MachPhysBolter::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysBolter& t)
 {
 
-    o << "MachPhysBolter " << (void*)&t << " start" << std::endl;
-    o << "MachPhysBolter " << (void*)&t << " end" << std::endl;
+    o << "MachPhysBolter " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysBolter " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

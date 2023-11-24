@@ -208,8 +208,8 @@ bool SndWaveManager::isLoaded(const SndWaveformId& id)
 
 std::ostream& operator<<(std::ostream& o, const SndWaveManager& t)
 {
-    o << "SndWaveManager " << (void*)&t << " start" << std::endl;
-    o << "SndWaveManager " << (void*)&t << " end" << std::endl;
+    o << "SndWaveManager " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SndWaveManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

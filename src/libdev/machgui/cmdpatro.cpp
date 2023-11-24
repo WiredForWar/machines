@@ -39,8 +39,8 @@ void MachGuiPatrolCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiPatrolCommand& t)
 {
 
-    o << "MachGuiPatrolCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiPatrolCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiPatrolCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiPatrolCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

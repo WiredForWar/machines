@@ -146,7 +146,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     , pCreationTimer_(new DevTimer())
     , pHasCDTransmissionTimer_(new DevTimer())
 {
-    NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady this " << static_cast<const void*>(this) << "\n");
     NETWORK_INDENT(2);
     // Display backdrop, play correct music, switch cursor on.
     changeBackdrop("gui/menu/sd.bmp");
@@ -236,21 +236,21 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
 
     TEST_INVARIANT;
     NETWORK_INDENT(-2);
-    NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady DONE this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady DONE this " << static_cast<const void*>(this) << "\n");
 }
 
 MachGuiCtxImReady::~MachGuiCtxImReady()
 {
     delete pCreationTimer_;
     delete pHasCDTransmissionTimer_;
-    NETWORK_STREAM("MachGuiCtxImReady:: ~MachGuiCtxImReady this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady:: ~MachGuiCtxImReady this " << static_cast<const void*>(this) << "\n");
     NETWORK_INDENT(2);
     TEST_INVARIANT;
 
     startupData().removeCtxImReady();
     GuiManager::instance().charFocus(pStartupScreens_);
     NETWORK_INDENT(-2);
-    NETWORK_STREAM("MachGuiCtxImReady:: ~MachGuiCtxImReady DONE this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady:: ~MachGuiCtxImReady DONE this " << static_cast<const void*>(this) << "\n");
 }
 
 void MachGuiCtxImReady::CLASS_INVARIANT
@@ -261,8 +261,8 @@ void MachGuiCtxImReady::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxImReady& t)
 {
 
-    o << "MachGuiCtxImReady " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxImReady " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxImReady " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxImReady " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -323,7 +323,7 @@ void MachGuiCtxImReady::update()
             if( not NetNetwork::instance().imStuffed() )
                 MachLogNetwork::instance().node().pingAll();
             //update pings every 1 second or so.
-            NETWORK_STREAM("MachGuiCtxImReady::update updatePlayerList from back of pingAll this " << (void*)this <<
+            NETWORK_STREAM("MachGuiCtxImReady::update updatePlayerList from back of pingAll this " << static_cast<const void*>(this) <<
         "\n" ); updatePlayerList();
         //  if( NetNetwork::instance().isLobbiedGame() )
                 {
@@ -397,7 +397,7 @@ void MachGuiCtxImReady::createPlayerList()
 
 void MachGuiCtxImReady::updatePlayerList()
 {
-    NETWORK_STREAM("MachGuiCtxImReady::updatePlayerList this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady::updatePlayerList this " << static_cast<const void*>(this) << "\n");
     NETWORK_INDENT(2);
     MachGuiStartupData::PlayerInfo* pPlayers = startupData().players();
 
@@ -426,7 +426,7 @@ void MachGuiCtxImReady::updatePlayerList()
     displaySystemMessages();
     updateStartAndReadyButtons();
     NETWORK_INDENT(-2);
-    NETWORK_STREAM("MachGuiCtxImReady::updatePlayerList DONE this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady::updatePlayerList DONE this " << static_cast<const void*>(this) << "\n");
 }
 
 void MachGuiCtxImReady::displaySystemMessages()
@@ -576,7 +576,7 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
 // virtual
 bool MachGuiCtxImReady::okayToSwitchContext()
 {
-    NETWORK_STREAM("MachGuiCtxImReady::okayToSwitchContext this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady::okayToSwitchContext this " << static_cast<const void*>(this) << "\n");
     NETWORK_INDENT(2);
     if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::EXIT)
     {
@@ -636,7 +636,7 @@ bool MachGuiCtxImReady::okayToSwitchContext()
         startupData().resetPlayers();
     }
     NETWORK_INDENT(-2);
-    NETWORK_STREAM("MachGuiCtxImReady::okayToSwitchContext DONE this " << (void*)this << "\n");
+    NETWORK_STREAM("MachGuiCtxImReady::okayToSwitchContext DONE this " << static_cast<const void*>(this) << "\n");
     return true;
 }
 

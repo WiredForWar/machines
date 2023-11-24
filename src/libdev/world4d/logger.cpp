@@ -44,8 +44,8 @@ void W4dLogger::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dLogger& t)
 {
 
-    o << "W4dLogger " << (void*)&t << " start" << std::endl;
-    o << "W4dLogger " << (void*)&t << " end" << std::endl;
+    o << "W4dLogger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dLogger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

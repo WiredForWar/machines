@@ -86,8 +86,8 @@ bool operator==(const MachLogBuildPoint& lhs, const MachLogBuildPoint& rhs)
 std::ostream& operator<<(std::ostream& o, const MachLogBuildPoint& t)
 {
 
-    o << "MachLogBuildPoint " << (void*)&t << " start" << std::endl;
-    o << "MachLogBuildPoint " << (void*)&t << " end" << std::endl;
+    o << "MachLogBuildPoint " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogBuildPoint " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

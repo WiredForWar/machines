@@ -321,8 +321,8 @@ void MachLogArmourer::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogArmourer& t)
 {
 
-    o << "MachLogArmourer " << (void*)&t << " start" << std::endl;
-    o << "MachLogArmourer " << (void*)&t << " end" << std::endl;
+    o << "MachLogArmourer " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogArmourer " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

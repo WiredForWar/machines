@@ -34,8 +34,8 @@ void MachLogDeployAPCOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogDeployAPCOperationImpl& t)
 {
 
-    o << "MachLogDeployAPCOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogDeployAPCOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogDeployAPCOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogDeployAPCOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

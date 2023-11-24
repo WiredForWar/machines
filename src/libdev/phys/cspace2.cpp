@@ -86,10 +86,10 @@ void PhysConfigSpace2d::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysConfigSpace2d& t)
 {
 
-    o << "PhysConfigSpace2d " << (void*)&t << " start" << std::endl;
+    o << "PhysConfigSpace2d " << static_cast<const void*>(&t) << " start" << std::endl;
     UtlIndentOstream ostr(o, "  ");
     ostr << t.impl_;
-    o << "PhysConfigSpace2d " << (void*)&t << " end" << std::endl;
+    o << "PhysConfigSpace2d " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -601,7 +601,7 @@ bool PhysConfigSpace2d::findPathExists(const FindPathId& id) const
 
 bool PhysConfigSpace2d::updateFindPath(const FindPathId& id, const PhysRelativeTime& maxTime)
 {
-    CS2VGRA_STREAM("PhysConfigSpace2d::updateFindPath entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysConfigSpace2d::updateFindPath entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
 
     PRE(findPathExists(id));
@@ -628,7 +628,7 @@ bool PhysConfigSpace2d::updateFindPath(const FindPathId& id, const PhysRelativeT
     const bool result = pIdFindPath->isFinished();
 
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysConfigSpace2d::updateFindPath exit " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysConfigSpace2d::updateFindPath exit " << static_cast<const void*>(this) << std::endl);
 
     return result;
 }
@@ -1531,7 +1531,7 @@ void PhysConfigSpace2d::removeCurrentDomainFindPathFromQueue()
 
 PhysCS2dFindPath* PhysConfigSpace2d::pCurrentFindPath()
 {
-    CS2VGRA_STREAM("PhysConfigSpace2d::pCurrentFindPath entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysConfigSpace2d::pCurrentFindPath entry " << static_cast<const void*>(this) << std::endl);
     CS2VGRA_INDENT(2);
 
     PRE(impl_.findPathQueue().size() > 0);
@@ -1574,7 +1574,7 @@ PhysCS2dFindPath* PhysConfigSpace2d::pCurrentFindPath()
     POST(result != nullptr);
 
     CS2VGRA_INDENT(-2);
-    CS2VGRA_STREAM("PhysConfigSpace2d::pCurrentFindPath entry " << (void*)this << std::endl);
+    CS2VGRA_STREAM("PhysConfigSpace2d::pCurrentFindPath entry " << static_cast<const void*>(this) << std::endl);
 
     return result;
 }

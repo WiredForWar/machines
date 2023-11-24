@@ -34,8 +34,8 @@ void MachGuiDatabaseHandler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDatabaseHandler& t)
 {
 
-    o << "MachGuiDatabaseHandler " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDatabaseHandler " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDatabaseHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDatabaseHandler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

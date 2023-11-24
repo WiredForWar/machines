@@ -70,8 +70,8 @@ void EnvElevationMaterialPlan::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const EnvElevationMaterialPlan& t)
 {
-    o << "EnvElevationMaterialPlan " << (void*)&t << " start" << std::endl;
-    o << "EnvElevationMaterialPlan " << (void*)&t << " end" << std::endl;
+    o << "EnvElevationMaterialPlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "EnvElevationMaterialPlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

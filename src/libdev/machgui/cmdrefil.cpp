@@ -35,8 +35,8 @@ void MachGuiRefillLandMineCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiRefillLandMineCommand& t)
 {
 
-    o << "MachGuiRefillLandMineCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiRefillLandMineCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiRefillLandMineCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiRefillLandMineCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -45,8 +45,8 @@ void PhysPersistence::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const PhysPersistence& t)
 {
 
-    o << "PhysPersistence " << (void*)&t << " start" << std::endl;
-    o << "PhysPersistence " << (void*)&t << " end" << std::endl;
+    o << "PhysPersistence " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PhysPersistence " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

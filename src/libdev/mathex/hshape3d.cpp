@@ -32,8 +32,8 @@ std::ostream& operator<<(std::ostream& o, const MexHierShape3d& t)
 
 void MexHierShape3d::streamout(std::ostream& o) const
 {
-    o << "MexHierShape3d " << (void*)this << " start" << std::endl;
-    o << "MexHierShape3d " << (void*)this << " end" << std::endl;
+    o << "MexHierShape3d " << static_cast<const void*>(this) << " start" << std::endl;
+    o << "MexHierShape3d " << static_cast<const void*>(this) << " end" << std::endl;
 }
 
 /* End SHAPE3D.CPP ******************************************************/

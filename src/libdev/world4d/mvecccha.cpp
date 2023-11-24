@@ -113,8 +113,8 @@ void W4dCompositeMaterialVecChanger::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dCompositeMaterialVecChanger& t)
 {
 
-    o << "W4dCompositeMaterialVecChanger " << (void*)&t << " start" << std::endl;
-    o << "W4dCompositeMaterialVecChanger " << (void*)&t << " end" << std::endl;
+    o << "W4dCompositeMaterialVecChanger " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCompositeMaterialVecChanger " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

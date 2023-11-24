@@ -189,8 +189,8 @@ void MachPhysTrailedProjectile::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachPhysTrailedProjectile& t)
 {
 
-    o << "MachPhysTrailedProjectile " << (void*)&t << " start" << std::endl;
-    o << "MachPhysTrailedProjectile " << (void*)&t << " end" << std::endl;
+    o << "MachPhysTrailedProjectile " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysTrailedProjectile " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

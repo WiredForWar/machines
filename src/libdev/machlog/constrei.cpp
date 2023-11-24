@@ -26,8 +26,8 @@ void MachLogConstructionTreeImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogConstructionTreeImpl& t)
 {
 
-    o << "MachLogConstructionTreeImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogConstructionTreeImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogConstructionTreeImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogConstructionTreeImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -90,8 +90,8 @@ void MachLogSmelter::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogSmelter& t)
 {
 
-    o << "MachLogSmelter " << (void*)&t << " start" << std::endl;
-    o << "MachLogSmelter " << (void*)&t << " end" << std::endl;
+    o << "MachLogSmelter " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogSmelter " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

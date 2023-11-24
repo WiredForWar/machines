@@ -514,8 +514,8 @@ void MachGuiCtxStatistics::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCtxStatistics& t)
 {
 
-    o << "MachGuiCtxStatistics " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCtxStatistics " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCtxStatistics " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCtxStatistics " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

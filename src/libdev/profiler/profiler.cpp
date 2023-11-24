@@ -237,8 +237,8 @@ void ProProfiler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const ProProfiler& t)
 {
 
-    o << "ProProfiler " << (void*)&t << " start" << std::endl;
-    o << "ProProfiler " << (void*)&t << " end" << std::endl;
+    o << "ProProfiler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "ProProfiler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

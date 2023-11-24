@@ -53,8 +53,8 @@ void MachGuiCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiCommand& t)
 {
 
-    o << "MachGuiCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

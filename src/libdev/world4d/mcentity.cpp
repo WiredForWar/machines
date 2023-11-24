@@ -85,8 +85,8 @@ void W4dMotionControlledEntity::localTransform(const MexTransform3d& trans)
 std::ostream& operator<<(std::ostream& o, const W4dMotionControlledEntity& t)
 {
 
-    o << "W4dMotionControlledEntity " << (void*)&t << " start" << std::endl;
-    o << "W4dMotionControlledEntity " << (void*)&t << " end" << std::endl;
+    o << "W4dMotionControlledEntity " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dMotionControlledEntity " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

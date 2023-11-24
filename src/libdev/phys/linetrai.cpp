@@ -43,10 +43,10 @@ void PhysLinearTravelPlanImpl::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const PhysLinearTravelPlanImpl& t)
 {
-    o << "PhysLinearTravelPlanImpl " << (void*)&t << " start" << std::endl;
+    o << "PhysLinearTravelPlanImpl " << static_cast<const void*>(&t) << " start" << std::endl;
     o << (*t.transformsPtr_) << std::endl;
     o << (*t.rampAccelerationsPtr_) << std::endl;
-    o << "PhysLinearTravelPlanImpl " << (void*)&t << " end" << std::endl;
+    o << "PhysLinearTravelPlanImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

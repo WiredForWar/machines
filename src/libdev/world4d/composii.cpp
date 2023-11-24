@@ -73,8 +73,8 @@ void W4dCompositeImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dCompositeImpl& t)
 {
 
-    o << "W4dCompositeImpl " << (void*)&t << " start" << std::endl;
-    o << "W4dCompositeImpl " << (void*)&t << " end" << std::endl;
+    o << "W4dCompositeImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dCompositeImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

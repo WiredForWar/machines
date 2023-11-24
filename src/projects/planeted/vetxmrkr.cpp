@@ -94,8 +94,8 @@ void PedVertexMarker::addSmallBox(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALA
 std::ostream& operator<<(std::ostream& o, const PedVertexMarker& t)
 {
 
-    o << "PedVertexMarker " << (void*)&t << " start" << std::endl;
-    o << "PedVertexMarker " << (void*)&t << " end" << std::endl;
+    o << "PedVertexMarker " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "PedVertexMarker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -33,8 +33,8 @@ void MachGuiDbIPlanet::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbIPlanet& t)
 {
 
-    o << "MachGuiDbIPlanet " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbIPlanet " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbIPlanet " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbIPlanet " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

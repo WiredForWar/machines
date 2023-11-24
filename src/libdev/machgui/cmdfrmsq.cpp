@@ -31,8 +31,8 @@ void MachGuiFormSquadronCommand::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiFormSquadronCommand& t)
 {
 
-    o << "MachGuiFormSquadronCommand " << (void*)&t << " start" << std::endl;
-    o << "MachGuiFormSquadronCommand " << (void*)&t << " end" << std::endl;
+    o << "MachGuiFormSquadronCommand " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiFormSquadronCommand " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

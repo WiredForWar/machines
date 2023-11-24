@@ -26,8 +26,8 @@ void MachLogDyingEntityEventImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogDyingEntityEventImpl& t)
 {
 
-    o << "MachLogDyingEntityEventImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogDyingEntityEventImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogDyingEntityEventImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogDyingEntityEventImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

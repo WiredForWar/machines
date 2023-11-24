@@ -31,8 +31,8 @@ void DevSdlTimeInternal::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const DevSdlTimeInternal& t)
 {
 
-    o << "DevSdlTimeInternal " << (void*)&t << " start" << std::endl;
-    o << "DevSdlTimeInternal " << (void*)&t << " end" << std::endl;
+    o << "DevSdlTimeInternal " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "DevSdlTimeInternal " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

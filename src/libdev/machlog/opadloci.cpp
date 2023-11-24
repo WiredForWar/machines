@@ -57,8 +57,8 @@ void MachLogAdminLocateOperationImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogAdminLocateOperationImpl& t)
 {
 
-    o << "MachLogAdminLocateOperationImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogAdminLocateOperationImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogAdminLocateOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogAdminLocateOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

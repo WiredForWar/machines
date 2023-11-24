@@ -42,8 +42,8 @@ void W4dFloatValuePlan::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dFloatValuePlan& t)
 {
 
-    o << "W4dFloatValuePlan " << (void*)&t << " start" << std::endl;
-    o << "W4dFloatValuePlan " << (void*)&t << " end" << std::endl;
+    o << "W4dFloatValuePlan " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dFloatValuePlan " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

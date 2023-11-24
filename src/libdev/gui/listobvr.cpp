@@ -37,8 +37,8 @@ void GuiListObserver::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const GuiListObserver& t)
 {
 
-    o << "GuiListObserver " << (void*)&t << " start" << std::endl;
-    o << "GuiListObserver " << (void*)&t << " end" << std::endl;
+    o << "GuiListObserver " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GuiListObserver " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

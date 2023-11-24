@@ -25,8 +25,8 @@ void MachGuiStatistics::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiStatistics& t)
 {
 
-    o << "MachGuiStatistics " << (void*)&t << " start" << std::endl;
-    o << "MachGuiStatistics " << (void*)&t << " end" << std::endl;
+    o << "MachGuiStatistics " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiStatistics " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

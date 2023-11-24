@@ -44,8 +44,8 @@ void BaseMemWatcher::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const BaseMemWatcher& t)
 {
 
-    o << "BaseMemWatcher " << (void*)&t << " start" << std::endl;
-    o << "BaseMemWatcher " << (void*)&t << " end" << std::endl;
+    o << "BaseMemWatcher " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "BaseMemWatcher " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

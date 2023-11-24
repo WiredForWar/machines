@@ -52,8 +52,8 @@ void SysMetaFile::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SysMetaFile& t)
 {
 
-    o << "SysMetaFile " << (void*)&t << " start" << std::endl;
-    o << "SysMetaFile " << (void*)&t << " end" << std::endl;
+    o << "SysMetaFile " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SysMetaFile " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

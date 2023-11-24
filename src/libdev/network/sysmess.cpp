@@ -36,8 +36,8 @@ void NetSystemMessageHandler::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const NetSystemMessageHandler& t)
 {
 
-    o << "NetSystemMessageHandler " << (void*)&t << " start" << std::endl;
-    o << "NetSystemMessageHandler " << (void*)&t << " end" << std::endl;
+    o << "NetSystemMessageHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "NetSystemMessageHandler " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

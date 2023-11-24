@@ -205,7 +205,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogMineralSite& t)
     o << " discovered " << (t.hasBeenDiscovered() ? "True" : "False") << std::endl;
     if (t.hasBeenDiscovered())
         o << "  by race " << (int)t.discoveredByRace() << std::endl;
-    o << " " << (void*)&t << " END ";
+    o << " " << static_cast<const void*>(&t) << " END ";
     return o;
 }
 

@@ -127,8 +127,8 @@ void W4dEntityScale::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const W4dEntityScale& t)
 {
 
-    o << "W4dEntityScale " << (void*)&t << " start" << std::endl;
-    o << "W4dEntityScale " << (void*)&t << " end" << std::endl;
+    o << "W4dEntityScale " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "W4dEntityScale " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

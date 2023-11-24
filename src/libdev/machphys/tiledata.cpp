@@ -42,7 +42,7 @@ MachPhysTileData::MachPhysTileData(int nXVertices, int nYVertices, const MexAlig
     PRE(nXVertices <= NMAX_VERTICES);
     PRE(nYVertices <= NMAX_VERTICES);
 
-    PATH_PROFILE_STREAM("TileData " << (void*)this << " " << mesh.pathName() << " " << mesh.meshName() << std::endl);
+    PATH_PROFILE_STREAM("TileData " << static_cast<const void*>(this) << " " << mesh.pathName() << " " << mesh.meshName() << std::endl);
 
     // This static collection used to cache lists of triangle ids
     trianglesDone_.reserve(64);
@@ -522,7 +522,7 @@ bool MachPhysTileData::lineIntersectsCell(MachPhysTileData& tileData, int xCell,
 std::ostream& operator<<(std::ostream& o, const MachPhysTileData& t)
 {
 
-    o << "MachPhysTileData " << (void*)&t << " start" << std::endl;
+    o << "MachPhysTileData " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "  Grid vertices " << t.nXVertices_ << " x " << t.nYVertices_ << std::endl;
     o << "  Boundary " << t.boundary_ << std::endl;
     o << "  Vertices" << std::endl;
@@ -548,7 +548,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysTileData& t)
 
             o << std::endl;
         }
-    o << "MachPhysTileData " << (void*)&t << " end" << std::endl;
+    o << "MachPhysTileData " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
@@ -796,7 +796,7 @@ bool MachPhysTileData::profileValid(const Profile& profile) const
 {
     bool result = true;
 
-    PATH_PROFILE_STREAM("TileData " << (void*)this << std::endl);
+    PATH_PROFILE_STREAM("TileData " << static_cast<const void*>(this) << std::endl);
 
     //  Check that if two points have the same X and Y coordinates
     //  that they also have the same Z coordinate - i.e. no vertical moves
@@ -1029,7 +1029,7 @@ void MachPhysTileData::sortTriangles(
     const MexPoint3d& finishPoint,
     IntersectingTriangles* pIntersectingTriangles) const
 {
-    PATH_PROFILE_STREAM("Enter sort triangles " << (void*)this << std::endl);
+    PATH_PROFILE_STREAM("Enter sort triangles " << static_cast<const void*>(this) << std::endl);
     PATH_PROFILE_INDENT(2);
 
     typedef bool (*PointSortFunction)(const MexPoint3d&, const MexPoint3d&);
@@ -1093,7 +1093,7 @@ void MachPhysTileData::sortTriangles(
     sort(pIntersectingTriangles->begin(), pIntersectingTriangles->end(), Sorter(pSortFn));
 
     PATH_PROFILE_INDENT(-2);
-    PATH_PROFILE_STREAM("Exit  sort triangles " << (void*)this << std::endl);
+    PATH_PROFILE_STREAM("Exit  sort triangles " << static_cast<const void*>(this) << std::endl);
 }
 
 // static

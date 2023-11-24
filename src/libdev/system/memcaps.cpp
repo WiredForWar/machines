@@ -102,8 +102,8 @@ void SysMemoryCaps::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const SysMemoryCaps& t)
 {
 
-    o << "SysMemoryCaps " << (void*)&t << " start" << std::endl;
-    o << "SysMemoryCaps " << (void*)&t << " end" << std::endl;
+    o << "SysMemoryCaps " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "SysMemoryCaps " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

@@ -36,11 +36,11 @@ void MexCompressedTransform3d::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MexCompressedTransform3d& t)
 {
 
-    o << "MexCompressedTransform3d " << (void*)&t << " start" << std::endl;
+    o << "MexCompressedTransform3d " << static_cast<const void*>(&t) << " start" << std::endl;
     o << " position " << t.position_ << std::endl;
     o << " xBasis " << t.xBasis_ << std::endl;
     o << " yBasis " << t.yBasis_ << std::endl;
-    o << "MexCompressedTransform3d " << (void*)&t << " end" << std::endl;
+    o << "MexCompressedTransform3d " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

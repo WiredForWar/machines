@@ -27,8 +27,8 @@ void MachLogVoiceMailImpl::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailImpl& t)
 {
 
-    o << "MachLogVoiceMailImpl " << (void*)&t << " start" << std::endl;
-    o << "MachLogVoiceMailImpl " << (void*)&t << " end" << std::endl;
+    o << "MachLogVoiceMailImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogVoiceMailImpl " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

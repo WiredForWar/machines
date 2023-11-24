@@ -49,8 +49,8 @@ void wdebug::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const wdebug& t)
 {
 
-    o << "wdebug " << (void*)&t << " start" << std::endl;
-    o << "wdebug " << (void*)&t << " end" << std::endl;
+    o << "wdebug " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "wdebug " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }

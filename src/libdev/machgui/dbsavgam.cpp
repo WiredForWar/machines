@@ -40,8 +40,8 @@ void MachGuiDbSavedGame::CLASS_INVARIANT
 std::ostream& operator<<(std::ostream& o, const MachGuiDbSavedGame& t)
 {
 
-    o << "MachGuiDbSavedGame " << (void*)&t << " start" << std::endl;
-    o << "MachGuiDbSavedGame " << (void*)&t << " end" << std::endl;
+    o << "MachGuiDbSavedGame " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiDbSavedGame " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
