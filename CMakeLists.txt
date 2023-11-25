@@ -89,17 +89,20 @@ option_on_off_auto(BUILD_WITH_ALURE "Build with Alure support" "Auto")
 option(BUILD_32 "Builds 32 bit executable" OFF)
 # Include cmake directory with some additions
 
-include(CompilerSettings)
-
 # Asserts can be enabled/disabled regardless of build type
 option(DEV_BUILD "Enable assert()s and other debug checks" ON)
 
+set(WARNINGS_AS_ERRORS FALSE)
+option(ENABLE_CLANG_TIDY "Enable clang-tidy" ON)
 option(BUILD_PLANETED "Build the PlanetEditor" OFF)
 
 # Warn about development build
 if(DEV_BUILD)
     message(STATUS "Building with development extensions")
 endif()
+
+include(CompilerSettings)
+include(StaticAnalyzers)
 
 # Testing
 #option(BUILD_TESTS "Build the test suite" off)
@@ -125,6 +128,11 @@ if(BUILD_EXPORT_CC_CMDS)
     endif()
     message(STATUS "Export of compile commands is set to: ${CMAKE_EXPORT_COMPILE_COMMANDS}")
 endif(BUILD_EXPORT_CC_CMDS)
+
+add_library(machines_options INTERFACE)
+if(ENABLE_CLANG_TIDY)
+    enable_clang_tidy(machines_options ${WARNINGS_AS_ERRORS})
+endif()
 
 ##
 # Searching for packages
