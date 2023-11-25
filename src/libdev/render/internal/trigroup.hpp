@@ -47,8 +47,8 @@ public:
 
     bool operator<(const RenIMaterialGroup&) const;
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(RenIMaterialGroup);
-    PER_FRIEND_READ_WRITE(RenIMaterialGroup);
+    PER_MEMBER_PERSISTENT_ABSTRACT(RenIMaterialGroup)
+    PER_FRIEND_READ_WRITE(RenIMaterialGroup)
 
     virtual void write(std::ostream&) const = 0;
 
@@ -79,8 +79,8 @@ public:
 
     void write(std::ostream&) const override;
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(RenITriangleGroup);
-    PER_FRIEND_READ_WRITE(RenITriangleGroup);
+    PER_MEMBER_PERSISTENT_ABSTRACT(RenITriangleGroup)
+    PER_FRIEND_READ_WRITE(RenITriangleGroup)
 
 private:
     bool backFace_;
@@ -113,8 +113,8 @@ public:
 
     void write(std::ostream&) const override;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(RenIDistinctGroup);
-    PER_FRIEND_READ_WRITE(RenIDistinctGroup);
+    PER_MEMBER_PERSISTENT_VIRTUAL(RenIDistinctGroup)
+    PER_FRIEND_READ_WRITE(RenIDistinctGroup)
 
 private:
     IndexVec indices_;
@@ -147,8 +147,8 @@ public:
     using IndexVec = ctl_min_memory_vector<Ren::VertexIdx>;
 
     void write(std::ostream&) const override;
-    PER_MEMBER_PERSISTENT_VIRTUAL(RenILineGroup);
-    PER_FRIEND_READ_WRITE(RenILineGroup);
+    PER_MEMBER_PERSISTENT_VIRTUAL(RenILineGroup)
+    PER_FRIEND_READ_WRITE(RenILineGroup)
 
 private:
     IndexVec indices_;

@@ -56,8 +56,8 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const RenColour& t);
     friend std::istream& operator>>(std::istream& i, RenColour& t);
 
-    PER_MEMBER_PERSISTENT_DEFAULT(RenColour);
-    PER_FRIEND_READ_WRITE(RenColour);
+    PER_MEMBER_PERSISTENT_DEFAULT(RenColour)
+    PER_FRIEND_READ_WRITE(RenColour)
 
 private:
     bool lessThanOrEq(float d1, float d2) const;

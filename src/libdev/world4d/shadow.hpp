@@ -54,8 +54,8 @@ public:
     static void minIntensity(MATHEX_SCALAR); // default = 0.1
     static void maxIntensity(MATHEX_SCALAR); // default = 0.6
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(W4dShadow);
-    PER_FRIEND_READ_WRITE(W4dShadow);
+    PER_MEMBER_PERSISTENT_ABSTRACT(W4dShadow)
+    PER_FRIEND_READ_WRITE(W4dShadow)
 
 protected:
     static const W4dDirectionalLight* light();
@@ -96,8 +96,8 @@ public:
     // Set the projection plane for all shadows to be z=zs.  Default=0.
     static void shadowPlaneZ(MATHEX_SCALAR zs);
 
-    PER_MEMBER_PERSISTENT(W4dShadowProjected2d);
-    PER_FRIEND_READ_WRITE(W4dShadowProjected2d);
+    PER_MEMBER_PERSISTENT(W4dShadowProjected2d)
+    PER_FRIEND_READ_WRITE(W4dShadowProjected2d)
 
 private:
     // This W4dEntity method is overriden in order to cast the shadow whenever
@@ -123,8 +123,8 @@ public:
     void copy(W4dEntity* parent) override;
     bool loadLODFile(const SysPathName& filename);
 
-    PER_MEMBER_PERSISTENT(W4dShadowFixed);
-    PER_FRIEND_READ_WRITE(W4dShadowFixed);
+    PER_MEMBER_PERSISTENT(W4dShadowFixed)
+    PER_FRIEND_READ_WRITE(W4dShadowFixed)
 };
 
 PER_DECLARE_PERSISTENT(W4dShadowFixed);

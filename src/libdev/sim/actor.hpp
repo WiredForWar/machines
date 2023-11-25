@@ -84,8 +84,8 @@ public:
     // in public interface as persistence mechanism may have to do this as well.
     void assignToDifferentProcess(SimProcess*);
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(SimActor);
-    PER_FRIEND_READ_WRITE(SimActor);
+    PER_MEMBER_PERSISTENT_ABSTRACT(SimActor)
+    PER_FRIEND_READ_WRITE(SimActor)
 
 protected:
     // Set/get the time at which the actor has requested it should be next updated

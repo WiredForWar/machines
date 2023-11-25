@@ -73,8 +73,8 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbElement);
-    PER_FRIEND_READ_WRITE(MachGuiDbElement);
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbElement)
+    PER_FRIEND_READ_WRITE(MachGuiDbElement)
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbElement& t);

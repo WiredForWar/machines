@@ -46,7 +46,7 @@ public:
 
     bool isShared() const;
 
-    PER_MEMBER_PERSISTENT_DEFAULT(CtlCountedPtr);
+    PER_MEMBER_PERSISTENT_DEFAULT(CtlCountedPtr)
 
 private:
     friend class CtlConstCountedPtr<T>;
@@ -105,7 +105,7 @@ public:
 
     bool isShared() const;
 
-    PER_MEMBER_PERSISTENT_DEFAULT(CtlConstCountedPtr);
+    PER_MEMBER_PERSISTENT_DEFAULT(CtlConstCountedPtr)
 
 private:
     void init();

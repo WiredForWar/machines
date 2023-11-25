@@ -205,8 +205,8 @@ public:
     void CLASS_INVARIANT;
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexTransform3d);
-    PER_FRIEND_READ_WRITE(MexTransform3d);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexTransform3d)
+    PER_FRIEND_READ_WRITE(MexTransform3d)
 
 private:
     friend class MexCompressedTransform3d;

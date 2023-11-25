@@ -55,7 +55,7 @@ public:
     void persistAsRaw(bool flag);
     bool persistAsRaw() const;
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_min_memory_vector);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_min_memory_vector)
 
 private:
     bool persistAsRaw_;

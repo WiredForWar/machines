@@ -96,7 +96,7 @@ public:
     // PRE( xIndex < nXTiles() );
     // PRE( yIndex < nYTiles() );
 
-    CTL_PAIR(Floor, MexAlignedBox2d, area, MATHEX_SCALAR, height);
+    CTL_PAIR(Floor, MexAlignedBox2d, area, MATHEX_SCALAR, height)
     using Floors = ctl_vector<Floor>;
 
     // height of terrain at global coordinates (x, y) in planet space.
@@ -152,8 +152,8 @@ public:
     friend class MachPhysMachineExplosion;
     friend std::ostream& operator<<(std::ostream& o, const MachPhysPlanetSurface& t);
 
-    PER_MEMBER_PERSISTENT(MachPhysPlanetSurface);
-    PER_FRIEND_READ_WRITE(MachPhysPlanetSurface);
+    PER_MEMBER_PERSISTENT(MachPhysPlanetSurface)
+    PER_FRIEND_READ_WRITE(MachPhysPlanetSurface)
 
 private:
     // Operation deliberately revoked

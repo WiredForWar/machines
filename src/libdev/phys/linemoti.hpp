@@ -47,8 +47,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& o, const PhysLinearMotionPlan& t);
 
-    PER_MEMBER_PERSISTENT(PhysLinearMotionPlan);
-    PER_FRIEND_READ_WRITE(PhysLinearMotionPlan);
+    PER_MEMBER_PERSISTENT(PhysLinearMotionPlan)
+    PER_FRIEND_READ_WRITE(PhysLinearMotionPlan)
 
 private:
     // Operation deliberately revoked

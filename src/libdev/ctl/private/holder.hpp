@@ -47,7 +47,7 @@ public:
     //  This doesn't need to be virtual because nothing
     //  derives from this class. It is an exception to the
     //  normal persistence rules.
-    PER_MEMBER_PERSISTENT_DEFAULT(CtlCountHolder);
+    PER_MEMBER_PERSISTENT_DEFAULT(CtlCountHolder)
 };
 
 PER_DEFINE_PERSISTENT_INLINE_T1(CtlCountHolder);

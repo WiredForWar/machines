@@ -40,8 +40,8 @@ public:
     friend std::ostream& operator<<(std::ostream& str, const MexAngle& t);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexAngle);
-    PER_FRIEND_READ_WRITE(MexAngle);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexAngle)
+    PER_FRIEND_READ_WRITE(MexAngle)
 
     void CLASS_INVARIANT;
 

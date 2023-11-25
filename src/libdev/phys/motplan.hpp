@@ -58,8 +58,8 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(PhysMotionPlan);
-    PER_FRIEND_READ_WRITE(PhysMotionPlan);
+    PER_MEMBER_PERSISTENT_ABSTRACT(PhysMotionPlan)
+    PER_FRIEND_READ_WRITE(PhysMotionPlan)
 
 protected:
     // set the duration of the motion plan to newDuration

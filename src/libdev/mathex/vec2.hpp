@@ -89,8 +89,8 @@ public:
     void rotate(const MexRadians& angle);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexVec2);
-    PER_FRIEND_READ_WRITE(MexVec2);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexVec2)
+    PER_FRIEND_READ_WRITE(MexVec2)
 
 private:
     MATHEX_SCALAR x_, y_;

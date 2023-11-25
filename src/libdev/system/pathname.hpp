@@ -150,7 +150,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& o, const SysPathName& p);
 
-    PER_MEMBER_PERSISTENT_DEFAULT(SysPathName);
+    PER_MEMBER_PERSISTENT_DEFAULT(SysPathName)
 
 private:
     SysPathNameImpl* pImpl_;
@@ -168,7 +168,7 @@ private:
 
     bool checkForCapitals(const string& path) const;
 
-    PER_FRIEND_READ_WRITE(SysPathName);
+    PER_FRIEND_READ_WRITE(SysPathName)
     OBJECT_TRACKER(SysPathName);
 };
 

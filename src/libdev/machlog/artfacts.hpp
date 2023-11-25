@@ -105,8 +105,8 @@ public:
     // mechanism needs to call it as well hence the public access rights.
     void finish();
 
-    PER_MEMBER_PERSISTENT_DEFAULT(MachLogArtefacts);
-    PER_FRIEND_READ_WRITE(MachLogArtefacts);
+    PER_MEMBER_PERSISTENT_DEFAULT(MachLogArtefacts)
+    PER_FRIEND_READ_WRITE(MachLogArtefacts)
 
 private:
     friend class MachLogArtefactsImpl;

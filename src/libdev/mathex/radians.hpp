@@ -32,8 +32,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& o, const MexRadians& t);
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexRadians);
-    PER_FRIEND_READ_WRITE(MexRadians);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexRadians)
+    PER_FRIEND_READ_WRITE(MexRadians)
 };
 
 PER_DECLARE_PERSISTENT(MexRadians);

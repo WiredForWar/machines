@@ -35,7 +35,7 @@ public:
 
     ///////////////////////////////
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_list);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_list)
 };
 
 PER_DEFINE_PERSISTENT_INLINE_T1(ctl_list);

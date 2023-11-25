@@ -121,8 +121,8 @@ public:
     //           and externalPoint.y() < maxCorner().y() ) );
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexAlignedBox2d);
-    PER_FRIEND_READ_WRITE(MexAlignedBox2d);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexAlignedBox2d)
+    PER_FRIEND_READ_WRITE(MexAlignedBox2d)
 
 protected:
     void CLASS_INVARIANT

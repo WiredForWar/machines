@@ -49,8 +49,8 @@ public:
     // actually part of the displayed world (eg exemplars)
     static W4dRoot& hiddenRoot();
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(W4dRoot);
-    PER_FRIEND_READ_WRITE(W4dRoot);
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dRoot)
+    PER_FRIEND_READ_WRITE(W4dRoot)
 
 private:
     void doDebugOutput(std::ostream& ostr) override;

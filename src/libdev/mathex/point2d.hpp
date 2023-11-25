@@ -79,8 +79,8 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const MexPoint2d& t);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexPoint2d);
-    PER_FRIEND_READ_WRITE(MexPoint2d);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexPoint2d)
+    PER_FRIEND_READ_WRITE(MexPoint2d)
 
 private:
     // The coordinates

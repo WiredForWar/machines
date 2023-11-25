@@ -30,7 +30,7 @@ public:
     void print(std::ostream& o) const;
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenTexture);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenTexture)
 
 private:
     // Only the texture manager can create objects of this type.

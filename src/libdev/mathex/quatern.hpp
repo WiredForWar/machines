@@ -60,8 +60,8 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const MexQuaternion& t);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexQuaternion);
-    PER_FRIEND_READ_WRITE(MexQuaternion);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexQuaternion)
+    PER_FRIEND_READ_WRITE(MexQuaternion)
 
 private:
     // Data members

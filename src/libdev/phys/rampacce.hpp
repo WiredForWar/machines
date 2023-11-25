@@ -289,8 +289,8 @@ public:
     PhysRampAcceleration& operator=(const PhysRampAcceleration& copyMe);
     ///////////////////////////////////////////////////////////
 
-    PER_MEMBER_PERSISTENT_DEFAULT(PhysRampAcceleration);
-    PER_FRIEND_READ_WRITE(PhysRampAcceleration);
+    PER_MEMBER_PERSISTENT_DEFAULT(PhysRampAcceleration)
+    PER_FRIEND_READ_WRITE(PhysRampAcceleration)
 
 private:
     // Operations deliberately revoked

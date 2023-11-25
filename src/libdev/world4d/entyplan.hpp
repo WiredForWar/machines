@@ -250,8 +250,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& o, const W4dEntityPlan& t);
 
-    PER_MEMBER_PERSISTENT_DEFAULT(W4dEntityPlan);
-    PER_FRIEND_READ_WRITE(W4dEntityPlan);
+    PER_MEMBER_PERSISTENT_DEFAULT(W4dEntityPlan)
+    PER_FRIEND_READ_WRITE(W4dEntityPlan)
 
 private:
     // Operations deliberately revoked

@@ -138,8 +138,8 @@ public:
         bool operator()(const RenMaterial& m1, const RenMaterial& m2) const { return m1 < m2; }
     };
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenMaterial);
-    PER_FRIEND_READ_WRITE(RenMaterial);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenMaterial)
+    PER_FRIEND_READ_WRITE(RenMaterial)
 
 private:
     friend class RenIDeviceImpl;

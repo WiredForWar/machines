@@ -31,7 +31,7 @@ public:
 
     // ctl_deque< T >& operator =( const ctl_deque< T >& x );
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_deque);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_deque)
 
 private:
 };

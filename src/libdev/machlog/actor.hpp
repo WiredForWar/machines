@@ -265,8 +265,8 @@ public:
     void persistenceWriteStrategy(PerOstream&) const;
     void persistenceReadStrategy(PerIstream&);
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(MachActor);
-    PER_FRIEND_READ_WRITE(MachActor);
+    PER_MEMBER_PERSISTENT_ABSTRACT(MachActor)
+    PER_FRIEND_READ_WRITE(MachActor)
 
     bool isInSpecialUpdateActorsList() const;
     void isInSpecialUpdateActorsList(bool);

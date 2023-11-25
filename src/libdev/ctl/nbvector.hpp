@@ -47,7 +47,7 @@ public:
 
     ///////////////////////////////
 
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_nb_vector);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_nb_vector)
 
 private:
     // template < T > friend bool operator ==( const ctl_nb_vector< T >& a, const ctl_nb_vector< T >& b );

@@ -26,7 +26,7 @@ public:
     //  This used to be marked inline due to a watcom bug.
     //  this appears to have been fixed (inadvertantly) incase
     //  it comes back the comment remains.
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_pvector);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_pvector)
 };
 
 PER_DEFINE_PERSISTENT_INLINE_T1(ctl_pvector);

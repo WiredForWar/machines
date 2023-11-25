@@ -153,7 +153,7 @@ public:
     bool operator==(const MexXCoord<SCALAR>& x) const { return data_ == x.data_; }
 
     // Persistence
-    PER_MEMBER_PERSISTENT(MexXCoord);
+    PER_MEMBER_PERSISTENT(MexXCoord)
     template <class T> friend std::ostream& operator<<(std::ostream& ostr, const MexXCoord<T>& t);
     template <class T> friend void perWrite(PerOstream& stream, const MexXCoord<T>& t);
     template <class T> friend void perRead(PerIstream& stream, MexXCoord<T>& t);
@@ -177,7 +177,7 @@ public:
     bool operator==(const MexYCoord<SCALAR>& y) const { return data_ == y.data_; }
 
     // Persistence
-    PER_MEMBER_PERSISTENT(MexYCoord);
+    PER_MEMBER_PERSISTENT(MexYCoord)
     template <class T> friend std::ostream& operator<<(std::ostream& ostr, const MexYCoord<T>& t);
     template <class T> friend void perWrite(PerOstream& stream, const MexYCoord<T>& t);
     template <class T> friend void perRead(PerIstream& stream, MexYCoord<T>& t);

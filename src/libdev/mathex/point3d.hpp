@@ -86,8 +86,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const MexPoint3d&);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexPoint3d);
-    PER_FRIEND_READ_WRITE(MexPoint3d);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexPoint3d)
+    PER_FRIEND_READ_WRITE(MexPoint3d)
 
 private:
     enum

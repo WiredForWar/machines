@@ -97,8 +97,8 @@ public:
     W4dSubjectImpl& impl();
     const W4dSubjectImpl& impl() const;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(W4dSubject);
-    PER_FRIEND_READ_WRITE(W4dSubject);
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dSubject)
+    PER_FRIEND_READ_WRITE(W4dSubject)
 
 protected:
     // Override to implement output for the derived class

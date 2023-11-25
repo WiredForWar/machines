@@ -34,7 +34,7 @@ template <class T> class basic_string : public std::basic_string<T>
 public:
     using std::basic_string<T>::basic_string;
 
-    PER_MEMBER_PERSISTENT_DEFAULT(basic_string);
+    PER_MEMBER_PERSISTENT_DEFAULT(basic_string)
     // PER_DEFINE_PERSISTENT_INLINE_T1( basic_string );
 
     basic_string() { }

@@ -54,8 +54,8 @@ public:
 
     void CLASS_INVARIANT;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbPlanet);
-    PER_FRIEND_READ_WRITE(MachGuiDbPlanet);
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbPlanet)
+    PER_FRIEND_READ_WRITE(MachGuiDbPlanet)
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlanet& t);

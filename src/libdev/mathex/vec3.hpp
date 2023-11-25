@@ -107,8 +107,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const MexVec3&);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexVec3);
-    PER_FRIEND_READ_WRITE(MexVec3);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexVec3)
+    PER_FRIEND_READ_WRITE(MexVec3)
 
 private:
     enum

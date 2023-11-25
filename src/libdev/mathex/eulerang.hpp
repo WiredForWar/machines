@@ -48,8 +48,8 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const MexEulerAngles& t);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexEulerAngles);
-    PER_FRIEND_READ_WRITE(MexEulerAngles);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexEulerAngles)
+    PER_FRIEND_READ_WRITE(MexEulerAngles)
 
 private:
     MexRadians azimuth_;

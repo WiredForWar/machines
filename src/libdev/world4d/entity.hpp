@@ -366,8 +366,8 @@ public:
         DONT_ADD_TO_CHILD_LIST
     };
 
-    PER_MEMBER_PERSISTENT_ABSTRACT(W4dEntity);
-    PER_FRIEND_READ_WRITE(W4dEntity);
+    PER_MEMBER_PERSISTENT_ABSTRACT(W4dEntity)
+    PER_FRIEND_READ_WRITE(W4dEntity)
 
 protected:
     // Constructor attaches to parent, adds this to the parent's list of children,

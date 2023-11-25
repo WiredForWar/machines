@@ -50,7 +50,7 @@ public:
     // POST : T's destructor is applied to every element,
     // and all allocated raw memory is returned.
 
-    PER_MEMBER_PERSISTENT_DEFAULT(ctl_fixed_vector);
+    PER_MEMBER_PERSISTENT_DEFAULT(ctl_fixed_vector)
 
 private:
 };

@@ -32,7 +32,7 @@ public:
     // will be done automatically.
     virtual void domainDeleted(W4dDomain* pDomain) = 0;
 
-    PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT(W4dObserver);
+    PER_MEMBER_PERSISTENT_DEFAULT_ABSTRACT(W4dObserver)
 };
 
 PER_READ_WRITE(W4dObserver);

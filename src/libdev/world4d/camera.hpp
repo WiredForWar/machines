@@ -66,8 +66,8 @@ public:
     // Inherited from W4dEntity
     bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(W4dCamera);
-    PER_FRIEND_READ_WRITE(W4dCamera);
+    PER_MEMBER_PERSISTENT_VIRTUAL(W4dCamera)
+    PER_FRIEND_READ_WRITE(W4dCamera)
 
 protected:
     void doDebugOutput(std::ostream& ostr) override;

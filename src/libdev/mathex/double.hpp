@@ -49,8 +49,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const MexDouble&);
 
     // Persistence
-    PER_MEMBER_PERSISTENT_DEFAULT(MexDouble);
-    PER_FRIEND_READ_WRITE(MexDouble);
+    PER_MEMBER_PERSISTENT_DEFAULT(MexDouble)
+    PER_FRIEND_READ_WRITE(MexDouble)
 
 private:
     enum Cardinality : unsigned char

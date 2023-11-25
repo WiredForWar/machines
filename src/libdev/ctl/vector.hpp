@@ -29,7 +29,7 @@ public:
     virtual ~ctl_vector() {};
 
 private:
-    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_vector);
+    PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(ctl_vector)
 };
 
 PER_DEFINE_PERSISTENT_INLINE_T1(ctl_vector);

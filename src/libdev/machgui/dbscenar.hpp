@@ -100,8 +100,8 @@ public:
     void hasBeenWon(bool);
     bool hasBeenWon() const;
 
-    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbScenario);
-    PER_FRIEND_READ_WRITE(MachGuiDbScenario);
+    PER_MEMBER_PERSISTENT_VIRTUAL(MachGuiDbScenario)
+    PER_FRIEND_READ_WRITE(MachGuiDbScenario)
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbScenario& t);
