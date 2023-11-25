@@ -110,7 +110,7 @@ unsigned int AniSmackerRegular::width() const
 void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
 {
     // First time in? If so open the smack animation
-    if (not pSmack_)
+    if (! pSmack_)
     {
         pSmack_ = smk_open_file(fileName_.pathname().c_str(), SMK_MODE_MEMORY);
         // In debug version, assert that SmackOpen has worked
@@ -222,14 +222,14 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         advanceToNextFrame_ = (timeNow - lastFrameTime_ >= frameTime_);
 
         // Copy next frame from smacker file to the buffer.
-        if (advanceToNextFrame_ or fast_)
+        if (advanceToNextFrame_ || fast_)
         {
             copyCurrentFrameToBuffer(surface_);
             lastFrameTime_ = timeNow;
             shouldRender = true;
         }
 
-        if (shouldRender or not useFrontBuffer())
+        if (shouldRender || ! useFrontBuffer())
         {
             // Render the animation to a surface ( usually the screen ).
             if (useFrontBuffer())
@@ -444,11 +444,11 @@ void AniSmackerRegular::unpackBufferToSurface(const RenSurface& dst, const RenSu
     //  we might be pretending to continue to play even though the flic has
     //  actually finished.
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        doUnpack = not isFinishedNoRecord();
+        doUnpack = ! isFinishedNoRecord();
 
     if (doUnpack)
     {
-        ASSERT(not isFinishedNoRecord(), "");
+        ASSERT(! isFinishedNoRecord(), "");
 
         const_cast<RenSurface&>(dst).simpleBlit(src, xCoordTo_, yCoordTo_);
     }
@@ -468,7 +468,7 @@ bool AniSmackerRegular::isPenultimateFrame() const
 
 void AniSmackerRegular::getNextFrame()
 {
-    if (not isPenultimateFrame())
+    if (! isPenultimateFrame())
     {
         smk_next(pSmack_);
     }

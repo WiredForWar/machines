@@ -130,7 +130,7 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
 {
     if (selected())
     {
-        if (pMyListBox_ and pMyListBox_->isFocusControl())
+        if (pMyListBox_ && pMyListBox_->isFocusControl())
         {
             GuiPainter::instance().blit(
                 MachGui::longYellowGlowBmp(),
@@ -152,7 +152,7 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
     }
     else if (highlighted())
     {
-        if (pMyListBox_ and pMyListBox_->isFocusControl())
+        if (pMyListBox_ && pMyListBox_->isFocusControl())
         {
             GuiPainter::instance().blit(
                 MachGui::longYellowGlowBmp(),
@@ -210,7 +210,7 @@ void MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent(const GuiMouseEv
 
     highlighted_ = true;
 
-    if (not selected())
+    if (! selected())
         changed();
 }
 
@@ -219,7 +219,7 @@ void MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent(const GuiMouseEve
 {
     highlighted_ = false;
 
-    if (not selected())
+    if (! selected())
         changed();
 }
 

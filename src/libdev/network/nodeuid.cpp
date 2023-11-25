@@ -56,8 +56,8 @@ bool operator==(const NetNodeUid& lhs, const NetNodeUid& rhs)
     //       ( lhs.nodeName_ == rhs.nodeName_ ) )
     //       return true;
 
-    if ((lhs.interProcessUid_ == rhs.interProcessUid_) and (lhs.processUid_.threadUid() == rhs.processUid_.threadUid())
-        and (lhs.processUid_.processorUid() == rhs.processUid_.processorUid()) and (lhs.nodeName_ == rhs.nodeName_))
+    if ((lhs.interProcessUid_ == rhs.interProcessUid_) && (lhs.processUid_.threadUid() == rhs.processUid_.threadUid())
+        && (lhs.processUid_.processorUid() == rhs.processUid_.processorUid()) && (lhs.nodeName_ == rhs.nodeName_))
         return true;
 
     return false;

@@ -119,7 +119,7 @@ void MachLogNetwork::processNetworkIniSettings(const string& fileName)
     bool processingNetworkTokens = false;
     string protocol;
     string stringSessionId;
-    while (not parser.finished())
+    while (! parser.finished())
     {
         if (parser.tokens()[0] == "NETWORK")
         {
@@ -252,7 +252,7 @@ void MachLogNetwork::update()
 {
     CB_MachLogNetwork_DEPIMPL();
 
-    if (not isNetworkGame_)
+    if (! isNetworkGame_)
         return;
 
     // NETWORK_STREAM( "MachLogNetwork::update " );
@@ -267,7 +267,7 @@ void MachLogNetwork::update()
     }
     // remember that the network game may have dropped out due to system messages
     // in the pollmessages call above...therefore check that game is still running.
-    if (not isNetworkGame())
+    if (! isNetworkGame())
         return;
     // NETWORK_STREAM( " deref node\n" );
     //   NetNode& nod = node();
@@ -278,7 +278,7 @@ void MachLogNetwork::update()
         MachLogMessageBroker& broker = messageBroker();
         // network game status _may_ be changed by processing a message
         //       while( isNetworkGame_ and nod.haveMessages() )
-        while (isNetworkGame_ and NetNetwork::instance().haveMessages())
+        while (isNetworkGame_ && NetNetwork::instance().haveMessages())
         {
             // NETWORK_STREAM( " gunna process a message..\n" );
             broker.processMessage(NetNetwork::instance().getMessage());
@@ -287,7 +287,7 @@ void MachLogNetwork::update()
         // send any messages that the broker had to cache.
         // NETWORK_STREAM( "MLNetwork::update has broker cached messages? " << broker.hasCachedOutgoingMessages() <<
         // std::endl );
-        if (isNetworkGame_ and broker.hasCachedOutgoingMessages())
+        if (isNetworkGame_ && broker.hasCachedOutgoingMessages())
             broker.sendCachedOutgoingMessages();
     }
 
@@ -407,7 +407,7 @@ bool MachLogNetwork::joinWithSessionId(const string& gameName, const string& pla
     PhysRelativeTime timeout = 30;
     if (NetNetwork::instance().currentProtocol() == NetNetwork::MODEM)
         timeout = 1;
-    while (not pSelectedSessionUid and ((Phys::time() - startTime) < timeout))
+    while (! pSelectedSessionUid && ((Phys::time() - startTime) < timeout))
     {
         std::cout << "TimeOut in : " << timeout - (Phys::time() - startTime) << " seconds.                 \r";
         // issue an update to the network which will go and populate the sessions collection.
@@ -418,7 +418,7 @@ bool MachLogNetwork::joinWithSessionId(const string& gameName, const string& pla
         NetNetwork::Sessions::const_iterator i = availableSessions.begin();
         NetNetwork::Sessions::const_iterator j = availableSessions.end();
 
-        for (; i != j and not pSelectedSessionUid; ++i)
+        for (; i != j && ! pSelectedSessionUid; ++i)
         {
             if ((*i)->appSessionName() == selectedSessionName)
             {

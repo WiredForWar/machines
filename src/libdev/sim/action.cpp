@@ -30,7 +30,7 @@ SimAction::~SimAction()
 
 bool SimAction::checkConditionAndDoAction()
 {
-    if (not enabled())
+    if (! enabled())
         return false;
 
     if (pCondition_->hasConditionBeenMet())

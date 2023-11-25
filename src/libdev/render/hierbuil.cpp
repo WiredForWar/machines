@@ -58,7 +58,7 @@ void RenHierarchyBuilder::addNode(Node* pNode)
         pCurrentNode_ = pNode;
     }
 
-    while (pCurrentNode_ and pCurrentNode_->allChildrenSupplied())
+    while (pCurrentNode_ && pCurrentNode_->allChildrenSupplied())
         pCurrentNode_ = pCurrentNode_->pParent();
 }
 

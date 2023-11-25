@@ -33,16 +33,16 @@ W4dEntityScale::~W4dEntityScale()
 
 void W4dEntityScale::meshScale(const RenScale& scale)
 {
-    PRE(not scale.isUnity());
+    PRE(! scale.isUnity());
 
     // If we have an existing scale of the same type, use assignment
     if (pScale_)
     {
         bool existingUniform = pScale_->isUniform();
         bool newUniform = scale.isUniform();
-        if (existingUniform and newUniform)
+        if (existingUniform && newUniform)
             pScale_->asUniform() = scale.asUniform();
-        else if (not existingUniform and not newUniform)
+        else if (! existingUniform && ! newUniform)
             pScale_->asNonUniform() = scale.asNonUniform();
         else
         {
@@ -52,7 +52,7 @@ void W4dEntityScale::meshScale(const RenScale& scale)
     }
 
     // If still don't have a scale, copy the argument
-    if (not pScale_)
+    if (! pScale_)
         pScale_ = scale.clone();
 }
 
@@ -72,7 +72,7 @@ void W4dEntityScale::meshScale(const RenUniformScale& scale)
     }
 
     // If still don't have a scale, copy the argument
-    if (not pScale_)
+    if (! pScale_)
         pScale_ = scale.clone();
 }
 
@@ -92,7 +92,7 @@ void W4dEntityScale::meshScale(const RenNonUniformScale& scale)
     }
 
     // If still don't have a scale, copy the argument
-    if (not pScale_)
+    if (! pScale_)
         pScale_ = scale.clone();
 }
 

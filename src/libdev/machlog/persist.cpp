@@ -144,7 +144,7 @@ void MachLogPersistence::registerDerivedClasses()
 void perWrite(PerOstream& ostr, const MachLogPersistence& per)
 {
     PRE(per.pExtras_);
-    bool resumeClock = not SimManager::instance().isSuspended();
+    bool resumeClock = ! SimManager::instance().isSuspended();
     SimManager::instance().suspend();
     HAL_STREAM("MachLogPersistence::perWrite\n");
     per.setDataForWrite();

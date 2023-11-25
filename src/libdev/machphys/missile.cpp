@@ -59,7 +59,7 @@ MachPhysMissile::MachPhysMissile(
         localTransform,
         (lights == CREATE_LIGHTS) ? COPY_LIGHTS : DONT_COPY_LIGHTS)
 {
-    PRE(level > 0 and level < 10);
+    PRE(level > 0 && level < 10);
 
     if (!findLink("flame", &pFlame_))
         pFlame_ = nullptr;
@@ -343,7 +343,7 @@ PhysRelativeTime MachPhysMissile::beLaunched(
         startFlame(startTime, data);
     }
 
-    if (data.trailOn() and MachPhysComplexityManager::instance().vapourTrailsEnabled())
+    if (data.trailOn() && MachPhysComplexityManager::instance().vapourTrailsEnabled())
     {
 
         pVapourTrail_ = new MachPhysVapourTrail(pParent(), 16, 1.5, level_);

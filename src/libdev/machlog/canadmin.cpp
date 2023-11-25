@@ -106,22 +106,22 @@ void MachLogCanAdminister::handleIdleGeoLocator(MachLogCommsId obj)
 void MachLogCanAdminister::handleIdleConstructor(MachLogCommsId pObj)
 {
     MachLogConstructor* obj = &pObj->asConstructor();
-    if (obj->squadron() and obj->squadron()->hasCommander())
+    if (obj->squadron() && obj->squadron()->hasCommander())
         return;
 
     bool found = false;
 
     MachLogRaces::Mines& mines = MachLogRaces::instance().mines(obj->race());
     MachLogRaces::Mines::iterator i = mines.begin();
-    for (; i != mines.end() and not found; ++i)
+    for (; i != mines.end() && ! found; ++i)
     {
-        found = not(*i)->isComplete();
+        found = !(*i)->isComplete();
         MexPoint2d p((*i)->position().x(), (*i)->position().y());
         if (found)
             obj->newOperation(new MachLogConstructOperation(&obj->asConstructor(), *i));
     }
 
-    if (not found)
+    if (! found)
         moveOutOfTheWay(obj);
 }
 
@@ -188,7 +188,7 @@ void MachLogCanAdminister::handleIdleResourceCarrier(MachLogCommsId pObj)
 {
     MachLogMachine* obj = &pObj->asMachine();
     HAL_STREAM("(" << obj->id() << ") MachLogCanAdminister::handleIdleResourceCarrier" << std::endl);
-    if (obj->squadron() and obj->squadron()->hasCommander())
+    if (obj->squadron() && obj->squadron()->hasCommander())
         return;
 
     MachLogResourceCarrier::assignResourceCarrierTask(&obj->asResourceCarrier());
@@ -198,7 +198,7 @@ void MachLogCanAdminister::handleIdleResourceCarrier(MachLogCommsId pObj)
 void MachLogCanAdminister::handleIdleAPC(MachLogCommsId pObj)
 {
     MachLogMachine* obj = &pObj->asMachine();
-    if (obj->squadron() and obj->squadron()->hasCommander())
+    if (obj->squadron() && obj->squadron()->hasCommander())
         return;
 
     MachLogAPC::assignAPCTask(&obj->asAPC());
@@ -221,7 +221,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
     //  ASSERT( not garrisons.empty(), logic_error() );
 
     // check for already in a garrison.
-    if (pObj->insideBuilding() and pObj->insideWhichBuilding().objectType() == MachLog::GARRISON)
+    if (pObj->insideBuilding() && pObj->insideWhichBuilding().objectType() == MachLog::GARRISON)
         return;
 
     // if I am an aggressor then I will go to an assembly point of my race.
@@ -269,14 +269,14 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj)
         return;
     }
     int randomBaseChance
-        = (pObj->objectType() == MachLog::AGGRESSOR or pObj->objectType() == MachLog::ADMINISTRATOR) ? 5 : 1;
+        = (pObj->objectType() == MachLog::AGGRESSOR || pObj->objectType() == MachLog::ADMINISTRATOR) ? 5 : 1;
     if (pObj->objectType() == MachLog::GEO_LOCATOR)
         randomBaseChance = 10;
     // If no garrisons try to move to the pod
     // or 30% chance of moving to the pod
-    if (not foundGarrison or MachPhysRandom::randomInt(0, 10) < randomBaseChance)
+    if (! foundGarrison || MachPhysRandom::randomInt(0, 10) < randomBaseChance)
     {
-        if (not races.pods(pObj->race()).empty())
+        if (! races.pods(pObj->race()).empty())
         {
             MexPoint2d entrance = (*races.pods(pObj->race()).begin())->entranceExternalPoint(0);
 
@@ -325,7 +325,7 @@ void MachLogCanAdminister::moveOutOfTheWay(MachLogMachine* pObj, int assemblyPoi
             MATHEX_SCALAR radius = 0;
             MexTransform3d trans(dest);
             while (
-                not MachLogSpacialManipulation::getNearestFreeSpacePoint(trans, radius, pObj->highClearence(), &dest))
+                ! MachLogSpacialManipulation::getNearestFreeSpacePoint(trans, radius, pObj->highClearence(), &dest))
                 radius += 20;
 
             // less than 30m from an assembly point is good enough.

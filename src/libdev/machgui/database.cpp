@@ -40,13 +40,13 @@ MachGuiDatabase::MachGuiDatabase()
         savedGameRemoved = false;
         uint numSavedGames = nSavedGames();
 
-        for (uint loop = 0; loop < numSavedGames and not savedGameRemoved; ++loop)
+        for (uint loop = 0; loop < numSavedGames && ! savedGameRemoved; ++loop)
         {
             MachGuiDbSavedGame& savedGameObj = savedGame(loop);
 
             // Check for external file name on hard disk
             SysPathName externFileName(savedGameObj.externalFileName());
-            if (not externFileName.existsAsFile())
+            if (! externFileName.existsAsFile())
             {
                 removeSavedGame(&savedGameObj);
                 savedGameRemoved = true;
@@ -193,7 +193,7 @@ void MachGuiDatabase::parseCampaignFile()
     UtlLineTokeniser parser(virginDatabaseSourcePath());
 
     // Loop through the higher level constructs
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT(parser.tokens().size() == 1, "Incorrect number of tokens");
         if (parser.tokens()[0] == "CAMPAIGNS")
@@ -294,7 +294,7 @@ void MachGuiDatabase::parseCampaignSystem(UtlLineTokeniser& parser)
     string systemPicture;
     bool hadAfter = false;
 
-    while (not hadAfter and index + 1 < nTokens)
+    while (! hadAfter && index + 1 < nTokens)
     {
         const string& token = parser.tokens()[index++];
         if (token == "IDS")
@@ -312,7 +312,7 @@ void MachGuiDatabase::parseCampaignSystem(UtlLineTokeniser& parser)
         }
     }
 
-    if (not hadAfter)
+    if (! hadAfter)
     {
         ASSERT(index == nTokens, "Incorrect number of keywords");
     }
@@ -384,7 +384,7 @@ void MachGuiDatabase::parsePlanet(UtlLineTokeniser& parser, MachGuiDbSystem* pSy
     bool hadAfter = false;
     bool campaignContext = context == CAMPAIGNS;
 
-    while (not hadAfter and index + 1 < nTokens)
+    while (! hadAfter && index + 1 < nTokens)
     {
         const string& token = parser.tokens()[index++];
         if (token == "IDS")
@@ -393,9 +393,9 @@ void MachGuiDatabase::parsePlanet(UtlLineTokeniser& parser, MachGuiDbSystem* pSy
             planetNameMenu = parser.tokens()[index++];
         else if (token == "TEXT")
             textFile = parser.tokens()[index++];
-        else if (campaignContext and token == "FLIC")
+        else if (campaignContext && token == "FLIC")
             planetPicture = parser.tokens()[index++];
-        else if (campaignContext and token == "AFTER")
+        else if (campaignContext && token == "AFTER")
             hadAfter = true;
         else
         {
@@ -404,7 +404,7 @@ void MachGuiDatabase::parsePlanet(UtlLineTokeniser& parser, MachGuiDbSystem* pSy
         }
     }
 
-    if (not hadAfter)
+    if (! hadAfter)
     {
         ASSERT(index == nTokens, "Incorrect number of keywords");
     }
@@ -470,7 +470,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
     uint maxPlayers = 4;
     uint musicTrack = MachGuiStartupScreens::DEFAULT_INGAME_MUSIC;
 
-    while (not hadAfter and index + 1 < nTokens)
+    while (! hadAfter && index + 1 < nTokens)
     {
         const string& token = parser.tokens()[index++];
         if (token == "IDS")
@@ -483,11 +483,11 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
             planetFile = parser.tokens()[index++];
         else if (token == "MUSIC")
             musicTrack = atol(parser.tokens()[index++].c_str()) - 2;
-        else if (campaignContext and token == "AFTER")
+        else if (campaignContext && token == "AFTER")
             hadAfter = true;
         else if (token == "MAXPLAYERS")
         {
-            ASSERT(not campaignContext, "Max players cannot  be specified for campaign");
+            ASSERT(! campaignContext, "Max players cannot  be specified for campaign");
             maxPlayers = atol(parser.tokens()[index++].c_str());
         }
         else
@@ -497,7 +497,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
         }
     }
 
-    if (not hadAfter)
+    if (! hadAfter)
     {
         ASSERT(index == nTokens, "Incorrect number of keywords");
     }
@@ -601,7 +601,7 @@ void MachGuiDatabase::parseUserCampaignFile()
     UtlLineTokeniser parser(customDatabaseSourcePath());
 
     // Loop through the higher level constructs
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT(parser.tokens().size() == 1, "Incorrect number of tokens");
         if (parser.tokens()[0] == "SKIRMISHES")
@@ -773,13 +773,13 @@ void MachGuiDatabase::setCampaignCompleteFlags(const MachGuiDbPlayer& player)
 
             // Check all its scenarios
             uint nScenarios = planet.nScenarios();
-            for (uint j = nScenarios; planetComplete and j--;)
+            for (uint j = nScenarios; planetComplete && j--;)
             {
                 planetComplete = planet.scenario(j).isComplete();
             }
 
             // If any planet is not complete, the system isn't either
-            if (not planetComplete)
+            if (! planetComplete)
                 systemComplete = false;
         }
 
@@ -874,7 +874,7 @@ void MachGuiDatabase::removePlayer(MachGuiDbPlayer* pDbPlayer)
     {
         MachGuiDbSavedGame* pDbSavedGame = (*it);
 
-        if (pDbSavedGame->hasPlayer() and &(pDbSavedGame->player()) == pDbPlayer)
+        if (pDbSavedGame->hasPlayer() && &(pDbSavedGame->player()) == pDbPlayer)
             pDbSavedGame->player(nullptr);
     }
 
@@ -887,13 +887,13 @@ bool MachGuiDatabase::campaignScenario(const string& name, MachGuiDbScenario** p
     bool foundIt = false;
 
     // Check all the campaigns
-    for (size_t i = 0; not foundIt and i != nCampaignSystems(); ++i)
+    for (size_t i = 0; ! foundIt && i != nCampaignSystems(); ++i)
     {
         MachGuiDbSystem& system = campaignSystem(i);
-        for (size_t j = 0; not foundIt and j != system.nPlanets(); ++j)
+        for (size_t j = 0; ! foundIt && j != system.nPlanets(); ++j)
         {
             MachGuiDbPlanet& planet = system.planet(j);
-            for (size_t k = 0; not foundIt and k != planet.nScenarios(); ++k)
+            for (size_t k = 0; ! foundIt && k != planet.nScenarios(); ++k)
             {
                 MachGuiDbScenario& scenario = planet.scenario(k);
                 if (scenario.name() == name)

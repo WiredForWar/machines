@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiResearchCommand& t)
 void MachGuiResearchCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool, bool)
 {
     // Usual selection of the actor
-    if (not ctrlPressed)
+    if (! ctrlPressed)
         inGameScreen().deselectAll();
 
     inGameScreen().select(pActor);
@@ -59,7 +59,7 @@ bool MachGuiResearchCommand::canActorEverExecute(const MachActor& actor) const
 bool MachGuiResearchCommand::isInteractionComplete() const
 {
     // Is complete if the selection set no longer consists of single hwlab
-    return not actorsCanExecute();
+    return ! actorsCanExecute();
 }
 
 // virtual
@@ -109,7 +109,7 @@ bool MachGuiResearchCommand::actorsCanExecute() const
 {
     // Check there is exactly one selected entity, and it is a factory
     const MachInGameScreen::Actors& selectionSet = inGameScreen().selectedActors();
-    return selectionSet.size() == 1 and selectionSet.front()->objectType() == MachLog::HARDWARE_LAB;
+    return selectionSet.size() == 1 && selectionSet.front()->objectType() == MachLog::HARDWARE_LAB;
 }
 
 // virtual

@@ -259,7 +259,7 @@ void MachLogMessageBroker::doSend(MachLogNetMessage*& pMessage)
 */
     // if we are already caching messages then continue to do so - otherwise messages may go out of sequence.
     //   if( to.size() == 0 or NetNetwork::instance().imStuffed() or hasCachedOutgoingMessages() )
-    if (NetNetwork::instance().imStuffed() or hasCachedOutgoingMessages())
+    if (NetNetwork::instance().imStuffed() || hasCachedOutgoingMessages())
     {
         addCachedOutgoingMessage(pMessage);
     }
@@ -313,7 +313,7 @@ void MachLogMessageBroker::sendCachedOutgoingMessages()
 
     //  while( cachedOutgoingMessages_.size() and to.size() > 0 and not NetNetwork::instance().imStuffed() and not
     //  connectionLost )
-    while (cachedOutgoingMessages_.size() and not NetNetwork::instance().imStuffed() and not connectionLost)
+    while (cachedOutgoingMessages_.size() && ! NetNetwork::instance().imStuffed() && ! connectionLost)
     {
         DEBUG_STREAM(
             DIAG_NETWORK,

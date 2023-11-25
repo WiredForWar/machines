@@ -457,7 +457,7 @@ void MachGuiFirstPerson::doDisplay()
     CB_DEPIMPL(bool, finishedStartupSequence_);
     CB_DEPIMPL(int, frameNumber_);
 
-    if (borderDrawCount_ or not finishedStartupSequence_)
+    if (borderDrawCount_ || ! finishedStartupSequence_)
     {
         // Get screen dimensions
         RenDevice& device = *pSceneManager_->pDevice();
@@ -483,7 +483,7 @@ void MachGuiFirstPerson::doDisplay()
         MachGuiSoundManager::instance().playSound("gui/sounds/radaron.wav");
 
         // If there are any weapons then play the weapon selection sound.
-        if (pLogHandler_ and pLogHandler_->nWeapons())
+        if (pLogHandler_ && pLogHandler_->nWeapons())
             MachGuiSoundManager::instance().playSound("gui/sounds/weapchng.wav");
 
         justEnteredFirstPerson_ = false;
@@ -538,12 +538,12 @@ void MachGuiFirstPerson::update()
     }
 
     // Check to see if we should automatically leave 1st person
-    if (not isDead_)
+    if (! isDead_)
     {
         MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
         // If the actor has been deleted or has changed race then exit the actor
-        if (not pActor_ or pActor_->isDead() or pActor_->race() != playerRace)
+        if (! pActor_ || pActor_->isDead() || pActor_->race() != playerRace)
         {
             isDead_ = true;
             timeOfDeath_ = Phys::time();
@@ -571,15 +571,15 @@ void MachGuiFirstPerson::update()
     {
         MachLog1stPersonHandler& logHandler = *pLogHandler_;
 
-        if (commandSquadIndex_ == -1L and logHandler.getActiveSquadron().hasActiveSquadron())
+        if (commandSquadIndex_ == -1L && logHandler.getActiveSquadron().hasActiveSquadron())
         {
             commandSquadIndex_ = logHandler.getActiveSquadron().getActiveSquadronId() - 1;
         }
 
         if (pActor_
-            and not(
-                pActor_->objectType() == MachLog::AGGRESSOR and pActor_->asAggressor().subType() == MachPhys::NINJA
-                and pActor_->busy())) // prevents major movement when gorilla is doing its ground punch
+            && !(
+                pActor_->objectType() == MachLog::AGGRESSOR && pActor_->asAggressor().subType() == MachPhys::NINJA
+                && pActor_->busy())) // prevents major movement when gorilla is doing its ground punch
         {
 
             if (commandList_[FOWARD].on())
@@ -668,7 +668,7 @@ void MachGuiFirstPerson::update()
         // The command icons should not light up if there's nobody selected. This value will be used more further
         // down...
         bool canIssueCommands = logHandler.getActiveSquadron().hasActiveSquadron();
-        if (not canIssueCommands)
+        if (! canIssueCommands)
         {
             pCommandWidget_->setAttackIconState(MachGuiFPCommand::CommandIconState::INVALID);
             pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::INVALID);
@@ -676,19 +676,19 @@ void MachGuiFirstPerson::update()
         }
 
         // Turn head...
-        if (commandList_[TURNHEADLEFT].on() and logHandler.canTurnHead())
+        if (commandList_[TURNHEADLEFT].on() && logHandler.canTurnHead())
         {
             logHandler.turnHeadBy(-MexDegrees(1.0));
         }
-        if (commandList_[TURNHEADRIGHT].on() and logHandler.canTurnHead())
+        if (commandList_[TURNHEADRIGHT].on() && logHandler.canTurnHead())
         {
             logHandler.turnHeadBy(MexDegrees(1.0));
         }
-        if (commandList_[TURNHEADLEFTFAST].on() and logHandler.canTurnHead())
+        if (commandList_[TURNHEADLEFTFAST].on() && logHandler.canTurnHead())
         {
             logHandler.turnHeadBy(-MexDegrees(10.0));
         }
-        if (commandList_[TURNHEADRIGHTFAST].on() and logHandler.canTurnHead())
+        if (commandList_[TURNHEADRIGHTFAST].on() && logHandler.canTurnHead())
         {
             logHandler.turnHeadBy(MexDegrees(10.0));
         }
@@ -725,7 +725,7 @@ void MachGuiFirstPerson::update()
 
         // Centre head...
         if (commandList_[CENTREHEAD].on()
-            or (rightMouseButtonHeadTurningUsed_ and not DevMouse::instance().rightButton()))
+            || (rightMouseButtonHeadTurningUsed_ && ! DevMouse::instance().rightButton()))
         {
             rightMouseButtonHeadTurningUsed_ = false;
 
@@ -752,7 +752,7 @@ void MachGuiFirstPerson::update()
 
         // If head can turn independant of body then do so ( as long as Shift is pressed or Right mouse button pressed
         // )...
-        if (logHandler.canTurnHead() and (DevKeyboard::instance().shiftPressed() or DevMouse::instance().rightButton()))
+        if (logHandler.canTurnHead() && (DevKeyboard::instance().shiftPressed() || DevMouse::instance().rightButton()))
         {
             if (DevMouse::instance().rightButton())
                 rightMouseButtonHeadTurningUsed_ = true;
@@ -766,7 +766,7 @@ void MachGuiFirstPerson::update()
             else
             {
                 // Move ten times faster when mouse has moved a long way ( 60 pixels )
-                if (not(deltaX < 60.0 and deltaX > -60.0))
+                if (!(deltaX < 60.0 && deltaX > -60.0))
                 {
                     deltaX *= 7.0;
                 }
@@ -780,7 +780,7 @@ void MachGuiFirstPerson::update()
         {
             // Work out if body should be turning at fast rate
             bool turnFast = false;
-            if (not DevKeyboard::instance().ctrlPressed() and ((deltaX < -10.0 or deltaX > 10.0) or deltaX == 0.0))
+            if (! DevKeyboard::instance().ctrlPressed() && ((deltaX < -10.0 || deltaX > 10.0) || deltaX == 0.0))
             {
                 turnFast = true;
             }
@@ -809,7 +809,7 @@ void MachGuiFirstPerson::update()
             if (abs(origDeltaX) < abs(deltaY * 3.0))
             {
                 // Move two times faster when mouse has moved a long way ( 50 pixels )
-                if (not(deltaY < 50.0 and deltaY > -50.0))
+                if (!(deltaY < 50.0 && deltaY > -50.0))
                 {
                     deltaY *= 4.0;
                 }
@@ -845,16 +845,16 @@ void MachGuiFirstPerson::update()
         pTargetActor_ = targetingInfo.shootingTarget;
 
         bool viableTarget = targetingInfo.strikeType == MachPhys::ON_OBJECT;
-        bool viableShootingTarget = (targetingInfo.shootingTarget != nullptr) and viableTarget;
-        bool viableCommandTarget = (targetingInfo.getCommandTarget() != nullptr) and viableTarget;
+        bool viableShootingTarget = (targetingInfo.shootingTarget != nullptr) && viableTarget;
+        bool viableCommandTarget = (targetingInfo.getCommandTarget() != nullptr) && viableTarget;
         bool viableMoveToTarget
-            = logHandler.isPointingTowardsGround() and logHandler.isViableMoveToTarget(targetingInfo);
+            = logHandler.isPointingTowardsGround() && logHandler.isViableMoveToTarget(targetingInfo);
         bool moveIndicatorPresent = logHandler.isMoveIndicatorPresent();
 
         // Don't allow the target of ore holos or debris!
         if (viableShootingTarget)
         {
-            if (targetingInfo.shootingTarget->objectIsOreHolograph() or targetingInfo.shootingTarget->objectIsDebris())
+            if (targetingInfo.shootingTarget->objectIsOreHolograph() || targetingInfo.shootingTarget->objectIsDebris())
             {
                 viableTarget = false;
             }
@@ -862,14 +862,14 @@ void MachGuiFirstPerson::update()
         else if (viableCommandTarget)
         {
             if (targetingInfo.getCommandTarget()->objectIsOreHolograph()
-                or targetingInfo.getCommandTarget()->objectIsDebris())
+                || targetingInfo.getCommandTarget()->objectIsDebris())
             {
                 viableTarget = false;
             }
         }
 
         // FOR SHOOTING: Are we targeting a machine?
-        if (viableShootingTarget and viableTarget)
+        if (viableShootingTarget && viableTarget)
         {
             // Enemy machine?
             if (targetingInfo.shootingTarget->race() != pActor_->race())
@@ -877,17 +877,17 @@ void MachGuiFirstPerson::update()
                 bool anglesValid = logHandler.targetAnglesValid();
 
                 // Display attack cursor or miss cursor
-                if (not pAttackCursor_->isVisible() and anglesValid)
+                if (! pAttackCursor_->isVisible() && anglesValid)
                 {
                     // Attack cursor has just come on line. play sound
                     MachGuiSoundManager::instance().playSound("gui/sounds/attackon.wav");
                 }
                 pAttackCursor_->isVisible(anglesValid);
-                pMissCursor_->isVisible(not anglesValid);
+                pMissCursor_->isVisible(! anglesValid);
             }
             else
             {
-                if (not pMissCursor_->isVisible())
+                if (! pMissCursor_->isVisible())
                 {
                     // Attack cursor has just come on line. play sound
                     MachGuiSoundManager::instance().playSound("gui/sounds/friendon.wav");
@@ -906,7 +906,7 @@ void MachGuiFirstPerson::update()
         }
 
         // FOR COMMAND: Are we targeting a machine?
-        if (canIssueCommands and viableCommandTarget and viableTarget)
+        if (canIssueCommands && viableCommandTarget && viableTarget)
         {
             // Enemy machine?
             if (targetingInfo.getCommandTarget()->race() != pActor_->race())
@@ -938,7 +938,7 @@ void MachGuiFirstPerson::update()
                 pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::VALID);
 
                 // Only light up Move Icon when pointing at navigable ground AND when the indicator disappears
-                if (viableMoveToTarget and not moveIndicatorPresent)
+                if (viableMoveToTarget && ! moveIndicatorPresent)
                 {
                     pCommandWidget_->setMoveIconState(MachGuiFPCommand::CommandIconState::VALID);
                 }
@@ -952,13 +952,13 @@ void MachGuiFirstPerson::update()
         // Display normal or startup cursor - This is the CROSSHAIRS btw
         if (pStartCursor_->cellIndex() == pStartCursor_->numCells() - 1)
         {
-            pNormalCursor_->isVisible(not viableTarget or not viableShootingTarget);
+            pNormalCursor_->isVisible(! viableTarget || ! viableShootingTarget);
             pStartCursor_->isVisible(false);
         }
         else
         {
             pNormalCursor_->isVisible(false);
-            pStartCursor_->isVisible(not viableTarget);
+            pStartCursor_->isVisible(! viableTarget);
 
             // End startup cursor animation if there is a valid target
             if (viableTarget)
@@ -968,20 +968,20 @@ void MachGuiFirstPerson::update()
         }
 
         // Fire enabled weapons if requested
-        if (commandList_[FIRE].on() or DevMouse::instance().leftButton())
+        if (commandList_[FIRE].on() || DevMouse::instance().leftButton())
         {
             bool canFire = false;
             // Check that at least one weapon can fire
-            for (uint weaponIndex = 0; weaponIndex < logHandler.nWeapons() and not canFire; ++weaponIndex)
+            for (uint weaponIndex = 0; weaponIndex < logHandler.nWeapons() && ! canFire; ++weaponIndex)
             {
-                if (not targetingInfo.shootingTarget and logHandler.weaponCanOnlyFireAtActor(weaponIndex))
+                if (! targetingInfo.shootingTarget && logHandler.weaponCanOnlyFireAtActor(weaponIndex))
                 {
                     // canFire remains as false
                 }
                 else
                 {
                     if (logHandler.weapon(weaponIndex).percentageRecharge() >= 100
-                        and logHandler.isWeaponEnabled(weaponIndex))
+                        && logHandler.isWeaponEnabled(weaponIndex))
                     {
                         // We've found a weapon that can fire
                         canFire = true;
@@ -989,7 +989,7 @@ void MachGuiFirstPerson::update()
                 }
             }
 
-            if (not canFire)
+            if (! canFire)
             {
                 // timeWeaponsFired_ stops sound from being triggered over and over
                 if (now - timeWeaponsFired_ > 0.8)
@@ -1011,7 +1011,7 @@ void MachGuiFirstPerson::update()
             }
         }
 
-        if (commandList_[COMMAND_ORDER_ATTACK].on() and canIssueCommands and viableTarget)
+        if (commandList_[COMMAND_ORDER_ATTACK].on() && canIssueCommands && viableTarget)
         {
             MachActor* pTarget = targetingInfo.getCommandTarget();
             if (pTarget)
@@ -1021,9 +1021,9 @@ void MachGuiFirstPerson::update()
             }
         }
 
-        if (commandList_[COMMAND_ORDER_FOLLOW].on() and canIssueCommands)
+        if (commandList_[COMMAND_ORDER_FOLLOW].on() && canIssueCommands)
         {
-            if (not viableTarget) // FOLLOW SELF
+            if (! viableTarget) // FOLLOW SELF
             {
                 pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::ACTIVATED);
                 logHandler.getActiveSquadron().issueFollowCommand(pActor_);
@@ -1031,7 +1031,7 @@ void MachGuiFirstPerson::update()
             else // FOLLOW FRIENDLY
             {
                 MachActor* pTarget = targetingInfo.getCommandTarget();
-                if (pTarget and pTarget->race() == pActor_->race())
+                if (pTarget && pTarget->race() == pActor_->race())
                 {
                     pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::ACTIVATED);
                     logHandler.getActiveSquadron().issueFollowCommand(pTarget);
@@ -1039,8 +1039,8 @@ void MachGuiFirstPerson::update()
             }
         }
 
-        if (commandList_[COMMAND_ORDER_MOVE].on() and canIssueCommands and viableMoveToTarget and not viableTarget
-            and not moveIndicatorPresent)
+        if (commandList_[COMMAND_ORDER_MOVE].on() && canIssueCommands && viableMoveToTarget && ! viableTarget
+            && ! moveIndicatorPresent)
         {
             const auto& point = targetingInfo.getCommandPoint();
             pCommandWidget_->setMoveIconState(MachGuiFPCommand::CommandIconState::ACTIVATED);
@@ -1064,13 +1064,13 @@ void MachGuiFirstPerson::update()
         startupTimer_ = now;
     }
 
-    if (not finishedStartupSequence_)
+    if (! finishedStartupSequence_)
     {
         double timeDiff = now - startupTimer_;
         timeDiff *= (STARTUP_SEQUENCE_FRAMES / STARTUP_SEQUENCE_TIME);
 
         // Cause static effect when machine is first entered (switch on/off intermittently)
-        if (timeDiff < STARTUP_SEQUENCE_FRAMES or frameNumber_ < STARTUP_SEQUENCE_FRAMES)
+        if (timeDiff < STARTUP_SEQUENCE_FRAMES || frameNumber_ < STARTUP_SEQUENCE_FRAMES)
         {
             // Check to see if we are already playing hit interference. Check to see if its ended
             if (isHitInterferenceOn_)
@@ -1082,7 +1082,7 @@ void MachGuiFirstPerson::update()
                 }
             }
 
-            if (not isHitInterferenceOn_)
+            if (! isHitInterferenceOn_)
             {
                 isHitInterferenceOn_ = true;
                 int randomInt = mexRandomInt(&hitInterferenceRandom_, 0, 2);
@@ -1129,7 +1129,7 @@ void MachGuiFirstPerson::update()
         W4dEnvironment& env = MachLogPlanet::instance().surface()->environment();
 
         // Turn interference on/off when machine is hit (don't do it every time though cus it might be annoying)
-        if (pActor_ and isHitInterferenceOn_)
+        if (pActor_ && isHitInterferenceOn_)
         {
             if (now > hitInterferenceEndTime_)
             {
@@ -1137,11 +1137,11 @@ void MachGuiFirstPerson::update()
                 pInGameScreen_->sceneManager().pDevice()->interferenceOff();
 
                 // Turn NVG on/off
-                if (not env.isNvgOn() and machineNVGOn_)
+                if (! env.isNvgOn() && machineNVGOn_)
                 {
                     env.nvgOn(true);
                 }
-                else if (env.isNvgOn() and not machineNVGOn_)
+                else if (env.isNvgOn() && ! machineNVGOn_)
                 {
                     env.nvgOn(false);
                 }
@@ -1150,7 +1150,7 @@ void MachGuiFirstPerson::update()
         else
         {
             // Machine hit? play static effect... ( 1 in 20 chance of effect being played )
-            if (pActor_ and W4dManager::instance().frameNumber() == pActor_->lastBeHitFrame())
+            if (pActor_ && W4dManager::instance().frameNumber() == pActor_->lastBeHitFrame())
             {
                 int randomInt = mexRandomInt(&hitInterferenceRandom_, 0, 20);
 
@@ -1165,13 +1165,13 @@ void MachGuiFirstPerson::update()
                     pInGameScreen_->sceneManager().pDevice()->interferenceOn(hitStaticIntensity / 10.0);
 
                     // NVG capable machine? Turn NVG on/off... ( 1 in 5 chance of effect being played )
-                    if (pActor_->objectIsMachine() and pActor_->asMachine().hasNVG())
+                    if (pActor_->objectIsMachine() && pActor_->asMachine().hasNVG())
                     {
                         randomInt = mexRandomInt(&hitInterferenceRandom_, 0, 5);
 
                         if (randomInt == 0)
                         {
-                            if (not env.isNvgOn())
+                            if (! env.isNvgOn())
                             {
                                 pInGameScreen_->sceneManager().pDevice()->interferenceOff();
                                 env.nvgOn(true);
@@ -1333,7 +1333,7 @@ void MachGuiFirstPerson::doBecomeRoot()
         const int chatMessagesX = 0;
         int chatMessagesY = borderHeight_;
 
-        if (pLogHandler_ and pLogHandler_->nWeapons() != 0)
+        if (pLogHandler_ && pLogHandler_->nWeapons() != 0)
         {
             chatMessagesY = borderHeight_ + weaponBackgroundBmp_.height() + 4;
         }
@@ -1468,13 +1468,13 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
     {
         processed = true;
 
-        if ((event.key() == DevKey::ESCAPE or event.key() == DevKey::SPACE) and event.state() == Gui::PRESSED)
+        if ((event.key() == DevKey::ESCAPE || event.key() == DevKey::SPACE) && event.state() == Gui::PRESSED)
         {
             switchToInGame();
         }
     }
 
-    while (not finished and not processed)
+    while (! finished && ! processed)
     {
         switch (count)
         {
@@ -1482,8 +1482,8 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                 {
                     DevKeyToCommandTranslator::CommandId commandId;
                     bool found = pKeyTranslator_->translate(event.buttonEvent(), &commandId);
-                    if (found and commandId == WEAPONSELECT and event.state() == Gui::RELEASED and pLogHandler_
-                        and pActor_)
+                    if (found && commandId == WEAPONSELECT && event.state() == Gui::RELEASED && pLogHandler_
+                        && pActor_)
                     {
                         processed = true;
                         doWeaponSelect();
@@ -1500,13 +1500,13 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                     switchToInGame();
                     processed = true;
                 }
-                else if (event.key() == DevKey::PAD_0 and event.state() == Gui::PRESSED)
+                else if (event.key() == DevKey::PAD_0 && event.state() == Gui::PRESSED)
                 {
                     switchBackToGroundCamera_ = true;
                     switchToInGame();
                     processed = true;
                 }
-                else if (event.key() == DevKey::PAD_2 and event.state() == Gui::PRESSED)
+                else if (event.key() == DevKey::PAD_2 && event.state() == Gui::PRESSED)
                 {
                     switchBackToGroundCamera_ = false;
                     switchToInGame();
@@ -1514,22 +1514,22 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                 }
                 break;
             case 3: // Switch to ingame menus
-                if (event.key() == DevKey::F10 and event.state() == Gui::PRESSED)
+                if (event.key() == DevKey::F10 && event.state() == Gui::PRESSED)
                 {
                     switchToMenus_ = true;
                     processed = true;
                 }
             case 4: // Screen shot
-                if (event.key() == DevKey::F12 and event.isShiftPressed() and event.isCtrlPressed()
-                    and event.state() == Gui::PRESSED)
+                if (event.key() == DevKey::F12 && event.isShiftPressed() && event.isCtrlPressed()
+                    && event.state() == Gui::PRESSED)
                 {
                     pInGameScreen_->initiateScreenShot();
                     processed = true;
                 }
             case 5:
-                if (event.key() == DevKey::KEY_N and event.state() == Gui::PRESSED and pActor_)
+                if (event.key() == DevKey::KEY_N && event.state() == Gui::PRESSED && pActor_)
                 {
-                    if (pActor_->objectIsMachine() and not pActor_->asMachine().hasNVG())
+                    if (pActor_->objectIsMachine() && ! pActor_->asMachine().hasNVG())
                     {
                         // do nothing
                     }
@@ -1552,10 +1552,10 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                     processed = true;
                 }
             case 6: // Pause game
-                if (event.key() == DevKey::BREAK and event.state() == Gui::PRESSED)
+                if (event.key() == DevKey::BREAK && event.state() == Gui::PRESSED)
                 {
                     // Can't pause game in multiplayer games
-                    if (not MachLogNetwork::instance().isNetworkGame())
+                    if (! MachLogNetwork::instance().isNetworkGame())
                     {
                         if (SimManager::instance().isSuspended())
                         {
@@ -1661,7 +1661,7 @@ bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::Notificati
     CB_DEPIMPL(MachGuiRadar*, pRadar_);
     CB_DEPIMPL(bool, inFirstPerson_);
 
-    ASSERT((not pActor_) or pSubject == pActor_, "MachGuiFirstPerson::beNotified notified about wrong actor");
+    ASSERT((! pActor_) || pSubject == pActor_, "MachGuiFirstPerson::beNotified notified about wrong actor");
 
     bool exitFromActor = false;
 
@@ -1704,7 +1704,7 @@ bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::Notificati
             // above seems odd but it is written like this to cope with the second beNotified event.
             exitActor();
 
-            if (not isDead_)
+            if (! isDead_)
             {
                 isDead_ = true;
                 timeOfDeath_ = Phys::time();
@@ -1717,7 +1717,7 @@ bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::Notificati
         }
     }
 
-    return not exitFromActor;
+    return ! exitFromActor;
 }
 
 // virtual
@@ -1741,8 +1741,8 @@ bool MachGuiFirstPerson::okayToSwitchTo1stPerson()
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
     // Check that the actor can be entered.
-    if (pActor_ and pActor_->objectIsMachine() and pActor_->race() == playerRace
-        and not pActor_->asMachine().insideAPC() and not pActor_->isDead())
+    if (pActor_ && pActor_->objectIsMachine() && pActor_->race() == playerRace
+        && ! pActor_->asMachine().insideAPC() && ! pActor_->isDead())
     {
         return true;
     }
@@ -1773,7 +1773,7 @@ void MachGuiFirstPerson::setFirstPerson3DViewport()
 
     lastBorderHeight_ = borderHeight_;
 
-    if (not finishedStartupSequence_)
+    if (! finishedStartupSequence_)
     {
         double now = DevTime::instance().time();
         double timeDiff = now - startupTimer_;
@@ -1988,7 +1988,7 @@ void MachGuiFirstPerson::displayCompass()
     CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
 
     // Only display compass if start cursor has finished animating
-    if (pActor_ and not pStartCursor_->isVisible())
+    if (pActor_ && ! pStartCursor_->isVisible())
     {
         // Get screen size.
         RenDevice& device = *pSceneManager_->pDevice();
@@ -2000,7 +2000,7 @@ void MachGuiFirstPerson::displayCompass()
         MexDegrees azimuth = angles.azimuth();
 
         // Add head turn ( if machine can turn head! )
-        if (pLogHandler_ and pLogHandler_->canTurnHead())
+        if (pLogHandler_ && pLogHandler_->canTurnHead())
         {
             azimuth += pLogHandler_->currentHeadAngle();
         }
@@ -2152,7 +2152,7 @@ bool MachGuiFirstPerson::displayWeapon(
 
     if (pLogHandler_)
     {
-        for (int index = 0; index < pLogHandler_->nWeapons() and not foundWeapon; ++index)
+        for (int index = 0; index < pLogHandler_->nWeapons() && ! foundWeapon; ++index)
         {
             MachLogWeapon& weapon = pLogHandler_->weapon(index);
             if (weapon.mounting() == mounting)
@@ -2391,8 +2391,8 @@ void MachGuiFirstPerson::doWeaponSelect()
         weaponSelectIndex_ = 0;
 
     // Special case for gorilla weapon select
-    if (pActor_->objectType() == MachLog::AGGRESSOR and pActor_->subType() == MachPhys::NINJA
-        and weaponSelectIndex_ == pLogHandler_->nWeapons() - 1)
+    if (pActor_->objectType() == MachLog::AGGRESSOR && pActor_->subType() == MachPhys::NINJA
+        && weaponSelectIndex_ == pLogHandler_->nWeapons() - 1)
     {
         weaponSelectIndex_ = pLogHandler_->nWeapons();
     }
@@ -2402,7 +2402,7 @@ void MachGuiFirstPerson::doWeaponSelect()
     {
         for (int weaponIndex = 0; weaponIndex < pLogHandler_->nWeapons(); ++weaponIndex)
         {
-            if (not pLogHandler_->isWeaponEnabled(weaponIndex))
+            if (! pLogHandler_->isWeaponEnabled(weaponIndex))
             {
                 pLogHandler_->enableWeapon(weaponIndex, true);
 
@@ -2425,16 +2425,16 @@ void MachGuiFirstPerson::doWeaponSelect()
     else // Select one weapon
     {
         // Special case for gorilla weapon select. Select both missiles at same time
-        if (pActor_->objectType() == MachLog::AGGRESSOR and pActor_->subType() == MachPhys::NINJA)
+        if (pActor_->objectType() == MachLog::AGGRESSOR && pActor_->subType() == MachPhys::NINJA)
         {
             if (weaponSelectIndex_ == 0)
             {
-                if (not pLogHandler_->isWeaponEnabled(0))
+                if (! pLogHandler_->isWeaponEnabled(0))
                 {
                     pLogHandler_->enableWeapon(0, true); // Missile 1
                     updateWeaponAnimEndTime(leftWeaponChangeEndTime_);
                 }
-                if (not pLogHandler_->isWeaponEnabled(1))
+                if (! pLogHandler_->isWeaponEnabled(1))
                 {
                     pLogHandler_->enableWeapon(1, true); // Missile 2
                     updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
@@ -2457,7 +2457,7 @@ void MachGuiFirstPerson::doWeaponSelect()
                     pLogHandler_->enableWeapon(1, false); // Missile 2
                     updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
                 }
-                if (not pLogHandler_->isWeaponEnabled(2))
+                if (! pLogHandler_->isWeaponEnabled(2))
                 {
                     pLogHandler_->enableWeapon(2, true); // Punch
                     updateWeaponAnimEndTime(topWeaponChangeEndTime_);

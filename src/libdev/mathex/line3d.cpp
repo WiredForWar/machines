@@ -21,7 +21,7 @@
 
 bool MexPoint3d::contains(const MexLine3d& l) const
 {
-    return (l.end1() == l.end2() and l.end2() == *this);
+    return (l.end1() == l.end2() && l.end2() == *this);
 }
 
 bool MexPoint3d::intersects(const MexLine3d& l) const
@@ -147,15 +147,15 @@ bool MexLine3d::intersects(const MexLine3d& rhs) const
     const MATHEX_SCALAR epsilon = (MATHEX_SCALAR)0.01;
 
     // if the points are not the same then the lines do not intersect
-    if (MATHEX_SCALAR(Mathex::abs(point2.x()) > epsilon) or MATHEX_SCALAR(Mathex::abs(point2.y()) > epsilon)
-        or MATHEX_SCALAR(Mathex::abs(point2.z()) > epsilon))
+    if (MATHEX_SCALAR(Mathex::abs(point2.x()) > epsilon) || MATHEX_SCALAR(Mathex::abs(point2.y()) > epsilon)
+        || MATHEX_SCALAR(Mathex::abs(point2.z()) > epsilon))
         return false;
 
     // if both t and s lie between 0 and 1 then the line SEGMENTS intersect
     // which is what we want
     bool result
-        = ((t >= -MexEpsilon::instance()) and (t <= ((MATHEX_SCALAR)1.0 + MexEpsilon::instance()))
-           and (s >= -(MATHEX_SCALAR)MexEpsilon::instance()) and (s <= ((MATHEX_SCALAR)1.0 + MexEpsilon::instance())));
+        = ((t >= -MexEpsilon::instance()) && (t <= ((MATHEX_SCALAR)1.0 + MexEpsilon::instance()))
+           && (s >= -(MATHEX_SCALAR)MexEpsilon::instance()) && (s <= ((MATHEX_SCALAR)1.0 + MexEpsilon::instance())));
 
     /*  cout << "result is ";
     if( result )
@@ -173,7 +173,7 @@ bool MexLine3d::contains(const MexPoint3d& p) const
 
 bool MexLine3d::contains(const MexLine3d& l2) const
 {
-    return contains(l2.end1()) and contains(l2.end2());
+    return contains(l2.end1()) && contains(l2.end2());
 }
 /*
 
@@ -235,7 +235,7 @@ bool MexLine3d::intersects( const MexBoundary3d& b, MexIntersectionData* i) cons
 
 bool MexLine3d::intersects(const MexPoint3d& v) const
 {
-    if ((end1() == v) or (end2() == v))
+    if ((end1() == v) || (end2() == v))
         return true;
 
     return isPointOnLine(v);
@@ -354,7 +354,7 @@ const MexLine3d& MexLine3d::operator=(const MexLine3d& rhs)
 
 bool MexLine3d::operator==(const MexLine3d& rhs) const
 {
-    return end1() == rhs.end1() and end2() == rhs.end2();
+    return end1() == rhs.end1() && end2() == rhs.end2();
 }
 
 /*
@@ -433,11 +433,11 @@ MATHEX_SCALAR MexLine3d::sqrEuclidianDistance(
 
         // q1 could be outside the segment a1b1, and q2 outside a2b2
         // check for these particular cases
-        if (lambda1 <= 0 or lambda1 >= l1)
+        if (lambda1 <= 0 || lambda1 >= l1)
         {
             // Which point is the closest to line 2 a1 or b1 ?
             closest1 = (lambda1 <= 0) ? a1 : b1;
-            if (lambda2 <= 0 or lambda2 >= l2)
+            if (lambda2 <= 0 || lambda2 >= l2)
             {
                 // Which point is the closest to line 1 a2 or b2 ?
                 closest2 = (lambda2 <= 0) ? a2 : b2;
@@ -452,7 +452,7 @@ MATHEX_SCALAR MexLine3d::sqrEuclidianDistance(
         }
         else
         {
-            if (lambda2 <= 0 or lambda2 >= l2)
+            if (lambda2 <= 0 || lambda2 >= l2)
             {
                 // Which point is the closest to line 1 a2 or b2 ?
                 closest2 = (lambda2 <= 0) ? a2 : b2;
@@ -574,7 +574,7 @@ bool MexLine3d::segmentIntersects(
     {
         MATHEX_SCALAR eps = MexEpsilon::instance();
         MATHEX_SCALAR distance = *pDistance;
-        if (distance < -eps or distance > (length + eps))
+        if (distance < -eps || distance > (length + eps))
             result = false;
     }
 
@@ -610,7 +610,7 @@ bool MexLine3d::intersects(
     const MATHEX_SCALAR eps = MexEpsilon::instance();
     bool result = fabs(denom) > eps;
 
-    if (result and side == INTERSECT_FRONT_SIDE)
+    if (result && side == INTERSECT_FRONT_SIDE)
     {
         // The dot product of the normal with our incoming vector tells us
         // which side we're approaching from
@@ -628,8 +628,8 @@ bool MexLine3d::intersects(
 
         // Perform point inside triangle test
         result = n.dotProduct(MexVec3::crossProduct(p1p2, MexVec3(p1, a))) >= -eps
-            and n.dotProduct(MexVec3::crossProduct(p2p3, MexVec3(p2, a))) >= -eps
-            and n.dotProduct(MexVec3::crossProduct(p3p1, MexVec3(p3, a))) >= -eps;
+            && n.dotProduct(MexVec3::crossProduct(p2p3, MexVec3(p2, a))) >= -eps
+            && n.dotProduct(MexVec3::crossProduct(p3p1, MexVec3(p3, a))) >= -eps;
 
         // If scored a hit, return the distance
         if (result)

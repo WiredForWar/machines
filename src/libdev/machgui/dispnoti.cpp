@@ -74,11 +74,11 @@ void MachGuiDispositionChangeNotifiable::doDisplay(GuiResourceString::Id id, Mac
         MachPhys::Race pcsRace = MachLogRaces::instance().pcController().race();
 
         bool bothRacesAreAI = MachLogRaces::instance().controller(race1).type() == MachLogController::AI_CONTROLLER
-            and MachLogRaces::instance().controller(race2).type() == MachLogController::AI_CONTROLLER;
+            && MachLogRaces::instance().controller(race2).type() == MachLogController::AI_CONTROLLER;
 
-        if (pStartupScreens_->startupData()->broadcastAlliances() or pcsRace == race1 or pcsRace == race2)
+        if (pStartupScreens_->startupData()->broadcastAlliances() || pcsRace == race1 || pcsRace == race2)
         {
-            if (not bothRacesAreAI) // Never show computer to computer alliances
+            if (! bothRacesAreAI) // Never show computer to computer alliances
             {
                 GuiStrings strings;
                 strings.push_back(getDisplayName(race1));
@@ -121,7 +121,7 @@ string MachGuiDispositionChangeNotifiable::getDisplayName(MachPhys::Race race)
         if (playerInfo[i].race_ == race)
         {
             if (playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
-                or playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST)
+                || playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST)
             {
                 name += playerInfo[i].playerName_;
             }

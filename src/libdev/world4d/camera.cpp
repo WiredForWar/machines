@@ -125,7 +125,7 @@ void W4dCamera::renderTree(W4dEntity* node, TraversalType traversalType)
             // virtual implementations of render, the test below should amount to
             // the same thing.  This isn't guaranteed.
             bool nodeIsComposite = nodeImpl.isComposite();
-            if (nodeIsComposite or nodeImpl.hasMesh())
+            if (nodeIsComposite || nodeImpl.hasMesh())
             {
                 // Check to see if the bounding volume of the entity intersects the
                 // camera's bv.
@@ -150,7 +150,7 @@ void W4dCamera::renderTree(W4dEntity* node, TraversalType traversalType)
                     // render the composite children based without recomputing the intersection relationships
                     for (W4dEntity::W4dEntities::const_iterator it = kids.begin(); it != kids.end(); ++it)
                     {
-                        if (traversalType == IN_ORDER_RENDER or (not(*it)->isDomain()))
+                        if (traversalType == IN_ORDER_RENDER || (!(*it)->isDomain()))
                             renderSubTree(*it);
                     }
                 }
@@ -158,7 +158,7 @@ void W4dCamera::renderTree(W4dEntity* node, TraversalType traversalType)
                 {
                     for (W4dEntity::W4dEntities::const_iterator it = kids.begin(); it != kids.end(); ++it)
                     {
-                        if (traversalType == IN_ORDER_RENDER or (not(*it)->isDomain()))
+                        if (traversalType == IN_ORDER_RENDER || (!(*it)->isDomain()))
                             renderTree(*it, traversalType);
                     }
                 }
@@ -234,7 +234,7 @@ void W4dCamera::renderSubTree(W4dEntity* node)
             // test is: will W4dEntity::render draw anything which needs lights?
             // With the current virtual implementations of render, the test below
             // should amount to the same thing.  This isn't guaranteed.
-            if (nodeImpl.isComposite() or nodeImpl.hasMesh())
+            if (nodeImpl.isComposite() || nodeImpl.hasMesh())
                 renderType = node->render(*this, manager_->complexity());
 
             if (renderType == W4dEntity::RENDER_CHILDREN)
@@ -242,7 +242,7 @@ void W4dCamera::renderSubTree(W4dEntity* node)
                 const W4dEntity::W4dEntities& kids = nodeImpl.children();
                 for (W4dEntity::W4dEntities::const_iterator it = kids.begin(); it != kids.end(); ++it)
                 {
-                    if (not(*it)->isDomain())
+                    if (!(*it)->isDomain())
                         renderSubTree(*it);
                 }
             }
@@ -426,7 +426,7 @@ void W4dCamera::recursiveDomainRender(
 void W4dCamera::adaptToEnvironment(W4dEnvironment* env)
 {
     MATHEX_SCALAR newYonClipDistance;
-    if (env and env->fogOn())
+    if (env && env->fogOn())
     {
         newYonClipDistance = 1.5 * env->fogVisibility();
         if (newYonClipDistance > savedYonClipDistance())

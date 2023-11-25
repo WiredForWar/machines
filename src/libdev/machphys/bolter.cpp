@@ -147,7 +147,7 @@ PhysRelativeTime MachPhysBolter::fire(const PhysAbsoluteTime& startTime, int num
     if (type() == MachPhys::BOLTER)
         pFlash->temporaryScale(RenUniformScale(0.8), W4dEntity::NOT_PROPOGATE);
 
-    if (type() == MachPhys::HEAVY_BOLTER1 or type() == MachPhys::HEAVY_BOLTER2)
+    if (type() == MachPhys::HEAVY_BOLTER1 || type() == MachPhys::HEAVY_BOLTER2)
         pFlash->temporaryScale(RenNonUniformScale(1.5, 1, 1), W4dEntity::NOT_PROPOGATE);
 
     // Set up a visibility plan for the flash

@@ -92,7 +92,7 @@ PhysRelativeTime MachLogPatrolOperation::doUpdate()
                     for (MachLogSquadron::Machines::iterator i = pSquadron->machines().begin();
                          i != pSquadron->machines().end();
                          ++i)
-                        if ((*i)->id() != pActor_->id() and (*i)->objectIsCanAttack())
+                        if ((*i)->id() != pActor_->id() && (*i)->objectIsCanAttack())
                         {
                             if ((*i)->isIdle())
                                 (*i)->newOperation(new MachLogAttackOperation(
@@ -109,7 +109,7 @@ PhysRelativeTime MachLogPatrolOperation::doUpdate()
         return 1.0;
 
     // if we still want to do next move and we aren't currently moving then...
-    if (doNextMove and not pActor_->motionSeq().hasDestination())
+    if (doNextMove && ! pActor_->motionSeq().hasDestination())
     {
         if (pathElement_ < path_.size())
         {
@@ -211,7 +211,7 @@ void MachLogPatrolOperation::doOutputOperator(std::ostream& o) const
 bool MachLogPatrolOperation::doBeInterrupted()
 {
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 void perWrite(PerOstream& ostr, const MachLogPatrolOperation& op)

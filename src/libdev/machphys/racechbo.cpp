@@ -387,9 +387,9 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
 
         UtlLineTokeniser parser(*pIstream, logoFilename);
 
-        ASSERT(not parser.finished(), "Logo file empty");
+        ASSERT(! parser.finished(), "Logo file empty");
 
-        while (not parser.finished())
+        while (! parser.finished())
         {
             string logoName = parser.tokens()[0];
 

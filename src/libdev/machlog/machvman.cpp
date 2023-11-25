@@ -170,9 +170,9 @@ VoiceMailID MachLogMachineVoiceMailManager::getGlobalFromMachineEvent(
     ASSERT_INFO(ot);
 
     ASSERT(
-        ot == MachLog::AGGRESSOR or ot == MachLog::ADMINISTRATOR or ot == MachLog::CONSTRUCTOR
-            or ot == MachLog::GEO_LOCATOR or ot == MachLog::SPY_LOCATOR or ot == MachLog::TECHNICIAN
-            or ot == MachLog::RESOURCE_CARRIER or ot == MachLog::APC,
+        ot == MachLog::AGGRESSOR || ot == MachLog::ADMINISTRATOR || ot == MachLog::CONSTRUCTOR
+            || ot == MachLog::GEO_LOCATOR || ot == MachLog::SPY_LOCATOR || ot == MachLog::TECHNICIAN
+            || ot == MachLog::RESOURCE_CARRIER || ot == MachLog::APC,
         "No, that's rubbish. Not a recognised machine type.");
 
     switch (ot)

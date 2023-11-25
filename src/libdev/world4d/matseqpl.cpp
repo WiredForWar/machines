@@ -43,8 +43,8 @@ W4dMaterialSequencePlan::~W4dMaterialSequencePlan()
 
 void W4dMaterialSequencePlan::lodPlan(const MaterialVecPtrs& materialVecPtrs, W4dLOD lodId)
 {
-    PRE(lodId > 0 and lodId <= maxLOD());
-    PRE(not isLODDefined(lodId));
+    PRE(lodId > 0 && lodId <= maxLOD());
+    PRE(! isLODDefined(lodId));
     PRE(isLODDefined(lodId - 1));
     PRE(materialVecPtrs.size() != 0);
 
@@ -55,7 +55,7 @@ void W4dMaterialSequencePlan::lodPlan(const MaterialVecPtrs& materialVecPtrs, W4
 // virtual
 bool W4dMaterialSequencePlan::isLODDefined(W4dLOD lodId) const
 {
-    return lodId >= 0 and lodId < materialVecPtrsVec_.size();
+    return lodId >= 0 && lodId < materialVecPtrsVec_.size();
 }
 
 void W4dMaterialSequencePlan::CLASS_INVARIANT

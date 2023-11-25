@@ -179,7 +179,7 @@ PhysRelativeTime MachPhysTechnician::research()
     static int animation = 0;
 
     W4dCompositePlanPtr thePlan;
-    if (not cycleAnims(&thePlan))
+    if (! cycleAnims(&thePlan))
         interval = 1;
     else
     {

@@ -54,7 +54,7 @@ MachLogResearchItem::MachLogResearchItem(
 
     ASSERT_INFO(hardwareLabSubType_);
     ASSERT(
-        hardwareLabSubType_ == MachPhys::LAB_CIVILIAN or hardwareLabSubType_ == MachPhys::LAB_MILITARY,
+        hardwareLabSubType_ == MachPhys::LAB_CIVILIAN || hardwareLabSubType_ == MachPhys::LAB_MILITARY,
         "Invalid lab type\n");
     HAL_STREAM(
         "MachLogResearchItem  " << static_cast<const void*>(this) << " CTOR [" << objectType << "," << subType << "," << hwLevel << ","
@@ -317,7 +317,7 @@ int MachLogResearchItem::swTechnologyLevel(int level) const
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw TechnoloyLevel\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw TechnoloyLevel\n");
     return swTechnologyLevel_[level - 1];
 }
 
@@ -326,7 +326,7 @@ void MachLogResearchItem::swTechnologyLevel(int level, int newValue)
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level in SET MLResearchItem::sw TechnoloyLevel\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level in SET MLResearchItem::sw TechnoloyLevel\n");
     swTechnologyLevel_[level - 1] = newValue;
 }
 
@@ -335,7 +335,7 @@ const MachPhys::ResearchUnits& MachLogResearchItem::swResearchCost(int level) co
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw ResearchCost\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw ResearchCost\n");
     return swResearchCost_[level - 1];
 }
 
@@ -344,7 +344,7 @@ void MachLogResearchItem::swResearchCost(int level, MachPhys::ResearchUnits valu
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level SET MLResearchItem::sw ResearchCost\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level SET MLResearchItem::sw ResearchCost\n");
     swResearchCost_[level - 1] = value;
 }
 
@@ -353,7 +353,7 @@ const MachPhys::BuildingMaterialUnits& MachLogResearchItem::swBuildingCost(int l
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw builidngcost\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw builidngcost\n");
     return swBuildingCost_[level - 1];
 }
 
@@ -362,7 +362,7 @@ void MachLogResearchItem::swBuildingCost(int level, MachPhys::BuildingMaterialUn
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level SET MLResearchItem::sw builidngcost\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level SET MLResearchItem::sw builidngcost\n");
     swBuildingCost_[level - 1] = value;
 }
 
@@ -371,7 +371,7 @@ bool MachLogResearchItem::swAvailable(MachPhys::Race race, int level) const
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Avavailae\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Avavailae\n");
     return swAvailable_[race][level - 1];
 }
 
@@ -380,7 +380,7 @@ bool MachLogResearchItem::swResearched(MachPhys::Race race, int level) const
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Researched\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Researched\n");
     return swResearched_[race][level - 1];
 }
 
@@ -389,7 +389,7 @@ void MachLogResearchItem::swAvailable(MachPhys::Race race, int level, bool value
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Avaialble\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Avaialble\n");
     swAvailable_[race][level - 1] = value;
 }
 
@@ -398,7 +398,7 @@ void MachLogResearchItem::swResearched(MachPhys::Race race, int level, bool valu
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Researched\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw Researched\n");
     swResearched_[race][level - 1] = value;
     if (level > swLevel(race))
         swLevel(race, level);
@@ -409,7 +409,7 @@ MachPhys::ResearchUnits MachLogResearchItem::swAmountResearched(MachPhys::Race r
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountResearched\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountResearched\n");
     return swAmountResearched_[race][level - 1];
 }
 
@@ -422,11 +422,11 @@ void MachLogResearchItem::swAdvanceResearch(
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountBuilt\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountBuilt\n");
     swAmountResearched_[race][level - 1] += rAmount;
     swAmountBuilt_[race][level - 1] += bAmount;
     if (swAmountResearched_[race][level - 1] >= swResearchCost_[level - 1]
-        and swAmountBuilt_[race][level - 1] >= swBuildingCost_[level - 1])
+        && swAmountBuilt_[race][level - 1] >= swBuildingCost_[level - 1])
     {
         swResearched_[race][level - 1] = true;
         // update currently highest sw level available
@@ -440,7 +440,7 @@ MachPhys::BuildingMaterialUnits MachLogResearchItem::swAmountBuilt(MachPhys::Rac
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountBuilt\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountBuilt\n");
     return swAmountBuilt_[race][level - 1];
 }
 
@@ -468,7 +468,7 @@ MachPhys::ResearchUnits MachLogResearchItem::swAmountResearched(MachPhys::Race r
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountResearched\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountResearched\n");
     return swAmountResearched_[race][level - 1];
 }
 
@@ -477,7 +477,7 @@ MachPhys::BuildingMaterialUnits MachLogResearchItem::swAmountBuilt(MachPhys::Rac
     CB_MachLogResearchItem_DEPIMPL();
 
     ASSERT_INFO(level);
-    ASSERT(level > 0 and level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountBuilt\n");
+    ASSERT(level > 0 && level < MAX_SW_LEVELS + 1, "Unknown level MLResearchItem::sw AmountBuilt\n");
     return swAmountBuilt_[race][level - 1];
 }
 

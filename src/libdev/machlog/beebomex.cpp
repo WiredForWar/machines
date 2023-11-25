@@ -181,7 +181,7 @@ void MachLogBeeBombExplosion::inflictDamageFirstWave(MachActor* pDamagedVictim)
     CB_MachLogBeeBombExplosion_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this

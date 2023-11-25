@@ -256,7 +256,7 @@ bool MachPhysObjDemolish::useGenericDemolition(MachPhys::DemolitionType type)
         fileName.combine(demolishName);
     }
 
-    bool result = not fileName.existsAsFile();
+    bool result = ! fileName.existsAsFile();
     return result;
 }
 
@@ -429,7 +429,7 @@ void MachPhysObjDemolish::startDemolition(
     W4dMaterialPlanPtr pWhiteToBlackMaterialPlanPtr(pWhiteToBlackPlan);
 
     entityPlanForEdit().materialPlan(pWhiteToBlackMaterialPlanPtr, startTime);
-    for (W4dEntityIter it(this); not it.isFinished(); ++it)
+    for (W4dEntityIter it(this); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().materialPlan(pWhiteToBlackMaterialPlanPtr, startTime);
     }
@@ -453,7 +453,7 @@ void MachPhysObjDemolish::startDemolition(
     W4dMaterialPlanPtr pBlackMaterialPlanPtr(pBlackPlan);
 
     entityPlanForEdit().materialPlan(pBlackMaterialPlanPtr, startTime + blackFadingOffset);
-    for (W4dEntityIter it(this); not it.isFinished(); ++it)
+    for (W4dEntityIter it(this); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().materialPlan(pBlackMaterialPlanPtr, startTime + blackFadingOffset);
     }

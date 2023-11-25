@@ -66,12 +66,12 @@ PhysRelativeTime MachLogAdminHealOperation::doUpdate()
 
         MachLogMachine* pSquadronMachine = (*i);
 
-        if (not pSquadronMachine->evading() and // don't interrupt actors who are currently evading aggressors
-            not pSquadronMachine->isStandingGround() and // machines standing ground are exempt from squad orders
+        if (! pSquadronMachine->evading() && // don't interrupt actors who are currently evading aggressors
+            ! pSquadronMachine->isStandingGround() && // machines standing ground are exempt from squad orders
             pSquadronMachine->id() != pActor_->id())
         {
             if (pSquadronMachine->objectType() == MachLog::ADMINISTRATOR
-                and pSquadronMachine->asCanAttack().hasHealingWeapon())
+                && pSquadronMachine->asCanAttack().hasHealingWeapon())
             {
                 HAL_STREAM(" issuing heal operation to " << pSquadronMachine->id() << std::endl);
                 pSquadronMachine->newOperation(
@@ -112,7 +112,7 @@ bool MachLogAdminHealOperation::doBeInterrupted()
 // virtual
 bool MachLogAdminHealOperation::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
-    PRE(currentlyAttached_ and pSubject == (W4dSubject*)pDirectObject_);
+    PRE(currentlyAttached_ && pSubject == (W4dSubject*)pDirectObject_);
 
     switch (event)
     {

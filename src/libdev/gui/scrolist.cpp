@@ -50,7 +50,7 @@ GuiSimpleScrollableList::GuiSimpleScrollableList(
     Gui::Coord relPos(0, 0);
     bool endOfDisplayableAreas = false;
 
-    while (not endOfDisplayableAreas)
+    while (! endOfDisplayableAreas)
     {
         ++numPositions_;
         relPos.x(relPos.x() + horizontalSpacing_);
@@ -114,7 +114,7 @@ bool GuiSimpleScrollableList::canScroll() const
 {
     CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
 
-    return (canScrollFoward_ or canScrollBackward_);
+    return (canScrollFoward_ || canScrollBackward_);
 }
 
 void GuiSimpleScrollableList::scrollFoward()
@@ -190,9 +190,9 @@ void GuiSimpleScrollableList::childrenUpdated()
         }
         else
         { // Yes
-            (*itter)->isVisible(not endOfDisplayableChildren);
+            (*itter)->isVisible(! endOfDisplayableChildren);
 
-            if (not endOfDisplayableChildren)
+            if (! endOfDisplayableChildren)
                 positionChildRelative(*itter, relPos); // Only reposition if child is visible
 
             relPos.x(relPos.x() + horizontalSpacing_);

@@ -94,8 +94,8 @@ void SDLApp::checkFinishApp()
 //  TBD: The display of recorder info should be on a keypush somewhere.
 static bool displayRecorderInfo()
 {
-    static bool result = not(
-        getenv("cb_recorder_display") and
+    static bool result = !(
+        getenv("cb_recorder_display") &&
         //      ( stricmp( getenv( "cb_recorder_display" ), "off" ) == 0 ) );
         (strcasecmp(getenv("cb_recorder_display"), "off") == 0));
 
@@ -115,7 +115,7 @@ void SDLApp::loopCycle()
     }
 
     // Prevent processing before clientStartup() call
-    if (not initialised_)
+    if (! initialised_)
         return;
 
     checkFinishApp();

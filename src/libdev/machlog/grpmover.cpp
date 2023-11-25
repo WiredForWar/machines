@@ -101,7 +101,7 @@ MachLogGroupMoverInternal::pOperation(const MachLogMachine* pMachine, const Mach
     MachLogOperation* result = nullptr;
 
     for (MachLogMachineOperations::const_iterator i = machineOperations.begin();
-         i != machineOperations.end() and result == nullptr;
+         i != machineOperations.end() && result == nullptr;
          ++i)
     {
         if (pMachine == (*i).pMachine())

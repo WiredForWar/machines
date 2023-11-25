@@ -119,7 +119,7 @@ PhysLinearTravelPlan::PhysLinearTravelPlan(
         PhysRelativeTime segmentTime;
         bool isRotationSegment = distance < MexEpsilon::instance();
 
-        if (not isRotationSegment)
+        if (! isRotationSegment)
         {
             // We are translating.
 
@@ -292,7 +292,7 @@ void PhysLinearTravelPlan::transform(const PhysRelativeTime& timeOffset, MexTran
                 nonConstThis->pImpl_->cacheValid_ = false;
                 ++nonConstThis->pImpl_->cacheSegment_;
             }
-            else if (cacheSegment_ != 0 and timeOffset < segmentTimes[cacheSegment_ - 1])
+            else if (cacheSegment_ != 0 && timeOffset < segmentTimes[cacheSegment_ - 1])
             {
                 nonConstThis->pImpl_->cacheValid_ = false;
                 nonConstThis->pImpl_->cacheSegment_ = 0;
@@ -302,7 +302,7 @@ void PhysLinearTravelPlan::transform(const PhysRelativeTime& timeOffset, MexTran
             nonConstThis->pImpl_->cacheSegment_ = 0;
 
         // If required, find the new correct interval
-        if (not cacheValid_)
+        if (! cacheValid_)
         {
             size_t nSegments = segmentTimes.size();
             while (segmentTimes[cacheSegment_] < timeOffset)

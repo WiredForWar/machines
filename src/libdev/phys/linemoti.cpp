@@ -68,7 +68,7 @@ void PhysLinearMotionPlan::transform(const PhysRelativeTime& timeOffset, MexTran
         bool search;
         if (timeOffset > entries_[targetIndex_]->time)
             search = true;
-        else if (targetIndex_ != 0 and timeOffset < entries_[targetIndex_ - 1]->time)
+        else if (targetIndex_ != 0 && timeOffset < entries_[targetIndex_ - 1]->time)
         {
             nonConstThis->pImpl_->targetIndex_ = 0;
             search = true;
@@ -88,7 +88,7 @@ void PhysLinearMotionPlan::transform(const PhysRelativeTime& timeOffset, MexTran
         }
 
         // If required, compute the cached data
-        if (not pImpl_->interpolationCached_)
+        if (! pImpl_->interpolationCached_)
             nonConstThis->computeCacheData();
 
         // Compute the interpolated transform, or use target if at it
@@ -114,7 +114,7 @@ void PhysLinearMotionPlan::computeCacheData()
     CB_DEPIMPL(MATHEX_SCALAR, angle_);
     // CB_DEPIMPL(bool, interpolationCached_);
 
-    PRE(targetIndex_ > 0 and targetIndex_ < entries_.size())
+    PRE(targetIndex_ > 0 && targetIndex_ < entries_.size())
 
     // Get the difference transform
     MexTransform3d differenceTransform;
@@ -153,7 +153,7 @@ void PhysLinearMotionPlan::computeInterpolatedTransform(const PhysRelativeTime& 
 
     MATHEX_SCALAR s = (beginTime == targetTime ? 1.0 : (timeOffset - beginTime) / (targetTime - beginTime));
 
-    POST(s >= 0.0 and s <= 1.0);
+    POST(s >= 0.0 && s <= 1.0);
 
     // hence construct the difference transform a proportion s between the 2 positions
     MexQuaternion params;

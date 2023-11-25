@@ -65,7 +65,7 @@ void MachLogAdminDeconstructOperation::doOutputOperator(std::ostream& o) const
 
 bool MachLogAdminDeconstructOperation::doStart()
 {
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ PhysRelativeTime MachLogAdminDeconstructOperation::doUpdate()
         {
             constructors.push_back((*i));
             ++nConstructors;
-            if (not(*i)->isIdle())
+            if (!(*i)->isIdle())
                 allConstructorsIdle = false;
         }
     }
@@ -116,12 +116,12 @@ PhysRelativeTime MachLogAdminDeconstructOperation::doUpdate()
     {
 
         // don't interrupt actors who are currently evading aggressors
-        if (not(*i)->evading()
-            and ((*i)->isIdle() or (*i)->strategy().currentOperationType() == MachLogOperation::ENTER_OPERATION or (*i)->strategy().currentOperationType() == MachLogOperation::FOLLOW_OPERATION))
+        if (!(*i)->evading()
+            && ((*i)->isIdle() || (*i)->strategy().currentOperationType() == MachLogOperation::ENTER_OPERATION || (*i)->strategy().currentOperationType() == MachLogOperation::FOLLOW_OPERATION))
         {
             if ((*i)->objectType() == MachLog::RESOURCE_CARRIER)
                 MachLogResourceCarrier::assignResourceCarrierTask(&(*i)->asResourceCarrier());
-            if ((*i)->objectType() == MachLog::AGGRESSOR or (*i)->objectType() == MachLog::ADMINISTRATOR)
+            if ((*i)->objectType() == MachLog::AGGRESSOR || (*i)->objectType() == MachLog::ADMINISTRATOR)
                 (*i)->newOperation(new MachLogFollowOperation(
                     (*i),
                     constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],

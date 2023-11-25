@@ -65,7 +65,7 @@ MachGuiInGameChatMessages::MachGuiInGameChatMessages()
 
     if (chatMessagesFile.is_open())
     {
-        while (not chatMessagesFile.eof())
+        while (! chatMessagesFile.eof())
         {
             chatMessagesFile.getline(buffer, sizeof(buffer));
             standardMessages_.push_back(buffer);
@@ -188,7 +188,7 @@ MachPhys::Race MachGuiInGameChatMessages::playerRace() const
 
     MachPhys::Race playersRace = MachPhys::N_RACES;
 
-    for (int i = 0; i < 4 and playersRace == MachPhys::N_RACES; ++i)
+    for (int i = 0; i < 4 && playersRace == MachPhys::N_RACES; ++i)
     {
         if (pStartupScreens_->startupData()->players()[i].getDisplayName() == playerName())
         {
@@ -206,10 +206,10 @@ bool MachGuiInGameChatMessages::opponentExists(int index) const
     bool returnVal = false;
     int opponentIndex = 0;
 
-    for (int i = 0; i < 4 and not returnVal; ++i)
+    for (int i = 0; i < 4 && ! returnVal; ++i)
     {
         if (pStartupScreens_->startupData()->players()[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
-            and pStartupScreens_->startupData()->players()[i].getDisplayName() != playerName())
+            && pStartupScreens_->startupData()->players()[i].getDisplayName() != playerName())
         {
             if (index == opponentIndex)
             {
@@ -232,10 +232,10 @@ string MachGuiInGameChatMessages::opponentName(int index) const
     bool opponentFound = false;
     int opponentIndex = 0;
 
-    for (int i = 0; i < 4 and not opponentFound; ++i)
+    for (int i = 0; i < 4 && ! opponentFound; ++i)
     {
         if (pStartupScreens_->startupData()->players()[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
-            and pStartupScreens_->startupData()->players()[i].getDisplayName() != playerName())
+            && pStartupScreens_->startupData()->players()[i].getDisplayName() != playerName())
         {
             if (index == opponentIndex)
             {
@@ -259,10 +259,10 @@ MachPhys::Race MachGuiInGameChatMessages::opponentRace(int index) const
     bool opponentFound = false;
     int opponentIndex = 0;
 
-    for (int i = 0; i < 4 and not opponentFound; ++i)
+    for (int i = 0; i < 4 && ! opponentFound; ++i)
     {
         if (pStartupScreens_->startupData()->players()[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
-            and pStartupScreens_->startupData()->players()[i].getDisplayName() != playerName())
+            && pStartupScreens_->startupData()->players()[i].getDisplayName() != playerName())
         {
             if (index == opponentIndex)
             {

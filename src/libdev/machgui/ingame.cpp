@@ -403,7 +403,7 @@ void MachInGameScreen::select(const Actors& actors)
         MachActor* pActor = (*iter);
 
         // Check to see if actor is already selected!!
-        ASSERT(not isSelected(*pActor), "actor already selected");
+        ASSERT(! isSelected(*pActor), "actor already selected");
 
         // Mark actor as selected
         pActor->selectionState(MachLog::SELECTED);
@@ -617,9 +617,9 @@ void MachInGameScreen::checkDismissNavigator()
     // Called when actor is selected/deselected.
 
     // Check to see if selection should cause navigator to be dismissed
-    if (not isMachineNavigationContext() or not pMachineNavigation_->remainVisible())
+    if (! isMachineNavigationContext() || ! pMachineNavigation_->remainVisible())
     {
-        if (not isConstructionNavigationContext() or not pConstructionNavigation_->remainVisible())
+        if (! isConstructionNavigationContext() || ! pConstructionNavigation_->remainVisible())
         {
             pMachinesIcon_->forceUp(); // Make sure machines navigation button pops up as we are leaving navigation mode
             pConstructionsIcon_->forceUp();
@@ -820,7 +820,7 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
     CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
 
     // Can't issue commands if game is paused or network is busy
-    if (SimManager::instance().isSuspended() or isNetworkStuffed())
+    if (SimManager::instance().isSuspended() || isNetworkStuffed())
     {
         MachGuiSoundManager::instance().playSound("gui/sounds/clickbad.wav");
     }
@@ -857,7 +857,7 @@ MachGuiCommand& MachInGameScreen::activeCommand() const
     CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
     CB_DEPIMPL(MachGuiCommand*, pDefaultCommand_);
 
-    PRE(pActiveCommand_ != nullptr or pDefaultCommand_ != nullptr);
+    PRE(pActiveCommand_ != nullptr || pDefaultCommand_ != nullptr);
     return (pActiveCommand_ != nullptr ? *pActiveCommand_ : *pDefaultCommand_);
 }
 
@@ -894,7 +894,7 @@ bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& pr
     bool processed = false;
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    if (pActor->objectIsMachine() and pActor->race() == playerRace)
+    if (pActor->objectIsMachine() && pActor->race() == playerRace)
     {
         MachLogMachine& machine = pActor->asMachine();
         char buffer[20];
@@ -920,7 +920,7 @@ bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& pr
         }
         // Resource carrier info
         else if (
-            pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isNormalResourceCarrier())
+            pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier())
         {
             char buffer2[20];
             //          itoa( pActor->asResourceCarrier().data().capacity(), buffer, 10 );
@@ -948,7 +948,7 @@ bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& pr
             MachLogAPC& apc = pActor->asAPC();
 
             for (MachLogAPC::Machines::const_iterator iter = apc.machines().begin();
-                 iter != apc.machines().end() and count < 10;
+                 iter != apc.machines().end() && count < 10;
                  ++iter)
             {
                 if (first)
@@ -975,20 +975,20 @@ bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& pr
 
                 ++count;
                 // If more than 10 machines in APC then end with ... to indicate more machines.
-                if (count == 10 and count != apc.machines().size())
+                if (count == 10 && count != apc.machines().size())
                 {
                     prompt += spaceText.asString();
                 }
             }
 
-            if (not first)
+            if (! first)
             {
                 prompt += apcEndText.asString();
             }
         }
 
         // Add on a string describing the machines current operation
-        if (not pActor->isIdle())
+        if (! pActor->isIdle())
         {
             GuiResourceString opString(
                 9000 /*IDS_xxx values for ops start at 9000*/ + pActor->strategy().currentOperationType());
@@ -1007,7 +1007,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
     // Display incomplete construction info
-    if (pActor->objectIsConstruction() and not pActor->asConstruction().isComplete() and pActor->race() == playerRace)
+    if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete() && pActor->race() == playerRace)
     {
         // Special case for incomplete mines, they still show number of BMUs in mine.
         // Add BMUs left in mine onto prompt text
@@ -1037,7 +1037,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
         processed = true;
     }
     // Display HP + AP for fristd::endly constructions
-    else if (pActor->objectIsConstruction() and pActor->race() == playerRace)
+    else if (pActor->objectIsConstruction() && pActor->race() == playerRace)
     {
         // Get HP and Armour info
         //      GuiResourceString hpText( IDS_HEALTHPOINTS, GuiString( itoa( pActor->hp(), buffer, 10 ) ) );
@@ -1082,7 +1082,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
         }
 
         // Add on a string describing the current operation
-        if (not pActor->isIdle())
+        if (! pActor->isIdle())
         {
             GuiResourceString opString(
                 9000 /*IDS_xxx values for ops start at 9000*/ + pActor->strategy().currentOperationType());
@@ -1169,7 +1169,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
     GuiString weaponName;
 
-    if (pActor->race() == playerRace and MachLogActorStringIdRestorer::isExceptionToRule(pActor, &stringId))
+    if (pActor->race() == playerRace && MachLogActorStringIdRestorer::isExceptionToRule(pActor, &stringId))
     {
     }
     else
@@ -1177,11 +1177,11 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
         stringId = MachLogActorStringIdRestorer::stringId(pActor);
 
         // Get weapon name, if any ( must belong to player to see weapon info ).
-        if (pActor->objectIsCanAttack() and pActor->race() == playerRace)
+        if (pActor->objectIsCanAttack() && pActor->race() == playerRace)
         {
             // If actor is POD then we must check that the ion cannon is active.
-            if ((pActor->objectType() == MachLog::POD and pActor->asPod().hasIonCannon())
-                or pActor->objectType() != MachLog::POD)
+            if ((pActor->objectType() == MachLog::POD && pActor->asPod().hasIonCannon())
+                || pActor->objectType() != MachLog::POD)
             {
                 MachLogCanAttack& canAttack = pActor->asCanAttack();
                 GuiResourceString weapon(MachLogActorStringIdRestorer::weaponStringId(canAttack.weaponCombo()));
@@ -1228,7 +1228,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
     }
 
     // Set the cursor prompt
-    cursorPromptText(prompt, not(pPromptTextActor_ == pActor));
+    cursorPromptText(prompt, !(pPromptTextActor_ == pActor));
 
     pPromptTextActor_ = pActor;
 }
@@ -1290,10 +1290,10 @@ void MachInGameScreen::asynchronousUpdate()
 
     // If we have a non-default active command, and its interaction is complete,
     // execute it and restore default command.
-    if (pActiveCommand_ != nullptr and pActiveCommand_->isInteractionComplete())
+    if (pActiveCommand_ != nullptr && pActiveCommand_->isInteractionComplete())
     {
         // If not done so, execute it
-        if (not pActiveCommand_->isExecuted())
+        if (! pActiveCommand_->isExecuted())
         {
             pActiveCommand_->apply();
             commandBankNeedsUpdating_ = true;
@@ -1312,8 +1312,8 @@ void MachInGameScreen::asynchronousUpdate()
         // However, if no selections, or first is foreign race, then no command should
         // be visible.
         MachLogRaces& races = MachLogRaces::instance();
-        bool forceInvisible = selectedActors_.size() == 0 or not races.hasPCRace()
-            or selectedActors_.front()->race() != races.pcController().race();
+        bool forceInvisible = selectedActors_.size() == 0 || ! races.hasPCRace()
+            || selectedActors_.front()->race() != races.pcController().race();
 
         for (Commands::iterator it = allCommands_.begin(); it != allCommands_.end(); ++it)
         {
@@ -1388,7 +1388,7 @@ void MachInGameScreen::asynchronousUpdate()
     // Update time network has been stuffed for
     if (MachLogNetwork::instance().isNetworkGame())
     {
-        if (not NetNetwork::instance().imStuffed())
+        if (! NetNetwork::instance().imStuffed())
         {
             networkStuffedStartTime_ = DevTime::instance().time();
         }
@@ -1401,9 +1401,9 @@ void MachInGameScreen::asynchronousUpdate()
         if (NetNetwork::instance().imStuffed())
             NetNetwork::instance().outputStuffedInfo(pSceneManager_->out());
     }
-    if (showCurrentMachine_ and selectedActors().size() > 0)
+    if (showCurrentMachine_ && selectedActors().size() > 0)
         pSceneManager_->out() << *selectedActors().front() << std::endl;
-    if (showNetworkPing_ and MachLogNetwork::instance().isNetworkGame())
+    if (showNetworkPing_ && MachLogNetwork::instance().isNetworkGame())
     {
         const NetNode& node = MachLogNetwork::instance().node();
         /*      const NetNode::Ping& pingInfo = node.pingInformation();
@@ -1453,7 +1453,7 @@ void MachInGameScreen::update()
 
     bool controlPanelMoved = false;
     // Scroll control panel...
-    if ((controlPanelOn_ or displayControlPanel()) and controlPanelXPos_ != MachGui::controlPanelOutXPos())
+    if ((controlPanelOn_ || displayControlPanel()) && controlPanelXPos_ != MachGui::controlPanelOutXPos())
     {
         // Trigger sound if control panel about to slide out
         if (controlPanelXPos_ == MachGui::controlPanelInXPos())
@@ -1464,7 +1464,7 @@ void MachInGameScreen::update()
 
         controlPanelMoved = true;
     }
-    else if (not controlPanelOn_ and not displayControlPanel() and controlPanelXPos_ != MachGui::controlPanelInXPos())
+    else if (! controlPanelOn_ && ! displayControlPanel() && controlPanelXPos_ != MachGui::controlPanelInXPos())
     {
         // Trigger sound if control panel about to slide in
         if (controlPanelXPos_ == MachGui::controlPanelOutXPos())
@@ -1537,9 +1537,9 @@ bool MachInGameScreen::beNotified(W4dSubject* pSubject, W4dSubject::Notification
             break;
 
         case W4dSubject::CLIENT_SPECIFIC:
-            if (clientData == MachLog::TELEPORTED_OUT_OF_WORLD or clientData == MachLog::ENTERED_WORLD
-                or clientData == MachLog::RACE_CHANGED or clientData == MachLog::CHANGED_CAMOUFLAGE_STATUS
-                or clientData == MachLog::CHANGED_MINERALS_CARRIED)
+            if (clientData == MachLog::TELEPORTED_OUT_OF_WORLD || clientData == MachLog::ENTERED_WORLD
+                || clientData == MachLog::RACE_CHANGED || clientData == MachLog::CHANGED_CAMOUFLAGE_STATUS
+                || clientData == MachLog::CHANGED_MINERALS_CARRIED)
             {
                 // Need to grey out or show the icon in the corral when leaving/entering APC
                 pCorralSingleIcon_->setActor(selectedActors().front(), true);
@@ -1572,7 +1572,7 @@ bool MachInGameScreen::beNotified(W4dSubject* pSubject, W4dSubject::Notification
         unselect(pActor);
     }
 
-    return not cancelSelection;
+    return ! cancelSelection;
 }
 
 bool MachInGameScreen::applyCommandToSquadron()
@@ -1619,7 +1619,7 @@ bool MachInGameScreen::doHandleRightClickEvent(const GuiMouseEvent& event)
         // over the map then deselect all selected actors, reset the intelligent
         // cursors etc.
         if (DevTime::instance().time() - pressReleaseTimer < 0.5
-            and not pContinentMap_->absoluteBoundary().contains(event.coord()))
+            && ! pContinentMap_->absoluteBoundary().contains(event.coord()))
         {
             shouldDeselectActors = true;
         }
@@ -1750,8 +1750,8 @@ void MachInGameScreen::mainMenuOrSingleFactoryContext()
     // build menu.
     const MachInGameScreen::Actors& selectionSet = selectedActors();
     MachLogRaces& races = MachLogRaces::instance();
-    if (selectionSet.size() == 1 and // Only consider when one actor selected
-        races.hasPCRace() and // PC race must exist
+    if (selectionSet.size() == 1 && // Only consider when one actor selected
+        races.hasPCRace() && // PC race must exist
         selectionSet.front()->race() == races.pcController().race()) // factory must belong to PC race
     {
         if (selectionSet.front()->objectType() == MachLog::FACTORY) // actor is factory
@@ -1789,7 +1789,7 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
     CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
 
     // Check not already in it
-    if (controlPanelContext_ != newContext or forceChange)
+    if (controlPanelContext_ != newContext || forceChange)
     {
         // Reset all other contexts
         MachGui::ControlPanelContext oldContext = controlPanelContext_;
@@ -1910,10 +1910,10 @@ bool MachInGameScreen::isCorralVisible() const
     CB_DEPIMPL(Actors, selectedActors_);
     CB_DEPIMPL(int, controlPanelXPos_);
 
-    bool visible = controlPanelContext_ == MachGui::MAIN_MENU or controlPanelContext_ == MachGui::SQUADRON_MENU
-        or controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
-        or controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU
-        or controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU;
+    bool visible = controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::SQUADRON_MENU
+        || controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
+        || controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU
+        || controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU;
 
     // Only visible if there is more than one actor selected
     visible &= (selectedActors_.size() > 1);
@@ -1931,13 +1931,13 @@ bool MachInGameScreen::isCorralSingleIconVisible() const
     CB_DEPIMPL(MachActor*, pHighlightedActor_);
     CB_DEPIMPL(int, controlPanelXPos_);
 
-    bool visible = controlPanelContext_ == MachGui::MAIN_MENU or controlPanelContext_ == MachGui::SQUADRON_MENU
-        or controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
-        or controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU
-        or controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU
-        or controlPanelContext_ == MachGui::SINGLE_FACTORY or controlPanelContext_ == MachGui::HARDWARE_RESEARCH;
+    bool visible = controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::SQUADRON_MENU
+        || controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
+        || controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU
+        || controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU
+        || controlPanelContext_ == MachGui::SINGLE_FACTORY || controlPanelContext_ == MachGui::HARDWARE_RESEARCH;
 
-    visible &= (selectedActors_.size() == 1 or (pHighlightedActor_ and selectedActors_.empty()));
+    visible &= (selectedActors_.size() == 1 || (pHighlightedActor_ && selectedActors_.empty()));
 
     // Only visible if control panel is not in the process of sliding in/out
     visible &= controlPanelXPos_ == MachGui::controlPanelOutXPos();
@@ -1964,7 +1964,7 @@ bool MachInGameScreen::isSmallCommandIconsVisible() const
     CB_DEPIMPL(int, controlPanelXPos_);
 
     bool visible
-        = (controlPanelContext_ == MachGui::SINGLE_FACTORY or controlPanelContext_ == MachGui::HARDWARE_RESEARCH);
+        = (controlPanelContext_ == MachGui::SINGLE_FACTORY || controlPanelContext_ == MachGui::HARDWARE_RESEARCH);
 
     // Only visible if control panel is not in the process of sliding in/out
     visible &= controlPanelXPos_ == MachGui::controlPanelOutXPos();
@@ -2004,7 +2004,7 @@ bool MachInGameScreen::isSquadronBankVisible() const
     CB_DEPIMPL(int, controlPanelXPos_);
 
     bool visible
-        = controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND or controlPanelContext_ == MachGui::SQUADRON_MENU;
+        = controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND || controlPanelContext_ == MachGui::SQUADRON_MENU;
 
     // Only visible if control panel is not in the process of sliding in/out
     visible &= controlPanelXPos_ == MachGui::controlPanelOutXPos();
@@ -2166,8 +2166,8 @@ void MachInGameScreen::setupActorBank()
             pFactory = &pSelectedActor->asFactory();
 
         showProductionBank = pFactory != nullptr
-            and (controlPanelContext_ == MachGui::MAIN_MENU or controlPanelContext_ == MachGui::SINGLE_FACTORY)
-            and pFactory->race() == playerRace;
+            && (controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::SINGLE_FACTORY)
+            && pFactory->race() == playerRace;
 
         // See if the hw research bank is appropriate.
         // Must have a fristd::endly, complete hw lab, and be in the main or hw research menus
@@ -2175,12 +2175,12 @@ void MachInGameScreen::setupActorBank()
             pHardwareLab = &pSelectedActor->asHardwareLab();
 
         showHWResearchBank = pHardwareLab != nullptr
-            and (controlPanelContext_ == MachGui::MAIN_MENU or controlPanelContext_ == MachGui::HARDWARE_RESEARCH)
-            and pHardwareLab->race() == playerRace;
+            && (controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::HARDWARE_RESEARCH)
+            && pHardwareLab->race() == playerRace;
     }
 
     // Delete any unwanted banks, also watching for banks for an old actor
-    if (pProductionBank_ != nullptr and ((not showProductionBank) or (pFactory != &pProductionBank_->factory())))
+    if (pProductionBank_ != nullptr && ((! showProductionBank) || (pFactory != &pProductionBank_->factory())))
     {
         pControlPanel_->redrawArea(*pProductionBank_);
         delete pProductionBank_;
@@ -2190,7 +2190,7 @@ void MachInGameScreen::setupActorBank()
     }
 
     if (pHWResearchBank_ != nullptr
-        and ((not showHWResearchBank) or (pHardwareLab != &pHWResearchBank_->hardwareLab())))
+        && ((! showHWResearchBank) || (pHardwareLab != &pHWResearchBank_->hardwareLab())))
     {
         pControlPanel_->redrawArea(*pHWResearchBank_);
         delete pHWResearchBank_;
@@ -2200,7 +2200,7 @@ void MachInGameScreen::setupActorBank()
     }
 
     // Construct any required banks
-    if (showProductionBank and pProductionBank_ == nullptr)
+    if (showProductionBank && pProductionBank_ == nullptr)
     {
         Gui::Boundary bankArea(
             1,
@@ -2211,7 +2211,7 @@ void MachInGameScreen::setupActorBank()
 
         DEBUG_STREAM(DIAG_NEIL, "Creating production bank" << std::endl << std::flush);
     }
-    else if (showHWResearchBank and pHWResearchBank_ == nullptr)
+    else if (showHWResearchBank && pHWResearchBank_ == nullptr)
     {
         Gui::Boundary bankArea(
             1,
@@ -2248,78 +2248,78 @@ void MachInGameScreen::updateChildVisible()
     CB_DEPIMPL(int, controlPanelXPos_);
 
     // Make navigator visible/invisible
-    if (not isMachineNavigationVisible() and pMachineNavigation_->isVisible())
+    if (! isMachineNavigationVisible() && pMachineNavigation_->isVisible())
     {
         pMachineNavigation_->makeVisible(false);
         pControlPanel_->redrawArea(*pMachineNavigation_);
     }
-    else if (isMachineNavigationVisible() and not pMachineNavigation_->isVisible())
+    else if (isMachineNavigationVisible() && ! pMachineNavigation_->isVisible())
     {
         pMachineNavigation_->makeVisible(true);
     }
 
     // Make construction navigation visible/invisble
-    if (not isConstructionNavigationVisible() and pConstructionNavigation_->isVisible())
+    if (! isConstructionNavigationVisible() && pConstructionNavigation_->isVisible())
     {
         pConstructionNavigation_->makeVisible(false);
         pControlPanel_->redrawArea(*pConstructionNavigation_);
     }
-    else if (isConstructionNavigationVisible() and not pConstructionNavigation_->isVisible())
+    else if (isConstructionNavigationVisible() && ! pConstructionNavigation_->isVisible())
     {
         pConstructionNavigation_->makeVisible(true);
     }
 
     // Make single icon corral visible/invisible
-    if (not isCorralSingleIconVisible() and pCorralSingleIcon_->isVisible())
+    if (! isCorralSingleIconVisible() && pCorralSingleIcon_->isVisible())
     {
         pCorralSingleIcon_->isVisible(false);
         pControlPanel_->redrawArea(*pCorralSingleIcon_);
     }
-    else if (isCorralSingleIconVisible() and not pCorralSingleIcon_->isVisible())
+    else if (isCorralSingleIconVisible() && ! pCorralSingleIcon_->isVisible())
     {
         pCorralSingleIcon_->isVisible(true);
     }
 
     // Make multi-icon corral visible/invisible
-    if (not isCorralVisible() and pCorral_->isVisible())
+    if (! isCorralVisible() && pCorral_->isVisible())
     {
         pCorral_->isVisible(false);
         pControlPanel_->redrawArea(*pCorral_);
     }
-    else if (isCorralVisible() and not pCorral_->isVisible())
+    else if (isCorralVisible() && ! pCorral_->isVisible())
     {
         pCorral_->isVisible(true);
     }
 
     // Make squadron bank visible/invisible
-    if (not isSquadronBankVisible() and pSquadronBank_->isVisible())
+    if (! isSquadronBankVisible() && pSquadronBank_->isVisible())
     {
         pSquadronBank_->isVisible(false);
         pControlPanel_->redrawArea(*pSquadronBank_);
     }
-    else if (isSquadronBankVisible() and not pSquadronBank_->isVisible())
+    else if (isSquadronBankVisible() && ! pSquadronBank_->isVisible())
     {
         pSquadronBank_->isVisible(true);
     }
 
     // Make command icons visible/invisible
-    if (not isCommandIconsVisible() and pCommandIcons_->isVisible())
+    if (! isCommandIconsVisible() && pCommandIcons_->isVisible())
     {
         pCommandIcons_->isVisible(false);
         pControlPanel_->redrawArea(*pCommandIcons_);
     }
-    else if (isCommandIconsVisible() and not pCommandIcons_->isVisible())
+    else if (isCommandIconsVisible() && ! pCommandIcons_->isVisible())
     {
         pCommandIcons_->isVisible(true);
     }
 
     // Make small command icons visible/invisible
-    if (not isSmallCommandIconsVisible() and pSmallCommandIcons_->isVisible())
+    if (! isSmallCommandIconsVisible() && pSmallCommandIcons_->isVisible())
     {
         pSmallCommandIcons_->isVisible(false);
         pControlPanel_->redrawArea(*pSmallCommandIcons_);
     }
-    else if (isSmallCommandIconsVisible() and not pSmallCommandIcons_->isVisible())
+    else if (isSmallCommandIconsVisible() && ! pSmallCommandIcons_->isVisible())
     {
         pSmallCommandIcons_->isVisible(true);
     }
@@ -2515,8 +2515,8 @@ void MachInGameScreen::updateGameState()
         if (MachLogRaces::instance().hasLost(playerRace))
         {
             // Keep host working on until ctrl is pressed TODO: another elegant solution?
-            if (MachLogNetwork::instance().isNetworkGame() and MachLogNetwork::instance().isNodeLogicalHost()
-                and not DevKeyboard::instance().ctrlPressed())
+            if (MachLogNetwork::instance().isNetworkGame() && MachLogNetwork::instance().isNodeLogicalHost()
+                && ! DevKeyboard::instance().ctrlPressed())
                 return;
             gameState_ = LOST;
             gameStateTimer_ = Phys::time();
@@ -2543,15 +2543,15 @@ MachInGameScreen::GameState MachInGameScreen::gameState() const
         PhysAbsoluteTime now = Phys::time();
         // Only return that game has been lost/won after it has been in this state for a few seconds.
         // This enables pod destruction animation time to run and music to play.
-        if (MachGuiDatabase::instance().currentScenario().isTrainingScenario() and now - gameStateTimer_ > 5.0)
+        if (MachGuiDatabase::instance().currentScenario().isTrainingScenario() && now - gameStateTimer_ > 5.0)
         {
             retVal = gameState_;
         }
-        else if (gameState_ == WON and now - gameStateTimer_ > 19.0)
+        else if (gameState_ == WON && now - gameStateTimer_ > 19.0)
         {
             retVal = gameState_;
         }
-        else if (gameState_ == LOST and now - gameStateTimer_ > 14.0)
+        else if (gameState_ == LOST && now - gameStateTimer_ > 14.0)
         {
             retVal = gameState_;
         }
@@ -2567,7 +2567,7 @@ void MachInGameScreen::activate()
     CB_DEPIMPL(MachContinentMap*, pContinentMap_);
     CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
 
-    if (not inFirstPerson_)
+    if (! inFirstPerson_)
     {
         pContinentMap_->forceUpdate();
         changed();
@@ -2592,7 +2592,7 @@ bool MachInGameScreen::switchToMenus() const
     CB_DEPIMPL(bool, switchToMenus_);
     CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
 
-    return switchToMenus_ or pFirstPerson_->switchToMenus();
+    return switchToMenus_ || pFirstPerson_->switchToMenus();
 }
 
 void MachInGameScreen::resetSwitchToMenus()
@@ -2688,7 +2688,7 @@ void MachInGameScreen::switchBackToInGame()
     // In a multiplayer game the game continues whilst the user is in the menu
     // screens therefore it is possible that the actor that was embodied has been
     // destroyed in the mean time.
-    if (inFirstPerson_ and pFirstPerson_->okayToSwitchTo1stPerson())
+    if (inFirstPerson_ && pFirstPerson_->okayToSwitchTo1stPerson())
     {
         // Switch Gui root.
         pFirstPerson_->becomeRoot();
@@ -2755,7 +2755,7 @@ void MachInGameScreen::updateWhilstInFirstPerson()
     // Update time network has been stuffed for
     if (MachLogNetwork::instance().isNetworkGame())
     {
-        if (not NetNetwork::instance().imStuffed())
+        if (! NetNetwork::instance().imStuffed())
         {
             networkStuffedStartTime_ = DevTime::instance().time();
         }
@@ -2839,16 +2839,16 @@ bool MachInGameScreen::displayControlPanel() const
     CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
 
     bool returnVal = controlPanelContext_ == MachGui::SQUADRON_MENU
-        or controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
-        or controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU
-        or controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU
-        or controlPanelContext_ == MachGui::SINGLE_FACTORY or controlPanelContext_ == MachGui::HARDWARE_RESEARCH
-        or controlPanelContext_ == MachGui::CONSTRUCT_COMMAND;
+        || controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
+        || controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU
+        || controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU
+        || controlPanelContext_ == MachGui::SINGLE_FACTORY || controlPanelContext_ == MachGui::HARDWARE_RESEARCH
+        || controlPanelContext_ == MachGui::CONSTRUCT_COMMAND;
 
-    if (not returnVal)
+    if (! returnVal)
     {
-        if (corralState() & CORRAL_ALLCONSTRUCTORS and corralState() & CORRAL_ALLMACHINES
-            and corralState() & CORRAL_SOMEFRIENDLY)
+        if (corralState() & CORRAL_ALLCONSTRUCTORS && corralState() & CORRAL_ALLMACHINES
+            && corralState() & CORRAL_SOMEFRIENDLY)
         {
             returnVal = true;
         }
@@ -2920,7 +2920,7 @@ void MachInGameScreen::setupNavigators()
     CB_DEPIMPL(MachSquadronIcon*, pSquadronIcon_);
     CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
 
-    if (not pMachineNavigation_)
+    if (! pMachineNavigation_)
     {
         // Work out relative coord for all navigators
         Gui::Coord navTopLeft(1, pControlPanel_->getVisibleHeight() - MachGuiNavigatorBase::reqHeight());
@@ -3060,17 +3060,17 @@ void MachInGameScreen::updateCorralState()
             corralState_ |= CORRAL_ALLCONSTRUCTIONS;
             NEIL_STREAM("   CORRAL_ALLCONSTRUCTIONS" << std::endl);
         }
-        if (allFactories and someConstructions)
+        if (allFactories && someConstructions)
         {
             corralState_ |= CORRAL_ALLFACTORIES;
             NEIL_STREAM("   CORRAL_ALLFACTORIES" << std::endl);
         }
-        if (allConstructors and someMachines)
+        if (allConstructors && someMachines)
         {
             corralState_ |= CORRAL_ALLCONSTRUCTORS;
             NEIL_STREAM("   CORRAL_ALLCONSTRUCTORS" << std::endl);
         }
-        if (allAPCs and someMachines)
+        if (allAPCs && someMachines)
         {
             corralState_ |= CORRAL_ALLAPCS;
             NEIL_STREAM("   CORRAL_ALLAPCS" << std::endl);
@@ -3174,7 +3174,7 @@ void MachInGameScreen::saveScreenShot()
 
         pathName = SysPathName(string("mach") + buffer + ".png");
 
-        if (not pathName.existsAsFile())
+        if (! pathName.existsAsFile())
             gotPathName = true;
 
         ++count;
@@ -3264,7 +3264,7 @@ bool MachInGameScreen::isFirstPersonDisabled() const
 
     bool retValue = false;
 
-    if (MachLogNetwork::instance().isNetworkGame() and disableFirstPerson_)
+    if (MachLogNetwork::instance().isNetworkGame() && disableFirstPerson_)
     {
         retValue = true;
     }

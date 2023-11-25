@@ -112,12 +112,12 @@ bool MachLogSquadron::addToControl(MachLogMachine* p)
     bool addToEnd = true;
     if (p->objectType() == MachLog::ADMINISTRATOR)
     {
-        if (not hasCommander() or p->swLevel() > pCommander_->swLevel())
+        if (! hasCommander() || p->swLevel() > pCommander_->swLevel())
         {
             pCommander_ = &p->asAdministrator();
             hasCommander_ = true;
 
-            if (not machines_.empty())
+            if (! machines_.empty())
             {
                 machines_.push_back(machines_.front());
                 machines_.front() = p;
@@ -171,19 +171,19 @@ void MachLogSquadron::removeFromControl(const MachLogMachine* p)
     // Oops commander has just been removed from squadron
     bool checkForNewCommander = false;
     if (p->objectType() == MachLog::ADMINISTRATOR)
-        if (hasCommander() and pCommander_->id() == p->id())
+        if (hasCommander() && pCommander_->id() == p->id())
         {
             hasCommander_ = false;
             pCommander_ = nullptr;
             checkForNewCommander = true;
         }
     squadron_ctl_erase(&machines_, p);
-    if (checkForNewCommander and machines_.size() > 0)
+    if (checkForNewCommander && machines_.size() > 0)
     {
         for (Machines::iterator i = machines_.begin(); i != machines_.end(); ++i)
             if ((*i)->objectType() == MachLog::ADMINISTRATOR)
             {
-                if (not hasCommander())
+                if (! hasCommander())
                     pCommander_ = &(*i)->asAdministrator();
 
                 else if (p->swLevel() > pCommander_->swLevel())
@@ -265,7 +265,7 @@ PhysRelativeTime MachLogSquadron::update(const PhysRelativeTime& maxCPUTime, MAT
     MachLogProductionUnit prod;
     if (checkIfMachineMissing(&prod))
     {
-        if (not MachLogRaces::instance().addMatchingMachineToSquadron(race(), prod, this))
+        if (! MachLogRaces::instance().addMatchingMachineToSquadron(race(), prod, this))
         {
             MachLogFactory* mlf;
             if (MachLogRaces::instance().getSuitableFactory(race(), prod, &mlf))
@@ -329,10 +329,10 @@ PhysRelativeTime MachLogSquadron::beDestroyed()
 bool MachLogSquadron::checkIfMachineMissing(MachLogProductionUnit* pProd) const
 {
     CB_MachLogSquadron_DEPIMPL();
-    if (totalDesiredMachines_ == 0 or totalDesiredMachines_ == machines_.size())
+    if (totalDesiredMachines_ == 0 || totalDesiredMachines_ == machines_.size())
         return false;
     bool found = false;
-    for (DesiredMachineList::iterator i = desiredMachineList_.begin(); i != desiredMachineList_.end() and not found;
+    for (DesiredMachineList::iterator i = desiredMachineList_.begin(); i != desiredMachineList_.end() && ! found;
          ++i)
     {
         const DesiredMachineData& dmd = **i;
@@ -363,7 +363,7 @@ void MachLogSquadron::doOutputOperator(std::ostream& o) const
         for (MachLogSquadron::Machines::const_iterator i = machines().begin(); i != machines().end(); ++i)
         {
             o << " (" << (*i)->id() << ") " << (*i)->objectType();
-            if (hasCommander() and commander().id() == (*i)->id())
+            if (hasCommander() && commander().id() == (*i)->id())
                 o << " [Commander]\t";
             else
                 o << "\t";

@@ -372,7 +372,7 @@ bool MachPhysConstructionData::dataValid() const
 {
     bool result = true;
 
-    if (not localBoundary().contains(interiorBoundary()))
+    if (! localBoundary().contains(interiorBoundary()))
     {
         ASSERT_INFO("Interior not contained in exterior");
         ASSERT_INFO(localBoundary());
@@ -385,7 +385,7 @@ bool MachPhysConstructionData::dataValid() const
     {
         const MachPhysStation& station = stations().station(i);
 
-        if (not interiorBoundary().contains(station.position()))
+        if (! interiorBoundary().contains(station.position()))
         {
             ASSERT_INFO("Station not contained in interior");
             ASSERT_INFO(interiorBoundary());

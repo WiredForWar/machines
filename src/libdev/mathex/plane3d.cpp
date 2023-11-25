@@ -148,7 +148,7 @@ bool MexPlane3d::contains(const MexPoint3d& rhs) const
 bool MexPlane3d::contains(const MexLine3d& rhs) const
 {
     // true if both points of the line lie on the plane
-    return (pointRelativeToPlane(rhs.end1()) == 0) and (pointRelativeToPlane(rhs.end2()) == 0);
+    return (pointRelativeToPlane(rhs.end1()) == 0) && (pointRelativeToPlane(rhs.end2()) == 0);
 }
 
 bool MexPlane3d::contains(const MexPlane3d& rhs) const
@@ -170,7 +170,7 @@ bool MexPlane3d::intersects(const MexPoint3d& rhs) const
 bool MexPlane3d::intersects(const MexLine3d& rhs) const
 {
 
-    if (contains(rhs.end1()) or contains(rhs.end2()))
+    if (contains(rhs.end1()) || contains(rhs.end2()))
     {
         // cout << " returned true here - contains both points " << endl;
         return true;
@@ -207,8 +207,8 @@ bool MexPlane3d::intersects(const MexPlane3d& rhs) const
     MexVec3 normalThis(this->normal());
 
     if (Mathex::abs(normRhs.x() - normalThis.x()) < MexEpsilon::instance()
-        and Mathex::abs(normRhs.y() - normalThis.y()) < MexEpsilon::instance()
-        and Mathex::abs(normRhs.z() - normalThis.z()) < MexEpsilon::instance())
+        && Mathex::abs(normRhs.y() - normalThis.y()) < MexEpsilon::instance()
+        && Mathex::abs(normRhs.z() - normalThis.z()) < MexEpsilon::instance())
     {
         // cout << "******* Didn't Intersect *******" ;
         return false;
@@ -288,7 +288,7 @@ bool MexPlane3d::operator==(const MexPlane3d& rhs) const
 {
     TEST_INVARIANT;
 
-    bool x = a_ == rhs.a_ and b_ == rhs.b_ and c_ == rhs.c_ and d_ == rhs.d_ and normal_ == rhs.normal_;
+    bool x = a_ == rhs.a_ && b_ == rhs.b_ && c_ == rhs.c_ && d_ == rhs.d_ && normal_ == rhs.normal_;
 
     /* if (x==true)
     { cout << "This is an equal case ";

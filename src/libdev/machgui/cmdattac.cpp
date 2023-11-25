@@ -75,7 +75,7 @@ void MachGuiAttackCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool
 {
     MachGui::Cursor2dType cursor = cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed);
 
-    hadFinalPick_ = (cursor != MachGui::INVALID_CURSOR) and (cursor != MachGui::MENU_CURSOR);
+    hadFinalPick_ = (cursor != MachGui::INVALID_CURSOR) && (cursor != MachGui::MENU_CURSOR);
 }
 
 // virtual
@@ -85,9 +85,9 @@ bool MachGuiAttackCommand::canActorEverExecute(const MachActor& actor) const
     // Administrators and aggressors can attack
     MachLog::ObjectType objectType = actor.objectType();
     return (
-        objectType == MachLog::ADMINISTRATOR or objectType == MachLog::AGGRESSOR
-        or (objectType == MachLog::MISSILE_EMPLACEMENT and actor.asMissileEmplacement().subType() != MachPhys::ICBM
-            and actor.asMissileEmplacement().isComplete()));
+        objectType == MachLog::ADMINISTRATOR || objectType == MachLog::AGGRESSOR
+        || (objectType == MachLog::MISSILE_EMPLACEMENT && actor.asMissileEmplacement().subType() != MachPhys::ICBM
+            && actor.asMissileEmplacement().isComplete()));
 }
 
 // virtual
@@ -145,7 +145,7 @@ bool MachGuiAttackCommand::applyMove(MachActor* pActor, string*)
 
             pActor->asMachine().manualCommandIssued();
 
-            if (not hasPlayedVoiceMail())
+            if (! hasPlayedVoiceMail())
             {
                 MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
                 hasPlayedVoiceMail(true);
@@ -159,7 +159,7 @@ bool MachGuiAttackCommand::applyMove(MachActor* pActor, string*)
 bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, string*)
 {
     bool canDo = pActor != pDirectObject_ // Check not trying to attack oneself
-        and pActor->objectIsCanAttack() and pActor->asCanAttack().canFireAt(*pDirectObject_);
+        && pActor->objectIsCanAttack() && pActor->asCanAttack().canFireAt(*pDirectObject_);
 
     if (canDo)
     {
@@ -177,7 +177,7 @@ bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, string*)
                         commandId(),
                         MachLogAttackOperation::TERMINATE_ON_CHANGE);
 
-                    if (not hasPlayedVoiceMail())
+                    if (! hasPlayedVoiceMail())
                     {
                         MachLogMachineVoiceMailManager::instance().postNewMail(
                             *pActor,
@@ -222,7 +222,7 @@ MachGui::Cursor2dType MachGuiAttackCommand::cursorOnTerrain(const MexPoint3d& lo
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::MOVETO_CURSOR;
 
     return cursor;
@@ -234,12 +234,12 @@ MachGui::Cursor2dType MachGuiAttackCommand::cursorOnActor(MachActor* pActor, boo
     MachGui::Cursor2dType cursorType = MachGui::INVALID_CURSOR;
 
     // Check for a building or machine
-    if (pActor->objectIsConstruction() or pActor->objectIsMachine() or pActor->objectIsArtefact()
-        or pActor->objectIsLandMine())
+    if (pActor->objectIsConstruction() || pActor->objectIsMachine() || pActor->objectIsArtefact()
+        || pActor->objectIsLandMine())
     {
         // Make sure users not trying to attack same machine as selected
         // machine.
-        if (inGameScreen().selectedActors().size() == 1 and inGameScreen().selectedActors().front() == pActor)
+        if (inGameScreen().selectedActors().size() == 1 && inGameScreen().selectedActors().front() == pActor)
         {
             cursorType = MachGui::MENU_CURSOR;
         }
@@ -348,9 +348,9 @@ bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdminis
 // virtual
 bool MachGuiAttackCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_A and be.action() == DevButtonEvent::PRESS
-        and be.wasAltPressed() == false and be.wasCtrlPressed() == false and be.wasShiftPressed() == false
-        and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_A && be.action() == DevButtonEvent::PRESS
+        && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
+        && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -364,19 +364,19 @@ bool MachGuiAttackCommand::atLeastOneCanFireAt(const MachActor& potentialTargetA
     bool noneCanFireAt = true;
 
     for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-         iter != inGameScreen().selectedActors().end() and noneCanFireAt;
+         iter != inGameScreen().selectedActors().end() && noneCanFireAt;
          ++iter)
     {
         MachActor* pActor = (*iter);
 
-        if (pActor->objectIsCanAttack() and pActor != &potentialTargetActor // can't attack oneself.......
-            and pActor->asCanAttack().canFireAt(potentialTargetActor))
+        if (pActor->objectIsCanAttack() && pActor != &potentialTargetActor // can't attack oneself.......
+            && pActor->asCanAttack().canFireAt(potentialTargetActor))
         {
             noneCanFireAt = false;
         }
     }
 
-    return not(noneCanFireAt);
+    return !(noneCanFireAt);
 }
 
 bool MachGuiAttackCommand::applyAdminMove(MachLogAdministrator* pAdministrator, string*)

@@ -159,7 +159,7 @@ void MachPhysWheels::moveAnimations(
             else
             {
                 rightForwards = turnAngles[i] < MexRadians(0.0);
-                leftForwards = not rightForwards;
+                leftForwards = ! rightForwards;
             }
 
             // Compute the times for each part of the segment.

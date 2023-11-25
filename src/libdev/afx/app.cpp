@@ -23,10 +23,10 @@ AfxApp::ExitStatus AfxApp::run()
 // virtual
 bool AfxApp::startup()
 {
-    if (not OSStartup())
+    if (! OSStartup())
         return false;
 
-    if (not clientStartup())
+    if (! clientStartup())
     {
         OSShutdown();
         return false;

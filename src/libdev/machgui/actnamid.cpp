@@ -268,34 +268,34 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(
             switch ((MachPhys::AdministratorSubType)subType)
             {
                 case MachPhys::OVERSEER:
-                    if (level == 2 and wc == MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED)
+                    if (level == 2 && wc == MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED)
                     {
                         *pStringId = IDS_EXCEPT_OVERSEER2HEAL;
                         return true;
                     }
-                    else if (level == 3 and wc == MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED)
+                    else if (level == 3 && wc == MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED)
                     {
                         *pStringId = IDS_EXCEPT_OVERSEER3HEAL;
                         return true;
                     }
                     break;
                 case MachPhys::COMMANDER:
-                    if (level == 4 and wc == MachPhys::L_MULTI_LAUNCHER5_R_TREACHERY)
+                    if (level == 4 && wc == MachPhys::L_MULTI_LAUNCHER5_R_TREACHERY)
                     {
                         *pStringId = IDS_EXCEPT_COMMANDER4TREACH;
                         return true;
                     }
-                    else if (level == 4 and wc == MachPhys::L_MULTI_LAUNCHER5_R_SUPERCHARGE_SUPER)
+                    else if (level == 4 && wc == MachPhys::L_MULTI_LAUNCHER5_R_SUPERCHARGE_SUPER)
                     {
                         *pStringId = IDS_EXCEPT_COMMANDER4HEAL;
                         return true;
                     }
-                    else if (level == 5 and wc == MachPhys::L_PULSE_CANNON_R_SUPERCHARGE_SUPER)
+                    else if (level == 5 && wc == MachPhys::L_PULSE_CANNON_R_SUPERCHARGE_SUPER)
                     {
                         *pStringId = IDS_EXCEPT_COMMANDER5HEAL;
                         return true;
                     }
-                    else if (level == 5 and wc == MachPhys::L_PULSE_CANNON_R_VIRUS)
+                    else if (level == 5 && wc == MachPhys::L_PULSE_CANNON_R_VIRUS)
                     {
                         *pStringId = IDS_EXCEPT_COMMANDER5VIRUS;
                         return true;
@@ -309,14 +309,14 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(
             switch ((MachPhys::AggressorSubType)subType)
             {
                 case MachPhys::GRUNT:
-                    if (level == 2 and wc == MachPhys::L_FLAME_THROWER2)
+                    if (level == 2 && wc == MachPhys::L_FLAME_THROWER2)
                     {
                         *pStringId = IDS_EXCEPT_GRUNT2FLAME;
                         return true;
                     }
                     break;
                 case MachPhys::BALLISTA:
-                    if (level == 3 and wc == MachPhys::T_VORTEX)
+                    if (level == 3 && wc == MachPhys::T_VORTEX)
                     {
                         *pStringId = IDS_EXCEPT_BALLISTA3VORTEX;
                         return true;

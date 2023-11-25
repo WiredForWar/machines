@@ -122,7 +122,7 @@ bool PhysCS2dFindPath::spaceIntersections(
     CS2VGRA_STREAM(*this << std::endl);
 
     // See how many intersections we have
-    return not pConfigSpace_->contains(sausage, flags_, pPolygonIds, PhysConfigSpace2d::USE_PERMANENT_ONLY);
+    return ! pConfigSpace_->contains(sausage, flags_, pPolygonIds, PhysConfigSpace2d::USE_PERMANENT_ONLY);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -146,7 +146,7 @@ void PhysCS2dFindPath::start()
     fullPath_.push_back(endPoint_);
 
     // See if the direct route is ok
-    if (not spaceIntersections(startPoint_, endPoint_, clearance_, &intersectingPolygons))
+    if (! spaceIntersections(startPoint_, endPoint_, clearance_, &intersectingPolygons))
     {
         // The direct path is ok
         state_ = FINISHED;
@@ -239,7 +239,7 @@ void PhysCS2dFindPath::update(const PhysRelativeTime& maxTime)
                     CS2VGRA_STREAM("  PATHFIND:" << std::endl);
                     // try to complete the sub-path search
                     bool done = isPathSearchFinished();
-                    if (not done)
+                    if (! done)
                     {
                         updatePathSearch(timeLeft);
                         done = isPathSearchFinished();
@@ -264,7 +264,7 @@ void PhysCS2dFindPath::update(const PhysRelativeTime& maxTime)
 
         // How much time do we have left?
         timeLeft = maxTime - (Phys::time() - entryTime);
-    } while (canDoMore and timeLeft > 0);
+    } while (canDoMore && timeLeft > 0);
 
     // Reenable any polygons we wanted to ignore
     ignorePolygons(false);
@@ -285,7 +285,7 @@ void PhysCS2dFindPath::startPathSearch()
 
     // We must be able to open an expansion space. Only one allowed at a time
     PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
-    if (not impl.expansionSpaceIsOpen())
+    if (! impl.expansionSpaceIsOpen())
     {
         // The clearance we use for the expansion space has to be greater than the clearance
         // asked for. This is because we use swept rectangles for each path segment. These
@@ -355,7 +355,7 @@ bool PhysCS2dFindPath::checkPath(size_t* nExtraPolygons)
         // Find all the polygons it intersects in the space
         PhysConfigSpace2d::PolygonIds polygonIds;
         polygonIds.reserve(64);
-        if (not pConfigSpace_->contains(sausage, flags_, &polygonIds))
+        if (! pConfigSpace_->contains(sausage, flags_, &polygonIds))
         {
             // Set flag indicating any section not contained
             contained = false;
@@ -364,7 +364,7 @@ bool PhysCS2dFindPath::checkPath(size_t* nExtraPolygons)
             for (PhysConfigSpace2d::PolygonIds::iterator it = polygonIds.begin(); it != polygonIds.end(); ++it)
             {
                 PhysConfigSpace2d::PolygonId id = *it;
-                if (not impl.expansionSpacePolygonExists(expansionDistance_, id))
+                if (! impl.expansionSpacePolygonExists(expansionDistance_, id))
                 {
                     CS2VGRA_STREAM("  Path clash with unexpanded polygon id " << id << std::endl);
                     CS2VGRA_STREAM("  Adding polygon to expansion space id " << id.asScalar() << std::endl);
@@ -451,7 +451,7 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
     // get the results, unless aborting the search
     bool donePath = false;
     bool failed = false;
-    bool aborting = (not isPathSearchFinished()) or (forceAbort == FORCE_ABORT);
+    bool aborting = (! isPathSearchFinished()) || (forceAbort == FORCE_ABORT);
 
     CS2VGRA_WHERE;
 
@@ -460,7 +460,7 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
 
     CS2VGRA_WHERE;
 
-    if (not aborting)
+    if (! aborting)
     {
         CS2VGRA_WHERE;
         fullPath_ = pVisibilityGraph->findPath();
@@ -582,7 +582,7 @@ void PhysCS2dFindPath::ignorePolygons(bool doIgnore)
 {
     if (pIgnorePolygons_ != nullptr)
     {
-        bool enabled = not doIgnore;
+        bool enabled = ! doIgnore;
 
         PolygonIds::const_iterator citEnd = pIgnorePolygons_->end();
         for (PolygonIds::const_iterator cit = pIgnorePolygons_->begin(); cit != citEnd; ++cit)

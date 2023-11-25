@@ -84,14 +84,14 @@ bool MachLogConstructionTree::activated(
 
     bool isActivated = false;
     ConstructionItems::iterator i = constructionItems_.begin();
-    for (; i != constructionItems_.end() and not isActivated; ++i)
+    for (; i != constructionItems_.end() && ! isActivated; ++i)
     {
-        if (constructionType == (*i)->constructionType() and (*i)->activated(r))
+        if (constructionType == (*i)->constructionType() && (*i)->activated(r))
         {
             if (subType == MachLog::DONTCARE)
             {
                 ASSERT(
-                    hwLevel == MachLog::DONTCARE and wc == MachPhys::N_WEAPON_COMBOS,
+                    hwLevel == MachLog::DONTCARE && wc == MachPhys::N_WEAPON_COMBOS,
                     "No further parameters should be passed after a DONTCARE parameter.");
                 isActivated = true;
             }
@@ -109,7 +109,7 @@ bool MachLogConstructionTree::activated(
                 else if (hwLevel == (*i)->hwLevel())
 
                 {
-                    if (wc == MachPhys::N_WEAPON_COMBOS or wc == (*i)->weaponCombo())
+                    if (wc == MachPhys::N_WEAPON_COMBOS || wc == (*i)->weaponCombo())
                         isActivated = true;
                 }
             }
@@ -134,11 +134,11 @@ MachLogConstructionItem& MachLogConstructionTree::constructionItem(
     bool found = false;
     MachLogConstructionItem* pRI = nullptr;
     ConstructionItems::iterator i = constructionItems_.begin();
-    for (; i != constructionItems_.end() and not found; ++i)
+    for (; i != constructionItems_.end() && ! found; ++i)
     {
         MachLogConstructionItem* pCandidateItem = (*i);
-        if (pCandidateItem->constructionType() == constructionType and pCandidateItem->subType() == subType
-            and pCandidateItem->hwLevel() == hwLevel and pCandidateItem->weaponCombo() == wc)
+        if (pCandidateItem->constructionType() == constructionType && pCandidateItem->subType() == subType
+            && pCandidateItem->hwLevel() == hwLevel && pCandidateItem->weaponCombo() == wc)
         {
             pRI = pCandidateItem;
             found = true;
@@ -190,11 +190,11 @@ void MachLogConstructionTree::updateAvailableConstructions(
 
     MachLogConstructionItem* pItemSpecified = nullptr;
 
-    for (ConstructionItems::iterator i = constructionItems_.begin(); i != constructionItems_.end() and not found; ++i)
+    for (ConstructionItems::iterator i = constructionItems_.begin(); i != constructionItems_.end() && ! found; ++i)
     {
         MachLogConstructionItem* pCandidateItem = (*i);
-        if (pCandidateItem->constructionType() == constructionType and pCandidateItem->subType() == subType
-            and pCandidateItem->hwLevel() == hwLevel and pCandidateItem->weaponCombo() == wc)
+        if (pCandidateItem->constructionType() == constructionType && pCandidateItem->subType() == subType
+            && pCandidateItem->hwLevel() == hwLevel && pCandidateItem->weaponCombo() == wc)
         {
             pItemSpecified = pCandidateItem;
             found = true;
@@ -210,7 +210,7 @@ void MachLogConstructionTree::updateAvailableConstructions(
     // Okay, we found the construction item in question. Now we simply make activate ALL items preceding it in the list
     // (for this race).
 
-    if (not pItemSpecified->activated(r))
+    if (! pItemSpecified->activated(r))
     // (no point updating if this entry point is already activated for the race - everything before will be, as well,
     //  should that be the case.)
     {
@@ -219,7 +219,7 @@ void MachLogConstructionTree::updateAvailableConstructions(
         for (ConstructionItems::iterator i = constructionItems_.begin(); i != constructionItems_.end(); ++i)
         {
             MachLogConstructionItem* pCandidateItem = (*i);
-            if (not pCandidateItem->activated(r) and not pCandidateItem->activationLocked(r))
+            if (! pCandidateItem->activated(r) && ! pCandidateItem->activationLocked(r))
             {
                 pCandidateItem->activate(r);
                 nothingNewActivated = false;
@@ -231,7 +231,7 @@ void MachLogConstructionTree::updateAvailableConstructions(
             }
         }
 
-        if (not nothingNewActivated)
+        if (! nothingNewActivated)
         {
             // send a voicemail to the race who now has new constructions online
             MachLogVoiceMailManager::instance().postNewMail(VID_POD_NEW_CONSTRUCTIONS, r);
@@ -279,7 +279,7 @@ void MachLogConstructionTree::removeMe(MachLogNotifiable* pCurrentCTreeNot)
 
     Notifiables::iterator i = notifiables_.begin();
     bool found = false;
-    while (not found && i != notifiables_.end())
+    while (! found && i != notifiables_.end())
     {
         if ((*i) == pCurrentCTreeNot)
         {
@@ -319,7 +319,7 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
     }
 
     UtlLineTokeniser parser(*pIstream, treePath);
-    while (not parser.finished())
+    while (! parser.finished())
     {
         size_t lineSize = parser.tokens().size();
         MachLog::ObjectType consType;
@@ -331,7 +331,7 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
         {
             ASSERT_INFO(lineSize);
             ASSERT(
-                (lineSize == 4 or lineSize == 3 or lineSize == 2),
+                (lineSize == 4 || lineSize == 3 || lineSize == 2),
                 "Wrong number of tokens in construction tree file line (should be either 2 or 3).\n");
 
             consType = MachLogScenario::objectType(parser.tokens()[0]);

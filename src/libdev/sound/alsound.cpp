@@ -98,7 +98,7 @@ void ALSound::initialise(const SndMixerParameters& params, PriorityLevel p)
     spdlog::info("Initializing OpenAL...");
 
     // Check ALSound is not already initialised
-    PRE(not ALSound::isInitialised());
+    PRE(! ALSound::isInitialised());
 
     // I don't entirely agree with setting this here as
     // nothing has actually been initialised yet, but it's a bit of a

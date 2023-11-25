@@ -90,7 +90,7 @@ bool MachGuiDbPlayer::hasPlayed(const MachGuiDbScenario& scenario, MachGuiDbPlay
 
     // Find the entry in the collection
     uint nPlayed = pData_->playerScenarios_.size();
-    for (uint i = 0; not result and i != nPlayed; ++i)
+    for (uint i = 0; ! result && i != nPlayed; ++i)
     {
         MachGuiDbPlayerScenario* pPlayerScenario = pData_->playerScenarios_[i];
         if (&(pPlayerScenario->scenario()) == &scenario)
@@ -106,7 +106,7 @@ bool MachGuiDbPlayer::hasPlayed(const MachGuiDbScenario& scenario, MachGuiDbPlay
 MachGuiDbPlayerScenario& MachGuiDbPlayer::playerScenario(MachGuiDbScenario* pDbScenario)
 {
     MachGuiDbPlayerScenario* pPlayerScenario;
-    if (not hasPlayed(*pDbScenario, &pPlayerScenario))
+    if (! hasPlayed(*pDbScenario, &pPlayerScenario))
     {
         // This is a new one, so create it
         pPlayerScenario = new MachGuiDbPlayerScenario(this, pDbScenario);

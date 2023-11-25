@@ -378,7 +378,7 @@ void MachPhysHardwareLab::doWorking(bool setWorking)
         const size_t nLinks = links().size();
         const size_t nInterLinks = pInteror()->links().size();
 
-        if (not isWorking()) // setWorking must == true
+        if (! isWorking()) // setWorking must == true
         {
             // working animations on the interiors of both c and m labs
             pInteror()->clearAnimation(MachPhys::CONSTRUCTION_NOT_WORKING);

@@ -29,7 +29,7 @@ public:
 
     void drawBackground() override
     {
-        if (pListBox_ and pListBox_->isFocusControl())
+        if (pListBox_ && pListBox_->isFocusControl())
         {
             GuiPainter::instance().blit(
                 MachGui::longYellowGlowBmp(),

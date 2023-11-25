@@ -70,7 +70,7 @@ void MachLogRecycleOperation::doOutputOperator(std::ostream& o) const
 
 bool MachLogRecycleOperation::doStart()
 {
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

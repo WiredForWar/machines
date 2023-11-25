@@ -128,7 +128,7 @@ void RenIDeviceImpl::updateFogMultiplier(const RenMaterial& mat)
             parent_->fogEnd(fogEnd_ * materialFogMultiplier_);
         }
     }
-    else if (not fogMultiplierIsNeutral())
+    else if (! fogMultiplierIsNeutral())
     {
         materialFogMultiplier_ = 1.0;
         parent_->fogEnd(fogEnd_);

@@ -50,7 +50,7 @@ bool W4dEntityIter::isFinished() const
 
 W4dEntityIter& W4dEntityIter::operator++()
 {
-    PRE(not isFinished());
+    PRE(! isFinished());
 
     // Pop the top item off the stack
     W4dEntity& top = *(stack_.back());
@@ -81,7 +81,7 @@ W4dEntityIter& W4dEntityIter::operator++()
 
 W4dEntity& W4dEntityIter::operator*()
 {
-    PRE(not isFinished());
+    PRE(! isFinished());
     return *(stack_.back());
 }
 

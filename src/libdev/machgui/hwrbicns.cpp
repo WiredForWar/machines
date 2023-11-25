@@ -118,7 +118,7 @@ size_t MachHWResearchBankIcons::reqWidth()
 
 void MachHWResearchBankIcons::updateProgress(float percentageComplete)
 {
-    if (not children().empty() and not canScrollBackward())
+    if (! children().empty() && ! canScrollBackward())
     {
         MachHWResearchBankIcon* pHeadOfList = _REINTERPRET_CAST(MachHWResearchBankIcon*, children().front());
         pHeadOfList->updateProgress(percentageComplete);

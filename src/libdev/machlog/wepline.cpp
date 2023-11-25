@@ -89,8 +89,8 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
     MexPoint3d startPosition(owner().position());
     W4dDomain* pParent = MachLogPlanetDomains::pDomainPosition(startPosition, zAngle, &localTransform);
     if (owner().objectIsMachine()
-        and &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace()
-        and owner().asMachine().insideBuilding())
+        && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace()
+        && owner().asMachine().insideBuilding())
     {
         pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
     }
@@ -119,7 +119,7 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
         // DEBUG_STREAM( DIAG_MISC, owner().id() << "," << physWeapon().type() << ",createLinearProjectile," << endTime
         // - startTime << std::endl ); HAL_STREAM(" create new Linear blob done\n" );
     }
-    if (isNetworkGame and network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (isNetworkGame && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         network.messageBroker().sendEchoLinearProjectileMessage(
             owner().id(),
@@ -159,7 +159,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
     MexPoint3d startPosition(owner().position());
     W4dDomain* pParent = MachLogPlanetDomains::pDomainPosition(startPosition, zAngle, &localTransform);
     if (owner().objectIsMachine()
-        and &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
+        && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
     {
         pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
     }
@@ -207,7 +207,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
         MATHEX_SCALAR zDrift = std::max(-0.05, (fireData.secondDrift / 300.0));
 
         // SPECIAL CASE HACK LOGIC FOR HORRIBLE LEVIATHANS
-        if (owner().objectIsMissileEmplacement() and owner().asMissileEmplacement().subType() == MachPhys::LAUNCHER)
+        if (owner().objectIsMissileEmplacement() && owner().asMissileEmplacement().subType() == MachPhys::LAUNCHER)
         {
             MachLogCanAttack::Weapons& weapons = owner().asCanAttack().weapons();
             ASSERT(weapons.size() == 2, "Special-case hack compromised by change to number of weapons on LAUNCHER 4.");
@@ -270,7 +270,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
         // DEBUG_STREAM( DIAG_MISC, owner().id() << "," << physWeapon().type() << ",createLinearProjectile," << endTime
         // - startTime << std::endl ); HAL_STREAM(" create new Linear blob done\n" );
     }
-    if (isNetworkGame and network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (isNetworkGame && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         network.messageBroker().sendEchoLinearProjectileMessage(
             owner().id(),
@@ -305,7 +305,7 @@ void MachLogLinearWeapon::doEchoFire(
     MexPoint3d startPosition(owner().position());
     W4dDomain* pParent = MachLogPlanetDomains::pDomainPosition(startPosition, zAngle, &localTransform);
     if (owner().objectIsMachine()
-        and &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
+        && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
     {
         pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
     }
@@ -347,7 +347,7 @@ void MachLogLinearWeapon::doEchoFireForTerrain(
     MexPoint3d startPosition(owner().position());
     W4dDomain* pParent = MachLogPlanetDomains::pDomainPosition(startPosition, zAngle, &localTransform);
     if (owner().objectIsMachine()
-        and &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
+        && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
     {
         pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
     }

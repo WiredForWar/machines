@@ -354,7 +354,7 @@ void PhysTimedSpinPlan::setCacheSegment(const PhysRelativeTime& timeOffset)
     bool search = true;
     if (times_[cacheIndex_] < timeOffset)
         ++cacheIndex_;
-    else if (cacheIndex_ != 0 and timeOffset < times_[cacheIndex_ - 1])
+    else if (cacheIndex_ != 0 && timeOffset < times_[cacheIndex_ - 1])
         cacheIndex_ = 0;
     else
         search = false;

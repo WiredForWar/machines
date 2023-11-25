@@ -98,7 +98,7 @@ PhysRelativeTime MachLogCaptureOperation::interactWithBuilding()
 
     ASSERT(pConstron, "Hey! The construction has gone! It shouldn't have!");
 
-    if (not(hpsRemoved == 0))
+    if (!(hpsRemoved == 0))
     {
         lastUpdateTime(SimManager::instance().currentTime());
     }
@@ -137,7 +137,7 @@ PhysRelativeTime MachLogCaptureOperation::interactWithBuilding()
             MachineVoiceMailEventID::BUILDING_CAPTURED);
 
         // post voicemail if no more operations on the queue
-        if (not pConstructorMachine->isDoingSuperConstruct())
+        if (! pConstructorMachine->isDoingSuperConstruct())
             MachLogMachineVoiceMailManager::instance().postNewMail(
                 *pConstructorMachine,
                 MachineVoiceMailEventID::AWAITING_NEW_JOB);
@@ -150,7 +150,7 @@ PhysRelativeTime MachLogCaptureOperation::interactWithBuilding()
 
 bool MachLogCaptureOperation::doIsFinished() const
 {
-    bool finished = (not pConstruction()) or pConstruction()->race() == pConstructor()->race();
+    bool finished = (! pConstruction()) || pConstruction()->race() == pConstructor()->race();
 
     return finished;
 }

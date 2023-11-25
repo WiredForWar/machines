@@ -107,7 +107,7 @@ MachPhysComplexityManager::~MachPhysComplexityManager()
 #ifndef NDEBUG
 static bool validId(uint id)
 {
-    return (id >= 10000 and id <= 10199);
+    return (id >= 10000 && id <= 10199);
 }
 #endif
 
@@ -126,7 +126,7 @@ void MachPhysComplexityManager::changeBooleanItem(const uint& id, bool enabled)
     PRE(validId(id));
 
     bool idFound = false;
-    for (BooleanItems::iterator it = booleanItems_.begin(); it != booleanItems_.end() and not idFound; ++it)
+    for (BooleanItems::iterator it = booleanItems_.begin(); it != booleanItems_.end() && ! idFound; ++it)
     {
         MachPhysComplexityBooleanItem* pItem = *it;
         if (pItem->id() == id)
@@ -145,7 +145,7 @@ void MachPhysComplexityManager::changeChoiceItem(const uint& id, uint choice)
     PRE(validId(id));
 
     bool idFound = false;
-    for (ChoiceItems::iterator it = choiceItems_.begin(); it != choiceItems_.end() and not idFound; ++it)
+    for (ChoiceItems::iterator it = choiceItems_.begin(); it != choiceItems_.end() && ! idFound; ++it)
     {
         MachPhysComplexityChoiceItem* pItem = *it;
         if (pItem->id() == id)

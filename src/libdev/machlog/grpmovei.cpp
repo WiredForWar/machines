@@ -206,7 +206,7 @@ bool MachLogGroupSimpleMoveImplementation::canPlaceAtDestination(
 
     //  Check against terrain / other machines
 
-    if (not machine.motionSeq().positionContainedInSpace(desiredDestination, configSpace_))
+    if (! machine.motionSeq().positionContainedInSpace(desiredDestination, configSpace_))
     {
         canPlace = false;
     }
@@ -217,7 +217,7 @@ bool MachLogGroupSimpleMoveImplementation::canPlaceAtDestination(
 
     if (canPlace)
     {
-        for (DestData::const_iterator i = destData_.begin(); i != destData_.end() and canPlace; ++i)
+        for (DestData::const_iterator i = destData_.begin(); i != destData_.end() && canPlace; ++i)
         {
             MATHEX_SCALAR sqrDistance = desiredDestination.sqrEuclidianDistance((*i).destination());
             MATHEX_SCALAR totalClearance = clearance + (*i).clearance();
@@ -266,7 +266,7 @@ void MachLogGroupSimpleMoveImplementation::positionMachinesOnGrid(const Machines
     {
         bool placedMachine = false;
 
-        while (not placedMachine)
+        while (! placedMachine)
         {
             MexPoint3d desiredDestination(nextGridDestination());
 

@@ -245,7 +245,7 @@ bool GuiManager::update()
     }
 
     bool finished = DevKeyboard::instance().keyCode(DevKey::KEY_Q);
-    return not finished;
+    return ! finished;
 }
 
 void GuiManager::display()
@@ -344,7 +344,7 @@ void GuiManager::updateMouseFocus()
 
 #ifndef PRODUCTION
     // ##NA include for useful debug info. Tells you what the mouse is pointing at
-    if (getenv("cb_mouseover") and pFocus)
+    if (getenv("cb_mouseover") && pFocus)
         W4dManager::instance().sceneManager()->out()
             << "Mouse is over " << pFocus->description() << " : " << pFocus << " " << pFocus->relativeCoord()
             << " processesMouseEvents " << pFocus->processesMouseEvents() << std::endl;
@@ -394,7 +394,7 @@ void GuiManager::processMouseEvent(const GuiMouseEvent& me)
     // If we have a right click, give the current root the opportunity to handle it.
     // Many applications will treat right clicks irrespective of location.
     bool handledRightClick
-        = (me.rightButton() != Gui::NO_CHANGE) and hasRoot() and root().doHandleRightClickEvent(mrel);
+        = (me.rightButton() != Gui::NO_CHANGE) && hasRoot() && root().doHandleRightClickEvent(mrel);
 
     bool isMouseWheelEvent = (me.scrollDirection() != Gui::ScrollState::NO_SCROLL);
 
@@ -415,7 +415,7 @@ void GuiManager::processMouseEvent(const GuiMouseEvent& me)
                 }
             }
         }
-        else if (not handledRightClick)
+        else if (! handledRightClick)
         {
             mrel = me;
             mrel.translate(unaryMinus(pMouseFocus_->absoluteCoord()));
@@ -443,7 +443,7 @@ GuiEventBase::ModifierKeys modifierKeys(const DevButtonEvent& be)
 
 void GuiManager::processEvents()
 {
-    while (not DevEventQueue::instance().isEmpty())
+    while (! DevEventQueue::instance().isEmpty())
     {
         DevButtonEvent be = DevEventQueue::instance().oldestEvent();
         GuiEventBase::ModifierKeys mKeys = modifierKeys(be);
@@ -468,10 +468,10 @@ void GuiManager::processEvents()
             if (keyboardFocusExists())
             {
                 GuiKeyEvent e(be.scanCode(), buttonState(be.action()), mKeys, be);
-                if (not keyboardFocus().doHandleKeyEvent(e))
+                if (! keyboardFocus().doHandleKeyEvent(e))
                 {
                     // If the keyboard focus doesn't want the event then maybe the char focus will
-                    if (charFocusExists() and &charFocus() != &keyboardFocus())
+                    if (charFocusExists() && &charFocus() != &keyboardFocus())
                     {
                         charFocus().doHandleKeyEvent(e);
                     }
@@ -649,7 +649,7 @@ void GuiManager::removeCharFocus()
 
     pCharacterFocus_ = nullptr;
 
-    POST(not charFocusExists());
+    POST(! charFocusExists());
 }
 
 //////////////////////////////////////////////////////////////////////

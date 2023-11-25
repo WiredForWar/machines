@@ -72,7 +72,7 @@ RenISavedArea::RenISavedArea(RenSurface& getPixelFormatFrom, int width, int heig
 
 bool RenISavedArea::hasDifferentSize(int width, int height)
 {
-    return (area_.width != width or area_.height != height);
+    return (area_.width != width || area_.height != height);
 }
 
 void RenISavedArea::save(RenSurface& surf, const Ren::Rect& rect)
@@ -224,7 +224,7 @@ bool RenIDisplay::modeChanged()
         RenIDisplayModeObserver* ob = *it;
         ASSERT(ob, "Null display mode observer.");
 
-        if (not ob->modeChanged(currentMode_))
+        if (! ob->modeChanged(currentMode_))
             return false;
 
         ++it;
@@ -272,7 +272,7 @@ void RenIDisplay::restoreUnderCursor()
         backBufferCursorSave_->restore();
 
         // Only restore the back once if the cursor isn't on.
-        if (not cursor_)
+        if (! cursor_)
         {
             delete backBufferCursorSave_;
             backBufferCursorSave_ = nullptr;
@@ -291,7 +291,7 @@ void RenIDisplay::restoreUnderCursor(RenSurface* dest, const RenSurface& front, 
     RENDER_STREAM("  pCursor : " << (void*)cursor_ << std::endl);
     RENDER_STREAM("  pSave : " << (void*)frontBufferCursorSave_ << std::endl);
 
-    if (cursor_ and frontBufferCursorSave_)
+    if (cursor_ && frontBufferCursorSave_)
         frontBufferCursorSave_->restoreTo(dest, front, srcArea, destX, destY);
 }
 

@@ -157,7 +157,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
 {
     // Trim spaces off beginning of name
     string playerName = pSingleLineEditBox_->text();
-    while (playerName.length() > 0 and playerName[0] == ' ')
+    while (playerName.length() > 0 && playerName[0] == ' ')
     {
         playerName = &playerName[1];
     }
@@ -165,7 +165,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
     // Was JOIN pressed?...
     if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::JOIN)
     {
-        if (playerName == "" or // No name entered
+        if (playerName == "" || // No name entered
             pSingleLineEditBox_->clearTextOnNextChar())
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERNAME);
@@ -174,10 +174,10 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
         } // stricmp
         else if (
             strcasecmp(pSingleLineEditBox_->text().c_str(), MachGui::openText().c_str()) == 0
-            or // Invalid name ( open/closed/computer reserved )
+            || // Invalid name ( open/closed/computer reserved )
             strcasecmp(pSingleLineEditBox_->text().c_str(), MachGui::closedText().c_str()) == 0
-            or strcasecmp(pSingleLineEditBox_->text().c_str(), MachGui::computerText().c_str()) == 0
-            or strcasecmp(pSingleLineEditBox_->text().c_str(), MachGui::unavailableText().c_str()) == 0)
+            || strcasecmp(pSingleLineEditBox_->text().c_str(), MachGui::computerText().c_str()) == 0
+            || strcasecmp(pSingleLineEditBox_->text().c_str(), MachGui::unavailableText().c_str()) == 0)
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_INVALIDNAME);
 
@@ -217,7 +217,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
         }
     }
 
-    if (playerName != "" and not pSingleLineEditBox_->clearTextOnNextChar())
+    if (playerName != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
     {
         pStartupScreens_->startupData()->playerName(playerName);
     }

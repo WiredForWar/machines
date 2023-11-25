@@ -112,7 +112,7 @@ float MachGuiSlideBar::value() const
 
 void MachGuiSlideBar::setValue(float newVal)
 {
-    PRE(newVal >= minValue_ and newVal <= maxValue_);
+    PRE(newVal >= minValue_ && newVal <= maxValue_);
 
     RICHARD_STREAM("Setting value to " << newVal << std::endl);
 

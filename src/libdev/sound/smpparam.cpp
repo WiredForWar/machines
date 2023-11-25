@@ -79,7 +79,7 @@ SndSampleParameters::SndSampleParameters(
     is3DSound_ = false;
     hwMixingOn_ = false;
 
-    POST(not is3dSound());
+    POST(! is3dSound());
 }
 
 SndSampleParameters::SndSampleParameters(
@@ -108,7 +108,7 @@ SndSampleParameters::SndSampleParameters(
     is3DSound_ = false;
     hwMixingOn_ = false;
 
-    POST(not is3dSound());
+    POST(! is3dSound());
     POST(duration_ > 0.0);
 }
 

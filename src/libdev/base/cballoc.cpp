@@ -120,7 +120,7 @@ void* cbAlloc(size_t nBytes)
         else
         {
             size_t poolBlockSize = unitSize + 1;
-            if (not pFirstUnusedBlock || pFirstUnusedBlock->leftUnits_ < poolBlockSize)
+            if (! pFirstUnusedBlock || pFirstUnusedBlock->leftUnits_ < poolBlockSize)
             {
                 bool found = false;
                 for (UnusedBlock* pTryUnusedBlock = pFirstUnusedBlock; pTryUnusedBlock;
@@ -147,7 +147,7 @@ void* cbAlloc(size_t nBytes)
                     }
                 }
 
-                if (not found)
+                if (! found)
                 {
                     // Allocate a new system block
                     SystemBlock* pNewSystemBlock = (SystemBlock*)malloc(SYSTEM_BLOCK_SIZE);
@@ -294,7 +294,7 @@ void cbInitialise()
 
     while (currentSize < UNIT_THRESHOLD)
     {
-        while (currentSize <= limit and currentSize < UNIT_THRESHOLD)
+        while (currentSize <= limit && currentSize < UNIT_THRESHOLD)
         {
             unitSizeMap[currentSize] = ((currentSize + round - 1) / round) * round;
             ++currentSize;

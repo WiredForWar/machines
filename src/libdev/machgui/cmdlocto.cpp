@@ -62,7 +62,7 @@ void MachGuiLocateToCommand::pickOnTerrain(
         // Store the location
         path_.push_back(MexPoint2d(location));
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -109,7 +109,7 @@ bool MachGuiLocateToCommand::doApply(MachActor* pActor, string*)
             pActor->newOperation(pOp);
             canDo = true;
 
-            if (not hasPlayedVoiceMail())
+            if (! hasPlayedVoiceMail())
             {
                 MachLogVoiceMailManager::instance().postNewMail(VID_GEO_LOCATING, pActor->id(), pActor->race());
                 hasPlayedVoiceMail(true);
@@ -125,7 +125,7 @@ MachGui::Cursor2dType MachGuiLocateToCommand::cursorOnTerrain(const MexPoint3d& 
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::LOCATETO_CURSOR;
 
     return cursor;
@@ -197,7 +197,7 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
 
         bool found = false;
         for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-             not found and i != inGameScreen().selectedActors().end();
+             ! found && i != inGameScreen().selectedActors().end();
              ++i)
             if ((*i)->objectType() == MachLog::GEO_LOCATOR)
             {
@@ -220,7 +220,7 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
 // virtual
 bool MachGuiLocateToCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_L and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_L && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

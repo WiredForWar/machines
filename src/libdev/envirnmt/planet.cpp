@@ -163,7 +163,7 @@ void EnvPlanetEnvironment::update()
         {
             EnvSatellite* pSat = satellites_[index];
 
-            if (pSat->light() and pSat->light()->isOn())
+            if (pSat->light() && pSat->light()->isOn())
             {
                 RenColour colour = pSat->light()->colour();
                 result += colour.r() + colour.g() + colour.b();
@@ -669,7 +669,7 @@ static void unvisibleSatellite(EnvSatellite*& sat)
     if (sat)
     {
         W4dLight* light = sat->light();
-        if (not light)
+        if (! light)
             sat->visible(false);
     }
 }

@@ -214,7 +214,7 @@ void RenIGXMeshLoader::load(const SysPathName& pathname)
     GXTextures gxtextures;
     GXHier* gxhierarchy = new GXHier;
 
-    PRE(not meshesBeingLoaded_);
+    PRE(! meshesBeingLoaded_);
 
     // Create a new set of meshes in which the meshes
     // read from the current file will be loaded

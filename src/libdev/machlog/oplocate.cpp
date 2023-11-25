@@ -82,7 +82,7 @@ void MachLogLocateOperation::doOutputOperator(std::ostream& o) const
 
 bool MachLogLocateOperation::doStart()
 {
-    if (not checkNeedAndDoLeaveOperation(pActor_))
+    if (! checkNeedAndDoLeaveOperation(pActor_))
     {
         HAL_STREAM("(" << pActor_->id() << ") MLLocateOp::doStart...computing points\n");
         pActor_->isLocating(true);
@@ -110,7 +110,7 @@ bool MachLogLocateOperation::doStart()
                      i != MachLogPlanet::instance().sites().end();
                      ++i)
                 {
-                    if (not(*i)->hasBeenDiscovered())
+                    if (!(*i)->hasBeenDiscovered())
                     {
                         MexPoint2d sitePos = (*i)->position();
 
@@ -123,7 +123,7 @@ bool MachLogLocateOperation::doStart()
                                 < sqrRange;
 
                         // verify that location is a valid move point.
-                        if (addSite and pActor_->motionSeq().targetPositionContainedInSpace(sitePos))
+                        if (addSite && pActor_->motionSeq().targetPositionContainedInSpace(sitePos))
                             path_.push_back(sitePos);
                     }
                 }
@@ -157,13 +157,13 @@ void MachLogLocateOperation::buildPathFromExternalPath()
             MexPoint2d sitePos = (*i)->position();
             if (MexLine2d::sqrEuclidianDistance((*j), *(l), (*j).euclidianDistance(*(l)), sitePos)
                     < pActor_->data().scannerRange() * pActor_->data().scannerRange()
-                and not(*i)->hasBeenDiscovered())
+                && !(*i)->hasBeenDiscovered())
             {
                 bool alreadyIn = false;
-                for (Path::iterator n = path_.begin(); n != path_.end() and not alreadyIn; ++n)
+                for (Path::iterator n = path_.begin(); n != path_.end() && ! alreadyIn; ++n)
                     if (*n == sitePos)
                         alreadyIn = true;
-                if (not alreadyIn)
+                if (! alreadyIn)
                 {
                     // verify that location is a valid move point.
                     if (pActor_->motionSeq().targetPositionContainedInSpace((*i)->position()))
@@ -208,7 +208,7 @@ bool MachLogLocateOperation::doIsFinished() const
 bool MachLogLocateOperation::doBeInterrupted()
 {
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 // virtual
@@ -222,12 +222,12 @@ PhysRelativeTime MachLogLocateOperation::doUpdate()
         MachPhys::Race race = pActor_->race();
         // has the Locator discovered a site?
         MachLogPlanet::Sites::const_iterator i = MachLogPlanet::instance().sites().begin();
-        for (; i != MachLogPlanet::instance().sites().end() and not found; ++i)
+        for (; i != MachLogPlanet::instance().sites().end() && ! found; ++i)
         {
             MachLogMineralSite& site = (**i);
             found
                 = (MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(site.position())) < 1
-                   and not site.hasBeenDiscovered());
+                   && ! site.hasBeenDiscovered());
             if (found)
             {
                 site.beDiscoveredBy(race);
@@ -241,16 +241,16 @@ PhysRelativeTime MachLogLocateOperation::doUpdate()
         {
             --currentElement_;
             path_.erase(path_.begin());
-            if (not pSubOperation() and not pActor_->motionSeq().hasDestination())
+            if (! pSubOperation() && ! pActor_->motionSeq().hasDestination())
             {
-                while (not pActor_->motionSeq().targetPositionContainedInSpace(path_.front()))
+                while (! pActor_->motionSeq().targetPositionContainedInSpace(path_.front()))
                 {
                     if (path_.size() == 1)
                     {
                         MexTransform3d trans(path_.front());
                         MATHEX_SCALAR radius = 0;
                         MexPoint2d dest;
-                        while (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+                        while (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
                             trans,
                             radius,
                             pActor_->highClearence(),

@@ -79,15 +79,15 @@ bool MachLogMachineMotionSequencer::trySwerveMove(
     //  can handle we can't attempt to swerve. Also don't allow too many
     //  swerves within swerves
 
-    if (motionChunkIds_.size() + 2 < MachLogMessageBroker::maximumMotionChunks() and swerveRecursionCount_ < 3)
+    if (motionChunkIds_.size() + 2 < MachLogMessageBroker::maximumMotionChunks() && swerveRecursionCount_ < 3)
     {
         MATHEX_SCALAR obstructingObjectsClearance = 5.0;
 
         UtlId id = collisionObjectId.asScalar();
 
         MachLogRaces& races = MachLogRaces::instance();
-        if (races.actorExists(id) and races.actor(id).objectIsMachine()
-            and races.actor(id).race() == logMobile().race())
+        if (races.actorExists(id) && races.actor(id).objectIsMachine()
+            && races.actor(id).race() == logMobile().race())
         {
             MachLogMachineMotionSequencer& obstructingSequencer = races.actor(id).asMobile().motionSeq();
 
@@ -115,7 +115,7 @@ bool MachLogMachineMotionSequencer::trySwerveMove(
         LOG_INSPECT(swervePoints[0]);
         LOG_INSPECT(swervePoints[1]);
 
-        for (size_t i = 0; i < swervePoints.size() and not foundPath; ++i)
+        for (size_t i = 0; i < swervePoints.size() && ! foundPath; ++i)
         {
             Point2ds path;
             path.reserve(2);
@@ -158,7 +158,7 @@ bool MachLogMachineMotionSequencer::trySwerveMove(
     LOG_STREAM("Total motion chunks reserved : " << motionChunkIds_.size() << std::endl);
     LOG_INSPECT(*pMoveResult);
 
-    POST(implies(not foundPath, originalNChunks == motionChunkIds_.size()));
+    POST(implies(! foundPath, originalNChunks == motionChunkIds_.size()));
     POST(implies(foundPath, originalNChunks < motionChunkIds_.size()));
     POST(motionChunkIds_.size() <= MachLogMessageBroker::maximumMotionChunks());
 
@@ -216,7 +216,7 @@ size_t MachLogMachineMotionSequencer::reservePath(
 
     *pActualFinalState = MachPhys::IN_MOTION;
 
-    while (not finished)
+    while (! finished)
     {
         ASSERT(pathPointIndex < path.size(), "");
 
@@ -329,7 +329,7 @@ size_t MachLogMachineMotionSequencer::reservePath(
 
         ASSERT_INFO(nChunks);
 
-        if (desiredFinalState == MachPhys::AT_REST and *pActualFinalState != MachPhys::AT_REST)
+        if (desiredFinalState == MachPhys::AT_REST && *pActualFinalState != MachPhys::AT_REST)
         {
             forceMotionToRest(ignoreIds, &nChunks);
             pathPointIndex = nChunks.size();
@@ -350,7 +350,7 @@ size_t MachLogMachineMotionSequencer::reservePath(
 
     POST(motionChunkIds_.size() <= MachLogMessageBroker::maximumMotionChunks());
     POST(implies(
-        desiredFinalState == MachPhys::AT_REST and pathPointIndex > 0,
+        desiredFinalState == MachPhys::AT_REST && pathPointIndex > 0,
         *pActualFinalState == MachPhys::AT_REST));
     POST(implies(pathPointIndex > 0, *pActualFinalState == moveInfos_.back().finalState()));
     POST(implies(pathPointIndex == path.size(), *pMoveResult == SUCCESS));
@@ -476,7 +476,7 @@ MachLogMachineMotionSequencer::MoveResult MachLogMachineMotionSequencer::reserve
         if (motionPossible)
             ++nNormalSpeedSucceed;
 
-        if (not motionPossible)
+        if (! motionPossible)
         {
             LOG_STREAM("Failed to reserve chunk at normal speed - " << *pCollisionInfo << std::endl);
 
@@ -494,7 +494,7 @@ MachLogMachineMotionSequencer::MoveResult MachLogMachineMotionSequencer::reserve
 
                 if (MexEpsilon::isWithinEpsilonOf(startSpeed, 0.0))
                 {
-                    for (PhysRelativeTime timeOffset = 0.5; timeOffset < 0.7 and (not motionPossible);
+                    for (PhysRelativeTime timeOffset = 0.5; timeOffset < 0.7 && (! motionPossible);
                          timeOffset += 0.5)
                     {
                         motionPossible = doReserveChunk(
@@ -525,7 +525,7 @@ MachLogMachineMotionSequencer::MoveResult MachLogMachineMotionSequencer::reserve
                     }
                 }
 
-                if (not motionPossible)
+                if (! motionPossible)
                 {
                     //  See if going at a slower speed helps
 
@@ -581,7 +581,7 @@ MachLogMachineMotionSequencer::MoveResult MachLogMachineMotionSequencer::reserve
 
     POST(moveInfos_.size() == motionChunkIds_.size());
     POST(implies(
-        result == SUCCESS and finalState == MachPhys::AT_REST,
+        result == SUCCESS && finalState == MachPhys::AT_REST,
         moveInfos_.back().finalState() == MachPhys::AT_REST));
 
     return result;
@@ -710,7 +710,7 @@ void MachLogMachineMotionSequencer::forceMotionToRest(
     //  for the current point
     pNChunks->pop_back();
 
-    while (pNChunks->size() > 0 and moveInfos_.back().finalState() != MachPhys::AT_REST)
+    while (pNChunks->size() > 0 && moveInfos_.back().finalState() != MachPhys::AT_REST)
     {
         ASSERT_INFO(*pNChunks);
         ASSERT_INFO(motionChunkIds_.size());
@@ -859,7 +859,7 @@ bool MachLogMachineMotionSequencer::doReserveChunk(
         &collisionObjectId,
         &collideTime);
 
-    if (not motionPossible)
+    if (! motionPossible)
     {
         *pCollisionInfo = MachLogCollisionInfo(info, parentTransform, collisionObjectId, collideTime);
     }
@@ -905,7 +905,7 @@ void MachLogMachineMotionSequencer::stopShuffling()
     pPhysMachine_->stopDead();
     shuffleEndTime_ = SimManager::instance().currentTime();
 
-    POST(not shuffling());
+    POST(! shuffling());
 }
 
 void MachLogMachineMotionSequencer::shuffle()
@@ -919,7 +919,7 @@ void MachLogMachineMotionSequencer::shuffle()
     PRE(internalState_ != INTERNAL_MOVING);
     PRE(internalState_ != INTERNAL_1ST_PERSON);
 
-    if (not shuffling())
+    if (! shuffling())
     {
         // Get the machine's current position
         const MexTransform3d& currentTransform = pPhysMachine_->globalTransform();
@@ -933,7 +933,7 @@ void MachLogMachineMotionSequencer::shuffle()
         LOG_WHERE;
         LOG_INSPECT(target);
 
-        for (size_t index = nPathPointsDone_; index < path_.size() and not targetPointFound; ++index)
+        for (size_t index = nPathPointsDone_; index < path_.size() && ! targetPointFound; ++index)
         {
             LOG_INSPECT(path_[index]);
 
@@ -947,7 +947,7 @@ void MachLogMachineMotionSequencer::shuffle()
             }
         }
 
-        if (not targetPointFound and target.sqrEuclidianDistance(currentLocation) < sqr1cm)
+        if (! targetPointFound && target.sqrEuclidianDistance(currentLocation) < sqr1cm)
         {
             target.x(target.x() + 0.01);
 
@@ -1084,13 +1084,13 @@ PhysRelativeTime MachLogMachineMotionSequencer::sendMotionToPhysicalMachine()
         const bool firstInfo = (i == 0);
         const bool lastInfo = (i == moveInfos_.size() - 1);
 
-        if (not firstInfo and info.needsToTurn())
+        if (! firstInfo && info.needsToTurn())
         {
             ++beginTx;
             ++beginRA;
         }
 
-        if (not lastInfo)
+        if (! lastInfo)
             --endTx;
 
         transformsPtr->insert(transformsPtr->end(), beginTx, endTx);
@@ -1142,13 +1142,13 @@ bool MachLogMachineMotionSequencer::anyMotionChunkStationary(
 
     bool result = false;
 
-    for (size_t i = 0; i != chunkIntersections.size() and not result; ++i)
+    for (size_t i = 0; i != chunkIntersections.size() && ! result; ++i)
     {
         const PhysMotionChunk& chunk = currentConfigSpace().motionChunk(chunkIntersections[i].collisionChunkId());
 
         //  Check that the chunk intersects the height of this machine
 
-        if (chunk.minHeight() < MexDouble(maxHeight()) and chunk.maxHeight() > MexDouble(minHeight()))
+        if (chunk.minHeight() < MexDouble(maxHeight()) && chunk.maxHeight() > MexDouble(minHeight()))
         {
             //  We define a stationary chunk as one that isn't moving very far
             const MATHEX_SCALAR sqrStationaryDistance = 0.1 * 0.1;

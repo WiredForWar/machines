@@ -74,8 +74,8 @@ bool MachGuiTreacheryCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Administrators and aggressors can Treachery
     MachLog::ObjectType objectType = actor.objectType();
-    return (objectType == MachLog::ADMINISTRATOR or objectType == MachLog::AGGRESSOR)
-        and actor.asCanAttack().hasTreacheryWeapon();
+    return (objectType == MachLog::ADMINISTRATOR || objectType == MachLog::AGGRESSOR)
+        && actor.asCanAttack().hasTreacheryWeapon();
 }
 
 // virtual
@@ -129,7 +129,7 @@ bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, string*)
             pActor->newOperation(pOp);
             result = true;
 
-            if (not hasPlayedVoiceMail())
+            if (! hasPlayedVoiceMail())
             {
                 MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
                 hasPlayedVoiceMail(true);
@@ -150,8 +150,8 @@ bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, string*)
         MachLogOperation* pOp;
 
         ASSERT(
-            (pActor->objectType() == MachLog::ADMINISTRATOR or pActor->objectType() == MachLog::AGGRESSOR)
-                and pActor->asCanAttack().hasTreacheryWeapon(),
+            (pActor->objectType() == MachLog::ADMINISTRATOR || pActor->objectType() == MachLog::AGGRESSOR)
+                && pActor->asCanAttack().hasTreacheryWeapon(),
             "Unexpected non-treachery-capable actor about to be issued a treachery op.");
 
         pOp = new MachLogTreacheryOperation(&pActor->asMachine(), pDirectObject_);
@@ -159,7 +159,7 @@ bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, string*)
         // Give it to the actor
         pActor->newOperation(pOp);
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             // Note: here we had passing objectType = MachLog::ADMINISTRATOR:
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TREACHERY_TARGET);
@@ -175,7 +175,7 @@ MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnTerrain(const MexPoint3d&
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::MOVETO_CURSOR;
 
     return cursor;
@@ -189,7 +189,7 @@ MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnActor(MachActor* pActor, 
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
     // Check for a building or machine
-    if (pActor->objectIsMachine() and pActor->race() != playerRace)
+    if (pActor->objectIsMachine() && pActor->race() != playerRace)
     {
         // Set the Treachery object action
         action_ = ATTACK_OBJECT;
@@ -246,7 +246,7 @@ bool MachGuiTreacheryCommand::doAdminApply(MachLogAdministrator* /*pAdministrato
 // virtual
 bool MachGuiTreacheryCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_J and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_J && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

@@ -178,11 +178,11 @@ void MachLogAPC::specialAPCHitStuff()
     }
     else if (
         carriedMachines_.size() > 0
-        and ((virtualDefCon() == MachLog::DEFCON_LOW and hpRatio() < 0.20) or (virtualDefCon() == MachLog::DEFCON_NORMAL and hpRatio() < 0.10)))
+        && ((virtualDefCon() == MachLog::DEFCON_LOW && hpRatio() < 0.20) || (virtualDefCon() == MachLog::DEFCON_NORMAL && hpRatio() < 0.10)))
     {
         // damage critical - evacuate craft! But only trigger new op if we're not already doing
         // a deploy in this area.
-        if (not isDeploying() or not nearDropzone())
+        if (! isDeploying() || ! nearDropzone())
             newOperation(new MachLogDeployAPCOperation(this, position()));
     }
 }
@@ -378,7 +378,7 @@ bool MachLogAPC::alignedWithDeployPoint(const MexPoint3d& dest3d)
 {
     MexRadians alignmentAngle = MachLogSpacialManipulation::angleToTurnToFace(*this, dest3d);
 
-    return (alignmentAngle > MexRadians(3) or alignmentAngle < MexRadians(-3));
+    return (alignmentAngle > MexRadians(3) || alignmentAngle < MexRadians(-3));
     // return true if REAR is (almost) facing deployment point
 }
 
@@ -435,10 +435,10 @@ PhysRelativeTime MachLogAPC::update(const PhysRelativeTime& maxCPUTime, MATHEX_S
     if (isIdle())
         turningTowardMachine_ = false;
 
-    if (not isIn1stPersonView() and nMachinesIncoming_ > 0
-        and ((virtualDefCon() != MachLog::DEFCON_HIGH and not evading()) or isIdle()))
+    if (! isIn1stPersonView() && nMachinesIncoming_ > 0
+        && ((virtualDefCon() != MachLog::DEFCON_HIGH && ! evading()) || isIdle()))
     {
-        if (not turningTowardMachine_)
+        if (! turningTowardMachine_)
             turnRearToFaceNearestIncoming();
 
         // ensure APC will not be jostled around by other machines while it prepares to load incoming machines
@@ -514,7 +514,7 @@ const MachLogMachine& MachLogAPC::currentNearestMachine() const
                 = fabs(MachLogSpacialManipulation::angleToTurnToFace(*this, (*i)->position()).asScalar());
 
             if ((position().sqrEuclidianDistance((*i)->position()) < sqrCloseDistance())
-                and (absTempRelativeAngle > absRelativeAngleOfNearest))
+                && (absTempRelativeAngle > absRelativeAngleOfNearest))
             {
                 pCurrentNearest = (*i);
                 absRelativeAngleOfNearest = absTempRelativeAngle;

@@ -58,7 +58,7 @@ void* BasePoolAllocator::alloc(size_t nBytes)
         else
         {
             size_t poolBlockSize = unitSize + 1;
-            if (not pFirstUnusedBlock_ || pFirstUnusedBlock_->leftUnits_ < poolBlockSize)
+            if (! pFirstUnusedBlock_ || pFirstUnusedBlock_->leftUnits_ < poolBlockSize)
             {
                 bool found = false;
                 for (UnusedBlock* pTryUnusedBlock = pFirstUnusedBlock_; pTryUnusedBlock;
@@ -85,7 +85,7 @@ void* BasePoolAllocator::alloc(size_t nBytes)
                     }
                 }
 
-                if (not found)
+                if (! found)
                 {
                     // Allocate a new system block
                     uint32_t nSystemBytes = (pFirstSystemBlock_ == nullptr ? nInitialPoolBytes_ : nExtensionBytes_);
@@ -162,6 +162,6 @@ void BasePoolAllocator::free(void* pBlock)
 
 bool BasePoolAllocator::allBlocksFreed() const
 {
-    return nUnitsAllocated_ == 0 and nBlocksAllocated_ == 0;
+    return nUnitsAllocated_ == 0 && nBlocksAllocated_ == 0;
 }
 /* End POOLALLO.CPP *************************************************/

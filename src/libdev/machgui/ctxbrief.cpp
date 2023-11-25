@@ -293,7 +293,7 @@ void MachGuiCtxBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 bool MachGuiCtxBriefing::okayToSwitchContext()
 {
     if ((pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::STARTGAME)
-        or (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_CANCEL))
+        || (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_CANCEL))
     {
         // silence voicemail
         stopPlayingBriefingVoicemail();
@@ -315,7 +315,7 @@ void MachGuiCtxBriefing::displayBriefingImage()
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario brief filename: " << briefPicture << std::endl);
 
     // Get flic off hard-disk or CD-Rom
-    if (not briefPicture.existsAsFile())
+    if (! briefPicture.existsAsFile())
     {
         // Make sure the cd is stopped before accessing files on it.
         if (DevCD::instance().isPlayingAudioCd())

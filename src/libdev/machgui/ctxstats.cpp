@@ -56,7 +56,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     SysPathName statAnim("flics/gui/statist.smk");
 
     // Get flic off hard-disk or CD-Rom
-    if (not statAnim.existsAsFile())
+    if (! statAnim.existsAsFile())
     {
         // Make sure the cd is stopped before accessing files on it.
         if (DevCD::instance().isPlayingAudioCd())
@@ -147,7 +147,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     MachPhys::Race playerRace;
     string playerName;
 
-    if ((context == MachGuiStartupScreens::CTX_CASTATISTICS) or (context == MachGuiStartupScreens::CTX_SKSTATISTICS))
+    if ((context == MachGuiStartupScreens::CTX_CASTATISTICS) || (context == MachGuiStartupScreens::CTX_SKSTATISTICS))
     {
         playerRace = MachLogRaces::instance().pcController().race();
         if (context == MachGuiStartupScreens::CTX_CASTATISTICS)
@@ -167,8 +167,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
             // Display string 'Computer' for every player in the game who is not user controlled
             if (MachLogRaces::instance().raceInGame(currentRace)
-                and (currentRace != MachLogRaces::instance().pcController().race())
-                and MachLogRaces::instance().score(currentRace).scoreShouldBeDisplayed())
+                && (currentRace != MachLogRaces::instance().pcController().race())
+                && MachLogRaces::instance().score(currentRace).scoreShouldBeDisplayed())
             {
                 string computerString = GuiResourceString(IDS_MENU_STSCOMPUTER).asString();
 
@@ -229,7 +229,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
             }
 
             if (playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
-                or playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST)
+                || playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST)
             {
                 *name = playerInfo[i].playerName_;
             }

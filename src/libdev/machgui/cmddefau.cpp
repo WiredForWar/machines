@@ -373,7 +373,7 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
         for (MachInGameScreen::Actors::const_iterator it = selectedActors.begin(); it != selectedActors.end(); ++it)
         {
             // Find an actor in corral that ain't in an APC
-            if (not((*it)->objectIsMachine() and (*it)->asMachine().insideAPC()))
+            if (!((*it)->objectIsMachine() && (*it)->asMachine().insideAPC()))
             {
                 pSelectedActor = *it;
                 break;
@@ -382,21 +382,21 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
 
         if (pSelectedActor)
         {
-            if (pSelectedActor->objectIsMachine() and pSelectedActor->race() == playerRace)
+            if (pSelectedActor->objectIsMachine() && pSelectedActor->race() == playerRace)
             {
                 // If we are outside a building then we need to check if we are trying to move
                 // to a valid domain
-                if (not inGameScreen().cameras()->currentCamera()->insideConstruction())
+                if (! inGameScreen().cameras()->currentCamera()->insideConstruction())
                 {
-                    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+                    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
                     {
                         // Locators default to Locate, move is alternative
-                        if (pSelectedActor->objectType() == MachLog::GEO_LOCATOR and not altPressed)
+                        if (pSelectedActor->objectType() == MachLog::GEO_LOCATOR && ! altPressed)
                         {
                             cursor = MachGui::LOCATETO_CURSOR;
                         }
                         // APC default to move, deploy is alternative
-                        else if (pSelectedActor->objectType() == MachLog::APC and altPressed)
+                        else if (pSelectedActor->objectType() == MachLog::APC && altPressed)
                         {
                             cursor = MachGui::DEPLOY_CURSOR;
                         }
@@ -414,10 +414,10 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
             }
             // Factories get the "assemble at" cursor as an alternative
             else if (
-                pSelectedActor->objectType() == MachLog::FACTORY and pSelectedActor->race() == playerRace
-                and altPressed)
+                pSelectedActor->objectType() == MachLog::FACTORY && pSelectedActor->race() == playerRace
+                && altPressed)
             {
-                if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+                if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
                 {
                     cursor = MachGui::ASSEMBLEPOINT_CURSOR;
                 }
@@ -447,7 +447,7 @@ MachGuiDefaultCommand::cursorOnActor(MachActor* pCursorActor, bool ctrlPressed, 
         for (MachInGameScreen::Actors::const_iterator it = selectedActors.begin(); it != selectedActors.end(); ++it)
         {
             // Find an actor in corral that ain't in an APC
-            if (not((*it)->objectIsMachine() and (*it)->asMachine().insideAPC()))
+            if (!((*it)->objectIsMachine() && (*it)->asMachine().insideAPC()))
             {
                 pSelectedActor = *it;
                 break;

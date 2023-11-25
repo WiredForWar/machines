@@ -52,7 +52,7 @@ size_t MachPhysLevelIndexMap::index(size_t level) const
 
     bool foundLevel = false;
 
-    for (size_t i = 0; i < nLevels_ and not foundLevel; ++i)
+    for (size_t i = 0; i < nLevels_ && ! foundLevel; ++i)
     {
         if (level == pLevelArray_[i])
         {

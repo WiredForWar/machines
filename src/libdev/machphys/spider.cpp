@@ -348,7 +348,7 @@ void MachPhysSpiderLegs::calculateAccelerations(
                 iStartTranslation = iAcc;
             }
 
-            if (fabs((*iAcc).endSpeed()) < MexEpsilon::instance() or i == transformsPtr->size() - 2)
+            if (fabs((*iAcc).endSpeed()) < MexEpsilon::instance() || i == transformsPtr->size() - 2)
             {
                 PHYS_MOTION_STREAM("Found end of a translation" << std::endl);
 
@@ -395,10 +395,10 @@ void MachPhysSpiderLegs::reviseTranslationProfile(RampAccelerations::iterator be
     PHYS_MOTION_INSPECT(startAtRest);
     PHYS_MOTION_INSPECT(finishAtRest);
 
-    if (startWalkingPlanPtr_.isDefined() and startAtRest)
+    if (startWalkingPlanPtr_.isDefined() && startAtRest)
         startTime = startWalkingPlanPtr_->finishTime();
 
-    if (stopWalkingPlanPtr_.isDefined() and finishAtRest)
+    if (stopWalkingPlanPtr_.isDefined() && finishAtRest)
         stopTime = stopWalkingPlanPtr_->finishTime();
 
     PHYS_MOTION_INSPECT(startTime);
@@ -573,14 +573,14 @@ void MachPhysSpiderLegs::doFirstPersonMotionAnimations(MachPhysLocomotionMethod:
     // But we do want to do them if remotely controlled
     MachPhysLocomotionMethod::FirstPersonMotionState oldState = pImpl_->lastState();
 
-    if (not isRemotelyControlledFirstPerson())
+    if (! isRemotelyControlledFirstPerson())
     {
-        if (oldState == MachPhysLocomotionMethod::TURNING_LEFT or oldState == MachPhysLocomotionMethod::TURNING_RIGHT
-            or oldState == MachPhysLocomotionMethod::ENTERING)
+        if (oldState == MachPhysLocomotionMethod::TURNING_LEFT || oldState == MachPhysLocomotionMethod::TURNING_RIGHT
+            || oldState == MachPhysLocomotionMethod::ENTERING)
             oldState = MachPhysLocomotionMethod::STOPPED;
 
-        if (state == MachPhysLocomotionMethod::TURNING_LEFT or state == MachPhysLocomotionMethod::TURNING_RIGHT
-            or state == MachPhysLocomotionMethod::ENTERING)
+        if (state == MachPhysLocomotionMethod::TURNING_LEFT || state == MachPhysLocomotionMethod::TURNING_RIGHT
+            || state == MachPhysLocomotionMethod::ENTERING)
             state = MachPhysLocomotionMethod::STOPPED;
     }
 

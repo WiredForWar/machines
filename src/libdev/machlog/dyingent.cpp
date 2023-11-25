@@ -47,9 +47,9 @@ MachLogDyingEntityEvent::MachLogDyingEntityEvent(
         HAL_STREAM(pFromPolygons->size() << std::endl);
     }
     // #endif
-    PRE((insideBuilding_ and pConstruction_) or not insideBuilding_);
+    PRE((insideBuilding_ && pConstruction_) || ! insideBuilding_);
     // build array of polygons here....
-    if (pFromPolygons and pFromPolygons->size())
+    if (pFromPolygons && pFromPolygons->size())
     {
         polygons_.reserve(pFromPolygons->size());
         for (Polygons::const_iterator i = pFromPolygons->begin(); i != pFromPolygons->end(); ++i)
@@ -79,7 +79,7 @@ MachLogDyingEntityEvent::MachLogDyingEntityEvent(
     insideBuilding_ = insideBuilding == INSIDE_BUILDING;
     // HAL_STREAM(" going dead time gap " << goDeadTime << std::endl );
     HAL_STREAM(" single Polygon Id " << singlePolygonOnly << std::endl);
-    PRE((insideBuilding_ and pConstruction_) or not insideBuilding_);
+    PRE((insideBuilding_ && pConstruction_) || ! insideBuilding_);
     //  PolygonId* pPolygonId = new PolygonId( singlePolygonOnly );
     //  HAL_STREAM(" created new PolygonId address (void*) " << (void*)pPolygonId << std::endl );
     polygons_.push_back(singlePolygonOnly);
@@ -94,11 +94,11 @@ MachLogDyingEntityEvent::~MachLogDyingEntityEvent()
     CB_MachLogDyingEntityEvent_DEPIMPL();
     HAL_STREAM("MLDyingEntityEvent::DTOR\n");
 
-    if (not polygons_.empty())
+    if (! polygons_.empty())
     {
         // Work out which config space to remove the polygons from
         PhysConfigSpace2d* pConfigSpace = nullptr;
-        if (insideBuilding_ and pConstruction_)
+        if (insideBuilding_ && pConstruction_)
         {
             MachLogConstruction& mlc = pConstruction_->asConstruction();
             pConfigSpace = &mlc.interiorConfigSpace();

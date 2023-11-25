@@ -844,7 +844,7 @@ defaultact:
         case 113:
             // # line 553 "d:\libdev\envirnmt\source\parser.y"
             {
-                PRE(*yypvt[-7].pString == "spherical" or *yypvt[-7].pString == "hemispherical");
+                PRE(*yypvt[-7].pString == "spherical" || *yypvt[-7].pString == "hemispherical");
 
                 if (*yypvt[-7].pString == "spherical")
                     EnvIPlanetParser::instance().createStars(RenStars::SPHERICAL, yypvt[-4].floatVal, yypvt[-1].intVal);

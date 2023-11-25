@@ -135,7 +135,7 @@ void MachGuiCheckBox::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
     if (rel.leftButton() == Gui::PRESSED)
     {
-        isChecked_ = not isChecked_;
+        isChecked_ = ! isChecked_;
         changed();
     }
 }
@@ -152,7 +152,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCheckBox& t)
 // virtual
 bool MachGuiCheckBox::executeControl()
 {
-    isChecked_ = not isChecked_;
+    isChecked_ = ! isChecked_;
     changed();
 
     return true;

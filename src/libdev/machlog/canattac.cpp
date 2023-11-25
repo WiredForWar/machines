@@ -83,14 +83,14 @@ MachLogCanAttack::MachLogCanAttack(MachActor* pMe, MachPhysCanAttack* pPhysCanAt
 MachLogCanAttack::~MachLogCanAttack()
 {
     CB_MachLogCanAttack_DEPIMPL();
-    if (pMe_ and pMe_->objectIsMachine())
+    if (pMe_ && pMe_->objectIsMachine())
         pMe_->asMachine().setSquadron(nullptr);
     while (weapons_.size() > 0)
     {
         delete weapons_.front();
         weapons_.erase(weapons_.begin());
     }
-    if (currentlyAttached_ and pCurrentTarget_)
+    if (currentlyAttached_ && pCurrentTarget_)
     {
         currentlyAttached_ = false;
         pCurrentTarget_->detach(this);
@@ -103,7 +103,7 @@ void MachLogCanAttack::currentTarget(MachActor* p)
 {
     CB_MachLogCanAttack_DEPIMPL();
 
-    if (currentlyAttached_ and pCurrentTarget_)
+    if (currentlyAttached_ && pCurrentTarget_)
     {
         pCurrentTarget_->detach(this);
         currentlyAttached_ = false;
@@ -120,7 +120,7 @@ void MachLogCanAttack::currentTarget(MachActor* p)
     }
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         UtlId otherId = 0;
         if (pCurrentTarget_)
@@ -200,7 +200,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
     MachLog::DefCon defCon = pActor->virtualDefCon();
 
     // if high defcon and we are not classified as being fully free to attack then return out
-    if (defCon == MachLog::DEFCON_HIGH and not pActor->isFreeToAttack())
+    if (defCon == MachLog::DEFCON_HIGH && ! pActor->isFreeToAttack())
     {
         return;
     }
@@ -212,7 +212,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
     // did something fire at us?
     bool found;
 
-    if (not pFiredAtMe and hasCurrentTarget())
+    if (! pFiredAtMe && hasCurrentTarget())
     {
         // I already have a target. Chances are nothing much has happened between then and now.
         // Probably don't need to bother checking for a change in circumstances. Let us do something really smart.
@@ -249,7 +249,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
         found = races.findTargetClosestTo(*pActor, &pMach);
     }
 
-    if (found and pMach->objectIsMachine())
+    if (found && pMach->objectIsMachine())
     {
         // our target is a machine. Therefore, it might be inside a building.
         MachLogMachine& targetMachine = pMach->asMachine();
@@ -262,13 +262,13 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
             const MachLogConstruction& buildingTargetIsInside = targetMachine.insideWhichBuilding();
 
             bool okayToAttack
-                = (pActor->insideBuilding() and pActor->insideWhichBuilding().id() == buildingTargetIsInside.id())
-                or pActor->canEnterConstructionNow(buildingTargetIsInside);
+                = (pActor->insideBuilding() && pActor->insideWhichBuilding().id() == buildingTargetIsInside.id())
+                || pActor->canEnterConstructionNow(buildingTargetIsInside);
 
-            if (not okayToAttack)
+            if (! okayToAttack)
                 found = false;
         }
-        else if (pActor->insideBuilding() and pActor->race() == races.pcController().race())
+        else if (pActor->insideBuilding() && pActor->race() == races.pcController().race())
         {
             // player race machines shouldn't leave buildings of their own volition to attack targets outside
             found = false;
@@ -289,8 +289,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
         // Note that we rescind the scanner range requirement( but not the maximumEngagementDistance ) if we were
         // actually hit by the other actor's fire - we're able to "zero his position" even if beyond scanner range, by
         // detecting the direction from which the shot came.
-        if ((sqrDistanceToTarget < sqrScannerRange or pFiredAtMe)
-            and sqrDistanceToTarget <= sqrMaximumEngagementDistance())
+        if ((sqrDistanceToTarget < sqrScannerRange || pFiredAtMe)
+            && sqrDistanceToTarget <= sqrMaximumEngagementDistance())
         {
             // go on full alert
             setMinimumAlertness(125);
@@ -306,12 +306,12 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
                 if (actorIsDirectThreat(*pMach))
                 {
                     retarget = pFiredAtMe != nullptr
-                        or acceptableAggressiveTargetForHigherDefconsMachine(pMach, sqrDistanceToTarget);
+                        || acceptableAggressiveTargetForHigherDefconsMachine(pMach, sqrDistanceToTarget);
                 }
                 else
                 {
                     // not an aggressive machine - if I can't shoot it from where I'm standing, forget about it.
-                    if (not canTurnToAttackAndNoCover(pMach))
+                    if (! canTurnToAttackAndNoCover(pMach))
                     {
                         retarget = false;
                     }
@@ -321,7 +321,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
 
             // =================  The "What to do if we already have a target" section ===================
 
-            if (retarget and hasCurrentTarget())
+            if (retarget && hasCurrentTarget())
             {
                 // note that this operation MAY change *pMach to an alternative actor under certain conditions
                 retarget = switchFromExistingTargetToThisOne(pMach, sqrDistanceToTarget, pFiredAtMe);
@@ -332,7 +332,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
             {
                 bool initiateAttack = false;
 
-                if (hasCurrentTarget() and not currentTarget().isDead())
+                if (hasCurrentTarget() && ! currentTarget().isDead())
                 {
                     if (pMach->id() != currentTarget().id())
                         initiateAttack = true;
@@ -344,7 +344,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
                 {
                     currentTarget(pMach);
                     if (pActor->strategy().currentOperationType() != MachLogOperation::COUNTERATTACK_OPERATION
-                        and not isStandingGround and not pActor->strategy().isUninterruptable())
+                        && ! isStandingGround && ! pActor->strategy().isUninterruptable())
                     {
                         pActor->strategy().changeToCounterattackMode(pMach);
                     }
@@ -404,10 +404,10 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor*
             // if normal then only target if new target is lessequal in hwlevel
 
             // if the current target is also in scanner range and can attack then do NOT retarget
-            if (retarget and /*pActor->asCanAttack().*/ hasCurrentTarget())
+            if (retarget && /*pActor->asCanAttack().*/ hasCurrentTarget())
             {
                 if (currentTarget().objectIsCanAttack()
-                    and pActor->position().sqrEuclidianDistance(/*pActor->asCanAttack().*/ currentTarget().position())
+                    && pActor->position().sqrEuclidianDistance(/*pActor->asCanAttack().*/ currentTarget().position())
                         < sqrScannerRange)
                     retarget = false;
             }
@@ -415,7 +415,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor*
             if (retarget)
             {
                 if (hasCurrentTarget()
-                    and MachLogRaces::instance().objectExists(&/*pActor->asCanAttack().*/ currentTarget()))
+                    && MachLogRaces::instance().objectExists(&/*pActor->asCanAttack().*/ currentTarget()))
                 {
                     if (pMach->id() != currentTarget().id())
                     {
@@ -453,11 +453,11 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
     bool found = false;
     // launchers at anything more than 25% of full health will not attack targets within 25m of themselves
     MATHEX_SCALAR minSqrFiringRange = 0.0;
-    if (pActor->subType() == MachPhys::LAUNCHER and pActor->hpRatio() > 0.25)
+    if (pActor->subType() == MachPhys::LAUNCHER && pActor->hpRatio() > 0.25)
         minSqrFiringRange = 625.0;
 
     ////////////////////////////////////////
-    if (not pFiredAtMe and hasCurrentTarget())
+    if (! pFiredAtMe && hasCurrentTarget())
     {
         // if we already have a target, only a 20% chance of checking for an alternative
         int ignoreChance = MachPhysRandom::randomInt(0, 5);
@@ -497,7 +497,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
     }
 
     // never bother with machines inside buildings
-    if (found and pMach->objectIsMachine() and pMach->asMachine().insideBuilding())
+    if (found && pMach->objectIsMachine() && pMach->asMachine().insideBuilding())
     {
         found = false;
     }
@@ -508,7 +508,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
     {
         HAL_STREAM(" found something new " << pMach->objectType() << std::endl);
     }
-    if (found and pActor->canDetect(*pMach))
+    if (found && pActor->canDetect(*pMach))
     {
         // go to full alert.
         setMinimumAlertness(125);
@@ -531,7 +531,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
                 HAL_STREAM(
                     " new target behind softCover is " << targetBehindSoftCover(pMach, SAME_RACE_OK) << std::endl);
                 // .....don't bother retargetting if we can't see and attack the rival target candidate
-                if (not canTurnToAttackAndNoCover(pMach))
+                if (! canTurnToAttackAndNoCover(pMach))
                 {
                     retarget = false;
                     HAL_STREAM(" new target is not valid\n");
@@ -548,7 +548,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
                         // if rival target poses attacking threat and current target does not.
                         if (races.controller(pActor->race()).type() != MachLogController::AI_CONTROLLER)
                         {
-                            if (actorIsDirectThreat(currentTargetActor) or not actorIsDirectThreat(*pMach))
+                            if (actorIsDirectThreat(currentTargetActor) || ! actorIsDirectThreat(*pMach))
                             {
                                 retarget = false;
                             }
@@ -615,7 +615,7 @@ const MATHEX_SCALAR MachLogCanAttack::getMaximumHealWeaponRange() const
     {
         const MachLogWeapon& weapon = (**i);
         MachPhys::WeaponType type = weapon.physWeapon().type();
-        if ((type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER) and weapon.range() > result)
+        if ((type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER) && weapon.range() > result)
             result = weapon.range();
     }
     return result;
@@ -703,7 +703,7 @@ bool MachLogCanAttack::canAttack(const MachActor& other) const
     {
         return true;
     }
-    bool result = inWeaponRange(other, NONE) and inAngleRange(other.physObject());
+    bool result = inWeaponRange(other, NONE) && inAngleRange(other.physObject());
     return result;
     // and hasSightOf( other )
 }
@@ -804,7 +804,7 @@ bool MachLogCanAttack::hasHealingWeapon() const
     for (Weapons::const_iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
         MachPhys::WeaponType type = ((const MachLogWeapon&)(**i)).physWeapon().type();
-        if (type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER)
+        if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER)
         {
             result = true;
             break;
@@ -822,14 +822,14 @@ void MachLogCanAttack::stopAllHealing(const MachActor& me)
     for (Weapons::iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
         MachPhys::WeaponType type = ((const MachLogWeapon&)(**i)).physWeapon().type();
-        if (type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER)
+        if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER)
         {
             MachLogSuperCharger& charger = MachLogSuperCharger::asSuperCharger((*i));
             if (charger.healing())
             {
                 charger.stopAllHealing();
                 if (MachLogNetwork::instance().isNetworkGame()
-                    and MachLogNetwork::instance().remoteStatus(me.race()) == MachLogNetwork::LOCAL_PROCESS)
+                    && MachLogNetwork::instance().remoteStatus(me.race()) == MachLogNetwork::LOCAL_PROCESS)
                     MachLogNetwork::instance().messageBroker().sendHealMessage(
                         me.id(),
                         0,
@@ -851,9 +851,9 @@ PhysRelativeTime MachLogCanAttack::attack(MachActor* pTarget)
     for (Weapons::iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
         MachPhys::WeaponType type = _CONST_CAST(const MachLogWeapon*, (*i))->physWeapon().type();
-        if (type != MachPhys::SUPERCHARGE_ADVANCED and type != MachPhys::SUPERCHARGE_SUPER
-            and type != MachPhys::GORILLA_PUNCH
-            and not(type == MachPhys::ORB_OF_TREACHERY and not pTarget->objectIsMachine()))
+        if (type != MachPhys::SUPERCHARGE_ADVANCED && type != MachPhys::SUPERCHARGE_SUPER
+            && type != MachPhys::GORILLA_PUNCH
+            && !(type == MachPhys::ORB_OF_TREACHERY && ! pTarget->objectIsMachine()))
         {
             lastFireFrame_ = W4dManager::instance().frameNumber();
             PhysRelativeTime wft = (*i)->fire(pTarget, fireData);
@@ -874,14 +874,14 @@ PhysRelativeTime MachLogCanAttack::heal(MachActor* pTarget)
     for (Weapons::iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
         MachPhys::WeaponType type = _CONST_CAST(const MachLogWeapon*, (*i))->physWeapon().type();
-        if (type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER)
+        if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER)
         {
             lastFireFrame_ = W4dManager::instance().frameNumber();
             PhysRelativeTime wft = (*i)->fire(pTarget);
             if (wft > rt)
                 rt = wft;
             if (MachLogNetwork::instance().isNetworkGame()
-                and MachLogNetwork::instance().remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
+                && MachLogNetwork::instance().remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
                 MachLogNetwork::instance().messageBroker().sendHealMessage(
                     pMe_->id(),
                     pTarget->id(),
@@ -924,7 +924,7 @@ bool MachLogCanAttack::targetBehindSoftCover(MachActor* pTarget, MachLogCanAttac
         {
             MachActor& intersectingActor = MachLogRaces::instance().actor(pIntersectingEntity->id());
             {
-                if (precision == MachLogCanAttack::SAME_RACE_OK and intersectingActor.race() == pTarget->race())
+                if (precision == MachLogCanAttack::SAME_RACE_OK && intersectingActor.race() == pTarget->race())
                     return false;
             }
         }
@@ -1230,7 +1230,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::rangeData(
             MATHEX_SCALAR exitDistance;
             bool doesIntersect = tallBoundary.intersects(projectilePath, &entryDistance, &exitDistance);
             MISC_STREAM("  doesIntersect " << doesIntersect << "  entryDistance " << entryDistance << std::endl);
-            if (not doesIntersect)
+            if (! doesIntersect)
                 disposition = NOT_IN_HORIZONTAL_ANGLE_RANGE;
             else if (entryDistance * entryDistance > sqrWeaponRange)
                 disposition = NOT_IN_DISTANCE_RANGE;
@@ -1247,7 +1247,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::rangeData(
                 bool lowEntry = zEntry < zLowerLimit;
 
                 // for the moment, assume vertical angle is bad if entering above or below the box
-                bool verticalAngleBad = highEntry or lowEntry;
+                bool verticalAngleBad = highEntry || lowEntry;
 
                 // we may rescind the "vertical angle bad" decision if we can determine that the line
                 // actually passes through the box via its lower or upper face
@@ -1315,7 +1315,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::testActorBehindCover(
 
     W4dDomain* pDomain = nullptr;
 
-    if (pSubjectActor->objectIsMachine() and pSubjectActor->asMachine().insideBuilding())
+    if (pSubjectActor->objectIsMachine() && pSubjectActor->asMachine().insideBuilding())
     {
         // must use the building's domain, not that of the outside world
         pDomain = &(pSubjectActor->asMachine().insideWhichBuilding().interiorDomain());
@@ -1361,14 +1361,14 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::testActorBehindCover(
         // pCoverEntity->visible( not pCoverEntity->visible() );
         // tbr========================
 
-        if (pCoverEntity->hasSubject() and races.actorExists(coverActorId))
+        if (pCoverEntity->hasSubject() && races.actorExists(coverActorId))
         {
             MachActor& coverActor = races.actor(coverActorId);
             if (coverActor.objectIsMachine())
             {
                 MachLogRaces::DispositionToRace disposition = races.dispositionToRace(attackerRace, coverActor.race());
 
-                if (disposition != MachLogRaces::ENEMY and disposition != MachLogRaces::NEUTRAL)
+                if (disposition != MachLogRaces::ENEMY && disposition != MachLogRaces::NEUTRAL)
                     // disposition = BEHIND_FRIENDLY_COVER;
                     disposition = _STATIC_CAST(MachLogRaces::DispositionToRace, BEHIND_FRIENDLY_COVER);
             }
@@ -1388,7 +1388,7 @@ const MATHEX_SCALAR MachLogCanAttack::getMaximumPunchWeaponRange() const
 bool MachLogCanAttack::hasPunchWeapon() const
 {
     bool found = false;
-    for (Weapons::const_iterator i = weapons().begin(); not found and i != weapons().end(); ++i)
+    for (Weapons::const_iterator i = weapons().begin(); ! found && i != weapons().end(); ++i)
     {
         MachPhys::WeaponType type = ((const MachLogWeapon&)(**i)).physWeapon().type();
         if (type == MachPhys::GORILLA_PUNCH)
@@ -1407,7 +1407,7 @@ bool MachLogCanAttack::canPunch(const MachActor& other) const
     if (pMe_->position().sqrEuclidianDistance(other.position()) == 0)
         return true;
 
-    return inWeaponRange(other, GORILLA_PUNCH) and inAngleRange(other.physObject());
+    return inWeaponRange(other, GORILLA_PUNCH) && inAngleRange(other.physObject());
 }
 
 // virtual
@@ -1420,7 +1420,7 @@ PhysRelativeTime MachLogCanAttack::attackWithPunch(MachActor* pTarget)
 
     bool found = false;
 
-    for (Weapons::iterator i = weapons().begin(); not found and i != weapons().end(); ++i)
+    for (Weapons::iterator i = weapons().begin(); ! found && i != weapons().end(); ++i)
     {
         MachPhys::WeaponType type = ((const MachLogWeapon&)(**i)).physWeapon().type();
         if (type == MachPhys::GORILLA_PUNCH)
@@ -1458,14 +1458,14 @@ void MachLogCanAttack::resetInaccuracyToDefault()
     CB_MachLogCanAttack_DEPIMPL();
     MATHEX_SCALAR initialAccuracy = 0;
 
-    ASSERT(pMe_->objectIsMachine() or pMe_->objectIsConstruction(), "Unexpected actor type.");
+    ASSERT(pMe_->objectIsMachine() || pMe_->objectIsConstruction(), "Unexpected actor type.");
 
     ASSERT_INFO(pMe_->objectType());
 
     if (pMe_->objectIsMachine())
     {
         ASSERT(
-            pMe_->objectType() == MachLog::AGGRESSOR or pMe_->objectType() == MachLog::ADMINISTRATOR,
+            pMe_->objectType() == MachLog::AGGRESSOR || pMe_->objectType() == MachLog::ADMINISTRATOR,
             "Unexpected machine type.");
 
         if (pMe_->objectType() == MachLog::AGGRESSOR)
@@ -1478,7 +1478,7 @@ void MachLogCanAttack::resetInaccuracyToDefault()
     // must be a construction, and should be a missile emplacement
     {
         ASSERT(
-            pMe_->objectType() == MachLog::MISSILE_EMPLACEMENT or pMe_->objectType() == MachLog::POD,
+            pMe_->objectType() == MachLog::MISSILE_EMPLACEMENT || pMe_->objectType() == MachLog::POD,
             "Unexpected construction type.");
 
         if (pMe_->objectType() == MachLog::MISSILE_EMPLACEMENT)
@@ -1597,16 +1597,16 @@ MachLogFireData MachLogCanAttack::createFireData()
             if (hasCurrentTarget())
             {
                 MachActor& targetActor = currentTarget();
-                if (targetActor.objectIsMachine() and targetActor.asMachine().machineIsGlider())
+                if (targetActor.objectIsMachine() && targetActor.asMachine().machineIsGlider())
                 {
                     penalty += 35.0;
                 }
             }
 
             // general accuracy improves if in an administrator-led squad and the guv'nor's in 100m range.
-            if (meAsMachine.objectType() != MachLog::ADMINISTRATOR and meAsMachine.squadron() != nullptr
-                and meAsMachine.squadron()->hasCommander()
-                and meAsMachine.position().sqrEuclidianDistance(meAsMachine.squadron()->commander().position())
+            if (meAsMachine.objectType() != MachLog::ADMINISTRATOR && meAsMachine.squadron() != nullptr
+                && meAsMachine.squadron()->hasCommander()
+                && meAsMachine.position().sqrEuclidianDistance(meAsMachine.squadron()->commander().position())
                     <= 10000.0)
             {
                 penalty -= 20.0;
@@ -1689,7 +1689,7 @@ void perRead(PerIstream& istr, MachLogCanAttack& actor)
 
     istr >> actor.pImpl_;
 
-    if (actor.currentlyAttached() and actor.hasCurrentTarget())
+    if (actor.currentlyAttached() && actor.hasCurrentTarget())
         actor.currentTarget().attach(&actor);
 }
 
@@ -1728,7 +1728,7 @@ std::ostream& operator<<(std::ostream& o, MachLogCanAttack::WeaponDisposition di
 
 bool MachLogCanAttack::canTurnToAttackAndNoCover(MachActor* pTargetActor)
 {
-    return (canTurnToAttack(*pTargetActor) and IHaveClearWeaponPathToHim(pTargetActor));
+    return (canTurnToAttack(*pTargetActor) && IHaveClearWeaponPathToHim(pTargetActor));
 }
 
 bool MachLogCanAttack::IHaveClearWeaponPathToHim(MachActor* pTargetActor) const
@@ -1801,9 +1801,9 @@ bool MachLogCanAttack::acceptableAggressiveTargetForHigherDefconsMachine(
     }
     // if I'm on defcon normal, will move to attack him if he currently threatens me.
     else if (
-        pMe_->asMachine().virtualDefCon() == MachLog::DEFCON_NORMAL and pMe_->hasThreats()
-        and pMe_->hasThisActorAsAThreat(pTarget->id())
-        and pTarget->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceToTarget))
+        pMe_->asMachine().virtualDefCon() == MachLog::DEFCON_NORMAL && pMe_->hasThreats()
+        && pMe_->hasThisActorAsAThreat(pTarget->id())
+        && pTarget->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceToTarget))
     {
         acceptableRange = true;
     }
@@ -1824,7 +1824,7 @@ bool MachLogCanAttack::willCheckForTargets() const
 
     int doCheckDiceRoll = MachPhysRandom::randomInt(0, 100);
 
-    return doCheckDiceRoll < alertness_ and allowedToCheckForNewTarget();
+    return doCheckDiceRoll < alertness_ && allowedToCheckForNewTarget();
 }
 
 void MachLogCanAttack::diminishAlertnessAndInaccuracy()
@@ -1885,10 +1885,10 @@ bool MachLogCanAttack::canFireAt(const MachActor& potentialTarget) const
     // am I a ground-to-air missile emplacement?
 
     if (pMe_->objectType() == MachLog::MISSILE_EMPLACEMENT
-        and pMe_->asMissileEmplacement().subType() == MachPhys::SENTRY)
+        && pMe_->asMissileEmplacement().subType() == MachPhys::SENTRY)
     {
         bool targetIsFlyingMachine
-            = potentialTarget.objectIsMachine() and potentialTarget.asMachine().machineIsGlider();
+            = potentialTarget.objectIsMachine() && potentialTarget.asMachine().machineIsGlider();
 
         // SAMs (level 4) can only attack flying machines, SSMs (level 3) can attack anything but flying machines
         bool isSAMsite = pMe_->asMissileEmplacement().level() == 4;
@@ -1906,8 +1906,8 @@ bool MachLogCanAttack::canFireAt(const MachActor& potentialTarget) const
                 return false;
 
             // am I a Bee? If so, I can't attack other airborne targets
-            if (pMe_->objectType() == MachLog::ADMINISTRATOR and pMe_->asAdministrator().subType() == MachPhys::BOSS
-                and pMe_->asAdministrator().hwLevel() == 2)
+            if (pMe_->objectType() == MachLog::ADMINISTRATOR && pMe_->asAdministrator().subType() == MachPhys::BOSS
+                && pMe_->asAdministrator().hwLevel() == 2)
                 return false;
         }
         else if (machine.insideBuilding())
@@ -1940,11 +1940,11 @@ bool MachLogCanAttack::recruitableToAttack(const MachActor& potentialTarget) con
     CB_MachLogCanAttack_DEPIMPL();
 
     // pc race machines inside a building don't respond to SOS calls targetting enemies outside that building
-    if (pMe_->objectIsMachine() and pMe_->asMachine().insideBuilding()
-        and pMe_->race() == MachLogRaces::instance().pcController().race()
-        and not(
-            potentialTarget.objectIsMachine() and potentialTarget.asMachine().insideBuilding()
-            and potentialTarget.asMachine().insideWhichBuilding().id() == pMe_->asMachine().insideWhichBuilding().id()))
+    if (pMe_->objectIsMachine() && pMe_->asMachine().insideBuilding()
+        && pMe_->race() == MachLogRaces::instance().pcController().race()
+        && !(
+            potentialTarget.objectIsMachine() && potentialTarget.asMachine().insideBuilding()
+            && potentialTarget.asMachine().insideWhichBuilding().id() == pMe_->asMachine().insideWhichBuilding().id()))
     {
         // the target is outside, and I'm inside. Don't respond to the call.
         return false;
@@ -1960,7 +1960,7 @@ int MachLogCanAttack::minimumAlertnessForActor() const
     int hwLevelMinimum = 0;
 
     ASSERT_INFO(pMe_->objectType());
-    ASSERT(pMe_->objectIsMachine() or pMe_->objectIsMissileEmplacement(), "Hey, that's not right.");
+    ASSERT(pMe_->objectIsMachine() || pMe_->objectIsMissileEmplacement(), "Hey, that's not right.");
 
     if (pMe_->objectIsMachine())
         hwLevelMinimum = pMe_->asMachine().hwLevel() * 4;
@@ -1996,7 +1996,7 @@ bool MachLogCanAttack::willTestHitByCandidate(const MachActor& hitByActor) const
     bool result = false;
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
-    if (not hasCurrentTarget())
+    if (! hasCurrentTarget())
     {
         // well, yeah, we'll definitely test for this new fella!
         result = true;
@@ -2042,10 +2042,10 @@ MATHEX_SCALAR MachLogCanAttack::distanceBeyondMaximumWeaponRange(const MachActor
 bool MachLogCanAttack::actorIsDirectThreat(const MachActor& candidateActor)
 {
     bool result
-        = candidateActor.objectIsCanAttack() and not(candidateActor.objectType() == MachLog::POD)
-        and not(
+        = candidateActor.objectIsCanAttack() && !(candidateActor.objectType() == MachLog::POD)
+        && !(
               candidateActor.objectIsMissileEmplacement()
-              and (candidateActor.asMissileEmplacement().subType() == MachPhys::ICBM or not candidateActor.asMissileEmplacement().isComplete()));
+              && (candidateActor.asMissileEmplacement().subType() == MachPhys::ICBM || ! candidateActor.asMissileEmplacement().isComplete()));
 
     return result;
 }
@@ -2094,7 +2094,7 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
     // if normal then only target if new target is lessequal in hwlevel
     // if idleing etc then actor will always retarget.
     if (races.controller(meAsMachine.race()).type() != MachLogController::AI_CONTROLLER
-        and defCon == MachLog::DEFCON_NORMAL and not meAsMachine.isFreeToAttack())
+        && defCon == MachLog::DEFCON_NORMAL && ! meAsMachine.isFreeToAttack())
     {
         // the new target is lessequal than we are so try to blow it up on the way
         if (pAlternativeActor->objectIsMachine())
@@ -2116,7 +2116,7 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
             // the target is now behind cover , or the target isn't a canattack and a viable
             // canattack alternative target is within range and not behind cover.
 
-            if (not IHaveClearWeaponPathToHim(&currentTargetActor))
+            if (! IHaveClearWeaponPathToHim(&currentTargetActor))
             {
                 // note that this REPLACES pAlternativeActor with the alternative if the current pAlternativeActor is
                 // already our current target, and findAlternativeTargetClosestTo then succeeds
@@ -2131,8 +2131,8 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
                 }
                 else if (
                     races.findAlternativeTargetClosestTo(meAsMachine, &pAlternativeActor)
-                    and pAlternativeActor->id() != currentTargetActor.id()
-                    and canTurnToAttackAndNoCover(pAlternativeActor))
+                    && pAlternativeActor->id() != currentTargetActor.id()
+                    && canTurnToAttackAndNoCover(pAlternativeActor))
                 {
                     retarget = true;
                 }
@@ -2141,7 +2141,7 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
             // to that instead so long as it's not behind cover.
             else
             {
-                if (not myCurrentTargetIsADirectThreat)
+                if (! myCurrentTargetIsADirectThreat)
                 {
                     // note that this REPLACES pAlternativeActor with the alternative if the current pAlternativeActor
                     // is already our current target, and findAlternativeTargetClosestTo then succeeds
@@ -2149,13 +2149,13 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
                     // must ensure alternative target being examined IS a genuine alternative
                     if (pAlternativeActor->id() != currentTargetActor.id())
                     {
-                        if (actorIsDirectThreat(*pAlternativeActor) and canTurnToAttackAndNoCover(pAlternativeActor))
+                        if (actorIsDirectThreat(*pAlternativeActor) && canTurnToAttackAndNoCover(pAlternativeActor))
                             retarget = true;
                     }
                     else if (
                         races.findAlternativeTargetClosestTo(meAsMachine, &pAlternativeActor)
-                        and pAlternativeActor->id() != currentTargetActor.id()
-                        and actorIsDirectThreat(*pAlternativeActor) and canTurnToAttackAndNoCover(pAlternativeActor))
+                        && pAlternativeActor->id() != currentTargetActor.id()
+                        && actorIsDirectThreat(*pAlternativeActor) && canTurnToAttackAndNoCover(pAlternativeActor))
                     {
                         retarget = true;
                     }
@@ -2169,8 +2169,8 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
             {
                 // don't retarget if this alternative is a non-attack-capable guy,
                 // my current target IS attack-capable, and I'm within my current target's weapon range
-                if (not actorIsDirectThreat(*pAlternativeActor) and myCurrentTargetIsADirectThreat
-                    and currentTargetActor.asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceToCurrentTarget))
+                if (! actorIsDirectThreat(*pAlternativeActor) && myCurrentTargetIsADirectThreat
+                    && currentTargetActor.asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceToCurrentTarget))
                 {
                     retarget = false;
                 }
@@ -2183,7 +2183,7 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
             {
                 // Well, the alternative ain't in range. Only retarget if it actually just shot us and our
                 // current target is not a threat.
-                if (pFiredAtMe and not myCurrentTargetIsADirectThreat)
+                if (pFiredAtMe && ! myCurrentTargetIsADirectThreat)
                 {
                     retarget = true;
                 }

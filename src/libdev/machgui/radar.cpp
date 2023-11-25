@@ -110,7 +110,7 @@ void MachGuiRadar::doDisplay()
         justEnteredFirstPerson_ = false;
     }
 
-    if (animationEndTime_ > now or frameNumber_ < RADAR_ANIMATION_FRAMES)
+    if (animationEndTime_ > now || frameNumber_ < RADAR_ANIMATION_FRAMES)
     {
         displayAnimatedRadarFrame();
     }
@@ -170,7 +170,7 @@ void MachGuiRadar::displayHealthArmour()
         bool newHpAboveCritical = hpRatio > 0.2;
 
         // Play sound if HP are at critical level ( below 20% )
-        if (not newHpAboveCritical and hpAboveCritical_)
+        if (! newHpAboveCritical && hpAboveCritical_)
             MachGuiSoundManager::instance().playSound("gui/sounds/hpcritic.wav");
 
         hpAboveCritical_ = newHpAboveCritical;
@@ -226,7 +226,7 @@ void MachGuiRadar::displayRadarBlips()
         fstPersonAngles.azimuth(fstPersonAngles.azimuth() + MexRadians(Mathex::PI_DIV_2));
 
         // Add head turn ( if machine can turn head! )
-        if (pLogHandler_ and pLogHandler_->canTurnHead())
+        if (pLogHandler_ && pLogHandler_->canTurnHead())
         {
             fstPersonAngles.azimuth(fstPersonAngles.azimuth() + pLogHandler_->currentHeadAngle());
         }
@@ -266,9 +266,9 @@ void MachGuiRadar::displayRadarBlips()
                     double actorOffsetY = pos.y() * scannerScaler;
 
                     // Blit blob
-                    if (pScannedActor->objectIsMachine() and not pScannedActor->asMachine().insideBuilding()
-                        and // Ignore any machines inside buildings
-                        not pScannedActor->asMachine().insideAPC()) // Ignore any machines inside APCs
+                    if (pScannedActor->objectIsMachine() && ! pScannedActor->asMachine().insideBuilding()
+                        && // Ignore any machines inside buildings
+                        ! pScannedActor->asMachine().insideAPC()) // Ignore any machines inside APCs
                     {
                         GuiPainter::instance().blit(
                             machineImage()[scannedActorRace],
@@ -499,7 +499,7 @@ void MachGuiRadar::displayMotionDirection()
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
 
-    if (pLogHandler_ and pLogHandler_->canTurnHead())
+    if (pLogHandler_ && pLogHandler_->canTurnHead())
     {
         MexDegrees headAngle = pLogHandler_->currentHeadAngle();
         MATHEX_SCALAR headAngleScalar = -headAngle.asScalar();

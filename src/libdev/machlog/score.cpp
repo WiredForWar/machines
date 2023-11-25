@@ -195,7 +195,7 @@ void MachLogScore::changeGrossScore(int difference)
     pImpl_->grossScore_ += difference;
     MachLogNetwork& network = MachLogNetwork::instance();
     if (network.isNetworkGame())
-        if (network.remoteStatus(pImpl_->race_) == MachLogNetwork::LOCAL_PROCESS and lastTransmissionTime.time() > 2)
+        if (network.remoteStatus(pImpl_->race_) == MachLogNetwork::LOCAL_PROCESS && lastTransmissionTime.time() > 2)
         {
             network.messageBroker().sendEchoNewScoreMessage(*pImpl_);
             lastTransmissionTime.time(0);

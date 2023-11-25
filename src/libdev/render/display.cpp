@@ -211,7 +211,7 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
     glClear(GL_COLOR_BUFFER_BIT);
     SDL_ShowWindow(window());
 
-    if (!success or (not pImpl_->modeChanged()))
+    if (!success || (! pImpl_->modeChanged()))
     {
         // Failed, attempt to restore state before attempt to change mode
         RENDER_STREAM("Failed to switch to mode: " << m << std::endl);
@@ -373,7 +373,7 @@ bool RenDisplay::lowestAllowedMode(const RenDisplay::Mode& lowest)
     ASSERT(highestIt != modeList_.end(), "Invalid highestAllowedMode_ ");
     ++highestIt;
 
-    while (it != highestIt and not found)
+    while (it != highestIt && ! found)
     {
         if (lowest == *it)
         {
@@ -423,11 +423,11 @@ bool RenDisplay::setHighestAllowedMode(uint32_t maxMemory)
     Modes::const_iterator lowestIt = find(modeList_.begin(), modeList_.end(), lowestAllowedMode_);
     Modes::const_iterator it = modeList_.end();
 
-    while (it != lowestIt and not found)
+    while (it != lowestIt && ! found)
     {
         --it;
         memoryRequiredByMode = 3 * (*it).memoryRequired();
-        if (memoryRequiredByMode <= maxMemory and (*it).bitDepth() > 8)
+        if (memoryRequiredByMode <= maxMemory && (*it).bitDepth() > 8)
         {
             highestAllowedMode_ = *it;
             found = true;
@@ -465,7 +465,7 @@ bool RenDisplay::createSurfaces(MemoryType memType, int zbDepth)
 
     // Try to create a set of surfaces for the current mode.  If this fails,
     // due to lack of video memory, repeatedly choose a lower resolution.
-    if (not fallibleCreateSurfaces(memType, zbDepth))
+    if (! fallibleCreateSurfaces(memType, zbDepth))
         return false;
 
     RENDER_STREAM("Created surfaces in mode " << currentMode_ << ":\n");

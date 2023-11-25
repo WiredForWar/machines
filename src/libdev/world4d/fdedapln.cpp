@@ -63,7 +63,7 @@ std::ostream& operator<<(std::ostream& o, const W4dSolidFadedAlphaPlan& t)
 
 bool W4dSolidFadedAlphaPlan::isLODDefined(W4dLOD lodId) const
 {
-    return lodId <= maxLOD() and isFaded();
+    return lodId <= maxLOD() && isFaded();
 }
 
 bool W4dSolidFadedAlphaPlan::isFaded() const

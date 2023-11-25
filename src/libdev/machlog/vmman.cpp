@@ -82,7 +82,7 @@ void MachLogVoiceMailManager::update()
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
-    if (not voiceMailsActivated())
+    if (! voiceMailsActivated())
         return;
 
     if (!(incomingMailQueue_.empty()))
@@ -92,7 +92,7 @@ void MachLogVoiceMailManager::update()
         int indexPos = 0;
 
         // we have already confirmed that the queue is of at least size one, so we're safe first time around.
-        while (not finished)
+        while (! finished)
         {
             MachLogVoiceMail* pMail = incomingMailQueue_[indexPos];
             ASSERT(pMail, "Invalid mail");
@@ -167,12 +167,12 @@ void MachLogVoiceMailManager::update()
 
                 VoiceMailType mailType = ((*pAvailableVEMails_)[pMail->id()])->mailType_;
 
-                if (noOfMailsPlaying_ == 2 or SndMixer::instance().noOfFreeLogicalChannels() == 0
-                    or (mailType == VM_WAIT_UNTIL_NOTHING_PLAYING and noOfMailsPlaying_ > 0))
+                if (noOfMailsPlaying_ == 2 || SndMixer::instance().noOfFreeLogicalChannels() == 0
+                    || (mailType == VM_WAIT_UNTIL_NOTHING_PLAYING && noOfMailsPlaying_ > 0))
                 {
                     // if this isn't a full-function or wait-until mail, just delete the bugger.
                     // It's tough luck. We're too busy.
-                    if (not(mailType == VM_FULL_FUNCTION or mailType == VM_WAIT_UNTIL_NOTHING_PLAYING))
+                    if (!(mailType == VM_FULL_FUNCTION || mailType == VM_WAIT_UNTIL_NOTHING_PLAYING))
                     {
                         delete pMail;
                         incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
@@ -202,7 +202,7 @@ void MachLogVoiceMailManager::update()
                             "SHRIEK! We have an actor ID larger than the expected actor size (and our "
                             "voiceMailPlaying_ array)");
 
-                        if (not voiceMailPlaying_[actorId])
+                        if (! voiceMailPlaying_[actorId])
                         {
                             pMail->play();
                             pMail->hasStarted(true);
@@ -215,7 +215,7 @@ void MachLogVoiceMailManager::update()
                     else
                     {
                         // must be a pod mail. Only play if we're not already playing a pod mail.
-                        if (not podMailPlaying_)
+                        if (! podMailPlaying_)
                         {
                             pMail->play();
                             pMail->hasStarted(true);
@@ -374,12 +374,12 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
     // acceptance of mail is contingent upon voicemail type.
     VoiceMailType mailType = ((*pAvailableVEMails_)[id])->mailType_;
 
-    if (mailType == VM_FULL_FUNCTION or mailType == VM_WAIT_UNTIL_NOTHING_PLAYING)
+    if (mailType == VM_FULL_FUNCTION || mailType == VM_WAIT_UNTIL_NOTHING_PLAYING)
     {
         // yes, we'll definitely keep that
         acceptMail = true;
     }
-    else if (voiceMailPlaying_[actorId] and mailType == VM_SELECTION_AFFIRMATION)
+    else if (voiceMailPlaying_[actorId] && mailType == VM_SELECTION_AFFIRMATION)
     {
         // nope, we certainly won't bother keeping one of those
         acceptMail = false;
@@ -391,12 +391,12 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
         int nActorMailsInQueue = 0;
 
         for (MachLogVoiceMailManager::MailVector::iterator i = incomingMailQueue_.begin();
-             nActorMailsInQueue <= 1 and i != incomingMailQueue_.end();
+             nActorMailsInQueue <= 1 && i != incomingMailQueue_.end();
              ++i)
         {
             MachLogVoiceMail* pMail = (*i);
 
-            if (pMail->hasActorId() and pMail->actorId() == actorId)
+            if (pMail->hasActorId() && pMail->actorId() == actorId)
             {
                 ++nActorMailsInQueue;
             }
@@ -432,8 +432,8 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
-    if (voiceMailsActivated() and acceptMailPostings_ and MachLogRaces::instance().hasPCRace()
-        and targetRace == MachLogRaces::instance().pcController().race())
+    if (voiceMailsActivated() && acceptMailPostings_ && MachLogRaces::instance().hasPCRace()
+        && targetRace == MachLogRaces::instance().pcController().race())
     {
 
         bool finished = false;
@@ -450,7 +450,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
         {
             bool found = false;
 
-            while (not found)
+            while (! found)
             {
                 ASSERT(
                     indexPos < queueSize,
@@ -458,7 +458,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                     "mail!");
 
                 MachLogVoiceMail* pMail = incomingMailQueue_[indexPos];
-                if (pMail->hasActorId() and pMail->actorId() == actorId and pMail->hasStarted())
+                if (pMail->hasActorId() && pMail->actorId() == actorId && pMail->hasStarted())
                 {
                     // that's the one
 
@@ -591,12 +591,12 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
         indexPos = 0;
         finished = (indexPos >= queueSize);
 
-        while (not finished)
+        while (! finished)
         {
             ASSERT(indexPos < queueSize, "indexPos exceeded queue bounds!");
 
             MachLogVoiceMail* pMail = incomingMailQueue_[indexPos];
-            if (pMail->hasActorId() and pMail->actorId() == actorId and pMail != pStaticMail)
+            if (pMail->hasActorId() && pMail->actorId() == actorId && pMail != pStaticMail)
             {
                 // that's one of ours - just boot it off the queue
                 delete pMail;
@@ -683,7 +683,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
-    ASSERT(not definitionFileRead_, "Mail Error5");
+    ASSERT(! definitionFileRead_, "Mail Error5");
 
     // these are specified in vmman2.cpp
     assignMappingGroup1();
@@ -724,7 +724,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
     }
 
     UtlLineTokeniser parser(*pIstream, definitionFileName);
-    while (not parser.finished())
+    while (! parser.finished())
     {
         const UtlLineTokeniser::Tokens& tokens = parser.tokens();
         ASSERT(
@@ -754,7 +754,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 
         ASSERT_INFO(tokens[4]);
         ASSERT(
-            tokens[4] == "PRELOAD" or tokens[4] == "NO_PRELOAD",
+            tokens[4] == "PRELOAD" || tokens[4] == "NO_PRELOAD",
             "VEmail definition line must have PRELOAD or NO_PRELOAD as its final parameter.");
 
         if (tokens[4] == "PRELOAD")
@@ -815,7 +815,7 @@ void MachLogVoiceMailManager::clearMailQueue()
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
-    while (not incomingMailQueue_.empty())
+    while (! incomingMailQueue_.empty())
     {
         MachLogVoiceMailManager::MailVector::iterator i = incomingMailQueue_.begin();
         MachLogVoiceMail* pMail = *i;

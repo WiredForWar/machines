@@ -161,10 +161,10 @@ bool PhysCS2dVisibilityGraph::updateGraph(const PhysRelativeTime& maxTime, Obsta
 
     // Loop until the graph is up to date, or alloted time has elapsed
     PhysAbsoluteTime entryTime;
-    if (not upToDate_)
+    if (! upToDate_)
         entryTime = Phys::time();
 
-    while (not upToDate_)
+    while (! upToDate_)
     {
         switch (processingState_)
         {
@@ -172,7 +172,7 @@ bool PhysCS2dVisibilityGraph::updateGraph(const PhysRelativeTime& maxTime, Obsta
                 {
                     // Decide what to do next. Always try polygons first.
                     startProcessingPolygon(flags);
-                    if (processingState_ == NONE and findPathIsDefined_)
+                    if (processingState_ == NONE && findPathIsDefined_)
                         startProcessingFindPathVertex();
 
                     upToDate_ = processingState_ == NONE;
@@ -260,7 +260,7 @@ void PhysCS2dVisibilityGraph::startProcessingPolygon(ObstacleFlags flags)
 
             for (VertexId vertexId = vertexIdGenerator_.begin(); vertexId != vertexIdGenerator_.end(); ++vertexId)
             {
-                if (graph_.containsVertex(vertexId) and vertexId != startVertexId_ and vertexId != endVertexId_)
+                if (graph_.containsVertex(vertexId) && vertexId != startVertexId_ && vertexId != endVertexId_)
                 {
                     const MexPoint2d& position = *(graph_.vertex(vertexId).pPoint_);
 
@@ -345,7 +345,7 @@ bool PhysCS2dVisibilityGraph::processOldArcs()
     CS2VGRA_STREAM("Polygon\n" << polygon << std::endl);
 
     size_t nArcsDone = 0;
-    while (nArcsDone < 10 and processingGraphArcId_ < arcIdGenerator_.end())
+    while (nArcsDone < 10 && processingGraphArcId_ < arcIdGenerator_.end())
     {
         // Check still exists
         if (graph_.containsArc(processingGraphArcId_))
@@ -407,7 +407,7 @@ bool PhysCS2dVisibilityGraph::processNewVertexWithOldVertex(ObstacleFlags flags)
         CS2VGRA_STREAM("Processing polygon " << processingPolygon);
 
         // See if any more old vertices to join arcs to
-        while (not doneOldVertex and processingGraphVertexId_ < vertexIdGenerator_.end())
+        while (! doneOldVertex && processingGraphVertexId_ < vertexIdGenerator_.end())
         {
             if (graph_.containsVertex(processingGraphVertexId_))
             {
@@ -415,7 +415,7 @@ bool PhysCS2dVisibilityGraph::processNewVertexWithOldVertex(ObstacleFlags flags)
                 // provided it isn't a vertex of the processing polygon.
                 const VertexData& oldVertexData = graph_.vertex(processingGraphVertexId_);
                 if (oldVertexData.polygonId_ != processingPolygonId_
-                    and oldVertexData.polygonId_ != PolygonId::invalidId())
+                    && oldVertexData.polygonId_ != PolygonId::invalidId())
                 {
                     // Get the distance from the current processing polygon vertex.
                     // Arcs that are very small will be automatically rejected
@@ -436,7 +436,7 @@ bool PhysCS2dVisibilityGraph::processNewVertexWithOldVertex(ObstacleFlags flags)
                         bool pointIsVertex = processingPolygon.pointIsVertex(processingPoint, &vertexIndex);
                         ASSERT(pointIsVertex, "");
 
-                        bool contains = not processingPolygon.intersects(vertexIndex, oldPoint);
+                        bool contains = ! processingPolygon.intersects(vertexIndex, oldPoint);
 
                         CS2VGRA_INSPECT(contains);
 
@@ -448,7 +448,7 @@ bool PhysCS2dVisibilityGraph::processNewVertexWithOldVertex(ObstacleFlags flags)
 
                             bool oldPointIsVertex = oldVertexPolygon.pointIsVertex(oldPoint, &vertexIndex);
                             ASSERT(oldPointIsVertex, "");
-                            contains = not oldVertexPolygon.intersects(vertexIndex, processingPoint);
+                            contains = ! oldVertexPolygon.intersects(vertexIndex, processingPoint);
                         }
 
                         CS2VGRA_INSPECT(contains);
@@ -505,7 +505,7 @@ bool PhysCS2dVisibilityGraph::processNewVertexWithNewVertex(ObstacleFlags flags)
     CS2VGRA_INDENT(2);
 
     PRE(processingState_ == POLYGON);
-    PRE(not processingOldArcs_);
+    PRE(! processingOldArcs_);
     PRE(processingPolygonVertex_ < processingPolygonVertexIds_.size());
 
     // Get the ids of the current vertex and its predecessor
@@ -514,7 +514,7 @@ bool PhysCS2dVisibilityGraph::processNewVertexWithNewVertex(ObstacleFlags flags)
         = (processingPolygonVertex_ == 0 ? processingPolygonVertexIds_.size() - 1 : processingPolygonVertex_ - 1);
     VertexId previousVertexId = processingPolygonVertexIds_[previousVertex];
 
-    if (newVertexId != dummyVertexId() and previousVertexId != dummyVertexId())
+    if (newVertexId != dummyVertexId() && previousVertexId != dummyVertexId())
     {
         // Get the points for these 2
         const VertexData& processingVertexData = graph_.vertex(newVertexId);
@@ -573,7 +573,7 @@ void PhysCS2dVisibilityGraph::endProcessingPolygon()
 void PhysCS2dVisibilityGraph::removePolygon(const PolygonId& polygonId)
 {
     // If this polygon is currently being processed, stop processing it
-    if (processingState_ == POLYGON and processingPolygonId_ == polygonId)
+    if (processingState_ == POLYGON && processingPolygonId_ == polygonId)
         endProcessingPolygon();
 
     // Run through all the graph vertices, removing any that were derived from this
@@ -603,7 +603,7 @@ void PhysCS2dVisibilityGraph::setFindPath(const MexPoint2d& startPoint, const Me
     {
         // If old start matches new end or old end matches new start, swap the existing
         // points
-        bool swapped = endPoints_[startPointIndex_] == endPoint or endPoints_[1 - startPointIndex_] == startPoint;
+        bool swapped = endPoints_[startPointIndex_] == endPoint || endPoints_[1 - startPointIndex_] == startPoint;
         if (swapped)
         {
             VertexId temp = startVertexId_;
@@ -628,7 +628,7 @@ void PhysCS2dVisibilityGraph::setFindPath(const MexPoint2d& startPoint, const Me
     if (addStartVertex)
     {
         // Allocate id if don't have one
-        if (not findPathIsDefined_)
+        if (! findPathIsDefined_)
             startVertexId_ = vertexIdGenerator_.next();
 
         // Store the coords
@@ -648,7 +648,7 @@ void PhysCS2dVisibilityGraph::setFindPath(const MexPoint2d& startPoint, const Me
     if (addEndVertex)
     {
         // Allocate id if don't have one
-        if (not findPathIsDefined_)
+        if (! findPathIsDefined_)
             endVertexId_ = vertexIdGenerator_.next();
 
         // Store the coords
@@ -672,7 +672,7 @@ void PhysCS2dVisibilityGraph::setFindPath(const MexPoint2d& startPoint, const Me
     invalidateFindPath();
 
     // If changed either vertex, the graph is no longer up to date
-    if (addStartVertex or addEndVertex)
+    if (addStartVertex || addEndVertex)
     {
         upToDate_ = false;
 
@@ -693,7 +693,7 @@ void PhysCS2dVisibilityGraph::clearFindPath()
         graph_.removeVertex(endVertexId_);
 
         // If was processing the vertices, reset
-        if (processingState_ == START_VERTEX or processingState_ == END_VERTEX)
+        if (processingState_ == START_VERTEX || processingState_ == END_VERTEX)
             processingState_ = NONE;
 
         // Reset the flag
@@ -710,9 +710,9 @@ void PhysCS2dVisibilityGraph::startProcessingFindPathVertex()
     PRE(findPathIsDefined_);
 
     // Set processing state for the appropriate vertex, if any
-    if (not startVertexProcessed_)
+    if (! startVertexProcessed_)
         processingState_ = START_VERTEX;
-    else if (not endVertexProcessed_)
+    else if (! endVertexProcessed_)
         processingState_ = END_VERTEX;
 
     // Set the existing graph vertex index to first value
@@ -726,7 +726,7 @@ bool PhysCS2dVisibilityGraph::processFindPathVertexWithOldVertex(ObstacleFlags f
     CS2VGRA_INDENT(2);
 
     PRE(findPathIsDefined_);
-    PRE(processingState_ == START_VERTEX or processingState_ == END_VERTEX);
+    PRE(processingState_ == START_VERTEX || processingState_ == END_VERTEX);
 
     // Decide which search vertex to use depending on processing state
     bool doingStartVertex = processingState_ == START_VERTEX;
@@ -739,7 +739,7 @@ bool PhysCS2dVisibilityGraph::processFindPathVertexWithOldVertex(ObstacleFlags f
 
     // See if any more old vertices to join arcs to
     bool doneOldVertex = false;
-    while (not doneOldVertex and processingGraphVertexId_ < vertexIdGenerator_.end())
+    while (! doneOldVertex && processingGraphVertexId_ < vertexIdGenerator_.end())
     {
         if (graph_.containsVertex(processingGraphVertexId_))
         {
@@ -764,7 +764,7 @@ bool PhysCS2dVisibilityGraph::processFindPathVertexWithOldVertex(ObstacleFlags f
                 else
                     oldVertexData.endArcChecked_ = true;
             }
-            if (not alreadyChecked and findPathVertexId != processingGraphVertexId_)
+            if (! alreadyChecked && findPathVertexId != processingGraphVertexId_)
             {
                 // Get the distance from the current processing findPath vertex.
                 // Arcs that are very small will be automatically accepted.
@@ -773,7 +773,7 @@ bool PhysCS2dVisibilityGraph::processFindPathVertexWithOldVertex(ObstacleFlags f
                 MATHEX_SCALAR sqrDistance = processingPoint.sqrEuclidianDistance(oldPoint);
 
                 bool doAddArc = sqrDistance < sqrEps;
-                if (not doAddArc)
+                if (! doAddArc)
                 {
                     // Can the original config space accomodate this arc?
                     doAddArc = originalSpaceContainsSausage(processingPoint, oldPoint, flags);
@@ -802,7 +802,7 @@ bool PhysCS2dVisibilityGraph::processFindPathVertexWithOldVertex(ObstacleFlags f
     }
 
     // If we've finished processing this vertex, change state etc
-    if (not(processingGraphVertexId_ < vertexIdGenerator_.end()))
+    if (!(processingGraphVertexId_ < vertexIdGenerator_.end()))
     {
         if (processingState_ == START_VERTEX)
             startVertexProcessed_ = true;
@@ -829,11 +829,11 @@ bool PhysCS2dVisibilityGraph::updateFindPath(const PhysRelativeTime& maxTime, Ob
 
     // record entry time if any work to do
     PhysAbsoluteTime entryTime = 0;
-    if (not upToDate_ or not findPathCompleted_)
+    if (! upToDate_ || ! findPathCompleted_)
         entryTime = Phys::time();
 
     // Check for the graph being up to date
-    if (not upToDate_)
+    if (! upToDate_)
     {
         // Remove any existing findPath data
         invalidateFindPath();
@@ -843,7 +843,7 @@ bool PhysCS2dVisibilityGraph::updateFindPath(const PhysRelativeTime& maxTime, Ob
     }
 
     // If graph done, and any time left, work on the pathfind algorithm
-    if (upToDate_ and not findPathCompleted_ and (Phys::time() - entryTime < maxTime))
+    if (upToDate_ && ! findPathCompleted_ && (Phys::time() - entryTime < maxTime))
     {
         // Ensure we have a search algorithm instantiated
         if (pFindPathAlg_ == nullptr)
@@ -872,7 +872,7 @@ bool PhysCS2dVisibilityGraph::updateFindPath(const PhysRelativeTime& maxTime, Ob
     CS2VGRA_INDENT(-2);
     CS2VGRA_STREAM("Exit updateFindPath" << std::endl);
 
-    return upToDate_ and findPathCompleted_;
+    return upToDate_ && findPathCompleted_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -932,7 +932,7 @@ PhysCS2dVisibilityGraph::VertexData::VertexData()
 
 bool operator==(const PhysCS2dVisibilityGraph::VertexData& lhs, const PhysCS2dVisibilityGraph::VertexData& rhs)
 {
-    return *(lhs.pPoint_) == *(rhs.pPoint_) and lhs.polygonId_ == rhs.polygonId_;
+    return *(lhs.pPoint_) == *(rhs.pPoint_) && lhs.polygonId_ == rhs.polygonId_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -975,7 +975,7 @@ bool PhysCS2dVisibilityGraph::originalSpaceContainsSausage(
 
     // Test this polygon in the original space
     PhysCS2dImpl& originalImpl = *pOriginalConfigSpace_->pImpl();
-    bool result = not originalImpl.intersectsAnyExpanded(
+    bool result = ! originalImpl.intersectsAnyExpanded(
         testSausage,
         sausageBoundary,
         originalImpl.permanentPolygonTree(),

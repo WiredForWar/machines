@@ -62,14 +62,14 @@ void MachGuiTransportCommand::pickOnActor(MachActor* pActor, bool, bool shiftPre
     bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
 
     // Check for a building or machine
-    if ((pActor->objectType() == MachLog::MINE and pActor->asMine().worthVisiting())
-        or (pActor->objectIsCanSmelt() and not myRace))
+    if ((pActor->objectType() == MachLog::MINE && pActor->asMine().worthVisiting())
+        || (pActor->objectIsCanSmelt() && ! myRace))
     {
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-        if (not supplierIsDuplicate(pCandidateConstruction))
+        if (! supplierIsDuplicate(pCandidateConstruction))
         {
-            if (not shiftPressed)
+            if (! shiftPressed)
                 clearAndDetachFromAllSuppliers();
 
             // Add to list of suppliers
@@ -79,7 +79,7 @@ void MachGuiTransportCommand::pickOnActor(MachActor* pActor, bool, bool shiftPre
         }
     }
 
-    if (pActor->objectIsCanSmelt() and myRace)
+    if (pActor->objectIsCanSmelt() && myRace)
     {
         pSmeltingBuilding_ = &pActor->asConstruction();
         hadFinalPick_ = true;
@@ -96,7 +96,7 @@ bool MachGuiTransportCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Administrators and aggressors can Transport
     MachLog::ObjectType objectType = actor.objectType();
-    return objectType == MachLog::RESOURCE_CARRIER and actor.asResourceCarrier().isNormalResourceCarrier();
+    return objectType == MachLog::RESOURCE_CARRIER && actor.asResourceCarrier().isNormalResourceCarrier();
 }
 
 // virtual
@@ -109,9 +109,9 @@ bool MachGuiTransportCommand::isInteractionComplete() const
 bool MachGuiTransportCommand::doApply(MachActor* pActor, string*)
 {
     PRE(pActor->objectIsMachine());
-    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isNormalResourceCarrier());
+    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier());
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         // if we're already transporting, we're basically just changing implementation details, so give a "tasked"
         // e-mail instead( "OK." "Alright!" etc.
@@ -127,7 +127,7 @@ bool MachGuiTransportCommand::doApply(MachActor* pActor, string*)
         hasPlayedVoiceMail(true);
     }
 
-    if (not suppliers_.empty())
+    if (! suppliers_.empty())
     {
         pActor->asResourceCarrier().setSuppliers(suppliers_);
     }
@@ -166,12 +166,12 @@ MachGui::Cursor2dType MachGuiTransportCommand::cursorOnActor(MachActor* pActor, 
 
     MachLog::ObjectType objectType = pActor->objectType();
 
-    if ((objectType == MachLog::MINE and pActor->asMine().worthVisiting())
-        or (objectType == MachLog::SMELTER and not myRace))
+    if ((objectType == MachLog::MINE && pActor->asMine().worthVisiting())
+        || (objectType == MachLog::SMELTER && ! myRace))
     {
         cursor = MachGui::PICKUP_CURSOR;
     }
-    else if ((objectType == MachLog::SMELTER or objectType == MachLog::POD) and myRace)
+    else if ((objectType == MachLog::SMELTER || objectType == MachLog::POD) && myRace)
         cursor = MachGui::TRANSPORT_CURSOR;
 
     return cursor;
@@ -211,7 +211,7 @@ uint MachGuiTransportCommand::commandPromptStringid() const
 // virtual
 bool MachGuiTransportCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_T and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_T && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -235,7 +235,7 @@ bool MachGuiTransportCommand::supplierIsDuplicate(const MachLogConstruction* pCa
 
 void MachGuiTransportCommand::clearAndDetachFromAllSuppliers()
 {
-    while (not suppliers_.empty())
+    while (! suppliers_.empty())
     {
         suppliers_.back()->detach(this);
         suppliers_.pop_back();

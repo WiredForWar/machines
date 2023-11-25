@@ -509,10 +509,10 @@ bool SDLApp::clientStartup()
     bool doLoad2MBytesTexture = false;
     // Check to see if texture4 directory even exists. The user may have done a minimum
     // install in which case texture4 directory will not be available
-    if (not doLoad2MBytesTexture)
+    if (! doLoad2MBytesTexture)
     {
         SysPathName texture4Dir("models/texture4");
-        if (not texture4Dir.existsAsDirectory())
+        if (! texture4Dir.existsAsDirectory())
         {
             doLoad2MBytesTexture = true;
         }

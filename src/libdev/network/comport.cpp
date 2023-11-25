@@ -49,7 +49,7 @@ size_t NetComPortAddress::portNumber() const
 
 void NetComPortAddress::portNumber(size_t newPortNumber)
 {
-    PRE(newPortNumber > 0 and newPortNumber < 5);
+    PRE(newPortNumber > 0 && newPortNumber < 5);
     portNumber_ = newPortNumber;
 }
 

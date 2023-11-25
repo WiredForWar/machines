@@ -60,7 +60,7 @@ MachLogMissileEmplacementAttackOperation::MachLogMissileEmplacementAttackOperati
 
     // if I'm the only one currently initiating an attack against this target, it's quite probable I'm the
     // first one to spot it. Dispatch a cavee call to set all nearby chums on alert.
-    if (not pDirectObject_->hasThreats())
+    if (! pDirectObject_->hasThreats())
         pActor_->dispatchCaveeCall();
 
     // now signal to the target that the subject machine is threatening it,
@@ -141,7 +141,7 @@ PhysRelativeTime MachLogMissileEmplacementAttackOperation::doUpdate()
 {
     CB_MachLogMissileEmplacementAttackOperation_DEPIMPL();
 
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
 
     // Do nothing if delegated to a subop
@@ -163,7 +163,7 @@ PhysRelativeTime MachLogMissileEmplacementAttackOperation::doUpdate()
         attacker.currentTarget(&target);
 
     // If the target is a machine inside a building, try again in a bit
-    if (target.objectIsMachine() and target.asMachine().insideBuilding())
+    if (target.objectIsMachine() && target.asMachine().insideBuilding())
         return 1.0;
 
     // Set up useful local variables
@@ -226,15 +226,15 @@ bool MachLogMissileEmplacementAttackOperation::doIsFinished() const
     CB_MachLogMissileEmplacementAttackOperation_DEPIMPL();
 
     // Continue the op as long as we have a target and it's in scanner range
-    bool result = (pDirectObject_ == nullptr) or not pActor_->canDetect(*pDirectObject_)
-        or not pActor_
+    bool result = (pDirectObject_ == nullptr) || ! pActor_->canDetect(*pDirectObject_)
+        || ! pActor_
                    ->isComplete() // defensive programming - catchall to prevent illegal attacks by incomplete turrets
-        or (pActor_->subType() == MachPhys::LAUNCHER // if I'm a launcher at more than 25% health, don't continue to
+        || (pActor_->subType() == MachPhys::LAUNCHER // if I'm a launcher at more than 25% health, don't continue to
                                                      // attack targets less than 25m from me
-            and pActor_->hpRatio() > 0.25
-            and pActor_->position().sqrEuclidianDistance(pDirectObject_->position()) < 625);
+            && pActor_->hpRatio() > 0.25
+            && pActor_->position().sqrEuclidianDistance(pDirectObject_->position()) < 625);
 
-    if (not result and pDirectObject_)
+    if (! result && pDirectObject_)
     {
         // still have to do a check for AI races now being allied
 
@@ -289,7 +289,7 @@ bool MachLogMissileEmplacementAttackOperation::beNotified(
                         MachLogRaces::DispositionToRace disposition
                             = MachLogRaces::instance().dispositionToRace(pDirectObject_->race(), pActor_->race());
 
-                        if (disposition == MachLogRaces::OUR_RACE or disposition == MachLogRaces::ALLY)
+                        if (disposition == MachLogRaces::OUR_RACE || disposition == MachLogRaces::ALLY)
                         {
                             // now signal to the target that the subject machine is no longer threatening it,
                             // and if the current target is the direct object, cancel the target

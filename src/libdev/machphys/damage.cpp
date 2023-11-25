@@ -107,7 +107,7 @@ void MachPhysEntityDamage::update()
 
     PhysAbsoluteTime now = SimManager::instance().currentTime();
 
-    if ((damageLevel_ < 40 or damaged()) && pSmoke1_ && now > (lastSmoke1Time_ + smokeDuration_))
+    if ((damageLevel_ < 40 || damaged()) && pSmoke1_ && now > (lastSmoke1Time_ + smokeDuration_))
     {
         delete pSmoke1_;
         pSmoke1_ = nullptr;
@@ -117,7 +117,7 @@ void MachPhysEntityDamage::update()
         delete pFlame1_;
         pFlame1_ = nullptr;
     }
-    if ((damageLevel_ < 60 or damaged()) && pSplat_)
+    if ((damageLevel_ < 60 || damaged()) && pSplat_)
     {
         delete pSplat_;
         pSplat_ = nullptr;
@@ -127,7 +127,7 @@ void MachPhysEntityDamage::update()
         delete pFlame3_;
         pFlame3_ = nullptr;
     }
-    if ((damageLevel_ < 75 or damaged()) && pSmoke2_ && now > (lastSmoke2Time_ + smokeDuration_))
+    if ((damageLevel_ < 75 || damaged()) && pSmoke2_ && now > (lastSmoke2Time_ + smokeDuration_))
     {
         delete pSmoke2_;
         pSmoke2_ = nullptr;
@@ -192,7 +192,7 @@ void MachPhysEntityDamage::update()
     {
         // flame1 start
         PhysRelativeTime duration = 60;
-        if (pFlame1_ == nullptr and flameWidths_[0] * flameHeights_[0] != 0)
+        if (pFlame1_ == nullptr && flameWidths_[0] * flameHeights_[0] != 0)
             pFlame1_ = new MachPhysSTFFlame(
                 pTarget_,
                 flameTransforms_[0],
@@ -230,7 +230,7 @@ void MachPhysEntityDamage::update()
         // Flame3 start
         PhysRelativeTime duration = 60;
 
-        if (pFlame3_ == nullptr and flameWidths_[2] * flameHeights_[2] != 0)
+        if (pFlame3_ == nullptr && flameWidths_[2] * flameHeights_[2] != 0)
             pFlame3_ = new MachPhysSTFFlame(
                 pTarget_,
                 flameTransforms_[2],
@@ -285,7 +285,7 @@ void MachPhysEntityDamage::update()
         // flame2 starts
 
         PhysRelativeTime duration = 60;
-        if (pFlame2_ == nullptr and flameWidths_[1] * flameHeights_[1] != 0)
+        if (pFlame2_ == nullptr && flameWidths_[1] * flameHeights_[1] != 0)
             pFlame2_ = new MachPhysSTFFlame(
                 pTarget_,
                 flameTransforms_[1],

@@ -107,7 +107,7 @@ bool W4dCameraVolume::intersects(const W4dEntity& entity) const
 
     // Now check near clipping plane
     MATHEX_SCALAR h = MexVec3(nearPlanePoint_, centroid).dotProduct(lineOfSight_);
-    bool result = h > 0.0 or (h * h < sqrRadius);
+    bool result = h > 0.0 || (h * h < sqrRadius);
 
     if (result)
     {
@@ -115,7 +115,7 @@ bool W4dCameraVolume::intersects(const W4dEntity& entity) const
         if (clipFarPlane_)
         {
             h = MexVec3(farPlanePoint_, centroid).dotProduct(lineOfSight_);
-            result = h < 0.0 or (h * h < sqrRadius);
+            result = h < 0.0 || (h * h < sqrRadius);
         }
 
         if (result)
@@ -125,25 +125,25 @@ bool W4dCameraVolume::intersects(const W4dEntity& entity) const
 
             // Check right horizontal clipping
             h = v.dotProduct(horizontalRightNormal_);
-            result = h < 0.0 or (h * h < sqrRadius);
+            result = h < 0.0 || (h * h < sqrRadius);
 
             if (result)
             {
                 // Check left horizontal clipping
                 h = v.dotProduct(horizontalLeftNormal_);
-                result = h < 0.0 or (h * h < sqrRadius);
+                result = h < 0.0 || (h * h < sqrRadius);
 
                 if (result)
                 {
                     // Check up vertical clipping
                     h = v.dotProduct(verticalUpNormal_);
-                    result = h < 0.0 or (h * h < sqrRadius);
+                    result = h < 0.0 || (h * h < sqrRadius);
 
                     if (result)
                     {
                         // Check down vertical clipping
                         h = v.dotProduct(verticalDownNormal_);
-                        result = h < 0.0 or (h * h < sqrRadius);
+                        result = h < 0.0 || (h * h < sqrRadius);
                     }
                 }
             }

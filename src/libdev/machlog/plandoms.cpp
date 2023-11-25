@@ -68,7 +68,7 @@ void MachLogPlanetDomains::intersecting(const MexAlignedBox2d& boundary, Domains
     MATHEX_SCALAR xMax = maxCorner.x();
     MATHEX_SCALAR yMin = minCorner.y();
     MATHEX_SCALAR yMax = maxCorner.y();
-    bool valid = xMin <= xMax and yMin <= yMax;
+    bool valid = xMin <= xMax && yMin <= yMax;
 
     if (xMin < 0.0)
         xMin = 0.0;
@@ -304,6 +304,6 @@ bool MachLogPlanetDomains::onPlanet(const MexPoint2d& point)
     MATHEX_SCALAR x = point.x();
     MATHEX_SCALAR y = point.y();
 
-    return (x >= pSurface->xMin()) and (x <= pSurface->xMax()) and (y >= pSurface->yMin()) and (y <= pSurface->yMax());
+    return (x >= pSurface->xMin()) && (x <= pSurface->xMax()) && (y >= pSurface->yMin()) && (y <= pSurface->yMax());
 }
 /* End PLANDOMS.CPP *************************************************/

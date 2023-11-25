@@ -95,7 +95,7 @@ void MachMachinesIcon::doBeDepressed(const GuiMouseEvent&)
 
 void MachMachinesIcon::doBeReleased(const GuiMouseEvent&)
 {
-    if (not forcingUp_)
+    if (! forcingUp_)
     {
         pInGameScreen_->mainMenuOrSingleFactoryContext();
     }
@@ -165,7 +165,7 @@ void MachConstructionsIcon::doBeDepressed(const GuiMouseEvent&)
 
 void MachConstructionsIcon::doBeReleased(const GuiMouseEvent&)
 {
-    if (not forcingUp_)
+    if (! forcingUp_)
     {
         pInGameScreen_->mainMenuOrSingleFactoryContext();
     }

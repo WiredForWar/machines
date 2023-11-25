@@ -33,8 +33,8 @@ W4dColourPulseData::W4dColourPulseData(
         string name = textureName;
 
         if (nameLength <= 4
-            or (nameLength > 4
-                and (name.substr(nameLength - 4, 4) != ".bmp" and name.substr(nameLength - 4, 4) != ".BMP")))
+            || (nameLength > 4
+                && (name.substr(nameLength - 4, 4) != ".bmp" && name.substr(nameLength - 4, 4) != ".BMP")))
         {
             name += ".bmp";
         }

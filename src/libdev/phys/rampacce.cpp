@@ -505,7 +505,7 @@ PhysRampAcceleration::PhysRampAcceleration(
     PRE(accelerationRate >= 0.0);
     PRE(decelerationRate >= 0.0);
 
-    PRE(implies(desiredDistance == 0.0, (startSpeed == 0.0 and endSpeed == 0.0)));
+    PRE(implies(desiredDistance == 0.0, (startSpeed == 0.0 && endSpeed == 0.0)));
 
     PRE(implies(desiredDistance > 0.0, desiredSpeed >= 0.0));
     PRE(implies(desiredDistance < 0.0, desiredSpeed <= 0.0));
@@ -514,7 +514,7 @@ PhysRampAcceleration::PhysRampAcceleration(
 
     ASSERT_DATA(int counter = 0);
 
-    while (not finished)
+    while (! finished)
     {
         if (doSpeedConstructor(desiredDistance, startSpeed, desiredSpeed, endSpeed, accelerationRate, decelerationRate))
         {
@@ -590,8 +590,8 @@ bool PhysRampAcceleration::doSpeedConstructor(
 
     MATHEX_SCALAR distance3 = distance(0.0, desiredSpeed, secondAcceleration_, secondAccelerationTime_);
 
-    if (fabs(distance1) > fabs(desiredDistance) or (fabs(distance1) + fabs(distance3)) > fabs(desiredDistance)
-        or desiredSpeed < MexEpsilon::instance())
+    if (fabs(distance1) > fabs(desiredDistance) || (fabs(distance1) + fabs(distance3)) > fabs(desiredDistance)
+        || desiredSpeed < MexEpsilon::instance())
     {
         //  Cannot reach the desired speed and then the end speed. Head straight for
         //  the end speed.
@@ -696,14 +696,14 @@ PhysRampAcceleration::PhysRampAcceleration(
     //  TBD: Investigate the whole reason these occur at all and
     //  correct the problem at source.
 
-    if (finalSpeed < 0 and finalSpeed > -MexEpsilon::instance())
+    if (finalSpeed < 0 && finalSpeed > -MexEpsilon::instance())
         finalSpeed = 0.0;
 
     bool finished = false;
 
     int counter = 0;
 
-    while (not finished and counter++ != 20)
+    while (! finished && counter++ != 20)
     {
         ASSERT_INFO(counter);
 
@@ -726,7 +726,7 @@ PhysRampAcceleration::PhysRampAcceleration(
         }
     }
 
-    if (not finished)
+    if (! finished)
     {
         ASSERT_FAIL("PhysRampAcceleration time/distance ctor failed");
 
@@ -776,7 +776,7 @@ bool PhysRampAcceleration::doDistanceTimeConstructor(
     PRE(time > 0.0);
     PRE(maxAcceleration >= 0.0);
     PRE(maxDeceleration >= 0.0);
-    PRE(distance >= 0.0 or (startSpeed == 0.0 and finalSpeed == 0.0));
+    PRE(distance >= 0.0 || (startSpeed == 0.0 && finalSpeed == 0.0));
 
     startSpeed_ = startSpeed;
     totalTime_ = time;
@@ -805,7 +805,7 @@ bool PhysRampAcceleration::doDistanceTimeConstructor(
             MATHEX_SCALAR secondAccelerationTime = deltaSpeed / maxDeceleration;
             MATHEX_SCALAR lowerLimitDistance = startSpeed * time + 0.5 * secondAccelerationTime * deltaSpeed;
 
-            sufficientTimeToChangeSpeed = firstAccelerationTime <= time and secondAccelerationTime <= time;
+            sufficientTimeToChangeSpeed = firstAccelerationTime <= time && secondAccelerationTime <= time;
             if (sufficientTimeToChangeSpeed)
             {
                 if (distance > upperLimitDistance)
@@ -835,7 +835,7 @@ bool PhysRampAcceleration::doDistanceTimeConstructor(
             MATHEX_SCALAR secondAccelerationTime = deltaSpeed / maxDeceleration;
             MATHEX_SCALAR upperLimitDistance = startSpeed * time - 0.5 * secondAccelerationTime * deltaSpeed;
 
-            sufficientTimeToChangeSpeed = firstAccelerationTime <= time and secondAccelerationTime <= time;
+            sufficientTimeToChangeSpeed = firstAccelerationTime <= time && secondAccelerationTime <= time;
             if (sufficientTimeToChangeSpeed)
             {
                 if (distance > upperLimitDistance)
@@ -858,7 +858,7 @@ bool PhysRampAcceleration::doDistanceTimeConstructor(
     }
 
     if (sufficientTimeToChangeSpeed
-        and solveForTime(
+        && solveForTime(
             firstAcceleration_,
             secondAcceleration_,
             time,
@@ -872,10 +872,10 @@ bool PhysRampAcceleration::doDistanceTimeConstructor(
         const MATHEX_SCALAR middleSpeed = startSpeed + firstAccelerationTime_ * firstAcceleration_;
 
         // This speed must have the same sign as the distance we want to move
-        const bool correctSign = (distance >= 0.0 and middleSpeed >= 0.0) or (distance < 0.0 and middleSpeed < 0.0);
+        const bool correctSign = (distance >= 0.0 && middleSpeed >= 0.0) || (distance < 0.0 && middleSpeed < 0.0);
 
-        if (correctSign and firstAccelerationTime_ >= 0.0 and secondAccelerationTime_ >= 0.0
-            and (firstAccelerationTime_ + secondAccelerationTime_) <= time + MexEpsilon::instance())
+        if (correctSign && firstAccelerationTime_ >= 0.0 && secondAccelerationTime_ >= 0.0
+            && (firstAccelerationTime_ + secondAccelerationTime_) <= time + MexEpsilon::instance())
         {
             finished = true;
         }
@@ -1080,7 +1080,7 @@ bool PhysRampAcceleration::solveForTime(
 
     bool canSolve;
 
-    if (MexEpsilon::isWithinEpsilonOf(a, 0.0) and MexEpsilon::isWithinEpsilonOf(b, 0.0))
+    if (MexEpsilon::isWithinEpsilonOf(a, 0.0) && MexEpsilon::isWithinEpsilonOf(b, 0.0))
     {
         canSolve = false;
     }
@@ -1114,7 +1114,7 @@ bool PhysRampAcceleration::solveForTime(
 
     //  Check for time values that are slightly negative and see if by
     //  making them zero we can still get close enough
-    if (canSolve and (*pT1 < 0.0 or *pT3 < 0.0))
+    if (canSolve && (*pT1 < 0.0 || *pT3 < 0.0))
     {
         if (*pT1 < 0.0)
             *pT1 = 0.0;
@@ -1131,7 +1131,7 @@ bool PhysRampAcceleration::solveForTime(
 
         const MATHEX_SCALAR finalSpeed = u3 + a3 * *pT3;
 
-        if (MexEpsilon::isWithinEpsilonOf(distance, s) and MexEpsilon::isWithinEpsilonOf(finalSpeed, v3))
+        if (MexEpsilon::isWithinEpsilonOf(distance, s) && MexEpsilon::isWithinEpsilonOf(finalSpeed, v3))
         {
             canSolve = true;
         }

@@ -89,7 +89,7 @@ PhysRelativeTime MachLogRepairOperation::interactWithBuilding()
                 MachineVoiceMailEventID::BUILDING_REPAIRED);
 
             // post voicemail if no more operations on the queue
-            if (not pConstructorGuy->isDoingSuperConstruct())
+            if (! pConstructorGuy->isDoingSuperConstruct())
                 MachLogMachineVoiceMailManager::instance().postNewMail(
                     *pConstructorGuy,
                     MachineVoiceMailEventID::AWAITING_NEW_JOB);
@@ -112,7 +112,7 @@ PhysRelativeTime MachLogRepairOperation::interactWithBuilding()
 
 bool MachLogRepairOperation::doIsFinished() const
 {
-    bool finished = (not pConstruction()) or pConstruction()->hpRatio() == 1.0;
+    bool finished = (! pConstruction()) || pConstruction()->hpRatio() == 1.0;
 
     return finished;
 }
@@ -132,7 +132,7 @@ bool MachLogRepairOperation::clientSpecificNotification(int clientData)
                 MachLogRaces::DispositionToRace disposition
                     = MachLogRaces::instance().dispositionToRace(pConstruction()->race(), pConstructor()->race());
 
-                if (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL)
+                if (disposition == MachLogRaces::ENEMY || disposition == MachLogRaces::NEUTRAL)
                 {
                     // not going to repair an opponent's base. No way.
                     stayAttached = false;

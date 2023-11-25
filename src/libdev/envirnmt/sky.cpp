@@ -264,7 +264,7 @@ void EnvDynamicSky::update(W4dSceneManager* pSceneManager)
         colourSomeVertices(&mesh, 0, nVertices);
     }
 
-    if (visible() and complexity_ == COMPLEX)
+    if (visible() && complexity_ == COMPLEX)
     {
         // An optimisation: assume that some domes are built without a top, i.e.
         // they are just a skirt around the horizon.  Set the background colour

@@ -783,7 +783,7 @@ W4dEntity* MachLogActorMaker::newDumbArtefact(int subType, const MexPoint3d& inL
 
     W4dEntity* pResult = MachLogRaces::instance().artefacts().newPhysArtefact(subType, location, angle);
 
-    if (MachLogNetwork::instance().isNetworkGame() and MachLogNetwork::instance().isNodeLogicalHost())
+    if (MachLogNetwork::instance().isNetworkGame() && MachLogNetwork::instance().isNodeLogicalHost())
     {
         MachLogNetwork::instance().messageBroker().sendCreateActorMessage(
             MachPhys::NORACE,

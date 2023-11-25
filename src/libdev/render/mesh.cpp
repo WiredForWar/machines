@@ -935,7 +935,7 @@ void RenMesh::updateBoundingVolume()
     bool ttfs = false;
     bool stfs = false;
 
-    if (vertices_ and vertices_->size() != 0)
+    if (vertices_ && vertices_->size() != 0)
     {
         vertice = true;
 
@@ -1078,7 +1078,7 @@ void RenMesh::updateBoundingVolume()
         }
     }
 
-    if (vertice or ttfs or stfs)
+    if (vertice || ttfs || stfs)
     {
         // boundingVolume_.corners( MexPoint3d( xMin, yMin, zMin ), MexPoint3d( xMax, yMax, zMax ) );
         boundingVolume_ = MexAlignedBox3d(MexPoint3d(xMin, yMin, zMin), MexPoint3d(xMax, yMax, zMax));
@@ -1317,7 +1317,7 @@ static void spinPolyElements(
     MATHEX_SCALAR constValue;
     MexPoint2d base2;
 
-    if (not match)
+    if (! match)
     {
         if (xEqConst)
         {
@@ -2128,7 +2128,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
         float alpha = material->mDiffuse.a;
         renMat.diffuse(RenColour(red, green, blue, alpha));
 
-        if (material->mTextures.size() > 0 and material->mTextures[0].mName.size() > 4)
+        if (material->mTextures.size() > 0 && material->mTextures[0].mName.size() > 4)
         {
             string txName = material->mTextures[0].mName;
             RenTexture renTex = RenSurfaceManager::instance().createTexture(txName);

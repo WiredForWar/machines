@@ -186,10 +186,10 @@ void MachLogProductionUnit::needRebuild(bool rebuildSetting)
 bool MachLogProductionUnit::operator==(const MachLogProductionUnit& t)
 {
     TEST_INVARIANT;
-    bool result = type_ == t.type_ and subType_ == t.subType_ and hwLevel_ == t.hwLevel_ and swLevel_ == t.swLevel_
-        and weaponCombo_ == t.weaponCombo_;
+    bool result = type_ == t.type_ && subType_ == t.subType_ && hwLevel_ == t.hwLevel_ && swLevel_ == t.swLevel_
+        && weaponCombo_ == t.weaponCombo_;
 
-    result &= (priority_ == UNCHECKED_PRIORITY or t.priority_ == UNCHECKED_PRIORITY or priority_ == t.priority_);
+    result &= (priority_ == UNCHECKED_PRIORITY || t.priority_ == UNCHECKED_PRIORITY || priority_ == t.priority_);
 
     return result;
 }
@@ -243,16 +243,16 @@ bool operator<(const MachLogProductionUnit& lhs, const MachLogProductionUnit& rh
 {
     // Check against relative place in the hierarchy
     return (lhs.type_ < rhs.type_)
-        or ((lhs.type_ == rhs.type_)
-            and ((lhs.subType_ < rhs.subType_) or ((lhs.subType_ == rhs.subType_) and ((lhs.hwLevel_ < rhs.hwLevel_) or ((lhs.hwLevel_ == rhs.hwLevel_) and (lhs.swLevel_ < rhs.swLevel_))))));
+        || ((lhs.type_ == rhs.type_)
+            && ((lhs.subType_ < rhs.subType_) || ((lhs.subType_ == rhs.subType_) && ((lhs.hwLevel_ < rhs.hwLevel_) || ((lhs.hwLevel_ == rhs.hwLevel_) && (lhs.swLevel_ < rhs.swLevel_))))));
 }
 
 bool operator>(const MachLogProductionUnit& lhs, const MachLogProductionUnit& rhs)
 {
     // Check against relative place in the hierarchy
     return (lhs.type_ > rhs.type_)
-        or ((lhs.type_ == rhs.type_)
-            and ((lhs.subType_ > rhs.subType_) or ((lhs.subType_ == rhs.subType_) and ((lhs.hwLevel_ > rhs.hwLevel_) or ((lhs.hwLevel_ == rhs.hwLevel_) and (lhs.swLevel_ > rhs.swLevel_))))));
+        || ((lhs.type_ == rhs.type_)
+            && ((lhs.subType_ > rhs.subType_) || ((lhs.subType_ == rhs.subType_) && ((lhs.hwLevel_ > rhs.hwLevel_) || ((lhs.hwLevel_ == rhs.hwLevel_) && (lhs.swLevel_ > rhs.swLevel_))))));
 }
 
 /* End PRODUNIT.CPP *************************************************/

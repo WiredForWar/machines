@@ -87,7 +87,7 @@ W4dEntityMaterialVecChanger::W4dEntityMaterialVecChanger(
     }
 
     // If no overrides were defined, delete the vector
-    if (not anyOverrides)
+    if (! anyOverrides)
     {
         delete pMaterialVecPtrs_;
         pMaterialVecPtrs_ = nullptr;
@@ -135,7 +135,7 @@ bool W4dEntityMaterialVecChanger::applyOverrides(W4dEntity* pEntity) const
         {
             // Check we have an override at this level, and a mesh
             const Ren::MaterialVecPtr& materialVecPtr = materialVecPtrs[lodId];
-            if (materialVecPtr.isDefined() and pEntity->hasMesh(lodId))
+            if (materialVecPtr.isDefined() && pEntity->hasMesh(lodId))
             {
                 // Get the mesh instance
                 RenMeshInstance& meshInstance = pEntity->mesh(lodId);
@@ -153,8 +153,8 @@ bool W4dEntityMaterialVecChanger::applyOverrides(W4dEntity* pEntity) const
 
 bool W4dEntityMaterialVecChanger::hasOverride(W4dLOD lodId) const
 {
-    return pMaterialVecPtrs_ != nullptr and lodId < pMaterialVecPtrs_->size()
-        and (*pMaterialVecPtrs_)[lodId].isDefined();
+    return pMaterialVecPtrs_ != nullptr && lodId < pMaterialVecPtrs_->size()
+        && (*pMaterialVecPtrs_)[lodId].isDefined();
 }
 
 const Ren::MaterialVecPtr& W4dEntityMaterialVecChanger::override(W4dLOD lodId) const
@@ -179,7 +179,7 @@ bool W4dEntityMaterialVecChanger::hueClose(double hue1, double hue2)
     while (diff >= 360.0)
         diff -= 360.0;
 
-    result = diff <= epsilon or diff >= (360.0 - epsilon);
+    result = diff <= epsilon || diff >= (360.0 - epsilon);
 
     return result;
 }

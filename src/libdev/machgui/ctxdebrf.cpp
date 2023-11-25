@@ -46,7 +46,7 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
         MachGuiStartupScreens::BE_STATISTICS);
     MachGuiMenuButton* pContinueButton;
     // display back to lobby on button for zone games.
-    if (not NetNetwork::instance().isLobbiedGame())
+    if (! NetNetwork::instance().isLobbiedGame())
         pContinueButton = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
@@ -271,7 +271,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario debrief filename: " << debriefPicture << std::endl);
 
     // Get flic off hard-disk or CD-Rom
-    if (not debriefPicture.existsAsFile())
+    if (! debriefPicture.existsAsFile())
     {
         // Make sure the cd is stopped before accessing files on it.
         if (DevCD::instance().isPlayingAudioCd())

@@ -158,7 +158,7 @@ void MachLog1stPersonMachineHandler::doUpdate()
     // Update the driver using current settings
     MachPhys1stPersonMachineDriver& driver = *pDriver_;
 
-    if (not remotelyControlled())
+    if (! remotelyControlled())
     {
         if (isToMoveForwards())
             driver.moveForwards();
@@ -219,7 +219,7 @@ void MachLog1stPersonMachineHandler::doUpdate()
             MachLogEntrance* pEntrance = &pEnteringConstruction->entrance(entranceIndex);
             if (pEntrance->locked())
             {
-                haveLockedEntrance = machine.hasLockedEntrance() and &machine.lockedEntrance() == pEntrance;
+                haveLockedEntrance = machine.hasLockedEntrance() && &machine.lockedEntrance() == pEntrance;
             }
             else
             {
@@ -236,7 +236,7 @@ void MachLog1stPersonMachineHandler::doUpdate()
             // Determine which side of the threshold we are on. This is determined by the camera position.
             bool isOutside = false;
             // is this locally controlled - if so determine in/out wrt to camera.
-            if (not remotelyControlled())
+            if (! remotelyControlled())
             {
                 const W4dCamera& camera = *W4dManager::instance().sceneManager()->currentCamera();
                 MexPoint3d cameraLocation = camera.globalTransform().position();
@@ -252,17 +252,17 @@ void MachLog1stPersonMachineHandler::doUpdate()
             machine.inOrOnPadBuilding(pEnteringConstruction);
 
             // Ensure machine correctly located inside or outside the construction
-            if (wasInside and isOutside)
+            if (wasInside && isOutside)
             {
                 // Exit the building
                 NETWORK_STREAM(" wasInside and isOutside so calling inside with NULL\n");
                 machine.insideWhichBuilding(nullptr);
 
                 // Tell the camera if local
-                if (not remotelyControlled())
+                if (! remotelyControlled())
                     camera().leaveConstruction();
             }
-            else if (not wasInside and not isOutside)
+            else if (! wasInside && ! isOutside)
             {
                 // Enter the building
                 //               MachLogNetwork& network = MachLogNetwork::instance();
@@ -284,7 +284,7 @@ void MachLog1stPersonMachineHandler::doUpdate()
                 //                   pEnteringConstruction->id() );
 
                 // Tell the camera if local
-                if (not remotelyControlled())
+                if (! remotelyControlled())
                     camera().enterConstruction();
             }
 
@@ -302,7 +302,7 @@ void MachLog1stPersonMachineHandler::doUpdate()
 
     // Check to see if this new position is contained in the config space, other than
     // ignored polygons. Don't do this while on entrance pad
-    if (moveMachine and not onEntrancePad)
+    if (moveMachine && ! onEntrancePad)
     {
         if (nextPositionOk(&nextPositionCircle))
         {
@@ -322,7 +322,7 @@ void MachLog1stPersonMachineHandler::doUpdate()
         "(" << machine.id() << ") physMachine.parent is " << (void*)machine.physObject().pParent() << std::endl);
     // If controlling the machine on this node, stop any other machines about to collide with it
     bool stoppedAnyOtherMachines
-        = not remotelyControlled() and motionSequencer.preventImpendingCollisions(nextPosition, startTime);
+        = ! remotelyControlled() && motionSequencer.preventImpendingCollisions(nextPosition, startTime);
 
     // Deal with machine trying to move
     if (moveMachine)
@@ -346,8 +346,8 @@ void MachLog1stPersonMachineHandler::doUpdate()
     NETWORK_STREAM(
         "(" << machine.id() << ") physMachine.parent is " << (void*)machine.physObject().pParent() << std::endl);
     // If we have moved off an entrance pad, we can unlock the entrance etc
-    bool outside = not machine.insideBuilding();
-    if (moveMachine and not onEntrancePad and machine.hasLockedEntrance())
+    bool outside = ! machine.insideBuilding();
+    if (moveMachine && ! onEntrancePad && machine.hasLockedEntrance())
     {
 
         // Close the door
@@ -373,22 +373,22 @@ void MachLog1stPersonMachineHandler::doUpdate()
     NETWORK_STREAM(
         "(" << machine.id() << ") physMachine.parent is " << (void*)machine.physObject().pParent() << std::endl);
     // If on an entrance pad, ensure the door opens
-    if (moveMachine and onEntrancePad)
+    if (moveMachine && onEntrancePad)
     {
-        if (not pEnteringConstruction->isEntranceOpen(entranceIndex))
+        if (! pEnteringConstruction->isEntranceOpen(entranceIndex))
             pEnteringConstruction->isEntranceOpen(entranceIndex, true);
     }
 
     NETWORK_STREAM(
         "(" << machine.id() << ") physMachine.parent is " << (void*)machine.physObject().pParent() << std::endl);
     // If we have moved, and have a station locked, unlock it
-    if (moveMachine and machine.hasStationLocked())
+    if (moveMachine && machine.hasStationLocked())
     {
         machine.stationLocked().lock(false);
         machine.stationLocked(nullptr);
     }
 
-    if (not outside)
+    if (! outside)
         machine.physObject().attachTo(machine.insideWhichBuilding().interiorDomain().getAsDomain());
 
     // Adjust the camera roll angles
@@ -455,7 +455,7 @@ bool MachLog1stPersonMachineHandler::nextPositionOk(MexCircle2d* pCircle)
         PhysConfigSpace2d::PolygonId polygonId;
         ok = configSpace.contains(*pCircle, motionSequencer.obstacleFlags(), &polygonId);
 
-        if (not ok)
+        if (! ok)
         {
             // Get the polygon which is causing the obstruction
             const MexPolygon2d& polygon = configSpace.polygon(polygonId);
@@ -502,7 +502,7 @@ void MachLog1stPersonMachineHandler::firstUpdateProcessing()
     pData_->isFirstUpdate_ = false;
 
     // Get the machine, and if currently inside a building, ensure the camera knows
-    if (not remotelyControlled())
+    if (! remotelyControlled())
     {
         MachLogMachine& machine = *pData_->pMachine_;
         if (machine.insideBuilding())

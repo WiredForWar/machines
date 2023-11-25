@@ -84,7 +84,7 @@ bool isColourMap(const SysPathName& pathname)
 
 void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pReporter)
 {
-    PRE(not isLoaded_);
+    PRE(! isLoaded_);
 
     TEXSET_STREAM("Preloading textures from directory " << directory << std::endl);
     TEXSET_INDENT(2);
@@ -121,7 +121,7 @@ void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pR
         // in which only load if
         // we are considering a color or a transparancy bitmap, do not load
         // RenSurfBody::read will sort out which bitmap effectively needs to be loaded
-        if (not isAlphaMap(fileName) and not isColourMap(fileName))
+        if (! isAlphaMap(fileName) && ! isColourMap(fileName))
         {
 
             TEXSET_STREAM(" (" << textures_.size() << ") preloading texture " << fileName.pathname() << std::endl);

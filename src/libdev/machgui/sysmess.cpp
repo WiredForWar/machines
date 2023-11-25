@@ -92,10 +92,10 @@ bool MachGuiSystemMessageHandler::handleHostMessage()
         MachLogRaces& races = MachLogRaces::instance();
         for (MachPhys::Race i : MachPhys::AllRaces)
         {
-            if (races.raceInGame(i) and races.controller(i).type() == MachLogController::AI_CONTROLLER)
+            if (races.raceInGame(i) && races.controller(i).type() == MachLogController::AI_CONTROLLER)
             {
                 MexPoint2d pos;
-                if (races.aggressorAssemblyPoints(i).size() == 0 or races.aggressorAssemblyPoints(i).size() == 0)
+                if (races.aggressorAssemblyPoints(i).size() == 0 || races.aggressorAssemblyPoints(i).size() == 0)
                 {
                     if (races.raceObjects(i).size() > 0)
                         pos = races.raceObjects(i).front()->position();
@@ -134,7 +134,7 @@ bool MachGuiSystemMessageHandler::handleDestroyPlayerMessage(const string& name)
             const string& playerName = pStartupScreens_->startupData()->players()[i].getDisplayName();
             NETWORK_STREAM("Checking against " << playerName << std::endl);
             if (playerName == name
-                and pStartupScreens_->startupData()->players()[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN)
+                && pStartupScreens_->startupData()->players()[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN)
             {
                 foundPlayer = true;
                 NETWORK_STREAM("found a match with.\n");

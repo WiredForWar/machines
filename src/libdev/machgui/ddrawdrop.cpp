@@ -101,7 +101,7 @@ bool MachGuiDDrawDropDownListBoxCreator::doHandleNavigationKey(
 {
     bool retValue = MachGuiDropDownListBoxCreator::doHandleNavigationKey(navKey, pFocusCapableControl);
 
-    if (navKey == MachGuiFocusCapableControl::UP_ARROW or navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    if (navKey == MachGuiFocusCapableControl::UP_ARROW || navKey == MachGuiFocusCapableControl::DOWN_ARROW)
     {
         callbackHandler_->callBack();
     }

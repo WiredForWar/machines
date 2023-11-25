@@ -115,7 +115,7 @@ void MachHWResearchIcons::addIcons(
     {
         // Check not already researched
         MachLogResearchItem* pResearchItem = (*it);
-        if (not pResearchItem->researched(pHardwareLab->race()))
+        if (! pResearchItem->researched(pHardwareLab->race()))
         {
             new MachHWResearchIcon(this, pInGameScreen, pHWResearchBank, pHardwareLab, pResearchItem);
         }

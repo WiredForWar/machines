@@ -112,7 +112,7 @@ public:
 
         numThisType_ = num;
 
-        if (numThisType_ == 0 and isNavButton() and not isDisabled())
+        if (numThisType_ == 0 && isNavButton() && ! isDisabled())
             disable();
         else if (isDisabled())
             enable();
@@ -216,7 +216,7 @@ public:
     }
     void selected()
     {
-        if (not selected_ and not isDisabled())
+        if (! selected_ && ! isDisabled())
         {
             selected_ = true;
             border().isSelected(true);
@@ -253,29 +253,29 @@ protected:
         MachInGameScreen::Actors actors; // List of actors being selected/deselected
 
         for (MachLogRaces::Objects::iterator itter = allObjects.begin();
-             itter != allObjects.end() and not pSwitchToActor;
+             itter != allObjects.end() && ! pSwitchToActor;
              ++itter)
         {
             const MachActor* pActor = *itter;
-            if (pActor->race() == playerRace and pActor->objectType() == objType_ and pActor->subType() == subType_)
+            if (pActor->race() == playerRace && pActor->objectType() == objType_ && pActor->subType() == subType_)
             {
-                if (pActor->objectIsMachine() and pActor->asMachine().insideAPC())
+                if (pActor->objectIsMachine() && pActor->asMachine().insideAPC())
                 {
                     pActor = &pActor->asMachine().APCImInside();
                 }
 
-                if (not pFirstActor)
+                if (! pFirstActor)
                     pFirstActor = pActor;
 
                 --cycleIndex;
-                if (not cycleIndex)
+                if (! cycleIndex)
                 {
                     pSwitchToActor = pActor;
                 }
             }
         }
 
-        if (not pSwitchToActor)
+        if (! pSwitchToActor)
         {
             cycleIndex_ = 1;
             if (pFirstActor)
@@ -293,13 +293,13 @@ protected:
         bool ctrlPressed = event.isCtrlPressed();
 
         // You must press ctrl to keep current selected items in corral and navigator
-        if (not ctrlPressed)
+        if (! ctrlPressed)
         {
             pInGameScreen_->deselectAll();
             pNavigator_->deselectAll();
         }
 
-        selected_ = not selected_;
+        selected_ = ! selected_;
         border().isSelected(selected_);
 
         MachLogRaces& races = MachLogRaces::instance();
@@ -313,11 +313,11 @@ protected:
         for (MachLogRaces::Objects::iterator itter = allObjects.begin(); itter != allObjects.end(); ++itter)
         {
             MachActor* pActor = *itter;
-            if (pActor->race() == playerRace and pActor->objectType() == objType_ and pActor->subType() == subType_)
+            if (pActor->race() == playerRace && pActor->objectType() == objType_ && pActor->subType() == subType_)
             {
-                if (selected_ or not ctrlPressed)
+                if (selected_ || ! ctrlPressed)
                 {
-                    if (not pInGameScreen_->isSelected(*pActor)) // Make sure actor isn't already selected
+                    if (! pInGameScreen_->isSelected(*pActor)) // Make sure actor isn't already selected
                         actors.push_back(pActor);
                 }
                 else
@@ -332,7 +332,7 @@ protected:
         // this operation.
         pNavigator_->remainVisible(ctrlPressed);
 
-        if (selected_ or not ctrlPressed) // Select actors if button is being selected
+        if (selected_ || ! ctrlPressed) // Select actors if button is being selected
         {
             pInGameScreen_->select(actors);
         }
@@ -409,7 +409,7 @@ protected:
                 break;
         }
 
-        if (grey or not MachLogRaces::instance().hasPCRace())
+        if (grey || ! MachLogRaces::instance().hasPCRace())
         {
             retValue += "grey/";
         }
@@ -650,27 +650,27 @@ protected:
         MachInGameScreen::Actors actors; // List of actors being selected/deselected
 
         for (MachLogRaces::Objects::iterator itter = allObjects.begin();
-             itter != allObjects.end() and not pSwitchToActor;
+             itter != allObjects.end() && ! pSwitchToActor;
              ++itter)
         {
             MachActor* pActor = *itter;
             if (pActor->race() == playerRace)
             {
                 if ((pActor->objectType() == objectType_)
-                    or (pActor->objectType() == MachLog::SPY_LOCATOR and objectType_ == MachLog::GEO_LOCATOR)
-                    or // GEO and SPY share select all button
-                    (pActor->objectType() == MachLog::APC and objectType_ == MachLog::RESOURCE_CARRIER)
-                    or // APC and RES CARRIER share select all button
-                    (pActor->objectType() == MachLog::MINE and objectType_ == MachLog::SMELTER)
-                    or // MINE and SMELTER share select all button
+                    || (pActor->objectType() == MachLog::SPY_LOCATOR && objectType_ == MachLog::GEO_LOCATOR)
+                    || // GEO and SPY share select all button
+                    (pActor->objectType() == MachLog::APC && objectType_ == MachLog::RESOURCE_CARRIER)
+                    || // APC and RES CARRIER share select all button
+                    (pActor->objectType() == MachLog::MINE && objectType_ == MachLog::SMELTER)
+                    || // MINE and SMELTER share select all button
                     (pActor->objectType() == MachLog::BEACON
-                     and objectType_ == MachLog::POD)) // POD and BEACON share select all button
+                     && objectType_ == MachLog::POD)) // POD and BEACON share select all button
                 {
-                    if (not pFirstActor)
+                    if (! pFirstActor)
                         pFirstActor = pActor;
 
                     --cycleIndex;
-                    if (not cycleIndex)
+                    if (! cycleIndex)
                     {
                         pSwitchToActor = pActor;
                     }
@@ -678,7 +678,7 @@ protected:
             }
         }
 
-        if (not pSwitchToActor)
+        if (! pSwitchToActor)
         {
             cycleIndex_ = 1;
             if (pFirstActor)
@@ -863,7 +863,7 @@ void MachGuiSelectAllNavButton::doBeReleased(const GuiMouseEvent& event)
         bool ctrlPressed = event.isCtrlPressed();
 
         // You must press ctrl to keep current selected items in corral and navigator
-        if (not ctrlPressed)
+        if (! ctrlPressed)
         {
             pInGameScreen_->deselectAll();
             pNavigator_->deselectAll();
@@ -886,16 +886,16 @@ void MachGuiSelectAllNavButton::doBeReleased(const GuiMouseEvent& event)
             if (pActor->race() == playerRace)
             {
                 if ((pActor->objectType() == objectType_)
-                    or (pActor->objectType() == MachLog::SPY_LOCATOR and objectType_ == MachLog::GEO_LOCATOR)
-                    or // GEO and SPY share select all button
-                    (pActor->objectType() == MachLog::APC and objectType_ == MachLog::RESOURCE_CARRIER)
-                    or // APC and RES CARRIER share select all button
-                    (pActor->objectType() == MachLog::MINE and objectType_ == MachLog::SMELTER)
-                    or // MINE and SMELTER share select all button
+                    || (pActor->objectType() == MachLog::SPY_LOCATOR && objectType_ == MachLog::GEO_LOCATOR)
+                    || // GEO and SPY share select all button
+                    (pActor->objectType() == MachLog::APC && objectType_ == MachLog::RESOURCE_CARRIER)
+                    || // APC and RES CARRIER share select all button
+                    (pActor->objectType() == MachLog::MINE && objectType_ == MachLog::SMELTER)
+                    || // MINE and SMELTER share select all button
                     (pActor->objectType() == MachLog::BEACON
-                     and objectType_ == MachLog::POD)) // POD and BEACON share select all button
+                     && objectType_ == MachLog::POD)) // POD and BEACON share select all button
                 {
-                    if (not pInGameScreen_->isSelected(*pActor))
+                    if (! pInGameScreen_->isSelected(*pActor))
                         actors.push_back(pActor);
                 }
             }
@@ -1144,7 +1144,7 @@ void MachGuiConstructionNavigator::removeAllIcons()
 
 void MachGuiConstructionNavigator::update()
 {
-    if (not isVisible())
+    if (! isVisible())
     {
         updateReq_ = true;
         return;
@@ -1570,7 +1570,7 @@ void MachGuiMachineNavigator::removeAllIcons()
 
 void MachGuiMachineNavigator::update()
 {
-    if (not isVisible())
+    if (! isVisible())
     {
         updateReq_ = true;
         return;
@@ -1817,11 +1817,11 @@ void MachGuiNavigatorBase::makeVisible(bool visible)
 {
     isVisible(visible);
 
-    if (visible and updateReq_)
+    if (visible && updateReq_)
     {
         update();
     }
-    else if (not visible)
+    else if (! visible)
     {
         deselectAll();
     }
@@ -1847,7 +1847,7 @@ bool MachGuiNavigatorBase::remainVisible()
 void MachGuiNavigatorBase::updateButtonNumber(MachGuiNavButtonWithCounter* pButton, size_t value, MachGuiNavRow* pRow)
 {
     pButton->buttonNumber(value);
-    if (value != 0 and not pButton->isSwitchedOn())
+    if (value != 0 && ! pButton->isSwitchedOn())
     {
         // if value is not zero then we must be able to navigate to
         // an actor of this type, regardless of whether we have
@@ -1902,7 +1902,7 @@ bool MachGuiNavigatorBase::processButtonEvent(const DevButtonEvent& buttonEvent)
 
 void MachGuiNavigatorBase::selectAll(bool keepSelection)
 {
-    if (not keepSelection)
+    if (! keepSelection)
     {
         remainVisible(isVisible());
         pInGameScreen_->deselectAll();
@@ -1923,7 +1923,7 @@ void MachGuiNavigatorBase::selectAll(bool keepSelection)
     for (MachLogRaces::Objects::iterator itter = allObjects.begin(); itter != allObjects.end(); ++itter)
     {
         MachActor* pActor = *itter;
-        if ((machineNav() and pActor->objectIsMachine()) or (not machineNav() and pActor->objectIsConstruction()))
+        if ((machineNav() && pActor->objectIsMachine()) || (! machineNav() && pActor->objectIsConstruction()))
         {
             // Make sure the actor hasn't already been selected
             if (pActor->selectionState() != MachLog::SELECTED)
@@ -1986,24 +1986,24 @@ void MachGuiNavigatorBase::viewNext()
 
     MachLogRaces::Objects& allObjects = races.raceObjects(playerRace);
 
-    for (MachLogRaces::Objects::iterator itter = allObjects.begin(); itter != allObjects.end() and not pSwitchToActor;
+    for (MachLogRaces::Objects::iterator itter = allObjects.begin(); itter != allObjects.end() && ! pSwitchToActor;
          ++itter)
     {
         MachActor* pActor = *itter;
-        if ((machineNav() and pActor->objectIsMachine()) or (not machineNav() and pActor->objectIsConstruction()))
+        if ((machineNav() && pActor->objectIsMachine()) || (! machineNav() && pActor->objectIsConstruction()))
         {
-            if (not pFirstActor)
+            if (! pFirstActor)
                 pFirstActor = pActor;
 
             --cycleIndex;
-            if (not cycleIndex)
+            if (! cycleIndex)
             {
                 pSwitchToActor = pActor;
             }
         }
     }
 
-    if (not pSwitchToActor)
+    if (! pSwitchToActor)
     {
         cycleIndex_ = 1;
         if (pFirstActor)

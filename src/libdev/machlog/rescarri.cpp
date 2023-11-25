@@ -80,7 +80,7 @@ void perRead(PerIstream& istr, MachLogResourceCarrierImpl& actorImpl)
 MachLogResourceCarrierImpl::Suppliers::iterator
 MachLogResourceCarrierImpl::iNearestSupplier(Suppliers& listOfCandidateSuppliers, const MexPoint2d& position)
 {
-    PRE(not listOfCandidateSuppliers.empty());
+    PRE(! listOfCandidateSuppliers.empty());
 
     MATHEX_SCALAR lowestDistanceFound = 100000000;
 

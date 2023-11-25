@@ -96,7 +96,7 @@ bool MachLogCounterattackOperation::beNotified(
                             MachLogRaces::DispositionToRace disposition
                                 = MachLogRaces::instance().dispositionToRace(pTarget_->race(), pActor_->race());
 
-                            if (disposition == MachLogRaces::OUR_RACE or disposition == MachLogRaces::ALLY)
+                            if (disposition == MachLogRaces::OUR_RACE || disposition == MachLogRaces::ALLY)
                             {
                                 stayAttached = false;
                             }
@@ -117,7 +117,7 @@ bool MachLogCounterattackOperation::beNotified(
         default:;
     }
 
-    if (not stayAttached)
+    if (! stayAttached)
     {
         pTarget_ = nullptr;
         nextCallBackTime(SimManager::instance().currentTime());
@@ -158,7 +158,7 @@ PhysRelativeTime MachLogCounterattackOperation::doUpdate()
 {
     CB_MachLogCounterattackOperation_DEPIMPL();
 
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
 
     ASSERT(
@@ -208,7 +208,7 @@ bool MachLogCounterattackOperation::shouldBreakOffAttack()
         giveUp = true;
     else if (initiatedAttackOp_)
     {
-        if (not pSubOperation())
+        if (! pSubOperation())
             giveUp = true;
         else if (pTarget_->objectIsMachine())
         {
@@ -219,7 +219,7 @@ bool MachLogCounterattackOperation::shouldBreakOffAttack()
 
             PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
-            if (not targetMachine.evading())
+            if (! targetMachine.evading())
                 lastTimeTargetWasntEvading_ = timeNow;
 
             MATHEX_SCALAR speedDifferential
@@ -232,14 +232,14 @@ bool MachLogCounterattackOperation::shouldBreakOffAttack()
 
             giveUp = (timeNow - lastTimeTargetWasntEvading_ >= giveUpPeriod);
 
-            if (not giveUp and timeNow > nextTimeINeedToCheckImClosing_)
+            if (! giveUp && timeNow > nextTimeINeedToCheckImClosing_)
             {
                 // will still give up if I haven't managed to close on the target in the last 20 seconds.
                 MATHEX_SCALAR distanceTargetIsBeyondWeaponRangeNow
                     = pActor_->asCanAttack().distanceBeyondMaximumWeaponRange(*pTarget_);
 
                 if (distanceTargetIsBeyondWeaponRangeNow > 35.0
-                    and distanceTargetIsBeyondWeaponRangeNow > (distanceBeyondWeaponRangeLastTimeIChecked_ * 0.7))
+                    && distanceTargetIsBeyondWeaponRangeNow > (distanceBeyondWeaponRangeLastTimeIChecked_ * 0.7))
                 {
                     giveUp = true;
                 }
@@ -250,7 +250,7 @@ bool MachLogCounterattackOperation::shouldBreakOffAttack()
                 }
             }
 
-            if (giveUp and not pActor_->isStandingGround())
+            if (giveUp && ! pActor_->isStandingGround())
             {
                 // prevents the aggressor from doing CAACT for a few seconds, otherwise it'd just
                 // immediately reacquire the target in most cases.

@@ -95,13 +95,13 @@ void MachGuiSingleSelectionListBox::hasFocus(bool newValue)
     {
         bool itemSelected = false;
 
-        for (auto i = listItems_.begin(); i != listItems_.end() and not itemSelected; ++i)
+        for (auto i = listItems_.begin(); i != listItems_.end() && ! itemSelected; ++i)
         {
             itemSelected = (*i)->selected();
         }
 
         // Select first item
-        if (!itemSelected and !listItems_.empty())
+        if (!itemSelected && !listItems_.empty())
         {
             listItems_.front()->selectThisItem();
         }
@@ -122,7 +122,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
         bool itemSelected = false;
 
         // Find item before one selected
-        for (auto i = listItems_.begin(); i != listItems_.end() and not itemSelected; ++i)
+        for (auto i = listItems_.begin(); i != listItems_.end() && ! itemSelected; ++i)
         {
             pPreviousItem = pCurrentItem;
 
@@ -132,7 +132,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
         }
 
         // Didn't find previous item (first item was selected or there isn't any items to select)
-        if (!pPreviousItem and !listItems_.empty())
+        if (!pPreviousItem && !listItems_.empty())
         {
             pPreviousItem = listItems_.back();
         }
@@ -151,7 +151,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
         // Find item after one selected
         auto i = listItems_.begin();
 
-        for (/*empty*/; i != listItems_.end() and not itemSelected; ++i)
+        for (/*empty*/; i != listItems_.end() && ! itemSelected; ++i)
         {
             itemSelected = (*i)->selected();
         }

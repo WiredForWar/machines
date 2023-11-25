@@ -69,7 +69,7 @@ W4dVisibilityPlanPtr MachPhysHemiSphere::startGlow(
         PhysRelativeTime currentTime = i / 15.0;
         uint trueFrame = i + frameOffset;
 
-        if (trueFrame % 2 == 0 or trueFrame % 5 == 0)
+        if (trueFrame % 2 == 0 || trueFrame % 5 == 0)
         {
             hVisibilityPlanPtr->add(false, currentTime);
         }

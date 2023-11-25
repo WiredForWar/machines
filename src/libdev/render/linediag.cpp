@@ -90,7 +90,7 @@ bool RenILinesDiagnostic::pixelsMatchColour(
         int y = testTypeMethod_ == TEST1 ? points[index].y() : surface.height() - 1 - points[index].y();
         surface.getPixel(points[index].x(), y, &pixelColour);
 
-        if (not(pixelColour == colour))
+        if (!(pixelColour == colour))
         {
             RENDER_STREAM("Pixel match failiure in line diagnosis. Non-fatal." << std::endl);
 
@@ -109,7 +109,7 @@ bool RenILinesDiagnostic::pixelsMatchColour(
 void RenILinesDiagnostic::testLines(const RenSurface& surface)
 {
     PRE(RenDevice::current());
-    PRE(RenDevice::current()->idleRendering() or not RenDevice::current()->rendering());
+    PRE(RenDevice::current()->idleRendering() || ! RenDevice::current()->rendering());
 
     RENDER_STREAM("Testing the 2D line drawing." << std::endl);
     RENDER_INDENT(4);
@@ -229,7 +229,7 @@ const RenSurface::Points& RenILinesDiagnostic::horizontalVertices()
     static RenSurface::Points vertices;
     static bool initialised = false;
 
-    if (not initialised)
+    if (! initialised)
     {
         initialised = true;
 
@@ -251,7 +251,7 @@ const RenSurface::Points& RenILinesDiagnostic::verticalVertices()
     static RenSurface::Points vertices;
     static bool initialised = false;
 
-    if (not initialised)
+    if (! initialised)
     {
         initialised = true;
 
@@ -275,7 +275,7 @@ const RenSurface::Points& RenILinesDiagnostic::horizontalStockVertices(DrawMetho
     static RenSurface::Points vertices;
     static bool initialised = false;
 
-    if (not initialised)
+    if (! initialised)
     {
         initialised = true;
 
@@ -334,7 +334,7 @@ const RenSurface::Points& RenILinesDiagnostic::verticalStockVertices(DrawMethod 
     static RenSurface::Points vertices;
     static bool initialised = false;
 
-    if (not initialised)
+    if (! initialised)
     {
         initialised = true;
 

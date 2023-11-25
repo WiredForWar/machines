@@ -332,7 +332,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     //
     //    pObject_->entityPlanForEdit().materialPlan( pMaterialPlanPtr, startTime+glowingOffset );
     //    pObject_->entityPlanForEdit().visibilityPlan( objVisibilityPlanPtr, startTime );
-    for (W4dEntityIter it(pObject_); not it.isFinished(); ++it)
+    for (W4dEntityIter it(pObject_); ! it.isFinished(); ++it)
     {
         //        (*it).entityPlanForEdit().materialPlan( pMaterialPlanPtr, startTime+glowingOffset );
         (*it).entityPlanForEdit().visibilityPlan(objVisibilityPlanPtr, startTime);
@@ -347,7 +347,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     demolishVisibilityPlanPtr->add(false, demolitionOffset + demolitionDuration);
 
     pDemolish->entityPlanForEdit().visibilityPlan(demolishVisibilityPlanPtr, startTime);
-    for (W4dEntityIter it(pDemolish); not it.isFinished(); ++it)
+    for (W4dEntityIter it(pDemolish); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().visibilityPlan(demolishVisibilityPlanPtr, startTime);
     }
@@ -378,7 +378,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     // get rid of the shadow
     if (pObject_->isComposite())
     {
-        for (W4dEntityIter it(pObject_); not it.isFinished(); ++it)
+        for (W4dEntityIter it(pObject_); ! it.isFinished(); ++it)
         {
             if ((*it).name() == "SHADOW_PROJ" || (*it).name() == "SHADOW_FIXED")
             {

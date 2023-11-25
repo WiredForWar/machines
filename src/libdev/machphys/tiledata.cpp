@@ -187,7 +187,7 @@ void MachPhysTileData::makeCellLists()
                 {
                     int tx = cellCoords[j++];
                     int ty = cellCoords[j++];
-                    if (tx == x and ty == y)
+                    if (tx == x && ty == y)
                     {
                         nTrianglesOverCell++;
                         cellTriangleLists_.push_back(id);
@@ -253,7 +253,7 @@ int MachPhysTileData::cellsUnderLine(const MexPoint3d& p1, const MexPoint3d& p2,
     int count = abs(xEndCell - xCell) + abs(yEndCell - yCell);
 
     ++nCells;
-    if (not(*pFn)(*this, xCell, yCell))
+    if (!(*pFn)(*this, xCell, yCell))
         count = 0;
 
     if (count != 0)
@@ -310,7 +310,7 @@ int MachPhysTileData::cellsUnderLine(const MexPoint3d& p1, const MexPoint3d& p2,
         while (count--)
         {
             // Make the shortest move
-            if (xCell != xEndCell and (yCell == yEndCell or (bx + cy < by + cx)))
+            if (xCell != xEndCell && (yCell == yEndCell || (bx + cy < by + cx)))
             {
                 // Move to the next x cell
                 xCell = xNextCell;
@@ -333,7 +333,7 @@ int MachPhysTileData::cellsUnderLine(const MexPoint3d& p1, const MexPoint3d& p2,
 
             // Output this cell
             ++nCells;
-            if (not(*pFn)(*this, xCell, yCell))
+            if (!(*pFn)(*this, xCell, yCell))
                 break;
         }
     }
@@ -493,7 +493,7 @@ bool MachPhysTileData::lineIntersectsCell(MachPhysTileData& tileData, int xCell,
         // Get the triangle. See if already checked. If so, ignore it.
         TriangleId id = tileData.cellTriangleLists_[index++];
         if (trianglesDone_.size() == 0
-            or find(trianglesDone_.begin(), trianglesDone_.end(), id) == trianglesDone_.end())
+            || find(trianglesDone_.begin(), trianglesDone_.end(), id) == trianglesDone_.end())
         {
             // Add the id check list.
             trianglesDone_.push_back(id);
@@ -516,7 +516,7 @@ bool MachPhysTileData::lineIntersectsCell(MachPhysTileData& tileData, int xCell,
     }
 
     // JON_STREAM("MachPhysTileData::lineIntersectsCell exit " << foundIntersection_ << " " << distance_ << std::endl;)
-    return not foundIntersection_;
+    return ! foundIntersection_;
 }
 
 std::ostream& operator<<(std::ostream& o, const MachPhysTileData& t)
@@ -604,7 +604,7 @@ MATHEX_SCALAR MachPhysTileData::height(MATHEX_SCALAR x, MATHEX_SCALAR y, MexVec3
 
     MATHEX_SCALAR distance;
     bool hit = false;
-    while (not hit and nTriangles--)
+    while (! hit && nTriangles--)
     {
         // Get the triangle data
         TriangleId id = cellTriangleLists_[index++];
@@ -617,7 +617,7 @@ MATHEX_SCALAR MachPhysTileData::height(MATHEX_SCALAR x, MATHEX_SCALAR y, MexVec3
         hit = testLine.intersects(v1, v2, v3, &distance);
 
         // If required, compute a unit normal vector to return
-        if (hit and pNormal)
+        if (hit && pNormal)
         {
             const MexVec3 v1v2(v1, v2);
             const MexVec3 v2v3(v2, v3);
@@ -801,7 +801,7 @@ bool MachPhysTileData::profileValid(const Profile& profile) const
     //  Check that if two points have the same X and Y coordinates
     //  that they also have the same Z coordinate - i.e. no vertical moves
 
-    for (Profile::const_iterator i = profile.begin(); i != profile.end() and result; ++i)
+    for (Profile::const_iterator i = profile.begin(); i != profile.end() && result; ++i)
     {
         Profile::const_iterator j = i;
         ++j;
@@ -907,10 +907,10 @@ bool MachPhysTileData::intersectWithTriangle(
 
         //  See if the line segment is entirely to one side
         //  of the triangle
-        if (distance1 <= 0.0 and distance2 <= 0.0)
+        if (distance1 <= 0.0 && distance2 <= 0.0)
             intersects = false;
 
-        if (distance1 >= length and distance2 >= length)
+        if (distance1 >= length && distance2 >= length)
             intersects = false;
     }
 
@@ -920,12 +920,12 @@ bool MachPhysTileData::intersectWithTriangle(
 
         PATH_PROFILE_STREAM("Distance 1 " << distance1 << "  distance 2 " << distance2 << std::endl);
 
-        if (distance1 >= 0.0 and distance1 <= length)
+        if (distance1 >= 0.0 && distance1 <= length)
             *pPoint1 = line.pointAtDistance(distance1);
         else
             *pPoint1 = line.end1();
 
-        if (distance2 >= 0.0 and distance2 <= length)
+        if (distance2 >= 0.0 && distance2 <= length)
             *pPoint2 = line.pointAtDistance(distance2);
         else
             *pPoint2 = line.end2();
@@ -956,7 +956,7 @@ bool MachPhysTileData::intersectWithTriangle(
         PATH_PROFILE_STREAM("Triangle does not intersect line" << std::endl);
     }
 
-    POST(implies(result, not triangleVertical(triangle)));
+    POST(implies(result, ! triangleVertical(triangle)));
 
     return result;
 }
@@ -1063,7 +1063,7 @@ void MachPhysTileData::sortTriangles(
         PATH_PROFILE_INSPECT((*i).point1());
         PATH_PROFILE_INSPECT((*i).point2());
 
-        if (not(pSortFn)((*i).point1(), (*i).point2()))
+        if (!(pSortFn)((*i).point1(), (*i).point2()))
         {
             MexPoint3d temp = (*i).point1();
             (*i).point1((*i).point2());
@@ -1356,7 +1356,7 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
         // Beginning with the current cell, advance through all the cells traversed by the line
         bool done = false;
         MATHEX_SCALAR limitDistance = lineLength - useEps;
-        while (not done)
+        while (! done)
         {
             // Process current cell. Iterate through its triangles
             size_t cellIndex = xCurrentCell + yCurrentCell * nXCell;
@@ -1372,7 +1372,7 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
             {
                 // Get the triangle data
                 TriangleId id = cellTriangleLists_[triangleIndex++];
-                if (not aHadTriangle[id])
+                if (! aHadTriangle[id])
                 {
                     // set flag so we don't process this one again.
                     aHadTriangle[id] = true;
@@ -1565,7 +1565,7 @@ bool MachPhysTileData::profileTriangleIntersect(
         PATH_PROFILE_INSPECT(zOut[1]);
 
         // Check the overlap isn't off the end of the line
-        if (sOut[0] < (lineLength - eps) and sOut[1] > eps)
+        if (sOut[0] < (lineLength - eps) && sOut[1] > eps)
         {
             MATHEX_SCALAR separation = sOut[1] - sOut[0];
             if (separation > eps)
@@ -1661,7 +1661,7 @@ void MachPhysTileData::profileOutput(TriangleIntersectDatas& intersectDatas, Pro
 
         TriangleIntersectData& data = *(itBegin + aDataIndex[index]);
 
-        if (not lastOne)
+        if (! lastOne)
         {
             // Check for the entry point being within 1cm of the next one.
             // If so, we don't need it.

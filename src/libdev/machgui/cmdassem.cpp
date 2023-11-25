@@ -53,7 +53,7 @@ void MachGuiAssemblyPointCommand::pickOnTerrain(
     bool /*altPressed*/
 )
 {
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
     {
         interactionComplete_ = true;
         assemblyPoint_ = location;
@@ -84,7 +84,7 @@ bool MachGuiAssemblyPointCommand::isInteractionComplete() const
 MachGui::Cursor2dType
 MachGuiAssemblyPointCommand::cursorOnTerrain(const MexPoint3d& location, bool /*ctrlPressed*/, bool, bool)
 {
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         return MachGui::ASSEMBLEPOINT_CURSOR;
 
     return MachGui::MENU_CURSOR;
@@ -165,7 +165,7 @@ bool MachGuiAssemblyPointCommand::doAdminApply(MachLogAdministrator* /*pAdminist
 // virtual
 bool MachGuiAssemblyPointCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_B and be.action() == DevButtonEvent::PRESS)
+    if (isVisible() && be.scanCode() == DevKey::KEY_B && be.action() == DevButtonEvent::PRESS)
     {
         inGameScreen().activeCommand(*this);
         return true;

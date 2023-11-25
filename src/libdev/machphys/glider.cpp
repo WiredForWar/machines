@@ -665,12 +665,12 @@ void MachPhysGlider::doFirstPersonMotionAnimations(MachPhysLocomotionMethod::Fir
     // But we do want to do them if remotely controlled
     MachPhysLocomotionMethod::FirstPersonMotionState oldState = pImpl_->lastState();
 
-    if (not isRemotelyControlledFirstPerson())
+    if (! isRemotelyControlledFirstPerson())
     {
-        if (oldState == MachPhysLocomotionMethod::TURNING_LEFT or oldState == MachPhysLocomotionMethod::TURNING_RIGHT)
+        if (oldState == MachPhysLocomotionMethod::TURNING_LEFT || oldState == MachPhysLocomotionMethod::TURNING_RIGHT)
             oldState = MachPhysLocomotionMethod::STOPPED;
 
-        if (state == MachPhysLocomotionMethod::TURNING_LEFT or state == MachPhysLocomotionMethod::TURNING_RIGHT)
+        if (state == MachPhysLocomotionMethod::TURNING_LEFT || state == MachPhysLocomotionMethod::TURNING_RIGHT)
             state = MachPhysLocomotionMethod::STOPPED;
     }
 

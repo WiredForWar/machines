@@ -84,7 +84,7 @@ bool MachLogPickUpOperation::doStart()
 {
     CB_MachLogPickUpOperation_DEPIMPL();
 
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ///////////////////////////////////
@@ -98,7 +98,7 @@ bool MachLogPickUpOperation::doIsFinished() const
 {
     CB_MachLogPickUpOperation_DEPIMPL();
 
-    bool finished = (finished_ and not pActor_->motionSeq().hasDestination());
+    bool finished = (finished_ && ! pActor_->motionSeq().hasDestination());
 
     if (finished)
     {
@@ -125,7 +125,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
     MachLogResourceCarrier::Suppliers& suppliers = pActor_->suppliers(); // access given via friend relationship
 
     // am I already full, or have I already dealt with all suppliers in my list?
-    if (pActor_->amountCarried() == pActor_->data().capacity() or pActor_->doneAllSuppliers())
+    if (pActor_->amountCarried() == pActor_->data().capacity() || pActor_->doneAllSuppliers())
     {
         terminateOp();
         return 0.0;
@@ -138,15 +138,15 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
 
     MachLogConstruction& tempCurrentSupplier = pActor_->currentSupplier();
 
-    if (not(tempCurrentSupplier.isComplete())
-        or (tempCurrentSupplier.objectType() == MachLog::MINE and tempCurrentSupplier.asMine().ore() == 0))
+    if (!(tempCurrentSupplier.isComplete())
+        || (tempCurrentSupplier.objectType() == MachLog::MINE && tempCurrentSupplier.asMine().ore() == 0))
     {
         size_t testElement = pActor_->currentSupplierIndex();
         bool found = false;
-        while (not found and testElement < suppliers.size())
+        while (! found && testElement < suppliers.size())
         {
             if (suppliers[testElement]->isComplete()
-                and (suppliers[testElement]->objectType() != MachLog::MINE or suppliers[testElement]->asMine().ore() > 0))
+                && (suppliers[testElement]->objectType() != MachLog::MINE || suppliers[testElement]->asMine().ore() > 0))
             {
                 // note that we have to actually set our resource carrier's index here, rather
                 // than merely our local copy.
@@ -160,16 +160,16 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
             }
             ++testElement;
         }
-        if (not found)
+        if (! found)
         {
-            if (pActor_->amountCarried() > 0 and pActor_->hasSmeltingBuilding())
+            if (pActor_->amountCarried() > 0 && pActor_->hasSmeltingBuilding())
             {
                 // Don't bother hanging around waiting for a mine to be completed or extract ore
                 // if we already have cargo to take back to our smelter.
                 terminateOp();
                 return 0.0;
             }
-            if (not tempCurrentSupplier.asMine().hasMineralSite())
+            if (! tempCurrentSupplier.asMine().hasMineralSite())
             {
                 // We'd better end the op here, otherwise we run the risk of getting stuck on later suppliers
                 // even if earlier ones in the supplier list are valid.
@@ -186,7 +186,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
     ASSERT_INFO(pActor_->id());
     ASSERT(
         currentSupplier.objectType() == MachLog::MINE
-            or (currentSupplier.objectIsCanSmelt() and currentSupplier.race() != pActor_->race()),
+            || (currentSupplier.objectIsCanSmelt() && currentSupplier.race() != pActor_->race()),
         "MachLogPickUpOperation::doUpdate : we are trying to pick up from something that is neither mine nor enemy "
         "smelter.");
 
@@ -215,10 +215,10 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
             sqrDistanceToTestPad = actorPos.sqrEuclidianDistance(testDest);
 
             if (sqrDistanceToTestPad > sqr(45)
-                or sqrDistanceToTestPad
+                || sqrDistanceToTestPad
                     <= sqrDropOffDistance // if we're that close, the thing blocking the pad will be us!
-                or (MachLogSpacialManipulation::pointIsFree(testDest, 5.0)
-                    and not(mine.pickupPointUsedRecently(pointNum))))
+                || (MachLogSpacialManipulation::pointIsFree(testDest, 5.0)
+                    && !(mine.pickupPointUsedRecently(pointNum))))
             {
 
                 if (testDest == oldDestinationPadPosition)
@@ -240,7 +240,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
             }
         }
 
-        if (not found)
+        if (! found)
         {
             // no points are free - just choose a point at random.
             destinationPadPosition_
@@ -269,7 +269,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 }
             }
 
-            if (not pSubOperation())
+            if (! pSubOperation())
             {
                 // need to initiate a move to the pad.
 
@@ -295,7 +295,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
 
             // mine must be complete before we pick up from it. (ore should be zero any way but this is still a valid
             // check)
-            if (not mine.isComplete())
+            if (! mine.isComplete())
                 return 5.0;
 
             // Yes...Note that if the mine has no ore ready then we will wait until mine.ore > 0
@@ -312,7 +312,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 pActor_->setAmountCarried(carried + amountToAdd);
 
                 // finished with this mine go onto the next element if possible
-                if (not moveToNextSupplier())
+                if (! moveToNextSupplier())
                 {
                     terminateOp();
                 }
@@ -384,7 +384,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
             smeltingBuilding.usedPickupPoint(bestPointNum);
 
             // enemy smeltingBuildings must be complete before we pick up from them.
-            if (not smeltingBuilding.isComplete())
+            if (! smeltingBuilding.isComplete())
                 return 5.0;
 
             // steal as much as we possibly can
@@ -398,7 +398,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 interval = pActor_->doLoading();
             }
             // finished with this smeltingBuilding go onto the next element if possible
-            if (not moveToNextSupplier())
+            if (! moveToNextSupplier())
             {
                 terminateOp();
             }

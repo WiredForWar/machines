@@ -162,7 +162,7 @@ void MachLogConstructionItem::activate(MachPhys::Race race)
 {
     CB_DEPIMPL_ARRAY(bool, activated_);
     CB_DEPIMPL_ARRAY(bool, activationLocked_);
-    if (not activationLocked_[race])
+    if (! activationLocked_[race])
         activated_[race] = true;
 }
 
@@ -199,7 +199,7 @@ void MachLogConstructionItem::activationLocked(MachPhys::Race race, bool newValu
     CB_DEPIMPL_ARRAY(bool, activationLocked_);
     CB_DEPIMPL_ARRAY(bool, activated_);
     activationLocked_[race] = newValue;
-    if (newValue and activated_[race])
+    if (newValue && activated_[race])
         activated_[race] = false;
 }
 

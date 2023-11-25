@@ -62,8 +62,8 @@ void GuiSingleLineEditBox::doDisplay()
     font_.drawText(rightText_, startText, maxWidth() - caretPos_);
     font_.drawText(leftText_, startText, caretPos_, GuiBmpFont::RIGHT_JUSTIFY);
 
-    if (GuiManager::instance().charFocusExists() and &GuiManager::instance().charFocus() == this
-        and showCaret_) // Only show caret if we have focus
+    if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
+        && showCaret_) // Only show caret if we have focus
     {
         GuiPainter::instance().line(
             Gui::Coord(
@@ -86,7 +86,7 @@ void GuiSingleLineEditBox::update()
     int itime = time * 2;
 
     bool newShowCaret = itime % 2;
-    if (not dontUpdate_ and newShowCaret != showCaret_)
+    if (! dontUpdate_ && newShowCaret != showCaret_)
     {
         showCaret_ = newShowCaret;
         changed();
@@ -103,7 +103,7 @@ bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
     {
         // Check to see if adding this character is allowed, i.e. length of string will
         // be less than or equal to maxChars_ ( maximum length of string allowed ).
-        if ((leftText_.length() + rightText_.length()) < maxChars_ or maxChars_ == 0)
+        if ((leftText_.length() + rightText_.length()) < maxChars_ || maxChars_ == 0)
         {
             leftText_ += e.getChar();
 
@@ -161,7 +161,7 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
 void GuiSingleLineEditBox::leftArrowEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (not leftText_.length() == 0)
+    if (! leftText_.length() == 0)
     {
         char c = leftText_[leftText_.length() - 1];
         // leftText_.remove( leftText_.length() - 1 );
@@ -181,7 +181,7 @@ void GuiSingleLineEditBox::leftArrowEvent()
 void GuiSingleLineEditBox::rightArrowEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (not rightText_.length() == 0)
+    if (! rightText_.length() == 0)
     {
         char c = rightText_[0];
         // rightText_.remove( 0, 1 );
@@ -201,7 +201,7 @@ void GuiSingleLineEditBox::rightArrowEvent()
 void GuiSingleLineEditBox::homeEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (not leftText_.length() == 0)
+    if (! leftText_.length() == 0)
     {
         rightText_ = leftText_ + rightText_;
         // leftText_.remove( 0 );
@@ -215,7 +215,7 @@ void GuiSingleLineEditBox::homeEvent()
 void GuiSingleLineEditBox::endEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (not rightText_.length() == 0)
+    if (! rightText_.length() == 0)
     {
         leftText_ = leftText_ + rightText_;
 
@@ -236,7 +236,7 @@ void GuiSingleLineEditBox::endEvent()
 void GuiSingleLineEditBox::backspaceEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (not leftText_.length() == 0)
+    if (! leftText_.length() == 0)
     {
         char c = leftText_[leftText_.length() - 1];
         // leftText_.remove( leftText_.length() - 1 );
@@ -249,7 +249,7 @@ void GuiSingleLineEditBox::backspaceEvent()
             // Jump caret fowards 5 character widths
             int pos = leftText_.length();
             int count = 5;
-            while (pos and --count)
+            while (pos && --count)
             {
                 --pos;
                 caretPos_ += font_.charWidth(leftText_[pos]) + font_.spacing();
@@ -263,7 +263,7 @@ void GuiSingleLineEditBox::backspaceEvent()
 void GuiSingleLineEditBox::deleteEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (not rightText_.length() == 0)
+    if (! rightText_.length() == 0)
     {
         char c = rightText_[0];
         // rightText_.remove( 0, 1 );

@@ -48,7 +48,7 @@ bool W4dVisibilityPlan::visible(const PhysRelativeTime& time) const
 
     bool finished = false;
 
-    while ((timeIterator != times_.end()) and (not finished))
+    while ((timeIterator != times_.end()) && (! finished))
     {
         if ((*timeIterator) > time)
             finished = true;

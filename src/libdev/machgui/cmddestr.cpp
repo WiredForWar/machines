@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiSelfDestructCommand& t)
 bool MachGuiSelfDestructCommand::canActorEverExecute(const MachActor& actor) const
 {
     // All Machines and Constructions can SelfDestruct
-    return actor.objectIsMachine() or actor.objectIsConstruction();
+    return actor.objectIsMachine() || actor.objectIsConstruction();
 }
 
 // virtual
@@ -54,11 +54,11 @@ bool MachGuiSelfDestructCommand::isInteractionComplete() const
 // virtual
 bool MachGuiSelfDestructCommand::doApply(MachActor* pActor, string*)
 {
-    PRE(pActor->objectIsMachine() or pActor->objectIsConstruction());
+    PRE(pActor->objectIsMachine() || pActor->objectIsConstruction());
 
     if (buttonState() == BTN_SHOWN)
     {
-        if (not hasPlayedVoiceMail() and pActor->objectIsMachine())
+        if (! hasPlayedVoiceMail() && pActor->objectIsMachine())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::SELF_DESTRUCT);
             hasPlayedVoiceMail(true);
@@ -99,7 +99,7 @@ void MachGuiSelfDestructCommand::typeData(MachLog::ObjectType, int, uint)
 // virtual
 MachGuiCommand* MachGuiSelfDestructCommand::clone() const
 {
-    if (buttonState() == BTN_SHOWN or buttonState() == BTN_ACTIVE)
+    if (buttonState() == BTN_SHOWN || buttonState() == BTN_ACTIVE)
     {
         privateHadFinalPick() = true;
         MachGuiSelfDestructCommandIcon::refreshAllIcons();
@@ -135,8 +135,8 @@ uint MachGuiSelfDestructCommand::commandPromptStringid() const
 // virtual
 bool MachGuiSelfDestructCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::BACK_SPACE and be.wasCtrlPressed() and be.wasShiftPressed()
-        and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::BACK_SPACE && be.wasCtrlPressed() && be.wasShiftPressed()
+        && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -214,7 +214,7 @@ void MachGuiSelfDestructCommand::update(const Actors& actors)
     {
         MachActor& actor = *(*iter);
 
-        if ((actor.objectIsMachine() or actor.objectIsConstruction()) and actor.selfDestruct() == true)
+        if ((actor.objectIsMachine() || actor.objectIsConstruction()) && actor.selfDestruct() == true)
         {
             privateButtonState() = BTN_ACTIVE;
             MachGuiSelfDestructCommand::privateRotateFrame() = 7;
@@ -264,7 +264,7 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
             double currentTime = DevTime::instance().time();
             double timeDiff = currentTime - MachGuiSelfDestructCommand::privateRotateFrameTime();
 
-            if (timeDiff > 0.05 or rotateFrame == 0)
+            if (timeDiff > 0.05 || rotateFrame == 0)
             {
                 ++rotateFrame;
                 MachGuiSelfDestructCommand::privateRotateFrameTime() = currentTime;

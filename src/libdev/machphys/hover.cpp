@@ -236,7 +236,7 @@ void MachPhysHoverBoots::moveAnimations(
 
     MexVec3 axis(0.0, -1.0, 0.0);
 
-    if (pLHoverBoot_ != nullptr and pRHoverBoot_ != nullptr)
+    if (pLHoverBoot_ != nullptr && pRHoverBoot_ != nullptr)
     {
         PhysTimedAnglePlan* pLPlan
             = new PhysTimedAnglePlan(lAnglesPtr, timesPtr, axis, pLHoverBoot_->localTransform().position());

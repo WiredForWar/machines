@@ -84,14 +84,14 @@ bool MachGuiStandGroundCommand::doApply(MachActor* pActor, string*)
     bool result = false;
     MachLogMachine& machine = pActor->asMachine();
 
-    if (not machine.isStandingGround())
+    if (! machine.isStandingGround())
     {
         // Create a stand ground operation for the machine
         MachLogStandGroundOperation* pOp = new MachLogStandGroundOperation(&machine);
 
         machine.newOperation(pOp);
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(machine, MachineVoiceMailEventID::TASKED);
             hasPlayedVoiceMail(true);
@@ -155,7 +155,7 @@ bool MachGuiStandGroundCommand::doAdminApply(MachLogAdministrator* /*pAdministra
 // virtual
 bool MachGuiStandGroundCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_W and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_W && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

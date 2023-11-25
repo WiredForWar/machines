@@ -40,7 +40,7 @@ SysFileFinder::~SysFileFinder()
 void SysFileFinder::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
-    INVARIANT((includedInSearch() == FILES) or (includedInSearch() == DIRS) or (includedInSearch() == FILES_DIRS));
+    INVARIANT((includedInSearch() == FILES) || (includedInSearch() == DIRS) || (includedInSearch() == FILES_DIRS));
 }
 
 void SysFileFinder::fileSpecification(const SysPathName& fileSpec)

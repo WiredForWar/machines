@@ -123,15 +123,15 @@ public:
 
         bool allComplete = true;
 
-        for (uint loop = 0; loop < numScenarios and allComplete; ++loop)
+        for (uint loop = 0; loop < numScenarios && allComplete; ++loop)
         {
             MachGuiDbScenario& scenario = planet.scenario(loop);
 
             MachGuiDbPlayerScenario* pPlayerScenario = nullptr;
 
             if (MachGuiDatabase::instance().hasCurrentPlayer()
-                and MachGuiDatabase::instance().currentPlayer().hasPlayed(scenario, &pPlayerScenario)
-                and pPlayerScenario->hasWon())
+                && MachGuiDatabase::instance().currentPlayer().hasPlayed(scenario, &pPlayerScenario)
+                && pPlayerScenario->hasWon())
             {
                 // Level completed
             }
@@ -238,7 +238,7 @@ private:
 
         bool allComplete = true;
 
-        for (uint loop = 0; loop < numPlanets and allComplete; ++loop)
+        for (uint loop = 0; loop < numPlanets && allComplete; ++loop)
         {
             MachGuiDbPlanet& planet = system.planet(loop);
 
@@ -280,7 +280,7 @@ protected:
         MachGuiDbPlayerScenario* pPlayerScenario = nullptr;
 
         if (MachGuiDatabase::instance().hasCurrentPlayer()
-            and MachGuiDatabase::instance().currentPlayer().hasPlayed(scenario, &pPlayerScenario))
+            && MachGuiDatabase::instance().currentPlayer().hasPlayed(scenario, &pPlayerScenario))
         {
             ASSERT(pPlayerScenario, "failed to get player scenario information");
 
@@ -483,21 +483,21 @@ void MachGuiCtxScenario::updateSystemList()
 
         if (system.isAvailable()
 #ifndef PRODUCTION
-            or getenv("cb_showallscenarios")
+            || getenv("cb_showallscenarios")
 #endif
         )
         {
             MachGuiSystemListBoxItem* pItem
                 = new MachGuiSystemListBoxItem(pStartupScreens_, pSystemList_, LB_MAXX - LB_MINX, system, this);
             // Store first item in list
-            if (not pFirstItem)
+            if (! pFirstItem)
             {
                 pFirstItem = pItem;
                 pFirstSystem = &system;
             }
 
             // See if this is the next system to be played
-            if (pDefaultScenario_ and &pDefaultScenario_->planet().system() == &system)
+            if (pDefaultScenario_ && &pDefaultScenario_->planet().system() == &system)
             {
                 pItem->selectThisItem();
                 selectFirstItem = false;
@@ -575,7 +575,7 @@ void MachGuiCtxScenario::updatePlanetList(MachGuiDbSystem& system)
 
         if (planet.isAvailable()
 #ifndef PRODUCTION
-            or getenv("cb_showallscenarios")
+            || getenv("cb_showallscenarios")
 #endif
         )
         {
@@ -583,13 +583,13 @@ void MachGuiCtxScenario::updatePlanetList(MachGuiDbSystem& system)
                 = new MachGuiPlanetListBoxItem(pStartupScreens_, pPlanetList_, LB_MAXX - LB_MINX, planet, this);
 
             // Store first item in list
-            if (not pFirstItem)
+            if (! pFirstItem)
             {
                 pFirstItem = pItem;
             }
 
             // See if this is the next planet to be played
-            if (pDefaultScenario_ and &pDefaultScenario_->planet() == &planet)
+            if (pDefaultScenario_ && &pDefaultScenario_->planet() == &planet)
             {
                 pItem->selectThisItem();
                 selectFirstItem = false;
@@ -641,7 +641,7 @@ void MachGuiCtxScenario::updateScenarioList(MachGuiDbPlanet& planet)
 
         if (scenario.isAvailable()
 #ifndef PRODUCTION
-            or getenv("cb_showallscenarios")
+            || getenv("cb_showallscenarios")
 #endif
         )
         {
@@ -649,7 +649,7 @@ void MachGuiCtxScenario::updateScenarioList(MachGuiDbPlanet& planet)
                 = new MachGuiScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this);
 
             // Store first item in list
-            if (not pFirstItem)
+            if (! pFirstItem)
             {
                 pFirstItem = pItem;
             }
@@ -693,7 +693,7 @@ void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName ani
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario animation filename: " << animation << std::endl);
 
     // Get flic off hard-disk or CD-Rom
-    if (not animation.existsAsFile())
+    if (! animation.existsAsFile())
     {
         // Make sure the cd is stopped before accessing files on it.
         if (DevCD::instance().isPlayingAudioCd())

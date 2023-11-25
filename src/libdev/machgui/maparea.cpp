@@ -27,7 +27,7 @@ public:
     {
         // Blit from front to back buffer, this will restore the map area after the
         // 3D rendering has wiped over it
-        if (not pMapArea_->hasChanged())
+        if (! pMapArea_->hasChanged())
         {
             GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
             GuiPainter::instance().blit(frontBuffer, absoluteBoundary(), absoluteBoundary().minCorner());
@@ -36,7 +36,7 @@ public:
         // Render the underside of the map area.
         static GuiBitmap slideRailBmp = MachGui::getScaledImage("gui/misc/slide.bmp");
 
-        if (not slideRailBmp.isColourKeyingOn())
+        if (! slideRailBmp.isColourKeyingOn())
         {
             slideRailBmp.enableColourKeying();
         }
@@ -108,7 +108,7 @@ void MachGuiMapArea::redrawAreaImmediate(const Gui::Box& area)
     int areaYMin = area.minCorner().y();
     int areaXMin = area.minCorner().x();
 
-    while (y < maxY and y < areaYMax)
+    while (y < maxY && y < areaYMax)
     {
         if (areaYMin <= y + yStep)
         {

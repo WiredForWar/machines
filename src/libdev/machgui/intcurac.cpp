@@ -78,17 +78,17 @@ MachGui::Cursor2dType MachGuiIntelligentCursorOnActor::cursorType(
 
     // Don't waste time doing complex processing if the actor does not belong to the
     // player.
-    if (not isActorPlayersRace)
+    if (! isActorPlayersRace)
     {
         // Only one non-player race actor can be selected at anyone time, therefore, if CTRL pressed, show
         // invalid cursor.
-        if (not ctrlPressed and pActorUnderCursor->selectableType() == MachLog::FULLY_SELECTABLE)
+        if (! ctrlPressed && pActorUnderCursor->selectableType() == MachLog::FULLY_SELECTABLE)
         {
             useCursor_ = MachGui::SELECT_CURSOR;
         }
         else if (
-            pActorUnderCursor->objectIsDebris() or pActorUnderCursor->objectIsOreHolograph()
-            or pActorUnderCursor->objectIsArtefact())
+            pActorUnderCursor->objectIsDebris() || pActorUnderCursor->objectIsOreHolograph()
+            || pActorUnderCursor->objectIsArtefact())
         {
             useCursor_ = MachGui::MENU_CURSOR;
         }
@@ -117,15 +117,15 @@ MachGuiIntelligentCursorOnActor::doProcessConstruction(MachLogConstruction* pCon
 
     // Can construction attack...
     if (pConstruction->objectType() == MachLog::MISSILE_EMPLACEMENT // Must be missile emplacement
-        and pConstruction->asMissileEmplacement().subType() != MachPhys::ICBM // Must not be Nuke
-        and not pCursorActor_->objectIsDebris() // Can't attack debris
-        and not pCursorActor_->objectIsOreHolograph() // Can't attack ore
-        and pConstruction->asMissileEmplacement().canFireAt(*pCursorActor_))
+        && pConstruction->asMissileEmplacement().subType() != MachPhys::ICBM // Must not be Nuke
+        && ! pCursorActor_->objectIsDebris() // Can't attack debris
+        && ! pCursorActor_->objectIsOreHolograph() // Can't attack ore
+        && pConstruction->asMissileEmplacement().canFireAt(*pCursorActor_))
     {
         // Check for an enemy unit, and if so, attack it
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(pConstruction->race(), pCursorActor_->race());
-        bool enemyTarget = (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL);
+        bool enemyTarget = (disposition == MachLogRaces::ENEMY || disposition == MachLogRaces::NEUTRAL);
 
         if (enemyTarget)
         {
@@ -135,7 +135,7 @@ MachGuiIntelligentCursorOnActor::doProcessConstruction(MachLogConstruction* pCon
     }
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         doDefaultProcess(pConstruction);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -154,16 +154,16 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doDefault
     // Get the operand type
     MachLog::ObjectType operandType = pCursorActor_->objectType();
 
-    if ((not isPlayersRace) and ctrlPressed_)
+    if ((! isPlayersRace) && ctrlPressed_)
         useCursor_ = MachGui::INVALID_CURSOR; // Only allow one enemy actor to be selected.
     else
     {
         if (pCursorActor_->selectableType() == MachLog::FULLY_SELECTABLE)
         {
             // If we're wounded, default on a friendly garrison is enter cursor
-            if (not ctrlPressed_ and // Ctrl overrides all intelligent cursors with select cursor
-                operandType == MachLog::GARRISON and // Cursor on garrison
-                pActor->objectIsMachine() and // I am a machine
+            if (! ctrlPressed_ && // Ctrl overrides all intelligent cursors with select cursor
+                operandType == MachLog::GARRISON && // Cursor on garrison
+                pActor->objectIsMachine() && // I am a machine
                 isPlayersRace) // Garrison is my race
             // not( pActor->hpRatio() >= 1.0 ) )  // Wounded ( removed due to Acclaim bug report, NA 9/1/99 )
             {
@@ -177,30 +177,30 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doDefault
             }
             // If over smelter we may want to recycle the machine
             else if (
-                altPressed_ and // We want an alternative cursor ( alt pressed )
-                not ctrlPressed_ and // Ctrl overrides all intelligent cursors with select cursor
-                (operandType == MachLog::SMELTER or operandType == MachLog::POD) and // Cursor on smelt-capable building
-                isPlayersRace and // Building is my race
-                pActor->objectIsMachine() and // I am a machine
+                altPressed_ && // We want an alternative cursor ( alt pressed )
+                ! ctrlPressed_ && // Ctrl overrides all intelligent cursors with select cursor
+                (operandType == MachLog::SMELTER || operandType == MachLog::POD) && // Cursor on smelt-capable building
+                isPlayersRace && // Building is my race
+                pActor->objectIsMachine() && // I am a machine
                 pCursorActor_->asConstruction().isComplete()) // Building is finished and operational
             {
                 useCursor_ = MachGui::RECYCLE_CURSOR;
             }
             // If over machine then we may want to follow it
             else if (
-                altPressed_ and // We want an alternative cursor ( alt pressed )
-                not ctrlPressed_ and // Ctrl overrides all intelligent cursors with select cursor
-                pCursorActor_->objectIsMachine() and // Cursor is on machine
+                altPressed_ && // We want an alternative cursor ( alt pressed )
+                ! ctrlPressed_ && // Ctrl overrides all intelligent cursors with select cursor
+                pCursorActor_->objectIsMachine() && // Cursor is on machine
                 pActor->objectIsMachine()) // I am a machine
             {
                 useCursor_ = MachGui::FOLLOW_CURSOR;
             }
             // If over construction we may want to enter it
             else if (
-                altPressed_ and // We want an alternative cursor ( alt pressed )
-                not ctrlPressed_ and // Ctrl overrides all intelligent cursors with select cursor
-                pCursorActor_->objectIsConstruction() and // Cursor is on building
-                pActor->objectIsMachine() and // I am a machine
+                altPressed_ && // We want an alternative cursor ( alt pressed )
+                ! ctrlPressed_ && // Ctrl overrides all intelligent cursors with select cursor
+                pCursorActor_->objectIsConstruction() && // Cursor is on building
+                pActor->objectIsMachine() && // I am a machine
                 pCursorActor_->asConstruction().physConstruction().hasInterior()) // Building can be entered
             {
                 // must check to see that at least one actor in the corral is capable of entering the building
@@ -221,7 +221,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doDefault
         {
             // If the non-fully-selectable item is debris then allow machines to move on top
             // of it but don't allow it to be selected into the corral.
-            if (pCursorActor_->objectIsDebris() and pActor->objectIsMachine())
+            if (pCursorActor_->objectIsDebris() && pActor->objectIsMachine())
             {
                 if (pActor->objectType() == MachLog::GEO_LOCATOR)
                 {
@@ -259,20 +259,20 @@ MachGuiIntelligentCursorOnActor::doProcessAdministrator(MachLogAdministrator* pA
     bool typeSpecificHandling = false;
 
     // Don't attack debris or ore...
-    if (not pCursorActor_->objectIsDebris() and not pCursorActor_->objectIsOreHolograph()
-        and pActor->canFireAt(*pCursorActor_))
+    if (! pCursorActor_->objectIsDebris() && ! pCursorActor_->objectIsOreHolograph()
+        && pActor->canFireAt(*pCursorActor_))
     {
         // Check for an enemy unit, and if so, attack it
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(pActor->race(), pCursorActor_->race());
-        bool enemyTarget = (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL);
+        bool enemyTarget = (disposition == MachLogRaces::ENEMY || disposition == MachLogRaces::NEUTRAL);
 
         if (enemyTarget)
         {
             if (pActor->asCanAttack().hasTreacheryWeapon()
-                and altPressed_ // We want an alternative cursor ( alt pressed )
-                and not ctrlPressed_ // Ctrl overrides all intelligent cursors with select cursor
-                and pCursorActor_->objectIsMachine())
+                && altPressed_ // We want an alternative cursor ( alt pressed )
+                && ! ctrlPressed_ // Ctrl overrides all intelligent cursors with select cursor
+                && pCursorActor_->objectIsMachine())
             {
                 typeSpecificHandling = true;
                 useCursor_ = MachGui::TREACHERY_CURSOR;
@@ -285,12 +285,12 @@ MachGuiIntelligentCursorOnActor::doProcessAdministrator(MachLogAdministrator* pA
         }
         else
         {
-            if (not enemyTarget and pActor->objectIsCanAttack())
+            if (! enemyTarget && pActor->objectIsCanAttack())
             {
                 // Has the administrator got the potential to heal? ( make sure we don't try and heal ourself ).
-                if (pActor->asCanAttack().hasHealingWeapon() and (pActor != pCursorActor_)
-                    and (pCursorActor_->objectIsMachine())
-                    and not ctrlPressed_) // Ctrl overrides all intelligent cursors with select cursor
+                if (pActor->asCanAttack().hasHealingWeapon() && (pActor != pCursorActor_)
+                    && (pCursorActor_->objectIsMachine())
+                    && ! ctrlPressed_) // Ctrl overrides all intelligent cursors with select cursor
                 {
                     // Find out if machine being pointed at needs healing...
                     if (pCursorActor_->hpRatio() != 1.0)
@@ -304,7 +304,7 @@ MachGuiIntelligentCursorOnActor::doProcessAdministrator(MachLogAdministrator* pA
     }
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         processStandardMachine(pActor);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -317,13 +317,13 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
 
     bool typeSpecificHandling = false;
 
-    if (not pCursorActor_->objectIsDebris() and not pCursorActor_->objectIsOreHolograph()
-        and pActor->canFireAt(*pCursorActor_))
+    if (! pCursorActor_->objectIsDebris() && ! pCursorActor_->objectIsOreHolograph()
+        && pActor->canFireAt(*pCursorActor_))
     {
         // Check for an enemy unit, and if so, attack it
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(pActor->race(), pCursorActor_->race());
-        bool enemyTarget = (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL);
+        bool enemyTarget = (disposition == MachLogRaces::ENEMY || disposition == MachLogRaces::NEUTRAL);
 
         if (enemyTarget)
         {
@@ -333,7 +333,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
     }
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         processStandardMachine(pActor);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -349,7 +349,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
     MachLogRaces::DispositionToRace disposition
         = MachLogRaces::instance().dispositionToRace(pActor->race(), pCursorActor_->race());
 
-    bool friendlyRace = (disposition == MachLogRaces::OUR_RACE or disposition == MachLogRaces::ALLY);
+    bool friendlyRace = (disposition == MachLogRaces::OUR_RACE || disposition == MachLogRaces::ALLY);
 
     // Check for an incomplete friendly building, and join in construction or repair.
     if (pCursorActor_->objectIsConstruction())
@@ -357,14 +357,14 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
         if (friendlyRace)
         {
             // If ctrl pressed then we use selection cursor, see default processing.
-            if (not altPressed_ and not ctrlPressed_)
+            if (! altPressed_ && ! ctrlPressed_)
             {
                 // Get HP info ( max HP and current HP )
                 const MachPhysObjectData& objData = pCursorActor_->objectData();
                 MachPhys::HitPointUnits maxHp = objData.hitPoints();
 
                 // If construction is not complete then join in...
-                if (not pCursorActor_->asConstruction().isComplete())
+                if (! pCursorActor_->asConstruction().isComplete())
                 {
                     typeSpecificHandling = true;
                     useCursor_ = MachGui::JOINCONSTRUCT_CURSOR;
@@ -376,7 +376,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
                     useCursor_ = MachGui::REPAIR_CURSOR;
                 }
             }
-            else if (altPressed_ and not ctrlPressed_)
+            else if (altPressed_ && ! ctrlPressed_)
             {
                 typeSpecificHandling = true;
                 useCursor_ = MachGui::DECONSTRUCT_CURSOR;
@@ -405,7 +405,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
     }
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         processStandardMachine(pActor);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -417,7 +417,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
     bool typeSpecificHandling = false;
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         processStandardMachine(pActor);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -435,12 +435,12 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
     bool ourRace = (disposition == MachLogRaces::OUR_RACE);
 
     // Check for the operand being a building
-    if (!ourRace and operandType == MachLog::HARDWARE_LAB and not ctrlPressed_)
+    if (!ourRace && operandType == MachLog::HARDWARE_LAB && ! ctrlPressed_)
     {
         // Try to enter the construction
         useCursor_ = MachGui::ENTER_BUILDING_CURSOR;
     }
-    else if (ourRace and operandType == MachLog::GARRISON and not pActor->fullyStockedMines() and not ctrlPressed_)
+    else if (ourRace && operandType == MachLog::GARRISON && ! pActor->fullyStockedMines() && ! ctrlPressed_)
     {
         // Try to enter the construction
         useCursor_ = MachGui::ENTER_BUILDING_CURSOR;
@@ -466,8 +466,8 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
 
     // Check for the operand being a friendly lab. If ctrl is pressed then user probably wants to select
     // the lab instead of have the machine enter it.
-    if (valid and pCursorActor_->objectIsConstruction() and operandType == MachLog::HARDWARE_LAB and not ctrlPressed_
-        and pActor->canFitInsideConstructionNow(pCursorActor_->asConstruction()))
+    if (valid && pCursorActor_->objectIsConstruction() && operandType == MachLog::HARDWARE_LAB && ! ctrlPressed_
+        && pActor->canFitInsideConstructionNow(pCursorActor_->asConstruction()))
     {
         // Try to enter the construction
         useCursor_ = MachGui::ENTER_BUILDING_CURSOR;
@@ -486,7 +486,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doProcess
     bool typeSpecificHandling = false;
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         processStandardMachine(pActor);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -503,7 +503,7 @@ MachGuiIntelligentCursorOnActor::doProcessResourceCarrier(MachLogResourceCarrier
     bool myBuilding = (disposition == MachLogRaces::OUR_RACE);
 
     // If operand is a construction..
-    if (pCursorActor_->objectIsConstruction() and pActor->isNormalResourceCarrier() and not ctrlPressed_)
+    if (pCursorActor_->objectIsConstruction() && pActor->isNormalResourceCarrier() && ! ctrlPressed_)
     {
         MachLog::ObjectType operandType = pCursorActor_->objectType();
         if (operandType == MachLog::MINE)
@@ -516,25 +516,25 @@ MachGuiIntelligentCursorOnActor::doProcessResourceCarrier(MachLogResourceCarrier
             else
                 useCursor_ = MachGui::INVALID_CURSOR;
         }
-        else if ((operandType == MachLog::SMELTER or operandType == MachLog::POD) and not myBuilding)
+        else if ((operandType == MachLog::SMELTER || operandType == MachLog::POD) && ! myBuilding)
         {
             useCursor_ = MachGui::PICKUP_CURSOR;
             typeSpecificHandling = true;
         }
-        else if ((operandType == MachLog::SMELTER or operandType == MachLog::POD) and myBuilding)
+        else if ((operandType == MachLog::SMELTER || operandType == MachLog::POD) && myBuilding)
         {
             useCursor_ = MachGui::TRANSPORT_CURSOR;
             typeSpecificHandling = true;
         }
     }
-    else if (pCursorActor_->objectIsDebris() and pActor->isScavenger())
+    else if (pCursorActor_->objectIsDebris() && pActor->isScavenger())
     {
         useCursor_ = MachGui::SCAVENGE_CURSOR;
         typeSpecificHandling = true;
     }
 
     // If nothing special, use standard machine logic
-    if (not typeSpecificHandling)
+    if (! typeSpecificHandling)
         processStandardMachine(pActor);
 
     return DO_NOT_PROCESS_AS_SUBTYPE;
@@ -553,7 +553,7 @@ void MachGuiIntelligentCursorOnActor::processStandardMachine(MachLogMachine* pAc
     // Check to see if corral is full of APCs, i.e. contains some actors that can enter
     // an APC
     bool allowAPCEnter = (pInGameScreen_->corralState() & MachInGameScreen::CORRAL_SOMEMACHINES)
-        and not(pInGameScreen_->corralState() & MachInGameScreen::CORRAL_ALLAPCS);
+        && !(pInGameScreen_->corralState() & MachInGameScreen::CORRAL_ALLAPCS);
 
     // Check for the operand being a building
     if (pCursorActor_->objectIsConstruction())
@@ -564,15 +564,15 @@ void MachGuiIntelligentCursorOnActor::processStandardMachine(MachLogMachine* pAc
     {
         // Operand is a machine.
         // If an APC we could enter it, as long as ctrl is not pressed
-        if (valid and operandType == MachLog::APC and // Cursor is over an APC
-            not ctrlPressed_ and // Ctrl overrides intelligent cursors, forces select cursor
-            not altPressed_ and // Alt means we are specifying alternative cursor ( see doDefaultProcess )
+        if (valid && operandType == MachLog::APC && // Cursor is over an APC
+            ! ctrlPressed_ && // Ctrl overrides intelligent cursors, forces select cursor
+            ! altPressed_ && // Alt means we are specifying alternative cursor ( see doDefaultProcess )
             allowAPCEnter) // APCs can't enter APCs. Therefore there must be at least one other type of machine
         {
             // must check to see that at least one actor in the corral is capable of entering this APC
             bool noneCanEnter = true;
             for (MachInGameScreen::Actors::const_iterator iter = pInGameScreen_->selectedActors().begin();
-                 iter != pInGameScreen_->selectedActors().end() and noneCanEnter;
+                 iter != pInGameScreen_->selectedActors().end() && noneCanEnter;
                  ++iter)
             {
                 if (MachGuiMoveCommand::couldEnterAPC((**iter), pCursorActor_->asAPC()))
@@ -581,7 +581,7 @@ void MachGuiIntelligentCursorOnActor::processStandardMachine(MachLogMachine* pAc
                 }
             }
 
-            if (not noneCanEnter)
+            if (! noneCanEnter)
                 useCursor_ = MachGui::ENTER_APC_CURSOR;
             else
                 useCursor_ = MachGui::INVALID_CURSOR;
@@ -591,7 +591,7 @@ void MachGuiIntelligentCursorOnActor::processStandardMachine(MachLogMachine* pAc
             doDefaultProcess(pActor);
         }
     }
-    else if (pCursorActor_->objectIsDebris() or pCursorActor_->objectIsOreHolograph())
+    else if (pCursorActor_->objectIsDebris() || pCursorActor_->objectIsOreHolograph())
     {
         if (pActor->objectType() == MachLog::GEO_LOCATOR)
         {

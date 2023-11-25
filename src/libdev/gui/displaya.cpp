@@ -132,7 +132,7 @@ void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
     relativeBox_.corners(newRelMin, newRelMax);
 
     Gui::Coord absCoord = relativeCoord();
-    if (not isRoot())
+    if (! isRoot())
         absCoord += parent()->absoluteCoord();
 
     absoluteBox_ = Gui::Box(absCoord, relativeBox_.size());
@@ -154,7 +154,7 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
     PRE_INFO(absCoord);
     PRE_INFO(newBoundary);
     PRE_INFO(parentBoundary);
-    PRE(implies(not isRoot() and isVisible(), parentBoundary.contains(newBoundary)));
+    PRE(implies(! isRoot() && isVisible(), parentBoundary.contains(newBoundary)));
 
     // Construct the displacement vector
     MexVec2 diff(absoluteBox_.minCorner(), absCoord);
@@ -167,7 +167,7 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
     absoluteBox_.corners(newAbsMin, newAbsMax);
 
     Gui::Coord relCoord = absCoord;
-    if (not isRoot())
+    if (! isRoot())
         relCoord -= parent()->absoluteCoord();
     relativeBox_ = Gui::Box(relCoord, absoluteBox_.size());
 
@@ -214,7 +214,7 @@ void GuiDisplayable::isVisible(bool visible)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
 
-    bool makeVisible = visible and isEligableForVisibility() and not isVisible_;
+    bool makeVisible = visible && isEligableForVisibility() && ! isVisible_;
 
     if (makeVisible)
         changed(true);
@@ -235,7 +235,7 @@ bool GuiDisplayable::isVisible() const
         parentVisible = pParent_->isVisible();
 
     // Return true if "this" is visible and my parent(s) is visible etc.
-    return isVisible_ and parentVisible and isEligableForVisibility();
+    return isVisible_ && parentVisible && isEligableForVisibility();
 }
 
 // virtual
@@ -286,7 +286,7 @@ void GuiDisplayable::addChild(GuiDisplayable* pNewChild, Layer childsLayer)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
 
-    PRE(not hasChild(pNewChild));
+    PRE(! hasChild(pNewChild));
     PRE_INFO(absoluteBoundary());
     PRE_INFO(pNewChild->absoluteBoundary());
 
@@ -326,7 +326,7 @@ void GuiDisplayable::removeChild(GuiDisplayable* pChild)
         }
     }
 
-    POST(not hasChild(pChild));
+    POST(! hasChild(pChild));
 }
 
 void GuiDisplayable::deleteChild(GuiDisplayable* pChild)
@@ -340,7 +340,7 @@ void GuiDisplayable::deleteChild(GuiDisplayable* pChild)
         delete *i; // Child automatically removes itself from allChildren_ collection on deletion
     }
 
-    POST(not hasChild(pChild));
+    POST(! hasChild(pChild));
 }
 
 void GuiDisplayable::deleteAllChildren()
@@ -411,7 +411,7 @@ bool GuiDisplayable::recursivelyHasChild(const GuiDisplayable* pChild) const
         found = true;
     }
 
-    for (Children::iterator i = allChildren_.begin(); not found and i != allChildren_.end(); ++i)
+    for (Children::iterator i = allChildren_.begin(); ! found && i != allChildren_.end(); ++i)
     {
         found = recursivelyHasChild(*i);
     }
@@ -428,9 +428,9 @@ void GuiDisplayable::display()
     if (isVisible()) // No point continuing if this displayable is invisible
     {
         // If this has changed and needs rendering then draw it followed by all it's children
-        if (hasChanged() or redrawEveryFrame())
+        if (hasChanged() || redrawEveryFrame())
         {
-            if (secondDisplay() and useFastSecondDisplay() and not redrawEveryFrame())
+            if (secondDisplay() && useFastSecondDisplay() && ! redrawEveryFrame())
             {
                 fastDisplay();
             }
@@ -471,7 +471,7 @@ void GuiDisplayable::normalDisplay()
             {
                 // If the parent ( this ) has just changed ( i.e. this is the first display out of two )
                 // then tell all children to display for the next 2 frames.
-                if (firstDisplay() or redrawEveryFrame())
+                if (firstDisplay() || redrawEveryFrame())
                 {
                     (*i)->changed(true);
                 }
@@ -505,8 +505,8 @@ void GuiDisplayable::fastDisplayChildren()
             GuiDisplayable* pChild = (*i);
             if (pChild->isVisible())
             {
-                if (pChild->firstDisplay() or pChild->redrawEveryFrame()
-                    or (pChild->secondDisplay() and not pChild->useFastSecondDisplay()))
+                if (pChild->firstDisplay() || pChild->redrawEveryFrame()
+                    || (pChild->secondDisplay() && ! pChild->useFastSecondDisplay()))
                 {
                     // Call childs display method.
                     pChild->display();
@@ -674,7 +674,7 @@ Gui::Boundary GuiDisplayable::relativeBoundary(const GuiDisplayable& ancestor) c
 
 Gui::Coord GuiDisplayable::relativeCoord(const GuiDisplayable& ancestor) const
 {
-    PRE(not isRoot());
+    PRE(! isRoot());
 
     Gui::Coord coord = relativeCoord();
 
@@ -712,7 +712,7 @@ bool GuiDisplayable::contains(Gui::XCoord x, Gui::YCoord y) const
 // virtual
 bool GuiDisplayable::contains(const Gui::Coord& c) const
 {
-    if (c.x() >= absoluteBoundary().minCorner().x() + width() or c.y() >= absoluteBoundary().minCorner().y() + height())
+    if (c.x() >= absoluteBoundary().minCorner().x() + width() || c.y() >= absoluteBoundary().minCorner().y() + height())
         return false;
 
     return absoluteBoundary().contains(c);
@@ -781,21 +781,21 @@ bool GuiDisplayable::innermostContaining(const Gui::Coord& c, GuiDisplayable** p
 
     // If we are visible and the point is contained in the boundary then we have found
     // a gui displayable that contains the mouse.
-    if (isVisible() and absoluteBoundary().contains(c))
+    if (isVisible() && absoluteBoundary().contains(c))
     {
-        for (Layer layer = NUMLAYERS; layer != LAYER1 and not found;)
+        for (Layer layer = NUMLAYERS; layer != LAYER1 && ! found;)
         {
             --((int&)layer);
 
             // Check to see if any of the children contain the mouse pointer
-            for (Children::iterator i = children_[layer].begin(); not found and i != children_[layer].end(); ++i)
+            for (Children::iterator i = children_[layer].begin(); ! found && i != children_[layer].end(); ++i)
             {
                 found = (*i)->innermostContaining(c, ppResult);
             }
         }
 
         // No children contain coord therefore we are most derived displayable containing coord.
-        if (not found)
+        if (! found)
         {
             *ppResult = this;
             found = true;
@@ -812,7 +812,7 @@ void GuiDisplayable::changed()
 
 void GuiDisplayable::setLayer(Layer layer)
 {
-    PRE(not isRoot());
+    PRE(! isRoot());
 
     parent()->removeChild(this);
     parent()->addChild(this, layer);
@@ -862,21 +862,21 @@ bool GuiDisplayable::innermostContainingCheckProcessesMouseEvents(const Gui::Coo
 
     // If we are visible and the point is contained in the boundary then we have found
     // a gui displayable that contains the mouse.
-    if (isVisible() and absoluteBoundary().contains(c) and processesMouseEvents())
+    if (isVisible() && absoluteBoundary().contains(c) && processesMouseEvents())
     {
-        for (Layer layer = NUMLAYERS; layer != LAYER1 and not found;)
+        for (Layer layer = NUMLAYERS; layer != LAYER1 && ! found;)
         {
             --((int&)layer);
 
             // Check to see if any of the children contain the mouse pointer
-            for (Children::iterator i = children_[layer].begin(); not found and i != children_[layer].end(); ++i)
+            for (Children::iterator i = children_[layer].begin(); ! found && i != children_[layer].end(); ++i)
             {
                 found = (*i)->innermostContainingCheckProcessesMouseEvents(c, ppResult);
             }
         }
 
         // No children contain coord therefore we are most derived displayable containing coord.
-        if (not found)
+        if (! found)
         {
             *ppResult = this;
             found = true;

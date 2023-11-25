@@ -71,7 +71,7 @@ void MachLogSuperCharger::doFire(MachActor* pTarget, const MachLogFireData&)
 
     if (pTarget->objectIsMachine())
     {
-        if (not healing_)
+        if (! healing_)
         {
             // initiate healing; start off by activating the beam animation and adding a heal aura reference
 
@@ -149,7 +149,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogSuperCharger& t)
 // virtual
 bool MachLogSuperCharger::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
-    PRE(currentlyAttached() and pSubject == &target());
+    PRE(currentlyAttached() && pSubject == &target());
 
     bool stayAttached = true;
 
@@ -173,7 +173,7 @@ MachLogSuperCharger& MachLogSuperCharger::asSuperCharger(MachLogWeapon* pWeapon)
     ASSERT_INFO(((const MachLogWeapon*)pWeapon)->physWeapon().type());
     ASSERT(
         ((const MachLogWeapon*)pWeapon)->physWeapon().type() == MachPhys::SUPERCHARGE_ADVANCED
-            or ((const MachLogWeapon*)pWeapon)->physWeapon().type() == MachPhys::SUPERCHARGE_SUPER,
+            || ((const MachLogWeapon*)pWeapon)->physWeapon().type() == MachPhys::SUPERCHARGE_SUPER,
         " Wrong weapon type in MLCharger::asSuperCharger\n");
     return *(_STATIC_CAST(MachLogSuperCharger*, pWeapon));
 }

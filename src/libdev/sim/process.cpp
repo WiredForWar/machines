@@ -150,7 +150,7 @@ void SimProcess::remove(SimActor* pActor)
         // See if we have a hit
         if (*i == pActor)
         {
-            if (not isEveryCycleActor)
+            if (! isEveryCycleActor)
             {
                 // Tidy up saved actor
                 if (pActor == pSavedActor_)
@@ -177,7 +177,7 @@ void SimProcess::remove(SimActor* pActor)
     POST(foundIt);
 
     // Adjust the index number of the next actor to update if necessary
-    if (not isEveryCycleActor and nextUpdateActor_ > index)
+    if (! isEveryCycleActor && nextUpdateActor_ > index)
         --nextUpdateActor_;
 
     TEST_INVARIANT;
@@ -208,7 +208,7 @@ void SimProcess::updateActors(const PhysRelativeTime& maxCPUTime)
 
     bool finished = false;
 
-    while ((not finished) and (actors_.size() != 0))
+    while ((! finished) && (actors_.size() != 0))
     {
         nextUpdateActor_ = nextUpdateActor_ % actors_.size();
 
@@ -233,7 +233,7 @@ void SimProcess::updateActors(const PhysRelativeTime& maxCPUTime)
             if (toBeUpdated_ == MANAGER_UPDATE)
                 offsetToNextUpdate = pActor->update(maxCPUTime, 0);
             bool isDead = pActor->isDead();
-            if (offsetToNextUpdate == 0 and not isDead)
+            if (offsetToNextUpdate == 0 && ! isDead)
             {
                 pSavedActor_ = pActor;
                 incrementActor_ = false;
@@ -252,7 +252,7 @@ void SimProcess::updateActors(const PhysRelativeTime& maxCPUTime)
             doneAnUpdate = true;
 
             // Set its next update time
-            if (not isDead)
+            if (! isDead)
                 pActor->nextUpdateTime(currentTime + offsetToNextUpdate);
 
             // Delete this or any other now dead actors
@@ -268,7 +268,7 @@ void SimProcess::updateActors(const PhysRelativeTime& maxCPUTime)
     }
 
     // If didn't find an actor to update, update the process
-    if (not doneAnUpdate)
+    if (! doneAnUpdate)
     {
         const PhysRelativeTime timeUsedSoFar = Phys::time() - entryTime;
 

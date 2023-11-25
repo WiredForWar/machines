@@ -122,7 +122,7 @@ void MachGuiChatWindow::addText(const string& text)
     if (chatWindow())
     {
         // Don't update if message box is filling screen
-        if (not chatWindow()->pStartupScreens_->msgBoxIsBeingDisplayed())
+        if (! chatWindow()->pStartupScreens_->msgBoxIsBeingDisplayed())
         {
             chatWindow()->changed();
         }

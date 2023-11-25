@@ -88,8 +88,8 @@ const MexVec3& MexVec3::operator=(const MexPoint3d& rhs)
 
 bool MexVec3::operator==(const MexVec3& v) const
 {
-    return Mathex::abs(x() - v.x()) < MexEpsilon::instance() and Mathex::abs(y() - v.y()) < MexEpsilon::instance()
-        and Mathex::abs(z() - v.z()) < MexEpsilon::instance();
+    return Mathex::abs(x() - v.x()) < MexEpsilon::instance() && Mathex::abs(y() - v.y()) < MexEpsilon::instance()
+        && Mathex::abs(z() - v.z()) < MexEpsilon::instance();
 }
 
 bool MexVec3::operator!=(const MexVec3& v) const
@@ -189,8 +189,8 @@ MATHEX_SCALAR MexVec3::modulus() const
 
 MexRadians MexVec3::angleBetween(const MexVec3& v) const
 {
-    PRE(not isZeroVector());
-    PRE(not v.isZeroVector());
+    PRE(! isZeroVector());
+    PRE(! v.isZeroVector());
 
     MATHEX_SCALAR cr = dotProduct(v);
     MexVec3 xp = crossProduct(*this, v);
@@ -198,7 +198,7 @@ MexRadians MexVec3::angleBetween(const MexVec3& v) const
 
     MexRadians result(atan2(sr, cr));
 
-    POST(MexRadians(0.0) <= result and result <= MexRadians(Mathex::PI));
+    POST(MexRadians(0.0) <= result && result <= MexRadians(Mathex::PI));
 
     return result;
 }
@@ -207,8 +207,8 @@ MexRadians MexVec3::angleBetween(const MexVec3& v) const
 
 MexRadians MexVec3::signedAngleBetween(const MexVec3& v) const
 {
-    PRE(not isZeroVector());
-    PRE(not v.isZeroVector());
+    PRE(! isZeroVector());
+    PRE(! v.isZeroVector());
 
     MATHEX_SCALAR cr = dotProduct(v);
     MexVec3 xp = crossProduct(*this, v);
@@ -230,7 +230,7 @@ MexRadians MexVec3::signedAngleBetween(const MexVec3& v) const
         }
     }
 
-    POST(-MexRadians(Mathex::PI) <= result and result <= MexRadians(Mathex::PI));
+    POST(-MexRadians(Mathex::PI) <= result && result <= MexRadians(Mathex::PI));
 
     return result;
 }
@@ -307,8 +307,8 @@ std::ostream& operator<<(std::ostream& o, const MexVec3& rhs)
 
 bool MexVec3::isZeroVector() const
 {
-    return (Mathex::abs(x()) < MexEpsilon::instance()) and (Mathex::abs(y()) < MexEpsilon::instance())
-        and (Mathex::abs(z()) < MexEpsilon::instance());
+    return (Mathex::abs(x()) < MexEpsilon::instance()) && (Mathex::abs(y()) < MexEpsilon::instance())
+        && (Mathex::abs(z()) < MexEpsilon::instance());
 }
 
 bool MexVec3::parallel(const MexVec3& v2) const

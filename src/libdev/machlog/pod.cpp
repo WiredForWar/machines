@@ -151,7 +151,7 @@ PhysRelativeTime MachLogPod::update(const PhysRelativeTime& alteredMaxCPUTime, M
 
     PhysRelativeTime interval = 5.0;
 
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
         interval = 0.1;
     else if (complete)
     {
@@ -169,14 +169,14 @@ PhysRelativeTime MachLogPod::update(const PhysRelativeTime& alteredMaxCPUTime, M
             races.newSmelterCompleted(myRace);
         }
 
-        if (not pPhysPod()->isWorking())
+        if (! pPhysPod()->isWorking())
         {
             pPhysPod()->isWorking(true);
             if (MachLogNetwork::instance().isNetworkGame())
                 MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
         }
 
-        if (not hasIonCannon())
+        if (! hasIonCannon())
         {
             MachLogResearchItem& mlri
                 = races.researchTree().researchItem(MachLog::POD, 0, 1, MachPhys::T_ION_ORBITAL_CANNON);
@@ -189,7 +189,7 @@ PhysRelativeTime MachLogPod::update(const PhysRelativeTime& alteredMaxCPUTime, M
         {
             if (ionCannonReady())
             {
-                if (not ionCannonCharged_) // i.e. it wasn't charged last update time
+                if (! ionCannonCharged_) // i.e. it wasn't charged last update time
                     // aha! Ion cannon has come online!
                     MachLogVoiceMailManager::instance().postNewMail(VID_POD_ION_CANNON_CHARGED, position(), myRace);
 
@@ -359,7 +359,7 @@ bool MachLogPod::hasIonCannon() const
 
 bool MachLogPod::ionCannonReady() const
 {
-    return hasIonCannon() and weapons().front()->recharged();
+    return hasIonCannon() && weapons().front()->recharged();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -427,7 +427,7 @@ PhysRelativeTime MachLogPod::attack(const MexPoint3d& position)
 // virtual
 int MachLogPod::militaryStrength() const
 {
-    if (not isComplete())
+    if (! isComplete())
         return 0;
 
     int hwLevel = (int)(asConstruction().level());
@@ -468,7 +468,7 @@ void MachLogPod::assignToDifferentRace(MachLogRace& newRace)
 
     // now, if this pod doesn't have an ion cannon but the capturing race has the technology, arm it up.
 
-    if (not hasIonCannon())
+    if (! hasIonCannon())
     {
         MachLogResearchItem& mlri
             = races.researchTree().researchItem(MachLog::POD, 0, 1, MachPhys::T_ION_ORBITAL_CANNON);
@@ -558,20 +558,20 @@ void MachLogPod::beHit(
 {
     CB_MachLogPod_DEPIMPL();
 
-    if (not isDead())
+    if (! isDead())
     {
         MachLogConstruction::beHit(damage, byType, pByActor, pByDirection, echo);
 
         // only knock off BMU capacity from race total if we've actually added it for this pod (not done until pod
         // is complete - see update method)
-        if (isDead() and addedBMUStorageToRace_)
+        if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
             // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
             // If we're deliberately aiming at the pod, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.
-            bool destroyedByFriendly = (pByActor and pByActor->race() == race());
+            bool destroyedByFriendly = (pByActor && pByActor->race() == race());
 
             if (destroyedByFriendly)
                 MachLogRaces::instance().reduceCapacityNoPenalty(
@@ -594,20 +594,20 @@ void MachLogPod::beHitWithoutAnimation(
 {
     CB_MachLogPod_DEPIMPL();
 
-    if (not isDead())
+    if (! isDead())
     {
         MachLogConstruction::beHitWithoutAnimation(damage, physicalTimeDelay, pByActor, echo);
 
         // only knock off BMU capacity from race total if we've actually added it for this pod (not done until pod
         // is complete - see update method)
-        if (isDead() and addedBMUStorageToRace_)
+        if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
             // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
             // If we're deliberately aiming at the pod, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.
-            bool destroyedByFriendly = (pByActor and pByActor->race() == race());
+            bool destroyedByFriendly = (pByActor && pByActor->race() == race());
 
             if (destroyedByFriendly)
                 MachLogRaces::instance().reduceCapacityNoPenalty(

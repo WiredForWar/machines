@@ -28,7 +28,7 @@ double MachPhysRandom::randomDouble(MATHEX_SCALAR lowerLimit, MATHEX_SCALAR uppe
     //    result = lowerLimit + ( (float)(rand()) / 32767.0 ) * ( upperLimit - lowerLimit );
     result = lowerLimit + ((float)(rand()) / (float)RAND_MAX) * (upperLimit - lowerLimit);
 
-    POST(lowerLimit <= result and result <= upperLimit);
+    POST(lowerLimit <= result && result <= upperLimit);
 
     return result;
 }
@@ -42,7 +42,7 @@ int MachPhysRandom::randomInt(int lowerLimit, int upperLimit)
 
     int result = lowerLimit + rand() % (upperLimit - lowerLimit);
 
-    POST(lowerLimit <= result and result < upperLimit);
+    POST(lowerLimit <= result && result < upperLimit);
 
     return result;
 }
@@ -54,7 +54,7 @@ size_t MachPhysRandom::randomInt(size_t lowerLimit, size_t upperLimit)
 
     size_t result = lowerLimit + rand() % (upperLimit - lowerLimit);
 
-    POST(lowerLimit <= result and result < upperLimit);
+    POST(lowerLimit <= result && result < upperLimit);
 
     return result;
 }

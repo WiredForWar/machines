@@ -96,7 +96,7 @@ void W4dCompositeImpl::parseModel(const SysPathName& directoryName, UtlLineToken
 
     MATHEX_SCALAR distance;
 
-    if (not pParser->finished() and pParser->tokens()[0] == "DISTANCE")
+    if (! pParser->finished() && pParser->tokens()[0] == "DISTANCE")
     {
         ASSERT(pParser->tokens().size() == 2, "");
         distance = atof(pParser->tokens()[1].c_str());
@@ -113,7 +113,7 @@ void W4dCompositeImpl::parseModel(const SysPathName& directoryName, UtlLineToken
 
     addEmptyMeshes(distance, id);
 
-    if (not empty_)
+    if (! empty_)
     {
         RenHierarchyBuilder builder;
         RenHierarchyLoader::load(pathname, &builder);
@@ -231,15 +231,15 @@ bool W4dCompositeImpl::readAnimation(
 
     bool finished = false;
 
-    while (not parser.finished() and not finished)
+    while (! parser.finished() && ! finished)
     {
-        if ((parser.tokens().size() >= 2) and parser.tokens()[0] == "AnimationSet"
-            and parser.tokens()[1] == animationName)
+        if ((parser.tokens().size() >= 2) && parser.tokens()[0] == "AnimationSet"
+            && parser.tokens()[1] == animationName)
         {
             parser.parseNextLine();
 
             // Next line either defines a link animation, or end-of-set
-            while (not parser.finished())
+            while (! parser.finished())
             {
                 if (parser.tokens()[0] == "Animation")
                 {
@@ -247,7 +247,7 @@ bool W4dCompositeImpl::readAnimation(
                     ASSERT(parser.tokens().size() == 3, "");
                     ASSERT(parser.tokens()[2] == "{", "")
                     parser.parseNextLine();
-                    ASSERT(not parser.finished(), "")
+                    ASSERT(! parser.finished(), "")
 
                     // The current line contains the link name. Map to link id.
                     POST(parser.tokens().size() == 3);
@@ -263,7 +263,7 @@ bool W4dCompositeImpl::readAnimation(
                     // Find the length of the substring before an 'X' character.
                     // This separates out the link name from the mesh shared name.
                     size_t length = 0;
-                    while (length < linkName.length() and linkName[length] != 'X')
+                    while (length < linkName.length() && linkName[length] != 'X')
                         ++length;
 
                     linkName = linkName.substr(0, length);
@@ -275,7 +275,7 @@ bool W4dCompositeImpl::readAnimation(
                     W4dLink::Id id = pLink->id();
 
                     parser.parseNextLine();
-                    ASSERT(not parser.finished(), "")
+                    ASSERT(! parser.finished(), "")
 
                     // Get the link animation as a PhysMotionPlan
 
@@ -302,13 +302,13 @@ bool W4dCompositeImpl::readAnimation(
                     finished = true;
                 }
 
-                if (not parser.finished())
+                if (! parser.finished())
                     parser.parseNextLine();
             }
         }
 
         // Load the next line
-        if (not parser.finished())
+        if (! parser.finished())
             parser.parseNextLine();
     }
 
@@ -339,9 +339,9 @@ bool W4dCompositeImpl::parseLinkAnimation(
 
     while (pParser->tokens()[0] == "AnimationKey")
     {
-        POST(pParser->tokens().size() == 2 and pParser->tokens()[1] == "{");
+        POST(pParser->tokens().size() == 2 && pParser->tokens()[1] == "{");
         pParser->parseNextLine();
-        POST(not pParser->finished())
+        POST(! pParser->finished())
 
         // The next line is the key type
         PRE(pParser->tokens().size() == 1)
@@ -377,14 +377,14 @@ bool W4dCompositeImpl::parseLinkAnimation(
                 ASSERT_FAIL("Unknown XAN key type");
         }
         pParser->parseNextLine();
-        POST(not pParser->finished())
+        POST(! pParser->finished())
 
         // Now get the number of frames defined
         PRE(pParser->tokens().size() == 1)
         int nFrames = atoi(pParser->tokens()[0].c_str());
         POST(nFrames > 0);
         pParser->parseNextLine();
-        POST(not pParser->finished())
+        POST(! pParser->finished())
 
         // Parse the actual key frame data
         while (nFrames--)
@@ -444,17 +444,17 @@ bool W4dCompositeImpl::parseLinkAnimation(
 
             // Must have another line
             pParser->parseNextLine();
-            POST(not pParser->finished())
+            POST(! pParser->finished())
         }
 
         // Next line must be closing brace
-        POST(pParser->tokens().size() == 1 and pParser->tokens()[0] == "}");
+        POST(pParser->tokens().size() == 1 && pParser->tokens()[0] == "}");
         pParser->parseNextLine();
-        POST(not pParser->finished())
+        POST(! pParser->finished())
     }
 
     // Must be the end of the animation
-    ASSERT(pParser->tokens().size() == 1 and pParser->tokens()[0] == "}", "");
+    ASSERT(pParser->tokens().size() == 1 && pParser->tokens()[0] == "}", "");
 
     bool result = false;
 
@@ -570,14 +570,14 @@ bool W4dCompositeImpl::animationValid(
         //         if( linkOrientation != orientations.front().second )
         //             valid = true;
 
-        for (KeyFrameOrientations::const_iterator i = orientations.begin(); i != orientations.end() and not valid; ++i)
+        for (KeyFrameOrientations::const_iterator i = orientations.begin(); i != orientations.end() && ! valid; ++i)
         {
             if ((*i).second != orientations.front().second)
                 valid = true;
         }
     }
 
-    if (locations.size() > 0 and not valid)
+    if (locations.size() > 0 && ! valid)
     {
         //  Don't check against the link's original position because of
         //  rounding errors. This means that an animation which just moves
@@ -589,7 +589,7 @@ bool W4dCompositeImpl::animationValid(
         //         if( linkLocation != locations.front().second )
         //             valid = true;
 
-        for (KeyFrameLocations::const_iterator i = locations.begin(); i != locations.end() and not valid; ++i)
+        for (KeyFrameLocations::const_iterator i = locations.begin(); i != locations.end() && ! valid; ++i)
         {
             if ((*i).second != locations.front().second)
                 valid = true;
@@ -603,7 +603,7 @@ bool W4dCompositeImpl::findLink(const string& name, W4dLink** ppLink) const
 {
     *ppLink = nullptr;
 
-    for (W4dComposite::W4dLinks::const_iterator i = links_.begin(); i != links_.end() and *ppLink == nullptr; ++i)
+    for (W4dComposite::W4dLinks::const_iterator i = links_.begin(); i != links_.end() && *ppLink == nullptr; ++i)
     {
         if ((*i)->name() == name)
             *ppLink = *i;
@@ -622,7 +622,7 @@ PhysMotionPlanPtr W4dCompositeImpl::makeAnimationPlan(
     size_t i = 0;
     size_t j = 0;
 
-    PRE(orientations[i].first == 0 or locations[i].first == 0);
+    PRE(orientations[i].first == 0 || locations[i].first == 0);
 
     // Get the start transform from first orientation and location,
     MexTransform3d startTransform(orientations.front().second, locations.front().second);
@@ -674,7 +674,7 @@ PhysMotionPlanPtr W4dCompositeImpl::makeAnimationPlan(
     PhysLinearMotionPlan* pPlan = new PhysLinearMotionPlan(startTransform, currentTransform, time);
 
     // Add any further transforms
-    while (i < orientations.size() and j < locations.size())
+    while (i < orientations.size() && j < locations.size())
     {
         if (locations[j].first < orientations[i].first)
         {

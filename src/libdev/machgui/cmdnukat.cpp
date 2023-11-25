@@ -35,7 +35,7 @@ MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScre
     : MachGuiCommand(pInGameScreen)
     , action_(DO_NOTHING)
     , pDirectObject_(nullptr)
-    , hadFinalPick_(not atLeastOneActorHasChargedNuke())
+    , hadFinalPick_(! atLeastOneActorHasChargedNuke())
 {
     TEST_INVARIANT;
 }
@@ -86,7 +86,7 @@ void MachGuiNukeAttackCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, 
 bool MachGuiNukeAttackCommand::canActorEverExecute(const MachActor& actor) const
 {
     // this function has multiple exit points
-    if (actor.objectType() == MachLog::MISSILE_EMPLACEMENT and actor.asMissileEmplacement().isNukeSilo())
+    if (actor.objectType() == MachLog::MISSILE_EMPLACEMENT && actor.asMissileEmplacement().isNukeSilo())
     {
         return true;
     }
@@ -134,7 +134,7 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
 {
     ASSERT_INFO(*pActor);
     ASSERT(
-        pActor->objectType() == MachLog::MISSILE_EMPLACEMENT and pActor->asMissileEmplacement().isNukeSilo(),
+        pActor->objectType() == MachLog::MISSILE_EMPLACEMENT && pActor->asMissileEmplacement().isNukeSilo(),
         "A non-ICBM has somehow been allowed to initiate a nuclear attack.");
 
     MachLogRaces& races = MachLogRaces::instance();
@@ -150,7 +150,7 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
 
         MexPoint2d validPoint;
         canDo = pActor->asMissileEmplacement().nukeReady()
-            and findClosestPointValidOnTerrain(
+            && findClosestPointValidOnTerrain(
                     location_,
                     pActor->globalTransform().position(),
                     IGNORE_ALL_ACTOR_OBSTACLES,
@@ -191,12 +191,12 @@ bool MachGuiNukeAttackCommand::applyAttackObject(MachActor* pActor, string*)
     if (sufficientBMUsForLaunch)
     {
         bool canDo = pActor->asMissileEmplacement().nukeReady()
-            and pActor != pDirectObject_; // check not trying to attack oneself.
+            && pActor != pDirectObject_; // check not trying to attack oneself.
         if (canDo)
         {
             ASSERT_INFO(*pActor);
             ASSERT(
-                pActor->objectType() == MachLog::MISSILE_EMPLACEMENT and pActor->asMissileEmplacement().isNukeSilo(),
+                pActor->objectType() == MachLog::MISSILE_EMPLACEMENT && pActor->asMissileEmplacement().isNukeSilo(),
                 "A non-ICBM has somehow been allowed to initiate a nuclear attack.");
 
             // Construct appropriate type of operation
@@ -226,7 +226,7 @@ MachGui::Cursor2dType MachGuiNukeAttackCommand::cursorOnTerrain(const MexPoint3d
     {
         cursorType = MachGui::INVALID_CURSOR;
 
-        if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_ALL_ACTOR_OBSTACLES))
+        if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_ALL_ACTOR_OBSTACLES))
         {
             action_ = ATTACK_LOCATION;
             cursorType = MachGui::NUKE_ATTACK_CURSOR;
@@ -287,7 +287,7 @@ uint MachGuiNukeAttackCommand::commandPromptStringid() const
 // virtual
 bool MachGuiNukeAttackCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_N and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_N && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -304,7 +304,7 @@ void MachGuiNukeAttackCommand::update(const Actors& actors)
 
     for (Actors::const_iterator iter = actors.begin(); iter != actors.end(); ++iter)
     {
-        if ((*iter)->objectType() == MachLog::MISSILE_EMPLACEMENT and (*iter)->asMissileEmplacement().isNukeSilo())
+        if ((*iter)->objectType() == MachLog::MISSILE_EMPLACEMENT && (*iter)->asMissileEmplacement().isNukeSilo())
         {
             int percentageRecharged = (*iter)->asMissileEmplacement().weapons().front()->percentageRecharge();
 
@@ -338,7 +338,7 @@ bool MachGuiNukeAttackCommand::atLeastOneActorHasChargedNuke() const
     bool noneHasChargedNuke = true;
 
     for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-         iter != inGameScreen().selectedActors().end() and noneHasChargedNuke;
+         iter != inGameScreen().selectedActors().end() && noneHasChargedNuke;
          ++iter)
     {
         MachActor& actor = (**iter);
@@ -346,14 +346,14 @@ bool MachGuiNukeAttackCommand::atLeastOneActorHasChargedNuke() const
         if (actor.objectIsMissileEmplacement())
         {
             const MachLogMissileEmplacement& missileEmp = actor.asMissileEmplacement();
-            if (missileEmp.isNukeSilo() and missileEmp.nukeReady())
+            if (missileEmp.isNukeSilo() && missileEmp.nukeReady())
             {
                 noneHasChargedNuke = false;
             }
         }
     }
 
-    return not(noneHasChargedNuke);
+    return !(noneHasChargedNuke);
 }
 
 // Forced recompile 19/2/99 CPS

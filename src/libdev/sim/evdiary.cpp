@@ -28,7 +28,7 @@ SimEventDiary::~SimEventDiary()
     TEST_INVARIANT;
 
     // Extract every event from the list, and disassociate it
-    while (not events_.empty())
+    while (! events_.empty())
     {
         // Remove last element from queue
         SimDiscreteEventPtr event = events_.back();
@@ -87,7 +87,7 @@ void SimEventDiary::remove(const SimDiscreteEventPtr& event)
 SimDiscreteEventPtr SimEventDiary::takeNextEvent()
 {
     // Check the diary isn't empty
-    PRE(not events_.empty());
+    PRE(! events_.empty());
 
     // Ensure the order is correct
     validateOrder();
@@ -106,7 +106,7 @@ SimDiscreteEventPtr SimEventDiary::takeNextEvent()
 void SimEventDiary::validateOrder() const
 {
     // No action needed if events are already in order
-    if (not eventsSorted_)
+    if (! eventsSorted_)
     {
 
         // We need a non-const pointer to this item

@@ -243,7 +243,7 @@ void MachPhysTurnerTracker::snapToAngle(const PhysAbsoluteTime& atTime, MexRadia
 
 MexRadians MachPhysTurnerTracker::targetAngle() const
 {
-    PRE(not isTrackingTarget());
+    PRE(! isTrackingTarget());
 
     ITurnerTracker& impl = *pImpl_;
     W4dAxisTurnerPlan& axisTurnerPlan = *(impl.pAxisTurnerPlan_);

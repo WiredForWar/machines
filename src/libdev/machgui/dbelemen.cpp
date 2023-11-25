@@ -56,7 +56,7 @@ bool MachGuiDbElement::isAvailable() const
 
     // Check for any incomplete antecedents
     size_t nAntecedents = pData_->antecedents_.size();
-    for (size_t i = nAntecedents; result and i--;)
+    for (size_t i = nAntecedents; result && i--;)
         result = pData_->antecedents_[i]->isComplete();
 
     return result;

@@ -66,7 +66,7 @@ void PhysAccelerateTumblePlan::transform(const PhysRelativeTime& timeOffset, Mex
         {
             recalculateSegmentIndex = true;
         }
-        else if (currentSegmentIndex_ != 0 and timeOffset < segmentTimes[currentSegmentIndex_ - 1])
+        else if (currentSegmentIndex_ != 0 && timeOffset < segmentTimes[currentSegmentIndex_ - 1])
         {
             recalculateSegmentIndex = true;
             nonConstThis->pImpl_->currentSegmentIndex_ = 0;
@@ -138,7 +138,7 @@ void PhysAccelerateTumblePlan::setRotation(const PhysRelativeTime& timeFromStart
     MATHEX_SCALAR timeFraction = timeFromStartOfSegment / currentSegmentDuration();
 
     ASSERT_INFO(timeFraction);
-    ASSERT(timeFraction >= 0.0 and timeFraction <= 1.0, "");
+    ASSERT(timeFraction >= 0.0 && timeFraction <= 1.0, "");
 
     MexRadians azimuth = initialOrientation_.azimuth() + timeFraction * deltaOrientation_.azimuth();
     MexRadians elevation = initialOrientation_.elevation() + timeFraction * deltaOrientation_.elevation();

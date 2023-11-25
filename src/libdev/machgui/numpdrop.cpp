@@ -96,7 +96,7 @@ bool MachGuiNumPlayersDropDownListBoxCreator::doHandleNavigationKey(
 {
     bool retValue = MachGuiDropDownListBoxCreator::doHandleNavigationKey(navKey, pFocusCapableControl);
 
-    if (navKey == MachGuiFocusCapableControl::UP_ARROW or navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    if (navKey == MachGuiFocusCapableControl::UP_ARROW || navKey == MachGuiFocusCapableControl::DOWN_ARROW)
     {
         GuiResourceString two(IDS_MENU_NUMPLAYERS2);
         GuiResourceString three(IDS_MENU_NUMPLAYERS3);

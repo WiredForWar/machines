@@ -72,7 +72,7 @@ void GuiIconSequence::updateMetrics()
     unsigned nActiveChildren = 0;
     for (Children::iterator i = children().begin(); i != children().end(); ++i)
     {
-        if (not isScroller(*i) and (*i)->isEligableForVisibility())
+        if (! isScroller(*i) && (*i)->isEligableForVisibility())
         {
             Coords::size_type fixIndex;
             if (isFixedChild(*i, &fixIndex))
@@ -95,7 +95,7 @@ void GuiIconSequence::update()
     allocatedPositions_.clear();
     for (Children::iterator i = children().begin(); i != children().end(); ++i)
     {
-        if (not isScroller(*i) and (*i)->isEligableForVisibility())
+        if (! isScroller(*i) && (*i)->isEligableForVisibility())
         {
             Coords::size_type fixIndex;
             if (isFixedChild(*i, &fixIndex))
@@ -171,19 +171,19 @@ void GuiIconSequence::repositionChildren()
     Coords::size_type firstUnavailablePosition = std::min(activeChildren_.size() - offset(), coords().size());
     for (Coords::size_type i = 0; i < coords().size(); ++i)
     {
-        bool iThPositionAvailable = i < firstUnavailablePosition and not currentAllocatedPositions[i];
+        bool iThPositionAvailable = i < firstUnavailablePosition && ! currentAllocatedPositions[i];
 
-        bool isScrollPos = canScroll() and isPositionOfScroller(i);
-        if (iThPositionAvailable and not isScrollPos)
+        bool isScrollPos = canScroll() && isPositionOfScroller(i);
+        if (iThPositionAvailable && ! isScrollPos)
         {
             // place next active child in the i-th position
             bool foundChild = false;
             for (Coords::size_type j = std::max(i, _STATIC_CAST(Coords::size_type, offset()));
-                 j < activeChildren_.size() and not foundChild;
+                 j < activeChildren_.size() && ! foundChild;
                  ++j)
             {
                 ASSERT(j < allocatedChild.size(), "index out of range");
-                foundChild = not currentAllocatedPositions[j - offset()];
+                foundChild = ! currentAllocatedPositions[j - offset()];
                 if (foundChild)
                 {
                     allocatedChild[j] = true;
@@ -226,8 +226,8 @@ bool GuiIconSequence::isFixedPosition(Coords::size_type coordIndex) const
     PRE_INFO(coordIndex);
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
-    bool result = isPositionOfScroller(coordIndex) or isPositionOfFixedChild(coordIndex);
-    POST(iff(result, isPositionOfScroller(coordIndex) or isPositionOfFixedChild(coordIndex)));
+    bool result = isPositionOfScroller(coordIndex) || isPositionOfFixedChild(coordIndex);
+    POST(iff(result, isPositionOfScroller(coordIndex) || isPositionOfFixedChild(coordIndex)));
     return result;
 }
 
@@ -245,12 +245,12 @@ bool GuiIconSequence::isPositionOfFixedChild(Coords::size_type coordIndex) const
 bool GuiIconSequence::isFixedChild(GuiDisplayable* pChild, Coords::size_type* pResult) const
 {
     PRE(hasChild(pChild));
-    PRE(not isScroller(pChild));
+    PRE(! isScroller(pChild));
 
     CB_GUIICONSEQUENCE_DEPIMPL();
 
     bool result = false;
-    for (FixedChildren::size_type i = 0; i < fixedChildren_.size() and not result; ++i)
+    for (FixedChildren::size_type i = 0; i < fixedChildren_.size() && ! result; ++i)
     {
         result = (fixedChildren_[i] == pChild);
         if (result)
@@ -266,29 +266,29 @@ void GuiIconSequence::fixChild(GuiDisplayable* pChild, Coords::size_type coordIn
     PRE_INFO(coordIndex);
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
-    PRE(not isScroller(pChild));
-    PRE(not isFixedPosition(coordIndex));
+    PRE(! isScroller(pChild));
+    PRE(! isFixedPosition(coordIndex));
     PRE_DATA(Coords::size_type dummy);
-    PRE(not isFixedChild(pChild, &dummy));
+    PRE(! isFixedChild(pChild, &dummy));
 
     CB_GUIICONSEQUENCE_DEPIMPL();
 
     fixedChildren_[coordIndex] = pChild;
 
     POST_DATA(Coords::size_type atIndex);
-    POST(isFixedChild(pChild, &atIndex) and coordIndex == atIndex);
+    POST(isFixedChild(pChild, &atIndex) && coordIndex == atIndex);
 }
 
 void GuiIconSequence::unfixChild(GuiDisplayable* pChild)
 {
     PRE(hasChild(pChild));
-    PRE(not isScroller(pChild));
+    PRE(! isScroller(pChild));
 
     CB_GUIICONSEQUENCE_DEPIMPL();
 
     bool found = false;
     FixedChildren::size_type i = 0;
-    for (; i < fixedChildren_.size() and not found; ++i)
+    for (; i < fixedChildren_.size() && ! found; ++i)
     {
         found = (fixedChildren_[i] == pChild);
         if (found)
@@ -296,7 +296,7 @@ void GuiIconSequence::unfixChild(GuiDisplayable* pChild)
     }
 
     POST_DATA(Coords::size_type dummy);
-    POST(not isFixedChild(pChild, &dummy));
+    POST(! isFixedChild(pChild, &dummy));
 }
 
 void GuiIconSequence::fixScroller(GuiDisplayable* pChild, Coords::size_type coordIndex)
@@ -307,7 +307,7 @@ void GuiIconSequence::fixScroller(GuiDisplayable* pChild, Coords::size_type coor
     PRE_INFO(coordIndex);
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
-    PRE(not isPositionOfFixedChild(coordIndex));
+    PRE(! isPositionOfFixedChild(coordIndex));
 
     CB_GUIICONSEQUENCE_DEPIMPL();
 
@@ -434,7 +434,7 @@ Gui::Box GuiIconSequence::arrayDimensions(unsigned iconWidth, unsigned iconHeigh
 Gui::Box GuiIconSequence::coordBoundary(const Coords& c, unsigned iconWidth, unsigned iconHeight)
 // bounding box for a seqeunce of coords
 {
-    PRE(not c.empty());
+    PRE(! c.empty());
     Gui::Box result(*c.begin(), 1, 1);
 
     for (Coords::const_iterator i = c.begin(); i != c.end(); ++i)
@@ -523,7 +523,7 @@ bool GuiScrollableIconSequence::canScroll() const
 {
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
-    return canScrollLeft_ or canScrollRight_;
+    return canScrollLeft_ || canScrollRight_;
 }
 
 bool GuiScrollableIconSequence::canScrollLeft() const
@@ -549,32 +549,32 @@ bool GuiScrollableIconSequence::isPositionOfScroller(Coords::size_type coordInde
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
     PRE(coordIndex < coords().size());
-    return pLeftScroller_ != nullptr and coordIndex == leftScrollerIndex_
-        or pRightScroller_ != nullptr and coordIndex == rightScrollerIndex_
-        or pTwoWayScroller_ != nullptr and coordIndex == twoWayScrollerIndex_;
+    return pLeftScroller_ != nullptr && coordIndex == leftScrollerIndex_
+        || pRightScroller_ != nullptr && coordIndex == rightScrollerIndex_
+        || pTwoWayScroller_ != nullptr && coordIndex == twoWayScrollerIndex_;
 }
 
 bool GuiScrollableIconSequence::hasLeftScroller() const
 {
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
-    return pLeftScroller_ != nullptr or pTwoWayScroller_ != nullptr;
+    return pLeftScroller_ != nullptr || pTwoWayScroller_ != nullptr;
 }
 
 bool GuiScrollableIconSequence::hasRightScroller() const
 {
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
-    return pRightScroller_ != nullptr or pTwoWayScroller_ != nullptr;
+    return pRightScroller_ != nullptr || pTwoWayScroller_ != nullptr;
 }
 
 bool GuiScrollableIconSequence::isScroller(GuiDisplayable* pChild) const
 {
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
-    return pLeftScroller_ != nullptr and pChild == pLeftScroller_
-        or pRightScroller_ != nullptr and pChild == pRightScroller_
-        or pTwoWayScroller_ != nullptr and pChild == pTwoWayScroller_;
+    return pLeftScroller_ != nullptr && pChild == pLeftScroller_
+        || pRightScroller_ != nullptr && pChild == pRightScroller_
+        || pTwoWayScroller_ != nullptr && pChild == pTwoWayScroller_;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -583,13 +583,13 @@ void GuiScrollableIconSequence::leftScroller(GuiDisplayable* pNewScroller, Coord
 {
     PRE(hasChild(pNewScroller));
     PRE_DATA(Coords::size_type dummy);
-    PRE(not isFixedChild(pNewScroller, &dummy));
-    PRE(not isScroller(pNewScroller));
-    PRE(not hasLeftScroller());
+    PRE(! isFixedChild(pNewScroller, &dummy));
+    PRE(! isScroller(pNewScroller));
+    PRE(! hasLeftScroller());
     PRE_INFO(coordIndex);
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
-    PRE(not isFixedPosition(coordIndex));
+    PRE(! isFixedPosition(coordIndex));
 
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
@@ -605,13 +605,13 @@ void GuiScrollableIconSequence::rightScroller(GuiDisplayable* pNewScroller, Coor
 {
     PRE(hasChild(pNewScroller));
     PRE_DATA(Coords::size_type dummy);
-    PRE(not isFixedChild(pNewScroller, &dummy));
-    PRE(not isScroller(pNewScroller));
-    PRE(not hasLeftScroller());
+    PRE(! isFixedChild(pNewScroller, &dummy));
+    PRE(! isScroller(pNewScroller));
+    PRE(! hasLeftScroller());
     PRE_INFO(coordIndex);
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
-    PRE(not isFixedPosition(coordIndex));
+    PRE(! isFixedPosition(coordIndex));
 
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
@@ -627,14 +627,14 @@ void GuiScrollableIconSequence::twoWayScroller(GuiDisplayable* pNewScroller, Coo
 {
     PRE(hasChild(pNewScroller));
     PRE_DATA(Coords::size_type dummy);
-    PRE(not isFixedChild(pNewScroller, &dummy));
-    PRE(not isScroller(pNewScroller));
-    PRE(not hasLeftScroller());
-    PRE(not hasRightScroller());
+    PRE(! isFixedChild(pNewScroller, &dummy));
+    PRE(! isScroller(pNewScroller));
+    PRE(! hasLeftScroller());
+    PRE(! hasRightScroller());
     PRE_INFO(coordIndex);
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
-    PRE(not isFixedPosition(coordIndex));
+    PRE(! isFixedPosition(coordIndex));
 
     CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
@@ -714,14 +714,14 @@ void GuiScrollableIconSequence::positionScrollers()
 
     if (pTwoWayScroller_ != nullptr)
     {
-        if (canScrollLeft_ or canScrollRight_)
+        if (canScrollLeft_ || canScrollRight_)
             fixScroller(pTwoWayScroller_, twoWayScrollerIndex_);
         else
             pTwoWayScroller_->isVisible(false);
     }
     else
     {
-        if (canScrollLeft_ or canScrollRight_)
+        if (canScrollLeft_ || canScrollRight_)
         {
             if (pLeftScroller_ != nullptr)
                 fixScroller(pLeftScroller_, leftScrollerIndex_);

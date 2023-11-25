@@ -93,8 +93,8 @@ PhysRelativeTime MachLogAggressor::update(const PhysRelativeTime& maxCPUTime, MA
 
     MachLogCanAttack::update();
 
-    if (not(isDead() or isDying() or evading() or insideAPC()) and not MachLogRaces::instance().inSpecialActorUpdate()
-        and willCheckForTargets())
+    if (!(isDead() || isDying() || evading() || insideAPC()) && ! MachLogRaces::instance().inSpecialActorUpdate()
+        && willCheckForTargets())
         checkAndAttackCloserTarget(this);
 
     diminishAlertnessAndInaccuracy();
@@ -132,14 +132,14 @@ void MachLogAggressor::beHit(
     MATHEX_SCALAR dazing = ((MATHEX_SCALAR)(hpBeforeImpact - hpAfterImpact) / maximumhp()) * 40;
     MachLogCanAttack::increaseCurrentInaccuracy(dazing);
 
-    if (pByActor and allowedToCheckForNewTarget() and not isDead() and not evading() and not isIn1stPersonView()
-        and canFireAt(*pByActor) and willTestHitByCandidate(*pByActor))
+    if (pByActor && allowedToCheckForNewTarget() && ! isDead() && ! evading() && ! isIn1stPersonView()
+        && canFireAt(*pByActor) && willTestHitByCandidate(*pByActor))
     {
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
         // only take a pop at this schmo if we don't think it's a friend (same race or ally),
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
         {
             // will try to initiate a counterattack against the actor who hit me.
             checkAndAttackCloserTarget(this, pByActor);
@@ -163,14 +163,14 @@ void MachLogAggressor::beHitWithoutAnimation(
     MATHEX_SCALAR dazing = ((MATHEX_SCALAR)(hpBeforeImpact - hpAfterImpact) / maximumhp()) / 4.0;
     MachLogCanAttack::increaseCurrentInaccuracy(dazing);
 
-    if (pByActor and allowedToCheckForNewTarget() and not isDead() and not evading() and not isIn1stPersonView()
-        and canFireAt(*pByActor) and willTestHitByCandidate(*pByActor))
+    if (pByActor && allowedToCheckForNewTarget() && ! isDead() && ! evading() && ! isIn1stPersonView()
+        && canFireAt(*pByActor) && willTestHitByCandidate(*pByActor))
     {
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
         // only take a pop at this schmo if we don't think it's a friend (same race or ally),
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
         {
             // will try to initiate a counterattack against the actor who hit me.
             checkAndAttackCloserTarget(this, pByActor);
@@ -258,8 +258,8 @@ bool MachLogAggressor::fearsThisActor(const MachActor& otherActor) const
     // put together
 
     return (
-        otherActor.asCanAttack().canFireAt(*this) and not(canFireAt(otherActor))
-        or otherActor.militaryStrength() > (localStrength() * 2));
+        otherActor.asCanAttack().canFireAt(*this) && !(canFireAt(otherActor))
+        || otherActor.militaryStrength() > (localStrength() * 2));
 }
 
 // virtual
@@ -331,7 +331,7 @@ MachLogAggressor::MachLogAggressor(PerConstructor con)
 
 bool MachLogAggressor::isEradicator() const
 {
-    return subType() == MachPhys::BALLISTA and hwLevel() == 3 and weaponCombo() == MachPhys::T_VORTEX;
+    return subType() == MachPhys::BALLISTA && hwLevel() == 3 && weaponCombo() == MachPhys::T_VORTEX;
 }
 
 // Forced recompile 16/2/99 CPS

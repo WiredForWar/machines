@@ -50,7 +50,7 @@ void MachLogMessageBroker::sendMachineMoveMessage(
     PRE(startEndPositions.size() == (infos.size() + 1));
     PRE(infos.size() <= maximumMotionChunks());
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMachineMoveMessage (" << whichId << ")" << std::endl);
-    if (infos.size() == 1 and startEndPositions[0].position() == startEndPositions[1].position())
+    if (infos.size() == 1 && startEndPositions[0].position() == startEndPositions[1].position())
     {
         //      NETWORK_STREAM(" move is a shuffle - transmit a turn instead\n" );
         //      NETWORK_INDENT( 2 );
@@ -159,13 +159,13 @@ void MachLogMessageBroker::processMachineMoveMessage(NetMessage* pMessage)
                 const bool firstInfo = (i == 0);
                 const bool lastInfo = (i == infos.size() - 1);
 
-                if (not firstInfo and info.needsToTurn())
+                if (! firstInfo && info.needsToTurn())
                 {
                     ++beginTx;
                     ++beginRA;
                 }
 
-                if (not lastInfo)
+                if (! lastInfo)
                     --endTx;
 
                 transformsPtr->insert(transformsPtr->end(), beginTx, endTx);
@@ -1197,14 +1197,14 @@ void MachLogMessageBroker::processEnteredBuildingMessage(NetMessage* pNetMessage
     if (races.actorExists(pMessage->whichId_))
     {
         MachActor& actor = races.actor(pMessage->whichId_);
-        if (not actor.isIn1stPersonView())
+        if (! actor.isIn1stPersonView())
         {
             if (pMessage->constructionId_)
             {
                 if (races.actorExists(pMessage->constructionId_))
                 {
                     MachActor& construction = races.actor(pMessage->constructionId_);
-                    if (actor.objectIsMachine() and construction.objectIsConstruction())
+                    if (actor.objectIsMachine() && construction.objectIsConstruction())
                         actor.asMachine().insideWhichBuilding(&construction.asConstruction());
                 }
             }

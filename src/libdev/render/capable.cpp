@@ -109,7 +109,7 @@ void RenCapabilities::parseCardSpecificationFile(const SysPathName& fileName)
 
     UtlLineTokeniser parser(fileName);
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         if (parser.tokens()[0] == "MEMORY_AVAILABLE_FOR_TEXTURES")
         {
@@ -224,7 +224,7 @@ uint32_t RenCapabilities::memoryRequiredByTextureSet() const
     if (supports4MBytesTextureSet())
         result *= 2;
 
-    if (not supports8BitsTexture_)
+    if (! supports8BitsTexture_)
         result *= 2;
     RENDER_STREAM(((supports8BitsTexture_) ? "Supports " : "Does not support ") << "8 bit textures" << std::endl);
 

@@ -52,8 +52,8 @@ bool MachLogRefillLandMinesOperation::doStart()
     MachLogConstruction* pConstruction;
     bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
     HAL_STREAM(" inside Building " << insideABuilding << std::endl);
-    if (insideABuilding and pConstruction->objectType() != MachLog::GARRISON)
-        return not checkNeedAndDoLeaveOperation(pActor_);
+    if (insideABuilding && pConstruction->objectType() != MachLog::GARRISON)
+        return ! checkNeedAndDoLeaveOperation(pActor_);
 
     return true;
 }
@@ -65,9 +65,9 @@ void MachLogRefillLandMinesOperation::doFinish()
 bool MachLogRefillLandMinesOperation::doIsFinished() const
 {
     HAL_STREAM("(" << pActor_->id() << ") MLRefilLLMinesOp::doIsFinished\n");
-    bool result = (pActor_->nMines() == pActor_->data().mineCapacity() and not pActor_->motionSeq().hasDestination()
-                   and doneMove_)
-        or MachLogRaces::instance().garrisons(pActor_->race()).size() == 0;
+    bool result = (pActor_->nMines() == pActor_->data().mineCapacity() && ! pActor_->motionSeq().hasDestination()
+                   && doneMove_)
+        || MachLogRaces::instance().garrisons(pActor_->race()).size() == 0;
     HAL_STREAM(" result " << result << std::endl);
     return result;
 }
@@ -76,7 +76,7 @@ bool MachLogRefillLandMinesOperation::doIsFinished() const
 bool MachLogRefillLandMinesOperation::doBeInterrupted()
 {
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 // virtual

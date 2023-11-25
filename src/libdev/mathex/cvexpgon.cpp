@@ -87,7 +87,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexPolygon2d& rhs, MATHEX_SCALAR ex
 
     // Ensure rhs can give access to the edge data
     bool rhsIsCachingData = rhs.isCachingData();
-    if (not rhsIsCachingData)
+    if (! rhsIsCachingData)
         rhs.isCachingData(true);
 
     // Fill some vectors with unit edge direction and normal vectors
@@ -186,7 +186,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexPolygon2d& rhs, MATHEX_SCALAR ex
     }
 
     // Clear rhs cache data if created just for this function call
-    if (not rhsIsCachingData)
+    if (! rhsIsCachingData)
         rhs.isCachingData(false);
 
     POST(allVerticesDiscrete());
@@ -370,7 +370,7 @@ bool MexConvexPolygon2d::allVerticesDiscrete() const
             ASSERT_INFO(vertex(i));
             ASSERT_INFO(vertex(j));
 
-            if (i != j and vertex(i) == vertex(j))
+            if (i != j && vertex(i) == vertex(j))
                 return false;
         }
     }

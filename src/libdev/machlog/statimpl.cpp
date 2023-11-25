@@ -66,7 +66,7 @@ void MachLogStatsImpl::readStatsInitialisationFile()
     }
 
     UtlLineTokeniser parser(*pIstream, pathName);
-    while (not parser.finished())
+    while (! parser.finished())
     {
         HAL_STREAM("parser.tokens.size " << parser.tokens().size() << std::endl);
         HAL_STREAM(" " << parser.tokens()[0] << std::endl);

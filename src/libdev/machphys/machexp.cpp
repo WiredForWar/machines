@@ -104,7 +104,7 @@ MachPhysMachineExplosion::MachPhysMachineExplosion(
     for (MachPhysMachineExplosionData::LinkDatas::const_iterator i = data.links().begin(); i != data.links().end(); ++i)
     {
         MATHEX_SCALAR size = (*i).size();
-        if ((size > 0) and (size < minSize))
+        if ((size > 0) && (size < minSize))
         {
             minSize = size;
         }
@@ -127,7 +127,7 @@ MachPhysMachineExplosion::MachPhysMachineExplosion(
         //  reach our maximum shot off limit whilst still leaving some
         //  parts that should always be shot off unshot.
 
-        if (data.maxToShootOff() != MachPhysMachineExplosionData::ALL_LINKS and nShotOff >= data.maxToShootOff())
+        if (data.maxToShootOff() != MachPhysMachineExplosionData::ALL_LINKS && nShotOff >= data.maxToShootOff())
             shoot = false;
         else if (nLeft + nShotOff <= data.minToShootOff())
             shoot = true;
@@ -745,7 +745,7 @@ double MachPhysMachineExplosion::randomDouble(MATHEX_SCALAR lowerLimit, MATHEX_S
     //    result = lowerLimit + ( (float)(rand()) / 32767.0 ) * ( upperLimit - lowerLimit );
     result = lowerLimit + ((float)(rand()) / (float)RAND_MAX) * (upperLimit - lowerLimit);
 
-    POST(lowerLimit <= result and result <= upperLimit);
+    POST(lowerLimit <= result && result <= upperLimit);
 
     return result;
 }
@@ -758,7 +758,7 @@ int MachPhysMachineExplosion::randomInt(int lowerLimit, int upperLimit)
 
     result = lowerLimit + rand() % (upperLimit - lowerLimit);
 
-    POST(lowerLimit <= result and result < upperLimit);
+    POST(lowerLimit <= result && result < upperLimit);
 
     return result;
 }

@@ -268,8 +268,8 @@ static bool checkTextureSize(const SysPathName& fileName, const SDL_Surface* sur
 // virtual
 bool RenITexBody::read(const std::string& nameAsString)
 {
-    PRE(not isAlpha(SysPathName(nameAsString)));
-    PRE(not isColour(SysPathName(nameAsString)));
+    PRE(! isAlpha(SysPathName(nameAsString)));
+    PRE(! isColour(SysPathName(nameAsString)));
     PRE(Ren::initialised());
     TEST_INVARIANT;
 

@@ -32,7 +32,7 @@ MachLogMissileHolder::~MachLogMissileHolder()
 PhysRelativeTime MachLogMissileHolder::update(const PhysRelativeTime&, MATHEX_SCALAR)
 {
     pPhysMissile_->update();
-    if (not isDead())
+    if (! isDead())
     {
         PhysAbsoluteTime now = SimManager::instance().currentTime();
         if (now > destroyAtTime_)

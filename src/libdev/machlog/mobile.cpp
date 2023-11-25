@@ -58,9 +58,9 @@ static MATHEX_SCALAR transformToOrientationInRadians(const MexTransform3d& xform
     xBasis[2] = 0;
 
     MATHEX_SCALAR eps = MexEpsilon::instance();
-    bool pointingDown = Mathex::abs(xBasis[0]) < eps and Mathex::abs(xBasis[1]) < eps;
+    bool pointingDown = Mathex::abs(xBasis[0]) < eps && Mathex::abs(xBasis[1]) < eps;
 
-    ASSERT(not pointingDown, logic_error());
+    ASSERT(! pointingDown, logic_error());
 
     MexEulerAngles e;
     xform.rotation(&e);
@@ -83,7 +83,7 @@ static MATHEX_SCALAR transformToOrientationInRadians(const MexTransform3d& xform
             result -= 2 * Mathex::PI;
     }
 
-    POST(result >= 0 and result <= (2 * Mathex::PI));
+    POST(result >= 0 && result <= (2 * Mathex::PI));
     return result;
 }
 
@@ -243,12 +243,12 @@ void MachLogMobile::preservePhysicalModel(const PhysRelativeTime& forTime)
 
 void MachLogMobile::dropDebris(const PhysAbsoluteTime&)
 {
-    if (not MachLogNetwork::instance().isNetworkGame()
-        or MachLogNetwork::instance().remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (! MachLogNetwork::instance().isNetworkGame()
+        || MachLogNetwork::instance().remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         MexPoint3d debrisPosition;
 
-        if (objectIsMachine() and asMachine().insideAPC())
+        if (objectIsMachine() && asMachine().insideAPC())
             debrisPosition = asMachine().APCImInside().position();
         else
             debrisPosition = position();
@@ -265,7 +265,7 @@ void MachLogMobile::dropDebris(const PhysAbsoluteTime&)
         const MexPoint2d maxCorner(machineBox.maxCorner().x(), machineBox.maxCorner().y());
 
         // flying machines don't drop debris
-        if (not mobileIsGlider())
+        if (! mobileIsGlider())
         {
             MachLogActorMaker::newLogDebris(
                 race(),
@@ -307,7 +307,7 @@ MachLogMobile::MachLogMobile(PerConstructor con)
 
 void MachLogMobile::createNewMachineMotionSequencer(MachPhysMobile* pPhysMobile)
 {
-    PRE(not pMotionSeq_);
+    PRE(! pMotionSeq_);
     HAL_STREAM(
         "(" << id() << ") MachLogMobile::createNewMachMotSeq at " << pPhysMobile->globalTransform() << std::endl);
     pMotionSeq_ = new MachLogMachineMotionSequencer(

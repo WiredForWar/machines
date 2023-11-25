@@ -230,7 +230,7 @@ void MachLogWeapon::currentlyAttached(bool newAttachement)
     currentlyAttached_ = newAttachement;
 
     // If we don't do this we get a crash writing the op, because pTarget is left dangling.
-    if (not newAttachement)
+    if (! newAttachement)
         pTarget_ = nullptr;
 }
 

@@ -62,7 +62,7 @@ PhysRelativeTime MachLogTaskPatrolOperation::doUpdate()
     if (complete_)
         return 60.0;
 
-    if (not initialDelayProcessed_)
+    if (! initialDelayProcessed_)
     {
         if (startTime_ + initialDelay_ < SimManager::instance().currentTime())
             initialDelayProcessed_ = true;
@@ -101,8 +101,8 @@ PhysRelativeTime MachLogTaskPatrolOperation::doUpdateWithCommander()
 {
     MachLogOperation::OperationType commanderOp = pActor_->commander().strategy().currentOperationType();
 
-    if (commanderOp == MachLogOperation::ATTACK_OPERATION or commanderOp == MachLogOperation::SEEK_AND_DESTROY_OPERATION
-        or commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION or commanderOp == MachLogOperation::PATROL_OPERATION)
+    if (commanderOp == MachLogOperation::ATTACK_OPERATION || commanderOp == MachLogOperation::SEEK_AND_DESTROY_OPERATION
+        || commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION || commanderOp == MachLogOperation::PATROL_OPERATION)
         return 22.0;
     // The commander is not doing an aggressive operation...so we can reassign as necessary.
     pActor_->commander().newOperation(new MachLogPatrolOperation(&pActor_->commander(), path_, true));
@@ -114,8 +114,8 @@ PhysRelativeTime MachLogTaskPatrolOperation::doUpdateWithoutCommander()
     for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); i != pActor_->machines().end(); ++i)
     {
         MachLogOperation::OperationType op = (*i)->strategy().currentOperationType();
-        if (op != MachLogOperation::ATTACK_OPERATION and op != MachLogOperation::PATROL_OPERATION
-            and op != MachLogOperation::SEEK_AND_DESTROY_OPERATION)
+        if (op != MachLogOperation::ATTACK_OPERATION && op != MachLogOperation::PATROL_OPERATION
+            && op != MachLogOperation::SEEK_AND_DESTROY_OPERATION)
             (*i)->newOperation(new MachLogPatrolOperation((*i), path_, true));
     }
 

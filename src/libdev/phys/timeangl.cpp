@@ -74,7 +74,7 @@ MexRadians PhysTimedAnglePlan::angle(const PhysRelativeTime& timeOffset) const
 
         if (timeOffset > times[cacheIndex_])
             ++nonConstThis->pImpl_->cacheIndex_;
-        else if (cacheIndex_ != 0 and timeOffset < times[cacheIndex_ - 1])
+        else if (cacheIndex_ != 0 && timeOffset < times[cacheIndex_ - 1])
             nonConstThis->pImpl_->cacheIndex_ = 0;
         else
             search = false;

@@ -133,11 +133,11 @@ bool MachPhysPlanetSurfaceChecker::checkProjectedSegmentOK(
     {
         result = true;
     }
-    else if (segmentInsideObstacle(segment2d, OBSTACLE_WATER, configSpace) and gradient <= maxWaterGradient_)
+    else if (segmentInsideObstacle(segment2d, OBSTACLE_WATER, configSpace) && gradient <= maxWaterGradient_)
     {
         result = true;
     }
-    else if (segmentInsideObstacle(segment2d, OBSTACLE_LOW, configSpace) and gradient <= maxLowObstacleGradient_)
+    else if (segmentInsideObstacle(segment2d, OBSTACLE_LOW, configSpace) && gradient <= maxLowObstacleGradient_)
     {
         result = true;
     }
@@ -198,11 +198,11 @@ bool MachPhysPlanetSurfaceChecker::checkTriangleOK(
     {
         result = true;
     }
-    else if (triangleInsideObstacle(triangle2d, OBSTACLE_WATER, configSpace) and gradient <= maxWaterGradient_)
+    else if (triangleInsideObstacle(triangle2d, OBSTACLE_WATER, configSpace) && gradient <= maxWaterGradient_)
     {
         result = true;
     }
-    else if (triangleInsideObstacle(triangle2d, OBSTACLE_LOW, configSpace) and gradient <= maxLowObstacleGradient_)
+    else if (triangleInsideObstacle(triangle2d, OBSTACLE_LOW, configSpace) && gradient <= maxLowObstacleGradient_)
     {
         result = true;
     }

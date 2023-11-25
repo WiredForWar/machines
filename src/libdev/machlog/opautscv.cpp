@@ -120,7 +120,7 @@ PhysRelativeTime MachLogAutoScavengeOperation::doUpdate()
 {
     CB_MachLogAutoScavengeOperation_DEPIMPL();
 
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pScavenger_ != nullptr);
 
     ASSERT(
@@ -169,7 +169,7 @@ bool MachLogAutoScavengeOperation::shouldStopScavenging()
         result = true;
     else if (initiatedScavengeOp_)
     {
-        if (not pSubOperation())
+        if (! pSubOperation())
             result = true;
     }
 

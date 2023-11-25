@@ -254,7 +254,7 @@ PhysRelativeTime MachPhysConstructor::construct()
     static int animation = 0;
 
     W4dCompositePlanPtr thePlan;
-    if (not cycleAnims(&thePlan))
+    if (! cycleAnims(&thePlan))
         interval = 1;
     else
     {
@@ -340,7 +340,7 @@ void perRead(PerIstream& istr, MachPhysConstructor& machine)
 
 void MachPhysConstructor::startConstructing(const MachPhysConstruction& construction, const PhysAbsoluteTime& startTime)
 {
-    if (not isConstructing())
+    if (! isConstructing())
     {
         W4dCompositePlanPtr constructingPlanPtr;
         MexPoint3d targetOffsetGlobal = construction.compositeBoundingVolume().centroid();

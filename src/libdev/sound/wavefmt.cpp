@@ -62,8 +62,8 @@ WaveFormat& WaveFormat::operator=(const WaveFormat& w)
 /** FRIEND **/
 bool operator==(const WaveFormat& a, const WaveFormat& b)
 {
-    return (a.channels() == b.channels()) and (a.sampleRateHz() == b.sampleRateHz())
-        and (a.bitsPerSample() == b.bitsPerSample());
+    return (a.channels() == b.channels()) && (a.sampleRateHz() == b.sampleRateHz())
+        && (a.bitsPerSample() == b.bitsPerSample());
 }
 
 /** FRIEND **/

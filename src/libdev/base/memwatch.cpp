@@ -72,17 +72,17 @@ void BaseMemWatcher::addBlock(void* pBlock, size_t nBytes, uint32_t lineNumber, 
     for (; pSite; pSite = pSite->pNext_)
     {
 
-        if (nBytes == pSite->nBytes_ and lineNumber == pSite->lineNumber_ and nStackFrames == pSite->nStackFrames_
-            and nNewTextChars == pSite->nNewTextChars_)
+        if (nBytes == pSite->nBytes_ && lineNumber == pSite->lineNumber_ && nStackFrames == pSite->nStackFrames_
+            && nNewTextChars == pSite->nNewTextChars_)
         {
             // Compare the call stack
             bool match = true;
             size_t* siteCallStack = pSite->aCallStack_;
-            for (size_t i = nStackFrames; match and i--;)
+            for (size_t i = nStackFrames; match && i--;)
                 match = siteCallStack[i] == stackAddress[i];
 
             // Compare the new text
-            if (match and (nNewTextChars == 0 or strcmp(aNewText, pSite->aNewText_) == 0))
+            if (match && (nNewTextChars == 0 || strcmp(aNewText, pSite->aNewText_) == 0))
                 break;
         }
     }

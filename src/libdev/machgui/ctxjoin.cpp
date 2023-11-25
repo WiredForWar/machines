@@ -385,13 +385,13 @@ bool MachGuiCtxJoin::okayToSwitchContext()
     {
         bool isHost = true;
 
-        if (pStartupScreens_->startupData()->newGameName() == "" or not editingGameName_ or pNewGameName_->text() == "")
+        if (pStartupScreens_->startupData()->newGameName() == "" || ! editingGameName_ || pNewGameName_->text() == "")
         {
             // Display message box. Type in game name to create game.
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERGAMENAME);
             return false;
         } // Can the network connection be established
-        else if (not validNetworkSettings(isHost))
+        else if (! validNetworkSettings(isHost))
         {
             return false;
         }
@@ -409,7 +409,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
     else if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::JOIN)
     {
         bool isHost = false;
-        if (pStartupScreens_->startupData()->joinGame() == "" or not joinGameSelected_)
+        if (pStartupScreens_->startupData()->joinGame() == "" || ! joinGameSelected_)
         {
             // Display message box. Must choose game to join.
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_SELECTGAMETOJOIN);
@@ -422,10 +422,10 @@ bool MachGuiCtxJoin::okayToSwitchContext()
         //      }
         else
         {
-            if (not MachLogNetwork::instance().joinWithSessionId(
+            if (! MachLogNetwork::instance().joinWithSessionId(
                     pStartupScreens_->startupData()->joinGame(),
                     pStartupScreens_->startupData()->playerName()))
-                if (not MachLogNetwork::instance().joinWithSessionId(
+                if (! MachLogNetwork::instance().joinWithSessionId(
                         pStartupScreens_->startupData()->joinGame(),
                         pStartupScreens_->startupData()->playerName()))
                 {
@@ -464,8 +464,8 @@ void MachGuiCtxJoin::update()
     {
         static double time = 0.0;
 
-        if (DevTime::instance().time() - time > 5.0 and not editingGameName_ and not joinGameSelected_
-            and NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
+        if (DevTime::instance().time() - time > 5.0 && ! editingGameName_ && ! joinGameSelected_
+            && NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
         {
             showGames();
             time = DevTime::instance().time();
@@ -482,7 +482,7 @@ bool MachGuiCtxJoin::validNetworkSettings(bool isHost)
 {
     // If network details are not valid, the class handling the protocol will display
     // the appropriate dialog box
-    if (not pNetworkProtocol_->validNetworkDetails(isHost))
+    if (! pNetworkProtocol_->validNetworkDetails(isHost))
     {
         return false;
     }
@@ -492,7 +492,7 @@ bool MachGuiCtxJoin::validNetworkSettings(bool isHost)
         pNetworkProtocol_->setNetworkDetails();
     }
     // Test for successful network connection
-    if (not pNetworkProtocol_->connectionSet())
+    if (! pNetworkProtocol_->connectionSet())
     {
         return false;
     }

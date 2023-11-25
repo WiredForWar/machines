@@ -78,7 +78,7 @@ MATHEX_SCALAR PhysLinearScalarPlan::scalar(const PhysRelativeTime& timeOffset) c
     // If this isn't true, return the first scale.
     if (timeOffset > 0)
     {
-        while ((i < times_.size()) and not done)
+        while ((i < times_.size()) && ! done)
         {
             PhysRelativeTime t2 = times_[i];
 

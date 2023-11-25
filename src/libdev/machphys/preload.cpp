@@ -185,7 +185,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
     HAL_STREAM("MachPreload::ADMINISTRATORS\n");
     doLoadingProgressUpdate(doUpdate);
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysAdministrator(
             &tempRoot,
@@ -232,7 +232,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     doLoadingProgressUpdate(doUpdate);
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         HAL_STREAM("MachPreload::ADMINISTRATORS::COMMANDER\n");
         pM = new MachPhysAdministrator(
@@ -307,7 +307,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     HAL_STREAM("MachPreload::AGGRESSORS::ASSASSIN::BALLISTA\n");
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysAggressor(
             &tempRoot,
@@ -354,7 +354,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     doLoadingProgressUpdate(doUpdate);
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysAggressor(
             &tempRoot,
@@ -399,7 +399,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
     pM = new MachPhysGeoLocator(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED);
     delete pM;
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysGeoLocator(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED);
         delete pM;
@@ -424,7 +424,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
     pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED);
     delete pM;
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysResourceCarrier(&tempRoot, MexTransform3d(), 3, 1, MachPhys::RED);
         delete pM;
@@ -443,7 +443,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
     pM = new MachPhysAPC(&tempRoot, MexTransform3d(), 2, 1, MachPhys::RED);
     delete pM;
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysAPC(&tempRoot, MexTransform3d(), 4, 1, MachPhys::RED);
         delete pM;
@@ -466,7 +466,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     doLoadingProgressUpdate(doUpdate);
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysTechnician(&tempRoot, MexTransform3d(), MachPhys::BRAIN_BOX, 5, 5, MachPhys::RED);
         delete pM;
@@ -486,7 +486,7 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
 
     doLoadingProgressUpdate(doUpdate);
 
-    if (not getenv("cb_builddemo"))
+    if (! getenv("cb_builddemo"))
     {
         pM = new MachPhysConstructor(&tempRoot, MexTransform3d(), MachPhys::BEHEMOTH, 4, 1, MachPhys::RED);
         delete pM;

@@ -558,7 +558,7 @@ static void logNewBlock(const DebugInfo* dPtr)
     void* address = (void*)((uint8*)dPtr + sizeof(DebugInfo));
     if (recordStackData)
     {
-        if (not tracedStackAnchor)
+        if (! tracedStackAnchor)
         {
             tracedStackAnchor = true;
             ProProfiler::instance().traceStack(logStream(), true, 0, nullptr);

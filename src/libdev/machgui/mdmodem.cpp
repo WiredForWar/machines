@@ -69,7 +69,7 @@ bool MachGuiModemNetworkMode::validNetworkDetails(bool isHost)
 {
     bool valid = true;
 
-    if ((pimpl_->pTelNoEntryBox_->text() == "") and (not isHost))
+    if ((pimpl_->pTelNoEntryBox_->text() == "") && (! isHost))
     {
         startupScreens().displayMsgBox(IDS_MENUMSG_ENTERSERVERTELNO);
         valid = false;

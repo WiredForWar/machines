@@ -29,7 +29,7 @@ GuiProgressBar::Percentage GuiProgressBar::percentageComplete()
 
 void GuiProgressBar::percentageComplete(Percentage p)
 {
-    PRE(p >= 0.0 and p <= 100.0);
+    PRE(p >= 0.0 && p <= 100.0);
 
     unsigned width = absoluteBoundary().width();
     unsigned oldWidth = progressWidthInPixels(percentageComplete_, width);

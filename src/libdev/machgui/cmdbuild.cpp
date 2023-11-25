@@ -68,7 +68,7 @@ bool MachGuiBuildCommand::canActorEverExecute(const MachActor& actor) const
 bool MachGuiBuildCommand::isInteractionComplete() const
 {
     // Is complete if the selection set no longer consists of single factory
-    return not actorsCanExecute();
+    return ! actorsCanExecute();
 }
 
 // virtual
@@ -117,7 +117,7 @@ bool MachGuiBuildCommand::actorsCanExecute() const
 {
     // Check there is exactly one selected entity, and it is a factory
     const MachInGameScreen::Actors& selectionSet = inGameScreen().selectedActors();
-    return selectionSet.size() == 1 and selectionSet.front()->objectType() == MachLog::FACTORY;
+    return selectionSet.size() == 1 && selectionSet.front()->objectType() == MachLog::FACTORY;
 }
 
 void MachGuiBuildCommand::start()
@@ -151,7 +151,7 @@ uint MachGuiBuildCommand::commandPromptStringid() const
 // virtual
 bool MachGuiBuildCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_B and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_B && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

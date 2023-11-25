@@ -262,7 +262,7 @@ const string& W4dEntityImpl::name() const
 
 void W4dEntityImpl::updateHasMeshFlag()
 {
-    hasMesh_ = meshes_->size() > 0 and (*meshes_)[0].mesh;
+    hasMesh_ = meshes_->size() > 0 && (*meshes_)[0].mesh;
 }
 
 const W4dEntity::W4dEntities& W4dEntityImpl::children() const
@@ -470,7 +470,7 @@ void perRead(PerIstream& istr, W4dEntityImpl::PlanUpdateTimes& times)
 
 void W4dEntityImpl::filterColour(const RenColour& colour)
 {
-    if (not filterColourIsSet())
+    if (! filterColourIsSet())
         pFilterColour_ = new RenColour(colour);
     else
         *pFilterColour_ = colour;

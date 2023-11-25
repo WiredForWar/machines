@@ -100,7 +100,7 @@ UtlId UtlBoundedIdGenerator::nextId(UtlId minId, UtlId maxId)
 
 void UtlBoundedIdGenerator::allocateId(UtlId id)
 {
-    PRE(not isAllocated(id));
+    PRE(! isAllocated(id));
 
     // Decrement remaining count
     --nUnused_;

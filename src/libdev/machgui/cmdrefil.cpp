@@ -70,7 +70,7 @@ bool MachGuiRefillLandMineCommand::doApply(MachActor* pActor, string* /*pReason*
         pActor->newOperation(pOp);
         canDo = true;
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TASKED);
             hasPlayedVoiceMail(true);
@@ -144,7 +144,7 @@ bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdminis
 // virtual
 bool MachGuiRefillLandMineCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_G and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_G && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

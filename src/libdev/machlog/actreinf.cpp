@@ -74,7 +74,7 @@ void MachLogReinforcementsAction::doAction()
         MexPoint2d pos;
         MexTransform3d deployPointAsTransform(dest_);
         MATHEX_SCALAR radius = 10;
-        while (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+        while (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
             deployPointAsTransform,
             radius,
             MachLogMachine::maxHighClearance(),
@@ -138,7 +138,7 @@ MachLogReinforcementsAction::newFromParser(SimCondition* pCondition, bool enable
             pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
         else if (pParser->tokens()[i] == "NO_VOICEMAIL")
             pResult->giveVoiceMail_ = false;
-    while (not finished)
+    while (! finished)
     {
         if (pParser->tokens()[0] == "MACHINE")
         {
@@ -182,7 +182,7 @@ MachLogReinforcementsAction::newFromParser(SimCondition* pCondition, bool enable
             pResult->assignToSquadronIndex_ = atol(pParser->tokens()[1].c_str());
         }
 
-        if (not finished)
+        if (! finished)
             pParser->parseNextLine();
     }
     HAL_STREAM(*pResult << std::endl);
@@ -267,7 +267,7 @@ void MachLogReinforcementsAction::parseFromScenario(MachPhys::Race race, UtlLine
     const string& scenarioName = pParser->tokens()[1];
     units = MachLogRaces::instance().databaseHandler().survivingUnits(race, scenarioName);
 
-    if (not units.empty())
+    if (! units.empty())
     {
         // We need to sort the units into descending order
         std::sort(units.begin(), units.end(), std::greater<MachLogProductionUnit>());
@@ -285,7 +285,7 @@ void MachLogReinforcementsAction::parseFromScenario(MachPhys::Race race, UtlLine
 
             // Iterate through our collection, add machines of this type to the reinforcement list,
             // up to the maximum number specified
-            for (MachLogDatabaseHandler::Units::iterator it = units.begin(); nToLoad != 0 and it != units.end(); ++it)
+            for (MachLogDatabaseHandler::Units::iterator it = units.begin(); nToLoad != 0 && it != units.end(); ++it)
             {
                 MachLogProductionUnit& unit = (*it);
                 if (unit.type() == type)

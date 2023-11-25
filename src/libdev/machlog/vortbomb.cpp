@@ -188,7 +188,7 @@ MachPhysVortexBomb* MachLogVortexBomb::pNewPhysVortexBomb(
         }
     }
 
-    if (pOwnerActor and pOwnerActor->objectIsMachine() and pOwnerActor->asMachine().insideBuilding())
+    if (pOwnerActor && pOwnerActor->objectIsMachine() && pOwnerActor->asMachine().insideBuilding())
     {
         ASSERT(
             pOwnerActor->asMachine().insideWhichBuilding().physConstruction().hasInterior(),
@@ -257,7 +257,7 @@ bool MachLogVortexBomb::hitVictimFirstWave(const MachActor& victim) const
     MATHEX_SCALAR checkRadiusSize
         = MachPhysVortexBomb::radius(SimManager::instance().currentTime() - firstWaveStartTime()) + 2.0;
 
-    result = actorWithinRadius(victim, checkRadiusSize) and checkRadiusSize >= 4;
+    result = actorWithinRadius(victim, checkRadiusSize) && checkRadiusSize >= 4;
 
     return result;
 }
@@ -268,7 +268,7 @@ void MachLogVortexBomb::inflictDamageFirstWave(MachActor* pDamagedVictim)
     CB_MachLogVortexBomb_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this

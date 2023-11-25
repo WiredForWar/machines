@@ -41,7 +41,7 @@ MachGuiDeconstructCommand::~MachGuiDeconstructCommand()
 
     inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
-    while (not constructions_.empty())
+    while (! constructions_.empty())
     {
         constructions_.back()->detach(this);
         constructions_.pop_back();
@@ -70,7 +70,7 @@ void MachGuiDeconstructCommand::pickOnActor(MachActor* pActor, bool, bool shiftP
     {
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-        if (not constructionIsDuplicate(pCandidateConstruction))
+        if (! constructionIsDuplicate(pCandidateConstruction))
         {
             // Add to list of constructions to deconstruct
             constructions_.push_back(pCandidateConstruction);
@@ -78,7 +78,7 @@ void MachGuiDeconstructCommand::pickOnActor(MachActor* pActor, bool, bool shiftP
             pCandidateConstruction->attach(this);
         }
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -156,7 +156,7 @@ bool MachGuiDeconstructCommand::doApply(MachActor* pActor, string*)
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
     pActor->asMachine().manualCommandIssued();
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVE_TO_SITE);
         hasPlayedVoiceMail(true);
@@ -224,7 +224,7 @@ bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrato
 
     bool found = false;
     for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-         not found and i != inGameScreen().selectedActors().end();
+         ! found && i != inGameScreen().selectedActors().end();
          ++i)
         if ((*i)->objectType() == MachLog::CONSTRUCTOR)
         {
@@ -243,7 +243,7 @@ bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrato
 // virtual
 bool MachGuiDeconstructCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_D and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_D && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

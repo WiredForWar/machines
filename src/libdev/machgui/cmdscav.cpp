@@ -35,7 +35,7 @@ MachGuiScavengeCommand::MachGuiScavengeCommand(MachInGameScreen* pInGameScreen)
 
 MachGuiScavengeCommand::~MachGuiScavengeCommand()
 {
-    while (not suppliers_.empty())
+    while (! suppliers_.empty())
     {
         suppliers_.back()->detach(this);
         suppliers_.pop_back();
@@ -68,7 +68,7 @@ void MachGuiScavengeCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bo
 
         MachLogDebris* pCandidateDebris = &pActor->asDebris();
 
-        if (not debrisIsDuplicate(pCandidateDebris))
+        if (! debrisIsDuplicate(pCandidateDebris))
         {
             // Add to list of constructions to deconstruct
             suppliers_.push_back(pCandidateDebris);
@@ -76,7 +76,7 @@ void MachGuiScavengeCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bo
             pCandidateDebris->attach(this);
         }
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -93,7 +93,7 @@ bool MachGuiScavengeCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Administrators and aggressors can Scavenge
     MachLog::ObjectType objectType = actor.objectType();
-    return objectType == MachLog::RESOURCE_CARRIER and actor.asResourceCarrier().isScavenger();
+    return objectType == MachLog::RESOURCE_CARRIER && actor.asResourceCarrier().isScavenger();
 }
 
 // virtual
@@ -106,7 +106,7 @@ bool MachGuiScavengeCommand::isInteractionComplete() const
 bool MachGuiScavengeCommand::doApply(MachActor* pActor, string* pReason)
 {
     PRE(pActor->objectIsMachine());
-    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isScavenger());
+    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isScavenger());
 
     // Take appropriate action
     bool canDo = false;
@@ -137,7 +137,7 @@ bool MachGuiScavengeCommand::applyScavengeObject(MachActor* pActor, string*)
     // Give it to the actor
     pActor->newOperation(pOp);
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         MachLogVoiceMailManager::instance().postNewMail(VID_RESOURCE_CARRIER_SCAVENGING, pActor->id(), pActor->race());
         hasPlayedVoiceMail(true);
@@ -206,7 +206,7 @@ uint MachGuiScavengeCommand::commandPromptStringid() const
 // virtual
 bool MachGuiScavengeCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_Y and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_Y && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

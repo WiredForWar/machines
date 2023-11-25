@@ -124,10 +124,10 @@ PhysRelativeTime MachLogFollowOperation::doUpdate()
     {
         MachLogMachineMotionSequencer& sequencer = pActor_->motionSeq();
         // First check that still following
-        if (not sequencer.isFollowing())
+        if (! sequencer.isFollowing())
         {
             // Check target still exists
-            if (not sequencer.hasDestination())
+            if (! sequencer.hasDestination())
             {
                 // Resume following it
                 sequencer.follow(pTarget_, offset_);
@@ -168,14 +168,14 @@ bool MachLogFollowOperation::doIsFinished() const
 {
     CB_MachLogFollowOperation_DEPIMPL();
 
-    if (terminateFlag_ == TERMINATE_WHEN_CLOSE and pTarget_
-        and pActor_->position().sqrEuclidianDistance(pTarget_->position())
+    if (terminateFlag_ == TERMINATE_WHEN_CLOSE && pTarget_
+        && pActor_->position().sqrEuclidianDistance(pTarget_->position())
             < 801) // root(800) metres away deemed sufficiently close
         // as randomDouble( -20, 20 ), randomDouble( -20, 20 )
         // is standard random follow offset
         return true;
     else
-        return (pTarget_ == nullptr and not pActor_->motionSeq().hasDestination());
+        return (pTarget_ == nullptr && ! pActor_->motionSeq().hasDestination());
 }
 
 // virtual
@@ -198,7 +198,7 @@ bool MachLogFollowOperation::doBeInterrupted()
 
     pActor_->motionSeq().stop();
     nextCallBackTime(SimManager::instance().currentTime() + pActor_->motionSeq().update(0.001));
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 // virtual

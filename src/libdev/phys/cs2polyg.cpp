@@ -57,7 +57,7 @@ bool PhysCS2dPolygon::isEnabled(Flags flags) const
 
     if (enabled_)
     {
-        if (flags == 0 or flags_ == 0)
+        if (flags == 0 || flags_ == 0)
             result = true;
         else
             result = (flags & flags_) == 0;

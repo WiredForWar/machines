@@ -86,7 +86,7 @@ Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool
     const SysPathName pathName(name);
 
     bool searchLeaf = false;
-    if (createTex or pathName.components().size() == 1)
+    if (createTex || pathName.components().size() == 1)
         searchLeaf = true;
 
     std::string searchName;
@@ -114,7 +114,7 @@ Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool
     if (pathName.components().size() > 1)
     {
         newBody = loadActualSurface(name, createTex, surf);
-        if (not newBody)
+        if (! newBody)
         {
             RENDER_STREAM("Could not load surface " << name << std::endl);
         }
@@ -128,7 +128,7 @@ Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool
 
         newBody = loadSurface(texturePathNames, createTex, surf);
 
-        if (not newBody)
+        if (! newBody)
         {
             RENDER_STREAM("Could not load surface " << name << std::endl);
             RENDER_STREAM("Searched files:" << std::endl);
@@ -205,7 +205,7 @@ RenISurfaceManagerImpl::loadSurface(const PathNames& pathNames, bool createTex, 
     bool foundFile = false;
 
     // Find the directory that the texture exists in.
-    for (PathNames::const_iterator i = pathNames.begin(); i != pathNames.end() and not foundFile; ++i)
+    for (PathNames::const_iterator i = pathNames.begin(); i != pathNames.end() && ! foundFile; ++i)
     {
         ASSERT_INFO(*i);
         if ((*i).existsAsFile())
@@ -251,7 +251,7 @@ Ren::TexId RenISurfaceManagerImpl::findSharedSurface(const std::string& name) co
     RENDER_STREAM("Looking for existing texture " << searchName << std::endl);
 
     NameMap::const_iterator it = nameMap_.find(searchName);
-    if (it != nameMap_.end() and entries_[(*it).second]->sharable())
+    if (it != nameMap_.end() && entries_[(*it).second]->sharable())
     {
         RENDER_STREAM("  returning id " << (*it).second << std::endl);
         return (*it).second;

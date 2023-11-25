@@ -20,7 +20,7 @@ bool DevKeyToCommandTranslator::Command::on() const
 
 void DevKeyToCommandTranslator::Command::forceOn()
 {
-    if (not on_)
+    if (! on_)
     {
         on_ = true;
         reset_ = true;
@@ -113,22 +113,22 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
     bool found = false; // Returned to caller to indicate that a command using the
                         // buttonEvent was found.
 
-    for (size_t i = 0; i < commandTranslations_.size() && not found; ++i)
+    for (size_t i = 0; i < commandTranslations_.size() && ! found; ++i)
     {
         DevKeyToCommand* pEvent = commandTranslations_[i];
         if (pEvent->scanCode() == buttonEvent.scanCode())
         {
             bool ctrlCorrect = (pEvent->ctrlReq() == DevKeyToCommand::EITHER)
-                or (pEvent->ctrlReq() == DevKeyToCommand::PRESSED and buttonEvent.wasCtrlPressed())
-                or (pEvent->ctrlReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasCtrlPressed());
+                || (pEvent->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
+                || (pEvent->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
             bool shiftCorrect = (pEvent->shiftReq() == DevKeyToCommand::EITHER)
-                or (pEvent->shiftReq() == DevKeyToCommand::PRESSED and buttonEvent.wasShiftPressed())
-                or (pEvent->shiftReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasShiftPressed());
+                || (pEvent->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
+                || (pEvent->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
             bool altCorrect = (pEvent->altReq() == DevKeyToCommand::EITHER)
-                or (pEvent->altReq() == DevKeyToCommand::PRESSED and buttonEvent.wasAltPressed())
-                or (pEvent->altReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasAltPressed());
+                || (pEvent->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
+                || (pEvent->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
 
-            if (ctrlCorrect and shiftCorrect and altCorrect)
+            if (ctrlCorrect && shiftCorrect && altCorrect)
             {
                 *pCommandId = pEvent->commandId();
                 found = true;
@@ -158,14 +158,14 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
 
             // Find out if modifier keys are in correct state for this command
             bool ctrlCorrect = (pEvent->ctrlReq() == DevKeyToCommand::EITHER)
-                or (pEvent->ctrlReq() == DevKeyToCommand::PRESSED and buttonEvent.wasCtrlPressed())
-                or (pEvent->ctrlReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasCtrlPressed());
+                || (pEvent->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
+                || (pEvent->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
             bool shiftCorrect = (pEvent->shiftReq() == DevKeyToCommand::EITHER)
-                or (pEvent->shiftReq() == DevKeyToCommand::PRESSED and buttonEvent.wasShiftPressed())
-                or (pEvent->shiftReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasShiftPressed());
+                || (pEvent->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
+                || (pEvent->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
             bool altCorrect = (pEvent->altReq() == DevKeyToCommand::EITHER)
-                or (pEvent->altReq() == DevKeyToCommand::PRESSED and buttonEvent.wasAltPressed())
-                or (pEvent->altReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasAltPressed());
+                || (pEvent->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
+                || (pEvent->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
 
             if (pEvent->scanCode() == buttonEvent.scanCode())
             {
@@ -177,7 +177,7 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
                 commandList[pEvent->commandId()].pressed_ = true;
             }
 
-            if (ctrlCorrect and shiftCorrect and altCorrect)
+            if (ctrlCorrect && shiftCorrect && altCorrect)
             {
                 if (commandList[pEvent->commandId()].pressed_)
                 {
@@ -201,14 +201,14 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
 
             // Find out if modifier keys are in correct state for this command
             bool ctrlCorrect = (pEvent->ctrlReq() == DevKeyToCommand::EITHER)
-                or (pEvent->ctrlReq() == DevKeyToCommand::PRESSED and buttonEvent.wasCtrlPressed())
-                or (pEvent->ctrlReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasCtrlPressed());
+                || (pEvent->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
+                || (pEvent->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
             bool shiftCorrect = (pEvent->shiftReq() == DevKeyToCommand::EITHER)
-                or (pEvent->shiftReq() == DevKeyToCommand::PRESSED and buttonEvent.wasShiftPressed())
-                or (pEvent->shiftReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasShiftPressed());
+                || (pEvent->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
+                || (pEvent->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
             bool altCorrect = (pEvent->altReq() == DevKeyToCommand::EITHER)
-                or (pEvent->altReq() == DevKeyToCommand::PRESSED and buttonEvent.wasAltPressed())
-                or (pEvent->altReq() == DevKeyToCommand::RELEASED and not buttonEvent.wasAltPressed());
+                || (pEvent->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
+                || (pEvent->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
 
             if (pEvent->scanCode() == buttonEvent.scanCode())
             {
@@ -218,7 +218,7 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
             }
             else
             {
-                if (ctrlCorrect and shiftCorrect and altCorrect)
+                if (ctrlCorrect && shiftCorrect && altCorrect)
                 {
                     if (commandList[pEvent->commandId()].pressed_)
                     {
@@ -264,7 +264,7 @@ void DevKeyToCommandTranslator::resetCommands(CommandList* pCommandList, bool fo
             commandList[i].pressed_ = false;
         }
         else
-            commandList[i].on_ = commandList[i].on_ and not commandList[i].reset_;
+            commandList[i].on_ = commandList[i].on_ && ! commandList[i].reset_;
 
         commandList[i].reset_ = false;
     }

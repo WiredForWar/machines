@@ -87,7 +87,7 @@ void MachGuiMoveCommand::pickOnTerrain(const MexPoint3d& location, bool ctrlPres
         points_.push_back(location);
 
         // If the shift key was not pressed, this is the final point
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -104,7 +104,7 @@ void MachGuiMoveCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool s
 {
     // Update cursor, and treat as final pick if not invalid
     MachGui::Cursor2dType cursor = cursorOnActor(pActor, ctrlPressed, shiftPressed, altPressed);
-    if (cursor == MachGui::INVALID_CURSOR or cursor == MachGui::MENU_CURSOR)
+    if (cursor == MachGui::INVALID_CURSOR || cursor == MachGui::MENU_CURSOR)
     {
         hadFinalPick_ = false;
     }
@@ -112,9 +112,9 @@ void MachGuiMoveCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool s
     {
         // Push onto the list of points
         points_.push_back(pActor->globalTransform().position());
-        hadFinalPick_ = not shiftPressed;
+        hadFinalPick_ = ! shiftPressed;
 
-        if (not hadFinalPick_)
+        if (! hadFinalPick_)
         {
             // Waypoint click (i.e. not final click)
             MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
@@ -192,7 +192,7 @@ bool MachGuiMoveCommand::applySimpleMove(MachActor* pActor, string*)
         ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
         pActor->asMachine().manualCommandIssued();
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
             hasPlayedVoiceMail(true);
@@ -216,13 +216,13 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, string* pReason)
 
     // machine cannot enter if it's too fat or there's no free bays for it.
 
-    if (not pActor->asMachine().canFitInsideConstructionNow(*pConstruction_))
+    if (! pActor->asMachine().canFitInsideConstructionNow(*pConstruction_))
         return false;
 
     // The internal station is a PARKING BAY except for a research lab
     MachLog::ObjectType constructionType = pConstruction_->objectType();
     MachPhysStation::Type stationType
-        = ((constructionType == MachLog::HARDWARE_LAB or constructionType == MachLog::SOFTWARE_LAB)
+        = ((constructionType == MachLog::HARDWARE_LAB || constructionType == MachLog::SOFTWARE_LAB)
                ? MachPhysStation::RESEARCH_BAY
                : MachPhysStation::PARKING_BAY);
 
@@ -252,10 +252,10 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, string* pReason)
             // in cases of this being a spy enterign an enemy building,
             // trigger "I'll attempt to download enemy's research" voicemail instead of normal move mail
 
-            if (pActor->objectType() == MachLog::SPY_LOCATOR and pConstruction_->objectType() == MachLog::HARDWARE_LAB
-                and (pActor->race() != pConstruction_->race()))
+            if (pActor->objectType() == MachLog::SPY_LOCATOR && pConstruction_->objectType() == MachLog::HARDWARE_LAB
+                && (pActor->race() != pConstruction_->race()))
             {
-                if (not hasPlayedVoiceMail())
+                if (! hasPlayedVoiceMail())
                 {
                     MachLogVoiceMailManager::instance().postNewMail(
                         VID_SPY_TASKED_INFLITRATE,
@@ -266,7 +266,7 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, string* pReason)
             }
             else
             {
-                if (not hasPlayedVoiceMail())
+                if (! hasPlayedVoiceMail())
                 {
                     MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
                     hasPlayedVoiceMail(true);
@@ -299,7 +299,7 @@ bool MachGuiMoveCommand::applyEnterAPC(MachActor* pActor, string*)
 
         machine.manualCommandIssued();
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
             hasPlayedVoiceMail(true);
@@ -332,7 +332,7 @@ bool MachGuiMoveCommand::applyFollowMachine(MachActor* pActor, string*)
         ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
         pActor->asMachine().manualCommandIssued();
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
             hasPlayedVoiceMail(true);
@@ -351,9 +351,9 @@ MachGui::Cursor2dType MachGuiMoveCommand::cursorOnTerrain(const MexPoint3d& loca
 
     // Check the location is on the ground - not up a hill
 
-    if (not inGameScreen().cameras()->currentCamera()->insideConstruction())
+    if (! inGameScreen().cameras()->currentCamera()->insideConstruction())
     {
-        if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+        if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         {
             cursorType = MachGui::MOVETO_CURSOR;
         }
@@ -386,7 +386,7 @@ MachGui::Cursor2dType MachGuiMoveCommand::cursorOnActor(MachActor* pActor, bool,
             pConstruction_ = pConstruction;
         }
     }
-    else if (pActor->objectType() == MachLog::APC and sameRace and not altPressed) // If ALT is pressed then follow the
+    else if (pActor->objectType() == MachLog::APC && sameRace && ! altPressed) // If ALT is pressed then follow the
                                                                                    // APC instead
     {
         pAPC_ = &pActor->asAPC();
@@ -395,7 +395,7 @@ MachGui::Cursor2dType MachGuiMoveCommand::cursorOnActor(MachActor* pActor, bool,
         // an APC
         bool noneCanEnter = true;
         for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-             iter != inGameScreen().selectedActors().end() and noneCanEnter;
+             iter != inGameScreen().selectedActors().end() && noneCanEnter;
              ++iter)
         {
             if (couldEnterAPC((**iter), *pAPC_))
@@ -404,7 +404,7 @@ MachGui::Cursor2dType MachGuiMoveCommand::cursorOnActor(MachActor* pActor, bool,
             }
         }
 
-        if (not noneCanEnter)
+        if (! noneCanEnter)
         {
             // Set enter APC action and store the pointer
             action_ = ENTER_APC;
@@ -415,7 +415,7 @@ MachGui::Cursor2dType MachGuiMoveCommand::cursorOnActor(MachActor* pActor, bool,
     {
         // Make sure we've not got the cursor over the same machine and
         // trying to tell it to follow...
-        if (inGameScreen().selectedActors().size() == 1 and inGameScreen().selectedActors().front() == pActor)
+        if (inGameScreen().selectedActors().size() == 1 && inGameScreen().selectedActors().front() == pActor)
         {
             cursorType = MachGui::MENU_CURSOR;
         }
@@ -427,7 +427,7 @@ MachGui::Cursor2dType MachGuiMoveCommand::cursorOnActor(MachActor* pActor, bool,
             pMachine_ = &pActor->asMachine();
         }
     }
-    else if (pActor->objectIsDebris() or pActor->objectIsOreHolograph())
+    else if (pActor->objectIsDebris() || pActor->objectIsOreHolograph())
     {
         // Regular move
         action_ = SIMPLE_MOVE;
@@ -585,7 +585,7 @@ bool MachGuiMoveCommand::doGroupApply(const Actors& actors, string* pReason)
         MachLogGroupSimpleMove groupMove(actors, validPoints, commandId(), pReason, pathFindingPriority());
         canApply = groupMove.moveOK();
 
-        if (canApply and pMachine)
+        if (canApply && pMachine)
         {
             // give voicemail
             MachLogMachineVoiceMailManager::instance().postNewMail(*pMachine, MachineVoiceMailEventID::MOVING);
@@ -598,9 +598,9 @@ bool MachGuiMoveCommand::doGroupApply(const Actors& actors, string* pReason)
 // virtual
 bool MachGuiMoveCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_M and be.action() == DevButtonEvent::PRESS
-        and be.wasAltPressed() == false and be.wasCtrlPressed() == false and be.wasShiftPressed() == false
-        and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_M && be.action() == DevButtonEvent::PRESS
+        && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
+        && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -613,8 +613,8 @@ bool MachGuiMoveCommand::processButtonEvent(const DevButtonEvent& be)
 bool MachGuiMoveCommand::couldEnterAPC(const MachActor& actor, const MachLogAPC& apc)
 {
     return (
-        actor.objectIsMachine() and actor.objectType() != MachLog::APC and not(actor.asMachine().machineIsGlider())
-        and apc.roomForMachine(actor.asMachine()));
+        actor.objectIsMachine() && actor.objectType() != MachLog::APC && !(actor.asMachine().machineIsGlider())
+        && apc.roomForMachine(actor.asMachine()));
 }
 
 // static
@@ -629,17 +629,17 @@ bool MachGuiMoveCommand::atLeastOneCorralActorCanEnterConstruction(
     if (inGameScreen.corralState() & MachInGameScreen::CORRAL_SOMEMACHINES)
     {
         for (MachInGameScreen::Actors::const_iterator iter = inGameScreen.selectedActors().begin();
-             iter != inGameScreen.selectedActors().end() and noneCanEnter;
+             iter != inGameScreen.selectedActors().end() && noneCanEnter;
              ++iter)
         {
-            if ((*iter)->objectIsMachine() and (*iter)->asMachine().canFitInsideConstructionNow(construction))
+            if ((*iter)->objectIsMachine() && (*iter)->asMachine().canFitInsideConstructionNow(construction))
             {
                 noneCanEnter = false;
             }
         }
     }
 
-    return not(noneCanEnter);
+    return !(noneCanEnter);
 }
 
 /* End CMDMOVE.CPP **************************************************/

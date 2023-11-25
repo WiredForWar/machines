@@ -35,15 +35,15 @@ bool PhysCS2dDomainFindPathCache::findPath(
 {
     bool result = false;
 
-    for (size_t i = 0; i < cache_.size() and not result; ++i)
+    for (size_t i = 0; i < cache_.size() && ! result; ++i)
     {
         const MATHEX_SCALAR sqrMaxDistance = 15.0 * 15.0;
         const PathData& data = cache_[i];
 
-        if (startDomainId == data.startPoint().domainId() and endDomainId == data.endPoint().domainId()
-            and clearance <= data.searchData().clearance() and flags == data.searchData().flags()
-            and startPoint.sqrEuclidianDistance(data.startPoint().point()) < sqrMaxDistance
-            and endPoint.sqrEuclidianDistance(data.endPoint().point()) < sqrMaxDistance)
+        if (startDomainId == data.startPoint().domainId() && endDomainId == data.endPoint().domainId()
+            && clearance <= data.searchData().clearance() && flags == data.searchData().flags()
+            && startPoint.sqrEuclidianDistance(data.startPoint().point()) < sqrMaxDistance
+            && endPoint.sqrEuclidianDistance(data.endPoint().point()) < sqrMaxDistance)
         {
             result = true;
             *pPath = data.path();

@@ -92,7 +92,7 @@ RenColour RenColourHSV::rgb() const
 
     if (saturation() == 0.0)
     {
-        ASSERT(not hueDefined(), "");
+        ASSERT(! hueDefined(), "");
 
         red = value();
         green = value();
@@ -163,7 +163,7 @@ double RenColourHSV::hue() const
 
     double result = hue_;
 
-    POST(0.0 <= result and result <= 360.0);
+    POST(0.0 <= result && result <= 360.0);
 
     return result;
 }

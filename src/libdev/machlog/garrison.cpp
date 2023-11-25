@@ -138,17 +138,17 @@ PhysRelativeTime MachLogGarrison::update(const PhysRelativeTime& alteredMaxCPUTi
 
     PhysRelativeTime interval = 8.0;
 
-    if (not machines().empty())
+    if (! machines().empty())
     {
         // faster callback time if have machines inside me
         interval = 2.0;
     }
 
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
         interval = 0.1;
     else
     {
-        if (not pPhysGarrison()->isWorking())
+        if (! pPhysGarrison()->isWorking())
         {
             pPhysGarrison()->isWorking(true);
             if (MachLogNetwork::instance().isNetworkGame())
@@ -221,13 +221,13 @@ void MachLogGarrison::healAll()
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pMachine->race());
 
-        if (disposition == MachLogRaces::OUR_RACE or disposition == MachLogRaces::ALLY)
+        if (disposition == MachLogRaces::OUR_RACE || disposition == MachLogRaces::ALLY)
         {
             // can only heal machines standing still that have less than maximum hp, are idle and which
             // we're not already healing
             if (pMachine->hpRatio() < 1.0
                 /*and pMachine->isIdle()*/
-                and not currentlyHealing(pMachine))
+                && ! currentlyHealing(pMachine))
             {
                 startHealing(pMachine);
             }
@@ -239,7 +239,7 @@ void MachLogGarrison::healAll()
 
     bool foundNoMachinesThatNeedHealingStopped = false;
 
-    while (not foundNoMachinesThatNeedHealingStopped)
+    while (! foundNoMachinesThatNeedHealingStopped)
     {
         foundNoMachinesThatNeedHealingStopped = true; // provisional assignment
 
@@ -250,7 +250,7 @@ void MachLogGarrison::healAll()
 
             if (pMachineOnHealingList->hpRatio() == 1.0
                 /*or not pMachineOnHealingList->isIdle()*/
-                or not containsMachine(pMachineOnHealingList)) // can't continue to heal if outside building
+                || ! containsMachine(pMachineOnHealingList)) // can't continue to heal if outside building
             {
                 stopHealing(pMachineOnHealingList);
                 foundNoMachinesThatNeedHealingStopped = false;
@@ -282,7 +282,7 @@ void MachLogGarrison::healAll()
 void MachLogGarrison::startHealing(MachLogMachine* pMachine)
 {
     CB_MachLogGarrison_DEPIMPL();
-    PRE(not currentlyHealing(pMachine));
+    PRE(! currentlyHealing(pMachine));
 
     machinesBeingHealed_.push_back(pMachine);
     pMachine->attach(this);
@@ -314,7 +314,7 @@ void MachLogGarrison::stopHealing(MachLogMachine* pMachine)
     if (network.isNetworkGame())
         network.messageBroker().sendHealMessage(id(), pMachine->id(), MachLogMessageBroker::STOP_HEALING, true);
 
-    POST(not currentlyHealing(pMachine));
+    POST(! currentlyHealing(pMachine));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +364,7 @@ bool MachLogGarrison::beNotified(W4dSubject* pSubject, W4dSubject::NotificationE
 // virtual
 int MachLogGarrison::militaryStrength() const
 {
-    if (not isComplete())
+    if (! isComplete())
         return 0;
 
     int hwLevel = (int)(asConstruction().level());

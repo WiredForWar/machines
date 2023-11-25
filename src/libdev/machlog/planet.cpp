@@ -159,7 +159,7 @@ void MachLogPlanet::surface(
 {
     CB_MachLogPlanet_DEPIMPL();
     PRE(pSceneManager != nullptr);
-    PRE(not hasSurface());
+    PRE(! hasSurface());
 
     // Store the world pointer
     pWorld_ = &(pSceneManager->root());
@@ -280,7 +280,7 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
     domainIds.reserve(64);
 
     // Read definitions until finished
-    while (not parser.finished())
+    while (! parser.finished())
     {
         long currentPosition = pIstream->tellg();
         // This function must report on section 20% to 50% - so scale % read of file accordingly.
@@ -424,7 +424,7 @@ void MachLogPlanet::readObstacleFlags(UtlLineTokeniser* pParser, ObstacleFlags* 
 
     bool finished = false;
 
-    while (not finished)
+    while (! finished)
     {
         for (size_t i = 0; i < pParser->tokens().size(); ++i)
         {
@@ -440,7 +440,7 @@ void MachLogPlanet::readObstacleFlags(UtlLineTokeniser* pParser, ObstacleFlags* 
                 finished = true;
         }
 
-        if (not finished)
+        if (! finished)
             pParser->parseNextLine();
     }
 }
@@ -565,7 +565,7 @@ void MachLogPlanet::clear()
     // clear the planet surface in scene complexity manager
     MachPhysComplexityManager::instance().planetSurface(nullptr);
 
-    POST(not hasSurface());
+    POST(! hasSurface());
 }
 
 bool MachLogPlanet::hasSurface() const

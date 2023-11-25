@@ -61,7 +61,7 @@ const MachGuiOptionsLayout::CheckBoxInfo& MachGuiOptionsLayout::checkBoxInfo(uin
 
 void MachGuiOptionsLayout::parse()
 {
-    while (not parser_.finished())
+    while (! parser_.finished())
     {
         if (parser_.tokens()[0] == "SB")
             parseSlidebar(parser_.tokens());

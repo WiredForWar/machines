@@ -179,7 +179,7 @@ void MachPhysGeoLocator::isLocating(bool doLocate)
             if (pLocator_ == nullptr)
             {
                 W4dLink* pHip;
-                if (findLink("hip", &pHip) or findLink("hips", &pHip))
+                if (findLink("hip", &pHip) || findLink("hips", &pHip))
                 {
                     const MexAlignedBox3d& hipBox = pHip->boundingVolume();
                     locatorSize_ = MachPhysData::instance().geoLocatorData(bodyLevel(), brainLevel()).scannerRange();
@@ -257,7 +257,7 @@ void MachPhysGeoLocator::move(const MachPhysMachineMoveInfo& info)
 
     // If locating, need to ensure we have a locating animation to cover the move period
     PhysAbsoluteTime moveEndTime = startTime + interval;
-    if (isLocating_ and locatingPlanPtr_.isDefined() and (moveEndTime > locatingPlanEndTime_))
+    if (isLocating_ && locatingPlanPtr_.isDefined() && (moveEndTime > locatingPlanEndTime_))
     {
         // Get time to start new locating animation
         PhysAbsoluteTime locatingStartTime = locatingPlanEndTime_;

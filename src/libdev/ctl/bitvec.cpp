@@ -28,7 +28,7 @@ std::ostream& operator<<(std::ostream& o, ctl_bit_vector& b)
 
 bool operator==(const ctl_bit_vector& a, const ctl_bit_vector& b)
 {
-    return a.size() == b.size() and memcmp(a.vec_, b.vec_, a.nBlocks_ * sizeof(unsigned long)) == 0;
+    return a.size() == b.size() && memcmp(a.vec_, b.vec_, a.nBlocks_ * sizeof(unsigned long)) == 0;
 }
 
 void ctl_bit_vector::CLASS_INVARIANT
@@ -71,7 +71,7 @@ ctl_bit_vector::ctl_bit_vector(const string& s)
     // set up the values in the string
     for (size_t i = 0; i < size(); ++i)
     {
-        ASSERT(s[i] == '1' or s[i] == '0', "Input characters must be either a 0 or a 1");
+        ASSERT(s[i] == '1' || s[i] == '0', "Input characters must be either a 0 or a 1");
 
         if (s[i] == '1')
             (*this)[i].flip();

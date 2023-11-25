@@ -64,7 +64,7 @@ void MachGuiDropLandMineCommand::pickOnTerrain(
         // Store the location
         path_.push_back(MexPoint2d(location));
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -81,7 +81,7 @@ bool MachGuiDropLandMineCommand::canActorEverExecute(const MachActor& actor) con
 {
     // Spies with at least one mine can initiate a drop land mine operation.
     MachLog::ObjectType objectType = actor.objectType();
-    return objectType == MachLog::SPY_LOCATOR and actor.asSpyLocator().nMines() > 0;
+    return objectType == MachLog::SPY_LOCATOR && actor.asSpyLocator().nMines() > 0;
 }
 
 // virtual
@@ -111,7 +111,7 @@ bool MachGuiDropLandMineCommand::doApply(MachActor* pActor, string* /*pReason*/)
             pActor->newOperation(pOp);
             canDo = true;
 
-            if (not hasPlayedVoiceMail())
+            if (! hasPlayedVoiceMail())
             {
                 MachLogVoiceMailManager::instance().postNewMail(VID_SPY_TASKED_LAY_MINE, pActor->id(), pActor->race());
                 hasPlayedVoiceMail(true);
@@ -127,7 +127,7 @@ MachGui::Cursor2dType MachGuiDropLandMineCommand::cursorOnTerrain(const MexPoint
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, USE_ALL_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, USE_ALL_OBSTACLES))
         cursor = MachGui::DROPLANDMINE_CURSOR;
 
     return cursor;
@@ -200,7 +200,7 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
 
         bool found = false;
         for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-             not found and i != inGameScreen().selectedActors().end();
+             ! found && i != inGameScreen().selectedActors().end();
              ++i)
             if ((*i)->objectType() == MachLog::SPY_LOCATOR)
             {
@@ -223,8 +223,8 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
 // virtual
 bool MachGuiDropLandMineCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_M and be.action() == DevButtonEvent::PRESS and be.wasShiftPressed()
-        and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_M && be.action() == DevButtonEvent::PRESS && be.wasShiftPressed()
+        && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

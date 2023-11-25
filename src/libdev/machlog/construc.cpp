@@ -109,7 +109,7 @@ void MachLogConstructor::constructing(bool newIsConstructingValue, UtlId constru
     isConstructing_ = newIsConstructingValue;
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
         network.messageBroker().sendPlayConstructAnimationMessage(id(), constructionId, isConstructing_);
 
     if (isConstructing_)
@@ -283,13 +283,13 @@ bool MachLogConstructor::constructing() const
 bool MachLogConstructor::constructingMissileEmplacement() const
 {
     bool result = false;
-    if (not strategy().queueIsEmpty())
+    if (! strategy().queueIsEmpty())
     {
         const MachLogOperation& operation = strategy().operationCurrentlyExecuting();
 
         result = operation.operationType() == MachLogOperation::CONSTRUCT_OPERATION
             // and _STATIC_CAST( MachLogConstructOperation&, operation ).constructingMissileEmplacement();
-            and _STATIC_CAST(const MachLogConstructOperation&, operation).constructingMissileEmplacement();
+            && _STATIC_CAST(const MachLogConstructOperation&, operation).constructingMissileEmplacement();
     }
 
     return result;

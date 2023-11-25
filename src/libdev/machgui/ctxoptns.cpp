@@ -229,7 +229,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     int inGameResolutionRefresh = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
 
     // Check that minimum resolution is specified
-    if (inGameResolutionWidth < 640 or inGameResolutionHeight < 480)
+    if (inGameResolutionWidth < 640 || inGameResolutionHeight < 480)
     {
         inGameResolutionWidth = 640;
         inGameResolutionHeight = 480;
@@ -252,7 +252,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         // requirement.
         // if ( mode >= lowestMode and mode.bitDepth() == 16 and
         if (mode >= lowestMode
-            and caps.maxAvailableDisplayMemoryAfterTextures() >= 3 * mode.memoryRequired())
+            && caps.maxAvailableDisplayMemoryAfterTextures() >= 3 * mode.memoryRequired())
         {
             // Construct a string to go in the drop down list box ( e.g. "640x480" )
             char buffer[30];
@@ -263,8 +263,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
             // If this mode is the current mode for ingame then make sure it appears first in the
             // drop down list box
-            if (inGameResolutionWidth == mode.width() and inGameResolutionHeight == mode.height()
-                and (inGameResolutionRefresh == 0 or inGameResolutionRefresh == mode.refreshRate()))
+            if (inGameResolutionWidth == mode.width() && inGameResolutionHeight == mode.height()
+                && (inGameResolutionRefresh == 0 || inGameResolutionRefresh == mode.refreshRate()))
             {
                 strings.insert(strings.begin(), resolutionStr);
                 modeList.insert(modeList.begin(), (void*)&mode);
@@ -515,7 +515,7 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
         int newScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
 
         if (pScreenResolutionLock_->checked()
-            and ((pNewMode->width() != pCurrentMode.width()) or (pNewMode->height() != pCurrentMode.height())))
+            && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
         {
             // If we already have a message to display from the previous settings change, then use a combined message
             if (bDisplayMessageBox)

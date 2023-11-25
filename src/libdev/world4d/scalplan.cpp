@@ -32,7 +32,7 @@ W4dScalePlan::~W4dScalePlan()
 
 void W4dScalePlan::scale(const PhysRelativeTime& timeOffset, RenUniformScale* pScale) const
 {
-    PRE(not isNonUniform());
+    PRE(! isNonUniform());
     doScale(timeOffset, pScale);
 }
 

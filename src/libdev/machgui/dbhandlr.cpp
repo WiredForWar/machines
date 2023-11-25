@@ -57,7 +57,7 @@ MachGuiDatabaseHandler::survivingUnits(MachPhys::Race race, const string& scenar
     {
         // See if our player has played this scenario successfully
         MachGuiDbPlayerScenario* pDbPlayerScenario = nullptr;
-        if (player.hasPlayed(*pDbScenario, &pDbPlayerScenario) and pDbPlayerScenario->hasWon())
+        if (player.hasPlayed(*pDbScenario, &pDbPlayerScenario) && pDbPlayerScenario->hasWon())
         {
             pUnits = &pDbPlayerScenario->raceSurvivingUnits(race);
         }
@@ -80,7 +80,7 @@ bool MachGuiDatabaseHandler::isFlagSet(const string& flag, const string& scenari
     {
         // See if our player has played this scenario successfully
         MachGuiDbPlayerScenario* pDbPlayerScenario = nullptr;
-        if (player.hasPlayed(*pDbScenario, &pDbPlayerScenario) and pDbPlayerScenario->hasWon())
+        if (player.hasPlayed(*pDbScenario, &pDbPlayerScenario) && pDbPlayerScenario->hasWon())
         {
             isSet = pDbPlayerScenario->isFlagSet(flag);
         }

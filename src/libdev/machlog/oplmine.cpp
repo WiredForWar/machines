@@ -95,7 +95,7 @@ bool MachLogDropLandMineOperation::doStart()
 {
     CB_MachLogDropLandMineOperation_DEPIMPL();
 
-    if (not checkNeedAndDoLeaveOperation(pActor_))
+    if (! checkNeedAndDoLeaveOperation(pActor_))
     {
         dest_ = path_.front();
         return true;
@@ -112,7 +112,7 @@ bool MachLogDropLandMineOperation::doIsFinished() const
 {
     CB_MachLogDropLandMineOperation_DEPIMPL();
 
-    return path_.empty() or pActor_->nMines() == 0 or failedAttempts_ == 10;
+    return path_.empty() || pActor_->nMines() == 0 || failedAttempts_ == 10;
 }
 
 // virtual
@@ -121,7 +121,7 @@ bool MachLogDropLandMineOperation::doBeInterrupted()
     CB_MachLogDropLandMineOperation_DEPIMPL();
 
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 // virtual
@@ -132,7 +132,7 @@ PhysRelativeTime MachLogDropLandMineOperation::doUpdate()
     if (pSubOperation())
     {
         // check to see we can still reach this current location without any hassles.
-        if (not MachLogSpacialManipulation::pointIsFree(path_.front(), pActor_->motionSeq().highClearance() * 1.5))
+        if (! MachLogSpacialManipulation::pointIsFree(path_.front(), pActor_->motionSeq().highClearance() * 1.5))
         {
             // if this counter reaches 5, it is pretty clear that this destination location isn't currently viable
             ++failedAttempts_;
@@ -174,7 +174,7 @@ PhysRelativeTime MachLogDropLandMineOperation::doUpdate()
         path_.erase(path_.begin());
 
         // now, any more places to go to?
-        if (pActor_->nMines() > 0 and not path_.empty())
+        if (pActor_->nMines() > 0 && ! path_.empty())
         {
             subOperation(pActor_, new MachLogMoveToOperation(pActor_, MexPoint3d(path_.front())));
             interval = 2.0;

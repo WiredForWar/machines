@@ -105,14 +105,14 @@ RenIDriverImpl* RenIDDrawDriverImpl::clone() const
 
 bool RenIDDrawDriverImpl::isBetterChoiceThan(const RenIDriverImpl& than) const
 {
-    return not than.isBetterChoiceThan(*this);
+    return ! than.isBetterChoiceThan(*this);
 }
 
 bool RenIDDrawDriverImpl::isBetterChoiceThan(const RenIDDrawDriverImpl& than) const
 {
     bool result = true;
     // we prefer the non primary drivers which have guids
-    if (not hasGuid() and than.hasGuid())
+    if (! hasGuid() && than.hasGuid())
         result = false;
     return result;
 }
@@ -121,7 +121,7 @@ void RenIDDrawDriverImpl::writeToRegistry()
 {
     SysRegistry::KeyHandle handle;
     SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Automatic", isAutomatic());
-    SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Primary Driver", not hasGuid());
+    SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Primary Driver", ! hasGuid());
     if (hasGuid())
     {
         SysRegistry::instance().closeKey(handle);
@@ -145,7 +145,7 @@ RenIDriverImpl* RenID3dDeviceImpl::clone() const
 bool RenID3dDeviceImpl::isBetterChoiceThan(const RenIDriverImpl& than) const
 {
     hasGuid();
-    return not than.isBetterChoiceThan(*this);
+    return ! than.isBetterChoiceThan(*this);
 }
 
 bool RenID3dDeviceImpl::isBetterChoiceThan(const RenID3dDeviceImpl& than) const

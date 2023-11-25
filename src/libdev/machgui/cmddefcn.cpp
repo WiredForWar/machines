@@ -84,13 +84,13 @@ bool MachGuiDefconCommand::doApply(MachActor* pActor, string*)
 {
     MachLog::DefCon newDefcon = MachLog::DEFCON_NORMAL;
 
-    if (defconLow_ and defconNormal_ and defconHigh_)
+    if (defconLow_ && defconNormal_ && defconHigh_)
         newDefcon = MachLog::DEFCON_HIGH;
-    else if (defconLow_ and defconNormal_)
+    else if (defconLow_ && defconNormal_)
         newDefcon = MachLog::DEFCON_NORMAL;
-    else if (defconNormal_ and defconHigh_)
+    else if (defconNormal_ && defconHigh_)
         newDefcon = MachLog::DEFCON_HIGH;
-    else if (defconLow_ and defconHigh_)
+    else if (defconLow_ && defconHigh_)
         newDefcon = MachLog::DEFCON_HIGH;
     else if (defconLow_)
         newDefcon = MachLog::DEFCON_NORMAL;
@@ -200,11 +200,11 @@ void MachGuiDefconCommand::update(const Actors& actors)
     }
 
     // now may need to alter the goHighFromNormal_ movement direction flag
-    if (defconLow_ and not defconNormal_ and not defconHigh_)
+    if (defconLow_ && ! defconNormal_ && ! defconHigh_)
     {
         goHighFromNormal_ = true;
     }
-    else if (defconHigh_ and not defconNormal_ and not defconLow_)
+    else if (defconHigh_ && ! defconNormal_ && ! defconLow_)
     {
         goHighFromNormal_ = false;
     }
@@ -235,7 +235,7 @@ bool MachGuiDefconCommand::defconHigh()
 // virtual
 bool MachGuiDefconCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::TAB and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::TAB && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

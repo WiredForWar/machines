@@ -111,7 +111,7 @@ size_t MachProductionIcons::width()
 
 void MachProductionIcons::updateProgress(float percentageComplete)
 {
-    if (not children().empty() and not canScrollBackward())
+    if (! children().empty() && ! canScrollBackward())
     {
         MachProductionIcon* pHeadOfList = _REINTERPRET_CAST(MachProductionIcon*, children().front());
         pHeadOfList->updateProgress(percentageComplete);

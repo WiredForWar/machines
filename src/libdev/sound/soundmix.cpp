@@ -132,7 +132,7 @@ SndMixer::SndMixer()
 void SndMixer::initialise(const SndMixerParameters& params)
 {
     // Check we are not already initialised
-    PRE(not SndMixer::isInitialised());
+    PRE(! SndMixer::isInitialised());
 
     SndMixerImpl::noOfChannels_ = params.noOfChannels();
 

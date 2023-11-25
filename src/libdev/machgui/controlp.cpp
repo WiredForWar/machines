@@ -44,7 +44,7 @@ public:
 protected:
     void doBeReleased(const GuiMouseEvent&) override
     {
-        pInGameScreen_->controlPanelOn(not pInGameScreen_->controlPanelOn());
+        pInGameScreen_->controlPanelOn(! pInGameScreen_->controlPanelOn());
     }
 
     void doBeDepressed(const GuiMouseEvent&) override
@@ -216,7 +216,7 @@ void MachGuiControlPanel::redrawAreaImmediate(const Gui::Box& area)
     // DEBUG_STREAM( DIAG_NEIL, "*** redraw area " << areaXMin << "," << areaYMin << "," << areaXMax << "," << areaYMax
     // << std::endl );
 
-    while (y < maxY and y < areaYMax)
+    while (y < maxY && y < areaYMax)
     {
         if (areaYMin <= y + yStep)
         {

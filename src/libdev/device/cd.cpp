@@ -278,7 +278,7 @@ void DevCD::play()
 
 void DevCD::playFrom(DevCDTrackIndex track)
 {
-    PRE(track >= 0 and track < numberOfTracks());
+    PRE(track >= 0 && track < numberOfTracks());
     play(track);
 }
 
@@ -302,16 +302,16 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
     unsigned int& savedVolume_ = pImpl_->savedVolume_;
     bool& musicEnabled_ = pImpl_->musicEnabled_;
 
-    PRE(track >= 0 and track < numberOfTracks());
+    PRE(track >= 0 && track < numberOfTracks());
 
     trackPlaying_ = track;
 
-    if (musicEnabled_ and stream_ != nullptr)
+    if (musicEnabled_ && stream_ != nullptr)
     {
         alureDestroyStream(stream_, 0, nullptr);
     }
 
-    if (not musicEnabled_ or savedVolume_ <= 0) // Muted
+    if (! musicEnabled_ || savedVolume_ <= 0) // Muted
     {
         return;
     }
@@ -394,7 +394,7 @@ void DevCD::handleMessages(CDMessage message, unsigned int devID)
             {
                 if (status_ == PROGRAMMED)
                 {
-                    if (not pPlayList_->isFinished())
+                    if (! pPlayList_->isFinished())
                     {
                         play(pPlayList_->nextTrack());
                     }
@@ -416,7 +416,7 @@ void DevCD::handleMessages(CDMessage message, unsigned int devID)
                             // Make sure we don't play the same track twice (unless it is the only track)
                             DevCDTrackIndex trackToPlay = trackPlaying_;
                             while (trackToPlay == trackPlaying_
-                                   and (trackToPlay != randomStartTrack_ or trackToPlay != tmpEndTrack))
+                                   && (trackToPlay != randomStartTrack_ || trackToPlay != tmpEndTrack))
                             {
                                 trackToPlay = mexRandomInt(&randomGenerator_, randomStartTrack_, tmpEndTrack);
                             }
@@ -445,7 +445,7 @@ bool DevCD::isAudioCDPresent()
     bool& musicEnabled_ = pImpl_->musicEnabled_;
 
     // If music is muted then just say no
-    if (not musicEnabled_ or savedVolume_ <= 0)
+    if (! musicEnabled_ || savedVolume_ <= 0)
     {
         return false;
     }

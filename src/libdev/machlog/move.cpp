@@ -175,9 +175,9 @@ bool MachLogMoveToOperation::doStart()
     {
         MachLogConstruction* pConstruction;
         bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
-        if (insideABuilding and not pConstruction->globalBoundary().contains(dest_))
+        if (insideABuilding && ! pConstruction->globalBoundary().contains(dest_))
         {
-            return not checkNeedAndDoLeaveOperation(pActor_);
+            return ! checkNeedAndDoLeaveOperation(pActor_);
         }
     }
 
@@ -213,7 +213,7 @@ PhysRelativeTime MachLogMoveToOperation::doUpdate()
     // HAL_STREAM(" (" << pActor_->id() << ") MachLogMoveToOperation::doUpdate " << (void*)pActor_ << std::endl;)
     static PhysRelativeTime moveCPU = MachLogRaces::instance().stats().maxMoveTime();
     PhysRelativeTime returnTime = pActor_->motionSeq().update(moveCPU);
-    if (not pActor_->motionSeq().hasDestination())
+    if (! pActor_->motionSeq().hasDestination())
     {
         if (path_.size() > 0)
             path_.erase(path_.begin());
@@ -258,7 +258,7 @@ bool MachLogMoveToOperation::doIsFinished() const
     CB_MachLogMoveToOperation_DEPIMPL();
 
     // JON_STREAM("MachLogMoveToOperation::doIsFinished entry" << (void*)pActor_ << std::endl;)
-    bool result = not pActor_->motionSeq().hasDestination() and path_.size() == 0;
+    bool result = ! pActor_->motionSeq().hasDestination() && path_.size() == 0;
     // JON_STREAM("MachLogMoveToOperation::doFinish exit: result = " << result << std::endl;)
     return result;
 }
@@ -270,7 +270,7 @@ bool MachLogMoveToOperation::doBeInterrupted()
     pActor_->motionSeq().stop();
     while (path_.size() > 0)
         path_.erase(path_.begin());
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 void perWrite(PerOstream& ostr, const MachLogMoveToOperation& op)
@@ -405,8 +405,8 @@ bool MachLogMoveAndTurnOperation::doStart()
     {
         MachLogConstruction* pConstruction;
         bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
-        if (insideABuilding and not pConstruction->globalBoundary().contains(dest_))
-            return not checkNeedAndDoLeaveOperation(pActor_);
+        if (insideABuilding && ! pConstruction->globalBoundary().contains(dest_))
+            return ! checkNeedAndDoLeaveOperation(pActor_);
     }
 
     if (timeNow >= dontMoveUntil_)
@@ -456,7 +456,7 @@ PhysRelativeTime MachLogMoveAndTurnOperation::doUpdate()
     else
     {
         MexRadians turnBy = angleToTurnToFace(*pActor_, endFacing_);
-        if (not withinEpsilonOf(angleToTurnToFace(*pActor_, endFacing_).asScalar(), 0.0))
+        if (! withinEpsilonOf(angleToTurnToFace(*pActor_, endFacing_).asScalar(), 0.0))
             subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
     }
     return interval;
@@ -474,17 +474,17 @@ bool MachLogMoveAndTurnOperation::doIsFinished() const
     // if actor is standing ground, always return true to cancel move op UNLESS one of superops is enter/exit
     //  building op, in which
     if (pActor_->isStandingGround()
-        and not(
+        && !(
             pActor_->strategy().currentOperationType() == MachLogOperation::ENTER_OPERATION
-            or pActor_->strategy().currentOperationType() == MachLogOperation::LEAVE_OPERATION))
+            || pActor_->strategy().currentOperationType() == MachLogOperation::LEAVE_OPERATION))
     {
         return true;
     }
 
     // otherwise, use this test to return boolean value
     return (
-        not pActor_->motionSeq().hasDestination()
-        and withinEpsilonOf(angleToTurnToFace(*pActor_, endFacing_).asScalar(), 0.0));
+        ! pActor_->motionSeq().hasDestination()
+        && withinEpsilonOf(angleToTurnToFace(*pActor_, endFacing_).asScalar(), 0.0));
 }
 
 bool MachLogMoveAndTurnOperation::doBeInterrupted()

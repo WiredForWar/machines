@@ -71,8 +71,8 @@ bool MachLogSpacialManipulation::getNearestFreeSpacePoint(
     {
         case USE_CLOCK_PATTERN:
             {
-                while (not getNextInCircularPattern(orTrans, useRadius, clearance, pResult)
-                       and useRadius < (innerRadius + distanceToOuterRadius))
+                while (! getNextInCircularPattern(orTrans, useRadius, clearance, pResult)
+                       && useRadius < (innerRadius + distanceToOuterRadius))
                 {
                     useRadius += 2.5;
                 }
@@ -80,8 +80,8 @@ bool MachLogSpacialManipulation::getNearestFreeSpacePoint(
             }
         case USE_FLANKING_PATTERN:
             {
-                while (not getNextInFlankingPattern(orTrans, useRadius, clearance, pResult)
-                       and useRadius < (innerRadius + distanceToOuterRadius))
+                while (! getNextInFlankingPattern(orTrans, useRadius, clearance, pResult)
+                       && useRadius < (innerRadius + distanceToOuterRadius))
                 {
                     useRadius += 2.5;
                 }
@@ -90,7 +90,7 @@ bool MachLogSpacialManipulation::getNearestFreeSpacePoint(
             DEFAULT_ASSERT_BAD_CASE(pattern);
     }
 
-    if (not(useRadius < (innerRadius + distanceToOuterRadius)))
+    if (!(useRadius < (innerRadius + distanceToOuterRadius)))
     {
         HAL_STREAM(
             "MLSpacialManipulation::getNearestFreeSpacePoint from:\n "
@@ -147,7 +147,7 @@ bool MachLogSpacialManipulation::getNextInCircularPattern(
 
     bool found = false;
 
-    for (int multiplier = 1; not found and multiplier < nSectors; ++multiplier)
+    for (int multiplier = 1; ! found && multiplier < nSectors; ++multiplier)
     {
 
         trans.rotate(MexEulerAngles(angleChunk * addAngleModifier * multiplier, 0, 0));
@@ -203,7 +203,7 @@ bool MachLogSpacialManipulation::targetBehindCover(const MachActor& actor, const
         {
             // HAL_STREAM(" target inside building using interiorConfigSpace\n" );
             PhysConfigSpace2d& cSpace = mlm.insideWhichBuilding().interiorConfigSpace();
-            result = not cSpace.contains(
+            result = ! cSpace.contains(
                 actor.position(),
                 target.position(),
                 mlm.obstacleFlags(),
@@ -220,7 +220,7 @@ bool MachLogSpacialManipulation::targetBehindCover(const MachActor& actor, const
         {
             HAL_STREAM(" not inside a building checking against planet CSpace2d\n");
             PhysConfigSpace2d& cSpace = MachLogPlanet::instance().configSpace();
-            result = not cSpace.contains(
+            result = ! cSpace.contains(
                 actor.position(),
                 target.position(),
                 mlm.obstacleFlags(),
@@ -232,7 +232,7 @@ bool MachLogSpacialManipulation::targetBehindCover(const MachActor& actor, const
     {
         // HAL_STREAM(" target is a construction checking against planet CSpace2d\n" );
         PhysConfigSpace2d& cSpace = MachLogPlanet::instance().configSpace();
-        bool result = not cSpace.contains(
+        bool result = ! cSpace.contains(
             actor.position(),
             target.position(),
             MachLog::OBSTACLE_NORMAL,
@@ -240,7 +240,7 @@ bool MachLogSpacialManipulation::targetBehindCover(const MachActor& actor, const
             PhysConfigSpace2d::USE_PERMANENT_ONLY);
         // HAL_STREAM(" result " << result << std::endl );
         // HAL_STREAM(" junk polygon " << junk << std::endl );
-        if (target.objectIsConstruction() and target.asConstruction().obstaclePolygonId() == junk)
+        if (target.objectIsConstruction() && target.asConstruction().obstaclePolygonId() == junk)
         {
             // HAL_STREAM( " junk == obstacle polygon id so changing to false\n" );
             result = false;
@@ -470,7 +470,7 @@ bool MachLogSpacialManipulation::pointIsFree(const MexPoint2d& testPoint, MATHEX
     PhysConfigSpace2d::PolygonId dummyId;
     PhysConfigSpace2d::DomainId dummyDomainId;
     if (cs.contains(testCircle, MachLog::OBSTACLE_NORMAL, &dummyId, PhysConfigSpace2d::USE_ALL)
-        and cs.domain(testPoint, &dummyDomainId))
+        && cs.domain(testPoint, &dummyDomainId))
         result = true;
 
     return result;
@@ -489,7 +489,7 @@ bool MachLogSpacialManipulation::pointInsideConfigSpaceIsFree(
     PhysConfigSpace2d::PolygonId dummyId;
     PhysConfigSpace2d::DomainId dummyDomainId;
     if (cs.contains(testCircle, MachLog::OBSTACLE_NORMAL, &dummyId, PhysConfigSpace2d::USE_ALL)
-        and cs.domain(testPoint, &dummyDomainId))
+        && cs.domain(testPoint, &dummyDomainId))
         result = true;
 
     return result;
@@ -527,7 +527,7 @@ bool MachLogSpacialManipulation::getNextInFlankingPattern(
 
     // the search will basically try from the initial angle defined by "progression", right around
     // to 90 degrees on the other side of the normal.
-    for (; not found and progression < quarterSectors; ++progression)
+    for (; ! found && progression < quarterSectors; ++progression)
     {
         // note the use of 'sense' - can effectively make the whole findspace a mirror-image search if set at -1.
         trans.rotate(MexEulerAngles(angleChunk * sense, 0, 0));
@@ -573,12 +573,12 @@ bool MachLogSpacialManipulation::intersectsWithActor(const MexAlignedBox2d& box)
     bool intersects = false;
 
     for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().objects().begin();
-         not intersects and i != MachLogRaces::instance().objects().end();
+         ! intersects && i != MachLogRaces::instance().objects().end();
          ++i)
     {
         MachLog::ObjectType type = (*i)->objectType();
         // only bother checking if not holograph or debris.
-        if (type != MachLog::DEBRIS and type != MachLog::ORE_HOLOGRAPH)
+        if (type != MachLog::DEBRIS && type != MachLog::ORE_HOLOGRAPH)
         {
             HAL_STREAM("Checking actor position: " << (*i)->position() << std::endl);
             if (box.contains((*i)->position()))

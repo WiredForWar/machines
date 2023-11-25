@@ -922,7 +922,7 @@ void MachPhysDataParser::readParameterisedDataFile(const SysPathName& pathname)
     bool weaponsSection = false;
     bool EPPsSection = false;
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT_INFO(parser.tokens()[0]);
         //      for( int i = 0 ; i < parser.tokens().size() ; ++i )
@@ -930,33 +930,33 @@ void MachPhysDataParser::readParameterisedDataFile(const SysPathName& pathname)
 
         if (parser.tokens()[0] == "MACHINES")
         {
-            ASSERT(not constructionsSection, "Error in object data file -> no end of constructions section\n");
-            ASSERT(not weaponsSection, "Error in object data file -> no end of weapons section\n");
-            ASSERT(not EPPsSection, "Error in object data file -> no end of EPPs section\n");
+            ASSERT(! constructionsSection, "Error in object data file -> no end of constructions section\n");
+            ASSERT(! weaponsSection, "Error in object data file -> no end of weapons section\n");
+            ASSERT(! EPPsSection, "Error in object data file -> no end of EPPs section\n");
             machinesSection = true;
         }
 
         if (parser.tokens()[0] == "CONSTRUCTIONS")
         {
-            ASSERT(not machinesSection, "Error in object data file -> no end of machines section\n");
-            ASSERT(not weaponsSection, "Error in object data file -> no end of weapons section\n");
-            ASSERT(not EPPsSection, "Error in object data file -> no end of EPPs section\n");
+            ASSERT(! machinesSection, "Error in object data file -> no end of machines section\n");
+            ASSERT(! weaponsSection, "Error in object data file -> no end of weapons section\n");
+            ASSERT(! EPPsSection, "Error in object data file -> no end of EPPs section\n");
             constructionsSection = true;
         }
 
         if (parser.tokens()[0] == "WEAPONS")
         {
-            ASSERT(not machinesSection, "Error in object data file -> no end of machines section\n");
-            ASSERT(not constructionsSection, "Error in object data file -> no end of constructions section\n");
-            ASSERT(not EPPsSection, "Error in object data file -> no end of EPPs section\n");
+            ASSERT(! machinesSection, "Error in object data file -> no end of machines section\n");
+            ASSERT(! constructionsSection, "Error in object data file -> no end of constructions section\n");
+            ASSERT(! EPPsSection, "Error in object data file -> no end of EPPs section\n");
             weaponsSection = true;
         }
 
         if (parser.tokens()[0] == "EVASION_STRATEGIES")
         {
-            ASSERT(not machinesSection, "Error in object data file -> no end of machines section\n");
-            ASSERT(not constructionsSection, "Error in object data file -> no end of constructions section\n");
-            ASSERT(not weaponsSection, "Error in object data file -> no end of weapons section\n");
+            ASSERT(! machinesSection, "Error in object data file -> no end of machines section\n");
+            ASSERT(! constructionsSection, "Error in object data file -> no end of constructions section\n");
+            ASSERT(! weaponsSection, "Error in object data file -> no end of weapons section\n");
             EPPsSection = true;
         }
 
@@ -1103,7 +1103,7 @@ void MachPhysDataParser::parseAggressorBlock(UtlLineTokeniser* pParser)
 
         AggressorDataStore* pStore = pData_->pDataStore(subType);
 
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(*pStore),
                 MachPhysLevels::instance().hardwareLevelIndexMap(subType),
@@ -1173,7 +1173,7 @@ void MachPhysDataParser::parseAdministratorBlock(UtlLineTokeniser* pParser)
 
         AdministratorDataStore* pStore = pData_->pDataStore(subType);
 
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(*pStore),
                 MachPhysLevels::instance().hardwareLevelIndexMap(subType),
@@ -1255,7 +1255,7 @@ void MachPhysDataParser::parseAPCBlock(UtlLineTokeniser* pParser)
 
     while (pParser->tokens()[0] != "END")
     {
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(pData_->APCData_),
                 MachPhysLevels::instance().hardwareLevelIndexMap(MachPhys::APC),
@@ -1300,7 +1300,7 @@ void MachPhysDataParser::parseResourceCarrierBlock(UtlLineTokeniser* pParser)
 
     while (pParser->tokens()[0] != "END")
     {
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(pData_->resourceCarrierData_),
                 MachPhysLevels::instance().hardwareLevelIndexMap(MachPhys::RESOURCE_CARRIER),
@@ -1349,7 +1349,7 @@ void MachPhysDataParser::parseEPPBlock(UtlLineTokeniser* pParser)
     // first line MUST be the name of a new EPP
 
     ASSERT(
-        pParser->tokens().size() == 2 and pParser->tokens()[0] == "NAME",
+        pParser->tokens().size() == 2 && pParser->tokens()[0] == "NAME",
         "First line of an EPP data block must be of the format NAME [EPPNAME]");
 
     string EPPName = pParser->tokens()[1];
@@ -1398,7 +1398,7 @@ void MachPhysDataParser::parseGeoLocatorBlock(UtlLineTokeniser* pParser)
 
     while (pParser->tokens()[0] != "END")
     {
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(pData_->geoLocatorData_),
                 MachPhysLevels::instance().hardwareLevelIndexMap(MachPhys::GEO_LOCATOR),
@@ -1444,7 +1444,7 @@ void MachPhysDataParser::parseSpyLocatorBlock(UtlLineTokeniser* pParser)
 
     while (pParser->tokens()[0] != "END")
     {
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(pData_->spyLocatorData_),
                 MachPhysLevels::instance().hardwareLevelIndexMap(MachPhys::SPY_LOCATOR),
@@ -1508,7 +1508,7 @@ void MachPhysDataParser::parseTechnicianBlock(UtlLineTokeniser* pParser)
     {
         TechnicianDataStore* pStore = pData_->pDataStore(subType);
 
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(*pStore),
                 MachPhysLevels::instance().hardwareLevelIndexMap(subType),
@@ -1558,7 +1558,7 @@ void MachPhysDataParser::parseConstructorBlock(UtlLineTokeniser* pParser)
     {
         ConstructorDataStore* pStore = pData_->pDataStore(subType);
 
-        if (not parseCommonMachineToken(
+        if (! parseCommonMachineToken(
                 pParser,
                 machineDataStore(*pStore),
                 MachPhysLevels::instance().hardwareLevelIndexMap(subType),
@@ -1683,7 +1683,7 @@ bool MachPhysDataParser::parseCommonMachineToken(
 {
     //  Note that store uses indices rather than levels
 
-    if (pParser->tokens()[0] == "SW_COSTS" or pParser->tokens()[0] == "SW_RESEARCH_COSTS")
+    if (pParser->tokens()[0] == "SW_COSTS" || pParser->tokens()[0] == "SW_RESEARCH_COSTS")
     {
         ASSERT_INFO(pParser->tokens()[0]);
         ASSERT_INFO(pParser->tokens().size());
@@ -2378,7 +2378,7 @@ void MachPhysDataParser::parseWeaponBlock(UtlLineTokeniser* pParser, MachPhys::W
         }
         else if (firstToken == "BURST")
         {
-            ASSERT(pParser->tokens().size() == 3 or pParser->tokens().size() == 4, "");
+            ASSERT(pParser->tokens().size() == 3 || pParser->tokens().size() == 4, "");
             ASSERT_INFO(pParser->tokens()[2]);
             uint nRounds = atol(pParser->tokens()[1].c_str());
             PhysRelativeTime burstTime = atof(pParser->tokens()[2].c_str());
@@ -2390,7 +2390,7 @@ void MachPhysDataParser::parseWeaponBlock(UtlLineTokeniser* pParser, MachPhys::W
                 const string& burstTypeToken = pParser->tokens()[3];
 
                 ASSERT(
-                    burstTypeToken == "FIXED" or burstTypeToken == "VARIABLE",
+                    burstTypeToken == "FIXED" || burstTypeToken == "VARIABLE",
                     "Unknown burst type qualifier - should be FIXED or VARIABLE");
 
                 if (burstTypeToken == "VARIABLE")
@@ -2654,7 +2654,7 @@ bool MachPhysDataParser::constructionDataValid(const ConstructionDataStore& stor
     {
         if (store[i])
         {
-            if (not store[i]->dataValid())
+            if (! store[i]->dataValid())
                 result = false;
         }
     }

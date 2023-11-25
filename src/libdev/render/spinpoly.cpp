@@ -60,7 +60,7 @@ RenSpinTFPolygon::SpinAxis::SpinAxis(const MexPoint3d& b, const MexVec3& d)
     , direction_(d)
     , isPerpendicularToY_(true)
 {
-    PRE(not d.isZeroVector());
+    PRE(! d.isZeroVector());
     TEST_INVARIANT;
 
     direction_.makeUnitVector();
@@ -70,7 +70,7 @@ RenSpinTFPolygon::SpinAxis::SpinAxis(const MexPoint3d& b, const MexVec3& d)
 
 void RenSpinTFPolygon::SpinAxis::direction(const MexVec3& d)
 {
-    PRE(not d.isZeroVector());
+    PRE(! d.isZeroVector());
     TEST_INVARIANT;
 
     direction_ = d;
@@ -361,7 +361,7 @@ void RenSpinTFPolygon::spinPlan(
             yBasis.x(xBasis.z());
             yBasis.y(0);
             yBasis.z(-xBasis.x());
-            ASSERT(not yBasis.isZeroVector(), "yBasis is not orthogonal to xAxis");
+            ASSERT(! yBasis.isZeroVector(), "yBasis is not orthogonal to xAxis");
         }
     }
 
@@ -378,7 +378,7 @@ static MATHEX_SCALAR areaOfTriangle(const MexPoint2d& p1, const MexPoint2d& p2, 
 
 void RenSpinTFPolygon::makeOrderCorrect(const Vertices& points, Vertices* pOrderedPoints)
 {
-    PRE(not verticesOrdered_);
+    PRE(! verticesOrdered_);
     PRE(pOrderedPoints);
 
     int length = points.size();
@@ -470,7 +470,7 @@ void RenSpinTFPolygon::vertices(const Vertices& verts)
     // been altered.
     // thus reordering will cause uv to be inconsitent with the vertices
     // all that is not very pretty and should be cleaned someday
-    PRE(not verticesOrdered_);
+    PRE(! verticesOrdered_);
     TEST_INVARIANT;
 
     Vertices orderedVertices;

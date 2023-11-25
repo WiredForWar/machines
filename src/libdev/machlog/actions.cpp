@@ -85,15 +85,15 @@ void MachLogActions::parseActionsSection(UtlLineTokeniser* pParser)
     typedef ctl_map<string, SimCondition*, std::less<string>> ConditionNameMap;
     ConditionNameMap conditionMap;
 
-    while (not finished)
+    while (! finished)
     {
         HAL_STREAM("MLActions:: token 0 is " << pParser->tokens()[0] << std::endl);
         if (pParser->tokens()[0] == "ENDACTIONS")
         {
-            ASSERT(not parsedActions, "Already set actions parsed trying to do it again\n");
+            ASSERT(! parsedActions, "Already set actions parsed trying to do it again\n");
             parsedActions = true;
             ASSERT(
-                parsedConditions and parsedActions,
+                parsedConditions && parsedActions,
                 "You cannot end the actions section without having parsed conditons and actions.\n");
             finished = true;
             parsingActions = false;
@@ -104,13 +104,13 @@ void MachLogActions::parseActionsSection(UtlLineTokeniser* pParser)
         else if (pParser->tokens()[0] == "ENDCONDITIONS")
         {
             ASSERT(parsingConditions, "Setting parsedCondtions but not in parsingConditons state\n");
-            ASSERT(not parsedConditions, "Already set conditions parsed trying to do it again\n");
+            ASSERT(! parsedConditions, "Already set conditions parsed trying to do it again\n");
             parsingConditions = false;
             parsedConditions = true;
         }
         else if (pParser->tokens()[0] == "ACTIONS")
         {
-            ASSERT(not parsingActions, "Setting parsingActions but already set\n");
+            ASSERT(! parsingActions, "Setting parsingActions but already set\n");
             parsingActions = true;
         }
         else if (parsingConditions)
@@ -305,7 +305,7 @@ void MachLogActions::parseActionsSection(UtlLineTokeniser* pParser)
                 pAction->enabled(enabled);
             }
         }
-        if (not finished)
+        if (! finished)
             pParser->parseNextLine();
     }
 
@@ -374,18 +374,18 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
     MachLogAllOtherRacesUnitsDeadCondition* pAllOthersDead
         = new MachLogAllOtherRacesUnitsDeadCondition("dynamic_all_other_races_dead", races.pcController().race());
     MachLogWinAction* pWin
-        = MachLogWinAction::newDynamic(pAllOthersDead, not createEnableActions, races.pcController().race());
+        = MachLogWinAction::newDynamic(pAllOthersDead, ! createEnableActions, races.pcController().race());
     SimManager::instance().addAction(pWin);
-    pWin->enabled(not createEnableActions);
+    pWin->enabled(! createEnableActions);
     // create an all dead condition and attach it to a lost action for the pcControlled race
     // create disabled in network games as we have to allow for the connection time before we start checking for
     // win/lost
     MachLogAllUnitsDeadCondition* pAllDead
         = new MachLogAllUnitsDeadCondition("dynamic_all_dead", races.pcController().race());
     MachLogLostAction* pLost
-        = MachLogLostAction::newDynamic(pAllDead, not createEnableActions, races.pcController().race());
+        = MachLogLostAction::newDynamic(pAllDead, ! createEnableActions, races.pcController().race());
     SimManager::instance().addAction(pLost);
-    pLost->enabled(not createEnableActions);
+    pLost->enabled(! createEnableActions);
 
     if (createEnableActions)
     {
@@ -413,9 +413,9 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                     1,
                     0);
                 MachLogLostAction* pPodLost
-                    = MachLogLostAction::newDynamic(pLUC, not createEnableActions, races.pcController().race());
+                    = MachLogLostAction::newDynamic(pLUC, ! createEnableActions, races.pcController().race());
                 SimManager::instance().addAction(pPodLost);
-                pPodLost->enabled(not createEnableActions);
+                pPodLost->enabled(! createEnableActions);
                 if (createEnableActions)
                 {
                     MachLogTimerCondition* pTimerForPodLost
@@ -453,9 +453,9 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                         nameLow += raceExtensions[i];
                         MachLogLowUnitCountCondition* pLUCr
                             = new MachLogLowUnitCountCondition(nameLow, i, MachLog::POD, 1, 0);
-                        MachLogLostAction* pPodLostr = MachLogLostAction::newDynamic(pLUCr, not createEnableActions, i);
+                        MachLogLostAction* pPodLostr = MachLogLostAction::newDynamic(pLUCr, ! createEnableActions, i);
                         SimManager::instance().addAction(pPodLostr);
-                        pPodLostr->enabled(not createEnableActions);
+                        pPodLostr->enabled(! createEnableActions);
                         if (createEnableActions)
                         {
                             string nameTimer = "dynamic_timer_for_pod_lost";
@@ -475,9 +475,9 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                 // gameData
                 MachLogTimerCondition* pTimer = new MachLogTimerCondition("dynamic_timer", timerFireDelay);
                 MachLogWinOrLoseAction* pWinOrLose
-                    = MachLogWinOrLoseAction::newDynamic(pTimer, not createEnableActions, races.pcController().race());
+                    = MachLogWinOrLoseAction::newDynamic(pTimer, ! createEnableActions, races.pcController().race());
                 SimManager::instance().addAction(pWinOrLose);
-                pWinOrLose->enabled(not createEnableActions);
+                pWinOrLose->enabled(! createEnableActions);
                 if (createEnableActions)
                 {
                     MachLogTimerCondition* pTimerForTimerWinOrLose

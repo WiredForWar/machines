@@ -107,14 +107,14 @@ public:
         static GuiBitmap bmpDefcon123 = MachGui::getScaledImage("gui/commands/defco123.bmp");
         static GuiBitmap bmpDefcon13 = MachGui::getScaledImage("gui/commands/defco13.bmp");
 
-        if (MachGuiDefconCommand::defconLow() and MachGuiDefconCommand::defconNormal()
-            and MachGuiDefconCommand::defconHigh())
+        if (MachGuiDefconCommand::defconLow() && MachGuiDefconCommand::defconNormal()
+            && MachGuiDefconCommand::defconHigh())
             return bmpDefcon123;
-        else if (MachGuiDefconCommand::defconLow() and MachGuiDefconCommand::defconNormal())
+        else if (MachGuiDefconCommand::defconLow() && MachGuiDefconCommand::defconNormal())
             return bmpDefcon12;
-        else if (MachGuiDefconCommand::defconNormal() and MachGuiDefconCommand::defconHigh())
+        else if (MachGuiDefconCommand::defconNormal() && MachGuiDefconCommand::defconHigh())
             return bmpDefcon23;
-        else if (MachGuiDefconCommand::defconLow() and MachGuiDefconCommand::defconHigh())
+        else if (MachGuiDefconCommand::defconLow() && MachGuiDefconCommand::defconHigh())
             return bmpDefcon13;
         else if (MachGuiDefconCommand::defconLow())
             return bmpDefcon1;
@@ -372,7 +372,7 @@ void MachCommandIcon::doBeReleased(const GuiMouseEvent&)
 // virtual
 bool MachCommandIcon::isEligableForVisibility() const
 {
-    return (pCommand_->isVisible() and GuiBitmapButtonWithFilledBorder::isEligableForVisibility());
+    return (pCommand_->isVisible() && GuiBitmapButtonWithFilledBorder::isEligableForVisibility());
 }
 
 // virtual

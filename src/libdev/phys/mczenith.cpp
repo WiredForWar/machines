@@ -86,7 +86,7 @@ void PhysZenithFlyControl::pitchAngle(MexRadians& newPitch)
 void PhysZenithFlyControl::update()
 {
     // Check not frozen
-    if (not motionFrozen())
+    if (! motionFrozen())
     {
         updateMotion();
 

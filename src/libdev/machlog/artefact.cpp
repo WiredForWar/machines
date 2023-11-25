@@ -155,7 +155,7 @@ void MachLogArtefact::beHit(
     // Do more stuff if survived...
     {
         // Apply an victim animation if appropriate
-        if (byType != MachPhys::N_WEAPON_TYPES and pByDirection != nullptr)
+        if (byType != MachPhys::N_WEAPON_TYPES && pByDirection != nullptr)
             MachPhysWeaponUtility::victimAnimation(
                 byType,
                 SimManager::instance().currentTime(),
@@ -181,7 +181,7 @@ void MachLogArtefact::beHitWithoutAnimation(
     MachActor* pByActor,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         MachPhys::ArmourUnits armourLeft = armour();
         MachPhys::ArmourUnits absorb = 0;
@@ -207,7 +207,7 @@ void MachLogArtefact::beHitWithoutAnimation(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO and MachLogNetwork::instance().isNetworkGame())
+        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendBeHitMessage(
                 id(),
                 damage,
@@ -240,7 +240,7 @@ void MachLogArtefact::beHitWithoutAnimation(
                     damageLinkedArtefact((*it));
             }
         }
-        if (not isDead())
+        if (! isDead())
         {
             notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
             doVisualiseSelectionState();
@@ -294,7 +294,7 @@ bool MachLogArtefact::beNotified(W4dSubject* pSubject, W4dSubject::NotificationE
 
     // Iterate through the collection of damage link datas, looking for a link to artefact pSubject,
     // and erasing those entries
-    if (event == W4dSubject::DELETED and pLinkDatas_ != nullptr)
+    if (event == W4dSubject::DELETED && pLinkDatas_ != nullptr)
     {
         LinkDatas::iterator it, nextIt;
         for (nextIt = it = pLinkDatas_->begin(); it != pLinkDatas_->end(); it = nextIt)
@@ -373,7 +373,7 @@ void MachLogArtefact::damageLinkedArtefact(const MachLogArtefactLinkData& linkDa
     // If the artefact has zero hp, damage it again to invoke destruction
     // Do not do this if the thing is already dead - there simply is no point and it also leads to
     // recursive call sequence - if artefact A kills artefact B which kills artefact A etc
-    if (hpNew <= 0 and not pDamageArtefact->isDead())
+    if (hpNew <= 0 && ! pDamageArtefact->isDead())
         pDamageArtefact->beHit(armourNew + 10, MachPhys::N_WEAPON_TYPES, nullptr, nullptr, ECHO);
 }
 
@@ -429,8 +429,8 @@ void MachLogArtefact::dropDebris(const PhysAbsoluteTime&)
     MexAlignedBox2d tempBoundary;
     polygon.boundary(&tempBoundary);
 
-    if (not MachLogNetwork::instance().isNetworkGame()
-        or (MachLogNetwork::instance().isNetworkGame() and MachLogNetwork::instance().isNodeLogicalHost()))
+    if (! MachLogNetwork::instance().isNetworkGame()
+        || (MachLogNetwork::instance().isNetworkGame() && MachLogNetwork::instance().isNodeLogicalHost()))
     {
         int quantity = pPhysArtefact_->artefactData().cost();
         if (quantity > 0)

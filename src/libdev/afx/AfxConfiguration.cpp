@@ -28,7 +28,7 @@ const AfxConfigurationData& AfxConfiguration::getConfig()
         pConfigData_ = pLoader_->load();
     }
 
-    if (not configValidated_)
+    if (! configValidated_)
     {
         // Add validations here:
         validateAntiAliasingSettings(*pConfigData_);

@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiFormSquadronCommand& t)
 bool MachGuiFormSquadronCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Machines can be formed into squadrons
-    return actor.objectIsMachine() and inGameScreen().currentContext() == MachGui::MAIN_MENU;
+    return actor.objectIsMachine() && inGameScreen().currentContext() == MachGui::MAIN_MENU;
 }
 
 // virtual
@@ -109,7 +109,7 @@ uint MachGuiFormSquadronCommand::commandPromptStringid() const
 // virtual
 bool MachGuiFormSquadronCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_F and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_F && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

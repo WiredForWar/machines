@@ -140,7 +140,7 @@ void MachPhysLocomotionMethod::doCalculateAccelerations(
 
             MATHEX_SCALAR endSpeed = translationSpeed;
 
-            if (lastSegment and finalState == MachPhys::AT_REST)
+            if (lastSegment && finalState == MachPhys::AT_REST)
                 endSpeed = 0.0;
 
             PhysRampAcceleration rampAcceleration(

@@ -375,7 +375,7 @@ void MachGuiStartupData::receivedJoinMessage(const string& playerName, int uniqu
         string newPlayerName = playerName;
 
         // Check to see if name is unique. If not then add a number on the end.
-        while (not uniqueName)
+        while (! uniqueName)
         {
             uniqueName = true;
 
@@ -451,7 +451,7 @@ void MachGuiStartupData::receivedJoinMessage(const string& playerName, int uniqu
 void MachGuiStartupData::receivedUpdatePlayersMessage()
 {
     NETWORK_STREAM("MachGuiStartupData::receivedUpdatePlayersMessage()\n");
-    ASSERT(not host_, "host getting receivedUpdatePlayersMessage");
+    ASSERT(! host_, "host getting receivedUpdatePlayersMessage");
 
     if (pCtxImReady_)
     {
@@ -466,7 +466,7 @@ void MachGuiStartupData::receivedUpdatePlayersMessage()
 
 void MachGuiStartupData::receivedUpdateGameSettingsMessage()
 {
-    ASSERT(not host_, "host getting receivedUpdateGameSettingsMessage");
+    ASSERT(! host_, "host getting receivedUpdateGameSettingsMessage");
 
     ASSERT_INFO(gameSettings()->mapSizeId_);
     ASSERT_INFO(gameSettings()->terrainTypeId_);
@@ -476,7 +476,7 @@ void MachGuiStartupData::receivedUpdateGameSettingsMessage()
 
     // Based on the ids that have just been passed across the network find out which
     // scenario these are linked to.
-    for (MachGuiDatabase::TerrainSize loop = MachGuiDatabase::SMALL; loop <= MachGuiDatabase::LARGE and not found;
+    for (MachGuiDatabase::TerrainSize loop = MachGuiDatabase::SMALL; loop <= MachGuiDatabase::LARGE && ! found;
          loop = _STATIC_CAST(MachGuiDatabase::TerrainSize, _STATIC_CAST(uint, loop) + 1))
     {
         // Find system...
@@ -487,7 +487,7 @@ void MachGuiStartupData::receivedUpdateGameSettingsMessage()
             // Find planet...
             uint numPlanets = system.nPlanets();
 
-            for (uint loop = 0; loop < numPlanets and not found; ++loop)
+            for (uint loop = 0; loop < numPlanets && ! found; ++loop)
             {
                 MachGuiDbPlanet& planet = system.planet(loop);
 
@@ -496,7 +496,7 @@ void MachGuiStartupData::receivedUpdateGameSettingsMessage()
                     // Find scenario...
                     uint numScenarios = planet.nScenarios();
 
-                    for (uint loop = 0; loop < numScenarios and not found; ++loop)
+                    for (uint loop = 0; loop < numScenarios && ! found; ++loop)
                     {
                         MachGuiDbScenario& scenario = planet.scenario(loop);
 
@@ -616,7 +616,7 @@ bool MachGuiStartupData::isRaceAvailable(MachPhys::Race race) const
 
     bool free = true;
 
-    for (size_t loop = 0; loop < 4 and free; ++loop)
+    for (size_t loop = 0; loop < 4 && free; ++loop)
     {
         if (players_[loop].race_ == race)
         {
@@ -691,13 +691,13 @@ bool MachGuiStartupData::isReady(const string& playerName)
 bool MachGuiStartupData::canStartMultiPlayerGame() const
 {
     // Only the host can start a multi player game
-    if (not isHost() or terminalMultiPlayerGameProblem_)
+    if (! isHost() || terminalMultiPlayerGameProblem_)
         return false;
 
     bool canStart = true;
     size_t humans = 0;
 
-    for (size_t loop = 0; loop < 4 and canStart; ++loop)
+    for (size_t loop = 0; loop < 4 && canStart; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::HUMAN)
         {
@@ -730,7 +730,7 @@ bool MachGuiStartupData::updateIncludedInGame()
     includedInGame_ = false;
     if (playerName().length() > 0)
     {
-        for (size_t loop = 0; loop < 4 and not includedInGame_; ++loop)
+        for (size_t loop = 0; loop < 4 && ! includedInGame_; ++loop)
         {
             if (players_[loop].status_ == PlayerInfo::HUMAN)
             {
@@ -753,7 +753,7 @@ bool MachGuiStartupData::includedInGame() const
 
 void MachGuiStartupData::receivedHostCancelMessage()
 {
-    ASSERT(not isHost(), "host shouldn't receive this message");
+    ASSERT(! isHost(), "host shouldn't receive this message");
 
     terminalMultiPlayerGameProblem_ = true;
 
@@ -801,7 +801,7 @@ void MachGuiStartupData::receivedClientCancelMessage(const string& playerName)
             }
 
             // Found a player not included in the game
-            if (not included)
+            if (! included)
             {
                 replacePlayerName = iterPlayerName;
                 break;
@@ -847,7 +847,7 @@ void MachGuiStartupData::receivedStartMessage()
     }
 
     NETWORK_STREAM(" checking against updateIncludedInGame" << std::endl);
-    if (not updateIncludedInGame())
+    if (! updateIncludedInGame())
     {
         NETWORK_STREAM(" player not in the game so set some values" << std::endl);
 
@@ -936,7 +936,7 @@ void MachGuiStartupData::initMachLogNetwork()
     for (size_t loop = 0; loop < 4; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::HUMAN
-            and strcasecmp(playerName().c_str(), players_[loop].playerName_) == 0)
+            && strcasecmp(playerName().c_str(), players_[loop].playerName_) == 0)
         {
             MachLogNetwork::instance().localRace(players_[loop].race_);
         }
@@ -1390,7 +1390,7 @@ string MachGuiStartupData::victoryConditionStr() const
 
 void MachGuiStartupData::numPlayers(int numPlayers)
 {
-    PRE(numPlayers >= 2 and numPlayers <= 4);
+    PRE(numPlayers >= 2 && numPlayers <= 4);
 
     gameSettings()->numPlayers_ = numPlayers;
 }
@@ -1612,10 +1612,10 @@ void MachGuiStartupData::receivedInGameChatMessage(const string& message, MachPh
     }
     else
     {
-        for (int i = 0; i < 4 and not displayMessage; ++i)
+        for (int i = 0; i < 4 && ! displayMessage; ++i)
         {
-            if (players_[i].race_ == intendedRace and players_[i].status_ == PlayerInfo::HUMAN
-                and players_[i].getDisplayName() == playerName())
+            if (players_[i].race_ == intendedRace && players_[i].status_ == PlayerInfo::HUMAN
+                && players_[i].getDisplayName() == playerName())
             {
                 displayMessage = true;
             }
@@ -1633,13 +1633,13 @@ bool MachGuiStartupData::doesAtLeastOnePlayerHaveMachinesCD() const
     bool retVal = false;
 
     // Check to see if the host has a machines CD
-    if (MachGui::machinesCDIsAvailable(1) or MachGui::machinesCDIsAvailable(2))
+    if (MachGui::machinesCDIsAvailable(1) || MachGui::machinesCDIsAvailable(2))
     {
         retVal = true;
     }
 
     // Check to see if other players have machines CD
-    for (size_t loop = 0; loop < 4 and not retVal; ++loop)
+    for (size_t loop = 0; loop < 4 && ! retVal; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::HUMAN)
         {

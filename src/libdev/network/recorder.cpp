@@ -369,7 +369,7 @@ bool NetIRecorder::equal(const NetAppSession::NodeIds& a, const NetAppSession::N
     {
         result = true;
 
-        for (size_t i = 0; i < a.size() and result; ++i)
+        for (size_t i = 0; i < a.size() && result; ++i)
         {
             if (*a[i] != *b[i])
             {
@@ -452,7 +452,7 @@ void NetIRecorder::recordLastPingAllTime(double d) const
 
 void NetIRecorder::playbackMessageBuffer(NetNode::NetMessageBuffer* pMessageBuffer)
 {
-    while (not reachedEndOfMessageBufferUpdate())
+    while (! reachedEndOfMessageBufferUpdate())
     {
         pMessageBuffer->push_back(new NetMessage(playbackMessage()));
     }
@@ -480,7 +480,7 @@ void NetIRecorder::recordMessageBuffer(const NetNode::NetMessageBuffer& messageB
     NetNode::NetMessageBuffer::const_iterator newItem;
 
     for (NetNode::NetMessageBuffer::const_iterator i = messageBuffer.begin();
-         i != messageBuffer.end() and not foundNewItem;
+         i != messageBuffer.end() && ! foundNewItem;
          ++i)
     {
         const NetMessage* pMessage = (*i);

@@ -73,7 +73,7 @@ string MachActorBitmaps::name(
             DEFAULT_ASSERT_BAD_CASE(objectType);
     }
 
-    if (not inFirstPerson)
+    if (! inFirstPerson)
     {
         // Add race identifier
         switch (race)

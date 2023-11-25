@@ -280,17 +280,17 @@ bool DevKeyboard::anyKeyNoRecord() const
 
 bool DevKeyboard::shiftPressedNoRecord() const
 {
-    return keyMap_[DevKey::RIGHT_SHIFT] or keyMap_[DevKey::LEFT_SHIFT];
+    return keyMap_[DevKey::RIGHT_SHIFT] || keyMap_[DevKey::LEFT_SHIFT];
 }
 
 bool DevKeyboard::ctrlPressedNoRecord() const
 {
-    return keyMap_[DevKey::RIGHT_CONTROL] or keyMap_[DevKey::LEFT_CONTROL];
+    return keyMap_[DevKey::RIGHT_CONTROL] || keyMap_[DevKey::LEFT_CONTROL];
 }
 
 bool DevKeyboard::altPressedNoRecord() const
 {
-    return keyMap_[DevKey::RIGHT_ALT] or keyMap_[DevKey::LEFT_ALT];
+    return keyMap_[DevKey::RIGHT_ALT] || keyMap_[DevKey::LEFT_ALT];
 }
 
 DevKeyboard::KeyState DevKeyboard::deltaKeyCodeNoRecord(ScanCode code) const
@@ -313,13 +313,13 @@ DevKeyboard::KeyState DevKeyboard::deltaKeyCodeNoRecord(ScanCode code) const
 
     if (current == last)
         result = NO_CHANGE;
-    else if (current and not last)
+    else if (current && ! last)
         result = PRESSED;
     else
     {
         // This assertion could actually fail if in the presence of
         // race conditions (if keyMap_ were used rather than current).
-        ASSERT(not current and last, logic_error());
+        ASSERT(! current && last, logic_error());
         result = RELEASED;
     }
 

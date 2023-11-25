@@ -52,16 +52,16 @@ bool MachPhysStations::freeStation(MachPhysStation::Type type, MachPhysStation**
 {
     bool found = false;
 
-    for (Stations::iterator i = stations_.begin(); i != stations_.end() and not found; ++i)
+    for (Stations::iterator i = stations_.begin(); i != stations_.end() && ! found; ++i)
     {
-        if ((*i).type() == type and (not(*i).locked()))
+        if ((*i).type() == type && (!(*i).locked()))
         {
             *ppStation = &(*i);
             found = true;
         }
     }
 
-    POST(implies(found, not(*ppStation)->locked()));
+    POST(implies(found, !(*ppStation)->locked()));
     POST(implies(found, (*ppStation)->type() == type));
 
     return found;
@@ -93,7 +93,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysStations& t)
 bool MachPhysStations::nearStation(const MexPoint2d& position, MachPhysStation** ppStation)
 {
     bool found = false;
-    for (Stations::iterator i = stations_.begin(); i != stations_.end() and not found; ++i)
+    for (Stations::iterator i = stations_.begin(); i != stations_.end() && ! found; ++i)
     {
         if (position.sqrEuclidianDistance((*i).position()) < MexEpsilon::sqrInstance())
         {

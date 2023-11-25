@@ -82,7 +82,7 @@ void MachLogArtefacts::load(const SysPathName& pathname)
 
     // Make sure get loaded round network
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.isNodeLogicalHost())
+    if (network.isNetworkGame() && network.isNodeLogicalHost())
         network.messageBroker().sendLoadArtefactModelsMessage(pathname);
 
     // Set the filename for the persistent version
@@ -171,7 +171,7 @@ void MachLogArtefacts::addSubType(
     pData_->pSubTypes_->push_back(MachLogArtefactSubType(subType, pExemplar, name));
     pData_->artefactDatas_.push_back(pArtefactData);
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.isNodeLogicalHost())
+    if (network.isNetworkGame() && network.isNodeLogicalHost())
         network.messageBroker()
             .sendAddNewArtefactSubTypeMessage(subType, name, cost, armour, hitPoints, stringId, height, &localBoundary);
 }
@@ -199,7 +199,7 @@ void MachLogArtefacts::addSubType(int subType, const string& name)
 
     MachLogNetwork& network = MachLogNetwork::instance();
     // send message to add new subtype - DUMBs key from localboundary being NULL
-    if (network.isNetworkGame() and network.isNodeLogicalHost())
+    if (network.isNetworkGame() && network.isNodeLogicalHost())
         network.messageBroker().sendAddNewArtefactSubTypeMessage(subType, name, 0, 0, 0, 0, 0, nullptr);
 }
 
@@ -286,7 +286,7 @@ void MachLogArtefacts::parseArtefactsSection(
     tagIds.reserve(256);
     taggedArtefacts.reserve(256);
 
-    while (not done)
+    while (! done)
     {
         // Check for end of section
         if (pParser->tokens()[0] == "ENDARTEFACTS")
@@ -384,7 +384,7 @@ void MachLogArtefacts::parseArtefactsSection(
             // Create an artefact instance - example line (ID clause optional)
             // AT 250 800 10 -90 ID 1
             size_t nTokens = pParser->tokens().size();
-            ASSERT(nTokens == 5 or nTokens == 7, "");
+            ASSERT(nTokens == 5 || nTokens == 7, "");
             ASSERT(currentSubType >= 0, "No artefact type defined");
 
             // Get the x, y location
@@ -431,7 +431,7 @@ void MachLogArtefacts::parseArtefactsSection(
                 // Get the dying artefact
                 uint tagId = atol(pParser->tokens()[1].c_str());
                 MachLogArtefact* pDyingArtefact = nullptr;
-                for (size_t i = 0; pDyingArtefact == nullptr and i < tagIds.size(); ++i)
+                for (size_t i = 0; pDyingArtefact == nullptr && i < tagIds.size(); ++i)
                     if (tagIds[i] == tagId)
                         pDyingArtefact = taggedArtefacts[i];
 
@@ -442,7 +442,7 @@ void MachLogArtefacts::parseArtefactsSection(
                 ASSERT(pParser->tokens()[2] == "DAMAGE", "");
                 tagId = atol(pParser->tokens()[3].c_str());
                 MachLogArtefact* pDamageArtefact = nullptr;
-                for (size_t i = 0; pDamageArtefact == nullptr and i < tagIds.size(); ++i)
+                for (size_t i = 0; pDamageArtefact == nullptr && i < tagIds.size(); ++i)
                     if (tagIds[i] == tagId)
                         pDamageArtefact = taggedArtefacts[i];
 
@@ -466,7 +466,7 @@ void MachLogArtefacts::parseArtefactsSection(
         }
 
         // Do the next line. The caller skips to next line after ENDARTEFACTS, so we don't
-        if (not done)
+        if (! done)
             pParser->parseNextLine();
     }
 }
@@ -488,7 +488,7 @@ void MachLogArtefacts::addDamageRelation(UtlId dyingArtefactId, UtlId damageArte
     CB_MachLogArtefacts_DEPIMPL();
     // do the network stuff first as values of parameters can be changed inside the function.
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.isNodeLogicalHost())
+    if (network.isNetworkGame() && network.isNodeLogicalHost())
         network.messageBroker()
             .sendAddArtefactDamageLinkMessage(dyingArtefactId, damageArtefactId, hpDamage, armourDamage);
 

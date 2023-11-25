@@ -171,21 +171,21 @@ void MachLogMachineMotionSequencer::CLASS_INVARIANT
     INVARIANT(highClearance_ >= lowClearance_);
     INVARIANT(pPhysMachine_ != nullptr);
     INVARIANT(
-        not pImpl_->hasQueuedDestination_
-        or (internalState_ == INTERNAL_MOVING or internalState_ == INTERNAL_WANT_DOMAIN_PATH));
-    INVARIANT(not pImpl_->stopAsSoonAsPossible_ or internalState_ == INTERNAL_MOVING);
+        ! pImpl_->hasQueuedDestination_
+        || (internalState_ == INTERNAL_MOVING || internalState_ == INTERNAL_WANT_DOMAIN_PATH));
+    INVARIANT(! pImpl_->stopAsSoonAsPossible_ || internalState_ == INTERNAL_MOVING);
     INVARIANT(pImpl_ != nullptr);
 
     if (internalState_ == INTERNAL_MOVING)
     {
-        INVARIANT(not pImpl_->restingChunkExists_);
+        INVARIANT(! pImpl_->restingChunkExists_);
     }
 
     INVARIANT(motionChunkIds_.size() == moveInfos_.size());
 
-    INVARIANT(internalState_ != INTERNAL_PLANNING or pConfigSpace_->findPathExists(findPathId_));
+    INVARIANT(internalState_ != INTERNAL_PLANNING || pConfigSpace_->findPathExists(findPathId_));
     INVARIANT(
-        internalState_ != INTERNAL_PLANNING_DOMAIN_PATH or pConfigSpace_->domainFindPathExists(domainFindPathId_));
+        internalState_ != INTERNAL_PLANNING_DOMAIN_PATH || pConfigSpace_->domainFindPathExists(domainFindPathId_));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -336,7 +336,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::destination(const MexPoint2d& ne
     LOG_ENTER("destination( newDestination )");
 
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
-    PRE(implies(pLogMobile_->objectIsMachine(), not pLogMobile_->asMachine().isStandingGround()));
+    PRE(implies(pLogMobile_->objectIsMachine(), ! pLogMobile_->asMachine().isStandingGround()));
 
     return destination(newDestination, MachLogGroupMoveInfo());
 }
@@ -348,7 +348,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
 
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
-    PRE(implies(pLogMobile_->objectIsMachine(), not pLogMobile_->asMachine().isStandingGround()));
+    PRE(implies(pLogMobile_->objectIsMachine(), ! pLogMobile_->asMachine().isStandingGround()));
 
     TEST_INVARIANT;
 
@@ -371,7 +371,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
     PRE(pConfigSpace_->domain(currentLocation(), &domainId));
 
 #ifndef PRODUCTION
-    if (not targetPositionContainedInSpace(newDestination))
+    if (! targetPositionContainedInSpace(newDestination))
     {
         BOB_STREAM("About to fail precondition" << std::endl);
         BOB_INSPECT(newDestination);
@@ -383,8 +383,8 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
 #endif
 
     PRE(targetPositionContainedInSpace(newDestination));
-    PRE(not is1stPersonControlled());
-    PRE(implies(pLogMobile_->objectIsMachine(), not pLogMobile_->asMachine().isStandingGround()));
+    PRE(! is1stPersonControlled());
+    PRE(implies(pLogMobile_->objectIsMachine(), ! pLogMobile_->asMachine().isStandingGround()));
 
     PhysRelativeTime interval = 0;
 
@@ -415,7 +415,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
                 //  destination - this might save us messing around with path
                 //  finding.
 
-                if (pFollowSequencer_ == nullptr and straightLineMove(destinationPoint_, &interval))
+                if (pFollowSequencer_ == nullptr && straightLineMove(destinationPoint_, &interval))
                 {
                     //  Don't have to do anything further - the straight
                     //  line move is good enough
@@ -423,7 +423,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
                 else
                 {
                     CHANGE_STATE(INTERNAL_WANT_DOMAIN_PATH, "new destination set");
-                    if ((pFollowSequencer_ == nullptr) and isPlayerControlled())
+                    if ((pFollowSequencer_ == nullptr) && isPlayerControlled())
                         shuffle();
                 }
             }
@@ -499,7 +499,7 @@ void MachLogMachineMotionSequencer::createFindPath()
     while (nPortalPointsDone_ < nDomainPathPoints)
     {
         // Compute the coordinates of the next on-portal point
-        if (not pImpl_->hasOnPortalPoint_)
+        if (! pImpl_->hasOnPortalPoint_)
             getOnPortalPoint();
 
         // Check for already there
@@ -517,7 +517,7 @@ void MachLogMachineMotionSequencer::createFindPath()
     }
 
     // Use the final destination point if no more portal points
-    if (not haveTargetPoint)
+    if (! haveTargetPoint)
     {
         targetPoint = destinationPoint_;
         haveTargetPoint = targetPoint.sqrEuclidianDistance(nowPoint) >= 0.0002;
@@ -530,7 +530,7 @@ void MachLogMachineMotionSequencer::createFindPath()
     if (haveTargetPoint)
     {
         // Check that the target point is attainable using the config space
-        if (not targetPositionContainedInSpace(targetPoint))
+        if (! targetPositionContainedInSpace(targetPoint))
         {
             LOG_STREAM("  Target in findpath not contained in config space (permanent) " << std::endl);
             // No, so use findspace to get a point we can reach
@@ -554,7 +554,7 @@ void MachLogMachineMotionSequencer::createFindPath()
     {
         PhysRelativeTime dummyInterval;
 
-        if (pConvoy_ == nullptr and pFollowSequencer_ == nullptr and straightLineMove(targetPoint, &dummyInterval))
+        if (pConvoy_ == nullptr && pFollowSequencer_ == nullptr && straightLineMove(targetPoint, &dummyInterval))
         {
             LOG_STREAM("Managed to get a straight line path to " << targetPoint << std::endl);
         }
@@ -590,7 +590,7 @@ bool MachLogMachineMotionSequencer::hasDestination() const
 {
     CB_DEPIMPL(InternalState, internalState_);
 
-    return internalState_ != INTERNAL_RESTING and internalState_ != INTERNAL_1ST_PERSON;
+    return internalState_ != INTERNAL_RESTING && internalState_ != INTERNAL_1ST_PERSON;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -707,7 +707,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::stop()
     pImpl_->hasQueuedDestination_ = false;
 
     // Ensure we have a resting obstacle registered if not still moving
-    if (internalState_ != INTERNAL_MOVING and not(pImpl_->restingObstacleExists_ and pImpl_->restingChunkExists_))
+    if (internalState_ != INTERNAL_MOVING && !(pImpl_->restingObstacleExists_ && pImpl_->restingChunkExists_))
         addRestingObstacle();
 
     // Reset the scheduled update time
@@ -802,7 +802,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::stopKeepDestination()
     }
 
     // Ensure we have a resting obstacle registered if not still moving
-    if (internalState_ != INTERNAL_MOVING and not(pImpl_->restingObstacleExists_ and pImpl_->restingChunkExists_))
+    if (internalState_ != INTERNAL_MOVING && !(pImpl_->restingObstacleExists_ && pImpl_->restingChunkExists_))
         addRestingObstacle();
 
     // Reset the scheduled update time
@@ -842,8 +842,8 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
     clearRestingObstacleWithoutEcho();
-    PRE(not pImpl_->restingObstacleExists_);
-    PRE(not pImpl_->restingChunkExists_);
+    PRE(! pImpl_->restingObstacleExists_);
+    PRE(! pImpl_->restingChunkExists_);
 
     // set the parent correctly otherwise the network can get inconsistencies.
     // use the none network version as we shall send through the transform in a few lines time...
@@ -914,8 +914,8 @@ void MachLogMachineMotionSequencer::addRestingObstacleWithoutEcho(const MexTrans
 
     clearRestingObstacleWithoutEcho();
     PRE_INFO(pLogMobile_->id());
-    PRE(not pImpl_->restingObstacleExists_);
-    PRE(not pImpl_->restingChunkExists_);
+    PRE(! pImpl_->restingObstacleExists_);
+    PRE(! pImpl_->restingChunkExists_);
     DEBUG_STREAM(
         DIAG_NETWORK,
         "(" << pLogMobile_->id() << ") addRestingObstacleWithoutEcho Transform to " << newTransform << std::endl);
@@ -1147,7 +1147,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
     LOG_STREAM(PhysPathFindingQueueWriter(currentConfigSpace()));
 
     TEST_INVARIANT;
-    PRE(not is1stPersonControlled());
+    PRE(! is1stPersonControlled());
     PRE(machineHasMotionChunk());
 
     LOG_STREAM("Global transform for phys machine " << (void*)pPhysMachine_ << std::endl);
@@ -1199,7 +1199,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
                 case INTERNAL_WANT_DOMAIN_PATH:
                     {
                         LOG_WHERE;
-                        if (not targetPositionContainedInSpace(currentLocation()))
+                        if (! targetPositionContainedInSpace(currentLocation()))
                         {
                             //  We are currently in an obstacle. Try and find a close
                             //  point that isn't inside an obstacle and move to that
@@ -1332,7 +1332,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
                             "fabs( location.y() - destinationPoint_.y() ) "
                             << fabs(location.y() - destinationPoint_.y()) << std::endl);
                         if (fabs(location.x() - destinationPoint_.x()) < 0.01
-                            and fabs(location.y() - destinationPoint_.y()) < 0.01)
+                            && fabs(location.y() - destinationPoint_.y()) < 0.01)
                         {
                             clearOldPaths();
                             CHANGE_STATE(INTERNAL_RESTING, "reached destination");
@@ -1374,14 +1374,14 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
 
             // How much time do we have left?
             timeLeft = maxCPUTime - (Phys::time() - entryTime);
-        } while (canDoMore and interval == 0.0 and timeLeft > 0);
+        } while (canDoMore && interval == 0.0 && timeLeft > 0);
 
         LOG_WHERE;
         // If not moving, we must have a resting obstacle (if we are waiting for network messages then wait as well)
-        if (internalState_ != INTERNAL_WAITING_FOR_NETWORK_CONFIRM and internalState_ != INTERNAL_MOVING)
+        if (internalState_ != INTERNAL_WAITING_FOR_NETWORK_CONFIRM && internalState_ != INTERNAL_MOVING)
         {
             // Add resting obstacle if one doesn't exist
-            if (not pImpl_->restingObstacleExists_)
+            if (! pImpl_->restingObstacleExists_)
                 addRestingObstacle();
 
             // Unlock any locked entrances we might have moved off
@@ -1413,7 +1413,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
     //     }
 
     // Ensure we have a resting obstacle registered if not still moving
-    if (internalState_ != INTERNAL_MOVING and not(pImpl_->restingObstacleExists_ and pImpl_->restingChunkExists_))
+    if (internalState_ != INTERNAL_MOVING && !(pImpl_->restingObstacleExists_ && pImpl_->restingChunkExists_))
         addRestingObstacle();
 
     LOG_WHERE;
@@ -1633,7 +1633,7 @@ void MachLogMachineMotionSequencer::setIntersectingDomains()
         for (MachLogPlanetDomains::Domains::iterator it = domains.begin(); it != domains.end(); ++it)
         {
             W4dDomain* pExtraDomain = *it;
-            if (pExtraDomain != pCurrentDomain and not pPhysMachine_->intersects(*pExtraDomain))
+            if (pExtraDomain != pCurrentDomain && ! pPhysMachine_->intersects(*pExtraDomain))
             {
                 pPhysMachine_->intersects(pExtraDomain, true);
             }
@@ -1725,7 +1725,7 @@ void MachLogMachineMotionSequencer::getOnPortalPoint()
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
     PRE(nPortalPointsDone_ < domainPath_.size());
-    PRE(not pImpl_->hasOnPortalPoint_);
+    PRE(! pImpl_->hasOnPortalPoint_);
 
     // Extract the portal id and distance from the domain path
     const PortalPoint& portalPoint = domainPath_[nPortalPointsDone_];
@@ -1738,7 +1738,7 @@ void MachLogMachineMotionSequencer::getOnPortalPoint()
 
     LOG_STREAM("Actual on portal point " << onPortalPoint_ << std::endl);
 
-    if (pImpl_->groupMoveInfo_.valid() and (not pImpl_->offsetValid_))
+    if (pImpl_->groupMoveInfo_.valid() && (! pImpl_->offsetValid_))
     {
         pImpl_->calculateOffset(MexVec2(pPhysMachine_->globalTransform().position(), onPortalPoint_));
     }
@@ -1955,7 +1955,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
 
     LOG_INSPECT(motionInitiated);
 
-    if (not motionInitiated)
+    if (! motionInitiated)
     {
         bool done = false;
         //            LOG_STREAM("Blocked by object " << collisionObjectId.asScalar() << " at " << collideTime <<
@@ -1972,8 +1972,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
 
         // Check for trying to move to last point on current path, and the
         // obstacle being in resting state.
-        if (pConvoy_ == nullptr and nPathPointsDone_ >= (path_.size() - 1) and objectIsResting(collisionObjectId)
-            and not objectHasSameCommandId(collisionObjectId))
+        if (pConvoy_ == nullptr && nPathPointsDone_ >= (path_.size() - 1) && objectIsResting(collisionObjectId)
+            && ! objectHasSameCommandId(collisionObjectId))
         {
             LOG_INSPECT(nPortalPointsDone_);
             LOG_INSPECT(domainPath_.size());
@@ -2003,8 +2003,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
 
                     UtlId id = collisionObjectId.asScalar();
                     MachLogRaces& races = MachLogRaces::instance();
-                    if (races.actorExists(id) and races.actor(id).objectIsMachine()
-                        and races.actor(id).race() == logMobile().race())
+                    if (races.actorExists(id) && races.actor(id).objectIsMachine()
+                        && races.actor(id).race() == logMobile().race())
                     {
                         MachLogMachineMotionSequencer& obstructingSequencer = races.actor(id).asMobile().motionSeq();
 
@@ -2023,7 +2023,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                             obstacleBeingMoved = true;
                     }
 
-                    if (not obstacleBeingMoved)
+                    if (! obstacleBeingMoved)
                     {
                         // Try an avoidance move
 
@@ -2041,7 +2041,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                             // If we can't find an alternative destination,
                             // just stop.
                             MexPoint2d newDestination;
-                            if (not pConfigSpace_->findSpace(
+                            if (! pConfigSpace_->findSpace(
                                     fromPoint2d,
                                     targetPoint,
                                     useClearance_,
@@ -2068,7 +2068,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                         }
                     }
                 }
-                if (not motionInitiated)
+                if (! motionInitiated)
                     clearOldPaths();
 
                 interval = 0;
@@ -2076,13 +2076,13 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             }
         }
 
-        if (not done)
+        if (! done)
         {
             // See if the obstructing object is a machine
             MachLogRaces& races = MachLogRaces::instance();
             UtlId actorId = collisionObjectId.asScalar();
 
-            if (races.actorExists(actorId) and races.actor(actorId).objectIsMachine())
+            if (races.actorExists(actorId) && races.actor(actorId).objectIsMachine())
             {
                 MachLogMachineMotionSequencer* pObstructingSequencer = &(races.actor(actorId).asMobile().motionSeq());
 
@@ -2091,7 +2091,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                 // If we are in a convoy, only move other machines in the same
                 // convoy out of the way if I am the leader
 
-                if (pConvoy_ and pConvoy_ == pObstructingSequencer->pConvoy())
+                if (pConvoy_ && pConvoy_ == pObstructingSequencer->pConvoy())
                 {
                     if (nFollowers_ != 0)
                         tryMove = true;
@@ -2116,7 +2116,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             }
         }
 
-        if (not done)
+        if (! done)
         {
             //  If we're being blocked by a machine that has the same
             //  command id as we do don't try and move out of the way
@@ -2127,7 +2127,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             }
         }
 
-        if (not done)
+        if (! done)
         {
             // Try an avoidance move
 
@@ -2154,7 +2154,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
     }
 
     // If we didn't move, and we haven't chosen a new destination, just wait for a bit
-    if (internalState_ != INTERNAL_RESTING and not(motionInitiated or internalState_ == INTERNAL_WANT_PATH))
+    if (internalState_ != INTERNAL_RESTING && !(motionInitiated || internalState_ == INTERNAL_WANT_PATH))
     {
         // Enter wait state
         CHANGE_STATE(INTERNAL_WAITING, "didn't move and didn't chose a new destination so waiting");
@@ -2162,7 +2162,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
         LOG_STREAM("  Enter INTERNAL_WAITING state" << std::endl);
 
         // Ensure we have a resting obstacle
-        if (not pImpl_->restingObstacleExists_)
+        if (! pImpl_->restingObstacleExists_)
             addRestingObstacle();
 
         // Try again in a bit
@@ -2189,11 +2189,11 @@ bool MachLogMachineMotionSequencer::objectHasSameCommandId(ObjectId collisionObj
 
     UtlId id = collisionObjectId.asScalar();
     MachLogRaces& races = MachLogRaces::instance();
-    if (races.actorExists(id) and races.actor(id).objectIsMachine())
+    if (races.actorExists(id) && races.actor(id).objectIsMachine())
     {
         MachLogMachineMotionSequencer& obstructingSequencer = races.actor(id).asMobile().motionSeq();
 
-        if (commandIdSet() and obstructingSequencer.commandIdSet() and commandId() == obstructingSequencer.commandId())
+        if (commandIdSet() && obstructingSequencer.commandIdSet() && commandId() == obstructingSequencer.commandId())
             result = true;
     }
 
@@ -2241,7 +2241,7 @@ bool MachLogMachineMotionSequencer::objectIsResting(const ObjectId& collisionObj
     // Get the motion sequencer for the object in the way
     UtlId id = collisionObjectId.asScalar();
     MachLogRaces& races = MachLogRaces::instance();
-    if (races.actorExists(id) and races.actor(id).objectIsMachine())
+    if (races.actorExists(id) && races.actor(id).objectIsMachine())
     {
         MachLogMachineMotionSequencer& obstructingSequencer = races.actor(id).asMobile().motionSeq();
 
@@ -2249,7 +2249,7 @@ bool MachLogMachineMotionSequencer::objectIsResting(const ObjectId& collisionObj
 
         // Check for resting state
         answer = obstructingSequencer.internalState() == INTERNAL_RESTING
-            or obstructingSequencer.internalState() == INTERNAL_WAITING;
+            || obstructingSequencer.internalState() == INTERNAL_WAITING;
     }
 
     LOG_INSPECT(answer);
@@ -2272,7 +2272,7 @@ bool MachLogMachineMotionSequencer::objectInSameConvoy(const ObjectId& collision
         UtlId id = collisionObjectId.asScalar();
         MachLogRaces& races = MachLogRaces::instance();
 
-        if (races.actorExists(id) and races.actor(id).objectIsMachine())
+        if (races.actorExists(id) && races.actor(id).objectIsMachine())
         {
             MachLogMachineMotionSequencer& obstructingSequencer = races.actor(id).asMobile().motionSeq();
 
@@ -2423,7 +2423,7 @@ void MachLogMachineMotionSequencer::stopFollowing()
         // If the leader has no other followers and is not itself following it should
         // be removed from its convoy. Decrement follower count in leader.
         bool leaderRemovedFromConvoy
-            = --(pFollowSequencer_->nFollowers()) == 0 and pFollowSequencer_->pFollowSequencer() == nullptr;
+            = --(pFollowSequencer_->nFollowers()) == 0 && pFollowSequencer_->pFollowSequencer() == nullptr;
 
         if (leaderRemovedFromConvoy)
             pFollowSequencer_->removeFromConvoy();
@@ -2436,7 +2436,7 @@ void MachLogMachineMotionSequencer::stopFollowing()
 
         if (nFollowers_ == 0)
             removeFromConvoy();
-        else if (not leaderRemovedFromConvoy)
+        else if (! leaderRemovedFromConvoy)
         {
             // This machine is still leading, and the old leader is still in a convoy,
             // so we need to update the convoy, possibly splitting into 2 or more.
@@ -2491,7 +2491,7 @@ MexPoint2d MachLogMachineMotionSequencer::currentTargetPoint() const
 
     // Use the current location if resting or no existing path computed.
     // Otherwise the next path point
-    bool useCurrentPosition = internalState_ == INTERNAL_RESTING or nPathPointsDone_ == path_.size();
+    bool useCurrentPosition = internalState_ == INTERNAL_RESTING || nPathPointsDone_ == path_.size();
     return (useCurrentPosition ? currentLocation() : path_[nPathPointsDone_]);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -2573,7 +2573,7 @@ void MachLogMachineMotionSequencer::updateFollowDestination()
     // If the destination is different, clear any existing paths, and enter
     // state to plan a new path
     if (haveNewDestination
-        and (internalState_ == INTERNAL_RESTING or newDestination.sqrEuclidianDistance(destinationPoint_) > 1.0))
+        && (internalState_ == INTERNAL_RESTING || newDestination.sqrEuclidianDistance(destinationPoint_) > 1.0))
     {
         clearOldPaths();
         CHANGE_STATE(INTERNAL_WANT_DOMAIN_PATH, "follow destination has been updated");
@@ -2611,8 +2611,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::moveOutOfWay(
     if (allowMoveOutOfWay())
     {
         // We must not be moving or planning a path
-        if (internalState_ != INTERNAL_MOVING and internalState_ != INTERNAL_PLANNING
-            and internalState_ != INTERNAL_PLANNING_DOMAIN_PATH and internalState_ != INTERNAL_1ST_PERSON)
+        if (internalState_ != INTERNAL_MOVING && internalState_ != INTERNAL_PLANNING
+            && internalState_ != INTERNAL_PLANNING_DOMAIN_PATH && internalState_ != INTERNAL_1ST_PERSON)
         {
             // Compute a unit vector in the direction the asker is trying to go
             MexVec2 askerDir(askerStartPoint, askerEndPoint);
@@ -2660,33 +2660,33 @@ PhysRelativeTime MachLogMachineMotionSequencer::moveOutOfWay(
 
             // try moves in various directions
             canMove
-                = canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + askerNormal.x(), pos.y() + askerNormal.y())) or
+                = canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + askerNormal.x(), pos.y() + askerNormal.y())) ||
 
-                canMoveTo(pos, targetPoint = MexPoint2d(pos.x() - askerNormal.x(), pos.y() - askerNormal.y())) or
+                canMoveTo(pos, targetPoint = MexPoint2d(pos.x() - askerNormal.x(), pos.y() - askerNormal.y())) ||
 
                 canMoveTo(
                       pos,
                       targetPoint
                       = MexPoint2d(pos.x() + askerNormal.x() + askerDir.x(), pos.y() + askerNormal.y() + askerDir.y()))
-                or
+                ||
 
                 canMoveTo(
                       pos,
                       targetPoint
                       = MexPoint2d(pos.x() - askerNormal.x() + askerDir.x(), pos.y() - askerNormal.y() + askerDir.y()))
-                or
+                ||
 
                 canMoveTo(
                       pos,
                       targetPoint
                       = MexPoint2d(pos.x() + askerNormal.x() - askerDir.x(), pos.y() + askerNormal.y() - askerDir.y()))
-                or
+                ||
 
                 canMoveTo(
                       pos,
                       targetPoint
                       = MexPoint2d(pos.x() - askerNormal.x() - askerDir.x(), pos.y() - askerNormal.y() - askerDir.y()))
-                or
+                ||
 
                 canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + askerDir.x(), pos.y() + askerDir.y()));
 
@@ -2882,7 +2882,7 @@ bool MachLogMachineMotionSequencer::targetPositionContainedInSpace(const MexPoin
     PhysConfigSpace2d::PolygonId inTheWay;
     PhysConfigSpace2d::DomainId domainId;
     bool result = pConfigSpace_->contains(testCircle, obstacleFlags(), &inTheWay)
-        and pConfigSpace_->domain(targetPoint, &domainId);
+        && pConfigSpace_->domain(targetPoint, &domainId);
 
     // Re-enable the polygons
     ignorePolygons(false);
@@ -2922,7 +2922,7 @@ bool MachLogMachineMotionSequencer::positionContainedInSpace(
     PhysConfigSpace2d::PolygonId inTheWay;
     PhysConfigSpace2d::DomainId domainId;
     bool result
-        = configSpace.contains(testCircle, obstacleFlags(), &inTheWay) and configSpace.domain(targetPoint, &domainId);
+        = configSpace.contains(testCircle, obstacleFlags(), &inTheWay) && configSpace.domain(targetPoint, &domainId);
 
     LOG_INSPECT(result);
 
@@ -2962,7 +2962,7 @@ void MachLogMachineMotionSequencer::switchConfigSpace(PhysConfigSpace2d* pNewCon
     pImpl_->inPlanetSpace_ = pConfigSpace_ == &(MachLogPlanet::instance().configSpace());
 
     // Attach to any space domain specified if not on the planet space
-    if (not pImpl_->inPlanetSpace_ and pSpaceDomain_ != nullptr)
+    if (! pImpl_->inPlanetSpace_ && pSpaceDomain_ != nullptr)
     {
         NETWORK_STREAM(
             " not in planet space and space domain != NULL so clear intersecting relationships and attacTo\n");
@@ -3057,7 +3057,7 @@ bool MachLogMachineMotionSequencer::canMoveTo(const MexPoint2d fromPoint, const 
 
     PhysConfigSpace2d::DomainId domainId;
     bool rc = pConfigSpace_->domain(toPoint, &domainId);
-    if (not rc)
+    if (! rc)
     {
         HAL_STREAM("canMoveTo toPoint " << toPoint << " does not lie in a domain\n");
         return rc;
@@ -3104,7 +3104,7 @@ bool MachLogMachineMotionSequencer::canMoveTo(const MexPoint2d fromPoint, const 
         result = pConfigSpace_
                      ->contains(testPolygon, obstacleFlags(), &nastyPolygonId, PhysConfigSpace2d::USE_PERMANENT_ONLY);
 
-        if (not result)
+        if (! result)
         {
             LOG_STREAM(
                 "    Location " << toPoint << " clashes with polygon id " << nastyPolygonId.asScalar() << std::endl);
@@ -3120,7 +3120,7 @@ bool MachLogMachineMotionSequencer::canMoveTo(const MexPoint2d fromPoint, const 
                 obstacleFlags(),
                 &nastyPolygonId,
                 PhysConfigSpace2d::USE_PERMANENT_ONLY);
-            if (not result)
+            if (! result)
             {
                 LOG_STREAM(
                     "    Location " << toPoint << " clashes with polygon id " << nastyPolygonId.asScalar()
@@ -3132,7 +3132,7 @@ bool MachLogMachineMotionSequencer::canMoveTo(const MexPoint2d fromPoint, const 
                 // Finally check that the toPoint is contained in a valid domain
                 PhysConfigSpace2d::DomainId domainId;
                 result = pConfigSpace_->domain(toPoint, &domainId);
-                if (not result)
+                if (! result)
                 {
                     HAL_STREAM(" Location " << toPoint << " is not in any domain\n " << std::endl);
                 }
@@ -3184,14 +3184,14 @@ bool MachLogMachineMotionSequencer::findAvoidancePoint(const MexPoint2d& fromPoi
         = canMoveTo(
               pos,
               targetPoint = MexPoint2d(pos.x() + moveDirection.x() + norm.x(), pos.y() + moveDirection.y() + norm.y()))
-        or
+        ||
 
         canMoveTo(
               pos,
               targetPoint = MexPoint2d(pos.x() + moveDirection.x() - norm.x(), pos.y() + moveDirection.y() - norm.y()))
-        or
+        ||
 
-        canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + norm.x(), pos.y() + norm.y())) or
+        canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + norm.x(), pos.y() + norm.y())) ||
 
         canMoveTo(pos, targetPoint = MexPoint2d(pos.x() - norm.x(), pos.y() - norm.y()));
 
@@ -3336,7 +3336,7 @@ void MachLogMachineMotionSequencer::doStopDead()
 
     // Enter waiting state (as long as we aren't in 1st person control - otherwise everything will shag
     // as the motion sequencer will not match the 1st person controller state).
-    if (not is1stPersonControlled())
+    if (! is1stPersonControlled())
     {
         CHANGE_STATE(INTERNAL_WAITING, "stop dead called");
     }
@@ -3406,7 +3406,7 @@ void MachLogMachineMotionSequencer::leaderChangedDestination()
     PRE(isFollowing());
 
     // If we are moving and won't arrive for more than 2 seconds, interrupt motion
-    if (internalState_ == INTERNAL_MOVING and (arrivalTime_ + 2.0) > SimManager::instance().currentTime())
+    if (internalState_ == INTERNAL_MOVING && (arrivalTime_ + 2.0) > SimManager::instance().currentTime())
     {
         pImpl_->stopAsSoonAsPossible_ = true;
         scheduledUpdateTime_ = 0.0;
@@ -3430,7 +3430,7 @@ void MachLogMachineMotionSequencer::notifyFollowers()
              ++it)
         {
             MachLogMachineMotionSequencer* pConvoySequencer = *it;
-            if (pConvoySequencer != this and pConvoySequencer->pFollowSequencer() == this)
+            if (pConvoySequencer != this && pConvoySequencer->pFollowSequencer() == this)
                 pConvoySequencer->logMobile().checkLeaderDestination();
         }
     }
@@ -3454,7 +3454,7 @@ bool MachLogMachineMotionSequencer::addMotionChunks(const ctl_vector<PhysMotionC
 
     bool worked = true;
 
-    for (size_t i = 0; worked and i < chunks.size(); ++i)
+    for (size_t i = 0; worked && i < chunks.size(); ++i)
     {
         PhysConfigSpace2d::MotionChunkId chunkId;
 
@@ -3578,7 +3578,7 @@ bool MachLogMachineMotionSequencer::followingMachines(MachLogMachine::Machines* 
 
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
-    if (not hasFollowers())
+    if (! hasFollowers())
         return false;
 
     bool found = false;
@@ -3590,7 +3590,7 @@ bool MachLogMachineMotionSequencer::followingMachines(MachLogMachine::Machines* 
          ++it)
     {
         MachLogMachineMotionSequencer* pConvoySequencer = *it;
-        if (pConvoySequencer != this and pConvoySequencer->pFollowSequencer() == this)
+        if (pConvoySequencer != this && pConvoySequencer->pFollowSequencer() == this)
         {
             ASSERT(pConvoySequencer->logMobile().objectIsMachine(), "Following MLMobile was not machine.");
             followingMachines.push_back(&pConvoySequencer->logMobile().asMachine());
@@ -3623,7 +3623,7 @@ void MachLogMachineMotionSequencer::is1stPersonControlled(bool isIt)
 {
     CB_DEPIMPL(InternalState, internalState_);
 
-    PRE(not isIt or internalState_ == INTERNAL_RESTING);
+    PRE(! isIt || internalState_ == INTERNAL_RESTING);
 
     if (isIt)
     {
@@ -3720,11 +3720,11 @@ void MachLogMachineMotionSequencer::autoUnlockAnyLockedEntrance()
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
     // check have permission
-    if (not keepEntranceLocked())
+    if (! keepEntranceLocked())
     {
         // Get the machine and see if it has a locked entrance
         MachLogMachine* pMachine = &pLogMobile_->asMachine();
-        if (pMachine->hasLockedEntrance() and pMachine->inBuildingOrOnPad())
+        if (pMachine->hasLockedEntrance() && pMachine->inBuildingOrOnPad())
         {
             // Need to see if still on the internal or external entrance polygon.
             // Make a clearance circle for the machine
@@ -3738,7 +3738,7 @@ void MachLogMachineMotionSequencer::autoUnlockAnyLockedEntrance()
             const MexPolygon2d& externalEntrancePolygon = planetConfigSpace.polygon(externalId);
             bool onPolygons = testCircle.intersects(externalEntrancePolygon);
 
-            if (not onPolygons)
+            if (! onPolygons)
             {
                 // Not on the external polygon, so test the internal one
                 PhysConfigSpace2d::PolygonId internalId = construction.entrance(0).interiorPolygonId();
@@ -3748,7 +3748,7 @@ void MachLogMachineMotionSequencer::autoUnlockAnyLockedEntrance()
             }
 
             // Check for circle not intersecting the polygon
-            if (not onPolygons)
+            if (! onPolygons)
             {
                 // Close the door
                 if (construction.isEntranceOpen(0))
@@ -3781,7 +3781,7 @@ void MachLogMachineMotionSequencer::ignorePolygons(bool setIgnore) const
 
     for (PhysConfigSpace2d::PolygonIds::const_iterator it = ignoreObstacleIds_.begin(); it != ignoreObstacleIds_.end();
          ++it)
-        pConfigSpace_->isPolygonEnabled(*it, not setIgnore);
+        pConfigSpace_->isPolygonEnabled(*it, ! setIgnore);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -4151,14 +4151,14 @@ void MachLogMachineMotionSequencer::updateConvoy(MachLogMachineConvoy* pOldConvo
     {
         // Only process this machine if it is a follower, and hasn't yet been assigned to a convoy
         MachLogMachineMotionSequencer* pStartSequencer = sequencers[i];
-        if (pStartSequencer->pImpl_->pFollowSequencer_ != nullptr and pStartSequencer->pImpl_->pConvoy_ == nullptr)
+        if (pStartSequencer->pImpl_->pFollowSequencer_ != nullptr && pStartSequencer->pImpl_->pConvoy_ == nullptr)
         {
             // Assign the old convoy pointer to this and any sequence of machines being followed.
             // This prevents infinite recursion with cyclic following relations, marking each sequencer
             // in the run starting at pStartSequencer.
             MachLogMachineMotionSequencer* pCurrentSequencer;
             for (pCurrentSequencer = pStartSequencer;
-                 pCurrentSequencer != nullptr and pCurrentSequencer->pImpl_->pConvoy_ == nullptr;
+                 pCurrentSequencer != nullptr && pCurrentSequencer->pImpl_->pConvoy_ == nullptr;
                  pCurrentSequencer = pCurrentSequencer->pImpl_->pFollowSequencer_)
             {
                 pCurrentSequencer->pImpl_->pConvoy_ = pOldConvoy;
@@ -4168,7 +4168,7 @@ void MachLogMachineMotionSequencer::updateConvoy(MachLogMachineConvoy* pOldConvo
             // then add all the machines in our run to this convoy.
             // Otherwise create a new convoy, and add them all to that.
             MachLogMachineConvoy* pNewConvoy;
-            if (pCurrentSequencer != nullptr and pCurrentSequencer->pImpl_->pConvoy_ != pOldConvoy)
+            if (pCurrentSequencer != nullptr && pCurrentSequencer->pImpl_->pConvoy_ != pOldConvoy)
             {
                 pNewConvoy = pCurrentSequencer->pImpl_->pConvoy_;
                 pStartSequencer->pImpl_->pConvoy_ = nullptr;
@@ -4184,7 +4184,7 @@ void MachLogMachineMotionSequencer::updateConvoy(MachLogMachineConvoy* pOldConvo
 
             // Now add remaining machines in run to same convoy
             for (pCurrentSequencer = pStartSequencer->pImpl_->pFollowSequencer_;
-                 pCurrentSequencer != nullptr and pCurrentSequencer->pImpl_->pConvoy_ != pNewConvoy;
+                 pCurrentSequencer != nullptr && pCurrentSequencer->pImpl_->pConvoy_ != pNewConvoy;
                  pCurrentSequencer = pCurrentSequencer->pImpl_->pFollowSequencer_)
             {
                 pCurrentSequencer->pImpl_->pConvoy_ = nullptr;
@@ -4205,7 +4205,7 @@ MATHEX_SCALAR MachLogMachineMotionSequencer::scalarSpeedNow() const
     CB_DEPIMPL(ctl_vector<MotionChunkId>, motionChunkIds_);
     CB_DEPIMPL(PhysConfigSpace2d*, pConfigSpace_);
 
-    PRE(not is1stPersonControlled());
+    PRE(! is1stPersonControlled());
 
     MATHEX_SCALAR speedNow = 0.0; // unless proven otherwise
 

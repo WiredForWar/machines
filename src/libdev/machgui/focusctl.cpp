@@ -107,7 +107,7 @@ bool MachGuiFocusCapableControl::isFocusControl() const
     CB_DEPIMPL(bool, hasFocus_);
     CB_DEPIMPL(bool, msgBoxIsDisplayed_);
 
-    return hasFocus_ and not msgBoxIsDisplayed_;
+    return hasFocus_ && ! msgBoxIsDisplayed_;
 }
 
 // virtual
@@ -152,7 +152,7 @@ bool MachGuiFocusCapableControl::doHandleNavigationKey(
             break;
     }
 
-    return ((*ppNavFocusControl != nullptr) and (*ppNavFocusControl)->isFocusEnabled());
+    return ((*ppNavFocusControl != nullptr) && (*ppNavFocusControl)->isFocusEnabled());
 }
 
 void MachGuiFocusCapableControl::setLeftNavControl(MachGuiFocusCapableControl* pNewValue)

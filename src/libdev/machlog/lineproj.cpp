@@ -267,7 +267,7 @@ MATHEX_SCALAR MachLogLinearProjectile::rangeToMovingObject(
         const PhysRelativeTime timeIncrement = 0.25;
         bool haveCollision = false;
 
-        while (not haveCollision and nPossibleCollisions != 0)
+        while (! haveCollision && nPossibleCollisions != 0)
         {
             // Find the earliest possible collision
             PhysAbsoluteTime earliestTime = intersections.front().collisionTime_;
@@ -318,7 +318,7 @@ MATHEX_SCALAR MachLogLinearProjectile::rangeToMovingObject(
                 MexLine3d segment(segmentStartPoint, segmentEndPoint);
 
                 // set the artificial time to the test time unless actor is not moving
-                if (not isStationary)
+                if (! isStationary)
                     w4dManager.artificialTime(testTime);
 
                 // check the line segment for intersection with the machine
@@ -378,7 +378,7 @@ PhysRelativeTime MachLogLinearProjectile::update(const PhysRelativeTime& /* maxC
     //  This check is a hack which needs to be here until the logical lineproj
     //  is properly destroyed when the physical lineproj blows up.
 
-    if (not isDead())
+    if (! isDead())
     {
         if (SimManager::instance().currentTime() > destructionTime_)
         {
@@ -402,7 +402,7 @@ void MachLogLinearProjectile::destroyAt(const PhysAbsoluteTime& time)
     const PhysRelativeTime destructionTime = time + explosionDuration - SimManager::instance().currentTime();
 
     // WHERE;
-    if (pOwner_->objectIsMachine() and pOwner_->asMachine().insideBuilding())
+    if (pOwner_->objectIsMachine() && pOwner_->asMachine().insideBuilding())
     {
         inside = MachLogDyingEntityEvent::INSIDE_BUILDING;
         pConstruction = &pOwner_->asMachine().insideWhichBuilding();
@@ -485,7 +485,7 @@ void MachLogLinearProjectile::genericCheckForDamage(
         // Flame thrower mustn't damage itself
         // Same goes for electric charge
         if (pActor == (*i)
-            and (wt == MachPhys::FLAME_THROWER1 or wt == MachPhys::FLAME_THROWER2 or wt == MachPhys::ELECTRIC_CHARGE))
+            && (wt == MachPhys::FLAME_THROWER1 || wt == MachPhys::FLAME_THROWER2 || wt == MachPhys::ELECTRIC_CHARGE))
         {
             continue;
         }
@@ -568,7 +568,7 @@ void MachLogLinearProjectile::genericCheckForDamage(
                             if (boxSqrRange > epsilon)
                             {
                                 MATHEX_SCALAR actualRange = expPosition.euclidianDistance(iActor.position());
-                                if (actualRange <= 1 or range <= 1)
+                                if (actualRange <= 1 || range <= 1)
                                     iActor.beHit(damage, wt, pActor, &line);
                                 else
                                 {
@@ -605,7 +605,7 @@ void MachLogLinearProjectile::genericCheckForDamage(
 // virtual
 bool MachLogLinearProjectile::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
-    PRE(currentlyAttached_ and pSubject == pOwner_);
+    PRE(currentlyAttached_ && pSubject == pOwner_);
 
     switch (event)
     {

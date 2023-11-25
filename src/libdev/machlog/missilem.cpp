@@ -157,11 +157,11 @@ PhysRelativeTime MachLogMissileEmplacement::update(const PhysRelativeTime& alter
     PhysRelativeTime alertnessResponse = 10.0;
 
     // HAL_STREAM(" call updateCompletionVisulaistaion or isWorking\n" );
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
         interval = 0.1;
     else
     {
-        if (not pPhysMissileEmplacement()->isWorking())
+        if (! pPhysMissileEmplacement()->isWorking())
 
         {
             pPhysMissileEmplacement()->isWorking(true);
@@ -181,7 +181,7 @@ PhysRelativeTime MachLogMissileEmplacement::update(const PhysRelativeTime& alter
         switch (subType())
         {
             case MachPhys::ICBM:
-                if (nukeReady() and not domeOpen())
+                if (nukeReady() && ! domeOpen())
                 {
                     if (inTransition_)
                     {
@@ -200,7 +200,7 @@ PhysRelativeTime MachLogMissileEmplacement::update(const PhysRelativeTime& alter
                         interval = 3.5;
                     }
                 }
-                else if ((not nukeReady()) and domeOpen())
+                else if ((! nukeReady()) && domeOpen())
                 {
                     if (inTransition_)
                     {
@@ -230,8 +230,8 @@ PhysRelativeTime MachLogMissileEmplacement::update(const PhysRelativeTime& alter
 
             // otherwise (i.e. for all other missileEmp types ), no dome faffling, just attack nearest baddy.
             default:
-                if (isComplete() and not(isDead()) and not(MachLogRaces::instance().inSpecialActorUpdate())
-                    and willCheckForTargets())
+                if (isComplete() && !(isDead()) && !(MachLogRaces::instance().inSpecialActorUpdate())
+                    && willCheckForTargets())
                 {
                     checkAndAttackCloserTarget(this);
                 }
@@ -293,7 +293,7 @@ bool MachLogMissileEmplacement::canAttack(const MachActor& other) const
     if (position().sqrEuclidianDistance(other.position()) == 0)
         return true;
 
-    return canTurnToAttack(other) and inAngleRange(other.physObject());
+    return canTurnToAttack(other) && inAngleRange(other.physObject());
     // and hasSightOf( other )
 }
 
@@ -442,7 +442,7 @@ int MachLogMissileEmplacement::militaryStrength() const
 {
     // this method has multiple exit-points for efficiency
 
-    if (not isComplete())
+    if (! isComplete())
         return 0;
 
     switch (subType())
@@ -537,7 +537,7 @@ void perRead(PerIstream& istr, MachLogMissileEmplacement& actor)
         if (actor.inTransition_)
         {
             actor.inTransition_ = false;
-            actor.domeOpen_ = not actor.domeOpen_;
+            actor.domeOpen_ = ! actor.domeOpen_;
         }
 
         // Only open it - model by default is closed
@@ -587,14 +587,14 @@ void MachLogMissileEmplacement::beHit(
         pByDirection,
         echo); // somehow it was called for actor not constructions
 
-    if (pByActor and allowedToCheckForNewTarget() and not isDead() and canFireAt(*pByActor)
-        and subType() != MachPhys::ICBM and willTestHitByCandidate(*pByActor))
+    if (pByActor && allowedToCheckForNewTarget() && ! isDead() && canFireAt(*pByActor)
+        && subType() != MachPhys::ICBM && willTestHitByCandidate(*pByActor))
     {
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
         // only take a pop at this schmo if we don't think it's a friend (same race or ally),
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
         {
             // will try to initiate a counterattack against the actor who hit me.
             checkAndAttackCloserTarget(this, pByActor);
@@ -614,14 +614,14 @@ void MachLogMissileEmplacement::beHitWithoutAnimation(
     //  MachActor::beHitWithoutAnimation( damage, physicalTimeDelay, pByActor, echo );
     MachLogConstruction::beHitWithoutAnimation(damage, physicalTimeDelay, pByActor, echo);
 
-    if (pByActor and allowedToCheckForNewTarget() and not isDead() and canFireAt(*pByActor)
-        and subType() != MachPhys::ICBM and willTestHitByCandidate(*pByActor))
+    if (pByActor && allowedToCheckForNewTarget() && ! isDead() && canFireAt(*pByActor)
+        && subType() != MachPhys::ICBM && willTestHitByCandidate(*pByActor))
     {
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
         // only take a pop at this schmo if we don't think it's a friend (same race or ally),
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
         {
             // will try to initiate a counterattack against the actor who hit me.
             checkAndAttackCloserTarget(this, pByActor);

@@ -95,7 +95,7 @@ public:
     {
         if (pConstruction_)
         {
-            if (not event.isCtrlPressed())
+            if (! event.isCtrlPressed())
             {
                 pInGameScreen_->deselectAll();
             }
@@ -109,7 +109,7 @@ public:
                  iter != pConstConstruction->machines().end();
                  ++iter)
             {
-                if ((*iter)->selectionState() != MachLog::SELECTED and (*iter)->race() == playerRace)
+                if ((*iter)->selectionState() != MachLog::SELECTED && (*iter)->race() == playerRace)
                 {
                     pInGameScreen_->select(*iter);
                 }
@@ -276,11 +276,11 @@ bool MachGuiCorralSingleIcon::beNotified(W4dSubject* pSubject, W4dSubject::Notif
             changed();
             break;
         case W4dSubject::CLIENT_SPECIFIC:
-            if (clientData == MachLog::HEALTH_STATUS_CHANGED or clientData == MachLog::PERCENTAGE_COMPLETE_CHANGED
-                or clientData == MachLog::TELEPORTED_OUT_OF_WORLD or clientData == MachLog::ENTERED_WORLD
-                or clientData == MachLog::RACE_CHANGED or clientData == MachLog::CHANGED_CAMOUFLAGE_STATUS
-                or clientData == MachLog::CHANGED_MINERALS_CARRIED
-                or clientData == MachLog::CHANGED_N_MACHINES_INSIDE_CONSTRUCTION)
+            if (clientData == MachLog::HEALTH_STATUS_CHANGED || clientData == MachLog::PERCENTAGE_COMPLETE_CHANGED
+                || clientData == MachLog::TELEPORTED_OUT_OF_WORLD || clientData == MachLog::ENTERED_WORLD
+                || clientData == MachLog::RACE_CHANGED || clientData == MachLog::CHANGED_CAMOUFLAGE_STATUS
+                || clientData == MachLog::CHANGED_MINERALS_CARRIED
+                || clientData == MachLog::CHANGED_N_MACHINES_INSIDE_CONSTRUCTION)
             {
                 setActor(pActor_, true);
             }
@@ -307,7 +307,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
         MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-        if (pActor_->objectIsConstruction() and not pActor_->asConstruction().isComplete())
+        if (pActor_->objectIsConstruction() && ! pActor_->asConstruction().isComplete())
         {
             // Only display extra info if the actor is ours.
             if (pActor_->race() == playerRace)
@@ -350,7 +350,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 // Resource carrier info
                 else if (
                     pActor_->objectType() == MachLog::RESOURCE_CARRIER
-                    and pActor_->asResourceCarrier().isNormalResourceCarrier())
+                    && pActor_->asResourceCarrier().isNormalResourceCarrier())
                 {
                     //                  itoa( pActor_->asResourceCarrier().data().capacity(), buffer, 10 );
                     //                  itoa( pActor_->asResourceCarrier().amountCarried(), buffer2, 10 );
@@ -531,7 +531,7 @@ MachGuiCorralSingleIcon::MachGuiCorralSingleIcon(
 // virtual
 MachGuiCorralSingleIcon::~MachGuiCorralSingleIcon()
 {
-    if (isObservingActor_ and pActor_)
+    if (isObservingActor_ && pActor_)
         pActor_->detach(this);
 }
 
@@ -560,13 +560,13 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
     PRE(pIconInfo_);
     PRE(pActor);
 
-    if (pActor_ != pActor or forceUpdate) // Check to see if single icon corral is already displaying this actor
+    if (pActor_ != pActor || forceUpdate) // Check to see if single icon corral is already displaying this actor
     {
         // Set up observer relationship
         if (pActor_ != pActor)
         {
             // Stop observing actor
-            if (isObservingActor_ and pActor_)
+            if (isObservingActor_ && pActor_)
                 pActor_->detach(this);
 
             // Start observing new actor
@@ -629,7 +629,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
                 MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
                 for (MachLogConstruction::Machines::const_iterator iter = construction.machines().begin();
-                     iter != construction.machines().end() and not friendlyMachineInside;
+                     iter != construction.machines().end() && ! friendlyMachineInside;
                      ++iter)
                 {
                     if ((*iter)->race() == playerRace)
@@ -651,10 +651,10 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
             pSelectInsideBuildingIcon_->isVisible(false);
 
             // Check that machine can be entered...
-            bool headIconVisible = pActor->race() == playerRace and not pActor->asMachine().insideAPC();
+            bool headIconVisible = pActor->race() == playerRace && ! pActor->asMachine().insideAPC();
 
             // Extra check if multiplayer game cus you can disable 1st person
-            if (headIconVisible and pInGameScreen_->isFirstPersonDisabled())
+            if (headIconVisible && pInGameScreen_->isFirstPersonDisabled())
             {
                 headIconVisible = false;
             }
@@ -675,7 +675,7 @@ void MachGuiCorralSingleIcon::doDisplay()
 
 void MachGuiCorralSingleIcon::clear()
 {
-    if (isObservingActor_ and pActor_)
+    if (isObservingActor_ && pActor_)
         pActor_->detach(this);
 
     pActor_ = nullptr;

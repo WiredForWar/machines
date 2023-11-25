@@ -70,7 +70,7 @@ MachLogSeekAndDestroyOperation::~MachLogSeekAndDestroyOperation()
 
 bool MachLogSeekAndDestroyOperation::doStart()
 {
-    bool result = not checkNeedAndDoLeaveOperation(pActor_);
+    bool result = ! checkNeedAndDoLeaveOperation(pActor_);
     return result;
 }
 
@@ -91,18 +91,18 @@ PhysRelativeTime MachLogSeekAndDestroyOperation::doUpdate()
     bool found = MachLogRaces::instance()
                      .findTargetClosestTo(*pActor_, &pTarget, targetSystemType_, objectType_, searchStartingPoint_);
 
-    if (found and pTarget->objectIsMachine())
+    if (found && pTarget->objectIsMachine())
     {
         // our target is a machine. Therefore, it might be inside a building.
         MachLogMachine& targetMachine = pTarget->asMachine();
 
         found = canAttackEvenIfInsideBuilding(targetMachine);
 
-        if (not found and targetSystemType_ == MachLog::TARGET_NORMAL)
+        if (! found && targetSystemType_ == MachLog::TARGET_NORMAL)
         {
             found = MachLogRaces::instance().findAlternativeTargetClosestTo(*pActor_, &pTarget);
 
-            if (found and pTarget->objectIsMachine())
+            if (found && pTarget->objectIsMachine())
             {
                 MachLogMachine& alternativeTargetMachine = pTarget->asMachine();
 
@@ -248,9 +248,9 @@ void MachLogSeekAndDestroyOperation::aggressorUpdateWithTarget(MachActor* pTarge
 {
     MachLogAggressor& aggressor = pActor_->asAggressor();
 
-    if (not pSubOperation() or not aggressor.hasCurrentTarget()
-        or (aggressor.hasCurrentTarget() and not aggressor.currentTarget().isDead()
-            and aggressor.currentTarget().id() != pTarget->id()))
+    if (! pSubOperation() || ! aggressor.hasCurrentTarget()
+        || (aggressor.hasCurrentTarget() && ! aggressor.currentTarget().isDead()
+            && aggressor.currentTarget().id() != pTarget->id()))
     {
         if (currentlyAttached_)
         {
@@ -267,7 +267,7 @@ void MachLogSeekAndDestroyOperation::aggressorUpdateWithTarget(MachActor* pTarge
             MachLogMachine& targetMachine = pTarget->asMachine();
 
             if (targetMachine.insideBuilding()
-                and (not aggressor.insideBuilding() or aggressor.insideWhichBuilding().id() != targetMachine.insideWhichBuilding().id()))
+                && (! aggressor.insideBuilding() || aggressor.insideWhichBuilding().id() != targetMachine.insideWhichBuilding().id()))
             {
                 MachLogConstruction& construction = targetMachine.insideWhichBuilding();
                 // our target is inside a building which we're not inside. Move to chase it if possible.
@@ -315,8 +315,8 @@ void MachLogSeekAndDestroyOperation::administratorUpdateWithTarget(MachActor* pT
             MachLogMachine& squadronMachine = (**i);
             MachLog::ObjectType obType = squadronMachine.objectType();
             if (obType == MachLog::AGGRESSOR
-                or (obType == MachLog::ADMINISTRATOR
-                    and squadronMachine.id() != pActor_->id())) // administrator shouldn't issue orders to itself
+                || (obType == MachLog::ADMINISTRATOR
+                    && squadronMachine.id() != pActor_->id())) // administrator shouldn't issue orders to itself
             {
                 // convoyIndex may or may not be incremented depending on whether the issuing of the order
                 // resulted in squadronMachine joining the convoy
@@ -326,7 +326,7 @@ void MachLogSeekAndDestroyOperation::administratorUpdateWithTarget(MachActor* pT
     }
 
     // administrator who leads the gang should be given a standard attack op
-    if (not pSubOperation())
+    if (! pSubOperation())
         subOperation(&administrator, new MachLogAttackOperation(pActor_, pTarget, commandId_));
 }
 
@@ -336,14 +336,14 @@ int MachLogSeekAndDestroyOperation::issueOrderToSquadronMachine(
     bool issueAttack,
     int convoyIndex)
 {
-    if (pSquadronMachine->motionSeq().isFollowing() or (not pSquadronMachine->motionSeq().hasDestination()))
+    if (pSquadronMachine->motionSeq().isFollowing() || (! pSquadronMachine->motionSeq().hasDestination()))
     {
         if (issueAttack)
         {
             pSquadronMachine->motionSeq().stop();
             pSquadronMachine->newOperation(new MachLogAttackOperation(pSquadronMachine, pTarget, commandId_));
         }
-        else if (not pSquadronMachine->motionSeq().isFollowing())
+        else if (! pSquadronMachine->motionSeq().isFollowing())
         {
             pSquadronMachine->newOperation(new MachLogFollowOperation(
                 pSquadronMachine,
@@ -368,8 +368,8 @@ bool MachLogSeekAndDestroyOperation::canAttackEvenIfInsideBuilding(const MachLog
         const MachLogConstruction& buildingTargetIsInside = targetMachine.insideWhichBuilding();
 
         okayToAttack
-            = (pActor_->insideBuilding() and pActor_->insideWhichBuilding().id() == buildingTargetIsInside.id())
-            or pActor_->canEnterConstructionNow(buildingTargetIsInside);
+            = (pActor_->insideBuilding() && pActor_->insideWhichBuilding().id() == buildingTargetIsInside.id())
+            || pActor_->canEnterConstructionNow(buildingTargetIsInside);
     }
 
     return okayToAttack;

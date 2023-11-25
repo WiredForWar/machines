@@ -76,7 +76,7 @@ bool MachLogPressurePads::onPad(
     bool result = false;
     PhysConfigSpace2d::PolygonId id;
 
-    if (not pEntranceConfigSpace_->contains(polygon, MachLog::OBSTACLE_NORMAL, &id))
+    if (! pEntranceConfigSpace_->contains(polygon, MachLog::OBSTACLE_NORMAL, &id))
     {
         result = true;
 
@@ -136,7 +136,7 @@ bool MachLogPressurePads::onPad(const MexCircle2d& circle, MachLogConstruction**
     bool result = false;
     PhysConfigSpace2d::PolygonId id;
 
-    if (not pEntranceConfigSpace_->contains(circle, MachLog::OBSTACLE_NORMAL, &id))
+    if (! pEntranceConfigSpace_->contains(circle, MachLog::OBSTACLE_NORMAL, &id))
     {
         result = true;
 

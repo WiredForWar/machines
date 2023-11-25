@@ -49,7 +49,7 @@ void MachGuiRecycleCommand::pickOnActor(MachActor* pActor, bool, bool, bool)
 {
     // Check for a pick on construction
     // note that use of static cast relies on short-circuiting of AND operator
-    if (pActor->objectIsCanSmelt() and pActor->asConstruction().isComplete())
+    if (pActor->objectIsCanSmelt() && pActor->asConstruction().isComplete())
     {
         hadFinalPick_ = true;
         pSmeltingBuilding_ = &pActor->asConstruction();
@@ -83,7 +83,7 @@ MachGui::Cursor2dType MachGuiRecycleCommand::cursorOnActor(MachActor* pActor, bo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (pActor->objectIsCanSmelt() and (_STATIC_CAST(MachLogConstruction*, pActor))->isComplete())
+    if (pActor->objectIsCanSmelt() && (_STATIC_CAST(MachLogConstruction*, pActor))->isComplete())
     {
         cursor = MachGui::RECYCLE_CURSOR;
     }
@@ -107,7 +107,7 @@ bool MachGuiRecycleCommand::doApply(MachActor* pActor, string*)
 
     pActor->newOperation(pOp);
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::RECYCLE);
         hasPlayedVoiceMail(true);
@@ -168,7 +168,7 @@ bool MachGuiRecycleCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*
 // virtual
 bool MachGuiRecycleCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_Q and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_Q && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

@@ -26,7 +26,7 @@ string MachPhysEvasionPriorityPlan::name()
 
 void MachPhysEvasionPriorityPlan::garrisonPriority(int priority)
 {
-    PRE(priority < 4 and priority >= -2);
+    PRE(priority < 4 && priority >= -2);
     garrisonPriority_ = priority;
 }
 
@@ -34,7 +34,7 @@ void MachPhysEvasionPriorityPlan::garrisonPriority(int priority)
 
 void MachPhysEvasionPriorityPlan::aggressivesPriority(int priority)
 {
-    PRE(priority < 4 and priority > -2);
+    PRE(priority < 4 && priority > -2);
     aggressivesPriority_ = priority;
 }
 
@@ -42,7 +42,7 @@ void MachPhysEvasionPriorityPlan::aggressivesPriority(int priority)
 
 void MachPhysEvasionPriorityPlan::podPriority(int priority)
 {
-    PRE(priority < 4 and priority > -2);
+    PRE(priority < 4 && priority > -2);
     podPriority_ = priority;
 }
 
@@ -50,7 +50,7 @@ void MachPhysEvasionPriorityPlan::podPriority(int priority)
 
 void MachPhysEvasionPriorityPlan::turretsPriority(int priority)
 {
-    PRE(priority < 4 and priority > -2);
+    PRE(priority < 4 && priority > -2);
     turretsPriority_ = priority;
 }
 

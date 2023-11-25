@@ -78,7 +78,7 @@ bool MachGuiNetworkProtocolMode::connectionSetHelper(NetNetwork::NetNetworkStatu
             valid = true;
             break;
     }
-    if (not valid)
+    if (! valid)
     {
         startupScreens().displayMsgBox(error);
         // Set network to a valid state

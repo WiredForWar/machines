@@ -868,7 +868,7 @@ void MachGui::releaseInGameBmpMemory()
 // static
 bool MachGui::getCDRomDriveContainingMachinesCD(string& cdRomDrive, int CDNumber)
 {
-    PRE(CDNumber > 0 and CDNumber < 3);
+    PRE(CDNumber > 0 && CDNumber < 3);
 
     /*  if ( CDNumber == 1 )
         return getCDRomDriveContainingFile( cdRomDrive, "setupx.bin" );
@@ -880,7 +880,7 @@ bool MachGui::getCDRomDriveContainingMachinesCD(string& cdRomDrive, int CDNumber
 // static
 bool MachGui::machinesCDIsAvailable(int CDNumber)
 {
-    PRE(CDNumber > 0 and CDNumber < 3);
+    PRE(CDNumber > 0 && CDNumber < 3);
 
     string cdRomDrive;
 

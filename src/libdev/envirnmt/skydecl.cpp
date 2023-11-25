@@ -24,7 +24,7 @@ class EnvSatellite;
 
 void EnvISkyDeclaration::UniformSky::controller(const string& name)
 {
-    PRE(not controllerSet_);
+    PRE(! controllerSet_);
 
     EnvSatellite* pController = EnvIPlanetParser::instance().lookUpSatellite(&name);
     ASSERT(pController, "An invalid satellite name was parsed.");
@@ -35,7 +35,7 @@ void EnvISkyDeclaration::UniformSky::controller(const string& name)
 
 void EnvISkyDeclaration::UniformSky::colourTable(const string& name)
 {
-    PRE(not colourTableSet_);
+    PRE(! colourTableSet_);
 
     EnvElevationColourTable* pElevationClut = EnvIPlanetParser::instance().lookUpClut(&name);
     ASSERT(pElevationClut, "An invalid elevation clut name was parsed.");
@@ -59,14 +59,14 @@ EnvISkyDeclaration::UniformSky::UniformSky(EnvUniformSky* const pSky)
     , pSky_(pSky)
 {
     PRE(pSky);
-    PRE(not pSky_->controller());
+    PRE(! pSky_->controller());
 }
 
 ////////////////////////////////////////////////////////////
 
 void EnvISkyDeclaration::StaticSky::meshFile(const string& pathname)
 {
-    PRE(not meshFileSet_);
+    PRE(! meshFileSet_);
 
     pSky_->mesh(pathname);
     meshFileSet_ = true;
@@ -74,7 +74,7 @@ void EnvISkyDeclaration::StaticSky::meshFile(const string& pathname)
 
 void EnvISkyDeclaration::StaticSky::backgroundColour(const RenColour& backgrdColour)
 {
-    PRE(not backgroundColourSet_);
+    PRE(! backgroundColourSet_);
 
     pSky_->backgroundColour(backgrdColour);
     backgroundColourSet_ = true;
@@ -101,7 +101,7 @@ EnvISkyDeclaration::StaticSky::StaticSky(EnvStaticSky* const pSky)
 
 void EnvISkyDeclaration::DynamicSky::meshFile(const string& pathname)
 {
-    PRE(not meshFileSet_);
+    PRE(! meshFileSet_);
 
     pSky_->mesh(pathname);
     meshFileSet_ = true;
@@ -109,7 +109,7 @@ void EnvISkyDeclaration::DynamicSky::meshFile(const string& pathname)
 
 void EnvISkyDeclaration::DynamicSky::controller(const string& name)
 {
-    PRE(not controllerSet_);
+    PRE(! controllerSet_);
 
     EnvSatellite* pController = EnvIPlanetParser::instance().lookUpSatellite(&name);
     ASSERT(pController, "An invalid satellite name was parsed.");
@@ -144,7 +144,7 @@ EnvISkyDeclaration::DynamicSky::DynamicSky(EnvDynamicSky* const pSky)
     , pSky_(pSky)
 {
     PRE(pSky);
-    PRE(not pSky_->controller());
+    PRE(! pSky_->controller());
 }
 
 ////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ void EnvISkyDeclaration::createDynamicSkyDeclaration(EnvDynamicSky* const pSky)
 
 void EnvISkyDeclaration::clear()
 {
-    PRE(isClear() or isComplete());
+    PRE(isClear() || isComplete());
 
     pCompletedSky_ = nullptr;
 
@@ -276,12 +276,12 @@ bool EnvISkyDeclaration::isDynamicSkyDeclaration() const
 
 bool EnvISkyDeclaration::isClear() const
 {
-    return (pUniformSky_ or pStaticSky_ or pDynamicSky_ or pCompletedSky_) ? false : true;
+    return (pUniformSky_ || pStaticSky_ || pDynamicSky_ || pCompletedSky_) ? false : true;
 }
 
 bool EnvISkyDeclaration::isBuilding() const
 {
-    return not isComplete() and not isClear();
+    return ! isComplete() && ! isClear();
 }
 
 bool EnvISkyDeclaration::isComplete() const
@@ -303,7 +303,7 @@ void EnvISkyDeclaration::CLASS_INVARIANT
 
 void EnvISkyDeclaration::setCompleteSky(EnvSky* const pSky)
 {
-    PRE(not pCompletedSky_);
+    PRE(! pCompletedSky_);
 
     pCompletedSky_ = pSky;
 }

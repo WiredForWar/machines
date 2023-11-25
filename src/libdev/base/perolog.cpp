@@ -43,7 +43,7 @@ bool operator==(const PersistenceObjectLog& a, const PersistenceObjectLog& b)
 {
     ASSERT_INFO("A");
 
-    const bool result = (a.classname_ == b.classname_) and (a.ptr_ == b.ptr_);
+    const bool result = (a.classname_ == b.classname_) && (a.ptr_ == b.ptr_);
 
     ASSERT_INFO("A");
 

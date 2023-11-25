@@ -193,7 +193,7 @@ void UtlAsciiPictureImpl::line(const MexLine2d& line, char c)
         const uint x = cells[i].xIndex();
         const uint y = cells[i].yIndex();
 
-        if (x < nColumns() and y < nRows())
+        if (x < nColumns() && y < nRows())
             pixel(cells[i].xIndex(), cells[i].yIndex(), c);
     }
 }

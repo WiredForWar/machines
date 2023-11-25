@@ -77,7 +77,7 @@ void SimConditionsManager::update()
             bool actionDeleted = false;
             if (pAction->enabled())
             {
-                if (pAction->nextCallBackTime() < now and pAction->checkConditionAndDoAction())
+                if (pAction->nextCallBackTime() < now && pAction->checkConditionAndDoAction())
                 {
                     delete pAction;
                     actions.erase(actions.begin() + i);
@@ -91,7 +91,7 @@ void SimConditionsManager::update()
                 }
             }
 
-            if (not actionDeleted)
+            if (! actionDeleted)
                 ++i;
         }
     }

@@ -113,7 +113,7 @@ void MachLogGroundCameraMotionConstraint::move(MexTransform3d& trans, PhysMotion
     }
 
     // Stop camera from going through building roof
-    if (pCamera_->insideConstruction() and zTerrainDelta_ > 4.1)
+    if (pCamera_->insideConstruction() && zTerrainDelta_ > 4.1)
     {
         zTerrainDelta_ = 4.1;
     }
@@ -128,9 +128,9 @@ void MachLogGroundCameraMotionConstraint::move(MexTransform3d& trans, PhysMotion
 
     trans.position(pos);
 
-    if (not pCamera_->newPositionIsValid(trans))
+    if (! pCamera_->newPositionIsValid(trans))
     {
-        if (not pCamera_->alternativeNewPosition(&trans))
+        if (! pCamera_->alternativeNewPosition(&trans))
         {
             trans = oldTrans;
             motion.speed(0.0);
@@ -198,13 +198,13 @@ bool MachLogGroundCameraMotionConstraint::snapTo(MexTransform3d* pTrans)
     bool finished = false;
 
     // Find sensible location to position camera
-    while (not finished and not pCamera_->canSnapToPosition(location))
+    while (! finished && ! pCamera_->canSnapToPosition(location))
     {
         location += moveVec;
 
         // Check to see if we have stepped outside the planet boundary
-        if (location.x() >= maxPlanetX or location.x() <= minPlanetX or location.y() >= maxPlanetY
-            or location.y() <= minPlanetY)
+        if (location.x() >= maxPlanetX || location.x() <= minPlanetX || location.y() >= maxPlanetY
+            || location.y() <= minPlanetY)
         {
             // Reset location
             location = pTrans->position();
@@ -242,12 +242,12 @@ bool MachLogGroundCameraMotionConstraint::snapTo(MexTransform3d* pTrans)
         }
     }
 
-    if (not finished)
+    if (! finished)
     {
         pTrans->position(location);
     }
 
-    return not finished;
+    return ! finished;
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogGroundCameraMotionConstraint& t)
@@ -328,10 +328,10 @@ void MachLogZenithCameraMotionConstraint::move(MexTransform3d& trans, PhysMotion
         motion.heading(minTurnRate().asScalar());
 
     // If any of these values are moving we can't be up to date
-    if (motion.speed() != 0.0 or motion.drift() != 0.0 or motion.climb() != 0.0 or motion.heading() != 0.0)
+    if (motion.speed() != 0.0 || motion.drift() != 0.0 || motion.climb() != 0.0 || motion.heading() != 0.0)
         isUpToDate_ = false;
 
-    if (not isUpToDate_)
+    if (! isUpToDate_)
     {
         // Compute the min/max zoom distance
         MATHEX_SCALAR minZoomDistance = minHeight() / sinPitchAngle_;
@@ -574,7 +574,7 @@ void MachLogZenithCameraMotionConstraint::setCameraDataFromTransform()
         filter);
 
     // If no luck with the domain based check, just get the coords at z=0 along line of sight
-    if (not foundCentre)
+    if (! foundCentre)
         distance = limit * (endPoint.z() / (startPoint.z() - endPoint.z()));
 
     // Set the centre coords

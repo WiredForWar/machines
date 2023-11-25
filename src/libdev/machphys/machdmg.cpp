@@ -76,13 +76,13 @@ void MachPhysMachineDamage::update()
 
     PhysAbsoluteTime now = SimManager::instance().currentTime();
 
-    if ((damageLevel_ < 65 or damageLevel_ >= 90) && pSmoke1_)
+    if ((damageLevel_ < 65 || damageLevel_ >= 90) && pSmoke1_)
     {
         delete pSmoke1_;
         pSmoke1_ = nullptr;
     }
 
-    if ((damageLevel_ < 90 or damaged()) && pSmoke2_)
+    if ((damageLevel_ < 90 || damaged()) && pSmoke2_)
     {
         delete pSmoke2_;
         pSmoke2_ = nullptr;
@@ -104,7 +104,7 @@ void MachPhysMachineDamage::update()
     sizeY = pTarget_->compositeBoundingVolume().yLength();
     sizeZ = pTarget_->compositeBoundingVolume().zLength();
 
-    if (damageLevel_ >= 65 and damageLevel_ < 90)
+    if (damageLevel_ >= 65 && damageLevel_ < 90)
     {
         if (pSmoke1_ == nullptr)
         {
@@ -150,7 +150,7 @@ void MachPhysMachineDamage::update()
 
         static double flame1Width, flame2Width, flameHeight;
 
-        if (pFlame1_ == nullptr or pFlame2_ == nullptr)
+        if (pFlame1_ == nullptr || pFlame2_ == nullptr)
         {
             delete pFlame1_;
             pFlame1_ = nullptr;
@@ -165,7 +165,7 @@ void MachPhysMachineDamage::update()
 
             // See if a faceplate link is defined to make sure that flame will not set on it.
             W4dLink* pFaceplate_ = nullptr;
-            bool linkFound = pTarget_->findLink("faceplate", &pFaceplate_) or pTarget_->findLink("fplat", &pFaceplate_);
+            bool linkFound = pTarget_->findLink("faceplate", &pFaceplate_) || pTarget_->findLink("fplat", &pFaceplate_);
 
             for (W4dComposite::W4dLinks::const_iterator it = mLinks.begin(); it != mLinks.end(); ++it)
             {

@@ -76,7 +76,7 @@ MachLogAttackOperation::MachLogAttackOperation(
 
     // if I'm the only one currently initiating an attack against this target, it's quite probable I'm the
     // first one to spot it. Dispatch a cavee call to set all nearby chums on alert.
-    if (not pDirectObject_->hasThreats())
+    if (! pDirectObject_->hasThreats())
         pActor_->dispatchCaveeCall();
 
     // now signal to the target that the subject machine is threatening it,
@@ -111,7 +111,7 @@ MachLogAttackOperation::MachLogAttackOperation(
 
     // if I'm the only one currently initiating an attack against this target, it's quite probable I'm the
     // first one to spot it. Dispatch a cavee call to set all nearby chums on alert.
-    if (not pDirectObject_->hasThreats())
+    if (! pDirectObject_->hasThreats())
         pActor_->dispatchCaveeCall();
 
     // now signal to the target that the subject machine is threatening it,
@@ -156,7 +156,7 @@ void MachLogAttackOperation::doOutputOperator(std::ostream& o) const
         {
             PhysConfigSpace2d::PolygonId junk;
             PhysConfigSpace2d& cSpace = MachLogPlanet::instance().configSpace();
-            bool result = not cSpace.contains(
+            bool result = ! cSpace.contains(
                 pActor_->position(),
                 pDirectObject_->position(),
                 pActor_->obstacleFlags(),
@@ -246,11 +246,11 @@ bool MachLogAttackOperation::doStart()
         MachLogConstruction* pConstruction;
         bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
 
-        if (insideABuilding and not pConstruction->globalBoundary().contains(pDirectObject_->position())
-            and not(
-                pDirectObject_->objectIsMachine() and pDirectObject_->asMachine().isEnteringBuilding(*pConstruction)))
+        if (insideABuilding && ! pConstruction->globalBoundary().contains(pDirectObject_->position())
+            && !(
+                pDirectObject_->objectIsMachine() && pDirectObject_->asMachine().isEnteringBuilding(*pConstruction)))
         {
-            result = not checkNeedAndDoLeaveOperation(pActor_);
+            result = ! checkNeedAndDoLeaveOperation(pActor_);
         }
 
         if (pAgg_)
@@ -283,7 +283,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
     HAL_STREAM(
         "(" << pActor_->id() << ") MachLogAttackOperation::doUpdate entry at " << SimManager::instance().currentTime()
             << std::endl);
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
 
     // Need a view of the subject actor as a canAttack
@@ -292,8 +292,8 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
 
     // Check each weapon separately
     const MachLogCanAttack::Weapons& weapons = _CONST_CAST(const MachLogCanAttack&, attacker).weapons();
-    if (pActor_->isInSpecialUpdateActorsList() and MachLogRaces::instance().inSpecialActorUpdate()
-        and not weapons.front()->recharged())
+    if (pActor_->isInSpecialUpdateActorsList() && MachLogRaces::instance().inSpecialActorUpdate()
+        && ! weapons.front()->recharged())
         return 0;
 
     // Do nothing if delegated to a subop
@@ -316,7 +316,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
 
     // If we were moving to the side, and haven't arrived, try again later
     MachLogMachineMotionSequencer& motionSequencer = pActor_->motionSeq();
-    if (lastAction_ == MOVE_TO_SIDE and motionSequencer.hasDestination())
+    if (lastAction_ == MOVE_TO_SIDE && motionSequencer.hasDestination())
         return 0.1;
 
     // Set up useful local variables
@@ -324,7 +324,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
                                    // otherwise will be overridden.
     const W4dEntity& targetObject = _CONST_CAST(const MachActor&, target).physObject();
     MATHEX_SCALAR heightModifier = 1.0;
-    bool canMove = not pActor_->isStandingGround();
+    bool canMove = ! pActor_->isStandingGround();
     MachLogCanAttack::WeaponDisposition worstDisposition = MachLogCanAttack::IN_RANGE;
 
     // Check for target being inside a building
@@ -353,8 +353,8 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
             if (pTargetBuilding != nullptr)
             {
                 // Check attacker can legally enter the building
-                if (pActor_->canEnterConstructionNow(*pTargetBuilding) and not pActor_->isStandingGround()
-                    and not targetMachine.isLeavingBuilding()) // don't bother chasing inside if the target is already
+                if (pActor_->canEnterConstructionNow(*pTargetBuilding) && ! pActor_->isStandingGround()
+                    && ! targetMachine.isLeavingBuilding()) // don't bother chasing inside if the target is already
                                                                // coming out.
                     subOperation(pActor_, new MachLogEnterBuildingOperation(pActor_, pTargetBuilding, nullptr));
                 else
@@ -365,7 +365,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
                 // Target is outside, and attacker is inside, so leave the building, UNLESS that attacker is currently
                 // coming
                 //  into this very building, in which case, wait for him. Also wait if I'm standing ground
-                if (targetMachine.isEnteringBuilding(*pAttackerBuilding) or pActor_->isStandingGround())
+                if (targetMachine.isEnteringBuilding(*pAttackerBuilding) || pActor_->isStandingGround())
                 {
                     // should really make sure I'm facing towards the bounder, I suppose.
                     turnToFaceTarget();
@@ -386,7 +386,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
     bool doingSpecialAttack = false;
     bool inPunchRange = false;
 
-    bool targetIsFlyingMachine = pDirectObject_->objectIsMachine() and pDirectObject_->asMachine().machineIsGlider();
+    bool targetIsFlyingMachine = pDirectObject_->objectIsMachine() && pDirectObject_->asMachine().machineIsGlider();
 
     for (MachLogCanAttack::Weapons::const_iterator it = weapons.begin(); it != weapons.end(); ++it)
     {
@@ -394,20 +394,20 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
         MachLogWeapon& weapon = *(*it);
         const MachPhysWeapon& physWeapon = _CONST_CAST(const MachLogWeapon&, weapon).physWeapon();
         MachPhys::WeaponType type = physWeapon.type();
-        if (type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER
-            or (type == MachPhys::ORB_OF_TREACHERY and not pDirectObject_->objectIsMachine()))
+        if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER
+            || (type == MachPhys::ORB_OF_TREACHERY && ! pDirectObject_->objectIsMachine()))
             continue;
 
         // Gorilla punch handled differently. Don't attack flying machines with ground punch, btw.
         if (type == MachPhys::GORILLA_PUNCH)
         {
             hasGorillaPunch_ = true;
-            if (not targetIsFlyingMachine) // don't try to punch aircraft - that's plain daft
+            if (! targetIsFlyingMachine) // don't try to punch aircraft - that's plain daft
             {
                 ASSERT(pActor_->objectIsCanAttack(), "Expected canAttack actor!");
 
                 MachLogCanAttack& canAttackWithPunch = pActor_->asCanAttack();
-                if (weapon.recharged() and canAttackWithPunch.canPunch(directObject()))
+                if (weapon.recharged() && canAttackWithPunch.canPunch(directObject()))
                 {
                     inPunchRange = true;
 
@@ -476,16 +476,16 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
     {
         action = actionForDisposition(worstDisposition, attacker);
 
-        if (doingSpecialAttack and action == MOVE_CLOSER)
+        if (doingSpecialAttack && action == MOVE_CLOSER)
         {
             // override urge to move closer - just continue to track the target
             action = TURN_TO_FACE;
         }
 
-        if (action == TURN_TO_FACE or action == MOVE_TO_SIDE)
+        if (action == TURN_TO_FACE || action == MOVE_TO_SIDE)
             doAddSpecialUpdateActor = true;
     }
-    else if (hasGorillaPunch_ and not targetIsFlyingMachine and not doingSpecialAttack and not inPunchRange and canMove)
+    else if (hasGorillaPunch_ && ! targetIsFlyingMachine && ! doingSpecialAttack && ! inPunchRange && canMove)
     {
         // Special clause for George....he ALWAYS wants to get into punch range, providing he's not standing ground.
         action = MOVE_CLOSER;
@@ -493,9 +493,9 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
 
     // We might want to stop if we're in weapon range.
     // HOWEVER, we don't necessarily want to if the target is currently moving away from us.
-    if (canMove and worstDisposition != MachLogCanAttack::NOT_IN_DISTANCE_RANGE and action != MOVE_CLOSER
-        and motionSequencer.hasDestination()
-        and not(pDirectObject_->objectIsMachine() and pDirectObject_->asMachine().evading()))
+    if (canMove && worstDisposition != MachLogCanAttack::NOT_IN_DISTANCE_RANGE && action != MOVE_CLOSER
+        && motionSequencer.hasDestination()
+        && !(pDirectObject_->objectIsMachine() && pDirectObject_->asMachine().evading()))
     {
         motionSequencer.stop();
 
@@ -568,7 +568,7 @@ bool MachLogAttackOperation::doIsFinished() const
                 result = true;
             }
         }
-        else if (targetBehindCover_ or pDirectObject_->isDead())
+        else if (targetBehindCover_ || pDirectObject_->isDead())
         {
             result = true;
         }
@@ -582,7 +582,7 @@ bool MachLogAttackOperation::doBeInterrupted()
     CB_DEPIMPL(MachLogMachine*, pActor_);
 
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 // virtual
@@ -619,7 +619,7 @@ bool MachLogAttackOperation::beNotified(W4dSubject* pSubject, W4dSubject::Notifi
                         MachLogRaces::DispositionToRace disposition
                             = MachLogRaces::instance().dispositionToRace(pDirectObject_->race(), pActor_->race());
 
-                        if (disposition == MachLogRaces::OUR_RACE or disposition == MachLogRaces::ALLY)
+                        if (disposition == MachLogRaces::OUR_RACE || disposition == MachLogRaces::ALLY)
                         {
                             // signal to the target that the subject machine is no longer threatening it,
                             // and if the current target is the direct object, cancel the target
@@ -681,10 +681,10 @@ PhysRelativeTime MachLogAttackOperation::moveCloserToTarget()
     CB_DEPIMPL(MexPoint2d, lastTargetPosition_);
     CB_DEPIMPL(bool, hasGorillaPunch_);
 
-    ASSERT(not pActor_->isStandingGround(), "Should never move closer if actor is standing ground.");
+    ASSERT(! pActor_->isStandingGround(), "Should never move closer if actor is standing ground.");
 
     HAL_STREAM("MachLogAttackOperation::moveCloserToTarget\n");
-    if (not pDirectObject_)
+    if (! pDirectObject_)
         return 0;
 
     PhysRelativeTime interval = 0.25;
@@ -709,9 +709,9 @@ PhysRelativeTime MachLogAttackOperation::moveCloserToTarget()
     MachLogMachineMotionSequencer& motSeq = pActor_->motionSeq();
 
     bool recalculateDestination = false;
-    bool chasingEvader = pDirectObject_->objectIsMachine() and pDirectObject_->asMachine().evading();
+    bool chasingEvader = pDirectObject_->objectIsMachine() && pDirectObject_->asMachine().evading();
 
-    if (not motSeq.hasDestination())
+    if (! motSeq.hasDestination())
         recalculateDestination = true;
     else
     {
@@ -719,7 +719,7 @@ PhysRelativeTime MachLogAttackOperation::moveCloserToTarget()
 
         MATHEX_SCALAR sqrDistanceBetweenDestinationAndTarget
             = motSeq.destination().sqrEuclidianDistance(targetPositionNow);
-        if (not pActor_->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceBetweenDestinationAndTarget))
+        if (! pActor_->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceBetweenDestinationAndTarget))
         {
             // okay, what this system does is to decide whether or not to recalculate the path based on
             // a ratio of the (non-squared) distance the target has moved since we last set up a path
@@ -733,7 +733,7 @@ PhysRelativeTime MachLogAttackOperation::moveCloserToTarget()
                 = lastTargetPosition_.euclidianDistance(targetPositionNow);
 
             MATHEX_SCALAR recalculateRatio = 0.45;
-            if (distanceToTargetNow < 50 and chasingEvader)
+            if (distanceToTargetNow < 50 && chasingEvader)
                 recalculateRatio = 0.90;
 
             if (distanceTargetMovedSinceAttackerChoseDestination / distanceToTargetNow > recalculateRatio)
@@ -755,7 +755,7 @@ PhysRelativeTime MachLogAttackOperation::turnToFaceTarget()
     CB_DEPIMPL(MachLogMachine*, pActor_);
 
     HAL_STREAM("MachLogAttackOperation::turnToFaceTarget\n");
-    if (not pDirectObject_)
+    if (! pDirectObject_)
         return 0;
     // If we are currently moving we must stop first.
     PhysRelativeTime interval = 0.25;
@@ -783,7 +783,7 @@ PhysRelativeTime MachLogAttackOperation::moveToSide()
     CB_DEPIMPL(MachActor*, pDirectObject_);
     CB_DEPIMPL(MachLogMachine*, pActor_);
 
-    if (not pDirectObject_)
+    if (! pDirectObject_)
         return 0;
     HAL_STREAM("  MachLogAttackOperation::moveToSide() entry" << std::endl);
     PhysRelativeTime interval = 0.5;
@@ -886,9 +886,9 @@ MachLogAttackOperation::Action MachLogAttackOperation::actionForDisposition(
     CB_DEPIMPL(PhysAbsoluteTime, nextHardCoverCheckTime_);
 
     Action action = WAIT_FOR_INTERVAL;
-    bool canMove = not pActor_->isStandingGround();
+    bool canMove = ! pActor_->isStandingGround();
 
-    if (worstDisposition == MachLogCanAttack::NOT_IN_HORIZONTAL_ANGLE_RANGE and not attacker.canTurnHead())
+    if (worstDisposition == MachLogCanAttack::NOT_IN_HORIZONTAL_ANGLE_RANGE && ! attacker.canTurnHead())
     {
         // if we're a non torso-twisty machine, we need to be a bit clever. The problem is that initiating
         // a move-closer often forces us to move out of horizontal angle range. So we need to check if there
@@ -899,7 +899,7 @@ MachLogAttackOperation::Action MachLogAttackOperation::actionForDisposition(
         // Oh, BTW, never do the MOVE_CLOSER thing if we're standing ground.
 
         PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
-        if (timeNow < nextHardCoverCheckTime_ or pActor_->isStandingGround())
+        if (timeNow < nextHardCoverCheckTime_ || pActor_->isStandingGround())
             action = TURN_TO_FACE;
         else if (pActor_->asCanAttack().IHaveClearWeaponPathToHim(pDirectObject_))
         {
@@ -961,7 +961,7 @@ PhysRelativeTime MachLogAttackOperation::calculateNewApproachPoint(
     CB_DEPIMPL(bool, hasGorillaPunch_);
     CB_DEPIMPL(MachActor*, pDirectObject_);
 
-    PRE(not pActor_->isStandingGround());
+    PRE(! pActor_->isStandingGround());
 
     PhysRelativeTime interval = 0;
     MachLogMachineMotionSequencer& motSeq = pActor_->motionSeq();
@@ -1054,7 +1054,7 @@ PhysRelativeTime MachLogAttackOperation::calculateNewApproachPoint(
 
     MachLogSpacialManipulation::UseWhichPattern pattern = MachLogSpacialManipulation::USE_CLOCK_PATTERN;
     // now.....approach head-on, or try a flanking approach?
-    if (pActor_->asCanAttack().canTurnHead() and distanceToTargetNow > 40.0 and MachPhysRandom::randomInt(0, 3) != 0)
+    if (pActor_->asCanAttack().canTurnHead() && distanceToTargetNow > 40.0 && MachPhysRandom::randomInt(0, 3) != 0)
         pattern = MachLogSpacialManipulation::USE_FLANKING_PATTERN;
 
     // Construct a transform in which the z axis is vertical, the x axis is pointing from the target to

@@ -62,7 +62,7 @@ int64_t MachLog1stPersonActiveSquadron::getActiveSquadronId() const
 
 MachLogMachine* const MachLog1stPersonActiveSquadron::getLeadingMachine() const
 {
-    if (not hasActiveSquadron())
+    if (! hasActiveSquadron())
     {
         return nullptr;
     }
@@ -77,7 +77,7 @@ MachLogMachine* const MachLog1stPersonActiveSquadron::getLeadingMachine() const
 
 void MachLog1stPersonActiveSquadron::issueAttackCommand(MachActor* target) const
 {
-    if (not hasActiveSquadron() or target == nullptr)
+    if (! hasActiveSquadron() || target == nullptr)
     {
         return;
     }
@@ -87,7 +87,7 @@ void MachLog1stPersonActiveSquadron::issueAttackCommand(MachActor* target) const
 
 void MachLog1stPersonActiveSquadron::issueFollowCommand(MachActor* followTarget) const
 {
-    if (not hasActiveSquadron() or followTarget == nullptr)
+    if (! hasActiveSquadron() || followTarget == nullptr)
     {
         return;
     }
@@ -104,7 +104,7 @@ void MachLog1stPersonActiveSquadron::issueFollowCommand(MachActor* followTarget)
 
 void MachLog1stPersonActiveSquadron::issueMoveCommand(const MexPoint3d& destination) const
 {
-    if (not hasActiveSquadron() or destination.isZeroPoint())
+    if (! hasActiveSquadron() || destination.isZeroPoint())
     {
         return;
     }

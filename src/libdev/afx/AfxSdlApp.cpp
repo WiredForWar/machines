@@ -33,7 +33,7 @@ AfxSdlApp::AfxSdlApp(int argc, char* argv[])
 void AfxSdlApp::finish()
 {
     // Make multiple finish calls benign.
-    if (not isFinished())
+    if (! isFinished())
     {
         finishing_ = true;
         finished_ = true;
@@ -122,7 +122,7 @@ void AfxSdlApp::coreLoop()
 {
     bool callApp = true;
 
-    while (not isFinished())
+    while (! isFinished())
     {
         // Check for messages in the queue.
         SDL_Event ev;
@@ -130,7 +130,7 @@ void AfxSdlApp::coreLoop()
         {
             // If any message other than key down or mouse move, ensure we
             // call the application
-            if (ev.type != SDL_KEYDOWN and ev.type != SDL_KEYUP and ev.type != SDL_MOUSEMOTION)
+            if (ev.type != SDL_KEYDOWN && ev.type != SDL_KEYUP && ev.type != SDL_MOUSEMOTION)
             {
                 callApp = true;
             }
@@ -151,11 +151,11 @@ void AfxSdlApp::coreLoop()
 
             // If we haven't yet decided to call the app, don't call it if there
             // are any keyboard messages still in the queue
-            if (not callApp)
+            if (! callApp)
             {
-                callApp = not SDL_PollEvent(&ev);
+                callApp = ! SDL_PollEvent(&ev);
 
-                if (not callApp)
+                if (! callApp)
                 {
                     dispatchEvent(&ev);
                 }

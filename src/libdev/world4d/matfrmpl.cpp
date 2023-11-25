@@ -46,7 +46,7 @@ W4dMaterialFramePlan::~W4dMaterialFramePlan()
 // virtual
 bool W4dMaterialFramePlan::isLODDefined(W4dLOD lodId) const
 {
-    return lodId >= 0 and lodId < materialVecPtrsPtrVec_.size();
+    return lodId >= 0 && lodId < materialVecPtrsPtrVec_.size();
 }
 
 void W4dMaterialFramePlan::CLASS_INVARIANT
@@ -69,8 +69,8 @@ void W4dMaterialFramePlan::lodPlan(const MaterialVecPtrsPtr& materialVecPtrsPtr,
     PRE_INFO(materialVecPtrsPtr->size());
     PRE_DATA(for (int i = 0; i != maxLOD(); ++i))
     PRE_INFO(isLODDefined(i));
-    PRE(lodId > 0 and lodId <= maxLOD());
-    PRE(not isLODDefined(lodId));
+    PRE(lodId > 0 && lodId <= maxLOD());
+    PRE(! isLODDefined(lodId));
     PRE(isLODDefined(lodId - 1));
     PRE(materialVecPtrsPtr->size() != 0);
 

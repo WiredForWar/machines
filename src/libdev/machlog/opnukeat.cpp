@@ -73,7 +73,7 @@ bool MachLogNukeAttackOperation::doStart()
 
 PhysRelativeTime MachLogNukeAttackOperation::doUpdate()
 {
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
     if (pSubOperation())
     {
@@ -100,7 +100,7 @@ void MachLogNukeAttackOperation::doFinish()
 
 bool MachLogNukeAttackOperation::doIsFinished() const
 {
-    bool result = not(_CONST_CAST(const MachLogMissileEmplacement&, *pActor_).weapons().front()->recharged());
+    bool result = !(_CONST_CAST(const MachLogMissileEmplacement&, *pActor_).weapons().front()->recharged());
 
     return result;
 }

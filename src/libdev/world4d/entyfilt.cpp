@@ -77,6 +77,6 @@ bool W4dStandardFilter::check(const W4dEntity& entity, TreeOption* pOption)
             isExcluded = true;
     }
 
-    return not isExcluded;
+    return ! isExcluded;
 }
 /* End ENTYFILT.CPP *************************************************/

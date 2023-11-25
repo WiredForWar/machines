@@ -69,7 +69,7 @@ RecRecorderImplementation::RecRecorderImplementation()
     // TODO windows dir
     if (filename)
     {
-        if (strlen(filename) >= 2 and filename[1] == ':')
+        if (strlen(filename) >= 2 && filename[1] == ':')
             drive_[0] = filename[0];
         // else
         // drive_[ 0 ] = _STATIC_CAST( char, 'a' + _getdrive() - 1 );
@@ -162,7 +162,7 @@ void RecRecorderImplementation::getData(RecordType type, size_t nBytes, void* pD
 
     nBytesRead_ += sizeof(header) + nBytes;
 
-    if (playbackStream_.eof() or playbackStream_.bad())
+    if (playbackStream_.eof() || playbackStream_.bad())
         state_ = RecRecorder::INACTIVE;
 }
 
@@ -184,7 +184,7 @@ bool RecRecorderImplementation::getBool(RecordType trueType, RecordType falseTyp
         REC_PLAYBACK_STREAM(readType << std::endl);
         ProProfiler::instance().traceStack(Diag::instance().recPlaybackStream(), true, 0, "");
 
-        if (readType != trueType and readType != falseType)
+        if (readType != trueType && readType != falseType)
         {
             REC_PLAYBACK_STREAM("**************** ERROR *****************" << std::endl);
             REC_PLAYBACK_STREAM(
@@ -196,7 +196,7 @@ bool RecRecorderImplementation::getBool(RecordType trueType, RecordType falseTyp
     ASSERT_INFO(trueType);
     ASSERT_INFO(falseType);
 
-    ASSERT(readType == trueType or readType == falseType, "");
+    ASSERT(readType == trueType || readType == falseType, "");
 
     bool result;
 
@@ -207,7 +207,7 @@ bool RecRecorderImplementation::getBool(RecordType trueType, RecordType falseTyp
 
     nBytesRead_ += sizeof(header);
 
-    if (playbackStream_.eof() or playbackStream_.bad())
+    if (playbackStream_.eof() || playbackStream_.bad())
         state_ = RecRecorder::INACTIVE;
 
     return result;
@@ -239,7 +239,7 @@ void RecRecorderImplementation::checkOKToRecord()
     if (inAssertionData)
         errorText = "in assertion data";
 
-    if (inAssertion or inAssertionInfo or inAssertionData)
+    if (inAssertion || inAssertionInfo || inAssertionData)
     {
         REC_RECORD_STREAM("***************** ERROR *****************" << std::endl);
         REC_RECORD_STREAM("Trying to record whilst " << errorText << std::endl);
@@ -255,7 +255,7 @@ void RecRecorderImplementation::checkOKToRecord()
         fatalErrorFound_ = true;
     }
 
-    if (not recordingAllowed())
+    if (! recordingAllowed())
         fatalErrorFound_ = true;
 
     ASSERT_INFO(recordingAllowed());
@@ -265,7 +265,7 @@ void RecRecorderImplementation::checkOKToRecord()
     //  checks are disabled. We therefore save the fact that there has been
     //  an error so we can assert out as soon as possible.
     ASSERT(
-        not fatalErrorFound_,
+        ! fatalErrorFound_,
         "Cannot record whilst doing debug code or when in Windows event loop. The stack trace produced in "
         "assert.log may be innaccurate - see record or playback streams for accurate stack");
 #endif

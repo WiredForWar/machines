@@ -37,7 +37,7 @@ MachGuiPickUpCommand::MachGuiPickUpCommand(MachInGameScreen* pInGameScreen)
 
 MachGuiPickUpCommand::~MachGuiPickUpCommand()
 {
-    while (not suppliers_.empty())
+    while (! suppliers_.empty())
     {
         suppliers_.back()->detach(this);
         suppliers_.pop_back();
@@ -70,7 +70,7 @@ void MachGuiPickUpCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool
 
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-        if (not constructionIsDuplicate(pCandidateConstruction))
+        if (! constructionIsDuplicate(pCandidateConstruction))
         {
             // Add to list of suppliers
             suppliers_.push_back(pCandidateConstruction);
@@ -96,7 +96,7 @@ bool MachGuiPickUpCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Administrators and aggressors can PickUp
     MachLog::ObjectType objectType = actor.objectType();
-    return objectType == MachLog::RESOURCE_CARRIER and actor.asResourceCarrier().isNormalResourceCarrier();
+    return objectType == MachLog::RESOURCE_CARRIER && actor.asResourceCarrier().isNormalResourceCarrier();
 }
 
 // virtual
@@ -109,7 +109,7 @@ bool MachGuiPickUpCommand::isInteractionComplete() const
 bool MachGuiPickUpCommand::doApply(MachActor* pActor, string* pReason)
 {
     PRE(pActor->objectIsMachine());
-    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER and pActor->asResourceCarrier().isNormalResourceCarrier());
+    PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier());
 
     // Take appropriate action
     bool canDo = false;
@@ -132,7 +132,7 @@ bool MachGuiPickUpCommand::applyPickUpObject(MachActor* pActor, string*)
     ASSERT(pActor->objectType() == MachLog::RESOURCE_CARRIER, "Unexpected actor type.");
     ASSERT(pActor->asResourceCarrier().isNormalResourceCarrier(), "Resource carrier is a scavenger!");
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         // if we're already transporting, we're basically just changing implementation details, so give a "tasked"
         // e-mail instead( "OK." "Alright!" etc.
@@ -176,8 +176,8 @@ MachGui::Cursor2dType MachGuiPickUpCommand::cursorOnActor(MachActor* pActor, boo
     bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
 
     // Check for a building or machine
-    if ((pActor->objectType() == MachLog::MINE and pActor->asMine().worthVisiting())
-        or (pActor->objectIsCanSmelt() and not myRace))
+    if ((pActor->objectType() == MachLog::MINE && pActor->asMine().worthVisiting())
+        || (pActor->objectIsCanSmelt() && ! myRace))
     {
         // Set the PickUp object action
         action_ = PICKUP;
@@ -221,7 +221,7 @@ uint MachGuiPickUpCommand::commandPromptStringid() const
 // virtual
 bool MachGuiPickUpCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_K and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_K && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

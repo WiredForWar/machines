@@ -78,15 +78,15 @@ void MachGuiCommand::apply()
     // an intelligent administrator. If so, and the command has an admin version,
     // use that version.
     bool doneAdminVersion = false;
-    if (isSquadronContext_ and canAdminApply())
+    if (isSquadronContext_ && canAdminApply())
     {
         // Get first actor, which must be a machine and not inside an APC.
         MachActor* pActor = selectedActors.front();
-        if (pActor->objectIsMachine() and not pActor->asMachine().insideAPC())
+        if (pActor->objectIsMachine() && ! pActor->asMachine().insideAPC())
         {
             // Check we have a squadron
             MachLogSquadron* pSquadron = pActor->asMachine().squadron();
-            if (pSquadron != nullptr and pSquadron->hasCommander())
+            if (pSquadron != nullptr && pSquadron->hasCommander())
             {
                 succeeded = doAdminApply(&pSquadron->commander(), &reason);
                 doneAdminVersion = true;
@@ -95,7 +95,7 @@ void MachGuiCommand::apply()
     }
 
     // Apply the command to each one if not done as squadron
-    if (not doneAdminVersion)
+    if (! doneAdminVersion)
     {
         // Filter out machines inside an APC
         MachInGameScreen::Actors actors;
@@ -104,7 +104,7 @@ void MachGuiCommand::apply()
              ++iter)
         {
             MachActor* pActor = *iter;
-            if (pActor->objectIsMachine() and pActor->asMachine().insideAPC())
+            if (pActor->objectIsMachine() && pActor->asMachine().insideAPC())
             {
             }
             else
@@ -113,7 +113,7 @@ void MachGuiCommand::apply()
             }
         }
 
-        if (actors.size() > 1 and canApplyToGroup())
+        if (actors.size() > 1 && canApplyToGroup())
         {
             succeeded = doGroupApply(actors, &reason);
         }
@@ -127,7 +127,7 @@ void MachGuiCommand::apply()
                 // Check the command can be applied, then apply it
                 if (canActorEverExecute(actor))
                 {
-                    succeeded = doApply(&actor, &reason) or succeeded;
+                    succeeded = doApply(&actor, &reason) || succeeded;
                 }
             }
         }
@@ -142,7 +142,7 @@ void MachGuiCommand::apply()
     isExecuted_ = true;
 
     // Display failure reason if found
-    if (not succeeded)
+    if (! succeeded)
         pImpl_->pInGameScreen_->cursorPromptText(reason);
     else
         // now reset the voice mail played status to allow consecutive reissues of a command to give a voicemail
@@ -191,9 +191,9 @@ bool MachGuiCommand::actorsCanExecute() const
     {
         MachActor* pActor = *it;
         if ((
-                not(pActor->objectIsMachine()
-                    and pActor->asMachine().insideAPC())) // Check that machine is not inside an APC
-            and canActorEverExecute(*pActor))
+                !(pActor->objectIsMachine()
+                    && pActor->asMachine().insideAPC())) // Check that machine is not inside an APC
+            && canActorEverExecute(*pActor))
         {
             result = true;
             break;
@@ -262,7 +262,7 @@ bool MachGuiCommand::isPointValidOnTerrain(const MexPoint2d& point, ObstacleModi
         valid = true;
 
         PhysConfigSpace2d::PolygonId nastyPolygonId;
-        if (not MachLogPlanet::instance()
+        if (! MachLogPlanet::instance()
                     .configSpace()
                     .contains(point, flags, &nastyPolygonId, PhysConfigSpace2d::USE_PERMANENT_ONLY))
         {
@@ -424,7 +424,7 @@ bool MachGuiCommand::findClosestPointValidOnTerrain(
 
     bool keepTrying = true;
 
-    while (keepTrying and not valid)
+    while (keepTrying && ! valid)
     {
         NEIL_STREAM("pointToCheckNear " << pointToCheckNear << std::endl);
         NEIL_STREAM("pointToCheckFar" << pointToCheckFar << std::endl);
@@ -448,7 +448,7 @@ bool MachGuiCommand::findClosestPointValidOnTerrain(
         }
 
         // Check point moving away from machines original point
-        if (checkFar and not valid and MachLogPlanet::instance().configSpace().domain(pointToCheckFar, &domainId))
+        if (checkFar && ! valid && MachLogPlanet::instance().configSpace().domain(pointToCheckFar, &domainId))
         {
             PhysConfigSpace2d::PolygonId nastyPolygonId;
 
@@ -463,7 +463,7 @@ bool MachGuiCommand::findClosestPointValidOnTerrain(
             }
         }
 
-        if (not valid)
+        if (! valid)
         {
             checkFar = true;
 

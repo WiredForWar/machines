@@ -258,7 +258,7 @@ void MachPhysFactory::doWorking(bool setWorking)
     // Enable or disable the animation and sound
     if (setWorking)
     {
-        if (not isWorking())
+        if (! isWorking())
         {
             PhysAbsoluteTime now = SimManager::instance().currentTime();
             W4dCompositePlanPtr workingPlanPtr;
@@ -393,7 +393,7 @@ void MachPhysFactory::doWorking(bool setWorking)
         dealWithSmoke();
     }
 
-    else if (isWorking() and setWorking == false)
+    else if (isWorking() && setWorking == false)
     {
         clearAnimation(CHIM_HOT);
         finishAnimation(MachPhys::CONSTRUCTION_WORKING);

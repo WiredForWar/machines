@@ -145,9 +145,9 @@ PhysRelativeTime MachLogSpyLocator::update(const PhysRelativeTime& maxCPUTime, M
 {
     PhysRelativeTime interval = MachLogMachine::update(maxCPUTime, clearance);
 
-    if (insideBuilding() and insideWhichBuilding().race() != race()
-        and insideWhichBuilding().objectType() == MachLog::HARDWARE_LAB and not motionSeq().is1stPersonControlled()
-        and isIdle())
+    if (insideBuilding() && insideWhichBuilding().race() != race()
+        && insideWhichBuilding().objectType() == MachLog::HARDWARE_LAB && ! motionSeq().is1stPersonControlled()
+        && isIdle())
     {
         executeTheft();
     }
@@ -211,7 +211,7 @@ void MachLogSpyLocator::executeTheft()
 
     // Am I already downloading something? If not, try and find something to download.
 
-    if (not isDownloading()) // i.e. If we're currently stealing nothing
+    if (! isDownloading()) // i.e. If we're currently stealing nothing
         pResItemCurrentlyStealing_ = stealNewResearchItem(
             insideWhichBuilding().race(),
             (MachPhys::HardwareLabSubType)insideWhichBuilding().subType()); // Attempt to acquire a new item to steal
@@ -346,8 +346,8 @@ bool MachLogSpyLocator::stealable(
     // allowing us to steal a tech for which we already have the parent tech researched
 
     return (
-        researchItem.researched(otherRace) and researchItem.hardwareLabSubType() == hardwareLabSubType
-        and researchItem.available(race()) and not researchItem.researched(race()));
+        researchItem.researched(otherRace) && researchItem.hardwareLabSubType() == hardwareLabSubType
+        && researchItem.available(race()) && ! researchItem.researched(race()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

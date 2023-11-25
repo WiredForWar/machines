@@ -86,9 +86,9 @@ MachPhysMachine::MachPhysMachine(
     readCompositeFile(compositeFileName);
 
     // See if a faceplate link is defined
-    bool linkFound = findLink("faceplate", &pFaceplate_) or findLink("fplat", &pFaceplate_);
+    bool linkFound = findLink("faceplate", &pFaceplate_) || findLink("fplat", &pFaceplate_);
 
-    if (not linkFound)
+    if (! linkFound)
         pFaceplate_ = nullptr;
 
     // Set up any locomotion method
@@ -99,7 +99,7 @@ MachPhysMachine::MachPhysMachine(
 
     // Set up the turning link if defined
     const string& turnLinkName = data.upperBodyTurnLinkName();
-    if (turnLinkName.length() != 0 and turnLinkName != "NONE")
+    if (turnLinkName.length() != 0 && turnLinkName != "NONE")
     {
         linkFound = findLink(turnLinkName, &pUpperBodyTurnLink_);
         ASSERT_INFO(turnLinkName);
@@ -174,7 +174,7 @@ MachPhysMachine::~MachPhysMachine()
     W4dSoundManager::instance().stop(this);
     SOUND_STREAM(" done!" << std::endl);
 
-    if (isBurning() and (not isBurningFinished()))
+    if (isBurning() && (! isBurningFinished()))
     {
         damageData().finishBurning();
     }
@@ -204,7 +204,7 @@ std::unique_ptr<MachPhysMachineMoveInfo> MachPhysMachine::moveInfo(
     }
 */
     // Check for finished burning
-    if (isBurning() and isBurningFinished())
+    if (isBurning() && isBurningFinished())
     {
         damageData().finishBurning();
     }
@@ -344,7 +344,7 @@ void MachPhysMachine::smoothProfile(
 
             bool finished = false;
 
-            for (size_t i = 0; i < transforms.size() and not finished; ++i)
+            for (size_t i = 0; i < transforms.size() && ! finished; ++i)
             {
                 outputTransformsPtr->push_back(transforms[i]);
 
@@ -383,7 +383,7 @@ void MachPhysMachine::smoothTransition(
     {
         pTransforms->push_back(thisTransform);
     }
-    else if (lastToThisVector.modulus() < machineLength or thisToNextVector.modulus() < machineLength)
+    else if (lastToThisVector.modulus() < machineLength || thisToNextVector.modulus() < machineLength)
     {
         //  If the machine is longer than the distances between this point and
         //  the last or this point and the next it is difficult to do any
@@ -1170,12 +1170,12 @@ void MachPhysMachine::createTracksLocomotion(MATHEX_SCALAR repeatsPerMeter)
     W4dLink* rTrackLink;
 
     // Find the left link pointer
-    bool lFound = findLink("l_trx", &lTrackLink) or findLink("tr_l", &lTrackLink) or findLink("tra_l", &lTrackLink)
-        or findLink("trp2j", &lTrackLink) or findLink("log1v", &lTrackLink) or findLink("trrtl", &lTrackLink);
+    bool lFound = findLink("l_trx", &lTrackLink) || findLink("tr_l", &lTrackLink) || findLink("tra_l", &lTrackLink)
+        || findLink("trp2j", &lTrackLink) || findLink("log1v", &lTrackLink) || findLink("trrtl", &lTrackLink);
 
     // Find the left link pointer
-    bool rFound = findLink("r_trx", &rTrackLink) or findLink("tr_r", &rTrackLink) or findLink("tra_r", &rTrackLink)
-        or findLink("trp2h", &rTrackLink) or findLink("log1w", &rTrackLink) or findLink("trrtr", &rTrackLink);
+    bool rFound = findLink("r_trx", &rTrackLink) || findLink("tr_r", &rTrackLink) || findLink("tra_r", &rTrackLink)
+        || findLink("trp2h", &rTrackLink) || findLink("log1w", &rTrackLink) || findLink("trrtr", &rTrackLink);
 
     ASSERT(lFound && rFound, "Couldn't find machine tracks.");
 
@@ -1399,7 +1399,7 @@ PhysRelativeTime MachPhysMachine::shake(const PhysAbsoluteTime startTime)
 
         // Check this link has no motion plan - mustn't interfere with it
         W4dEntityPlan& linkEntityPlan = link.entityPlanForEdit();
-        if (not linkEntityPlan.hasMotionPlan())
+        if (! linkEntityPlan.hasMotionPlan())
         {
             // Set up transform plan for this link
             MexTransform3d unshakenTransform = link.localTransform();
@@ -1642,7 +1642,7 @@ bool MachPhysMachine::upperBodyIsTrackingTarget() const
 {
     CB_DEPIMPL(MachPhysTurnerTracker*, pTurnerTracker_);
 
-    return pTurnerTracker_ != nullptr and pTurnerTracker_->isTrackingTarget();
+    return pTurnerTracker_ != nullptr && pTurnerTracker_->isTrackingTarget();
 }
 
 void MachPhysMachine::upperBodyStopTrackingTarget()
@@ -1660,7 +1660,7 @@ MachPhysMachineDamageData& MachPhysMachine::damageData()
 {
     CB_DEPIMPL(MachPhysMachineDamageData*, pDamageData_);
 
-    if (not hasDamageData())
+    if (! hasDamageData())
         pDamageData_ = new MachPhysMachineDamageData(this);
 
     return *pDamageData_;
@@ -1670,14 +1670,14 @@ bool MachPhysMachine::isBurning() const
 {
     CB_DEPIMPL(MachPhysMachineDamageData*, pDamageData_);
 
-    return hasDamageData() and pDamageData_->isBurning();
+    return hasDamageData() && pDamageData_->isBurning();
 }
 
 bool MachPhysMachine::isBurningFinished() const
 {
     CB_DEPIMPL(MachPhysMachineDamageData*, pDamageData_);
 
-    return hasDamageData() and pDamageData_->isBurningFinished();
+    return hasDamageData() && pDamageData_->isBurningFinished();
 }
 
 void MachPhysMachine::damageLevel(const double& percent)
@@ -1705,7 +1705,7 @@ bool MachPhysMachine::isDamaged() const
 {
     CB_DEPIMPL(MachPhysMachineDamageData*, pDamageData_);
 
-    return hasDamageData() and pDamageData_->isDamaged();
+    return hasDamageData() && pDamageData_->isDamaged();
 }
 
 bool MachPhysMachine::hasDamageData() const
@@ -1720,7 +1720,7 @@ PhysRelativeTime MachPhysMachine::upperBodyTurnBy(MexRadians angle)
     CB_DEPIMPL(MachPhysTurnerTracker*, pTurnerTracker_);
 
     PRE(canTurnUpperBody());
-    PRE(not upperBodyIsTrackingTarget());
+    PRE(! upperBodyIsTrackingTarget());
 
     return pTurnerTracker_->turnByAngle(angle);
 }
@@ -1730,7 +1730,7 @@ PhysRelativeTime MachPhysMachine::upperBodyTurnTo(MexRadians angle)
     CB_DEPIMPL(MachPhysTurnerTracker*, pTurnerTracker_);
 
     PRE(canTurnUpperBody());
-    PRE(not upperBodyIsTrackingTarget());
+    PRE(! upperBodyIsTrackingTarget());
 
     return pTurnerTracker_->turnToAngle(angle);
 }
@@ -1754,7 +1754,7 @@ void MachPhysMachine::upperBodySnapTo(MexRadians angle, const PhysAbsoluteTime& 
     CB_DEPIMPL(MachPhysTurnerTracker*, pTurnerTracker_);
 
     PRE(canTurnUpperBody());
-    PRE(not upperBodyIsTrackingTarget());
+    PRE(! upperBodyIsTrackingTarget());
 
     pTurnerTracker_->snapToAngle(atTime, angle);
 }
@@ -1764,7 +1764,7 @@ MexRadians MachPhysMachine::upperBodyTargetAngle() const
     CB_DEPIMPL(MachPhysTurnerTracker*, pTurnerTracker_);
 
     PRE(canTurnUpperBody());
-    PRE(not upperBodyIsTrackingTarget());
+    PRE(! upperBodyIsTrackingTarget());
 
     return pTurnerTracker_->targetAngle();
 }
@@ -1988,7 +1988,7 @@ void MachPhysMachine::doFadeInAnimation()
         whiteMaterialPlanPtr = pWhitePlan;
     }
 
-    for (W4dEntityIter it(this); not it.isFinished(); ++it)
+    for (W4dEntityIter it(this); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().materialPlan(blueMaterialPlanPtr, now);
         (*it).entityPlanForEdit().materialPlan(whiteMaterialPlanPtr, now + blueMaterialPlanPtr->duration());
@@ -2046,7 +2046,7 @@ void MachPhysMachine::doFadeOutAnimation()
         whiteMaterialPlanPtr = pWhitePlan;
     }
 
-    for (W4dEntityIter it(this); not it.isFinished(); ++it)
+    for (W4dEntityIter it(this); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().materialPlan(whiteMaterialPlanPtr, now);
         (*it).entityPlanForEdit().materialPlan(blueMaterialPlanPtr, now + whiteMaterialPlanPtr->duration());

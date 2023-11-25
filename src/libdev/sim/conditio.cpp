@@ -52,13 +52,13 @@ bool SimCondition::hasConditionBeenMet()
         result = lastResult_;
     else
     {
-        if (conditions_.size() and booleanOperator_ == ALL)
+        if (conditions_.size() && booleanOperator_ == ALL)
         {
             for (Conditions::iterator i = conditions_.begin(); i != conditions_.end(); ++i)
-                if (not(*i)->hasConditionBeenMet())
+                if (!(*i)->hasConditionBeenMet())
                     result = false;
         }
-        else if (conditions_.size() and booleanOperator_ == ANY)
+        else if (conditions_.size() && booleanOperator_ == ANY)
         {
             result = false;
             for (Conditions::iterator i = conditions_.begin(); i != conditions_.end(); ++i)

@@ -107,7 +107,7 @@ void MachPhysCanAttack::mount(MachPhysWeapon* pWeapon, MachPhys::Mounting mounti
     bool alreadyLoaded = false;
     size_t n = weapons_.size();
     size_t index;
-    for (size_t i = 0; not alreadyLoaded and i != n; ++i)
+    for (size_t i = 0; ! alreadyLoaded && i != n; ++i)
     {
         MachPhysWeapon* pOldWeapon = weapons_[i];
 
@@ -121,7 +121,7 @@ void MachPhysCanAttack::mount(MachPhysWeapon* pWeapon, MachPhys::Mounting mounti
     }
 
     // If not remounted in above loop, add a new weapon element
-    if (not alreadyLoaded)
+    if (! alreadyLoaded)
     {
         index = weapons_.size();
         weapons_.push_back(pWeapon);
@@ -258,7 +258,7 @@ bool MachPhysCanAttack::atTiltLimits(uint weaponIndex) const
 
     // Considered at limits if can't tilt - ie no tracker set up, or tracker at its limits
     MachPhysTurnerTracker* pTurnerTracker = turnerTrackers_[weaponIndex];
-    return pTurnerTracker == nullptr or pTurnerTracker->nearLimits(MexDegrees(1.0));
+    return pTurnerTracker == nullptr || pTurnerTracker->nearLimits(MexDegrees(1.0));
 }
 
 bool MachPhysCanAttack::hasLaunchedLightWithin(

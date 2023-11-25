@@ -32,7 +32,7 @@ MachLogNotCondition::~MachLogNotCondition()
 // virtual
 bool MachLogNotCondition::doHasConditionBeenMet() const
 {
-    return not pNotCondition_->hasConditionBeenMet();
+    return ! pNotCondition_->hasConditionBeenMet();
 }
 
 // static

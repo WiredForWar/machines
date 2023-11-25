@@ -54,7 +54,7 @@ SysPathName::SysPathName()
 
     LOG_CONSTRUCTION;
 
-    POST(not set());
+    POST(! set());
 }
 
 SysPathName::SysPathName(const char* path)
@@ -135,10 +135,10 @@ void SysPathName::createFromComponents(const Components& newComponents)
     {
         bool cancelPrevious = false;
 
-        if ((*i) == ".." and not components_.empty())
+        if ((*i) == ".." && ! components_.empty())
         {
             //  If the preceeding component was . or .. don't cancel it.
-            if (components_.back() != ".." and components_.back() != ".")
+            if (components_.back() != ".." && components_.back() != ".")
                 cancelPrevious = true;
         }
 
@@ -184,9 +184,9 @@ const string& SysPathName::pathname() const
 
     const string* pResult;
 
-    if (internalRootDirectorySet() and isRelative())
+    if (internalRootDirectorySet() && isRelative())
     {
-        if (not fullPathnameSet_ or rootId_ != currentRootId())
+        if (! fullPathnameSet_ || rootId_ != currentRootId())
         {
             SysPathName temp(internalRootDirectory());
             temp.combine(*this);
@@ -301,7 +301,7 @@ bool SysPathName::insensitiveExistsAsFile() const
 
     PRE(set());
 
-    if (not containsCapitals_)
+    if (! containsCapitals_)
     {
         return existsAsFile();
     }
@@ -323,10 +323,10 @@ bool SysPathName::isAbsolute() const
 
     bool result = false;
 
-    if (pathname_.length() >= 1 and pathname_[0] == '/')
+    if (pathname_.length() >= 1 && pathname_[0] == '/')
         result = true;
 
-    if (pathname_.length() >= 2 and pathname_[1] == ':')
+    if (pathname_.length() >= 2 && pathname_[1] == ':')
         result = true;
 
     return result;
@@ -340,7 +340,7 @@ bool SysPathName::isRelative() const
 
     PRE_INFO(*this);
 
-    return not isAbsolute();
+    return ! isAbsolute();
 }
 
 void SysPathName::combine(const SysPathName& nextPath)
@@ -356,7 +356,7 @@ void SysPathName::combine(const SysPathName& nextPath)
 
         char ch = pathname_[pathname_.length() - 1];
 
-        if (ch == '\\' or ch == '/')
+        if (ch == '\\' || ch == '/')
             pathname_ += CB_PEER_REF_DEPIMPL(nextPath, pathname_);
         else
             pathname_ += separator() + CB_PEER_REF_DEPIMPL(nextPath, pathname_);
@@ -372,7 +372,7 @@ const SysPathName::Components& SysPathName::components() const
 
     PRE(set());
 
-    if (not componentsSet_)
+    if (! componentsSet_)
         createComponents();
 
     return components_;
@@ -534,7 +534,7 @@ string SysPathName::directory() const
     string result;
     bool finished = false;
 
-    for (Components::const_iterator i = components_.begin(); not finished; ++i)
+    for (Components::const_iterator i = components_.begin(); ! finished; ++i)
     {
         Components::const_iterator j = i;
         ++j;
@@ -542,7 +542,7 @@ string SysPathName::directory() const
         if (j == components_.end())
             finished = true;
 
-        if (not finished)
+        if (! finished)
         {
             result += (*i);
 
@@ -749,7 +749,7 @@ bool SysPathName::hasPrefix(const SysPathName& prefix) const
     bool result = false;
 
     if (thisComponents.size() >= prefixComponents.size()
-        and equal(prefixComponents.begin(), prefixComponents.end(), thisComponents.begin()))
+        && equal(prefixComponents.begin(), prefixComponents.end(), thisComponents.begin()))
     {
         result = true;
     }

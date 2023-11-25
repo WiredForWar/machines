@@ -37,7 +37,7 @@ MachGuiCaptureCommand::~MachGuiCaptureCommand()
 
     inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
-    while (not constructions_.empty())
+    while (! constructions_.empty())
     {
         constructions_.back()->detach(this);
         constructions_.pop_back();
@@ -64,11 +64,11 @@ void MachGuiCaptureCommand::pickOnActor(MachActor* pActor, bool, bool shiftPress
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
     // Check for a pick on an enemy construction
-    if (pActor->objectIsConstruction() and pActor->race() != playerRace)
+    if (pActor->objectIsConstruction() && pActor->race() != playerRace)
     {
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-        if (not constructionIsDuplicate(pCandidateConstruction))
+        if (! constructionIsDuplicate(pCandidateConstruction))
         {
             // Add to list of constructions to capture
             constructions_.push_back(pCandidateConstruction);
@@ -76,7 +76,7 @@ void MachGuiCaptureCommand::pickOnActor(MachActor* pActor, bool, bool shiftPress
             pCandidateConstruction->attach(this);
         }
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -124,7 +124,7 @@ MachGui::Cursor2dType MachGuiCaptureCommand::cursorOnActor(MachActor* pActor, bo
 
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    if (pActor->objectIsConstruction() and pActor->asConstruction().isComplete() and pActor->race() != playerRace)
+    if (pActor->objectIsConstruction() && pActor->asConstruction().isComplete() && pActor->race() != playerRace)
     {
         cursor = MachGui::CAPTURE_CURSOR;
     }
@@ -147,7 +147,7 @@ bool MachGuiCaptureCommand::doApply(MachActor* pActor, string*)
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
     pActor->asMachine().manualCommandIssued();
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVE_TO_SITE);
         hasPlayedVoiceMail(true);
@@ -214,7 +214,7 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
 
     bool found = false;
     for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-         not found and i != inGameScreen().selectedActors().end();
+         ! found && i != inGameScreen().selectedActors().end();
          ++i)
         if ((*i)->objectType() == MachLog::CONSTRUCTOR)
         {
@@ -233,7 +233,7 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
 // virtual
 bool MachGuiCaptureCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_U and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_U && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

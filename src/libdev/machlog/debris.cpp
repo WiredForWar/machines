@@ -307,7 +307,7 @@ void MachLogDebris::setLifeTime(MachPhys::BuildingMaterialUnits quantity)
 
     bool scavengersExist = false;
 
-    for (MachPhys::Race r = MachPhys::RED; not(scavengersExist) and r < MachPhys::N_RACES; ++((int&)r))
+    for (MachPhys::Race r = MachPhys::RED; !(scavengersExist) && r < MachPhys::N_RACES; ++((int&)r))
     {
         if (MachLogRaces::instance().nScavengers(r))
             scavengersExist = true;

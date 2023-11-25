@@ -77,7 +77,7 @@ PhysRelativeTime MachLogTaskLocateOperation::doUpdate()
         return 10.0;
     }
 
-    if (not pActor_->hasCommander())
+    if (! pActor_->hasCommander())
     {
         // oops no commander for squadron. This leaves the locator without a brain.
         // if it is currently locating them leave it alone.
@@ -99,7 +99,7 @@ PhysRelativeTime MachLogTaskLocateOperation::doUpdate()
     bool ok = true;
     for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); i != pActor_->machines().end(); ++i)
         if ((*i)->id() != pActor_->id()
-            and ((*i)->isIdle() or (*i)->strategy().currentOperationType() == MachLogOperation::FOLLOW_OPERATION))
+            && ((*i)->isIdle() || (*i)->strategy().currentOperationType() == MachLogOperation::FOLLOW_OPERATION))
         {
         }
         else
@@ -107,7 +107,7 @@ PhysRelativeTime MachLogTaskLocateOperation::doUpdate()
             ok = false;
         }
 
-    if (not ok)
+    if (! ok)
     {
         // at least one machine is doing something.
         // return in a few seconds and try again.
@@ -128,10 +128,10 @@ PhysRelativeTime MachLogTaskLocateOperation::doUpdate()
         = pActor_->hasCommander() ? pActor_->commander().position() : pActor_->machines().front()->position();
     for (; j != MachLogPlanet::instance().sites().end(); ++j)
     {
-        found = not(*j)->hasBeenDiscovered();
+        found = !(*j)->hasBeenDiscovered();
         range = checkFromPos.euclidianDistance((*j)->position());
         HAL_STREAM(" checking mineral sites range " << range << " amount of ore " << (*j)->amountOfOre() << std::endl);
-        if (found and range < rangeClosest and (*j)->amountOfOre() > 0 and range < maxRangeFromPod_)
+        if (found && range < rangeClosest && (*j)->amountOfOre() > 0 && range < maxRangeFromPod_)
         {
             HAL_STREAM("  saving this one for later...\n");
             rangeClosest = range;
@@ -202,7 +202,7 @@ bool MachLogTaskLocateOperation::setCompleteState()
         }
     }
 
-    if (totalWeDiscovered_ >= nDesiredSites_ or totalPossibleToDiscover_ == 0)
+    if (totalWeDiscovered_ >= nDesiredSites_ || totalPossibleToDiscover_ == 0)
         complete_ = true;
     if (complete_)
     {

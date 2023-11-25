@@ -73,7 +73,7 @@ MachLogExpandingBlast::MachLogExpandingBlast(
         // must observe owner in case he karks it during the explosion.
         pOwner_->attach(this);
 
-        if (pOwner()->objectIsMachine() and pOwner()->asMachine().insideBuilding())
+        if (pOwner()->objectIsMachine() && pOwner()->asMachine().insideBuilding())
         {
             pConstruction_ = &(pOwner()->asMachine().insideWhichBuilding());
             pConstruction_->attach(this);
@@ -156,7 +156,7 @@ MachLogExpandingBlast::update(const PhysRelativeTime& /*maxCPUTime*/, MATHEX_SCA
     PhysRelativeTime interval = 0.0;
 
     // some blasts can be aborted before the first wave begins
-    if (finished() and timeNow < firstWaveStartTime())
+    if (finished() && timeNow < firstWaveStartTime())
     {
         // self-terminate
         isDead(true);
@@ -169,27 +169,27 @@ MachLogExpandingBlast::update(const PhysRelativeTime& /*maxCPUTime*/, MATHEX_SCA
     else
     {
         // we should actually do some logical hit checking
-        if (timeNow >= firstWaveStartTime() and timeNow < firstWaveFinishTime())
+        if (timeNow >= firstWaveStartTime() && timeNow < firstWaveFinishTime())
         {
-            if (not startedFirstWave_)
+            if (! startedFirstWave_)
                 buildVictimList();
 
             if (nVictims() > 0)
                 damageCheckFirstWave();
         }
-        if (timeNow >= secondWaveStartTime() and timeNow < secondWaveFinishTime())
+        if (timeNow >= secondWaveStartTime() && timeNow < secondWaveFinishTime())
         {
             // this may change later
-            if (not startedFirstWave_)
+            if (! startedFirstWave_)
                 buildVictimList();
 
             if (nVictims() > 0)
                 damageCheckSecondWave();
         }
-        if (timeNow >= thirdWaveStartTime() and timeNow < thirdWaveFinishTime())
+        if (timeNow >= thirdWaveStartTime() && timeNow < thirdWaveFinishTime())
         {
             // this may change later
-            if (not startedFirstWave_)
+            if (! startedFirstWave_)
                 buildVictimList();
 
             if (nVictims() > 0)
@@ -302,7 +302,7 @@ void MachLogExpandingBlast::finishedWithVictim(MachActor* pVictim, SuppressDetac
         // (signalled via the observer pattern) can warrant a detach from him.
         // Same applies for the pConstruction_ pointer if we happen to be inside
         // a building domain
-        if (suppressDetach == DONT_SUPPRESS_DETACH and pVictim != pOwner() and pVictim != pConstruction_)
+        if (suppressDetach == DONT_SUPPRESS_DETACH && pVictim != pOwner() && pVictim != pConstruction_)
             pVictim->detach(this);
 
         (*i) = NULL;
@@ -426,7 +426,7 @@ void MachLogExpandingBlast::buildVictimMachinesList()
             MachActor* pActor = &(MachLogRaces::instance().actor((*i).collisionObjectId_.asScalar()));
 
             if (canHitAirUnits_ == CAN_HIT_AIR_UNITS
-                or not(pActor->objectIsMachine() and pActor->asMachine().machineIsGlider()))
+                || !(pActor->objectIsMachine() && pActor->asMachine().machineIsGlider()))
             {
                 addVictim(pActor);
             }
@@ -494,7 +494,7 @@ void MachLogExpandingBlast::damageCheckFirstWave()
     {
         MachActor* pVictim = (*i);
         // first part of conditional ignores entries now set to NULL
-        if (pVictim and hitVictimFirstWave(*pVictim))
+        if (pVictim && hitVictimFirstWave(*pVictim))
             inflictDamageFirstWave(pVictim);
     }
 }
@@ -506,7 +506,7 @@ void MachLogExpandingBlast::damageCheckSecondWave()
         MachActor* pVictim = (*i);
 
         // First part of conditional ignores entries now set to NULL
-        if (pVictim and hitVictimSecondWave(*pVictim))
+        if (pVictim && hitVictimSecondWave(*pVictim))
             inflictDamageSecondWave(pVictim);
     }
 }
@@ -517,7 +517,7 @@ void MachLogExpandingBlast::damageCheckThirdWave()
     {
         MachActor* pVictim = (*i);
         // First part of conditional ignores entries now set to NULL
-        if (pVictim and hitVictimThirdWave(*pVictim))
+        if (pVictim && hitVictimThirdWave(*pVictim))
             inflictDamageThirdWave(pVictim);
     }
 }
@@ -590,7 +590,7 @@ bool MachLogExpandingBlast::beNotified(W4dSubject* pSubject, W4dSubject::Notific
     CB_MachLogExpandingBlast_DEPIMPL();
 
     ASSERT(
-        nVictims() or (pOwner()) or pConstruction_,
+        nVictims() || (pOwner()) || pConstruction_,
         "This expanding blast believes it has no observation subjects, yet it is being notified.");
 
     // remove subject from list of victims if event = I'm dead, by setting pointer in ctl_pvector to NULL
@@ -611,7 +611,7 @@ bool MachLogExpandingBlast::beNotified(W4dSubject* pSubject, W4dSubject::Notific
                 {
                     ownerDestroyed();
                 }
-                if (pConstruction_ and pSubject == (W4dSubject*)pConstruction_)
+                if (pConstruction_ && pSubject == (W4dSubject*)pConstruction_)
                 {
                     // this blast was inside a building which has itself now been destroyed. So the blast should
                     // terminate.

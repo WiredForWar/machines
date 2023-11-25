@@ -151,7 +151,7 @@ void W4dDomain::addPortalToList(W4dPortal* pPortal)
     CB_W4dDomain_DEPIMPL();
 
     PRE(pPortal != nullptr);
-    PRE(not hasPortal(pPortal));
+    PRE(! hasPortal(pPortal));
 
     portals_.push_back(pPortal);
 
@@ -220,7 +220,7 @@ void W4dDomain::CLASS_INVARIANT
 
     for (W4dPortals::const_iterator i = portals_.begin(); i != portals_.end(); ++i)
     {
-        INVARIANT((*i)->pOwner() == this or (*i)->pPartner() == this);
+        INVARIANT((*i)->pOwner() == this || (*i)->pPartner() == this);
     }
 }
 
@@ -361,7 +361,7 @@ bool W4dDomain::findNearerEntity(
     const W4dEntities& intersectors = intersectingEntities();
 
     for (W4dEntities::const_iterator it = intersectors.begin();
-         not pEntityFilter->isFinished() and it != intersectors.end();
+         ! pEntityFilter->isFinished() && it != intersectors.end();
          ++it)
     {
         // Check this entity
@@ -384,11 +384,11 @@ bool W4dDomain::findNearerEntity(
     }
 
     // Try any adjoining domains by considering any portals
-    for (W4dPortals::iterator it = portals_.begin(); not pEntityFilter->isFinished() and it != portals_.end(); ++it)
+    for (W4dPortals::iterator it = portals_.begin(); ! pEntityFilter->isFinished() && it != portals_.end(); ++it)
     {
         // Check we can see through it
         W4dPortal* pPortal = *it;
-        if (not pPortal->isOpenFrom(this))
+        if (! pPortal->isOpenFrom(this))
             continue;
 
         // See if the other domain has already been done
@@ -440,8 +440,8 @@ bool W4dDomain::recursiveFindNearerEntity(
         W4dEntityFilter::TreeOption filterTreeOption;
 
         if (pEntityFilter->check(*pEntity, &filterTreeOption)
-            and pEntity->intersectsLine(line, &foundDistance, accuracy) and foundDistance >= 0.0
-            and foundDistance <= limit)
+            && pEntity->intersectsLine(line, &foundDistance, accuracy) && foundDistance >= 0.0
+            && foundDistance <= limit)
         {
             // This is the nearest so far. Update the limit and nearest entity
             result = true;
@@ -454,12 +454,12 @@ bool W4dDomain::recursiveFindNearerEntity(
         {
             const W4dEntities& children = pEntity->children();
             for (W4dEntities::const_iterator it = children.begin();
-                 not pEntityFilter->isFinished() and it != children.end();
+                 ! pEntityFilter->isFinished() && it != children.end();
                  ++it)
             {
                 // Check entity not a domain
                 W4dEntity* pChild = *it;
-                if (not pChild->isDomain())
+                if (! pChild->isDomain())
                 {
                     // Find nearer
                     if (recursiveFindNearerEntity(

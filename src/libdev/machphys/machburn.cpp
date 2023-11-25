@@ -33,23 +33,23 @@ MachPhysMachineBurning::MachPhysMachineBurning(MachPhysMachine* pMachine)
     MATHEX_SCALAR flamePosition = 0.75;
 
     bool isBallista4 = pMachine->machineData().machineType() == MachPhys::AGGRESSOR
-        and pMachine->machineData().subType() == MachPhys::BALLISTA and pMachine->machineData().hwLevel() == 4;
+        && pMachine->machineData().subType() == MachPhys::BALLISTA && pMachine->machineData().hwLevel() == 4;
 
     bool isBrainBox = pMachine->machineData().machineType() == MachPhys::TECHNICIAN
-        and pMachine->machineData().subType() == MachPhys::BRAIN_BOX;
+        && pMachine->machineData().subType() == MachPhys::BRAIN_BOX;
 
-    if (isBallista4 or isBrainBox)
+    if (isBallista4 || isBrainBox)
     {
         nMaxFlames = 1;
         flamePosition = 1.1;
     }
 
     bool isCommander5 = pMachine->machineData().machineType() == MachPhys::AGGRESSOR
-        and pMachine->machineData().subType() == MachPhys::COMMANDER and pMachine->machineData().hwLevel() == 5;
+        && pMachine->machineData().subType() == MachPhys::COMMANDER && pMachine->machineData().hwLevel() == 5;
 
     bool isGeoLocator = pMachine->machineData().machineType() == MachPhys::GEO_LOCATOR;
 
-    if (isCommander5 or isGeoLocator)
+    if (isCommander5 || isGeoLocator)
         flamePosition = 0.5;
 
     flames_.reserve(nMaxFlames);
@@ -159,7 +159,7 @@ MachPhysMachineBurning::Links MachPhysMachineBurning::burnLinks(const MachPhysMa
 
         // Choose to use this link, it isn't empty, and we don't already have enough
         // that are larger.
-        bool useLink = volume != 0.0 and (nAdded < nWanted or volume > volumes.back());
+        bool useLink = volume != 0.0 && (nAdded < nWanted || volume > volumes.back());
 
         // If using it, insert at appropriate point in the vectors
         if (useLink)
@@ -176,7 +176,7 @@ MachPhysMachineBurning::Links MachPhysMachineBurning::burnLinks(const MachPhysMa
             if (nAdded != 1)
             {
                 uint index = nAdded - 1;
-                while (index != 0 and volumes[index - 1] < volume)
+                while (index != 0 && volumes[index - 1] < volume)
                 {
                     volumes[index] = volumes[index - 1];
                     links[index] = links[index - 1];

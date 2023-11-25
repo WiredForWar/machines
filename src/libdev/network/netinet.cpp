@@ -369,7 +369,7 @@ void NetINetwork::pollMessages()
                     if (peers_.empty())
                     {
                         if (pSystemMessageHandler_)
-                            bool shouldAbort = not pSystemMessageHandler_->handleSessionLostMessage();
+                            bool shouldAbort = ! pSystemMessageHandler_->handleSessionLostMessage();
                     }
                     break;
             }
@@ -714,7 +714,7 @@ bool NetINetwork::hasAppSessionNoRecord(const NetAppSessionName& appSessionName)
     NetNetwork::Sessions::const_iterator i = sessions_.begin();
     NetNetwork::Sessions::const_iterator j = sessions_.end();
 
-    while (i != j && not found)
+    while (i != j && ! found)
     {
         if ((*i)->appSessionName() == appSessionName)
             found = true;
@@ -814,7 +814,7 @@ void NetINetwork::setAppUid()
         static string fileName = "";
         static string commandLine = "";
         static string description = "";
-        while (not parser.finished())
+        while (! parser.finished())
         {
             const string& token = parser.tokens()[0];
             if (token == "application")
@@ -1139,7 +1139,7 @@ void NetINetwork::computeSentMessageStuffedNess()
         int totalLength = 0;
         for (SentMessages::iterator i = sentMessages_.begin(); i != sentMessages_.end(); ++i)
             totalLength += (*i)->length_;
-        if (totalLength > maxBytesPerSecond_ or sentMessages_.size() > maxSentMessagesPerSecond())
+        if (totalLength > maxBytesPerSecond_ || sentMessages_.size() > maxSentMessagesPerSecond())
             imStuffed_ = true;
     }
     //  NETWORK_STREAM("NetINetwork::computeSentMessageStuffedNess No. messages " << sentMessages_.size() << "
@@ -1159,7 +1159,7 @@ double NetINetwork::deterministicTimeoutPeriod() const
 size_t NetINetwork::maxSentMessagesPerSecond() const
 {
     static bool initialisedFromRegistry = false;
-    if (not initialisedFromRegistry)
+    if (! initialisedFromRegistry)
     {
         NetINetwork* pMe = _CONST_CAST(NetINetwork*, this);
         bool fromLan = (currentProtocol() == NetNetwork::IPX);

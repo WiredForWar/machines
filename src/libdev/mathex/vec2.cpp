@@ -29,12 +29,12 @@ const MexVec2& MexVec2::operator=(const MexVec2& v)
 
 bool MexVec2::operator==(const MexVec2& v) const
 {
-    return x_ == v.x_ and y_ == v.y_;
+    return x_ == v.x_ && y_ == v.y_;
 }
 
 bool MexVec2::isZeroVector() const
 {
-    return x_ == 0 and y_ == 0;
+    return x_ == 0 && y_ == 0;
 }
 
 void MexVec2::operator+=(const MexVec2& v)
@@ -145,7 +145,7 @@ MexVec2::MexVec2(const MexPoint2d& p1, const MexPoint2d& p2)
 
 void MexVec2::makeUnitVector()
 {
-    PRE(not isZeroVector());
+    PRE(! isZeroVector());
 
     // Compute the length
     MATHEX_SCALAR length = x_ * x_ + y_ * y_;

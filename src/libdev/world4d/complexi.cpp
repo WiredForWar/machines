@@ -41,7 +41,7 @@ void W4dComplexity::W4dRangeModifier::increaseLevel()
 
 const MATHEX_SCALAR& W4dComplexity::W4dRangeModifier::rangeMultiplier() const
 {
-    if (not rangeMultiplierUptodate_)
+    if (! rangeMultiplierUptodate_)
     {
         W4dRangeModifier* nonConstThis = _CONST_CAST(W4dRangeModifier*, this);
         nonConstThis->updateRangeMultiplier();
@@ -97,7 +97,7 @@ void W4dComplexity::reset()
 
 bool W4dComplexity::highestComplexityReached() const
 {
-    if (not highestComplexityReachedUptodate_)
+    if (! highestComplexityReachedUptodate_)
     {
         W4dComplexity* nonConstThis = _CONST_CAST(W4dComplexity*, this);
         nonConstThis->updateHighestComplexityReached();
@@ -107,7 +107,7 @@ bool W4dComplexity::highestComplexityReached() const
 
 bool W4dComplexity::lowestComplexityReached() const
 {
-    if (not lowestComplexityReachedUptodate_)
+    if (! lowestComplexityReachedUptodate_)
     {
         W4dComplexity* nonConstThis = _CONST_CAST(W4dComplexity*, this);
         nonConstThis->updateLowestComplexityReached();
@@ -120,7 +120,7 @@ void W4dComplexity::updateHighestComplexityReached()
 
     highestComplexityReached_ = true;
     for (W4dRangeModifiers::iterator it = rangeModifiers_.begin();
-         it != rangeModifiers_.end() and highestComplexityReached_;
+         it != rangeModifiers_.end() && highestComplexityReached_;
          ++it)
     {
         highestComplexityReached_ = ((*it).level() >= (*it).maxLevel());
@@ -133,7 +133,7 @@ void W4dComplexity::updateLowestComplexityReached()
 
     lowestComplexityReached_ = true;
     for (W4dRangeModifiers::iterator it = rangeModifiers_.begin();
-         it != rangeModifiers_.end() and lowestComplexityReached_;
+         it != rangeModifiers_.end() && lowestComplexityReached_;
          ++it)
     {
         lowestComplexityReached_ = ((*it).level() <= (*it).minLevel());
@@ -150,7 +150,7 @@ bool W4dComplexity::increase()
 
 bool W4dComplexity::increaseComplexityByLOD()
 {
-    if (not highestComplexityReached())
+    if (! highestComplexityReached())
     {
         // Go to previous then modify
         // entities having lower priority have their lod range modified
@@ -174,7 +174,7 @@ bool W4dComplexity::decrease()
 
 bool W4dComplexity::decreaseComplexityByLOD()
 {
-    if (not lowestComplexityReached())
+    if (! lowestComplexityReached())
     {
         // Modify then go to next
         rangeModifiers_[priorityCycler_].decreaseLevel();
@@ -192,7 +192,7 @@ bool W4dComplexity::decreaseComplexityByLOD()
 void W4dComplexity::enabled(bool setEnabled)
 {
     enabled_ = setEnabled;
-    if (not enabled_)
+    if (! enabled_)
         reset();
 }
 

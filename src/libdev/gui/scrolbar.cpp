@@ -177,7 +177,7 @@ size_t GuiVerticalScrollBar::minBoxHeight() const
 // virtual
 void GuiVerticalScrollBar::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if (hasList() and list().canScroll() and rel.leftButton() == Gui::PRESSED)
+    if (hasList() && list().canScroll() && rel.leftButton() == Gui::PRESSED)
     {
         if (boxRelPosition_.contains(rel.coord()))
         {
@@ -214,7 +214,7 @@ void GuiVerticalScrollBar::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 // virtual
 void GuiVerticalScrollBar::doHandleContainsMouseEvent(const GuiMouseEvent& rel)
 {
-    if (hasList() and list().canScroll() and rel.leftButton() == Gui::PRESSED and dragBox_)
+    if (hasList() && list().canScroll() && rel.leftButton() == Gui::PRESSED && dragBox_)
     {
         scrollToMousePos(rel);
     }

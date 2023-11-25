@@ -66,7 +66,7 @@ void W4dMotionControlledEntity::globalTransform(const MexTransform3d& trans)
     // in W4dMotionControlledEntity will be modified even though the transform is not.
     // This test allows us to doing lazy evaluation based on the camera transform keys in domainRender
     // Why doesn't the operator != compile in debug ??
-    if (not(trans == pMotionControlledEntity_->globalTransform()))
+    if (!(trans == pMotionControlledEntity_->globalTransform()))
         pMotionControlledEntity_->globalTransform(trans);
 }
 

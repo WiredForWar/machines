@@ -287,8 +287,8 @@ void W4dEntityPlan::clearAtTime(const PhysAbsoluteTime& time)
         ClearObsoletePlansAtTime(pMaterialPlans_, time);
 
     // Update the flag
-    hasTransformPlan_ = pAbsoluteMotionPlans_ and pAbsoluteMotionPlans_->size() != 0;
-    hasVisibilityPlan_ = pVisibilityPlans_ and pVisibilityPlans_->size() != 0;
+    hasTransformPlan_ = pAbsoluteMotionPlans_ && pAbsoluteMotionPlans_->size() != 0;
+    hasVisibilityPlan_ = pVisibilityPlans_ && pVisibilityPlans_->size() != 0;
 
     TEST_INVARIANT;
 }
@@ -414,8 +414,8 @@ void W4dEntityPlan::plan(const W4dEntityPlan& rhs, const PhysAbsoluteTime& start
     }
 
     // Update the flags
-    hasTransformPlan_ = pAbsoluteMotionPlans_ and pAbsoluteMotionPlans_->size() != 0;
-    hasVisibilityPlan_ = pVisibilityPlans_ and pVisibilityPlans_->size() != 0;
+    hasTransformPlan_ = pAbsoluteMotionPlans_ && pAbsoluteMotionPlans_->size() != 0;
+    hasVisibilityPlan_ = pVisibilityPlans_ && pVisibilityPlans_->size() != 0;
 
     // Copy in any frame regulator
     if (pFrameRegulator_ != nullptr)
@@ -471,7 +471,7 @@ void W4dEntityPlan::renderMesh(
     CB_ENTITYPLAN_DEPIMPL;
 
     // Deal with any mesh plans
-    if (pMeshPlans_ and pMeshPlans_->size() != 0)
+    if (pMeshPlans_ && pMeshPlans_->size() != 0)
     {
         // Convert the time to effective time if regulated
         PhysAbsoluteTime time = (pFrameRegulator_ ? pFrameRegulator_->effectiveTime() : actualTime);
@@ -510,7 +510,7 @@ void W4dEntityPlan::materialPlan(
 
 bool W4dEntityPlan::hasMaterialPlan() const
 {
-    return pImpl_->pMaterialPlans_ and pImpl_->pMaterialPlans_->size() != 0;
+    return pImpl_->pMaterialPlans_ && pImpl_->pMaterialPlans_->size() != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -561,7 +561,7 @@ W4dEntityPlan::visible(const PhysAbsoluteTime& actualTime, bool* pVisible, uint*
 
 bool W4dEntityPlan::hasScalePlan() const
 {
-    return pImpl_->pScalePlans_ and pImpl_->pScalePlans_->size() > 0;
+    return pImpl_->pScalePlans_ && pImpl_->pScalePlans_->size() > 0;
 }
 
 //  Attach a scale plan
@@ -622,7 +622,7 @@ W4dEntityPlan::scale(const PhysAbsoluteTime& actualTime, W4dEntityScale* pEntity
 // UV plan methods.
 bool W4dEntityPlan::hasUVPlan() const
 {
-    return pImpl_->pUVPlans_ and pImpl_->pUVPlans_->size() > 0;
+    return pImpl_->pUVPlans_ && pImpl_->pUVPlans_->size() > 0;
 }
 
 void W4dEntityPlan::uvPlan(
@@ -684,7 +684,7 @@ void W4dEntityPlan::clearMotionPlans(uint n)
 
     if (pAbsoluteMotionPlans_)
     {
-        while (n-- and pAbsoluteMotionPlans_->size() != 0)
+        while (n-- && pAbsoluteMotionPlans_->size() != 0)
             pAbsoluteMotionPlans_->pop_front();
 
         hasTransformPlan_ = pAbsoluteMotionPlans_->size() != 0;
@@ -699,7 +699,7 @@ void W4dEntityPlan::clearMeshPlans(uint n)
 
     if (pMeshPlans_)
     {
-        while (n-- and pMeshPlans_->size() != 0)
+        while (n-- && pMeshPlans_->size() != 0)
             pMeshPlans_->pop_front();
     }
 }
@@ -710,7 +710,7 @@ void W4dEntityPlan::clearVisibilityPlans(uint n)
 
     if (pVisibilityPlans_)
     {
-        while (n-- and pVisibilityPlans_->size() != 0)
+        while (n-- && pVisibilityPlans_->size() != 0)
             pVisibilityPlans_->pop_front();
 
         hasVisibilityPlan_ = pVisibilityPlans_->size() != 0;
@@ -725,7 +725,7 @@ void W4dEntityPlan::clearScalePlans(uint n)
 
     if (pScalePlans_)
     {
-        while (n-- and pScalePlans_->size() != 0)
+        while (n-- && pScalePlans_->size() != 0)
             pScalePlans_->pop_front();
     }
 }
@@ -736,7 +736,7 @@ void W4dEntityPlan::clearUVPlans(uint n)
 
     if (pUVPlans_)
     {
-        while (n-- and pUVPlans_->size() != 0)
+        while (n-- && pUVPlans_->size() != 0)
             pUVPlans_->pop_front();
     }
 }
@@ -747,7 +747,7 @@ void W4dEntityPlan::clearMaterialPlans(uint n)
 
     if (pMaterialPlans_)
     {
-        while (n-- and pMaterialPlans_->size() != 0)
+        while (n-- && pMaterialPlans_->size() != 0)
             pMaterialPlans_->pop_front();
     }
 }
@@ -911,7 +911,7 @@ bool W4dEntityPlan::hasMotionPlan() const
 
 bool W4dEntityPlan::hasMeshPlan() const
 {
-    return pImpl_->pMeshPlans_ and pImpl_->pMeshPlans_->size() != 0;
+    return pImpl_->pMeshPlans_ && pImpl_->pMeshPlans_->size() != 0;
 }
 
 uint W4dEntityPlan::nMaterialPlans() const

@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDamageCommand& t)
 // virtual
 bool MachGuiDamageCommand::canActorEverExecute(const MachActor& actor) const
 {
-    return actor.objectIsMachine() or actor.objectIsConstruction();
+    return actor.objectIsMachine() || actor.objectIsConstruction();
 }
 
 // virtual
@@ -53,7 +53,7 @@ bool MachGuiDamageCommand::isInteractionComplete() const
 // virtual
 bool MachGuiDamageCommand::doApply(MachActor* pActor, string* /*pReason*/)
 {
-    PRE(pActor->objectIsMachine() or pActor->objectIsConstruction());
+    PRE(pActor->objectIsMachine() || pActor->objectIsConstruction());
 
     // Check locator type
     bool canDo = true;

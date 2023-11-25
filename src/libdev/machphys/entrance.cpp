@@ -82,7 +82,7 @@ PhysRelativeTime MachPhysEntrance::isOpen(bool doOpen)
     else if (openCount_ > 0)
         --openCount_;
 
-    bool changeState = (openCount_ == 1 and doOpen) or (openCount_ == 0 and oldOpenCount != 0);
+    bool changeState = (openCount_ == 1 && doOpen) || (openCount_ == 0 && oldOpenCount != 0);
 
     // Check changing state
     if (changeState)

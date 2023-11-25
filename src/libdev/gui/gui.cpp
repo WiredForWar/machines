@@ -39,7 +39,7 @@ void Gui::backBuffer(const RenSurface& pNewBuffer)
 
 bool operator==(const GuiColour& a, const GuiColour& b)
 {
-    return a.r() == b.r() and a.g() == b.g() and a.b() == b.b();
+    return a.r() == b.r() && a.g() == b.g() && a.b() == b.b();
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -118,7 +118,7 @@ GuiBitmap Gui::bitmap(const SysPathName& path)
     // LO's assets don't keep case. :(
     string pathName(path.pathname());
 
-    if (path.containsCapitals() and not path.existsAsFile())
+    if (path.containsCapitals() && ! path.existsAsFile())
     {
         std::transform(pathName.begin(), pathName.end(), pathName.begin(), [](unsigned char c) {
             return std::tolower(c);
@@ -154,7 +154,7 @@ void Gui::writeScreenAsFile(const char* startFilename)
     SysPathName bmpPathName;
     size_t count = 0;
 
-    while (not gotBmpPathName)
+    while (! gotBmpPathName)
     {
         char buffer[20];
 
@@ -163,7 +163,7 @@ void Gui::writeScreenAsFile(const char* startFilename)
         // bmpPathName = string( startFilename ) + buffer + ".png";
         bmpPathName = SysPathName(string(startFilename) + buffer + ".png");
 
-        if (not bmpPathName.existsAsFile())
+        if (! bmpPathName.existsAsFile())
             gotBmpPathName = true;
 
         ++count;

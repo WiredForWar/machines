@@ -25,9 +25,9 @@ ctl_vector<double> MachPhysDataStream::data(const SysPathName& fileName)
 
     UtlLineTokeniser parser(fileName);
 
-    ASSERT(not parser.finished(), "named file empty");
+    ASSERT(! parser.finished(), "named file empty");
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
 
         theData.push_back(atof(parser.tokens()[0].c_str()));

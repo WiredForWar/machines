@@ -111,7 +111,7 @@ bool MachLogAdminLocateOperation::doStart()
 {
     CB_MachLogAdminLocateOperation_DEPIMPL();
 
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
@@ -138,7 +138,7 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
     // HAL_STREAM(" (void*)pLoc " << (void*)pLoc << std::endl );
     // If not, dissolve the squadron if AI
     if (MachLogRaces::instance().controller(pActor_->race()).type() == MachLogController::AI_CONTROLLER
-        and pLoc == nullptr)
+        && pLoc == nullptr)
     {
         // HAL_STREAM(" AI controller no locator ending op.\n" );
         pActor_->squadron()->releaseAllMachines();
@@ -159,7 +159,7 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
          i != pActor_->squadron()->machines().end();
          ++i)
         if ((*i)->id() != pActor_->id()
-            and ((*i)->isIdle() or (*i)->strategy().currentOperationType() == MachLogOperation::FOLLOW_OPERATION))
+            && ((*i)->isIdle() || (*i)->strategy().currentOperationType() == MachLogOperation::FOLLOW_OPERATION))
         {
             if ((*i)->objectType() == MachLog::GEO_LOCATOR)
             {
@@ -184,7 +184,7 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
     pActor_->motionSeq().stop();
     pActor_->motionSeq().update(0.01);
     // HAL_STREAM(" issuing follow op for administrator\n" );
-    if (not pActor_->motionSeq().isFollowing() and not pSubOperation())
+    if (! pActor_->motionSeq().isFollowing() && ! pSubOperation())
         subOperation(
             pActor_,
             new MachLogFollowOperation(
@@ -235,11 +235,11 @@ void MachLogAdminLocateOperation::assignLocatorTask(MachLogGeoLocator* obj)
     MachLogPlanet::Sites::const_iterator i = MachLogPlanet::instance().sites().begin();
     for (; j != MachLogPlanet::instance().sites().end(); ++j)
     {
-        found = not(*j)->hasBeenDiscovered();
+        found = !(*j)->hasBeenDiscovered();
         sqrRange = obj->position().sqrEuclidianDistance((*j)->position());
         ////HAL_STREAM(" checking mineral sites sqrRange " << sqrRange << " amount of ore " << (*j)->amountOfOre() <<
         /// std::endl );
-        if (found and sqrRange < sqrRangeClosest and (*j)->amountOfOre() > 0)
+        if (found && sqrRange < sqrRangeClosest && (*j)->amountOfOre() > 0)
         {
             ////HAL_STREAM("  saving this one for later...\n" );
             sqrRangeClosest = sqrRange;
@@ -255,7 +255,7 @@ void MachLogAdminLocateOperation::assignLocatorTask(MachLogGeoLocator* obj)
         PhysConfigSpace2d::DomainId domain;
         dest.x(dest.x() + MachPhysRandom::randomDouble(-30, 30));
         dest.y(dest.y() + MachPhysRandom::randomDouble(-30, 30));
-        while (not obj->motionSeq().targetPositionContainedInSpace(dest))
+        while (! obj->motionSeq().targetPositionContainedInSpace(dest))
         {
             dest = (*i)->position();
             dest.x(dest.x() + MachPhysRandom::randomDouble(-30, 30));

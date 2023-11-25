@@ -88,16 +88,16 @@ bool W4dBoundingBoxSelector::pointOutsideTrapezoid(const MexPoint3d& p) const
     // Check each of the bounding planes
     MexVec3 v(globalCameraPosition_, p);
     bool inside = true;
-    for (uint i = 5; inside and i--;)
+    for (uint i = 5; inside && i--;)
         inside = v.dotProduct(aGlobalPlaneNormals_[i]) <= 0.0;
 
-    return not inside;
+    return ! inside;
 }
 
 bool W4dBoundingBoxSelector::entitySelected(const W4dEntity& entity) const
 {
     // Check for associated subject if required
-    bool selected = not ignoreNonSubjectEntities_ or entity.hasSubject();
+    bool selected = ! ignoreNonSubjectEntities_ || entity.hasSubject();
     if (selected)
     {
         // Get the entity's global transform
@@ -129,7 +129,7 @@ bool W4dBoundingBoxSelector::entitySelected(const W4dEntity& entity) const
         }
 
         if (selected)
-            selected = not pointOutsideTrapezoid(entityPosition);
+            selected = ! pointOutsideTrapezoid(entityPosition);
     }
 
     // If still selected, check the origin lies inside the trapezoid
@@ -139,7 +139,7 @@ bool W4dBoundingBoxSelector::entitySelected(const W4dEntity& entity) const
 void W4dBoundingBoxSelector::addTreeEntities(W4dEntity* pEntity, Entities* pEntities) const
 {
     // Add this entity if selected
-    if (pEntity->checkId() != checkId_ and pEntity->visible())
+    if (pEntity->checkId() != checkId_ && pEntity->visible())
     {
         // Add to the list if selected
         if (entitySelected(*pEntity))
@@ -195,10 +195,10 @@ bool W4dBoundingBoxSelector::portalIntersects(W4dPortal* pPortal) const
 
     // check every point lies outside one of the four planes
     bool intersects = true;
-    for (uint i = 0; intersects and i != 5; ++i)
+    for (uint i = 0; intersects && i != 5; ++i)
     {
         bool outsidePlane = true;
-        for (uint j = 0; outsidePlane and j != 4; ++j)
+        for (uint j = 0; outsidePlane && j != 4; ++j)
         {
             // Get the portal vertex
             const MexPoint3d& portalVertex = portalAperture.vertex(j);
@@ -208,7 +208,7 @@ bool W4dBoundingBoxSelector::portalIntersects(W4dPortal* pPortal) const
         }
 
         // If all points outside any one plane, can't intersect
-        intersects = not outsidePlane;
+        intersects = ! outsidePlane;
     }
 
     return intersects;

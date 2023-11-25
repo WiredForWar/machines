@@ -41,7 +41,7 @@ MachPhysVapourPuff::MachPhysVapourPuff(
     : W4dSprite3d(pParent, localTransform, size, size, initialMaterial(missile_level))
     , missile_level_(missile_level)
 {
-    PRE(missile_level >= MachPhysTrailedProjectile::MISSILE1 and missile_level < MachPhysTrailedProjectile::NMISSILES);
+    PRE(missile_level >= MachPhysTrailedProjectile::MISSILE1 && missile_level < MachPhysTrailedProjectile::NMISSILES);
 
     visible(false);
 

@@ -43,7 +43,7 @@ PhysMotionControl::PhysMotionControl(PhysMotionControlled* t)
     allControls_.push_front(this);
     default_ = t->globalTransform();
 
-    POST(not enabled_);
+    POST(! enabled_);
 }
 
 PhysMotionControl::~PhysMotionControl()
@@ -426,7 +426,7 @@ void PhysPlanControl::readKeyboard()
 {
     const double repeatInterval = 0.1;
 
-    if (inputEnabled() and keyTimer_.time() > repeatInterval)
+    if (inputEnabled() && keyTimer_.time() > repeatInterval)
     {
         const DevKeyboard& keyboard = DevKeyboard::instance();
 

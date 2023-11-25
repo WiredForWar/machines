@@ -106,12 +106,12 @@ PhysRelativeTime MachLogBeacon::update(const PhysRelativeTime&, MATHEX_SCALAR)
 
     PhysRelativeTime interval = 5.0;
 
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
         interval = 0.1;
     else
     {
         if (complete)
-            if (not pPhysBeacon()->isWorking())
+            if (! pPhysBeacon()->isWorking())
             {
                 pPhysBeacon()->isWorking(true);
                 if (MachLogNetwork::instance().isNetworkGame())

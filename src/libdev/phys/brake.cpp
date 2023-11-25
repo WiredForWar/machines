@@ -18,7 +18,7 @@ Brake::Brake(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brake
     , minBandValue_(minValue + brakeBandFraction * (maxValue - minValue))
 {
     PRE(maxValue >= minValue);
-    PRE(0.0 <= brakeBandFraction and brakeBandFraction <= 1.0);
+    PRE(0.0 <= brakeBandFraction && brakeBandFraction <= 1.0);
 
     TEST_INVARIANT;
 }
@@ -33,7 +33,7 @@ void Brake::setLimits(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCA
     TEST_INVARIANT;
 
     PRE(maxValue >= minValue);
-    PRE(0.0 <= brakeBandFraction and brakeBandFraction <= 1.0);
+    PRE(0.0 <= brakeBandFraction && brakeBandFraction <= 1.0);
 
     minValue_ = minValue;
     maxValue_ = maxValue;
@@ -107,7 +107,7 @@ MATHEX_SCALAR Brake::newDelta(MATHEX_SCALAR currentValue, MATHEX_SCALAR desiredD
     POST_INFO(maxValue_);
     POST_INFO(currentValue);
     POST_INFO(result);
-    POST(minValue_ <= currentValue + result + eps and currentValue + result - eps <= maxValue_);
+    POST(minValue_ <= currentValue + result + eps && currentValue + result - eps <= maxValue_);
 
     return result;
 }

@@ -46,7 +46,7 @@ MachLogMineralSite::MachLogMineralSite(
     CB_MachLogMineralSite_DEPIMPL();
 
     PRE(amountOfOre_ > 0);
-    PRE(grade_ > 0 and grade < 5);
+    PRE(grade_ > 0 && grade < 5);
     MachLogPlanet::instance().newSite(this);
 }
 
@@ -70,7 +70,7 @@ void MachLogMineralSite::beDiscoveredBy(MachPhys::Race race)
 
     // if the race discovering this site is remote then do NOT create an ore holograph as one will be created for us.
     if (MachLogNetwork::instance().isNetworkGame()
-        and MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::REMOTE_PROCESS)
+        && MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::REMOTE_PROCESS)
     {
     }
     else
@@ -123,7 +123,7 @@ void MachLogMineralSite::setOre(MachPhys::BuildingMaterialUnits amountOfOre)
 
     if (amountOfOre_ == 0)
     {
-        if (not registeredAsExhausted_)
+        if (! registeredAsExhausted_)
         {
             registeredAsExhausted_ = true;
 
@@ -147,11 +147,11 @@ void MachLogMineralSite::setOre(MachPhys::BuildingMaterialUnits amountOfOre)
                     for (MachLogRaces::Mines::const_iterator i = mines.begin(); i != mines.end(); ++i)
                     {
                         MachLogMine& mine = (**i);
-                        if (mine.hasMineralSite() and &(_CONST_CAST(const MachLogMine&, mine).mineralSite()) == this)
+                        if (mine.hasMineralSite() && &(_CONST_CAST(const MachLogMine&, mine).mineralSite()) == this)
                         {
                             // need to give voicemail if appropriate.
-                            if (not pcPlayerHadMineUsingThis
-                                and mine.race() == MachLogRaces::instance().pcController().race())
+                            if (! pcPlayerHadMineUsingThis
+                                && mine.race() == MachLogRaces::instance().pcController().race())
                             {
                                 pcPlayerHadMineUsingThis = true;
                                 MachLogVoiceMailManager::instance().postNewMail(
@@ -179,7 +179,7 @@ bool MachLogMineralSite::hasBeenDiscoveredBy(MachPhys::Race race) const
 {
     CB_MachLogMineralSite_DEPIMPL();
 
-    return state_ == DISCOVERED and discoveredBy_ == race;
+    return state_ == DISCOVERED && discoveredBy_ == race;
 }
 
 bool MachLogMineralSite::hasBeenDiscovered() const

@@ -64,7 +64,7 @@ bool MachGuiSoundManager::playSound(const SysPathName& wavFilePath)
     bool playingSound = true;
 
     // If there is a 'channel' available
-    if (delaySoundsFrameCount_ == 0 and currentActiveHandles_.size() < MAX_SOUNDS)
+    if (delaySoundsFrameCount_ == 0 && currentActiveHandles_.size() < MAX_SOUNDS)
     {
         // Play the sound
         SndWaveformId id(wavFilePath);

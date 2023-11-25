@@ -169,12 +169,12 @@ PhysRelativeTime MachLogMine::update(const PhysRelativeTime& maxCPUTime, MATHEX_
     PhysRelativeTime interval = 5;
     MachPhysConstruction& physMine = physConstruction();
 
-    if (not physMine.isWorking())
+    if (! physMine.isWorking())
     {
         bool complete = isComplete();
         bool upToDate = updateCompletionVisualisation();
 
-        if (complete and upToDate and ore_ < data().capacity() and hasMineralSite())
+        if (complete && upToDate && ore_ < data().capacity() && hasMineralSite())
         {
             physMine.isWorking(true);
             if (MachLogNetwork::instance().isNetworkGame())
@@ -184,7 +184,7 @@ PhysRelativeTime MachLogMine::update(const PhysRelativeTime& maxCPUTime, MATHEX_
             lastUpdateTime_ = SimManager::instance().currentTime();
         }
 
-        if (not upToDate)
+        if (! upToDate)
             interval = 0.1;
     }
     else
@@ -289,7 +289,7 @@ bool MachLogMine::worthVisiting()
     HAL_STREAM(
         "(" << id() << ") MachLogMine::worthVisiting ( ore_ > 0 ) " << (ore_ > 0) << " or hasMineralSite "
             << hasMineralSite() << std::endl);
-    return ore_ > 0 or hasMineralSite();
+    return ore_ > 0 || hasMineralSite();
 }
 
 // static
@@ -317,8 +317,8 @@ bool MachLogMine::validMineSite(const MexPoint3d& location, uint hwLevel, const 
         MachLogMineralSite* pSite = *i;
         if (check == CHECK_DISCOVERED_FLAG)
         {
-            if (pSite->hasBeenDiscovered() and pSite->amountOfOre() > 0
-                and location.sqrEuclidianDistance(pSite->position()) < maxMineralDistance)
+            if (pSite->hasBeenDiscovered() && pSite->amountOfOre() > 0
+                && location.sqrEuclidianDistance(pSite->position()) < maxMineralDistance)
             {
                 result = true;
                 break;
@@ -371,7 +371,7 @@ bool MachLogMine::validForAllSmelters(const MexPoint3d& location)
              i != MachLogRaces::instance().smelters(r).end();
              ++i)
         {
-            if (not outsideMinimumMineSmelterRange(location, (*i)))
+            if (! outsideMinimumMineSmelterRange(location, (*i)))
                 return false;
         }
         for (MachLogRaces::Pods::const_iterator i = MachLogRaces::instance().pods(r).begin();
@@ -379,7 +379,7 @@ bool MachLogMine::validForAllSmelters(const MexPoint3d& location)
              ++i)
         {
             const MachLogPod* pPod = _CONST_CAST(const MachLogPod*, (*i));
-            if (not outsideMinimumMineSmelterRange(location, pPod))
+            if (! outsideMinimumMineSmelterRange(location, pPod))
                 return false;
         }
     }
@@ -394,7 +394,7 @@ bool MachLogMine::outsideMinimumMineSmelterRange(const MexPoint3d& location, con
     // smelter, a pod or a mine, the complement of whichever type passed its location to this function as const
     // MexPoint3d& location.
 
-    PRE(pTarget->objectIsCanSmelt() or pTarget->objectType() == MachLog::MINE);
+    PRE(pTarget->objectIsCanSmelt() || pTarget->objectType() == MachLog::MINE);
 
     static MATHEX_SCALAR sqrMinSmelterDistance
         = MachPhysData::instance()
@@ -519,9 +519,9 @@ bool MachLogMine::assignToNearestMineralSite()
             "checking against mineral site " << pTestSite->position() << " position.sqrEuclid "
                                              << position().sqrEuclidianDistance(pTestSite->position()) << " ");
         HAL_STREAM("closestSiteDistance " << closestSiteDistance << std::endl);
-        if (pTestSite->hasBeenDiscovered() and pTestSite->amountOfOre() > 0
-            and (testDistance = position().sqrEuclidianDistance(pTestSite->position())) < closestSiteDistance
-            and testDistance < maxMineralDistance)
+        if (pTestSite->hasBeenDiscovered() && pTestSite->amountOfOre() > 0
+            && (testDistance = position().sqrEuclidianDistance(pTestSite->position())) < closestSiteDistance
+            && testDistance < maxMineralDistance)
         {
             HAL_STREAM("this one is ok so setting\n");
             closestSiteDistance = testDistance;
@@ -552,8 +552,8 @@ bool MachLogMine::discoverAndAssignToNearestMineralSite(MachLogRace* pRace)
     {
         MachLogMineralSite* pTestSite = *i;
         if (pTestSite->amountOfOre() > 0
-            and (testDistance = position().sqrEuclidianDistance(pTestSite->position())) < closestSiteDistance
-            and testDistance < maxMineralDistance)
+            && (testDistance = position().sqrEuclidianDistance(pTestSite->position())) < closestSiteDistance
+            && testDistance < maxMineralDistance)
         {
             closestSiteDistance = testDistance;
             pSite_ = pTestSite;
@@ -563,7 +563,7 @@ bool MachLogMine::discoverAndAssignToNearestMineralSite(MachLogRace* pRace)
     }
 
     if (found)
-        if (not pSite_->hasBeenDiscovered())
+        if (! pSite_->hasBeenDiscovered())
             pSite_->beDiscoveredBy(pRace->race());
 
     return found;
@@ -598,7 +598,7 @@ void MachLogMine::mineralSiteIsExhausted()
 
 void MachLogMine::newMineralSiteAvailable()
 {
-    if (not hasMineralSite())
+    if (! hasMineralSite())
     {
         // we may want to see if we could use this newly-discovered site.
         if (assignToNearestMineralSite())
@@ -618,7 +618,7 @@ MachPhys::BuildingMaterialUnits MachLogMine::removeOre(MachPhys::BuildingMateria
     // if I have no ore and no mineral site, I'm as useful as a Southampton FC trophy cabinet.
     // Inform anyone who cares to know that I'm pretty worthless.
 
-    if (not worthVisiting())
+    if (! worthVisiting())
         notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::MINE_CHANGED_OPERATIONAL_STATUS);
 
     return actualOreRemoved;

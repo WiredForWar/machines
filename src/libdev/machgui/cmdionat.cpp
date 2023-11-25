@@ -24,7 +24,7 @@ MachGuiIonAttackCommand::MachGuiIonAttackCommand(MachInGameScreen* pInGameScreen
     , action_(DO_NOTHING)
     , // this default is for the case where no ion cannons are charged
     pDirectObject_(nullptr)
-    , hadFinalPick_(not atLeastOneActorHasChargedIonCannon())
+    , hadFinalPick_(! atLeastOneActorHasChargedIonCannon())
 {
     TEST_INVARIANT;
 }
@@ -76,7 +76,7 @@ bool MachGuiIonAttackCommand::canActorEverExecute(const MachActor& actor) const
 {
     // this function has multiple exit points
 
-    if (actor.objectType() == MachLog::POD and actor.asPod().hasIonCannon()) // ionCannonReady() )
+    if (actor.objectType() == MachLog::POD && actor.asPod().hasIonCannon()) // ionCannonReady() )
         return true;
     else
         return false;
@@ -125,7 +125,7 @@ bool MachGuiIonAttackCommand::applyAttackLocation(MachActor* pActor, string*)
 
     MexPoint2d validPoint;
     bool valid = pActor->asPod().ionCannonReady()
-        and findClosestPointValidOnTerrain(
+        && findClosestPointValidOnTerrain(
                      location_,
                      pActor->globalTransform().position(),
                      IGNORE_SELECTED_ACTOR_OBSTACLES,
@@ -180,7 +180,7 @@ MachGui::Cursor2dType MachGuiIonAttackCommand::cursorOnTerrain(const MexPoint3d&
     {
         cursorType = MachGui::INVALID_CURSOR;
 
-        if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_ALL_ACTOR_OBSTACLES))
+        if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_ALL_ACTOR_OBSTACLES))
         {
             action_ = ATTACK_LOCATION;
             cursorType = MachGui::ION_ATTACK_CURSOR;
@@ -241,7 +241,7 @@ uint MachGuiIonAttackCommand::commandPromptStringid() const
 // virtual
 bool MachGuiIonAttackCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_I and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_I && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -288,18 +288,18 @@ bool MachGuiIonAttackCommand::atLeastOneActorHasChargedIonCannon() const
     bool noneHasChargedCannon = true;
 
     for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-         iter != inGameScreen().selectedActors().end() and noneHasChargedCannon;
+         iter != inGameScreen().selectedActors().end() && noneHasChargedCannon;
          ++iter)
     {
         MachActor& actor = (**iter);
 
-        if (actor.objectType() == MachLog::POD and actor.asPod().ionCannonReady())
+        if (actor.objectType() == MachLog::POD && actor.asPod().ionCannonReady())
         {
             noneHasChargedCannon = false;
         }
     }
 
-    return not(noneHasChargedCannon);
+    return !(noneHasChargedCannon);
 }
 
 /* End CMDIONAT.CPP **************************************************/

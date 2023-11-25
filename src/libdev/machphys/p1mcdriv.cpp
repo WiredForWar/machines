@@ -86,7 +86,7 @@ bool MachPhys1stPersonMachineDriver::nextPosition(MexTransform3d* pNextPosition)
     if (interval > 0.0)
     {
         // Check for need to compute motion
-        if (isMovingForwards() or isMovingBackwards() or isTurningLeft() or isTurningRight() or lastSpeed_ != 0.0)
+        if (isMovingForwards() || isMovingBackwards() || isTurningLeft() || isTurningRight() || lastSpeed_ != 0.0)
         {
             // Get the machine's current position. Set a gradient modifier if on a slope.
             const MachPhysMachineData& machineData = pMachine_->machineData();
@@ -95,7 +95,7 @@ bool MachPhys1stPersonMachineDriver::nextPosition(MexTransform3d* pNextPosition)
             // We need the x axis direction after a rotation if turning
             MexVec3 xBasis;
 
-            if (isTurningLeft() or isTurningRight())
+            if (isTurningLeft() || isTurningRight())
             {
                 // Get the limit for turning rate, and cap the machine's own rate.
                 // See whether fast or slow limit set.
@@ -139,7 +139,7 @@ bool MachPhys1stPersonMachineDriver::nextPosition(MexTransform3d* pNextPosition)
                 acceleration *= -1.0;
                 topSpeed *= -0.25; // Only go slowly in reverse
             }
-            else if (not isMovingForwards())
+            else if (! isMovingForwards())
             {
                 // Come to rest
                 if (lastSpeed_ > 0.0)
@@ -173,7 +173,7 @@ bool MachPhys1stPersonMachineDriver::nextPosition(MexTransform3d* pNextPosition)
         lastUpdateTime_ = now;
     }
 
-    if (not foundNewPosition)
+    if (! foundNewPosition)
         *pNextPosition = pMachine_->globalTransform();
 
     return foundNewPosition;

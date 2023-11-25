@@ -204,7 +204,7 @@ double MachPhysConstruction::percentageComplete() const
 
     double result = percentageComplete_;
 
-    POST(result >= 0.0 and result <= 100.0);
+    POST(result >= 0.0 && result <= 100.0);
 
     return result;
 }
@@ -215,9 +215,9 @@ void MachPhysConstruction::percentageComplete(double newPercentage)
     CB_DEPIMPL(bool, completionVisualised_);
 
     PRE_INFO(newPercentage);
-    PRE(newPercentage >= 0.0 and newPercentage <= 100.0);
+    PRE(newPercentage >= 0.0 && newPercentage <= 100.0);
 
-    if (newPercentage != percentageComplete_ or not completionVisualised_)
+    if (newPercentage != percentageComplete_ || ! completionVisualised_)
     {
         doPercentageComplete(newPercentage);
         percentageComplete_ = newPercentage;
@@ -425,7 +425,7 @@ void MachPhysConstruction::doPercentageComplete(double newPercentage)
 
     CompletionBand band;
 
-    if (newPercentage != percentageComplete_ or not completionVisualised_)
+    if (newPercentage != percentageComplete_ || ! completionVisualised_)
     {
         completionVisualised_ = true;
 
@@ -455,7 +455,7 @@ void MachPhysConstruction::doPercentageComplete(double newPercentage)
         if (band != pImpl_->completionBand_)
         {
 
-            for (W4dEntityIter it(this); not it.isFinished(); ++it)
+            for (W4dEntityIter it(this); ! it.isFinished(); ++it)
             {
                 // Make sure animation is only applied to correct entities (i.e. don't apply to fire and markers)
                 if ((*it).clientData() != (int)MachPhys::ECD_DONTAPPLYANIMATION)
@@ -887,7 +887,7 @@ void MachPhysConstruction::damageSmoke2Type(const MachPhysPuffType& type2)
 static bool isPadName(const string& name)
 {
     const string str = name.substr(0, 3);
-    return (name == "fpad") or (str == "pad");
+    return (name == "fpad") || (str == "pad");
 }
 
 bool MachPhysConstruction::hasSavedPadsTransforms() const
@@ -899,7 +899,7 @@ bool MachPhysConstruction::hasSavedPadsTransforms() const
 void MachPhysConstruction::savePadsTransforms()
 {
     // reset the array of transforms
-    PRE(not hasSavedPadsTransforms());
+    PRE(! hasSavedPadsTransforms());
     pImpl_->createSavedPadsTransforms();
     // Go threough the links and save
     for (W4dLinks::const_iterator it = links().begin(); it != links().end(); ++it)
@@ -1072,23 +1072,23 @@ static bool tryToLayThreeVerticesOnGround(
     {
         case 0:
             noCrestLine
-                = ((edge01.dotProduct(normalVertex0) > -eps) and (edge01.dotProduct(normalVertex1) < eps)
-                   and (edge30.dotProduct(normalVertex3) > -eps) and (edge30.dotProduct(normalVertex0) < eps));
+                = ((edge01.dotProduct(normalVertex0) > -eps) && (edge01.dotProduct(normalVertex1) < eps)
+                   && (edge30.dotProduct(normalVertex3) > -eps) && (edge30.dotProduct(normalVertex0) < eps));
             break;
         case 1:
             noCrestLine
-                = ((edge01.dotProduct(normalVertex0) > -eps) and (edge01.dotProduct(normalVertex1) < eps)
-                   and (edge12.dotProduct(normalVertex1) > -eps) and (edge12.dotProduct(normalVertex2) < eps));
+                = ((edge01.dotProduct(normalVertex0) > -eps) && (edge01.dotProduct(normalVertex1) < eps)
+                   && (edge12.dotProduct(normalVertex1) > -eps) && (edge12.dotProduct(normalVertex2) < eps));
             break;
         case 2:
             noCrestLine
-                = ((edge12.dotProduct(normalVertex1) > -eps) and (edge12.dotProduct(normalVertex2) < eps)
-                   and (edge23.dotProduct(normalVertex2) > -eps) and (edge23.dotProduct(normalVertex3) < eps));
+                = ((edge12.dotProduct(normalVertex1) > -eps) && (edge12.dotProduct(normalVertex2) < eps)
+                   && (edge23.dotProduct(normalVertex2) > -eps) && (edge23.dotProduct(normalVertex3) < eps));
             break;
         case 3:
             noCrestLine
-                = ((edge23.dotProduct(normalVertex2) > -eps) and (edge23.dotProduct(normalVertex3) < eps)
-                   and (edge30.dotProduct(normalVertex3) > -eps) and (edge30.dotProduct(normalVertex0) < eps));
+                = ((edge23.dotProduct(normalVertex2) > -eps) && (edge23.dotProduct(normalVertex3) < eps)
+                   && (edge30.dotProduct(normalVertex3) > -eps) && (edge30.dotProduct(normalVertex0) < eps));
             break;
         default:
             ASSERT_BAD_CASE_INFO(indexPivot);
@@ -1268,7 +1268,7 @@ static void layVerticesOnTerrain(
     // The following piece of code is supposed to deal with a crest line situation
     // that's the kind of situation where the former will have failed.
     // In a second pass we try to find the best solution having the four vertices above the ground
-    if (not matchFound)
+    if (! matchFound)
     {
         for (int i = 0; i < padVertices.size(); ++i)
         {
@@ -1302,7 +1302,7 @@ static void layVerticesOnTerrain(
         // That's a saddle situation (opposite curvatures in x and y)   which unfortunately
         // happens sometimes in game.
         // TBD I should try to find a better solution for saddles but could not think of any
-        if (not matchFound)
+        if (! matchFound)
         {
             for (int i = 0; i < padVertices.size(); ++i)
             {
@@ -1405,7 +1405,7 @@ void MachPhysConstruction::layPadOnTerrain(const MachPhysPlanetSurface& terrain,
         MexRadians rotationAngleCSecondToCPrime = padNormal.angleBetween(newPadNormal);
         MexVec3 rotationAxisCSecondToCPrime(MexVec3::crossProduct(padNormal, newPadNormal));
         MexTransform3d transformCSecondToCPrime;
-        if (not rotationAxisCSecondToCPrime.isZeroVector())
+        if (! rotationAxisCSecondToCPrime.isZeroVector())
             transformCSecondToCPrime.rotate(MexQuaternion(rotationAxisCSecondToCPrime, rotationAngleCSecondToCPrime));
 
         // compute  transfrom C" -> C  (pivot transform)

@@ -59,7 +59,7 @@ void MachLogVortexWeapon::doFire(MachActor* pTarget, const MachLogFireData&)
 
     const MachActor& ownerActor = owner();
 
-    if (not(ownerActor.objectIsMachine() and ownerActor.asMachine().insideBuilding()))
+    if (!(ownerActor.objectIsMachine() && ownerActor.asMachine().insideBuilding()))
     {
         MexPoint3d estimated1SecondTargetOffset = pTarget->predictedTargetOffset(1.3);
         MexTransform3d trans = pTarget->globalTransform();

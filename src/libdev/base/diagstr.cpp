@@ -57,7 +57,7 @@ void DiagStream::setupStream()
     while (pStream != nullptr)
     {
         if (/* pStream->exists() and */
-            (name() != nullptr) and (pStream->name() != nullptr) and strcmp(pStream->name(), name()) == 0)
+            (name() != nullptr) && (pStream->name() != nullptr) && strcmp(pStream->name(), name()) == 0)
         {
             //  We have our match. Now check for whether this is an append
             //  file or not. If a file is an append file for any debug stream
@@ -70,7 +70,7 @@ void DiagStream::setupStream()
                 append_ = true;
 
             //  If this is not an append stream then make it dependant.
-            if (not append())
+            if (! append())
                 pDependantStream_ = pStream;
 
             firstFileOfThisName = false;
@@ -138,7 +138,7 @@ void DiagStream::close()
     ostr() << " Stream closed under control ";
     ostr() << separator << std::endl;
 
-    if (not pDependantStream_ and name() != nullptr and not append())
+    if (! pDependantStream_ && name() != nullptr && ! append())
         ostr_.close();
 
     pDependantStream_ = nullptr;
@@ -272,7 +272,7 @@ bool DiagStream::append() const
 
 void DiagStream::forceAppendFile()
 {
-    if (not append_)
+    if (! append_)
     {
         ostr_.close();
 

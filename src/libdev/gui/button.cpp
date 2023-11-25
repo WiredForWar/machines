@@ -65,11 +65,11 @@ void GuiButton::doHandleMouseClickEvent(const GuiMouseEvent& e)
             // Only interested in release event if we are a popupButton,
             // stay-pressed buttons are sent release event when they are pressed
             // a second time.
-            if (isPopupButton_ and isDepressed_)
+            if (isPopupButton_ && isDepressed_)
             {
                 isDepressed_ = false;
 
-                if (not isDisabled())
+                if (! isDisabled())
                 {
                     changed();
                     doBeReleased(e);
@@ -86,9 +86,9 @@ void GuiButton::doHandleMouseClickEvent(const GuiMouseEvent& e)
             if (isPopupButton_)
                 isDepressed_ = true;
             else
-                isDepressed_ = not isDepressed_;
+                isDepressed_ = ! isDepressed_;
 
-            if (not isDisabled())
+            if (! isDisabled())
             {
                 changed();
 
@@ -102,7 +102,7 @@ void GuiButton::doHandleMouseExitEvent(const GuiMouseEvent&)
 {
     if (isVisible())
     {
-        if (isDepressed_ and isPopupButton_)
+        if (isDepressed_ && isPopupButton_)
         {
             isDepressed_ = false;
             changed();
@@ -144,12 +144,12 @@ void GuiButton::enable()
     isDisabled_ = false;
     changed();
 
-    PRE(not isDisabled());
+    PRE(! isDisabled());
 }
 
 void GuiButton::disable()
 {
-    PRE(not isDisabled());
+    PRE(! isDisabled());
 
     isDisabled_ = true;
     changed();

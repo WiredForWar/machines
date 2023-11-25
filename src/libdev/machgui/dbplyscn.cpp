@@ -90,7 +90,7 @@ void MachGuiDbPlayerScenario::upDate(bool didWin, int score)
 
     // Save highest score ( note : reason why lastScore_ is a badly
     // named variable is because the usage has changed from lastScore to highestScore )
-    if (nAttempts() == 0 or score > pData_->lastScore_)
+    if (nAttempts() == 0 || score > pData_->lastScore_)
     {
         pData_->lastScore_ = score;
     }
@@ -144,7 +144,7 @@ void MachGuiDbPlayerScenario::setFlag(const string& flag, bool doSet)
     else
     {
         // Is already entered. If clearing, erase it
-        if (not doSet)
+        if (! doSet)
             setFlags.erase(it);
     }
 }

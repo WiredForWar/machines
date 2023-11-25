@@ -37,7 +37,7 @@ void W4dMeshPlan::add(const SysPathName& pathName, const PhysRelativeTime& endTi
 {
     // Checks
     PRE(endTime > 0.0);
-    PRE(intervals_.size() == 0 or intervals_.back().second < endTime);
+    PRE(intervals_.size() == 0 || intervals_.back().second < endTime);
 
     // Construct a W4dGeneric from the lod file
     W4dGeneric* pGeneric = new W4dGeneric(pRoot_, transform);
@@ -57,7 +57,7 @@ void W4dMeshPlan::renderAtRange(
 {
     PRE(intervals_.size() != 0);
 
-    if (timeOffset >= 0.0 and timeOffset <= intervals_.back().second)
+    if (timeOffset >= 0.0 && timeOffset <= intervals_.back().second)
     {
         // Find the appropriate interval
         for (MeshIntervals::const_iterator i = intervals_.begin(); i != intervals_.end(); ++i)

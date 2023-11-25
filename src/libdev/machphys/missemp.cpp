@@ -49,7 +49,7 @@ MachPhysMissileEmplacement::MachPhysMissileEmplacement(
     // If an appropriate type, make the shadow turn with the head
     W4dEntity* pShadow = nullptr;
 
-    bool shadowTurn = (subType == MachPhys::TURRET and level != 1) or (subType == MachPhys::SENTRY and level == 3);
+    bool shadowTurn = (subType == MachPhys::TURRET && level != 1) || (subType == MachPhys::SENTRY && level == 3);
 
     if (shadowTurn)
     {

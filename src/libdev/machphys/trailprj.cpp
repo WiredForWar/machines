@@ -113,7 +113,7 @@ void MachPhysTrailedProjectile::update()
     // CB_DEPIMPL(PhysAbsoluteTime, destructionTime_ );
 
     //  Only update the vapour trail if we're still moving
-    if (destructionTime_ > SimManager::instance().currentTime() and pVapourTrail_ != nullptr)
+    if (destructionTime_ > SimManager::instance().currentTime() && pVapourTrail_ != nullptr)
     {
         MexPoint3d position = localTransform().position();
 
@@ -339,7 +339,7 @@ PhysRelativeTime MachPhysTrailedProjectile::beLaunched(
         startFlame(startTime, data);
     }
 
-    if (data.trailOn() and MachPhysComplexityManager::instance().vapourTrailsEnabled())
+    if (data.trailOn() && MachPhysComplexityManager::instance().vapourTrailsEnabled())
     {
         pVapourTrail_ = new MachPhysVapourTrail(pParent(), 16, 1.5, level_);
     }

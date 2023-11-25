@@ -209,7 +209,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     SysPathName hotkeySmackerFile("flics/gui/hotkeys.smk");
 
     // Get flic off hard-disk or CD-Rom
-    if (not hotkeySmackerFile.existsAsFile())
+    if (! hotkeySmackerFile.existsAsFile())
     {
         // Make sure the cd is stopped before accessing files on it.
         if (DevCD::instance().isPlayingAudioCd())
@@ -288,7 +288,7 @@ void MachGuiCtxHotKeys::readHotkeyData(const string& hotKeyDataFileName, string&
     SysPathName hotKeyFilePath = SysPathName(hotKeyDataFileName);
     string path = string(hotKeyDataFileName.c_str());
 
-    if (hotKeyFilePath.containsCapitals() and not hotKeyFilePath.existsAsFile())
+    if (hotKeyFilePath.containsCapitals() && ! hotKeyFilePath.existsAsFile())
     {
         std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c) { return std::tolower(c); });
     }

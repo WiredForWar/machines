@@ -243,8 +243,8 @@ GuiFilledBorder::GuiFilledBorder(const GuiFilledBorderColours& c)
     , isDepressed_(false)
     , isSelected_(false)
 {
-    POST(not isDepressed());
-    POST(not isSelected());
+    POST(! isDepressed());
+    POST(! isSelected());
 }
 
 //////////////////////////////////////////////////////////////////////

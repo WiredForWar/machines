@@ -113,9 +113,9 @@ bool MachLogHealOperation::doStart()
     {
         MachLogConstruction* pConstruction;
         bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
-        if (insideABuilding and not pConstruction->globalBoundary().contains(pDirectObject_->position()))
+        if (insideABuilding && ! pConstruction->globalBoundary().contains(pDirectObject_->position()))
         {
-            result = not checkNeedAndDoLeaveOperation(pActor_);
+            result = ! checkNeedAndDoLeaveOperation(pActor_);
         }
         pActor_->currentTarget(pDirectObject_);
     }
@@ -128,7 +128,7 @@ bool MachLogHealOperation::doStart()
 PhysRelativeTime MachLogHealOperation::doUpdate()
 {
     HAL_STREAM("(" << pActor_->id() << ") MachLogHealOperation::doUpdate\n");
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
 
     // Do nothing if delegated to a subop
@@ -157,7 +157,7 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
 
     // If we were moving to the side, and haven't arrived, try again later
     MachLogMachineMotionSequencer& motionSequencer = pActor_->motionSeq();
-    if (lastAction_ == MOVE_TO_SIDE and motionSequencer.hasDestination())
+    if (lastAction_ == MOVE_TO_SIDE && motionSequencer.hasDestination())
         return 0.5;
 
     // Set up useful local variables
@@ -217,7 +217,7 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
         MachLogWeapon& weapon = *(*it);
         const MachPhysWeapon& physWeapon = _CONST_CAST(const MachLogWeapon&, weapon).physWeapon();
         MachPhys::WeaponType type = physWeapon.type();
-        if (type != MachPhys::SUPERCHARGE_ADVANCED and type != MachPhys::SUPERCHARGE_SUPER)
+        if (type != MachPhys::SUPERCHARGE_ADVANCED && type != MachPhys::SUPERCHARGE_SUPER)
             continue;
 
         // Get the disposition of this weapon with respect to position (not cover)
@@ -260,7 +260,7 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
         {
             // Weapons aren't facing in the right direction. If tracking, will be soon, otherwise
             // Need to turn the whole machine to face the target.
-            if (not attacker.canTurnHead())
+            if (! attacker.canTurnHead())
                 action = TURN_TO_FACE;
         }
         else if (worstDisposition == MachLogCanAttack::NOT_IN_DISTANCE_RANGE)
@@ -288,8 +288,8 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
     }
 
     // Stop moving if in weapon range, and no need to move closer
-    if (worstDisposition != MachLogCanAttack::NOT_IN_DISTANCE_RANGE and action != MOVE_CLOSER
-        and motionSequencer.hasDestination())
+    if (worstDisposition != MachLogCanAttack::NOT_IN_DISTANCE_RANGE && action != MOVE_CLOSER
+        && motionSequencer.hasDestination())
     {
         motionSequencer.stop();
 
@@ -339,13 +339,13 @@ bool MachLogHealOperation::doIsFinished() const
 {
     // HAL_STREAM("(" << pActor_->id() << ") MLHealOp::doIsFinsihed " );
     bool result;
-    if (pDirectObject_ and pDirectObject_->hp() >= pDirectObject_->objectData().hitPoints())
+    if (pDirectObject_ && pDirectObject_->hp() >= pDirectObject_->objectData().hitPoints())
     {
         // finished healing the fella
         result = true;
     }
     else
-        result = pDirectObject_ == nullptr or targetBehindCover_;
+        result = pDirectObject_ == nullptr || targetBehindCover_;
 
     // HAL_STREAM( result << std::endl );
     // if( result )
@@ -360,7 +360,7 @@ bool MachLogHealOperation::doBeInterrupted()
 {
     // HAL_STREAM("(" << pActor_->id() << ") MLHealOp::doBeInterrupted\n" );
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -402,9 +402,9 @@ bool MachLogHealOperation::beNotified(W4dSubject* pSubject, W4dSubject::Notifica
 
 PhysRelativeTime MachLogHealOperation::moveCloserToTarget()
 {
-    ASSERT(not pActor_->isStandingGround(), "Should never move closer if actor is standing ground.");
+    ASSERT(! pActor_->isStandingGround(), "Should never move closer if actor is standing ground.");
 
-    if (not pDirectObject_)
+    if (! pDirectObject_)
         return 0;
 
     PhysRelativeTime interval = 0.25;
@@ -418,7 +418,7 @@ PhysRelativeTime MachLogHealOperation::moveCloserToTarget()
 
     bool recalculateDestination = false;
 
-    if (not motSeq.hasDestination())
+    if (! motSeq.hasDestination())
         recalculateDestination = true;
     else
     {
@@ -426,7 +426,7 @@ PhysRelativeTime MachLogHealOperation::moveCloserToTarget()
 
         MATHEX_SCALAR sqrDistanceBetweenDestinationAndTarget
             = motSeq.destination().sqrEuclidianDistance(targetPositionNow);
-        if (not pActor_->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceBetweenDestinationAndTarget))
+        if (! pActor_->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceBetweenDestinationAndTarget))
         {
             // okay, what this system does is to decide whether or not to recalculate the path based on
             // a ratio of the (non-squared) distance the target has moved since we last set up a path

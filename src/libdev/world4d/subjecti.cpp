@@ -15,7 +15,7 @@ W4dSubjectImpl::W4dSubjectImpl(W4dSubject* pSubject, W4dEntity* pPhysObject)
     , pSubject_(pSubject)
 {
     PRE(pSubject);
-    PRE(pPhysObject == nullptr or not pPhysObject->hasSubject());
+    PRE(pPhysObject == nullptr || ! pPhysObject->hasSubject());
 
     // Choose sensible collection size
     observers_.reserve(4);
@@ -176,7 +176,7 @@ void W4dSubjectImpl::notifyObservers(NotificationEvent event, int clientData)
         //      OBSERVER_STREAM(" " << (void*)pObserver << std::endl );
 
         size_t beforeObserverCount = observers_.size();
-        bool eraseCurrent = (not pObserver->beNotified(pSubject_, event, clientData)) or event == W4dSubject::DELETED;
+        bool eraseCurrent = (! pObserver->beNotified(pSubject_, event, clientData)) || event == W4dSubject::DELETED;
         bool sizeChanged = observers_.size() != beforeObserverCount;
 
         if (eraseCurrent)

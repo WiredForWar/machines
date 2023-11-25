@@ -46,7 +46,7 @@ MachLogMachineMotionSequencerData::MachLogMachineMotionSequencerData(int id)
     environmentVariable += str;
     environmentVariable += "_log";
 
-    if (getenv("cb_mseq_log") or getenv(environmentVariable.c_str()))
+    if (getenv("cb_mseq_log") || getenv(environmentVariable.c_str()))
         toggleLogging();
 
     TEST_INVARIANT;
@@ -72,7 +72,7 @@ void MachLogMachineMotionSequencerData::clearCommandId()
 {
     commandId_ = NO_ID;
 
-    POST(not commandIdSet());
+    POST(! commandIdSet());
 }
 
 size_t MachLogMachineMotionSequencerData::commandId() const

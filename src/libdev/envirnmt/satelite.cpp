@@ -116,7 +116,7 @@ const W4dDirectionalLight* EnvSatellite::light() const
 
 void EnvSatellite::visible(bool setVisible)
 {
-    if (orbit_ and orbit_->movingEntity())
+    if (orbit_ && orbit_->movingEntity())
         orbit_->movingEntity()->visible(setVisible);
 }
 

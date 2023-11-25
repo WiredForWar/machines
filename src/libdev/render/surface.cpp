@@ -408,7 +408,7 @@ void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, in
         static RenIVertex vertices[8];
         static bool initialised = false;
 
-        if (not initialised)
+        if (! initialised)
         {
             initialised = true;
 
@@ -704,7 +704,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
         }
 
         // Don't bother initialising the const stuff every frame.
-        if (not initialised)
+        if (! initialised)
         {
             initialised = true;
 
@@ -1223,7 +1223,7 @@ void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const Ren
 // These read/write functions are used for fog of war in savegame and store alpha only
 void RenSurface::read(PerIstream& inStream)
 {
-    PRE(not readOnly() and not sharable());
+    PRE(! readOnly() && ! sharable());
 
     size_t w = width();
     size_t h = height();

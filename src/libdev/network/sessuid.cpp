@@ -73,9 +73,9 @@ NetAppSessionUid NetAppSessionUid::operator=(const NetAppSessionUid& rhs)
 
 bool operator==(const NetAppSessionUid& lhs, const NetAppSessionUid& rhs)
 {
-    if (NetMappings::mapUnsignedtoGUID(lhs.appUid_) == NetMappings::mapUnsignedtoGUID(rhs.appUid_) and
+    if (NetMappings::mapUnsignedtoGUID(lhs.appUid_) == NetMappings::mapUnsignedtoGUID(rhs.appUid_) &&
 
-        NetMappings::mapUnsignedtoGUID(lhs.appInstanceUid_) == NetMappings::mapUnsignedtoGUID(rhs.appInstanceUid_) and
+        NetMappings::mapUnsignedtoGUID(lhs.appInstanceUid_) == NetMappings::mapUnsignedtoGUID(rhs.appInstanceUid_) &&
 
         lhs.appSessionName_ == rhs.appSessionName_)
         return true;

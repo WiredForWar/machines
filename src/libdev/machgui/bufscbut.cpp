@@ -69,14 +69,14 @@ void MachGuiBufferScrollButton::doBeReleased(const GuiMouseEvent&)
 
 void MachGuiBufferScrollButton::listUpdated()
 {
-    bool canScroll = list().canScrollBackward() or list().canScrollFoward();
+    bool canScroll = list().canScrollBackward() || list().canScrollFoward();
 
     if (canScroll != isVisible())
     {
         isVisible(canScroll);
 
         // Clean up control panel if this is being removed.
-        if (not canScroll)
+        if (! canScroll)
         {
             pInGameScreen_->controlPanel().redrawArea(*this);
         }

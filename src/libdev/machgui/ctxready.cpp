@@ -158,7 +158,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     new MachGuiChatButton(pStartupScreens, Gui::Box(336, 345, 346, 373));
 
     MachGuiMenuButton* pCancelBtn;
-    if (not NetNetwork::instance().isLobbiedGame())
+    if (! NetNetwork::instance().isLobbiedGame())
         pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
@@ -230,7 +230,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     for (int i = 0; i < pStartupScreens->startupData()->gameSettings()->numPlayers_; ++i)
     {
         MachGuiStartupData::PlayerInfo::Status status = pStartupScreens->startupData()->players()[i].status_;
-        if (status == MachGuiStartupData::PlayerInfo::HUMAN or status == MachGuiStartupData::PlayerInfo::COMPUTER)
+        if (status == MachGuiStartupData::PlayerInfo::HUMAN || status == MachGuiStartupData::PlayerInfo::COMPUTER)
             actualPlayers++;
     }
 
@@ -270,10 +270,10 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCtxImReady& t)
 // virtual
 bool MachGuiCtxImReady::doHandleKeyEvent(const GuiKeyEvent& e)
 {
-    if (e.key() == DevKey::ENTER and e.state() == Gui::PRESSED)
+    if (e.key() == DevKey::ENTER && e.state() == Gui::PRESSED)
     {
         // Make sure there is a chat message worth sending ( i.e. not empty )
-        if (pSingleLineEditBox_->text() != "" and not pSingleLineEditBox_->clearTextOnNextChar())
+        if (pSingleLineEditBox_->text() != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
         {
             // Add players name onto chat message
             string chatMessage(startupData().playerName());
@@ -281,7 +281,7 @@ bool MachGuiCtxImReady::doHandleKeyEvent(const GuiKeyEvent& e)
             chatMessage += pSingleLineEditBox_->text();
 
             // Send message (if host hasn't terminated or another problem hasn't occured )
-            if (not pStartupScreens_->startupData()->terminalMultiPlayerGameProblem())
+            if (! pStartupScreens_->startupData()->terminalMultiPlayerGameProblem())
             {
                 pStartupScreens_->messageBroker().sendChatMessage(chatMessage);
             }
@@ -306,7 +306,7 @@ void MachGuiCtxImReady::update()
     pSingleLineEditBox_->update();
     animations_.update();
 
-    if (MachLogNetwork::instance().isNetworkGame() and not startupData().terminalMultiPlayerGameProblem())
+    if (MachLogNetwork::instance().isNetworkGame() && ! startupData().terminalMultiPlayerGameProblem())
     {
         /*      if( MachLogNetwork::instance().node().lastPingAllTime() > 2.5 )
         {
@@ -431,7 +431,7 @@ void MachGuiCtxImReady::updatePlayerList()
 
 void MachGuiCtxImReady::displaySystemMessages()
 {
-    if (not startupData().isHost())
+    if (! startupData().isHost())
     {
         bool included = startupData().includedInGame();
         if (included != startupData().updateIncludedInGame())
@@ -463,7 +463,7 @@ void MachGuiCtxImReady::updateStartAndReadyButtons()
     else
     {
         // Grey out "I'm Ready" button if this player is not being considered for the game
-        if (not startupData().includedInGame() or startupData().terminalMultiPlayerGameProblem())
+        if (! startupData().includedInGame() || startupData().terminalMultiPlayerGameProblem())
         {
             pImReadyButton_->setReady(false);
             pImReadyButton_->disabled(true);
@@ -477,7 +477,7 @@ void MachGuiCtxImReady::updateStartAndReadyButtons()
     }
 
     // Update start button
-    pStartButton_->disabled(not startupData().canStartMultiPlayerGame());
+    pStartButton_->disabled(! startupData().canStartMultiPlayerGame());
 
     pSettingsButton_->disabled(startupData().terminalMultiPlayerGameProblem());
 }
@@ -487,11 +487,11 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
 {
     if (buttonEvent == MachGuiStartupScreens::IMREADY)
     {
-        ASSERT(not startupData().isHost(), "Host shouldn't be able to press I'm Ready button");
+        ASSERT(! startupData().isHost(), "Host shouldn't be able to press I'm Ready button");
 
         pStartupScreens_->messageBroker().sendImReadyMessage(
             startupData().playerName(),
-            not startupData().isReady(startupData().playerName()));
+            ! startupData().isReady(startupData().playerName()));
     }
     else if (buttonEvent == MachGuiStartupScreens::START)
     {
@@ -500,7 +500,7 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
 #ifndef DEMO
         if (startupData().doesAtLeastOnePlayerHaveMachinesCD()
 #ifndef PRODUCTION
-            or getenv("cb_dontcheckcd"))
+            || getenv("cb_dontcheckcd"))
 #else
         )
 #endif
@@ -550,7 +550,7 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
     else if (buttonEvent == MachGuiStartupScreens::BE_OK)
     {
         // Make sure there is a chat message worth sending ( i.e. not empty )
-        if (pSingleLineEditBox_->text() != "" and not pSingleLineEditBox_->clearTextOnNextChar())
+        if (pSingleLineEditBox_->text() != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
         {
             // Add players name onto chat message
             string chatMessage(startupData().playerName());
@@ -558,7 +558,7 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
             chatMessage += pSingleLineEditBox_->text();
 
             // Send message (if host hasn't terminated or another problem hasn't occured )
-            if (not pStartupScreens_->startupData()->terminalMultiPlayerGameProblem())
+            if (! pStartupScreens_->startupData()->terminalMultiPlayerGameProblem())
             {
                 pStartupScreens_->messageBroker().sendChatMessage(chatMessage);
             }
@@ -584,7 +584,7 @@ bool MachGuiCtxImReady::okayToSwitchContext()
         if (MachLogNetwork::instance().isNetworkGame())
         {
             // if we got into this screen via a lobby session then we need to terminate correctly at this point.
-            if (NetNetwork::instance().isLobbiedGame() and not pStartupScreens_->ignoreHostLostSystemMessage())
+            if (NetNetwork::instance().isLobbiedGame() && ! pStartupScreens_->ignoreHostLostSystemMessage())
             {
                 pStartupScreens_->displayMsgBox(
                     IDS_MENUMSG_QUIT,

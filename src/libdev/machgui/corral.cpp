@@ -54,7 +54,7 @@ SysPathName MachGuiCorralResource_hack(MachActor* pActor)
         wc = pActor->asCanAttack().weaponCombo();
 
         // Special check for POD to see if the ion cannon is functional
-        if (pActor->objectType() == MachLog::POD and not pActor->asPod().hasIonCannon())
+        if (pActor->objectType() == MachLog::POD && ! pActor->asPod().hasIonCannon())
         {
             wc = MachPhys::N_WEAPON_COMBOS;
         }
@@ -72,7 +72,7 @@ SysPathName MachGuiCorralResource_hack(MachActor* pActor)
     SysPathName pathName
         = MachActorBitmaps::name(pActor->objectType(), pActor->subType(), level, wc, pActor->displayMapAndIconRace());
 
-    if (pActor->objectType() == MachLog::SPY_LOCATOR and pActor->asSpyLocator().camouflaged())
+    if (pActor->objectType() == MachLog::SPY_LOCATOR && pActor->asSpyLocator().camouflaged())
     {
         pathName.extension("");
         string strPathName = pathName.c_str();
@@ -153,7 +153,7 @@ bool MachGuiCorralResource::beNotified(W4dSubject* pSubject, W4dSubject::Notific
         case W4dSubject::CLIENT_SPECIFIC:
             {
                 HAL_STREAM("MGCorralRespource::beNotified with HEALTH_STATUIS_CHANGED\n");
-                if (clientData == MachLog::HEALTH_STATUS_CHANGED or clientData == MachLog::PERCENTAGE_COMPLETE_CHANGED)
+                if (clientData == MachLog::HEALTH_STATUS_CHANGED || clientData == MachLog::PERCENTAGE_COMPLETE_CHANGED)
                     updateHealthBar();
             }
             break;
@@ -183,7 +183,7 @@ void MachGuiCorralResource::doBeReleased(const GuiMouseEvent& event)
         const MachActor* pActor = pActor_;
 
         // If inside APC look at APC instead
-        if (pActor_->objectIsMachine() and pActor_->asMachine().insideAPC())
+        if (pActor_->objectIsMachine() && pActor_->asMachine().insideAPC())
         {
             pActor = &(pActor_->asMachine().APCImInside());
         }
@@ -278,7 +278,7 @@ void MachGuiCorralResource::doDisplayInteriorEnabled(const Gui::Coord& abs)
 {
     MachGuiNewCorralIcon::doDisplayInteriorEnabled(abs);
 
-    if (pActor_->objectIsMachine() and pActor_->asMachine().insideAPC())
+    if (pActor_->objectIsMachine() && pActor_->asMachine().insideAPC())
     {
         Gui::Coord absCopy(abs);
         absCopy.y(absCopy.y() + MachGuiHealthBar::healthBarHeight());
@@ -323,8 +323,8 @@ void MachCorralIcons::add(MachActor* pActor)
     new MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_);
 
     // note that "selected" voicemail is only given in the case of the first actor put into the corral
-    if (pActor->objectIsMachine() and pActor->race() == MachLogRaces::instance().pcController().race()
-        and pCorral_->actors_.size() == 1)
+    if (pActor->objectIsMachine() && pActor->race() == MachLogRaces::instance().pcController().race()
+        && pCorral_->actors_.size() == 1)
     {
         // give voicemail
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::SELECTED);
@@ -392,7 +392,7 @@ const MachGuiCorral::Actors& MachGuiCorral::actors() const
 
 void MachGuiCorral::eraseAllActors()
 {
-    if (not actors_.empty())
+    if (! actors_.empty())
         actors_.erase(actors_.begin(), actors_.end());
 }
 
@@ -410,7 +410,7 @@ bool MachGuiCorral::isSelected(MachActor* pActor) const
 
 void MachGuiCorral::add(MachActor* pActor)
 {
-    PRE(not isSelected(pActor));
+    PRE(! isSelected(pActor));
 
     // Add to the collection
     actors_.push_back(pActor);
@@ -426,7 +426,7 @@ void MachGuiCorral::add(const ctl_pvector<MachActor>& actors)
     {
         MachActor* pActor = (*iter);
 
-        ASSERT(not isSelected(pActor), "actor already selected");
+        ASSERT(! isSelected(pActor), "actor already selected");
 
         // Add to the collection
         actors_.push_back(pActor);

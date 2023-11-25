@@ -18,7 +18,7 @@ GXError GXFile::open(const std::string& filename)
 {
 
     GXError result = FILE_OPEN_AGT;
-    if (not isOpen())
+    if (! isOpen())
     {
         inFile_ = fopen(filename.c_str(), "rb");
         if (inFile_ != nullptr)

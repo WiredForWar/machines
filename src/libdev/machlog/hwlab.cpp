@@ -187,7 +187,7 @@ PhysRelativeTime MachLogHardwareLab::update(const PhysRelativeTime& alteredMaxCP
 
     PhysRelativeTime interval = 10.0;
 
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
     {
         ensureLabAnimationIsOff();
         interval = 0.1;
@@ -195,7 +195,7 @@ PhysRelativeTime MachLogHardwareLab::update(const PhysRelativeTime& alteredMaxCP
 
     if (complete)
     {
-        if (not currentResearchQueue_.empty())
+        if (! currentResearchQueue_.empty())
         {
             // HAL_STREAM("(" << id() << ") MLHardwareLab::update...have something in currentReserachQueue\n" );
 
@@ -263,7 +263,7 @@ PhysRelativeTime MachLogHardwareLab::update(const PhysRelativeTime& alteredMaxCP
             bool completedSweepWithNothingFound = false;
             bool erasedItems = false;
 
-            while (not completedSweepWithNothingFound)
+            while (! completedSweepWithNothingFound)
             {
                 MachLogResearchTree::ResearchItems::iterator iFound = currentResearchQueue_.end();
 
@@ -318,8 +318,8 @@ float MachLogHardwareLab::totalResearchRate() const
     for (MachLogRaces::Technicians::const_iterator i = MachLogRaces::instance().technicians(race()).begin();
          i != MachLogRaces::instance().technicians(race()).end();
          ++i)
-        if ((*i)->insideBuilding() and (*i)->insideWhichBuilding().id() == id()
-            and &(*i)->motionSeq().currentConfigSpace() == &interiorConfigSpace())
+        if ((*i)->insideBuilding() && (*i)->insideWhichBuilding().id() == id()
+            && &(*i)->motionSeq().currentConfigSpace() == &interiorConfigSpace())
         {
             if ((*i)->isIdle())
                 (*i)->newOperation(new MachLogResearchAnimation(*i));
@@ -397,8 +397,8 @@ void MachLogHardwareLab::initialiseResearchItems()
     for (MachLogResearchTree::ResearchItems::const_iterator i = items.begin(); i != items.end(); ++i)
     {
         MachLogResearchItem* pRi = *i;
-        if (pRi->available(race()) and not pRi->researched(race()) and pRi->technologyLevel() <= highestTechLevel
-            and subType_ == pRi->hardwareLabSubType())
+        if (pRi->available(race()) && ! pRi->researched(race()) && pRi->technologyLevel() <= highestTechLevel
+            && subType_ == pRi->hardwareLabSubType())
         {
             if (pRi->hasParentDependancy())
             {
@@ -436,20 +436,20 @@ bool MachLogHardwareLab::addResearchItem(const MachLogResearchItem& mlri)
     CB_MachLogHardwareLab_DEPIMPL();
     bool found = false;
     for (MachLogResearchTree::ResearchItems::iterator i = availableResearchItems_.begin();
-         i != availableResearchItems_.end() and not found;
+         i != availableResearchItems_.end() && ! found;
          ++i)
-        if ((*i)->objectType() == mlri.objectType() and (*i)->subType() == mlri.subType()
-            and (*i)->hwLevel() == mlri.hwLevel() and (*i)->weaponCombo() == mlri.weaponCombo())
+        if ((*i)->objectType() == mlri.objectType() && (*i)->subType() == mlri.subType()
+            && (*i)->hwLevel() == mlri.hwLevel() && (*i)->weaponCombo() == mlri.weaponCombo())
         {
             // HAL_STREAM(" found a match in the available items list\n" );
             bool foundExistingEntry = false;
             for (MachLogResearchTree::ResearchItems::iterator j = currentResearchQueue_.begin();
                  j != currentResearchQueue_.end();
                  ++j)
-                if ((*j)->objectType() == mlri.objectType() and (*j)->subType() == mlri.subType()
-                    and (*j)->hwLevel() == mlri.hwLevel() and (*j)->weaponCombo() == mlri.weaponCombo())
+                if ((*j)->objectType() == mlri.objectType() && (*j)->subType() == mlri.subType()
+                    && (*j)->hwLevel() == mlri.hwLevel() && (*j)->weaponCombo() == mlri.weaponCombo())
                     foundExistingEntry = true;
-            if (not foundExistingEntry)
+            if (! foundExistingEntry)
             {
                 found = true;
                 currentResearchQueue_.push_back((*i));
@@ -485,7 +485,7 @@ bool MachLogHardwareLab::addResearchItem(const MachLogResearchItem& mlri)
                 const MachLogRaces::Technicians& myTechs = MachLogRaces::instance().technicians(race());
 
                 for (MachLogRaces::Technicians::const_iterator i = myTechs.begin();
-                     noTechsOnWayEncountered and i != myTechs.end();
+                     noTechsOnWayEncountered && i != myTechs.end();
                      ++i)
                 {
                     if ((*i)->isEnteringBuilding(*this))
@@ -537,9 +537,9 @@ void MachLogHardwareLab::moveResearchItem(const MachLogResearchItem& mlri, MachL
         if ((*i) == &mlri)
         {
             //          delete (*i);
-            if (direction == TOWARDS_FRONT and i == currentResearchQueue_.begin())
+            if (direction == TOWARDS_FRONT && i == currentResearchQueue_.begin())
                 return;
-            if (direction == TOWARDS_BACK and i == tempIterator)
+            if (direction == TOWARDS_BACK && i == tempIterator)
                 return;
 
             MachLogResearchTree::ResearchItems::iterator insertIterator = i;
@@ -645,7 +645,7 @@ MachLogHardwareLab::MachLogHardwareLab(PerConstructor con)
 
 void MachLogHardwareLab::ensureLabAnimationIsOn()
 {
-    if (not pPhysHardwareLab()->isWorking())
+    if (! pPhysHardwareLab()->isWorking())
     {
         pPhysHardwareLab()->isWorking(true);
         if (MachLogNetwork::instance().isNetworkGame())

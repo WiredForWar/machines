@@ -49,7 +49,7 @@ const MexEulerAngles& MexEulerAngles::operator=(const MexEulerAngles& rhs)
 
 bool MexEulerAngles::operator==(const MexEulerAngles& v) const
 {
-    return azimuth_ == v.azimuth_ and elevation_ == v.elevation_ and roll_ == v.roll_;
+    return azimuth_ == v.azimuth_ && elevation_ == v.elevation_ && roll_ == v.roll_;
 }
 
 std::ostream& operator<<(std::ostream& o, const MexEulerAngles& t)

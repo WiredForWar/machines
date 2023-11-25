@@ -24,11 +24,11 @@ const CtlConstCountedPtr<MachPhysConstructionExplosionData>&
 MachPhysGenericExplosionData::genericExplosion(size_t level)
 {
     PRE_INFO(level);
-    PRE(level > 0 and level < 6);
+    PRE(level > 0 && level < 6);
     static bool defined[5] = { false, false, false, false, false };
     static CtlConstCountedPtr<MachPhysConstructionExplosionData> dataPtr[5];
 
-    if (not defined[level - 1])
+    if (! defined[level - 1])
     {
         MachPhysConstructionExplosionData* pData = new MachPhysConstructionExplosionData(15.0);
 

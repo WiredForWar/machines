@@ -72,7 +72,7 @@ void W4dGarbageCollector::collect()
         {
             W4dEntity* pEntity = entities_[i];
             PhysAbsoluteTime iTime = times_[i];
-            if (pEntity == nullptr or iTime <= now)
+            if (pEntity == nullptr || iTime <= now)
             {
                 // Delete the entity
                 if (pEntity != nullptr)

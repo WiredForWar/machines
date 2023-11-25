@@ -197,7 +197,7 @@ W4dEntity::~W4dEntity()
     // However, children owned by a counted pointer must be attached to a hidden root,
     // to be deleted naturally when the last counted ptr goes out of scope.
     // Otherwise double deletion will occur.
-    while (childList_ and childList_->size() != 0)
+    while (childList_ && childList_->size() != 0)
     {
         W4dEntity* pChild = childList_->back();
         if (pChild->isOwnedByCountedPtr())
@@ -219,14 +219,14 @@ W4dEntity::~W4dEntity()
     cancelIsHeld();
 
     // Remove from parent's child list if appropriate
-    if (pImpl_->ownedByParent_ and hasParent())
+    if (pImpl_->ownedByParent_ && hasParent())
     {
         ASSERT(pParent()->pImpl_->childList_ != nullptr, "Parent has no child list");
         pParent()->pImpl_->childList_->remove(this);
     }
 
     // Remove any intersecting domains relations
-    while (intersectingDomains_ != nullptr and intersectingDomains_->size() != 0)
+    while (intersectingDomains_ != nullptr && intersectingDomains_->size() != 0)
         intersects(intersectingDomains_->back(), false);
 
     delete pImpl_;
@@ -277,7 +277,7 @@ void W4dEntity::attachTo(W4dEntity* pNewParent, const W4dTransform3d& newLocalTr
 
     // If associated with a logical subject, update any relevant observers
     // if resulted in domain change.
-    if (pImpl_->ownedByParent_ and pSubject_ != nullptr)
+    if (pImpl_->ownedByParent_ && pSubject_ != nullptr)
     {
         pSubject_->impl().updateDomainObservers(*oldParent);
     }
@@ -340,7 +340,7 @@ W4dDomain* W4dEntity::containingDomain() const
 
     bool finished = false;
 
-    while (not finished)
+    while (! finished)
     {
         if (pNode->isDomain())
         {
@@ -401,7 +401,7 @@ void W4dEntity::intersects(W4dDomain* pDomain, bool intersects)
     CB_W4dEntity_DEPIMPL();
 
     PRE(pDomain != nullptr);
-    PRE(intersects or intersectingDomains_ != nullptr);
+    PRE(intersects || intersectingDomains_ != nullptr);
 
     // If adding an intersection, ensure we have an intersecting domains collection
     if (intersectingDomains_ == nullptr)
@@ -510,7 +510,7 @@ bool W4dEntity::hasIntersectingDomains() const
 void W4dEntity::createIntersectingDomains()
 {
     CB_W4dEntity_DEPIMPL();
-    PRE(not hasIntersectingDomains());
+    PRE(! hasIntersectingDomains());
     intersectingDomains_ = new W4dDomains;
 }
 
@@ -518,7 +518,7 @@ void W4dEntity::addIntersectingDomain(W4dDomain* domain)
 {
     CB_W4dEntity_DEPIMPL();
     PRE(hasIntersectingDomains());
-    PRE(not intersects(*domain));
+    PRE(! intersects(*domain));
 
     intersectingDomains_->push_back(domain);
     domain->intersects(this, true);
@@ -551,7 +551,7 @@ void W4dEntity::deleteIntersectingDomains()
     delete intersectingDomains_;
     intersectingDomains_ = nullptr;
 
-    POST(not hasIntersectingDomains());
+    POST(! hasIntersectingDomains());
 }
 
 void W4dEntity::localTransform(const W4dTransform3d& newLocalTransform)
@@ -568,7 +568,7 @@ void W4dEntity::localTransform(const W4dTransform3d& newLocalTransform)
     markGlobalTransformsDirty();
 
     // If transform is being scaled, apply the scale
-    if (pEntityScale_ != nullptr and scaleTransformFromParent())
+    if (pEntityScale_ != nullptr && scaleTransformFromParent())
     {
         // Store the unscaled transform position
         pEntityScale_->unscaledTransformPosition(localTransform_.position());
@@ -585,15 +585,15 @@ const W4dTransform3d& W4dEntity::localTransform() const
     CB_W4dEntity_DEPIMPL();
 
     // Check for special conditions under which we might need to lazily evaluate
-    bool hasTransformPlan = pPlan_ and pPlan_->hasMotionPlan();
+    bool hasTransformPlan = pPlan_ && pPlan_->hasMotionPlan();
     bool useParentScale = scaleTransformFromParent();
 
     // In either case do some updating
-    if (hasTransformPlan or useParentScale)
+    if (hasTransformPlan || useParentScale)
     {
         // get current time, and check for up to date
         PhysAbsoluteTime timeNow = W4dManager::instance().time();
-        if (pPlanUpdateTimes_ == nullptr or pPlanUpdateTimes_->transformTime != timeNow)
+        if (pPlanUpdateTimes_ == nullptr || pPlanUpdateTimes_->transformTime != timeNow)
         {
             // Update the transform from any motion plan
             if (hasTransformPlan)
@@ -688,7 +688,7 @@ const W4dTransform3d& W4dEntity::globalTransform() const
 
             // See if the transform keys still match. If so no need to recompute.
             if (parentGlobalTransform.key() != lastParentGlobalTransformKey_
-                or myTransform.key() != lastLocalTransformKey_)
+                || myTransform.key() != lastLocalTransformKey_)
             {
                 // cache the keys
                 nonConstThis->pImpl_->lastParentGlobalTransformKey_ = parentGlobalTransform.key();
@@ -814,7 +814,7 @@ void W4dEntity::add(RenMeshInstance* pMesh, const W4dDistance& distance, W4dLOD 
     (*meshes_)[id].distance = distance * distance; // squared!
 
     pImpl_->updateHasMeshFlag();
-    if (id == 0 and pMesh != nullptr)
+    if (id == 0 && pMesh != nullptr)
     {
         // Need current flag indicating whether this entity has any scaling
         updateNotScaledFlag();
@@ -896,7 +896,7 @@ void W4dEntity::renderAtRange(const W4dCamera& camera, const W4dDistance& range,
             // leave the entity with a permanent state change, which material plans do not.
             pPlan_->clearMaterialPlansAtTime(timeNow);
 
-            if (pPlan_->hasMaterialPlan() and pPlanUpdateTimes_->materialTime != timeNow)
+            if (pPlan_->hasMaterialPlan() && pPlanUpdateTimes_->materialTime != timeNow)
             {
                 // See if a material vector override is defined for this level of detail,
                 // and if so apply it.
@@ -927,13 +927,13 @@ void W4dEntity::renderAtRange(const W4dCamera& camera, const W4dDistance& range,
                     //     updateLODMaterials( timeNow, lodId );
 
                     // Clear obsolete plans
-                    if (not manager.hasArtificialTime())
+                    if (! manager.hasArtificialTime())
                         pPlan_->clearMaterialPlans(nObsoletePlans);
                 }
             }
 
             // Deal with any texture coordinate plans
-            if (pPlan_->hasUVPlan() and pPlanUpdateTimes_->uvTime != timeNow)
+            if (pPlan_->hasUVPlan() && pPlanUpdateTimes_->uvTime != timeNow)
             {
                 uint nObsoletePlans = 0;
                 Ren::UVTransformPtr uvTransformPtr;
@@ -945,7 +945,7 @@ void W4dEntity::renderAtRange(const W4dCamera& camera, const W4dDistance& range,
                     pMesh->animateTextureCoords(uvTransformPtr);
 
                     // Clear any obsolete uv plans
-                    if (nObsoletePlans != 0 and not manager.hasArtificialTime())
+                    if (nObsoletePlans != 0 && ! manager.hasArtificialTime())
                     {
                         updateLODUVTransforms(uvTransformPtr, maxLOD, lodId);
                         pPlan_->clearUVPlans(nObsoletePlans);
@@ -962,7 +962,7 @@ void W4dEntity::renderAtRange(const W4dCamera& camera, const W4dDistance& range,
                 pPlan_->renderMesh(camera, range, nonConstThis, timeNow, &nObsoletePlans, complexity);
 
                 // Clear any obsolete mesh plans
-                if (nObsoletePlans != 0 and not manager.hasArtificialTime())
+                if (nObsoletePlans != 0 && ! manager.hasArtificialTime())
                     pPlan_->clearMeshPlans(nObsoletePlans);
             }
         }
@@ -1012,7 +1012,7 @@ bool W4dEntity::rangeToMesh(
         {
             bool foundMesh = false;
             W4dLOD lodId = 0;
-            for (W4dEntityImpl::Meshes::const_iterator it = meshes_->begin(); it != meshes_->end() && not foundMesh;
+            for (W4dEntityImpl::Meshes::const_iterator it = meshes_->begin(); it != meshes_->end() && ! foundMesh;
                  ++it)
             {
                 // If this mesh is within range, draw it.
@@ -1053,7 +1053,7 @@ bool W4dEntity::rangeToMesh(
         {
             bool foundMesh = false;
             W4dLOD lodId = 0;
-            for (W4dEntityImpl::Meshes::const_iterator it = meshes_->begin(); it != meshes_->end() && not foundMesh;
+            for (W4dEntityImpl::Meshes::const_iterator it = meshes_->begin(); it != meshes_->end() && ! foundMesh;
                  ++it)
             {
                 if (range < (*it).distance)
@@ -1221,7 +1221,7 @@ bool W4dEntity::clearPlanIfDone()
         PhysAbsoluteTime time = W4dManager::instance().time();
 
         // Check for complete
-        if (pPlan_->isDone(time) and not W4dManager::instance().hasArtificialTime())
+        if (pPlan_->isDone(time) && ! W4dManager::instance().hasArtificialTime())
         {
             delete pPlan_;
             pPlan_ = nullptr;
@@ -1253,7 +1253,7 @@ bool W4dEntity::updateTransformFromPlan()
     PhysAbsoluteTime time = manager.time();
 
     // Check there is a plan
-    if (pPlan_ and pPlan_->hasMotionPlan())
+    if (pPlan_ && pPlan_->hasMotionPlan())
     {
         // Update the local transform
         W4dEntityPlan::PlanState state;
@@ -1263,7 +1263,7 @@ bool W4dEntity::updateTransformFromPlan()
         updated = state == W4dEntityPlan::DEFINED;
 
         // Clear any completed plans
-        if (nObsoletePlans != 0 and not manager.hasArtificialTime())
+        if (nObsoletePlans != 0 && ! manager.hasArtificialTime())
             pPlan_->clearMotionPlans(nObsoletePlans);
     }
 
@@ -1300,13 +1300,13 @@ void W4dEntity::readLODFile(const SysPathName& pathname)
 
     UtlLineTokeniser parser(pathname);
 
-    ASSERT(not parser.finished(), "LOD file empty");
+    ASSERT(! parser.finished(), "LOD file empty");
 
     W4dLOD id = 0;
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
-        if (parser.tokens()[0] == "MESH" or parser.tokens()[0] == "EMPTY_MESH")
+        if (parser.tokens()[0] == "MESH" || parser.tokens()[0] == "EMPTY_MESH")
         {
             parseMesh(directoryname, &parser, id++);
         }
@@ -1341,7 +1341,7 @@ void W4dEntity::parseMesh(const SysPathName& directoryname, UtlLineTokeniser* pP
     CB_W4dEntity_DEPIMPL();
 
     ASSERT_INFO(pParser->tokens()[0]);
-    ASSERT(pParser->tokens()[0] == "MESH" or pParser->tokens()[0] == "EMPTY_MESH", "");
+    ASSERT(pParser->tokens()[0] == "MESH" || pParser->tokens()[0] == "EMPTY_MESH", "");
 
     RenMeshInstance* pMesh = nullptr;
 
@@ -1370,7 +1370,7 @@ void W4dEntity::parseMesh(const SysPathName& directoryname, UtlLineTokeniser* pP
 
     pParser->parseNextLine();
 
-    if (pParser->finished() or pParser->tokens()[0] != "DISTANCE")
+    if (pParser->finished() || pParser->tokens()[0] != "DISTANCE")
         add(pMesh, HUGE_VAL, id); // HUGE_VAL => effectively on until infinity.
 
     else if (pParser->tokens()[0] == "DISTANCE")
@@ -1401,7 +1401,7 @@ bool W4dEntity::hasMesh(W4dLOD id) const
 {
     TEST_INVARIANT;
     CB_W4dEntity_DEPIMPL();
-    return meshes_->size() > id and (*meshes_)[id].mesh;
+    return meshes_->size() > id && (*meshes_)[id].mesh;
 }
 
 const RenMeshInstance& W4dEntity::mesh(W4dLOD id) const
@@ -1494,7 +1494,7 @@ bool W4dEntity::visible() const
     CB_W4dEntity_DEPIMPL();
 
     // Check for a visibility plan
-    if (pPlan_ != nullptr and pPlan_->hasVisibilityPlan())
+    if (pPlan_ != nullptr && pPlan_->hasVisibilityPlan())
     {
         // Only update once at any given time
         W4dManager& manager = W4dManager::instance();
@@ -1510,7 +1510,7 @@ bool W4dEntity::visible() const
             pPlanUpdateTimes_->visibilityTime = timeNow;
 
             // Expunge any obsolete visibility plans
-            if (nObsoletePlans != 0 and not manager.hasArtificialTime())
+            if (nObsoletePlans != 0 && ! manager.hasArtificialTime())
                 pPlan_->clearVisibilityPlans(nObsoletePlans);
         }
     }
@@ -1563,7 +1563,7 @@ const MexAlignedBox3d& W4dEntity::boundingVolume() const
     // Only entities with a mesh have any scale
     const MexAlignedBox3d* pResult;
 
-    if (boundingVolume_ == nullptr and pImpl_->notScaled_ and hasMesh())
+    if (boundingVolume_ == nullptr && pImpl_->notScaled_ && hasMesh())
     {
         // Use the mesh's own local scale
         pResult = &(mesh().mesh()->boundingVolume());
@@ -1588,7 +1588,7 @@ void W4dEntity::CLASS_INVARIANT
     INVARIANT(pImpl_);
     INVARIANT(meshes_);
     INVARIANT(
-        (pPlan_ == nullptr and pPlanUpdateTimes_ == nullptr) or (pPlan_ != nullptr and pPlanUpdateTimes_ != nullptr));
+        (pPlan_ == nullptr && pPlanUpdateTimes_ == nullptr) || (pPlan_ != nullptr && pPlanUpdateTimes_ != nullptr));
     INVARIANT(hasMesh() == hasMesh(0));
 }
 
@@ -1723,7 +1723,7 @@ W4dEntity::Solidity W4dEntity::solid() const
 uint W4dEntity::updateLODMaterials(const PhysAbsoluteTime timeNow, W4dLOD exceptLodId)
 {
     CB_W4dEntity_DEPIMPL();
-    PRE(pPlan_ != nullptr and pPlan_->hasMaterialPlan());
+    PRE(pPlan_ != nullptr && pPlan_->hasMaterialPlan());
 
     // Material plans now regarded as temporary, so we never want to do this
     ASSERT(false, "");
@@ -1756,7 +1756,7 @@ void W4dEntity::updateLODUVTransforms(const Ren::UVTransformPtr& uvTransformPtr,
     // Iterate through the levels of detail
     W4dLOD lodId = 0;
 
-    for (W4dEntityImpl::Meshes::const_iterator it = meshes_->begin(); it != meshes_->end() and lodId <= maxLOD;
+    for (W4dEntityImpl::Meshes::const_iterator it = meshes_->begin(); it != meshes_->end() && lodId <= maxLOD;
          ++it, ++lodId)
     {
         if (lodId != exceptId)
@@ -1775,7 +1775,7 @@ W4dEntityPlan& W4dEntity::entityPlanForEdit()
     {
         // Only clear if we don't have an artificial time
         W4dManager& manager = W4dManager::instance();
-        if (not manager.hasArtificialTime())
+        if (! manager.hasArtificialTime())
         {
             // get current time
             PhysAbsoluteTime timeNow = manager.time();
@@ -1838,7 +1838,7 @@ void W4dEntity::updateNotScaledFlag()
     CB_W4dEntity_DEPIMPL();
     // Check for a scaled mesh or a local mesh scale attribute
     pImpl_->notScaled_
-        = (not hasMesh() or mesh().scale().isUnity()) and (not pEntityScale_ or not pEntityScale_->hasMeshScale());
+        = (! hasMesh() || mesh().scale().isUnity()) && (! pEntityScale_ || ! pEntityScale_->hasMeshScale());
 }
 
 // virtual
@@ -1846,7 +1846,7 @@ void W4dEntity::temporaryScale(const RenScale& scale, PropogateScaleFlag propoga
 {
     CB_W4dEntity_DEPIMPL();
     // Check scale type
-    if (scale.isUnity() or (scale.isUniform() and scale.asUniform().factor() == 1.0))
+    if (scale.isUnity() || (scale.isUniform() && scale.asUniform().factor() == 1.0))
     {
         // Setting scale to untiy, which is same as clearing
         clearTemporaryScale(propogate);
@@ -1858,7 +1858,7 @@ void W4dEntity::temporaryScale(const RenScale& scale, PropogateScaleFlag propoga
         updateNotScaledFlag();
 
         // Deal with any propogation through descendants
-        if (propogate and childList_ != nullptr)
+        if (propogate && childList_ != nullptr)
         {
             const RenNonUniformScale* pNonUniformScale = (scale.isNonUniform() ? &scale.asNonUniform() : nullptr);
 
@@ -1948,7 +1948,7 @@ void W4dEntity::clearTemporaryScale(PropogateScaleFlag propogate)
     }
 
     // Clear any children if propogating
-    if (propogate and childList_ != nullptr)
+    if (propogate && childList_ != nullptr)
     {
         for (W4dEntities::iterator it = childList_->begin(); it != childList_->end(); ++it)
             (*it)->clearTemporaryScale(propogate);
@@ -1958,7 +1958,7 @@ void W4dEntity::clearTemporaryScale(PropogateScaleFlag propogate)
 bool W4dEntity::hasTemporaryScale() const
 {
     CB_W4dEntity_DEPIMPL();
-    return (pEntityScale_ and pEntityScale_->hasMeshScale()) or (pPlan_ != nullptr and pPlan_->hasScalePlan());
+    return (pEntityScale_ && pEntityScale_->hasMeshScale()) || (pPlan_ != nullptr && pPlan_->hasScalePlan());
 }
 
 const RenScale& W4dEntity::temporaryScale() const
@@ -1970,7 +1970,7 @@ const RenScale& W4dEntity::temporaryScale() const
     W4dEntityScale& myEntityScale = _CONST_CAST(W4dEntity*, this)->entityScale();
 
     // Check for a scale plan
-    if (pPlan_ != nullptr and pPlan_->hasScalePlan())
+    if (pPlan_ != nullptr && pPlan_->hasScalePlan())
     {
         // Only update once at any given time
         W4dManager& manager = W4dManager::instance();
@@ -1983,12 +1983,12 @@ const RenScale& W4dEntity::temporaryScale() const
             if (pPlan_->scale(timeNow, &myEntityScale, &nObsoletePlans) != W4dEntityPlan::DEFINED)
             {
                 // Ensure we have a scale defined. If none, allocate a unity scale.
-                if (not myEntityScale.hasMeshScale())
+                if (! myEntityScale.hasMeshScale())
                     myEntityScale.meshScale(RenUniformScale(1.0));
             }
 
             // Expunge any obsolete scale plans
-            if (nObsoletePlans != 0 and not manager.hasArtificialTime())
+            if (nObsoletePlans != 0 && ! manager.hasArtificialTime())
                 pPlan_->clearScalePlans(nObsoletePlans);
         }
     }
@@ -1999,21 +1999,21 @@ const RenScale& W4dEntity::temporaryScale() const
 void W4dEntity::scaleTransformFromParent(bool doScale)
 {
     CB_W4dEntity_DEPIMPL();
-    if (doScale or pEntityScale_ != nullptr)
+    if (doScale || pEntityScale_ != nullptr)
     {
         // Get the entity scale object, and checking if we're already scaling transform
         W4dEntityScale& myEntityScale = entityScale();
         bool wasScalingFromParent = myEntityScale.scaleTransformFromParent();
 
         // If removing scaling, restore local transform
-        if (not doScale and wasScalingFromParent)
+        if (! doScale && wasScalingFromParent)
             localTransform_.position(myEntityScale.unscaledTransformPosition());
 
         // Set the flag
         myEntityScale.scaleTransformFromParent(doScale);
 
         // If scaling for first time, ensure current transform position is saved
-        if (doScale and not wasScalingFromParent)
+        if (doScale && ! wasScalingFromParent)
             pEntityScale_->unscaledTransformPosition(localTransform_.position());
     }
 }
@@ -2021,7 +2021,7 @@ void W4dEntity::scaleTransformFromParent(bool doScale)
 bool W4dEntity::scaleTransformFromParent() const
 {
     CB_W4dEntity_DEPIMPL();
-    return pEntityScale_ != nullptr and pEntityScale_->scaleTransformFromParent();
+    return pEntityScale_ != nullptr && pEntityScale_->scaleTransformFromParent();
 }
 
 void W4dEntity::scaleTransformPosition()
@@ -2207,7 +2207,7 @@ void W4dEntity::isComposite(bool isIt)
 
 void W4dEntity::isGarbage(bool setIsGarbage)
 {
-    PRE(not setIsGarbage or not isOwnedByCountedPtr());
+    PRE(! setIsGarbage || ! isOwnedByCountedPtr());
 
     CB_W4dEntity_DEPIMPL();
     pImpl_->isGarbage_ = setIsGarbage;
@@ -2226,7 +2226,7 @@ bool W4dEntity::hasContainingDomain(W4dDomain** ppDomain) const
     W4dEntity* pNode = _CONST_CAST(W4dEntity*, this);
     bool found = false;
 
-    while (not found and pNode->hasParent())
+    while (! found && pNode->hasParent())
     {
         pNode = pNode->pParent();
 
@@ -2583,7 +2583,7 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
 
             string lightType = pParser->tokens()[1];
             ASSERT(
-                lightType == "DIRECTIONAL" or lightType == "POINT" or lightType == "UNIFORM",
+                lightType == "DIRECTIONAL" || lightType == "POINT" || lightType == "UNIFORM",
                 "illigal type specified");
 
             if (lightType == "DIRECTIONAL")
@@ -2609,8 +2609,8 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
 
             string lightScope = pParser->tokens()[1];
             ASSERT(
-                lightScope == "LOCAL_LIGHT" or lightScope == "GLOBAL_LIGHT" or lightScope == "DOMAIN_LIGHT"
-                    or lightScope == "DOMAIN_COMPOSITE" or lightScope == "DYNAMIC_LIGHT",
+                lightScope == "LOCAL_LIGHT" || lightScope == "GLOBAL_LIGHT" || lightScope == "DOMAIN_LIGHT"
+                    || lightScope == "DOMAIN_COMPOSITE" || lightScope == "DYNAMIC_LIGHT",
                 "illigal light scope specified");
 
             if (lightScope == "LOCAL_LIGHT")
@@ -2708,16 +2708,16 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
         pParser->parseNextLine();
     }
 
-    ASSERT(type and scope and colour and direction and (dummyMesh or position), "basic elements missing");
-    ASSERT((uniform or point) and attenuations and range, " attenuations/range not specified");
+    ASSERT(type && scope && colour && direction && (dummyMesh || position), "basic elements missing");
+    ASSERT((uniform || point) && attenuations && range, " attenuations/range not specified");
     ASSERT_INFO(nTimes);
     ASSERT_INFO(nIntensities);
 
     ASSERT_INFO(timesDefined);
     ASSERT_INFO(intsDefined);
-    bool result = not(timesDefined ^ intsDefined);
+    bool result = !(timesDefined ^ intsDefined);
     ASSERT_INFO(result);
-    ASSERT(not(timesDefined ^ intsDefined), " TIMES or INTENSITIES missing ");
+    ASSERT(!(timesDefined ^ intsDefined), " TIMES or INTENSITIES missing ");
 
     pImpl_->addLightAnimationData(pLightData);
     pParser->parseNextLine();

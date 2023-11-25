@@ -32,8 +32,8 @@ MachPhysConstructionExplosionData::ExplosionPoint::ExplosionPoint(
 {
     PRE_INFO(minTimeFactor);
     PRE_INFO(maxTimeFactor);
-    PRE(0.0 <= minTimeFactor and minTimeFactor <= 1.0);
-    PRE(0.0 <= maxTimeFactor and maxTimeFactor <= 1.0);
+    PRE(0.0 <= minTimeFactor && minTimeFactor <= 1.0);
+    PRE(0.0 <= maxTimeFactor && maxTimeFactor <= 1.0);
 
     TEST_INVARIANT;
 }
@@ -68,7 +68,7 @@ MATHEX_SCALAR MachPhysConstructionExplosionData::ExplosionPoint::minTimeFactor()
     MATHEX_SCALAR result = minTimeFactor_;
 
     POST_INFO(minTimeFactor_);
-    POST(0.0 <= result and result <= 1.0);
+    POST(0.0 <= result && result <= 1.0);
 
     return result;
 }
@@ -78,7 +78,7 @@ MATHEX_SCALAR MachPhysConstructionExplosionData::ExplosionPoint::maxTimeFactor()
     MATHEX_SCALAR result = maxTimeFactor_;
 
     POST_INFO(maxTimeFactor_);
-    POST(0.0 <= result and result <= 1.0);
+    POST(0.0 <= result && result <= 1.0);
 
     return result;
 }

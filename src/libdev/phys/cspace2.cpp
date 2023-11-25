@@ -166,7 +166,7 @@ void PhysConfigSpace2d::removeDomain(const DomainId& id)
     // Delete the domain
     delete pDomain;
 
-    POST(not domainExists(id));
+    POST(! domainExists(id));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -233,7 +233,7 @@ void PhysConfigSpace2d::removePortal(const PortalId& id)
     // Delete the portal
     delete pPortal;
 
-    POST(not portalExists(id));
+    POST(! portalExists(id));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -288,7 +288,7 @@ PhysConfigSpace2d::PolygonId PhysConfigSpace2d::add(
     }
 
     // Unless buffering polygon updates, update the portals as required
-    if (not impl_.bufferPolygonPortalUpdates_)
+    if (! impl_.bufferPolygonPortalUpdates_)
         impl_.updateDomainRegion();
 
     return id;
@@ -379,7 +379,7 @@ void PhysConfigSpace2d::remove(PolygonId id)
     delete pPolygonHolder;
 
     // Unless buffering polygon updates, update the portals as required
-    if (not impl_.bufferPolygonPortalUpdates_)
+    if (! impl_.bufferPolygonPortalUpdates_)
         impl_.updateDomainRegion();
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -399,14 +399,14 @@ bool PhysConfigSpace2d::contains(
         // See if the point is inside any polygon
         bool inPolygons = false;
 
-        if (whichPolygons == USE_PERMANENT_ONLY or whichPolygons == USE_ALL)
+        if (whichPolygons == USE_PERMANENT_ONLY || whichPolygons == USE_ALL)
             inPolygons = impl_.contains(testPoint, pId, impl_.permanentPolygonTree(), flags);
 
-        if (not inPolygons and (whichPolygons == USE_TEMPORARY_ONLY or whichPolygons == USE_ALL))
+        if (! inPolygons && (whichPolygons == USE_TEMPORARY_ONLY || whichPolygons == USE_ALL))
             inPolygons = impl_.contains(testPoint, pId, impl_.temporaryPolygonTree(), flags);
 
         // Decide what this means based on space type
-        inSet = (impl_.mode() == SUBTRACTIVE ? not inPolygons : inPolygons);
+        inSet = (impl_.mode() == SUBTRACTIVE ? ! inPolygons : inPolygons);
     }
 
     return inSet;
@@ -428,14 +428,14 @@ bool PhysConfigSpace2d::contains(
     MATHEX_SCALAR height = (p1.z() <= p2.z() ? p1.z() : p2.z());
 
     // Check inside the outer boundary
-    bool inSet = impl_.boundary().contains(end1) and impl_.boundary().contains(end2);
+    bool inSet = impl_.boundary().contains(end1) && impl_.boundary().contains(end2);
 
     // Check for containment with the appropriate BSP trees of polygons
     if (inSet)
     {
         // See if the line intersects any polygon
-        if (whichPolygons == USE_PERMANENT_ONLY or whichPolygons == USE_ALL)
-            inSet = not impl_.intersects(
+        if (whichPolygons == USE_PERMANENT_ONLY || whichPolygons == USE_ALL)
+            inSet = ! impl_.intersects(
                 end1,
                 end2,
                 height,
@@ -444,8 +444,8 @@ bool PhysConfigSpace2d::contains(
                 Mathex::TOUCH_ISNT_INTERSECT,
                 flags);
 
-        if (inSet and (whichPolygons == USE_TEMPORARY_ONLY or whichPolygons == USE_ALL))
-            inSet = not impl_.intersects(
+        if (inSet && (whichPolygons == USE_TEMPORARY_ONLY || whichPolygons == USE_ALL))
+            inSet = ! impl_.intersects(
                 end1,
                 end2,
                 height,
@@ -481,9 +481,9 @@ bool PhysConfigSpace2d::contains(
         ids.reserve(2);
 
         // See if the polygon intersects any polygon
-        if (whichPolygons == USE_PERMANENT_ONLY or whichPolygons == USE_ALL)
+        if (whichPolygons == USE_PERMANENT_ONLY || whichPolygons == USE_ALL)
         {
-            inSet = not impl_.intersects(
+            inSet = ! impl_.intersects(
                 polygon,
                 polygonBoundary,
                 &ids,
@@ -493,9 +493,9 @@ bool PhysConfigSpace2d::contains(
                 flags);
         }
 
-        if (inSet and (whichPolygons == USE_TEMPORARY_ONLY or whichPolygons == USE_ALL))
+        if (inSet && (whichPolygons == USE_TEMPORARY_ONLY || whichPolygons == USE_ALL))
         {
-            inSet = not impl_.intersects(
+            inSet = ! impl_.intersects(
                 polygon,
                 polygonBoundary,
                 &ids,
@@ -505,7 +505,7 @@ bool PhysConfigSpace2d::contains(
                 flags);
         }
 
-        if (not inSet)
+        if (! inSet)
             *pId = ids[0];
     }
     else
@@ -536,8 +536,8 @@ bool PhysConfigSpace2d::contains(
         PolygonIds ids;
 
         // See if the polygon intersects any polygon
-        if (whichPolygons == USE_PERMANENT_ONLY or whichPolygons == USE_ALL)
-            inSet = not impl_.intersects(
+        if (whichPolygons == USE_PERMANENT_ONLY || whichPolygons == USE_ALL)
+            inSet = ! impl_.intersects(
                 polygon,
                 polygonBoundary,
                 pIds,
@@ -546,8 +546,8 @@ bool PhysConfigSpace2d::contains(
                 Mathex::TOUCH_ISNT_INTERSECT,
                 flags);
 
-        if (inSet and (whichPolygons == USE_TEMPORARY_ONLY or whichPolygons == USE_ALL))
-            inSet = not impl_.intersects(
+        if (inSet && (whichPolygons == USE_TEMPORARY_ONLY || whichPolygons == USE_ALL))
+            inSet = ! impl_.intersects(
                 polygon,
                 polygonBoundary,
                 pIds,
@@ -586,7 +586,7 @@ PhysConfigSpace2d::FindPathId PhysConfigSpace2d::addFindPath(
     impl_.findPaths().add(id, pFindPath);
 
     // Add it to the queue if not already finished
-    if (not pFindPath->isFinished())
+    if (! pFindPath->isFinished())
         impl_.findPathQueue().push_back(pFindPath);
 
     return id;
@@ -652,7 +652,7 @@ void PhysConfigSpace2d::removeFindPath(const FindPathId& id)
     // queue and delete it
     PhysCS2dFindPath* pFindPath = impl_.findPaths()[id];
 
-    if (impl_.hasCurrentFindPath_ and (impl_.pCurrentFindPath_ == pFindPath))
+    if (impl_.hasCurrentFindPath_ && (impl_.pCurrentFindPath_ == pFindPath))
     {
         impl_.hasCurrentFindPath_ = false;
     }
@@ -660,7 +660,7 @@ void PhysConfigSpace2d::removeFindPath(const FindPathId& id)
     impl_.findPaths().remove(id);
     impl_.findPathIdGenerator().free(id);
 
-    if (not pFindPath->isFinished())
+    if (! pFindPath->isFinished())
     {
         PhysCS2dImpl::FindPaths& findPathQueue = impl_.findPathQueue();
         PhysCS2dImpl::FindPaths::iterator it = std::find(findPathQueue.begin(), findPathQueue.end(), pFindPath);
@@ -735,12 +735,12 @@ void PhysConfigSpace2d::isMaintainingVisibilityGraph(
     // Get existing graph pointer
     PhysCS2dVisibilityGraph* pGraph = impl_.pVisibilityGraph();
 
-    if (doMaintain and pGraph == nullptr)
+    if (doMaintain && pGraph == nullptr)
     {
         // Set up a visibility graph
         impl_.createVisibilityGraph(pOriginalSpace, pExpansionSpace, clearance);
     }
-    else if (not doMaintain and pGraph != nullptr)
+    else if (! doMaintain && pGraph != nullptr)
     {
         // Destroy the graph
         impl_.deleteVisibilityGraph();
@@ -867,7 +867,7 @@ std::ostream& PhysConfigSpace2d::traceObstacles(
         for (uint y = 0; y < picture.nRows(); ++y)
         {
             const MexPoint2d location = picture.point(x, y);
-            if (not pointValid(location, &pCachedDomain))
+            if (! pointValid(location, &pCachedDomain))
             {
                 picture.pixel(x, y, '~');
             }
@@ -952,7 +952,7 @@ bool PhysConfigSpace2d::findSpace(
         MexCircle2d testCircle(testPoint, clearance * 1.01);
 
         PolygonId id;
-        if (contains(testCircle, flags, &id, USE_ALL) and domain(testPoint, &domainId))
+        if (contains(testCircle, flags, &id, USE_ALL) && domain(testPoint, &domainId))
         {
             doneIt = true;
             *pResult = testPoint;
@@ -990,7 +990,7 @@ PhysConfigSpace2d::DomainFindPathId PhysConfigSpace2d::addDomainFindPath(
     impl_.domainFindPaths().add(id, pDomainFindPath);
 
     // Add it to the queue, unless already finished
-    if (not pDomainFindPath->isFinished())
+    if (! pDomainFindPath->isFinished())
         impl_.domainFindPathQueue().push_back(pDomainFindPath);
 
     return id;
@@ -1048,7 +1048,7 @@ void PhysConfigSpace2d::removeDomainFindPath(const DomainFindPathId& id)
     // remove it from the map and queue and delete it
     PhysCS2dDomainFindPath* pDomainFindPath = impl_.domainFindPaths()[id];
 
-    if (impl_.hasCurrentDomainFindPath_ and (impl_.pCurrentDomainFindPath_ == pDomainFindPath))
+    if (impl_.hasCurrentDomainFindPath_ && (impl_.pCurrentDomainFindPath_ == pDomainFindPath))
     {
         impl_.hasCurrentDomainFindPath_ = false;
     }
@@ -1056,7 +1056,7 @@ void PhysConfigSpace2d::removeDomainFindPath(const DomainFindPathId& id)
     impl_.domainFindPaths().remove(id);
     impl_.domainFindPathIdGenerator().free(id);
 
-    if (not pDomainFindPath->isFinished())
+    if (! pDomainFindPath->isFinished())
     {
         PhysCS2dImpl::DomainFindPaths& domainFindPathQueue = impl_.domainFindPathQueue();
         PhysCS2dImpl::DomainFindPaths::iterator it
@@ -1126,11 +1126,11 @@ bool PhysConfigSpace2d::add(
 
         const bool ignore = find(ignoreIds.begin(), ignoreIds.end(), holder.objectId()) != ignoreIds.end();
 
-        if (not ignore)
+        if (! ignore)
         {
             PhysAbsoluteTime oldTime;
             const PhysMotionChunk& oldMotionChunk = holder.motionChunk();
-            if (motionChunk.intersects(oldMotionChunk, &oldTime) and (ok or oldTime < *pCollideTime))
+            if (motionChunk.intersects(oldMotionChunk, &oldTime) && (ok || oldTime < *pCollideTime))
             {
                 ok = false;
                 *pCollideTime = oldTime;
@@ -1301,8 +1301,8 @@ bool PhysConfigSpace2d::contains(
         PolygonIds ids;
 
         // See if the polygon intersects any polygon
-        if (whichPolygons == USE_PERMANENT_ONLY or whichPolygons == USE_ALL)
-            inSet = not impl_.intersects(
+        if (whichPolygons == USE_PERMANENT_ONLY || whichPolygons == USE_ALL)
+            inSet = ! impl_.intersects(
                 sausage,
                 sausageBoundary,
                 pIds,
@@ -1311,8 +1311,8 @@ bool PhysConfigSpace2d::contains(
                 Mathex::TOUCH_ISNT_INTERSECT,
                 flags);
 
-        if (inSet and (whichPolygons == USE_TEMPORARY_ONLY or whichPolygons == USE_ALL))
-            inSet = not impl_.intersects(
+        if (inSet && (whichPolygons == USE_TEMPORARY_ONLY || whichPolygons == USE_ALL))
+            inSet = ! impl_.intersects(
                 sausage,
                 sausageBoundary,
                 pIds,
@@ -1353,8 +1353,8 @@ bool PhysConfigSpace2d::contains(
         ids.reserve(2);
 
         // See if the polygon intersects any polygon
-        if (whichPolygons == USE_PERMANENT_ONLY or whichPolygons == USE_ALL)
-            inSet = not impl_.intersects(
+        if (whichPolygons == USE_PERMANENT_ONLY || whichPolygons == USE_ALL)
+            inSet = ! impl_.intersects(
                 circle,
                 circleBoundary,
                 &ids,
@@ -1363,8 +1363,8 @@ bool PhysConfigSpace2d::contains(
                 Mathex::TOUCH_ISNT_INTERSECT,
                 flags);
 
-        if (inSet and (whichPolygons == USE_TEMPORARY_ONLY or whichPolygons == USE_ALL))
-            inSet = not impl_.intersects(
+        if (inSet && (whichPolygons == USE_TEMPORARY_ONLY || whichPolygons == USE_ALL))
+            inSet = ! impl_.intersects(
                 circle,
                 circleBoundary,
                 &ids,
@@ -1373,7 +1373,7 @@ bool PhysConfigSpace2d::contains(
                 Mathex::TOUCH_ISNT_INTERSECT,
                 flags);
 
-        if (not inSet)
+        if (! inSet)
             *pId = ids[0];
     }
     else
@@ -1526,7 +1526,7 @@ void PhysConfigSpace2d::removeCurrentDomainFindPathFromQueue()
 
     impl_.hasCurrentDomainFindPath_ = false;
 
-    POST(not impl_.hasCurrentDomainFindPath_);
+    POST(! impl_.hasCurrentDomainFindPath_);
 }
 
 PhysCS2dFindPath* PhysConfigSpace2d::pCurrentFindPath()
@@ -1592,7 +1592,7 @@ void PhysConfigSpace2d::removeCurrentFindPathFromQueue()
 
     impl_.hasCurrentFindPath_ = false;
 
-    POST(not impl_.hasCurrentFindPath_);
+    POST(! impl_.hasCurrentFindPath_);
 }
 
 void PhysConfigSpace2d::bufferPolygonPortalUpdates(bool doBuffer)
@@ -1600,7 +1600,7 @@ void PhysConfigSpace2d::bufferPolygonPortalUpdates(bool doBuffer)
     impl_.bufferPolygonPortalUpdates_ = doBuffer;
 
     // Clear any outstanding updates if not buffering any longer
-    if (not doBuffer)
+    if (! doBuffer)
         impl_.updateDomainRegion();
 }
 
@@ -1649,7 +1649,7 @@ bool PhysConfigSpace2d::intersectsWithMotionChunk(const MexAlignedBox2d& box) co
 
     bool intersects = false;
 
-    for (size_t i = 0; i != n and not intersects; ++i)
+    for (size_t i = 0; i != n && ! intersects; ++i)
     {
         const PhysCS2dMotionChunk& holder = *(motionChunkHolders[i]);
 
@@ -1680,13 +1680,13 @@ bool PhysConfigSpace2d::add(
 
         const bool ignore = find(ignoreIds.begin(), ignoreIds.end(), testObjectId) != ignoreIds.end();
 
-        if (not ignore)
+        if (! ignore)
         {
             PhysAbsoluteTime testTime;
 
             const PhysMotionChunk& testMotionChunk = motionChunk(testMotionChunkId);
 
-            if (motionChunkToAdd.intersects(testMotionChunk, &testTime) and (ok or testTime < *pCollideTime))
+            if (motionChunkToAdd.intersects(testMotionChunk, &testTime) && (ok || testTime < *pCollideTime))
             {
                 ok = false;
                 *pCollideTime = testTime;
@@ -1728,7 +1728,7 @@ void PhysConfigSpace2d::findIntersections(
         const bool ignore
             = find(ignoreObjectIds.begin(), ignoreObjectIds.end(), holder.objectId()) != ignoreObjectIds.end();
 
-        if (not ignore)
+        if (! ignore)
         {
             const PhysMotionChunk& motionChunk = holder.motionChunk();
             const MexSausage2d motionChunkSausage(
@@ -1775,16 +1775,16 @@ void PhysConfigSpace2d::traceIllegalPoints(std::ostream& o) const
 
             const bool valid = pointValid(location, &pCachedDomain);
 
-            if (not valid)
+            if (! valid)
             {
                 bool printWarning = true;
 
                 //  Check the previous point on this line
-                if (xIndex > 0 and not line[xIndex - 1])
+                if (xIndex > 0 && ! line[xIndex - 1])
                     printWarning = false;
 
                 //  Check the point immediately above this one
-                if (line.size() > xIndex and not line[xIndex])
+                if (line.size() > xIndex && ! line[xIndex])
                     printWarning = false;
 
                 if (printWarning)
@@ -1812,7 +1812,7 @@ bool PhysConfigSpace2d::pointValid(const MexPoint2d& location, PhysCS2dDomain** 
             result = true;
     }
 
-    if (not result)
+    if (! result)
     {
         DomainId domainId;
         const bool inDomain = domain(location, &domainId) != 0;
@@ -1826,7 +1826,7 @@ bool PhysConfigSpace2d::pointValid(const MexPoint2d& location, PhysCS2dDomain** 
         {
             const ObstacleFlags flags = 0;
             PolygonId id;
-            const bool inObstacle = not contains(location, flags, &id);
+            const bool inObstacle = ! contains(location, flags, &id);
 
             if (inObstacle)
                 result = true;
@@ -1916,25 +1916,25 @@ void PhysConfigSpace2d::findIntersections(
 
         CONFIG_SPACE_INSPECT(motionChunk);
 
-        bool ignore = not motionChunk.timeIntersects(startTime, endTime);
+        bool ignore = ! motionChunk.timeIntersects(startTime, endTime);
 
-        if (not ignore)
+        if (! ignore)
         {
             CONFIG_SPACE_WHERE;
 
-            if (maxHeight < motionChunk.minHeight() or minHeight > motionChunk.maxHeight())
+            if (maxHeight < motionChunk.minHeight() || minHeight > motionChunk.maxHeight())
             {
                 ignore = true;
             }
         }
 
-        if (not ignore)
+        if (! ignore)
         {
             CONFIG_SPACE_WHERE;
             ignore = find(ignoreObjectIds.begin(), ignoreObjectIds.end(), holder.objectId()) != ignoreObjectIds.end();
         }
 
-        if (not ignore)
+        if (! ignore)
         {
             CONFIG_SPACE_WHERE;
             const MexSausage2d motionChunkSausage(

@@ -97,7 +97,7 @@ void MachLogTreacheryOperation::doOutputOperator(std::ostream& o) const
         {
             PhysConfigSpace2d::PolygonId junk;
             PhysConfigSpace2d& cSpace = MachLogPlanet::instance().configSpace();
-            bool result = not cSpace.contains(
+            bool result = ! cSpace.contains(
                 pActor_->position(),
                 pDirectObject_->position(),
                 pActor_->obstacleFlags(),
@@ -184,10 +184,10 @@ bool MachLogTreacheryOperation::doStart()
         // ).insideWhichBuilding().id() << std::endl );
         // }
         // #endif
-        if (insideABuilding and not pConstruction->globalBoundary().contains(pDirectObject_->position()))
+        if (insideABuilding && ! pConstruction->globalBoundary().contains(pDirectObject_->position()))
         {
             // HAL_STREAM(" issuing leave Buolding operation.\n" );
-            result = not checkNeedAndDoLeaveOperation(pActor_);
+            result = ! checkNeedAndDoLeaveOperation(pActor_);
         }
 
         // HAL_STREAM(" Setting current target for object\n" );
@@ -206,7 +206,7 @@ MexRadians angleToTurnToFace(const MachLogMachine& actor, const MexPoint3d& pos)
 
 PhysRelativeTime MachLogTreacheryOperation::doUpdate()
 {
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
 
     // Do nothing if delegated to a subop
@@ -229,14 +229,14 @@ PhysRelativeTime MachLogTreacheryOperation::doUpdate()
 
     // If we were moving to the side, and haven't arrived, try again later
     MachLogMachineMotionSequencer& motionSequencer = pActor_->motionSeq();
-    if (lastAction_ == MOVE_TO_SIDE and motionSequencer.hasDestination())
+    if (lastAction_ == MOVE_TO_SIDE && motionSequencer.hasDestination())
         return 0.5;
 
     // Set up useful local variables
     PhysRelativeTime interval = 0.25;
     const W4dEntity& targetObject = _CONST_CAST(const MachActor&, target).physObject();
     MATHEX_SCALAR heightModifier = 1.0;
-    bool canMove = not pActor_->isStandingGround();
+    bool canMove = ! pActor_->isStandingGround();
     MachLogCanAttack::WeaponDisposition worstDisposition = MachLogCanAttack::IN_RANGE;
 
     // Check for target being inside a building
@@ -328,7 +328,7 @@ PhysRelativeTime MachLogTreacheryOperation::doUpdate()
         {
             // Weapons aren't facing in the right direction. If tracking, will be soon, otherwise
             // Need to turn the whole machine to face the target.
-            if (not attacker.canTurnHead())
+            if (! attacker.canTurnHead())
                 action = TURN_TO_FACE;
         }
         else if (canMove)
@@ -360,9 +360,9 @@ PhysRelativeTime MachLogTreacheryOperation::doUpdate()
 
     // We might want to stop if we're in weapon range.
     // HOWEVER, we don't necessarily want to if the target is currently moving away from us.
-    if (canMove and worstDisposition != MachLogCanAttack::NOT_IN_DISTANCE_RANGE and action != MOVE_CLOSER
-        and motionSequencer.hasDestination()
-        and not(pDirectObject_->objectIsMachine() and pDirectObject_->asMachine().evading()))
+    if (canMove && worstDisposition != MachLogCanAttack::NOT_IN_DISTANCE_RANGE && action != MOVE_CLOSER
+        && motionSequencer.hasDestination()
+        && !(pDirectObject_->objectIsMachine() && pDirectObject_->asMachine().evading()))
     {
         motionSequencer.stop();
 
@@ -407,7 +407,7 @@ void MachLogTreacheryOperation::doFinish()
 bool MachLogTreacheryOperation::doIsFinished() const
 {
     // HAL_STREAM("(" << pActor_->id() << ") MLTreacheryOp::doIsFinsihed " );
-    bool result = pDirectObject_ == nullptr or targetBehindCover_ or pDirectObject_->race() == pActor_->race();
+    bool result = pDirectObject_ == nullptr || targetBehindCover_ || pDirectObject_->race() == pActor_->race();
     // HAL_STREAM( result << std::endl );
     // if( result )
     // HAL_STREAM(" pDirectObject == NULL is " << ( pDirectObject_ == NULL ) << " targetBehindCover_ " <<
@@ -419,7 +419,7 @@ bool MachLogTreacheryOperation::doBeInterrupted()
 {
     // HAL_STREAM("(" << pActor_->id() << ") MLTreacheryOp::doBeInterrupted\n" );
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 // virtual
@@ -471,9 +471,9 @@ void MachLogTreacheryOperation::stopTargetting()
 
 PhysRelativeTime MachLogTreacheryOperation::moveCloserToTarget()
 {
-    ASSERT(not pActor_->isStandingGround(), "Should never move closer if actor is standing ground.");
+    ASSERT(! pActor_->isStandingGround(), "Should never move closer if actor is standing ground.");
 
-    if (not pDirectObject_)
+    if (! pDirectObject_)
         return 0;
 
     PhysRelativeTime interval = 0.25;
@@ -489,7 +489,7 @@ PhysRelativeTime MachLogTreacheryOperation::moveCloserToTarget()
 
     bool recalculateDestination = false;
 
-    if (not motSeq.hasDestination())
+    if (! motSeq.hasDestination())
         recalculateDestination = true;
     else
     {
@@ -497,7 +497,7 @@ PhysRelativeTime MachLogTreacheryOperation::moveCloserToTarget()
 
         MATHEX_SCALAR sqrDistanceBetweenDestinationAndTarget
             = motSeq.destination().sqrEuclidianDistance(targetPositionNow);
-        if (not pActor_->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceBetweenDestinationAndTarget))
+        if (! pActor_->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceBetweenDestinationAndTarget))
         {
             // okay, what this system does is to decide whether or not to recalculate the path based on
             // a ratio of the (non-squared) distance the target has moved since we last set up a path
@@ -511,8 +511,8 @@ PhysRelativeTime MachLogTreacheryOperation::moveCloserToTarget()
                 = lastTargetPosition_.euclidianDistance(targetPositionNow);
 
             MATHEX_SCALAR recalculateRatio = 0.45;
-            if (distanceToTargetNow < 50 and pDirectObject_->objectIsMachine()
-                and pDirectObject_->asMachine().evading())
+            if (distanceToTargetNow < 50 && pDirectObject_->objectIsMachine()
+                && pDirectObject_->asMachine().evading())
                 recalculateRatio = 0.90;
 
             if (distanceTargetMovedSinceAttackerChoseDestination / distanceToTargetNow > recalculateRatio)

@@ -66,7 +66,7 @@ uint MexIntersections::lineVsTriangle2d(
             // Check for next vertex being on opposite side of line
             size_t j = (i + 1) % 3;
             Mathex::Side jSide = side[j];
-            if (jSide != iSide and jSide != Mathex::ONEDGE)
+            if (jSide != iSide && jSide != Mathex::ONEDGE)
             {
                 // There is an intersection
                 l[nIntersections++] = (s[j] * h[i] - s[i] * h[j]) / (h[i] - h[j]);

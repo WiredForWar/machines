@@ -44,7 +44,7 @@ void MachLogGotoLabOperation::doOutputOperator(std::ostream& o) const
 
 bool MachLogGotoLabOperation::doStart()
 {
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ///////////////////////////////////
@@ -87,7 +87,7 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
              i != MachLogRaces::instance().hardwareLabs(pActor_->race()).end();
              ++i)
             if (pActor_->position().sqrEuclidianDistance((*i)->position()) < sqrRange
-                and (*i)->currentResearchQueue().size())
+                && (*i)->currentResearchQueue().size())
             {
                 MachPhysStation* pStation;
                 // MachPhysConstructionData& conData = _STATIC_CAST( MachPhysConstructionData&, (*i)->constructionData()

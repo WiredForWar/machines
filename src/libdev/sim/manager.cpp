@@ -107,7 +107,7 @@ void SimManager::cycle()
     W4dManager& renManager = W4dManager::instance();
 
     // Don't do any simulation if the process is suspended
-    if (not suspended_)
+    if (! suspended_)
     {
         // Hardcode the minimum computation time at 10ms, and the target time between
         // render passes at 30ms
@@ -133,7 +133,7 @@ void SimManager::cycle()
 
             // Garbage collect dead actors
 
-            if (not pActor->isDead())
+            if (! pActor->isDead())
             {
                 pActor->update(nextRenderTime - currentTime_, 0);
                 ++index;
@@ -216,7 +216,7 @@ void SimManager::executeDiscreteEvents()
     CB_DEPIMPL(SimEventDiary, diary_);
 
     // Find all the events due by now
-    while (not diary_.isEmpty() and diary_.nextEventTime() <= currentTime_)
+    while (! diary_.isEmpty() && diary_.nextEventTime() <= currentTime_)
     {
         // Take the event from the diary and execute it
         SimDiscreteEventPtr eventPtr = diary_.takeNextEvent();
@@ -423,7 +423,7 @@ void SimManager::deleteDeadActors()
 {
     CB_DEPIMPL(SimActors, deadActors_);
 
-    while (not deadActors_.empty())
+    while (! deadActors_.empty())
     {
         // Get the next dead actor to delete
         SimActor* pActor = deadActors_.back();
@@ -459,7 +459,7 @@ void SimManager::updateProcesses(PhysRelativeTime maxCPUTime)
 
         const PhysRelativeTime timeToUse = std::max(biasMaxCPU, SimStats::instance().minProcessUpdateTime());
 
-        if (not NetNetwork::instance().imStuffed())
+        if (! NetNetwork::instance().imStuffed())
             (*i)->updateActors(timeToUse);
 
         // Ensure all dead actors are deleted

@@ -38,7 +38,7 @@ UtlBoundedIdVoidPMap::~UtlBoundedIdVoidPMap()
 void UtlBoundedIdVoidPMap::add(UtlId id, void* p)
 {
     PRE(id < upperBound());
-    PRE(not contains(id));
+    PRE(! contains(id));
 
     aPointers_[id] = p;
 }

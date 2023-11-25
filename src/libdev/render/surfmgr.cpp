@@ -81,13 +81,13 @@ RenSurface RenSurfaceManager::createAnonymousSurface(size_t width, size_t height
 RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t height, const RenSurface& pixelFmt)
 {
     PRE(!pixelFmt.isNull());
-    PRE(width > 0 and height > 0);
+    PRE(width > 0 && height > 0);
 
     CB_REN_SURFACE_MANAGER_DEPIMPL;
 
     TEST_INVARIANT;
 
-    if (width == 0 or height == 0)
+    if (width == 0 || height == 0)
         return RenSurface();
 
     const RenIPixelFormat& rqFormat = entries_[pixelFmt.myId_]->pixelFormat();
@@ -97,7 +97,7 @@ RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t h
 
     RenSurface result(newId);
 
-    POST(!result.sharable() and !result.readOnly());
+    POST(!result.sharable() && !result.readOnly());
     POST(result.name().length() == 0);
 
     return result;

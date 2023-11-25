@@ -143,7 +143,7 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
     if (races.actorExists(withId))
         ASSERT_INFO(races.actor(withId).objectType());
 #endif
-    ASSERT(not races.actorExists(withId), "Actor already exists\n");
+    ASSERT(! races.actorExists(withId), "Actor already exists\n");
 
     if (withId != 0)
         MachLogRaces::idGenerator().allocateId(withId);
@@ -257,7 +257,7 @@ void MachActor::newOperation(MachLogOperation* pNewOperation)
     CB_DEPIMPL(MachLogStrategy*, pStrategy_);
 
     // no machine should EVER be being issued an operation if inside an APC.
-    PRE(not objectIsMachine() or not asMachine().insideAPC());
+    PRE(! objectIsMachine() || ! asMachine().insideAPC());
 
     pStrategy_->newOperation(pNewOperation, false);
 
@@ -276,7 +276,7 @@ void MachActor::newOperation(MachLogOperation* pNewOperation)
                 if (network.isNetworkGame())
                 {
                     if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS
-                        and not NetNetwork::instance().imStuffed())
+                        && ! NetNetwork::instance().imStuffed())
                         update(0, 0);
                 }
                 else
@@ -292,7 +292,7 @@ bool MachActor::isIdle() const
     // an actor should never have a current target if it is idle
     ASSERT_DATA(bool isIdle = pStrategy_->isFinished());
     ASSERT(
-        implies(isIdle, not(objectIsCanAttack()) or not(asCanAttack().hasCurrentTarget())),
+        implies(isIdle, !(objectIsCanAttack()) || !(asCanAttack().hasCurrentTarget())),
         "An actor should never have a current target if it is idle");
 
     return pStrategy_->isFinished();
@@ -310,14 +310,14 @@ void MachActor::beHit(
 {
     CB_DEPIMPL(bool, selfDestructActive_);
 
-    if (not isDead())
+    if (! isDead())
     {
         updateArmourAndHps(damage);
 
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO and MachLogNetwork::instance().isNetworkGame())
+        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance()
                 .messageBroker()
                 .sendBeHitMessage(id(), damage, wt, pByActor, pLine, 0, MachLogMessageBroker::NORMAL_HIT, actorNowDead);
@@ -336,7 +336,7 @@ void MachActor::beHit(
 
             bool isMachine = objectIsMachine();
 
-            if (isMachine and asMachine().isTeleporting())
+            if (isMachine && asMachine().isTeleporting())
             {
                 asMachine().teleportingInterrupted();
             }
@@ -344,7 +344,7 @@ void MachActor::beHit(
             MATHEX_SCALAR junk = 0.0;
             // by calling into the strategy here we know that the actor will blow up now.
             MachActor::update(PhysRelativeTime(0.001), junk);
-            if (isMachine or objectIsConstruction())
+            if (isMachine || objectIsConstruction())
             {
                 if (pByActor)
                     MachLogRaces::instance()
@@ -376,7 +376,7 @@ void MachActor::beHitWithoutAnimation(
     MachActor* pByActor,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         updateArmourAndHps(damage);
 
@@ -386,7 +386,7 @@ void MachActor::beHitWithoutAnimation(
         {
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
 
-            if (objectIsMachine() and asMachine().isTeleporting())
+            if (objectIsMachine() && asMachine().isTeleporting())
             {
                 asMachine().teleportingInterrupted();
             }
@@ -409,7 +409,7 @@ void MachActor::beHitWithoutAnimation(
             doHitButStillAliveStuff(pByActor);
         }
 
-        if (echo == ECHO and MachLogNetwork::instance().isNetworkGame())
+        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendBeHitMessage(
                 id(),
                 damage,
@@ -440,18 +440,18 @@ void MachActor::doHitButStillAliveStuff(MachActor* pByActor)
     doVisualiseSelectionState();
     // also, if machine that hit me was a first-person machine (and is still alive), we need to
     // try issuing a first-person SOS
-    if (pByActor and pByActor->isIn1stPersonView())
+    if (pByActor && pByActor->isIn1stPersonView())
     {
         // don't do it if it's a non-enemy who's hit us.
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
             dealWithFirstPersonThreat(pByActor);
     }
 
     // go on full alert if hit by an enemy
-    if (pByActor and pByActor->race() != race() and objectIsCanAttack())
+    if (pByActor && pByActor->race() != race() && objectIsCanAttack())
         asCanAttack().setMinimumAlertness(125);
 }
 
@@ -474,7 +474,7 @@ PhysRelativeTime MachActor::update(const PhysRelativeTime& maxCPUTime, MATHEX_SC
     PhysRelativeTime result = 3.0;
     bool threatened = hasThreats();
 
-    if (selfDestructActive_ and not isDead())
+    if (selfDestructActive_ && ! isDead())
     {
         if (selfDestructTime_ < SimManager::instance().currentTime())
         {
@@ -482,13 +482,13 @@ PhysRelativeTime MachActor::update(const PhysRelativeTime& maxCPUTime, MATHEX_SC
             selfDestructActive_ = false;
         }
     }
-    else if (hp_ > 0 and threatened)
+    else if (hp_ > 0 && threatened)
     {
         // deal with any threats we may have currently
         dealWithThreats();
     }
 
-    if (not strategy().isFinished())
+    if (! strategy().isFinished())
     {
         result = strategy().update(maxCPUTime);
     }
@@ -904,9 +904,9 @@ bool MachActor::objectIsMachine() const
     //  //HAL_STREAM("MActor::object is machine...(void*)this " << static_cast<const void*>(this) << std::endl );
     //  //HAL_STREAM("(" << id() << ") MActor::objectIsMachine " << objectType() << "\n" );
     MachLog::ObjectType type = objectType();
-    if (type == MachLog::ADMINISTRATOR or type == MachLog::AGGRESSOR or type == MachLog::APC
-        or type == MachLog::CONSTRUCTOR or type == MachLog::GEO_LOCATOR or type == MachLog::RESOURCE_CARRIER
-        or type == MachLog::SPY_LOCATOR or type == MachLog::TECHNICIAN)
+    if (type == MachLog::ADMINISTRATOR || type == MachLog::AGGRESSOR || type == MachLog::APC
+        || type == MachLog::CONSTRUCTOR || type == MachLog::GEO_LOCATOR || type == MachLog::RESOURCE_CARRIER
+        || type == MachLog::SPY_LOCATOR || type == MachLog::TECHNICIAN)
         return true;
 
     return false;
@@ -915,9 +915,9 @@ bool MachActor::objectIsMachine() const
 bool MachActor::objectIsConstruction() const
 {
     MachLog::ObjectType type = objectType();
-    if (type == MachLog::BEACON or type == MachLog::FACTORY or type == MachLog::GARRISON
-        or type == MachLog::HARDWARE_LAB or type == MachLog::MINE or type == MachLog::MISSILE_EMPLACEMENT
-        or type == MachLog::POD or type == MachLog::SMELTER or type == MachLog::SOFTWARE_LAB)
+    if (type == MachLog::BEACON || type == MachLog::FACTORY || type == MachLog::GARRISON
+        || type == MachLog::HARDWARE_LAB || type == MachLog::MINE || type == MachLog::MISSILE_EMPLACEMENT
+        || type == MachLog::POD || type == MachLog::SMELTER || type == MachLog::SOFTWARE_LAB)
         return true;
 
     return false;
@@ -934,8 +934,8 @@ bool MachActor::objectIsCanAttack() const
     //  //HAL_STREAM("MActor::object is Can Attack...(void*)this " << static_cast<const void*>(this) << std::endl );
     //  //HAL_STREAM("(" << id() << ") MActor::objectIsCanAttack " << objectType() << "\n" );
     MachLog::ObjectType type = objectType();
-    if (type == MachLog::ADMINISTRATOR or type == MachLog::AGGRESSOR or type == MachLog::MISSILE_EMPLACEMENT
-        or type == MachLog::POD)
+    if (type == MachLog::ADMINISTRATOR || type == MachLog::AGGRESSOR || type == MachLog::MISSILE_EMPLACEMENT
+        || type == MachLog::POD)
         return true;
 
     return false;
@@ -961,7 +961,7 @@ bool MachActor::objectIsMissileEmplacement() const
 
 bool MachActor::objectIsCanSmelt() const
 {
-    return objectType() == MachLog::SMELTER or objectType() == MachLog::POD;
+    return objectType() == MachLog::SMELTER || objectType() == MachLog::POD;
 }
 
 MachLogArtefact& MachActor::asArtefact()
@@ -1233,7 +1233,7 @@ void MachActor::setHPAndArmour(MachPhys::HitPointUnits newHp, MachPhys::ArmourUn
     doVisualiseSelectionState();
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         network.messageBroker().sendAdjustHPAndArmourMessage(id(), newHp, newArmour);
     }
@@ -1395,7 +1395,7 @@ void MachActor::dealWithThreats()
     CB_DEPIMPL(PhysAbsoluteTime, nextSOSOpportunity_);
 
     // if we have no threats at all, no need to do any threat processing
-    if (isIn1stPersonView() or (objectIsMachine() and asMachine().insideAPC()))
+    if (isIn1stPersonView() || (objectIsMachine() && asMachine().insideAPC()))
     {
         return;
     }
@@ -1466,13 +1466,13 @@ void MachActor::addThreat(UtlId threatId /*MachActor* pThreat*/)
 {
     CB_DEPIMPL(Actors, actorsThreateningMe_);
     // Has to be defensive due to network
-    if (not hasThisActorAsAThreat(threatId))
+    if (! hasThisActorAsAThreat(threatId))
     {
         actorsThreateningMe_.push_back(threatId);
         MachLogNetwork& network = MachLogNetwork::instance();
         MachLogRaces& races = MachLogRaces::instance();
-        if (network.isNetworkGame() and races.actorExists(threatId)
-            and network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (network.isNetworkGame() && races.actorExists(threatId)
+            && network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
         {
             network.messageBroker().sendActorThreatMessage(id(), threatId, MachLogMessageBroker::ADD_THREAT);
         }
@@ -1497,8 +1497,8 @@ void MachActor::removeThreat(UtlId threatId /*const MachActor* pThreat*/)
 
         MachLogNetwork& network = MachLogNetwork::instance();
         MachLogRaces& races = MachLogRaces::instance();
-        if (network.isNetworkGame() and races.actorExists(threatId)
-            and network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (network.isNetworkGame() && races.actorExists(threatId)
+            && network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
         {
             network.messageBroker().sendActorThreatMessage(id(), threatId, MachLogMessageBroker::REMOVE_THREAT);
         }
@@ -1553,15 +1553,15 @@ void MachActor::populateStrongThreats(Actors* pActors)
         MachLogRaces::DispositionToRace disposition = races.dispositionToRace(race(), actor.race());
 
         // only add this as a strong threat if we don't think it's a friend (same race or ally),
-        if ((disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
-            and (position().sqrEuclidianDistance(actor.position()) < sqrStrongThreatRange))
+        if ((disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
+            && (position().sqrEuclidianDistance(actor.position()) < sqrStrongThreatRange))
         {
             // can only check building location status of machines, not other actor types
             if (actor.objectIsMachine())
             {
                 const MachLogMachine& threatMachine = actor.asMachine();
 
-                if ((not threatMachine.insideBuilding()))
+                if ((! threatMachine.insideBuilding()))
                     strongThreats.push_back(*i);
             }
             else
@@ -1643,10 +1643,10 @@ void MachActor::dispatchSOS(Actors& strongThreats)
 
     ctl_pvector<MachActor>::iterator iFriends = friends.begin();
 
-    while (iThreats != strongThreats.end() and iFriends != friends.end())
+    while (iThreats != strongThreats.end() && iFriends != friends.end())
     {
         MachActor& threatActor = races.actor(*iThreats);
-        if (threatActor.isOutGunned() or not MachLogCanAttack::IHaveClearWeaponPathToHim(this, &threatActor))
+        if (threatActor.isOutGunned() || ! MachLogCanAttack::IHaveClearWeaponPathToHim(this, &threatActor))
         {
             ++iThreats;
         }
@@ -1663,7 +1663,7 @@ void MachActor::dispatchSOS(Actors& strongThreats)
                 = races.dispositionToRace(friendlyActor.race(), threatActor.race());
 
             // This machine will only listen to the SOS request if it also considers the threat actor an enemy
-            if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+            if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
             {
                 // yep, he'll listen to the request
 
@@ -1674,15 +1674,15 @@ void MachActor::dispatchSOS(Actors& strongThreats)
                 friendlyCanAttack.setMinimumAlertness(125);
 
                 if (friendlyMachine.virtualDefCon() != MachLog::DEFCON_HIGH
-                    and (not friendlyCanAttack.hasCurrentTarget())
-                    and friendlyCanAttack.willingToRespondToSOS() // wounded machines may give this a miss
-                    and (not friendlyMachine.isStandingGround()) and (not friendlyMachine.evading())
-                    and (not friendlyMachine.insideBuilding()) and (not friendlyMachine.isIn1stPersonView())
-                    and (friendlyCanAttack.canFireAt(threatActor))
-                    and (not friendlyMachine.motionSeq().isFollowing() or friendlyMachine.virtualDefCon() == MachLog::DEFCON_LOW))
+                    && (! friendlyCanAttack.hasCurrentTarget())
+                    && friendlyCanAttack.willingToRespondToSOS() // wounded machines may give this a miss
+                    && (! friendlyMachine.isStandingGround()) && (! friendlyMachine.evading())
+                    && (! friendlyMachine.insideBuilding()) && (! friendlyMachine.isIn1stPersonView())
+                    && (friendlyCanAttack.canFireAt(threatActor))
+                    && (! friendlyMachine.motionSeq().isFollowing() || friendlyMachine.virtualDefCon() == MachLog::DEFCON_LOW))
                 {
 
-                    if (not friendlyMachine.strategy().isUninterruptable())
+                    if (! friendlyMachine.strategy().isUninterruptable())
                     {
                         friendlyMachine.motionSeq().stop();
 
@@ -1704,10 +1704,10 @@ void MachActor::dispatchSOS(Actors& strongThreats)
     races.allFriendlyAggressiveMachinesWithinRange(this, secondWaveRadius, &furtherFriends, firstWaveRadius);
     iFriends = furtherFriends.begin();
 
-    while (iThreats != strongThreats.end() and iFriends != furtherFriends.end())
+    while (iThreats != strongThreats.end() && iFriends != furtherFriends.end())
     {
         MachActor& threatActor = races.actor(*iThreats);
-        if (threatActor.isOutGunned() or not MachLogCanAttack::IHaveClearWeaponPathToHim(this, &threatActor))
+        if (threatActor.isOutGunned() || ! MachLogCanAttack::IHaveClearWeaponPathToHim(this, &threatActor))
         {
             ++iThreats;
         }
@@ -1724,7 +1724,7 @@ void MachActor::dispatchSOS(Actors& strongThreats)
                 = races.dispositionToRace(friendlyActor.race(), threatActor.race());
 
             // This machine will only listen to the SOS request if it also considers the threat actor an enemy
-            if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+            if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
             {
                 // yep, he'll listen to the request
 
@@ -1735,15 +1735,15 @@ void MachActor::dispatchSOS(Actors& strongThreats)
                 friendlyCanAttack.setMinimumAlertness(70);
 
                 if (friendlyMachine.virtualDefCon() != MachLog::DEFCON_HIGH
-                    and (not friendlyCanAttack.hasCurrentTarget())
-                    and friendlyCanAttack.willingToRespondToSOS() // wounded machines may give this a miss
-                    and (not friendlyMachine.isStandingGround()) and (not friendlyMachine.evading())
-                    and (not friendlyMachine.insideBuilding()) and (not friendlyMachine.isIn1stPersonView())
-                    and (friendlyCanAttack.canFireAt(threatActor))
-                    and (not friendlyMachine.motionSeq().isFollowing() or friendlyMachine.virtualDefCon() == MachLog::DEFCON_LOW))
+                    && (! friendlyCanAttack.hasCurrentTarget())
+                    && friendlyCanAttack.willingToRespondToSOS() // wounded machines may give this a miss
+                    && (! friendlyMachine.isStandingGround()) && (! friendlyMachine.evading())
+                    && (! friendlyMachine.insideBuilding()) && (! friendlyMachine.isIn1stPersonView())
+                    && (friendlyCanAttack.canFireAt(threatActor))
+                    && (! friendlyMachine.motionSeq().isFollowing() || friendlyMachine.virtualDefCon() == MachLog::DEFCON_LOW))
                 {
 
-                    if (not friendlyMachine.strategy().isUninterruptable())
+                    if (! friendlyMachine.strategy().isUninterruptable())
                     {
                         friendlyMachine.motionSeq().stop();
 
@@ -1818,7 +1818,7 @@ void MachActor::actorCreated()
         ASSERT(&MachLogRaces::instance().actor(id()) == this, "ID already allocated and pointers are not the same");
     }
 #endif
-    if (not MachLogRaces::instance().actorExists(id()))
+    if (! MachLogRaces::instance().actorExists(id()))
         MachLogRaces::idGenerator().allocateId(id());
 }
 
@@ -1966,7 +1966,7 @@ bool MachActor::busy() const
 {
     CB_DEPIMPL(PhysAbsoluteTime, busyUntil_);
 
-    return (not isDead() and SimManager::instance().currentTime() < busyUntil_);
+    return (! isDead() && SimManager::instance().currentTime() < busyUntil_);
 }
 
 void MachActor::updateArmourAndHps(int damageTaken)
@@ -2008,7 +2008,7 @@ void MachActor::validateActorsThreateningMe()
 
     for (Actors::iterator i = actorsThreateningMe_.begin(); i != actorsThreateningMe_.end(); ++i)
     {
-        if (not races.actorExists(*i))
+        if (! races.actorExists(*i))
             removeTheseActors.push_back(*i);
     }
     // Remove redundant actors (remember that there are two seperate mechanisms for removal (i) by removeThreat
@@ -2040,7 +2040,7 @@ void MachActor::checkAndDoSpecialDeaths()
     else if (objectType() == MachLog::MISSILE_EMPLACEMENT)
     {
         MachLogMissileEmplacement& me = asMissileEmplacement();
-        if (me.subType() == MachPhys::ICBM and me.isComplete())
+        if (me.subType() == MachPhys::ICBM && me.isComplete())
         {
             // okay, this is a self-destructing ICBM! Let's make it kick out one final nuke.
             // From hell's heart, I eat beans at thee........for Keith's sake, I wheeze my last breath at thee........

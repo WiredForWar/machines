@@ -127,7 +127,7 @@ void MachLogResourceCarrier::addSuppliers(const Suppliers& listOfSuppliers)
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    PRE(not listOfSuppliers.empty());
+    PRE(! listOfSuppliers.empty());
 
     StartWithPickUpOrPutDown startType;
 
@@ -143,14 +143,14 @@ void MachLogResourceCarrier::addSuppliers(const Suppliers& listOfSuppliers)
     {
         ASSERT_INFO((*i)->objectType());
         ASSERT(
-            (*i)->objectType() == MachLog::MINE or ((*i)->objectIsCanSmelt() and (*i)->race() != race()),
+            (*i)->objectType() == MachLog::MINE || ((*i)->objectIsCanSmelt() && (*i)->race() != race()),
             "Not a valid supplier type.");
 
         // don't add a duplicate
         Suppliers::iterator iDuplicate = find(suppliers_.begin(), suppliers_.end(), (*i));
         bool duplicate = iDuplicate != suppliers_.end();
 
-        if (not duplicate)
+        if (! duplicate)
         {
             suppliers_.push_back((*i));
             (*i)->attach(this);
@@ -166,7 +166,7 @@ void MachLogResourceCarrier::addSuppliers(const Suppliers& listOfSuppliers)
         // if we have a smelter that has NOT been explicitly set, try a findBestSmeltingBuilding() again
         // as the addition of a new supplier may make a different smelter the optimum one.
 
-        if (not smeltingBuildingExplicitlyAssigned_)
+        if (! smeltingBuildingExplicitlyAssigned_)
             findBestSmeltingBuilding();
 
         if (hasSmeltingBuilding())
@@ -182,7 +182,7 @@ void MachLogResourceCarrier::setSuppliers(const Suppliers& listOfSuppliers)
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    PRE(not listOfSuppliers.empty());
+    PRE(! listOfSuppliers.empty());
 
     StartWithPickUpOrPutDown startType;
 
@@ -199,12 +199,12 @@ void MachLogResourceCarrier::setSuppliers(const Suppliers& listOfSuppliers)
 
     if (isPickingUp())
     {
-        if (suppliers_.size() == 1 and listOfSuppliers.size() == 1
-            and (*suppliers_.begin() == *listOfSuppliers.begin()))
+        if (suppliers_.size() == 1 && listOfSuppliers.size() == 1
+            && (*suppliers_.begin() == *listOfSuppliers.begin()))
         {
             // do nothing
         }
-        else if (not evading())
+        else if (! evading())
         {
             // stop in our tracks.
 
@@ -225,7 +225,7 @@ void MachLogResourceCarrier::setSuppliers(const Suppliers& listOfSuppliers)
     {
         ASSERT_INFO((*i)->objectType());
         ASSERT(
-            (*i)->objectType() == MachLog::MINE or ((*i)->objectIsCanSmelt() and (*i)->race() != race()),
+            (*i)->objectType() == MachLog::MINE || ((*i)->objectIsCanSmelt() && (*i)->race() != race()),
             "Not a valid supplier type.");
 
         suppliers_.push_back(*i);
@@ -233,7 +233,7 @@ void MachLogResourceCarrier::setSuppliers(const Suppliers& listOfSuppliers)
         (*i)->addThreat(id());
     }
 
-    if (not smeltingBuildingExplicitlyAssigned_)
+    if (! smeltingBuildingExplicitlyAssigned_)
         findBestSmeltingBuilding();
 
     if (hasSmeltingBuilding())
@@ -275,7 +275,7 @@ void MachLogResourceCarrier::internalSetSmeltingBuilding(MachLogConstruction* pS
             clearSmeltingBuilding();
         }
 
-        if (isPuttingDown() and not evading())
+        if (isPuttingDown() && ! evading())
         {
             // As we were engaged in a putdown, and our smelter has changed, no point carrying on towards the
             // old one (or the location it occupied if now destroyed) if we're not actually going to use it.
@@ -311,7 +311,7 @@ bool MachLogResourceCarrier::hasSuppliers() const
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    return not suppliers_.empty();
+    return ! suppliers_.empty();
 }
 
 MachLogResourceCarrier::Suppliers& MachLogResourceCarrier::suppliers()
@@ -405,10 +405,10 @@ void MachLogResourceCarrier::mayNeedNewOp(StartWithPickUpOrPutDown startType)
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    if (not isTransporting())
+    if (! isTransporting())
     {
         // okay, should we now initiate a transport op?
-        if (hasSuppliers() or hasSmeltingBuilding())
+        if (hasSuppliers() || hasSmeltingBuilding())
             newOperation(new MachLogTransportOperation(this, startType));
     }
 }
@@ -482,7 +482,7 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
     }
 
     // give voicemail if we used to have a smelter, and we also have one now, but it's now a different one.
-    if (alreadyHadSmeltingBuilding and hasSmeltingBuilding() and pOldSmeltingBuilding != pDestinationSmeltingBuilding_)
+    if (alreadyHadSmeltingBuilding && hasSmeltingBuilding() && pOldSmeltingBuilding != pDestinationSmeltingBuilding_)
     {
         giveAlternativeDestinationVoicemail();
     }
@@ -519,7 +519,7 @@ void MachLogResourceCarrier::reorderTransportRoute()
 
     MachLogConstruction* pCurrentSupplier = nullptr;
 
-    bool dealingWithSupplier = not doneAllSuppliers();
+    bool dealingWithSupplier = ! doneAllSuppliers();
 
     if (dealingWithSupplier)
         // store a pointer to the actor our current supplier index points to.
@@ -573,7 +573,7 @@ void MachLogResourceCarrier::informOfNewSmeltingBuildingCompletion()
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    if (not smeltingBuildingExplicitlyAssigned_ and hasSuppliers())
+    if (! smeltingBuildingExplicitlyAssigned_ && hasSuppliers())
         findBestSmeltingBuilding();
 }
 
@@ -621,7 +621,7 @@ bool MachLogResourceCarrier::isScavenger() const
 
 bool MachLogResourceCarrier::isNormalResourceCarrier() const
 {
-    return not isScavenger();
+    return ! isScavenger();
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -693,7 +693,7 @@ void MachLogResourceCarrier::addedTransportOp()
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    PRE(not isTransporting_);
+    PRE(! isTransporting_);
 
     isTransporting_ = true;
 }
@@ -706,7 +706,7 @@ void MachLogResourceCarrier::removedTransportOp()
 
     isTransporting_ = false;
 
-    if (not protectNodesFromClearance_)
+    if (! protectNodesFromClearance_)
         clearSuppliersAndSmeltingBuilding();
 }
 
@@ -721,7 +721,7 @@ void MachLogResourceCarrier::addedPickUpOp()
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    PRE(not isPickingUp_);
+    PRE(! isPickingUp_);
 
     isPickingUp_ = true;
 }
@@ -746,7 +746,7 @@ void MachLogResourceCarrier::addedPutDownOp()
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    PRE(not isPuttingDown_);
+    PRE(! isPuttingDown_);
 
     isPuttingDown_ = true;
 }
@@ -781,7 +781,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
         MachLogRaces::Pods& pods = races.pods(race);
 
         int nMyTotalMines = mines.size();
-        if (nMyTotalMines > 0 and (smelters.size() > 0 or pods.size() > 0))
+        if (nMyTotalMines > 0 && (smelters.size() > 0 || pods.size() > 0))
         {
             // which mines are worth visiting?
 
@@ -886,7 +886,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
 
         // if there aren't at least one mine and one smelter left, there may at least be one or the other.
         // if so, it's still worth doing a one-shot pick-up or put-down if possible and applicable.
-        if (failedToAssign and (nMyTotalMines > 0 or (smelters.size() > 0 or pods.size() > 0)))
+        if (failedToAssign && (nMyTotalMines > 0 || (smelters.size() > 0 || pods.size() > 0)))
         {
             // carrying anything?
             if (obj->amountCarried() == 0)
@@ -931,7 +931,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
             {
                 // carrying something go and drop it off at a smelter, so long as smelters aren't full.
                 if (races.nBuildingMaterialUnits(race) < races.nMaxBuildingMaterialUnits(race)
-                    and (smelters.size() > 0 or pods.size() > 0))
+                    && (smelters.size() > 0 || pods.size() > 0))
                 {
                     obj->clearSuppliers();
                     obj->findBestSmeltingBuilding();
@@ -944,7 +944,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
     }
 
     // scavengers won't do anything.
-    if (failedToAssign and not obj->isScavenger())
+    if (failedToAssign && ! obj->isScavenger())
     {
         HAL_STREAM("still failedToAssign so issuing move out of the way\n");
         races.controller(obj->race()).moveOutOfTheWay(obj);
@@ -1007,7 +1007,7 @@ bool MachLogResourceCarrier::beNotified(W4dSubject* pSubject, W4dSubject::Notifi
                             // We will want to re-evaluate the best smelter (if possible) in light of the changed status
                             // of this mine.
 
-                            if (not smeltingBuildingExplicitlyAssigned_)
+                            if (! smeltingBuildingExplicitlyAssigned_)
                                 findBestSmeltingBuilding();
                         }
                     }
@@ -1031,7 +1031,7 @@ void MachLogResourceCarrier::reassignIndex(MachLogConstruction* pSupplier)
 
     bool found = false;
 
-    for (Suppliers::iterator i = suppliers_.begin(); not found and i != suppliers_.end(); ++i)
+    for (Suppliers::iterator i = suppliers_.begin(); ! found && i != suppliers_.end(); ++i)
     {
         if ((*i) == pSupplier)
             currentSupplierIndex(newIndex);
@@ -1051,7 +1051,7 @@ MachLogConstruction& MachLogResourceCarrier::currentSupplier()
 {
     CB_MachLogResourceCarrier_DEPIMPL();
 
-    PRE(not doneAllSuppliers());
+    PRE(! doneAllSuppliers());
 
     return *suppliers_[currentSupplierIndex()];
 }
@@ -1070,9 +1070,9 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
         // scavengers get guaranteed fast-ish callback times
         result = std::min(1.5, result);
 
-        if (virtualDefCon() != MachLog::DEFCON_HIGH and not evading() and not isStandingGround()
-            and strategy().currentOperationType() != MachLogOperation::SCAVENGE_OPERATION
-            and strategy().currentOperationType() != MachLogOperation::AUTOSCAVENGE_OPERATION)
+        if (virtualDefCon() != MachLog::DEFCON_HIGH && ! evading() && ! isStandingGround()
+            && strategy().currentOperationType() != MachLogOperation::SCAVENGE_OPERATION
+            && strategy().currentOperationType() != MachLogOperation::AUTOSCAVENGE_OPERATION)
         /*and MachPhysRandom::randomInt( 0, 3 ) == 0
             and( isIdle()
                  or
@@ -1105,8 +1105,8 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
                 MachLogDebris* pCandidateDebris = (*i);
                 MexPoint2d candidateDebrisPosition = pCandidateDebris->position();
                 MATHEX_SCALAR sqrDistanceToCandidate = position().sqrEuclidianDistance(candidateDebrisPosition);
-                if (sqrDistanceToCandidate < sqrScavengingRange and sqrDistanceToCandidate < sqrClosestFoundSoFar
-                    and MachLogSpacialManipulation::pointIsFree(candidateDebrisPosition, 2.0))
+                if (sqrDistanceToCandidate < sqrScavengingRange && sqrDistanceToCandidate < sqrClosestFoundSoFar
+                    && MachLogSpacialManipulation::pointIsFree(candidateDebrisPosition, 2.0))
                 {
                     sqrClosestFoundSoFar = sqrDistanceToCandidate;
                     pChosenDebris = pCandidateDebris;
@@ -1114,7 +1114,7 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
                 }
             }
 
-            if (found and not strategy().isUninterruptable())
+            if (found && ! strategy().isUninterruptable())
             {
                 // let's go and scavenge the fella!
                 strategy().changeToScavengeMode(pChosenDebris);
@@ -1207,7 +1207,7 @@ PhysRelativeTime MachLogResourceCarrier::doLoading()
         interval = physResourceCarrier().doLoading(SimManager::instance().currentTime());
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
         network.messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
 
     notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::CHANGED_MINERALS_CARRIED);
@@ -1236,7 +1236,7 @@ bool MachLogResourceCarrier::mayHaveLostRouteElement(W4dSubject* pSubject)
 
         if (hasSuppliers())
         {
-            if (not smeltingBuildingExplicitlyAssigned_)
+            if (! smeltingBuildingExplicitlyAssigned_)
                 findBestSmeltingBuilding();
 
             if (hasSmeltingBuilding())
@@ -1249,11 +1249,11 @@ bool MachLogResourceCarrier::mayHaveLostRouteElement(W4dSubject* pSubject)
 
         // stop in our tracks if we now have no smelter and we were previously moving toward it
         // (UNLESS we are evading)
-        if (not(hasSmeltingBuilding()))
+        if (!(hasSmeltingBuilding()))
         {
             giveTransportRouteFailureVoicemail();
 
-            if (isPuttingDown() and not evading())
+            if (isPuttingDown() && ! evading())
             {
                 // this will protect all our supplier and smelter lists from being wiped out as a result
                 // of the removal of the transport op (as would normally be the case)
@@ -1287,7 +1287,7 @@ bool MachLogResourceCarrier::mayHaveLostRouteElement(W4dSubject* pSubject)
 
             if (hasSuppliers())
             {
-                if (not smeltingBuildingExplicitlyAssigned_)
+                if (! smeltingBuildingExplicitlyAssigned_)
                     findBestSmeltingBuilding();
 
                 if (hasSmeltingBuilding())
@@ -1296,14 +1296,14 @@ bool MachLogResourceCarrier::mayHaveLostRouteElement(W4dSubject* pSubject)
             else
                 giveTransportRouteFailureVoicemail();
 
-            if (not(hasSuppliers()) or doneAllSuppliers())
+            if (!(hasSuppliers()) || doneAllSuppliers())
             {
                 // nothing more remains to be picked up - stop dead in our tracks. Reissue transport op
                 // if we do still have suppliers left - this will flip round to a putdown immediately
                 // as we will now have completed pickup from all remaining suppliers.
                 // Note that none of this is relevant if we are currently evading - don't want to interfere
                 // with that.
-                if (isPickingUp() and not evading())
+                if (isPickingUp() && ! evading())
                 {
                     // this will protect all our supplier and smelter lists from being wiped out as a result
                     // of the removal of the transport op (as would normally be the case)

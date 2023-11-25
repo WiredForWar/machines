@@ -93,10 +93,10 @@ MachLogEnterBuildingOperation::~MachLogEnterBuildingOperation()
     if (buildingGone_)
     {
     }
-    else if (pActor_->insideBuilding() and &pActor_->insideWhichBuilding() == pConstruction_)
+    else if (pActor_->insideBuilding() && &pActor_->insideWhichBuilding() == pConstruction_)
     {
         // Machine got inside the right building. If not on the internal entrance polygon...
-        if (not onInternalEntrancePolygon())
+        if (! onInternalEntrancePolygon())
         {
             // we no longer need to lock the entrance.
             if (pActor_->hasLockedEntrance())
@@ -111,8 +111,8 @@ MachLogEnterBuildingOperation::~MachLogEnterBuildingOperation()
     }
 
     // If we didn't make it to the station, unlock it
-    if (pStation_ != nullptr and pActor_->hasStationLocked() and &pActor_->stationLocked() == pStation_
-        and MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position())) > 0.0001)
+    if (pStation_ != nullptr && pActor_->hasStationLocked() && &pActor_->stationLocked() == pStation_
+        && MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position())) > 0.0001)
     {
         pActor_->stationLocked(nullptr);
         pStation_->lock(false);
@@ -136,7 +136,7 @@ void MachLogEnterBuildingOperation::doOutputOperator(std::ostream& o) const
     o << " external( 0 ).position() " << pConstruction_->entranceExternalPoint(0) << std::endl;
     o << " internal( 0 ).position() " << pConstruction_->entranceInternalPoint(0) << std::endl;
     o << " current position() " << pActor_->position() << std::endl;
-    o << " motionSeq() is in RESTING state " << not pActor_->motionSeq().hasDestination() << std::endl;
+    o << " motionSeq() is in RESTING state " << ! pActor_->motionSeq().hasDestination() << std::endl;
     o << " pStation_ " << (void*)pStation_ << std::endl;
     if (pStation_ != nullptr)
     {
@@ -185,8 +185,8 @@ bool MachLogEnterBuildingOperation::doStart()
     // If already in a different construction, we can't start until we have left it
     MachLogConstruction* pConstruction = nullptr;
     bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
-    if (insideABuilding and pConstruction->id() != pConstruction_->id())
-        return not checkNeedAndDoLeaveOperation(pActor_);
+    if (insideABuilding && pConstruction->id() != pConstruction_->id())
+        return ! checkNeedAndDoLeaveOperation(pActor_);
 
     HAL_STREAM(
         " (" << pActor_->id() << ") MEnterBOp::doStart no leave necesary " << pConstruction_->objectType() << "\n");
@@ -205,7 +205,7 @@ bool MachLogEnterBuildingOperation::doStart()
         else
             status_ = GOING_TO_STATION;
     }
-    else if (pActor_->hasLockedEntrance() and &pActor_->lockedEntrance() == &pConstruction_->entrance(0))
+    else if (pActor_->hasLockedEntrance() && &pActor_->lockedEntrance() == &pConstruction_->entrance(0))
     {
         // Already have the entrance locked. So act as if going to external point.
         status_ = GOING_TO_EXTERNAL_POINT;
@@ -266,7 +266,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                     if (moving)
                         mSeq.stop();
                 }
-                else if (not moving)
+                else if (! moving)
                     action = MOVE_TO_STATION;
                 else
                     callBackInterval = 1.0;
@@ -277,7 +277,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
         case GOING_TO_INTERIOR:
             {
                 ASSERT(pStation_ == nullptr, "");
-                if (not moving and onInternalEntrancePolygon())
+                if (! moving && onInternalEntrancePolygon())
                     action = MOVE_TO_STATION;
 
                 break;
@@ -296,7 +296,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
 
         case GOING_TO_INTERNAL_POINT:
             {
-                if (not moving)
+                if (! moving)
                 {
                     // Have we arrived?
                     if (actorPos.euclidianDistance(pConstruction_->entranceInternalPoint(0)) < 0.001)
@@ -325,7 +325,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
 
         case GOING_TO_EXTERNAL_POINT:
             {
-                if (not moving)
+                if (! moving)
                 {
                     // Have we arrived?
                     if (actorPos.euclidianDistance(pConstruction_->entranceExternalPoint(0)) < 0.001)
@@ -342,7 +342,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
 
         case CLEAR:
             {
-                if (not moving)
+                if (! moving)
                     action = MOVE_TO_EXTERNAL_POINT;
 
                 break;
@@ -415,10 +415,10 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                         // about upsetting people by not getting out of the way.
                         // also, if it's an enemy building, full stop, don't get out of the way
                         if ((pActor_->race() != pConstruction_->race())
-                            or (pActor_->objectIsCanAttack() and pActor_->asCanAttack().hasCurrentTarget()
-                                and pActor_->asCanAttack().currentTarget().objectIsMachine()
-                                and pActor_->asCanAttack().currentTarget().asMachine().insideBuilding()
-                                and &(pActor_->asCanAttack().currentTarget().asMachine().insideWhichBuilding())
+                            || (pActor_->objectIsCanAttack() && pActor_->asCanAttack().hasCurrentTarget()
+                                && pActor_->asCanAttack().currentTarget().objectIsMachine()
+                                && pActor_->asCanAttack().currentTarget().asMachine().insideBuilding()
+                                && &(pActor_->asCanAttack().currentTarget().asMachine().insideWhichBuilding())
                                     == pConstruction_))
                         {
                             // I'm glad you could follow that.
@@ -447,7 +447,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                 else
                 {
                     ASSERT(pActor_->hasLockedEntrance(), "Machine on pad but not locked entrance");
-                    ASSERT(pStation_ == nullptr or pStation_->locked(), "Moved inside without having locked station");
+                    ASSERT(pStation_ == nullptr || pStation_->locked(), "Moved inside without having locked station");
 
                     // Ignore the building obstacle polygon while we make the move to inside
                     pActor_->ignoreConstructionPolygon(true);
@@ -475,7 +475,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
 
         case MOVE_TO_EXTERNAL_POINT:
             {
-                ASSERT(not pActor_->insideBuilding(), "");
+                ASSERT(! pActor_->insideBuilding(), "");
 
                 // Are we close enough to move directly to the entrance point
 
@@ -487,14 +487,14 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                 {
                     // Close enough to attempt a move to the external entrance point.
                     // Try to lock the entrance, if not already done so
-                    if (pActor_->hasLockedEntrance() or pConstruction_->entrance(0).lock())
+                    if (pActor_->hasLockedEntrance() || pConstruction_->entrance(0).lock())
                     {
                         // Ok. If our station is locked, see if there is another free one of the same type.
                         // Otherwise we can't start the move.
                         bool doMove = true;
                         if (pStation_)
                         {
-                            if (pStation_->locked() and not pActor_->hasStationLocked())
+                            if (pStation_->locked() && ! pActor_->hasStationLocked())
                             {
                                 doMove = false;
                                 MachPhysStation::Type type = pStation_->type();
@@ -551,7 +551,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                 else
                 {
                     // Need to move closer to the entrance if not moving already
-                    if (not moving)
+                    if (! moving)
                     {
                         MexPoint2d newDest;
 
@@ -608,21 +608,21 @@ bool MachLogEnterBuildingOperation::doBeInterrupted()
 bool MachLogEnterBuildingOperation::doIsFinished() const
 {
     // Must hav efinished if the building has been destroyed
-    bool result = buildingGone_ or (status_ == TERMINATE_EARLY);
+    bool result = buildingGone_ || (status_ == TERMINATE_EARLY);
 
-    if (not result)
+    if (! result)
     {
         // If moving to a station, we must have got there and stopped moving
         if (pStation_)
         {
-            result = not pActor_->motionSeq().hasDestination()
-                and MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position())) < 0.0001;
+            result = ! pActor_->motionSeq().hasDestination()
+                && MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position())) < 0.0001;
         }
         else
         {
             // No station, so ok if inside the building, not moving, and not on the entrance polygon
-            result = not pActor_->motionSeq().hasDestination() and pActor_->insideBuilding()
-                and (not onInternalEntrancePolygon() or ignoreNeedToClearEntrancePolygon_);
+            result = ! pActor_->motionSeq().hasDestination() && pActor_->insideBuilding()
+                && (! onInternalEntrancePolygon() || ignoreNeedToClearEntrancePolygon_);
         }
     }
 
@@ -769,11 +769,11 @@ MachLogLeaveBuildingOperation::~MachLogLeaveBuildingOperation()
     if (buildingGone_)
     {
     }
-    else if (not pActor_->insideBuilding())
+    else if (! pActor_->insideBuilding())
     {
         // Machine got outside the building.
         // Check to see if not on external entrance polygon.
-        if (not onExternalEntrancePolygon())
+        if (! onExternalEntrancePolygon())
         {
             // we no longer need to lock the entrance.
             if (pActor_->hasLockedEntrance())
@@ -909,7 +909,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
 
         case GOING_TO_INTERNAL_POINT:
             {
-                if (not moving)
+                if (! moving)
                 {
                     // Have we arrived?
                     if (actorPos.sqrEuclidianDistance(pConstruction_->entranceInternalPoint(0)) < 0.0001)
@@ -937,7 +937,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
 
         case GOING_TO_EXTERNAL_POINT:
             {
-                if (not moving)
+                if (! moving)
                 {
                     // Have we arrived?
                     if (actorPos.sqrEuclidianDistance(pConstruction_->entranceExternalPoint(0)) < 0.0001)
@@ -965,7 +965,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
 
         case GOING_CLEAR:
             {
-                if (not moving)
+                if (! moving)
                 {
                     // See if clear of the external entrance polygon
                     MexCircle2d testCircle(actorPos, mSeq.highClearance() + 1.0);
@@ -1000,7 +1000,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
         case MOVE_TO_INTERNAL_POINT:
             {
                 // Ensure we get the entrance locked
-                if (pActor_->hasLockedEntrance() or pConstruction_->entrance(0).lock())
+                if (pActor_->hasLockedEntrance() || pConstruction_->entrance(0).lock())
                 {
                     status_ = GOING_TO_INTERNAL_POINT;
 
@@ -1135,15 +1135,15 @@ bool MachLogLeaveBuildingOperation::doIsFinished() const
     // Must be finsihed if building no longer exists
     bool result = buildingGone_;
 
-    if (not result)
+    if (! result)
     {
         // Check not contained in the building
         MexPoint2d actorPos(pActor_->position());
 
-        if (not pConstruction_->globalBoundary().contains(actorPos))
+        if (! pConstruction_->globalBoundary().contains(actorPos))
         {
             // Not in global building boundary. Check not on external polygon.
-            result = not onExternalEntrancePolygon();
+            result = ! onExternalEntrancePolygon();
         }
     }
 

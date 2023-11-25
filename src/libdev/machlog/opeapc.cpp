@@ -131,11 +131,11 @@ bool MachLogEnterAPCOperation::doStart()
 {
     bool result = true;
 
-    if (pAPC_ and status_ == PREPARING_TO_GO_TO_APC)
+    if (pAPC_ && status_ == PREPARING_TO_GO_TO_APC)
     {
         pAPC_->addIncoming(pActor_);
         status_ = GOING_TO_APC;
-        result = not checkNeedAndDoLeaveOperation(pActor_);
+        result = ! checkNeedAndDoLeaveOperation(pActor_);
     }
 
     return result;
@@ -165,7 +165,7 @@ PhysRelativeTime MachLogEnterAPCOperation::doUpdate()
     bool closeEnoughToEnter
         = pActor_->position().sqrEuclidianDistance(pAPC_->position()) < sqr(pAPC_->highClearence() + desiredRange_);
 
-    if (not closeEnoughToEnter and pSubOperation())
+    if (! closeEnoughToEnter && pSubOperation())
         return 2.0;
 
     // if the APC is inside a building then exit
@@ -177,7 +177,7 @@ PhysRelativeTime MachLogEnterAPCOperation::doUpdate()
 
     if (status_ == GOING_TO_APC)
     {
-        if (not closeEnoughToEnter)
+        if (! closeEnoughToEnter)
         {
             // too far away to enter......ensure motion sequencer is not locked
             pActor_->motionSeq().allowMoveOutOfWay(true);
@@ -204,7 +204,7 @@ PhysRelativeTime MachLogEnterAPCOperation::doUpdate()
                 &loadPoint,
                 desiredRange_ - 7);
 
-            if (not foundSpace)
+            if (! foundSpace)
                 finished_ = true;
             else
                 subOperation(pActor_, new MachLogMoveToOperation(pActor_, loadPoint, true, 5.0)); // 5m tolerance
@@ -220,7 +220,7 @@ PhysRelativeTime MachLogEnterAPCOperation::doUpdate()
 
             // ........but are we at the right angle?
             MexRadians entryAngle = MachLogSpacialManipulation::angleToTurnToFace(*pAPC_, pActor_->position());
-            if (entryAngle > MexRadians(2.8) or entryAngle < MexRadians(-2.8))
+            if (entryAngle > MexRadians(2.8) || entryAngle < MexRadians(-2.8))
                 status_ = ENTERING_APC;
         }
     }
@@ -285,7 +285,7 @@ void MachLogEnterAPCOperation::checkAndDoStopGoingToAPC()
 {
     // remove ourselves if we still have a pointer to the APC AND we've actually added
     // ourselves to the APC's incoming list by setting out toward it
-    if (pAPC_ and status_ != PREPARING_TO_GO_TO_APC)
+    if (pAPC_ && status_ != PREPARING_TO_GO_TO_APC)
     {
         pAPC_->removeIncoming(pActor_);
     }

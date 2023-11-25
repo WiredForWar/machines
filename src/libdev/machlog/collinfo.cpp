@@ -17,7 +17,7 @@ MachLogCollisionInfo::MachLogCollisionInfo()
 
     TEST_INVARIANT;
 
-    POST(not valid());
+    POST(! valid());
 }
 
 MachLogCollisionInfo::MachLogCollisionInfo(
@@ -44,7 +44,7 @@ MachLogCollisionInfo::MachLogCollisionInfo(const MexPoint2d& collisionPoint, Obj
     , collisionPoint_(collisionPoint)
 {
     POST(valid());
-    POST(not collisionTimeValid());
+    POST(! collisionTimeValid());
 }
 
 MachLogCollisionInfo::~MachLogCollisionInfo()

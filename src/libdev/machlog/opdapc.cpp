@@ -88,7 +88,7 @@ bool MachLogDeployAPCOperation::doStart()
 {
     CB_MachLogDeployAPCOperation_DEPIMPL();
 
-    return not checkNeedAndDoLeaveOperation(pAPC_);
+    return ! checkNeedAndDoLeaveOperation(pAPC_);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -209,7 +209,7 @@ bool MachLogDeployAPCOperation::doBeInterrupted()
     CB_MachLogDeployAPCOperation_DEPIMPL();
 
     pAPC_->motionSeq().stop();
-    return not pAPC_->motionSeq().hasDestination();
+    return ! pAPC_->motionSeq().hasDestination();
 }
 
 /////////////////////////////////////////////////////////////////////////

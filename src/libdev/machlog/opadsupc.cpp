@@ -39,8 +39,8 @@ MachLogAdminSuperConstructOperation::MachLogAdminSuperConstructOperation(
     , opType_(opType)
     , lastUpdateTime_(SimManager::instance().currentTime())
 {
-    PRE(opType_ == MachLogOperation::CONSTRUCT_OPERATION or opType_ == MachLogOperation::DECONSTRUCT_OPERATION
-        or opType_ == MachLogOperation::CAPTURE_OPERATION or opType_ == MachLogOperation::REPAIR_OPERATION);
+    PRE(opType_ == MachLogOperation::CONSTRUCT_OPERATION || opType_ == MachLogOperation::DECONSTRUCT_OPERATION
+        || opType_ == MachLogOperation::CAPTURE_OPERATION || opType_ == MachLogOperation::REPAIR_OPERATION);
 
     PRE(constructionArray_.size() != 0);
 
@@ -124,7 +124,7 @@ void MachLogAdminSuperConstructOperation::doOutputOperator(std::ostream& o) cons
 
 bool MachLogAdminSuperConstructOperation::doStart()
 {
-    bool result = not checkNeedAndDoLeaveOperation(pActor_);
+    bool result = ! checkNeedAndDoLeaveOperation(pActor_);
     return result;
 }
 
@@ -217,7 +217,7 @@ void MachLogAdminSuperConstructOperation::doFinish()
 
 bool MachLogAdminSuperConstructOperation::doIsFinished() const
 {
-    return (constructionArray_.size() == 0 or nConstructorsRemaining() == 0);
+    return (constructionArray_.size() == 0 || nConstructorsRemaining() == 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -310,13 +310,13 @@ bool MachLogAdminSuperConstructOperation::beNotified(
                 {
                     case MachLog::RACE_CHANGED:
                         if (opType_ == MachLogOperation::CAPTURE_OPERATION
-                            and (pConstruction->race() == pActor_->race()))
+                            && (pConstruction->race() == pActor_->race()))
                             stayAsObserver = false;
                         if (opType_ == MachLogOperation::REPAIR_OPERATION
-                            and (pConstruction->race() != pActor_->race()))
+                            && (pConstruction->race() != pActor_->race()))
                             stayAsObserver = false;
                         if (opType_ == MachLogOperation::CONSTRUCT_OPERATION
-                            and (pConstruction->race() != pActor_->race()))
+                            && (pConstruction->race() != pActor_->race()))
                             stayAsObserver = false;
                         break;
 
@@ -330,7 +330,7 @@ bool MachLogAdminSuperConstructOperation::beNotified(
                         break;
 
                     case MachLog::PERCENTAGE_COMPLETE_CHANGED:
-                        if (opType_ == MachLogOperation::CONSTRUCT_OPERATION and pConstruction->isComplete())
+                        if (opType_ == MachLogOperation::CONSTRUCT_OPERATION && pConstruction->isComplete())
                             stayAsObserver = false;
                         break;
                 }

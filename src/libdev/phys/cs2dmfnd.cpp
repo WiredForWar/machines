@@ -145,7 +145,7 @@ bool PhysCS2dDomainFindPath::needMacroSearch()
 
     // Both points must be in a domain to be able to find a path
     bool needed = false;
-    if (startInADomain and endInADomain)
+    if (startInADomain && endInADomain)
     {
         // If in same domain then the empty path is the one we want
         if (startDomainId_ == endDomainId_)
@@ -183,7 +183,7 @@ void PhysCS2dDomainFindPath::startMacroSearch()
     {
         // If the domain graph can be locked, lock it
         PhysCS2dImpl& impl = *(pConfigSpace_->pImpl());
-        if (not impl.domainGraphInUse())
+        if (! impl.domainGraphInUse())
         {
             // Enter the macro search phase
             state_ = MACRO;
@@ -230,7 +230,7 @@ void PhysCS2dDomainFindPath::updateMacroSearch(const PhysRelativeTime& maxTime)
     // If the domain graph needs to be updated, or has been updated, we must cancel the current search
     PhysCS2dImpl* pSpaceImpl = pConfigSpace_->pImpl();
     bool graphChanged = domainGraphVersion_ != pSpaceImpl->domainGraph().version();
-    if (graphChanged or pSpaceImpl->domainUpdateRegionExists())
+    if (graphChanged || pSpaceImpl->domainUpdateRegionExists())
     {
         // Cancel the search
         endMacroSearch();
@@ -272,7 +272,7 @@ void PhysCS2dDomainFindPath::endMacroSearch()
     // If the A* algorithm finished, we can get the results
     PhysCS2dImpl& impl = *(pConfigSpace_->pImpl());
 
-    if (pDomainAlg_->isFinished() and domainGraphVersion_ == impl.domainGraph().version())
+    if (pDomainAlg_->isFinished() && domainGraphVersion_ == impl.domainGraph().version())
     {
         // Get the results from the A* algorithm
         DomainAStarAlg::Vertices domainVertexIds = pDomainAlg_->output();
@@ -285,7 +285,7 @@ void PhysCS2dDomainFindPath::endMacroSearch()
             PhysConfigSpace2d::DomainVertexId domainVertexId = *it;
 
             // Don't output the start and end points
-            if (domainVertexId != startDomainVertexId_ and domainVertexId != endDomainVertexId_)
+            if (domainVertexId != startDomainVertexId_ && domainVertexId != endDomainVertexId_)
             {
                 // Get the domain vertex
                 const PhysCS2dDomainVertex& domainVertex = impl.domainGraph().vertex(domainVertexId);
@@ -425,7 +425,7 @@ void PhysCS2dDomainFindPath::update(const PhysRelativeTime& maxTime)
 
         // How much time do we have left?
         timeLeft = maxTime - (Phys::time() - entryTime);
-    } while (canDoMore and timeLeft > 0);
+    } while (canDoMore && timeLeft > 0);
 
     CS2PATH_EXIT("update");
 }
@@ -472,7 +472,7 @@ bool PhysCS2dDomainFindPath::DomainAStarAlg::vertexAvailable(const PhysCS2dDomai
         A_STAR_INSPECT(vertex.flags());
         A_STAR_INSPECT(flags_);
 
-        if (vertex.flags() and ((vertex.flags() & flags_) == 0))
+        if (vertex.flags() && ((vertex.flags() & flags_) == 0))
             result = false;
     }
 

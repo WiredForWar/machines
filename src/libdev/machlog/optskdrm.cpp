@@ -137,7 +137,7 @@ PhysRelativeTime MachLogTaskDropLandMineOperation::doUpdate()
                         MexPoint2d point(start.x() + x, start.y() + y);
                         MexPoint2d newPoint;
                         MATHEX_SCALAR radius = 5;
-                        while (not cs.findSpace(
+                        while (! cs.findSpace(
                             point,
                             point,
                             pSpyLocator->highClearence() * 1.5,

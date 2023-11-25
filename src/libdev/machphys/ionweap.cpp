@@ -166,7 +166,7 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
 
     W4dMaterialPlanPtr pMaterialPlanPtr(pPlan);
 
-    for (W4dEntityIter it(pVictim); not it.isFinished(); ++it)
+    for (W4dEntityIter it(pVictim); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().materialPlan(pMaterialPlanPtr, startTime);
         (*it).entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);
@@ -175,7 +175,7 @@ PhysRelativeTime MachPhysIonWeapon::destroy(W4dEntity* pVictim, const PhysAbsolu
     //  make plans for the copy
 
     // apply the same material and visibility plan  to the copy
-    for (W4dEntityIter it(pCopyTarget); not it.isFinished(); ++it)
+    for (W4dEntityIter it(pCopyTarget); ! it.isFinished(); ++it)
     {
         (*it).entityPlanForEdit().materialPlan(pMaterialPlanPtr, startTime);
         (*it).entityPlanForEdit().visibilityPlan(wVisibilityPlanPtr, startTime);

@@ -54,7 +54,7 @@ void MachLogChangeRaceAction::doAction()
     for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().objects().begin();
          i != MachLogRaces::instance().objects().end();
          ++i)
-        if ((*i)->race() == originalRace_ and dest_.sqrEuclidianDistance((*i)->position()) < sqrRange)
+        if ((*i)->race() == originalRace_ && dest_.sqrEuclidianDistance((*i)->position()) < sqrRange)
         {
             actorsToChange.push_back(*i);
         }

@@ -71,7 +71,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
     //  The epsilon check is a protection against rounding errors in floor within getIntegersBetween
     //  It must be done with the unscaled values otherwise we get into trouble with
     //  rounding errors near the edges of cells.
-    if (not MexEpsilon::isWithinEpsilonOf(line.end1().x(), line.end2().x()))
+    if (! MexEpsilon::isWithinEpsilonOf(line.end1().x(), line.end2().x()))
         getIntegersBetween(end1.x(), end2.x(), &xCrossings);
 
     MEX_GRID2D_INSPECT(xCrossings);
@@ -81,7 +81,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
     Points internalPoints;
     internalPoints.reserve(nToReserve);
 
-    if (end1.x() >= 0 and end1.x() <= nXCells_ and end1.y() >= 0 and end1.y() <= nYCells_)
+    if (end1.x() >= 0 && end1.x() <= nXCells_ && end1.y() >= 0 && end1.y() <= nYCells_)
     {
         internalPoints.push_back(end1);
     }
@@ -104,7 +104,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
         }
 
         //  Check for in range
-        if (x >= 0 and x <= nXCells_)
+        if (x >= 0 && x <= nXCells_)
         {
 
             Scalars yCrossings;
@@ -117,7 +117,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
             //  It must be done with the unscaled values otherwise we get into trouble with
             //  rounding errors near the edges of cells.
 
-            if (not MexEpsilon::isWithinEpsilonOf(originalScalePreviousY, originalScaleY))
+            if (! MexEpsilon::isWithinEpsilonOf(originalScalePreviousY, originalScaleY))
                 getIntegersBetween(previousY, y, &yCrossings);
 
             MEX_GRID2D_INSPECT(yCrossings);
@@ -161,7 +161,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
 
             if (convertedI == convertedJ)
                 useThisPoint = false;
-            else if (not inRange(convertedI))
+            else if (! inRange(convertedI))
                 useThisPoint = false;
             else
             {
@@ -189,7 +189,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
                 pCells->push_back(CellIndex(xCellIndex, yCellIndex));
             }
         }
-        else if (not inRange(convertedI))
+        else if (! inRange(convertedI))
             useThisPoint = false;
 
         if (useThisPoint)
@@ -261,7 +261,7 @@ bool MexGrid2d::valid(const Cells& cells, const MexLine2d& line) const
 {
     bool isValid = true;
 
-    for (size_t i = 0; i < cells.size() and isValid; ++i)
+    for (size_t i = 0; i < cells.size() && isValid; ++i)
     {
         ASSERT_INFO(cells[i].xIndex());
         ASSERT_INFO(cells[i].yIndex());
@@ -344,7 +344,7 @@ bool MexGrid2d::valid(const Points& points, const MexLine2d& line) const
 {
     bool isValid = true;
 
-    for (size_t i = 0; i < points.size() and isValid; ++i)
+    for (size_t i = 0; i < points.size() && isValid; ++i)
     {
         ASSERT_INFO(points[i]);
         ASSERT_INFO(xMin());
@@ -352,7 +352,7 @@ bool MexGrid2d::valid(const Points& points, const MexLine2d& line) const
         ASSERT_INFO(yMin());
         ASSERT_INFO(yMax());
 
-        if (not inRange(points[i]))
+        if (! inRange(points[i]))
         {
             ASSERT_FAIL("Point out of range");
             isValid = false;
@@ -369,7 +369,7 @@ bool MexGrid2d::valid(const Points& points, const MexLine2d& line) const
         if (line.end1().y() > line.end2().y())
             increasingY = false;
 
-        for (size_t i = 0; i < points.size() - 1 and isValid; ++i)
+        for (size_t i = 0; i < points.size() - 1 && isValid; ++i)
         {
 
             ASSERT_INFO(line);
@@ -423,7 +423,7 @@ bool MexGrid2d::inRange(const MexPoint2d& point) const
 {
     bool result = true;
 
-    if (point.x() < xMin() or point.x() > xMax() or point.y() < yMin() or point.y() > yMax())
+    if (point.x() < xMin() || point.x() > xMax() || point.y() < yMin() || point.y() > yMax())
     {
         result = false;
     }

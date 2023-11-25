@@ -163,7 +163,7 @@ void MachGuiDbTextData::parseFile(const SysPathName& filename)
     string objectiveText, taskText;
     string voicemail;
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         // Action depends on whether currently adding to a string
         if (pOutputString == nullptr)

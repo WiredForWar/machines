@@ -73,7 +73,7 @@ bool MachPhysConstructionImpl::savedPadTransform(W4dLink::Id id, MexTransform3d*
 
     bool result = false;
     LinkTransforms::const_iterator it;
-    for (it = savedPadsTransforms().begin(); it != savedPadsTransforms().end() and not result; ++it)
+    for (it = savedPadsTransforms().begin(); it != savedPadsTransforms().end() && ! result; ++it)
     {
         if ((*it).id == id)
         {

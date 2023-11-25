@@ -36,7 +36,7 @@ MexAlignedBox3d::MexAlignedBox3d(
     : isEmpty_(false)
     , spinSafe_(false)
 {
-    PRE(x1 <= x2 and y1 <= y2 and z1 <= z2);
+    PRE(x1 <= x2 && y1 <= y2 && z1 <= z2);
 
     minCorner_.setPoint(x1, y1, z1);
     maxCorner_.setPoint(x2, y2, z2);
@@ -294,10 +294,10 @@ bool MexAlignedBox3d::intersects(
         {
             lambda = (x - px) / denom;
             y = py + (lambda * dy);
-            if (y > eyMin and y < eyMax)
+            if (y > eyMin && y < eyMax)
             {
                 z = pz + (lambda * dz);
-                if (z > ezMin and z < ezMax)
+                if (z > ezMin && z < ezMax)
                     aHitDistances[nHits++] = lambda;
             }
         }
@@ -312,10 +312,10 @@ bool MexAlignedBox3d::intersects(
         {
             lambda = (y - py) / denom;
             x = px + (lambda * dx);
-            if (x > exMin and x < exMax)
+            if (x > exMin && x < exMax)
             {
                 z = pz + (lambda * dz);
-                if (z > ezMin and z < ezMax)
+                if (z > ezMin && z < ezMax)
                     aHitDistances[nHits++] = lambda;
             }
         }
@@ -330,10 +330,10 @@ bool MexAlignedBox3d::intersects(
         {
             lambda = (z - pz) / denom;
             x = px + (lambda * dx);
-            if (x > exMin and x < exMax)
+            if (x > exMin && x < exMax)
             {
                 y = py + (lambda * dy);
-                if (y > eyMin and y < eyMax)
+                if (y > eyMin && y < eyMax)
                     aHitDistances[nHits++] = lambda;
             }
         }
@@ -359,7 +359,7 @@ bool MexAlignedBox3d::intersects(
         }
 
         // Check the hits on the infinite line overlap the line segment
-        result = exitDistance > -ruleEpsilon and entryDistance < line.length() + ruleEpsilon;
+        result = exitDistance > -ruleEpsilon && entryDistance < line.length() + ruleEpsilon;
         if (result)
         {
             *pEntryDistance = entryDistance;

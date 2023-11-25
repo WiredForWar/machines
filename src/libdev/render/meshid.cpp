@@ -19,7 +19,7 @@ RenIMeshID::RenIMeshID(const SysPathName& pathName, const std::string& combinedN
     bool separatorFound = false;
     size_t separatorPosition;
 
-    for (size_t i = 0; i < combinedName.length() and not separatorFound; ++i)
+    for (size_t i = 0; i < combinedName.length() && ! separatorFound; ++i)
     {
         if (combinedName[i] == separator())
         {

@@ -351,7 +351,7 @@ void MachGuiStartupScreens::loopCycle()
 
     checkSwitchGuiRoot();
 
-    if (context_ == CTX_GAME or context_ == CTX_MULTI_GAME or context_ == CTX_SKIRMISH_GAME)
+    if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
     {
         loopCycleInGame();
     }
@@ -374,7 +374,7 @@ void MachGuiStartupScreens::updateGui()
     RENDER_STREAM("Starting MachGuiStartupScreens::updateGui()\n");
     RENDER_INDENT(2);
 
-    bool inGame = (context_ == CTX_GAME or context_ == CTX_MULTI_GAME or context_ == CTX_SKIRMISH_GAME);
+    bool inGame = (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
 
     // This is a bit of a hack.  Setting the viewports correctly depends
     // upon where this method is invoked in the order of things.
@@ -398,7 +398,7 @@ void MachGuiStartupScreens::displayGui()
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
 
-    bool inGame = (context_ == CTX_GAME or context_ == CTX_MULTI_GAME or context_ == CTX_SKIRMISH_GAME);
+    bool inGame = (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
 
     // This is a bit of a hack.  Setting the viewports correctly depends
     // upon where this method is invoked in the order of things.
@@ -452,7 +452,7 @@ void MachGuiStartupScreens::checkSwitchGuiRoot()
             if (gameType_ != MULTIGAME)
             {
                 // Resume sim if the game wasn't paused when we switched into the menu screens
-                if (not isGamePaused_)
+                if (! isGamePaused_)
                     SimManager::instance().resume();
 
                 if (gameType_ == CAMPAIGNGAME)
@@ -481,7 +481,7 @@ void MachGuiStartupScreens::checkSwitchGuiRoot()
     }
     else
     {
-        if (context_ == CTX_GAME or context_ == CTX_SKIRMISH_GAME or context_ == CTX_MULTI_GAME)
+        if (context_ == CTX_GAME || context_ == CTX_SKIRMISH_GAME || context_ == CTX_MULTI_GAME)
         {
             pInGameScreen_->checkSwitchGuiRoot();
         }
@@ -847,7 +847,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
             {
                 // find unsed colour
                 for (MachPhys::Race j = MachPhys::RED; j < MachPhys::N_RACES; ++((int&)j))
-                    if (not colourUsed[j])
+                    if (! colourUsed[j])
                     {
                         creationData[i].colour_ = j;
                         colourUsed[j] = true;
@@ -938,12 +938,12 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
         bool allOk = false;
         PhysAbsoluteTime startTime = Phys::time();
         PhysAbsoluteTime lastStartMessageTime = Phys::time();
-        while (not allOk and (Phys::time() - startTime < MachLogRaces::instance().stats().connectionTime()))
+        while (! allOk && (Phys::time() - startTime < MachLogRaces::instance().stats().connectionTime()))
         {
             bool checkAllOk = true;
             MachLogNetwork::instance().update();
             for (MachPhys::Race i : MachPhys::AllRaces)
-                if (not MachLogNetwork::instance().ready(i))
+                if (! MachLogNetwork::instance().ready(i))
                     checkAllOk = false;
             allOk = checkAllOk;
             if (checkAllOk)
@@ -989,7 +989,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
         // Timeout and enter game after 60secs regardless of who is ready. This at least
         // gives the option of quitting the game if things have gone wrong without having to
         // kill the process.
-        for (int i = 0; i < 60 and SimManager::instance().isSuspended(); ++i)
+        for (int i = 0; i < 60 && SimManager::instance().isSuspended(); ++i)
         {
             SysWindowsAPI::peekMessage();
             SysWindowsAPI::sleep(1000);
@@ -1104,7 +1104,7 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
     MachGuiSoundManager::instance().playSound(wavFile);
 
     // Dismiss message box?
-    if (pMsgBox_ and (be == BE_OK or be == BE_CANCEL))
+    if (pMsgBox_ && (be == BE_OK || be == BE_CANCEL))
     {
         // Restore character focus
         if (pCharFocus_)
@@ -1144,13 +1144,13 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
     bool found = false;
     size_t loop = 0;
 
-    while (not found and getContextSwitchInfo()[loop].curContext_ != CTX_FINISH)
+    while (! found && getContextSwitchInfo()[loop].curContext_ != CTX_FINISH)
     {
         ContextSwitchInfo& csi = getContextSwitchInfo()[loop];
 
-        if (csi.curContext_ == context_ and csi.buttonEvent_ == be)
+        if (csi.curContext_ == context_ && csi.buttonEvent_ == be)
         {
-            if (csi.playTransition_ and pStartupData_->transitionFlicsOn())
+            if (csi.playTransition_ && pStartupData_->transitionFlicsOn())
             {
                 contextBeforeFlic_ = context_;
                 contextAfterFlic_ = csi.newContext_;
@@ -1168,7 +1168,7 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
 
     // Default processing did not make use of the button event therefore allow current
     // context to process it.
-    if (not found and pCurrContext_)
+    if (! found && pCurrContext_)
     {
         pCurrContext_->buttonEvent(be);
     }
@@ -1180,11 +1180,11 @@ void MachGuiStartupScreens::doDisplay()
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(Context, context_);
 
-    if (context_ != CTX_LOADINGEXE and context_ != CTX_POSTLOADINGANIMATION)
+    if (context_ != CTX_LOADINGEXE && context_ != CTX_POSTLOADINGANIMATION)
     {
         const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
 
-        if (mode.width() != 640 or mode.height() != 480)
+        if (mode.width() != 640 || mode.height() != 480)
         {
             // Blit black on to backbuffer to stop previous screen from showing through black borders
             RenDevice::current()->backSurface().filledRectangle(
@@ -1234,7 +1234,7 @@ void MachGuiStartupScreens::switchContext(Context newContext)
     NETWORK_STREAM("(void*)pCurrContext_ " << (void*)pCurrContext_ << std::endl);
     if (pCurrContext_)
     {
-        if (not pCurrContext_->okayToSwitchContext())
+        if (! pCurrContext_->okayToSwitchContext())
         {
             NETWORK_STREAM("not ok to switch context returning\n");
             NETWORK_INDENT(-2);
@@ -1415,7 +1415,7 @@ void MachGuiStartupScreens::update()
     // of this functionality.
     if (pMustContainMouse_)
     {
-        if (not pMustContainMouse_->containsMousePointer())
+        if (! pMustContainMouse_->containsMousePointer())
         {
             delete pMustContainMouse_;
             pMustContainMouse_ = nullptr;
@@ -1427,7 +1427,7 @@ void MachGuiStartupScreens::update()
     }
 
     // Update the current context if a message box is not being displayed.
-    if (pCurrContext_ and not pMsgBox_)
+    if (pCurrContext_ && ! pMsgBox_)
     {
         pCurrContext_->update();
     }
@@ -1459,7 +1459,7 @@ void MachGuiStartupScreens::doBecomeRoot()
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
     // Use 640x480 menu resolution
-    if (not SysRegistry::instance()
+    if (! SysRegistry::instance()
                 .queryIntegerValue("Screen Resolution", "Lock Resolution", getDefaultLockScreenResolutionValue()))
     {
         //      pSceneManager_->pDevice()->display()->useMode(640, 480, 0);
@@ -1495,13 +1495,13 @@ void MachGuiStartupScreens::doBecomeNotRoot()
         inGameResolutionRate_ = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
 
         // Check that minimum resolution is specified
-        if (inGameResolutionWidth_ < 640 or inGameResolutionHeight_ < 480)
+        if (inGameResolutionWidth_ < 640 || inGameResolutionHeight_ < 480)
         {
             inGameResolutionWidth_ = 640;
             inGameResolutionHeight_ = 480;
         }
 
-        if (oldWidth != inGameResolutionWidth_ or oldHeight != inGameResolutionHeight_)
+        if (oldWidth != inGameResolutionWidth_ || oldHeight != inGameResolutionHeight_)
         {
             pInGameScreen_->resolutionChange();
         }
@@ -1578,7 +1578,7 @@ void MachGuiStartupScreens::checkContextTimeout()
     bool found = false;
     size_t loop = 0;
 
-    while (not found and getContextTimeoutInfo()[loop].curContext_ != CTX_FINISH)
+    while (! found && getContextTimeoutInfo()[loop].curContext_ != CTX_FINISH)
     {
         // Have we found the correct entry in the timeout table...
         if (getContextTimeoutInfo()[loop].curContext_ == context_)
@@ -1614,7 +1614,7 @@ void MachGuiStartupScreens::loopCycleInGame()
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
-    PRE(context_ == CTX_GAME or context_ == CTX_MULTI_GAME or context_ == CTX_SKIRMISH_GAME);
+    PRE(context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
 
 #ifndef PRODUCTION
 
@@ -1650,7 +1650,7 @@ void MachGuiStartupScreens::loopCycleInGame()
     if (proChugTime != 0.0)
     {
         PhysAbsoluteTime now = Phys::time();
-        if (ProProfiler::instance().isProfilingEnabled() and (now - cycleStartTime > proChugTime))
+        if (ProProfiler::instance().isProfilingEnabled() && (now - cycleStartTime > proChugTime))
         {
             ProProfiler::instance().outputStream() << std::endl
                                                    << "CHUG on frame " << W4dManager::instance().frameNumber()
@@ -1735,7 +1735,7 @@ void MachGuiStartupScreens::loopCycleInGame()
     }
 
     // Check for switch to in-game options, won or lost
-    if (pInGameScreen_->switchToMenus() or pInGameScreen_->gameState() != MachInGameScreen::PLAYING)
+    if (pInGameScreen_->switchToMenus() || pInGameScreen_->gameState() != MachInGameScreen::PLAYING)
     {
         // Stop all playing 3D sounds 'cus we are going into menus
         W4dSoundManager::instance().stopAll();
@@ -1815,7 +1815,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
     if (e.state() == Gui::PRESSED)
     {
         // Save menu screen shot
-        if (e.key() == DevKey::F12 and e.isShiftPressed() and e.isCtrlPressed())
+        if (e.key() == DevKey::F12 && e.isShiftPressed() && e.isCtrlPressed())
         {
             Gui::writeScreenAsFile("menu");
         }
@@ -1824,11 +1824,11 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         processed = doHandleFocusCapableControls(e);
 
         // Are we dismissing a message box?
-        if (not processed and pMsgBox_)
+        if (! processed && pMsgBox_)
         {
             processed = true;
 
-            if (e.key() == DevKey::ESCAPE or e.key() == DevKey::ENTER)
+            if (e.key() == DevKey::ESCAPE || e.key() == DevKey::ENTER)
             {
                 // Restore character focus
                 if (pCharFocus_)
@@ -1867,9 +1867,9 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         size_t loop = 0;
 
         // General processing for flics. Space and Escape cause flic to abort ( forced timeout!! )
-        if ((isContextFlic() and e.key() == DevKey::ESCAPE) or (isContextFlic() and e.key() == DevKey::SPACE))
+        if ((isContextFlic() && e.key() == DevKey::ESCAPE) || (isContextFlic() && e.key() == DevKey::SPACE))
         {
-            while (not processed and getContextTimeoutInfo()[loop].curContext_ != CTX_FINISH)
+            while (! processed && getContextTimeoutInfo()[loop].curContext_ != CTX_FINISH)
             {
                 // Have we found the correct entry in the timeout table...
                 if (getContextTimeoutInfo()[loop].curContext_ == context_)
@@ -1886,12 +1886,12 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         // More specific processing...
         loop = 0;
 
-        while (not processed and getContextKeypressInfo()[loop].curContext_ != CTX_FINISH)
+        while (! processed && getContextKeypressInfo()[loop].curContext_ != CTX_FINISH)
         {
             ContextKeypressInfo& cki = getContextKeypressInfo()[loop];
 
             // Have we found the correct entry in the keypress table...
-            if (cki.curContext_ == context_ and e.key() == cki.scanCode_)
+            if (cki.curContext_ == context_ && e.key() == cki.scanCode_)
             {
                 // Switch to new context if correct keypress has occured...
                 // When pressing a key we are simulating an on screen button being pressed,
@@ -1907,7 +1907,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
 
                 // Are we going to play a screen transition? If so store info so that when flic ends
                 // we know what context to switch to.
-                if (cki.playTransition_ and pStartupData_->transitionFlicsOn())
+                if (cki.playTransition_ && pStartupData_->transitionFlicsOn())
                 {
                     contextBeforeFlic_ = context_;
                     contextAfterFlic_ = cki.newContext_;
@@ -1925,7 +1925,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
     }
 
     // Still no one has processed the button event? Allow current context object to have a go...
-    if (not processed and pCurrContext_)
+    if (! processed && pCurrContext_)
     {
         processed = pCurrContext_->doHandleKeyEvent(e);
     }
@@ -1942,7 +1942,7 @@ MexTransform3d MachGuiStartupScreens::earTransform() const
     MexTransform3d xform = pSceneManager_->currentCamera()->globalTransform();
     MexPoint3d earPosition;
 
-    static bool isZenithActive = not pInGameScreen_->cameras()->isZenithCameraActive();
+    static bool isZenithActive = ! pInGameScreen_->cameras()->isZenithCameraActive();
     if (isZenithActive != pInGameScreen_->cameras()->isZenithCameraActive())
     {
         isZenithActive = pInGameScreen_->cameras()->isZenithCameraActive();
@@ -2049,7 +2049,7 @@ void MachGuiStartupScreens::startPlayingAnimation(
 #if not USE_SWSCALE
     isCutscene = false;
 #endif
-    if (not isCutscene)
+    if (! isCutscene)
     {
         pPlayingSmacker_ = new AniSmackerRegular(filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast);
     }
@@ -2092,7 +2092,7 @@ void MachGuiStartupScreens::loopCyclePlayingAnimation()
     updateCdAudio();
 
     // Get key events. False return indicates should quit the animation.
-    if (not GuiManager::instance().update() and pPlayingSmacker_ != nullptr)
+    if (! GuiManager::instance().update() && pPlayingSmacker_ != nullptr)
         stopPlayingAnimation();
 
     // The animation may already have been finished due to a keyboard event
@@ -2103,14 +2103,14 @@ void MachGuiStartupScreens::loopCyclePlayingAnimation()
     else
     {
         bool started = true;
-        if (not pPlayingSmacker_->useFrontBuffer())
+        if (! pPlayingSmacker_->useFrontBuffer())
             started = pSceneManager_->pDevice()->startFrame();
 
         if (started)
         {
             pPlayingSmacker_->playNextFrame(RenDevice::current());
 
-            if (not pPlayingSmacker_->useFrontBuffer())
+            if (! pPlayingSmacker_->useFrontBuffer())
                 pSceneManager_->pDevice()->endFrame();
         }
     }
@@ -2120,7 +2120,7 @@ bool MachGuiStartupScreens::animationFinished()
 {
     CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
 
-    return pPlayingSmacker_ == nullptr or pPlayingSmacker_->isFinished();
+    return pPlayingSmacker_ == nullptr || pPlayingSmacker_->isFinished();
 }
 
 void MachGuiStartupScreens::updateCdAudio()
@@ -2134,9 +2134,9 @@ void MachGuiStartupScreens::updateCdAudio()
     DevCD::instance().update();
     // Check to see if we are playing a game that has just finished. If so, play
     // either victory or defeat music.
-    if (context_ == CTX_GAME or context_ == CTX_MULTI_GAME or context_ == CTX_SKIRMISH_GAME)
+    if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
     {
-        if (not MachGuiDatabase::instance().currentScenario().isTrainingScenario())
+        if (! MachGuiDatabase::instance().currentScenario().isTrainingScenario())
         {
             if (pInGameScreen_->actualGameState() == MachInGameScreen::WON)
             {
@@ -2163,7 +2163,7 @@ void MachGuiStartupScreens::updateCdAudio()
             if (DevCD::instance().isAudioCDPresent())
             {
                 // Start to play desired track
-                bool repeat = not(desiredCdTrack_ == VICTORY_MUSIC or desiredCdTrack_ == DEFEAT_MUSIC);
+                bool repeat = !(desiredCdTrack_ == VICTORY_MUSIC || desiredCdTrack_ == DEFEAT_MUSIC);
 
                 if (desiredCdTrack_ + 1 < DevCD::instance().numberOfTracks())
                 {
@@ -2194,12 +2194,12 @@ void MachGuiStartupScreens::updateCdAudio()
             cdCheckTime_ = Phys::time();
 
             // Check to see if we need to restart the track. Maybe the cd was ejected from the drive?
-            if (not DevCD::instance().isPlayingAudioCd())
+            if (! DevCD::instance().isPlayingAudioCd())
             {
                 if (DevCD::instance().isAudioCDPresent())
                 {
                     // Start to play desired track
-                    bool repeat = not(desiredCdTrack_ == VICTORY_MUSIC or desiredCdTrack_ == DEFEAT_MUSIC);
+                    bool repeat = !(desiredCdTrack_ == VICTORY_MUSIC || desiredCdTrack_ == DEFEAT_MUSIC);
 
                     if (desiredCdTrack_ + 1 < DevCD::instance().numberOfTracks())
                     {
@@ -2242,7 +2242,7 @@ void MachGuiStartupScreens::activate()
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
 
-    if (context_ == CTX_GAME or context_ == CTX_MULTI_GAME or context_ == CTX_SKIRMISH_GAME)
+    if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
     {
         pInGameScreen_->activate();
     }
@@ -2356,7 +2356,7 @@ void MachGuiStartupScreens::contextAnimation()
             RenDevice::current()->clearAllSurfaces(RenColour::black());
         }
     }
-    else if (context_ == CTX_ENTRYFLIC or context_ == CTX_VICTORYFLIC or context_ == CTX_DEFEATFLIC)
+    else if (context_ == CTX_ENTRYFLIC || context_ == CTX_VICTORYFLIC || context_ == CTX_DEFEATFLIC)
     {
         string flicName;
 
@@ -4163,7 +4163,7 @@ bool MachGuiStartupScreens::handleHostMessage()
         case CTX_IMREADY:
         case CTX_SETTINGS:
             NETWORK_STREAM(" i'm ready or settings so going back to multiplayer\n");
-            if (not ignoreHostLostSystemMessage_)
+            if (! ignoreHostLostSystemMessage_)
             {
                 ignoreHostLostSystemMessage_ = true;
                 buttonAction(MachGuiStartupScreens::EXIT);
@@ -4340,9 +4340,9 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
     bool processed = false;
 
-    if (e.key() == DevKey::LEFT_ARROW or e.key() == DevKey::RIGHT_ARROW)
+    if (e.key() == DevKey::LEFT_ARROW || e.key() == DevKey::RIGHT_ARROW)
     {
-        if (GuiManager::instance().charFocusExists() and &GuiManager::instance().charFocus() != this)
+        if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() != this)
         {
             // Char focus control often want to use Left and Right arrow, therefore
             // navigation with these keys is disabled.
@@ -4351,9 +4351,9 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
     }
 
     // Do we have a control with focus that can respond to the key press?
-    if (e.key() == DevKey::TAB or e.key() == DevKey::UP_ARROW or e.key() == DevKey::DOWN_ARROW
-        or e.key() == DevKey::LEFT_ARROW or e.key() == DevKey::RIGHT_ARROW or e.key() == DevKey::ENTER
-        or e.key() == DevKey::ESCAPE)
+    if (e.key() == DevKey::TAB || e.key() == DevKey::UP_ARROW || e.key() == DevKey::DOWN_ARROW
+        || e.key() == DevKey::LEFT_ARROW || e.key() == DevKey::RIGHT_ARROW || e.key() == DevKey::ENTER
+        || e.key() == DevKey::ESCAPE)
     {
         MachGuiFocusCapableControl* pFocusControl = nullptr;
         MachGuiFocusCapableControl* pNextFocusControl = nullptr;
@@ -4367,11 +4367,11 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
              escDefIter != focusCapableControls_.end();
              ++escDefIter)
         {
-            if ((*escDefIter)->isEscapeControl() and (*escDefIter)->isFocusEnabled())
+            if ((*escDefIter)->isEscapeControl() && (*escDefIter)->isFocusEnabled())
             {
                 pEscapeFocusControl = (*escDefIter);
             }
-            if ((*escDefIter)->isDefaultControl() and (*escDefIter)->isFocusEnabled())
+            if ((*escDefIter)->isDefaultControl() && (*escDefIter)->isFocusEnabled())
             {
                 pDefaultFocusControl = (*escDefIter);
             }
@@ -4379,11 +4379,11 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
         // Find control with focus
         for (MachGuiStartupScreensImpl::FocusCapableControls::iterator i = focusCapableControls_.begin();
-             i != focusCapableControls_.end() and not pFocusControl;
+             i != focusCapableControls_.end() && ! pFocusControl;
              ++i)
         {
             // Store previous focus control for navigation purposes
-            if (pCurrentFocusControl and pCurrentFocusControl->isFocusEnabled())
+            if (pCurrentFocusControl && pCurrentFocusControl->isFocusEnabled())
             {
                 pPreviousFocusControl = pCurrentFocusControl;
             }
@@ -4397,7 +4397,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 // Store next and previous focus control for default navigation purposes.
                 // Find next control that is not disabled
                 ++i;
-                while (i != focusCapableControls_.end() and not pNextFocusControl)
+                while (i != focusCapableControls_.end() && ! pNextFocusControl)
                 {
                     if ((*i)->isFocusEnabled())
                     {
@@ -4409,11 +4409,11 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                     }
                 }
                 // Need to loop back to begining
-                if (not pNextFocusControl)
+                if (! pNextFocusControl)
                 {
                     for (MachGuiStartupScreensImpl::FocusCapableControls::iterator nextIter
                          = focusCapableControls_.begin();
-                         nextIter != focusCapableControls_.end() and not pNextFocusControl;
+                         nextIter != focusCapableControls_.end() && ! pNextFocusControl;
                          ++nextIter)
                     {
                         if ((*nextIter)->isFocusEnabled())
@@ -4425,7 +4425,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
                 // Haven't got a previous focus control for navigation yet, so iterate through
                 // list of controls and find the last non-disabled control.
-                if (not pPreviousFocusControl)
+                if (! pPreviousFocusControl)
                 {
                     for (MachGuiStartupScreensImpl::FocusCapableControls::iterator prevIter
                          = focusCapableControls_.begin();
@@ -4445,7 +4445,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         if (e.key() == DevKey::ESCAPE)
         {
             // Do we have a control with escape focus?
-            if (pEscapeFocusControl and pEscapeFocusControl->isFocusEnabled())
+            if (pEscapeFocusControl && pEscapeFocusControl->isFocusEnabled())
             {
                 processed = pEscapeFocusControl->executeControl();
             }
@@ -4464,7 +4464,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 }
 
                 // If the control with focus didn't use the Enter key then give the default key a chance
-                if (not processed and pDefaultFocusControl and pDefaultFocusControl->isFocusEnabled())
+                if (! processed && pDefaultFocusControl && pDefaultFocusControl->isFocusEnabled())
                 {
                     processed = pDefaultFocusControl->executeControl();
                 }
@@ -4591,7 +4591,7 @@ MachGuiDbScenario* MachGuiStartupScreens::workOutWhichScenarioToDefaultTo()
                 {
                     MachGuiDbScenario& scenario = planet.scenario(loop);
 
-                    if (selectNextItem and scenario.isAvailable())
+                    if (selectNextItem && scenario.isAvailable())
                     {
                         pDefaultScenario = &scenario;
                         return pDefaultScenario; // Found default scenario, no point continuing

@@ -74,8 +74,8 @@ const MexPoint3d& MexPoint3d::operator=(const MexVec3& rhs)
 
 bool MexPoint3d::operator==(const MexPoint3d& v) const
 {
-    return Mathex::abs(x() - v.x()) < MexEpsilon::instance() and Mathex::abs(y() - v.y()) < MexEpsilon::instance()
-        and Mathex::abs(z() - v.z()) < MexEpsilon::instance();
+    return Mathex::abs(x() - v.x()) < MexEpsilon::instance() && Mathex::abs(y() - v.y()) < MexEpsilon::instance()
+        && Mathex::abs(z() - v.z()) < MexEpsilon::instance();
 }
 
 bool MexPoint3d::operator!=(const MexPoint3d& v) const
@@ -151,8 +151,8 @@ void MexPoint3d::setPoint(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z)
 
 bool MexPoint3d::isZeroPoint() const
 {
-    return (Mathex::abs(x()) < MexEpsilon::instance()) and (Mathex::abs(y()) < MexEpsilon::instance())
-        and (Mathex::abs(z()) < MexEpsilon::instance());
+    return (Mathex::abs(x()) < MexEpsilon::instance()) && (Mathex::abs(y()) < MexEpsilon::instance())
+        && (Mathex::abs(z()) < MexEpsilon::instance());
 }
 
 std::ostream& operator<<(std::ostream& o, const MexPoint3d& rhs)

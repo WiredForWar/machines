@@ -52,8 +52,8 @@ bool MachGuiStopCommand::canActorEverExecute(const MachActor& actor) const
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
     // Machines/Missile emplacements can stop what they are doing, must be players machine
-    return (actor.objectIsMachine() or actor.objectType() == MachLog::MISSILE_EMPLACEMENT)
-        and actor.race() == playerRace;
+    return (actor.objectIsMachine() || actor.objectType() == MachLog::MISSILE_EMPLACEMENT)
+        && actor.race() == playerRace;
 }
 
 // virtual
@@ -155,7 +155,7 @@ bool MachGuiStopCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
 // virtual
 bool MachGuiStopCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_S and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_S && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

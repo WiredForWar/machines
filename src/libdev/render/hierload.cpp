@@ -17,7 +17,7 @@
 // static
 void RenHierarchyLoader::load(const SysPathName& pathName, RenHierarchyBuilder* pBuilder)
 {
-    PRE((not pathName.hasExtension()) or (pathName.extension() != "agt") or (pathName.extension() != "x"));
+    PRE((! pathName.hasExtension()) || (pathName.extension() != "agt") || (pathName.extension() != "x"));
 
     SysPathName withExtDX(pathName);
     withExtDX.extension("x");

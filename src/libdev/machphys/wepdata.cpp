@@ -108,7 +108,7 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
 {
     ctl_vector<RenTexture> textures;
 
-    if (trailOn() and trailTextureKey_ != "")
+    if (trailOn() && trailTextureKey_ != "")
     {
         string nameRoot;
         string extension;
@@ -130,7 +130,7 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
             extension = ".bmp";
         }
 
-        if (trailEndTextureIndex_ == 0 and trailStartTextureIndex_ == 0)
+        if (trailEndTextureIndex_ == 0 && trailStartTextureIndex_ == 0)
         {
             ctl_vector<RenTexture> trailTextures;
             trailTextures.reserve(1);

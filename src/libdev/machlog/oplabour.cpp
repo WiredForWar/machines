@@ -116,7 +116,7 @@ bool MachLogLabourOperation::doStart()
 {
     CB_MachLogLabourOperation_DEPIMPL();
 
-    bool result = not checkNeedAndDoLeaveOperation(pActor_);
+    bool result = ! checkNeedAndDoLeaveOperation(pActor_);
     if (result)
         state_ = MOVING;
     // HAL_STREAM("(" << pActor_->id() << ") MLConstructOperation::doStart return " << result << "\n" );
@@ -130,7 +130,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
     CB_MachLogLabourOperation_DEPIMPL();
 
     PhysRelativeTime interval = 2.0;
-    if (not pConstruction_)
+    if (! pConstruction_)
         return 0.0;
 
     if (pSubOperation())
@@ -147,7 +147,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
                 = sqr(pActor_->highClearence() * (2.6 + MachLogLabourOperation::proximityLeewayMultiplier()));
             MATHEX_SCALAR sqrActualDistance = constructorPosition.sqrEuclidianDistance(buildPointPosition);
 
-            if (sqrActualDistance <= sqrAcceptableDistance and constructorFacingBuilding())
+            if (sqrActualDistance <= sqrAcceptableDistance && constructorFacingBuilding())
             {
                 abortOut = false;
             }
@@ -162,13 +162,13 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
     MexPoint2d constructorPosition(pActor_->position());
     MexPoint2d constructionPosition = pConstruction_->position();
 
-    if (not hasBuildPoint_)
+    if (! hasBuildPoint_)
     {
         tryToAssignToNearestBuildPoint();
     }
 
     // and if we STILL don't have a build point.....
-    if (not hasBuildPoint_)
+    if (! hasBuildPoint_)
     {
 
         // Just try to move to a point about 35m away from the construction. Note that if we're too CLOSE, we
@@ -178,7 +178,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
 
         MATHEX_SCALAR sqrDistanceToBuilding = constructorPosition.sqrEuclidianDistance(constructionPosition);
 
-        if (sqrDistanceToBuilding > sqr(45) or sqrDistanceToBuilding < sqr(30))
+        if (sqrDistanceToBuilding > sqr(45) || sqrDistanceToBuilding < sqr(30))
         {
             bool foundSpace = false;
 
@@ -190,9 +190,9 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
             MexPoint2d approachPosition;
 
             MATHEX_SCALAR radius = 35;
-            while (not foundSpace)
+            while (! foundSpace)
             {
-                if (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+                if (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
                         constructionPointAsTransform,
                         radius,
                         pActor_->highClearence(),
@@ -280,7 +280,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
                         &actualBuildPosition,
                         pActor_->highClearence() * MachLogLabourOperation::proximityLeewayMultiplier());
 
-                    if (not actorCanFitThere)
+                    if (! actorCanFitThere)
                     {
                         // give up our build point. We'll try and find an alternative next time round.
                         giveUpBuildPoint();
@@ -341,7 +341,7 @@ PhysRelativeTime MachLogLabourOperation::attemptToInteractWithBuilding()
 
     if (constructorPosition.sqrEuclidianDistance(buildPointPosition)
             >= sqr(pConstructor()->highClearence() * (2.6 + MachLogLabourOperation::proximityLeewayMultiplier()))
-        or not constructorFacingBuilding())
+        || ! constructorFacingBuilding())
     {
         // hey, we must have been interrupted (by an evade op etc.) and now
         // that we've resumed our construct op, we're no longer at our build point!
@@ -372,7 +372,7 @@ bool MachLogLabourOperation::doBeInterrupted()
 
     pActor_->motionSeq().stop();
     pActor_->constructing(false);
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 void MachLogLabourOperation::tryToAssignToNearestBuildPoint()
@@ -539,7 +539,7 @@ bool MachLogLabourOperation::beNotified(W4dSubject* pSubject, W4dSubject::Notifi
         default:;
     }
 
-    if (not stayAttached)
+    if (! stayAttached)
     {
         pActor_->constructing(false);
 

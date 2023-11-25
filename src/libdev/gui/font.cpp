@@ -53,7 +53,7 @@ void GuiBmpFontCore::calculateProportionalFontWidthData(const SysPathName& persi
     {
         int startXPos = bmpXPos;
 
-        while (bmpXPos < fontBmp_.width() and not endOfChar(bmpXPos))
+        while (bmpXPos < fontBmp_.width() && ! endOfChar(bmpXPos))
         {
             ++bmpXPos;
         }

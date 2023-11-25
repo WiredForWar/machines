@@ -110,7 +110,7 @@ const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxC
 
     uint i;
 
-    for (i = 0; i < strings_.size() and strings_[i] != text(); ++i)
+    for (i = 0; i < strings_.size() && strings_[i] != text(); ++i)
     {
         // Intentionally empty
     }
@@ -403,7 +403,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
         bool itemSelected = false;
 
         // Find item before one selected
-        for (GuiStrings::iterator i = strings_.begin(); i != strings_.end() and not itemSelected; ++i)
+        for (GuiStrings::iterator i = strings_.begin(); i != strings_.end() && ! itemSelected; ++i)
         {
             previousItem = currentItem;
 
@@ -413,7 +413,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
         }
 
         // Didn't find previous item (first item was selected or there isn't any items to select)
-        if (previousItem == "" and strings_.size() >= 1)
+        if (previousItem == "" && strings_.size() >= 1)
         {
             previousItem = strings_.back();
         }
@@ -433,7 +433,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
         // Find item after one selected
         GuiStrings::iterator i = strings_.begin();
 
-        for (/*empty*/; i != strings_.end() and not itemSelected; ++i)
+        for (/*empty*/; i != strings_.end() && ! itemSelected; ++i)
         {
             itemSelected = (*i) == text();
         }

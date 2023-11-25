@@ -90,7 +90,7 @@ protected:
         // Change prompt text if keyboard has been used to switch cameras.
         if (usingZenithCamera_ != pInGameScreen_->cameras()->isZenithCameraActive())
         {
-            usingZenithCamera_ = not usingZenithCamera_;
+            usingZenithCamera_ = ! usingZenithCamera_;
 
             // Load the resource string
             GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);

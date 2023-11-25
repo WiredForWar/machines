@@ -29,7 +29,7 @@ void BaseAssertion::AssertionLock::lock()
 
 void BaseAssertion::AssertionLock::unlock()
 {
-    if (not isLocked_)
+    if (! isLocked_)
         BaseAssertion::preconditionFail("isLocked()", __FILE__, _STR(__LINE__));
 
     isLocked_ = false;
@@ -45,7 +45,7 @@ void BaseAssertion::AssertionLock::lockInvariant()
 
 void BaseAssertion::AssertionLock::unlockInvariant()
 {
-    if (not invariantLocked_)
+    if (! invariantLocked_)
         BaseAssertion::preconditionFail("invariantLocked()", __FILE__, _STR(__LINE__));
 
     invariantLocked_ = false;

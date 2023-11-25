@@ -44,7 +44,7 @@ bool MachLogBuildPoint::reserve(MachPhys::ConstructorSubType subTypeOfReserver)
 {
     bool result = false;
 
-    if (not reserved_)
+    if (! reserved_)
     {
         reserved_ = true;
         subTypeOfReserver_ = subTypeOfReserver;

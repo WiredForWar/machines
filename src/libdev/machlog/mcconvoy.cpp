@@ -59,7 +59,7 @@ void MachLogMachineConvoy::add(MachLogMachineMotionSequencer* pSequencer)
 {
     CB_MachLogMachineConvoy_DEPIMPL();
 
-    PRE(not pSequencer->isInConvoy());
+    PRE(! pSequencer->isInConvoy());
 
     // Add to the vector
     sequencers_.push_back(pSequencer);
@@ -72,7 +72,7 @@ void MachLogMachineConvoy::remove(MachLogMachineMotionSequencer* pSequencer)
 {
     CB_MachLogMachineConvoy_DEPIMPL();
 
-    PRE(pSequencer->isInConvoy() and &(pSequencer->convoy()) == this);
+    PRE(pSequencer->isInConvoy() && &(pSequencer->convoy()) == this);
 
     // Find the entry in the list
     Sequencers::iterator it = find(sequencers_.begin(), sequencers_.end(), pSequencer);
@@ -94,7 +94,7 @@ MATHEX_SCALAR MachLogMachineConvoy::minTopSpeed() const
     PRE(sequencers_.size() != 0);
 
     // Update the minimum top speed
-    if (not minTopSpeedUpToDate_)
+    if (! minTopSpeedUpToDate_)
     {
         // Initialise to first speed
         Sequencers::const_iterator cit = sequencers_.begin();

@@ -234,7 +234,7 @@ void MachLogConstruction::initialiseFromConstructionData(MachPhysConstruction* p
 
     for (int xIndex = 0; xIndex <= xIntervals; ++xIndex)
         for (int yIndex = 0; yIndex <= yIntervals; ++yIndex)
-            if (not(xIndex > 0 and xIndex < xIntervals and yIndex > 0 and yIndex < yIntervals))
+            if (!(xIndex > 0 && xIndex < xIntervals && yIndex > 0 && yIndex < yIntervals))
             {
                 MexPoint2d candidatePoint
                     = MexPoint2d(gMinC.x() + (xIndex * xIntervalLength), gMinC.y() + (yIndex * yIntervalLength));
@@ -256,7 +256,7 @@ void MachLogConstruction::removeDoorPoint()
 
     CB_MachLogConstruction_DEPIMPL();
 
-    ASSERT(not removedDoorPoint_, "Trying to remove door point when method has already been called previously.");
+    ASSERT(! removedDoorPoint_, "Trying to remove door point when method has already been called previously.");
 
     if (nEntrances() > 0)
     {
@@ -315,7 +315,7 @@ bool MachLogConstruction::bestAvailableBuildPoint(
 {
     CB_MachLogConstruction_DEPIMPL();
 
-    if (not removedDoorPoint_)
+    if (! removedDoorPoint_)
         removeDoorPoint();
 
     MexPoint2d enquirersPosition = enquirer.position();
@@ -334,8 +334,8 @@ bool MachLogConstruction::bestAvailableBuildPoint(
         if (candidateBuildPoint.isReserved())
             reservationsPreventMeFromTaking = true;
         else if (
-            enquirer.subType() == MachPhys::BEHEMOTH and buildPoints_.size() > 4
-            and behemothsRestrict(candidateBuildPoint))
+            enquirer.subType() == MachPhys::BEHEMOTH && buildPoints_.size() > 4
+            && behemothsRestrict(candidateBuildPoint))
         {
             // not reserved, but if we're a BEHEMOTH, we cannot take a buildpoint which has another
             // behemoth reserving either or both of the two nearest buildpoints to this one, except in cases
@@ -343,7 +343,7 @@ bool MachLogConstruction::bestAvailableBuildPoint(
             reservationsPreventMeFromTaking = true;
         }
 
-        if (not reservationsPreventMeFromTaking)
+        if (! reservationsPreventMeFromTaking)
         {
             MexPoint2d buildPointLocation = candidateBuildPoint.position();
             PhysConfigSpace2d& cs = MachLogPlanet::instance().configSpace();
@@ -432,8 +432,8 @@ bool MachLogConstruction::behemothsRestrict(const MachLogBuildPoint& candidatePo
     ASSERT(pBest, "Unexpected NULL for pBest!");
     ASSERT(pSecondBest, "Unexpected NULL for pSecondBest!");
 
-    if ((pBest->isReserved() and pBest->subTypeOfReserver() == MachPhys::BEHEMOTH)
-        or (pSecondBest->isReserved() and pSecondBest->subTypeOfReserver() == MachPhys::BEHEMOTH))
+    if ((pBest->isReserved() && pBest->subTypeOfReserver() == MachPhys::BEHEMOTH)
+        || (pSecondBest->isReserved() && pSecondBest->subTypeOfReserver() == MachPhys::BEHEMOTH))
         foundRestriction = true;
 
     return foundRestriction;
@@ -506,7 +506,7 @@ void MachLogConstruction::doOutputOperator(std::ostream& o) const
     else
         o << "Not scheduled for rebuild." << std::endl;
 
-    if (nEntrances() > 0 and entrance(0).locked())
+    if (nEntrances() > 0 && entrance(0).locked())
         o << "Entrance LOCKED" << std::endl;
 
     MachActor::doOutputOperator(o);
@@ -629,7 +629,7 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
 {
     CB_MachLogConstruction_DEPIMPL();
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         network.messageBroker().sendAdvanceConstructionStateMessage(id(), addUnits);
     }
@@ -680,7 +680,7 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
     notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::PERCENTAGE_COMPLETE_CHANGED);
 
     // We might now be complete.
-    if (constructedUnits_ >= physConstruction().constructionData().cost() and not isComplete_)
+    if (constructedUnits_ >= physConstruction().constructionData().cost() && ! isComplete_)
     {
         isComplete_ = true;
 
@@ -693,7 +693,7 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
         // bit of a non-OO hack here, but it'll have to do. Special logic is needed for when
         // an enemy builds an ICBM launcher.
 
-        if (objectIsMissileEmplacement() and subType() == MachPhys::ICBM)
+        if (objectIsMissileEmplacement() && subType() == MachPhys::ICBM)
         {
             MachLogRaces::instance().builtNuclearWeapon(race());
 
@@ -958,7 +958,7 @@ bool MachLogConstruction::remove(MachLogMachine* oldMachine)
 
     // allow machines to deploy up to a cell away (~30m).
 
-    if (not MachLogSpacialManipulation::getNearestFreeSpacePoint(globalTransform(), 10, 5, &dest2d))
+    if (! MachLogSpacialManipulation::getNearestFreeSpacePoint(globalTransform(), 10, 5, &dest2d))
     {
         MexPoint3d dest3d(dest2d);
         oldMachine->snapTo(dest3d); // physObject().attachTo( MachLogPlanet::instance().pWorld() );
@@ -979,7 +979,7 @@ void MachLogConstruction::addConstructor(MachLogConstructor* pConstructor)
         duplicateFound = true;
     }
 
-    if (not duplicateFound)
+    if (! duplicateFound)
         constructors_.push_back(pConstructor);
 }
 
@@ -989,7 +989,7 @@ void MachLogConstruction::removeConstructor(MachLogConstructor* pConstructor)
     HAL_STREAM(
         "(" << id() << ") MLConstruction::removeConstructor currently have " << constructors_.size() << std::endl);
     constructors_.remove(pConstructor);
-    if (constructors_.size() == 0 and constructedUnits() == 0 and nReservations_ == 0 and not isDead())
+    if (constructors_.size() == 0 && constructedUnits() == 0 && nReservations_ == 0 && ! isDead())
     {
         HAL_STREAM(" no constructors, no reservations and constructedUnits == 0 so killing\n");
         isDead(true);
@@ -1008,7 +1008,7 @@ void MachLogConstruction::removeConstructor(MachLogConstructor* pConstructor)
 
 void MachLogConstruction::networkRemove()
 {
-    if (not isDead())
+    if (! isDead())
     {
         isDead(true);
         SimManager::instance().add(new MachLogDyingEntityEvent(
@@ -1087,7 +1087,7 @@ void MachLogConstruction::cancelReservation()
     // Somebody had commented out the  "and not isDead()" bit below. This could cause multiple dying entity
     // events to be added for one dying construction, which in turn causes the polygon id to be removed
     // twice, leading to a crash.
-    if (constructors_.size() == 0 and constructedUnits() == 0 and nReservations_ == 0 and not isDead())
+    if (constructors_.size() == 0 && constructedUnits() == 0 && nReservations_ == 0 && ! isDead())
     {
         isDead(true);
         SimManager::instance().add(new MachLogDyingEntityEvent(
@@ -1171,10 +1171,10 @@ void MachLogConstruction::beHit(
     MexLine3d* pByDirection,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
 
     {
-        if (byType != MachPhys::N_WEAPON_TYPES and pByDirection != nullptr)
+        if (byType != MachPhys::N_WEAPON_TYPES && pByDirection != nullptr)
             MachPhysWeaponUtility::victimAnimation(
                 byType,
                 SimManager::instance().currentTime(),
@@ -1193,7 +1193,7 @@ void MachLogConstruction::beHit(
         MachActor::beHit(damage, byType, pByActor, pByDirection, echo);
 
         // give voicemail if appropriate
-        if (pByActor and pByActor->race() != race())
+        if (pByActor && pByActor->race() != race())
             dealWithHitVoiceMail();
     }
 }
@@ -1205,7 +1205,7 @@ void MachLogConstruction::beHitWithoutAnimation(
     MachActor* pByActor,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         MachPhys::ArmourUnits armourLeft = armour();
         MachPhys::ArmourUnits absorb = 0;
@@ -1231,7 +1231,7 @@ void MachLogConstruction::beHitWithoutAnimation(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO and MachLogNetwork::instance().isNetworkGame())
+        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendBeHitMessage(
                 id(),
                 damage,
@@ -1269,13 +1269,13 @@ void MachLogConstruction::beHitWithoutAnimation(
             // Ensure marker gets removed
             selectionState(MachLog::NOT_SELECTED);
         }
-        if (not isDead())
+        if (! isDead())
         {
             doVisualiseSelectionState();
             notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
         }
 
-        if (pByActor and pByActor->race() != race())
+        if (pByActor && pByActor->race() != race())
             // give voicemail if appropriate
             dealWithHitVoiceMail();
     }
@@ -1284,7 +1284,7 @@ void MachLogConstruction::beHitWithoutAnimation(
 
 void MachLogConstruction::dealWithHitVoiceMail()
 {
-    if (not isDead())
+    if (! isDead())
     {
         if (sufficientTimePassedSinceLastHit())
         {
@@ -1317,7 +1317,7 @@ void MachLogConstruction::dealWithHitVoiceMail()
                     // note drop through if we're an ICBM silo.
 
                 default:
-                    if (hpRatio() < 0.10 and not isEmpty())
+                    if (hpRatio() < 0.10 && ! isEmpty())
                     {
                         // give voicemail to warn that damage is dangerously high, and, err, we're evacuating the
                         // building
@@ -1393,7 +1393,7 @@ bool MachLogConstruction::sufficientTimePassedSinceLastHit()
         // allow this mail if actor is over 200m away from the last actor to report having been hit
         // or sufficient time has elapsed since last actor reported having been hit
         if (myPosition.sqrEuclidianDistance(lastGlobalHitVoiceMailPosition()) > 40000.0
-            or timeNow >= nextGlobalHitVoiceMailTime())
+            || timeNow >= nextGlobalHitVoiceMailTime())
         {
             // yes, we've passed the requirements for the global-level cull....now still have to satisfy
             // our own personal time period requirements.
@@ -1437,7 +1437,7 @@ void MachLogConstruction::makeComplete(CompleteWithFullHPs setHPsFullStrength)
     isComplete_ = true;
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
         network.messageBroker().sendMakeCompleteConstructionMessage(id());
 
     // Ensure the construction is updated soon
@@ -1458,8 +1458,8 @@ void MachLogConstruction::preservePhysicalModel(const PhysRelativeTime& forTime)
 
 void MachLogConstruction::dropDebris(const PhysAbsoluteTime&)
 {
-    if (not MachLogNetwork::instance().isNetworkGame()
-        or MachLogNetwork::instance().remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (! MachLogNetwork::instance().isNetworkGame()
+        || MachLogNetwork::instance().remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         MATHEX_SCALAR completionMultiplier = percentageComplete() / 100.0;
         MATHEX_SCALAR recoveredValue
@@ -1475,10 +1475,10 @@ bool MachLogConstruction::isEnemyCanAttackInside(MachPhys::Race r) const
     CB_MachLogConstruction_DEPIMPL();
     bool found = false;
 
-    for (Machines::const_iterator i = machines_.begin(); not found and i != machines_.end(); ++i)
+    for (Machines::const_iterator i = machines_.begin(); ! found && i != machines_.end(); ++i)
     {
         MachLogRaces::DispositionToRace disposition = MachLogRaces::instance().dispositionToRace(r, (*i)->race());
-        if (disposition != MachLogRaces::OUR_RACE and disposition != MachLogRaces::ALLY and (*i)->objectIsCanAttack())
+        if (disposition != MachLogRaces::OUR_RACE && disposition != MachLogRaces::ALLY && (*i)->objectIsCanAttack())
             found = true;
     }
 
@@ -1635,7 +1635,7 @@ void MachLogConstruction::addRepairPoints(MachPhys::HitPointUnits hpsAdded)
     physConstruction().damageLevel(damagePercent);
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         network.messageBroker().sendAddRepairPointsMessage(id(), hpsAdded);
     }
@@ -1652,10 +1652,10 @@ bool MachLogConstruction::isEnemyMachineInside(MachPhys::Race r) const
     CB_MachLogConstruction_DEPIMPL();
     bool found = false;
 
-    for (Machines::const_iterator i = machines_.begin(); not found and i != machines_.end(); ++i)
+    for (Machines::const_iterator i = machines_.begin(); ! found && i != machines_.end(); ++i)
     {
         MachLogRaces::DispositionToRace disposition = MachLogRaces::instance().dispositionToRace(r, (*i)->race());
-        if (disposition != MachLogRaces::OUR_RACE and disposition != MachLogRaces::ALLY)
+        if (disposition != MachLogRaces::OUR_RACE && disposition != MachLogRaces::ALLY)
             found = true;
     }
 

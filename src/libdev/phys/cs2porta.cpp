@@ -63,8 +63,8 @@ bool PhysCS2dPortal::addDomainVertex(
     PhysCS2dDomainGraph* pDomainGraph,
     ObstacleFlags flags)
 {
-    PRE(not pDomainGraph->containsVertex(domainVertexId));
-    PRE(distance >= 0.0 and distance <= length());
+    PRE(! pDomainGraph->containsVertex(domainVertexId));
+    PRE(distance >= 0.0 && distance <= length());
 
     const MATHEX_SCALAR proportionalDistance = distance / length();
     const MATHEX_SCALAR x = endPoint1_.x() * (1 - proportionalDistance) + endPoint2_.x() * proportionalDistance;
@@ -77,11 +77,11 @@ bool PhysCS2dPortal::addDomainVertex(
     //  add this vertex, we already have a suitable vertex and set of arcs.
 
     bool addVertex = true;
-    for (DomainVertexIds::iterator i = domainVertexIds_.begin(); i != domainVertexIds_.end() and addVertex; ++i)
+    for (DomainVertexIds::iterator i = domainVertexIds_.begin(); i != domainVertexIds_.end() && addVertex; ++i)
     {
         const PhysCS2dDomainVertex& domainVertex = pDomainGraph->vertex(*i);
 
-        if (domainVertex.point() == position and domainVertex.clearance() == clearance and domainVertex.flags() == 0)
+        if (domainVertex.point() == position && domainVertex.clearance() == clearance && domainVertex.flags() == 0)
         {
             addVertex = false;
         }

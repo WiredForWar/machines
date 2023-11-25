@@ -41,7 +41,7 @@ MachGuiRepairCommand::~MachGuiRepairCommand()
 
     inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
-    while (not constructions_.empty())
+    while (! constructions_.empty())
     {
         constructions_.back()->detach(this);
         constructions_.pop_back();
@@ -66,13 +66,13 @@ std::ostream& operator<<(std::ostream& o, const MachGuiRepairCommand& t)
 void MachGuiRepairCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
     // Check for a pick on construction
-    if (pActor->objectIsConstruction() and // It's a construction
-        pActor->asConstruction().isComplete() and // It's been built
+    if (pActor->objectIsConstruction() && // It's a construction
+        pActor->asConstruction().isComplete() && // It's been built
         pActor->hp() < pActor->objectData().hitPoints()) // It's damaged
     {
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-        if (not constructionIsDuplicate(pCandidateConstruction))
+        if (! constructionIsDuplicate(pCandidateConstruction))
         {
             // Add to list of constructions to repair
             constructions_.push_back(pCandidateConstruction);
@@ -80,7 +80,7 @@ void MachGuiRepairCommand::pickOnActor(MachActor* pActor, bool, bool shiftPresse
             pCandidateConstruction->attach(this);
         }
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -126,8 +126,8 @@ MachGui::Cursor2dType MachGuiRepairCommand::cursorOnActor(MachActor* pActor, boo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (pActor->objectIsConstruction() and // It's a construction
-        pActor->asConstruction().isComplete() and // It's been built
+    if (pActor->objectIsConstruction() && // It's a construction
+        pActor->asConstruction().isComplete() && // It's been built
         pActor->hp() < pActor->objectData().hitPoints()) // It's damaged
     {
         cursor = MachGui::REPAIR_CURSOR;
@@ -154,7 +154,7 @@ bool MachGuiRepairCommand::doApply(MachActor* pActor, string*)
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
     pActor->asMachine().manualCommandIssued();
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVE_TO_SITE);
         hasPlayedVoiceMail(true);
@@ -221,7 +221,7 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
 
     bool found = false;
     for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-         not found and i != inGameScreen().selectedActors().end();
+         ! found && i != inGameScreen().selectedActors().end();
          ++i)
         if ((*i)->objectType() == MachLog::CONSTRUCTOR)
         {
@@ -240,7 +240,7 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
 // virtual
 bool MachGuiRepairCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_R and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_R && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

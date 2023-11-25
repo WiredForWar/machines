@@ -29,7 +29,7 @@ W4dCompositeMaterialVecChanger::W4dCompositeMaterialVecChanger(
     // Attempt to create a changer for the composite itself.
     // If no overrides, delete it.
     pCompositeChanger_ = new W4dEntityMaterialVecChanger(patternComposite, map, pMaterialVecPtrSet);
-    if (not pCompositeChanger_->hasAnyOverrides())
+    if (! pCompositeChanger_->hasAnyOverrides())
     {
         delete pCompositeChanger_;
         pCompositeChanger_ = nullptr;
@@ -121,7 +121,7 @@ std::ostream& operator<<(std::ostream& o, const W4dCompositeMaterialVecChanger& 
 
 bool W4dCompositeMaterialVecChanger::hasAnyOverrides() const
 {
-    return pCompositeChanger_ != nullptr or pLinkChangers_ != nullptr;
+    return pCompositeChanger_ != nullptr || pLinkChangers_ != nullptr;
 }
 
 bool W4dCompositeMaterialVecChanger::applyOverrides(W4dComposite* pComposite) const
@@ -291,7 +291,7 @@ void W4dCompositeMaterialVecChanger::fillMaterialMaps(
 bool W4dCompositeMaterialVecChanger::hasLinkChanger(W4dLinkId linkId) const
 {
     ctl_vector<W4dLinkId>::const_iterator it = pLinkIds_->begin();
-    while (it != pLinkIds_->end() and (*it) != linkId)
+    while (it != pLinkIds_->end() && (*it) != linkId)
         ++it;
 
     return it != pLinkIds_->end();
@@ -304,7 +304,7 @@ const W4dEntityMaterialVecChanger& W4dCompositeMaterialVecChanger::linkIdChanger
 
     W4dEntityMaterialVecChanger* pChanger = nullptr;
 
-    for (uint i = 0; pChanger == nullptr and i != nChangers; ++i)
+    for (uint i = 0; pChanger == nullptr && i != nChangers; ++i)
     {
         if ((*pLinkIds_)[i] == linkId)
             pChanger = (*pLinkChangers_)[i];

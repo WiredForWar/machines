@@ -91,7 +91,7 @@ bool MachPhysPunchBlast::startPunchBlastCalled() const
 void MachPhysPunchBlast::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
-    INVARIANT(implies(startPunchBlastCalled(), blastBeginTime_ != 0 or blastEndTime_ != 0));
+    INVARIANT(implies(startPunchBlastCalled(), blastBeginTime_ != 0 || blastEndTime_ != 0));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachPhysPunchBlast& t)

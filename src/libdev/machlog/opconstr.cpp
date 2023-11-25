@@ -89,7 +89,7 @@ PhysRelativeTime MachLogConstructOperation::interactWithBuilding()
                 MachineVoiceMailEventID::BUILDING_COMPLETE);
 
             // post voicemail if no more operations on the queue
-            if (not pConstructorGuy->isDoingSuperConstruct())
+            if (! pConstructorGuy->isDoingSuperConstruct())
                 MachLogMachineVoiceMailManager::instance().postNewMail(
                     *pConstructorGuy,
                     MachineVoiceMailEventID::AWAITING_NEW_JOB);
@@ -110,7 +110,7 @@ PhysRelativeTime MachLogConstructOperation::interactWithBuilding()
 
 bool MachLogConstructOperation::doIsFinished() const
 {
-    bool finished = not pConstruction() or pConstruction()->isComplete();
+    bool finished = ! pConstruction() || pConstruction()->isComplete();
 
     return finished;
 }
@@ -130,7 +130,7 @@ bool MachLogConstructOperation::clientSpecificNotification(int clientData)
                 MachLogRaces::DispositionToRace disposition
                     = MachLogRaces::instance().dispositionToRace(pConstruction()->race(), pConstructor()->race());
 
-                if (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL)
+                if (disposition == MachLogRaces::ENEMY || disposition == MachLogRaces::NEUTRAL)
                 {
                     // not going to help construct an opponent's base. No way.
                     stayAttached = false;
@@ -165,7 +165,7 @@ MachLogConstructOperation::MachLogConstructOperation(PerConstructor con)
 
 bool MachLogConstructOperation::constructingMissileEmplacement() const
 {
-    return pConstruction() and pConstruction()->objectIsMissileEmplacement() and pConstructor()->constructing();
+    return pConstruction() && pConstruction()->objectIsMissileEmplacement() && pConstructor()->constructing();
 }
 
 /* End OPCONSTR.CPP *************************************************/

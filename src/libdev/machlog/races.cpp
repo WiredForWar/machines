@@ -222,7 +222,7 @@ bool MachLogRaces::getSuitableFactory(MachPhys::Race r, const MachLogProductionU
 {
     bool found = false;
     Factories relevantFactories;
-    for (Factories::iterator i = factories(r).begin(); i != factories(r).end() and not found; ++i)
+    for (Factories::iterator i = factories(r).begin(); i != factories(r).end() && ! found; ++i)
         if ((*i)->isAllowedToBuild(prod.type(), prod.subType(), prod.hwLevel(), prod.weaponCombo()))
         {
             relevantFactories.push_back((*i));
@@ -248,7 +248,7 @@ bool MachLogRaces::getSuitableFactory(MachPhys::Race r, const MachLogProductionU
             found = true;
             *ppFactory = relevantFactories.front();
             bool jumpOutOfLoop = false;
-            for (Factories::iterator i = relevantFactories.begin(); i != relevantFactories.end() and not jumpOutOfLoop;
+            for (Factories::iterator i = relevantFactories.begin(); i != relevantFactories.end() && ! jumpOutOfLoop;
                  ++i)
             {
                 MachLogProductionUnit prodUnit;
@@ -280,7 +280,7 @@ bool MachLogRaces::addMatchingMachineToSquadron(
 {
     bool found = false;
     for (Objects::iterator i = pDataImpl_->raceObjects_[map_MachPhysRace_to_size_t(r)].begin();
-         i != pDataImpl_->raceObjects_[map_MachPhysRace_to_size_t(r)].end() and not found;
+         i != pDataImpl_->raceObjects_[map_MachPhysRace_to_size_t(r)].end() && ! found;
          ++i)
     {
         if ((*i)->objectIsMachine())
@@ -289,8 +289,8 @@ bool MachLogRaces::addMatchingMachineToSquadron(
             MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS;
             if (mlm.objectIsCanAttack())
                 wc = mlm.asCanAttack().weaponCombo();
-            if (mlm.squadron() == nullptr and mlm.objectType() == prod.type() and mlm.subType() == prod.subType()
-                and mlm.hwLevel() == prod.hwLevel() and wc == prod.weaponCombo())
+            if (mlm.squadron() == nullptr && mlm.objectType() == prod.type() && mlm.subType() == prod.subType()
+                && mlm.hwLevel() == prod.hwLevel() && wc == prod.weaponCombo())
             {
                 found = true;
                 mlm.setSquadron(pSquadron);
@@ -593,7 +593,7 @@ MachLogRaces::smartAddBMUs(MachPhys::Race r, MachPhys::BuildingMaterialUnits amo
     nBuildingMaterialUnits(r, currentBMUs + amountToAdd);
     MachLogRaces::instance().BMUsMinedScoreAdjust(r, amountToAdd);
 
-    if (pcController().race() == r and smeltersFull(r))
+    if (pcController().race() == r && smeltersFull(r))
     {
         PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
         if (timeNow > pDataImpl_->lastFullSmeltersUpdateTime_)
@@ -606,14 +606,14 @@ MachLogRaces::smartAddBMUs(MachPhys::Race r, MachPhys::BuildingMaterialUnits amo
             {
                 // need to make sure that at least one of these is actually complete.
                 for (MachLogRaces::Smelters::const_iterator i = smelters(r).begin();
-                     not hasAtLeastOneSmelter and i != smelters(r).end();
+                     ! hasAtLeastOneSmelter && i != smelters(r).end();
                      ++i)
                 {
                     if ((*i)->isComplete())
                         hasAtLeastOneSmelter = true;
                 }
                 for (MachLogRaces::Pods::const_iterator i = pods(r).begin();
-                     not hasAtLeastOneSmelter and i != pods(r).end();
+                     ! hasAtLeastOneSmelter && i != pods(r).end();
                      ++i)
                 {
                     if ((*i)->isComplete())
@@ -649,7 +649,7 @@ MachLogRaces::smartSubtractBMUs(MachPhys::Race r, MachPhys::BuildingMaterialUnit
 
     nBuildingMaterialUnits(r, currentBMUs - amountToSubtract);
 
-    if (pcController().race() == r and nBuildingMaterialUnits(r) < 100)
+    if (pcController().race() == r && nBuildingMaterialUnits(r) < 100)
     {
         PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
         if (timeNow > pDataImpl_->lastLowBMUsUpdateTime_)
@@ -870,7 +870,7 @@ void MachLogRaces::remove(MachActor* pObj)
     ctl_erase_first_instance(&objects(), pObj);
 
     MachPhys::Race objectRace = pObj->race();
-    if (objectRace != MachPhys::N_RACES and objectRace != MachPhys::NORACE)
+    if (objectRace != MachPhys::N_RACES && objectRace != MachPhys::NORACE)
         ctl_erase_first_instance(&raceObjects(objectRace), pObj);
 
     if (pObj->objectIsMachine())
@@ -1014,8 +1014,8 @@ bool MachLogRaces::findTargetClosestTo(
         {
             MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-            if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                and not(*i)->isDead())
+            if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                && !(*i)->isDead())
             {
                 found = true;
                 closest = dist;
@@ -1032,15 +1032,15 @@ bool MachLogRaces::findTargetClosestTo(
         {
             MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
-            if (disp != MachLogRaces::ALLY and disp != MachLogRaces::OUR_RACE)
+            if (disp != MachLogRaces::ALLY && disp != MachLogRaces::OUR_RACE)
             {
                 for (ResourceCarriers::const_iterator i = resourceCarriers(ridx).begin();
                      i != resourceCarriers(ridx).end();
                      ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and (not(*i)->isDead()))
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && (!(*i)->isDead()))
                     {
                         found = true;
                         closest = dist;
@@ -1050,8 +1050,8 @@ bool MachLogRaces::findTargetClosestTo(
                 for (Mines::const_iterator i = mines(ridx).begin(); i != mines(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and (not(*i)->isDead()))
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && (!(*i)->isDead()))
                     {
                         found = true;
                         closest = dist;
@@ -1061,8 +1061,8 @@ bool MachLogRaces::findTargetClosestTo(
                 for (Smelters::const_iterator i = smelters(ridx).begin(); i != smelters(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and (not(*i)->isDead()))
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && (!(*i)->isDead()))
                     {
                         found = true;
                         closest = dist;
@@ -1085,15 +1085,15 @@ bool MachLogRaces::findTargetClosestTo(
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
-        if (disp != MachLogRaces::ALLY and disp != MachLogRaces::OUR_RACE)
+        if (disp != MachLogRaces::ALLY && disp != MachLogRaces::OUR_RACE)
         {
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::AGGRESSOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::AGGRESSOR)
                 for (Aggressors::const_iterator i = aggressors(ridx).begin(); i != aggressors(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1101,14 +1101,14 @@ bool MachLogRaces::findTargetClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::ADMINISTRATOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::ADMINISTRATOR)
                 for (Administrators::const_iterator i = administrators(ridx).begin(); i != administrators(ridx).end();
                      ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1117,7 +1117,7 @@ bool MachLogRaces::findTargetClosestTo(
                 }
 
             // Check for non-ICBM turrets
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::MISSILE_EMPLACEMENT)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::MISSILE_EMPLACEMENT)
                 for (MissileEmplacements::const_iterator i = missileEmplacements(ridx).begin();
                      i != missileEmplacements(ridx).end();
                      ++i)
@@ -1125,12 +1125,12 @@ bool MachLogRaces::findTargetClosestTo(
                     MachLogMissileEmplacement* pTurret = (*i);
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance(pTurret->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and pTurret->subType() != MachPhys::ICBM
-                        and actorAsCanAttack.canFireAt((*pTurret))
-                        and (not(isLocalHumanPlayer) or pTurret->isComplete()) // note that local player machines will
+                    if (dist < closest && dist >= minEuclidianDistance && pTurret->subType() != MachPhys::ICBM
+                        && actorAsCanAttack.canFireAt((*pTurret))
+                        && (!(isLocalHumanPlayer) || pTurret->isComplete()) // note that local player machines will
                                                                                // not consider incomplete turrets as
                                                                                // viable targets
-                        and not pTurret->isDead())
+                        && ! pTurret->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1141,25 +1141,25 @@ bool MachLogRaces::findTargetClosestTo(
             // --------- EFFICIENCY-RELATED CHANGE ------------------
             // aggressors, administrators and turrets are our prime targets - stop here if we now have a match within
             // scanner range (ends search for this particular race)
-            if (found and MachPhysRandom::randomInt(0, 10) != 0 // 10% chance of checking everything regardless
-                and not actor.objectIsMissileEmplacement() // Missile emps always find ACTUAL closest target
-                and not(
+            if (found && MachPhysRandom::randomInt(0, 10) != 0 // 10% chance of checking everything regardless
+                && ! actor.objectIsMissileEmplacement() // Missile emps always find ACTUAL closest target
+                && !(
                     actor.objectIsMachine()
-                    and actor.asMachine()
+                    && actor.asMachine()
                             .insideBuilding()) // For god's sake, check for technicians etc. if we're inside a building!
-                and closest < std::min(
+                && closest < std::min(
                         sqrScannerRange,
                         22500.0)) // 150m is furthest away aggressive can be if we are to abort the search
                 continue;
             // --------- EFFICIENCY-RELATED CHANGE ------------------
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::TECHNICIAN)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::TECHNICIAN)
                 for (Technicians::const_iterator i = technicians(ridx).begin(); i != technicians(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1167,13 +1167,13 @@ bool MachLogRaces::findTargetClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::CONSTRUCTOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::CONSTRUCTOR)
                 for (Constructors::const_iterator i = constructors(ridx).begin(); i != constructors(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1181,13 +1181,13 @@ bool MachLogRaces::findTargetClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::GEO_LOCATOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::GEO_LOCATOR)
                 for (GeoLocators::const_iterator i = geoLocators(ridx).begin(); i != geoLocators(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1195,13 +1195,13 @@ bool MachLogRaces::findTargetClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::SPY_LOCATOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::SPY_LOCATOR)
                 for (SpyLocators::const_iterator i = spyLocators(ridx).begin(); i != spyLocators(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead() and not(*i)->camouflaged()) // special clause for spies
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead() && !(*i)->camouflaged()) // special clause for spies
                     {
                         found = true;
                         closest = dist;
@@ -1209,15 +1209,15 @@ bool MachLogRaces::findTargetClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::RESOURCE_CARRIER)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::RESOURCE_CARRIER)
                 for (ResourceCarriers::const_iterator i = resourceCarriers(ridx).begin();
                      i != resourceCarriers(ridx).end();
                      ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1225,13 +1225,13 @@ bool MachLogRaces::findTargetClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::APC)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::APC)
                 for (APCs::const_iterator i = apcs(ridx).begin(); i != apcs(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -1245,13 +1245,13 @@ bool MachLogRaces::findTargetClosestTo(
             // above were found
             if (/*not found and*/ controller(actor.race()).type() == MachLogController::AI_CONTROLLER)
             {
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::BEACON)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::BEACON)
                     for (Beacons::const_iterator i = beacons(ridx).begin(); i != beacons(ridx).end(); ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1259,13 +1259,13 @@ bool MachLogRaces::findTargetClosestTo(
                         }
                     }
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::FACTORY)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::FACTORY)
                     for (Factories::const_iterator i = factories(ridx).begin(); i != factories(ridx).end(); ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1273,13 +1273,13 @@ bool MachLogRaces::findTargetClosestTo(
                         }
                     }
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::GARRISON)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::GARRISON)
                     for (Garrisons::const_iterator i = garrisons(ridx).begin(); i != garrisons(ridx).end(); ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1287,14 +1287,14 @@ bool MachLogRaces::findTargetClosestTo(
                         }
                     }
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::HARDWARE_LAB)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::HARDWARE_LAB)
                     for (HardwareLabs::const_iterator i = hardwareLabs(ridx).begin(); i != hardwareLabs(ridx).end();
                          ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1302,13 +1302,13 @@ bool MachLogRaces::findTargetClosestTo(
                         }
                     }
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::POD)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::POD)
                     for (Pods::const_iterator i = pods(ridx).begin(); i != pods(ridx).end(); ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1316,13 +1316,13 @@ bool MachLogRaces::findTargetClosestTo(
                         }
                     }
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::MINE)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::MINE)
                     for (Mines::const_iterator i = mines(ridx).begin(); i != mines(ridx).end(); ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1330,13 +1330,13 @@ bool MachLogRaces::findTargetClosestTo(
                         }
                     }
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::SMELTER)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::SMELTER)
                     for (Smelters::const_iterator i = smelters(ridx).begin(); i != smelters(ridx).end(); ++i)
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1346,7 +1346,7 @@ bool MachLogRaces::findTargetClosestTo(
 
                 // check for ICBM turrets only
 
-                if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::MISSILE_EMPLACEMENT)
+                if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::MISSILE_EMPLACEMENT)
                     for (MissileEmplacements::const_iterator i = missileEmplacements(ridx).begin();
                          i != missileEmplacements(ridx).end();
                          ++i)
@@ -1354,9 +1354,9 @@ bool MachLogRaces::findTargetClosestTo(
                         MachLogMissileEmplacement* pEmplacement = (*i);
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance(pEmplacement->position());
 
-                        if (pEmplacement->subType() == MachPhys::ICBM and dist < closest
-                            and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt(*pEmplacement)
-                            and not pEmplacement->isDead())
+                        if (pEmplacement->subType() == MachPhys::ICBM && dist < closest
+                            && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt(*pEmplacement)
+                            && ! pEmplacement->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -1391,16 +1391,16 @@ bool MachLogRaces::findFriendlyClosestTo(
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
-        if (disp == MachLogRaces::ALLY or disp == MachLogRaces::OUR_RACE)
+        if (disp == MachLogRaces::ALLY || disp == MachLogRaces::OUR_RACE)
         {
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::TECHNICIAN)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::TECHNICIAN)
                 for (Technicians::const_iterator i = technicians(ridx).begin(); i != technicians(ridx).end(); ++i)
                 {
                     //        if( (*i)->motionSeq().isUsingSpaceDomain() )
                     //            continue;
 
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1408,12 +1408,12 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::ADMINISTRATOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::ADMINISTRATOR)
                 for (Administrators::const_iterator i = administrators(ridx).begin(); i != administrators(ridx).end();
                      ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1421,11 +1421,11 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::CONSTRUCTOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::CONSTRUCTOR)
                 for (Constructors::const_iterator i = constructors(ridx).begin(); i != constructors(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1433,11 +1433,11 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::GEO_LOCATOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::GEO_LOCATOR)
                 for (GeoLocators::const_iterator i = geoLocators(ridx).begin(); i != geoLocators(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1445,11 +1445,11 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::SPY_LOCATOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::SPY_LOCATOR)
                 for (SpyLocators::const_iterator i = spyLocators(ridx).begin(); i != spyLocators(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1457,13 +1457,13 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::RESOURCE_CARRIER)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::RESOURCE_CARRIER)
                 for (ResourceCarriers::const_iterator i = resourceCarriers(ridx).begin();
                      i != resourceCarriers(ridx).end();
                      ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1471,11 +1471,11 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::APC)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::APC)
                 for (APCs::const_iterator i = apcs(ridx).begin(); i != apcs(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1483,11 +1483,11 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::AGGRESSOR)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::AGGRESSOR)
                 for (Aggressors::const_iterator i = aggressors(ridx).begin(); i != aggressors(ridx).end(); ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor)
+                    if (dist < closest && (*i) != &actor)
                     {
                         found = true;
                         closest = dist;
@@ -1495,13 +1495,13 @@ bool MachLogRaces::findFriendlyClosestTo(
                     }
                 }
 
-            if (targetSystemType == MachLog::TARGET_NORMAL or ot == MachLog::MISSILE_EMPLACEMENT)
+            if (targetSystemType == MachLog::TARGET_NORMAL || ot == MachLog::MISSILE_EMPLACEMENT)
                 for (MissileEmplacements::const_iterator i = missileEmplacements(ridx).begin();
                      i != missileEmplacements(ridx).end();
                      ++i)
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
-                    if (dist < closest and (*i) != &actor and (*i)->isComplete())
+                    if (dist < closest && (*i) != &actor && (*i)->isComplete())
                     {
                         found = true;
                         closest = dist;
@@ -1525,7 +1525,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
-        if (disp == MachLogRaces::ALLY or disp == MachLogRaces::OUR_RACE)
+        if (disp == MachLogRaces::ALLY || disp == MachLogRaces::OUR_RACE)
         {
 
             switch (safeActorType)
@@ -1542,7 +1542,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
                             // the AI implications (it'll not be concerned about protecting you), this avoids the
                             // potentially nasty situation of 2 evading machines running towards each other, and thus
                             // both observing each other - nasty order-dependency problems for the persistence mechanism
-                            if (candidateSafetyValue > bestMilitaryStrength and (*i) != &actor and not((*i)->evading()))
+                            if (candidateSafetyValue > bestMilitaryStrength && (*i) != &actor && !((*i)->evading()))
                             {
                                 bestMilitaryStrength = candidateSafetyValue;
                                 *ppResult = *i;
@@ -1560,7 +1560,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
                             // the AI implications (it'll not be concerned about protecting you), this avoids the
                             // potentially nasty situation of 2 evading machines running towards each other, and thus
                             // both observing each other - nasty order-dependency problems for the persistence mechanism
-                            if (candidateSafetyValue > bestMilitaryStrength and (*i) != &actor and not((*i)->evading()))
+                            if (candidateSafetyValue > bestMilitaryStrength && (*i) != &actor && !((*i)->evading()))
                             {
                                 bestMilitaryStrength = candidateSafetyValue;
                                 *ppResult = *i;
@@ -1578,7 +1578,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
                         {
                             int candidateSafetyValue = (*i)->localStrengthFromPosition(pos);
 
-                            if (candidateSafetyValue > bestMilitaryStrength and (*i) != &actor)
+                            if (candidateSafetyValue > bestMilitaryStrength && (*i) != &actor)
                             {
                                 bestMilitaryStrength = candidateSafetyValue;
                                 *ppResult = *i;
@@ -1592,7 +1592,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
                         {
                             int candidateSafetyValue = (*i)->localStrengthFromPosition(pos);
 
-                            if (candidateSafetyValue > bestMilitaryStrength and (*i) != &actor)
+                            if (candidateSafetyValue > bestMilitaryStrength && (*i) != &actor)
                             {
                                 bestMilitaryStrength = candidateSafetyValue;
                                 *ppResult = *i;
@@ -1606,7 +1606,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
                         {
                             int candidateSafetyValue = (*i)->localStrengthFromPosition(pos);
 
-                            if (candidateSafetyValue > bestMilitaryStrength and (*i) != &actor)
+                            if (candidateSafetyValue > bestMilitaryStrength && (*i) != &actor)
                             {
                                 bestMilitaryStrength = candidateSafetyValue;
                                 *ppResult = *i;
@@ -1641,20 +1641,20 @@ void MachLogRaces::allFriendlyAggressiveMachinesWithinRange(
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(pActor->race(), ridx);
 
-        if (disp == MachLogRaces::ALLY or disp == MachLogRaces::OUR_RACE)
+        if (disp == MachLogRaces::ALLY || disp == MachLogRaces::OUR_RACE)
         {
             // first, check aggressors
             for (Aggressors::iterator i = aggressors(ridx).begin(); i != aggressors(ridx).end(); ++i)
             {
                 MATHEX_SCALAR distance = pActor->position().sqrEuclidianDistance((*i)->position());
-                if (not(*i)->insideAPC() and distance > sqrMinRange and distance <= sqrMaxRange)
+                if (!(*i)->insideAPC() && distance > sqrMinRange && distance <= sqrMaxRange)
                     pActors->push_back((*i));
             }
             // then check administrators
             for (Administrators::iterator i = administrators(ridx).begin(); i != administrators(ridx).end(); ++i)
             {
                 MATHEX_SCALAR distance = pActor->position().sqrEuclidianDistance((*i)->position());
-                if (not(*i)->insideAPC() and distance > sqrMinRange and distance <= sqrMaxRange)
+                if (!(*i)->insideAPC() && distance > sqrMinRange && distance <= sqrMaxRange)
                     pActors->push_back((*i));
             }
         }
@@ -1681,14 +1681,14 @@ void MachLogRaces::allFriendlyAggressivesWithinRange(
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(pActor->race(), ridx);
 
-        if (disp == MachLogRaces::ALLY or disp == MachLogRaces::OUR_RACE)
+        if (disp == MachLogRaces::ALLY || disp == MachLogRaces::OUR_RACE)
         {
             for (MissileEmplacements::iterator i = missileEmplacements(ridx).begin();
                  i != missileEmplacements(ridx).end();
                  ++i)
             {
                 MATHEX_SCALAR distance = pActor->position().sqrEuclidianDistance((*i)->position());
-                if (distance > sqrMinRange and distance <= sqrMaxRange and (*i)->isComplete())
+                if (distance > sqrMinRange && distance <= sqrMaxRange && (*i)->isComplete())
                     pActors->push_back((*i));
             }
         }
@@ -1711,7 +1711,7 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
     {
         case MachLog::GARRISON:
             for (Garrisons::iterator i = garrisons(race).begin();
-                 noBuiltAlternativeFound and i != garrisons(race).end();
+                 noBuiltAlternativeFound && i != garrisons(race).end();
                  ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
@@ -1720,7 +1720,7 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
             break;
         case MachLog::HARDWARE_LAB:
             for (HardwareLabs::iterator i = hardwareLabs(race).begin();
-                 noBuiltAlternativeFound and i != hardwareLabs(race).end();
+                 noBuiltAlternativeFound && i != hardwareLabs(race).end();
                  ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
@@ -1729,7 +1729,7 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
             break;
         case MachLog::FACTORY:
             for (Factories::iterator i = factories(race).begin();
-                 noBuiltAlternativeFound and i != factories(race).end();
+                 noBuiltAlternativeFound && i != factories(race).end();
                  ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
@@ -1737,7 +1737,7 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
             }
             break;
         case MachLog::SMELTER:
-            for (Smelters::iterator i = smelters(race).begin(); noBuiltAlternativeFound and i != smelters(race).end();
+            for (Smelters::iterator i = smelters(race).begin(); noBuiltAlternativeFound && i != smelters(race).end();
                  ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
@@ -1745,7 +1745,7 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
             }
             break;
         case MachLog::MINE:
-            for (Mines::iterator i = mines(race).begin(); noBuiltAlternativeFound and i != mines(race).end(); ++i)
+            for (Mines::iterator i = mines(race).begin(); noBuiltAlternativeFound && i != mines(race).end(); ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
                     noBuiltAlternativeFound = false;
@@ -1753,7 +1753,7 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
             break;
         case MachLog::MISSILE_EMPLACEMENT:
             for (MissileEmplacements::iterator i = missileEmplacements(race).begin();
-                 noBuiltAlternativeFound and i != missileEmplacements(race).end();
+                 noBuiltAlternativeFound && i != missileEmplacements(race).end();
                  ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
@@ -1761,14 +1761,14 @@ bool MachLogRaces::noAlternativeAlreadyBuilt(MachPhys::Race race, const MachLogP
             }
             break;
         case MachLog::POD:
-            for (Pods::iterator i = pods(race).begin(); noBuiltAlternativeFound and i != pods(race).end(); ++i)
+            for (Pods::iterator i = pods(race).begin(); noBuiltAlternativeFound && i != pods(race).end(); ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
                     noBuiltAlternativeFound = false;
             }
             break;
         case MachLog::BEACON:
-            for (Beacons::iterator i = beacons(race).begin(); noBuiltAlternativeFound and i != beacons(race).end(); ++i)
+            for (Beacons::iterator i = beacons(race).begin(); noBuiltAlternativeFound && i != beacons(race).end(); ++i)
             {
                 if ((*i)->constructionId() == prod.constructionId())
                     noBuiltAlternativeFound = false;
@@ -1797,7 +1797,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
     const MachLogGarrison* pGarrisonImInside = nullptr; // only used if we ARE inside a garrison
 
     // if we're already inside a garrison, we don't want to include that in the list.
-    if (machine.insideBuilding() and machine.insideWhichBuilding().objectType() == MachLog::GARRISON)
+    if (machine.insideBuilding() && machine.insideWhichBuilding().objectType() == MachLog::GARRISON)
     {
         insideGarrison = true;
         pGarrisonImInside = &(machine.insideWhichBuilding().asGarrison());
@@ -1806,7 +1806,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
     for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(machine.race(), ridx);
-        if (disp == MachLogRaces::ALLY or disp == MachLogRaces::OUR_RACE)
+        if (disp == MachLogRaces::ALLY || disp == MachLogRaces::OUR_RACE)
         {
 
             Garrisons& friendlyGarrisons = garrisons(ridx);
@@ -1817,8 +1817,8 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
 
                 // don't check this garrison if it's the one we're inside.
                 // also, don't consider any garrisons I'm too fat to fit inside.
-                if (not(insideGarrison and pGarrisonImInside == pCandidateGarrison)
-                    and machine.canEnterConstruction(*pCandidateGarrison))
+                if (!(insideGarrison && pGarrisonImInside == pCandidateGarrison)
+                    && machine.canEnterConstruction(*pCandidateGarrison))
                 {
                     MachPhysStation* pCandidateStation = nullptr;
                     sqrDistance = machine.position().sqrEuclidianDistance(pCandidateGarrison->entranceExternalPoint(0));
@@ -1831,7 +1831,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
                                     = _CONST_CAST(MachPhysConstructionData&, pCandidateGarrison->constructionData());
                                 // const MachPhysConstructionData& conData = (*i)->constructionData();
                                 if (sqrDistance < range
-                                    and conData.stations().freeStation(
+                                    && conData.stations().freeStation(
                                         MachPhysStation::PARKING_BAY,
                                         &pCandidateStation))
                                 {
@@ -1849,8 +1849,8 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
                                     = _CONST_CAST(MachPhysConstructionData&, pCandidateGarrison->constructionData());
                                 // const MachPhysConstructionData& conData = (*i)->constructionData();
                                 if (sqrDistance < range
-                                    and conData.stations().freeStation(MachPhysStation::PARKING_BAY, &pCandidateStation)
-                                    and not pCandidateGarrison->isEnemyCanAttackInside(machine.race()))
+                                    && conData.stations().freeStation(MachPhysStation::PARKING_BAY, &pCandidateStation)
+                                    && ! pCandidateGarrison->isEnemyCanAttackInside(machine.race()))
                                 {
                                     found = true;
                                     range = sqrDistance;
@@ -1877,7 +1877,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
     }
 
     POST(implies(found, *ppGarrison != nullptr));
-    POST(implies(found and criterion != FREE_BAYS_UNIMPORTANT, *ppStation != nullptr));
+    POST(implies(found && criterion != FREE_BAYS_UNIMPORTANT, *ppStation != nullptr));
 
     return found;
 }
@@ -1916,7 +1916,7 @@ void MachLogRaces::add(MachActor* pActor)
 {
     // Add the entry for this actor to the id map
     pDataImpl_->pActorIdMap_->add(pActor->id(), pActor);
-    if (pActor->objectIsArtefact() or pActor->objectIsDebris() or pActor->objectIsOreHolograph())
+    if (pActor->objectIsArtefact() || pActor->objectIsDebris() || pActor->objectIsOreHolograph())
     {
         // Add to the actor collection
         objects().push_back(pActor);
@@ -2129,7 +2129,7 @@ MachLogPCController& MachLogRaces::pcController() const
 
 void MachLogRaces::setPcController(MachLogPCController* pNewPCController)
 {
-    PRE(not hasPCRace());
+    PRE(! hasPCRace());
 
     // Store the special pointer
     pDataImpl_->thePCController_ = pNewPCController;
@@ -2396,10 +2396,10 @@ bool MachLogRaces::loadSavedGame(
         UtlLineTokeniser parser(*pIstream, scenarioPathName);
 
         // Fast forward to the artefacts section
-        while (not parser.finished() and not(parser.tokens()[0] == "ARTEFACTS"))
+        while (! parser.finished() && !(parser.tokens()[0] == "ARTEFACTS"))
             parser.parseNextLine();
 
-        if (not parser.finished())
+        if (! parser.finished())
             artefacts().parseArtefactsSection(&parser, MachLogArtefacts::DO_NOT_CREATE_ARTEFACT_INSTANCES);
     }
 
@@ -2437,7 +2437,7 @@ bool MachLogRaces::saveGame(const SysPathName& pathname, MachLogLoadSaveGameExtr
     // using the MLPersistence singleton.
     std::ofstream str(pathname.c_str(), std::ios::binary);
 
-    if (not str.fail())
+    if (! str.fail())
     {
         PerOstream ostr(str);
 
@@ -2447,10 +2447,10 @@ bool MachLogRaces::saveGame(const SysPathName& pathname, MachLogLoadSaveGameExtr
     }
 
     // Check to see if the save screwed up.
-    bool success = not str.fail();
+    bool success = ! str.fail();
 
     // Remove any half finished save causes by a mistake (probably lack of disk space) during the save game.
-    if (not success)
+    if (! success)
     {
         ::remove(pathname.c_str());
     }
@@ -2646,7 +2646,7 @@ MachLog::BeaconType MachLogRaces::beaconType(MachPhys::Race race)
         {
             if ((*i)->level() == 3)
                 result = MachLog::LEVEL_3_BEACON;
-            else if ((*i)->level() == 1 and result != MachLog::LEVEL_3_BEACON)
+            else if ((*i)->level() == 1 && result != MachLog::LEVEL_3_BEACON)
                 result = MachLog::LEVEL_1_BEACON;
         }
     }
@@ -2803,19 +2803,19 @@ bool MachLogRaces::hasLost(MachPhys::Race race) const
 void MachLogRaces::hasLost(MachPhys::Race race, bool newValue)
 {
     pDataImpl_->hasLost_[race] = newValue;
-    if (newValue and MachLogNetwork::instance().isNetworkGame()
-        and MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::LOCAL_PROCESS)
+    if (newValue && MachLogNetwork::instance().isNetworkGame()
+        && MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::LOCAL_PROCESS)
     {
         MachLogNetwork::instance().messageBroker().sendLostFlagSetMessage(race);
     }
     if (gameType() == MachLog::SKIRMISH_SINGLE_PLAYER
-        or (MachLogNetwork::instance().isNetworkGame()
-            and MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::LOCAL_PROCESS))
+        || (MachLogNetwork::instance().isNetworkGame()
+            && MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::LOCAL_PROCESS))
     {
         MachLogRaces::Objects& objects = raceObjects(race);
         for (MachLogRaces::Objects::iterator i = objects.begin(); i != objects.end(); ++i)
         {
-            if ((*i)->objectIsMachine() or (*i)->objectIsConstruction())
+            if ((*i)->objectIsMachine() || (*i)->objectIsConstruction())
                 (*i)->selfDestruct(0.01);
         }
     }
@@ -2842,7 +2842,7 @@ void MachLogRaces::podCaptured(MachPhys::Race race, bool newValue)
 
 void MachLogRaces::builtIonCannon(MachPhys::Race r)
 {
-    if (not pDataImpl_->builtIonCannon_[r])
+    if (! pDataImpl_->builtIonCannon_[r])
     {
         // this is the first time this race has built a weapon of this type.
 
@@ -2853,7 +2853,7 @@ void MachLogRaces::builtIonCannon(MachPhys::Race r)
 
         MachPhys::Race myRace = pcController().race();
 
-        if (myRace != r and beaconType(myRace) == MachLog::LEVEL_3_BEACON)
+        if (myRace != r && beaconType(myRace) == MachLog::LEVEL_3_BEACON)
         {
             // yup, we've detected this new acquisition. Give warning voicemail.
             MachLogVoiceMailManager::instance().postNewMail(VID_POD_ENEMY_ION_CANNON_ONLINE, myRace);
@@ -2870,7 +2870,7 @@ void MachLogRaces::builtIonCannon(MachPhys::Race r)
 
 void MachLogRaces::builtNuclearWeapon(MachPhys::Race r)
 {
-    if (not pDataImpl_->builtNuclearWeapon_[r])
+    if (! pDataImpl_->builtNuclearWeapon_[r])
     {
         // this is the first time this race has built a weapon of this type.
 
@@ -2881,7 +2881,7 @@ void MachLogRaces::builtNuclearWeapon(MachPhys::Race r)
 
         MachPhys::Race myRace = pcController().race();
 
-        if (myRace != r and beaconType(myRace) == MachLog::LEVEL_3_BEACON)
+        if (myRace != r && beaconType(myRace) == MachLog::LEVEL_3_BEACON)
         {
             // yup, we've detected this new acquisition. Give warning voicemail.
             MachLogVoiceMailManager::instance().postNewMail(VID_POD_ENEMY_NUKE_ONLINE, myRace);
@@ -2954,7 +2954,7 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
-        if (disp != MachLogRaces::ALLY and disp != MachLogRaces::OUR_RACE)
+        if (disp != MachLogRaces::ALLY && disp != MachLogRaces::OUR_RACE)
         {
             for (Aggressors::const_iterator i = aggressors(ridx).begin(); i != aggressors(ridx).end(); ++i)
             {
@@ -2964,8 +2964,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -2982,8 +2982,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3002,12 +3002,12 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance(pTurret->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and pTurret->subType() != MachPhys::ICBM
-                        and actorAsCanAttack.canFireAt((*pTurret))
-                        and (not(isLocalHumanPlayer) or pTurret->isComplete()) // note that local player machines will
+                    if (dist < closest && dist >= minEuclidianDistance && pTurret->subType() != MachPhys::ICBM
+                        && actorAsCanAttack.canFireAt((*pTurret))
+                        && (!(isLocalHumanPlayer) || pTurret->isComplete()) // note that local player machines will
                                                                                // not consider incomplete turrets as
                                                                                // viable targets
-                        and not pTurret->isDead())
+                        && ! pTurret->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3019,13 +3019,13 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
             // --------- EFFICIENCY-RELATED CHANGE ------------------
             // aggressors, administrators and turrets are our prime targets - stop here if we now have a match within
             // scanner range (ends search for this particular race)
-            if (found and MachPhysRandom::randomInt(0, 10) != 0 // 10% chance of checking everything regardless
-                and not actor.objectIsMissileEmplacement() // Missile emps always find ACTUAL closest target
-                and not(
+            if (found && MachPhysRandom::randomInt(0, 10) != 0 // 10% chance of checking everything regardless
+                && ! actor.objectIsMissileEmplacement() // Missile emps always find ACTUAL closest target
+                && !(
                     actor.objectIsMachine()
-                    and actor.asMachine()
+                    && actor.asMachine()
                             .insideBuilding()) // For god's sake, check for technicians etc. if we're inside a building!
-                and closest < std::min(
+                && closest < std::min(
                         sqrScannerRange,
                         22500.0)) // 150m is furthest away aggressive can be if we are to abort the search
                 continue;
@@ -3039,8 +3039,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3057,8 +3057,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3075,8 +3075,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3093,8 +3093,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead() and not(*i)->camouflaged()) // special clause for spies
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead() && !(*i)->camouflaged()) // special clause for spies
                     {
                         found = true;
                         closest = dist;
@@ -3112,8 +3112,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3130,8 +3130,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                 {
                     MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                    if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                        and not(*i)->isDead())
+                    if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                        && !(*i)->isDead())
                     {
                         found = true;
                         closest = dist;
@@ -3154,8 +3154,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3172,8 +3172,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3190,8 +3190,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3208,8 +3208,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3226,8 +3226,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3244,8 +3244,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3262,8 +3262,8 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance((*i)->position());
 
-                        if (dist < closest and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt((**i))
-                            and not(*i)->isDead())
+                        if (dist < closest && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt((**i))
+                            && !(*i)->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3284,9 +3284,9 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
                     {
                         MATHEX_SCALAR dist = pos.sqrEuclidianDistance(pEmplacement->position());
 
-                        if (pEmplacement->subType() == MachPhys::ICBM and dist < closest
-                            and dist >= minEuclidianDistance and actorAsCanAttack.canFireAt(*pEmplacement)
-                            and not pEmplacement->isDead())
+                        if (pEmplacement->subType() == MachPhys::ICBM && dist < closest
+                            && dist >= minEuclidianDistance && actorAsCanAttack.canFireAt(*pEmplacement)
+                            && ! pEmplacement->isDead())
                         {
                             found = true;
                             closest = dist;
@@ -3308,7 +3308,7 @@ void MachLogRaces::addSpecialUpdateActor(MachActor* pActor, const PhysRelativeTi
     MachLogRaces::Objects& specialUpdateActors = pDataImpl_->specialUpdateActors_;
     //  HAL_STREAM("(" << pActor->id() << ") MachLogRaces::addSpecialUpdateActor (void*)" << (void*)pActor << std::endl
     //  );
-    if (not ctl_contains(&specialUpdateActors, pActor))
+    if (! ctl_contains(&specialUpdateActors, pActor))
     {
         //      HAL_STREAM(" added\n" );
         specialUpdateActors.push_back(pActor);
@@ -3324,7 +3324,7 @@ void MachLogRaces::removeSpecialUpdateActor(MachActor* pActor, MachLog::ForceRem
     //   HAL_STREAM("(" << pActor->id() << ") MachLogRaces::removeSpecialUpdateActor (void*)" << (void*)pActor <<
     //   std::endl );
     const PhysRelativeTime& maxTime = pActor->maximumTimeInSpecialUpdateActors();
-    if (forceRemove == MachLog::DO_NOT_FORCE_REMOVE and maxTime >= MexEpsilon::instance())
+    if (forceRemove == MachLog::DO_NOT_FORCE_REMOVE && maxTime >= MexEpsilon::instance())
         if (maxTime + pActor->startTimeInSpecialUpdateActors() > SimManager::instance().currentTime())
             return;
 
@@ -3354,7 +3354,7 @@ void MachLogRaces::specialActorUpdate()
         {
             if (network.remoteStatus((*i)->race()) == MachLogNetwork::LOCAL_PROCESS)
             {
-                if (not NetNetwork::instance().imStuffed())
+                if (! NetNetwork::instance().imStuffed())
                     (*i)->update(0, 0);
             }
             else
@@ -3363,7 +3363,7 @@ void MachLogRaces::specialActorUpdate()
         else
             (*i)->update(0, 0);
         const PhysRelativeTime& maxTime = (*i)->maximumTimeInSpecialUpdateActors();
-        if (maxTime >= MexEpsilon::instance() and maxTime + (*i)->startTimeInSpecialUpdateActors() < now)
+        if (maxTime >= MexEpsilon::instance() && maxTime + (*i)->startTimeInSpecialUpdateActors() < now)
             removeSpecialUpdateActor(*i, MachLog::FORCE_REMOVE);
     }
     pDataImpl_->inSpecialActorUpdate_ = false;
@@ -3407,7 +3407,7 @@ void MachLogRaces::newMineralSiteDiscovered(MachPhys::Race r)
 
     for (Mines::iterator i = mines(r).begin(); i != mines(r).end(); ++i)
     {
-        if (not(*i)->hasMineralSite())
+        if (!(*i)->hasMineralSite())
             (*i)->newMineralSiteAvailable();
     }
 }
@@ -3469,18 +3469,18 @@ bool MachLogRaces::findMostValuableTarget(
         favourBuildings = true;
 
     // the only restriction on distance here is the minimum distance.
-    if (targetSystemType == MachLog::TARGET_NORMAL or targetSystemType == MachLog::FAVOUR_STATIC_TARGETS)
+    if (targetSystemType == MachLog::TARGET_NORMAL || targetSystemType == MachLog::FAVOUR_STATIC_TARGETS)
     {
         for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
         {
             MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
-            if (disp != MachLogRaces::ALLY and disp != MachLogRaces::OUR_RACE)
+            if (disp != MachLogRaces::ALLY && disp != MachLogRaces::OUR_RACE)
             {
                 for (Objects::const_iterator i = raceObjects(ridx).begin(); i != raceObjects(ridx).end(); ++i)
                 {
                     MachLog::ObjectType ot = (*i)->objectType();
-                    if (ot != MachLog::ORE_HOLOGRAPH and ot != MachLog::DEBRIS and ot != MachLog::LAND_MINE
-                        and ot != MachLog::SQUADRON and ot != MachLog::ARTEFACT)
+                    if (ot != MachLog::ORE_HOLOGRAPH && ot != MachLog::DEBRIS && ot != MachLog::LAND_MINE
+                        && ot != MachLog::SQUADRON && ot != MachLog::ARTEFACT)
                     {
                         MachActor* pTargetActor = (*i);
 
@@ -3503,7 +3503,7 @@ bool MachLogRaces::findMostValuableTarget(
                                 militaryValue *= 0.5;
                         }
 
-                        if (not favourBuildings and pTargetActor->objectType() == MachLog::MISSILE_EMPLACEMENT)
+                        if (! favourBuildings && pTargetActor->objectType() == MachLog::MISSILE_EMPLACEMENT)
                         {
                             if (pTargetActor->asMissileEmplacement().subType() == MachPhys::ICBM)
                                 militaryValue = 500; // yeah, yeah, pretty arbitrary but that'll probably be okay.
@@ -3512,12 +3512,12 @@ bool MachLogRaces::findMostValuableTarget(
                                     *= 0.5; // turrets not seen as so valuable militarily to a global strike weapon
                         }
 
-                        if ((not pTargetActor->isDead()) and militaryValue > highestValueFound
-                            and dist >= minEuclidianDistance)
+                        if ((! pTargetActor->isDead()) && militaryValue > highestValueFound
+                            && dist >= minEuclidianDistance)
                         {
                             if (pTargetActor->objectIsMachine())
                             {
-                                if (not(pTargetActor->asMachine().camouflaged()))
+                                if (!(pTargetActor->asMachine().camouflaged()))
                                 {
                                     found = true;
                                     highestValueFound = militaryValue;
@@ -3538,7 +3538,7 @@ bool MachLogRaces::findMostValuableTarget(
     }
 
     // if no targets with any military strength were found, simply attack the nearest target.
-    if (not found)
+    if (! found)
         found = findTargetClosestTo(actor, ppResult, targetSystemType, ot, startingPoint, minEuclidianDistance);
 
     return found;
@@ -3643,7 +3643,7 @@ void MachLogRaces::removeNotDisplayedScores()
 {
     for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i))
     {
-        if (not pDataImpl_->scores_[i]->scoreShouldBeDisplayed())
+        if (! pDataImpl_->scores_[i]->scoreShouldBeDisplayed())
         {
             pDataImpl_->scores_[i]->resetNumbers();
             for (MachPhys::Race j = MachPhys::RED; j != MachPhys::N_RACES; ++((int&)j))
@@ -3697,7 +3697,7 @@ MachLogRaces::dispositionToRace(const MachPhys::Race checkRace, const MachPhys::
 {
     MachLogRaces::DispositionToRace result;
 
-    if (checkRace != MachPhys::NORACE and targetRace != MachPhys::NORACE)
+    if (checkRace != MachPhys::NORACE && targetRace != MachPhys::NORACE)
         result
             = pDataImpl_->disposition_[map_MachPhysRace_to_size_t(checkRace)][map_MachPhysRace_to_size_t(targetRace)];
     else
@@ -3731,7 +3731,7 @@ void MachLogRaces::dispositionToRace(
             {
                 (*i)->notifyDispositionChangeToAlly(checkRace, targetRace);
             }
-            else if (newDisposition == NEUTRAL or newDisposition == ENEMY)
+            else if (newDisposition == NEUTRAL || newDisposition == ENEMY)
             {
                 (*i)->notifyDispositionChangeToNoneAlly(checkRace, targetRace);
             }
@@ -3771,7 +3771,7 @@ void MachLogRaces::dispositionToRaceWithoutEcho(
             {
                 (*i)->notifyDispositionChangeToAlly(checkRace, targetRace);
             }
-            else if (newDisposition == NEUTRAL or newDisposition == ENEMY)
+            else if (newDisposition == NEUTRAL || newDisposition == ENEMY)
             {
                 (*i)->notifyDispositionChangeToNoneAlly(checkRace, targetRace);
             }
@@ -3790,7 +3790,7 @@ MachLog::GameType MachLogRaces::gameType() const
 
 void MachLogRaces::addToMachinesCollection(MachLogMachine* pMachine)
 {
-    ASSERT(not machineExists(pMachine), "Tried to add duplicate of machine into machines collection!");
+    ASSERT(! machineExists(pMachine), "Tried to add duplicate of machine into machines collection!");
     ctl_append(&machines(), pMachine);
 
     ++nMachines(pMachine->race());

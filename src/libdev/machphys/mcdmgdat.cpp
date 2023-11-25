@@ -68,7 +68,7 @@ void MachPhysMachineDamageData::damageLevel(const double& percent)
 {
     if (percent > 0)
     {
-        if (not isDamaged())
+        if (! isDamaged())
             pMachineDamage_ = new MachPhysMachineDamage(pTargetMachine_);
 
         pMachineDamage_->damageLevel(percent);
@@ -93,7 +93,7 @@ void MachPhysMachineDamageData::updateDamageLevel()
 
 MachPhysMachineBurning& MachPhysMachineDamageData::machineBurning()
 {
-    if (not isBurning())
+    if (! isBurning())
         pMachineBurning_ = new MachPhysMachineBurning(pTargetMachine_);
 
     return *pMachineBurning_;

@@ -211,7 +211,7 @@ void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
 
 const GuiBitmap& MachGuiMessageBox::image() const
 {
-    if (mbType_ == MBOKCANCEL or mbType_ == MBYESNO)
+    if (mbType_ == MBOKCANCEL || mbType_ == MBYESNO)
         return MachGui::okCancelMsgBoxBmp();
 
     return MachGui::okMsgBoxBmp();
@@ -220,7 +220,7 @@ const GuiBitmap& MachGuiMessageBox::image() const
 // static
 SysPathName MachGuiMessageBox::animationFile(MBType mbType)
 {
-    if (mbType == MBOKCANCEL or mbType == MBYESNO)
+    if (mbType == MBOKCANCEL || mbType == MBYESNO)
         return SysPathName("gui/menu/mb_anim2.anm");
 
     return SysPathName("gui/menu/mb_anims.anm");

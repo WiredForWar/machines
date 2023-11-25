@@ -52,7 +52,7 @@ std::ostream& operator<<(std::ostream& o, const PhysCS2dExpansionSpace& t)
 PhysConfigSpace2d::PolygonId
 PhysCS2dExpansionSpace::addPolygon(const MexPolygon2d& oldPolygon, const PolygonId& oldId, ObstacleFlags flags)
 {
-    PRE(not polygonExists(oldId))
+    PRE(! polygonExists(oldId))
 
     CS2VGRA_STREAM("Adding polygon to expansion space" << std::endl);
     CS2VGRA_STREAM("Unexpanded polygon " << oldPolygon << std::endl);
@@ -75,7 +75,7 @@ PhysCS2dExpansionSpace::addPolygon(const MexPolygon2d& oldPolygon, const Polygon
 
 bool PhysCS2dExpansionSpace::polygonExists(const PolygonId& oldId) const
 {
-    return idMap_.contains(oldId) and configSpace_.exists(idMap_[oldId]);
+    return idMap_.contains(oldId) && configSpace_.exists(idMap_[oldId]);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

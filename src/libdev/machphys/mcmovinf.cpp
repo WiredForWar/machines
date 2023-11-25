@@ -123,7 +123,7 @@ PhysRampAcceleration MachPhysMachineMoveInfo::averageProfile() const
     MATHEX_SCALAR finishSpeed = rampAccelerationsPtr_->back().endSpeed();
 
     //  Take small rounding errors into account
-    if (finishSpeed < 0.0 and finishSpeed > -MexEpsilon::instance())
+    if (finishSpeed < 0.0 && finishSpeed > -MexEpsilon::instance())
         finishSpeed = 0.0;
 
     PhysRampAcceleration acceleration(
@@ -191,7 +191,7 @@ MexTransform3d MachPhysMachineMoveInfo::transform(PhysAbsoluteTime time) const
         size_t segmentIndex = 0;
         MATHEX_SCALAR proportionOfDistance = 0;
 
-        for (size_t i = 0; i != (*rampAccelerationsPtr_).size() and not foundSegment; ++i)
+        for (size_t i = 0; i != (*rampAccelerationsPtr_).size() && ! foundSegment; ++i)
         {
             const PhysRampAcceleration& acceleration = (*rampAccelerationsPtr_)[i];
 
@@ -211,7 +211,7 @@ MexTransform3d MachPhysMachineMoveInfo::transform(PhysAbsoluteTime time) const
         const MexTransform3d& tx1 = (*transformsPtr_)[segmentIndex];
         const MexTransform3d& tx2 = (*transformsPtr_)[segmentIndex + 1];
 
-        if (needsToTurn() and segmentIndex == 0)
+        if (needsToTurn() && segmentIndex == 0)
         {
             //  We are on the rotation part of the movement. Interpolate the orientation.
             MexTransform3d differenceTransform;

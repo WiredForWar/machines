@@ -293,7 +293,7 @@ bool MachGuiCtxCampaign::okayToSwitchContext()
         }
         else // Select previously created player...
         {
-            if (not pSelectedPlayer_)
+            if (! pSelectedPlayer_)
             {
                 pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERPLAYERNAME);
                 return false;
@@ -368,7 +368,7 @@ void MachGuiCtxCampaign::deletePlayer()
     for (uint loop = 0; loop < numSavedGames; ++loop)
     {
         MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
-        if (savedGame.isCampaignGame() and not savedGame.hasPlayer())
+        if (savedGame.isCampaignGame() && ! savedGame.hasPlayer())
             savedGamesWithNoPlayer.push_back(&savedGame);
     }
 

@@ -312,7 +312,7 @@ void MachPhysWeapon::lighting(
     }
 
     // also create a light shadow on the ground if required
-    if (pParent != nullptr and shadow == SHADOW)
+    if (pParent != nullptr && shadow == SHADOW)
     {
         MexPoint3d shadowPositon = pLight->globalTransform().position();
         shadowPositon.z(

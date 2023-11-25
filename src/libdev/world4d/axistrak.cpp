@@ -83,7 +83,7 @@ void W4dAxisTrackerPlan::transform(const PhysRelativeTime& timeOffset, MexTransf
 
     // Update the target offset if the required number of frames have elapsed, or first time
     W4dManager& w4dManager = W4dManager::instance();
-    if (firstTime or (w4dManager.frameNumber() % nFramesPerTargetOffsetUpdate_) == 0)
+    if (firstTime || (w4dManager.frameNumber() % nFramesPerTargetOffsetUpdate_) == 0)
         nonConstThis->targetOffset_ = targetOffset(*pTargetObject_);
 
     // Compute the global position of the target point
@@ -185,7 +185,7 @@ void W4dAxisTrackerPlan::transform(const PhysRelativeTime& timeOffset, MexTransf
     baseTransform_.transform(turnTransform, pResult);
 
     // Store the current time and angle, unless doing a look-ahead calculation
-    if (not w4dManager.hasArtificialTime())
+    if (! w4dManager.hasArtificialTime())
     {
         nonConstThis->lastUpdateTime_ = now;
         nonConstThis->lastAngle_ = theAngle;
@@ -288,7 +288,7 @@ bool W4dAxisTrackerPlan::nearLimits(MexRadians tolerance) const
         MATHEX_SCALAR angle = lastAngle_.asScalar();
         MATHEX_SCALAR maxDiff = tolerance.asScalar();
         result = (Mathex::abs(angle - minAngle_.asScalar()) < maxDiff)
-            or (Mathex::abs(angle - maxAngle_.asScalar()) < maxDiff);
+            || (Mathex::abs(angle - maxAngle_.asScalar()) < maxDiff);
     }
 
     return result;

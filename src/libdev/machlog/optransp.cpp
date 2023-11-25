@@ -72,7 +72,7 @@ bool MachLogTransportOperation::doStart()
 {
     CB_MachLogTransportOperation_DEPIMPL();
 
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ///////////////////////////////////
@@ -98,9 +98,9 @@ PhysRelativeTime MachLogTransportOperation::doUpdate()
         return 2.0;
 
     // have we done the pickUp operation yet?
-    if (not donePickUp_)
+    if (! donePickUp_)
     {
-        if (not pActor_->hasSuppliers())
+        if (! pActor_->hasSuppliers())
         {
             // HAL_STREAM("(" << pActor_->id() << ") MLTransportOp...need to do pickup but run out of suppliers.
             // Finish\n" );

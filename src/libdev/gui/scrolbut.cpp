@@ -118,18 +118,18 @@ void GuiScrollButton::listUpdated()
 {
     if (hasList())
     {
-        if (not isDisabled())
+        if (! isDisabled())
         {
             switch (scrollDir_)
             {
                 case FOWARD:
                 case END:
-                    if (not list().canScrollFoward())
+                    if (! list().canScrollFoward())
                         disable();
                     break;
                 case BACKWARD:
                 case BEGIN:
-                    if (not list().canScrollBackward())
+                    if (! list().canScrollBackward())
                         disable();
                     break;
                     DEFAULT_ASSERT_BAD_CASE(scrollDir_);

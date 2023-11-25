@@ -51,7 +51,7 @@ public:
     {
         disabled_ = false;
 
-        if (savedGame.hasPlayer() and MachGuiDatabase::instance().hasCurrentPlayer())
+        if (savedGame.hasPlayer() && MachGuiDatabase::instance().hasCurrentPlayer())
         {
             MachGuiDbPlayer* pPlayer1 = &savedGame.player();
             MachGuiDbPlayer* pPlayer2 = &MachGuiDatabase::instance().currentPlayer();
@@ -85,7 +85,7 @@ public:
 protected:
     void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override
     {
-        if (not disabled_)
+        if (! disabled_)
         {
             MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent(rel);
         }
@@ -93,7 +93,7 @@ protected:
 
     void doHandleMouseExitEvent(const GuiMouseEvent& rel) override
     {
-        if (not disabled_)
+        if (! disabled_)
         {
             MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent(rel);
         }
@@ -101,7 +101,7 @@ protected:
 
     void doHandleMouseClickEvent(const GuiMouseEvent& rel) override
     {
-        if (not disabled_)
+        if (! disabled_)
         {
             MachGuiSingleSelectionListBoxItem::doHandleMouseClickEvent(rel);
         }
@@ -321,7 +321,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
                     // Save the game, the name is unique so we can save it...
                     bool saveSuccess = saveGame(pNewSaveGameName_->text());
 
-                    if (not saveSuccess)
+                    if (! saveSuccess)
                     {
                         // Display error message, game failed to save...
                         pStartupScreens_->displayMsgBox(IDS_MENUMSG_SAVEFAIL);
@@ -344,7 +344,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
         }
         else // Select previously saved game ( save over )...
         {
-            if (not pSelectedSaveGame_)
+            if (! pSelectedSaveGame_)
             {
                 pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERSAVEGAMENAME);
                 return false;
@@ -420,7 +420,7 @@ bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
     SysPathName savePathName;
     size_t count = 0;
 
-    while (not gotSavePathName)
+    while (! gotSavePathName)
     {
         char buffer[20];
 
@@ -429,7 +429,7 @@ bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
         // savePathName = string( "savegame/save" ) + buffer + ".sav";
         savePathName = SysPathName(string("savegame/save") + buffer + ".sav");
 
-        if (not savePathName.existsAsFile())
+        if (! savePathName.existsAsFile())
             gotSavePathName = true;
 
         ++count;

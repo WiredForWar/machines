@@ -191,7 +191,7 @@ void perRead(PerIstream& istr, MachPhysBeacon& construction)
 
 void MachPhysBeacon::doWorking(bool setWorking)
 {
-    if (setWorking and not isWorking())
+    if (setWorking && ! isWorking())
     {
         PhysMotionPlan::Times* pTimesList = new PhysMotionPlan::Times;
         pTimesList->push_back(1.2);
@@ -236,7 +236,7 @@ void MachPhysBeacon::doWorking(bool setWorking)
 
         W4dSoundManager::instance().play(this, newID, PhysAbsoluteTime(0), W4dSoundManager::LOOP_CONTINUOUSLY);
     }
-    else if (isWorking() and setWorking == false)
+    else if (isWorking() && setWorking == false)
     {
         finishAnimation(MachPhys::CONSTRUCTION_WORKING);
         W4dSoundManager::instance().stop(this);

@@ -116,7 +116,7 @@ PhysRelativeTime MachLogSmelter::update(const PhysRelativeTime& alteredMaxCPUTim
 
     PhysRelativeTime interval = 5.0;
 
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
         interval = 0.1;
     else if (complete)
     {
@@ -133,7 +133,7 @@ PhysRelativeTime MachLogSmelter::update(const PhysRelativeTime& alteredMaxCPUTim
         }
         bool isWorking = false;
 
-        if (droppedOffOreTime_ + 10 > SimManager::instance().currentTime() and droppedOffOreTime_ > 0)
+        if (droppedOffOreTime_ + 10 > SimManager::instance().currentTime() && droppedOffOreTime_ > 0)
             isWorking = true;
 
         if (isWorking != pPhysSmelter()->isWorking())
@@ -317,20 +317,20 @@ void MachLogSmelter::beHit(
     MexLine3d* pByDirection,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         MachLogConstruction::beHit(damage, byType, pByActor, pByDirection, echo);
 
         // only knock off BMU capacity from race total if we've actually added it for this smelter (not done until
         // smelter is complete - see update method)
-        if (isDead() and addedBMUStorageToRace_)
+        if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
             // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
             // If we're deliberately aiming at the smelter, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.
-            bool destroyedByFriendly = (pByActor and pByActor->race() == race());
+            bool destroyedByFriendly = (pByActor && pByActor->race() == race());
 
             if (destroyedByFriendly)
                 MachLogRaces::instance().reduceCapacityNoPenalty(
@@ -351,20 +351,20 @@ void MachLogSmelter::beHitWithoutAnimation(
     MachActor* pByActor,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         MachLogConstruction::beHitWithoutAnimation(damage, physicalTimeDelay, pByActor, echo);
 
         // only knock off BMU capacity from race total if we've actually added it for this smelter (not done until
         // smelter is complete - see update method)
-        if (isDead() and addedBMUStorageToRace_)
+        if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
             // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
             // If we're deliberately aiming at the smelter, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.
-            bool destroyedByFriendly = (pByActor and pByActor->race() == race());
+            bool destroyedByFriendly = (pByActor && pByActor->race() == race());
 
             if (destroyedByFriendly)
                 MachLogRaces::instance().reduceCapacityNoPenalty(

@@ -202,7 +202,7 @@ void MachPhysSmelter::doWorking(bool setWorking)
     if (setWorking != isWorking())
     {
         // Enable or disable the animation and sound
-        if (not isWorking()) // setWorking must == true
+        if (! isWorking()) // setWorking must == true
         {
             W4dCompositePlanPtr workingPlanPtr;
             if (cycleAnims(&workingPlanPtr))

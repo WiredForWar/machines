@@ -217,7 +217,7 @@ void MachLogNuclearBomb::inflictDamageFirstWave(MachActor* pDamagedVictim)
     CB_MachLogNuclearBomb_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this
@@ -252,7 +252,7 @@ void MachLogNuclearBomb::inflictDamageSecondWave(MachActor* pDamagedVictim)
         "be called.");
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this
@@ -289,7 +289,7 @@ void MachLogNuclearBomb::inflictDamageThirdWave(MachActor* pDamagedVictim)
     CB_MachLogNuclearBomb_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this

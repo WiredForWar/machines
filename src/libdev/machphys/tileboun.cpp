@@ -39,10 +39,10 @@ MachPhysTileBoundary::MachPhysTileBoundary(
     , cacheId_((TriangleId)nTriangles)
 {
     // Check the data falls in required range
-    PRE(nXVertices > 1 and nYVertices > 1);
-    PRE(nXVertices <= maxXYVertices and nYVertices <= maxXYVertices);
+    PRE(nXVertices > 1 && nYVertices > 1);
+    PRE(nXVertices <= maxXYVertices && nYVertices <= maxXYVertices);
     PRE(nTriangles <= (nXVertices - 1) * (nYVertices - 1) * 2);
-    PRE(xMin < xMax and yMin < yMax);
+    PRE(xMin < xMax && yMin < yMax);
 
     // Set the sizes for the triangle collection
     triangles_.reserve(nTriangles_);
@@ -256,11 +256,11 @@ MATHEX_SCALAR MachPhysTileBoundary::heightOverCachedTriangle(MATHEX_SCALAR x, MA
 MachPhysTileBoundary::Coordinate MachPhysTileBoundary::xCoordinate(MATHEX_SCALAR x) const
 {
     // Check in range
-    PRE(x > xMin_ - epsilon_ and x < xMax_ + epsilon_);
+    PRE(x > xMin_ - epsilon_ && x < xMax_ + epsilon_);
 
     // Compute grid coordinate and check in range
     int m = (int)((MATHEX_SCALAR)(nXVertices_ - 1) * (x - xMin_ + epsilon_) / (xMax_ - xMin_));
-    POST(m >= 0 and m < nXVertices_);
+    POST(m >= 0 && m < nXVertices_);
 
     // Check close enough to grid line
     POST(abs(xCoordinate((Coordinate)m) - x) < epsilon_);
@@ -272,11 +272,11 @@ MachPhysTileBoundary::Coordinate MachPhysTileBoundary::xCoordinate(MATHEX_SCALAR
 MachPhysTileBoundary::Coordinate MachPhysTileBoundary::yCoordinate(MATHEX_SCALAR y) const
 {
     // Check in range
-    PRE(y > yMin_ - epsilon_ and y < yMax_ + epsilon_);
+    PRE(y > yMin_ - epsilon_ && y < yMax_ + epsilon_);
 
     // Compute grid coordinate and check in range
     int m = (int)((MATHEX_SCALAR)(nYVertices_ - 1) * (y - yMin_ + epsilon_) / (yMax_ - yMin_));
-    POST(m >= 0 and m < nXVertices_);
+    POST(m >= 0 && m < nXVertices_);
 
     // Check close enough to grid line
     POST(abs(yCoordinate((Coordinate)m) - y) < epsilon_);
@@ -311,7 +311,7 @@ MATHEX_SCALAR MachPhysTileBoundary::zCoordinate(Coordinate x, Coordinate y) cons
 
 uint MachPhysTileBoundary::xCell(MATHEX_SCALAR x) const
 {
-    PRE(x >= xMin_ and x <= xMax_);
+    PRE(x >= xMin_ && x <= xMax_);
     MATHEX_SCALAR f = (x - xMin_) / (xMax_ - xMin_);
     uint cell = (uint)(f * (MATHEX_SCALAR)(nXVertices_ - 1));
     if (cell >= (nXVertices_ - 1))
@@ -323,7 +323,7 @@ uint MachPhysTileBoundary::xCell(MATHEX_SCALAR x) const
 
 uint MachPhysTileBoundary::yCell(MATHEX_SCALAR y) const
 {
-    PRE(y >= yMin_ and y <= yMax_);
+    PRE(y >= yMin_ && y <= yMax_);
     MATHEX_SCALAR f = (y - yMin_) / (yMax_ - yMin_);
     uint cell = (uint)(f * (MATHEX_SCALAR)(nYVertices_ - 1));
     if (cell >= (nYVertices_ - 1))
@@ -362,10 +362,10 @@ void MachPhysTileBoundary::profile(
     ctl_vector<MexPoint3d>* pPoints) const
 {
     MATHEX_SCALAR eps = MexEpsilon::instance();
-    PRE((x1 >= xMin_ - eps) and (x1 <= xMax_ + eps));
-    PRE((y1 >= yMin_ - eps) and (y1 <= yMax_ + eps));
-    PRE((x2 >= xMin_ - eps) and (x2 <= xMax_ + eps));
-    PRE((y2 >= yMin_ - eps) and (y2 <= yMax_ + eps));
+    PRE((x1 >= xMin_ - eps) && (x1 <= xMax_ + eps));
+    PRE((y1 >= yMin_ - eps) && (y1 <= yMax_ + eps));
+    PRE((x2 >= xMin_ - eps) && (x2 <= xMax_ + eps));
+    PRE((y2 >= yMin_ - eps) && (y2 <= yMax_ + eps));
 
     // Compute the cell spacing
     MATHEX_SCALAR xSpacing = (xMax_ - xMin_) / (nXVertices_ - 1);

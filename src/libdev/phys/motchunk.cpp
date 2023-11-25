@@ -143,13 +143,13 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
     MATHEX_SCALAR epsilon = MexEpsilon::instance();
 
     // Check there is a time overlap
-    bool result = (not hasExpiryTime_ or expiryTime_ > rhs.createTime_)
-        and (not rhs.hasExpiryTime_ or rhs.expiryTime_ > createTime_);
+    bool result = (! hasExpiryTime_ || expiryTime_ > rhs.createTime_)
+        && (! rhs.hasExpiryTime_ || rhs.expiryTime_ > createTime_);
 
     //  Check that there is a height overlap
     if (result)
     {
-        if (minHeight_ > rhs.maxHeight_ or rhs.minHeight_ > maxHeight_)
+        if (minHeight_ > rhs.maxHeight_ || rhs.minHeight_ > maxHeight_)
         {
             result = false;
         }
@@ -164,7 +164,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
         MexSausage2d lhsFullSausage(startPoint_, endPoint_, clearance_);
         MexSausage2d rhsFullSausage(rhs.startPoint_, rhs.endPoint_, rhs.clearance_);
         result = lhsFullSausage.intersects(rhsFullSausage);
-        if (not result)
+        if (! result)
             break;
 
         // Extract motion profile times for each chunk
@@ -206,13 +206,13 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
         bool lhsHasAccn1 = lhsAccn1Duration > epsilon;
         bool lhsHasConstantSpeed = (lhsMotionDuration - lhsAccn1Duration - lhsAccn2Duration) > epsilon;
         bool lhsHasAccn2 = lhsAccn2Duration > epsilon;
-        bool lhsHasFinal = not hasExpiryTime_ or (lhsEndTime - lhsFinalStartTime) > epsilon;
+        bool lhsHasFinal = ! hasExpiryTime_ || (lhsEndTime - lhsFinalStartTime) > epsilon;
 
         bool rhsHasInitial = rhs.motionTimeOffset_ > epsilon;
         bool rhsHasAccn1 = rhsAccn1Duration > epsilon;
         bool rhsHasConstantSpeed = (rhsMotionDuration - rhsAccn1Duration - rhsAccn2Duration) > epsilon;
         bool rhsHasAccn2 = rhsAccn2Duration > epsilon;
-        bool rhsHasFinal = not rhs.hasExpiryTime_ or (rhsEndTime - rhsFinalStartTime) > epsilon;
+        bool rhsHasFinal = ! rhs.hasExpiryTime_ || (rhsEndTime - rhsFinalStartTime) > epsilon;
 
         // Construct points at the start and end of the constant velocity section for
         // each chunk. Note the use of defaults in case negligble acceleration.
@@ -279,11 +279,11 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
             rhsAccn2Sausage = MexSausage2d(rhsConstantSpeedEndPoint, rhs.endPoint_, rhs.clearance_);
 
         // Now perform checks between each section
-        if (lhsHasInitial and lhsAccn1StartTime > rhsInitialStartTime
-            and (not rhs.hasExpiryTime_ or rhsEndTime > lhsInitialStartTime))
+        if (lhsHasInitial && lhsAccn1StartTime > rhsInitialStartTime
+            && (! rhs.hasExpiryTime_ || rhsEndTime > lhsInitialStartTime))
         {
             if (rhsHasInitial
-                and circleIntersectsCircle(
+                && circleIntersectsCircle(
                     lhsStartCircle,
                     lhsInitialStartTime,
                     true,
@@ -296,7 +296,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn1
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     lhsStartCircle,
                     lhsInitialStartTime,
                     true,
@@ -308,7 +308,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasConstantSpeed
-                and circleIntersectsConstantSpeedSausage(
+                && circleIntersectsConstantSpeedSausage(
                     lhsStartCircle,
                     lhsInitialStartTime,
                     true,
@@ -320,7 +320,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn2
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     lhsStartCircle,
                     lhsInitialStartTime,
                     true,
@@ -332,7 +332,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasFinal
-                and circleIntersectsCircle(
+                && circleIntersectsCircle(
                     lhsStartCircle,
                     lhsInitialStartTime,
                     true,
@@ -345,11 +345,11 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
         }
 
-        if (lhsHasAccn1 and lhsConstantSpeedStartTime > rhsInitialStartTime
-            and (not rhs.hasExpiryTime_ or rhsEndTime > lhsAccn1StartTime))
+        if (lhsHasAccn1 && lhsConstantSpeedStartTime > rhsInitialStartTime
+            && (! rhs.hasExpiryTime_ || rhsEndTime > lhsAccn1StartTime))
         {
             if (rhsHasInitial
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     rhsStartCircle,
                     rhsInitialStartTime,
                     true,
@@ -361,7 +361,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn1
-                and accelerationSausageIntersectsAccelerationSausage(
+                && accelerationSausageIntersectsAccelerationSausage(
                     lhsAccn1Sausage,
                     lhsAccn1StartTime,
                     lhsConstantSpeedStartTime,
@@ -372,7 +372,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasConstantSpeed
-                and accelerationSausageIntersectsConstantSpeedSausage(
+                && accelerationSausageIntersectsConstantSpeedSausage(
                     lhsAccn1Sausage,
                     lhsAccn1StartTime,
                     lhsConstantSpeedStartTime,
@@ -383,7 +383,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn2
-                and accelerationSausageIntersectsAccelerationSausage(
+                && accelerationSausageIntersectsAccelerationSausage(
                     lhsAccn1Sausage,
                     lhsAccn1StartTime,
                     lhsConstantSpeedStartTime,
@@ -394,7 +394,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasFinal
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     rhsEndCircle,
                     rhsFinalStartTime,
                     rhs.hasExpiryTime_,
@@ -406,11 +406,11 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
         }
 
-        if (lhsHasConstantSpeed and lhsAccn2StartTime > rhsInitialStartTime
-            and (not rhs.hasExpiryTime_ or rhsEndTime > lhsConstantSpeedStartTime))
+        if (lhsHasConstantSpeed && lhsAccn2StartTime > rhsInitialStartTime
+            && (! rhs.hasExpiryTime_ || rhsEndTime > lhsConstantSpeedStartTime))
         {
             if (rhsHasInitial
-                and circleIntersectsConstantSpeedSausage(
+                && circleIntersectsConstantSpeedSausage(
                     rhsStartCircle,
                     rhsInitialStartTime,
                     true,
@@ -422,7 +422,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn1
-                and accelerationSausageIntersectsConstantSpeedSausage(
+                && accelerationSausageIntersectsConstantSpeedSausage(
                     rhsAccn1Sausage,
                     rhsAccn1StartTime,
                     rhsConstantSpeedStartTime,
@@ -433,7 +433,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasConstantSpeed
-                and constantSpeedSausageIntersectsConstantSpeedSausage(
+                && constantSpeedSausageIntersectsConstantSpeedSausage(
                     lhsConstantSpeedSausage,
                     lhsConstantSpeedStartTime,
                     lhsAccn2StartTime,
@@ -444,7 +444,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn2
-                and accelerationSausageIntersectsConstantSpeedSausage(
+                && accelerationSausageIntersectsConstantSpeedSausage(
                     rhsAccn2Sausage,
                     rhsAccn2StartTime,
                     rhsFinalStartTime,
@@ -455,7 +455,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasFinal
-                and circleIntersectsConstantSpeedSausage(
+                && circleIntersectsConstantSpeedSausage(
                     rhsEndCircle,
                     rhsFinalStartTime,
                     rhs.hasExpiryTime_,
@@ -467,11 +467,11 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
         }
 
-        if (lhsHasAccn2 and lhsFinalStartTime > rhsInitialStartTime
-            and (not rhs.hasExpiryTime_ or rhsEndTime > lhsAccn2StartTime))
+        if (lhsHasAccn2 && lhsFinalStartTime > rhsInitialStartTime
+            && (! rhs.hasExpiryTime_ || rhsEndTime > lhsAccn2StartTime))
         {
             if (rhsHasInitial
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     rhsStartCircle,
                     rhsInitialStartTime,
                     true,
@@ -483,7 +483,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn1
-                and accelerationSausageIntersectsAccelerationSausage(
+                && accelerationSausageIntersectsAccelerationSausage(
                     lhsAccn2Sausage,
                     lhsAccn2StartTime,
                     lhsFinalStartTime,
@@ -494,7 +494,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasConstantSpeed
-                and accelerationSausageIntersectsConstantSpeedSausage(
+                && accelerationSausageIntersectsConstantSpeedSausage(
                     lhsAccn2Sausage,
                     lhsAccn2StartTime,
                     lhsFinalStartTime,
@@ -505,7 +505,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn2
-                and accelerationSausageIntersectsAccelerationSausage(
+                && accelerationSausageIntersectsAccelerationSausage(
                     lhsAccn2Sausage,
                     lhsAccn2StartTime,
                     lhsFinalStartTime,
@@ -516,7 +516,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasFinal
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     rhsEndCircle,
                     rhsFinalStartTime,
                     rhs.hasExpiryTime_,
@@ -528,11 +528,11 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
         }
 
-        if (lhsHasFinal and (not hasExpiryTime_ or lhsEndTime > rhsInitialStartTime)
-            and (not rhs.hasExpiryTime_ or rhsEndTime > lhsFinalStartTime))
+        if (lhsHasFinal && (! hasExpiryTime_ || lhsEndTime > rhsInitialStartTime)
+            && (! rhs.hasExpiryTime_ || rhsEndTime > lhsFinalStartTime))
         {
             if (rhsHasInitial
-                and circleIntersectsCircle(
+                && circleIntersectsCircle(
                     lhsEndCircle,
                     lhsFinalStartTime,
                     hasExpiryTime_,
@@ -545,7 +545,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn1
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     lhsEndCircle,
                     lhsFinalStartTime,
                     hasExpiryTime_,
@@ -557,7 +557,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasConstantSpeed
-                and circleIntersectsConstantSpeedSausage(
+                && circleIntersectsConstantSpeedSausage(
                     lhsEndCircle,
                     lhsFinalStartTime,
                     hasExpiryTime_,
@@ -569,7 +569,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasAccn2
-                and circleIntersectsAccelerationSausage(
+                && circleIntersectsAccelerationSausage(
                     lhsEndCircle,
                     lhsFinalStartTime,
                     hasExpiryTime_,
@@ -581,7 +581,7 @@ bool PhysMotionChunk::intersects(const PhysMotionChunk& rhs, PhysAbsoluteTime* p
                 break;
 
             if (rhsHasFinal
-                and circleIntersectsCircle(
+                && circleIntersectsCircle(
                     lhsEndCircle,
                     lhsFinalStartTime,
                     hasExpiryTime_,
@@ -613,7 +613,7 @@ bool PhysMotionChunk::circleIntersectsCircle(
     PhysAbsoluteTime* pCollideTime)
 {
     // Check the times overlap
-    bool result = (not lhsHasEndTime or lhsEndTime > rhsStartTime) and (not rhsHasEndTime or rhsEndTime > lhsStartTime);
+    bool result = (! lhsHasEndTime || lhsEndTime > rhsStartTime) && (! rhsHasEndTime || rhsEndTime > lhsStartTime);
 
     // If so, check for spatial overlap
     if (result)
@@ -637,7 +637,7 @@ bool PhysMotionChunk::circleIntersectsAccelerationSausage(
     PhysAbsoluteTime* pCollideTime)
 {
     // Check the times overlap
-    bool result = (not lhsHasEndTime or lhsEndTime > rhsStartTime) and (rhsEndTime > lhsStartTime);
+    bool result = (! lhsHasEndTime || lhsEndTime > rhsStartTime) && (rhsEndTime > lhsStartTime);
 
     // If so, check for spatial overlap
     if (result)
@@ -705,7 +705,7 @@ bool PhysMotionChunk::circleIntersectsConstantSpeedSausage(
         {
             // Intersection occurs from roots[0] to roots[1]
             // Check for any time overlap.
-            if (roots[1] >= overlapStartTime and overlapEndTime >= roots[0])
+            if (roots[1] >= overlapStartTime && overlapEndTime >= roots[0])
             {
                 result = true;
                 *pCollideTime = std::max(roots[0], overlapStartTime);
@@ -714,7 +714,7 @@ bool PhysMotionChunk::circleIntersectsConstantSpeedSausage(
         else if (nRoots == 1)
         {
             // Intersection occurs at roots[0].
-            if (roots[0] >= overlapStartTime and overlapEndTime >= roots[0])
+            if (roots[0] >= overlapStartTime && overlapEndTime >= roots[0])
             {
                 result = true;
                 *pCollideTime = roots[0];
@@ -735,7 +735,7 @@ bool PhysMotionChunk::accelerationSausageIntersectsAccelerationSausage(
     PhysAbsoluteTime* pCollideTime)
 {
     // Check the times overlap
-    bool result = lhsEndTime > rhsStartTime and rhsEndTime > lhsStartTime;
+    bool result = lhsEndTime > rhsStartTime && rhsEndTime > lhsStartTime;
 
     // If so, check for spatial overlap
     if (result)
@@ -762,7 +762,7 @@ bool PhysMotionChunk::accelerationSausageIntersectsConstantSpeedSausage(
     PhysAbsoluteTime overlapStartTime = std::max(lhsStartTime, rhsStartTime);
     PhysAbsoluteTime overlapEndTime = std::min(lhsEndTime, rhsEndTime);
 
-    bool result = (overlapEndTime - overlapStartTime) > epsilon and rhsCSSausage.intersects(lhsAccnSausage);
+    bool result = (overlapEndTime - overlapStartTime) > epsilon && rhsCSSausage.intersects(lhsAccnSausage);
 
     // If so, do more detailed check
     if (result)
@@ -859,7 +859,7 @@ bool PhysMotionChunk::constantSpeedSausageIntersectsConstantSpeedSausage(
         for (int i = 0; i != nRoots; ++i)
         {
             MATHEX_SCALAR t = roots[i] + overlapStartTime;
-            result = t >= overlapStartTime and t <= overlapEndTime;
+            result = t >= overlapStartTime && t <= overlapEndTime;
             if (result)
             {
                 *pCollideTime = t;

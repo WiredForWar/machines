@@ -107,7 +107,7 @@ size_t MachLogGroupMoverUtility::addToClump(Machines* pClump, Machines* pMachine
 
         bool added = false;
 
-        for (size_t j = 0; j < pClump->size() and not added; ++j)
+        for (size_t j = 0; j < pClump->size() && ! added; ++j)
         {
             const MexPoint3d& processedPosition = (*pClump)[j]->position();
             if (position.sqrEuclidianDistance(processedPosition) < sqrDistance)
@@ -120,7 +120,7 @@ size_t MachLogGroupMoverUtility::addToClump(Machines* pClump, Machines* pMachine
             }
         }
 
-        if (not added)
+        if (! added)
             ++index;
     }
 

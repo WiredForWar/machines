@@ -88,21 +88,21 @@ bool MachLogReachedLocationCondition::doHasConditionBeenMet() const
             objectOk = true;
         else if (machineWillDo_)
         {
-            if (not(*i)->objectIsMachine())
+            if (!(*i)->objectIsMachine())
                 objectOk = false;
         }
         else if (constructionWillDo_)
         {
-            if (not(*i)->objectIsConstruction())
+            if (!(*i)->objectIsConstruction())
                 objectOk = false;
-            else if (not(*i)->asConstruction().isComplete())
+            else if (!(*i)->asConstruction().isComplete())
                 objectOk = false;
         }
         else if ((*i)->objectType() == objectType_)
         {
-            if (subTypeSet_ and (*i)->subType() != subType_)
+            if (subTypeSet_ && (*i)->subType() != subType_)
                 objectOk = false;
-            if (objectOk and hwLevelSet_)
+            if (objectOk && hwLevelSet_)
             {
                 if ((*i)->objectIsMachine())
                 {
@@ -113,7 +113,7 @@ bool MachLogReachedLocationCondition::doHasConditionBeenMet() const
                 else if ((*i)->objectIsConstruction())
                 {
                     MachLogConstruction& mlc = (*i)->asConstruction();
-                    if (mlc.level() != hwLevel_ or not mlc.isComplete())
+                    if (mlc.level() != hwLevel_ || ! mlc.isComplete())
                         objectOk = false;
                 }
                 else // if the object is not a machine or construction then matching on level is impossible
@@ -121,7 +121,7 @@ bool MachLogReachedLocationCondition::doHasConditionBeenMet() const
                     objectOk = false;
                 }
             }
-            if (objectOk and weaponComboSet_)
+            if (objectOk && weaponComboSet_)
             {
                 if ((*i)->objectIsCanAttack())
                 {
@@ -137,7 +137,7 @@ bool MachLogReachedLocationCondition::doHasConditionBeenMet() const
 
         if (doRangeCheck_)
         {
-            if (objectOk and point_.sqrEuclidianDistance((*i)->position()) < sqrRange_)
+            if (objectOk && point_.sqrEuclidianDistance((*i)->position()) < sqrRange_)
                 matchingObjects.push_back(*i);
         }
         else if (objectOk)

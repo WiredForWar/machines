@@ -96,8 +96,8 @@ PhysRelativeTime MachLogAdministrator::update(const PhysRelativeTime& maxCPUTime
     // Do the main work
     DEBUG_STREAM(DIAG_HAL, "(" << id() << ") MLAdministrator::update\n");
 
-    if (not(isDead() or isDying() or evading() or insideAPC()) and not MachLogRaces::instance().inSpecialActorUpdate()
-        and willCheckForTargets())
+    if (!(isDead() || isDying() || evading() || insideAPC()) && ! MachLogRaces::instance().inSpecialActorUpdate()
+        && willCheckForTargets())
         checkAndAttackCloserTarget(this);
 
     diminishAlertnessAndInaccuracy();
@@ -193,8 +193,8 @@ bool MachLogAdministrator::fearsThisActor(const MachActor& otherActor) const
     // put together
 
     return (
-        otherActor.asCanAttack().canFireAt(*this) and not(canFireAt(otherActor))
-        or otherActor.militaryStrength() > (localStrength() * 2));
+        otherActor.asCanAttack().canFireAt(*this) && !(canFireAt(otherActor))
+        || otherActor.militaryStrength() > (localStrength() * 2));
 }
 
 // virtual
@@ -220,14 +220,14 @@ void MachLogAdministrator::beHit(
     MATHEX_SCALAR dazing = ((MATHEX_SCALAR)(hpBeforeImpact - hpAfterImpact) / maximumhp()) * 40;
     MachLogCanAttack::increaseCurrentInaccuracy(dazing);
 
-    if (pByActor and allowedToCheckForNewTarget() and not isDead() and not evading() and not isIn1stPersonView()
-        and canFireAt(*pByActor) and willTestHitByCandidate(*pByActor))
+    if (pByActor && allowedToCheckForNewTarget() && ! isDead() && ! evading() && ! isIn1stPersonView()
+        && canFireAt(*pByActor) && willTestHitByCandidate(*pByActor))
     {
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
         // only take a pop at this schmo if we don't think it's a friend (same race or ally),
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
         {
             // will try to initiate a counterattack against the actor who hit me.
             checkAndAttackCloserTarget(this, pByActor);
@@ -251,14 +251,14 @@ void MachLogAdministrator::beHitWithoutAnimation(
     MATHEX_SCALAR dazing = ((MATHEX_SCALAR)(hpBeforeImpact - hpAfterImpact) / maximumhp()) / 4.0;
     MachLogCanAttack::increaseCurrentInaccuracy(dazing);
 
-    if (pByActor and allowedToCheckForNewTarget() and not isDead() and not evading() and not isIn1stPersonView()
-        and canFireAt(*pByActor) and willTestHitByCandidate(*pByActor))
+    if (pByActor && allowedToCheckForNewTarget() && ! isDead() && ! evading() && ! isIn1stPersonView()
+        && canFireAt(*pByActor) && willTestHitByCandidate(*pByActor))
     {
         MachLogRaces::DispositionToRace disposition
             = MachLogRaces::instance().dispositionToRace(race(), pByActor->race());
 
         // only take a pop at this schmo if we don't think it's a friend (same race or ally),
-        if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+        if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
         {
             // will try to initiate a counterattack against the actor who hit me.
             checkAndAttackCloserTarget(this, pByActor);

@@ -70,10 +70,10 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
          i != MachLogRaces::instance().raceObjects(pActor_->race()).end();
          ++i)
     {
-        if ((*i)->objectIsConstruction() and not(*i)->asConstruction().isComplete()
-            and (*i)->asConstruction().nConstructors() == 0)
+        if ((*i)->objectIsConstruction() && !(*i)->asConstruction().isComplete()
+            && (*i)->asConstruction().nConstructors() == 0)
         {
-            if (not pActor_->hasCommander())
+            if (! pActor_->hasCommander())
                 issueConstructOperation(&(*i)->asConstruction());
             else
                 issueAdminConstructOperation(&(*i)->asConstruction());
@@ -106,7 +106,7 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
         }
 
     // If not, set longer call back as owning squad will be trying to create a constructor.
-    if (pConstructor == nullptr or idleConstructors == 0)
+    if (pConstructor == nullptr || idleConstructors == 0)
     {
         return 10.0;
     }
@@ -114,10 +114,10 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
     MachLogProductionUnit prod;
     bool prodUnitFound = MachLogRaces::instance().AIController(pActor_->race()).getHighestPriorityConstruction(&prod);
 
-    if (not prodUnitFound)
+    if (! prodUnitFound)
         return 15.0;
 
-    if (not pActor_->hasCommander())
+    if (! pActor_->hasCommander())
     {
         // oops no commander for squadron. This leaves the constructor without a brain.
         // if it is currently constructing then leave it alone.
@@ -132,7 +132,7 @@ PhysRelativeTime MachLogTaskConstructOperation::doUpdate()
         {
             // if the type is a mine then we need to check that the mine can be placed in a valid site
             // if not then throw THIS PRODUCTION UNIT AWAY;
-            if (not MachLogMine::validMineSite(
+            if (! MachLogMine::validMineSite(
                     prod.globalTransform().position(),
                     1,
                     MachLogMine::CHECK_DISCOVERED_FLAG))
@@ -280,7 +280,7 @@ bool MachLogTaskConstructOperation::couldPlaceConstruction(const MachLogProducti
     HAL_STREAM(" delete worked\n");
 
 #ifndef PRODUCTION
-    if (not isValid)
+    if (! isValid)
     {
         HAL_STREAM(
             " Clashed with poygon id " << id << " " << MachLogPlanet::instance().configSpace().polygon(id)
@@ -289,10 +289,10 @@ bool MachLogTaskConstructOperation::couldPlaceConstruction(const MachLogProducti
 #endif
 
     if (isValid)
-        isValid = not MachLogSpacialManipulation::intersectsWithActor(globalBorder);
+        isValid = ! MachLogSpacialManipulation::intersectsWithActor(globalBorder);
 
     if (isValid)
-        isValid = not MachLogSpacialManipulation::intersectsWithMotionChunks(globalBorder);
+        isValid = ! MachLogSpacialManipulation::intersectsWithMotionChunks(globalBorder);
 
     return isValid;
     //                  MachLogMine * pConstruction_ = new MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )

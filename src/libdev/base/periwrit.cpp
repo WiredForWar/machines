@@ -108,14 +108,14 @@ void PersistenceImplementationWrite::writeObjectPre(PerOstream& ostr, const void
     ASSERT_INFO(className);
     ASSERT_INFO((void*)pOb);
 
-    if (not writeAsRaw())
+    if (! writeAsRaw())
     {
-        ASSERT(not writtenAsObject(className, pOb), "Object has already been written as an object");
+        ASSERT(! writtenAsObject(className, pOb), "Object has already been written as an object");
     }
 
     write(ostr, PER_OBJECT);
 
-    if (not writeAsRaw())
+    if (! writeAsRaw())
     {
         PerIdentifier id = identifier(pOb);
         writeId(ostr, id);
@@ -166,8 +166,8 @@ Persistence::PointerWriteResult PersistenceImplementationWrite::writePointerPre(
 
     Persistence::PointerWriteResult result = Persistence::DONT_WRITE_OBJECT;
 
-    if (writtenViaPointer(pMostDerivedOb) or pMostDerivedOb == nullptr
-        or writtenAsObject(mostDerivedClassName, pMostDerivedOb))
+    if (writtenViaPointer(pMostDerivedOb) || pMostDerivedOb == nullptr
+        || writtenAsObject(mostDerivedClassName, pMostDerivedOb))
     {
         logWrittenViaPointer(pMostDerivedOb);
 

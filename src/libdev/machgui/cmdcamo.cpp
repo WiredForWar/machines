@@ -48,8 +48,8 @@ bool MachGuiCamouflageCommand::canActorEverExecute(const MachActor& actor) const
 {
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
-    return MachLogNetwork::instance().isNetworkGame() and actor.objectType() == MachLog::SPY_LOCATOR
-        and actor.race() == playerRace;
+    return MachLogNetwork::instance().isNetworkGame() && actor.objectType() == MachLog::SPY_LOCATOR
+        && actor.race() == playerRace;
 }
 
 // virtual
@@ -90,7 +90,7 @@ bool MachGuiCamouflageCommand::doApply(MachActor* pActor, string*)
     PRE(pActor->objectType() == MachLog::SPY_LOCATOR);
 
     // Toggle camouflage
-    pActor->asMachine().camouflaged(not pActor->asMachine().camouflaged());
+    pActor->asMachine().camouflaged(! pActor->asMachine().camouflaged());
 
     return true;
 }
@@ -147,7 +147,7 @@ bool MachGuiCamouflageCommand::doAdminApply(MachLogAdministrator*, string*)
 // virtual
 bool MachGuiCamouflageCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_O and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_O && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

@@ -177,7 +177,7 @@ bool MachPhysTerrainTile::intersectsLine(const MexLine3d& testLine, MATHEX_SCALA
         if (result)
         {
             // If necessary, modify the local line
-            if (entryDistance != 0.0 or exitDistance != localLength)
+            if (entryDistance != 0.0 || exitDistance != localLength)
             {
                 MexPoint3d a = localLine.pointAtDistance(entryDistance);
                 MexPoint3d b = localLine.pointAtDistance(exitDistance);

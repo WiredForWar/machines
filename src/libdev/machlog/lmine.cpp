@@ -113,7 +113,7 @@ PhysRelativeTime MachLogLandMine::update(const PhysRelativeTime& maxCPUTime, MAT
 {
     PhysRelativeTime guaranteedMinTime = 2.5;
 
-    if (not isDead())
+    if (! isDead())
     {
         MachLogRaces& races = MachLogRaces::instance();
 
@@ -125,17 +125,17 @@ PhysRelativeTime MachLogLandMine::update(const PhysRelativeTime& maxCPUTime, MAT
                 break;
 
             MachLogRaces::DispositionToRace disp = races.dispositionToRace(race(), ridx);
-            if (disp != MachLogRaces::ALLY and disp != MachLogRaces::OUR_RACE)
+            if (disp != MachLogRaces::ALLY && disp != MachLogRaces::OUR_RACE)
             {
                 for (MachLogRaces::Objects::iterator i = races.raceObjects(ridx).begin();
-                     not isDead() and i != races.raceObjects(ridx).end();
+                     ! isDead() && i != races.raceObjects(ridx).end();
                      ++i)
                 {
                     if ((*i)->objectIsMachine())
                     {
                         MachLogMachine& machine = (*i)->asMachine();
 
-                        if (not(machine.machineIsGlider()) and not machine.isDead())
+                        if (!(machine.machineIsGlider()) && ! machine.isDead())
                         {
                             MATHEX_SCALAR sqrDistanceToMachine = position().sqrEuclidianDistance(machine.position());
                             if (sqrDistanceToMachine < sqrClosestFound)
@@ -183,7 +183,7 @@ PhysRelativeTime MachLogLandMine::update(const PhysRelativeTime& maxCPUTime, MAT
 // virtual
 void MachLogLandMine::beHit(const int& /*damage*/, MachPhys::WeaponType /*byType*/)
 {
-    if (not isDead())
+    if (! isDead())
     {
         // MachLogLinearProjectile::genericCheckForDamage( position(), 1, MachLogLinearProjectile::CONSTANT_DAMAGE, 80,
         // MachPhys::BOLTER );
@@ -199,7 +199,7 @@ void MachLogLandMine::beHitWithoutAnimation(
     MachActor* pByActor,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         // MachLogLinearProjectile::genericCheckForDamage( position(), 1, MachLogLinearProjectile::CONSTANT_DAMAGE, 80,
         // MachPhys::BOLTER );
@@ -256,7 +256,7 @@ bool MachLogLandMine::thisIsClosestLandmineTo(const MexPoint2d& targetPosition) 
     MachPhys::Race myRace = race();
 
     for (MachLogRaces::Objects::iterator i = races.raceObjects(myRace).begin();
-         nothingCloserFound and i != races.raceObjects(myRace).end();
+         nothingCloserFound && i != races.raceObjects(myRace).end();
          ++i)
     {
         if ((*i)->objectIsLandMine())

@@ -228,7 +228,7 @@ void MachWorldViewWindow::dispatchCursor(
         pInGameScreen_->cursorFilter());
 
     if (distance <= 0.0
-        or distance > (RenDevice::current()->fogEnd() * 0.9) /* After 90% fog distance things aren't visible*/)
+        || distance > (RenDevice::current()->fogEnd() * 0.9) /* After 90% fog distance things aren't visible*/)
     {
         hit = false;
     }
@@ -240,14 +240,14 @@ void MachWorldViewWindow::dispatchCursor(
         UtlId hitId = pEntity->id();
         MachLogRaces& races = MachLogRaces::instance();
 
-        if (not MachGuiCommand::cursorInFogOfWar() and races.actorExists(hitId))
+        if (! MachGuiCommand::cursorInFogOfWar() && races.actorExists(hitId))
         {
             // Get the picked actor
             MachActor& hitActor = races.actor(hitId);
 
             // Check that actor has not recently been blown up
             // so that bounding box isn't put round an explosion
-            if (not hitActor.isDead())
+            if (! hitActor.isDead())
             {
                 // Display prompt text for actor
                 pInGameScreen_->displayActorPromptText(&hitActor);
@@ -256,7 +256,7 @@ void MachWorldViewWindow::dispatchCursor(
                 if (click)
                 {
                     // Can't dispatch commands if game is paused or network is busy
-                    if (SimManager::instance().isSuspended() or pInGameScreen_->isNetworkStuffed())
+                    if (SimManager::instance().isSuspended() || pInGameScreen_->isNetworkStuffed())
                     {
                         // Only allow selecting when paused
                         if (activeCommand.cursorOnActor(&hitActor, ctrlPressed, shiftPressed, altPressed)
@@ -281,7 +281,7 @@ void MachWorldViewWindow::dispatchCursor(
 
                 // If the actor under the cursor is not selected, highlight it
                 if (hitActor.selectionState() != MachLog::SELECTED
-                    and hitActor.selectableType() == MachLog::FULLY_SELECTABLE)
+                    && hitActor.selectableType() == MachLog::FULLY_SELECTABLE)
                     pNewHighlightedActor = &hitActor;
             }
         }
@@ -299,7 +299,7 @@ void MachWorldViewWindow::dispatchCursor(
             if (click)
             {
                 // Can't issue commands if game is paused or network is busy
-                if (SimManager::instance().isSuspended() or pInGameScreen_->isNetworkStuffed())
+                if (SimManager::instance().isSuspended() || pInGameScreen_->isNetworkStuffed())
                 {
                     MachGuiSoundManager::instance().playSound("gui/sounds/clickbad.wav");
                 }
@@ -320,8 +320,8 @@ void MachWorldViewWindow::dispatchCursor(
     }
 
     // Update the highlight state of any new/previous actor
-    if (pOldHighlightedActor and pOldHighlightedActor != pNewHighlightedActor
-        and pOldHighlightedActor->selectionState() == MachLog::HIGHLIGHTED)
+    if (pOldHighlightedActor && pOldHighlightedActor != pNewHighlightedActor
+        && pOldHighlightedActor->selectionState() == MachLog::HIGHLIGHTED)
     {
         pOldHighlightedActor->selectionState(MachLog::NOT_SELECTED);
         pInGameScreen_->removeHighlightedActor();
@@ -344,7 +344,7 @@ void MachWorldViewWindow::dispatchCursor(
     }
 
     // If not a click, update the 2d cursor shape
-    if (not click)
+    if (! click)
         pInGameScreen_->cursor2d(cursor2d);
 }
 
@@ -498,7 +498,7 @@ void MachWorldViewWindow::update()
             endRubberBand_.x(DevMouse::instance().position().first);
             endRubberBand_.y(DevMouse::instance().position().second);
 
-            if (not rubberBanding_)
+            if (! rubberBanding_)
             {
                 // Check that start and end points are far enough apart to start rubber banding.
                 // Note : used MexLine3d because there doesn't appear to be a "length" function
@@ -556,12 +556,12 @@ void MachWorldViewWindow::updateActorsSelectedViaRubberBand(
     bool inclMachines /*= true*/,
     bool inclConstructions /*= true*/)
 {
-    PRE(inclMachines or inclConstructions);
+    PRE(inclMachines || inclConstructions);
 
-    if (not highlightOnly)
+    if (! highlightOnly)
     {
         // Unselect all currently selected item if keepSelection is not true
-        if (not keepSelection)
+        if (! keepSelection)
         {
             pInGameScreen_->deselectAll();
         }
@@ -593,8 +593,8 @@ void MachWorldViewWindow::updateActorsSelectedViaRubberBand(
             MachActor& actor = races.actor(pEntity->id());
 
             // Only select actors belonging to player
-            if (actor.race() == playerRace and actor.selectableType() == MachLog::FULLY_SELECTABLE
-                and ((inclMachines and actor.objectIsMachine()) or (inclConstructions and actor.objectIsConstruction())))
+            if (actor.race() == playerRace && actor.selectableType() == MachLog::FULLY_SELECTABLE
+                && ((inclMachines && actor.objectIsMachine()) || (inclConstructions && actor.objectIsConstruction())))
             {
                 if (highlightOnly) // Just highlight the actors for now because the rubber-banding hasn't finished
                 {
@@ -636,7 +636,7 @@ void MachWorldViewWindow::updateActorsSelectedViaRubberBand(
         }
     }
 
-    if (not highlightOnly)
+    if (! highlightOnly)
     {
         selectedEntities_.erase(selectedEntities_.begin(), selectedEntities_.end());
 
@@ -753,7 +753,7 @@ void MachWorldViewWindow::unloadGame()
 
 bool MachWorldViewWindow::processButtonEvent(const DevButtonEvent& buttonEvent)
 {
-    if (buttonEvent.action() == DevButtonEvent::RELEASE or rubberBanding_)
+    if (buttonEvent.action() == DevButtonEvent::RELEASE || rubberBanding_)
         return false;
 
     typedef DevKeyToCommand::CommandId CommandId;
@@ -812,7 +812,7 @@ ctl_pvector<W4dEntity> MachWorldViewWindow::getActorsInRectangle(const Gui::Coor
     // Make sure rubber band area is big enough to continue. A small rubber band area will result
     // in an ASSERT in W4dBoundingBoxSelector.
     if (Mathex::abs(from.x() - to.x()) > MexEpsilon::instance()
-        and Mathex::abs(from.y() - to.y()) > MexEpsilon::instance())
+        && Mathex::abs(from.y() - to.y()) > MexEpsilon::instance())
     {
         W4dSceneManager& sceneManager = pInGameScreen_->sceneManager();
         MexPoint3d rbPoint1 = sceneManager.pDevice()->screenToCamera(from);
@@ -821,7 +821,7 @@ ctl_pvector<W4dEntity> MachWorldViewWindow::getActorsInRectangle(const Gui::Coor
         MexPoint3d rbPoint4 = sceneManager.pDevice()->screenToCamera(MexPoint2d(to.x(), from.y()));
 
         // Sort rubber band points into clockwise order
-        if ((to.x() > from.x() and to.y() > from.y()) or (to.x() < from.x() and to.y() < from.y()))
+        if ((to.x() > from.x() && to.y() > from.y()) || (to.x() < from.x() && to.y() < from.y()))
         {
             std::swap(rbPoint2, rbPoint4);
         }

@@ -61,7 +61,7 @@ void MachGuiMessageDisplay::doOutput(std::ostream& o)
         {
             delete messages_[i];
             messages_.erase(messages_.begin() + i);
-            if (i == 0 or i == messages_.size())
+            if (i == 0 || i == messages_.size())
                 i = -1;
         }
         else

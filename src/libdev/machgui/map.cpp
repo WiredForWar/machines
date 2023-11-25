@@ -390,7 +390,7 @@ void MachContinentMap::doDisplay()
 {
     // doDisplay gets called twice in a row. We can use
     // this to produce simple flashing of colours ( e.g. when machine is selected )
-    firstDraw_ = not firstDraw_;
+    firstDraw_ = ! firstDraw_;
 
     /*  if ( firstDraw_ ) // This causes onmap units to blink
         GuiPainter::instance().blit( mapFrameOne_, absoluteCoord() );
@@ -508,10 +508,10 @@ GuiBitmap& MachContinentMap::oreImage()
 
 void MachContinentMap::updateMapBackground()
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     // Blit map
-    if (pTerrainOnOffButton_->mapOn() or currentBeacon_ == MachLog::NO_BEACON)
+    if (pTerrainOnOffButton_->mapOn() || currentBeacon_ == MachLog::NO_BEACON)
     {
         mapFrameOne_.simpleBlit(mapBackground_);
     }
@@ -584,18 +584,18 @@ void MachContinentMap::updateMapBackground()
 
 void MachContinentMap::updateMapBackground2()
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     mapFrameTwo_.simpleBlit(mapFrameOne_);
 }
 
 void MachContinentMap::updateMapFrameOne(size_t loop)
 {
-    PRE(not pInGameScreen_->inFirstPerson());
-    PRE(not oreImage().empty());
-    PRE(not debrisImage().empty());
-    PRE(not artifactImage().empty());
-    PRE(not mapFrameOne_.empty());
+    PRE(! pInGameScreen_->inFirstPerson());
+    PRE(! oreImage().empty());
+    PRE(! debrisImage().empty());
+    PRE(! artifactImage().empty());
+    PRE(! mapFrameOne_.empty());
 
     // Prepare actor for drawing on second frame
     if (actorPositions_[loop].actorState_ & ATTACKED)
@@ -607,7 +607,7 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
     // Check for existance of beacon. No point drawing stuff if there is no beacon present.
     if (currentBeacon_ != MachLog::NO_BEACON)
     {
-        if (actorPositions_[loop].type_ == POD and mapMode_ != RESOURCES_ONLY)
+        if (actorPositions_[loop].type_ == POD && mapMode_ != RESOURCES_ONLY)
         {
             // Draw pod...
             if (actorPositions_[loop].actorState_ & SELECTED)
@@ -615,7 +615,7 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
             else
                 mapFrameOne_.simpleBlit(podImage(race), pos.x(), pos.y());
         }
-        else if (actorPositions_[loop].type_ == MACHINE and mapMode_ != RESOURCES_ONLY)
+        else if (actorPositions_[loop].type_ == MACHINE && mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
@@ -623,7 +623,7 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
             else
                 mapFrameOne_.simpleBlit(machineImage(race), pos.x(), pos.y());
         }
-        else if (actorPositions_[loop].type_ == CAMOUFLAGEDMACHINE and mapMode_ != RESOURCES_ONLY)
+        else if (actorPositions_[loop].type_ == CAMOUFLAGEDMACHINE && mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
@@ -631,7 +631,7 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
             else
                 mapFrameOne_.simpleBlit(machineImage(playerRace_), pos.x(), pos.y());
         }
-        else if (actorPositions_[loop].type_ == CONSTRUCTION and mapMode_ != RESOURCES_ONLY)
+        else if (actorPositions_[loop].type_ == CONSTRUCTION && mapMode_ != RESOURCES_ONLY)
         {
             // Draw construction...
             if (actorPositions_[loop].actorState_ & SELECTED)
@@ -717,7 +717,7 @@ void MachContinentMap::updateVisibleAreas(size_t loop)
 
 void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     if (currentBeacon_ != MachLog::NO_BEACON)
     {
@@ -793,7 +793,7 @@ GuiBitmap& MachContinentMap::selectedAttackedPodImage()
 
 void MachContinentMap::updateMapFrameTwo(size_t loop)
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     GuiBitmap& machineAttackedImage = attackedMachineImage();
     GuiBitmap& podAttackedImage = attackedPodImage();
@@ -806,30 +806,30 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
     MachPhys::Race race = secondFrameActorPositions_[loop].displayAsRace_;
     ActorState actorState = secondFrameActorPositions_[loop].actorState_;
 
-    if (mapMode_ != RESOURCES_ONLY and currentBeacon_ != MachLog::NO_BEACON)
+    if (mapMode_ != RESOURCES_ONLY && currentBeacon_ != MachLog::NO_BEACON)
     {
         if (secondFrameActorPositions_[loop].type_ == POD)
         {
             // Draw attacked pods...
-            if ((actorState & ATTACKED) and not(actorState & SELECTED))
+            if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
                 mapFrameTwo_.simpleBlit(podAttackedImage, pos.x(), pos.y());
             }
-            else if ((actorState & ATTACKED) and (actorState & SELECTED))
+            else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
                 mapFrameTwo_.simpleBlit(selectedPodAttackedImage, pos.x(), pos.y());
             }
         }
         else if (
             secondFrameActorPositions_[loop].type_ == MACHINE
-            or secondFrameActorPositions_[loop].type_ == CAMOUFLAGEDMACHINE)
+            || secondFrameActorPositions_[loop].type_ == CAMOUFLAGEDMACHINE)
         {
             // Draw attacked machines...
-            if ((actorState & ATTACKED) and not(actorState & SELECTED))
+            if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
                 mapFrameTwo_.simpleBlit(machineAttackedImage, pos.x(), pos.y());
             }
-            else if ((actorState & ATTACKED) and (actorState & SELECTED))
+            else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
                 mapFrameTwo_.simpleBlit(selectedMachineAttackedImage, pos.x(), pos.y());
             }
@@ -837,11 +837,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
         else if (secondFrameActorPositions_[loop].type_ == CONSTRUCTION)
         {
             // Draw attacked constructions...
-            if ((actorState & ATTACKED) and not(actorState & SELECTED))
+            if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
                 mapFrameTwo_.simpleBlit(constructionAttackedImage, pos.x(), pos.y());
             }
-            else if ((actorState & ATTACKED) and (actorState & SELECTED))
+            else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
                 mapFrameTwo_.simpleBlit(selectedConstructionAttackedImage, pos.x(), pos.y());
             }
@@ -942,7 +942,7 @@ void MachContinentMap::updateRacePos()
 
         // Has the machine been attacked recently?
         if ((W4dManager::instance().frameNumber() - pActor->lastBeHitFrame()) < 10
-            and (W4dManager::instance().frameNumber() > 10))
+            && (W4dManager::instance().frameNumber() > 10))
         {
             // actorState |= ATTACKED;
             actorState = _STATIC_CAST(ActorState, ActorState::ATTACKED | actorState);
@@ -952,8 +952,8 @@ void MachContinentMap::updateRacePos()
 
         if (pActor->objectIsMachine())
         {
-            if (not pActor->asMachine().insideBuilding() and // Ignore any machines inside buildings
-                not pActor->asMachine().insideAPC()) // Ignore any machines inside APCs
+            if (! pActor->asMachine().insideBuilding() && // Ignore any machines inside buildings
+                ! pActor->asMachine().insideAPC()) // Ignore any machines inside APCs
             {
                 newPosInfo.actualPos_ = absCoord;
 
@@ -981,11 +981,11 @@ void MachContinentMap::updateRacePos()
                 int scannerRange = pActor->asMachine().machineData().scannerRange();
                 if (scannerRange <= SCANNER_UPPERLIMIT[0])
                     newPosInfo.scanner_ = 1;
-                else if (scannerRange > SCANNER_UPPERLIMIT[0] and scannerRange <= SCANNER_UPPERLIMIT[1])
+                else if (scannerRange > SCANNER_UPPERLIMIT[0] && scannerRange <= SCANNER_UPPERLIMIT[1])
                     newPosInfo.scanner_ = 2;
-                else if (scannerRange > SCANNER_UPPERLIMIT[1] and scannerRange <= SCANNER_UPPERLIMIT[2])
+                else if (scannerRange > SCANNER_UPPERLIMIT[1] && scannerRange <= SCANNER_UPPERLIMIT[2])
                     newPosInfo.scanner_ = 3;
-                else if (scannerRange > SCANNER_UPPERLIMIT[2] and scannerRange <= SCANNER_UPPERLIMIT[3])
+                else if (scannerRange > SCANNER_UPPERLIMIT[2] && scannerRange <= SCANNER_UPPERLIMIT[3])
                     newPosInfo.scanner_ = 4;
                 else
                     newPosInfo.scanner_ = 5;
@@ -1039,7 +1039,7 @@ void MachContinentMap::updateRacePos()
                 actorPositions_.push_back(newPosInfo);
             }
         }
-        else if (pActor->objectIsDebris() and mapMode_ != UNITS_ONLY and not pInGameScreen_->inFirstPerson())
+        else if (pActor->objectIsDebris() && mapMode_ != UNITS_ONLY && ! pInGameScreen_->inFirstPerson())
         {
             newPosInfo.actualPos_ = absCoord;
 
@@ -1053,7 +1053,7 @@ void MachContinentMap::updateRacePos()
 
             actorPositions_.push_back(newPosInfo);
         }
-        else if (pActor->objectIsOreHolograph() and mapMode_ != UNITS_ONLY and not pInGameScreen_->inFirstPerson())
+        else if (pActor->objectIsOreHolograph() && mapMode_ != UNITS_ONLY && ! pInGameScreen_->inFirstPerson())
         {
             newPosInfo.actualPos_ = absCoord;
 
@@ -1067,7 +1067,7 @@ void MachContinentMap::updateRacePos()
 
             actorPositions_.push_back(newPosInfo);
         }
-        else if (pActor->objectIsArtefact() and mapMode_ != UNITS_ONLY and not pInGameScreen_->inFirstPerson())
+        else if (pActor->objectIsArtefact() && mapMode_ != UNITS_ONLY && ! pInGameScreen_->inFirstPerson())
         {
             newPosInfo.actualPos_ = absCoord;
 
@@ -1084,7 +1084,7 @@ void MachContinentMap::updateRacePos()
     }
 
     // Update camera position
-    if (not pInGameScreen_->inFirstPerson())
+    if (! pInGameScreen_->inFirstPerson())
         updateMapCameraRepresentation();
 
     // Update info for refresh function
@@ -1096,7 +1096,7 @@ void MachContinentMap::updateRacePos()
 
 void MachContinentMap::forceUpdate()
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     // This will force the map to be refreshed
     updateRacePos();
@@ -1172,24 +1172,24 @@ bool MachContinentMap::findActor(const GuiMouseEvent& rel, MachActor** ppActor)
 
         // Find actor that mouse cursor is pointing at. Allow a certain amount of
         // tolerance so that user doesn't have to be pixel perfect
-        if (actorPosInfo.actualPos_.x() >= rel.coord().x() - 2 and actorPosInfo.actualPos_.x() <= rel.coord().x() + 2
-            and actorPosInfo.actualPos_.y() >= rel.coord().y() - 2
-            and actorPosInfo.actualPos_.y() <= rel.coord().y() + 2
-            and MachLogRaces::instance().actorExists(actorPosInfo.actorId_))
+        if (actorPosInfo.actualPos_.x() >= rel.coord().x() - 2 && actorPosInfo.actualPos_.x() <= rel.coord().x() + 2
+            && actorPosInfo.actualPos_.y() >= rel.coord().y() - 2
+            && actorPosInfo.actualPos_.y() <= rel.coord().y() + 2
+            && MachLogRaces::instance().actorExists(actorPosInfo.actorId_))
         {
             MachActor* pActor = &MachLogRaces::instance().actor(actorPosInfo.actorId_);
 
             // Is valid actor ( i.e. does current map mode show actor ). Debris/Ore/Artefacts only
             // shown on RESOURCE map mode etc.
             bool validActor = false;
-            if (pActor->objectIsDebris() or pActor->objectIsArtefact() or pActor->objectIsOreHolograph())
+            if (pActor->objectIsDebris() || pActor->objectIsArtefact() || pActor->objectIsOreHolograph())
             {
                 if (mapMode_ != MachContinentMap::UNITS_ONLY)
                 {
                     validActor = true;
                 }
             }
-            else if (pActor->objectIsMachine() or pActor->objectIsConstruction())
+            else if (pActor->objectIsMachine() || pActor->objectIsConstruction())
             {
                 if (mapMode_ != MachContinentMap::RESOURCES_ONLY)
                 {
@@ -1204,9 +1204,9 @@ bool MachContinentMap::findActor(const GuiMouseEvent& rel, MachActor** ppActor)
                 {
                     // Is the new actor a closer match?
                     if (actorPosInfo.actualPos_.x() >= rel.coord().x() - 1
-                        and actorPosInfo.actualPos_.x() <= rel.coord().x() + 1
-                        and actorPosInfo.actualPos_.y() >= rel.coord().y() - 1
-                        and actorPosInfo.actualPos_.y() <= rel.coord().y() + 1)
+                        && actorPosInfo.actualPos_.x() <= rel.coord().x() + 1
+                        && actorPosInfo.actualPos_.y() >= rel.coord().y() - 1
+                        && actorPosInfo.actualPos_.y() <= rel.coord().y() + 1)
                     {
                         *ppActor = pActor;
                         break;
@@ -1235,12 +1235,12 @@ void MachContinentMap::handleIntelligentCursor(const GuiMouseEvent& rel, bool bu
     {
         // Indicate if commands are going to be executed in FOW
         MachGuiCommand::cursorInFogOfWar(
-            currentBeacon_ != MachLog::LEVEL_3_BEACON and getFogOfWarLevel(rel.coord()) == FULL_FOW);
+            currentBeacon_ != MachLog::LEVEL_3_BEACON && getFogOfWarLevel(rel.coord()) == FULL_FOW);
 
         // Pick on ACTOR
         MachActor* pActorUnderCursor = nullptr;
         // Don't do actor picks in a FOW situation ( drop through and do a terrain pick instead )
-        if (not MachGuiCommand::cursorInFogOfWar() and findActor(rel, &pActorUnderCursor))
+        if (! MachGuiCommand::cursorInFogOfWar() && findActor(rel, &pActorUnderCursor))
         {
             ASSERT(pActorUnderCursor != nullptr, "Found actor but pointer to actor left as NULL");
 
@@ -1254,7 +1254,7 @@ void MachContinentMap::handleIntelligentCursor(const GuiMouseEvent& rel, bool bu
             if (buttonClicked)
             {
                 // Can't dispatch commands if game is paused or network is busy
-                if (SimManager::instance().isSuspended() or pInGameScreen_->isNetworkStuffed())
+                if (SimManager::instance().isSuspended() || pInGameScreen_->isNetworkStuffed())
                 {
                     // Only allow selecting when paused
                     if (pInGameScreen_->activeCommand().cursorOnActor(
@@ -1308,7 +1308,7 @@ void MachContinentMap::handleIntelligentCursor(const GuiMouseEvent& rel, bool bu
             MachPhysPlanetSurface* pSurface = MachLogPlanet::instance().surface();
 
             // Make sure x,y lies inside planet surface boundary
-            if (x >= pSurface->xMin() and x <= pSurface->xMax() and y >= pSurface->yMin() and y <= pSurface->yMax())
+            if (x >= pSurface->xMin() && x <= pSurface->xMax() && y >= pSurface->yMin() && y <= pSurface->yMax())
             {
                 // Get terrain height
                 MATHEX_SCALAR z = pSurface->terrainHeight(x, y);
@@ -1316,7 +1316,7 @@ void MachContinentMap::handleIntelligentCursor(const GuiMouseEvent& rel, bool bu
                 if (buttonClicked)
                 {
                     // Can't issue commands if game is paused or network is busy
-                    if (SimManager::instance().isSuspended() or pInGameScreen_->isNetworkStuffed())
+                    if (SimManager::instance().isSuspended() || pInGameScreen_->isNetworkStuffed())
                     {
                         MachGuiSoundManager::instance().playSound("gui/sounds/clickbad.wav");
                     }
@@ -1350,8 +1350,8 @@ void MachContinentMap::positionCamera(const GuiMouseEvent& rel)
     // Only allow position camera to work if a rubber band selection is not happening otherwise
     // the camera starts jumping all over the place and it gets very confusing. Also, you can only
     // position the camera if the map is active (i.e. beacon1 or beacon3 exists ).
-    if (rel.rightButton() == Gui::PRESSED and not pInGameScreen_->rubberBandSelectionHappening()
-        and currentBeacon_ != MachLog::NO_BEACON)
+    if (rel.rightButton() == Gui::PRESSED && ! pInGameScreen_->rubberBandSelectionHappening()
+        && currentBeacon_ != MachLog::NO_BEACON)
     {
         // Don't allow gradual change in FOW lighting if the camera is positioned because the
         // player might be trying to cheat by having a very fast glimpse of what the enemy is
@@ -1368,8 +1368,8 @@ void MachContinentMap::positionCamera(const GuiMouseEvent& rel)
         MATHEX_SCALAR moveToPlanetY = (rel.coord().y() - yOffset()) * ratio;
 
         // Check that we are moving the camera to a valid location
-        if (moveToPlanetX > minPlanetX and moveToPlanetX < maxPlanetX and moveToPlanetY > minPlanetY
-            and moveToPlanetY < maxPlanetY)
+        if (moveToPlanetX > minPlanetX && moveToPlanetX < maxPlanetX && moveToPlanetY > minPlanetY
+            && moveToPlanetY < maxPlanetY)
         {
             // Move camera and force map to be re-drawn.
             pCameras_->lookAt(MexPoint3d(
@@ -1401,7 +1401,7 @@ void MachContinentMap::refresh()
             refreshLastFrame();
             break;
         case 1:
-            if (not pInGameScreen_->inFirstPerson())
+            if (! pInGameScreen_->inFirstPerson())
             {
                 updateMapBackground();
             }
@@ -1424,7 +1424,7 @@ void MachContinentMap::refresh()
             break;
     }
 
-    if (not pInGameScreen_->inFirstPerson())
+    if (! pInGameScreen_->inFirstPerson())
     {
         update3dFogOfWarLightLevel();
     }
@@ -1432,7 +1432,7 @@ void MachContinentMap::refresh()
 
 void MachContinentMap::refreshLastFrame()
 {
-    while (firstFrameNumActors_ or secondFrameNumActors_)
+    while (firstFrameNumActors_ || secondFrameNumActors_)
     {
         if (firstFrameNumActors_)
         {
@@ -1448,7 +1448,7 @@ void MachContinentMap::refreshLastFrame()
             }
 
             // have we finished frame one?
-            if (firstFrameNumActors_ == 0 and not pInGameScreen_->inFirstPerson())
+            if (firstFrameNumActors_ == 0 && ! pInGameScreen_->inFirstPerson())
             {
                 // If so then prepare second frame
                 // Show only unfogged areas
@@ -1464,14 +1464,14 @@ void MachContinentMap::refreshLastFrame()
         {
             --secondFrameNumActors_;
 
-            if (not pInGameScreen_->inFirstPerson())
+            if (! pInGameScreen_->inFirstPerson())
             {
                 updateMapFrameTwo(secondFrameNumActors_);
             }
         }
     }
 
-    if (not pInGameScreen_->inFirstPerson())
+    if (! pInGameScreen_->inFirstPerson())
     {
         // Finish off frame two
         // Show only unfogged areas
@@ -1486,7 +1486,7 @@ void MachContinentMap::refreshLastFrame()
 
 void MachContinentMap::refreshFrame()
 {
-    for (int loop = 0; loop < numActorsPerFrame_ and (firstFrameNumActors_ or secondFrameNumActors_); ++loop)
+    for (int loop = 0; loop < numActorsPerFrame_ && (firstFrameNumActors_ || secondFrameNumActors_); ++loop)
     {
         if (firstFrameNumActors_)
         {
@@ -1502,7 +1502,7 @@ void MachContinentMap::refreshFrame()
             }
 
             // have we finished frame one?
-            if (firstFrameNumActors_ == 0 and not pInGameScreen_->inFirstPerson())
+            if (firstFrameNumActors_ == 0 && ! pInGameScreen_->inFirstPerson())
             {
                 // If so then prepare second frame after final touches are added to frame one
                 // Show only unfogged areas
@@ -1517,7 +1517,7 @@ void MachContinentMap::refreshFrame()
         else if (secondFrameNumActors_)
         {
             --secondFrameNumActors_;
-            if (not pInGameScreen_->inFirstPerson())
+            if (! pInGameScreen_->inFirstPerson())
             {
                 updateMapFrameTwo(secondFrameNumActors_);
             }
@@ -1564,7 +1564,7 @@ Gui::Coord MachContinentMap::translate3DScreenCoordToMapCoord(const Gui::Coord& 
 
 void MachContinentMap::updateMapCameraRepresentation()
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     MATHEX_SCALAR ratio = mapToWorldRatio();
 
@@ -1631,12 +1631,12 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
     MachLog::BeaconType newBeaconSetting = MachLogRaces::instance().beaconType(playerRace_);
 
     // If fog of war isn't being used then pretend we have a level 3 beacon.
-    if (not fogOfWarOn_)
+    if (! fogOfWarOn_)
     {
         newBeaconSetting = MachLog::LEVEL_3_BEACON;
     }
 
-    if (newBeaconSetting != currentBeacon_ or forceBeaconUpdate)
+    if (newBeaconSetting != currentBeacon_ || forceBeaconUpdate)
     {
         currentBeacon_ = newBeaconSetting;
 
@@ -1667,7 +1667,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
 
 void MachContinentMap::update3dFogOfWarLightLevel()
 {
-    PRE(not pInGameScreen_->inFirstPerson());
+    PRE(! pInGameScreen_->inFirstPerson());
 
     // A level 3 beacon removes all fog-of-war. Might as well terminate early.
     if (currentBeacon_ == MachLog::LEVEL_3_BEACON)
@@ -1678,7 +1678,7 @@ void MachContinentMap::update3dFogOfWarLightLevel()
         noFastChangeInLightLevel_ = false;
         MachGuiCommand::cursorInFogOfWar(false);
         // Make sure sounds are on
-        if (not W4dSoundManager::instance().isPlayingSounds())
+        if (! W4dSoundManager::instance().isPlayingSounds())
         {
             W4dSoundManager::instance().setPlayingSoundsStatus(true);
         }
@@ -1800,7 +1800,7 @@ void MachContinentMap::update3dFogOfWarLightLevel()
     }
     else
     {
-        if (not W4dSoundManager::instance().isPlayingSounds())
+        if (! W4dSoundManager::instance().isPlayingSounds())
         {
             W4dSoundManager::instance().setPlayingSoundsStatus(true);
         }
@@ -1849,7 +1849,7 @@ MachContinentMap::FogOfWarLevel MachContinentMap::getFogOfWarLevel(const Gui::Co
     {
         for (int y = -1; y <= 1; ++y)
         {
-            if (not(y == 0 and x == 0))
+            if (!(y == 0 && x == 0))
             {
                 mapVisibleArea_.getPixel(checkPos.x() + x, checkPos.y() + y, &fogColour);
                 //              if ( fogColour == Gui::MAGENTA() )
@@ -1866,7 +1866,7 @@ MachContinentMap::FogOfWarLevel MachContinentMap::getFogOfWarLevel(const Gui::Co
     {
         for (int y = -2; y <= 2; ++y)
         {
-            if (y == -2 or x == -2 or y == 2 or x == 2)
+            if (y == -2 || x == -2 || y == 2 || x == 2)
             {
                 mapVisibleArea_.getPixel(checkPos.x() + x, checkPos.y() + y, &fogColour);
                 //              if ( fogColour == Gui::MAGENTA() )
@@ -1883,7 +1883,7 @@ MachContinentMap::FogOfWarLevel MachContinentMap::getFogOfWarLevel(const Gui::Co
     {
         for (int y = -3; y <= 3; ++y)
         {
-            if (y == -3 or x == -3 or y == 3 or x == 3)
+            if (y == -3 || x == -3 || y == 3 || x == 3)
             {
                 mapVisibleArea_.getPixel(checkPos.x() + x, checkPos.y() + y, &fogColour);
                 //              if ( fogColour == Gui::MAGENTA() )

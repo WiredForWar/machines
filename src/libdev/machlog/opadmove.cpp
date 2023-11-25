@@ -101,8 +101,8 @@ bool MachLogAdminMoveToOperation::doStart()
     {
         MachLogConstruction* pConstruction;
         bool insideABuilding = checkNeedLeaveOperation(pActor_, &pConstruction);
-        if (insideABuilding and not pConstruction->globalBoundary().contains(dest_))
-            return not checkNeedAndDoLeaveOperation(pActor_);
+        if (insideABuilding && ! pConstruction->globalBoundary().contains(dest_))
+            return ! checkNeedAndDoLeaveOperation(pActor_);
     }
     MexPoint2d dest(dest_);
     if (groupMoveInfo().valid())
@@ -149,7 +149,7 @@ bool MachLogAdminMoveToOperation::doIsFinished() const
 {
     CB_MachLogAdminMoveToOperation_DEPIMPL();
 
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 bool MachLogAdminMoveToOperation::doBeInterrupted()

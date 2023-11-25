@@ -34,7 +34,7 @@ bool MachPhysMaterialConverter::convert(RenMaterial* pMaterial) const
     RenColourHSV colour(pMaterial->diffuse());
     bool converted = false;
 
-    if (colour.hueDefined() and close(colour.hue(), fromHue_))
+    if (colour.hueDefined() && close(colour.hue(), fromHue_))
     {
         colour.hue(colour.hue() + toHue_ - fromHue_);
 
@@ -87,7 +87,7 @@ bool MachPhysMaterialConverter::close(double hue1, double hue2) const
     while (diff >= 360.0)
         diff -= 360.0;
 
-    result = diff <= epsilon or diff >= (360.0 - epsilon);
+    result = diff <= epsilon || diff >= (360.0 - epsilon);
 
     return result;
 }

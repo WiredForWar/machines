@@ -32,7 +32,7 @@ int MexBasicRandom::next()
     state_ = state_ * 1103515245 + 12345;
     int result = ((unsigned int)(state_ >> 16) & RAND_MAX);
 
-    POST(0 <= result and result < upperLimit());
+    POST(0 <= result && result < upperLimit());
 
     return result;
 }

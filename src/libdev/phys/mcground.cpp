@@ -263,16 +263,16 @@ void PhysGroundFlyControl::updateMotion()
         }
 
         // Pitch
-        if ((commandList_[PhysMotionControlWithTrans::PITCH_UP].on() and not reversePitchUpDownKeys_)
-            or (commandList_[PhysMotionControlWithTrans::PITCH_DOWN].on() and reversePitchUpDownKeys_))
+        if ((commandList_[PhysMotionControlWithTrans::PITCH_UP].on() && ! reversePitchUpDownKeys_)
+            || (commandList_[PhysMotionControlWithTrans::PITCH_DOWN].on() && reversePitchUpDownKeys_))
         {
             if (motion_.pitch() > 0.0)
                 motion_.pitch(-motion_.pitch());
             motion_.deltaPitch(-radiansPerSecond.asScalar());
         }
         else if (
-            (commandList_[PhysMotionControlWithTrans::PITCH_DOWN].on() and not reversePitchUpDownKeys_)
-            or (commandList_[PhysMotionControlWithTrans::PITCH_UP].on() and reversePitchUpDownKeys_))
+            (commandList_[PhysMotionControlWithTrans::PITCH_DOWN].on() && ! reversePitchUpDownKeys_)
+            || (commandList_[PhysMotionControlWithTrans::PITCH_UP].on() && reversePitchUpDownKeys_))
         {
             if (motion_.pitch() < 0.0)
                 motion_.pitch(abs(motion_.pitch()));
@@ -296,7 +296,7 @@ void PhysGroundFlyControl::updateMotion()
 
         const DevKeyboard& keyboard = DevKeyboard::instance();
         bool shifted = keyboard.shiftPressed();
-        if (not shifted)
+        if (! shifted)
         {
             // Reset elevation
             MexTransform3d newTransform = pMotionControlled_->globalTransform();
@@ -317,7 +317,7 @@ void PhysGroundFlyControl::updateMotion()
 void PhysGroundFlyControl::update()
 {
     // Check not frozen
-    if (not motionFrozen())
+    if (! motionFrozen())
     {
         // Update deltas from keyboard, and check we have some motion
         updateMotion();

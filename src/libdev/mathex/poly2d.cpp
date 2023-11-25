@@ -72,7 +72,7 @@ void MexPolygon2d::isCachingData(bool doCache) const
         nonConstThis->isCachingData_ = doCache;
 
         // Delete any cached data if not caching any more
-        if (not doCache)
+        if (! doCache)
             clearCachedData();
     }
 }
@@ -157,7 +157,7 @@ bool MexPolygon2d::intersects(const MexPoint2d& q1, const MexPoint2d& q2, Mathex
 
         // Check each edge for intersection with the line joining p1 to p2
         const MexPoint2d* pP1 = &vertex(0);
-        for (size_t i = 0, j = 1; not hit and i != nVertices_; ++i)
+        for (size_t i = 0, j = 1; ! hit && i != nVertices_; ++i)
         {
             // Get the edge as point, unit direction vector and length
             const MexPoint2d* pP2 = &vertex(j);
@@ -179,10 +179,10 @@ bool MexPolygon2d::intersects(const MexPoint2d& q1, const MexPoint2d& q2, Mathex
         }
 
         // If not caching, clear any data
-        if (not isCachingData_)
+        if (! isCachingData_)
             clearCachedData();
 
-        result = hit or inside;
+        result = hit || inside;
     }
 
     return result;
@@ -216,7 +216,7 @@ void MexPolygon2d::edgeDirections(ctl_vector<MexVec2>* directions) const
     }
 
     // If not caching, clear any data
-    if (not isCachingData_)
+    if (! isCachingData_)
         clearCachedData();
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +259,7 @@ bool MexPolygon2d::contains(const MexPoint2d& q) const
     bool inside = true;
 
     // Ensure the edge lengths are available if meant to be caching data
-    if (pEdgeLengths_ == nullptr and isCachingData_)
+    if (pEdgeLengths_ == nullptr && isCachingData_)
         computeEdgeLengths();
     bool haveCachedData = pEdgeLengths_ != nullptr;
 
@@ -325,7 +325,7 @@ bool MexPolygon2d::intersects(const MexPolygon2d& rhs, Mathex::TouchingRule rule
     }
 
     // If this is not the case, check for this polygon being intersected by any edge of rhs
-    if (not result)
+    if (! result)
     {
         // Construct bounding box for this
         MexAlignedBox2d thisBoundary;
@@ -428,7 +428,7 @@ bool MexPolygon2d::isPenetratedBy(const MexPoint2d& q1, const MexPoint2d& q2, MA
                 sOnLine[nLineIntersections++] = s;
             }
         }
-        else if (lastVertexSide != Mathex::ONEDGE and lastVertexSide != side)
+        else if (lastVertexSide != Mathex::ONEDGE && lastVertexSide != side)
         {
             // The edge ending at current vertex crosses the line.
             // Find the distance along the line of the point of intersection.
@@ -452,7 +452,7 @@ bool MexPolygon2d::isPenetratedBy(const MexPoint2d& q1, const MexPoint2d& q2, MA
             // which is dealt with above. The only issue is whether the section of the
             // infinite line significantly overlaps the section from Q1 to Q2.
             MATHEX_SCALAR eps = MexEpsilon::instance();
-            result = sOnLine[1] > eps and sOnLine[0] < lineLength - eps;
+            result = sOnLine[1] > eps && sOnLine[0] < lineLength - eps;
             break;
         }
 
@@ -487,7 +487,7 @@ bool MexPolygon2d::intersects(size_t vertexIndex, const MexPoint2d& p2) const
 
     bool result = false;
 
-    if (side1 == Mathex::CHOCOLATE and side2 == Mathex::CHOCOLATE)
+    if (side1 == Mathex::CHOCOLATE && side2 == Mathex::CHOCOLATE)
     {
         result = true;
     }
@@ -504,7 +504,7 @@ bool MexPolygon2d::pointIsVertex(const MexPoint2d& point, size_t* pVertexIndex) 
 
     bool result = false;
 
-    for (size_t i = 0; i < nVertices() and not result; ++i)
+    for (size_t i = 0; i < nVertices() && ! result; ++i)
     {
         if (point == vertex(i))
         {

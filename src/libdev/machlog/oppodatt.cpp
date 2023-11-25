@@ -101,7 +101,7 @@ MexRadians angleToTurnToFace(const MachLogPod& actor, const MexPoint3d& pos);
 
 PhysRelativeTime MachLogPodAttackOperation::doUpdate()
 {
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
     if (pSubOperation())
     {
@@ -129,7 +129,7 @@ void MachLogPodAttackOperation::doFinish()
 
 bool MachLogPodAttackOperation::doIsFinished() const
 {
-    bool result = not _CONST_CAST(const MachLogPod&, *pActor_).weapons().front()->recharged();
+    bool result = ! _CONST_CAST(const MachLogPod&, *pActor_).weapons().front()->recharged();
 
     return result;
 }

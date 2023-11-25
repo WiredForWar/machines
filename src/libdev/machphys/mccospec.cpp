@@ -104,14 +104,14 @@ void MachPhysMachineSpec::race(MachPhys::Race race)
 bool operator<(const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs)
 {
     return lhs.type_ < rhs.type_
-        or (lhs.type_ == rhs.type_
-            and (lhs.subType_ < rhs.subType_ or (lhs.subType_ == rhs.subType_ and (lhs.hwLevel_ < rhs.hwLevel_ or (lhs.hwLevel_ == rhs.hwLevel_ and (lhs.swLevel_ < rhs.swLevel_ or (lhs.swLevel_ == rhs.swLevel_ and (lhs.race_ < rhs.race_))))))));
+        || (lhs.type_ == rhs.type_
+            && (lhs.subType_ < rhs.subType_ || (lhs.subType_ == rhs.subType_ && (lhs.hwLevel_ < rhs.hwLevel_ || (lhs.hwLevel_ == rhs.hwLevel_ && (lhs.swLevel_ < rhs.swLevel_ || (lhs.swLevel_ == rhs.swLevel_ && (lhs.race_ < rhs.race_))))))));
 }
 
 bool operator==(const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs)
 {
-    return lhs.type_ == rhs.type_ and lhs.subType_ == rhs.subType_ and lhs.hwLevel_ == rhs.hwLevel_
-        and lhs.swLevel_ == rhs.swLevel_ and lhs.race_ == rhs.race_;
+    return lhs.type_ == rhs.type_ && lhs.subType_ == rhs.subType_ && lhs.hwLevel_ == rhs.hwLevel_
+        && lhs.swLevel_ == rhs.swLevel_ && lhs.race_ == rhs.race_;
 }
 
 MachPhysConstructionSpec::MachPhysConstructionSpec(
@@ -204,14 +204,14 @@ void MachPhysConstructionSpec::race(MachPhys::Race race)
 bool operator<(const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs)
 {
     return lhs.type_ < rhs.type_
-        or (lhs.type_ == rhs.type_
-            and (lhs.subType_ < rhs.subType_ or (lhs.subType_ == rhs.subType_ and (lhs.hwLevel_ < rhs.hwLevel_ or (lhs.hwLevel_ == rhs.hwLevel_ and (lhs.race_ < rhs.race_))))));
+        || (lhs.type_ == rhs.type_
+            && (lhs.subType_ < rhs.subType_ || (lhs.subType_ == rhs.subType_ && (lhs.hwLevel_ < rhs.hwLevel_ || (lhs.hwLevel_ == rhs.hwLevel_ && (lhs.race_ < rhs.race_))))));
 }
 
 bool operator==(const MachPhysConstructionSpec& lhs, const MachPhysConstructionSpec& rhs)
 {
-    return lhs.type_ == rhs.type_ and lhs.subType_ == rhs.subType_ and lhs.hwLevel_ == rhs.hwLevel_
-        and lhs.race_ == rhs.race_;
+    return lhs.type_ == rhs.type_ && lhs.subType_ == rhs.subType_ && lhs.hwLevel_ == rhs.hwLevel_
+        && lhs.race_ == rhs.race_;
 }
 
 bool MachPhysMachineSpec_Less::operator()(const MachPhysMachineSpec& lhs, const MachPhysMachineSpec& rhs) const
@@ -281,12 +281,12 @@ void MachPhysWeaponSpec::race(MachPhys::Race race)
 
 bool operator<(const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs)
 {
-    return lhs.type_ < rhs.type_ or (lhs.type_ == rhs.type_ and (lhs.race_ < rhs.race_));
+    return lhs.type_ < rhs.type_ || (lhs.type_ == rhs.type_ && (lhs.race_ < rhs.race_));
 }
 
 bool operator==(const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs)
 {
-    return lhs.type_ == rhs.type_ and lhs.race_ == rhs.race_;
+    return lhs.type_ == rhs.type_ && lhs.race_ == rhs.race_;
 }
 
 bool MachPhysWeaponSpec_Less::operator()(const MachPhysWeaponSpec& lhs, const MachPhysWeaponSpec& rhs) const

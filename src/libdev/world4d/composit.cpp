@@ -238,7 +238,7 @@ void W4dComposite::renderLinks(const W4dCamera& camera, MATHEX_SCALAR range, con
         // to not be rendered. I don't know what the check was for. It makes no sense to me.
         if (pParent->visible() /*and parentPassId == pLink->pComposite()->passId()*/)
         {
-            if (linkImpl.hasMesh() and pLink->visible())
+            if (linkImpl.hasMesh() && pLink->visible())
             {
                 // If the link is flagged as totally unlit, disable the render
                 // lighting.  This logic should ensure that we don't disable the
@@ -359,11 +359,11 @@ W4dEntity::RenderType W4dComposite::render(const W4dCamera& camera, W4dComplexit
             if (complexity.enabled())
             {
                 uint priority = 0;
-                priority = (hasPlan() and entityPlan().hasMotionPlan()) ? 1 : 0;
-                for (W4dLinks::iterator it = links_.begin(); it != links_.end() and (priority == 0); ++it)
+                priority = (hasPlan() && entityPlan().hasMotionPlan()) ? 1 : 0;
+                for (W4dLinks::iterator it = links_.begin(); it != links_.end() && (priority == 0); ++it)
                 {
                     W4dLink* pLink = *it;
-                    priority = (pLink != nullptr and pLink->hasPlan() and pLink->entityPlan().hasMotionPlan()) ? 1 : 0;
+                    priority = (pLink != nullptr && pLink->hasPlan() && pLink->entityPlan().hasMotionPlan()) ? 1 : 0;
                 }
 
                 complexity.usePriority(priority);
@@ -423,7 +423,7 @@ bool W4dComposite::findCompositePlan(const string& name, W4dCompositePlanPtr* pP
     CB_W4dComposite_DEPIMPL();
     bool planFound = false;
     for (W4dCompositeImpl::CompositePlans::const_iterator i = compositePlans_.begin();
-         i != compositePlans_.end() and not planFound;
+         i != compositePlans_.end() && ! planFound;
          ++i)
     {
         if ((*i)->name() == name)
@@ -614,7 +614,7 @@ void W4dComposite::readCompositeFile(const SysPathName& pathname)
     W4dLOD id = 0;
     bool hasShadow = false;
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT_INFO(parser.tokens()[0]);
 
@@ -788,11 +788,11 @@ bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_
     bool result = intersectsCompositeBoundingVolume(line, pDistance);
 
     // If have a hit and not low accuracy, check each link plus the composite
-    if (result and accuracy != LOW)
+    if (result && accuracy != LOW)
     {
         // Check the composite itself
         MATHEX_SCALAR minDistance, foundDistance;
-        result = hasMesh() and defaultIntersectsLine(line, &foundDistance, accuracy);
+        result = hasMesh() && defaultIntersectsLine(line, &foundDistance, accuracy);
         // JON_STREAM("  Composite mesh result " << result << std::endl;)
         if (result)
             minDistance = foundDistance;
@@ -809,7 +809,7 @@ bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_
                 if (pLink->intersectsLine(line, &foundDistance, accuracy))
                 {
                     // Keep track of the nearest hit
-                    if (not result or foundDistance < minDistance)
+                    if (! result || foundDistance < minDistance)
                         minDistance = foundDistance;
                     result = true;
                     // JON_STREAM("  Hit!" << std::endl;)
@@ -846,7 +846,7 @@ PhysAbsoluteTime W4dComposite::finishAnimation(uint animId)
     for (W4dLinks::iterator it = links_.begin(); it != links_.end(); ++it)
     {
         W4dLink* pLink = *it;
-        if (pLink != nullptr and pLink->hasPlan())
+        if (pLink != nullptr && pLink->hasPlan())
         {
             linkFinishTime = pLink->entityPlanForEdit().finishAnimation(animId);
             latestFinishTime = std::max(latestFinishTime, linkFinishTime);
@@ -864,7 +864,7 @@ void W4dComposite::temporaryScale(const RenScale& scale, PropogateScaleFlag prop
     W4dEntity::temporaryScale(scale, propogate);
 
     // Visit each link if propogating
-    if (propogate and links_.size() != 0)
+    if (propogate && links_.size() != 0)
     {
         // Check for non-uniform scale
         const RenNonUniformScale* pNonUniformScale = (scale.isNonUniform() ? &scale.asNonUniform() : nullptr);
@@ -1142,7 +1142,7 @@ void W4dComposite::clearAnimation(uint animId)
     for (W4dLinks::iterator it = links_.begin(); it != links_.end(); ++it)
     {
         W4dLink* pLink = *it;
-        if (pLink != nullptr and pLink->hasPlan())
+        if (pLink != nullptr && pLink->hasPlan())
             pLink->entityPlanForEdit().clearAnimation(animId);
     }
 }

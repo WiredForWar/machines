@@ -105,7 +105,7 @@ bool MachLogStrategy::isFinished() const
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    return queue_.size() == 0 and pPendingOperation_ == nullptr;
+    return queue_.size() == 0 && pPendingOperation_ == nullptr;
 }
 
 void MachLogStrategy::newOperation(MachLogOperation* pNewOperation, bool subOperation)
@@ -162,14 +162,14 @@ bool MachLogStrategy::addOperationAsSubOperationToFollowOperation(MachLogOperati
 
     bool found = false;
     bool succeeded = false;
-    for (Queue::iterator i = queue_.begin(); not found and i < queue_.end(); ++i)
+    for (Queue::iterator i = queue_.begin(); ! found && i < queue_.end(); ++i)
     {
         MachLogOperation* pOp = (*i);
 
         if (pOp->operationType() == MachLogOperation::FOLLOW_OPERATION)
         {
             found = true;
-            if (not pOp->hasSubOperation())
+            if (! pOp->hasSubOperation())
             {
                 pOp->subOperation(pActor_, pNewOperation);
                 succeeded = true;
@@ -184,16 +184,16 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    PRE(not isFinished());
+    PRE(! isFinished());
 
-    if (semaphoreInUpdate_ or pActor_->busy())
+    if (semaphoreInUpdate_ || pActor_->busy())
     {
         // immediate abortion of strategy update
 
         return 0.0;
     }
 
-    if (pActor_->objectIsMachine() and pActor_->asMachine().insideAPC())
+    if (pActor_->objectIsMachine() && pActor_->asMachine().insideAPC())
     {
         // immediate abortion of strategy update
         return 3.0;
@@ -229,7 +229,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
         size_t queueOrigSize = queue_.size();
         // Mark the update stack in a state where you cannot remove the current operation out of sequence.
         semaphoreInUpdate_ = true;
-        while (not finished)
+        while (! finished)
         {
             ASSERT_INFO(pActor_->id());
             ASSERT_INFO(pActor_->objectType());
@@ -243,7 +243,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                 for (Queue::iterator j = queue_.begin(); j != queue_.end(); ++j)
                     if ((*j)->pSubOperation() == pOp)
                         (*j)->pSubOperation(nullptr);
-                if (pPendingOperation_ and pPendingOperation_->pSubOperation() == pOp)
+                if (pPendingOperation_ && pPendingOperation_->pSubOperation() == pOp)
                     pPendingOperation_->pSubOperation(nullptr);
 
                 delete pOp;
@@ -280,13 +280,13 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                         }
                     }
 
-                    if (not finished)
+                    if (! finished)
                     {
                         MachLogOperation* pOpBefore = pOp;
                         if (pOp->progress() != MachLogOperation::START)
                         {
                             // Two seperate checks for not finished followed by finished as it may have nowe finished
-                            if (not pOp->doIsFinished())
+                            if (! pOp->doIsFinished())
                             {
                                 // PhysAbsoluteTime startTime = Phys::time();
                                 result = pOp->doUpdate();
@@ -302,7 +302,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                                 for (Queue::iterator j = queue_.begin(); j != queue_.end(); ++j)
                                     if ((*j)->pSubOperation() == pOp)
                                         (*j)->pSubOperation(nullptr);
-                                if (pPendingOperation_ and pPendingOperation_->pSubOperation() == pOp)
+                                if (pPendingOperation_ && pPendingOperation_->pSubOperation() == pOp)
                                     pPendingOperation_->pSubOperation(nullptr);
                                 delete pOp;
                                 queue_.erase(queue_.begin() + i);
@@ -318,7 +318,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
 
             if (increment)
                 ++i;
-            if (queueOrigSize > queue_.size() or i >= queue_.size())
+            if (queueOrigSize > queue_.size() || i >= queue_.size())
                 finished = true;
         }
     }
@@ -357,7 +357,7 @@ void MachLogStrategy::tryToRemoveAllOperations()
     {
         int i = 0;
         bool finished = false;
-        while (not finished)
+        while (! finished)
         {
             ASSERT_INFO(pActor_->id());
             ASSERT_INFO(pActor_->objectType());
@@ -368,7 +368,7 @@ void MachLogStrategy::tryToRemoveAllOperations()
                 for (Queue::iterator j = queue_.begin(); j != queue_.end(); ++j)
                     if ((*j)->pSubOperation() == pOp)
                         (*j)->pSubOperation(nullptr);
-                if (pPendingOperation_ and pPendingOperation_->pSubOperation() == pOp)
+                if (pPendingOperation_ && pPendingOperation_->pSubOperation() == pOp)
                     pPendingOperation_->pSubOperation(nullptr);
                 delete pOp;
                 queue_.erase(queue_.begin() + i);
@@ -389,7 +389,7 @@ void MachLogStrategy::removeAllOperations()
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    PRE(not isUninterruptable());
+    PRE(! isUninterruptable());
 
     if (semaphoreInUpdate_)
         return;
@@ -397,7 +397,7 @@ void MachLogStrategy::removeAllOperations()
     if (queue_.size() > 0)
     {
         bool finished = false;
-        while (not finished)
+        while (! finished)
         {
             ASSERT_INFO(pActor_->id());
             ASSERT_INFO(pActor_->objectType());
@@ -434,14 +434,14 @@ bool MachLogStrategy::isUninterruptable()
 
     int i = 0;
     bool found = false;
-    for (int i = 0; not found and i < queue_.size(); ++i)
+    for (int i = 0; ! found && i < queue_.size(); ++i)
     {
         ASSERT_INFO(pActor_->id());
         ASSERT_INFO(pActor_->objectType());
         ASSERT(i < queue_.size(), "Referencing element not there in strategy isUninterruptable");
         MachLogOperation* pOp = queue_[i];
 
-        if (not pOp->isInterruptable())
+        if (! pOp->isInterruptable())
         {
             found = true;
         }
@@ -458,7 +458,7 @@ void MachLogStrategy::changeToEvadeMode()
 
     HAL_STREAM("(" << pActor_->id() << ") MachLogStrategy::changeToEvadeMode\n");
     PRE(pActor_->objectIsMachine());
-    PRE(not isUninterruptable());
+    PRE(! isUninterruptable());
 
     MachLogMachine* pMachine = &(pActor_->asMachine());
 
@@ -489,7 +489,7 @@ void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
 
     HAL_STREAM("(" << pActor_->id() << ") MachLogStrategy::changeToEvadeMode\n");
     PRE(pActor_->objectIsMachine());
-    PRE(not isUninterruptable());
+    PRE(! isUninterruptable());
 
     MachLogMachine* pMachine = &(pActor_->asMachine());
 
@@ -562,18 +562,18 @@ void MachLogStrategy::beInterrupted()
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    if (pActor_->objectIsMachine() and pActor_->asMachine().motionSeq().hasDestination())
+    if (pActor_->objectIsMachine() && pActor_->asMachine().motionSeq().hasDestination())
     {
         pActor_->asMachine().motionSeq().stop();
     }
 
-    while (queue_.size() > 0 and not semaphoreInUpdate_)
+    while (queue_.size() > 0 && ! semaphoreInUpdate_)
     {
         delete *queue_.begin();
         queue_.erase(queue_.begin());
     }
     // if mustRemoveAllOperations is true then the pPending is still needed.
-    if (pPendingOperation_ and not mustRemoveAllOperations_)
+    if (pPendingOperation_ && ! mustRemoveAllOperations_)
     {
         delete pPendingOperation_;
         pPendingOperation_ = nullptr;
@@ -712,8 +712,8 @@ void MachLogStrategy::changeToScavengeMode(MachLogDebris* pDebris)
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
     HAL_STREAM("(" << pActor_->id() << ") MachLogStrategy::changeToEvadeMode\n");
-    PRE(pActor_->objectType() == MachLog::RESOURCE_CARRIER and pActor_->asResourceCarrier().isScavenger());
-    PRE(not isUninterruptable());
+    PRE(pActor_->objectType() == MachLog::RESOURCE_CARRIER && pActor_->asResourceCarrier().isScavenger());
+    PRE(! isUninterruptable());
 
     MachLogResourceCarrier* pScavenger = &(pActor_->asResourceCarrier());
 
@@ -748,7 +748,7 @@ bool MachLogStrategy::isDoingLeaveOperation() const
 
     bool found = false;
 
-    for (Queue::iterator i = queue_.begin(); not found and i < queue_.end(); ++i)
+    for (Queue::iterator i = queue_.begin(); ! found && i < queue_.end(); ++i)
     {
         MachLogOperation* pOp = (*i);
 
@@ -772,12 +772,12 @@ bool MachLogStrategy::isEnteringBuilding(const MachLogConstruction& constron) co
 
     bool result = false;
 
-    for (Queue::iterator i = queue_.begin(); not result and i < queue_.end(); ++i)
+    for (Queue::iterator i = queue_.begin(); ! result && i < queue_.end(); ++i)
     {
         MachLogOperation* pOp = (*i);
 
         if (pOp->operationType() == MachLogOperation::ENTER_OPERATION
-            and _STATIC_CAST(const MachLogEnterBuildingOperation*, pOp)->destination().id() == constron.id())
+            && _STATIC_CAST(const MachLogEnterBuildingOperation*, pOp)->destination().id() == constron.id())
         {
             result = true;
         }

@@ -73,7 +73,7 @@ RenColour W4dColourPlanData::colour(const PhysRelativeTime& timeOffset) const
     PhysRelativeTime t1 = 0;
     bool done = false;
 
-    while ((i < times_.size()) and not done)
+    while ((i < times_.size()) && ! done)
     {
         PhysRelativeTime t2 = times_[i];
 

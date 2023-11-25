@@ -689,7 +689,7 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
 
     UtlLineTokeniser parser(*pIstream, definitionFileName);
     W4dSoundManagerImpl::SoundDataVector& availableSounds = *(pAvailableSounds_);
-    while (not parser.finished())
+    while (! parser.finished())
     {
         const UtlLineTokeniser::Tokens& tokens = parser.tokens();
 

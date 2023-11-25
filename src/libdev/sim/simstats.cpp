@@ -87,7 +87,7 @@ void SimStats::readInitialisationFile()
 
     UtlLineTokeniser parser(*pIstream, pathName);
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         if (parser.tokens()[0] == "minComputationTime")
             minComputationTime_ = atof(parser.tokens()[1].c_str());

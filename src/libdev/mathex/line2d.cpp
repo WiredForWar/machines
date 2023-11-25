@@ -103,16 +103,16 @@ bool MexLine2d::intersects(
         if (touchingBad)
         {
             if (side2 == Mathex::ONEDGE)
-                result = not((s1 > high and s2 > high) or (s1 < low and s2 < low));
+                result = !((s1 > high && s2 > high) || (s1 < low && s2 < low));
             else
-                result = s1 < high and s1 > low;
+                result = s1 < high && s1 > low;
         }
         else
             result = false;
     }
     else if (side2 == Mathex::ONEDGE)
     {
-        result = touchingBad and (s2 < high and s2 > low);
+        result = touchingBad && (s2 < high && s2 > low);
     }
     else if (side1 == side2)
     {
@@ -122,7 +122,7 @@ bool MexLine2d::intersects(
     {
         // Compute the point of intersection between the 2 infinite lines
         MATHEX_SCALAR t = (h1 * s2 - h2 * s1) / (h1 - h2);
-        result = t < high and t > low;
+        result = t < high && t > low;
     }
 
     return result;
@@ -219,13 +219,13 @@ MATHEX_SCALAR MexLine2d::sqrEuclidianDistance(
     MATHEX_SCALAR result;
     bool linesIntersect = false;
 
-    if (fabs(denom1) > epsilon and fabs(denom2) > epsilon)
+    if (fabs(denom1) > epsilon && fabs(denom2) > epsilon)
     {
         MATHEX_SCALAR x1 = (s1q2 * h1p2 - s1p2 * h1q2) / denom1;
-        if (x1 >= 0.0 and x1 <= l1)
+        if (x1 >= 0.0 && x1 <= l1)
         {
             MATHEX_SCALAR x2 = (s2q1 * h2p1 - s2p1 * h2q1) / denom2;
-            linesIntersect = x2 >= 0.0 and x2 <= l2;
+            linesIntersect = x2 >= 0.0 && x2 <= l2;
         }
     }
 
@@ -380,7 +380,7 @@ bool MexLine2d::isPointOnLine(const MexPoint2d& v) const
     }
 
     // Point is off line.
-    if (t < 0.0 or t > 1.0)
+    if (t < 0.0 || t > 1.0)
         return false;
 
     dxVec *= t;
@@ -440,7 +440,7 @@ bool MexLine2d::segmentIntersects(const MexLine2d& line, MexPoint2d* pIntersectP
 
     MATHEX_SCALAR eq = ((line.end1().x() - end1_.x()) * line2yvec) - ((line.end1().y() - end1_.y()) * line2xvec);
 
-    if ((eq / divider < 0.0) or (eq / divider > 1.0))
+    if ((eq / divider < 0.0) || (eq / divider > 1.0))
         return false;
 
     MATHEX_SCALAR x = end1_.x() + (line1xvec * (eq / divider));
@@ -451,7 +451,7 @@ bool MexLine2d::segmentIntersects(const MexLine2d& line, MexPoint2d* pIntersectP
 
     //  Check that the point is actually within the range of line as well as in range of this
 
-    if (not line.isPointOnLine(*pIntersectPoint))
+    if (! line.isPointOnLine(*pIntersectPoint))
         return false;
 
     return true;

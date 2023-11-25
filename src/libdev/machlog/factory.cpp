@@ -118,7 +118,7 @@ MachLogFactory::~MachLogFactory()
 {
     // HAL_STREAM("(" << id() << ") MLFactory::DTOR\n" );
     CB_MachLogFactory_DEPIMPL();
-    if (not productionLine_.empty())
+    if (! productionLine_.empty())
         clearProductionLine();
     delete pImpl_;
 
@@ -163,9 +163,9 @@ void MachLogFactory::doOutputOperator(std::ostream& o) const
     o << "Build Items " << buildItems().size() << std::endl;
     for (MachLogResearchTree::ResearchItems::const_iterator i = buildItems().begin(); i != buildItems().end(); ++i)
     {
-        if (not(*i)->researched(race()))
+        if (!(*i)->researched(race()))
             o << "(NR) ";
-        if (not(*i)->available(race()))
+        if (!(*i)->available(race()))
             o << "(NA) ";
         o << (*i)->objectType() << " sub " << (*i)->subType() << " hw " << (*i)->hwLevel() << " wc "
           << (*i)->weaponCombo() << std::endl;
@@ -247,7 +247,7 @@ void MachLogFactory::createNewMachine(
     // if this is an AI Race then if the constructionId field is set then it represents the id
     // of the squadron id to add it to.
     if (newMachine.constructionId() != -1
-        and MachLogRaces::instance().controller(pRace->race()).type() == MachLogController::AI_CONTROLLER)
+        && MachLogRaces::instance().controller(pRace->race()).type() == MachLogController::AI_CONTROLLER)
         pMach->setSquadron(MachLogRaces::instance().squadrons(pRace->race())[newMachine.constructionId()]);
 
     // Now make the little fella beetle off to a deploy point.
@@ -269,7 +269,7 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
 
     PhysRelativeTime interval = 10.0;
 
-    if (not updateCompletionVisualisation())
+    if (! updateCompletionVisualisation())
     {
         interval = 0.1;
         pPhysFactory()->isWorking(false);
@@ -318,8 +318,8 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
                 // irrespective of amount stored away - note that specialActorUpdate has to be checked so you don't
                 // get the instance build bug.
                 if (roundedOffAmountToAdd == 0
-                    and MachLogRaces::instance().controller(race()).type() == MachLogController::AI_CONTROLLER
-                    and not MachLogRaces::instance().inSpecialActorUpdate())
+                    && MachLogRaces::instance().controller(race()).type() == MachLogController::AI_CONTROLLER
+                    && ! MachLogRaces::instance().inSpecialActorUpdate())
                     roundedOffAmountToAdd = 1;
 
                 current->amountBuilt(current->amountBuilt() + roundedOffAmountToAdd);
@@ -329,7 +329,7 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
 
             interval = 2.5;
 
-            if (current->amountBuilt() >= cost and not MachLogRaces::instance().maxUnitsExist(race()))
+            if (current->amountBuilt() >= cost && ! MachLogRaces::instance().maxUnitsExist(race()))
             {
                 PhysConfigSpace2d::PolygonId junk;
                 bool found = false;
@@ -338,7 +338,7 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
                 // may use this later to get hold of possible fristd::endly machine blocking build pad
                 PhysConfigSpace2d::ObjectId collisionObjectId = PhysConfigSpace2d::ObjectId ::invalidId();
 
-                for (size_t i = 0; i < nEntrances() and not found; ++i)
+                for (size_t i = 0; i < nEntrances() && ! found; ++i)
                 {
                     // Now construct a motion chunk as if we had moved from nearPoint to location2d,
                     // and add this
@@ -384,8 +384,8 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
                             {
                                 MachActor* pActor = &(MachLogRaces::instance().actor(collisionObjectId.asScalar()));
 
-                                if (pActor->race() == race() and pActor->objectIsMachine() and pActor->isIdle()
-                                    and not pActor->asMachine().isIn1stPersonView())
+                                if (pActor->race() == race() && pActor->objectIsMachine() && pActor->isIdle()
+                                    && ! pActor->asMachine().isIn1stPersonView())
                                 {
                                     // right, let's move it out of the way.
                                     moveToDeployPoint(
@@ -399,7 +399,7 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
                     }
                 }
                 // No space to deploy... wait 5 seconds to allow machine to move out of the way.
-                if (not found)
+                if (! found)
                 {
                     interval = 5.0;
                 }
@@ -489,10 +489,10 @@ bool MachLogFactory::buildMachineUnique(
         newUnit->weaponCombo(wc);
         newUnit->amountBuilt(0);
         bool found = false;
-        for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end() and not found; ++i)
+        for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end() && ! found; ++i)
             if (**i == *newUnit)
                 found = true;
-        if (not found)
+        if (! found)
         {
             insertIntoProductionLine(newUnit);
             //          productionLine_.push_back( newUnit );
@@ -510,7 +510,7 @@ void MachLogFactory::clearProductionLine()
 {
     // HAL_STREAM("(" << id() << ") MLFactory:;clearProductionLine " << productionLine_.size() << std::endl );
     CB_MachLogFactory_DEPIMPL();
-    while (not productionLine_.empty())
+    while (! productionLine_.empty())
     {
         delete *productionLine_.begin();
         productionLine_.pop_front();
@@ -534,7 +534,7 @@ void MachLogFactory::removeMachine(const MachLog::ObjectType)
 void MachLogFactory::cancelAllProduction()
 {
     CB_MachLogFactory_DEPIMPL();
-    if (not productionLine_.empty())
+    if (! productionLine_.empty())
     {
         cancelProductionUnit(*productionLine_.begin());
         amountBuilt(0);
@@ -547,7 +547,7 @@ void MachLogFactory::cancelAllProduction()
 void MachLogFactory::cancelProductionUnit(const MachLogProductionUnit* pUnit)
 {
     CB_MachLogFactory_DEPIMPL();
-    if (not productionLine_.empty())
+    if (! productionLine_.empty())
     {
         ProductionLine::iterator i = find(productionLine_.begin(), productionLine_.end(), pUnit);
 
@@ -575,9 +575,9 @@ void MachLogFactory::moveProductionUnit(MachLogProductionUnit* pUnit, MachLogFac
         if ((*i) == pUnit)
         {
             //          delete (*i);
-            if (direction == TOWARDS_FRONT and i == productionLine_.begin())
+            if (direction == TOWARDS_FRONT && i == productionLine_.begin())
                 return;
-            if (direction == TOWARDS_BACK and i == tempIterator)
+            if (direction == TOWARDS_BACK && i == tempIterator)
                 return;
 
             ProductionLine::iterator insertIterator = i;
@@ -688,10 +688,10 @@ bool MachLogFactory::isAllowedToBuild(MachLog::ObjectType type, int subType, int
     CB_MachLogFactory_DEPIMPL();
     bool found = false;
     for (MachLogResearchTree::ResearchItems::const_iterator i = buildItems().begin();
-         i != buildItems().end() and not found;
+         i != buildItems().end() && ! found;
          ++i)
-        if ((*i)->researched(race()) and (*i)->objectType() == type and (*i)->subType() == subType
-            and (*i)->hwLevel() == hwLevel and (*i)->weaponCombo() == wc)
+        if ((*i)->researched(race()) && (*i)->objectType() == type && (*i)->subType() == subType
+            && (*i)->hwLevel() == hwLevel && (*i)->weaponCombo() == wc)
             found = true;
     return found;
 }
@@ -706,7 +706,7 @@ void MachLogFactory::insertIntoProductionLine(MachLogProductionUnit* newUnit)
 {
     CB_MachLogFactory_DEPIMPL();
     bool inserted = false;
-    for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end() and not inserted; ++i)
+    for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end() && ! inserted; ++i)
     {
         if (newUnit->priority() > (*i)->priority())
         {
@@ -714,7 +714,7 @@ void MachLogFactory::insertIntoProductionLine(MachLogProductionUnit* newUnit)
             productionLine_.insert(i, newUnit);
         }
     }
-    if (not inserted)
+    if (! inserted)
         productionLine_.push_back(newUnit);
 }
 
@@ -758,10 +758,10 @@ void MachLogFactory::loadGame()
     UtlLineTokeniser parser(*pIstream, factoryItemsPath);
     int i = 0;
     int j = 0;
-    while (not parser.finished())
+    while (! parser.finished())
     {
         size_t lineSize = parser.tokens().size();
-        if (lineSize > 0 and parser.tokens()[0] != "//")
+        if (lineSize > 0 && parser.tokens()[0] != "//")
         {
             bool working = false;
             if (parser.tokens()[0] == "CIVILIAN")
@@ -817,7 +817,7 @@ void MachLogFactory::loadGame()
                             hwLevel,
                             wc);
                         researchItems()[i][j].push_back(pRI);
-                        if (obType == MachLog::AGGRESSOR and hwLevel == 4)
+                        if (obType == MachLog::AGGRESSOR && hwLevel == 4)
                         {
                             MachLogResearchItem* pRI2 = &MachLogRaces::instance().researchTree().researchItem(
                                 obType,
@@ -845,7 +845,7 @@ void MachLogFactory::unloadGame()
     {
         for (size_t j = 0; j < 5; ++j)
         {
-            while (not researchItems()[i][j].empty())
+            while (! researchItems()[i][j].empty())
                 researchItems()[i][j].pop_back();
         }
     }
@@ -945,7 +945,7 @@ void MachLogFactory::moveToDeployPoint(
 
     bool movingBlockingMachine = (builtOrBlocking == BLOCKING_MACHINE);
 
-    if (deployPointIsSet_ and not movingBlockingMachine)
+    if (deployPointIsSet_ && ! movingBlockingMachine)
     {
         deployPointAsTransform = MachLogSpacialManipulation::sourceToDestination3dTransform(
             position(),
@@ -969,9 +969,9 @@ void MachLogFactory::moveToDeployPoint(
     }
 
     bool finished = false;
-    while (not finished)
+    while (! finished)
     {
-        if (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+        if (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
                 deployPointAsTransform,
                 radius,
                 pMach->highClearence(),
@@ -1005,10 +1005,10 @@ bool MachLogFactory::buildMachineUniqueWithSquadIndex(
         newUnit->amountBuilt(0);
         newUnit->constructionId(squadIndex);
         bool found = false;
-        for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end() and not found; ++i)
+        for (ProductionLine::iterator i = productionLine_.begin(); i != productionLine_.end() && ! found; ++i)
             if (**i == *newUnit)
                 found = true;
-        if (not found)
+        if (! found)
         {
             insertIntoProductionLine(newUnit);
             //          productionLine_.push_back( newUnit );

@@ -106,7 +106,7 @@ void MachLogEntrance::unlock()
 
     locked_ = false;
 
-    POST(not locked());
+    POST(! locked());
 }
 
 bool MachLogEntrance::locked() const

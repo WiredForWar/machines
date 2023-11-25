@@ -131,7 +131,7 @@ bool MexSausage2d::intersects(const MexPolygon2d& polygon, Mathex::TouchingRule 
 
     // Finally, if we haven't got a hit, the sausage may be completely contained in the
     // polygon. So test for containment of any point in the sausage.
-    if (not hit)
+    if (! hit)
         hit = polygon.contains(startPoint_);
 
     return hit;

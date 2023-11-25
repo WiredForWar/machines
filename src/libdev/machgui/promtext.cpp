@@ -415,8 +415,8 @@ void MachPromptText::displayChatMessage()
         Gui::Box(0, 0, promptBmp_.width(), promptBmp_.height()),
         getPromptTextAbsolutePosition());
 
-    if (GuiManager::instance().charFocusExists() and &GuiManager::instance().charFocus() == this
-        and showCaret()) // Only show caret if we have focus
+    if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
+        && showCaret()) // Only show caret if we have focus
     {
         Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Vec(caretPosition, startY);
         Gui::Coord to = from + Gui::Vec(0, font_.charHeight());
@@ -503,8 +503,8 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 
     if (event.state() == Gui::PRESSED)
     {
-        if ((event.key() == DevKey::F1 or event.key() == DevKey::F2 or event.key() == DevKey::F3)
-            and not event.isShiftPressed() and MachLogNetwork::instance().isNetworkGame())
+        if ((event.key() == DevKey::F1 || event.key() == DevKey::F2 || event.key() == DevKey::F3)
+            && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
         {
             // Work out who we are going to send the message to
             int newOpponentIndex = 0;
@@ -531,7 +531,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             else
             {
                 // Are we already entering a message and want to cycle through a standard list of messages?
-                if (enteringChatMessage_ and opponentIndex_ == newOpponentIndex)
+                if (enteringChatMessage_ && opponentIndex_ == newOpponentIndex)
                 {
                     if (MachGuiInGameChatMessages::instance().standardMessages().size() > 0)
                     {
@@ -587,12 +587,12 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             }
         }
         else if (
-            event.key() == DevKey::F4 and not event.isShiftPressed() and MachLogNetwork::instance().isNetworkGame())
+            event.key() == DevKey::F4 && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
         {
             int newOpponentIndex = 3;
 
             // Are we already entering a message and want to cycle through a standard list of messages?
-            if (enteringChatMessage_ and opponentIndex_ == newOpponentIndex)
+            if (enteringChatMessage_ && opponentIndex_ == newOpponentIndex)
             {
                 if (MachGuiInGameChatMessages::instance().standardMessages().size() > 0)
                 {
@@ -620,7 +620,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             }
         }
         else if (
-            event.key() == DevKey::F11 and event.isShiftPressed() and event.isCtrlPressed() and event.isAltPressed())
+            event.key() == DevKey::F11 && event.isShiftPressed() && event.isCtrlPressed() && event.isAltPressed())
         {
             opponentIndex_ = SYSTEM_MESSAGE;
             enteringChatMessage_ = true;
@@ -631,7 +631,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             chatMessageIntendedForStr_ = sendToSystemStr.asString();
             beginningTextWidth_ = shadowFont_.textWidth(chatMessageIntendedForStr_);
         }
-        else if (event.key() == DevKey::ESCAPE or event.key() == DevKey::ENTER or event.key() == DevKey::F10)
+        else if (event.key() == DevKey::ESCAPE || event.key() == DevKey::ENTER || event.key() == DevKey::F10)
         {
             if (enteringChatMessage_)
             {
@@ -669,12 +669,12 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                     {
                         //                      if ( strnicmp( text().c_str(), "MUSIC", 5 ) == 0 and text().length() > 5
                         //                      )
-                        if (strncasecmp(text().c_str(), "MUSIC", 5) == 0 and text().length() > 5)
+                        if (strncasecmp(text().c_str(), "MUSIC", 5) == 0 && text().length() > 5)
                         {
                             int track = atoi(&text().c_str()[5]);
 
-                            if (track > 0 and // Valid track number entered
-                                DevCD::instance().isAudioCDPresent() and // Audio CD is in CD-Rom
+                            if (track > 0 && // Valid track number entered
+                                DevCD::instance().isAudioCDPresent() && // Audio CD is in CD-Rom
                                 track < DevCD::instance()
                                             .numberOfTracks()) // Track number is not outside the number of tracks on CD
                             {
@@ -703,7 +703,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
         }
     }
 
-    return processed or enteringChatMessage_;
+    return processed || enteringChatMessage_;
 }
 
 // virtual

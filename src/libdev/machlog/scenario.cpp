@@ -138,10 +138,10 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     // assert for the correct number of entires in the players creation data array.
     // if a player has not been defined then the entry for that race should indicate this by the NOT_DEFINED marker.
     ASSERT(
-        playersCreationData.size() == 0 or playersCreationData.size() == 4,
+        playersCreationData.size() == 0 || playersCreationData.size() == 4,
         "Defined players data must have 0 or 4 entries\n");
     bool useCreationData = playersCreationData.size() > 0;
-    if (not useCreationData)
+    if (! useCreationData)
         races.gameType(MachLog::CAMPAIGN_SINGLE_PLAYER);
     else if (MachLogNetwork::instance().isNetworkGame())
         races.gameType(MachLog::MULTIPLAYER);
@@ -171,20 +171,20 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
     // get the default races data from the beginning of the file
     // look for races token
-    while (not(parser.tokens()[0] == "RACES_DEFAULT"))
+    while (!(parser.tokens()[0] == "RACES_DEFAULT"))
         parser.parseNextLine();
 
     bool racesFinished = false;
-    while (not(parser.tokens()[0] == "ENDRACES_DEFAULT"))
+    while (!(parser.tokens()[0] == "ENDRACES_DEFAULT"))
     {
         const string& token = parser.tokens()[0];
-        if (token == "RED" or token == "BLUE" or token == "GREEN" or token == "YELLOW")
+        if (token == "RED" || token == "BLUE" || token == "GREEN" || token == "YELLOW")
         {
             MachPhys::Race r = machPhysRace(token);
             const string& typeToken = parser.tokens()[1];
-            if (typeToken == "PC_LOCAL" or typeToken == "PC")
+            if (typeToken == "PC_LOCAL" || typeToken == "PC")
                 defaultData[r].type_ = MachLog::PC_LOCAL;
-            else if (typeToken == "AI_LOCAL" or typeToken == "AI")
+            else if (typeToken == "AI_LOCAL" || typeToken == "AI")
                 defaultData[r].type_ = MachLog::AI_LOCAL;
         }
         parser.parseNextLine();
@@ -220,17 +220,17 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         {
             // go through each of the races and mark which ones we have matches for already
             for (MachPhys::Race i : MachPhys::AllRaces)
-                if (useData[i].type_ != MachLog::NOT_DEFINED and gotRace[i])
+                if (useData[i].type_ != MachLog::NOT_DEFINED && gotRace[i])
                     usedRace[i] = true;
             // now go through each of the races and see if a useData does not have usedRace marked.
             for (MachPhys::Race i : MachPhys::AllRaces)
-                if (useData[i].type_ != MachLog::NOT_DEFINED and not usedRace[i])
+                if (useData[i].type_ != MachLog::NOT_DEFINED && ! usedRace[i])
                 {
                     // we need to allocate this useData element to a race which has been defined by the scenario file
                     for (MachPhys::Race j = MachPhys::RED; j < MachPhys::N_RACES; ++((int&)j))
                     {
                         // match to first unused race.
-                        if (not usedRace[j])
+                        if (! usedRace[j])
                         {
                             // swap elements around.
                             useData[j].colour_ = useData[i].colour_;
@@ -252,7 +252,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
     MachLogNetwork& network = MachLogNetwork::instance();
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         if (MachLogNetwork::instance().isNetworkGame())
             NetNetwork::instance().pollMessages();
@@ -270,11 +270,11 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         MachPhys::Race race;
         bool doingAIRace = false;
 
-        while (not parser.finished()
-               and not(
-                   parser.tokens()[0] == "RACE" or parser.tokens()[0] == "MINERAL"
-                   or parser.tokens()[0] == "RESEARCH_ITEMS" or parser.tokens()[0] == "ARTEFACTS"
-                   or parser.tokens()[0] == "CONDITIONS" or parser.tokens()[0] == "RESTRICT_CONSTRUCTION"))
+        while (! parser.finished()
+               && !(
+                   parser.tokens()[0] == "RACE" || parser.tokens()[0] == "MINERAL"
+                   || parser.tokens()[0] == "RESEARCH_ITEMS" || parser.tokens()[0] == "ARTEFACTS"
+                   || parser.tokens()[0] == "CONDITIONS" || parser.tokens()[0] == "RESTRICT_CONSTRUCTION"))
         {
             parser.parseNextLine();
             HAL_STREAM("Token 0 : " << parser.tokens()[0] << std::endl);
@@ -303,8 +303,8 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             stopProcessingRace = true;
         }
         else if (
-            parser.tokens()[1] == "RED" or parser.tokens()[1] == "BLUE" or parser.tokens()[1] == "GREEN"
-            or parser.tokens()[1] == "YELLOW")
+            parser.tokens()[1] == "RED" || parser.tokens()[1] == "BLUE" || parser.tokens()[1] == "GREEN"
+            || parser.tokens()[1] == "YELLOW")
         {
             hadAggressorAssemblyPoint = false;
             hadAdministratorAssemblyPoint = false;
@@ -325,7 +325,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
             if (useData[parsedRace].type_ != MachLog::NOT_DEFINED)
             {
-                ASSERT(not doneRace[race], runtime_error());
+                ASSERT(! doneRace[race], runtime_error());
                 doneRace[race] = true;
                 pRace = new MachLogRace(race);
                 ASSERT(pRace != nullptr, runtime_error());
@@ -344,7 +344,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             {
                 MachLogPCController* pPCController;
                 pCtl = pPCController = new MachLogPCController(pRace, pPhysObject);
-                if (not network.isNetworkGame() or network.localRace() == race)
+                if (! network.isNetworkGame() || network.localRace() == race)
                 {
                     races.setPcController(pPCController);
                     if (network.isNetworkGame())
@@ -370,7 +370,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 pRace->priority(races.stats().pcPriority());
                 instantiateObjects = false;
             }
-            else if (useData[parsedRace].type_ == MachLog::AI_LOCAL or useData[parsedRace].type_ == MachLog::AI_REMOTE)
+            else if (useData[parsedRace].type_ == MachLog::AI_LOCAL || useData[parsedRace].type_ == MachLog::AI_REMOTE)
             {
                 pCtl = new MachLogAIController(pRace, pPhysObject, parser.tokens()[2]);
                 pAICtl = (MachLogAIController*)pCtl;
@@ -406,7 +406,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         }
         else if (parser.tokens()[1] == "SITES")
         {
-            ASSERT(not doneMineralSites, runtime_error());
+            ASSERT(! doneMineralSites, runtime_error());
 
             doneMineralSites = true;
             parsingMineralSites = true;
@@ -449,7 +449,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         {
             lineSize = parser.tokens().size();
 #ifndef NDEBUG
-            if (lineSize < 1 or lineSize > 10)
+            if (lineSize < 1 || lineSize > 10)
             {
                 // Bad line
                 ASSERT_INFO(lineSize);
@@ -549,7 +549,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     }
                 }
             }
-            else if ((lineSize >= 6 and lineSize <= 10) and parsingMachines)
+            else if ((lineSize >= 6 && lineSize <= 10) && parsingMachines)
             {
                 if (instantiateObjects)
                 {
@@ -572,8 +572,8 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                             if (parser.tokens()[i] == "SQUAD")
                                 squadId = atol(parser.tokens()[i + 1].c_str());
 
-                    if (ot == MachLog::GEO_LOCATOR or ot == MachLog::SPY_LOCATOR or ot == MachLog::RESOURCE_CARRIER
-                        or ot == MachLog::APC)
+                    if (ot == MachLog::GEO_LOCATOR || ot == MachLog::SPY_LOCATOR || ot == MachLog::RESOURCE_CARRIER
+                        || ot == MachLog::APC)
                     {
                         pMachine = MachLogActorMaker::newLogMachine(
                             ot,
@@ -645,7 +645,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     }
                 }
             }
-            else if ((lineSize >= 5 and lineSize <= 10) and parsingConstructions)
+            else if ((lineSize >= 5 && lineSize <= 10) && parsingConstructions)
             {
                 bool isAlternativeSite = false;
                 MachLog::ObjectType ot;
@@ -689,12 +689,12 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
                 ASSERT_INFO(fabs(orientation));
                 ASSERT(
-                    fabs(orientation) == 0 or fabs(orientation) == 90 or fabs(orientation) == 180
-                        or fabs(orientation) == 270,
+                    fabs(orientation) == 0 || fabs(orientation) == 90 || fabs(orientation) == 180
+                        || fabs(orientation) == 270,
                     " Incorrect builing orientation detected\n");
 
                 int constructionSubType = 0;
-                if (not isAlternativeSite)
+                if (! isAlternativeSite)
                 {
                     // work out the subtype on a by-case basis
                     switch (ot)
@@ -840,7 +840,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                             pConstruction->displayAsRace(displayAsRace);
                         }
 
-                        if (doingAIRace and needRebuild)
+                        if (doingAIRace && needRebuild)
                         {
                             pConstruction->needRebuild(true);
                         }
@@ -849,7 +849,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     lastEncounteredWasUnbuiltConstruction = false;
                 }
             }
-            else if ((lineSize == 6 or lineSize == 7) and parsingMineralSites)
+            else if ((lineSize == 6 || lineSize == 7) && parsingMineralSites)
             {
                 ASSERT(parser.tokens()[0] == "SITE", "Expectine SITE token in scenario file.\n");
                 MachPhys::MineralGrade grade = atol(parser.tokens()[1].c_str());
@@ -862,11 +862,11 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     thisResource = resourceAvailable(parser.tokens()[6]);
                 ASSERT_INFO(grade);
                 ASSERT_INFO(amount);
-                ASSERT(grade > 0 and grade < 5, "bad grade for mineral site in scenario file.\n");
+                ASSERT(grade > 0 && grade < 5, "bad grade for mineral site in scenario file.\n");
                 ASSERT(amount > 0, "bad amount for mineral site in scenario file.\n");
                 bool processSite = false; //( resources == MachLogRaces::RES_DEFAULT );
 
-                if (resources == thisResource or thisResource == MachLog::RES_DEFAULT)
+                if (resources == thisResource || thisResource == MachLog::RES_DEFAULT)
                     processSite = true;
                 else
                     processSite = false;
@@ -893,19 +893,19 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             if (parser.tokens()[0] != "ENDRESEARCH_ITEMS")
                 parser.parseNextLine();
 
-            if (parser.tokens()[0] == "ENDRACE" or parser.tokens()[0] == "ENDSITES"
-                or parser.tokens()[0] == "ENDRESEARCH_ITEMS")
+            if (parser.tokens()[0] == "ENDRACE" || parser.tokens()[0] == "ENDSITES"
+                || parser.tokens()[0] == "ENDRESEARCH_ITEMS")
             {
                 if (parser.tokens()[0] == "ENDRACE")
                 {
                     // Check we have had the assembly points if required
-                    if (doingAIRace or checkAllRacesHaveAssemblyPoints)
+                    if (doingAIRace || checkAllRacesHaveAssemblyPoints)
                     {
                         ASSERT(hadAggressorAssemblyPoint, " No aggressor assembly point defined");
                         ASSERT(hadAdministratorAssemblyPoint, " No administrator assembly point defined");
                     }
                 }
-                if (not parser.finished())
+                if (! parser.finished())
                     parser.parseNextLine();
                 running = false;
             }
@@ -928,7 +928,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             doCreate = false;
             for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i))
             {
-                if (races.raceInGame(i) and races.pods(i).size() > 0)
+                if (races.raceInGame(i) && races.pods(i).size() > 0)
                     doCreate = true;
             }
         }
@@ -945,7 +945,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     }
 
     for (MachPhys::Race i : MachPhys::AllRaces)
-        if (not doneRace[i])
+        if (! doneRace[i])
             MachLogNetwork::instance().ready(i, true);
 
     const SysPathName RSI(researchItemsPath[gameData.technologyLevel()]);
@@ -969,7 +969,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     MachPhys::Race race = MachPhys::NORACE;
     bool doAI = true;
     HAL_STREAM("MLScenario processing RSI file " << RSI << std::endl);
-    while (not riParser.finished())
+    while (! riParser.finished())
     {
         if (riParser.tokens().size() > 0)
         {
@@ -1007,7 +1007,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 pLastProd = nullptr;
                 lastEncounteredWasUnbuiltConstruction = false;
             }
-            if (riParser.tokens()[0] == "MACHINE" or riParser.tokens()[0] == "CONSTRUCTION")
+            if (riParser.tokens()[0] == "MACHINE" || riParser.tokens()[0] == "CONSTRUCTION")
             {
                 bool researched = riParser.tokens()[1] == "RESEARCHED";
                 MachLog::ObjectType type = objectType(riParser.tokens()[2]);
@@ -1050,7 +1050,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                         if (doAI)
                         {
                             if (races.raceInGame(ridx)
-                                and races.controller(ridx).type() != MachLogController::AI_CONTROLLER)
+                                && races.controller(ridx).type() != MachLogController::AI_CONTROLLER)
                             {
                                 doWork = false;
                             }
@@ -1058,7 +1058,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                         else
                         {
                             if (races.raceInGame(ridx)
-                                and races.controller(ridx).type() == MachLogController::AI_CONTROLLER)
+                                && races.controller(ridx).type() == MachLogController::AI_CONTROLLER)
                             {
                                 doWork = false;
                             }
@@ -1081,7 +1081,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                             ri.researchCost(overrideResearchCost);
                         if (overrideBuildingCost)
                             ri.buildingCost(overrideBuildingCost);
-                        if (not researched)
+                        if (! researched)
                         {
                             ASSERT_INFO(riParser.tokens());
                             // ASSERT( ri.researchCost > 0,"You may not specify an item to be researched if it has zero
@@ -1545,7 +1545,7 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
 
     ASSERT_INFO(lineSize);
     ASSERT(
-        (lineSize == 7 or lineSize == 6 or lineSize == 5),
+        (lineSize == 7 || lineSize == 6 || lineSize == 5),
         "Wrong number of tokens in RESTRICT_CONSTRUCTION line.\n");
 
     type = MachLogScenario::objectType(parser.tokens()[3]);
@@ -1579,14 +1579,14 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
             doWork = true;
             if (doAI)
             {
-                if (races.raceInGame(i) and races.controller(i).type() != MachLogController::AI_CONTROLLER)
+                if (races.raceInGame(i) && races.controller(i).type() != MachLogController::AI_CONTROLLER)
                 {
                     doWork = false;
                 }
             }
             else
             {
-                if (races.raceInGame(i) and races.controller(i).type() == MachLogController::AI_CONTROLLER)
+                if (races.raceInGame(i) && races.controller(i).type() == MachLogController::AI_CONTROLLER)
                 {
                     doWork = false;
                 }

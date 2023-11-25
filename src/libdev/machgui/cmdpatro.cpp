@@ -58,7 +58,7 @@ void MachGuiPatrolCommand::pickOnTerrain(
         // Store the location and set the action
         path_.push_back(location);
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -79,7 +79,7 @@ void MachGuiPatrolCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool
         // Store the location and set the action
         path_.push_back(pActor->globalTransform().position());
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -125,7 +125,7 @@ bool MachGuiPatrolCommand::doApply(MachActor* pActor, string*)
             // Give to actor
             pActor->newOperation(pOp);
 
-            if (not hasPlayedVoiceMail())
+            if (! hasPlayedVoiceMail())
             {
                 MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::TASKED);
                 hasPlayedVoiceMail(true);
@@ -141,7 +141,7 @@ MachGui::Cursor2dType MachGuiPatrolCommand::cursorOnTerrain(const MexPoint3d& lo
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::PATROL_CURSOR;
 
     return cursor;
@@ -192,7 +192,7 @@ uint MachGuiPatrolCommand::commandPromptStringid() const
 // virtual
 bool MachGuiPatrolCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_P and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_P && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

@@ -71,7 +71,7 @@ MexAlignedBox2d::MexAlignedBox2d(
     const MATHEX_SCALAR x2,
     const MATHEX_SCALAR y2)
 {
-    PRE(x1 <= x2 and y1 <= y2);
+    PRE(x1 <= x2 && y1 <= y2);
 
     MexPoint2d v(x1, y1);
     MexPoint2d v2(x2, y2);
@@ -106,14 +106,14 @@ MexAlignedBox2d::~MexAlignedBox2d()
 bool MexAlignedBox2d::contains(const MexAlignedBox2d& rhs) const
 {
 
-    return (vmin_.x() <= rhs.vmin_.x()) and (vmax_.x() >= rhs.vmax_.x()) and (vmin_.y() <= rhs.vmin_.y())
-        and (vmax_.y() >= rhs.vmax_.y());
+    return (vmin_.x() <= rhs.vmin_.x()) && (vmax_.x() >= rhs.vmax_.x()) && (vmin_.y() <= rhs.vmin_.y())
+        && (vmax_.y() >= rhs.vmax_.y());
 }
 
 bool MexAlignedBox2d::contains(const MexPoint2d& pt) const
 {
 
-    return (vmin_.x() <= pt.x()) and (vmax_.x() >= pt.x()) and (vmin_.y() <= pt.y()) and (vmax_.y() >= pt.y());
+    return (vmin_.x() <= pt.x()) && (vmax_.x() >= pt.x()) && (vmin_.y() <= pt.y()) && (vmax_.y() >= pt.y());
 }
 
 bool MexAlignedBox2d::intersects(const MexAlignedBox2d& rhs, Mathex::TouchingRule rule) const
@@ -123,8 +123,8 @@ bool MexAlignedBox2d::intersects(const MexAlignedBox2d& rhs, Mathex::TouchingRul
     if (rule == Mathex::TOUCH_ISNT_INTERSECT)
         eps = -eps;
 
-    return rhs.vmin_.x() <= vmax_.x() + eps and rhs.vmin_.y() <= vmax_.y() + eps and rhs.vmax_.x() >= vmin_.x() - eps
-        and rhs.vmax_.y() >= vmin_.y() - eps;
+    return rhs.vmin_.x() <= vmax_.x() + eps && rhs.vmin_.y() <= vmax_.y() + eps && rhs.vmax_.x() >= vmin_.x() - eps
+        && rhs.vmax_.y() >= vmin_.y() - eps;
 }
 
 void MexAlignedBox2d::intersectWith(const MexAlignedBox2d& rhs)
@@ -136,7 +136,7 @@ void MexAlignedBox2d::intersectWith(const MexAlignedBox2d& rhs)
     vmax_.x(std::min(vmax_.x(), rhs.vmax_.x()));
     vmax_.y(std::min(vmax_.y(), rhs.vmax_.y()));
 
-    isEmpty_ = vmin_.x() > vmax_.x() or vmin_.y() > vmax_.y();
+    isEmpty_ = vmin_.x() > vmax_.x() || vmin_.y() > vmax_.y();
 }
 
 void MexAlignedBox2d::unionWith(const MexAlignedBox2d& rhs)
@@ -164,7 +164,7 @@ const MexAlignedBox2d& MexAlignedBox2d::operator=(const MexAlignedBox2d& b)
 bool MexAlignedBox2d::operator==(const MexAlignedBox2d& b) const
 {
 
-    return (vmin_ == b.vmin_) and (vmax_ == b.vmax_) and (isEmpty_ == b.isEmpty_);
+    return (vmin_ == b.vmin_) && (vmax_ == b.vmax_) && (isEmpty_ == b.isEmpty_);
 }
 
 const MexPoint2d& MexAlignedBox2d::minCorner() const
@@ -459,13 +459,13 @@ void perRead(PerIstream& str, MexAlignedBox2d& t)
 MexPoint2d MexAlignedBox2d::nearestPointToExternalPoint(const MexPoint2d& externalPoint) const
 {
     PRE(
-        not(externalPoint.x() > minCorner().x() and externalPoint.x() < maxCorner().x()
-            and externalPoint.y() > minCorner().y() and externalPoint.y() < maxCorner().y()));
+        !(externalPoint.x() > minCorner().x() && externalPoint.x() < maxCorner().x()
+            && externalPoint.y() > minCorner().y() && externalPoint.y() < maxCorner().y()));
 
     MATHEX_SCALAR xVal;
     MATHEX_SCALAR yVal;
 
-    if (externalPoint.x() >= minCorner().x() and externalPoint.x() <= maxCorner().x())
+    if (externalPoint.x() >= minCorner().x() && externalPoint.x() <= maxCorner().x())
     {
         // nearest point must be on one of the horizontal lines
         if (externalPoint.y() <= minCorner().y())
@@ -475,7 +475,7 @@ MexPoint2d MexAlignedBox2d::nearestPointToExternalPoint(const MexPoint2d& extern
 
         xVal = externalPoint.x();
     }
-    else if (externalPoint.y() >= minCorner().y() and externalPoint.y() <= maxCorner().y())
+    else if (externalPoint.y() >= minCorner().y() && externalPoint.y() <= maxCorner().y())
     {
         // nearest point must be on one of the vertical lines
         if (externalPoint.x() <= minCorner().x())

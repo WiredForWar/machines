@@ -65,7 +65,7 @@ MachGuiCtxInGameOptions::MachGuiCtxInGameOptions(MachGuiStartupScreens* pStartup
         IDS_MENUBTN_LOADGAME,
         MachGuiStartupScreens::LOADGAME);
     MachGuiMenuButton* pExitBtn;
-    if (not NetNetwork::instance().isLobbiedGame())
+    if (! NetNetwork::instance().isLobbiedGame())
         pExitBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,

@@ -53,7 +53,7 @@ void MachPhysEffects::flashObject(
     W4dMaterialPlanPtr planPtr(pPlan);
 
     // Apply the plan to every entity from pEntity on
-    for (W4dEntityIter it(pEntity); not it.isFinished(); ++it)
+    for (W4dEntityIter it(pEntity); ! it.isFinished(); ++it)
         (*it).entityPlanForEdit().materialPlan(planPtr, startTime);
 }
 
@@ -165,7 +165,7 @@ W4dMaterialPlan* MachPhysEffects::createSmokeMaterialPlan(const RenColour& colou
 
     // Make the colour translucent if alpha not available
     RenColour myColour(colour);
-    if (not capabilities.supportsTextureAlpha() and capabilities.supportsStippledAlpha())
+    if (! capabilities.supportsTextureAlpha() && capabilities.supportsStippledAlpha())
         myColour.a(0.5);
 
     // Create a collection of material vectors based on the argument colour

@@ -136,16 +136,16 @@ void MachLogMessageBroker::processBeHitMessage(NetMessage* pNetMessage)
         }
         DEBUG_STREAM(DIAG_NETWORK, "call whichever beHit Method\n");
         // if the actor is supposed to die then make sure it does otherwise we get funnies occuring.
-        if (pMessage->actorNowDead_ == ACTOR_DEAD and not actor.willHitCauseDeath(pMessage->damage_))
+        if (pMessage->actorNowDead_ == ACTOR_DEAD && ! actor.willHitCauseDeath(pMessage->damage_))
             pMessage->damage_ = 10000;
         // of course - if the actor isn't supposed to die then we also have to trap for that as well.
-        else if (pMessage->actorNowDead_ == ACTOR_NOT_DEAD and actor.willHitCauseDeath(pMessage->damage_))
+        else if (pMessage->actorNowDead_ == ACTOR_NOT_DEAD && actor.willHitCauseDeath(pMessage->damage_))
         {
             pMessage->damage_ = actor.hp() + actor.armour() - 1;
             // check that we have done enough
             // e.g. if actor has 1hp and 1ap and damage =1 then it would die on this hit - so make damage reduce to zero
             // in limiting case
-            while (actor.willHitCauseDeath(pMessage->damage_) and pMessage->damage_ > 0)
+            while (actor.willHitCauseDeath(pMessage->damage_) && pMessage->damage_ > 0)
                 pMessage->damage_ -= 1;
         }
         if (pMessage->damage_ > 0)
@@ -156,7 +156,7 @@ void MachLogMessageBroker::processBeHitMessage(NetMessage* pNetMessage)
             else
                 actor.beHitWithoutAnimation(pMessage->damage_, pMessage->physicalDelay_, pByActor, MachActor::NO_ECHO);
         }
-        if (pMessage->actorNowDead_ == ACTOR_DEAD and not actor.isDead())
+        if (pMessage->actorNowDead_ == ACTOR_DEAD && ! actor.isDead())
         {
             NETWORK_STREAM("############\nFAILURE TO KILL ACTOR WHEN ASKED::\n");
             NETWORK_INDENT(2);
@@ -327,7 +327,7 @@ void MachLogMessageBroker::processEchoLinearProjectileMessage(NetMessage* pNetMe
     int nRounds = pMessage->nRounds_;
 
     if (MachLogRaces::instance().actorExists(pMessage->whichId_)
-        and (targetID == 0 or MachLogRaces::instance().actorExists(targetID)))
+        && (targetID == 0 || MachLogRaces::instance().actorExists(targetID)))
     {
         DEBUG_STREAM(DIAG_NETWORK, "processEchoLinearProjectileMessage " << pMessage->whichId_ << std::endl);
         MachActor& actor = MachLogRaces::instance().actor(pMessage->whichId_);
@@ -631,7 +631,7 @@ void MachLogMessageBroker::processPlayConstructAnimationMessage(NetMessage* pNet
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->constructorId_ ), "Actor does not exist" );
 
     if (MachLogRaces::instance().actorExists(pMessage->constructorId_)
-        and (pMessage->onOrOff_ == false or MachLogRaces::instance().actorExists(pMessage->constructionId_)))
+        && (pMessage->onOrOff_ == false || MachLogRaces::instance().actorExists(pMessage->constructionId_)))
     {
         MachActor& constructorActor = MachLogRaces::instance().actor(pMessage->constructorId_);
         ASSERT(
@@ -725,7 +725,7 @@ void MachLogMessageBroker::processSetSiteDiscoveredByMessage(NetMessage* pNetMes
          ++i)
     {
         MachLogMineralSite* pSite = *i;
-        if (not pSite->hasBeenDiscovered() and MexPoint3d(pMessage->position_) == pSite->position())
+        if (! pSite->hasBeenDiscovered() && MexPoint3d(pMessage->position_) == pSite->position())
         {
             pSite->beDiscoveredBy(pMessage->race_);
             break;
@@ -851,7 +851,7 @@ void MachLogMessageBroker::processHealMessage(NetMessage* pNetMessage)
         if (pMessage->healingFlag_ == MachLogMessageBroker::BEGIN_HEALING)
         {
             if (MachLogRaces::instance().actorExists(pMessage->whichId_)
-                and MachLogRaces::instance().actorExists(pMessage->targetId_))
+                && MachLogRaces::instance().actorExists(pMessage->targetId_))
             {
                 MachActor& actor = MachLogRaces::instance().actor(pMessage->whichId_);
                 MachActor& target = MachLogRaces::instance().actor(pMessage->targetId_);
@@ -1173,7 +1173,7 @@ void MachLogMessageBroker::processCamouflageMachineMessage(NetMessage* pNetMessa
         MachLogMachine& machine = actor.asMachine();
 
         ASSERT(
-            pMessage->camouflageFlag_ == BEGIN_CAMOUFLAGE or pMessage->camouflageFlag_ == STOP_CAMOUFLAGE,
+            pMessage->camouflageFlag_ == BEGIN_CAMOUFLAGE || pMessage->camouflageFlag_ == STOP_CAMOUFLAGE,
             "Unknown message type received.");
 
         if (pMessage->camouflageFlag_ == BEGIN_CAMOUFLAGE)
@@ -1215,7 +1215,7 @@ void MachLogMessageBroker::processCurrentTargetMessage(NetMessage* pNetMessage)
         MachActor& actor = MachLogRaces::instance().actor(pMessage->whichId_);
         if (actor.objectIsCanAttack())
         {
-            if (pMessage->targetIdValidFlag_ == VALID and MachLogRaces::instance().actorExists(pMessage->targetId_))
+            if (pMessage->targetIdValidFlag_ == VALID && MachLogRaces::instance().actorExists(pMessage->targetId_))
             {
                 actor.asCanAttack().currentTarget(&MachLogRaces::instance().actor(pMessage->targetId_));
             }
@@ -1285,12 +1285,12 @@ void MachLogMessageBroker::processActorThreatMessage(NetMessage* pNetMessage)
         "processActorThreatMessage whichId " << pMessage->whichId_ << " threat " << pMessage->threatId_ << " Add? "
                                              << (pMessage->threatFlag_ == ADD_THREAT ? true : false) << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
-    if (races.actorExists(pMessage->whichId_) and races.actorExists(pMessage->threatId_))
+    if (races.actorExists(pMessage->whichId_) && races.actorExists(pMessage->threatId_))
     {
         MachActor& actor = races.actor(pMessage->whichId_);
         if (pMessage->threatFlag_ == ADD_THREAT)
         {
-            if (not actor.hasThisActorAsAThreat(pMessage->threatId_))
+            if (! actor.hasThisActorAsAThreat(pMessage->threatId_))
                 actor.addThreat(pMessage->threatId_);
         }
         else
@@ -1373,7 +1373,7 @@ void MachLogMessageBroker::processSmeltMachineMessage(NetMessage* pNetMessage)
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
 
-    if (races.actorExists(whichId) and races.actor(whichId).objectIsMachine())
+    if (races.actorExists(whichId) && races.actor(whichId).objectIsMachine())
         races.actor(whichId).asMachine().smeltMe();
 #ifndef PRODUCTION
     else
@@ -1421,7 +1421,7 @@ void MachLogMessageBroker::processAdvanceConstructionStateMessage(NetMessage* pN
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
 
-    if (races.actorExists(whichId) and races.actor(whichId).objectIsConstruction())
+    if (races.actorExists(whichId) && races.actor(whichId).objectIsConstruction())
         races.actor(whichId).asConstruction().advanceConstructionState(pMessage->addAmount_);
 
     DEBUG_STREAM(DIAG_NETWORK, "processAdvanceConstructionStateMessage DONE " << std::endl);
@@ -1455,7 +1455,7 @@ void MachLogMessageBroker::processAddRepairPointsMessage(NetMessage* pNetMessage
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
 
-    if (races.actorExists(whichId) and races.actor(whichId).objectIsConstruction())
+    if (races.actorExists(whichId) && races.actor(whichId).objectIsConstruction())
         races.actor(whichId).asConstruction().addRepairPoints(pMessage->addAmount_);
 
     DEBUG_STREAM(DIAG_NETWORK, "processAddRepairPointsMessage DONE " << std::endl);
@@ -1490,7 +1490,7 @@ void MachLogMessageBroker::processMakeCompleteConstructionMessage(NetMessage* pN
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
 
-    if (races.actorExists(whichId) and races.actor(whichId).objectIsConstruction())
+    if (races.actorExists(whichId) && races.actor(whichId).objectIsConstruction())
         races.actor(whichId).asConstruction().makeComplete(MachLogConstruction::FULL_HP_STRENGTH);
 
     DEBUG_STREAM(DIAG_NETWORK, "processMakeCompleteConstructionMessage DONE " << std::endl);
@@ -1525,7 +1525,7 @@ void MachLogMessageBroker::processIsEntranceOpenMessage(NetMessage* pNetMessage)
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
 
-    if (races.actorExists(whichId) and races.actor(whichId).objectIsConstruction())
+    if (races.actorExists(whichId) && races.actor(whichId).objectIsConstruction())
         races.actor(whichId).asConstruction().isEntranceOpenNoEcho(pMessage->door_, pMessage->doOpen_);
 
     DEBUG_STREAM(DIAG_NETWORK, "processIsEntranceOpenMessage DONE " << std::endl);

@@ -62,7 +62,7 @@ const W4dVisibilityPlanPtr& MachPhysMoveIndicator::getFadeAwayPlan()
     static W4dVisibilityPlanPtr planPtr = new W4dVisibilityPlan(true);
     static bool doneOnce = false;
 
-    if (not doneOnce)
+    if (! doneOnce)
     {
         doneOnce = true;
         constexpr auto duration = MachPhysMoveIndicator::DisplayTime;

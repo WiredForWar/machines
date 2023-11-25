@@ -74,9 +74,9 @@ void MachLogPlayAnimationAction::doAction()
             objectOk = true;
         else if ((*i)->objectType() == objectType_)
         {
-            if (subTypeSet_ and (*i)->subType() != subType_)
+            if (subTypeSet_ && (*i)->subType() != subType_)
                 objectOk = false;
-            if (objectOk and hwLevelSet_)
+            if (objectOk && hwLevelSet_)
             {
                 if ((*i)->objectIsMachine())
                 {
@@ -95,7 +95,7 @@ void MachLogPlayAnimationAction::doAction()
                     objectOk = false;
                 }
             }
-            if (objectOk and weaponComboSet_)
+            if (objectOk && weaponComboSet_)
             {
                 if ((*i)->objectIsCanAttack())
                 {
@@ -108,7 +108,7 @@ void MachLogPlayAnimationAction::doAction()
         }
         else
             objectOk = false;
-        if (objectOk and point_.sqrEuclidianDistance((*i)->position()) < sqrRange_)
+        if (objectOk && point_.sqrEuclidianDistance((*i)->position()) < sqrRange_)
             matchingObjects.push_back(*i);
     }
 

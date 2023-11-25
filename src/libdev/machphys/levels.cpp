@@ -101,7 +101,7 @@ void MachPhysLevels::CLASS_INVARIANT
 
 size_t MachPhysLevels::nHardwareLevels(MachPhys::MachineType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t result = 0;
     size_t* pData = nullptr;
@@ -149,8 +149,8 @@ size_t MachPhysLevels::nHardwareLevels(MachPhys::TechnicianSubType subType) cons
 
 size_t MachPhysLevels::nHardwareLevels(MachPhys::ConstructionType type) const
 {
-    PRE(type == MachPhys::SMELTER or type == MachPhys::GARRISON or type == MachPhys::MINE or type == MachPhys::BEACON
-        or type == MachPhys::POD);
+    PRE(type == MachPhys::SMELTER || type == MachPhys::GARRISON || type == MachPhys::MINE || type == MachPhys::BEACON
+        || type == MachPhys::POD);
 
     size_t result = 0;
     size_t* pData = nullptr;
@@ -189,7 +189,7 @@ size_t MachPhysLevels::nHardwareLevels(MachPhys::MissileEmplacementSubType subTy
 
 size_t MachPhysLevels::nSoftwareLevels(MachPhys::MachineType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t result = 0;
     size_t* pData = nullptr;
@@ -238,7 +238,7 @@ size_t MachPhysLevels::nSoftwareLevels(MachPhys::TechnicianSubType subType) cons
 size_t MachPhysLevels::hardwareLevel(MachPhys::MachineType type, size_t index) const
 {
     PRE(index < nHardwareLevels(type));
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t nElements = 0;
     size_t* levels = nullptr;
@@ -295,7 +295,7 @@ size_t MachPhysLevels::hardwareLevel(MachPhys::TechnicianSubType subType, size_t
 size_t MachPhysLevels::hardwareLevel(MachPhys::ConstructionType type, size_t index) const
 {
     PRE(index < nHardwareLevels(type));
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t nElements = 0;
     size_t* levels = nullptr;
@@ -341,7 +341,7 @@ size_t MachPhysLevels::hardwareLevel(MachPhys::MissileEmplacementSubType subType
 size_t MachPhysLevels::softwareLevel(MachPhys::MachineType type, size_t index) const
 {
     PRE(index < nSoftwareLevels(type));
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t nElements = 0;
     size_t* levels = nullptr;
@@ -401,7 +401,7 @@ bool MachPhysLevels::levelValid(MachPhys::MachineType type, size_t hardwareLevel
     PRE_INFO(hardwareLevel);
     PRE_INFO(softwareLevel);
 
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     bool hardwareLevelFound = false;
     bool softwareLevelFound = false;
@@ -417,14 +417,14 @@ bool MachPhysLevels::levelValid(MachPhys::MachineType type, size_t hardwareLevel
         softwareLevelFound = levelFound(softwareLevel, levels, nElements);
     }
 
-    return hardwareLevelFound and softwareLevelFound;
+    return hardwareLevelFound && softwareLevelFound;
 }
 bool MachPhysLevels::levelValid(MachPhys::MachineType type, size_t hardwareLevel) const
 {
     PRE_INFO(type);
     PRE_INFO(hardwareLevel);
 
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     bool hardwareLevelFound = false;
     size_t nElements = 0;
@@ -455,7 +455,7 @@ bool MachPhysLevels::levelValid(MachPhys::AdministratorSubType subType, size_t h
         softwareLevelFound = levelFound(softwareLevel, levels, nElements);
     }
 
-    return hardwareLevelFound and softwareLevelFound;
+    return hardwareLevelFound && softwareLevelFound;
 }
 bool MachPhysLevels::levelValid(MachPhys::AdministratorSubType subType, size_t hardwareLevel) const
 {
@@ -491,7 +491,7 @@ bool MachPhysLevels::levelValid(MachPhys::AggressorSubType subType, size_t hardw
         softwareLevelFound = levelFound(softwareLevel, levels, nElements);
     }
 
-    return hardwareLevelFound and softwareLevelFound;
+    return hardwareLevelFound && softwareLevelFound;
 }
 bool MachPhysLevels::levelValid(MachPhys::AggressorSubType subType, size_t hardwareLevel) const
 {
@@ -527,7 +527,7 @@ bool MachPhysLevels::levelValid(MachPhys::ConstructorSubType subType, size_t har
         softwareLevelFound = levelFound(softwareLevel, levels, nElements);
     }
 
-    return hardwareLevelFound and softwareLevelFound;
+    return hardwareLevelFound && softwareLevelFound;
 }
 bool MachPhysLevels::levelValid(MachPhys::ConstructorSubType subType, size_t hardwareLevel) const
 {
@@ -563,7 +563,7 @@ bool MachPhysLevels::levelValid(MachPhys::TechnicianSubType subType, size_t hard
         softwareLevelFound = levelFound(softwareLevel, levels, nElements);
     }
 
-    return hardwareLevelFound and softwareLevelFound;
+    return hardwareLevelFound && softwareLevelFound;
 }
 bool MachPhysLevels::levelValid(MachPhys::TechnicianSubType subType, size_t hardwareLevel) const
 {
@@ -585,7 +585,7 @@ bool MachPhysLevels::levelValid(MachPhys::ConstructionType type, size_t hardware
     PRE_INFO(type);
     PRE_INFO(hardwareLevel);
 
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     bool hardwareLevelFound = false;
     size_t nElements = 0;
@@ -641,7 +641,7 @@ bool MachPhysLevels::levelValid(MachPhys::MissileEmplacementSubType subType, siz
 
 void MachPhysLevels::hardwareLevelData(MachPhys::MachineType type, size_t** pDataArray, size_t* pNElements) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     switch (type)
     {
@@ -765,7 +765,7 @@ void MachPhysLevels::hardwareLevelData(MachPhys::TechnicianSubType subType, size
 
 void MachPhysLevels::hardwareLevelData(MachPhys::ConstructionType type, size_t** pDataArray, size_t* pNElements) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     switch (type)
     {
@@ -860,7 +860,7 @@ void MachPhysLevels::hardwareLevelData(
 
 void MachPhysLevels::softwareLevelData(MachPhys::MachineType type, size_t** pDataArray, size_t* pNElements) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     switch (type)
     {
@@ -986,7 +986,7 @@ bool MachPhysLevels::levelFound(size_t level, const size_t* levels, size_t nLeve
 {
     bool found = false;
 
-    for (size_t i = 0; i < nLevels and not found; ++i)
+    for (size_t i = 0; i < nLevels && ! found; ++i)
     {
         if (level == levels[i])
             found = true;
@@ -999,22 +999,22 @@ bool MachPhysLevels::subTyped(MachPhys::MachineType type) const
 {
     PRE_INFO(type);
 
-    return type == MachPhys::AGGRESSOR or type == MachPhys::CONSTRUCTOR or type == MachPhys::ADMINISTRATOR
-        or type == MachPhys::TECHNICIAN;
+    return type == MachPhys::AGGRESSOR || type == MachPhys::CONSTRUCTOR || type == MachPhys::ADMINISTRATOR
+        || type == MachPhys::TECHNICIAN;
 }
 
 bool MachPhysLevels::subTyped(MachPhys::ConstructionType type) const
 {
     PRE_INFO(type);
 
-    return type == MachPhys::FACTORY or type == MachPhys::MISSILE_EMPLACEMENT or type == MachPhys::HARDWARE_LAB;
+    return type == MachPhys::FACTORY || type == MachPhys::MISSILE_EMPLACEMENT || type == MachPhys::HARDWARE_LAB;
 }
 
 // ********************************************************************************
 
 MachPhysLevelIndexMap MachPhysLevels::hardwareLevelIndexMap(MachPhys::MachineType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t* dataArray = nullptr;
     size_t nElements = 0;
@@ -1066,7 +1066,7 @@ MachPhysLevelIndexMap MachPhysLevels::hardwareLevelIndexMap(MachPhys::Technician
 
 MachPhysLevelIndexMap MachPhysLevels::softwareLevelIndexMap(MachPhys::MachineType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t* dataArray = nullptr;
     size_t nElements = 0;
@@ -1118,7 +1118,7 @@ MachPhysLevelIndexMap MachPhysLevels::softwareLevelIndexMap(MachPhys::Technician
 
 MachPhysLevelIndexMap MachPhysLevels::hardwareLevelIndexMap(MachPhys::ConstructionType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     size_t* dataArray = nullptr;
     size_t nElements = 0;
@@ -1162,7 +1162,7 @@ MachPhysLevelIndexMap MachPhysLevels::hardwareLevelIndexMap(MachPhys::MissileEmp
 
 size_t MachPhysLevels::uniqueHardwareIndex(MachPhys::MachineType type, size_t hardwareLevel) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
     PRE(levelValid(type, hardwareLevel));
 
     size_t result = hardwareLevelIndexMap(type).index(hardwareLevel);
@@ -1274,7 +1274,7 @@ size_t MachPhysLevels::uniqueHardwareIndex(MachPhys::TechnicianSubType subType, 
 
 size_t MachPhysLevels::uniqueHardwareIndex(MachPhys::ConstructionType type, size_t hardwareLevel) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
     PRE(levelValid(type, hardwareLevel));
 
     size_t result = hardwareLevelIndexMap(type).index(hardwareLevel);
@@ -1466,7 +1466,7 @@ size_t MachPhysLevels::nSoftwareIndices() const
 
 string MachPhysLevels::name(MachPhys::MachineType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     string result;
 
@@ -1578,7 +1578,7 @@ string MachPhysLevels::name(MachPhys::TechnicianSubType subType) const
 
 string MachPhysLevels::name(MachPhys::ConstructionType type) const
 {
-    PRE(not subTyped(type));
+    PRE(! subTyped(type));
 
     string result;
 

@@ -27,7 +27,7 @@ MachPhysLocomotionMethodImpl::MachPhysLocomotionMethodImpl(MachPhysMachine* pMac
     const MexAlignedBox3d& boundary = pMachine->compositeBoundingVolume();
     foreDistance_ = boundary.maxCorner().x();
     aftDistance_ = boundary.minCorner().x();
-    ASSERT(foreDistance_ > 0.01 and aftDistance_ < -0.01, "Funny shaped machine");
+    ASSERT(foreDistance_ > 0.01 && aftDistance_ < -0.01, "Funny shaped machine");
 
     TEST_INVARIANT;
 }

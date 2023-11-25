@@ -116,7 +116,7 @@ void MachLogGeoLocator::isLocating(bool doLocate)
     if (doLocate != isLocating())
     {
         MachLogNetwork& network = MachLogNetwork::instance();
-        if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
             network.messageBroker().sendPlayNormalObjectAnimationMessage(id(), doLocate);
         physGeoLocator().isLocating(doLocate);
     }

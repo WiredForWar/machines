@@ -38,7 +38,7 @@ MachPhysEvasionPriorityPlans::~MachPhysEvasionPriorityPlans()
 
 void MachPhysEvasionPriorityPlans::addNewEPP(const string& EPPName)
 {
-    PRE(not EPPExists(EPPName));
+    PRE(! EPPExists(EPPName));
 
     MachPhysEvasionPriorityPlan* pEPP = new MachPhysEvasionPriorityPlan(EPPName);
     EPPs_.push_back(pEPP);
@@ -54,7 +54,7 @@ void MachPhysEvasionPriorityPlans::garrisonPriority(const string& EPPName, int p
     PRE_INFO(priority);
     // Special value of -2 allowed for garrisons which will indicate that NO evasion is ever to be
     // undertaken by any machine with this priority plan.
-    PRE(priority < N_PRIORITY_LEVELS and priority >= -2);
+    PRE(priority < N_PRIORITY_LEVELS && priority >= -2);
     PRE(EPPExists(EPPName));
 
     EPP(EPPName).garrisonPriority(priority);
@@ -65,7 +65,7 @@ void MachPhysEvasionPriorityPlans::garrisonPriority(const string& EPPName, int p
 void MachPhysEvasionPriorityPlans::aggressivesPriority(const string& EPPName, int priority)
 {
     PRE_INFO(priority);
-    PRE(priority < N_PRIORITY_LEVELS and priority >= -1);
+    PRE(priority < N_PRIORITY_LEVELS && priority >= -1);
     PRE(EPPExists(EPPName));
 
     EPP(EPPName).aggressivesPriority(priority);
@@ -76,7 +76,7 @@ void MachPhysEvasionPriorityPlans::aggressivesPriority(const string& EPPName, in
 void MachPhysEvasionPriorityPlans::podPriority(const string& EPPName, int priority)
 {
     PRE_INFO(priority);
-    PRE(priority < N_PRIORITY_LEVELS and priority >= -1);
+    PRE(priority < N_PRIORITY_LEVELS && priority >= -1);
     PRE(EPPExists(EPPName));
 
     EPP(EPPName).podPriority(priority);
@@ -87,7 +87,7 @@ void MachPhysEvasionPriorityPlans::podPriority(const string& EPPName, int priori
 void MachPhysEvasionPriorityPlans::turretsPriority(const string& EPPName, int priority)
 {
     PRE_INFO(priority);
-    PRE(priority < N_PRIORITY_LEVELS and priority >= -1);
+    PRE(priority < N_PRIORITY_LEVELS && priority >= -1);
     PRE(EPPExists(EPPName));
 
     EPP(EPPName).turretsPriority(priority);
@@ -135,7 +135,7 @@ bool MachPhysEvasionPriorityPlans::EPPExists(const string& EPPName) const
 {
     bool found = false;
 
-    for (EPPs::const_iterator i = EPPs_.begin(); not found and i != EPPs_.end(); ++i)
+    for (EPPs::const_iterator i = EPPs_.begin(); ! found && i != EPPs_.end(); ++i)
     {
         if ((*i)->name() == EPPName)
             found = true;
@@ -153,7 +153,7 @@ const MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const strin
     MachPhysEvasionPriorityPlan* pEPP = nullptr;
     bool found = false;
 
-    for (EPPs::const_iterator i = EPPs_.begin(); not found and i != EPPs_.end(); ++i)
+    for (EPPs::const_iterator i = EPPs_.begin(); ! found && i != EPPs_.end(); ++i)
     {
         if ((*i)->name() == EPPName)
         {
@@ -174,7 +174,7 @@ MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const string& EPP
     bool found = false;
     MachPhysEvasionPriorityPlan* pEPP = nullptr;
 
-    for (EPPs::iterator i = EPPs_.begin(); not found and i != EPPs_.end(); ++i)
+    for (EPPs::iterator i = EPPs_.begin(); ! found && i != EPPs_.end(); ++i)
     {
         if ((*i)->name() == EPPName)
         {

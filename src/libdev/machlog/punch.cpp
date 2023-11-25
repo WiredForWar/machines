@@ -133,7 +133,7 @@ bool MachLogPunchBlast::hitVictimFirstWave(const MachActor& victim) const
     MATHEX_SCALAR minimumCheckRadiusSize = basicWaveRadius - 8.0;
 
     bool targetIsAtHitDistance
-        = actorWithinRadius(victim, basicWaveRadius) and not actorWithinRadius(victim, minimumCheckRadiusSize);
+        = actorWithinRadius(victim, basicWaveRadius) && ! actorWithinRadius(victim, minimumCheckRadiusSize);
 
     if (targetIsAtHitDistance)
     {
@@ -161,7 +161,7 @@ void MachLogPunchBlast::inflictDamageFirstWave(MachActor* pDamagedVictim)
     CB_MachLogPunchBlast_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this

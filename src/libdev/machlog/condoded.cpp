@@ -43,7 +43,7 @@ bool MachLogAllOtherRacesUnitsDeadCondition::doHasConditionBeenMet() const
     bool result = true;
     for (int i = 0; i < otherRace_.size(); ++i)
         if ((races.nConstructions(otherRace_[i]) + races.nMachines(otherRace_[i]) != 0)
-            and not races.hasLost(otherRace_[i]))
+            && ! races.hasLost(otherRace_[i]))
             result = false;
     return result;
 }

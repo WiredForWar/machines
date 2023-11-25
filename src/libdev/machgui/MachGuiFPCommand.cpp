@@ -20,7 +20,7 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
         = RenSurface::createAnonymousSurface(32, 32, W4dManager::instance().sceneManager()->pDevice()->backSurface());
     static bool initializedNUM = false;
 
-    if (not initializedNUM)
+    if (! initializedNUM)
     {
         constexpr auto rectangle = Ren::Rect { 0, 0, 32, 32 };
 
@@ -82,7 +82,7 @@ void MachGuiFPCommand::resetLogHandler()
 
 void MachGuiFPCommand::updateSquadIcon()
 {
-    if (not pLogHandler_)
+    if (! pLogHandler_)
     {
         return;
     }
@@ -107,7 +107,7 @@ void MachGuiFPCommand::clearSquadIcon()
 
 void MachGuiFPCommand::updateSquadNumber()
 {
-    if (not pLogHandler_)
+    if (! pLogHandler_)
     {
         return;
     }

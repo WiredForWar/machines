@@ -111,7 +111,7 @@ ProProfiler::~ProProfiler()
 
 void ProProfiler::traceInterval(double timeSeconds)
 {
-    PRE(not traceIntervalFixed());
+    PRE(! traceIntervalFixed());
 
     traceIntervalSeconds_ = timeSeconds;
 
@@ -373,7 +373,7 @@ void ProProfiler::traceStack(
     ostr << " [" << lineNumber << "]";
 
     // And any extra string
-    if (extraString and extraString[0] != '\0')
+    if (extraString && extraString[0] != '\0')
         ostr << " { " << extraString << " }";
 
     // And the terminator
@@ -383,13 +383,13 @@ void ProProfiler::traceStack(
 void ProProfiler::isBufferingOutput(bool is)
 {
     // Check which way
-    if (is and not isBufferingOutput_)
+    if (is && ! isBufferingOutput_)
     {
         // starting buffering
         isBufferingOutput_ = true;
         pMemoryBuffer_ = new BaseLogBuffer(256000);
     }
-    else if (not is and isBufferingOutput_)
+    else if (! is && isBufferingOutput_)
     {
         // starting buffering
         isBufferingOutput_ = false;

@@ -84,7 +84,7 @@ MachLogTechnician::~MachLogTechnician()
 PhysRelativeTime MachLogTechnician::research()
 {
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
         network.messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
     return physTechnician().research();
 }

@@ -166,7 +166,7 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdate()
         done = true;
     }
 
-    if (not done and not initialDelayProcessed_)
+    if (! done && ! initialDelayProcessed_)
     {
         if (startTime_ + initialDelay_ < SimManager::instance().currentTime())
         {
@@ -185,7 +185,7 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdate()
         }
     }
 
-    if (not done)
+    if (! done)
     {
         if (useIonCannon_)
         {
@@ -198,7 +198,7 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdate()
         }
     }
 
-    if (not done and pActor_->machines().size() < nMinimumMachines_)
+    if (! done && pActor_->machines().size() < nMinimumMachines_)
     {
         for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); i != pActor_->machines().end(); ++i)
         {
@@ -215,7 +215,7 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdate()
         }
     }
 
-    if (not done)
+    if (! done)
     {
         // will this attack operation occur a fixed number of times only?
         if (doCount_ > -1)
@@ -264,8 +264,8 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdateWithCommander()
 {
     MachLogOperation::OperationType commanderOp = pActor_->commander().strategy().currentOperationType();
 
-    if (commanderOp == MachLogOperation::ATTACK_OPERATION or commanderOp == MachLogOperation::SEEK_AND_DESTROY_OPERATION
-        or commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION)
+    if (commanderOp == MachLogOperation::ATTACK_OPERATION || commanderOp == MachLogOperation::SEEK_AND_DESTROY_OPERATION
+        || commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION)
         return 30.0;
     // The commander is not doing an aggressive operation...so we can reassign as necessary.
     pActor_->commander().newOperation(new MachLogSeekAndDestroyOperation(
@@ -290,7 +290,7 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdateWithoutCommander()
 
     if (doProximityCheck_)
     {
-        if (state_ == RAMPAGING and doProximityCheck_ and noRampagingMachines())
+        if (state_ == RAMPAGING && doProximityCheck_ && noRampagingMachines())
         {
             switchToAssembleMode();
         }
@@ -317,12 +317,12 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdateWithoutCommander()
         //      MATHEX_SCALAR squadronMaxWeaponRange = 0;
         MachActor* pCanAttackActor = nullptr;
         for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin();
-             not pCanAttackActor and i != pActor_->machines().end();
+             ! pCanAttackActor && i != pActor_->machines().end();
              ++i)
         {
             MachLogMachine* pSquadronMachine = (*i);
 
-            if (pSquadronMachine->objectIsCanAttack() and pSquadronMachine->rampaging())
+            if (pSquadronMachine->objectIsCanAttack() && pSquadronMachine->rampaging())
             {
                 pCanAttackActor = pSquadronMachine;
 
@@ -548,7 +548,7 @@ void MachLogTaskAttackOperation::issueSeekAndDestroysToAllMachinesWithoutTargets
     for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); i != pActor_->machines().end(); ++i)
     {
         MachLogMachine& squadronMachine = (**i);
-        if (squadronMachine.objectIsCanAttack() and not squadronMachine.asCanAttack().hasCurrentTarget())
+        if (squadronMachine.objectIsCanAttack() && ! squadronMachine.asCanAttack().hasCurrentTarget())
         {
             squadronMachine.newOperation(new MachLogSeekAndDestroyOperation(
                 &squadronMachine,
@@ -563,7 +563,7 @@ void MachLogTaskAttackOperation::issueSeekAndDestroysToAllMachinesWithoutTargets
 PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActor& targetActor)
 {
     PRE(pActor_->machines().size() > 0);
-    PRE(not noRampagingMachines());
+    PRE(! noRampagingMachines());
 
     HAL_STREAM(" found closer target..looking at range against first machine compared against sqr weapon range\n");
     //  HAL_STREAM(" range " << targetActor.position().sqrEuclidianDistance( pCanAttackActor->position() ) << " sqr
@@ -578,11 +578,11 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
 
     // may have to put the attack on hold until any stragglers have caught up....order them to move to the
     // position of the machine currently nearest the target if anyone is more than 50m away from him
-    if (doProximityCheck_ and not pActor_->machines().empty())
+    if (doProximityCheck_ && ! pActor_->machines().empty())
     {
         MexPoint2d positionOfMachineNearestTarget
             = positionOfRampagingMachineNearestTargetPoint(targetActor.position());
-        if (not allRampagingMachinesCloseToPoint(positionOfMachineNearestTarget))
+        if (! allRampagingMachinesCloseToPoint(positionOfMachineNearestTarget))
         {
             destinationPoint = positionOfMachineNearestTarget;
             orderedAssemblyAroundClosestMachine = true;
@@ -590,7 +590,7 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
         }
     }
 
-    if (not orderedAssemblyAroundClosestMachine)
+    if (! orderedAssemblyAroundClosestMachine)
     {
         // just go towards the target
         destinationPoint = targetActor.position();
@@ -606,9 +606,9 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
     for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); i != pActor_->machines().end(); ++i)
     {
         MachLogMachine& squadronMachine = (**i);
-        if (squadronMachine.objectIsCanAttack() and squadronMachine.rampaging())
+        if (squadronMachine.objectIsCanAttack() && squadronMachine.rampaging())
         {
-            if (not squadronMachine.asCanAttack().hasCurrentTarget())
+            if (! squadronMachine.asCanAttack().hasCurrentTarget())
             {
                 MachLogCanAttack& canAttack = squadronMachine.asCanAttack();
                 MATHEX_SCALAR sqrWeaponRange = sqr(canAttack.getMaximumWeaponRange());
@@ -645,7 +645,7 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
         }
     }
 
-    if (not actors.empty())
+    if (! actors.empty())
     {
         MachLogGroupSimpleMove
             groupMove(actors, points, MachLogRaces::instance().AICommandId(), &dummyReason, pathFindingPriority());
@@ -659,7 +659,7 @@ bool MachLogTaskAttackOperation::allRampagingMachinesCloseToPoint(const MexPoint
     bool allCloseEnough = true;
 
     for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin();
-         allCloseEnough and i != pActor_->machines().end();
+         allCloseEnough && i != pActor_->machines().end();
          ++i)
     {
         MachLogMachine& squadronMachine = (**i);
@@ -677,8 +677,8 @@ bool MachLogTaskAttackOperation::allRampagingMachinesCloseToPoint(const MexPoint
 
 MexPoint2d MachLogTaskAttackOperation::positionOfRampagingMachineNearestTargetPoint(const MexPoint2d& targetPoint) const
 {
-    PRE(not pActor_->machines().empty());
-    PRE(not noRampagingMachines());
+    PRE(! pActor_->machines().empty());
+    PRE(! noRampagingMachines());
 
     MATHEX_SCALAR sqrClosestDistance = 1000000000;
     MachLogMachine* pClosestMachine = nullptr;
@@ -726,10 +726,10 @@ bool MachLogTaskAttackOperation::noRampagingMachines() const
 {
     bool result = true;
 
-    for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); result and i != pActor_->machines().end();
+    for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); result && i != pActor_->machines().end();
          ++i)
     {
-        result = not((*i)->rampaging());
+        result = !((*i)->rampaging());
     }
 
     return result;

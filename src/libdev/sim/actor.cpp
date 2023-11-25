@@ -150,12 +150,12 @@ void SimActor::isDead(bool die)
     // The manager will delete this actor very soon
     if (die)
     {
-        if (not isDead_)
+        if (! isDead_)
             SimManager::instance().addDeadActor(this);
     }
     else
     {
-        ASSERT(not isDead_, "Attempt to resurrect dead actor");
+        ASSERT(! isDead_, "Attempt to resurrect dead actor");
     }
 
     isDead_ = die;

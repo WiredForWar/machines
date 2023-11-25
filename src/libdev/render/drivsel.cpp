@@ -71,7 +71,7 @@ RenDriverPtr RenDriverSelectorImpl::createAutomaticDriver(const RenDriverSelecto
     for (it = fromList.begin(); it != fromList.end(); ++it)
     {
         // if( (bestDriverInList == NULL) or (*it)->isBetterChoiceThan( *bestDriverInList ) )
-        if ((bestDriverInList == RenDriverPtr(nullptr)) or (*it)->isBetterChoiceThan(*bestDriverInList))
+        if ((bestDriverInList == RenDriverPtr(nullptr)) || (*it)->isBetterChoiceThan(*bestDriverInList))
             bestDriverInList = (*it);
     }
     ASSERT(bestDriverInList.isDefined(), " Could not find a acceptable driver in list ");
@@ -99,7 +99,7 @@ void RenDriverSelectorImpl::eraseNonAutomaticD3dDrivers()
     {
         nextIt = it;
         ++nextIt;
-        if (not(*it)->driverImpl().isAutomatic())
+        if (!(*it)->driverImpl().isAutomatic())
             d3dDrivers_.erase(it);
         it = nextIt;
     }
@@ -233,7 +233,7 @@ void RenDriverSelector::buildD3dDrivers()
     ASSERT(automaticD3dDriver_.isDefined(), "Unable to find an appropriate D3D driver ");
 
     bool isAutomatic;
-    if (not isAutomatic)
+    if (! isAutomatic)
     {
         RENDER_STREAM("The user has requested not to use the automatic driver " << std::endl);
 
@@ -245,7 +245,7 @@ void RenDriverSelector::buildD3dDrivers()
             RENDER_STREAM("Requested Direct3d Driver not found (automatic driver will be used) " << std::endl);
     }
 
-    if (not currentD3dDriver_.isDefined())
+    if (! currentD3dDriver_.isDefined())
         currentD3dDriver_ = automaticD3dDriver_;
 
     RENDER_STREAM(
@@ -292,7 +292,7 @@ RenDriverSelector::ReturnValue RenDriverSelector::useDDrawDriver(const RenDriver
     ReturnValue result = FAILED;
     // look for the driver in the list
     RenDrivers::const_iterator it;
-    for (it = dDrawDrivers_.begin(); it != dDrawDrivers_.end() and result == FAILED; ++it)
+    for (it = dDrawDrivers_.begin(); it != dDrawDrivers_.end() && result == FAILED; ++it)
     {
         if ((*it) == driver)
         {
@@ -333,7 +333,7 @@ RenDriverSelector::ReturnValue RenDriverSelector::useD3dDriver(const RenDriverPt
     ReturnValue result = FAILED;
     // look for the driver in the list
     RenDrivers::const_iterator it;
-    for (it = d3dDrivers_.begin(); it != d3dDrivers_.end() and result == FAILED; ++it)
+    for (it = d3dDrivers_.begin(); it != d3dDrivers_.end() && result == FAILED; ++it)
     {
         if ((*it) == driver)
         {

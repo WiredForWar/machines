@@ -130,7 +130,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 {
     CB_MachLogEvadeOperation_DEPIMPL();
 
-    PRE(not isFinished());
+    PRE(! isFinished());
     PRE(pActor_ != nullptr);
 
     ASSERT(
@@ -146,20 +146,20 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
     pActor_->populateStrongThreats(&strongThreats);
 
-    if (not strongThreats.empty())
+    if (! strongThreats.empty())
         lastTimeIHadStrongThreat_ = timeNow;
 
     // If we are still doing a subop, only terminate evade after 16 seconds clear of strong threats.
     // If we DON'T have a subop, and there's no strong threats, we'll have to cancel as subsequent code
     // to initiate an evade subop relies on there being at least one strong threat.
 
-    bool naturallyTerminate = (pSubOperation() and (timeNow - lastTimeIHadStrongThreat_ >= 16.0))
-        or (not(pSubOperation()) and strongThreats.empty());
+    bool naturallyTerminate = (pSubOperation() && (timeNow - lastTimeIHadStrongThreat_ >= 16.0))
+        || (!(pSubOperation()) && strongThreats.empty());
 
     // have we now met any of the conditions for terminating this operation?
     if (naturallyTerminate // stop evading if no strong threats for 10 seconds or more
-        or pActor_->virtualDefCon() == MachLog::DEFCON_HIGH
-        or (not(strongThreats.empty()) and pActor_->notAfraidOfStrongThreats(strongThreats)))
+        || pActor_->virtualDefCon() == MachLog::DEFCON_HIGH
+        || (!(strongThreats.empty()) && pActor_->notAfraidOfStrongThreats(strongThreats)))
     {
         // restore previous first operation as first (and only) operation on the strategy queue.
         pActor_->strategy().newOperation(pCachedOperation_, false);
@@ -203,7 +203,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
     MachActor* pPodActor = nullptr;
 
     for (int priority = 0;
-         currentEvadeOpType_ == SEEK_SAFER_GROUND and priority < MachPhysEvasionPriorityPlans::N_PRIORITY_LEVELS;
+         currentEvadeOpType_ == SEEK_SAFER_GROUND && priority < MachPhysEvasionPriorityPlans::N_PRIORITY_LEVELS;
          ++priority)
     {
         if (EPP.garrisonPriority() == priority)
@@ -231,8 +231,8 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 int aggressiveMilitaryStrength = pFriendlyMachine->localStrengthFromPosition(pActor_->position());
 
-                if (not pEvadeDestinationActor
-                    or (pEvadeDestinationActor and aggressiveMilitaryStrength > strongestMilitaryStrength))
+                if (! pEvadeDestinationActor
+                    || (pEvadeDestinationActor && aggressiveMilitaryStrength > strongestMilitaryStrength))
                 {
                     pEvadeDestinationActor = pFriendlyMachine;
                     currentEvadeOpType_ = SEEK_AGGRESSIVE;
@@ -249,8 +249,8 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                 ASSERT(pFriendlyMissileEmplacement, "Unexpected NULL pointer for pFriendlyMissileEmplacement.");
                 int missileEmplacementMilitaryStrength
                     = pFriendlyMissileEmplacement->localStrengthFromPosition(pActor_->position());
-                if (not pEvadeDestinationActor
-                    or (pEvadeDestinationActor and missileEmplacementMilitaryStrength > strongestMilitaryStrength))
+                if (! pEvadeDestinationActor
+                    || (pEvadeDestinationActor && missileEmplacementMilitaryStrength > strongestMilitaryStrength))
                 {
                     pEvadeDestinationActor = pFriendlyMissileEmplacement;
                     currentEvadeOpType_ = SEEK_TURRET;
@@ -266,9 +266,9 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
             if (podMilitaryStrength > 0) // (0 = nothing found)
             {
-                if ((not pEvadeDestinationActor
-                     or (pEvadeDestinationActor and podMilitaryStrength > strongestMilitaryStrength))
-                    and
+                if ((! pEvadeDestinationActor
+                     || (pEvadeDestinationActor && podMilitaryStrength > strongestMilitaryStrength))
+                    &&
                     // don't count this as a valid option if we're already very close to the pod
                     pActor_->position().sqrEuclidianDistance(pPodActor->position()) > 3000)
                 {
@@ -289,7 +289,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
         case SEEK_GARRISON:
             {
                 ASSERT(
-                    pGarrison and pStation,
+                    pGarrison && pStation,
                     "MachLogEvadeOperation::doUpdate : We have an unexpected NULL pointer for pGarrison and/or "
                     "pStation.");
 
@@ -335,7 +335,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 const MachActor* pNearestEnemy = nullptr;
 
-                ASSERT(not strongThreats.empty(), "Our strongThreats list is unexpectedly empty.");
+                ASSERT(! strongThreats.empty(), "Our strongThreats list is unexpectedly empty.");
 
                 MachLogRaces& races = MachLogRaces::instance();
 
@@ -373,9 +373,9 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 bool finished = false;
                 MATHEX_SCALAR radius = 1;
-                while (not finished)
+                while (! finished)
                 {
-                    if (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+                    if (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
                             destinationPointAsTransform,
                             radius,
                             pActor_->highClearence(),
@@ -406,9 +406,9 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 bool finished = false;
                 MATHEX_SCALAR radius = 25;
-                while (not finished)
+                while (! finished)
                 {
-                    if (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+                    if (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
                             destinationPointAsTransform,
                             radius,
                             pActor_->highClearence(),
@@ -440,7 +440,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 const MachActor* pNearestEnemy = nullptr;
 
-                ASSERT(not strongThreats.empty(), "Our strongThreats list is unexpectedly empty.");
+                ASSERT(! strongThreats.empty(), "Our strongThreats list is unexpectedly empty.");
                 MachLogRaces& races = MachLogRaces::instance();
                 for (MachLogMachine::Actors::iterator i = strongThreats.begin(); i < strongThreats.end(); ++i)
                 {
@@ -464,9 +464,9 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 bool finished = false;
                 MATHEX_SCALAR radius = 60;
-                while (not finished)
+                while (! finished)
                 {
-                    if (not MachLogSpacialManipulation::getNearestFreeSpacePoint(
+                    if (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
                             destinationPointAsTransform,
                             radius,
                             pActor_->highClearence(),
@@ -509,7 +509,7 @@ bool MachLogEvadeOperation::doBeInterrupted()
 
     // HAL_STREAM("(" << pActor_->id() << ") MLHealOp::doBeInterrupted\n" );
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 /////////////////////////////////////////////////// persistence /////////////////////////////////////////////////////

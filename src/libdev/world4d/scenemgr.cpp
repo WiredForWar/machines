@@ -510,7 +510,7 @@ void W4dSceneManager::cullDynamicLights(const W4dEntity* entity)
                 LIGHT_CULL_STREAM("Considering light " << (W4dEntity*)*i << "\n");
                 LIGHT_CULL_INDENT(2);
 
-                if (not lightImpl->hasBoundingSphere())
+                if (! lightImpl->hasBoundingSphere())
                 {
                     LIGHT_CULL_STREAM("light has no sphere => rejecting\n");
                     lightImpl->dynamicDisable(false);
@@ -724,7 +724,7 @@ static W4dEnvironment* w4dPushedEnv = nullptr;
 void W4dSceneManager::pushBackgroundData()
 {
     CB_SCENEMANAGER_DEPIMPL;
-    PRE(not itemsStacked_);
+    PRE(! itemsStacked_);
 
     stackClearBg_ = clearBackground();
     pStackBgRoot_ = bgRoot_;
@@ -756,7 +756,7 @@ void W4dSceneManager::popBackgroundData()
 
     itemsStacked_ = false;
 
-    POST(not itemsStacked_);
+    POST(! itemsStacked_);
 }
 
 W4dRoot& W4dSceneManager::root() const

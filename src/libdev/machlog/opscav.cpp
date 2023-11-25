@@ -144,7 +144,7 @@ bool MachLogScavengeOperation::doStart()
 {
     CB_MachLogScavengeOperation_DEPIMPL();
 
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ///////////////////////////////////
@@ -158,7 +158,7 @@ bool MachLogScavengeOperation::doIsFinished() const
 {
     CB_MachLogScavengeOperation_DEPIMPL();
 
-    return (finished_ and not pActor_->motionSeq().hasDestination());
+    return (finished_ && ! pActor_->motionSeq().hasDestination());
 }
 
 PhysRelativeTime MachLogScavengeOperation::doUpdate()

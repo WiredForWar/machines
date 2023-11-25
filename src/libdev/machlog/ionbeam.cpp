@@ -224,7 +224,7 @@ void MachLogIonBeam::inflictDamageSecondWave(MachActor* pDamagedVictim)
     CB_MachLogIonBeam_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     // don't want to damage this victim any more after this
@@ -263,8 +263,8 @@ bool MachLogIonBeam::hitVictimThirdWave(const MachActor& victim) const
     MATHEX_SCALAR innerCheckRadiusSize = basicWaveRadius - 8.0;
     MATHEX_SCALAR outerCheckRadiusSize = basicWaveRadius - 3.0;
 
-    bool result = outerCheckRadiusSize > 12 and actorWithinRadius(victim, outerCheckRadiusSize)
-        and not actorWithinRadius(victim, innerCheckRadiusSize);
+    bool result = outerCheckRadiusSize > 12 && actorWithinRadius(victim, outerCheckRadiusSize)
+        && ! actorWithinRadius(victim, innerCheckRadiusSize);
 
     return result;
 }
@@ -275,7 +275,7 @@ void MachLogIonBeam::inflictDamageThirdWave(MachActor* pDamagedVictim)
     CB_MachLogIonBeam_DEPIMPL();
 
     MachActor* pByActor = pOwner();
-    if (pOwner() and pOwner()->isDead())
+    if (pOwner() && pOwner()->isDead())
         pByActor = nullptr;
 
     int damagePoints = 3; // flash burns - may cause weaker machines to pop nicely

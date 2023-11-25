@@ -316,11 +316,11 @@ bool PhysCS2dImpl::contains(
 
     // Check for the point inside each polygon
     bool in = false;
-    for (size_t i = 0; not in and i != n; ++i)
+    for (size_t i = 0; ! in && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygonHolders[i]);
 
-        if (holder.isEnabled(flags) and holder.polygon().contains(testPoint))
+        if (holder.isEnabled(flags) && holder.polygon().contains(testPoint))
         {
             in = true;
             *pId = holder.id();
@@ -355,10 +355,10 @@ bool PhysCS2dImpl::intersects(
 
     // Check for the line intersects each polygon
     bool hit = false;
-    for (size_t i = 0; not hit and i != n; ++i)
+    for (size_t i = 0; ! hit && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygonHolders[i]);
-        if (holder.isEnabled(flags) and holder.height() >= lineHeight and holder.polygon().intersects(p1, p2))
+        if (holder.isEnabled(flags) && holder.height() >= lineHeight && holder.polygon().intersects(p1, p2))
         {
             if (touchingOk)
                 hit = holder.polygon().isPenetratedBy(p1, p2, lineLength);
@@ -391,10 +391,10 @@ bool PhysCS2dImpl::intersects(
 
     // Check for the polygon intersects each polygon
     bool hit = false;
-    for (size_t i = 0; maxHits != 0 and i != n; ++i)
+    for (size_t i = 0; maxHits != 0 && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygonHolders[i]);
-        if (holder.isEnabled(flags) and holder.polygon().intersects(polygon, rule))
+        if (holder.isEnabled(flags) && holder.polygon().intersects(polygon, rule))
         {
             hit = true;
             --maxHits;
@@ -426,7 +426,7 @@ void PhysCS2dImpl::addPortalDomainVertexs(const PortalId& portalId)
 
     calculatePortalPoints(portalId, CHECK_END, CHECK_END, &foundAtEnd1, &foundAtEnd2, useAllPolygons, polygons);
 
-    if (foundAtEnd1 and foundAtEnd2)
+    if (foundAtEnd1 && foundAtEnd2)
     {
         //  We don't have to look for any more portal ponts because we found some that
         //  don't intersect with _any_ obstacles, are the maximum allowed size and are
@@ -534,7 +534,7 @@ void PhysCS2dImpl::calculatePortalPoints(
     //  If these portal points are quite close together we will only add one
     //  of them, since the other point isn't really gaining us much of an
     //  advantage.
-    if (addPoint1 and addPoint2)
+    if (addPoint1 && addPoint2)
     {
         const MATHEX_SCALAR close = 20.0;
 
@@ -561,7 +561,7 @@ void PhysCS2dImpl::calculatePortalPoints(
                     &foundAtEnd,
                     flags,
                     polygons))
-                and (clearance >= clearance1) and (clearance >= clearance2))
+                && (clearance >= clearance1) && (clearance >= clearance2))
             {
                 addPoint1 = false;
                 addPoint2 = false;
@@ -624,9 +624,9 @@ bool PhysCS2dImpl::calculatePortalPoint(
 
     *pFoundAtEnd = false;
 
-    while (clearance >= minPortalClearance_ and not foundPoint)
+    while (clearance >= minPortalClearance_ && ! foundPoint)
     {
-        for (distance = startDistance + clearance; distance < (endDistance - clearance) and not foundPoint;)
+        for (distance = startDistance + clearance; distance < (endDistance - clearance) && ! foundPoint;)
         {
             CONFIG_SPACE_INSPECT(clearance);
             CONFIG_SPACE_INSPECT(distance);
@@ -642,7 +642,7 @@ bool PhysCS2dImpl::calculatePortalPoint(
             PhysConfigSpace2d::PolygonIds dummyIds;
             dummyIds.reserve(2);
 
-            if (not intersects(testCircle, polygons, &dummyIds, 1, Mathex::TOUCH_ISNT_INTERSECT, flags))
+            if (! intersects(testCircle, polygons, &dummyIds, 1, Mathex::TOUCH_ISNT_INTERSECT, flags))
             {
                 CONFIG_SPACE_STREAM("Found point" << std::endl);
 
@@ -664,18 +664,18 @@ bool PhysCS2dImpl::calculatePortalPoint(
             else
             {
                 ASSERT_DATA(PolygonId badId);
-                ASSERT(not configSpace_.contains(testCircle, flags, &badId), "");
+                ASSERT(! configSpace_.contains(testCircle, flags, &badId), "");
 
                 CONFIG_SPACE_STREAM("Intersected with polygon " << dummyIds[0].asScalar() << std::endl);
             }
 
             first = false;
 
-            if (not foundPoint)
+            if (! foundPoint)
                 distance += clearance;
         }
 
-        if (not foundPoint)
+        if (! foundPoint)
         {
             // Try a point half way along - this helps with some easy cases that
             // fall through the gaps of the above code.
@@ -690,7 +690,7 @@ bool PhysCS2dImpl::calculatePortalPoint(
             PhysConfigSpace2d::PolygonIds dummyIds;
             dummyIds.reserve(2);
 
-            if (not intersects(testCircle, polygons, &dummyIds, 1, Mathex::TOUCH_ISNT_INTERSECT, flags))
+            if (! intersects(testCircle, polygons, &dummyIds, 1, Mathex::TOUCH_ISNT_INTERSECT, flags))
             {
                 CONFIG_SPACE_STREAM("Found half way point" << std::endl);
 
@@ -705,7 +705,7 @@ bool PhysCS2dImpl::calculatePortalPoint(
             else
             {
                 ASSERT_DATA(PolygonId badId);
-                ASSERT(not configSpace_.contains(testCircle, flags, &badId), "");
+                ASSERT(! configSpace_.contains(testCircle, flags, &badId), "");
 
                 CONFIG_SPACE_STREAM(
                     "Trying to find half way point but intersected with polygon " << dummyIds[0].asScalar()
@@ -713,9 +713,9 @@ bool PhysCS2dImpl::calculatePortalPoint(
             }
         }
 
-        if (not foundPoint)
+        if (! foundPoint)
         {
-            if (clearance > minPortalClearance_ and clearance - clearanceStep < minPortalClearance_)
+            if (clearance > minPortalClearance_ && clearance - clearanceStep < minPortalClearance_)
                 clearance = minPortalClearance_;
             else
                 clearance -= clearanceStep;
@@ -724,7 +724,7 @@ bool PhysCS2dImpl::calculatePortalPoint(
 
     //  The found at end test is really a found near end test,. This
     //  reduces the number of portal points we have to consider.
-    if ((*pPointDistance < 2.5 * *pClearance) or (*pPointDistance < (endDistance - startDistance) / 4.0))
+    if ((*pPointDistance < 2.5 * *pClearance) || (*pPointDistance < (endDistance - startDistance) / 4.0))
     {
         *pFoundAtEnd = true;
     }
@@ -834,7 +834,7 @@ void PhysCS2dImpl::addDomainArcs(const DomainVertexId& inVertexId, const DomainI
                 const ObstacleFlags flags1 = inVertex.flags();
                 const ObstacleFlags flags2 = domainVertex.flags();
 
-                if (flags1 != 0 and flags2 != 0 and flags1 != flags2)
+                if (flags1 != 0 && flags2 != 0 && flags1 != flags2)
                 {
                     ++nUnnecessaryArcs;
                     CONFIG_SPACE_INSPECT(nUnnecessaryArcs);
@@ -895,15 +895,15 @@ void PhysCS2dImpl::expansionSpaceOpen(MATHEX_SCALAR expansionDistance)
     CS2VGRA_STREAM("Enter PhysCS2dImpl::expansionSpaceOpen" << std::endl);
     CS2VGRA_INDENT(2);
 
-    PRE(not expansionSpaceIsOpen());
+    PRE(! expansionSpaceIsOpen());
 
     // See if one already open with different distance, or same distance but too may
     // polygons, and delete if so.
     if (pExpansionSpace_ != nullptr)
     {
         if (pExpansionSpace_->expansionDistance() != expansionDistance
-            or (pExpansionSpace_->configSpace().nPolygons() > EXPANSION_SPACE_THRESHOLD
-                and pExpansionSpace_->nClients() == 0))
+            || (pExpansionSpace_->configSpace().nPolygons() > EXPANSION_SPACE_THRESHOLD
+                && pExpansionSpace_->nClients() == 0))
         {
             PRE(pExpansionSpace_->nClients() == 0);
             delete pExpansionSpace_;
@@ -947,14 +947,14 @@ void PhysCS2dImpl::expansionSpaceClose(MATHEX_SCALAR expansionDistance)
 
 bool PhysCS2dImpl::expansionSpaceIsOpen(MATHEX_SCALAR expansionDistance) const
 {
-    return pExpansionSpace_ != nullptr and pExpansionSpace_->expansionDistance() == expansionDistance
-        and pExpansionSpace_->nClients() != 0;
+    return pExpansionSpace_ != nullptr && pExpansionSpace_->expansionDistance() == expansionDistance
+        && pExpansionSpace_->nClients() != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool PhysCS2dImpl::expansionSpaceIsOpen() const
 {
-    return pExpansionSpace_ != nullptr and pExpansionSpace_->nClients() != 0;
+    return pExpansionSpace_ != nullptr && pExpansionSpace_->nClients() != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -969,7 +969,7 @@ PhysConfigSpace2d* PhysCS2dImpl::expansionSpace(MATHEX_SCALAR expansionDistance)
 void PhysCS2dImpl::expansionSpaceAddPolygon(MATHEX_SCALAR expansionDistance, PolygonId id)
 {
     PRE(expansionSpaceIsOpen(expansionDistance));
-    PRE(not expansionSpacePolygonExists(expansionDistance, id));
+    PRE(! expansionSpacePolygonExists(expansionDistance, id));
     PRE(polygons_.contains(id));
 
     pExpansionSpace_->addPolygon(polygons_[id]->polygon(), id, polygons_[id]->flags());
@@ -1057,10 +1057,10 @@ bool PhysCS2dImpl::intersects(
 
     // Check for the polygon intersects each polygon
     bool hit = false;
-    for (size_t i = 0; maxHits != 0 and i != n; ++i)
+    for (size_t i = 0; maxHits != 0 && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygonHolders[i]);
-        if (holder.isEnabled(flags) and sausage.intersects(holder.polygon(), rule))
+        if (holder.isEnabled(flags) && sausage.intersects(holder.polygon(), rule))
         {
             hit = true;
             --maxHits;
@@ -1115,10 +1115,10 @@ bool PhysCS2dImpl::intersects(
 
     // Check for the polygon intersects each polygon
     bool hit = false;
-    for (size_t i = 0; maxHits != 0 and i != n; ++i)
+    for (size_t i = 0; maxHits != 0 && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygons[i]);
-        if (holder.isEnabled(flags) and circle.intersects(holder.polygon(), rule))
+        if (holder.isEnabled(flags) && circle.intersects(holder.polygon(), rule))
         {
             hit = true;
             --maxHits;
@@ -1158,7 +1158,7 @@ bool PhysCS2dImpl::intersects(
 
 void PhysCS2dImpl::activeDomainFindPath(PhysCS2dDomainFindPath* pDomainFindPath)
 {
-    PRE(pDomainFindPath == nullptr or pActiveDomainFindPath_ == nullptr);
+    PRE(pDomainFindPath == nullptr || pActiveDomainFindPath_ == nullptr);
     pActiveDomainFindPath_ = pDomainFindPath;
 }
 
@@ -1204,11 +1204,11 @@ bool PhysCS2dImpl::intersectsAnyExpanded(
 
     // Check for the polygon intersects each enabled polygon, which has been expanded
     bool hit = false;
-    for (size_t i = 0; not hit and i != n; ++i)
+    for (size_t i = 0; ! hit && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygonHolders[i]);
-        if (holder.isEnabled(flags) and expansionSpacePolygonExists(expansionDistance, holder.id())
-            and sausage.intersects(holder.polygon(), rule))
+        if (holder.isEnabled(flags) && expansionSpacePolygonExists(expansionDistance, holder.id())
+            && sausage.intersects(holder.polygon(), rule))
         {
             CS2VGRA_STREAM("Clash with polygon id " << holder.id().asScalar() << std::endl);
             CS2VGRA_INSPECT(holder.polygon());

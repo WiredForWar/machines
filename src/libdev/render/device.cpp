@@ -204,7 +204,7 @@ bool RenDevice::initialize()
 
     // No luck, try another one test (TODO: why isn't test above working all the times?)
     if (RenILinesDiagnostic::instance().verticalResult() == RenILinesDiagnostic::UNKNOWN
-        and RenILinesDiagnostic::instance().horizontalResult() == RenILinesDiagnostic::UNKNOWN)
+        && RenILinesDiagnostic::instance().horizontalResult() == RenILinesDiagnostic::UNKNOWN)
     {
         RenSurface backSurf = backSurface();
         RenILinesDiagnostic::instance().setTestType(RenILinesDiagnostic::TEST2);
@@ -905,7 +905,7 @@ void RenDevice::commonEndFrame()
     ASSERT(pImpl_->vpMapping_, "No viewport set; startFrame should set a default.");
     const string concat = statsStr + debugStr;
 
-    if (concat.length() > 0 and not isWhiteString(concat) and pImpl_->shouldBeginScene_)
+    if (concat.length() > 0 && ! isWhiteString(concat) && pImpl_->shouldBeginScene_)
     {
         RenSurface surf = backSurface();
         auto const& yellowColour { RenColour::yellow() };

@@ -160,7 +160,7 @@ void W4dPortal::CLASS_INVARIANT
 bool W4dPortal::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
 {
     // Just check against bounding volume
-    return hasMesh() and defaultIntersectsLine(line, pDistance, accuracy);
+    return hasMesh() && defaultIntersectsLine(line, pDistance, accuracy);
 }
 
 bool W4dPortal::apertureIntersectsLine(const MexLine3d& line, MATHEX_SCALAR limit) const
@@ -206,7 +206,7 @@ bool W4dPortal::apertureIntersectsLine(const MexLine3d& line, MATHEX_SCALAR limi
     MexAlignedBox3d bv(xMin, yMin, zMin, xMax, yMax, zMax);
 
     MATHEX_SCALAR entryDistance, exitDistance;
-    bool result = bv.intersects(localLine, &entryDistance, &exitDistance) and entryDistance <= limit;
+    bool result = bv.intersects(localLine, &entryDistance, &exitDistance) && entryDistance <= limit;
 
     return result;
 }

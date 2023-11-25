@@ -38,10 +38,10 @@ W4dObjectTracker::W4dObjectTracker(
     , defaultLength_(defaultLength)
     , lastUpdateTime_(-1.0)
 {
-    PRE(maxAbsYawSine >= 0.0 and maxAbsYawSine <= 1.0);
-    PRE(maxAbsPitchSine >= 0.0 and maxAbsPitchSine <= 1.0);
+    PRE(maxAbsYawSine >= 0.0 && maxAbsYawSine <= 1.0);
+    PRE(maxAbsPitchSine >= 0.0 && maxAbsPitchSine <= 1.0);
     PRE(minLength <= maxLength);
-    PRE(defaultLength >= minLength and defaultLength <= maxLength);
+    PRE(defaultLength >= minLength && defaultLength <= maxLength);
     TEST_INVARIANT;
 }
 
@@ -130,7 +130,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
     MATHEX_SCALAR eps = MexEpsilon::instance();
     MATHEX_SCALAR yawSine, yawCosine;
 
-    if (h > eps and maxAbsYawSine > 0.0)
+    if (h > eps && maxAbsYawSine > 0.0)
     {
         yawSine = qy / h;
         if (fabs(yawSine) <= maxAbsYawSine)
@@ -150,7 +150,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
     }
 
     // Amend if required using the delta angle
-    if (yawDeltaSine != 0.0 or yawDeltaCosine != 1.0)
+    if (yawDeltaSine != 0.0 || yawDeltaCosine != 1.0)
     {
         MATHEX_SCALAR temp = yawSine * yawDeltaCosine + yawCosine * yawDeltaSine;
         yawCosine = yawCosine * yawDeltaCosine - yawSine * yawDeltaSine;
@@ -163,7 +163,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
     // Now the pitch angle
     MATHEX_SCALAR pitchSine, pitchCosine;
 
-    if (l > eps and maxAbsPitchSine > 0.0)
+    if (l > eps && maxAbsPitchSine > 0.0)
     {
         pitchSine = -qz / l;
         if (fabs(pitchSine) <= maxAbsPitchSine)

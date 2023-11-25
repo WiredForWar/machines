@@ -67,7 +67,7 @@ bool MachLogAttackFilter::check(const W4dEntity& entity, TreeOption* pOption)
 
                         MachLogRaces::DispositionToRace disposition
                             = races.dispositionToRace(attackerRace_, actor.race());
-                        if (disposition == MachLogRaces::ENEMY or disposition == MachLogRaces::NEUTRAL)
+                        if (disposition == MachLogRaces::ENEMY || disposition == MachLogRaces::NEUTRAL)
                         {
                             // ignore this entity - as it's not of our allegiance, we don't give a monkey's if
                             // projectiles pass through it en route to the intended target.

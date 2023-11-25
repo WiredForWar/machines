@@ -289,8 +289,8 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
         if (pSelectedSaveGame_)
         {
             // Check that current player created this game and can therefore delete it.
-            if (MachGuiDatabase::instance().hasCurrentPlayer() and pSelectedSaveGame_->hasPlayer()
-                and &pSelectedSaveGame_->player() != &MachGuiDatabase::instance().currentPlayer())
+            if (MachGuiDatabase::instance().hasCurrentPlayer() && pSelectedSaveGame_->hasPlayer()
+                && &pSelectedSaveGame_->player() != &MachGuiDatabase::instance().currentPlayer())
             {
                 GuiStrings strings;
                 strings.push_back(MachGuiDatabase::instance().currentPlayer().name());
@@ -307,7 +307,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
     else if (be == MachGuiStartupScreens::BE_DUMMY_OK)
     {
 #ifndef DEMO
-        if (not pSelectedSaveGame_)
+        if (! pSelectedSaveGame_)
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_SELECTSAVEDGAME);
         }

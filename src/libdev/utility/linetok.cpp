@@ -91,7 +91,7 @@ UtlLineTokeniser::~UtlLineTokeniser()
 
 void UtlLineTokeniser::parseNextLine()
 {
-    PRE(not finished());
+    PRE(! finished());
 
     if (repeatCurrentLine_)
     {
@@ -102,7 +102,7 @@ void UtlLineTokeniser::parseNextLine()
     {
         bool finished = false;
 
-        while (not finished)
+        while (! finished)
         {
             getNextLine();
 
@@ -132,7 +132,7 @@ void UtlLineTokeniser::parseNextLine()
 //  Get the next line from the file ( blank or non blank ) and split it into tokens.
 void UtlLineTokeniser::getNextLine()
 {
-    PRE(not finished());
+    PRE(! finished());
 
     //  We use the buffer so we aren't continually pushing
     //  single characters onto the end of the string
@@ -144,12 +144,12 @@ void UtlLineTokeniser::getNextLine()
 
     line_ = std::string();
 
-    while (not finished)
+    while (! finished)
     {
         char ch = EOF;
         ch = pCurrentStream_->get(); // pCurrentStream_->get( ch );
 
-        if (ch == EOF or pCurrentStream_->eof())
+        if (ch == EOF || pCurrentStream_->eof())
         {
             finished = true;
         }
@@ -190,28 +190,28 @@ void UtlLineTokeniser::repeatLine()
 
 void UtlLineTokeniser::lineNumber(size_t currentLineNumber)
 {
-    PRE(not finished());
+    PRE(! finished());
 
     lineNumber_ = currentLineNumber;
 }
 
 size_t UtlLineTokeniser::lineNumber() const
 {
-    PRE(not finished());
+    PRE(! finished());
 
     return lineNumber_;
 }
 
 const UtlLineTokeniser::Tokens& UtlLineTokeniser::tokens() const
 {
-    PRE(not finished());
+    PRE(! finished());
 
     return tokens_;
 }
 
 const std::string& UtlLineTokeniser::line() const
 {
-    PRE(not finished());
+    PRE(! finished());
 
     return line_;
 }
@@ -232,7 +232,7 @@ void UtlLineTokeniser::splitIntoTokens()
     bool finished = false;
     size_t index = 0;
 
-    while (index < line_.length() and not finished)
+    while (index < line_.length() && ! finished)
     {
         if (startOfComment(line_, index))
         {
@@ -267,7 +267,7 @@ void UtlLineTokeniser::splitIntoTokens()
 
                     state = READ_DELIMITER;
                 }
-                else if (not isWhiteSpace(line_[index]))
+                else if (! isWhiteSpace(line_[index]))
                 {
                     tokens_.push_back(std::string());
                     tokens_.back() += line_[index];
@@ -304,7 +304,7 @@ bool UtlLineTokeniser::matchesFixedToken(const std::string& line, size_t* pIndex
 
     FixedTokens::const_iterator matchIterator;
 
-    for (FixedTokens::const_iterator i = fixedTokens_.begin(); i != fixedTokens_.end() and not foundMatch; ++i)
+    for (FixedTokens::const_iterator i = fixedTokens_.begin(); i != fixedTokens_.end() && ! foundMatch; ++i)
     {
         if ((*i).length() < line.length() - *pIndex)
         {
@@ -355,8 +355,8 @@ bool UtlLineTokeniser::isTokenDelimiter(char c)
 
 void UtlLineTokeniser::addWhiteSpace(char c)
 {
-    PRE(not isWhiteSpace(c));
-    PRE(not isTokenDelimiter(c));
+    PRE(! isWhiteSpace(c));
+    PRE(! isTokenDelimiter(c));
 
     tokenDelimiterCharacters_ += c;
 
@@ -367,7 +367,7 @@ void UtlLineTokeniser::removeWhiteSpace(char c)
 {
     bool finished = false;
 
-    for (size_t i = 0; i < whiteSpaceCharacters_.length() and not finished; ++i)
+    for (size_t i = 0; i < whiteSpaceCharacters_.length() && ! finished; ++i)
         if (c == whiteSpaceCharacters_[i])
         {
             // whiteSpaceCharacters_.remove( i );
@@ -375,13 +375,13 @@ void UtlLineTokeniser::removeWhiteSpace(char c)
             finished = true;
         }
 
-    POST(not isWhiteSpace(c));
+    POST(! isWhiteSpace(c));
 }
 
 void UtlLineTokeniser::addTokenDelimiter(char c)
 {
-    PRE(not isWhiteSpace(c));
-    PRE(not isTokenDelimiter(c));
+    PRE(! isWhiteSpace(c));
+    PRE(! isTokenDelimiter(c));
 
     tokenDelimiterCharacters_ += c;
 
@@ -392,7 +392,7 @@ void UtlLineTokeniser::removeTokenDelimiter(char c)
 {
     bool finished = false;
 
-    for (size_t i = 0; i < tokenDelimiterCharacters_.length() and not finished; ++i)
+    for (size_t i = 0; i < tokenDelimiterCharacters_.length() && ! finished; ++i)
         if (c == tokenDelimiterCharacters_[i])
         {
             // tokenDelimiterCharacters_.remove( i );
@@ -400,7 +400,7 @@ void UtlLineTokeniser::removeTokenDelimiter(char c)
             finished = true;
         }
 
-    POST(not isTokenDelimiter(c));
+    POST(! isTokenDelimiter(c));
 }
 
 void UtlLineTokeniser::foundInclude()
@@ -422,7 +422,7 @@ void UtlLineTokeniser::foundInclude()
 
 void UtlLineTokeniser::finishedFile()
 {
-    if (not fileDataStack_.empty())
+    if (! fileDataStack_.empty())
     {
         delete pCurrentStream_;
 

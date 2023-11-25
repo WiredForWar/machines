@@ -87,9 +87,9 @@ MachLogResearchItem& MachLogResearchTree::researchItem(
     bool found = false;
     MachLogResearchItem* pRI = nullptr;
     ResearchItems::iterator i = researchItems_.begin();
-    for (; i != researchItems_.end() and not found; ++i)
+    for (; i != researchItems_.end() && ! found; ++i)
     {
-        if ((*i)->objectType() == objectType and (*i)->subType() == subType and (*i)->weaponCombo() == wc)
+        if ((*i)->objectType() == objectType && (*i)->subType() == subType && (*i)->weaponCombo() == wc)
         {
             if (hwLevel == 0)
             {
@@ -138,7 +138,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
     }
 
     UtlLineTokeniser parser(*pIstream, treePath);
-    while (not parser.finished())
+    while (! parser.finished())
     {
         size_t lineSize = parser.tokens().size();
         MachLog::ObjectType obType;
@@ -150,7 +150,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
         int buildingCost = 0;
         if (lineSize > 0)
         {
-            if (parser.tokens()[0] == "MACHINE" or parser.tokens()[0] == "CONSTRUCTION")
+            if (parser.tokens()[0] == "MACHINE" || parser.tokens()[0] == "CONSTRUCTION")
             {
                 bool doingMachine = true;
                 obType = MachLogScenario::objectType(parser.tokens()[1]);
@@ -272,7 +272,7 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
                     pRI->swBuildingCost(i, swBuildingCost[i]);
                 }
 
-                if (obType == MachLog::AGGRESSOR and hwLevel == 4)
+                if (obType == MachLog::AGGRESSOR && hwLevel == 4)
                 {
                     MachLogResearchItem* pRI2 = new MachLogResearchItem(
                         obType,
@@ -320,7 +320,7 @@ void MachLogResearchTree::removeMe(MachLogNotifiable* pCurrentRTreeNot)
 
     Notifiables::iterator i = notifiables_.begin();
     bool found = false;
-    while (not found && i != notifiables_.end())
+    while (! found && i != notifiables_.end())
     {
         if ((*i) == pCurrentRTreeNot)
         {
@@ -371,14 +371,14 @@ bool MachLogResearchTree::activated(
 
     bool isActivated = false;
     ResearchItems::iterator i = researchItems_.begin();
-    for (; i != researchItems_.end() and not isActivated; ++i)
+    for (; i != researchItems_.end() && ! isActivated; ++i)
     {
-        if (objectType == (*i)->objectType() and (*i)->researched(r))
+        if (objectType == (*i)->objectType() && (*i)->researched(r))
         {
             if (subType == MachLog::DONTCARE)
             {
                 ASSERT(
-                    hwLevel == MachLog::DONTCARE and wc == MachPhys::N_WEAPON_COMBOS,
+                    hwLevel == MachLog::DONTCARE && wc == MachPhys::N_WEAPON_COMBOS,
                     "No further parameters should be passed after a DONTCARE parameter.");
                 isActivated = true;
             }
@@ -394,7 +394,7 @@ bool MachLogResearchTree::activated(
                 else if (hwLevel == (*i)->hwLevel())
 
                 {
-                    if (wc == MachPhys::N_WEAPON_COMBOS or wc == (*i)->weaponCombo())
+                    if (wc == MachPhys::N_WEAPON_COMBOS || wc == (*i)->weaponCombo())
                         isActivated = true;
                 }
             }

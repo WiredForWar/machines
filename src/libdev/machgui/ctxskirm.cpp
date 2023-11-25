@@ -61,7 +61,7 @@ public:
 
         bool allComplete = true;
 
-        for (uint loop = 0; loop < numScenarios and allComplete; ++loop)
+        for (uint loop = 0; loop < numScenarios && allComplete; ++loop)
         {
             MachGuiDbScenario& scenario = planet.scenario(loop);
 
@@ -151,7 +151,7 @@ protected:
 
         bool allComplete = true;
 
-        for (uint loop = 0; loop < numPlanets and allComplete; ++loop)
+        for (uint loop = 0; loop < numPlanets && allComplete; ++loop)
         {
             MachGuiDbPlanet& planet = system.planet(loop);
 
@@ -411,7 +411,7 @@ void MachGuiCtxSkirmish::updateMapSizeList()
     {
         MachGuiDbSystem& system = MachGuiDatabase::instance().skirmishSystem(loop);
 
-        if (not system.nPlanets()) // skip user custom scenarios if empty
+        if (! system.nPlanets()) // skip user custom scenarios if empty
             continue;
         MachGuiMapSizeListBoxItem* pItem
             = new MachGuiMapSizeListBoxItem(pStartupScreens_, pMapSizeList_, LB_MAXX - LB_MINX, system, this);

@@ -98,13 +98,13 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
     bool noTexturePreload = true;
 
     for (RenTexManager::PathNames::const_iterator itDirectories = RenTexManager::instance().searchList().begin();
-         itDirectories != RenTexManager::instance().searchList().end() and directory4MbNotFound
-         and directory2MbNotFound;
+         itDirectories != RenTexManager::instance().searchList().end() && directory4MbNotFound
+         && directory2MbNotFound;
          ++itDirectories)
     {
         const SysPathName::Components& components = (*itDirectories).components();
         for (SysPathName::Components::const_iterator itComponents = components.begin();
-             itComponents != components.end() and directory4MbNotFound and directory2MbNotFound;
+             itComponents != components.end() && directory4MbNotFound && directory2MbNotFound;
              ++itComponents)
         {
             string componentAsLowerCase = (*itComponents);
@@ -267,7 +267,7 @@ void MachPhysPlanetSurface::readPlanetSurfaceFile(const SysPathName& pathname)
         }
     }
 
-    if (not parser.finished())
+    if (! parser.finished())
         parser.parseNextLine();
 
     ASSERT(parser.finished(), "");
@@ -359,10 +359,10 @@ void MachPhysPlanetSurface::parseHeader(UtlLineTokeniser* pParser)
 
 void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineTokeniser* pParser, W4dEntity* pParent)
 {
-    if (not pParser->finished())
+    if (! pParser->finished())
         pParser->parseNextLine();
 
-    if (pParser->finished() or pParser->tokens()[0] != "ROTATION")
+    if (pParser->finished() || pParser->tokens()[0] != "ROTATION")
     {
         // Setup default tile
         double height = -0.065;
@@ -383,7 +383,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
         // Execute search
         finder.find();
 
-        ASSERT(not finder.isEmpty(), tilePath.pathname().c_str());
+        ASSERT(! finder.isEmpty(), tilePath.pathname().c_str());
 
         // Construct the tile and add to the collection
         MachPhysTerrainTile* pTile = new MachPhysTerrainTile(
@@ -399,7 +399,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
         tileArray_.back().push_back(pTile);
         const MexAlignedBox3d& boundary = pTile->boundingVolume();
         if ((boundary.maxCorner().x() - boundary.minCorner().x() > edgeLength_)
-            or (boundary.maxCorner().y() - boundary.minCorner().y() > edgeLength_))
+            || (boundary.maxCorner().y() - boundary.minCorner().y() > edgeLength_))
         {
             PLANET_SURFACE_STREAM("Tile Problem detected (N): " << finder.files()[0].pathName() << std::endl);
             PATH_PROFILE_STREAM(
@@ -456,7 +456,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
         tileArray_.back().push_back(pTile);
         const MexAlignedBox3d& boundary = pTile->boundingVolume();
         if ((boundary.maxCorner().x() - boundary.minCorner().x() > edgeLength_)
-            or (boundary.maxCorner().y() - boundary.minCorner().y() > edgeLength_))
+            || (boundary.maxCorner().y() - boundary.minCorner().y() > edgeLength_))
         {
             PLANET_SURFACE_STREAM("Tile Problem detected (R): " << tilePathname << std::endl);
             PATH_PROFILE_STREAM(
@@ -496,13 +496,13 @@ bool MachPhysPlanetSurface::save()
                 MexDegrees degrees = eulerAngle.azimuth();
 
                 int intRotation = 0;
-                if (degrees.asScalar() > 85.0 and degrees.asScalar() < 95.0)
+                if (degrees.asScalar() > 85.0 && degrees.asScalar() < 95.0)
                     intRotation = 3;
-                else if (degrees.asScalar() > -185.0 and degrees.asScalar() < -175.0)
+                else if (degrees.asScalar() > -185.0 && degrees.asScalar() < -175.0)
                     intRotation = 2;
-                else if (degrees.asScalar() > 175.0 and degrees.asScalar() < 185.0)
+                else if (degrees.asScalar() > 175.0 && degrees.asScalar() < 185.0)
                     intRotation = 2;
-                else if (degrees.asScalar() > -95.0 and degrees.asScalar() < -85.0)
+                else if (degrees.asScalar() > -95.0 && degrees.asScalar() < -85.0)
                     intRotation = 1;
 
                 psfFileStream << "ROTATION " << intRotation << std::endl;
@@ -520,7 +520,7 @@ bool MachPhysPlanetSurface::save()
                 psfFileStream << "TILE " << shortLodPath << std::endl << std::endl;
             }
         }
-        saveSuccessful = not psfFileStream.fail();
+        saveSuccessful = ! psfFileStream.fail();
     }
 
     return saveSuccessful;
@@ -913,7 +913,7 @@ void MachPhysPlanetSurface::pathProfile(
         MexGrid2d::Cells::const_iterator j = i;
         ++j;
 
-        if (j != cells.end() and pProfile->size() != 0)
+        if (j != cells.end() && pProfile->size() != 0)
             pProfile->pop_back();
 
         //  get all of the profile points converted to the planet's coordinate system
@@ -960,13 +960,13 @@ void MachPhysPlanetSurface::optimiseProfile(Profile* pProfile) const
     {
         PATH_PROFILE_WHERE;
         //  First check for duplicates
-        if (i == 0 or (*pProfile)[i] != (*pProfile)[i - 1])
+        if (i == 0 || (*pProfile)[i] != (*pProfile)[i - 1])
         {
             PATH_PROFILE_WHERE;
             //  Now check for the points being in a straight line
 
             if (newProfile.size() > 1
-                and pointsInLine(
+                && pointsInLine(
                     newProfile[newProfile.size() - 2].position(),
                     newProfile[newProfile.size() - 1].position(),
                     (*pProfile)[i].position()))
@@ -1011,7 +1011,7 @@ void MachPhysPlanetSurface::handleFloors(const Floors& floors, Profile* pProfile
 
         bool finished = false;
 
-        for (size_t j = 0; j < floors.size() and not finished; ++j)
+        for (size_t j = 0; j < floors.size() && ! finished; ++j)
         {
             const MexAlignedBox2d& floorArea = floors[j].area();
 
@@ -1144,7 +1144,7 @@ void MachPhysPlanetSurface::domainsAt(W4dLight* light) const
     ASSERT(xIdx1 <= xIdx2, "box corners are the wrong way around");
     ASSERT(yIdx1 <= yIdx2, "box corners are the wrong way around");
 
-    if (not light->hasIntersectingDomains())
+    if (! light->hasIntersectingDomains())
     {
         for (int x = xIdx1; x <= xIdx2; ++x)
         {
@@ -1156,7 +1156,7 @@ void MachPhysPlanetSurface::domainsAt(W4dLight* light) const
                     // only push back if is not containing domain
                     if (conDom != pTile)
                     {
-                        if (not light->hasIntersectingDomains())
+                        if (! light->hasIntersectingDomains())
                             light->createIntersectingDomains();
                         light->addIntersectingDomain(pTile);
                     }
@@ -1285,7 +1285,7 @@ void perRead(PerIstream& istr, MachPhysPlanetSurface& t)
             MachPhysTerrainTile* pTile = t.tileArray_[i][j];
             const MexAlignedBox3d& boundary = pTile->boundingVolume();
             if ((boundary.maxCorner().x() - boundary.minCorner().x() > t.edgeLength_)
-                or (boundary.maxCorner().y() - boundary.minCorner().y() > t.edgeLength_))
+                || (boundary.maxCorner().y() - boundary.minCorner().y() > t.edgeLength_))
             {
                 PLANET_SURFACE_STREAM("Tile Problem detected : AT x " << j << " , y " << i << std::endl);
                 PATH_PROFILE_STREAM("Tile Problem Detected : " << pTile->tileData() << std::endl);
@@ -1347,7 +1347,7 @@ MachPhysPlanetSurface::terrainHeight(MATHEX_SCALAR x, MATHEX_SCALAR y, const Flo
     bool intersectsWithFloor = false;
     MATHEX_SCALAR result;
 
-    for (size_t i = 0; i < floors.size() and not intersectsWithFloor; ++i)
+    for (size_t i = 0; i < floors.size() && ! intersectsWithFloor; ++i)
     {
         const MexAlignedBox2d& floorArea = floors[i].area();
 
@@ -1361,7 +1361,7 @@ MachPhysPlanetSurface::terrainHeight(MATHEX_SCALAR x, MATHEX_SCALAR y, const Flo
         }
     }
 
-    if (not intersectsWithFloor)
+    if (! intersectsWithFloor)
     {
         result = terrainHeight(x, y, pUnitNormal);
     }

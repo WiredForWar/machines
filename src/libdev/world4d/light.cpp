@@ -190,7 +190,7 @@ void W4dLight::updatePlans()
 
         PhysRelativeTime timeOffset = timeNow - pImpl_->startTime_;
 
-        if (timeOffset >= 0 and timeOffset <= lifeTime) // pImpl_->intensityPlanPtr_->duration() )
+        if (timeOffset >= 0 && timeOffset <= lifeTime) // pImpl_->intensityPlanPtr_->duration() )
         {
             timeOffset = timeOffset - int(timeOffset / cycle) * cycle;
             MATHEX_SCALAR intensity = pImpl_->intensityPlanPtr_->scalar(timeOffset);

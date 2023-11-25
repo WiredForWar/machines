@@ -62,7 +62,7 @@ void MachGuiDeployCommand::pickOnTerrain(
 bool MachGuiDeployCommand::canActorEverExecute(const MachActor& actor) const
 {
     // Only laden APCs can deploy.
-    return actor.objectType() == MachLog::APC and actor.asAPC().amountCarried() > 0;
+    return actor.objectType() == MachLog::APC && actor.asAPC().amountCarried() > 0;
 }
 
 // virtual
@@ -96,7 +96,7 @@ bool MachGuiDeployCommand::doApply(MachActor* pActor, string* pReason)
             // Give to apc
             pActor->newOperation(pOp);
 
-            if (not hasPlayedVoiceMail())
+            if (! hasPlayedVoiceMail())
             {
                 MachLogVoiceMailManager::instance().postNewMail(
                     VID_APC_MOVING_TO_DEPLOY_POINT,
@@ -117,7 +117,7 @@ MachGui::Cursor2dType MachGuiDeployCommand::cursorOnTerrain(const MexPoint3d& lo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::DEPLOY_CURSOR;
 
     return cursor;
@@ -165,7 +165,7 @@ uint MachGuiDeployCommand::commandPromptStringid() const
 // virtual
 bool MachGuiDeployCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_E and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_E && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

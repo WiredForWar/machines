@@ -46,7 +46,7 @@ MachGuiColourSelector::MachGuiColourSelector(
     , pPlayerInfo_(pPlayerInfo)
 {
     // Check to see if the colour is available ( i.e. hasn't been taken by another player ).
-    if (not pStartupScreens->startupData()->isRaceAvailable(race) and race != pPlayerInfo->race_)
+    if (! pStartupScreens->startupData()->isRaceAvailable(race) && race != pPlayerInfo->race_)
     {
         race_ = MachPhys::NORACE;
     }
@@ -83,7 +83,7 @@ void MachGuiPlayerColour::releaseBmpMemory()
 GuiBitmap*& MachGuiPlayerColour::pRedBmp()
 {
     static GuiBitmap* pBmp = nullptr;
-    if (not pBmp)
+    if (! pBmp)
     {
         pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gred.bmp"));
     }
@@ -94,7 +94,7 @@ GuiBitmap*& MachGuiPlayerColour::pRedBmp()
 GuiBitmap*& MachGuiPlayerColour::pGreenBmp()
 {
     static GuiBitmap* pBmp = nullptr;
-    if (not pBmp)
+    if (! pBmp)
     {
         pBmp = new GuiBitmap(Gui::bitmap("gui/menu/ggreen.bmp"));
     }
@@ -105,7 +105,7 @@ GuiBitmap*& MachGuiPlayerColour::pGreenBmp()
 GuiBitmap*& MachGuiPlayerColour::pBlueBmp()
 {
     static GuiBitmap* pBmp = nullptr;
-    if (not pBmp)
+    if (! pBmp)
     {
         pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gblue.bmp"));
     }
@@ -116,7 +116,7 @@ GuiBitmap*& MachGuiPlayerColour::pBlueBmp()
 GuiBitmap*& MachGuiPlayerColour::pYellowBmp()
 {
     static GuiBitmap* pBmp = nullptr;
-    if (not pBmp)
+    if (! pBmp)
     {
         pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gyellow.bmp"));
     }
@@ -127,7 +127,7 @@ GuiBitmap*& MachGuiPlayerColour::pYellowBmp()
 GuiBitmap*& MachGuiPlayerColour::pBlackBmp()
 {
     static GuiBitmap* pBmp = nullptr;
-    if (not pBmp)
+    if (! pBmp)
     {
         pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gblack.bmp"));
     }
@@ -204,7 +204,7 @@ void MachGuiColourSelector::doHandleMouseClickEvent(const GuiMouseEvent& rel)
                 pPlayerInfo_->index_,
                 race_);
         }
-        else if (not pStartupScreens_->startupData()->terminalMultiPlayerGameProblem())
+        else if (! pStartupScreens_->startupData()->terminalMultiPlayerGameProblem())
         {
             // Clients need to ask for a race change, if the host agrees then it will update the race
             pStartupScreens_->messageBroker().sendRaceChangeRequest(pPlayerInfo_->name_, pPlayerInfo_->index_, race_);
@@ -305,7 +305,7 @@ void MachGuiPlayerListItem::doDisplay()
 {
     Gui::YCoord textYOffset = (height() - getFont().charHeight()) / 2.0;
 
-    if (highlighted_ or colourHighlighted_ or pDropDownList_)
+    if (highlighted_ || colourHighlighted_ || pDropDownList_)
     {
         // Draw glowing background
         GuiPainter::instance().blit(
@@ -351,7 +351,7 @@ void MachGuiPlayerListItem::doDisplay()
 
         // Only the host can control the names displayed in each slot ( i.e. change from human to computer, open or
         // closed ).
-        if (canDisplayDropDownList() and not pDropDownList_)
+        if (canDisplayDropDownList() && ! pDropDownList_)
         {
             GuiPainter::instance().blit(
                 MachGui::dropDownBmp(),
@@ -416,7 +416,7 @@ void MachGuiPlayerListItem::doDisplay()
     }
 
     // Show how good/bad ping time is...
-    if (playerInfo_.ping_ > 0 and not pDropDownList_)
+    if (playerInfo_.ping_ > 0 && ! pDropDownList_)
     {
         // We only care about ms so multiply by 1000.
         int ping = (int)(playerInfo_.ping_ * 1000);
@@ -480,7 +480,7 @@ void MachGuiPlayerListItem::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 bool MachGuiPlayerListItem::canInteract() const
 {
     if (pStartupScreens_->startupData()->isHost()
-        or (pStartupScreens_->startupData()->playerName() == playerInfo_.name_ and not playerInfo_.ready_))
+        || (pStartupScreens_->startupData()->playerName() == playerInfo_.name_ && ! playerInfo_.ready_))
     {
         return true;
     }
@@ -495,8 +495,8 @@ void MachGuiPlayerListItem::updateInfo(
     double ping,
     bool playerHasMachinesCD)
 {
-    PRE(playerRace == MachPhys::RED or playerRace == MachPhys::BLUE or playerRace == MachPhys::GREEN
-        or playerRace == MachPhys::YELLOW or playerRace == MachPhys::NORACE);
+    PRE(playerRace == MachPhys::RED || playerRace == MachPhys::BLUE || playerRace == MachPhys::GREEN
+        || playerRace == MachPhys::YELLOW || playerRace == MachPhys::NORACE);
 
     playerInfo_.name_ = playerName;
     playerInfo_.race_ = playerRace;
@@ -505,7 +505,7 @@ void MachGuiPlayerListItem::updateInfo(
     playerInfo_.ping_ = ping;
     playerInfo_.hasMachinesCD_ = playerHasMachinesCD;
 
-    if (not pStartupScreens_->msgBoxIsBeingDisplayed())
+    if (! pStartupScreens_->msgBoxIsBeingDisplayed())
     {
         changed();
         if (pDropDownList_)
@@ -635,7 +635,7 @@ void MachGuiPlayerColour::doDisplay()
 // virtual
 void MachGuiPlayerColour::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
-    if (pParent_->canInteract() and canInteract())
+    if (pParent_->canInteract() && canInteract())
     {
         highlighted_ = true;
         pParent_->colourHighlighted(true);
@@ -646,7 +646,7 @@ void MachGuiPlayerColour::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 // virtual
 void MachGuiPlayerColour::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
-    if (pParent_->canInteract() and canInteract())
+    if (pParent_->canInteract() && canInteract())
     {
         highlighted_ = false;
         pParent_->colourHighlighted(false);
@@ -657,7 +657,7 @@ void MachGuiPlayerColour::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 // virtual
 void MachGuiPlayerColour::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if (pParent_->canInteract() and rel.leftButton() == Gui::RELEASED and canInteract())
+    if (pParent_->canInteract() && rel.leftButton() == Gui::RELEASED && canInteract())
     {
         // Only allow colour selection for human and computer
         new MachGuiColourList(pStartupScreens_, this, Gui::Box(0, 0, width(), height()), pPlayerInfo_);
@@ -669,7 +669,7 @@ void MachGuiPlayerColour::doHandleContainsMouseEvent(const GuiMouseEvent& /*rel*
 {
     bool shouldHighlight = false;
 
-    if (pParent_->canInteract() and canInteract())
+    if (pParent_->canInteract() && canInteract())
     {
         shouldHighlight = true;
     }
@@ -685,8 +685,8 @@ void MachGuiPlayerColour::doHandleContainsMouseEvent(const GuiMouseEvent& /*rel*
 bool MachGuiPlayerColour::canInteract() const
 {
     if (strcasecmp(pPlayerInfo_->name_.c_str(), MachGui::openText().c_str()) == 0
-        or strcasecmp(pPlayerInfo_->name_.c_str(), MachGui::closedText().c_str()) == 0
-        or strcasecmp(pPlayerInfo_->name_.c_str(), MachGui::unavailableText().c_str()) == 0)
+        || strcasecmp(pPlayerInfo_->name_.c_str(), MachGui::closedText().c_str()) == 0
+        || strcasecmp(pPlayerInfo_->name_.c_str(), MachGui::unavailableText().c_str()) == 0)
     {
         return false;
     }
@@ -729,9 +729,9 @@ public:
 
         // Remove text from player slots ( as long as it ain't "open", "closed", "unavailable" or "computer" )
         bool isPlayersName = strcasecmp(text.c_str(), MachGui::openText().c_str()) != 0
-            and strcasecmp(text.c_str(), MachGui::closedText().c_str()) != 0
-            and strcasecmp(text.c_str(), MachGui::computerText().c_str()) != 0
-            and strcasecmp(text.c_str(), MachGui::unavailableText().c_str()) != 0;
+            && strcasecmp(text.c_str(), MachGui::closedText().c_str()) != 0
+            && strcasecmp(text.c_str(), MachGui::computerText().c_str()) != 0
+            && strcasecmp(text.c_str(), MachGui::unavailableText().c_str()) != 0;
 
         MachPhys::Race playersRace = MachPhys::NORACE;
 
@@ -805,7 +805,7 @@ bool MachGuiPlayerListItem::canDisplayDropDownList() const
     MachGuiStartupData* pData = pStartupScreens_->startupData();
 
     // Must be host...
-    if (not pData->isHost())
+    if (! pData->isHost())
         return false;
 
     // Even host cannot remove his name from the player list
@@ -823,7 +823,7 @@ bool MachGuiPlayerListItem::canDisplayDropDownList() const
 // virtual
 void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if (rel.leftButton() == Gui::RELEASED and canDisplayDropDownList())
+    if (rel.leftButton() == Gui::RELEASED && canDisplayDropDownList())
     {
         auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
         using namespace machgui::helper::menus;

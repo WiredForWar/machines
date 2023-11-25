@@ -112,7 +112,7 @@ bool MexCircle2d::intersects(const MexPolygon2d& polygon, Mathex::TouchingRule r
 
     // Finally, if we haven't got a hit, the circle may be completely contained in the
     // polygon. So test for containment of the centre point.
-    if (not hit)
+    if (! hit)
     {
         hit = polygon.contains(centre());
     }

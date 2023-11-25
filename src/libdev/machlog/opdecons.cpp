@@ -89,7 +89,7 @@ PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
     MachPhys::HitPointUnits remainingConstructionhps = pConstron->hp();
     HAL_STREAM("remaining hp " << remainingConstructionhps << std::endl);
 
-    if (remainingConstructionhps < hpsRemoved and hpsRemoved > 0)
+    if (remainingConstructionhps < hpsRemoved && hpsRemoved > 0)
     {
         HAL_STREAM("rejigging BMUVlaueOfRemoved and hpsRemoved...\n");
         BMUValueOfRemoved *= ((float)remainingConstructionhps / (float)hpsRemoved);
@@ -125,7 +125,7 @@ PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
 
         // post "awaiting new job" voicemail if no more operations on the queue
 
-        if (not pConstructorMachine->isDoingSuperConstruct())
+        if (! pConstructorMachine->isDoingSuperConstruct())
             MachLogMachineVoiceMailManager::instance().postNewMail(
                 *pConstructorMachine,
                 MachineVoiceMailEventID::AWAITING_NEW_JOB);
@@ -153,7 +153,7 @@ PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
 
 bool MachLogDeconstructOperation::doIsFinished() const
 {
-    bool finished = not currentlyAttached();
+    bool finished = ! currentlyAttached();
 
     return finished;
 }

@@ -13,7 +13,7 @@ MachLogType::MachLogType(MachLog::ObjectType type)
     , hardwareLevel_(0)
     , isSubtype_(false)
 {
-    POST(not isSubtype());
+    POST(! isSubtype());
 }
 
 MachLogType::MachLogType(MachLog::ObjectType type, int subtype, unsigned hardwareLevel)
@@ -107,7 +107,7 @@ void MachLogTypeMap::process()
 
 void MachLogTypeMap::processConstruction()
 {
-    if (doConstruction() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doConstruction() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         switch (type_.type())
         {
@@ -147,7 +147,7 @@ void MachLogTypeMap::processConstruction()
 
 void MachLogTypeMap::processAdministrator()
 {
-    if (doAdministrator() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doAdministrator() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         MachPhys::AdministratorSubType subtype = (MachPhys::AdministratorSubType)type_.subtype();
         switch (subtype)
@@ -168,7 +168,7 @@ void MachLogTypeMap::processAdministrator()
 
 void MachLogTypeMap::processAggressor()
 {
-    if (doAggressor() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doAggressor() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         MachPhys::AggressorSubType subtype = (MachPhys::AggressorSubType)type_.subtype();
         switch (subtype)
@@ -195,7 +195,7 @@ void MachLogTypeMap::processAggressor()
 
 void MachLogTypeMap::processConstructor()
 {
-    if (doConstructor() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doConstructor() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         MachPhys::ConstructorSubType subtype = (MachPhys::ConstructorSubType)type_.subtype();
         switch (subtype)
@@ -216,7 +216,7 @@ void MachLogTypeMap::processConstructor()
 
 void MachLogTypeMap::processLocator()
 {
-    PRE(type_.type() == MachLog::GEO_LOCATOR or type_.type() == MachLog::SPY_LOCATOR);
+    PRE(type_.type() == MachLog::GEO_LOCATOR || type_.type() == MachLog::SPY_LOCATOR);
     if (doLocator() == PROCESS_AS_SUBTYPE)
     {
         switch (type_.type())
@@ -234,7 +234,7 @@ void MachLogTypeMap::processLocator()
 
 void MachLogTypeMap::processTechnician()
 {
-    if (doTechnician() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doTechnician() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         MachPhys::TechnicianSubType subtype = (MachPhys::TechnicianSubType)type_.subtype();
         switch (subtype)
@@ -255,7 +255,7 @@ void MachLogTypeMap::processTechnician()
 
 void MachLogTypeMap::processTransporter()
 {
-    PRE(type_.type() == MachLog::APC or type_.type() == MachLog::RESOURCE_CARRIER);
+    PRE(type_.type() == MachLog::APC || type_.type() == MachLog::RESOURCE_CARRIER);
     if (doTransporter() == PROCESS_AS_SUBTYPE)
     {
         switch (type_.type())
@@ -487,7 +487,7 @@ MachLogTypeMap::ProcessAsSubtype MachLogTypeMap::doPersonnelCarrier()
 
 void MachLogTypeMap::processFactory()
 {
-    if (doFactory() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doFactory() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         MachPhys::FactorySubType subtype = (MachPhys::FactorySubType)type_.subtype();
         switch (subtype)
@@ -505,7 +505,7 @@ void MachLogTypeMap::processFactory()
 
 void MachLogTypeMap::processMissileEmplacement()
 {
-    if (doMissileEmplacement() == PROCESS_AS_SUBTYPE and type_.isSubtype())
+    if (doMissileEmplacement() == PROCESS_AS_SUBTYPE && type_.isSubtype())
     {
         MachPhys::MissileEmplacementSubType subtype = (MachPhys::MissileEmplacementSubType)type_.subtype();
         switch (subtype)

@@ -37,7 +37,7 @@ MachPhysMachineExplosionData& MachPhysMachineExplosionData::operator=(const Mach
 {
     CB_MacPhysMachineExplosionData_DEPIMPL()
 
-    PRE(pImpl_ and copyMe.pImpl_);
+    PRE(pImpl_ && copyMe.pImpl_);
     links_ = copyMe.pImpl_->links_;
 
     maxSize_ = copyMe.pImpl_->maxSize_;

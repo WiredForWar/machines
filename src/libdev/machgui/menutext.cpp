@@ -117,7 +117,7 @@ void MachGuiMenuText::chopUpText(const string& text, size_t maxWidth, const GuiB
     while (charPos < textLength)
     {
         // Ignore spaces at beginning of line
-        if (beginningOfLine and text[charPos] == ' ')
+        if (beginningOfLine && text[charPos] == ' ')
         {
         }
         // Force new line

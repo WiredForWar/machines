@@ -99,9 +99,9 @@ MachPhys::ConstructionType MachLogMapper::mapToPhysConstruction(MachLog::ObjectT
 // static
 bool MachLogMapper::isMachine(MachLog::ObjectType type)
 {
-    bool result = type == MachLog::ADMINISTRATOR or type == MachLog::AGGRESSOR or type == MachLog::CONSTRUCTOR
-        or type == MachLog::GEO_LOCATOR or type == MachLog::SPY_LOCATOR or type == MachLog::TECHNICIAN
-        or type == MachLog::RESOURCE_CARRIER or type == MachLog::APC;
+    bool result = type == MachLog::ADMINISTRATOR || type == MachLog::AGGRESSOR || type == MachLog::CONSTRUCTOR
+        || type == MachLog::GEO_LOCATOR || type == MachLog::SPY_LOCATOR || type == MachLog::TECHNICIAN
+        || type == MachLog::RESOURCE_CARRIER || type == MachLog::APC;
 
     return result;
 }
@@ -109,9 +109,9 @@ bool MachLogMapper::isMachine(MachLog::ObjectType type)
 // static
 bool MachLogMapper::isConstruction(MachLog::ObjectType type)
 {
-    bool result = type == MachLog::BEACON or type == MachLog::FACTORY or type == MachLog::GARRISON
-        or type == MachLog::HARDWARE_LAB or type == MachLog::POD or type == MachLog::MINE
-        or type == MachLog::MISSILE_EMPLACEMENT or type == MachLog::SMELTER;
+    bool result = type == MachLog::BEACON || type == MachLog::FACTORY || type == MachLog::GARRISON
+        || type == MachLog::HARDWARE_LAB || type == MachLog::POD || type == MachLog::MINE
+        || type == MachLog::MISSILE_EMPLACEMENT || type == MachLog::SMELTER;
 
     return result;
 }

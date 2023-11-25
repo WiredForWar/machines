@@ -186,7 +186,7 @@ MachLogMachine::~MachLogMachine()
 
         MachLogNetwork& network = MachLogNetwork::instance();
 
-        if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
         {
             network.messageBroker().sendEnteredBuildingMessage(id(), 0);
         }
@@ -266,7 +266,7 @@ void MachLogMachine::machineCreated()
     // seeIfNeedRegister();
 
     // No motion sequencer indicates this instance is being created via load game persistence.
-    if (not machineMotionSequencerDefined())
+    if (! machineMotionSequencerDefined())
     {
         // reallocate the id etc
         actorCreated();
@@ -330,7 +330,7 @@ void MachLogMachine::sendMessage(MachLogCommsId, const MachLogMessage& msg) cons
     CB_DEPIMPL(MachLogSquadron*, pSquadron_);
     // If machine is in a squadron and the squadron has a commander (by def must be an administrator )
     // Then send the message there unless the commander is this machine
-    if (pSquadron_ and pSquadron_->hasCommander() and pSquadron_->commander().id() != id())
+    if (pSquadron_ && pSquadron_->hasCommander() && pSquadron_->commander().id() != id())
         pSquadron_->commander().receiveMessage(msg);
     else
         MachLogRaces::instance().controller(race()).receiveMessage(msg);
@@ -353,17 +353,17 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
     CB_DEPIMPL(bool, isTeleporting_);
     CB_DEPIMPL(PhysAbsoluteTime, teleportFinishTime_);
     PhysRelativeTime alteredMaxCPUTime = maxCPUTime;
-    if (isDead() and not state_ == EXPLODING)
+    if (isDead() && ! state_ == EXPLODING)
         return 1.0;
 
     // if we're a non-first person-controlled machine that's idle inside a building that has
     // no attack-capable enemy machines in, try to ensure we're clear of the entrance.
     // This is good for the game. Trust me.
-    if (insideBuilding() and not motionSeq().is1stPersonControlled() and isIdle())
+    if (insideBuilding() && ! motionSeq().is1stPersonControlled() && isIdle())
     {
         MachLogConstruction& building = insideWhichBuilding();
 
-        if (not building.isEnemyCanAttackInside(race()))
+        if (! building.isEnemyCanAttackInside(race()))
             checkAndDoClearEntrance(building);
     }
 
@@ -427,7 +427,7 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
             // there is no real need to send update for hp/armour more regularly than once every two hundred
             // milliseconds
             if (MachLogNetwork::instance().isNetworkGame()
-                and (lastUpdateTimeGap > 0.2 or armour() == machData.armour()))
+                && (lastUpdateTimeGap > 0.2 || armour() == machData.armour()))
                 MachLogNetwork::instance().messageBroker().sendAdjustHPAndArmourMessage(id(), hp(), armour());
         }
     }
@@ -466,7 +466,7 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
     // Update the motion sequencer (unless in 1st person or inside an APC) and the actor level.
     // Next update should occur at earliest of these times
     PhysRelativeTime intervalMotionSeq
-        = ((isIn1stPersonView() or insideAPC()) ? 1.0 : motionSeq().update(alteredMaxCPUTime));
+        = ((isIn1stPersonView() || insideAPC()) ? 1.0 : motionSeq().update(alteredMaxCPUTime));
 
     MATHEX_SCALAR junk = 0;
     PhysRelativeTime intervalActor = MachActor::update(alteredMaxCPUTime, junk);
@@ -690,7 +690,7 @@ bool MachLogMachine::isDying() const
 
 bool MachLogMachine::isFreeToAttack() const
 {
-    return isIdle() or isStandingGround() or doingTaskAttack();
+    return isIdle() || isStandingGround() || doingTaskAttack();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -824,7 +824,7 @@ bool MachLogMachine::insideBuilding() const
 {
     // Deemed to be inside a building if using its interior config space
     return pImpl_->pInOrOnPadConstruction_
-        and &motionSeq().currentConfigSpace() == &pImpl_->pInOrOnPadConstruction_->interiorConfigSpace();
+        && &motionSeq().currentConfigSpace() == &pImpl_->pInOrOnPadConstruction_->interiorConfigSpace();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -850,11 +850,11 @@ void MachLogMachine::insideWhichBuilding(MachLogConstruction* pEnteredBuilding)
     PRE_INFO((void*)pEnteredBuilding);
     PRE_INFO((void*)pImpl_->pInOrOnPadConstruction_);
 
-    PRE(pEnteredBuilding == nullptr or pImpl_->pInOrOnPadConstruction_ == nullptr
-        or pImpl_->pInOrOnPadConstruction_ == pEnteredBuilding);
+    PRE(pEnteredBuilding == nullptr || pImpl_->pInOrOnPadConstruction_ == nullptr
+        || pImpl_->pInOrOnPadConstruction_ == pEnteredBuilding);
 
     // Don't do anything if neither in nor entering
-    if (pEnteredBuilding or pImpl_->pInOrOnPadConstruction_)
+    if (pEnteredBuilding || pImpl_->pInOrOnPadConstruction_)
     {
         // Get the config spaces currently in use and of the new construction
         PhysConfigSpace2d* pOldSpace = &motionSeq().currentConfigSpace();
@@ -881,7 +881,7 @@ void MachLogMachine::insideWhichBuilding(MachLogConstruction* pEnteredBuilding)
             motionSeq().switchConfigSpace(pNewSpace);
             // this bit is for Enter/Leave building operations
             // So that things are logically attach correctly at the correct time.
-            if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+            if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
             {
                 if (pEnteredBuilding)
                     network.messageBroker().sendEnteredBuildingMessage(id(), pEnteredBuilding->id());
@@ -910,9 +910,9 @@ void MachLogMachine::hidePhysicalMachine()
     MexPoint2d target(position());
     target.x(target.x() + 0.01);
     //  HAL_STREAM("doing a findspace loop\n" );
-    while (not foundSpace)
+    while (! foundSpace)
     {
-        if (not cs.findSpace(position(), target, highClearence() * 2, radius, obstacleFlags(), &dest))
+        if (! cs.findSpace(position(), target, highClearence() * 2, radius, obstacleFlags(), &dest))
             radius += 5;
         else
             foundSpace = true;
@@ -997,7 +997,7 @@ MachLog::DefCon MachLogMachine::virtualDefCon() const
     CB_DEPIMPL(MachLog::DefCon, defCon_);
     CB_DEPIMPL(PhysAbsoluteTime, nextTrueDefConTime_);
 
-    if (nextTrueDefConTime_ > SimManager::instance().currentTime() and not isIdle())
+    if (nextTrueDefConTime_ > SimManager::instance().currentTime() && ! isIdle())
         return MachLog::DEFCON_HIGH;
     else
         return defCon_;
@@ -1008,7 +1008,7 @@ void MachLogMachine::manualCommandIssued()
     CB_DEPIMPL(PhysAbsoluteTime, nextTrueDefConTime_);
 
     nextTrueDefConTime_ = SimManager::instance().currentTime() + virtualDefConInterval();
-    if (objectType() == MachLog::AGGRESSOR and asAggressor().isEradicator())
+    if (objectType() == MachLog::AGGRESSOR && asAggressor().isEradicator())
     {
         setBusyPeriod(0.0);
     }
@@ -1019,7 +1019,7 @@ void MachLogMachine::manualCommandIssued()
 void MachLogMachine::defCon(MachLog::DefCon newDefCon)
 {
     ASSERT(
-        newDefCon == MachLog::DEFCON_HIGH or newDefCon == MachLog::DEFCON_NORMAL or newDefCon == MachLog::DEFCON_LOW,
+        newDefCon == MachLog::DEFCON_HIGH || newDefCon == MachLog::DEFCON_NORMAL || newDefCon == MachLog::DEFCON_LOW,
         "Unknown defcon in MLMAchine(defcon)");
     CB_DEPIMPL(MachLog::DefCon, defCon_);
     defCon_ = newDefCon;
@@ -1090,9 +1090,9 @@ void MachLogMachine::beHit(
     MexLine3d* pByDirection,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
-        if (byType != MachPhys::N_WEAPON_TYPES and pByDirection != nullptr)
+        if (byType != MachPhys::N_WEAPON_TYPES && pByDirection != nullptr)
             MachPhysWeaponUtility::victimAnimation(
                 byType,
                 SimManager::instance().currentTime(),
@@ -1101,11 +1101,11 @@ void MachLogMachine::beHit(
         MachActor::beHit(damage, byType, pByActor, pByDirection, echo);
         sendMessage(nullptr, MachLogMessage(this, MachLogMessage::ENEMY_SIGHTED));
 
-        if (not isDead())
+        if (! isDead())
         {
             notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
 
-            if (pByActor and pByActor->race() != race())
+            if (pByActor && pByActor->race() != race())
             {
                 // give voicemail if appropriate
                 checkAndDoHitVoiceMail();
@@ -1126,7 +1126,7 @@ void MachLogMachine::beHitWithoutAnimation(
     MachActor* pByActor,
     MachActor::EchoBeHit echo)
 {
-    if (not isDead())
+    if (! isDead())
     {
         MachPhys::ArmourUnits armourLeft = armour();
         MachPhys::ArmourUnits absorb = 0;
@@ -1142,7 +1142,7 @@ void MachLogMachine::beHitWithoutAnimation(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO and MachLogNetwork::instance().isNetworkGame())
+        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
             MachLogNetwork::instance().messageBroker().sendBeHitMessage(
                 id(),
                 damage,
@@ -1180,11 +1180,11 @@ void MachLogMachine::beHitWithoutAnimation(
             // Ensure marker gets removed
             selectionState(MachLog::NOT_SELECTED);
         }
-        if (not isDead())
+        if (! isDead())
         {
             notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
 
-            if (pByActor and pByActor->race() != race())
+            if (pByActor && pByActor->race() != race())
             {
                 // give voicemail if appropriate
                 checkAndDoHitVoiceMail();
@@ -1230,7 +1230,7 @@ bool MachLogMachine::sufficientTimePassedSinceLastHit()
         // allow this mail if actor is over 200m away from the last actor to report having been hit
         // or sufficient time has elapsed since last actor reported having been hit
         if (myPosition.sqrEuclidianDistance(lastGlobalHitVoiceMailPosition()) > 40000.0
-            or timeNow >= nextGlobalHitVoiceMailTime())
+            || timeNow >= nextGlobalHitVoiceMailTime())
         {
             // yes, we've passed the requirements for the global-level cull....now still have to satisfy
             // our own personal time period requirements.
@@ -1269,7 +1269,7 @@ void MachLogMachine::releaseHealingAuraReference()
     HAL_STREAM(
         "(" << id() << ") MLMachine::releaseHealingAuraReference at entry " << healAuraReferences_ << "references\n");
     --healAuraReferences_;
-    if (healAuraReferences_ <= 0 and pHealAura_ != nullptr)
+    if (healAuraReferences_ <= 0 && pHealAura_ != nullptr)
     {
         HAL_STREAM(" got no references left and heal aura is not null so delete\n");
         delete pHealAura_;
@@ -1313,7 +1313,7 @@ void MachLogMachine::smeltMe()
 
     isDead(true);
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() and network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         network.messageBroker().sendSmeltMachineMessage(id());
     }
@@ -1447,7 +1447,7 @@ bool MachLogMachine::evading() const
 void MachLogMachine::camouflaged(bool status)
 {
     CB_DEPIMPL(bool, camouflaged_);
-    if (status == true and camouflaged_ == false)
+    if (status == true && camouflaged_ == false)
     {
         MachLogNetwork& network = MachLogNetwork::instance();
         if (network.isNetworkGame())
@@ -1464,7 +1464,7 @@ void MachLogMachine::camouflaged(bool status)
         camouflaged_ = status;
         notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::CHANGED_CAMOUFLAGE_STATUS);
     }
-    else if (status == false and camouflaged_ == true)
+    else if (status == false && camouflaged_ == true)
     {
         MachLogNetwork& network = MachLogNetwork::instance();
         if (network.isNetworkGame())
@@ -1529,26 +1529,26 @@ void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
         return;
 
     // if we're inside a fristd::endly garrison and our hitpoints are low, it's probably best to stay here.
-    if (insideBuilding() and insideWhichBuilding().objectType() == MachLog::GARRISON
-        and insideWhichBuilding().race() == race() and hpRatio() < 0.2)
+    if (insideBuilding() && insideWhichBuilding().objectType() == MachLog::GARRISON
+        && insideWhichBuilding().race() == race() && hpRatio() < 0.2)
         return;
 
     // if we're an attack-capable machine and one of the strong threats is our target, do not evade
 
     if (objectIsCanAttack())
     {
-        if (asCanAttack().hasCurrentTarget() and asCanAttack().currentTargetIsOneOfThese(strongThreats))
+        if (asCanAttack().hasCurrentTarget() && asCanAttack().currentTargetIsOneOfThese(strongThreats))
             return;
     }
     else
     {
         // specific "don't evade" clauses for certain non-attack-capable machines
 
-        if (objectType() == MachLog::APC and asAPC().isDeploying() /*and asAPC().nearDropzone()*/)
+        if (objectType() == MachLog::APC && asAPC().isDeploying() /*and asAPC().nearDropzone()*/)
             return;
 
         // better to try and complete the missile emplacement than run
-        if (objectType() == MachLog::CONSTRUCTOR and asConstructor().constructingMissileEmplacement())
+        if (objectType() == MachLog::CONSTRUCTOR && asConstructor().constructingMissileEmplacement())
             return;
     }
 
@@ -1573,7 +1573,7 @@ void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
 
     // okay, our hand is forced.....we must attempt an evasion. Initiate an evade operation, I say....
 
-    if (not strategy().isUninterruptable())
+    if (! strategy().isUninterruptable())
         strategy().changeToEvadeMode();
 }
 
@@ -1609,7 +1609,7 @@ void MachLogMachine::populateStrongThreats(Actors* pActors)
             MachLogRaces::DispositionToRace disposition = races.dispositionToRace(race(), threatActor.race());
 
             // only add this as a strong threat if we don't think it's a friend (same race or ally),
-            if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+            if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
             {
                 // can only check building location status of machines, not other actor types
                 if (threatActor.objectIsMachine())
@@ -1630,7 +1630,7 @@ void MachLogMachine::populateStrongThreats(Actors* pActors)
                         // are here with us, otherwise we might stupidly leave this place to get to a nearby
                         // garrison or something, which'd be dumb. So only add hostiles inside with us.
                         if (threatMachine.insideBuilding()
-                            and threatMachine.insideWhichBuilding().id() == insideWhichBuilding().id())
+                            && threatMachine.insideWhichBuilding().id() == insideWhichBuilding().id())
                             strongThreats.push_back(*i);
                     }
                 }
@@ -1647,14 +1647,14 @@ void MachLogMachine::populateStrongThreats(Actors* pActors)
             MachLogRaces::DispositionToRace disposition = races.dispositionToRace(race(), threatActor.race());
 
             // only add this as a strong threat if we don't think it's a friend (same race or ally),
-            if (disposition == MachLogRaces::NEUTRAL or disposition == MachLogRaces::ENEMY)
+            if (disposition == MachLogRaces::NEUTRAL || disposition == MachLogRaces::ENEMY)
             {
                 // can only check building location status of machines, not other actor types
                 if (threatActor.objectIsMachine())
                 {
                     const MachLogMachine& threatMachine = threatActor.asMachine();
 
-                    if ((not threatMachine.insideBuilding()) and inScannerRange(threatMachine, scannerMultiplier))
+                    if ((! threatMachine.insideBuilding()) && inScannerRange(threatMachine, scannerMultiplier))
                         strongThreats.push_back(*i);
                 }
                 // for the moment, machines will not treat missile emplacements as threats. We'll see how that behaves.
@@ -1686,7 +1686,7 @@ bool MachLogMachine::notAfraidOfStrongThreats(const Actors& strongThreats) const
     bool notAfraid = true;
     MachLogRaces& races = MachLogRaces::instance();
 
-    for (Actors::const_iterator i = strongThreats.begin(); notAfraid and i != strongThreats.end(); ++i)
+    for (Actors::const_iterator i = strongThreats.begin(); notAfraid && i != strongThreats.end(); ++i)
     {
         MachActor& threatActor = races.actor(*i);
         if (fearsThisActor(threatActor))
@@ -1700,13 +1700,13 @@ bool MachLogMachine::notAfraidOfStrongThreats(const Actors& strongThreats) const
 
 bool MachLogMachine::destinationTakesUsClearOfThreats(const Actors& threats)
 {
-    if (not motionSeq().hasDestination())
+    if (! motionSeq().hasDestination())
         return false;
 
     MachLogRaces& races = MachLogRaces::instance();
 
     bool safe = true;
-    for (Actors::const_iterator i = threats.begin(); safe and i != threats.end(); ++i)
+    for (Actors::const_iterator i = threats.begin(); safe && i != threats.end(); ++i)
     {
         MachActor& threatActor = races.actor(*i);
 
@@ -1716,7 +1716,7 @@ bool MachLogMachine::destinationTakesUsClearOfThreats(const Actors& threats)
             if (threatMachine.inScannerRange(motionSeq().destination()))
                 safe = false;
         }
-        else if (threatActor.objectType() == MachLog::MISSILE_EMPLACEMENT and threatActor.subType() != MachPhys::ICBM)
+        else if (threatActor.objectType() == MachLog::MISSILE_EMPLACEMENT && threatActor.subType() != MachPhys::ICBM)
         {
             const MachLogMissileEmplacement& threatME = threatActor.asMissileEmplacement();
             if (threatME.inWeaponRange(motionSeq().destination()))
@@ -1739,7 +1739,7 @@ bool MachLogMachine::fearsThisActor(const MachActor& otherActor) const
     // and/or
     // the other actor is not yet outgunned
 
-    return otherActor.militaryStrength() > (localStrength() * 0.7) or (not otherActor.isOutGunned());
+    return otherActor.militaryStrength() > (localStrength() * 0.7) || (! otherActor.isOutGunned());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1770,10 +1770,10 @@ bool MachLogMachine::wontFindAnywhereSafer() const
     MachActor* pSafestActor = nullptr;
     bool firstEPPencountered = false;
     const MachPhysEvasionPriorityPlan& EPP = machineData().EPP();
-    for (int priority = 0; firstEPPencountered == false and priority < MachPhysEvasionPriorityPlans::N_PRIORITY_LEVELS;
+    for (int priority = 0; firstEPPencountered == false && priority < MachPhysEvasionPriorityPlans::N_PRIORITY_LEVELS;
          ++priority)
     {
-        if (EPP.aggressivesPriority() == priority and EPP.turretsPriority() == priority)
+        if (EPP.aggressivesPriority() == priority && EPP.turretsPriority() == priority)
         {
             // special case if aggressive machines and missile emplacements share the same EPP priority level.
             // we must check both, and apply the "nowhere safer" check on the safest of the two candidates returned
@@ -1825,11 +1825,11 @@ bool MachLogMachine::wontFindAnywhereSafer() const
         }
     }
 
-    if (pSafestActor and position().sqrEuclidianDistance(pSafestActor->position()) <= localStrengthMaximumRadius() / 2)
+    if (pSafestActor && position().sqrEuclidianDistance(pSafestActor->position()) <= localStrengthMaximumRadius() / 2)
     {
         inSafestPosition = true;
     }
-    else if (not pSafestActor and objectIsCanAttack())
+    else if (! pSafestActor && objectIsCanAttack())
     {
         // If there are no safe actors, and we're attack-capable, it's time to fight.
         // Hey, ya can't run forever....
@@ -1857,13 +1857,13 @@ void MachLogMachine::dispatchSOS(Actors& strongThreats)
 
     MachLogRaces& races = MachLogRaces::instance();
 
-    while (iThreats != strongThreats.end() and iFollowers != followers.end())
+    while (iThreats != strongThreats.end() && iFollowers != followers.end())
     {
         MachActor& threatActor = races.actor(*iThreats);
         if (threatActor.objectIsMissileEmplacement())
             // don't bother dispatching SOSs for turret attacks.
             ++iThreats;
-        else if (threatActor.isOutGunned() or not MachLogCanAttack::IHaveClearWeaponPathToHim(this, &threatActor))
+        else if (threatActor.isOutGunned() || ! MachLogCanAttack::IHaveClearWeaponPathToHim(this, &threatActor))
         {
             ++iThreats;
         }
@@ -1873,8 +1873,8 @@ void MachLogMachine::dispatchSOS(Actors& strongThreats)
 
             // don't need a DefCon check for following aggressives - attacking your enemies is their JOB.
             // We don't want to interrupt them if they're evading, though.
-            if (pFollowingMachine->objectIsCanAttack() and not pFollowingMachine->evading()
-                and (pFollowingMachine->asCanAttack().canFireAt(threatActor)))
+            if (pFollowingMachine->objectIsCanAttack() && ! pFollowingMachine->evading()
+                && (pFollowingMachine->asCanAttack().canFireAt(threatActor)))
             {
                 // even if this actor doesn't respond to the SOS call, bump its alertness up to full
                 pFollowingMachine->asCanAttack().setMinimumAlertness(125);
@@ -1883,7 +1883,7 @@ void MachLogMachine::dispatchSOS(Actors& strongThreats)
                     pFollowingMachine,
                     &threatActor,
                     MachLogAttackOperation::TERMINATE_ON_CHANGE);
-                if (not(pFollowingMachine->strategy().addOperationAsSubOperationToFollowOperation(pOp)))
+                if (!(pFollowingMachine->strategy().addOperationAsSubOperationToFollowOperation(pOp)))
                     delete pOp;
             }
             ++iFollowers;
@@ -1902,7 +1902,7 @@ bool MachLogMachine::findSafestNearbyAggressiveMachine(MachLogMachine** ppSafest
     CB_DEPIMPL(PhysAbsoluteTime, lastSafestMachineEstimateTime_);
     bool found = false;
 
-    if ((not pSafestMachine_) or SimManager::instance().currentTime() - lastSafestMachineEstimateTime_ > 6.0)
+    if ((! pSafestMachine_) || SimManager::instance().currentTime() - lastSafestMachineEstimateTime_ > 6.0)
     {
         MachActor* pNewSafestMachine = nullptr;
 
@@ -1948,8 +1948,8 @@ bool MachLogMachine::findSafestNearbyMissileEmplacement(MachLogMissileEmplacemen
     CB_DEPIMPL(PhysAbsoluteTime, lastSafestMissileEmplacementEstimateTime_);
     bool found = false;
 
-    if ((not pSafestMissileEmplacement_)
-        or SimManager::instance().currentTime() - lastSafestMissileEmplacementEstimateTime_ > 6.0)
+    if ((! pSafestMissileEmplacement_)
+        || SimManager::instance().currentTime() - lastSafestMissileEmplacementEstimateTime_ > 6.0)
     {
         MachActor* pNewSafestMissileEmplacement = nullptr;
 
@@ -2033,7 +2033,7 @@ bool MachLogMachine::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEv
                 physMachine().notInOrOnPadConstruction();
 
                 // And blow up, unless shutting game down
-                if (not MachLogRaces::instance().isUnloadingGame())
+                if (! MachLogRaces::instance().isUnloadingGame())
                     beHit(1000000);
 
                 remainAttached = false;
@@ -2095,7 +2095,7 @@ void MachLogMachine::teleportIntoWorld()
     CB_DEPIMPL(PhysAbsoluteTime, teleportFinishTime_);
     CB_DEPIMPL(MachLogMachine::State, state_);
 
-    PRE(not isTeleporting());
+    PRE(! isTeleporting());
     doFadeInAnimation();
     isTeleporting_ = true;
     teleportFinishTime_ = SimManager::instance().currentTime() + 1.5;
@@ -2114,7 +2114,7 @@ void MachLogMachine::teleportOutOfWorld()
     CB_DEPIMPL(PhysAbsoluteTime, teleportFinishTime_);
     CB_DEPIMPL(MachLogMachine::State, state_);
 
-    PRE(not isTeleporting());
+    PRE(! isTeleporting());
     doFadeOutAnimation();
     isTeleporting_ = true;
     teleportFinishTime_ = SimManager::instance().currentTime() + 1.5;
@@ -2317,14 +2317,14 @@ void MachLogMachine::ignoreEntrancePolygon(bool setIgnore)
     bool alreadyIgnored = mSeq.isPolygonIgnored(id);
 
     // Make change if required
-    if ((setIgnore and not alreadyIgnored) or (not setIgnore and alreadyIgnored))
+    if ((setIgnore && ! alreadyIgnored) || (! setIgnore && alreadyIgnored))
         mSeq.isPolygonIgnored(id, setIgnore);
 }
 
 void MachLogMachine::ignoreConstructionPolygon(bool setIgnore)
 {
     PRE(inBuildingOrOnPad());
-    PRE(not insideBuilding());
+    PRE(! insideBuilding());
 
     // Get the polygon id for the construction
     PhysConfigSpace2d::PolygonId id = pImpl_->pInOrOnPadConstruction_->obstaclePolygonId();
@@ -2334,7 +2334,7 @@ void MachLogMachine::ignoreConstructionPolygon(bool setIgnore)
     bool alreadyIgnored = mSeq.isPolygonIgnored(id);
 
     // Make change if required
-    if ((setIgnore and not alreadyIgnored) or (not setIgnore and alreadyIgnored))
+    if ((setIgnore && ! alreadyIgnored) || (! setIgnore && alreadyIgnored))
         mSeq.isPolygonIgnored(id, setIgnore);
 }
 
@@ -2361,7 +2361,7 @@ bool MachLogMachine::ignoringConstructionPolygon() const
 {
     bool result = false;
 
-    if (inBuildingOrOnPad() and not insideBuilding())
+    if (inBuildingOrOnPad() && ! insideBuilding())
     {
         PhysConfigSpace2d::PolygonId id = pImpl_->pInOrOnPadConstruction_->obstaclePolygonId();
         const MachLogMachineMotionSequencer& mSeq = motionSeq();
@@ -2401,7 +2401,7 @@ MATHEX_SCALAR MachLogMachine::perceivedDarkness() const
 
     if (hasNVG())
         return MachLogMachine::thresholdNVGDarkness();
-    else if (darkness > 0.0 and pSquadron_ != nullptr and pSquadron_->hasCommander())
+    else if (darkness > 0.0 && pSquadron_ != nullptr && pSquadron_->hasCommander())
     {
         // if within 200m of the administrator, get incrementally better information on the environment
         // as he can use his NVG to increase your awareness of, err, stuff
@@ -2459,7 +2459,7 @@ MachLog1stPersonMachineHandler* MachLogMachine::pFirstPersonMachineHandler() con
 bool MachLogMachine::doingTaskAttack() const
 {
     CB_DEPIMPL(MachLogSquadron*, pSquadron_);
-    return (pSquadron_ and pSquadron_->strategy().currentOperationType() == MachLogOperation::TASK_ATTACK_OPERATION);
+    return (pSquadron_ && pSquadron_->strategy().currentOperationType() == MachLogOperation::TASK_ATTACK_OPERATION);
 }
 
 bool MachLogMachine::machineIsGlider() const
@@ -2479,8 +2479,8 @@ void MachLogMachine::teleportingInterrupted()
 bool MachLogMachine::canEnterConstructionNow(const MachLogConstruction& construction) const
 {
     return (
-        construction.nLogicalEntrances() > 0 and not(construction.entrance(0).locked())
-        and canFitInsideConstructionNow(construction));
+        construction.nLogicalEntrances() > 0 && !(construction.entrance(0).locked())
+        && canFitInsideConstructionNow(construction));
 }
 
 bool MachLogMachine::canFitInsideConstructionNow(const MachLogConstruction& construction) const
@@ -2488,7 +2488,7 @@ bool MachLogMachine::canFitInsideConstructionNow(const MachLogConstruction& cons
     bool result = true;
 
     // machine cannot enter if it's too fat, or if the building has a locked entrance
-    if (not canEnterConstruction(construction))
+    if (! canEnterConstruction(construction))
         result = false;
     else
     {
@@ -2496,13 +2496,13 @@ bool MachLogMachine::canFitInsideConstructionNow(const MachLogConstruction& cons
 
         // Need to examine bays if this is a building of our race OR if this machine is an aggressor;
         // Don't care otherwise.
-        if (construction.race() == race() and not objectType() == MachLog::AGGRESSOR)
+        if (construction.race() == race() && ! objectType() == MachLog::AGGRESSOR)
         {
             // See if there is a free station.
             // The internal station will be a PARKING BAY unless this is a research lab.
             MachLog::ObjectType constructionType = construction.objectType();
             MachPhysStation::Type stationType
-                = ((constructionType == MachLog::HARDWARE_LAB or constructionType == MachLog::SOFTWARE_LAB)
+                = ((constructionType == MachLog::HARDWARE_LAB || constructionType == MachLog::SOFTWARE_LAB)
                        ? MachPhysStation::RESEARCH_BAY
                        : MachPhysStation::PARKING_BAY);
 
@@ -2553,7 +2553,7 @@ void MachLogMachine::checkAndDoClearEntrance(MachLogConstruction& constron)
 
         MATHEX_SCALAR myClearance = motionSeq().lowClearance() * 1.2;
 
-        for (MATHEX_SCALAR proximity = 10.0; not succeeded and proximity > 1.0; proximity -= 0.1)
+        for (MATHEX_SCALAR proximity = 10.0; ! succeeded && proximity > 1.0; proximity -= 0.1)
         {
             MexVec2 moveVector(pushVector);
             moveVector *= proximity;
@@ -2585,7 +2585,7 @@ void MachLogMachine::resetNextGlobalHitVoiceMailTime()
 
 void MachLogMachine::checkAndDoHitVoiceMail()
 {
-    if (race() == MachLogRaces::instance().pcController().race() and sufficientTimePassedSinceLastHit())
+    if (race() == MachLogRaces::instance().pcController().race() && sufficientTimePassedSinceLastHit())
     {
         if (hpRatio() <= 0.35)
             // give voicemail to warn that damage is dangerously high

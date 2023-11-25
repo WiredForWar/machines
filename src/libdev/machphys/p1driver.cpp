@@ -112,8 +112,8 @@ MachPhys1stPersonDriver::~MachPhys1stPersonDriver()
 void MachPhys1stPersonDriver::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
-    INVARIANT(not(movingForwards_ and movingBackwards_));
-    INVARIANT(not(turningLeft_ and turningRight_));
+    INVARIANT(!(movingForwards_ && movingBackwards_));
+    INVARIANT(!(turningLeft_ && turningRight_));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachPhys1stPersonDriver& t)
@@ -173,7 +173,7 @@ bool MachPhys1stPersonDriver::isMovingBackwards() const
 
 bool MachPhys1stPersonDriver::isMoving() const
 {
-    return movingForwards_ or movingBackwards_;
+    return movingForwards_ || movingBackwards_;
 }
 
 bool MachPhys1stPersonDriver::isTurningLeft() const
@@ -188,12 +188,12 @@ bool MachPhys1stPersonDriver::isTurningRight() const
 
 bool MachPhys1stPersonDriver::isTurning() const
 {
-    return turningLeft_ or turningRight_;
+    return turningLeft_ || turningRight_;
 }
 
 bool MachPhys1stPersonDriver::isStationary() const
 {
-    return not(isTurning() or isMoving());
+    return !(isTurning() || isMoving());
 }
 
 void MachPhys1stPersonDriver::maxWeaponRange(MATHEX_SCALAR range)
@@ -459,7 +459,7 @@ bool MachPhys1stPersonDriver::targetPointAnglesValid(uint weaponIndex, const Mex
     // Check in range
     MATHEX_SCALAR x = localPoint.x();
     return (Mathex::abs(localPoint.y()) <= 0.95 * x * data.tanHorizontalDeviationAngle())
-        and (Mathex::abs(localPoint.z()) <= 0.95 * x * data.tanVerticalDeviationAngle());
+        && (Mathex::abs(localPoint.z()) <= 0.95 * x * data.tanVerticalDeviationAngle());
 }
 
 void MachPhys1stPersonDriver::initialiseCamera()

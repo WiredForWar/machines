@@ -105,9 +105,9 @@ MachLog1stPersonHandler::MachLog1stPersonHandler(
             // We want to ignore heal weapons, coz they give us a load of grief in 1st person
             MachPhys::WeaponType type = pData_->pCanAttack_->weapons()[i]->type();
 
-            if (type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER)
+            if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER)
             {
-                ASSERT(not pData_->hasHealWeapon_, "Only one heal weapon allowed");
+                ASSERT(! pData_->hasHealWeapon_, "Only one heal weapon allowed");
                 pData_->hasHealWeapon_ = true;
                 pData_->healWeaponIndex_ = i;
             }
@@ -122,7 +122,7 @@ MachLog1stPersonHandler::MachLog1stPersonHandler(
     pData_->maxWeaponRange_ = 0.0;
     pData_->targetAnglesValid_ = false;
     pData_->remoteNode_ = networkType == REMOTE;
-    pData_->xmitOnUpdate_ = not pData_->remoteNode_;
+    pData_->xmitOnUpdate_ = ! pData_->remoteNode_;
     pData_->lastXmitTime_ = 0.0;
     pData_->indicatorSpawnTime_ = 0.0;
 
@@ -184,18 +184,18 @@ void MachLog1stPersonHandler::turnRight()
 void MachLog1stPersonHandler::update()
 {
     // If networking and any of the setup flags have changed, ensure we retransmit the state vector
-    bool weShouldXmit = MachLogNetwork::instance().isNetworkGame() and not pData_->remoteNode_;
-    if (weShouldXmit and not pData_->xmitOnUpdate_)
+    bool weShouldXmit = MachLogNetwork::instance().isNetworkGame() && ! pData_->remoteNode_;
+    if (weShouldXmit && ! pData_->xmitOnUpdate_)
         pData_->xmitOnUpdate_ = setupFlagsChanged();
 
     // Concrete class to do its work
     doUpdate();
 
     // If required, xmit the state vector
-    if (weShouldXmit and (pData_->xmitOnUpdate_ or (Phys::time() - pData_->lastXmitTime_ > 0.5)))
+    if (weShouldXmit && (pData_->xmitOnUpdate_ || (Phys::time() - pData_->lastXmitTime_ > 0.5)))
         xmitStateVector();
 
-    if (not pData_->remoteNode_)
+    if (! pData_->remoteNode_)
     {
         // cancel all motion setups
         clearSetupFlags();
@@ -245,7 +245,7 @@ MachLogWeapon& MachLog1stPersonHandler::weapon(uint index)
     PRE(index < nWeapons());
 
     // So we can ignore heal weapons
-    if (pData_->hasHealWeapon_ and index >= pData_->healWeaponIndex_)
+    if (pData_->hasHealWeapon_ && index >= pData_->healWeaponIndex_)
         ++index;
 
     return *pData_->pCanAttack_->weapons()[index];
@@ -256,7 +256,7 @@ void MachLog1stPersonHandler::enableWeapon(uint index, bool isEnabled)
     PRE(index < nWeapons());
 
     // So we can ignore heal weapons
-    if (pData_->hasHealWeapon_ and index >= pData_->healWeaponIndex_)
+    if (pData_->hasHealWeapon_ && index >= pData_->healWeaponIndex_)
         ++index;
 
     pData_->weaponEnabled_[index] = isEnabled;
@@ -269,7 +269,7 @@ bool MachLog1stPersonHandler::isWeaponEnabled(uint index) const
     PRE(index < nWeapons());
 
     // So we can ignore heal weapons
-    if (pData_->hasHealWeapon_ and index >= pData_->healWeaponIndex_)
+    if (pData_->hasHealWeapon_ && index >= pData_->healWeaponIndex_)
         ++index;
 
     return pData_->weaponEnabled_[index];
@@ -280,7 +280,7 @@ void MachLog1stPersonHandler::updateMaxWeaponRange()
     MATHEX_SCALAR maxRange = 0.0;
     for (uint i = nWeapons(); i--;)
     {
-        if (pData_->remoteNode_ or isWeaponEnabled(i))
+        if (pData_->remoteNode_ || isWeaponEnabled(i))
         {
             MATHEX_SCALAR weaponRange = weapon(i).range();
             if (weaponRange > maxRange)
@@ -313,12 +313,12 @@ void MachLog1stPersonHandler::acquireTargetingInfo(TargetingInfo& targetInfo) co
         ASSERT_INFO(entityId);
         ASSERT(entityId < 2001, "That entityId isn't in the permissible range.");
 
-        if (entityId != 0 and MachLogRaces::instance().actorExists(entityId))
+        if (entityId != 0 && MachLogRaces::instance().actorExists(entityId))
         {
             MachActor* pTargetActor = &MachLogRaces::instance().actor(entityId);
             // boost alertness of actor being targetted if it's a canattack of a different race to me
             MachActor& targetActor = *pTargetActor;
-            if (targetActor.objectIsCanAttack() and targetActor.race() != pData_->pActor_->race())
+            if (targetActor.objectIsCanAttack() && targetActor.race() != pData_->pActor_->race())
             {
                 targetActor.asCanAttack().setMinimumAlertness(125);
             }
@@ -341,12 +341,12 @@ void MachLog1stPersonHandler::acquireTargetingInfo(TargetingInfo& targetInfo) co
         ASSERT_INFO(entityId);
         ASSERT(entityId < 2001, "That entityId isn't in the permissible range.");
 
-        if (entityId != 0 and MachLogRaces::instance().actorExists(entityId))
+        if (entityId != 0 && MachLogRaces::instance().actorExists(entityId))
         {
             MachActor* pTargetActor = &MachLogRaces::instance().actor(entityId);
             // boost alertness of actor being targetted if it's a canattack of a different race to me
             MachActor& targetActor = *pTargetActor;
-            if (targetActor.objectIsCanAttack() and targetActor.race() != pData_->pActor_->race())
+            if (targetActor.objectIsCanAttack() && targetActor.race() != pData_->pActor_->race())
             {
                 targetActor.asCanAttack().setMinimumAlertness(125);
             }
@@ -393,7 +393,7 @@ bool MachLog1stPersonHandler::isPointingTowardsGround() const
 bool MachLog1stPersonHandler::isViableMoveToTarget(const TargetingInfo& targetInfo) const
 {
     bool viableMoveToTarget = targetInfo.strikeType == MachPhys::ON_TERRAIN;
-    if (not viableMoveToTarget or targetInfo.getCommandPoint().isZeroPoint())
+    if (! viableMoveToTarget || targetInfo.getCommandPoint().isZeroPoint())
     {
         return false;
     }
@@ -441,7 +441,7 @@ void MachLog1stPersonHandler::displayMoveIndicator(const MexPoint3d& targetPoint
 bool MachLog1stPersonHandler::isMoveIndicatorPresent() const
 {
     PhysAbsoluteTime now = SimManager::instance().currentTime();
-    return not(now > pData_->indicatorSpawnTime_);
+    return !(now > pData_->indicatorSpawnTime_);
 }
 
 void MachLog1stPersonHandler::fire(const MexPoint3d& targetPoint)
@@ -452,7 +452,7 @@ void MachLog1stPersonHandler::fire(const MexPoint3d& targetPoint)
     // Fire each weapon that is enabled
     for (uint i = nWeapons(); i--;)
     {
-        if (isWeaponEnabled(i) and not weaponCanOnlyFireAtActor(i))
+        if (isWeaponEnabled(i) && ! weaponCanOnlyFireAtActor(i))
             weapon(i).fire(targetPoint);
     }
 }
@@ -467,13 +467,13 @@ void MachLog1stPersonHandler::fire(MachActor* pTargetActor)
     // Fire each weapon that is enabled
     for (uint i = nWeapons(); i--;)
     {
-        if (isWeaponEnabled(i) and weaponCanOnlyFireAtActor(i))
+        if (isWeaponEnabled(i) && weaponCanOnlyFireAtActor(i))
         {
             // Check only firing at machines if a heal weapon
             MachLogWeapon& firingWeapon = weapon(i);
             MachPhys::WeaponType type = firingWeapon.type();
             bool canFire = true;
-            if (type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER)
+            if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER)
             {
                 canFire = pTargetActor->objectIsMachine();
             }
@@ -490,7 +490,7 @@ bool MachLog1stPersonHandler::weaponCanOnlyFireAtActor(uint index) const
 
     // get the weapon type. This decides it
     MachPhys::WeaponType type = _CONST_CAST(MachLog1stPersonHandler*, this)->weapon(index).type();
-    return type == MachPhys::SUPERCHARGE_ADVANCED or type == MachPhys::SUPERCHARGE_SUPER;
+    return type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER;
 }
 
 void MachLog1stPersonHandler::lookDown(MexRadians byAngle)
@@ -539,7 +539,7 @@ void MachLog1stPersonHandler::updateTargetAnglesValidFlag()
     // Iterate through the enabled weapons
     for (uint i = nWeapons(); i--;)
     {
-        if (isWeaponEnabled(i) and physDriver.targetPointAnglesValid(i, targetPoint))
+        if (isWeaponEnabled(i) && physDriver.targetPointAnglesValid(i, targetPoint))
         {
             pData_->targetAnglesValid_ = true;
             break;
@@ -588,23 +588,23 @@ bool MachLog1stPersonHandler::setupFlagsChanged()
     MachPhys1stPersonDriver& physDriver = *pData_->pPhysDriver_;
 
     if (isToMoveForwards())
-        changed = not physDriver.isMovingForwards();
+        changed = ! physDriver.isMovingForwards();
     else if (isToMoveBackwards())
-        changed = not physDriver.isMovingForwards();
+        changed = ! physDriver.isMovingForwards();
     else
         changed = physDriver.isMoving();
 
     // Check turning
-    if (not changed)
+    if (! changed)
     {
         if (isToTurnLeft())
-            changed = not physDriver.isTurningLeft();
+            changed = ! physDriver.isTurningLeft();
         else if (isToTurnRight())
-            changed = not physDriver.isTurningRight();
+            changed = ! physDriver.isTurningRight();
         else
             changed = physDriver.isTurning();
 
-        if (not changed and physDriver.isTurning())
+        if (! changed && physDriver.isTurning())
             changed = physDriver.turnAtFastRate() != turnAtFastRate();
     }
 
@@ -613,8 +613,8 @@ bool MachLog1stPersonHandler::setupFlagsChanged()
 
 void MachLog1stPersonHandler::updateAnyNetworkState()
 {
-    if (MachLogNetwork::instance().isNetworkGame() and not pData_->remoteNode_
-        and SimManager::instance().currentTime() != pData_->lastXmitTime_)
+    if (MachLogNetwork::instance().isNetworkGame() && ! pData_->remoteNode_
+        && SimManager::instance().currentTime() != pData_->lastXmitTime_)
     {
         xmitStateVector();
     }
@@ -623,7 +623,7 @@ void MachLog1stPersonHandler::updateAnyNetworkState()
 void MachLog1stPersonHandler::setupRemoteHandlers()
 {
     // If this is a local handler, and we are playing a network game, we need to set up remote handlers
-    if (not pData_->remoteNode_ and MachLogNetwork::instance().isNetworkGame())
+    if (! pData_->remoteNode_ && MachLogNetwork::instance().isNetworkGame())
     {
         MachActor& actor = *pData_->pActor_;
         MachLogNetwork::instance().messageBroker().sendFirstPersonEndMessage(actor.id(), actor.race(), true);
@@ -633,7 +633,7 @@ void MachLog1stPersonHandler::setupRemoteHandlers()
 void MachLog1stPersonHandler::clearRemoteHandlers()
 {
     // If this is a local handler, and we are playing a network game, we need to clear remote handlers
-    if (not pData_->remoteNode_ and MachLogNetwork::instance().isNetworkGame())
+    if (! pData_->remoteNode_ && MachLogNetwork::instance().isNetworkGame())
     {
         MachActor& actor = *pData_->pActor_;
         MachLogNetwork::instance().messageBroker().sendFirstPersonEndMessage(actor.id(), actor.race(), false);
@@ -643,7 +643,7 @@ void MachLog1stPersonHandler::clearRemoteHandlers()
 void MachLog1stPersonHandler::xmitStateVector()
 {
     PRE(MachLogNetwork::instance().isNetworkGame());
-    PRE(not pData_->remoteNode_);
+    PRE(! pData_->remoteNode_);
 
     PhysAbsoluteTime now = SimManager::instance().currentTime();
     PhysRelativeTime timeGap = now - pData_->lastXmitTime_;
@@ -653,7 +653,7 @@ void MachLog1stPersonHandler::xmitStateVector()
     float timeGapThreshold = 1 / NetNetwork::instance().maxSentMessagesPerSecond();
     if (timeGapThreshold > 0.125)
         timeGapThreshold = 0.125;
-    if (timeGap > 0 and timeGap < timeGapThreshold)
+    if (timeGap > 0 && timeGap < timeGapThreshold)
         return;
     // Clear flag indicating retransmit on next update call
     pData_->xmitOnUpdate_ = false;
@@ -665,7 +665,7 @@ void MachLog1stPersonHandler::xmitStateVector()
 
     // Send the update message
     MachActor& actor = *pData_->pActor_;
-    if (not NetNetwork::instance().imStuffed())
+    if (! NetNetwork::instance().imStuffed())
         MachLogNetwork::instance().messageBroker().sendFirstPersonUpdateMessage(actor.id(), actor.race(), stateVector);
 }
 
@@ -711,7 +711,7 @@ bool MachLogAimDataFilter::check(const W4dEntity& entity, TreeOption* pOption)
                 MachActor& actor = MachLogRaces::instance().actor(entityId);
 
                 // Don't check debris, or ore holos
-                if (actor.objectIsDebris() or actor.objectIsOreHolograph())
+                if (actor.objectIsDebris() || actor.objectIsOreHolograph())
                     doCheck = false;
             }
             else

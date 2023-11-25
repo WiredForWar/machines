@@ -126,7 +126,7 @@ bool MachGuiHealCommand::applyMove(MachActor* pActor, string*)
         // Give it to the actor
         pActor->newOperation(pOp);
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVING);
             hasPlayedVoiceMail(true);
@@ -146,7 +146,7 @@ bool MachGuiHealCommand::applyHealObject(MachActor* pActor, string*)
         MachLogOperation* pOp;
 
         ASSERT(
-            pActor->objectType() == MachLog::ADMINISTRATOR and pActor->asAdministrator().hasHealingWeapon(),
+            pActor->objectType() == MachLog::ADMINISTRATOR && pActor->asAdministrator().hasHealingWeapon(),
             "Non-administrator or non-heal-capable administrator about to be issued heal op!");
 
         pOp = new MachLogHealOperation(&pActor->asAdministrator(), pDirectObject_);
@@ -154,7 +154,7 @@ bool MachGuiHealCommand::applyHealObject(MachActor* pActor, string*)
         // Give it to the actor
         pActor->newOperation(pOp);
 
-        if (not hasPlayedVoiceMail())
+        if (! hasPlayedVoiceMail())
         {
             MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::HEAL_TARGET);
             hasPlayedVoiceMail(true);
@@ -169,7 +169,7 @@ MachGui::Cursor2dType MachGuiHealCommand::cursorOnTerrain(const MexPoint3d& loca
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (cursorInFogOfWar() or isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
+    if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
         cursor = MachGui::MOVETO_CURSOR;
 
     return cursor;
@@ -181,7 +181,7 @@ MachGui::Cursor2dType MachGuiHealCommand::cursorOnActor(MachActor* pActor, bool,
     MachGui::Cursor2dType cursorType = MachGui::INVALID_CURSOR;
 
     // Check for a machine at less than 100% hps.
-    if (pActor->objectIsMachine() and pActor->hpRatio() != 1.0 and atLeastOneCanHeal(&pActor->asMachine()))
+    if (pActor->objectIsMachine() && pActor->hpRatio() != 1.0 && atLeastOneCanHeal(&pActor->asMachine()))
     {
         // Set the Heal object action
         action_ = HEAL_OBJECT;
@@ -246,9 +246,9 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
 
         bool found = false;
         for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-             not found and i != inGameScreen().selectedActors().end();
+             ! found && i != inGameScreen().selectedActors().end();
              ++i)
-            if ((*i)->objectIsMachine() and (*i)->objectIsCanAttack() and (*i)->asCanAttack().hasHealingWeapon())
+            if ((*i)->objectIsMachine() && (*i)->objectIsCanAttack() && (*i)->asCanAttack().hasHealingWeapon())
             {
                 found = true;
                 pFirstHealingMachine = (*i);
@@ -268,7 +268,7 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
 // virtual
 bool MachGuiHealCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() and be.scanCode() == DevKey::KEY_H and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_H && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;
@@ -282,19 +282,19 @@ bool MachGuiHealCommand::atLeastOneCanHeal(const MachLogMachine* pTargetMachine)
     bool noneCanHealThis = true;
 
     for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-         iter != inGameScreen().selectedActors().end() and noneCanHealThis;
+         iter != inGameScreen().selectedActors().end() && noneCanHealThis;
          ++iter)
     {
         MachActor* pActor = (*iter);
 
-        if (pActor->objectType() == MachLog::ADMINISTRATOR and pActor->asAdministrator().hasHealingWeapon()
-            and pActor != pTargetMachine) // can't heal oneself.......
+        if (pActor->objectType() == MachLog::ADMINISTRATOR && pActor->asAdministrator().hasHealingWeapon()
+            && pActor != pTargetMachine) // can't heal oneself.......
         {
             noneCanHealThis = false;
         }
     }
 
-    return not(noneCanHealThis);
+    return !(noneCanHealThis);
 }
 
 /* End CMDATTAC.CPP **************************************************/

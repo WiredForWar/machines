@@ -247,7 +247,7 @@ void MachProductionIcon::displayCursorPromptText()
         prompt += ". " + maxUnitsText.asString();
     }
 
-    pInGameScreen_->cursorPromptText(prompt, not needsPromptUpdate_);
+    pInGameScreen_->cursorPromptText(prompt, ! needsPromptUpdate_);
 
     needsPromptUpdate_ = false;
 }

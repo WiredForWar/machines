@@ -130,7 +130,7 @@ void W4dCycleMultiTextureData::apply(W4dEntity* pEntity, const PhysAbsoluteTime&
                 isExcluded = true;
             }
         }
-        if (not isExcluded)
+        if (! isExcluded)
 
             nFrames *= iFrames;
     }
@@ -147,7 +147,7 @@ void W4dCycleMultiTextureData::apply(W4dEntity* pEntity, const PhysAbsoluteTime&
             RenMaterial mat = (*pAnimMaterialVec)[j];
             uint offset = offsets[j];
             uint jTexturesSetNumber = texturesSetNumbers[j];
-            if (offset != 9999 and jTexturesSetNumber != 9999)
+            if (offset != 9999 && jTexturesSetNumber != 9999)
             {
                 uint jTextures = textures2d[jTexturesSetNumber].size();
                 uint nFrameReps = cycleTextureDataVec_[jTexturesSetNumber]->nRepetations_;

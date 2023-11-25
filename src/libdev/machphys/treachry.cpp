@@ -97,7 +97,7 @@ PhysRelativeTime MachPhysTreacheryWeapon::traitorAnimation(
 
     // Set up a material sequence plan for the machine composite itself
     uint nCompositeLODs = pMachine->nLODs();
-    if (nCompositeLODs != 0 and oldRaceChanger.hasCompositeChanger() and newRaceChanger.hasCompositeChanger())
+    if (nCompositeLODs != 0 && oldRaceChanger.hasCompositeChanger() && newRaceChanger.hasCompositeChanger())
     {
         // Get the entity level changers
         const W4dEntityMaterialVecChanger& oldEntityChanger = oldRaceChanger.compositeChanger();
@@ -108,7 +108,7 @@ PhysRelativeTime MachPhysTreacheryWeapon::traitorAnimation(
         W4dMaterialSequencePlan* pPlan = nullptr;
 
         for (uint lodId = 0;
-             lodId < nCompositeLODs and oldEntityChanger.hasOverride(lodId) and newEntityChanger.hasOverride(lodId);
+             lodId < nCompositeLODs && oldEntityChanger.hasOverride(lodId) && newEntityChanger.hasOverride(lodId);
              ++lodId)
         {
 
@@ -141,7 +141,7 @@ PhysRelativeTime MachPhysTreacheryWeapon::traitorAnimation(
         W4dLinkId linkId = pLink->id();
 
         uint nLinkLODs = pLink->nLODs();
-        if (nLinkLODs != 0 and oldRaceChanger.hasLinkChanger(linkId) and newRaceChanger.hasLinkChanger(linkId))
+        if (nLinkLODs != 0 && oldRaceChanger.hasLinkChanger(linkId) && newRaceChanger.hasLinkChanger(linkId))
         {
             // Get the entity level changers
             const W4dEntityMaterialVecChanger& oldEntityChanger = oldRaceChanger.linkIdChanger(linkId);
@@ -152,7 +152,7 @@ PhysRelativeTime MachPhysTreacheryWeapon::traitorAnimation(
             W4dMaterialSequencePlan* pPlan = nullptr;
 
             for (uint lodId = 0;
-                 lodId < nLinkLODs and oldEntityChanger.hasOverride(lodId) and newEntityChanger.hasOverride(lodId);
+                 lodId < nLinkLODs && oldEntityChanger.hasOverride(lodId) && newEntityChanger.hasOverride(lodId);
                  ++lodId)
             {
                 W4dMaterialSequencePlan::MaterialVecPtrs materialVecPtrs;

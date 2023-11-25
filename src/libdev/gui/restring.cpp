@@ -68,14 +68,14 @@ void GuiResourceString::insert(const GuiStrings& inserts)
             else
             {
                 unsigned n = 0;
-                while (i + j < insertionString_.length() and isdigit(insertionString_[i + j]))
+                while (i + j < insertionString_.length() && isdigit(insertionString_[i + j]))
                 {
                     n *= 10;
                     n += insertionString_[i + j] - '0';
                     ++j;
                 }
 
-                if (i + j < insertionString_.length() and insertionString_[i + j] == '%')
+                if (i + j < insertionString_.length() && insertionString_[i + j] == '%')
                     ++j;
 
                 // insertionString_.remove( i, j );
@@ -144,7 +144,7 @@ void GuiResourceString::resource(AfxResourceLib* pLib)
 void GuiResourceString::clearResource()
 {
     pResource() = nullptr;
-    POST(not hasResource());
+    POST(! hasResource());
 }
 
 // static
@@ -170,7 +170,7 @@ bool GuiResourceString::isInsertionString(const GuiString& insertionString)
     // <digit>          ::= <0> - <9>
 
     bool valid = true;
-    for (size_t i = 0; i < insertionString.length() and valid; ++i)
+    for (size_t i = 0; i < insertionString.length() && valid; ++i)
     {
         if (insertionString[i] == '%')
         {
@@ -181,15 +181,15 @@ bool GuiResourceString::isInsertionString(const GuiString& insertionString)
                 ++i;
             else
             {
-                valid = isdigit(insertionString[i]) and insertionString[i] != '0';
+                valid = isdigit(insertionString[i]) && insertionString[i] != '0';
 
                 if (valid)
                 {
                     ++i;
-                    while (i < insertionString.length() and isdigit(insertionString[i]))
+                    while (i < insertionString.length() && isdigit(insertionString[i]))
                         ++i;
 
-                    if (i < insertionString.length() and insertionString[i] == '%')
+                    if (i < insertionString.length() && insertionString[i] == '%')
                         ++i;
                 }
             }

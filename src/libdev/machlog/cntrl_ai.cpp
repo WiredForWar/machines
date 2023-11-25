@@ -154,7 +154,7 @@ static bool mineSiteIsOccupied(const MexPoint3d& dest)
         PhysConfigSpace2d::PolygonId junk;
         found = cSpace.contains(poly, MachLog::OBSTACLE_NORMAL, &junk, PhysConfigSpace2d::USE_ALL);
     }
-    return not found;
+    return ! found;
 }
 
 void MachLogAIController::deleteHolographAtPosition(const MexPoint3d& pos)
@@ -184,8 +184,8 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
 
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
-    if (checkForDynamicAllies_ and timeNow >= nextAllyUpdateTime_
-        and (races.nMachines(myRace) + races.nConstructions(myRace)) > 0)
+    if (checkForDynamicAllies_ && timeNow >= nextAllyUpdateTime_
+        && (races.nMachines(myRace) + races.nConstructions(myRace)) > 0)
     {
         // note random element to update times - tries to avoid all computer races updating ally relationships at more
         // or less the same time
@@ -201,7 +201,7 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
 
         for (MachPhys::Race i : MachPhys::AllRaces)
         {
-            if (races.raceInGame(i) and (races.nMachines(i) + races.nConstructions(i)) > 0)
+            if (races.raceInGame(i) && (races.nMachines(i) + races.nConstructions(i)) > 0)
             {
                 ++nRaces;
                 if (races.controller(i).type() == MachLogController::AI_CONTROLLER)
@@ -275,12 +275,12 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
         // to build the cheapest type of mine!
 
         const MachLogMineralSite* pSite = (*i);
-        if (pSite->hasBeenDiscoveredBy(myRace) and pSite->amountOfOre() > 100)
+        if (pSite->hasBeenDiscoveredBy(myRace) && pSite->amountOfOre() > 100)
         {
             MexPoint2d p(pSite->position().x(), pSite->position().y());
-            if (not hasMineOnSite(p))
+            if (! hasMineOnSite(p))
             {
-                if (not mineSiteIsOccupied(pSite->position()))
+                if (! mineSiteIsOccupied(pSite->position()))
                 {
                     // deleteHolographAtPosition( pSite->position() );
                     MachLogRace* pRace = &races.race(myRace);
@@ -299,14 +299,14 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
                     MachPhys::BuildingMaterialUnits costOfLevel3Mine = MachPhysData::instance().mineData(3).cost();
                     MachPhys::BuildingMaterialUnits costOfLevel5Mine = MachPhysData::instance().mineData(5).cost();
 
-                    if (consTree.activated(myRace, MachLog::MINE, 0, 3) and pSite->amountOfOre() >= costOfLevel3Mine * 3
-                        and bmusAvailable > costOfLevel3Mine * 0.8) // must have most of the dosh already available
+                    if (consTree.activated(myRace, MachLog::MINE, 0, 3) && pSite->amountOfOre() >= costOfLevel3Mine * 3
+                        && bmusAvailable > costOfLevel3Mine * 0.8) // must have most of the dosh already available
                     {
                         highestHWLevel = 3;
                     }
 
-                    if (consTree.activated(myRace, MachLog::MINE, 0, 5) and pSite->amountOfOre() >= costOfLevel5Mine * 3
-                        and bmusAvailable > costOfLevel5Mine * 0.8) // must have most of the dosh already available
+                    if (consTree.activated(myRace, MachLog::MINE, 0, 5) && pSite->amountOfOre() >= costOfLevel5Mine * 3
+                        && bmusAvailable > costOfLevel5Mine * 0.8) // must have most of the dosh already available
                     {
                         highestHWLevel = 5;
                     }
@@ -333,7 +333,7 @@ void MachLogAIController::handleEnemyContact(const MachLogMessage& msg)
     if (senderActor.objectIsMachine())
     {
         MachLogMachine& senderMachine = senderActor.asMachine();
-        if (not senderMachine.insideBuilding())
+        if (! senderMachine.insideBuilding())
         {
             // Try to find any idle aggressive machine within 100m
             MexPoint3d senderPosition = senderActor.position();
@@ -346,10 +346,10 @@ void MachLogAIController::handleEnemyContact(const MachLogMessage& msg)
             {
                 MachLogRaces::Aggressors::iterator i = races.aggressors(myRace).begin();
                 MachLogRaces::Aggressors::iterator iend = races.aggressors(myRace).end();
-                for (; pIdleAggressiveMachine == nullptr and i != iend; ++i)
+                for (; pIdleAggressiveMachine == nullptr && i != iend; ++i)
                 {
-                    if (not(*i)->isDead() and (*i)->isIdle()
-                        and (*i)->position().sqrEuclidianDistance(senderPosition) < 10000)
+                    if (!(*i)->isDead() && (*i)->isIdle()
+                        && (*i)->position().sqrEuclidianDistance(senderPosition) < 10000)
                         pIdleAggressiveMachine = (*i);
                 }
             }
@@ -359,10 +359,10 @@ void MachLogAIController::handleEnemyContact(const MachLogMessage& msg)
             {
                 MachLogRaces::Administrators::iterator i = races.administrators(myRace).begin();
                 MachLogRaces::Administrators::iterator iend = races.administrators(myRace).end();
-                for (; pIdleAggressiveMachine == nullptr and i != iend; ++i)
+                for (; pIdleAggressiveMachine == nullptr && i != iend; ++i)
                 {
-                    if (not(*i)->isDead() and (*i)->isIdle()
-                        and (*i)->position().sqrEuclidianDistance(senderPosition) < 10000)
+                    if (!(*i)->isDead() && (*i)->isIdle()
+                        && (*i)->position().sqrEuclidianDistance(senderPosition) < 10000)
                         pIdleAggressiveMachine = (*i);
                 }
             }
@@ -466,9 +466,9 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
 
     // if we are already inside a lab then set that as the destination lab.
     MachLogResearchItem* pmlri = nullptr;
-    if (obj->insideBuilding() and obj->insideWhichBuilding().objectType() == MachLog::HARDWARE_LAB
-        and (obj->insideWhichBuilding().asHardwareLab().currentlyResearching(&pmlri)
-             or obj->insideWhichBuilding().asHardwareLab().availableResearchItems().size() > 0))
+    if (obj->insideBuilding() && obj->insideWhichBuilding().objectType() == MachLog::HARDWARE_LAB
+        && (obj->insideWhichBuilding().asHardwareLab().currentlyResearching(&pmlri)
+             || obj->insideWhichBuilding().asHardwareLab().availableResearchItems().size() > 0))
     {
         pChosenLab = &obj->insideWhichBuilding().asHardwareLab();
     }
@@ -487,7 +487,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                     {
                         MachLogHardwareLab* pCandidateLab = (*i);
                         if (obj->position().sqrEuclidianDistance(pCandidateLab->position()) < sqrRange
-                            and pCandidateLab->availableResearchItems().size() > 0)
+                            && pCandidateLab->availableResearchItems().size() > 0)
                         {
                             MachPhysStation* pStation;
                             // MachPhysConstructionData& conData = _STATIC_CAST( MachPhysConstructionData&,
@@ -515,7 +515,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
 
     // if there's an enemy aggressive inside that lab, only enter with a 33% chance.
     // This is purely for game variety and entertainment - not as a "smart tactic".
-    if (pChosenLab->isEnemyCanAttackInside(obj->race()) and MachPhysRandom::randomInt(0, 3) != 0)
+    if (pChosenLab->isEnemyCanAttackInside(obj->race()) && MachPhysRandom::randomInt(0, 3) != 0)
     {
         //        moveOutOfTheWay( obj );
         return;
@@ -524,7 +524,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
     MexPoint2d techPos(obj->position().x(), obj->position().y());
 
     MexPoint2d dest2;
-    if (researchInterest_ == HARDWARE and pChosenLab)
+    if (researchInterest_ == HARDWARE && pChosenLab)
         dest2 = pChosenLab->entranceExternalPoint(0);
 
     MexPoint3d dest3(dest2.x(), dest2.y(), 0);
@@ -532,7 +532,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
     if (pChosenLab->objectType() == MachLog::HARDWARE_LAB)
     {
         pmlri = nullptr;
-        if (not pChosenLab->currentlyResearching(&pmlri))
+        if (! pChosenLab->currentlyResearching(&pmlri))
             for (MachLogResearchTree::ResearchItems::iterator i = pChosenLab->availableResearchItems().begin();
                  i != pChosenLab->availableResearchItems().end();
                  ++i)
@@ -555,7 +555,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                     {
                         if (researchInterest_ == HARDWARE)
                         {
-                            if (not(obj->insideBuilding() and obj->insideWhichBuilding().id() == pChosenLab->id()))
+                            if (!(obj->insideBuilding() && obj->insideWhichBuilding().id() == pChosenLab->id()))
                                 obj->newOperation(new MachLogEnterBuildingOperation(obj, pChosenLab, pStation));
                         }
                     }
@@ -563,7 +563,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                 else
                 {
                     // already in this lab? (and hence at a free station). If so do not issue moveOutOfWay.
-                    if (not(obj->insideBuilding() and obj->insideWhichBuilding().id() == pChosenLab->id()))
+                    if (!(obj->insideBuilding() && obj->insideWhichBuilding().id() == pChosenLab->id()))
                         moveOutOfTheWay(obj);
                 }
             }
@@ -583,7 +583,7 @@ bool MachLogAIController::hasMineOnSite(const MexPoint2d& pos) const
 
     bool found = false;
     MachLogRaces::Mines::const_iterator i = races.mines(myRace).begin();
-    for (; i != races.mines(myRace).end() and not found; ++i)
+    for (; i != races.mines(myRace).end() && ! found; ++i)
     {
         MexPoint2d p((*i)->position().x(), (*i)->position().y());
         found = (p == pos);
@@ -608,7 +608,7 @@ void MachLogAIController::handleIdleAdministrator(MachLogCommsId pObj)
     //  if( pAdmin->squadronType() != NO_SQUAD )
     //      return;
 
-    if (not pAdmin->squadron())
+    if (! pAdmin->squadron())
         moveOutOfTheWay(obj);
 }
 
@@ -637,7 +637,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
 
     UtlLineTokeniser parser(*pIstream, pathName);
     bool finishedSPL = false;
-    while (not finishedSPL)
+    while (! finishedSPL)
     {
         int lineSize = parser.tokens().size();
         HAL_STREAM(" lineSize " << lineSize << std::endl);
@@ -685,7 +685,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
 
     bool finishedSquadron = false;
     int currentSquad = -1;
-    while (not parser.finished())
+    while (! parser.finished())
     {
         int lineSize = parser.tokens().size();
         if (lineSize > 0)
@@ -702,7 +702,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
                 bool finishedSquad = false;
                 string taskType;
                 HAL_STREAM(" found a free squadron " << currentSquad << std::endl);
-                while (not finishedSquad)
+                while (! finishedSquad)
                 {
                     if (parser.tokens().size() > 0)
                     {
@@ -860,10 +860,10 @@ void MachLogAIController::addUniqueConstructionProductionUnit(MachLogProductionU
     bool foundMatch = false;
     HAL_STREAM("MLAIController::addUniqueConstructionProductionUnit:\n" << *pProd << std::endl);
     for (ProductionList::iterator i = constructionProductionList_.begin();
-         i != constructionProductionList_.end() and not foundMatch;
+         i != constructionProductionList_.end() && ! foundMatch;
          ++i)
     {
-        if ((**i) == *pProd and (*i)->globalTransform() == pProd->globalTransform())
+        if ((**i) == *pProd && (*i)->globalTransform() == pProd->globalTransform())
             foundMatch = true;
     }
     HAL_STREAM(" found a match with existing = " << foundMatch << std::endl);

@@ -24,7 +24,7 @@ bool MexUtility::inStraightLineXY(const ctl_vector<MexTransform3d>& transforms)
     {
         result = true;
 
-        for (size_t i = 0; i < transforms.size() - 2 and result; ++i)
+        for (size_t i = 0; i < transforms.size() - 2 && result; ++i)
             result
                 = inStraightLine(transforms[i].position(), transforms[i + 1].position(), transforms[i + 2].position());
     }
@@ -41,7 +41,7 @@ bool MexUtility::inStraightLine(const MexPoint2d& p1, const MexPoint2d& p2, cons
     ASSERT_INFO(p2);
     ASSERT_INFO(p3);
 
-    if (p1 == p2 or p1 == p3 or p2 == p3)
+    if (p1 == p2 || p1 == p3 || p2 == p3)
         result = true;
     else
     {

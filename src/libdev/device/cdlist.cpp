@@ -29,7 +29,7 @@ bool DevCDPlayList::hasTrack(DevCDTrackIndex index) const
     PlayList::const_iterator j = playList_.end();
 
     bool found = false;
-    for (; i != j and not found; ++i)
+    for (; i != j && ! found; ++i)
     {
         if ((*i) == index)
             found = true;
@@ -46,7 +46,7 @@ void DevCDPlayList::selectionOrder(SelectionOrder newOrder)
 void DevCDPlayList::addTrack(DevCDTrackIndex i)
 {
     PRE(i < nTracks());
-    PRE(not hasTrack(i));
+    PRE(! hasTrack(i));
 
     playList_.push_back(i);
 
@@ -62,7 +62,7 @@ void DevCDPlayList::removeTrack(DevCDTrackIndex index)
     PlayList::iterator j = playList_.end();
 
     bool found = false;
-    for (; i != j and not found; ++i)
+    for (; i != j && ! found; ++i)
     {
         if ((*i) == index)
         {
@@ -71,7 +71,7 @@ void DevCDPlayList::removeTrack(DevCDTrackIndex index)
         }
     }
 
-    POST(not hasTrack(index));
+    POST(! hasTrack(index));
 }
 
 size_t DevCDPlayList::nSelections() const

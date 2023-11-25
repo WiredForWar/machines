@@ -48,13 +48,13 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     {
         processed = true;
 
-        if ((e.key() == DevKey::ESCAPE or e.key() == DevKey::SPACE) and e.state() == Gui::PRESSED)
+        if ((e.key() == DevKey::ESCAPE || e.key() == DevKey::SPACE) && e.state() == Gui::PRESSED)
         {
             gameStateTimer_ = 0;
         }
     }
 
-    while (not finished and not processed)
+    while (! finished && ! processed)
     {
         switch (count)
         {
@@ -66,12 +66,12 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 processed = pImpl_->pCameras_->processButtonEvent(e.buttonEvent());
 
                 // Dismiss control panel?
-                if (e.key() == DevKey::LEFT_ARROW and e.isAltPressed() and e.state() == Gui::PRESSED)
+                if (e.key() == DevKey::LEFT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
                 {
                     pImpl_->controlPanelOn_ = false;
                     processed = true;
                 }
-                if (e.key() == DevKey::RIGHT_ARROW and e.isAltPressed() and e.state() == Gui::PRESSED)
+                if (e.key() == DevKey::RIGHT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
                 {
                     pImpl_->controlPanelOn_ = true;
                     processed = true;
@@ -98,9 +98,9 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             case 7:
                 break;
             case 8:
-                if (e.key() == DevKey::ESCAPE and e.state() == Gui::PRESSED)
+                if (e.key() == DevKey::ESCAPE && e.state() == Gui::PRESSED)
                 {
-                    if (isMachineNavigationContext() or isConstructionNavigationContext())
+                    if (isMachineNavigationContext() || isConstructionNavigationContext())
                     {
                         mainMenuOrSingleFactoryContext();
                     }
@@ -113,14 +113,14 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 9: // F10 gets you into menus
-                if (e.key() == DevKey::F10 and e.state() == Gui::PRESSED)
+                if (e.key() == DevKey::F10 && e.state() == Gui::PRESSED)
                 {
                     pImpl_->switchToMenus_ = true;
                     processed = true;
                 }
                 break;
             case 10: // Screen shot
-                if (e.key() == DevKey::F12 and e.isShiftPressed() and e.isCtrlPressed() and e.state() == Gui::PRESSED)
+                if (e.key() == DevKey::F12 && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
                 {
                     initiateScreenShot();
                     processed = true;
@@ -128,7 +128,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 break;
             case 11: // Command hot keys
                 {
-                    for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() and not processed;
+                    for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() && ! processed;
                          ++iter)
                     {
                         processed = (*iter)->processButtonEvent(e.buttonEvent());
@@ -144,10 +144,10 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 13: // Pause game
-                if (e.key() == DevKey::BREAK and e.state() == Gui::PRESSED)
+                if (e.key() == DevKey::BREAK && e.state() == Gui::PRESSED)
                 {
                     // Can't pause game in multiplayer games
-                    if (not MachLogNetwork::instance().isNetworkGame() and actualGameState() == PLAYING)
+                    if (! MachLogNetwork::instance().isNetworkGame() && actualGameState() == PLAYING)
                     {
                         if (SimManager::instance().isSuspended())
                         {
@@ -179,7 +179,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     NEIL_STREAM("COUNT " << count << std::endl);
 
 #ifndef PRODUCTION
-    if ((not getenv("cb_nokeyboardhacks")) and (not(count == 1)))
+    if ((! getenv("cb_nokeyboardhacks")) && (!(count == 1)))
     {
         doHandleKeyEventHacks(e);
     }
@@ -195,10 +195,10 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
     NEIL_STREAM("MachInGameScreen::doHandleKeyEventHacks " << std::endl);
 
     // Quick hack to switch "fog of war" on/off
-    if (e.key() == DevKey::KEY_M and e.isShiftPressed() and e.isCtrlPressed() and e.state() == Gui::PRESSED)
+    if (e.key() == DevKey::KEY_M && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
     {
         static bool fogOfWarOn = true;
-        fogOfWarOn = not fogOfWarOn;
+        fogOfWarOn = ! fogOfWarOn;
         pImpl_->pContinentMap_->fogOfWarOn(fogOfWarOn);
     }
 
@@ -219,7 +219,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 pImpl_->pSceneManager_->autoAdjustFrameRate(true);
         }
 
-        if (e.key() == DevKey::F4 and e.isShiftPressed())
+        if (e.key() == DevKey::F4 && e.isShiftPressed())
         {
             if (e.isCtrlPressed())
                 ProProfiler::instance().disableProfiling();
@@ -227,7 +227,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 ProProfiler::instance().enableProfiling();
         }
 
-        if (e.key() == DevKey::F5 and e.isShiftPressed())
+        if (e.key() == DevKey::F5 && e.isShiftPressed())
         {
             if (e.isCtrlPressed())
             {
@@ -239,7 +239,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 MemChkMemoryWatchingOn(true);
         }
 
-        if (e.key() == DevKey::F7 and e.isShiftPressed() and e.isCtrlPressed())
+        if (e.key() == DevKey::F7 && e.isShiftPressed() && e.isCtrlPressed())
         {
             static bool showStats = false;
 
@@ -248,10 +248,10 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             else
                 pImpl_->pSceneManager_->showStats(0.333);
 
-            showStats = not showStats;
+            showStats = ! showStats;
         }
 
-        if (e.key() == DevKey::F8 and e.isShiftPressed() and e.isCtrlPressed())
+        if (e.key() == DevKey::F8 && e.isShiftPressed() && e.isCtrlPressed())
         {
             for (MachInGameScreenImpl::Actors::iterator i = pImpl_->selectedActors_.begin();
                  i != pImpl_->selectedActors_.end();
@@ -267,9 +267,9 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             }
         }
 
-        if (e.key() == DevKey::F9 and e.isShiftPressed() and e.isCtrlPressed())
+        if (e.key() == DevKey::F9 && e.isShiftPressed() && e.isCtrlPressed())
         {
-            pImpl_->showCurrentMachine_ = not pImpl_->showCurrentMachine_;
+            pImpl_->showCurrentMachine_ = ! pImpl_->showCurrentMachine_;
         }
 
         if (e.key() == DevKey::F11)
@@ -277,7 +277,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             RENDER_STREAM(RenSurfaceManager::instance());
         }
 
-        if (e.key() == DevKey::KEY_N and e.isShiftPressed())
+        if (e.key() == DevKey::KEY_N && e.isShiftPressed())
         {
             pImpl_->showNetworkPing_ = e.isCtrlPressed();
         }

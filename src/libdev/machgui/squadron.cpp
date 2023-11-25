@@ -456,7 +456,7 @@ void MachGuiSquadronBank::createSquad(size_t squadIndex)
     const MachInGameScreen::Actors& members = pInGameScreen_->selectedActors();
     for (MachInGameScreen::Actors::const_iterator it = members.begin(); it != members.end(); ++it)
     {
-        if ((*it)->objectIsMachine() and (*it)->race() == race)
+        if ((*it)->objectIsMachine() && (*it)->race() == race)
         {
             (*it)->asMachine().setSquadron(pSquadron);
         }
@@ -657,7 +657,7 @@ bool MachGuiSquadronBankIcon::beNotified(W4dSubject*, W4dSubject::NotificationEv
                 DEBUG_STREAM(DIAG_NEIL, "MachGuiSquadronBankIcon::beNotified squad member deleted/added" << std::endl);
 
                 // Only update whole squad menu if we are not already doing so in 'doBeReleased'.
-                if (not inDoBeReleased_)
+                if (! inDoBeReleased_)
                     pBank_->update();
             }
         default:

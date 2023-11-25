@@ -16,7 +16,7 @@ MachPhysMachineExplosionData::LinkData::LinkData()
     : initialised_(false)
 {
 
-    POST(not initialised_);
+    POST(! initialised_);
     TEST_INVARIANT;
 }
 
@@ -33,7 +33,7 @@ MachPhysMachineExplosionData::LinkData::LinkData(
     , minExplosionTime_(minExplosionTime)
     , maxExplosionTime_(maxExplosionTime)
 {
-    PRE(0.0 <= shootOffProbability and shootOffProbability <= 1.0);
+    PRE(0.0 <= shootOffProbability && shootOffProbability <= 1.0);
     PRE(maxExplosionTime >= minExplosionTime);
 
     discreteSize_ = pow(size, 0.5);
@@ -95,7 +95,7 @@ MATHEX_SCALAR MachPhysMachineExplosionData::LinkData::shootOffProbability() cons
 
     MATHEX_SCALAR result = shootOffProbability_;
 
-    POST(0.0 <= result and result <= 1.0);
+    POST(0.0 <= result && result <= 1.0);
 
     return result;
 }
@@ -124,7 +124,7 @@ void MachPhysMachineExplosionData::LinkData::size(MATHEX_SCALAR newSize)
 void MachPhysMachineExplosionData::LinkData::shootOffProbability(MATHEX_SCALAR newProbability)
 {
     PRE(initialised_);
-    PRE(0.0 <= newProbability and newProbability <= 1.0);
+    PRE(0.0 <= newProbability && newProbability <= 1.0);
 
     shootOffProbability_ = newProbability;
 }
@@ -151,7 +151,7 @@ uint MachPhysMachineExplosionData::LinkData::discreteSize() const
 
     uint result = discreteSize_;
 
-    POST(1 <= result and result <= 10);
+    POST(1 <= result && result <= 10);
 
     return result;
 }
@@ -159,7 +159,7 @@ uint MachPhysMachineExplosionData::LinkData::discreteSize() const
 void MachPhysMachineExplosionData::LinkData::discreteSize(uint newDiscreteSize)
 {
     PRE(initialised_);
-    PRE(1 <= newDiscreteSize and newDiscreteSize <= 10);
+    PRE(1 <= newDiscreteSize && newDiscreteSize <= 10);
 
     discreteSize_ = newDiscreteSize;
 }
@@ -174,9 +174,9 @@ bool operator==(const MachPhysMachineExplosionData::LinkData& a, const MachPhysM
     PRE(a.initialised_);
     PRE(b.initialised_);
 
-    return a.linkId_ == b.linkId_ and a.size_ == b.size_ and a.discreteSize_ == b.discreteSize_
-        and a.shootOffProbability_ == b.shootOffProbability_ and a.minExplosionTime_ == b.minExplosionTime_
-        and a.maxExplosionTime_ == b.maxExplosionTime_;
+    return a.linkId_ == b.linkId_ && a.size_ == b.size_ && a.discreteSize_ == b.discreteSize_
+        && a.shootOffProbability_ == b.shootOffProbability_ && a.minExplosionTime_ == b.minExplosionTime_
+        && a.maxExplosionTime_ == b.maxExplosionTime_;
 }
 
 //  This is here purely for the ctl_list instantiation

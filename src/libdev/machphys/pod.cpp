@@ -187,7 +187,7 @@ void MachPhysPod::doWorking(bool setWorking)
     // only do anything if situation has changed
     if (setWorking != isWorking())
     {
-        if (not isWorking()) // setWorking must == true
+        if (! isWorking()) // setWorking must == true
         {
             PhysMotionPlan::Times* pTimesList = new PhysMotionPlan::Times;
             pTimesList->reserve(3);
@@ -206,7 +206,7 @@ void MachPhysPod::doWorking(bool setWorking)
             MexVec3 position(0, 0, 0);
 
             ASSERT(
-                (pTop_->visible() and not pIonTop_->visible()) or (not pTop_->visible() and pIonTop_->visible()),
+                (pTop_->visible() && ! pIonTop_->visible()) || (! pTop_->visible() && pIonTop_->visible()),
                 "Only one is visible.");
 
             position = pTurner_->localTransform().position();

@@ -87,7 +87,7 @@ MachGuiConstructCommand::~MachGuiConstructCommand()
 
     // note that as newConstructions_ is a subset of allConstructions_, we only have to call the detach for
     // all members of allConstructions_.
-    while (not allConstructions_.empty())
+    while (! allConstructions_.empty())
     {
         allConstructions_.back()->detach(this);
         allConstructions_.pop_back();
@@ -124,13 +124,13 @@ void MachGuiConstructCommand::pickOnTerrain(
         const MachLogRaces& races = MachLogRaces::instance();
 
         // If the location is valid we can place the construction
-        if (locationIsValid_ or races.nBuildingMaterialUnits(races.pcController().race()) < 5)
+        if (locationIsValid_ || races.nBuildingMaterialUnits(races.pcController().race()) < 5)
         {
             if (races.nBuildingMaterialUnits(races.pcController().race()) >= 5)
             {
                 placeConstruction();
 
-                if (not shiftPressed)
+                if (! shiftPressed)
                 {
                     hadFinalPick_ = true;
                 }
@@ -155,17 +155,17 @@ void MachGuiConstructCommand::pickOnTerrain(
 void MachGuiConstructCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
     // Check for a pick on an incomplete construction (of any race)
-    if (pActor->objectIsConstruction() and not pActor->asConstruction().isComplete())
+    if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete())
     {
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
-        if (not constructionIsDuplicate(pCandidateConstruction))
+        if (! constructionIsDuplicate(pCandidateConstruction))
         {
             allConstructions_.push_back(pCandidateConstruction);
             pCandidateConstruction->attach(this); // must observe in case it gets destroyed before command is executed
         }
 
-        if (not shiftPressed)
+        if (! shiftPressed)
         {
             hadFinalPick_ = true;
         }
@@ -175,7 +175,7 @@ void MachGuiConstructCommand::pickOnActor(MachActor* pActor, bool ctrlPressed, b
             MachGuiSoundManager::instance().playSound("gui/sounds/waypoint.wav");
         }
     }
-    else if (pActor->objectIsOreHolograph() or pActor->objectIsDebris())
+    else if (pActor->objectIsOreHolograph() || pActor->objectIsDebris())
     {
         pickOnTerrain(pActor->globalTransform().position(), ctrlPressed, shiftPressed, altPressed);
     }
@@ -328,11 +328,11 @@ MachGuiConstructCommand::cursorOnActor(MachActor* pActor, bool ctrlPressed, bool
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
 
     // Check for a pick on fristd::endly incomplete construction
-    if (pActor->objectIsConstruction() and not pActor->asConstruction().isComplete() and pActor->race() == playerRace)
+    if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete() && pActor->race() == playerRace)
     {
         cursor = MachGui::JOINCONSTRUCT_CURSOR;
     }
-    else if (pActor->objectIsOreHolograph() or pActor->objectIsDebris())
+    else if (pActor->objectIsOreHolograph() || pActor->objectIsDebris())
     {
         cursor = cursorOnTerrain(pActor->globalTransform().position(), ctrlPressed, shiftPressed, altPressed);
     }
@@ -388,7 +388,7 @@ void MachGuiConstructCommand::markValidPosition(bool isValid)
     double time = DevTime::instance().time();
     int itime = time * 4;
 
-    pPhysConstruction_->visible(isValid or itime % 2);
+    pPhysConstruction_->visible(isValid || itime % 2);
 
     // Store the setting
     locationIsValid_ = isValid;
@@ -445,7 +445,7 @@ bool MachGuiConstructCommand::isValidPosition()
     PhysConfigSpace2d::PolygonId id;
     bool isValid = MachLogPlanet::instance().configSpace().contains(polygon, MachLog::OBSTACLE_NORMAL, &id);
 
-    if (not isValid)
+    if (! isValid)
         invalidPosReason_ = TOCLOSETOOBSTACLES;
 
     if (isValid)
@@ -457,7 +457,7 @@ bool MachGuiConstructCommand::isValidPosition()
         {
             isValid = MachLogSmelter::validForAllMines(location_);
 
-            if (not isValid)
+            if (! isValid)
                 invalidPosReason_ = SMELTERTOCLOSETOMINE;
         }
 
@@ -466,7 +466,7 @@ bool MachGuiConstructCommand::isValidPosition()
         {
             isValid = MachLogMine::validMineSite(location_, level_, MachLogMine::CHECK_DISCOVERED_FLAG);
 
-            if (not isValid)
+            if (! isValid)
                 invalidPosReason_ = MINETOCLOSETOSMELTER;
         }
     }
@@ -493,7 +493,7 @@ bool MachGuiConstructCommand::isValidPosition()
         if (fabs(maxHeight - minHeight) > maxUnevenness)
             isValid = false;
 
-        if (not isValid)
+        if (! isValid)
             invalidPosReason_ = UNEVENTERRAIN;
     }
 
@@ -546,7 +546,7 @@ bool MachGuiConstructCommand::doApply(MachActor* pActor, string*)
 
     pActor->newOperation(pOp);
 
-    if (not hasPlayedVoiceMail())
+    if (! hasPlayedVoiceMail())
     {
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::MOVE_TO_SITE);
         hasPlayedVoiceMail(true);
@@ -640,7 +640,7 @@ bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator,
 
     bool found = false;
     for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-         not found and i != inGameScreen().selectedActors().end();
+         ! found && i != inGameScreen().selectedActors().end();
          ++i)
         if ((*i)->objectType() == MachLog::CONSTRUCTOR)
         {
@@ -671,13 +671,13 @@ bool MachGuiConstructCommand::processButtonEvent(const DevButtonEvent& be)
 {
     bool returnVal = false;
 
-    if (isVisible() and be.scanCode() == DevKey::KEY_C and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+    if (isVisible() && be.scanCode() == DevKey::KEY_C && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         returnVal = true;
     }
     else if (
-        isVisible() and be.scanCode() == DevKey::SPACE and be.action() == DevButtonEvent::PRESS and be.previous() == 0)
+        isVisible() && be.scanCode() == DevKey::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         orientation()++;
         NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation() << std::endl);

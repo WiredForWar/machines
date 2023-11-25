@@ -1231,9 +1231,9 @@ MexTransform3d::MexTransform3d(
 {
     PRE_INFO(axisDirection);
     PRE_INFO(planeDefiningVector);
-    PRE(not axisDirection.parallel(planeDefiningVector));
-    PRE(not axisDirection.isZeroVector());
-    PRE(not planeDefiningVector.isZeroVector());
+    PRE(! axisDirection.parallel(planeDefiningVector));
+    PRE(! axisDirection.isZeroVector());
+    PRE(! planeDefiningVector.isZeroVector());
 
     MexVec3 xBasis;
     MexVec3 yBasis;

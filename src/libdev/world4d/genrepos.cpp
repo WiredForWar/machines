@@ -95,13 +95,13 @@ void W4dGenericRepository::readGenericFile(const SysPathName& listFile)
 {
     UtlLineTokeniser parser(listFile);
 
-    while (not parser.finished())
+    while (! parser.finished())
     {
         uint nTokens = parser.tokens().size();
-        ASSERT(nTokens == 2 or nTokens == 3, "");
+        ASSERT(nTokens == 2 || nTokens == 3, "");
 
         // Determine solidity - default is solid
-        Solidity solid = (nTokens == 3 and parser.tokens()[2] == "NOT_SOLID" ? NOT_SOLID : SOLID);
+        Solidity solid = (nTokens == 3 && parser.tokens()[2] == "NOT_SOLID" ? NOT_SOLID : SOLID);
 
         add(parser.tokens()[0], parser.tokens()[1], solid);
         parser.parseNextLine();
@@ -111,7 +111,7 @@ void W4dGenericRepository::readGenericFile(const SysPathName& listFile)
 void W4dGenericRepository::add(const string& key, const SysPathName& fileName, Solidity solidity)
 {
     string extension = fileName.extension();
-    PRE(extension == "lod" or extension == "cdf");
+    PRE(extension == "lod" || extension == "cdf");
     PRE(type(key) == UNKNOWN);
 
     // Convert solidity to W4dEntity version
@@ -228,7 +228,7 @@ bool W4dGenericRepository::findSimple(const string& key, size_t* pIndex) const
 {
     size_t size = simpleEntries_.size();
     bool found = false;
-    for (size_t i = 0; i < size && not found; ++i)
+    for (size_t i = 0; i < size && ! found; ++i)
     {
         if (simpleEntries_[i].first == key)
         {
@@ -244,7 +244,7 @@ bool W4dGenericRepository::findComposite(const string& key, size_t* pIndex) cons
 {
     size_t size = compositeEntries_.size();
     bool found = false;
-    for (size_t i = 0; i < size && not found; ++i)
+    for (size_t i = 0; i < size && ! found; ++i)
     {
         if (compositeEntries_[i].first == key)
         {

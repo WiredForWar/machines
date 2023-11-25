@@ -75,7 +75,7 @@ bool MachLogPutDownOperation::doStart()
 {
     CB_MachLogPutDownOperation_DEPIMPL();
 
-    return not checkNeedAndDoLeaveOperation(pActor_);
+    return ! checkNeedAndDoLeaveOperation(pActor_);
 }
 
 ///////////////////////////////////
@@ -89,7 +89,7 @@ bool MachLogPutDownOperation::doIsFinished() const
 {
     CB_MachLogPutDownOperation_DEPIMPL();
 
-    return (finished_ and not pActor_->motionSeq().hasDestination()) or (not pActor_->hasSmeltingBuilding());
+    return (finished_ && ! pActor_->motionSeq().hasDestination()) || (! pActor_->hasSmeltingBuilding());
 }
 
 PhysRelativeTime MachLogPutDownOperation::doUpdate()
@@ -135,7 +135,7 @@ PhysRelativeTime MachLogPutDownOperation::doUpdate()
             }
         }
 
-        if (not pSubOperation())
+        if (! pSubOperation())
         {
             // need to initiate a move to the pad.
 
@@ -163,7 +163,7 @@ PhysRelativeTime MachLogPutDownOperation::doUpdate()
 
         MachLogConstruction* pDestinationSmeltingBuilding = pActor_->pDestinationSmeltingBuilding();
 
-        if (not pDestinationSmeltingBuilding->isComplete())
+        if (! pDestinationSmeltingBuilding->isComplete())
             interval = 10.0;
         else
         {
@@ -210,7 +210,7 @@ bool MachLogPutDownOperation::doBeInterrupted()
     CB_MachLogPutDownOperation_DEPIMPL();
 
     pActor_->motionSeq().stop();
-    return not pActor_->motionSeq().hasDestination();
+    return ! pActor_->motionSeq().hasDestination();
 }
 
 void perWrite(PerOstream& ostr, const MachLogPutDownOperation& op)
@@ -257,7 +257,7 @@ void MachLogPutDownOperation::chooseMostViablePad()
         MATHEX_SCALAR testPointDistance = actorPos.sqrEuclidianDistance(testDest);
 
         bool seemsFree = MachLogSpacialManipulation::pointIsFree(testDest, 5.0)
-            and not(pDestinationSmeltingBuilding->pickupPointUsedRecently(j));
+            && !(pDestinationSmeltingBuilding->pickupPointUsedRecently(j));
 
         if (seemsFree)
         {
@@ -279,7 +279,7 @@ void MachLogPutDownOperation::chooseMostViablePad()
         }
     }
 
-    if (not found)
+    if (! found)
     {
         // no points are free - just choose a point at random.
         destinationPadPosition_ = pDestinationSmeltingBuilding->putDownPoint(

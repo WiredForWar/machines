@@ -277,7 +277,7 @@ void PersistenceImplementationRead::readObjectPre(PerIstream& istr, const void* 
     ASSERT_INFO(className);
     ASSERT(type == PER_OBJECT, "Object expected but not found");
 
-    if (not readAsRaw())
+    if (! readAsRaw())
     {
         PerIdentifier id = readId(istr);
 

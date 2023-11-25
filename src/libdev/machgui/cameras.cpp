@@ -413,13 +413,13 @@ bool MachCameras::processButtonEvent(const DevButtonEvent& buttonEvent)
     bool processed = PhysMotionControl::processButtonEvent(buttonEvent);
 
     // Inidicate that camera has moved so that it can be saved in the update method.
-    if (processed and (isGroundCameraActive() or isZenithCameraActive()))
+    if (processed && (isGroundCameraActive() || isZenithCameraActive()))
     {
         cameraMoved_ = true;
         groundCameraMoved_ = true;
     }
 
-    if (not processed and buttonEvent.action() == DevButtonEvent::PRESS)
+    if (! processed && buttonEvent.action() == DevButtonEvent::PRESS)
     {
         // Now process all commands that motion control is not interested in
         CommandId commandId;
@@ -881,11 +881,11 @@ bool MachCameras::is1stPersonCameraActive() const
 
 void MachCameras::freezeMotion()
 {
-    if (not pZenithControl_->motionFrozen())
+    if (! pZenithControl_->motionFrozen())
         pZenithControl_->freezeMotion();
-    if (not pGroundControl_->motionFrozen())
+    if (! pGroundControl_->motionFrozen())
         pGroundControl_->freezeMotion();
-    if (not pFreeControl_->motionFrozen())
+    if (! pFreeControl_->motionFrozen())
         pFreeControl_->freezeMotion();
 }
 
@@ -953,7 +953,7 @@ void readZenithDataFile(
 
     UtlLineTokeniser tokeniser(*pIstream, fileName);
 
-    while (not tokeniser.finished())
+    while (! tokeniser.finished())
     {
         ASSERT_INFO(tokeniser.tokens().size());
         ASSERT(tokeniser.tokens().size() == 2, "");
@@ -1053,7 +1053,7 @@ void MachCameras::use1stPersonCamera()
 void MachCameras::useGroundCamera()
 {
 
-    if (not isGroundCameraActive())
+    if (! isGroundCameraActive())
     {
         // Switching from zenith camera, store it's position. If we switch straight
         // back to zenith then the camera will jump back to it's last position otherwise
@@ -1086,14 +1086,14 @@ void MachCameras::useGroundCamera()
 
 void MachCameras::useZenithCamera()
 {
-    if (not isZenithCameraActive())
+    if (! isZenithCameraActive())
     {
         if (isGroundCameraActive())
         {
             // If the ground camera hasn't moved then put zenith camera back to it's
             // last position, else work out a new zenith position based on the new ground
             // position.
-            if (not groundCameraMoved_)
+            if (! groundCameraMoved_)
             {
                 restoreCamera(lastZenithPos_);
             }
