@@ -985,7 +985,7 @@ void MexTransform3d::setTransform(const MexFloatMatrix3d m)
 
 void MexTransform3d::getTransform(MexFloatMatrix3d m) const
 {
-    register size_t row, column;
+    size_t row, column;
 
     TEST_INVARIANT;
 

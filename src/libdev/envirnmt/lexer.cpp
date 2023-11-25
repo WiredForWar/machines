@@ -437,8 +437,8 @@ static void unput(unsigned char c)
 
     if (yy_c_buf_p == 0)
     {
-        register int i;
-        register int yy_buf_pos = YY_BUF_MAX;
+        int i;
+        int yy_buf_pos = YY_BUF_MAX;
 
         for (i = yy_e_buf_p; i >= yy_c_buf_p; --i)
         {
@@ -464,8 +464,8 @@ static void unput(unsigned char c)
 
 YY_DECL
 {
-    register int yy_curst;
-    register unsigned char yy_sym;
+    int yy_curst;
+    unsigned char yy_sym;
     int yy_n_chars, yy_lp, yy_iii, yy_buf_pos, yy_act, yy_full_match;
 
     if (yy_init)
@@ -752,7 +752,7 @@ static const struct
 
 static int keyword()
 {
-    register int mid;
+    int mid;
     int cc, hi, lo;
 
     lo = 0;
