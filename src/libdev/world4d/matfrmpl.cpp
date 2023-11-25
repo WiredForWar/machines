@@ -16,6 +16,8 @@
 #include "render/material.hpp"
 #include "render/matvec.hpp"
 
+#include <algorithm>
+
 W4dMaterialFramePlan::W4dMaterialFramePlan(
     const MaterialVecPtrsPtr& materialVecPtrsPtr,
     uint frameOffset,

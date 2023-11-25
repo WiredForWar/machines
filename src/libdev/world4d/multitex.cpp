@@ -20,6 +20,8 @@
 
 #include "ctl/pvector.hpp"
 
+#include <algorithm>
+
 PER_DEFINE_PERSISTENT(W4dCycleMultiTextureData);
 
 W4dCycleMultiTextureData::W4dCycleMultiTextureData(const size_t& nData)

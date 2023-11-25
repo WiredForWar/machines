@@ -52,6 +52,8 @@ EXISTS(W4dEntity);
 #include "mathex/quatern.hpp"
 #include "mathex/vec2.hpp"
 
+#include <algorithm>
+
 #define CB_W4dEntity_DEPIMPL()                                                                                         \
     CB_DEPIMPL(W4dTransform3d, localTransform_);                                                                       \
     CB_DEPIMPL(W4dTransform3d, globalTransform_);                                                                      \

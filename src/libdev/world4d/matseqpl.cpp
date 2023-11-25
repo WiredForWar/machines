@@ -19,6 +19,8 @@
 #include "world4d/entity.hpp"
 #include "world4d/entyplan.hpp"
 
+#include <algorithm>
+
 W4dMaterialSequencePlan::W4dMaterialSequencePlan(
     const MaterialVecPtrs& materialVecPtrs,
     const PhysRelativeTime& duration,
