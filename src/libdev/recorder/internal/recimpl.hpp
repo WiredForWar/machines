@@ -124,22 +124,22 @@ private:
     std::ofstream recordStream_;
     std::ifstream playbackStream_;
 
-    size_t nBytesRead_;
-    size_t nBytesInFile_;
-    size_t nBytesWritten_;
+    size_t nBytesRead_{};
+    size_t nBytesInFile_{};
+    size_t nBytesWritten_{};
 
-    bool fatalErrorFound_;
+    bool fatalErrorFound_{};
 
-    int allowedCount_;
+    int allowedCount_{};
 
     DevRate freeDiskSpaceRate_;
     DevRate fileRate_;
 
     char drive_[4];
 
-    double updateDiskSpaceTime_;
-    double diskSpaceFreeBytes_;
-    double diskSpaceFreeSeconds_;
+    double updateDiskSpaceTime_{};
+    double diskSpaceFreeBytes_{};
+    double diskSpaceFreeSeconds_{};
 };
 
 std::ostream& operator<<(std::ostream&, RecRecorderImplementation::RecordType);

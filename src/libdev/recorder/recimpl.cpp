@@ -23,16 +23,10 @@ RecRecorderImplementation& RecRecorderImplementation::instance()
 }
 
 RecRecorderImplementation::RecRecorderImplementation()
-    : nBytesRead_(0)
-    , nBytesWritten_(0)
-    , state_(RecRecorder::INACTIVE)
-    , fatalErrorFound_(false)
-    , allowedCount_(0)
+    : state_(RecRecorder::INACTIVE)
     , freeDiskSpaceRate_(3.0)
     , fileRate_(3.0)
     , updateDiskSpaceTime_(-10.0)
-    , diskSpaceFreeBytes_(0)
-    , diskSpaceFreeSeconds_(0)
 {
     const char* filename = getenv("cb_playback_from");
 
