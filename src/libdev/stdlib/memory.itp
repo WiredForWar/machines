@@ -80,7 +80,7 @@ unique_ptr< X >::unique_ptr( X *tPtr )
 : pData_( tPtr ),
   owner_( tPtr != 0 )
 {
-    //* Intentionally Empty *
+    // * Intentionally Empty *
 }
 
 template < class X >

@@ -227,7 +227,7 @@ private:
     char currentLine_[LINESIZE]; // line buffer
     ULONG sectionCount_;
     short linePos_; // Current position in line buffer
-    ULONG lineCount_;
+    uint32_t lineCount_;
 };
 
 #endif

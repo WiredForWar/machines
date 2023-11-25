@@ -609,7 +609,7 @@ GXError GXFile::reportAGTError(GXError error, void* info)
     // method accept different type of argument according to the error type
 
     // print error message
-    printf("Error at line %i:%i ", lineCount_, linePos_ + 1);
+    printf("Error at line %u:%i ", lineCount_, linePos_ + 1);
     switch (error)
     {
         case FILE_OPEN_AGT:
