@@ -19,7 +19,7 @@ class RenIVertexData;
 class RenIDelayedCoplanarGroup : public RenIPrioritySortedItem
 {
 public:
-    RenIDelayedCoplanarGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr&, const RenMaterial&, const glm::mat4&);
+    RenIDelayedCoplanarGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr, const RenMaterial&, const glm::mat4&);
 
     ~RenIDelayedCoplanarGroup() override;
     void render() override;

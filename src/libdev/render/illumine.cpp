@@ -339,7 +339,7 @@ RenI::LitVtxAPtr RenIIlluminator::applyMaterialAndCopy(
     const RenIVertex* vtx = applyMaterial(m, in, indices);
     RenIVertex* copy = _NEW_ARRAY(RenIVertex, nIndicesUsed);
     memcpy(copy, vtx, nIndicesUsed * sizeof(RenIVertex));
-    return copy;
+    return RenI::LitVtxAPtr(copy);
 }
 
 RenI::LitVtxAPtr RenIIlluminator::applyMaterialAndCopy(const RenMaterial& m, const RenIVertexData& in, size_t nVertices)
@@ -349,7 +349,7 @@ RenI::LitVtxAPtr RenIIlluminator::applyMaterialAndCopy(const RenMaterial& m, con
     const RenIVertex* vtx = applyMaterial(m, in, nVertices);
     RenIVertex* copy = _NEW_ARRAY(RenIVertex, nVertices);
     memcpy(copy, vtx, nVertices * sizeof(RenIVertex));
-    return copy;
+    return RenI::LitVtxAPtr(copy);
 }
 
 static void resizeIndices(ctl_min_memory_vector<Ren::VertexIdx>& v, size_t newSize)

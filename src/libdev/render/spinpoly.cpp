@@ -292,7 +292,7 @@ void RenSpinTFPolygon::render(
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = ill->applyMaterialAndCopy(mat, *vertices_, vertices_->size());
-            RenIDelayedSpinPolygon* spoly = new RenIDelayedSpinPolygon(lit, vertices_->size(), mat, glWorld);
+            RenIDelayedSpinPolygon* spoly = new RenIDelayedSpinPolygon(std::move(lit), vertices_->size(), mat, glWorld);
             std::unique_ptr<RenIDepthSortedItem> item(spoly);
             devImpl->alphaSorter().addItem(item);
         }

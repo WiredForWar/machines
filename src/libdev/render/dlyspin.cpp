@@ -12,13 +12,13 @@
 #include "render/device.hpp"
 
 RenIDelayedSpinPolygon::RenIDelayedSpinPolygon(
-    RenI::LitVtxAPtr& v, // array of spun and lit vertices
+    RenI::LitVtxAPtr v, // array of spun and lit vertices
     size_t nVtx, // the number of elements in v
     const RenMaterial& mat, // material to render with
     const glm::mat4& x // the global xfrom of the STF
     )
     : RenIDepthSortedItem(mat)
-    , vertices_(v)
+    , vertices_(std::move(v))
     , nVertices_(nVtx)
     , xform_(x)
 {

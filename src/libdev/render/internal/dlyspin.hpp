@@ -16,7 +16,7 @@ class RenIDelayedSpinPolygon : public RenIDepthSortedItem
 {
 public:
     // PRE(nVtx >= 3);
-    RenIDelayedSpinPolygon(RenI::LitVtxAPtr& vertices, size_t nVtx, const RenMaterial& mat, const glm::mat4&);
+    RenIDelayedSpinPolygon(RenI::LitVtxAPtr vertices, size_t nVtx, const RenMaterial& mat, const glm::mat4&);
 
     ~RenIDelayedSpinPolygon() override;
     void render() override;

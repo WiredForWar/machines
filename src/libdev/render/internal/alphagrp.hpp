@@ -20,7 +20,7 @@ class RenIVertexData;
 class RenIDelayedAlphaGroup : public RenIDepthSortedItem
 {
 public:
-    RenIDelayedAlphaGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr&, const RenMaterial&, const glm::mat4&);
+    RenIDelayedAlphaGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr, const RenMaterial&, const glm::mat4&);
 
     ~RenIDelayedAlphaGroup() override;
     void render() override;

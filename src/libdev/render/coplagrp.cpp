@@ -16,12 +16,12 @@
 
 RenIDelayedCoplanarGroup::RenIDelayedCoplanarGroup(
     const RenIMaterialGroup* g,
-    RenI::LitVtxAPtr& v,
+    RenI::LitVtxAPtr v,
     const RenMaterial& m,
     const glm::mat4& x)
     : RenIPrioritySortedItem(m)
     , group_(g)
-    , vertices_(v)
+    , vertices_(std::move(v))
     , xform_(x)
 {
     PRE(group_);

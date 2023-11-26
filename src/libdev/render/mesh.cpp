@@ -284,7 +284,7 @@ template <class T> void GroupRenderFunctor<T>::operator()(const T* group) const
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, lit, mat, world_);
+            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, std::move(lit), mat, world_);
 
             if (mat.intraMeshAlphaPriority())
                 delayed->meshId(RenMesh::meshId());
@@ -303,7 +303,7 @@ template <class T> void GroupRenderFunctor<T>::operator()(const T* group) const
     else if (mat.interMeshCoplanar())
     {
         RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, lit, mat, world_);
+        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, std::move(lit), mat, world_);
         std::unique_ptr<RenIPrioritySortedItem> item(delayed);
         devImpl->coplanarSorter().addItem(item);
     }
@@ -351,7 +351,7 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, lit, mat, world_);
+            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, std::move(lit), mat, world_);
 
             if (mat.intraMeshAlphaPriority())
                 delayed->meshId(RenMesh::meshId());
@@ -370,7 +370,7 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
     else if (mat.interMeshCoplanar())
     {
         RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, lit, mat, world_);
+        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, std::move(lit), mat, world_);
         std::unique_ptr<RenIPrioritySortedItem> item(delayed);
         devImpl->coplanarSorter().addItem(item);
     }
