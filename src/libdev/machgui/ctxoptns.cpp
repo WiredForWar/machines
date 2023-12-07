@@ -212,11 +212,13 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     // Create volume sliders
     pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range);
+    pMusicVolume_->minMax(0, 100);
     pMusicVolume_->setValueChangedHandler([](float newValue) {
         DevCD::instance().volume(newValue + 0.5 /*stop rounding errors from slowly reducing volume*/);
     });
 
     pSoundVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.range);
+    pSoundVolume_->minMax(0, 100);
     pSoundVolume_->setValueChangedHandler([](float newValue) {
         SndMixer::instance().masterSampleVolume(newValue + 0.5 /*stop rounding errors from slowly reducing volume*/);
     });
@@ -700,6 +702,12 @@ void MachGuiCtxOptions::setOptions()
     {
         pSound3d_->check(SndMixer::instance().is3dMixer());
     }
+
+    musicVolume_ = DevCD::instance().volume();
+    soundVolume_ = SndMixer::instance().masterSampleVolume();
+
+    pMusicVolume_->setValue(musicVolume_);
+    pSoundVolume_->setValue(soundVolume_);
 
     // Set resolution lock on if it the first time the game is being run
     SysRegistry::KeyHandle resolutionHandle;
