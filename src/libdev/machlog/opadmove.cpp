@@ -39,8 +39,8 @@ PER_DEFINE_PERSISTENT(MachLogAdminMoveToOperation);
     CB_DEPIMPL(MachLogAdministrator*, pActor_);                                                                        \
     CB_DEPIMPL(bool, complete_);                                                                                       \
     CB_DEPIMPL(MexPoint3d, dest_);                                                                                     \
-    \      
-        CB_DEPIMPL(bool, checkForLeave_);                                                                              \
+                                                                                                                       \
+    CB_DEPIMPL(bool, checkForLeave_);                                                                                  \
     CB_DEPIMPL(MachLogAdminMoveToOperation::Path, path_);                                                              \
     CB_DEPIMPL(MachLogFollowOperation::CamouflagedOp, camoStatus_);
 

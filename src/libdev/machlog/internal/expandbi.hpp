@@ -71,13 +71,13 @@ private:
     CB_DEPIMPL(MachLogRace*, pRace_);                                                                                  \
     CB_DEPIMPL(MexPoint3d, startPosition_);                                                                            \
     CB_DEPIMPL(bool, finished_);                                                                                       \
-    \ 
+    \
     CB_DEPIMPL(bool, startedFirstWave_);                                                                               \
-    \ 
+    \
     CB_DEPIMPL(bool, startedSecondWave_);                                                                              \
-    \    
+    \
     CB_DEPIMPL(bool, startedThirdWave_);                                                                               \
-    \ 
+    \
     CB_DEPIMPL(MATHEX_SCALAR, blastRadius_);                                                                           \
     CB_DEPIMPL(PhysAbsoluteTime, creationTime_);                                                                       \
     CB_DEPIMPL(MachLogExpandingBlast::CanHitAirUnits, canHitAirUnits_);                                                \

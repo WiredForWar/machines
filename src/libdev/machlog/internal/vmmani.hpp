@@ -65,7 +65,7 @@ private:
     CB_DEPIMPL(bool, definitionFileRead_);                                                                             \
     CB_DEPIMPL(bool, podMailPlaying_);                                                                                 \
     CB_DEPIMPL(int, noOfMailsPlaying_);                                                                                \
-    \ 
+                                                                                                                       \
     CB_DEPIMPL(bool, acceptMailPostings_);
 
 #endif

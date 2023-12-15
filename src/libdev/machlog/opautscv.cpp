@@ -29,8 +29,8 @@ PER_DEFINE_PERSISTENT(MachLogAutoScavengeOperation);
     CB_DEPIMPL(MachLogDebris*, pDebris_);                                                                              \
     CB_DEPIMPL(bool, finished_);                                                                                       \
     CB_DEPIMPL(bool, initiatedScavengeOp_);                                                                            \
-    \     
-        CB_DEPIMPL(MachLogOperation*, pCachedOperation_);
+                                                                                                                       \
+    CB_DEPIMPL(MachLogOperation*, pCachedOperation_);
 
 /* //////////////////////////////////////////////////////////////// */
 

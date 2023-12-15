@@ -56,7 +56,7 @@ private:
     CB_DEPIMPL(PhysAbsoluteTime, secondWaveFinishTime_);                                                               \
     CB_DEPIMPL(PhysAbsoluteTime, thirdWaveStartTime_);                                                                 \
     CB_DEPIMPL(PhysAbsoluteTime, thirdWaveFinishTime_);                                                                \
-    \  
+    \
     CB_DEPIMPL(PhysAbsoluteTime, destructionTime_);
 
 #endif

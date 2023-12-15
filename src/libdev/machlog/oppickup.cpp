@@ -31,8 +31,7 @@ PER_DEFINE_PERSISTENT(MachLogPickUpOperation);
     PRE(pImpl_);                                                                                                       \
     CB_DEPIMPL(MachLogResourceCarrier*, pActor_);                                                                      \
     CB_DEPIMPL(bool, finished_);                                                                                       \
-    \    
-        CB_DEPIMPL(MexPoint2d, destinationPadPosition_)
+    CB_DEPIMPL(MexPoint2d, destinationPadPosition_)
 
 /* //////////////////////////////////////////////////////////////// */
 

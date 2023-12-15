@@ -73,7 +73,7 @@ PER_DECLARE_PERSISTENT(MachLogResearchItemImpl);
     CB_DEPIMPL(MachPhys::BuildingMaterialUnits, buildingCost_);                                                        \
     CB_DEPIMPL(MachPhys::BuildingMaterialUnits, factoryInstanceCost_);                                                 \
     CB_DEPIMPL(MachLogResearchItem*, pParentDependancy_);                                                              \
-    \ 
+                                                                                                                       \
     CB_DEPIMPL(MachPhys::HardwareLabSubType, hardwareLabSubType_);                                                     \
     CB_DEPIMPL(MachPhys::WeaponCombo, weaponCombo_);                                                                   \
     CB_DEPIMPL(bool, hasWeaponCombo_);                                                                                 \
@@ -87,7 +87,7 @@ PER_DECLARE_PERSISTENT(MachLogResearchItemImpl);
     CB_DEPIMPL_ARRAY(MachPhys::BuildingMaterialUnits, swBuildingCost_);                                                \
     CB_DEPIMPL_2D_ARRAY(bool, swAvailable_, MachLogResearchItem::MAX_SW_LEVELS);                                       \
     CB_DEPIMPL_2D_ARRAY(bool, swResearched_, MachLogResearchItem::MAX_SW_LEVELS);                                      \
-    \ 
+                                                                                                                       \
     CB_DEPIMPL_2D_ARRAY(MachPhys::ResearchUnits, swAmountResearched_, MachLogResearchItem::MAX_SW_LEVELS);             \
     CB_DEPIMPL_2D_ARRAY(MachPhys::BuildingMaterialUnits, swAmountBuilt_, MachLogResearchItem::MAX_SW_LEVELS);
 
