@@ -13,7 +13,7 @@
 
 #include "ctl/vector.hpp"
 
-#ifdef _WIN95APP
+#ifdef _MSC_VER
 #include "windows.h"
 #else
 #include <dirent.h>
@@ -178,7 +178,7 @@ int SysFileFinder::processFiles(const SysPathName& directoryName)
 
     return (abort);
 
-#elif defined _WIN95APP
+#elif defined _MSC_VER
 
     WIN32_FIND_DATA data;
     int err, abort;
@@ -219,16 +219,16 @@ int SysFileFinder::processFiles(const SysPathName& directoryName)
         DWORD fileAttributes = GetFileAttributes(fd.pathName().c_str());
 
         bool dir = fileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-        bool incdirs = dir and ((includeInSearch_ == DIRS) or (includeInSearch_ == FILES_DIRS));
-        bool incfile = not dir and ((includeInSearch_ == FILES) or (includeInSearch_ == FILES_DIRS));
+        bool incdirs = dir && ((includeInSearch_ == DIRS) || (includeInSearch_ == FILES_DIRS));
+        bool incfile = !dir && ((includeInSearch_ == FILES) || (includeInSearch_ == FILES_DIRS));
 
-        if ((incdirs or incfile) and strcmp(data.cFileName, ".") and // not interested in '.' or '..'
+        if ((incdirs || incfile) && strcmp(data.cFileName, ".") && // not interested in '.' or '..'
             strcmp(data.cFileName, ".."))
         {
             processFile(fd);
         }
 
-        err = not FindNextFile(hErr, &data);
+        err = !FindNextFile(hErr, &data);
     }
 
     if (hErr != INVALID_HANDLE_VALUE)
@@ -255,15 +255,15 @@ int SysFileFinder::processFiles(const SysPathName& directoryName)
 
             DWORD fileAttributes = GetFileAttributes(directory.pathname().c_str());
 
-            if ((fileAttributes & FILE_ATTRIBUTE_DIRECTORY) and strcmp(data.cFileName, ".")
-                and strcmp(data.cFileName, ".."))
+            if ((fileAttributes & FILE_ATTRIBUTE_DIRECTORY) && strcmp(data.cFileName, ".")
+                && strcmp(data.cFileName, ".."))
             {
                 _makepath(pathname, NULL, directoryName.pathname().c_str(), data.cFileName, NULL);
 
                 abort = processFiles(pathname);
             }
 
-            err = not FindNextFile(hErr, &data);
+            err = !FindNextFile(hErr, &data);
         }
     }
 
