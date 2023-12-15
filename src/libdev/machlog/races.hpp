@@ -597,7 +597,7 @@ private:
     bool operator==(const MachLogRaces&) const;
 
     // Useful typedefs
-    using ActorIdMap = class UtlBoundedIdPMap<class MachActor>;
+    using ActorIdMap = UtlBoundedIdPMap<class MachActor>;
 
     static size_t map_MachPhysRace_to_size_t(MachPhys::Race);
     // POST( result < MachPhys::N_RACES );

@@ -67,9 +67,8 @@ class basic_formatter
 {
 
 public:
-    using string = class std::basic_string<T, CharTraits, Allocator>;
-
-    using stringstream = class std::basic_ostringstream<T, CharTraits, Allocator>;
+    using string = std::basic_string<T, CharTraits, Allocator>;
+    using stringstream = std::basic_ostringstream<T, CharTraits, Allocator>;
 
 public:
     basic_formatter() { }
