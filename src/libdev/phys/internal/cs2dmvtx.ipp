@@ -42,7 +42,7 @@ PhysCS2dDomainVertex::~PhysCS2dDomainVertex()
 _CODE_INLINE
 bool operator==(const PhysCS2dDomainVertex& lhs, const PhysCS2dDomainVertex& rhs)
 {
-    return lhs.portalId_ == rhs.portalId_ and lhs.point_ == rhs.point_;
+    return lhs.portalId_ == rhs.portalId_ && lhs.point_ == rhs.point_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE

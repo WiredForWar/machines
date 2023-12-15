@@ -17,7 +17,7 @@ inline MexDouble::MexDouble(Cardinality c)
 
 inline MexDouble::operator double() const
 {
-    PRE(not isInfinite());
+    PRE(!isInfinite());
 
     return rep_.value_;
 }
@@ -75,8 +75,8 @@ inline MexDouble MexDouble::operator-() const
 
 inline const MexDouble& MexDouble::operator+=(const MexDouble& rhs)
 {
-    PRE(implies(isMinusInfinity(), not rhs.isPlusInfinity()));
-    PRE(implies(isPlusInfinity(), not rhs.isMinusInfinity()));
+    PRE(implies(isMinusInfinity(), !rhs.isPlusInfinity()));
+    PRE(implies(isPlusInfinity(), !rhs.isMinusInfinity()));
 
     switch (classification(*this, rhs))
     {
@@ -111,8 +111,8 @@ inline const MexDouble& MexDouble::operator+=(const MexDouble& rhs)
 
 inline const MexDouble& MexDouble::operator-=(const MexDouble& rhs)
 {
-    PRE(implies(isMinusInfinity(), not rhs.isPlusInfinity()));
-    PRE(implies(isPlusInfinity(), not rhs.isMinusInfinity()));
+    PRE(implies(isMinusInfinity(), !rhs.isPlusInfinity()));
+    PRE(implies(isPlusInfinity(), !rhs.isMinusInfinity()));
 
     switch (classification(*this, rhs))
     {
@@ -184,8 +184,8 @@ inline const MexDouble& MexDouble::operator*=(const MexDouble& rhs)
 
 inline const MexDouble& MexDouble::operator/=(const MexDouble& rhs)
 {
-    PRE(implies(isInfinite(), not rhs.isInfinite()));
-    PRE(implies(not rhs.isInfinite(), rhs.rep_.value_ != 0.0));
+    PRE(implies(isInfinite(), !rhs.isInfinite()));
+    PRE(implies(!rhs.isInfinite(), rhs.rep_.value_ != 0.0));
 
     switch (classification(*this, rhs))
     {
@@ -229,7 +229,7 @@ inline const MexDouble& MexDouble::operator/=(const MexDouble& rhs)
 
 inline const MexDouble& MexDouble::operator%=(const MexDouble& rhs)
 {
-    PRE(implies(not rhs.isInfinite(), rhs != MexDouble(0.0)));
+    PRE(implies(!rhs.isInfinite(), rhs != MexDouble(0.0)));
 
     switch (classification(*this, rhs))
     {
@@ -371,8 +371,8 @@ inline MexDouble operator%(const MexDouble& a, const MexDouble& b)
 
 inline MexDouble sqrt(const MexDouble& d)
 {
-    PRE(not d.isMinusInfinity());
-    PRE(implies(not d.isInfinite(), d >= MexDouble(0.0)));
+    PRE(!d.isMinusInfinity());
+    PRE(implies(!d.isInfinite(), d >= MexDouble(0.0)));
 
     MexDouble result = d.rep_.value_;
 

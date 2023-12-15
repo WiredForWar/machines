@@ -62,11 +62,11 @@ std::pair<const FIRST, SECOND> ctl_make_const_first_pair(const FIRST& first, con
         }                                                                                                              \
         bool operator==(className const& c2) const                                                                     \
         {                                                                                                              \
-            return first == c2.first and second == c2.second;                                                          \
+            return first == c2.first && second == c2.second;                                                           \
         }                                                                                                              \
         bool operator<(className const& c2) const                                                                      \
         {                                                                                                              \
-            return first < c2.first or (not(c2.first < first) and second < c2.second);                                 \
+            return first < c2.first || (!(c2.first < first) && second < c2.second);                                    \
         }                                                                                                              \
                                                                                                                        \
     private:                                                                                                           \
@@ -117,7 +117,7 @@ std::pair<const FIRST, SECOND> ctl_make_const_first_pair(const FIRST& first, con
         }                                                                                                              \
         bool operator==(className const& c2) const                                                                     \
         {                                                                                                              \
-            return first == c2.first and second == c2.second and third == c2.third;                                    \
+            return first == c2.first && second == c2.second && third == c2.third;                                      \
         }                                                                                                              \
         bool operator<(className const& c2) const                                                                      \
         {                                                                                                              \
@@ -195,7 +195,7 @@ std::pair<const FIRST, SECOND> ctl_make_const_first_pair(const FIRST& first, con
         }                                                                                                              \
         bool operator==(className const& c2) const                                                                     \
         {                                                                                                              \
-            return first == c2.first and second == c2.second and third == c2.third and fourth == c2.fourth;            \
+            return first == c2.first && second == c2.second && third == c2.third && fourth == c2.fourth;               \
         }                                                                                                              \
         bool operator<(className const& c2) const                                                                      \
         {                                                                                                              \

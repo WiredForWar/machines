@@ -28,7 +28,7 @@ _CODE_INLINE
     FtlSerialMap<VALUE>::contains(const FtlSerialId& id) const
 {
     size_t i = id.asScalar();
-    return i < index_.size() and index_[i] != FTL_SERIALMAP_NOENTRY;
+    return i < index_.size() && index_[i] != FTL_SERIALMAP_NOENTRY;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 template <class VALUE>

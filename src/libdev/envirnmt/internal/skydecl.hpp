@@ -135,11 +135,11 @@ public:
     // PRE(isDynamicSkyDeclaration());
 
     bool isUniformSkyDeclaration() const;
-    // PRE(not isClear());
+    // PRE(!isClear());
     bool isStaticSkyDeclaration() const;
-    // PRE(not isClear());
+    // PRE(!isClear());
     bool isDynamicSkyDeclaration() const;
-    // PRE(not isClear());
+    // PRE(!isClear());
     bool isClear() const;
     bool isBuilding() const;
     bool isComplete() const;

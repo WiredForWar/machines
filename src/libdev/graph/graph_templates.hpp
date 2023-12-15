@@ -16,7 +16,7 @@ bool GraGraph<VERTICES, ARCS>::isConnected(const VertexId& from, const VertexId&
     PRE(containsVertex(from));
     PRE(containsVertex(to));
 
-    return not arcs(from, to).empty();
+    return !arcs(from, to).empty();
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -155,7 +155,7 @@ template <class VERTICES, class ARCS> void GraGraph<VERTICES, ARCS>::doRemoveVer
     */
     vertices_.remove(id);
 
-    POST(not containsVertex(id));
+    POST(!containsVertex(id));
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -183,7 +183,7 @@ template <class VERTICES, class ARCS> void GraGraph<VERTICES, ARCS>::doRemoveArc
 
     arcs_.remove(id);
 
-    POST(not containsArc(id));
+    POST(!containsArc(id));
 }
 
 // virtual

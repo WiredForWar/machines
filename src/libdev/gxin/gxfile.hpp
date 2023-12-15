@@ -70,7 +70,7 @@ public:
 
     // Open a file for reading
     GXError open(const std::string&);
-    // PRE(not isOpen())
+    // PRE(!isOpen())
     // POST(iff(isOpen(),result!=NULL)
 
     // Test whether file is opened or not

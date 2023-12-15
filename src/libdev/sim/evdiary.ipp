@@ -24,7 +24,7 @@ _CODE_INLINE
 PhysAbsoluteTime SimEventDiary::nextEventTime() const
 {
     // Check the diary is not empty
-    PRE(not isEmpty());
+    PRE(!isEmpty());
 
     // Ensure in order
     validateOrder();
@@ -52,7 +52,7 @@ void SimEventDiary::eventTimeChanged()
 _CODE_INLINE
 void SimEventDiary::clear()
 {
-    while (not isEmpty())
+    while (!isEmpty())
     {
         SimDiscreteEventPtr event = events_.back();
         events_.pop_back();

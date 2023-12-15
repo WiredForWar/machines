@@ -56,7 +56,7 @@ private:
     // Create a (GX) hierarchy structure loads it
     // and insert it in hierarchyMap_
     void load(const SysPathName& pathName);
-    // PRE(not meshesBeingLoaded_);
+    // PRE(!meshesBeingLoaded_);
 
     // load the @Objects field of a file and put the meshes
     // at the top of files_

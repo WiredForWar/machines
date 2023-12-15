@@ -29,7 +29,7 @@ MexAlignedBox3d::MexAlignedBox3d()
 _CODE_INLINE
 bool MexAlignedBox3d::operator==(const MexAlignedBox3d& b) const
 {
-    return (minCorner_ == b.minCorner_) and (maxCorner_ == b.maxCorner_);
+    return (minCorner_ == b.minCorner_) && (maxCorner_ == b.maxCorner_);
 }
 
 _CODE_INLINE

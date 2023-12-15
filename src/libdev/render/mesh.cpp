@@ -1854,7 +1854,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
                 }
 
 
-                if (not match)
+                if (!match)
                 {
                     ctl_vector<size_t>::iterator it = std::find(matchedTriangles.begin(), matchedTriangles.end(), f1);
 

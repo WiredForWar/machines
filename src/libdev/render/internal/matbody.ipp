@@ -101,7 +101,7 @@ void RenIMatBody::emissive(const RenColour& c)
 
     if (emissive_ != RenColour::black())
     {
-        if (not hasFogMultiplier())
+        if (!hasFogMultiplier())
         {
             fogMultiplier_ = 1.3;
             hasFogMultiplier_ = true;

@@ -71,7 +71,7 @@ W4dEntityPlan::PlanState FindPlan(
         else
         {
             // If the plan is repeated, adjust the time offset for the current repetition
-            if (nRepetitions != 0 and duration > 0)
+            if (nRepetitions != 0 && duration > 0)
             {
                 uint n = (uint)(timeOffset / duration);
 
@@ -100,7 +100,7 @@ void ClearObsoletePlansAtTime(ctl_list<W4dPendingPlan<PLAN_TYPE>>* pPlans, const
     // Keeping checking while list empty and haven't first one hasn't been found to
     // be unexpired
     bool firstExpired = true;
-    while (pPlans->size() != 0 and firstExpired)
+    while (pPlans->size() != 0 && firstExpired)
     {
         // Compute end time of first one
         typename PendingPlans::iterator it = pPlans->begin();

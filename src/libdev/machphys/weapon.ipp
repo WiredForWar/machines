@@ -32,7 +32,7 @@ uint MachPhysWeapon::nextLaunchOffset() const
 _CODE_INLINE
 void MachPhysWeapon::machine(MachPhysMachine* pMachine)
 {
-    PRE(not hasConstruction());
+    PRE(!hasConstruction());
     pMachine_ = pMachine;
     convertMaterials();
 }
@@ -53,7 +53,7 @@ MachPhysMachine& MachPhysWeapon::machine() const
 _CODE_INLINE
 void MachPhysWeapon::construction(MachPhysConstruction* pConstruction)
 {
-    PRE(not hasMachine());
+    PRE(!hasMachine());
     pConstruction_ = pConstruction;
     convertMaterials();
 }

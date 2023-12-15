@@ -37,7 +37,7 @@ void SysMetaFile::encryptionType(EncryptionType encryptionType)
 // static
 bool SysMetaFile::useMetaFile()
 {
-    // static bool useMetaFile_ = not ( getenv( "CB_READ_FROM_METAFILE" ) and strcmp( getenv( "CB_READ_FROM_METAFILE" ),
+    // static bool useMetaFile_ = !( getenv( "CB_READ_FROM_METAFILE" ) and strcmp( getenv( "CB_READ_FROM_METAFILE" ),
     // "false" ) == 0 );
 
     // return useMetaFile_;

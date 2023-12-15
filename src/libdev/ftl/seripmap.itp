@@ -23,7 +23,7 @@ _CODE_INLINE // virtual
     FtlSerialPMap<REF>::contains(const FtlSerialId& id) const
 {
     size_t index = id.asScalar();
-    return index < refs_.size() and refs_[index] != nullptr;
+    return index < refs_.size() && refs_[index] != nullptr;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 template <class REF>
@@ -47,7 +47,7 @@ _CODE_INLINE // virtual
 //////////////////////////////////////////////////////////////////////////////////////////
 template <class REF> _CODE_INLINE void FtlSerialPMap<REF>::add(const FtlSerialId& id, REF* pValue)
 {
-    PRE(not contains(id));
+    PRE(!contains(id));
 
     // Delegate to pair version
     add(FtlPair<FtlSerialId, REF*>(id, pValue));

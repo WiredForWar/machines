@@ -39,7 +39,7 @@ template <class T> bool ctl_erase_first_instance(ctl_vector<T>* pC, const T& key
 
     POST(implies(result, pC->size() == old_size - 1));
     POST(implies(result, ctl_count(*pC, key) == old_nvalues - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     return result;
 }
 
@@ -57,7 +57,7 @@ template <class T, class UNARY_PREDICATE> bool ctl_erase_first_instance_if(ctl_v
 
     POST(implies(result, pC->size() == old_size - 1));
     POST(implies(result, ctl_count_if(*pC, p) == old_nvalues - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     return result;
 }
 
@@ -105,7 +105,7 @@ template <class T> bool ctl_erase_first_instance(ctl_list<T>* pC, const T& key)
 
     POST(implies(result, pC->size() == old_size - 1));
     POST(implies(result, ctl_count(*pC, key) == old_nvalues - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     return result;
 }
 
@@ -123,7 +123,7 @@ template <class T, class UNARY_PREDICATE> bool ctl_erase_first_instance_if(ctl_l
 
     POST(implies(result, pC->size() == old_size - 1));
     POST(implies(result, ctl_count_if(*pC, p) == old_nvalues - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     return result;
 }
 
@@ -172,7 +172,7 @@ template <class T> bool ctl_erase(ctl_set<T, std::less<T>>* pC, const T& key)
         pC->erase(i);
 
     POST(implies(result, pC->size() == old_size - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     POST(not ctl_contains(pC, key));
     return result;
 }
@@ -192,7 +192,7 @@ bool ctl_erase_first_instance_if(ctl_set<T, std::less<T>>* pC, UNARY_PREDICATE p
 
     POST(implies(result, pC->size() == old_size - 1));
     POST(implies(result, ctl_count_if(*pC, p) == old_nvalues - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     POST(not ctl_contains_if(pC, p));
     return result;
 }
@@ -235,7 +235,7 @@ template <class KEY, class VALUE> bool ctl_erase(ctl_map<KEY, VALUE, std::less<K
         pC->erase(i);
 
     POST(implies(result, pC->size() == old_size - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     POST(not ctl_contains_if(pC, compose1(bind1st(std::equal_to<int>(), key), ctl_select1st<const int, int>())));
     return result;
 }
@@ -255,7 +255,7 @@ bool ctl_erase_first_instance_if(ctl_map<KEY, VALUE, std::less<KEY>>* pC, UNARY_
 
     POST(implies(result, pC->size() == old_size - 1));
     POST(implies(result, ctl_count_if(*pC, p) == old_nvalues - 1));
-    POST(implies(not result, pC->size() == old_size));
+    POST(implies(!result, pC->size() == old_size));
     return result;
 }
 

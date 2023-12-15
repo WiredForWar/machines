@@ -45,7 +45,7 @@ template <class SCALAR> _CODE_INLINE SCALAR mod(SCALAR a, SCALAR b)
 // _CODE_INLINE
 // bool isodd( SCALAR x )
 // {
-//  return not divides( 2, x )
+//  return !divides( 2, x )
 // }
 //
 // template < class SCALAR >
@@ -79,7 +79,7 @@ template <class SCALAR> bool isprime(SCALAR x)
 
 template <class SCALAR> SCALAR primeceil(SCALAR x)
 {
-    while (not isprime(x))
+    while (!isprime(x))
         ++x;
 
     return x;
@@ -132,14 +132,14 @@ _CODE_INLINE T1 mexInterpolate(
     PRE_INFO(outputLimit1);
     PRE_INFO(outputLimit2);
 
-    PRE(implies(inputLimit1 <= inputLimit2, inputLimit1 <= inputValue and inputValue <= inputLimit2));
-    PRE(implies(inputLimit1 >= inputLimit2, inputLimit2 <= inputValue and inputValue <= inputLimit1));
-    PRE(implies(inputLimit1 == inputLimit2, outputLimit1 == outputLimit2 and inputValue == inputLimit1));
+    PRE(implies(inputLimit1 <= inputLimit2, inputLimit1 <= inputValue && inputValue <= inputLimit2));
+    PRE(implies(inputLimit1 >= inputLimit2, inputLimit2 <= inputValue && inputValue <= inputLimit1));
+    PRE(implies(inputLimit1 == inputLimit2, outputLimit1 == outputLimit2 && inputValue == inputLimit1));
 
     T1 t = (inputValue - inputLimit1) / (inputLimit2 - inputLimit1);
 
     ASSERT_INFO(t);
-    ASSERT(0.0 <= t and t <= 1.0, "Input value out of range");
+    ASSERT(0.0 <= t && t <= 1.0, "Input value out of range");
 
     //  This has been very carefully written to use the minimum
     //  number of operators
@@ -154,10 +154,10 @@ _CODE_INLINE T1 mexInterpolate(
     POST_INFO(result);
     POST(implies(
         outputLimit1 <= outputLimit2,
-        outputLimit1 - MexEpsilon::instance() <= result and result <= outputLimit2 + MexEpsilon::instance()));
+        outputLimit1 - MexEpsilon::instance() <= result && result <= outputLimit2 + MexEpsilon::instance()));
     POST(implies(
         outputLimit1 >= outputLimit2,
-        outputLimit2 - MexEpsilon::instance() <= result and result <= outputLimit1 + MexEpsilon::instance()));
+        outputLimit2 - MexEpsilon::instance() <= result && result <= outputLimit1 + MexEpsilon::instance()));
 
     return result;
 }
@@ -173,7 +173,7 @@ template <class T1> _CODE_INLINE T1 mexClamp(const T1& inputValue, const T1& low
     else if (result > upperLimit)
         result = upperLimit;
 
-    POST(lowerLimit <= result and result <= upperLimit);
+    POST(lowerLimit <= result && result <= upperLimit);
 
     return result;
 }

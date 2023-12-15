@@ -17,7 +17,7 @@ template <class RANDOM> MATHEX_SCALAR mexRandomScalar(RANDOM* pR, MATHEX_SCALAR 
     result *= (upperLimit - lowerLimit);
     result += lowerLimit;
 
-    POST(lowerLimit <= result and result < upperLimit);
+    POST(lowerLimit <= result && result < upperLimit);
 
     return result;
 }
@@ -30,7 +30,7 @@ template <class RANDOM> int mexRandomInt(RANDOM* pR, int lowerLimit, int upperLi
 
     int result = mexRandomScalar(pR, (MATHEX_SCALAR)lowerLimit, (MATHEX_SCALAR)upperLimit);
 
-    POST(lowerLimit <= result and result < upperLimit);
+    POST(lowerLimit <= result && result < upperLimit);
 
     return result;
 }
@@ -42,7 +42,7 @@ template <class RANDOM> int mexRandomInt(RANDOM* pR, int upperLimit)
 
     int result = mexRandomInt(pR, 0, upperLimit);
 
-    POST(0 <= result and result < upperLimit);
+    POST(0 <= result && result < upperLimit);
 
     return result;
 }

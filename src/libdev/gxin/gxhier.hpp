@@ -35,11 +35,11 @@ public:
     // POST(allChildrenSupplied());
 
     GXName getMeshName(const GXIdPos&, bool&);
-    // PRE(not searchedId==zeroId_);
+    // PRE(!searchedId==zeroId_);
 
     // The node has an object (namely a mesh) attached to it if the meshId
     // is not null
-    bool hasObject() const { return not(meshId_ == zeroId_); }
+    bool hasObject() const { return !(meshId_ == zeroId_); }
 
     void meshId(const GXIdPos& newMeshId) { meshId_ = newMeshId; }
     const GXIdPos& meshId() const { return meshId_; }

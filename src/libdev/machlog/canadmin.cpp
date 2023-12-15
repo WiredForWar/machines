@@ -90,7 +90,7 @@ void MachLogCanAdminister::handleIdleGeoLocator(MachLogCommsId obj)
     MachLogMineralSites::const_iterator j =  MachLogMineralSites::instance().sites( race() ).begin();
     for( ; j != MachLogMineralSites::instance().sites( race() ).end() and not found; ++j )
     {
-        found = not (*j).hasBeenDiscoveredBy( race() );
+        found = !(*j).hasBeenDiscoveredBy( race() );
         if( found )
             obj->newOperation( new MachLocateOperation( _STATIC_CAST( MachLogLocator *, obj ) , (*j).position() ) );
     }

@@ -39,9 +39,9 @@ public:
     // not been loaded (i.e. the instance has been created by the default
     // constructor)
     void load(const SysPathName&);
-    // PRE(not isLoaded() );
+    // PRE(!isLoaded() );
     void load(const SysPathName&, IProgressReporter* pReporter);
-    // PRE(not isLoaded() );
+    // PRE(!isLoaded() );
     // PRE( pReporter );
 
     bool isLoaded() const;

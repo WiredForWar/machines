@@ -7,7 +7,7 @@
 
 template <class T> bool operator==(const ctl_vector<T>& x, const ctl_vector<T>& y)
 {
-    return x.size() == y.size() and equal(x.begin(), x.end(), y.begin());
+    return x.size() == y.size() && equal(x.begin(), x.end(), y.begin());
 }
 
 template <class T> bool operator<(const ctl_vector<T>& x, const ctl_vector<T>& y)

@@ -81,7 +81,7 @@ template <class T> void perRead(PerIstream& istr, CtlCountedPtr<T>& ptr)
         pCount->addReference();
 
 #ifndef NDEBUG
-    if (DiagInternal::checkCountedPointers_ and pCount)
+    if (DiagInternal::checkCountedPointers_ && pCount)
         DiagInternal::countedPointerTracker().addPointer(pCount->pT_);
 #endif
 }
@@ -106,7 +106,7 @@ template <class T> void perRead(PerIstream& istr, CtlConstCountedPtr<T>& ptr)
         pCount->addReference();
 
 #ifndef NDEBUG
-    if (DiagInternal::checkCountedPointers_ and pCount)
+    if (DiagInternal::checkCountedPointers_ && pCount)
         DiagInternal::countedPointerTracker().addPointer(pCount->pT_);
 #endif
 }

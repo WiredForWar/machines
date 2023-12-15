@@ -32,7 +32,7 @@ const MATHEX_SCALAR& MexQuaternion::scalar() const
 _CODE_INLINE
 bool operator==(const MexQuaternion& a, const MexQuaternion& b)
 {
-    return a.v_ == b.v_ and a.s_ == b.s_;
+    return a.v_ == b.v_ && a.s_ == b.s_;
 }
 
 // friend

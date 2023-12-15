@@ -14,7 +14,7 @@ template <class REF>
 // virtual
 void FtlSerialPMap<REF>::add(const FtlPair<FtlSerialId, Ref*>& addMe)
 {
-    PRE(not contains(addMe.first));
+    PRE(!contains(addMe.first));
 
     // get index and current highest entry + 1
     size_t index = addMe.first.asScalar();

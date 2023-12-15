@@ -422,7 +422,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(557, 155), 104, pTextInfo_);
 
 #ifdef DEMO
-    if (not MachGuiDatabase::instance().nPlayers())
+    if (!MachGuiDatabase::instance().nPlayers())
     {
         MachGuiDbPlayer& newPlayer = MachGuiDatabase::instance().addPlayer("Dummy");
         MachGuiDatabase::instance().currentPlayer(&newPlayer);

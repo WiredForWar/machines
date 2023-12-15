@@ -50,7 +50,7 @@ void GraShortestPath<VERTEX_ID, ADJACENT_VERTICES, IS_DEST>::restart(const Verte
 template <class VERTEX_ID, class ADJACENT_VERTICES, class IS_DEST>
 void GraShortestPath<VERTEX_ID, ADJACENT_VERTICES, IS_DEST>::iterate()
 {
-    PRE(not isFinished());
+    PRE(!isFinished());
 
     if (state_ == SEARCHING)
     {
@@ -67,7 +67,7 @@ template <class VERTEX_ID, class ADJACENT_VERTICES, class IS_DEST>
 void GraShortestPath<VERTEX_ID, ADJACENT_VERTICES, IS_DEST>::search()
 {
     PRE(state_ == SEARCHING);
-    PRE(not pendingVertices_.empty());
+    PRE(!pendingVertices_.empty());
     VertexId vId = pendingVertices_.front();
 
     pendingVertices_.pop_front();
@@ -92,11 +92,11 @@ void GraShortestPath<VERTEX_ID, ADJACENT_VERTICES, IS_DEST>::search()
         }
         else
         {
-            if (not isMarked)
+            if (!isMarked)
                 pendingVertices_.push_back(*i);
         }
 
-        if (not isMarked)
+        if (!isMarked)
         {
             mapVertexToJourneyId_.insert(*i, journeyId_);
             mapJourneyIdToVertexId_.insert(ctl_make_const_first_pair(journeyId_, *i));
@@ -121,7 +121,7 @@ template <class VERTEX_ID, class ADJACENT_VERTICES, class IS_DEST>
 void GraShortestPath<VERTEX_ID, ADJACENT_VERTICES, IS_DEST>::searchBackwards()
 {
     PRE(state_ == FOUND);
-    PRE(not result_.empty());
+    PRE(!result_.empty());
     // cout << "searching backwards" << endl;
     --journeyId_;
 

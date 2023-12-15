@@ -26,7 +26,7 @@ _CODE_INLINE
 void SimDiscreteEvent::diary(SimEventDiary* pDiary)
 {
     // Mustn't already be in a diary except the new one
-    PRE((pDiary == nullptr) or (pDiary_ == nullptr) or (pDiary_ == pDiary));
+    PRE((pDiary == nullptr) || (pDiary_ == nullptr) || (pDiary_ == pDiary));
 
     pDiary_ = pDiary;
 }

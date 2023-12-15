@@ -126,8 +126,8 @@ template <class NUMERIC> bool UtlOpenInterval<NUMERIC>::isOpenInterval(NUMERIC l
 
 template <class NUMERIC> bool UtlOpenInterval<NUMERIC>::contains(NUMERIC x) const
 {
-    bool result = lower() <= x and x <= upper();
-    POST(iff(result, lower() <= x and x <= upper()));
+    bool result = lower() <= x && x <= upper();
+    POST(iff(result, lower() <= x && x <= upper()));
     return result;
 }
 

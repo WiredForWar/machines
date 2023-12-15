@@ -989,7 +989,7 @@ bool MachLogCanAttack::targetBehindSoftCover(MachActor* pTarget, MachLogCanAttac
         }
     }
 
-    bool result = not cSpace.contains( pMe_->position(), pTarget->position(), &junk, PhysConfigSpace2d::USE_ALL );
+    bool result = !cSpace.contains( pMe_->position(), pTarget->position(), &junk, PhysConfigSpace2d::USE_ALL );
     DEBUG_STREAM( DIAG_HAL," result " << result << " junk Id " << junk << std::endl );
 
     //re-enable any obstacle polygon around the target object

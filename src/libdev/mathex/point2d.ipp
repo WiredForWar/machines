@@ -72,7 +72,7 @@ bool MexPoint2d::operator==(const MexPoint2d& rhs) const
 {
     TEST_INVARIANT;
 
-    return Mathex::abs(x() - rhs.x()) < MexEpsilon::instance() and Mathex::abs(y() - rhs.y()) < MexEpsilon::instance();
+    return Mathex::abs(x() - rhs.x()) < MexEpsilon::instance() && Mathex::abs(y() - rhs.y()) < MexEpsilon::instance();
 }
 
 _CODE_INLINE
@@ -128,7 +128,7 @@ void MexPoint2d::operator-=(const MexVec2& rhs)
 _CODE_INLINE
 MATHEX_SCALAR MexPoint2d::operator[](size_t i) const
 {
-    PRE(i == 0 or i == 1);
+    PRE(i == 0 || i == 1);
     TEST_INVARIANT;
 
     return (i == 0 ? x_ : y_);

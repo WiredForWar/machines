@@ -39,7 +39,7 @@ template <class VERTEX_ITEM, class ARC_ID> bool GraVertex<VERTEX_ITEM, ARC_ID>::
 
 template <class VERTEX_ITEM, class ARC_ID> void GraVertex<VERTEX_ITEM, ARC_ID>::addArc(const ArcId& id)
 {
-    PRE(not containsArc(id));
+    PRE(!containsArc(id));
     POST_DATA(Arity old_arity = arity());
 
     if (arcs_.size() == 0)
@@ -64,7 +64,7 @@ template <class VERTEX_ITEM, class ARC_ID> void GraVertex<VERTEX_ITEM, ARC_ID>::
 
     ctl_erase(&arcs_, id);
 
-    PRE(not containsArc(id));
+    PRE(!containsArc(id));
     POST(arity() == old_arity - 1);
 }
 

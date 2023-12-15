@@ -14,7 +14,7 @@ template <class VALUE>
 // virtual
 void FtlSerialMap<VALUE>::add(const FtlPair<FtlSerialId, VALUE>& addMe)
 {
-    PRE(not contains(addMe.first));
+    PRE(!contains(addMe.first));
 
     // get id and current highest entry + 1
     size_t id = addMe.first.asScalar();
@@ -66,7 +66,7 @@ void FtlSerialMap<VALUE>::remove(const FtlSerialId& id)
     // Mark the index entry for the removed value as unused
     index_[i] = FTL_SERIALMAP_NOENTRY;
 
-    POST(not contains(id));
+    POST(!contains(id));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 template <class VALUE> void FtlSerialMap<VALUE>::CLASS_INVARIANT

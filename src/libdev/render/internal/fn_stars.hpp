@@ -221,7 +221,7 @@ public:
 
     uint setD3DCOLORAlpha(uint colour, MATHEX_SCALAR alpha) const
     {
-        PRE(alpha >= 0.0 and alpha <= 1.0);
+        PRE(alpha >= 0.0 && alpha <= 1.0);
 
         return (colour & 0x00ffffff) | (_STATIC_CAST(uint, alpha * 255) << 24);
     }
@@ -440,13 +440,12 @@ public:
 
         if (antiRay_ > clockRay_)
         {
-            if (not inIntervalOO(antiPartition, clockRay_, antiRay_)
-                or not inIntervalOO(clockPartition, clockRay_, antiRay_))
+            if (!inIntervalOO(antiPartition, clockRay_, antiRay_) || !inIntervalOO(clockPartition, clockRay_, antiRay_))
                 result = true;
         }
         else
         {
-            if (inIntervalOO(antiPartition, antiRay_, clockRay_) or inIntervalOO(clockPartition, antiRay_, clockRay_))
+            if (inIntervalOO(antiPartition, antiRay_, clockRay_) || inIntervalOO(clockPartition, antiRay_, clockRay_))
                 result = true;
         }
 

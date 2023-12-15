@@ -176,7 +176,7 @@ PhysCS2dFindPath* PhysCS2dImpl::pActiveFindPath()
 _CODE_INLINE
 void PhysCS2dImpl::activeFindPath(PhysCS2dFindPath* pFindPath)
 {
-    PRE(pFindPath == nullptr or pActiveFindPath_ == nullptr);
+    PRE(pFindPath == nullptr || pActiveFindPath_ == nullptr);
     pActiveFindPath_ = pFindPath;
 }
 //////////////////////////////////////////////////////////////////////////////////////////

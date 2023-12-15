@@ -90,7 +90,7 @@ void PhysAlignedBSPTree2d<P_ITEM>::add(
 
     // If the current partition is full and not split, split it
     bool isSplit = pPartition->pLeft_ != nullptr;
-    if (not isSplit and pPartition->items_.size() == nMaxItems_)
+    if (!isSplit && pPartition->items_.size() == nMaxItems_)
         isSplit = split(pPartition, partitionBoundary);
 
     // If subdivided check to see if the new item belongs in either
@@ -113,7 +113,7 @@ void PhysAlignedBSPTree2d<P_ITEM>::add(
     }
 
     // Add the item to this partition, if not added to a subdivision
-    if (not done)
+    if (!done)
     {
         pPartition->items_.push_back(pItem);
         ++nItems_;
@@ -205,7 +205,7 @@ void PhysAlignedBSPTree2d<P_ITEM>::remove(
     }
 
     // If the item is not in a subdivision, it must be in this partition, so remove it
-    if (not done)
+    if (!done)
     {
         PItems& items = pPartition->items_;
         for (typename PItems::iterator i = items.begin(); i != items.end(); ++i)

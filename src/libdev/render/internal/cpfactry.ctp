@@ -18,7 +18,7 @@ template <class ID, class PART> UtlCPFactory<ID, PART>::~UtlCPFactory()
 // virtual
 template <class ID, class PART> PART UtlCPFactory<ID, PART>::part(const ID& id)
 {
-    if (not containsPart(id))
+    if (!containsPart(id))
     {
         PART result = doCreatePart(id);
 

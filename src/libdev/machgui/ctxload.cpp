@@ -326,7 +326,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 // pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiLoadMessageBoxResponder(this) );
 // }
 #else // DEMO defined
-        if (not pSelectedSaveGame_)
+        if (!pSelectedSaveGame_)
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_SELECTSAVEDGAME);
         }

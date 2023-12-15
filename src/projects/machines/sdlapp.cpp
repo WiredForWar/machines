@@ -505,7 +505,7 @@ bool SDLApp::clientStartup()
 
     // We set different search paths depending on the amount
     // of video memory available for texture
-    //  bool doLoad2MBytesTexture = not manager_->pDevice()->capabilities().supports4MBytesTextureSet();
+    //  bool doLoad2MBytesTexture = !manager_->pDevice()->capabilities().supports4MBytesTextureSet();
     bool doLoad2MBytesTexture = false;
     // Check to see if texture4 directory even exists. The user may have done a minimum
     // install in which case texture4 directory will not be available

@@ -206,7 +206,7 @@ private:
     {                                                                                                                  \
         if (BaseTrace::instance().trace())                                                                             \
             BaseTrace::instance().log(__FILE__, __LINE__);                                                             \
-        if (not BaseAssertion::AssertionLock::instance().isLocked())                                                   \
+        if (!BaseAssertion::AssertionLock::instance().isLocked())                                                   \
         {                                                                                                              \
             BaseAssertion::AssertionLock::instance().lock();                                                           \
             (exp) ? BaseAssertion::AssertionLock::instance().unlock() : fn;                                            \
@@ -259,7 +259,7 @@ private:
         {                                                                                                              \
             if (BaseTrace::instance().trace())                                                                         \
                 BaseTrace::instance().log(__FILE__, __LINE__);                                                         \
-            if (not BaseAssertion::AssertionLock::instance().invariantLocked())                                        \
+            if (!BaseAssertion::AssertionLock::instance().invariantLocked())                                        \
             {                                                                                                          \
                 BaseAssertion::AssertionLock::instance().lockInvariant();                                              \
                 invariant(__FILE__, _STR(__LINE__));                                                                   \

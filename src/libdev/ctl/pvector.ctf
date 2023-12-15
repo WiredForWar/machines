@@ -9,11 +9,11 @@ template <class T> bool operator==(const ctl_pvector<T>& x, const ctl_pvector<T>
 
     if (x.size() == y.size())
     {
-        for (size_t i = 0; i < x.size() and result; ++i)
+        for (size_t i = 0; i < x.size() && result; ++i)
         {
-            if ((x[i] == nullptr) or (y[i] == nullptr))
+            if ((x[i] == nullptr) || (y[i] == nullptr))
             {
-                if (x[i] != nullptr or y[i] != nullptr)
+                if (x[i] != nullptr || y[i] != nullptr)
                     result = false;
             }
             else if (*(x[i]) != *(y[i]))

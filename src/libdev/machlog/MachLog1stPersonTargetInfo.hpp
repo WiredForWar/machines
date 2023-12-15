@@ -36,7 +36,7 @@ struct MachLog1stPersonTargetInfo
     const MexPoint3d& getCommandPoint() const
     {
         // Prefer command point
-        if (not commandPoint.isZeroPoint())
+        if (!commandPoint.isZeroPoint())
         {
             return commandPoint;
         }

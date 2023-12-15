@@ -47,7 +47,7 @@
     {                                                                                                                  \
         ASSERT_INFO(_STATIC_CAST(void*, this));                                                                        \
         ASSERT(                                                                                                        \
-            not diagTracker().pointerPresent(_STATIC_CAST(void*, this)),                                               \
+            !diagTracker().pointerPresent(_STATIC_CAST(void*, this)),                                                  \
             "Attempt to construct object on top of existing object");                                                  \
         diagTracker().addPointer(_STATIC_CAST(void*, this));                                                           \
     }
@@ -63,7 +63,7 @@
 #define PRIVATE_EXISTS(CLASS)                                                                                          \
     bool exists(const CLASS* ptr)                                                                                      \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_CONST_CAST(void*, _REINTERPRET_CAST(const void*, ptr)));                                          \
         return CLASS::diagTracker().pointerPresent(_CONST_CAST(void*, _REINTERPRET_CAST(const void*, ptr)));           \
@@ -76,7 +76,7 @@
 #define PRIVATE_EXISTS_T1(CLASS)                                                                                       \
     template <class X1> static bool exists(const CLASS<X1>* ptr)                                                       \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));                                      \
@@ -89,7 +89,7 @@
 #define PRIVATE_EXISTS_T2(CLASS)                                                                                       \
     template <class X1, class X2> static bool exists(const CLASS<X1, X2>* ptr)                                         \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (ptr->diagTrackingActive())                                                                                 \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));                                  \
@@ -102,7 +102,7 @@
 #define PRIVATE_EXISTS_T3(CLASS)                                                                                       \
     template <class X1, class X2, class X3> static bool exists(const CLASS<X1, X2, X3>* ptr)                           \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));                              \
@@ -115,7 +115,7 @@
 #define PRIVATE_EXISTS_T4(CLASS)                                                                                       \
     template <class X1, class X2, class X3, class X4> static bool exists(const CLASS<X1, X2, X3, X4>* ptr)             \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));                          \
@@ -129,7 +129,7 @@
     template <class X1, class X2, class X3, class X4, class X5>                                                        \
     static bool exists(const CLASS<X1, X2, X3, X4, X5>* ptr)                                                           \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4, X5>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));                      \
@@ -144,7 +144,7 @@
     template <class X1, class X2, class X3, class X4, class X5, class X6>                                              \
     static bool exists(const CLASS<X1, X2, X3, X4, X5, X6>* ptr)                                                       \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4, X5, X6>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));                  \
@@ -159,7 +159,7 @@
     template <class X1, class X2, class X3, class X4, class X5, class X6, class X7>                                    \
     static bool exists(const CLASS<X1, X2, X3, X4, X5, X6, X7>* ptr)                                                   \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4, X5, X6, X7>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));              \
@@ -174,7 +174,7 @@
     template <class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>                          \
     static bool exists(const CLASS<X1, X2, X3, X4, X5, X6, X7, X8>* ptr)                                               \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4, X5, X6, X7, X8>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));          \
@@ -189,7 +189,7 @@
     template <class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, class X9>                \
     static bool exists(const CLASS<X1, X2, X3, X4, X5, X6, X7, X8, X9>* ptr)                                           \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4, X5, X6, X7, X8, X9>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr));      \
@@ -204,7 +204,7 @@
     template <class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, class X9, class X10>     \
     static bool exists(const CLASS<X1, X2, X3, X4, X5, X6, X7, X8, X9, X10>* ptr)                                      \
     {                                                                                                                  \
-        if (not ptr->diagTrackingActive())                                                                             \
+        if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
         ASSERT_INFO(_STATIC_CAST(void*, ptr));                                                                         \
         return CLASS<X1, X2, X3, X4, X5, X6, X7, X8, X9, X10>::diagTracker().pointerPresent(_STATIC_CAST(void*, ptr)); \

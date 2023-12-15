@@ -111,7 +111,7 @@ public:
         return *this;
     }
 
-    static bool isInRange(value_type v) { return v >= LOWER and v <= UPPER; }
+    static bool isInRange(value_type v) { return v >= LOWER && v <= UPPER; }
 
     static value_type length() { return UPPER - LOWER; };
 

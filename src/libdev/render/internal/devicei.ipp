@@ -105,7 +105,7 @@ bool RenIDeviceImpl::rendering3D() const
 _CODE_INLINE
 bool RenIDeviceImpl::idleRendering() const
 {
-    return rendering() and not rendering3D() and not rendering2D();
+    return rendering() && !rendering3D() && !rendering2D();
 }
 
 _CODE_INLINE

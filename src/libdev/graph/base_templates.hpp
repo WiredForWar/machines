@@ -47,7 +47,7 @@ typename GraGraphBase<VI, VT, AI, AT, AIS, W>::Version GraGraphBase<VI, VT, AI, 
 template <class VI, class VT, class AI, class AT, class AIS, class W>
 void GraGraphBase<VI, VT, AI, AT, AIS, W>::addVertex(const VertexId& id, const VertexItem& item)
 {
-    PRE(not containsVertex(id));
+    PRE(!containsVertex(id));
     POST_DATA(VertexCount old_nVertices = nVertices());
 
     doAddVertex(id, item);
@@ -68,7 +68,7 @@ void GraGraphBase<VI, VT, AI, AT, AIS, W>::removeVertex(const VertexId& id)
     --nVertices_;
     ++version_;
 
-    POST(not containsVertex(id));
+    POST(!containsVertex(id));
     POST(nVertices() == old_nVertices - 1);
 }
 
@@ -83,7 +83,7 @@ void GraGraphBase<VI, VT, AI, AT, AIS, W>::addArc(
 {
     PRE(containsVertex(from));
     PRE(containsVertex(to));
-    PRE(not containsArc(arcId));
+    PRE(!containsArc(arcId));
     PRE(from != to);
 
     POST_DATA(ArcCount old_nArcs = nArcs());
@@ -112,9 +112,9 @@ void GraGraphBase<VI, VT, AI, AT, AIS, W>::removeArc(const ArcId& id)
     --nArcs_;
     ++version_;
 
-    POST(not containsArc(id));
-    POST(not ctl_contains(&arcs(fromVert), id));
-    POST(not ctl_contains(&arcs(toVert), id));
+    POST(!containsArc(id));
+    POST(!ctl_contains(&arcs(fromVert), id));
+    POST(!ctl_contains(&arcs(toVert), id));
     POST(nArcs() == old_nArcs - 1);
 }
 

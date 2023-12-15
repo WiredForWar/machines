@@ -22,7 +22,7 @@ void PhysCS2dDomain::boundary(MexAlignedBox2d* pBox) const
 _CODE_INLINE
 void PhysCS2dDomain::addPortal(const PhysConfigSpace2d::PortalId& id)
 {
-    PRE(not containsPortal(id));
+    PRE(!containsPortal(id));
     portals_.push_back(id);
 }
 //////////////////////////////////////////////////////////////////////////////////////////

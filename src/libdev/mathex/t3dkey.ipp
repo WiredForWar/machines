@@ -53,7 +53,7 @@ bool operator==(const MexTransform3dKey& lhs, const MexTransform3dKey& rhs)
 _CODE_INLINE
 bool operator!=(const MexTransform3dKey& lhs, const MexTransform3dKey& rhs)
 {
-    return not(lhs.key_ == rhs.key_);
+    return !(lhs.key_ == rhs.key_);
 }
 //---------------------------------------------------------------------
 /* End T3DKEY.IPP ***************************************************/

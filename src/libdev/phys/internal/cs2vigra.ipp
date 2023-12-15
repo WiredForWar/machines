@@ -21,7 +21,7 @@ _CODE_INLINE
 bool PhysCS2dVisibilityGraph::isFindPathFinished() const
 {
     PRE(findPathIsDefined_);
-    return upToDate_ and findPathCompleted_;
+    return upToDate_ && findPathCompleted_;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 /* End CS2VIGRA.IPP *************************************************/

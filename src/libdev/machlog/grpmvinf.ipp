@@ -18,7 +18,7 @@ MachLogGroupMoveInfo::MachLogGroupMoveInfo()
     : valid_(false)
 {
     TEST_INVARIANT;
-    POST(not valid());
+    POST(!valid());
 }
 
 _CODE_INLINE

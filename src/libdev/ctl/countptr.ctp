@@ -95,7 +95,7 @@ template <class T> bool CtlCountedPtr<T>::isShared() const
 
 template <class T> bool CtlCountedPtr<T>::isDefined() const
 {
-    return (pCount_ != nullptr and pCount_->pT_ != nullptr);
+    return (pCount_ != nullptr && pCount_->pT_ != nullptr);
 }
 
 template <class T> void CtlCountedPtr<T>::clear()
@@ -191,7 +191,7 @@ template <class T> bool CtlConstCountedPtr<T>::isShared() const
 
 template <class T> bool CtlConstCountedPtr<T>::isDefined() const
 {
-    return (pCount_ != nullptr and pCount_->pT_ != nullptr);
+    return (pCount_ != nullptr && pCount_->pT_ != nullptr);
 }
 
 template <class T> void CtlConstCountedPtr<T>::clear()

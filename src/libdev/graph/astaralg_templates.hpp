@@ -162,7 +162,7 @@ template <class GRA_GRAPH, class VERTEX_MAP> typename GraAStarAlg__::State GraAS
 
             ASSERT(vertexAvailable(pGraph_->vertex(currentVertexId)), "");
 
-            if (havePath_ and currentAStarVertex.estimatedCostToEnd() >= bestPathCost_)
+            if (havePath_ && currentAStarVertex.estimatedCostToEnd() >= bestPathCost_)
             {
                 // A_STAR_STREAM( "Already have a better path - algorithm finished" << std::endl );
                 state_ = FINISHED;
@@ -225,7 +225,7 @@ void GraAStarAlg__::expand(const VertexId& expandId, const Weight& costToExpandV
 
             // Decide whether the other vertex has already been visited.
             // If not add a GraAStarVertex entry to the visited vertices map
-            bool newVertex = not pAStarVertices_->contains(otherVertexId);
+            bool newVertex = !pAStarVertices_->contains(otherVertexId);
 
             // A_STAR_STREAM( "Vertex " << otherVertexId << " has " << ( newVertex ? "not " : "" ) << "been visited" <<
             // std::endl );
@@ -242,13 +242,13 @@ void GraAStarAlg__::expand(const VertexId& expandId, const Weight& costToExpandV
             // We connect a path to this vertex if not seen before, or this path is
             // better than any previous path
             AStarVertex& otherAStarVertex = algVertices[otherVertexId];
-            if (newVertex or costToOtherVertex < otherAStarVertex.costFromStart())
+            if (newVertex || costToOtherVertex < otherAStarVertex.costFromStart())
             {
                 // A_STAR_STREAM( "Connect a path to vertex " << otherVertexId << std::endl );
 
                 // Set the new cost to this node, and store the arc used to connect to it,
                 // unless a new vertex, in which case this was done above.
-                if (not newVertex)
+                if (!newVertex)
                 {
                     otherAStarVertex.costFromStart(costToOtherVertex);
                     otherAStarVertex.previousArcId(arcId);
