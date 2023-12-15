@@ -1028,7 +1028,7 @@ bool MachLogRaces::findTargetClosestTo(
     // if the targetresource flag is set then only try mines+smelters+carriers
     if (targetResource)
     {
-        for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+        for (MachPhys::Race ridx : MachPhys::AllRaces)
         {
             MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
@@ -1081,7 +1081,7 @@ bool MachLogRaces::findTargetClosestTo(
     else if (actor.objectIsMissileEmplacement())
         sqrScannerRange = sqr(actor.asMissileEmplacement().scannerRange());
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
@@ -1387,7 +1387,7 @@ bool MachLogRaces::findFriendlyClosestTo(
     if (targetSystemType == MachLog::TARGET_OBJECT)
         targetObject = true;
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
@@ -1521,7 +1521,7 @@ int MachLogRaces::findSafestFriendly(const MachActor& actor, MachActor** ppResul
     int bestMilitaryStrength = 0;
     MexPoint3d pos = actor.position();
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
@@ -1637,7 +1637,7 @@ void MachLogRaces::allFriendlyAggressiveMachinesWithinRange(
 
     // note that the requirement that distance > sqrMinRange rules out possibility of adding yourself to the vector
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(pActor->race(), ridx);
 
@@ -1677,7 +1677,7 @@ void MachLogRaces::allFriendlyAggressivesWithinRange(
 
     // note that the requirement that distance > sqrMinRange rules out possibility of adding yourself to the vector
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(pActor->race(), ridx);
 
@@ -1803,7 +1803,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
         pGarrisonImInside = &(machine.insideWhichBuilding().asGarrison());
     }
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(machine.race(), ridx);
         if (disp == MachLogRaces::ALLY || disp == MachLogRaces::OUR_RACE)
@@ -2459,7 +2459,7 @@ bool MachLogRaces::saveGame(const SysPathName& pathname, MachLogLoadSaveGameExtr
     if (getenv("CB_GENERATE_SCENARIO_ENTRIES"))
     {
         std::ofstream o("temp.scn");
-        for (MachPhys::Race r = MachPhys::RED; r < MachPhys::N_RACES; ++((int&)r))
+        for (MachPhys::Race r : MachPhys::AllRaces)
         {
             if (raceInGame(r))
             {
@@ -2950,7 +2950,7 @@ bool MachLogRaces::findAlternativeTargetClosestTo(
     else if (actor.objectIsMissileEmplacement())
         sqrScannerRange = sqr(actor.asMissileEmplacement().scannerRange());
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
 
@@ -3471,7 +3471,7 @@ bool MachLogRaces::findMostValuableTarget(
     // the only restriction on distance here is the minimum distance.
     if (targetSystemType == MachLog::TARGET_NORMAL || targetSystemType == MachLog::FAVOUR_STATIC_TARGETS)
     {
-        for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+        for (MachPhys::Race ridx : MachPhys::AllRaces)
         {
             MachLogRaces::DispositionToRace disp = dispositionToRace(actor.race(), ridx);
             if (disp != MachLogRaces::ALLY && disp != MachLogRaces::OUR_RACE)
@@ -3641,12 +3641,12 @@ void MachLogRaces::scoreShouldBeDisplayed(MachPhys::Race race, bool value)
 
 void MachLogRaces::removeNotDisplayedScores()
 {
-    for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         if (! pDataImpl_->scores_[i]->scoreShouldBeDisplayed())
         {
             pDataImpl_->scores_[i]->resetNumbers();
-            for (MachPhys::Race j = MachPhys::RED; j != MachPhys::N_RACES; ++((int&)j))
+            for (MachPhys::Race j : MachPhys::AllRaces)
             {
                 pDataImpl_->scores_[j]->resetPartialNumbers(j);
             }

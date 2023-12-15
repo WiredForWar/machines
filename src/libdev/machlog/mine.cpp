@@ -365,7 +365,7 @@ bool MachLogMine::validMineSite(const MexPoint3d& location, uint hwLevel, const 
 // static
 bool MachLogMine::validForAllSmelters(const MexPoint3d& location)
 {
-    for (MachPhys::Race r = MachPhys::RED; r != MachPhys::N_RACES; ++((int&)r))
+    for (MachPhys::Race r : MachPhys::AllRaces)
     {
         for (MachLogRaces::Smelters::const_iterator i = MachLogRaces::instance().smelters(r).begin();
              i != MachLogRaces::instance().smelters(r).end();

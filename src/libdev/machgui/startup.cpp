@@ -846,7 +846,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
             if (colourUsed[creationData[i].colour_])
             {
                 // find unsed colour
-                for (MachPhys::Race j = MachPhys::RED; j < MachPhys::N_RACES; ++((int&)j))
+                for (MachPhys::Race j : MachPhys::AllRaces)
                     if (! colourUsed[j])
                     {
                         creationData[i].colour_ = j;

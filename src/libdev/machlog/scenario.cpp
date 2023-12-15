@@ -227,10 +227,10 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 if (useData[i].type_ != MachLog::NOT_DEFINED && ! usedRace[i])
                 {
                     // we need to allocate this useData element to a race which has been defined by the scenario file
-                    for (MachPhys::Race j = MachPhys::RED; j < MachPhys::N_RACES; ++((int&)j))
+                    for (MachPhys::Race j : MachPhys::AllRaces)
                     {
                         // match to first unused race.
-                        if (! usedRace[j])
+                        if (!usedRace[j])
                         {
                             // swap elements around.
                             useData[j].colour_ = useData[i].colour_;
@@ -926,7 +926,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         if (gameData.victoryCondition() == MachLog::VICTORY_POD)
         {
             doCreate = false;
-            for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i))
+            for (MachPhys::Race i : MachPhys::AllRaces)
             {
                 if (races.raceInGame(i) && races.pods(i).size() > 0)
                     doCreate = true;
@@ -1034,7 +1034,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 HAL_STREAM(
                     " ri objectTYpe " << ri.objectType() << " ri.sub " << ri.subType() << " ri.hwLevel " << ri.hwLevel()
                                       << " ri.wc " << ri.weaponCombo() << std::endl);
-                for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+                for (MachPhys::Race ridx : MachPhys::AllRaces)
                 {
                     bool doWork = false;
                     doWork = false;
@@ -1564,7 +1564,7 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
 
     MachLogConstructionItem& consItem
         = races.constructionTree().constructionItem((MachPhys::ConstructionType)type, subType, hwLevel, weaponCombo);
-    for (MachPhys::Race i = MachPhys::RED; i != MachPhys::N_RACES; ++((int&)i))
+    for (MachPhys::Race i : MachPhys::AllRaces)
     {
         bool doWork = false;
         doWork = false;

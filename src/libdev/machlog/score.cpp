@@ -333,7 +333,7 @@ void MachLogScore::resetNumbers()
     pImpl_->itemsResearched_ = 0;
     pImpl_->totalResearchCost_ = 0;
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         pImpl_->raceMachinesDestroyed_[ridx] = 0;
         pImpl_->raceConstructionsDestroyed_[ridx] = 0;

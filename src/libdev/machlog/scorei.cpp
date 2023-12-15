@@ -28,7 +28,7 @@ void perWrite(PerOstream& ostr, const MachLogScoreImpl& impl)
     PER_WRITE_RAW_OBJECT(ostr, impl.totalResearchCost_);
     PER_WRITE_RAW_OBJECT(ostr, impl.BMUsMined_);
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         PER_WRITE_RAW_OBJECT(ostr, impl.raceMachinesDestroyed_[ridx]);
         PER_WRITE_RAW_OBJECT(ostr, impl.raceConstructionsDestroyed_[ridx]);
@@ -52,7 +52,7 @@ void perRead(PerIstream& istr, MachLogScoreImpl& impl)
     PER_READ_RAW_OBJECT(istr, impl.totalResearchCost_);
     PER_READ_RAW_OBJECT(istr, impl.BMUsMined_);
 
-    for (MachPhys::Race ridx = MachPhys::RED; ridx != MachPhys::N_RACES; ++((int&)ridx))
+    for (MachPhys::Race ridx : MachPhys::AllRaces)
     {
         PER_READ_RAW_OBJECT(istr, impl.raceMachinesDestroyed_[ridx]);
         PER_READ_RAW_OBJECT(istr, impl.raceConstructionsDestroyed_[ridx]);
