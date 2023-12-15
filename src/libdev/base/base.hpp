@@ -118,16 +118,16 @@ using uint = unsigned int;
 // Macros make switching between pImpl_ and no pImpl_ very easy.
 #define CB_DEPIMPL(vartype, varname)                                                                                   \
     PRE(pImpl_)                                                                                                        \
-    [[gnu::unused]] vartype& varname = pImpl_->varname;
+    DECL_UNUSED vartype& varname = pImpl_->varname;
 
 // If data member is "int var[10]" then pass vartype as int.
 #define CB_DEPIMPL_ARRAY(vartype, varname)                                                                             \
     PRE(pImpl_)                                                                                                        \
-    [[gnu::unused]] vartype* varname = pImpl_->varname;
+    DECL_UNUSED vartype* varname = pImpl_->varname;
 
 #define CB_DEPIMPL_2D_ARRAY(vartype, varname, secondDimension)                                                         \
     PRE(pImpl_);                                                                                                       \
-    [[gnu::unused]] vartype(*varname)[secondDimension] = pImpl_->varname;
+    DECL_UNUSED vartype(*varname)[secondDimension] = pImpl_->varname;
 
 //////////////////////////////////////////////////////////////////////
 

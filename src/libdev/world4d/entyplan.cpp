@@ -81,7 +81,7 @@ struct W4dEntityPlanImpl
 PER_DECLARE_PERSISTENT(W4dEntityPlanImpl);
 PER_DEFINE_PERSISTENT(W4dEntityPlanImpl);
 
-#define CB_DEPIMPL_TYPEDEF(PimpleClass, TheType) [[gnu::unused]] typedef PimpleClass::TheType TheType;
+#define CB_DEPIMPL_TYPEDEF(PimpleClass, TheType) [[maybe_unused]] typedef PimpleClass::TheType TheType;
 
 // De-pimple everything in the class.
 #define CB_ENTITYPLAN_DEPIMPL                                                                                          \

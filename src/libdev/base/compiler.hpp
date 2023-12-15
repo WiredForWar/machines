@@ -30,9 +30,11 @@ using uint64 = uint64_t;
 #if defined(__GNUC__) && !defined(__MINGW32__)
 #define WEAK_SYMBOL __attribute__((weak))
 #define DECL_DEPRECATED __attribute__((__deprecated__))
+#define DECL_UNUSED [[gnu::unused]]
 #else
 #define WEAK_SYMBOL
 #define DECL_DEPRECATED
+#define DECL_UNUSED
 #endif
 
 #if defined(_MSC_VER)
