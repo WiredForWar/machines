@@ -43,7 +43,6 @@ public:
     {
         // returns whether or not this item matches the currectly selected protocol
         // This will enable client code to reselect it as necessary
-        //       if ( stricmp( text().c_str(), startupScreens()->startupData()->connectionType().c_str() ) == 0 )
         if (strcasecmp(text().c_str(), startupScreens()->startupData()->connectionType().c_str()) == 0)
         {
             return true;

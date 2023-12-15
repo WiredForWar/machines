@@ -6,7 +6,6 @@ set(XIN_SOURCES
     XFileTypes.hpp
     fastatof.hpp
     formatter.hpp
-    strcmp.hpp
     strutils.hpp
 )
 

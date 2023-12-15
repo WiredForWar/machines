@@ -187,7 +187,6 @@ void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent&
             for (auto iter = strings_.begin(); iter != strings_.end(); ++iter)
             {
                 // Ignore text_, do not add into list again.
-                //              if ( stricmp( (*iter).c_str(), text_.c_str() ) != 0 )
                 if (strcasecmp((*iter).c_str(), text_.c_str()) != 0)
                 {
                     orderedStrings.push_back((*iter));

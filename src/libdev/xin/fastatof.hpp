@@ -22,7 +22,7 @@
 #include <stdint.h>
 #include <stdexcept>
 
-#include "strcmp.hpp"
+#include "base/compiler.hpp"
 
 namespace XFile {
 
@@ -290,14 +290,14 @@ template <typename Real> inline const char* fast_atoreal_move(const char* c, Rea
         ++c;
     }
 
-    if ((c[0] == 'N' || c[0] == 'n') && ASSIMP_strincmp(c, "nan", 3) == 0)
+    if ((c[0] == 'N' || c[0] == 'n') && strncasecmp(c, "nan", 3) == 0)
     {
         out = std::numeric_limits<Real>::quiet_NaN();
         c += 3;
         return c;
     }
 
-    if ((c[0] == 'I' || c[0] == 'i') && ASSIMP_strincmp(c, "inf", 3) == 0)
+    if ((c[0] == 'I' || c[0] == 'i') && strncasecmp(c, "inf", 3) == 0)
     {
         out = std::numeric_limits<Real>::infinity();
         if (inv)
@@ -305,7 +305,7 @@ template <typename Real> inline const char* fast_atoreal_move(const char* c, Rea
             out = -out;
         }
         c += 3;
-        if ((c[0] == 'I' || c[0] == 'i') && ASSIMP_strincmp(c, "inity", 5) == 0)
+        if ((c[0] == 'I' || c[0] == 'i') && strncasecmp(c, "inity", 5) == 0)
         {
             c += 5;
         }

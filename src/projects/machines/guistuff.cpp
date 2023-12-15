@@ -96,7 +96,6 @@ static bool displayRecorderInfo()
 {
     static bool result = !(
         getenv("cb_recorder_display") &&
-        //      ( stricmp( getenv( "cb_recorder_display" ), "off" ) == 0 ) );
         (strcasecmp(getenv("cb_recorder_display"), "off") == 0));
 
     return result;

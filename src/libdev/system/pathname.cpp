@@ -626,9 +626,6 @@ bool operator==(const SysPathName& a, const SysPathName& b)
 {
     //  Since DOS pathnames are case insensitive do a case insensitive compare.
 
-    //  Warning, stricmp is not an ANSI standard function
-
-    // return stricmp( a.pathname().c_str(), b.pathname().c_str() ) == 0;
     return strcasecmp(a.pathname().c_str(), b.pathname().c_str()) == 0;
 }
 
@@ -636,9 +633,6 @@ bool operator<(const SysPathName& a, const SysPathName& b)
 {
     //  Since DOS pathnames are case insensitive do a case insensitive compare.
 
-    //  Warning, stricmp is not an ANSI standard function
-
-    // return stricmp( a.pathname().c_str(), b.pathname().c_str() ) < 0;
     return strcasecmp(a.pathname().c_str(), b.pathname().c_str()) < 0;
 }
 

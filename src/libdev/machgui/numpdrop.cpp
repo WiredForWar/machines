@@ -102,17 +102,14 @@ bool MachGuiNumPlayersDropDownListBoxCreator::doHandleNavigationKey(
         GuiResourceString three(IDS_MENU_NUMPLAYERS3);
         GuiResourceString four(IDS_MENU_NUMPLAYERS4);
 
-        //      if ( stricmp( two.asString().c_str(), text().c_str() ) == 0 )
         if (strcasecmp(two.asString().c_str(), text().c_str()) == 0)
         {
             MachGuiCtxSkirmish::chosenNumPlayers() = 2;
         }
-        //      else if ( stricmp( three.asString().c_str(), text().c_str() ) == 0 )
         else if (strcasecmp(three.asString().c_str(), text().c_str()) == 0)
         {
             MachGuiCtxSkirmish::chosenNumPlayers() = 3;
         }
-        //      else if ( stricmp( four.asString().c_str(), text().c_str() ) == 0 )
         else if (strcasecmp(four.asString().c_str(), text().c_str()) == 0)
         {
             MachGuiCtxSkirmish::chosenNumPlayers() = 4;
@@ -207,17 +204,14 @@ void MachGuiNumPlayersDropDownListBoxItem::select()
     GuiResourceString three(IDS_MENU_NUMPLAYERS3);
     GuiResourceString four(IDS_MENU_NUMPLAYERS4);
 
-    //  if ( stricmp( two.asString().c_str(), text().c_str() ) == 0 )
     if (strcasecmp(two.asString().c_str(), text().c_str()) == 0)
     {
         MachGuiCtxSkirmish::chosenNumPlayers() = 2;
     }
-    //  else if ( stricmp( three.asString().c_str(), text().c_str() ) == 0 )
     else if (strcasecmp(three.asString().c_str(), text().c_str()) == 0)
     {
         MachGuiCtxSkirmish::chosenNumPlayers() = 3;
     }
-    //  else if ( stricmp( four.asString().c_str(), text().c_str() ) == 0 )
     else if (strcasecmp(four.asString().c_str(), text().c_str()) == 0)
     {
         MachGuiCtxSkirmish::chosenNumPlayers() = 4;

@@ -27,7 +27,6 @@
         const char* pStr = Diag::instance().getenv("cb_" #CLASS "_tracking");                                          \
         if (pStr)                                                                                                      \
         {                                                                                                              \
-            /*if( stricmp( pStr, "active" ) == 0 )*/                                                                   \
             if (strcasecmp(pStr, "active") == 0)                                                                       \
             {                                                                                                          \
                 result = true;                                                                                         \

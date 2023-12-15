@@ -35,4 +35,9 @@ using uint64 = uint64_t;
 #define DECL_DEPRECATED
 #endif
 
+#if defined(_MSC_VER)
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
+#endif
+
 #endif /*  #ifndef COMPILER_HPP    */
