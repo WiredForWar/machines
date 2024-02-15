@@ -93,7 +93,7 @@ option(BUILD_32 "Builds 32 bit executable" OFF)
 option(DEV_BUILD "Enable assert()s and other debug checks" ON)
 
 set(WARNINGS_AS_ERRORS FALSE)
-option(ENABLE_CLANG_TIDY "Enable clang-tidy" ON)
+option(ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
 option(BUILD_PLANETED "Build the PlanetEditor" OFF)
 
 # Warn about development build
