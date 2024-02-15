@@ -90,7 +90,7 @@ option(BUILD_32 "Builds 32 bit executable" OFF)
 # Include cmake directory with some additions
 
 # Asserts can be enabled/disabled regardless of build type
-option(DEV_BUILD "Enable assert()s and other debug checks" ON)
+option(DEV_BUILD "Enable assert()s and other debug checks" OFF)
 
 set(WARNINGS_AS_ERRORS FALSE)
 option(ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
