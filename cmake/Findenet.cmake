@@ -14,7 +14,7 @@
 # Lots of simplifications by Adrian Friedli
 #                 > www.orxonox.net <
 
-FIND_PATH(ENET_INCLUDE_DIRS enet/enet.h
+find_path(ENET_INCLUDE_DIRS enet/enet.h
     PATHS
     $ENV{ENETDIR}
     /usr/local
@@ -36,16 +36,16 @@ find_library(ENET_LIBRARY
 
 # handle the QUIETLY and REQUIRED arguments and set ENET_FOUND to TRUE if
 # all listed variables are TRUE
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(ENet DEFAULT_MSG ENET_LIBRARY ENET_INCLUDE_DIRS)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(enet DEFAULT_MSG ENET_LIBRARY ENET_INCLUDE_DIRS)
 
-IF (ENET_FOUND)
-    IF(WIN32)
-        SET(WINDOWS_ENET_DEPENDENCIES "ws2_32;winmm")
-        SET(ENET_LIBRARIES ${ENET_LIBRARY} ${WINDOWS_ENET_DEPENDENCIES})
-    ELSE(WIN32)
-        SET(ENET_LIBRARIES ${ENET_LIBRARY})
-    ENDIF(WIN32)
+if(ENET_FOUND)
+    if(WIN32)
+        set(WINDOWS_ENET_DEPENDENCIES "ws2_32;winmm")
+        set(ENET_LIBRARIES ${ENET_LIBRARY} ${WINDOWS_ENET_DEPENDENCIES})
+    else()
+        set(ENET_LIBRARIES ${ENET_LIBRARY})
+    endif()
 
     if(NOT TARGET enet::enet)
         add_library(enet::enet INTERFACE IMPORTED)
@@ -54,6 +54,6 @@ IF (ENET_FOUND)
         set_property(TARGET enet::enet PROPERTY INTERFACE_LINK_LIBRARIES
             "${ENET_LIBRARIES}")
     endif()
-ENDIF (ENET_FOUND)
+endif()
 
-MARK_AS_ADVANCED(ENET_LIBRARY ENET_LIBRARIES ENET_INCLUDE_DIRS) 
+mark_as_advanced(ENET_LIBRARY ENET_LIBRARIES ENET_INCLUDE_DIRS)
