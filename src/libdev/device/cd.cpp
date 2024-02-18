@@ -93,7 +93,7 @@ DevCD::DevCD()
 
     randomGenerator_.seedFromTime();
 #else
-    spdlog::info("The music is not available in this build configuration (using alure)");
+    spdlog::info("The music is not available in this build configuration ('alure' backend is disabled)");
 #endif
 }
 
