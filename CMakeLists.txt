@@ -248,6 +248,10 @@ if(NOT DEV_BUILD)
         include(GNUInstallDirs)
         set(BIN_PATH "${CMAKE_INSTALL_BINDIR}")
         set(DATA_PATH "${CMAKE_INSTALL_DATAROOTDIR}/machines")
+
+        install(FILES "packaging/machines.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications/")
+        install(FILES "packaging/machines.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo/")
+        install(FILES "packaging/machines-64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps/" RENAME "machines.png")
     endif()
 endif()
 

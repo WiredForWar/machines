@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Machines: Wired for War
+GenericName=Strategy Game
+Exec=machines
+Icon=machines
+Terminal=false
+Keywords=game;strategy;
+Categories=Game;StrategyGame;

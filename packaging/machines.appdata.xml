@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>io.github.wiredforwar.machines</id>
+    <metadata_license>FSFAP</metadata_license>
+    <project_license>GPL-3.0</project_license>
+    <name>Machines: Wired For War</name>
+    <summary>
+        3D Real-Time Strategy video game from 1999 developed by Charybdis and released as free software by Night Dive Studios
+    </summary>
+    <description>
+        <p>
+            The application requires original game assets. In case of Flatpak installation the files (top-level `machines` directory) should be placed at ~/.var/app/io.github.wiredforwar.machines/data/.
+            The final game data structure should include 'models', 'pdata', and 'sounds' in ~/.var/app/io.github.wiredforwar.machines/data/machines/.
+        </p>
+    </description>
+    <launchable type="desktop-id">io.github.wiredforwar.machines.desktop</launchable>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://lordovervolt.com/uploads/machines-screens1.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://lordovervolt.com/uploads/machines-screens2.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://lordovervolt.com/uploads/machines-screens3.png</image>
+        </screenshot>
+    </screenshots>
+    <keywords>
+        <keyword>game</keyword>
+    </keywords>
+    <content_rating type="oars-1.1">
+        <content_attribute id="social-chat">intense</content_attribute>
+    </content_rating>
+    <releases>
+        <release date="2024-02-17" version="0.1.7"/>
+    </releases>
+    <url type="homepage">https://wiredforwar.github.io/</url>
+    <url type="vcs-browser">https://github.com/WiredForWar/machines</url>
+    <url type="bugtracker">https://github.com/WiredForWar/machines/issues</url>
+</component>
