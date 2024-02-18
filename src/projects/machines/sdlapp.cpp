@@ -279,26 +279,29 @@ bool SDLApp::clientStartup()
         int modeH = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
         int modeR = 0;
 
-        if (pDisplay_->fullScreen())
-            modeR = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
-
-        const RenDisplay::Mode loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
-        if (loadedMode.isValid())
+        if (modeW && modeH)
         {
-            displayModeInitialized = pDisplay_->useMode(loadedMode);
-        }
+            if (pDisplay_->fullScreen())
+                modeR = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
 
-        if (!displayModeInitialized)
-        {
-            char aBuffer[128];
-            snprintf(
-                &aBuffer[0],
-                sizeof(aBuffer),
-                "Failed to initialize the preferred screen mode (%dx%d; %d Hz)",
-                modeW,
-                modeH,
-                modeR);
-            SysWindowsAPI::messageBox(aBuffer, name().c_str());
+            const RenDisplay::Mode loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
+            if (loadedMode.isValid())
+            {
+                displayModeInitialized = pDisplay_->useMode(loadedMode);
+            }
+
+            if (!displayModeInitialized)
+            {
+                char aBuffer[128];
+                snprintf(
+                    &aBuffer[0],
+                    sizeof(aBuffer),
+                    "The preferred screen mode (%dx%d; %d Hz) is not available",
+                    modeW,
+                    modeH,
+                    modeR);
+                SysWindowsAPI::messageBox(aBuffer, name().c_str());
+            }
         }
     }
 
