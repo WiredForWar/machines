@@ -443,7 +443,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
     pScaleFactorSelector_->items(items);
 
-    setOptions();
+    readFromConfig();
 
     TEST_INVARIANT;
 }
@@ -493,7 +493,7 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
     {
         int currentScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
 
-        getOptions();
+        writeToConfig();
 
         SysRegistry::instance().reload();
 
@@ -561,7 +561,7 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
     }
 }
 
-void MachGuiCtxOptions::getOptions()
+void MachGuiCtxOptions::writeToConfig()
 {
     // Used to set current game settings to be that of gui items
 
@@ -690,7 +690,7 @@ void MachGuiCtxOptions::getOptions()
     }
 }
 
-void MachGuiCtxOptions::setOptions()
+void MachGuiCtxOptions::readFromConfig()
 {
     // Used to set gui items to reflect current game settings
     SysRegistry::KeyHandle handle;

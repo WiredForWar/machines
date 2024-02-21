@@ -51,8 +51,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxOptions& t);
 
-    void getOptions();
-    void setOptions();
+    void writeToConfig();
+    void readFromConfig();
     void showDirect3DDrivers();
 
     MachGuiCtxOptions(const MachGuiCtxOptions&);
