@@ -1494,4 +1494,6 @@ BELONGING TO</string>
 	>Scale Factor</string>
 <string id="11001"
 	>The UI Scale Factor settings will not take effect until you re-run the game.</string>
+<string id="11002"
+	>Grab Mouse</string>
 </resources>

@@ -165,6 +165,8 @@ public:
     void useCursor(const RenCursor2d*);
     const RenCursor2d* currentCursor() const;
 
+    void setCursorGrabEnabled(bool enabled);
+
     void supportsGammaCorrection(bool);
     bool supportsGammaCorrection() const;
     void gammaCorrection(const double& gammaCorrection);

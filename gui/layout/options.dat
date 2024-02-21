@@ -38,3 +38,6 @@ CB 6995 240 159
 
 // Reverse mouse
 CB 6994 240 179
+
+// Grab mouse
+CB 11002 240 199

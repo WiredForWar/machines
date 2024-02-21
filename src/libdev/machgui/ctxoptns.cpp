@@ -45,9 +45,10 @@
 #define OPTIONS_AREA_MINX 95
 #define OPTIONS_AREA_MINY 50
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
-#define OPTIMISATIONS_AREA_MINY 209
+#define OPTIMISATIONS_AREA_MINY 239
 
 const char c_ScaleFactorOptionKey[] = "Options\\Scale Factor";
+const char c_GrabCursorOptionKey[] = "Options\\Grab Cursor";
 
 class MachGuiCtxOptions;
 
@@ -154,6 +155,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     const MachGuiOptionsLayout::CheckBoxInfo& cursorType = screenLayout.checkBoxInfo(3);
     const MachGuiOptionsLayout::CheckBoxInfo& reverseKeys = screenLayout.checkBoxInfo(4);
     const MachGuiOptionsLayout::CheckBoxInfo& reverseMouse = screenLayout.checkBoxInfo(5);
+    const MachGuiOptionsLayout::CheckBoxInfo& grabMouse = screenLayout.checkBoxInfo(6);
 
     // Create control labels
     new MachGuiMenuText(
@@ -209,6 +211,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     pReverseMouse_
         = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseMouse.topLeft, reverseMouse.stringId);
+
+    pGrabMouse_
+        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, grabMouse.topLeft, grabMouse.stringId);
 
     // Create volume sliders
     pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range);
@@ -445,6 +450,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     readFromConfig();
 
+    pGrabMouse_->setCallback([](MachGuiCheckBox* pCheckBox) {
+        RenDisplay* pDisplay_ = W4dManager::instance().sceneManager()->pDevice()->display();
+        pDisplay_->setCursorGrabEnabled(pCheckBox->isChecked());
+    });
+
     TEST_INVARIANT;
 }
 
@@ -558,6 +568,9 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
             pGammaCorrection_->setValue(gammaCorrection_);
         }
         pStartupScreens_->buttonAction(MachGuiStartupScreens::EXIT);
+
+        const bool grabCursorEnabled = SysRegistry::instance().queryBooleanValue(c_GrabCursorOptionKey, "on", true);
+        pGrabMouse_->setChecked(grabCursorEnabled);
     }
 }
 
@@ -649,6 +662,7 @@ void MachGuiCtxOptions::writeToConfig()
     // Store reverse direction of up/down keys/mouse
     SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->isChecked());
     SysRegistry::instance().setIntegerValue("Options\\Reverse BackForward Mouse", "on", pReverseMouse_->isChecked());
+    SysRegistry::instance().setIntegerValue(c_GrabCursorOptionKey, "on", pGrabMouse_->isChecked());
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
@@ -725,6 +739,9 @@ void MachGuiCtxOptions::readFromConfig()
     pCursorType_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
     pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
     pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));
+
+    const bool grabCursorEnabled = SysRegistry::instance().queryBooleanValue(c_GrabCursorOptionKey, "on", true);
+    pGrabMouse_->setChecked(grabCursorEnabled);
 
     pTransitions_->setChecked(pStartupScreens_->startupData()->transitionFlicsOn());
 

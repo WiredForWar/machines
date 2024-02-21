@@ -368,6 +368,10 @@ bool SDLApp::clientStartup()
     }
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
+    {
+        const bool grabEnabled = SysRegistry::instance().queryBooleanValue("Options\\Grab Cursor", "on", true);
+        pDisplay_->setCursorGrabEnabled(grabEnabled);
+    }
 
     spdlog::info("Initializing the rendering device...");
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);

@@ -75,6 +75,7 @@ private:
     MachGuiCheckBox* pCursorType_ = nullptr;
     MachGuiCheckBox* pReverseKeys_ = nullptr;
     MachGuiCheckBox* pReverseMouse_ = nullptr;
+    MachGuiCheckBox* pGrabMouse_{};
     MachGuiDropDownListBoxCreator* pScreenSize_ = nullptr;
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
