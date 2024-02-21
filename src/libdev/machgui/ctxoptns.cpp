@@ -226,9 +226,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     const RenCapabilities& caps = W4dManager::instance().sceneManager()->pDevice()->capabilities();
 
     // Get current resolution
-    int inGameResolutionWidth = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
-    int inGameResolutionHeight = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
-    int inGameResolutionRefresh = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
+    int inGameResolutionWidth = pDisplay_->currentMode().width();
+    int inGameResolutionHeight = pDisplay_->currentMode().height();
+    int inGameResolutionRefresh = pDisplay_->currentMode().refreshRate();
 
     // Check that minimum resolution is specified
     if (inGameResolutionWidth < 640 || inGameResolutionHeight < 480)
