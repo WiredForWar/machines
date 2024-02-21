@@ -487,6 +487,11 @@ int SysRegistry::queryIntegerValue(const std::string& keyName, const std::string
     return result;
 }
 
+bool SysRegistry::queryBooleanValue(const std::string& keyName, const std::string& valueName, bool defaultValue)
+{
+    return queryIntegerValue(keyName, valueName, defaultValue ? 1 : 0) == 1;
+}
+
 // The set functions will create the key if it isn't present
 void SysRegistry::setStringValue(const std::string& keyName, const std::string& valueName, const std::string& value)
 {

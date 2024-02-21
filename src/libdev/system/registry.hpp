@@ -64,6 +64,7 @@ public:
         const std::string& valueName,
         const std::string& defaultValue = std::string());
     int queryIntegerValue(const std::string& keyName, const std::string& valueName, int defaultValue = 0);
+    bool queryBooleanValue(const std::string& keyName, const std::string& valueName, bool defaultValue = false);
     // The set functions will create the key if it isn't present
     void setStringValue(const std::string& keyName, const std::string& valueName, const std::string& value);
     void setIntegerValue(const std::string& keyName, const std::string& valueName, int value);
