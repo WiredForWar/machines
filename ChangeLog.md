@@ -1,7 +1,8 @@
-Current dev build (to be released):
+Current dev build (to be released as v1.7.0):
 - Implemented initial 2X UI scaling (no scale for the first person camera UI, no scale for the menu, a lot of HD textures wanted)
 - Implemented recent events manager (to cycle through the positions of the last important events with SpaceBar key)
-- Implement a following camera (click on the Actor in corral or double click the squadron key (<0-9>).
+- Implemented a following camera (click on the Actor in corral or double click the squadron key (<0-9>)
+- Implemented mouse grab (important for multi-display configurations)
 - Added Shift+<0-9> to add units to the squadron
 - Added the same type selection by Ctrl-click or double click
 - Shift+click now toggles selection
