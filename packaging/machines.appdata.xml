@@ -32,7 +32,7 @@
         <content_attribute id="social-chat">intense</content_attribute>
     </content_rating>
     <releases>
-        <release date="2024-02-17" version="0.1.7"/>
+        <release date="2024-02-21" version="1.7.0"/>
     </releases>
     <url type="homepage">https://wiredforwar.github.io/</url>
     <url type="vcs-browser">https://github.com/WiredForWar/machines</url>
