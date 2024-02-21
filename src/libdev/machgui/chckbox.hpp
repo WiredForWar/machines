@@ -25,6 +25,8 @@ class MachGuiCheckBox
 // Canonical form revoked
 {
 public:
+    using Callback = std::function<void(MachGuiCheckBox*)>;
+
     // The coord specifying the postion of the box is the top left corner of the box,
     // not the text label to the right of it.
     MachGuiCheckBox(
@@ -42,10 +44,12 @@ public:
     ~MachGuiCheckBox() override;
 
     // Check/uncheck box
-    void check(bool isChecked) { isChecked_ = isChecked; }
+    void setChecked(bool isChecked);
 
-    // Determine if checked
-    bool checked() const { return isChecked_; }
+    // Determine if isChecked
+    bool isChecked() const { return isChecked_; }
+
+    void setCallback(Callback callback) { callback_ = callback; }
 
     void CLASS_INVARIANT;
 
@@ -67,6 +71,7 @@ private:
     string label_;
     bool isChecked_;
     bool isHighlighted_;
+    Callback callback_;
     GuiBmpFont font_;
     GuiBitmap checkBmp_;
     GuiBitmap uncheckBmp_;

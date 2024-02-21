@@ -80,6 +80,15 @@ MachGuiCheckBox::~MachGuiCheckBox()
     TEST_INVARIANT;
 }
 
+void MachGuiCheckBox::setChecked(bool isChecked)
+{
+    isChecked_ = isChecked;
+    if (callback_)
+    {
+        callback_(this);
+    }
+}
+
 void MachGuiCheckBox::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
@@ -135,7 +144,7 @@ void MachGuiCheckBox::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
     if (rel.leftButton() == Gui::PRESSED)
     {
-        isChecked_ = ! isChecked_;
+        setChecked(!isChecked_);
         changed();
     }
 }
@@ -152,7 +161,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCheckBox& t)
 // virtual
 bool MachGuiCheckBox::executeControl()
 {
-    isChecked_ = ! isChecked_;
+    setChecked(!isChecked_);
     changed();
 
     return true;

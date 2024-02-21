@@ -516,7 +516,7 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
 
         int newScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
 
-        if (pScreenResolutionLock_->checked()
+        if (pScreenResolutionLock_->isChecked()
             && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
         {
             // If we already have a message to display from the previous settings change, then use a combined message
@@ -565,17 +565,17 @@ void MachGuiCtxOptions::writeToConfig()
 {
     // Used to set current game settings to be that of gui items
 
-    if (pSound3d_->checked() != SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"))
+    if (pSound3d_->isChecked() != SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"))
     {
         SOUND_STREAM("Updating sounds" << std::endl);
         //      //It is necessary to clear all sounds from the system
         //      //before loading a new set.
         MachGuiSoundManager::instance().clearAll();
         W4dSoundManager::instance().stopAll();
-        load3dSoundFiles(pSound3d_->checked());
+        load3dSoundFiles(pSound3d_->isChecked());
         // We now have to change all the in game sounds to the correct
         // number of dimensions
-        if (pSound3d_->checked())
+        if (pSound3d_->isChecked())
         {
             W4dSoundManager::instance().convertSoundDimensions(Snd::THREE_D);
         }
@@ -583,10 +583,10 @@ void MachGuiCtxOptions::writeToConfig()
         {
             W4dSoundManager::instance().convertSoundDimensions(Snd::TWO_D);
         }
-        SysRegistry::instance().setIntegerValue("Options\\3DSound", "on", pSound3d_->checked());
+        SysRegistry::instance().setIntegerValue("Options\\3DSound", "on", pSound3d_->isChecked());
     }
 
-    pStartupScreens_->startupData()->transitionFlicsOn(pTransitions_->checked());
+    pStartupScreens_->startupData()->transitionFlicsOn(pTransitions_->isChecked());
     SysRegistry::instance().setIntegerValue(
         "Options\\transitions",
         "on",
@@ -618,13 +618,13 @@ void MachGuiCtxOptions::writeToConfig()
     }
 
     // Store option to maintain screen res of in-game menus in menus
-    SysRegistry::instance().setIntegerValue("Screen Resolution", "Lock Resolution", pScreenResolutionLock_->checked());
+    SysRegistry::instance().setIntegerValue("Screen Resolution", "Lock Resolution", pScreenResolutionLock_->isChecked());
 
     // Store cursor type (2D/3D)
-    SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->checked());
+    SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->isChecked());
 
     // If cursor type has changed then refresh all selection boxes
-    if (cursorType2d_ != pCursorType_->checked())
+    if (cursorType2d_ != pCursorType_->isChecked())
     {
         MachLogRaces::Objects& allObjects = MachLogRaces::instance().objects();
 
@@ -647,8 +647,8 @@ void MachGuiCtxOptions::writeToConfig()
     }
 
     // Store reverse direction of up/down keys/mouse
-    SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->checked());
-    SysRegistry::instance().setIntegerValue("Options\\Reverse BackForward Mouse", "on", pReverseMouse_->checked());
+    SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->isChecked());
+    SysRegistry::instance().setIntegerValue("Options\\Reverse BackForward Mouse", "on", pReverseMouse_->isChecked());
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
@@ -656,7 +656,7 @@ void MachGuiCtxOptions::writeToConfig()
     for (MachPhysComplexityManager::BooleanItems::const_iterator it = boolItems.begin(); it != boolItems.end(); ++it)
     {
         uint id = (*it)->id();
-        MachPhysComplexityManager::instance().changeBooleanItem(id, booleanOptimisations_[index]->checked());
+        MachPhysComplexityManager::instance().changeBooleanItem(id, booleanOptimisations_[index]->isChecked());
         ++index;
     }
     index = 0;
@@ -696,11 +696,11 @@ void MachGuiCtxOptions::readFromConfig()
     SysRegistry::KeyHandle handle;
     if (SysRegistry::instance().onlyOpenKey("Options\\3DSound", &handle) == SysRegistry::SUCCESS)
     {
-        pSound3d_->check(SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"));
+        pSound3d_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"));
     }
     else
     {
-        pSound3d_->check(SndMixer::instance().is3dMixer());
+        pSound3d_->setChecked(SndMixer::instance().is3dMixer());
     }
 
     musicVolume_ = DevCD::instance().volume();
@@ -721,11 +721,12 @@ void MachGuiCtxOptions::readFromConfig()
             MachGuiStartupScreens::getDefaultLockScreenResolutionValue());
     }
 
-    pScreenResolutionLock_->check(SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"));
-    pCursorType_->check(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
-    pReverseKeys_->check(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
-    pReverseMouse_->check(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));
-    pTransitions_->check(pStartupScreens_->startupData()->transitionFlicsOn());
+    pScreenResolutionLock_->setChecked(SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"));
+    pCursorType_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
+    pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
+    pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));
+
+    pTransitions_->setChecked(pStartupScreens_->startupData()->transitionFlicsOn());
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
@@ -733,7 +734,7 @@ void MachGuiCtxOptions::readFromConfig()
     for (MachPhysComplexityManager::BooleanItems::const_iterator it = boolItems.begin(); it != boolItems.end(); ++it)
     {
         uint id = (*it)->id();
-        booleanOptimisations_[index]->check((*it)->enabled());
+        booleanOptimisations_[index]->setChecked((*it)->enabled());
         ++index;
     }
 
@@ -751,7 +752,7 @@ void MachGuiCtxOptions::readFromConfig()
         ++index;
     }
 
-    cursorType2d_ = pCursorType_->checked();
+    cursorType2d_ = pCursorType_->isChecked();
 
     {
         int scaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
