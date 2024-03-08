@@ -141,6 +141,7 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
     // If the attacker is busy shooting something else right now, try again in a bit.
     // Otherwise ensure the direct object is the current target
     MachActor& target = directObject();
+    ASSERT(pActor_ != &target, "No actor can heal themself");
     if (attacker.hasCurrentTarget())
     {
         if (attacker.currentTarget().id() != target.id())

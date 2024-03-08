@@ -2,6 +2,7 @@
 #include "machlog/internal/firedata.hpp"
 
 #include "ctl/algorith.hpp"
+#include "ctl/list.hpp"
 #include "ctl/vector.hpp"
 
 #include "world4d/manager.hpp"
@@ -45,6 +46,7 @@
 #include "machlog/squad.hpp"
 #include "machlog/vmdata.hpp"
 #include "machlog/vmman.hpp"
+#include "opheal.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogCanAttack);
 
@@ -573,6 +575,65 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
                     MachLogAttackOperation::TERMINATE_ON_CHANGE)),
                 false;
         }
+    }
+}
+
+void MachLogCanAttack::checkAndHealCloserTarget(MachLogMachine* pActor)
+{
+    if (pActor->objectType() != MachLog::ADMINISTRATOR)
+        return;
+
+    if (!pActor->isIdle())
+        return;
+
+    if (pActor->evading())
+        return;
+
+    if (pActor->isIn1stPersonView())
+        return;
+
+    if (MachLogNetwork::instance().isNetworkGame())
+    {
+        if (MachLogNetwork::REMOTE_PROCESS == MachLogNetwork::instance().remoteStatus(pActor->race()))
+            return;
+    }
+
+    const MachLog::DefCon defCon = pActor->virtualDefCon();
+    if (defCon != MachLog::DEFCON_LOW)
+        return;
+
+    // Look for a closer target
+    MachActor* pTarget = nullptr;
+
+    MachLogRaces& races = MachLogRaces::instance();
+    const MachLogRaces::Objects& objects = races.raceObjects(pActor->race());
+
+    int range = 500;
+    int bestDistanceSquared = range * range + 1;
+
+    for (MachActor* pObject : objects)
+    {
+        if (!pObject->objectIsMachine())
+            continue;
+        if (pObject->hpRatio() == 1)
+            continue;
+        if (pObject == pActor)
+            continue;
+
+        int distance = pActor->position().sqrEuclidianDistance(pObject->position());
+
+        if (distance > bestDistanceSquared)
+            continue;
+
+        pTarget = pObject;
+        bestDistanceSquared = distance;
+    }
+
+    if (pTarget)
+    {
+        MachLogAdministrator* pAsAdmin = &pActor->asAdministrator();
+
+        pActor->strategy().newOperation(new MachLogHealOperation(pAsAdmin, pTarget));
     }
 }
 
