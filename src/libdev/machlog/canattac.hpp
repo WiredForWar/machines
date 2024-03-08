@@ -240,6 +240,7 @@ protected:
     void checkAndAttackCloserTarget(MachLogMissileEmplacement* pActor, MachActor* pFiredAtMe = nullptr);
     void checkAndAttackCloserTarget(MachLogPod* pActor, MachActor* pFiredAtMe = nullptr);
     //  void checkAndAttackCloserTarget( MachLogAdministrator* );
+    void checkAndHealCloserTarget(MachLogMachine* pActor);
     //  bool targetBehindSoftCover( MachLogMachine* pActor, MachActor* );
 
     bool inAngleRange(const W4dEntity& entity) const;
