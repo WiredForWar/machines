@@ -80,6 +80,7 @@ set(CMAKE_MODULE_PATH "${Machines_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 include(Utils)
+include(DefaultOptions)
 
 # Options for optional libs
 option_on_off_auto(BUILD_WITH_SWSCALE "Build with SWScale support" "Auto")
@@ -91,6 +92,7 @@ option(BUILD_32 "Builds 32 bit executable" OFF)
 
 # Asserts can be enabled/disabled regardless of build type
 option(DEV_BUILD "Enable assert()s and other debug checks" OFF)
+option(USE_STANDALONE_LAYOUT "Install the executable and data into the same dir" ${DEFAULT_USE_STANDALONE_LAYOUT})
 
 set(WARNINGS_AS_ERRORS FALSE)
 option(ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
@@ -241,18 +243,19 @@ if(BUILD_TESTS)
 endif(BUILD_TESTS)
 
 # Install
-set(BIN_PATH ".")
-set(DATA_PATH ".")
-if(NOT DEV_BUILD)
-    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        include(GNUInstallDirs)
-        set(BIN_PATH "${CMAKE_INSTALL_BINDIR}")
-        set(DATA_PATH "${CMAKE_INSTALL_DATAROOTDIR}/machines")
+if(USE_STANDALONE_LAYOUT)
+    set(BIN_PATH ".")
+    set(DATA_PATH ".")
+else()
+    include(GNUInstallDirs)
+    set(BIN_PATH "${CMAKE_INSTALL_BINDIR}")
+    set(DATA_PATH "${CMAKE_INSTALL_DATAROOTDIR}/machines")
+endif()
 
-        install(FILES "packaging/machines.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications/")
-        install(FILES "packaging/machines.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo/")
-        install(FILES "packaging/machines-64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps/" RENAME "machines.png")
-    endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT USE_STANDALONE_LAYOUT)
+    install(FILES "packaging/machines.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications/")
+    install(FILES "packaging/machines.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo/")
+    install(FILES "packaging/machines-64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps/" RENAME "machines.png")
 endif()
 
 install(DIRECTORY "data" DESTINATION ${DATA_PATH})
