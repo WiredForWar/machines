@@ -5,31 +5,78 @@ on:
   pull_request:
 
 jobs:
-  build-cmake:
+  game_data_archive:
+    name: "Prepare game data archive"
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: "machines-data"
+        repository: "WiredForWar/machines-data"
+
+    - name: Prepare the system (Linux)
+      run: |
+        sudo machines-data/scripts/prepare-system.sh
+
+    - name: "Bake the data"
+      run: |
+        SKIP_GRAYSCALE=y machines-data/scripts/install.sh
+
+    - name: Upload the data
+      uses: actions/upload-artifact@v4
+      with:
+        name: machines-data
+        path: ${{github.workspace}}/machines-data/install/machines
+
+  build:
+    needs: game_data_archive
     runs-on: ${{ matrix.os }}
+    env:
+      BUILD_TAG: "wfw"
     strategy:
       fail-fast: false
       matrix:
         include:
         - os: ubuntu-22.04
           build-type: Release
+          upload-data-pack: true
           tests: true
 
         - os: ubuntu-22.04
           toolchain: mingw64
           build-type: Release
-
-        - os: ubuntu-22.04
-          toolchain: mingw32
-          build-type: Release
+          package: true
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        path: "machines-packager"
+        repository: "WiredForWar/machines-packager"
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: machines-data
+        path: "machines-packager/data-pack/baked-machines-data"
+
+    - name: Prepare data pack
+      run: |
+        machines-packager/data-pack/gen-machines-data-pack.sh
+
+    - name: Upload final data pack
+      if: matrix.upload-data-pack
+      uses: actions/upload-artifact@v4
+      with:
+        name: machines-data-pack
+        path: ${{github.workspace}}/machines-data-pack-*.zip
+
+    - uses: actions/checkout@v4
+      with:
+        path: "sources"
 
     - name: Prepare the system (Linux)
       if: contains(matrix.os, 'ubuntu')
       run: |
-        sudo scripts/prepare-system.sh
+        sudo sources/scripts/prepare-system.sh
 
     - name: Prepare mingw (Linux)
       if: contains(matrix.toolchain, 'mingw')
@@ -42,6 +89,9 @@ jobs:
         set(toolchain "${{ matrix.toolchain }}")
         if(toolchain)
           set(cmake_toolchain_args "-DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-${toolchain}.cmake")
+            if(toolchain MATCHES ".*mingw.*")
+                list(APPEND cmake_toolchain_args "-DWINDOWS_DEPENDENCIES_DIR=${{github.workspace}}/machines-packager/mingw64/win-dev-libs")
+            endif()
             if(toolchain MATCHES ".*32.*")
                 list(APPEND cmake_toolchain_args "-DBUILD_32=1")
             endif()
@@ -50,12 +100,14 @@ jobs:
           set(cmake_release_args "-DDEV_BUILD=OFF")
         endif()
 
-        file(TO_CMAKE_PATH "${{ github.workspace }}" WORKSPACE_DIR)
+        file(TO_CMAKE_PATH "${{github.workspace}}" WORKSPACE_DIR)
 
         execute_process(COMMAND ${CMAKE_COMMAND}
+          -S ${WORKSPACE_DIR}/sources
           -B ${WORKSPACE_DIR}/build
           -GNinja
           -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/install/machines
           ${cmake_toolchain_args}
           ${cmake_release_args}
           RESULT_VARIABLE CONF_RESULT
@@ -66,18 +118,37 @@ jobs:
         endif()
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }}
+      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }} --target all
 
     - name: Test
       if: matrix.tests
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{ matrix.build-type }} --output-on-failure
 
-    - name: Package
-      working-directory: ${{github.workspace}}/build
-      run: cpack -C ${{ matrix.build-type }}
+    - name: Install
+      if: matrix.package
+      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }} --target install
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
+    - name: Add the data pack
+      if: matrix.package
+      run: |
+        cp -arv ${{github.workspace}}/machines-data-pack/* ${{github.workspace}}/install/machines
+
+    - name: Add runtime libraries
+      if: matrix.package
+      run: |
+        cp -arv ${{github.workspace}}/machines-packager/mingw64/win64-extra-files/* ${{github.workspace}}/install/machines
+
+    - name: Create the package
+      if: matrix.package
+      working-directory: ${{github.workspace}}/install
+      run: |
+        sudo apt install -y p7zip-full
+        7z a machines-win64-$BUILD_TAG-$(date +%Y%m%d).7z machines
+
+    - name: Upload final data pack
+      if: matrix.package
+      uses: actions/upload-artifact@v4
       with:
-        path: ${{github.workspace}}/build/Machines-*.zip
+        name: machines-win64
+        path: ${{github.workspace}}/install/machines-win64-*.7z
