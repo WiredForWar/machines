@@ -11,8 +11,6 @@ file(GLOB GRAPH_SOURCES
     base_templates.hpp
     graph.hpp
     graph_templates.hpp
-    path.hpp
-    path_templates.hpp
     vertex.hpp
     vertex_templates.hpp
 )
