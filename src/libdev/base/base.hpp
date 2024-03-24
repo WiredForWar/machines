@@ -116,6 +116,10 @@ using uint = unsigned int;
 //////////////////////////////////////////////////////////////////////
 
 // Macros make switching between pImpl_ and no pImpl_ very easy.
+#define CB_DEPIMPL_AUTO(varname)                                                                                       \
+    PRE(pImpl_)                                                                                                        \
+    DECL_UNUSED auto& varname = pImpl_->varname;
+
 #define CB_DEPIMPL(vartype, varname)                                                                                   \
     PRE(pImpl_)                                                                                                        \
     DECL_UNUSED vartype& varname = pImpl_->varname;
