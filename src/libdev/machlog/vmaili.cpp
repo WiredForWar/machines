@@ -7,23 +7,6 @@
 
 #include "machlog/internal/vmaili.hpp"
 
-MachLogVoiceMailImpl::MachLogVoiceMailImpl()
-    : sampleHandleValid_(false)
-{
-
-    TEST_INVARIANT;
-}
-
-MachLogVoiceMailImpl::~MachLogVoiceMailImpl()
-{
-    TEST_INVARIANT;
-}
-
-void MachLogVoiceMailImpl::CLASS_INVARIANT
-{
-    INVARIANT(this != nullptr);
-}
-
 std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailImpl& t)
 {
 

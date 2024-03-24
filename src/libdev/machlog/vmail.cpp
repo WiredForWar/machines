@@ -38,9 +38,6 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id)
     CB_MachLogVoiceMail_DEPIMPL();
 
     id_ = id;
-    actorId_ = 0;
-    hasPosition_ = false;
-    hasStarted_ = false;
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId)
@@ -51,7 +48,6 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId)
     // Calculate position from actorId_
     id_ = id;
     actorId_ = actorId;
-    hasStarted_ = false;
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId, MexPoint3d& position)
@@ -61,9 +57,7 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId, MexPoint3d& po
 
     id_ = id;
     actorId_ = actorId;
-    hasPosition_ = true;
     position_ = position;
-    hasStarted_ = false;
 }
 
 MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, MexPoint3d& position)
@@ -72,10 +66,7 @@ MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, MexPoint3d& position)
     CB_MachLogVoiceMail_DEPIMPL();
 
     id_ = id;
-    actorId_ = 0;
-    hasPosition_ = true;
     position_ = position;
-    hasStarted_ = false;
 }
 
 VoiceMailID MachLogVoiceMail::id() const
@@ -89,7 +80,7 @@ bool MachLogVoiceMail::hasActorId() const
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    return (bool)actorId_;
+    return actorId_ != 0;
 }
 
 UtlId MachLogVoiceMail::actorId() const
@@ -103,14 +94,15 @@ bool MachLogVoiceMail::hasPosition() const
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    return hasPosition_;
+    return position_.has_value();
 }
 
 MexPoint3d MachLogVoiceMail::position() const
 {
     CB_MachLogVoiceMail_DEPIMPL();
+    PRE(position_.has_value())
 
-    return position_;
+    return position_.value();
 }
 
 void MachLogVoiceMail::play()

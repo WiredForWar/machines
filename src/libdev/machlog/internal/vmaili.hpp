@@ -18,14 +18,13 @@
 #include "sound/smphandl.hpp"
 #include "machlog/vmdata.hpp"
 
+#include <optional>
+
 class MachLogVoiceMailImpl
 // Canonical form revoked
 {
 public:
-    MachLogVoiceMailImpl();
-    ~MachLogVoiceMailImpl();
-
-    void CLASS_INVARIANT;
+    MachLogVoiceMailImpl() = default;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailImpl& t);
@@ -35,25 +34,23 @@ private:
 
     friend class MachLogVoiceMail;
 
-    PhysAbsoluteTime timeStamp_;
-    VoiceMailID id_;
-    bool hasPosition_;
-    MexPoint3d position_;
-    UtlId actorId_;
-    SndSampleHandle sampleHandle_;
-    bool hasStarted_;
-    bool sampleHandleValid_;
+    PhysAbsoluteTime timeStamp_{};
+    VoiceMailID id_{};
+    std::optional<MexPoint3d> position_;
+    UtlId actorId_{};
+    SndSampleHandle sampleHandle_{};
+    bool hasStarted_{};
+    bool sampleHandleValid_{};
 };
 
 #define CB_MachLogVoiceMail_DEPIMPL()                                                                                  \
-    CB_DEPIMPL(PhysAbsoluteTime, timeStamp_);                                                                          \
-    CB_DEPIMPL(VoiceMailID, id_);                                                                                      \
-    CB_DEPIMPL(bool, hasPosition_);                                                                                    \
-    CB_DEPIMPL(MexPoint3d, position_);                                                                                 \
-    CB_DEPIMPL(UtlId, actorId_);                                                                                       \
-    CB_DEPIMPL(SndSampleHandle, sampleHandle_);                                                                        \
-    CB_DEPIMPL(bool, sampleHandleValid_);                                                                              \
-    CB_DEPIMPL(bool, hasStarted_);
+    CB_DEPIMPL_AUTO(timeStamp_);                                                                                       \
+    CB_DEPIMPL_AUTO(id_);                                                                                              \
+    CB_DEPIMPL_AUTO(position_);                                                                                        \
+    CB_DEPIMPL_AUTO(actorId_);                                                                                         \
+    CB_DEPIMPL_AUTO(sampleHandle_);                                                                                    \
+    CB_DEPIMPL_AUTO(sampleHandleValid_);                                                                               \
+    CB_DEPIMPL_AUTO(hasStarted_);
 
 #endif
 
