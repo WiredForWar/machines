@@ -66,8 +66,6 @@ private:
     // Has mail started playing
     bool hasStarted() const;
 
-    void hasStarted(bool);
-
     // Return the saved mail time stamp
     // If this is not relevent then return 0
     PhysAbsoluteTime timeStamp() const;

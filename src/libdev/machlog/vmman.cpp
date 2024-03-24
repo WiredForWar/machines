@@ -205,7 +205,6 @@ void MachLogVoiceMailManager::update()
                         if (! voiceMailPlaying_[actorId])
                         {
                             pMail->play();
-                            pMail->hasStarted(true);
                             voiceMailPlaying_[actorId] = true;
                             ++noOfMailsPlaying_;
 
@@ -218,7 +217,6 @@ void MachLogVoiceMailManager::update()
                         if (! podMailPlaying_)
                         {
                             pMail->play();
-                            pMail->hasStarted(true);
                             podMailPlaying_ = true;
                             ++noOfMailsPlaying_;
 
@@ -541,7 +539,6 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
 
                         pStaticMail = new MachLogVoiceMail(staticId, actorId);
                         pStaticMail->play();
-                        pStaticMail->hasStarted(true);
 
                         ASSERT_INFO(actorId);
                         ASSERT(

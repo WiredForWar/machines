@@ -129,6 +129,8 @@ void MachLogVoiceMail::play()
     bool internalSampleHandleIsValid = SndMixer::instance().isAllocated(sampleHandle_);
 
     POST(isSampleValid());
+
+    hasStarted_ = true;
 }
 
 bool MachLogVoiceMail::isPlaying() const
@@ -175,13 +177,6 @@ bool MachLogVoiceMail::hasStarted() const
     CB_MachLogVoiceMail_DEPIMPL();
 
     return hasStarted_;
-}
-
-void MachLogVoiceMail::hasStarted(bool newHasStarted)
-{
-    CB_MachLogVoiceMail_DEPIMPL();
-
-    hasStarted_ = newHasStarted;
 }
 
 void MachLogVoiceMail::invalidateSample()
