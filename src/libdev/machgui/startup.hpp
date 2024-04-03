@@ -380,9 +380,9 @@ private:
         const char* flicPath_;
     };
 
-    static ContextSwitchInfo* getContextSwitchInfo();
-    static ContextTimeoutInfo* getContextTimeoutInfo();
-    static ContextKeypressInfo* getContextKeypressInfo();
+    static const ContextSwitchInfo* getContextSwitchInfo();
+    static const ContextTimeoutInfo* getContextTimeoutInfo();
+    static const ContextKeypressInfo* getContextKeypressInfo();
 
     void contextAnimation();
     // void contextFinish();

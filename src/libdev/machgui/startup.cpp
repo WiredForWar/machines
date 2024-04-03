@@ -1155,7 +1155,7 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
 
     while (! found && getContextSwitchInfo()[loop].curContext_ != CTX_FINISH)
     {
-        ContextSwitchInfo& csi = getContextSwitchInfo()[loop];
+        const ContextSwitchInfo& csi = getContextSwitchInfo()[loop];
 
         if (csi.curContext_ == context_ && csi.buttonEvent_ == be)
         {
@@ -1897,7 +1897,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
 
         while (! processed && getContextKeypressInfo()[loop].curContext_ != CTX_FINISH)
         {
-            ContextKeypressInfo& cki = getContextKeypressInfo()[loop];
+            const ContextKeypressInfo& cki = getContextKeypressInfo()[loop];
 
             // Have we found the correct entry in the keypress table...
             if (cki.curContext_ == context_ && e.key() == cki.scanCode_)
@@ -3006,10 +3006,10 @@ string MachGuiStartupScreens::getContextStrName(MachGuiStartupScreens::Context c
 }
 
 // static
-MachGuiStartupScreens::ContextSwitchInfo* MachGuiStartupScreens::getContextSwitchInfo() {
+const MachGuiStartupScreens::ContextSwitchInfo* MachGuiStartupScreens::getContextSwitchInfo() {
     if constexpr (cDemoVersion)
     {
-        static ContextSwitchInfo csi[] = {
+        static constexpr ContextSwitchInfo csi[] = {
             { CTX_MULTIPLAYER, JOIN, CTX_JOIN, false },
             { CTX_MULTIPLAYER, EXIT, CTX_MAINMENU, false },
             { CTX_JOIN, EXIT, CTX_MULTIPLAYER, false },
@@ -3076,7 +3076,7 @@ MachGuiStartupScreens::ContextSwitchInfo* MachGuiStartupScreens::getContextSwitc
     }
     else
     {
-        static ContextSwitchInfo csi[] = {
+        static constexpr ContextSwitchInfo csi[] = {
             { CTX_SINGLEPLAYER, EXIT, CTX_MAINMENU, true },
             { CTX_SINGLEPLAYER, CAMPAIGN, CTX_CAMPAIGN, true },
             { CTX_SINGLEPLAYER, SKIRMISH, CTX_SKIRMISH, true },
@@ -3159,11 +3159,11 @@ MachGuiStartupScreens::ContextSwitchInfo* MachGuiStartupScreens::getContextSwitc
 }
 
 // static
-MachGuiStartupScreens::ContextTimeoutInfo* MachGuiStartupScreens::getContextTimeoutInfo()
+const MachGuiStartupScreens::ContextTimeoutInfo* MachGuiStartupScreens::getContextTimeoutInfo()
 {
     if constexpr (cDemoVersion)
     {
-        static ContextTimeoutInfo cti[] = {
+        static constexpr ContextTimeoutInfo cti[] = {
             { CTX_LEGALSCREEN, CTX_PROBEACCLAIMLOGO, ContextTimeoutInfo::TIMEOUT, 5 },
             { CTX_PROBEACCLAIMLOGO, CTX_INTROANIMATION, ContextTimeoutInfo::TIMEOUT, 5 },
             { CTX_INTROANIMATION, CTX_MAINMENU, ContextTimeoutInfo::FLIC_FINISHED, 0 },
@@ -3183,7 +3183,7 @@ MachGuiStartupScreens::ContextTimeoutInfo* MachGuiStartupScreens::getContextTime
     }
     else
     {
-        static ContextTimeoutInfo cti[] = {
+        static constexpr ContextTimeoutInfo cti[] = {
             { CTX_LEGALSCREEN, CTX_PROBEACCLAIMLOGO, ContextTimeoutInfo::TIMEOUT, 5 },
             { CTX_PROBEACCLAIMLOGO, CTX_CHARYBDISLOGO, ContextTimeoutInfo::TIMEOUT, 5 },
             { CTX_CHARYBDISLOGO, CTX_INTROANIMATION, ContextTimeoutInfo::TIMEOUT, 5 },
@@ -3227,11 +3227,11 @@ bool MachGuiStartupScreens::isContextFlic() const
 }
 
 // static
-MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getContextKeypressInfo()
+const MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getContextKeypressInfo()
 {
     if constexpr (cDemoVersion)
     {
-        static ContextKeypressInfo cki[] = {
+        static constexpr ContextKeypressInfo cki[] = {
             { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_MAINMENU, false, NO_IMP },
             { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_MAINMENU, false, NO_IMP },
             { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, NO_IMP },
@@ -3282,7 +3282,7 @@ MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getContextKey
     }
     else
     {
-        static ContextKeypressInfo cki[] = {
+        static constexpr ContextKeypressInfo cki[] = {
             { CTX_DEFEAT, DevKey::ESCAPE, CTX_DEBRIEFING, false, NO_IMP },
             { CTX_VICTORY, DevKey::ESCAPE, CTX_DEBRIEFING, false, NO_IMP },
             { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, NO_IMP },
