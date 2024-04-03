@@ -143,6 +143,13 @@ private:
     bool isEmpty_ = false;
 };
 
+inline MexAlignedBox2d& MexAlignedBox2d::operator*=(MATHEX_SCALAR multiplier)
+{
+    vmin_ *= multiplier;
+    vmax_ *= multiplier;
+    return *this;
+}
+
 inline MexAlignedBox2d operator*(MexAlignedBox2d rhs, MATHEX_SCALAR c)
 {
     return rhs *= c;
