@@ -28,12 +28,11 @@ public:
 
     void doDisplay() override;
 
-    void textOffset(int x, int y);
+    void setTextOffset(Gui::Coord offset);
 
 private:
     string text_;
-    int textOffsetX_ = 0;
-    int textOffsetY_ = 0;
+    Gui::Coord textOffset_;
     GuiBmpFont font_;
 
     // A GuiRoot such as MachGuiStartupScreens

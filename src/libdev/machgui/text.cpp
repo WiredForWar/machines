@@ -23,10 +23,9 @@ MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const string& st
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 }
 
-void MachGuiText::textOffset(int x, int y)
+void MachGuiText::setTextOffset(Gui::Coord offset)
 {
-    textOffsetX_ = x;
-    textOffsetY_ = y;
+    textOffset_ = offset;
 }
 
 // virtual
@@ -50,9 +49,7 @@ void MachGuiText::doDisplay()
     // Draw list box item text
     font_.drawText(
         text_,
-        Gui::Coord(
-            absoluteBoundary().minCorner().x() + textOffsetX_,
-            absoluteBoundary().minCorner().y() + textOffsetY_),
+        absoluteBoundary().minCorner() + textOffset_,
         width());
 }
 
