@@ -1192,23 +1192,9 @@ void MachGuiStartupScreens::doDisplay()
     if (context_ != CTX_LOADINGEXE && context_ != CTX_POSTLOADINGANIMATION)
     {
         const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-
-        if (mode.width() != 640 || mode.height() != 480)
-        {
-            // Blit black on to backbuffer to stop previous screen from showing through black borders
-            RenDevice::current()->backSurface().filledRectangle(
-                Ren::Rect(0, 0, xMenuOffset(), mode.height()),
-                RenColour::black());
-            RenDevice::current()->backSurface().filledRectangle(
-                Ren::Rect(0, 0, mode.width(), yMenuOffset()),
-                RenColour::black());
-            RenDevice::current()->backSurface().filledRectangle(
-                Ren::Rect(0, mode.height() - yMenuOffset(), mode.width(), mode.height()),
-                RenColour::black());
-            RenDevice::current()->backSurface().filledRectangle(
-                Ren::Rect(mode.width() - xMenuOffset(), 0, xMenuOffset(), mode.height()),
-                RenColour::black());
-        }
+        RenDevice::current()->backSurface().filledRectangle(
+            Ren::Rect(0, 0, mode.width(), mode.height()),
+            RenColour::black());
     }
 
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
