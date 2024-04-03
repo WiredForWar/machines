@@ -10,8 +10,9 @@
 #include "machgui/optlayout.hpp"
 #include "system/pathname.hpp"
 
-MachGuiOptionsLayout::MachGuiOptionsLayout(const SysPathName& filename)
+MachGuiOptionsLayout::MachGuiOptionsLayout(const SysPathName& filename, float scale)
     : parser_(filename)
+    , scale_(scale)
 {
     ASSERT(filename.existsAsFile(), filename.c_str())
     parse();
@@ -69,7 +70,7 @@ void MachGuiOptionsLayout::parseSlidebar(const UtlLineTokeniser::Tokens& tokens)
 
     MexPoint2d topLeft(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
     uint range = atoi(tokens[3].c_str());
-    slidebars_.emplace_back(SlidebarInfo(topLeft, range));
+    slidebars_.emplace_back(SlidebarInfo(topLeft * scale_, range));
 }
 
 void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
@@ -81,7 +82,7 @@ void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
     MexPoint2d bottomRight(atoi(tokens[4].c_str()), atoi(tokens[5].c_str()));
     string fontPath(tokens[6]);
     ASSERT(SysPathName(fontPath).existsAsFile(), " ");
-    menuTexts_.emplace_back(MenuTextInfo(idsString, topLeft, bottomRight, fontPath));
+    menuTexts_.emplace_back(MenuTextInfo(idsString, topLeft * scale_, bottomRight * scale_, fontPath));
 }
 
 void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
@@ -90,7 +91,7 @@ void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
 
     int stringId(atoi(tokens[1].c_str()));
     MexPoint2d topLeft(atoi(tokens[2].c_str()), atoi(tokens[3].c_str()));
-    checkBoxes_.emplace_back(CheckBoxInfo(topLeft, stringId));
+    checkBoxes_.emplace_back(CheckBoxInfo(topLeft * scale_, stringId));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)

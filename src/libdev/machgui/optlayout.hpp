@@ -51,7 +51,7 @@ public:
         uint stringId;
     };
 
-    MachGuiOptionsLayout(const SysPathName&);
+    MachGuiOptionsLayout(const SysPathName&, float scale = 1);
     ~MachGuiOptionsLayout();
 
     const MachGuiOptionsLayout::SlidebarInfo& slidebarInfo(uint index) const;
@@ -84,6 +84,7 @@ private:
     std::vector<MenuTextInfo> menuTexts_;
     std::vector<CheckBoxInfo> checkBoxes_;
     UtlLineTokeniser parser_;
+    float scale_{};
 };
 
 #endif
