@@ -12,6 +12,8 @@
 #ifndef _BASE_TRACE_HPP
 #define _BASE_TRACE_HPP
 
+#include <cstddef>
+
 class BaseTrace
 {
 public:
