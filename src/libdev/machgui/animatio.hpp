@@ -28,24 +28,22 @@ class MachGuiAnimation : public GuiDisplayable
 public:
     struct Cell
     {
-        Cell();
-
         enum CellTime
         {
             STATIC,
             RANDOM
         };
-        GuiBitmap cell_;
-        double finishTime_;
-        double duration_;
-        double randomDurationMinTime_;
-        double randomDurationMaxTime_;
-        CellTime cellTimeType_;
-        bool hasSound_;
-        string wavFile_;
+        GuiBitmap cell_{};
+        double finishTime_{};
+        double duration_{};
+        double randomDurationMinTime_{};
+        double randomDurationMaxTime_{};
+        CellTime cellTimeType_{};
+        bool hasSound_{};
+        std::string wavFile_;
     };
 
-    using Cells = ctl_pvector<Cell>;
+    using Cells = std::vector<Cell>;
 
     // Create animation from file describing animation.
     // - optional colourKey argument is used to switch colourKeying on for each frame of the animation.
@@ -59,7 +57,6 @@ public:
         float scale = 1);
 
     MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box&, std::unique_ptr<Cells> pCells);
-    ~MachGuiAnimation() override;
 
     void CLASS_INVARIANT;
 
@@ -79,7 +76,7 @@ protected:
     void doDisplay() override;
 
     void updateCellTimes();
-    void playSound(const string& wavFile);
+    void playSound(const std::string& wavFile);
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t);

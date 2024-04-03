@@ -89,20 +89,21 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
         if (hasSound)
             tmpIn >> wavFile;
 
-        MachGuiAnimation::Cell* pCell = new MachGuiAnimation::Cell;
-        pCell->cell_ = Gui::requestScaledImage(path, scale);
-        pCell->duration_ = duration;
-        pCell->randomDurationMinTime_ = minT;
-        pCell->randomDurationMaxTime_ = maxT;
-        pCell->cellTimeType_ = cellTimeType;
-        pCell->hasSound_ = hasSound;
-        pCell->wavFile_ = wavFile;
-        pCells->push_back(pCell);
-
+        MachGuiAnimation::Cell cell {
+            .cell_ = Gui::requestScaledImage(path, scale),
+            .duration_ = duration,
+            .randomDurationMinTime_ = minT,
+            .randomDurationMaxTime_ = maxT,
+            .cellTimeType_ = cellTimeType,
+            .hasSound_ = hasSound,
+            .wavFile_ = wavFile,
+        };
         if (colourKey)
         {
-            pCell->cell_.enableColourKeying();
+            cell.cell_.enableColourKeying();
         }
+
+        pCells->emplace_back(cell);
     }
 
     MachGuiAnimation* pAnim = new MachGuiAnimation(
@@ -112,12 +113,6 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     pAnim->loopBack_ = loopBack;
 
     return pAnim;
-}
-
-MachGuiAnimation::Cell::Cell()
-{
-    cellTimeType_ = STATIC;
-    hasSound_ = false;
 }
 
 MachGuiAnimation::MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box& box, std::unique_ptr<Cells> pCells)
@@ -135,16 +130,6 @@ MachGuiAnimation::MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box& box,
     TEST_INVARIANT;
 }
 
-MachGuiAnimation::~MachGuiAnimation()
-{
-    TEST_INVARIANT;
-
-    for (MachGuiAnimation::Cells::iterator iter = pCells_->begin(); iter != pCells_->end(); ++iter)
-    {
-        delete (*iter);
-    }
-}
-
 void MachGuiAnimation::update()
 {
     size_t oldCellIndex = cellIndex_;
@@ -152,13 +137,13 @@ void MachGuiAnimation::update()
     double newTime = DevTime::instance().time();
     double timeDiff = newTime - startTime_;
 
-    while (timeDiff > (*pCells_)[cellIndex_]->finishTime_)
+    while (timeDiff > pCells_->at(cellIndex_).finishTime_)
     {
         ++cellIndex_;
         // Wrap around to beginning of animation
         if (cellIndex_ >= pCells_->size())
         {
-            double overShootTime = timeDiff - (*pCells_)[cellIndex_ - 1]->finishTime_;
+            double overShootTime = timeDiff - pCells_->at(cellIndex_ - 1).finishTime_;
             startTime_ = newTime - overShootTime;
             timeDiff = overShootTime;
             cellIndex_ = loopBack_;
@@ -171,8 +156,8 @@ void MachGuiAnimation::update()
     {
         changed();
 
-        if ((*pCells_)[cellIndex_]->hasSound_)
-            playSound((*pCells_)[cellIndex_]->wavFile_);
+        if (pCells_->at(cellIndex_).hasSound_)
+            playSound(pCells_->at(cellIndex_).wavFile_);
     }
 }
 
@@ -193,7 +178,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t)
 // virtual
 void MachGuiAnimation::doDisplay()
 {
-    GuiBitmap& cell = (*pCells_)[cellIndex_]->cell_;
+    const GuiBitmap& cell = pCells_->at(cellIndex_).cell_;
     if (cell.requestedSize().isNull())
     {
         GuiPainter::instance().blit(cell, absoluteBoundary().minCorner());
@@ -210,15 +195,15 @@ void MachGuiAnimation::updateCellTimes()
     // First of all assign a cell time to any cells with random duration
     for (MachGuiAnimation::Cells::iterator iter = pCells_->begin(); iter != pCells_->end(); ++iter)
     {
-        if ((*iter)->cellTimeType_ == Cell::RANDOM)
+        if (iter->cellTimeType_ == Cell::RANDOM)
         {
             double randNum = rand();
             double randNum2 = randNum / RAND_MAX; // Get number from 0.0 - 1.0
             // Get random number to fall between our stated upper and lower bounds
-            double diff = (*iter)->randomDurationMaxTime_ - (*iter)->randomDurationMinTime_;
+            double diff = iter->randomDurationMaxTime_ - iter->randomDurationMinTime_;
             diff = diff * randNum2;
-            diff += (*iter)->randomDurationMinTime_;
-            (*iter)->duration_ = diff;
+            diff += iter->randomDurationMinTime_;
+            iter->duration_ = diff;
         }
     }
 
@@ -230,13 +215,13 @@ void MachGuiAnimation::updateCellTimes()
         ++index;
         if (index > cellIndex_)
         {
-            finishTime += (*iter)->duration_;
-            (*iter)->finishTime_ = finishTime;
+            finishTime += iter->duration_;
+            iter->finishTime_ = finishTime;
         }
     }
 }
 
-void MachGuiAnimation::playSound(const string& wavFile)
+void MachGuiAnimation::playSound(const std::string& wavFile)
 {
     MachGuiSoundManager::instance().playSound(wavFile);
 }
