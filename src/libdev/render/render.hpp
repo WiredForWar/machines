@@ -58,6 +58,29 @@ namespace Ren
     using UVTransformPtr = CtlCountedPtr<RenUVTransform>;
     using ConstUVTransformPtr = CtlConstCountedPtr<RenUVTransform>;
 
+    struct Size
+    {
+        constexpr Size() = default;
+        constexpr Size(int w, int h)
+            : width(w)
+            , height(h)
+        {
+        }
+
+        template<typename T>
+        constexpr Size& operator*=(T multiplier)
+        {
+            width *= multiplier;
+            height *= multiplier;
+            return *this;
+        }
+
+        constexpr bool isNull() const { return width == 0 && height == 0; }
+
+        int width {};
+        int height {};
+    };
+
     struct Rect
     {
         constexpr Rect(int x = 0, int y = 0, int w = 0, int h = 0)
@@ -69,6 +92,13 @@ namespace Ren
         }
         int originX, originY, width, height;
     };
+
+
+    template<typename T>
+    constexpr inline Size operator*(Size rhs, T c)
+    {
+        return rhs *= c;
+    }
 
     enum LightType
     {
