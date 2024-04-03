@@ -21,16 +21,6 @@ MachGuiOptionsLayout::MachGuiOptionsLayout(const SysPathName& filename)
 MachGuiOptionsLayout::~MachGuiOptionsLayout()
 {
     TEST_INVARIANT;
-
-    // Empty slidebar info list
-    for (Slidebars::iterator i = slidebars_.begin(); i != slidebars_.end(); i++)
-        delete *i;
-    // Empty menutext info list
-    for (MenuTexts::iterator i = menuTexts_.begin(); i != menuTexts_.end(); i++)
-        delete *i;
-    // Empty checkBox info list
-    for (CheckBoxes::iterator i = checkBoxes_.begin(); i != checkBoxes_.end(); i++)
-        delete *i;
 }
 
 void MachGuiOptionsLayout::CLASS_INVARIANT
@@ -42,21 +32,21 @@ const MachGuiOptionsLayout::SlidebarInfo& MachGuiOptionsLayout::slidebarInfo(uin
 {
     PRE(nSlidebars());
     PRE(index < nSlidebars());
-    return *(slidebars_[index]);
+    return slidebars_.at(index);
 }
 
 const MachGuiOptionsLayout::MenuTextInfo& MachGuiOptionsLayout::menuTextInfo(uint index) const
 {
     PRE(nMenuTexts());
     PRE(index < nMenuTexts());
-    return *(menuTexts_[index]);
+    return menuTexts_.at(index);
 }
 
 const MachGuiOptionsLayout::CheckBoxInfo& MachGuiOptionsLayout::checkBoxInfo(uint index) const
 {
     PRE(nCheckBoxes());
     PRE(index < nCheckBoxes());
-    return *(checkBoxes_[index]);
+    return checkBoxes_.at(index);
 }
 
 void MachGuiOptionsLayout::parse()
@@ -79,7 +69,7 @@ void MachGuiOptionsLayout::parseSlidebar(const UtlLineTokeniser::Tokens& tokens)
 
     MexPoint2d topLeft(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
     uint range = atoi(tokens[3].c_str());
-    slidebars_.push_back(new SlidebarInfo(topLeft, range));
+    slidebars_.emplace_back(SlidebarInfo(topLeft, range));
 }
 
 void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
@@ -91,7 +81,7 @@ void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
     MexPoint2d bottomRight(atoi(tokens[4].c_str()), atoi(tokens[5].c_str()));
     string fontPath(tokens[6]);
     ASSERT(SysPathName(fontPath).existsAsFile(), " ");
-    menuTexts_.push_back(new MenuTextInfo(idsString, topLeft, bottomRight, fontPath));
+    menuTexts_.emplace_back(MenuTextInfo(idsString, topLeft, bottomRight, fontPath));
 }
 
 void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
@@ -100,25 +90,24 @@ void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
 
     int stringId(atoi(tokens[1].c_str()));
     MexPoint2d topLeft(atoi(tokens[2].c_str()), atoi(tokens[3].c_str()));
-    checkBoxes_.push_back(new CheckBoxInfo(topLeft, stringId));
+    checkBoxes_.emplace_back(CheckBoxInfo(topLeft, stringId));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)
 {
-
     o << "MachGuiOptionsLayout " << static_cast<const void*>(&t) << " start" << std::endl;
     for (uint i = 0; i < t.slidebars_.size(); i++)
     {
-        const MachGuiOptionsLayout::SlidebarInfo* info = t.slidebars_[i];
-        o << "topleft :" << info->topLeft << std::endl;
-        o << "range: " << info->range << std::endl;
+        const MachGuiOptionsLayout::SlidebarInfo& info = t.slidebars_[i];
+        o << "topleft :" << info.topLeft << std::endl;
+        o << "range: " << info.range << std::endl;
     }
     for (uint i = 0; i < t.menuTexts_.size(); i++)
     {
-        const MachGuiOptionsLayout::MenuTextInfo* info = t.menuTexts_[i];
-        o << "topleft :" << info->topLeft << std::endl;
-        o << "bottom right: " << info->bottomRight << std::endl;
-        o << "font: " << info->font << std::endl;
+        const MachGuiOptionsLayout::MenuTextInfo& info = t.menuTexts_[i];
+        o << "topleft :" << info.topLeft << std::endl;
+        o << "bottom right: " << info.bottomRight << std::endl;
+        o << "font: " << info.font << std::endl;
     }
 
     o << "MachGuiOptionsLayout " << static_cast<const void*>(&t) << " end" << std::endl;

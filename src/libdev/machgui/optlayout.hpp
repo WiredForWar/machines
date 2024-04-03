@@ -13,7 +13,6 @@
 #define _OPTLAYOUT_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
 #include "utility/linetok.hpp"
 #include "mathex/point2d.hpp"
 
@@ -81,13 +80,9 @@ private:
     MachGuiOptionsLayout(const MachGuiOptionsLayout&);
     MachGuiOptionsLayout& operator=(const MachGuiOptionsLayout&);
 
-    using Slidebars = ctl_pvector<SlidebarInfo>;
-    using MenuTexts = ctl_pvector<MenuTextInfo>;
-    using CheckBoxes = ctl_pvector<CheckBoxInfo>;
-
-    Slidebars slidebars_;
-    MenuTexts menuTexts_;
-    CheckBoxes checkBoxes_;
+    std::vector<SlidebarInfo> slidebars_;
+    std::vector<MenuTextInfo> menuTexts_;
+    std::vector<CheckBoxInfo> checkBoxes_;
     UtlLineTokeniser parser_;
 };
 
