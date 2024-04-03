@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include <stdlib.h>
-#include "machgui/startup.hpp"
 #include "machgui/internal/startui.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/ingame.hpp"

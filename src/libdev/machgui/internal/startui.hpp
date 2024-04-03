@@ -12,21 +12,11 @@
 #include "phys/phys.hpp"
 #include "ctl/pvector.hpp"
 
-class W4dSceneManager;
+#include "machgui/startup.hpp"
+
 class RenCursor2d;
-class MachInGameScreen;
-class W4dRoot;
-class GuiKeyEvent;
-class AniSmacker;
-class MachGuiStartupData;
-class MachGuiMessageBroker;
-class MachGuiAutoDeleteDisplayable;
 class MachGuiMessageBox;
-class MachGuiMessageBoxResponder;
-class MachGuiDbSavedGame;
-class MachLogGameCreationData;
 class MachGuiStartupScreenContext;
-class MachGuiFocusCapableControl;
 class MachGuiDispositionChangeNotifiable;
 
 class MachGuiStartupScreensImpl
