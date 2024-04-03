@@ -69,6 +69,11 @@ public:
     MATHEX_SCALAR euclidianDistance(const MexPoint2d& rhs) const;
     MATHEX_SCALAR sqrEuclidianDistance(const MexPoint2d& rhs) const;
 
+    friend MexPoint2d operator+(const MexPoint2d& lhs, const MexPoint2d& rhs)
+    {
+        return { lhs.x_ + rhs.x_, lhs.y_ + rhs.y_ };
+    }
+
     friend MexPoint2d operator*(const MexPoint2d& rhs, MATHEX_SCALAR c) noexcept
     {
         return MexPoint2d(rhs.x_ * c, rhs.y_ * c);
