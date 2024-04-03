@@ -399,7 +399,7 @@ private:
     int xMenuOffset();
     int yMenuOffset();
 
-    static string getContextStrName(Context context);
+    static std::string getContextStrName(Context context);
 
     MachGuiStartupScreensImpl* pImpl_;
 };

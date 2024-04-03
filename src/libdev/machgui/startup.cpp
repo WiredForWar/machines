@@ -2268,9 +2268,9 @@ void MachGuiStartupScreens::contextAnimation()
 
     if (context_ == CTX_TRANSITION)
     {
-        string ctxBeforeName = getContextStrName(contextBeforeFlic_);
-        string ctxAfterName = getContextStrName(contextAfterFlic_);
-        string flicName = string("flics/") + ctxBeforeName + ctxAfterName + string(".smk");
+        std::string ctxBeforeName = getContextStrName(contextBeforeFlic_);
+        std::string ctxAfterName = getContextStrName(contextAfterFlic_);
+        std::string flicName = "flics/" + ctxBeforeName + ctxAfterName + ".smk";
         SysPathName sysFlicName(flicName);
         // Only play menu transition if it is on the hard disk
         if (sysFlicName.existsAsFile())
@@ -2927,7 +2927,7 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
 }
 
 // static
-string MachGuiStartupScreens::getContextStrName(MachGuiStartupScreens::Context context)
+std::string MachGuiStartupScreens::getContextStrName(MachGuiStartupScreens::Context context)
 {
     switch (context)
     {
@@ -2986,6 +2986,8 @@ string MachGuiStartupScreens::getContextStrName(MachGuiStartupScreens::Context c
                 else
                     return "end3";
             }
+        default:
+            break;
     };
 
     return "notfound";
