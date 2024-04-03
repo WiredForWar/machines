@@ -3647,6 +3647,8 @@ bool MachGuiStartupScreens::isContextFlic() const
         case CTX_DEFEATFLIC:
         case CTX_ENTRYFLIC:
             return true;
+        default:
+            break;
     }
 
     return false;
