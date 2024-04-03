@@ -80,7 +80,7 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     // set to 0, 1, or 2 NOT 3 ).
     ASSERT(loopBack < numCells, "Loop back set incorrectly, must be less than numCells");
 
-    MachGuiAnimation::Cells* pCells = new MachGuiAnimation::Cells;
+    std::unique_ptr<Cells> pCells = std::make_unique<Cells>();
     pCells->reserve(numCells);
 
     while (numCells--)
@@ -105,8 +105,10 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
         }
     }
 
-    MachGuiAnimation* pAnim
-        = new MachGuiAnimation(pParent, Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset) * scale, pCells);
+    MachGuiAnimation* pAnim = new MachGuiAnimation(
+        pParent,
+        Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset) * scale,
+        std::move(pCells));
     pAnim->loopBack_ = loopBack;
 
     return pAnim;
@@ -118,9 +120,9 @@ MachGuiAnimation::Cell::Cell()
     hasSound_ = false;
 }
 
-MachGuiAnimation::MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box& box, MachGuiAnimation::Cells* pCells)
+MachGuiAnimation::MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box& box, std::unique_ptr<Cells> pCells)
     : GuiDisplayable(pParent, box)
-    , pCells_(pCells)
+    , pCells_(std::move(pCells))
     , cellIndex_(0)
     , loopBack_(0)
 {
@@ -141,7 +143,6 @@ MachGuiAnimation::~MachGuiAnimation()
     {
         delete (*iter);
     }
-    delete pCells_;
 }
 
 void MachGuiAnimation::update()

@@ -18,6 +18,8 @@
 #include "gui/gui.hpp"
 #include "ctl/pvector.hpp"
 
+#include <memory>
+
 class SysPathName;
 
 class MachGuiAnimation : public GuiDisplayable
@@ -56,8 +58,7 @@ public:
         int yOffset = 0,
         float scale = 1);
 
-    // MachGuiAnimationCells* must be newed and will be deleted by this class.
-    MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box&, Cells*);
+    MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box&, std::unique_ptr<Cells> pCells);
     ~MachGuiAnimation() override;
 
     void CLASS_INVARIANT;
@@ -87,7 +88,7 @@ private:
     MachGuiAnimation& operator=(const MachGuiAnimation&);
 
     // Data members...
-    Cells* pCells_;
+    std::unique_ptr<Cells> pCells_;
     double startTime_;
     size_t cellIndex_;
     size_t loopBack_;
