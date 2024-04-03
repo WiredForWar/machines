@@ -53,7 +53,8 @@ public:
         const SysPathName& animPath,
         bool colourKey = false,
         int xOffset = 0,
-        int yOffset = 0);
+        int yOffset = 0,
+        float scale = 1);
 
     // MachGuiAnimationCells* must be newed and will be deleted by this class.
     MachGuiAnimation(GuiDisplayable* pParent, const Gui::Box&, Cells*);
@@ -95,7 +96,7 @@ private:
 class MachGuiAnimations
 {
 public:
-    MachGuiAnimations(GuiDisplayable*, const SysPathName& pathName);
+    MachGuiAnimations(GuiDisplayable*, const SysPathName& pathName, float scale = 1);
     ~MachGuiAnimations();
 
     void update();

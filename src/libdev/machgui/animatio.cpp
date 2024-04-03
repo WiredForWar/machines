@@ -6,13 +6,15 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/animatio.hpp"
+
+#include "gui/gui.hpp"
 #include "gui/painter.hpp"
 #include "device/time.hpp"
 #include "system/pathname.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include <fstream>
 
-MachGuiAnimations::MachGuiAnimations(GuiDisplayable* pParent, const SysPathName& pathName)
+MachGuiAnimations::MachGuiAnimations(GuiDisplayable* pParent, const SysPathName& pathName, float scale)
 {
     ASSERT_FILE_EXISTS(pathName.c_str());
     std::ifstream in(pathName.c_str());
@@ -22,12 +24,15 @@ MachGuiAnimations::MachGuiAnimations(GuiDisplayable* pParent, const SysPathName&
     string animPath;
 
     animations_.reserve(numAnimations);
+    bool colorKey{};
+    int xOffset{};
+    int yOffset{};
 
     while (numAnimations--)
     {
         std::istream& tmpIn = in;
         tmpIn >> animPath;
-        animations_.push_back(MachGuiAnimation::createAnimation(pParent, animPath));
+        animations_.push_back(MachGuiAnimation::createAnimation(pParent, animPath, colorKey, xOffset, yOffset, scale));
     }
 }
 
@@ -55,7 +60,8 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     const SysPathName& animPath,
     bool colourKey,
     int xOffset,
-    int yOffset)
+    int yOffset,
+    float scale)
 {
     ASSERT_FILE_EXISTS(animPath.c_str());
     std::ifstream in(animPath.c_str());
@@ -84,7 +90,7 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
             tmpIn >> wavFile;
 
         MachGuiAnimation::Cell* pCell = new MachGuiAnimation::Cell;
-        pCell->cell_ = Gui::bitmap(path);
+        pCell->cell_ = Gui::requestScaledImage(path, scale);
         pCell->duration_ = duration;
         pCell->randomDurationMinTime_ = minT;
         pCell->randomDurationMaxTime_ = maxT;
@@ -100,7 +106,7 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     }
 
     MachGuiAnimation* pAnim
-        = new MachGuiAnimation(pParent, Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset), pCells);
+        = new MachGuiAnimation(pParent, Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset) * scale, pCells);
     pAnim->loopBack_ = loopBack;
 
     return pAnim;
@@ -187,7 +193,15 @@ std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t)
 void MachGuiAnimation::doDisplay()
 {
     GuiBitmap& cell = (*pCells_)[cellIndex_]->cell_;
-    GuiPainter::instance().blit(cell, absoluteBoundary().minCorner());
+    if (cell.requestedSize().isNull())
+    {
+        GuiPainter::instance().blit(cell, absoluteBoundary().minCorner());
+    }
+    else
+    {
+        Gui::Size cellSize(cell.requestedSize().width, cell.requestedSize().height);
+        GuiPainter::instance().stretch(cell, Gui::Box(absoluteBoundary().minCorner(), cellSize));
+    }
 }
 
 void MachGuiAnimation::updateCellTimes()
