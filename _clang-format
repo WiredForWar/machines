@@ -93,7 +93,7 @@ PackConstructorInitializers: Never
 BasedOnStyle: WebKit
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 AllowAllConstructorInitializersOnNextLine: true
-FixNamespaceComments: false
+FixNamespaceComments: true
 ForEachMacros:
   - foreach
   - Q_FOREACH
