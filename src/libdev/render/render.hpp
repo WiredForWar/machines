@@ -83,14 +83,23 @@ namespace Ren
 
     struct Rect
     {
-        constexpr Rect(int x = 0, int y = 0, int w = 0, int h = 0)
+        constexpr Rect() = default;
+        constexpr Rect(Size size)
+            : width(size.width)
+            , height(size.height)
+        {
+        }
+        constexpr Rect(int x, int y, int w, int h)
             : originX(x)
             , originY(y)
             , width(w)
             , height(h)
         {
         }
-        int originX, originY, width, height;
+        int originX{};
+        int originY{};
+        int width{};
+        int height{};
     };
 
 
