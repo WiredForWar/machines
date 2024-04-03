@@ -391,7 +391,7 @@ GuiBitmap& MachGui::okMsgBoxBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/msgbox.bmp");
 
-        pBmp = Gui::bitmap("gui/menu/msgbox.bmp");
+        pBmp = Gui::requestScaledImage("gui/menu/msgbox.bmp", menuScaleFactor());
         pBmp.enableColourKeying();
     }
 
@@ -407,7 +407,7 @@ GuiBitmap& MachGui::okCancelMsgBoxBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/msgbox2.bmp");
 
-        pBmp = Gui::bitmap("gui/menu/msgbox2.bmp");
+        pBmp = Gui::requestScaledImage("gui/menu/msgbox2.bmp", menuScaleFactor());
         pBmp.enableColourKeying();
     }
 

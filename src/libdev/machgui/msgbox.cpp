@@ -6,6 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/msgbox.hpp"
+
 #include "machgui/startup.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
@@ -38,8 +39,8 @@ bool MachGuiMessageBoxResponder::cancelPressed()
 }
 
 MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uint stringResId, MBType mbType)
-    : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480), GuiDisplayable::LAYER5)
-    , animations_(this, animationFile(mbType))
+    : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480) * MachGui::menuScaleFactor(), GuiDisplayable::LAYER5)
+    , animations_(this, animationFile(mbType), MachGui::menuScaleFactor())
     , mbType_(mbType)
     , pStartupScreens_(pStartupScreens)
 {
@@ -48,7 +49,7 @@ MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uin
 
     new MachGuiMenuText(
         this,
-        Gui::Box(203, 157, 484, 293),
+        Gui::Box(203, 157, 484, 293) * MachGui::menuScaleFactor(),
         stringResId,
         MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
@@ -67,8 +68,8 @@ MachGuiMessageBox::MachGuiMessageBox(
     uint stringResId,
     MBType mbType,
     const GuiStrings& strs)
-    : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480), GuiDisplayable::LAYER5)
-    , animations_(this, animationFile(mbType))
+    : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480) * MachGui::menuScaleFactor(), GuiDisplayable::LAYER5)
+    , animations_(this, animationFile(mbType), MachGui::menuScaleFactor())
     , mbType_(mbType)
     , pStartupScreens_(pStartupScreens)
 {
@@ -80,7 +81,7 @@ MachGuiMessageBox::MachGuiMessageBox(
 
     new MachGuiMenuText(
         this,
-        Gui::Box(203, 157, 484, 293),
+        Gui::Box(203, 157, 484, 293) * MachGui::menuScaleFactor(),
         wholeStr,
         MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
@@ -108,15 +109,17 @@ MachGuiMessageBox::~MachGuiMessageBox()
 void MachGuiMessageBox::doDisplay()
 {
     auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
+    const auto backdropSize = backdrop->requestedSize().isNull() ? backdrop->size() : backdrop->requestedSize();
     using namespace machgui::helper::menus;
-    int menuLeft = x_from_screen_left(pStartupScreens_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
-    int menuTop = y_from_screen_bottom(pStartupScreens_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
+    // If the backdrop is the screen size, this would be the true top-left.
+    int menuTop = y_from_screen_bottom(backdropSize.height, 2);
+    int menuLeft = x_from_screen_left(backdropSize.width, 2);
 
     const GuiBitmap& boxBitmap = image();
     if (boxBitmap.isNull())
         return;
 
-    const auto msgBoxSize = boxBitmap.size();
+    const auto msgBoxSize = boxBitmap.requestedSize().isNull() ? boxBitmap.size() : boxBitmap.requestedSize();
 
     GuiPainter::instance().blit(
         boxBitmap,
@@ -149,13 +152,13 @@ void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
     {
         MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
-            Gui::Box(348, 324, 491, 355),
+            Gui::Box(348, 324, 491, 355) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_CANCEL,
             MachGui::ButtonEvent::CANCEL,
             this);
         MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
-            Gui::Box(175, 324, 319, 355),
+            Gui::Box(175, 324, 319, 355) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_OK,
             MachGui::ButtonEvent::OK,
             this);
@@ -168,7 +171,7 @@ void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
     {
         MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
-            Gui::Box(348, 324, 491, 355),
+            Gui::Box(348, 324, 491, 355) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_OK,
             MachGui::ButtonEvent::OK,
             this);
@@ -179,13 +182,13 @@ void MachGuiMessageBox::displayButtons(MachGuiStartupScreens* pStartupScreens)
     {
         MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
-            Gui::Box(348, 324, 491, 355),
+            Gui::Box(348, 324, 491, 355) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_NO,
             MachGui::ButtonEvent::CANCEL,
             this);
         MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
-            Gui::Box(175, 324, 319, 355),
+            Gui::Box(175, 324, 319, 355) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_YES,
             MachGui::ButtonEvent::OK,
             this);
