@@ -137,7 +137,15 @@ void writeScreenAsFile(const char* startFilename);
 
 RenSurface& staticBackBuffer();
 
-};
+/**
+ * @brief Returns a bitmap or its HiDPI alternative if available
+ * @param path The path to the image file (with .bmp or without any extension)
+ * @param scale The wanted scale factor
+ * @return image as is or HiDPI bitmap
+ */
+GuiBitmap requestScaledImage(std::string path, float scale);
+
+}; // namespace Gui
 
 /* //////////////////////////////////////////////////////////////// */
 

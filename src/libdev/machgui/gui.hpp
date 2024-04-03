@@ -72,6 +72,12 @@ public:
     static void setUiScaleFactor(MATHEX_SCALAR scale);
 
     static std::string getScaledImagePath(std::string path);
+
+    /**
+     * @brief Returns a bitmap scaled by uiScaleFactor() or a HiDPI alternatives
+     * @param path to the image file (with .bmp or without any extension)
+     * @return scaled image or HiDPI bitmap
+     */
     static GuiBitmap getScaledImage(std::string path);
 
     static float getPhysMarkerLineWidth();

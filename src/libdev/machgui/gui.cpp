@@ -676,46 +676,19 @@ std::string MachGui::getScaledImagePath(std::string path)
 
 GuiBitmap MachGui::getScaledImage(std::string path)
 {
-    const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
-    const MATHEX_SCALAR factor = uiScaleFactor();
-    if (factor == 1)
-    {
-        if (!hasBmpExtention)
-        {
-            path += ".bmp";
-        }
-        return Gui::bitmap(path);
-    }
+    GuiBitmap image = Gui::requestScaledImage(path, uiScaleFactor());
+    if (image.requestedSize().isNull())
+        return image;
 
-    // TODO: Fix later :eyes:
-    std::string scaledImagePath = path;
-    if (hasBmpExtention)
-    {
-        const auto from = scaledImagePath.end() - 4;
-        scaledImagePath.replace(from, scaledImagePath.end(), "_2x.png");
-    }
-    else
-    {
-        scaledImagePath += "_2x.png";
-    }
-
-    if (SysPathName::existsAsFile(scaledImagePath))
-    {
-        return Gui::bitmap(scaledImagePath);
-    }
-
-    const GuiBitmap mapBitmap1x = Gui::bitmap(hasBmpExtention ? path : path + ".bmp");
-    GuiBitmap result = RenSurface::createAnonymousSurface(
-        mapBitmap1x.width() * MachGui::uiScaleFactor(),
-        mapBitmap1x.height() * MachGui::uiScaleFactor(),
-        mapBitmap1x);
+    RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize(), image);
 
     // Workaround artefacts in transparent pixels:
-    result.filledRectangle(RenSurface::Rect(0, 0, result.width(), result.height()), Gui::MAGENTA());
-    result.enableColourKeying();
+    scaledSurface.filledRectangle(image.requestedSize(), Gui::MAGENTA());
+    scaledSurface.enableColourKeying();
 
-    result.stretchBlit(mapBitmap1x);
-    return result;
+    scaledSurface.stretchBlit(image);
+
+    return scaledSurface;
 }
 
 float MachGui::getPhysMarkerLineWidth()

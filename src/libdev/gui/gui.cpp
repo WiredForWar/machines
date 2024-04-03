@@ -35,6 +35,40 @@ void Gui::backBuffer(const RenSurface& pNewBuffer)
     staticBackBuffer() = pNewBuffer;
 }
 
+GuiBitmap Gui::requestScaledImage(std::string path, float scale)
+{
+    const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
+    if (scale == 1)
+    {
+        if (!hasBmpExtention)
+        {
+            path += ".bmp";
+        }
+        return Gui::bitmap(path);
+    }
+
+           // TODO: Fix later :eyes:
+    std::string scaledImagePath = path;
+    if (hasBmpExtention)
+    {
+        const auto from = scaledImagePath.end() - 4;
+        scaledImagePath.replace(from, scaledImagePath.end(), "_2x.png");
+    }
+    else
+    {
+        scaledImagePath += "_2x.png";
+    }
+
+    if (SysPathName::existsAsFile(scaledImagePath))
+    {
+        return Gui::bitmap(scaledImagePath);
+    }
+
+    GuiBitmap result = Gui::bitmap(hasBmpExtention ? path : path + ".bmp");
+    result.setRequestedSize(result.size() * scale);
+    return result;
+}
+
 /* //////////////////////////////////////////////////////////////// */
 
 bool operator==(const GuiColour& a, const GuiColour& b)
