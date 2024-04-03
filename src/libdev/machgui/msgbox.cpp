@@ -106,35 +106,21 @@ MachGuiMessageBox::~MachGuiMessageBox()
 // virtual
 void MachGuiMessageBox::doDisplay()
 {
-    size_t msgBoxBmpWidth = 0;
-    size_t msgBoxBmpHeight = 0;
-
     auto backdrop = pStartupScreens_->getSharedBitmaps()->getNamedBitmap("backdrop");
     using namespace machgui::helper::menus;
     int menuLeft = x_from_screen_left(pStartupScreens_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
     int menuTop = y_from_screen_bottom(pStartupScreens_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
 
-    switch (mbType_)
-    {
-        case MBOKCANCEL:
-        case MBYESNO:
-            msgBoxBmpWidth = MachGui::okCancelMsgBoxBmp().width();
-            msgBoxBmpHeight = MachGui::okCancelMsgBoxBmp().height();
-            GuiPainter::instance().blit(
-                MachGui::okCancelMsgBoxBmp(),
-                Gui::Box(0, 0, msgBoxBmpWidth, msgBoxBmpHeight),
-                Gui::Coord(menuLeft, menuTop));
-            break;
+    const GuiBitmap& boxBitmap = image();
+    if (boxBitmap.isNull())
+        return;
 
-        case MBOK:
-            msgBoxBmpWidth = MachGui::okMsgBoxBmp().width();
-            msgBoxBmpHeight = MachGui::okMsgBoxBmp().height();
-            GuiPainter::instance().blit(
-                MachGui::okMsgBoxBmp(),
-                Gui::Box(0, 0, msgBoxBmpWidth, msgBoxBmpHeight),
-                Gui::Coord(menuLeft, menuTop));
-            break;
-    }
+    const auto msgBoxSize = boxBitmap.size();
+
+    GuiPainter::instance().blit(
+        boxBitmap,
+        Gui::Box(0, 0, msgBoxSize.width, msgBoxSize.height),
+        Gui::Coord(menuLeft, menuTop));
 }
 
 void MachGuiMessageBox::CLASS_INVARIANT
