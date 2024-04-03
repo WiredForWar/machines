@@ -132,13 +132,18 @@ void GuiPainter::tile(const GuiBitmap& source, const Gui::Box& sourceArea, const
         map_GuiBox_to_RenSurfaceRect(destArea));
 }
 
-void GuiPainter::stretch(const GuiBitmap& /*source*/, const Gui::Box& /*sourceArea*/, const Gui::Box& /*destArea*/)
-    const
+void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const
 {
+    Gui::backBuffer().stretchBlit(
+        source,
+        map_GuiBox_to_RenSurfaceRect(sourceArea),
+        map_GuiBox_to_RenSurfaceRect(destArea));
 }
 
-void GuiPainter::stretch(const GuiBitmap& /*source*/, const Gui::Box& /*destArea*/) const
+void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& destArea) const
 {
+    const Ren::Rect sourceArea(0, 0, source.width(), source.height());
+    Gui::backBuffer().stretchBlit(source, sourceArea, map_GuiBox_to_RenSurfaceRect(destArea));
 }
 
 //////////////////////////////////////////////////////////////////////
