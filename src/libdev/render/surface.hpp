@@ -38,6 +38,7 @@ class TextOptions;
 class RenSurface
 {
 public:
+    using Size = Ren::Size;
     using Rect = Ren::Rect;
 
     // Creates a null, not very useful surface.
@@ -156,6 +157,9 @@ public:
     const std::string& name() const;
     const int handle() const;
 
+    Size requestedSize() const;
+    void setRequestedSize(Size size);
+
     // Sharing and read/write control.
     bool sharable() const; // Is this English?
     bool readOnly() const;
@@ -169,6 +173,7 @@ public:
 
     size_t width() const;
     size_t height() const;
+    Size size() const;
     bool empty() const; // i.e., width() == 0 || height() == 0
 
     // Allows a body to get a handle corresponding to itself.

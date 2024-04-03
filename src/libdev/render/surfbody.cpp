@@ -709,6 +709,11 @@ size_t RenISurfBody::height() const
     return height_;
 }
 
+Ren::Size RenISurfBody::size() const
+{
+    return Ren::Size(width_, height_);
+}
+
 size_t RenISurfBody::bitDepth() const
 {
     return pixelFormat().totalDepth();

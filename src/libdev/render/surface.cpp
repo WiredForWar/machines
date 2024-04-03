@@ -1044,6 +1044,16 @@ const int RenSurface::handle() const
     return internals()->handle();
 }
 
+RenSurface::Size RenSurface::requestedSize() const
+{
+    return internals()->requestedSize();
+}
+
+void RenSurface::setRequestedSize(Size size)
+{
+    return internals()->setRequestedSize(size);
+}
+
 // Several methods are delegated to RenISurfBody using these macros.
 #define TEX_FORWARD_GET(RETTYPE, METHOD)                                                                               \
     RETTYPE RenSurface::METHOD() const                                                                                 \
@@ -1057,6 +1067,7 @@ TEX_FORWARD_GET(bool, sharable)
 TEX_FORWARD_GET(bool, readOnly)
 TEX_FORWARD_GET(size_t, width)
 TEX_FORWARD_GET(size_t, height)
+TEX_FORWARD_GET(RenSurface::Size, size)
 
 //---------------------------------Canonnical stuff--------------------------------
 bool operator==(const RenSurface& s1, const RenSurface& s2)

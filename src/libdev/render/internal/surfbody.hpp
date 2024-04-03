@@ -59,6 +59,7 @@ public:
     size_t bitDepth() const;
     size_t width() const;
     size_t height() const;
+    Ren::Size size() const;
     size_t memoryUsed() const;
     bool isEmpty() const; // width == 0 || height == 0
 
@@ -84,6 +85,9 @@ public:
     uint refCount() const;
     void incRefCount();
     void decRefCount();
+
+    Ren::Size requestedSize() const { return requestedSize_; }
+    void setRequestedSize(Ren::Size value) { requestedSize_ = value; }
 
     // You cannot change the name of a surface which already has a name.
     // PRE(name().length() == 0);
@@ -203,6 +207,7 @@ private:
 
     uint refCount_;
     std::string name_, leafName_;
+    Ren::Size requestedSize_{};
     bool sharedLeaf_;
     bool loaded_, readOnly_, sharable_;
     size_t currentHeight_;
