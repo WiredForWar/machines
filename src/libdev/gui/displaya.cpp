@@ -766,9 +766,9 @@ void GuiDisplayable::doHandleContainsMouseEvent(const GuiMouseEvent&)
 // static
 Gui::Box GuiDisplayable::translateBox(const Gui::Box& b, const Gui::Coord& c)
 {
-    MexVec2 minC = b.minCorner();
+    MexPoint2d minC = b.minCorner();
     minC += c;
-    MexVec2 maxC = b.maxCorner();
+    MexPoint2d maxC = b.maxCorner();
     maxC += c;
     return Gui::Box(minC, maxC);
 }

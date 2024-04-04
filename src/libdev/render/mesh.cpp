@@ -2091,10 +2091,10 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
             renNormal = MexVec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         }
 
-        MexVec2 renUV;
+        MexPoint2d renUV;
         // Add texture coordinates if file have them defined
         if (mesh->mPositions.size() == mesh->mTexCoords[0].size())
-            renUV = MexVec2(mesh->mTexCoords[0][i].x, mesh->mTexCoords[0][i].y);
+            renUV = MexPoint2d(mesh->mTexCoords[0][i].x, mesh->mTexCoords[0][i].y);
 
         renVertexIndex = _STATIC_CAST(Ren::VertexIdx, vertices_->size());
         if (renNormal.modulus() > 1)
@@ -2400,7 +2400,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
             gxmesh->normal(gxNormalIndex).x(),
             gxmesh->normal(gxNormalIndex).z(),
             gxmesh->normal(gxNormalIndex).y());
-        MexVec2 renUV(gxVertex.uv().u(), 1 - gxVertex.uv().v());
+        MexPoint2d renUV(gxVertex.uv().u(), 1 - gxVertex.uv().v());
 
         renVertexIndex = _STATIC_CAST(Ren::VertexIdx, vertices_->size());
 

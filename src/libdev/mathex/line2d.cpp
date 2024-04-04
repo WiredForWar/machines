@@ -386,7 +386,7 @@ bool MexLine2d::isPointOnLine(const MexPoint2d& v) const
     dxVec *= t;
     dyVec *= t;
 
-    MexVec2 result(end1().x() + dxVec, end1().y() + dyVec);
+    MexPoint2d result(end1().x() + dxVec, end1().y() + dyVec);
 
     return v.sqrEuclidianDistance(result) < (MATHEX_SCALAR)MexEpsilon::instance();
 }

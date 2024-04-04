@@ -224,14 +224,14 @@ void MachPhysTileBoundary::cacheLoad(TriangleId id)
 bool MachPhysTileBoundary::isOverCachedTriangle(MATHEX_SCALAR x, MATHEX_SCALAR y) const
 {
     // Construct 3 2d vectors representing the triangle corners, and hence a 2d triangle
-    MexVec2 a(x_[0], y_[0]);
-    MexVec2 b(x_[1], y_[1]);
-    MexVec2 c(x_[2], y_[2]);
+    MexPoint2d a(x_[0], y_[0]);
+    MexPoint2d b(x_[1], y_[1]);
+    MexPoint2d c(x_[2], y_[2]);
 
     MexTriangle2d triangle2d(a, b, c);
 
     // Construct a 2d vector for the test coordinate
-    MexVec2 testPoint(x, y);
+    MexPoint2d testPoint(x, y);
 
     // See if the triangle contains the test point
     return triangle2d.contains(testPoint);
