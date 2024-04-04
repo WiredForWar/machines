@@ -12,11 +12,10 @@
 #ifndef _MACHGUI_CHCKBOX_HPP
 #define _MACHGUI_CHCKBOX_HPP
 
-#include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "gui/gui.hpp"
 #include "gui/font.hpp"
 #include "gui/displaya.hpp"
+#include "machgui/ResolvedUiString.hpp"
 #include "machgui/focusctl.hpp"
 
 class MachGuiCheckBox
@@ -33,13 +32,7 @@ public:
         MachGuiStartupScreens*,
         GuiDisplayable* pParent,
         const Gui::Coord& boxTopLeft,
-        const string& label,
-        bool isChecked = false);
-    MachGuiCheckBox(
-        MachGuiStartupScreens*,
-        GuiDisplayable* pParent,
-        const Gui::Coord& boxTopLeft,
-        uint idsLabel,
+        const ResolvedUiString& label,
         bool isChecked = false);
     ~MachGuiCheckBox() override;
 
@@ -68,9 +61,9 @@ private:
     MachGuiCheckBox(const MachGuiCheckBox&);
     MachGuiCheckBox& operator=(const MachGuiCheckBox&);
 
-    string label_;
-    bool isChecked_;
-    bool isHighlighted_;
+    std::string label_;
+    bool isChecked_{};
+    bool isHighlighted_{};
     Callback callback_;
     GuiBmpFont font_;
     GuiBitmap checkBmp_;

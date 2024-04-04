@@ -9,7 +9,6 @@
 #include "system/pathname.hpp"
 #include "gui/event.hpp"
 #include "gui/painter.hpp"
-#include "gui/restring.hpp"
 #include "machgui/gui.hpp"
 
 #define MGCB_BOX_DIMENSIONX 12
@@ -19,20 +18,19 @@ MachGuiCheckBox::MachGuiCheckBox(
     MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
     const Gui::Coord& boxTopLeft,
-    const string& label,
+    const ResolvedUiString& label,
     bool isChecked)
     : GuiDisplayable(pParent, Gui::Box(boxTopLeft, MGCB_BOX_DIMENSIONX, MGCB_BOX_DIMENSIONY))
     , MachGuiFocusCapableControl(pStartupScreens)
     , label_(label)
     , isChecked_(isChecked)
     , font_(GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp")))
-    , checkBmp_(Gui::bitmap(SysPathName("gui/menu/check.bmp")))
-    , uncheckBmp_(Gui::bitmap(SysPathName("gui/menu/uncheck.bmp")))
-    , checkFocusBmp_(Gui::bitmap(SysPathName("gui/menu/checkf.bmp")))
-    , uncheckFocusBmp_(Gui::bitmap(SysPathName("gui/menu/uncheckf.bmp")))
-    , checkHighlightBmp_(Gui::bitmap(SysPathName("gui/menu/checkh.bmp")))
-    , uncheckHighlightBmp_(Gui::bitmap(SysPathName("gui/menu/uncheckh.bmp")))
-    , isHighlighted_(false)
+    , checkBmp_(Gui::requestScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
+    , uncheckBmp_(Gui::requestScaledImage("gui/menu/uncheck.bmp", MachGui::menuScaleFactor()))
+    , checkFocusBmp_(Gui::requestScaledImage("gui/menu/checkf.bmp", MachGui::menuScaleFactor()))
+    , uncheckFocusBmp_(Gui::requestScaledImage("gui/menu/uncheckf.bmp", MachGui::menuScaleFactor()))
+    , checkHighlightBmp_(Gui::requestScaledImage("gui/menu/checkh.bmp", MachGui::menuScaleFactor()))
+    , uncheckHighlightBmp_(Gui::requestScaledImage("gui/menu/uncheckh.bmp", MachGui::menuScaleFactor()))
 {
     checkBmp_.enableColourKeying();
     uncheckBmp_.enableColourKeying();
@@ -40,37 +38,6 @@ MachGuiCheckBox::MachGuiCheckBox(
     uncheckFocusBmp_.enableColourKeying();
     checkHighlightBmp_.enableColourKeying();
     uncheckHighlightBmp_.enableColourKeying();
-
-    TEST_INVARIANT;
-}
-
-MachGuiCheckBox::MachGuiCheckBox(
-    MachGuiStartupScreens* pStartupScreens,
-    GuiDisplayable* pParent,
-    const Gui::Coord& boxTopLeft,
-    uint idsLabel,
-    bool isChecked)
-    : GuiDisplayable(pParent, Gui::Box(boxTopLeft, MGCB_BOX_DIMENSIONX, MGCB_BOX_DIMENSIONY))
-    , MachGuiFocusCapableControl(pStartupScreens)
-    , isChecked_(isChecked)
-    , font_(GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp")))
-    , checkBmp_(Gui::bitmap(SysPathName("gui/menu/check.bmp")))
-    , uncheckBmp_(Gui::bitmap(SysPathName("gui/menu/uncheck.bmp")))
-    , checkFocusBmp_(Gui::bitmap(SysPathName("gui/menu/checkf.bmp")))
-    , uncheckFocusBmp_(Gui::bitmap(SysPathName("gui/menu/uncheckf.bmp")))
-    , checkHighlightBmp_(Gui::bitmap(SysPathName("gui/menu/checkh.bmp")))
-    , uncheckHighlightBmp_(Gui::bitmap(SysPathName("gui/menu/uncheckh.bmp")))
-    , isHighlighted_(false)
-{
-    checkBmp_.enableColourKeying();
-    uncheckBmp_.enableColourKeying();
-    checkFocusBmp_.enableColourKeying();
-    uncheckFocusBmp_.enableColourKeying();
-    checkHighlightBmp_.enableColourKeying();
-    uncheckHighlightBmp_.enableColourKeying();
-
-    GuiResourceString resourceLabel(idsLabel);
-    label_ = resourceLabel.asString();
 
     TEST_INVARIANT;
 }
