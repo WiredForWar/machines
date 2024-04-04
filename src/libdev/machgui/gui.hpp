@@ -3,178 +3,174 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#ifndef _MACH_GUI_HPP
-#define _MACH_GUI_HPP
+#pragma once
 
 #include "gui/gui.hpp"
 #include "stdlib/string.hpp"
 
 class MachLogMachine;
 
-class MachGui
+namespace MachGui
 {
-public:
-    // Load the correct icon for a machine. You may specify whether it's normal looking or matrix-like (first person)
-    static GuiBitmap createIconForMachine(MachLogMachine* machine, bool firstPersonIcon);
 
-    // Draws a number onto the screen. numberArray is an array of bitmaps, each
-    // bitmap representing a number. The index position in the array is the same
-    // as the number shown in the bitmap.
-    static void drawNumber(GuiBitmap* pNumberArray, size_t value, Gui::Coord* pAbsCoord);
-    // PRE( pAbsCoord );
+// Load the correct icon for a machine. You may specify whether it's normal looking or matrix-like (first person)
+GuiBitmap createIconForMachine(MachLogMachine* machine, bool firstPersonIcon);
 
-    static const Gui::Colour& mVIIIBackgroundColour();
-    static const Gui::Colour& OFFWHITE();
-    static const Gui::Colour& VERYDARKGREY();
-    static const Gui::Colour& ALMOSTBLACK();
-    static const Gui::Colour& VERYDARKPURPLE();
-    static const Gui::Colour& LIGHTPURPLE();
-    static const Gui::Colour& PURPLE();
-    static const Gui::Colour& PROGRESSGREEN();
+// Draws a number onto the screen. numberArray is an array of bitmaps, each
+// bitmap representing a number. The index position in the array is the same
+// as the number shown in the bitmap.
+void drawNumber(GuiBitmap* pNumberArray, size_t value, Gui::Coord* pAbsCoord);
+// PRE( pAbsCoord );
 
-    static const Gui::Colour& MENUDARKGREEN();
-    static const Gui::Colour& SANDY();
-    static const Gui::Colour& DARKSANDY();
-    static const Gui::Colour& DARKRED();
-    static const Gui::Colour& DARKYELLOW();
-    static const Gui::Colour& DARKGREEN();
-    static const Gui::Colour& DARKBLUE();
-    static const Gui::Colour& DROPDOWNDARKGREEN();
-    static const Gui::Colour& DROPDOWNLIGHTGREEN();
+const Gui::Colour& mVIIIBackgroundColour();
+const Gui::Colour& OFFWHITE();
+const Gui::Colour& VERYDARKGREY();
+const Gui::Colour& ALMOSTBLACK();
+const Gui::Colour& VERYDARKPURPLE();
+const Gui::Colour& LIGHTPURPLE();
+const Gui::Colour& PURPLE();
+const Gui::Colour& PROGRESSGREEN();
 
-    static void releaseMenuBmpMemory();
-    // Cached menu bitmaps
-    static GuiBitmap& longGlowBmp();
-    static GuiBitmap& longYellowGlowBmp();
-    static GuiBitmap& buttonGlowBmp();
-    static GuiBitmap& buttonDisableBmp();
-    static GuiBitmap& menuScrollUpBmp();
-    static GuiBitmap& menuScrollDownBmp();
-    static GuiBitmap& okMsgBoxBmp();
-    static GuiBitmap& okCancelMsgBoxBmp();
-    static GuiBitmap& tickBmp();
-    static GuiBitmap& darkTickBmp();
-    static GuiBitmap& largeTickBmp();
-    static GuiBitmap& largeDarkTickBmp();
-    static GuiBitmap& dropDownBmp();
-    static GuiBitmap& hostBmp();
-    static GuiBitmap& slideBtnBmp();
-    static GuiBitmap& controlPanelBmp();
-    static GuiBitmap& inTransitBmp();
+const Gui::Colour& MENUDARKGREEN();
+const Gui::Colour& SANDY();
+const Gui::Colour& DARKSANDY();
+const Gui::Colour& DARKRED();
+const Gui::Colour& DARKYELLOW();
+const Gui::Colour& DARKGREEN();
+const Gui::Colour& DARKBLUE();
+const Gui::Colour& DROPDOWNDARKGREEN();
+const Gui::Colour& DROPDOWNLIGHTGREEN();
 
-    static const string& closedText();
-    static const string& openText();
-    static const string& computerText();
-    static const string& unavailableText();
-    static const string& wonSymbolText();
+void releaseMenuBmpMemory();
+// Cached menu bitmaps
+GuiBitmap& longGlowBmp();
+GuiBitmap& longYellowGlowBmp();
+GuiBitmap& buttonGlowBmp();
+GuiBitmap& buttonDisableBmp();
+GuiBitmap& menuScrollUpBmp();
+GuiBitmap& menuScrollDownBmp();
+GuiBitmap& okMsgBoxBmp();
+GuiBitmap& okCancelMsgBoxBmp();
+GuiBitmap& tickBmp();
+GuiBitmap& darkTickBmp();
+GuiBitmap& largeTickBmp();
+GuiBitmap& largeDarkTickBmp();
+GuiBitmap& dropDownBmp();
+GuiBitmap& hostBmp();
+GuiBitmap& slideBtnBmp();
+GuiBitmap& controlPanelBmp();
+GuiBitmap& inTransitBmp();
 
-    static MATHEX_SCALAR uiScaleFactor();
-    static MATHEX_SCALAR menuScaleFactor();
-    static void setUiScaleFactor(MATHEX_SCALAR scale);
+const string& closedText();
+const string& openText();
+const string& computerText();
+const string& unavailableText();
+const string& wonSymbolText();
 
-    static std::string getScaledImagePath(std::string path);
+MATHEX_SCALAR uiScaleFactor();
+MATHEX_SCALAR menuScaleFactor();
+void setUiScaleFactor(MATHEX_SCALAR scale);
 
-    /**
-     * @brief Returns a bitmap scaled by uiScaleFactor() or a HiDPI alternatives
-     * @param path to the image file (with .bmp or without any extension)
-     * @return scaled image or HiDPI bitmap
-     */
-    static GuiBitmap getScaledImage(std::string path);
+std::string getScaledImagePath(std::string path);
 
-    static float getPhysMarkerLineWidth();
+/**
+ * @brief Returns a bitmap scaled by uiScaleFactor() or a HiDPI alternatives
+ * @param path to the image file (with .bmp or without any extension)
+ * @return scaled image or HiDPI bitmap
+ */
+GuiBitmap getScaledImage(std::string path);
 
-    // Various gui layout values
-    static int controlPanelInXPos();
-    static int controlPanelOutXPos();
-    static int controlPanelSlideInSpeed();
-    static int controlPanelSlideOutSpeed();
-    static int promptTextXOffset();
-    static int promptTextYOffset();
-    static int mapAreaHeight();
+float getPhysMarkerLineWidth();
 
-    static int barBorderThickness();
-    static int barShadowThickness();
-    static int barDividerThickness();
-    static int barValueLineOffset();
-    static int barValueLineThickness();
+// Various gui layout values
+int controlPanelInXPos();
+int controlPanelOutXPos();
+int controlPanelSlideInSpeed();
+int controlPanelSlideOutSpeed();
+int promptTextXOffset();
+int promptTextYOffset();
+int mapAreaHeight();
 
-    static int iconIndexYOffset();
+int barBorderThickness();
+int barShadowThickness();
+int barDividerThickness();
+int barValueLineOffset();
+int barValueLineThickness();
 
-    static int corralInfoTextSize();
-    static int navigationButtonNumberSize();
+int iconIndexYOffset();
 
-    static double doubleClickInterval();
+int corralInfoTextSize();
+int navigationButtonNumberSize();
 
-    // Context enumerations
-    enum ControlPanelContext
-    {
-        MAIN_MENU,
-        SQUADRON_MENU,
-        MACHINE_NAVIGATION_MENU,
-        CONSTRUCTION_NAVIGATION_MENU,
-        CONSTRUCT_COMMAND,
-        BUILD_COMMAND,
-        HARDWARE_RESEARCH,
-        SOFTWARE_RESEARCH,
-        FORM_SQUADRON_COMMAND,
-        SINGLE_FACTORY
-    };
+double doubleClickInterval();
 
-    // Cursor enumeration
-    enum Cursor2dType
-    {
-        MENU_CURSOR,
-        INVALID_CURSOR,
-        MOVETO_CURSOR,
-        ATTACK_CURSOR,
-        CONSTRUCT_CURSOR,
-        LOCATETO_CURSOR,
-        PATROL_CURSOR,
-        DEPLOY_CURSOR,
-        PICKUP_CURSOR,
-        TRANSPORT_CURSOR,
-        ENTER_BUILDING_CURSOR,
-        ENTER_APC_CURSOR,
-        FOLLOW_CURSOR,
-        SELECT_CURSOR,
-        DROPLANDMINE_CURSOR,
-        HEAL_CURSOR,
-        DECONSTRUCT_CURSOR,
-        RECYCLE_CURSOR,
-        STANDGROUND_CUSROR,
-        REPAIR_CURSOR,
-        CAPTURE_CURSOR,
-        JOINCONSTRUCT_CURSOR,
-        ASSEMBLEPOINT_CURSOR,
-        ION_ATTACK_CURSOR,
-        NUKE_ATTACK_CURSOR,
-        SCROLL_N_CURSOR,
-        SCROLL_S_CURSOR,
-        SCROLL_E_CURSOR,
-        SCROLL_W_CURSOR,
-        SCROLL_NE_CURSOR,
-        SCROLL_NW_CURSOR,
-        SCROLL_SE_CURSOR,
-        SCROLL_SW_CURSOR,
-        SCAVENGE_CURSOR,
-        CHOOSE_CONST_CURSOR,
-        TREACHERY_CURSOR
-    };
-
-    static int convertNetworkError(int);
-
-    static void releaseInGameBmpMemory();
-
-    // Funtions that check for existance of CD
-    static bool getCDRomDriveContainingFile(string& cdRomDrive, const string& fileToCheckFor);
-
-    static bool getCDRomDriveContainingMachinesCD(string& cdRomDrive, int CDNumber);
-    // PRE( CDNumber > and 0 CDNumber < 3 );
-
-    static bool machinesCDIsAvailable(int CDNumber);
-    // PRE( CDNumber > and 0 CDNumber < 3 );
+// Context enumerations
+enum ControlPanelContext
+{
+    MAIN_MENU,
+    SQUADRON_MENU,
+    MACHINE_NAVIGATION_MENU,
+    CONSTRUCTION_NAVIGATION_MENU,
+    CONSTRUCT_COMMAND,
+    BUILD_COMMAND,
+    HARDWARE_RESEARCH,
+    SOFTWARE_RESEARCH,
+    FORM_SQUADRON_COMMAND,
+    SINGLE_FACTORY
 };
 
-#endif // #ifndef _MACH_GUI_HPP
+// Cursor enumeration
+enum Cursor2dType
+{
+    MENU_CURSOR,
+    INVALID_CURSOR,
+    MOVETO_CURSOR,
+    ATTACK_CURSOR,
+    CONSTRUCT_CURSOR,
+    LOCATETO_CURSOR,
+    PATROL_CURSOR,
+    DEPLOY_CURSOR,
+    PICKUP_CURSOR,
+    TRANSPORT_CURSOR,
+    ENTER_BUILDING_CURSOR,
+    ENTER_APC_CURSOR,
+    FOLLOW_CURSOR,
+    SELECT_CURSOR,
+    DROPLANDMINE_CURSOR,
+    HEAL_CURSOR,
+    DECONSTRUCT_CURSOR,
+    RECYCLE_CURSOR,
+    STANDGROUND_CUSROR,
+    REPAIR_CURSOR,
+    CAPTURE_CURSOR,
+    JOINCONSTRUCT_CURSOR,
+    ASSEMBLEPOINT_CURSOR,
+    ION_ATTACK_CURSOR,
+    NUKE_ATTACK_CURSOR,
+    SCROLL_N_CURSOR,
+    SCROLL_S_CURSOR,
+    SCROLL_E_CURSOR,
+    SCROLL_W_CURSOR,
+    SCROLL_NE_CURSOR,
+    SCROLL_NW_CURSOR,
+    SCROLL_SE_CURSOR,
+    SCROLL_SW_CURSOR,
+    SCAVENGE_CURSOR,
+    CHOOSE_CONST_CURSOR,
+    TREACHERY_CURSOR
+};
 
-/* End GUI.HPP ******************************************************/
+int convertNetworkError(int);
+
+void releaseInGameBmpMemory();
+
+// Funtions that check for existance of CD
+bool getCDRomDriveContainingFile(string& cdRomDrive, const string& fileToCheckFor);
+
+bool getCDRomDriveContainingMachinesCD(string& cdRomDrive, int CDNumber);
+// PRE( CDNumber > and 0 CDNumber < 3 );
+
+bool machinesCDIsAvailable(int CDNumber);
+// PRE( CDNumber > and 0 CDNumber < 3 );
+
+}; // namespace MachGui
