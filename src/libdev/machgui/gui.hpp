@@ -69,6 +69,7 @@ public:
     static const string& wonSymbolText();
 
     static MATHEX_SCALAR uiScaleFactor();
+    static MATHEX_SCALAR menuScaleFactor();
     static void setUiScaleFactor(MATHEX_SCALAR scale);
 
     static std::string getScaledImagePath(std::string path);

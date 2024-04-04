@@ -645,6 +645,11 @@ MATHEX_SCALAR MachGui::uiScaleFactor()
     return s_uiScaleFactor;
 }
 
+MATHEX_SCALAR MachGui::menuScaleFactor()
+{
+    return uiScaleFactor();
+}
+
 void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
 {
     s_uiScaleFactor = scale;
