@@ -1083,9 +1083,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                             ri.buildingCost(overrideBuildingCost);
                         if (! researched)
                         {
-                            ASSERT_INFO(riParser.tokens());
-                            // ASSERT( ri.researchCost > 0,"You may not specify an item to be researched if it has zero
-                            // cost\n" );
+                            ASSERT_INFO(riParser.line());
                             ASSERT(
                                 ri.researchCost() > 0,
                                 "You may not specify an item to be researched if it has zero cost\n");

@@ -14,11 +14,10 @@
 #ifndef _UTILITY_LINETOK_HPP
 #define _UTILITY_LINETOK_HPP
 
-#include "base/base.hpp"
-#include "ctl/vector.hpp"
 #include "system/pathname.hpp"
 
 #include <string>
+#include <vector>
 
 class UtlLineTokeniser
 {
@@ -62,7 +61,7 @@ public:
     const std::string& line() const;
     //  PRE( not finished() );
 
-    using Tokens = ctl_vector<std::string>;
+    using Tokens = std::vector<std::string>;
 
     //  Returns the current set of tokens. Tokens are delimited by white space
     //  and token delimiters
@@ -149,12 +148,12 @@ private:
     {
         SysPathName fileName_;
         std::istream* pIstream_;
-        size_t lineNumber_;
+        std::size_t lineNumber_;
     };
 
-    ctl_vector<FileData> fileDataStack_;
+    std::vector<FileData> fileDataStack_;
 
-    using FixedTokens = ctl_vector<std::string>;
+    using FixedTokens = std::vector<std::string>;
 
     FixedTokens fixedTokens_;
 };
