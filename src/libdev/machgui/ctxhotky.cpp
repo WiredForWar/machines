@@ -27,11 +27,6 @@
 MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("so", pStartupScreens)
 {
-    changeBackdrop("gui/menu/so.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     const uint HOTKEY_MIN_X = 128;
     const uint HOTKEY_MIN_Y = 15;
     const uint HOTKEY_MAX_Y = 350;

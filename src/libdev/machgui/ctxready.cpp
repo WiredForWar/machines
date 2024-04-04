@@ -147,11 +147,6 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
 {
     NETWORK_STREAM("MachGuiCtxImReady::MachGuiCtxImReady this " << static_cast<const void*>(this) << "\n");
     NETWORK_INDENT(2);
-    // Display backdrop, play correct music, switch cursor on.
-    changeBackdrop("gui/menu/sd.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
     new MachGuiChatButton(pStartupScreens, Gui::Box(336, 345, 346, 373));

@@ -86,12 +86,6 @@ private:
 MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sf", pStartupScreens)
 {
-    // Bitmap background
-    changeBackdrop("gui/menu/sf.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     // Get the display, required for things like gamma correction, display drivers etc
     RenDisplay* pDisplay_ = W4dManager::instance().sceneManager()->pDevice()->display();
 

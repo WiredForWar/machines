@@ -241,13 +241,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
     , pNumPlayersText_(nullptr)
     , autoLoadGame_(false)
 {
-    // Display backdrop, play correct music, switch cursor on.
-    changeBackdrop("gui/menu/sn.bmp");
-
     const auto& topLeft = getBackdropTopLeft();
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
     MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(

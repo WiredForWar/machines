@@ -227,12 +227,6 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         *this);
     pGamesList_->childrenUpdated();
 
-    // Standard context setting stuff...
-    changeBackdrop("gui/menu/sc.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     // Query network to find which protocol has been selected
     NetNetwork::NetworkProtocol protocol = NetNetwork::instance().currentProtocol();
 

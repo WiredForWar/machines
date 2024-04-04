@@ -162,13 +162,7 @@ private:
 MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sh", pStartupScreens)
 {
-    // Display backdrop, play correct music, switch cursor on.
-    changeBackdrop("gui/menu/sh.bmp");
-
     const auto& topLeft = getBackdropTopLeft();
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Standard buttons...
     pOkBtn_ = new MachGuiMenuButton(

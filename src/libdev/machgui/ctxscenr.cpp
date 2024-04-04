@@ -332,13 +332,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
     const int SCENARIO_LB_MINY = 274;
     const int SCENARIO_LB_MAXY = 453;
 
-    // Display backdrop, play correct music, switch cursor on.
-    changeBackdrop("gui/menu/sl.bmp");
-
     const auto& topLeft = getBackdropTopLeft();
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     // Regular menu buttons...
     MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(

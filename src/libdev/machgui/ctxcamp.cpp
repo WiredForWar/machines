@@ -195,12 +195,6 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
         1);
     updatePlayersList();
 
-    // Display backdrop, play correct music, switch cursor on.
-    changeBackdrop("gui/menu/sm.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     TEST_INVARIANT;
 }
 

@@ -76,11 +76,6 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
     if (pStartupScreens->currentContext() == MachGuiStartupScreens::CTX_MPDEBRIEFING)
         pRestartButton->disabled(true);
 
-    changeBackdrop("gui/menu/sj.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     displayDeBriefImage();
 
     MachGuiScrollableText* pTextInfo = new MachGuiScrollableText(pStartupScreens, Gui::Box(359, 265, 558, 426));

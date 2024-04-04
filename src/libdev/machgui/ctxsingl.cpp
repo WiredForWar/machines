@@ -41,11 +41,6 @@ MachGuiCtxSinglePlayer::MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupSc
     new MachGuiMenuText(pStartupScreens, Gui::Box(82, 292, 262, 399), IDS_MENU_SINGLEPLAYER, "gui/menu/largefnt.bmp");
     pCancelBtn->escapeControl(true);
 
-    changeBackdrop("gui/menu/si.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     TEST_INVARIANT;
 }
 

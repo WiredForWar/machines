@@ -67,11 +67,6 @@ MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
 
     pCancelBtn->escapeControl(true);
 
-    changeBackdrop("gui/menu/sk.bmp");
-
-    pStartupScreens->cursorOn(true);
-    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
-
     pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(23, 21, 305, 336));
     MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(306, 21), 315, pTextInfo_);
 

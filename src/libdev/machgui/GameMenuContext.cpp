@@ -9,6 +9,10 @@ GameMenuContext::GameMenuContext(std::string name, MachGuiStartupScreens* pStart
     : MachGuiStartupScreenContext(pStartupScreens)
     , animations_(pStartupScreens, SysPathName("gui/menu/" + name + "_anims.anm"))
 {
+    changeBackdrop("gui/menu/" + name + ".bmp");
+
+    pStartupScreens->cursorOn(true);
+    pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 }
 
 } // namespace MachGui
