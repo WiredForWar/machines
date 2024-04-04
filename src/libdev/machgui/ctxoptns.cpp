@@ -362,25 +362,26 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         new GuiImage(pStartupScreens, Gui::Coord(353, 198), Gui::bitmap("gui/menu/gammacal.bmp"));
     }
 
-    const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
-
-    // Access boolean items
-    uint index = 0;
-    for (MachPhysComplexityManager::BooleanItems::const_iterator it = boolItems.begin(); it != boolItems.end(); ++it)
     {
-        uint id = (*it)->id();
-
-        booleanOptimisations_.push_back(new MachGuiCheckBox(
-            pStartupScreens,
-            pStartupScreens,
-            Gui::Coord(240, OPTIMISATIONS_AREA_MINY + 33 + (20 * index)),
-            id));
-        ++index;
+        const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
+        // Access boolean items
+        uint index = 0;
+        const auto optimizationAreaCoord = Gui::Coord(240, OPTIMISATIONS_AREA_MINY + 33);
+        const int verticalStep = 20;
+        for (const MachPhysComplexityBooleanItem *item : boolItems)
+        {
+            booleanOptimisations_.push_back(new MachGuiCheckBox(
+                pStartupScreens,
+                pStartupScreens,
+                optimizationAreaCoord + Gui::Coord(0, verticalStep * index),
+                item->id()));
+            ++index;
+        }
     }
 
     // Access all the choices items, their id and # of choice per id
     const MachPhysComplexityManager::ChoiceItems& chItems = MachPhysComplexityManager::instance().choiceItems();
-    index = 0;
+    uint index = 0;
     for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
     {
         uint id = (*it)->id();
