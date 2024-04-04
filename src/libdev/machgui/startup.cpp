@@ -1189,16 +1189,27 @@ void MachGuiStartupScreens::doDisplay()
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(Context, context_);
 
+    const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
     if (context_ != CTX_LOADINGEXE && context_ != CTX_POSTLOADINGANIMATION)
     {
-        const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
         RenDevice::current()->backSurface().filledRectangle(
             Ren::Rect(0, 0, mode.width(), mode.height()),
             RenColour::black());
     }
 
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
-    mSharedBitmaps_.blitNamedBitmap(backdrop, Gui::Coord(xMenuOffset(), yMenuOffset()));
+    assert(!backdrop->isNull());
+
+    const Gui::Coord coord(xMenuOffset(), yMenuOffset());
+    if (backdrop->requestedSize().isNull())
+    {
+        GuiPainter::instance().blit(*backdrop, coord);
+    }
+    else
+    {
+        RenSurface::Size backdropSize = backdrop->requestedSize();
+        GuiPainter::instance().stretch(*backdrop, Gui::Box(coord, Gui::Size(backdropSize.width, backdropSize.height)));
+    }
 }
 
 bool MachGuiStartupScreens::finishApp()
