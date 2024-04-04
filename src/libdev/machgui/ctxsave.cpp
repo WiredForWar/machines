@@ -6,8 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxsave.hpp"
-#include "machgui/menubutn.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/dbsavgam.hpp"
 #include "machgui/dbplayer.hpp"
@@ -19,7 +19,7 @@
 #include "machgui/msgbox.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/lsgextra.hpp"
-#include "machgui/scrolbar.hpp"
+#include "machgui/ui/VerticalScrollBar.hpp"
 #include "machlog/races.hpp"
 #include "system/pathname.hpp"
 #include "machgui/internal/strings.hpp"

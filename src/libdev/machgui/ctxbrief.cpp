@@ -7,9 +7,9 @@
 //
 
 #include "machgui/ctxbrief.hpp"
-#include "machgui/menubutn.hpp"
-#include "machgui/menutext.hpp"
-#include "machgui/scrltext.hpp"
+#include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/ScrollableText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
 #include "machgui/dbtexdat.hpp"
@@ -17,7 +17,7 @@
 #include "machgui/dbplyscn.hpp"
 #include "machgui/dbplayer.hpp"
 #include "machgui/database.hpp"
-#include "machgui/scrolbar.hpp"
+#include "machgui/ui/VerticalScrollBar.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/msgbox.hpp"
 #include "machlog/dbhandlr.hpp"

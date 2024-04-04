@@ -7,8 +7,8 @@
 
 #include "machgui/msgbox.hpp"
 #include "machgui/startup.hpp"
-#include "machgui/menutext.hpp"
-#include "machgui/menubutn.hpp"
+#include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/MenuButton.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
 #include "gui/manager.hpp"

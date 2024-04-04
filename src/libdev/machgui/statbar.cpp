@@ -9,7 +9,7 @@
 #include "gui/painter.hpp"
 #include "system/pathname.hpp"
 #include "machgui/startup.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "gui/font.hpp"
 #include <stdlib.h>
 

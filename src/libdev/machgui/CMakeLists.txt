@@ -32,8 +32,6 @@ set(MACHGUI_SOURCES
     chatmsgs.hpp
     chatwind.cpp
     chatwind.hpp
-    chckbox.cpp
-    chckbox.hpp
     cmdassem.cpp
     cmdassem.hpp
     cmdattac.cpp
@@ -261,10 +259,6 @@ set(MACHGUI_SOURCES
     mdnetwork.hpp
     mdserial.cpp
     mdserial.hpp
-    menubutn.cpp
-    menubutn.hpp
-    menutext.cpp
-    menutext.hpp
     messbrok.cpp
     messbrok.hpp
     mextemp.cpp
@@ -297,14 +291,6 @@ set(MACHGUI_SOURCES
     restorer.cpp
     restorer.hpp
     root.hpp
-    scrlarea.cpp
-    scrlarea.hpp
-    scrltext.cpp
-    scrltext.hpp
-    scrolbar.cpp
-    scrolbar.hpp
-    slidebar.cpp
-    slidebar.hpp
     squadron.cpp
     squadron.hpp
     sslistbx.cpp
@@ -325,10 +311,24 @@ set(MACHGUI_SOURCES
     strtdata.hpp
     sysmess.cpp
     sysmess.hpp
-    text.cpp
-    text.hpp
     typemap.cpp
     typemap.hpp
+    ui/CheckBox.cpp
+    ui/CheckBox.hpp
+    ui/MenuButton.cpp
+    ui/MenuButton.hpp
+    ui/MenuText.cpp
+    ui/MenuText.hpp
+    ui/ScrollArea.cpp
+    ui/ScrollArea.hpp
+    ui/ScrollableText.cpp
+    ui/ScrollableText.hpp
+    ui/SlideBar.cpp
+    ui/SlideBar.hpp
+    ui/Text.cpp
+    ui/Text.hpp
+    ui/VerticalScrollBar.cpp
+    ui/VerticalScrollBar.hpp
     worldvie.cpp
     worldvie.hpp
     menus_helper.hpp

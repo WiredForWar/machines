@@ -5,7 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/menubutn.hpp"
+#include "MenuButton.hpp"
+
 #include "machgui/gui.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"

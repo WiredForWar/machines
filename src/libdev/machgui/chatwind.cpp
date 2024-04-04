@@ -8,7 +8,7 @@
 #include "stdlib/string.hpp"
 #include "machgui/chatwind.hpp"
 #include "machgui/startup.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "machgui/menus_helper.hpp"

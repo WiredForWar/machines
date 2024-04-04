@@ -8,8 +8,8 @@
 #include "machgui/ctxcamp.hpp"
 
 #include "base/diag.hpp"
-#include "machgui/menubutn.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/editlist.hpp"
 #include "machgui/sslistbx.hpp"

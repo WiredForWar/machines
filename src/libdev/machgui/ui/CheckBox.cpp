@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/chckbox.hpp"
+#include "machgui/ui/CheckBox.hpp"
 #include "system/pathname.hpp"
 #include "gui/event.hpp"
 #include "gui/painter.hpp"

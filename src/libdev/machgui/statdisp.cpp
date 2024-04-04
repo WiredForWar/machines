@@ -12,7 +12,7 @@
 #include "gui/painter.hpp"
 #include "gui/font.hpp"
 #include "machgui/statbar.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 
 float MachGuiStatisticsDisplay::initialTime_ = 0;
 float MachGuiStatisticsDisplay::ratioComplete_ = 0;

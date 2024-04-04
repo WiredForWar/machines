@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/slidebar.hpp"
+#include "machgui/ui/SlideBar.hpp"
 
 #include "base/diag.hpp"
 

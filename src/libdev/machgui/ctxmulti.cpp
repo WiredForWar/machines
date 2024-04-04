@@ -8,9 +8,9 @@
 #include "machgui/ctxmulti.hpp"
 
 #include "base/diag.hpp"
-#include "machgui/menubutn.hpp"
+#include "machgui/ui/MenuButton.hpp"
 #include "machgui/strtdata.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/sslistit.hpp"
 #include "machgui/sslistbx.hpp"
 #include "machgui/editbox.hpp"

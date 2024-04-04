@@ -11,7 +11,7 @@
 #include "gui/gui.hpp"
 #include "gui/font.hpp"
 #include "machgui/dropdwnc.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
 #include "network/comport.hpp"

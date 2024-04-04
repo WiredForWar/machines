@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "gui/painter.hpp"
 #include "gui/restring.hpp"
 #include "gui/font.hpp"

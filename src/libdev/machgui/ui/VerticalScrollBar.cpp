@@ -5,7 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/scrolbar.hpp"
+#include "VerticalScrollBar.hpp"
+
 #include "machgui/gui.hpp"
 #include "gui/painter.hpp"
 #include "gui/border.hpp"

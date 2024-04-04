@@ -14,7 +14,7 @@
 #include "machphys/machphys.hpp"
 
 #include "machgui/gui.hpp"
-#include "machgui/scrlarea.hpp"
+#include "machgui/ui/ScrollArea.hpp"
 
 #include "world4d/observer.hpp"
 

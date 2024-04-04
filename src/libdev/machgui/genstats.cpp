@@ -11,7 +11,7 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "machgui/gui.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 
 #define GS_BOX_WIDTH 77
 #define GS_INDENT 6

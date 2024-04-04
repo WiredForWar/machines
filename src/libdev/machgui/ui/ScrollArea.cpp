@@ -5,7 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/scrlarea.hpp"
+#include "ScrollArea.hpp"
+
 #include "machgui/ingame.hpp"
 #include "machgui/controlp.hpp"
 #include "gui/scrolist.hpp"

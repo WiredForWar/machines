@@ -14,7 +14,7 @@
 #include "machgui/messbrok.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "gui/font.hpp"
 #include <fstream>

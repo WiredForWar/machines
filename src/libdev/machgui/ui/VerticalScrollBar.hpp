@@ -12,7 +12,6 @@
 #ifndef _MACHGUI_SCROLBAR_HPP
 #define _MACHGUI_SCROLBAR_HPP
 
-#include "base/base.hpp"
 #include "gui/scrolbar.hpp"
 
 class MachGuiVerticalScrollBar : public GuiVerticalScrollBar

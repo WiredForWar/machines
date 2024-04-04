@@ -11,7 +11,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/promtext.hpp"
 #include "machgui/cameras.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/strtdata.hpp"
 #include "machgui/chatmsgs.hpp"
 #include "machgui/ingame.hpp"

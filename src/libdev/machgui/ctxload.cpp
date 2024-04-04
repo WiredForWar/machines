@@ -6,8 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxload.hpp"
-#include "machgui/menubutn.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/sslistit.hpp"
 #include "machgui/sslistbx.hpp"
@@ -16,7 +16,7 @@
 #include "machgui/dbplayer.hpp"
 #include "machgui/msgbox.hpp"
 #include "machgui/gui.hpp"
-#include "machgui/scrolbar.hpp"
+#include "machgui/ui/VerticalScrollBar.hpp"
 #include "system/pathname.hpp"
 #include "machgui/internal/strings.hpp"
 #include "gui/font.hpp"

@@ -9,7 +9,7 @@
 #include "machlog/network.hpp"
 #include "machgui/ctxingam.hpp"
 #include "system/pathname.hpp"
-#include "machgui/menubutn.hpp"
+#include "machgui/ui/MenuButton.hpp"
 #include "machgui/database.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/msgboxei.hpp"

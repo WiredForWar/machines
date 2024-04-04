@@ -14,7 +14,7 @@
 #define _MACHGUI_BILDMENU_HPP
 
 #include "base/base.hpp"
-#include "machgui/scrlarea.hpp"
+#include "machgui/ui/ScrollArea.hpp"
 
 // forward refs
 class MachInGameScreen;

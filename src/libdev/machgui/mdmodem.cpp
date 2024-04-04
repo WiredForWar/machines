@@ -11,7 +11,7 @@
 #include "gui/font.hpp"
 #include "gui/manager.hpp"
 #include "machgui/dropdwnc.hpp"
-#include "machgui/menutext.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/editbox.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/gui.hpp"

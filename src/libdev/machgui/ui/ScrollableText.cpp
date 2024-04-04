@@ -5,12 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/scrltext.hpp"
+#include "machgui/ui/ScrollableText.hpp"
 
 #include "base/diag.hpp"
 #include "machgui/startup.hpp"
-#include "machgui/menutext.hpp"
-#include "machgui/text.hpp"
+#include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/Text.hpp"
 #include "gui/restring.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
