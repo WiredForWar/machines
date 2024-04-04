@@ -41,3 +41,9 @@ CB 6994 240 179
 
 // Grab mouse
 CB 11002 240 199
+
+// Menu button OK
+MB 85 377 291 423
+
+// Menu button Cancel
+MB 337 377 543 423

@@ -100,20 +100,25 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     MachGuiOptionsLayout screenLayout(SysPathName("gui/layout/options.dat"));
 
     // Create buttons
-    MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
-        pStartupScreens,
-        pStartupScreens,
-        Gui::Box(85, 377, 291, 423),
-        IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK);
-    MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
-        pStartupScreens,
-        pStartupScreens,
-        Gui::Box(337, 377, 543, 423),
-        IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::BE_DUMMY_EXIT);
-    pCancelBtn->escapeControl(true);
-    pOkBtn->defaultControl(true);
+    {
+        const MachGuiOptionsLayout::MenuButtonInfo& okButtonInfo = screenLayout.menuButtonInfo(0);
+        const MachGuiOptionsLayout::MenuButtonInfo& cancelButtonInfo = screenLayout.menuButtonInfo(1);
+
+        MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
+            pStartupScreens,
+            pStartupScreens,
+            Gui::Box(okButtonInfo.topLeft, okButtonInfo.bottomRight),
+            IDS_MENUBTN_OK,
+            MachGuiStartupScreens::BE_DUMMY_OK);
+        MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
+            pStartupScreens,
+            pStartupScreens,
+            Gui::Box(cancelButtonInfo.topLeft, cancelButtonInfo.bottomRight),
+            IDS_MENUBTN_CANCEL,
+            MachGuiStartupScreens::BE_DUMMY_EXIT);
+        pCancelBtn->escapeControl(true);
+        pOkBtn->defaultControl(true);
+    }
 
     // Display large headings
     GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
