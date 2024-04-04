@@ -29,6 +29,17 @@ public:
         uint range;
     };
 
+    struct MenuButtonInfo
+    {
+        MenuButtonInfo(MexPoint2d tl, MexPoint2d br)
+            : topLeft(tl)
+            , bottomRight(br)
+        {
+        }
+        MexPoint2d topLeft;
+        MexPoint2d bottomRight;
+    };
+
     struct MenuTextInfo
     {
         MenuTextInfo(uint stringId, MexPoint2d tl, MexPoint2d br, const string& fnt)
@@ -57,6 +68,7 @@ public:
     const MachGuiOptionsLayout::SlidebarInfo& slidebarInfo(uint index) const;
     // PRE( index < nScrollBars() )
 
+    const MachGuiOptionsLayout::MenuButtonInfo& menuButtonInfo(uint index) const;
     const MachGuiOptionsLayout::MenuTextInfo& menuTextInfo(uint index) const;
     // PRE( index < nMenuTexts() )
 
@@ -64,6 +76,7 @@ public:
     // PRE( index < nCheckBoxes() )
 
     uint nSlidebars() const { return slidebars_.size(); }
+    uint nMenuButtons() const { return menuButtons_.size(); }
     uint nMenuTexts() const { return menuTexts_.size(); }
     uint nCheckBoxes() const { return checkBoxes_.size(); }
 
@@ -72,6 +85,7 @@ public:
 private:
     void parse();
     void parseSlidebar(const UtlLineTokeniser::Tokens& tokens);
+    void parseMenuButton(const UtlLineTokeniser::Tokens& tokens);
     void parseMenuText(const UtlLineTokeniser::Tokens& tokens);
     void parseCheckBox(const UtlLineTokeniser::Tokens& tokens);
 
@@ -81,6 +95,7 @@ private:
     MachGuiOptionsLayout& operator=(const MachGuiOptionsLayout&);
 
     std::vector<SlidebarInfo> slidebars_;
+    std::vector<MenuButtonInfo> menuButtons_;
     std::vector<MenuTextInfo> menuTexts_;
     std::vector<CheckBoxInfo> checkBoxes_;
     UtlLineTokeniser parser_;

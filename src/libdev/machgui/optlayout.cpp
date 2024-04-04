@@ -36,6 +36,13 @@ const MachGuiOptionsLayout::SlidebarInfo& MachGuiOptionsLayout::slidebarInfo(uin
     return slidebars_.at(index);
 }
 
+const MachGuiOptionsLayout::MenuButtonInfo& MachGuiOptionsLayout::menuButtonInfo(uint index) const
+{
+    PRE(nMenuButtons());
+    PRE(index < nMenuButtons());
+    return menuButtons_.at(index);
+}
+
 const MachGuiOptionsLayout::MenuTextInfo& MachGuiOptionsLayout::menuTextInfo(uint index) const
 {
     PRE(nMenuTexts());
@@ -56,6 +63,8 @@ void MachGuiOptionsLayout::parse()
     {
         if (parser_.tokens()[0] == "SB")
             parseSlidebar(parser_.tokens());
+        else if (parser_.tokens()[0] == "MB")
+            parseMenuButton(parser_.tokens());
         else if (parser_.tokens()[0] == "MT")
             parseMenuText(parser_.tokens());
         else if (parser_.tokens()[0] == "CB")
@@ -71,6 +80,15 @@ void MachGuiOptionsLayout::parseSlidebar(const UtlLineTokeniser::Tokens& tokens)
     MexPoint2d topLeft(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
     uint range = atoi(tokens[3].c_str());
     slidebars_.emplace_back(SlidebarInfo(topLeft * scale_, range));
+}
+
+void MachGuiOptionsLayout::parseMenuButton(const UtlLineTokeniser::Tokens& tokens)
+{
+    ASSERT(tokens.size() == 5, "wrong number of arguments");
+
+    MexPoint2d topLeft(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
+    MexPoint2d bottomRight(atoi(tokens[3].c_str()), atoi(tokens[4].c_str()));
+    menuButtons_.emplace_back(MenuButtonInfo(topLeft * scale_, bottomRight * scale_));
 }
 
 void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
