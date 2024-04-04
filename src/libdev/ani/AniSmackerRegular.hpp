@@ -44,7 +44,7 @@ protected:
 
 private:
     void copyCurrentFrameToBuffer(RenSurface& dst);
-    void unpackBufferToSurface(const RenSurface& dst, const RenSurface& src);
+    void unpackBufferToSurface(RenSurface dst, const RenSurface& src);
 
     bool isFinishedNoRecord() const;
 

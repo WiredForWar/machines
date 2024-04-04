@@ -436,7 +436,7 @@ void AniSmackerRegular::copyCurrentFrameToBuffer(RenSurface& dst)
     }
 }
 
-void AniSmackerRegular::unpackBufferToSurface(const RenSurface& dst, const RenSurface& src)
+void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& src)
 {
     bool doUnpack = true;
 
@@ -450,7 +450,7 @@ void AniSmackerRegular::unpackBufferToSurface(const RenSurface& dst, const RenSu
     {
         ASSERT(! isFinishedNoRecord(), "");
 
-        const_cast<RenSurface&>(dst).simpleBlit(src, xCoordTo_, yCoordTo_);
+        dst.simpleBlit(src, xCoordTo_, yCoordTo_);
     }
 }
 
