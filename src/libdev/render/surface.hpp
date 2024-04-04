@@ -50,7 +50,7 @@ public:
     RenSurface(const RenSurface&);
     RenSurface& operator=(const RenSurface&);
 
-    void swap(RenSurface& other) { std::swap(other.myId_, myId_); }
+    void swap(RenSurface&& other) { std::swap(other.myId_, myId_); }
 
     // Create a surface of the given size with a pixel format which matches
     // that of the given surface.  No data is copied form the given surface.
@@ -102,6 +102,7 @@ public:
 
     // Use to indicate bad return values etc.
     bool isNull() const;
+    void reset();
 
     // Blit from the given surface to this one:
     //   simple = one copy, no repeats and no stretching

@@ -1044,6 +1044,11 @@ bool RenSurface::isNull() const
     return myId_ == Ren::NullTexId;
 }
 
+void RenSurface::reset()
+{
+    swap(RenSurface());
+}
+
 const int RenSurface::handle() const
 {
     return internals()->handle();
