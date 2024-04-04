@@ -3826,7 +3826,7 @@ int MachGuiStartupScreens::getDefaultLockScreenResolutionValue()
 
 void MachGuiStartupScreens::changeLogoImage(const char* image)
 {
-    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image);
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image, MachGui::menuScaleFactor());
 
     changed();
 }
