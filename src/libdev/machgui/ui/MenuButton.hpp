@@ -14,8 +14,16 @@
 
 #include "base/base.hpp"
 #include "gui/displaya.hpp"
-#include "machgui/startup.hpp"
 #include "machgui/focusctl.hpp"
+
+class GuiRoot;
+
+namespace MachGui
+{
+
+enum class ButtonEvent;
+
+} // namespace MachGui
 
 class MachGuiMenuButton
     : public GuiDisplayable

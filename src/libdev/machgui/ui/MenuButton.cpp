@@ -8,6 +8,7 @@
 #include "MenuButton.hpp"
 
 #include "machgui/gui.hpp"
+#include "machgui/startup.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
 #include "sound/smpparam.hpp"
