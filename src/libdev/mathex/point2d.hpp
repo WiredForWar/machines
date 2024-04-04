@@ -32,7 +32,7 @@ public:
     MexPoint2d() = default;
     MexPoint2d(MATHEX_SCALAR x, MATHEX_SCALAR y);
     MexPoint2d(const MexPoint2d& rhs);
-    MexPoint2d(const MexVec2& rhs);
+    explicit MexPoint2d(const MexVec2& rhs);
 
     MexPoint2d(const MexPoint3d& p3);
     // POST( *this == MexPoint2d( p3.x(), p3.y() ) );
