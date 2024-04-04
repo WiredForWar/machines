@@ -321,9 +321,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sl_anims.anm"))
-    , pImage_(nullptr)
+    : MachGui::GameMenuContext("sl", pStartupScreens)
 {
     const int LB_MINX = 38;
     const int LB_MAXX = 251;

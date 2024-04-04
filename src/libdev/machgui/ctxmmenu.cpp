@@ -38,9 +38,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sa_anims.anm"))
-    , quit_(false)
+    : MachGui::GameMenuContext("sa", pStartupScreens)
 {
     // Access all menu fonts to make sure they are loaded ready for other context to use. This will
     // stop annoying pauses as other context access and use fonts for the first time.

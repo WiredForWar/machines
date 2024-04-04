@@ -12,16 +12,14 @@
 #ifndef _MACHGUI_CTXSAVE_HPP
 #define _MACHGUI_CTXSAVE_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiSingleSelectionListBox;
 class MachGuiEditBoxListBoxItem;
 class MachGuiDbSavedGame;
 class MachGuiMenuButton;
 
-class MachGuiCtxSave : public MachGuiStartupScreenContext
+class MachGuiCtxSave : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -54,10 +52,9 @@ private:
     MachGuiCtxSave& operator=(const MachGuiCtxSave&);
 
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiSingleSelectionListBox* pSaveGameList_;
     MachGuiEditBoxListBoxItem* pNewSaveGameName_;
-    MachGuiDbSavedGame* pSelectedSaveGame_;
+    MachGuiDbSavedGame* pSelectedSaveGame_{};
     MachGuiMenuButton* pDeleteBtn_;
     MachGuiMenuButton* pOkBtn_;
 };

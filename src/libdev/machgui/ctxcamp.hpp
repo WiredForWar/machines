@@ -12,16 +12,14 @@
 #ifndef _MACHGUI_CTXCAMP_HPP
 #define _MACHGUI_CTXCAMP_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiSingleSelectionListBox;
 class MachGuiEditBoxListBoxItem;
 class MachGuiDbPlayer;
 class MachGuiMenuText;
 
-class MachGuiCtxCampaign : public MachGuiStartupScreenContext
+class MachGuiCtxCampaign : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -53,7 +51,6 @@ private:
 
     void displayCurrentStatus();
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiSingleSelectionListBox* pPlayersList_;
     MachGuiEditBoxListBoxItem* pNewPlayerName_;
     MachGuiDbPlayer* pSelectedPlayer_;

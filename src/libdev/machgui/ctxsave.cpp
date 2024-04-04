@@ -160,9 +160,7 @@ private:
 #define SCROLLBAR_WIDTH 17
 
 MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sh_anims.anm"))
-    , pSelectedSaveGame_(nullptr)
+    : MachGui::GameMenuContext("sh", pStartupScreens)
 {
     // Display backdrop, play correct music, switch cursor on.
     changeBackdrop("gui/menu/sh.bmp");

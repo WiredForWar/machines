@@ -12,11 +12,9 @@
 #ifndef _MACHGUI_CTXSINGL_HPP
 #define _MACHGUI_CTXSINGL_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
-class MachGuiCtxSinglePlayer : public MachGuiStartupScreenContext
+class MachGuiCtxSinglePlayer : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -32,8 +30,6 @@ private:
 
     MachGuiCtxSinglePlayer(const MachGuiCtxSinglePlayer&);
     MachGuiCtxSinglePlayer& operator=(const MachGuiCtxSinglePlayer&);
-
-    MachGuiAnimations animations_;
 };
 
 #endif

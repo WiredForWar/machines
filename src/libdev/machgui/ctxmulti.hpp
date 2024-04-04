@@ -12,13 +12,11 @@
 #ifndef _MACHGUI_CTXMULTI_HPP
 #define _MACHGUI_CTXMULTI_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiSingleLineEditBox;
 
-class MachGuiCtxMultiplayer : public MachGuiStartupScreenContext
+class MachGuiCtxMultiplayer : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -37,7 +35,6 @@ private:
     MachGuiCtxMultiplayer& operator=(const MachGuiCtxMultiplayer&);
 
     MachGuiSingleLineEditBox* pSingleLineEditBox_;
-    MachGuiAnimations animations_;
 };
 
 #endif

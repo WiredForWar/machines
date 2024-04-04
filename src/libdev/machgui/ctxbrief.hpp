@@ -12,16 +12,15 @@
 #ifndef _MACHGUI_CTXBRIEF_HPP
 #define _MACHGUI_CTXBRIEF_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
+
 #include "sound/soundmix.hpp"
 
 class MachGuiScrollableText;
 class MachGuiMenuButton;
 class GuiImage;
 
-class MachGuiCtxBriefing : public MachGuiStartupScreenContext
+class MachGuiCtxBriefing : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -55,7 +54,6 @@ private:
     void stopPlayingBriefingVoicemail();
 
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiScrollableText* pTextInfo_;
     MachGuiMenuButton* pHintsBtn_;
     MachGuiMenuButton* pObjectiveBtn_;

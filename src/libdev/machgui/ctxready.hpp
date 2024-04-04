@@ -12,9 +12,7 @@
 #ifndef _MACHGUI_CTXREADY_HPP
 #define _MACHGUI_CTXREADY_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiChatWindow;
 class MachGuiSingleLineEditBox;
@@ -25,7 +23,7 @@ class MachGuiImReadyButton;
 class MachGuiStartupData;
 class DevTimer;
 
-class MachGuiCtxImReady : public MachGuiStartupScreenContext
+class MachGuiCtxImReady : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -68,7 +66,6 @@ private:
     MachGuiImReadyButton* pImReadyButton_;
     MachGuiMenuButton* pStartButton_;
     MachGuiMenuButton* pSettingsButton_;
-    MachGuiAnimations animations_;
     GuiSimpleScrollableList* pReadOnlySettings_;
     DevTimer* pCreationTimer_;
     DevTimer* pHasCDTransmissionTimer_;

@@ -141,8 +141,7 @@ private:
 #define SETTINGS_MAXY 270
 
 MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sd_anims.anm"))
+    : MachGui::GameMenuContext("sd", pStartupScreens)
     , pCreationTimer_(new DevTimer())
     , pHasCDTransmissionTimer_(new DevTimer())
 {

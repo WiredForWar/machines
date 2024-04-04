@@ -12,9 +12,7 @@
 #ifndef _MACHGUI_CTXSKIRM_HPP
 #define _MACHGUI_CTXSKIRM_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiScrollableText;
 class MachGuiSingleSelectionListBox;
@@ -25,7 +23,7 @@ class GuiSimpleScrollableList;
 class MachGuiDropDownListBoxCreator;
 class MachGuiText;
 
-class MachGuiCtxSkirmish : public MachGuiStartupScreenContext
+class MachGuiCtxSkirmish : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -62,7 +60,6 @@ private:
     void initSettings();
 
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiScrollableText* pScenarioDesc_;
     MachGuiSingleSelectionListBox* pMapSizeList_;
     MachGuiSingleSelectionListBox* pTerrainTypeList_;

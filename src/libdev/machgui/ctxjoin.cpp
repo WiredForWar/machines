@@ -151,13 +151,8 @@ private:
 #define SCROLLBAR_WIDTH 17
 
 MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sc_anims.anm"))
-    , pNetworkProtocol_(nullptr)
-    , editingGameName_(false)
-    , joinGameSelected_(false)
+    : MachGui::GameMenuContext("sc", pStartupScreens)
 {
-
     WAYNE_STREAM("JOINGAME_LB_MAXY: " << JOINGAME_LB_MAXY << std::endl);
     pJoinBtn_ = new MachGuiMenuButton(
         pStartupScreens,

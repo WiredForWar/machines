@@ -12,8 +12,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiCtxSinglePlayer::MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/si_anims.anm"))
+    : MachGui::GameMenuContext("si", pStartupScreens)
 {
     new MachGuiMenuButton(
         pStartupScreens,

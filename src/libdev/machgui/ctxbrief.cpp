@@ -35,8 +35,7 @@
 #include <algorithm>
 
 MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sk_anims.anm"))
+    : MachGui::GameMenuContext("sk", pStartupScreens)
     , pBriefImage_(nullptr)
     , playedMail_(false)
     , autoLoadGame_(false)

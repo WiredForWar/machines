@@ -18,8 +18,7 @@
 #include "world4d/soundman.hpp"
 
 MachGuiCtxInGameOptions::MachGuiCtxInGameOptions(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/se_anims.anm"))
+    : MachGui::GameMenuContext("se", pStartupScreens)
 {
     // Setup all the buttons on this screen.
     MachGuiMenuButton* pContinueBtn = new MachGuiMenuButton(

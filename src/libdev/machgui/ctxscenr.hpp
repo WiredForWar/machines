@@ -12,9 +12,7 @@
 #ifndef _MACHGUI_CTXSCENR_HPP
 #define _MACHGUI_CTXSCENR_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiSingleSelectionListBox;
 class MachGuiDbSystem;
@@ -23,7 +21,7 @@ class MachGuiDbScenario;
 class MachGuiScrollableText;
 class GuiImage;
 
-class MachGuiCtxScenario : public MachGuiStartupScreenContext
+class MachGuiCtxScenario : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -53,12 +51,11 @@ private:
     void workOutWhichScenarioToDefaultTo();
 
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiSingleSelectionListBox* pSystemList_;
     MachGuiSingleSelectionListBox* pPlanetList_;
     MachGuiSingleSelectionListBox* pScenarioList_;
     MachGuiScrollableText* pTextInfo_;
-    GuiImage* pImage_;
+    GuiImage* pImage_{};
     MachGuiDbScenario* pDefaultScenario_;
 };
 

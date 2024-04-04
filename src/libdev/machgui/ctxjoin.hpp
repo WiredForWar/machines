@@ -12,16 +12,14 @@
 #ifndef _MACHGUI_CTXJOIN_HPP
 #define _MACHGUI_CTXJOIN_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiSingleSelectionListBox;
 class MachGuiNewGameName;
 class MachGuiNetworkProtocolMode;
 class MachGuiMenuButton;
 
-class MachGuiCtxJoin : public MachGuiStartupScreenContext
+class MachGuiCtxJoin : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -55,10 +53,9 @@ private:
     // Data members...
     MachGuiSingleSelectionListBox* pGamesList_;
     MachGuiNewGameName* pNewGameName_;
-    MachGuiAnimations animations_;
-    MachGuiNetworkProtocolMode* pNetworkProtocol_;
-    bool editingGameName_;
-    bool joinGameSelected_;
+    MachGuiNetworkProtocolMode* pNetworkProtocol_{};
+    bool editingGameName_{};
+    bool joinGameSelected_{};
     MachGuiMenuButton* pJoinBtn_;
     MachGuiMenuButton* pCreateBtn_;
     MachGuiMenuButton* pShowGamesBtn_;

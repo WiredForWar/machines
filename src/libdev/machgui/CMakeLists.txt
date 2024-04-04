@@ -1,5 +1,7 @@
 
 set(MACHGUI_SOURCES
+    GameMenuContext.cpp
+    GameMenuContext.hpp
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
     ResolvedUiString.cpp

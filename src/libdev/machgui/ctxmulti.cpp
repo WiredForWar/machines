@@ -68,8 +68,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sb_anims.anm"))
+    : MachGui::GameMenuContext("sb", pStartupScreens)
 {
     new MachGuiMenuButton(
         pStartupScreens,

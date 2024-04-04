@@ -108,8 +108,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sm_anims.anm"))
+    : MachGui::GameMenuContext("sm", pStartupScreens)
     , pSelectedPlayer_(nullptr)
     , pScenarioText_(nullptr)
     , pLastScenarioText_(nullptr)

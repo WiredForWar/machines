@@ -12,13 +12,12 @@
 #ifndef _MACHGUI_CTXOPTNS_HPP
 #define _MACHGUI_CTXOPTNS_HPP
 
-#include "base/base.hpp"
+#include "machgui/GameMenuContext.hpp"
+
 #include "ctl/pvector.hpp"
 #include "ctl/countptr.hpp"
 #include "render/driv.hpp"
-#include "machgui/startctx.hpp"
 #include "machgui/startup.hpp"
-#include "machgui/animatio.hpp"
 
 #define GAMMA_REG_MULTIPLIER 0x19999999
 #define GAMMA_LOWER_LIMIT 0.1
@@ -31,7 +30,7 @@ class MachGuiDDrawDropDownListBoxCreator;
 class MachGuiCheckBox;
 class RenDisplay;
 
-class MachGuiCtxOptions : public MachGuiStartupScreenContext
+class MachGuiCtxOptions : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -65,7 +64,6 @@ private:
 
     // Data members...
     MachGuiStartupScreens::Context exitContext_;
-    MachGuiAnimations animations_;
 
     MachGuiSlideBar* pMusicVolume_ = nullptr;
     MachGuiSlideBar* pSoundVolume_ = nullptr;

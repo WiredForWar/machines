@@ -12,11 +12,9 @@
 #ifndef _MACHGUI_CTXHOTKY_HPP
 #define _MACHGUI_CTXHOTKY_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
-class MachGuiCtxHotKeys : public MachGuiStartupScreenContext
+class MachGuiCtxHotKeys : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -34,9 +32,6 @@ private:
     MachGuiCtxHotKeys& operator=(const MachGuiCtxHotKeys&);
 
     void readHotkeyData(const string& hotKeyDataFileName, string& hotkeyString, uint& linesInString);
-
-    // Data members...
-    MachGuiAnimations animations_;
 };
 
 #endif

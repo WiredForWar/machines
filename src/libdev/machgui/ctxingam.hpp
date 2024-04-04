@@ -12,11 +12,9 @@
 #ifndef _MACHGUI_CTXINGAM_HPP
 #define _MACHGUI_CTXINGAM_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
-class MachGuiCtxInGameOptions : public MachGuiStartupScreenContext
+class MachGuiCtxInGameOptions : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -36,9 +34,6 @@ private:
 
     MachGuiCtxInGameOptions(const MachGuiCtxInGameOptions&);
     MachGuiCtxInGameOptions& operator=(const MachGuiCtxInGameOptions&);
-
-    // Data members...
-    MachGuiAnimations animations_;
 };
 
 #endif

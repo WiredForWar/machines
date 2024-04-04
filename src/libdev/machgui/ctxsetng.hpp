@@ -12,9 +12,7 @@
 #ifndef _MACHGUI_CTXSETNG_HPP
 #define _MACHGUI_CTXSETNG_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiScrollableText;
 class MachGuiSingleSelectionListBox;
@@ -24,7 +22,7 @@ class MachGuiDbScenario;
 class GuiSimpleScrollableList;
 class MachGuiDropDownListBoxCreator;
 
-class MachGuiCtxSettings : public MachGuiStartupScreenContext
+class MachGuiCtxSettings : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -54,7 +52,6 @@ private:
     void initSettings();
 
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiScrollableText* pScenarioDesc_;
     MachGuiSingleSelectionListBox* pMapSizeList_;
     MachGuiSingleSelectionListBox* pTerrainTypeList_;

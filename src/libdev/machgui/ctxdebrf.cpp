@@ -32,8 +32,7 @@
 #include "device/cd.hpp"
 
 MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sj_anims.anm"))
+    : MachGui::GameMenuContext("sj", pStartupScreens)
     , pDebriefImage_(nullptr)
     , playedMail_(false)
 {

@@ -84,8 +84,7 @@ private:
 };
 
 MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sf_anims.anm"))
+    : MachGui::GameMenuContext("sf", pStartupScreens)
 {
     // Bitmap background
     changeBackdrop("gui/menu/sf.bmp");

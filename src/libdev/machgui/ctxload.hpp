@@ -12,15 +12,13 @@
 #ifndef _MACHGUI_CTXLOAD_HPP
 #define _MACHGUI_CTXLOAD_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
 
 class MachGuiDbSavedGame;
 class MachGuiSingleSelectionListBox;
 class MachGuiMenuButton;
 
-class MachGuiCtxLoad : public MachGuiStartupScreenContext
+class MachGuiCtxLoad : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -51,10 +49,9 @@ private:
     MachGuiCtxLoad& operator=(const MachGuiCtxLoad&);
 
     // Data members...
-    MachGuiAnimations animations_;
     MachGuiSingleSelectionListBox* pSaveGameList_;
     MachGuiDbSavedGame* pSelectedSaveGame_;
-    bool autoLoadGame_;
+    bool autoLoadGame_{};
     MachGuiMenuButton* pDeleteBtn_;
     MachGuiMenuButton* pOkBtn_;
 };

@@ -236,8 +236,7 @@ private:
 #define SETTINGS_LB_MAXX 601
 
 MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sn_anims.anm"))
+    : MachGui::GameMenuContext("sn", pStartupScreens)
     , pNumPlayersSelector_(nullptr)
     , pNumPlayersText_(nullptr)
     , autoLoadGame_(false)

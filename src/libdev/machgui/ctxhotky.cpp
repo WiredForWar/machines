@@ -25,8 +25,7 @@
 #include <algorithm>
 
 MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/so_anims.anm"))
+    : MachGui::GameMenuContext("so", pStartupScreens)
 {
     changeBackdrop("gui/menu/so.bmp");
 

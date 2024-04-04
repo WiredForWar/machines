@@ -12,14 +12,13 @@
 #ifndef _MACHGUI_CTXDEBRF_HPP
 #define _MACHGUI_CTXDEBRF_HPP
 
-#include "base/base.hpp"
-#include "machgui/startctx.hpp"
-#include "machgui/animatio.hpp"
+#include "machgui/GameMenuContext.hpp"
+
 #include "sound/soundmix.hpp"
 
 class GuiImage;
 
-class MachGuiCtxDeBriefing : public MachGuiStartupScreenContext
+class MachGuiCtxDeBriefing : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:
@@ -47,7 +46,6 @@ private:
     void displayDeBriefImage();
 
     // Data members...
-    MachGuiAnimations animations_;
     GuiImage* pDebriefImage_;
     SndSampleHandle debriefVoicemail_;
     // Has this mail been played yet

@@ -159,8 +159,7 @@ private:
 #define SETTINGS_LB_MAXX 601
 
 MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/sp_anims.anm"))
+    : MachGui::GameMenuContext("sp", pStartupScreens)
 {
     // Display backdrop, play correct music, switch cursor on.
     changeBackdrop("gui/menu/sp.bmp");
