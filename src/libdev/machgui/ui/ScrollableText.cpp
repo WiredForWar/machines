@@ -8,80 +8,38 @@
 #include "machgui/ui/ScrollableText.hpp"
 
 #include "base/diag.hpp"
-#include "machgui/startup.hpp"
+#include "gui/font.hpp"
+#include "gui/root.hpp"
+#include "machgui/menus_helper.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/Text.hpp"
-#include "gui/restring.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "machgui/menus_helper.hpp"
 
-MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint stringId)
-    : GuiSimpleScrollableList(pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1)
-{
-    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
-    setText(stringId);
+static const std::string fontName = "gui/menu/smallfnt.bmp";
 
-    TEST_INVARIANT;
-}
-
-MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, const string& text)
-    : GuiSimpleScrollableList(pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1)
-{
-    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
-    setText(text);
-
-    TEST_INVARIANT;
-}
-
-MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box)
-    : GuiSimpleScrollableList(pParent, box, 1000, GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1, 1)
+MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint columnWidth)
+    : GuiSimpleScrollableList(pParent, box, columnWidth, GuiBmpFont::getFont(fontName).charHeight() + 1, 1)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
 }
 
-MachGuiScrollableText::MachGuiScrollableText(
-    GuiDisplayable* pParent,
-    const Gui::Box& box,
-    uint columnWidth,
-    const string& text)
-    : GuiSimpleScrollableList(
-        pParent,
-        box,
-        columnWidth,
-        GuiBmpFont::getFont("gui/menu/smallfnt.bmp").charHeight() + 1,
-        1)
-{
-    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
-    setText(text);
-
-    TEST_INVARIANT;
-}
-
-void MachGuiScrollableText::setText(uint stringId)
-{
-    GuiResourceString text(stringId);
-    setText(text.asString());
-}
-
-void MachGuiScrollableText::setText(const string& text)
+void MachGuiScrollableText::setText(const ResolvedUiString& text)
 {
     deleteAllChildren();
 
     strings linesOfText;
     linesOfText.reserve(64);
-    MachGuiMenuText::chopUpText(text, width(), GuiBmpFont::getFont("gui/menu/smallfnt.bmp"), &linesOfText);
+    MachGuiMenuText::chopUpText(text, width(), GuiBmpFont::getFont(fontName), &linesOfText);
 
     for (auto iter = linesOfText.begin(); iter != linesOfText.end(); ++iter)
     {
-        string lineOfText = *iter;
+        const std::string &lineOfText = *iter;
 
         NEIL_STREAM(lineOfText << std::endl);
 
         if (strncasecmp(&lineOfText.c_str()[0], "<w>", 3) == 0)
         {
-            new MachGuiText(this, width(), &lineOfText.c_str()[3], "gui/menu/smalwfnt.bmp");
+            new MachGuiText(this, width(), &lineOfText.c_str()[3], fontName);
         }
         else
         {

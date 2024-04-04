@@ -9,10 +9,8 @@
     A brief description of the class should go in here
 */
 
-#ifndef _MACHGUI_MENUBUTN_HPP
-#define _MACHGUI_MENUBUTN_HPP
+#pragma once
 
-#include "base/base.hpp"
 #include "gui/displaya.hpp"
 #include "machgui/focusctl.hpp"
 
@@ -92,7 +90,3 @@ private:
     bool msgBoxButton_;
     MachGui::ButtonEvent buttonEvent_;
 };
-
-#endif
-
-/* End MENUBUTN.HPP *************************************************/

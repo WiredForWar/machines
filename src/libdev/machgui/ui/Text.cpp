@@ -5,16 +5,18 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ui/Text.hpp"
+#include "Text.hpp"
+
 #include "gui/font.hpp"
+#include "gui/root.hpp"
 #include "machgui/menus_helper.hpp"
 
-MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const string& str)
+MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const std::string& str)
     : MachGuiText(pParent, width, str, "gui/menu/smallfnt.bmp")
 {
 }
 
-MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const string& str, const string& font)
+MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const std::string& str, const std::string& font)
     : GuiDisplayable(pParent)
     , text_(str)
     , font_(GuiBmpFont::getFont(font))

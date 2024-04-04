@@ -3,20 +3,12 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-/*
-    MachGuiMenuText
+#pragma once
 
-    A brief description of the class should go in here
-*/
-
-#ifndef _MACHGUI_MENUTEXT_HPP
-#define _MACHGUI_MENUTEXT_HPP
-
-#include "base/base.hpp"
-#include "stdlib/string.hpp"
-#include "ctl/vector.hpp"
 #include "gui/displaya.hpp"
+
 #include "system/pathname.hpp"
+#include "machgui/ResolvedUiString.hpp"
 
 using strings = std::vector<std::string>;
 class GuiBmpFont;
@@ -35,20 +27,14 @@ public:
     MachGuiMenuText(
         GuiDisplayable* pParent,
         const Gui::Box& box,
-        unsigned int stringId,
-        const SysPathName& fontPath,
-        Justification = CENTRE_JUSTIFY);
-    MachGuiMenuText(
-        GuiDisplayable* pParent,
-        const Gui::Box& box,
-        const string&,
+        const ResolvedUiString& str,
         const SysPathName& fontPath,
         Justification = CENTRE_JUSTIFY);
     ~MachGuiMenuText() override;
 
     void CLASS_INVARIANT;
 
-    static void chopUpText(const string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings);
+    static void chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings);
 
 protected:
     void doDisplay() override;
@@ -63,7 +49,3 @@ private:
     strings strings_;
     Justification justification_;
 };
-
-#endif
-
-/* End MENUTEXT.HPP *************************************************/

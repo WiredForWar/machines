@@ -9,25 +9,21 @@
     A brief description of the class should go in here
 */
 
-#ifndef _MACHGUI_SCRLTEXT_HPP
-#define _MACHGUI_SCRLTEXT_HPP
+#pragma once
 
-#include "base/base.hpp"
 #include "gui/scrolist.hpp"
-#include "gui/root.hpp"
+#include "machgui/ResolvedUiString.hpp"
+
+class GuiRoot;
 
 class MachGuiScrollableText : public GuiSimpleScrollableList
 // Canonical form revoked
 {
 public:
-    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box);
-    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint stringId);
-    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, const string& text);
-    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint columnWidth, const string& text);
+    MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint columnWidth = 1000);
     ~MachGuiScrollableText() override;
 
-    void setText(uint stringId);
-    void setText(const string&);
+    void setText(const ResolvedUiString& text);
 
     void doDisplay() override;
 
@@ -42,7 +38,3 @@ private:
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 };
-
-#endif
-
-/* End SCRLTEXT.HPP *************************************************/

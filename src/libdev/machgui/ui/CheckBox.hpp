@@ -9,14 +9,13 @@
     Check box class.
 */
 
-#ifndef _MACHGUI_CHCKBOX_HPP
-#define _MACHGUI_CHCKBOX_HPP
+#pragma once
 
-#include "gui/gui.hpp"
-#include "gui/font.hpp"
 #include "gui/displaya.hpp"
-#include "machgui/ResolvedUiString.hpp"
 #include "machgui/focusctl.hpp"
+
+#include "gui/font.hpp"
+#include "machgui/ResolvedUiString.hpp"
 
 class MachGuiCheckBox
     : public GuiDisplayable
@@ -73,7 +72,3 @@ private:
     GuiBitmap checkHighlightBmp_;
     GuiBitmap uncheckHighlightBmp_;
 };
-
-#endif
-
-/* End CHCKBOX.HPP **************************************************/

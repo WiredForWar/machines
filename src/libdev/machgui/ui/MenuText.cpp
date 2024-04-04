@@ -5,34 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ui/MenuText.hpp"
-#include "gui/painter.hpp"
-#include "gui/restring.hpp"
+#include "MenuText.hpp"
+
 #include "gui/font.hpp"
 
 MachGuiMenuText::MachGuiMenuText(
     GuiDisplayable* pParent,
     const Gui::Box& box,
-    unsigned int stringId,
-    const SysPathName& fontPath,
-    Justification justification)
-    : GuiDisplayable(pParent, box)
-    , fontPath_(fontPath)
-    , justification_(justification)
-{
-    strings_.reserve(128);
-    GuiResourceString str(stringId);
-    string wholeStr = str.asString();
-
-    chopUpText(wholeStr, width(), GuiBmpFont::getFont(fontPath_), &strings_);
-
-    TEST_INVARIANT;
-}
-
-MachGuiMenuText::MachGuiMenuText(
-    GuiDisplayable* pParent,
-    const Gui::Box& box,
-    const string& str,
+    const ResolvedUiString& str,
     const SysPathName& fontPath,
     Justification justification)
     : GuiDisplayable(pParent, box)
@@ -104,11 +84,11 @@ void MachGuiMenuText::doDisplay()
 }
 
 // static
-void MachGuiMenuText::chopUpText(const string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings)
+void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings)
 {
     // WARNING : this function breaks down if the width is not big enough to store at least 6 characters.
 
-    string choppedUpText;
+    std::string choppedUpText;
     int charPos = 0;
     int textLength = text.length();
     int curWidth = 0;
@@ -153,7 +133,7 @@ void MachGuiMenuText::chopUpText(const string& text, size_t maxWidth, const GuiB
             else if (strchr(almostStrEnd, ' '))
             {
                 // Remove beginning of last word from this line and stuff on next line...
-                string newLine;
+                std::string newLine;
                 curWidth = 0;
                 // Remove last chars until we find a space
                 while (choppedUpText[choppedUpText.length() - 1] != ' ')
@@ -176,8 +156,8 @@ void MachGuiMenuText::chopUpText(const string& text, size_t maxWidth, const GuiB
             else
             {
                 // Splitting word across two lines...
-                string newLine;
-                size_t hyphenWidth = font.charWidth('-') + font.spacing();
+                std::string newLine;
+                std::size_t hyphenWidth = font.charWidth('-') + font.spacing();
                 curWidth = 0;
 
                 // Remove as many characters as necessary so that a hyphen can be

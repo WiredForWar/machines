@@ -9,8 +9,7 @@
     A brief description of the class should go in here
 */
 
-#ifndef _MACHGUI_SCROLBAR_HPP
-#define _MACHGUI_SCROLBAR_HPP
+#pragma once
 
 #include "gui/scrolbar.hpp"
 
@@ -27,7 +26,3 @@ protected:
     void doDisplayBar() override;
     void doDisplayBox(const Gui::Box& absoluteBox) override;
 };
-
-#endif
-
-/* End SCROLBAR.HPP *************************************************/
