@@ -54,27 +54,27 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(368, 40, 527, 75),
         IDS_MENUBTN_CAMPAIGN,
-        MachGuiStartupScreens::CAMPAIGN);
+        MachGui::ButtonEvent::CAMPAIGN);
     new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 130, 527, 165),
         IDS_MENUBTN_MULTIPLAYER,
-        MachGuiStartupScreens::MULTIPLAYER);
+        MachGui::ButtonEvent::MULTIPLAYER);
     new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 217, 527, 252),
         IDS_MENUBTN_SKIRMISH,
-        MachGuiStartupScreens::SKIRMISH);
+        MachGui::ButtonEvent::SKIRMISH);
     new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(368, 297, 527, 332),
         IDS_MENUBTN_OPTIONS,
-        MachGuiStartupScreens::OPTIONS);
+        MachGui::ButtonEvent::OPTIONS);
     MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         Gui::Box(117, 410, 275, 445),
         IDS_MENUBTN_EXIT,
-        MachGuiStartupScreens::BE_DUMMY_OK);
+        MachGui::ButtonEvent::DUMMY_OK);
 
 #else
     new MachGuiMenuButton(
@@ -82,25 +82,25 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(368, 40, 527, 75),
         IDS_MENUBTN_SINGLEPLAYER,
-        MachGuiStartupScreens::SINGLEPLAYER);
+        MachGui::ButtonEvent::SINGLEPLAYER);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 130, 527, 165),
         IDS_MENUBTN_MULTIPLAYER,
-        MachGuiStartupScreens::MULTIPLAYER);
+        MachGui::ButtonEvent::MULTIPLAYER);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 217, 527, 252),
         IDS_MENUBTN_OPTIONS,
-        MachGuiStartupScreens::OPTIONS);
+        MachGui::ButtonEvent::OPTIONS);
     MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(368, 297, 527, 332),
         IDS_MENUBTN_EXIT,
-        MachGuiStartupScreens::BE_DUMMY_OK);
+        MachGui::ButtonEvent::DUMMY_OK);
 
 #endif
 
@@ -140,7 +140,7 @@ void MachGuiCtxMainMenu::update()
 {
     if (quit_)
     {
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::EXIT);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::EXIT);
     }
     else
     {
@@ -151,7 +151,7 @@ void MachGuiCtxMainMenu::update()
 // virtual
 bool MachGuiCtxMainMenu::okayToSwitchContext()
 {
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_DUMMY_OK)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::DUMMY_OK)
     {
         pStartupScreens_->displayMsgBox(IDS_MENUMSG_QUIT, new MachGuiMainMenuMessageBoxResponder(this), true);
         return false;

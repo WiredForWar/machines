@@ -42,7 +42,7 @@ public:
 
     void update() override;
     bool okayToSwitchContext() override;
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
     void exitFromOptions();
 

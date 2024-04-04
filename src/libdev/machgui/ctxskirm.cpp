@@ -256,13 +256,13 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(302, 420, 444, 451),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK);
+        MachGui::ButtonEvent::DUMMY_OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(472, 420, 607, 451),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn->defaultControl(true);
@@ -391,7 +391,7 @@ void MachGuiCtxSkirmish::update()
 {
     if (autoLoadGame_)
     {
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
     }
     else
     {
@@ -784,9 +784,9 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void MachGuiCtxSkirmish::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEvent)
+void MachGuiCtxSkirmish::buttonEvent(MachGui::ButtonEvent buttonEvent)
 {
-    if (buttonEvent == MachGuiStartupScreens::BE_DUMMY_OK)
+    if (buttonEvent == MachGui::ButtonEvent::DUMMY_OK)
     {
 #ifndef DEMO
         // if ( MachGui::machinesCDIsAvailable( 2 )
@@ -796,14 +796,14 @@ void MachGuiCtxSkirmish::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEv
         //  )
 #endif
         {
-            pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+            pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
         }
 // else
 //{
 //   pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiStartSkirmishMessageBoxResponder(this) );
 // }
 #else // DEMO defined.
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
 #endif
     }
 }

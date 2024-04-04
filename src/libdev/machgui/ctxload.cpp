@@ -122,19 +122,19 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(364, 127, 555, 170),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK);
+        MachGui::ButtonEvent::DUMMY_OK);
     pDeleteBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(364, 230, 555, 274),
         IDS_MENUBTN_DELETE,
-        MachGuiStartupScreens::BE_DELETE);
+        MachGui::ButtonEvent::DELETE);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(364, 328, 555, 371),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn_->defaultControl(true);
@@ -201,7 +201,7 @@ void MachGuiCtxLoad::update()
 {
     if (autoLoadGame_)
     {
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
     }
     else
     {
@@ -243,7 +243,7 @@ void MachGuiCtxLoad::updateSaveGameList()
 // virtual
 bool MachGuiCtxLoad::okayToSwitchContext()
 {
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::OK)
     {
         // Unload game if one is currently being played.
         pStartupScreens_->unloadGame();
@@ -282,9 +282,9 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
+void MachGuiCtxLoad::buttonEvent(MachGui::ButtonEvent be)
 {
-    if (be == MachGuiStartupScreens::BE_DELETE)
+    if (be == MachGui::ButtonEvent::DELETE)
     {
         if (pSelectedSaveGame_)
         {
@@ -304,7 +304,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
             }
         }
     }
-    else if (be == MachGuiStartupScreens::BE_DUMMY_OK)
+    else if (be == MachGui::ButtonEvent::DUMMY_OK)
     {
 #ifndef DEMO
         if (! pSelectedSaveGame_)
@@ -319,7 +319,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 #endif
         else
         {
-            pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+            pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
         }
 // else
 //{
@@ -332,7 +332,7 @@ void MachGuiCtxLoad::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
         }
         else
         {
-            pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+            pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
         }
 #endif
     }

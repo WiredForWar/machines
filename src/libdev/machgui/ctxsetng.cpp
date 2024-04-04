@@ -176,13 +176,13 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(302, 420, 444, 451),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK);
+        MachGui::ButtonEvent::OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(472, 420, 607, 451),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOKBtn->defaultControl(true);
@@ -456,7 +456,7 @@ void MachGuiCtxSettings::updateSelectedScenario(MachGuiDbScenario& scenario)
 // virtual
 bool MachGuiCtxSettings::okayToSwitchContext()
 {
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::OK)
     {
         ASSERT(pStartupScreens_->startupData()->isHost(), "Only host should be able to change multiplayer settings");
 

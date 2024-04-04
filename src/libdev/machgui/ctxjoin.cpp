@@ -164,25 +164,25 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(414, 51, 605, 93),
         IDS_MENUBTN_JOIN,
-        MachGuiStartupScreens::JOIN);
+        MachGui::ButtonEvent::JOIN);
     pCreateBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 157, 605, 200),
         IDS_MENUBTN_CREATE,
-        MachGuiStartupScreens::CREATE);
+        MachGui::ButtonEvent::CREATE);
     pShowGamesBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 251, 605, 293),
         IDS_MENUBTN_SHOWGAMES,
-        MachGuiStartupScreens::SHOWGAMES);
+        MachGui::ButtonEvent::SHOWGAMES);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(414, 348, 605, 390),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
 
     pCancelBtn->escapeControl(true);
     pShowGamesBtn_->defaultControl(true);
@@ -287,9 +287,9 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t)
 }
 
 // virtual
-void MachGuiCtxJoin::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
+void MachGuiCtxJoin::buttonEvent(MachGui::ButtonEvent be)
 {
-    if (be == MachGuiStartupScreens::SHOWGAMES)
+    if (be == MachGui::ButtonEvent::SHOWGAMES)
     {
         showGames();
     }
@@ -381,7 +381,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
     pNewGameName_->updateNewGameName();
 
     // Was CREATE pressed...
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::CREATE)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::CREATE)
     {
         bool isHost = true;
 
@@ -406,7 +406,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
             return true;
         }
     } // Was JOIN pressed...
-    else if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::JOIN)
+    else if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::JOIN)
     {
         bool isHost = false;
         if (pStartupScreens_->startupData()->joinGame() == "" || ! joinGameSelected_)

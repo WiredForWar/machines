@@ -34,7 +34,7 @@ public:
 
     bool okayToSwitchContext() override;
 
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
     void selectedSaveGame(MachGuiDbSavedGame*);
     void clearSelectedSaveGame();

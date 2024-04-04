@@ -42,7 +42,7 @@ private:
     MachGuiStartupScreens::Music desiredCdTrack_; // Track number that should be playing on audio cd. ( -1 for none )
     PhysAbsoluteTime cdCheckTime_; // Only check cd once every 60 seconds
     bool endGame_;
-    MachGuiStartupScreens::ButtonEvent lastButtonEvent_;
+    MachGui::ButtonEvent lastButtonEvent_;
     MachGuiMessageBox* pMsgBox_; // Displays a message box with OK or OK/Cancel buttons
     MachGuiMessageBoxResponder* pMsgBoxResponder_; // Is told about OK/Cancel button presses in a message box
     MachGuiStartupScreens::GameType gameType_;

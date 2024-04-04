@@ -33,6 +33,45 @@ class MexTransform3d;
 class MachGuiFocusCapableControl;
 class MachGuiDbScenario;
 
+namespace MachGui
+{
+
+enum class ButtonEvent
+{
+    NO_IMP,
+    SINGLEPLAYER,
+    EXIT,
+    STARTGAME,
+    CAMPAIGN,
+    MOVIES,
+    MULTIPLAYER,
+    CONTINUE,
+    JOIN,
+    CREATE,
+    SHOWGAMES,
+    LOADGAME,
+    SAVEGAME,
+    OPTIONS,
+    SKIRMISH,
+    SETTINGS,
+    OK,
+    IMREADY,
+    START,
+    BRIEFING,
+    HOTKEYS,
+    RESTART,
+    NEW,
+    DELETE,
+    HINTS,
+    OBJECTIVES,
+    CANCEL,
+    STATISTICS,
+    DUMMY_OK,
+    DUMMY_EXIT
+};
+
+} // namespace MachGui
+
 class MachGuiStartupScreens : public GuiRoot
 // Canonical form revoked
 {
@@ -42,42 +81,8 @@ public:
 
     void setGuiViewport();
 
-    enum ButtonEvent
-    {
-        NO_IMP,
-        SINGLEPLAYER,
-        EXIT,
-        STARTGAME,
-        CAMPAIGN,
-        MOVIES,
-        MULTIPLAYER,
-        CONTINUE,
-        JOIN,
-        CREATE,
-        SHOWGAMES,
-        LOADGAME,
-        SAVEGAME,
-        OPTIONS,
-        SKIRMISH,
-        SETTINGS,
-        BE_OK,
-        IMREADY,
-        START,
-        BRIEFING,
-        HOTKEYS,
-        RESTART,
-        BE_NEW,
-        BE_DELETE,
-        HINTS,
-        OBJECTIVES,
-        BE_CANCEL,
-        BE_STATISTICS,
-        BE_DUMMY_OK,
-        BE_DUMMY_EXIT
-    };
-
-    void buttonAction(ButtonEvent);
-    void buttonAction(ButtonEvent, const string& wavFile);
+    void buttonAction(MachGui::ButtonEvent);
+    void buttonAction(MachGui::ButtonEvent, const string& wavFile);
 
     void updateGui();
     void displayGui();
@@ -94,7 +99,7 @@ public:
     // const GuiBitmap& backdrop() const;
 
     // Returns the ButtonEvent enum for the last menu button that was pressed.
-    ButtonEvent lastButtonEvent() const;
+    MachGui::ButtonEvent lastButtonEvent() const;
 
     // Switch mouse cursor on/off
     void cursorOn(bool);
@@ -350,7 +355,7 @@ private:
     struct ContextSwitchInfo
     {
         Context curContext_;
-        ButtonEvent buttonEvent_;
+        MachGui::ButtonEvent buttonEvent_;
         Context newContext_;
         bool playTransition_;
     };
@@ -372,7 +377,7 @@ private:
         DevKey::Code scanCode_;
         Context newContext_;
         bool playTransition_;
-        ButtonEvent simButtonEvent_;
+        MachGui::ButtonEvent simButtonEvent_;
     };
     struct ContextFlic
     {

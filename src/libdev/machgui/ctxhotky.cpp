@@ -250,7 +250,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(351, 420, 553, 464),
         IDS_MENUBTN_CONTINUE,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
     new MachGuiMenuText(pStartupScreens, Gui::Box(42, 353, 224, 464), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp");
 
     pContinueBtn->escapeControl(true);

@@ -120,6 +120,8 @@ inline constexpr bool cDemoVersion =
 #include "base/cballoc.hpp"
 #include "base/IProgressReporter.hpp"
 
+using namespace MachGui;
+
 class LoadGameProgressIndicator : public IProgressReporter
 {
 public:
@@ -1092,7 +1094,7 @@ void MachGuiStartupScreens::setVictoryCondition(MachLogGameCreationData& gameDat
 
 void MachGuiStartupScreens::buttonAction(ButtonEvent be)
 {
-    if (be != NO_IMP)
+    if (be != ButtonEvent::NO_IMP)
     {
         buttonAction(be, "gui/sounds/click.wav");
     }
@@ -1113,7 +1115,7 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
     MachGuiSoundManager::instance().playSound(wavFile);
 
     // Dismiss message box?
-    if (pMsgBox_ && (be == BE_OK || be == BE_CANCEL))
+    if (pMsgBox_ && (be == ButtonEvent::OK || be == ButtonEvent::CANCEL))
     {
         // Restore character focus
         if (pCharFocus_)
@@ -1126,7 +1128,7 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
         // Do we need to tell a message box responder about the button press?
         if (pMsgBoxResponder_)
         {
-            if (be == BE_OK)
+            if (be == ButtonEvent::OK)
                 deleteMsgBox = pMsgBoxResponder_->okPressed();
             else
                 deleteMsgBox = pMsgBoxResponder_->cancelPressed();
@@ -1904,7 +1906,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
                 // store the button value that we are pressing.
                 lastButtonEvent_ = cki.simButtonEvent_;
 
-                if (lastButtonEvent_ != NO_IMP)
+                if (lastButtonEvent_ != ButtonEvent::NO_IMP)
                 {
                     // Set up the sound to be played. Only play sound if keypress is equivalent
                     // to pressing an onscreen button
@@ -2550,9 +2552,9 @@ void MachGuiStartupScreens::contextLogo()
         desiredCdTrack(MENU_MUSIC);
 }
 
-MachGuiStartupScreens::ButtonEvent MachGuiStartupScreens::lastButtonEvent() const
+MachGui::ButtonEvent MachGuiStartupScreens::lastButtonEvent() const
 {
-    CB_DEPIMPL(ButtonEvent, lastButtonEvent_);
+    CB_DEPIMPL_AUTO(lastButtonEvent_);
 
     return lastButtonEvent_;
 }
@@ -3009,66 +3011,66 @@ const MachGuiStartupScreens::ContextSwitchInfo* MachGuiStartupScreens::getContex
     if constexpr (cDemoVersion)
     {
         static constexpr ContextSwitchInfo csi[] = {
-            { CTX_MULTIPLAYER, JOIN, CTX_JOIN, false },
-            { CTX_MULTIPLAYER, EXIT, CTX_MAINMENU, false },
-            { CTX_JOIN, EXIT, CTX_MULTIPLAYER, false },
-            { CTX_JOIN, CREATE, CTX_IMREADY, false },
-            { CTX_JOIN, JOIN, CTX_IMREADY, false },
-            { CTX_IMREADY, EXIT, CTX_JOIN, false },
-            { CTX_IMREADY, SETTINGS, CTX_SETTINGS, false },
-            { CTX_SETTINGS, EXIT, CTX_IMREADY, false },
-            { CTX_SETTINGS, BE_OK, CTX_IMREADY, false },
-            { CTX_MAINMENU, EXIT, CTX_SPLASH1, false },
-            { CTX_MAINMENU, BE_DUMMY_OK, CTX_SPLASH1, false },
-            { CTX_MAINMENU, CAMPAIGN, CTX_SCENARIO, false },
-            { CTX_MAINMENU, SKIRMISH, CTX_SKIRMISH, false },
-            { CTX_MAINMENU, OPTIONS, CTX_OPTIONS, false },
-            { CTX_MAINMENU, MULTIPLAYER, CTX_MULTIPLAYER, false },
-            { CTX_SCENARIO, EXIT, CTX_MAINMENU, false },
-            { CTX_SCENARIO, BE_OK, CTX_BRIEFING, false },
-            { CTX_BRIEFING, EXIT, CTX_SCENARIO, false },
-            { CTX_BRIEFING, STARTGAME, CTX_GAME, false },
-            { CTX_IGBRIEFING, EXIT, CTX_INGAMEOP, false },
-            { CTX_IGBRIEFING, STARTGAME, CTX_BACKTOGAME, false },
-            { CTX_SKIRMISH, EXIT, CTX_MAINMENU, false },
-            { CTX_SKIRMISH, BE_OK, CTX_SKIRMISH_GAME, false },
+            { CTX_MULTIPLAYER, ButtonEvent::JOIN, CTX_JOIN, false },
+            { CTX_MULTIPLAYER, ButtonEvent::EXIT, CTX_MAINMENU, false },
+            { CTX_JOIN, ButtonEvent::EXIT, CTX_MULTIPLAYER, false },
+            { CTX_JOIN, ButtonEvent::CREATE, CTX_IMREADY, false },
+            { CTX_JOIN, ButtonEvent::JOIN, CTX_IMREADY, false },
+            { CTX_IMREADY, ButtonEvent::EXIT, CTX_JOIN, false },
+            { CTX_IMREADY, ButtonEvent::SETTINGS, CTX_SETTINGS, false },
+            { CTX_SETTINGS, ButtonEvent::EXIT, CTX_IMREADY, false },
+            { CTX_SETTINGS, ButtonEvent::OK, CTX_IMREADY, false },
+            { CTX_MAINMENU, ButtonEvent::EXIT, CTX_SPLASH1, false },
+            { CTX_MAINMENU, ButtonEvent::DUMMY_OK, CTX_SPLASH1, false },
+            { CTX_MAINMENU, ButtonEvent::CAMPAIGN, CTX_SCENARIO, false },
+            { CTX_MAINMENU, ButtonEvent::SKIRMISH, CTX_SKIRMISH, false },
+            { CTX_MAINMENU, ButtonEvent::OPTIONS, CTX_OPTIONS, false },
+            { CTX_MAINMENU, ButtonEvent::MULTIPLAYER, CTX_MULTIPLAYER, false },
+            { CTX_SCENARIO, ButtonEvent::EXIT, CTX_MAINMENU, false },
+            { CTX_SCENARIO, ButtonEvent::OK, CTX_BRIEFING, false },
+            { CTX_BRIEFING, ButtonEvent::EXIT, CTX_SCENARIO, false },
+            { CTX_BRIEFING, ButtonEvent::STARTGAME, CTX_GAME, false },
+            { CTX_IGBRIEFING, ButtonEvent::EXIT, CTX_INGAMEOP, false },
+            { CTX_IGBRIEFING, ButtonEvent::STARTGAME, CTX_BACKTOGAME, false },
+            { CTX_SKIRMISH, ButtonEvent::EXIT, CTX_MAINMENU, false },
+            { CTX_SKIRMISH, ButtonEvent::OK, CTX_SKIRMISH_GAME, false },
 
-            { CTX_OPTIONS, BE_OK, CTX_MAINMENU, false },
-            { CTX_OPTIONS, EXIT, CTX_MAINMENU, false },
+            { CTX_OPTIONS, ButtonEvent::OK, CTX_MAINMENU, false },
+            { CTX_OPTIONS, ButtonEvent::EXIT, CTX_MAINMENU, false },
 
-            { CTX_CAINGAMEOPTIONS, EXIT, CTX_SCENARIO, false },
-            { CTX_CAINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_CAINGAMEOPTIONS, OPTIONS, CTX_IGOPTIONS, false },
-            { CTX_CAINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::EXIT, CTX_SCENARIO, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::OPTIONS, CTX_IGOPTIONS, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, false },
 
-            { CTX_SKINGAMEOPTIONS, EXIT, CTX_SKIRMISH, false },
-            { CTX_SKINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_SKINGAMEOPTIONS, OPTIONS, CTX_IGOPTIONS, false },
-            { CTX_SKINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::EXIT, CTX_SKIRMISH, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::OPTIONS, CTX_IGOPTIONS, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, false },
 
-            { CTX_MPINGAMEOPTIONS, EXIT, CTX_JOIN, false },
-            { CTX_MPINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_MPINGAMEOPTIONS, OPTIONS, CTX_IGOPTIONS, false },
-            { CTX_MPINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::EXIT, CTX_JOIN, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::OPTIONS, CTX_IGOPTIONS, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, false },
 
-            { CTX_CAINGAMEOPTIONS, EXIT, CTX_MAINMENU, false },
-            { CTX_CAINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_CAINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, false },
-            { CTX_SKINGAMEOPTIONS, EXIT, CTX_MAINMENU, false },
-            { CTX_SKINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_SKINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::EXIT, CTX_MAINMENU, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::EXIT, CTX_MAINMENU, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, false },
 
-            { CTX_MPINGAMEOPTIONS, EXIT, CTX_MAINMENU, false },
-            { CTX_MPINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_MPINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::EXIT, CTX_MAINMENU, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, false },
 
-            { CTX_IGOPTIONS, BE_OK, CTX_INGAMEOP, false },
-            { CTX_IGOPTIONS, EXIT, CTX_INGAMEOP, false },
-            { CTX_CADEBRIEFING, CONTINUE, CTX_SCENARIO, false },
-            { CTX_SKDEBRIEFING, CONTINUE, CTX_SKIRMISH, false },
-            { CTX_MPDEBRIEFING, CONTINUE, CTX_JOIN, false },
+            { CTX_IGOPTIONS, ButtonEvent::OK, CTX_INGAMEOP, false },
+            { CTX_IGOPTIONS, ButtonEvent::EXIT, CTX_INGAMEOP, false },
+            { CTX_CADEBRIEFING, ButtonEvent::CONTINUE, CTX_SCENARIO, false },
+            { CTX_SKDEBRIEFING, ButtonEvent::CONTINUE, CTX_SKIRMISH, false },
+            { CTX_MPDEBRIEFING, ButtonEvent::CONTINUE, CTX_JOIN, false },
             /*This line must come last*/
-            { CTX_FINISH, EXIT, CTX_FINISH, false },
+            { CTX_FINISH, ButtonEvent::EXIT, CTX_FINISH, false },
         };
 
         return csi;
@@ -3076,81 +3078,81 @@ const MachGuiStartupScreens::ContextSwitchInfo* MachGuiStartupScreens::getContex
     else
     {
         static constexpr ContextSwitchInfo csi[] = {
-            { CTX_SINGLEPLAYER, EXIT, CTX_MAINMENU, true },
-            { CTX_SINGLEPLAYER, CAMPAIGN, CTX_CAMPAIGN, true },
-            { CTX_SINGLEPLAYER, SKIRMISH, CTX_SKIRMISH, true },
-            { CTX_SINGLEPLAYER, LOADGAME, CTX_LOAD, true },
-            { CTX_MULTIPLAYER, JOIN, CTX_JOIN, true },
-            { CTX_MULTIPLAYER, EXIT, CTX_MAINMENU, true },
-            { CTX_JOIN, EXIT, CTX_MULTIPLAYER, true },
-            { CTX_JOIN, CREATE, CTX_IMREADY, true },
-            { CTX_JOIN, JOIN, CTX_IMREADY, true },
-            { CTX_IMREADY, EXIT, CTX_JOIN, true },
-            { CTX_IMREADY, SETTINGS, CTX_SETTINGS, true },
-            { CTX_SETTINGS, EXIT, CTX_IMREADY, true },
-            { CTX_SETTINGS, BE_OK, CTX_IMREADY, true },
-            { CTX_MAINMENU, EXIT, CTX_FINISH, true },
-            { CTX_MAINMENU, BE_DUMMY_OK, CTX_FINISH, true },
-            { CTX_MAINMENU, SINGLEPLAYER, CTX_SINGLEPLAYER, true },
-            { CTX_MAINMENU, OPTIONS, CTX_OPTIONS, true },
-            { CTX_MAINMENU, MULTIPLAYER, CTX_MULTIPLAYER, true },
-            { CTX_CAMPAIGN, EXIT, CTX_SINGLEPLAYER, true },
-            { CTX_CAMPAIGN, BE_OK, CTX_SCENARIO, true },
-            { CTX_SCENARIO, EXIT, CTX_CAMPAIGN, true },
-            { CTX_SCENARIO, BE_OK, CTX_BRIEFING, true },
-            { CTX_BRIEFING, EXIT, CTX_SCENARIO, true },
-            { CTX_BRIEFING, STARTGAME, CTX_ENTRYFLIC, false },
-            { CTX_IGBRIEFING, EXIT, CTX_INGAMEOP, true },
-            { CTX_IGBRIEFING, STARTGAME, CTX_BACKTOGAME, false },
-            { CTX_SKIRMISH, EXIT, CTX_SINGLEPLAYER, true },
-            { CTX_SKIRMISH, BE_OK, CTX_SKIRMISH_GAME, false },
+            { CTX_SINGLEPLAYER, ButtonEvent::EXIT, CTX_MAINMENU, true },
+            { CTX_SINGLEPLAYER, ButtonEvent::CAMPAIGN, CTX_CAMPAIGN, true },
+            { CTX_SINGLEPLAYER, ButtonEvent::SKIRMISH, CTX_SKIRMISH, true },
+            { CTX_SINGLEPLAYER, ButtonEvent::LOADGAME, CTX_LOAD, true },
+            { CTX_MULTIPLAYER, ButtonEvent::JOIN, CTX_JOIN, true },
+            { CTX_MULTIPLAYER, ButtonEvent::EXIT, CTX_MAINMENU, true },
+            { CTX_JOIN, ButtonEvent::EXIT, CTX_MULTIPLAYER, true },
+            { CTX_JOIN, ButtonEvent::CREATE, CTX_IMREADY, true },
+            { CTX_JOIN, ButtonEvent::JOIN, CTX_IMREADY, true },
+            { CTX_IMREADY, ButtonEvent::EXIT, CTX_JOIN, true },
+            { CTX_IMREADY, ButtonEvent::SETTINGS, CTX_SETTINGS, true },
+            { CTX_SETTINGS, ButtonEvent::EXIT, CTX_IMREADY, true },
+            { CTX_SETTINGS, ButtonEvent::OK, CTX_IMREADY, true },
+            { CTX_MAINMENU, ButtonEvent::EXIT, CTX_FINISH, true },
+            { CTX_MAINMENU, ButtonEvent::DUMMY_OK, CTX_FINISH, true },
+            { CTX_MAINMENU, ButtonEvent::SINGLEPLAYER, CTX_SINGLEPLAYER, true },
+            { CTX_MAINMENU, ButtonEvent::OPTIONS, CTX_OPTIONS, true },
+            { CTX_MAINMENU, ButtonEvent::MULTIPLAYER, CTX_MULTIPLAYER, true },
+            { CTX_CAMPAIGN, ButtonEvent::EXIT, CTX_SINGLEPLAYER, true },
+            { CTX_CAMPAIGN, ButtonEvent::OK, CTX_SCENARIO, true },
+            { CTX_SCENARIO, ButtonEvent::EXIT, CTX_CAMPAIGN, true },
+            { CTX_SCENARIO, ButtonEvent::OK, CTX_BRIEFING, true },
+            { CTX_BRIEFING, ButtonEvent::EXIT, CTX_SCENARIO, true },
+            { CTX_BRIEFING, ButtonEvent::STARTGAME, CTX_ENTRYFLIC, false },
+            { CTX_IGBRIEFING, ButtonEvent::EXIT, CTX_INGAMEOP, true },
+            { CTX_IGBRIEFING, ButtonEvent::STARTGAME, CTX_BACKTOGAME, false },
+            { CTX_SKIRMISH, ButtonEvent::EXIT, CTX_SINGLEPLAYER, true },
+            { CTX_SKIRMISH, ButtonEvent::OK, CTX_SKIRMISH_GAME, false },
 
-            { CTX_CAINGAMEOPTIONS, EXIT, CTX_SCENARIO, true },
-            { CTX_CAINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_CAINGAMEOPTIONS, OPTIONS, CTX_IGOPTIONS, true },
-            { CTX_CAINGAMEOPTIONS, LOADGAME, CTX_IGLOAD, true },
-            { CTX_CAINGAMEOPTIONS, SAVEGAME, CTX_SAVE, true },
-            { CTX_CAINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, true },
-            { CTX_CAINGAMEOPTIONS, HOTKEYS, CTX_HOTKEYS, true },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::EXIT, CTX_SCENARIO, true },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::OPTIONS, CTX_IGOPTIONS, true },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::LOADGAME, CTX_IGLOAD, true },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::SAVEGAME, CTX_SAVE, true },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, true },
+            { CTX_CAINGAMEOPTIONS, ButtonEvent::HOTKEYS, CTX_HOTKEYS, true },
 
-            { CTX_SKINGAMEOPTIONS, EXIT, CTX_SKIRMISH, true },
-            { CTX_SKINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_SKINGAMEOPTIONS, OPTIONS, CTX_IGOPTIONS, true },
-            { CTX_SKINGAMEOPTIONS, LOADGAME, CTX_IGLOAD, true },
-            { CTX_SKINGAMEOPTIONS, SAVEGAME, CTX_SAVE, true },
-            { CTX_SKINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, true },
-            { CTX_SKINGAMEOPTIONS, HOTKEYS, CTX_HOTKEYS, true },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::EXIT, CTX_SKIRMISH, true },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::OPTIONS, CTX_IGOPTIONS, true },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::LOADGAME, CTX_IGLOAD, true },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::SAVEGAME, CTX_SAVE, true },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, true },
+            { CTX_SKINGAMEOPTIONS, ButtonEvent::HOTKEYS, CTX_HOTKEYS, true },
 
-            { CTX_MPINGAMEOPTIONS, EXIT, CTX_JOIN, true },
-            { CTX_MPINGAMEOPTIONS, CONTINUE, CTX_BACKTOGAME, false },
-            { CTX_MPINGAMEOPTIONS, OPTIONS, CTX_IGOPTIONS, true },
-            { CTX_MPINGAMEOPTIONS, LOADGAME, CTX_IGLOAD, true },
-            { CTX_MPINGAMEOPTIONS, SAVEGAME, CTX_SAVE, true },
-            { CTX_MPINGAMEOPTIONS, BRIEFING, CTX_IGBRIEFING, true },
-            { CTX_MPINGAMEOPTIONS, HOTKEYS, CTX_HOTKEYS, true },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::EXIT, CTX_JOIN, true },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::CONTINUE, CTX_BACKTOGAME, false },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::OPTIONS, CTX_IGOPTIONS, true },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::LOADGAME, CTX_IGLOAD, true },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::SAVEGAME, CTX_SAVE, true },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::BRIEFING, CTX_IGBRIEFING, true },
+            { CTX_MPINGAMEOPTIONS, ButtonEvent::HOTKEYS, CTX_HOTKEYS, true },
 
-            { CTX_OPTIONS, BE_OK, CTX_MAINMENU, true },
-            { CTX_OPTIONS, EXIT, CTX_MAINMENU, true },
-            { CTX_IGOPTIONS, BE_OK, CTX_INGAMEOP, true },
-            { CTX_IGOPTIONS, EXIT, CTX_INGAMEOP, true },
-            { CTX_HOTKEYS, EXIT, CTX_INGAMEOP, true },
-            { CTX_LOAD, EXIT, CTX_SINGLEPLAYER, true },
-            { CTX_LOAD, BE_OK, CTX_BACKTOGAME, false },
-            { CTX_IGLOAD, EXIT, CTX_INGAMEOP, true },
-            { CTX_IGLOAD, BE_OK, CTX_BACKTOGAME, false },
-            { CTX_SAVE, EXIT, CTX_INGAMEOP, true },
-            { CTX_SAVE, BE_OK, CTX_INGAMEOP, true },
-            { CTX_CADEBRIEFING, CONTINUE, CTX_SCENARIO, true },
-            { CTX_SKDEBRIEFING, CONTINUE, CTX_SKIRMISH, true },
-            { CTX_MPDEBRIEFING, CONTINUE, CTX_JOIN, true },
-            { CTX_CADEBRIEFING, BE_STATISTICS, CTX_CASTATISTICS, true },
-            { CTX_SKDEBRIEFING, BE_STATISTICS, CTX_SKSTATISTICS, true },
-            { CTX_MPDEBRIEFING, BE_STATISTICS, CTX_MPSTATISTICS, true },
-            { CTX_CASTATISTICS, EXIT, CTX_CADEBRIEFING, true },
-            { CTX_SKSTATISTICS, EXIT, CTX_SKDEBRIEFING, true },
-            { CTX_MPSTATISTICS, EXIT, CTX_MPDEBRIEFING, true },
+            { CTX_OPTIONS, ButtonEvent::OK, CTX_MAINMENU, true },
+            { CTX_OPTIONS, ButtonEvent::EXIT, CTX_MAINMENU, true },
+            { CTX_IGOPTIONS, ButtonEvent::OK, CTX_INGAMEOP, true },
+            { CTX_IGOPTIONS, ButtonEvent::EXIT, CTX_INGAMEOP, true },
+            { CTX_HOTKEYS, ButtonEvent::EXIT, CTX_INGAMEOP, true },
+            { CTX_LOAD, ButtonEvent::EXIT, CTX_SINGLEPLAYER, true },
+            { CTX_LOAD, ButtonEvent::OK, CTX_BACKTOGAME, false },
+            { CTX_IGLOAD, ButtonEvent::EXIT, CTX_INGAMEOP, true },
+            { CTX_IGLOAD, ButtonEvent::OK, CTX_BACKTOGAME, false },
+            { CTX_SAVE, ButtonEvent::EXIT, CTX_INGAMEOP, true },
+            { CTX_SAVE, ButtonEvent::OK, CTX_INGAMEOP, true },
+            { CTX_CADEBRIEFING, ButtonEvent::CONTINUE, CTX_SCENARIO, true },
+            { CTX_SKDEBRIEFING, ButtonEvent::CONTINUE, CTX_SKIRMISH, true },
+            { CTX_MPDEBRIEFING, ButtonEvent::CONTINUE, CTX_JOIN, true },
+            { CTX_CADEBRIEFING, ButtonEvent::STATISTICS, CTX_CASTATISTICS, true },
+            { CTX_SKDEBRIEFING, ButtonEvent::STATISTICS, CTX_SKSTATISTICS, true },
+            { CTX_MPDEBRIEFING, ButtonEvent::STATISTICS, CTX_MPSTATISTICS, true },
+            { CTX_CASTATISTICS, ButtonEvent::EXIT, CTX_CADEBRIEFING, true },
+            { CTX_SKSTATISTICS, ButtonEvent::EXIT, CTX_SKDEBRIEFING, true },
+            { CTX_MPSTATISTICS, ButtonEvent::EXIT, CTX_MPDEBRIEFING, true },
             /*This line must come last*/
-            { CTX_FINISH, EXIT, CTX_FINISH, false },
+            { CTX_FINISH, ButtonEvent::EXIT, CTX_FINISH, false },
         };
 
         return csi;
@@ -3231,50 +3233,50 @@ const MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getCont
     if constexpr (cDemoVersion)
     {
         static constexpr ContextKeypressInfo cki[] = {
-            { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_MAINMENU, false, NO_IMP },
-            { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_MAINMENU, false, NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::SPACE, CTX_PROBEACCLAIMLOGO, false, NO_IMP },
-            { CTX_MULTIPLAYER, DevKey::ENTER, CTX_JOIN, false, JOIN },
-            { CTX_MULTIPLAYER, DevKey::ESCAPE, CTX_MAINMENU, false, EXIT },
-            { CTX_IGOPTIONS, DevKey::ENTER, CTX_INGAMEOP, false, BE_OK },
-            { CTX_IGOPTIONS, DevKey::ESCAPE, CTX_INGAMEOP, false, EXIT },
-            { CTX_JOIN, DevKey::ESCAPE, CTX_MULTIPLAYER, false, EXIT },
-            { CTX_SETTINGS, DevKey::ESCAPE, CTX_IMREADY, false, EXIT },
-            { CTX_SETTINGS, DevKey::ENTER, CTX_IMREADY, false, BE_OK },
-            { CTX_SKIRMISH, DevKey::ESCAPE, CTX_MAINMENU, false, EXIT },
-            { CTX_SKIRMISH, DevKey::ENTER, CTX_SKIRMISH_GAME, false, BE_OK },
-            { CTX_SCENARIO, DevKey::ESCAPE, CTX_MAINMENU, false, EXIT },
-            { CTX_SCENARIO, DevKey::ENTER, CTX_BRIEFING, false, BE_OK },
-            { CTX_BRIEFING, DevKey::ESCAPE, CTX_SCENARIO, false, EXIT },
-            { CTX_BRIEFING, DevKey::ENTER, CTX_GAME, false, STARTGAME },
-            { CTX_IGBRIEFING, DevKey::ESCAPE, CTX_INGAMEOP, false, EXIT },
-            { CTX_IGBRIEFING, DevKey::ENTER, CTX_BACKTOGAME, false, STARTGAME },
-            { CTX_IMREADY, DevKey::ESCAPE, CTX_JOIN, false, EXIT },
-            { CTX_CADEBRIEFING, DevKey::ENTER, CTX_SCENARIO, false, CONTINUE },
-            { CTX_SKDEBRIEFING, DevKey::ENTER, CTX_SKIRMISH, false, CONTINUE },
-            { CTX_MPDEBRIEFING, DevKey::ENTER, CTX_JOIN, false, CONTINUE },
-            { CTX_CASTATISTICS, DevKey::ENTER, CTX_CADEBRIEFING, false, EXIT },
-            { CTX_CASTATISTICS, DevKey::ESCAPE, CTX_CADEBRIEFING, false, EXIT },
-            { CTX_SKSTATISTICS, DevKey::ENTER, CTX_SKDEBRIEFING, false, EXIT },
-            { CTX_SKSTATISTICS, DevKey::ESCAPE, CTX_SKDEBRIEFING, false, EXIT },
-            { CTX_MPSTATISTICS, DevKey::ENTER, CTX_MPDEBRIEFING, false, EXIT },
-            { CTX_MPSTATISTICS, DevKey::ESCAPE, CTX_MPDEBRIEFING, false, EXIT },
-            { CTX_CAINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, CONTINUE },
-            { CTX_CAINGAMEOPTIONS, DevKey::ESCAPE, CTX_SCENARIO, false, EXIT },
-            { CTX_SKINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, CONTINUE },
-            { CTX_SKINGAMEOPTIONS, DevKey::ESCAPE, CTX_SKIRMISH, false, EXIT },
-            { CTX_MPINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, CONTINUE },
-            { CTX_MPINGAMEOPTIONS, DevKey::ESCAPE, CTX_JOIN, false, EXIT },
-            { CTX_MAINMENU, DevKey::ESCAPE, CTX_MAINMENU, false, BE_DUMMY_OK },
-            { CTX_SPLASH1, DevKey::ESCAPE, CTX_SPLASH2, false, EXIT },
-            { CTX_SPLASH1, DevKey::SPACE, CTX_SPLASH2, false, EXIT },
-            { CTX_SPLASH1, DevKey::ENTER, CTX_SPLASH2, false, EXIT },
-            { CTX_SPLASH2, DevKey::ESCAPE, CTX_FINISH, false, EXIT },
-            { CTX_SPLASH2, DevKey::ENTER, CTX_FINISH, false, EXIT },
-            { CTX_SPLASH2, DevKey::SPACE, CTX_FINISH, false, EXIT },
+            { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::NO_IMP },
+            { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_MAINMENU, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, DevKey::SPACE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_MULTIPLAYER, DevKey::ENTER, CTX_JOIN, false, ButtonEvent::JOIN },
+            { CTX_MULTIPLAYER, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
+            { CTX_IGOPTIONS, DevKey::ENTER, CTX_INGAMEOP, false, ButtonEvent::OK },
+            { CTX_IGOPTIONS, DevKey::ESCAPE, CTX_INGAMEOP, false, ButtonEvent::EXIT },
+            { CTX_JOIN, DevKey::ESCAPE, CTX_MULTIPLAYER, false, ButtonEvent::EXIT },
+            { CTX_SETTINGS, DevKey::ESCAPE, CTX_IMREADY, false, ButtonEvent::EXIT },
+            { CTX_SETTINGS, DevKey::ENTER, CTX_IMREADY, false, ButtonEvent::OK },
+            { CTX_SKIRMISH, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
+            { CTX_SKIRMISH, DevKey::ENTER, CTX_SKIRMISH_GAME, false, ButtonEvent::OK },
+            { CTX_SCENARIO, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
+            { CTX_SCENARIO, DevKey::ENTER, CTX_BRIEFING, false, ButtonEvent::OK },
+            { CTX_BRIEFING, DevKey::ESCAPE, CTX_SCENARIO, false, ButtonEvent::EXIT },
+            { CTX_BRIEFING, DevKey::ENTER, CTX_GAME, false, ButtonEvent::STARTGAME },
+            { CTX_IGBRIEFING, DevKey::ESCAPE, CTX_INGAMEOP, false, ButtonEvent::EXIT },
+            { CTX_IGBRIEFING, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::STARTGAME },
+            { CTX_IMREADY, DevKey::ESCAPE, CTX_JOIN, false, ButtonEvent::EXIT },
+            { CTX_CADEBRIEFING, DevKey::ENTER, CTX_SCENARIO, false, ButtonEvent::CONTINUE },
+            { CTX_SKDEBRIEFING, DevKey::ENTER, CTX_SKIRMISH, false, ButtonEvent::CONTINUE },
+            { CTX_MPDEBRIEFING, DevKey::ENTER, CTX_JOIN, false, ButtonEvent::CONTINUE },
+            { CTX_CASTATISTICS, DevKey::ENTER, CTX_CADEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_CASTATISTICS, DevKey::ESCAPE, CTX_CADEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, DevKey::ENTER, CTX_SKDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, DevKey::ESCAPE, CTX_SKDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, DevKey::ENTER, CTX_MPDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, DevKey::ESCAPE, CTX_MPDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_CAINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_CAINGAMEOPTIONS, DevKey::ESCAPE, CTX_SCENARIO, false, ButtonEvent::EXIT },
+            { CTX_SKINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_SKINGAMEOPTIONS, DevKey::ESCAPE, CTX_SKIRMISH, false, ButtonEvent::EXIT },
+            { CTX_MPINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_MPINGAMEOPTIONS, DevKey::ESCAPE, CTX_JOIN, false, ButtonEvent::EXIT },
+            { CTX_MAINMENU, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::DUMMY_OK },
+            { CTX_SPLASH1, DevKey::ESCAPE, CTX_SPLASH2, false, ButtonEvent::EXIT },
+            { CTX_SPLASH1, DevKey::SPACE, CTX_SPLASH2, false, ButtonEvent::EXIT },
+            { CTX_SPLASH1, DevKey::ENTER, CTX_SPLASH2, false, ButtonEvent::EXIT },
+            { CTX_SPLASH2, DevKey::ESCAPE, CTX_FINISH, false, ButtonEvent::EXIT },
+            { CTX_SPLASH2, DevKey::ENTER, CTX_FINISH, false, ButtonEvent::EXIT },
+            { CTX_SPLASH2, DevKey::SPACE, CTX_FINISH, false, ButtonEvent::EXIT },
             /*This line must come last*/
-            { CTX_FINISH, DevKey::SPACE, CTX_FINISH, false, NO_IMP },
+            { CTX_FINISH, DevKey::SPACE, CTX_FINISH, false, ButtonEvent::NO_IMP },
         };
 
         return cki;
@@ -3282,60 +3284,60 @@ const MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getCont
     else
     {
         static constexpr ContextKeypressInfo cki[] = {
-            { CTX_DEFEAT, DevKey::ESCAPE, CTX_DEBRIEFING, false, NO_IMP },
-            { CTX_VICTORY, DevKey::ESCAPE, CTX_DEBRIEFING, false, NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::SPACE, CTX_PROBEACCLAIMLOGO, false, NO_IMP },
-            { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_CHARYBDISLOGO, false, NO_IMP },
-            { CTX_CHARYBDISLOGO, DevKey::ESCAPE, CTX_INTROANIMATION, false, NO_IMP },
-            { CTX_DEFEAT, DevKey::SPACE, CTX_DEBRIEFING, false, NO_IMP },
-            { CTX_VICTORY, DevKey::SPACE, CTX_DEBRIEFING, false, NO_IMP },
-            { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_CHARYBDISLOGO, false, NO_IMP },
-            { CTX_CHARYBDISLOGO, DevKey::SPACE, CTX_INTROANIMATION, false, NO_IMP },
-            { CTX_MULTIPLAYER, DevKey::ENTER, CTX_JOIN, true, JOIN },
-            { CTX_MULTIPLAYER, DevKey::ESCAPE, CTX_MAINMENU, true, EXIT },
-            { CTX_OPTIONS, DevKey::ENTER, CTX_MAINMENU, true, BE_OK },
-            { CTX_OPTIONS, DevKey::ESCAPE, CTX_MAINMENU, true, EXIT },
-            { CTX_IGOPTIONS, DevKey::ENTER, CTX_INGAMEOP, true, BE_OK },
-            { CTX_IGOPTIONS, DevKey::ESCAPE, CTX_INGAMEOP, true, EXIT },
-            { CTX_SINGLEPLAYER, DevKey::ESCAPE, CTX_MAINMENU, true, EXIT },
-            { CTX_JOIN, DevKey::ESCAPE, CTX_MULTIPLAYER, true, EXIT },
-            { CTX_SETTINGS, DevKey::ESCAPE, CTX_IMREADY, true, EXIT },
-            { CTX_SETTINGS, DevKey::ENTER, CTX_IMREADY, true, BE_OK },
-            { CTX_SKIRMISH, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, EXIT },
-            { CTX_SKIRMISH, DevKey::ENTER, CTX_SKIRMISH_GAME, false, BE_OK },
-            { CTX_CAMPAIGN, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, EXIT },
-            { CTX_CAMPAIGN, DevKey::ENTER, CTX_SCENARIO, true, BE_OK },
-            { CTX_SCENARIO, DevKey::ESCAPE, CTX_CAMPAIGN, true, EXIT },
-            { CTX_SCENARIO, DevKey::ENTER, CTX_BRIEFING, true, BE_OK },
-            { CTX_BRIEFING, DevKey::ESCAPE, CTX_SCENARIO, true, EXIT },
-            { CTX_BRIEFING, DevKey::ENTER, CTX_ENTRYFLIC, false, STARTGAME },
-            { CTX_IGBRIEFING, DevKey::ESCAPE, CTX_INGAMEOP, true, EXIT },
-            { CTX_IGBRIEFING, DevKey::ENTER, CTX_BACKTOGAME, false, STARTGAME },
-            { CTX_IMREADY, DevKey::ESCAPE, CTX_JOIN, true, EXIT },
-            { CTX_IGLOAD, DevKey::ESCAPE, CTX_INGAMEOP, true, EXIT },
-            { CTX_IGLOAD, DevKey::ENTER, CTX_BACKTOGAME, false, BE_OK },
-            { CTX_LOAD, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, EXIT },
-            { CTX_LOAD, DevKey::ENTER, CTX_BACKTOGAME, false, BE_OK },
-            { CTX_SAVE, DevKey::ESCAPE, CTX_INGAMEOP, true, EXIT },
-            { CTX_SAVE, DevKey::ENTER, CTX_INGAMEOP, true, BE_OK },
-            { CTX_CADEBRIEFING, DevKey::ENTER, CTX_SCENARIO, true, CONTINUE },
-            { CTX_SKDEBRIEFING, DevKey::ENTER, CTX_SKIRMISH, true, CONTINUE },
-            { CTX_MPDEBRIEFING, DevKey::ENTER, CTX_JOIN, true, CONTINUE },
-            { CTX_CASTATISTICS, DevKey::ENTER, CTX_CADEBRIEFING, true, EXIT },
-            { CTX_CASTATISTICS, DevKey::ESCAPE, CTX_CADEBRIEFING, true, EXIT },
-            { CTX_SKSTATISTICS, DevKey::ENTER, CTX_SKDEBRIEFING, true, EXIT },
-            { CTX_SKSTATISTICS, DevKey::ESCAPE, CTX_SKDEBRIEFING, true, EXIT },
-            { CTX_MPSTATISTICS, DevKey::ENTER, CTX_MPDEBRIEFING, true, EXIT },
-            { CTX_MPSTATISTICS, DevKey::ESCAPE, CTX_MPDEBRIEFING, true, EXIT },
-            { CTX_CAINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, CONTINUE },
-            { CTX_SKINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, CONTINUE },
-            { CTX_MPINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, CONTINUE },
-            { CTX_HOTKEYS, DevKey::ENTER, CTX_INGAMEOP, true, EXIT },
-            { CTX_HOTKEYS, DevKey::ESCAPE, CTX_INGAMEOP, true, EXIT },
-            { CTX_MAINMENU, DevKey::ESCAPE, CTX_MAINMENU, false, BE_DUMMY_OK },
+            { CTX_DEFEAT, DevKey::ESCAPE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_VICTORY, DevKey::ESCAPE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, DevKey::SPACE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_CHARYBDISLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_CHARYBDISLOGO, DevKey::ESCAPE, CTX_INTROANIMATION, false, ButtonEvent::NO_IMP },
+            { CTX_DEFEAT, DevKey::SPACE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_VICTORY, DevKey::SPACE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_CHARYBDISLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_CHARYBDISLOGO, DevKey::SPACE, CTX_INTROANIMATION, false, ButtonEvent::NO_IMP },
+            { CTX_MULTIPLAYER, DevKey::ENTER, CTX_JOIN, true, ButtonEvent::JOIN },
+            { CTX_MULTIPLAYER, DevKey::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
+            { CTX_OPTIONS, DevKey::ENTER, CTX_MAINMENU, true, ButtonEvent::OK },
+            { CTX_OPTIONS, DevKey::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
+            { CTX_IGOPTIONS, DevKey::ENTER, CTX_INGAMEOP, true, ButtonEvent::OK },
+            { CTX_IGOPTIONS, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_SINGLEPLAYER, DevKey::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
+            { CTX_JOIN, DevKey::ESCAPE, CTX_MULTIPLAYER, true, ButtonEvent::EXIT },
+            { CTX_SETTINGS, DevKey::ESCAPE, CTX_IMREADY, true, ButtonEvent::EXIT },
+            { CTX_SETTINGS, DevKey::ENTER, CTX_IMREADY, true, ButtonEvent::OK },
+            { CTX_SKIRMISH, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
+            { CTX_SKIRMISH, DevKey::ENTER, CTX_SKIRMISH_GAME, false, ButtonEvent::OK },
+            { CTX_CAMPAIGN, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
+            { CTX_CAMPAIGN, DevKey::ENTER, CTX_SCENARIO, true, ButtonEvent::OK },
+            { CTX_SCENARIO, DevKey::ESCAPE, CTX_CAMPAIGN, true, ButtonEvent::EXIT },
+            { CTX_SCENARIO, DevKey::ENTER, CTX_BRIEFING, true, ButtonEvent::OK },
+            { CTX_BRIEFING, DevKey::ESCAPE, CTX_SCENARIO, true, ButtonEvent::EXIT },
+            { CTX_BRIEFING, DevKey::ENTER, CTX_ENTRYFLIC, false, ButtonEvent::STARTGAME },
+            { CTX_IGBRIEFING, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_IGBRIEFING, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::STARTGAME },
+            { CTX_IMREADY, DevKey::ESCAPE, CTX_JOIN, true, ButtonEvent::EXIT },
+            { CTX_IGLOAD, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_IGLOAD, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::OK },
+            { CTX_LOAD, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
+            { CTX_LOAD, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::OK },
+            { CTX_SAVE, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_SAVE, DevKey::ENTER, CTX_INGAMEOP, true, ButtonEvent::OK },
+            { CTX_CADEBRIEFING, DevKey::ENTER, CTX_SCENARIO, true, ButtonEvent::CONTINUE },
+            { CTX_SKDEBRIEFING, DevKey::ENTER, CTX_SKIRMISH, true, ButtonEvent::CONTINUE },
+            { CTX_MPDEBRIEFING, DevKey::ENTER, CTX_JOIN, true, ButtonEvent::CONTINUE },
+            { CTX_CASTATISTICS, DevKey::ENTER, CTX_CADEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_CASTATISTICS, DevKey::ESCAPE, CTX_CADEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, DevKey::ENTER, CTX_SKDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, DevKey::ESCAPE, CTX_SKDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, DevKey::ENTER, CTX_MPDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, DevKey::ESCAPE, CTX_MPDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_CAINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_SKINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_MPINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_HOTKEYS, DevKey::ENTER, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_HOTKEYS, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_MAINMENU, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::DUMMY_OK },
             /*This line must come last*/
-            { CTX_FINISH, DevKey::ESCAPE, CTX_FINISH, false, NO_IMP },
+            { CTX_FINISH, DevKey::ESCAPE, CTX_FINISH, false, ButtonEvent::NO_IMP },
         };
 
         return cki;
@@ -3359,7 +3361,7 @@ bool MachGuiStartupScreens::handleHostMessage()
             if (! ignoreHostLostSystemMessage_)
             {
                 ignoreHostLostSystemMessage_ = true;
-                buttonAction(MachGuiStartupScreens::EXIT);
+                buttonAction(MachGui::ButtonEvent::EXIT);
                 ignoreHostLostSystemMessage_ = false;
             }
             return true;
@@ -3409,7 +3411,7 @@ bool MachGuiStartupScreens::handleDestroyPlayerMessage(const string& name)
                 {
                     NETWORK_STREAM(" it was the host that went so goinf to pretend that I pressed exit\n");
                     ignoreHostLostSystemMessage_ = true;
-                    buttonAction(MachGuiStartupScreens::EXIT);
+                    buttonAction(MachGui::ButtonEvent::EXIT);
                     ignoreHostLostSystemMessage_ = false;
                     return true;
                 }

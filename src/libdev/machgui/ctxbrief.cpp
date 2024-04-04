@@ -46,25 +46,25 @@ MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(131, 363, 301, 401),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_DUMMY_OK);
+        MachGui::ButtonEvent::DUMMY_OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(132, 416, 301, 453),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
     pHintsBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(357, 363, 526, 401),
         IDS_MENUBTN_HINTS,
-        MachGuiStartupScreens::HINTS);
+        MachGui::ButtonEvent::HINTS);
     pObjectiveBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(356, 416, 526, 453),
         IDS_MENUBTN_OBJECTIVES,
-        MachGuiStartupScreens::OBJECTIVES);
+        MachGui::ButtonEvent::OBJECTIVES);
 
     pCancelBtn->escapeControl(true);
 
@@ -108,7 +108,7 @@ void MachGuiCtxBriefing::update()
 {
     if (autoLoadGame_)
     {
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::STARTGAME);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::STARTGAME);
     }
     else
     {
@@ -250,17 +250,17 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void MachGuiCtxBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
+void MachGuiCtxBriefing::buttonEvent(MachGui::ButtonEvent be)
 {
-    if (be == MachGuiStartupScreens::HINTS)
+    if (be == MachGui::ButtonEvent::HINTS)
     {
         displayHints();
     }
-    else if (be == MachGuiStartupScreens::OBJECTIVES)
+    else if (be == MachGui::ButtonEvent::OBJECTIVES)
     {
         displayObjectives();
     }
-    else if (be == MachGuiStartupScreens::BE_DUMMY_OK)
+    else if (be == MachGui::ButtonEvent::DUMMY_OK)
     {
 #ifndef DEMO
 // if ( MachGui::machinesCDIsAvailable( 2 )
@@ -270,7 +270,7 @@ void MachGuiCtxBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 //      )
 #endif
         {
-            pStartupScreens_->buttonAction(MachGuiStartupScreens::STARTGAME);
+            pStartupScreens_->buttonAction(MachGui::ButtonEvent::STARTGAME);
         }
 // else
 //{
@@ -283,7 +283,7 @@ void MachGuiCtxBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 //}
 #else // DEMO
         {
-            pStartupScreens_->buttonAction(MachGuiStartupScreens::STARTGAME);
+            pStartupScreens_->buttonAction(MachGui::ButtonEvent::STARTGAME);
         }
 #endif
     }
@@ -292,8 +292,8 @@ void MachGuiCtxBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
 // virtual
 bool MachGuiCtxBriefing::okayToSwitchContext()
 {
-    if ((pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::STARTGAME)
-        || (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_CANCEL))
+    if ((pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::STARTGAME)
+        || (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::CANCEL))
     {
         // silence voicemail
         stopPlayingBriefingVoicemail();

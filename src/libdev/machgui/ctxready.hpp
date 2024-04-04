@@ -47,7 +47,7 @@ protected:
     void updateStartAndReadyButtons();
     void displaySystemMessages();
 
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
     bool okayToSwitchContext() override;
 

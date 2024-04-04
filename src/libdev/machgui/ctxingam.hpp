@@ -29,7 +29,7 @@ public:
 
     bool okayToSwitchContext() override;
 
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxInGameOptions& t);

@@ -76,13 +76,13 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         pStartupScreens,
         Gui::Box(56, 407, 246, 449),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::JOIN);
+        MachGui::ButtonEvent::JOIN);
     MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(311, 407, 502, 449),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
     pExitBtn->escapeControl(true);
     GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
     pSingleLineEditBox_
@@ -162,7 +162,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
     }
 
     // Was JOIN pressed?...
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::JOIN)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::JOIN)
     {
         if (playerName == "" || // No name entered
             pSingleLineEditBox_->clearTextOnNextChar())

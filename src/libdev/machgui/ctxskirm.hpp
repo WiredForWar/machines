@@ -41,7 +41,7 @@ public:
     void updateSelectedScenario(MachGuiDbScenario&);
 
     bool okayToSwitchContext() override;
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
     void autoLoadGame();
 

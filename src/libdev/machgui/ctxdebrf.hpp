@@ -32,7 +32,7 @@ public:
 
     bool okayToSwitchContext() override;
 
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
 protected:
     void playDeBriefingVoicemail();

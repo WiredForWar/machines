@@ -109,13 +109,13 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             pStartupScreens,
             Gui::Box(okButtonInfo.topLeft, okButtonInfo.bottomRight),
             IDS_MENUBTN_OK,
-            MachGuiStartupScreens::BE_DUMMY_OK);
+            MachGui::ButtonEvent::DUMMY_OK);
         MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(cancelButtonInfo.topLeft, cancelButtonInfo.bottomRight),
             IDS_MENUBTN_CANCEL,
-            MachGuiStartupScreens::BE_DUMMY_EXIT);
+            MachGui::ButtonEvent::DUMMY_EXIT);
         pCancelBtn->escapeControl(true);
         pOkBtn->defaultControl(true);
     }
@@ -488,7 +488,7 @@ void MachGuiCtxOptions::update()
 {
     if (exitFromOptions_)
     {
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
     }
     else
     {
@@ -503,9 +503,9 @@ bool MachGuiCtxOptions::okayToSwitchContext()
 }
 
 // virtual
-void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEvent)
+void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 {
-    if (buttonEvent == MachGuiStartupScreens::BE_DUMMY_OK)
+    if (buttonEvent == MachGui::ButtonEvent::DUMMY_OK)
     {
         int currentScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
 
@@ -560,10 +560,10 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
         }
         else
         {
-            pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK);
+            pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
         }
     }
-    else if (buttonEvent == MachGuiStartupScreens::BE_DUMMY_EXIT)
+    else if (buttonEvent == MachGui::ButtonEvent::DUMMY_EXIT)
     {
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
@@ -573,7 +573,7 @@ void MachGuiCtxOptions::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
         {
             pGammaCorrection_->setValue(gammaCorrection_);
         }
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::EXIT);
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::EXIT);
 
         const bool grabCursorEnabled = SysRegistry::instance().queryBooleanValue(c_GrabCursorOptionKey, "on", true);
         pGrabMouse_->setChecked(grabCursorEnabled);

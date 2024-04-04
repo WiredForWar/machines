@@ -33,7 +33,7 @@ bool MachGuiStartupScreenContext::okayToSwitchContext()
 }
 
 // virtual
-void MachGuiStartupScreenContext::buttonEvent(MachGuiStartupScreens::ButtonEvent)
+void MachGuiStartupScreenContext::buttonEvent(MachGui::ButtonEvent)
 {
     // Intentionally empty
 }

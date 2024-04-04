@@ -29,13 +29,13 @@ public:
         MachGuiStartupScreens* pParent,
         const Gui::Box& box,
         unsigned int stringId,
-        MachGuiStartupScreens::ButtonEvent buttonEvent);
+        MachGui::ButtonEvent buttonEvent);
     // TODO: Eliminate entirely MachGuiStartupScreens from this constructor.
     MachGuiMenuButton(
         MachGuiStartupScreens* pStartupScreens,
         const Gui::Box& box,
         unsigned int stringId,
-        MachGuiStartupScreens::ButtonEvent,
+        MachGui::ButtonEvent,
         GuiDisplayable* pParent);
     ~MachGuiMenuButton() override;
 
@@ -81,7 +81,7 @@ private:
     bool flash_;
     bool disabled_;
     bool msgBoxButton_;
-    MachGuiStartupScreens::ButtonEvent buttonEvent_;
+    MachGui::ButtonEvent buttonEvent_;
 };
 
 #endif

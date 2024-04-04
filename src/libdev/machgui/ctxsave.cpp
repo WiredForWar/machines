@@ -178,19 +178,19 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(387, 111, 578, 154),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK);
+        MachGui::ButtonEvent::OK);
     pDeleteBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(387, 215, 578, 258),
         IDS_MENUBTN_DELETE,
-        MachGuiStartupScreens::BE_DELETE);
+        MachGui::ButtonEvent::DELETE);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(387, 312, 578, 356),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn_->defaultControl(true);
@@ -294,7 +294,7 @@ void MachGuiCtxSave::updateSaveGameList()
 // virtual
 bool MachGuiCtxSave::okayToSwitchContext()
 {
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::OK)
     {
         // Create new save game...
         if (pNewSaveGameName_->selected())
@@ -361,9 +361,9 @@ bool MachGuiCtxSave::okayToSwitchContext()
 }
 
 // virtual
-void MachGuiCtxSave::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
+void MachGuiCtxSave::buttonEvent(MachGui::ButtonEvent be)
 {
-    if (be == MachGuiStartupScreens::BE_DELETE)
+    if (be == MachGui::ButtonEvent::DELETE)
     {
         if (pSelectedSaveGame_)
         {

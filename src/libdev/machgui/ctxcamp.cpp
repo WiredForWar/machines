@@ -134,25 +134,25 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(83, 408, 255, 445),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK);
+        MachGui::ButtonEvent::OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(327, 408, 497, 445),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(376, 40, 546, 77),
         IDS_MENUBTN_NEW,
-        MachGuiStartupScreens::BE_NEW);
+        MachGui::ButtonEvent::NEW);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(376, 134, 546, 172),
         IDS_MENUBTN_DELETE,
-        MachGuiStartupScreens::BE_DELETE);
+        MachGui::ButtonEvent::DELETE);
 
     pCancelBtn->escapeControl(true);
     pOkBtn->defaultControl(true);
@@ -269,7 +269,7 @@ void MachGuiCtxCampaign::updatePlayersList()
 // virtual
 bool MachGuiCtxCampaign::okayToSwitchContext()
 {
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_OK)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::OK)
     {
         // Create new player...
         if (pNewPlayerName_->selected())
@@ -300,7 +300,7 @@ bool MachGuiCtxCampaign::okayToSwitchContext()
             }
         }
     }
-    else if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::EXIT)
+    else if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::EXIT)
     {
         MachGuiDatabase::instance().clearCurrentPlayer();
     }
@@ -321,14 +321,14 @@ void MachGuiCtxCampaign::clearSelectedPlayer()
 }
 
 // virtual
-void MachGuiCtxCampaign::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
+void MachGuiCtxCampaign::buttonEvent(MachGui::ButtonEvent be)
 {
-    if (be == MachGuiStartupScreens::BE_NEW)
+    if (be == MachGui::ButtonEvent::NEW)
     {
         pNewPlayerName_->selectThisItem();
         pStartupScreens_->displayMsgBox(IDS_MENUMSG_NEWPLAYERNAME);
     }
-    else if (be == MachGuiStartupScreens::BE_DELETE)
+    else if (be == MachGui::ButtonEvent::DELETE)
     {
         if (pSelectedPlayer_)
         {

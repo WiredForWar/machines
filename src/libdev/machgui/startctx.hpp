@@ -34,7 +34,7 @@ public:
 
     // Called when a button is pressed if the default processing by MachGuiStartupScreens
     // does not "use" the button event.
-    virtual void buttonEvent(MachGuiStartupScreens::ButtonEvent);
+    virtual void buttonEvent(MachGui::ButtonEvent);
 
     // Called if the startup screens does not use the GuiKeyEvent.
     virtual bool doHandleKeyEvent(const GuiKeyEvent&);

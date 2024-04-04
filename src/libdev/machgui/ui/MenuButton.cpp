@@ -25,7 +25,7 @@ MachGuiMenuButton::MachGuiMenuButton(
     MachGuiStartupScreens* pParent,
     const Gui::Box& box,
     unsigned int stringId,
-    MachGuiStartupScreens::ButtonEvent buttonEvent)
+    MachGui::ButtonEvent buttonEvent)
     : GuiDisplayable(pParent, box)
     , MachGuiFocusCapableControl(pParent)
     , pRootParent_(pRootParent)
@@ -45,7 +45,7 @@ MachGuiMenuButton::MachGuiMenuButton(
     MachGuiStartupScreens* pStartupScreens,
     const Gui::Box& box,
     unsigned int stringId,
-    MachGuiStartupScreens::ButtonEvent buttonEvent,
+    MachGui::ButtonEvent buttonEvent,
     GuiDisplayable* pParent)
     : GuiDisplayable(pParent, box)
     , MachGuiFocusCapableControl(pStartupScreens)

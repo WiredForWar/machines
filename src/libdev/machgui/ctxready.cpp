@@ -47,7 +47,7 @@ public:
         MachGuiStartupScreens* pParent,
         const Gui::Box& box,
         unsigned int stringId,
-        MachGuiStartupScreens::ButtonEvent buttonEvent)
+        MachGui::ButtonEvent buttonEvent)
         : MachGuiMenuButton(pParent, pParent, box, stringId, buttonEvent)
     {
         ready_ = false;
@@ -102,7 +102,7 @@ class MachGuiChatButton : public MachGuiMenuButton
 {
 public:
     MachGuiChatButton(MachGuiStartupScreens* pParent, const Gui::Box& box)
-        : MachGuiMenuButton(pParent, pParent, box, IDS_MENUBTN_SENDCHAT, MachGuiStartupScreens::BE_OK)
+        : MachGuiMenuButton(pParent, pParent, box, IDS_MENUBTN_SENDCHAT, MachGui::ButtonEvent::OK)
         , pStartupScreens_(pParent)
     {
     }
@@ -126,7 +126,7 @@ protected:
     bool executeControl() override
     {
         // Initiate button action
-        pStartupScreens_->buttonAction(MachGuiStartupScreens::BE_OK, "gui/sounds/chatmsg.wav");
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK, "gui/sounds/chatmsg.wav");
 
         return true;
     }
@@ -164,32 +164,32 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
             pStartupScreens,
             Gui::Box(379, 416, 574, 458),
             IDS_MENUBTN_CANCEL,
-            MachGuiStartupScreens::EXIT);
+            MachGui::ButtonEvent::EXIT);
     else
         pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(379, 416, 574, 458),
             IDS_MENUBTN_EXIT_TO_ZONE,
-            MachGuiStartupScreens::EXIT);
+            MachGui::ButtonEvent::EXIT);
 
     pSettingsButton_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(395, 40, 591, 82),
         IDS_MENUBTN_SETTINGS,
-        MachGuiStartupScreens::SETTINGS);
+        MachGui::ButtonEvent::SETTINGS);
     pImReadyButton_ = new MachGuiImReadyButton(
         pStartupScreens,
         Gui::Box(47, 399, 243, 442),
         IDS_MENUBTN_IMREADY,
-        MachGuiStartupScreens::IMREADY);
+        MachGui::ButtonEvent::IMREADY);
     pStartButton_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(380, 348, 576, 392),
         IDS_MENUBTN_START,
-        MachGuiStartupScreens::START);
+        MachGui::ButtonEvent::START);
     pCancelBtn->escapeControl(true);
 
     // Chat window...
@@ -483,9 +483,9 @@ void MachGuiCtxImReady::updateStartAndReadyButtons()
 }
 
 // virtual
-void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEvent)
+void MachGuiCtxImReady::buttonEvent(MachGui::ButtonEvent buttonEvent)
 {
-    if (buttonEvent == MachGuiStartupScreens::IMREADY)
+    if (buttonEvent == MachGui::ButtonEvent::IMREADY)
     {
         ASSERT(! startupData().isHost(), "Host shouldn't be able to press I'm Ready button");
 
@@ -493,7 +493,7 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
             startupData().playerName(),
             ! startupData().isReady(startupData().playerName()));
     }
-    else if (buttonEvent == MachGuiStartupScreens::START)
+    else if (buttonEvent == MachGui::ButtonEvent::START)
     {
         ASSERT(startupData().isHost(), "Only host should be able to press Start button");
 
@@ -547,7 +547,7 @@ void MachGuiCtxImReady::buttonEvent(MachGuiStartupScreens::ButtonEvent buttonEve
         pStartupScreens_->switchContext(MachGuiStartupScreens::CTX_MULTI_GAME);
 #endif
     }
-    else if (buttonEvent == MachGuiStartupScreens::BE_OK)
+    else if (buttonEvent == MachGui::ButtonEvent::OK)
     {
         // Make sure there is a chat message worth sending ( i.e. not empty )
         if (pSingleLineEditBox_->text() != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
@@ -578,7 +578,7 @@ bool MachGuiCtxImReady::okayToSwitchContext()
 {
     NETWORK_STREAM("MachGuiCtxImReady::okayToSwitchContext this " << static_cast<const void*>(this) << "\n");
     NETWORK_INDENT(2);
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::EXIT)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::EXIT)
     {
         NETWORK_STREAM("lastButtonEvent was EXIT so doing some stuff\n");
         if (MachLogNetwork::instance().isNetworkGame())

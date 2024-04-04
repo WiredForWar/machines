@@ -28,7 +28,7 @@ public:
     MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens);
     ~MachGuiCtxJoin() override;
 
-    void buttonEvent(MachGuiStartupScreens::ButtonEvent) override;
+    void buttonEvent(MachGui::ButtonEvent) override;
 
     bool okayToSwitchContext() override;
 

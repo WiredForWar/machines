@@ -348,13 +348,13 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(362, 305, 532, 343),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::BE_OK);
+        MachGui::ButtonEvent::OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(362, 400, 532, 438),
         IDS_MENUBTN_CANCEL,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
 
     pCancelBtn->escapeControl(true);
     pOkBtn->defaultControl(true);

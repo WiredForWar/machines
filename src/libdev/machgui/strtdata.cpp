@@ -873,7 +873,7 @@ void MachGuiStartupData::receivedStartMessage()
         switch (pStartupScreens_->currentContext())
         {
             case MachGuiStartupScreens::CTX_IMREADY:
-                pStartupScreens_->buttonAction(MachGuiStartupScreens::EXIT);
+                pStartupScreens_->buttonAction(MachGui::ButtonEvent::EXIT);
                 break;
             default:
                 pStartupScreens_->switchContext(MachGuiStartupScreens::CTX_JOIN);

@@ -45,7 +45,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         pStartupScreens,
         Gui::Box(425, 406, 576, 439),
         IDS_MENUBTN_OK,
-        MachGuiStartupScreens::EXIT);
+        MachGui::ButtonEvent::EXIT);
     pOkBtn->escapeControl(true);
 
     changeBackdrop("gui/menu/sq.bmp");

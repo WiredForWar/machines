@@ -43,7 +43,7 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
         pStartupScreens,
         Gui::Box(87, 206, 279, 248),
         IDS_MENUBTN_STATS,
-        MachGuiStartupScreens::BE_STATISTICS);
+        MachGui::ButtonEvent::STATISTICS);
     MachGuiMenuButton* pContinueButton;
     // display back to lobby on button for zone games.
     if (! NetNetwork::instance().isLobbiedGame())
@@ -52,21 +52,21 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
             pStartupScreens,
             Gui::Box(87, 310, 279, 353),
             IDS_MENUBTN_CONTINUE,
-            MachGuiStartupScreens::CONTINUE);
+            MachGui::ButtonEvent::CONTINUE);
     else
         pContinueButton = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
             Gui::Box(87, 310, 279, 353),
             IDS_MENUBTN_BACK_TO_ZONE,
-            MachGuiStartupScreens::CONTINUE);
+            MachGui::ButtonEvent::CONTINUE);
 
     MachGuiMenuButton* pRestartButton = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
         Gui::Box(87, 100, 279, 142),
         IDS_MENUBTN_RESTART,
-        MachGuiStartupScreens::RESTART);
+        MachGui::ButtonEvent::RESTART);
 
 #ifdef DEMO
     pStatisticsButton->disabled(true);
@@ -172,9 +172,9 @@ void MachGuiCtxDeBriefing::update()
 }
 
 // virtual
-void MachGuiCtxDeBriefing::buttonEvent(MachGuiStartupScreens::ButtonEvent be)
+void MachGuiCtxDeBriefing::buttonEvent(MachGui::ButtonEvent be)
 {
-    if (be == MachGuiStartupScreens::RESTART)
+    if (be == MachGui::ButtonEvent::RESTART)
     {
         stopPlayingDeBriefingVoicemail();
         pStartupScreens_->restartGame();
@@ -186,7 +186,7 @@ bool MachGuiCtxDeBriefing::okayToSwitchContext()
 {
     stopPlayingDeBriefingVoicemail();
 
-    if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::CONTINUE)
+    if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::CONTINUE)
     {
         // Unload the game that has just finished.
         pStartupScreens_->unloadGame();
