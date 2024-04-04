@@ -2290,6 +2290,7 @@ void MachGuiStartupScreens::contextAnimation()
         if (sysFlicName.existsAsFile())
         {
             startPlayingAnimation(sysFlicName, true, true, Gui::Coord(0, 0));
+            pImpl_->pPlayingSmacker_->setScaleFactor(MachGui::menuScaleFactor());
         }
     }
     else if (context_ == CTX_INTROANIMATION)
