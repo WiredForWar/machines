@@ -173,25 +173,6 @@ public:
 
     static bool machinesCDIsAvailable(int CDNumber);
     // PRE( CDNumber > and 0 CDNumber < 3 );
-
-private:
-    static GuiBitmap*& privateLongGlowBmp();
-    static GuiBitmap*& privateLongYellowGlowBmp();
-    static GuiBitmap*& privateButtonGlowBmp();
-    static GuiBitmap*& privateButtonDisableBmp();
-    static GuiBitmap*& privateMenuScrollUpBmp();
-    static GuiBitmap*& privateMenuScrollDownBmp();
-    static GuiBitmap*& privateOkMsgBoxBmp();
-    static GuiBitmap*& privateOkCancelMsgBoxBmp();
-    static GuiBitmap*& privateTickBmp();
-    static GuiBitmap*& privateDarkTickBmp();
-    static GuiBitmap*& privateLargeTickBmp();
-    static GuiBitmap*& privateLargeDarkTickBmp();
-    static GuiBitmap*& privateDropDownBmp();
-    static GuiBitmap*& privateHostBmp();
-    static GuiBitmap*& privateSlideBtnBmp();
-    static GuiBitmap*& privateControlPanelBmp();
-    static GuiBitmap*& privateInTransitBmp();
 };
 
 #endif // #ifndef _MACH_GUI_HPP
