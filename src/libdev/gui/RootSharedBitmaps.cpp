@@ -1,3 +1,4 @@
+#include "gui/gui.hpp"
 #include "system/pathname.hpp"
 #include "gui/RootSharedBitmaps.hpp"
 
@@ -17,19 +18,22 @@ GuiRootSharedBitmaps::~GuiRootSharedBitmaps()
     sharedBitmaps_.clear();
 }
 
-void GuiRootSharedBitmaps::createUpdateNamedBitmap(const std::string& imageName, const std::string& filePath)
+void GuiRootSharedBitmaps::createUpdateNamedBitmap(
+    const std::string& imageName,
+    const std::string& filePath,
+    float scale)
 {
-    loadSharedBitmap(filePath);
+    loadSharedBitmap(filePath, scale);
     namedBitmaps_[imageName] = filePath;
 }
 
-void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& filePath)
+void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& filePath, float scale)
 {
     auto sharedBitmap = sharedBitmaps_.find(filePath);
     // only load once
     if (sharedBitmap == sharedBitmaps_.end())
     {
-        sharedBitmaps_[filePath] = std::make_shared<GuiBitmap>(Gui::bitmap(SysPathName(filePath)));
+        sharedBitmaps_[filePath] = std::make_shared<GuiBitmap>(Gui::requestScaledImage(filePath, scale));
     }
 }
 
@@ -98,7 +102,14 @@ int GuiRootSharedBitmaps::getWidthOfNamedBitmap(const std::shared_ptr<GuiBitmap>
 
     if (bitmap)
     {
-        width = static_cast<int>(bitmap->width());
+        if(!bitmap->requestedSize().isNull())
+        {
+            width = bitmap->requestedSize().width;
+        }
+        else
+        {
+            width = static_cast<int>(bitmap->width());
+        }
     }
     else
     {
@@ -114,7 +125,14 @@ int GuiRootSharedBitmaps::getHeightOfNamedBitmap(const std::shared_ptr<GuiBitmap
 
     if (bitmap)
     {
-        height = static_cast<int>(bitmap->height());
+        if(!bitmap->requestedSize().isNull())
+        {
+            height = bitmap->requestedSize().height;
+        }
+        else
+        {
+            height = static_cast<int>(bitmap->height());
+        }
     }
     else
     {

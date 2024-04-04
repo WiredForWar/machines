@@ -16,11 +16,11 @@ public:
     ~GuiRootSharedBitmaps();
 
     // Create or reassign a named bitmap, loading if necessary
-    void createUpdateNamedBitmap(const std::string& imageName, const std::string& filePath);
+    void createUpdateNamedBitmap(const std::string& imageName, const std::string& filePath, float scale = 1);
 
     // Load a bitmap unless its already been loaded
     //  This method will be invoked by createUpdateNamedBitmap
-    void loadSharedBitmap(const std::string& filePath);
+    void loadSharedBitmap(const std::string& filePath, float scale = 1);
 
     // Retrieve an OWNING REFERENCE to a named bitmap, e.g.: "backdrop"
     std::shared_ptr<GuiBitmap> getNamedBitmap(const std::string& imageName) const noexcept;
