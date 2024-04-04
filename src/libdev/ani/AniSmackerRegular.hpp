@@ -19,6 +19,7 @@ public:
     AniSmackerRegular& operator=(const AniSmackerRegular) = delete;
     bool operator==(const AniSmackerRegular&) const = delete;
 
+    void setScaleFactor(float scaleFactor) override;
     bool isFinished() const override;
 
     unsigned int height() const override;
@@ -41,6 +42,7 @@ protected:
 
     size_t xCoordTo_;
     size_t yCoordTo_;
+    float scaleFactor_{};
 
 private:
     void copyCurrentFrameToBuffer(RenSurface& dst);

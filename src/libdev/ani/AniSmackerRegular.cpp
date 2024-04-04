@@ -40,6 +40,11 @@ AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, s
     // delegate :o
 }
 
+void AniSmackerRegular::setScaleFactor(float scaleFactor)
+{
+    scaleFactor_ = scaleFactor;
+}
+
 // PUBLIC CTOR
 AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, bool fast)
 {
@@ -47,6 +52,7 @@ AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, s
     pBuffer_ = nullptr;
     xCoordTo_ = xCoordTo;
     yCoordTo_ = yCoordTo;
+    scaleFactor_ = 1;
     advanceToNextFrame_ = true;
     fast_ = fast;
     useFrontBuffer_ = false;
@@ -450,7 +456,17 @@ void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& 
     {
         ASSERT(! isFinishedNoRecord(), "");
 
-        dst.simpleBlit(src, xCoordTo_, yCoordTo_);
+        if(scaleFactor_ == 1)
+        {
+            dst.simpleBlit(src, xCoordTo_, yCoordTo_);
+        }
+        else
+        {
+            Ren::Rect destRect(src.size() * scaleFactor_);
+            destRect.originX = xCoordTo_;
+            destRect.originY = yCoordTo_;
+            dst.stretchBlit(src, destRect);
+        }
     }
 }
 
