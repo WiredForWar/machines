@@ -2,6 +2,8 @@
 set(MACHGUI_SOURCES
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
+    ResolvedUiString.cpp
+    ResolvedUiString.hpp
     actbmpnm.cpp
     actbmpnm.hpp
     actnamid.cpp
