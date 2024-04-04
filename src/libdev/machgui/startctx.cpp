@@ -75,7 +75,7 @@ std::pair<int, int> MachGuiStartupScreenContext::getBackdropTopLeft()
     return std::make_pair(top, left);
 }
 
-void MachGuiStartupScreenContext::changeBackdrop(const char* newBackdrop)
+void MachGuiStartupScreenContext::changeBackdrop(const std::string& newBackdrop)
 {
     // This is here to show that the background image, or backdrop, is managed by the active GuiRoot.
     GuiRoot* root = pStartupScreens_;
