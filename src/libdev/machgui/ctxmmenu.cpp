@@ -153,7 +153,7 @@ bool MachGuiCtxMainMenu::okayToSwitchContext()
 {
     if (pStartupScreens_->lastButtonEvent() == MachGuiStartupScreens::BE_DUMMY_OK)
     {
-        pStartupScreens_->displayMsgBox(IDS_MENUMSG_QUIT, new MachGuiMainMenuMessageBoxResponder(this)), true;
+        pStartupScreens_->displayMsgBox(IDS_MENUMSG_QUIT, new MachGuiMainMenuMessageBoxResponder(this), true);
         return false;
     }
 
