@@ -47,6 +47,14 @@ unsigned GuiBorderMetrics::totalHorizontalThickness() const
     return highlightThickness_ + shadowThickness_ + (2 * frameThickness_);
 }
 
+GuiBorderMetrics& GuiBorderMetrics::operator*=(MATHEX_SCALAR multiplier)
+{
+    frameThickness_ *= multiplier;
+    highlightThickness_ *= multiplier;
+    shadowThickness_ *= multiplier;
+    return *this;
+}
+
 //////////////////////////////////////////////////////////////////////
 
 GuiBorderDimensions::GuiBorderDimensions(

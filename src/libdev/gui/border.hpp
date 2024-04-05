@@ -29,11 +29,18 @@ public:
     unsigned totalVerticalThickness() const;
     unsigned totalHorizontalThickness() const;
 
+    GuiBorderMetrics& operator*=(MATHEX_SCALAR multiplier);
+
 private:
-    unsigned frameThickness_;
-    unsigned highlightThickness_;
-    unsigned shadowThickness_;
+    unsigned frameThickness_{};
+    unsigned highlightThickness_{};
+    unsigned shadowThickness_{};
 };
+
+inline GuiBorderMetrics operator*(GuiBorderMetrics rhs, MATHEX_SCALAR c)
+{
+    return rhs *= c;
+}
 
 //////////////////////////////////////////////////////////////////////
 
