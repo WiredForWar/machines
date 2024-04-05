@@ -554,7 +554,7 @@ void GuiBmpFont::underlineColour(const GuiColour& colour)
     underlineColour_ = colour;
 }
 
-size_t GuiBmpFont::textWidth(const string& text) const
+int GuiBmpFont::textWidth(const string& text) const
 {
     Gui::Coord absPos(0, 0);
 
