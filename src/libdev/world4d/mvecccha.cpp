@@ -218,7 +218,7 @@ void W4dCompositeMaterialVecChanger::fillMaterialMaps(
 
         bool texTureMatch = false;
         uint idx;
-        for (uint i = 0; i < fromTextures.size(); ++i)
+        for (std::size_t i = 0; i < fromTextures.size(); ++i)
         {
             if (compositeMaterial.texture() == fromTextures[i])
             {

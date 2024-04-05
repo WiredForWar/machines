@@ -820,7 +820,7 @@ void NetINetwork::setAppUid()
             if (token == "application")
             {
                 appName = "";
-                for (int i = 1; i < parser.tokens().size(); ++i)
+                for (std::size_t i = 1; i < parser.tokens().size(); ++i)
                 {
                     appName += parser.tokens()[i];
                     if (i < parser.tokens().size() - 1)
@@ -830,7 +830,7 @@ void NetINetwork::setAppUid()
             else if (token == "filename")
             {
                 fileName = "";
-                for (int i = 1; i < parser.tokens().size(); ++i)
+                for (std::size_t i = 1; i < parser.tokens().size(); ++i)
                 {
                     fileName += parser.tokens()[i];
                     if (i < parser.tokens().size() - 1)
@@ -840,7 +840,7 @@ void NetINetwork::setAppUid()
             else if (token == "commandline")
             {
                 commandLine = "";
-                for (int i = 1; i < parser.tokens().size(); ++i)
+                for (std::size_t i = 1; i < parser.tokens().size(); ++i)
                 {
                     commandLine += parser.tokens()[i];
                     if (i < parser.tokens().size() - 1)
@@ -850,7 +850,7 @@ void NetINetwork::setAppUid()
             else if (token == "description")
             {
                 description = "";
-                for (int i = 1; i < parser.tokens().size(); ++i)
+                for (std::size_t i = 1; i < parser.tokens().size(); ++i)
                 {
                     description += parser.tokens()[i];
                     if (i < parser.tokens().size() - 1)

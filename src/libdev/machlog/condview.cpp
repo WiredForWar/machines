@@ -44,7 +44,7 @@ MachLogCameraViewCondition* MachLogCameraViewCondition::newFromParser(UtlLineTok
 {
     MexPoint3d location;
     MexRadians angle;
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
         if (pParser->tokens()[i] == "AT")
         {
             location.x(atof(pParser->tokens()[i + 1].c_str()));

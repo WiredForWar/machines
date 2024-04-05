@@ -89,7 +89,7 @@ bool GXPolygon3::allVerticesColored() const
 bool GXPolygon3::noVertexColored() const
 {
     bool result = true;
-    for (int i = 0; i < vertices_.size(); ++i)
+    for (std::size_t i = 0; i < vertices_.size(); ++i)
     {
         if (vertices_[i].hasColor() == true)
         {

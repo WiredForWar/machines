@@ -58,11 +58,11 @@ void MachGuiMenuText::doDisplay()
 
     size_t startY = absoluteBoundary().minCorner().y() + ((height() - totalHeight) / 2.0);
 
-    for (int i = 0; i < strings_.size(); ++i)
+    for (std::size_t i = 0; i < strings_.size(); ++i)
     {
-        size_t textWidth = font.textWidth(strings_[i]);
+        std::size_t textWidth = font.textWidth(strings_[i]);
 
-        size_t textX = 0;
+        std::size_t textX = 0;
 
         switch (justification_)
         {
@@ -91,7 +91,7 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
     std::string choppedUpText;
     int charPos = 0;
     int textLength = text.length();
-    int curWidth = 0;
+    std::size_t curWidth = 0;
     bool beginningOfLine = true;
 
     while (charPos < textLength)

@@ -161,7 +161,7 @@ std::ostream& operator<<(std::ostream& o, const EnvElevationColourTable& t)
 
     o << ":" << std::endl;
 
-    for (int i = 0; i != t.colours_.size(); ++i)
+    for (std::size_t i = 0; i != t.colours_.size(); ++i)
         o << "  " << t.colours_[i].elevation << "\t" << t.colours_[i].colour << std::endl;
 
     o << std::endl;

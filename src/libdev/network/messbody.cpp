@@ -19,7 +19,7 @@ std::ostream& operator<<(std::ostream& o, const NetMessageBody& t)
 {
     o << "size " << t.body_.size() << std::endl;
     o << "data as char: " << std::endl;
-    for (int i = 0; i < t.body_.size(); ++i)
+    for (std::size_t i = 0; i < t.body_.size(); ++i)
     {
         o << (int)t.body_.data()[i] << " " << t.body_.data()[i] << " ";
     }

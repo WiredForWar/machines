@@ -143,7 +143,7 @@ MachLogPlayAnimationAction::newFromParser(SimCondition* pCondition, bool enabled
 {
     MachLogPlayAnimationAction* pResult = nullptr;
     pResult = new MachLogPlayAnimationAction(pCondition, enabled);
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
         if (token == "RACE")

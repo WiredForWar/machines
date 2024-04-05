@@ -775,8 +775,8 @@ void MachGuiCtxOptions::readFromConfig()
         int scaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
 
         const MachGuiDropDownListBoxCreator::DropDownListBoxItems& scaleItems = pScaleFactorSelector_->items();
-        size_t scaleItemIndex = 0;
-        for (size_t i = 0; i < scaleItems.size(); ++i)
+        std::size_t scaleItemIndex = 0;
+        for (std::size_t i = 0; i < scaleItems.size(); ++i)
         {
             const int* scale = static_cast<const int*>(scaleItems.at(i));
             if (scaleFactorValue == *scale)

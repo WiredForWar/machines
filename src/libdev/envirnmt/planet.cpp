@@ -286,7 +286,7 @@ void EnvPlanetEnvironment::updateShadow()
     // use that as the basis for shadow casting.  Not ideal!
     W4dDirectionalLight* strongest = nullptr;
     double maxInt = -1;
-    for (int i = 0; i != satellites_.size(); ++i)
+    for (std::size_t i = 0; i != satellites_.size(); ++i)
     {
         W4dDirectionalLight* light = satellites_[i]->light();
 

@@ -329,7 +329,7 @@ bool MexAlignedBox2d::intersects(const MexTriangle2d& poly) const
     // First determine the out-code for every polygon vertex.
     std::vector<OutCode> codes(poly.nVertices());
 
-    for (int i = 0; i != poly.nVertices(); ++i)
+    for (std::size_t i = 0; i != poly.nVertices(); ++i)
     {
         const OutCode c(*this, poly.vertex(i));
 
@@ -343,9 +343,9 @@ bool MexAlignedBox2d::intersects(const MexTriangle2d& poly) const
 
     // Having done all the trivial tests, resort to the standard Cohen-Sutherland
     // algorithm to see if we have any intersections.
-    for (int i = 0; i != poly.nVertices(); ++i)
+    for (std::size_t i = 0; i != poly.nVertices(); ++i)
     {
-        const int i2 = (i + 1) % poly.nVertices();
+        const std::size_t i2 = (i + 1) % poly.nVertices();
         const MexPoint2d& v1 = poly.vertex(i);
         const MexPoint2d& v2 = poly.vertex(i2);
         if (CohenSutherlandClip(*this, v1, v2, codes[i], codes[i2]))

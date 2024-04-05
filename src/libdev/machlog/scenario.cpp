@@ -568,7 +568,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     int squadId = -1; // special case value - if +ve then machine will get added to squadron directly
 
                     if (doingAIRace)
-                        for (int i = 0; i < parser.tokens().size(); ++i)
+                        for (std::size_t i = 0; i < parser.tokens().size(); ++i)
                             if (parser.tokens()[i] == "SQUAD")
                                 squadId = atol(parser.tokens()[i + 1].c_str());
 
@@ -678,7 +678,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     yPos = atof(parser.tokens()[3].c_str());
                     zPos = atof(parser.tokens()[4].c_str());
                     orientation = atof(parser.tokens()[5].c_str());
-                    for (int i = 0; i < parser.tokens().size(); ++i)
+                    for (std::size_t i = 0; i < parser.tokens().size(); ++i)
                     {
                         if (parser.tokens()[i] == "REBUILD")
                             needRebuild = true;
@@ -824,7 +824,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                         if (ot == MachLog::POD)
                         {
                             bool callActivateIonCannon = false;
-                            for (int i = 0; i < parser.tokens().size(); ++i)
+                            for (std::size_t i = 0; i < parser.tokens().size(); ++i)
                                 if (parser.tokens()[i] == "ACTIVATE_ION_CANNON")
                                     callActivateIonCannon = true;
 
@@ -1016,7 +1016,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS;
                 MachPhys::ResearchUnits overrideResearchCost = 0;
                 MachPhys::BuildingMaterialUnits overrideBuildingCost = 0;
-                for (int i = 0; i < riParser.tokens().size(); ++i)
+                for (std::size_t i = 0; i < riParser.tokens().size(); ++i)
                 {
                     if (riParser.tokens()[i] == "SUB")
                         subType = objectSubType(type, riParser.tokens()[i + 1]);

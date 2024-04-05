@@ -434,7 +434,7 @@ bool MachLogStrategy::isUninterruptable()
 
     int i = 0;
     bool found = false;
-    for (int i = 0; ! found && i < queue_.size(); ++i)
+    for (std::size_t i = 0; ! found && i < queue_.size(); ++i)
     {
         ASSERT_INFO(pActor_->id());
         ASSERT_INFO(pActor_->objectType());
@@ -603,7 +603,7 @@ void MachLogStrategy::setAllOperationsToRestart()
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    for (int i = 0; i < queue_.size(); ++i)
+    for (std::size_t i = 0; i < queue_.size(); ++i)
         if (queue_[i]->progress() == MachLogOperation::UPDATE)
             queue_[i]->progress(MachLogOperation::START);
 }

@@ -230,7 +230,7 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
                 if (AIRaces.size() > 1)
                 {
                     // I'm only responsible for setting up relationships with those races coming after me in the list
-                    for (int i = myIndexInAIRacesList + 1; i < AIRaces.size(); ++i)
+                    for (std::size_t i = myIndexInAIRacesList + 1; i < AIRaces.size(); ++i)
                     {
                         MachPhys::Race otherAIRace = AIRaces[i];
 
@@ -982,7 +982,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         int nDesiredSites = 200;
         MATHEX_SCALAR maxRangeFromPod = 1000000;
 
-        for (int i = 2; i < parser.tokens().size(); ++i)
+        for (std::size_t i = 2; i < parser.tokens().size(); ++i)
         {
             if (parser.tokens()[i] == "SITES")
                 nDesiredSites = atol(parser.tokens()[i + 1].c_str());
@@ -1006,7 +1006,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         PhysRelativeTime attackIn = atof(parser.tokens()[3].c_str());
         attackIn *= 60.0;
         MachLogTaskAttackOperation* pAttackOp = new MachLogTaskAttackOperation(pSquad, attackIn);
-        for (int i = 3; i < parser.tokens().size(); ++i)
+        for (std::size_t i = 3; i < parser.tokens().size(); ++i)
         {
             HAL_STREAM(" processing token " << parser.tokens()[i] << std::endl);
             ASSERT_INFO(parser.tokens()[i]);
@@ -1097,7 +1097,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         ASSERT(parser.tokens().size() >= 6, "patrol must have at least two x,y pairs\n");
         PhysRelativeTime attackIn = 0;
         int indexPathStartAt = 2;
-        for (int i = 0; i < parser.tokens().size(); ++i)
+        for (std::size_t i = 0; i < parser.tokens().size(); ++i)
         {
             if (parser.tokens()[i] == "DELAY")
             {

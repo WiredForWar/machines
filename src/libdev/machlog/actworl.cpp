@@ -71,7 +71,7 @@ MachLogWinOrLoseAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 {
     MachLogWinOrLoseAction* pResult = nullptr;
     pResult = new MachLogWinOrLoseAction(pCondition, enabled);
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
         if (token == "RACE")

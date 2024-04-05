@@ -596,7 +596,7 @@ void XFileParser::ParseDataObjectMeshMaterialList(XFile::Mesh* pMesh)
             material.sceneIndex = 0;
             material.mName = matName;
 
-            for (uint i = 0; i < mScene->mGlobalMaterials.size(); ++i)
+            for (std::size_t i = 0; i < mScene->mGlobalMaterials.size(); ++i)
             {
                 if (mScene->mGlobalMaterials[i]->mName == matName)
                 {

@@ -133,7 +133,7 @@ MachLogReinforcementsAction::newFromParser(SimCondition* pCondition, bool enable
     pResult = new MachLogReinforcementsAction(pCondition, enabled);
     bool finished = false;
     // read initial line for race.
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
         if (pParser->tokens()[i] == "RACE")
             pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
         else if (pParser->tokens()[i] == "NO_VOICEMAIL")

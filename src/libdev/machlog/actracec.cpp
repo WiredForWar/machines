@@ -72,7 +72,7 @@ MachLogChangeRaceAction::newFromParser(SimCondition* pCondition, bool enabled, U
 {
     MachLogChangeRaceAction* pResult = nullptr;
     pResult = new MachLogChangeRaceAction(pCondition, enabled);
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
         if (token == "ORIGINAL_RACE")

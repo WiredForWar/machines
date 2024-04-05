@@ -41,7 +41,7 @@ bool MachLogAllOtherRacesUnitsDeadCondition::doHasConditionBeenMet() const
     HAL_STREAM("MachLogAllOtherRacesUnitsDeadCondition::doHasConditionBeenMet " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     bool result = true;
-    for (int i = 0; i < otherRace_.size(); ++i)
+    for (std::size_t i = 0; i < otherRace_.size(); ++i)
         if ((races.nConstructions(otherRace_[i]) + races.nMachines(otherRace_[i]) != 0)
             && ! races.hasLost(otherRace_[i]))
             result = false;

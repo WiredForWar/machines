@@ -54,7 +54,7 @@ MachLogSetFlagAction::newFromParser(SimCondition* pCondition, bool enabled, UtlL
 {
     MachLogSetFlagAction* pResult = nullptr;
     pResult = new MachLogSetFlagAction(pCondition, enabled);
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
         if (token == "NAME")

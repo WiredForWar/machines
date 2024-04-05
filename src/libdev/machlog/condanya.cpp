@@ -41,7 +41,7 @@ MachLogAnyAllCondition* MachLogAnyAllCondition::newFromParser(
     SimCondition::BooleanOperator booleanOperator)
 {
     ctl_pvector<SimCondition> subOps;
-    for (int i = 2; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 2; i < pParser->tokens().size(); ++i)
     {
         subOps.push_back(pMap->operator[](pParser->tokens()[i]));
     }

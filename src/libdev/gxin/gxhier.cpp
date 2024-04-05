@@ -24,7 +24,7 @@ GXHier::~GXHier()
 {
     TEST_INVARIANT;
 
-    for (int i = 0; i < children_.size(); ++i)
+    for (std::size_t i = 0; i < children_.size(); ++i)
     {
         delete children_[i];
     }

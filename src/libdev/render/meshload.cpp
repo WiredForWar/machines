@@ -309,7 +309,7 @@ void RenID3DMeshLoader::traverseFrame(XFile::Node* frame)
     COMPTR(IDirect3DRMVisualArray) visuals;
     if (SUCCEEDED(frame->GetVisuals(visuals.address())))
     {
-        for (int i=0; i!=visuals->GetSize(); ++i)
+        for (std::size_t i=0; i!=visuals->GetSize(); ++i)
         {
             COMPTR(IDirect3DRMVisual) visual;
             if (SUCCEEDED(visuals->GetElement(i, visual.address())))
@@ -330,7 +330,7 @@ void RenID3DMeshLoader::traverseFrame(XFile::Node* frame)
             }
         }
     }*/
-    for (uint i = 0; i != frame->mMeshes.size(); ++i)
+    for (std::size_t i = 0; i != frame->mMeshes.size(); ++i)
     {
         XFile::Mesh* mesh = frame->mMeshes[i];
         meshName = mesh->mName;

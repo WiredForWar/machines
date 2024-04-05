@@ -25,9 +25,9 @@ public:
     // Singleton class
     ~W4dDebugTimer()
     {
-        for (int i = 0; i < textSnaps_.size(); ++i)
+        for (std::size_t i = 0; i < textSnaps_.size(); ++i)
         {
-            LIONEL_STREAM(textSnaps_[i] << timeSnaps_[i] << endl);
+            LIONEL_STREAM(textSnaps_[i] << timeSnaps_[i] << std::endl);
         }
     }
 

@@ -308,7 +308,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysConstructionData& t)
 
     o << "hwResearch cost " << t.hwResearchCost() << std::endl;
     o << "nEntrances " << t.entrances().size() << std::endl;
-    for (int i = 0; i < t.entrances().size(); ++i)
+    for (std::size_t i = 0; i < t.entrances().size(); ++i)
     {
         MachPhysConstructionData::EntranceData e = t.entrances()[i];
         o << " " << e.internalPoint << " " << e.externalPoint;
@@ -320,7 +320,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysConstructionData& t)
 
     o << "interiorBoundary " << t.interiorBoundary() << std::endl;
     o << "interior obstacles " << std::endl;
-    for (int i = 0; i < t.interiorObstacles().size(); ++i)
+    for (std::size_t i = 0; i < t.interiorObstacles().size(); ++i)
     {
         o << *t.interiorObstacles()[i] << std::endl;
     }

@@ -361,7 +361,7 @@ bool MexConvexPolygon2d::allVerticesDiscrete() const
     //  cout << " " << vertex( i ) << endl;
     // }
 
-    for (int i = 0; i < pPoints_->size(); ++i)
+    for (std::size_t i = 0; i < pPoints_->size(); ++i)
     {
         for (int j = 0; j < pPoints_->size(); ++j)
         {

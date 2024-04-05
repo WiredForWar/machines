@@ -137,7 +137,7 @@ void MachLogNetwork::processNetworkIniSettings(const string& fileName)
             if (parser.tokens()[0] == "PROTOCOL")
             {
                 protocol = "";
-                for (int i = 1; i < parser.tokens().size(); ++i)
+                for (std::size_t i = 1; i < parser.tokens().size(); ++i)
                 {
                     protocol += parser.tokens()[i];
                     if (i != (parser.tokens().size() - 1))

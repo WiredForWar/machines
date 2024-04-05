@@ -149,7 +149,7 @@ MachLogRaces::~MachLogRaces()
     delete pDataImpl_->pActorIdMap_;
     delete pDataImpl_->pRemoteFirstPersonManager_;
 
-    for (Scores::size_type i = 0; i < pDataImpl_->scores_.size(); ++i)
+    for (std::size_t i = 0; i < pDataImpl_->scores_.size(); ++i)
         delete pDataImpl_->scores_[i];
 
     delete pDataImpl_->pArtefacts_;

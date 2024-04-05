@@ -70,7 +70,7 @@ void MachLogMessageBroker::sendMachineMoveMessage(
             + infos.size() * sizeof(MachLogSingleMoveInfo);
         pMoveMessage->topSpeed_ = topSpeed;
         pMoveMessage->nMoveInfos_ = infos.size();
-        for (int i = 0; i < infos.size(); ++i)
+        for (std::size_t i = 0; i < infos.size(); ++i)
         {
             // DEBUG_STREAM( DIAG_NETWORK, WHERE_STR << std::endl );
             // DEBUG_STREAM( DIAG_NETWORK, infos[ i ] );
@@ -428,7 +428,7 @@ void MachLogMessageBroker::sendAddMotionChunksMessage(
     pMessage->whichId_ = whichId;
     pMessage->nChunks_ = chunks.size();
     pMessage->status_ = status;
-    for (int i = 0; i < chunks.size(); ++i)
+    for (std::size_t i = 0; i < chunks.size(); ++i)
     {
         PhysCompressedMotionChunk chunk = chunks[i];
         memcpy(
@@ -485,7 +485,7 @@ void MachLogMessageBroker::sendRequestAddMotionChunksMessage(
     pMessage->whichId_ = whichId;
     pMessage->nChunks_ = chunks.size();
     pMessage->status_ = status;
-    for (int i = 0; i < chunks.size(); ++i)
+    for (std::size_t i = 0; i < chunks.size(); ++i)
     {
         PhysCompressedMotionChunk chunk = chunks[i];
         memcpy(

@@ -154,7 +154,7 @@ MachCommandIcons::MachCommandIcons(GuiDisplayable* pParent, const Gui::Coord& re
     // Construct an icon for every command available in the inGameScreen
     const MachInGameScreen::Commands& commands = pInGameScreen->allCommands();
 
-    for (int i = 0; i != commands.size(); ++i)
+    for (std::size_t i = 0; i != commands.size(); ++i)
     {
         if (commands[i] == pInGameScreen->defconCommand())
         {
@@ -245,7 +245,7 @@ MachSmallCommandIcons::MachSmallCommandIcons(
     int i = 0;
     const MachInGameScreen::Commands& commands = pInGameScreen->allCommands();
 
-    for (int i = 0; i != commands.size(); ++i)
+    for (std::size_t i = 0; i != commands.size(); ++i)
     {
         if (commands[i] == pInGameScreen->defconCommand())
         {

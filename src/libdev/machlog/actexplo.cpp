@@ -71,7 +71,7 @@ MachLogExplosionAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 {
     MachLogExplosionAction* pResult = nullptr;
     pResult = new MachLogExplosionAction(pCondition, enabled);
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
         if (token == "AT")

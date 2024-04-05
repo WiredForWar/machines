@@ -61,7 +61,7 @@ MachLogTaskStateAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
 
     MachLogTaskStateAction* pResult = nullptr;
     pResult = new MachLogTaskStateAction(pCondition, enabled);
-    for (int i = 0; i < pParser->tokens().size(); ++i)
+    for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
         if (token == "NUMBER")

@@ -324,7 +324,7 @@ void GuiIconSequence::doOutputOperator(std::ostream& o) const
 
     o << '\t' << "fixedChildren_"
       << " start" << std::endl;
-    for (FixedChildren::size_type i = 0; i < fixedChildren_.size(); ++i)
+    for (std::size_t i = 0; i < fixedChildren_.size(); ++i)
     {
         o << "\t\t";
         if (fixedChildren_[i] == nullptr)
@@ -350,7 +350,7 @@ void GuiIconSequence::doOutputOperator(std::ostream& o) const
 
     o << '\t' << "allocatedPositions_ "
       << " start" << std::endl;
-    for (unsigned i = 0; i < allocatedPositions_.size(); ++i)
+    for (std::size_t i = 0; i < allocatedPositions_.size(); ++i)
         o << "\t\t" << (allocatedPositions_[i] ? "true" : "false") << std::endl;
     o << '\t' << "allocatedPositions_ "
       << " end" << std::endl;

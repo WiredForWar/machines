@@ -994,7 +994,7 @@ verticesBelowPlan(const MexPoint3d& planePoint, const MexVec3& planeNormal, cons
 {
 
     MATHEX_SCALAR eps = MexEpsilon::instance();
-    for (int i = 0; i < vertices.size(); ++i)
+    for (std::size_t i = 0; i < vertices.size(); ++i)
     {
         if (planeNormal.dotProduct(MexVec3(planePoint, vertices[i])) > eps)
             return false;
@@ -1235,7 +1235,7 @@ static void layVerticesOnTerrain(
     // 2) no crest along any of its edgees
     // 3) a smaller average distance of the ground points to the pad than any other match
     // This pass will fail if we have a crest line or a saddle on the ground
-    for (int i = 0; i < padVertices.size(); ++i)
+    for (std::size_t i = 0; i < padVertices.size(); ++i)
     {
         // Second vertex
         LIONEL_STREAM("Laying pad on three vertices (with vertex 1 as pivot)" << std::endl);
@@ -1270,7 +1270,7 @@ static void layVerticesOnTerrain(
     // In a second pass we try to find the best solution having the four vertices above the ground
     if (! matchFound)
     {
-        for (int i = 0; i < padVertices.size(); ++i)
+        for (std::size_t i = 0; i < padVertices.size(); ++i)
         {
             // Second vertex
             LIONEL_STREAM("Laying pad on vertex " << i << std::endl);
@@ -1304,7 +1304,7 @@ static void layVerticesOnTerrain(
         // TBD I should try to find a better solution for saddles but could not think of any
         if (! matchFound)
         {
-            for (int i = 0; i < padVertices.size(); ++i)
+            for (std::size_t i = 0; i < padVertices.size(); ++i)
             {
                 // Second vertex
                 LIONEL_STREAM("Laying pad on vertex " << i << std::endl);
