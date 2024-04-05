@@ -169,19 +169,19 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
     pOkBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(387, 111, 578, 154),
+        Gui::Box(387, 111, 578, 154) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::OK);
     pDeleteBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(387, 215, 578, 258),
+        Gui::Box(387, 215, 578, 258) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_DELETE,
         MachGui::ButtonEvent::DELETE);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(387, 312, 578, 356),
+        Gui::Box(387, 312, 578, 356) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
 
@@ -197,7 +197,7 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
             SAVE_LB_MINX,
             SAVE_LB_MINY,
             SAVE_LB_MINX + font.textWidth(saveHeading.asString()),
-            SAVE_LB_MINY + font.charHeight() + 2),
+            SAVE_LB_MINY + font.charHeight() + 2) * MachGui::menuScaleFactor(),
         IDS_MENULB_SAVEGAME,
         MachGui::Menu::largeFontLight());
 
@@ -209,14 +209,15 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
             SAVE_LB_MINX,
             pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first,
             SAVE_LB_MAXX - SCROLLBAR_WIDTH,
-            SAVE_LB_MAXY),
-        1000,
-        MachGuiSingleSelectionListBoxItem::reqHeight(),
+            SAVE_LB_MAXY) * MachGui::menuScaleFactor(),
+        1000 * MachGui::menuScaleFactor(),
+        MachGuiSingleSelectionListBoxItem::reqHeight(), // FIXME:  * MachGui::menuScaleFactor()
         1);
 
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
-        Gui::Coord(SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first),
+        Gui::Coord(SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first)
+            * MachGui::menuScaleFactor(),
         SAVE_LB_MAXY - SAVE_LB_MINY
             - (pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y()),
         pSaveGameList_);

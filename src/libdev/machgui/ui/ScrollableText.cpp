@@ -10,6 +10,7 @@
 #include "base/diag.hpp"
 #include "gui/font.hpp"
 #include "gui/root.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/menus_helper.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -18,7 +19,12 @@
 static const std::string &fontName = MachGui::Menu::smallFontLight();
 
 MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui::Box& box, uint columnWidth)
-    : GuiSimpleScrollableList(pParent, box, columnWidth, GuiBmpFont::getFont(fontName).charHeight() + 1, 1)
+    : GuiSimpleScrollableList(
+        pParent,
+        box,
+        columnWidth,
+        GuiBmpFont::getFont(fontName).charHeight() + 1 * MachGui::menuScaleFactor(),
+        1)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;

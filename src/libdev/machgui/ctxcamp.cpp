@@ -8,6 +8,7 @@
 #include "machgui/ctxcamp.hpp"
 
 #include "base/diag.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -120,37 +121,37 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
     , pTotalScoreHeadingText_(nullptr)
     , pTotalScoreText_(nullptr)
 {
-    const int PLAYERS_LB_MINX = 84;
-    const int PLAYERS_LB_MINY = 93;
-    const int PLAYERS_LB_MAXX = 237;
-    const int PLAYERS_LB_MAXY = 378;
-    const int CURRENTSTATUS_MINX = 378;
-    const int CURRENTSTATUS_MINY = 225;
-    const int CURRENTSTATUS_MAXX = 532;
-    const int CURRENTSTATUS_MAXY = 376;
+    const int PLAYERS_LB_MINX = 84 * MachGui::menuScaleFactor();
+    const int PLAYERS_LB_MINY = 93 * MachGui::menuScaleFactor();
+    const int PLAYERS_LB_MAXX = 237 * MachGui::menuScaleFactor();
+    const int PLAYERS_LB_MAXY = 378 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MINX = 378 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MINY = 225 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MAXX = 532 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MAXY = 376 * MachGui::menuScaleFactor();
 
     MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(83, 408, 255, 445),
+        Gui::Box(83, 408, 255, 445) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(327, 408, 497, 445),
+        Gui::Box(327, 408, 497, 445) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(376, 40, 546, 77),
+        Gui::Box(376, 40, 546, 77) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_NEW,
         MachGui::ButtonEvent::NEW);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(376, 134, 546, 172),
+        Gui::Box(376, 134, 546, 172) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_DELETE,
         MachGui::ButtonEvent::DELETE);
 
@@ -227,10 +228,10 @@ void MachGuiCtxCampaign::update()
 
 void MachGuiCtxCampaign::updatePlayersList()
 {
-    const int PLAYERS_LB_MINX = 84;
-    const int PLAYERS_LB_MINY = 93;
-    const int PLAYERS_LB_MAXX = 237;
-    const int PLAYERS_LB_MAXY = 378;
+    const int PLAYERS_LB_MINX = 84 * MachGui::menuScaleFactor();
+    const int PLAYERS_LB_MINY = 93 * MachGui::menuScaleFactor();
+    const int PLAYERS_LB_MAXX = 237 * MachGui::menuScaleFactor();
+    const int PLAYERS_LB_MAXY = 378 * MachGui::menuScaleFactor();
 
     pPlayersList_->deleteAllItems();
     pSelectedPlayer_ = nullptr;

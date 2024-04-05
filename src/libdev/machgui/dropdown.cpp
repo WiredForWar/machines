@@ -50,48 +50,43 @@ GuiBmpFont MachGuiDropDownListBoxItem::getWhiteFont()
 // virtual
 void MachGuiDropDownListBoxItem::doDisplay()
 {
+    const Gui::Coord textCoord(
+        absoluteBoundary().minCorner().x() + 2 * MachGui::menuScaleFactor(),
+        absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor());
+
     if (selected())
     {
         GuiPainter::instance().blit(
             MachGui::longGlowBmp(),
-            Gui::Box(0, 0, width(), height() - 1),
+            Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
             absoluteBoundary().minCorner());
-        getUnderlineFont().drawText(
-            text(),
-            Gui::Coord(absoluteBoundary().minCorner().x() + 2, absoluteBoundary().minCorner().y() + 1),
-            width());
+        getUnderlineFont().drawText(text(), textCoord, width());
     }
     else if (highlighted())
     {
         GuiPainter::instance().blit(
             MachGui::longGlowBmp(),
-            Gui::Box(0, 0, width(), height() - 1),
+            Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
             absoluteBoundary().minCorner());
-        getHighlightFont().drawText(
-            text(),
-            Gui::Coord(absoluteBoundary().minCorner().x() + 2, absoluteBoundary().minCorner().y() + 1),
-            width());
+        getHighlightFont().drawText(text(), textCoord, width());
     }
     else
     {
         // Draw background to list box item
         GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::DROPDOWNDARKGREEN());
-        GuiPainter::instance().hollowRectangle(absoluteBoundary(), MachGui::DROPDOWNLIGHTGREEN(), 1);
+        GuiPainter::instance().hollowRectangle(
+            absoluteBoundary(),
+            MachGui::DROPDOWNLIGHTGREEN(),
+            1 * MachGui::menuScaleFactor());
 
         // Draw list box item text
         if (whiteFont_)
         {
-            getWhiteFont().drawText(
-                text(),
-                Gui::Coord(absoluteBoundary().minCorner().x() + 2, absoluteBoundary().minCorner().y() + 1),
-                width());
+            getWhiteFont().drawText(text(), textCoord, width());
         }
         else
         {
-            getFont().drawText(
-                text(),
-                Gui::Coord(absoluteBoundary().minCorner().x() + 2, absoluteBoundary().minCorner().y() + 1),
-                width());
+            getFont().drawText(text(), textCoord, width());
         }
     }
 }

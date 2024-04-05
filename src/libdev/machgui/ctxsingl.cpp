@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxsingl.hpp"
+
+#include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -18,28 +20,32 @@ MachGuiCtxSinglePlayer::MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupSc
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(401, 62, 588, 105),
+        Gui::Box(401, 62, 588, 105) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CAMPAIGN,
         MachGui::ButtonEvent::CAMPAIGN);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(401, 169, 588, 211),
+        Gui::Box(401, 169, 588, 211) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_SKIRMISH,
         MachGui::ButtonEvent::SKIRMISH);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(401, 272, 588, 314),
+        Gui::Box(401, 272, 588, 314) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_LOADGAME,
         MachGui::ButtonEvent::LOADGAME);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(401, 370, 588, 412),
+        Gui::Box(401, 370, 588, 412) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
-    new MachGuiMenuText(pStartupScreens, Gui::Box(82, 292, 262, 399), IDS_MENU_SINGLEPLAYER, MachGui::Menu::largeFontLight());
+    new MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(82, 292, 262, 399) * MachGui::menuScaleFactor(),
+        IDS_MENU_SINGLEPLAYER,
+        MachGui::Menu::largeFontLight());
     pCancelBtn->escapeControl(true);
 
     TEST_INVARIANT;

@@ -43,32 +43,36 @@ MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
     pOkBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(131, 363, 301, 401),
+        Gui::Box(131, 363, 301, 401) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::DUMMY_OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(132, 416, 301, 453),
+        Gui::Box(132, 416, 301, 453) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
     pHintsBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(357, 363, 526, 401),
+        Gui::Box(357, 363, 526, 401) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_HINTS,
         MachGui::ButtonEvent::HINTS);
     pObjectiveBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(356, 416, 526, 453),
+        Gui::Box(356, 416, 526, 453) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OBJECTIVES,
         MachGui::ButtonEvent::OBJECTIVES);
 
     pCancelBtn->escapeControl(true);
 
-    pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(23, 21, 305, 336));
-    MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(306, 21), 315, pTextInfo_);
+    pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(23, 21, 305, 336) * MachGui::menuScaleFactor());
+    MachGuiVerticalScrollBar::createWholeBar(
+        pStartupScreens,
+        Gui::Coord(306, 21) * MachGui::menuScaleFactor(),
+        315 * MachGui::menuScaleFactor(),
+        pTextInfo_);
 
     displayObjectives();
     displayBriefingImage();

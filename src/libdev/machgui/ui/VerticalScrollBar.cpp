@@ -26,61 +26,75 @@ MachGuiVerticalScrollBar::MachGuiVerticalScrollBar(
 void MachGuiVerticalScrollBar::doDisplayBar()
 {
     GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::MENUDARKGREEN());
+    const int frameWidth = MachGui::menuScaleFactor() * 1;
     GuiPainter::instance().line(
         absoluteBoundary().minCorner(),
         Gui::Coord(absoluteBoundary().minCorner().x(), absoluteBoundary().maxCorner().y()),
         MachGui::DARKSANDY(),
-        1);
+        frameWidth);
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBoundary().maxCorner().x() - 1, absoluteBoundary().minCorner().y()),
-        Gui::Coord(absoluteBoundary().maxCorner().x() - 1, absoluteBoundary().maxCorner().y()),
+        Gui::Coord(absoluteBoundary().maxCorner().x() - frameWidth, absoluteBoundary().minCorner().y()),
+        Gui::Coord(absoluteBoundary().maxCorner().x() - frameWidth, absoluteBoundary().maxCorner().y()),
         MachGui::DARKSANDY(),
-        1);
+        frameWidth);
 }
 
 // virtual
 void MachGuiVerticalScrollBar::doDisplayBox(const Gui::Box& absoluteBox)
 {
     // Draw low lights and high lights
+    const int penWidth = 1 * MachGui::menuScaleFactor();
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.maxCorner().x() - 2, absoluteBox.minCorner().y()),
-        Gui::Coord(absoluteBox.maxCorner().x() - 2, absoluteBox.maxCorner().y()),
+        Gui::Coord(absoluteBox.maxCorner().x() - 2 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
+        Gui::Coord(absoluteBox.maxCorner().x() - 2 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y()),
         MachGui::SANDY(),
-        1);
+        penWidth);
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 1, absoluteBox.maxCorner().y() - 1),
-        Gui::Coord(absoluteBox.maxCorner().x() - 1, absoluteBox.maxCorner().y() - 1),
+        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y() - 1 * MachGui::menuScaleFactor()),
+        Gui::Coord(absoluteBox.maxCorner().x() - 1 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y() - 1 * MachGui::menuScaleFactor()),
         MachGui::SANDY(),
-        1);
+        penWidth);
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 1, absoluteBox.minCorner().y()),
-        Gui::Coord(absoluteBox.maxCorner().x() - 1, absoluteBox.minCorner().y()),
+        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
+        Gui::Coord(absoluteBox.maxCorner().x() - 1 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
         MachGui::SANDY(),
-        1);
+        penWidth);
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 1, absoluteBox.minCorner().y()),
-        Gui::Coord(absoluteBox.minCorner().x() + 1, absoluteBox.maxCorner().y()),
+        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
+        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y()),
         MachGui::SANDY(),
-        1);
+        penWidth);
 
     int halfBoxHeight = (absoluteBox.maxCorner().y() - absoluteBox.minCorner().y()) / 2;
 
     // Draw three lines in middle of scroll box
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 3, absoluteBox.minCorner().y() + halfBoxHeight),
-        Gui::Coord(absoluteBox.maxCorner().x() - 3, absoluteBox.minCorner().y() + halfBoxHeight),
+        Gui::Coord(
+            absoluteBox.minCorner().x() + 3 * MachGui::menuScaleFactor(),
+            absoluteBox.minCorner().y() + halfBoxHeight),
+        Gui::Coord(
+            absoluteBox.maxCorner().x() - 3 * MachGui::menuScaleFactor(),
+            absoluteBox.minCorner().y() + halfBoxHeight),
         MachGui::SANDY(),
-        1);
+        penWidth);
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 3, absoluteBox.minCorner().y() + halfBoxHeight - 2),
-        Gui::Coord(absoluteBox.maxCorner().x() - 3, absoluteBox.minCorner().y() + halfBoxHeight - 2),
+        Gui::Coord(
+            absoluteBox.minCorner().x() + 3 * MachGui::menuScaleFactor(),
+            absoluteBox.minCorner().y() + halfBoxHeight - 2 * MachGui::menuScaleFactor()),
+        Gui::Coord(
+            absoluteBox.maxCorner().x() - 3 * MachGui::menuScaleFactor(),
+            absoluteBox.minCorner().y() + halfBoxHeight - 2 * MachGui::menuScaleFactor()),
         MachGui::SANDY(),
-        1);
+        penWidth);
     GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 3, absoluteBox.minCorner().y() + halfBoxHeight + 2),
-        Gui::Coord(absoluteBox.maxCorner().x() - 3, absoluteBox.minCorner().y() + halfBoxHeight + 2),
+        Gui::Coord(
+            absoluteBox.minCorner().x() + 3 * MachGui::menuScaleFactor(),
+            absoluteBox.minCorner().y() + halfBoxHeight + 2 * MachGui::menuScaleFactor()),
+        Gui::Coord(
+            absoluteBox.maxCorner().x() - 3 * MachGui::menuScaleFactor(),
+            absoluteBox.minCorner().y() + halfBoxHeight + 2 * MachGui::menuScaleFactor()),
         MachGui::SANDY(),
-        1);
+        penWidth);
 }
 
 // static

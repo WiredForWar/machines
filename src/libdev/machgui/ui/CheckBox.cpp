@@ -21,17 +21,19 @@ MachGuiCheckBox::MachGuiCheckBox(
     const Gui::Coord& boxTopLeft,
     const ResolvedUiString& label,
     bool isChecked)
-    : GuiDisplayable(pParent, Gui::Box(boxTopLeft, MGCB_BOX_DIMENSIONX, MGCB_BOX_DIMENSIONY))
+    : GuiDisplayable(
+        pParent,
+        Gui::Box(boxTopLeft, MexSize2d(MGCB_BOX_DIMENSIONX, MGCB_BOX_DIMENSIONY) * MachGui::menuScaleFactor()))
     , MachGuiFocusCapableControl(pStartupScreens)
     , label_(label)
     , isChecked_(isChecked)
     , font_(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()))
-    , checkBmp_(Gui::requestScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
-    , uncheckBmp_(Gui::requestScaledImage("gui/menu/uncheck.bmp", MachGui::menuScaleFactor()))
-    , checkFocusBmp_(Gui::requestScaledImage("gui/menu/checkf.bmp", MachGui::menuScaleFactor()))
-    , uncheckFocusBmp_(Gui::requestScaledImage("gui/menu/uncheckf.bmp", MachGui::menuScaleFactor()))
-    , checkHighlightBmp_(Gui::requestScaledImage("gui/menu/checkh.bmp", MachGui::menuScaleFactor()))
-    , uncheckHighlightBmp_(Gui::requestScaledImage("gui/menu/uncheckh.bmp", MachGui::menuScaleFactor()))
+    , checkBmp_(MachGui::getScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
+    , uncheckBmp_(MachGui::getScaledImage("gui/menu/uncheck.bmp", MachGui::menuScaleFactor()))
+    , checkFocusBmp_(MachGui::getScaledImage("gui/menu/checkf.bmp", MachGui::menuScaleFactor()))
+    , uncheckFocusBmp_(MachGui::getScaledImage("gui/menu/uncheckf.bmp", MachGui::menuScaleFactor()))
+    , checkHighlightBmp_(MachGui::getScaledImage("gui/menu/checkh.bmp", MachGui::menuScaleFactor()))
+    , uncheckHighlightBmp_(MachGui::getScaledImage("gui/menu/uncheckh.bmp", MachGui::menuScaleFactor()))
 {
     checkBmp_.enableColourKeying();
     uncheckBmp_.enableColourKeying();
@@ -69,7 +71,7 @@ void MachGuiCheckBox::doDisplay()
     uint y = absoluteCoord().y();
 
     Gui::Coord startText(
-        x - font_.textWidth(label_) - 8,
+        x - font_.textWidth(label_) - 8 * MachGui::menuScaleFactor(),
         y
             + (font_.charHeight() > height() ? (font_.charHeight() - height()) / 2
                                              : (height() - font_.charHeight()) / 2));

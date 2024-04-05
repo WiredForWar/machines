@@ -5,9 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
+#include "machgui/ctxingam.hpp"
+
+#include "machgui/gui.hpp"
 #include "network/netnet.hpp"
 #include "machlog/network.hpp"
-#include "machgui/ctxingam.hpp"
 #include "system/pathname.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/database.hpp"
@@ -24,60 +26,51 @@ MachGuiCtxInGameOptions::MachGuiCtxInGameOptions(MachGuiStartupScreens* pStartup
     MachGuiMenuButton* pContinueBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(90, 72, 281, 115),
+        Gui::Box(90, 72, 281, 115) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CONTINUE,
         MachGui::ButtonEvent::CONTINUE);
     MachGuiMenuButton* pBriefingBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(90, 178, 281, 222),
+        Gui::Box(90, 178, 281, 222) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_BRIEFING,
         MachGui::ButtonEvent::BRIEFING);
     MachGuiMenuButton* pRestartBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(90, 282, 281, 326),
+        Gui::Box(90, 282, 281, 326) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_RESTART,
         MachGui::ButtonEvent::RESTART);
     MachGuiMenuButton* pHotkeysBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(90, 377, 281, 420),
+        Gui::Box(90, 377, 281, 420) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_HOTKEYS,
         MachGui::ButtonEvent::HOTKEYS);
     MachGuiMenuButton* pOptionsBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(344, 72, 536, 114),
+        Gui::Box(344, 72, 536, 114) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OPTIONS,
         MachGui::ButtonEvent::OPTIONS);
     MachGuiMenuButton* pSaveBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(344, 178, 536, 221),
+        Gui::Box(344, 178, 536, 221) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_SAVEGAME,
         MachGui::ButtonEvent::SAVEGAME);
     MachGuiMenuButton* pLoadBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(344, 282, 536, 325),
+        Gui::Box(344, 282, 536, 325) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_LOADGAME,
         MachGui::ButtonEvent::LOADGAME);
-    MachGuiMenuButton* pExitBtn;
-    if (! NetNetwork::instance().isLobbiedGame())
-        pExitBtn = new MachGuiMenuButton(
-            pStartupScreens,
-            pStartupScreens,
-            Gui::Box(344, 377, 536, 419),
-            IDS_MENUBTN_EXITGAME,
-            MachGui::ButtonEvent::EXIT);
-    else
-        pExitBtn = new MachGuiMenuButton(
-            pStartupScreens,
-            pStartupScreens,
-            Gui::Box(344, 377, 536, 419),
-            IDS_MENUBTN_EXIT_TO_ZONE,
-            MachGui::ButtonEvent::EXIT);
+    MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Box(344, 377, 536, 419) * MachGui::menuScaleFactor(),
+        NetNetwork::instance().isLobbiedGame() ? IDS_MENUBTN_EXIT_TO_ZONE : IDS_MENUBTN_EXITGAME,
+        MachGui::ButtonEvent::EXIT);
 
     // Setup nav overrides
     pContinueBtn->setRightNavControl(pOptionsBtn);

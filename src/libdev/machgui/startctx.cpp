@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/startctx.hpp"
+
+#include "machgui/gui.hpp"
 #include "machgui/menus_helper.hpp"
 
 MachGuiStartupScreenContext::MachGuiStartupScreenContext(MachGuiStartupScreens* pStartupScreens)
@@ -67,10 +69,11 @@ std::pair<int, int> MachGuiStartupScreenContext::getBackdropTopLeft()
     GuiRoot* root = pStartupScreens_;
 
     auto backdrop = root->getSharedBitmaps()->getNamedBitmap("backdrop");
+    const auto backdropSize = backdrop->requestedSize().isNull() ? backdrop->size() : backdrop->requestedSize();
     using namespace machgui::helper::menus;
     // If the backdrop is the screen size, this would be the true top-left.
-    int top = y_from_screen_bottom(root->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
-    int left = x_from_screen_left(root->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
+    int top = y_from_screen_bottom(backdropSize.height, 2);
+    int left = x_from_screen_left(backdropSize.width, 2);
 
     return std::make_pair(top, left);
 }
@@ -80,7 +83,7 @@ void MachGuiStartupScreenContext::changeBackdrop(const std::string& newBackdrop)
     // This is here to show that the background image, or backdrop, is managed by the active GuiRoot.
     GuiRoot* root = pStartupScreens_;
 
-    root->getSharedBitmaps()->createUpdateNamedBitmap("backdrop", newBackdrop);
+    root->getSharedBitmaps()->createUpdateNamedBitmap("backdrop", newBackdrop, MachGui::menuScaleFactor());
 
     const auto& topLeft = getBackdropTopLeft();
     root->absoluteCoord(Gui::Coord(topLeft.second, topLeft.first));

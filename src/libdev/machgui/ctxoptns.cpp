@@ -28,6 +28,7 @@
 #include "machgui/ddrawdrop.hpp"
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -91,7 +92,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     RenDisplay* pDisplay_ = W4dManager::instance().sceneManager()->pDevice()->display();
 
     // Load the layout information
-    MachGuiOptionsLayout screenLayout(SysPathName("gui/layout/options.dat"));
+    MachGuiOptionsLayout screenLayout(SysPathName("gui/layout/options.dat"), MachGui::menuScaleFactor());
 
     // Create buttons
     {
@@ -121,7 +122,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            Gui::Coord(OPTIONS_AREA_MINX, OPTIONS_AREA_MINY),
+            Gui::Coord(OPTIONS_AREA_MINX, OPTIONS_AREA_MINY) * MachGui::menuScaleFactor(),
             font.textWidth(optionsHeading.asString()),
             font.charHeight() + 2),
         IDS_MENULB_OPTIONS,
@@ -131,7 +132,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            Gui::Coord(OPTIMISATIONS_AREA_MINX, OPTIMISATIONS_AREA_MINY),
+            Gui::Coord(OPTIMISATIONS_AREA_MINX, OPTIMISATIONS_AREA_MINY) * MachGui::menuScaleFactor(),
             font.textWidth(optimisationsHeading.asString()),
             font.charHeight() + 2),
         IDS_MENULB_OPTIMISATIONS,
@@ -161,28 +162,28 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(musicVolTxt.topLeft, musicVolTxt.bottomRight),
         musicVolTxt.idsStringId,
-        musicVolTxt.font,
+        MachGui::getScaledImagePath(musicVolTxt.font),
         MachGuiMenuText::RIGHT_JUSTIFY);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(soundVolTxt.topLeft, soundVolTxt.bottomRight),
         soundVolTxt.idsStringId,
-        soundVolTxt.font,
+        MachGui::getScaledImagePath(soundVolTxt.font),
         MachGuiMenuText::RIGHT_JUSTIFY);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(screenSizeTxt.topLeft, screenSizeTxt.bottomRight),
         screenSizeTxt.idsStringId,
-        screenSizeTxt.font,
+        MachGui::getScaledImagePath(screenSizeTxt.font),
         MachGuiMenuText::RIGHT_JUSTIFY);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(directDrawTxt.topLeft, directDrawTxt.bottomRight),
         directDrawTxt.idsStringId,
-        directDrawTxt.font,
+        MachGui::getScaledImagePath(directDrawTxt.font),
         MachGuiMenuText::RIGHT_JUSTIFY);
 
     //  new MachGuiMenuText( pStartupScreens, Gui::Box( direct3DTxt.topLeft, direct3DTxt.bottomRight ),
@@ -192,7 +193,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(scaleFactorTxt.topLeft, scaleFactorTxt.bottomRight),
         scaleFactorTxt.idsStringId,
-        scaleFactorTxt.font,
+        MachGui::getScaledImagePath(scaleFactorTxt.font),
         MachGuiMenuText::RIGHT_JUSTIFY);
 
     // Create check boxes
@@ -286,8 +287,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pScreenSize_ = new MachGuiDropDownListBoxCreator(
         pStartupScreens,
         pStartupScreens,
-        Gui::Coord(353, 119),
-        153,
+        Gui::Coord(353, 119) * MachGui::menuScaleFactor(),
+        153 * MachGui::menuScaleFactor(),
         strings,
         false,
         true);
@@ -313,8 +314,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pDirectDrawDrivers_ = new MachGuiDDrawDropDownListBoxCreator(
         pStartupScreens,
         pStartupScreens,
-        Gui::Coord(353, 139),
-        153,
+        Gui::Coord(353, 139) * MachGui::menuScaleFactor(),
+        153 * MachGui::menuScaleFactor(),
         dDrawDriverNames,
         false,
         true,
@@ -333,7 +334,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             pStartupScreens,
             Gui::Box(gammaCorrectionTxt.topLeft, gammaCorrectionTxt.bottomRight),
             gammaCorrectionTxt.idsStringId,
-            gammaCorrectionTxt.font,
+            MachGui::getScaledImagePath(gammaCorrectionTxt.font),
             MachGuiMenuText::RIGHT_JUSTIFY);
 
         pGammaCorrection_ = new MachGuiSlideBar(
@@ -353,15 +354,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pGammaCorrection_->setValue(gammaCorrection_);
 
         // Show gamma correction image (helps get gamma setting correct)
-        new GuiImage(pStartupScreens, Gui::Coord(353, 198), Gui::bitmap("gui/menu/gammacal.bmp"));
+        new GuiImage(pStartupScreens, Gui::Coord(353, 198) * MachGui::menuScaleFactor(), MachGui::getScaledImage("gui/menu/gammacal.bmp"));
     }
 
     {
         const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
         // Access boolean items
         uint index = 0;
-        const auto optimizationAreaCoord = Gui::Coord(240, OPTIMISATIONS_AREA_MINY + 33);
-        const int verticalStep = 20;
+        const auto optimizationAreaCoord = Gui::Coord(240, OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor();
+        const int verticalStep = 20 * MachGui::menuScaleFactor();
         for (const MachPhysComplexityBooleanItem *item : boolItems)
         {
             booleanOptimisations_.push_back(new MachGuiCheckBox(
@@ -373,49 +374,53 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         }
     }
 
-    // Access all the choices items, their id and # of choice per id
-    const MachPhysComplexityManager::ChoiceItems& chItems = MachPhysComplexityManager::instance().choiceItems();
-    uint index = 0;
-    for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
     {
-        uint id = (*it)->id();
-        uint nch = (*it)->nChoices();
-
-        GuiStrings choices;
-        MachGuiDropDownListBoxCreator::DropDownListBoxItems choiceIds;
-        choices.reserve(4);
-        choiceIds.reserve(4);
-
-        for (uint ch = 0; ch < nch; ++ch)
+        // Access all the choices items, their id and # of choice per id
+        const MachPhysComplexityManager::ChoiceItems& chItems = MachPhysComplexityManager::instance().choiceItems();
+        uint index = 0;
+        const auto optimizationAreaCoord = Gui::Coord(347, OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor();
+        const auto choicesBaseCoord = Gui::Coord(353, OPTIMISATIONS_AREA_MINY + 35) * MachGui::menuScaleFactor();
+        const int verticalStep = 20 * MachGui::menuScaleFactor();
+        for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
         {
-            GuiResourceString choice(ch + id + 1);
-            string choiceString = choice.asString();
-            choices.push_back(choiceString);
-            choiceIds.push_back((MachGuiDropDownListBoxCreator::DropDownListBoxItem)(ch + 1));
+            uint id = (*it)->id();
+            uint nch = (*it)->nChoices();
+
+            GuiStrings choices;
+            MachGuiDropDownListBoxCreator::DropDownListBoxItems choiceIds;
+            choices.reserve(nch);
+            choiceIds.reserve(nch);
+
+            for (uint ch = 0; ch < nch; ++ch)
+            {
+                GuiResourceString choice(ch + id + 1);
+                string choiceString = choice.asString();
+                choices.push_back(choiceString);
+                choiceIds.push_back((MachGuiDropDownListBoxCreator::DropDownListBoxItem)(ch + 1));
+            }
+            GuiResourceString choiceTitle(id);
+
+            new MachGuiMenuText(
+                pStartupScreens,
+                Gui::Box(
+                    optimizationAreaCoord
+                        + Gui::Coord(-smallFont.textWidth(choiceTitle.asString()), verticalStep * index),
+                    smallFont.textWidth(choiceTitle.asString()),
+                    smallFont.charHeight() + 8 * MachGui::menuScaleFactor()),
+                id,
+                MachGui::Menu::smallFontLight());
+
+            choicesOptimisations_.push_back(new MachGuiDropDownListBoxCreator(
+                pStartupScreens,
+                pStartupScreens,
+                choicesBaseCoord + Gui::Coord(0, verticalStep * index),
+                153 * MachGui::menuScaleFactor(),
+                choices,
+                false,
+                true));
+            (*(choicesOptimisations_.end() - 1))->items(choiceIds);
+            ++index;
         }
-        GuiResourceString choiceTitle(id);
-
-        new MachGuiMenuText(
-            pStartupScreens,
-            Gui::Box(
-                Gui::Coord(
-                    347 - smallFont.textWidth(choiceTitle.asString()),
-                    OPTIMISATIONS_AREA_MINY + 33 + (20 * index)),
-                smallFont.textWidth(choiceTitle.asString()),
-                smallFont.charHeight() + 8),
-            id,
-            MachGui::Menu::smallFontLight());
-
-        choicesOptimisations_.push_back(new MachGuiDropDownListBoxCreator(
-            pStartupScreens,
-            pStartupScreens,
-            Gui::Coord(353, OPTIMISATIONS_AREA_MINY + 35 + (20 * index)),
-            153,
-            choices,
-            false,
-            true));
-        (*(choicesOptimisations_.end() - 1))->items(choiceIds);
-        ++index;
     }
 
     // Retain original settings in case user cancels subsequent settings
@@ -440,8 +445,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pScaleFactorSelector_ = new MachGuiDropDownListBoxCreator(
         pStartupScreens,
         pStartupScreens,
-        Gui::Coord(353, 159),
-        153,
+        Gui::Coord(353, 159) * MachGui::menuScaleFactor(),
+        153 * MachGui::menuScaleFactor(),
         scaleNames,
         false,
         true);

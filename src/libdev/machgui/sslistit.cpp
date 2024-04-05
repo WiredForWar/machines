@@ -79,7 +79,7 @@ size_t MachGuiSingleSelectionListBoxItem::reqHeight()
 {
     size_t myReqHeight = getFont().charHeight();
 
-    myReqHeight += 5;
+    myReqHeight += 5 * MachGui::menuScaleFactor();
 
     return myReqHeight;
 }

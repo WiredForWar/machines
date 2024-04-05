@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxmmenu.hpp"
+
+#include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -53,27 +55,27 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
 #ifdef DEMO
     new MachGuiMenuButton(
         pStartupScreens,
-        Gui::Box(368, 40, 527, 75),
+        Gui::Box(368, 40, 527, 75) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CAMPAIGN,
         MachGui::ButtonEvent::CAMPAIGN);
     new MachGuiMenuButton(
         pStartupScreens,
-        Gui::Box(368, 130, 527, 165),
+        Gui::Box(368, 130, 527, 165) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_MULTIPLAYER,
         MachGui::ButtonEvent::MULTIPLAYER);
     new MachGuiMenuButton(
         pStartupScreens,
-        Gui::Box(368, 217, 527, 252),
+        Gui::Box(368, 217, 527, 252) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_SKIRMISH,
         MachGui::ButtonEvent::SKIRMISH);
     new MachGuiMenuButton(
         pStartupScreens,
-        Gui::Box(368, 297, 527, 332),
+        Gui::Box(368, 297, 527, 332) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OPTIONS,
         MachGui::ButtonEvent::OPTIONS);
     MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
-        Gui::Box(117, 410, 275, 445),
+        Gui::Box(117, 410, 275, 445) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_EXIT,
         MachGui::ButtonEvent::DUMMY_OK);
 
@@ -81,25 +83,25 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(368, 40, 527, 75),
+        Gui::Box(368, 40, 527, 75) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_SINGLEPLAYER,
         MachGui::ButtonEvent::SINGLEPLAYER);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(368, 130, 527, 165),
+        Gui::Box(368, 130, 527, 165) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_MULTIPLAYER,
         MachGui::ButtonEvent::MULTIPLAYER);
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(368, 217, 527, 252),
+        Gui::Box(368, 217, 527, 252) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OPTIONS,
         MachGui::ButtonEvent::OPTIONS);
     MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(368, 297, 527, 332),
+        Gui::Box(368, 297, 527, 332) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_EXIT,
         MachGui::ButtonEvent::DUMMY_OK);
 
@@ -108,7 +110,7 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     // Create exit button, responds to escape...
     pExitBtn->escapeControl(true);
 
-    new MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122), IDS_MENU_MAINMENU, MachGui::Menu::largeFontLight());
+    new MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122) * MachGui::menuScaleFactor(), IDS_MENU_MAINMENU, MachGui::Menu::largeFontLight());
 
     TEST_INVARIANT;
 }

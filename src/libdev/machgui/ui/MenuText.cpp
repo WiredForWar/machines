@@ -8,6 +8,7 @@
 #include "MenuText.hpp"
 
 #include "gui/font.hpp"
+#include "machgui/gui.hpp"
 
 MachGuiMenuText::MachGuiMenuText(
     GuiDisplayable* pParent,
@@ -50,7 +51,7 @@ void MachGuiMenuText::doDisplay()
     GuiBmpFont font(GuiBmpFont::getFont(fontPath_));
 
     size_t textHeight = font.charHeight();
-    size_t totalHeight = (strings_.size() * (textHeight + 1)) - 1;
+    size_t totalHeight = (strings_.size() * (textHeight + 1 * MachGui::menuScaleFactor())) - 1 * MachGui::menuScaleFactor();
 
     ASSERT_INFO(totalHeight);
     ASSERT_INFO(height());
@@ -77,7 +78,7 @@ void MachGuiMenuText::doDisplay()
                 break;
                 DEFAULT_ASSERT_BAD_CASE(justification_);
         }
-        size_t textY = startY + (i * (textHeight + 1));
+        size_t textY = startY + (i * (textHeight + 1 * MachGui::menuScaleFactor()));
 
         font.drawText(strings_[i], Gui::Coord(textX, textY), 1000);
     }

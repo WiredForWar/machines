@@ -148,10 +148,10 @@ bool MachGuiDropDownListBoxCreator::hasItems() const
 // static
 size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 {
-    size_t height = getFont().charHeight() + 4;
+    size_t height = getFont().charHeight() + 4 * MachGui::menuScaleFactor();
 
     if (border)
-        height += 2;
+        height += 2 * MachGui::menuScaleFactor();
 
     return height;
 }
@@ -218,13 +218,13 @@ void MachGuiDropDownListBoxCreator::doDisplay()
     int offset = 0;
     if (border_)
     {
-        offset = 1;
+        offset = 1 * MachGui::menuScaleFactor();
     }
     int offset2 = 2 * offset;
 
     Gui::Coord textPos(
-        absoluteBoundary().minCorner().x() + 1 + offset,
-        absoluteBoundary().minCorner().y() + 1 + offset);
+        absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor() + offset,
+        absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor() + offset);
 
     if (hovered_)
     {
@@ -232,14 +232,14 @@ void MachGuiDropDownListBoxCreator::doDisplay()
         {
             GuiPainter::instance().blit(
                 MachGui::longYellowGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
+                Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
         }
         else
         {
             GuiPainter::instance().blit(
                 MachGui::longGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
+                Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
         }
         getHighlightFont().drawText(text_, textPos, width() - offset2);
@@ -250,7 +250,7 @@ void MachGuiDropDownListBoxCreator::doDisplay()
         {
             GuiPainter::instance().blit(
                 MachGui::longYellowGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
+                Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
 
             getHighlightFont().drawText(text_, textPos, width() - offset2);
@@ -271,7 +271,10 @@ void MachGuiDropDownListBoxCreator::doDisplay()
 
     if (border_)
     {
-        GuiPainter::instance().hollowRectangle(absoluteBoundary(), MachGui::DARKSANDY(), 1);
+        GuiPainter::instance().hollowRectangle(
+            absoluteBoundary(),
+            MachGui::DARKSANDY(),
+            1 * MachGui::menuScaleFactor());
     }
 }
 

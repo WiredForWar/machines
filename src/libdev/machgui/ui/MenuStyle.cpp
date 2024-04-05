@@ -1,5 +1,7 @@
 #include "MenuStyle.hpp"
 
+#include "machgui/gui.hpp"
+
 namespace
 {
 
@@ -57,13 +59,13 @@ const std::string& largeFontFocus()
 
 void updateFonts()
 {
-    menuStyle().smallFontDark = "gui/menu/smaldfnt.bmp";
-    menuStyle().smallFontLight = "gui/menu/smallfnt.bmp";
-    menuStyle().smallFontWhite = "gui/menu/smalwfnt.bmp";
+    menuStyle().smallFontDark = getScaledImagePath("gui/menu/smaldfnt.bmp");
+    menuStyle().smallFontLight = getScaledImagePath("gui/menu/smallfnt.bmp");
+    menuStyle().smallFontWhite = getScaledImagePath("gui/menu/smalwfnt.bmp");
 
-    menuStyle().largeFontDark = "gui/menu/largdfnt.bmp";
-    menuStyle().largeFontLight = "gui/menu/largefnt.bmp";
-    menuStyle().largeFontFocus = "gui/menu/largyfnt.bmp";
+    menuStyle().largeFontDark = getScaledImagePath("gui/menu/largdfnt.bmp");
+    menuStyle().largeFontLight = getScaledImagePath("gui/menu/largefnt.bmp");
+    menuStyle().largeFontFocus = getScaledImagePath("gui/menu/largyfnt.bmp");
 }
 
 } // namespace MachGui::Menu

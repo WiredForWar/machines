@@ -4,6 +4,7 @@
  */
 
 #include "machgui/startup.hpp"
+#include "machgui/gui.hpp"
 
 inline constexpr bool cDemoVersion =
 #ifdef DEMO
@@ -136,12 +137,12 @@ public:
     {
         if (done == lastDone_)
             return 0;
-        const double minx = 275 + xOffset_;
-        const double maxx = 361 + xOffset_;
-        const double miny = 250 + yOffset_;
-        const double maxy = 254 + yOffset_;
-        const double width = maxx - minx + 1;
-        const double height = maxy - miny + 1;
+        const double minx = 275 * MachGui::uiScaleFactor() + xOffset_;
+        const double maxx = 361 * MachGui::uiScaleFactor() + xOffset_;
+        const double miny = 250 * MachGui::uiScaleFactor() + yOffset_;
+        const double maxy = 254 * MachGui::uiScaleFactor() + yOffset_;
+        const double width = maxx - minx + 1 * MachGui::uiScaleFactor();
+        const double height = maxy - miny + 1 * MachGui::uiScaleFactor();
         const double limitRange = upperLimit_ - lowerLimit_;
         const double percentComplete = (((double)done / (double)maxDone) * limitRange) + lowerLimit_;
         const double displayWidth = std::min((percentComplete * width) + 5, width);
@@ -510,7 +511,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     PRE(gameType_ == NOGAME);
 
     // Display loading bmp
-    GuiBitmap loadingBmp = Gui::bitmap("gui/menu/loading.bmp");
+    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());
@@ -592,7 +593,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     PRE(gameType_ == NOGAME);
 
     // Display loading bmp
-    GuiBitmap loadingBmp = Gui::bitmap("gui/menu/loading.bmp");
+    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());
@@ -746,7 +747,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     HAL_STREAM("MachGuiStartupScreens::switchGuiRootToMultiGame\n");
 
     // Display loading bmp
-    GuiBitmap loadingBmp = Gui::bitmap("gui/menu/loading.bmp");
+    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());
@@ -2879,7 +2880,7 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     pSceneManager_->pDevice()->display()->useCursor(nullptr);
 
     // Display loading bmp
-    GuiBitmap loadingBmp = Gui::bitmap("gui/menu/loading.bmp");
+    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, xMenuOffset(), yMenuOffset());

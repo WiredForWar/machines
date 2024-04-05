@@ -13,6 +13,8 @@
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
 
+constexpr float BorderWidth{2};
+
 MachGuiSlideBar::MachGuiSlideBar(
     MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
@@ -26,7 +28,7 @@ MachGuiSlideBar::MachGuiSlideBar(
     , maxValue_(maxVal)
     , highlighted_(false)
 {
-    barPos_ = 1.0;
+    barPos_ = 1.0 * MachGui::menuScaleFactor();
 
     POST_INFO(value());
     POST(value() >= minValue_);
@@ -46,7 +48,7 @@ MachGuiSlideBar::MachGuiSlideBar(
 {
     minValue_ = 0.0;
     maxValue_ = 1.0;
-    barPos_ = 1.0;
+    barPos_ = 1.0 * MachGui::menuScaleFactor();
 
     POST_INFO(value());
     POST(minValue_ == 0.0);
@@ -90,10 +92,10 @@ void MachGuiSlideBar::minMax(float minV, float maxV)
 float MachGuiSlideBar::value() const
 {
     float usableWidth = width();
-    usableWidth -= 2; // sandy coloured border
+    usableWidth -= BorderWidth * MachGui::menuScaleFactor(); // sandy coloured border
     usableWidth -= MachGui::slideBtnBmp().width();
 
-    float barPos = barPos_ - 1.0;
+    float barPos = barPos_ - 1.0 * MachGui::menuScaleFactor();
     RICHARD_STREAM("barPos_" << barPos_ << std::endl);
     RICHARD_STREAM("usableWidth" << usableWidth << std::endl);
 
@@ -117,7 +119,7 @@ void MachGuiSlideBar::setValue(float newVal)
     RICHARD_STREAM("Setting value to " << newVal << std::endl);
 
     float usableWidth = width();
-    usableWidth -= 2; // sandy coloured border
+    usableWidth -= BorderWidth * MachGui::menuScaleFactor(); // sandy coloured border
     usableWidth -= MachGui::slideBtnBmp().width();
     RICHARD_STREAM("usableWidth(b) " << usableWidth << std::endl);
 
@@ -129,7 +131,7 @@ void MachGuiSlideBar::setValue(float newVal)
 
     float barPos = barPosPercent * usableWidth;
 
-    barPos_ = barPos + 1.0;
+    barPos_ = barPos + 1.0 * MachGui::menuScaleFactor();
     RICHARD_STREAM("barPos_(b) " << barPos_ << std::endl);
 
     changed();
@@ -156,7 +158,7 @@ void MachGuiSlideBar::setValueChangedHandler(FloatValueChangedCallback callback)
 // static
 size_t MachGuiSlideBar::reqHeight()
 {
-    return MachGui::slideBtnBmp().height() + 4;
+    return MachGui::slideBtnBmp().height() + 4 * MachGui::menuScaleFactor();
 }
 
 // virtual
@@ -181,10 +183,12 @@ void MachGuiSlideBar::doDisplay()
         GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::MENUDARKGREEN());
     }
 
-    GuiPainter::instance().hollowRectangle(absoluteBoundary(), MachGui::DARKSANDY(), 1);
+    GuiPainter::instance().hollowRectangle(absoluteBoundary(), MachGui::DARKSANDY(), 1 * MachGui::menuScaleFactor());
     GuiPainter::instance().blit(
         MachGui::slideBtnBmp(),
-        Gui::Coord(absoluteBoundary().minCorner().x() + (int)barPos_, absoluteBoundary().minCorner().y() + 2));
+        Gui::Coord(
+            absoluteBoundary().minCorner().x() + (int)barPos_,
+            absoluteBoundary().minCorner().y() + BorderWidth * MachGui::menuScaleFactor()));
 }
 
 // virtual
@@ -223,8 +227,8 @@ void MachGuiSlideBar::doHandleContainsMouseEvent(const GuiMouseEvent& rel)
 
 void MachGuiSlideBar::barMoved(Gui::XCoord newBarPos)
 {
-    float wastedWidth = 2 /*sandy coloured border*/ + MachGui::slideBtnBmp().width();
-    float usableWidth = width() - wastedWidth;
+     /*sandy coloured border*/
+    float wastedWidth = BorderWidth * MachGui::menuScaleFactor() + MachGui::slideBtnBmp().width();
 
     float validStartPos = wastedWidth / 2.0;
     float validEndPos = width() - (wastedWidth / 2.0);
@@ -234,7 +238,7 @@ void MachGuiSlideBar::barMoved(Gui::XCoord newBarPos)
     else if (newBarPos > validEndPos)
         newBarPos = validEndPos;
 
-    barPos_ = newBarPos - (wastedWidth / 2.0) + 1.0;
+    barPos_ = newBarPos - (wastedWidth / 2.0) + 1.0 * MachGui::menuScaleFactor();
 
     changed();
     valueChanged(value());

@@ -78,6 +78,7 @@ std::string getScaledImagePath(std::string path);
  * @param path to the image file (with .bmp or without any extension)
  * @return scaled image or HiDPI bitmap
  */
+GuiBitmap getScaledImage(std::string path, float scaleFactor);
 GuiBitmap getScaledImage(std::string path);
 
 float getPhysMarkerLineWidth();

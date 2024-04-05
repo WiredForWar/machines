@@ -113,19 +113,19 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
     pOkBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(364, 127, 555, 170),
+        Gui::Box(364, 127, 555, 170) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::DUMMY_OK);
     pDeleteBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(364, 230, 555, 274),
+        Gui::Box(364, 230, 555, 274) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_DELETE,
         MachGui::ButtonEvent::DELETE);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(364, 328, 555, 371),
+        Gui::Box(364, 328, 555, 371) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
 
@@ -138,10 +138,10 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pLoadText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            LOAD_LB_MINX,
-            LOAD_LB_MINY,
-            LOAD_LB_MINX + font.textWidth(loadHeading.asString()),
-            LOAD_LB_MINY + font.charHeight() + 2),
+            MachGui::menuScaleFactor() * LOAD_LB_MINX,
+            MachGui::menuScaleFactor() * LOAD_LB_MINY,
+            MachGui::menuScaleFactor() * LOAD_LB_MINX + font.textWidth(loadHeading.asString()),
+            MachGui::menuScaleFactor() * LOAD_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_LOADGAME,
         MachGui::Menu::largeFontLight());
 
@@ -150,18 +150,20 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
-            LOAD_LB_MINX,
+            MachGui::menuScaleFactor() * LOAD_LB_MINX,
             pLoadText->absoluteBoundary().maxCorner().y() - topLeft.first,
-            LOAD_LB_MAXX - SCROLLBAR_WIDTH,
-            LOAD_LB_MAXY),
-        1000,
+            MachGui::menuScaleFactor() * (LOAD_LB_MAXX - SCROLLBAR_WIDTH),
+            MachGui::menuScaleFactor() * LOAD_LB_MAXY),
+        MachGui::menuScaleFactor() * 1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
 
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
-        Gui::Coord(LOAD_LB_MAXX - SCROLLBAR_WIDTH, pLoadText->absoluteBoundary().maxCorner().y() - topLeft.first),
-        LOAD_LB_MAXY - LOAD_LB_MINY
+        Gui::Coord(
+            MachGui::menuScaleFactor() * (LOAD_LB_MAXX - SCROLLBAR_WIDTH),
+            pLoadText->absoluteBoundary().maxCorner().y() - topLeft.first),
+        MachGui::menuScaleFactor() * (LOAD_LB_MAXY - LOAD_LB_MINY)
             - (pLoadText->absoluteBoundary().maxCorner().y() - pLoadText->absoluteBoundary().minCorner().y()),
         pSaveGameList_);
 
@@ -224,7 +226,7 @@ void MachGuiCtxLoad::updateSaveGameList()
         new MachGuiLoadGameListBoxItem(
             pStartupScreens_,
             pSaveGameList_,
-            LOAD_LB_MAXX - LOAD_LB_MINX - SCROLLBAR_WIDTH,
+            MachGui::menuScaleFactor() * (LOAD_LB_MAXX - LOAD_LB_MINX - SCROLLBAR_WIDTH),
             savedGame,
             this);
     }

@@ -310,7 +310,7 @@ GuiBitmap& MachGui::longGlowBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/longglow.bmp");
+        pBmp = getScaledImage("gui/menu/longglow.bmp");
     }
 
     return pBmp;
@@ -323,7 +323,7 @@ GuiBitmap& MachGui::longYellowGlowBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/lonyglow.bmp");
+        pBmp = getScaledImage("gui/menu/lonyglow.bmp");
     }
 
     return pBmp;
@@ -336,7 +336,7 @@ GuiBitmap& MachGui::buttonGlowBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/glow.bmp");
+        pBmp = getScaledImage("gui/menu/glow.bmp");
     }
 
     return pBmp;
@@ -349,7 +349,7 @@ GuiBitmap& MachGui::buttonDisableBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/disable.bmp");
+        pBmp = getScaledImage("gui/menu/disable.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -363,7 +363,7 @@ GuiBitmap& MachGui::menuScrollUpBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/scrollup.bmp");
+        pBmp = getScaledImage("gui/menu/scrollup.bmp");
     }
 
     return pBmp;
@@ -376,7 +376,7 @@ GuiBitmap& MachGui::menuScrollDownBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/scrolldn.bmp");
+        pBmp = getScaledImage("gui/menu/scrolldn.bmp");
     }
 
     return pBmp;
@@ -640,6 +640,11 @@ std::string MachGui::getScaledImagePath(std::string path)
 }
 
 GuiBitmap MachGui::getScaledImage(std::string path)
+{
+    return getScaledImage(path, uiScaleFactor());
+}
+
+GuiBitmap MachGui::getScaledImage(std::string path, float scaleFactor)
 {
     GuiBitmap image = Gui::requestScaledImage(path, uiScaleFactor());
     if (image.requestedSize().isNull())
