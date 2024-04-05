@@ -76,6 +76,7 @@ jobs:
     - name: Prepare the system (Linux)
       if: contains(matrix.os, 'ubuntu')
       run: |
+        sudo apt-get update
         sudo sources/scripts/prepare-system.sh
 
     - name: Prepare mingw (Linux)
