@@ -42,7 +42,7 @@ public:
 
     struct MenuTextInfo
     {
-        MenuTextInfo(uint stringId, MexPoint2d tl, MexPoint2d br, const string& fnt)
+        MenuTextInfo(uint stringId, MexPoint2d tl, MexPoint2d br, const std::string& fnt)
             : idsStringId(stringId)
             , topLeft(tl)
             , bottomRight(br)
@@ -50,7 +50,7 @@ public:
         uint idsStringId;
         MexPoint2d topLeft;
         MexPoint2d bottomRight;
-        string font;
+        std::string font;
     };
 
     struct CheckBoxInfo

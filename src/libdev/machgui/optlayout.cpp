@@ -98,7 +98,7 @@ void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
     int idsString(atoi(tokens[1].c_str()));
     MexPoint2d topLeft(atoi(tokens[2].c_str()), atoi(tokens[3].c_str()));
     MexPoint2d bottomRight(atoi(tokens[4].c_str()), atoi(tokens[5].c_str()));
-    string fontPath(tokens[6]);
+    std::string fontPath(tokens[6]);
     ASSERT(SysPathName(fontPath).existsAsFile(), " ");
     menuTexts_.emplace_back(MenuTextInfo(idsString, topLeft * scale_, bottomRight * scale_, fontPath));
 }
