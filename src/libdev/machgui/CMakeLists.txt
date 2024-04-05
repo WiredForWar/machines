@@ -321,6 +321,8 @@ set(MACHGUI_SOURCES
     ui/CheckBox.hpp
     ui/MenuButton.cpp
     ui/MenuButton.hpp
+    ui/MenuStyle.cpp
+    ui/MenuStyle.hpp
     ui/MenuText.cpp
     ui/MenuText.hpp
     ui/ScrollArea.cpp

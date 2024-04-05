@@ -8,6 +8,7 @@
 #include "network/netnet.hpp"
 
 #include "machgui/gui.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/internal/strings.hpp"
 #include "gui/painter.hpp"
 #include "gui/gui.hpp"
@@ -615,6 +616,8 @@ MATHEX_SCALAR MachGui::menuScaleFactor()
 void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
 {
     s_uiScaleFactor = scale;
+
+    Menu::updateFonts();
 }
 
 // static
