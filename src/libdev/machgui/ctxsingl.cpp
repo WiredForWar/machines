@@ -7,6 +7,7 @@
 
 #include "machgui/ctxsingl.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/internal/strings.hpp"
@@ -38,7 +39,7 @@ MachGuiCtxSinglePlayer::MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupSc
         Gui::Box(401, 370, 588, 412),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
-    new MachGuiMenuText(pStartupScreens, Gui::Box(82, 292, 262, 399), IDS_MENU_SINGLEPLAYER, "gui/menu/largefnt.bmp");
+    new MachGuiMenuText(pStartupScreens, Gui::Box(82, 292, 262, 399), IDS_MENU_SINGLEPLAYER, MachGui::Menu::largeFontLight());
     pCancelBtn->escapeControl(true);
 
     TEST_INVARIANT;

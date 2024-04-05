@@ -8,8 +8,15 @@
 #include "machgui/internal/playscri.hpp"
 #include "machgui/internal/strings.hpp"
 
+#include "machgui/ui/MenuStyle.hpp"
+
 MachGuiPlayerScore::MachGuiPlayerScore(GuiDisplayable* pParent, const Gui::Coord& topLeft)
-    : MachGuiPlayerNameList(pParent, Gui::Boundary(topLeft, 135, 77), "gui/menu/largefnt.bmp", IDS_MENU_STSSCORE, true)
+    : MachGuiPlayerNameList(
+        pParent,
+        Gui::Boundary(topLeft, 135, 77),
+        MachGui::Menu::largeFontLight(),
+        IDS_MENU_STSSCORE,
+        true)
     , statDisplay_(pParent, Gui::Coord(topLeft.x() + 59, topLeft.y() + 35), MachPhys::N_RACES)
 {
 

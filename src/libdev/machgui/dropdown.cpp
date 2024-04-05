@@ -8,6 +8,7 @@
 #include "machgui/dropdown.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/startup.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "gui/painter.hpp"
 #include "gui/font.hpp"
 #include "gui/manager.hpp"
@@ -41,7 +42,7 @@ MachGuiDropDownListBoxItem::MachGuiDropDownListBoxItem(
 // static
 GuiBmpFont MachGuiDropDownListBoxItem::getWhiteFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName(MachGui::Menu::smallFontWhite()));
 
     return bmpFont;
 }

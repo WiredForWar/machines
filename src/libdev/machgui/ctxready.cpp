@@ -20,6 +20,7 @@
 #include "machgui/msgboxei.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/Text.hpp"
 #include "machlog/network.hpp"
@@ -72,7 +73,7 @@ public:
             GuiResourceString resString(stringId());
             string text = resString.asString();
 
-            GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+            GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
             size_t textWidth = font.textWidth(text);
             size_t textHeight = font.charHeight();
 
@@ -189,7 +190,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     // Chat window...
     pChatWindow_ = new MachGuiChatWindow(pStartupScreens, pStartupScreens, Gui::Box(30, 113, 345, 322));
 
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
 
     pSingleLineEditBox_
         = new MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(37, 353, 330, 353 + font.charHeight()), font);
@@ -675,7 +676,7 @@ void MachGuiCtxImReady::updateGameSettings()
     GuiResourceString techLevelStr(IDS_MENU_STARTINGTECHLEVEL);
     GuiResourceString broadcastAlliancesStr(IDS_MENU_BROADCAST_ALLIANCE);
     GuiResourceString disableFirstPersonStr(IDS_MENU_DISABLE_FIRST_PERSON);
-    string whiteFont("gui/menu/smalwfnt.bmp");
+    string whiteFont(MachGui::Menu::smallFontWhite());
 
     // Show read only game settings...
     new MachGuiText(pReadOnlySettings_, textWidth, fogOfWarStr.asString());

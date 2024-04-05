@@ -9,6 +9,7 @@
 
 #include "base/diag.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/strtdata.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/sslistit.hpp"
@@ -83,7 +84,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
     pExitBtn->escapeControl(true);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
     pSingleLineEditBox_
         = new MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(106, 34, 444, 34 + font.charHeight()), font);
     pSingleLineEditBox_->maxChars(MAX_PLAYERNAME_LEN);
@@ -108,7 +109,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         pStartupScreens,
         Gui::Box(61, startY, 61 + font.textWidth(connectionType.asString()), startY + font.charHeight() + 2),
         IDS_MENULB_CONNECTIONTYPE,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
     startY += font.charHeight() + 3;
     MachGuiSingleSelectionListBox* pListBox = new MachGuiSingleSelectionListBox(
         pStartupScreens,

@@ -7,6 +7,7 @@
 
 #include "machgui/ctxskirm.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/ui/ScrollableText.hpp"
@@ -266,7 +267,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
 
     // Display mapsize list box heading
     GuiResourceString mapsizeHeading(IDS_MENULB_MAPSIZE);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
     MachGuiMenuText* pMapSizeText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
@@ -275,7 +276,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(mapsizeHeading.asString()),
             MAPSIZE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_MAPSIZE,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Display planet list box heading
     GuiResourceString terrainHeading(IDS_MENULB_TERRAINTYPE);
@@ -287,7 +288,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(terrainHeading.asString()),
             TERRAINTYPE_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_TERRAINTYPE,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Display scenario list box heading
     GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
@@ -299,7 +300,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(scenarioHeading.asString()),
             SCENARIO_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SCENARIO,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Display settings list box heading
     GuiResourceString settingsHeading(IDS_MENULB_SETTINGS);
@@ -311,7 +312,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
             SETTINGS_LB_MINX + font.textWidth(settingsHeading.asString()),
             SETTINGS_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SETTINGS,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Create system list box
     pMapSizeList_ = new MachGuiSingleSelectionListBox(

@@ -28,6 +28,7 @@
 #include "machgui/statistics.hpp"
 #include "machgui/statdisp.hpp"
 #include "machgui/genstats.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/database.hpp"
 #include "machgui/dbplayer.hpp"
@@ -93,14 +94,14 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     }
 
     // Heading texts
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::smallFontWhite()));
     GuiResourceString generalHeading(IDS_MENU_STSGENERAL);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(Gui::Coord(196, 41), font.textWidth(generalHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSGENERAL,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     GuiResourceString BARHeading(IDS_MENU_STSBAR);
@@ -109,7 +110,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         pStartupScreens,
         Gui::Box(Gui::Coord(196, 132), font.textWidth(BARHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSBAR,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     GuiResourceString killsHeading(IDS_MENU_STSKILLS);
@@ -118,10 +119,10 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         pStartupScreens,
         Gui::Box(Gui::Coord(196, 232), font.textWidth(killsHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSKILLS,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
-    GuiBmpFont largeFont = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
+    GuiBmpFont largeFont = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
 
     GuiResourceString statsHeading(IDS_MENU_STATISTICS);
 
@@ -129,7 +130,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         pStartupScreens,
         Gui::Box(Gui::Coord(53, 31), largeFont.textWidth(statsHeading.asString()), largeFont.charHeight()),
         IDS_MENU_STATISTICS,
-        "gui/menu/largefnt.bmp",
+        MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     // Get handle to score object for each race
@@ -355,7 +356,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     //
     // Player name list
     MachGuiPlayerNameList* names1 = new 
-        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 241), "gui/menu/smallfnt.bmp", IDS_MENU_STSTPLAYER);
+        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 241), MachGui::Menu::smallFontLight(), IDS_MENU_STSTPLAYER);
     names1->names(redName, blueName, greenName, yellowName);
     // Destroyed Machines belonging to player 1
     statistics_.push_back(new MachGuiGeneralStatistics(
@@ -407,7 +408,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         yellowScore.raceMachinesDestroyed(MachPhys::YELLOW));
     // Player name list
     MachGuiPlayerNameList* names2 = new 
-        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 322), "gui/menu/smallfnt.bmp", IDS_MENU_STSTPLAYER);
+        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 322), MachGui::Menu::smallFontLight(), IDS_MENU_STSTPLAYER);
     names2->names(redName, blueName, greenName, yellowName);
     // Destroyed constructions belonging to player 1
     statistics_.push_back(new MachGuiGeneralStatistics(

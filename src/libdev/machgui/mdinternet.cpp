@@ -12,6 +12,7 @@
 #include "gui/font.hpp"
 #include "gui/manager.hpp"
 #include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/editbox.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/gui.hpp"
@@ -88,14 +89,14 @@ void MachGuiInternetNetworkMode::charFocus()
 void MachGuiInternetNetworkMode::readNetworkDetails()
 {
     GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
     const int textHeight = font.charHeight() + 2;
 
     MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
         &parent(),
         Gui::Box(Gui::Coord(INM_MINX, INM_MINY), font.textWidth(IPAddressHeading.asString()), textHeight),
         IDS_MENU_IPADDRESS,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pIPAddressEntryBox_ = new MachGuiSingleLineEditBox(
         &startupScreens(),

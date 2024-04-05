@@ -13,6 +13,7 @@
 #include "machgui/strtdata.hpp"
 #include "machgui/messbrok.hpp"
 #include "machgui/dropdown.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "gui/scrolist.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
@@ -282,7 +283,7 @@ size_t MachGuiPlayerListItem::reqHeight()
 // static
 GuiBmpFont MachGuiPlayerListItem::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
 
     return bmpFont;
 }
@@ -290,7 +291,7 @@ GuiBmpFont MachGuiPlayerListItem::getFont()
 // static
 GuiBmpFont MachGuiPlayerListItem::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
 }

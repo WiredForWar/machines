@@ -12,6 +12,7 @@
 #include "gui/painter.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 
 #define GS_BOX_WIDTH 77
 #define GS_INDENT 6
@@ -29,7 +30,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         pParent,
         Gui::Box(topLeft, 77, 35),
         titleString,
-        "gui/menu/smallfnt.bmp",
+        MachGui::Menu::smallFontLight(),
         MachGuiMenuText::CENTRE_JUSTIFY);
 
     TEST_INVARIANT;
@@ -44,14 +45,14 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     : GuiDisplayable(pParent, Gui::Boundary(topLeft, 77, 77))
     , statDisplay_(pParent, Gui::Coord(topLeft.x() + 1, topLeft.y() + 35), race)
 {
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
 
     // Create title text
     new MachGuiMenuText(
         pParent,
         Gui::Box(topLeft, 77, 33 - font.charHeight() - 2),
         titleString,
-        "gui/menu/smallfnt.bmp",
+        MachGui::Menu::smallFontLight(),
         MachGuiMenuText::CENTRE_JUSTIFY);
 
     string newPlayer = truncate(player);
@@ -60,7 +61,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         pParent,
         Gui::Box(Gui::Coord(topLeft.x(), topLeft.y() + 33 - font.charHeight() - 2), 77, font.charHeight() + 2),
         newPlayer,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::CENTRE_JUSTIFY);
 
     TEST_INVARIANT;
@@ -110,7 +111,7 @@ void MachGuiGeneralStatistics::CLASS_INVARIANT
 // static
 string MachGuiGeneralStatistics::truncate(const string& name)
 {
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
     string truncatedName = name;
 
     const uint maxWidth = GS_BOX_WIDTH - (GS_INDENT * 2) - 10;

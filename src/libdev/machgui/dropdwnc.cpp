@@ -9,6 +9,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/sslistit.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
@@ -314,7 +315,7 @@ MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
 
     return bmpFont;
 }
@@ -322,7 +323,7 @@ GuiBmpFont MachGuiDropDownListBoxCreator::getFont()
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getWhiteFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontWhite());
 
     return bmpFont;
 }
@@ -330,7 +331,7 @@ GuiBmpFont MachGuiDropDownListBoxCreator::getWhiteFont()
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
 }

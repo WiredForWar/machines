@@ -7,6 +7,7 @@
 
 #include "machgui/ctxmmenu.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/animatio.hpp"
@@ -42,10 +43,12 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
 {
     // Access all menu fonts to make sure they are loaded ready for other context to use. This will
     // stop annoying pauses as other context access and use fonts for the first time.
-    GuiBmpFont::getFont("gui/menu/smallfnt.bmp");
-    GuiBmpFont::getFont("gui/menu/smaldfnt.bmp");
-    GuiBmpFont::getFont("gui/menu/largefnt.bmp");
-    GuiBmpFont::getFont("gui/menu/largdfnt.bmp");
+    GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
+    GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    GuiBmpFont::getFont(MachGui::Menu::smallFontWhite());
+    GuiBmpFont::getFont(MachGui::Menu::largeFontDark());
+    GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
+    GuiBmpFont::getFont(MachGui::Menu::largeFontFocus());
 
 #ifdef DEMO
     new MachGuiMenuButton(
@@ -105,7 +108,7 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     // Create exit button, responds to escape...
     pExitBtn->escapeControl(true);
 
-    new MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122), IDS_MENU_MAINMENU, "gui/menu/largefnt.bmp");
+    new MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122), IDS_MENU_MAINMENU, MachGui::Menu::largeFontLight());
 
     TEST_INVARIANT;
 }

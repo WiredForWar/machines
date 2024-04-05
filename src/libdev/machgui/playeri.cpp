@@ -11,6 +11,7 @@
 #include "gui/painter.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 
 #define PNL_BOX_WIDTH 77
 #define PNL_INDENT 6
@@ -66,7 +67,7 @@ void MachGuiPlayerNameList::names(
     const string& player4)
 {
 
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
 
     uint spacing = font.charHeight() + 2;
     const uint maxWidth = PNL_BOX_WIDTH - (PNL_INDENT * 2) - 10;
@@ -80,28 +81,28 @@ void MachGuiPlayerNameList::names(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38), font.textWidth(newPlayer1), spacing),
         newPlayer1,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + spacing), font.textWidth(newPlayer2), spacing),
         newPlayer2,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 2)), font.textWidth(newPlayer3), spacing),
         newPlayer3,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 3)), font.textWidth(newPlayer4), spacing),
         newPlayer4,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 }
 
@@ -141,7 +142,7 @@ void MachGuiPlayerNameList::CLASS_INVARIANT
 // static
 string MachGuiPlayerNameList::truncate(const string& name, uint maxWidth)
 {
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
     string truncatedName = name;
 
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();

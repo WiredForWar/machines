@@ -12,6 +12,7 @@
 #include "gui/manager.hpp"
 #include "machgui/dropdwnc.hpp"
 #include "machgui/ui/MenuText.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/editbox.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/gui.hpp"
@@ -95,7 +96,7 @@ void MachGuiModemNetworkMode::updateGUI()
 void MachGuiModemNetworkMode::readNetworkDetails()
 {
     GuiResourceString modemHeading(IDS_MENU_MODEMTYPE);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smalwfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
     const int textHeight = font.charHeight() + 2;
 
     //  NetNetwork::Modems availableModems = NetNetwork::instance().modems();
@@ -109,7 +110,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
         &parent(),
         Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), font.textWidth(modemHeading.asString()), textHeight),
         IDS_MENU_MODEMTYPE,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pModemSelector_ = new MachGuiDropDownListBoxCreator(
         &parent(),
@@ -126,7 +127,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
         &parent(),
         Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), font.textWidth(telephoneNoHeading.asString()), textHeight),
         IDS_MENU_TELNO,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pTelNoEntryBox_ = new MachGuiSingleLineEditBox(
         &startupScreens(),

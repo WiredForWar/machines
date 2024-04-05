@@ -7,8 +7,9 @@
 
 #include "machgui/msgbox.hpp"
 #include "machgui/startup.hpp"
-#include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
 #include "gui/manager.hpp"
@@ -49,7 +50,7 @@ MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uin
         this,
         Gui::Box(203, 157, 484, 293),
         stringResId,
-        "gui/menu/largefnt.bmp",
+        MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     displayButtons(pStartupScreens);
@@ -81,7 +82,7 @@ MachGuiMessageBox::MachGuiMessageBox(
         this,
         Gui::Box(203, 157, 484, 293),
         wholeStr,
-        "gui/menu/largefnt.bmp",
+        MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     displayButtons(pStartupScreens);

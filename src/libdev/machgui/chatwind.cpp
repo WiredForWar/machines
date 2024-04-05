@@ -8,6 +8,7 @@
 #include "stdlib/string.hpp"
 #include "machgui/chatwind.hpp"
 #include "machgui/startup.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
@@ -18,7 +19,7 @@ MachGuiChatWindow::MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens
     , pRootParent_(pRootParent)
     , pStartupScreens_(pStartupScreens)
 {
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
     // Work out how may lines we can display in the chat window
     numLines() = height() / (font.charHeight() + 1.0 /*spacing*/);
 
@@ -95,7 +96,7 @@ void MachGuiChatWindow::doDisplay()
                 shared->getHeightOfNamedBitmap(backdrop));
         });
 
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
 
     size_t startY = absoluteBoundary().maxCorner().y();
     size_t loop = linesOfText().size();
@@ -112,7 +113,7 @@ void MachGuiChatWindow::doDisplay()
 // static
 void MachGuiChatWindow::addText(const string& text)
 {
-    MachGuiMenuText::chopUpText(text, chatWidth(), GuiBmpFont::getFont("gui/menu/smallfnt.bmp"), &linesOfText());
+    MachGuiMenuText::chopUpText(text, chatWidth(), GuiBmpFont::getFont(MachGui::Menu::smallFontLight()), &linesOfText());
 
     while (linesOfText().size() > numLines())
     {

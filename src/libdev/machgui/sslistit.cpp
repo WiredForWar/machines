@@ -14,6 +14,7 @@
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/menus_helper.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 
 MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
@@ -87,7 +88,7 @@ size_t MachGuiSingleSelectionListBoxItem::reqHeight()
 // static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
 
     return bmpFont;
 }
@@ -95,7 +96,7 @@ GuiBmpFont MachGuiSingleSelectionListBoxItem::getFont()
 // static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
 }
@@ -103,7 +104,7 @@ GuiBmpFont MachGuiSingleSelectionListBoxItem::getHighlightFont()
 // static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getUnderlineFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName("gui/menu/smaldfnt.bmp"));
+    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
 
     bmpFont.underline(true);
 

@@ -9,6 +9,7 @@
 #include "gui/painter.hpp"
 #include "system/pathname.hpp"
 #include "machgui/startup.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "gui/font.hpp"
 #include <stdlib.h>
@@ -102,7 +103,7 @@ void MachGuiStatisticsBar::draw(bool update)
 void MachGuiStatisticsBar::showStatistic()
 {
     showStatistic_ = true;
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
+    GuiBmpFont font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     char statistic[255];
     uint statsBarWidth = 0;
 
@@ -126,7 +127,7 @@ void MachGuiStatisticsBar::showStatistic()
             topLeft_.x(),
             topLeft_.y() + font.charHeight()),
         newStatistic,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::RIGHT_JUSTIFY);
 }
 

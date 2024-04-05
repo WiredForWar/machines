@@ -9,6 +9,7 @@
 
 #include "base/diag.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/editlist.hpp"
@@ -158,7 +159,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
 
     // Display list box heading
     GuiResourceString players(IDS_MENULB_PLAYERS);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
     MachGuiMenuText* pPlayersText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
@@ -167,7 +168,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             PLAYERS_LB_MINX + font.textWidth(players.asString()),
             PLAYERS_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_PLAYERS,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Display current status heading
     GuiResourceString status(IDS_MENU_PLAYERSTATUS);
@@ -179,7 +180,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             CURRENTSTATUS_MINX + font.textWidth(status.asString()),
             CURRENTSTATUS_MINY + font.charHeight() + 2),
         IDS_MENU_PLAYERSTATUS,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Create players list box
     pPlayersList_ = new MachGuiSingleSelectionListBox(
@@ -453,7 +454,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             //          totalScore = itoa( nTotalScore, buffer, 10 );
         }
 
-        GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
+        GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
 
         Gui::Box scenarioTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, CURRENTSTATUS_MINY),
@@ -466,7 +467,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             scenarioTextBox,
             scenarioStr.asString(),
-            "gui/menu/smallfnt.bmp",
+            MachGui::Menu::smallFontLight(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box lastScenarioTextBox(
@@ -480,7 +481,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             lastScenarioTextBox,
             lastScenarioStr,
-            "gui/menu/smalwfnt.bmp",
+            MachGui::Menu::smallFontWhite(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box scoreTextBox(
@@ -494,7 +495,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             scoreTextBox,
             scoreStr.asString(),
-            "gui/menu/smallfnt.bmp",
+            MachGui::Menu::smallFontLight(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box lastScoreTextBox(
@@ -508,7 +509,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             lastScoreTextBox,
             lastScoreStr,
-            "gui/menu/smalwfnt.bmp",
+            MachGui::Menu::smallFontWhite(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box numScenariosPlayedStrBox(
@@ -522,7 +523,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             numScenariosPlayedStrBox,
             numScenariosPlayedStr.asString(),
-            "gui/menu/smallfnt.bmp",
+            MachGui::Menu::smallFontLight(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box numScenariosPlayedBox(
@@ -538,7 +539,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             numScenariosPlayedBox,
             numScenariosPlayed,
-            "gui/menu/smalwfnt.bmp",
+            MachGui::Menu::smallFontWhite(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box totalScoreStrBox(
@@ -552,7 +553,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             totalScoreStrBox,
             totalScoreStr.asString(),
-            "gui/menu/smallfnt.bmp",
+            MachGui::Menu::smallFontLight(),
             MachGuiMenuText::LEFT_JUSTIFY);
 
         Gui::Box totalScoreBox(
@@ -568,7 +569,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             pStartupScreens_,
             totalScoreBox,
             totalScore,
-            "gui/menu/smalwfnt.bmp",
+            MachGui::Menu::smallFontWhite(),
             MachGuiMenuText::LEFT_JUSTIFY);
     }
 }

@@ -29,6 +29,7 @@
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/msgbox.hpp"
 #include "machgui/startup.hpp"
@@ -114,8 +115,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     }
 
     // Display large headings
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
-    GuiBmpFont smallFont = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
+    GuiBmpFont font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
+    GuiBmpFont smallFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     GuiResourceString optionsHeading(IDS_MENULB_OPTIONS);
     new MachGuiMenuText(
         pStartupScreens,
@@ -124,7 +125,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             font.textWidth(optionsHeading.asString()),
             font.charHeight() + 2),
         IDS_MENULB_OPTIONS,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     GuiResourceString optimisationsHeading(IDS_MENULB_OPTIMISATIONS);
     new MachGuiMenuText(
@@ -134,7 +135,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             font.textWidth(optimisationsHeading.asString()),
             font.charHeight() + 2),
         IDS_MENULB_OPTIMISATIONS,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
     // Initialise gui items
 
     const MachGuiOptionsLayout::SlidebarInfo& musicVolSl = screenLayout.slidebarInfo(0);
@@ -403,7 +404,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 smallFont.textWidth(choiceTitle.asString()),
                 smallFont.charHeight() + 8),
             id,
-            "gui/menu/smallfnt.bmp");
+            MachGui::Menu::smallFontLight());
 
         choicesOptimisations_.push_back(new MachGuiDropDownListBoxCreator(
             pStartupScreens,

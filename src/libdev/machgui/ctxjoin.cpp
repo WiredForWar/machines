@@ -11,6 +11,7 @@
 #include "machgui/ctxjoin.hpp"
 #include "machgui/sslistit.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
@@ -184,7 +185,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
 
     // Display list box heading
     GuiResourceString currentGames(IDS_MENULB_GAMES);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
     MachGuiMenuText* pCurrentGamesText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
@@ -193,7 +194,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
             JOINGAME_LB_MINX + font.textWidth(currentGames.asString()),
             55 + font.charHeight() + 2),
         IDS_MENULB_GAMES,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Create games list box
     pGamesList_ = new MachGuiSingleSelectionListBox(

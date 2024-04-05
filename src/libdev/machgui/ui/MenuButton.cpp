@@ -9,6 +9,7 @@
 
 #include "machgui/gui.hpp"
 #include "machgui/startup.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
 #include "sound/smpparam.hpp"
@@ -20,6 +21,8 @@
 #include "render/device.hpp"
 #include "system/winapi.hpp"
 #include "machgui/menus_helper.hpp"
+
+using namespace MachGui;
 
 MachGuiMenuButton::MachGuiMenuButton(
     GuiRoot* pRootParent,
@@ -190,9 +193,9 @@ void MachGuiMenuButton::doDisplay()
         }
     }
 
-    GuiBmpFont darkfont(GuiBmpFont::getFont("gui/menu/largdfnt.bmp"));
-    GuiBmpFont lightfont(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
-    GuiBmpFont focusfont(GuiBmpFont::getFont("gui/menu/largyfnt.bmp"));
+    GuiBmpFont darkfont(GuiBmpFont::getFont(Menu::largeFontDark()));
+    GuiBmpFont lightfont(GuiBmpFont::getFont(Menu::largeFontLight()));
+    GuiBmpFont focusfont(GuiBmpFont::getFont(Menu::largeFontFocus()));
 
     GuiResourceString str(stringId_);
     string text = str.asString();
@@ -285,7 +288,7 @@ bool MachGuiMenuButton::executeControl()
         absoluteBoundary().minCorner().y());
 
     // Draw dark text
-    GuiBmpFont darkfont(GuiBmpFont::getFont("gui/menu/largdfnt.bmp"));
+    GuiBmpFont darkfont(GuiBmpFont::getFont(Menu::largeFontDark()));
 
     GuiResourceString str(stringId_);
     string text = str.asString();

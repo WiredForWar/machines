@@ -9,6 +9,7 @@
 
 #include "base/diag.hpp"
 #include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/sslistit.hpp"
@@ -353,7 +354,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
 
     // Display system list box heading
     GuiResourceString systemHeading(IDS_MENULB_SYSTEM);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/largefnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
     MachGuiMenuText* pSystemText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
@@ -362,7 +363,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(systemHeading.asString()),
             SYSTEM_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SYSTEM,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Display planet list box heading
     GuiResourceString planetHeading(IDS_MENULB_PLANET);
@@ -374,7 +375,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(planetHeading.asString()),
             PLANET_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_PLANET,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Display scenario list box heading
     GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
@@ -386,7 +387,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX + font.textWidth(scenarioHeading.asString()),
             SCENARIO_LB_MINY + font.charHeight() + 2),
         IDS_MENULB_SCENARIO,
-        "gui/menu/largefnt.bmp");
+        MachGui::Menu::largeFontLight());
 
     // Create system list box
     pSystemList_ = new MachGuiSystemPlanetScenarioListBox(

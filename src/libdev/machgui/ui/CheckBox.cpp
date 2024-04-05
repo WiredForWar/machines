@@ -10,6 +10,7 @@
 #include "gui/event.hpp"
 #include "gui/painter.hpp"
 #include "machgui/gui.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 
 #define MGCB_BOX_DIMENSIONX 12
 #define MGCB_BOX_DIMENSIONY 11
@@ -24,7 +25,7 @@ MachGuiCheckBox::MachGuiCheckBox(
     , MachGuiFocusCapableControl(pStartupScreens)
     , label_(label)
     , isChecked_(isChecked)
-    , font_(GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp")))
+    , font_(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()))
     , checkBmp_(Gui::requestScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
     , uncheckBmp_(Gui::requestScaledImage("gui/menu/uncheck.bmp", MachGui::menuScaleFactor()))
     , checkFocusBmp_(Gui::requestScaledImage("gui/menu/checkf.bmp", MachGui::menuScaleFactor()))

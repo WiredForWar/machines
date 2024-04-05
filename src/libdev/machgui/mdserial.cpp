@@ -11,6 +11,7 @@
 #include "gui/gui.hpp"
 #include "gui/font.hpp"
 #include "machgui/dropdwnc.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
@@ -116,14 +117,14 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
     comSettings.push_back((void*)4);
 
     GuiResourceString comPortHeading(IDS_MENU_COMPORT);
-    GuiBmpFont font(GuiBmpFont::getFont("gui/menu/smallfnt.bmp"));
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
     const int textHeight = font.charHeight() + 2;
 
     MachGuiMenuText* pComPortText = new MachGuiMenuText(
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY), font.textWidth(comPortHeading.asString()), textHeight),
         IDS_MENU_COMPORT,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pComPortSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
@@ -161,7 +162,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY2), font.textWidth(baudHeading.asString()), textHeight),
         IDS_MENU_BAUD,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pBaudRateSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
@@ -191,7 +192,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY2), font.textWidth(parityHeading.asString()), textHeight),
         IDS_MENU_PARITY,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pParitySelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
@@ -219,7 +220,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY3), font.textWidth(stopBitsHeading.asString()), textHeight),
         IDS_MENU_STOPBITS,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pStopBitsSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
@@ -251,7 +252,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY3), font.textWidth(flowHeading.asString()), textHeight),
         IDS_MENU_FLOW,
-        "gui/menu/smallfnt.bmp");
+        MachGui::Menu::smallFontLight());
 
     pimpl_->pFlowSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),

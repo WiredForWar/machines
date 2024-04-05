@@ -13,6 +13,7 @@
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/ingame.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/ScrollableText.hpp"
 #include "machgui/internal/strings.hpp"
 #include "utility/linetok.hpp"
@@ -36,19 +37,19 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     const uint HOTKEY_KEY_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH;
     const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
-    uint smallFontHeight = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp")).charHeight() + 2;
-    uint largeFontHeight = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp")).charHeight() + 2;
+    uint smallFontHeight = GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).charHeight() + 2;
+    uint largeFontHeight = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight())).charHeight() + 2;
 
     // Display First Person Control heading
     //
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
+    GuiBmpFont font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
     GuiResourceString optionsHeading(IDS_MENU_FIRSTPERSONCONTROL);
     uint headingMaxY = HOTKEY_MIN_Y + largeFontHeight;
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(HOTKEY_MIN_X, HOTKEY_MIN_Y, HOTKEY_MIN_X + font.textWidth(optionsHeading.asString()), headingMaxY),
         IDS_MENU_FIRSTPERSONCONTROL,
-        "gui/menu/largefnt.bmp",
+        MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     // Create First Person Actions text below First Person Control heading
@@ -63,7 +64,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(HOTKEY_MIN_X, headingMaxY, HOTKEY_KEY_X, fstPersonWindowMaxY),
         hotKey1stPersonActions,
-        "gui/menu/smallfnt.bmp",
+        MachGui::Menu::smallFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     // Create First Person Keys text next to First Person Action text
@@ -74,12 +75,12 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(HOTKEY_KEY_X, headingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, fstPersonWindowMaxY),
         hotKey1stPersonKeys,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     // Display General Controls heading underneath First Person Controls hot keys
     //
-    font = GuiBmpFont::getFont(SysPathName("gui/menu/largefnt.bmp"));
+    font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
     GuiResourceString optionsGeneralHeading(IDS_MENU_GENERALCONTROL);
     uint genHeadingMaxY = fstPersonWindowMaxY + largeFontHeight;
 
@@ -91,12 +92,12 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             HOTKEY_MIN_X + font.textWidth(optionsGeneralHeading.asString()),
             genHeadingMaxY),
         IDS_MENU_GENERALCONTROL,
-        "gui/menu/largefnt.bmp",
+        MachGui::Menu::largeFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     // Calculate the number of lines of General hotkeys that can be displayed under
     // the First Person hotkeys
-    font = GuiBmpFont::getFont(SysPathName("gui/menu/smallfnt.bmp"));
+    font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
 
     uint noDisplayableLines = (HOTKEY_MAX_Y - genHeadingMaxY) / smallFontHeight;
 
@@ -144,7 +145,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(HOTKEY_MIN_X, genHeadingMaxY, HOTKEY_KEY_X, generalWindowMaxY),
         headString,
-        "gui/menu/smallfnt.bmp",
+        MachGui::Menu::smallFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     uint generalRemainderMaxY = HOTKEY_MIN_Y + (noRemainingLines * smallFontHeight);
@@ -159,7 +160,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(HOTKEY_2NDCOLUMN_X, HOTKEY_MIN_Y, HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH, generalRemainderMaxY),
         remainderString,
-        "gui/menu/smallfnt.bmp",
+        MachGui::Menu::smallFontLight(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     string hotKeyGeneralKeys;
@@ -185,7 +186,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(HOTKEY_KEY_X, genHeadingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, generalWindowMaxY),
         headString,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     new MachGuiMenuText(
@@ -196,7 +197,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH,
             generalRemainderMaxY),
         remainderString,
-        "gui/menu/smalwfnt.bmp",
+        MachGui::Menu::smallFontWhite(),
         MachGuiMenuText::LEFT_JUSTIFY);
 
     // Add flick to bottom left of window
@@ -245,7 +246,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(351, 420, 553, 464),
         IDS_MENUBTN_CONTINUE,
         MachGui::ButtonEvent::EXIT);
-    new MachGuiMenuText(pStartupScreens, Gui::Box(42, 353, 224, 464), IDS_MENU_HOTKEYS, "gui/menu/largefnt.bmp");
+    new MachGuiMenuText(pStartupScreens, Gui::Box(42, 353, 224, 464), IDS_MENU_HOTKEYS, MachGui::Menu::largeFontLight());
 
     pContinueBtn->escapeControl(true);
 
