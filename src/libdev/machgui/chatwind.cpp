@@ -81,21 +81,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiChatWindow& t)
 // virtual
 void MachGuiChatWindow::doDisplay()
 {
-    // Blit background to list box item
-    auto* shared = pRootParent_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        absoluteBoundary(),
-        absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
-
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
 
     size_t startY = absoluteBoundary().maxCorner().y();

@@ -9,7 +9,6 @@
 #include "machgui/sslistit.hpp"
 #include "machgui/startup.hpp"
 #include "gui/painter.hpp"
-#include "machgui/menus_helper.hpp"
 #include <algorithm>
 
 MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(
@@ -21,7 +20,6 @@ MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(
     size_t scrollInc)
     : GuiSingleSelectionListBox(pStartupScreens, box, horizontalSpacing, verticalSpacing, scrollInc)
     , MachGuiFocusCapableControl(pStartupScreens)
-    , pStartupScreens_(pStartupScreens)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
@@ -53,20 +51,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiSingleSelectionListBox& t
 // virtual
 void MachGuiSingleSelectionListBox::doDisplay()
 {
-    // Blit background to list box
-    auto* shared = pRootParent_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        absoluteBoundary(),
-        absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
 }
 
 void MachGuiSingleSelectionListBox::addListItem(MachGuiSingleSelectionListBoxItem* pItem)

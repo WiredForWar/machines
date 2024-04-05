@@ -647,21 +647,6 @@ void MachGuiCtxImReady::updateGameSettings()
 {
     pReadOnlySettings_->deleteAllChildren();
 
-    // Blit background to read only list box
-    auto* shared = pStartupScreens_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        pReadOnlySettings_->absoluteBoundary(),
-        pReadOnlySettings_->absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
-
     int textWidth = (SETTINGS_MAXX - SETTINGS_MINX) * 0.66;
     int valueWidth = (SETTINGS_MAXX - SETTINGS_MINX) * 0.33;
 

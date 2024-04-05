@@ -13,7 +13,6 @@
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
-#include "machgui/menus_helper.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 
 MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(
@@ -175,21 +174,6 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
     }
     else
     {
-        // Blit background to list box item
-        auto* shared = pRootParent_->getSharedBitmaps();
-        auto backdrop = shared->getNamedBitmap("backdrop");
-        shared->blitNamedBitmapFromArea(
-            backdrop,
-            absoluteBoundary(),
-            absoluteBoundary().minCorner(),
-            [shared, backdrop](const Gui::Box& box) {
-                using namespace machgui::helper::menus;
-                return centered_bitmap_transform(
-                    box,
-                    shared->getWidthOfNamedBitmap(backdrop),
-                    shared->getHeightOfNamedBitmap(backdrop));
-            });
-
         // Draw list box item text
         getFont().drawText(
             text_,

@@ -31,19 +31,6 @@ MachGuiSingleLineEditBox::~MachGuiSingleLineEditBox()
 // virtual
 void MachGuiSingleLineEditBox::drawBackground()
 {
-    auto* shared = pRootParent_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        absoluteBoundary(),
-        absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
 }
 
 void MachGuiSingleLineEditBox::CLASS_INVARIANT

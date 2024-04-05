@@ -9,7 +9,6 @@
 
 #include "gui/font.hpp"
 #include "gui/root.hpp"
-#include "machgui/menus_helper.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 
 MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const std::string& str)
@@ -34,21 +33,6 @@ void MachGuiText::setTextOffset(Gui::Coord offset)
 // virtual
 void MachGuiText::doDisplay()
 {
-    // Blit background to list box item
-    auto* shared = pRootParent_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        absoluteBoundary(),
-        absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
-
     // Draw list box item text
     font_.drawText(
         text_,
@@ -61,5 +45,3 @@ size_t MachGuiText::reqHeight()
 {
     return GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).charHeight() + 1;
 }
-
-/* End TEXT.CPP *****************************************************/

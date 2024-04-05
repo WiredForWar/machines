@@ -257,20 +257,6 @@ void MachGuiDropDownListBoxCreator::doDisplay()
         }
         else
         {
-            auto* shared = pRootParent_->getSharedBitmaps();
-            auto backdrop = shared->getNamedBitmap("backdrop");
-            shared->blitNamedBitmapFromArea(
-                backdrop,
-                absoluteBoundary(),
-                absoluteBoundary().minCorner(),
-                [shared, backdrop](const Gui::Box& box) {
-                    using namespace machgui::helper::menus;
-                    return centered_bitmap_transform(
-                        box,
-                        shared->getWidthOfNamedBitmap(backdrop),
-                        shared->getHeightOfNamedBitmap(backdrop));
-                });
-
             // Draw list box item text
             if (whiteFont_)
             {

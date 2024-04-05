@@ -350,21 +350,6 @@ void MachGuiCtxSettings::updateTerrainTypeList(MachGuiDbSystem& system)
     // Delete all items from list
     pTerrainTypeList_->deleteAllItems();
 
-    // Redraw backdrop to list
-    auto* shared = pStartupScreens_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        pTerrainTypeList_->absoluteBoundary(),
-        pTerrainTypeList_->absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
-
     // Insert new items into list
     uint numPlanets = system.nPlanets();
     bool firstItem = true;
@@ -397,21 +382,6 @@ void MachGuiCtxSettings::updateScenarioList(MachGuiDbPlanet& planet)
 {
     // Delete all items from list
     pScenarioList_->deleteAllItems();
-
-    // Redraw backdrop to list
-    auto* shared = pStartupScreens_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        pScenarioList_->absoluteBoundary(),
-        pScenarioList_->absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
 
     // Insert new items into list
     uint numScenarios = planet.nScenarios();
@@ -495,21 +465,6 @@ void MachGuiCtxSettings::initSettings()
 {
     // Delete all items from list
     pSettingsList_->deleteAllChildren();
-
-    // Redraw backdrop to list
-    auto* shared = pStartupScreens_->getSharedBitmaps();
-    auto backdrop = shared->getNamedBitmap("backdrop");
-    shared->blitNamedBitmapFromArea(
-        backdrop,
-        pSettingsList_->absoluteBoundary(),
-        pSettingsList_->absoluteBoundary().minCorner(),
-        [shared, backdrop](const Gui::Box& box) {
-            using namespace machgui::helper::menus;
-            return centered_bitmap_transform(
-                box,
-                shared->getWidthOfNamedBitmap(backdrop),
-                shared->getHeightOfNamedBitmap(backdrop));
-        });
 
     // Add "fog of war" setting...
     addSetting(pFogOfWarSelector_, IDS_MENU_FOGOFWAR, 2, IDS_MENU_ON, IDS_MENU_OFF);

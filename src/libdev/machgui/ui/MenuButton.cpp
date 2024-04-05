@@ -157,41 +157,6 @@ void MachGuiMenuButton::doDisplay()
             Gui::Box(Gui::Coord(glowX, glowY), width(), height()),
             absoluteBoundary().minCorner());
     }
-    else
-    {
-        if (msgBoxButton_)
-        {
-            auto* shared = pRootParent_->getSharedBitmaps();
-            auto msgBoxBackdrop = shared->getNamedBitmap("msgbox");
-            shared->blitNamedBitmapFromArea(
-                msgBoxBackdrop,
-                absoluteBoundary(),
-                absoluteBoundary().minCorner(),
-                [shared, msgBoxBackdrop](const Gui::Box& box) {
-                    using namespace machgui::helper::menus;
-                    return centered_bitmap_transform(
-                        box,
-                        shared->getWidthOfNamedBitmap(msgBoxBackdrop),
-                        shared->getHeightOfNamedBitmap(msgBoxBackdrop));
-                });
-        }
-        else
-        {
-            auto* shared = pRootParent_->getSharedBitmaps();
-            auto backdrop = shared->getNamedBitmap("backdrop");
-            shared->blitNamedBitmapFromArea(
-                backdrop,
-                absoluteBoundary(),
-                absoluteBoundary().minCorner(),
-                [shared, backdrop](const Gui::Box& box) {
-                    using namespace machgui::helper::menus;
-                    return centered_bitmap_transform(
-                        box,
-                        shared->getWidthOfNamedBitmap(backdrop),
-                        shared->getHeightOfNamedBitmap(backdrop));
-                });
-        }
-    }
 
     GuiBmpFont darkfont(GuiBmpFont::getFont(Menu::largeFontDark()));
     GuiBmpFont lightfont(GuiBmpFont::getFont(Menu::largeFontLight()));
