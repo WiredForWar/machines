@@ -161,7 +161,7 @@ protected:
             options.setColor(Gui::WHITE());
             options.setShadow(1, 1, shadowColor);
 
-            GuiPainter::instance().drawText(absCopy, buffer, options, MachGui::navigationButtonNumberSize());
+            GuiPainter::instance().drawText(absCopy, buffer, options, MachGui::navigationButtonNumberFontSize());
         }
     }
 

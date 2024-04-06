@@ -99,8 +99,8 @@ int barValueLineThickness();
 
 int iconIndexYOffset();
 
-int corralInfoTextSize();
-int navigationButtonNumberSize();
+int corralInfoFontSize();
+int navigationButtonNumberFontSize();
 
 double doubleClickInterval();
 

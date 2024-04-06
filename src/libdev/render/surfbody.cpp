@@ -324,9 +324,6 @@ size_t RenISurfBody::defaultHeight()
 
 size_t RenISurfBody::useFontHeight(size_t pixelHeight)
 {
-    // Decrease to fit in game scale
-    pixelHeight -= 2;
-
     if (currentHeight_ == 0)
         currentHeight_ = pixelHeight;
 

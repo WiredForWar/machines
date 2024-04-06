@@ -752,14 +752,14 @@ int MachGui::iconIndexYOffset()
     return MachGui::uiScaleFactor() - 1;
 }
 
-int MachGui::corralInfoTextSize()
+int MachGui::corralInfoFontSize()
 {
-    return MachGui::uiScaleFactor() == 1 ? 12 : 20;
+    return MachGui::uiScaleFactor() == 1 ? 10 : 18;
 }
 
-int MachGui::navigationButtonNumberSize()
+int MachGui::navigationButtonNumberFontSize()
 {
-    return MachGui::uiScaleFactor() == 1 ? 12 : 20;
+    return MachGui::uiScaleFactor() == 1 ? 10 : 18;
 }
 
 // static

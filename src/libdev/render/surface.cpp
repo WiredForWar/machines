@@ -945,7 +945,7 @@ size_t RenSurface::currentFontHeight() const
 size_t RenSurface::getDefaultFontHeight()
 {
     static bool first = true;
-    static size_t size = 12;
+    static size_t size = 10;
 
     if (first)
     {
