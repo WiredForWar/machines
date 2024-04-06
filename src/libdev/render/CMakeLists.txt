@@ -2,6 +2,8 @@
 set(RENDER_SOURCES
     Font.cpp
     Font.hpp
+    FontMetrics.cpp
+    FontMetrics.hpp
     TextOptions.hpp
     alphagrp.cpp
     animcurs.cpp
