@@ -40,7 +40,7 @@ double Mathex::abs(double x)
 _CODE_INLINE
 long double Mathex::abs(long double x)
 {
-    return fabs((double)x);
+    return fabs(static_cast<double>(x));
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ _CODE_INLINE double mod(double a, double b)
 }
 _CODE_INLINE long double mod(long double a, long double b)
 {
-    return fmod((double)a, (double)b);
+    return fmod(static_cast<double>(a), static_cast<double>(b));
 }
 
 //////////////////////////////////////////////////////////////////////
