@@ -26,7 +26,7 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
     , topLeft_(topLeft)
     , redraw_(true)
 {
-    SysPathName backgroundBmpFile("gui/menu/barBack.bmp");
+    SysPathName backgroundBmpFile("gui/menu/barback.bmp");
     ASSERT(backgroundBmpFile.insensitiveExistsAsFile(), backgroundBmpFile.c_str());
 
     backgroundBmp_ = Gui::bitmap(backgroundBmpFile);
@@ -35,22 +35,22 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
     switch (race)
     {
         case MachPhys::N_RACES:
-            bar1 = "gui/menu/redBar.bmp";
-            bar2 = "gui/menu/blueBar.bmp";
-            bar3 = "gui/menu/greenBar.bmp";
-            bar4 = "gui/menu/yelloBar.bmp";
+            bar1 = "gui/menu/redbar.bmp";
+            bar2 = "gui/menu/bluebar.bmp";
+            bar3 = "gui/menu/greenbar.bmp";
+            bar4 = "gui/menu/yellobar.bmp";
             break;
         case MachPhys::RED:
-            bar1 = bar2 = bar3 = bar4 = "gui/menu/redBar.bmp";
+            bar1 = bar2 = bar3 = bar4 = "gui/menu/redbar.bmp";
             break;
         case MachPhys::YELLOW:
-            bar1 = bar2 = bar3 = bar4 = "gui/menu/yelloBar.bmp";
+            bar1 = bar2 = bar3 = bar4 = "gui/menu/yellobar.bmp";
             break;
         case MachPhys::BLUE:
-            bar1 = bar2 = bar3 = bar4 = "gui/menu/blueBar.bmp";
+            bar1 = bar2 = bar3 = bar4 = "gui/menu/bluebar.bmp";
             break;
         case MachPhys::GREEN:
-            bar1 = bar2 = bar3 = bar4 = "gui/menu/greenBar.bmp";
+            bar1 = bar2 = bar3 = bar4 = "gui/menu/greenbar.bmp";
             break;
     }
     uint x = 33;
