@@ -160,12 +160,8 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
             playerName = GuiResourceString(IDS_MENU_STSPLAYER).asString();
         }
 
-        MachPhys::Race allRaces[4] = { MachPhys::RED, MachPhys::BLUE, MachPhys::GREEN, MachPhys::YELLOW };
-
-        for (uint i = 0; i < 4; ++i)
+        for (MachPhys::Race currentRace : MachPhys::AllRaces)
         {
-            MachPhys::Race currentRace = allRaces[i];
-
             // Display string 'Computer' for every player in the game who is not user controlled
             if (MachLogRaces::instance().raceInGame(currentRace)
                 && (currentRace != MachLogRaces::instance().pcController().race())
@@ -175,17 +171,21 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
                 switch (currentRace)
                 {
-                    case (MachPhys::RED):
+                    case MachPhys::RED:
                         redName = computerString;
                         break;
-                    case (MachPhys::BLUE):
+                    case MachPhys::BLUE:
                         blueName = computerString;
                         break;
-                    case (MachPhys::GREEN):
+                    case MachPhys::GREEN:
                         greenName = computerString;
                         break;
-                    case (MachPhys::YELLOW):
+                    case MachPhys::YELLOW:
                         yellowName = computerString;
+                        break;
+                    case MachPhys::N_RACES:
+                    case MachPhys::NORACE:
+                        // Invalid
                         break;
                 }
             }
@@ -193,39 +193,47 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         switch (playerRace)
         {
             // Assign player to appropriate colour
-            case (MachPhys::RED):
+            case MachPhys::RED:
                 redName = playerName;
                 break;
-            case (MachPhys::BLUE):
+            case MachPhys::BLUE:
                 blueName = playerName;
                 break;
-            case (MachPhys::GREEN):
+            case MachPhys::GREEN:
                 greenName = playerName;
                 break;
-            case (MachPhys::YELLOW):
+            case MachPhys::YELLOW:
                 yellowName = playerName;
+                break;
+            case MachPhys::N_RACES:
+            case MachPhys::NORACE:
+                // Invalid
                 break;
         }
     }
     else // Multi player mode
     {
-        MachGuiStartupData::PlayerInfo* playerInfo = pStartupScreens->startupData()->players();
+        const MachGuiStartupData::PlayerInfo* playerInfo = pStartupScreens->startupData()->players();
         for (uint i = 0; i < 4; ++i)
         {
             string* name = nullptr;
             switch (playerInfo[i].race_)
             {
-                case (MachPhys::RED):
+                case MachPhys::RED:
                     name = &redName;
                     break;
-                case (MachPhys::BLUE):
+                case MachPhys::BLUE:
                     name = &blueName;
                     break;
-                case (MachPhys::GREEN):
+                case MachPhys::GREEN:
                     name = &greenName;
                     break;
-                case (MachPhys::YELLOW):
+                case MachPhys::YELLOW:
                     name = &yellowName;
+                    break;
+                case MachPhys::N_RACES:
+                case MachPhys::NORACE:
+                    // Invalid
                     break;
             }
 
