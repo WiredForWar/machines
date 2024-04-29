@@ -324,14 +324,14 @@ private:
 MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sl", pStartupScreens)
 {
-    const int LB_MINX = 38;
-    const int LB_MAXX = 251;
-    const int SYSTEM_LB_MINY = 27;
-    const int SYSTEM_LB_MAXY = 120;
-    const int PLANET_LB_MINY = 140;
-    const int PLANET_LB_MAXY = 254;
-    const int SCENARIO_LB_MINY = 274;
-    const int SCENARIO_LB_MAXY = 453;
+    const int LB_MINX = MachGui::menuScaleFactor() * 38;
+    const int LB_MAXX = MachGui::menuScaleFactor() * 251;
+    const int SYSTEM_LB_MINY = MachGui::menuScaleFactor() * 27;
+    const int SYSTEM_LB_MAXY = MachGui::menuScaleFactor() * 120;
+    const int PLANET_LB_MINY = MachGui::menuScaleFactor() * 140;
+    const int PLANET_LB_MAXY = MachGui::menuScaleFactor() * 254;
+    const int SCENARIO_LB_MINY = MachGui::menuScaleFactor() * 274;
+    const int SCENARIO_LB_MAXY = MachGui::menuScaleFactor() * 453;
 
     const auto& topLeft = getBackdropTopLeft();
 
@@ -339,13 +339,13 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(362, 305, 532, 343),
+        Gui::Box(362, 305, 532, 343) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(362, 400, 532, 438),
+        Gui::Box(362, 400, 532, 438) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
 
@@ -411,8 +411,12 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
 
-    pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(338, 155, 556, 260));
-    MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(557, 155), 104, pTextInfo_);
+    pTextInfo_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(338, 155, 556, 260) * MachGui::menuScaleFactor());
+    MachGuiVerticalScrollBar::createWholeBar(
+        pStartupScreens,
+        Gui::Coord(557, 155) * MachGui::menuScaleFactor(),
+        104 * MachGui::menuScaleFactor(),
+        pTextInfo_);
 
 #ifdef DEMO
     if (!MachGuiDatabase::instance().nPlayers())
@@ -462,8 +466,8 @@ void MachGuiCtxScenario::update()
 
 void MachGuiCtxScenario::updateSystemList()
 {
-    const int LB_MINX = 38;
-    const int LB_MAXX = 251;
+    const int LB_MINX = MachGui::menuScaleFactor() * 38;
+    const int LB_MAXX = MachGui::menuScaleFactor() * 251;
 
     uint numSystems = MachGuiDatabase::instance().nCampaignSystems();
     bool selectFirstItem = true;
@@ -536,8 +540,8 @@ void MachGuiCtxScenario::updateSystemList()
 
 void MachGuiCtxScenario::updatePlanetList(MachGuiDbSystem& system)
 {
-    const int LB_MINX = 38;
-    const int LB_MAXX = 251;
+    const int LB_MINX = MachGui::menuScaleFactor() * 38;
+    const int LB_MAXX = MachGui::menuScaleFactor() * 251;
 
     // Delete all items from list
     pPlanetList_->deleteAllItems();
@@ -602,8 +606,8 @@ void MachGuiCtxScenario::updatePlanetList(MachGuiDbSystem& system)
 
 void MachGuiCtxScenario::updateScenarioList(MachGuiDbPlanet& planet)
 {
-    const int LB_MINX = 38;
-    const int LB_MAXX = 251;
+    const int LB_MINX = MachGui::menuScaleFactor() * 38;
+    const int LB_MAXX = MachGui::menuScaleFactor() * 251;
 
     // Delete all items from list
     pScenarioList_->deleteAllItems();
@@ -714,24 +718,25 @@ void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName ani
 
     if (animation.existsAsFile())
     {
+        const Gui::Coord animationCoord = Gui::Coord(342, 32) * MachGui::menuScaleFactor();
         if (animation.extension() == "smk")
         {
             // File is smacker file
-            // Construct a smacker player
-            //          HWND targetWindow = RenDevice::current()->display()->window();
-
-            //          AniSmacker* pSmackerAnimation = new AniSmacker( animation, targetWindow, 342 +
-            //          pStartupScreens_->xMenuOffset(), 32 + pStartupScreens_->yMenuOffset() );
-            // AniSmacker* pSmackerAnimation = new AniSmacker( animation, 342 + pStartupScreens_->xMenuOffset(), 32 +
-            // pStartupScreens_->yMenuOffset() );
             const auto& topLeft = getBackdropTopLeft();
-            AniSmacker* pSmackerAnimation = new AniSmackerRegular(animation, 342 + topLeft.second, 32 + topLeft.first);
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(
+                animation,
+                animationCoord.x() + topLeft.second,
+                animationCoord.y() + topLeft.first);
+            pSmackerAnimation->setScaleFactor(MachGui::menuScaleFactor());
             pStartupScreens_->addSmackerAnimation(pSmackerAnimation);
         }
         else if (animation.extension() == "bmp")
         {
             // File is a bitmap
-            pImage_ = new GuiImage(pStartupScreens_, Gui::Coord(342, 32), Gui::bitmap(animation));
+            pImage_ = new GuiImage(
+                pStartupScreens_,
+                animationCoord,
+                MachGui::getScaledImage(animation.pathname(), MachGui::menuScaleFactor()));
         }
     }
     pStartupScreens_->playSmackerAnimations();

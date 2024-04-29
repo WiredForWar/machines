@@ -158,25 +158,25 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     pJoinBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(414, 51, 605, 93),
+        Gui::Box(414, 51, 605, 93) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_JOIN,
         MachGui::ButtonEvent::JOIN);
     pCreateBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(414, 157, 605, 200),
+        Gui::Box(414, 157, 605, 200) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CREATE,
         MachGui::ButtonEvent::CREATE);
     pShowGamesBtn_ = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(414, 251, 605, 293),
+        Gui::Box(414, 251, 605, 293) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_SHOWGAMES,
         MachGui::ButtonEvent::SHOWGAMES);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(414, 348, 605, 390),
+        Gui::Box(414, 348, 605, 390) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
 
@@ -189,10 +189,8 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pCurrentGamesText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            JOINGAME_LB_MINX,
-            JOINGAME_LB_MINY,
-            JOINGAME_LB_MINX + font.textWidth(currentGames.asString()),
-            55 + font.charHeight() + 2),
+            Gui::Coord(JOINGAME_LB_MINX, JOINGAME_LB_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(currentGames.asString()), font.charHeight() + 1 * MachGui::menuScaleFactor())),
         IDS_MENULB_GAMES,
         MachGui::Menu::largeFontLight());
 
@@ -201,18 +199,18 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
-            JOINGAME_LB_MINX,
+            MachGui::menuScaleFactor() * JOINGAME_LB_MINX,
             pCurrentGamesText->absoluteBoundary().maxCorner().y() - getBackdropTopLeft().first,
-            JOINGAME_LB_MAXX - SCROLLBAR_WIDTH,
-            JOINGAME_LB_MAXY),
+            MachGui::menuScaleFactor() * (JOINGAME_LB_MAXX - SCROLLBAR_WIDTH),
+            MachGui::menuScaleFactor() * JOINGAME_LB_MAXY),
         1000,
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
 
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
-        Gui::Coord(JOINGAME_LB_MAXX - SCROLLBAR_WIDTH, JOINGAME_LB_MINY),
-        JOINGAME_LB_MAXY - JOINGAME_LB_MINY,
+        Gui::Coord(JOINGAME_LB_MAXX - SCROLLBAR_WIDTH, JOINGAME_LB_MINY) * MachGui::menuScaleFactor(),
+        (JOINGAME_LB_MAXY - JOINGAME_LB_MINY) * MachGui::menuScaleFactor(),
         pGamesList_);
 
     // Clear join game info.
@@ -223,7 +221,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     pNewGameName_ = new MachGuiNewGameName(
         pStartupScreens_,
         pGamesList_,
-        JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH,
+        (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor(),
         enterName.asString(),
         *this);
     pGamesList_->childrenUpdated();
@@ -305,12 +303,14 @@ void MachGuiCtxJoin::showGames()
         // Clear games list box
         pGamesList_->deleteAllItems();
 
+        const int itemWidth = (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor();
+
         // Set up special enter-name edit box
         GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
         pNewGameName_ = new MachGuiNewGameName(
             pStartupScreens_,
             pGamesList_,
-            JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH,
+            itemWidth,
             enterName.asString(),
             *this);
 
@@ -330,7 +330,7 @@ void MachGuiCtxJoin::showGames()
             new MachGuiCurGamesListBoxItem(
                 pStartupScreens_,
                 pGamesList_,
-                JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH,
+                itemWidth,
                 (*iter)->appSessionName(),
                 *this);
             NETWORK_STREAM("  item added.\n");

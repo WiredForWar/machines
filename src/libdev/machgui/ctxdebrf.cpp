@@ -40,7 +40,7 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
     MachGuiMenuButton* pStatisticsButton = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(87, 206, 279, 248),
+        Gui::Box(87, 206, 279, 248) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_STATS,
         MachGui::ButtonEvent::STATISTICS);
     MachGuiMenuButton* pContinueButton;
@@ -49,21 +49,21 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
         pContinueButton = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
-            Gui::Box(87, 310, 279, 353),
+            Gui::Box(87, 310, 279, 353) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_CONTINUE,
             MachGui::ButtonEvent::CONTINUE);
     else
         pContinueButton = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
-            Gui::Box(87, 310, 279, 353),
+            Gui::Box(87, 310, 279, 353) * MachGui::menuScaleFactor(),
             IDS_MENUBTN_BACK_TO_ZONE,
             MachGui::ButtonEvent::CONTINUE);
 
     MachGuiMenuButton* pRestartButton = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(87, 100, 279, 142),
+        Gui::Box(87, 100, 279, 142) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_RESTART,
         MachGui::ButtonEvent::RESTART);
 
@@ -78,8 +78,13 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
 
     displayDeBriefImage();
 
-    MachGuiScrollableText* pTextInfo = new MachGuiScrollableText(pStartupScreens, Gui::Box(359, 265, 558, 426));
-    MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(559, 265), 160, pTextInfo);
+    MachGuiScrollableText* pTextInfo
+        = new MachGuiScrollableText(pStartupScreens, Gui::Box(359, 265, 558, 426) * MachGui::menuScaleFactor());
+    MachGuiVerticalScrollBar::createWholeBar(
+        pStartupScreens,
+        Gui::Coord(559, 265) * MachGui::menuScaleFactor(),
+        160 * MachGui::menuScaleFactor(),
+        pTextInfo);
 
     string winLoseText;
     // Display win/lose text...
@@ -289,25 +294,25 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
 
     if (debriefPicture.existsAsFile())
     {
+        const Gui::Coord animationCoord = Gui::Coord(359, 51) * MachGui::menuScaleFactor();
         if (debriefPicture.extension() == "smk")
         {
             // File is smacker file
-            // Construct a smacker player
-            //          HWND targetWindow = RenDevice::current()->display()->window();
-
-            //          AniSmacker* pSmackerAnimation = new AniSmacker( debriefPicture, targetWindow, 359 +
-            //          pStartupScreens_->xMenuOffset(), 51 + pStartupScreens_->yMenuOffset() );
-            // AniSmacker* pSmackerAnimation = new AniSmacker( debriefPicture, 359 + pStartupScreens_->xMenuOffset(),
-            // 51 + pStartupScreens_->yMenuOffset() );
             const auto& topLeft = getBackdropTopLeft();
-            AniSmacker* pSmackerAnimation
-                = new AniSmackerRegular(debriefPicture, 359 + topLeft.second, 51 + topLeft.first);
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(
+                debriefPicture,
+                animationCoord.x() + topLeft.second,
+                animationCoord.y() + topLeft.first);
+            pSmackerAnimation->setScaleFactor(MachGui::menuScaleFactor());
             pStartupScreens_->addSmackerAnimation(pSmackerAnimation);
         }
         else if (debriefPicture.extension() == "bmp")
         {
             // File is a bitmap
-            pDebriefImage_ = new GuiImage(pStartupScreens_, Gui::Coord(359, 51), Gui::bitmap(debriefPicture));
+            pDebriefImage_ = new GuiImage(
+                pStartupScreens_,
+                animationCoord,
+                MachGui::getScaledImage(debriefPath, MachGui::menuScaleFactor()));
         }
     }
 }

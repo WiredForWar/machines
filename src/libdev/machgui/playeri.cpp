@@ -13,21 +13,21 @@
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 
-#define PNL_BOX_WIDTH 77
-#define PNL_INDENT 6
+constexpr int PNL_BOX_WIDTH = 77;
+constexpr int PNL_INDENT = 6;
 
 MachGuiPlayerNameList::MachGuiPlayerNameList(
     GuiDisplayable* pParent,
     const Gui::Coord& topLeft,
     const string& fontName,
     uint title)
-    : GuiDisplayable(pParent, Gui::Boundary(topLeft, PNL_BOX_WIDTH, 77))
+    : GuiDisplayable(pParent, Gui::Boundary(topLeft, Gui::Size(PNL_BOX_WIDTH, 77) * MachGui::menuScaleFactor()))
     , isWhite_(false)
 {
     // Create title text
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(0, 0), PNL_BOX_WIDTH, 35),
+        Gui::Box(Gui::Coord(0, 0), Gui::Size(PNL_BOX_WIDTH, 35) * MachGui::menuScaleFactor()),
         title,
         fontName,
         Gui::AlignCenter);
@@ -47,7 +47,10 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
     // Create title text
     new MachGuiMenuText(
         pParent,
-        Gui::Box(boundary.minCorner(), boundary.maxCorner().x() - boundary.minCorner().x(), 35),
+        Gui::Box(
+            boundary.minCorner(),
+            boundary.maxCorner().x() - boundary.minCorner().x(),
+            35 * MachGui::menuScaleFactor()),
         title,
         fontName,
         Gui::AlignCenter);
@@ -69,38 +72,40 @@ void MachGuiPlayerNameList::names(
 
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
 
-    uint spacing = font.charHeight() + 2;
-    const uint maxWidth = PNL_BOX_WIDTH - (PNL_INDENT * 2) - 10;
+    uint spacing = font.charHeight() + 2 * MachGui::menuScaleFactor();
+    const uint maxWidth = (PNL_BOX_WIDTH - (PNL_INDENT * 2) - 10) * MachGui::menuScaleFactor();
 
     string newPlayer1 = truncate(player1, maxWidth);
     string newPlayer2 = truncate(player2, maxWidth);
     string newPlayer3 = truncate(player3, maxWidth);
     string newPlayer4 = truncate(player4, maxWidth);
 
+    const int PosX = 38 * MachGui::menuScaleFactor();
+
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, 38), font.textWidth(newPlayer1), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX), font.textWidth(newPlayer1), spacing),
         newPlayer1,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, 38 + spacing), font.textWidth(newPlayer2), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX + spacing), font.textWidth(newPlayer2), spacing),
         newPlayer2,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 2)), font.textWidth(newPlayer3), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX + (spacing * 2)), font.textWidth(newPlayer3), spacing),
         newPlayer3,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 3)), font.textWidth(newPlayer4), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX + (spacing * 3)), font.textWidth(newPlayer4), spacing),
         newPlayer4,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -114,23 +119,23 @@ void MachGuiPlayerNameList::doDisplay()
     if (isWhite_)
     {
         // Draw bounding box
-        GuiPainter::instance().hollowRectangle(boundary, MachGui::OFFWHITE(), 1);
+        GuiPainter::instance().hollowRectangle(boundary, MachGui::OFFWHITE(), 1 * MachGui::menuScaleFactor());
         // Line across box
         GuiPainter::instance().line(
-            Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34),
-            Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34),
+            Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
+            Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
             MachGui::OFFWHITE(),
-            1);
+            1 * MachGui::menuScaleFactor());
     }
     else
     {
-        GuiPainter::instance().hollowRectangle(boundary, MachGui::DROPDOWNLIGHTGREEN(), 1);
+        GuiPainter::instance().hollowRectangle(boundary, MachGui::DROPDOWNLIGHTGREEN(), 1 * MachGui::menuScaleFactor());
         // Line across box
         GuiPainter::instance().line(
-            Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34),
-            Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34),
+            Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
+            Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
             MachGui::DROPDOWNLIGHTGREEN(),
-            1);
+            1 * MachGui::menuScaleFactor());
     }
 }
 

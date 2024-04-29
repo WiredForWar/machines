@@ -385,10 +385,10 @@ void MachGuiCtxCampaign::deletePlayer()
 
 void MachGuiCtxCampaign::displayCurrentStatus()
 {
-    const int CURRENTSTATUS_MINX = 378;
-    const int CURRENTSTATUS_MINY = 260;
-    const int CURRENTSTATUS_MAXX = 532;
-    const int CURRENTSTATUS_MAXY = 376;
+    const int CURRENTSTATUS_MINX = 378 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MINY = 260 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MAXX = 532 * MachGui::menuScaleFactor();
+    const int CURRENTSTATUS_MAXY = 376 * MachGui::menuScaleFactor();
     const int CURRENTSTATUS_WIDTH = CURRENTSTATUS_MAXX - CURRENTSTATUS_MINX;
 
     // Clean up old text

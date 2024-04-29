@@ -194,10 +194,10 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pSaveText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            SAVE_LB_MINX,
-            SAVE_LB_MINY,
-            SAVE_LB_MINX + font.textWidth(saveHeading.asString()),
-            SAVE_LB_MINY + font.charHeight() + 2) * MachGui::menuScaleFactor(),
+            MachGui::menuScaleFactor() * SAVE_LB_MINX,
+            MachGui::menuScaleFactor() * SAVE_LB_MINY,
+            MachGui::menuScaleFactor() * SAVE_LB_MINX + font.textWidth(saveHeading.asString()),
+            MachGui::menuScaleFactor() * SAVE_LB_MINY + font.charHeight() + MachGui::menuScaleFactor() * 2),
         IDS_MENULB_SAVEGAME,
         MachGui::Menu::largeFontLight());
 
@@ -206,20 +206,22 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
-            SAVE_LB_MINX,
+            MachGui::menuScaleFactor() * SAVE_LB_MINX,
             pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first,
-            SAVE_LB_MAXX - SCROLLBAR_WIDTH,
-            SAVE_LB_MAXY) * MachGui::menuScaleFactor(),
-        1000 * MachGui::menuScaleFactor(),
-        MachGuiSingleSelectionListBoxItem::reqHeight(), // FIXME:  * MachGui::menuScaleFactor()
-        1);
+            MachGui::menuScaleFactor() * (SAVE_LB_MAXX - SCROLLBAR_WIDTH),
+            MachGui::menuScaleFactor() * SAVE_LB_MAXY),
+        MachGui::menuScaleFactor() * 1000,
+        MachGuiSingleSelectionListBoxItem::reqHeight(),
+        1 * MachGui::menuScaleFactor());
 
+    const int barHeight = MachGui::menuScaleFactor() * (SAVE_LB_MAXY - SAVE_LB_MINY)
+        - (pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y());
     MachGuiVerticalScrollBar::createWholeBar(
         pStartupScreens,
-        Gui::Coord(SAVE_LB_MAXX - SCROLLBAR_WIDTH, pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first)
-            * MachGui::menuScaleFactor(),
-        SAVE_LB_MAXY - SAVE_LB_MINY
-            - (pSaveText->absoluteBoundary().maxCorner().y() - pSaveText->absoluteBoundary().minCorner().y()),
+        Gui::Coord(
+            MachGui::menuScaleFactor() * (SAVE_LB_MAXX - SCROLLBAR_WIDTH),
+            pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first),
+        barHeight,
         pSaveGameList_);
 
     updateSaveGameList();
@@ -259,11 +261,12 @@ void MachGuiCtxSave::updateSaveGameList()
     pSaveGameList_->deleteAllItems();
 
     // Create special [new save game] entry in list box.
+    const int itemWidth = (SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor();
     GuiResourceString newSaveGameStr(IDS_MENU_NEWSAVEGAME);
     pNewSaveGameName_ = new MachGuiEditBoxListBoxItem(
         pStartupScreens_,
         pSaveGameList_,
-        SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH,
+        itemWidth,
         newSaveGameStr.asString());
     pNewSaveGameName_->maxChars(MAX_SAVEGAMENAME_LEN);
 
@@ -276,7 +279,7 @@ void MachGuiCtxSave::updateSaveGameList()
         new MachGuiSaveGameListBoxItem(
             pStartupScreens_,
             pSaveGameList_,
-            SAVE_LB_MAXX - SAVE_LB_MINX - SCROLLBAR_WIDTH,
+            itemWidth,
             savedGame,
             this);
     }
@@ -400,11 +403,20 @@ void MachGuiCtxSave::deleteSavedGame()
 bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
 {
     // Display saving bmp
-    GuiBitmap savingBmp = Gui::bitmap("gui/menu/saving.bmp");
+    GuiBitmap savingBmp = Gui::requestScaledImage("gui/menu/saving.bmp", MachGui::menuScaleFactor());
     savingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     const auto& topLeft = getBackdropTopLeft();
-    frontBuffer.simpleBlit(savingBmp, topLeft.second, topLeft.first);
+    const Gui::Coord coord(topLeft.second, topLeft.first);
+    if (savingBmp.requestedSize().isNull())
+    {
+        GuiPainter::instance().blit(savingBmp, coord);
+    }
+    else
+    {
+        Gui::Size backgroundSize(savingBmp.requestedSize().width, savingBmp.requestedSize().height);
+        GuiPainter::instance().stretch(savingBmp, Gui::Box(coord, backgroundSize));
+    }
     W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
 
     // Create next filename...

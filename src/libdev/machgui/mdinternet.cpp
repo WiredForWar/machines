@@ -94,13 +94,17 @@ void MachGuiInternetNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
         &parent(),
-        Gui::Box(Gui::Coord(INM_MINX, INM_MINY), font.textWidth(IPAddressHeading.asString()), textHeight),
+        Gui::Box(
+            Gui::Coord(INM_MINX, INM_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(IPAddressHeading.asString()), textHeight)),
         IDS_MENU_IPADDRESS,
         MachGui::Menu::smallFontLight());
 
     pimpl_->pIPAddressEntryBox_ = new MachGuiSingleLineEditBox(
         &startupScreens(),
-        Gui::Box(Gui::Coord(INM_MINX, INM_MINY + textHeight), INM_WIDTH, textHeight + 4),
+        Gui::Box(
+            pIPAddressText->relativeBoundary().bottomLeft(),
+            Gui::Size(INM_WIDTH * MachGui::menuScaleFactor(), textHeight + 4)),
         font);
     pimpl_->pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
     pimpl_->pIPAddressEntryBox_->border(true);

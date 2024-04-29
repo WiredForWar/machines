@@ -86,7 +86,7 @@ GuiBitmap*& MachGuiPlayerColour::pRedBmp()
     static GuiBitmap* pBmp = nullptr;
     if (! pBmp)
     {
-        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gred.bmp"));
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/menu/gred.bmp", MachGui::menuScaleFactor()));
     }
     return pBmp;
 }
@@ -97,7 +97,7 @@ GuiBitmap*& MachGuiPlayerColour::pGreenBmp()
     static GuiBitmap* pBmp = nullptr;
     if (! pBmp)
     {
-        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/ggreen.bmp"));
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/menu/ggreen.bmp", MachGui::menuScaleFactor()));
     }
     return pBmp;
 }
@@ -108,7 +108,7 @@ GuiBitmap*& MachGuiPlayerColour::pBlueBmp()
     static GuiBitmap* pBmp = nullptr;
     if (! pBmp)
     {
-        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gblue.bmp"));
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/menu/gblue.bmp", MachGui::menuScaleFactor()));
     }
     return pBmp;
 }
@@ -119,7 +119,7 @@ GuiBitmap*& MachGuiPlayerColour::pYellowBmp()
     static GuiBitmap* pBmp = nullptr;
     if (! pBmp)
     {
-        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gyellow.bmp"));
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/menu/gyellow.bmp", MachGui::menuScaleFactor()));
     }
     return pBmp;
 }
@@ -130,7 +130,7 @@ GuiBitmap*& MachGuiPlayerColour::pBlackBmp()
     static GuiBitmap* pBmp = nullptr;
     if (! pBmp)
     {
-        pBmp = new GuiBitmap(Gui::bitmap("gui/menu/gblack.bmp"));
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/menu/gblack.bmp", MachGui::menuScaleFactor()));
     }
     return pBmp;
 }
@@ -224,11 +224,20 @@ MachGuiColourList::MachGuiColourList(
     : MachGuiAutoDeleteDisplayable(pStartupScreens)
     , GuiDisplayable(pParent, box)
 {
-    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(0, 0, 13, 13), MachPhys::NORACE, pPlayerInfo);
-    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(12, 0, 25, 13), MachPhys::RED, pPlayerInfo);
-    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(24, 0, 37, 13), MachPhys::GREEN, pPlayerInfo);
-    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(36, 0, 49, 13), MachPhys::BLUE, pPlayerInfo);
-    new MachGuiColourSelector(pStartupScreens, this, Gui::Box(48, 0, 61, 13), MachPhys::YELLOW, pPlayerInfo);
+    constexpr MachPhys::Race colorOptions[]
+        = { MachPhys::NORACE, MachPhys::RED, MachPhys::GREEN, MachPhys::BLUE, MachPhys::YELLOW };
+
+    int xPos = 0;
+    for (const auto raceOption : colorOptions)
+    {
+        new MachGuiColourSelector(
+            pStartupScreens,
+            this,
+            Gui::Box(Gui::Coord(xPos, 0) * MachGui::menuScaleFactor(), Gui::Size(13, 13) * MachGui::menuScaleFactor()),
+            raceOption,
+            pPlayerInfo);
+        xPos += 12;
+    }
 }
 
 MachGuiColourList::~MachGuiColourList()
@@ -277,7 +286,7 @@ MachGuiPlayerListItem::~MachGuiPlayerListItem()
 // static
 size_t MachGuiPlayerListItem::reqHeight()
 {
-    return 16;
+    return 16 * MachGui::menuScaleFactor();
 }
 
 // static
@@ -311,7 +320,7 @@ void MachGuiPlayerListItem::doDisplay()
         // Draw glowing background
         GuiPainter::instance().blit(
             MachGui::longGlowBmp(),
-            Gui::Box(0, 0, width(), height() - 1),
+            Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
             absoluteBoundary().minCorner());
 
         // Blit host icon
@@ -319,26 +328,32 @@ void MachGuiPlayerListItem::doDisplay()
         {
             GuiPainter::instance().blit(
                 MachGui::hostBmp(),
-                Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 3));
+                Gui::Coord(
+                    absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor(),
+                    absoluteBoundary().minCorner().y() + 3 * MachGui::menuScaleFactor()));
         }
         else
         {
             // Blit CD icon if machines cd is present in players machine
             if (playerInfo_.hasMachinesCD_)
             {
-                GuiBitmap cdBmp = Gui::bitmap("gui/menu/cd.bmp");
+                GuiBitmap cdBmp = MachGui::getScaledImage("gui/menu/cd.bmp");
                 cdBmp.enableColourKeying();
 
                 GuiPainter::instance().blit(
                     cdBmp,
-                    Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 2));
+                    Gui::Coord(
+                        absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor(),
+                        absoluteBoundary().minCorner().y() + 2 * MachGui::menuScaleFactor()));
             }
 
             if (playerInfo_.ready_) // Blit tick if necessary.
             {
                 GuiPainter::instance().blit(
                     MachGui::darkTickBmp(),
-                    Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 2));
+                    Gui::Coord(
+                        absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor(),
+                        absoluteBoundary().minCorner().y() + 2 * MachGui::menuScaleFactor()));
             }
         }
 
@@ -346,7 +361,7 @@ void MachGuiPlayerListItem::doDisplay()
         getHighlightFont().drawText(
             playerInfo_.name_,
             Gui::Coord(
-                absoluteBoundary().minCorner().x() + MachGui::darkTickBmp().width() + 2,
+                absoluteBoundary().minCorner().x() + MachGui::darkTickBmp().width() + 2 * MachGui::menuScaleFactor(),
                 absoluteBoundary().minCorner().y() + textYOffset),
             width());
 
@@ -358,8 +373,8 @@ void MachGuiPlayerListItem::doDisplay()
                 MachGui::dropDownBmp(),
                 Gui::Coord(
                     absoluteBoundary().maxCorner().x() - MachGuiPlayerColour::reqWidth()
-                        - MachGui::dropDownBmp().width() - 2,
-                    absoluteBoundary().minCorner().y() + 1));
+                        - MachGui::dropDownBmp().width() - 2 * MachGui::menuScaleFactor(),
+                    absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor()));
         }
     }
     else
@@ -369,26 +384,32 @@ void MachGuiPlayerListItem::doDisplay()
         {
             GuiPainter::instance().blit(
                 MachGui::hostBmp(),
-                Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 3));
+                Gui::Coord(
+                    absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor(),
+                    absoluteBoundary().minCorner().y() + 3 * MachGui::menuScaleFactor()));
         }
         else
         {
             // Blit CD icon if machines cd is present in players machine
             if (playerInfo_.hasMachinesCD_)
             {
-                GuiBitmap cdBmp = Gui::bitmap("gui/menu/cd.bmp");
+                GuiBitmap cdBmp = MachGui::getScaledImage("gui/menu/cd.bmp");
                 cdBmp.enableColourKeying();
 
                 GuiPainter::instance().blit(
                     cdBmp,
-                    Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 2));
+                    Gui::Coord(
+                        absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor(),
+                        absoluteBoundary().minCorner().y() + 2 * MachGui::menuScaleFactor()));
             }
 
             if (playerInfo_.ready_) // Blit tick if necessary.
             {
                 GuiPainter::instance().blit(
                     MachGui::tickBmp(),
-                    Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 2));
+                    Gui::Coord(
+                        absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor(),
+                        absoluteBoundary().minCorner().y() + 2 * MachGui::menuScaleFactor()));
             }
         }
 
@@ -396,7 +417,7 @@ void MachGuiPlayerListItem::doDisplay()
         getFont().drawText(
             playerInfo_.name_,
             Gui::Coord(
-                absoluteBoundary().minCorner().x() + MachGui::tickBmp().width() + 2,
+                absoluteBoundary().minCorner().x() + MachGui::tickBmp().width() + 2 * MachGui::menuScaleFactor(),
                 absoluteBoundary().minCorner().y() + textYOffset),
             width());
     }
@@ -409,15 +430,15 @@ void MachGuiPlayerListItem::doDisplay()
 
         GuiBitmap pingBmp;
         if (ping > 800)
-            pingBmp = Gui::bitmap("gui/menu/ping1.bmp");
+            pingBmp = MachGui::getScaledImage("gui/menu/ping1.bmp");
         else if (ping > 600)
-            pingBmp = Gui::bitmap("gui/menu/ping2.bmp");
+            pingBmp = MachGui::getScaledImage("gui/menu/ping2.bmp");
         else if (ping > 250)
-            pingBmp = Gui::bitmap("gui/menu/ping3.bmp");
+            pingBmp = MachGui::getScaledImage("gui/menu/ping3.bmp");
         else if (ping > 100)
-            pingBmp = Gui::bitmap("gui/menu/ping4.bmp");
+            pingBmp = MachGui::getScaledImage("gui/menu/ping4.bmp");
         else
-            pingBmp = Gui::bitmap("gui/menu/ping5.bmp");
+            pingBmp = MachGui::getScaledImage("gui/menu/ping5.bmp");
 
         pingBmp.enableColourKeying();
         GuiPainter::instance().blit(
@@ -551,16 +572,16 @@ MachGuiPlayerColour::~MachGuiPlayerColour()
 // static
 size_t MachGuiPlayerColour::reqWidth()
 {
-    return 61;
+    return 61 * MachGui::menuScaleFactor();
 }
 
 // static
 Gui::Box MachGuiPlayerColour::getRelPos(MachGuiPlayerListItem* pParent)
 {
-    auto x = static_cast<Gui::XCoord>(pParent->width() - reqWidth() - 1);
-    Gui::XCoord y = 1;
+    auto x = static_cast<Gui::XCoord>(pParent->width() - reqWidth() - 1 * MachGui::menuScaleFactor());
+    Gui::XCoord y = 1 * MachGui::menuScaleFactor();
 
-    return Gui::Box(x, y, x + reqWidth(), y + pParent->height() - 3);
+    return Gui::Box(x, y, x + reqWidth(), y + pParent->height() - 3 * MachGui::menuScaleFactor());
 }
 
 // virtual
@@ -615,7 +636,7 @@ void MachGuiPlayerColour::doDisplay()
         GuiPainter::instance().filledRectangle(absoluteBoundary(), *pColour);
     }
 
-    GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::BLACK(), 1);
+    GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::BLACK(), 1 * MachGui::menuScaleFactor());
 }
 
 // virtual
@@ -818,8 +839,9 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 
         Gui::Coord dropDownPos = absoluteBoundary().minCorner();
         dropDownPos.x(dropDownPos.x() + MachGui::tickBmp().width() - menuLeft);
-        dropDownPos.y(dropDownPos.y() + 4 - menuTop);
-        size_t dropDownWidth = width() - 3 - MachGui::tickBmp().width() - MachGuiPlayerColour::reqWidth();
+        dropDownPos.y(dropDownPos.y() + 4 * MachGui::menuScaleFactor() - menuTop);
+        size_t dropDownWidth
+            = width() - 3 * MachGui::menuScaleFactor() - MachGui::tickBmp().width() - MachGuiPlayerColour::reqWidth();
 
         ctl_vector<string> strings;
 

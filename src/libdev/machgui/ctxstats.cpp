@@ -44,7 +44,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(425, 406, 576, 439),
+        Gui::Box(425, 406, 576, 439) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::EXIT);
     pOkBtn->escapeControl(true);
@@ -82,14 +82,11 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     if (statAnim.existsAsFile())
     {
         // Construct a smacker player
-        //       HWND targetWindow = RenDevice::current()->display()->window();
-
-        //      AniSmacker* pSmackerAnimation = new AniSmacker( statAnim, targetWindow, 55 +
-        //      pStartupScreens_->xMenuOffset(), 142 + pStartupScreens_->yMenuOffset() );
-        // AniSmacker* pSmackerAnimation = new AniSmacker( statAnim, 55 + pStartupScreens_->xMenuOffset(), 142 +
-        // pStartupScreens_->yMenuOffset() );
         const auto& topLeft = getBackdropTopLeft();
-        AniSmacker* pSmackerAnimation = new AniSmackerRegular(statAnim, 55 + topLeft.second, 142 + topLeft.first);
+        const Gui::Coord animationCoord = Gui::Coord(55, 142) * MachGui::menuScaleFactor();
+        AniSmacker* pSmackerAnimation
+            = new AniSmackerRegular(statAnim, animationCoord.x() + topLeft.second, animationCoord.y() + topLeft.first);
+        pSmackerAnimation->setScaleFactor(MachGui::menuScaleFactor());
         pStartupScreens->addSmackerAnimation(pSmackerAnimation);
     }
 
@@ -99,7 +96,10 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
     new MachGuiMenuText(
         pStartupScreens,
-        Gui::Box(Gui::Coord(196, 41), font.textWidth(generalHeading.asString()), font.charHeight() + 2),
+        Gui::Box(
+            Gui::Coord(196, 41) * MachGui::menuScaleFactor(),
+            font.textWidth(generalHeading.asString()),
+            font.charHeight() + 2),
         IDS_MENU_STSGENERAL,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -108,7 +108,10 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
     new MachGuiMenuText(
         pStartupScreens,
-        Gui::Box(Gui::Coord(196, 132), font.textWidth(BARHeading.asString()), font.charHeight() + 2),
+        Gui::Box(
+            Gui::Coord(196, 132) * MachGui::menuScaleFactor(),
+            font.textWidth(BARHeading.asString()),
+            font.charHeight() + 2),
         IDS_MENU_STSBAR,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -117,7 +120,10 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
     new MachGuiMenuText(
         pStartupScreens,
-        Gui::Box(Gui::Coord(196, 232), font.textWidth(killsHeading.asString()), font.charHeight() + 2),
+        Gui::Box(
+            Gui::Coord(196, 232) * MachGui::menuScaleFactor(),
+            font.textWidth(killsHeading.asString()),
+            font.charHeight() + 2),
         IDS_MENU_STSKILLS,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -128,7 +134,10 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
     new MachGuiMenuText(
         pStartupScreens,
-        Gui::Box(Gui::Coord(53, 31), largeFont.textWidth(statsHeading.asString()), largeFont.charHeight()),
+        Gui::Box(
+            Gui::Coord(53, 31) * MachGui::menuScaleFactor(),
+            largeFont.textWidth(statsHeading.asString()),
+            largeFont.charHeight()),
         IDS_MENU_STATISTICS,
         MachGui::Menu::largeFontLight(),
         Gui::AlignLeft);
@@ -254,9 +263,15 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // General statistics
     //
     // Machine kills
-    MachGuiGeneralStatistics* machineKills = new 
-        MachGuiGeneralStatistics(pStartupScreens, Gui::Coord(196, 50), IDS_MENU_MACHINEKILLS, MachPhys::N_RACES);
-    uint width1 = machineKills->width() - 1;
+    const int FirstRowY = 50;
+    int RowY = FirstRowY;
+    int TableContentX = 196;
+    MachGuiGeneralStatistics* machineKills = new MachGuiGeneralStatistics(
+        pStartupScreens,
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor(),
+        IDS_MENU_MACHINEKILLS,
+        MachPhys::N_RACES);
+    uint width1 = machineKills->width() - 1 * MachGui::menuScaleFactor();
     statistics_.push_back(machineKills);
     statistics_[0]->setStatistics(
         redScore.otherMachinesDestroyed(),
@@ -266,7 +281,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Construction Kills
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + width1, 50),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 1, 0),
         IDS_MENU_CONSTRUCTKILLS,
         MachPhys::N_RACES));
     statistics_[1]->setStatistics(
@@ -277,7 +292,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Machine Losses
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 2), 50),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 2, 0),
         IDS_MENU_MACHINELOSSES,
         MachPhys::N_RACES));
     statistics_[2]->setStatistics(
@@ -288,7 +303,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Construction Losses
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 3), 50),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 3, 0),
         IDS_MENU_CONSTRUCTLOSSES,
         MachPhys::N_RACES));
     statistics_[3]->setStatistics(
@@ -302,14 +317,19 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // BMU's Mined
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 4), 50),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 4, 0),
         IDS_MENU_BMUSMINED,
         MachPhys::N_RACES));
     statistics_[4]
         ->setStatistics(redScore.BMUsMined(), blueScore.BMUsMined(), greenScore.BMUsMined(), yellowScore.BMUsMined());
     // Machines Built
-    statistics_.push_back(new 
-        MachGuiGeneralStatistics(pStartupScreens, Gui::Coord(196, 141), IDS_MENU_MACHINESBUILT, MachPhys::N_RACES));
+    RowY = 141; // was 50, +91
+
+    statistics_.push_back(new MachGuiGeneralStatistics(
+        pStartupScreens,
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor(),
+        IDS_MENU_MACHINESBUILT,
+        MachPhys::N_RACES));
     statistics_[5]->setStatistics(
         redScore.machinesBuilt(),
         blueScore.machinesBuilt(),
@@ -318,7 +338,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Military Machines Built
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + width1, 141),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 1, 0),
         IDS_MENU_MLTMACHINESBUILT,
         MachPhys::N_RACES));
     statistics_[6]->setStatistics(
@@ -329,7 +349,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Constructions Built
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 2), 141),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 2, 0),
         IDS_MENU_CONSTRUCTSBUILT,
         MachPhys::N_RACES));
     statistics_[7]->setStatistics(
@@ -340,7 +360,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Items Researched
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 3), 141),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 3, 0),
         IDS_MENU_ITEMSRESEARCHED,
         MachPhys::N_RACES));
     statistics_[8]->setStatistics(
@@ -351,7 +371,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Researce points
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 4), 141),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 4, 0),
         IDS_MENU_RESEARCHPOINTS,
         MachPhys::N_RACES));
     statistics_[9]->setStatistics(
@@ -361,15 +381,19 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         yellowScore.totalResearchCost());
     //
     // Kills
+    RowY = 241;
     //
     // Player name list
-    MachGuiPlayerNameList* names1 = new 
-        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 241), MachGui::Menu::smallFontLight(), IDS_MENU_STSTPLAYER);
+    MachGuiPlayerNameList* names1 = new MachGuiPlayerNameList(
+        pStartupScreens,
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor(),
+        MachGui::Menu::smallFontLight(),
+        IDS_MENU_STSTPLAYER);
     names1->names(redName, blueName, greenName, yellowName);
     // Destroyed Machines belonging to player 1
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + width1, 241),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 1, 0),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::RED,
         redName));
@@ -381,7 +405,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Destroyed Machines belonging to player 2
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 2), 241),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 2, 0),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::BLUE,
         blueName));
@@ -393,7 +417,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Destroyed Machines belonging to player 3
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 3), 241),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 3, 0),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::GREEN,
         greenName));
@@ -405,7 +429,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Destroyed Machines belonging to player 4
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 4), 241),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 4, 0),
         IDS_MENU_DESTROYEDMACH,
         MachPhys::YELLOW,
         yellowName));
@@ -415,13 +439,17 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         greenScore.raceMachinesDestroyed(MachPhys::YELLOW),
         yellowScore.raceMachinesDestroyed(MachPhys::YELLOW));
     // Player name list
-    MachGuiPlayerNameList* names2 = new 
-        MachGuiPlayerNameList(pStartupScreens, Gui::Coord(196, 322), MachGui::Menu::smallFontLight(), IDS_MENU_STSTPLAYER);
+    RowY = 322;
+    MachGuiPlayerNameList* names2 = new MachGuiPlayerNameList(
+        pStartupScreens,
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor(),
+        MachGui::Menu::smallFontLight(),
+        IDS_MENU_STSTPLAYER);
     names2->names(redName, blueName, greenName, yellowName);
     // Destroyed constructions belonging to player 1
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + width1, 322),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 1, 0),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::RED,
         redName));
@@ -433,7 +461,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Destroyed constructions belonging to player 2
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 2), 322),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 2, 0),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::BLUE,
         blueName));
@@ -445,7 +473,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Destroyed constructions belonging to player 3
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 3), 322),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 3, 0),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::GREEN,
         greenName));
@@ -457,7 +485,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     // Destroyed constructions belonging to player 4
     statistics_.push_back(new MachGuiGeneralStatistics(
         pStartupScreens,
-        Gui::Coord(196 + (width1 * 4), 322),
+        Gui::Coord(TableContentX, RowY) * MachGui::menuScaleFactor() + Gui::Coord(width1 * 4, 0),
         IDS_MENU_DESTROYEDCONST,
         MachPhys::YELLOW,
         yellowName));
@@ -469,7 +497,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     //
     // Overall Scores
     //
-    MachGuiPlayerScore* names3 = new MachGuiPlayerScore(pStartupScreens, Gui::Coord(53, 50));
+    MachGuiPlayerScore* names3 = new MachGuiPlayerScore(pStartupScreens, Gui::Coord(53, FirstRowY) * MachGui::menuScaleFactor());
     names3->names(redName, blueName, greenName, yellowName);
     statistics_.push_back(names3);
     statistics_[18]->setStatistics(

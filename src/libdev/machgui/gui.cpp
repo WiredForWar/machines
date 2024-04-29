@@ -421,7 +421,7 @@ GuiBitmap& MachGui::tickBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/tick.bmp");
+        pBmp = getScaledImage("gui/menu/tick.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -435,7 +435,7 @@ GuiBitmap& MachGui::darkTickBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/tickd.bmp");
+        pBmp = getScaledImage("gui/menu/tickd.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -449,7 +449,7 @@ GuiBitmap& MachGui::largeDarkTickBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/tickld.bmp");
+        pBmp = getScaledImage("gui/menu/tickld.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -463,7 +463,7 @@ GuiBitmap& MachGui::largeTickBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/tickl.bmp");
+        pBmp = getScaledImage("gui/menu/tickl.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -477,7 +477,7 @@ GuiBitmap& MachGui::dropDownBmp()
 
     if (pBmp.isNull())
     {
-        pBmp = Gui::bitmap("gui/menu/dropdown.bmp");
+        pBmp = getScaledImage("gui/menu/dropdown.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -491,9 +491,7 @@ GuiBitmap& MachGui::hostBmp()
 
     if (pBmp.isNull())
     {
-        ASSERT_FILE_EXISTS("gui/menu/host.bmp");
-
-        pBmp = Gui::bitmap("gui/menu/host.bmp");
+        pBmp = getScaledImage("gui/menu/host.bmp");
         pBmp.enableColourKeying();
     }
 

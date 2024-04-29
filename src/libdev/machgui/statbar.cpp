@@ -6,12 +6,15 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/statbar.hpp"
+
 #include "gui/painter.hpp"
+#include "machgui/gui.hpp"
 #include "system/pathname.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "gui/font.hpp"
+
 #include <stdlib.h>
 
 MachGuiStatisticsBar::MachGuiStatisticsBar(
@@ -25,7 +28,7 @@ MachGuiStatisticsBar::MachGuiStatisticsBar(
 
     range_ = range;
     stat_ = 0;
-    statsBarBmp_ = Gui::bitmap(barBmpFilename);
+    statsBarBmp_ = MachGui::getScaledImage(barBmpFilename.pathname(), MachGui::menuScaleFactor());
     statsBarBmp_.enableColourKeying();
     topLeft_ = topLeft;
     pParent_ = pParent;
@@ -122,7 +125,7 @@ void MachGuiStatisticsBar::showStatistic()
     statsText_ = new MachGuiMenuText(
         pParent_,
         Gui::Box(
-            topLeft_.x() - font.textWidth(newStatistic) - 2,
+            topLeft_.x() - font.textWidth(newStatistic) - 2 * MachGui::menuScaleFactor(),
             topLeft_.y() + yOffset,
             topLeft_.x(),
             topLeft_.y() + font.charHeight()),

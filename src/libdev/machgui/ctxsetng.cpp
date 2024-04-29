@@ -168,13 +168,13 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuButton* pOKBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(302, 420, 444, 451),
+        Gui::Box(302, 420, 444, 451) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::OK);
     MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(472, 420, 607, 451),
+        Gui::Box(472, 420, 607, 451) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
 
@@ -190,8 +190,13 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     }
 
     // Scenario description
-    pScenarioDesc_ = new MachGuiScrollableText(pStartupScreens, Gui::Box(353, 288, 576, 384));
-    MachGuiVerticalScrollBar::createWholeBar(pStartupScreens, Gui::Coord(576, 288), 96, pScenarioDesc_);
+    pScenarioDesc_
+        = new MachGuiScrollableText(pStartupScreens, Gui::Box(353, 288, 576, 384) * MachGui::menuScaleFactor());
+    MachGuiVerticalScrollBar::createWholeBar(
+        pStartupScreens,
+        Gui::Coord(576, 288) * MachGui::menuScaleFactor(),
+        96 * MachGui::menuScaleFactor(),
+        pScenarioDesc_);
 
     // Display mapsize list box heading
     GuiResourceString mapsizeHeading(IDS_MENULB_MAPSIZE);
@@ -199,10 +204,8 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pMapSizeText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            LB_MINX,
-            MAPSIZE_LB_MINY,
-            LB_MINX + font.textWidth(mapsizeHeading.asString()),
-            MAPSIZE_LB_MINY + font.charHeight() + 2),
+            Gui::Coord(LB_MINX, MAPSIZE_LB_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(mapsizeHeading.asString()), font.charHeight() + 2)),
         IDS_MENULB_MAPSIZE,
         MachGui::Menu::largeFontLight());
 
@@ -211,10 +214,8 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pTerrainText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            LB_MINX,
-            TERRAINTYPE_LB_MINY,
-            LB_MINX + font.textWidth(terrainHeading.asString()),
-            TERRAINTYPE_LB_MINY + font.charHeight() + 2),
+            Gui::Coord(LB_MINX, TERRAINTYPE_LB_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(terrainHeading.asString()), font.charHeight() + 2)),
         IDS_MENULB_TERRAINTYPE,
         MachGui::Menu::largeFontLight());
 
@@ -223,10 +224,8 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pScenarioText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            LB_MINX,
-            SCENARIO_LB_MINY,
-            LB_MINX + font.textWidth(scenarioHeading.asString()),
-            SCENARIO_LB_MINY + font.charHeight() + 2),
+            Gui::Coord(LB_MINX, SCENARIO_LB_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(scenarioHeading.asString()), font.charHeight() + 2)),
         IDS_MENULB_SCENARIO,
         MachGui::Menu::largeFontLight());
 
@@ -235,10 +234,8 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     MachGuiMenuText* pSettingsText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
-            SETTINGS_LB_MINX,
-            SETTINGS_LB_MINY,
-            SETTINGS_LB_MINX + font.textWidth(settingsHeading.asString()),
-            SETTINGS_LB_MINY + font.charHeight() + 2),
+            Gui::Coord(SETTINGS_LB_MINX, SETTINGS_LB_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(settingsHeading.asString()), font.charHeight() + 2)),
         IDS_MENULB_SETTINGS,
         MachGui::Menu::largeFontLight());
 
@@ -246,8 +243,12 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     pMapSizeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(LB_MINX, pMapSizeText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, MAPSIZE_LB_MAXY),
-        1000,
+        Gui::Box(
+            MachGui::menuScaleFactor() * LB_MINX,
+            pMapSizeText->absoluteBoundary().maxCorner().y() - topLeft.first,
+            MachGui::menuScaleFactor() * LB_MAXX,
+            MachGui::menuScaleFactor() * MAPSIZE_LB_MAXY),
+        1000 * MachGui::menuScaleFactor(),
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
     // Create planet list box
@@ -255,19 +256,23 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         pStartupScreens,
         Gui::Box(
-            LB_MINX,
+            MachGui::menuScaleFactor() * LB_MINX,
             pTerrainText->absoluteBoundary().maxCorner().y() - topLeft.first,
-            LB_MAXX,
-            TERRAINTYPE_LB_MAXY),
-        1000,
+            MachGui::menuScaleFactor() * LB_MAXX,
+            MachGui::menuScaleFactor() * TERRAINTYPE_LB_MAXY),
+        1000 * MachGui::menuScaleFactor(),
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
     // Create scenario list box
     pScenarioList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(LB_MINX, pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first, LB_MAXX, SCENARIO_LB_MAXY),
-        1000,
+        Gui::Box(
+            MachGui::menuScaleFactor() * LB_MINX,
+            pScenarioText->absoluteBoundary().maxCorner().y() - topLeft.first,
+            MachGui::menuScaleFactor() * LB_MAXX,
+            MachGui::menuScaleFactor() * SCENARIO_LB_MAXY),
+        1000 * MachGui::menuScaleFactor(),
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
 
@@ -275,12 +280,12 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     pSettingsList_ = new GuiSimpleScrollableList(
         pStartupScreens,
         Gui::Box(
-            SETTINGS_LB_MINX,
+            MachGui::menuScaleFactor() * SETTINGS_LB_MINX,
             pSettingsText->absoluteBoundary().maxCorner().y() - topLeft.first,
-            SETTINGS_LB_MAXX,
-            SETTINGS_LB_MAXY),
-        (SETTINGS_LB_MAXX - SETTINGS_LB_MINX) / 2,
-        MachGuiDropDownListBoxCreator::reqHeight() + 1,
+            MachGui::menuScaleFactor() * SETTINGS_LB_MAXX,
+            MachGui::menuScaleFactor() * SETTINGS_LB_MAXY),
+        (SETTINGS_LB_MAXX - SETTINGS_LB_MINX) / 2 * MachGui::menuScaleFactor(),
+        MachGuiDropDownListBoxCreator::reqHeight() + 1 * MachGui::menuScaleFactor(),
         1);
 
     updateMapSizeList();
@@ -326,8 +331,12 @@ void MachGuiCtxSettings::updateMapSizeList()
     {
         MachGuiDbSystem& system = MachGuiDatabase::instance().multiPlayerSystem(loop);
 
-        MachGuiMPMapSizeListBoxItem* pItem
-            = new MachGuiMPMapSizeListBoxItem(pStartupScreens_, pMapSizeList_, LB_MAXX - LB_MINX, system, this);
+        MachGuiMPMapSizeListBoxItem* pItem = new MachGuiMPMapSizeListBoxItem(
+            pStartupScreens_,
+            pMapSizeList_,
+            MachGui::menuScaleFactor() * (LB_MAXX - LB_MINX),
+            system,
+            this);
         // Select first item in list or previously selected item
         if (firstItem)
         {
@@ -359,8 +368,12 @@ void MachGuiCtxSettings::updateTerrainTypeList(MachGuiDbSystem& system)
     {
         MachGuiDbPlanet& planet = system.planet(loop);
 
-        MachGuiMPTerrainTypeListBoxItem* pItem = new 
-            MachGuiMPTerrainTypeListBoxItem(pStartupScreens_, pTerrainTypeList_, LB_MAXX - LB_MINX, planet, this);
+        MachGuiMPTerrainTypeListBoxItem* pItem = new MachGuiMPTerrainTypeListBoxItem(
+            pStartupScreens_,
+            pTerrainTypeList_,
+            MachGui::menuScaleFactor() * (LB_MAXX - LB_MINX),
+            planet,
+            this);
         // Select first item in list or previously selected item
         if (firstItem)
         {
@@ -392,8 +405,12 @@ void MachGuiCtxSettings::updateScenarioList(MachGuiDbPlanet& planet)
     {
         MachGuiDbScenario& scenario = planet.scenario(loop);
 
-        MachGuiMPScenarioListBoxItem* pItem
-            = new MachGuiMPScenarioListBoxItem(pStartupScreens_, pScenarioList_, LB_MAXX - LB_MINX, scenario, this);
+        MachGuiMPScenarioListBoxItem* pItem = new MachGuiMPScenarioListBoxItem(
+            pStartupScreens_,
+            pScenarioList_,
+            MachGui::menuScaleFactor() * (LB_MAXX - LB_MINX),
+            scenario,
+            this);
         // Select first item in list or previously selected item
         if (firstItem)
         {
@@ -542,8 +559,8 @@ void MachGuiCtxSettings::addSetting(MachGuiDropDownListBoxCreator*& pCreator, ui
 
     GuiResourceString labelStr(labelStrId);
     GuiStrings strings;
-    MachGuiText* pText = new MachGuiText(pSettingsList_, width, labelStr.asString());
-    pText->setTextOffset(Gui::Coord(1, 1));
+    MachGuiText* pText = new MachGuiText(pSettingsList_, width * Gui::uiScaleFactor(), labelStr.asString());
+    pText->setTextOffset(Gui::Coord(1, 1) * Gui::uiScaleFactor());
 
     while (numStrs)
     {
@@ -555,7 +572,12 @@ void MachGuiCtxSettings::addSetting(MachGuiDropDownListBoxCreator*& pCreator, ui
         strings.push_back(listBoxStr.asString());
     }
 
-    pCreator = new MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true);
+    pCreator = new MachGuiDropDownListBoxCreator(
+        pSettingsList_,
+        pStartupScreens_,
+        width * Gui::uiScaleFactor(),
+        strings,
+        true);
 
     va_end(marker); // Reset variable arguments.
 }

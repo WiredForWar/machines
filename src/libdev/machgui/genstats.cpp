@@ -14,21 +14,20 @@
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 
-#define GS_BOX_WIDTH 77
-#define GS_INDENT 6
+constexpr int GS_BOX_WIDTH = 77;
 
 MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     GuiDisplayable* pParent,
     Gui::Coord topLeft,
     uint titleString,
     MachPhys::Race race)
-    : GuiDisplayable(pParent, Gui::Boundary(topLeft, 77, 77))
-    , statDisplay_(pParent, Gui::Coord(topLeft.x() + 1, topLeft.y() + 35), race)
+    : GuiDisplayable(pParent, Gui::Boundary(topLeft, Gui::Size(GS_BOX_WIDTH, 77) * MachGui::menuScaleFactor()))
+    , statDisplay_(pParent, topLeft + Gui::Coord(1, 35) * MachGui::menuScaleFactor(), race)
 {
     // Create title text
     new MachGuiMenuText(
         pParent,
-        Gui::Box(topLeft, 77, 35),
+        Gui::Box(topLeft, Gui::Size(GS_BOX_WIDTH, 35) * MachGui::menuScaleFactor()),
         titleString,
         MachGui::Menu::smallFontLight(),
         Gui::AlignCenter);
@@ -42,15 +41,18 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     uint titleString,
     MachPhys::Race race,
     const string& player)
-    : GuiDisplayable(pParent, Gui::Boundary(topLeft, 77, 77))
-    , statDisplay_(pParent, Gui::Coord(topLeft.x() + 1, topLeft.y() + 35), race)
+    : GuiDisplayable(pParent, Gui::Boundary(topLeft, Gui::Size(GS_BOX_WIDTH, 77) * MachGui::menuScaleFactor()))
+    , statDisplay_(pParent, topLeft + Gui::Coord(1, 35) * MachGui::menuScaleFactor(), race)
 {
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
 
     // Create title text
     new MachGuiMenuText(
         pParent,
-        Gui::Box(topLeft, 77, 33 - font.charHeight() - 2),
+        Gui::Box(
+            topLeft,
+            GS_BOX_WIDTH * MachGui::menuScaleFactor(),
+            33 * MachGui::menuScaleFactor() - font.charHeight() - 2 * MachGui::menuScaleFactor()),
         titleString,
         MachGui::Menu::smallFontLight(),
         Gui::AlignCenter);
@@ -59,7 +61,12 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     // Create player name text
     new MachGuiMenuText(
         pParent,
-        Gui::Box(Gui::Coord(topLeft.x(), topLeft.y() + 33 - font.charHeight() - 2), 77, font.charHeight() + 2),
+        Gui::Box(
+            Gui::Coord(
+                topLeft.x(),
+                topLeft.y() + 33 * MachGui::menuScaleFactor() - font.charHeight() - 2 * MachGui::menuScaleFactor()),
+            GS_BOX_WIDTH * MachGui::menuScaleFactor(),
+            font.charHeight() + 2 * MachGui::menuScaleFactor()),
         newPlayer,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignCenter);
@@ -93,14 +100,14 @@ void MachGuiGeneralStatistics::doDisplay()
     const Gui::Boundary& boundary = absoluteBoundary();
 
     // Draw bounding box
-    GuiPainter::instance().hollowRectangle(boundary, MachGui::DROPDOWNLIGHTGREEN(), 1);
+    GuiPainter::instance().hollowRectangle(boundary, MachGui::DROPDOWNLIGHTGREEN(), 1 * MachGui::menuScaleFactor());
 
     // Line across box
     GuiPainter::instance().line(
-        Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34),
-        Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34),
+        Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
+        Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
         MachGui::DROPDOWNLIGHTGREEN(),
-        1);
+        1 * MachGui::menuScaleFactor());
 }
 
 void MachGuiGeneralStatistics::CLASS_INVARIANT
@@ -111,10 +118,12 @@ void MachGuiGeneralStatistics::CLASS_INVARIANT
 // static
 string MachGuiGeneralStatistics::truncate(const string& name)
 {
+    constexpr int GS_INDENT = 6;
+
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
     string truncatedName = name;
 
-    const uint maxWidth = GS_BOX_WIDTH - (GS_INDENT * 2) - 10;
+    const uint maxWidth = (GS_BOX_WIDTH - (GS_INDENT * 2) - 10) * MachGui::menuScaleFactor();
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();
 
     if (font.textWidth(name) > maxWidth)

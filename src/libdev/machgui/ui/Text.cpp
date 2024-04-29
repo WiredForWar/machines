@@ -9,6 +9,7 @@
 
 #include "gui/font.hpp"
 #include "gui/root.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 
 MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const std::string& str)
@@ -43,5 +44,5 @@ void MachGuiText::doDisplay()
 // static
 size_t MachGuiText::reqHeight()
 {
-    return GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).charHeight() + 1;
+    return GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).charHeight() + 1 * MachGui::menuScaleFactor();
 }

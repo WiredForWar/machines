@@ -341,25 +341,25 @@ void MachGuiCtxBriefing::displayBriefingImage()
 
     if (briefPicture.existsAsFile())
     {
+        const Gui::Coord animationCoord = Gui::Coord(355, 56) * MachGui::menuScaleFactor();
         if (briefPicture.extension() == "smk")
         {
             // File is smacker file
-            // Construct a smacker player
-            //          HWND targetWindow = RenDevice::current()->display()->window();
-
-            //         AniSmacker* pSmackerAnimation = new AniSmacker( briefPicture, targetWindow, 355 +
-            //         pStartupScreens_->xMenuOffset(), 56 + pStartupScreens_->yMenuOffset() );
-            // AniSmacker* pSmackerAnimation = new AniSmacker( briefPicture, 355 + pStartupScreens_->xMenuOffset(), 56
-            // + pStartupScreens_->yMenuOffset() );
             const auto& topLeft = getBackdropTopLeft();
-            AniSmacker* pSmackerAnimation
-                = new AniSmackerRegular(briefPicture, 355 + topLeft.second, 56 + topLeft.first);
+            AniSmacker* pSmackerAnimation = new AniSmackerRegular(
+                briefPicture,
+                animationCoord.x() + topLeft.second,
+                animationCoord.y() + topLeft.first);
+            pSmackerAnimation->setScaleFactor(MachGui::menuScaleFactor());
             pStartupScreens_->addSmackerAnimation(pSmackerAnimation);
         }
         else if (briefPicture.extension() == "bmp")
         {
             // File is a bitmap
-            pBriefImage_ = new GuiImage(pStartupScreens_, Gui::Coord(355, 56), Gui::bitmap(briefPicture));
+            pBriefImage_ = new GuiImage(
+                pStartupScreens_,
+                animationCoord,
+                MachGui::getScaledImage(briefPath, MachGui::menuScaleFactor()));
         }
     }
 }

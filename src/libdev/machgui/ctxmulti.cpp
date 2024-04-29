@@ -74,19 +74,23 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(56, 407, 246, 449),
+        Gui::Box(56, 407, 246, 449) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_OK,
         MachGui::ButtonEvent::JOIN);
     MachGuiMenuButton* pExitBtn = new MachGuiMenuButton(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(311, 407, 502, 449),
+        Gui::Box(311, 407, 502, 449) * MachGui::menuScaleFactor(),
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
     pExitBtn->escapeControl(true);
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
-    pSingleLineEditBox_
-        = new MachGuiSingleLineEditBox(pStartupScreens, Gui::Box(106, 34, 444, 34 + font.charHeight()), font);
+    pSingleLineEditBox_ = new MachGuiSingleLineEditBox(
+        pStartupScreens,
+        Gui::Box(
+            Gui::Coord(106, 34) * MachGui::menuScaleFactor(),
+            Gui::Size(338 * MachGui::menuScaleFactor(), font.charHeight())),
+        font);
     pSingleLineEditBox_->maxChars(MAX_PLAYERNAME_LEN);
 
     if (pStartupScreens_->startupData()->playerName() == "")
@@ -104,18 +108,26 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
 
     GuiResourceString connectionType(IDS_MENULB_CONNECTIONTYPE);
 
-    size_t startY = 123;
+    size_t startY = 123 * MachGui::menuScaleFactor();
+    int startX = 61 * MachGui::menuScaleFactor();
     new MachGuiMenuText(
         pStartupScreens,
-        Gui::Box(61, startY, 61 + font.textWidth(connectionType.asString()), startY + font.charHeight() + 2),
+        Gui::Box(
+            Gui::Coord(startX, startY),
+            Gui::Size(font.textWidth(connectionType.asString()), font.charHeight() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_CONNECTIONTYPE,
         MachGui::Menu::largeFontLight());
-    startY += font.charHeight() + 3;
+    startY += font.charHeight() + 3 * MachGui::menuScaleFactor();
+    int listBoxWidth = 413 * MachGui::menuScaleFactor();
     MachGuiSingleSelectionListBox* pListBox = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,
-        Gui::Box(61, startY, 474, 287),
-        1000,
+        Gui::Box(
+            startX,
+            startY,
+            startX + listBoxWidth,
+            287 * MachGui::menuScaleFactor()),
+        1000 * MachGui::menuScaleFactor(),
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
 
@@ -126,7 +138,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     for (const NetNetwork::ProtocolSpec& protocol : availableProtocols)
     {
         MachGuiProtocolListBoxItem* pItem
-            = new MachGuiProtocolListBoxItem(pStartupScreens, pListBox, 413, protocol.first);
+            = new MachGuiProtocolListBoxItem(pStartupScreens, pListBox, listBoxWidth, protocol.first);
         if (pItem->isSelectedProtocol())
             pSelectedItem = pItem;
     }

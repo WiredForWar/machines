@@ -5,14 +5,16 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include <stdlib.h>
 #include "machgui/statdisp.hpp"
-#include "system/pathname.hpp"
-#include "machphys/machphys.hpp"
-#include "gui/painter.hpp"
-#include "gui/font.hpp"
+
+#include "machgui/gui.hpp"
 #include "machgui/statbar.hpp"
 #include "machgui/ui/MenuText.hpp"
+
+#include "gui/font.hpp"
+#include "gui/painter.hpp"
+#include "machphys/machphys.hpp"
+#include "system/pathname.hpp"
 
 float MachGuiStatisticsDisplay::initialTime_ = 0;
 float MachGuiStatisticsDisplay::ratioComplete_ = 0;
@@ -22,14 +24,14 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
     GuiDisplayable* pParent,
     const Gui::Coord& topLeft,
     MachPhys::Race race)
-    : GuiDisplayable(pParent, Gui::Boundary(topLeft, 75, 42))
+    : GuiDisplayable(pParent, Gui::Boundary(topLeft, MexSize2d(75, 42) * MachGui::menuScaleFactor()))
     , topLeft_(topLeft)
     , redraw_(true)
 {
     SysPathName backgroundBmpFile("gui/menu/barback.bmp");
     ASSERT(backgroundBmpFile.insensitiveExistsAsFile(), backgroundBmpFile.c_str());
 
-    backgroundBmp_ = Gui::bitmap(backgroundBmpFile);
+    backgroundBmp_ = Gui::requestScaledImage(backgroundBmpFile.pathname(), MachGui::menuScaleFactor());
 
     string bar1, bar2, bar3, bar4;
     switch (race)
@@ -53,10 +55,10 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
             bar1 = bar2 = bar3 = bar4 = "gui/menu/greenbar.bmp";
             break;
     }
-    uint x = 33;
-    uint y = 3; // relative to top left of stats display background
+    uint x = 33 * MachGui::menuScaleFactor();
+    uint y = 3 * MachGui::menuScaleFactor(); // relative to top left of stats display background
     statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y), bar1));
-    uint height = (*statBars_.begin())->height() + 2;
+    uint height = (*statBars_.begin())->height() + 2 * MachGui::menuScaleFactor();
     statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar2));
     statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar3));
     statBars_.push_back(new MachGuiStatisticsBar(this, Gui::Coord(x, y += height), bar4));
@@ -118,10 +120,15 @@ void MachGuiStatisticsDisplay::doDisplay()
     if (redraw())
     {
         // Draw statistics bars on background bitmap, ramping up bars until actual value is reached
-        GuiPainter::instance().blit(
-            backgroundBmp_,
-            Gui::Box(0, 0, backgroundBmp_.width(), backgroundBmp_.height()),
-            absoluteBoundary().minCorner());
+        if (backgroundBmp_.requestedSize().isNull())
+        {
+            GuiPainter::instance().blit(backgroundBmp_, absoluteBoundary().minCorner());
+        }
+        else
+        {
+            Gui::Size backgroundSize(backgroundBmp_.requestedSize().width, backgroundBmp_.requestedSize().height);
+            GuiPainter::instance().stretch(backgroundBmp_, Gui::Box(absoluteBoundary().minCorner(), backgroundSize));
+        }
 
         bool redraw = false;
         for (uint i = 0; i < statBars_.size(); ++i)
