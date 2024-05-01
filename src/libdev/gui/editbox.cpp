@@ -53,7 +53,7 @@ void GuiSingleLineEditBox::doDisplay()
 {
     drawBackground();
 
-    int offset = border_ ? 2 : 0;
+    int offset = border_ ? 2 * Gui::uiScaleFactor() : 0;
 
     Gui::Coord startText = Gui::Coord(
         absoluteBoundary().minCorner().x() + caretPos_ + offset,
@@ -71,12 +71,12 @@ void GuiSingleLineEditBox::doDisplay()
                 absoluteBoundary().minCorner().y() + offset),
             Gui::Coord(absoluteBoundary().minCorner().x() + caretPos_ + offset, absoluteBoundary().maxCorner().y()),
             caretColour_,
-            1);
+            1 * Gui::uiScaleFactor());
     }
 
     if (border_)
     {
-        GuiPainter::instance().hollowRectangle(absoluteBoundary(), borderColour_, 1);
+        GuiPainter::instance().hollowRectangle(absoluteBoundary(), borderColour_, 1 * Gui::uiScaleFactor());
     }
 }
 
