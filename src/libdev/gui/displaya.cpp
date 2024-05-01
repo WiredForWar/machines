@@ -702,6 +702,13 @@ unsigned GuiDisplayable::height() const
     return relativeBox_.height();
 }
 
+Gui::Size GuiDisplayable::size() const
+{
+    CB_GUIDISPLAYABLE_DEPIMPL();
+
+    return relativeBox_.size();
+}
+
 //////////////////////////////////////////////////////////////////////
 
 bool GuiDisplayable::contains(Gui::XCoord x, Gui::YCoord y) const

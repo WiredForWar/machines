@@ -124,10 +124,12 @@ public:
 
     unsigned width() const;
     unsigned height() const;
+    Gui::Size size() const;
 
     Gui::Coord relativeCoord() const;
     Gui::Coord absoluteCoord() const;
     Gui::Coord relativeCoord(const GuiDisplayable& ancestor) const;
+    const Gui::Boundary &relativeBoundary() const;
     Gui::Boundary relativeBoundary(const GuiDisplayable& ancestor) const;
 
     const Gui::Boundary& absoluteBoundary() const;
@@ -229,7 +231,6 @@ protected:
     Children& children();
     const Children& children() const;
 
-    const Gui::Boundary& relativeBoundary() const;
     // POST( translate( result ) == boundary() );
 
     Gui::Coord translate(Gui::XCoord x, Gui::YCoord) const;
