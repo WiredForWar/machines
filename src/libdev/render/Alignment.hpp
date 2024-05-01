@@ -18,6 +18,9 @@ namespace Align
         AlignBottom = 0x10,
         AlignVCenter = 0x20,
         AlignCenter = AlignHCenter | AlignVCenter,
+
+        AlignHorizontal_Mask = AlignLeft | AlignRight | AlignHCenter,
+        AlignVertical_Mask = AlignTop | AlignBottom | AlignVCenter,
     };
 
 } // namespace Align

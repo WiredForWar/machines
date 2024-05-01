@@ -58,13 +58,25 @@ void MachGuiMenuText::doDisplay()
     ASSERT_INFO(height());
     ASSERT(totalHeight <= height(), "height required to render text is greater than the height assigned");
 
-    size_t startY = absoluteBoundary().minCorner().y() + ((height() - totalHeight) / 2.0);
+    int startY = absoluteBoundary().minCorner().y();
+    Gui::Alignment verticalAlignment = alignment_ & Gui::AlignVertical_Mask;
+    if (!verticalAlignment) {
+        // Vertical center is the default behavior
+        verticalAlignment = Gui::AlignVCenter;
+    }
+
+    if (verticalAlignment & Gui::AlignTop)
+        ;
+    else if (verticalAlignment & Gui::AlignVCenter)
+        startY += (height() - totalHeight) / 2.0;
+    else if (verticalAlignment & Gui::AlignBottom)
+        startY += height() - totalHeight;
 
     for (std::size_t i = 0; i < strings_.size(); ++i)
     {
-        std::size_t textWidth = font.textWidth(strings_[i]);
+        int textWidth = font.textWidth(strings_[i]);
+        int textX = 0;
 
-        std::size_t textX = 0;
         if (alignment_ & Gui::AlignHCenter)
             textX = absoluteBoundary().minCorner().x() + ((width() - textWidth) / 2.0);
         else if (alignment_ & Gui::AlignRight)
@@ -72,7 +84,7 @@ void MachGuiMenuText::doDisplay()
         else if (alignment_ & Gui::AlignLeft)
             textX = absoluteBoundary().minCorner().x();
 
-        size_t textY = startY + (i * (textHeight + 1 * MachGui::menuScaleFactor()));
+        int textY = startY + (i * (textHeight + 1 * MachGui::menuScaleFactor()));
 
         font.drawText(strings_[i], Gui::Coord(textX, textY), 1000);
     }
