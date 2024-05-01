@@ -113,6 +113,14 @@ public:
     void yMax(MATHEX_SCALAR yNew);
     // PRE( yNew >= minCorner.y() )
 
+    MATHEX_SCALAR top() const { return vmin_.y(); }
+    MATHEX_SCALAR bottom() const { return vmax_.y(); }
+    MATHEX_SCALAR left() const { return vmin_.x(); }
+    MATHEX_SCALAR right() const { return vmax_.x(); }
+
+    MexPoint2d bottomLeft() const { return { left(), bottom() }; }
+    MexPoint2d bottomRight() const { return { right(), bottom() }; }
+
     // returns the point on the box boundary that is the nearest to the external reference point
     MexPoint2d nearestPointToExternalPoint(const MexPoint2d& externalPoint) const;
     // PRE( not (    externalPoint.x() > minCorner().x()
