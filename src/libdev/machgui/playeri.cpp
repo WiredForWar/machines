@@ -30,7 +30,7 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
         Gui::Box(Gui::Coord(0, 0), PNL_BOX_WIDTH, 35),
         title,
         fontName,
-        MachGuiMenuText::CENTRE_JUSTIFY);
+        Gui::AlignCenter);
 
     TEST_INVARIANT;
 }
@@ -50,7 +50,7 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
         Gui::Box(boundary.minCorner(), boundary.maxCorner().x() - boundary.minCorner().x(), 35),
         title,
         fontName,
-        MachGuiMenuText::CENTRE_JUSTIFY);
+        Gui::AlignCenter);
 
     TEST_INVARIANT;
 }
@@ -82,28 +82,28 @@ void MachGuiPlayerNameList::names(
         Gui::Box(Gui::Coord(PNL_INDENT, 38), font.textWidth(newPlayer1), spacing),
         newPlayer1,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + spacing), font.textWidth(newPlayer2), spacing),
         newPlayer2,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 2)), font.textWidth(newPlayer3), spacing),
         newPlayer3,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
         Gui::Box(Gui::Coord(PNL_INDENT, 38 + (spacing * 3)), font.textWidth(newPlayer4), spacing),
         newPlayer4,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 }
 
 // virtual

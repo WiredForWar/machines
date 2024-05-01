@@ -50,7 +50,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(HOTKEY_MIN_X, HOTKEY_MIN_Y, HOTKEY_MIN_X + font.textWidth(optionsHeading.asString()), headingMaxY),
         IDS_MENU_FIRSTPERSONCONTROL,
         MachGui::Menu::largeFontLight(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     // Create First Person Actions text below First Person Control heading
     //
@@ -65,7 +65,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(HOTKEY_MIN_X, headingMaxY, HOTKEY_KEY_X, fstPersonWindowMaxY),
         hotKey1stPersonActions,
         MachGui::Menu::smallFontLight(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     // Create First Person Keys text next to First Person Action text
     //
@@ -76,7 +76,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(HOTKEY_KEY_X, headingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, fstPersonWindowMaxY),
         hotKey1stPersonKeys,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     // Display General Controls heading underneath First Person Controls hot keys
     //
@@ -93,7 +93,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             genHeadingMaxY),
         IDS_MENU_GENERALCONTROL,
         MachGui::Menu::largeFontLight(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     // Calculate the number of lines of General hotkeys that can be displayed under
     // the First Person hotkeys
@@ -146,7 +146,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(HOTKEY_MIN_X, genHeadingMaxY, HOTKEY_KEY_X, generalWindowMaxY),
         headString,
         MachGui::Menu::smallFontLight(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     uint generalRemainderMaxY = HOTKEY_MIN_Y + (noRemainingLines * smallFontHeight);
 
@@ -161,7 +161,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(HOTKEY_2NDCOLUMN_X, HOTKEY_MIN_Y, HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH, generalRemainderMaxY),
         remainderString,
         MachGui::Menu::smallFontLight(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     string hotKeyGeneralKeys;
     readHotkeyData("gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines);
@@ -187,7 +187,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(HOTKEY_KEY_X, genHeadingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, generalWindowMaxY),
         headString,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     new MachGuiMenuText(
         pStartupScreens,
@@ -198,7 +198,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             generalRemainderMaxY),
         remainderString,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     // Add flick to bottom left of window
     SysPathName hotkeySmackerFile("flics/gui/hotkeys.smk");

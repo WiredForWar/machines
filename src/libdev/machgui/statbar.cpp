@@ -128,7 +128,7 @@ void MachGuiStatisticsBar::showStatistic()
             topLeft_.y() + font.charHeight()),
         newStatistic,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::RIGHT_JUSTIFY);
+        Gui::AlignRight);
 }
 
 // static

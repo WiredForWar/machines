@@ -154,8 +154,8 @@ protected:
             snprintf(buffer, sizeof(buffer), "%zu", numThisType_);
 
             // Render the text
-            Render::TextOptions options;
-            options.setAlignment(Render::AlignRight);
+            Gui::TextOptions options;
+            options.setAlignment(Gui::AlignRight);
             constexpr Gui::Colour shadowColor(74.0 / 256.0, 74.0 / 256.0, 82.0 / 256.0);
 
             options.setColor(Gui::WHITE());

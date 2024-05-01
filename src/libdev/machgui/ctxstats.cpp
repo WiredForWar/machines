@@ -102,7 +102,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(Gui::Coord(196, 41), font.textWidth(generalHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSGENERAL,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     GuiResourceString BARHeading(IDS_MENU_STSBAR);
 
@@ -111,7 +111,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(Gui::Coord(196, 132), font.textWidth(BARHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSBAR,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     GuiResourceString killsHeading(IDS_MENU_STSKILLS);
 
@@ -120,7 +120,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(Gui::Coord(196, 232), font.textWidth(killsHeading.asString()), font.charHeight() + 2),
         IDS_MENU_STSKILLS,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     GuiBmpFont largeFont = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
 
@@ -131,7 +131,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(Gui::Coord(53, 31), largeFont.textWidth(statsHeading.asString()), largeFont.charHeight()),
         IDS_MENU_STATISTICS,
         MachGui::Menu::largeFontLight(),
-        MachGuiMenuText::LEFT_JUSTIFY);
+        Gui::AlignLeft);
 
     // Get handle to score object for each race
     MachLogRaces::instance().removeNotDisplayedScores();

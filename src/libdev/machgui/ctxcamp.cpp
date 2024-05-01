@@ -8,6 +8,7 @@
 #include "machgui/ctxcamp.hpp"
 
 #include "base/diag.hpp"
+#include "gui/gui.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
@@ -469,7 +470,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             scenarioTextBox,
             scenarioStr.asString(),
             MachGui::Menu::smallFontLight(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box lastScenarioTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pScenarioText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
@@ -483,7 +484,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             lastScenarioTextBox,
             lastScenarioStr,
             MachGui::Menu::smallFontWhite(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box scoreTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 - topLeft.first),
@@ -497,7 +498,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             scoreTextBox,
             scoreStr.asString(),
             MachGui::Menu::smallFontLight(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box lastScoreTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pScoreText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
@@ -511,7 +512,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             lastScoreTextBox,
             lastScoreStr,
             MachGui::Menu::smallFontWhite(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box numScenariosPlayedStrBox(
             Gui::Coord(CURRENTSTATUS_MINX, pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
@@ -525,7 +526,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             numScenariosPlayedStrBox,
             numScenariosPlayedStr.asString(),
             MachGui::Menu::smallFontLight(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box numScenariosPlayedBox(
             Gui::Coord(
@@ -541,7 +542,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             numScenariosPlayedBox,
             numScenariosPlayed,
             MachGui::Menu::smallFontWhite(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box totalScoreStrBox(
             Gui::Coord(CURRENTSTATUS_MINX, pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
@@ -555,7 +556,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             totalScoreStrBox,
             totalScoreStr.asString(),
             MachGui::Menu::smallFontLight(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
 
         Gui::Box totalScoreBox(
             Gui::Coord(
@@ -571,7 +572,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             totalScoreBox,
             totalScore,
             MachGui::Menu::smallFontWhite(),
-            MachGuiMenuText::LEFT_JUSTIFY);
+            Gui::AlignLeft);
     }
 }
 

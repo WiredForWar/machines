@@ -8,6 +8,7 @@
 #include "MenuText.hpp"
 
 #include "gui/font.hpp"
+#include "gui/gui.hpp"
 #include "machgui/gui.hpp"
 
 MachGuiMenuText::MachGuiMenuText(
@@ -15,10 +16,10 @@ MachGuiMenuText::MachGuiMenuText(
     const Gui::Box& box,
     const ResolvedUiString& str,
     const SysPathName& fontPath,
-    Justification justification)
+    Gui::Alignment alignment)
     : GuiDisplayable(pParent, box)
     , fontPath_(fontPath)
-    , justification_(justification)
+    , alignment_(alignment)
 {
     strings_.reserve(128);
     chopUpText(str, width(), GuiBmpFont::getFont(fontPath_), &strings_);
@@ -64,20 +65,13 @@ void MachGuiMenuText::doDisplay()
         std::size_t textWidth = font.textWidth(strings_[i]);
 
         std::size_t textX = 0;
+        if (alignment_ & Gui::AlignHCenter)
+            textX = absoluteBoundary().minCorner().x() + ((width() - textWidth) / 2.0);
+        else if (alignment_ & Gui::AlignRight)
+            textX = absoluteBoundary().minCorner().x() + width() - textWidth;
+        else if (alignment_ & Gui::AlignLeft)
+            textX = absoluteBoundary().minCorner().x();
 
-        switch (justification_)
-        {
-            case CENTRE_JUSTIFY:
-                textX = absoluteBoundary().minCorner().x() + ((width() - textWidth) / 2.0);
-                break;
-            case RIGHT_JUSTIFY:
-                textX = absoluteBoundary().minCorner().x() + width() - textWidth;
-                break;
-            case LEFT_JUSTIFY:
-                textX = absoluteBoundary().minCorner().x();
-                break;
-                DEFAULT_ASSERT_BAD_CASE(justification_);
-        }
         size_t textY = startY + (i * (textHeight + 1 * MachGui::menuScaleFactor()));
 
         font.drawText(strings_[i], Gui::Coord(textX, textY), 1000);

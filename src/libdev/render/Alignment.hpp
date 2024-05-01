@@ -13,6 +13,11 @@ namespace Align
         AlignNone,
         AlignLeft = 0x01,
         AlignRight = 0x02,
+        AlignHCenter = 0x04,
+        AlignTop = 0x08,
+        AlignBottom = 0x10,
+        AlignVCenter = 0x20,
+        AlignCenter = AlignHCenter | AlignVCenter,
     };
 
 } // namespace Align

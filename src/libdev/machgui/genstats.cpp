@@ -31,7 +31,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         Gui::Box(topLeft, 77, 35),
         titleString,
         MachGui::Menu::smallFontLight(),
-        MachGuiMenuText::CENTRE_JUSTIFY);
+        Gui::AlignCenter);
 
     TEST_INVARIANT;
 }
@@ -53,7 +53,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         Gui::Box(topLeft, 77, 33 - font.charHeight() - 2),
         titleString,
         MachGui::Menu::smallFontLight(),
-        MachGuiMenuText::CENTRE_JUSTIFY);
+        Gui::AlignCenter);
 
     string newPlayer = truncate(player);
     // Create player name text
@@ -62,7 +62,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         Gui::Box(Gui::Coord(topLeft.x(), topLeft.y() + 33 - font.charHeight() - 2), 77, font.charHeight() + 2),
         newPlayer,
         MachGui::Menu::smallFontWhite(),
-        MachGuiMenuText::CENTRE_JUSTIFY);
+        Gui::AlignCenter);
 
     TEST_INVARIANT;
 }

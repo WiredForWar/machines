@@ -12,6 +12,7 @@
 #include "mathex/point2d.hpp"
 #include "mathex/vec2.hpp"
 
+#include "render/Alignment.hpp"
 #include "render/colour.hpp"
 #include "render/surface.hpp"
 
@@ -72,6 +73,8 @@ using Vec = MexVec2;
 using Boundary = MexAlignedBox2d;
 using Box = MexAlignedBox2d;
 using Size = MexSize2d;
+using namespace Render::Align;
+using Alignment = Render::Alignment;
 using TextOptions = Render::TextOptions;
 
 // Deprecated

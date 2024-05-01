@@ -163,38 +163,38 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(musicVolTxt.topLeft, musicVolTxt.bottomRight),
         musicVolTxt.idsStringId,
         MachGui::getScaledImagePath(musicVolTxt.font),
-        MachGuiMenuText::RIGHT_JUSTIFY);
+        Gui::AlignRight);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(soundVolTxt.topLeft, soundVolTxt.bottomRight),
         soundVolTxt.idsStringId,
         MachGui::getScaledImagePath(soundVolTxt.font),
-        MachGuiMenuText::RIGHT_JUSTIFY);
+        Gui::AlignRight);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(screenSizeTxt.topLeft, screenSizeTxt.bottomRight),
         screenSizeTxt.idsStringId,
         MachGui::getScaledImagePath(screenSizeTxt.font),
-        MachGuiMenuText::RIGHT_JUSTIFY);
+        Gui::AlignRight);
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(directDrawTxt.topLeft, directDrawTxt.bottomRight),
         directDrawTxt.idsStringId,
         MachGui::getScaledImagePath(directDrawTxt.font),
-        MachGuiMenuText::RIGHT_JUSTIFY);
+        Gui::AlignRight);
 
     //  new MachGuiMenuText( pStartupScreens, Gui::Box( direct3DTxt.topLeft, direct3DTxt.bottomRight ),
-    //                         direct3DTxt.idsStringId, direct3DTxt.font, MachGuiMenuText::RIGHT_JUSTIFY );
+    //                         direct3DTxt.idsStringId, direct3DTxt.font, Gui::AlignRight );
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(scaleFactorTxt.topLeft, scaleFactorTxt.bottomRight),
         scaleFactorTxt.idsStringId,
         MachGui::getScaledImagePath(scaleFactorTxt.font),
-        MachGuiMenuText::RIGHT_JUSTIFY);
+        Gui::AlignRight);
 
     // Create check boxes
     pSound3d_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, sound3dCB.topLeft, sound3dCB.stringId);
@@ -335,7 +335,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             Gui::Box(gammaCorrectionTxt.topLeft, gammaCorrectionTxt.bottomRight),
             gammaCorrectionTxt.idsStringId,
             MachGui::getScaledImagePath(gammaCorrectionTxt.font),
-            MachGuiMenuText::RIGHT_JUSTIFY);
+            Gui::AlignRight);
 
         pGammaCorrection_ = new MachGuiSlideBar(
             pStartupScreens,

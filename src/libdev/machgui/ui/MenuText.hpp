@@ -17,19 +17,12 @@ class MachGuiMenuText : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    enum Justification
-    {
-        LEFT_JUSTIFY,
-        RIGHT_JUSTIFY,
-        CENTRE_JUSTIFY
-    };
-
     MachGuiMenuText(
         GuiDisplayable* pParent,
         const Gui::Box& box,
         const ResolvedUiString& str,
         const SysPathName& fontPath,
-        Justification = CENTRE_JUSTIFY);
+        Gui::Alignment alignment = Gui::AlignCenter);
     ~MachGuiMenuText() override;
 
     void CLASS_INVARIANT;
@@ -47,5 +40,5 @@ private:
 
     SysPathName fontPath_;
     strings strings_;
-    Justification justification_;
+    Gui::Alignment alignment_{};
 };
