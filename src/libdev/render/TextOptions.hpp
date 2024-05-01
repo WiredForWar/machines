@@ -1,17 +1,11 @@
 #ifndef RENDER_TEXT_OPTIONS_HPP
 #define RENDER_TEXT_OPTIONS_HPP
 
+#include "Alignment.hpp"
 #include "colour.hpp"
 
 namespace Render
 {
-
-enum class Alignment
-{
-    Invalid,
-    Left,
-    Right,
-};
 
 // Text render options
 class TextOptions

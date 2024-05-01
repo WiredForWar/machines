@@ -1,5 +1,6 @@
 
 set(RENDER_SOURCES
+    Alignment.hpp
     Font.cpp
     Font.hpp
     FontMetrics.cpp
