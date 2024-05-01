@@ -131,3 +131,29 @@ void SDLApp::activateGui()
     if (pStartupScreens_)
         pStartupScreens_->activate();
 }
+
+void SDLApp::initDefaultFontSize()
+{
+    int size = 10;
+
+    static bool first = true;
+    if (first)
+    {
+        first = false;
+
+        const char* envVar = getenv("CB_RENDER_FONT");
+        if (envVar)
+        {
+            char* copy = strdup(envVar);
+            strtok(copy, ":");
+            const char* sizeStr = strtok(nullptr, ":");
+
+            if (sizeStr)
+                size = atoi(sizeStr);
+
+            free(copy);
+        }
+    }
+
+    RenSurface::setDefaultFontSize(size);
+}

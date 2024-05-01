@@ -367,6 +367,8 @@ bool SDLApp::clientStartup()
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
+    initDefaultFontSize();
+
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     {
         const bool grabEnabled = SysRegistry::instance().queryBooleanValue("Options\\Grab Cursor", "on", true);

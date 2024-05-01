@@ -139,8 +139,9 @@ public:
 
     // Returns the actual size used, in case an exact match doesn't exist.
     size_t useFontHeight(size_t pixelHieght);
-    size_t currentFontHeight() const; // defaults to 16.
-    static size_t getDefaultFontHeight();
+    size_t currentFontHeight() const;
+    static int getDefaultFontHeight();
+    static void setDefaultFontSize(int size);
     void drawText(int x, int y, const std::string& text, const Render::TextOptions& options);
     void textDimensions(const std::string& text, Ren::Rect* dimensions) const;
 

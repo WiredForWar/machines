@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 
+static int sDefaultFontSize{10};
+
 //--------------------------------Creation & destruction--------------------------------
 // static
 RenSurface RenSurface::createAnonymousSurface(size_t w, size_t h, const RenSurface& surf)
@@ -942,30 +944,14 @@ size_t RenSurface::currentFontHeight() const
     return internals()->currentFontHeight();
 }
 
-size_t RenSurface::getDefaultFontHeight()
+int RenSurface::getDefaultFontHeight()
 {
-    static bool first = true;
-    static size_t size = 10;
+    return sDefaultFontSize;
+}
 
-    if (first)
-    {
-        first = false;
-
-        const char* envVar = getenv("CB_RENDER_FONT");
-        if (envVar)
-        {
-            char* copy = strdup(envVar);
-            strtok(copy, ":");
-            const char* sizeStr = strtok(nullptr, ":");
-
-            if (sizeStr)
-                size = atoi(sizeStr);
-
-            free(copy);
-        }
-    }
-
-    return size;
+void RenSurface::setDefaultFontSize(int size)
+{
+    sDefaultFontSize = size;
 }
 
 void RenSurface::drawText(int x, int y, const std::string& text, const Render::TextOptions& options)

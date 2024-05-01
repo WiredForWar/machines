@@ -68,6 +68,7 @@ private:
     void checkFinishApp();
     void activateGui();
 
+    void initDefaultFontSize();
     // Sound
     void initSound();
     void initMusic();
