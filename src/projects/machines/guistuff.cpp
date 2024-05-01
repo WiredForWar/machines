@@ -132,9 +132,9 @@ void SDLApp::activateGui()
         pStartupScreens_->activate();
 }
 
-void SDLApp::initDefaultFontSize()
+void SDLApp::initDefaultFontSize(float scaleFactor)
 {
-    int size = 10;
+    int size = 10 * scaleFactor;
 
     static bool first = true;
     if (first)
