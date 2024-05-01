@@ -1,9 +1,10 @@
-#include <iostream>
-#include <stdio.h>
 #include "stdlib/string.hpp"
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
 #include "system/pathname.hpp"
+
+#include <cassert>
+#include <stdio.h>
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -207,5 +208,17 @@ void Gui::writeScreenAsFile(const char* startFilename)
 }
 
 /* //////////////////////////////////////////////////////////////// */
+static double s_uiScaleFactor = 0;
+
+MATHEX_SCALAR Gui::uiScaleFactor()
+{
+    assert(s_uiScaleFactor > 0);
+    return s_uiScaleFactor;
+}
+
+void Gui::setUiScaleFactor(MATHEX_SCALAR scale)
+{
+    s_uiScaleFactor = scale;
+}
 
 /* End **************************************************************/

@@ -96,6 +96,9 @@ enum class ScrollState
     SCROLL_DOWN
 };
 
+MATHEX_SCALAR uiScaleFactor();
+void setUiScaleFactor(MATHEX_SCALAR scale);
+
 ///////////////////////////////
 
 Gui::Box bitmapDimensions(const SysPathName& path);

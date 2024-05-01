@@ -599,24 +599,19 @@ const string& MachGui::unavailableText()
     return text;
 }
 
-// static
-static double s_uiScaleFactor = 0;
-
 MATHEX_SCALAR MachGui::uiScaleFactor()
 {
-    assert(s_uiScaleFactor > 0);
-    return s_uiScaleFactor;
+    return Gui::uiScaleFactor();
 }
 
 MATHEX_SCALAR MachGui::menuScaleFactor()
 {
-    return uiScaleFactor();
+    return Gui::uiScaleFactor();
 }
 
 void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
 {
-    s_uiScaleFactor = scale;
-
+    Gui::setUiScaleFactor(scale);
     Menu::updateFonts();
 }
 
