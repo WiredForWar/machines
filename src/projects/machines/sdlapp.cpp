@@ -465,7 +465,11 @@ bool SDLApp::clientStartup()
     }
     // Draw copyright note, store it in a way preventing from modification
     {
-        Gui::Coord notePosition(xOffset + 6, yOffset + 6);
+        Gui::Coord waitImageContentOffset(32, 129);
+        const int noteBottomMargin{14};
+        Gui::Coord notePosition(
+            xOffset + waitImageContentOffset.x(),
+            yOffset + waitImageContentOffset.y() - noteBottomMargin - RenSurface::getDefaultFontHeight());
         const std::string note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.drawText(notePosition.x(), notePosition.y(), note, RenColour::yellow());
