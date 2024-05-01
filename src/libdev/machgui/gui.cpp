@@ -509,7 +509,7 @@ GuiBitmap& MachGui::slideBtnBmp()
     {
         ASSERT_FILE_EXISTS("gui/menu/slidebtn.bmp");
 
-        pBmp = Gui::bitmap("gui/menu/slidebtn.bmp");
+        pBmp = getScaledImage("gui/menu/slidebtn.bmp");
         pBmp.enableColourKeying();
     }
 
@@ -525,7 +525,7 @@ GuiBitmap& MachGui::controlPanelBmp()
     {
         ASSERT_FILE_EXISTS("gui/misc/backtile.bmp");
 
-        pBmp = MachGui::getScaledImage("gui/misc/backtile");
+        pBmp = getScaledImage("gui/misc/backtile");
     }
 
     return pBmp;
@@ -540,7 +540,7 @@ GuiBitmap& MachGui::inTransitBmp()
     {
         ASSERT_FILE_EXISTS("gui/misc/transit.bmp");
 
-        pBmp = Gui::bitmap("gui/misc/transit.bmp");
+        pBmp = getScaledImage("gui/misc/transit.bmp");
         pBmp.enableColourKeying();
     }
 
