@@ -465,12 +465,13 @@ bool SDLApp::clientStartup()
     }
     // Draw copyright note, store it in a way preventing from modification
     {
+        Gui::Coord notePosition(xOffset + 6, yOffset + 6);
         const std::string note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        frontBuffer.drawText(xOffset + 6, yOffset + 6, note, RenColour::yellow());
+        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.drawText(xOffset + 6, yOffset + 6, note, RenColour::yellow());
+        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, RenColour::yellow());
     }
 
     ProgressIndicator progressIndicator(xOffset, yOffset);
