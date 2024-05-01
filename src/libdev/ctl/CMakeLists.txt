@@ -1,5 +1,6 @@
 
 file(GLOB CTL_SOURCES
+    TFlag.hpp
     algorith.hpp
     bitvec.cpp
     bitvec.hpp

@@ -155,7 +155,7 @@ protected:
 
             // Render the text
             Render::TextOptions options;
-            options.setAlignment(Render::Alignment::Right);
+            options.setAlignment(Render::AlignRight);
             constexpr Gui::Colour shadowColor(74.0 / 256.0, 74.0 / 256.0, 82.0 / 256.0);
 
             options.setColor(Gui::WHITE());

@@ -375,7 +375,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
         const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
         const Render::FontImpl::CharData* charData = nullptr;
 
-        if (options.alignment() == Render::Alignment::Right)
+        if (options.alignment() & Render::AlignRight)
         {
             int textWidth = 0;
             int lineTextWidth = 0;

@@ -12,7 +12,7 @@ class TextOptions
 {
 public:
     TextOptions() = default;
-    TextOptions(const RenColour& color, Alignment alignment = Alignment::Left)
+    TextOptions(const RenColour& color, Alignment alignment = AlignLeft)
         : alignment_(alignment)
         , color_(color)
     {
@@ -37,7 +37,7 @@ public:
     }
 
 private:
-    Alignment alignment_ = Alignment::Invalid;
+    Alignment alignment_{};
     int shadowX_ = 0;
     int shadowY_ = 0;
 
