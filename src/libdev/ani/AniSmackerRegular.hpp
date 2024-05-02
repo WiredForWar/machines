@@ -11,7 +11,7 @@ using smk = struct smk_t*;
 class AniSmackerRegular : public AniSmacker
 {
 public:
-    AniSmackerRegular(const SysPathName& path, int xCoordTo, int yCoordTo, bool fast = false);
+    AniSmackerRegular(const SysPathName& path, int xCoordTo = 0, int yCoordTo = 0, bool fast = false);
     ~AniSmackerRegular() override;
 
     AniSmackerRegular(const AniSmackerRegular& other) = delete;
@@ -20,7 +20,10 @@ public:
 
     bool open() override;
 
+    void setPosition(int x, int y);
+    void setFast(bool value);
     void setScaleFactor(float scaleFactor) override;
+
     bool isFinished() const override;
 
     unsigned int height() const override;

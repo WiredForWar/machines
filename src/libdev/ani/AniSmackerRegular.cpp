@@ -105,6 +105,17 @@ bool AniSmackerRegular::isFinished() const
     return finished;
 }
 
+void AniSmackerRegular::setPosition(int x, int y)
+{
+    xCoordTo_ = x;
+    yCoordTo_ = y;
+}
+
+void AniSmackerRegular::setFast(bool value)
+{
+    fast_ = value;
+}
+
 unsigned int AniSmackerRegular::height() const
 {
     return height_;

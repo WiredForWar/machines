@@ -2055,20 +2055,31 @@ void MachGuiStartupScreens::startPlayingAnimation(
         //     yMenuOffset(), fast );
         // pPlayingSmacker_ = new AniSmacker( filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast );
 
-#if not USE_SWSCALE
-    isCutscene = false;
-#endif
     if (! isCutscene)
     {
         pPlayingSmacker_ = new AniSmackerRegular(filename, pos.x() + xMenuOffset(), pos.y() + yMenuOffset(), fast);
     }
     else
     {
-#if USE_SWSCALE
         const auto& displayMode = RenDevice::current()->display()->currentMode();
+#if USE_SWSCALE
         // If xCoordTo is 0, then for some bizarre reason there will be a large black bar on the left. 3 makes it a
         // skinny line on both sides.
         pPlayingSmacker_ = new AniSmackerCutscene(filename, 3, 0, displayMode.width(), displayMode.height());
+#else
+        AniSmackerRegular* pVideo = new AniSmackerRegular(filename);
+        pVideo->setFast(fast);
+        pPlayingSmacker_ = pVideo;
+        if (pPlayingSmacker_->open())
+        {
+            float horizontalRatio = displayMode.width() * 1.0 / pVideo->width();
+            float verticalRatio = displayMode.height() * 1.0 / pVideo->height();
+            int resultRatio = std::min(horizontalRatio, verticalRatio);
+            int posX = (displayMode.width() - pVideo->width() * resultRatio) / 2;
+            int posY = (displayMode.height() - pVideo->height() * resultRatio) / 2;
+            pVideo->setPosition(posX, posY);
+            pPlayingSmacker_->setScaleFactor(resultRatio);
+        }
 #endif
     }
 
