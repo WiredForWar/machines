@@ -602,9 +602,12 @@ MATHEX_SCALAR MachGui::menuScaleFactor()
     return Gui::uiScaleFactor();
 }
 
+static char sScaledTextureSuffix[] = "_2x.png";
+
 void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
 {
     Gui::setUiScaleFactor(scale);
+    sScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
     Menu::updateFonts();
 }
 
@@ -621,15 +624,14 @@ std::string MachGui::getScaledImagePath(std::string path)
         return path + ".bmp";
     }
 
-    // TODO: Fix later :eyes:
     if (hasBmpExtention)
     {
         const auto from = path.end() - 4;
-        path.replace(from, path.end(), "_2x.png");
+        path.replace(from, path.end(), sScaledTextureSuffix);
         return path;
     }
 
-    return path + "_2x.png";
+    return path + sScaledTextureSuffix;
 }
 
 GuiBitmap MachGui::getScaledImage(std::string path)
