@@ -2677,7 +2677,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId)
 
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK);
 
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", Gui::uiScaleFactor());
 }
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId, const GuiStrings& strs)
@@ -2698,7 +2698,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, const GuiStrings& st
 
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK, strs);
 
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", Gui::uiScaleFactor());
 }
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxResponder* pResponder)
@@ -2734,7 +2734,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxRes
     }
 
     // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp");
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp", Gui::uiScaleFactor());
 
     pMsgBoxResponder_ = pResponder;
 }
@@ -2763,7 +2763,7 @@ void MachGuiStartupScreens::displayMsgBox(
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOKCANCEL, strs);
 
     // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp");
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp", Gui::uiScaleFactor());
 
     pMsgBoxResponder_ = pResponder;
 }
@@ -2789,7 +2789,7 @@ void MachGuiStartupScreens::displayOKMsgBox(uint stringResId, MachGuiMessageBoxR
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK);
 
     // This overload of displayMsgBox is the single-button one. Set msgbox to the single-button one
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp");
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", Gui::uiScaleFactor());
 
     pMsgBoxResponder_ = pResponder;
 }
