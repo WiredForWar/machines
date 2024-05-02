@@ -112,10 +112,9 @@ static void newHandler()
 class ProgressIndicator : public IProgressReporter
 {
 public:
-    ProgressIndicator(int xOffset, int yOffset)
+    ProgressIndicator(Gui::Box area)
         : upperLimit_(1.0)
-        , xOffset_(xOffset)
-        , yOffset_(yOffset)
+        , area_(area)
     {
     }
 
@@ -123,12 +122,10 @@ public:
     {
         if (done == lastDone_)
             return 0;
-        const double minx = 98 + xOffset_;
-        const double maxx = 538 + xOffset_;
-        const double miny = 362 + yOffset_;
-        const double maxy = 366 + yOffset_;
-        const double width = maxx - minx + 1;
-        const double height = maxy - miny + 1;
+        const double minx = area_.left();
+        const double miny = area_.top();
+        const double width = area_.width();
+        const double height = area_.height();
         const double limitRange = upperLimit_ - lowerLimit_;
         const double percentComplete = (((double)done / (double)maxDone) * limitRange) + lowerLimit_;
         const double displayWidth = std::min((percentComplete * width) + 5, width);
@@ -172,8 +169,7 @@ private:
     double lowerLimit_ = 0;
     double upperLimit_ = 0;
     size_t lastDone_;
-    int xOffset_ = 0;
-    int yOffset_ = 0;
+    Gui::Box area_;
 };
 
 void SDLApp::initMusic()
@@ -479,7 +475,9 @@ bool SDLApp::clientStartup()
         frontBuffer.drawText(notePosition.x(), notePosition.y(), note, RenColour::yellow());
     }
 
-    ProgressIndicator progressIndicator(xOffset, yOffset);
+    Gui::Coord indicatorPos(98 + xOffset, 362 + yOffset);
+    Gui::Size indicatorSize(440 + 1, 4 + 1);
+    ProgressIndicator progressIndicator(Gui::Box(indicatorPos, indicatorSize));
     progressIndicator.setLimits(0.00, 0.18);
 
     // moved higher due to call sequence problems in lobbying when very slow machines host with very fast machines
