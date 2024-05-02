@@ -41,9 +41,8 @@
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
 
-#include "SDL_version.h"
-
 #include "spdlog/spdlog.h"
+
 #include <cstdio>
 
 void debugTiming(const char* text, bool startTiming)
@@ -486,7 +485,6 @@ bool SDLApp::clientStartup()
     StartedFromLobby startedType = NORMAL_START;
     if (lobbyFlag)
         startedType = LOBBY_START;
-    spdlog::info("Initializing GUI...");
     initialiseGui(startedType, &progressIndicator);
 
     progressIndicator.report(100, 100);

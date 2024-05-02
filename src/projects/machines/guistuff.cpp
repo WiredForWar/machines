@@ -17,7 +17,8 @@
 #include "device/timer.hpp"
 #include "machines/scrndump.hpp"
 #include "sim/manager.hpp"
-#include "system/winapi.hpp"
+
+#include "spdlog/spdlog.h"
 
 void debugTiming(const char*, bool);
 
@@ -29,8 +30,9 @@ void SDLApp::cleanUpGui()
 
 void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter* pReporter)
 {
-    HAL_STREAM("SDLApp::initialiseGui\n");
+    spdlog::info("Initializing GUI...");
     RenSurface backBuf = manager_->pDevice()->backSurface();
+    spdlog::info("SWScale enabled: {}", USE_SWSCALE != 0);
 
     HAL_STREAM("SDLApp::initialiseGui set backbuffer\n");
     Gui::backBuffer(backBuf);
