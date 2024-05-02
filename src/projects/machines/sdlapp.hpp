@@ -5,6 +5,7 @@
 #include "afx/AfxSdlApp.hpp"
 
 class IProgressReporter;
+class RenDevice;
 class RenDisplay;
 class RenTextureSet;
 class W4dEntity;
@@ -61,6 +62,7 @@ private:
 
     // Gui
     void cleanUpGui();
+    void initializeGuiDevice(RenDevice &device);
     void initialiseGui(StartedFromLobby, IProgressReporter*);
     void updateGui();
     void displayGui();

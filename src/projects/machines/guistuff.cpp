@@ -28,14 +28,17 @@ void SDLApp::cleanUpGui()
     pStartupScreens_ = nullptr;
 }
 
+void SDLApp::initializeGuiDevice(RenDevice &device)
+{
+    spdlog::info("Initializing GUI rendering...");
+    Gui::backBuffer(device.backSurface());
+}
+
 void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter* pReporter)
 {
     spdlog::info("Initializing GUI...");
     RenSurface backBuf = manager_->pDevice()->backSurface();
     spdlog::info("SWScale enabled: {}", USE_SWSCALE != 0);
-
-    HAL_STREAM("SDLApp::initialiseGui set backbuffer\n");
-    Gui::backBuffer(backBuf);
 
     HAL_STREAM("SDLApp::initialiseGui new MachGuiStartupScreens\n");
     pStartupScreens_ = new MachGuiStartupScreens(manager_, pRoot_, pReporter);

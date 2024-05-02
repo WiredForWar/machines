@@ -379,6 +379,8 @@ bool SDLApp::clientStartup()
     if (!pDevice->initialize())
         return false;
 
+    initializeGuiDevice(*pDevice);
+
     spdlog::info("Initializing SceneManager...");
     manager_ = new W4dSceneManager(std::move(pDevice), root);
     manager_->pDevice()->debugTextCoords(204, 0);
