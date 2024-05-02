@@ -94,9 +94,7 @@ private:
 class MachGuiAnimations
 {
 public:
-    MachGuiAnimations(GuiDisplayable*, const SysPathName& pathName, float scale = 1);
-    ~MachGuiAnimations();
-
+    void init(GuiDisplayable* pParent, const SysPathName& pathName, float scale);
     void update();
 
 private:

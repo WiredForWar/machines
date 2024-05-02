@@ -6,10 +6,13 @@
 namespace MachGui
 {
 
-GameMenuContext::GameMenuContext(std::string name, MachGuiStartupScreens* pStartupScreens)
+GameMenuContext::GameMenuContext(std::string name, MachGuiStartupScreens* pStartupScreens, LoadAnimations load)
     : MachGuiStartupScreenContext(pStartupScreens)
-    , animations_(pStartupScreens, SysPathName("gui/menu/" + name + "_anims.anm"), MachGui::menuScaleFactor())
+    , name_(name)
 {
+    if (load == LoadAnimations::Yes)
+        animations_.init(pStartupScreens, SysPathName("gui/menu/" + name + "_anims.anm"), MachGui::menuScaleFactor());
+
     changeBackdrop("gui/menu/" + name + ".bmp");
 
     pStartupScreens->cursorOn(true);

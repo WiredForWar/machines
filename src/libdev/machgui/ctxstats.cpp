@@ -38,7 +38,7 @@
 #include "machgui/internal/playscri.hpp"
 
 MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreens)
-    : MachGuiStartupScreenContext(pStartupScreens)
+    : MachGui::GameMenuContext("sq", pStartupScreens, LoadAnimations::No)
     , delayBarsGrowth_(2)
 {
     MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(

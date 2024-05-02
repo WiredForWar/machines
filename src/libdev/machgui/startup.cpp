@@ -209,7 +209,7 @@ private:
     CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);                                                                          \
     CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);                                                        \
     CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);                                                            \
-    CB_DEPIMPL(MachGuiStartupScreenContext*, pCurrContext_);                                                           \
+    CB_DEPIMPL_AUTO(pCurrContext_);                                                                                    \
     CB_DEPIMPL(MachGuiStartupData*, pStartupData_);                                                                    \
     CB_DEPIMPL(MachGuiMessageBroker*, pMessageBroker_);                                                                \
     CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);                                                     \
@@ -1224,7 +1224,7 @@ bool MachGuiStartupScreens::finishApp()
 
 void MachGuiStartupScreens::switchContext(Context newContext)
 {
-    CB_DEPIMPL(MachGuiStartupScreenContext*, pCurrContext_);
+    CB_DEPIMPL(GameMenuContext*, pCurrContext_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
     CB_DEPIMPL(bool, switchGuiRoot_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);
@@ -1417,7 +1417,7 @@ void MachGuiStartupScreens::switchContext(Context newContext)
 void MachGuiStartupScreens::update()
 {
     CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);
-    CB_DEPIMPL(MachGuiStartupScreenContext*, pCurrContext_);
+    CB_DEPIMPL_AUTO(pCurrContext_);
     CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
 
     // Check that mouse is contained within the auto delete gui. See header for description
@@ -1813,7 +1813,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
     CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
     CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachGuiStartupScreenContext*, pCurrContext_);
+    CB_DEPIMPL_AUTO(pCurrContext_);
     CB_DEPIMPL(ButtonEvent, lastButtonEvent_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);
@@ -3375,7 +3375,7 @@ bool MachGuiStartupScreens::handleDestroyPlayerMessage(const string& name)
 {
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
     CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
-    CB_DEPIMPL(MachGuiStartupScreenContext*, pCurrContext_);
+    CB_DEPIMPL_AUTO(pCurrContext_);
     CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
 
     NETWORK_STREAM("MachGuiStartupScreens::handleDestroyPlayerMessage\n");

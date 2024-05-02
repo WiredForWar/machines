@@ -13,12 +13,12 @@
 #define _MACHGUI_CTXSTATS_HPP
 
 #include "base/base.hpp"
-#include "machgui/startctx.hpp"
+#include "machgui/GameMenuContext.hpp"
 #include "ctl/pvector.hpp"
 
 class MachGuiStatistics;
 
-class MachGuiCtxStatistics : public MachGuiStartupScreenContext
+class MachGuiCtxStatistics : public MachGui::GameMenuContext
 // Canonical form revoked
 {
 public:

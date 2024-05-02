@@ -14,7 +14,7 @@
 #include "machgui/internal/mgsndman.hpp"
 #include <fstream>
 
-MachGuiAnimations::MachGuiAnimations(GuiDisplayable* pParent, const SysPathName& pathName, float scale)
+void MachGuiAnimations::init(GuiDisplayable* pParent, const SysPathName& pathName, float scale)
 {
     ASSERT_FILE_EXISTS(pathName.c_str());
     std::ifstream in(pathName.c_str());
@@ -34,15 +34,6 @@ MachGuiAnimations::MachGuiAnimations(GuiDisplayable* pParent, const SysPathName&
         tmpIn >> animPath;
         animations_.push_back(MachGuiAnimation::createAnimation(pParent, animPath, colorKey, xOffset, yOffset, scale));
     }
-}
-
-MachGuiAnimations::~MachGuiAnimations()
-{
-    // No need to delete animations. This is done automatically by the GuiDisplayable hierarchy.
-    // for ( ctl_pvector<MachGuiAnimation>::iterator iter = animations_.begin(); iter != animations_.end(); ++iter )
-    //{
-    //  delete (*iter);
-    //}
 }
 
 void MachGuiAnimations::update()

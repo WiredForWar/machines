@@ -19,6 +19,13 @@ class MachGuiMessageBox;
 class MachGuiStartupScreenContext;
 class MachGuiDispositionChangeNotifiable;
 
+namespace MachGui
+{
+
+class GameMenuContext;
+
+} // namespace MachGui
+
 class MachGuiStartupScreensImpl
 {
 private:
@@ -46,7 +53,7 @@ private:
     MachGuiMessageBox* pMsgBox_; // Displays a message box with OK or OK/Cancel buttons
     MachGuiMessageBoxResponder* pMsgBoxResponder_; // Is told about OK/Cancel button presses in a message box
     MachGuiStartupScreens::GameType gameType_;
-    MachGuiStartupScreenContext* pCurrContext_;
+    MachGui::GameMenuContext* pCurrContext_;
     MachGuiStartupData* pStartupData_;
     MachGuiMessageBroker* pMessageBroker_;
     MachGuiAutoDeleteDisplayable* pMustContainMouse_; // A gui displayable that is present only if the mouse if inside

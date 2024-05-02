@@ -40,10 +40,10 @@ bool MachGuiMessageBoxResponder::cancelPressed()
 
 MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uint stringResId, MBType mbType)
     : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480) * MachGui::menuScaleFactor(), GuiDisplayable::LAYER5)
-    , animations_(this, animationFile(mbType), MachGui::menuScaleFactor())
     , mbType_(mbType)
     , pStartupScreens_(pStartupScreens)
 {
+    animations_.init(this, animationFile(mbType), MachGui::menuScaleFactor());
     // Disable focus on all non-message box controls
     pStartupScreens->messageBoxHasFocus(true);
 
@@ -69,10 +69,10 @@ MachGuiMessageBox::MachGuiMessageBox(
     MBType mbType,
     const GuiStrings& strs)
     : GuiDisplayable(pStartupScreens, Gui::Box(0, 0, 640, 480) * MachGui::menuScaleFactor(), GuiDisplayable::LAYER5)
-    , animations_(this, animationFile(mbType), MachGui::menuScaleFactor())
     , mbType_(mbType)
     , pStartupScreens_(pStartupScreens)
 {
+    animations_.init(this, animationFile(mbType), MachGui::menuScaleFactor());
     // Disable focus on all non-message box controls
     pStartupScreens->messageBoxHasFocus(true);
 
