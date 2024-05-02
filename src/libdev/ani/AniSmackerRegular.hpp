@@ -19,6 +19,8 @@ public:
     AniSmackerRegular& operator=(const AniSmackerRegular) = delete;
     bool operator==(const AniSmackerRegular&) const = delete;
 
+    bool open() override;
+
     void setScaleFactor(float scaleFactor) override;
     bool isFinished() const override;
 

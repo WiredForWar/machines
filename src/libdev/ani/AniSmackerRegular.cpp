@@ -40,11 +40,6 @@ AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, s
     // delegate :o
 }
 
-void AniSmackerRegular::setScaleFactor(float scaleFactor)
-{
-    scaleFactor_ = scaleFactor;
-}
-
 // PUBLIC CTOR
 AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, bool fast)
 {
@@ -86,6 +81,33 @@ AniSmackerRegular::~AniSmackerRegular()
     }
 }
 
+bool AniSmackerRegular::open()
+{
+    if (pSmack_)
+    {
+        // Already opened
+        return false;
+    }
+
+    pSmack_ = smk_open_file(fileName_.pathname().c_str(), SMK_MODE_MEMORY);
+    // In debug version, assert that SmackOpen has worked
+    ASSERT(pSmack_ != nullptr, "SmackOpen failed");
+    if (!pSmack_)
+        return false;
+
+    long unsigned int w, h;
+    smk_info_video(pSmack_, &w, &h, nullptr);
+    width_ = w;
+    height_ = h;
+
+    return true;
+}
+
+void AniSmackerRegular::setScaleFactor(float scaleFactor)
+{
+    scaleFactor_ = scaleFactor;
+}
+
 bool AniSmackerRegular::isFinished() const
 {
     bool finished = false;
@@ -116,152 +138,141 @@ unsigned int AniSmackerRegular::width() const
 void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
 {
     // First time in? If so open the smack animation
-    if (! pSmack_)
+    if (!pSmack_)
     {
-        pSmack_ = smk_open_file(fileName_.pathname().c_str(), SMK_MODE_MEMORY);
-        // In debug version, assert that SmackOpen has worked
-        ASSERT(pSmack_ != nullptr, "SmackOpen failed");
-
-        // Failed to open smacker animation, finish straight away, this will help release builds cope more
-        // gracefully with failed SmackOpen.
-        if (pSmack_ == nullptr)
+        if (!open())
         {
             finished_ = true;
+            return;
         }
-        if (pSmack_)
+    }
+
+    if (surface_.isNull())
+    {
+        // Turn on audio track 0 if present and prepare audio buffers
+        unsigned char a_tracks, a_channels[7], a_bitdepth[7];
+        unsigned long a_rate[7];
+        smk_info_audio(pSmack_, &a_tracks, a_channels, a_bitdepth, a_rate);
+        if (a_tracks & (1 << 0))
         {
-            // Turn on audio track 0 if present and prepare audio buffers
-            unsigned char a_tracks, a_channels[7], a_bitdepth[7];
-            unsigned long a_rate[7];
-            smk_info_audio(pSmack_, &a_tracks, a_channels, a_bitdepth, a_rate);
-            if (a_tracks & (1 << 0))
+            smk_enable_audio(pSmack_, 0, 1);
+            // OpenAL stuff
+            alFormat_ = toALformat(a_channels[0], a_bitdepth[0]);
+            alFrequency_ = a_rate[0];
+
+            alGenSources((ALuint)1, &alSource_);
+            alTestError("gen source smacker");
+            alSourcef(alSource_, AL_PITCH, 1);
+            ALfloat fVol = (float)SndMixer::instance().masterSampleVolume() / 100.0f;
+            alSourcef(alSource_, AL_GAIN, fVol);
+            alSource3f(alSource_, AL_VELOCITY, 0, 0, 0);
+            // alSourcei(alSource_, AL_LOOPING, AL_TRUE);
+            alSourcei(alSource_, AL_SOURCE_RELATIVE, AL_TRUE);
+            alSource3f(alSource_, AL_POSITION, 0.0f, 0.0f, 0.0f);
+            // Create the buffers
+            alGenBuffers(BUFFERS_NUM, &alBuffers_[0]);
+            alTestError("gen buffer smacker");
+
+            /*// Get audio all samples - testcode
+            unsigned char* audioBuffer;
+            unsigned int audioBufferSize = 0;
+            do
             {
-                smk_enable_audio(pSmack_, 0, 1);
-                // OpenAL stuff
-                alFormat_ = toALformat(a_channels[0], a_bitdepth[0]);
-                alFrequency_ = a_rate[0];
-
-                alGenSources((ALuint)1, &alSource_);
-                alTestError("gen source smacker");
-                alSourcef(alSource_, AL_PITCH, 1);
-                ALfloat fVol = (float)SndMixer::instance().masterSampleVolume() / 100.0f;
-                alSourcef(alSource_, AL_GAIN, fVol);
-                alSource3f(alSource_, AL_VELOCITY, 0, 0, 0);
-                // alSourcei(alSource_, AL_LOOPING, AL_TRUE);
-                alSourcei(alSource_, AL_SOURCE_RELATIVE, AL_TRUE);
-                alSource3f(alSource_, AL_POSITION, 0.0f, 0.0f, 0.0f);
-                // Create the buffers
-                alGenBuffers(BUFFERS_NUM, &alBuffers_[0]);
-                alTestError("gen buffer smacker");
-
-                /*// Get audio all samples - testcode
-                unsigned char* audioBuffer;
-                unsigned int audioBufferSize = 0;
-                do
+                const unsigned char* pAudioBuffer =   smk_get_audio(pSmack_, 0);
+                unsigned long audioSize =       smk_get_audio_size(pSmack_, 0);
+                unsigned char* tmpBuff = _NEW_ARRAY(unsigned char, audioSize + audioBufferSize);
+                if(audioBufferSize > 0)
                 {
-                    const unsigned char* pAudioBuffer =   smk_get_audio(pSmack_, 0);
-                    unsigned long audioSize =       smk_get_audio_size(pSmack_, 0);
-                    unsigned char* tmpBuff = _NEW_ARRAY(unsigned char, audioSize + audioBufferSize);
-                    if(audioBufferSize > 0)
-                    {
-                        memcpy(tmpBuff, audioBuffer, audioBufferSize);
-                        _DELETE_ARRAY(audioBuffer);
-                    }
-                    memcpy(&tmpBuff[audioBufferSize], pAudioBuffer, audioSize);
-                    audioBufferSize += audioSize;
-                    audioBuffer = tmpBuff;
+                    memcpy(tmpBuff, audioBuffer, audioBufferSize);
+                    _DELETE_ARRAY(audioBuffer);
                 }
-                while(smk_next( pSmack_ ) != SMK_DONE);
-
-                smk_enable_audio(pSmack_, 0, 0);
-                alBufferData(alBuffers_[0], alFormat_, audioBuffer, audioBufferSize, alFrequency_);
-                alSourcei(alSource_, AL_BUFFER, alBuffers_[0]);
-                _DELETE_ARRAY(audioBuffer);*/
+                memcpy(&tmpBuff[audioBufferSize], pAudioBuffer, audioSize);
+                audioBufferSize += audioSize;
+                audioBuffer = tmpBuff;
             }
+            while(smk_next( pSmack_ ) != SMK_DONE);
 
-            long unsigned int w, h;
-            // Turn on decoding for palette, video
-            smk_enable_video(pSmack_, 1);
+            smk_enable_audio(pSmack_, 0, 0);
+            alBufferData(alBuffers_[0], alFormat_, audioBuffer, audioBufferSize, alFrequency_);
+            alSourcei(alSource_, AL_BUFFER, alBuffers_[0]);
+            _DELETE_ARRAY(audioBuffer);*/
+        }
 
-            // Get a pointer to first frame
-            smk_first(pSmack_);
-            // One frame time in ms
-            smk_info_all(pSmack_, nullptr, nullptr, &frameTime_);
-            // frameTime_ = 0.000001 * frameTime_;
-            frameTime_ *= 0.000000826;
-            smk_info_video(pSmack_, &w, &h, nullptr);
-            width_ = w;
-            height_ = h;
-            surface_ = this->createSmackerSurface(pDevice);
-            pBuffer_ = new uint[width_ * height_];
+        // Turn on decoding for palette, video
+        smk_enable_video(pSmack_, 1);
 
-            // TBD: replace this assertion with something more reasonable
-            ASSERT(pBuffer_ != nullptr, "");
+        // Get a pointer to first frame
+        smk_first(pSmack_);
+        // One frame time in ms
+        smk_info_all(pSmack_, nullptr, nullptr, &frameTime_);
+        // frameTime_ = 0.000001 * frameTime_;
+        frameTime_ *= 0.000000826;
+        surface_ = this->createSmackerSurface(pDevice);
+        pBuffer_ = new uint[width_ * height_];
 
-            // Start playing the first chunk
-            if (alSource_)
+        // TBD: replace this assertion with something more reasonable
+        ASSERT(pBuffer_ != nullptr, "");
+
+        // Start playing the first chunk
+        if (alSource_)
+        {
+            // Fill bufers with WAV data
+            const unsigned char* pAudioBuffer = smk_get_audio(pSmack_, 0);
+            unsigned long audioSize = smk_get_audio_size(pSmack_, 0);
+
+            ALsizei size = audioSize / BUFFERS_NUM;
+            for (int i = 0; i < BUFFERS_NUM; ++i)
             {
-                // Fill bufers with WAV data
-                const unsigned char* pAudioBuffer = smk_get_audio(pSmack_, 0);
-                unsigned long audioSize = smk_get_audio_size(pSmack_, 0);
-
-                ALsizei size = audioSize / BUFFERS_NUM;
-                for (int i = 0; i < BUFFERS_NUM; ++i)
-                {
-                    const ALvoid* data = &pAudioBuffer[i * size];
-                    alBufferData(alBuffers_[i], alFormat_, data, size, alFrequency_);
-                    alTestError("start buffer data smacker on start");
-                }
-                alSourceQueueBuffers(alSource_, BUFFERS_NUM, &alBuffers_[0]);
-                alSourcePlay(alSource_);
-                alTestError("start play source smacker");
+                const ALvoid* data = &pAudioBuffer[i * size];
+                alBufferData(alBuffers_[i], alFormat_, data, size, alFrequency_);
+                alTestError("start buffer data smacker on start");
             }
+            alSourceQueueBuffers(alSource_, BUFFERS_NUM, &alBuffers_[0]);
+            alSourcePlay(alSource_);
+            alTestError("start play source smacker");
         }
     } // FIRST FRAME
 
-    if (pSmack_) // Check pSmack_ just so release version copes with SmackOpen not working
+    bool shouldRender = true;
+
+    // This method is called every frame after changes, check if frame time has passed
+    double timeNow = DevTime::instance().time();
+    advanceToNextFrame_ = (timeNow - lastFrameTime_ >= frameTime_);
+
+    // Copy next frame from smacker file to the buffer.
+    if (advanceToNextFrame_ || fast_)
     {
-        bool shouldRender = true;
+        copyCurrentFrameToBuffer(surface_);
+        lastFrameTime_ = timeNow;
+        shouldRender = true;
+    }
 
-        // This method is called every frame after changes, check if frame time has passed
-        double timeNow = DevTime::instance().time();
-        advanceToNextFrame_ = (timeNow - lastFrameTime_ >= frameTime_);
-
-        // Copy next frame from smacker file to the buffer.
-        if (advanceToNextFrame_ || fast_)
+    if (shouldRender || !useFrontBuffer())
+    {
+        // Render the animation to a surface ( usually the screen ).
+        if (useFrontBuffer())
         {
-            copyCurrentFrameToBuffer(surface_);
-            lastFrameTime_ = timeNow;
-            shouldRender = true;
+            unpackBufferToSurface(pDevice->frontSurface(), surface_);
+            pDevice->display()->flipBuffers();
         }
+        else
+            unpackBufferToSurface(pDevice->backSurface(), surface_);
+    }
 
-        if (shouldRender || ! useFrontBuffer())
-        {
-            // Render the animation to a surface ( usually the screen ).
-            if (useFrontBuffer())
-            {
-                unpackBufferToSurface(pDevice->frontSurface(), surface_);
-                pDevice->display()->flipBuffers();
-            }
-            else
-                unpackBufferToSurface(pDevice->backSurface(), surface_);
-        }
-
-        if (fast_)
+    if (fast_)
+    {
+        getNextFrame();
+    }
+    else
+    {
+        if (advanceToNextFrame_)
         {
             getNextFrame();
         }
-        else
-        {
-            if (advanceToNextFrame_)
-            {
-                getNextFrame();
-            }
 
-            advanceToNextFrame_ = true;
-        }
-        ++frame_;
+        advanceToNextFrame_ = true;
     }
+    ++frame_;
 }
 
 void AniSmackerRegular::displaySummaryInfo() const

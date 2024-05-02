@@ -8,6 +8,8 @@ class AniSmacker
 public:
     virtual ~AniSmacker() = default;
 
+    virtual bool open() = 0;
+
     virtual void setScaleFactor(float scaleFactor) = 0;
     virtual bool isFinished() const = 0;
 
