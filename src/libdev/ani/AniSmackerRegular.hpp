@@ -11,8 +11,7 @@ using smk = struct smk_t*;
 class AniSmackerRegular : public AniSmacker
 {
 public:
-    AniSmackerRegular(const SysPathName& path, size_t xCoordTo, size_t yCoordTo);
-    AniSmackerRegular(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, bool fast);
+    AniSmackerRegular(const SysPathName& path, int xCoordTo, int yCoordTo, bool fast = false);
     ~AniSmackerRegular() override;
 
     AniSmackerRegular(const AniSmackerRegular& other) = delete;
@@ -42,8 +41,8 @@ protected:
     void copyCurrentVideoFrameToBuffer(RenSurface& renderSurface) override;
     uint* fillBufferForCurrentFrame() override;
 
-    size_t xCoordTo_;
-    size_t yCoordTo_;
+    int xCoordTo_{};
+    int yCoordTo_{};
     float scaleFactor_{};
 
 private:
@@ -58,22 +57,24 @@ private:
     void getNextFrame();
 
     // Member Data
-    smk pSmack_;
-    uint* pBuffer_;
+    smk pSmack_{};
+    uint* pBuffer_{};
     RenSurface surface_;
-    unsigned frame_;
-    size_t width_, height_;
-    double frameTime_;
-    double lastFrameTime_;
-    bool advanceToNextFrame_;
-    bool fast_;
-    bool useFrontBuffer_;
+    unsigned frame_{};
+    int width_{};
+    int height_{};
+    double frameTime_{};
+    double lastFrameTime_{};
+    bool advanceToNextFrame_{};
+    bool fast_{};
+    bool useFrontBuffer_{};
     SysPathName fileName_;
-    bool finished_;
+    bool finished_{};
 
     // Sound
-    ALsizei alFrequency_;
-    ALenum alFormat_;
-    ALuint alBuffers_[8], alSource_;
+    ALsizei alFrequency_{};
+    ALenum alFormat_{};
+    ALuint alBuffers_[8]{};
+    ALuint alSource_{};
     std::vector<ALuint> freedBuffers_;
 };

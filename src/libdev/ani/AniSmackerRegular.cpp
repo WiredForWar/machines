@@ -32,36 +32,16 @@ static inline ALenum toALformat(short channels, short samples)
     }
 }
 
-//////////////////////////////////////////////////////////////////////
-// PUBLIC CTOR
-AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, size_t yCoordTo)
-    : AniSmackerRegular(path, xCoordTo, yCoordTo, false)
+AniSmackerRegular::AniSmackerRegular(const SysPathName& path, int xCoordTo, int yCoordTo, bool fast)
 {
-    // delegate :o
-}
-
-// PUBLIC CTOR
-AniSmackerRegular::AniSmackerRegular(const SysPathName& path, size_t xCoordTo, size_t yCoordTo, bool fast)
-{
-    pSmack_ = nullptr;
-    pBuffer_ = nullptr;
     xCoordTo_ = xCoordTo;
     yCoordTo_ = yCoordTo;
     scaleFactor_ = 1;
     advanceToNextFrame_ = true;
     fast_ = fast;
-    useFrontBuffer_ = false;
-    frameTime_ = 0.0;
-    lastFrameTime_ = 0.0;
-    frame_ = 0;
-    width_ = 0;
-    height_ = 0;
     fileName_ = path;
-    finished_ = false;
 
     alFormat_ = -1;
-    alSource_ = 0;
-    alFrequency_ = 0;
 }
 
 // DTOR
