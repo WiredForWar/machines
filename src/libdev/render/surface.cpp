@@ -387,6 +387,21 @@ void RenSurface::stretchBlit(const RenSurface& source)
     stretchBlit(source, destArea);
 }
 
+void RenSurface::blitInRequestedSize(const RenSurface& source, int destX, int destY)
+{
+    if (source.requestedSize().isNull())
+    {
+        simpleBlit(source, destX, destY);
+    }
+    else
+    {
+        const RenSurface::Size requestedSourceSize = source.requestedSize();
+        const Ren::Rect sourceArea(0, 0, source.width(), source.height());
+        const Ren::Rect destArea(destX, destY, requestedSourceSize.width, requestedSourceSize.height);
+        stretchBlit(source, sourceArea, destArea);
+    }
+}
+
 void RenSurface::copyFromRGBABuffer(const uint* buff)
 {
     internals()->copyFromBuffer(buff);

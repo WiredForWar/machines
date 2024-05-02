@@ -115,6 +115,7 @@ public:
     void stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
     void stretchBlit(const RenSurface& source, const Rect& destArea);
     void stretchBlit(const RenSurface& source);
+    void blitInRequestedSize(const RenSurface& source, int destX = 0, int destY = 0);
     void copyFromRGBABuffer(const uint* buff);
 
     void hollowRectangle(const Rect&, const RenColour&, int thickness);
