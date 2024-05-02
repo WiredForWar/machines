@@ -38,6 +38,7 @@
 #include "machines/leaktrak.hpp"
 #include "render/colour.hpp"
 #include "system/metafile.hpp"
+#include "machgui/ProgressIndicator.hpp"
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
 
@@ -108,69 +109,6 @@ static void newHandler()
     WHERE_STREAM("Aborting in new handler " << std::endl);
     ASSERT_FAIL("Aborting in new handler");
 }
-
-class ProgressIndicator : public IProgressReporter
-{
-public:
-    ProgressIndicator(Gui::Box area)
-        : upperLimit_(1.0)
-        , area_(area)
-    {
-    }
-
-    size_t report(size_t done, size_t maxDone) override
-    {
-        if (done == lastDone_)
-            return 0;
-        const double minx = area_.left();
-        const double miny = area_.top();
-        const double width = area_.width();
-        const double height = area_.height();
-        const double limitRange = upperLimit_ - lowerLimit_;
-        const double percentComplete = (((double)done / (double)maxDone) * limitRange) + lowerLimit_;
-        const double displayWidth = std::min((percentComplete * width) + 5, width);
-
-        const double red = 255.0 / 255.0;
-        const double green = 250.0 / 255.0;
-        const double blue = 142.0 / 255.0;
-
-        RenDevice::current()->frontSurface().filledRectangle(
-            Ren::Rect(minx, miny, displayWidth, height),
-            RenColour(red, green, blue));
-        RenDevice::current()->display()->flipBuffers();
-        // For double buffering do it twice to prevent bar from blinking
-        RenDevice::current()->frontSurface().filledRectangle(
-            Ren::Rect(minx, miny, displayWidth, height),
-            RenColour(red, green, blue));
-        // If the game session has come out prematurely then the network connection may have been reset.
-        if (MachLogNetwork::instance().isNetworkGame())
-        {
-            MachLogNetwork::instance().update();
-            SysWindowsAPI::sleep(0);
-            SysWindowsAPI::peekMessage();
-            // network game _may_ have come out on update above.
-            /*              if( MachLogNetwork::instance().isNetworkGame() and
-            MachLogNetwork::instance().node().lastPingAllTime() > 1 )
-            {
-                MachLogNetwork::instance().node().pingAll();
-            }*/
-        }
-        lastDone_ = done;
-        return (double)maxDone / 50.0;
-    }
-
-    void setLimits(double lower, double upper)
-    {
-        lowerLimit_ = lower;
-        upperLimit_ = upper;
-    }
-
-private:
-    double lowerLimit_ = 0;
-    double upperLimit_ = 0;
-    size_t lastDone_;
-    Gui::Box area_;
-};
 
 void SDLApp::initMusic()
 {
@@ -477,7 +415,9 @@ bool SDLApp::clientStartup()
 
     Gui::Coord indicatorPos(98 + xOffset, 362 + yOffset);
     Gui::Size indicatorSize(440 + 1, 4 + 1);
-    ProgressIndicator progressIndicator(Gui::Box(indicatorPos, indicatorSize));
+    MachGui::ProgressIndicator progressIndicator(
+        Gui::Box(indicatorPos, indicatorSize),
+        RenColour(255.0 / 255.0, 250.0 / 255.0, 142.0 / 255.0));
     progressIndicator.setLimits(0.00, 0.18);
 
     // moved higher due to call sequence problems in lobbying when very slow machines host with very fast machines

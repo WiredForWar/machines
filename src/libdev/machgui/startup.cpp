@@ -41,6 +41,7 @@ inline constexpr bool cDemoVersion =
 #include "machgui/focusctl.hpp"
 #include "machgui/dispnoti.hpp"
 #include "machgui/menus_helper.hpp"
+#include "machgui/ProgressIndicator.hpp"
 
 // Context helpers
 #include "machgui/ctxmulti.hpp"
@@ -119,73 +120,31 @@ inline constexpr bool cDemoVersion =
 #include "system/registry.hpp"
 #include "device/mouse.hpp"
 #include "base/cballoc.hpp"
-#include "base/IProgressReporter.hpp"
 
 using namespace MachGui;
 
-class LoadGameProgressIndicator : public IProgressReporter
+class LoadGameProgressIndicator : public ProgressIndicator
 {
-public:
-    LoadGameProgressIndicator(int xOffset, int yOffset)
-        : upperLimit_(1.0)
-        , xOffset_(xOffset)
-        , yOffset_(yOffset)
+    static Gui::Box getBoundingBox(Gui::Coord offset)
     {
+        const Gui::Coord cIndicatorOffset{275, 250};
+        const Gui::Size cIndicatorSize{86 + 1, 4 + 1};
+        return Gui::Box(offset + cIndicatorOffset * Gui::uiScaleFactor(), cIndicatorSize * Gui::uiScaleFactor());
     }
 
-    size_t report(size_t done, size_t maxDone) override
+    static Gui::Colour getColor()
     {
-        if (done == lastDone_)
-            return 0;
-        const double minx = 275 * Gui::uiScaleFactor() + xOffset_;
-        const double maxx = 361 * Gui::uiScaleFactor() + xOffset_;
-        const double miny = 250 * Gui::uiScaleFactor() + yOffset_;
-        const double maxy = 254 * Gui::uiScaleFactor() + yOffset_;
-        const double width = maxx - minx + 1 * Gui::uiScaleFactor();
-        const double height = maxy - miny + 1 * Gui::uiScaleFactor();
-        const double limitRange = upperLimit_ - lowerLimit_;
-        const double percentComplete = (((double)done / (double)maxDone) * limitRange) + lowerLimit_;
-        const double displayWidth = std::min((percentComplete * width) + 5, width);
-
         const double red = 255.0 / 255.0;
         const double green = 252.0 / 255.0;
         const double blue = 223.0 / 255.0;
 
-        RenDevice::current()->frontSurface().filledRectangle(
-            Ren::Rect(minx, miny, displayWidth, height),
-            RenColour(red, green, blue));
-        RenDevice::current()->display()->flipBuffers();
-        // keep the ping messages alive.
-        // This will also remove the messages from the directplay external message queue
-        // Allowing continued processing.
-        if (MachLogNetwork::instance().isNetworkGame())
-        {
-            // Note that we poll the messages directly reatherthan calling MLNetwork::update
-            NetNetwork::instance().pollMessages();
-            //          MachLogNetwork::instance().node().transmitCompoundMessage();
-            SysWindowsAPI::sleep(0);
-            SysWindowsAPI::peekMessage();
-            /*          if( MachLogNetwork::instance().node().lastPingAllTime() > 2.5 )
-            {
-                MachLogNetwork::instance().node().pingAll();
-            }*/
-        }
-        lastDone_ = done;
-        return (double)maxDone / 50.0;
+        return Gui::Colour(red, green, blue);
     }
-
-    void setLimits(double lower, double upper)
+public:
+    LoadGameProgressIndicator(int xOffset, int yOffset)
+        : ProgressIndicator(getBoundingBox(Gui::Coord(xOffset, yOffset)), getColor())
     {
-        lowerLimit_ = lower;
-        upperLimit_ = upper;
     }
-
-private:
-    double lowerLimit_ = 0;
-    double upperLimit_ = 0;
-    size_t lastDone_;
-    int xOffset_ = 0;
-    int yOffset_ = 0;
 };
 
 #define CB_MachGuiStartupScreens_DEPIMPL()                                                                             \
