@@ -82,13 +82,13 @@ void MachConstructionSelectIcon::doBeReleased(const GuiMouseEvent&)
 // static
 size_t MachConstructionSelectIcon::reqHeight()
 {
-    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
+    return 42 * Gui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 // static
 size_t MachConstructionSelectIcon::reqWidth()
 {
-    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
+    return 42 * Gui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 // virtual

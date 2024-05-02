@@ -2457,8 +2457,8 @@ void MachInGameScreen::loadGame(const string& planet)
 
     if (MachLogNetwork::instance().isNetworkGame())
     {
-        const int chatMessagesX = 202 * MachGui::uiScaleFactor();
-        const int chatMessagesY = 0 * MachGui::uiScaleFactor();
+        const int chatMessagesX = 202 * Gui::uiScaleFactor();
+        const int chatMessagesY = 0 * Gui::uiScaleFactor();
 
         pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(
             this,

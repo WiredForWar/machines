@@ -161,7 +161,7 @@ void MachHWResearchBankIcon::doBeReleased(const GuiMouseEvent&)
 size_t MachHWResearchBankIcon::reqHeight()
 {
     // TODO : Remove hard coded values
-    return MachGuiBuildProgressBar::height() + (38 /* Bitmap height */ + 4 /* Border */) * MachGui::uiScaleFactor();
+    return MachGuiBuildProgressBar::height() + (38 /* Bitmap height */ + 4 /* Border */) * Gui::uiScaleFactor();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ size_t MachHWResearchBankIcon::reqHeight()
 // static
 size_t MachHWResearchBankIcon::reqWidth()
 {
-    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
+    return 42 * Gui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

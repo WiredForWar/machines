@@ -37,9 +37,9 @@ public:
     {
     }
 
-    static int reqWidth() { return 6 * MachGui::uiScaleFactor(); }
+    static int reqWidth() { return 6 * Gui::uiScaleFactor(); }
 
-    static int reqHeight() { return 49 * MachGui::uiScaleFactor(); }
+    static int reqHeight() { return 49 * Gui::uiScaleFactor(); }
 
 protected:
     void doBeReleased(const GuiMouseEvent&) override
@@ -89,7 +89,7 @@ protected:
             sliderBmp_,
             Gui::Coord(
                 absoluteBoundary().minCorner().x(),
-                absoluteBoundary().minCorner().y() + 12 * MachGui::uiScaleFactor()));
+                absoluteBoundary().minCorner().y() + 12 * Gui::uiScaleFactor()));
     }
 
     void doDisplayReleasedEnabled() override
@@ -103,7 +103,7 @@ protected:
                 sliderBmp_,
                 Gui::Coord(
                     absoluteBoundary().minCorner().x(),
-                    absoluteBoundary().minCorner().y() + 24 * MachGui::uiScaleFactor()));
+                    absoluteBoundary().minCorner().y() + 24 * Gui::uiScaleFactor()));
     }
 
 private:
@@ -133,7 +133,7 @@ MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box
         this,
         Gui::Coord(
             MachGui::controlPanelOutXPos() - MachGuiControlPanelOnOffBtn::reqWidth(),
-            8 * MachGui::uiScaleFactor()),
+            8 * Gui::uiScaleFactor()),
         pInGameScreen);
 
     useFastSecondDisplay(false);
@@ -319,21 +319,21 @@ void MachGuiControlPanel::setupDecalCoords()
     CB_DEPIMPL_ARRAY(Gui::Coord, decalCoord_);
     CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
 
-    decalCoord_[0] = Gui::Coord(0, 78) * MachGui::uiScaleFactor();
-    decalCoord_[1] = Gui::Coord(1, 175) * MachGui::uiScaleFactor();
-    decalCoord_[2] = Gui::Coord(127, 60) * MachGui::uiScaleFactor();
-    decalCoord_[3] = Gui::Coord(79, 155) * MachGui::uiScaleFactor();
-    decalCoord_[4] = Gui::Coord(0, 0) * MachGui::uiScaleFactor();
+    decalCoord_[0] = Gui::Coord(0, 78) * Gui::uiScaleFactor();
+    decalCoord_[1] = Gui::Coord(1, 175) * Gui::uiScaleFactor();
+    decalCoord_[2] = Gui::Coord(127, 60) * Gui::uiScaleFactor();
+    decalCoord_[3] = Gui::Coord(79, 155) * Gui::uiScaleFactor();
+    decalCoord_[4] = Gui::Coord(0, 0) * Gui::uiScaleFactor();
 
     decalCoord_[5] = Gui::Coord(
-        60 * MachGui::uiScaleFactor(),
-        getVisibleHeight() - (decals_[5].height() + 5 * MachGui::uiScaleFactor()));
+        60 * Gui::uiScaleFactor(),
+        getVisibleHeight() - (decals_[5].height() + 5 * Gui::uiScaleFactor()));
     decalCoord_[6] = Gui::Coord(
-        5 * MachGui::uiScaleFactor(),
-        getVisibleHeight() - (decals_[6].height() + 3 * MachGui::uiScaleFactor()));
+        5 * Gui::uiScaleFactor(),
+        getVisibleHeight() - (decals_[6].height() + 3 * Gui::uiScaleFactor()));
     decalCoord_[7] = Gui::Coord(
-        136 * MachGui::uiScaleFactor(),
-        getVisibleHeight() - (decals_[7].height() + 3 * MachGui::uiScaleFactor()));
+        136 * Gui::uiScaleFactor(),
+        getVisibleHeight() - (decals_[7].height() + 3 * Gui::uiScaleFactor()));
 }
 
 void MachGuiControlPanel::repositionNavigators(

@@ -137,8 +137,8 @@ MachPromptText::MachPromptText(
     std::string normalFont = MachGui::getScaledImagePath("gui/menu/promtfnt");
     std::string shadowFont = MachGui::getScaledImagePath("gui/menu/promdfnt");
     GuiBmpFont::FontType fontType = GuiBmpFont::PROPORTIONAL;
-    size_t spaceCharWidth = 7 * MachGui::uiScaleFactor();
-    size_t spacing = 1 * MachGui::uiScaleFactor();
+    size_t spaceCharWidth = 7 * Gui::uiScaleFactor();
+    size_t spacing = 1 * Gui::uiScaleFactor();
 
     font_ = GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing);
     pImpl_ = new MachPromptTextImpl(normalFont, shadowFont, fontType, spaceCharWidth, spacing);
@@ -420,7 +420,7 @@ void MachPromptText::displayChatMessage()
     {
         Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Vec(caretPosition, startY);
         Gui::Coord to = from + Gui::Vec(0, font_.charHeight());
-        GuiPainter::instance().line(from, to, caretColour(), 1 * MachGui::uiScaleFactor());
+        GuiPainter::instance().line(from, to, caretColour(), 1 * Gui::uiScaleFactor());
     }
 
     // Blit light on graphic
@@ -447,11 +447,11 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
         for (const std::string& line : textLines)
         {
             Gui::Coord textPos(0, startY);
-            Gui::Coord shadowPos = textPos + Gui::Vec(1, 1) * MachGui::uiScaleFactor();
+            Gui::Coord shadowPos = textPos + Gui::Vec(1, 1) * Gui::uiScaleFactor();
             pImpl_->shadowFont_
                 .drawText(&pImpl_->promptBmp_, line, shadowPos, pImpl_->promptBmp_.width() - shadowPos.x());
             pImpl_->font_.drawText(&pImpl_->promptBmp_, line, textPos, pImpl_->promptBmp_.width());
-            startY += pImpl_->shadowFont_.charHeight() + 1 * MachGui::uiScaleFactor();
+            startY += pImpl_->shadowFont_.charHeight() + 1 * Gui::uiScaleFactor();
         }
 
         if (pImpl_->restartScroll_)
@@ -727,10 +727,10 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
 {
     CB_DEPIMPL(GuiBitmap, lightOn_);
 
-    const int yOffset = 7 * MachGui::uiScaleFactor();
+    const int yOffset = 7 * Gui::uiScaleFactor();
     const int w = W4dManager::instance().sceneManager()->pDevice()->windowWidth();
     const int baseSpacing = w < 1024 ? 1 : 2;
-    const int hSpacing = baseSpacing * MachGui::uiScaleFactor();
+    const int hSpacing = baseSpacing * Gui::uiScaleFactor();
     const int xOffset = lightOn_.width() + hSpacing;
 
     return absoluteBoundary().minCorner() + Gui::Vec(xOffset, yOffset);

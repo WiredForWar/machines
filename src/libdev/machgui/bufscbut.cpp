@@ -36,7 +36,7 @@ MachGuiBufferScrollButton::~MachGuiBufferScrollButton()
 
 size_t MachGuiBufferScrollButton::width()
 {
-    return 17 * MachGui::uiScaleFactor();
+    return 17 * Gui::uiScaleFactor();
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */

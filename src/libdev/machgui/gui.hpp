@@ -67,7 +67,6 @@ const string& computerText();
 const string& unavailableText();
 const string& wonSymbolText();
 
-MATHEX_SCALAR uiScaleFactor();
 MATHEX_SCALAR menuScaleFactor();
 void setUiScaleFactor(MATHEX_SCALAR scale);
 

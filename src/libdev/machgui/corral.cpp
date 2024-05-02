@@ -263,14 +263,14 @@ void MachGuiCorralResource::doHandleContainsMouseEvent(const GuiMouseEvent& mous
 // static
 size_t MachGuiCorralResource::buttonWidth()
 {
-    return 42 * MachGui::uiScaleFactor(); // TODO : Remove hard coded value
+    return 42 * Gui::uiScaleFactor(); // TODO : Remove hard coded value
 }
 
 // static
 size_t MachGuiCorralResource::buttonHeight()
 {
     // TODO : Remove hard coded values
-    return MachGuiHealthBar::healthBarHeight() + (38 /* Bitmap height */ + 4 /* Border */) * MachGui::uiScaleFactor();
+    return MachGuiHealthBar::healthBarHeight() + (38 /* Bitmap height */ + 4 /* Border */) * Gui::uiScaleFactor();
 }
 
 // virtual

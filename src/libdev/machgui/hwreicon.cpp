@@ -99,7 +99,7 @@ void MachHWResearchIcon::doBeReleased(const GuiMouseEvent&)
 // static
 size_t MachHWResearchIcon::reqWidth()
 {
-    return 42 * MachGui::uiScaleFactor(); // Todo : remove hardcoding
+    return 42 * Gui::uiScaleFactor(); // Todo : remove hardcoding
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ size_t MachHWResearchIcon::reqWidth()
 // static
 size_t MachHWResearchIcon::reqHeight()
 {
-    return 42 * MachGui::uiScaleFactor(); // todo : remove hardcoding
+    return 42 * Gui::uiScaleFactor(); // todo : remove hardcoding
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -198,7 +198,7 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
 
         if (SysPathName::existsAsFile(withFrames + extention))
         {
-            origin *= MachGui::uiScaleFactor();
+            origin *= Gui::uiScaleFactor();
         }
         else
         {

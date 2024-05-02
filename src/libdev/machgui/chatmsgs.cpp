@@ -279,7 +279,7 @@ MachPhys::Race MachGuiInGameChatMessages::opponentRace(int index) const
 // static
 int MachGuiInGameChatMessages::reqWidth()
 {
-    return 430 * MachGui::uiScaleFactor();
+    return 430 * Gui::uiScaleFactor();
 }
 
 // static
@@ -287,7 +287,7 @@ int MachGuiInGameChatMessages::reqHeight()
 {
     GuiBmpFont font = GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp"));
 
-    return (font.charHeight() + 1 * MachGui::uiScaleFactor()) * 5;
+    return (font.charHeight() + 1 * Gui::uiScaleFactor()) * 5;
 }
 
 const std::vector<std::string>& MachGuiInGameChatMessages::standardMessages() const

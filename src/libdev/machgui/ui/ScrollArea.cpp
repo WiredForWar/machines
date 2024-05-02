@@ -35,13 +35,13 @@ MachGuiScrollButton::~MachGuiScrollButton()
 // static
 size_t MachGuiScrollButton::reqWidth()
 {
-    return 17 * MachGui::uiScaleFactor(); // todo
+    return 17 * Gui::uiScaleFactor(); // todo
 }
 
 // static
 size_t MachGuiScrollButton::reqHeight()
 {
-    return 50 * MachGui::uiScaleFactor(); // todo
+    return 50 * Gui::uiScaleFactor(); // todo
 }
 
 // virtual

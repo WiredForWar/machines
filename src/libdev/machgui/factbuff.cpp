@@ -30,8 +30,8 @@ MachGuiFactoryBuffer::MachGuiFactoryBuffer(
     Gui::Box iconsArea(
         20,
         8,
-        MachProductionIcon::buttonWidth() * 3 + 29 * MachGui::uiScaleFactor(),
-        MachProductionIcon::buttonHeight() + 12 * MachGui::uiScaleFactor());
+        MachProductionIcon::buttonWidth() * 3 + 29 * Gui::uiScaleFactor(),
+        MachProductionIcon::buttonHeight() + 12 * Gui::uiScaleFactor());
     pIcons_ = new MachProductionIcons(this, iconsArea, pFactory, pInGameScreen);
 
     // Become an observer of the factory

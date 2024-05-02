@@ -225,7 +225,7 @@ size_t MachCommandIcons::reqHeight()
 
 size_t MachCommandIcons::horizontalSpacing()
 {
-    return 5 * MachGui::uiScaleFactor();
+    return 5 * Gui::uiScaleFactor();
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -397,13 +397,13 @@ void MachCommandIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 
 size_t MachCommandIcon::reqWidth()
 {
-    return 77 * MachGui::uiScaleFactor(); // TODO : remove hardcoding
+    return 77 * Gui::uiScaleFactor(); // TODO : remove hardcoding
 }
 
 // static
 size_t MachCommandIcon::reqHeight()
 {
-    return 13 * MachGui::uiScaleFactor(); // TODO : remove hardcoding
+    return 13 * Gui::uiScaleFactor(); // TODO : remove hardcoding
 }
 
 const MachGuiCommand* MachCommandIcon::pCommand() const

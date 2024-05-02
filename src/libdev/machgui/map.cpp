@@ -75,9 +75,9 @@ public:
 
     bool mapOn() { return isDepressed(); }
 
-    static size_t reqWidth() { return 14 * MachGui::uiScaleFactor(); }
+    static size_t reqWidth() { return 14 * Gui::uiScaleFactor(); }
 
-    static size_t reqHeight() { return 11 * MachGui::uiScaleFactor(); }
+    static size_t reqHeight() { return 11 * Gui::uiScaleFactor(); }
 
 protected:
     void doBeDepressed(const GuiMouseEvent&) override
@@ -137,9 +137,9 @@ public:
         pMap_ = pMap;
     }
 
-    static size_t reqWidth() { return 14 * MachGui::uiScaleFactor(); }
+    static size_t reqWidth() { return 14 * Gui::uiScaleFactor(); }
 
-    static size_t reqHeight() { return 11 * MachGui::uiScaleFactor(); }
+    static size_t reqHeight() { return 11 * Gui::uiScaleFactor(); }
 
 protected:
     void doBeDepressed(const GuiMouseEvent&) override { }
@@ -265,7 +265,7 @@ MachContinentMap::MachContinentMap(
     selectedAttackedMachineImage().enableColourKeying();
     selectedAttackedPodImage().enableColourKeying();
 
-    pBmuText_ = new MachGuiBmuText(this, Gui::Coord(1, 1) * MachGui::uiScaleFactor());
+    pBmuText_ = new MachGuiBmuText(this, Gui::Coord(1, 1) * Gui::uiScaleFactor());
 
     pTerrainOnOffButton_ = new MachGuiTerrainOnOffButton(
         this,
@@ -297,7 +297,7 @@ void MachContinentMap::loadGame(const string& planet)
 
     DEBUG_STREAM(DIAG_NEIL, "Changing map to " << mapBmp << std::endl);
 
-    if (MachGui::uiScaleFactor() == 1)
+    if (Gui::uiScaleFactor() == 1)
     {
         mapBackground_ = Gui::bitmap(mapBmp);
     }
@@ -305,8 +305,8 @@ void MachContinentMap::loadGame(const string& planet)
     {
         GuiBitmap mapBitmap = Gui::bitmap(mapBmp);
         mapBackground_ = RenSurface::createAnonymousSurface(
-            mapBitmap.width() * MachGui::uiScaleFactor(),
-            mapBitmap.height() * MachGui::uiScaleFactor(),
+            mapBitmap.width() * Gui::uiScaleFactor(),
+            mapBitmap.height() * Gui::uiScaleFactor(),
             mapBitmap);
         mapBackground_.stretchBlit(mapBitmap);
     }
@@ -721,7 +721,7 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
 
     if (currentBeacon_ != MachLog::NO_BEACON)
     {
-        Gui::Coord cameraImageOffset = Gui::Coord(-2, -2) * MachGui::uiScaleFactor();
+        Gui::Coord cameraImageOffset = Gui::Coord(-2, -2) * Gui::uiScaleFactor();
         int cameraPolygonThickness = 1;
         if (zenithCamera_)
         {
@@ -750,7 +750,7 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
                 cameraPos_.y() + cameraImageOffset.y());
 
             Gui::Vec vecToEndPos(cameraPos_, cameraEndPos_);
-            vecToEndPos *= MachGui::uiScaleFactor();
+            vecToEndPos *= Gui::uiScaleFactor();
             Gui::Coord realEndPos = cameraPos_ + vecToEndPos;
 
             // Draw line of sight
@@ -1648,7 +1648,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
         else
         {
             // Load the actual map terrain
-            if (MachGui::uiScaleFactor() == 1)
+            if (Gui::uiScaleFactor() == 1)
             {
                 mapBackground_ = Gui::bitmap(mapPath_);
             }
@@ -1656,8 +1656,8 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
             {
                 GuiBitmap mapBitmap = Gui::bitmap(mapPath_);
                 mapBackground_ = RenSurface::createAnonymousSurface(
-                    mapBitmap.width() * MachGui::uiScaleFactor(),
-                    mapBitmap.height() * MachGui::uiScaleFactor(),
+                    mapBitmap.width() * Gui::uiScaleFactor(),
+                    mapBitmap.height() * Gui::uiScaleFactor(),
                     mapBitmap);
                 mapBackground_.stretchBlit(mapBitmap);
             }
@@ -1902,15 +1902,15 @@ void MachContinentMap::saveGame(PerOstream& outStream)
 {
     outStream << fogOfWarOn_;
 
-    if (MachGui::uiScaleFactor() == 1)
+    if (Gui::uiScaleFactor() == 1)
     {
         mapVisibleArea_.write(outStream);
     }
     else
     {
         GuiBitmap visibleArea = RenSurface::createAnonymousSurface(
-            mapVisibleArea_.width() / MachGui::uiScaleFactor(),
-            mapVisibleArea_.height() / MachGui::uiScaleFactor(),
+            mapVisibleArea_.width() / Gui::uiScaleFactor(),
+            mapVisibleArea_.height() / Gui::uiScaleFactor(),
             mapVisibleArea_);
         visibleArea.filledRectangle(RenSurface::Rect(0, 0, visibleArea.width(), visibleArea.height()), Gui::BLACK());
 

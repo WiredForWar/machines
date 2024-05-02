@@ -137,12 +137,12 @@ public:
     {
         if (done == lastDone_)
             return 0;
-        const double minx = 275 * MachGui::uiScaleFactor() + xOffset_;
-        const double maxx = 361 * MachGui::uiScaleFactor() + xOffset_;
-        const double miny = 250 * MachGui::uiScaleFactor() + yOffset_;
-        const double maxy = 254 * MachGui::uiScaleFactor() + yOffset_;
-        const double width = maxx - minx + 1 * MachGui::uiScaleFactor();
-        const double height = maxy - miny + 1 * MachGui::uiScaleFactor();
+        const double minx = 275 * Gui::uiScaleFactor() + xOffset_;
+        const double maxx = 361 * Gui::uiScaleFactor() + xOffset_;
+        const double miny = 250 * Gui::uiScaleFactor() + yOffset_;
+        const double maxy = 254 * Gui::uiScaleFactor() + yOffset_;
+        const double width = maxx - minx + 1 * Gui::uiScaleFactor();
+        const double height = maxy - miny + 1 * Gui::uiScaleFactor();
         const double limitRange = upperLimit_ - lowerLimit_;
         const double percentComplete = (((double)done / (double)maxDone) * limitRange) + lowerLimit_;
         const double displayWidth = std::min((percentComplete * width) + 5, width);

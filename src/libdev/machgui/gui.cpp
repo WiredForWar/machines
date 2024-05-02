@@ -597,11 +597,6 @@ const string& MachGui::unavailableText()
     return text;
 }
 
-MATHEX_SCALAR MachGui::uiScaleFactor()
-{
-    return Gui::uiScaleFactor();
-}
-
 MATHEX_SCALAR MachGui::menuScaleFactor()
 {
     return Gui::uiScaleFactor();
@@ -617,7 +612,7 @@ void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)
 std::string MachGui::getScaledImagePath(std::string path)
 {
     const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
-    const MATHEX_SCALAR factor = uiScaleFactor();
+    const MATHEX_SCALAR factor = Gui::uiScaleFactor();
     if (factor == 1)
     {
         if (hasBmpExtention)
@@ -639,12 +634,12 @@ std::string MachGui::getScaledImagePath(std::string path)
 
 GuiBitmap MachGui::getScaledImage(std::string path)
 {
-    return getScaledImage(path, uiScaleFactor());
+    return getScaledImage(path, Gui::uiScaleFactor());
 }
 
 GuiBitmap MachGui::getScaledImage(std::string path, float scaleFactor)
 {
-    GuiBitmap image = Gui::requestScaledImage(path, uiScaleFactor());
+    GuiBitmap image = Gui::requestScaledImage(path, Gui::uiScaleFactor());
     if (image.requestedSize().isNull())
         return image;
 
@@ -661,7 +656,7 @@ GuiBitmap MachGui::getScaledImage(std::string path, float scaleFactor)
 
 float MachGui::getPhysMarkerLineWidth()
 {
-    const float scale = uiScaleFactor();
+    const float scale = Gui::uiScaleFactor();
 
     if (scale >= 3.0f)
     {
@@ -678,13 +673,13 @@ float MachGui::getPhysMarkerLineWidth()
 // static
 int MachGui::controlPanelInXPos()
 {
-    return 6 * uiScaleFactor();
+    return 6 * Gui::uiScaleFactor();
 }
 
 // static
 int MachGui::controlPanelOutXPos()
 {
-    return 169 * uiScaleFactor();
+    return 169 * Gui::uiScaleFactor();
 }
 
 // static
@@ -702,62 +697,62 @@ int MachGui::controlPanelSlideOutSpeed()
 // static
 int MachGui::promptTextXOffset()
 {
-    return -7 * MachGui::uiScaleFactor();
+    return -7 * Gui::uiScaleFactor();
 }
 
 // static
 int MachGui::promptTextYOffset()
 {
-    return -24 * uiScaleFactor();
+    return -24 * Gui::uiScaleFactor();
 }
 
 // static
 int MachGui::mapAreaHeight()
 {
-    return 129 * uiScaleFactor();
+    return 129 * Gui::uiScaleFactor();
 }
 
 int MachGui::barBorderThickness()
 {
-    return 1 * MachGui::uiScaleFactor();
+    return 1 * Gui::uiScaleFactor();
 }
 
 int MachGui::barShadowThickness()
 {
-    return 1 * MachGui::uiScaleFactor();
+    return 1 * Gui::uiScaleFactor();
 }
 
 int MachGui::barDividerThickness()
 {
-    return 1 * MachGui::uiScaleFactor();
+    return 1 * Gui::uiScaleFactor();
 }
 
 int MachGui::barValueLineOffset()
 {
-    return 1 * MachGui::uiScaleFactor();
+    return 1 * Gui::uiScaleFactor();
 }
 
 int MachGui::barValueLineThickness()
 {
     // The '+' below is intentional:
     // We want 2px for 1X and 3px for 2X scales.
-    return 1 + MachGui::uiScaleFactor();
+    return 1 + Gui::uiScaleFactor();
 }
 
 int MachGui::iconIndexYOffset()
 {
     // We want 0px for 1X and 1px for 2X scales.
-    return MachGui::uiScaleFactor() - 1;
+    return Gui::uiScaleFactor() - 1;
 }
 
 int MachGui::corralInfoFontSize()
 {
-    return MachGui::uiScaleFactor() == 1 ? 10 : 18;
+    return Gui::uiScaleFactor() == 1 ? 10 : 18;
 }
 
 int MachGui::navigationButtonNumberFontSize()
 {
-    return MachGui::uiScaleFactor() == 1 ? 10 : 18;
+    return Gui::uiScaleFactor() == 1 ? 10 : 18;
 }
 
 // static

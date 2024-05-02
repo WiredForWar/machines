@@ -42,8 +42,8 @@ public:
 
     ~MachGuiSquadronAdminIcon() override { }
 
-    static size_t reqWidth() { return 40 * MachGui::uiScaleFactor(); }
-    static size_t reqHeight() { return 40 * MachGui::uiScaleFactor(); }
+    static size_t reqWidth() { return 40 * Gui::uiScaleFactor(); }
+    static size_t reqHeight() { return 40 * Gui::uiScaleFactor(); }
 
     void update()
     {
@@ -91,7 +91,7 @@ public:
         }
         */
 
-        const int borderWidth = 1 * MachGui::uiScaleFactor();
+        const int borderWidth = 1 * Gui::uiScaleFactor();
 
         Gui::Coord absCoordInOne(absoluteCoord());
         absCoordInOne.x(absCoordInOne.x() + borderWidth);
@@ -579,7 +579,7 @@ size_t MachGuiSquadronBank::reqHeight()
 
 size_t MachGuiSquadronBank::spacing()
 {
-    return 22 * MachGui::uiScaleFactor();
+    return 22 * Gui::uiScaleFactor();
 }
 
 void MachGuiSquadronBank::update()
@@ -637,13 +637,13 @@ void MachGuiSquadronBankIcon::doBeDepressed(const GuiMouseEvent&)
 // static
 size_t MachGuiSquadronBankIcon::reqWidth()
 {
-    return 29 * MachGui::uiScaleFactor(); // TODO : remove hard coding.
+    return 29 * Gui::uiScaleFactor(); // TODO : remove hard coding.
 }
 
 // static
 size_t MachGuiSquadronBankIcon::reqHeight()
 {
-    return 40 * MachGui::uiScaleFactor(); // TODO : remove hard coding.
+    return 40 * Gui::uiScaleFactor(); // TODO : remove hard coding.
 }
 
 // virtual

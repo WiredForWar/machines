@@ -27,7 +27,7 @@ public:
         : GuiBitmapButtonWithFilledBorder(
             pParent,
             rel,
-            GuiBorderMetrics(1, 1, 1) * MachGui::uiScaleFactor(),
+            GuiBorderMetrics(1, 1, 1) * Gui::uiScaleFactor(),
             GuiFilledBorderColours(
                 Gui::Colour(144.0 / 255.0, 148.0 / 255.0, 160.0 / 255.0),
                 Gui::Colour(232.0 / 255.0, 232.0 / 255.0, 232.0 / 255.0),
@@ -117,7 +117,7 @@ class MachGuiReturnToMenuBtn : public GuiButton
 {
 public:
     MachGuiReturnToMenuBtn(GuiDisplayable* pParent, const Gui::Coord& rel, MachInGameScreen* pInGameScreen)
-        : GuiButton(pParent, Gui::Box(rel, Gui::Size(20, 20) * MachGui::uiScaleFactor()))
+        : GuiButton(pParent, Gui::Box(rel, Gui::Size(20, 20) * Gui::uiScaleFactor()))
         , pInGameScreen_(pInGameScreen)
         , return1Bmp_(MachGui::getScaledImage("gui/misc/return1.bmp"))
         , return2Bmp_(MachGui::getScaledImage("gui/misc/return2.bmp"))
@@ -252,7 +252,7 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
         pParent,
         Gui::Box(
             coord,
-            Gui::Size(MachGuiControlPanelAddOnWidth, MachGuiControlPanelAddOnHeight) * MachGui::uiScaleFactor()),
+            Gui::Size(MachGuiControlPanelAddOnWidth, MachGuiControlPanelAddOnHeight) * Gui::uiScaleFactor()),
         GuiDisplayable::LAYER3)
 {
     pImpl_ = new MachGuiControlPanelAddOnImpl();
@@ -261,8 +261,8 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
 
     pInGameScreen_ = pInGameScreen;
 
-    new MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0) * MachGui::uiScaleFactor(), pInGameScreen);
-    new MachGuiCameraToggleBtn(this, Gui::Coord(4, 22) * MachGui::uiScaleFactor(), pInGameScreen);
+    new MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0) * Gui::uiScaleFactor(), pInGameScreen);
+    new MachGuiCameraToggleBtn(this, Gui::Coord(4, 22) * Gui::uiScaleFactor(), pInGameScreen);
 
     redrawEveryFrame(true);
 

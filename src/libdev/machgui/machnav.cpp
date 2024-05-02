@@ -147,8 +147,8 @@ protected:
         if (numThisType_ != 0)
         {
             Gui::Coord absCopy(abs);
-            absCopy.y(absCopy.y() + 19 * MachGui::uiScaleFactor());
-            absCopy.x(absCopy.x() + width() - 2 * MachGui::uiScaleFactor());
+            absCopy.y(absCopy.y() + 19 * Gui::uiScaleFactor());
+            absCopy.x(absCopy.x() + width() - 2 * Gui::uiScaleFactor());
 
             char buffer[8];
             snprintf(buffer, sizeof(buffer), "%zu", numThisType_);
@@ -198,11 +198,11 @@ public:
 
     static size_t reqWidth()
     {
-        return 28 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
+        return 28 * Gui::uiScaleFactor(); // TODO : remove hardcoded value
     }
     static size_t reqHeight()
     {
-        return 33 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
+        return 33 * Gui::uiScaleFactor(); // TODO : remove hardcoded value
     }
 
     void refresh()
@@ -627,11 +627,11 @@ public:
 
     static size_t reqWidth()
     {
-        return 20 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
+        return 20 * Gui::uiScaleFactor(); // TODO : remove hardcoded value
     }
     static size_t reqHeight()
     {
-        return 33 * MachGui::uiScaleFactor(); // TODO : remove hardcoded value
+        return 33 * Gui::uiScaleFactor(); // TODO : remove hardcoded value
     }
 
 protected:

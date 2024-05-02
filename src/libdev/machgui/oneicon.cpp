@@ -66,8 +66,8 @@ public:
 
     void setConstruction(MachLogConstruction* pConstruction) { pConstruction_ = pConstruction; }
 
-    static size_t reqWidth() { return 24 * MachGui::uiScaleFactor(); }
-    static size_t reqHeight() { return 24 * MachGui::uiScaleFactor(); }
+    static size_t reqWidth() { return 24 * Gui::uiScaleFactor(); }
+    static size_t reqHeight() { return 24 * Gui::uiScaleFactor(); }
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override
     {
@@ -169,8 +169,8 @@ public:
         }
     }
 
-    static size_t reqWidth() { return 24 * MachGui::uiScaleFactor(); }
-    static size_t reqHeight() { return 24 * MachGui::uiScaleFactor(); }
+    static size_t reqWidth() { return 24 * Gui::uiScaleFactor(); }
+    static size_t reqHeight() { return 24 * Gui::uiScaleFactor(); }
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override
     {
@@ -251,13 +251,13 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCorralSingleIconInfo& t)
 // static
 size_t MachGuiCorralSingleIconInfo::reqWidth()
 {
-    return 93 * MachGui::uiScaleFactor();
+    return 93 * Gui::uiScaleFactor();
 }
 
 // static
 size_t MachGuiCorralSingleIconInfo::reqHeight()
 {
-    return 47 * MachGui::uiScaleFactor();
+    return 47 * Gui::uiScaleFactor();
 }
 
 // virtual

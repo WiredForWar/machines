@@ -367,7 +367,7 @@ bool SDLApp::clientStartup()
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
-    initDefaultFontSize(MachGui::uiScaleFactor());
+    initDefaultFontSize(Gui::uiScaleFactor());
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     {
