@@ -2309,11 +2309,12 @@ void MachGuiStartupScreens::contextAnimation()
         SysPathName sysFlicName("flics/animatic.smk");
         string cdRomDrive;
         bool flicExists = false;
+        Gui::Coord animationPos = Gui::Coord(5, 104);
 
         // Try playing into anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
-            startPlayingAnimation(sysFlicName, false, true, Gui::Coord(5, 104), true);
+            startPlayingAnimation(sysFlicName, false, true, animationPos, true);
             flicExists = true;
         }
         // Try playing intro anim off CD-ROM
@@ -2328,7 +2329,7 @@ void MachGuiStartupScreens::contextAnimation()
             if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/animatic.smk"))
             {
                 SysPathName sysCDFlicName(cdRomDrive + "flics/animatic.smk");
-                startPlayingAnimation(sysCDFlicName, false, true, Gui::Coord(5, 104), true);
+                startPlayingAnimation(sysCDFlicName, false, true, animationPos, true);
                 flicExists = true;
             }
         }
@@ -2346,11 +2347,12 @@ void MachGuiStartupScreens::contextAnimation()
         SysPathName sysFlicName("flics/postload.smk");
         string cdRomDrive;
         bool flicExists = false;
+        Gui::Coord animationPos = Gui::Coord(32, 129);
 
         // Try playing intro anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
-            startPlayingAnimation(sysFlicName, false, true, Gui::Coord(32, 129));
+            startPlayingAnimation(sysFlicName, false, true, animationPos);
             flicExists = true;
         }
         // Try playing intro anim off CD-ROM
@@ -2365,7 +2367,7 @@ void MachGuiStartupScreens::contextAnimation()
             if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/postload.smk"))
             {
                 SysPathName sysCDFlicName(cdRomDrive + "flics/postload.smk");
-                startPlayingAnimation(sysCDFlicName, false, true, Gui::Coord(32, 129));
+                startPlayingAnimation(sysCDFlicName, false, true, animationPos);
                 desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
                 flicExists = true;
             }
@@ -2400,11 +2402,12 @@ void MachGuiStartupScreens::contextAnimation()
         SysPathName sysFlicName(flicName);
         string cdRomDrive;
         bool flicExists = false;
+        Gui::Coord animationPos = Gui::Coord(5, 104);
 
         // Try playing intro anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
-            startPlayingAnimation(sysFlicName, false, true, Gui::Coord(5, 104), true);
+            startPlayingAnimation(sysFlicName, false, true, animationPos, true);
             flicExists = true;
         }
         // Try playing intro anim off CD-ROM
@@ -2419,7 +2422,7 @@ void MachGuiStartupScreens::contextAnimation()
             if (MachGui::getCDRomDriveContainingFile(cdRomDrive, flicName))
             {
                 SysPathName sysCDFlicName(cdRomDrive + flicName);
-                startPlayingAnimation(sysCDFlicName, false, true, Gui::Coord(5, 104), true);
+                startPlayingAnimation(sysCDFlicName, false, true, animationPos, true);
                 flicExists = true;
             }
         }
