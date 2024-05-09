@@ -956,10 +956,10 @@ void MachGuiFirstPerson::update()
         else
         {
             pNormalCursor_->isVisible(false);
-            pStartCursor_->isVisible(! viableTarget);
+            pStartCursor_->isVisible(!(viableTarget && viableShootingTarget));
 
             // End startup cursor animation if there is a valid target
-            if (viableTarget)
+            if (viableTarget && viableShootingTarget)
             {
                 pStartCursor_->jumpToCell(pStartCursor_->numCells() - 1);
             }
