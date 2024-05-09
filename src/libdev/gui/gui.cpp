@@ -36,6 +36,8 @@ void Gui::backBuffer(const RenSurface& pNewBuffer)
     staticBackBuffer() = pNewBuffer;
 }
 
+static char s_ScaledTextureSuffix[] = "_2x.png";
+
 GuiBitmap Gui::requestScaledImage(std::string path, float scale)
 {
     const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
@@ -48,16 +50,15 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
         return Gui::bitmap(path);
     }
 
-           // TODO: Fix later :eyes:
     std::string scaledImagePath = path;
     if (hasBmpExtention)
     {
         const auto from = scaledImagePath.end() - 4;
-        scaledImagePath.replace(from, scaledImagePath.end(), "_2x.png");
+        scaledImagePath.replace(from, scaledImagePath.end(), s_ScaledTextureSuffix);
     }
     else
     {
-        scaledImagePath += "_2x.png";
+        scaledImagePath += s_ScaledTextureSuffix;
     }
 
     if (SysPathName::existsAsFile(scaledImagePath))
@@ -68,6 +69,23 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
     GuiBitmap result = Gui::bitmap(hasBmpExtention ? path : path + ".bmp");
     result.setRequestedSize(result.size() * scale);
     return result;
+}
+
+GuiBitmap Gui::getScaledImage(std::string path, float scale)
+{
+    GuiBitmap image = Gui::requestScaledImage(path, scale);
+    if (image.requestedSize().isNull())
+        return image;
+
+    RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize(), image);
+
+    // Workaround artefacts in transparent pixels:
+    scaledSurface.filledRectangle(image.requestedSize(), Gui::MAGENTA());
+    scaledSurface.enableColourKeying();
+
+    scaledSurface.stretchBlit(image);
+
+    return scaledSurface;
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -218,6 +236,7 @@ MATHEX_SCALAR Gui::uiScaleFactor()
 
 void Gui::setUiScaleFactor(MATHEX_SCALAR scale)
 {
+    s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
     s_uiScaleFactor = scale;
 }
 

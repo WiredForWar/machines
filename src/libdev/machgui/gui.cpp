@@ -636,24 +636,12 @@ std::string MachGui::getScaledImagePath(std::string path)
 
 GuiBitmap MachGui::getScaledImage(std::string path)
 {
-    return getScaledImage(path, Gui::uiScaleFactor());
+    return Gui::getScaledImage(path, Gui::uiScaleFactor());
 }
 
 GuiBitmap MachGui::getScaledImage(std::string path, float scaleFactor)
 {
-    GuiBitmap image = Gui::requestScaledImage(path, Gui::uiScaleFactor());
-    if (image.requestedSize().isNull())
-        return image;
-
-    RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize(), image);
-
-    // Workaround artefacts in transparent pixels:
-    scaledSurface.filledRectangle(image.requestedSize(), Gui::MAGENTA());
-    scaledSurface.enableColourKeying();
-
-    scaledSurface.stretchBlit(image);
-
-    return scaledSurface;
+    return Gui::getScaledImage(path, scaleFactor);
 }
 
 float MachGui::getPhysMarkerLineWidth()
