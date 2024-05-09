@@ -36,24 +36,53 @@ void Gui::backBuffer(const RenSurface& pNewBuffer)
     staticBackBuffer() = pNewBuffer;
 }
 
-static char s_ScaledTextureSuffix[] = "_2x.png";
+static thread_local char s_ScaledTextureSuffix[] = "_2x.png";
+static constexpr char s_BmpTextureSuffix[] = ".bmp";
+constexpr auto s_BmpSuffixSize = sizeof(s_BmpTextureSuffix) - 1;
+
+std::string Gui::getScaledImagePath(std::string path, float scale)
+{
+    const bool hasBmpExtention = path.size() > s_BmpSuffixSize
+        && path.substr(path.size() - s_BmpSuffixSize, s_BmpSuffixSize) == s_BmpTextureSuffix;
+
+    if (scale == 1)
+    {
+        if (hasBmpExtention)
+            return path;
+
+        return path + s_BmpTextureSuffix;
+    }
+
+    s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
+    if (hasBmpExtention)
+    {
+        const auto from = path.end() - s_BmpSuffixSize;
+        path.replace(from, path.end(), s_ScaledTextureSuffix);
+        return path;
+    }
+
+    return path + s_ScaledTextureSuffix;
+}
 
 GuiBitmap Gui::requestScaledImage(std::string path, float scale)
 {
-    const bool hasBmpExtention = path.size() > 4 && path.substr(path.size() - 4, 4) == ".bmp";
+    const bool hasBmpExtention = path.size() > s_BmpSuffixSize
+        && path.substr(path.size() - s_BmpSuffixSize, s_BmpSuffixSize) == s_BmpTextureSuffix;
+
     if (scale == 1)
     {
         if (!hasBmpExtention)
         {
-            path += ".bmp";
+            path += s_BmpTextureSuffix;
         }
         return Gui::bitmap(path);
     }
 
+    s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
     std::string scaledImagePath = path;
     if (hasBmpExtention)
     {
-        const auto from = scaledImagePath.end() - 4;
+        const auto from = scaledImagePath.end() - s_BmpSuffixSize;
         scaledImagePath.replace(from, scaledImagePath.end(), s_ScaledTextureSuffix);
     }
     else
@@ -66,7 +95,7 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
         return Gui::bitmap(scaledImagePath);
     }
 
-    GuiBitmap result = Gui::bitmap(hasBmpExtention ? path : path + ".bmp");
+    GuiBitmap result = Gui::bitmap(hasBmpExtention ? path : path + s_BmpTextureSuffix);
     result.setRequestedSize(result.size() * scale);
     return result;
 }

@@ -143,6 +143,8 @@ void writeScreenAsFile(const char* startFilename);
 
 RenSurface& staticBackBuffer();
 
+std::string getScaledImagePath(std::string path, float scale);
+
 /**
  * @brief Returns the original bitmap or its HiDPI alternative if available
  * @param path The path to the image file (with .bmp or without any extension)

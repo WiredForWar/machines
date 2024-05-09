@@ -70,8 +70,6 @@ const string& wonSymbolText();
 MATHEX_SCALAR menuScaleFactor();
 void setUiScaleFactor(MATHEX_SCALAR scale);
 
-std::string getScaledImagePath(std::string path);
-
 /**
  * @brief Returns a bitmap scaled by uiScaleFactor() or a HiDPI alternatives
  * @param path to the image file (with .bmp or without any extension)
