@@ -143,7 +143,7 @@ void writeScreenAsFile(const char* startFilename);
 
 RenSurface& staticBackBuffer();
 
-std::string getScaledImagePath(std::string path, float scale);
+std::string getScaledImagePath(std::string path, float scale = uiScaleFactor());
 
 /**
  * @brief Returns the original bitmap or its HiDPI alternative if available
@@ -151,7 +151,7 @@ std::string getScaledImagePath(std::string path, float scale);
  * @param scale The wanted scale factor
  * @return image as is or HiDPI bitmap
  */
-GuiBitmap requestScaledImage(std::string path, float scale);
+GuiBitmap requestScaledImage(std::string path, float scale = uiScaleFactor());
 
 /**
  * @brief Returns a bitmap scaled by uiScaleFactor() or a HiDPI alternatives
@@ -159,7 +159,8 @@ GuiBitmap requestScaledImage(std::string path, float scale);
  * @param scale The wanted scale factor
  * @return scaled image or HiDPI bitmap
  */
-GuiBitmap getScaledImage(std::string path, float scale);
+GuiBitmap getScaledImage(std::string path, float scale = uiScaleFactor());
+
 }; // namespace Gui
 
 /* //////////////////////////////////////////////////////////////// */
