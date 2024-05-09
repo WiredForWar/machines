@@ -97,9 +97,11 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
         pCells->emplace_back(cell);
     }
 
+    Gui::Coord coord(x, y);
+
     MachGuiAnimation* pAnim = new MachGuiAnimation(
         pParent,
-        Gui::Box(x + xOffset, y + yOffset, x + xOffset, y + yOffset) * scale,
+        Gui::Box(Gui::Coord(xOffset, yOffset) + coord * scale, Gui::Size(0, 0)),
         std::move(pCells));
     pAnim->loopBack_ = loopBack;
 
