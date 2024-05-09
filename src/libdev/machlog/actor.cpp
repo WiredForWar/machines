@@ -597,7 +597,12 @@ void MachActor::hp(const MachPhys::HitPointUnits& newHp)
 
 MATHEX_SCALAR MachActor::hpRatio() const
 {
-    return (MATHEX_SCALAR)hp() / (MATHEX_SCALAR)maximumhp();
+    return hp() * 1.0 / maximumhp();
+}
+
+MATHEX_SCALAR MachActor::armourRatio() const
+{
+    return armour() * 1.0 / objectData().armour();
 }
 
 bool MachActor::IsSameActorType(const MachActor* pActor1, const MachActor* pActor2)

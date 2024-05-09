@@ -140,6 +140,7 @@ public:
     MachPhys::HitPointUnits hp() const;
     MachPhys::HitPointUnits maximumhp() const;
     MATHEX_SCALAR hpRatio() const;
+    MATHEX_SCALAR armourRatio() const;
 
     static bool IsSameActorType(const MachActor* pActor1, const MachActor* pActor2);
 
