@@ -36,26 +36,27 @@ class MachGuiRadarImpl
 public:
     MachGuiRadarImpl();
 
-    MachActor* pActor_;
+    MachActor* pActor_ {};
     GuiBitmap healthBmp_[3];
     GuiBitmap armourBmp_[3];
     GuiBitmap radarBackdropBmp_;
     GuiBitmap radarDomeBmp_;
-    MachLog1stPersonHandler* pLogHandler_;
+    MachLog1stPersonHandler* pLogHandler_ {};
     bool justEnteredFirstPerson_;
     GuiBitmap radarStartupFrames_[RADAR_ANIMATION_FRAMES];
     GuiBitmap machineIcon_;
-    bool hpAboveCritical_;
+    bool hpAboveCritical_ {};
     double animationEndTime_;
     int frameNumber_;
 };
 
 MachGuiRadarImpl::MachGuiRadarImpl()
-    : pActor_(nullptr)
-    , pLogHandler_(nullptr)
-    , radarBackdropBmp_(RenSurface::createSharedSurface("gui/fstpersn/radar/rmmap.bmp", Gui::backBuffer()))
-    , radarDomeBmp_(RenSurface::createSharedSurface("gui/fstpersn/radar/dome.bmp", Gui::backBuffer()))
-    , hpAboveCritical_(false)
+    : radarBackdropBmp_(RenSurface::createSharedSurface(
+        Gui::getScaledImagePath("gui/fstpersn/radar/rmmap.bmp"),
+        Gui::backBuffer()))
+    , radarDomeBmp_(RenSurface::createSharedSurface(
+          Gui::getScaledImagePath("gui/fstpersn/radar/dome.bmp"),
+          Gui::backBuffer()))
 {
     radarBackdropBmp_.enableColourKeying();
     radarDomeBmp_.enableColourKeying();
@@ -120,7 +121,7 @@ void MachGuiRadar::doDisplay()
         // Display machine icon
         GuiPainter::instance().blit(
             machineIcon_,
-            absoluteBoundary().topLeft() + Gui::Coord(180, 30));
+            absoluteBoundary().topLeft() + Gui::Coord(180, 30) * Gui::uiScaleFactor());
     }
 
     ++frameNumber_;
@@ -173,9 +174,9 @@ void MachGuiRadar::displayHealthArmour()
         else if (apRatio <= MID_THRESHOLD)
             apBmpIndex = 1;
 
-        const int healthBarXOffset = 216;
-        const int armourBarXOffset = 234;
-        const int barYOffset = 111;
+        const int healthBarXOffset = 216 * Gui::uiScaleFactor();
+        const int armourBarXOffset = 234 * Gui::uiScaleFactor();
+        const int barYOffset = 111 * Gui::uiScaleFactor();
 
         GuiPainter::instance().blit(
             healthBmp_[hpBmpIndex],
@@ -205,8 +206,8 @@ void MachGuiRadar::displayRadarBlips()
     // Blit icons onto radar
     if (pActor_)
     {
-        const int screenScannerRadius = 55;
-        const Gui::Coord screenScannerCentre = Gui::Coord(102, 103);
+        const int screenScannerRadius = 55 * Gui::uiScaleFactor();
+        const Gui::Coord screenScannerCentre = Gui::Coord(102, 103) * Gui::uiScaleFactor();
         double scannerScaler = 1.0;
         double scannerRange = 1.0;
 
@@ -292,7 +293,7 @@ void MachGuiRadar::displayRadarBlips()
         }
 
         // Blit middle bit of radar
-        const Gui::Coord domeCoord(100, 101);
+        const Gui::Coord domeCoord = Gui::Coord(100, 101) * Gui::uiScaleFactor();
         GuiPainter::instance().blit(radarDomeBmp_, absoluteBoundary().topLeft() + domeCoord);
     }
 }
@@ -327,7 +328,7 @@ void MachGuiRadar::actor(MachActor* pActor)
         wc = pActor->asCanAttack().weaponCombo();
     }
 
-    machineIcon_ = Gui::bitmap(MachActorBitmaps::name(
+    machineIcon_ = MachGui::getScaledImage(MachActorBitmaps::name(
         pActor_->objectType(),
         pActor_->subType(),
         pActor_->asMachine().hwLevel(),
@@ -350,11 +351,12 @@ void MachGuiRadar::resetActor()
 // static
 GuiBitmap* MachGuiRadar::machineImage()
 {
-    static GuiBitmap machinePixel[MachPhys::N_RACES]
-        = { Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/rmachpix.bmp")),
-            Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/bmachpix.bmp")),
-            Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/gmachpix.bmp")),
-            Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/ymachpix.bmp")) };
+    static GuiBitmap machinePixel[MachPhys::N_RACES] = {
+        Gui::getScaledImage("gui/fstpersn/radar/blips/rmachpix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/bmachpix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/gmachpix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/ymachpix.bmp"),
+    };
 
     return machinePixel;
 }
@@ -362,11 +364,12 @@ GuiBitmap* MachGuiRadar::machineImage()
 // static
 GuiBitmap* MachGuiRadar::constructionImage()
 {
-    static GuiBitmap constructionPixel[MachPhys::N_RACES]
-        = { Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/rconspix.bmp")),
-            Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/bconspix.bmp")),
-            Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/gconspix.bmp")),
-            Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/yconspix.bmp")) };
+    static GuiBitmap constructionPixel[MachPhys::N_RACES] = {
+        Gui::getScaledImage("gui/fstpersn/radar/blips/rconspix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/bconspix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/gconspix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/yconspix.bmp"),
+    };
 
     return constructionPixel;
 }
@@ -374,10 +377,12 @@ GuiBitmap* MachGuiRadar::constructionImage()
 // static
 GuiBitmap* MachGuiRadar::podImage()
 {
-    static GuiBitmap podPixel[MachPhys::N_RACES] = { Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/rpodpix.bmp")),
-                                                     Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/bpodpix.bmp")),
-                                                     Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/gpodpix.bmp")),
-                                                     Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/ypodpix.bmp")) };
+    static GuiBitmap podPixel[MachPhys::N_RACES] = {
+        Gui::getScaledImage("gui/fstpersn/radar/blips/rpodpix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/bpodpix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/gpodpix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/ypodpix.bmp"),
+    };
 
     return podPixel;
 }
@@ -385,10 +390,12 @@ GuiBitmap* MachGuiRadar::podImage()
 // static
 GuiBitmap* MachGuiRadar::missileEmplacementImage()
 {
-    static GuiBitmap mePixel[MachPhys::N_RACES] = { Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/rmisspix.bmp")),
-                                                    Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/bmisspix.bmp")),
-                                                    Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/gmisspix.bmp")),
-                                                    Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/ymisspix.bmp")) };
+    static GuiBitmap mePixel[MachPhys::N_RACES] = {
+        Gui::getScaledImage("gui/fstpersn/radar/blips/rmisspix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/bmisspix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/gmisspix.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/blips/ymisspix.bmp"),
+    };
 
     return mePixel;
 }
@@ -396,22 +403,24 @@ GuiBitmap* MachGuiRadar::missileEmplacementImage()
 // static
 GuiBitmap* MachGuiRadar::arrowImage()
 {
-    static GuiBitmap arrowImages[16] = { Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point1.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point2.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point3.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point4.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point5.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point6.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point7.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point8.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point9.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point10.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point11.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point12.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point13.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point14.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point15.bmp")),
-                                         Gui::bitmap(SysPathName("gui/fstpersn/radar/arrow/point16.bmp")) };
+    static GuiBitmap arrowImages[16] = {
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point1.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point2.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point3.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point4.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point5.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point6.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point7.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point8.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point9.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point10.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point11.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point12.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point13.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point14.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point15.bmp"),
+        Gui::getScaledImage("gui/fstpersn/radar/arrow/point16.bmp"),
+    };
 
     return arrowImages;
 }
@@ -419,21 +428,21 @@ GuiBitmap* MachGuiRadar::arrowImage()
 // static
 GuiBitmap& MachGuiRadar::debrisImage()
 {
-    static GuiBitmap debrisPixel = Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/debris.bmp"));
+    static GuiBitmap debrisPixel = Gui::getScaledImage("gui/fstpersn/radar/blips/debris.bmp");
     return debrisPixel;
 }
 
 // static
 GuiBitmap& MachGuiRadar::artefactImage()
 {
-    static GuiBitmap artifactPixel = Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/artefact.bmp"));
+    static GuiBitmap artifactPixel = Gui::getScaledImage("gui/fstpersn/radar/blips/artefact.bmp");
     return artifactPixel;
 }
 
 // static
 GuiBitmap& MachGuiRadar::oreImage()
 {
-    static GuiBitmap orePixel = Gui::bitmap(SysPathName("gui/fstpersn/radar/blips/ore.bmp"));
+    static GuiBitmap orePixel = Gui::getScaledImage("gui/fstpersn/radar/blips/ore.bmp");
     return orePixel;
 }
 
@@ -475,7 +484,7 @@ void MachGuiRadar::displayMotionDirection()
         index = headAngleScalar * 16;
     }
 
-    const Gui::Coord arrowCoord = Gui::Coord(85, 85);
+    const Gui::Coord arrowCoord = Gui::Coord(85, 85) * Gui::uiScaleFactor();
     GuiPainter::instance().blit(arrowImage()[index], absoluteBoundary().topLeft() + arrowCoord);
 }
 
@@ -501,10 +510,11 @@ void MachGuiRadar::displayAnimatedRadarFrame()
     RenDevice& device = *W4dManager::instance().sceneManager()->pDevice();
     const int w = device.windowWidth();
 
+    const auto &frameTexture = radarStartupFrames_[frame];
+    int frameWidth = frameTexture.requestedSize().isNull() ? frameTexture.width() : frameTexture.requestedSize().width;
+
     // Blit to screen.
-    GuiPainter::instance().blit(
-        radarStartupFrames_[frame],
-        Gui::Coord(w - radarStartupFrames_[frame].width(), absoluteBoundary().minCorner().y()));
+    GuiPainter::instance().blitInRequestedSize(frameTexture, Gui::Coord(w - frameWidth, absoluteBoundary().top()));
 }
 
 void MachGuiRadar::initialise()
@@ -531,19 +541,18 @@ void MachGuiRadar::loadBitmaps()
         // framePath += itoa( loop, buffer, 10 );
         sprintf(buffer, "%d", loop);
         framePath += buffer;
-        framePath += ".bmp";
 
-        radarStartupFrames_[loop] = Gui::bitmap(framePath);
+        radarStartupFrames_[loop] = Gui::requestScaledImage(framePath);
         radarStartupFrames_[loop].enableColourKeying();
     }
 
     // Load health and armour bars
-    healthBmp_[0] = Gui::bitmap("gui/fstpersn/radar/rhealth.bmp");
-    healthBmp_[1] = Gui::bitmap("gui/fstpersn/radar/rhealth2.bmp");
-    healthBmp_[2] = Gui::bitmap("gui/fstpersn/radar/rhealth3.bmp");
-    armourBmp_[0] = Gui::bitmap("gui/fstpersn/radar/rarmour.bmp");
-    armourBmp_[1] = Gui::bitmap("gui/fstpersn/radar/rarmour2.bmp");
-    armourBmp_[2] = Gui::bitmap("gui/fstpersn/radar/rarmour3.bmp");
+    healthBmp_[0] = Gui::getScaledImage("gui/fstpersn/radar/rhealth.bmp");
+    healthBmp_[1] = Gui::getScaledImage("gui/fstpersn/radar/rhealth2.bmp");
+    healthBmp_[2] = Gui::getScaledImage("gui/fstpersn/radar/rhealth3.bmp");
+    armourBmp_[0] = Gui::getScaledImage("gui/fstpersn/radar/rarmour.bmp");
+    armourBmp_[1] = Gui::getScaledImage("gui/fstpersn/radar/rarmour2.bmp");
+    armourBmp_[2] = Gui::getScaledImage("gui/fstpersn/radar/rarmour3.bmp");
 }
 
 void MachGuiRadar::unloadBitmaps()
