@@ -19,6 +19,7 @@
 #include "envirnmt/planet.hpp"
 #include "render/device.hpp"
 #include "render/camera.hpp"
+#include "gui/gui.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
 #include "gui/image.hpp"
@@ -206,11 +207,11 @@ public:
 
 MachGuiFirstPersonImpl::MachGuiFirstPersonImpl()
     : switchBackToGroundCamera_(true)
-    , compassBmp_(Gui::bitmap("gui/fstpersn/cursor/compass.bmp"))
-    , healthBmp_(Gui::bitmap("gui/fstpersn/cursor/health.bmp"))
-    , armourBmp_(Gui::bitmap("gui/fstpersn/cursor/armour.bmp"))
-    , weaponChargeBmp_(Gui::bitmap("gui/fstpersn/weapon/chrgey.bmp"))
-    , weaponBackgroundBmp_(Gui::bitmap("gui/fstpersn/weapon/weapon.bmp"))
+    , compassBmp_(Gui::getScaledImage("gui/fstpersn/cursor/compass.bmp"))
+    , healthBmp_(Gui::getScaledImage("gui/fstpersn/cursor/health.bmp"))
+    , armourBmp_(Gui::getScaledImage("gui/fstpersn/cursor/armour.bmp"))
+    , weaponChargeBmp_(Gui::getScaledImage("gui/fstpersn/weapon/chrgey.bmp"))
+    , weaponBackgroundBmp_(Gui::requestScaledImage("gui/fstpersn/weapon/weapon.bmp"))
     , resolutionChanged_(true)
     , reverseUpDownKeys_(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"))
     , reverseUpDownMouse_(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"))
@@ -1232,8 +1233,9 @@ void MachGuiFirstPerson::doBecomeRoot()
     machineNVGOn_ = false;
 
     RenDevice& device = *pSceneManager_->pDevice();
-    const int h = device.windowHeight();
-    const int w = device.windowWidth();
+    const Ren::Size windowSize = device.windowSize();
+    const int h = windowSize.height;
+    const int w = windowSize.width;
 
     if (resolutionChanged_)
     {
@@ -1247,38 +1249,42 @@ void MachGuiFirstPerson::doBecomeRoot()
         delete pMissCursor_;
 
         // Load cursors...
-        GuiBitmap attachCursorBmp = Gui::bitmap("gui/fstpersn/cursor/targv1.bmp");
-        GuiBitmap normalCursorBmp = Gui::bitmap("gui/fstpersn/cursor/targ1.bmp");
-        GuiBitmap missCursorBmp = Gui::bitmap("gui/fstpersn/cursor/targnv1.bmp");
-        GuiBitmap startCursorBmp = Gui::bitmap("gui/fstpersn/cursor/ping1.bmp");
+        GuiBitmap attachCursorBmp = Gui::getScaledImage("gui/fstpersn/cursor/targv1.bmp");
+        GuiBitmap normalCursorBmp = Gui::getScaledImage("gui/fstpersn/cursor/targ1.bmp");
+        GuiBitmap missCursorBmp = Gui::getScaledImage("gui/fstpersn/cursor/targnv1.bmp");
+        GuiBitmap startCursorBmp = Gui::getScaledImage("gui/fstpersn/cursor/ping1.bmp");
 
         pStartCursor_ = MachGuiAnimation::createAnimation(
             this,
             SysPathName("gui/fstpersn/cursor/ping.anm"),
             true,
             (w / 2) - (startCursorBmp.width() / 2),
-            (h / 2) - (startCursorBmp.height() / 2));
+            (h / 2) - (startCursorBmp.height() / 2),
+            Gui::uiScaleFactor());
         pNormalCursor_ = MachGuiAnimation::createAnimation(
             this,
             SysPathName("gui/fstpersn/cursor/targ.anm"),
             true,
             (w / 2) - (normalCursorBmp.width() / 2),
-            (h / 2) - (normalCursorBmp.height() / 2));
+            (h / 2) - (normalCursorBmp.height() / 2),
+            Gui::uiScaleFactor());
         pAttackCursor_ = MachGuiAnimation::createAnimation(
             this,
             SysPathName("gui/fstpersn/cursor/targv.anm"),
             true,
             (w / 2) - (attachCursorBmp.width() / 2),
-            (h / 2) - (attachCursorBmp.height() / 2));
+            (h / 2) - (attachCursorBmp.height() / 2),
+            Gui::uiScaleFactor());
         pMissCursor_ = MachGuiAnimation::createAnimation(
             this,
             SysPathName("gui/fstpersn/cursor/targnv.anm"),
             true,
             (w / 2) - (missCursorBmp.width() / 2),
-            (h / 2) - (missCursorBmp.height() / 2));
+            (h / 2) - (missCursorBmp.height() / 2),
+            Gui::uiScaleFactor());
 
         // Create radar
-        GuiBitmap rcmMapBmp = Gui::bitmap("gui/fstpersn/radar/rmmap.bmp");
+        GuiBitmap rcmMapBmp = Gui::getScaledImage("gui/fstpersn/radar/rmmap.bmp");
         if (pRadar_ != nullptr)
         {
             delete pRadar_;
@@ -1292,7 +1298,7 @@ void MachGuiFirstPerson::doBecomeRoot()
     }
 
     // Reposition debug text
-    pSceneManager_->pDevice()->debugTextCoords(0, borderHeight_ + 1);
+    pSceneManager_->pDevice()->debugTextCoords(0, borderHeight_ + 1 * Gui::uiScaleFactor());
 
     inFirstPerson_ = true;
 
@@ -1313,8 +1319,8 @@ void MachGuiFirstPerson::doBecomeRoot()
 
     // Set mouse pointer to middle of screen...
     // Get screen size.
-    const double halfScreenWidth = (double)device.windowWidth() / 2.0;
-    const double halfScreenHeight = (double)device.windowHeight() / 2.0;
+    const double halfScreenWidth = device.windowWidth() / 2.0;
+    const double halfScreenHeight = device.windowHeight() / 2.0;
 
     DevMouse::instance().changePosition(halfScreenWidth, halfScreenHeight);
 
@@ -1333,7 +1339,7 @@ void MachGuiFirstPerson::doBecomeRoot()
 
         if (pLogHandler_ && pLogHandler_->nWeapons() != 0)
         {
-            chatMessagesY = borderHeight_ + weaponBackgroundBmp_.height() + 4;
+            chatMessagesY = borderHeight_ + weaponBackgroundBmp_.height() + 4 * Gui::uiScaleFactor();
         }
 
         pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(
@@ -1990,8 +1996,8 @@ void MachGuiFirstPerson::displayCompass()
     {
         // Get screen size.
         RenDevice& device = *pSceneManager_->pDevice();
-        const int halfScreenWidth = device.windowWidth() / 2;
-        const int halfScreenHeight = device.windowHeight() / 2;
+        const auto windowSize = device.windowSize();
+        const Gui::Coord centerCoord = Gui::Coord(windowSize.width, windowSize.height) * 0.5;
 
         MexTransform3d trans = pActor_->globalTransform();
         MexEulerAngles angles = trans.rotationAsEulerAngles();
@@ -2012,21 +2018,20 @@ void MachGuiFirstPerson::displayCompass()
         while (heading >= 360.0)
             heading -= 360.0;
 
-        const int compassZeroOffset = 38;
-        const int compass360Width = 160;
-        const int compassDisplayWidth = 48;
+        const int compassZeroOffset = 38 * Gui::uiScaleFactor();
+        const int compass360Width = 160 * Gui::uiScaleFactor();
+        const int compassDisplayWidth = 48 * Gui::uiScaleFactor();
 
         int compassOffset = heading / 360.0 * compass360Width;
 
         int startBmpPos = compassZeroOffset + compassOffset - (compassDisplayWidth / 2);
 
-        const int compassXOffset = -24;
-        const int compassYOffset = 26;
+        Gui::Coord compassCoord = Gui::Coord(-24, 26) * Gui::uiScaleFactor();
 
         GuiPainter::instance().blit(
             compassBmp_,
             Gui::Box(startBmpPos, 0, startBmpPos + compassDisplayWidth, compassBmp_.height()),
-            Gui::Coord(halfScreenWidth + compassXOffset, halfScreenHeight + compassYOffset));
+            centerCoord + compassCoord);
     }
 }
 
@@ -2042,8 +2047,8 @@ void MachGuiFirstPerson::displayHealthArmour()
     {
         // Get screen size.
         RenDevice& device = *pSceneManager_->pDevice();
-        const int halfScreenWidth = device.windowWidth() / 2;
-        const int halfScreenHeight = device.windowHeight() / 2;
+        const auto windowSize = device.windowSize();
+        const Gui::Coord centerCoord = Gui::Coord(windowSize.width, windowSize.height) * 0.5;
 
         const double healthHeight = healthBmp_.height();
         const double armourHeight = armourBmp_.height();
@@ -2051,22 +2056,18 @@ void MachGuiFirstPerson::displayHealthArmour()
         double displayHealthHeight = healthHeight * pTargetActor_->hpRatio();
         double displayArmourHeight = armourHeight * pTargetActor_->armourRatio();
 
-        const int healthBarXOffset = -33;
-        const int armourBarXOffset = 29;
         const int barYOffset = -9;
+        const Gui::Coord hpBarCoord = Gui::Coord(-33, barYOffset) * Gui::uiScaleFactor();
+        const Gui::Coord armourBarCoord = Gui::Coord(29, barYOffset) * Gui::uiScaleFactor();
 
         GuiPainter::instance().blit(
             healthBmp_,
             Gui::Box(0, healthHeight - displayHealthHeight, healthBmp_.width(), healthHeight),
-            Gui::Coord(
-                halfScreenWidth + healthBarXOffset,
-                halfScreenHeight + barYOffset + healthHeight - displayHealthHeight));
+            centerCoord + hpBarCoord + Gui::Coord(0, healthHeight - displayHealthHeight));
         GuiPainter::instance().blit(
             armourBmp_,
             Gui::Box(0, armourHeight - displayArmourHeight, armourBmp_.width(), armourHeight),
-            Gui::Coord(
-                halfScreenWidth + armourBarXOffset,
-                halfScreenHeight + barYOffset + armourHeight - displayArmourHeight));
+            centerCoord + armourBarCoord + Gui::Coord(0, armourHeight - displayArmourHeight));
     }
 }
 
@@ -2107,9 +2108,9 @@ void MachGuiFirstPerson::displayWeapons()
         rightWeaponPos_ = (2 * framesBehind) - 1;
     }
 
-    const int weaponIconWidthSpacer = 2;
+    const int weaponIconWidthSpacer = 2 * Gui::uiScaleFactor();
 
-    Gui::Coord topLeft(1, borderHeight_);
+    Gui::Coord topLeft(1 * Gui::uiScaleFactor(), borderHeight_);
 
     // Display LEFT weapon first
     if (displayWeapon(MachPhys::LEFT, topLeft, leftWeaponBmp_, leftWeaponChangeEndTime_, leftWeaponPos_))
@@ -2180,25 +2181,20 @@ bool MachGuiFirstPerson::displayWeapon(
 
                 if (frame >= WEAPON_DROPDOWN_FRAMES)
                 {
-                    GuiPainter::instance().blit(weaponBackgroundBmp_, topLeft);
+                    GuiPainter::instance().blitInRequestedSize(weaponBackgroundBmp_, topLeft);
 
                     // Weapon bitmap offset
-                    Gui::Coord wrcTopLeft(topLeft);
-                    wrcTopLeft.x(wrcTopLeft.x() + 8);
-                    wrcTopLeft.y(wrcTopLeft.y() + 33);
+                    Gui::Coord offset(8, 33);
+                    GuiPainter::instance().blitInRequestedSize(weaponBmp, topLeft + offset * Gui::uiScaleFactor());
 
-                    GuiPainter::instance().blit(weaponBmp, wrcTopLeft);
-
-                    wrcTopLeft.x(topLeft.x() + 9);
-                    wrcTopLeft.y(topLeft.y() + 19);
-
-                    double chargeDisplayWidth
-                        = ((double)weaponChargeBmp_.width() / 100.0) * weapon.percentageRecharge();
+                    offset = { 9, 19 };
+                    const double chargeDisplayWidth = (weaponChargeBmp_.width() / 100.0) * weapon.percentageRecharge();
+                    const int chargeDisplayHeight = weaponChargeBmp_.height();
 
                     GuiPainter::instance().blit(
                         weaponChargeBmp_,
-                        Gui::Box(0, 0, chargeDisplayWidth, weaponChargeBmp_.height()),
-                        wrcTopLeft);
+                        Gui::Box(0, 0, chargeDisplayWidth, chargeDisplayHeight),
+                        topLeft + offset * Gui::uiScaleFactor());
                 }
                 else
                 {
@@ -2208,7 +2204,7 @@ bool MachGuiFirstPerson::displayWeapon(
 
                     int displayFrame = std::max(frame, 0);
                     // Blit to screen.
-                    GuiPainter::instance().blit(weaponStartupFrames_[displayFrame], topLeft);
+                    GuiPainter::instance().blitInRequestedSize(weaponStartupFrames_[displayFrame], topLeft);
                 }
             }
         }
@@ -2358,7 +2354,7 @@ GuiBitmap MachGuiFirstPerson::getWeaponBmp(MachPhys::WeaponType wt)
             DEFAULT_ASSERT_BAD_CASE(wt);
     }
 
-    return Gui::bitmap(bitmapName);
+    return Gui::requestScaledImage(bitmapName, Gui::uiScaleFactor());
 }
 
 void MachGuiFirstPerson::doWeaponSelect()
@@ -2513,9 +2509,8 @@ void MachGuiFirstPerson::loadBitmaps()
         //      framePath += itoa( loop, buffer, 10 );
         sprintf(buffer, "%d", loop);
         framePath += buffer;
-        framePath += ".bmp";
 
-        weaponStartupFrames_[loop] = Gui::bitmap(framePath);
+        weaponStartupFrames_[loop] = Gui::requestScaledImage(framePath, Gui::uiScaleFactor());
         weaponStartupFrames_[loop].enableColourKeying();
     }
 
