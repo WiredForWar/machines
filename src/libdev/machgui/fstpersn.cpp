@@ -2045,19 +2045,11 @@ void MachGuiFirstPerson::displayHealthArmour()
         const int halfScreenWidth = device.windowWidth() / 2;
         const int halfScreenHeight = device.windowHeight() / 2;
 
-        const MachPhysObjectData& objData = pTargetActor_->objectData();
-
-        MachPhys::ArmourUnits maxAp = objData.armour();
-        MachPhys::HitPointUnits maxHp = objData.hitPoints();
-
-        MachPhys::ArmourUnits ap = pTargetActor_->armour();
-        MachPhys::HitPointUnits hp = pTargetActor_->hp();
-
         const double healthHeight = healthBmp_.height();
         const double armourHeight = armourBmp_.height();
 
-        double displayHealthHeight = ((double)hp / (double)maxHp) * healthHeight;
-        double displayArmourHeight = ((double)ap / (double)maxAp) * armourHeight;
+        double displayHealthHeight = healthHeight * pTargetActor_->hpRatio();
+        double displayArmourHeight = armourHeight * pTargetActor_->armourRatio();
 
         const int healthBarXOffset = -33;
         const int armourBarXOffset = 29;
