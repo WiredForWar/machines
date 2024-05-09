@@ -2243,7 +2243,7 @@ void MachGuiFirstPerson::loadWeaponBmps()
 
     for (int index = 0; index < pLogHandler_->nWeapons(); ++index)
     {
-        MachLogWeapon& weapon = pLogHandler_->weapon(index);
+        const MachLogWeapon& weapon = pLogHandler_->weapon(index);
         switch (weapon.mounting())
         {
             case MachPhys::LEFT:
@@ -2257,6 +2257,9 @@ void MachGuiFirstPerson::loadWeaponBmps()
             case MachPhys::TOP:
                 topWeaponBmp_ = getWeaponBmp(weapon.type());
                 topWeaponBmp_.enableColourKeying();
+                break;
+            case MachPhys::N_MOUNTINGS:
+                ASSERT_BAD_CASE;
                 break;
         }
     }
