@@ -740,18 +740,16 @@ void MachGuiFirstPerson::update()
 
         // Get screen size.
         RenDevice& device = *pSceneManager_->pDevice();
-        const double halfScreenWidth = (double)device.windowWidth() / 2.0;
-        const double halfScreenHeight = (double)device.windowHeight() / 2.0;
+        const double halfScreenWidth = device.windowWidth() / 2.0;
+        const double halfScreenHeight = device.windowHeight() / 2.0;
 
         // Get new mouse position
         DevMouse::Position mousePos = DevMouse::instance().position();
 
-        double deltaX = (double)mousePos.first - halfScreenWidth;
-        double deltaY = (double)mousePos.second - halfScreenHeight;
-        double origDeltaX = deltaX;
+        Gui::Vec relMove(mousePos.first - halfScreenWidth, mousePos.second - halfScreenHeight);
+        double origDeltaX = relMove.x();
 
-        // If head can turn independant of body then do so ( as long as Shift is pressed or Right mouse button pressed
-        // )...
+        // If head can turn independant of body then do so (as long as Shift is pressed or Right mouse button pressed)
         if (logHandler.canTurnHead() && (DevKeyboard::instance().shiftPressed() || DevMouse::instance().rightButton()))
         {
             if (DevMouse::instance().rightButton())
@@ -761,37 +759,37 @@ void MachGuiFirstPerson::update()
             // half screen width = 10 deg rotation ( in slow mode )
             if (DevKeyboard::instance().ctrlPressed())
             {
-                deltaX = (deltaX / halfScreenWidth) * (Mathex::PI / 18.0);
+                relMove.rx() = (relMove.x() / halfScreenWidth) * (Mathex::PI / 18.0);
             }
             else
             {
                 // Move ten times faster when mouse has moved a long way ( 60 pixels )
-                if (!(deltaX < 60.0 && deltaX > -60.0))
+                if (!(relMove.x() < 60.0 && relMove.x() > -60.0))
                 {
-                    deltaX *= 7.0;
+                    relMove.rx() *= 7.0;
                 }
-                deltaX = (deltaX / halfScreenHeight) * (Mathex::PI / 7.0);
+                relMove.rx() = (relMove.x() / halfScreenHeight) * (Mathex::PI / 7.0);
             }
 
-            if (deltaX != 0.0)
-                logHandler.turnHeadBy(deltaX);
+            if (relMove.x() != 0.0)
+                logHandler.turnHeadBy(relMove.x());
         }
         else // Move whole body
         {
             // Work out if body should be turning at fast rate
             bool turnFast = false;
-            if (! DevKeyboard::instance().ctrlPressed() && ((deltaX < -10.0 || deltaX > 10.0) || deltaX == 0.0))
+            if (! DevKeyboard::instance().ctrlPressed() && ((relMove.x() < -10.0 || relMove.x() > 10.0) || relMove.x() == 0.0))
             {
                 turnFast = true;
             }
 
             logHandler.turnAtFastRate(turnFast);
 
-            if (deltaX < 0)
+            if (relMove.x() < 0)
             {
                 logHandler.turnLeft();
             }
-            else if (deltaX > 0)
+            else if (relMove.x() > 0)
             {
                 logHandler.turnRight();
             }
@@ -802,32 +800,32 @@ void MachGuiFirstPerson::update()
         // half screen height = 10 deg rotation ( in slow mode )
         if (DevKeyboard::instance().ctrlPressed())
         {
-            deltaY = (deltaY / halfScreenHeight) * (Mathex::PI / 18.0);
+            relMove.ry() = (relMove.y() / halfScreenHeight) * (Mathex::PI / 18.0);
         }
         else
         {
-            if (abs(origDeltaX) < abs(deltaY * 3.0))
+            if (abs(origDeltaX) < abs(relMove.y() * 3.0))
             {
                 // Move two times faster when mouse has moved a long way ( 50 pixels )
-                if (!(deltaY < 50.0 && deltaY > -50.0))
+                if (!(relMove.y() < 50.0 && relMove.y() > -50.0))
                 {
-                    deltaY *= 4.0;
+                    relMove.ry() *= 4.0;
                 }
 
-                deltaY = (deltaY / halfScreenHeight) * (Mathex::PI / 12.0);
+                relMove.ry() = (relMove.y() / halfScreenHeight) * (Mathex::PI / 12.0);
             }
             else
             {
-                deltaY = 0.0;
+                relMove.ry() = 0.0;
             }
         }
 
-        if (deltaY != 0.0)
+        if (relMove.y() != 0.0)
         {
             if (reverseUpDownMouse_)
-                logHandler.lookDown(-deltaY);
+                logHandler.lookDown(-relMove.y());
             else
-                logHandler.lookDown(deltaY);
+                logHandler.lookDown(relMove.y());
         }
 
         // Reset mouse position to centre of screen
