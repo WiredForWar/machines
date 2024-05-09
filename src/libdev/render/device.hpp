@@ -176,6 +176,7 @@ public:
     float fogDensity() const;
 
     // The dimensions of the display, window or whatever.
+    Ren::Size windowSize() const;
     int windowWidth() const;
     int windowHeight() const;
 

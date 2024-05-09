@@ -1620,6 +1620,11 @@ void RenDevice::backgroundColour(const RenColour& b)
     pImpl_->background_ = b;
 }
 
+Ren::Size RenDevice::windowSize() const
+{
+    return display()->currentMode().size();
+}
+
 int RenDevice::windowWidth() const
 {
     // return backSurface().width();

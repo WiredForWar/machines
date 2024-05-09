@@ -55,6 +55,7 @@ public:
 
         int width() const { return width_; }
         int height() const { return height_; }
+        Ren::Size size() const { return { width_, height_ }; }
         int bitDepth() const { return depth_; }
         int refreshRate() const { return rate_; }
         int pixels() const { return width_ * height_; }
