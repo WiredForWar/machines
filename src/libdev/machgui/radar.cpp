@@ -6,12 +6,11 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/radar.hpp"
+#include "gui/gui.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/actnamid.hpp"
 #include "machgui/actbmpnm.hpp"
 #include "gui/painter.hpp"
-#include "gui/font.hpp"
-#include "gui/restring.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/objdata.hpp"
 #include "machphys/machdata.hpp"
@@ -26,7 +25,6 @@
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"
-#include "ctl/list.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "device/time.hpp"
 
@@ -120,10 +118,9 @@ void MachGuiRadar::doDisplay()
         displayHealthArmour();
 
         // Display machine icon
-        const int minX = absoluteBoundary().minCorner().x();
-        const int minY = absoluteBoundary().minCorner().y();
-
-        GuiPainter::instance().blit(machineIcon_, Gui::Coord(minX + 180, minY + 30));
+        GuiPainter::instance().blit(
+            machineIcon_,
+            absoluteBoundary().topLeft() + Gui::Coord(180, 30));
     }
 
     ++frameNumber_;
@@ -139,23 +136,14 @@ void MachGuiRadar::displayHealthArmour()
 
     if (pActor_)
     {
-        const MachPhysObjectData& objData = pActor_->objectData();
-
-        MachPhys::ArmourUnits maxAp = objData.armour();
-        MachPhys::HitPointUnits maxHp = objData.hitPoints();
-
-        MachPhys::ArmourUnits ap = pActor_->armour();
-        MachPhys::HitPointUnits hp = pActor_->hp();
-
         const double healthHeight = healthBmp_[0].height();
         const double armourHeight = armourBmp_[0].height();
 
-        double displayHealthHeight = ((double)hp / (double)maxHp) * healthHeight;
-        double displayArmourHeight = ((double)ap / (double)maxAp) * armourHeight;
+        float hpRatio = pActor_->hpRatio();
+        float apRatio = pActor_->armourRatio();
 
-        const int healthBarXOffset = 216;
-        const int armourBarXOffset = 234;
-        const int barYOffset = 111;
+        double displayHealthHeight = hpRatio * healthHeight;
+        double displayArmourHeight = apRatio * armourHeight;
 
         const int minX = absoluteBoundary().minCorner().x();
         const int minY = absoluteBoundary().minCorner().y();
@@ -164,13 +152,11 @@ void MachGuiRadar::displayHealthArmour()
         const float MID_THRESHOLD = 1.7 / 3.0;
         int hpBmpIndex = 0;
         int apBmpIndex = 0;
-        float hpRatio = (float)hp / (float)maxHp;
-        float apRatio = (float)ap / (float)maxAp;
 
         bool newHpAboveCritical = hpRatio > 0.2;
 
         // Play sound if HP are at critical level ( below 20% )
-        if (! newHpAboveCritical && hpAboveCritical_)
+        if (!newHpAboveCritical && hpAboveCritical_)
             MachGuiSoundManager::instance().playSound("gui/sounds/hpcritic.wav");
 
         hpAboveCritical_ = newHpAboveCritical;
@@ -186,6 +172,10 @@ void MachGuiRadar::displayHealthArmour()
             apBmpIndex = 2;
         else if (apRatio <= MID_THRESHOLD)
             apBmpIndex = 1;
+
+        const int healthBarXOffset = 216;
+        const int armourBarXOffset = 234;
+        const int barYOffset = 111;
 
         GuiPainter::instance().blit(
             healthBmp_[hpBmpIndex],
@@ -216,7 +206,7 @@ void MachGuiRadar::displayRadarBlips()
     if (pActor_)
     {
         const int screenScannerRadius = 55;
-        const Gui::Coord screenScannerCentre(102, 103);
+        const Gui::Coord screenScannerCentre = Gui::Coord(102, 103);
         double scannerScaler = 1.0;
         double scannerRange = 1.0;
 
@@ -242,99 +232,68 @@ void MachGuiRadar::displayRadarBlips()
 
         double sqrScannerRange = scannerRange * scannerRange;
 
-        MachLogRaces& races = MachLogRaces::instance();
-        MachLogRaces::Objects& allObjects = races.objects();
+        const MachLogRaces& races = MachLogRaces::instance();
+        const MachLogRaces::Objects& allObjects = races.objects();
 
-        for (MachLogRaces::Objects::iterator iter = allObjects.begin(); iter != allObjects.end(); ++iter)
+        for (const MachActor* pScannedActor : allObjects)
         {
-            MachActor* pScannedActor = *iter;
+            if (pScannedActor == pActor_)
+                continue;
 
-            if (pScannedActor != pActor_)
+            MexPoint3d pos = pScannedActor->globalTransform().position();
+            const MexPoint2d pos2d = pos;
+
+            if (pos2d.sqrEuclidianDistance(fstPersonPos) >= sqrScannerRange)
+                continue;
+
+            // Get info about scanned actors race
+            MachPhys::Race scannedActorRace = pScannedActor->displayMapAndIconRace();
+
+            // Convert pos relative to fstPerson machine
+            fstPersonActorInverseTrans.transform(&pos);
+
+            const MexPoint2d scaledPos2d = MexPoint2d(pos) * scannerScaler;
+            const Gui::Coord indicatorPos = absoluteBoundary().topLeft() + screenScannerCentre + scaledPos2d;
+
+            // Blit blob
+            if (pScannedActor->objectIsMachine() && !pScannedActor->asMachine().insideBuilding()
+                && // Ignore any machines inside buildings
+                !pScannedActor->asMachine().insideAPC()) // Ignore any machines inside APCs
             {
-                MexPoint3d pos = pScannedActor->globalTransform().position();
-                MexPoint2d pos2d = pos;
-
-                if (pos2d.sqrEuclidianDistance(fstPersonPos) < sqrScannerRange)
+                GuiPainter::instance().blit(machineImage()[scannedActorRace], indicatorPos);
+            }
+            else if (pScannedActor->objectIsConstruction())
+            {
+                if (pScannedActor->objectType() == MachLog::POD)
                 {
-                    // Get info about scanned actors race
-                    MachPhys::Race scannedActorRace = pScannedActor->displayMapAndIconRace();
-
-                    // Convert pos relative to fstPerson machine
-                    fstPersonActorInverseTrans.transform(&pos);
-
-                    double actorOffsetX = pos.x() * scannerScaler;
-                    double actorOffsetY = pos.y() * scannerScaler;
-
-                    // Blit blob
-                    if (pScannedActor->objectIsMachine() && ! pScannedActor->asMachine().insideBuilding()
-                        && // Ignore any machines inside buildings
-                        ! pScannedActor->asMachine().insideAPC()) // Ignore any machines inside APCs
-                    {
-                        GuiPainter::instance().blit(
-                            machineImage()[scannedActorRace],
-                            Gui::Coord(
-                                absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                    }
-                    else if (pScannedActor->objectIsConstruction())
-                    {
-                        if (pScannedActor->objectType() == MachLog::POD)
-                        {
-                            GuiPainter::instance().blit(
-                                podImage()[scannedActorRace],
-                                Gui::Coord(
-                                    absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                    absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                        }
-                        else if (pScannedActor->objectType() == MachLog::MISSILE_EMPLACEMENT)
-                        {
-                            GuiPainter::instance().blit(
-                                missileEmplacementImage()[scannedActorRace],
-                                Gui::Coord(
-                                    absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                    absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                        }
-                        else
-                        {
-                            GuiPainter::instance().blit(
-                                constructionImage()[scannedActorRace],
-                                Gui::Coord(
-                                    absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                    absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                        }
-                    }
-                    else if (pScannedActor->objectIsDebris())
-                    {
-                        GuiPainter::instance().blit(
-                            debrisImage(),
-                            Gui::Coord(
-                                absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                    }
-                    else if (pScannedActor->objectIsOreHolograph())
-                    {
-                        GuiPainter::instance().blit(
-                            oreImage(),
-                            Gui::Coord(
-                                absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                    }
-                    else if (pScannedActor->objectIsArtefact())
-                    {
-                        GuiPainter::instance().blit(
-                            artefactImage(),
-                            Gui::Coord(
-                                absoluteBoundary().minCorner().x() + screenScannerCentre.x() + actorOffsetX,
-                                absoluteBoundary().minCorner().y() + screenScannerCentre.y() + actorOffsetY));
-                    }
+                    GuiPainter::instance().blit(podImage()[scannedActorRace], indicatorPos);
                 }
+                else if (pScannedActor->objectType() == MachLog::MISSILE_EMPLACEMENT)
+                {
+                    GuiPainter::instance().blit(missileEmplacementImage()[scannedActorRace], indicatorPos);
+                }
+                else
+                {
+                    GuiPainter::instance().blit(constructionImage()[scannedActorRace], indicatorPos);
+                }
+            }
+            else if (pScannedActor->objectIsDebris())
+            {
+                GuiPainter::instance().blit(debrisImage(), indicatorPos);
+            }
+            else if (pScannedActor->objectIsOreHolograph())
+            {
+                GuiPainter::instance().blit(oreImage(), indicatorPos);
+            }
+            else if (pScannedActor->objectIsArtefact())
+            {
+                GuiPainter::instance().blit(artefactImage(), indicatorPos);
             }
         }
 
         // Blit middle bit of radar
-        GuiPainter::instance().blit(
-            radarDomeBmp_,
-            Gui::Coord(absoluteBoundary().minCorner().x() + 100, absoluteBoundary().minCorner().y() + 101));
+        const Gui::Coord domeCoord(100, 101);
+        GuiPainter::instance().blit(radarDomeBmp_, absoluteBoundary().topLeft() + domeCoord);
     }
 }
 
@@ -499,6 +458,7 @@ void MachGuiRadar::displayMotionDirection()
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
 
+    int index = 0;
     if (pLogHandler_ && pLogHandler_->canTurnHead())
     {
         MexDegrees headAngle = pLogHandler_->currentHeadAngle();
@@ -512,18 +472,11 @@ void MachGuiRadar::displayMotionDirection()
             headAngleScalar -= 360.0;
 
         headAngleScalar = headAngleScalar / 360.0;
-        int index = headAngleScalar * 16;
+        index = headAngleScalar * 16;
+    }
 
-        GuiPainter::instance().blit(
-            arrowImage()[index],
-            Gui::Coord(absoluteBoundary().minCorner().x() + 85, absoluteBoundary().minCorner().y() + 85));
-    }
-    else
-    {
-        GuiPainter::instance().blit(
-            arrowImage()[0],
-            Gui::Coord(absoluteBoundary().minCorner().x() + 85, absoluteBoundary().minCorner().y() + 85));
-    }
+    const Gui::Coord arrowCoord = Gui::Coord(85, 85);
+    GuiPainter::instance().blit(arrowImage()[index], absoluteBoundary().topLeft() + arrowCoord);
 }
 
 void MachGuiRadar::displayAnimatedRadarFrame()
@@ -572,10 +525,10 @@ void MachGuiRadar::loadBitmaps()
 
     for (int loop = 0; loop < RADAR_ANIMATION_FRAMES; ++loop)
     {
-        string framePath("gui/fstpersn/radar/radar");
+        std::string framePath("gui/fstpersn/radar/radar");
         char buffer[3];
 
-        //      framePath += itoa( loop, buffer, 10 );
+        // framePath += itoa( loop, buffer, 10 );
         sprintf(buffer, "%d", loop);
         framePath += buffer;
         framePath += ".bmp";
