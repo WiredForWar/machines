@@ -67,6 +67,12 @@ public:
     MATHEX_SCALAR x() const;
     MATHEX_SCALAR y() const;
 
+    void setX(MATHEX_SCALAR value);
+    void setY(MATHEX_SCALAR value);
+
+    MATHEX_SCALAR& rx();
+    MATHEX_SCALAR& ry();
+
     // Modify the vector so that it becomes a unit vector
     void makeUnitVector();
 
@@ -106,6 +112,26 @@ std::ostream& operator<<(std::ostream& os, const MexVec2& vec);
 std::istream& operator>>(std::istream& is, MexVec2& vec);
 
 //////////////////////////////////////////////////////////////////////
+
+inline void MexVec2::setX(MATHEX_SCALAR value)
+{
+    x_ = value;
+}
+
+inline void MexVec2::setY(MATHEX_SCALAR value)
+{
+    y_ = value;
+}
+
+inline MATHEX_SCALAR& MexVec2::rx()
+{
+    return x_;
+}
+
+inline MATHEX_SCALAR& MexVec2::ry()
+{
+    return y_;
+}
 
 #ifdef _INLINE
 #include "mathex/vec2.ipp"
