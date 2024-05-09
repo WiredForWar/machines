@@ -260,30 +260,7 @@ void MachGuiCtxBriefing::buttonEvent(MachGui::ButtonEvent be)
     }
     else if (be == MachGui::ButtonEvent::DUMMY_OK)
     {
-#ifndef DEMO
-// if ( MachGui::machinesCDIsAvailable( 2 )
-#ifndef PRODUCTION
-//   or getenv("cb_dontcheckcd") )
-#else
-//      )
-#endif
-        {
-            pStartupScreens_->buttonAction(MachGui::ButtonEvent::STARTGAME);
-        }
-// else
-//{
-//  silence voicemail
-//   stopPlayingBriefingVoicemail();
-//  Stop playing briefing animation
-//   pStartupScreens_->clearAllSmackerAnimations();
-
-//  pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiStartBriefingMessageBoxResponder(this) );
-//}
-#else // DEMO
-        {
-            pStartupScreens_->buttonAction(MachGui::ButtonEvent::STARTGAME);
-        }
-#endif
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::STARTGAME);
     }
 }
 

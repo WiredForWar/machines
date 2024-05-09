@@ -496,38 +496,7 @@ void MachGuiCtxImReady::buttonEvent(MachGui::ButtonEvent buttonEvent)
     {
         ASSERT(startupData().isHost(), "Only host should be able to press Start button");
 
-#ifndef DEMO
-        if (startupData().doesAtLeastOnePlayerHaveMachinesCD()
-#ifndef PRODUCTION
-            || getenv("cb_dontcheckcd"))
-#else
-        )
-#endif
-        {
-            // Assign colours to races that have been left as NORACE
-            pStartupScreens_->startupData()->initMachLogNetwork();
-
-            if (NetNetwork::instance().currentProtocol() != NetNetwork::ZONE)
-                NetNetwork::instance().disableNewPlayers();
-
-            //  Make sure all remote players have the correct game settings
-            pStartupScreens_->startupData()->sendUpdatePlayersMessage();
-            pStartupScreens_->startupData()->sendUpdateGameSettingsMessage();
-
-            for (int i = 0; i < 3; ++i)
-            {
-                SysWindowsAPI::peekMessage();
-                SysWindowsAPI::sleep(500);
-                pStartupScreens_->messageBroker().sendStartMessage();
-            }
-            pStartupScreens_->switchContext(MachGuiStartupScreens::CTX_MULTI_GAME);
-        }
-        else
-        {
-            pStartupScreens_->displayMsgBox(IDS_MENUMSG_MULTIPLAYERINSERTCD);
-        }
-#else // DEMO defined. \
-    // Assign colours to races that have been left as NORACE
+        // Assign colours to races that have been left as NORACE
         pStartupScreens_->startupData()->initMachLogNetwork();
 
         if (NetNetwork::instance().currentProtocol() != NetNetwork::ZONE)
@@ -544,7 +513,6 @@ void MachGuiCtxImReady::buttonEvent(MachGui::ButtonEvent buttonEvent)
             pStartupScreens_->messageBroker().sendStartMessage();
         }
         pStartupScreens_->switchContext(MachGuiStartupScreens::CTX_MULTI_GAME);
-#endif
     }
     else if (buttonEvent == MachGui::ButtonEvent::OK)
     {

@@ -762,23 +762,7 @@ void MachGuiCtxSkirmish::buttonEvent(MachGui::ButtonEvent buttonEvent)
 {
     if (buttonEvent == MachGui::ButtonEvent::DUMMY_OK)
     {
-#ifndef DEMO
-        // if ( MachGui::machinesCDIsAvailable( 2 )
-#ifndef PRODUCTION
-        //   or getenv("cb_dontcheckcd") )
-#else
-        //  )
-#endif
-        {
-            pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
-        }
-// else
-//{
-//   pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiStartSkirmishMessageBoxResponder(this) );
-// }
-#else // DEMO defined.
         pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
-#endif
     }
 }
 

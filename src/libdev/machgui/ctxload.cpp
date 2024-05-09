@@ -301,26 +301,6 @@ void MachGuiCtxLoad::buttonEvent(MachGui::ButtonEvent be)
     }
     else if (be == MachGui::ButtonEvent::DUMMY_OK)
     {
-#ifndef DEMO
-        if (! pSelectedSaveGame_)
-        {
-            pStartupScreens_->displayMsgBox(IDS_MENUMSG_SELECTSAVEDGAME);
-        }
-// else if ( MachGui::machinesCDIsAvailable( 2 )
-#ifndef PRODUCTION
-//   or getenv("cb_dontcheckcd") )
-#else
-//  )
-#endif
-        else
-        {
-            pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
-        }
-// else
-//{
-// pStartupScreens_->displayMsgBox( IDS_MENUMSG_INSERTCD, new MachGuiLoadMessageBoxResponder(this) );
-// }
-#else // DEMO defined
         if (!pSelectedSaveGame_)
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_SELECTSAVEDGAME);
@@ -329,7 +309,6 @@ void MachGuiCtxLoad::buttonEvent(MachGui::ButtonEvent be)
         {
             pStartupScreens_->buttonAction(MachGui::ButtonEvent::OK);
         }
-#endif
     }
 }
 
