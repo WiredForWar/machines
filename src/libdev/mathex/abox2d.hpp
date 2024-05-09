@@ -118,6 +118,8 @@ public:
     MATHEX_SCALAR left() const { return vmin_.x(); }
     MATHEX_SCALAR right() const { return vmax_.x(); }
 
+    MexPoint2d topLeft() const { return vmin_; }
+    MexPoint2d topRight() const { return { right(), top() }; }
     MexPoint2d bottomLeft() const { return { left(), bottom() }; }
     MexPoint2d bottomRight() const { return { right(), bottom() }; }
 
