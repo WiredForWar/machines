@@ -37,6 +37,8 @@ public:
 
     virtual void stretch(const GuiBitmap& source, const Gui::Box& destArea) const = 0;
 
+    virtual void blitInRequestedSize(const GuiBitmap& source, const Gui::Coord& dest) const = 0;
+
     ///////////////////////////////
 
     virtual void filledRectangle(const Gui::Box&, const Gui::Colour&) const = 0;
@@ -92,6 +94,8 @@ public:
     void stretch(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const override;
 
     void stretch(const GuiBitmap& source, const Gui::Box& destArea) const override;
+
+    void blitInRequestedSize(const GuiBitmap& source, const Gui::Coord& dest) const override;
 
     ///////////////////////////////
 

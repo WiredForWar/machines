@@ -19,6 +19,7 @@ public:
     MOCK_METHOD(void, tile, (const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea), (const, override));
     MOCK_METHOD(void, stretch, (const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea), (const, override));
     MOCK_METHOD(void, stretch, (const GuiBitmap& source, const Gui::Box& destArea ), (const, override));
+    MOCK_METHOD(void, blitInRequestedSize, (const GuiBitmap& source, const Gui::Coord& dest ), (const, override));
     MOCK_METHOD(void, filledRectangle, ( const Gui::Box&, const Gui::Colour& ), (const, override));
     MOCK_METHOD(void, hollowRectangle, ( const Gui::Box&, const Gui::Colour&, unsigned thickness ), (const, override));
     MOCK_METHOD(void, bevel, ( const Gui::Box& b, unsigned thickness, const Gui::Colour& hiCol, const Gui::Colour& loCol), (const, override));
