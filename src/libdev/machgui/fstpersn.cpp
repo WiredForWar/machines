@@ -1308,7 +1308,7 @@ void MachGuiFirstPerson::doBecomeRoot()
     // Create FP Command Widget
     if (pCommandWidget_ == nullptr)
     {
-        pCommandWidget_ = new MachGuiFPCommand(this, Gui::Coord(21, h - 187));
+        pCommandWidget_ = new MachGuiFPCommand(this, Gui::Coord(21 * Gui::uiScaleFactor(), h - 187 * Gui::uiScaleFactor()));
     }
 
     // Embody the actor

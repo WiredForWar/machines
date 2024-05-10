@@ -62,7 +62,7 @@ private:
     // Will either point to noSquadronSelected() OR activeSquadIcon_
     GuiBitmap* pActiveSquadIcon_;
     int64_t activeSquadNumber_;
-    MachLog1stPersonHandler* pLogHandler_;
+    MachLog1stPersonHandler* pLogHandler_ {};
 
     // Rendered text of the squad number.
     // 0 is blank

@@ -30,7 +30,7 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
         if (showText)
         {
             // RenSurface drawText doesn't work... :o
-            auto font = GuiBmpFont { GuiBmpFont::getFont("gui/menu/largyfnt.bmp") };
+            auto font = GuiBmpFont { GuiBmpFont::getFont(Gui::getScaledImagePath("gui/menu/largyfnt.bmp")) };
             font.drawText(&surfaceNUM, std::to_string(NUM), Gui::Coord(0, 0), 32);
         }
 
@@ -45,7 +45,6 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
 MachGuiFPCommand::MachGuiFPCommand(GuiDisplayable* pParent, const Gui::Coord& relPos)
     : GuiDisplayable(pParent, Gui::Box(relPos, 1, 1))
 {
-    pLogHandler_ = nullptr;
     pActiveSquadIcon_ = &noSquadronSelected();
     activeSquadNumber_ = 0;
 
@@ -82,7 +81,7 @@ void MachGuiFPCommand::resetLogHandler()
 
 void MachGuiFPCommand::updateSquadIcon()
 {
-    if (! pLogHandler_)
+    if (!pLogHandler_)
     {
         return;
     }
@@ -107,7 +106,7 @@ void MachGuiFPCommand::clearSquadIcon()
 
 void MachGuiFPCommand::updateSquadNumber()
 {
-    if (! pLogHandler_)
+    if (!pLogHandler_)
     {
         return;
     }
@@ -137,45 +136,48 @@ void MachGuiFPCommand::setMoveIconState(CommandIconState state)
 void MachGuiFPCommand::doDisplay()
 {
     // Display widget body, active squad icon, etc...
-    const int minX = absoluteBoundary().minCorner().x();
-    const int minY = absoluteBoundary().minCorner().y();
+    const auto topLeft = absoluteBoundary().topLeft();
 
-    GuiPainter::instance().blit(widgetBody(), Gui::Coord(minX, minY));
-    GuiPainter::instance().blit(*pActiveSquadIcon_, Gui::Coord(minX + 43, minY + 50));
-
-    GuiPainter::instance().blit(*mapSquadNumbers_[activeSquadNumber_], Gui::Coord(minX + 64, minY + 20));
+    GuiPainter::instance().blit(widgetBody(), topLeft);
+    GuiPainter::instance().blit(*pActiveSquadIcon_, topLeft + Gui::Coord(43, 50) * Gui::uiScaleFactor());
+    GuiPainter::instance().blit(
+        *mapSquadNumbers_[activeSquadNumber_],
+        topLeft + Gui::Coord(64, 20) * Gui::uiScaleFactor());
 
     // widget.bmp: 130x130
     // the command icons: 64x24
     int state = static_cast<int>(moveCommandState_);
-    GuiPainter::instance().blit(moveCommandIcons()[state], Gui::Coord(minX, minY + 130));
+    GuiPainter::instance().blit(moveCommandIcons()[state], topLeft + Gui::Coord(0, 130) * Gui::uiScaleFactor());
     state = static_cast<int>(followCommandState_);
-    GuiPainter::instance().blit(followCommandIcons()[state], Gui::Coord(minX + 66, minY + 130));
+    GuiPainter::instance().blit(followCommandIcons()[state], topLeft + Gui::Coord(66, 130) * Gui::uiScaleFactor());
     state = static_cast<int>(attackCommandState_);
-    GuiPainter::instance().blit(attackCommandIcons()[state], Gui::Coord(minX + 130 / 2 - 64 / 2, minY + 130 + 24));
+    GuiPainter::instance().blit(
+        attackCommandIcons()[state],
+        topLeft + Gui::Coord(130 / 2 - 64 / 2, 130 + 24) * Gui::uiScaleFactor());
 }
 
 // static
 GuiBitmap& MachGuiFPCommand::noSquadronSelected()
 {
-    static GuiBitmap blankIcon = Gui::bitmap(SysPathName("gui/fstpersn/machines/backgrnd.bmp"));
+    static GuiBitmap blankIcon = Gui::getScaledImage("gui/fstpersn/machines/backgrnd.bmp");
     return blankIcon;
 }
 
 // static
 GuiBitmap& MachGuiFPCommand::widgetBody()
 {
-    static GuiBitmap widget = Gui::bitmap(SysPathName("gui/fstpersn/command/widget.bmp"));
+    static GuiBitmap widget = Gui::getScaledImage("gui/fstpersn/command/widget.bmp");
     return widget;
 }
 
 // static
 GuiBitmap* MachGuiFPCommand::attackCommandIcons()
 {
-    static GuiBitmap attackIcons[NumCommandIconStates]
-        = { /* INVALID   */ Gui::bitmap(SysPathName("gui/fstpersn/command/attack_invalid.bmp")),
-            /* VALID     */ Gui::bitmap(SysPathName("gui/fstpersn/command/attack_valid.bmp")),
-            /* ACTIVATED */ Gui::bitmap(SysPathName("gui/fstpersn/command/attack_activate.bmp")) };
+    static GuiBitmap attackIcons[NumCommandIconStates] = {
+        /* INVALID   */ Gui::getScaledImage("gui/fstpersn/command/attack_invalid.bmp"),
+        /* VALID     */ Gui::getScaledImage("gui/fstpersn/command/attack_valid.bmp"),
+        /* ACTIVATED */ Gui::getScaledImage("gui/fstpersn/command/attack_activate.bmp"),
+    };
 
     return attackIcons;
 }
@@ -183,10 +185,11 @@ GuiBitmap* MachGuiFPCommand::attackCommandIcons()
 // static
 GuiBitmap* MachGuiFPCommand::followCommandIcons()
 {
-    static GuiBitmap followIcons[NumCommandIconStates]
-        = { /* INVALID   */ Gui::bitmap(SysPathName("gui/fstpersn/command/follow_invalid.bmp")),
-            /* VALID     */ Gui::bitmap(SysPathName("gui/fstpersn/command/follow_valid.bmp")),
-            /* ACTIVATED */ Gui::bitmap(SysPathName("gui/fstpersn/command/follow_activate.bmp")) };
+    static GuiBitmap followIcons[NumCommandIconStates] = {
+        /* INVALID   */ Gui::getScaledImage("gui/fstpersn/command/follow_invalid.bmp"),
+        /* VALID     */ Gui::getScaledImage("gui/fstpersn/command/follow_valid.bmp"),
+        /* ACTIVATED */ Gui::getScaledImage("gui/fstpersn/command/follow_activate.bmp"),
+    };
 
     return followIcons;
 }
@@ -194,10 +197,11 @@ GuiBitmap* MachGuiFPCommand::followCommandIcons()
 // static
 GuiBitmap* MachGuiFPCommand::moveCommandIcons()
 {
-    static GuiBitmap moveIcons[NumCommandIconStates]
-        = { /* INVALID   */ Gui::bitmap(SysPathName("gui/fstpersn/command/move_invalid.bmp")),
-            /* VALID     */ Gui::bitmap(SysPathName("gui/fstpersn/command/move_valid.bmp")),
-            /* ACTIVATED */ Gui::bitmap(SysPathName("gui/fstpersn/command/move_activate.bmp")) };
+    static GuiBitmap moveIcons[NumCommandIconStates] = {
+        /* INVALID   */ Gui::getScaledImage("gui/fstpersn/command/move_invalid.bmp"),
+        /* VALID     */ Gui::getScaledImage("gui/fstpersn/command/move_valid.bmp"),
+        /* ACTIVATED */ Gui::getScaledImage("gui/fstpersn/command/move_activate.bmp"),
+    };
 
     return moveIcons;
 }
