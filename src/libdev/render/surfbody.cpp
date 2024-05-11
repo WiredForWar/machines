@@ -348,81 +348,46 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
     if (currentHeight_ == 0)
         useFontHeight(defaultHeight());
 
-    if (pCurrentFont_)
+    if (!pCurrentFont_)
+        return;
+
+    std::vector<RenIVertex> vertices;
     {
-        std::vector<RenIVertex> vertices;
-        {
-            int expectedVerticesNumber = text.size() * 6;
-            if (options.hasShadow())
-            {
-                expectedVerticesNumber *= 2;
-            }
-            vertices.reserve(expectedVerticesNumber);
-        }
-
-        RenColour col = options.color();
-        uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
-
-        uint secondColor = 0;
-
+        int expectedVerticesNumber = text.size() * 6;
         if (options.hasShadow())
         {
-            RenColour unpacked = options.shadowColor();
-            secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
+            expectedVerticesNumber *= 2;
         }
+        vertices.reserve(expectedVerticesNumber);
+    }
 
-        y += currentHeight_;
-        const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
-        const Render::FontImpl::CharData* charData = nullptr;
+    RenColour col = options.color();
+    uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
 
-        if (options.alignment() & Render::AlignRight)
+    uint secondColor = 0;
+
+    if (options.hasShadow())
+    {
+        RenColour unpacked = options.shadowColor();
+        secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
+    }
+
+    y += currentHeight_;
+    const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
+    const Render::FontImpl::CharData* charData = nullptr;
+
+    if (options.alignment() & Render::AlignRight)
+    {
+        int textWidth = 0;
+        int lineTextWidth = 0;
+        // Precalc the width
+        int usedSpacing = 0;
+        for (uint character : text)
         {
-            int textWidth = 0;
-            int lineTextWidth = 0;
-            // Precalc the width
-            int usedSpacing = 0;
-            for (uint character : text)
-            {
-                if (character == '\n')
-                {
-                    textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
-                    usedSpacing = 0;
-                    continue;
-                }
-
-                charData = font.getChar(character);
-                // Ignore missing characters
-                if (!charData)
-                    continue;
-
-                /* Advance the cursor to the start of the next character */
-                lineTextWidth += charData->ax + options.letterSpacing();
-                usedSpacing = options.letterSpacing();
-            }
-            textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
-            if (options.hasShadow())
-            {
-                textWidth += options.shadowX();
-            }
-
-            x -= textWidth;
-
-            if (x < 0)
-            {
-                x = 0;
-            }
-        }
-
-        const int originX = x;
-
-        x = originX;
-        for (int i = 0; i < text.size(); ++i)
-        {
-            uint character = text[i];
             if (character == '\n')
             {
-                x = originX;
-                y += currentHeight_ + 2;
+                textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
+                usedSpacing = 0;
                 continue;
             }
 
@@ -431,84 +396,119 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
             if (!charData)
                 continue;
 
-            int x2 = x + charData->bl;
-            int y2 = y - charData->bt;
-            int w = charData->bw;
-            int h = charData->bh;
-
             /* Advance the cursor to the start of the next character */
-            x += charData->ax + options.letterSpacing();
-            y += charData->ay;
-
-            /* Skip glyphs that have no pixels */
-            if (w <= 0 || h <= 0)
-                continue;
-
-            // Calculate some common coordinate values
-            int x1 = x2 + w;
-            int y1 = y2 + h;
-            float tu1 = charData->tx;
-            float tv1 = charData->ty;
-            float tu2 = charData->tx2;
-            float tv2 = charData->ty2;
-
-            const auto addVertices
-                = [&vertices](uint color, int x1, int x2, int y1, int y2, float tu1, float tu2, float tv1, float tv2) {
-                RenIVertex vx;
-                vx.color = color;
-                vx.z = 0;
-                vx.x = x2;
-                vx.y = y2;
-                vx.tu = tu1;
-                vx.tv = tv1;
-                vertices.push_back(vx);
-                vx.x = x1;
-                vx.y = y2;
-                vx.tu = tu2;
-                vx.tv = tv1;
-                vertices.push_back(vx);
-                vx.x = x2;
-                vx.y = y1;
-                vx.tu = tu1;
-                vx.tv = tv2;
-                vertices.push_back(vx);
-                vx.x = x1;
-                vx.y = y2;
-                vx.tu = tu2;
-                vx.tv = tv1;
-                vertices.push_back(vx);
-                vx.x = x2;
-                vx.y = y1;
-                vx.tu = tu1;
-                vx.tv = tv2;
-                vertices.push_back(vx);
-                vx.x = x1;
-                vx.y = y1;
-                vx.tu = tu2;
-                vx.tv = tv2;
-                vertices.push_back(vx);
-            };
-
-            if (options.hasShadow())
-            {
-                addVertices(
-                    secondColor,
-                    x1 + options.shadowX(),
-                    x2 + options.shadowX(),
-                    y1 + options.shadowY(),
-                    y2 + options.shadowY(),
-                    tu1,
-                    tu2,
-                    tv1,
-                    tv2);
-            }
-            addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
+            lineTextWidth += charData->ax + options.letterSpacing();
+            usedSpacing = options.letterSpacing();
         }
-        glDisable(GL_CULL_FACE);
-        RenDevice::current()
-            ->renderScreenspace(&vertices.front(), vertices.size(), GL_TRIANGLES, width_, height_, font.textureId);
-        glEnable(GL_CULL_FACE);
+        textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
+        if (options.hasShadow())
+        {
+            textWidth += options.shadowX();
+        }
+
+        x -= textWidth;
+
+        if (x < 0)
+        {
+            x = 0;
+        }
     }
+
+    const int originX = x;
+
+    x = originX;
+    for (int i = 0; i < text.size(); ++i)
+    {
+        uint character = text[i];
+        if (character == '\n')
+        {
+            x = originX;
+            y += currentHeight_ + 2;
+            continue;
+        }
+
+        charData = font.getChar(character);
+        // Ignore missing characters
+        if (!charData)
+            continue;
+
+        int x2 = x + charData->bl;
+        int y2 = y - charData->bt;
+        int w = charData->bw;
+        int h = charData->bh;
+
+        /* Advance the cursor to the start of the next character */
+        x += charData->ax + options.letterSpacing();
+        y += charData->ay;
+
+        /* Skip glyphs that have no pixels */
+        if (w <= 0 || h <= 0)
+            continue;
+
+        // Calculate some common coordinate values
+        int x1 = x2 + w;
+        int y1 = y2 + h;
+        float tu1 = charData->tx;
+        float tv1 = charData->ty;
+        float tu2 = charData->tx2;
+        float tv2 = charData->ty2;
+
+        const auto addVertices
+            = [&vertices](uint color, int x1, int x2, int y1, int y2, float tu1, float tu2, float tv1, float tv2) {
+            RenIVertex vx;
+            vx.color = color;
+            vx.z = 0;
+            vx.x = x2;
+            vx.y = y2;
+            vx.tu = tu1;
+            vx.tv = tv1;
+            vertices.push_back(vx);
+            vx.x = x1;
+            vx.y = y2;
+            vx.tu = tu2;
+            vx.tv = tv1;
+            vertices.push_back(vx);
+            vx.x = x2;
+            vx.y = y1;
+            vx.tu = tu1;
+            vx.tv = tv2;
+            vertices.push_back(vx);
+            vx.x = x1;
+            vx.y = y2;
+            vx.tu = tu2;
+            vx.tv = tv1;
+            vertices.push_back(vx);
+            vx.x = x2;
+            vx.y = y1;
+            vx.tu = tu1;
+            vx.tv = tv2;
+            vertices.push_back(vx);
+            vx.x = x1;
+            vx.y = y1;
+            vx.tu = tu2;
+            vx.tv = tv2;
+            vertices.push_back(vx);
+        };
+
+        if (options.hasShadow())
+        {
+            addVertices(
+                secondColor,
+                x1 + options.shadowX(),
+                x2 + options.shadowX(),
+                y1 + options.shadowY(),
+                y2 + options.shadowY(),
+                tu1,
+                tu2,
+                tv1,
+                tv2);
+        }
+        addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
+    }
+    glDisable(GL_CULL_FACE);
+    RenDevice::current()
+        ->renderScreenspace(&vertices.front(), vertices.size(), GL_TRIANGLES, width_, height_, font.textureId);
+    glEnable(GL_CULL_FACE);
 }
 
 void RenISurfBody::textDimensions(const std::string& text, Ren::Rect* dimensions) const
