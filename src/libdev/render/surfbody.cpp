@@ -26,6 +26,40 @@
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"
 
+class ScopedGLEnable
+{
+public:
+    ScopedGLEnable(GLenum capability) :
+        capability_(capability)
+    {
+        glEnable(capability_);
+    }
+
+    ~ScopedGLEnable()
+    {
+        glDisable(capability_);
+    }
+private:
+    GLenum capability_{};
+};
+
+class ScopedGLDisable
+{
+public:
+    ScopedGLDisable(GLenum capability) :
+        capability_(capability)
+    {
+        glDisable(capability_);
+    }
+
+    ~ScopedGLDisable()
+    {
+        glEnable(capability_);
+    }
+private:
+    GLenum capability_{};
+};
+
 RenISurfBody::RenISurfBody()
     : displayType_(RenI::NOT_DISPLAY)
     , refCount_(0)
@@ -376,6 +410,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
     const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
     const Render::FontImpl::CharData* charData = nullptr;
 
+    auto disabledCullFaceScope = ScopedGLDisable(GL_CULL_FACE);
     if (options.alignment() & Render::AlignRight)
     {
         int textWidth = 0;
@@ -505,10 +540,8 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
         }
         addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
     }
-    glDisable(GL_CULL_FACE);
     RenDevice::current()
         ->renderScreenspace(&vertices.front(), vertices.size(), GL_TRIANGLES, width_, height_, font.textureId);
-    glEnable(GL_CULL_FACE);
 }
 
 void RenISurfBody::textDimensions(const std::string& text, Ren::Rect* dimensions) const
