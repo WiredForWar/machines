@@ -24,6 +24,9 @@ public:
     RenColour color() const { return color_; }
     void setColor(RenColour color) { color_ = color; }
 
+    int letterSpacing() const { return letterSpacing_; }
+    void setLetterSpacing(int value) { letterSpacing_ = value; };
+
     int shadowX() const { return shadowX_; }
     int shadowY() const { return shadowY_; }
     bool hasShadow() const { return shadowX_ || shadowY_; }
@@ -38,6 +41,7 @@ public:
 
 private:
     Alignment alignment_{};
+    int letterSpacing_{};
     int shadowX_ = 0;
     int shadowY_ = 0;
 

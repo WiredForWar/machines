@@ -380,13 +380,13 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
             int textWidth = 0;
             int lineTextWidth = 0;
             // Precalc the width
-            for (int i = 0; i < text.size(); ++i)
+            int usedSpacing = 0;
+            for (uint character : text)
             {
-                uint character = text[i];
                 if (character == '\n')
                 {
-                    textWidth = std::max<int>(textWidth, lineTextWidth);
-                    lineTextWidth = 0;
+                    textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
+                    usedSpacing = 0;
                     continue;
                 }
 
@@ -396,9 +396,10 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
                     continue;
 
                 /* Advance the cursor to the start of the next character */
-                lineTextWidth += charData->ax;
+                lineTextWidth += charData->ax + options.letterSpacing();
+                usedSpacing = options.letterSpacing();
             }
-            textWidth = std::max<int>(textWidth, lineTextWidth);
+            textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
             if (options.hasShadow())
             {
                 textWidth += options.shadowX();
@@ -436,7 +437,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
             int h = charData->bh;
 
             /* Advance the cursor to the start of the next character */
-            x += charData->ax;
+            x += charData->ax + options.letterSpacing();
             y += charData->ay;
 
             /* Skip glyphs that have no pixels */
