@@ -28,7 +28,7 @@ if (NOT BUILD_VERSION)
     endif()
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 ##
 # Platform detection and some related checks
