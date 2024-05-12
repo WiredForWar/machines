@@ -1,5 +1,5 @@
-Current dev build (to be released as v1.7.0):
-- Implemented initial 2X UI scaling (no scale for the first person camera UI, no scale for the menu, a lot of HD textures wanted)
+Current dev build (to be released as v1.7.1):
+- Implemented 2X UI scaling (a lot of HD textures wanted)
 - Implemented recent events manager (to cycle through the positions of the last important events with SpaceBar key)
 - Implemented a following camera (click on the Actor in corral or double click the squadron key (<0-9>)
 - Implemented mouse grab (important for multi-display configurations)
