@@ -74,7 +74,8 @@ void MachGuiCheckBox::doDisplay()
         x - font_.textWidth(label_) - 8 * MachGui::menuScaleFactor(),
         y
             + (font_.charHeight() > height() ? (font_.charHeight() - height()) / 2
-                                             : (height() - font_.charHeight()) / 2));
+                                             : (height() - font_.charHeight()) / 2)
+            + 1 * Gui::uiScaleFactor());
     font_.drawText(label_, startText, font_.textWidth(label_));
 
     if (isChecked_)
