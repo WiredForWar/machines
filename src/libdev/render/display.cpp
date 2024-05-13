@@ -72,8 +72,18 @@ void RenDisplay::buildDisplayModesList()
     CB_RenDisplay_DEPIMPL();
 
     SDL_DisplayMode desktopMode;
-    if (SDL_GetDesktopDisplayMode(0, &desktopMode) != 0)
+    if (SDL_GetDesktopDisplayMode(0, &desktopMode) == 0)
     {
+        spdlog::info(
+            "Current desktop display mode: {}x{}@{}bpp ({} Hz)",
+            desktopMode.w,
+            desktopMode.h,
+            SDL_BITSPERPIXEL(desktopMode.format),
+            desktopMode.refresh_rate);
+    }
+    else
+    {
+        spdlog::warn("Unable to get the current desktop display mode");
         // Got no current desktop mode
         desktopMode.w = desktopMode.h = 0;
     }
