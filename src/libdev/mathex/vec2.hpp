@@ -105,6 +105,7 @@ private:
 PER_DECLARE_PERSISTENT(MexVec2);
 
 MexPoint2d operator+(const MexPoint2d& rhs, const MexVec2& lhs);
+MexPoint2d operator-(const MexPoint2d& rhs, const MexVec2& lhs);
 
 // class ostream;
 // class istream;

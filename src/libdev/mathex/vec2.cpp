@@ -234,4 +234,9 @@ MexPoint2d operator+(const MexPoint2d& rhs, const MexVec2& lhs)
     return MexPoint2d(rhs.x() + lhs.x(), rhs.y() + lhs.y());
 }
 
+MexPoint2d operator-(const MexPoint2d& rhs, const MexVec2& lhs)
+{
+    return MexPoint2d(rhs.x() - lhs.x(), rhs.y() - lhs.y());
+}
+
 /* End VEC2.CPP *****************************************************/
