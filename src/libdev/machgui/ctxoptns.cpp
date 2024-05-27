@@ -197,23 +197,23 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Gui::AlignRight);
 
     // Create check boxes
-    pSound3d_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, sound3dCB.topLeft, sound3dCB.stringId);
+    pSound3d_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, sound3dCB.box(), sound3dCB.stringId);
 
     pTransitions_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, transitionsCB.topLeft, transitionsCB.stringId);
+        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, transitionsCB.box(), transitionsCB.stringId);
 
     pScreenResolutionLock_ = new 
-        MachGuiCheckBox(pStartupScreens, pStartupScreens, screenResolutionLock.topLeft, screenResolutionLock.stringId);
+        MachGuiCheckBox(pStartupScreens, pStartupScreens, screenResolutionLock.box(), screenResolutionLock.stringId);
 
-    pCursorType_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, cursorType.topLeft, cursorType.stringId);
+    pCursorType_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, cursorType.box(), cursorType.stringId);
 
-    pReverseKeys_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseKeys.topLeft, reverseKeys.stringId);
+    pReverseKeys_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseKeys.box(), reverseKeys.stringId);
 
     pReverseMouse_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseMouse.topLeft, reverseMouse.stringId);
+        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseMouse.box(), reverseMouse.stringId);
 
     pGrabMouse_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, grabMouse.topLeft, grabMouse.stringId);
+        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, grabMouse.box(), grabMouse.stringId);
 
     // Create volume sliders
     pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range);
@@ -361,14 +361,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
         // Access boolean items
         uint index = 0;
-        const auto optimizationAreaCoord = Gui::Coord(240, OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor();
+        const auto optimizationAreaCoord = Gui::Coord(95, OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor();
         const int verticalStep = 20 * MachGui::menuScaleFactor();
+        const int boxWidth = 157 * MachGui::menuScaleFactor();
         for (const MachPhysComplexityBooleanItem *item : boolItems)
         {
             booleanOptimisations_.push_back(new MachGuiCheckBox(
                 pStartupScreens,
                 pStartupScreens,
-                optimizationAreaCoord + Gui::Coord(0, verticalStep * index),
+                Gui::Box(optimizationAreaCoord + Gui::Coord(0, verticalStep * index), MexSize2d(boxWidth, MachGuiCheckBox::implicitHeight())),
                 item->id()));
             ++index;
         }

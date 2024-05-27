@@ -30,9 +30,8 @@ public:
     MachGuiCheckBox(
         MachGuiStartupScreens*,
         GuiDisplayable* pParent,
-        const Gui::Coord& boxTopLeft,
-        const ResolvedUiString& label,
-        bool isChecked = false);
+        const Gui::Box& box,
+        const ResolvedUiString& label);
     ~MachGuiCheckBox() override;
 
     // Check/uncheck box
@@ -48,11 +47,15 @@ public:
     bool executeControl() override;
     void hasFocus(bool) override;
 
+    static int implicitHeight();
+
 protected:
     void doDisplay() override;
-    void doHandleMouseClickEvent(const GuiMouseEvent&) override;
-    void doHandleMouseEnterEvent(const GuiMouseEvent&) override;
-    void doHandleMouseExitEvent(const GuiMouseEvent&) override;
+    void doHandleMouseClickEvent(const GuiMouseEvent& event) override;
+    void doHandleMouseEnterEvent(const GuiMouseEvent& event) override;
+    void doHandleContainsMouseEvent(const GuiMouseEvent& event) override;
+    void doHandleMouseExitEvent(const GuiMouseEvent& event) override;
+    bool hitButton(Gui::Coord relCoord) const;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCheckBox& t);
@@ -61,6 +64,7 @@ private:
     MachGuiCheckBox& operator=(const MachGuiCheckBox&);
 
     std::string label_;
+    Gui::Coord textPos_{};
     bool isChecked_{};
     bool isHighlighted_{};
     Callback callback_;

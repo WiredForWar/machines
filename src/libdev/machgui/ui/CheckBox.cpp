@@ -6,27 +6,26 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ui/CheckBox.hpp"
+
+#include "gui/gui.hpp"
 #include "system/pathname.hpp"
 #include "gui/event.hpp"
 #include "gui/painter.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 
-#define MGCB_BOX_DIMENSIONX 12
-#define MGCB_BOX_DIMENSIONY 11
+static constexpr MexSize2d IndicatorSize = MexSize2d(12, 11);
 
 MachGuiCheckBox::MachGuiCheckBox(
     MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
-    const Gui::Coord& boxTopLeft,
-    const ResolvedUiString& label,
-    bool isChecked)
+    const Gui::Box& box,
+    const ResolvedUiString& label)
     : GuiDisplayable(
         pParent,
-        Gui::Box(boxTopLeft, MexSize2d(MGCB_BOX_DIMENSIONX, MGCB_BOX_DIMENSIONY) * MachGui::menuScaleFactor()))
+        box)
     , MachGuiFocusCapableControl(pStartupScreens)
     , label_(label)
-    , isChecked_(isChecked)
     , font_(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()))
     , checkBmp_(MachGui::getScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
     , uncheckBmp_(MachGui::getScaledImage("gui/menu/uncheck.bmp", MachGui::menuScaleFactor()))
@@ -41,6 +40,14 @@ MachGuiCheckBox::MachGuiCheckBox(
     uncheckFocusBmp_.enableColourKeying();
     checkHighlightBmp_.enableColourKeying();
     uncheckHighlightBmp_.enableColourKeying();
+
+    const auto ScaledSize = IndicatorSize * MachGui::menuScaleFactor();
+    Gui::Coord indicatorPosition(absoluteBoundary().bottomRight() - Gui::Vec(ScaledSize.width(), ScaledSize.height()));
+
+    constexpr int spacing{8};
+    textPos_ = Gui::Coord(
+        width() - (IndicatorSize.width() + spacing) * MachGui::menuScaleFactor() - font_.textWidth(label_),
+        font_.charHeight() > height() ? 0 : (height() - font_.charHeight()) / 2 + 1 * Gui::uiScaleFactor());
 
     TEST_INVARIANT;
 }
@@ -67,53 +74,50 @@ void MachGuiCheckBox::CLASS_INVARIANT
 // virtual
 void MachGuiCheckBox::doDisplay()
 {
-    uint x = absoluteCoord().x();
-    uint y = absoluteCoord().y();
+    const auto ScaledSize = IndicatorSize * MachGui::menuScaleFactor();
+    Gui::Coord indicatorPosition(absoluteBoundary().bottomRight() - Gui::Vec(ScaledSize.width(), ScaledSize.height()));
 
-    Gui::Coord startText(
-        x - font_.textWidth(label_) - 8 * MachGui::menuScaleFactor(),
-        y
-            + (font_.charHeight() > height() ? (font_.charHeight() - height()) / 2
-                                             : (height() - font_.charHeight()) / 2)
-            + 1 * Gui::uiScaleFactor());
-    font_.drawText(label_, startText, font_.textWidth(label_));
+    font_.drawText(label_, absoluteBoundary().topLeft() + textPos_, font_.textWidth(label_));
 
     if (isChecked_)
     {
         if (isFocusControl())
         {
-            GuiPainter::instance().blit(checkFocusBmp_, absoluteCoord());
+            GuiPainter::instance().blit(checkFocusBmp_, indicatorPosition);
         }
         else if (isHighlighted_)
         {
-            GuiPainter::instance().blit(checkHighlightBmp_, absoluteCoord());
+            GuiPainter::instance().blit(checkHighlightBmp_, indicatorPosition);
         }
         else
         {
-            GuiPainter::instance().blit(checkBmp_, absoluteCoord());
+            GuiPainter::instance().blit(checkBmp_, indicatorPosition);
         }
     }
     else
     {
         if (isFocusControl())
         {
-            GuiPainter::instance().blit(uncheckFocusBmp_, absoluteCoord());
+            GuiPainter::instance().blit(uncheckFocusBmp_, indicatorPosition);
         }
         else if (isHighlighted_)
         {
-            GuiPainter::instance().blit(uncheckHighlightBmp_, absoluteCoord());
+            GuiPainter::instance().blit(uncheckHighlightBmp_, indicatorPosition);
         }
         else
         {
-            GuiPainter::instance().blit(uncheckBmp_, absoluteCoord());
+            GuiPainter::instance().blit(uncheckBmp_, indicatorPosition);
         }
     }
 }
 
 // virtual
-void MachGuiCheckBox::doHandleMouseClickEvent(const GuiMouseEvent& rel)
+void MachGuiCheckBox::doHandleMouseClickEvent(const GuiMouseEvent& event)
 {
-    if (rel.leftButton() == Gui::PRESSED)
+    if (!hitButton(event.coord()))
+        return;
+
+    if (event.leftButton() == Gui::PRESSED)
     {
         setChecked(!isChecked_);
         changed();
@@ -146,20 +150,38 @@ void MachGuiCheckBox::hasFocus(bool newValue)
     changed();
 }
 
-// virtual
-void MachGuiCheckBox::doHandleMouseEnterEvent(const GuiMouseEvent&)
+int MachGuiCheckBox::implicitHeight()
 {
-    isHighlighted_ = true;
+    return IndicatorSize.height() * MachGui::menuScaleFactor();
+}
 
+// virtual
+void MachGuiCheckBox::doHandleMouseEnterEvent(const GuiMouseEvent& event)
+{
+    if (!hitButton(event.coord()))
+        return;
+
+    isHighlighted_ = true;
+    changed();
+}
+
+void MachGuiCheckBox::doHandleContainsMouseEvent(const GuiMouseEvent& event)
+{
+    isHighlighted_ = hitButton(event.coord());
     changed();
 }
 
 // virtual
-void MachGuiCheckBox::doHandleMouseExitEvent(const GuiMouseEvent&)
+void MachGuiCheckBox::doHandleMouseExitEvent(const GuiMouseEvent& event)
 {
     isHighlighted_ = false;
 
     changed();
+}
+
+bool MachGuiCheckBox::hitButton(Gui::Coord relCoord) const
+{
+    return relCoord.x() >= textPos_.x();
 }
 
 /* End CHCKBOX.CPP **************************************************/

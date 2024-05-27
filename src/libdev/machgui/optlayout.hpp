@@ -14,6 +14,7 @@
 
 #include "base/base.hpp"
 #include "utility/linetok.hpp"
+#include "mathex/abox2d.hpp"
 #include "mathex/point2d.hpp"
 
 class MachGuiOptionsLayout
@@ -55,11 +56,18 @@ public:
 
     struct CheckBoxInfo
     {
-        CheckBoxInfo(MexPoint2d tl, uint id)
+        CheckBoxInfo(MexPoint2d tl, MexPoint2d br, uint id)
             : topLeft(tl)
+            , bottomRight(br)
             , stringId(id) {};
         MexPoint2d topLeft;
+        MexPoint2d bottomRight;
         uint stringId;
+
+        MexAlignedBox2d box() const
+        {
+            return MexAlignedBox2d(topLeft, bottomRight);
+        }
     };
 
     MachGuiOptionsLayout(const SysPathName&, float scale = 1);

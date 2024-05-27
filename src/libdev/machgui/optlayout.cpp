@@ -105,11 +105,12 @@ void MachGuiOptionsLayout::parseMenuText(const UtlLineTokeniser::Tokens& tokens)
 
 void MachGuiOptionsLayout::parseCheckBox(const UtlLineTokeniser::Tokens& tokens)
 {
-    ASSERT(tokens.size() == 4, "wrong number of arguments");
+    ASSERT(tokens.size() == 6, "wrong number of arguments");
 
     int stringId(atoi(tokens[1].c_str()));
     MexPoint2d topLeft(atoi(tokens[2].c_str()), atoi(tokens[3].c_str()));
-    checkBoxes_.emplace_back(CheckBoxInfo(topLeft * scale_, stringId));
+    MexPoint2d bottomRight(atoi(tokens[4].c_str()), atoi(tokens[5].c_str()));
+    checkBoxes_.emplace_back(CheckBoxInfo(topLeft * scale_, bottomRight * scale_, stringId));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)
