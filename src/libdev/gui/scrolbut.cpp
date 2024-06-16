@@ -18,7 +18,13 @@ GuiScrollButton::GuiScrollButton(
     const GuiFilledBorderColours& colours,
     const GuiBitmap& bitmap)
     : GuiListObserver(pList)
-    , GuiBitmapButtonWithFilledBorder(pParent, rel, GuiBorderMetrics(1, 1, 1), colours, bitmap, Gui::Coord(1, 1))
+    , GuiBitmapButtonWithFilledBorder(
+          pParent,
+          rel,
+          GuiBorderMetrics(1, 1, 1) * Gui::uiScaleFactor(),
+          colours,
+          bitmap,
+          Gui::Coord(1, 1) * Gui::uiScaleFactor())
     , scrollDir_(dir)
     , disabledBitmap_(bitmap)
     , enabledBitmap_(bitmap)
@@ -38,10 +44,10 @@ GuiScrollButton::GuiScrollButton(
     , GuiBitmapButtonWithFilledBorder(
           pParent,
           rel,
-          GuiBorderMetrics(1, 1, 1),
+          GuiBorderMetrics(1, 1, 1) * Gui::uiScaleFactor(),
           GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::RED()),
           bitmap,
-          Gui::Coord(1, 1))
+          Gui::Coord(1, 1) * Gui::uiScaleFactor())
     , scrollDir_(dir)
     , disabledBitmap_(bitmap)
     , enabledBitmap_(bitmap)
@@ -60,7 +66,13 @@ GuiScrollButton::GuiScrollButton(
     const GuiBitmap& enabledBitmap,
     const GuiBitmap& disabledBitmap)
     : GuiListObserver(pList)
-    , GuiBitmapButtonWithFilledBorder(pParent, rel, GuiBorderMetrics(1, 1, 1), colours, enabledBitmap, Gui::Coord(1, 1))
+    , GuiBitmapButtonWithFilledBorder(
+          pParent,
+          rel,
+          GuiBorderMetrics(1, 1, 1) * Gui::uiScaleFactor(),
+          colours,
+          enabledBitmap,
+          Gui::Coord(1, 1) * Gui::uiScaleFactor())
     , scrollDir_(dir)
     , disabledBitmap_(disabledBitmap)
     , enabledBitmap_(enabledBitmap)
@@ -81,10 +93,10 @@ GuiScrollButton::GuiScrollButton(
     , GuiBitmapButtonWithFilledBorder(
           pParent,
           rel,
-          GuiBorderMetrics(1, 1, 1),
+          GuiBorderMetrics(1, 1, 1) * Gui::uiScaleFactor(),
           GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::RED()),
           enabledBitmap,
-          Gui::Coord(1, 1))
+          Gui::Coord(1, 1) * Gui::uiScaleFactor())
     , scrollDir_(dir)
     , disabledBitmap_(disabledBitmap)
     , enabledBitmap_(enabledBitmap)
