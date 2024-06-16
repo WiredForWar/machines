@@ -44,7 +44,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations") # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
 
     if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
-        set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wsuggest-override")
+        set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-suggest-override")
     endif()
 
     set(RELEASE_CXX_FLAGS "-O2")
