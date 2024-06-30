@@ -17,7 +17,7 @@
 #include "base/base.hpp"
 // #include <function>
 
-template <class T> class less_ptr : public std::binary_function<T*, T*, bool>
+template <class T> class less_ptr
 {
 public:
     bool operator()(T* a, T* b) { return a < b; }
