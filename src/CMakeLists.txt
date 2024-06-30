@@ -183,7 +183,9 @@ target_link_libraries(libs INTERFACE
     LibDev::world4d
 )
 
-add_executable(machines ${MACHINES_SOURCES})
+add_executable(machines WIN32
+    ${MACHINES_SOURCES}
+)
 
 set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE -s)
 set_target_properties(machines PROPERTIES
@@ -192,7 +194,9 @@ set_target_properties(machines PROPERTIES
 target_link_libraries(machines libs)
 
 if(BUILD_PLANETED)
-    add_executable(planeted ${PLANETED_SOURCES})
+    add_executable(planeted WIN32
+        ${PLANETED_SOURCES}
+    )
     set_target_properties(planeted PROPERTIES LINK_FLAGS_RELEASE -s)
     set_target_properties(planeted PROPERTIES
         COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
