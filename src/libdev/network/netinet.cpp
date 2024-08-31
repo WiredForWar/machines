@@ -24,6 +24,9 @@
 #include "system/metafile.hpp"
 #include "system/metaistr.hpp"
 #include "system/registry.hpp"
+
+#include "spdlog/spdlog.h"
+
 #include <memory>
 
 #define MAXNAMELEN 200
@@ -258,7 +261,7 @@ void NetINetwork::initHost(bool asServer)
     ENetAddress address;
     if (asServer)
     {
-        NETWORK_STREAM("NetINetwork::initHost Server\n");
+        spdlog::info("NetINetwork: Initializing a server");
         // b. Create a host using enet_host_create
         address.host = ENET_HOST_ANY;
         address.port = 1234;
@@ -272,7 +275,7 @@ void NetINetwork::initHost(bool asServer)
 
         if (pHost_ == nullptr)
         {
-            std::cerr << "An error occured while trying to create an ENet server host" << std::endl;
+            spdlog::error("NetINetwork: Unable to create ENet server");
             // exit(EXIT_FAILURE);
             currentStatus(NetNetwork::NETNET_NODEERROR);
             return;
@@ -280,13 +283,13 @@ void NetINetwork::initHost(bool asServer)
     }
     else
     {
-        NETWORK_STREAM("NetINetwork::initHost Client\n");
+        spdlog::info("NetINetwork: Initializing a client");
         // b. Create a host using enet_host_create
         pHost_ = enet_host_create(nullptr, 16, 2, /*57600/8*/ 0, /*14400/8*/ 0);
 
         if (pHost_ == nullptr)
         {
-            std::cerr << "An error occured while trying to create an ENet server host" << std::endl;
+            spdlog::error("NetINetwork: Unable to create ENet client");
             // exit(EXIT_FAILURE);
             currentStatus(NetNetwork::NETNET_NODEERROR);
             return;
@@ -317,9 +320,10 @@ void NetINetwork::pollMessages()
             switch (event.type)
             {
                 case ENET_EVENT_TYPE_CONNECT:
-                    NETWORK_STREAM(
-                        "Got a new connection from " << event.peer->address.host << " " << event.peer->connectID
-                                                     << std::endl);
+                    spdlog::debug(
+                        "NetINetwork: Got a new connection from {} {}",
+                        event.peer->address.host,
+                        event.peer->connectID);
                     peers_.push_back(event.peer);
                     if (isLogicalHost_)
                     {
@@ -363,9 +367,7 @@ void NetINetwork::pollMessages()
                     break;
 
                 case ENET_EVENT_TYPE_DISCONNECT:
-                    NETWORK_STREAM(
-                        "Peer disconnected: " << event.peer->address.host << " " << (char*)event.peer->data
-                                              << std::endl);
+                    spdlog::debug("NetINetwork: Peer disconnected:  {}", event.peer->address.host);
 
                     // Reset client's information
                     _DELETE_ARRAY((char*)event.peer->data);
@@ -376,6 +378,8 @@ void NetINetwork::pollMessages()
                         if (pSystemMessageHandler_)
                             bool shouldAbort = ! pSystemMessageHandler_->handleSessionLostMessage();
                     }
+                    break;
+                case ENET_EVENT_TYPE_NONE:
                     break;
             }
         }

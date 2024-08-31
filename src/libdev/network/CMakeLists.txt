@@ -45,6 +45,8 @@ set(NETWORK_SOURCES
 add_library(network STATIC ${NETWORK_SOURCES})
 add_library(LibDev::network ALIAS network)
 
-target_link_libraries(network PUBLIC
+target_link_libraries(network PRIVATE
+    LibDev::base
+
     enet::enet
 )
