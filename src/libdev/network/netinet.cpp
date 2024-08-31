@@ -254,6 +254,7 @@ void NetINetwork::initHost(bool asServer)
         pHost_ = nullptr;
     }
 
+    isLogicalHost_ = asServer;
     ENetAddress address;
     if (asServer)
     {
@@ -320,6 +321,10 @@ void NetINetwork::pollMessages()
                         "Got a new connection from " << event.peer->address.host << " " << event.peer->connectID
                                                      << std::endl);
                     peers_.push_back(event.peer);
+                    if (isLogicalHost_)
+                    {
+                        sendInitPacket(event.peer);
+                    }
                     break;
 
                 case ENET_EVENT_TYPE_RECEIVE:
@@ -452,9 +457,7 @@ NetAppSession* NetINetwork::joinAppSession(const NetAppSessionUid& sessionUid)
         NETWORK_STREAM("Joining session succeeded.\n");
         // peers_.push_back(pPeer);
 
-        ENetPacket* packet
-            = enet_packet_create(localPlayerName_.c_str(), localPlayerName_.length() + 1, ENET_PACKET_FLAG_RELIABLE);
-        enet_peer_send(pPeer, 0, packet);
+        sendInitPacket(pPeer);
     }
     else
     {
@@ -1226,6 +1229,13 @@ void NetINetwork::disableNewPlayers()
 bool NetINetwork::pingAllAllowed() const
 {
     return pingAllAllowed_;
+}
+
+void NetINetwork::sendInitPacket(ENetPeer* pPeer)
+{
+    ENetPacket* packet
+        = enet_packet_create(localPlayerName_.c_str(), localPlayerName_.length() + 1, ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send(pPeer, 0, packet);
 }
 
 void NetINetwork::determineStandardSendFlags()

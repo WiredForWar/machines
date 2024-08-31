@@ -149,6 +149,8 @@ private:
     void disableNewPlayers();
     bool pingAllAllowed() const;
 
+    void sendInitPacket(ENetPeer* pPeer);
+
     void determineStandardSendFlags();
 
     void messageThrottlingActive(bool);
