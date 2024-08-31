@@ -405,7 +405,7 @@ bool MachLogNetwork::joinWithSessionId(const string& gameName, const string& pla
     PhysAbsoluteTime startTime = Phys::time();
     std::cout << "\n";
     PhysRelativeTime timeout = 30;
-    if (NetNetwork::instance().currentProtocol() == NetNetwork::MODEM)
+    if (NetNetwork::instance().currentProtocol() == NetNetwork::NetworkProtocol::MODEM)
         timeout = 1;
     while (! pSelectedSessionUid && ((Phys::time() - startTime) < timeout))
     {

@@ -266,22 +266,22 @@ std::ostream& operator<<(std::ostream& o, NetNetwork::NetworkProtocol protocol)
 {
     switch (protocol)
     {
-        case NetNetwork::IPX:
+        case NetNetwork::NetworkProtocol::IPX:
             o << "IPX";
             break;
-        case NetNetwork::TCPIP:
+        case NetNetwork::NetworkProtocol::TCPIP:
             o << "TCPIP";
             break;
-        case NetNetwork::MODEM:
+        case NetNetwork::NetworkProtocol::MODEM:
             o << "MODEM";
             break;
-        case NetNetwork::SERIAL:
+        case NetNetwork::NetworkProtocol::SERIAL:
             o << "SERIAL";
             break;
-        case NetNetwork::ZONE:
+        case NetNetwork::NetworkProtocol::ZONE:
             o << "ZONE";
             break;
-        case NetNetwork::OTHER:
+        case NetNetwork::NetworkProtocol::OTHER:
             o << "OTHER";
             break;
         default:

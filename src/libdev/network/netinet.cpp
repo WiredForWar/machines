@@ -544,7 +544,7 @@ const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(UpdateType update
         else
         {
             NetNetwork::ProtocolMap* pAvailableProtocols = &availableProtocols;
-            pAvailableProtocols->insert("UDP connection for IP v4", 0);
+            pAvailableProtocols->insert("UDP connection for IP v4", NetNetwork::NetworkProtocol::UDP);
 
             if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             {
@@ -612,37 +612,37 @@ void NetINetwork::chooseProtocol(const string& protoName, NetNetwork::Initialise
 
         if (strstr(protoName.c_str(), "UDP"))
         {
-            currentProtocol_ = NetNetwork::UDP;
+            currentProtocol_ = NetNetwork::NetworkProtocol::UDP;
             NETWORK_STREAM(" NetNetwork::UDP\n");
         }
         else if (strstr(protoName.c_str(), "IPX "))
         {
-            currentProtocol_ = NetNetwork::IPX;
+            currentProtocol_ = NetNetwork::NetworkProtocol::IPX;
             NETWORK_STREAM(" NetNetwork::IPX\n");
         }
         else if (strstr(protoName.c_str(), " TCP/IP "))
         {
-            currentProtocol_ = NetNetwork::TCPIP;
+            currentProtocol_ = NetNetwork::NetworkProtocol::TCPIP;
             NETWORK_STREAM(" NetNetwork::TCPIP\n");
         }
         else if (strstr(protoName.c_str(), "Serial "))
         {
-            currentProtocol_ = NetNetwork::SERIAL;
+            currentProtocol_ = NetNetwork::NetworkProtocol::SERIAL;
             NETWORK_STREAM(" NetNetwork::SERIAL\n");
         }
         else if (strstr(protoName.c_str(), "Modem "))
         {
-            currentProtocol_ = NetNetwork::MODEM;
+            currentProtocol_ = NetNetwork::NetworkProtocol::MODEM;
             NETWORK_STREAM(" NetNetwork::MODEM\n");
         }
         else if (strstr(protoName.c_str(), " Zone "))
         {
-            currentProtocol_ = NetNetwork::ZONE;
+            currentProtocol_ = NetNetwork::NetworkProtocol::ZONE;
             NETWORK_STREAM(" NetNetwork::ZONE\n");
         }
         else
         {
-            currentProtocol_ = NetNetwork::OTHER;
+            currentProtocol_ = NetNetwork::NetworkProtocol::OTHER;
             NETWORK_STREAM(" NetNetwork::OTHER\n");
         }
 
@@ -1150,7 +1150,7 @@ void NetINetwork::computeSentMessageStuffedNess()
 double NetINetwork::deterministicTimeoutPeriod() const
 {
     // 5 minutes allowed before IPX will blow up.
-    if (currentProtocol() == NetNetwork::IPX)
+    if (currentProtocol() == NetNetwork::NetworkProtocol::IPX)
         return 300;
     // 10 minutes of lag allowed for Zone type games
     return 600;
@@ -1162,7 +1162,7 @@ size_t NetINetwork::maxSentMessagesPerSecond() const
     if (! initialisedFromRegistry)
     {
         NetINetwork* pMe = _CONST_CAST(NetINetwork*, this);
-        bool fromLan = (currentProtocol() == NetNetwork::IPX);
+        bool fromLan = (currentProtocol() == NetNetwork::NetworkProtocol::IPX);
         string keyValue = "Max packets per second";
 
         if (fromLan)
@@ -1253,7 +1253,7 @@ void NetINetwork::autoAdjustMaxSentMessagesPerSecond(size_t numberOfPlayers)
 
     int thresholdValue = 50;
 
-    if (currentProtocol() != NetNetwork::IPX)
+    if (currentProtocol() != NetNetwork::NetworkProtocol::IPX)
     {
         thresholdValue = 40;
     }

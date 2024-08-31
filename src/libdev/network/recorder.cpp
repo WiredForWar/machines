@@ -143,7 +143,7 @@ void NetIRecorder::playbackAvailableProtocols(NetNetwork::ProtocolMap* pMap) con
         string str = RecRecorderPrivate::instance().playbackNetworkString();
         int ii = RecRecorderPrivate::instance().playbackNetworkInt();
 
-        map.insert(str, ii);
+        map.insert(str, static_cast<NetNetwork::NetworkProtocol>(ii));
     }
 
     *pMap = map;
@@ -156,7 +156,7 @@ void NetIRecorder::recordAvailableProtocols(const NetNetwork::ProtocolMap& proto
     for (NetNetwork::ProtocolMap::const_iterator i = protocolMap.begin(); i != protocolMap.end(); ++i)
     {
         RecRecorderPrivate::instance().recordNetworkString((*i).first);
-        RecRecorderPrivate::instance().recordNetworkInt((*i).second);
+        RecRecorderPrivate::instance().recordNetworkInt(static_cast<int>((*i).second));
     }
 }
 

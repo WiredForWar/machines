@@ -499,7 +499,7 @@ void MachGuiCtxImReady::buttonEvent(MachGui::ButtonEvent buttonEvent)
         // Assign colours to races that have been left as NORACE
         pStartupScreens_->startupData()->initMachLogNetwork();
 
-        if (NetNetwork::instance().currentProtocol() != NetNetwork::ZONE)
+        if (NetNetwork::instance().currentProtocol() != NetNetwork::NetworkProtocol::ZONE)
             NetNetwork::instance().disableNewPlayers();
 
         //  Make sure all remote players have the correct game settings

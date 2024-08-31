@@ -201,16 +201,16 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
 
             switch (NetNetwork::instance().currentProtocol())
             {
-                case NetNetwork::MODEM:
+                case NetNetwork::NetworkProtocol::MODEM:
                     errorId = IDS_MENUMSG_NOMODEM;
                     break;
-                case NetNetwork::IPX:
+                case NetNetwork::NetworkProtocol::IPX:
                     errorId = IDS_MENUMSG_NOIPX;
                     break;
-                case NetNetwork::TCPIP:
+                case NetNetwork::NetworkProtocol::TCPIP:
                     errorId = IDS_MENUMSG_NOTCPIP;
                     break;
-                case NetNetwork::SERIAL:
+                case NetNetwork::NetworkProtocol::SERIAL:
                     errorId = IDS_MENUMSG_NOSERIAL;
                     break;
                 default:

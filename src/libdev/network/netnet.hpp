@@ -21,11 +21,6 @@ class NetNetwork
 public:
     ///////////////////////////////
 
-    using ProtocolSpec = std::pair<const std::string, unsigned int>;
-    using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<string>>;
-    using Sessions = ctl_pvector<NetAppSessionUid>;
-    using Modems = ctl_vector<string>;
-
     enum NetNetworkStatus
     {
         NETNET_OK,
@@ -39,7 +34,7 @@ public:
         NETNET_NODEERROR,
     };
 
-    enum NetworkProtocol
+    enum class NetworkProtocol
     {
         UDP,
         IPX,
@@ -49,6 +44,11 @@ public:
         ZONE,
         OTHER
     };
+
+    using ProtocolSpec = std::pair<const std::string, NetworkProtocol>;
+    using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<string>>;
+    using Sessions = ctl_pvector<NetAppSessionUid>;
+    using Modems = ctl_vector<string>;
 
     ///////////////////////////////
 

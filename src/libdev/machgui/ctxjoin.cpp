@@ -231,19 +231,19 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
 
     switch (protocol)
     {
-        case NetNetwork::UDP:
+        case NetNetwork::NetworkProtocol::UDP:
             pNetworkProtocol_ = new MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens);
             break;
-        case NetNetwork::IPX:
+        case NetNetwork::NetworkProtocol::IPX:
             pNetworkProtocol_ = new MachGuiIPXNetworkMode(pStartupScreens, pStartupScreens);
             break;
-        case NetNetwork::TCPIP:
+        case NetNetwork::NetworkProtocol::TCPIP:
             pNetworkProtocol_ = new MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens);
             break;
-        case NetNetwork::MODEM:
+        case NetNetwork::NetworkProtocol::MODEM:
             pNetworkProtocol_ = new MachGuiModemNetworkMode(pStartupScreens, pStartupScreens);
             break;
-        case NetNetwork::SERIAL:
+        case NetNetwork::NetworkProtocol::SERIAL:
             pNetworkProtocol_ = new MachGuiSerialNetworkMode(pStartupScreens, pStartupScreens);
             break;
         default:
@@ -450,7 +450,7 @@ void MachGuiCtxJoin::update()
     pNetworkProtocol_->updateGUI();
 
     // Update available games automatically on IPX
-    if (NetNetwork::instance().currentProtocol() == NetNetwork::IPX)
+    if (NetNetwork::instance().currentProtocol() == NetNetwork::NetworkProtocol::IPX)
     {
         static double time = 0.0;
 
