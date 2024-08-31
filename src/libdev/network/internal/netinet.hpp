@@ -37,10 +37,10 @@ class NetINetwork
 public:
     ///////////////////////////////
 
-    enum UpdateType
+    enum class Update
     {
-        UPDATE,
-        NOUPDATE
+        No,
+        Yes,
     };
 
     enum ObjectActionType
@@ -56,7 +56,7 @@ public:
 
     ///////////////////////////////
 
-    const NetNetwork::ProtocolMap& availableProtocols(UpdateType update = UPDATE);
+    const NetNetwork::ProtocolMap& availableProtocols(Update update = Update::Yes);
     void chooseProtocol(const string&, NetNetwork::InitialiseConnection);
     void initialiseConnection();
 

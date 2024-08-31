@@ -520,7 +520,7 @@ void NetINetwork::updateSessions()
     //  POST( isValidNoRecord() );
 }
 
-const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(UpdateType update)
+const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(Update update)
 {
     NETWORK_STREAM("NetINetwork::availableProtocols\n");
     NETWORK_INDENT(2);
@@ -528,7 +528,7 @@ const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(UpdateType update
 
     NetNetwork::ProtocolMap& availableProtocols = NetNetwork::instance().netINetwork().availableProtocols_;
 
-    if (update == UPDATE)
+    if (update == Update::Yes)
     {
         NETWORK_STREAM("UPDATE\n");
         NetNetwork::ProtocolMap::iterator i = availableProtocols.begin();
