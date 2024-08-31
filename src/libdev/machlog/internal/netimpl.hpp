@@ -36,8 +36,8 @@ private:
     bool isNodeLogicalHost_;
     MachLogNetwork::Remote remote_[MachPhys::N_RACES];
     MachPhys::Race localRace_;
-    string desiredProtocol_;
-    string sessionId_;
+    std::string desiredProtocol_;
+    std::string sessionId_;
     NetNode* pNode_;
     MachLogMessageBroker* pBroker_;
     bool readyStatus_[MachPhys::N_RACES];
@@ -51,22 +51,22 @@ private:
 };
 
 #define CB_MachLogNetwork_DEPIMPL()                                                                                    \
-    CB_DEPIMPL(bool, isNetworkGame_);                                                                                  \
-    CB_DEPIMPL(bool, isNodeLogicalHost_);                                                                              \
-    CB_DEPIMPL_ARRAY(MachLogNetwork::Remote, remote_);                                                                 \
-    CB_DEPIMPL(MachPhys::Race, localRace_);                                                                            \
-    CB_DEPIMPL(string, desiredProtocol_);                                                                              \
-    CB_DEPIMPL(string, sessionId_);                                                                                    \
-    CB_DEPIMPL(NetNode*, pNode_);                                                                                      \
-    CB_DEPIMPL(MachLogMessageBroker*, pBroker_);                                                                       \
-    CB_DEPIMPL_ARRAY(bool, readyStatus_);                                                                              \
-    CB_DEPIMPL(bool, syncSimCycles_);                                                                                  \
-    CB_DEPIMPL_ARRAY(bool, simUpdateReceived_);                                                                        \
-    CB_DEPIMPL_ARRAY(bool, simUpdateNeeded_);                                                                          \
-    CB_DEPIMPL(int, expectedPlayers_);                                                                                 \
-    CB_DEPIMPL_ARRAY(bool, processedStartup_);                                                                         \
-    CB_DEPIMPL(bool, lockedForStartup_);                                                                               \
-    CB_DEPIMPL(bool, protocolChosen_);
+    CB_DEPIMPL_AUTO(isNetworkGame_);                                                                                   \
+    CB_DEPIMPL_AUTO(isNodeLogicalHost_);                                                                               \
+    CB_DEPIMPL_AUTO(remote_);                                                                                          \
+    CB_DEPIMPL_AUTO(localRace_);                                                                                       \
+    CB_DEPIMPL_AUTO(desiredProtocol_);                                                                                 \
+    CB_DEPIMPL_AUTO(sessionId_);                                                                                       \
+    CB_DEPIMPL_AUTO(pNode_);                                                                                           \
+    CB_DEPIMPL_AUTO(pBroker_);                                                                                         \
+    CB_DEPIMPL_AUTO(readyStatus_);                                                                                     \
+    CB_DEPIMPL_AUTO(syncSimCycles_);                                                                                   \
+    CB_DEPIMPL_AUTO(simUpdateReceived_);                                                                               \
+    CB_DEPIMPL_AUTO(simUpdateNeeded_);                                                                                 \
+    CB_DEPIMPL_AUTO(expectedPlayers_);                                                                                 \
+    CB_DEPIMPL_AUTO(processedStartup_);                                                                                \
+    CB_DEPIMPL_AUTO(lockedForStartup_);                                                                                \
+    CB_DEPIMPL_AUTO(protocolChosen_);
 
 #endif
 

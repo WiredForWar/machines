@@ -44,8 +44,8 @@ public:
     bool playbackIsLogicalHost() const;
     void recordIsLogicalHost(bool) const;
 
-    string playbackLocalPlayerName() const;
-    void recordLocalPlayerName(const string&) const;
+    std::string playbackLocalPlayerName() const;
+    void recordLocalPlayerName(const std::string&) const;
 
     bool playbackHasLocalNode() const;
     void recordHasLocalNode(bool) const;
@@ -53,8 +53,8 @@ public:
     void playbackAvailableProtocols(NetNetwork::ProtocolMap*) const;
     void recordAvailableProtocols(const NetNetwork::ProtocolMap&) const;
 
-    string playbackCurrentProtocolName() const;
-    void recordCurrentProtocolName(const string&) const;
+    std::string playbackCurrentProtocolName() const;
+    void recordCurrentProtocolName(const std::string&) const;
 
     NetNetwork::NetNetworkStatus playbackCurrentStatus() const;
     void recordCurrentStatus(const NetNetwork::NetNetworkStatus&) const;
@@ -65,8 +65,8 @@ public:
     NetNetwork::NetworkProtocol playbackCurrentProtocol() const;
     void recordCurrentProtocol(const NetNetwork::NetworkProtocol&) const;
 
-    string playbackIPAddress() const;
-    void recordIPAddress(const string&) const;
+    std::string playbackIPAddress() const;
+    void recordIPAddress(const std::string&) const;
 
     string playbackModem() const;
     void recordModem(const string&) const;

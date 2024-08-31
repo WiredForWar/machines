@@ -189,7 +189,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
 
             return false;
         }
-        else if (pStartupScreens_->startupData()->connectionType() == "") // No connection type specified
+        else if (pStartupScreens_->startupData()->connectionType().empty()) // No connection type specified
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_CONNECTIONTYPE);
 

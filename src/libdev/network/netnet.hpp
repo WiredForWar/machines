@@ -68,7 +68,7 @@ public:
         INITIALISE_CONNECTION,
         DO_NOT_INITIALISE_CONNECTION
     };
-    static void chooseProtocol(const string&, InitialiseConnection);
+    static void chooseProtocol(const std::string&, InitialiseConnection);
     void initialiseConnection();
 
     static NetNetworkStatus currentStatus();
@@ -99,8 +99,8 @@ public:
 
     bool isLobbiedGame() const;
     bool isLogicalHost() const;
-    const string& localPlayerName() const;
-    void localPlayerName(const string&);
+    const std::string& localPlayerName() const;
+    void localPlayerName(const std::string&);
     // All this does is call into NetINetwork lpDiretcPlayLobby -
     //  which will ensure that internal flags are set correctly
     void instantiateLobby();
@@ -108,8 +108,8 @@ public:
     NetworkProtocol currentProtocol() const;
 
     // Ip addresses may be in the form of numerical IP addresses or domain net
-    const string& IPAddress() const;
-    void IPAddress(const string&);
+    const std::string& IPAddress() const;
+    void IPAddress(const std::string&);
 
     bool imStuffed() const;
     bool imStuffedNoRecord() const;

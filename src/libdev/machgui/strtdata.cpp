@@ -304,12 +304,12 @@ std::ostream& operator<<(std::ostream& o, const MachGuiStartupData& t)
     return o;
 }
 
-const string& MachGuiStartupData::playerName() const
+const std::string& MachGuiStartupData::playerName() const
 {
     return playerName_;
 }
 
-void MachGuiStartupData::playerName(const string& playerName)
+void MachGuiStartupData::playerName(const std::string& playerName)
 {
     playerName_ = playerName;
 
@@ -329,7 +329,7 @@ MachGuiDbScenario* MachGuiStartupData::scenario()
     return pScenario_;
 }
 
-const string& MachGuiStartupData::connectionType() const
+const std::string& MachGuiStartupData::connectionType() const
 {
     if (MachLogNetwork::instance().desiredProtocol() != "")
         return MachLogNetwork::instance().desiredProtocol();
@@ -337,7 +337,7 @@ const string& MachGuiStartupData::connectionType() const
         return lastProtocol_;
 }
 
-void MachGuiStartupData::connectionType(const string& ct, InitialiseConnection initialise)
+void MachGuiStartupData::connectionType(const std::string& ct, InitialiseConnection initialise)
 {
     MachLogNetwork::instance().terminateAndReset();
 
@@ -350,7 +350,7 @@ void MachGuiStartupData::connectionType(const string& ct, InitialiseConnection i
     ASSERT(success, "failed to set protocol");
 }
 
-void MachGuiStartupData::joinGame(const string& str)
+void MachGuiStartupData::joinGame(const std::string& str)
 {
     joinGame_ = str;
     includedInGame_ = false;
@@ -358,7 +358,7 @@ void MachGuiStartupData::joinGame(const string& str)
     MachGuiChatWindow::clearAllText();
 }
 
-const string& MachGuiStartupData::joinGame() const
+const std::string& MachGuiStartupData::joinGame() const
 {
     return joinGame_;
 }
@@ -943,12 +943,12 @@ void MachGuiStartupData::initMachLogNetwork()
     }
 }
 
-const string& MachGuiStartupData::newGameName() const
+const std::string& MachGuiStartupData::newGameName() const
 {
     return newGameName_;
 }
 
-void MachGuiStartupData::newGameName(const string& gameName)
+void MachGuiStartupData::newGameName(const std::string& gameName)
 {
     newGameName_ = gameName;
 

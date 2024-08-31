@@ -599,7 +599,7 @@ void NetINetwork::clearProtocols()
     NETWORK_STREAM("NetINetwork::clearProtocols DONE\n");
 }
 
-void NetINetwork::chooseProtocol(const string& protoName, NetNetwork::InitialiseConnection /*initConnection*/)
+void NetINetwork::chooseProtocol(const std::string& protocolName, NetNetwork::InitialiseConnection /*initConnection*/)
 {
     const NetNetwork::ProtocolMap& availableProtocolsConst = NetINetwork::availableProtocols();
     NetNetwork::ProtocolMap& availableProtocols = _CONST_CAST(NetNetwork::ProtocolMap&, availableProtocolsConst);
@@ -611,34 +611,34 @@ void NetINetwork::chooseProtocol(const string& protoName, NetNetwork::Initialise
         NETWORK_STREAM("NetINetwork::chooseProtocol\n");
         PRE(currentStatusNoRecord() == NetNetwork::NETNET_OK);
 
-        protocolName(protoName);
+        setProtocolName(protocolName);
 
-        if (strstr(protoName.c_str(), "UDP"))
+        if (strstr(protocolName.c_str(), "UDP"))
         {
             currentProtocol_ = NetNetwork::NetworkProtocol::UDP;
             NETWORK_STREAM(" NetNetwork::UDP\n");
         }
-        else if (strstr(protoName.c_str(), "IPX "))
+        else if (strstr(protocolName.c_str(), "IPX "))
         {
             currentProtocol_ = NetNetwork::NetworkProtocol::IPX;
             NETWORK_STREAM(" NetNetwork::IPX\n");
         }
-        else if (strstr(protoName.c_str(), " TCP/IP "))
+        else if (strstr(protocolName.c_str(), " TCP/IP "))
         {
             currentProtocol_ = NetNetwork::NetworkProtocol::TCPIP;
             NETWORK_STREAM(" NetNetwork::TCPIP\n");
         }
-        else if (strstr(protoName.c_str(), "Serial "))
+        else if (strstr(protocolName.c_str(), "Serial "))
         {
             currentProtocol_ = NetNetwork::NetworkProtocol::SERIAL;
             NETWORK_STREAM(" NetNetwork::SERIAL\n");
         }
-        else if (strstr(protoName.c_str(), "Modem "))
+        else if (strstr(protocolName.c_str(), "Modem "))
         {
             currentProtocol_ = NetNetwork::NetworkProtocol::MODEM;
             NETWORK_STREAM(" NetNetwork::MODEM\n");
         }
-        else if (strstr(protoName.c_str(), " Zone "))
+        else if (strstr(protocolName.c_str(), " Zone "))
         {
             currentProtocol_ = NetNetwork::NetworkProtocol::ZONE;
             NETWORK_STREAM(" NetNetwork::ZONE\n");
@@ -740,9 +740,9 @@ bool NetINetwork::isValidNoRecord() const
 }
 
 // static
-const string& NetINetwork::protocolName()
+const std::string& NetINetwork::protocolName()
 {
-    string& currentProtocolName = protocolNameNoRecord();
+    std::string& currentProtocolName = protocolNameNoRecord();
 
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
@@ -760,15 +760,15 @@ const string& NetINetwork::protocolName()
 }
 
 // static
-string& NetINetwork::protocolNameNoRecord()
+std::string& NetINetwork::protocolNameNoRecord()
 {
-    static string currentProtocolName;
+    static std::string currentProtocolName;
 
     return currentProtocolName;
 }
 
 // static
-void NetINetwork::protocolName(const string& name)
+void NetINetwork::setProtocolName(const std::string& name)
 {
     protocolNameNoRecord() = name;
 }
@@ -981,7 +981,7 @@ bool NetINetwork::isLogicalHost() const
     return isLogicalHost_;
 }
 
-const string& NetINetwork::localPlayerName() const
+const std::string& NetINetwork::localPlayerName() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
@@ -1000,7 +1000,7 @@ const string& NetINetwork::localPlayerName() const
     return localPlayerName_;
 }
 
-void NetINetwork::localPlayerName(const string& newName)
+void NetINetwork::localPlayerName(const std::string& newName)
 {
     localPlayerName_ = newName;
 }
@@ -1024,7 +1024,7 @@ NetNetwork::NetworkProtocol NetINetwork::currentProtocol() const
     return currentProtocol_;
 }
 
-const string& NetINetwork::IPAddress() const
+const std::string& NetINetwork::IPAddress() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
@@ -1043,7 +1043,7 @@ const string& NetINetwork::IPAddress() const
     return IPAddress_;
 }
 
-void NetINetwork::IPAddress(const string& newIPAddress)
+void NetINetwork::IPAddress(const std::string& newIPAddress)
 {
     IPAddress_ = newIPAddress;
 }

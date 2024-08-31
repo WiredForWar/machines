@@ -112,12 +112,12 @@ void NetIRecorder::recordIsLogicalHost(bool value) const
     RecRecorderPrivate::instance().recordNetworkBool(value);
 }
 
-string NetIRecorder::playbackLocalPlayerName() const
+std::string NetIRecorder::playbackLocalPlayerName() const
 {
     return RecRecorderPrivate::instance().playbackNetworkString();
 }
 
-void NetIRecorder::recordLocalPlayerName(const string& str) const
+void NetIRecorder::recordLocalPlayerName(const std::string& str) const
 {
     RecRecorderPrivate::instance().recordNetworkString(str);
 }
@@ -160,12 +160,12 @@ void NetIRecorder::recordAvailableProtocols(const NetNetwork::ProtocolMap& proto
     }
 }
 
-string NetIRecorder::playbackCurrentProtocolName() const
+std::string NetIRecorder::playbackCurrentProtocolName() const
 {
     return RecRecorderPrivate::instance().playbackNetworkString();
 }
 
-void NetIRecorder::recordCurrentProtocolName(const string& str) const
+void NetIRecorder::recordCurrentProtocolName(const std::string& str) const
 {
     RecRecorderPrivate::instance().recordNetworkString(str);
 }
@@ -208,12 +208,12 @@ void NetIRecorder::recordCurrentProtocol(const NetNetwork::NetworkProtocol& prot
     RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &protocol), sizeof(protocol));
 }
 
-string NetIRecorder::playbackIPAddress() const
+std::string NetIRecorder::playbackIPAddress() const
 {
     return RecRecorderPrivate::instance().playbackNetworkString();
 }
 
-void NetIRecorder::recordIPAddress(const string& str) const
+void NetIRecorder::recordIPAddress(const std::string& str) const
 {
     RecRecorderPrivate::instance().recordNetworkString(str);
 }

@@ -10,7 +10,7 @@
 
 using NetProcessorUid = string;
 using NetAppSessionName = string;
-using NetNodeName = string;
+using NetNodeName = std::string;
 using NetMessageUid = unsigned int;
 using NetAppUid = unsigned int;
 using NetAppInstanceUid = unsigned int;

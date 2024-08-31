@@ -55,9 +55,9 @@ const NetNetwork::ProtocolMap& NetNetwork::availableProtocols()
 }
 
 // static
-void NetNetwork::chooseProtocol(const string& protoName, NetNetwork::InitialiseConnection initConnection)
+void NetNetwork::chooseProtocol(const std::string& protocolName, NetNetwork::InitialiseConnection initConnection)
 {
-    NetNetwork::instance().pNetINetwork_->chooseProtocol(protoName, initConnection);
+    NetNetwork::instance().pNetINetwork_->chooseProtocol(protocolName, initConnection);
 }
 
 // static
@@ -206,12 +206,12 @@ bool NetNetwork::isLogicalHost() const
     return pNetINetwork_->isLogicalHost();
 }
 
-const string& NetNetwork::localPlayerName() const
+const std::string& NetNetwork::localPlayerName() const
 {
     return pNetINetwork_->localPlayerName();
 }
 
-void NetNetwork::localPlayerName(const string& name)
+void NetNetwork::localPlayerName(const std::string& name)
 {
     pNetINetwork_->localPlayerName(name);
 }
@@ -227,12 +227,12 @@ NetNetwork::NetworkProtocol NetNetwork::currentProtocol() const
     return pNetINetwork_->currentProtocol();
 }
 
-const string& NetNetwork::IPAddress() const
+const std::string& NetNetwork::IPAddress() const
 {
     return pNetINetwork_->IPAddress();
 }
 
-void NetNetwork::IPAddress(const string& newAddress)
+void NetNetwork::IPAddress(const std::string& newAddress)
 {
     pNetINetwork_->IPAddress(newAddress);
 }

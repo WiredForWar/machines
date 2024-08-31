@@ -211,9 +211,9 @@ void MachLogNetwork::remoteStatus(MachPhys::Race race, MachLogNetwork::Remote re
     remote_[race] = remote;
 }
 
-const string& MachLogNetwork::desiredProtocol() const
+const std::string& MachLogNetwork::desiredProtocol() const
 {
-    CB_DEPIMPL(string, desiredProtocol_);
+    CB_DEPIMPL_AUTO(desiredProtocol_);
 
     return desiredProtocol_;
 }
@@ -338,7 +338,7 @@ int MachLogNetwork::expectedPlayers() const
     return expectedPlayers_;
 }
 
-bool MachLogNetwork::desiredProtocol(const string& protocol, MachLogNetwork::InitialiseConnection initConnection)
+bool MachLogNetwork::desiredProtocol(const std::string& protocol, MachLogNetwork::InitialiseConnection initConnection)
 {
     CB_MachLogNetwork_DEPIMPL();
 
@@ -369,14 +369,14 @@ void MachLogNetwork::initialiseConnection()
     NetNetwork::instance().initialiseConnection();
 }
 
-const string& MachLogNetwork::sessionId() const
+const std::string& MachLogNetwork::sessionId() const
 {
-    CB_DEPIMPL(string, sessionId_);
+    CB_DEPIMPL_AUTO(sessionId_);
 
     return sessionId_;
 }
 
-bool MachLogNetwork::hostWithSessionId(const string& gameName, const string& playerName)
+bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::string& playerName)
 {
     CB_MachLogNetwork_DEPIMPL();
 
@@ -388,14 +388,14 @@ bool MachLogNetwork::hostWithSessionId(const string& gameName, const string& pla
     //  DWORD dwNameSize = 200;
     //  char szSessionName[200];
     //  GetComputerName(szSessionName, &dwNameSize);
-    NetNodeName name(playerName.c_str());
-    NetNetwork::instance().localPlayerName(name);
+    // NetNodeName name(playerName);
+    NetNetwork::instance().localPlayerName(playerName);
     //  pNode_ = new NetNode(name);
     //  pNode_->useCompoundMessaging( true );
     return true;
 }
 
-bool MachLogNetwork::joinWithSessionId(const string& gameName, const string& playerName)
+bool MachLogNetwork::joinWithSessionId(const std::string& gameName, const std::string& playerName)
 {
     CB_MachLogNetwork_DEPIMPL();
 
@@ -438,8 +438,8 @@ bool MachLogNetwork::joinWithSessionId(const string& gameName, const string& pla
         //      char szSessionName[200];
         //      GetComputerName(szSessionName, &dwNameSize);
 
-        NetNodeName name(playerName.c_str());
-        NetNetwork::instance().localPlayerName(name);
+        // NetNodeName name(playerName);
+        NetNetwork::instance().localPlayerName(playerName);
         //      pNode_ = new NetNode(name);
         //      pNode_->useCompoundMessaging( true );
         isNetworkGame_ = true;

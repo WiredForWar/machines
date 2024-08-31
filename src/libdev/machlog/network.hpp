@@ -64,13 +64,13 @@ public:
     void ready(MachPhys::Race, bool newValue);
     bool ready(MachPhys::Race) const;
 
-    const string& desiredProtocol() const;
-    bool desiredProtocol(const string&, InitialiseConnection = INITIALISE_CONNECTION);
+    const std::string& desiredProtocol() const;
+    bool desiredProtocol(const std::string&, InitialiseConnection = INITIALISE_CONNECTION);
     void initialiseConnection();
 
-    const string& sessionId() const;
-    bool hostWithSessionId(const string& gameName, const string& playerName);
-    bool joinWithSessionId(const string& gamename, const string& playerName);
+    const std::string& sessionId() const;
+    bool hostWithSessionId(const std::string& gameName, const std::string& playerName);
+    bool joinWithSessionId(const std::string& gamename, const std::string& playerName);
     bool launchFromLobbyInfo();
     void setNodeCompoundStatus(bool);
 

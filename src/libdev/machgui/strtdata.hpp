@@ -112,25 +112,25 @@ public:
 #pragma pack(pop)
 
     // Name of player using this computer in multiplayer game
-    const string& playerName() const;
-    void playerName(const string&);
+    const std::string& playerName() const;
+    void playerName(const std::string&);
 
     // Set/Get the scenario that will be played.
     MachGuiDbScenario* scenario();
     void scenario(MachGuiDbScenario*);
 
     // Set and get network protocol
-    const string& connectionType() const;
-    void connectionType(const string&, InitialiseConnection = DO_NOT_INITIALISE_CONNECTION);
+    const std::string& connectionType() const;
+    void connectionType(const std::string&, InitialiseConnection = DO_NOT_INITIALISE_CONNECTION);
 
     // Store the name of the game that will be joined if the Join button
     // is pressed. Calling this method does NOT actually join that game.
-    const string& joinGame() const;
-    void joinGame(const string& gameName);
+    const std::string& joinGame() const;
+    void joinGame(const std::string& gameName);
 
     // Name of new game if one is created
-    const string& newGameName() const;
-    void newGameName(const string& gameName);
+    const std::string& newGameName() const;
+    void newGameName(const std::string& gameName);
 
     // Network message handling
     void receivedJoinMessage(const string& playerName, int uniqueMachineNumber);
@@ -284,10 +284,10 @@ private:
     MachGuiStartupData(const MachGuiStartupData&);
     MachGuiStartupData& operator=(const MachGuiStartupData&);
 
-    string playerName_;
+    std::string playerName_;
     MachGuiDbScenario* pScenario_;
     bool transitionFlicsOn_;
-    string joinGame_;
+    std::string joinGame_;
     bool host_;
     MachGuiCtxImReady* pCtxImReady_;
     ctl_vector<string> availablePlayers_;
@@ -295,10 +295,10 @@ private:
     MachGuiStartupScreens* pStartupScreens_;
     bool includedInGame_;
     bool terminalMultiPlayerGameProblem_;
-    string newGameName_;
+    std::string newGameName_;
     GameSettings gameSettings_;
     MachPhys::Race playerRace_;
-    string lastProtocol_;
+    std::string lastProtocol_;
     int uniqueMachineNumber_; // Used to identify this machine on the network
 };
 

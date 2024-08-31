@@ -57,7 +57,7 @@ public:
     ///////////////////////////////
 
     const NetNetwork::ProtocolMap& availableProtocols(Update update = Update::Yes);
-    void chooseProtocol(const string&, NetNetwork::InitialiseConnection);
+    void chooseProtocol(const std::string&, NetNetwork::InitialiseConnection);
     void initialiseConnection();
 
     static const NetNetwork::NetNetworkStatus& currentStatus();
@@ -88,8 +88,8 @@ public:
     // mainly used with lobby technology - but the fields should be valid for normal create/join mechanism as well
     bool isLobbiedGame() const;
     bool isLogicalHost() const;
-    const string& localPlayerName() const;
-    void localPlayerName(const string&);
+    const std::string& localPlayerName() const;
+    void localPlayerName(const std::string&);
 
     ///////////////////////////////
     bool imStuffed() const;
@@ -108,9 +108,9 @@ private:
     ///////////////////////////////
 
     void clearProtocols();
-    const string& protocolName();
-    string& protocolNameNoRecord();
-    void protocolName(const string&);
+    const std::string& protocolName();
+    std::string& protocolNameNoRecord();
+    void setProtocolName(const std::string&);
     void setAppUid();
 
     ///////////////////////////////
@@ -130,8 +130,8 @@ private:
     NetNetwork::NetworkProtocol currentProtocol() const;
 
     // Ip addresses may be in the form of numerical IP addresses or domain net
-    const string& IPAddress() const;
-    void IPAddress(const string&);
+    const std::string& IPAddress() const;
+    void IPAddress(const std::string& newIPAddress);
 
     bool isValidNoRecord() const;
     bool hasLocalNodeNoRecord(const NetNode*) const;
@@ -181,9 +181,9 @@ private:
 
     bool isLobbiedGame_;
     bool isLogicalHost_;
-    string localPlayerName_;
+    std::string localPlayerName_;
 
-    string IPAddress_;
+    std::string IPAddress_;
 
     NetNetwork::NetworkProtocol currentProtocol_;
 
