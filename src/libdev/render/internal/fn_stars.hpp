@@ -543,7 +543,7 @@ public:
     void operator()(RenIVertex* pVertex)
     {
         static RenMaterial emptyMat = RenMaterial();
-        RenDevice::current()->renderPrimitive(pVertex, *itSizes_, emptyMat, GL_POINTS);
+        RenDevice::current()->renderPrimitive(pVertex, *itSizes_, emptyMat, Ren::PrimitiveTopology::Points);
         ++itSizes_;
     }
 

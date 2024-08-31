@@ -621,15 +621,15 @@ void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, in
                 glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);
                 glGetIntegerv(GL_BLEND_DST_ALPHA, &blendDst);
                 glBlendFunc(GL_ZERO, GL_ZERO);
-                dev->renderScreenspace(vertices, 8, GL_LINES, width(), height());
+                dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
                 glBlendFunc(blendSrc, blendDst);
             }
             else
-                dev->renderScreenspace(vertices, 8, GL_LINES, width(), height());
+                dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
             dev->renderToTextureMode(0, 0, 0);
         }
         else
-            dev->renderScreenspace(vertices, 8, GL_LINES, width(), height());
+            dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
 
         glLineWidth(1.0);
     }
@@ -908,11 +908,11 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             if (internals() && internals()->isOffscreen())
             {
                 dev->renderToTextureMode(handle(), width(), height());
-                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), GL_LINES, width(), -height());
+                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), Ren::PrimitiveTopology::Lines, width(), -height());
                 dev->renderToTextureMode(0, 0, 0);
             }
             else
-                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), GL_LINES, width(), height());
+                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), Ren::PrimitiveTopology::Lines, width(), height());
             glLineWidth(1.0);
         }
         else
@@ -939,11 +939,11 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             if (internals() && internals()->isOffscreen())
             {
                 dev->renderToTextureMode(handle(), width(), height());
-                dev->renderScreenspace(vtx.data(), pts.size(), GL_LINE_STRIP, width(), -height());
+                dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), -height());
                 dev->renderToTextureMode(0, 0, 0);
             }
             else
-                dev->renderScreenspace(vtx.data(), pts.size(), GL_LINE_STRIP, width(), height());
+                dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
             glLineWidth(1.0);
         }
     }
@@ -1234,11 +1234,11 @@ void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const Ren
     if (internals() && internals()->isOffscreen())
     {
         dev->renderToTextureMode(handle(), width(), height());
-        dev->renderScreenspace(vertices.data(), vertices.size(), GL_TRIANGLE_FAN, width(), -height());
+        dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), -height());
         dev->renderToTextureMode(0, 0, 0);
     }
     else
-        dev->renderScreenspace(vertices.data(), vertices.size(), GL_TRIANGLE_FAN, width(), height());
+        dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), height());
     glEnable(GL_CULL_FACE);
 }
 

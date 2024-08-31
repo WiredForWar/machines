@@ -5,6 +5,8 @@ set(RENDER_SOURCES
     Font.hpp
     FontMetrics.cpp
     FontMetrics.hpp
+    OpenGL/Utils.hpp
+    PrimitiveTopology.hpp
     TextOptions.hpp
     alphagrp.cpp
     animcurs.cpp

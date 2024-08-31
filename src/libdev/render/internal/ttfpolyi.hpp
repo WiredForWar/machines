@@ -6,10 +6,9 @@
 #ifndef _RENDER_TTFPOLYI_HPP
 #define _RENDER_TTFPOLYI_HPP
 
-#include "base/base.hpp"
-#include "render/render.hpp"
+#include "render/PrimitiveTopology.hpp"
 #include "render/material.hpp"
-#include <GL/glew.h>
+#include "render/render.hpp"
 
 class MexVec2;
 class RenIVertex;
@@ -22,7 +21,7 @@ public:
     RenITTFImpl(const RenITTFImpl&);
     ~RenITTFImpl();
 
-    void renderGL(RenIVertex*, const RenMaterial&, GLenum mode) const;
+    void renderGL(RenIVertex*, const RenMaterial&, Ren::PrimitiveTopology topology) const;
 
     RenIVertex* vertices() const { return vertices_; }
     size_t nVertices() const { return nVertices_; }

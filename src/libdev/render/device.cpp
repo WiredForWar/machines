@@ -35,6 +35,8 @@
 #include "render/mesh.hpp"
 #include "render/drivsel.hpp"
 
+#include "render/OpenGL/Utils.hpp"
+
 #include "render/internal/devicei.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/internal/internal.hpp"
@@ -1389,7 +1391,7 @@ static void graduatedNoisePolygon(RenDevice* dev, const Ren::Rect& area, double 
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    dev->renderScreenspace(pts, 6, noiseMat, GL_TRIANGLE_STRIP, area.width, area.height);
+    dev->renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 }
@@ -1433,7 +1435,7 @@ static void uniformNoisePolygon(RenDevice* dev, const Ren::Rect& area, double ma
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    dev->renderScreenspace(pts, 4, noiseMat, GL_TRIANGLE_STRIP, area.width, area.height);
+    dev->renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 }
@@ -1606,7 +1608,7 @@ void RenDevice::addStatic()
 
     disableFog();
 
-    renderScreenspace(pts, numVertices, GL_LINES, viewportWidth, viewportHeight);
+    renderScreenspace(pts, numVertices, Ren::PrimitiveTopology::Lines, viewportWidth, viewportHeight);
     restoreFog();
 }
 
@@ -1974,7 +1976,7 @@ void RenDevice::renderToTextureMode(const GLuint targetTexture, uint32_t viewPor
 void RenDevice::renderScreenspace(
     const RenIVertex* vertices,
     const size_t nVertices,
-    GLenum mode,
+    Ren::PrimitiveTopology topology,
     const int targetW,
     const int targetH,
     const GLuint texture)
@@ -2024,6 +2026,7 @@ void RenDevice::renderScreenspace(
     glDisable(GL_LIGHTING);
     //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw call
     glDrawArrays(mode, 0, nVertices);
 
@@ -2196,7 +2199,7 @@ void RenDevice::renderPrimitive(
     const RenIVertex* vertices,
     const size_t nVertices,
     const RenMaterial& mat,
-    const GLenum mode)
+    Ren::PrimitiveTopology topology)
 {
     PRE(vertices);
     PRE(nVertices < 5000);
@@ -2278,6 +2281,7 @@ void RenDevice::renderPrimitive(
     );
      */
     // Draw the triangles !
+    GLenum mode = Ren::OpenGL::getDrawMode(topology);
     glDrawArrays(mode, 0, nVertices);
 
     glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
@@ -2292,7 +2296,7 @@ void RenDevice::renderIndexed(
     const Ren::VertexIdx* indices,
     const size_t nIndices,
     const RenMaterial& mat,
-    GLenum mode)
+    Ren::PrimitiveTopology topology)
 {
     PRE(vertices);
     PRE(indices);
@@ -2378,6 +2382,7 @@ void RenDevice::renderIndexed(
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferID_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STATIC_DRAW);
 
+    GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !
     glDrawElements(
         mode, // mode
@@ -2398,7 +2403,7 @@ void RenDevice::renderIndexedScreenspace(
     const Ren::VertexIdx* indices,
     const size_t nIndices,
     const RenMaterial& mat,
-    GLenum mode)
+    Ren::PrimitiveTopology topology)
 {
     PRE(vertices);
     PRE(indices);
@@ -2456,6 +2461,7 @@ void RenDevice::renderIndexedScreenspace(
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferBillboardID_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STATIC_DRAW);
 
+    GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !
     glDrawElements(
         mode, // mode

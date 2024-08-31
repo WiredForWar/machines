@@ -60,7 +60,7 @@ public:
     PER_FRIEND_READ_WRITE(RenTTFTriangles);
 
 private:
-    GLenum compose2DGeometry(RenIVertex*, const MexPoint3d& centre, MATHEX_SCALAR scale) const override;
+    Ren::PrimitiveTopology compose2DGeometry(RenIVertex*, const MexPoint3d& centre, MATHEX_SCALAR scale) const override;
     static const Ren::VertexIdx* indices();
 
     MATHEX_SCALAR width_, height_, cornerWidth_, cornerHeight_;

@@ -1,11 +1,16 @@
 #pragma once
 
 #include "base/base.hpp"
-#include <GL/glew.h>
-#include <SDL.h>
-#include <glm/gtc/matrix_transform.hpp>
 #include "render/internal/trigroup.hpp"
 #include "render/texture.hpp"
+
+#include "render/PrimitiveTopology.hpp"
+
+#include <SDL.h>
+
+#include <GL/glew.h>
+
+#include <glm/gtc/matrix_transform.hpp>
 
 class SysPathName;
 
@@ -273,27 +278,27 @@ public:
     RenIDeviceImpl& impl();
     const RenIDeviceImpl& impl() const;
 
-    const GLuint loadShaders(const char* vertexPath, const char* fragmentPath);
+    const uint loadShaders(const char* vertexPath, const char* fragmentPath);
 
     void renderScreenspace(
         const RenIVertex* vertices,
         const size_t nVertices,
-        GLenum mode,
+        Ren::PrimitiveTopology topology,
         const int targetW = 0,
         const int targetH = 0)
     {
-        renderScreenspace(vertices, nVertices, mode, targetW, targetH, glTextureEmptyID_);
+        renderScreenspace(vertices, nVertices, topology, targetW, targetH, glTextureEmptyID_);
     };
 
     void renderScreenspace(
         const RenIVertex* vertices,
         const size_t nVertices,
         const RenMaterial& mat,
-        GLenum mode,
+        Ren::PrimitiveTopology topology,
         const int targetW,
         const int targetH)
     {
-        renderScreenspace(vertices, nVertices, mode, targetW, targetH, mat.texture().handle());
+        renderScreenspace(vertices, nVertices, topology, targetW, targetH, mat.texture().handle());
     };
     void renderSurface(
         const RenISurfBody* surf,
@@ -306,21 +311,21 @@ public:
         const RenIVertex* vertices,
         const size_t nVertices,
         const RenMaterial& mat,
-        const GLenum mode = GL_TRIANGLE_FAN);
+        Ren::PrimitiveTopology topology = Ren::PrimitiveTopology::TriangleFan);
     void renderIndexed(
         const RenIVertex* vertices,
         const size_t nVertices,
         const Ren::VertexIdx* indices,
         const size_t nIndices,
         const RenMaterial& mat,
-        GLenum mode);
+        Ren::PrimitiveTopology topology);
     void renderIndexedScreenspace(
         const RenIVertex* vertices,
         const size_t nVertices,
         const Ren::VertexIdx* indices,
         const size_t nIndices,
         const RenMaterial& mat,
-        GLenum mode);
+        Ren::PrimitiveTopology topology);
 
     void setModelMatrix(glm::mat4& model) { model_ = model; }
 
@@ -335,7 +340,7 @@ public:
     void renderScreenspace(
         const RenIVertex* vertices,
         const size_t nVertices,
-        GLenum mode,
+        Ren::PrimitiveTopology topology,
         const int targetW,
         const int targetH,
         const GLuint texture);

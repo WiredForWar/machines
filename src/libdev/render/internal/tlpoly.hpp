@@ -7,6 +7,8 @@
 #define _RENDER_TLPOLY_HPP
 
 #include "base/base.hpp"
+
+#include "render/PrimitiveTopology.hpp"
 #include "render/internal/polysord.hpp"
 
 class RenITTFImpl;
@@ -15,7 +17,7 @@ class RenITTFImpl;
 class RenITLPolygon : public RenIDepthSortedItem
 {
 public:
-    RenITLPolygon(const RenITTFImpl*, const RenMaterial& mat, MATHEX_SCALAR w, GLenum);
+    RenITLPolygon(const RenITTFImpl*, const RenMaterial& mat, MATHEX_SCALAR w, Ren::PrimitiveTopology topology);
 
     ~RenITLPolygon() override;
     void render() override;
@@ -24,7 +26,7 @@ public:
 private:
     const RenITTFImpl* const pImpl_;
     RenIVertex* vertices_;
-    GLenum geomType_;
+    Ren::PrimitiveTopology topology_;
 };
 
 #endif

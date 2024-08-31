@@ -73,7 +73,7 @@ void RenPoints::render(const MexTransform3d& world) const
     //  TRYRENDX(d3dDev->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, true));
 
     RenIVertex* crufty = _STATIC_CAST(RenIVertex*, &(points_->front()));
-    dev->renderPrimitive(crufty, points_->size(), withoutTexture, GL_POINTS);
+    dev->renderPrimitive(crufty, points_->size(), withoutTexture, Ren::PrimitiveTopology::Points);
 
     //  TRYRENDX(d3dDev->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, previous));
 }

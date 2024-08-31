@@ -137,7 +137,7 @@ void RenTTFPolygon::render(
     center.x(centerWorld[0]);
     center.y(centerWorld[1]);
     center.z(centerWorld[2]);
-    const GLenum tmpType = compose2DGeometry(pImpl_->vertices(), center, scale);
+    const Ren::PrimitiveTopology tmpType = compose2DGeometry(pImpl_->vertices(), center, scale);
 
     RenIIlluminator* ill = devImpl->illuminator();
     ill->applyMaterialGenericLighting(mat, pImpl_->vertices(), nVertices);
@@ -303,7 +303,7 @@ RenTTFPolygon* RenTTFRectangle::clone() const
 }
 
 // virtual
-GLenum RenTTFRectangle::compose2DGeometry(RenIVertex* vtx, const MexPoint3d& centre, MATHEX_SCALAR scale) const
+Ren::PrimitiveTopology RenTTFRectangle::compose2DGeometry(RenIVertex* vtx, const MexPoint3d& centre, MATHEX_SCALAR scale) const
 {
     const glm::mat4& vMatrix = RenDevice::current()->getViewMatrix();
     glm::vec3 right(vMatrix[0][0], vMatrix[1][0], vMatrix[2][0]);
@@ -332,7 +332,7 @@ GLenum RenTTFRectangle::compose2DGeometry(RenIVertex* vtx, const MexPoint3d& cen
     vtx[3].y = d.y;
     vtx[3].z = d.z;
 
-    return GL_TRIANGLE_FAN;
+    return Ren::PrimitiveTopology::TriangleFan;
 }
 // static
 const Ren::VertexIdx* RenTTFRectangle::indices()

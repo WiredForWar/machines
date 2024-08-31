@@ -11,11 +11,11 @@
 // Note: we need to copy the vertices because these might change when other
 // instances of the same TTF are rendered in this frame.  The rest of the pimple
 // need not be copied because instances won't affect it.
-RenITLPolygon::RenITLPolygon(const RenITTFImpl* p, const RenMaterial& mat, MATHEX_SCALAR w, GLenum gt)
+RenITLPolygon::RenITLPolygon(const RenITTFImpl* p, const RenMaterial& mat, MATHEX_SCALAR w, Ren::PrimitiveTopology topology)
     : RenIDepthSortedItem(mat)
-    , vertices_(_NEW_ARRAY(RenIVertex, p->nVertices()))
     , pImpl_(p)
-    , geomType_(gt)
+    , vertices_(_NEW_ARRAY(RenIVertex, p->nVertices()))
+    , topology_(topology)
 {
     PRE(p);
     depth_ = w;
@@ -34,7 +34,7 @@ void RenITLPolygon::render()
 {
     // NB: use the material from the base class rather than the one in the TTF
     // pimple.  The former reflects any material overrides, the latter doesn't.
-    pImpl_->renderGL(vertices_, material_, geomType_);
+    pImpl_->renderGL(vertices_, material_, topology_);
 }
 
 void RenITLPolygon::print(std::ostream& o) const

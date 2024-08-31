@@ -541,7 +541,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
         addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
     }
     RenDevice::current()
-        ->renderScreenspace(&vertices.front(), vertices.size(), GL_TRIANGLES, width_, height_, font.textureId);
+        ->renderScreenspace(&vertices.front(), vertices.size(), Ren::PrimitiveTopology::Triangles, width_, height_, font.textureId);
 }
 
 void RenISurfBody::textDimensions(const std::string& text, Ren::Rect* dimensions) const

@@ -59,7 +59,7 @@ RenTTFPolygon* RenTTFTriangles::clone() const
 }
 
 // virtual
-GLenum RenTTFTriangles::compose2DGeometry(RenIVertex* vtx, const MexPoint3d& centre, MATHEX_SCALAR scale) const
+Ren::PrimitiveTopology RenTTFTriangles::compose2DGeometry(RenIVertex* vtx, const MexPoint3d& centre, MATHEX_SCALAR scale) const
 {
     const MATHEX_SCALAR cw = cornerWidth_ * scale;
     const MATHEX_SCALAR ch = cornerHeight_ * scale;
@@ -90,7 +90,7 @@ GLenum RenTTFTriangles::compose2DGeometry(RenIVertex* vtx, const MexPoint3d& cen
     vtx[2].y = vtx[4].y = (y1);
     vtx[10].y = vtx[8].y = (y2);
 
-    return GL_TRIANGLES;
+    return Ren::PrimitiveTopology::Triangles;
 }
 
 // static

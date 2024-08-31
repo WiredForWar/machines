@@ -10,10 +10,11 @@
 #include "base/persist.hpp"
 #include "utility/property.hpp"
 #include "mathex/point3d.hpp"
+
+#include "render/PrimitiveTopology.hpp"
 #include "render/render.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <GL/glew.h>
 
 class MexVec2;
 class RenMaterial;
@@ -76,7 +77,7 @@ private:
     // given array with the appropriate 2D geometry (filling out x and y only).
     // The return value indicates the type of triangle geometry required, i.e.,
     // strips, fans or disjoint triangles.
-    virtual GLenum compose2DGeometry(RenIVertex*, const MexPoint3d& centre, MATHEX_SCALAR scale) const = 0;
+    virtual Ren::PrimitiveTopology compose2DGeometry(RenIVertex*, const MexPoint3d& centre, MATHEX_SCALAR scale) const = 0;
 
     friend class RenMesh;
     void render(const glm::mat4&, MATHEX_SCALAR scale, const RenUVTransform*) const;
@@ -123,7 +124,7 @@ public:
     PER_FRIEND_READ_WRITE(RenTTFRectangle);
 
 private:
-    GLenum compose2DGeometry(RenIVertex*, const MexPoint3d& centre, MATHEX_SCALAR scale) const override;
+    Ren::PrimitiveTopology compose2DGeometry(RenIVertex*, const MexPoint3d& centre, MATHEX_SCALAR scale) const override;
     static const Ren::VertexIdx* indices();
 
     MATHEX_SCALAR width_, height_;
