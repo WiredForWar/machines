@@ -33,6 +33,8 @@
 
 #define INITGUID
 
+static constexpr uint16_t GamePort = 1234;
+
 NetINetwork::~NetINetwork()
 {
     NETWORK_STREAM("NetINetwork::~NetINetwork " << static_cast<const void*>(this) << std::endl);
@@ -223,7 +225,7 @@ void NetINetwork::initHost(bool asServer)
         spdlog::info("NetINetwork: Initializing a server");
         // b. Create a host using enet_host_create
         address.host = ENET_HOST_ANY;
-        address.port = 1234;
+        address.port = GamePort;
 
         pHost_ = enet_host_create(
             &address /* the address to bind the server host to */,
@@ -400,7 +402,7 @@ NetAppSession* NetINetwork::joinAppSession(const NetAppSessionUid& sessionUid)
     // c. Connect and user service
     ENetAddress address;
     enet_address_set_host(&address, IPAddress().c_str());
-    address.port = 1234;
+    address.port = GamePort;
 
     ENetPeer* pPeer;
     pPeer = enet_host_connect(pHost_, &address, 2, 0);
