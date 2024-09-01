@@ -7,6 +7,9 @@
 #include "network/netdefs.hpp"
 #include "network/message.hpp"
 
+#include <vector>
+#include <memory>
+
 class NetNode;
 class NetNodeUid;
 class NetProcessUid;
@@ -47,7 +50,7 @@ public:
 
     using ProtocolSpec = std::pair<const std::string, NetworkProtocol>;
     using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<string>>;
-    using Sessions = ctl_pvector<NetAppSessionUid>;
+    using Sessions = std::vector<std::unique_ptr<NetAppSessionUid>>;
     using Modems = ctl_vector<string>;
 
     ///////////////////////////////

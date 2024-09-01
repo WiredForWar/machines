@@ -422,7 +422,7 @@ bool MachLogNetwork::joinWithSessionId(const std::string& gameName, const std::s
         {
             if ((*i)->appSessionName() == selectedSessionName)
             {
-                pSelectedSessionUid = *i;
+                pSelectedSessionUid = i->get();
             }
         }
         //      SysWindowsAPI::sleep( 1000 );

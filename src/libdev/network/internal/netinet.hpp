@@ -101,8 +101,7 @@ public:
 private:
     ///////////////////////////////
 
-    using Nodes = ctl_vector<NetNode*>;
-    using Peers = ctl_vector<ENetPeer*>;
+    using Peers = std::vector<ENetPeer*>;
     using NetMessageBuffer = ctl_pvector<NetMessage>;
 
     ///////////////////////////////
@@ -164,12 +163,11 @@ private:
 
     NetNode::NetMessageBuffer messageBuffer_;
     NetNetwork::Sessions sessions_;
-    Nodes nodes_;
     Peers peers_;
-    NetAppSession* pLocalSession_;
-    NetSystemMessageHandler* pSystemMessageHandler_;
+    NetAppSession* pLocalSession_{};
+    NetSystemMessageHandler* pSystemMessageHandler_{};
 
-    bool lobbyAware_; // default is false
+    bool lobbyAware_{};
 
     // lobby description fields
     string descAppName_;
@@ -179,22 +177,22 @@ private:
     string descCurrentDirectory_;
     string descDescription_;
 
-    bool isLobbiedGame_;
-    bool isLogicalHost_;
+    bool isLobbiedGame_{};
+    bool isLogicalHost_{};
     std::string localPlayerName_;
 
     std::string IPAddress_;
 
     NetNetwork::NetworkProtocol currentProtocol_;
 
-    bool imStuffed_;
+    bool imStuffed_{};
 
     //  NetPingHelper                   pingHelper_;
 
     ENetAddress address_;
-    ENetHost* pHost_;
+    ENetHost* pHost_{};
 
-    bool deterministicPingDropoutAllowed_;
+    bool deterministicPingDropoutAllowed_{};
 
     ///////////////////////////////
 
@@ -213,7 +211,7 @@ private:
     int maxSentMessagesPerSecond_;
     int originalMaxSentMessagesPerSecond_;
 
-    bool messageThrottlingActive_;
+    bool messageThrottlingActive_{};
     NetNetwork::ProtocolMap availableProtocols_;
 };
 

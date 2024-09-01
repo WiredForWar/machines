@@ -46,30 +46,7 @@ NetINetwork::~NetINetwork()
         NetINetwork::clearProtocols();
 
         NETWORK_STREAM("delete sessions" << std::endl);
-        NetNetwork::Sessions::iterator i = sessions_.begin();
-        NetNetwork::Sessions::iterator j = sessions_.end();
-
-        for (; i != j; ++i)
-        {
-            delete *i;
-        }
-        i = sessions_.begin();
-        if (i != j)
-            sessions_.erase(i, j);
-
-        NETWORK_STREAM("delete nodes" << std::endl);
-
-        Nodes::iterator m = nodes_.begin();
-        Nodes::iterator n = nodes_.end();
-
-        int index = 0;
-
-        while (m != n)
-        {
-            Nodes::iterator p = m;
-            ++m;
-            delete *p;
-        }
+        sessions_.clear();
 
         NETWORK_STREAM(" delete message handler" << std::endl);
         if (pSystemMessageHandler_)
@@ -124,17 +101,11 @@ bool NetINetwork::hasAppSessionNoRecord(const NetAppSessionUid& aUid) const
 {
     PRE(isValidNoRecord());
 
-    bool found = false;
-
-    NetNetwork::Sessions::const_iterator i = sessions_.begin();
-    NetNetwork::Sessions::const_iterator j = sessions_.end();
-
-    while (i != j && !found)
-    {
-        if ((*(*i)) == aUid)
-            found = true;
-        ++i;
-    }
+    const auto result
+        = std::find_if(sessions_.begin(), sessions_.end(), [&aUid](const std::unique_ptr<NetAppSessionUid>& session) {
+        return session && *session == aUid;
+    });
+    bool found = result != sessions_.end();
 
     POST(isValidNoRecord());
 
@@ -209,25 +180,16 @@ NetAppUid NetINetwork::appUidNoRecord() const
 }
 
 NetINetwork::NetINetwork()
-    : pLocalSession_(nullptr)
-    , pSystemMessageHandler_(nullptr)
-    , lobbyAware_(false)
-    , descFileName_("")
+    : descFileName_("")
     , descCommandLine_("")
     , descPath_("")
     , descCurrentDirectory_("")
     , descDescription_("")
-    , isLogicalHost_(false)
     , localPlayerName_("")
-    , deterministicPingDropoutAllowed_(false)
     , maxBytesPerSecond_(9000)
-    , imStuffed_(false)
     , pingAllAllowed_(true)
     , maxSentMessagesPerSecond_(40)
-    , messageThrottlingActive_(false)
     , originalMaxSentMessagesPerSecond_(40)
-    , isLobbiedGame_(false)
-    , pHost_(nullptr)
 {
     PRE(isValidNoRecord());
 
@@ -245,12 +207,9 @@ void NetINetwork::initHost(bool asServer)
 {
     if (pHost_ != nullptr)
     {
-        Peers::const_iterator i = peers_.begin();
-        Peers::const_iterator j = peers_.end();
-        while (i != j)
+        for (ENetPeer* peer : peers_)
         {
-            enet_peer_disconnect(*i, 0);
-            ++i;
+            enet_peer_disconnect(peer, 0);
         }
         peers_.clear();
         enet_host_destroy(pHost_);
@@ -510,17 +469,8 @@ void NetINetwork::updateSessions()
 
         NETWORK_STREAM("NetINetwork::updateSessions() sessions before call " << sessions_.size() << std::endl);
         PRE(isValidNoRecord());
-        NetNetwork::Sessions::iterator i = sessions_.begin();
-        NetNetwork::Sessions::iterator j = sessions_.end();
-
-        for (; i != j; ++i)
-        {
-            delete (*i);
-        }
-
-        sessions_.erase(sessions_.begin(), sessions_.end());
-
-        sessions_.push_back(new NetAppSessionUid(0, 0, "game"));
+        sessions_.clear();
+        sessions_.push_back(std::make_unique<NetAppSessionUid>(0, 0, "game"));
         RecRecorder::instance().recordingAllowed(true);
     }
 

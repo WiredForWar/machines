@@ -19,16 +19,15 @@ public:
 
     NetAppSessionUid(const NetAppSessionUid&);
 
-private:
     NetAppSessionUid(NetAppUid, NetAppInstanceUid, const NetAppSessionName&);
 
+private:
     NetAppUid appUid_;
     NetAppInstanceUid appInstanceUid_;
     NetAppSessionName appSessionName_;
 
     friend bool operator==(const NetAppSessionUid& lhs, const NetAppSessionUid& rhs);
 
-    friend class NetINetwork;
     friend class NetNode;
     friend class NetIAppSession;
 

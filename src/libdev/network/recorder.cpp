@@ -59,13 +59,7 @@ void NetIRecorder::recordHasAppSession(bool value) const
 
 void NetIRecorder::playbackSessions(NetNetwork::Sessions* pSessions) const
 {
-    //  Delete all existing sessions
-    for (NetNetwork::Sessions::iterator i = pSessions->begin(); i != pSessions->end(); ++i)
-    {
-        delete *i;
-    }
-
-    pSessions->erase(pSessions->begin(), pSessions->end());
+    pSessions->clear();
 
     //  Now read in the current set of sessions
 
@@ -73,7 +67,7 @@ void NetIRecorder::playbackSessions(NetNetwork::Sessions* pSessions) const
 
     for (size_t i = 0; i < nSessions; ++i)
     {
-        pSessions->push_back(new NetAppSessionUid(playbackAppSessionUid()));
+        pSessions->push_back(std::make_unique<NetAppSessionUid>(playbackAppSessionUid()));
     }
 }
 
