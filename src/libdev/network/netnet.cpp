@@ -211,9 +211,9 @@ const std::string& NetNetwork::localPlayerName() const
     return pNetINetwork_->localPlayerName();
 }
 
-void NetNetwork::localPlayerName(const std::string& name)
+void NetNetwork::setLocalPlayerName(const std::string& name)
 {
-    pNetINetwork_->localPlayerName(name);
+    pNetINetwork_->setLocalPlayerName(name);
 }
 
 void NetNetwork::instantiateLobby()
@@ -232,9 +232,9 @@ const std::string& NetNetwork::IPAddress() const
     return pNetINetwork_->IPAddress();
 }
 
-void NetNetwork::IPAddress(const std::string& newAddress)
+void NetNetwork::setIPAddress(const std::string& newAddress)
 {
-    pNetINetwork_->IPAddress(newAddress);
+    pNetINetwork_->setIPAddress(newAddress);
 }
 
 void NetNetwork::initialiseConnection()
@@ -305,9 +305,9 @@ bool NetNetwork::deterministicPingDropoutAllowed() const
     return pNetINetwork_->deterministicPingDropoutAllowed();
 }
 
-void NetNetwork::deterministicPingDropoutAllowed(bool newValue)
+void NetNetwork::setDeterministicPingDropoutAllowed(bool newValue)
 {
-    pNetINetwork_->deterministicPingDropoutAllowed(newValue);
+    pNetINetwork_->setDeterministicPingDropoutAllowed(newValue);
 }
 
 void NetNetwork::disableNewPlayers()

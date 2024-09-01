@@ -1004,7 +1004,7 @@ const std::string& NetINetwork::localPlayerName() const
     return localPlayerName_;
 }
 
-void NetINetwork::localPlayerName(const std::string& newName)
+void NetINetwork::setLocalPlayerName(const std::string& newName)
 {
     localPlayerName_ = newName;
 }
@@ -1047,7 +1047,7 @@ const std::string& NetINetwork::IPAddress() const
     return IPAddress_;
 }
 
-void NetINetwork::IPAddress(const std::string& newIPAddress)
+void NetINetwork::setIPAddress(const std::string& newIPAddress)
 {
     IPAddress_ = newIPAddress;
 }
@@ -1091,7 +1091,7 @@ bool NetINetwork::deterministicPingDropoutAllowed() const
     return deterministicPingDropoutAllowed_;
 }
 
-void NetINetwork::deterministicPingDropoutAllowed(bool newValue)
+void NetINetwork::setDeterministicPingDropoutAllowed(bool newValue)
 {
     deterministicPingDropoutAllowed_ = newValue;
 }

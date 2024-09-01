@@ -89,14 +89,14 @@ public:
     bool isLobbiedGame() const;
     bool isLogicalHost() const;
     const std::string& localPlayerName() const;
-    void localPlayerName(const std::string&);
+    void setLocalPlayerName(const std::string&);
 
     ///////////////////////////////
     bool imStuffed() const;
     bool imStuffedNoRecord() const;
 
     bool deterministicPingDropoutAllowed() const;
-    void deterministicPingDropoutAllowed(bool);
+    void setDeterministicPingDropoutAllowed(bool);
 
 private:
     ///////////////////////////////
@@ -131,7 +131,7 @@ private:
 
     // Ip addresses may be in the form of numerical IP addresses or domain net
     const std::string& IPAddress() const;
-    void IPAddress(const std::string& newIPAddress);
+    void setIPAddress(const std::string& newIPAddress);
 
     bool isValidNoRecord() const;
     bool hasLocalNodeNoRecord(const NetNode*) const;

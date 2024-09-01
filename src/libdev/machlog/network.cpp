@@ -389,7 +389,7 @@ bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::s
     //  char szSessionName[200];
     //  GetComputerName(szSessionName, &dwNameSize);
     // NetNodeName name(playerName);
-    NetNetwork::instance().localPlayerName(playerName);
+    NetNetwork::instance().setLocalPlayerName(playerName);
     //  pNode_ = new NetNode(name);
     //  pNode_->useCompoundMessaging( true );
     return true;
@@ -439,7 +439,7 @@ bool MachLogNetwork::joinWithSessionId(const std::string& gameName, const std::s
         //      GetComputerName(szSessionName, &dwNameSize);
 
         // NetNodeName name(playerName);
-        NetNetwork::instance().localPlayerName(playerName);
+        NetNetwork::instance().setLocalPlayerName(playerName);
         //      pNode_ = new NetNode(name);
         //      pNode_->useCompoundMessaging( true );
         isNetworkGame_ = true;
@@ -472,7 +472,7 @@ bool MachLogNetwork::launchFromLobbyInfo()
         pImpl_->isNodeLogicalHost_ = true;
 
     NetNodeName name(NetNetwork::instance().localPlayerName());
-    NetNetwork::instance().localPlayerName(name);
+    NetNetwork::instance().setLocalPlayerName(name);
     //  pImpl_->pNode_ = new NetNode(name);
     //  pImpl_->pNode_->useCompoundMessaging( true );
     NETWORK_INDENT(-2);

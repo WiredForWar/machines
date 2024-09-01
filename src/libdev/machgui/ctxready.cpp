@@ -223,7 +223,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
         1);
 
     updateGameSettings();
-    NetNetwork::instance().deterministicPingDropoutAllowed(true);
+    NetNetwork::instance().setDeterministicPingDropoutAllowed(true);
 
     int actualPlayers = 0;
     for (int i = 0; i < pStartupScreens->startupData()->gameSettings()->numPlayers_; ++i)

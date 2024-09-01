@@ -100,7 +100,7 @@ public:
     bool isLobbiedGame() const;
     bool isLogicalHost() const;
     const std::string& localPlayerName() const;
-    void localPlayerName(const std::string&);
+    void setLocalPlayerName(const std::string&);
     // All this does is call into NetINetwork lpDiretcPlayLobby -
     //  which will ensure that internal flags are set correctly
     void instantiateLobby();
@@ -109,14 +109,14 @@ public:
 
     // Ip addresses may be in the form of numerical IP addresses or domain net
     const std::string& IPAddress() const;
-    void IPAddress(const std::string&);
+    void setIPAddress(const std::string& newAddress);
 
     bool imStuffed() const;
     bool imStuffedNoRecord() const;
     void imStuffed(bool);
 
     bool deterministicPingDropoutAllowed() const;
-    void deterministicPingDropoutAllowed(bool);
+    void setDeterministicPingDropoutAllowed(bool);
 
     void disableNewPlayers();
     void outputStuffedInfo(std::ostream&);

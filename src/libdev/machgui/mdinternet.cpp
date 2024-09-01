@@ -57,7 +57,7 @@ void MachGuiInternetNetworkMode::setNetworkDetails()
     // This function will use the settings from the drop downs to configure network settings
     string ipAddress = pimpl_->pIPAddressEntryBox_->text();
 
-    NetNetwork::instance().IPAddress(ipAddress);
+    NetNetwork::instance().setIPAddress(ipAddress);
     SysRegistry::instance().setStringValue("Network", "IP Address", ipAddress);
     NetNetwork::instance().initialiseConnection();
 }
