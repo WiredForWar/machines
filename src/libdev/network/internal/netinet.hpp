@@ -120,9 +120,6 @@ private:
     bool hasAppSessionNoRecord(const NetAppSessionName&) const;
     NetAppSession* createAppSession(const NetAppSessionName&, NetNode*);
     void updateSessions();
-    bool hasLocalNode(const NetNode*) const;
-    void addLocalNode(NetNode*);
-    void removeLocalNode(NetNode*);
     void enterAppSession(NetNode*, NetAppSessionUid);
     void doAbort(const string& reasonCode);
     void initHost(bool asServer = false);
