@@ -103,15 +103,13 @@ void MachGuiEditBoxListBoxItem::select()
     pSingleLineEditBox_->caretColour(Gui::BLACK());
     pSingleLineEditBox_->maxChars(maxChars_);
     pSingleLineEditBox_->setText(text_);
+    pSingleLineEditBox_->setTextChangedCallback([this](GuiSingleLineEditBox* pLineEdit) { text_ = pLineEdit->text(); });
     GuiManager::instance().charFocus(pSingleLineEditBox_);
 }
 
 // virtual
 void MachGuiEditBoxListBoxItem::unselect()
 {
-    // Update text_ data member
-    text();
-
     delete pSingleLineEditBox_;
     pSingleLineEditBox_ = nullptr;
     GuiManager::instance().removeCharFocus();
@@ -125,13 +123,6 @@ GuiSingleLineEditBox* MachGuiEditBoxListBoxItem::singleLineEditBox()
 
 string MachGuiEditBoxListBoxItem::text() const
 {
-    MachGuiEditBoxListBoxItem* pThis = _CONST_CAST(MachGuiEditBoxListBoxItem*, this);
-    /// Update text_ data member if we are currently in edit mode
-    if (pThis->singleLineEditBox())
-    {
-        pThis->text_ = pThis->singleLineEditBox()->text();
-    }
-
     return text_;
 }
 
@@ -140,6 +131,8 @@ void MachGuiEditBoxListBoxItem::text(const string& str)
     if (singleLineEditBox())
     {
         singleLineEditBox()->setText(str);
+        // Existing line editor 'll set the text_ directly via callback
+        return;
     }
 
     text_ = str;

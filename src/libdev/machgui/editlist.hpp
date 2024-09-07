@@ -56,7 +56,7 @@ private:
     MachGuiEditBoxListBoxItem& operator=(const MachGuiEditBoxListBoxItem&);
 
     // Data members...
-    GuiSingleLineEditBox* pSingleLineEditBox_;
+    GuiSingleLineEditBox* pSingleLineEditBox_{};
     string text_;
     size_t maxChars_;
 };
