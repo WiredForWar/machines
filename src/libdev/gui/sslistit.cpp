@@ -45,8 +45,7 @@ void GuiSingleSelectionListBoxItem::doHandleMouseClickEvent(const GuiMouseEvent&
 {
     PRE(pListBox_);
 
-    if ((rel.leftButton() == Gui::PRESSED && pListBox_->selectItemWhen() == GuiSingleSelectionListBox::PRESSED)
-        || (rel.leftButton() == Gui::RELEASED && pListBox_->selectItemWhen() == GuiSingleSelectionListBox::RELEASED))
+    if (rel.leftButton() == Gui::PRESSED)
     {
         selectThisItem();
     }

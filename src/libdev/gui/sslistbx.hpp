@@ -31,14 +31,6 @@ public:
 
     void CLASS_INVARIANT;
 
-    enum SelectItemWhen
-    {
-        PRESSED,
-        RELEASED
-    };
-    void selectItemWhen(SelectItemWhen);
-    SelectItemWhen selectItemWhen() const;
-
     void deleteAllItems();
 
 protected:
@@ -53,7 +45,6 @@ private:
     GuiSingleSelectionListBox& operator=(const GuiSingleSelectionListBox&);
 
     GuiSingleSelectionListBoxItem* pCurrentSelection_;
-    SelectItemWhen selectItemWhen_;
 };
 
 #endif

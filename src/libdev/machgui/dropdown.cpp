@@ -97,6 +97,16 @@ void MachGuiDropDownListBoxItem::select()
     pListBox_->itemSelected(text());
 }
 
+void MachGuiDropDownListBoxItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
+{
+    PRE(pListBox_);
+
+    if (rel.leftButton() == Gui::RELEASED)
+    {
+        selectThisItem();
+    }
+}
+
 MachGuiDropDownListBox::MachGuiDropDownListBox(
     MachGuiStartupScreens* pParent,
     const Gui::Box& box,
@@ -118,8 +128,6 @@ MachGuiDropDownListBox::MachGuiDropDownListBox(
     nextItem_ = 0;
 
     timeStart_ = DevTime::instance().time();
-
-    selectItemWhen(GuiSingleSelectionListBox::RELEASED);
 }
 
 MachGuiDropDownListBox::MachGuiDropDownListBox(
@@ -144,8 +152,6 @@ MachGuiDropDownListBox::MachGuiDropDownListBox(
     nextItem_ = 0;
 
     timeStart_ = DevTime::instance().time();
-
-    selectItemWhen(GuiSingleSelectionListBox::RELEASED);
 }
 
 MachGuiDropDownListBox::~MachGuiDropDownListBox()

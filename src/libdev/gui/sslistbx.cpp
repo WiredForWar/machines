@@ -16,7 +16,6 @@ GuiSingleSelectionListBox::GuiSingleSelectionListBox(
     size_t scrollInc)
     : GuiSimpleScrollableList(pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
     , pCurrentSelection_(nullptr)
-    , selectItemWhen_(PRESSED)
 {
 
     TEST_INVARIANT;
@@ -56,16 +55,6 @@ void GuiSingleSelectionListBox::notifyListItemSelection(GuiSingleSelectionListBo
         pCurrentSelection_->selected(true);
         pCurrentSelection_->select();
     }
-}
-
-void GuiSingleSelectionListBox::selectItemWhen(GuiSingleSelectionListBox::SelectItemWhen newSelectItemWhen)
-{
-    selectItemWhen_ = newSelectItemWhen;
-}
-
-GuiSingleSelectionListBox::SelectItemWhen GuiSingleSelectionListBox::selectItemWhen() const
-{
-    return selectItemWhen_;
 }
 
 void GuiSingleSelectionListBox::deleteAllItems()

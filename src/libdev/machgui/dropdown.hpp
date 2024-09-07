@@ -96,6 +96,8 @@ protected:
 
     void select() override;
 
+    void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
+
     static GuiBmpFont getWhiteFont();
 
 private:
