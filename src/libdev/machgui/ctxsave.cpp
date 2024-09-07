@@ -294,7 +294,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
     if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::OK)
     {
         // Create new save game...
-        if (pNewSaveGameName_->selected())
+        if (pNewSaveGameName_->isSelected())
         {
             if (pNewSaveGameName_->text() != "")
             {

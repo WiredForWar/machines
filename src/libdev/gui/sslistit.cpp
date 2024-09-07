@@ -15,7 +15,6 @@ GuiSingleSelectionListBoxItem::GuiSingleSelectionListBoxItem(
     size_t height)
     : GuiDisplayable(pListBox, Gui::Box(0, 0, width, height))
     , pListBox_(pListBox)
-    , selected_(false)
 {
 
     TEST_INVARIANT;
@@ -51,12 +50,12 @@ void GuiSingleSelectionListBoxItem::doHandleMouseClickEvent(const GuiMouseEvent&
     }
 }
 
-void GuiSingleSelectionListBoxItem::selected(bool selected)
+void GuiSingleSelectionListBoxItem::setSelected(bool selected)
 {
     selected_ = selected;
 }
 
-bool GuiSingleSelectionListBoxItem::selected() const
+bool GuiSingleSelectionListBoxItem::isSelected() const
 {
     return selected_;
 }

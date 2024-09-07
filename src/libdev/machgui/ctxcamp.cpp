@@ -268,7 +268,7 @@ bool MachGuiCtxCampaign::okayToSwitchContext()
     if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::OK)
     {
         // Create new player...
-        if (pNewPlayerName_->selected())
+        if (pNewPlayerName_->isSelected())
         {
             if (pNewPlayerName_->text() != "")
             {
@@ -338,7 +338,7 @@ void MachGuiCtxCampaign::buttonEvent(MachGui::ButtonEvent be)
         }
         else
         {
-            if (pNewPlayerName_->selected())
+            if (pNewPlayerName_->isSelected())
             {
                 // Reset new player name
                 pNewPlayerName_->text("");

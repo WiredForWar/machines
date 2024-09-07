@@ -24,8 +24,8 @@ public:
     GuiSingleSelectionListBoxItem(GuiSingleSelectionListBox* pListBox, size_t width, size_t height);
     ~GuiSingleSelectionListBoxItem() override;
 
-    // True if this is the selected item in the list box.
-    bool selected() const;
+    // True if this is the isSelected item in the list box.
+    bool isSelected() const;
 
     // Notifies list box of selection change. Calling this will indirectly cause
     // "select" to get called. This is the only way to select a list box item
@@ -59,10 +59,10 @@ private:
 
     friend class GuiSingleSelectionListBox;
 
-    void selected(bool);
+    void setSelected(bool);
 
-    bool selected_;
     GuiSingleSelectionListBox* pListBox_;
+    bool selected_{};
 };
 
 #endif

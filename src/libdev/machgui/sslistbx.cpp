@@ -81,7 +81,7 @@ void MachGuiSingleSelectionListBox::hasFocus(bool newValue)
 
         for (auto i = listItems_.begin(); i != listItems_.end() && ! itemSelected; ++i)
         {
-            itemSelected = (*i)->selected();
+            itemSelected = (*i)->isSelected();
         }
 
         // Select first item
@@ -112,7 +112,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
 
             pCurrentItem = *i;
 
-            itemSelected = pCurrentItem->selected();
+            itemSelected = pCurrentItem->isSelected();
         }
 
         // Didn't find previous item (first item was selected or there isn't any items to select)
@@ -137,7 +137,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
 
         for (/*empty*/; i != listItems_.end() && ! itemSelected; ++i)
         {
-            itemSelected = (*i)->selected();
+            itemSelected = (*i)->isSelected();
         }
 
         // Found selected item, no select one after it...

@@ -46,13 +46,13 @@ void GuiSingleSelectionListBox::notifyListItemSelection(GuiSingleSelectionListBo
     {
         if (pCurrentSelection_)
         {
-            pCurrentSelection_->selected(false);
+            pCurrentSelection_->setSelected(false);
             pCurrentSelection_->unselect();
         }
 
         pCurrentSelection_ = pNewSelection;
 
-        pCurrentSelection_->selected(true);
+        pCurrentSelection_->setSelected(true);
         pCurrentSelection_->select();
     }
 }

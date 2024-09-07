@@ -128,7 +128,7 @@ void MachGuiSingleSelectionListBoxItem::unselect()
 // virtual
 void MachGuiSingleSelectionListBoxItem::doDisplay()
 {
-    if (selected())
+    if (isSelected())
     {
         if (pMyListBox_ && pMyListBox_->isFocusControl())
         {
@@ -195,7 +195,7 @@ void MachGuiSingleSelectionListBoxItem::doHandleMouseEnterEvent(const GuiMouseEv
 
     highlighted_ = true;
 
-    if (! selected())
+    if (!isSelected())
         changed();
 }
 
@@ -204,7 +204,7 @@ void MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent(const GuiMouseEve
 {
     highlighted_ = false;
 
-    if (! selected())
+    if (!isSelected())
         changed();
 }
 

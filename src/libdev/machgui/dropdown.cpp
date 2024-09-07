@@ -54,7 +54,7 @@ void MachGuiDropDownListBoxItem::doDisplay()
         absoluteBoundary().minCorner().x() + 2 * MachGui::menuScaleFactor(),
         absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor());
 
-    if (selected())
+    if (isSelected())
     {
         GuiPainter::instance().blit(
             MachGui::longGlowBmp(),
