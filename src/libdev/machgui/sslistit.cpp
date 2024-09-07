@@ -150,7 +150,7 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
             Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
             static_cast<int>(width()));
     }
-    else if (highlighted())
+    else if (isHighlighted())
     {
         if (pMyListBox_ && pMyListBox_->isFocusControl())
         {
@@ -182,7 +182,7 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
     }
 }
 
-bool MachGuiSingleSelectionListBoxItem::highlighted() const
+bool MachGuiSingleSelectionListBoxItem::isHighlighted() const
 {
     return highlighted_;
 }

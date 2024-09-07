@@ -62,7 +62,7 @@ void MachGuiDropDownListBoxItem::doDisplay()
             absoluteBoundary().minCorner());
         getUnderlineFont().drawText(text(), textCoord, width());
     }
-    else if (highlighted())
+    else if (isHighlighted())
     {
         GuiPainter::instance().blit(
             MachGui::longGlowBmp(),

@@ -39,6 +39,9 @@ public:
 
     static size_t reqHeight();
 
+    bool isHighlighted() const;
+    const string& text() const;
+
 protected:
     // This variant utilized by MachGuiDropDownListBoxItem to initialize it. Hence, pMyListBox_ is null
     // TODO: Find a suitable abstraction for getting handle to game state ("startupData" lol) so MGSS dependency can be
@@ -58,8 +61,6 @@ protected:
 
     void doDisplay() override;
 
-    bool highlighted() const;
-    const string& text() const;
     // TODO: Eliminate this. Subclasses in declared in ctxjoin.cpp and ctxmulti.cpp use this to join & name the MP game.
     DECL_DEPRECATED MachGuiStartupScreens* startupScreens();
     MachGuiSingleSelectionListBox* myListBox();
