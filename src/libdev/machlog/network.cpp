@@ -23,6 +23,8 @@
 #include "system/metaistr.hpp"
 #include <memory>
 
+#include "spdlog/spdlog.h"
+
 // #define DEFINE_GUID
 #define INITGUID
 // #include <windows.h>
@@ -68,11 +70,16 @@ MachLogNetwork::~MachLogNetwork()
     delete pImpl_;
 }
 
+void MachLogNetwork::markDisconnected()
+{
+    pImpl_->isNetworkGame_ = false;
+}
+
 void MachLogNetwork::terminateAndReset()
 {
     CB_MachLogNetwork_DEPIMPL();
 
-    DEBUG_STREAM(DIAG_NETWORK, "MachLogNetwork::terminateAndReset\n");
+    spdlog::debug("MachLogNetwork::terminateAndReset()");
     NETWORK_STREAM(ProStackTracer());
 
     if (pNode_)
@@ -292,7 +299,7 @@ bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::s
     PRE(protocolChosen_);
     isNetworkGame_ = true;
     isNodeLogicalHost_ = true;
-    NetNetwork::instance().createAppSession();
+    NetNetwork::instance().createAppSession(gameName);
     //  DWORD dwNameSize = 200;
     //  char szSessionName[200];
     //  GetComputerName(szSessionName, &dwNameSize);

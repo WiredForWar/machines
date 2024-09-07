@@ -66,9 +66,10 @@ public:
 
     ///////////////////////////////
 
-    NetAppSession* createAppSession();
+    NetAppSession* createAppSession(const std::string& gameName);
     NetAppSession* joinAppSession(const std::string& addressStr);
     NetAppSession* connectAppSession();
+    void resetAppSession();
 
     NetAppUid appUid() const;
     bool hasAppSession(const NetAppSessionUid&) const;
@@ -76,10 +77,13 @@ public:
     bool hasAppSessionNoRecord(const NetAppSessionUid&) const;
     NetAppSession& session();
     void update();
+    void clearSessions();
+    void updateSessions();
     void pollMessages();
     const NetNetwork::Sessions& sessions() const;
 
     bool isValid() const;
+    bool hasActiveSession() const;
 
     void systemMessageHandler(NetSystemMessageHandler*);
     bool hasSystemMessageHandler() const;
@@ -117,11 +121,10 @@ private:
     bool hasAppSession(const NetAppSessionName&) const;
     //  Use the no record version in assertions
     bool hasAppSessionNoRecord(const NetAppSessionName&) const;
-    NetAppSession* createAppSession(const NetAppSessionName&, NetNode*);
-    void updateSessions();
     void enterAppSession(NetNode*, NetAppSessionUid);
     void doAbort(const string& reasonCode);
     void initHost(bool asServer = false);
+    void resetHost();
     NetMessage* getMessage();
     bool haveMessages();
     void sendMessage(const NetPriority& priority, const NetMessageRecipients& /*to*/, const NetMessageBody& body);
@@ -150,6 +153,14 @@ private:
 
     void sendInitPacket(ENetPeer* pPeer);
 
+    void initServersDiscoverySocket();
+    void deinitServersDiscoverySocket();
+    void sendLocalServersDiscoveryBroadcast();
+    void acceptLocalServersReplies();
+    void initLocalServerDiscovery();
+    void deinitLocalServerDiscovery();
+    void replyToServerDiscoveryRequests();
+
     void determineStandardSendFlags();
 
     void messageThrottlingActive(bool);
@@ -163,6 +174,7 @@ private:
 
     NetNode::NetMessageBuffer messageBuffer_;
     NetNetwork::Sessions sessions_;
+    double lastSessionsUpdate_{};
     Peers peers_;
     NetAppSession* pLocalSession_{};
     NetSystemMessageHandler* pSystemMessageHandler_{};
@@ -180,6 +192,7 @@ private:
     bool isLobbiedGame_{};
     bool isLogicalHost_{};
     std::string localPlayerName_;
+    std::string gameName_;
 
     std::string IPAddress_;
 
@@ -189,7 +202,9 @@ private:
 
     //  NetPingHelper                   pingHelper_;
 
-    ENetAddress address_;
+    ENetSocket lanDiscoveryServerSocket_{ENET_SOCKET_NULL};
+    ENetSocket lanDiscoveryClientSocket_{ENET_SOCKET_NULL};
+    ENetAddress address_{};
     ENetHost* pHost_{};
 
     bool deterministicPingDropoutAllowed_{};

@@ -38,6 +38,7 @@ public:
     static MachLogNetwork& instance();
     ~MachLogNetwork();
 
+    void markDisconnected();
     void terminateAndReset();
 
     MachPhys::Race localRace() const;

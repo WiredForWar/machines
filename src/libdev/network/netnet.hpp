@@ -86,14 +86,18 @@ public:
     NetAppUid appUidNoRecord() const;
     bool hasAppSession(NetAppSessionUid) const;
     void update();
+    void refreshSessions();
+    void updateSessions();
     void pollMessages();
     const Sessions& sessions() const;
     // If hosting conventional game then use createAppSession
-    NetAppSession* createAppSession();
+    NetAppSession* createAppSession(const std::string& gameName);
     // If joining a conventional game then use joinAppSession
     NetAppSession* joinAppSession(const std::string& addressStr);
     // if connecting via lobby then use connectAppSession (handles join and create)
     NetAppSession* connectAppSession();
+    void resetAppSession();
+
     void systemMessageHandler(NetSystemMessageHandler*);
     bool hasSystemMessageHandler() const;
     NetSystemMessageHandler& systemMessageHandler();

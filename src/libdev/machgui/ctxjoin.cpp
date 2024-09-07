@@ -223,6 +223,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         *this);
     pGamesList_->childrenUpdated();
 
+    NetNetwork::instance().resetAppSession();
     // Query network to find which protocol has been selected
     NetNetwork::NetworkProtocol protocol = NetNetwork::instance().currentProtocol();
 
@@ -316,29 +317,15 @@ void MachGuiCtxJoin::showGames()
 
         // Update network status
         NETWORK_STREAM("MachGuiCtxJoin::showGames() calling update to get most uptodate session list\n");
-        NetNetwork::instance().update();
-
-        const NetNetwork::Sessions& sessions = NetNetwork::instance().sessions();
-
-        NETWORK_STREAM(" sessions.size " << sessions.size() << std::endl);
-
-        for (NetNetwork::Sessions::const_iterator iter = sessions.begin(); iter != sessions.end(); ++iter)
-        {
-            new MachGuiCurGamesListBoxItem(
-                pStartupScreens_,
-                pGamesList_,
-                itemWidth,
-                *iter,
-                *this);
-            NETWORK_STREAM("  item added.\n");
-        }
-        NETWORK_STREAM(" items added to the list box.\n");
-
-        pGamesList_->childrenUpdated();
-
-        // if ( NetNetwork::instance().currentProtocol() != NetNetwork::IPX )
-        //   pStartupScreens_->changed();
+        NetNetwork::instance().refreshSessions();
     }
+}
+
+std::size_t MachGuiCtxJoin::numGamesInList() const
+{
+    // The list should always have at least the 'new game' item (which we exclude here)
+    PRE(pGamesList_->numListItems() > 0);
+    return pGamesList_->numListItems() - 1;
 }
 
 // virtual
@@ -444,18 +431,23 @@ void MachGuiCtxJoin::update()
     pNewGameName_->update();
     animations_.update();
     pNetworkProtocol_->updateGUI();
+    NetNetwork::instance().update();
 
-    // Update available games automatically on IPX
-    if (NetNetwork::instance().currentProtocol() == NetNetwork::NetworkProtocol::IPX)
+    const NetNetwork::Sessions& sessions = NetNetwork::instance().sessions();
+    if (numGamesInList() != sessions.size())
     {
-        static double time = 0.0;
-
-        if (DevTime::instance().time() - time > 5.0 && ! editingGameName_ && ! joinGameSelected_
-            && NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
+        const int itemWidth = (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor();
+        for (std::size_t sessionIndex = numGamesInList(); sessionIndex < sessions.size(); ++sessionIndex)
         {
-            showGames();
-            time = DevTime::instance().time();
+            new MachGuiCurGamesListBoxItem(
+                pStartupScreens_,
+                pGamesList_,
+                itemWidth,
+                sessions.at(sessionIndex),
+                *this);
+            NETWORK_STREAM("  item added.\n");
         }
+        pGamesList_->childrenUpdated();
     }
 }
 

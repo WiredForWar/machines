@@ -135,6 +135,28 @@ void NetNetwork::update()
     POST(isValidNoRecord());
 }
 
+/*NetAppSession& NetNetwork::session()
+{
+    PRE( isValidNoRecord() );
+    return pNetINetwork_->session();
+}*/
+
+void NetNetwork::refreshSessions()
+{
+    // Refresh is clear + update
+    PRE(isValidNoRecord());
+    pNetINetwork_->clearSessions();
+    pNetINetwork_->updateSessions();
+    POST(isValidNoRecord());
+}
+
+void NetNetwork::updateSessions()
+{
+    PRE(isValidNoRecord());
+    pNetINetwork_->updateSessions();
+    POST(isValidNoRecord());
+}
+
 void NetNetwork::pollMessages()
 {
     if (isValid())
@@ -147,10 +169,10 @@ const NetNetwork::Sessions& NetNetwork::sessions() const
     return pNetINetwork_->sessions();
 }
 
-NetAppSession* NetNetwork::createAppSession()
+NetAppSession* NetNetwork::createAppSession(const std::string& gameName)
 {
     PRE(isValidNoRecord());
-    return pNetINetwork_->createAppSession();
+    return pNetINetwork_->createAppSession(gameName);
 }
 
 NetAppSession* NetNetwork::joinAppSession(const std::string& addressStr)
@@ -163,6 +185,11 @@ NetAppSession* NetNetwork::connectAppSession()
 {
     PRE(isValidNoRecord());
     return pNetINetwork_->connectAppSession();
+}
+
+void NetNetwork::resetAppSession()
+{
+    return pNetINetwork_->resetAppSession();
 }
 
 //////////////////////////////////////////////////////////////

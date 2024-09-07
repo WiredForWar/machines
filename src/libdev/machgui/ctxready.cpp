@@ -305,6 +305,8 @@ void MachGuiCtxImReady::update()
     pSingleLineEditBox_->update();
     animations_.update();
 
+    NetNetwork::instance().update();
+
     if (MachLogNetwork::instance().isNetworkGame() && ! startupData().terminalMultiPlayerGameProblem())
     {
         /*      if( MachLogNetwork::instance().node().lastPingAllTime() > 2.5 )
@@ -598,6 +600,8 @@ bool MachGuiCtxImReady::okayToSwitchContext()
         // string ct = startupData().connectionType();
         // MachLogNetwork::instance().terminateAndReset();
         // startupData().connectionType( ct );
+        MachLogNetwork::instance().markDisconnected();
+        NetNetwork::instance().resetAppSession();
 
         // Initialise all data in player info slots.
         startupData().resetPlayers();

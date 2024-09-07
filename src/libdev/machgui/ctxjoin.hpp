@@ -47,6 +47,7 @@ public:
 
 protected:
     void showGames();
+    std::size_t numGamesInList() const;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t);

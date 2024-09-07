@@ -2,6 +2,7 @@
 #include "network/internal/netinet.hpp"
 
 #include "base/diag.hpp"
+#include "device/time.hpp"
 #include "stdlib/string.hpp"
 #include "profiler/profiler.hpp"
 #include "ctl/algorith.hpp"
@@ -34,6 +35,15 @@
 #define INITGUID
 
 static constexpr uint16_t GamePort = 1234;
+// Port 30583 means Wired for War
+static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
+
+struct ServerReply
+{
+    char replyMagic[4]{};
+    char serverName[64]{};
+    uint16_t port{};
+};
 
 NetINetwork::~NetINetwork()
 {
@@ -119,14 +129,23 @@ bool NetINetwork::hasAppSessionNoRecord(const NetAppSessionUid& aUid) const
 // call periodically to ensure that network information remains current.
 void NetINetwork::update()
 {
-    PRE(isValidNoRecord());
+    if (hasActiveSession())
+    {
+        if (isLogicalHost())
+        {
+            replyToServerDiscoveryRequests();
+        }
+    }
+    else
+    {
+        static constexpr double UpdateInterval = 5.0;
+        if (DevTime::instance().time() - lastSessionsUpdate_ > UpdateInterval)
+        {
+            updateSessions();
+        }
 
-    NETWORK_STREAM("NetINetwork::update \n");
-    ProProfiler::instance().traceStack(Diag::instance().networkStream(), true, 0, "");
-
-    updateSessions();
-
-    POST(isValidNoRecord());
+        acceptLocalServersReplies();
+    }
 }
 
 const NetNetwork::Sessions& NetINetwork::sessions() const
@@ -207,16 +226,7 @@ NetINetwork::NetINetwork()
 
 void NetINetwork::initHost(bool asServer)
 {
-    if (pHost_ != nullptr)
-    {
-        for (ENetPeer* peer : peers_)
-        {
-            enet_peer_disconnect(peer, 0);
-        }
-        peers_.clear();
-        enet_host_destroy(pHost_);
-        pHost_ = nullptr;
-    }
+    resetHost();
 
     isLogicalHost_ = asServer;
     ENetAddress address;
@@ -241,6 +251,8 @@ void NetINetwork::initHost(bool asServer)
             currentStatus(NetNetwork::NETNET_NODEERROR);
             return;
         }
+
+        spdlog::info("NetINetwork: Created ENet LAN server on port {}", pHost_->address.port);
     }
     else
     {
@@ -256,6 +268,27 @@ void NetINetwork::initHost(bool asServer)
             return;
         }
     }
+}
+
+void NetINetwork::resetHost()
+{
+    if (pHost_ == nullptr)
+        return;
+
+    for (ENetPeer* peer : peers_)
+    {
+        enet_peer_disconnect(peer, 0);
+    }
+    peers_.clear();
+    enet_host_destroy(pHost_);
+    pHost_ = nullptr;
+
+    isLogicalHost_ = false;
+}
+
+bool NetINetwork::hasActiveSession() const
+{
+    return pHost_ != nullptr;
 }
 
 void NetINetwork::pollMessages()
@@ -328,7 +361,7 @@ void NetINetwork::pollMessages()
                     break;
 
                 case ENET_EVENT_TYPE_DISCONNECT:
-                    spdlog::debug("NetINetwork: Peer disconnected:  {}", event.peer->address.host);
+                    spdlog::debug("NetINetwork: Peer disconnected: {}", event.peer->address.host);
 
                     // Reset client's information
                     _DELETE_ARRAY((char*)event.peer->data);
@@ -385,11 +418,16 @@ void NetINetwork::sendMessage(
 }
 
 // Host a game
-NetAppSession* NetINetwork::createAppSession()
+NetAppSession* NetINetwork::createAppSession(const std::string& gameName)
 {
     PRE(isValidNoRecord());
 
+    deinitServersDiscoverySocket();
+    initLocalServerDiscovery();
     initHost(true);
+
+    gameName_ = gameName;
+
     return nullptr;
 }
 
@@ -397,6 +435,7 @@ NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
 {
     PRE(isValidNoRecord());
 
+    spdlog::info("NetINetwork: Connecting to {}", addressStr);
     initHost();
 
     std::string ipAddress = std::string(getIp(addressStr));
@@ -458,6 +497,17 @@ NetAppSession* NetINetwork::connectAppSession()
     return pLocalSession_;
 }
 
+void NetINetwork::resetAppSession()
+{
+    if (isLogicalHost_)
+    {
+        deinitLocalServerDiscovery();
+    }
+
+    resetHost();
+    initServersDiscoverySocket();
+}
+
 NetAppSession& NetINetwork::session()
 {
     PRE(isValidNoRecord());
@@ -465,20 +515,23 @@ NetAppSession& NetINetwork::session()
     return *pLocalSession_;
 }
 
-// called periodically by update() to ensure that sessions_ remains current.
-void NetINetwork::updateSessions()
+void NetINetwork::clearSessions()
 {
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
         RecRecorder::instance().recordingAllowed(false);
 
-        NETWORK_STREAM("NetINetwork::updateSessions() sessions before call " << sessions_.size() << std::endl);
         PRE(isValidNoRecord());
         sessions_.clear();
         RecRecorder::instance().recordingAllowed(true);
     }
+}
 
-    //  POST( isValidNoRecord() );
+// called periodically by update() to ensure that sessions_ remains current.
+void NetINetwork::updateSessions()
+{
+    lastSessionsUpdate_ = DevTime::instance().time();
+    sendLocalServersDiscoveryBroadcast();
 }
 
 const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(Update update)
@@ -1194,6 +1247,163 @@ void NetINetwork::sendInitPacket(ENetPeer* pPeer)
     ENetPacket* packet
         = enet_packet_create(localPlayerName_.c_str(), localPlayerName_.length() + 1, ENET_PACKET_FLAG_RELIABLE);
     enet_peer_send(pPeer, 0, packet);
+}
+
+void NetINetwork::initServersDiscoverySocket()
+{
+    lanDiscoveryClientSocket_ = enet_socket_create(ENET_SOCKET_TYPE_DATAGRAM);
+    if (lanDiscoveryClientSocket_ == ENET_SOCKET_NULL)
+    {
+        spdlog::error("NetINetwork: Unable to create broadcast socket");
+        return;
+    }
+    if (enet_socket_set_option(lanDiscoveryClientSocket_, ENET_SOCKOPT_BROADCAST, 1) != 0)
+    {
+        spdlog::error("NetINetwork: Unable to enable broadcast socket");
+        return;
+    }
+}
+
+void NetINetwork::deinitServersDiscoverySocket()
+{
+    if(lanDiscoveryClientSocket_ != ENET_SOCKET_NULL)
+    {
+        enet_socket_shutdown(lanDiscoveryClientSocket_, ENET_SOCKET_SHUTDOWN_READ_WRITE);
+        enet_socket_destroy(lanDiscoveryClientSocket_);
+        lanDiscoveryClientSocket_ = ENET_SOCKET_NULL;
+    }
+}
+
+void NetINetwork::sendLocalServersDiscoveryBroadcast()
+{
+    ENetAddress scanaddr;
+    scanaddr.host = ENET_HOST_BROADCAST;
+    scanaddr.port = LANServerDiscoveryPort;
+    // Send a dummy payload
+    char data[] = "WFW0.DiscoverServers";
+    ENetBuffer sendbuf;
+    sendbuf.data = data;
+    sendbuf.dataLength = std::size(data);
+    if (enet_socket_send(lanDiscoveryClientSocket_, &scanaddr, &sendbuf, 1) != static_cast<int>(sendbuf.dataLength))
+    {
+        spdlog::warn("NetINetwork: Unable to send discovery broadcast");
+        return;
+    }
+}
+
+void NetINetwork::acceptLocalServersReplies()
+{
+    ENetSocketSet set;
+    ENET_SOCKETSET_EMPTY(set);
+    ENET_SOCKETSET_ADD(set, lanDiscoveryClientSocket_);
+
+    if (!enet_socketset_select(lanDiscoveryClientSocket_, &set, nullptr, 0))
+        return;
+
+    ENetAddress serverAddress;
+
+    ENetBuffer recvbuf;
+
+    ServerReply reply;
+    recvbuf.data = &reply;
+    recvbuf.dataLength = sizeof(reply);
+    const int recvlen = enet_socket_receive(lanDiscoveryClientSocket_, &serverAddress, &recvbuf, 1);
+
+    char buf[256];
+    enet_address_get_host_ip(&serverAddress, buf, sizeof buf);
+
+    if (recvlen != sizeof(reply))
+    {
+        spdlog::warn("NetINetwork: Unexpected server reply from {}", buf);
+        return;
+    }
+
+    std::string address = makeAddress(buf, reply.port);
+    const auto session = std::find_if(sessions_.begin(), sessions_.end(), [&address](const NetSessionInfo& info) {
+        return info.address == address;
+    });
+    if (session != sessions_.end())
+    {
+        session->serverName = reply.serverName;
+        return;
+    }
+
+    sessions_.emplace_back(NetSessionInfo {
+        .address = address,
+        .serverName = reply.serverName,
+    });
+}
+
+void NetINetwork::initLocalServerDiscovery()
+{
+    lanDiscoveryServerSocket_ = enet_socket_create(ENET_SOCKET_TYPE_DATAGRAM);
+    if (lanDiscoveryServerSocket_ == ENET_SOCKET_NULL)
+    {
+        spdlog::error("NetINetwork: Unable to create LAN server announce socket");
+        return;
+    }
+
+    ENetAddress listenaddr;
+    listenaddr.host = ENET_HOST_ANY;
+    listenaddr.port = LANServerDiscoveryPort;
+    if (enet_socket_bind(lanDiscoveryServerSocket_, &listenaddr) != 0)
+    {
+        fprintf(stderr, "Failed to bind listen socket\n");
+        return;
+    }
+    if (enet_socket_get_address(lanDiscoveryServerSocket_, &listenaddr) != 0)
+    {
+        fprintf(stderr, "Cannot get listen socket address\n");
+        return;
+    }
+    printf("Listening for scans on port %d\n", listenaddr.port);
+}
+
+void NetINetwork::deinitLocalServerDiscovery()
+{
+    if(lanDiscoveryServerSocket_ != ENET_SOCKET_NULL)
+    {
+        enet_socket_shutdown(lanDiscoveryServerSocket_, ENET_SOCKET_SHUTDOWN_READ_WRITE);
+        enet_socket_destroy(lanDiscoveryServerSocket_);
+        lanDiscoveryServerSocket_ = ENET_SOCKET_NULL;
+    }
+}
+
+void NetINetwork::replyToServerDiscoveryRequests()
+{
+    ENetSocketSet set;
+    ENET_SOCKETSET_EMPTY(set);
+    ENET_SOCKETSET_ADD(set, lanDiscoveryServerSocket_);
+
+    if (!enet_socketset_select(lanDiscoveryServerSocket_, &set, nullptr, 0))
+        return;
+
+    ENetAddress clientAddress;
+
+    ENetBuffer recvbuf;
+    char recBuf[32];
+    recvbuf.data = &recBuf;
+    recvbuf.dataLength = sizeof(recBuf);
+    const int recvlen = enet_socket_receive(lanDiscoveryServerSocket_, &clientAddress, &recvbuf, 1);
+    if (recvlen > 0)
+    {
+        char buf[256];
+        enet_address_get_host_ip(&clientAddress, buf, sizeof buf);
+        printf("Replying to a client at %s:%d\n", recBuf, clientAddress.port);
+    }
+
+    ServerReply reply { .replyMagic = { 'W', 'F', 'W', '0' } };
+    gameName_.copy(reply.serverName, sizeof(reply.serverName) - 1);
+    reply.port = pHost_->address.port;
+
+    ENetBuffer sendbuf;
+    sendbuf.data = &reply;
+    sendbuf.dataLength = sizeof(reply);
+    if (enet_socket_send(lanDiscoveryServerSocket_, &clientAddress, &sendbuf, 1) != static_cast<int>(sendbuf.dataLength))
+    {
+        spdlog::warn("NetINetwork: Unable to send LAN server announce broadcast");
+        return;
+    }
 }
 
 void NetINetwork::determineStandardSendFlags()

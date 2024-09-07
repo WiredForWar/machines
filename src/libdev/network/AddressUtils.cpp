@@ -1,7 +1,8 @@
-#include <optional>
-#include <string_view>
 #include <algorithm>
 #include <charconv>
+#include <optional>
+#include <string>
+#include <string_view>
 
 #include "AddressUtils.hpp"
 
@@ -32,4 +33,9 @@ std::optional<uint16_t> getPort(const std::string& addressStr)
         return {};
 
     return port;
+}
+
+std::string makeAddress(std::string_view ip, uint16_t port)
+{
+    return std::string(ip) + ":" + std::to_string(port);
 }
