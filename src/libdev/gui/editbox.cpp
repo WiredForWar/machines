@@ -112,7 +112,7 @@ bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
             if (caretPos_ >= maxWidth() - (border_ ? 4 : 0))
                 caretPos_ = maxWidth() - (border_ ? 5 : 1);
 
-            forceRedraw();
+            onTextChanged();
         }
 
         return true;
@@ -255,7 +255,7 @@ void GuiSingleLineEditBox::backspaceEvent()
             }
         }
 
-        forceRedraw();
+        onTextChanged();
     }
 }
 
@@ -266,8 +266,13 @@ void GuiSingleLineEditBox::deleteEvent()
     {
         rightText_.erase(0, 1);
 
-        forceRedraw();
+        onTextChanged();
     }
+}
+
+void GuiSingleLineEditBox::onTextChanged()
+{
+    forceRedraw();
 }
 
 void GuiSingleLineEditBox::forceRedraw()
@@ -287,7 +292,7 @@ void GuiSingleLineEditBox::text(const string& newText)
     leftText_.erase(0);
     caretPos_ = 0;
 
-    forceRedraw();
+    onTextChanged();
 }
 
 string GuiSingleLineEditBox::text() const

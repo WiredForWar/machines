@@ -62,6 +62,7 @@ protected:
     void backspaceEvent();
     void deleteEvent();
 
+    void onTextChanged();
     void forceRedraw();
 
     virtual void drawBackground();
