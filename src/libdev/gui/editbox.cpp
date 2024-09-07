@@ -161,7 +161,7 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
 void GuiSingleLineEditBox::leftArrowEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (! leftText_.length() == 0)
+    if (!leftText_.empty())
     {
         char c = leftText_[leftText_.length() - 1];
         // leftText_.remove( leftText_.length() - 1 );
@@ -181,7 +181,7 @@ void GuiSingleLineEditBox::leftArrowEvent()
 void GuiSingleLineEditBox::rightArrowEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (! rightText_.length() == 0)
+    if (!rightText_.empty())
     {
         char c = rightText_[0];
         // rightText_.remove( 0, 1 );
@@ -201,7 +201,7 @@ void GuiSingleLineEditBox::rightArrowEvent()
 void GuiSingleLineEditBox::homeEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (! leftText_.length() == 0)
+    if (!leftText_.empty())
     {
         rightText_ = leftText_ + rightText_;
         // leftText_.remove( 0 );
@@ -215,7 +215,7 @@ void GuiSingleLineEditBox::homeEvent()
 void GuiSingleLineEditBox::endEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (! rightText_.length() == 0)
+    if (!rightText_.empty())
     {
         leftText_ = leftText_ + rightText_;
 
@@ -236,10 +236,9 @@ void GuiSingleLineEditBox::endEvent()
 void GuiSingleLineEditBox::backspaceEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (! leftText_.length() == 0)
+    if (!leftText_.empty())
     {
         char c = leftText_[leftText_.length() - 1];
-        // leftText_.remove( leftText_.length() - 1 );
         leftText_.erase(leftText_.length() - 1, 1);
         caretPos_ -= font_.charWidth(c) + font_.spacing();
 
@@ -263,10 +262,8 @@ void GuiSingleLineEditBox::backspaceEvent()
 void GuiSingleLineEditBox::deleteEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (! rightText_.length() == 0)
+    if (!rightText_.empty())
     {
-        char c = rightText_[0];
-        // rightText_.remove( 0, 1 );
         rightText_.erase(0, 1);
 
         forceRedraw();
