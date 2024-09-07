@@ -63,7 +63,8 @@ ProProfiler& ProProfiler::instance(IProgressReporter* pReporter)
     static ProProfiler instance_;
     if (!instance_.isInitialized())
     {
-        instance_.init(pReporter);
+        // The profiler is broken (it does not set ticksPerSecond_). Disable for now.
+        // instance_.init(pReporter);
     }
 
     return instance_;
