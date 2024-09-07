@@ -341,7 +341,7 @@ void MachGuiCtxCampaign::buttonEvent(MachGui::ButtonEvent be)
             if (pNewPlayerName_->isSelected())
             {
                 // Reset new player name
-                pNewPlayerName_->text("");
+                pNewPlayerName_->setText("");
             }
         }
     }

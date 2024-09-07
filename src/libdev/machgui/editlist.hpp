@@ -36,8 +36,8 @@ public:
     // Get the last text that was entered into the edit box.
     string text() const;
 
-    // Set the text displayed in the edit box.
-    void text(const string& str);
+    // Set the setText displayed in the edit box.
+    void setText(const string& str);
 
     // Set max chars that can be entered into edit box. zero = no limit
     size_t maxChars() const;

@@ -126,7 +126,7 @@ string MachGuiEditBoxListBoxItem::text() const
     return text_;
 }
 
-void MachGuiEditBoxListBoxItem::text(const string& str)
+void MachGuiEditBoxListBoxItem::setText(const string& str)
 {
     if (singleLineEditBox())
     {
