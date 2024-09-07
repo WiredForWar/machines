@@ -22,6 +22,8 @@ class GuiSingleLineEditBox : public GuiDisplayable
 // Canonical form revoked
 {
 public:
+    using Callback = std::function<void(GuiSingleLineEditBox*)>;
+
     GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box);
     GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
     ~GuiSingleLineEditBox() override;
@@ -40,6 +42,7 @@ public:
     void setText(const string&);
     // PRE( string.length() <= maxChars_ );
     string text() const;
+    void setTextChangedCallback(Callback callback);
 
     // Turn edit box border on.
     void border(bool);
@@ -80,6 +83,8 @@ protected:
 
     GuiSingleLineEditBox(const GuiSingleLineEditBox&);
     GuiSingleLineEditBox& operator=(const GuiSingleLineEditBox&);
+
+    Callback textChangedCallback_{};
 
     // Data members...
     string rightText_;

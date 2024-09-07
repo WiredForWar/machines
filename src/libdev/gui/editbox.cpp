@@ -273,6 +273,11 @@ void GuiSingleLineEditBox::deleteEvent()
 void GuiSingleLineEditBox::onTextChanged()
 {
     forceRedraw();
+
+    if (textChangedCallback_)
+    {
+        textChangedCallback_(this);
+    }
 }
 
 void GuiSingleLineEditBox::forceRedraw()
@@ -322,6 +327,11 @@ void GuiSingleLineEditBox::backgroundColour(const GuiColour& colour)
 void GuiSingleLineEditBox::caretColour(const GuiColour& colour)
 {
     caretColour_ = colour;
+}
+
+void GuiSingleLineEditBox::setTextChangedCallback(Callback callback)
+{
+    textChangedCallback_ = callback;
 }
 
 void GuiSingleLineEditBox::border(bool b)
