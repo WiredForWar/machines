@@ -200,7 +200,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
         font);
     pSingleLineEditBox_->maxChars(MAX_CHATMESSAGE_LEN - MAX_PLAYERNAME_LEN - 5);
     GuiResourceString chatMessage(IDS_MENU_CHATMESSAGE);
-    pSingleLineEditBox_->text(chatMessage.asString());
+    pSingleLineEditBox_->setText(chatMessage.asString());
     pSingleLineEditBox_->clearTextOnNextChar(true);
     GuiManager::instance().charFocus(pSingleLineEditBox_);
 
@@ -290,7 +290,7 @@ bool MachGuiCtxImReady::doHandleKeyEvent(const GuiKeyEvent& e)
             pChatWindow_->addText(chatMessage);
 
             // Clear down chat message entry area ready for next message
-            pSingleLineEditBox_->text("");
+            pSingleLineEditBox_->setText("");
         }
 
         return true;
@@ -535,7 +535,7 @@ void MachGuiCtxImReady::buttonEvent(MachGui::ButtonEvent buttonEvent)
             pChatWindow_->addText(chatMessage);
 
             // Clear down chat message entry area ready for next message
-            pSingleLineEditBox_->text("");
+            pSingleLineEditBox_->setText("");
         }
     }
 }

@@ -36,8 +36,8 @@ public:
     void backgroundColour(const GuiColour& colour);
     void caretColour(const GuiColour& colour);
 
-    // Get/Set text that is displayed in edit box
-    void text(const string&);
+    // Set text that is displayed in edit box
+    void setText(const string&);
     // PRE( string.length() <= maxChars_ );
     string text() const;
 

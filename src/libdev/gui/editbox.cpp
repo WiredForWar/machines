@@ -283,7 +283,7 @@ void GuiSingleLineEditBox::forceRedraw()
     changed();
 }
 
-void GuiSingleLineEditBox::text(const string& newText)
+void GuiSingleLineEditBox::setText(const string& newText)
 {
     PRE(maxChars_ ? newText.length() <= maxChars_ : true);
 

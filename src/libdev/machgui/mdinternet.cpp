@@ -112,7 +112,7 @@ void MachGuiInternetNetworkMode::readNetworkDetails()
     if (ipAddress.empty())
         ipAddress = "localhost";
 
-    pimpl_->pIPAddressEntryBox_->text(ipAddress);
+    pimpl_->pIPAddressEntryBox_->setText(ipAddress);
 
     charFocus();
 }

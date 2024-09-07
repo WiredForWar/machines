@@ -102,7 +102,7 @@ void MachGuiEditBoxListBoxItem::select()
         = new MachGuiEditBoxItem(this, Gui::Box(1, 1, width() - 1, height() - 1), getUnderlineFont(), myListBox());
     pSingleLineEditBox_->caretColour(Gui::BLACK());
     pSingleLineEditBox_->maxChars(maxChars_);
-    pSingleLineEditBox_->text(text_);
+    pSingleLineEditBox_->setText(text_);
     GuiManager::instance().charFocus(pSingleLineEditBox_);
 }
 
@@ -139,7 +139,7 @@ void MachGuiEditBoxListBoxItem::text(const string& str)
 {
     if (singleLineEditBox())
     {
-        singleLineEditBox()->text(str);
+        singleLineEditBox()->setText(str);
     }
 
     text_ = str;

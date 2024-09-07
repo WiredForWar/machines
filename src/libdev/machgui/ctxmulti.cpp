@@ -96,12 +96,12 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     if (pStartupScreens_->startupData()->playerName() == "")
     {
         GuiResourceString enterName(IDS_MENU_ENTERNAME);
-        pSingleLineEditBox_->text(enterName.asString());
+        pSingleLineEditBox_->setText(enterName.asString());
         pSingleLineEditBox_->clearTextOnNextChar(true);
     }
     else
     {
-        pSingleLineEditBox_->text(pStartupScreens_->startupData()->playerName());
+        pSingleLineEditBox_->setText(pStartupScreens_->startupData()->playerName());
     }
 
     GuiManager::instance().charFocus(pSingleLineEditBox_);

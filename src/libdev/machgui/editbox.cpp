@@ -64,7 +64,7 @@ bool MachGuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
 
     if (clearTextOnNextChar_)
     {
-        text("");
+        setText("");
         clearTextOnNextChar_ = false;
     }
 

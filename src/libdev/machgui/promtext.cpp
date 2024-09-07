@@ -540,7 +540,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                             standardMessageIndex_ = 0;
                         }
 
-                        text(MachGuiInGameChatMessages::instance().standardMessages()[standardMessageIndex_]);
+                        setText(MachGuiInGameChatMessages::instance().standardMessages()[standardMessageIndex_]);
                         // Display next message next time
                         ++standardMessageIndex_;
                     }
@@ -601,7 +601,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                         standardMessageIndex_ = 0;
                     }
 
-                    text(MachGuiInGameChatMessages::instance().standardMessages()[standardMessageIndex_]);
+                    setText(MachGuiInGameChatMessages::instance().standardMessages()[standardMessageIndex_]);
                     // Display next message next time
                     ++standardMessageIndex_;
                 }
@@ -691,7 +691,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                 // Clear message from prompt text
                 enteringChatMessage_ = false;
                 GuiManager::instance().removeCharFocus();
-                text("");
+                setText("");
                 refresh_ = true;
                 restartScroll_ = true;
                 processed = true;

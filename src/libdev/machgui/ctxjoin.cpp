@@ -125,7 +125,7 @@ protected:
         MachGuiEditBoxListBoxItem::select();
 
         singleLineEditBox()->maxChars(MAX_GAMENAME_LEN);
-        singleLineEditBox()->text(startupScreens()->startupData()->newGameName());
+        singleLineEditBox()->setText(startupScreens()->startupData()->newGameName());
         startupScreens()->startupData()->joinGame("");
         joinContext_.editingGameName(true);
     }
